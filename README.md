@@ -17,7 +17,9 @@ Actor based c++distributed game server framework
   * /resources/protocolbuff    proto文件目录,用于定义与客户端交互的协议
 
 # 杂谈
-  源代码中.h暴露的接口中大量使用了impl用来隐藏和尽量避免成员变量的暴露,让使用.h的人只关心暴露出来的接口
+  * 源代码中.h暴露的接口中大量使用了impl用来隐藏和尽量避免成员变量的暴露,让使用.h的人只关心暴露出来的接口
+  * 不要尝试编译libcore,libcore仅仅是为了在写代码时对单个cpp文件进行编译用来测试代码是否存在问题
+  * libcorekkk是include 所有.cpp文件以加快编译速度
   
 
 
