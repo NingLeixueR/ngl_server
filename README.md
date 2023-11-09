@@ -52,6 +52,21 @@ Actor based c++distributed game server framework
 	```
 	ngl/tools/public/proto/db.proto中定义要存储的db数据
 	数据统一以db_开头 例如：
+	定义一个枚举
+	enum ENUM_DB
+	{
+		ENUM_DB_ACCOUNT = 0;		// 账号数据
+		ENUM_DB_ROLE = 1;			// 玩家数据
+		ENUM_DB_BRIEF = 2;			// 玩家简要数据
+		ENUM_DB_BAG = 3;			// 背包数据
+		ENUM_DB_KEYVALUE = 4;		// 键值数据
+		ENUM_DB_MAIL = 5;			// 邮件数据
+		ENUM_DB_GUILD = 6;			// 工会数据
+		ENUM_DB_NOTICE = 7;			// 公告数据
+		ENUM_DB_RANKLIST = 8;		// 排行数据
+		ENUM_DB_ACTIVITY = 9;		// 活动数据
+		ENUM_DB_COUNT = 10;
+	};
 	// ENUM_DB_ACCOUNT,				// 账号数据
 	message db_account
 	{
@@ -61,7 +76,29 @@ Actor based c++distributed game server framework
 		optional string m_passworld		= 4;				// 密码
 		optional int32	m_area			= 5;				// 区服id
 	}
-	还需要在
+
+	这样我们就可以在node的db中增加数据加载(server_main.h)
+	using actor_db_account = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>;
+	actor_db_account::getInstance();
+
+	我们还必须在tab_dbload.csv中指定db_account表的基本信息
+	int32_t		string		string		bool						bool						int
+	m_id		m_name		m_remarks	m_isloadall					m_network					m_sendmaxcount
+										是否需要启动加载全部数据	是否允许通过网络分发		单次最多发送数量
+	version:0					
+	1			DB_ACCOUNT	DB_ACCOUNT	1							1							100
+
+	好了就差最后一步 定义加载后数据访问的途径
+	using account_db_modular = db_modular<
+		EPROTOCOL_TYPE_PROTOCOLBUFF,
+		pbdb::ENUM_DB_ACCOUNT,
+		pbdb::db_account,
+		actor_login
+	>;
+	class account : public account_db_modular
+
+	virtual void set_id() 看你是加载一个实例还是加载全部实例 -1加载全部
+	virtual void initdata() 加载成功后会调用此函数  我们可以在其中对数据进行预处理
 
 	```
 
