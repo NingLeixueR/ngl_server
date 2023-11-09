@@ -69,12 +69,6 @@ namespace ngl
 		return (i64_actorid)lguid;
 	}
 
-	i64_actorid actor_guid::make_nonearea(ENUM_ACTOR atype, i32_actordataid aid)
-	{
-		actor_guid lguid(atype, none_area(), aid);
-		return (i64_actorid)lguid;
-	}
-
 	i64_actorid actor_guid::make_type(i64_actorid aactorid, ENUM_ACTOR atype)
 	{
 		actor_guid lguid(aactorid);
@@ -147,19 +141,19 @@ namespace ngl
 	// sendmore 发送给同类型的所有actor
 	i64_actorid actor_guid::moreactor(ENUM_ACTOR atype)
 	{
-		return make(atype, none<uint16_t>(), none<uint32_t>());
+		return make(atype, none_area(), none_actordataid());
 	}
 
 	i64_actorid actor_guid::moreactor()
 	{
-		return make(none<ENUM_ACTOR>(), none<uint16_t>(), none<uint32_t>());
+		return make(none_type(), none_area(), none_actordataid());
 	}
 
 	void actor_guid::none()
 	{
-		m_value2[0] = none<ENUM_ACTOR>();
-		m_value2[1] = none<uint16_t>();
-		m_value1[1] = none<uint32_t>();
+		m_value2[0] = none_type();
+		m_value2[1] = none_area();
+		m_value1[1] = none_actordataid();
 	}
 
 	//是否发给同类型的所有actor

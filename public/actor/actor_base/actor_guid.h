@@ -6,6 +6,10 @@
 
 namespace ngl
 {
+	// actor唯一id(64bit)
+	// 16位			类型ENUM_ACTOR
+	// 16位			区服id	
+	// 32位			数据id
 	// ############ 64 bit ######### //
 	// #actor_type###areaid###id#### //
 	// #16bit########16bit####32bit# //
@@ -19,33 +23,40 @@ namespace ngl
 		actor_guid(int64_t aid);
 		actor_guid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);
 
+		// 可以将union强转为i64_actorid值
 		operator i64_actorid ()const;
+		// 获取guidid值
 		i64_actorid id()const;
+		// 获取ENUM_ACTOR类型
 		ENUM_ACTOR type()const;
+		// 获取数据id
 		i32_actordataid actordataid()const;
+		// 获取区服
 		i16_area area()const;
-
+		// 通过actor_typename::enum2name获取枚举对应字符串
 		static const char* name(i64_actorid aactorid);
-
+		// 根据类型、区服、数据id创建一个i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);
-		// none_area()
+		// 根据类型、数据id、区服为none_area()创建一个i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i32_actordataid aid);
-		// none_area() none_actordataid()
+		// 根据类型、数据id为none_actordataid()、区服为none_area()创建一个i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype);
-		// ttab_servers::tab()->m_area none_actordataid() 
+		// 根据类型、区服为ttab_servers::tab()->m_area none_actordataid()、数据id为none_actordataid创建一个i64_actorid
 		static i64_actorid make_self(ENUM_ACTOR atype);
-		// none_type() none_area() none_actordataid()
+		// 根据类型none_type()、区服为none_area()数据id为none_actordataid()创建一个i64_actorid
 		static i64_actorid make();
-		static i64_actorid make_nonearea(ENUM_ACTOR atype, i32_actordataid aid);
+
 		// ### 替换type
 		static i64_actorid make_type(i64_actorid aactorid, ENUM_ACTOR atype);
 		// ### 替换area
 		static i64_actorid make_area(i64_actorid aactorid, i16_area aareaid);
 		// ### 替换actordataid
 		static i64_actorid make_actordataid(i64_actorid aactorid, i32_actordataid aid);
-
+		// ### 替换type
 		i64_actorid make_type(ENUM_ACTOR atype);
+		// ### 替换area
 		i64_actorid make_area(i16_area aareaid);
+		// ### 替换actordataid
 		i64_actorid make_actordataid(i32_actordataid aid);
 
 		// ### 获取actordataid
