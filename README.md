@@ -106,6 +106,7 @@ Actor based c++distributed game server framework
   * 源代码中.h暴露的接口中大量使用了impl用来隐藏和尽量避免成员变量的暴露,让使用.h的人只关心暴露出来的接口
   * 不要尝试编译libcore,libcore仅仅是为了在写代码时对单个cpp文件进行编译用来测试代码是否存在问题
   * libcorekkk是include 所有.cpp文件以加快编译速度
+  * 近半年的修改未在linux上编译,一方面是不太方便，另一方面是懒,因为代码使用了部分c++20的内容所以对编译器版本有要求。 
   * QQ群 56257994 欢迎志同道合的小伙伴一起维护完善这个小项目
 # 
   
