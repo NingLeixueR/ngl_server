@@ -28,6 +28,7 @@ namespace ngl
 			static actor_manage ltemp;
 			return ltemp;
 		}
+
 		// 初始化 设置工作线程数量
 		void init(i32_threadsize apthreadnum);
 

@@ -68,17 +68,23 @@ namespace ngl
 
 		// sendmore 发送给同类型的所有actor
 		static i64_actorid moreactor(ENUM_ACTOR atype);
+		// 和无参make()一致
 		static i64_actorid moreactor();
+		// 和无参make()一致
 		void none();
-		//是否发给同类型的所有actor
+
+		// 是否发给同类型的所有actor
 		static bool is_moreactor(i64_actorid actorid, ENUM_ACTOR atype);
 		bool is_moreactor(ENUM_ACTOR atype)const;
-		//actor type 是否无效
+
+		// actor type 是否无效
 		static bool is_actortypenone(i64_actorid actorid);
 		bool is_actortypenone()const;
+
 		//actor area 是否无效
 		static bool is_actorareanone(i64_actorid actorid);
 		bool is_actorareanone()const;
+
 		//actor id 是否无效
 		static bool is_actoridnone(i64_actorid actorid);
 		bool is_actoridnone()const;

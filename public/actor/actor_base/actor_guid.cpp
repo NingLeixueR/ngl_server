@@ -198,6 +198,7 @@ namespace ngl
 		actor_guid lguid(actorid);
 		return lguid.is_actoridnone();
 	}
+
 	bool actor_guid::is_actoridnone()const
 	{
 		return actordataid() == none<i32_actordataid>();
