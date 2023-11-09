@@ -23,16 +23,20 @@ namespace ngl
 			return actor_instance<actor_client>::instance(); 
 		}
 		
+		// 注册需要处理的消息
 		static void actor_register();
 
 		enum { ACTOR_TYPE = ACTOR_ADDRESS_CLIENT };
+
 	private:
 		void actor_server_register(i32_serverid aserverid);
 	public:
 		//# 向actor_server注册结点
 		void actor_server_register();
 	private:
+		// 设置连接后时间 例如actor_dbclient会注册连接后事件（加载数据）
 		void set_connect_fnish(i32_serverid aserverid);
+		// 连接成功后调用
 		void connect_fnish();
 	public:
 		// 注册结点

@@ -263,6 +263,8 @@ namespace ngl
 				TDerived::actor_register();
 			}
 		}
+
+		// 用于创建非单例actor
 		static actor_base* create(ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr);
 
 	};

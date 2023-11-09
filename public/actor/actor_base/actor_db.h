@@ -14,6 +14,7 @@
 
 namespace ngl
 {
+	// db连接池
 	class actor_dbpool
 	{
 		static std::vector<db*> m_data;
@@ -33,6 +34,7 @@ namespace ngl
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 	public:
+		// 初始化
 		static void init()
 		{
 			Try
@@ -70,6 +72,7 @@ namespace ngl
 			}Catch;
 		}
 
+		// 加载表中的所有数据
 		static void loadall(const std::shared_ptr<pack>& apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network) return;
@@ -123,6 +126,7 @@ namespace ngl
 			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name());
 		}
 
+		// 加载表中的指定数据
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
 			if (aid == -1)
@@ -131,6 +135,7 @@ namespace ngl
 				db_manage::select<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athreadid), aid);
 		}
 
+		// 加载数据 ：同步方式
 		static void load(i32_threadid athreadid, const std::shared_ptr<pack>& apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
@@ -167,6 +172,7 @@ namespace ngl
 			}
 		}
 
+		// 异步保存数据  将需要保存的数据添加到缓存保存队列
 		static void save(i32_threadid athreadid, const TDBTAB& adata)
 		{
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
@@ -183,6 +189,7 @@ namespace ngl
 			}
 		}
 
+		// 异步删除数据  将需要删除的数据添加到缓存保存队列
 		static void del(i32_threadid athreadid, i64_actorid aid)
 		{
 			m_idset.erase(aid);
