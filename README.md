@@ -17,12 +17,12 @@ Actor based c++distributed game server framework
   * /tools/public/protocolbuff    	proto文件目录,用于定义与客户端交互的协议
 
 # 编译
-   * 首先需要下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
-	* 运行cmake 源路径选择主目录/ngl 生成目录/ngl/obj
-	* 会生成sln项目,打开,首先项目中的libmycore是不需要编译的别浪费时间(libmycorekkk是他的替代主要是include所有cpp文件以加速编译)
-	* makeproto工程主要是根据proto文件生成对应的sql文件和 协议结构与协议号关联的xml(我们就不需要大费心神关联协议号与协议体了)
-	* rebuild工程主要是遍历/public下的所有cpp文件,生成ub.cpp让libmycorekkk加速编译
-	* node是节点文件,包含逻辑的全部代码,在其中我们可以修改实例化哪些actor将一些逻辑进行分离和集中,我们游戏可能稳定运行了一段时间,要更新“新玩法”我们可以把新功能和玩法进行抽离，放到线上等起稳定了再将其集中,当然我们也能因为某个节点压力太大可以运用分离,将压力分散
+  * 首先需要下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
+  * 运行cmake 源路径选择主目录/ngl 生成目录/ngl/obj
+  * 会生成sln项目,打开,首先项目中的libmycore是不需要编译的别浪费时间(libmycorekkk是他的替代主要是include所有cpp文件以加速编译)
+  * makeproto工程主要是根据proto文件生成对应的sql文件和 协议结构与协议号关联的xml(我们就不需要大费心神关联协议号与协议体了)
+  * rebuild工程主要是遍历/public下的所有cpp文件,生成ub.cpp让libmycorekkk加速编译
+  * node是节点文件,包含逻辑的全部代码,在其中我们可以修改实例化哪些actor将一些逻辑进行分离和集中,我们游戏可能稳定运行了一段时间,要更新“新玩法”我们可以把新功能和玩法进行抽离，放到线上等起稳定了再将其集中,当然我们也能因为某个节点压力太大可以运用分离,将压力分散
 
 
 # 杂谈
