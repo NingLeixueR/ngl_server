@@ -17,7 +17,7 @@ Actor based c++distributed game server framework
   * /tools/public/protocolbuff    	proto文件目录,用于定义与客户端交互的协议
 
 # 编译
-	* 首先需要下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
+   * 首先需要下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
 	* 运行cmake 源路径选择主目录/ngl 生成目录/ngl/obj
 	* 会生成sln项目,打开,首先项目中的libmycore是不需要编译的别浪费时间(libmycorekkk是他的替代主要是include所有cpp文件以加速编译)
 	* makeproto工程主要是根据proto文件生成对应的sql文件和 协议结构与协议号关联的xml(我们就不需要大费心神关联协议号与协议体了)
