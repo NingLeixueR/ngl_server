@@ -24,6 +24,31 @@ Actor based c++distributed game server framework
   * rebuild工程主要是遍历/public下的所有cpp文件,生成ub.cpp让libmycorekkk加速编译
   * node是节点文件,包含逻辑的全部代码,在其中我们可以修改实例化哪些actor将一些逻辑进行分离和集中,我们游戏可能稳定运行了一段时间,要更新“新玩法”我们可以把新功能和玩法进行抽离，放到线上等起稳定了再将其集中,当然我们也能因为某个节点压力太大可以运用分离,将压力分散
 
+# 使用
+  * 如何定义一个actor?
+	```
+	定义一个actor_xxx 需要继承 actor
+	在构造函数中我们需要简单配置一下actor,比如actor的类型ENUM_ACTOR,区服id,dataid,是否需要从数据库中加载数据,消息处理权重(数字,每一次轮训最多处理多少消息)
+	virtual void init()中需要actor_xxx与dbclient相关联
+	static void actor_register(); 需要注册actor_xxx要处理的消息
+	例如 ：
+	register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_xxx>(false,
+				null<pbnet::PROBUFF_NET_ROLE_LOGIN>
+			);
+	在actor_xxx中注册了proto消息 pbnet::PROBUFF_NET_ROLE_LOGIN需要处理 
+	此时我们需要实现对应的消息  bool actor_xxx::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
+	参数i32_threadid athread是线程id  一般用不到
+	参数const std::shared_ptr<pack>& apack 是经过网络的原生包 一般用不到
+	参数pbnet::PROBUFF_NET_ROLE_LOGIN& adata 是我们需要处理的消息
+
+	我们也可以实现bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);方法 用来处理定时任务
+	这时我们同样需要在static void actor_register();中注册 调用actor_xxx::register_timer<actor_role>();即可
+
+	
+	[可以查看actor_role](https://https://github.com/NingLeixueR/ngl/tree/main/public/actor/actor_logic/game/actor_role.h)
+
+	```
+
 
 # 杂谈
   * 源代码中.h暴露的接口中大量使用了impl用来隐藏和尽量避免成员变量的暴露,让使用.h的人只关心暴露出来的接口
