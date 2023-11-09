@@ -142,9 +142,7 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 add_subdirectory(3part)
 add_subdirectory(public)
-add_subdirectory(idl)
 add_subdirectory(server)
-#add_subdirectory(cs)
 
 ######################使用多处理器编译########################
 #IF (WIN32)
