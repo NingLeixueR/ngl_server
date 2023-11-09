@@ -41,9 +41,6 @@ namespace ngl
 		}
 
 	public:
-		
-
-
 		//// ### client->gateway->game
 		static void client2game();
 

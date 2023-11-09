@@ -89,6 +89,7 @@ namespace ngl
 			arfun<TDerived, TYPE>::instance().rfun<T>(afun);
 		}
 
+#pragma region register_actor
 		// 注册actor成员函数[handle]
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor(bool aisload, const T*)
@@ -102,7 +103,9 @@ namespace ngl
 			register_actor<TYPE, TDerived, T>(aisload, apdata);
 			register_actor<TYPE, TDerived, ARG...>(aisload, arg...);
 		}
+#pragma endregion 
 
+#pragma region register_actornonet
 		// ## 与register_actor类似 只不过不注册网络层
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, const T*)
@@ -116,6 +119,7 @@ namespace ngl
 			register_actornonet<TYPE, TDerived>(aisload, apdata);
 			register_actornonet<TYPE, TDerived>(aisload, arg...);
 		}
+#pragma endregion 
 
 	private:
 		// 注册actor类的handle
@@ -133,6 +137,8 @@ namespace ngl
 		}
 	public:
 
+	private:
+		friend class gateway_game_forward;
 		// ### 注册 [forward:转发协议]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(TDerived* aderived, const T*)
@@ -176,22 +182,16 @@ namespace ngl
 
 		virtual ~actor();
 
-		virtual void release() final;
-
-		bool list_empty();
-
 		virtual actor_stat get_activity_stat();
-
 		virtual void set_activity_stat(actor_stat astat);
 
+	private:
+		virtual void release() final;
+		virtual bool list_empty();
 		virtual void push(handle_pram& apram);
-
 		virtual void clear_task();
-
-		void actor_handle(i32_threadid athreadid, int aweight);
-
 		virtual void actor_handle(i32_threadid athreadid);
-
+	public:
 #pragma region ActorBroadcast
 		// ############# Start[Actor 全员广播] ############# 
 		// ## 间隔一段时间发起的全员(所有actor)广播

@@ -123,11 +123,6 @@ namespace ngl
 
 	void actor::clear_task() {}
 
-	void actor::actor_handle(i32_threadid athreadid, int aweight)
-	{
-		m_impl_actor()->actor_handle(this, athreadid, aweight);
-	}
-
 	void actor::actor_handle(i32_threadid athreadid)
 	{
 		m_impl_actor()->actor_handle(this, athreadid);
