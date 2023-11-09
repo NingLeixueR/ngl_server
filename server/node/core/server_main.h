@@ -13,9 +13,9 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 		ltemp.set_m_passworld("123456");
 		ltemp.set_m_roleid(ltemp.m_id());
 		ltemp.set_m_area(ngl::tab_self_area);
-		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, ngl::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
 
-		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, ngl::ENUM_DB_ACCOUNT, pbdb::db_account>::load(0, ngl::actor_guid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, 1));
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::load(0, ngl::actor_guid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, 1));
 		pbdb::db_account lDB_ACCOUNT;
 		ngl::dbdata<pbdb::db_account>::get(ngl::actor_guid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, 1), lDB_ACCOUNT);
 	}
@@ -43,7 +43,7 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase->set_m_moneygold(i + 1000);
 		lrolebase->set_m_moneysilver(i + 2000);
 
-		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, ngl::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
 	}
 }
 
@@ -63,7 +63,7 @@ void init_DB_BAG(const char* aname, int beg)
 		ltemp.set_m_id(ngl::actor_guid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
 		ltemp.set_m_maxid(1);
 
-		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, ngl::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
 	}
 }
 
@@ -80,7 +80,7 @@ void init_DB_MAIL(int beg)
 	{
 		pbdb::db_mail ltemp;
 		ltemp.set_m_id(ngl::actor_guid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
-		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, ngl::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
 	}
 }
 
@@ -117,7 +117,7 @@ void init_DB_NOTICE()
 		ltemp.set_m_notice(lvec[i]);
 		ltemp.set_m_starttime(time(NULL));
 		ltemp.set_m_finishtime(time(NULL) + 36000);
-		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, ngl::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
 	}
 }
 
