@@ -9,3 +9,5 @@
 3part/mysql
 3part/protobuf
 bin/Debug
+obj
+lib
