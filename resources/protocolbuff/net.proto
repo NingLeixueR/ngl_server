@@ -1,0 +1,223 @@
+syntax = "proto3";
+
+
+import "db.proto";
+
+package pbnet;
+//namespace
+//支持 SPEED(速度快，占用最大空间) CODE_SIZE LITE_RUNTIME(效率最高，且占用空间少，不支持反射)
+//option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
+option optimize_for = SPEED;
+
+// [请求]心跳协议
+message PROBUFF_NET_HEARTBEAT
+{
+};
+
+
+// [请求]错误码
+message PROBUFF_NET_ERROR
+{
+	optional int32 m_errnum			= 1; // 错误码
+};
+
+// [回复]错误码
+message PROBUFF_NET_ERROR_RESPONSE
+{
+	optional int32 m_errnum			= 1; // 错误码
+	optional string m_errmessage	= 2; // 错误描述
+};
+
+// [请求]服务器时间
+message PROBUFF_NET_GET_TIME
+{
+};
+
+// [回复]服务器时间
+message PROBUFF_NET_GET_TIME_RESPONSE
+{
+	optional int32 m_utc			= 1; // 错误码
+};
+
+// [请求]获取公告列表
+message PROBUFF_NET_GET_NOTICE
+{
+};
+
+// [回复]获取公告列表
+message PROBUFF_NET_GET_NOTICE_RESPONSE
+{
+	repeated pbdb.db_notice m_notices		= 1;
+};
+
+// [请求]登录账号
+message PROBUFF_NET_ACOUNT_LOGIN
+{
+	optional int32 m_area			= 1;	// 区服id
+	optional string m_account		= 2;	// 帐号
+	optional string m_password		= 3;	// 密码
+};
+
+// [回复]登录账号
+message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+{
+	optional int32 m_area			= 1;				// 区服id
+	optional int64 m_roleid			= 2;				// 玩家id
+	optional string m_session		= 3;
+	optional string m_account		= 4;				// 帐号
+	optional int32 m_gatewayid		= 5;				// 网关id
+};
+
+// [请求]玩家登录
+message PROBUFF_NET_ROLE_LOGIN
+{
+	optional int64 m_roleid			= 1;	// 玩家id
+	optional string m_session		= 2;
+	optional bool m_iscreate		= 3;
+	optional int32 m_area			= 4;	// 区服id
+	optional int32 m_gatewayid	    = 5;
+};
+
+// [请求]获取角色信息
+message PROBUFF_NET_ROLE_SYNC
+{
+};
+
+// [回复]获取角色信息
+message PROBUFF_NET_ROLE_SYNC_RESPONSE
+{
+	optional pbdb.db_role m_role	= 1;
+	optional pbdb.db_bag m_bag		= 2;
+};
+
+// [请求]获取背包信息
+message PROBUFF_NET_BAG_SYNC
+{
+};
+
+// [回复]获取背包信息
+message PROBUFF_NET_BAG_SYNC_RESPONSE
+{
+	optional pbdb.db_bag m_bag			= 1;
+};
+
+// [请求]更新背包信息
+message PROBUFF_NET_BAG_UPDATE
+{
+};
+
+// [回复]更新背包信息
+message PROBUFF_NET_BAG_UPDATE_RESPONSE
+{
+	repeated pbdb.item m_items			= 1;	// 物品
+	repeated int32 m_delitems			= 2;	// 删除的物品
+};
+
+// [请求]cmd协议
+message PROBUFF_NET_CMD
+{
+	// ## 命令							注释
+	// ## /time						获取服务器时间
+	// ## /set_rolename				设置角色名称
+	// ## /set_rolelv				增加角色等级(负数就是减少)
+	// ## /chat						聊天
+	// ## /switch					切换game服务器
+	// [命令|参数]   参数[parm1*parm2]
+	// /set_rolename|libo
+	optional string m_cmd						= 1;
+};
+
+// [请求]聊天
+enum enum_logic_chat 
+{
+	get_chat_list		= 0;
+	chat_speak			= 1;
+	updata_speck		= 2;
+};
+
+message PROBUFF_NET_CHAT
+{
+	optional int32 m_type				= 1; //enum_logic_chat
+	optional int32 m_channelid			= 2;
+	optional string m_content			= 3; //m_type == chat_speak
+};
+
+// [回复]聊天
+message chatitem
+{
+	optional int64 m_roleid	= 1;
+	optional string m_rolename	= 2;
+	optional string m_content	= 3;
+	optional int32 m_utc		= 4;
+};
+	
+message PROBUFF_NET_CHAT_RESPONSE
+{
+	optional int32 m_type				= 1; // enum_logic_chat
+	optional int32 m_channelid			= 2; // tab_chat.m_id
+	repeated chatitem m_chatlist		= 3; // m_type == get_chat_list || m_type == updata_speck
+	optional bool m_stat				= 4; // m_type == chat_speak
+};
+
+// [请求]切换线路
+message PROBUFF_NET_SWITCH_LINE
+{
+	optional int32 m_line				= 1;
+};
+
+// [回复]切换线路
+message PROBUFF_NET_SWITCH_LINE_RESPONSE
+{
+	optional int32 m_line				= 1;
+	optional bool m_stat				= 2;
+};
+
+// [请求]获取邮件列表
+message PROBUFF_NET_MAIL_LIST
+{
+};
+
+// [回复]获取邮件列表
+message PROBUFF_NET_MAIL_LIST_RESPONSE
+{
+	map<int32, pbdb.mail> m_mail			= 1; // key mail id
+};
+
+// [请求]读取邮件
+message PROBUFF_NET_MAIL_READ
+{
+	optional int64 m_mailid				= 1;
+};
+
+// [回复]读取邮件
+message PROBUFF_NET_MAIL_READ_RESPONSE
+{
+	optional int64 m_mailid				= 1;
+	optional bool m_stat				= 2;
+};
+
+// [请求]领取邮件附件
+message PROBUFF_NET_MAIL_DRAW
+{
+	optional int64 m_mailid				= 1;
+};
+
+// [回复]领取邮件附件
+message PROBUFF_NET_MAIL_DRAW_RESPONSE
+{
+	optional int64 m_mailid				= 1;
+	optional bool m_stat				= 2;
+};
+
+// [请求]领取邮件附件
+message PROBUFF_NET_MAIL_DEL
+{
+	optional int64 m_mailid				= 1;
+};
+
+// [回复]领取邮件附件
+message PROBUFF_NET_MAIL_DEL_RESPONSE
+{
+	optional int64 m_mailid				= 1;
+	optional bool m_stat				= 2;
+};

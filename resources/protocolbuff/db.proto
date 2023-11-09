@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+
+package pbdb;
+
+option optimize_for = SPEED;
+
+
+// ENUM_DB_ACCOUNT,				// 账号数据
+message db_account
+{
+	optional int64	m_id			= 1;				// 帐号id
+	optional int64	m_roleid		= 2;				// 角色id
+	optional string m_account		= 3;				// 账号
+	optional string m_passworld		= 4;				// 密码
+	optional int32	m_area			= 5;				// 区服id
+}
+
+// ENUM_DB_BRIEF,			// 玩家简要数据
+message db_brief
+{
+	optional int64 m_id				= 1;				// role id
+	optional string m_name			= 2;				// 名字
+	optional int32 m_lv				= 3;				// 等级
+	optional int32 m_moneygold		= 4;				// 金币
+	optional int32 m_moneysilver	= 5;				// 银币
+}
+
+// ENUM_DB_ROLE,			// 玩家数据
+message db_role
+{
+	optional int64 m_id					= 1;				// role id
+	optional db_brief m_base			= 2;				// 玩家基础信息
+}
+
+//ENUM_DB_BAG,			// 背包数据
+message item
+{
+	optional int32 m_id			= 1;
+	optional int32 m_tid		= 2; // tab id
+	optional int32 m_count		= 3;
+	// ## 卡牌 装备
+	optional int32 m_lv			= 4;	// 等级
+	optional int32 m_star		= 5;	// 星级
+}
+
+
+message db_bag
+{
+	optional int64 m_id					= 1;	// roleid
+	map<int32, item> m_items			= 2;	// key item id
+	optional int32 m_maxid				= 3;
+}
+
+//ENUM_DB_KEYVALUE,		// 键值数据
+message db_keyvalue
+{
+	optional int64 m_id					= 1;
+	optional string m_key				= 2;				// key
+	optional string m_value				= 3;				// value
+}
+
+//ENUM_DB_MAIL,			// 邮件数据
+message mailitem
+{
+	optional int32 m_itemtid	= 1;
+	optional int32 m_count		= 2;
+}
+message mail
+{
+	optional int32 m_id				= 1;
+	optional int32 m_createutc		= 2;	// 创建时间
+	optional int32 m_tid			= 3;	// 邮件表id
+	optional string m_prams			= 4;	// 参数以#号分割pram1#pram2..
+	repeated mailitem  m_items		= 5;	// 邮件附件
+	optional bool m_read			= 6;	// 是否已读
+	optional bool m_draw			= 7;	// 是否领取附件	
+}
+
+message db_mail
+{
+	optional int64 m_id				= 1;
+	map<int32, mail> m_mail			= 2; // key mail id
+}
+
+//ENUM_DB_GUILD,			// 工会数据
+message db_guild
+{
+	optional int64 m_id				= 1;				// 工会id
+	optional string m_guild			= 2;				// 工会名称
+	optional int64 m_leader			= 3;				// 工会会长
+	repeated int64 m_members			= 4;				// 工会成员
+}
+
+//ENUM_DB_NOTICE,			// 公告数据
+message db_notice
+{
+	optional int64 m_id			= 1;				// 公告id
+	optional string m_notice	= 2;				// 内容
+	optional int32 m_starttime	= 3;				// 开始时间
+	optional int32 m_finishtime	= 4;				// 结束时间
+};
+
+message rankitem
+{
+	optional int64 m_roleid = 1;
+	optional string m_name = 2;
+
+	optional int32 m_lv = 3;		// 玩家等级
+	optional int32 m_lvtime = 4;	// 玩家等级更新时间
+}
+
+//ENUM_DB_RANKLIST,		// 排行数据
+message db_ranklist
+{
+	optional int64 m_id			= 1;				// 排行id
+	map<int64,rankitem> m_item	= 2;
+}
+
+
+message db_activity
+{
+	optional int64 m_id			= 1; // tab_actiivity 表id
+	message data
+	{
+		optional int32 m_beg		= 2; // 活动开启时间
+		optional int32 m_end		= 3; // 活动结束时间
+		optional bool m_start		= 4; // 是否开启
+		optional bool m_finish		= 5; // 是否关闭
+
+		// tab_activity.m_type == EActivityDrawCompliance
+		message drawcompliance
+		{
+			optional int32 m_count		= 1; // 累计次数
+			repeated int32 m_reward		= 2; // 累计领取哪些奖励
+		}
+		map<int64,drawcompliance> m_drawcompliance	= 6;
+	}
+	repeated data m_datas = 2; // 活动数据
+}
+
+
+message db_task
+{
+	optional int64 m_id			= 1; // roleid
+	message data
+	{
+		optional int32 m_taskid		= 1; // 任务id
+		optional int32 m_receiveutc	= 2; // 接收任务时间
+		optional int32 m_finshutc	= 3; // 完成任务时间
+		optional int32 m_parmint1	= 4; 
+		optional int32 m_parmint2	= 5;
+		optional string m_parmstring1	= 6; 
+		optional string m_parmstring2	= 7;
+	}
+	repeated data m_datas = 2; // 任务数据
+}
+
+
+
+
+
+
