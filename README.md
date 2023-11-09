@@ -2,19 +2,19 @@
 Actor based c++distributed game server framework
 基于Actor的c++分布式游戏服务器框架
 # 目录
-  * /3part                    		此目录用于存放第三方库(bcp裁剪的boost、cryptopp、libcurl、hiredis、protobuf、mysql)
-  * /idl                      		csv表的生成代码生成工具(对应目录/tools/public/idl/csvtable.idl)
-  * /public                   		库的源代码目录
-  * /public/actor             		actor模式的实现
-  * /public/logic             		简单的使用例子
-  * /public/net               		网络相关(只支持tcp和ws)
-  * /public/protocol          		生成的协议相关的文件
-  * /public/serialize         		主要是tcp分包，包头，序列化
-  * /public/tools             		一些简单封装的工具(curl,dbmysql,log,xml,csv,json,md5......)
-  * /server                   		cmake项目文件,一些main.cpp等
-  * /tools                    		此目录中有一些脚本文件 如rename_node.bat将生成的node.exe文件分别重命名,以方便在windwos任务管理器中查看.
-  * /tools/public/idl         		idl文件目录
-  * /tools/public/protocolbuff    	proto文件目录,用于定义与客户端交互的协议
+  * ngl/3part                    		此目录用于存放第三方库(bcp裁剪的boost、cryptopp、libcurl、hiredis、protobuf、mysql)
+  * ngl/idl                      		csv表的生成代码生成工具(对应目录/tools/public/idl/csvtable.idl)
+  * ngl/public                   		库的源代码目录
+  * ngl/public/actor             		actor模式的实现
+  * ngl/public/logic             		简单的使用例子
+  * ngl/public/net               		网络相关(只支持tcp和ws)
+  * ngl/public/protocol          		生成的协议相关的文件
+  * ngl/public/serialize         		主要是tcp分包，包头，序列化
+  * ngl/public/tools             		一些简单封装的工具(curl,dbmysql,log,xml,csv,json,md5......)
+  * ngl/server                   		cmake项目文件,一些main.cpp等
+  * ngl/tools                    		此目录中有一些脚本文件 如rename_node.bat将生成的node.exe文件分别重命名,以方便在windwos任务管理器中查看.
+  * ngl/tools/public/idl         		idl文件目录
+  * ngl/tools/public/protocolbuff    	proto文件目录,用于定义与客户端交互的协议
 
 # 编译
   * 首先需要下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
@@ -47,6 +47,23 @@ Actor based c++distributed game server framework
 	```
   * [非单例actor:actor_role](https://github.com/NingLeixueR/ngl/blob/main/public/actor/actor_logic/game/actor_role.h)
   *	[单例actor:actor_manage_role](https://github.com/NingLeixueR/ngl/blob/main/public/actor/actor_logic/game/actor_manage_role.h)
+
+  * 数据的存储与加载
+	```
+	ngl/tools/public/proto/db.proto中定义要存储的db数据
+	数据统一以db_开头 例如：
+	// ENUM_DB_ACCOUNT,				// 账号数据
+	message db_account
+	{
+		optional int64	m_id			= 1;				// 帐号id
+		optional int64	m_roleid		= 2;				// 角色id
+		optional string m_account		= 3;				// 账号
+		optional string m_passworld		= 4;				// 密码
+		optional int32	m_area			= 5;				// 区服id
+	}
+	还需要在
+
+	```
 
 # 杂谈
   * 源代码中.h暴露的接口中大量使用了impl用来隐藏和尽量避免成员变量的暴露,让使用.h的人只关心暴露出来的接口

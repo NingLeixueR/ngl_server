@@ -31,55 +31,6 @@ enum EPH
 	EPH_REQUEST_ACTOR_ID,	// Request ACTOR_ID
 	EPH_SUM,	
 };
-enum ENUM_DB
-{
-	ENUM_DB_ACCOUNT,	// 账号数据
-	ENUM_DB_ROLE,	// 玩家数据
-	ENUM_DB_BRIEF,	// 玩家简要数据
-	ENUM_DB_BAG,	// 背包数据
-	ENUM_DB_KEYVALUE,	// 键值数据
-	ENUM_DB_MAIL,	// 邮件数据
-	ENUM_DB_GUILD,	// 工会数据
-	ENUM_DB_NOTICE,	// 公告数据
-	ENUM_DB_RANKLIST,	// 排行数据
-	ENUM_DB_ACTIVITY,	// 活动数据
-	ENUM_DB_COUNT,	
-};
-enum ENUM_ACTOR
-{
-	ACTOR_NONE = -1,	
-	ACTOR_ROLE = 1,	
-	ACTOR_ROBOT,	// 机器人
-	ACTOR_GUILD,	// 工会	
-	ACTOR_SIGNLE_START,	
-	ACTOR_ADDRESS_SERVER = ACTOR_SIGNLE_START,	// 单例 actor address server  管理分发地址的中心
-	ACTOR_ADDRESS_CLIENT,	// 单例 actor address client 
-	ACTOR_LOGIN,	
-	ACTOR_GATEWAY,	// 网关
-	ACTOR_GATEWAY_CLIENT2GAME,	// 网关 [Client]->[Game]
-	ACTOR_GATEWAY_GAME2CLIENT,	// 网关 [Game]	->[Client]
-	ACTOR_SPROCESS,	
-	ACTOR_LOG,	
-	ACTOR_MANAGE_ROLE,	
-	ACTOR_MANAGE_ROBOT,	
-	ACTOR_MANAGE_GUILD,	// 工会管理器
-	ACTOR_MANAGE_MAP,	
-	ACTOR_RELOADCSV,	// 接收分发然后重载csv
-	ACTOR_RELOADCSV_DISTRIBUTE,	// 分发csv
-	ACTOR_NOTICE,	// 公告
-	ACTOR_GM,	// GM
-	ACTOR_MAIL,	// 邮件
-	ACTOR_CHAT,	// 聊天
-	ACTOR_RANKLIST,	// 排行榜
-	ACTOR_ACTIVITY_MANAGE,	// 活动管理
-	ACTOR_BRIEF,	// brief简要信息
-	ACTOR_CROSS,	// 跨服
-	ACTOR_CROSSDB,	// 跨服数据库
-	ACTOR_CROSSCHAT,	// 跨服聊天
-	ACTOR_DB,	// 必须是最后一个
-	ACTOR_SIGNLE_FINISH = ACTOR_DB+ENUM_DB_COUNT,	
-	ACTOR_COUNT = ACTOR_SIGNLE_FINISH,	
-};
 enum NODE_TYPE
 {
 	DB = 1,	// 数据库服务器

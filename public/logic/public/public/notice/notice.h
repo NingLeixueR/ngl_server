@@ -8,7 +8,7 @@ namespace ngl
 	class actor_notice;
 	using notice_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		ENUM_DB_NOTICE, 
+		pbdb::ENUM_DB_NOTICE,
 		pbdb::db_notice,
 		actor_notice>;
 	class notice : public notice_db_modular

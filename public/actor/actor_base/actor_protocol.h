@@ -90,20 +90,20 @@ namespace ngl
 	// ---- [actor db client -> actor db server]
 	// ---- 从db server加载数据
 	// 从db server加载数据
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename T>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load
 	{
 		actor_guid m_id;
 		def_portocol(actor_db_load, m_id)
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename T>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load_response
 	{
 		def_portocol(actor_db_load_response<T>)
 	};
 
-	template <ENUM_DB DBTYPE, typename T>
+	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
 	{
 		protobuf_data<std::map<actor_guid, T>>	m_data;
@@ -121,7 +121,7 @@ namespace ngl
 
 	};
 
-	template <ENUM_DB DBTYPE, typename T>
+	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load_response<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
 	{
 		std::map<actor_guid, T>	m_data;
@@ -143,7 +143,7 @@ namespace ngl
 	// ---- [actor db server -> actor db client]
 	// ---- 保存数据
 	// 从db server加载数据
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename T>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_save
 	{
 		actor_db_save() {}
@@ -153,7 +153,7 @@ namespace ngl
 
 	};
 
-	template <ENUM_DB DBTYPE, typename T>
+	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
 	{
 		protobuf_data<std::map<actor_guid, T>>	m_data;
@@ -178,7 +178,7 @@ namespace ngl
 
 	};
 
-	template <ENUM_DB DBTYPE, typename T>
+	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_save<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
 	{
 		std::map<actor_guid, T>	m_data;
@@ -200,7 +200,7 @@ namespace ngl
 	};
 
 	// 从db server删除数据
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename T>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_delete
 	{
 		std::vector<int64_t> m_data;

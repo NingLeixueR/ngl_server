@@ -11,7 +11,7 @@ namespace ngl
 	class actor_mail;
 	using mail_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		ENUM_DB_MAIL, 
+		pbdb::ENUM_DB_MAIL,
 		pbdb::db_mail,
 		actor_mail>;
 	class mails : public mail_db_modular

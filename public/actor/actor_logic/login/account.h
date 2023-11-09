@@ -7,7 +7,7 @@ namespace ngl
 	class actor_login;
 	using account_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF,
-		ENUM_DB_ACCOUNT,
+		pbdb::ENUM_DB_ACCOUNT,
 		pbdb::db_account,
 		actor_login
 	>;

@@ -11,7 +11,7 @@ namespace ngl
 	class actor_role;
 	using bag_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		ENUM_DB_BAG, 
+		pbdb::ENUM_DB_BAG,
 		pbdb::db_bag,
 		actor_role
 	>;

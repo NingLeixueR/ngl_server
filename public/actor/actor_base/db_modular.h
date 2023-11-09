@@ -12,14 +12,14 @@ namespace ngl
 		actor_base* m_actor;
 		i64_actorid m_id;
 		actor_dbclient_base* m_dbclient;
-		ENUM_DB m_type;
+		pbdb::ENUM_DB m_type;
 
-		db_component(ENUM_DB aenum);
+		db_component(pbdb::ENUM_DB aenum);
 		void		set_dbclient(actor_dbclient_base* adbclient);
 	public:
 		void		set(actor_base* aactor);
 		i64_actorid id();
-		ENUM_DB		type();
+		pbdb::ENUM_DB		type();
 		actor_base* actorbase();
 		virtual void set_id();
 		void		init();
@@ -31,7 +31,7 @@ namespace ngl
 
 	template <
 		EPROTOCOL_TYPE PROTYPE, 
-		ENUM_DB ENUM, 
+		pbdb::ENUM_DB ENUM,
 		typename TDATA, 
 		typename TACTOR
 	>

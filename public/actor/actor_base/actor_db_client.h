@@ -17,8 +17,8 @@ namespace ngl
 	class actor_dbclient_base
 	{
 	protected:
-		ENUM_DB m_type;
-		actor_dbclient_base(ENUM_DB atype) :
+		pbdb::ENUM_DB m_type;
+		actor_dbclient_base(pbdb::ENUM_DB atype) :
 			m_type(atype)
 		{}
 	public:
@@ -30,7 +30,7 @@ namespace ngl
 		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const actor_guid& aid) = 0;
 		virtual void clear_modified() = 0;
 
-		ENUM_DB type()
+		pbdb::ENUM_DB type()
 		{
 			return m_type;
 		}
@@ -95,10 +95,10 @@ namespace ngl
 		}
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db;
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	class actor_dbclient : public actor_dbclient_base
 	{
 		tab_dbload* m_tab;
@@ -394,8 +394,8 @@ namespace ngl
 	class actor_manage_dbclient
 	{
 		actor_base* m_actor;
-		std::map<ENUM_DB, actor_dbclient_base*> m_typedbclientmap;
-		std::map<ENUM_DB, actor_dbclient_base*> m_dbclientmap;//已经加载完的
+		std::map<pbdb::ENUM_DB, actor_dbclient_base*> m_typedbclientmap;
+		std::map<pbdb::ENUM_DB, actor_dbclient_base*> m_dbclientmap;//已经加载完的
 		std::function<void(bool)> m_fun;//bool db数据库是否有该数据
 		bool m_finish;
 	public:
@@ -461,10 +461,10 @@ namespace ngl
 			return m_typedbclientmap.empty();
 		}
 
-		template <EPROTOCOL_TYPE PROTYPE, ENUM_DB ENUM, typename TDATA, typename TACTOR>
+		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 		actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
-			actor_dbclient_base** lp = ngl::tools::findmap<ENUM_DB, actor_dbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
+			actor_dbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, actor_dbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
 			if (lp == nullptr)
 				return nullptr;
 			return (actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>*)(*lp);
@@ -490,7 +490,7 @@ namespace ngl
 
 namespace ngl
 {
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	bool actor_base::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>& adata)
 	{
 		std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();

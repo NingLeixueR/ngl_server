@@ -15,7 +15,7 @@ namespace ngl
 		init_customs();
 	}
 
-	template <ENUM_DB DBTYPE, typename TDB>
+	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
 		init_protobuf::init_customs(
@@ -57,15 +57,15 @@ namespace ngl
 			, null<actor_switch_process<actor_switch_process_role>>
 		);
 
-		init_customs_db<ENUM_DB_ACCOUNT, pbdb::db_account>();
-		init_customs_db<ENUM_DB_ROLE, pbdb::db_role>();
-		init_customs_db<ENUM_DB_BAG, pbdb::db_bag>();
-		init_customs_db<ENUM_DB_KEYVALUE, pbdb::db_keyvalue>();
-		init_customs_db<ENUM_DB_MAIL, pbdb::db_mail>();
-		init_customs_db<ENUM_DB_GUILD, pbdb::db_guild>();
-		init_customs_db<ENUM_DB_NOTICE, pbdb::db_notice>();
-		init_customs_db<ENUM_DB_ACTIVITY, pbdb::db_activity>();
-		init_customs_db<ENUM_DB_BRIEF, pbdb::db_brief>();
-		init_customs_db<ENUM_DB_RANKLIST, pbdb::db_ranklist>();
+		init_customs_db<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();
+		init_customs_db<pbdb::ENUM_DB_ROLE, pbdb::db_role>();
+		init_customs_db<pbdb::ENUM_DB_BAG, pbdb::db_bag>();
+		init_customs_db<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>();
+		init_customs_db<pbdb::ENUM_DB_MAIL, pbdb::db_mail>();
+		init_customs_db<pbdb::ENUM_DB_GUILD, pbdb::db_guild>();
+		init_customs_db<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>();
+		init_customs_db<pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity>();
+		init_customs_db<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>();
+		init_customs_db<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>();
 	}
 }

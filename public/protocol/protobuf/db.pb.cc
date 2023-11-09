@@ -491,8 +491,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 db_taskDefaultTypeInternal _db_task_default_instance_;
 }  // namespace pbdb
 static ::_pb::Metadata file_level_metadata_db_2eproto[22];
-static constexpr const ::_pb::EnumDescriptor**
-    file_level_enum_descriptors_db_2eproto = nullptr;
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_db_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_db_2eproto = nullptr;
 const ::uint32_t TableStruct_db_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
@@ -944,13 +943,19 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
     "string2\030\007 \001(\tH\006\210\001\001B\013\n\t_m_taskidB\017\n\r_m_re"
     "ceiveutcB\r\n\013_m_finshutcB\r\n\013_m_parmint1B\r"
     "\n\013_m_parmint2B\020\n\016_m_parmstring1B\020\n\016_m_pa"
-    "rmstring2B\007\n\005_m_idB\002H\001b\006proto3"
+    "rmstring2B\007\n\005_m_id*\342\001\n\007ENUM_DB\022\023\n\017ENUM_D"
+    "B_ACCOUNT\020\000\022\020\n\014ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB"
+    "_BRIEF\020\002\022\017\n\013ENUM_DB_BAG\020\003\022\024\n\020ENUM_DB_KEY"
+    "VALUE\020\004\022\020\n\014ENUM_DB_MAIL\020\005\022\021\n\rENUM_DB_GUI"
+    "LD\020\006\022\022\n\016ENUM_DB_NOTICE\020\007\022\024\n\020ENUM_DB_RANK"
+    "LIST\020\010\022\024\n\020ENUM_DB_ACTIVITY\020\t\022\021\n\rENUM_DB_"
+    "COUNT\020\nB\002H\001b\006proto3"
 };
 static ::absl::once_flag descriptor_table_db_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_db_2eproto = {
     false,
     false,
-    2830,
+    3059,
     descriptor_table_protodef_db_2eproto,
     "db.proto",
     &descriptor_table_db_2eproto_once,
@@ -983,6 +988,28 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_db_2epro
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_db_2eproto(&descriptor_table_db_2eproto);
 namespace pbdb {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ENUM_DB_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_db_2eproto);
+  return file_level_enum_descriptors_db_2eproto[0];
+}
+bool ENUM_DB_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+      return true;
+    default:
+      return false;
+  }
+}
 // ===================================================================
 
 class db_account::_Internal {

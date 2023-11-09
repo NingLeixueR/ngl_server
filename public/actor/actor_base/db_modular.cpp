@@ -2,7 +2,7 @@
 
 namespace ngl
 {
-	db_component::db_component(ENUM_DB aenum) :
+	db_component::db_component(pbdb::ENUM_DB aenum) :
 		m_actor(nullptr),
 		m_id(0),
 		m_dbclient(nullptr),
@@ -25,7 +25,7 @@ namespace ngl
 		return m_id;
 	}
 
-	ENUM_DB db_component::type()
+	pbdb::ENUM_DB db_component::type()
 	{
 		return m_type;
 	}

@@ -23,7 +23,7 @@ namespace ngl
 		static db* get(int apos);
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_dbtab
 	{
 		static tab_dbload* m_tab;
@@ -224,13 +224,13 @@ namespace ngl
 		}
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	tab_dbload* actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::m_tab = nullptr;
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	std::set<int64_t> actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::m_idset;
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db : public actor
 	{
 	public:
@@ -328,7 +328,7 @@ namespace ngl
 		}
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	template <typename TDB>
 	static void actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
 	{

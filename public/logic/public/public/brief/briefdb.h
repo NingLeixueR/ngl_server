@@ -12,15 +12,11 @@ namespace ngl
 
 	using brief_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		ENUM_DB_BRIEF,
+		pbdb::ENUM_DB_BRIEF,
 		pbdb::db_brief,
 		actor_brief>;
 
-	class briefdb : public db_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF,
-		ENUM_DB_BRIEF,
-		pbdb::db_brief,
-		actor_brief>
+	class briefdb : public brief_db_modular
 	{
 	public:
 		briefdb() :

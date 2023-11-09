@@ -14,7 +14,7 @@ namespace ngl
 
 	using ranklist_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF
-		, ENUM_DB_RANKLIST
+		, pbdb::ENUM_DB_RANKLIST
 		, pbdb::db_ranklist
 		, actor_ranklist
 	>;

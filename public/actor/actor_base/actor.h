@@ -50,7 +50,7 @@ namespace ngl
 				);
 		}
 
-		template <ENUM_DB DBTYPE, typename TDBTAB>
+		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		class db_pair
 		{
 		public:
@@ -62,7 +62,7 @@ namespace ngl
 		};
 
 		// #### ×¢²ádb¼ÓÔØ
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, ENUM_DB DBTYPE, typename TDBTAB>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
 			arfun<TDerived, TYPE>::instance().rfun<actor_db_load_response<TYPE, DBTYPE, TDBTAB>>(
@@ -71,7 +71,7 @@ namespace ngl
 				);
 		}
 
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>* ap, const ARG*... arg)
 		{
 			register_db<TYPE, TDerived>(ap);

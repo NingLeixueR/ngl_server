@@ -56,7 +56,7 @@ namespace ngl
 		void			init_db_component(bool acreate);
 		bool			isloadfinish();
 		void			add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid);
-		template <EPROTOCOL_TYPE PROTYPE, ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool			handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>& adata);
 #pragma endregion 
 #pragma region virtual_function

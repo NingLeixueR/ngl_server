@@ -33,6 +33,7 @@
 #include "google/protobuf/map.h"  // IWYU pragma: export
 #include "google/protobuf/map_entry.h"
 #include "google/protobuf/map_field_inl.h"
+#include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 // @@protoc_insertion_point(includes)
 
@@ -169,6 +170,47 @@ template <>
 PROTOBUF_NAMESPACE_CLOSE
 
 namespace pbdb {
+enum ENUM_DB : int {
+  ENUM_DB_ACCOUNT = 0,
+  ENUM_DB_ROLE = 1,
+  ENUM_DB_BRIEF = 2,
+  ENUM_DB_BAG = 3,
+  ENUM_DB_KEYVALUE = 4,
+  ENUM_DB_MAIL = 5,
+  ENUM_DB_GUILD = 6,
+  ENUM_DB_NOTICE = 7,
+  ENUM_DB_RANKLIST = 8,
+  ENUM_DB_ACTIVITY = 9,
+  ENUM_DB_COUNT = 10,
+  ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ENUM_DB_IsValid(int value);
+constexpr ENUM_DB ENUM_DB_MIN = static_cast<ENUM_DB>(0);
+constexpr ENUM_DB ENUM_DB_MAX = static_cast<ENUM_DB>(10);
+constexpr int ENUM_DB_ARRAYSIZE = 10 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+ENUM_DB_descriptor();
+template <typename T>
+const std::string& ENUM_DB_Name(T value) {
+  static_assert(std::is_same<T, ENUM_DB>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ENUM_DB_Name().");
+  return ENUM_DB_Name(static_cast<ENUM_DB>(value));
+}
+template <>
+inline const std::string& ENUM_DB_Name(ENUM_DB value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<ENUM_DB_descriptor,
+                                                 0, 10>(
+      static_cast<int>(value));
+}
+inline bool ENUM_DB_Parse(absl::string_view name, ENUM_DB* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ENUM_DB>(
+      ENUM_DB_descriptor(), name, value);
+}
 
 // ===================================================================
 
@@ -6304,6 +6346,17 @@ db_task::_internal_mutable_m_datas() {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace pbdb
 
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <>
+struct is_proto_enum<::pbdb::ENUM_DB> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::pbdb::ENUM_DB>() {
+  return ::pbdb::ENUM_DB_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 

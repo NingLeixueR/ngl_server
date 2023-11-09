@@ -12,7 +12,7 @@ namespace ngl
 	class actor_role;
 	using roleinfo_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		ENUM_DB_ROLE, 
+		pbdb::ENUM_DB_ROLE,
 		pbdb::db_role,
 		actor_role
 		>;

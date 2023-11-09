@@ -11,7 +11,7 @@ namespace ngl
 	class actor_manage_activity;
 	using activity_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		ENUM_DB_ACTIVITY,
+		pbdb::ENUM_DB_ACTIVITY,
 		pbdb::db_activity,
 		actor_manage_activity>;
 	class activitydb : public activity_db_modular

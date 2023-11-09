@@ -34,18 +34,13 @@ namespace ngl
 
 #define _DBNAME(A,B) ((ENUM_ACTOR)((int)A + (int)B))
 
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_ACCOUNT)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_ROLE)));
-		//em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_OFFLINE_ROLE)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_BAG)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_KEYVALUE)));
-		//em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_COOLDDOWN)));
-		//em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_COUNTGROUP)));
-		//em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_TRIGGER_TIMENODE)));
-		//em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_PERIOD_TIMENODE)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_MAIL)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_GUILD)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, ENUM_DB_NOTICE)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_ACCOUNT)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_ROLE)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_BAG)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_KEYVALUE)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_MAIL)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_GUILD)));
+		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_NOTICE)));
 	}
 
 	bool actor_typename::name2enum(const std::string& aenumname, ENUM_ACTOR& avalue)
