@@ -899,15 +899,14 @@ int main(int argc, char** argv) {
     ngl::writefile lfilecpp("lua_struct_register.h");
     lfilecpp.write(g_stream.str());
 
-    ngl::writefile lsql("create_db.sql");
-    lsql.write(g_stream_sql.str());
-
 
     ngl::writefile lxml("lua.xml");
     lxml.write(g_stream_xml.str());
 
-    
-    
+    // 生成对应的sql文件
+    ngl::writefile lsql("create_db.sql");
+    lsql.write(g_stream_sql.str());
+    // 自动关联结构体为其提供协议号    
     ngl::xmlprotocol::load();
     int32_t lnumber = 0;
     foreachProtobuf(sourceTree, lnumber, "net");
