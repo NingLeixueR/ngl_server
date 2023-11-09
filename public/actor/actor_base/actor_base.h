@@ -49,12 +49,17 @@ namespace ngl
 		actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
+		// 获取actor_manage_dbclient实例
 		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient();
+		// 是否需要从数据库加载数据
 		bool			isload();
+		// 是否加载完成
+		bool			isloadfinish();
+		// 设置db_component组件
 		void			set_db_component(db_component* acomponent);
+		// 初始化数据(在数据加载完成后)
 		void			db_component_init_data();
 		void			init_db_component(bool acreate);
-		bool			isloadfinish();
 		void			add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid);
 		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool			handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>& adata);
@@ -92,25 +97,23 @@ namespace ngl
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		//sendtoserver
+		// 发送数据到指定服务器
 		template <typename T>
 		static bool sendtoserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
+		// 发送pack到指定服务器
 		template <typename T>
 		static bool sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
+		// 给指定连接发送数据
 		template <typename T>
 		static bool sendpackbysession(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
+		// 给指定连接发送数据
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		template <typename T>
-		void send_client(std::shared_ptr<T>& adata)
-		{
-			send_client(id_guid(), adata);
-		}
-
+		// 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
 		static void send_client(i64_actorid aid, std::shared_ptr<T>& adata)
 		{
@@ -130,6 +133,7 @@ namespace ngl
 			push_task_id(lclientguid, lpram, true);
 		}
 
+		// 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
 		static void send_client(i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata)
 		{
@@ -144,6 +148,7 @@ namespace ngl
 			}
 		}
 
+		// 根据actor_role.guidid确定客户端，给一组客户端发送数据
 		template <typename T>
 		static void send_client(const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata)
 		{
@@ -168,7 +173,7 @@ namespace ngl
 			push_task_id(lclientguid, lpram, true);
 		}
 
-		// 往所有客户端发送消息
+		// 向所有客户端发送消息
 		template <typename T>
 		static void send_allclient(std::shared_ptr<T>& adata)
 		{
@@ -188,7 +193,7 @@ namespace ngl
 				});
 		}
 
-		// 发送给指定actor
+		// 向指定actor发送数据
 		template <typename T>
 		void send_actor(const actor_guid& aguid, std::shared_ptr<T>& adata)
 		{
@@ -197,6 +202,7 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
+		// 向指定actor发送pack
 		void send_actor_pack(const actor_guid& aguid, std::shared_ptr<pack>& adata)
 		{
 			handle_pram lpram;
@@ -204,7 +210,7 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
-
+		// 群发给指定类型的所有actor
 		template <typename T>
 		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
@@ -213,6 +219,7 @@ namespace ngl
 			push_task_type(atype, lpram, aotherserver);
 		}
 
+		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>& adata)
 		{
@@ -221,6 +228,7 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
+		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>&& adata)
 		{

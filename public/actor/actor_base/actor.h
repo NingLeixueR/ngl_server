@@ -61,6 +61,9 @@ namespace ngl
 			};
 		};
 
+	private:
+		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+		friend class actor_dbclient;
 		// #### 注册db加载
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
@@ -77,6 +80,7 @@ namespace ngl
 			register_db<TYPE, TDerived>(ap);
 			register_db<TYPE, TDerived>(arg...);
 		}
+	public:
 		
 		// 用来注册匿名函数挂载在对应actor上
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
