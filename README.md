@@ -84,7 +84,7 @@ Actor based c++distributed game server framework
 	我们还必须在tab_dbload.csv中指定db_account表的基本信息
 	int32_t		string		string		bool						bool						int
 	m_id		m_name		m_remarks	m_isloadall					m_network					m_sendmaxcount
-										是否需要启动加载全部数据	是否允许通过网络分发		单次最多发送数量
+	唯一id		名称		注释		是否需要启动加载全部数据	是否允许通过网络分发		单次最多发送数量
 	version:0					
 	1			DB_ACCOUNT	DB_ACCOUNT	1							1							100
 
