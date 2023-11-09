@@ -44,11 +44,9 @@ Actor based c++distributed game server framework
 	我们也可以实现bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);方法 用来处理定时任务
 	这时我们同样需要在static void actor_register();中注册 调用actor_xxx::register_timer<actor_role>();即可
 
-	
-	[可以查看actor_role](https://https://github.com/NingLeixueR/ngl/tree/main/public/actor/actor_logic/game/actor_role.h)
-
 	```
-
+	[非单例actor:actor_role](https://https://github.com/NingLeixueR/ngl/tree/main/public/actor/actor_logic/game/actor_role.h)
+	[单例actor:actor_manage_role](https://https://github.com/NingLeixueR/ngl/tree/main/public/actor/actor_logic/game/actor_manage_role.h)
 
 # 杂谈
   * 源代码中.h暴露的接口中大量使用了impl用来隐藏和尽量避免成员变量的暴露,让使用.h的人只关心暴露出来的接口
