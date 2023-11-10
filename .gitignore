@@ -12,3 +12,5 @@ bin/Debug
 obj
 lib
 tools/public/rebuild.exe
+*.cpp text=auto charset=gbk
+*.h text=auto charset=gbk
