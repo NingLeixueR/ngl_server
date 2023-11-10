@@ -1,4 +1,4 @@
-#include "actor_thread.h"
+﻿#include "actor_thread.h"
 #include "actor_manage.h"
 
 
@@ -55,11 +55,9 @@ namespace ngl
 					}
 					actor_manage::getInstance().push(lpactor, athread);
 				}
-			}			
+			}
 		}
-
 	};
-
 
 	actor_thread::actor_thread(i32_threadid aid)
 	{
@@ -67,12 +65,12 @@ namespace ngl
 	}
 
 	i32_threadid actor_thread::id()
-	{ 
+	{
 		return m_impl_actor_thread()->m_id;
 	}
 
-	bool actor_thread::isactivity() 
-	{ 
+	bool actor_thread::isactivity()
+	{
 		return m_impl_actor_thread()->isactivity();
 	}
 

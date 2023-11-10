@@ -96,10 +96,41 @@ Actor based c++distributed game server framework
 		actor_login
 	>;
 	class account : public account_db_modular
+	需要重载以下函数
+	看你是加载一个实例还是加载全部实例 -1加载全部
+	virtual void set_id()
+	加载成功后会调用此函数  我们可以在其中对数据进行预处理
+	virtual void initdata() 
 
-	virtual void set_id() 看你是加载一个实例还是加载全部实例 -1加载全部
-	virtual void initdata() 加载成功后会调用此函数  我们可以在其中对数据进行预处理
+	```
+    * actor间消息交互
+	```
+	1、自定义消息  例如 
+	// ---- 通知服务器玩家账号验证通过
+	struct actor_role_login
+	{
+		std::string m_session;
+		i64_accountid m_accountid = 0;
+		i64_actorid m_roleid = 0;
+		i32_serverid m_gameid = 0;
+		i32_serverid m_gatewayid = 0;
+		i16_area m_area = 0;
+		bool m_iscreate = false;
+		def_portocol(actor_role_login, m_session, m_accountid, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate)
+	};
+	只需要定义一个消息体  然后def_portocol将成员变量依次填入，这样就actor就可以进行消息交互了 
+	不过自定义协议需要绑定自增协议号，在init_protobuf.cpp中定义
+	init_customs(EPROTOCOL_TYPE_CUSTOM
+			, null<actor_role_login>
+		);
+	自定义消息可以使用模板，例如模块间转发消息
+	template <typename T>
+	struct actor_module_forward
+	大部分自定义消息都定义在actor_protocol.h中，当然也可以随意定义在任何位置，但记得绑定自增协议号噢。
 
+	2、proto消息交互 
+	定义在net.proto文件中，不需要绑定自增协议号，makeproto工具会生成proto对应的xml（如net_protocol.xml）
+	net_protocol.xml需要交给客户端，客户端需要根据协议名称自行进行协议号与消息体绑定
 	```
 
 # 杂谈

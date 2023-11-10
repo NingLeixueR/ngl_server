@@ -1,4 +1,4 @@
-#include "actor_server.h"
+ï»¿#include "actor_server.h"
 #include "actor_register.h"
 
 namespace ngl
@@ -59,7 +59,7 @@ namespace ngl
 					nserver->sendmore(lvec, lpram, actor_guid::moreactor(), id_guid());
 				}
 			}
-			{// -- »Ø¸´
+			{// -- å›å¤
 				actor_node_register_response lpram;
 				actor_address::getInstance().foreach(
 					[&adata, &lpram, apack](const actor_node_session& anode)->bool
@@ -70,7 +70,7 @@ namespace ngl
 					});
 				nserver->send(apack->m_id, lpram, actor_guid::moreactor(), id_guid());
 			}
-			{// -- actor_client_node_update ¸øÆäËû½áµã
+			{// -- actor_client_node_update ç»™å…¶ä»–ç»“ç‚¹
 				actor_node_update lpram
 				{
 					.m_id = lserverid,
@@ -104,10 +104,7 @@ namespace ngl
 					nserver->send(apack->m_id, item.second, actor_guid::moreactor(), id_guid());
 				}
 			}
-
 		}Catch;
-
-
 		return true;
 	}
 
@@ -121,7 +118,7 @@ namespace ngl
 			actor_address::getInstance().actor_del(adata.m_del);
 			if (adata.m_actorservermass)
 			{
-				// -- ·Ö·¢¸øÆäËû½áµã
+				// -- åˆ†å‘ç»™å…¶ä»–ç»“ç‚¹
 				std::vector<i32_sessionid> lvec;
 				actor_address::getInstance().foreach(
 					[lserverid, &lvec](const actor_node_session& anode)->bool
@@ -130,7 +127,6 @@ namespace ngl
 							lvec.push_back(anode.m_session);
 						return true;
 					});
-
 				if (!lvec.empty())
 				{
 					nserver->sendmore(lvec, adata, actor_guid::moreactor(), id_guid());

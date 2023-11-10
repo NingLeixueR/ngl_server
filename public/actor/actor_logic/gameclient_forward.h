@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "actor.h"
 #include "actor_role.h"
@@ -10,7 +10,7 @@
 
 namespace ngl
 {
-	class gateway_game_forward
+	class gameclient_forward
 	{
 		template <EPROTOCOL_TYPE TYPE, typename T, typename ...ARG>
 		static void register_recvforward(const T* apdata, const ARG*... arg)
@@ -42,10 +42,10 @@ namespace ngl
 
 	public:
 		//// ### client->gateway->game
-		static void client2game();
+		static void c2g();
 
 		////// ### game->gateway->client
-		static void game2client();
+		static void g2c();
 	};
 
 

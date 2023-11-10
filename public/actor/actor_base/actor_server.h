@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "actor_address.h"
 #include "actor_manage.h"
@@ -12,25 +12,24 @@ namespace ngl
 		actor_server();
 	public:
 		friend class actor_instance<actor_server>;
-		static actor_server& getInstance() 
-		{ 
-			return actor_instance<actor_server>::instance(); 
+		static actor_server& getInstance()
+		{
+			return actor_instance<actor_server>::instance();
 		}
 
 		virtual ~actor_server();
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_ADDRESS_SERVER};
+		enum { ACTOR_TYPE = ACTOR_ADDRESS_SERVER };
 
 		// ---- [actor client -> actor server] register
-		// ע����
+		// 注册结点
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_register& adata);
-
+		// 更新结点中的actor
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_update& adata);
-
+		// 更新gateway表 actor_role.guidid与gateway server id对应关系
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_id_updata& adata);
-
 	private:
 	};
 

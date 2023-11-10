@@ -1,6 +1,6 @@
-#include "actor_gateway_client2game.h"
+﻿#include "actor_gateway_client2game.h"
 #include "actor_register.h"
-#include "gateway_game_forward.h"
+#include "gameclient_forward.h"
 
 namespace ngl
 {
@@ -25,8 +25,8 @@ namespace ngl
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway_client2game>(
 			false
 			, null<actor_gateway_info_updata>
-			);
+		);
 		// Client 2 Game
-		gateway_game_forward::client2game();
+		gameclient_forward::c2g();
 	}
 }

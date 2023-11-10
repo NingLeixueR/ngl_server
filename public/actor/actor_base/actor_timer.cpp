@@ -1,14 +1,9 @@
-#include "actor_timer.h"
+﻿#include "actor_timer.h"
 #include "actor_manage.h"
 
 
 namespace ngl
 {
-	bool actor_timer::check_actor_valid(i64_actorid lidguid)
-	{
-		return actor_manage::getInstance().is_have_actor(lidguid);
-	}
-
 	int actor_timer::addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm)
 	{
 		i64_actorid lidguid = actor->id_guid();
@@ -19,12 +14,12 @@ namespace ngl
 			.m_count = aparm->m_count,
 			.m_fun = [lidguid, aparm](wheel_node* anode)
 			{
-				if (check_actor_valid(lidguid) == false)
+				if (actor_manage::getInstance().is_have_actor(lidguid) == false)
 				{
 					LogLocalError("time run fail: actorid[%]", lidguid);
 					return;
 				}
-				
+
 				aparm->m_triggerms = anode->m_parm.m_timerstart + anode->m_parm.m_ms;
 				std::shared_ptr<timerparm> ltemp = aparm;
 				handle_pram lpram;

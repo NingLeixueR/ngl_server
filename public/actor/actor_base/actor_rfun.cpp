@@ -1,4 +1,4 @@
-#include "actor_rfun.h"
+﻿#include "actor_rfun.h"
 
 
 namespace ngl
@@ -15,7 +15,6 @@ namespace ngl
 		if (m_notfindfun != nullptr)
 			m_notfindfun(athreadid, apram);
 	}
-
 
 	bool arfunbase::handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 	{

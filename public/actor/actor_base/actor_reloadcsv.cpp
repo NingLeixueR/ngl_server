@@ -1,4 +1,4 @@
-#include "actor_reloadcsv.h"
+﻿#include "actor_reloadcsv.h"
 #include "manage_csv.h"
 #include "xmlnode.h"
 #include "splite.h"
@@ -16,21 +16,18 @@ namespace ngl
 	{}
 
 
-	void actor_reloadcsv::init() 
+	void actor_reloadcsv::init()
 	{
-		
-		//ttab_servers::tab()->m_reloadcsv
 		timerparm tparm;
 		make_timerparm::make_interval(tparm, 60);
 		set_timer(tparm);
-			
 	}
 
 	void actor_reloadcsv::actor_register()
 	{
 		actor_reloadcsv::register_timer<actor_reloadcsv>();
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv>(
-			false, 
+			false,
 			null<actor_reloadcsv_pro>
 		);
 	}
@@ -62,7 +59,7 @@ namespace ngl
 		sendtoserver(ttab_servers::tab()->m_reloadcsv, pro, lrequest, id_guid());
 		return true;
 	}
-	
+
 	actor_reloadcsv_distribute::actor_reloadcsv_distribute() :
 		actor(
 			actorparm
@@ -77,7 +74,7 @@ namespace ngl
 	void actor_reloadcsv_distribute::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv_distribute>(
-			false, 
+			false,
 			null<actor_reloadcsv_verify_version>
 		);
 	}
@@ -98,7 +95,7 @@ namespace ngl
 				continue;
 			reload_csv::readcsv(key, pro.m_csvcontent[key]);
 		}
-		if(pro.m_csvcontent.empty() == false)
+		if (pro.m_csvcontent.empty() == false)
 			send(apack->m_id, pro, apack->m_head.get_request_actor(), id_guid());
 		return true;
 	}

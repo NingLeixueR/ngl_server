@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "actor_enum.h"
 #include "actor_base.h"
@@ -22,7 +22,7 @@ namespace ngl
 		struct impl_actor;
 		ngl::impl<impl_actor> m_impl_actor;
 
-		std::array<arfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;		
+		std::array<arfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
 	public:
 #pragma region register
 		template <typename TDerived>
@@ -30,7 +30,7 @@ namespace ngl
 		{
 			m_actorfun[EPROTOCOL_TYPE_CUSTOM] = &arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance();
 			m_actorfun[EPROTOCOL_TYPE_PROTOCOLBUFF] = &arfun<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance();
-		
+
 			if (isbroadcast())
 			{
 				register_actornonet_s<EPROTOCOL_TYPE_CUSTOM, TDerived>(
@@ -40,14 +40,14 @@ namespace ngl
 			}
 		}
 
-		// ×¢²á¶¨Ê±Æ÷
+		// æ³¨å†Œå®šæ—¶å™¨
 		template <typename TDerived>
 		static void register_timer()
 		{
 			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().rfun_nonet<timerparm>(
-					&TDerived::timer_handle
-					, false
-				);
+				&TDerived::timer_handle
+				, false
+			);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
@@ -64,14 +64,14 @@ namespace ngl
 	private:
 		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		friend class actor_dbclient;
-		// #### ×¢²ádb¼ÓÔØ
+		// #### æ³¨å†ŒdbåŠ è½½
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
 			arfun<TDerived, TYPE>::instance().rfun<actor_db_load_response<TYPE, DBTYPE, TDBTAB>>(
-					&actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>
-					, true
-				);
+				&actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>
+				, true
+			);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -81,8 +81,8 @@ namespace ngl
 			register_db<TYPE, TDerived>(arg...);
 		}
 	public:
-		
-		// ÓÃÀ´×¢²áÄäÃûº¯Êı¹ÒÔØÔÚ¶ÔÓ¦actorÉÏ
+
+		// ç”¨æ¥æ³¨å†ŒåŒ¿åå‡½æ•°æŒ‚è½½åœ¨å¯¹åº”actorä¸Š
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(T&)>& afun)
 		{
@@ -90,7 +90,7 @@ namespace ngl
 		}
 
 #pragma region register_actor
-		// ×¢²áactor³ÉÔ±º¯Êı[handle]
+		// æ³¨å†Œactoræˆå‘˜å‡½æ•°[handle]
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor(bool aisload, const T*)
 		{
@@ -106,7 +106,7 @@ namespace ngl
 #pragma endregion 
 
 #pragma region register_actornonet
-		// ## Óëregister_actorÀàËÆ Ö»²»¹ı²»×¢²áÍøÂç²ã
+		// ## ä¸register_actorç±»ä¼¼ åªä¸è¿‡ä¸æ³¨å†Œç½‘ç»œå±‚
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, const T*)
 		{
@@ -122,7 +122,7 @@ namespace ngl
 #pragma endregion 
 
 	private:
-		// ×¢²áactorÀàµÄhandle
+		// æ³¨å†Œactorç±»çš„handle
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet_s(bool aisload, const T*)
 		{
@@ -138,8 +138,8 @@ namespace ngl
 	public:
 
 	private:
-		friend class gateway_game_forward;
-		// ### ×¢²á [forward:×ª·¢Ğ­Òé]
+		friend class gameclient_forward;
+		// ### æ³¨å†Œ [forward:è½¬å‘åè®®]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(TDerived* aderived, const T*)
 		{
@@ -158,7 +158,7 @@ namespace ngl
 			register_forward<TYPE, IsForward, TDerived, ARG...>(aderived, arg...);
 		}
 
-		// ×¢²á [forward:×ª·¢Ğ­Òé] recvforward
+		// æ³¨å†Œ [forward:è½¬å‘åè®®] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(const T*)
 		{
@@ -193,17 +193,17 @@ namespace ngl
 		virtual void actor_handle(i32_threadid athreadid);
 	public:
 #pragma region ActorBroadcast
-		// ############# Start[Actor È«Ô±¹ã²¥] ############# 
-		// ## ¼ä¸ôÒ»¶ÎÊ±¼ä·¢ÆğµÄÈ«Ô±(ËùÓĞactor)¹ã²¥
-		// ## ¿ÉÒÔÔÚÕâ¸ö¹ã²¥ÀïÍÆËÍÒ»Ğ©ĞèÒª´¦ÀíµÄÈÎÎñ,ÀıÈç ±£´æÊı¾İ
-		// ## Óëactor_base::start_broadcast() ÏàºôÓ¦
-		// ## ÖØÔØ´Ë·½·¨ÊµÏÖactor_base::m_broadcastºÁÃë´¥·¢ÊÂ¼ş
+		// ############# Start[Actor å…¨å‘˜å¹¿æ’­] ############# 
+		// ## é—´éš”ä¸€æ®µæ—¶é—´å‘èµ·çš„å…¨å‘˜(æ‰€æœ‰actor)å¹¿æ’­
+		// ## å¯ä»¥åœ¨è¿™ä¸ªå¹¿æ’­é‡Œæ¨é€ä¸€äº›éœ€è¦å¤„ç†çš„ä»»åŠ¡,ä¾‹å¦‚ ä¿å­˜æ•°æ®
+		// ## ä¸actor_base::start_broadcast() ç›¸å‘¼åº”
+		// ## é‡è½½æ­¤æ–¹æ³•å®ç°actor_base::m_broadcastæ¯«ç§’è§¦å‘äº‹ä»¶
 		virtual void broadcast() {}
 
-		// ¹ã²¥´¦Àíº¯Êı
+		// å¹¿æ’­å¤„ç†å‡½æ•°
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_broadcast& adata);
 
-		// ############# End[Actor È«Ô±¹ã²¥] ############# 
+		// ############# End[Actor å…¨å‘˜å¹¿æ’­] ############# 
 #pragma endregion
 
 	};

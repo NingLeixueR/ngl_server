@@ -1,13 +1,13 @@
-#include "actor_robot.h"
+﻿#include "actor_robot.h"
 #include "actor_register.h"
-#include "gateway_game_forward.h"
+#include "gameclient_forward.h"
 
 namespace ngl
 {
 
 	void actor_robot::actor_register()
 	{
-		gateway_game_forward::game2client();
+		gameclient_forward::g2c();
 	}
 
 	void actor_manage_robot::actor_register()
