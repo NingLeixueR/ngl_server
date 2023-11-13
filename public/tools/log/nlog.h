@@ -13,21 +13,7 @@ namespace ngl
 	class elog_name
 	{
 	public:
-		static const char* get(ELOG atype)
-		{
-			switch (atype)
-			{
-			case ELOG_DEBUG:
-				return "debug";
-			case ELOG_INFO:
-				return "info";
-			case ELOG_WARN:
-				return "warn";
-			case ELOG_ERROR:
-				return "error";
-			}
-			return "none";
-		}
+		static const char* get(ELOG atype);
 	};
 
 	class nlog
@@ -41,10 +27,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		bool& isinitfinish()
-		{
-			return m_isinitfinish;
-		}
+		bool& isinitfinish();
 
 		void plog(ELOG atype, ngl::logformat& llogformat, bool aislocal/* = false*/);
 		void plog_bi(ELOG atype, ngl::logformat& llogformat);
@@ -85,10 +68,6 @@ namespace ngl
 		llogformat.format("src", FORMAT,##__VA_ARGS__);									\
 		ngl::nlog::getInstance().plog_bi(ngl::ELOG_INFO, llogformat);					\
 	}
-
-
-
-
 
 #define LogDebug(FORMAT,...)			dlogmsg(ngl::ELOG_DEBUG, false, FORMAT,##__VA_ARGS__)
 #define LogError(FORMAT,...)			dlogmsg(ngl::ELOG_ERROR, false, FORMAT,##__VA_ARGS__)

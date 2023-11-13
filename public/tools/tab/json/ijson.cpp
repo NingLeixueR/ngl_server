@@ -20,7 +20,6 @@ namespace ngl
 	{
 	}
 
-
 	void free_json(const char* m_str)
 	{
 		free((void*)m_str);

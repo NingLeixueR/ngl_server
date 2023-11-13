@@ -10,7 +10,6 @@
 #include <list>
 #include <map>
 
-
 #include "cJSON.h"
 
 namespace ngl
@@ -29,7 +28,9 @@ namespace ngl
 			m_json(ajson)
 		{}
 
-		virtual ~json() {}
+		virtual ~json() 
+		{}
+
 		cJSON* get()
 		{
 			return m_json;

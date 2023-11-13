@@ -113,6 +113,7 @@ namespace ngl
 			}
 			return *this;
 		}
+
 		template <typename T>
 		ojson& operator >> (std::pair<const char*, std::list<T>>& adata)
 		{

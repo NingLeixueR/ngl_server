@@ -225,8 +225,4 @@ namespace ngl
 		}
 		return nullptr;
 	}
-
-
-
-
 }

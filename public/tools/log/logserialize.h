@@ -21,7 +21,6 @@ namespace ngl
 		char*	buff();
 		int		len();
 
-
 		bool operator()(int64_t avalue);
 		bool operator()(int32_t avalue);
 		bool operator()(int16_t avalue);
@@ -49,7 +48,6 @@ namespace ngl
 			return true;
 		}
 	public:
-
 		template <typename TKEY, typename TVALUE>
 		bool operator()(const std::pair<TKEY, TVALUE>& adata)
 		{

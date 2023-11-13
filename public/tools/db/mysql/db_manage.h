@@ -159,12 +159,10 @@ namespace ngl
 		public:
 		};
 
-
 		template <typename T>
 		class del<EPROTOCOL_TYPE_PROTOCOLBUFF, T>
 		{
 		public:
-
 			static void fun(db* adb, i64_actorid aid)
 			{
 				char lbuff[] = "DELETE FROM %s WHERE id='%';";

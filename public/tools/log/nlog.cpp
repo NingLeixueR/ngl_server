@@ -8,6 +8,27 @@
 
 namespace ngl
 {
+	const char* elog_name::get(ELOG atype)
+	{
+		switch (atype)
+		{
+		case ELOG_DEBUG:
+			return "debug";
+		case ELOG_INFO:
+			return "info";
+		case ELOG_WARN:
+			return "warn";
+		case ELOG_ERROR:
+			return "error";
+		}
+		return "none";
+	}
+
+	bool& nlog::isinitfinish()
+	{
+		return m_isinitfinish;
+	}
+
 	void nlog::plog(ELOG atype, ngl::logformat& llogformat, bool aislocal/* = false*/)
 	{
 		if (DEF_LOG_PRINTF)

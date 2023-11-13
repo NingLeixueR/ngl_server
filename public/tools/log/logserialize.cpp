@@ -102,6 +102,4 @@ namespace ngl
 		m_bufflen -= llen;
 		return true;
 	}
-
-	
 }

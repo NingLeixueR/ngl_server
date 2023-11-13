@@ -244,8 +244,6 @@ namespace ngl
 		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_POST);
 		ngl::manage_curl::set_url(*lhttp, "https://api.vsgame.vn/cp/user_login_auth");
 
-	//https://api.vsgame.vn/cp/user_login_auth?game_id=45&sign=13d89fa2af33de479deaf48da67ba01f&timestamp=1693920175&token=&uid=2969448
-
 
 		std::string lparm;
 		//ngl::manage_curl::param(lparm, "game_id", 45);

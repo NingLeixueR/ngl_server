@@ -88,7 +88,6 @@ namespace ngl
 
 		std::map<std::string, std::string> m_data;
 	public:
-
 		std::string& data(const char* aname)
 		{
 			return m_data[aname];
@@ -115,7 +114,5 @@ namespace ngl
 			lstr = aformat;
 			return lstr;
 		}
-
-
 	};
 }

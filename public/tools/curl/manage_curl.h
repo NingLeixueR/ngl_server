@@ -29,6 +29,7 @@ namespace ngl
 		ENUM_MODE_HTTP,		// http方式
 		ENUM_MODE_HTTPS,	// https方式
 	};
+
 	enum ENUM_TYPE
 	{
 		ENUM_TYPE_NULL,		// 未设置
@@ -48,7 +49,6 @@ namespace ngl
 		void headers(std::vector<std::string>& m_headers);
 		void log(int aerror);		
 	};
-
 
 	class manage_curl
 	{
@@ -78,7 +78,6 @@ namespace ngl
 		void send(_http* adata);
 		static _http* make_http();
 	};
-
 
 	void test_manage_curl();
 }//namespace ngl

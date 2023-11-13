@@ -73,7 +73,6 @@ namespace ngl
 		static NODE_TYPE m_nodetype;
 		static i32_id m_nodeid;
 
-
 		static void init();
 
 		static NODE_TYPE node_type();

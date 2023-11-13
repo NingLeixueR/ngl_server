@@ -101,8 +101,6 @@ namespace ngl
 			}
 		};
 		
-
-
 		template <typename T>
 		static bool readcsv(csvpair& apair, std::vector<T>& avec)
 		{
@@ -232,7 +230,6 @@ namespace ngl
 			}
 			return true;
 		}
-
 	};
 
 	template <typename E>
