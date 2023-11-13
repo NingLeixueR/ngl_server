@@ -9,5 +9,4 @@ namespace ngl
 		NET_CONFIG_LOGIC_PTHREAD_MAX_SIZE = 8,
 		NET_CONFIG_SOCKET_PTHREAD_MAX_SIZE = 8,
 	};
-
 }//namespace ngl

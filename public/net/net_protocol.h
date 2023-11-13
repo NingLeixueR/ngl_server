@@ -16,7 +16,6 @@
 
 namespace ngl
 {
-
 	template <typename T>
 	class net_pack
 	{
@@ -29,6 +28,48 @@ namespace ngl
 			if (structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid) == false)
 				return nullptr;
 			return lpack;
+		}
+	};
+
+	class sendpack_t
+	{
+	public:
+		template <typename Y>
+		static std::shared_ptr<pack> get_pack(Y&)
+		{
+			return nullptr;
+		}
+
+		template <typename Y>
+		static std::shared_ptr<pack> get_pack(
+			actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata
+		)
+		{
+			return adata.m_recvpack;
+		}
+
+		template <typename Y>
+		static std::shared_ptr<pack> get_pack(
+			actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata
+		)
+		{
+			return adata.m_recvpack;
+		}
+
+		template <typename Y>
+		static std::shared_ptr<pack> get_pack(
+			actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata
+		)
+		{
+			return adata.m_recvpack;
+		}
+
+		template <typename Y>
+		static std::shared_ptr<pack> get_pack(
+			actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata
+		)
+		{
+			return adata.m_recvpack;
 		}
 	};
 
@@ -63,9 +104,18 @@ namespace ngl
 		//## 服务器是否存在此session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
-		virtual void set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun) = 0;
+		virtual void set_close(
+			int asession
+			, const std::string& aip
+			, i16_port aport
+			, const std::function<void(i32_sessionid)>& afun
+		) = 0;
 
-		virtual bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun) = 0;
+		virtual bool connect(
+			const std::string& aip
+			, i16_port aport
+			, const std::function<void(i32_sessionid)>& afun
+		) = 0;
 
 		virtual bool connect(
 			i32_serverid aserverid
@@ -77,49 +127,8 @@ namespace ngl
 		);
 
 		int socketthreadnum();
+
 		int port();
-
-		class sendpack_t
-		{
-		public:
-			template <typename Y>
-			static std::shared_ptr<pack> get_pack(Y&)
-			{
-				return nullptr;
-			}
-
-			template <typename Y>
-			static std::shared_ptr<pack> get_pack(
-				actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata
-			)
-			{
-				return adata.m_recvpack;
-			}
-
-			template <typename Y>
-			static std::shared_ptr<pack> get_pack(
-				actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata
-			)
-			{
-				return adata.m_recvpack;
-			}
-
-			template <typename Y>
-			static std::shared_ptr<pack> get_pack(
-				actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata
-			)
-			{
-				return adata.m_recvpack;
-			}
-
-			template <typename Y>
-			static std::shared_ptr<pack> get_pack(
-				actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata
-			)
-			{
-				return adata.m_recvpack;
-			}
-		};
 
 		//// --- 发送消息
 		template <typename T>

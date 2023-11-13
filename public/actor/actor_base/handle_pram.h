@@ -13,9 +13,6 @@ namespace ngl
 	class actor_base;
 	using ptractor = std::shared_ptr<actor_base>;
 
-	//template <typename T>
-	//using sptr = std::shared_ptr<T>;
-
 	struct actor_node_session
 	{
 		i32_sessionid m_session;
@@ -47,11 +44,10 @@ namespace ngl
 		i32_protocolnum m_enum			= -1;
 		std::shared_ptr<void> m_data	= nullptr;
 		std::shared_ptr<pack> m_pack	= nullptr;
-		EPROTOCOL_TYPE m_protocoltype = EPROTOCOL_TYPE_CUSTOM;
+		EPROTOCOL_TYPE m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;
 		actor_guid m_actor;
 		actor_guid m_requestactor;
 
-		//// --- 群发相关
 		using forwardtype = std::function<void(std::map<i32_serverid, actor_node_session>&, std::map<actor_guid, i32_serverid>&, handle_pram&)>;
 		forwardtype m_forwardfun;	// 转发函数
 

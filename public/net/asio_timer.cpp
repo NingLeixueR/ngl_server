@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	time_wheel ngl::asio_timer::m_wheel(
+	time_wheel asio_timer::m_wheel(
 		time_wheel_config
 		{ 
 			.m_time_wheel_precision = 1000,

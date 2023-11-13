@@ -55,6 +55,7 @@
 #include "drop.cpp"
 #include "encryption.cpp"
 #include "gameclient_forward.cpp"
+#include "gateway_info.cpp"
 #include "gdbdmp.cpp"
 #include "handle_pram.cpp"
 #include "hexbytes.cpp"

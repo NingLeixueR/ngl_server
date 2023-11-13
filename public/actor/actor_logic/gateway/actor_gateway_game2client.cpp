@@ -20,6 +20,8 @@ namespace ngl
 	{
 	}
 
+	actor_gateway_game2client::~actor_gateway_game2client() {}
+
 	void actor_gateway_game2client::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway_game2client>(
@@ -28,5 +30,22 @@ namespace ngl
 		);
 		// Game 2 Client
 		gameclient_forward::g2c();
+	}
+
+	bool actor_gateway_game2client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_info_updata& adata)
+	{
+		for (auto& item : adata.m_delsocket)
+		{
+			m_info.remove_socket(item);
+		}
+		for (auto& item : adata.m_delactorid)
+		{
+			m_info.remove_actorid(item);
+		}
+		for (auto& item : adata.m_add)
+		{
+			m_info.updata(item);
+		}
+		return true;
 	}
 }

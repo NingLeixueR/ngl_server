@@ -10,8 +10,6 @@
 #include "actor_role.h"
 #include "gateway_info.h"
 
-#define ROBOT_TEST
-
 namespace ngl
 {
 	class actor_gateway_game2client : public actor
@@ -26,7 +24,7 @@ namespace ngl
 			return actor_instance<actor_gateway_game2client>::instance();
 		}
 
-		virtual ~actor_gateway_game2client() {}
+		virtual ~actor_gateway_game2client();
 
 		static void actor_register();
 
@@ -79,22 +77,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_info_updata& adata)
-		{
-			for (auto& item : adata.m_delsocket)
-			{
-				m_info.remove_socket(item);
-			}
-			for (auto& item : adata.m_delactorid)
-			{
-				m_info.remove_actorid(item);
-			}
-			for (auto& item : adata.m_add)
-			{
-				m_info.updata(item);
-			}
-			return true;
-		}
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_info_updata& adata);
 	private:
 	};
 
