@@ -2,7 +2,6 @@
 #include <string>
 #include <iostream>
 #include <functional>
-#include "operator_file.h"
 #include <string>
 #include <vector>
 #include <set>
@@ -19,7 +18,17 @@
 #include <map>
 #include <boost/lexical_cast.hpp> 
 #include <filesystem>
+#include <memory>
+#include <functional>
+#include <iostream>
+#include <type_traits>
+#include <typeinfo>
+#include <ranges>
+#include <iostream>
 
+#include "impl.h"
+#include "operator_file.h"
+#include "localtime.h"
 
 bool is_sname(const std::string& astrname, const std::string& akey)
 {
@@ -91,21 +100,6 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 }
 
 
-#include <memory>
-#include <functional>
-
-#include "impl.h"
-
-#include <iostream>
-#include <type_traits>
-#include <typeinfo>
-
-
-#include <ranges>
-#include <iostream>
-
-
-
 int main(int argc, char** argv)
 {
 	std::set<std::string> lvec1;
@@ -125,10 +119,12 @@ int main(int argc, char** argv)
 		find(false, ".cpp", targetPath, ldic, lvec1, lvec2);
 		find(false, ".c", targetPath, ldic, lvec5, lvec6);
 		find(false, ".h", targetPath, ldic, lvec3, lvec4);
-
-
 	}
 
+	m_stream << "// 注意【rebuild.bat 工具生成文件，不要手动修改】" << std::endl;
+	char ltmbuff[1024] = { 0 };
+	ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
+	m_stream << ltmbuff << std::endl;
 
 	for (auto item : lvec1)
 		m_stream << "#include \"" << item << "\"\n";

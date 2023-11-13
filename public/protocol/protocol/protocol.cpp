@@ -6,7 +6,6 @@
 
 namespace ngl
 {
-
 	class impl_protocol
 	{
 		struct protocol_fun
@@ -87,6 +86,7 @@ namespace ngl
 
 	std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, impl_protocol::protocol_fun>> impl_protocol::m_protocolfun;
 	std::shared_mutex impl_protocol::m_mutex;
+
 	void protocol::push(std::shared_ptr<pack>& apack)
 	{
 		impl_protocol::push(apack);

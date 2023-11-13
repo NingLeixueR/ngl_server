@@ -24,11 +24,11 @@ namespace ngl
 	public:
 		static void push(std::shared_ptr<pack>& apack);
 		static void register_protocol(
-			EPROTOCOL_TYPE atype
-			, i32_protocolnum aprotocolnumber
-			, ENUM_ACTOR aenumactor
-			, const typefun_pack& apackfun
-			, const typefun_run& arunfun
+			EPROTOCOL_TYPE atype					// 协议类型
+			, i32_protocolnum aprotocolnumber		// 协议号
+			, ENUM_ACTOR aenumactor					// actor类型
+			, const typefun_pack& apackfun			// 解包回调
+			, const typefun_run& arunfun			// 逻辑回调
 			, const char* aname);
 		static i32_serverid nodeid();
 
