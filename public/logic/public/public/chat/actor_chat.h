@@ -12,7 +12,6 @@
 #include "actor_switchprocess.h"
 #include "db_modular.h"
 #include "actor_roleitem.h"
-#include "tab_proto.h"
 #include "net.pb.h"
 #include "manage_csv.h"
 

@@ -2,7 +2,6 @@
 
 #include "db_modular.h"
 #include "db.pb.h"
-#include "tab_proto.h"
 
 #include <sstream>
 #include <iostream>

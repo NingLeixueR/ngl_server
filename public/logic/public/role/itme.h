@@ -1,7 +1,6 @@
 #pragma once
 
 #include "db.pb.h"
-#include "tab_proto.h"
 #include "manage_csv.h"
 
 

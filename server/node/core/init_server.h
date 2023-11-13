@@ -31,7 +31,6 @@
 #include "attribute.h"
 #include "varint.h"
 #include "net.pb.h"
-#include "tab_proto.h"
 #include "init_protobuf.h"
 #include "manage_curl.h"
 #include "notify.h"

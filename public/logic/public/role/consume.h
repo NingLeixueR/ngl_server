@@ -7,7 +7,6 @@
 #include "actor_role.h"
 #include "nlog.h"
 #include "tools.h"
-#include "tab_proto.h"
 
 namespace ngl
 {
