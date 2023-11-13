@@ -6,6 +6,11 @@
 
 namespace ngl
 {
+	void drop::init()
+	{
+		tdrop:init();
+	}
+
 	bool drop::weight(int aid, std::map<int, int>& amap)
 	{
 		tab_random* tab = allcsv::tab<tab_random>(aid);
@@ -13,8 +18,8 @@ namespace ngl
 			return false;
 		if (tab->m_calendarids > 0)
 		{
-			//if (ttab_calendar::is_period(tab->m_calendarids) == false)
-			//	return true;
+			if (ttab_calendar::is_period(tab->m_calendarids) == false)
+				return true;
 		}
 
 		int lweight = 0;
@@ -55,7 +60,6 @@ namespace ngl
 				}
 			}
 		}
-
 		for (int32_t childid : tab->m_childrandomids)
 		{
 			if (weight(childid, amap) == false)
@@ -63,7 +67,6 @@ namespace ngl
 		}
 		return true;
 	}
-
 
 	void print_weight(std::map<int, int>& amap)
 	{
@@ -92,6 +95,4 @@ namespace ngl
 		std::map<int, int> lmap;
 		return droplist(aid, acount, lmap) && arole->m_bag.add_item(lmap)? true : false;
 	}
-
-
 }

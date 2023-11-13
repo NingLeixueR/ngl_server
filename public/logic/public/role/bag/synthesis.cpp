@@ -16,6 +16,4 @@ namespace ngl
 		drop::use(arole, tab->m_generate, 1);
 		return true;
 	}
-
-
 }
