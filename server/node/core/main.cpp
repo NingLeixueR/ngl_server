@@ -33,7 +33,6 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	ngl::tab_proto_loadall::loadall();
 	ngl::allcsv::load();
 
 	nconfig::init();
