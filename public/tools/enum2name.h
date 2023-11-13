@@ -59,6 +59,5 @@ namespace ngl
 	template <typename ENUMT, bool TOLOWER = true>
 	using em = enum2name<ENUMT, TOLOWER>;
 
-
 	#define em_pram(NAME) NAME,#NAME
 }

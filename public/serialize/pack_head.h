@@ -24,14 +24,14 @@ namespace ngl
 		///////////////////////////////////协议号相关///////////////////////////////////////////////
 		// 设置actor ################# 发送给哪个actor #### 哪个actor发送的
 		static void head_set_actor(
-			int32_t* abuff,
-			i64_actorid aactor, /* aenum == ACTOR_NONE 此值无效 */
-			i64_actorid arequestactorid
+			int32_t* abuff
+			, i64_actorid aactor	/* aenum == ACTOR_NONE 此值无效 */
+			, i64_actorid arequestactorid
 		);
 
 		void set_actor(
-			i64_actorid aactor, /* aenum == ACTOR_NONE 此值无效 */
-			i64_actorid arequestactorid
+			i64_actorid aactor		/* aenum == ACTOR_NONE 此值无效 */
+			, i64_actorid arequestactorid
 		);
 
 		static void set_actor(uint32_t* abuff, i64_actorid aactor);
@@ -54,7 +54,6 @@ namespace ngl
 		// 设置协议类型
 		EPROTOCOL_TYPE	get_protocoltype()const;
 		void			set_protocoltype(EPROTOCOL_TYPE atype);
-		
 		
 		bool push(const char*& abuff, int& alen);
 		bool push(ngl::serialize& aflow);

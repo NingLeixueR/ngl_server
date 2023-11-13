@@ -44,18 +44,6 @@ namespace ngl
 			return adata.m_recvpack->m_len - adata.m_recvpack->m_pos;
 		}
 
-	/*	template <typename Y>
-		static int bytes(actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, Y>& adata)
-		{
-			return adata.ByteSize();
-		}
-
-		template <typename Y>
-		static int bytes(actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, Y>& adata)
-		{
-			return adata.ByteSize();
-		}*/
-
 		template <typename Y>
 		static int recv_bytes(Y&)
 		{

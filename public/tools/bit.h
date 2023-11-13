@@ -24,7 +24,5 @@ namespace ngl
 		bool get(int abit)const;
 
 		int find_first(bool abool);
-
-		bit& operator=(const bit&);
 	};
 }

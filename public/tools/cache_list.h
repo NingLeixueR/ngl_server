@@ -61,7 +61,5 @@ namespace ngl
 				m_ls.clear();
 			}
 		}
-
-
 	};
 }

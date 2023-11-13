@@ -131,9 +131,4 @@ namespace ngl
 		}
 		return -1;
 	}
-
-	bit& bit::operator=(const bit&)
-	{
-		return *this;
-	}
 }

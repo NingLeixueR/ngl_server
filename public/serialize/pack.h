@@ -11,7 +11,6 @@ namespace ngl
 	class bpool
 	{
 	public:
-
 		bpool();
 		char* malloc(int alen);
 		void free(char* ap, int alen);
@@ -40,9 +39,9 @@ namespace ngl
 		void reset();
 		bool isok();
 		bool malloc(int alen);
-
+		// 在数据包中设置actor
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
-
+		// 分配包
 		static std::shared_ptr<pack> make_pack(bpool* apool, int alen);
 	};
 

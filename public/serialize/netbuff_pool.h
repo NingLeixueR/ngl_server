@@ -136,7 +136,6 @@ namespace ngl
 		}
 	};
 
-
 	enum
 	{
 		enum_pool_count = 10,

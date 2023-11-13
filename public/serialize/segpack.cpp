@@ -168,7 +168,6 @@ namespace ngl
 				return false;
 			return true;
 		}
-
 	};
 
 	segpack::segpack()

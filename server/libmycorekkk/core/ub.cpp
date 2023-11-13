@@ -42,6 +42,7 @@
 #include "bag.cpp"
 #include "bit.cpp"
 #include "briefdb.cpp"
+#include "bytes_order.cpp"
 #include "cJSON.cpp"
 #include "consume.cpp"
 #include "conversion.cpp"

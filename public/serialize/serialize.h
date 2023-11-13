@@ -829,10 +829,6 @@ namespace ngl
 		}
 	};
 
-
-	
-	
-
 	//### 用于序列化枚举类型
 	template <typename T>
 	class enum_operator
@@ -986,7 +982,6 @@ namespace ngl
 		const char* name() { return "forward"; }
 	};
 
-
 	template <typename T>
 	bool unserialize::pop(T& adata)
 	{
@@ -998,10 +993,5 @@ namespace ngl
 	{
 		m_size += enum_operator<T>::bytes(*this, adata);
 		return m_size;
-	}
-
-	
-
-
-	
+	}	
 }
