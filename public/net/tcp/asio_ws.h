@@ -21,32 +21,28 @@ namespace ngl
 		friend class service_io;
 
 		// ---服务器
-		// i16_port						aport		监听端口
-		// i32_threadsize				athread		线程数
-		// const tcp_callback&			acallfun	回调
-		// const tcp_closecallback&		aclosefun	关闭回调
-		// const tcp_sendfinishcallback& asenderrfun 发送失败的回调
 		asio_ws(
-			i16_port aport, 
-			i32_threadsize athread, 
-			const ws_callback& acallfun, 
-			const ws_closecallback& aclosefun, 
-			const ws_sendfinishcallback& asendfinishfun
+			i16_port aport									// 监听端口
+			, i32_threadsize athread						// 线程数
+			, const ws_callback& acallfun					// 回调
+			, const ws_closecallback& aclosefun				// 关闭回调
+			, const ws_sendfinishcallback& asendfinishfun	// 发送失败的回调
 		);
 
 		// ---客户端
-		// i32_threadsize				athread		线程数
-		// const tcp_callback&			acallfun	回调
-		// const tcp_closecallback&		aclosefun	关闭回调
-		// const tcp_senderrorcallback& asenderrfun 发送失败的回调
 		asio_ws(
-			i32_threadsize athread, 
-			const ws_callback& acallfun, 
-			const ws_closecallback& aclosefun, 
-			const ws_sendfinishcallback& asendfinishfun
+			i32_threadsize athread							// 线程数
+			, const ws_callback& acallfun					// 回调	
+			, const ws_closecallback& aclosefun				// 关闭回调	
+			, const ws_sendfinishcallback& asendfinishfun	// 发送失败的回调			
 		);
 
-		service_ws* connect(const str_host& ahost, i16_port aport, const ws_connectcallback& afun, int acount = 5);
+		service_ws* connect(
+			const str_host& ahost						// ip
+			, i16_port aport							// 端口
+			, const ws_connectcallback& afun			// 连接回调
+			, int acount = 5							// 连接失败自动重连次数
+		);
 
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack);

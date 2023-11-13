@@ -22,7 +22,13 @@ namespace ngl
 		std::unordered_map<i32_sessionid, std::function<void()>> m_sessionclose;
 		std::shared_mutex					m_ipportlock;
 
-		impl_asio_tcp(i16_port aport, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun) :
+		impl_asio_tcp(
+			i16_port aport
+			, i32_threadsize athread
+			, const tcp_callback& acallfun
+			, const tcp_closecallback& aclosefun
+			, const tcp_sendfinishcallback& asendfinishfun
+		) :
 			m_fun(acallfun),
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
@@ -36,7 +42,12 @@ namespace ngl
 			accept();
 		}
 
-		impl_asio_tcp(i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun) :
+		impl_asio_tcp(
+			i32_threadsize athread
+			, const tcp_callback& acallfun
+			, const tcp_closecallback& aclosefun
+			, const tcp_sendfinishcallback& asendfinishfun
+		) :
 			m_fun(acallfun),
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
@@ -45,7 +56,12 @@ namespace ngl
 		{
 		}
 
-		inline service_tcp* connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount)
+		inline service_tcp* connect(
+			const str_ip& aip
+			, i16_port aport
+			, const tcp_connectcallback& afun
+			, int acount
+		)
 		{
 			LogLocalError("connect ip[%] port[%]", aip, aport);
 			std::cout << "connect ip[" << aip << "] port[" << aport << std::endl;
@@ -63,7 +79,14 @@ namespace ngl
 			return lservice;
 		}
 
-		inline void conn_handler(const boost::system::error_code& ec, service_tcp* ap, const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount)
+		inline void conn_handler(
+			const boost::system::error_code& ec
+			, service_tcp* ap
+			, const str_ip& aip
+			, i16_port aport
+			, const tcp_connectcallback& afun
+			, int acount
+		)
 		{
 			if (ec)
 			{

@@ -2,11 +2,21 @@
 #define _IDLCPP_PROTOCOL_H_
 
 #include "idl.h"
-
+#include "localtime.h"
 
 class idlcppprotocol
 {
-	idlcppprotocol() {}
+	idlcppprotocol() 
+	{
+		char ltmbuff[1024] = { 0 };
+		ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
+		m_tit = "// 注意【rebuild.bat 工具生成文件，不要手动修改】\n";
+		m_tit += "// 创建时间 ";
+		m_tit += ltmbuff;
+		m_tit += "\n";
+	}
+
+	std::string m_tit;
 public:
 	static idlcppprotocol& getInstance()
 	{
@@ -16,10 +26,13 @@ public:
 
 	void _h()
 	{
+		
+
 		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			std::string lstr;
+			lstr += m_tit;
 			Ifndef* lIfndef = new Ifndef(lstr, item.first);
 			Include lInclude(lstr, item.second.m_include);
 			Define lDefine(lstr, item.second.m_define);
@@ -38,11 +51,8 @@ public:
 			delete lIfndef;
 			ngl::writefile lfile(".\\idlfile\\" + item.first + ".h");
 			lfile.write(lstr);
-			
-			
 			//_h(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}
-		
 	}
 
 	
@@ -52,6 +62,7 @@ public:
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			std::string lstr;
+			lstr += m_tit;
 			{
 				set<string> lset;
 				lset.insert("#include \"" + item.first + ".h\"");

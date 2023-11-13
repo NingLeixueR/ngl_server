@@ -22,7 +22,13 @@ namespace ngl
 
 		std::unique_ptr<work_list<node_pack>>			m_sendlist;
 
-		impl_asio_ws(i16_port aport, i32_threadsize athread, const ws_callback& acallfun, const ws_closecallback& aclosefun, const ws_sendfinishcallback& asendfinishfun) :
+		impl_asio_ws(
+			i16_port aport
+			, i32_threadsize athread
+			, const ws_callback& acallfun
+			, const ws_closecallback& aclosefun
+			, const ws_sendfinishcallback& asendfinishfun
+		) :
 			m_fun(acallfun),
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
@@ -36,7 +42,12 @@ namespace ngl
 			accept();			
 		}
 
-		impl_asio_ws(i32_threadsize athread, const ws_callback& acallfun, const ws_closecallback& aclosefun, const ws_sendfinishcallback& asendfinishfun) :
+		impl_asio_ws(
+			i32_threadsize athread
+			, const ws_callback& acallfun
+			, const ws_closecallback& aclosefun
+			, const ws_sendfinishcallback& asendfinishfun
+		) :
 			m_fun(acallfun),
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
@@ -57,7 +68,6 @@ namespace ngl
 				lservice->socket(),
 				boost::bind(&impl_asio_ws::handle_accept, this, lservice, boost::asio::placeholders::error)
 			);
-
 		}
 
 		inline void handle_accept(service_ws* aservice, const boost::system::error_code& error)
@@ -173,7 +183,12 @@ namespace ngl
 			close(ap->m_sessionid);
 		}
 
-		inline service_ws* connect(const str_host& ahost, i16_port aport, const ws_connectcallback& afun, int acount)
+		inline service_ws* connect(
+			const str_host& ahost
+			, i16_port aport
+			, const ws_connectcallback& afun
+			, int acount
+		)
 		{
 			LogLocalError("connect host[%] port[%]", ahost, aport);
 			service_ws* lservice = nullptr;
@@ -194,12 +209,12 @@ namespace ngl
 		}
 
 		inline void conn_handler(
-			const boost::system::error_code& ec, 
-			service_ws* ap, 
-			const str_host& ahost, 
-			i16_port aport,
-			const ws_connectcallback& afun, 
-			int acount)
+			const boost::system::error_code& ec
+			, service_ws* ap
+			, const str_host& ahost
+			, i16_port aport
+			, const ws_connectcallback& afun
+			, int acount)
 		{
 			if (ec)
 			{
@@ -242,9 +257,6 @@ namespace ngl
 				lipport.second = ap->socket().remote_endpoint().port();
 				ap->m_is_lanip = tools::is_lanip(lipport.first);
 			}
-
-			//bool lisopen = ap->socket().is_open();
-			//lisopen = ap->m_ws.is_open();
 
 			start(ap);
 			afun(ap->m_sessionid);
@@ -381,7 +393,6 @@ namespace ngl
 			}
 		}
 
-
 		inline void handle_write(service_ws* ap, const boost::system::error_code& error, const std::shared_ptr<pack>& apack)
 		{
 			if (error)
@@ -449,7 +460,6 @@ namespace ngl
 					aservice->m_buff1,
 					boost::asio::placeholders::bytes_transferred)
 			);
-
 		}
 
 		inline void set_close(i32_sessionid asession, const std::function<void()>& afun)
@@ -460,39 +470,35 @@ namespace ngl
 	};
 
 	asio_ws::asio_ws(
-		i16_port aport, 
-		i32_threadsize athread, 
-		const ws_callback& acallfun, 
-		const ws_closecallback& aclosefun, 
-		const ws_sendfinishcallback& asendfinishfun)
+		i16_port aport
+		, i32_threadsize athread
+		, const ws_callback& acallfun
+		, const ws_closecallback& aclosefun
+		, const ws_sendfinishcallback& asendfinishfun
+	)
 	{
 		m_impl_asio_ws.make_unique(aport, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
 	asio_ws::asio_ws(
-		i32_threadsize athread,
-		const ws_callback& acallfun,
-		const ws_closecallback& aclosefun,
-		const ws_sendfinishcallback& asendfinishfun
+		i32_threadsize athread
+		, const ws_callback& acallfun
+		, const ws_closecallback& aclosefun
+		, const ws_sendfinishcallback& asendfinishfun
 	)
 	{
 		m_impl_asio_ws.make_unique(athread, acallfun, aclosefun, asendfinishfun);
 	}
 
-	service_ws* asio_ws::connect(const str_host& ahost, i16_port aport, const ws_connectcallback& afun, int acount/* = 5*/)
+	service_ws* asio_ws::connect(
+		const str_host& ahost
+		, i16_port aport
+		, const ws_connectcallback& afun
+		, int acount/* = 5*/
+	)
 	{
 		return m_impl_asio_ws()->connect(ahost, aport, afun, acount);
 	}
-
-	/*bool asio_ws::sendpack(service_ws* ap, std::shared_ptr<pack>& apack)
-	{
-		return m_impl_asio_ws()->sendpack(ap, apack);
-	}
-
-	bool asio_ws::sendpack(service_ws* ap, std::shared_ptr<void>& apack)
-	{
-		return m_impl_asio_ws()->sendpack(ap, apack);
-	}*/
 
 	bool asio_ws::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 	{
