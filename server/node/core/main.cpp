@@ -3,15 +3,6 @@
 Dumper lDumper;
 
 #include "rfun.h"
-//#include "benchmark.h"
-//
-//static void BM_TestFunction(benchmark::State& state) 
-//{
-//	for (auto _ : state) {
-//		// Testing code here
-//	}
-//}
-//BENCHMARK(BM_TestFunction);
 
 int main(int argc, char** argv)
 {	
@@ -21,9 +12,6 @@ int main(int argc, char** argv)
 	std::cout <<
 	typeid(ngl::actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>).name()
 		<< std::endl;
-
-	//benchmark::Initialize(&argc, argv);
-	//benchmark::RunSpecifiedBenchmarks();
 
 	if (argc <= 1)
 	{
@@ -110,7 +98,6 @@ int main(int argc, char** argv)
 	 
 	while (1)
 	{
-		//LogLocalError("Test Log Server:[%]", argv[1]);
 		boost::this_thread::sleep(boost::posix_time::seconds(1));
 	}
 	return 0;
