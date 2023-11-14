@@ -67,5 +67,6 @@ namespace ngl
 		init_customs_db<pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity>();
 		init_customs_db<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>();
 		init_customs_db<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>();
+		init_customs_db<pbdb::ENUM_DB_TASK, pbdb::db_task>();
 	}
 }

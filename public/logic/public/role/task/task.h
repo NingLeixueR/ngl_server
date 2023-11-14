@@ -18,10 +18,7 @@ namespace ngl
 		: public task_db_modular
 	{
 		// 检查任务是否可以接取
-		bool check_receive(const task_receive& areceive);
 		bool check_receive(int32_t ataskid);
-		// 获取进度
-		void update_schedule(task_complete& acomplete, pbdb::db_task::data_schedule& adata);
 		// 检查是否完成任务
 		bool check_complete(pbdb::db_task::data_schedule& adata);
 		bool check_complete(pbdb::db_task::data& adata);

@@ -41,11 +41,23 @@ namespace ngl
 			return true;
 		}
 
-		static bool check_complete(const std::vector<int32_t>& aparmint, const std::vector<int32_t>& asumint)
+		//static bool check_complete(const std::vector<int32_t>& aparmint, const std::vector<int32_t>& asumint)
+		//{
+		//	for (int i = 0; i < aparmint.size() && i < asumint.size(); ++i)
+		//	{
+		//		if (aparmint[i] < asumint[i])
+		//			return false;
+		//	}
+		//	return true;
+		//}
+
+		template <typename TLIST>
+		static bool check_complete(const TLIST& aparmint, const TLIST& asumint)
 		{
-			for (int i = 0; i < aparmint.size() && i < asumint.size(); ++i)
+			for (auto parmitor = aparmint.begin(), sumitor = asumint.begin();
+				parmitor != aparmint.end() && sumitor != asumint.end();++parmitor,++sumitor)
 			{
-				if (aparmint[i] < asumint[i])
+				if (*parmitor < *sumitor)
 					return false;
 			}
 			return true;
@@ -74,41 +86,9 @@ namespace ngl
 
 	taskcheck_rolelv g_taskcheck_rolelv;
 
-
-	void task::update_schedule(task_complete& acomplete, pbdb::db_task::data_schedule& adata)
-	{
-		adata.set_m_type(acomplete.m_completetype);
-		switch (acomplete.m_completetype)
-		{
-		case ETaskRoleLv:
-		{
-			adata.add_m_parmint(actor()->m_info.lv());
-			assert(acomplete.m_parmint.empty() == false);
-			adata.add_m_sumint(acomplete.m_parmint[0]);
-		}
-		break;
-		}
-	}
-
 	bool task::check_complete(pbdb::db_task::data_schedule& adata)
 	{
-		switch (adata.m_type())
-		{
-		case ETaskRoleLv:
-		{
-			
-			for (int i = 0; i < adata.m_parmint_size() && i < adata.m_sumint_size(); ++i)
-			{
-				if (adata.m_parmint()[i] < adata.m_sumint()[i])
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		break;
-		}
-		return false;
+		return taskcheck::check_complete(adata.m_parmint(), adata.m_sumint());
 	}
 
 	bool task::check_complete(pbdb::db_task::data& adata)
