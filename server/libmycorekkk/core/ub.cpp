@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-11-13 15:14:02
+// 创建时间 23-11-14 14:37:50
 #include "account.cpp"
 #include "activitydb.cpp"
 #include "actor.cpp"
@@ -41,6 +41,7 @@
 #include "asio_ws.cpp"
 #include "attribute.cpp"
 #include "attribute_value.cpp"
+#include "autoitem.cpp"
 #include "bag.cpp"
 #include "bit.cpp"
 #include "briefdb.cpp"
