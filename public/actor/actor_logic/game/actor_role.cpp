@@ -30,9 +30,13 @@ namespace ngl
 		LogLocalError("actor_role###loaddb_finish#[%]", actor_guid(id_guid()));
 		sync_data_client();
 
-		{// 玩家信息需要同步到每个game和world
-			m_info.sync_actor_roleinfo();
-		}
+		m_info.sync_actor_roleinfo();
+	}
+
+	void actor_role::handle_after()
+	{
+		// ### 同步这次消息的背包变动
+		m_bag.sync_client();
 	}
 
 	bool actor_role::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)

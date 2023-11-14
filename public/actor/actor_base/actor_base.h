@@ -72,8 +72,12 @@ namespace ngl
 		virtual bool list_empty() = 0;
 		virtual void actor_handle(i32_threadid athreadid) = 0;
 		virtual void push(handle_pram& apram) = 0;
-		virtual void loaddb_finish(bool adbishave) {} // 派生actor重载此函数 会在数据加载完成后调用
-		virtual void clear_task() = 0;// 清空当前任务
+		// 派生actor重载此函数 会在数据加载完成后调用
+		virtual void loaddb_finish(bool adbishave) {} 
+		// 清空当前任务
+		virtual void clear_task() = 0;
+		// 执行handle之后调用
+		virtual void handle_after() {}
 #pragma endregion 
 
 

@@ -50,18 +50,19 @@ namespace ngl
 		}
 
 	private:
-		inline void ahandle(actor* aactor, i32_threadid athreadid, handle_pram& aparm)
+		inline bool ahandle(actor* aactor, i32_threadid athreadid, handle_pram& aparm)
 		{
 			if (aactor == nullptr)
-				return;
+				return false;
 			Try
 			{
 				arfunbase * lprfun = aactor->m_actorfun[aparm.m_protocoltype];
 				Assert(lprfun != nullptr);
 				if (lprfun->handle_switch(aactor, athreadid, aparm))
-					return;
+					return true;
 				lprfun->notfindfun(aactor, athreadid, aparm);
 			}Catch;
+			return false;
 		}
 	public:
 		inline void actor_handle(actor* aactor, i32_threadid athreadid, int aweight)
@@ -73,7 +74,10 @@ namespace ngl
 			}
 			while (--aweight >= 0 && llist.empty() != true)
 			{
-				ahandle(aactor, athreadid, *llist.begin());
+				if (ahandle(aactor, athreadid, *llist.begin()) == true)
+				{
+					aactor->handle_after();
+				}
 				llist.pop_front();
 			}
 

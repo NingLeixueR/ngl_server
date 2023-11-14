@@ -17,6 +17,7 @@
 #include "bag.h"
 #include "roleinfo.h"
 #include "remakes.h"
+#include "autoitem.h"
 
 namespace ngl
 {
@@ -63,6 +64,8 @@ namespace ngl
 		virtual ~actor_role() {}
 
 		virtual void loaddb_finish(bool adbishave);
+		// 执行handle之后调用
+		virtual void handle_after();
 
 		enum { ACTOR_TYPE = ACTOR_ROLE };
 
@@ -169,7 +172,8 @@ namespace ngl
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_send_item& adata)
 		{
 			d_remakes(this, adata.m_src);
-			m_bag.add_item(adata.m_item);
+			//autoitem lautoitem(this);
+			//lautoitem.add_item(adata.m_item);
 			return true;
 		}
 

@@ -7,7 +7,7 @@
 
 namespace ngl
 {
-	class temp_bag;
+	struct autoitem;
 	class actor_role;
 	using bag_db_modular = db_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
@@ -20,6 +20,7 @@ namespace ngl
 	{
 		std::map<int, pbdb::item*> m_stackitems;				// key tid 可堆叠的物品
 		std::map<int, pbdb::item*> m_nostackitems;				// key id  不可堆叠的物品
+		std::unique_ptr<autoitem> m_autoitem;
 	public:
 		bag();
 
@@ -39,9 +40,10 @@ namespace ngl
 		bool dec_item(int32_t atid, int32_t acount);
 		// 删除不可堆叠物品
 		bool dec_item(int32_t aid);
-
+		
 		bool checkbytid(int32_t atid, int32_t acount);
 		bool checkbyid(int32_t aid);
-	};
 
+		void sync_client();
+	};
 }

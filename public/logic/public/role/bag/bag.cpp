@@ -1,11 +1,13 @@
 #include "bag.h"
 #include "actor_role.h"
+#include "autoitem.h"
 
 
 namespace ngl
 {
 	bag::bag()
-		: bag_db_modular() 
+		: bag_db_modular()
+		, m_autoitem(new autoitem())
 	{}
 
 	pbdb::db_bag& bag::get_bag()
@@ -80,6 +82,7 @@ namespace ngl
 					pbdb::item* lpitem = itor->second;
 					lpitem->set_m_count(lpitem->m_count() + item.m_count());
 				}
+				m_autoitem->add(atid, acount);
 			}
 			else
 			{
@@ -89,6 +92,7 @@ namespace ngl
 					continue;
 				}
 				m_nostackitems.insert({ item.m_id(), lpitem });
+				m_autoitem->add(item.m_id());
 			}
 		}
 		get_bag().set_m_maxid(lid);
@@ -106,7 +110,11 @@ namespace ngl
 	bool bag::add_item(std::vector<pbdb::item>& avec)
 	{
 		for (auto& litem : avec)
+		{
 			add(litem);
+			m_autoitem->add(litem.m_id());
+		}
+			
 		return true;
 	}
 
@@ -120,6 +128,7 @@ namespace ngl
 		lcount -= acount;
 		if (acount < 0)
 			return false;
+		m_autoitem->del(atid, acount);
 		if (acount == 0)
 		{
 			get_bag().mutable_m_items()->erase(itor->second->m_id());
@@ -142,6 +151,7 @@ namespace ngl
 		if (tab->m_isstack)
 			return false;
 		m_nostackitems.erase(itor);
+		m_autoitem->del(aid);
 		return true;
 	}
 
@@ -157,5 +167,43 @@ namespace ngl
 	{
 		auto itor = m_nostackitems.find(aid);
 		return itor != m_nostackitems.end();
+	}
+
+	void bag::sync_client()
+	{
+		if (m_autoitem->m_addstackitems.empty()
+			&& m_autoitem->m_addnostackitems.empty()
+			&& m_autoitem->m_delstackitems.empty()
+			&& m_autoitem->m_delnostackitems.empty()
+			)
+		{
+			return;
+		}
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>();
+		auto ladditems = pro->mutable_m_additems();
+		for (auto [_id, _count] : m_autoitem->m_addstackitems)
+		{
+			auto ladditem = ladditems->Add();
+			ladditem->set_m_id(_id);
+			ladditem->set_m_count(_count);
+		}
+		auto laddnostackitems = pro->mutable_m_addnostackitems();
+		for (int32_t itemid : m_autoitem->m_addnostackitems)
+		{
+			laddnostackitems->Add(itemid);
+		}
+		auto ldelitems = pro->mutable_m_delitems();
+		for (auto [_id, _count] : m_autoitem->m_delstackitems)
+		{
+			auto ldelitem = ldelitems->Add();
+			ldelitem->set_m_id(_id);
+			ldelitem->set_m_count(_count);
+		}
+		auto ldelnostackitems = pro->mutable_m_delnostackitems();
+		for (int32_t itemid : m_autoitem->m_delnostackitems)
+		{
+			ldelnostackitems->Add(itemid);
+		}
+		actor()->send2client(pro);
 	}
 }

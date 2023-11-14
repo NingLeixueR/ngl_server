@@ -8,7 +8,6 @@ namespace ngl
 {
 	void drop::init()
 	{
-		tdrop:init();
 	}
 
 	bool drop::weight(int aid, std::map<int, int>& amap)
