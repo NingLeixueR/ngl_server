@@ -72,9 +72,15 @@ class ENUM_DB
      */
     const ENUM_DB_ACTIVITY = 9;
     /**
-     * Generated from protobuf enum <code>ENUM_DB_COUNT = 10;</code>
+     * 任务数据
+     *
+     * Generated from protobuf enum <code>ENUM_DB_TASK = 10;</code>
      */
-    const ENUM_DB_COUNT = 10;
+    const ENUM_DB_TASK = 10;
+    /**
+     * Generated from protobuf enum <code>ENUM_DB_COUNT = 11;</code>
+     */
+    const ENUM_DB_COUNT = 11;
 
     private static $valueToName = [
         self::ENUM_DB_ACCOUNT => 'ENUM_DB_ACCOUNT',
@@ -87,6 +93,7 @@ class ENUM_DB
         self::ENUM_DB_NOTICE => 'ENUM_DB_NOTICE',
         self::ENUM_DB_RANKLIST => 'ENUM_DB_RANKLIST',
         self::ENUM_DB_ACTIVITY => 'ENUM_DB_ACTIVITY',
+        self::ENUM_DB_TASK => 'ENUM_DB_TASK',
         self::ENUM_DB_COUNT => 'ENUM_DB_COUNT',
     ];
 

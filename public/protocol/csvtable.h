@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-13 16:58:15
+// 创建时间 // 创建时间 23-11-14 21:39:45
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -119,16 +119,11 @@ enum EActivity
 {
 	EActivityDrawCompliance = 1,	// 类似咸鱼之王的<<招募达标>>
 };
-enum EReceiveTask
+enum ETask
 {
-	EReceiveTaskRoleLv = 1,	// 玩家等级
-	EReceiveTaskRoleVip = 2,	// 玩家vip等级
-	EReceiveTaskTaskId = 3,	// 完成某ID任务
-};
-enum EFinshTask
-{
-	EFinshTaskRoleLv = 1,	// 玩家等级
-	EFinshTaskRoleVip = 2,	// 玩家vip等级
+	ETaskRoleLv = 1,	// 玩家等级
+	ETaskRoleVip = 2,	// 玩家vip等级
+	ETaskTaskId = 3,	// 完成某ID任务
 };
 struct tab_servers
 {
@@ -486,32 +481,26 @@ struct tab_activity_drawcompliance
 struct task_receive
 {
 /*********************************/
-	EReceiveTask		m_receivetype;		// EReceiveTask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
-	int32_t		m_parmint1;		
-	int32_t		m_parmint2;		
-	std::string		m_parmstring1;		
-	std::string		m_parmstring2;		
+	ETask		m_receivetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
+	std::vector<int32_t>		m_parmint;		
 /*********************************/
 	task_receive();
 	// 序列化反序列化相关
-	def_portocol(task_receive, m_receivetype, m_parmint1, m_parmint2, m_parmstring1, m_parmstring2)
+	def_portocol(task_receive, m_receivetype, m_parmint)
 	// csv相关
-	def_rcsv(m_receivetype,m_parmint1,m_parmint2,m_parmstring1,m_parmstring2)
+	def_rcsv(m_receivetype,m_parmint)
 };
-struct task_finsh
+struct task_complete
 {
 /*********************************/
-	EFinshTask		m_finshtype;		// EFinshTask(1.玩家等级达到X 2.主公vip等级达到x)
-	int32_t		m_parmint1;		
-	int32_t		m_parmint2;		
-	std::string		m_parmstring1;		
-	std::string		m_parmstring2;		
+	ETask		m_completetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
+	std::vector<int32_t>		m_parmint;		
 /*********************************/
-	task_finsh();
+	task_complete();
 	// 序列化反序列化相关
-	def_portocol(task_finsh, m_finshtype, m_parmint1, m_parmint2, m_parmstring1, m_parmstring2)
+	def_portocol(task_complete, m_completetype, m_parmint)
 	// csv相关
-	def_rcsv(m_finshtype,m_parmint1,m_parmint2,m_parmstring1,m_parmstring2)
+	def_rcsv(m_completetype,m_parmint)
 };
 struct tab_task
 {
@@ -521,13 +510,13 @@ struct tab_task
 	std::string		m_remarks;		
 	int32_t		m_dropid;		// 任务奖励
 	std::vector<task_receive>		m_taskreceive;		// 接收此任务的前提
-	std::vector<task_finsh>		m_taskfinsh;		// 完成此任务的条件
+	std::vector<task_complete>		m_taskcomplete;		// 完成此任务的条件
 /*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	def_portocol(tab_task, m_id, m_name, m_remarks, m_dropid, m_taskreceive, m_taskfinsh)
+	def_portocol(tab_task, m_id, m_name, m_remarks, m_dropid, m_taskreceive, m_taskcomplete)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_dropid,m_taskreceive,m_taskfinsh)
+	def_rcsv(m_id,m_name,m_remarks,m_dropid,m_taskreceive,m_taskcomplete)
 };
 }//namespace ngl
 #endif //_csvtable_H_

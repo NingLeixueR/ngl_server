@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-13 16:58:15
+// 创建时间 // 创建时间 23-11-14 21:39:45
 #include "csvtable.h"
 namespace ngl{
 tab_servers::tab_servers()
@@ -77,7 +77,7 @@ tab_activity_drawcompliance::tab_activity_drawcompliance()
 task_receive::task_receive()
 {
 }
-task_finsh::task_finsh()
+task_complete::task_complete()
 {
 }
 tab_task::tab_task()

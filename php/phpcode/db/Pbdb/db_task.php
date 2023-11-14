@@ -20,11 +20,17 @@ class db_task extends \Google\Protobuf\Internal\Message
      */
     protected $m_id = null;
     /**
-     * 任务数据
+     * 正在进行的任务数据
      *
-     * Generated from protobuf field <code>repeated .pbdb.db_task.data m_datas = 2;</code>
+     * Generated from protobuf field <code>map<int32, .pbdb.db_task.data> m_rundatas = 2;</code>
      */
-    private $m_datas;
+    private $m_rundatas;
+    /**
+     * 已完成的任务数据
+     *
+     * Generated from protobuf field <code>map<int32, .pbdb.db_task.data> m_completeddatas = 3;</code>
+     */
+    private $m_completeddatas;
 
     /**
      * Constructor.
@@ -34,8 +40,10 @@ class db_task extends \Google\Protobuf\Internal\Message
      *
      *     @type int|string $m_id
      *           roleid
-     *     @type array<\Pbdb\db_task\data>|\Google\Protobuf\Internal\RepeatedField $m_datas
-     *           任务数据
+     *     @type array|\Google\Protobuf\Internal\MapField $m_rundatas
+     *           正在进行的任务数据
+     *     @type array|\Google\Protobuf\Internal\MapField $m_completeddatas
+     *           已完成的任务数据
      * }
      */
     public function __construct($data = NULL) {
@@ -80,27 +88,53 @@ class db_task extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * 任务数据
+     * 正在进行的任务数据
      *
-     * Generated from protobuf field <code>repeated .pbdb.db_task.data m_datas = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>map<int32, .pbdb.db_task.data> m_rundatas = 2;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
-    public function getMDatas()
+    public function getMRundatas()
     {
-        return $this->m_datas;
+        return $this->m_rundatas;
     }
 
     /**
-     * 任务数据
+     * 正在进行的任务数据
      *
-     * Generated from protobuf field <code>repeated .pbdb.db_task.data m_datas = 2;</code>
-     * @param array<\Pbdb\db_task\data>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>map<int32, .pbdb.db_task.data> m_rundatas = 2;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
      * @return $this
      */
-    public function setMDatas($var)
+    public function setMRundatas($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Pbdb\db_task\data::class);
-        $this->m_datas = $arr;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::INT32, \Google\Protobuf\Internal\GPBType::MESSAGE, \Pbdb\db_task\data::class);
+        $this->m_rundatas = $arr;
+
+        return $this;
+    }
+
+    /**
+     * 已完成的任务数据
+     *
+     * Generated from protobuf field <code>map<int32, .pbdb.db_task.data> m_completeddatas = 3;</code>
+     * @return \Google\Protobuf\Internal\MapField
+     */
+    public function getMCompleteddatas()
+    {
+        return $this->m_completeddatas;
+    }
+
+    /**
+     * 已完成的任务数据
+     *
+     * Generated from protobuf field <code>map<int32, .pbdb.db_task.data> m_completeddatas = 3;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
+     */
+    public function setMCompleteddatas($var)
+    {
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::INT32, \Google\Protobuf\Internal\GPBType::MESSAGE, \Pbdb\db_task\data::class);
+        $this->m_completeddatas = $arr;
 
         return $this;
     }

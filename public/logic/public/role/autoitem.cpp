@@ -22,5 +22,4 @@ namespace ngl
 	{
 		m_addnostackitems.push_back(aid);
 	}
-
 }

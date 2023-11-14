@@ -106,9 +106,18 @@ extern db_roleDefaultTypeInternal _db_role_default_instance_;
 class db_task;
 struct db_taskDefaultTypeInternal;
 extern db_taskDefaultTypeInternal _db_task_default_instance_;
+class db_task_MCompleteddatasEntry_DoNotUse;
+struct db_task_MCompleteddatasEntry_DoNotUseDefaultTypeInternal;
+extern db_task_MCompleteddatasEntry_DoNotUseDefaultTypeInternal _db_task_MCompleteddatasEntry_DoNotUse_default_instance_;
+class db_task_MRundatasEntry_DoNotUse;
+struct db_task_MRundatasEntry_DoNotUseDefaultTypeInternal;
+extern db_task_MRundatasEntry_DoNotUseDefaultTypeInternal _db_task_MRundatasEntry_DoNotUse_default_instance_;
 class db_task_data;
 struct db_task_dataDefaultTypeInternal;
 extern db_task_dataDefaultTypeInternal _db_task_data_default_instance_;
+class db_task_data_schedule;
+struct db_task_data_scheduleDefaultTypeInternal;
+extern db_task_data_scheduleDefaultTypeInternal _db_task_data_schedule_default_instance_;
 class item;
 struct itemDefaultTypeInternal;
 extern itemDefaultTypeInternal _item_default_instance_;
@@ -158,7 +167,13 @@ template <>
 template <>
 ::pbdb::db_task* Arena::CreateMaybeMessage<::pbdb::db_task>(Arena*);
 template <>
+::pbdb::db_task_MCompleteddatasEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_task_MCompleteddatasEntry_DoNotUse>(Arena*);
+template <>
+::pbdb::db_task_MRundatasEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_task_MRundatasEntry_DoNotUse>(Arena*);
+template <>
 ::pbdb::db_task_data* Arena::CreateMaybeMessage<::pbdb::db_task_data>(Arena*);
+template <>
+::pbdb::db_task_data_schedule* Arena::CreateMaybeMessage<::pbdb::db_task_data_schedule>(Arena*);
 template <>
 ::pbdb::item* Arena::CreateMaybeMessage<::pbdb::item>(Arena*);
 template <>
@@ -181,7 +196,8 @@ enum ENUM_DB : int {
   ENUM_DB_NOTICE = 7,
   ENUM_DB_RANKLIST = 8,
   ENUM_DB_ACTIVITY = 9,
-  ENUM_DB_COUNT = 10,
+  ENUM_DB_TASK = 10,
+  ENUM_DB_COUNT = 11,
   ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -190,8 +206,8 @@ enum ENUM_DB : int {
 
 bool ENUM_DB_IsValid(int value);
 constexpr ENUM_DB ENUM_DB_MIN = static_cast<ENUM_DB>(0);
-constexpr ENUM_DB ENUM_DB_MAX = static_cast<ENUM_DB>(10);
-constexpr int ENUM_DB_ARRAYSIZE = 10 + 1;
+constexpr ENUM_DB ENUM_DB_MAX = static_cast<ENUM_DB>(11);
+constexpr int ENUM_DB_ARRAYSIZE = 11 + 1;
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
 ENUM_DB_descriptor();
 template <typename T>
@@ -204,7 +220,7 @@ const std::string& ENUM_DB_Name(T value) {
 template <>
 inline const std::string& ENUM_DB_Name(ENUM_DB value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<ENUM_DB_descriptor,
-                                                 0, 10>(
+                                                 0, 11>(
       static_cast<int>(value));
 }
 inline bool ENUM_DB_Parse(absl::string_view name, ENUM_DB* value) {
@@ -3536,6 +3552,209 @@ class db_activity final :
   friend struct ::TableStruct_db_2eproto;
 };// -------------------------------------------------------------------
 
+class db_task_data_schedule final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_task.data_schedule) */ {
+ public:
+  inline db_task_data_schedule() : db_task_data_schedule(nullptr) {}
+  ~db_task_data_schedule() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR db_task_data_schedule(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  db_task_data_schedule(const db_task_data_schedule& from);
+  db_task_data_schedule(db_task_data_schedule&& from) noexcept
+    : db_task_data_schedule() {
+    *this = ::std::move(from);
+  }
+
+  inline db_task_data_schedule& operator=(const db_task_data_schedule& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline db_task_data_schedule& operator=(db_task_data_schedule&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const db_task_data_schedule& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const db_task_data_schedule* internal_default_instance() {
+    return reinterpret_cast<const db_task_data_schedule*>(
+               &_db_task_data_schedule_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(db_task_data_schedule& a, db_task_data_schedule& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(db_task_data_schedule* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(db_task_data_schedule* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  db_task_data_schedule* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<db_task_data_schedule>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const db_task_data_schedule& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const db_task_data_schedule& from) {
+    db_task_data_schedule::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(db_task_data_schedule* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbdb.db_task.data_schedule";
+  }
+  protected:
+  explicit db_task_data_schedule(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMParmintFieldNumber = 2,
+    kMSumintFieldNumber = 3,
+    kMTypeFieldNumber = 1,
+  };
+  // repeated int32 m_parmint = 2;
+  int m_parmint_size() const;
+  private:
+  int _internal_m_parmint_size() const;
+
+  public:
+  void clear_m_parmint() ;
+  ::int32_t m_parmint(int index) const;
+  void set_m_parmint(int index, ::int32_t value);
+  void add_m_parmint(::int32_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& m_parmint() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* mutable_m_parmint();
+
+  private:
+  ::int32_t _internal_m_parmint(int index) const;
+  void _internal_add_m_parmint(::int32_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& _internal_m_parmint() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* _internal_mutable_m_parmint();
+
+  public:
+  // repeated int32 m_sumint = 3;
+  int m_sumint_size() const;
+  private:
+  int _internal_m_sumint_size() const;
+
+  public:
+  void clear_m_sumint() ;
+  ::int32_t m_sumint(int index) const;
+  void set_m_sumint(int index, ::int32_t value);
+  void add_m_sumint(::int32_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& m_sumint() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* mutable_m_sumint();
+
+  private:
+  ::int32_t _internal_m_sumint(int index) const;
+  void _internal_add_m_sumint(::int32_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& _internal_m_sumint() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* _internal_mutable_m_sumint();
+
+  public:
+  // optional int32 m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::int32_t m_type() const;
+  void set_m_type(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_type() const;
+  void _internal_set_m_type(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbdb.db_task.data_schedule)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t> m_parmint_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _m_parmint_cached_byte_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t> m_sumint_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _m_sumint_cached_byte_size_;
+    ::int32_t m_type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_db_2eproto;
+};// -------------------------------------------------------------------
+
 class db_task_data final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_task.data) */ {
  public:
@@ -3592,7 +3811,7 @@ class db_task_data final :
                &_db_task_data_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(db_task_data& a, db_task_data& b) {
     a.Swap(&b);
@@ -3664,56 +3883,31 @@ class db_task_data final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMParmstring1FieldNumber = 6,
-    kMParmstring2FieldNumber = 7,
+    kMSchedulesFieldNumber = 4,
     kMTaskidFieldNumber = 1,
     kMReceiveutcFieldNumber = 2,
     kMFinshutcFieldNumber = 3,
-    kMParmint1FieldNumber = 4,
-    kMParmint2FieldNumber = 5,
   };
-  // optional string m_parmstring1 = 6;
-  bool has_m_parmstring1() const;
-  void clear_m_parmstring1() ;
-  const std::string& m_parmstring1() const;
-
-
-
-
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_m_parmstring1(Arg_&& arg, Args_... args);
-  std::string* mutable_m_parmstring1();
-  PROTOBUF_NODISCARD std::string* release_m_parmstring1();
-  void set_allocated_m_parmstring1(std::string* ptr);
-
+  // repeated .pbdb.db_task.data_schedule m_schedules = 4;
+  int m_schedules_size() const;
   private:
-  const std::string& _internal_m_parmstring1() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_m_parmstring1(
-      const std::string& value);
-  std::string* _internal_mutable_m_parmstring1();
+  int _internal_m_schedules_size() const;
 
   public:
-  // optional string m_parmstring2 = 7;
-  bool has_m_parmstring2() const;
-  void clear_m_parmstring2() ;
-  const std::string& m_parmstring2() const;
-
-
-
-
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_m_parmstring2(Arg_&& arg, Args_... args);
-  std::string* mutable_m_parmstring2();
-  PROTOBUF_NODISCARD std::string* release_m_parmstring2();
-  void set_allocated_m_parmstring2(std::string* ptr);
-
+  void clear_m_schedules() ;
+  ::pbdb::db_task_data_schedule* mutable_m_schedules(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data_schedule >*
+      mutable_m_schedules();
   private:
-  const std::string& _internal_m_parmstring2() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_m_parmstring2(
-      const std::string& value);
-  std::string* _internal_mutable_m_parmstring2();
-
+  const ::pbdb::db_task_data_schedule& _internal_m_schedules(int index) const;
+  ::pbdb::db_task_data_schedule* _internal_add_m_schedules();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data_schedule>& _internal_m_schedules() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data_schedule>* _internal_mutable_m_schedules();
   public:
+  const ::pbdb::db_task_data_schedule& m_schedules(int index) const;
+  ::pbdb::db_task_data_schedule* add_m_schedules();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data_schedule >&
+      m_schedules() const;
   // optional int32 m_taskid = 1;
   bool has_m_taskid() const;
   void clear_m_taskid() ;
@@ -3747,28 +3941,6 @@ class db_task_data final :
   void _internal_set_m_finshutc(::int32_t value);
 
   public:
-  // optional int32 m_parmint1 = 4;
-  bool has_m_parmint1() const;
-  void clear_m_parmint1() ;
-  ::int32_t m_parmint1() const;
-  void set_m_parmint1(::int32_t value);
-
-  private:
-  ::int32_t _internal_m_parmint1() const;
-  void _internal_set_m_parmint1(::int32_t value);
-
-  public:
-  // optional int32 m_parmint2 = 5;
-  bool has_m_parmint2() const;
-  void clear_m_parmint2() ;
-  ::int32_t m_parmint2() const;
-  void set_m_parmint2(::int32_t value);
-
-  private:
-  ::int32_t _internal_m_parmint2() const;
-  void _internal_set_m_parmint2(::int32_t value);
-
-  public:
   // @@protoc_insertion_point(class_scope:pbdb.db_task.data)
  private:
   class _Internal;
@@ -3779,17 +3951,62 @@ class db_task_data final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_parmstring1_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_parmstring2_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data_schedule > m_schedules_;
     ::int32_t m_taskid_;
     ::int32_t m_receiveutc_;
     ::int32_t m_finshutc_;
-    ::int32_t m_parmint1_;
-    ::int32_t m_parmint2_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_db_2eproto;
 };// -------------------------------------------------------------------
+
+class db_task_MRundatasEntry_DoNotUse final : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_task_MRundatasEntry_DoNotUse, 
+    ::int32_t, ::pbdb::db_task_data,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE> {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_task_MRundatasEntry_DoNotUse, 
+    ::int32_t, ::pbdb::db_task_data,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE> SuperType;
+  db_task_MRundatasEntry_DoNotUse();
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR db_task_MRundatasEntry_DoNotUse(
+      ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  explicit db_task_MRundatasEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_task_MRundatasEntry_DoNotUse& other);
+  static const db_task_MRundatasEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_task_MRundatasEntry_DoNotUse*>(&_db_task_MRundatasEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class db_task_MCompleteddatasEntry_DoNotUse final : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_task_MCompleteddatasEntry_DoNotUse, 
+    ::int32_t, ::pbdb::db_task_data,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE> {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_task_MCompleteddatasEntry_DoNotUse, 
+    ::int32_t, ::pbdb::db_task_data,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE> SuperType;
+  db_task_MCompleteddatasEntry_DoNotUse();
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR db_task_MCompleteddatasEntry_DoNotUse(
+      ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  explicit db_task_MCompleteddatasEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_task_MCompleteddatasEntry_DoNotUse& other);
+  static const db_task_MCompleteddatasEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_task_MCompleteddatasEntry_DoNotUse*>(&_db_task_MCompleteddatasEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
 
 class db_task final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_task) */ {
@@ -3847,7 +4064,7 @@ class db_task final :
                &_db_task_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    24;
 
   friend void swap(db_task& a, db_task& b) {
     a.Swap(&b);
@@ -3916,34 +4133,50 @@ class db_task final :
 
   // nested types ----------------------------------------------------
 
+  typedef db_task_data_schedule data_schedule;
   typedef db_task_data data;
 
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMDatasFieldNumber = 2,
+    kMRundatasFieldNumber = 2,
+    kMCompleteddatasFieldNumber = 3,
     kMIdFieldNumber = 1,
   };
-  // repeated .pbdb.db_task.data m_datas = 2;
-  int m_datas_size() const;
+  // map<int32, .pbdb.db_task.data> m_rundatas = 2;
+  int m_rundatas_size() const;
   private:
-  int _internal_m_datas_size() const;
+  int _internal_m_rundatas_size() const;
 
   public:
-  void clear_m_datas() ;
-  ::pbdb::db_task_data* mutable_m_datas(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data >*
-      mutable_m_datas();
+  void clear_m_rundatas() ;
   private:
-  const ::pbdb::db_task_data& _internal_m_datas(int index) const;
-  ::pbdb::db_task_data* _internal_add_m_datas();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data>& _internal_m_datas() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data>* _internal_mutable_m_datas();
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+      _internal_m_rundatas() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+      _internal_mutable_m_rundatas();
   public:
-  const ::pbdb::db_task_data& m_datas(int index) const;
-  ::pbdb::db_task_data* add_m_datas();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data >&
-      m_datas() const;
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+      m_rundatas() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+      mutable_m_rundatas();
+  // map<int32, .pbdb.db_task.data> m_completeddatas = 3;
+  int m_completeddatas_size() const;
+  private:
+  int _internal_m_completeddatas_size() const;
+
+  public:
+  void clear_m_completeddatas() ;
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+      _internal_m_completeddatas() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+      _internal_mutable_m_completeddatas();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+      m_completeddatas() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+      mutable_m_completeddatas();
   // optional int64 m_id = 1;
   bool has_m_id() const;
   void clear_m_id() ;
@@ -3965,7 +4198,16 @@ class db_task final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data > m_datas_;
+    ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+        db_task_MRundatasEntry_DoNotUse,
+        ::int32_t, ::pbdb::db_task_data,
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE> m_rundatas_;
+    ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+        db_task_MCompleteddatasEntry_DoNotUse,
+        ::int32_t, ::pbdb::db_task_data,
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE> m_completeddatas_;
     ::int64_t m_id_;
   };
   union { Impl_ _impl_; };
@@ -6005,16 +6247,133 @@ db_activity::_internal_mutable_m_datas() {
 
 // -------------------------------------------------------------------
 
+// db_task_data_schedule
+
+// optional int32 m_type = 1;
+inline bool db_task_data_schedule::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void db_task_data_schedule::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int32_t db_task_data_schedule::m_type() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_type)
+  return _internal_m_type();
+}
+inline void db_task_data_schedule::set_m_type(::int32_t value) {
+  _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_type)
+}
+inline ::int32_t db_task_data_schedule::_internal_m_type() const {
+  return _impl_.m_type_;
+}
+inline void db_task_data_schedule::_internal_set_m_type(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_type_ = value;
+}
+
+// repeated int32 m_parmint = 2;
+inline int db_task_data_schedule::_internal_m_parmint_size() const {
+  return _impl_.m_parmint_.size();
+}
+inline int db_task_data_schedule::m_parmint_size() const {
+  return _internal_m_parmint_size();
+}
+inline void db_task_data_schedule::clear_m_parmint() {
+  _internal_mutable_m_parmint()->Clear();
+}
+inline ::int32_t db_task_data_schedule::m_parmint(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_parmint)
+  return _internal_m_parmint(index);
+}
+inline void db_task_data_schedule::set_m_parmint(int index, ::int32_t value) {
+  _internal_mutable_m_parmint()->Set(index, value);
+  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_parmint)
+}
+inline void db_task_data_schedule::add_m_parmint(::int32_t value) {
+  _internal_add_m_parmint(value);
+  // @@protoc_insertion_point(field_add:pbdb.db_task.data_schedule.m_parmint)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& db_task_data_schedule::m_parmint() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_task.data_schedule.m_parmint)
+  return _internal_m_parmint();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* db_task_data_schedule::mutable_m_parmint() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_task.data_schedule.m_parmint)
+  return _internal_mutable_m_parmint();
+}
+
+inline ::int32_t db_task_data_schedule::_internal_m_parmint(int index) const {
+  return _internal_m_parmint().Get(index);
+}
+inline void db_task_data_schedule::_internal_add_m_parmint(::int32_t value) {
+  _internal_mutable_m_parmint()->Add(value);
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& db_task_data_schedule::_internal_m_parmint() const {
+  return _impl_.m_parmint_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* db_task_data_schedule::_internal_mutable_m_parmint() {
+  return &_impl_.m_parmint_;
+}
+
+// repeated int32 m_sumint = 3;
+inline int db_task_data_schedule::_internal_m_sumint_size() const {
+  return _impl_.m_sumint_.size();
+}
+inline int db_task_data_schedule::m_sumint_size() const {
+  return _internal_m_sumint_size();
+}
+inline void db_task_data_schedule::clear_m_sumint() {
+  _internal_mutable_m_sumint()->Clear();
+}
+inline ::int32_t db_task_data_schedule::m_sumint(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_sumint)
+  return _internal_m_sumint(index);
+}
+inline void db_task_data_schedule::set_m_sumint(int index, ::int32_t value) {
+  _internal_mutable_m_sumint()->Set(index, value);
+  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_sumint)
+}
+inline void db_task_data_schedule::add_m_sumint(::int32_t value) {
+  _internal_add_m_sumint(value);
+  // @@protoc_insertion_point(field_add:pbdb.db_task.data_schedule.m_sumint)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& db_task_data_schedule::m_sumint() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_task.data_schedule.m_sumint)
+  return _internal_m_sumint();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* db_task_data_schedule::mutable_m_sumint() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_task.data_schedule.m_sumint)
+  return _internal_mutable_m_sumint();
+}
+
+inline ::int32_t db_task_data_schedule::_internal_m_sumint(int index) const {
+  return _internal_m_sumint().Get(index);
+}
+inline void db_task_data_schedule::_internal_add_m_sumint(::int32_t value) {
+  _internal_mutable_m_sumint()->Add(value);
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>& db_task_data_schedule::_internal_m_sumint() const {
+  return _impl_.m_sumint_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int32_t>* db_task_data_schedule::_internal_mutable_m_sumint() {
+  return &_impl_.m_sumint_;
+}
+
+// -------------------------------------------------------------------
+
 // db_task_data
 
 // optional int32 m_taskid = 1;
 inline bool db_task_data::has_m_taskid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void db_task_data::clear_m_taskid() {
   _impl_.m_taskid_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000004u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::int32_t db_task_data::m_taskid() const {
   // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_taskid)
@@ -6028,18 +6387,18 @@ inline ::int32_t db_task_data::_internal_m_taskid() const {
   return _impl_.m_taskid_;
 }
 inline void db_task_data::_internal_set_m_taskid(::int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_taskid_ = value;
 }
 
 // optional int32 m_receiveutc = 2;
 inline bool db_task_data::has_m_receiveutc() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void db_task_data::clear_m_receiveutc() {
   _impl_.m_receiveutc_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000008u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::int32_t db_task_data::m_receiveutc() const {
   // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_receiveutc)
@@ -6053,18 +6412,18 @@ inline ::int32_t db_task_data::_internal_m_receiveutc() const {
   return _impl_.m_receiveutc_;
 }
 inline void db_task_data::_internal_set_m_receiveutc(::int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_receiveutc_ = value;
 }
 
 // optional int32 m_finshutc = 3;
 inline bool db_task_data::has_m_finshutc() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline void db_task_data::clear_m_finshutc() {
   _impl_.m_finshutc_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000010u;
+  _impl_._has_bits_[0] &= ~0x00000004u;
 }
 inline ::int32_t db_task_data::m_finshutc() const {
   // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_finshutc)
@@ -6078,189 +6437,61 @@ inline ::int32_t db_task_data::_internal_m_finshutc() const {
   return _impl_.m_finshutc_;
 }
 inline void db_task_data::_internal_set_m_finshutc(::int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000010u;
+  _impl_._has_bits_[0] |= 0x00000004u;
   _impl_.m_finshutc_ = value;
 }
 
-// optional int32 m_parmint1 = 4;
-inline bool db_task_data::has_m_parmint1() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000020u) != 0;
-  return value;
+// repeated .pbdb.db_task.data_schedule m_schedules = 4;
+inline int db_task_data::_internal_m_schedules_size() const {
+  return _impl_.m_schedules_.size();
 }
-inline void db_task_data::clear_m_parmint1() {
-  _impl_.m_parmint1_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000020u;
+inline int db_task_data::m_schedules_size() const {
+  return _internal_m_schedules_size();
 }
-inline ::int32_t db_task_data::m_parmint1() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_parmint1)
-  return _internal_m_parmint1();
+inline void db_task_data::clear_m_schedules() {
+  _internal_mutable_m_schedules()->Clear();
 }
-inline void db_task_data::set_m_parmint1(::int32_t value) {
-  _internal_set_m_parmint1(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_task.data.m_parmint1)
+inline ::pbdb::db_task_data_schedule* db_task_data::mutable_m_schedules(int index) {
+  // @@protoc_insertion_point(field_mutable:pbdb.db_task.data.m_schedules)
+  return _internal_mutable_m_schedules()->Mutable(index);
 }
-inline ::int32_t db_task_data::_internal_m_parmint1() const {
-  return _impl_.m_parmint1_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data_schedule >*
+db_task_data::mutable_m_schedules() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_task.data.m_schedules)
+  return _internal_mutable_m_schedules();
 }
-inline void db_task_data::_internal_set_m_parmint1(::int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000020u;
-  _impl_.m_parmint1_ = value;
+inline const ::pbdb::db_task_data_schedule& db_task_data::_internal_m_schedules(int index) const {
+  return _internal_m_schedules().Get(index);
 }
-
-// optional int32 m_parmint2 = 5;
-inline bool db_task_data::has_m_parmint2() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000040u) != 0;
-  return value;
+inline const ::pbdb::db_task_data_schedule& db_task_data::m_schedules(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_schedules)
+  return _internal_m_schedules(index);
 }
-inline void db_task_data::clear_m_parmint2() {
-  _impl_.m_parmint2_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000040u;
+inline ::pbdb::db_task_data_schedule* db_task_data::_internal_add_m_schedules() {
+  return _internal_mutable_m_schedules()->Add();
 }
-inline ::int32_t db_task_data::m_parmint2() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_parmint2)
-  return _internal_m_parmint2();
+inline ::pbdb::db_task_data_schedule* db_task_data::add_m_schedules() {
+  ::pbdb::db_task_data_schedule* _add = _internal_add_m_schedules();
+  // @@protoc_insertion_point(field_add:pbdb.db_task.data.m_schedules)
+  return _add;
 }
-inline void db_task_data::set_m_parmint2(::int32_t value) {
-  _internal_set_m_parmint2(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_task.data.m_parmint2)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data_schedule >&
+db_task_data::m_schedules() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_task.data.m_schedules)
+  return _internal_m_schedules();
 }
-inline ::int32_t db_task_data::_internal_m_parmint2() const {
-  return _impl_.m_parmint2_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data_schedule>&
+db_task_data::_internal_m_schedules() const {
+  return _impl_.m_schedules_;
 }
-inline void db_task_data::_internal_set_m_parmint2(::int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000040u;
-  _impl_.m_parmint2_ = value;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data_schedule>*
+db_task_data::_internal_mutable_m_schedules() {
+  return &_impl_.m_schedules_;
 }
 
-// optional string m_parmstring1 = 6;
-inline bool db_task_data::has_m_parmstring1() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  return value;
-}
-inline void db_task_data::clear_m_parmstring1() {
-  _impl_.m_parmstring1_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const std::string& db_task_data::m_parmstring1() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_parmstring1)
-  return _internal_m_parmstring1();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void db_task_data::set_m_parmstring1(Arg_&& arg,
-                                                     Args_... args) {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.m_parmstring1_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:pbdb.db_task.data.m_parmstring1)
-}
-inline std::string* db_task_data::mutable_m_parmstring1() {
-  std::string* _s = _internal_mutable_m_parmstring1();
-  // @@protoc_insertion_point(field_mutable:pbdb.db_task.data.m_parmstring1)
-  return _s;
-}
-inline const std::string& db_task_data::_internal_m_parmstring1() const {
-  return _impl_.m_parmstring1_.Get();
-}
-inline void db_task_data::_internal_set_m_parmstring1(const std::string& value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+// -------------------------------------------------------------------
 
-
-  _impl_.m_parmstring1_.Set(value, GetArenaForAllocation());
-}
-inline std::string* db_task_data::_internal_mutable_m_parmstring1() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  return _impl_.m_parmstring1_.Mutable( GetArenaForAllocation());
-}
-inline std::string* db_task_data::release_m_parmstring1() {
-  // @@protoc_insertion_point(field_release:pbdb.db_task.data.m_parmstring1)
-  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  auto* released = _impl_.m_parmstring1_.Release();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.m_parmstring1_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  return released;
-}
-inline void db_task_data::set_allocated_m_parmstring1(std::string* value) {
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.m_parmstring1_.SetAllocated(value, GetArenaForAllocation());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.m_parmstring1_.IsDefault()) {
-          _impl_.m_parmstring1_.Set("", GetArenaForAllocation());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:pbdb.db_task.data.m_parmstring1)
-}
-
-// optional string m_parmstring2 = 7;
-inline bool db_task_data::has_m_parmstring2() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline void db_task_data::clear_m_parmstring2() {
-  _impl_.m_parmstring2_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline const std::string& db_task_data::m_parmstring2() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_parmstring2)
-  return _internal_m_parmstring2();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void db_task_data::set_m_parmstring2(Arg_&& arg,
-                                                     Args_... args) {
-  _impl_._has_bits_[0] |= 0x00000002u;
-  _impl_.m_parmstring2_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:pbdb.db_task.data.m_parmstring2)
-}
-inline std::string* db_task_data::mutable_m_parmstring2() {
-  std::string* _s = _internal_mutable_m_parmstring2();
-  // @@protoc_insertion_point(field_mutable:pbdb.db_task.data.m_parmstring2)
-  return _s;
-}
-inline const std::string& db_task_data::_internal_m_parmstring2() const {
-  return _impl_.m_parmstring2_.Get();
-}
-inline void db_task_data::_internal_set_m_parmstring2(const std::string& value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
-
-
-  _impl_.m_parmstring2_.Set(value, GetArenaForAllocation());
-}
-inline std::string* db_task_data::_internal_mutable_m_parmstring2() {
-  _impl_._has_bits_[0] |= 0x00000002u;
-  return _impl_.m_parmstring2_.Mutable( GetArenaForAllocation());
-}
-inline std::string* db_task_data::release_m_parmstring2() {
-  // @@protoc_insertion_point(field_release:pbdb.db_task.data.m_parmstring2)
-  if ((_impl_._has_bits_[0] & 0x00000002u) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  auto* released = _impl_.m_parmstring2_.Release();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.m_parmstring2_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  return released;
-}
-inline void db_task_data::set_allocated_m_parmstring2(std::string* value) {
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-  _impl_.m_parmstring2_.SetAllocated(value, GetArenaForAllocation());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.m_parmstring2_.IsDefault()) {
-          _impl_.m_parmstring2_.Set("", GetArenaForAllocation());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:pbdb.db_task.data.m_parmstring2)
-}
+// -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
 
@@ -6291,52 +6522,62 @@ inline void db_task::_internal_set_m_id(::int64_t value) {
   _impl_.m_id_ = value;
 }
 
-// repeated .pbdb.db_task.data m_datas = 2;
-inline int db_task::_internal_m_datas_size() const {
-  return _impl_.m_datas_.size();
+// map<int32, .pbdb.db_task.data> m_rundatas = 2;
+inline int db_task::_internal_m_rundatas_size() const {
+  return _impl_.m_rundatas_.size();
 }
-inline int db_task::m_datas_size() const {
-  return _internal_m_datas_size();
+inline int db_task::m_rundatas_size() const {
+  return _internal_m_rundatas_size();
 }
-inline void db_task::clear_m_datas() {
-  _internal_mutable_m_datas()->Clear();
+inline void db_task::clear_m_rundatas() {
+  _impl_.m_rundatas_.Clear();
 }
-inline ::pbdb::db_task_data* db_task::mutable_m_datas(int index) {
-  // @@protoc_insertion_point(field_mutable:pbdb.db_task.m_datas)
-  return _internal_mutable_m_datas()->Mutable(index);
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+db_task::_internal_m_rundatas() const {
+  return _impl_.m_rundatas_.GetMap();
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data >*
-db_task::mutable_m_datas() {
-  // @@protoc_insertion_point(field_mutable_list:pbdb.db_task.m_datas)
-  return _internal_mutable_m_datas();
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+db_task::m_rundatas() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_task.m_rundatas)
+  return _internal_m_rundatas();
 }
-inline const ::pbdb::db_task_data& db_task::_internal_m_datas(int index) const {
-  return _internal_m_datas().Get(index);
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+db_task::_internal_mutable_m_rundatas() {
+  return _impl_.m_rundatas_.MutableMap();
 }
-inline const ::pbdb::db_task_data& db_task::m_datas(int index) const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.m_datas)
-  return _internal_m_datas(index);
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+db_task::mutable_m_rundatas() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_task.m_rundatas)
+  return _internal_mutable_m_rundatas();
 }
-inline ::pbdb::db_task_data* db_task::_internal_add_m_datas() {
-  return _internal_mutable_m_datas()->Add();
+
+// map<int32, .pbdb.db_task.data> m_completeddatas = 3;
+inline int db_task::_internal_m_completeddatas_size() const {
+  return _impl_.m_completeddatas_.size();
 }
-inline ::pbdb::db_task_data* db_task::add_m_datas() {
-  ::pbdb::db_task_data* _add = _internal_add_m_datas();
-  // @@protoc_insertion_point(field_add:pbdb.db_task.m_datas)
-  return _add;
+inline int db_task::m_completeddatas_size() const {
+  return _internal_m_completeddatas_size();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data >&
-db_task::m_datas() const {
-  // @@protoc_insertion_point(field_list:pbdb.db_task.m_datas)
-  return _internal_m_datas();
+inline void db_task::clear_m_completeddatas() {
+  _impl_.m_completeddatas_.Clear();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data>&
-db_task::_internal_m_datas() const {
-  return _impl_.m_datas_;
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+db_task::_internal_m_completeddatas() const {
+  return _impl_.m_completeddatas_.GetMap();
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_task_data>*
-db_task::_internal_mutable_m_datas() {
-  return &_impl_.m_datas_;
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >&
+db_task::m_completeddatas() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_task.m_completeddatas)
+  return _internal_m_completeddatas();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+db_task::_internal_mutable_m_completeddatas() {
+  return _impl_.m_completeddatas_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::int32_t, ::pbdb::db_task_data >*
+db_task::mutable_m_completeddatas() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_task.m_completeddatas)
+  return _internal_mutable_m_completeddatas();
 }
 
 #ifdef __GNUC__

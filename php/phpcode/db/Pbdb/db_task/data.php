@@ -32,21 +32,11 @@ class data extends \Google\Protobuf\Internal\Message
      */
     protected $m_finshutc = null;
     /**
-     * Generated from protobuf field <code>optional int32 m_parmint1 = 4;</code>
+     * 任务进度
+     *
+     * Generated from protobuf field <code>repeated .pbdb.db_task.data_schedule m_schedules = 4;</code>
      */
-    protected $m_parmint1 = null;
-    /**
-     * Generated from protobuf field <code>optional int32 m_parmint2 = 5;</code>
-     */
-    protected $m_parmint2 = null;
-    /**
-     * Generated from protobuf field <code>optional string m_parmstring1 = 6;</code>
-     */
-    protected $m_parmstring1 = null;
-    /**
-     * Generated from protobuf field <code>optional string m_parmstring2 = 7;</code>
-     */
-    protected $m_parmstring2 = null;
+    private $m_schedules;
 
     /**
      * Constructor.
@@ -60,10 +50,8 @@ class data extends \Google\Protobuf\Internal\Message
      *           接收任务时间
      *     @type int $m_finshutc
      *           完成任务时间
-     *     @type int $m_parmint1
-     *     @type int $m_parmint2
-     *     @type string $m_parmstring1
-     *     @type string $m_parmstring2
+     *     @type array<\Pbdb\db_task\data_schedule>|\Google\Protobuf\Internal\RepeatedField $m_schedules
+     *           任务进度
      * }
      */
     public function __construct($data = NULL) {
@@ -180,129 +168,27 @@ class data extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional int32 m_parmint1 = 4;</code>
-     * @return int
+     * 任务进度
+     *
+     * Generated from protobuf field <code>repeated .pbdb.db_task.data_schedule m_schedules = 4;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
-    public function getMParmint1()
+    public function getMSchedules()
     {
-        return isset($this->m_parmint1) ? $this->m_parmint1 : 0;
-    }
-
-    public function hasMParmint1()
-    {
-        return isset($this->m_parmint1);
-    }
-
-    public function clearMParmint1()
-    {
-        unset($this->m_parmint1);
+        return $this->m_schedules;
     }
 
     /**
-     * Generated from protobuf field <code>optional int32 m_parmint1 = 4;</code>
-     * @param int $var
+     * 任务进度
+     *
+     * Generated from protobuf field <code>repeated .pbdb.db_task.data_schedule m_schedules = 4;</code>
+     * @param array<\Pbdb\db_task\data_schedule>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
-    public function setMParmint1($var)
+    public function setMSchedules($var)
     {
-        GPBUtil::checkInt32($var);
-        $this->m_parmint1 = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>optional int32 m_parmint2 = 5;</code>
-     * @return int
-     */
-    public function getMParmint2()
-    {
-        return isset($this->m_parmint2) ? $this->m_parmint2 : 0;
-    }
-
-    public function hasMParmint2()
-    {
-        return isset($this->m_parmint2);
-    }
-
-    public function clearMParmint2()
-    {
-        unset($this->m_parmint2);
-    }
-
-    /**
-     * Generated from protobuf field <code>optional int32 m_parmint2 = 5;</code>
-     * @param int $var
-     * @return $this
-     */
-    public function setMParmint2($var)
-    {
-        GPBUtil::checkInt32($var);
-        $this->m_parmint2 = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>optional string m_parmstring1 = 6;</code>
-     * @return string
-     */
-    public function getMParmstring1()
-    {
-        return isset($this->m_parmstring1) ? $this->m_parmstring1 : '';
-    }
-
-    public function hasMParmstring1()
-    {
-        return isset($this->m_parmstring1);
-    }
-
-    public function clearMParmstring1()
-    {
-        unset($this->m_parmstring1);
-    }
-
-    /**
-     * Generated from protobuf field <code>optional string m_parmstring1 = 6;</code>
-     * @param string $var
-     * @return $this
-     */
-    public function setMParmstring1($var)
-    {
-        GPBUtil::checkString($var, True);
-        $this->m_parmstring1 = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>optional string m_parmstring2 = 7;</code>
-     * @return string
-     */
-    public function getMParmstring2()
-    {
-        return isset($this->m_parmstring2) ? $this->m_parmstring2 : '';
-    }
-
-    public function hasMParmstring2()
-    {
-        return isset($this->m_parmstring2);
-    }
-
-    public function clearMParmstring2()
-    {
-        unset($this->m_parmstring2);
-    }
-
-    /**
-     * Generated from protobuf field <code>optional string m_parmstring2 = 7;</code>
-     * @param string $var
-     * @return $this
-     */
-    public function setMParmstring2($var)
-    {
-        GPBUtil::checkString($var, True);
-        $this->m_parmstring2 = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Pbdb\db_task\data_schedule::class);
+        $this->m_schedules = $arr;
 
         return $this;
     }
