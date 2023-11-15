@@ -228,7 +228,8 @@ PROTOBUF_CONSTEXPR PROBUFF_NET_ROLE_SYNC_RESPONSE::PROBUFF_NET_ROLE_SYNC_RESPONS
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_.m_role_)*/nullptr
-  , /*decltype(_impl_.m_bag_)*/nullptr} {}
+  , /*decltype(_impl_.m_bag_)*/nullptr
+  , /*decltype(_impl_.m_task_)*/nullptr} {}
 struct PROBUFF_NET_ROLE_SYNC_RESPONSEDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PROBUFF_NET_ROLE_SYNC_RESPONSEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~PROBUFF_NET_ROLE_SYNC_RESPONSEDefaultTypeInternal() {}
@@ -757,8 +758,10 @@ const ::uint32_t TableStruct_net_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, _impl_.m_role_),
     PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, _impl_.m_bag_),
+    PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, _impl_.m_task_),
     0,
     1,
+    2,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_BAG_SYNC, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -1009,28 +1012,28 @@ static const ::_pbi::MigrationSchema
         { 79, 92, -1, sizeof(::pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE)},
         { 97, 110, -1, sizeof(::pbnet::PROBUFF_NET_ROLE_LOGIN)},
         { 115, -1, -1, sizeof(::pbnet::PROBUFF_NET_ROLE_SYNC)},
-        { 123, 133, -1, sizeof(::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE)},
-        { 135, -1, -1, sizeof(::pbnet::PROBUFF_NET_BAG_SYNC)},
-        { 143, 152, -1, sizeof(::pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE)},
-        { 153, -1, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE)},
-        { 161, 171, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem)},
-        { 173, 183, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_additem)},
-        { 185, -1, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE)},
-        { 197, 206, -1, sizeof(::pbnet::PROBUFF_NET_CMD)},
-        { 207, 218, -1, sizeof(::pbnet::PROBUFF_NET_CHAT)},
-        { 221, 233, -1, sizeof(::pbnet::chatitem)},
-        { 237, 249, -1, sizeof(::pbnet::PROBUFF_NET_CHAT_RESPONSE)},
-        { 253, 262, -1, sizeof(::pbnet::PROBUFF_NET_SWITCH_LINE)},
-        { 263, 273, -1, sizeof(::pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE)},
-        { 275, -1, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_LIST)},
-        { 283, 293, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE_MMailEntry_DoNotUse)},
-        { 295, -1, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE)},
-        { 304, 313, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_READ)},
-        { 314, 324, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_READ_RESPONSE)},
-        { 326, 335, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DRAW)},
-        { 336, 346, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE)},
-        { 348, 357, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DEL)},
-        { 358, 368, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE)},
+        { 123, 134, -1, sizeof(::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE)},
+        { 137, -1, -1, sizeof(::pbnet::PROBUFF_NET_BAG_SYNC)},
+        { 145, 154, -1, sizeof(::pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE)},
+        { 155, -1, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE)},
+        { 163, 173, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem)},
+        { 175, 185, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_additem)},
+        { 187, -1, -1, sizeof(::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE)},
+        { 199, 208, -1, sizeof(::pbnet::PROBUFF_NET_CMD)},
+        { 209, 220, -1, sizeof(::pbnet::PROBUFF_NET_CHAT)},
+        { 223, 235, -1, sizeof(::pbnet::chatitem)},
+        { 239, 251, -1, sizeof(::pbnet::PROBUFF_NET_CHAT_RESPONSE)},
+        { 255, 264, -1, sizeof(::pbnet::PROBUFF_NET_SWITCH_LINE)},
+        { 265, 275, -1, sizeof(::pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE)},
+        { 277, -1, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_LIST)},
+        { 285, 295, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE_MMailEntry_DoNotUse)},
+        { 297, -1, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE)},
+        { 306, 315, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_READ)},
+        { 316, 326, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_READ_RESPONSE)},
+        { 328, 337, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DRAW)},
+        { 338, 348, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE)},
+        { 350, 359, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DEL)},
+        { 360, 370, -1, sizeof(::pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -1094,58 +1097,59 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
     "(\005H\003\210\001\001\022\030\n\013m_gatewayid\030\005 \001(\005H\004\210\001\001B\013\n\t_m_"
     "roleidB\014\n\n_m_sessionB\r\n\013_m_iscreateB\t\n\007_"
     "m_areaB\016\n\014_m_gatewayid\"\027\n\025PROBUFF_NET_RO"
-    "LE_SYNC\"{\n\036PROBUFF_NET_ROLE_SYNC_RESPONS"
-    "E\022\"\n\006m_role\030\001 \001(\0132\r.pbdb.db_roleH\000\210\001\001\022 \n"
-    "\005m_bag\030\002 \001(\0132\014.pbdb.db_bagH\001\210\001\001B\t\n\007_m_ro"
-    "leB\010\n\006_m_bag\"\026\n\024PROBUFF_NET_BAG_SYNC\"K\n\035"
-    "PROBUFF_NET_BAG_SYNC_RESPONSE\022 \n\005m_bag\030\001"
-    " \001(\0132\014.pbdb.db_bagH\000\210\001\001B\010\n\006_m_bag\"\030\n\026PRO"
-    "BUFF_NET_BAG_UPDATE\"\361\002\n\037PROBUFF_NET_BAG_"
-    "UPDATE_RESPONSE\022B\n\nm_delitems\030\001 \003(\0132..pb"
-    "net.PROBUFF_NET_BAG_UPDATE_RESPONSE.deli"
-    "tem\022\031\n\021m_delnostackitems\030\002 \003(\005\022B\n\nm_addi"
-    "tems\030\003 \003(\0132..pbnet.PROBUFF_NET_BAG_UPDAT"
-    "E_RESPONSE.additem\022\031\n\021m_addnostackitems\030"
-    "\004 \003(\005\032G\n\007delitem\022\021\n\004m_id\030\001 \001(\005H\000\210\001\001\022\024\n\007m"
-    "_count\030\002 \001(\005H\001\210\001\001B\007\n\005_m_idB\n\n\010_m_count\032G"
-    "\n\007additem\022\021\n\004m_id\030\001 \001(\005H\000\210\001\001\022\024\n\007m_count\030"
-    "\002 \001(\005H\001\210\001\001B\007\n\005_m_idB\n\n\010_m_count\"/\n\017PROBU"
-    "FF_NET_CMD\022\022\n\005m_cmd\030\001 \001(\tH\000\210\001\001B\010\n\006_m_cmd"
-    "\"\202\001\n\020PROBUFF_NET_CHAT\022\023\n\006m_type\030\001 \001(\005H\000\210"
-    "\001\001\022\030\n\013m_channelid\030\002 \001(\005H\001\210\001\001\022\026\n\tm_conten"
-    "t\030\003 \001(\tH\002\210\001\001B\t\n\007_m_typeB\016\n\014_m_channelidB"
-    "\014\n\n_m_content\"\232\001\n\010chatitem\022\025\n\010m_roleid\030\001"
-    " \001(\003H\000\210\001\001\022\027\n\nm_rolename\030\002 \001(\tH\001\210\001\001\022\026\n\tm_"
-    "content\030\003 \001(\tH\002\210\001\001\022\022\n\005m_utc\030\004 \001(\005H\003\210\001\001B\013"
-    "\n\t_m_roleidB\r\n\013_m_rolenameB\014\n\n_m_content"
-    "B\010\n\006_m_utc\"\252\001\n\031PROBUFF_NET_CHAT_RESPONSE"
-    "\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\030\n\013m_channelid\030\002 \001"
-    "(\005H\001\210\001\001\022#\n\nm_chatlist\030\003 \003(\0132\017.pbnet.chat"
-    "item\022\023\n\006m_stat\030\004 \001(\010H\002\210\001\001B\t\n\007_m_typeB\016\n\014"
-    "_m_channelidB\t\n\007_m_stat\"9\n\027PROBUFF_NET_S"
-    "WITCH_LINE\022\023\n\006m_line\030\001 \001(\005H\000\210\001\001B\t\n\007_m_li"
-    "ne\"b\n PROBUFF_NET_SWITCH_LINE_RESPONSE\022\023"
-    "\n\006m_line\030\001 \001(\005H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001"
-    "B\t\n\007_m_lineB\t\n\007_m_stat\"\027\n\025PROBUFF_NET_MA"
-    "IL_LIST\"\234\001\n\036PROBUFF_NET_MAIL_LIST_RESPON"
-    "SE\022@\n\006m_mail\030\001 \003(\01320.pbnet.PROBUFF_NET_M"
-    "AIL_LIST_RESPONSE.MMailEntry\0328\n\nMMailEnt"
-    "ry\022\013\n\003key\030\001 \001(\005\022\031\n\005value\030\002 \001(\0132\n.pbdb.ma"
-    "il:\0028\001\";\n\025PROBUFF_NET_MAIL_READ\022\025\n\010m_mai"
-    "lid\030\001 \001(\003H\000\210\001\001B\013\n\t_m_mailid\"d\n\036PROBUFF_N"
-    "ET_MAIL_READ_RESPONSE\022\025\n\010m_mailid\030\001 \001(\003H"
-    "\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n\t_m_mailidB\t"
-    "\n\007_m_stat\";\n\025PROBUFF_NET_MAIL_DRAW\022\025\n\010m_"
-    "mailid\030\001 \001(\003H\000\210\001\001B\013\n\t_m_mailid\"d\n\036PROBUF"
-    "F_NET_MAIL_DRAW_RESPONSE\022\025\n\010m_mailid\030\001 \001"
-    "(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n\t_m_maili"
-    "dB\t\n\007_m_stat\":\n\024PROBUFF_NET_MAIL_DEL\022\025\n\010"
-    "m_mailid\030\001 \001(\003H\000\210\001\001B\013\n\t_m_mailid\"c\n\035PROB"
-    "UFF_NET_MAIL_DEL_RESPONSE\022\025\n\010m_mailid\030\001 "
-    "\001(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n\t_m_mail"
-    "idB\t\n\007_m_stat*F\n\017enum_logic_chat\022\021\n\rget_"
-    "chat_list\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_sp"
-    "eck\020\002B\002H\001b\006proto3"
+    "LE_SYNC\"\252\001\n\036PROBUFF_NET_ROLE_SYNC_RESPON"
+    "SE\022\"\n\006m_role\030\001 \001(\0132\r.pbdb.db_roleH\000\210\001\001\022 "
+    "\n\005m_bag\030\002 \001(\0132\014.pbdb.db_bagH\001\210\001\001\022\"\n\006m_ta"
+    "sk\030\003 \001(\0132\r.pbdb.db_taskH\002\210\001\001B\t\n\007_m_roleB"
+    "\010\n\006_m_bagB\t\n\007_m_task\"\026\n\024PROBUFF_NET_BAG_"
+    "SYNC\"K\n\035PROBUFF_NET_BAG_SYNC_RESPONSE\022 \n"
+    "\005m_bag\030\001 \001(\0132\014.pbdb.db_bagH\000\210\001\001B\010\n\006_m_ba"
+    "g\"\030\n\026PROBUFF_NET_BAG_UPDATE\"\361\002\n\037PROBUFF_"
+    "NET_BAG_UPDATE_RESPONSE\022B\n\nm_delitems\030\001 "
+    "\003(\0132..pbnet.PROBUFF_NET_BAG_UPDATE_RESPO"
+    "NSE.delitem\022\031\n\021m_delnostackitems\030\002 \003(\005\022B"
+    "\n\nm_additems\030\003 \003(\0132..pbnet.PROBUFF_NET_B"
+    "AG_UPDATE_RESPONSE.additem\022\031\n\021m_addnosta"
+    "ckitems\030\004 \003(\005\032G\n\007delitem\022\021\n\004m_id\030\001 \001(\005H\000"
+    "\210\001\001\022\024\n\007m_count\030\002 \001(\005H\001\210\001\001B\007\n\005_m_idB\n\n\010_m"
+    "_count\032G\n\007additem\022\021\n\004m_id\030\001 \001(\005H\000\210\001\001\022\024\n\007"
+    "m_count\030\002 \001(\005H\001\210\001\001B\007\n\005_m_idB\n\n\010_m_count\""
+    "/\n\017PROBUFF_NET_CMD\022\022\n\005m_cmd\030\001 \001(\tH\000\210\001\001B\010"
+    "\n\006_m_cmd\"\202\001\n\020PROBUFF_NET_CHAT\022\023\n\006m_type\030"
+    "\001 \001(\005H\000\210\001\001\022\030\n\013m_channelid\030\002 \001(\005H\001\210\001\001\022\026\n\t"
+    "m_content\030\003 \001(\tH\002\210\001\001B\t\n\007_m_typeB\016\n\014_m_ch"
+    "annelidB\014\n\n_m_content\"\232\001\n\010chatitem\022\025\n\010m_"
+    "roleid\030\001 \001(\003H\000\210\001\001\022\027\n\nm_rolename\030\002 \001(\tH\001\210"
+    "\001\001\022\026\n\tm_content\030\003 \001(\tH\002\210\001\001\022\022\n\005m_utc\030\004 \001("
+    "\005H\003\210\001\001B\013\n\t_m_roleidB\r\n\013_m_rolenameB\014\n\n_m"
+    "_contentB\010\n\006_m_utc\"\252\001\n\031PROBUFF_NET_CHAT_"
+    "RESPONSE\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\030\n\013m_chann"
+    "elid\030\002 \001(\005H\001\210\001\001\022#\n\nm_chatlist\030\003 \003(\0132\017.pb"
+    "net.chatitem\022\023\n\006m_stat\030\004 \001(\010H\002\210\001\001B\t\n\007_m_"
+    "typeB\016\n\014_m_channelidB\t\n\007_m_stat\"9\n\027PROBU"
+    "FF_NET_SWITCH_LINE\022\023\n\006m_line\030\001 \001(\005H\000\210\001\001B"
+    "\t\n\007_m_line\"b\n PROBUFF_NET_SWITCH_LINE_RE"
+    "SPONSE\022\023\n\006m_line\030\001 \001(\005H\000\210\001\001\022\023\n\006m_stat\030\002 "
+    "\001(\010H\001\210\001\001B\t\n\007_m_lineB\t\n\007_m_stat\"\027\n\025PROBUF"
+    "F_NET_MAIL_LIST\"\234\001\n\036PROBUFF_NET_MAIL_LIS"
+    "T_RESPONSE\022@\n\006m_mail\030\001 \003(\01320.pbnet.PROBU"
+    "FF_NET_MAIL_LIST_RESPONSE.MMailEntry\0328\n\n"
+    "MMailEntry\022\013\n\003key\030\001 \001(\005\022\031\n\005value\030\002 \001(\0132\n"
+    ".pbdb.mail:\0028\001\";\n\025PROBUFF_NET_MAIL_READ\022"
+    "\025\n\010m_mailid\030\001 \001(\003H\000\210\001\001B\013\n\t_m_mailid\"d\n\036P"
+    "ROBUFF_NET_MAIL_READ_RESPONSE\022\025\n\010m_maili"
+    "d\030\001 \001(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n\t_m_"
+    "mailidB\t\n\007_m_stat\";\n\025PROBUFF_NET_MAIL_DR"
+    "AW\022\025\n\010m_mailid\030\001 \001(\003H\000\210\001\001B\013\n\t_m_mailid\"d"
+    "\n\036PROBUFF_NET_MAIL_DRAW_RESPONSE\022\025\n\010m_ma"
+    "ilid\030\001 \001(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n\t"
+    "_m_mailidB\t\n\007_m_stat\":\n\024PROBUFF_NET_MAIL"
+    "_DEL\022\025\n\010m_mailid\030\001 \001(\003H\000\210\001\001B\013\n\t_m_mailid"
+    "\"c\n\035PROBUFF_NET_MAIL_DEL_RESPONSE\022\025\n\010m_m"
+    "ailid\030\001 \001(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n"
+    "\t_m_mailidB\t\n\007_m_stat*F\n\017enum_logic_chat"
+    "\022\021\n\rget_chat_list\020\000\022\016\n\nchat_speak\020\001\022\020\n\014u"
+    "pdata_speck\020\002B\002H\001b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_net_2eproto_deps[1] =
     {
@@ -1155,7 +1159,7 @@ static ::absl::once_flag descriptor_table_net_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_net_2eproto = {
     false,
     false,
-    3057,
+    3105,
     descriptor_table_protodef_net_2eproto,
     "net.proto",
     &descriptor_table_net_2eproto_once,
@@ -3246,6 +3250,10 @@ class PROBUFF_NET_ROLE_SYNC_RESPONSE::_Internal {
   static void set_has_m_bag(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
+  static const ::pbdb::db_task& m_task(const PROBUFF_NET_ROLE_SYNC_RESPONSE* msg);
+  static void set_has_m_task(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
 };
 
 const ::pbdb::db_role&
@@ -3256,6 +3264,10 @@ const ::pbdb::db_bag&
 PROBUFF_NET_ROLE_SYNC_RESPONSE::_Internal::m_bag(const PROBUFF_NET_ROLE_SYNC_RESPONSE* msg) {
   return *msg->_impl_.m_bag_;
 }
+const ::pbdb::db_task&
+PROBUFF_NET_ROLE_SYNC_RESPONSE::_Internal::m_task(const PROBUFF_NET_ROLE_SYNC_RESPONSE* msg) {
+  return *msg->_impl_.m_task_;
+}
 void PROBUFF_NET_ROLE_SYNC_RESPONSE::clear_m_role() {
   if (_impl_.m_role_ != nullptr) _impl_.m_role_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
@@ -3263,6 +3275,10 @@ void PROBUFF_NET_ROLE_SYNC_RESPONSE::clear_m_role() {
 void PROBUFF_NET_ROLE_SYNC_RESPONSE::clear_m_bag() {
   if (_impl_.m_bag_ != nullptr) _impl_.m_bag_->Clear();
   _impl_._has_bits_[0] &= ~0x00000002u;
+}
+void PROBUFF_NET_ROLE_SYNC_RESPONSE::clear_m_task() {
+  if (_impl_.m_task_ != nullptr) _impl_.m_task_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000004u;
 }
 PROBUFF_NET_ROLE_SYNC_RESPONSE::PROBUFF_NET_ROLE_SYNC_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -3276,7 +3292,8 @@ PROBUFF_NET_ROLE_SYNC_RESPONSE::PROBUFF_NET_ROLE_SYNC_RESPONSE(const PROBUFF_NET
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.m_role_){nullptr}
-    , decltype(_impl_.m_bag_){nullptr}};
+    , decltype(_impl_.m_bag_){nullptr}
+    , decltype(_impl_.m_task_){nullptr}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
@@ -3284,6 +3301,9 @@ PROBUFF_NET_ROLE_SYNC_RESPONSE::PROBUFF_NET_ROLE_SYNC_RESPONSE(const PROBUFF_NET
   }
   if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
     _this->_impl_.m_bag_ = new ::pbdb::db_bag(*from._impl_.m_bag_);
+  }
+  if ((from._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    _this->_impl_.m_task_ = new ::pbdb::db_task(*from._impl_.m_task_);
   }
   // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE)
 }
@@ -3295,6 +3315,7 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::SharedCtor(::_pb::Arena* arena) {
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.m_role_){nullptr}
     , decltype(_impl_.m_bag_){nullptr}
+    , decltype(_impl_.m_task_){nullptr}
   };
 }
 
@@ -3311,6 +3332,7 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete _impl_.m_role_;
   if (this != internal_default_instance()) delete _impl_.m_bag_;
+  if (this != internal_default_instance()) delete _impl_.m_task_;
 }
 
 void PROBUFF_NET_ROLE_SYNC_RESPONSE::SetCachedSize(int size) const {
@@ -3324,7 +3346,7 @@ void PROBUFF_NET_ROLE_SYNC_RESPONSE::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       ABSL_DCHECK(_impl_.m_role_ != nullptr);
       _impl_.m_role_->Clear();
@@ -3332,6 +3354,10 @@ void PROBUFF_NET_ROLE_SYNC_RESPONSE::Clear() {
     if (cached_has_bits & 0x00000002u) {
       ABSL_DCHECK(_impl_.m_bag_ != nullptr);
       _impl_.m_bag_->Clear();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      ABSL_DCHECK(_impl_.m_task_ != nullptr);
+      _impl_.m_task_->Clear();
     }
   }
   _impl_._has_bits_.Clear();
@@ -3358,6 +3384,15 @@ const char* PROBUFF_NET_ROLE_SYNC_RESPONSE::_InternalParse(const char* ptr, ::_p
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_m_bag(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional .pbdb.db_task m_task = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_m_task(), ptr);
           CHK_(ptr);
         } else {
           goto handle_unusual;
@@ -3408,6 +3443,13 @@ failure:
         _Internal::m_bag(this).GetCachedSize(), target, stream);
   }
 
+  // optional .pbdb.db_task m_task = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::m_task(this),
+        _Internal::m_task(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -3425,7 +3467,7 @@ failure:
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     // optional .pbdb.db_role m_role = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -3438,6 +3480,13 @@ failure:
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *_impl_.m_bag_);
+    }
+
+    // optional .pbdb.db_task m_task = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.m_task_);
     }
 
   }
@@ -3460,7 +3509,7 @@ void PROBUFF_NET_ROLE_SYNC_RESPONSE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message&
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       _this->_internal_mutable_m_role()->::pbdb::db_role::MergeFrom(
           from._internal_m_role());
@@ -3468,6 +3517,10 @@ void PROBUFF_NET_ROLE_SYNC_RESPONSE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message&
     if (cached_has_bits & 0x00000002u) {
       _this->_internal_mutable_m_bag()->::pbdb::db_bag::MergeFrom(
           from._internal_m_bag());
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_internal_mutable_m_task()->::pbdb::db_task::MergeFrom(
+          from._internal_m_task());
     }
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -3489,8 +3542,8 @@ void PROBUFF_NET_ROLE_SYNC_RESPONSE::InternalSwap(PROBUFF_NET_ROLE_SYNC_RESPONSE
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLE_SYNC_RESPONSE, _impl_.m_bag_)
-      + sizeof(PROBUFF_NET_ROLE_SYNC_RESPONSE::_impl_.m_bag_)
+      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLE_SYNC_RESPONSE, _impl_.m_task_)
+      + sizeof(PROBUFF_NET_ROLE_SYNC_RESPONSE::_impl_.m_task_)
       - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLE_SYNC_RESPONSE, _impl_.m_role_)>(
           reinterpret_cast<char*>(&_impl_.m_role_),
           reinterpret_cast<char*>(&other->_impl_.m_role_));

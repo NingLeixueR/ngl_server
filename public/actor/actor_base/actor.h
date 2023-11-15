@@ -158,6 +158,7 @@ namespace ngl
 			register_forward<TYPE, IsForward, TDerived, ARG...>(aderived, arg...);
 		}
 
+
 		// 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(const T*)

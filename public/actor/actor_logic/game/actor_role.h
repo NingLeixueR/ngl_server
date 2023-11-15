@@ -32,38 +32,15 @@ namespace ngl
 		task m_task;
 		i32_serverid m_gatewayid;
 	public:
-		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata) :
-			actor(
-				actorparm
-				{
-					.m_parm
-					{
-						.m_type = ACTOR_ROLE,
-						.m_area = aarea,
-						.m_id = aroleid,
-						.m_manage_dbclient = true
-					},
-					.m_weight = 0x7fffffff,
-					.m_broadcast = true,
-				}),
-			m_gatewayid(((actor_switch_process_role*)(adata))->m_gatewayid)
-		{
-			assert(aarea == ttab_servers::tab()->m_area);
-		}
+		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);
 
-		virtual i32_serverid get_getwayserverid()
-		{
-			return m_gatewayid;
-		}
+		virtual i32_serverid get_getwayserverid();
 
-		virtual void init()
-		{
-			m_info.set(this);
-			m_bag.set(this);
-		}
+		virtual void init();
+
 		static void actor_register();
 
-		virtual ~actor_role() {}
+		virtual ~actor_role();
 
 		virtual void loaddb_finish(bool adbishave);
 		// 执行handle之后调用
@@ -71,10 +48,7 @@ namespace ngl
 
 		enum { ACTOR_TYPE = ACTOR_ROLE };
 
-		int roleid()
-		{
-			return m_info.get()->getconst().m_id();
-		}
+		i64_actorid roleid();
 
 		template <typename T>
 		void send2client(std::shared_ptr<T>& adata)
@@ -82,56 +56,7 @@ namespace ngl
 			actor_base::send_client(m_gatewayid, id_guid(), adata);
 		}
 
-		void sync_data_client()
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>();
-			*pro->mutable_m_role() = m_info.get()->getconst();
-			*pro->mutable_m_bag() = m_bag.get()->getconst();
-			send2client(pro);
-			LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
-		}
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_SYNC& adata)
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>();
-			*pro->mutable_m_role() = m_info.get()->getconst();
-			*pro->mutable_m_bag() = m_bag.get()->getconst();
-			send2client(pro);
-			LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
-			return true;
-		}
-		// CMD 协议
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_CMD& adata);
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_GET_TIME& adata)
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
-			pro->set_m_utc(localtime::gettime());
-			send2client(pro);
-			//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name());
-			return true;
-		}
-
-		// PROBUFF_PROTOCOLNUM_LOGIC_SWITCH_LINE		= 18;			// [请求]切换线路
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_SWITCH_LINE& adata)
-		{
-			tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.m_line());
-			if (tab == nullptr)
-				return false;
-			i32_sessionid lsession = nserver->get_sessionid(tab->m_id);
-			if (lsession == -1)
-			{
-				LogLocalError("LOGIC_SWITCH_LINE Error line[%] severid[%]", adata.m_line(), tab->m_id);
-				return false;
-			}
-			actor_switch_process_role pro;
-			pro.m_create = false;
-			pro.m_gatewayid = m_gatewayid;
-			actor_switchprocess::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
-			//LogLocalError("######Switch Line##[%][%]", m_info.id(), m_info.db()->name());
-			//crossprocess<actor_role>(lserverid);
-			return true;
-		}
+		void sync_data_client();
 
 #define foward_module(MODULE, TYPE)														\
 	bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, TYPE& adata)	\
@@ -140,7 +65,33 @@ namespace ngl
 		send_actor(actor_guid::make_self(MODULE), pro);									\
 		return true;																	\
 	}
-
+		
+#define foward_cross_module(MODULE, TYPE, ISCROSSFUN)									\
+	bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, TYPE& adata)	\
+	{																					\
+		std::shared_ptr<mforward<TYPE>> pro(new mforward<TYPE>(id_guid(), adata));		\
+		if(ISCROSSFUN(adata))															\
+		{																				\
+			send_actor(																	\
+				actor_guid::make(														\
+					MODULE																\
+					, ttab_servers::tab()->m_crossarea									\
+					, actor_guid::none_actordataid()									\
+				), pro);																\
+		}																				\
+		else																			\
+		{																				\
+			send_actor(																	\
+				actor_guid::make(														\
+					MODULE																\
+					, ttab_servers::tab()->m_area										\
+					, actor_guid::none_actordataid()									\
+				), pro);																\
+		}																				\
+		return true;																	\
+	}
+		// 模块转发  
+		// foward_module(区服内部模块转发)
 		foward_module(ACTOR_NOTICE, pbnet::PROBUFF_NET_GET_NOTICE)
 		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_LIST)
 		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_READ)
@@ -148,45 +99,28 @@ namespace ngl
 		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_DEL)
 
 
-#define foward_cross_module(MODULE, TYPE, ISCROSSFUN)									\
-	bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, TYPE& adata)	\
-	{																					\
-		std::shared_ptr<mforward<TYPE>> pro(new mforward<TYPE>(id_guid(), adata));		\
-		if(ISCROSSFUN(adata))															\
-		{																				\
-			send_actor(actor_guid::make(MODULE, ttab_servers::tab()->m_crossarea, actor_guid::none_actordataid()), pro);	\
-		}																				\
-		else																			\
-		{																				\
-			send_actor(actor_guid::make(MODULE, ttab_servers::tab()->m_area, actor_guid::none_actordataid()), pro);			\
-		}																				\
-		return true;																	\
-	}
+		// foward_cross_module(跨服模块转发)
 		bool is_cross(pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			return adata.m_channelid() == 2;
 		}
 		foward_cross_module(ACTOR_CHAT, pbnet::PROBUFF_NET_CHAT, is_cross)
 
+		// CMD 协议
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_CMD& adata);
 
-		//actor_send_item
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_send_item& adata)
-		{
-			d_remakes(this, adata.m_src);
-			//autoitem lautoitem(this);
-			//lautoitem.add_item(adata.m_item);
-			return true;
-		}
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_SYNC& adata);
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_disconnect_close& adata)
-		{
-			erase_actor_byid();
-			return true;
-		}
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_GET_TIME& adata);
+
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_SWITCH_LINE& adata);
+
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_send_item& adata);
+
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_disconnect_close& adata);
 		
 		// 定时器
 		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
-
 	private:
 	};
 

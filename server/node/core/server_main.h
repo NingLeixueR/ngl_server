@@ -168,6 +168,9 @@ bool start_db(int argc, char** argv)
 	using actor_db_ranklist = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>;
 	actor_db_ranklist::getInstance();
 
+	using actor_db_task = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>;
+	actor_db_task::getInstance();
+
 	ngl::actor_client::getInstance().actor_server_register();
 
 	// ----------------test start-------------------- //

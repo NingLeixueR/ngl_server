@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-14 21:39:45
+// 创建时间 // 创建时间 23-11-15 14:53:47
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -124,6 +124,12 @@ enum ETask
 	ETaskRoleLv = 1,	// 玩家等级
 	ETaskRoleVip = 2,	// 玩家vip等级
 	ETaskTaskId = 3,	// 完成某ID任务
+};
+enum ETaskType
+{
+	ETaskTypePrincipalLine,	// 主线任务
+	ETaskTypeBranchLine,	// 支线任务
+	ETaskTypeDaily,	// 每日任务
 };
 struct tab_servers
 {
@@ -508,15 +514,16 @@ struct tab_task
 	int32_t		m_id;		// 任务id
 	std::string		m_name;		
 	std::string		m_remarks;		
+	ETaskType		m_type;		
 	int32_t		m_dropid;		// 任务奖励
 	std::vector<task_receive>		m_taskreceive;		// 接收此任务的前提
 	std::vector<task_complete>		m_taskcomplete;		// 完成此任务的条件
 /*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	def_portocol(tab_task, m_id, m_name, m_remarks, m_dropid, m_taskreceive, m_taskcomplete)
+	def_portocol(tab_task, m_id, m_name, m_remarks, m_type, m_dropid, m_taskreceive, m_taskcomplete)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_dropid,m_taskreceive,m_taskcomplete)
+	def_rcsv(m_id,m_name,m_remarks,m_type,m_dropid,m_taskreceive,m_taskcomplete)
 };
 }//namespace ngl
 #endif //_csvtable_H_
