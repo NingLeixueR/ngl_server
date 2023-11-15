@@ -429,10 +429,11 @@ public:
 
 	void _helpDefine(std::string& aname,string& ldata)
 	{
-		static string pattern("#define[ \t]+[a-zA-Z0-9_ ]+[ \t]+[\(]+[^)^(]+[)]+[ \t]+[/][/][^\r^\n]*");
+		//static string pattern("#define[ \t]+[a-zA-Z0-9_ ]+[ \t]+[\(]+[^)^(]+[)]+[ \t]+[/][/][^\r^\n]*");
+		static string pattern("#define[ \t]+[a-zA-Z0-9_ ]+[ \t]+[(]+[^)^(]+[)]+[ \t]+[/][/][^\r^\n]*");
 		ngl::regular::sregex(pattern, ldata, [this, aname](std::string& adata)
 		{
-			static string expression("#define[ \t]+([a-zA-Z0-9_ ]+)[ \t]+[\(]+([^)]+)[)]+[ \t]+[/][/][^\r^\n]*");
+			static string expression("#define[ \t]+([a-zA-Z0-9_ ]+)[ \t]+[(]+([^)]+)[)]+[ \t]+[/][/][^\r^\n]*");
 			DefVec lDefVec;
 			lDefVec.name = adata;
 			ngl::regular::smatch(expression, adata, [&lDefVec](std::smatch& awhat)
@@ -471,15 +472,15 @@ public:
 		if (lpattern2.empty())
 		{
 			lpattern2 += "[ \n\r\t]*";//空白
-			lpattern2 += "([^ \n\r\t\{\}]*)";//type
+			lpattern2 += "([^ \n\r\t{}]*)";//type
 			lpattern2 += "[ \t]*";//空白
-			lpattern2 += "[\=]*";
+			lpattern2 += "[=]*";
 			lpattern2 += "[ \t]*";//空白
 			lpattern2 += "([^ \t\,\{\}]*)";//values
 			lpattern2 += "[ \t]*";//空白
-			lpattern2 += "[\,]";
+			lpattern2 += "[,]";
 			lpattern2 += "[ \t]*";//空白
-			lpattern2 += "([\/\/]*[^\r\n]*)";//注释
+			lpattern2 += "([//]*[^\r\n]*)";//注释
 		}
 		ngl::regular::smatch(lpattern2, adata, [&lenumString](std::smatch& awhat)
 			{
@@ -549,34 +550,34 @@ public:
 				lpattern2
 					+= lkb + lhh + lkb
 					//+ "(if[\(][^\(\)]*[\)])*"
-					+ "(if[\(][^\)]*[\)])*"
+					+ "(if[(][^)]*[)])*"
 					+= lkb + lhh + lkb
 					+ "(required|optional)*"	//修饰符
 					+ lkb
-					+ "([^ \<\>\r\n\}\;\(\)]+)" //类型
+					+ "([^ <>\r\n};()]+)" //类型
 					+ "[ ]"
-					+ "([^ \t\<\>\r\n\}\;]+)" //类型名
+					+ "([^ \t<>\r\n};]+)" //类型名
 					+ lkb
-					+ "([ ]+[\=][ ][^\;]*)*"
-					+ "[\;]"
+					+ "([ ]+[=][ ][^;]*)*"
+					+ "[;]"
 					+ lkb
-					+ "([\/\/]*[^\r\n]*)" //注释
+					+ "([//]*[^\r\n]*)" //注释
 					+ "[\r\n]*[\r\n]*";
 
 				lpattern3
 					+= lkb + lhh + lkb
-					+ "(if[\(][^\)]*[\)])*"
+					+ "(if[(][^)]*[)])*"
 					+ lkb + lhh + lkb
 					+ "(required|optional)*"	//修饰符
 					+ lkb
-					+ "(derived_class[\<][^\>]+[\>]|map[\<][^\>]+[\>]|vector[\<][^\>]+[\>]|list[\<][^\>]+[\>]|set[\<][^\>]+[\>]|string[\<][^\>]+[\>]|int[\<][^\>]+[\>])" //类型
+					+ "(derived_class[<][^>]+[>]|map[<][^>]+[>]|vector[<][^>]+[>]|list[<][^>]+[>]|set[<][^>]+[>]|string[<][^>]+[>]|int[<][^>]+[>])" //类型
 					+ "[ ]"
-					+ "([^ \t\<\>\r\n\}\;]+)" //类型名
+					+ "([^ \t<>\r\n};]+)" //类型名
 					+ lkb
-					+ "([\=][^\;]+)*"
-					+ "[\;]"
+					+ "([=][^;]+)*"
+					+ "[;]"
 					+ lkb
-					+ "([\/\/]*[^\r\n]*)" //注释
+					+ "([//]*[^\r\n]*)" //注释
 					+ "[\r\n]*[\r\n]*";
 			}
 
