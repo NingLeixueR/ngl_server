@@ -1,4 +1,5 @@
 #include "operator_file.h"
+#include "nlog.h"
 
 #include <fstream>
 #include <string>
@@ -106,10 +107,14 @@ namespace ngl
 
 	writefile::~writefile()
 	{
-		if (m_file.is_open())
+		Try
 		{
-			m_file.close();
-		}
+			if (m_file.is_open())
+			{
+				m_file.close();
+			}
+		}Catch;
+		
 	}
 
 	bool filetools::remove(const std::string& afilename)
