@@ -23,7 +23,12 @@ namespace ngl
 
 		int lweight = 0;
 		for (int i = 0; i < tab->m_randomdatas.size(); ++i)
+		{
 			lweight += tab->m_randomdatas[i].m_weight;
+		}
+
+		if (lweight <= 0)
+			return false;
 
 		int lcount = tab->m_count;
 		bool lexclusive = tab->m_exclusive;

@@ -67,11 +67,6 @@ namespace ngl
 			return true;
 		}
 
-		bool is_draw()
-		{
-
-		}
-
 		void update(i64_actorid aroleid, int acount)
 		{
 			//m_drawcompliance

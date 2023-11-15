@@ -1,5 +1,5 @@
 #include "hexbytes.h"
-
+#include <assert.h>
 
 namespace ngl
 {
@@ -14,7 +14,7 @@ namespace ngl
 		if (avalues >= '0' && avalues <= '9')
 			return (avalues - '0');
 
-		throw "BytesHex::Get";
+		assert(false);
 	}
 
 	void _bh(unsigned char& apso, unsigned char& apto1, unsigned char& apto2)
@@ -45,7 +45,6 @@ namespace ngl
 		}
 		return llen;
 	}
-
 
 	int hexbytes::to_bytes(void* apso, int alen, void* apto)
 	{

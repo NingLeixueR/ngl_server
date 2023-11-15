@@ -98,7 +98,6 @@ namespace ngl
 		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_DRAW)
 		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_DEL)
 
-
 		// foward_cross_module(跨服模块转发)
 		bool is_cross(pbnet::PROBUFF_NET_CHAT& adata)
 		{

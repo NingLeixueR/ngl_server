@@ -73,8 +73,11 @@ namespace ngl
 
 		~actor_suspendthread()
 		{
-			actor_manage::getInstance().finish_suspend_thread();
-			LogLocalInfo("finish actor_suspendthread");
+			Try
+			{
+				actor_manage::getInstance().finish_suspend_thread();
+				LogLocalInfo("finish actor_suspendthread");
+			}Catch;			
 		}
 	};
 

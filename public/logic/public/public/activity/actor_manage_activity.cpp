@@ -116,8 +116,11 @@ namespace ngl
 		if (ldb == nullptr)
 		{
 			tab_activity* tab = lpcsv->find(aactivityid);
-			if (tab != nullptr)
+			if (tab == nullptr)
+			{
+				LogLocalError("actor_manage_activity::init_activity() actorid=% tab_activitynot find!!!");
 				return;
+			}
 			if (int32_t lbeg = 0, lend = 0; ttab_calendar::get(tab->m_calendarid, 0, lbeg, lend))
 			{
 				m_db.init_data(tab->m_id, lbeg, lend);
@@ -147,7 +150,7 @@ namespace ngl
 		{// 活动没开启并且已过关闭时间
 			// 活动下次执行时间
 			tab_activity* tab = lpcsv->find(aactivityid);
-			if (tab != nullptr)
+			if (tab == nullptr)
 				return;
 			if (int32_t lbeg = 0, lend = 0; ttab_calendar::get(tab->m_calendarid, litem.m_end(), lbeg, lend))
 			{
@@ -222,7 +225,6 @@ namespace ngl
 			start_activity(item.first);
 		}
 	}
-
 
 	bool actor_manage_activity::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
 	{

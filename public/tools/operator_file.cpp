@@ -12,10 +12,14 @@ namespace ngl
 
 	readfile::~readfile()
 	{
-		if (m_file.is_open())
+		try
 		{
-			m_file.close();
+			if (m_file.is_open())
+			{
+				m_file.close();
+			}
 		}
+		catch (...) {}
 	}
 	//跳过前三行
 	void readfile::jumpbegin(int anum, bool aiscsv)
