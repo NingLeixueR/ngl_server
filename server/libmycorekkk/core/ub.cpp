@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-11-14 14:37:50
+// 创建时间 23-11-15 10:54:46
 #include "account.cpp"
 #include "activitydb.cpp"
 #include "actor.cpp"
@@ -96,6 +96,7 @@
 #include "serialize.cpp"
 #include "splite.cpp"
 #include "synthesis.cpp"
+#include "task.cpp"
 #include "threadtools.cpp"
 #include "time_wheel.cpp"
 #include "tools.cpp"

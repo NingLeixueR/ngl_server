@@ -18,6 +18,7 @@
 #include "roleinfo.h"
 #include "remakes.h"
 #include "autoitem.h"
+#include "task.h"
 
 namespace ngl
 {
@@ -28,6 +29,7 @@ namespace ngl
 		remakes m_remakes;
 		roleinfo m_info;
 		bag m_bag;
+		task m_task;
 		i32_serverid m_gatewayid;
 	public:
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata) :
@@ -128,7 +130,6 @@ namespace ngl
 			actor_switchprocess::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
 			//LogLocalError("######Switch Line##[%][%]", m_info.id(), m_info.db()->name());
 			//crossprocess<actor_role>(lserverid);
-			
 			return true;
 		}
 

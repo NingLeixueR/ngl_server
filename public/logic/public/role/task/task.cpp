@@ -41,16 +41,6 @@ namespace ngl
 			return true;
 		}
 
-		//static bool check_complete(const std::vector<int32_t>& aparmint, const std::vector<int32_t>& asumint)
-		//{
-		//	for (int i = 0; i < aparmint.size() && i < asumint.size(); ++i)
-		//	{
-		//		if (aparmint[i] < asumint[i])
-		//			return false;
-		//	}
-		//	return true;
-		//}
-
 		template <typename TLIST>
 		static bool check_complete(const TLIST& aparmint, const TLIST& asumint)
 		{
@@ -63,6 +53,8 @@ namespace ngl
 			return true;
 		}
 	};
+
+	std::map<ETask, taskcheck*> taskcheck::m_taskdata;
 
 	class taskcheck_rolelv
 		: public taskcheck
@@ -84,7 +76,28 @@ namespace ngl
 		{}
 	};
 
+
 	taskcheck_rolelv g_taskcheck_rolelv;
+
+	void task::task_condition(ETask atype, const std::vector<int32_t>& avalue)
+	{
+		pbdb::db_task& ltask = db()->get(false);
+		auto lrundatas = ltask.mutable_m_rundatas();
+		for (std::pair<const int32_t, pbdb::db_task::data>& item : *lrundatas)
+		{
+			auto lschedules = item.second.mutable_m_schedules();
+			for (pbdb::db_task::data_schedule& itemschedules : *lschedules)
+			{
+				if (itemschedules.m_type() == atype)
+				{
+					for (int i = 0; i < avalue.size() && i < itemschedules.mutable_m_parmint()->size(); ++i)
+					{
+						(*itemschedules.mutable_m_parmint())[i] += avalue[i];
+					}
+				}
+			}
+		}
+	}
 
 	bool task::check_complete(pbdb::db_task::data_schedule& adata)
 	{

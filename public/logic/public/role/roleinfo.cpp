@@ -43,6 +43,7 @@ namespace ngl
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_lv(lrb->m_lv() + avalues);
 		sync_actor_roleinfo();
+		actor()->m_task.task_condition(ETaskRoleLv, { avalues });
 	}
 
 	const char* roleinfo::name()
