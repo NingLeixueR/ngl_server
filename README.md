@@ -26,7 +26,7 @@ Actor based c++distributed game server framework
 
 # 使用
   * 如何定义一个actor?
-	```
+	```cpp
 	定义一个actor_xxx 需要继承 actor
 	在构造函数中我们需要简单配置一下actor,比如actor的类型ENUM_ACTOR,区服id,dataid,是否需要从数据库中加载数据,消息处理权重(数字,每一次轮训最多处理多少消息)
 	virtual void init()中需要actor_xxx与dbclient相关联
@@ -104,7 +104,7 @@ Actor based c++distributed game server framework
 
 	```
     * actor间消息交互
-	```
+	```cpp
 	1、自定义消息  例如 
 	// ---- 通知服务器玩家账号验证通过
 	struct actor_role_login
