@@ -8,6 +8,7 @@
 3part/hiredis
 3part/mysql
 3part/protobuf
+php
 bin
 obj
 lib
