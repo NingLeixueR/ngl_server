@@ -5,6 +5,21 @@
 
 namespace ngl
 {
+	actor_manage_role::actor_manage_role() :
+		actor(
+			actorparm
+			{
+				.m_parm
+				{
+					.m_type = ACTOR_MANAGE_ROLE,
+					.m_area = ttab_servers::tab()->m_area,
+					.m_id = nconfig::m_nodeid
+				},
+				.m_weight = 0x7fffffff,
+			})
+	{
+	}
+
 	void actor_manage_role::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_role>(false,

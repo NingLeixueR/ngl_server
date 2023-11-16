@@ -15,20 +15,7 @@ namespace ngl
 {
 	class actor_manage_role : public actor
 	{
-		actor_manage_role() :
-			actor(
-				actorparm
-				{
-					.m_parm
-					{
-						.m_type = ACTOR_MANAGE_ROLE,
-						.m_area = ttab_servers::tab()->m_area,
-						.m_id = nconfig::m_nodeid
-					},
-					.m_weight = 0x7fffffff,
-				})
-		{
-		}
+		actor_manage_role();
 	public:
 		friend class actor_instance<actor_manage_role>;
 		static actor_manage_role& getInstance() 

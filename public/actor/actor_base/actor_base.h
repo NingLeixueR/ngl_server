@@ -232,6 +232,63 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
+	private:
+		
+	public:
+#pragma region network_strat_group
+	private:
+		// 分组数据
+		std::map<int, std::set<i64_actorid>> m_group;
+		int m_currentoffset = 0;
+	public:
+		// 创建一个群发分组
+		int add_group()
+		{
+			m_group[++m_currentoffset];
+			return m_currentoffset;
+		}
+		// 移除一个分组
+		void remove_group(int agroupid)
+		{
+			m_group.erase(agroupid);
+		}
+
+		// 将成员加入某个群发分组
+		bool add_group_member(int agroupid, i64_actorid amember)
+		{
+			auto itor = m_group.find(agroupid);
+			if (itor == m_group.end())
+				return false;
+			itor->second.insert(amember);
+			return true;			
+		}
+		// 将成员从头某个群发分组中移除
+		void remove_group_member(int agroupid, i64_actorid amember)
+		{
+			auto itor = m_group.find(agroupid);
+			if (itor == m_group.end())
+				return;
+			itor->second.erase(amember);
+		}
+
+
+		template <typename T>
+		void send_actorbygroup(int agroupid, std::shared_ptr<T>& adata)
+		{
+			auto itor = m_group.find(agroupid);
+			if (itor == m_group.end())
+				return false;
+			handle_pram lpram;
+			handle_pram::create<T>(lpram, actor_guid::make(), guid(), adata);
+			
+			for (i64_actorid actorid : itor->second)
+			{
+				lpram.m_actor = actorid;
+				push_task_id(actorid, lpram, true);
+			}
+			return true;
+		}
+
 		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>&& adata)
@@ -240,6 +297,7 @@ namespace ngl
 			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
+#pragma endregion
 
 #pragma endregion
 		
