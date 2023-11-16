@@ -49,7 +49,7 @@ Actor based c++distributed game server framework
   *	[单例actor:actor_manage_role](https://github.com/NingLeixueR/ngl/blob/main/public/actor/actor_logic/game/actor_manage_role.h)
 
   * 数据的存储与加载
-	```
+	```cpp
 	ngl/tools/public/proto/db.proto中定义要存储的db数据
 	数据统一以db_开头 例如：
 	定义一个枚举
