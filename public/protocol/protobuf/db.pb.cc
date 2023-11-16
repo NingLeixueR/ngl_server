@@ -1033,13 +1033,13 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
     "_DB_MAIL\020\005\022\021\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_DB"
     "_NOTICE\020\007\022\024\n\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM_"
     "DB_ACTIVITY\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\021\n\rENUM_"
-    "DB_COUNT\020\013B\002H\001b\006proto3"
+    "DB_COUNT\020\013b\006proto3"
 };
 static ::absl::once_flag descriptor_table_db_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_db_2eproto = {
     false,
     false,
-    3262,
+    3258,
     descriptor_table_protodef_db_2eproto,
     "db.proto",
     &descriptor_table_db_2eproto_once,

@@ -153,7 +153,11 @@ namespace ngl
 			else
 			{
 				if (m_idset.find(lid) == m_idset.end())
+				{
+					LogLocalError("load <<%>>===<<%>>", typeid(actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>).name(), lid);
 					return;
+				}
+					
 				load(athreadid, lid);
 				auto pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
 				pro->m_data.make();

@@ -758,7 +758,7 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
 
           g_stream_sql
               << "-- ----------------------------\r\n"
-              << "--Table structure for " << lmessage << "\r\n"
+              << "-- Table structure for " << lmessage << "\r\n"
               << "-- ----------------------------\r\n"
               << "DROP TABLE IF EXISTS `" << lmessage << "`;\r\n"
               << "CREATE TABLE `" << lmessage << "` (\r\n"
@@ -866,7 +866,7 @@ int main(int argc, char** argv) {
     abc::kkk<k1<float>>();
 
     google::protobuf::compiler::DiskSourceTree sourceTree;
-    sourceTree.MapPath("", "../../resources/protocolbuff/");
+    sourceTree.MapPath("", "../../tools/public/proto/");
   
     g_stream << "#pragma once" << std::endl;
     g_stream << "#include \"actor_lua.h\"" << std::endl;

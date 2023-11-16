@@ -33,24 +33,41 @@ namespace ngl
 	public:
 
 		template <typename T>
-		static char* serialize(db* adb, T& adata)
+		static char* serialize(db* adb, T& adata, bool aistohex = true)
 		{
 			ngl::serialize lserialize(adb->m_buff1, adb->m_bufflen1);
 			if (lserialize.push(adata))
 			{
-				int lpos = hexbytes::to_hex(adb->m_buff1, lserialize.byte(), adb->m_buff2);
-				adb->m_buff2[lpos] = '\0';
-				return adb->m_buff2;
+				if (aistohex)
+				{
+					int lpos = hexbytes::to_hex(adb->m_buff1, lserialize.byte(), adb->m_buff2);
+					adb->m_buff2[lpos] = '\0';
+					return adb->m_buff2;
+				}
+				else
+				{
+					std::swap(adb->m_buff1, adb->m_buff2);
+					return adb->m_buff2;
+				}
 			}
 			return nullptr;
 		}
 
 		template <typename T>
-		static bool unserialize(db* adb, T& adata, char* abuff, int alen)
+		static bool unserialize(db* adb, T& adata, char* abuff, int alen, bool aistohex = true)
 		{
-			ngl::unserialize lunser(adb->m_buff2, hexbytes::to_bytes(abuff, alen, adb->m_buff2));
-			if (!lunser.pop(adata))
-				return false;
+			if (aistohex)
+			{
+				ngl::unserialize lunser(adb->m_buff2, hexbytes::to_bytes(abuff, alen, adb->m_buff2));
+				if (!lunser.pop(adata))
+					return false;
+			}
+			else
+			{
+				ngl::unserialize lunser(abuff, alen);
+				if (!lunser.pop(adata))
+					return false;
+			}
 			return true;
 		}
 
@@ -110,9 +127,14 @@ namespace ngl
 		public:
 			static void fun(db* adb, T& adata)
 			{
+				if (m_savetemp.m_data == nullptr)
+				{
+					m_savetemp.make();
+					m_savetemp.m_isbinary = false;
+				}
 				*m_savetemp.m_data = adata;
 
-				char* lsql = ngl::db_manage::serialize(adb, m_savetemp);
+				char* lsql = ngl::db_manage::serialize(adb, m_savetemp, false);
 				if (lsql == nullptr)
 					return;
 
@@ -311,7 +333,8 @@ namespace ngl
 					[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1]) == false)
+						ldata.m_isbinary = false;
+						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], false) == false)
 							return false;
 						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
@@ -332,7 +355,8 @@ namespace ngl
 					[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1]) == false)
+						ldata.m_isbinary = false;
+						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], false) == false)
 							return false;
 						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;

@@ -73,6 +73,34 @@ void init_DB_BAG()
 	init_DB_BAG("wac", (1 * DEF_COUNT) + 1);
 }
 
+void init_DB_TASK(const char* aname, int beg)
+{
+	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	{
+		pbdb::db_task ltemp;
+		ltemp.set_m_id(ngl::actor_guid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
+		auto lrundatas = ltemp.mutable_m_rundatas();
+		std::pair<int32_t, pbdb::db_task::data> lpair;
+		lpair.first = 1;
+		lpair.second.set_m_taskid(1);
+		lpair.second.set_m_receiveutc(0);
+		lpair.second.set_m_finshutc(0);
+		auto lschedules = lpair.second.mutable_m_schedules();
+		auto lschedulesnode = lschedules->Add();
+		lschedulesnode->add_m_parmint(1);
+		lschedulesnode->add_m_sumint(10);
+		lrundatas->insert(lpair);
+
+		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>::save(0, ltemp);
+	}
+}
+
+void init_DB_TASK()
+{
+	init_DB_TASK("libo", (0 * DEF_COUNT) + 1);
+	init_DB_TASK("wac", (1 * DEF_COUNT) + 1);
+}
+
 //DB_MAIL
 void init_DB_MAIL(int beg)
 {
@@ -180,6 +208,7 @@ bool start_db(int argc, char** argv)
 		init_DB_ROLE();
 		init_DB_BAG();
 		init_DB_NOTICE();
+		init_DB_TASK();
 	}
 
 	return true;

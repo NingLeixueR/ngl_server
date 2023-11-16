@@ -19,6 +19,8 @@
 #include "bytes_order.h"
 #include "varint.h"
 #include "define.h"
+#include "db.pb.h"
+#include <google/protobuf/util/json_util.h>
 
 namespace ngl
 {
@@ -33,13 +35,16 @@ namespace ngl
 	struct protobuf_data
 	{
 		std::shared_ptr<T> m_data;
+		bool m_isbinary;			// 默认序列化为二进制，只有db保存的时候序列化为xml
 		
-		protobuf_data():
-			m_data(nullptr)
+		protobuf_data()
+			: m_data(nullptr)
+			, m_isbinary(true)
 		{}
 
-		protobuf_data(std::shared_ptr<T>& adata) :
-			m_data(adata)
+		protobuf_data(std::shared_ptr<T>& adata) 
+			: m_data(adata)
+			, m_isbinary(true)
 		{}
 
 		void make()
@@ -78,36 +83,58 @@ namespace ngl
 		bool push(const protobuf_data<T, IS_FORWARD>& adata)
 		{
 			assert(adata.m_data != nullptr);
-			int32_t lbytes = adata.m_data->ByteSize();
-			if constexpr (IS_FORWARD == false)
+			if (adata.m_isbinary)
 			{
-				if (push(lbytes) == false)
+				int32_t lbytes = adata.m_data->ByteSize();
+				if constexpr (IS_FORWARD == false)
+				{
+					if (push(lbytes) == false)
+						return false;
+				}
+				if (adata.m_data->SerializeToArray(&buff()[byte()], lbytes) == false)
 					return false;
+				add_bytes(lbytes);
+				return true;
 			}
-			if (adata.m_data->SerializeToArray(&buff()[byte()], lbytes) == false)
-				return false;
-			add_bytes(lbytes);
-			return true;
+			else
+			{
+				google::protobuf::util::JsonPrintOptions options;
+				options.add_whitespace = true;
+				options.always_print_primitive_fields = true;
+				options.preserve_proto_field_names = true;
+				std::string json;
+				bool ret = google::protobuf::json::MessageToJsonString(*adata.m_data, &json, options).ok();
+				if (ret)
+				{
+					int32_t len = json.size() + 1;
+					memcpy(&buff()[byte()], json.c_str(), len);
+					add_bytes(len);
+				}
+				return ret;
+			}
 		}
 
 		template <typename KEY, typename VALUE>
 		bool push(const protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
 			assert(adata.m_data != nullptr);
-			int16_t lsize = adata.m_data->size();
-			if (push(lsize) == false)
-				return false;
-			for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
+			if (adata.m_isbinary)
 			{
-				if (push(itor->first) == false)
+				int16_t lsize = adata.m_data->size();
+				if (push(lsize) == false)
 					return false;
-				int32_t lbytes = itor->second.ByteSize();
-				if (push(lbytes) == false)
-					return false;
-				if (itor->second.SerializeToArray(&buff()[byte()], lbytes) == false)
-					return false;
-				add_bytes(lbytes);
-			}
+				for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
+				{
+					if (push(itor->first) == false)
+						return false;
+					int32_t lbytes = itor->second.ByteSize();
+					if (push(lbytes) == false)
+						return false;
+					if (itor->second.SerializeToArray(&buff()[byte()], lbytes) == false)
+						return false;
+					add_bytes(lbytes);
+				}
+			}			
 			return true;
 		}
 
@@ -115,18 +142,21 @@ namespace ngl
 		bool push(const protobuf_data<std::vector<T>>& adata)
 		{
 			assert(adata.m_data != nullptr);
-			int16_t lsize = adata.m_data->size();
-			if (push(lsize) == false)
-				return false;
-			for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
+			if (adata.m_isbinary)
 			{
-				int32_t lbytes = itor->ByteSize();
-				if (push(lbytes) == false)
+				int16_t lsize = adata.m_data->size();
+				if (push(lsize) == false)
 					return false;
-				if (itor->SerializeToArray(&buff()[byte()], lbytes) == false)
-					return false;
-				add_bytes(lbytes);
-			}
+				for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
+				{
+					int32_t lbytes = itor->ByteSize();
+					if (push(lbytes) == false)
+						return false;
+					if (itor->SerializeToArray(&buff()[byte()], lbytes) == false)
+						return false;
+					add_bytes(lbytes);
+				}
+			}			
 			return true;
 		}
 
@@ -134,17 +164,20 @@ namespace ngl
 		bool push(const protobuf_data<std::list<T>>& adata)
 		{
 			assert(adata.m_data != nullptr);
-			int16_t lsize = adata.m_data->size();
-			if (push(lsize) == false)
-				return false;
-			for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
+			if (adata.m_isbinary)
 			{
-				int32_t lbytes = itor->ByteSize();
-				if (push(lbytes) == false)
+				int16_t lsize = adata.m_data->size();
+				if (push(lsize) == false)
 					return false;
-				if (itor->SerializeToArray(&buff()[byte()], lbytes) == false)
-					return false;
-				add_bytes(lbytes);
+				for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
+				{
+					int32_t lbytes = itor->ByteSize();
+					if (push(lbytes) == false)
+						return false;
+					if (itor->SerializeToArray(&buff()[byte()], lbytes) == false)
+						return false;
+					add_bytes(lbytes);
+				}
 			}
 			return true;
 		}
@@ -339,16 +372,29 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 				adata.make();
-			int32_t lbytes = len() - byte();
-			T& ldata = *adata.m_data.get();
-			if constexpr (IS_FORWARD == false)
+			if (adata.m_isbinary)
 			{
-				if (pop(lbytes) == false)
+				int32_t lbytes = len() - byte();
+				T& ldata = *adata.m_data.get();
+				if constexpr (IS_FORWARD == false)
+				{
+					if (pop(lbytes) == false)
+						return false;
+				}
+				if (ldata.ParseFromArray(&buff()[byte()], lbytes) == false)
 					return false;
+				add_bytes(lbytes);
 			}
-			if (ldata.ParseFromArray(&buff()[byte()], lbytes) == false)
-				return false;
-			add_bytes(lbytes);
+			else
+			{
+				int32_t lbytes = len() - byte();
+				T& ldata = *adata.m_data.get();
+				google::protobuf::util::JsonParseOptions parseOptions;
+				std::string jsonString(&buff()[byte()]);
+				google::protobuf::util::JsonStringToMessage(jsonString, &(*adata.m_data), parseOptions);
+				add_bytes(lbytes);
+			}
+			
 			return true;
 		}
 
@@ -357,23 +403,26 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 				adata.make();
-			std::map<KEY, VALUE>& lstl = *adata.m_data;
-			int16_t lsize = 0;
-			if (pop(lsize) == false)
-				return false;
-			for (int i = 0; i < lsize; ++i)
+			if (adata.m_isbinary)
 			{
-				KEY lkey;
-				if (pop(lkey) == false)
+				std::map<KEY, VALUE>& lstl = *adata.m_data;
+				int16_t lsize = 0;
+				if (pop(lsize) == false)
 					return false;
-				int32_t lbytes = 0;
-				if (pop(lbytes) == false)
-					return false;
-				VALUE& lvalues = lstl[lkey];
-				if (lvalues.ParseFromArray(&buff()[byte()], lbytes) == false)
-					return false;
-				add_bytes(lbytes);
-			}
+				for (int i = 0; i < lsize; ++i)
+				{
+					KEY lkey;
+					if (pop(lkey) == false)
+						return false;
+					int32_t lbytes = 0;
+					if (pop(lbytes) == false)
+						return false;
+					VALUE& lvalues = lstl[lkey];
+					if (lvalues.ParseFromArray(&buff()[byte()], lbytes) == false)
+						return false;
+					add_bytes(lbytes);
+				}
+			}			
 			return true;
 		}
 
@@ -382,21 +431,24 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 				adata.make();
-			std::vector<T>& lstl = *adata.m_data;
-			int16_t lsize = 0;
-			if (pop(lsize) == false)
-				return false;
-			for (int i = 0; i < lsize; ++i)
+			if (adata.m_isbinary)
 			{
-				int32_t lbytes = 0;
-				if (pop(lbytes) == false)
+				std::vector<T>& lstl = *adata.m_data;
+				int16_t lsize = 0;
+				if (pop(lsize) == false)
 					return false;
-				T ltemp;
-				if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
-					return false;
-				add_bytes(lbytes);
-				lstl.push_back(ltemp);
-			}
+				for (int i = 0; i < lsize; ++i)
+				{
+					int32_t lbytes = 0;
+					if (pop(lbytes) == false)
+						return false;
+					T ltemp;
+					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
+						return false;
+					add_bytes(lbytes);
+					lstl.push_back(ltemp);
+				}
+			}			
 			return true;
 		}
 
@@ -405,21 +457,24 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 				adata.make();
-			std::list<T>& lstl = adata.m_data;
-			int16_t lsize = 0;
-			if (pop(lsize) == false)
-				return false;
-			for (int i = 0; i < lsize; ++i)
+			if (adata.m_isbinary)
 			{
-				int32_t lbytes = 0;
-				if (pop(lbytes) == false)
+				std::list<T>& lstl = adata.m_data;
+				int16_t lsize = 0;
+				if (pop(lsize) == false)
 					return false;
-				T ltemp;
-				if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
-					return false;
-				add_bytes(lbytes);
-				lstl.push_back(ltemp);
-			}
+				for (int i = 0; i < lsize; ++i)
+				{
+					int32_t lbytes = 0;
+					if (pop(lbytes) == false)
+						return false;
+					T ltemp;
+					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
+						return false;
+					add_bytes(lbytes);
+					lstl.push_back(ltemp);
+				}
+			}			
 			return true;
 		}
 
@@ -626,15 +681,17 @@ namespace ngl
 		int bytes(const protobuf_data<T, IS_FORWARD>& adata)
 		{
 			assert(adata.m_data != nullptr);
-
-			int32_t lbytes = adata.m_data->ByteSize();
-			if constexpr (IS_FORWARD == false)
+			if (adata.m_isbinary)
 			{
-				if (bytes(lbytes) == false)
-					return false;
+				int32_t lbytes = adata.m_data->ByteSize();
+				if constexpr (IS_FORWARD == false)
+				{
+					if (bytes(lbytes) == false)
+						return false;
+				}
+				add_bytes(lbytes);
 			}
-			add_bytes(lbytes);
-			return bytes();
+			return bytes();			
 		}
 
 		template <typename KEY, typename VALUE>
