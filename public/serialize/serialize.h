@@ -99,8 +99,8 @@ namespace ngl
 			else
 			{
 				google::protobuf::util::JsonPrintOptions options;
-				options.add_whitespace = true;
-				options.always_print_primitive_fields = true;
+				options.add_whitespace = false;
+				options.always_print_primitive_fields = false;
 				options.preserve_proto_field_names = true;
 				std::string json;
 				bool ret = google::protobuf::json::MessageToJsonString(*adata.m_data, &json, options).ok();
