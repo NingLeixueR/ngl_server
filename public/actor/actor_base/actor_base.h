@@ -265,7 +265,7 @@ namespace ngl
 		void remove_group_member(int agroupid, i64_actorid amember);
 
 		template <typename T>
-		void send_actorbygroup(int agroupid, std::shared_ptr<T>& adata)
+		void send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
 			auto itor = m_group.find(agroupid);
 			if (itor == m_group.end())
