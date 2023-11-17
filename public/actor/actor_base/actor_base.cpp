@@ -270,4 +270,52 @@ namespace ngl
 	{
 		m_isbroadcast = aisbroadcast;
 	}
+
+	// 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
+	int actor_base::add_group(ENUM_ACTOR aactortype/* = ACTOR_NONE*/)
+	{
+		group_info& linfo = m_group[++m_currentoffset];
+		linfo.m_actortype = aactortype;
+		linfo.m_actorlist.clear();
+		return m_currentoffset;
+	}
+
+	// 移除一个分组
+	void actor_base::remove_group(int agroupid)
+	{
+		m_group.erase(agroupid);
+	}
+
+	// 将成员加入某个群发分组
+	bool actor_base::add_group_member(int agroupid, i64_actorid amember)
+	{
+		auto itor = m_group.find(agroupid);
+		if (itor == m_group.end())
+		{
+			LogLocalError("add_group_member not find groupid[%]", agroupid);
+			return false;
+		}
+
+		actor_guid lguid(amember);
+		ENUM_ACTOR ltype = itor->second.m_actortype;
+		if (ltype != ACTOR_NONE)
+		{
+			if (itor->second.m_actortype != lguid.type())
+			{
+				LogLocalError("itor->second.m_actortype != lguid.type()==[%]([%]!=[%])", agroupid, (int)ltype, (int)lguid.type());
+				return false;
+			}
+		}
+		itor->second.m_actorlist.insert(amember);
+		return true;
+	}
+
+	// 将成员从头某个群发分组中移除
+	void actor_base::remove_group_member(int agroupid, i64_actorid amember)
+	{
+		auto itor = m_group.find(agroupid);
+		if (itor == m_group.end())
+			return;
+		itor->second.m_actorlist.erase(amember);
+	}
 }

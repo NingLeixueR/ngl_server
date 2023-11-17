@@ -152,29 +152,38 @@ namespace ngl
 			}
 		}
 
+
 		// 根据actor_role.guidid确定客户端，给一组客户端发送数据
+		template <typename T>
+		static void send_client(std::initializer_list<i64_actorid>& itor, std::shared_ptr<T>& adata)
+		{
+			handle_pram lpram;
+			auto pro = std::make_shared<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>();
+			std::for_each(itor.begin(), itor.end(), [&pro](i64_actorid aactorid)
+				{
+					actor_guid lguid(id);
+					pro->m_uid.push_back(lguid.actordataid());
+					pro->m_area.push_back(lguid.area());
+				});
+			pro->set_data(adata);
+			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
+			handle_pram::create<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>, true, true, true>(
+				lpram,
+				*itor.begin(),
+				actor_guid::make(),
+				pro
+			);
+			push_task_id(lclientguid, lpram, true);
+			
+		}
+
 		template <typename T>
 		static void send_client(const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata)
 		{
 			if(avecid.empty())
 				return;
-			handle_pram lpram;
-			auto pro = std::make_shared<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>();
-			for (i64_actorid id : avecid)
-			{
-				actor_guid lguid(id);
-				pro->m_uid.push_back(lguid.actordataid());
-				pro->m_area.push_back(lguid.area());
-			}
-			pro->set_data(adata);
-			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
-			handle_pram::create<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>, true, true, true>(
-				lpram,
-				avecid[0],
-				actor_guid::make(),
-				pro
-			);
-			push_task_id(lclientguid, lpram, true);
+			std::initializer_list<i64_actorid> itor(avecid);
+			send_client(itor, adata);
 		}
 
 		// 向所有客户端发送消息
@@ -237,40 +246,26 @@ namespace ngl
 	public:
 #pragma region network_strat_group
 	private:
+		struct group_info
+		{
+			ENUM_ACTOR m_actortype;
+			std::set<i64_actorid> m_actorlist;
+		};
 		// 分组数据
-		std::map<int, std::set<i64_actorid>> m_group;
+		std::map<int, group_info> m_group;
 		int m_currentoffset = 0;
 	public:
-		// 创建一个群发分组
-		int add_group()
-		{
-			m_group[++m_currentoffset];
-			return m_currentoffset;
-		}
+		// 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
+		int add_group(ENUM_ACTOR aactortype = ACTOR_NONE);
+
 		// 移除一个分组
-		void remove_group(int agroupid)
-		{
-			m_group.erase(agroupid);
-		}
+		void remove_group(int agroupid);
 
 		// 将成员加入某个群发分组
-		bool add_group_member(int agroupid, i64_actorid amember)
-		{
-			auto itor = m_group.find(agroupid);
-			if (itor == m_group.end())
-				return false;
-			itor->second.insert(amember);
-			return true;			
-		}
-		// 将成员从头某个群发分组中移除
-		void remove_group_member(int agroupid, i64_actorid amember)
-		{
-			auto itor = m_group.find(agroupid);
-			if (itor == m_group.end())
-				return;
-			itor->second.erase(amember);
-		}
+		bool add_group_member(int agroupid, i64_actorid amember);
 
+		// 将成员从头某个群发分组中移除
+		void remove_group_member(int agroupid, i64_actorid amember);
 
 		template <typename T>
 		void send_actorbygroup(int agroupid, std::shared_ptr<T>& adata)
@@ -278,16 +273,26 @@ namespace ngl
 			auto itor = m_group.find(agroupid);
 			if (itor == m_group.end())
 				return false;
-			handle_pram lpram;
-			handle_pram::create<T>(lpram, actor_guid::make(), guid(), adata);
-			
-			for (i64_actorid actorid : itor->second)
+			if (itor->second.m_actortype != ACTOR_ROBOT)
 			{
-				lpram.m_actor = actorid;
-				push_task_id(actorid, lpram, true);
+				handle_pram lpram;
+				handle_pram::create<T>(lpram, actor_guid::make(), guid(), adata);
+
+				for (i64_actorid actorid : itor->second)
+				{
+					lpram.m_actor = actorid;
+					push_task_id(actorid, lpram, true);
+				}
+			}
+			else
+			{
+				std::initializer_list<i64_actorid> itor(itor->second.m_actorlist);
+				send_client(itor, adata);
 			}
 			return true;
 		}
+
+#pragma endregion
 
 		// 发送数据到指定的actor
 		template <typename T>
@@ -297,7 +302,6 @@ namespace ngl
 			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
-#pragma endregion
 
 #pragma endregion
 		
