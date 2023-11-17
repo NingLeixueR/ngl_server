@@ -310,7 +310,7 @@ namespace ngl
 		return true;
 	}
 
-	// 将成员从头某个群发分组中移除
+	// 将成员从某个群发分组中移除
 	void actor_base::remove_group_member(int agroupid, i64_actorid amember)
 	{
 		auto itor = m_group.find(agroupid);

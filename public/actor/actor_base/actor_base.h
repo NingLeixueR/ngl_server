@@ -261,9 +261,9 @@ namespace ngl
 		void remove_group(int agroupid);
 		// 将成员加入某个群发分组
 		bool add_group_member(int agroupid, i64_actorid amember);
-		// 将成员从头某个群发分组中移除
+		// 将成员从某个群发分组中移除
 		void remove_group_member(int agroupid, i64_actorid amember);
-
+		// 给一组成员发送消息
 		template <typename T>
 		void send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
@@ -288,8 +288,6 @@ namespace ngl
 			}
 			return true;
 		}
-
-
 #pragma endregion
 
 		// 发送数据到指定的actor

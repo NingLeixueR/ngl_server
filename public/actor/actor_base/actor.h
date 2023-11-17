@@ -42,10 +42,10 @@ namespace ngl
 
 		// 注册定时器
 		template <typename TDerived>
-		static void register_timer()
+		static void register_timer(arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::Tfun<timerparm> afun/* = &TDerived::timer_handle*/)
 		{
 			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().rfun_nonet<timerparm>(
-				&TDerived::timer_handle
+				afun
 				, false
 			);
 		}
