@@ -291,7 +291,6 @@ namespace ngl
 			}
 			return true;
 		}
-
 #pragma endregion
 
 		// 发送数据到指定的actor
