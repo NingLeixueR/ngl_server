@@ -257,13 +257,10 @@ namespace ngl
 	public:
 		// 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
 		int add_group(ENUM_ACTOR aactortype = ACTOR_NONE);
-
 		// 移除一个分组
 		void remove_group(int agroupid);
-
 		// 将成员加入某个群发分组
 		bool add_group_member(int agroupid, i64_actorid amember);
-
 		// 将成员从头某个群发分组中移除
 		void remove_group_member(int agroupid, i64_actorid amember);
 
@@ -291,6 +288,8 @@ namespace ngl
 			}
 			return true;
 		}
+
+
 #pragma endregion
 
 		// 发送数据到指定的actor
