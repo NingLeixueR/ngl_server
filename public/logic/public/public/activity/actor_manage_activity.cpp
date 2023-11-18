@@ -30,7 +30,7 @@ namespace ngl
 	void actor_manage_activity::actor_register()
 	{
 		// 定时器
-		actor::register_timer<actor_manage_activity>();
+		actor::register_timer<actor_manage_activity>(&actor_manage_activity::timer_handle);
 		// 协议注册
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_activity>(
 			false

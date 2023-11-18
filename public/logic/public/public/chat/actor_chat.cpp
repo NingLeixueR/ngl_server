@@ -30,7 +30,7 @@ namespace ngl
 	void actor_chat::actor_register()
 	{
 		// 定时器
-		actor::register_timer<actor_chat>();
+		actor::register_timer<actor_chat>(&actor_chat::timer_handle);
 		// 协议注册
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_chat>(
 			false
