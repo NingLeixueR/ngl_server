@@ -101,7 +101,7 @@ namespace ngl
 				google::protobuf::util::JsonPrintOptions options;
 				options.add_whitespace = false;
 				options.always_print_primitive_fields = false;
-				options.preserve_proto_field_names = true;
+				options.preserve_proto_field_names = false;
 				std::string json;
 				bool ret = google::protobuf::json::MessageToJsonString(*adata.m_data, &json, options).ok();
 				if (ret)
