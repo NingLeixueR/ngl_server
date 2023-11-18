@@ -31,6 +31,12 @@ namespace ngl
 	};
 
 
+	template <typename TDerived, typename TPRAM>
+	using Tfun = bool (TDerived::*)(i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
+
+	template <typename TDerived, typename TPRAM>
+	using TMountfun = bool (*)(TDerived*, i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
+
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	class arfun : public arfunbase
 	{
@@ -42,27 +48,21 @@ namespace ngl
 			return ltemp;
 		}
 
-		template <typename TPRAM>
-		using Tfun = bool (TDerived::*)(i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
-
-		template <typename TPRAM>
-		using TMountfun = bool (*)(TDerived*, i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
-
 		template <typename T>
-		arfun& rfun(const std::function<void(T&)>& afun);
+		arfun& rfun(const std::function<void(TDerived*, T&)>& afun);
 
 		//// #### bool aisload = false 是否允许db数据加载完成之前处理此消息
 		template <typename T>
-		arfun& rfun(Tfun<T> afun, bool aisload = false);
+		arfun& rfun(Tfun<TDerived, T> afun, bool aisload = false);
 
 		template <typename T>
-		arfun& rfun_nonet(Tfun<T> afun, bool aisload = false);
+		arfun& rfun_nonet(Tfun<TDerived, T> afun, bool aisload = false);
 
 		template <typename T, bool BOOL>
-		arfun& rfun_forward(Tfun<actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
+		arfun& rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		template <typename T>
-		arfun& rfun_recvforward(Tfun<T> afun, bool aisload = false);
+		arfun& rfun_recvforward(Tfun<TDerived, T> afun, bool aisload = false);
 	};
 
 

@@ -11,14 +11,14 @@ namespace ngl
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(const std::function<void(T&)>& afun)
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(const std::function<void(TDerived*, T&)>& afun)
 	{
 		m_fun[init_protobuf::protocol<T>()] = alogicfun
 		{
 			.m_isdbload = false,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				afun(*(T*)apram.m_data.get());
+				afun((TDerived*)aactor, *(T*)apram.m_data.get());
 			}
 		};
 		protocol::registry_actor<T, TYPE>(
@@ -30,7 +30,7 @@ namespace ngl
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_nonet(Tfun<T> afun, bool aisload/* = false*/)
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_nonet(Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
 		m_fun[init_protobuf::protocol<T>()] = alogicfun
 		{
@@ -45,7 +45,7 @@ namespace ngl
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<T> afun, bool aisload/* = false*/)
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
 		rfun_nonet(afun, aisload);
 		protocol::registry_actor<T, TYPE>(
@@ -58,7 +58,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T, bool BOOL>
 	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_forward(
-		Tfun<actor_forward<T, TYPE, BOOL, ngl::forward>> afun,
+		Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun,
 		ENUM_ACTOR atype,
 		bool aisload/* = false*/)
 	{
@@ -83,7 +83,7 @@ namespace ngl
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_recvforward(Tfun<T> afun, bool aisload/* = false*/)
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_recvforward(Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
 		using type_forward = actor_forward<T, TYPE, false, T>;
 		m_fun[init_protobuf::protocol<type_forward>()] = alogicfun
