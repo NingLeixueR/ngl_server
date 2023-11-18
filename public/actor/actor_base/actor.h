@@ -42,7 +42,7 @@ namespace ngl
 
 		// 注册定时器
 		template <typename TDerived>
-		static void register_timer(arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::Tfun<timerparm> afun/* = &TDerived::timer_handle*/)
+		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
 			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().rfun_nonet<timerparm>(
 				afun
@@ -84,7 +84,7 @@ namespace ngl
 
 		// 用来注册匿名函数挂载在对应actor上
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_actor_s(const std::function<void(T&)>& afun)
+		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
 			arfun<TDerived, TYPE>::instance().rfun<T>(afun);
 		}
@@ -104,6 +104,47 @@ namespace ngl
 			register_actor<TYPE, TDerived, ARG...>(aisload, arg...);
 		}
 #pragma endregion 
+
+#pragma region register_template_actor
+		// 注册actor成员函数[XXX]可以指定任意函数  符合handle参数要求
+		template <typename TDerived, typename T, bool isClient2Game>
+		class tfun
+		{
+		public:
+			using TYPE = T;
+			static Tfun<TDerived, T> fun;
+			static const bool IsClient2Game = isClient2Game;
+
+			static tfun<TDerived, T, isClient2Game>* make(Tfun<TDerived, T> afun)
+			{
+				tfun<TDerived, T, isClient2Game>::fun = afun;
+				return null<tfun<TDerived, T, isClient2Game>>;
+			}
+		};
+
+
+
+#define make_tfun(TDerived, Fun, T, IsClient2Game)		actor::tfun<TDerived,T,IsClient2Game>::make(Fun)
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
+		static void register_template_actor(bool aisload, const T*)
+		{
+			if constexpr (T::IsClient2Game == false)
+				arfun<TDerived, TYPE>::instance().rfun<typename T::TYPE>(T::fun, aisload);
+			else
+			{
+				arfun<TDerived, TYPE>::instance().rfun_recvforward<typename T::TYPE>(T::fun, false);
+			}
+		}
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
+		static void register_template_actor(bool aisload, const T* apdata, const ARG*... arg)
+		{
+			register_template_actor<TYPE, TDerived, T>(aisload, apdata);
+			register_template_actor<TYPE, TDerived, ARG...>(aisload, arg...);
+		}
+#pragma endregion 
+
 
 #pragma region register_actornonet
 		// ## 与register_actor类似 只不过不注册网络层
@@ -208,5 +249,8 @@ namespace ngl
 #pragma endregion
 
 	};
+
+	template <typename TDerived, typename T, bool isClient2Game>
+	Tfun<TDerived, T> actor::tfun<TDerived, T, isClient2Game>::fun;
 
 }
