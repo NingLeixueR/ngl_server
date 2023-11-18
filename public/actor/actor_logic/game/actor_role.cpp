@@ -42,7 +42,7 @@ namespace ngl
 	void actor_role::actor_register()
 	{
 		// 定时器
-		actor_role::register_timer<actor_role>();
+		register_timer<actor_role>(&actor_role::timer_handle);
 
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
 			true,

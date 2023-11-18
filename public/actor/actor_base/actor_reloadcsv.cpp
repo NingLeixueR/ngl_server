@@ -25,7 +25,7 @@ namespace ngl
 
 	void actor_reloadcsv::actor_register()
 	{
-		actor_reloadcsv::register_timer<actor_reloadcsv>();
+		actor_reloadcsv::register_timer<actor_reloadcsv>(&actor_reloadcsv::timer_handle);
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv>(
 			false,
 			null<actor_reloadcsv_pro>

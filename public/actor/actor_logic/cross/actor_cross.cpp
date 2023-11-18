@@ -5,7 +5,7 @@ namespace ngl
 	void actor_cross::actor_register()
 	{
 		// ¶¨Ê±Æ÷
-		actor_cross::register_timer<actor_cross>();
+		actor_cross::register_timer<actor_cross>(&actor_cross::timer_handle);
 		
 		//register_actor<EPROTOCOL_TYPE_CUSTOM, actor_cross>(
 		//	true,
