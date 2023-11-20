@@ -28,7 +28,7 @@ namespace ngl
 		template <typename TDerived>
 		void init_rfun()
 		{
-			m_actorfun[EPROTOCOL_TYPE_CUSTOM] = &arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance();
+			m_actorfun[EPROTOCOL_TYPE_CUSTOM]		= &arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance();
 			m_actorfun[EPROTOCOL_TYPE_PROTOCOLBUFF] = &arfun<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance();
 
 			if (isbroadcast())
@@ -44,10 +44,7 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
-			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().rfun_nonet<timerparm>(
-				afun
-				, false
-			);
+			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().rfun_nonet<timerparm>(afun, false);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
@@ -93,7 +90,7 @@ namespace ngl
 
 		// 简化[handle]方法注册
 #define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
-#define dregister_fun(TDerived,T, Fun)		(Tfun<TDerived, T>)&TDerived::Fun
+#define dregister_fun(TDerived,T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
 		// 注册actor成员函数
 		template <
@@ -145,12 +142,7 @@ namespace ngl
 		>
 		static void register_forward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance()
-				.rfun_forward<IsForward>(
-					afun
-					, (ENUM_ACTOR)TDerived::ACTOR_TYPE
-					, false
-				);
+			arfun<TDerived, TYPE>::instance().rfun_forward<IsForward>( afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>
@@ -168,11 +160,7 @@ namespace ngl
 		>
 		static void register_recvforward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance()
-				.rfun_recvforward(
-					afun
-					, false
-				);
+			arfun<TDerived, TYPE>::instance().rfun_recvforward(afun, false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
