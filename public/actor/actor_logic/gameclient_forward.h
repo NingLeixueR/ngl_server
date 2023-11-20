@@ -35,6 +35,33 @@ namespace ngl
 			gameclient_forward::register_recvforward<TYPE>(arg...);
 		}
 
+		// 二次转发   [client]->[gateway]			->			[game]		->		[module]
+		// ##############################		第一次转发		######	第二次转发	#######
+		// 需要支持二次转发
+		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename T>
+		static void register_recvforward2(const T* apdata)
+		{
+			switch (xmlnode::m_nodetype)
+			{
+			case ngl::GAME:// gateway->game
+				actor_role::register_recvforward<TYPE, actor_role>((Tfun<actor_role, T>)& actor_role::handle_forward<ACTOR, T>);
+				break;
+			case ngl::GATEWAY:// client->gateway
+				actor_gateway_client2game::register_forward<TYPE, false, actor_gateway_client2game>(
+					(Tfun<actor_gateway_client2game, actor_forward<T, TYPE, false, ngl::forward>>) & actor_gateway_client2game::handle
+				);
+				break;
+			}
+		}
+
+		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename T, typename ...ARG>
+		static void register_recvforward2(const T* apdata, const ARG*... arg)
+		{
+			gameclient_forward::register_recvforward2<TYPE, ACTOR>(apdata);
+			gameclient_forward::register_recvforward2<TYPE, ACTOR>(arg...);
+		}
+
+
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		static void register_forward(const T* ap)
 		{

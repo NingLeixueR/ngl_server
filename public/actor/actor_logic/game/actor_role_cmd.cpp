@@ -57,7 +57,7 @@ namespace ngl
 							}
 							pro.set_m_content(lvec[2]);
 						}
-						role->handle(0, nullptr, pro);
+						role->handle_forward<ACTOR_MAIL>(0, nullptr, pro);
 					}
 				};
 			lcmd["/switch"] = [this](actor_role* role, const char* aparm)

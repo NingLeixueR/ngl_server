@@ -58,52 +58,35 @@ namespace ngl
 
 		void sync_data_client();
 
-#define foward_module(MODULE, TYPE)														\
-	bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, TYPE& adata)	\
-	{																					\
-		std::shared_ptr<mforward<TYPE>> pro(new mforward<TYPE>(id_guid(), adata));		\
-		send_actor(actor_guid::make_self(MODULE), pro);									\
-		return true;																	\
-	}
-		
-#define foward_cross_module(MODULE, TYPE, ISCROSSFUN)									\
-	bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, TYPE& adata)	\
-	{																					\
-		std::shared_ptr<mforward<TYPE>> pro(new mforward<TYPE>(id_guid(), adata));		\
-		if(ISCROSSFUN(adata))															\
-		{																				\
-			send_actor(																	\
-				actor_guid::make(														\
-					MODULE																\
-					, ttab_servers::tab()->m_crossarea									\
-					, actor_guid::none_actordataid()									\
-				), pro);																\
-		}																				\
-		else																			\
-		{																				\
-			send_actor(																	\
-				actor_guid::make(														\
-					MODULE																\
-					, ttab_servers::tab()->m_area										\
-					, actor_guid::none_actordataid()									\
-				), pro);																\
-		}																				\
-		return true;																	\
-	}
-		// 模块转发  
-		// foward_module(区服内部模块转发)
-		foward_module(ACTOR_NOTICE, pbnet::PROBUFF_NET_GET_NOTICE)
-		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_LIST)
-		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_READ)
-		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_DRAW)
-		foward_module(ACTOR_MAIL, pbnet::PROBUFF_NET_MAIL_DEL)
+		// 重载(跨服模块转发)
+		template <typename T>
+		bool is_cross(T& adata)
+		{
+			return false;
+		}
 
-		// foward_cross_module(跨服模块转发)
 		bool is_cross(pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			return adata.m_channelid() == 2;
 		}
-		foward_cross_module(ACTOR_CHAT, pbnet::PROBUFF_NET_CHAT, is_cross)
+
+		template <ENUM_ACTOR ACTOR, typename T>
+		bool handle_forward(i32_threadid athread, const std::shared_ptr<pack>& apack, T& adata)
+		{
+			std::shared_ptr<mforward<T>> pro(new mforward<T>(id_guid(), adata));
+			i64_actorid lguid;
+			if (is_cross(adata))
+			{
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, actor_guid::none_actordataid());
+				
+			}
+			else
+			{
+				lguid = actor_guid::make_self(ACTOR);
+			}
+			send_actor(lguid, pro);
+			return true;
+		}
 
 		// CMD 协议
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_CMD& adata);
