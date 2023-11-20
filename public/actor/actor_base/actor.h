@@ -33,9 +33,9 @@ namespace ngl
 
 			if (isbroadcast())
 			{
-				register_actornonet_s<EPROTOCOL_TYPE_CUSTOM, TDerived>(
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
 					true
-					, null<actor_broadcast>
+					, (Tfun<actor, actor_broadcast>)&actor::handle
 				);
 			}
 		}
@@ -90,72 +90,44 @@ namespace ngl
 		}
 
 #pragma region register_actor
-		// 注册actor成员函数[handle]
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_actor(bool aisload, const T*)
+
+		// 简化[handle]方法注册
+#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
+#define dregister_fun(TDerived,T, Fun)		(Tfun<TDerived, T>)&TDerived::Fun
+
+		// 注册actor成员函数
+		template <
+			EPROTOCOL_TYPE TYPE			// 协议类型
+			, typename TDerived			// 注册的actor派生了
+			, typename T				// Tfun<TDerived, T>
+		>
+		static void register_actor(bool aisload, T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun<T>(&TDerived::handle, aisload);
+			arfun<TDerived, TYPE>::instance().rfun(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_actor(bool aisload, const T* apdata, const ARG*... arg)
+		static void register_actor(bool aisload, T afun, ARG... argfun)
 		{
-			register_actor<TYPE, TDerived, T>(aisload, apdata);
-			register_actor<TYPE, TDerived, ARG...>(aisload, arg...);
-		}
+			register_actor<TYPE, TDerived>(aisload, afun);
+			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
+		}		
 #pragma endregion 
-
-#pragma region register_template_actor
-		// 注册actor成员函数[XXX]可以指定任意函数  符合handle参数要求
-		template <typename TDerived, typename T, bool isClient2Game>
-		class tfun
-		{
-		public:
-			using TYPE = T;
-			static Tfun<TDerived, T> fun;
-			static const bool IsClient2Game = isClient2Game;
-
-			static tfun<TDerived, T, isClient2Game>* make(Tfun<TDerived, T> afun)
-			{
-				tfun<TDerived, T, isClient2Game>::fun = afun;
-				return null<tfun<TDerived, T, isClient2Game>>;
-			}
-		};
-
-
-
-#define make_tfun(TDerived, Fun, T, IsClient2Game)		actor::tfun<TDerived,T,IsClient2Game>::make(Fun)
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_template_actor(bool aisload, const T*)
-		{
-			if constexpr (T::IsClient2Game == false)
-				arfun<TDerived, TYPE>::instance().rfun<typename T::TYPE>(T::fun, aisload);
-			else
-			{
-				arfun<TDerived, TYPE>::instance().rfun_recvforward<typename T::TYPE>(T::fun, false);
-			}
-		}
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_template_actor(bool aisload, const T* apdata, const ARG*... arg)
-		{
-			register_template_actor<TYPE, TDerived, T>(aisload, apdata);
-			register_template_actor<TYPE, TDerived, ARG...>(aisload, arg...);
-		}
-#pragma endregion 
-
 
 #pragma region register_actornonet
 		// ## 与register_actor类似 只不过不注册网络层
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_actornonet(bool aisload, const T*)
+		template <
+			EPROTOCOL_TYPE TYPE			// 协议类型
+			, typename TDerived			// 注册的actor派生了
+			, typename T				// Tfun<TDerived, T>
+		>
+		static void register_actornonet(bool aisload, T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun_nonet<T>(&TDerived::handle, aisload);
+			arfun<TDerived, TYPE>::instance().rfun_nonet(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_actornonet(bool aisload, const T* apdata, const ARG*... arg)
+		static void register_actornonet(bool aisload, T apdata, ARG... arg)
 		{
 			register_actornonet<TYPE, TDerived>(aisload, apdata);
 			register_actornonet<TYPE, TDerived>(aisload, arg...);
@@ -163,56 +135,48 @@ namespace ngl
 #pragma endregion 
 
 	private:
-		// 注册actor类的handle
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_actornonet_s(bool aisload, const T*)
-		{
-			arfun<TDerived, TYPE>::instance().rfun_nonet<T>(&actor::handle, aisload);
-		}
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_actornonet_s(bool aisload, const T* apdata, const ARG*... arg)
-		{
-			register_actornonet_s<TYPE, TDerived>(aisload, apdata);
-			register_actornonet_s<TYPE, TDerived>(aisload, arg...);
-		}
-	public:
-
-	private:
 		friend class gameclient_forward;
 		// ### 注册 [forward:转发协议]
-		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
-		static void register_forward(TDerived* aderived, const T*)
+		template <
+			EPROTOCOL_TYPE TYPE			// 协议类型
+			, bool IsForward
+			, typename TDerived			// 注册的actor派生了
+			, typename T				// Tfun<TDerived, T>
+		>
+		static void register_forward(T afun)
 		{
 			arfun<TDerived, TYPE>::instance()
-				.rfun_forward<T, IsForward>(
-					&TDerived::handle
+				.rfun_forward<IsForward>(
+					afun
 					, (ENUM_ACTOR)TDerived::ACTOR_TYPE
 					, false
 				);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>
-		static void register_forward(TDerived* aderived, const T* ap, const ARG*... arg)
+		static void register_forward(T ap, ARG... arg)
 		{
-			register_forward<TYPE, IsForward, TDerived, T>(aderived, ap);
-			register_forward<TYPE, IsForward, TDerived, ARG...>(aderived, arg...);
+			register_forward<TYPE, IsForward, TDerived, T>(ap);
+			register_forward<TYPE, IsForward, TDerived, ARG...>(arg...);
 		}
 
-
 		// 注册 [forward:转发协议] recvforward
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_recvforward(const T*)
+		template <
+			EPROTOCOL_TYPE TYPE			// 协议类型
+			, typename TDerived			// 注册的actor派生了
+			, typename T				// Tfun<TDerived, T>
+		>
+		static void register_recvforward(T afun)
 		{
 			arfun<TDerived, TYPE>::instance()
-				.rfun_recvforward<T>(
-					&TDerived::handle
+				.rfun_recvforward(
+					afun
 					, false
 				);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_recvforward(const T* ap, const ARG*... arg)
+		static void register_recvforward(T ap, ARG... arg)
 		{
 			register_recvforward<TYPE, TDerived>(ap);
 			register_recvforward<TYPE, TDerived>(arg...);
@@ -250,7 +214,5 @@ namespace ngl
 
 	};
 
-	template <typename TDerived, typename T, bool isClient2Game>
-	Tfun<TDerived, T> actor::tfun<TDerived, T, isClient2Game>::fun;
 
 }

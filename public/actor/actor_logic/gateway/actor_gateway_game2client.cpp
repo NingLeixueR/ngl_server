@@ -26,7 +26,7 @@ namespace ngl
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway_game2client>(
 			false
-			, null<actor_gateway_info_updata>
+			, dregister_fun_handle(actor_gateway_game2client, actor_gateway_info_updata)
 		);
 		// Game 2 Client
 		gameclient_forward::g2c();

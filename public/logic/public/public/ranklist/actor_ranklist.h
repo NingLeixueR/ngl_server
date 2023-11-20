@@ -38,11 +38,6 @@ namespace ngl
 		}
 		static void actor_register()
 		{
-			// Ð­Òé×¢²á
-			//register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_ranklist>(
-			//	true
-			//	, null<mforward<GM::PROBUFF_GM_GET_NOTICE>>::ptr
-			//	);
 		}
 
 		virtual ~actor_ranklist() {}

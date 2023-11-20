@@ -44,14 +44,15 @@ namespace ngl
 		// 定时器
 		register_timer<actor_role>(&actor_role::timer_handle);
 
+
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
-			true,
-			null<actor_disconnect_close>
+			true
+			, dregister_fun_handle(actor_role, actor_disconnect_close)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>(
-			true,
-			null<pbnet::PROBUFF_NET_ROLE_SYNC>
+			true
+			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_ROLE_SYNC)
 		);
 
 		// 协议注册

@@ -7,10 +7,10 @@ namespace ngl
 	void actor_server::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_server>(
-			true,
-			null<actor_node_register>,
-			null<actor_node_update>,
-			null<actor_gateway_id_updata>
+			true
+			, dregister_fun_handle(actor_server, actor_node_register)
+			, dregister_fun_handle(actor_server, actor_node_update)
+			, dregister_fun_handle(actor_server, actor_gateway_id_updata)
 		);
 	}
 

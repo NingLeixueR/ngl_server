@@ -20,17 +20,13 @@ namespace ngl
 	void actor_gm::actor_register()
 	{
 		// Ð­Òé×¢²á
-		//register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gm>(
-		//	false,
-		//	);
-
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gm>(false
-			, null<GM::PROBUFF_GM_GET_NOTICE>
-			, null<GM::PROBUFF_GM_ADD_NOTICE>
-			, null<GM::PROBUFF_GM_DEL_NOTICE>
-			, null<mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>>
-			, null<mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>>
-			, null<mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>>
+			, dregister_fun_handle(actor_gm, GM::PROBUFF_GM_GET_NOTICE)
+			, dregister_fun_handle(actor_gm, GM::PROBUFF_GM_ADD_NOTICE)
+			, dregister_fun_handle(actor_gm, GM::PROBUFF_GM_DEL_NOTICE)
+			, dregister_fun_handle(actor_gm, mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>)
+			, dregister_fun_handle(actor_gm, mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>)
+			, dregister_fun_handle(actor_gm, mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>)
 		);
 	}
 

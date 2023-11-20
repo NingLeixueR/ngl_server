@@ -56,7 +56,7 @@ namespace ngl
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename T, bool BOOL>
+	template <bool BOOL, typename T>
 	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_forward(
 		Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun,
 		ENUM_ACTOR atype,

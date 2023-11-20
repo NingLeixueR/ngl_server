@@ -34,7 +34,7 @@ namespace ngl
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_chat>(
 			false
-			, null<mforward<pbnet::PROBUFF_NET_CHAT>>
+			, dregister_fun_handle(actor_chat, mforward<pbnet::PROBUFF_NET_CHAT>)
 			);
 
 	}

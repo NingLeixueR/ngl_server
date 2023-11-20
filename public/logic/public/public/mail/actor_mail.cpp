@@ -25,8 +25,8 @@ namespace ngl
 	{
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_mail>(
-			true, 
-			null<actor_protocol_add_mail>
+			true
+			, dregister_fun_handle(actor_mail, actor_protocol_add_mail)
 			);
 	}
 

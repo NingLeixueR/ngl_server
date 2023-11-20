@@ -34,8 +34,8 @@ namespace ngl
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_activity>(
 			false
-			, null<actor_protocol_open_activity>
-			, null<actor_protocol_close_activity>
+			, dregister_fun_handle(actor_manage_activity, actor_protocol_open_activity)
+			, dregister_fun_handle(actor_manage_activity, actor_protocol_close_activity)
 			);
 	}
 

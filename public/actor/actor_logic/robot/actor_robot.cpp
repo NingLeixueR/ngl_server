@@ -13,13 +13,13 @@ namespace ngl
 	void actor_manage_robot::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>(
-			false,
-			null<robot_pram>
+			false
+			, dregister_fun_handle(actor_manage_robot, robot_pram)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_robot>(
-			false,
-			null<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>
+			false
+			, dregister_fun_handle(actor_manage_robot, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE)
 		);
 	}
 

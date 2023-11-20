@@ -7,10 +7,6 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		actor_cross::register_timer<actor_cross>(&actor_cross::timer_handle);
 		
-		//register_actor<EPROTOCOL_TYPE_CUSTOM, actor_cross>(
-		//	true,
-		//	null<actor_disconnect_close>
-		//	);
 
 	}
 

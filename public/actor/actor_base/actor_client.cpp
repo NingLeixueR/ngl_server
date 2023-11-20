@@ -49,12 +49,12 @@ namespace ngl
 		//###### ×¢²áÐ­Òé
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_client>(
 			true
-			, null<actor_node_register_response>
-			, null<actor_client_node_connect>
-			, null<actor_node_update>
-			, null<actor_node_actor_connect_task>
-			, null<actor_node_update_mass>
-			, null<actor_gateway_id_updata>
+			, dregister_fun_handle(actor_client, actor_node_register_response)
+			, dregister_fun_handle(actor_client, actor_client_node_connect)
+			, dregister_fun_handle(actor_client, actor_node_update)
+			, dregister_fun_handle(actor_client, actor_node_actor_connect_task)
+			, dregister_fun_handle(actor_client, actor_node_update_mass)
+			, dregister_fun_handle(actor_client, actor_gateway_id_updata)
 			);
 	}
 

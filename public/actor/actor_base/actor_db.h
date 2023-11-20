@@ -278,11 +278,11 @@ namespace ngl
 			EPROTOCOL_TYPE ltype = PROTYPE;
 			using TDerived = actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 			TDerived::template register_actor<PROTYPE, TDerived>(
-				true,
-				null<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>,
-				null<actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>,
-				null<actor_db_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>,
-				null<actor_time_db_cache<PROTYPE, TDBTAB>>
+				true
+				, (Tfun<TDerived, actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>)&TDerived::handle
+				, (Tfun<TDerived, actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
+				, (Tfun<TDerived, actor_db_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
+				, (Tfun<TDerived, actor_time_db_cache<PROTYPE, TDBTAB>>) & TDerived::handle
 				);
 		}
 

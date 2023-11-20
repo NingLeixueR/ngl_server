@@ -6,7 +6,7 @@ namespace ngl
 	void actor_switchprocess::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_switchprocess>(false
-			, null<actor_switch_process<actor_switch_process_role>>
+			, (Tfun<actor_switchprocess, actor_switch_process<actor_switch_process_role>>) & actor_switchprocess::handle
 		);
 	}
 
