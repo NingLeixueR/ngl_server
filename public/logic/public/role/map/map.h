@@ -15,9 +15,7 @@ namespace ngl
 		std::map<i64_actorid, unit_region*> m_region;
 
 	public:
-		aoimap():
-			m_tabid(-1)
-		{}
+		aoimap();
 
 		// ≤È’“unit
 		unit_role*		find_role(i64_actorid aid);
