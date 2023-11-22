@@ -14,5 +14,7 @@ obj
 lib
 tools/public/rebuild.exe
 tools/public/idl/IDL.exe
+tools/public/idl/idlfile
+tools/public/proto/pro
 *.cpp text=auto charset=gbk
 *.h text=auto charset=gbk
