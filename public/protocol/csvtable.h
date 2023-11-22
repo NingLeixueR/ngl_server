@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-15 17:46:06
+// 创建时间 // 创建时间 23-11-22 10:41:49
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -130,6 +130,11 @@ enum ETaskType
 	ETaskTypePrincipalLine,	// 主线任务
 	ETaskTypeBranchLine,	// 支线任务
 	ETaskTypeDaily,	// 每日任务
+};
+enum eobstacles
+{
+	eobstacles_pass = 0,	// 可以通过
+	eobstacles_nopass = 1,	// 无法通过
 };
 struct tab_servers
 {
@@ -524,6 +529,37 @@ struct tab_task
 	def_portocol(tab_task, m_id, m_name, m_remarks, m_type, m_dropid, m_taskreceive, m_taskcomplete)
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_type,m_dropid,m_taskreceive,m_taskcomplete)
+};
+struct obstacles_data
+{
+/*********************************/
+	std::vector<eobstacles>		m_data;		
+/*********************************/
+	obstacles_data();
+	// 序列化反序列化相关
+	def_portocol(obstacles_data, m_data)
+	// csv相关
+	def_rcsv(m_data)
+};
+struct tab_map
+{
+/*********************************/
+	int32_t		m_id;		// 地图id
+	std::string		m_name;		
+	std::string		m_remarks;		
+	int32_t		m_w;		// x轴宽度
+	int32_t		m_l;		// y轴长度
+	int32_t		m_nx;		// [视野]x轴格子数量
+	int32_t		m_ny;		// [视野]y轴格子数量
+	int32_t		m_obstaclenx;		// [寻路]x轴格子数量
+	int32_t		m_obstacleny;		// [寻路]y轴格子数量
+	std::vector<obstacles_data>		m_obstacles;		// 地图数据
+/*********************************/
+	tab_map();
+	// 序列化反序列化相关
+	def_portocol(tab_map, m_id, m_name, m_remarks, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
+	// csv相关
+	def_rcsv(m_id,m_name,m_remarks,m_w,m_l,m_nx,m_ny,m_obstaclenx,m_obstacleny,m_obstacles)
 };
 }//namespace ngl
 #endif //_csvtable_H_

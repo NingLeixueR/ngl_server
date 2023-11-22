@@ -81,7 +81,7 @@ namespace ngl
 				};
 		}
 
-		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true, bool IS_CLIENT = false>
+		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
 		static void create(
 			handle_pram& apram
 			, const actor_guid& aid
@@ -97,11 +97,9 @@ namespace ngl
 			apram.m_forwardfun = nullptr;
 			if (IS_FORWARDFUN)
 				make_forwardfun<T, IS_SEND>(aid, arid, apram);
-			//if(IS_CLIENT)
-			//	make_client<T, IS_SEND>(aid, arid, apram);
 		}
 
-		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true, bool IS_CLIENT = false>
+		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
 		static void create(
 			handle_pram& apram
 			, const actor_guid& aid
@@ -115,8 +113,6 @@ namespace ngl
 			apram.m_requestactor = arid;
 			apram.m_protocoltype = (EPROTOCOL_TYPE)init_protobuf::protocol_type<T>();
 			apram.m_forwardfun = nullptr;
-			if (IS_FORWARDFUN)
-				make_forwardfun<T, IS_SEND>(aid, arid, apram);
 			if (IS_CLIENT)
 				make_client<T, IS_SEND>(aid, arid, apram);
 		}
@@ -203,7 +199,8 @@ namespace ngl
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendclient(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
 	{
-		std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);
+		using type_pro = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
+		std::shared_ptr<type_pro> ldata = std::static_pointer_cast<type_pro>(adata.m_data);
 		std::vector<i32_actordataid>& luid = ldata->m_uid;
 		std::vector<i16_area>& larea = ldata->m_area;
 		std::set<i32_serverid> lgateway;

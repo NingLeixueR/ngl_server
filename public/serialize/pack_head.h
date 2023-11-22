@@ -6,6 +6,7 @@
 #include "type.h"
 #include "serialize.h"
 #include "logserialize.h"
+#include "csvtable.h"
 
 namespace ngl
 {

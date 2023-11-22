@@ -266,7 +266,7 @@ public:
 		lstreamcsv << std::endl;
 		lstreamcsv << "version:0";
 
-		ngl::writefile lfilecsv("./idlfile2/"+ astruct.name + ".csv");
+		ngl::writefile lfilecsv("./idlfile/"+ astruct.name + ".csv");
 
 		//## ×ª»»Îªutf8
 		std::string lstr;
@@ -310,10 +310,6 @@ public:
 			lstream << "};\n";
 		}
 		m_str += lstream.str();
-
-		
-		
-
 	}
 
 	void _h_protocol()

@@ -8,7 +8,6 @@
 
 namespace ngl
 {
-
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
 	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(const std::function<void(TDerived*, T&)>& afun)

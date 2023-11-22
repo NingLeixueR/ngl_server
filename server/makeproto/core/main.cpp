@@ -828,43 +828,8 @@ void traverseProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, co
 
 #include "localtime.h"
 
-
-template <typename T>
-class k1
-{};
-
-class abc
+int main(int argc, char** argv) 
 {
-public:
-    template <typename T>
-    static void kkk()
-    {
-        std::cout << "kkk" << std::endl;
-    }
-
-    template <>
-    void kkk<k1<int>>()
-    {
-        std::cout << "k1" << std::endl;
-    }
-
-    template <>
-    void kkk<k1<float>>()
-    {
-        std::cout << "k1" << std::endl;
-    }
-};
-
-
-
-
-int main(int argc, char** argv) {
-   
-
-    abc::kkk<int>();
-    abc::kkk<k1<int>>();
-    abc::kkk<k1<float>>();
-
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", "../../tools/public/proto/");
   

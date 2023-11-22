@@ -30,14 +30,8 @@ namespace ngl
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 	};
 
-
 	template <typename TDerived, typename TPRAM>
 	using Tfun = bool (TDerived::*)(i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
-
-	template <typename TDerived, typename TPRAM>
-	using TMountfun = bool (*)(TDerived*, i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
-
-	
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	class arfun : public arfunbase

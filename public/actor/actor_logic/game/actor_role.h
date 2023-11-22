@@ -26,10 +26,10 @@ namespace ngl
 	class actor_role : public actor
 	{
 	public:
-		remakes m_remakes;
-		roleinfo m_info;
-		bag m_bag;
-		task m_task;
+		remakes		 m_remakes;
+		roleinfo	 m_info;
+		bag			 m_bag;
+		task		 m_task;
 		i32_serverid m_gatewayid;
 	public:
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);

@@ -128,7 +128,7 @@ namespace ngl
 			pro->m_area.push_back(lguid.area());
 			pro->set_data(adata);
 			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
-			handle_pram::create<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>,true, true, true>(
+			handle_pram::create<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>,true, true>(
 				lpram, 
 				lguid,
 				actor_guid::make(), 
@@ -152,38 +152,45 @@ namespace ngl
 			}
 		}
 
-
-		// 根据actor_role.guidid确定客户端，给一组客户端发送数据
-		template <typename T>
-		static void send_client(std::initializer_list<i64_actorid>& itor, std::shared_ptr<T>& adata)
+	private:
+		template < typename T, typename ITOR>
+		static void client_pro(ITOR abeg, ITOR aend, std::shared_ptr<T>& adata)
 		{
+			if (abeg == aend)
+				return;
 			handle_pram lpram;
 			auto pro = std::make_shared<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>();
-			std::for_each(itor.begin(), itor.end(), [&pro](i64_actorid aactorid)
+			std::for_each(abeg, abeg, [&pro](i64_actorid aactorid)
 				{
-					actor_guid lguid(id);
+					actor_guid lguid(aactorid);
 					pro->m_uid.push_back(lguid.actordataid());
 					pro->m_area.push_back(lguid.area());
 				});
 			pro->set_data(adata);
 			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
-			handle_pram::create<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>, true, true, true>(
-				lpram,
-				*itor.begin(),
-				actor_guid::make(),
-				pro
-			);
+			actor_guid lguid(*abeg);
+			//actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
+			handle_pram::create(lpram, lguid, actor_guid::make(), pro);
 			push_task_id(lclientguid, lpram, true);
-			
+		}
+	public:
+		// 根据actor_role.guidid确定客户端，给一组客户端发送数据
+		template <typename T>
+		static void send_client(std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata)
+		{
+			client_pro(alist.begin(), alist.end(), adata);
 		}
 
 		template <typename T>
 		static void send_client(const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata)
 		{
-			if(avecid.empty())
-				return;
-			std::initializer_list<i64_actorid> itor(avecid);
-			send_client(itor, adata);
+			client_pro(avecid.begin(), avecid.end(), adata);
+		}
+
+		template <typename T>
+		static void send_client(const std::set<i64_actorid>& asetid, std::shared_ptr<T>& adata)
+		{
+			client_pro(asetid.begin(), asetid.end(), adata);
 		}
 
 		// 向所有客户端发送消息
