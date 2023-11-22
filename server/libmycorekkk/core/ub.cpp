@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-11-16 17:23:09
+// 创建时间 23-11-22 16:26:34
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -74,6 +74,7 @@
 #include "mail.cpp"
 #include "manage_csv.cpp"
 #include "manage_curl.cpp"
+#include "map.cpp"
 #include "md5.cpp"
 #include "mdump.cpp"
 #include "net.cpp"
@@ -107,6 +108,7 @@
 #include "ttab_dbload.cpp"
 #include "ttab_random.cpp"
 #include "ttab_servers.cpp"
+#include "unit.cpp"
 #include "url.cpp"
 #include "uuid.cpp"
 #include "varint.cpp"

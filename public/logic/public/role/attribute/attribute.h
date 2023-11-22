@@ -13,8 +13,6 @@
 
 namespace ngl
 {
-	
-
 	class attribute
 	{
 		std::map<EnumModule, attribute_value> m_moduledata;
