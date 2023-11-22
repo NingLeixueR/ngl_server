@@ -186,5 +186,6 @@ namespace ngl
 			sync_position(aunit, llast_pos);
 			sync_position(aunit, lenter_pos);
 		}
+		return true;
 	}
 }
