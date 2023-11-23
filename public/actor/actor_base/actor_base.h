@@ -188,6 +188,12 @@ namespace ngl
 		}
 
 		template <typename T>
+		static void send_client(const std::list<i64_actorid>& avecid, std::shared_ptr<T>& adata)
+		{
+			client_pro(avecid.begin(), avecid.end(), adata);
+		}
+
+		template <typename T>
 		static void send_client(const std::set<i64_actorid>& asetid, std::shared_ptr<T>& adata)
 		{
 			client_pro(asetid.begin(), asetid.end(), adata);

@@ -30,7 +30,6 @@ namespace ngl
 		ACTOR_MANAGE_ROLE,
 		ACTOR_MANAGE_ROBOT,
 		ACTOR_MANAGE_GUILD,										// 工会管理器
-		ACTOR_MANAGE_MAP,
 		ACTOR_RELOADCSV,										// 接收分发然后重载csv
 		ACTOR_RELOADCSV_DISTRIBUTE,								// 分发csv
 		ACTOR_NOTICE,											// 公告
@@ -43,6 +42,9 @@ namespace ngl
 		ACTOR_CROSS,											// 跨服
 		ACTOR_CROSSDB,											// 跨服数据库
 		ACTOR_CROSSCHAT,										// 跨服聊天
+		ACTOR_MAP,												// 地图
+		ACTOR_MANAGE_MAP,										// 管理地图,创建地图
+		ACTOR_MATCHING,											// 匹配
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,

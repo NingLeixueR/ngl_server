@@ -70,6 +70,11 @@ namespace ngl
 			return adata.m_channelid() == 2;
 		}
 
+		bool dataid(pbnet::PROBUFF_NET_CHAT& adata)
+		{
+			return actor_guid::none_actordataid();
+		}
+
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(i32_threadid athread, const std::shared_ptr<pack>& apack, T& adata)
 		{
@@ -77,12 +82,11 @@ namespace ngl
 			i64_actorid lguid;
 			if (is_cross(adata))
 			{
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, actor_guid::none_actordataid());
-				
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(adata));
 			}
 			else
 			{
-				lguid = actor_guid::make_self(ACTOR);
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(adata));
 			}
 			send_actor(lguid, pro);
 			return true;
