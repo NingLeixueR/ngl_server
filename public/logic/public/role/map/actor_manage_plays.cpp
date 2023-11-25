@@ -36,6 +36,7 @@ namespace ngl
 		pbnet::eplays ltype = roomid::type(adata.m_roomid());
 		//ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr
 		//actor_base::create(ACTOR_PLAYS, );
+		return true;
 	}
 
 	bool actor_manage_plays::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
