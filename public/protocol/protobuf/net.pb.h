@@ -57,6 +57,9 @@ struct TableStruct_net_2eproto {
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable
     descriptor_table_net_2eproto;
 namespace pbnet {
+class MATCHING_MEMBER;
+struct MATCHING_MEMBERDefaultTypeInternal;
+extern MATCHING_MEMBERDefaultTypeInternal _MATCHING_MEMBER_default_instance_;
 class PROBUFF_NET_ACOUNT_LOGIN;
 struct PROBUFF_NET_ACOUNT_LOGINDefaultTypeInternal;
 extern PROBUFF_NET_ACOUNT_LOGINDefaultTypeInternal _PROBUFF_NET_ACOUNT_LOGIN_default_instance_;
@@ -141,6 +144,36 @@ extern PROBUFF_NET_MAIL_READDefaultTypeInternal _PROBUFF_NET_MAIL_READ_default_i
 class PROBUFF_NET_MAIL_READ_RESPONSE;
 struct PROBUFF_NET_MAIL_READ_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_MAIL_READ_RESPONSEDefaultTypeInternal _PROBUFF_NET_MAIL_READ_RESPONSE_default_instance_;
+class PROBUFF_NET_MATCHING;
+struct PROBUFF_NET_MATCHINGDefaultTypeInternal;
+extern PROBUFF_NET_MATCHINGDefaultTypeInternal _PROBUFF_NET_MATCHING_default_instance_;
+class PROBUFF_NET_MATCHING_CANCEL;
+struct PROBUFF_NET_MATCHING_CANCELDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_CANCELDefaultTypeInternal _PROBUFF_NET_MATCHING_CANCEL_default_instance_;
+class PROBUFF_NET_MATCHING_CANCEL_RESPONSE;
+struct PROBUFF_NET_MATCHING_CANCEL_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_CANCEL_RESPONSEDefaultTypeInternal _PROBUFF_NET_MATCHING_CANCEL_RESPONSE_default_instance_;
+class PROBUFF_NET_MATCHING_CONFIRM;
+struct PROBUFF_NET_MATCHING_CONFIRMDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_CONFIRMDefaultTypeInternal _PROBUFF_NET_MATCHING_CONFIRM_default_instance_;
+class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE;
+struct PROBUFF_NET_MATCHING_CONFIRM_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_CONFIRM_RESPONSEDefaultTypeInternal _PROBUFF_NET_MATCHING_CONFIRM_RESPONSE_default_instance_;
+class PROBUFF_NET_MATCHING_RESPONSE;
+struct PROBUFF_NET_MATCHING_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_RESPONSEDefaultTypeInternal _PROBUFF_NET_MATCHING_RESPONSE_default_instance_;
+class PROBUFF_NET_MATCHING_SUCCESS;
+struct PROBUFF_NET_MATCHING_SUCCESSDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_SUCCESSDefaultTypeInternal _PROBUFF_NET_MATCHING_SUCCESS_default_instance_;
+class PROBUFF_NET_MATCHING_SYNC;
+struct PROBUFF_NET_MATCHING_SYNCDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_SYNCDefaultTypeInternal _PROBUFF_NET_MATCHING_SYNC_default_instance_;
+class PROBUFF_NET_MATCHING_WAITCONFIRM;
+struct PROBUFF_NET_MATCHING_WAITCONFIRMDefaultTypeInternal;
+extern PROBUFF_NET_MATCHING_WAITCONFIRMDefaultTypeInternal _PROBUFF_NET_MATCHING_WAITCONFIRM_default_instance_;
+class PROBUFF_NET_MEMBER_MATCHING_CANCEL;
+struct PROBUFF_NET_MEMBER_MATCHING_CANCELDefaultTypeInternal;
+extern PROBUFF_NET_MEMBER_MATCHING_CANCELDefaultTypeInternal _PROBUFF_NET_MEMBER_MATCHING_CANCEL_default_instance_;
 class PROBUFF_NET_ROLE_LOGIN;
 struct PROBUFF_NET_ROLE_LOGINDefaultTypeInternal;
 extern PROBUFF_NET_ROLE_LOGINDefaultTypeInternal _PROBUFF_NET_ROLE_LOGIN_default_instance_;
@@ -156,6 +189,9 @@ extern PROBUFF_NET_SWITCH_LINEDefaultTypeInternal _PROBUFF_NET_SWITCH_LINE_defau
 class PROBUFF_NET_SWITCH_LINE_RESPONSE;
 struct PROBUFF_NET_SWITCH_LINE_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_SWITCH_LINE_RESPONSEDefaultTypeInternal _PROBUFF_NET_SWITCH_LINE_RESPONSE_default_instance_;
+class PROBUFF_NET_SYNC_MATCHING_CONFIRM;
+struct PROBUFF_NET_SYNC_MATCHING_CONFIRMDefaultTypeInternal;
+extern PROBUFF_NET_SYNC_MATCHING_CONFIRMDefaultTypeInternal _PROBUFF_NET_SYNC_MATCHING_CONFIRM_default_instance_;
 class PROBUFF_NET_SYNC_POSITION;
 struct PROBUFF_NET_SYNC_POSITIONDefaultTypeInternal;
 extern PROBUFF_NET_SYNC_POSITIONDefaultTypeInternal _PROBUFF_NET_SYNC_POSITION_default_instance_;
@@ -182,6 +218,8 @@ struct chatitemDefaultTypeInternal;
 extern chatitemDefaultTypeInternal _chatitem_default_instance_;
 }  // namespace pbnet
 PROTOBUF_NAMESPACE_OPEN
+template <>
+::pbnet::MATCHING_MEMBER* Arena::CreateMaybeMessage<::pbnet::MATCHING_MEMBER>(Arena*);
 template <>
 ::pbnet::PROBUFF_NET_ACOUNT_LOGIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ACOUNT_LOGIN>(Arena*);
 template <>
@@ -239,6 +277,26 @@ template <>
 template <>
 ::pbnet::PROBUFF_NET_MAIL_READ_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>(Arena*);
 template <>
+::pbnet::PROBUFF_NET_MATCHING* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_CANCEL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_CANCEL>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_CONFIRM* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_CONFIRM>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_RESPONSE>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_SUCCESS* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_SUCCESS>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_SYNC* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_SYNC>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>(Arena*);
+template <>
 ::pbnet::PROBUFF_NET_ROLE_LOGIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLE_LOGIN>(Arena*);
 template <>
 ::pbnet::PROBUFF_NET_ROLE_SYNC* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLE_SYNC>(Arena*);
@@ -248,6 +306,8 @@ template <>
 ::pbnet::PROBUFF_NET_SWITCH_LINE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_SWITCH_LINE>(Arena*);
 template <>
 ::pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>(Arena*);
 template <>
 ::pbnet::PROBUFF_NET_SYNC_POSITION* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_SYNC_POSITION>(Arena*);
 template <>
@@ -332,6 +392,140 @@ inline const std::string& eunit_Name(eunit value) {
 inline bool eunit_Parse(absl::string_view name, eunit* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eunit>(
       eunit_descriptor(), name, value);
+}
+enum eplays : int {
+  eplays_go_undergroundpalace = 0,
+  eplays_count = 1,
+  eplays_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  eplays_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool eplays_IsValid(int value);
+constexpr eplays eplays_MIN = static_cast<eplays>(0);
+constexpr eplays eplays_MAX = static_cast<eplays>(1);
+constexpr int eplays_ARRAYSIZE = 1 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+eplays_descriptor();
+template <typename T>
+const std::string& eplays_Name(T value) {
+  static_assert(std::is_same<T, eplays>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to eplays_Name().");
+  return eplays_Name(static_cast<eplays>(value));
+}
+template <>
+inline const std::string& eplays_Name(eplays value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<eplays_descriptor,
+                                                 0, 1>(
+      static_cast<int>(value));
+}
+inline bool eplays_Parse(absl::string_view name, eplays* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eplays>(
+      eplays_descriptor(), name, value);
+}
+enum ematching_cancel_stat : int {
+  ematching_cancel_success = 0,
+  ematching_cancel_stage = 1,
+  ematching_cancel_roomnotfind = 2,
+  ematching_cancel_roommembernotfind = 3,
+  ematching_cancel_stat_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ematching_cancel_stat_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ematching_cancel_stat_IsValid(int value);
+constexpr ematching_cancel_stat ematching_cancel_stat_MIN = static_cast<ematching_cancel_stat>(0);
+constexpr ematching_cancel_stat ematching_cancel_stat_MAX = static_cast<ematching_cancel_stat>(3);
+constexpr int ematching_cancel_stat_ARRAYSIZE = 3 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+ematching_cancel_stat_descriptor();
+template <typename T>
+const std::string& ematching_cancel_stat_Name(T value) {
+  static_assert(std::is_same<T, ematching_cancel_stat>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ematching_cancel_stat_Name().");
+  return ematching_cancel_stat_Name(static_cast<ematching_cancel_stat>(value));
+}
+template <>
+inline const std::string& ematching_cancel_stat_Name(ematching_cancel_stat value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<ematching_cancel_stat_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool ematching_cancel_stat_Parse(absl::string_view name, ematching_cancel_stat* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ematching_cancel_stat>(
+      ematching_cancel_stat_descriptor(), name, value);
+}
+enum etype_matching_cancel : int {
+  etype_matching_cancel_active = 0,
+  etype_matching_cancel_timeout = 1,
+  etype_matching_waitconfirm_timeout = 2,
+  etype_matching_waitcreate_timeout = 3,
+  etype_matching_cancel_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  etype_matching_cancel_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool etype_matching_cancel_IsValid(int value);
+constexpr etype_matching_cancel etype_matching_cancel_MIN = static_cast<etype_matching_cancel>(0);
+constexpr etype_matching_cancel etype_matching_cancel_MAX = static_cast<etype_matching_cancel>(3);
+constexpr int etype_matching_cancel_ARRAYSIZE = 3 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+etype_matching_cancel_descriptor();
+template <typename T>
+const std::string& etype_matching_cancel_Name(T value) {
+  static_assert(std::is_same<T, etype_matching_cancel>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to etype_matching_cancel_Name().");
+  return etype_matching_cancel_Name(static_cast<etype_matching_cancel>(value));
+}
+template <>
+inline const std::string& etype_matching_cancel_Name(etype_matching_cancel value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<etype_matching_cancel_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool etype_matching_cancel_Parse(absl::string_view name, etype_matching_cancel* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<etype_matching_cancel>(
+      etype_matching_cancel_descriptor(), name, value);
+}
+enum ematching_confirm_stat : int {
+  ematching_confirm_success = 0,
+  ematching_confirm_stage = 1,
+  ematching_confirm_roomnotfind = 2,
+  ematching_confirm_roommembernotfind = 3,
+  ematching_confirm_stat_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ematching_confirm_stat_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ematching_confirm_stat_IsValid(int value);
+constexpr ematching_confirm_stat ematching_confirm_stat_MIN = static_cast<ematching_confirm_stat>(0);
+constexpr ematching_confirm_stat ematching_confirm_stat_MAX = static_cast<ematching_confirm_stat>(3);
+constexpr int ematching_confirm_stat_ARRAYSIZE = 3 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+ematching_confirm_stat_descriptor();
+template <typename T>
+const std::string& ematching_confirm_stat_Name(T value) {
+  static_assert(std::is_same<T, ematching_confirm_stat>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ematching_confirm_stat_Name().");
+  return ematching_confirm_stat_Name(static_cast<ematching_confirm_stat>(value));
+}
+template <>
+inline const std::string& ematching_confirm_stat_Name(ematching_confirm_stat value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<ematching_confirm_stat_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool ematching_confirm_stat_Parse(absl::string_view name, ematching_confirm_stat* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ematching_confirm_stat>(
+      ematching_confirm_stat_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -6984,6 +7178,2198 @@ class PROBUFF_NET_SYNC_POSITION final :
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING) */ {
+ public:
+  inline PROBUFF_NET_MATCHING() : PROBUFF_NET_MATCHING(nullptr) {}
+  ~PROBUFF_NET_MATCHING() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING(const PROBUFF_NET_MATCHING& from);
+  PROBUFF_NET_MATCHING(PROBUFF_NET_MATCHING&& from) noexcept
+    : PROBUFF_NET_MATCHING() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING& operator=(const PROBUFF_NET_MATCHING& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING& operator=(PROBUFF_NET_MATCHING&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING*>(
+               &_PROBUFF_NET_MATCHING_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    41;
+
+  friend void swap(PROBUFF_NET_MATCHING& a, PROBUFF_NET_MATCHING& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING& from) {
+    PROBUFF_NET_MATCHING::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMTypeFieldNumber = 1,
+    kMTidFieldNumber = 2,
+  };
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_tid = 2;
+  bool has_m_tid() const;
+  void clear_m_tid() ;
+  ::int32_t m_tid() const;
+  void set_m_tid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_tid() const;
+  void _internal_set_m_tid(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    int m_type_;
+    ::int32_t m_tid_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class MATCHING_MEMBER final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.MATCHING_MEMBER) */ {
+ public:
+  inline MATCHING_MEMBER() : MATCHING_MEMBER(nullptr) {}
+  ~MATCHING_MEMBER() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR MATCHING_MEMBER(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  MATCHING_MEMBER(const MATCHING_MEMBER& from);
+  MATCHING_MEMBER(MATCHING_MEMBER&& from) noexcept
+    : MATCHING_MEMBER() {
+    *this = ::std::move(from);
+  }
+
+  inline MATCHING_MEMBER& operator=(const MATCHING_MEMBER& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MATCHING_MEMBER& operator=(MATCHING_MEMBER&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MATCHING_MEMBER& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MATCHING_MEMBER* internal_default_instance() {
+    return reinterpret_cast<const MATCHING_MEMBER*>(
+               &_MATCHING_MEMBER_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    42;
+
+  friend void swap(MATCHING_MEMBER& a, MATCHING_MEMBER& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(MATCHING_MEMBER* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MATCHING_MEMBER* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  MATCHING_MEMBER* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<MATCHING_MEMBER>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const MATCHING_MEMBER& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const MATCHING_MEMBER& from) {
+    MATCHING_MEMBER::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(MATCHING_MEMBER* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.MATCHING_MEMBER";
+  }
+  protected:
+  explicit MATCHING_MEMBER(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMNameFieldNumber = 2,
+    kMIdFieldNumber = 1,
+    kMLvFieldNumber = 3,
+    kMBegmatchFieldNumber = 4,
+    kMIsconfirmFieldNumber = 5,
+  };
+  // optional string m_name = 2;
+  bool has_m_name() const;
+  void clear_m_name() ;
+  const std::string& m_name() const;
+
+
+
+
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_m_name(Arg_&& arg, Args_... args);
+  std::string* mutable_m_name();
+  PROTOBUF_NODISCARD std::string* release_m_name();
+  void set_allocated_m_name(std::string* ptr);
+
+  private:
+  const std::string& _internal_m_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_m_name(
+      const std::string& value);
+  std::string* _internal_mutable_m_name();
+
+  public:
+  // optional int64 m_id = 1;
+  bool has_m_id() const;
+  void clear_m_id() ;
+  ::int64_t m_id() const;
+  void set_m_id(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_id() const;
+  void _internal_set_m_id(::int64_t value);
+
+  public:
+  // optional int32 m_lv = 3;
+  bool has_m_lv() const;
+  void clear_m_lv() ;
+  ::int32_t m_lv() const;
+  void set_m_lv(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_lv() const;
+  void _internal_set_m_lv(::int32_t value);
+
+  public:
+  // optional int32 m_begmatch = 4;
+  bool has_m_begmatch() const;
+  void clear_m_begmatch() ;
+  ::int32_t m_begmatch() const;
+  void set_m_begmatch(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_begmatch() const;
+  void _internal_set_m_begmatch(::int32_t value);
+
+  public:
+  // optional bool m_isconfirm = 5;
+  bool has_m_isconfirm() const;
+  void clear_m_isconfirm() ;
+  bool m_isconfirm() const;
+  void set_m_isconfirm(bool value);
+
+  private:
+  bool _internal_m_isconfirm() const;
+  void _internal_set_m_isconfirm(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.MATCHING_MEMBER)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_name_;
+    ::int64_t m_id_;
+    ::int32_t m_lv_;
+    ::int32_t m_begmatch_;
+    bool m_isconfirm_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_RESPONSE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_RESPONSE) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_RESPONSE() : PROBUFF_NET_MATCHING_RESPONSE(nullptr) {}
+  ~PROBUFF_NET_MATCHING_RESPONSE() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_RESPONSE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_RESPONSE(const PROBUFF_NET_MATCHING_RESPONSE& from);
+  PROBUFF_NET_MATCHING_RESPONSE(PROBUFF_NET_MATCHING_RESPONSE&& from) noexcept
+    : PROBUFF_NET_MATCHING_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_RESPONSE& operator=(const PROBUFF_NET_MATCHING_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_RESPONSE& operator=(PROBUFF_NET_MATCHING_RESPONSE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_RESPONSE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_RESPONSE*>(
+               &_PROBUFF_NET_MATCHING_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    43;
+
+  friend void swap(PROBUFF_NET_MATCHING_RESPONSE& a, PROBUFF_NET_MATCHING_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_RESPONSE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_RESPONSE* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_RESPONSE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_RESPONSE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_RESPONSE& from) {
+    PROBUFF_NET_MATCHING_RESPONSE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_RESPONSE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMIdFieldNumber = 1,
+  };
+  // optional int64 m_id = 1;
+  bool has_m_id() const;
+  void clear_m_id() ;
+  ::int64_t m_id() const;
+  void set_m_id(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_id() const;
+  void _internal_set_m_id(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::int64_t m_id_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_CANCEL final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_CANCEL) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_CANCEL() : PROBUFF_NET_MATCHING_CANCEL(nullptr) {}
+  ~PROBUFF_NET_MATCHING_CANCEL() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_CANCEL(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_CANCEL(const PROBUFF_NET_MATCHING_CANCEL& from);
+  PROBUFF_NET_MATCHING_CANCEL(PROBUFF_NET_MATCHING_CANCEL&& from) noexcept
+    : PROBUFF_NET_MATCHING_CANCEL() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_CANCEL& operator=(const PROBUFF_NET_MATCHING_CANCEL& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_CANCEL& operator=(PROBUFF_NET_MATCHING_CANCEL&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_CANCEL& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_CANCEL* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_CANCEL*>(
+               &_PROBUFF_NET_MATCHING_CANCEL_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    44;
+
+  friend void swap(PROBUFF_NET_MATCHING_CANCEL& a, PROBUFF_NET_MATCHING_CANCEL& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_CANCEL* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_CANCEL* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_CANCEL* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_CANCEL>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_CANCEL& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_CANCEL& from) {
+    PROBUFF_NET_MATCHING_CANCEL::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_CANCEL* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_CANCEL";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_CANCEL(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+  };
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_CANCEL)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::int64_t m_roomid_;
+    int m_type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_CANCEL_RESPONSE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_CANCEL_RESPONSE() : PROBUFF_NET_MATCHING_CANCEL_RESPONSE(nullptr) {}
+  ~PROBUFF_NET_MATCHING_CANCEL_RESPONSE() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_CANCEL_RESPONSE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_CANCEL_RESPONSE(const PROBUFF_NET_MATCHING_CANCEL_RESPONSE& from);
+  PROBUFF_NET_MATCHING_CANCEL_RESPONSE(PROBUFF_NET_MATCHING_CANCEL_RESPONSE&& from) noexcept
+    : PROBUFF_NET_MATCHING_CANCEL_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_CANCEL_RESPONSE& operator=(const PROBUFF_NET_MATCHING_CANCEL_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_CANCEL_RESPONSE& operator=(PROBUFF_NET_MATCHING_CANCEL_RESPONSE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_CANCEL_RESPONSE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_CANCEL_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_CANCEL_RESPONSE*>(
+               &_PROBUFF_NET_MATCHING_CANCEL_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    45;
+
+  friend void swap(PROBUFF_NET_MATCHING_CANCEL_RESPONSE& a, PROBUFF_NET_MATCHING_CANCEL_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_CANCEL_RESPONSE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_CANCEL_RESPONSE* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_CANCEL_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_CANCEL_RESPONSE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_CANCEL_RESPONSE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_CANCEL_RESPONSE& from) {
+    PROBUFF_NET_MATCHING_CANCEL_RESPONSE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_CANCEL_RESPONSE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_CANCEL_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMTypeFieldNumber = 1,
+    kMStatFieldNumber = 2,
+  };
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional .pbnet.ematching_cancel_stat m_stat = 2;
+  bool has_m_stat() const;
+  void clear_m_stat() ;
+  ::pbnet::ematching_cancel_stat m_stat() const;
+  void set_m_stat(::pbnet::ematching_cancel_stat value);
+
+  private:
+  ::pbnet::ematching_cancel_stat _internal_m_stat() const;
+  void _internal_set_m_stat(::pbnet::ematching_cancel_stat value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    int m_type_;
+    int m_stat_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MEMBER_MATCHING_CANCEL final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL) */ {
+ public:
+  inline PROBUFF_NET_MEMBER_MATCHING_CANCEL() : PROBUFF_NET_MEMBER_MATCHING_CANCEL(nullptr) {}
+  ~PROBUFF_NET_MEMBER_MATCHING_CANCEL() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MEMBER_MATCHING_CANCEL(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MEMBER_MATCHING_CANCEL(const PROBUFF_NET_MEMBER_MATCHING_CANCEL& from);
+  PROBUFF_NET_MEMBER_MATCHING_CANCEL(PROBUFF_NET_MEMBER_MATCHING_CANCEL&& from) noexcept
+    : PROBUFF_NET_MEMBER_MATCHING_CANCEL() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MEMBER_MATCHING_CANCEL& operator=(const PROBUFF_NET_MEMBER_MATCHING_CANCEL& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MEMBER_MATCHING_CANCEL& operator=(PROBUFF_NET_MEMBER_MATCHING_CANCEL&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MEMBER_MATCHING_CANCEL& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MEMBER_MATCHING_CANCEL* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MEMBER_MATCHING_CANCEL*>(
+               &_PROBUFF_NET_MEMBER_MATCHING_CANCEL_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    46;
+
+  friend void swap(PROBUFF_NET_MEMBER_MATCHING_CANCEL& a, PROBUFF_NET_MEMBER_MATCHING_CANCEL& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MEMBER_MATCHING_CANCEL* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MEMBER_MATCHING_CANCEL* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MEMBER_MATCHING_CANCEL* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MEMBER_MATCHING_CANCEL>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MEMBER_MATCHING_CANCEL& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MEMBER_MATCHING_CANCEL& from) {
+    PROBUFF_NET_MEMBER_MATCHING_CANCEL::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MEMBER_MATCHING_CANCEL* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL";
+  }
+  protected:
+  explicit PROBUFF_NET_MEMBER_MATCHING_CANCEL(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMCancelmemberFieldNumber = 3,
+    kMTypeFieldNumber = 1,
+    kMCanceltypeFieldNumber = 2,
+  };
+  // repeated int64 m_cancelmember = 3;
+  int m_cancelmember_size() const;
+  private:
+  int _internal_m_cancelmember_size() const;
+
+  public:
+  void clear_m_cancelmember() ;
+  ::int64_t m_cancelmember(int index) const;
+  void set_m_cancelmember(int index, ::int64_t value);
+  void add_m_cancelmember(::int64_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& m_cancelmember() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* mutable_m_cancelmember();
+
+  private:
+  ::int64_t _internal_m_cancelmember(int index) const;
+  void _internal_add_m_cancelmember(::int64_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& _internal_m_cancelmember() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* _internal_mutable_m_cancelmember();
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional .pbnet.etype_matching_cancel m_canceltype = 2;
+  bool has_m_canceltype() const;
+  void clear_m_canceltype() ;
+  ::pbnet::etype_matching_cancel m_canceltype() const;
+  void set_m_canceltype(::pbnet::etype_matching_cancel value);
+
+  private:
+  ::pbnet::etype_matching_cancel _internal_m_canceltype() const;
+  void _internal_set_m_canceltype(::pbnet::etype_matching_cancel value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t> m_cancelmember_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _m_cancelmember_cached_byte_size_;
+    int m_type_;
+    int m_canceltype_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_WAITCONFIRM final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_WAITCONFIRM() : PROBUFF_NET_MATCHING_WAITCONFIRM(nullptr) {}
+  ~PROBUFF_NET_MATCHING_WAITCONFIRM() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_WAITCONFIRM(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_WAITCONFIRM(const PROBUFF_NET_MATCHING_WAITCONFIRM& from);
+  PROBUFF_NET_MATCHING_WAITCONFIRM(PROBUFF_NET_MATCHING_WAITCONFIRM&& from) noexcept
+    : PROBUFF_NET_MATCHING_WAITCONFIRM() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_WAITCONFIRM& operator=(const PROBUFF_NET_MATCHING_WAITCONFIRM& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_WAITCONFIRM& operator=(PROBUFF_NET_MATCHING_WAITCONFIRM&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_WAITCONFIRM& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_WAITCONFIRM* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_WAITCONFIRM*>(
+               &_PROBUFF_NET_MATCHING_WAITCONFIRM_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    47;
+
+  friend void swap(PROBUFF_NET_MATCHING_WAITCONFIRM& a, PROBUFF_NET_MATCHING_WAITCONFIRM& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_WAITCONFIRM* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_WAITCONFIRM* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_WAITCONFIRM* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_WAITCONFIRM>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_WAITCONFIRM& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_WAITCONFIRM& from) {
+    PROBUFF_NET_MATCHING_WAITCONFIRM::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_WAITCONFIRM* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_WAITCONFIRM(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+  };
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::int64_t m_roomid_;
+    int m_type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_CONFIRM final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_CONFIRM) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_CONFIRM() : PROBUFF_NET_MATCHING_CONFIRM(nullptr) {}
+  ~PROBUFF_NET_MATCHING_CONFIRM() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_CONFIRM(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_CONFIRM(const PROBUFF_NET_MATCHING_CONFIRM& from);
+  PROBUFF_NET_MATCHING_CONFIRM(PROBUFF_NET_MATCHING_CONFIRM&& from) noexcept
+    : PROBUFF_NET_MATCHING_CONFIRM() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_CONFIRM& operator=(const PROBUFF_NET_MATCHING_CONFIRM& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_CONFIRM& operator=(PROBUFF_NET_MATCHING_CONFIRM&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_CONFIRM& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_CONFIRM* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_CONFIRM*>(
+               &_PROBUFF_NET_MATCHING_CONFIRM_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    48;
+
+  friend void swap(PROBUFF_NET_MATCHING_CONFIRM& a, PROBUFF_NET_MATCHING_CONFIRM& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_CONFIRM* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_CONFIRM* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_CONFIRM* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_CONFIRM>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_CONFIRM& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_CONFIRM& from) {
+    PROBUFF_NET_MATCHING_CONFIRM::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_CONFIRM* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_CONFIRM";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_CONFIRM(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+  };
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_CONFIRM)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::int64_t m_roomid_;
+    int m_type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_CONFIRM_RESPONSE() : PROBUFF_NET_MATCHING_CONFIRM_RESPONSE(nullptr) {}
+  ~PROBUFF_NET_MATCHING_CONFIRM_RESPONSE() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_CONFIRM_RESPONSE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_CONFIRM_RESPONSE(const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& from);
+  PROBUFF_NET_MATCHING_CONFIRM_RESPONSE(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE&& from) noexcept
+    : PROBUFF_NET_MATCHING_CONFIRM_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& operator=(const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& operator=(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE*>(
+               &_PROBUFF_NET_MATCHING_CONFIRM_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    49;
+
+  friend void swap(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& a, PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_CONFIRM_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& from) {
+    PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_CONFIRM_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+    kMStatFieldNumber = 3,
+  };
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional .pbnet.ematching_confirm_stat m_stat = 3;
+  bool has_m_stat() const;
+  void clear_m_stat() ;
+  ::pbnet::ematching_confirm_stat m_stat() const;
+  void set_m_stat(::pbnet::ematching_confirm_stat value);
+
+  private:
+  ::pbnet::ematching_confirm_stat _internal_m_stat() const;
+  void _internal_set_m_stat(::pbnet::ematching_confirm_stat value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::int64_t m_roomid_;
+    int m_type_;
+    int m_stat_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM) */ {
+ public:
+  inline PROBUFF_NET_SYNC_MATCHING_CONFIRM() : PROBUFF_NET_SYNC_MATCHING_CONFIRM(nullptr) {}
+  ~PROBUFF_NET_SYNC_MATCHING_CONFIRM() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_SYNC_MATCHING_CONFIRM(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_SYNC_MATCHING_CONFIRM(const PROBUFF_NET_SYNC_MATCHING_CONFIRM& from);
+  PROBUFF_NET_SYNC_MATCHING_CONFIRM(PROBUFF_NET_SYNC_MATCHING_CONFIRM&& from) noexcept
+    : PROBUFF_NET_SYNC_MATCHING_CONFIRM() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_SYNC_MATCHING_CONFIRM& operator=(const PROBUFF_NET_SYNC_MATCHING_CONFIRM& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_SYNC_MATCHING_CONFIRM& operator=(PROBUFF_NET_SYNC_MATCHING_CONFIRM&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_SYNC_MATCHING_CONFIRM& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_SYNC_MATCHING_CONFIRM* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_SYNC_MATCHING_CONFIRM*>(
+               &_PROBUFF_NET_SYNC_MATCHING_CONFIRM_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    50;
+
+  friend void swap(PROBUFF_NET_SYNC_MATCHING_CONFIRM& a, PROBUFF_NET_SYNC_MATCHING_CONFIRM& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_SYNC_MATCHING_CONFIRM* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_SYNC_MATCHING_CONFIRM* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_SYNC_MATCHING_CONFIRM* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_SYNC_MATCHING_CONFIRM>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_SYNC_MATCHING_CONFIRM& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_SYNC_MATCHING_CONFIRM& from) {
+    PROBUFF_NET_SYNC_MATCHING_CONFIRM::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_SYNC_MATCHING_CONFIRM* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM";
+  }
+  protected:
+  explicit PROBUFF_NET_SYNC_MATCHING_CONFIRM(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRoleidFieldNumber = 3,
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+  };
+  // repeated int64 m_roleid = 3;
+  int m_roleid_size() const;
+  private:
+  int _internal_m_roleid_size() const;
+
+  public:
+  void clear_m_roleid() ;
+  ::int64_t m_roleid(int index) const;
+  void set_m_roleid(int index, ::int64_t value);
+  void add_m_roleid(::int64_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& m_roleid() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* mutable_m_roleid();
+
+  private:
+  ::int64_t _internal_m_roleid(int index) const;
+  void _internal_add_m_roleid(::int64_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& _internal_m_roleid() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* _internal_mutable_m_roleid();
+
+  public:
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t> m_roleid_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _m_roleid_cached_byte_size_;
+    ::int64_t m_roomid_;
+    int m_type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_SYNC final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_SYNC) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_SYNC() : PROBUFF_NET_MATCHING_SYNC(nullptr) {}
+  ~PROBUFF_NET_MATCHING_SYNC() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_SYNC(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_SYNC(const PROBUFF_NET_MATCHING_SYNC& from);
+  PROBUFF_NET_MATCHING_SYNC(PROBUFF_NET_MATCHING_SYNC&& from) noexcept
+    : PROBUFF_NET_MATCHING_SYNC() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_SYNC& operator=(const PROBUFF_NET_MATCHING_SYNC& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_SYNC& operator=(PROBUFF_NET_MATCHING_SYNC&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_SYNC& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_SYNC* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_SYNC*>(
+               &_PROBUFF_NET_MATCHING_SYNC_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    51;
+
+  friend void swap(PROBUFF_NET_MATCHING_SYNC& a, PROBUFF_NET_MATCHING_SYNC& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_SYNC* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_SYNC* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_SYNC* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_SYNC>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_SYNC& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_SYNC& from) {
+    PROBUFF_NET_MATCHING_SYNC::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_SYNC* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_SYNC";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_SYNC(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMMemberFieldNumber = 3,
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+  };
+  // repeated .pbnet.MATCHING_MEMBER m_member = 3;
+  int m_member_size() const;
+  private:
+  int _internal_m_member_size() const;
+
+  public:
+  void clear_m_member() ;
+  ::pbnet::MATCHING_MEMBER* mutable_m_member(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >*
+      mutable_m_member();
+  private:
+  const ::pbnet::MATCHING_MEMBER& _internal_m_member(int index) const;
+  ::pbnet::MATCHING_MEMBER* _internal_add_m_member();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>& _internal_m_member() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>* _internal_mutable_m_member();
+  public:
+  const ::pbnet::MATCHING_MEMBER& m_member(int index) const;
+  ::pbnet::MATCHING_MEMBER* add_m_member();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >&
+      m_member() const;
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_SYNC)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER > m_member_;
+    ::int64_t m_roomid_;
+    int m_type_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_NET_MATCHING_SUCCESS final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING_SUCCESS) */ {
+ public:
+  inline PROBUFF_NET_MATCHING_SUCCESS() : PROBUFF_NET_MATCHING_SUCCESS(nullptr) {}
+  ~PROBUFF_NET_MATCHING_SUCCESS() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MATCHING_SUCCESS(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MATCHING_SUCCESS(const PROBUFF_NET_MATCHING_SUCCESS& from);
+  PROBUFF_NET_MATCHING_SUCCESS(PROBUFF_NET_MATCHING_SUCCESS&& from) noexcept
+    : PROBUFF_NET_MATCHING_SUCCESS() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MATCHING_SUCCESS& operator=(const PROBUFF_NET_MATCHING_SUCCESS& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MATCHING_SUCCESS& operator=(PROBUFF_NET_MATCHING_SUCCESS&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MATCHING_SUCCESS& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MATCHING_SUCCESS* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MATCHING_SUCCESS*>(
+               &_PROBUFF_NET_MATCHING_SUCCESS_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    52;
+
+  friend void swap(PROBUFF_NET_MATCHING_SUCCESS& a, PROBUFF_NET_MATCHING_SUCCESS& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MATCHING_SUCCESS* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MATCHING_SUCCESS* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MATCHING_SUCCESS* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MATCHING_SUCCESS>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MATCHING_SUCCESS& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MATCHING_SUCCESS& from) {
+    PROBUFF_NET_MATCHING_SUCCESS::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MATCHING_SUCCESS* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_MATCHING_SUCCESS";
+  }
+  protected:
+  explicit PROBUFF_NET_MATCHING_SUCCESS(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMMemberFieldNumber = 3,
+    kMRoomidFieldNumber = 2,
+    kMTypeFieldNumber = 1,
+    kMDataidFieldNumber = 4,
+  };
+  // repeated .pbnet.MATCHING_MEMBER m_member = 3;
+  int m_member_size() const;
+  private:
+  int _internal_m_member_size() const;
+
+  public:
+  void clear_m_member() ;
+  ::pbnet::MATCHING_MEMBER* mutable_m_member(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >*
+      mutable_m_member();
+  private:
+  const ::pbnet::MATCHING_MEMBER& _internal_m_member(int index) const;
+  ::pbnet::MATCHING_MEMBER* _internal_add_m_member();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>& _internal_m_member() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>* _internal_mutable_m_member();
+  public:
+  const ::pbnet::MATCHING_MEMBER& m_member(int index) const;
+  ::pbnet::MATCHING_MEMBER* add_m_member();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >&
+      m_member() const;
+  // optional int64 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int64_t m_roomid() const;
+  void set_m_roomid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int64_t value);
+
+  public:
+  // optional .pbnet.eplays m_type = 1;
+  bool has_m_type() const;
+  void clear_m_type() ;
+  ::pbnet::eplays m_type() const;
+  void set_m_type(::pbnet::eplays value);
+
+  private:
+  ::pbnet::eplays _internal_m_type() const;
+  void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_dataid = 4;
+  bool has_m_dataid() const;
+  void clear_m_dataid() ;
+  ::int32_t m_dataid() const;
+  void set_m_dataid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_dataid() const;
+  void _internal_set_m_dataid(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_SUCCESS)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER > m_member_;
+    ::int64_t m_roomid_;
+    int m_type_;
+    ::int32_t m_dataid_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
 };
 
 // ===================================================================
@@ -9842,6 +12228,978 @@ PROBUFF_NET_SYNC_POSITION::mutable_m_position() {
   return _internal_mutable_m_position();
 }
 
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_type_ = value;
+}
+
+// optional int32 m_tid = 2;
+inline bool PROBUFF_NET_MATCHING::has_m_tid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING::clear_m_tid() {
+  _impl_.m_tid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int32_t PROBUFF_NET_MATCHING::m_tid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING.m_tid)
+  return _internal_m_tid();
+}
+inline void PROBUFF_NET_MATCHING::set_m_tid(::int32_t value) {
+  _internal_set_m_tid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING.m_tid)
+}
+inline ::int32_t PROBUFF_NET_MATCHING::_internal_m_tid() const {
+  return _impl_.m_tid_;
+}
+inline void PROBUFF_NET_MATCHING::_internal_set_m_tid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_tid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// MATCHING_MEMBER
+
+// optional int64 m_id = 1;
+inline bool MATCHING_MEMBER::has_m_id() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void MATCHING_MEMBER::clear_m_id() {
+  _impl_.m_id_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int64_t MATCHING_MEMBER::m_id() const {
+  // @@protoc_insertion_point(field_get:pbnet.MATCHING_MEMBER.m_id)
+  return _internal_m_id();
+}
+inline void MATCHING_MEMBER::set_m_id(::int64_t value) {
+  _internal_set_m_id(value);
+  // @@protoc_insertion_point(field_set:pbnet.MATCHING_MEMBER.m_id)
+}
+inline ::int64_t MATCHING_MEMBER::_internal_m_id() const {
+  return _impl_.m_id_;
+}
+inline void MATCHING_MEMBER::_internal_set_m_id(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_id_ = value;
+}
+
+// optional string m_name = 2;
+inline bool MATCHING_MEMBER::has_m_name() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void MATCHING_MEMBER::clear_m_name() {
+  _impl_.m_name_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& MATCHING_MEMBER::m_name() const {
+  // @@protoc_insertion_point(field_get:pbnet.MATCHING_MEMBER.m_name)
+  return _internal_m_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MATCHING_MEMBER::set_m_name(Arg_&& arg,
+                                                     Args_... args) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_name_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:pbnet.MATCHING_MEMBER.m_name)
+}
+inline std::string* MATCHING_MEMBER::mutable_m_name() {
+  std::string* _s = _internal_mutable_m_name();
+  // @@protoc_insertion_point(field_mutable:pbnet.MATCHING_MEMBER.m_name)
+  return _s;
+}
+inline const std::string& MATCHING_MEMBER::_internal_m_name() const {
+  return _impl_.m_name_.Get();
+}
+inline void MATCHING_MEMBER::_internal_set_m_name(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+
+
+  _impl_.m_name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* MATCHING_MEMBER::_internal_mutable_m_name() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.m_name_.Mutable( GetArenaForAllocation());
+}
+inline std::string* MATCHING_MEMBER::release_m_name() {
+  // @@protoc_insertion_point(field_release:pbnet.MATCHING_MEMBER.m_name)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.m_name_.Release();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.m_name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return released;
+}
+inline void MATCHING_MEMBER::set_allocated_m_name(std::string* value) {
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.m_name_.SetAllocated(value, GetArenaForAllocation());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.m_name_.IsDefault()) {
+          _impl_.m_name_.Set("", GetArenaForAllocation());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:pbnet.MATCHING_MEMBER.m_name)
+}
+
+// optional int32 m_lv = 3;
+inline bool MATCHING_MEMBER::has_m_lv() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void MATCHING_MEMBER::clear_m_lv() {
+  _impl_.m_lv_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::int32_t MATCHING_MEMBER::m_lv() const {
+  // @@protoc_insertion_point(field_get:pbnet.MATCHING_MEMBER.m_lv)
+  return _internal_m_lv();
+}
+inline void MATCHING_MEMBER::set_m_lv(::int32_t value) {
+  _internal_set_m_lv(value);
+  // @@protoc_insertion_point(field_set:pbnet.MATCHING_MEMBER.m_lv)
+}
+inline ::int32_t MATCHING_MEMBER::_internal_m_lv() const {
+  return _impl_.m_lv_;
+}
+inline void MATCHING_MEMBER::_internal_set_m_lv(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_lv_ = value;
+}
+
+// optional int32 m_begmatch = 4;
+inline bool MATCHING_MEMBER::has_m_begmatch() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline void MATCHING_MEMBER::clear_m_begmatch() {
+  _impl_.m_begmatch_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::int32_t MATCHING_MEMBER::m_begmatch() const {
+  // @@protoc_insertion_point(field_get:pbnet.MATCHING_MEMBER.m_begmatch)
+  return _internal_m_begmatch();
+}
+inline void MATCHING_MEMBER::set_m_begmatch(::int32_t value) {
+  _internal_set_m_begmatch(value);
+  // @@protoc_insertion_point(field_set:pbnet.MATCHING_MEMBER.m_begmatch)
+}
+inline ::int32_t MATCHING_MEMBER::_internal_m_begmatch() const {
+  return _impl_.m_begmatch_;
+}
+inline void MATCHING_MEMBER::_internal_set_m_begmatch(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.m_begmatch_ = value;
+}
+
+// optional bool m_isconfirm = 5;
+inline bool MATCHING_MEMBER::has_m_isconfirm() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
+inline void MATCHING_MEMBER::clear_m_isconfirm() {
+  _impl_.m_isconfirm_ = false;
+  _impl_._has_bits_[0] &= ~0x00000010u;
+}
+inline bool MATCHING_MEMBER::m_isconfirm() const {
+  // @@protoc_insertion_point(field_get:pbnet.MATCHING_MEMBER.m_isconfirm)
+  return _internal_m_isconfirm();
+}
+inline void MATCHING_MEMBER::set_m_isconfirm(bool value) {
+  _internal_set_m_isconfirm(value);
+  // @@protoc_insertion_point(field_set:pbnet.MATCHING_MEMBER.m_isconfirm)
+}
+inline bool MATCHING_MEMBER::_internal_m_isconfirm() const {
+  return _impl_.m_isconfirm_;
+}
+inline void MATCHING_MEMBER::_internal_set_m_isconfirm(bool value) {
+  _impl_._has_bits_[0] |= 0x00000010u;
+  _impl_.m_isconfirm_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_RESPONSE
+
+// optional int64 m_id = 1;
+inline bool PROBUFF_NET_MATCHING_RESPONSE::has_m_id() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_RESPONSE::clear_m_id() {
+  _impl_.m_id_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_RESPONSE::m_id() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_RESPONSE.m_id)
+  return _internal_m_id();
+}
+inline void PROBUFF_NET_MATCHING_RESPONSE::set_m_id(::int64_t value) {
+  _internal_set_m_id(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_RESPONSE.m_id)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_RESPONSE::_internal_m_id() const {
+  return _impl_.m_id_;
+}
+inline void PROBUFF_NET_MATCHING_RESPONSE::_internal_set_m_id(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_CANCEL
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_CANCEL::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CANCEL::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CANCEL::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CANCEL.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_CANCEL::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CANCEL.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CANCEL::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_CANCEL::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_MATCHING_CANCEL::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CANCEL::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_CANCEL::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CANCEL.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_MATCHING_CANCEL::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CANCEL.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_CANCEL::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_MATCHING_CANCEL::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_CANCEL_RESPONSE
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_CANCEL_RESPONSE::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CANCEL_RESPONSE::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CANCEL_RESPONSE::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_CANCEL_RESPONSE::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CANCEL_RESPONSE::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_CANCEL_RESPONSE::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_type_ = value;
+}
+
+// optional .pbnet.ematching_cancel_stat m_stat = 2;
+inline bool PROBUFF_NET_MATCHING_CANCEL_RESPONSE::has_m_stat() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CANCEL_RESPONSE::clear_m_stat() {
+  _impl_.m_stat_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::ematching_cancel_stat PROBUFF_NET_MATCHING_CANCEL_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE.m_stat)
+  return _internal_m_stat();
+}
+inline void PROBUFF_NET_MATCHING_CANCEL_RESPONSE::set_m_stat(::pbnet::ematching_cancel_stat value) {
+   _internal_set_m_stat(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CANCEL_RESPONSE.m_stat)
+}
+inline ::pbnet::ematching_cancel_stat PROBUFF_NET_MATCHING_CANCEL_RESPONSE::_internal_m_stat() const {
+  return static_cast<::pbnet::ematching_cancel_stat>(_impl_.m_stat_);
+}
+inline void PROBUFF_NET_MATCHING_CANCEL_RESPONSE::_internal_set_m_stat(::pbnet::ematching_cancel_stat value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_stat_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MEMBER_MATCHING_CANCEL
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MEMBER_MATCHING_CANCEL::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MEMBER_MATCHING_CANCEL::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_type_ = value;
+}
+
+// optional .pbnet.etype_matching_cancel m_canceltype = 2;
+inline bool PROBUFF_NET_MEMBER_MATCHING_CANCEL::has_m_canceltype() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::clear_m_canceltype() {
+  _impl_.m_canceltype_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::etype_matching_cancel PROBUFF_NET_MEMBER_MATCHING_CANCEL::m_canceltype() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_canceltype)
+  return _internal_m_canceltype();
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::set_m_canceltype(::pbnet::etype_matching_cancel value) {
+   _internal_set_m_canceltype(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_canceltype)
+}
+inline ::pbnet::etype_matching_cancel PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_m_canceltype() const {
+  return static_cast<::pbnet::etype_matching_cancel>(_impl_.m_canceltype_);
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_set_m_canceltype(::pbnet::etype_matching_cancel value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_canceltype_ = value;
+}
+
+// repeated int64 m_cancelmember = 3;
+inline int PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_m_cancelmember_size() const {
+  return _impl_.m_cancelmember_.size();
+}
+inline int PROBUFF_NET_MEMBER_MATCHING_CANCEL::m_cancelmember_size() const {
+  return _internal_m_cancelmember_size();
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::clear_m_cancelmember() {
+  _internal_mutable_m_cancelmember()->Clear();
+}
+inline ::int64_t PROBUFF_NET_MEMBER_MATCHING_CANCEL::m_cancelmember(int index) const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_cancelmember)
+  return _internal_m_cancelmember(index);
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::set_m_cancelmember(int index, ::int64_t value) {
+  _internal_mutable_m_cancelmember()->Set(index, value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_cancelmember)
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::add_m_cancelmember(::int64_t value) {
+  _internal_add_m_cancelmember(value);
+  // @@protoc_insertion_point(field_add:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_cancelmember)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& PROBUFF_NET_MEMBER_MATCHING_CANCEL::m_cancelmember() const {
+  // @@protoc_insertion_point(field_list:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_cancelmember)
+  return _internal_m_cancelmember();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* PROBUFF_NET_MEMBER_MATCHING_CANCEL::mutable_m_cancelmember() {
+  // @@protoc_insertion_point(field_mutable_list:pbnet.PROBUFF_NET_MEMBER_MATCHING_CANCEL.m_cancelmember)
+  return _internal_mutable_m_cancelmember();
+}
+
+inline ::int64_t PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_m_cancelmember(int index) const {
+  return _internal_m_cancelmember().Get(index);
+}
+inline void PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_add_m_cancelmember(::int64_t value) {
+  _internal_mutable_m_cancelmember()->Add(value);
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_m_cancelmember() const {
+  return _impl_.m_cancelmember_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* PROBUFF_NET_MEMBER_MATCHING_CANCEL::_internal_mutable_m_cancelmember() {
+  return &_impl_.m_cancelmember_;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_WAITCONFIRM
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_WAITCONFIRM::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_WAITCONFIRM::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_MATCHING_WAITCONFIRM::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_WAITCONFIRM::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_CONFIRM
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_CONFIRM::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_MATCHING_CONFIRM::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_CONFIRM_RESPONSE
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// optional .pbnet.ematching_confirm_stat m_stat = 3;
+inline bool PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::has_m_stat() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::clear_m_stat() {
+  _impl_.m_stat_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::pbnet::ematching_confirm_stat PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_stat)
+  return _internal_m_stat();
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::set_m_stat(::pbnet::ematching_confirm_stat value) {
+   _internal_set_m_stat(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_stat)
+}
+inline ::pbnet::ematching_confirm_stat PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_m_stat() const {
+  return static_cast<::pbnet::ematching_confirm_stat>(_impl_.m_stat_);
+}
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_stat(::pbnet::ematching_confirm_stat value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_stat_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_SYNC_MATCHING_CONFIRM
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_SYNC_MATCHING_CONFIRM::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_SYNC_MATCHING_CONFIRM::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// repeated int64 m_roleid = 3;
+inline int PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_roleid_size() const {
+  return _impl_.m_roleid_.size();
+}
+inline int PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_roleid_size() const {
+  return _internal_m_roleid_size();
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::clear_m_roleid() {
+  _internal_mutable_m_roleid()->Clear();
+}
+inline ::int64_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_roleid(int index) const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roleid)
+  return _internal_m_roleid(index);
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::set_m_roleid(int index, ::int64_t value) {
+  _internal_mutable_m_roleid()->Set(index, value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roleid)
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::add_m_roleid(::int64_t value) {
+  _internal_add_m_roleid(value);
+  // @@protoc_insertion_point(field_add:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roleid)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_roleid() const {
+  // @@protoc_insertion_point(field_list:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roleid)
+  return _internal_m_roleid();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* PROBUFF_NET_SYNC_MATCHING_CONFIRM::mutable_m_roleid() {
+  // @@protoc_insertion_point(field_mutable_list:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roleid)
+  return _internal_mutable_m_roleid();
+}
+
+inline ::int64_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_roleid(int index) const {
+  return _internal_m_roleid().Get(index);
+}
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_add_m_roleid(::int64_t value) {
+  _internal_mutable_m_roleid()->Add(value);
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>& PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_roleid() const {
+  return _impl_.m_roleid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_mutable_m_roleid() {
+  return &_impl_.m_roleid_;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_SYNC
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_SYNC::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_SYNC::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_SYNC::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SYNC.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_SYNC::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SYNC.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_SYNC::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_SYNC::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_MATCHING_SYNC::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_SYNC::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_SYNC::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SYNC.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_MATCHING_SYNC::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SYNC.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_SYNC::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_MATCHING_SYNC::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// repeated .pbnet.MATCHING_MEMBER m_member = 3;
+inline int PROBUFF_NET_MATCHING_SYNC::_internal_m_member_size() const {
+  return _impl_.m_member_.size();
+}
+inline int PROBUFF_NET_MATCHING_SYNC::m_member_size() const {
+  return _internal_m_member_size();
+}
+inline void PROBUFF_NET_MATCHING_SYNC::clear_m_member() {
+  _internal_mutable_m_member()->Clear();
+}
+inline ::pbnet::MATCHING_MEMBER* PROBUFF_NET_MATCHING_SYNC::mutable_m_member(int index) {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_MATCHING_SYNC.m_member)
+  return _internal_mutable_m_member()->Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >*
+PROBUFF_NET_MATCHING_SYNC::mutable_m_member() {
+  // @@protoc_insertion_point(field_mutable_list:pbnet.PROBUFF_NET_MATCHING_SYNC.m_member)
+  return _internal_mutable_m_member();
+}
+inline const ::pbnet::MATCHING_MEMBER& PROBUFF_NET_MATCHING_SYNC::_internal_m_member(int index) const {
+  return _internal_m_member().Get(index);
+}
+inline const ::pbnet::MATCHING_MEMBER& PROBUFF_NET_MATCHING_SYNC::m_member(int index) const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SYNC.m_member)
+  return _internal_m_member(index);
+}
+inline ::pbnet::MATCHING_MEMBER* PROBUFF_NET_MATCHING_SYNC::_internal_add_m_member() {
+  return _internal_mutable_m_member()->Add();
+}
+inline ::pbnet::MATCHING_MEMBER* PROBUFF_NET_MATCHING_SYNC::add_m_member() {
+  ::pbnet::MATCHING_MEMBER* _add = _internal_add_m_member();
+  // @@protoc_insertion_point(field_add:pbnet.PROBUFF_NET_MATCHING_SYNC.m_member)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >&
+PROBUFF_NET_MATCHING_SYNC::m_member() const {
+  // @@protoc_insertion_point(field_list:pbnet.PROBUFF_NET_MATCHING_SYNC.m_member)
+  return _internal_m_member();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>&
+PROBUFF_NET_MATCHING_SYNC::_internal_m_member() const {
+  return _impl_.m_member_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>*
+PROBUFF_NET_MATCHING_SYNC::_internal_mutable_m_member() {
+  return &_impl_.m_member_;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_MATCHING_SUCCESS
+
+// optional .pbnet.eplays m_type = 1;
+inline bool PROBUFF_NET_MATCHING_SUCCESS::has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_SUCCESS::m_type() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::set_m_type(::pbnet::eplays value) {
+   _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_type)
+}
+inline ::pbnet::eplays PROBUFF_NET_MATCHING_SUCCESS::_internal_m_type() const {
+  return static_cast<::pbnet::eplays>(_impl_.m_type_);
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_type(::pbnet::eplays value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+
+// optional int64 m_roomid = 2;
+inline bool PROBUFF_NET_MATCHING_SUCCESS::has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::clear_m_roomid() {
+  _impl_.m_roomid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::set_m_roomid(::int64_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_roomid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_roomid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+
+// repeated .pbnet.MATCHING_MEMBER m_member = 3;
+inline int PROBUFF_NET_MATCHING_SUCCESS::_internal_m_member_size() const {
+  return _impl_.m_member_.size();
+}
+inline int PROBUFF_NET_MATCHING_SUCCESS::m_member_size() const {
+  return _internal_m_member_size();
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::clear_m_member() {
+  _internal_mutable_m_member()->Clear();
+}
+inline ::pbnet::MATCHING_MEMBER* PROBUFF_NET_MATCHING_SUCCESS::mutable_m_member(int index) {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_member)
+  return _internal_mutable_m_member()->Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >*
+PROBUFF_NET_MATCHING_SUCCESS::mutable_m_member() {
+  // @@protoc_insertion_point(field_mutable_list:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_member)
+  return _internal_mutable_m_member();
+}
+inline const ::pbnet::MATCHING_MEMBER& PROBUFF_NET_MATCHING_SUCCESS::_internal_m_member(int index) const {
+  return _internal_m_member().Get(index);
+}
+inline const ::pbnet::MATCHING_MEMBER& PROBUFF_NET_MATCHING_SUCCESS::m_member(int index) const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_member)
+  return _internal_m_member(index);
+}
+inline ::pbnet::MATCHING_MEMBER* PROBUFF_NET_MATCHING_SUCCESS::_internal_add_m_member() {
+  return _internal_mutable_m_member()->Add();
+}
+inline ::pbnet::MATCHING_MEMBER* PROBUFF_NET_MATCHING_SUCCESS::add_m_member() {
+  ::pbnet::MATCHING_MEMBER* _add = _internal_add_m_member();
+  // @@protoc_insertion_point(field_add:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_member)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >&
+PROBUFF_NET_MATCHING_SUCCESS::m_member() const {
+  // @@protoc_insertion_point(field_list:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_member)
+  return _internal_m_member();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>&
+PROBUFF_NET_MATCHING_SUCCESS::_internal_m_member() const {
+  return _impl_.m_member_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbnet::MATCHING_MEMBER>*
+PROBUFF_NET_MATCHING_SUCCESS::_internal_mutable_m_member() {
+  return &_impl_.m_member_;
+}
+
+// optional int32 m_dataid = 4;
+inline bool PROBUFF_NET_MATCHING_SUCCESS::has_m_dataid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::clear_m_dataid() {
+  _impl_.m_dataid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::int32_t PROBUFF_NET_MATCHING_SUCCESS::m_dataid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_dataid)
+  return _internal_m_dataid();
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::set_m_dataid(::int32_t value) {
+  _internal_set_m_dataid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_dataid)
+}
+inline ::int32_t PROBUFF_NET_MATCHING_SUCCESS::_internal_m_dataid() const {
+  return _impl_.m_dataid_;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_dataid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_dataid_ = value;
+}
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -9863,6 +13221,30 @@ struct is_proto_enum<::pbnet::eunit> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::pbnet::eunit>() {
   return ::pbnet::eunit_descriptor();
+}
+template <>
+struct is_proto_enum<::pbnet::eplays> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::pbnet::eplays>() {
+  return ::pbnet::eplays_descriptor();
+}
+template <>
+struct is_proto_enum<::pbnet::ematching_cancel_stat> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::pbnet::ematching_cancel_stat>() {
+  return ::pbnet::ematching_cancel_stat_descriptor();
+}
+template <>
+struct is_proto_enum<::pbnet::etype_matching_cancel> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::pbnet::etype_matching_cancel>() {
+  return ::pbnet::etype_matching_cancel_descriptor();
+}
+template <>
+struct is_proto_enum<::pbnet::ematching_confirm_stat> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::pbnet::ematching_confirm_stat>() {
+  return ::pbnet::ematching_confirm_stat_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

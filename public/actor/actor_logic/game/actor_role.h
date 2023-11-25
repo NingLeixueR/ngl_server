@@ -70,7 +70,8 @@ namespace ngl
 			return adata.m_channelid() == 2;
 		}
 
-		bool dataid(pbnet::PROBUFF_NET_CHAT& adata)
+		template <typename T>
+		bool dataid(T& adata)
 		{
 			return actor_guid::none_actordataid();
 		}

@@ -17,6 +17,8 @@ namespace ngl
 		ACTOR_ROLE = 1,
 		ACTOR_ROBOT,										// 机器人
 		ACTOR_GUILD,										// 工会	
+		ACTOR_MAP,											// 地图
+		ACTOR_PLAYS,										// 玩法
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
 		ACTOR_ADDRESS_SERVER = ACTOR_SIGNLE_START,				// 单例 actor address server  管理分发地址的中心
@@ -42,8 +44,7 @@ namespace ngl
 		ACTOR_CROSS,											// 跨服
 		ACTOR_CROSSDB,											// 跨服数据库
 		ACTOR_CROSSCHAT,										// 跨服聊天
-		ACTOR_MAP,												// 地图
-		ACTOR_MANAGE_MAP,										// 管理地图,创建地图
+		ACTOR_MANAGE_PLAYS,										// 创建玩法
 		ACTOR_MATCHING,											// 匹配
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,

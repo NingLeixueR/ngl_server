@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-22 10:41:49
+// 创建时间 // 创建时间 23-11-25 20:38:24
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -560,6 +560,41 @@ struct tab_map
 	def_portocol(tab_map, m_id, m_name, m_remarks, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_w,m_l,m_nx,m_ny,m_obstaclenx,m_obstacleny,m_obstacles)
+};
+struct tab_matching
+{
+/*********************************/
+	int32_t		m_id;		// 玩法类型 pbnet::eplays
+	std::string		m_name;		
+	std::string		m_remarks;		
+	int32_t		m_count;		// 玩法达到此人数可以开启玩法
+	int32_t		m_time;		// 匹配最长时间
+	bool		m_iswaitconfirm;		// 是否需要等待确认
+	int32_t		m_waitconfirmtime;		// 等待确认的时间
+/*********************************/
+	tab_matching();
+	// 序列化反序列化相关
+	def_portocol(tab_matching, m_id, m_name, m_remarks, m_count, m_time, m_iswaitconfirm, m_waitconfirmtime)
+	// csv相关
+	def_rcsv(m_id,m_name,m_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime)
+};
+struct tab_playes
+{
+/*********************************/
+	int32_t		m_id;		// 玩法
+	std::string		m_name;		
+	std::string		m_remarks;		
+	int32_t		m_type;		// 玩法类型 pbnet::eplays
+	int32_t		m_mapid;		// 在哪个地图应用该玩法
+	int32_t		m_preparation_tm;		// 准备阶段时间
+	int32_t		m_play_tm;		// 玩法时间
+	int32_t		m_settlement_tm;		// 结算时间
+/*********************************/
+	tab_playes();
+	// 序列化反序列化相关
+	def_portocol(tab_playes, m_id, m_name, m_remarks, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm)
+	// csv相关
+	def_rcsv(m_id,m_name,m_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm)
 };
 }//namespace ngl
 #endif //_csvtable_H_

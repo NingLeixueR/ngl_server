@@ -25,7 +25,7 @@ namespace ngl
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_ROLE));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_ROBOT));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_GUILD));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_MAP));
+		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_PLAYS));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_RELOADCSV));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_RELOADCSV_DISTRIBUTE));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_NOTICE));

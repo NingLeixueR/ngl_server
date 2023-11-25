@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-11-22 16:26:34
+// 创建时间 23-11-25 19:06:19
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -24,8 +24,12 @@
 #include "actor_mail.cpp"
 #include "actor_manage.cpp"
 #include "actor_manage_activity.cpp"
+#include "actor_manage_plays.cpp"
 #include "actor_manage_role.cpp"
+#include "actor_map.cpp"
+#include "actor_matching.cpp"
 #include "actor_notice.cpp"
+#include "actor_plays.cpp"
 #include "actor_ranklist.cpp"
 #include "actor_reloadcsv.cpp"
 #include "actor_rfun.cpp"
@@ -75,6 +79,7 @@
 #include "manage_csv.cpp"
 #include "manage_curl.cpp"
 #include "map.cpp"
+#include "matching.cpp"
 #include "md5.cpp"
 #include "mdump.cpp"
 #include "net.cpp"
