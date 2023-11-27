@@ -24,7 +24,7 @@ namespace ngl
 		std::map<int64_t, std::shared_ptr<unit_role>> m_role;
 
 	public:
-		actor_plays(int32_t adataid, void* data);
+		actor_plays(ENUM_ACTOR atype, int32_t adataid, void* data);
 
 		virtual void init()
 		{
@@ -38,8 +38,6 @@ namespace ngl
 		virtual ~actor_plays() {}
 
 		virtual void loaddb_finish(bool adbishave) {}
-
-		enum { ACTOR_TYPE = ACTOR_PLAYS };
 
 		// …Ë÷√Ω◊∂Œ
 		void stage(estage astage, bool astart)
