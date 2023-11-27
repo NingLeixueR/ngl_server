@@ -35,7 +35,13 @@ namespace ngl
 		roomid ltemp(adata.m_roomid());
 		int32_t tid = roomid::tid(adata.m_roomid());
 		//ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr
-		actor_base::create(ACTOR_PLAYS, adata.m_roomid());
+		actor_switch_process_plays pram;
+		std::for_each(adata.mutable_m_member()->begin(); adata.mutable_m_member()->end(); [](const pbnet::MATCHING_MEMBER& adata)
+			{
+
+			});
+		pram.m_players;
+		actor_base::create(ACTOR_PLAYS, adata.m_roomid(),);
 
 		actor_switch_process_plays;
 		return true;

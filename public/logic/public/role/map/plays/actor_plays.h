@@ -105,6 +105,8 @@ namespace ngl
 		virtual void init_after() {}
 		// 玩家进入
 		virtual void enter(i64_actorid aroleid) {}
+		// 玩家离开
+		virtual void leave(i64_actorid aroleid) {}
 		// 准备阶段[开始or结束]
 		virtual void preparation(bool astart) {}
 		// 玩法阶段[开始or结束]

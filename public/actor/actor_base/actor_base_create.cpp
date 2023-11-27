@@ -24,6 +24,11 @@ namespace ngl
 			((actor_robot*)(lpactor_base))->init_rfun<actor_robot>();
 			actor_base::first_actor_register<actor_robot>();
 			break;
+		case ACTOR_PLAYS:
+			lpactor_base = new actor_robot(tab_self_area, aid, aparm);
+			((actor_robot*)(lpactor_base))->init_rfun<actor_robot>();
+			actor_base::first_actor_register<actor_robot>();
+			break;
 		//case ACTOR_ACTIVITY:
 		//	lpactor_base = activity_create::create(aid, *(bool*)aparm);
 		//	break;
