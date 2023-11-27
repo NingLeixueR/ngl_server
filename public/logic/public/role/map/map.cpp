@@ -71,6 +71,16 @@ namespace ngl
 		return copy_unit(lpunit, aunit);
 	}
 
+	void aoimap::set_enterview(const std::function<void(i64_actorid, std::set<i64_actorid>&)>& afun)
+	{
+		m_enterview = afun;
+	}
+
+	void aoimap::set_leaveview(const std::function<void(i64_actorid, std::set<i64_actorid>&)>& afun)
+	{
+		m_leaveview = afun;
+	}
+
 	bool aoimap::enter(unit* aunit, int32_t ax, int32_t ay)
 	{
 		int32_t lenter_pos = m_grids.id(ax, ay);
@@ -92,6 +102,7 @@ namespace ngl
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>();
 		pro->add_m_units(aunit->id());
+		std::set<i64_actorid> lview;
 		// leave 离开视野
 		for (int32_t id : lgrids1)
 		{
@@ -101,12 +112,21 @@ namespace ngl
 				if (lpgrid != nullptr)
 				{
 					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					pro->set_m_isenter(false);
-					actor::send_client(*lpset, pro);
+					std::for_each(lpset->begin(), lpset->end(), [&lview](i64_actorid item)
+						{
+							lview.insert(item);
+						});
 				}
 			}
 		}
+		if (lview.empty() == false)
+		{
+			pro->set_m_isenter(false);
+			actor::send_client(lview, pro);
+			m_leaveview(aunit->id(), lview);
+		}
 
+		lview.clear();
 		// enter 进入视野
 		for (int32_t id : lgrids2)
 		{
@@ -116,11 +136,21 @@ namespace ngl
 				if (lpgrid != nullptr)
 				{
 					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					pro->set_m_isenter(true);
-					actor::send_client(*lpset, pro);
+					std::for_each(lpset->begin(), lpset->end(), [&lview](i64_actorid item)
+						{
+							lview.insert(item);
+						});
 				}
 			}
 		}
+		if (lview.empty() == false)
+		{
+			pro->set_m_isenter(true);
+			actor::send_client(lview, pro);
+			m_enterview(aunit->id(), lview);
+		}
+
+
 
 		aunit->set_x(ax);
 		aunit->set_y(ay);

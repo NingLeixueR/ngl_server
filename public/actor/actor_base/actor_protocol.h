@@ -525,6 +525,12 @@ namespace ngl
 		def_portocol(actor_switch_process_role, m_create, m_gatewayid);
 	};
 
+	struct actor_switch_process_plays
+	{
+		std::vector<i64_actorid> m_players;
+		def_portocol(actor_switch_process_plays, m_players);
+	};
+
 	// ---- 服务器会通过此消息告诉对方连接成功 
 	struct actor_server_connect
 	{

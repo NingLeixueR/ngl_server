@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-27 11:39:01
+// 创建时间 // 创建时间 23-11-27 21:08:37
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -578,6 +578,18 @@ struct tab_matching
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime)
 };
+struct Vector2
+{
+/*********************************/
+	int32_t		m_x;		
+	int32_t		m_y;		
+/*********************************/
+	Vector2();
+	// 序列化反序列化相关
+	def_portocol(Vector2, m_x, m_y)
+	// csv相关
+	def_rcsv(m_x,m_y)
+};
 struct tab_plays
 {
 /*********************************/
@@ -589,12 +601,13 @@ struct tab_plays
 	int32_t		m_preparation_tm;		// 准备阶段时间
 	int32_t		m_play_tm;		// 玩法时间
 	int32_t		m_settlement_tm;		// 结算时间
+	std::vector<Vector2>		m_birthpoint;		// 出生点Vector2(m_x:int32_t,m_y:int32_t)	
 /*********************************/
 	tab_plays();
 	// 序列化反序列化相关
-	def_portocol(tab_plays, m_id, m_name, m_remarks, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm)
+	def_portocol(tab_plays, m_id, m_name, m_remarks, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm)
+	def_rcsv(m_id,m_name,m_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint)
 };
 }//namespace ngl
 #endif //_csvtable_H_

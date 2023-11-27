@@ -13,7 +13,8 @@ namespace ngl
 		std::map<i64_actorid, unit_role*> m_roleunit;
 		std::map<i64_actorid, unit_monster*> m_monster;
 		std::map<i64_actorid, unit_region*> m_region;
-
+		std::function<void(i64_actorid, std::set<i64_actorid>&)> m_enterview;
+		std::function<void(i64_actorid, std::set<i64_actorid>&)> m_leaveview;
 	public:
 		aoimap();
 
@@ -28,6 +29,11 @@ namespace ngl
 		// ¿½±´ unit => pbnet::UNIT
 		bool copy_unit(unit* aunit, pbnet::UNIT* aUNIT);
 		bool get_unit(i64_actorid aid, pbnet::UNIT* aunit);
+
+		void set_enterview(const std::function<void(i64_actorid, std::set<i64_actorid>&)>& afun);
+
+		void set_leaveview(const std::function<void(i64_actorid, std::set<i64_actorid>&)>& afun);
+
 
 		virtual bool enter(unit* aunit, int32_t ax, int32_t ay);
 
