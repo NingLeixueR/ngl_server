@@ -9,6 +9,7 @@ namespace ngl
 	class actor_plays : public actor
 	{
 		tab_plays* m_tab;
+		aoimap m_map;
 	public:
 		actor_plays(int32_t adataid);
 
@@ -24,7 +25,11 @@ namespace ngl
 
 		enum { ACTOR_TYPE = ACTOR_PLAYS };
 
-		//bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS& adata);
+		template <typename T>
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, T& adata)
+		{
+			return true;
+		}
 
 		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
 		{

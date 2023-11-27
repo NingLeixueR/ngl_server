@@ -17,7 +17,9 @@ namespace ngl
 			})
 	{
 		int32_t tid = roomid::tid(adataid);
-		m_tab = allcsv::tab<tab_plays>(tid);		
+		m_tab = allcsv::tab<tab_plays>(tid);	
+		assert(m_tab != nullptr);
+		m_map.init(m_tab->m_mapid);		
 	}
 
 	void actor_plays::actor_register()
