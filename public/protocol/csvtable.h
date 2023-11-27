@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-11-25 20:38:24
+// 创建时间 // 创建时间 23-11-27 11:39:01
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -578,7 +578,7 @@ struct tab_matching
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime)
 };
-struct tab_playes
+struct tab_plays
 {
 /*********************************/
 	int32_t		m_id;		// 玩法
@@ -590,9 +590,9 @@ struct tab_playes
 	int32_t		m_play_tm;		// 玩法时间
 	int32_t		m_settlement_tm;		// 结算时间
 /*********************************/
-	tab_playes();
+	tab_plays();
 	// 序列化反序列化相关
-	def_portocol(tab_playes, m_id, m_name, m_remarks, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm)
+	def_portocol(tab_plays, m_id, m_name, m_remarks, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm)
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm)
 };

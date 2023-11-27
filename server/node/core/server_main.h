@@ -324,7 +324,7 @@ bool start_game()
 	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 	ngl::actor_manage_role::getInstance();
-	ngl::actor_switchprocess::getInstance();
+	ngl::actor_create::getInstance();
 	ngl::actor_brief::getInstance();
 	//ngl::actor_reloadcsv::getInstance();
 

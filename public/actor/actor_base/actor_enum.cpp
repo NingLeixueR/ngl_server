@@ -20,7 +20,7 @@ namespace ngl
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_ADDRESS_CLIENT));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_LOGIN));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_GATEWAY));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_SPROCESS));
+		em<ENUM_ACTOR>::set(em_pram(ACTOR_CREATE));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_LOG));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_ROLE));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_ROBOT));

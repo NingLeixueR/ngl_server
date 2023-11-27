@@ -27,7 +27,7 @@ namespace ngl
 		ACTOR_GATEWAY,											// 网关
 		ACTOR_GATEWAY_CLIENT2GAME,								// 网关 [Client]->[Game]
 		ACTOR_GATEWAY_GAME2CLIENT,								// 网关 [Game]	->[Client]
-		ACTOR_SPROCESS,
+		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_LOG,
 		ACTOR_MANAGE_ROLE,
 		ACTOR_MANAGE_ROBOT,

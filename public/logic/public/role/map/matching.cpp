@@ -4,7 +4,9 @@
 
 namespace ngl
 {
-	room::room(int aid, pbnet::eplays m_type, int atid)
+	std::array<room*, pbnet::eplays_count> room::m_typeroom;
+
+	room::room(int32_t aid, pbnet::eplays m_type, int32_t atid)
 		: m_id(aid)
 		, m_type(m_type)
 		, m_tab(nullptr)

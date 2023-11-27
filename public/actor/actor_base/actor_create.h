@@ -12,24 +12,25 @@
 
 namespace ngl
 {
+
 	// actor切换进程(暂时actor内部临时数据无法迁移)
-	class actor_switchprocess : public actor
+	class actor_create : public actor
 	{
-		actor_switchprocess();
+		actor_create();
 	public:
-		friend class actor_instance<actor_switchprocess>;
-		static actor_switchprocess& getInstance()
+		friend class actor_instance<actor_create>;
+		static actor_create& getInstance()
 		{
-			return actor_instance<actor_switchprocess>::instance();
+			return actor_instance<actor_create>::instance();
 		}
 
-		virtual ~actor_switchprocess();
-
+		virtual ~actor_create() {}
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_SPROCESS};
+		enum { ACTOR_TYPE = ACTOR_CREATE};
 
+		// 在指定[Server]上创建[Actor]
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<actor_switch_process<T>>& pro)
 		{
@@ -45,7 +46,7 @@ namespace ngl
 			}
 			//// #### 3 发给去的进程
 			actor_base::static_send_actor(
-				actor_guid::make(ACTOR_SPROCESS, tab_self_area, pro->m_toserverid),
+				actor_guid::make(ACTOR_CREATE, tab_self_area, pro->m_toserverid),
 				actor_guid::make(),
 				pro);
 		}
@@ -68,10 +69,10 @@ namespace ngl
 			{
 				// #### 1 发给actor目前所在的进程
 				actor_base::static_send_actor(
-					actor_guid::make(ACTOR_SPROCESS, tab_self_area, aserverid),
+					actor_guid::make(ACTOR_CREATE, tab_self_area, aserverid),
 					actor_guid::make(),
 					pro);
-			}	
+			}
 			else
 			{
 				switch_process_send(pro);
@@ -86,17 +87,20 @@ namespace ngl
 				actor_guid lguid(adata.m_actor);
 				actor_base::create(lguid.type(), lguid.actordataid(), &adata.m_pram);
 			}
-			else if(adata.m_serverid == nconfig::m_nodeid)
+			else if (adata.m_serverid == nconfig::m_nodeid)
 			{
 				actor_manage::getInstance().erase_actor_byid(adata.m_actor, [adata]()
 					{
 						std::shared_ptr<actor_switch_process<T>> pro(new actor_switch_process<T>(adata));
-						actor_switchprocess::switch_process_send<T>(pro);
+						actor_create::switch_process_send<T>(pro);
 					});
 			}
 			return true;
 		}
+
 	};
+
+
 
 
 }

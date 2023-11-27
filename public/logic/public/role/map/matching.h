@@ -24,7 +24,7 @@ namespace ngl
 
 	class room
 	{
-		int m_id;							// 房间id
+		int32_t m_id;							// 房间id
 		pbnet::eplays m_type;				// 玩法类型
 		std::map<int64_t, pbnet::MATCHING_MEMBER> m_memberlist;
 		tab_matching* m_tab;
@@ -35,7 +35,7 @@ namespace ngl
 
 		bool initmember(i64_actorid aroleid, pbnet::MATCHING_MEMBER& amember);
 	public:
-		room(int aid, pbnet::eplays m_type, int atid);
+		room(int32_t aid, pbnet::eplays m_type, int32_t atid);
 
 		room(pbnet::eplays m_type)
 			: m_id(0)
@@ -136,16 +136,16 @@ namespace ngl
 	};
 
 	// ########################## roomid #################################
-	// ##### uint8(玩法类型)#### uint8(玩法tid) ##### int16(dataid) ######
+	// ##### uint16(玩法tid) ########################## int16(dataid) ####
 
 	union roomid
 	{
 		int32_t m_id;
 		int16_t m_value[2];			// m_value1[0] = type  m_value1[1]=actordataid
 
-		roomid(pbnet::eplays atype, int16_t adataid)
+		roomid(int16_t atid, int16_t adataid)
 		{
-			m_value[0] = atype;
+			m_value[0] = atid;
 			m_value[1] = adataid;
 		}
 
@@ -154,16 +154,16 @@ namespace ngl
 			m_id = aid;
 		}
 
-		static int32_t make(pbnet::eplays atype, int16_t adataid)
+		static int32_t make(int16_t atid, int16_t adataid)
 		{
-			roomid ltemp(atype, adataid);
+			roomid ltemp(atid, adataid);
 			return ltemp.m_id;
 		}
 
-		static pbnet::eplays type(int32_t aid)
+		static int16_t tid(int32_t aid)
 		{
 			roomid ltemp(aid);
-			return (pbnet::eplays)ltemp.m_value[0];
+			return ltemp.m_value[0];
 		}
 
 		static int16_t dataid(int32_t aid)
@@ -180,8 +180,8 @@ namespace ngl
 		
 		std::array<std::list<prt_room>, pbnet::eplays_count> m_room;
 		std::array<int32_t, pbnet::eplays_count> m_currentroom;
-		std::map<int32_t, room*> m_roombyid;// key roomid
-		std::map<i64_actorid, int32_t> m_roombyroleid;
+		std::map<int32_t, room*> m_roombyid;							// key roomid
+		std::map<i64_actorid, int32_t> m_roombyroleid;					// key roleid value roomid
 	public:
 		matching();
 
@@ -195,11 +195,6 @@ namespace ngl
 			if (itor_room == m_roombyid.end())
 				return nullptr;
 			return itor_room->second->find(aid);
-		}
-
-		int32_t get_roomid(pbnet::eplays atype, int8_t atid)
-		{
-			return roomid::make(atype, ++m_currentroom[atype]);
 		}
 
 		room* findroombyrole(i64_actorid aroleid)
@@ -230,7 +225,8 @@ namespace ngl
 			if (lproom == nullptr)
 			{
 				// 新建房间
-				int32_t lroomid = get_roomid(atype, atid);
+				
+				int32_t lroomid = roomid::make(atid, ++m_currentroom[atype]);
 				lproom = room::create(lroomid, atype, atype);
 				std::shared_ptr<room> lroomptr;
 				m_room[atype].push_back(lroomptr);

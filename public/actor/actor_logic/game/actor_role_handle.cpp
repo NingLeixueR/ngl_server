@@ -34,7 +34,7 @@ namespace ngl
 		actor_switch_process_role pro;
 		pro.m_create = false;
 		pro.m_gatewayid = m_gatewayid;
-		actor_switchprocess::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
+		actor_create::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
 		//LogLocalError("######Switch Line##[%][%]", m_info.id(), m_info.db()->name());
 		//crossprocess<actor_role>(lserverid);
 		return true;

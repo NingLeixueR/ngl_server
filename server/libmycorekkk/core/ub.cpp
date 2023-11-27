@@ -1,11 +1,12 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-11-25 19:06:19
+// 创建时间 23-11-27 14:40:16
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
 #include "actor.cpp"
 #include "actor_address.cpp"
 #include "actor_base.cpp"
+#include "actor_base_create.cpp"
 #include "actor_brief.cpp"
 #include "actor_chat.cpp"
 #include "actor_client.cpp"
@@ -38,7 +39,6 @@
 #include "actor_role_cmd.cpp"
 #include "actor_role_handle.cpp"
 #include "actor_server.cpp"
-#include "actor_switchprocess.cpp"
 #include "actor_thread.cpp"
 #include "actor_timer.cpp"
 #include "asio_base.cpp"

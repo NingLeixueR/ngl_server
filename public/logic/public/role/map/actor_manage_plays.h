@@ -25,7 +25,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		enum { ACTOR_TYPE = ACTOR_PLAYS};
+		enum { ACTOR_TYPE = ACTOR_MANAGE_PLAYS};
 
 		// ´´½¨Íæ·¨
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS& adata);

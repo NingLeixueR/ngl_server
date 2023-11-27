@@ -27,7 +27,7 @@ namespace ngl
 
 		virtual ~actor_matching() {}
 
-		virtual void loaddb_finish(bool adbishave);
+		virtual void loaddb_finish(bool adbishave) {}
 
 		enum { ACTOR_TYPE = ACTOR_MATCHING};
 
