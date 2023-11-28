@@ -144,6 +144,10 @@ namespace ngl
 				// É¾³ýactor
 				actor_base::erase_actor_byid(id_guid());
 			}
+			else
+			{
+				m_map.update(adata.m_ms);
+			}
 			return true;
 		}
 	};

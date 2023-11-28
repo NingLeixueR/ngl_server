@@ -1,10 +1,12 @@
 #include "unit.h"
+#include "localtime.h"
 
 namespace ngl
 {
 	unit::unit(pbnet::eunit atype, int64_t aid) :
 		m_type(atype),
-		m_id(aid)
+		m_id(aid),
+		m_lastupdate(localtime::getms())
 	{
 		set_position_invalid();
 	}
