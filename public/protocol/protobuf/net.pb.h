@@ -84,6 +84,9 @@ extern PROBUFF_NET_BAG_UPDATE_RESPONSE_additemDefaultTypeInternal _PROBUFF_NET_B
 class PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem;
 struct PROBUFF_NET_BAG_UPDATE_RESPONSE_delitemDefaultTypeInternal;
 extern PROBUFF_NET_BAG_UPDATE_RESPONSE_delitemDefaultTypeInternal _PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem_default_instance_;
+class PROBUFF_NET_CHANGE_ANGLE;
+struct PROBUFF_NET_CHANGE_ANGLEDefaultTypeInternal;
+extern PROBUFF_NET_CHANGE_ANGLEDefaultTypeInternal _PROBUFF_NET_CHANGE_ANGLE_default_instance_;
 class PROBUFF_NET_CHAT;
 struct PROBUFF_NET_CHATDefaultTypeInternal;
 extern PROBUFF_NET_CHATDefaultTypeInternal _PROBUFF_NET_CHAT_default_instance_;
@@ -242,6 +245,8 @@ template <>
 ::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_additem* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_additem>(Arena*);
 template <>
 ::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem>(Arena*);
+template <>
+::pbnet::PROBUFF_NET_CHANGE_ANGLE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHANGE_ANGLE>(Arena*);
 template <>
 ::pbnet::PROBUFF_NET_CHAT* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHAT>(Arena*);
 template <>
@@ -6413,6 +6418,7 @@ class UNIT_POSITION final :
     kMPositionFieldNumber = 3,
     kMIdFieldNumber = 2,
     kMAngleFieldNumber = 4,
+    kMSpeedFieldNumber = 5,
   };
   // optional .pbnet.VECTOR2 m_position = 3;
   bool has_m_position() const;
@@ -6450,6 +6456,17 @@ class UNIT_POSITION final :
   void _internal_set_m_angle(::int32_t value);
 
   public:
+  // optional int32 m_speed = 5;
+  bool has_m_speed() const;
+  void clear_m_speed() ;
+  ::int32_t m_speed() const;
+  void set_m_speed(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_speed() const;
+  void _internal_set_m_speed(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:pbnet.UNIT_POSITION)
  private:
   class _Internal;
@@ -6463,6 +6480,7 @@ class UNIT_POSITION final :
     ::pbnet::VECTOR2* m_position_;
     ::int64_t m_id_;
     ::int32_t m_angle_;
+    ::int32_t m_speed_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -7190,6 +7208,166 @@ class PROBUFF_NET_SYNC_POSITION final :
   friend struct ::TableStruct_net_2eproto;
 };// -------------------------------------------------------------------
 
+class PROBUFF_NET_CHANGE_ANGLE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_CHANGE_ANGLE) */ {
+ public:
+  inline PROBUFF_NET_CHANGE_ANGLE() : PROBUFF_NET_CHANGE_ANGLE(nullptr) {}
+  ~PROBUFF_NET_CHANGE_ANGLE() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_CHANGE_ANGLE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_CHANGE_ANGLE(const PROBUFF_NET_CHANGE_ANGLE& from);
+  PROBUFF_NET_CHANGE_ANGLE(PROBUFF_NET_CHANGE_ANGLE&& from) noexcept
+    : PROBUFF_NET_CHANGE_ANGLE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_CHANGE_ANGLE& operator=(const PROBUFF_NET_CHANGE_ANGLE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_CHANGE_ANGLE& operator=(PROBUFF_NET_CHANGE_ANGLE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_CHANGE_ANGLE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_CHANGE_ANGLE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_CHANGE_ANGLE*>(
+               &_PROBUFF_NET_CHANGE_ANGLE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    41;
+
+  friend void swap(PROBUFF_NET_CHANGE_ANGLE& a, PROBUFF_NET_CHANGE_ANGLE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_CHANGE_ANGLE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_CHANGE_ANGLE* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_CHANGE_ANGLE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_CHANGE_ANGLE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_CHANGE_ANGLE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_CHANGE_ANGLE& from) {
+    PROBUFF_NET_CHANGE_ANGLE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_CHANGE_ANGLE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbnet.PROBUFF_NET_CHANGE_ANGLE";
+  }
+  protected:
+  explicit PROBUFF_NET_CHANGE_ANGLE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMPositionFieldNumber = 1,
+  };
+  // optional .pbnet.UNIT_POSITION m_position = 1;
+  bool has_m_position() const;
+  void clear_m_position() ;
+  const ::pbnet::UNIT_POSITION& m_position() const;
+  PROTOBUF_NODISCARD ::pbnet::UNIT_POSITION* release_m_position();
+  ::pbnet::UNIT_POSITION* mutable_m_position();
+  void set_allocated_m_position(::pbnet::UNIT_POSITION* m_position);
+  private:
+  const ::pbnet::UNIT_POSITION& _internal_m_position() const;
+  ::pbnet::UNIT_POSITION* _internal_mutable_m_position();
+  public:
+  void unsafe_arena_set_allocated_m_position(
+      ::pbnet::UNIT_POSITION* m_position);
+  ::pbnet::UNIT_POSITION* unsafe_arena_release_m_position();
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_CHANGE_ANGLE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::pbnet::UNIT_POSITION* m_position_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};// -------------------------------------------------------------------
+
 class PROBUFF_NET_MATCHING final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MATCHING) */ {
  public:
@@ -7246,7 +7424,7 @@ class PROBUFF_NET_MATCHING final :
                &_PROBUFF_NET_MATCHING_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    42;
 
   friend void swap(PROBUFF_NET_MATCHING& a, PROBUFF_NET_MATCHING& b) {
     a.Swap(&b);
@@ -7416,7 +7594,7 @@ class MATCHING_MEMBER final :
                &_MATCHING_MEMBER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    43;
 
   friend void swap(MATCHING_MEMBER& a, MATCHING_MEMBER& b) {
     a.Swap(&b);
@@ -7635,7 +7813,7 @@ class PROBUFF_NET_MATCHING_RESPONSE final :
                &_PROBUFF_NET_MATCHING_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    44;
 
   friend void swap(PROBUFF_NET_MATCHING_RESPONSE& a, PROBUFF_NET_MATCHING_RESPONSE& b) {
     a.Swap(&b);
@@ -7792,7 +7970,7 @@ class PROBUFF_NET_MATCHING_CANCEL final :
                &_PROBUFF_NET_MATCHING_CANCEL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    45;
 
   friend void swap(PROBUFF_NET_MATCHING_CANCEL& a, PROBUFF_NET_MATCHING_CANCEL& b) {
     a.Swap(&b);
@@ -7962,7 +8140,7 @@ class PROBUFF_NET_MATCHING_CANCEL_RESPONSE final :
                &_PROBUFF_NET_MATCHING_CANCEL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    46;
 
   friend void swap(PROBUFF_NET_MATCHING_CANCEL_RESPONSE& a, PROBUFF_NET_MATCHING_CANCEL_RESPONSE& b) {
     a.Swap(&b);
@@ -8132,7 +8310,7 @@ class PROBUFF_NET_MEMBER_MATCHING_CANCEL final :
                &_PROBUFF_NET_MEMBER_MATCHING_CANCEL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    47;
 
   friend void swap(PROBUFF_NET_MEMBER_MATCHING_CANCEL& a, PROBUFF_NET_MEMBER_MATCHING_CANCEL& b) {
     a.Swap(&b);
@@ -8325,7 +8503,7 @@ class PROBUFF_NET_MATCHING_WAITCONFIRM final :
                &_PROBUFF_NET_MATCHING_WAITCONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    48;
 
   friend void swap(PROBUFF_NET_MATCHING_WAITCONFIRM& a, PROBUFF_NET_MATCHING_WAITCONFIRM& b) {
     a.Swap(&b);
@@ -8495,7 +8673,7 @@ class PROBUFF_NET_MATCHING_CONFIRM final :
                &_PROBUFF_NET_MATCHING_CONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    49;
 
   friend void swap(PROBUFF_NET_MATCHING_CONFIRM& a, PROBUFF_NET_MATCHING_CONFIRM& b) {
     a.Swap(&b);
@@ -8665,7 +8843,7 @@ class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE final :
                &_PROBUFF_NET_MATCHING_CONFIRM_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    50;
 
   friend void swap(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& a, PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& b) {
     a.Swap(&b);
@@ -8848,7 +9026,7 @@ class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
                &_PROBUFF_NET_SYNC_MATCHING_CONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    51;
 
   friend void swap(PROBUFF_NET_SYNC_MATCHING_CONFIRM& a, PROBUFF_NET_SYNC_MATCHING_CONFIRM& b) {
     a.Swap(&b);
@@ -9041,7 +9219,7 @@ class PROBUFF_NET_MATCHING_SYNC final :
                &_PROBUFF_NET_MATCHING_SYNC_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    52;
 
   friend void swap(PROBUFF_NET_MATCHING_SYNC& a, PROBUFF_NET_MATCHING_SYNC& b) {
     a.Swap(&b);
@@ -9233,7 +9411,7 @@ class PROBUFF_NET_MATCHING_SUCCESS_RESPONSE final :
                &_PROBUFF_NET_MATCHING_SUCCESS_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    53;
 
   friend void swap(PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& a, PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& b) {
     a.Swap(&b);
@@ -9416,7 +9594,7 @@ class PROBUFF_NET_MATCHING_SUCCESS final :
                &_PROBUFF_NET_MATCHING_SUCCESS_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    54;
 
   friend void swap(PROBUFF_NET_MATCHING_SUCCESS& a, PROBUFF_NET_MATCHING_SUCCESS& b) {
     a.Swap(&b);
@@ -9621,7 +9799,7 @@ class PROBUFF_NET_ENTER_PLAYS final :
                &_PROBUFF_NET_ENTER_PLAYS_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    55;
 
   friend void swap(PROBUFF_NET_ENTER_PLAYS& a, PROBUFF_NET_ENTER_PLAYS& b) {
     a.Swap(&b);
@@ -12290,6 +12468,31 @@ inline void UNIT_POSITION::_internal_set_m_angle(::int32_t value) {
   _impl_.m_angle_ = value;
 }
 
+// optional int32 m_speed = 5;
+inline bool UNIT_POSITION::has_m_speed() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline void UNIT_POSITION::clear_m_speed() {
+  _impl_.m_speed_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::int32_t UNIT_POSITION::m_speed() const {
+  // @@protoc_insertion_point(field_get:pbnet.UNIT_POSITION.m_speed)
+  return _internal_m_speed();
+}
+inline void UNIT_POSITION::set_m_speed(::int32_t value) {
+  _internal_set_m_speed(value);
+  // @@protoc_insertion_point(field_set:pbnet.UNIT_POSITION.m_speed)
+}
+inline ::int32_t UNIT_POSITION::_internal_m_speed() const {
+  return _impl_.m_speed_;
+}
+inline void UNIT_POSITION::_internal_set_m_speed(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.m_speed_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // UNIT
@@ -12589,6 +12792,97 @@ inline ::PROTOBUF_NAMESPACE_ID::Map< ::int64_t, ::pbnet::UNIT_POSITION >*
 PROBUFF_NET_SYNC_POSITION::mutable_m_position() {
   // @@protoc_insertion_point(field_mutable_map:pbnet.PROBUFF_NET_SYNC_POSITION.m_position)
   return _internal_mutable_m_position();
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_CHANGE_ANGLE
+
+// optional .pbnet.UNIT_POSITION m_position = 1;
+inline bool PROBUFF_NET_CHANGE_ANGLE::has_m_position() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.m_position_ != nullptr);
+  return value;
+}
+inline void PROBUFF_NET_CHANGE_ANGLE::clear_m_position() {
+  if (_impl_.m_position_ != nullptr) _impl_.m_position_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::pbnet::UNIT_POSITION& PROBUFF_NET_CHANGE_ANGLE::_internal_m_position() const {
+  const ::pbnet::UNIT_POSITION* p = _impl_.m_position_;
+  return p != nullptr ? *p : reinterpret_cast<const ::pbnet::UNIT_POSITION&>(
+      ::pbnet::_UNIT_POSITION_default_instance_);
+}
+inline const ::pbnet::UNIT_POSITION& PROBUFF_NET_CHANGE_ANGLE::m_position() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_CHANGE_ANGLE.m_position)
+  return _internal_m_position();
+}
+inline void PROBUFF_NET_CHANGE_ANGLE::unsafe_arena_set_allocated_m_position(
+    ::pbnet::UNIT_POSITION* m_position) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.m_position_);
+  }
+  _impl_.m_position_ = m_position;
+  if (m_position) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_CHANGE_ANGLE.m_position)
+}
+inline ::pbnet::UNIT_POSITION* PROBUFF_NET_CHANGE_ANGLE::release_m_position() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::pbnet::UNIT_POSITION* temp = _impl_.m_position_;
+  _impl_.m_position_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::pbnet::UNIT_POSITION* PROBUFF_NET_CHANGE_ANGLE::unsafe_arena_release_m_position() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_CHANGE_ANGLE.m_position)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::pbnet::UNIT_POSITION* temp = _impl_.m_position_;
+  _impl_.m_position_ = nullptr;
+  return temp;
+}
+inline ::pbnet::UNIT_POSITION* PROBUFF_NET_CHANGE_ANGLE::_internal_mutable_m_position() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.m_position_ == nullptr) {
+    auto* p = CreateMaybeMessage<::pbnet::UNIT_POSITION>(GetArenaForAllocation());
+    _impl_.m_position_ = p;
+  }
+  return _impl_.m_position_;
+}
+inline ::pbnet::UNIT_POSITION* PROBUFF_NET_CHANGE_ANGLE::mutable_m_position() {
+  ::pbnet::UNIT_POSITION* _msg = _internal_mutable_m_position();
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_CHANGE_ANGLE.m_position)
+  return _msg;
+}
+inline void PROBUFF_NET_CHANGE_ANGLE::set_allocated_m_position(::pbnet::UNIT_POSITION* m_position) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.m_position_;
+  }
+  if (m_position) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(m_position);
+    if (message_arena != submessage_arena) {
+      m_position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, m_position, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.m_position_ = m_position;
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_CHANGE_ANGLE.m_position)
 }
 
 // -------------------------------------------------------------------

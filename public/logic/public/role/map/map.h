@@ -42,5 +42,14 @@ namespace ngl
 		void sync_position(unit* aunit, int32_t agridid);
 
 		bool move(unit* aunit, int32_t ax, int32_t ay);
+
+		// 改变方向
+		void change_angle(i64_actorid aroleid, int32_t aangle);
+		// 改变速度
+		void change_speed(i64_actorid aroleid, int32_t aspeed);
+		
+		void change(pbnet::UNIT_POSITION& aposition);
+
+		void update(int64_t ams);
 	};
 }

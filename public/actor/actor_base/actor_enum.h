@@ -18,7 +18,6 @@ namespace ngl
 		ACTOR_ROLE = 1,
 		ACTOR_ROBOT,										// 机器人
 		ACTOR_GUILD,										// 工会	
-		ACTOR_MAP,											// 地图
 		ACTOR_PLAYS,										// 玩法
 		ACTOR_PLAYS_GO_UNDERGROUNDPALACE = ACTOR_PLAYS,		// 玩法[勇闯地宫]
 

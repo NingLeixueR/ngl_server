@@ -34,6 +34,16 @@ namespace ngl
 		return m_position.m_position().m_y();
 	}
 
+	int32_t unit::angle()
+	{
+		return m_position.m_angle();
+	}
+
+	int32_t unit::speed()
+	{
+		return m_position.m_speed();
+	}
+
 	void unit::set_x(int32_t ax)
 	{
 		m_position.mutable_m_position()->set_m_x(ax);
@@ -42,6 +52,16 @@ namespace ngl
 	void unit::set_y(int32_t ay)
 	{
 		m_position.mutable_m_position()->set_m_y(ay);
+	}
+
+	void unit::set_angle(int32_t aangle)
+	{
+		m_position.set_m_angle(aangle);
+	}
+
+	void unit::set_speed(int32_t aspeed)
+	{
+		m_position.set_m_speed(aspeed);
 	}
 
 	pbnet::UNIT_POSITION& unit::position()
@@ -58,5 +78,12 @@ namespace ngl
 	bool unit::is_position_invalid()
 	{
 		return x() == -1 || y() == -1;
+	}
+
+	void unit::update(int64_t alastupdate, pbnet::VECTOR2& apos)
+	{
+		int64_t lvalue = alastupdate - m_lastupdate;
+		apos.set_m_x(x() + (speed() * cos(angle()) * lvalue));
+		apos.set_m_y(y() + (speed() * sin(angle()) * lvalue));
 	}
 }

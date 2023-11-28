@@ -218,4 +218,51 @@ namespace ngl
 		}
 		return true;
 	}
+
+	// 改变方向
+	void aoimap::change_angle(i64_actorid aroleid, int32_t aangle)
+	{
+		unit* lpunit = find_unit(aroleid);
+		if (lpunit == nullptr)
+			return;
+		lpunit->set_angle(aangle);
+	}
+	// 改变速度
+	void aoimap::change_speed(i64_actorid aroleid, int32_t aspeed)
+	{
+		unit* lpunit = find_unit(aroleid);
+		if (lpunit == nullptr)
+			return;
+		lpunit->set_speed(aspeed);
+	}
+
+	void aoimap::change(pbnet::UNIT_POSITION& aposition)
+	{
+		change_angle(aposition.m_id(), aposition.m_angle());
+		change_speed(aposition.m_id(), aposition.m_speed());
+	}
+
+	void aoimap::update(int64_t ams)
+	{
+		pbnet::VECTOR2 lpos;
+		for (auto itor = m_roleunit.begin();
+			itor != m_roleunit.end(); ++itor)
+		{
+			itor->second->update(ams, lpos);
+			move(itor->second, lpos.m_x(), lpos.m_y());
+		}
+		for (auto itor = m_monster.begin();
+			itor != m_monster.end(); ++itor)
+		{
+			itor->second->update(ams, lpos);
+			move(itor->second, lpos.m_x(), lpos.m_y());
+		}
+
+		for (auto itor = m_region.begin();
+			itor != m_region.end(); ++itor)
+		{
+			itor->second->update(ams, lpos);
+			move(itor->second, lpos.m_x(), lpos.m_y());
+		}
+	}
 }
