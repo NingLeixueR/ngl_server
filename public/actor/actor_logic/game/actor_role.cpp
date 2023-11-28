@@ -19,9 +19,11 @@ namespace ngl
 				},
 				.m_weight = 0x7fffffff,
 				.m_broadcast = true,
-			}),
-		m_gatewayid(((actor_switch_process_role*)(adata))->m_gatewayid)
+			})
+		, m_gatewayid(((actor_switch_process_role*)(adata))->m_gatewayid)
+		, m_playactorid(0)
 	{
+		
 		assert(aarea == ttab_servers::tab()->m_area);
 	}
 

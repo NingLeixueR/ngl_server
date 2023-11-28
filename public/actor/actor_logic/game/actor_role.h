@@ -31,6 +31,7 @@ namespace ngl
 		bag			 m_bag;
 		task		 m_task;
 		i32_serverid m_gatewayid;
+		i64_actorid  m_playactorid;
 	public:
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);
 
@@ -58,20 +59,27 @@ namespace ngl
 
 		void sync_data_client();
 
+		enum ecross
+		{
+			ecross_ordinary,			// 不需要跨服转发
+			ecross_cross_ordinary,		// 需要跨服转发
+			ecross_play,				// 玩法转发(但是转发的actorid已确认)
+		};
+
 		// 重载(跨服模块转发)
 		template <typename T>
-		bool is_cross(T& adata)
+		ecross get_cross(T& adata)
 		{
-			return false;
+			return ecross_ordinary;
 		}
 
-		bool is_cross(pbnet::PROBUFF_NET_CHAT& adata)
+		ecross get_cross(pbnet::PROBUFF_NET_CHAT& adata)
 		{
-			return adata.m_channelid() == 2;
+			return adata.m_channelid() == 2 ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		template <typename T>
-		bool dataid(T& adata)
+		int32_t dataid(T& adata)
 		{
 			return actor_guid::none_actordataid();
 		}
@@ -81,13 +89,19 @@ namespace ngl
 		{
 			std::shared_ptr<mforward<T>> pro(new mforward<T>(id_guid(), adata));
 			i64_actorid lguid;
-			if (is_cross(adata))
+			switch (get_cross(adata))
 			{
+			case ecross_ordinary:
 				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(adata));
-			}
-			else
-			{
+				break;
+			case ecross_cross_ordinary:
 				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(adata));
+				break;
+			case ecross_play:
+				lguid = m_playactorid;
+				break; 
+			default:
+				return true;
 			}
 			send_actor(lguid, pro);
 			return true;
@@ -105,6 +119,9 @@ namespace ngl
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_send_item& adata);
 
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_disconnect_close& adata);
+		
+		//玩法创建成功  记录玩法actorid
+		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& adata);
 		
 		// 定时器
 		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);

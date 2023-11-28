@@ -53,4 +53,10 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_role::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& adata)
+	{
+		m_playactorid = adata.m_playsactorid();
+		return true;
+	}
+
 }

@@ -27,6 +27,7 @@ namespace ngl
 		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>();
 		pro->set_m_type((pbnet::eplays)tab->m_type);
 		pro->set_m_roomid(adataid);
+		pro->set_m_playsactorid(id_guid());
 		send_actor(actor_guid::make_self(ACTOR_MATCHING), pro);
 
 		m_map.init(tab->m_mapid);

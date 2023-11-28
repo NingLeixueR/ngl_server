@@ -68,6 +68,13 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_matching::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& adata)
+	{
+		// É¾³ý·¿¼ä
+		m_matching.remove_success(adata.m_type(), adata.m_roomid(), adata.m_playsactorid());
+		return true;
+	}
+
 	bool actor_matching::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
 	{
 		m_matching.do_match();

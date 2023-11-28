@@ -7,6 +7,7 @@
 #include "csvtable.h"
 #include "data.pb.h"
 #include "db.pb.h"
+#include "net.pb.h"
 
 namespace ngl
 {
@@ -18,8 +19,10 @@ namespace ngl
 		ACTOR_ROBOT,										// 机器人
 		ACTOR_GUILD,										// 工会	
 		ACTOR_MAP,											// 地图
-		//ACTOR_PLAYS,										// 玩法
-		ACTOR_PLAYS_GO_UNDERGROUNDPALACE,					// 玩法[勇闯地宫]
+		ACTOR_PLAYS,										// 玩法
+		ACTOR_PLAYS_GO_UNDERGROUNDPALACE = ACTOR_PLAYS,		// 玩法[勇闯地宫]
+
+		ACTOR_PLAYS_END = ACTOR_PLAYS + pbnet::eplays_count,
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
 		ACTOR_ADDRESS_SERVER = ACTOR_SIGNLE_START,				// 单例 actor address server  管理分发地址的中心

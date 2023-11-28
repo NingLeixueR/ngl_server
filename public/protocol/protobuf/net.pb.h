@@ -8397,20 +8397,9 @@ class PROBUFF_NET_MATCHING_WAITCONFIRM final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -8420,6 +8409,17 @@ class PROBUFF_NET_MATCHING_WAITCONFIRM final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM)
@@ -8432,8 +8432,8 @@ class PROBUFF_NET_MATCHING_WAITCONFIRM final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -8567,20 +8567,9 @@ class PROBUFF_NET_MATCHING_CONFIRM final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -8590,6 +8579,17 @@ class PROBUFF_NET_MATCHING_CONFIRM final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_CONFIRM)
@@ -8602,8 +8602,8 @@ class PROBUFF_NET_MATCHING_CONFIRM final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -8737,21 +8737,10 @@ class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
     kMStatFieldNumber = 3,
   };
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -8761,6 +8750,17 @@ class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // optional .pbnet.ematching_confirm_stat m_stat = 3;
@@ -8784,8 +8784,8 @@ class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
     int m_stat_;
   };
   union { Impl_ _impl_; };
@@ -8921,8 +8921,8 @@ class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
 
   enum : int {
     kMRoleidFieldNumber = 3,
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
   // repeated int64 m_roleid = 3;
   int m_roleid_size() const;
@@ -8944,17 +8944,6 @@ class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* _internal_mutable_m_roleid();
 
   public:
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -8964,6 +8953,17 @@ class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM)
@@ -8978,8 +8978,8 @@ class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t> m_roleid_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _m_roleid_cached_byte_size_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -9114,8 +9114,8 @@ class PROBUFF_NET_MATCHING_SYNC final :
 
   enum : int {
     kMMemberFieldNumber = 3,
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
   // repeated .pbnet.MATCHING_MEMBER m_member = 3;
   int m_member_size() const;
@@ -9137,17 +9137,6 @@ class PROBUFF_NET_MATCHING_SYNC final :
   ::pbnet::MATCHING_MEMBER* add_m_member();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >&
       m_member() const;
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -9157,6 +9146,17 @@ class PROBUFF_NET_MATCHING_SYNC final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_SYNC)
@@ -9170,8 +9170,8 @@ class PROBUFF_NET_MATCHING_SYNC final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER > m_member_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -9305,20 +9305,10 @@ class PROBUFF_NET_MATCHING_SUCCESS_RESPONSE final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
+    kMPlaysactoridFieldNumber = 3,
   };
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -9328,6 +9318,28 @@ class PROBUFF_NET_MATCHING_SUCCESS_RESPONSE final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
+
+  public:
+  // optional int64 m_playsactorid = 3;
+  bool has_m_playsactorid() const;
+  void clear_m_playsactorid() ;
+  ::int64_t m_playsactorid() const;
+  void set_m_playsactorid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_playsactorid() const;
+  void _internal_set_m_playsactorid(::int64_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
@@ -9340,8 +9352,9 @@ class PROBUFF_NET_MATCHING_SUCCESS_RESPONSE final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
+    ::int64_t m_playsactorid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -9476,8 +9489,8 @@ class PROBUFF_NET_MATCHING_SUCCESS final :
 
   enum : int {
     kMMemberFieldNumber = 3,
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
     kMDataidFieldNumber = 4,
   };
   // repeated .pbnet.MATCHING_MEMBER m_member = 3;
@@ -9500,17 +9513,6 @@ class PROBUFF_NET_MATCHING_SUCCESS final :
   ::pbnet::MATCHING_MEMBER* add_m_member();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER >&
       m_member() const;
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -9520,6 +9522,17 @@ class PROBUFF_NET_MATCHING_SUCCESS final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // optional int32 m_dataid = 4;
@@ -9544,8 +9557,8 @@ class PROBUFF_NET_MATCHING_SUCCESS final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbnet::MATCHING_MEMBER > m_member_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
     ::int32_t m_dataid_;
   };
   union { Impl_ _impl_; };
@@ -9680,20 +9693,9 @@ class PROBUFF_NET_ENTER_PLAYS final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRoomidFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
-  // optional int64 m_roomid = 2;
-  bool has_m_roomid() const;
-  void clear_m_roomid() ;
-  ::int64_t m_roomid() const;
-  void set_m_roomid(::int64_t value);
-
-  private:
-  ::int64_t _internal_m_roomid() const;
-  void _internal_set_m_roomid(::int64_t value);
-
-  public:
   // optional .pbnet.eplays m_type = 1;
   bool has_m_type() const;
   void clear_m_type() ;
@@ -9703,6 +9705,17 @@ class PROBUFF_NET_ENTER_PLAYS final :
   private:
   ::pbnet::eplays _internal_m_type() const;
   void _internal_set_m_type(::pbnet::eplays value);
+
+  public:
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  void clear_m_roomid() ;
+  ::int32_t m_roomid() const;
+  void set_m_roomid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ENTER_PLAYS)
@@ -9715,8 +9728,8 @@ class PROBUFF_NET_ENTER_PLAYS final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::int64_t m_roomid_;
     int m_type_;
+    ::int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -13042,12 +13055,12 @@ inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* PROBUFF_NET_MEMBER_MAT
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_MATCHING_WAITCONFIRM::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_WAITCONFIRM::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_MATCHING_WAITCONFIRM::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_type)
@@ -13061,32 +13074,32 @@ inline ::pbnet::eplays PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_m_type() cons
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_MATCHING_WAITCONFIRM::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_WAITCONFIRM::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_MATCHING_WAITCONFIRM::m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_WAITCONFIRM::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_MATCHING_WAITCONFIRM::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_WAITCONFIRM.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 
@@ -13096,12 +13109,12 @@ inline void PROBUFF_NET_MATCHING_WAITCONFIRM::_internal_set_m_roomid(::int64_t v
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_MATCHING_CONFIRM::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_CONFIRM::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_type)
@@ -13115,32 +13128,32 @@ inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM::_internal_m_type() const {
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_MATCHING_CONFIRM::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_MATCHING_CONFIRM::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_CONFIRM::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM::m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_CONFIRM::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_MATCHING_CONFIRM::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_MATCHING_CONFIRM::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_CONFIRM::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_MATCHING_CONFIRM::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_MATCHING_CONFIRM::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 
@@ -13150,12 +13163,12 @@ inline void PROBUFF_NET_MATCHING_CONFIRM::_internal_set_m_roomid(::int64_t value
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_type)
@@ -13169,32 +13182,32 @@ inline ::pbnet::eplays PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_m_type()
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_CONFIRM_RESPONSE.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 
@@ -13229,12 +13242,12 @@ inline void PROBUFF_NET_MATCHING_CONFIRM_RESPONSE::_internal_set_m_stat(::pbnet:
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_SYNC_MATCHING_CONFIRM::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_type)
@@ -13248,32 +13261,32 @@ inline ::pbnet::eplays PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_type() con
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_SYNC_MATCHING_CONFIRM::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_roomid() const {
+inline ::int32_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_SYNC_MATCHING_CONFIRM.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_SYNC_MATCHING_CONFIRM::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 
@@ -13327,12 +13340,12 @@ inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<::int64_t>* PROBUFF_NET_SYNC_MATCH
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_MATCHING_SYNC::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_SYNC::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_MATCHING_SYNC::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SYNC.m_type)
@@ -13346,32 +13359,32 @@ inline ::pbnet::eplays PROBUFF_NET_MATCHING_SYNC::_internal_m_type() const {
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_MATCHING_SYNC::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_MATCHING_SYNC::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_SYNC::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_MATCHING_SYNC::m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_SYNC::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SYNC.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_MATCHING_SYNC::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_MATCHING_SYNC::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SYNC.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_MATCHING_SYNC::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_SYNC::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_MATCHING_SYNC::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_MATCHING_SYNC::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 
@@ -13429,12 +13442,12 @@ PROBUFF_NET_MATCHING_SYNC::_internal_mutable_m_member() {
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.m_type)
@@ -13448,33 +13461,58 @@ inline ::pbnet::eplays PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_m_type()
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
+}
+
+// optional int64 m_playsactorid = 3;
+inline bool PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::has_m_playsactorid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::clear_m_playsactorid() {
+  _impl_.m_playsactorid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::m_playsactorid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.m_playsactorid)
+  return _internal_m_playsactorid();
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::set_m_playsactorid(::int64_t value) {
+  _internal_set_m_playsactorid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.m_playsactorid)
+}
+inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_m_playsactorid() const {
+  return _impl_.m_playsactorid_;
+}
+inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_set_m_playsactorid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_playsactorid_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -13483,12 +13521,12 @@ inline void PROBUFF_NET_MATCHING_SUCCESS_RESPONSE::_internal_set_m_roomid(::int6
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_MATCHING_SUCCESS::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_SUCCESS::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_MATCHING_SUCCESS::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_type)
@@ -13502,32 +13540,32 @@ inline ::pbnet::eplays PROBUFF_NET_MATCHING_SUCCESS::_internal_m_type() const {
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_MATCHING_SUCCESS::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_MATCHING_SUCCESS::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS::m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_SUCCESS::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_MATCHING_SUCCESS::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_MATCHING_SUCCESS::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MATCHING_SUCCESS.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_MATCHING_SUCCESS::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_MATCHING_SUCCESS::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 
@@ -13610,12 +13648,12 @@ inline void PROBUFF_NET_MATCHING_SUCCESS::_internal_set_m_dataid(::int32_t value
 
 // optional .pbnet.eplays m_type = 1;
 inline bool PROBUFF_NET_ENTER_PLAYS::has_m_type() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline void PROBUFF_NET_ENTER_PLAYS::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::pbnet::eplays PROBUFF_NET_ENTER_PLAYS::m_type() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ENTER_PLAYS.m_type)
@@ -13629,32 +13667,32 @@ inline ::pbnet::eplays PROBUFF_NET_ENTER_PLAYS::_internal_m_type() const {
   return static_cast<::pbnet::eplays>(_impl_.m_type_);
 }
 inline void PROBUFF_NET_ENTER_PLAYS::_internal_set_m_type(::pbnet::eplays value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_type_ = value;
 }
 
-// optional int64 m_roomid = 2;
+// optional int32 m_roomid = 2;
 inline bool PROBUFF_NET_ENTER_PLAYS::has_m_roomid() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void PROBUFF_NET_ENTER_PLAYS::clear_m_roomid() {
-  _impl_.m_roomid_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int64_t PROBUFF_NET_ENTER_PLAYS::m_roomid() const {
+inline ::int32_t PROBUFF_NET_ENTER_PLAYS::m_roomid() const {
   // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ENTER_PLAYS.m_roomid)
   return _internal_m_roomid();
 }
-inline void PROBUFF_NET_ENTER_PLAYS::set_m_roomid(::int64_t value) {
+inline void PROBUFF_NET_ENTER_PLAYS::set_m_roomid(::int32_t value) {
   _internal_set_m_roomid(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ENTER_PLAYS.m_roomid)
 }
-inline ::int64_t PROBUFF_NET_ENTER_PLAYS::_internal_m_roomid() const {
+inline ::int32_t PROBUFF_NET_ENTER_PLAYS::_internal_m_roomid() const {
   return _impl_.m_roomid_;
 }
-inline void PROBUFF_NET_ENTER_PLAYS::_internal_set_m_roomid(::int64_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_ENTER_PLAYS::_internal_set_m_roomid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_roomid_ = value;
 }
 

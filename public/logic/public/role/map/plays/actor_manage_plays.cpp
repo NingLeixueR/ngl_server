@@ -43,14 +43,9 @@ namespace ngl
 			{
 				pram.m_players.push_back(adata.m_id());
 			});
-
-		i64_actorid lactorid = actor_guid::make(ACTOR_PLAYS_GO_UNDERGROUNDPALACE, ttab_servers::tab()->m_area, adata.m_roomid());
-		switch (tab->m_type)
-		{
-		case pbnet::eplays_go_undergroundpalace:
-			actor_create::switch_process(lactorid, -1, nconfig::m_nodeid, pram);
-			break;
-		}
+		i64_actorid lactorid = actor_guid::make(
+			(ENUM_ACTOR)((int)ACTOR_PLAYS + (int)tab->m_type), ttab_servers::tab()->m_area, adata.m_roomid()
+		);
 
 		//actor_base::create(ACTOR_PLAYS, adata.m_roomid(), &pram);
 		// 告诉匹配房间可以解散了

@@ -9,6 +9,7 @@
 #include "net.pb.h"
 #include "csvtable.h"
 #include "actor.h"
+#include "actor.h"
 
 namespace ngl
 {
@@ -64,6 +65,11 @@ namespace ngl
 		ematching_room stat()
 		{
 			return m_stat;
+		}
+
+		std::map<int64_t, pbnet::MATCHING_MEMBER>& member()
+		{
+			return m_memberlist;
 		}
 
 		void change_stat(ematching_room atype)
@@ -261,6 +267,31 @@ namespace ngl
 				return pbnet::ematching_cancel_roomnotfind;
 			}
 			return itor->second->try_cancel(aroleid);
+		}
+
+		void remove_success(pbnet::eplays atype, int32_t aroomid, i64_actorid aplayactorid)
+		{
+			//std::array<std::list<prt_room>, pbnet::eplays_count> m_room;
+			//std::array<int32_t, pbnet::eplays_count> m_currentroom;
+			//std::map<int32_t, room*> m_roombyid;							// key roomid
+			//std::map<i64_actorid, int32_t> m_roombyroleid;					// key roleid value roomid
+
+			auto itor = m_roombyid.find(aroomid);
+			if (itor == m_roombyid.end())
+			{
+				return;
+			}
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>();
+			pro->set_m_type(atype);
+			pro->set_m_roomid(aroomid);
+			pro->set_m_playsactorid(aplayactorid);
+			for (std::pair<const int64_t, pbnet::MATCHING_MEMBER>& item : itor->second->member())
+			{
+				actor::static_send_actor(item.first, actor_guid::make(), pro);
+				m_roombyroleid.erase(item.first);
+			}
+			m_roombyid.erase(aroomid);
+
 		}
 
 		void check_timeout()
