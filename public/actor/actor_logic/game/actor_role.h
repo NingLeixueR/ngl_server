@@ -101,10 +101,10 @@ namespace ngl
 			switch (get_cross(adata))
 			{
 			case ecross_ordinary:
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(adata));
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(adata));
 				break;
 			case ecross_cross_ordinary:
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(adata));
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(adata));
 				break;
 			case ecross_play:
 				lguid = m_playactorid;

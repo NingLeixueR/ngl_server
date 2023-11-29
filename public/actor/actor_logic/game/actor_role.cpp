@@ -54,6 +54,7 @@ namespace ngl
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>(
 			true
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_ROLE_SYNC)
+			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
 		);
 
 		// 协议注册

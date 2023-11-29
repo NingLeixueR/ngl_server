@@ -52,6 +52,9 @@ namespace ngl
 		arfun& rfun(Tfun<TDerived, T> afun, bool aisload = false);
 
 		template <typename T>
+		arfun& rfun(Tfun<TDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
+
+		template <typename T>
 		arfun& rfun_nonet(Tfun<TDerived, T> afun, bool aisload = false);
 
 		template <bool BOOL, typename T>

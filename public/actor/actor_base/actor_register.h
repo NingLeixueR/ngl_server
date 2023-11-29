@@ -46,13 +46,19 @@ namespace ngl
 	template <typename T>
 	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
-		rfun_nonet(afun, aisload);
-		protocol::registry_actor<T, TYPE>(
-			(ENUM_ACTOR)TDerived::ACTOR_TYPE
-			, init_protobuf::protocol_name<T>().c_str()
-		);
+		rfun(afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, aisload);
 		return *this;
 	}
+
+	template <typename TDerived, EPROTOCOL_TYPE TYPE>
+	template <typename T>
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
+	{
+		rfun_nonet(afun, aisload);
+		protocol::registry_actor<T, TYPE>(atype, init_protobuf::protocol_name<T>().c_str());
+		return *this;
+	}
+
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <bool BOOL, typename T>

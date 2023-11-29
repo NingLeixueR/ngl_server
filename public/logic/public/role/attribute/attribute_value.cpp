@@ -47,7 +47,6 @@ namespace ngl
 		map_ratio lrattr(m_rattr);
 		ttab_attribute::add(lrattr, m_orattr);
 		update(m_fight, lrattr);
-
 		return fight();
 	}
 

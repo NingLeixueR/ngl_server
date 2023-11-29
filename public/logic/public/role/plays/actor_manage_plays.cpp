@@ -23,7 +23,10 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		register_timer<actor_manage_plays>(&actor_manage_plays::timer_handle);
 
-
+		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_plays>(
+			true
+			, dregister_fun_handle(actor_manage_plays, pbnet::PROBUFF_NET_MATCHING_SUCCESS)
+		);
 	}
 
 	void actor_manage_plays::loaddb_finish(bool adbishave)

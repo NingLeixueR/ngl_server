@@ -16,9 +16,6 @@ namespace ngl
 				.m_weight = 10,
 			})
 	{
-
-		
-
 		int32_t tid = roomid::tid(adataid);
 		auto tab = allcsv::tab<tab_plays>(tid);	
 		assert(tab != nullptr);
@@ -46,12 +43,17 @@ namespace ngl
 		// 开始准备阶段
 		m_stage = estage_preparation;
 		preparation(true);
-
 	}
 
 	void actor_plays::actor_register()
 	{
 		// 定时器
 		register_timer<actor_plays>(&actor_plays::timer_handle);
+
+		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_plays>(
+			true
+			, ACTOR_PLAYS
+			, dregister_fun_handle(actor_plays, mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>)
+		);
 	}
 }

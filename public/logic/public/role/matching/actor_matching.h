@@ -40,7 +40,6 @@ namespace ngl
 		// 玩法已经建立完成
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& adata);
 		
-
 		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
 	};
 

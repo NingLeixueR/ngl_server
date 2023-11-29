@@ -98,6 +98,19 @@ namespace ngl
 			, typename TDerived			// 注册的actor派生了
 			, typename T				// Tfun<TDerived, T>
 		>
+		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun)
+		{
+			arfun<TDerived, TYPE>::instance().rfun(afun, atype, aisload);
+		}
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
+		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun, ARG... argfun)
+		{
+			register_actor<TYPE, TDerived>(aisload, atype, afun);
+			register_actor<TYPE, TDerived, ARG...>(aisload, atype, argfun...);
+		}
+
+		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
 		{
 			arfun<TDerived, TYPE>::instance().rfun(afun, aisload);
@@ -108,7 +121,7 @@ namespace ngl
 		{
 			register_actor<TYPE, TDerived>(aisload, afun);
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
-		}		
+		}
 #pragma endregion 
 
 #pragma region register_actornonet
