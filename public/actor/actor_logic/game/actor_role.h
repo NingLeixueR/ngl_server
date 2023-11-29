@@ -19,6 +19,7 @@
 #include "remakes.h"
 #include "autoitem.h"
 #include "task.h"
+#include "attribute.h"
 
 namespace ngl
 {
@@ -30,6 +31,7 @@ namespace ngl
 		roleinfo	 m_info;
 		bag			 m_bag;
 		task		 m_task;
+		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
 		i64_actorid  m_playactorid;
 	public:
@@ -51,6 +53,13 @@ namespace ngl
 
 		i64_actorid roleid();
 
+		// #### 设置更新角色属性
+		void update_attribute(std::pair<EnumModule, attribute_value>& apair)
+		{
+			m_attribute.updata(apair.first, apair.second);
+
+		}
+
 		template <typename T>
 		void send2client(std::shared_ptr<T>& adata)
 		{
@@ -61,8 +70,8 @@ namespace ngl
 
 		enum ecross
 		{
-			ecross_ordinary,			// 不需要跨服转发
-			ecross_cross_ordinary,		// 需要跨服转发
+			ecross_ordinary,			// 本服转发
+			ecross_cross_ordinary,		// 跨服转发
 			ecross_play,				// 玩法转发(但是转发的actorid已确认)
 		};
 

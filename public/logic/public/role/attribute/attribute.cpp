@@ -95,6 +95,7 @@ namespace ngl
 		m_moduledata[aenum] = avalue;
 		m_moduledata[aenum].m_module = aenum;
 		update_module(aenum);
+		m_issync = true;
 	}
 
 	int64_t attribute::fight()

@@ -58,6 +58,17 @@ namespace ngl
 		double get_rattr(EnumAttribute atype);
 		// 获取父结点添属性
 		double get_father_rattr(EnumModule amodule, EnumAttribute atype);
+
+		void topb(pbnet::UnitModule& aunitmodule)
+		{
+			aunitmodule.set_m_mtype(m_module);
+			for (std::pair<const EnumAttribute, int64_t>& item : m_fight)
+			{
+				pbnet::UnitAttribute* lptemp = aunitmodule.add_m_modules();
+				lptemp->set_m_type(item.first);
+				lptemp->set_m_value(item.second);
+			}
+		}
 	};
 
 }

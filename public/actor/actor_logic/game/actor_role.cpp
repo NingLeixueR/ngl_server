@@ -23,7 +23,6 @@ namespace ngl
 		, m_gatewayid(((actor_switch_process_role*)(adata))->m_gatewayid)
 		, m_playactorid(0)
 	{
-		
 		assert(aarea == ttab_servers::tab()->m_area);
 	}
 
@@ -73,6 +72,13 @@ namespace ngl
 	{
 		// ### 同步这次消息的背包变动
 		m_bag.sync_client();
+		if (m_attribute.issync())
+		{
+			m_attribute.set_issync(false);
+			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
+			m_attribute.topb(*pro);
+			send2client(pro);
+		}		
 	}
 
 	i64_actorid actor_role::roleid()
