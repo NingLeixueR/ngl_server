@@ -2,6 +2,20 @@
 
 namespace ngl
 {
+	attribute::attribute() :
+		m_issync(false)
+	{}
+
+	bool attribute::issync()
+	{
+		return m_issync;
+	}
+
+	void attribute::set_issync(bool aissync)
+	{
+		m_issync = aissync;
+	}
+
 	attribute_value& attribute::root()
 	{
 		return m_moduledata[EnumModule::E_ModuleRoot];

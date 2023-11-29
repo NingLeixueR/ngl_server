@@ -31,7 +31,6 @@ namespace ngl
 		int64_t m_fightscore;
 
 		EnumModule m_module;
-
 	public:
 		attribute_value();
 	private:
@@ -41,6 +40,10 @@ namespace ngl
 
 		int64_t fight();
 	public:
+		map_attr& get_fight()
+		{
+			return m_fight;
+		}
 		int64_t update();
 		// ¥Ú”° Ù–‘
 		void printf();

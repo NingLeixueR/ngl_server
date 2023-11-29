@@ -10,11 +10,13 @@
 #include "manage_csv.h"
 #include "ttab_attribute.h"
 #include "attribute_value.h"
+#include "event.h"
 
 namespace ngl
 {
 	class attribute
 	{
+		// 模块属性(只能模块间发生变化通过updata[EnumModule,attribute_value])
 		std::map<EnumModule, attribute_value> m_moduledata;
 		bool m_issync;
 
@@ -28,27 +30,24 @@ namespace ngl
 
 		void update_module(EnumModule aenum);
 	public:
-		attribute() :
-			m_issync(false)
-		{}
+		
+		attribute();
+		
 
-		bool issync()
-		{
-			return m_issync;
-		}
+		bool issync();
 
-		void set_issync(bool aissync)
-		{
-			m_issync = aissync;
-		}
+		void set_issync(bool aissync);
 
 		// #### 初始化数据 将模块属性输入
 		void init_data(EnumModule aenum, attribute_value& avalue);
+
 		// #### 计算输入的模块属性 生成最终属性与战力
 		void init();
 
+		// #### 更新模块属性
 		void updata(EnumModule aenum, attribute_value& avalue);
 
+		// #### 战力
 		int64_t fight();
 
 		const map_attr& get_attribute();
@@ -67,6 +66,43 @@ namespace ngl
 				item.second.topb(*lpmodule);
 			}
 		}
+	};
+
+	// 动态属性,可以在战斗中改变的属性
+	class dynamic_attribute
+	{
+		std::map<EnumAttribute, int64_t> m_dynamic;
+		aoimap* m_map;
+		int64_t m_unitid;
+	public:
+		dynamic_attribute(aoimap* amap, int64_t aunitid) :
+			m_map(amap),
+			m_unitid(aunitid)
+		{}
+
+		// 根据[模块属性]生成动态属性
+		void init_dynamic(std::map<EnumModule, attribute_value>& amoduledata)
+		{
+			m_dynamic = amoduledata[EnumModule::E_ModuleRoot].get_fight();
+		}
+
+		// 是否死亡
+		bool is_death()
+		{
+			return m_dynamic[E_Hp] <= 0;
+		}
+
+		// 修改动态属性
+		void change_attribute(EnumAttribute aattribute, int32_t avalue)
+		{
+			m_dynamic[aattribute] += avalue;
+			if (is_death())
+			{
+				mapevent::on_death(m_map, m_unitid);
+			}
+		}
+
+
 	};
 
 	void test_attribute();

@@ -78,7 +78,6 @@ namespace ngl
 		m_crattr.clear();
 	}
 
-
 	// Ìí¼ÓÊôĞÔ
 	void attribute_value::set_attr(EnumAttribute atype, double avalues)
 	{
