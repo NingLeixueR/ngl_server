@@ -54,7 +54,6 @@ namespace ngl
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,
 	};
 
-
 	class enum_actor
 	{
 	public:
@@ -75,6 +74,5 @@ namespace ngl
 		static bool name2enum(const std::string& aenumname, ENUM_ACTOR& avalue);
 		static const char* enum2name(ENUM_ACTOR aenum);
 	};
-
 }
 

@@ -4,7 +4,6 @@
 
 namespace ngl
 {
-
 	struct actor::impl_actor
 	{
 		std::list<handle_pram> m_list;
@@ -133,6 +132,6 @@ namespace ngl
 	}
 
 	actor::~actor() 
-	{}
-
+	{
+	}
 }

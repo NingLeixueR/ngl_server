@@ -727,6 +727,8 @@ PROTOBUF_CONSTEXPR UNIT::UNIT(
   , /*decltype(_impl_.m_id_)*/ ::int64_t{0}
 
   , /*decltype(_impl_.m_type_)*/ 0
+
+  , /*decltype(_impl_.m_stat_)*/ 0
 } {}
 struct UNITDefaultTypeInternal {
   PROTOBUF_CONSTEXPR UNITDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -1120,7 +1122,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_NET_ENTER_PLAYSDefaultTypeInternal _PROBUFF_NET_ENTER_PLAYS_default_instance_;
 }  // namespace pbnet
 static ::_pb::Metadata file_level_metadata_net_2eproto[59];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_net_2eproto[6];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_net_2eproto[7];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_net_2eproto = nullptr;
 const ::uint32_t TableStruct_net_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
@@ -1575,10 +1577,12 @@ const ::uint32_t TableStruct_net_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     PROTOBUF_FIELD_OFFSET(::pbnet::UNIT, _impl_.m_id_),
     PROTOBUF_FIELD_OFFSET(::pbnet::UNIT, _impl_.m_position_),
     PROTOBUF_FIELD_OFFSET(::pbnet::UNIT, _impl_.m_modules_),
+    PROTOBUF_FIELD_OFFSET(::pbnet::UNIT, _impl_.m_stat_),
     2,
     1,
     0,
     ~0u,
+    3,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -1868,27 +1872,27 @@ static const ::_pbi::MigrationSchema
         { 398, 410, -1, sizeof(::pbnet::UNIT_POSITION)},
         { 414, 424, -1, sizeof(::pbnet::UnitAttribute)},
         { 426, 436, -1, sizeof(::pbnet::UnitModule)},
-        { 438, 450, -1, sizeof(::pbnet::UNIT)},
-        { 454, -1, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE)},
-        { 463, -1, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_UNIT)},
-        { 472, 482, -1, sizeof(::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW)},
-        { 484, 494, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse)},
-        { 496, -1, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION)},
-        { 505, 514, -1, sizeof(::pbnet::PROBUFF_NET_CHANGE_ANGLE)},
-        { 515, 525, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING)},
-        { 527, 540, -1, sizeof(::pbnet::MATCHING_MEMBER)},
-        { 545, 554, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_RESPONSE)},
-        { 555, 565, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CANCEL)},
-        { 567, 577, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE)},
-        { 579, 590, -1, sizeof(::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL)},
-        { 593, 603, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM)},
-        { 605, 615, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CONFIRM)},
-        { 617, 628, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE)},
-        { 631, 642, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM)},
-        { 645, 656, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_SYNC)},
-        { 659, 670, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)},
-        { 673, 685, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_SUCCESS)},
-        { 689, 699, -1, sizeof(::pbnet::PROBUFF_NET_ENTER_PLAYS)},
+        { 438, 451, -1, sizeof(::pbnet::UNIT)},
+        { 456, -1, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE)},
+        { 465, -1, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_UNIT)},
+        { 474, 484, -1, sizeof(::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW)},
+        { 486, 496, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse)},
+        { 498, -1, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION)},
+        { 507, 516, -1, sizeof(::pbnet::PROBUFF_NET_CHANGE_ANGLE)},
+        { 517, 527, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING)},
+        { 529, 542, -1, sizeof(::pbnet::MATCHING_MEMBER)},
+        { 547, 556, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_RESPONSE)},
+        { 557, 567, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CANCEL)},
+        { 569, 579, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE)},
+        { 581, 592, -1, sizeof(::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL)},
+        { 595, 605, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM)},
+        { 607, 617, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CONFIRM)},
+        { 619, 630, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE)},
+        { 633, 644, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM)},
+        { 647, 658, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_SYNC)},
+        { 661, 672, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)},
+        { 675, 687, -1, sizeof(::pbnet::PROBUFF_NET_MATCHING_SUCCESS)},
+        { 691, 701, -1, sizeof(::pbnet::PROBUFF_NET_ENTER_PLAYS)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -2040,91 +2044,95 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
     "\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H\001"
     "\210\001\001B\t\n\007_m_typeB\n\n\010_m_value\"W\n\nUnitModule"
     "\022\024\n\007m_mtype\030\001 \001(\005H\000\210\001\001\022\'\n\tm_modules\030\002 \003("
-    "\0132\024.pbnet.UnitAttributeB\n\n\010_m_mtype\"\264\001\n\004"
+    "\0132\024.pbnet.UnitAttributeB\n\n\010_m_mtype\"\346\001\n\004"
     "UNIT\022!\n\006m_type\030\001 \001(\0162\014.pbnet.eunitH\000\210\001\001\022"
     "\021\n\004m_id\030\002 \001(\003H\001\210\001\001\022-\n\nm_position\030\003 \001(\0132\024"
     ".pbnet.UNIT_POSITIONH\002\210\001\001\022$\n\tm_modules\030\004"
-    " \003(\0132\021.pbnet.UnitModuleB\t\n\007_m_typeB\007\n\005_m"
-    "_idB\r\n\013_m_position\"B\n\032PROBUFF_NET_SYNC_A"
-    "TTRIBUTE\022$\n\tm_modules\030\001 \003(\0132\021.pbnet.Unit"
-    "Module\"5\n\025PROBUFF_NET_SYNC_UNIT\022\034\n\007m_uni"
-    "ts\030\001 \003(\0132\013.pbnet.UNIT\"U\n\034PROBUFF_NET_ENT"
-    "ER_LEAVE_VIEW\022\026\n\tm_isenter\030\001 \001(\010H\000\210\001\001\022\017\n"
-    "\007m_units\030\002 \003(\003B\014\n\n_m_isenter\"\250\001\n\031PROBUFF"
-    "_NET_SYNC_POSITION\022C\n\nm_position\030\001 \003(\0132/"
-    ".pbnet.PROBUFF_NET_SYNC_POSITION.MPositi"
-    "onEntry\032F\n\016MPositionEntry\022\013\n\003key\030\001 \001(\003\022#"
-    "\n\005value\030\002 \001(\0132\024.pbnet.UNIT_POSITION:\0028\001\""
-    "X\n\030PROBUFF_NET_CHANGE_ANGLE\022-\n\nm_positio"
-    "n\030\001 \001(\0132\024.pbnet.UNIT_POSITIONH\000\210\001\001B\r\n\013_m"
-    "_position\"c\n\024PROBUFF_NET_MATCHING\022\"\n\006m_t"
-    "ype\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\022\n\005m_tid\030\002"
-    " \001(\005H\001\210\001\001B\t\n\007_m_typeB\010\n\006_m_tid\"\273\001\n\017MATCH"
-    "ING_MEMBER\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\023\n\006m_name\030"
-    "\002 \001(\tH\001\210\001\001\022\021\n\004m_lv\030\003 \001(\005H\002\210\001\001\022\027\n\nm_begma"
-    "tch\030\004 \001(\005H\003\210\001\001\022\030\n\013m_isconfirm\030\005 \001(\010H\004\210\001\001"
-    "B\007\n\005_m_idB\t\n\007_m_nameB\007\n\005_m_lvB\r\n\013_m_begm"
-    "atchB\016\n\014_m_isconfirm\";\n\035PROBUFF_NET_MATC"
-    "HING_RESPONSE\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001B\007\n\005_m_i"
-    "d\"p\n\033PROBUFF_NET_MATCHING_CANCEL\022\"\n\006m_ty"
-    "pe\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\025\n\010m_roomid"
-    "\030\002 \001(\003H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomid\"\223\001\n$"
-    "PROBUFF_NET_MATCHING_CANCEL_RESPONSE\022\"\n\006"
-    "m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\0221\n\006m_st"
-    "at\030\002 \001(\0162\034.pbnet.ematching_cancel_statH\001"
-    "\210\001\001B\t\n\007_m_typeB\t\n\007_m_stat\"\265\001\n\"PROBUFF_NE"
-    "T_MEMBER_MATCHING_CANCEL\022\"\n\006m_type\030\001 \001(\016"
-    "2\r.pbnet.eplaysH\000\210\001\001\0227\n\014m_canceltype\030\002 \001"
-    "(\0162\034.pbnet.etype_matching_cancelH\001\210\001\001\022\026\n"
-    "\016m_cancelmember\030\003 \003(\003B\t\n\007_m_typeB\017\n\r_m_c"
-    "anceltype\"u\n PROBUFF_NET_MATCHING_WAITCO"
-    "NFIRM\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001"
-    "\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_"
-    "m_roomid\"q\n\034PROBUFF_NET_MATCHING_CONFIRM"
-    "\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\025\n\010"
-    "m_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roo"
-    "mid\"\271\001\n%PROBUFF_NET_MATCHING_CONFIRM_RES"
-    "PONSE\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001"
-    "\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001\0222\n\006m_stat\030\003 \001(\016"
-    "2\035.pbnet.ematching_confirm_statH\002\210\001\001B\t\n\007"
-    "_m_typeB\013\n\t_m_roomidB\t\n\007_m_stat\"\210\001\n!PROB"
-    "UFF_NET_SYNC_MATCHING_CONFIRM\022\"\n\006m_type\030"
-    "\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\025\n\010m_roomid\030\002 "
-    "\001(\005H\001\210\001\001\022\020\n\010m_roleid\030\003 \003(\003B\t\n\007_m_typeB\013\n"
-    "\t_m_roomid\"\230\001\n\031PROBUFF_NET_MATCHING_SYNC"
-    "\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\025\n\010"
-    "m_roomid\030\002 \001(\005H\001\210\001\001\022(\n\010m_member\030\003 \003(\0132\026."
-    "pbnet.MATCHING_MEMBERB\t\n\007_m_typeB\013\n\t_m_r"
-    "oomid\"\252\001\n%PROBUFF_NET_MATCHING_SUCCESS_R"
-    "ESPONSE\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000"
-    "\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001\022\033\n\016m_playsact"
-    "orid\030\003 \001(\003H\002\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomidB"
-    "\021\n\017_m_playsactorid\"\277\001\n\034PROBUFF_NET_MATCH"
-    "ING_SUCCESS\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.epla"
-    "ysH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001\022(\n\010m_memb"
-    "er\030\003 \003(\0132\026.pbnet.MATCHING_MEMBER\022\025\n\010m_da"
-    "taid\030\004 \001(\005H\002\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomidB"
-    "\013\n\t_m_dataid\"l\n\027PROBUFF_NET_ENTER_PLAYS\022"
+    " \003(\0132\021.pbnet.UnitModule\022%\n\006m_stat\030\005 \001(\0162"
+    "\020.pbnet.eunitstatH\003\210\001\001B\t\n\007_m_typeB\007\n\005_m_"
+    "idB\r\n\013_m_positionB\t\n\007_m_stat\"B\n\032PROBUFF_"
+    "NET_SYNC_ATTRIBUTE\022$\n\tm_modules\030\001 \003(\0132\021."
+    "pbnet.UnitModule\"5\n\025PROBUFF_NET_SYNC_UNI"
+    "T\022\034\n\007m_units\030\001 \003(\0132\013.pbnet.UNIT\"U\n\034PROBU"
+    "FF_NET_ENTER_LEAVE_VIEW\022\026\n\tm_isenter\030\001 \001"
+    "(\010H\000\210\001\001\022\017\n\007m_units\030\002 \003(\003B\014\n\n_m_isenter\"\250"
+    "\001\n\031PROBUFF_NET_SYNC_POSITION\022C\n\nm_positi"
+    "on\030\001 \003(\0132/.pbnet.PROBUFF_NET_SYNC_POSITI"
+    "ON.MPositionEntry\032F\n\016MPositionEntry\022\013\n\003k"
+    "ey\030\001 \001(\003\022#\n\005value\030\002 \001(\0132\024.pbnet.UNIT_POS"
+    "ITION:\0028\001\"X\n\030PROBUFF_NET_CHANGE_ANGLE\022-\n"
+    "\nm_position\030\001 \001(\0132\024.pbnet.UNIT_POSITIONH"
+    "\000\210\001\001B\r\n\013_m_position\"c\n\024PROBUFF_NET_MATCH"
+    "ING\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022"
+    "\022\n\005m_tid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\010\n\006_m_tid"
+    "\"\273\001\n\017MATCHING_MEMBER\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022"
+    "\023\n\006m_name\030\002 \001(\tH\001\210\001\001\022\021\n\004m_lv\030\003 \001(\005H\002\210\001\001\022"
+    "\027\n\nm_begmatch\030\004 \001(\005H\003\210\001\001\022\030\n\013m_isconfirm\030"
+    "\005 \001(\010H\004\210\001\001B\007\n\005_m_idB\t\n\007_m_nameB\007\n\005_m_lvB"
+    "\r\n\013_m_begmatchB\016\n\014_m_isconfirm\";\n\035PROBUF"
+    "F_NET_MATCHING_RESPONSE\022\021\n\004m_id\030\001 \001(\003H\000\210"
+    "\001\001B\007\n\005_m_id\"p\n\033PROBUFF_NET_MATCHING_CANC"
+    "EL\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\025"
+    "\n\010m_roomid\030\002 \001(\003H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_r"
+    "oomid\"\223\001\n$PROBUFF_NET_MATCHING_CANCEL_RE"
+    "SPONSE\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210"
+    "\001\001\0221\n\006m_stat\030\002 \001(\0162\034.pbnet.ematching_can"
+    "cel_statH\001\210\001\001B\t\n\007_m_typeB\t\n\007_m_stat\"\265\001\n\""
+    "PROBUFF_NET_MEMBER_MATCHING_CANCEL\022\"\n\006m_"
+    "type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\0227\n\014m_canc"
+    "eltype\030\002 \001(\0162\034.pbnet.etype_matching_canc"
+    "elH\001\210\001\001\022\026\n\016m_cancelmember\030\003 \003(\003B\t\n\007_m_ty"
+    "peB\017\n\r_m_canceltype\"u\n PROBUFF_NET_MATCH"
+    "ING_WAITCONFIRM\022\"\n\006m_type\030\001 \001(\0162\r.pbnet."
+    "eplaysH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m"
+    "_typeB\013\n\t_m_roomid\"q\n\034PROBUFF_NET_MATCHI"
+    "NG_CONFIRM\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplay"
+    "sH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_type"
+    "B\013\n\t_m_roomid\"\271\001\n%PROBUFF_NET_MATCHING_C"
+    "ONFIRM_RESPONSE\022\"\n\006m_type\030\001 \001(\0162\r.pbnet."
+    "eplaysH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001\0222\n\006m_"
+    "stat\030\003 \001(\0162\035.pbnet.ematching_confirm_sta"
+    "tH\002\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomidB\t\n\007_m_sta"
+    "t\"\210\001\n!PROBUFF_NET_SYNC_MATCHING_CONFIRM\022"
     "\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplaysH\000\210\001\001\022\025\n\010m"
-    "_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_room"
-    "id*F\n\017enum_logic_chat\022\021\n\rget_chat_list\020\000"
-    "\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*<\n\005eu"
-    "nit\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001\022\020"
-    "\n\014eunit_region\020\002*;\n\006eplays\022\037\n\033eplays_go_"
-    "undergroundpalace\020\000\022\020\n\014eplays_count\020\001*\233\001"
-    "\n\025ematching_cancel_stat\022\034\n\030ematching_can"
-    "cel_success\020\000\022\032\n\026ematching_cancel_stage\020"
-    "\001\022 \n\034ematching_cancel_roomnotfind\020\002\022&\n\"e"
-    "matching_cancel_roommembernotfind\020\003*\253\001\n\025"
-    "etype_matching_cancel\022 \n\034etype_matching_"
-    "cancel_active\020\000\022!\n\035etype_matching_cancel"
-    "_timeout\020\001\022&\n\"etype_matching_waitconfirm"
-    "_timeout\020\002\022%\n!etype_matching_waitcreate_"
-    "timeout\020\003*\240\001\n\026ematching_confirm_stat\022\035\n\031"
-    "ematching_confirm_success\020\000\022\033\n\027ematching"
-    "_confirm_stage\020\001\022!\n\035ematching_confirm_ro"
-    "omnotfind\020\002\022\'\n#ematching_confirm_roommem"
-    "bernotfind\020\003B\002H\001b\006proto3"
+    "_roomid\030\002 \001(\005H\001\210\001\001\022\020\n\010m_roleid\030\003 \003(\003B\t\n\007"
+    "_m_typeB\013\n\t_m_roomid\"\230\001\n\031PROBUFF_NET_MAT"
+    "CHING_SYNC\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplay"
+    "sH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001\022(\n\010m_membe"
+    "r\030\003 \003(\0132\026.pbnet.MATCHING_MEMBERB\t\n\007_m_ty"
+    "peB\013\n\t_m_roomid\"\252\001\n%PROBUFF_NET_MATCHING"
+    "_SUCCESS_RESPONSE\022\"\n\006m_type\030\001 \001(\0162\r.pbne"
+    "t.eplaysH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001\022\033\n\016"
+    "m_playsactorid\030\003 \001(\003H\002\210\001\001B\t\n\007_m_typeB\013\n\t"
+    "_m_roomidB\021\n\017_m_playsactorid\"\277\001\n\034PROBUFF"
+    "_NET_MATCHING_SUCCESS\022\"\n\006m_type\030\001 \001(\0162\r."
+    "pbnet.eplaysH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001"
+    "\022(\n\010m_member\030\003 \003(\0132\026.pbnet.MATCHING_MEMB"
+    "ER\022\025\n\010m_dataid\030\004 \001(\005H\002\210\001\001B\t\n\007_m_typeB\013\n\t"
+    "_m_roomidB\013\n\t_m_dataid\"l\n\027PROBUFF_NET_EN"
+    "TER_PLAYS\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.eplays"
+    "H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB"
+    "\013\n\t_m_roomid*F\n\017enum_logic_chat\022\021\n\rget_c"
+    "hat_list\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_spe"
+    "ck\020\002*<\n\005eunit\022\016\n\neunit_role\020\000\022\021\n\reunit_m"
+    "onster\020\001\022\020\n\014eunit_region\020\002*s\n\teunitstat\022"
+    "\024\n\020eunitstat_normal\020\000\022\024\n\020eunitstat_nomov"
+    "e\020\001\022\034\n\030eunitstat_nonormalattack\020\002\022\034\n\030eun"
+    "itstat_noreleaseskill\020\004*;\n\006eplays\022\037\n\033epl"
+    "ays_go_undergroundpalace\020\000\022\020\n\014eplays_cou"
+    "nt\020\001*\233\001\n\025ematching_cancel_stat\022\034\n\030ematch"
+    "ing_cancel_success\020\000\022\032\n\026ematching_cancel"
+    "_stage\020\001\022 \n\034ematching_cancel_roomnotfind"
+    "\020\002\022&\n\"ematching_cancel_roommembernotfind"
+    "\020\003*\253\001\n\025etype_matching_cancel\022 \n\034etype_ma"
+    "tching_cancel_active\020\000\022!\n\035etype_matching"
+    "_cancel_timeout\020\001\022&\n\"etype_matching_wait"
+    "confirm_timeout\020\002\022%\n!etype_matching_wait"
+    "create_timeout\020\003*\240\001\n\026ematching_confirm_s"
+    "tat\022\035\n\031ematching_confirm_success\020\000\022\033\n\027em"
+    "atching_confirm_stage\020\001\022!\n\035ematching_con"
+    "firm_roomnotfind\020\002\022\'\n#ematching_confirm_"
+    "roommembernotfind\020\003B\002H\001b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_net_2eproto_deps[1] =
     {
@@ -2134,7 +2142,7 @@ static ::absl::once_flag descriptor_table_net_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_net_2eproto = {
     false,
     false,
-    6864,
+    7031,
     descriptor_table_protodef_net_2eproto,
     "net.proto",
     &descriptor_table_net_2eproto_once,
@@ -2195,9 +2203,24 @@ bool eunit_IsValid(int value) {
       return false;
   }
 }
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eplays_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eunitstat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
   return file_level_enum_descriptors_net_2eproto[2];
+}
+bool eunitstat_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eplays_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
+  return file_level_enum_descriptors_net_2eproto[3];
 }
 bool eplays_IsValid(int value) {
   switch (value) {
@@ -2210,7 +2233,7 @@ bool eplays_IsValid(int value) {
 }
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ematching_cancel_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[3];
+  return file_level_enum_descriptors_net_2eproto[4];
 }
 bool ematching_cancel_stat_IsValid(int value) {
   switch (value) {
@@ -2225,7 +2248,7 @@ bool ematching_cancel_stat_IsValid(int value) {
 }
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* etype_matching_cancel_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[4];
+  return file_level_enum_descriptors_net_2eproto[5];
 }
 bool etype_matching_cancel_IsValid(int value) {
   switch (value) {
@@ -2240,7 +2263,7 @@ bool etype_matching_cancel_IsValid(int value) {
 }
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ematching_confirm_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[5];
+  return file_level_enum_descriptors_net_2eproto[6];
 }
 bool ematching_confirm_stat_IsValid(int value) {
   switch (value) {
@@ -10073,6 +10096,9 @@ class UNIT::_Internal {
   static void set_has_m_position(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
+  static void set_has_m_stat(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
 };
 
 const ::pbnet::UNIT_POSITION&
@@ -10095,6 +10121,8 @@ UNIT::UNIT(const UNIT& from)
     , decltype(_impl_.m_id_) {}
 
     , decltype(_impl_.m_type_) {}
+
+    , decltype(_impl_.m_stat_) {}
   };
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -10102,8 +10130,8 @@ UNIT::UNIT(const UNIT& from)
     _this->_impl_.m_position_ = new ::pbnet::UNIT_POSITION(*from._impl_.m_position_);
   }
   ::memcpy(&_impl_.m_id_, &from._impl_.m_id_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.m_type_) -
-    reinterpret_cast<char*>(&_impl_.m_id_)) + sizeof(_impl_.m_type_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.m_stat_) -
+    reinterpret_cast<char*>(&_impl_.m_id_)) + sizeof(_impl_.m_stat_));
   // @@protoc_insertion_point(copy_constructor:pbnet.UNIT)
 }
 
@@ -10117,6 +10145,8 @@ inline void UNIT::SharedCtor(::_pb::Arena* arena) {
     , decltype(_impl_.m_id_) { ::int64_t{0} }
 
     , decltype(_impl_.m_type_) { 0 }
+
+    , decltype(_impl_.m_stat_) { 0 }
 
   };
 }
@@ -10152,10 +10182,10 @@ void UNIT::Clear() {
     ABSL_DCHECK(_impl_.m_position_ != nullptr);
     _impl_.m_position_->Clear();
   }
-  if (cached_has_bits & 0x00000006u) {
+  if (cached_has_bits & 0x0000000eu) {
     ::memset(&_impl_.m_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.m_type_) -
-        reinterpret_cast<char*>(&_impl_.m_id_)) + sizeof(_impl_.m_type_));
+        reinterpret_cast<char*>(&_impl_.m_stat_) -
+        reinterpret_cast<char*>(&_impl_.m_id_)) + sizeof(_impl_.m_stat_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -10207,6 +10237,16 @@ const char* UNIT::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional .pbnet.eunitstat m_stat = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+          _internal_set_m_stat(static_cast<::pbnet::eunitstat>(val));
         } else {
           goto handle_unusual;
         }
@@ -10271,6 +10311,13 @@ failure:
         InternalWriteMessage(4, repfield, repfield.GetCachedSize(), target, stream);
   }
 
+  // optional .pbnet.eunitstat m_stat = 5;
+  if (cached_has_bits & 0x00000008u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        5, this->_internal_m_stat(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -10295,7 +10342,7 @@ failure:
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     // optional .pbnet.UNIT_POSITION m_position = 3;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -10313,6 +10360,12 @@ failure:
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
                     ::_pbi::WireFormatLite::EnumSize(this->_internal_m_type());
+    }
+
+    // optional .pbnet.eunitstat m_stat = 5;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 +
+                    ::_pbi::WireFormatLite::EnumSize(this->_internal_m_stat());
     }
 
   }
@@ -10336,7 +10389,7 @@ void UNIT::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
 
   _this->_internal_mutable_m_modules()->MergeFrom(from._internal_m_modules());
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       _this->_internal_mutable_m_position()->::pbnet::UNIT_POSITION::MergeFrom(
           from._internal_m_position());
@@ -10346,6 +10399,9 @@ void UNIT::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
     }
     if (cached_has_bits & 0x00000004u) {
       _this->_impl_.m_type_ = from._impl_.m_type_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.m_stat_ = from._impl_.m_stat_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
@@ -10369,8 +10425,8 @@ void UNIT::InternalSwap(UNIT* other) {
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _internal_mutable_m_modules()->InternalSwap(other->_internal_mutable_m_modules());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UNIT, _impl_.m_type_)
-      + sizeof(UNIT::_impl_.m_type_)
+      PROTOBUF_FIELD_OFFSET(UNIT, _impl_.m_stat_)
+      + sizeof(UNIT::_impl_.m_stat_)
       - PROTOBUF_FIELD_OFFSET(UNIT, _impl_.m_position_)>(
           reinterpret_cast<char*>(&_impl_.m_position_),
           reinterpret_cast<char*>(&other->_impl_.m_position_));

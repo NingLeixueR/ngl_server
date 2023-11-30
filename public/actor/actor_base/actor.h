@@ -126,11 +126,7 @@ namespace ngl
 
 #pragma region register_actornonet
 		// ## 与register_actor类似 只不过不注册网络层
-		template <
-			EPROTOCOL_TYPE TYPE			// 协议类型
-			, typename TDerived			// 注册的actor派生了
-			, typename T				// Tfun<TDerived, T>
-		>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived	, typename T>
 		static void register_actornonet(bool aisload, T afun)
 		{
 			arfun<TDerived, TYPE>::instance().rfun_nonet(afun, aisload);
@@ -147,12 +143,7 @@ namespace ngl
 	private:
 		friend class gameclient_forward;
 		// ### 注册 [forward:转发协议]
-		template <
-			EPROTOCOL_TYPE TYPE			// 协议类型
-			, bool IsForward
-			, typename TDerived			// 注册的actor派生了
-			, typename T				// Tfun<TDerived, T>
-		>
+		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
 			arfun<TDerived, TYPE>::instance().rfun_forward<IsForward>( afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, false);
@@ -166,11 +157,7 @@ namespace ngl
 		}
 
 		// 注册 [forward:转发协议] recvforward
-		template <
-			EPROTOCOL_TYPE TYPE			// 协议类型
-			, typename TDerived			// 注册的actor派生了
-			, typename T				// Tfun<TDerived, T>
-		>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(T afun)
 		{
 			arfun<TDerived, TYPE>::instance().rfun_recvforward(afun, false);
@@ -182,7 +169,6 @@ namespace ngl
 			register_recvforward<TYPE, TDerived>(ap);
 			register_recvforward<TYPE, TDerived>(arg...);
 		}
-
 #pragma endregion 
 	public:
 		actor(const actorparm& aparm);

@@ -214,22 +214,26 @@ namespace ngl
 		//		print_address();
 		//#endif
 	}
+
 	// 删除actor
 	void actor_address::actor_del(i64_actorid adataid)
 	{
 		m_impl_actor_address()->actor_del(adataid);
 	}
+
 	// 删除一组actor
 	void actor_address::actor_del(const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 			actor_del(item);
 	}
+
 	// 设置session
 	void actor_address::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
 		m_impl_actor_address()->set_session(aserverid, asession);
 	}
+
 	// 获取session
 	i32_sessionid actor_address::get_session(i32_serverid aserverid)
 	{

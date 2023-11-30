@@ -423,6 +423,40 @@ inline bool eunit_Parse(absl::string_view name, eunit* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eunit>(
       eunit_descriptor(), name, value);
 }
+enum eunitstat : int {
+  eunitstat_normal = 0,
+  eunitstat_nomove = 1,
+  eunitstat_nonormalattack = 2,
+  eunitstat_noreleaseskill = 4,
+  eunitstat_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  eunitstat_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool eunitstat_IsValid(int value);
+constexpr eunitstat eunitstat_MIN = static_cast<eunitstat>(0);
+constexpr eunitstat eunitstat_MAX = static_cast<eunitstat>(4);
+constexpr int eunitstat_ARRAYSIZE = 4 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+eunitstat_descriptor();
+template <typename T>
+const std::string& eunitstat_Name(T value) {
+  static_assert(std::is_same<T, eunitstat>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to eunitstat_Name().");
+  return eunitstat_Name(static_cast<eunitstat>(value));
+}
+template <>
+inline const std::string& eunitstat_Name(eunitstat value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<eunitstat_descriptor,
+                                                 0, 4>(
+      static_cast<int>(value));
+}
+inline bool eunitstat_Parse(absl::string_view name, eunitstat* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eunitstat>(
+      eunitstat_descriptor(), name, value);
+}
 enum eplays : int {
   eplays_go_undergroundpalace = 0,
   eplays_count = 1,
@@ -6982,6 +7016,7 @@ class UNIT final :
     kMPositionFieldNumber = 3,
     kMIdFieldNumber = 2,
     kMTypeFieldNumber = 1,
+    kMStatFieldNumber = 5,
   };
   // repeated .pbnet.UnitModule m_modules = 4;
   int m_modules_size() const;
@@ -7039,6 +7074,17 @@ class UNIT final :
   void _internal_set_m_type(::pbnet::eunit value);
 
   public:
+  // optional .pbnet.eunitstat m_stat = 5;
+  bool has_m_stat() const;
+  void clear_m_stat() ;
+  ::pbnet::eunitstat m_stat() const;
+  void set_m_stat(::pbnet::eunitstat value);
+
+  private:
+  ::pbnet::eunitstat _internal_m_stat() const;
+  void _internal_set_m_stat(::pbnet::eunitstat value);
+
+  public:
   // @@protoc_insertion_point(class_scope:pbnet.UNIT)
  private:
   class _Internal;
@@ -7053,6 +7099,7 @@ class UNIT final :
     ::pbnet::UNIT_POSITION* m_position_;
     ::int64_t m_id_;
     int m_type_;
+    int m_stat_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_net_2eproto;
@@ -13364,6 +13411,31 @@ UNIT::_internal_mutable_m_modules() {
   return &_impl_.m_modules_;
 }
 
+// optional .pbnet.eunitstat m_stat = 5;
+inline bool UNIT::has_m_stat() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline void UNIT::clear_m_stat() {
+  _impl_.m_stat_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::pbnet::eunitstat UNIT::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.UNIT.m_stat)
+  return _internal_m_stat();
+}
+inline void UNIT::set_m_stat(::pbnet::eunitstat value) {
+   _internal_set_m_stat(value);
+  // @@protoc_insertion_point(field_set:pbnet.UNIT.m_stat)
+}
+inline ::pbnet::eunitstat UNIT::_internal_m_stat() const {
+  return static_cast<::pbnet::eunitstat>(_impl_.m_stat_);
+}
+inline void UNIT::_internal_set_m_stat(::pbnet::eunitstat value) {
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.m_stat_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // PROBUFF_NET_SYNC_ATTRIBUTE
@@ -14793,6 +14865,12 @@ struct is_proto_enum<::pbnet::eunit> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::pbnet::eunit>() {
   return ::pbnet::eunit_descriptor();
+}
+template <>
+struct is_proto_enum<::pbnet::eunitstat> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::pbnet::eunitstat>() {
+  return ::pbnet::eunitstat_descriptor();
 }
 template <>
 struct is_proto_enum<::pbnet::eplays> : std::true_type {};

@@ -3,8 +3,6 @@
 
 namespace ngl
 {
-	
-
 	bool actor::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_broadcast& adata)
 	{
 		// ## ±£´æÊý¾Ý
@@ -17,7 +15,4 @@ namespace ngl
 		broadcast();
 		return true;
 	}
-
-	
-
 }

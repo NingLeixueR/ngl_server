@@ -25,9 +25,8 @@ namespace ngl
 		
 		// 注册需要处理的消息
 		static void actor_register();
-
+		
 		enum { ACTOR_TYPE = ACTOR_ADDRESS_CLIENT };
-
 	private:
 		void actor_server_register(i32_serverid aserverid);
 	public:

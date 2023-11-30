@@ -56,7 +56,6 @@ namespace ngl
 				}
 				Catch;
 			});
-
 		return lpactor_base;
 	}
 }

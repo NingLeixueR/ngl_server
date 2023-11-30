@@ -12,7 +12,6 @@
 
 namespace ngl
 {
-
 	// actor切换进程(暂时actor内部临时数据无法迁移)
 	class actor_create : public actor
 	{
@@ -97,7 +96,6 @@ namespace ngl
 			}
 			return true;
 		}
-
 	};
 
 

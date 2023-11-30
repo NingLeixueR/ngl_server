@@ -11,6 +11,7 @@
 #include "ttab_attribute.h"
 #include "attribute_value.h"
 #include "event.h"
+#include "net.pb.h"
 
 namespace ngl
 {
@@ -71,13 +72,17 @@ namespace ngl
 	// 动态属性,可以在战斗中改变的属性
 	class dynamic_attribute
 	{
+	public:
+	private:
 		std::map<EnumAttribute, int64_t> m_dynamic;
 		aoimap* m_map;
 		int64_t m_unitid;
+		int32_t m_stat;	// 状态	 
 	public:
 		dynamic_attribute(aoimap* amap, int64_t aunitid) :
 			m_map(amap),
-			m_unitid(aunitid)
+			m_unitid(aunitid),
+			m_stat(pbnet::eunitstat_normal)
 		{}
 
 		// 根据[模块属性]生成动态属性
@@ -102,7 +107,34 @@ namespace ngl
 			}
 		}
 
+		// 无法移动
+		void set_stat(pbnet::eunitstat astat)
+		{
+			m_stat |= (int32_t)astat;
+		}
 
+		void clear_stat()
+		{
+			m_stat = pbnet::eunitstat_normal;
+		}
+
+		// 是否可以移动
+		bool ismove()
+		{
+			return (m_stat & (int32_t)pbnet::eunitstat_nomove) == 0;
+		}
+
+		// 是否可以普通攻击
+		bool isnormalattack()
+		{
+			return (m_stat & (int32_t)pbnet::eunitstat_nonormalattack) == 0;
+		}
+
+		// 是否可以释放技能
+		bool isreleaseskill()
+		{
+			return (m_stat & (int32_t)pbnet::eunitstat_noreleaseskill) == 0;
+		}
 	};
 
 	void test_attribute();

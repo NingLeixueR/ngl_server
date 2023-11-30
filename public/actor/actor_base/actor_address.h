@@ -41,7 +41,6 @@ namespace ngl
 			static actor_address ltemp;
 			return ltemp;
 		}
-
 #pragma region base
 		// debug ´òÓ¡
 		void print_address();

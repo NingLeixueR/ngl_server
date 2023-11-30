@@ -1,6 +1,5 @@
 #include "actor_create.h"
 
-
 namespace ngl
 {
 	void actor_create::actor_register()
@@ -9,7 +8,6 @@ namespace ngl
 			, (Tfun<actor_create, actor_switch_process<actor_switch_process_role>>) & actor_create::handle
 		);
 	}
-
 
 	actor_create::actor_create() :
 		actor(
@@ -25,5 +23,4 @@ namespace ngl
 			})
 	{
 	}
-
 }

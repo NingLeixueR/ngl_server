@@ -80,7 +80,6 @@ namespace ngl
 		virtual void handle_after() {}
 #pragma endregion 
 
-
 		// 删除actor时候会被调用
 		virtual void	release() = 0;
 		virtual void	save();
@@ -253,10 +252,6 @@ namespace ngl
 			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
-
-	private:
-		
-	public:
 #pragma region network_strat_group
 	private:
 		struct group_info
@@ -341,7 +336,6 @@ namespace ngl
 
 		// 用于创建非单例actor
 		static actor_base* create(ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr);
-
 	};
 
 	template <typename T>
