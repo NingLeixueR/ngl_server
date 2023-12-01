@@ -53,47 +53,46 @@ namespace ngl
 				lptemp->set_m_finishtime(value.getconst().m_finishtime());
 			}
 		}
-
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<GM::PROBUFF_GM_GET_NOTICE>& adata)
+		
+		bool handle(message<mforward<GM::PROBUFF_GM_GET_NOTICE>>& adata)
 		{
 			using type = mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>;
-			std::shared_ptr<type> pro(new type(adata.identifier()));
+			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
 			get_notice_list(*pro->add_data());
 			send_actor(actor_guid::make_self(ACTOR_GM), pro);
 			return true;
 		}
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<GM::PROBUFF_GM_ADD_NOTICE>& adata)
+		
+		bool handle(message<mforward<GM::PROBUFF_GM_ADD_NOTICE>>& adata)
 		{
-			GM::PROBUFF_GM_ADD_NOTICE* lptr = adata.data();
+			GM::PROBUFF_GM_ADD_NOTICE* lptr = adata.m_data->data();
 			m_notice.add_notice(lptr->m_notice().m_notice(), lptr->m_notice().m_starttime(), lptr->m_notice().m_finishtime());
 			
 			using type = mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>;
-			std::shared_ptr<type> pro(new type(adata.identifier()));
+			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
 			pro->add_data()->set_m_stat(true);
 			send_actor(actor_guid::make_self(ACTOR_GM), pro);
 			return true;
 		}
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<GM::PROBUFF_GM_DEL_NOTICE>& adata)
+		
+		bool handle(message<mforward<GM::PROBUFF_GM_DEL_NOTICE>>& adata)
 		{
-			m_notice.erase(adata.data()->m_id());
+			m_notice.erase(adata.m_data->data()->m_id());
 			using type = mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>;
-			std::shared_ptr<type> pro(new type(adata.identifier()));
+			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
 			pro->add_data()->set_m_stat(true);
 			send_actor(actor_guid::make_self(ACTOR_GM), pro);
 			return true;
 		}
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_GET_NOTICE>& adata)
+		
+		bool handle(message<mforward<pbnet::PROBUFF_NET_GET_NOTICE>>& adata)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE>();
 			for (const auto& [_id, _notice] : m_notice.data())
 			{
 				*pro->add_m_notices() = _notice.getconst();
 			}
-			send_client(adata.identifier(), pro);
+			send_client(adata.m_data->identifier(), pro);
 			return true;			
 		}
 

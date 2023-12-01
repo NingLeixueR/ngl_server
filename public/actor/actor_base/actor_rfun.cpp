@@ -3,7 +3,6 @@
 
 namespace ngl
 {
-
 	arfunbase& arfunbase::set_notfindfun(const tnotfindfun& afun)
 	{
 		m_notfindfun = afun;

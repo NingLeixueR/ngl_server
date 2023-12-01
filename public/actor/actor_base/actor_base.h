@@ -40,6 +40,9 @@ namespace ngl
 		actor_stat_close, // ¹Ø±Õ×´Ì¬
 	};
 
+	template <typename T>
+	struct message;
+
 	class actor_base
 	{
 	protected:
@@ -62,7 +65,7 @@ namespace ngl
 		void			init_db_component(bool acreate);
 		void			add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid);
 		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-		bool			handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>& adata);
+		bool			handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
 #pragma region virtual_function
 		virtual ~actor_base();

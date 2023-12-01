@@ -9,32 +9,27 @@ namespace ngl
 	class db_component
 	{
 	protected:
-		actor_base* m_actor;
-		i64_actorid m_id;
-		actor_dbclient_base* m_dbclient;
-		pbdb::ENUM_DB m_type;
+		actor_base*				m_actor;
+		i64_actorid				m_id;
+		actor_dbclient_base*	m_dbclient;
+		pbdb::ENUM_DB			m_type;
 
 		db_component(pbdb::ENUM_DB aenum);
-		void		set_dbclient(actor_dbclient_base* adbclient);
+		void				set_dbclient(actor_dbclient_base* adbclient);
 	public:
-		void		set(actor_base* aactor);
-		i64_actorid id();
+		void				set(actor_base* aactor);
+		i64_actorid			id();
 		pbdb::ENUM_DB		type();
-		actor_base* actorbase();
-		virtual void set_id();
-		void		init();
-		void		create();
+		actor_base*			actorbase();
+		virtual void		set_id();
+		void				init();
+		void				create();
 		actor_dbclient_base* dbclientbase();
 		// 当数据全部加载后调用
-		virtual void init_data();
+		virtual void		init_data();
 	};
 
-	template <
-		EPROTOCOL_TYPE PROTYPE, 
-		pbdb::ENUM_DB ENUM,
-		typename TDATA, 
-		typename TACTOR
-	>
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 	class db_modular : public db_component
 	{
 	protected:
@@ -141,5 +136,4 @@ namespace ngl
 			get_actor_dbclient()->del(aid);
 		}
 	};
-
 }

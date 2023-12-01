@@ -47,30 +47,25 @@ namespace ngl
 		}
 
 		template <typename T>
-		void send2other(ENUM_ACTOR atype, const std::shared_ptr<pack>& apack, T& apro)
+		void send2other(ENUM_ACTOR atype, const pack* apack, T& apro)
 		{
 			std::shared_ptr<mforward<T>> pro(new mforward<T>(apack->m_id, apro));
 			send_actor(actor_guid::make_self(atype), pro);
 		}
 
-#define foward_module(MODULE, TYPE)														\
-	bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, TYPE& adata)	\
-	{																					\
-		send2other(MODULE, apack, adata);												\
-		return true;																	\
-	}
-
-#define foward_module_ret(MODULE, TYPE, RESPONSE) \
-		foward_module(MODULE,TYPE) \
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<RESPONSE>& adata)\
-		{\
-			sendphpclient(adata);\
-			return true;\
+		template <ENUM_ACTOR MODULE,typename T>
+		bool handle(message<T>& adata)
+		{
+			send2other(MODULE, adata.m_pack, *adata.m_data);
+			return true;
 		}
-
-		foward_module_ret(ACTOR_NOTICE, GM::PROBUFF_GM_GET_NOTICE, GM::PROBUFF_GM_GET_NOTICE_RESPONSE)
-		foward_module_ret(ACTOR_NOTICE, GM::PROBUFF_GM_ADD_NOTICE, GM::PROBUFF_GM_ADD_NOTICE_RESPONSE)
-		foward_module_ret(ACTOR_NOTICE, GM::PROBUFF_GM_DEL_NOTICE, GM::PROBUFF_GM_DEL_NOTICE_RESPONSE)
+		
+		template <typename T>
+		bool handle(message<mforward<T>>& adata)
+		{
+			sendphpclient(*adata.m_data);
+			return true;
+		}
 
 		private:
 	};

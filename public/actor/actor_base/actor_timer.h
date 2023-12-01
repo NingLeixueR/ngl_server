@@ -10,7 +10,6 @@
 
 namespace ngl
 {
-
 	struct timerparm
 	{
 		enum E_ACTOR_TIMER
@@ -23,34 +22,25 @@ namespace ngl
 			ET_MIN,			// 每分钟触发	asec秒
 			ET_INTERVAL_SEC,// 间隔n秒触发
 		};
-		int m_type = 0;
-		int m_timerid = 0;
-		int64_t m_ms = 0;		// 相对于当前时间 ms
-		std::function<int(int64_t)> m_intervalms = nullptr;	// 触发间隔
-		int m_count = 1;		// 触发次数
-		std::shared_ptr<void> m_parm = nullptr;	// 自定义参数
-		int64_t m_triggerms = 0;		// 触发时的毫秒
+		int		m_type = 0;
+		int		m_timerid = 0;
+		int64_t m_ms = 0;			// 相对于当前时间 ms
+		int		m_count = 1;		// 触发次数
+		std::function<int(int64_t)> m_intervalms = nullptr;		// 触发间隔
+		std::shared_ptr<void>		m_parm = nullptr;			// 自定义参数
+		int64_t						m_triggerms = 0;			// 触发时的毫秒
 
-		def_portocol(
-			timerparm,
-			m_type,
-			m_timerid,
-			m_ms,
-			m_count,
-			m_triggerms
-		)
-
-			template <typename T>
+		template <typename T>
 		void set_parm(T* aparm)
 		{
 			m_parm = std::shared_ptr<void>(aparm);
 		}
+		def_portocol(timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
 	};
 
 
 	class make_timerparm
 	{
-
 	public:
 		static time_t month_ms(int anow, int autc, int amonthday = 1/*1-31*/, int ahour = 0, int amin = 0, int asec = 0)
 		{
@@ -76,6 +66,7 @@ namespace ngl
 				};
 			aparm.m_count = acount;
 		}
+
 		// 1-7
 		static void week(timerparm& aparm, int aweek = 1/*1-7*/, int ahour = 0, int amin = 0, int asec = 0, int acount = 0x7fffffff)
 		{
@@ -93,6 +84,7 @@ namespace ngl
 				};
 			aparm.m_count = acount;
 		}
+
 		// 每日触发  ahour时amin分asec秒
 		static void day(timerparm& aparm, int ahour, int amin = 0, int asec = 0, int acount = 0x7fffffff)
 		{
@@ -109,6 +101,7 @@ namespace ngl
 				};
 			aparm.m_count = acount;
 		}
+
 		// 每小时触发  amin分asec秒
 		static void hour(timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
@@ -124,6 +117,7 @@ namespace ngl
 				};
 			aparm.m_count = acount;
 		}
+
 		// 每分钟触发  asec秒
 		static void min(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
@@ -138,6 +132,7 @@ namespace ngl
 				};
 			aparm.m_count = acount;
 		}
+
 		// 每n秒触发
 		static void make_interval(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{

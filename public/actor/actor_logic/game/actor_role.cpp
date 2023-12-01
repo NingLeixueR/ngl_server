@@ -38,13 +38,13 @@ namespace ngl
 		m_task.set(this);
 	}
 
-	actor_role::~actor_role() {}
+	actor_role::~actor_role() 
+	{}
 
 	void actor_role::actor_register()
 	{
 		// 定时器
 		register_timer<actor_role>(&actor_role::timer_handle);
-
 
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
 			true
@@ -65,7 +65,6 @@ namespace ngl
 	{
 		LogLocalError("actor_role###loaddb_finish#[%]", actor_guid(id_guid()));
 		sync_data_client();
-
 		m_info.sync_actor_roleinfo();
 	}
 
@@ -97,7 +96,7 @@ namespace ngl
 		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
 	}
 
-	bool actor_role::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+	bool actor_role::timer_handle(message<timerparm>& adata)
 	{
 		return true;
 	}

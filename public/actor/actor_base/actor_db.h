@@ -73,7 +73,7 @@ namespace ngl
 		}
 
 		// 加载表中的所有数据
-		static void loadall(const std::shared_ptr<pack>& apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		static void loadall(const pack* apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network) return;
 			int lsendmaxcount = m_tab->m_sendmaxcount;
@@ -136,7 +136,7 @@ namespace ngl
 		}
 
 		// 加载数据 ：同步方式
-		static void load(i32_threadid athreadid, const std::shared_ptr<pack>& apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		static void load(i32_threadid athreadid, const pack* apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
 				return;
@@ -211,7 +211,7 @@ namespace ngl
 			cache_list<TDBTAB, enum_clist_del>::getInstance().push(aid);
 		}
 
-		static void save(i32_threadid athreadid, const std::shared_ptr<pack>& apack, const actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		static void save(i32_threadid athreadid, const pack* apack, const actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
@@ -286,51 +286,49 @@ namespace ngl
 				);
 		}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, 
-			actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		
+		bool handle(message<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			//LogLocalInfo(" actor_db actor_db_load<%,%> [%]", TDBTAB_TYPE, TDBTAB::name(), adata.m_id);
-			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(athread, apack, adata);
+			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, 
-			actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		bool handle(message<actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			//for (auto& [key, value] : adata.m_data)
 			//	LogLocalInfo(" actor_db actor_db_save<%,%,false> [%:%:%]", TDBTAB_TYPE, TDBTAB::name(), key.type(), key.area(), key.actordataid());
-			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::save(athread, apack, adata);
+			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::save(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, 
-			actor_db_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		bool handle(message<actor_db_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			//for (auto& id : adata.m_data)
 			//	LogLocalInfo(" actor_db actor_db_delete<%,%,false> [%]", TDBTAB_TYPE, TDBTAB::name(), id);
-			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::del(athread, adata.m_data);
+			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::del(adata.m_thread, adata.m_data->m_data);
 			return true;
 		}
 
 		////// ----ACTOR_TIMER_DB_CACHE, db cache list  保存缓存列表
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, 
-			actor_time_db_cache<PROTYPE, TDBTAB>& adata)
+		bool handle(message<actor_time_db_cache<PROTYPE, TDBTAB>>& adata)
 		{
-			for (i64_actorid id : adata.m_ls)
+			auto lrecv = adata.m_data;
+			for (i64_actorid id : lrecv->m_ls)
 			{
-				switch (adata.m_type)
+				switch (lrecv->m_type)
 				{
 				case enum_clist_save:
 				{
 					if (ngl::dbdata<TDBTAB>::find(id) == nullptr)
 						continue;
-					db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), id);
+					db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(adata.m_thread), id);
 				}
 				break;
 				case enum_clist_del:
 				{
 					ngl::dbdata<TDBTAB>::remove(id);
-					db_manage::del<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), id);
+					db_manage::del<PROTYPE, TDBTAB>::fun(actor_dbpool::get(adata.m_thread), id);
 				}
 				break;
 				}

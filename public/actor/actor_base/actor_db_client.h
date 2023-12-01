@@ -369,15 +369,16 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(i32_threadid athreadid, const std::shared_ptr<pack>& apack, actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>& adata)
+		
+		bool handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 		{
 			Try
 			{
-				if (!adata.m_stat)
+				if (!adata.m_data->m_stat)
 				{//加载失败  数据库中没有数据
 					return loadfinish();
 				}
-				loadfinish(adata.data(), adata.m_over);
+				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch;
 			return true;
 		}
@@ -490,8 +491,9 @@ namespace ngl
 
 namespace ngl
 {
+	
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	bool actor_base::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>& adata)
+	bool actor_base::handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 	{
 		std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
 		if (mdbclient == nullptr)
@@ -505,7 +507,7 @@ namespace ngl
 			//LogLocalError("mdbclient->data<DBTYPE, TDBTAB>() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid());
 			return false;
 		}
-		return lp->handle(athread, apack, adata);
+		return lp->handle(adata);
 	}
 
 }

@@ -32,17 +32,18 @@ namespace ngl
 		gameclient_forward::c2g();
 	}
 
-	bool actor_gateway_client2game::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_info_updata& adata)
+	bool actor_gateway_client2game::handle(message<actor_gateway_info_updata>& adata)
 	{
-		for (auto& item : adata.m_delsocket)
+		auto lpram = adata.m_data;
+		for (auto& item : lpram->m_delsocket)
 		{
 			m_info.remove_socket(item);
 		}
-		for (auto& item : adata.m_delactorid)
+		for (auto& item : lpram->m_delactorid)
 		{
 			m_info.remove_actorid(item);
 		}
-		for (auto& item : adata.m_add)
+		for (auto& item : lpram->m_add)
 		{
 			m_info.updata(item);
 		}

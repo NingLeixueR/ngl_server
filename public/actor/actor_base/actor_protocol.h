@@ -85,8 +85,6 @@ namespace ngl
 		def_portocol(actor_node_actor_connect_task, m_serverid)
 	};
 
-
-
 	// ---- [actor db client -> actor db server]
 	// ---- 从db server加载数据
 	// 从db server加载数据
@@ -115,10 +113,7 @@ namespace ngl
 			return *m_data.m_data;
 		}
 
-		def_portocol(
-			actor_db_load_response<T>,
-			m_stat, m_data, m_over)
-
+		def_portocol(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
@@ -133,10 +128,7 @@ namespace ngl
 			return m_data;
 		}
 
-		def_portocol(
-			actor_db_load_response<T>,
-			m_stat, m_data, m_over)
-
+		def_portocol(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
 	
@@ -148,9 +140,7 @@ namespace ngl
 	{
 		actor_db_save() {}
 
-
 		def_portocol(actor_db_save<T>)
-
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
@@ -175,7 +165,6 @@ namespace ngl
 		}
 
 		def_portocol(actor_db_save<T>, m_data)
-
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
@@ -196,7 +185,6 @@ namespace ngl
 		}
 
 		def_portocol(actor_db_save<T>, m_data)
-
 	};
 
 	// 从db server删除数据
@@ -219,8 +207,9 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, typename T>
 	struct actor_time_db_cache
 	{
-		enum_cache_list m_type;
-		std::set<i64_actorid> m_ls;
+		enum_cache_list			m_type;
+		std::set<i64_actorid>	m_ls;
+
 		def_portocol(actor_time_db_cache<T>, m_ls)
 	};
 
@@ -229,8 +218,8 @@ namespace ngl
 	struct actor_module_forward
 	{
 	private:
-		int64_t m_identifier = 0;
-		std::shared_ptr<T> m_data;
+		int64_t				m_identifier = 0;
+		std::shared_ptr<T>	m_data;
 	public:
 		actor_module_forward(int64_t aidentifier, std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
@@ -339,13 +328,13 @@ namespace ngl
 	// ---- 通知服务器玩家账号验证通过
 	struct actor_role_login
 	{
-		std::string m_session;
-		i64_accountid m_accountid = 0;
-		i64_actorid m_roleid = 0;
-		i32_serverid m_gameid = 0;
-		i32_serverid m_gatewayid = 0;
-		i16_area m_area = 0;
-		bool m_iscreate = false;
+		std::string		m_session;
+		i64_accountid	m_accountid = 0;
+		i64_actorid		m_roleid = 0;
+		i32_serverid	m_gameid = 0;
+		i32_serverid	m_gatewayid = 0;
+		i16_area		m_area = 0;
+		bool			m_iscreate = false;
 		def_portocol(actor_role_login, m_session, m_accountid, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate)
 	};
 
@@ -365,23 +354,26 @@ namespace ngl
 	struct actor_forward<T, PROTYPE, true, ngl::forward>
 	{
 		using BASE_TYPE = T;
-		static const bool isusing = true;
-		std::vector<i32_actordataid> m_uid;
-		std::vector<i16_area> m_area;
-		std::shared_ptr<pack> m_recvpack;
+		static const bool				isusing = true;
+		std::vector<i32_actordataid>	m_uid;
+		std::vector<i16_area>			m_area;
+		std::shared_ptr<pack>			m_recvpack;
 
-		actor_forward() {}
+		actor_forward() 
+		{
+		}
+
 		actor_forward(actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
-		{}
+		{
+		}
 
 		T* get_data()
 		{
 			return nullptr;
 		}
 		
-		def_portocol(actor_forward, m_uid, m_area/*, m_data*/)
-	
+		def_portocol(actor_forward, m_uid, m_area/*, m_data*/)	
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
@@ -391,10 +383,10 @@ namespace ngl
 		static const bool isusing = false;
 		std::shared_ptr<pack> m_recvpack;
 
-		actor_forward() {}
+		actor_forward() 
+		{}
+
 		actor_forward(actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
-			//m_uid(adata.m_uid),
-			//m_area(adata.m_area),
 			m_recvpack(adata.m_recvpack)
 		{}
 
@@ -403,8 +395,7 @@ namespace ngl
 			return nullptr;
 		}
 		
-		def_portocol(actor_forward, /*m_uid, m_area,*/ /*m_data*/)
-		
+		def_portocol(actor_forward, /*m_uid, m_area,*/ /*m_data*/)		
 	};
 
 
@@ -412,69 +403,66 @@ namespace ngl
 	struct actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
 	{
 		using BASE_TYPE = T;
-		static const bool isusing = true;
-		std::vector<i32_actordataid> m_uid;
-		std::vector<i16_area> m_area;
+		static const bool				isusing = true;
+		std::vector<i32_actordataid>	m_uid;
+		std::vector<i16_area>			m_area;
 	private:
 		protobuf_data<T, true> m_data;
 	public:
-		/*void set_data(T& adata) 
-		{ 
-			m_data.m_data = adata; 
-		}*/
 		void set_data(std::shared_ptr<T>& adata)
 		{
 			m_data.m_data = adata;
 		}
+
 		T* get_data()
 		{
 			return m_data.m_data.get();
 		}
+
 		actor_forward()
 		{}
+
 		actor_forward(actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
+
 		~actor_forward()
 		{}
-		def_portocol(actor_forward,m_uid, m_area, m_data)
 
+		def_portocol(actor_forward,m_uid, m_area, m_data)
 	};
 
 	template <typename T>
 	struct actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>
 	{
 		using BASE_TYPE = T;
-		static const bool isusing = false;
-		std::vector<i32_actordataid> m_uid;
-		std::vector<i16_area> m_area;
+		static const bool				isusing = false;
+		std::vector<i32_actordataid>	m_uid;
+		std::vector<i16_area>			m_area;
 	private:
 		protobuf_data<T, true> m_data;
 	public:
-		/*void set_data(T& adata)
-		{
-			m_data.m_data = adata;
-		}*/
 		void set_data(std::shared_ptr<T>& adata)
 		{
 			m_data.m_data = adata;
 		}
+
 		T* get_data()
 		{
 			return m_data.m_data.get();
 		}
+
 		actor_forward()
 		{}
+
 		actor_forward(actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
+
 		~actor_forward()
 		{}
-		def_portocol(
-			actor_forward,
-			m_uid, m_area,
-			m_data)
 
+		def_portocol(actor_forward, m_uid, m_area, m_data)
 	};
 
 
@@ -482,28 +470,35 @@ namespace ngl
 	struct actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
 	{
 		using BASE_TYPE = T;
-		static const bool isusing = ISUSING;
-		std::vector<i32_actordataid> m_uid;
-		std::vector<i16_area> m_area;
+		static const bool				isusing = ISUSING;
+		std::vector<i32_actordataid>	m_uid;
+		std::vector<i16_area>			m_area;
 	private:
 		T m_data_;
 		T* m_data;
 	public:
-		void set_data(T& adata) { m_data = &adata; }
+		void set_data(T& adata) 
+		{ 
+			m_data = &adata; 
+		}
+
 		T* get_data()
 		{
 			return m_data != nullptr ? m_data : &m_data_;
 		}
+
 		actor_forward()
 			:m_data(nullptr)
 		{}
+
 		actor_forward(actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ~ISUSING, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
+
 		~actor_forward()
 		{}
-		def_portocol(actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
 
+		def_portocol(actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
 	};
 
 	// ---- actor 切换进程
@@ -511,17 +506,17 @@ namespace ngl
 	template <typename T>
 	struct actor_switch_process
 	{
-		i64_actorid m_actor = 0;
-		i32_serverid m_serverid = 0;
-		i32_serverid m_toserverid = 0;
-		T m_pram;
+		i64_actorid		m_actor = 0;
+		i32_serverid	m_serverid = 0;
+		i32_serverid	m_toserverid = 0;
+		T				m_pram;
 		def_portocol(actor_switch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
 	struct actor_switch_process_role
 	{
-		bool m_create = false;
-		int m_gatewayid = 0;
+		bool	m_create = false;
+		int		m_gatewayid = 0;
 		def_portocol(actor_switch_process_role, m_create, m_gatewayid);
 	};
 
@@ -554,21 +549,20 @@ namespace ngl
 	
 	struct actor_gateway_id_updata
 	{
-		bool m_isremove;
-		i64_actorid m_actorid;
-		i32_serverid m_gatewayid;
+		bool			m_isremove;
+		i64_actorid		m_actorid;
+		i32_serverid	m_gatewayid;
 		def_portocol(actor_gateway_id_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
 	// ---- 日志发送 
 	struct actor_logitem
 	{
-		int m_serverid = 0;						// 服务器id
-		int m_type;							//ELOG
-		
-		std::string m_head;								// 日志头
-		std::string m_pos;							// 触发日志的文件位置
-		std::string m_str;								// 日志内容
+		int				m_serverid = 0;				// 服务器id
+		int				m_type;						// ELOG
+		std::string		m_head;						// 日志头
+		std::string		m_pos;						// 触发日志的文件位置
+		std::string		m_str;						// 日志内容
 		def_portocol_function(actor_logitem, m_serverid, m_type, m_head, m_pos, m_str)
 	};
 	struct actor_logitempro
@@ -591,7 +585,6 @@ namespace ngl
 		def_portocol(actor_reloadcsv_pro, m_csvcontent)
 	};
 
-
 	// ---- 核实csv版本
 	struct actor_reloadcsv_verify_version
 	{
@@ -602,20 +595,18 @@ namespace ngl
 	// ---- 发送物品给actor role模块
 	struct actor_send_item
 	{
-		//EItemSrc m_src;//物品来源
-		std::string m_src;//物品来源
-		std::map<int32_t, int32_t> m_item;
-		def_portocol(
-			actor_send_item, m_src, m_item)
+		std::string					m_src;//物品来源
+		std::map<int32_t, int32_t>	m_item;
+		def_portocol(actor_send_item, m_src, m_item)
 	};
 
 	struct chat
 	{
-		int m_id;
+		int			m_id;
 		i64_actorid m_roleid;
 		std::string m_rolename;
 		std::string m_content;
-		int m_utc;				//发言utc
+		int			m_utc;				//发言utc
 		def_portocol_function(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
 	};
 
@@ -626,20 +617,16 @@ namespace ngl
 		def_portocol(actor_roleinfo, m_vecinfo)
 	};
 	
-	
-
-
-	
 	struct gateway_socket
 	{
-		std::string m_session;
-		i16_area m_area;
-		i64_accountid m_accountid;
-		i32_actordataid m_dataid;
-		i32_serverid m_gameid;
-		i32_serverid m_gatewayid;
-		i32_socket m_socket;
-		bool m_iscreate;
+		std::string			m_session;
+		i16_area			m_area;
+		i64_accountid		m_accountid;
+		i32_actordataid		m_dataid;
+		i32_serverid		m_gameid;
+		i32_serverid		m_gatewayid;
+		i32_socket			m_socket;
+		bool				m_iscreate;
 		def_portocol_function(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
 	};
 
@@ -649,17 +636,16 @@ namespace ngl
 		std::vector<gateway_socket>	m_add;
 		std::vector<i32_socket>		m_delsocket;
 		std::vector<i64_actorid>	m_delactorid;
-
 		def_portocol(actor_gateway_info_updata, m_add, m_delsocket, m_delactorid)
 	};
 
 	// ---- 新增邮件
 	struct actor_protocol_add_mail
 	{
-		i64_actorid m_roleid;
-		int32_t m_tid;
-		std::map<int32_t,int32_t> m_items;
-		std::string m_parm;
+		i64_actorid					m_roleid;
+		int32_t						m_tid;
+		std::map<int32_t,int32_t>	m_items;
+		std::string					m_parm;
 
 		def_portocol(actor_protocol_add_mail, m_roleid, m_tid, m_items, m_parm)
 	};
@@ -683,7 +669,7 @@ namespace ngl
 	struct actor_protocol_close_activity
 	{
 		i64_actorid m_activityid;
-		bool m_isnormal;	// 是否正常关闭
+		bool		m_isnormal;	// 是否正常关闭
 		def_portocol(actor_protocol_close_activity, m_activityid, m_isnormal)
 	};
 }

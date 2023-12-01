@@ -21,12 +21,12 @@ namespace ngl
 	{
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gm>(false
-			, dregister_fun_handle(actor_gm, GM::PROBUFF_GM_GET_NOTICE)
-			, dregister_fun_handle(actor_gm, GM::PROBUFF_GM_ADD_NOTICE)
-			, dregister_fun_handle(actor_gm, GM::PROBUFF_GM_DEL_NOTICE)
-			, dregister_fun_handle(actor_gm, mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>)
-			, dregister_fun_handle(actor_gm, mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>)
-			, dregister_fun_handle(actor_gm, mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>)
+			, (Tfun<actor_gm, GM::PROBUFF_GM_GET_NOTICE>) & actor_gm::handle<ACTOR_NOTICE>
+			, (Tfun<actor_gm, GM::PROBUFF_GM_ADD_NOTICE>) & actor_gm::handle<ACTOR_NOTICE>
+			, (Tfun<actor_gm, GM::PROBUFF_GM_DEL_NOTICE>) & actor_gm::handle<ACTOR_NOTICE>
+			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>>) & actor_gm::handle
+			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>>) & actor_gm::handle
+			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>>) & actor_gm::handle
 		);
 	}
 

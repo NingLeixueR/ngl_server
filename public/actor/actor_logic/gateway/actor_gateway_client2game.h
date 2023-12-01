@@ -30,31 +30,33 @@ namespace ngl
 		enum { ACTOR_TYPE = ACTOR_GATEWAY_CLIENT2GAME};
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_forward<T, TYPE, false, ngl::forward>& adata)
+		bool handle(message<actor_forward<T, TYPE, false, ngl::forward>>& adata)
 		{
 			//Client->Gate  需要把这个消息传递给Game服务器
 			//adata.m_uid == socket id
+			auto lpram = adata.m_data;
+			auto lpack = adata.m_pack;
 			gateway_socket* info = nullptr;
 			if (rebot_test::is_test)
 			{
-				i64_actorid lactorid = apack->m_head.get_request_actor();
+				i64_actorid lactorid = lpack->m_head.get_request_actor();
 				actor_guid lguid(lactorid);
 				info = m_info.get(lguid.area(), lguid.actordataid());
 			}
 			else
 			{
-				info = m_info.get(apack->m_id);//m_info.get(adata.m_uid[0]);
+				info = m_info.get(lpack->m_id);//m_info.get(adata.m_uid[0]);
 			}
 			if (info == nullptr)
 				return false;
-			actor_forward<T, TYPE, true, ngl::forward> ltemp(adata);
+			actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
 			ltemp.m_uid.push_back(info->m_dataid);
 			ltemp.m_area.push_back(info->m_area);
-			nserver->sendtoserver(info->m_gameid, ltemp, actor_guid::make(ACTOR_ROLE, info->m_area, info->m_dataid), apack->m_head.get_request_actor());
+			nserver->sendtoserver(info->m_gameid, ltemp, actor_guid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
 			return true;
 		}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_info_updata& adata);
+		bool handle(message<actor_gateway_info_updata>& adata);
 	private:
 	};
 

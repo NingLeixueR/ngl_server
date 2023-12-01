@@ -71,11 +71,12 @@ namespace ngl
 
 		void printf_freeserver();
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_server_connect& adata);
+		
+		bool handle(message<actor_server_connect>& adata);
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata);
+		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
 	
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_disconnect_close& adata);
+		bool handle(message<actor_disconnect_close>& adata);
 	};
 
 }

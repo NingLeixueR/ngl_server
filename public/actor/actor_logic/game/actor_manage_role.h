@@ -28,8 +28,9 @@ namespace ngl
 		static void actor_register();
 
 		enum { ACTOR_TYPE = ACTOR_MANAGE_ROLE};
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_LOGIN& adata);
+		
+		//bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_LOGIN& adata);
+		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	private:
 	};
 }

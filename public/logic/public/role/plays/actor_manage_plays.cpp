@@ -33,33 +33,26 @@ namespace ngl
 	{
 	}
 
-	bool actor_manage_plays::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS& adata)
+	bool actor_manage_plays::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata)
 	{
-		roomid ltemp(adata.m_roomid());
-		int32_t tid = roomid::tid(adata.m_roomid());
+		auto lrecv = adata.m_data;
+		roomid ltemp(lrecv->m_roomid());
+		int32_t tid = roomid::tid(lrecv->m_roomid());
 		//ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr
 
 		auto tab = allcsv::tab<tab_plays>(tid);
 		assert(tab != nullptr);
 		actor_switch_process_plays pram;
-		std::for_each(adata.mutable_m_member()->begin(), adata.mutable_m_member()->end(), [&pram](const pbnet::MATCHING_MEMBER& adata)
+		std::for_each(lrecv->mutable_m_member()->begin(), lrecv->mutable_m_member()->end(), [&pram](const pbnet::MATCHING_MEMBER& adata)
 			{
 				pram.m_players.push_back(adata.m_id());
 			});
-		i64_actorid lactorid = actor_guid::make(
-			(ENUM_ACTOR)((int)ACTOR_PLAYS + (int)tab->m_type), ttab_servers::tab()->m_area, adata.m_roomid()
-		);
+		i64_actorid lactorid = actor_guid::make((ENUM_ACTOR)((int)ACTOR_PLAYS + (int)tab->m_type), ttab_servers::tab()->m_area, lrecv->m_roomid());
 
-		//actor_base::create(ACTOR_PLAYS, adata.m_roomid(), &pram);
-		// 告诉匹配房间可以解散了
-		//auto pro = std::shared_ptr<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>();
-		//pro->set_m_type(adata.m_type());
-		//pro->set_m_roomid(adata.m_roomid());
-		//send_actor(actor_guid::make_self(ACTOR_MATCHING), pro);
 		return true;
 	}
 
-	bool actor_manage_plays::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+	bool actor_manage_plays::timer_handle(message<timerparm>& adata)
 	{
 		return true;
 	}

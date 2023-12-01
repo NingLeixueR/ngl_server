@@ -25,11 +25,11 @@ namespace ngl
 
 		// ---- [actor client -> actor server] register
 		// 注册结点
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_register& adata);
+		bool handle(message<actor_node_register>& adata);
 		// 更新结点中的actor
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_update& adata);
+		bool handle(message<actor_node_update>& adata);
 		// 更新gateway表 actor_role.guidid与gateway server id对应关系
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_id_updata& adata);
+		bool handle(message<actor_gateway_id_updata>& adata);
 	private:
 	};
 

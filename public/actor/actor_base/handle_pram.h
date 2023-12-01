@@ -35,21 +35,20 @@ namespace ngl
 			handle_pram& adata);
 
 		static bool send(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
-
 		static bool sendclient(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
 	};
 
 	struct handle_pram
 	{
-		i32_protocolnum m_enum			= -1;
-		std::shared_ptr<void> m_data	= nullptr;
-		std::shared_ptr<pack> m_pack	= nullptr;
-		EPROTOCOL_TYPE m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;
-		actor_guid m_actor;
-		actor_guid m_requestactor;
+		i32_protocolnum			m_enum			= -1;
+		std::shared_ptr<void>	m_data			= nullptr;
+		std::shared_ptr<pack>	m_pack			= nullptr;
+		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;
+		actor_guid				m_actor;
+		actor_guid				m_requestactor;
 
 		using forwardtype = std::function<void(std::map<i32_serverid, actor_node_session>&, std::map<actor_guid, i32_serverid>&, handle_pram&)>;
-		forwardtype m_forwardfun;	// 转发函数
+		forwardtype				m_forwardfun;	// 转发函数
 
 		static i32_sessionid get_session(i32_serverid aserverid);
 		static i32_serverid get_server(i64_actorid aactorid);
@@ -82,12 +81,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static void create(
-			handle_pram& apram
-			, const actor_guid& aid
-			, const actor_guid& arid
-			, std::shared_ptr<T>& adata
-		)
+		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<T>& adata)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -100,12 +94,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
-		static void create(
-			handle_pram& apram
-			, const actor_guid& aid
-			, const actor_guid& arid
-			, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata
-		)
+		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -216,5 +205,4 @@ namespace ngl
 		}
 		return true;
 	}
-
 }

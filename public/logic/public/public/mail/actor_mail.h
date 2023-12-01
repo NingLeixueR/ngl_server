@@ -42,47 +42,47 @@ namespace ngl
 		enum { ACTOR_TYPE = ACTOR_MAIL};
 
 		// ---- ACTOR_PROTOCOL_ADD_MAIL,ĞÂÔöÓÊ¼ş
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_protocol_add_mail& adata)
+		bool handle(message<actor_protocol_add_mail>& adata)
 		{
-			m_mails.addmail(adata.m_roleid, adata.m_tid, adata.m_items, adata.m_parm);
-
+			auto lparm = adata.m_data;
+			m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);
 			return true;
 		}
 		
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_MAIL_READ>& adata)
+		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
 		{
-			pbnet::PROBUFF_NET_MAIL_READ* lpdata = adata.data();
+			auto lparm = adata.m_data;
+			pbnet::PROBUFF_NET_MAIL_READ* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;
 			pbnet::PROBUFF_NET_MAIL_READ_RESPONSE pro;
 			pro.set_m_mailid(lpdata->m_mailid());
-			pro.set_m_stat(m_mails.readmail(adata.identifier(), lpdata->m_mailid()));
+			pro.set_m_stat(m_mails.readmail(lparm->identifier(), lpdata->m_mailid()));
 			return true;
 		}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>& adata)
+		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
 		{
-			pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = adata.data();
+			auto lparm = adata.m_data;
+			pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;
 			pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE pro;
 			pro.set_m_mailid(lpdata->m_mailid());
-			pro.set_m_stat(m_mails.drawmail(adata.identifier(), lpdata->m_mailid()));
+			pro.set_m_stat(m_mails.drawmail(lparm->identifier(), lpdata->m_mailid()));
 			return true;
 		}
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_MAIL_DEL>& adata)
+		
+		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
 		{
-			pbnet::PROBUFF_NET_MAIL_DEL* lpdata = adata.data();
+			auto lparm = adata.m_data;
+			pbnet::PROBUFF_NET_MAIL_DEL* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;
 			pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE pro;
 			pro.set_m_mailid(lpdata->m_mailid());
-			pro.set_m_stat(m_mails.delmail(adata.identifier(), lpdata->m_mailid()));
+			pro.set_m_stat(m_mails.delmail(lparm->identifier(), lpdata->m_mailid()));
 			return true;
 		}
-
-	
-	private:
 	};
 }

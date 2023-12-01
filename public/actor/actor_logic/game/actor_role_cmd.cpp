@@ -3,12 +3,13 @@
 
 namespace ngl
 {
-	bool actor_role::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_CMD& adata)
+	bool actor_role::handle(message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
-		LogInfo("cmd[%]", adata.m_cmd());
+		pbnet::PROBUFF_NET_CMD& lparm = *adata.m_data;
+		LogInfo("cmd[%]", lparm.m_cmd());
 
 		std::vector<std::string> lvec;
-		ngl::splite::division(adata.m_cmd().c_str(), "|", lvec);
+		ngl::splite::division(lparm.m_cmd().c_str(), "|", lvec);
 
 		static std::map<std::string, std::function<void(actor_role*,const char*)>> lcmd;
 		if (lcmd.empty())
@@ -16,7 +17,8 @@ namespace ngl
 			lcmd["/time"] = [this](actor_role* role, const char* aparm)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
-					role->handle(0, nullptr, pro);
+					message<pbnet::PROBUFF_NET_GET_TIME> lmessage(0, nullptr, &pro);
+					role->handle(lmessage);
 				};
 			lcmd["/name"] = [this](actor_role* role, const char* aparm)
 				{
@@ -57,7 +59,8 @@ namespace ngl
 							}
 							pro.set_m_content(lvec[2]);
 						}
-						role->handle_forward<ACTOR_CHAT>(0, nullptr, pro);
+						message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, &pro);
+						role->handle_forward<ACTOR_CHAT>(lmessage);
 					}
 				};
 			lcmd["/switch"] = [this](actor_role* role, const char* aparm)
@@ -72,7 +75,8 @@ namespace ngl
 						return;
 
 					pro.set_m_line(tab->m_tcount);
-					role->handle(0, nullptr, pro);
+					message<pbnet::PROBUFF_NET_SWITCH_LINE> lmessage(0, nullptr, &pro);
+					role->handle(lmessage);
 				};
 		}
 		

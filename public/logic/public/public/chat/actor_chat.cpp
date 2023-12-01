@@ -45,10 +45,10 @@ namespace ngl
 		make_timerparm::make_interval(tparm, 2);
 		set_timer(tparm);			
 	}
-
-	bool actor_chat::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+	
+	bool actor_chat::timer_handle(message<timerparm>& adata)
 	{
-		if (adata.m_type != timerparm::ET_INTERVAL_SEC)
+		if (adata.m_data->m_type != timerparm::ET_INTERVAL_SEC)
 			return true;
 		
 		//std::cout << "actor_chat::timer_handle ["; 

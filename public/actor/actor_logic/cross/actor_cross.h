@@ -39,11 +39,8 @@ namespace ngl
 
 		enum { ACTOR_TYPE = ACTOR_CROSS};
 
-		// CMD 协议
-		//bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_CMD& adata);
-
 		// 定时器
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
+		bool timer_handle(message<timerparm>& adata);
 
 	private:
 	};

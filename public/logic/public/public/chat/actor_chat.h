@@ -135,7 +135,7 @@ namespace ngl
 
 		virtual void init();
 
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
+		bool timer_handle(message<timerparm>& adata);
 	private:
 	};
 }

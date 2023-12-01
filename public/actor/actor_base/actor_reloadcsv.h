@@ -29,14 +29,12 @@ namespace ngl
 		virtual ~actor_reloadcsv();
 
 		enum { ACTOR_TYPE = ACTOR_RELOADCSV};
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_reloadcsv_pro& adata);
+		
+		bool handle(message<actor_reloadcsv_pro>& adata);
 
 		// 定时器
 		// 间接定时器 
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
-	private:
-
+		bool timer_handle(message<timerparm>& adata);
 	};
 
 	class actor_reloadcsv_distribute
@@ -56,9 +54,7 @@ namespace ngl
 		virtual ~actor_reloadcsv_distribute();
 
 		enum { ACTOR_TYPE = ACTOR_RELOADCSV_DISTRIBUTE};
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_reloadcsv_verify_version& adata);
-	private:
+		
+		bool handle(message<actor_reloadcsv_verify_version>& adata);
 	};
-
 }

@@ -56,32 +56,32 @@ namespace ngl
 		return head_get_time(m_data);
 	}
 
-	i64_actorid pack_head::get_actor()
+	i64_actorid pack_head::get_actor()const
 	{
 		return *(i64_actorid*)(&m_data[EPH::EPH_ACTOR_TYPEAREA]);
 	}
 
-	i64_actorid pack_head::get_request_actor()
+	i64_actorid pack_head::get_request_actor()const
 	{
 		return *(i64_actorid*)(&m_data[EPH::EPH_REQUEST_ACTOR_TYPEAREA]);
 	}
 
-	i16_actortype pack_head::get_actortype()
+	i16_actortype pack_head::get_actortype()const
 	{
 		return actor_guid::type(get_actor());
 	}
 
-	i16_actortype pack_head::get_request_actortype()
+	i16_actortype pack_head::get_request_actortype()const
 	{
 		return actor_guid::type(get_request_actor());
 	}
 
-	i16_area pack_head::get_actorearea()
+	i16_area pack_head::get_actorearea()const
 	{
 		return actor_guid::area(get_actor());
 	}
 
-	i32_actordataid pack_head::get_actordataid()
+	i32_actordataid pack_head::get_actordataid()const
 	{
 		return actor_guid::actordataid(get_actor());
 	}
@@ -107,7 +107,7 @@ namespace ngl
 		return EPH_SUM * sizeof(int);
 	}
 
-	bool pack_head::isok()
+	bool pack_head::isok()const
 	{
 		return m_wpos >= size();
 	}

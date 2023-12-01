@@ -3,7 +3,6 @@
 #include "xmlnode.h"
 #include "splite.h"
 
-
 namespace ngl
 {
 	actor_reloadcsv::actor_reloadcsv() :
@@ -14,7 +13,6 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{}
-
 
 	void actor_reloadcsv::init()
 	{
@@ -36,21 +34,21 @@ namespace ngl
 	{
 	}
 
-	bool actor_reloadcsv::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_reloadcsv_pro& adata)
+	bool actor_reloadcsv::handle(message<actor_reloadcsv_pro>& adata)
 	{
-		for (auto& [key, value] : adata.m_csvcontent)
+		for (auto& [key, value] : adata.m_data->m_csvcontent)
 		{
 			reload_csv::save(key, value);
 		}
 		actor_suspendthread ltemp;
-		for (auto& [key, value] : adata.m_csvcontent)
+		for (auto& [key, value] : adata.m_data->m_csvcontent)
 		{
 			reload_csv::reload(key);
 		}
 		return true;
 	}
 
-	bool actor_reloadcsv::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+	bool actor_reloadcsv::timer_handle(message<timerparm>& adata)
 	{
 		LogLocalError("############actor_reloadcsv::timer_handle###########");
 		actor_reloadcsv_verify_version pro;
@@ -83,20 +81,22 @@ namespace ngl
 	{
 	}
 
-	bool actor_reloadcsv_distribute::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_reloadcsv_verify_version& adata)
+	bool actor_reloadcsv_distribute::handle(message<actor_reloadcsv_verify_version>& adata)
 	{
 		LogLocalError("############actor_reloadcsv_distribute::handle###########");
+		auto lparm = adata.m_data;
+		auto lpack = adata.m_pack;
 		actor_reloadcsv_pro pro;
 		std::map<std::string, csvbase*>& lversion = allcsv::all();
 		for (auto [key, value] : lversion)
 		{
-			auto itor = adata.m_version.find(key);
-			if (itor != adata.m_version.end() && itor->second >= value->version())
+			auto itor = lparm->m_version.find(key);
+			if (itor != lparm->m_version.end() && itor->second >= value->version())
 				continue;
 			reload_csv::readcsv(key, pro.m_csvcontent[key]);
 		}
 		if (pro.m_csvcontent.empty() == false)
-			send(apack->m_id, pro, apack->m_head.get_request_actor(), id_guid());
+			send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
 		return true;
 	}
 

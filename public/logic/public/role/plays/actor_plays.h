@@ -118,9 +118,10 @@ namespace ngl
 		// Àë¿ªÊÓÒ°
 		virtual void player_leaveview(i64_actorid aroleid1, std::set<i64_actorid>& aother) {}
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>& adata)
+		bool handle(message<mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>>& adata)
 		{
-			if (m_role.find(adata.identifier()) != m_role.end())
+			auto lparm = adata.m_data;
+			if (m_role.find(lparm->identifier()) != m_role.end())
 				return true;
 			if (m_tab->m_birthpoint.empty())
 			{
@@ -128,15 +129,14 @@ namespace ngl
 				return true;
 			}
 			int lindex = std::rand() % m_tab->m_birthpoint.size();
-			auto& item = m_role[adata.identifier()];
-			item.reset(new unit_role(adata.identifier()));
+			auto& item = m_role[lparm->identifier()];
+			item.reset(new unit_role(lparm->identifier()));
 			m_map.enter(item.get(), m_tab->m_birthpoint[lindex].m_x, m_tab->m_birthpoint[lindex].m_y);
-			enter(adata.identifier());
+			enter(lparm->identifier());
 			return true;
 		}
-
-
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+		
+		bool timer_handle(message<timerparm>& adata)
 		{
 			update_stage();
 			if (check_stage(estage_over) == true)
@@ -146,7 +146,7 @@ namespace ngl
 			}
 			else
 			{
-				m_map.update(adata.m_ms);
+				m_map.update(adata.m_data->m_ms);
 			}
 			return true;
 		}

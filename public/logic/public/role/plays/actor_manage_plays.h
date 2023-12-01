@@ -28,10 +28,10 @@ namespace ngl
 		enum { ACTOR_TYPE = ACTOR_MANAGE_PLAYS};
 
 		// 创建玩法
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS& adata);
+		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata);
 
 		// 定时器
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
+		bool timer_handle(message<timerparm>& adata);
 
 	private:
 	};

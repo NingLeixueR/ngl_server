@@ -52,13 +52,13 @@ namespace ngl
 		void init_activity(int64_t aactivityid);
 		void start_activity(int64_t aactivityid);
 	public:
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_protocol_open_activity& adata);
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_protocol_close_activity& adata);
+		
+		bool handle(message<actor_protocol_open_activity>& adata);
+		bool handle(message<actor_protocol_close_activity>& adata);
 
 		virtual void init();
 
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
+		bool timer_handle(message<timerparm>& adata);
 	private:
 	};
 }

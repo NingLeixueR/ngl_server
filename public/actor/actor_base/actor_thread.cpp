@@ -11,8 +11,8 @@ namespace ngl
 		bool				m_isactivity;
 		ngl::thread			m_thread;
 
-		std::shared_mutex			m_mutex;
-		ngl::sem					m_sem;
+		std::shared_mutex	m_mutex;
+		ngl::sem			m_sem;
 
 		impl_actor_thread(i32_threadid aid, actor_thread* athread) :
 			m_id(aid),
@@ -83,5 +83,4 @@ namespace ngl
 	{
 		m_impl_actor_thread()->run(this);
 	}
-
 }

@@ -37,13 +37,13 @@ namespace ngl
 
 		void session_close(gateway_socket* ainfo);
 		// actor_login通知gateway玩家已经登录(并纪录session及对应的game服务器)
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_role_login& adata);
+		bool handle(message<actor_role_login>& adata);
 		// 玩家登陆
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_LOGIN& adata);
+		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 		// 玩家切换game进程
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_switch_process<actor_switch_process_role>& adata);
+		bool handle(message<actor_switch_process<actor_switch_process_role>>& adata);
 		// 断开连接
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_session_close& adata);
+		bool handle(message<actor_session_close>& adata);
 	private: 
 			
 	};

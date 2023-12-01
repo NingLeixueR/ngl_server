@@ -43,46 +43,50 @@ namespace ngl
 		);
 	}
 
-	bool actor_matching::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_MATCHING>& adata)
+	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING>>& adata)
 	{
-		pbnet::PROBUFF_NET_MATCHING* lpdata = adata.data();
-		m_matching.add_member(lpdata->m_type(), lpdata->m_tid(), adata.identifier());
+		auto lparm = adata.m_data;
+		pbnet::PROBUFF_NET_MATCHING* lpdata = lparm->data();
+		m_matching.add_member(lpdata->m_type(), lpdata->m_tid(), lparm->identifier());
 		return true;
 	}
-
-	bool actor_matching::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>& adata)
+	
+	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>>& adata)
 	{
-		pbnet::PROBUFF_NET_MATCHING_CANCEL* lpdata = adata.data();
+		auto lparm = adata.m_data;
+		pbnet::PROBUFF_NET_MATCHING_CANCEL* lpdata = lparm->data();
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>();
 		pro->set_m_type(lpdata->m_type());
 
-		pbnet::ematching_cancel_stat lstat = m_matching.try_cancel(lpdata->m_type(), adata.identifier());
+		pbnet::ematching_cancel_stat lstat = m_matching.try_cancel(lpdata->m_type(), lparm->identifier());
 		pro->set_m_stat(lstat);
-		send_client(adata.identifier(), pro);
+		send_client(lparm->identifier(), pro);
 		return true;
 	}
-
-	bool actor_matching::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>& adata)
+	
+	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>>& adata)
 	{
-		pbnet::PROBUFF_NET_MATCHING_CONFIRM* lpdata = adata.data();
-		pbnet::ematching_confirm_stat lstat = m_matching.confirm(lpdata->m_roomid(), adata.identifier());
+		auto lparm = adata.m_data;
+		pbnet::PROBUFF_NET_MATCHING_CONFIRM* lpdata = lparm->data();
+		pbnet::ematching_confirm_stat lstat = m_matching.confirm(lpdata->m_roomid(), lparm->identifier());
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>();
 		pro->set_m_stat(lstat);
 		pro->set_m_type(lpdata->m_type());
-		send_client(adata.identifier(), pro);
+		send_client(lparm->identifier(), pro);
 		return true;
 	}
-
-	bool actor_matching::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& adata)
+	
+	bool actor_matching::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
 	{
+		auto lparm = adata.m_data;
 		// É¾³ý·¿¼ä
-		m_matching.remove_success(adata.m_type(), adata.m_roomid(), adata.m_playsactorid());
+		m_matching.remove_success(lparm->m_type(), lparm->m_roomid(), lparm->m_playsactorid());
 		return true;
 	}
-
-	bool actor_matching::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+	
+	bool actor_matching::timer_handle(message<timerparm>& adata)
 	{
 		m_matching.do_match();
 		return true;

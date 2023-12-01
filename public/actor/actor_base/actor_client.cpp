@@ -129,14 +129,15 @@ namespace ngl
 		}Catch;
 	}
 
-	bool actor_client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_register_response& adata)
+	bool actor_client::handle(message<actor_node_register_response>& adata)
 	{
 		Try
 		{
+			auto lparm = adata.m_data;
 			tab_servers* tab = ttab_servers::tab();
-			for (int i = 0; i < adata.m_vec.size(); ++i)
+			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
-				const actor_node& node = adata.m_vec[i];
+				const actor_node& node = lparm->m_vec[i];
 				if (actor_address::getInstance().set_node(node))
 				{
 					// 比较id  较大的主动连接较小的
@@ -183,23 +184,24 @@ namespace ngl
 		}
 	}
 
-	bool actor_client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_client_node_connect& adata)
+	bool actor_client::handle(message<actor_client_node_connect>& adata)
 	{
 		Try
 		{
-			Assert(apack != nullptr);
-			i32_serverid lserverid = adata.m_id;
+			auto lparm = adata.m_data;
+			auto lpack = adata.m_pack;
+			i32_serverid lserverid = lparm->m_id;
 			Assert(lserverid != nconfig::m_nodeid);
 
-			node_update(this, nconfig::m_nodeid, apack->m_id);
+			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
-			actor_address::getInstance().set_session(lserverid, apack->m_id);
-			nserver->set_server(lserverid, apack->m_id);
-			set_connect_fnish(adata.m_id);
+			actor_address::getInstance().set_session(lserverid, lpack->m_id);
+			nserver->set_server(lserverid, lpack->m_id);
+			set_connect_fnish(lparm->m_id);
 			connect_fnish();
 
 			// 主动连接
-			active_connect(this, lserverid, nconfig::m_nodeid, apack->m_id);
+			active_connect(this, lserverid, nconfig::m_nodeid, lpack->m_id);
 
 
 			if (xmlnode::node_type() == ngl::LOGIN)
@@ -217,31 +219,36 @@ namespace ngl
 		}Catch;
 		return true;
 	}
-
-	bool actor_client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_update& adata)
+	
+	bool actor_client::handle(message<actor_node_update>& adata)
 	{
 		Try
 		{
-			LogLocalInfo("##actor_node_update## add:[%] del[%]",adata.m_add,adata.m_del);
-			actor_address::getInstance().actor_add(adata.m_id, adata.m_add);
-			actor_address::getInstance().actor_del(adata.m_del);
+			auto lparm = adata.m_data;
+			LogLocalInfo("##actor_node_update## add:[%] del[%]", lparm->m_add, lparm->m_del);
+			actor_address::getInstance().actor_add(lparm->m_id, lparm->m_add);
+			actor_address::getInstance().actor_del(lparm->m_del);
 		}Catch;
 		return true;
 	}
-
-	bool actor_client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_update_mass& adata)
+	
+	bool actor_client::handle(message<actor_node_update_mass>& adata)
 	{
-		handle(athread, apack, adata.m_mass);
+		auto lparm = adata.m_data;
+		auto lpack = adata.m_pack;
+		int32_t lthreadid = adata.m_thread;
+		message<actor_node_update> lmessage(lthreadid, lpack, &lparm->m_mass);
+		handle(lmessage);
 		i64_actorid lactorid = id_guid();
 		actor_address::getInstance().foreach(
-			[&adata, lactorid](const actor_node_session& anode)->bool
+			[&lparm, lactorid](const actor_node_session& anode)->bool
 			{
 				if (anode.m_node.m_serverid != nconfig::m_nodeid)
-					nserver->send(anode.m_session, adata.m_mass, actor_guid::moreactor(), lactorid);
+					nserver->send(anode.m_session, lparm->m_mass, actor_guid::moreactor(), lactorid);
 				return true;
 			});
-		if (adata.m_fun != nullptr)
-			adata.m_fun();
+		if (lparm->m_fun != nullptr)
+			lparm->m_fun();
 		return true;
 	}
 
@@ -267,31 +274,33 @@ namespace ngl
 				return;
 		}
 	}
-
-	bool actor_client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_actor_connect_task& adata)
+	
+	bool actor_client::handle(message<actor_node_actor_connect_task>& adata)
 	{
 		Try
 		{
+			auto lparm = adata.m_data;
 			std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
-			if (lconnectserverid.find(adata.m_serverid) != lconnectserverid.end())
+			if (lconnectserverid.find(lparm->m_serverid) != lconnectserverid.end())
 			{
-				adata.m_fun();
+				lparm->m_fun();
 				return true;
 			}
-			m_impl_actor_client()->m_connectfun[adata.m_serverid].push_back(adata.m_fun);
+			m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
 		}Catch;
 		return true;
 	}
-
-	bool actor_client::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_id_updata& adata)
+	
+	bool actor_client::handle(message<actor_gateway_id_updata>& adata)
 	{
-		if (adata.m_isremove)
+		auto lparm = adata.m_data;
+		if (lparm->m_isremove)
 		{
-			actor_address::getInstance().remove_gatewayid(adata.m_actorid);
+			actor_address::getInstance().remove_gatewayid(lparm->m_actorid);
 		}
 		else
 		{
-			actor_address::getInstance().add_gatewayid(adata.m_actorid, adata.m_gatewayid);
+			actor_address::getInstance().add_gatewayid(lparm->m_actorid, lparm->m_gatewayid);
 		}
 		return true;
 	}

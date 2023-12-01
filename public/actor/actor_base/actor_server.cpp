@@ -3,7 +3,6 @@
 
 namespace ngl
 {
-
 	void actor_server::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_server>(
@@ -32,22 +31,24 @@ namespace ngl
 	actor_server::~actor_server()
 	{}
 
-	bool actor_server::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_register& adata)
+	bool actor_server::handle(message<actor_node_register>& adata)
 	{
 		Try
 		{
-			Assert(apack != nullptr);
+			auto lrecv = adata.m_data;
+			auto lpack = adata.m_pack;
+			Assert(lpack != nullptr);
 
-			actor_address::getInstance().set_node(adata.m_node);
-			actor_address::getInstance().set_session(adata.m_node.m_serverid, apack->m_id);
-			actor_address::getInstance().actor_add(adata.m_node.m_serverid, adata.m_add);
+			actor_address::getInstance().set_node(lrecv->m_node);
+			actor_address::getInstance().set_session(lrecv->m_node.m_serverid, lpack->m_id);
+			actor_address::getInstance().actor_add(lrecv->m_node.m_serverid, lrecv->m_add);
 
-			i32_serverid lserverid = adata.m_node.m_serverid;
+			i32_serverid lserverid = lrecv->m_node.m_serverid;
 			std::vector<i32_sessionid> lvec;
 			actor_address::getInstance().foreach(
-				[&adata, &lvec, apack](const actor_node_session& anode)->bool
+				[lrecv, &lvec, lpack](const actor_node_session& anode)->bool
 				{
-					if (apack->m_id != anode.m_session)
+					if (lpack->m_id != anode.m_session)
 						lvec.push_back(anode.m_session);
 					return true;
 				});
@@ -55,26 +56,26 @@ namespace ngl
 				if (!lvec.empty())
 				{
 					actor_node_register_response lpram;
-					lpram.m_vec.push_back(adata.m_node);
+					lpram.m_vec.push_back(lrecv->m_node);
 					nserver->sendmore(lvec, lpram, actor_guid::moreactor(), id_guid());
 				}
 			}
 			{// -- 回复
 				actor_node_register_response lpram;
 				actor_address::getInstance().foreach(
-					[&adata, &lpram, apack](const actor_node_session& anode)->bool
+					[&adata, &lpram, lpack](const actor_node_session& anode)->bool
 					{
-						if (apack->m_id != anode.m_session)
+						if (lpack->m_id != anode.m_session)
 							lpram.m_vec.push_back(anode.m_node);
 						return true;
 					});
-				nserver->send(apack->m_id, lpram, actor_guid::moreactor(), id_guid());
+				nserver->send(lpack->m_id, lpram, actor_guid::moreactor(), id_guid());
 			}
 			{// -- actor_client_node_update 给其他结点
 				actor_node_update lpram
 				{
 					.m_id = lserverid,
-					.m_add = adata.m_add,
+					.m_add = lrecv->m_add,
 				};
 				if (!lvec.empty())
 					nserver->sendmore(lvec, lpram, actor_guid::moreactor(), id_guid());
@@ -82,7 +83,7 @@ namespace ngl
 			{
 				std::map<uint32_t, actor_node_update> lmapprotocol;
 				actor_address::getInstance().ergodic(
-					[&adata, &lmapprotocol](std::map<actor_guid, i32_serverid>& amap, std::map<i32_serverid, actor_node_session>& asession)->bool
+					[lrecv, &lmapprotocol](std::map<actor_guid, i32_serverid>& amap, std::map<i32_serverid, actor_node_session>& asession)->bool
 					{
 						std::map<i32_serverid, actor_node_session>::iterator itor;
 						for (auto&& [guid, serverid] : amap)
@@ -90,7 +91,7 @@ namespace ngl
 							itor = asession.find(serverid);
 							if (itor == asession.end())
 								continue;
-							if (adata.m_node.m_serverid == serverid)
+							if (lrecv->m_node.m_serverid == serverid)
 								continue;
 							actor_node_update& pro = lmapprotocol[serverid];
 							pro.m_id = serverid;
@@ -101,22 +102,24 @@ namespace ngl
 
 				for (auto&& item : lmapprotocol)
 				{
-					nserver->send(apack->m_id, item.second, actor_guid::moreactor(), id_guid());
+					nserver->send(lpack->m_id, item.second, actor_guid::moreactor(), id_guid());
 				}
 			}
 		}Catch;
 		return true;
 	}
 
-	bool actor_server::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_node_update& adata)
+	bool actor_server::handle(message<actor_node_update>& adata)
 	{
 		Try
 		{
-			Assert(apack != nullptr);
-			uint16_t lserverid = apack->m_id;
-			actor_address::getInstance().actor_add(lserverid, adata.m_add);
-			actor_address::getInstance().actor_del(adata.m_del);
-			if (adata.m_actorservermass)
+			auto lrecv = adata.m_data;
+			auto lpack = adata.m_pack;
+			Assert(lpack != nullptr);
+			uint16_t lserverid = lpack->m_id;
+			actor_address::getInstance().actor_add(lserverid, lrecv->m_add);
+			actor_address::getInstance().actor_del(lrecv->m_del);
+			if (lrecv->m_actorservermass)
 			{
 				// -- 分发给其他结点
 				std::vector<i32_sessionid> lvec;
@@ -129,36 +132,37 @@ namespace ngl
 					});
 				if (!lvec.empty())
 				{
-					nserver->sendmore(lvec, adata, actor_guid::moreactor(), id_guid());
+					nserver->sendmore(lvec, *lrecv, actor_guid::moreactor(), id_guid());
 				}
 			}
 		}Catch;
 		return true;
 	}
 
-	bool actor_server::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_gateway_id_updata& adata)
+	bool actor_server::handle(message<actor_gateway_id_updata>& adata)
 	{
-		if (adata.m_isremove)
+		auto lrecv = adata.m_data;
+		auto lpack = adata.m_pack;
+		if (lrecv->m_isremove)
 		{
-			actor_address::getInstance().remove_gatewayid(adata.m_actorid);
+			actor_address::getInstance().remove_gatewayid(lrecv->m_actorid);
 		}
 		else
 		{
-			actor_address::getInstance().add_gatewayid(adata.m_actorid, adata.m_gatewayid);
+			actor_address::getInstance().add_gatewayid(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
 		std::vector<i32_sessionid> lvec;
 		actor_address::getInstance().foreach(
-			[&adata, &lvec, apack](const actor_node_session& anode)->bool
+			[&adata, &lvec, lpack](const actor_node_session& anode)->bool
 			{
-				if (apack->m_id != anode.m_session)
+				if (lpack->m_id != anode.m_session)
 					lvec.push_back(anode.m_session);
 				return true;
 			});
 		if (lvec.empty() == false)
 		{
-			nserver->sendmore(lvec, adata, actor_guid::moreactor(), id_guid());
+			nserver->sendmore(lvec, *lrecv, actor_guid::moreactor(), id_guid());
 		}
 		return true;
 	}
-
 }

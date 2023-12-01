@@ -37,17 +37,17 @@ namespace ngl
 
 		static void set_actor(uint32_t* abuff, i64_actorid aactor);
 
-		i64_actorid		get_actor();
-		i64_actorid		get_request_actor();
-		i16_actortype	get_actortype();
-		i16_actortype	get_request_actortype();
-		i16_area		get_actorearea();
-		i32_actordataid get_actordataid();
+		i64_actorid		get_actor()const;
+		i64_actorid		get_request_actor()const;
+		i16_actortype	get_actortype()const;
+		i16_actortype	get_request_actortype()const;
+		i16_area		get_actorearea()const;
+		i32_actordataid get_actordataid()const;
 		void			reset();
 		int				getvalue(EPH aeph)const;
 		int				get_bytes()const;
 		static int		size();
-		bool			isok();
+		bool			isok()const;
 		i32_protocolnum protocolnum()const;
 		///// 获取协议号
 		i32_protocolnum get_protocolnumber()const;

@@ -113,23 +113,24 @@ namespace ngl
 		sync_actorserver_gatewayid(actor_guid::make(ACTOR_ROLE, larea, lroleid), true);
 	}
 
-	bool actor_gateway::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_role_login& adata)
+	bool actor_gateway::handle(message<actor_role_login>& adata)
 	{// login服务器通知GateWay服务器 玩家账号验证成功
-		actor_guid lguid(adata.m_roleid);
+		auto lparm = adata.m_data;
+		actor_guid lguid(lparm->m_roleid);
 
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo != nullptr)
 			return true;
 		gateway_socket ltemp
 		{
-				.m_session = adata.m_session,
+				.m_session = lparm->m_session,
 				.m_area = lguid.area(),
-				.m_accountid = adata.m_accountid,
+				.m_accountid = lparm->m_accountid,
 				.m_dataid = lguid.actordataid(),
-				.m_gameid = adata.m_gameid,
-				.m_gatewayid = adata.m_gatewayid,
+				.m_gameid = lparm->m_gameid,
+				.m_gatewayid = lparm->m_gatewayid,
 				.m_socket = 0,
-				.m_iscreate = adata.m_iscreate,
+				.m_iscreate = lparm->m_iscreate,
 		};
 		m_info.updata(ltemp);
 
@@ -141,26 +142,28 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
+	bool actor_gateway::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		Try
 		{
-			Assert(apack != nullptr);
-			LogLocalError("############ GateWay Login[%][%][%] ############", apack->m_id, adata.m_roleid(), adata.m_session());
-			actor_guid lguid(adata.m_roleid());
+			auto lpram = adata.m_data;
+			auto lpack = adata.m_pack;
+			Assert(lpack != nullptr);
+			LogLocalError("############ GateWay Login[%][%][%] ############", lpack->m_id, lpram->m_roleid(), lpram->m_session());
+			actor_guid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 			Assert(linfo != nullptr);
-			Assert(linfo->m_session == adata.m_session());
+			Assert(linfo->m_session == lpram->m_session());
 
 			if (rebot_test::is_test == false)
 			{
-				if (apack->m_id != linfo->m_socket)
+				if (lpack->m_id != linfo->m_socket)
 				{
 					if (linfo->m_socket > 0)
 					{
 						nserver->close_net(linfo->m_socket);
 						linfo->m_socket = 0;
-						if (m_info.updata_socket(lguid.area(), lguid.actordataid(), apack->m_id))
+						if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 						{
 							update_gateway_info(new actor_gateway_info_updata{.m_add = {*linfo} });
 						}
@@ -172,69 +175,71 @@ namespace ngl
 				}
 			}
 
-			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), apack->m_id))
+			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 			{
 				update_gateway_info(new actor_gateway_info_updata{.m_add = {*linfo} });
 			}
-			adata.set_m_iscreate(linfo->m_iscreate);
+			lpram->set_m_iscreate(linfo->m_iscreate);
 			linfo->m_iscreate = false;
-			adata.set_m_gatewayid(nconfig::m_nodeid);
-			adata.set_m_area(linfo->m_area);
-			nserver->sendtoserver(linfo->m_gameid, adata, actor_guid::moreactor(), id_guid());
+			lpram->set_m_gatewayid(nconfig::m_nodeid);
+			lpram->set_m_area(linfo->m_area);
+			nserver->sendtoserver(linfo->m_gameid, *lpram, actor_guid::moreactor(), id_guid());
 
 			return true;
 		}Catch;
 		return false;
 	}
 
-	bool actor_gateway::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_switch_process<actor_switch_process_role>& adata)
+	bool actor_gateway::handle(message<actor_switch_process<actor_switch_process_role>>& adata)
 	{
 		Try
 		{
+			auto lpram = adata.m_data;
 			LogLocalInfo("############ GateWay Transmit ############");
-			actor_guid lguid(adata.m_actor);
+			actor_guid lguid(lpram->m_actor);
 
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 			Assert(linfo != nullptr);
-			if (adata.m_toserverid != 0)
+			if (lpram->m_toserverid != 0)
 			{
-				linfo->m_gameid = adata.m_toserverid;
+				linfo->m_gameid = lpram->m_toserverid;
 				update_gateway_info(new actor_gateway_info_updata{.m_add = {*linfo} });
 			}
 		}Catch;
 		return true;
 	}
 
-	bool actor_gateway::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_session_close& adata)
+	bool actor_gateway::handle(message<actor_session_close>& adata)
 	{
 		Try
 		{
+			auto lpram = adata.m_data;
 			if (rebot_test::is_test)
 			{
 				std::vector<gateway_socket*> lvec;
-				m_info.foreach([&lvec, &adata](gateway_socket* agetway)
+				m_info.foreach([&lvec, lpram](gateway_socket* agetway)
 					{
-						if (adata.m_sessionid == agetway->m_socket)
+						if (lpram->m_sessionid == agetway->m_socket)
 							lvec.push_back(agetway);
 					});
 				for (gateway_socket* item : lvec)
 				{
 					gateway_socket* linfo = m_info.get(item->m_area, item->m_dataid);
 					session_close(linfo);
-					LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", actor_guid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), adata.m_sessionid);
+					LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", actor_guid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 				}
 			}
 			else
 			{
-				gateway_socket* linfo = m_info.get(adata.m_sessionid);
+				gateway_socket* linfo = m_info.get(lpram->m_sessionid);
 				Assert(linfo != nullptr);
 				session_close(linfo);
-				LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", actor_guid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), adata.m_sessionid);
+				LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", actor_guid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 			}
 
-			update_gateway_info(new actor_gateway_info_updata{.m_delsocket = {adata.m_sessionid} });
+			update_gateway_info(new actor_gateway_info_updata{.m_delsocket = {lpram->m_sessionid} });
 
-			m_info.remove_socket(adata.m_sessionid);
+			m_info.remove_socket(lpram->m_sessionid);
 			return true;
 		}Catch;
 		return false;

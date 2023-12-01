@@ -11,11 +11,11 @@ namespace ngl
 	//actor_dbclient<ENUM_DB_ROLE, DB_ROLE> m_role;
 	class actor_role;
 	using roleinfo_db_modular = db_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_ROLE,
-		pbdb::db_role,
-		actor_role
-		>;
+		EPROTOCOL_TYPE_PROTOCOLBUFF
+		, pbdb::ENUM_DB_ROLE
+		, pbdb::db_role
+		, actor_role
+	>;
 	class roleinfo : public roleinfo_db_modular
 	{
 	public:

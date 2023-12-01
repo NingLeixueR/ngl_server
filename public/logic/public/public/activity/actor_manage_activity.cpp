@@ -96,15 +96,15 @@ namespace ngl
 		start_activity(aactivityid);
 		return true;
 	}
-
-	bool actor_manage_activity::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_protocol_open_activity& adata)
+	
+	bool actor_manage_activity::handle(message<actor_protocol_open_activity>& adata)
 	{
-		return open_activity(adata.m_activityid);
+		return open_activity(adata.m_data->m_activityid);
 	}
 
-	bool actor_manage_activity::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_protocol_close_activity& adata)
+	bool actor_manage_activity::handle(message<actor_protocol_close_activity>& adata)
 	{
-		return close_activity(adata.m_activityid);
+		return close_activity(adata.m_data->m_activityid);
 	}
 
 	void actor_manage_activity::init_activity(int64_t aactivityid)
@@ -226,9 +226,9 @@ namespace ngl
 		}
 	}
 
-	bool actor_manage_activity::timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata)
+	bool actor_manage_activity::timer_handle(message<timerparm>& adata)
 	{
-		if (adata.m_type != timerparm::ET_INTERVAL_SEC)
+		if (adata.m_data->m_type != timerparm::ET_INTERVAL_SEC)
 			return true;
 		return true;
 	}

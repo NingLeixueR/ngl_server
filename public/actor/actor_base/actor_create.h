@@ -79,18 +79,19 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_switch_process<T>& adata)
+		bool handle(message<actor_switch_process<T>>& adata)
 		{
-			if (adata.m_toserverid == nconfig::m_nodeid)
+			auto lparm = adata.m_data;
+			if (lparm->m_toserverid == nconfig::m_nodeid)
 			{
-				actor_guid lguid(adata.m_actor);
-				actor_base::create(lguid.type(), lguid.actordataid(), &adata.m_pram);
+				actor_guid lguid(lparm->m_actor);
+				actor_base::create(lguid.type(), lguid.actordataid(), &lparm->m_pram);
 			}
-			else if (adata.m_serverid == nconfig::m_nodeid)
+			else if (lparm->m_serverid == nconfig::m_nodeid)
 			{
-				actor_manage::getInstance().erase_actor_byid(adata.m_actor, [adata]()
+				actor_manage::getInstance().erase_actor_byid(lparm->m_actor, [lparm]()
 					{
-						std::shared_ptr<actor_switch_process<T>> pro(new actor_switch_process<T>(adata));
+						std::shared_ptr<actor_switch_process<T>> pro(new actor_switch_process<T>(*lparm));
 						actor_create::switch_process_send<T>(pro);
 					});
 			}

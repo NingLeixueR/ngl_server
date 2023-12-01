@@ -140,36 +140,39 @@ namespace ngl
 	{
 		LogLocalError("game[%] \ngateway[%]", m_game, m_gateway);
 	}
-
-	bool actor_login::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_server_connect& adata)
+	
+	bool actor_login::handle(message<actor_server_connect>& adata)
 	{
+		auto lparm = adata.m_data;
 		server_info ltemp
 		{
-			.m_id = adata.m_serverid,
+			.m_id = lparm->m_serverid,
 			.m_rolesize = 0
 		};
-		switch (ttab_servers::node_type(adata.m_serverid))
+		switch (ttab_servers::node_type(lparm->m_serverid))
 		{
 		case ngl::NODE_TYPE::GAME:
-			m_game.insert(std::make_pair(adata.m_serverid, ltemp));
+			m_game.insert(std::make_pair(lparm->m_serverid, ltemp));
 			break;
 		case ngl::NODE_TYPE::GATEWAY:
-			m_gateway.insert(std::make_pair(adata.m_serverid, ltemp));
+			m_gateway.insert(std::make_pair(lparm->m_serverid, ltemp));
 			break;
 		}
 		return true;
 	}
 
 
-	bool actor_login::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata)
+	bool actor_login::handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
 	{
 		Try
 		{
-			Assert(apack != nullptr);
-			LogLocalInfo("############ Login[%][%][%] ############", adata.m_area(), adata.m_account(), adata.m_password());
+			auto lparm = adata.m_data;
+			auto lpack = adata.m_pack;
+			Assert(lpack != nullptr);
+			LogLocalInfo("############ Login[%][%][%] ############", lparm->m_area(), lparm->m_account(), lparm->m_password());
 			bool iscreate = false;
 
-			data_modified<pbdb::db_account>* lpaccount = get_account(adata.m_area(), adata.m_account(), adata.m_password(), iscreate);
+			data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
 			Assert(lpaccount != nullptr);
 
 
@@ -211,18 +214,18 @@ namespace ngl
 				pro.set_m_roleid(lpaccount->getconst().m_id());
 				pro.set_m_area(lpaccount->getconst().m_area());
 				pro.set_m_session(lppair_account->m_session);
-				pro.set_m_account(adata.m_account());
+				pro.set_m_account(lparm->m_account());
 				pro.set_m_gatewayid(lppair_account->m_gatewayserverid);
-				nserver->send(apack->m_id, pro, apack->m_head.get_request_actor(), id_guid());
+				nserver->send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
 			}
 
 		}Catch;
 		return true;
 	}
 
-	bool actor_login::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_disconnect_close& adata)
+	bool actor_login::handle(message<actor_disconnect_close>& adata)
 	{
-		auto itor = m_actorbyserver.find(adata.m_actorid);
+		auto itor = m_actorbyserver.find(adata.m_data->m_actorid);
 		if (itor == m_actorbyserver.end())
 			return true;
 		dec_freeserver_game(itor->second.m_gameserverid);

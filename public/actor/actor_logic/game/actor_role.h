@@ -11,9 +11,6 @@
 #include "actor_timer.h"
 #include "actor_create.h"
 #include "net.pb.h"
-
-#include <boost/shared_ptr.hpp>
-
 #include "bag.h"
 #include "roleinfo.h"
 #include "remakes.h"
@@ -46,6 +43,7 @@ namespace ngl
 		virtual ~actor_role();
 
 		virtual void loaddb_finish(bool adbishave);
+
 		// 执行handle之后调用
 		virtual void handle_after();
 
@@ -54,10 +52,9 @@ namespace ngl
 		i64_actorid roleid();
 
 		// #### 设置更新角色属性
-		void update_attribute(std::pair<EnumModule, attribute_value>& apair)
+		void update_attribute(EnumModule amodule, attribute_value& avalue)
 		{
-			m_attribute.updata(apair.first, apair.second);
-
+			m_attribute.updata(amodule, avalue);
 		}
 
 		template <typename T>
@@ -94,17 +91,17 @@ namespace ngl
 		}
 
 		template <ENUM_ACTOR ACTOR, typename T>
-		bool handle_forward(i32_threadid athread, const std::shared_ptr<pack>& apack, T& adata)
+		bool handle_forward(message<T>& adata)
 		{
-			std::shared_ptr<mforward<T>> pro(new mforward<T>(id_guid(), adata));
+			std::shared_ptr<mforward<T>> pro(new mforward<T>(id_guid(), *adata.m_data));
 			i64_actorid lguid;
-			switch (get_cross(adata))
+			switch (get_cross(*adata.m_data))
 			{
 			case ecross_ordinary:
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(adata));
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(*adata.m_data));
 				break;
 			case ecross_cross_ordinary:
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(adata));
+				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(*adata.m_data));
 				break;
 			case ecross_play:
 				lguid = m_playactorid;
@@ -117,24 +114,17 @@ namespace ngl
 		}
 
 		// CMD 协议
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_CMD& adata);
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_SYNC& adata);
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_GET_TIME& adata);
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_SWITCH_LINE& adata);
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_send_item& adata);
-
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_disconnect_close& adata);
-		
+		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
+		bool handle(message<actor_send_item>& adata);
+		bool handle(message<actor_disconnect_close>& adata);
 		//玩法创建成功  记录玩法actorid
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& adata);
-		
+		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
+
 		// 定时器
-		bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);
-	private:
+		bool timer_handle(message<timerparm>& adata);
 	};
 
 	

@@ -16,8 +16,6 @@ namespace ngl
 		void erase_remakes();
 	public:
 		const char* get_remakes();
-
-		
 	};
 
 	class actor_role;
