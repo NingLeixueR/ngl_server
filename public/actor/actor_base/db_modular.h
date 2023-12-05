@@ -50,7 +50,7 @@ namespace ngl
 
 		void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
 		{
-			for (auto& [_, value] : m_data.m_data)
+			for (auto&& [_, value] : data())
 			{
 				afun(value);
 			}
@@ -58,7 +58,7 @@ namespace ngl
 
 		std::map<actor_guid, data_modified<TDATA>>& data()
 		{
-			return m_data.m_data;
+			return m_data.get_data();
 		}
 
 		data_modified<TDATA>* get()
@@ -72,15 +72,15 @@ namespace ngl
 			data_modified<TDATA>* ret = find(aid);
 			if (ret != nullptr)
 				return ret;
-			data_modified<TDATA>& ldata = m_data.m_data[aid];
+			data_modified<TDATA>& ldata = data()[aid];
 			ldata.get().set_m_id(aid);
 			return &ldata;
 		}
 
 		data_modified<TDATA>* find(actor_guid aid)
 		{
-			auto itor = m_data.m_data.find(aid);
-			if (itor == m_data.m_data.end())
+			auto itor = data().find(aid);
+			if (itor == data().end())
 				return nullptr;
 			return &itor->second;
 		}
@@ -92,7 +92,7 @@ namespace ngl
 
 		data_modified<TDATA>* db()
 		{ 
-			return m_data.m_dbdata; 
+			return m_data.get_dbdata();
 		}
 
 		TACTOR* actor()							

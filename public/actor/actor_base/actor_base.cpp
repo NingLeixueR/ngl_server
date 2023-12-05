@@ -13,7 +13,7 @@ namespace ngl
 		actor_guid									m_guid;
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient;
 		bool										m_isload;			// 数据是否加载完成
-		std::map<pbdb::ENUM_DB, db_component*>			m_dbcomponent;
+		std::map<pbdb::ENUM_DB, db_component*>		m_dbcomponent;
 
 		impl_actor_base(actor_base* aactor, const actorparmbase& aparm)
 		{
@@ -125,7 +125,6 @@ namespace ngl
 			}
 		}
 	};
-
 
 	int actor_base::m_broadcast = 10000;			// 推送全员广播的 单位(毫秒)
 	int actor_base::m_broadcasttimer = -1;			// 推送广播的定时器id

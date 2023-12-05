@@ -182,7 +182,6 @@ namespace ngl
 			}
 			return handle_pram_send<pack, true>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
 		}
-
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>

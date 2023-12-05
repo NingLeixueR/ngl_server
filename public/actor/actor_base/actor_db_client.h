@@ -138,13 +138,11 @@ namespace ngl
 			actor_db_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 
-			i64_actorid ldbid = actor_guid::make(
-				(ENUM_ACTOR)actor_db<PROTYPE, DBTYPE, TDBTAB>::ACTOR_TYPE,
-				tab_self_area,
-				dbnodeid());
+			ENUM_ACTOR ltype = (ENUM_ACTOR)actor_db<PROTYPE, DBTYPE, TDBTAB>::ACTOR_TYPE;
+			i64_actorid ldbid = actor_guid::make(ltype, tab_self_area, dbnodeid());
 			nserver->sendtoserver(dbnodeid(), ldata, ldbid, m_actor->id_guid());
 		}
-	public:
+
 		actor_guid m_id;
 		std::map<actor_guid, data_modified<TDBTAB>> m_data;
 		data_modified<TDBTAB>* m_dbdata;
@@ -152,6 +150,7 @@ namespace ngl
 		actor_manage_dbclient* m_manage_dbclient;
 		actor_base* m_actor;
 		std::vector<int64_t> m_dellist;
+	public:
 
 		actor_dbclient():
 			m_id(actor_guid::make()),
@@ -195,6 +194,11 @@ namespace ngl
 			if (itor == m_data.end())
 				return nullptr;
 			return &itor->second;
+		}
+
+		data_modified<TDBTAB>* get_dbdata()
+		{
+			return m_dbdata;
 		}
 
 		void init(actor_manage_dbclient* amdb, actor_base* aactor, const actor_guid& aid)
@@ -491,7 +495,6 @@ namespace ngl
 
 namespace ngl
 {
-	
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	bool actor_base::handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 	{
@@ -509,5 +512,4 @@ namespace ngl
 		}
 		return lp->handle(adata);
 	}
-
 }

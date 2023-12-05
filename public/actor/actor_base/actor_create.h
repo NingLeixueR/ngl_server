@@ -39,15 +39,12 @@ namespace ngl
 			{
 				actor_guid lguid(pro->m_actor);
 				actor_switch_process_role* lp = (actor_switch_process_role*)&(pro.get()->m_pram);
-				actor_base::static_send_actor(actor_guid::make(ACTOR_GATEWAY, tab_self_area, lp->m_gatewayid),
-					actor_guid::make(),
-					pro);
+				i64_actorid lactorgatewayid = actor_guid::make(ACTOR_GATEWAY, tab_self_area, lp->m_gatewayid);
+				actor_base::static_send_actor(lactorgatewayid, actor_guid::make(), pro);
 			}
 			//// #### 3 发给去的进程
-			actor_base::static_send_actor(
-				actor_guid::make(ACTOR_CREATE, tab_self_area, pro->m_toserverid),
-				actor_guid::make(),
-				pro);
+			i64_actorid lactortoserverid = actor_guid::make(ACTOR_CREATE, tab_self_area, pro->m_toserverid);
+			actor_base::static_send_actor(lactortoserverid, actor_guid::make(), pro);
 		}
 
 		template <typename T>
@@ -67,10 +64,8 @@ namespace ngl
 			if (aserverid > 0)
 			{
 				// #### 1 发给actor目前所在的进程
-				actor_base::static_send_actor(
-					actor_guid::make(ACTOR_CREATE, tab_self_area, aserverid),
-					actor_guid::make(),
-					pro);
+				i64_actorid lcreateactor = actor_guid::make(ACTOR_CREATE, tab_self_area, aserverid);
+				actor_base::static_send_actor(lcreateactor, actor_guid::make(), pro);
 			}
 			else
 			{

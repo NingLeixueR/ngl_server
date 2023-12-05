@@ -110,7 +110,6 @@ namespace ngl
 					nserver->send(asession, lpram, lactorserveractorid, lactorid);
 				}
 			}, true, true);
-	
 	}
 
 	void actor_client::actor_server_register()
@@ -125,7 +124,6 @@ namespace ngl
 			{
 				actor_server_register(id);
 			}
-			
 		}Catch;
 	}
 
@@ -202,7 +200,6 @@ namespace ngl
 
 			// 主动连接
 			active_connect(this, lserverid, nconfig::m_nodeid, lpack->m_id);
-
 
 			if (xmlnode::node_type() == ngl::LOGIN)
 			{

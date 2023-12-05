@@ -231,7 +231,6 @@ namespace ngl
 					save(athreadid, item.second);
 				}
 			}
-			
 		}
 	};
 
@@ -347,10 +346,8 @@ namespace ngl
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
 
-		i64_actorid lactorid = actor_guid::make(
-			(ENUM_ACTOR)(actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>::ACTOR_TYPE),
-			tab_self_area,
-			nconfig::m_nodeid);
+		ENUM_ACTOR ltype = (ENUM_ACTOR)(actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>::ACTOR_TYPE);
+		i64_actorid lactorid = actor_guid::make(ltype, tab_self_area, nconfig::m_nodeid);
 		actor_base::static_send_actor(lactorid, actor_guid::make(), pro);
 	}
 }

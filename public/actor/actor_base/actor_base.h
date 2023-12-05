@@ -150,7 +150,6 @@ namespace ngl
 				sendtoserver(agatewayid, pro, actor_guid::make(), aid);
 			}
 		}
-
 	private:
 		template < typename T, typename ITOR>
 		static void client_pro(ITOR abeg, ITOR aend, std::shared_ptr<T>& adata)
