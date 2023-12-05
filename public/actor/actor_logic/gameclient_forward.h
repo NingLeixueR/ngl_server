@@ -61,7 +61,6 @@ namespace ngl
 			gameclient_forward::register_recvforward2<TYPE, ACTOR>(arg...);
 		}
 
-
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		static void register_forward(const T* ap)
 		{
@@ -77,7 +76,6 @@ namespace ngl
 				break;
 			}
 		}
-
 
 		template <EPROTOCOL_TYPE TYPE, typename T, typename ...ARG>
 		static void register_forward(const T* ap, const ARG*... arg)
