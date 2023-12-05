@@ -6,6 +6,7 @@
 #include <map>
 #include <atomic>
 #include <list>
+
 #include "actor_enum.h"
 #include "actor_guid.h"
 #include "localtime.h"
@@ -130,12 +131,8 @@ namespace ngl
 			pro->m_area.push_back(lguid.area());
 			pro->set_data(adata);
 			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
-			handle_pram::create<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>,true, true>(
-				lpram, 
-				lguid,
-				actor_guid::make(), 
-				pro
-			);
+			using tactor_forward = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
+			handle_pram::create<tactor_forward,true, true>(lpram, lguid, actor_guid::make(), pro);
 			push_task_id(lclientguid, lpram, true);
 		}
 

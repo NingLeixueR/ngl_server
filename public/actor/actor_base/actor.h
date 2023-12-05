@@ -33,10 +33,8 @@ namespace ngl
 
 			if (isbroadcast())
 			{
-				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
-					true
-					, (Tfun<actor, actor_broadcast>)&actor::handle
-				);
+				Tfun<actor, actor_broadcast> lpfun = (Tfun<actor, actor_broadcast>) & actor::handle;
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, lpfun);
 			}
 		}
 
@@ -65,10 +63,9 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
-			arfun<TDerived, TYPE>::instance().rfun<actor_db_load_response<TYPE, DBTYPE, TDBTAB>>(
-				&actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>
-				, true
-			);
+			using tloaddb = actor_db_load_response<TYPE, DBTYPE, TDBTAB>;
+			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
+			arfun<TDerived, TYPE>::instance().rfun<tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>

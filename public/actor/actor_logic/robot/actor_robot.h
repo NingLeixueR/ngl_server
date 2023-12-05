@@ -263,14 +263,6 @@ namespace ngl
 			//LogLocalInfo("[%]## [%]", arobot->m_account, arobot->m_robot->get());
 			return true;
 		}
-
-		bool switchline(_robot* arobot, int aline)
-		{
-			//LOGIC_SWITCH_LINE pro;
-			//pro.m_line = aline;
-			//nserver->send(arobot->m_session, pro, actor_guid::moreactor(), id_guid());
-			return true;
-		}
 	};
 }
 	

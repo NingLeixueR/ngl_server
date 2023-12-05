@@ -71,10 +71,7 @@ namespace ngl
 
 				actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				handle_pram lparm;
-				handle_pram::create(
-					lparm,
-					lclientguid,
-					actor_guid::make(), pro);
+				handle_pram::create(lparm, lclientguid, actor_guid::make(), pro);
 				push_task_id(lclientguid, lparm, false);
 			}
 			else
@@ -444,6 +441,5 @@ namespace ngl
 	{
 		m_impl_actor_manage()->finish_suspend_thread();
 	}
-
 }
 
