@@ -1,8 +1,8 @@
 #pragma once
 
-#include "enum2name.h"
 #include "xmlinfo.h"
 #include "xmlnode.h"
+#include "enum2name.h"
 #include "actor_protocol.h"
 
 #include <fstream>
@@ -36,13 +36,13 @@ namespace ngl
 
 	struct logfile
 	{
-		std::ofstream m_stream;
 		struct config
 		{
-			ELOG_TYPE m_type;				// 日志类型 ELOG_TYPE
+			ELOG_TYPE m_type;			// 日志类型 ELOG_TYPE
 			std::string m_dir;			// 文件夹
 			int m_flush_time;			// 写入文件的间隔
 		};
+		std::ofstream m_stream;
 		config m_config;
 		int m_count;
 		int m_fcount;

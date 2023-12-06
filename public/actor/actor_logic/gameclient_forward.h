@@ -91,7 +91,4 @@ namespace ngl
 		////// ### game->gateway->client
 		static void g2c();
 	};
-
-
-
 }

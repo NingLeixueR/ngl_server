@@ -7,7 +7,6 @@
 #include <inttypes.h>
 #include <set>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 
 namespace ngl
 {
@@ -147,7 +146,7 @@ namespace ngl
 		bool operator()(const T& avalue);
 
 		template <typename T>
-		bool operator()(const boost::shared_ptr<T>& adata)
+		bool operator()(const std::shared_ptr<T>& adata)
 		{
 			return adata->log(*this);
 		}

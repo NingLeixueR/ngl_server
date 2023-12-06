@@ -4,6 +4,7 @@
 #endif
 #include <filesystem>
 #include <iostream>
+
 #include "localtime.h"
 #include "enum2name.h"
 #include "logformat.h"
@@ -104,7 +105,6 @@ namespace ngl
 				return;
 		}
 		
-
 		if (m_stream.is_open())
 			m_stream.close();
 
@@ -113,16 +113,6 @@ namespace ngl
 		lpath += '/';
 		lpath += m_isactor ? "actor/" : "local/";
 		lpath += nconfig::m_nodename;
-		//xmlinfo* local = nconfig::local();
-		//if (local != nullptr)
-		//{
-		//	std::string lname;
-		//	if (local->name(lname))
-		//	{
-		//		lpath += lname;
-		//		//lpath += '/';
-		//	}
-		//}
 
 		if (afirst)
 		{//检查目录是否存在

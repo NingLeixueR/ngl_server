@@ -1,10 +1,10 @@
 #include "nlog.h"
-
-#include <iostream>
 #include "xmlnode.h"
 #include "actor_protocol.h"
 #include "actor_base.h"
 #include "logprintf.h"
+
+#include <iostream>
 
 namespace ngl
 {
