@@ -218,11 +218,11 @@ namespace ngl
 		}
 
 		// 向指定actor发送数据
-		template <typename T>
+		template <typename T, bool IS_SEND = true>
 		void send_actor(const actor_guid& aguid, std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram; 
-			handle_pram::create<T>(lpram, aguid, guid(), adata);
+			handle_pram::create<T, IS_SEND>(lpram, aguid, guid(), adata);
 			push_task_id(aguid, lpram, true);
 		}
 
@@ -235,20 +235,20 @@ namespace ngl
 		}
 
 		// 群发给指定类型的所有actor
-		template <typename T>
+		template <typename T, bool IS_SEND = true>
 		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
 			handle_pram lpram;
-			handle_pram::create<T>(lpram, actor_guid::make_self(atype), guid(), adata);
+			handle_pram::create<T, IS_SEND>(lpram, actor_guid::make_self(atype), guid(), adata);
 			push_task_type(atype, lpram, aotherserver);
 		}
 
 		// 发送数据到指定的actor
-		template <typename T>
+		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram;
-			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
+			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
 #pragma region network_strat_group

@@ -4,7 +4,6 @@
 #include "pack.h"
 #include "nlog.h"
 #include "threadtools.h"
-
 #include "impl.h"
 
 
@@ -60,7 +59,6 @@ namespace ngl
 	private:
 		struct impl_asio_tcp;
 		ngl::impl<impl_asio_tcp> m_impl_asio_tcp;
-	};
-	
+	};	
 }
 

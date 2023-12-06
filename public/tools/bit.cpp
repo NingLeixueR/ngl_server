@@ -29,41 +29,40 @@ namespace ngl
 		memset(m_bit, abool ? 0xFF : 0x0, m_bitarraycount);
 	}
 
-	void bit::vectorbooltobytes(const std::vector<bool>& avec, std::vector<int8_t>& aintvec)
+	template <int N>
+	void _bit_set(int8_t& avalues, bool abool)
 	{
-		for (int i = 0; i < avec.size(); ++i)
-		{
-			if ((i & 7) == 0)
-				aintvec.push_back(0x0);
-			set(i, *aintvec.rbegin(), avec[i]);
-		}
-	}
-
-	void bit::bytestovectorbool(const std::vector<int8_t>& avec, std::vector<bool>& aboolvec)
-	{
-		if (avec.empty())
-			return;
-		bit lbit;
-		lbit.init((int8_t*)&avec[0], avec.size());
-		int lsize = avec.size() * 8;
-		for (int i = 0; i < lsize; ++i)
-		{
-			aboolvec.push_back(lbit.get(i));
-		}
+		abool ? avalues |= _bits<N>() : avalues &= _invertbits<N>();
 	}
 
 	bool bit::set(int abit, int8_t& avalues, bool abool)
 	{
 		switch (abit & 7)
 		{
-		case 0:abool ? avalues |= _bits<0>() : avalues &= _invertbits<0>(); return true;
-		case 1:abool ? avalues |= _bits<1>() : avalues &= _invertbits<1>(); return true;
-		case 2:abool ? avalues |= _bits<2>() : avalues &= _invertbits<2>(); return true;
-		case 3:abool ? avalues |= _bits<3>() : avalues &= _invertbits<3>(); return true;
-		case 4:abool ? avalues |= _bits<4>() : avalues &= _invertbits<4>(); return true;
-		case 5:abool ? avalues |= _bits<5>() : avalues &= _invertbits<5>(); return true;
-		case 6:abool ? avalues |= _bits<6>() : avalues &= _invertbits<6>(); return true;
-		case 7:abool ? avalues |= _bits<7>() : avalues &= _invertbits<7>(); return true;
+		case 0:
+			_bit_set<0>(avalues, abool);
+			return true;
+		case 1:
+			_bit_set<1>(avalues, abool);
+			return true;
+		case 2:
+			_bit_set<2>(avalues, abool);
+			return true;
+		case 3:
+			_bit_set<3>(avalues, abool);
+			return true;
+		case 4:
+			_bit_set<4>(avalues, abool);
+			return true;
+		case 5:
+			_bit_set<5>(avalues, abool);
+			return true;
+		case 6:
+			_bit_set<6>(avalues, abool);
+			return true;
+		case 7:
+			_bit_set<7>(avalues, abool);
+			return true;
 		}
 		return false;
 	}

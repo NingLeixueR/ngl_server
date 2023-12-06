@@ -29,7 +29,7 @@ namespace ngl
 
 	struct forward;
 
-	struct serialize_bytes;
+	class serialize_bytes;
 
 	template <typename T, bool IS_FORWARD = false>
 	struct protobuf_data

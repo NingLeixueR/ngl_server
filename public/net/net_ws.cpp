@@ -19,8 +19,8 @@ namespace ngl
 		for (int i = 0; i < lsocketthreadnum; ++i)
 			m_segpackvec.push_back(new segpack());
 
-		if (lsocketthreadnum > NET_CONFIG_SOCKET_PTHREAD_MAX_SIZE || lsocketthreadnum <= 0)
-			lsocketthreadnum = NET_CONFIG_SOCKET_PTHREAD_MAX_SIZE;
+		if (lsocketthreadnum > net_config_socket_pthread_max_size || lsocketthreadnum <= 0)
+			lsocketthreadnum = net_config_socket_pthread_max_size;
 
 		std::function<bool(service_io*, const char*, uint32_t)> lfun
 			= boost::bind(&net_ws::socket_recv, this, _1, _2, _3);

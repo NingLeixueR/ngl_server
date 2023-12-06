@@ -8,7 +8,6 @@
 #include "asio_tcp.h"
 #include "pack.h"
 #include "segpack.h"
-#include "net_config.h"
 #include "handle_pram.h"
 #include "actor_base.h"
 #include "structbytes.h"
@@ -282,5 +281,4 @@ namespace ngl
 				sendtoserver(agateway, pro, moreactor(), moreactor());
 		}
 	};
-
 }

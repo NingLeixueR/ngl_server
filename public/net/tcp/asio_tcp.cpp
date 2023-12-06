@@ -6,8 +6,6 @@
 
 namespace ngl
 {
-	
-
 	struct asio_tcp::impl_asio_tcp
 	{
 		boost::asio::ip::tcp::acceptor*		m_acceptor;
@@ -64,7 +62,6 @@ namespace ngl
 		)
 		{
 			LogLocalError("connect ip[%] port[%]", aip, aport);
-			std::cout << "connect ip[" << aip << "] port[" << aport << std::endl;
 			service_tcp* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
@@ -99,7 +96,10 @@ namespace ngl
 						.m_ms = 1000,
 						.m_intervalms = [](int64_t) {return 1000; } ,
 						.m_count = 1,
-						.m_fun = [this, aip, aport, afun, acount](wheel_node* anode) {impl_asio_tcp::connect(aip, aport, afun, acount - 1); }
+						.m_fun = [this, aip, aport, afun, acount](wheel_node* anode) 
+						{
+							impl_asio_tcp::connect(aip, aport, afun, acount - 1); 
+						}
 					};
 					asio_timer::wheel().addtimer(lparm);
 				}
@@ -245,7 +245,7 @@ namespace ngl
 			}
 		}
 
-		void handle_write(service_tcp* ap, const boost::system::error_code& error, std::shared_ptr<pack> apack)
+		inline void handle_write(service_tcp* ap, const boost::system::error_code& error, std::shared_ptr<pack> apack)
 		{
 			if (error)
 			{
@@ -255,7 +255,7 @@ namespace ngl
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
 		}
 
-		void handle_write_void(service_tcp* ap, const boost::system::error_code& error, std::shared_ptr<void> apack)
+		inline void handle_write_void(service_tcp* ap, const boost::system::error_code& error, std::shared_ptr<void> apack)
 		{
 			if (error)
 			{
@@ -265,7 +265,7 @@ namespace ngl
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, (pack*)apack.get());
 		}
 
-		void close(i32_sessionid sessionid)
+		inline void close(i32_sessionid sessionid)
 		{
 			if (sessionid <= 0)
 				return;
@@ -308,7 +308,7 @@ namespace ngl
 			}
 		}
 
-		void close(service_tcp* ap)
+		inline void close(service_tcp* ap)
 		{
 			LogLocalError("asio_tcp::close[%]", ap->m_sessionid);
 			close(ap->m_sessionid);
@@ -335,7 +335,7 @@ namespace ngl
 			}
 		}
 
-		bool sessionid2ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
+		inline bool sessionid2ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
 		{
 			monopoly_shared_lock(m_ipportlock);
 			std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>::iterator itor = m_ipport.find(assionid);
@@ -347,13 +347,13 @@ namespace ngl
 			return true;
 		}
 
-		bool exist_session(i32_sessionid asession)
+		inline bool exist_session(i32_sessionid asession)
 		{
 			monopoly_shared_lock(m_ipportlock);
 			return m_ipport.find(asession) != m_ipport.end();
 		}
 
-		void accept()
+		inline void accept()
 		{
 			service_tcp* lservice = nullptr;
 			{
@@ -367,7 +367,7 @@ namespace ngl
 			);
 		}
 
-		void handle_accept(service_tcp* aservice, const boost::system::error_code& error)
+		inline void handle_accept(service_tcp* aservice, const boost::system::error_code& error)
 		{
 			if (error)
 			{
@@ -390,7 +390,7 @@ namespace ngl
 			accept();
 		}
 
-		void handle_read(const boost::system::error_code& error, service_tcp* aservice, char* abuff, size_t bytes_transferred)
+		inline void handle_read(const boost::system::error_code& error, service_tcp* aservice, char* abuff, size_t bytes_transferred)
 		{
 			if (!error)
 			{
@@ -408,7 +408,7 @@ namespace ngl
 
 		}
 
-		void start(service_tcp* aservice)
+		inline void start(service_tcp* aservice)
 		{
 			std::swap(aservice->m_buff1, aservice->m_buff2);
 			aservice->m_socket.async_read_some(
@@ -422,7 +422,7 @@ namespace ngl
 			);
 		}
 
-		void set_close(i32_sessionid asession, const std::function<void()>& afun)
+		inline void set_close(i32_sessionid asession, const std::function<void()>& afun)
 		{
 			monopoly_shared_lock(m_maplock);
 			m_sessionclose[asession] = afun;
