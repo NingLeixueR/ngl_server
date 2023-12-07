@@ -27,8 +27,6 @@ namespace ngl
 			);
 	}
 
-	
-
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		actor_guid lguid(adata.m_data->m_roleid());
@@ -41,7 +39,4 @@ namespace ngl
 		actor_create::switch_process(adata.m_data->m_roleid(), 0, nconfig::m_nodeid, pro);
 		return true;
 	}
-
-
-
 }
