@@ -29,11 +29,7 @@ namespace ngl
 	class handle_pram_send
 	{
 	public:
-		static bool sendbyserver(
-			i32_serverid aserverid,
-			const actor_guid& aactorid, const actor_guid& arequestactorid,
-			handle_pram& adata);
-
+		static bool sendbyserver(i32_serverid aserverid, const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
 		static bool send(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
 		static bool sendclient(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
 	};
@@ -116,10 +112,7 @@ namespace ngl
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendbyserver(
-		i32_serverid aserverid,
-		const actor_guid& aactorid, const actor_guid& arequestactorid,
-		handle_pram& adata)
+	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
 	{
 		if (IS_SEND == false)
 			return true;

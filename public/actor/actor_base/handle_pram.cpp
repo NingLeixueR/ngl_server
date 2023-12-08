@@ -2,8 +2,6 @@
 #include "actor_guid.h"
 #include "handle_pram.h"
 
-
-
 namespace ngl
 {
 	actor_node_session::actor_node_session() :

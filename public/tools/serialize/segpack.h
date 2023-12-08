@@ -15,8 +15,8 @@ namespace ngl
 {
 	enum enum_segpack
 	{
-		rate_interval = 1,					// 速率检测的间隔(单位秒)
-		rate_size = 20,						// 速率 每秒多少条
+		rate_interval		= 1,			// 速率检测的间隔(单位秒)
+		rate_size			= 20,			// 速率 每秒多少条
 		heart_beat_interval = 10,			// 心跳间隔(单位秒)
 	};
 
