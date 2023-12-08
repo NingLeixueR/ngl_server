@@ -9,7 +9,6 @@ namespace ngl
 {
 	class splite
 	{
-		
 	public:
 		// ·Ö¸î×Ö·û´®
 		static void division(const char* abuff, const char* afg, std::vector<int>& avec);
@@ -34,14 +33,24 @@ namespace ngl
 			division(avec, ++apos, arg...);
 		}
 
-
 		template <typename ...ARG>
 		static void division(const char* abuff, const char* afg, ARG&... arg)
 		{
 			std::vector<std::string> lvec;
 			boost::split(lvec, abuff, boost::is_any_of(afg));
-
 			division(lvec, 0, arg...);
+		}
+
+		template <typename T>
+		static void division(const char* abuff, const char* afg1, const char* afg2, std::vector<std::vector<T>>& avec)
+		{
+			std::vector<std::string> lvec;
+			division(abuff, afg1, lvec);
+			avec.resize(lvec.size());
+			for (int i = 0; i < lvec.size(); ++i)
+			{
+				division(lvec[i].c_str(), afg2, avec[i]);
+			}
 		}
 
 		template <typename TYPE>
@@ -69,22 +78,5 @@ namespace ngl
 		static void recast(const std::vector<int>& avec, const char afg, std::string& astr);
 		static void recast(const std::vector<float>& avec, const char afg, std::string& astr);
 		static void recast(const std::vector<double>& avec, const char afg, std::string& astr);
-
-		template <typename T>
-		static void division(
-			const char* abuff, 
-			const char* afg1, 
-			const char* afg2, 
-			std::vector<std::vector<T>>& avec
-		)
-		{
-			std::vector<std::string> lvec;
-			division(abuff, afg1, lvec);
-			avec.resize(lvec.size());
-			for (int i = 0; i < lvec.size(); ++i)
-			{
-				division(lvec[i].c_str(), afg2, avec[i]);
-			}
-		}
 	};
 }

@@ -12,7 +12,6 @@ namespace ngl
 	
 	std::map<rguid, rfuns::mame_function> rfuns::m_fun;
 
-
 	class testrfun1
 	{
 	public:
@@ -80,6 +79,4 @@ namespace ngl
 		rfuns::handle_switch(&ld, ltparm);
 
 	}
-
-
 }

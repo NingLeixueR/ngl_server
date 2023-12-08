@@ -25,7 +25,6 @@ namespace ngl
 		return "";
 	}
 
-
 	dremakes::dremakes(actor_role* arole, const char* aremakes):
 		m_role(arole)
 	{

@@ -20,7 +20,6 @@ namespace ngl
 
 	class actor_role;
 
-
 	class dremakes
 	{
 		actor_role* m_role;
@@ -31,8 +30,6 @@ namespace ngl
 
 		static const char* get_remake(actor_role*);
 	};
-
-
 }
 
 #define d_remakes(ROLE, REMAKES)	ngl::dremakes ldremakes(ROLE, REMAKES)

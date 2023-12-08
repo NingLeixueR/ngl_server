@@ -224,7 +224,6 @@ namespace ngl
 		}
 	};
 
-	
 	template <typename T>
 	class slist
 	{
@@ -321,14 +320,10 @@ namespace ngl
 			return true;
 		}
 
-
-		void swap(const slist<T>& ar)
+		inline void swap(const slist<T>& ar)
 		{
 			m_list.swap(ar);
 		}
-
-
-
 	};
 
 

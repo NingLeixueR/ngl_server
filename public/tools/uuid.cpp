@@ -8,7 +8,7 @@
 
 namespace ngl
 {
-	std::string& uuid::create(std::string& strUUID)
+	std::string& uuid::make(std::string& strUUID)
 	{
 		boost::uuids::uuid a_uuid = boost::uuids::random_generator()();
 		strUUID = boost::uuids::to_string(a_uuid);

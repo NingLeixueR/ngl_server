@@ -4,10 +4,10 @@
 
 namespace ngl
 {
+	// 生成uuid
 	class uuid
 	{
 	public:
-		// 生成uuid
-		static std::string& create(std::string& strUUID);
+		static std::string& make(std::string& strUUID);
 	};
 }

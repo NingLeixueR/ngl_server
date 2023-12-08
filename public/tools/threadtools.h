@@ -36,7 +36,6 @@ namespace ngl
 	};
 }
 
-
 #define lock_read(MUTEX)			std::shared_lock<std::shared_mutex> __Lock__(MUTEX)
 #define lock_write(MUTEX)			std::lock_guard<std::shared_mutex> __Lock__(MUTEX)
 #define monopoly_shared_lock(MUTEX)	lock_write(MUTEX)
@@ -50,8 +49,6 @@ namespace ngl
 		CV.wait(__Lock__, FUN);							\
 	}
 
-
-
 #define OPEN_SEM
 
 #ifdef OPEN_SEM
@@ -64,22 +61,17 @@ namespace ngl
 		std::condition_variable		m_cv;
 #endif//OPEN_SEM
 
-
 #ifdef OPEN_SEM
 # define ngl_lock monopoly_shared_lock(m_mutex)
 #else
 # define ngl_lock monopoly_lock(m_mutex)
 #endif//OPEN_SEM
 
-
 #ifdef OPEN_SEM
 # define ngl_post m_sem.post()
 #else
 # define ngl_post m_cv.notify_one()
 #endif//OPEN_SEM
-
-
-
 
 namespace ngl
 {
@@ -191,6 +183,4 @@ namespace ngl
 			}
 		}
 	};
-
-	
 }
