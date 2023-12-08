@@ -182,7 +182,7 @@ namespace ngl
 			{
 				lppair_account = &m_actorbyserver[lpaccount->getconst().m_id()];
 				// Éú³Ésession key
-				ngl::uuid::create(lppair_account->m_session);
+				ngl::uuid::make(lppair_account->m_session);
 
 				std::pair<int32_t, int32_t> lpairgame;
 				std::pair<int32_t, int32_t> lpairgateway;
