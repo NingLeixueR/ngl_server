@@ -173,8 +173,6 @@ namespace ngl
 			}
 		};
 
-		
-
 		template <EPROTOCOL_TYPE PROTYPE, typename T>
 		class del
 		{

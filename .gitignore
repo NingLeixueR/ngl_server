@@ -8,6 +8,7 @@
 3part/hiredis
 3part/mysql
 3part/protobuf
+3part/behaviac-3.6.40
 php
 bin
 obj
