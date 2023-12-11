@@ -36,10 +36,7 @@ namespace ngl
 	bool actor_manage_plays::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata)
 	{
 		auto lrecv = adata.m_data;
-		roomid ltemp(lrecv->m_roomid());
 		int32_t tid = roomid::tid(lrecv->m_roomid());
-		//ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr
-
 		auto tab = allcsv::tab<tab_plays>(tid);
 		assert(tab != nullptr);
 		actor_switch_process_plays pram;
@@ -48,7 +45,7 @@ namespace ngl
 				pram.m_players.push_back(adata.m_id());
 			});
 		i64_actorid lactorid = actor_guid::make((ENUM_ACTOR)((int)ACTOR_PLAYS + (int)tab->m_type), ttab_servers::tab()->m_area, lrecv->m_roomid());
-
+		actor_create::switch_process(lactorid, -1, xmlnode::m_nodeid, pram);
 		return true;
 	}
 

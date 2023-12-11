@@ -99,7 +99,6 @@ namespace ngl
 		}
 		m_grids.idaround_list(lenter_pos, lgrids2);
 
-
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>();
 		pro->add_m_units(aunit->id());
 		std::set<i64_actorid> lview;
@@ -150,13 +149,10 @@ namespace ngl
 			m_enterview(aunit->id(), lview);
 		}
 
-
-
 		aunit->set_x(ax);
 		aunit->set_y(ay);
 
 		return true;
-
 	}
 
 	void aoimap::leave(unit* aunit)

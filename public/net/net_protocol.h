@@ -34,13 +34,14 @@ namespace ngl
 	{
 	public:
 		template <typename Y>
-		static std::shared_ptr<pack> get_pack(Y&)
+		static std::shared_ptr<pack>& get_pack(Y&)
 		{
-			return nullptr;
+			static std::shared_ptr<pack> lnull = nullptr;
+			return lnull;
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack> get_pack(
+		static std::shared_ptr<pack>& get_pack(
 			actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata
 		)
 		{
@@ -48,7 +49,7 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack> get_pack(
+		static std::shared_ptr<pack>& get_pack(
 			actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata
 		)
 		{
@@ -56,7 +57,7 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack> get_pack(
+		static std::shared_ptr<pack>& get_pack(
 			actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata
 		)
 		{
@@ -64,7 +65,7 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack> get_pack(
+		static std::shared_ptr<pack>& get_pack(
 			actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata
 		)
 		{
@@ -138,7 +139,7 @@ namespace ngl
 				return false;
 			if (sendpack(asession, lpack) == false)
 				return false;
-			std::shared_ptr<pack> lpack2 = sendpack_t::get_pack(adata);
+			std::shared_ptr<pack>& lpack2 = sendpack_t::get_pack(adata);
 			if (lpack2 == nullptr)
 				return true;
 			if (encryption_bytexor::check_xor(lpack2))
@@ -157,27 +158,22 @@ namespace ngl
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
 		template <typename T>
-		bool sendmore(
-			const std::map<i32_sessionid, i64_actorid>& asession
-			, T& adata
-			, i64_actorid aactorid
-		)
+		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, T& adata, i64_actorid aactorid)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, 0);
 			if (lpack == nullptr)
 				return false;
 			//LogLocalWarn("SEND Session[%] Protocol Num[%] Name[%] Data[%]!", asession, (int)T::PROTOCOL, T::name(), adata);
 
-			std::shared_ptr<pack> lpack_ = sendpack_t::get_pack(adata);
+			std::shared_ptr<pack>& lpack_ = sendpack_t::get_pack(adata);
 			if (lpack_ != nullptr)
 			{
 				if (encryption_bytexor::check_xor(lpack_))
 				{
-					ngl::encryption::bytexor(
-						&lpack_->m_buff[lpack_->m_pos]
-						, lpack_->m_len - lpack_->m_pos
-						, lpack->m_len - pack_head::size()
-					);
+					char* lbuff = &lpack_->m_buff[lpack_->m_pos];
+					int32_t llen = lpack_->m_len - lpack_->m_pos;
+					int32_t lpos = lpack->m_len - pack_head::size();
+					ngl::encryption::bytexor(lbuff, llen, lpos);
 				}
 			}
 			
@@ -198,16 +194,15 @@ namespace ngl
 			if (lpack == nullptr)
 				return false;
 			//LogLocalWarn("SEND Session[%] Protocol Num[%] Name[%] Data[%]!", asession, (int)T::PROTOCOL, T::name(), adata);
-			std::shared_ptr<pack> lpack_ = sendpack_t::get_pack(adata);
+			std::shared_ptr<pack>& lpack_ = sendpack_t::get_pack(adata);
 			if (lpack_ != nullptr)
 			{
 				if (encryption_bytexor::check_xor(lpack_))
 				{
-					ngl::encryption::bytexor(
-						&lpack_->m_buff[lpack_->m_pos]
-						, lpack_->m_len - lpack_->m_pos
-						, lpack->m_len - pack_head::size()
-					);
+					char* lbuff = &lpack_->m_buff[lpack_->m_pos];
+					int32_t llen = lpack_->m_len - lpack_->m_pos;
+					int32_t lpos = lpack->m_len - pack_head::size();
+					ngl::encryption::bytexor(lbuff, llen, lpos);
 				}
 			}
 			

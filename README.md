@@ -9,7 +9,7 @@ Actor based c++distributed game server framework
   * ngl/public/logic             		简单的使用例子
   * ngl/public/net               		网络相关(只支持tcp和ws)
   * ngl/public/protocol          		生成的协议相关的文件
-  * ngl/public/serialize         		主要是tcp分包，包头，序列化
+  * ngl/public/tools/serialize         	主要是tcp分包，包头，序列化
   * ngl/public/tools             		一些简单封装的工具(curl,dbmysql,log,xml,csv,json,md5......)
   * ngl/server                   		cmake项目文件,一些main.cpp等
   * ngl/tools                    		此目录中有一些脚本文件 如rename_node.bat将生成的node.exe文件分别重命名,以方便在windwos任务管理器中查看.
@@ -33,16 +33,16 @@ Actor based c++distributed game server framework
 	static void actor_register(); 需要注册actor_xxx要处理的消息
 	例如 ：
 	register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_xxx>(false,
-				null<pbnet::PROBUFF_NET_ROLE_LOGIN>
+				dregister_fun_handle(actor_xxx, pbnet::PROBUFF_NET_ROLE_LOGIN>)
 			);
 	在actor_xxx中注册了proto消息 pbnet::PROBUFF_NET_ROLE_LOGIN需要处理 
-	此时我们需要实现对应的消息  bool actor_xxx::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
-	参数i32_threadid athread是线程id  一般用不到
-	参数const std::shared_ptr<pack>& apack 是经过网络的原生包 一般用不到
-	参数pbnet::PROBUFF_NET_ROLE_LOGIN& adata 是我们需要处理的消息
+	此时我们需要实现对应的消息  bool actor_xxx::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
+	message.m_data	是我们需要处理的消息pbnet::PROBUFF_NET_ROLE_LOGIN
+	adata.m_thread	是线程id  一般用不到
+	adata.m_pack	是经过网络的原生包 一般用不到
 
-	我们也可以实现bool timer_handle(i32_threadid athread, const std::shared_ptr<pack>& apack, timerparm& adata);方法 用来处理定时任务
-	这时我们同样需要在static void actor_register();中注册 调用actor_xxx::register_timer<actor_role>();即可
+	我们也可以实现bool timer_handle(message<timerparm>& adata);方法 用来处理定时任务
+	这时我们同样需要在static void actor_register();中注册 调用actor_xxx::register_timer<actor_role>(&timer_handle);即可
 
 	```
   * [非单例actor:actor_role](https://github.com/NingLeixueR/ngl/blob/main/public/actor/actor_logic/game/actor_role.h)
@@ -138,7 +138,7 @@ Actor based c++distributed game server framework
   * 不要尝试编译libcore,libcore仅仅是为了在写代码时对单个cpp文件进行编译用来测试代码是否存在问题
   * libcorekkk是include 所有.cpp文件以加快编译速度
   * 近半年的修改未在linux上编译,一方面是不太方便，另一方面是懒,因为代码使用了部分c++20的内容所以对编译器版本有要求。 
-  * QQ群 56257994 欢迎志同道合的小伙伴一起维护完善这个小项目
+  * QQ群 56257994 欢迎志同道合的小伙伴一起维护完善这个小项目 
 # 
   
 

@@ -35,6 +35,5 @@ namespace ngl
 		virtual void player_enterview(i64_actorid aroleid, std::set<i64_actorid>& aother) {}
 		// Àë¿ªÊÓÒ°
 		virtual void player_leaveview(i64_actorid aroleid1, std::set<i64_actorid>& aother) {}
-
 	};
 }

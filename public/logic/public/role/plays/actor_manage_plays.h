@@ -3,7 +3,6 @@
 #include "actor.h"
 #include "map.h"
 
-
 namespace ngl
 {
 	class actor_manage_plays : public actor
@@ -32,8 +31,6 @@ namespace ngl
 
 		// ¶¨Ê±Æ÷
 		bool timer_handle(message<timerparm>& adata);
-
-	private:
 	};
 
 

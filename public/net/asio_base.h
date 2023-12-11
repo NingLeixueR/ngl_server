@@ -30,12 +30,12 @@
 
 namespace ngl
 {
-	using basio_ioservice = boost::asio::io_service;
-	using basio_ioservicework = boost::asio::io_service::work;
-	using basio_iptcpsocket = boost::asio::ip::tcp::socket;
-	using basio_iptcpendpoint = boost::asio::ip::tcp::endpoint;
-	using basio_ipaddress = boost::asio::ip::address;
-	using tuple_ioservice = std::tuple<basio_ioservice*, basio_ioservicework*, std::thread*>;
+	using basio_ioservice		= boost::asio::io_service;
+	using basio_ioservicework	= boost::asio::io_service::work;
+	using basio_iptcpsocket		= boost::asio::ip::tcp::socket;
+	using basio_iptcpendpoint	= boost::asio::ip::tcp::endpoint;
+	using basio_ipaddress		= boost::asio::ip::address;
+	using tuple_ioservice		= std::tuple<basio_ioservice*, basio_ioservicework*, std::thread*>;
 
 	using basio_websocket = boost::beast::websocket::stream<boost::beast::tcp_stream>;
 
@@ -92,7 +92,4 @@ namespace ngl
 		service_ws(serviceio_info& amsi, int asessionid);
 		~service_ws();
 	};
-
-
-	
 }

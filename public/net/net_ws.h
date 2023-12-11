@@ -2,7 +2,6 @@
 
 #include "net_protocol.h"
 
-
 namespace ngl
 {
 	class net_ws : public net_protocol
