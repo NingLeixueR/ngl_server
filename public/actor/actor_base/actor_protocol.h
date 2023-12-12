@@ -529,7 +529,7 @@ namespace ngl
 	// ---- 服务器会通过此消息告诉对方连接成功 
 	struct actor_server_connect
 	{
-		i32_serverid m_serverid = 0;
+		i32_serverid m_serverid;
 		def_portocol(actor_server_connect, m_serverid);
 	};
 

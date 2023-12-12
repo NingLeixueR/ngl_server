@@ -167,7 +167,6 @@ namespace ngl
 			pro->set_data(adata);
 			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
 			actor_guid lguid(*abeg);
-			//actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
 			handle_pram::create(lpram, lguid, actor_guid::make(), pro);
 			push_task_id(lclientguid, lpram, true);
 		}

@@ -29,6 +29,8 @@ namespace ngl
 
 		const int32_t m_id();
 
+		const pbdb::db_role& m_role();
+
 		const pbdb::db_brief& m_base();
 
 		void sync_actor_roleinfo();

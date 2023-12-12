@@ -110,6 +110,12 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
+	{
+		LogLocalError("发货成功！！！")
+		return true;
+	}
+
 	void actor_manage_robot::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>(

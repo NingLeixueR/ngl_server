@@ -139,8 +139,56 @@ struct PROBUFF_GM_DEL_NOTICE_RESPONSEDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_GM_DEL_NOTICE_RESPONSEDefaultTypeInternal _PROBUFF_GM_DEL_NOTICE_RESPONSE_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR PROBUFF_GM_RECHARGE::PROBUFF_GM_RECHARGE(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.m_orderid_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.m_rechargeid_)*/ ::int64_t{0}
+
+  , /*decltype(_impl_.m_roleid_)*/ ::int64_t{0}
+} {}
+struct PROBUFF_GM_RECHARGEDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PROBUFF_GM_RECHARGEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PROBUFF_GM_RECHARGEDefaultTypeInternal() {}
+  union {
+    PROBUFF_GM_RECHARGE _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_GM_RECHARGEDefaultTypeInternal _PROBUFF_GM_RECHARGE_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR PROBUFF_GM_RECHARGE_RESPONSE::PROBUFF_GM_RECHARGE_RESPONSE(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.m_orderid_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.m_roleid_)*/ ::int64_t{0}
+
+  , /*decltype(_impl_.m_rechargeid_)*/ false
+
+  , /*decltype(_impl_.m_stat_)*/ 0
+} {}
+struct PROBUFF_GM_RECHARGE_RESPONSEDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PROBUFF_GM_RECHARGE_RESPONSEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PROBUFF_GM_RECHARGE_RESPONSEDefaultTypeInternal() {}
+  union {
+    PROBUFF_GM_RECHARGE_RESPONSE _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_GM_RECHARGE_RESPONSEDefaultTypeInternal _PROBUFF_GM_RECHARGE_RESPONSE_default_instance_;
 }  // namespace GM
-static ::_pb::Metadata file_level_metadata_gm_2eproto[7];
+static ::_pb::Metadata file_level_metadata_gm_2eproto[9];
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_gm_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -220,6 +268,36 @@ const ::uint32_t TableStruct_gm_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_DEL_NOTICE_RESPONSE, _impl_.m_stat_),
     0,
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE, _impl_.m_rechargeid_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE, _impl_.m_roleid_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE, _impl_.m_orderid_),
+    1,
+    2,
+    0,
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE_RESPONSE, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE_RESPONSE, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE_RESPONSE, _impl_.m_rechargeid_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE_RESPONSE, _impl_.m_roleid_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE_RESPONSE, _impl_.m_orderid_),
+    PROTOBUF_FIELD_OFFSET(::GM::PROBUFF_GM_RECHARGE_RESPONSE, _impl_.m_stat_),
+    2,
+    1,
+    0,
+    3,
 };
 
 static const ::_pbi::MigrationSchema
@@ -231,6 +309,8 @@ static const ::_pbi::MigrationSchema
         { 43, 52, -1, sizeof(::GM::PROBUFF_GM_ADD_NOTICE_RESPONSE)},
         { 53, 62, -1, sizeof(::GM::PROBUFF_GM_DEL_NOTICE)},
         { 63, 72, -1, sizeof(::GM::PROBUFF_GM_DEL_NOTICE_RESPONSE)},
+        { 73, 84, -1, sizeof(::GM::PROBUFF_GM_RECHARGE)},
+        { 87, 99, -1, sizeof(::GM::PROBUFF_GM_RECHARGE_RESPONSE)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -241,6 +321,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::GM::_PROBUFF_GM_ADD_NOTICE_RESPONSE_default_instance_._instance,
     &::GM::_PROBUFF_GM_DEL_NOTICE_default_instance_._instance,
     &::GM::_PROBUFF_GM_DEL_NOTICE_RESPONSE_default_instance_._instance,
+    &::GM::_PROBUFF_GM_RECHARGE_default_instance_._instance,
+    &::GM::_PROBUFF_GM_RECHARGE_RESPONSE_default_instance_._instance,
 };
 const char descriptor_table_protodef_gm_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\010gm.proto\022\002GM\"\027\n\025PROBUFF_GM_GET_NOTICE\""
@@ -256,19 +338,27 @@ const char descriptor_table_protodef_gm_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
     "\001B\t\n\007_m_stat\"3\n\025PROBUFF_GM_DEL_NOTICE\022\021\n"
     "\004m_id\030\003 \001(\003H\000\210\001\001B\007\n\005_m_id\"@\n\036PROBUFF_GM_"
     "DEL_NOTICE_RESPONSE\022\023\n\006m_stat\030\003 \001(\010H\000\210\001\001"
-    "B\t\n\007_m_statb\006proto3"
+    "B\t\n\007_m_stat\"\213\001\n\023PROBUFF_GM_RECHARGE\022\031\n\014m"
+    "_rechargeid\030\001 \001(\003H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003"
+    "H\001\210\001\001\022\026\n\tm_orderid\030\003 \001(\tH\002\210\001\001B\017\n\r_m_rech"
+    "argeidB\013\n\t_m_roleidB\014\n\n_m_orderid\"\264\001\n\034PR"
+    "OBUFF_GM_RECHARGE_RESPONSE\022\031\n\014m_recharge"
+    "id\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001\022\026\n\t"
+    "m_orderid\030\003 \001(\tH\002\210\001\001\022\023\n\006m_stat\030\004 \001(\005H\003\210\001"
+    "\001B\017\n\r_m_rechargeidB\013\n\t_m_roleidB\014\n\n_m_or"
+    "deridB\t\n\007_m_statb\006proto3"
 };
 static ::absl::once_flag descriptor_table_gm_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_gm_2eproto = {
     false,
     false,
-    539,
+    864,
     descriptor_table_protodef_gm_2eproto,
     "gm.proto",
     &descriptor_table_gm_2eproto_once,
     nullptr,
     0,
-    7,
+    9,
     schemas,
     file_default_instances,
     TableStruct_gm_2eproto::offsets,
@@ -1614,6 +1704,636 @@ void PROBUFF_GM_DEL_NOTICE_RESPONSE::InternalSwap(PROBUFF_GM_DEL_NOTICE_RESPONSE
       &descriptor_table_gm_2eproto_getter, &descriptor_table_gm_2eproto_once,
       file_level_metadata_gm_2eproto[6]);
 }
+// ===================================================================
+
+class PROBUFF_GM_RECHARGE::_Internal {
+ public:
+  using HasBits = decltype(std::declval<PROBUFF_GM_RECHARGE>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(PROBUFF_GM_RECHARGE, _impl_._has_bits_);
+  static void set_has_m_rechargeid(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_m_roleid(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static void set_has_m_orderid(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+PROBUFF_GM_RECHARGE::PROBUFF_GM_RECHARGE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:GM.PROBUFF_GM_RECHARGE)
+}
+PROBUFF_GM_RECHARGE::PROBUFF_GM_RECHARGE(const PROBUFF_GM_RECHARGE& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  PROBUFF_GM_RECHARGE* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.m_orderid_) {}
+
+    , decltype(_impl_.m_rechargeid_) {}
+
+    , decltype(_impl_.m_roleid_) {}
+  };
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.m_orderid_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.m_orderid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.m_orderid_.Set(from._internal_m_orderid(), _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.m_rechargeid_, &from._impl_.m_rechargeid_,
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.m_roleid_) -
+    reinterpret_cast<char*>(&_impl_.m_rechargeid_)) + sizeof(_impl_.m_roleid_));
+  // @@protoc_insertion_point(copy_constructor:GM.PROBUFF_GM_RECHARGE)
+}
+
+inline void PROBUFF_GM_RECHARGE::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.m_orderid_) {}
+
+    , decltype(_impl_.m_rechargeid_) { ::int64_t{0} }
+
+    , decltype(_impl_.m_roleid_) { ::int64_t{0} }
+
+  };
+  _impl_.m_orderid_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.m_orderid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+PROBUFF_GM_RECHARGE::~PROBUFF_GM_RECHARGE() {
+  // @@protoc_insertion_point(destructor:GM.PROBUFF_GM_RECHARGE)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void PROBUFF_GM_RECHARGE::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.m_orderid_.Destroy();
+}
+
+void PROBUFF_GM_RECHARGE::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void PROBUFF_GM_RECHARGE::Clear() {
+// @@protoc_insertion_point(message_clear_start:GM.PROBUFF_GM_RECHARGE)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    _impl_.m_orderid_.ClearNonDefaultToEmpty();
+  }
+  if (cached_has_bits & 0x00000006u) {
+    ::memset(&_impl_.m_rechargeid_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.m_roleid_) -
+        reinterpret_cast<char*>(&_impl_.m_rechargeid_)) + sizeof(_impl_.m_roleid_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PROBUFF_GM_RECHARGE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional int64 m_rechargeid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _Internal::set_has_m_rechargeid(&has_bits);
+          _impl_.m_rechargeid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional int64 m_roleid = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _Internal::set_has_m_roleid(&has_bits);
+          _impl_.m_roleid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional string m_orderid = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_m_orderid();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "GM.PROBUFF_GM_RECHARGE.m_orderid"));
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::uint8_t* PROBUFF_GM_RECHARGE::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:GM.PROBUFF_GM_RECHARGE)
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // optional int64 m_rechargeid = 1;
+  if (cached_has_bits & 0x00000002u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(
+        1, this->_internal_m_rechargeid(), target);
+  }
+
+  // optional int64 m_roleid = 2;
+  if (cached_has_bits & 0x00000004u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(
+        2, this->_internal_m_roleid(), target);
+  }
+
+  // optional string m_orderid = 3;
+  if (cached_has_bits & 0x00000001u) {
+    const std::string& _s = this->_internal_m_orderid();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "GM.PROBUFF_GM_RECHARGE.m_orderid");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:GM.PROBUFF_GM_RECHARGE)
+  return target;
+}
+
+::size_t PROBUFF_GM_RECHARGE::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:GM.PROBUFF_GM_RECHARGE)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    // optional string m_orderid = 3;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                      this->_internal_m_orderid());
+    }
+
+    // optional int64 m_rechargeid = 1;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_m_rechargeid());
+    }
+
+    // optional int64 m_roleid = 2;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_m_roleid());
+    }
+
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PROBUFF_GM_RECHARGE::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    PROBUFF_GM_RECHARGE::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PROBUFF_GM_RECHARGE::GetClassData() const { return &_class_data_; }
+
+
+void PROBUFF_GM_RECHARGE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<PROBUFF_GM_RECHARGE*>(&to_msg);
+  auto& from = static_cast<const PROBUFF_GM_RECHARGE&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:GM.PROBUFF_GM_RECHARGE)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_m_orderid(from._internal_m_orderid());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_impl_.m_rechargeid_ = from._impl_.m_rechargeid_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_impl_.m_roleid_ = from._impl_.m_roleid_;
+    }
+    _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PROBUFF_GM_RECHARGE::CopyFrom(const PROBUFF_GM_RECHARGE& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:GM.PROBUFF_GM_RECHARGE)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PROBUFF_GM_RECHARGE::IsInitialized() const {
+  return true;
+}
+
+void PROBUFF_GM_RECHARGE::InternalSwap(PROBUFF_GM_RECHARGE* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.m_orderid_, lhs_arena,
+                                       &other->_impl_.m_orderid_, rhs_arena);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PROBUFF_GM_RECHARGE, _impl_.m_roleid_)
+      + sizeof(PROBUFF_GM_RECHARGE::_impl_.m_roleid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_GM_RECHARGE, _impl_.m_rechargeid_)>(
+          reinterpret_cast<char*>(&_impl_.m_rechargeid_),
+          reinterpret_cast<char*>(&other->_impl_.m_rechargeid_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_GM_RECHARGE::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gm_2eproto_getter, &descriptor_table_gm_2eproto_once,
+      file_level_metadata_gm_2eproto[7]);
+}
+// ===================================================================
+
+class PROBUFF_GM_RECHARGE_RESPONSE::_Internal {
+ public:
+  using HasBits = decltype(std::declval<PROBUFF_GM_RECHARGE_RESPONSE>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(PROBUFF_GM_RECHARGE_RESPONSE, _impl_._has_bits_);
+  static void set_has_m_rechargeid(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static void set_has_m_roleid(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_m_orderid(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_m_stat(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+};
+
+PROBUFF_GM_RECHARGE_RESPONSE::PROBUFF_GM_RECHARGE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+}
+PROBUFF_GM_RECHARGE_RESPONSE::PROBUFF_GM_RECHARGE_RESPONSE(const PROBUFF_GM_RECHARGE_RESPONSE& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  PROBUFF_GM_RECHARGE_RESPONSE* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.m_orderid_) {}
+
+    , decltype(_impl_.m_roleid_) {}
+
+    , decltype(_impl_.m_rechargeid_) {}
+
+    , decltype(_impl_.m_stat_) {}
+  };
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.m_orderid_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.m_orderid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.m_orderid_.Set(from._internal_m_orderid(), _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.m_roleid_, &from._impl_.m_roleid_,
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.m_stat_) -
+    reinterpret_cast<char*>(&_impl_.m_roleid_)) + sizeof(_impl_.m_stat_));
+  // @@protoc_insertion_point(copy_constructor:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+}
+
+inline void PROBUFF_GM_RECHARGE_RESPONSE::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.m_orderid_) {}
+
+    , decltype(_impl_.m_roleid_) { ::int64_t{0} }
+
+    , decltype(_impl_.m_rechargeid_) { false }
+
+    , decltype(_impl_.m_stat_) { 0 }
+
+  };
+  _impl_.m_orderid_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.m_orderid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+PROBUFF_GM_RECHARGE_RESPONSE::~PROBUFF_GM_RECHARGE_RESPONSE() {
+  // @@protoc_insertion_point(destructor:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void PROBUFF_GM_RECHARGE_RESPONSE::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.m_orderid_.Destroy();
+}
+
+void PROBUFF_GM_RECHARGE_RESPONSE::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void PROBUFF_GM_RECHARGE_RESPONSE::Clear() {
+// @@protoc_insertion_point(message_clear_start:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    _impl_.m_orderid_.ClearNonDefaultToEmpty();
+  }
+  if (cached_has_bits & 0x0000000eu) {
+    ::memset(&_impl_.m_roleid_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.m_stat_) -
+        reinterpret_cast<char*>(&_impl_.m_roleid_)) + sizeof(_impl_.m_stat_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PROBUFF_GM_RECHARGE_RESPONSE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional bool m_rechargeid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          _Internal::set_has_m_rechargeid(&has_bits);
+          _impl_.m_rechargeid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional int64 m_roleid = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _Internal::set_has_m_roleid(&has_bits);
+          _impl_.m_roleid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional string m_orderid = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_m_orderid();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid"));
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // optional int32 m_stat = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
+          _Internal::set_has_m_stat(&has_bits);
+          _impl_.m_stat_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::uint8_t* PROBUFF_GM_RECHARGE_RESPONSE::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // optional bool m_rechargeid = 1;
+  if (cached_has_bits & 0x00000004u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        1, this->_internal_m_rechargeid(), target);
+  }
+
+  // optional int64 m_roleid = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(
+        2, this->_internal_m_roleid(), target);
+  }
+
+  // optional string m_orderid = 3;
+  if (cached_has_bits & 0x00000001u) {
+    const std::string& _s = this->_internal_m_orderid();
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
+  }
+
+  // optional int32 m_stat = 4;
+  if (cached_has_bits & 0x00000008u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        4, this->_internal_m_stat(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  return target;
+}
+
+::size_t PROBUFF_GM_RECHARGE_RESPONSE::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
+    // optional string m_orderid = 3;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                      this->_internal_m_orderid());
+    }
+
+    // optional int64 m_roleid = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_m_roleid());
+    }
+
+    // optional bool m_rechargeid = 1;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 2;
+    }
+
+    // optional int32 m_stat = 4;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+          this->_internal_m_stat());
+    }
+
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PROBUFF_GM_RECHARGE_RESPONSE::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    PROBUFF_GM_RECHARGE_RESPONSE::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PROBUFF_GM_RECHARGE_RESPONSE::GetClassData() const { return &_class_data_; }
+
+
+void PROBUFF_GM_RECHARGE_RESPONSE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<PROBUFF_GM_RECHARGE_RESPONSE*>(&to_msg);
+  auto& from = static_cast<const PROBUFF_GM_RECHARGE_RESPONSE&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_m_orderid(from._internal_m_orderid());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_impl_.m_roleid_ = from._impl_.m_roleid_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_impl_.m_rechargeid_ = from._impl_.m_rechargeid_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.m_stat_ = from._impl_.m_stat_;
+    }
+    _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PROBUFF_GM_RECHARGE_RESPONSE::CopyFrom(const PROBUFF_GM_RECHARGE_RESPONSE& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PROBUFF_GM_RECHARGE_RESPONSE::IsInitialized() const {
+  return true;
+}
+
+void PROBUFF_GM_RECHARGE_RESPONSE::InternalSwap(PROBUFF_GM_RECHARGE_RESPONSE* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.m_orderid_, lhs_arena,
+                                       &other->_impl_.m_orderid_, rhs_arena);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PROBUFF_GM_RECHARGE_RESPONSE, _impl_.m_stat_)
+      + sizeof(PROBUFF_GM_RECHARGE_RESPONSE::_impl_.m_stat_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_GM_RECHARGE_RESPONSE, _impl_.m_roleid_)>(
+          reinterpret_cast<char*>(&_impl_.m_roleid_),
+          reinterpret_cast<char*>(&other->_impl_.m_roleid_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_GM_RECHARGE_RESPONSE::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gm_2eproto_getter, &descriptor_table_gm_2eproto_once,
+      file_level_metadata_gm_2eproto[8]);
+}
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace GM
 PROTOBUF_NAMESPACE_OPEN
@@ -1644,6 +2364,14 @@ Arena::CreateMaybeMessage< ::GM::PROBUFF_GM_DEL_NOTICE >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::GM::PROBUFF_GM_DEL_NOTICE_RESPONSE*
 Arena::CreateMaybeMessage< ::GM::PROBUFF_GM_DEL_NOTICE_RESPONSE >(Arena* arena) {
   return Arena::CreateMessageInternal< ::GM::PROBUFF_GM_DEL_NOTICE_RESPONSE >(arena);
+}
+template<> PROTOBUF_NOINLINE ::GM::PROBUFF_GM_RECHARGE*
+Arena::CreateMaybeMessage< ::GM::PROBUFF_GM_RECHARGE >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::GM::PROBUFF_GM_RECHARGE >(arena);
+}
+template<> PROTOBUF_NOINLINE ::GM::PROBUFF_GM_RECHARGE_RESPONSE*
+Arena::CreateMaybeMessage< ::GM::PROBUFF_GM_RECHARGE_RESPONSE >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::GM::PROBUFF_GM_RECHARGE_RESPONSE >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 // @@protoc_insertion_point(global_scope)

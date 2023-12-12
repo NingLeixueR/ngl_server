@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-12-06 17:02:04
+// 创建时间 // 创建时间 23-12-12 16:48:39
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -607,6 +607,27 @@ struct tab_plays
 	def_portocol(tab_plays, m_id, m_name, m_remarks, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint)
+};
+struct tab_recharge
+{
+/*********************************/
+	int32_t		m_id;		// 充值id
+	std::string		m_name;		
+	std::string		m_remarks;		
+	int32_t		m_price;		// 价格
+	int32_t		m_gold;		// 获得的金币数量
+	int32_t		m_bonus;		// 奖励的金币数量
+	int32_t		m_firstbonus;		// 首充奖励的金币数量
+	int32_t		m_dropid;		// 掉落
+	int32_t		m_vipexp;		// 充值该档位赠送的vip经验
+	int32_t		m_count;		// 是否限制充值次数
+	std::vector<int32_t>		m_activityid;		// 必须指定活动开启时才能充值这一档
+/*********************************/
+	tab_recharge();
+	// 序列化反序列化相关
+	def_portocol(tab_recharge, m_id, m_name, m_remarks, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid)
+	// csv相关
+	def_rcsv(m_id,m_name,m_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid)
 };
 }//namespace ngl
 #endif //_csvtable_H_

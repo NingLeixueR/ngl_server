@@ -122,6 +122,10 @@ namespace ngl
 		bool handle(message<actor_disconnect_close>& adata);
 		//玩法创建成功  记录玩法actorid
 		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
+		void createorder(std::string& aorder, int32_t arechargeid);
+		bool handle(message<pbnet::PROBUFF_NET_RECHARGE>& adata);
+		bool is_first_recharge(int32_t arechargeid);
+		bool handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata);
 
 		// 定时器
 		bool timer_handle(message<timerparm>& adata);

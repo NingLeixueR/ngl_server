@@ -70,6 +70,12 @@ extern PROBUFF_GM_GET_NOTICEDefaultTypeInternal _PROBUFF_GM_GET_NOTICE_default_i
 class PROBUFF_GM_GET_NOTICE_RESPONSE;
 struct PROBUFF_GM_GET_NOTICE_RESPONSEDefaultTypeInternal;
 extern PROBUFF_GM_GET_NOTICE_RESPONSEDefaultTypeInternal _PROBUFF_GM_GET_NOTICE_RESPONSE_default_instance_;
+class PROBUFF_GM_RECHARGE;
+struct PROBUFF_GM_RECHARGEDefaultTypeInternal;
+extern PROBUFF_GM_RECHARGEDefaultTypeInternal _PROBUFF_GM_RECHARGE_default_instance_;
+class PROBUFF_GM_RECHARGE_RESPONSE;
+struct PROBUFF_GM_RECHARGE_RESPONSEDefaultTypeInternal;
+extern PROBUFF_GM_RECHARGE_RESPONSEDefaultTypeInternal _PROBUFF_GM_RECHARGE_RESPONSE_default_instance_;
 class gm_notice;
 struct gm_noticeDefaultTypeInternal;
 extern gm_noticeDefaultTypeInternal _gm_notice_default_instance_;
@@ -87,6 +93,10 @@ template <>
 ::GM::PROBUFF_GM_GET_NOTICE* Arena::CreateMaybeMessage<::GM::PROBUFF_GM_GET_NOTICE>(Arena*);
 template <>
 ::GM::PROBUFF_GM_GET_NOTICE_RESPONSE* Arena::CreateMaybeMessage<::GM::PROBUFF_GM_GET_NOTICE_RESPONSE>(Arena*);
+template <>
+::GM::PROBUFF_GM_RECHARGE* Arena::CreateMaybeMessage<::GM::PROBUFF_GM_RECHARGE>(Arena*);
+template <>
+::GM::PROBUFF_GM_RECHARGE_RESPONSE* Arena::CreateMaybeMessage<::GM::PROBUFF_GM_RECHARGE_RESPONSE>(Arena*);
 template <>
 ::GM::gm_notice* Arena::CreateMaybeMessage<::GM::gm_notice>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
@@ -1222,6 +1232,405 @@ class PROBUFF_GM_DEL_NOTICE_RESPONSE final :
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_gm_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_GM_RECHARGE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:GM.PROBUFF_GM_RECHARGE) */ {
+ public:
+  inline PROBUFF_GM_RECHARGE() : PROBUFF_GM_RECHARGE(nullptr) {}
+  ~PROBUFF_GM_RECHARGE() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_GM_RECHARGE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_GM_RECHARGE(const PROBUFF_GM_RECHARGE& from);
+  PROBUFF_GM_RECHARGE(PROBUFF_GM_RECHARGE&& from) noexcept
+    : PROBUFF_GM_RECHARGE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_GM_RECHARGE& operator=(const PROBUFF_GM_RECHARGE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_GM_RECHARGE& operator=(PROBUFF_GM_RECHARGE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_GM_RECHARGE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_GM_RECHARGE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_GM_RECHARGE*>(
+               &_PROBUFF_GM_RECHARGE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(PROBUFF_GM_RECHARGE& a, PROBUFF_GM_RECHARGE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_GM_RECHARGE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_GM_RECHARGE* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_GM_RECHARGE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_GM_RECHARGE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_GM_RECHARGE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_GM_RECHARGE& from) {
+    PROBUFF_GM_RECHARGE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_GM_RECHARGE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "GM.PROBUFF_GM_RECHARGE";
+  }
+  protected:
+  explicit PROBUFF_GM_RECHARGE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMOrderidFieldNumber = 3,
+    kMRechargeidFieldNumber = 1,
+    kMRoleidFieldNumber = 2,
+  };
+  // optional string m_orderid = 3;
+  bool has_m_orderid() const;
+  void clear_m_orderid() ;
+  const std::string& m_orderid() const;
+
+
+
+
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_m_orderid(Arg_&& arg, Args_... args);
+  std::string* mutable_m_orderid();
+  PROTOBUF_NODISCARD std::string* release_m_orderid();
+  void set_allocated_m_orderid(std::string* ptr);
+
+  private:
+  const std::string& _internal_m_orderid() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_m_orderid(
+      const std::string& value);
+  std::string* _internal_mutable_m_orderid();
+
+  public:
+  // optional int64 m_rechargeid = 1;
+  bool has_m_rechargeid() const;
+  void clear_m_rechargeid() ;
+  ::int64_t m_rechargeid() const;
+  void set_m_rechargeid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_rechargeid() const;
+  void _internal_set_m_rechargeid(::int64_t value);
+
+  public:
+  // optional int64 m_roleid = 2;
+  bool has_m_roleid() const;
+  void clear_m_roleid() ;
+  ::int64_t m_roleid() const;
+  void set_m_roleid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roleid() const;
+  void _internal_set_m_roleid(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:GM.PROBUFF_GM_RECHARGE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_orderid_;
+    ::int64_t m_rechargeid_;
+    ::int64_t m_roleid_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gm_2eproto;
+};// -------------------------------------------------------------------
+
+class PROBUFF_GM_RECHARGE_RESPONSE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:GM.PROBUFF_GM_RECHARGE_RESPONSE) */ {
+ public:
+  inline PROBUFF_GM_RECHARGE_RESPONSE() : PROBUFF_GM_RECHARGE_RESPONSE(nullptr) {}
+  ~PROBUFF_GM_RECHARGE_RESPONSE() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PROBUFF_GM_RECHARGE_RESPONSE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_GM_RECHARGE_RESPONSE(const PROBUFF_GM_RECHARGE_RESPONSE& from);
+  PROBUFF_GM_RECHARGE_RESPONSE(PROBUFF_GM_RECHARGE_RESPONSE&& from) noexcept
+    : PROBUFF_GM_RECHARGE_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_GM_RECHARGE_RESPONSE& operator=(const PROBUFF_GM_RECHARGE_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_GM_RECHARGE_RESPONSE& operator=(PROBUFF_GM_RECHARGE_RESPONSE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_GM_RECHARGE_RESPONSE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_GM_RECHARGE_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_GM_RECHARGE_RESPONSE*>(
+               &_PROBUFF_GM_RECHARGE_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(PROBUFF_GM_RECHARGE_RESPONSE& a, PROBUFF_GM_RECHARGE_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_GM_RECHARGE_RESPONSE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_GM_RECHARGE_RESPONSE* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_GM_RECHARGE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_GM_RECHARGE_RESPONSE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_GM_RECHARGE_RESPONSE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_GM_RECHARGE_RESPONSE& from) {
+    PROBUFF_GM_RECHARGE_RESPONSE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_GM_RECHARGE_RESPONSE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "GM.PROBUFF_GM_RECHARGE_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_GM_RECHARGE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMOrderidFieldNumber = 3,
+    kMRoleidFieldNumber = 2,
+    kMRechargeidFieldNumber = 1,
+    kMStatFieldNumber = 4,
+  };
+  // optional string m_orderid = 3;
+  bool has_m_orderid() const;
+  void clear_m_orderid() ;
+  const std::string& m_orderid() const;
+
+
+
+
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_m_orderid(Arg_&& arg, Args_... args);
+  std::string* mutable_m_orderid();
+  PROTOBUF_NODISCARD std::string* release_m_orderid();
+  void set_allocated_m_orderid(std::string* ptr);
+
+  private:
+  const std::string& _internal_m_orderid() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_m_orderid(
+      const std::string& value);
+  std::string* _internal_mutable_m_orderid();
+
+  public:
+  // optional int64 m_roleid = 2;
+  bool has_m_roleid() const;
+  void clear_m_roleid() ;
+  ::int64_t m_roleid() const;
+  void set_m_roleid(::int64_t value);
+
+  private:
+  ::int64_t _internal_m_roleid() const;
+  void _internal_set_m_roleid(::int64_t value);
+
+  public:
+  // optional bool m_rechargeid = 1;
+  bool has_m_rechargeid() const;
+  void clear_m_rechargeid() ;
+  bool m_rechargeid() const;
+  void set_m_rechargeid(bool value);
+
+  private:
+  bool _internal_m_rechargeid() const;
+  void _internal_set_m_rechargeid(bool value);
+
+  public:
+  // optional int32 m_stat = 4;
+  bool has_m_stat() const;
+  void clear_m_stat() ;
+  ::int32_t m_stat() const;
+  void set_m_stat(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_stat() const;
+  void _internal_set_m_stat(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:GM.PROBUFF_GM_RECHARGE_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_orderid_;
+    ::int64_t m_roleid_;
+    bool m_rechargeid_;
+    ::int32_t m_stat_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gm_2eproto;
 };
 
 // ===================================================================
@@ -1611,6 +2020,269 @@ inline bool PROBUFF_GM_DEL_NOTICE_RESPONSE::_internal_m_stat() const {
 }
 inline void PROBUFF_GM_DEL_NOTICE_RESPONSE::_internal_set_m_stat(bool value) {
   _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_stat_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_GM_RECHARGE
+
+// optional int64 m_rechargeid = 1;
+inline bool PROBUFF_GM_RECHARGE::has_m_rechargeid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE::clear_m_rechargeid() {
+  _impl_.m_rechargeid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int64_t PROBUFF_GM_RECHARGE::m_rechargeid() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE.m_rechargeid)
+  return _internal_m_rechargeid();
+}
+inline void PROBUFF_GM_RECHARGE::set_m_rechargeid(::int64_t value) {
+  _internal_set_m_rechargeid(value);
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE.m_rechargeid)
+}
+inline ::int64_t PROBUFF_GM_RECHARGE::_internal_m_rechargeid() const {
+  return _impl_.m_rechargeid_;
+}
+inline void PROBUFF_GM_RECHARGE::_internal_set_m_rechargeid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_rechargeid_ = value;
+}
+
+// optional int64 m_roleid = 2;
+inline bool PROBUFF_GM_RECHARGE::has_m_roleid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE::clear_m_roleid() {
+  _impl_.m_roleid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::int64_t PROBUFF_GM_RECHARGE::m_roleid() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE.m_roleid)
+  return _internal_m_roleid();
+}
+inline void PROBUFF_GM_RECHARGE::set_m_roleid(::int64_t value) {
+  _internal_set_m_roleid(value);
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE.m_roleid)
+}
+inline ::int64_t PROBUFF_GM_RECHARGE::_internal_m_roleid() const {
+  return _impl_.m_roleid_;
+}
+inline void PROBUFF_GM_RECHARGE::_internal_set_m_roleid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_roleid_ = value;
+}
+
+// optional string m_orderid = 3;
+inline bool PROBUFF_GM_RECHARGE::has_m_orderid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE::clear_m_orderid() {
+  _impl_.m_orderid_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& PROBUFF_GM_RECHARGE::m_orderid() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE.m_orderid)
+  return _internal_m_orderid();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PROBUFF_GM_RECHARGE::set_m_orderid(Arg_&& arg,
+                                                     Args_... args) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_orderid_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE.m_orderid)
+}
+inline std::string* PROBUFF_GM_RECHARGE::mutable_m_orderid() {
+  std::string* _s = _internal_mutable_m_orderid();
+  // @@protoc_insertion_point(field_mutable:GM.PROBUFF_GM_RECHARGE.m_orderid)
+  return _s;
+}
+inline const std::string& PROBUFF_GM_RECHARGE::_internal_m_orderid() const {
+  return _impl_.m_orderid_.Get();
+}
+inline void PROBUFF_GM_RECHARGE::_internal_set_m_orderid(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+
+
+  _impl_.m_orderid_.Set(value, GetArenaForAllocation());
+}
+inline std::string* PROBUFF_GM_RECHARGE::_internal_mutable_m_orderid() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.m_orderid_.Mutable( GetArenaForAllocation());
+}
+inline std::string* PROBUFF_GM_RECHARGE::release_m_orderid() {
+  // @@protoc_insertion_point(field_release:GM.PROBUFF_GM_RECHARGE.m_orderid)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.m_orderid_.Release();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.m_orderid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return released;
+}
+inline void PROBUFF_GM_RECHARGE::set_allocated_m_orderid(std::string* value) {
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.m_orderid_.SetAllocated(value, GetArenaForAllocation());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.m_orderid_.IsDefault()) {
+          _impl_.m_orderid_.Set("", GetArenaForAllocation());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:GM.PROBUFF_GM_RECHARGE.m_orderid)
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_GM_RECHARGE_RESPONSE
+
+// optional bool m_rechargeid = 1;
+inline bool PROBUFF_GM_RECHARGE_RESPONSE::has_m_rechargeid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::clear_m_rechargeid() {
+  _impl_.m_rechargeid_ = false;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline bool PROBUFF_GM_RECHARGE_RESPONSE::m_rechargeid() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_rechargeid)
+  return _internal_m_rechargeid();
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::set_m_rechargeid(bool value) {
+  _internal_set_m_rechargeid(value);
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_rechargeid)
+}
+inline bool PROBUFF_GM_RECHARGE_RESPONSE::_internal_m_rechargeid() const {
+  return _impl_.m_rechargeid_;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::_internal_set_m_rechargeid(bool value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_rechargeid_ = value;
+}
+
+// optional int64 m_roleid = 2;
+inline bool PROBUFF_GM_RECHARGE_RESPONSE::has_m_roleid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::clear_m_roleid() {
+  _impl_.m_roleid_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int64_t PROBUFF_GM_RECHARGE_RESPONSE::m_roleid() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_roleid)
+  return _internal_m_roleid();
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::set_m_roleid(::int64_t value) {
+  _internal_set_m_roleid(value);
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_roleid)
+}
+inline ::int64_t PROBUFF_GM_RECHARGE_RESPONSE::_internal_m_roleid() const {
+  return _impl_.m_roleid_;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::_internal_set_m_roleid(::int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_roleid_ = value;
+}
+
+// optional string m_orderid = 3;
+inline bool PROBUFF_GM_RECHARGE_RESPONSE::has_m_orderid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::clear_m_orderid() {
+  _impl_.m_orderid_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& PROBUFF_GM_RECHARGE_RESPONSE::m_orderid() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid)
+  return _internal_m_orderid();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void PROBUFF_GM_RECHARGE_RESPONSE::set_m_orderid(Arg_&& arg,
+                                                     Args_... args) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_orderid_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid)
+}
+inline std::string* PROBUFF_GM_RECHARGE_RESPONSE::mutable_m_orderid() {
+  std::string* _s = _internal_mutable_m_orderid();
+  // @@protoc_insertion_point(field_mutable:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid)
+  return _s;
+}
+inline const std::string& PROBUFF_GM_RECHARGE_RESPONSE::_internal_m_orderid() const {
+  return _impl_.m_orderid_.Get();
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::_internal_set_m_orderid(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+
+
+  _impl_.m_orderid_.Set(value, GetArenaForAllocation());
+}
+inline std::string* PROBUFF_GM_RECHARGE_RESPONSE::_internal_mutable_m_orderid() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.m_orderid_.Mutable( GetArenaForAllocation());
+}
+inline std::string* PROBUFF_GM_RECHARGE_RESPONSE::release_m_orderid() {
+  // @@protoc_insertion_point(field_release:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.m_orderid_.Release();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.m_orderid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return released;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::set_allocated_m_orderid(std::string* value) {
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.m_orderid_.SetAllocated(value, GetArenaForAllocation());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.m_orderid_.IsDefault()) {
+          _impl_.m_orderid_.Set("", GetArenaForAllocation());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_orderid)
+}
+
+// optional int32 m_stat = 4;
+inline bool PROBUFF_GM_RECHARGE_RESPONSE::has_m_stat() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::clear_m_stat() {
+  _impl_.m_stat_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::int32_t PROBUFF_GM_RECHARGE_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_stat)
+  return _internal_m_stat();
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::set_m_stat(::int32_t value) {
+  _internal_set_m_stat(value);
+  // @@protoc_insertion_point(field_set:GM.PROBUFF_GM_RECHARGE_RESPONSE.m_stat)
+}
+inline ::int32_t PROBUFF_GM_RECHARGE_RESPONSE::_internal_m_stat() const {
+  return _impl_.m_stat_;
+}
+inline void PROBUFF_GM_RECHARGE_RESPONSE::_internal_set_m_stat(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000008u;
   _impl_.m_stat_ = value;
 }
 

@@ -53,10 +53,25 @@ namespace ngl
 			send_actor(actor_guid::make_self(atype), pro);
 		}
 
+		template <typename T>
+		void send2role(const pack* apack, T& apro)
+		{
+			std::shared_ptr<mforward<T>> pro(new mforward<T>(apack->m_id, apro));
+			send_actor(apro.m_roleid(), pro);
+		}
+
 		template <ENUM_ACTOR MODULE,typename T>
 		bool handle(message<T>& adata)
 		{
 			send2other(MODULE, adata.m_pack, *adata.m_data);
+			return true;
+		}
+
+		// ·¢ËÍ¸øactor_role
+		template <typename T>
+		bool handle_role(message<T>& adata)
+		{
+			send2role(adata.m_pack, *adata.m_data);
 			return true;
 		}
 		

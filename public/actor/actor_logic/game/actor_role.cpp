@@ -3,6 +3,7 @@
 #include "gameclient_forward.h"
 #include "net.pb.h"
 #include "actor_roleitem.h"
+#include "drop.h"
 
 namespace ngl
 {
@@ -55,6 +56,7 @@ namespace ngl
 			true
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_ROLE_SYNC)
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
+			, dregister_fun_handle(actor_role, mforward<GM::PROBUFF_GM_RECHARGE>)
 		);
 
 		// 协议注册
@@ -94,6 +96,108 @@ namespace ngl
 		*pro->mutable_m_task() = m_task.get()->getconst();
 		send2client(pro);
 		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
+	}
+
+	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
+	{
+		static int billnoindex = 0;
+		char lbillno[128];
+		sprintf(lbillno,
+			"%05d%010d%010d%010d%02d",
+			type(), id(), arechargeid, localtime::gettime(), ++billnoindex);
+		aorder = lbillno;
+	}
+
+	bool actor_role::handle(message<pbnet::PROBUFF_NET_RECHARGE>& adata)
+	{
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>();
+		pro->set_m_rechargeid(adata.m_data->m_rechargeid());
+		const pbdb::db_role& lrole = m_info.m_role();
+		tab_recharge* tab = allcsv::tab<tab_recharge>(adata.m_data->m_rechargeid());
+		if (tab == nullptr)
+		{
+			LogLocalError("tab_recharge id[%] not find", adata.m_data->m_rechargeid());
+			pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_NotRechargeId);
+			send2client(pro);
+			return true;
+		}
+		if (tab->m_count > 0)
+		{
+			int lcount = 0;
+			for (auto& item : lrole.m_recharge())
+			{
+				if (item.m_rechargeid() == adata.m_data->m_rechargeid())
+					++lcount;
+			}
+			if (lcount > tab->m_count)
+			{
+				pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_MaxCount);
+				send2client(pro);
+				return true;
+			}
+		}
+		createorder(*pro->mutable_m_orderid(), adata.m_data->m_rechargeid());
+		pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_Success);
+		send2client(pro);
+		return true;
+	}
+
+	bool actor_role::is_first_recharge(int32_t arechargeid)
+	{
+		const pbdb::db_role& lrole = m_info.m_role();
+		int lcount = 0;
+		for (auto& item : lrole.m_recharge())
+		{
+			if (item.m_rechargeid() == arechargeid)
+				return false;
+		}
+		return true;
+	}
+
+	bool actor_role::handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata)
+	{
+		// ### 
+		auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>(adata.m_data->identifier());
+		int32_t lrechargeid = adata.m_data->data()->m_rechargeid();
+		pro->data()->set_m_rechargeid(lrechargeid);
+		tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);
+		if (tab == nullptr)
+		{
+			LogLocalError("tab_recharge id[%] not find", lrechargeid);
+			pro->data()->set_m_stat(1);
+			return true;
+		}
+		int lgold = 0;
+		lgold += tab->m_gold;
+		lgold += tab->m_bonus;
+		if (is_first_recharge(lrechargeid))
+		{
+			lgold += tab->m_firstbonus;
+		}
+
+		m_info.change_gold(lgold);
+
+
+		std::map<int, int> ldropmap;
+		if (tab->m_dropid > 0)
+		{
+			drop::droplist(tab->m_dropid, 1, ldropmap);
+			m_bag.add_item(ldropmap);
+			//drop::use(this, tab->m_dropid, 1);
+		}
+		send_actor(actor_guid::make_self(ACTOR_GM), pro);
+
+		auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
+		cpro->set_m_rechargeid(lrechargeid);
+		cpro->set_m_orderid(adata.m_data->data()->m_orderid());
+		cpro->set_m_gold(lgold);
+		for (std::pair<const int, int>& item : ldropmap)
+		{
+			cpro->mutable_m_items()->insert(item);
+		}
+		send2client(cpro);
+		
+		return true;
 	}
 
 	bool actor_role::timer_handle(message<timerparm>& adata)

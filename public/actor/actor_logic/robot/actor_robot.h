@@ -37,7 +37,7 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata);
-
+		bool handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
 		/*LOGIC_ROLE_SYNC& get()
 		{
 			return m_data;

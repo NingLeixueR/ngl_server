@@ -27,6 +27,8 @@ namespace ngl
 			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>>) & actor_gm::handle
 			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>>) & actor_gm::handle
 			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>>) & actor_gm::handle
+			, (Tfun<actor_gm, GM::PROBUFF_GM_RECHARGE>) & actor_gm::handle_role
+			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>) & actor_gm::handle
 		);
 	}
 

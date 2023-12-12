@@ -27,6 +27,11 @@ namespace ngl
 		return db()->getconst().m_id();
 	}
 
+	const pbdb::db_role& roleinfo::m_role()
+	{
+		return db()->getconst();
+	}
+
 	const pbdb::db_brief& roleinfo::m_base()
 	{
 		return db()->getconst().m_base();

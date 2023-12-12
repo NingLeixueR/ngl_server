@@ -103,6 +103,9 @@ extern db_ranklist_MItemEntry_DoNotUseDefaultTypeInternal _db_ranklist_MItemEntr
 class db_role;
 struct db_roleDefaultTypeInternal;
 extern db_roleDefaultTypeInternal _db_role_default_instance_;
+class db_role_recharge;
+struct db_role_rechargeDefaultTypeInternal;
+extern db_role_rechargeDefaultTypeInternal _db_role_recharge_default_instance_;
 class db_task;
 struct db_taskDefaultTypeInternal;
 extern db_taskDefaultTypeInternal _db_task_default_instance_;
@@ -164,6 +167,8 @@ template <>
 ::pbdb::db_ranklist_MItemEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_ranklist_MItemEntry_DoNotUse>(Arena*);
 template <>
 ::pbdb::db_role* Arena::CreateMaybeMessage<::pbdb::db_role>(Arena*);
+template <>
+::pbdb::db_role_recharge* Arena::CreateMaybeMessage<::pbdb::db_role_recharge>(Arena*);
 template <>
 ::pbdb::db_task* Arena::CreateMaybeMessage<::pbdb::db_task>(Arena*);
 template <>
@@ -595,6 +600,7 @@ class db_brief final :
     kMLvFieldNumber = 3,
     kMMoneygoldFieldNumber = 4,
     kMMoneysilverFieldNumber = 5,
+    kMVipFieldNumber = 6,
   };
   // optional string m_name = 2;
   bool has_m_name() const;
@@ -661,6 +667,17 @@ class db_brief final :
   void _internal_set_m_moneysilver(::int32_t value);
 
   public:
+  // optional int32 m_vip = 6;
+  bool has_m_vip() const;
+  void clear_m_vip() ;
+  ::int32_t m_vip() const;
+  void set_m_vip(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_vip() const;
+  void _internal_set_m_vip(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:pbdb.db_brief)
  private:
   class _Internal;
@@ -676,6 +693,177 @@ class db_brief final :
     ::int32_t m_lv_;
     ::int32_t m_moneygold_;
     ::int32_t m_moneysilver_;
+    ::int32_t m_vip_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_db_2eproto;
+};// -------------------------------------------------------------------
+
+class db_role_recharge final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_role.recharge) */ {
+ public:
+  inline db_role_recharge() : db_role_recharge(nullptr) {}
+  ~db_role_recharge() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR db_role_recharge(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  db_role_recharge(const db_role_recharge& from);
+  db_role_recharge(db_role_recharge&& from) noexcept
+    : db_role_recharge() {
+    *this = ::std::move(from);
+  }
+
+  inline db_role_recharge& operator=(const db_role_recharge& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline db_role_recharge& operator=(db_role_recharge&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const db_role_recharge& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const db_role_recharge* internal_default_instance() {
+    return reinterpret_cast<const db_role_recharge*>(
+               &_db_role_recharge_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(db_role_recharge& a, db_role_recharge& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(db_role_recharge* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(db_role_recharge* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  db_role_recharge* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<db_role_recharge>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const db_role_recharge& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const db_role_recharge& from) {
+    db_role_recharge::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(db_role_recharge* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "pbdb.db_role.recharge";
+  }
+  protected:
+  explicit db_role_recharge(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRechargeidFieldNumber = 1,
+    kMUtcFieldNumber = 2,
+  };
+  // optional int32 m_rechargeid = 1;
+  bool has_m_rechargeid() const;
+  void clear_m_rechargeid() ;
+  ::int32_t m_rechargeid() const;
+  void set_m_rechargeid(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_rechargeid() const;
+  void _internal_set_m_rechargeid(::int32_t value);
+
+  public:
+  // optional int32 m_utc = 2;
+  bool has_m_utc() const;
+  void clear_m_utc() ;
+  ::int32_t m_utc() const;
+  void set_m_utc(::int32_t value);
+
+  private:
+  ::int32_t _internal_m_utc() const;
+  void _internal_set_m_utc(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:pbdb.db_role.recharge)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::int32_t m_rechargeid_;
+    ::int32_t m_utc_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_db_2eproto;
@@ -737,7 +925,7 @@ class db_role final :
                &_db_role_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(db_role& a, db_role& b) {
     a.Swap(&b);
@@ -806,12 +994,35 @@ class db_role final :
 
   // nested types ----------------------------------------------------
 
+  typedef db_role_recharge recharge;
+
   // accessors -------------------------------------------------------
 
   enum : int {
+    kMRechargeFieldNumber = 3,
     kMBaseFieldNumber = 2,
     kMIdFieldNumber = 1,
   };
+  // repeated .pbdb.db_role.recharge m_recharge = 3;
+  int m_recharge_size() const;
+  private:
+  int _internal_m_recharge_size() const;
+
+  public:
+  void clear_m_recharge() ;
+  ::pbdb::db_role_recharge* mutable_m_recharge(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge >*
+      mutable_m_recharge();
+  private:
+  const ::pbdb::db_role_recharge& _internal_m_recharge(int index) const;
+  ::pbdb::db_role_recharge* _internal_add_m_recharge();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_role_recharge>& _internal_m_recharge() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_role_recharge>* _internal_mutable_m_recharge();
+  public:
+  const ::pbdb::db_role_recharge& m_recharge(int index) const;
+  ::pbdb::db_role_recharge* add_m_recharge();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge >&
+      m_recharge() const;
   // optional .pbdb.db_brief m_base = 2;
   bool has_m_base() const;
   void clear_m_base() ;
@@ -847,6 +1058,7 @@ class db_role final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge > m_recharge_;
     ::pbdb::db_brief* m_base_;
     ::int64_t m_id_;
   };
@@ -910,7 +1122,7 @@ class item final :
                &_item_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(item& a, item& b) {
     a.Swap(&b);
@@ -1143,7 +1355,7 @@ class db_bag final :
                &_db_bag_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(db_bag& a, db_bag& b) {
     a.Swap(&b);
@@ -1337,7 +1549,7 @@ class db_keyvalue final :
                &_db_keyvalue_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(db_keyvalue& a, db_keyvalue& b) {
     a.Swap(&b);
@@ -1540,7 +1752,7 @@ class mailitem final :
                &_mailitem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(mailitem& a, mailitem& b) {
     a.Swap(&b);
@@ -1710,7 +1922,7 @@ class mail final :
                &_mail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(mail& a, mail& b) {
     a.Swap(&b);
@@ -1988,7 +2200,7 @@ class db_mail final :
                &_db_mail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(db_mail& a, db_mail& b) {
     a.Swap(&b);
@@ -2169,7 +2381,7 @@ class db_guild final :
                &_db_guild_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(db_guild& a, db_guild& b) {
     a.Swap(&b);
@@ -2385,7 +2597,7 @@ class db_notice final :
                &_db_notice_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(db_notice& a, db_notice& b) {
     a.Swap(&b);
@@ -2591,7 +2803,7 @@ class rankitem final :
                &_rankitem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(rankitem& a, rankitem& b) {
     a.Swap(&b);
@@ -2821,7 +3033,7 @@ class db_ranklist final :
                &_db_ranklist_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(db_ranklist& a, db_ranklist& b) {
     a.Swap(&b);
@@ -3002,7 +3214,7 @@ class db_activity_data_drawcompliance final :
                &_db_activity_data_drawcompliance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(db_activity_data_drawcompliance& a, db_activity_data_drawcompliance& b) {
     a.Swap(&b);
@@ -3206,7 +3418,7 @@ class db_activity_data final :
                &_db_activity_data_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(db_activity_data& a, db_activity_data& b) {
     a.Swap(&b);
@@ -3427,7 +3639,7 @@ class db_activity final :
                &_db_activity_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(db_activity& a, db_activity& b) {
     a.Swap(&b);
@@ -3608,7 +3820,7 @@ class db_task_data_schedule final :
                &_db_task_data_schedule_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(db_task_data_schedule& a, db_task_data_schedule& b) {
     a.Swap(&b);
@@ -3811,7 +4023,7 @@ class db_task_data final :
                &_db_task_data_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    22;
 
   friend void swap(db_task_data& a, db_task_data& b) {
     a.Swap(&b);
@@ -4064,7 +4276,7 @@ class db_task final :
                &_db_task_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    25;
 
   friend void swap(db_task& a, db_task& b) {
     a.Swap(&b);
@@ -4604,6 +4816,85 @@ inline void db_brief::_internal_set_m_moneysilver(::int32_t value) {
   _impl_.m_moneysilver_ = value;
 }
 
+// optional int32 m_vip = 6;
+inline bool db_brief::has_m_vip() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
+inline void db_brief::clear_m_vip() {
+  _impl_.m_vip_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000020u;
+}
+inline ::int32_t db_brief::m_vip() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_brief.m_vip)
+  return _internal_m_vip();
+}
+inline void db_brief::set_m_vip(::int32_t value) {
+  _internal_set_m_vip(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_brief.m_vip)
+}
+inline ::int32_t db_brief::_internal_m_vip() const {
+  return _impl_.m_vip_;
+}
+inline void db_brief::_internal_set_m_vip(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000020u;
+  _impl_.m_vip_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// db_role_recharge
+
+// optional int32 m_rechargeid = 1;
+inline bool db_role_recharge::has_m_rechargeid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline void db_role_recharge::clear_m_rechargeid() {
+  _impl_.m_rechargeid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::int32_t db_role_recharge::m_rechargeid() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_role.recharge.m_rechargeid)
+  return _internal_m_rechargeid();
+}
+inline void db_role_recharge::set_m_rechargeid(::int32_t value) {
+  _internal_set_m_rechargeid(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_role.recharge.m_rechargeid)
+}
+inline ::int32_t db_role_recharge::_internal_m_rechargeid() const {
+  return _impl_.m_rechargeid_;
+}
+inline void db_role_recharge::_internal_set_m_rechargeid(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_rechargeid_ = value;
+}
+
+// optional int32 m_utc = 2;
+inline bool db_role_recharge::has_m_utc() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline void db_role_recharge::clear_m_utc() {
+  _impl_.m_utc_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int32_t db_role_recharge::m_utc() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_role.recharge.m_utc)
+  return _internal_m_utc();
+}
+inline void db_role_recharge::set_m_utc(::int32_t value) {
+  _internal_set_m_utc(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_role.recharge.m_utc)
+}
+inline ::int32_t db_role_recharge::_internal_m_utc() const {
+  return _impl_.m_utc_;
+}
+inline void db_role_recharge::_internal_set_m_utc(::int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_utc_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // db_role
@@ -4718,6 +5009,54 @@ inline void db_role::set_allocated_m_base(::pbdb::db_brief* m_base) {
   }
   _impl_.m_base_ = m_base;
   // @@protoc_insertion_point(field_set_allocated:pbdb.db_role.m_base)
+}
+
+// repeated .pbdb.db_role.recharge m_recharge = 3;
+inline int db_role::_internal_m_recharge_size() const {
+  return _impl_.m_recharge_.size();
+}
+inline int db_role::m_recharge_size() const {
+  return _internal_m_recharge_size();
+}
+inline void db_role::clear_m_recharge() {
+  _internal_mutable_m_recharge()->Clear();
+}
+inline ::pbdb::db_role_recharge* db_role::mutable_m_recharge(int index) {
+  // @@protoc_insertion_point(field_mutable:pbdb.db_role.m_recharge)
+  return _internal_mutable_m_recharge()->Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge >*
+db_role::mutable_m_recharge() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_role.m_recharge)
+  return _internal_mutable_m_recharge();
+}
+inline const ::pbdb::db_role_recharge& db_role::_internal_m_recharge(int index) const {
+  return _internal_m_recharge().Get(index);
+}
+inline const ::pbdb::db_role_recharge& db_role::m_recharge(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_role.m_recharge)
+  return _internal_m_recharge(index);
+}
+inline ::pbdb::db_role_recharge* db_role::_internal_add_m_recharge() {
+  return _internal_mutable_m_recharge()->Add();
+}
+inline ::pbdb::db_role_recharge* db_role::add_m_recharge() {
+  ::pbdb::db_role_recharge* _add = _internal_add_m_recharge();
+  // @@protoc_insertion_point(field_add:pbdb.db_role.m_recharge)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge >&
+db_role::m_recharge() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_role.m_recharge)
+  return _internal_m_recharge();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_role_recharge>&
+db_role::_internal_m_recharge() const {
+  return _impl_.m_recharge_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pbdb::db_role_recharge>*
+db_role::_internal_mutable_m_recharge() {
+  return &_impl_.m_recharge_;
 }
 
 // -------------------------------------------------------------------
