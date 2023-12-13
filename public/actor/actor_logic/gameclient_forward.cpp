@@ -45,6 +45,7 @@ namespace ngl
 			, null<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>
 			, null<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>
 			, null<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>
+			, null<pbnet::PROBUFF_NET_ERROR_RESPONSE>
 		);
 	}
 }

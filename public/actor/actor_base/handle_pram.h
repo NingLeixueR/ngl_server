@@ -45,6 +45,7 @@ namespace ngl
 
 		using forwardtype = std::function<void(std::map<i32_serverid, actor_node_session>&, std::map<actor_guid, i32_serverid>&, handle_pram&)>;
 		forwardtype				m_forwardfun;	// 转发函数
+		std::function<void()>	m_failfun;		// 如何actor_client都找不到目标actor则调用
 
 		static i32_sessionid get_session(i32_serverid aserverid);
 		static i32_serverid get_server(i64_actorid aactorid);
@@ -77,7 +78,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<T>& adata)
+		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -87,10 +88,11 @@ namespace ngl
 			apram.m_forwardfun = nullptr;
 			if (IS_FORWARDFUN)
 				make_forwardfun<T, IS_SEND>(aid, arid, apram);
+			apram.m_failfun = afailfun;
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
-		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata)
+		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -100,6 +102,7 @@ namespace ngl
 			apram.m_forwardfun = nullptr;
 			if (IS_CLIENT)
 				make_client<T, IS_SEND>(aid, arid, apram);
+			apram.m_failfun = afailfun;
 		}
 
 		static void create_pack(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<pack>& apack)
@@ -170,6 +173,8 @@ namespace ngl
 					}
 					return true;
 				}
+				if (adata.m_failfun != nullptr)
+					adata.m_failfun();
 				//LogLocalWarn("#handle_pram_send[%][%][%]", actor_guid::name(aactorid), actor_guid::type(aactorid), actor_guid::id(aactorid));
 				return false;
 			}

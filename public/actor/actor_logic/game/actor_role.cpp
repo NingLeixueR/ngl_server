@@ -4,6 +4,8 @@
 #include "net.pb.h"
 #include "actor_roleitem.h"
 #include "drop.h"
+#include "manage_curl.h"
+#include "ojson.h"
 
 namespace ngl
 {
@@ -63,11 +65,46 @@ namespace ngl
 		gameclient_forward::c2g();
 	}
 
+	void actor_role::loginpay()
+	{
+		// ### 检查是否有充值未发货
+		ngl::_http* lhttp = ngl::manage_curl::make_http();
+		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+		ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_login.php");
+
+		std::stringstream lstream;
+		lstream << "roleid=" << id_guid();
+
+		ngl::manage_curl::set_param(*lhttp, lstream.str());
+		ngl::manage_curl::set_callback(*lhttp, [](int, _http& ahttp)
+			{
+				ojson ltempjson(ahttp.m_recvdata.c_str());
+				std::pair<const char*, const char*> orderid("orderid", "");
+				if (ltempjson >> orderid == false)
+					return;
+				std::pair<const char*, int32_t> rechargeid("rechargeid", 0);
+				if (ltempjson >> rechargeid == false)
+					return;
+				std::pair<const char*, int64_t> roleid("roleid", 0);
+				if (ltempjson >> roleid == false)
+					return;
+				auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE>();
+				auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE>>(-1, prot);
+				pro->data()->set_m_orderid(orderid.second);
+				pro->data()->set_m_rechargeid(rechargeid.second);
+				pro->data()->set_m_roleid(roleid.second);
+				actor::static_send_actor(roleid.second, actor_guid::make(), pro);
+			});
+		ngl::manage_curl::getInstance().send(lhttp);
+	}
+
 	void actor_role::loaddb_finish(bool adbishave)
 	{
 		LogLocalError("actor_role###loaddb_finish#[%]", actor_guid(id_guid()));
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
+		loginpay();
 	}
 
 	void actor_role::handle_after()
@@ -104,7 +141,7 @@ namespace ngl
 		char lbillno[128];
 		sprintf(lbillno,
 			"%05d%010d%010d%010d%02d",
-			type(), id(), arechargeid, localtime::gettime(), ++billnoindex);
+			area(), id(), arechargeid, localtime::gettime(), ++billnoindex);
 		aorder = lbillno;
 	}
 
@@ -185,7 +222,10 @@ namespace ngl
 			m_bag.add_item(ldropmap);
 			//drop::use(this, tab->m_dropid, 1);
 		}
-		send_actor(actor_guid::make_self(ACTOR_GM), pro);
+		if (adata.m_data->identifier() > 0)
+		{
+			send_actor(actor_guid::make_self(ACTOR_GM), pro);
+		}
 
 		auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
 		cpro->set_m_rechargeid(lrechargeid);
@@ -196,6 +236,21 @@ namespace ngl
 			cpro->mutable_m_items()->insert(item);
 		}
 		send2client(cpro);
+
+		// ### 发货成功上报gm ###
+		ngl::_http* lhttp = ngl::manage_curl::make_http();
+		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+		ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
+
+		std::stringstream lstream;
+		lstream
+			<< "orderid=" << adata.m_data->data()->m_orderid()
+			<< "&gm=0"
+			<< "&stat=0";
+
+		ngl::manage_curl::set_param(*lhttp, lstream.str());
+		ngl::manage_curl::getInstance().send(lhttp);
 		
 		return true;
 	}

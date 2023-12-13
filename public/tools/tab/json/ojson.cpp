@@ -21,78 +21,78 @@ namespace ngl
 	}
 
 
-	ojson& ojson::operator >> (std::pair<const char*, int8_t>& adata)
+	bool ojson::operator >> (std::pair<const char*, int8_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, int16_t>& adata)
+	bool ojson::operator >> (std::pair<const char*, int16_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, int32_t>& adata)
+	bool ojson::operator >> (std::pair<const char*, int32_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, int64_t>& adata)
+	bool ojson::operator >> (std::pair<const char*, int64_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, uint8_t>& adata) 
+	bool ojson::operator >> (std::pair<const char*, uint8_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, uint16_t>& adata) 
+	bool ojson::operator >> (std::pair<const char*, uint16_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, uint32_t>& adata) 
+	bool ojson::operator >> (std::pair<const char*, uint32_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, uint64_t>& adata)
+	bool ojson::operator >> (std::pair<const char*, uint64_t>& adata)
 	{
 		return _fun_number(adata);
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, float>& adata)
+	bool ojson::operator >> (std::pair<const char*, float>& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 		if (nullptr == ret || ret->type != cJSON_Number)
-			return *this;
+			return false;
 		adata.second = (float)ret->valuedouble;
-		return *this;
+		return true;
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, double>& adata)
+	bool ojson::operator >> (std::pair<const char*, double>& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 		if (nullptr == ret || ret->type != cJSON_Number)
-			return *this;
+			return false;
 		adata.second = ret->valuedouble;
-		return *this;
+		return true;
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, const char*>& adata)
+	bool ojson::operator >> (std::pair<const char*, const char*>& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 		if (nullptr == ret || ret->type != cJSON_String)
-			return *this;
+			return false;
 		adata.second = ret->valuestring;
-		return *this;
+		return true;
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, bool>& adata) 
+	bool ojson::operator >> (std::pair<const char*, bool>& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 		if (nullptr == ret)
-			return *this;
+			return false;
 		if (ret->type != cJSON_False)
 		{
 			adata.second = false;
@@ -101,26 +101,26 @@ namespace ngl
 		{
 			adata.second = true;
 		}
-		return *this;
+		return true;
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, json>& adata) 
+	bool ojson::operator >> (std::pair<const char*, json>& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 		if (nullptr == ret || ret->type != cJSON_Object)
-			return *this;
+			return false;
 		adata.second.set(ret);
-		return *this;
+		return true;
 	}
 
-	ojson& ojson::operator >> (std::pair<const char*, cJSON*>& adata) 
+	bool ojson::operator >> (std::pair<const char*, cJSON*>& adata) 
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 		if (nullptr == ret)
-			return *this;
+			return false;
 		if (ret->type == cJSON_Object || ret->type == cJSON_Array)
 			adata.second = ret;
-		return *this;
+		return true;
 	}
 
 

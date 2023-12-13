@@ -78,6 +78,15 @@ namespace ngl
 					message<pbnet::PROBUFF_NET_SWITCH_LINE> lmessage(0, nullptr, &pro);
 					role->handle(lmessage);
 				};
+			lcmd["/createorder"] = [this](actor_role* role, const char* aparm)
+				{
+					std::string lorderid;
+					role->createorder(lorderid, 1989);
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR_RESPONSE>();
+					pro->set_m_errnum(0);
+					pro->set_m_errmessage(lorderid);
+					role->send2client(pro);
+				};
 		}
 		
 		std::function<void(actor_role*, const char*)>* lfun = tools::findmap(lcmd, lvec[0]);

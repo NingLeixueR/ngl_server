@@ -225,6 +225,14 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
+		template <typename T, bool IS_SEND = true>
+		void send_actor(const actor_guid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		{
+			handle_pram lpram;
+			handle_pram::create<T, IS_SEND>(lpram, aguid, guid(), adata, afailfun);
+			push_task_id(aguid, lpram, true);
+		}
+
 		// 向指定actor发送pack
 		void send_actor_pack(const actor_guid& aguid, std::shared_ptr<pack>& adata)
 		{
@@ -250,6 +258,15 @@ namespace ngl
 			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
+
+		template <typename T, bool IS_SEND = true>
+		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		{
+			handle_pram lpram;
+			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata, afailfun);
+			push_task_id(aguid, lpram, true);
+		}
+
 #pragma region network_strat_group
 	private:
 		struct group_info

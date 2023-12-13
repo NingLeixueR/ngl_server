@@ -16,6 +16,7 @@
 #include "manage_csv.h"
 #include "gm.pb.h"
 #include "init_protobuf.h"
+#include "manage_curl.h"
 
 namespace ngl
 {
@@ -54,10 +55,10 @@ namespace ngl
 		}
 
 		template <typename T>
-		void send2role(const pack* apack, T& apro)
+		void send2role(const pack* apack, T& apro, const std::function<void()>& afailfun)
 		{
 			std::shared_ptr<mforward<T>> pro(new mforward<T>(apack->m_id, apro));
-			send_actor(apro.m_roleid(), pro);
+			send_actor(apro.m_roleid(), pro, afailfun);
 		}
 
 		template <ENUM_ACTOR MODULE,typename T>
@@ -67,11 +68,40 @@ namespace ngl
 			return true;
 		}
 
+		template <typename T>
+		bool handle_role_fail(const message<T>& adata)
+		{
+			return true;
+		}
+
+		bool handle_role_fail(const message<GM::PROBUFF_GM_RECHARGE>& adata)
+		{
+			// ### 玩家不在线 记录订单
+			ngl::_http* lhttp = ngl::manage_curl::make_http();
+			ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+			ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
+
+			std::stringstream lstream;
+			lstream
+				<< "orderid=" << adata.m_data->m_orderid()
+				<< "&gm=0"
+				<< "&stat=1";
+
+			ngl::manage_curl::set_param(*lhttp, lstream.str());
+			ngl::manage_curl::getInstance().send(lhttp);
+			return true;
+		}
+
 		// 发送给actor_role
 		template <typename T>
 		bool handle_role(message<T>& adata)
 		{
-			send2role(adata.m_pack, *adata.m_data);
+			// ### actor_role 可能不在线
+			send2role(adata.m_pack, *adata.m_data, [this, adata]()
+				{
+					handle_role_fail(adata);
+				});
 			return true;
 		}
 		

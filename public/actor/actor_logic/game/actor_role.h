@@ -113,6 +113,9 @@ namespace ngl
 			return true;
 		}
 
+		// 登录请求未发货充值
+		void loginpay();
+
 		// CMD 协议
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);

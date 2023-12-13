@@ -15,90 +15,94 @@ namespace ngl
 		virtual ~ojson();
 
 		template <typename T>
-		ojson& _fun_number(std::pair<const char*, T>& adata)
+		bool _fun_number(std::pair<const char*, T>& adata)
 		{
 			cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 			if (nullptr == ret || ret->type != cJSON_Number)
-				return *this;
+				return false;
 			adata.second = ret->valueint;
-			return *this;
+			return true;
 		}
 
-		ojson& operator >> (std::pair<const char*, int8_t>& adata);
-		ojson& operator >> (std::pair<const char*, int16_t>& adata);
-		ojson& operator >> (std::pair<const char*, int32_t>& adata);
-		ojson& operator >> (std::pair<const char*, int64_t>& adata);
-		ojson& operator >> (std::pair<const char*, uint8_t>& adata);
-		ojson& operator >> (std::pair<const char*, uint16_t>& adata);
-		ojson& operator >> (std::pair<const char*, uint32_t>& adata);
-		ojson& operator >> (std::pair<const char*, uint64_t>& adata);
-		ojson& operator >> (std::pair<const char*, float>& adata);
-		ojson& operator >> (std::pair<const char*, double>& adata);
-		ojson& operator >> (std::pair<const char*, const char*>& adata);
-		ojson& operator >> (std::pair<const char*, bool>& adata);
-		ojson& operator >> (std::pair<const char*, json>& adata);
-		ojson& operator >> (std::pair<const char*, cJSON*>& adata);
+		bool operator >> (std::pair<const char*, int8_t>& adata);
+		bool operator >> (std::pair<const char*, int16_t>& adata);
+		bool operator >> (std::pair<const char*, int32_t>& adata);
+		bool operator >> (std::pair<const char*, int64_t>& adata);
+		bool operator >> (std::pair<const char*, uint8_t>& adata);
+		bool operator >> (std::pair<const char*, uint16_t>& adata);
+		bool operator >> (std::pair<const char*, uint32_t>& adata);
+		bool operator >> (std::pair<const char*, uint64_t>& adata);
+		bool operator >> (std::pair<const char*, float>& adata);
+		bool operator >> (std::pair<const char*, double>& adata);
+		bool operator >> (std::pair<const char*, const char*>& adata);
+		bool operator >> (std::pair<const char*, bool>& adata);
+		bool operator >> (std::pair<const char*, json>& adata);
+		bool operator >> (std::pair<const char*, cJSON*>& adata);
 
 		//// --- 结构体
 		template <typename T>
-		ojson& operator >> (std::pair<const char*, T>& adata)
+		bool operator >> (std::pair<const char*, T>& adata)
 		{
 			cJSON* ljson = nullptr;
-			(*this) >> std::make_pair(adata.first, ljson);
+			if ((*this) >> std::make_pair(adata.first, ljson) == false)
+				return false;
 			ojson ltemp;
 			ltemp.set(ljson);
 			ltemp >> adata.second;
-			return (*this);
+			return true;
 		}
 
 		template <typename T>
-		ojson& _fun_number(T& adata)
+		bool _fun_number(T& adata)
 		{
 			if (m_json->type == cJSON_Number)
 			{
 				adata = m_json->valueint;
+				return true;
 			}
-			return *this;
+			return false;
 		}
 
-		ojson& operator >> (int8_t& adata)
+		bool operator >> (int8_t& adata)
 		{
 			return _fun_number(adata);
 		}
-		ojson& operator >> (int16_t& adata)
+		bool operator >> (int16_t& adata)
 		{
 			return _fun_number(adata);
 		}
-		ojson& operator >> (int32_t& adata)
+		bool operator >> (int32_t& adata)
 		{
 			return _fun_number(adata);
 		}
-		ojson& operator >> (int64_t& adata)
+		bool operator >> (int64_t& adata)
 		{
 			return _fun_number(adata);
 		}
 
-		ojson& operator >> (std::string& adata)
+		bool operator >> (std::string& adata)
 		{
 			if (m_json->type == cJSON_String)
 			{
 				adata = m_json->valuestring;
+				return true;
 			}
-			return *this;
+			return false;
 		}
 
-		ojson& operator >> (const char*& adata)
+		bool operator >> (const char*& adata)
 		{
 			if (m_json->type == cJSON_String)
 			{
 				adata = m_json->valuestring;
+				return true;
 			}
-			return *this;
+			return false;
 		}
 
 		//// --- 数组类
 		template <typename T>
-		ojson& operator >> (std::pair<const char*, std::vector<T>>& adata)
+		bool operator >> (std::pair<const char*, std::vector<T>>& adata)
 		{
 			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
 			(*this) >> lpair;
@@ -111,11 +115,11 @@ namespace ngl
 				ltemp >> lT;
 				adata.second.push_back(lT);
 			}
-			return *this;
+			return true;
 		}
 
 		template <typename T>
-		ojson& operator >> (std::pair<const char*, std::list<T>>& adata)
+		bool operator >> (std::pair<const char*, std::list<T>>& adata)
 		{
 			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
 			(*this) >> lpair;
@@ -128,11 +132,11 @@ namespace ngl
 				ltemp >> lT;
 				adata.second.push_back(lT);
 			}
-			return *this;
+			return true;
 		}
 
 		template <typename T>
-		ojson& operator >> (std::pair<const char*, std::set<T>>& adata)
+		bool operator >> (std::pair<const char*, std::set<T>>& adata)
 		{
 			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
 			(*this) >> lpair;
@@ -145,11 +149,11 @@ namespace ngl
 				ltemp >> lT;
 				adata.second.insert(lT);
 			}
-			return *this;
+			return true;
 		}
 
 		template <typename TKEY, typename TVALUE>
-		ojson& operator >> (std::pair<const char*, std::map<TKEY, TVALUE>>& adata)
+		bool operator >> (std::pair<const char*, std::map<TKEY, TVALUE>>& adata)
 		{
 			std::pair<const char*, std::list<TKEY>> lkeypair("key", std::list<TKEY>());
 			std::pair<const char*, std::list<TVALUE>> lvalpair("value", std::list<TVALUE>());
@@ -166,7 +170,7 @@ namespace ngl
 			{
 				adata.second.insert(std::make_pair(*itorkey,*itorval));
 			}
-			return *this;
+			return true;
 		}
 	};
 }

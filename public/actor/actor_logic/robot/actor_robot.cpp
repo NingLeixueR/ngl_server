@@ -116,6 +116,12 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
+	{
+		LogLocalError("[%][%]", adata.m_data->m_errnum(), adata.m_data->m_errmessage());
+		return true;
+	}
+
 	void actor_manage_robot::actor_register()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>(
