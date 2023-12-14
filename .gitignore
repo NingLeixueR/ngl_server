@@ -1,4 +1,15 @@
-3part
+3part/boost/boost
+3part/boost/doc
+3part/boost/libs
+3part/boost/boost.png
+3part/boost/Jamroot
+3part/cryptopp
+3part/curl
+3part/hiredis
+3part/mysql
+3part/protobuf
+3part/behaviac-3.6.40
+3part/3part.rar
 php/phpcode
 bin
 obj
