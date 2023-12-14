@@ -134,7 +134,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-add_subdirectory(3part)
+#add_subdirectory(3part)
 add_subdirectory(public)
 add_subdirectory(server)
 
