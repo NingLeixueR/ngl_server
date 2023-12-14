@@ -118,7 +118,7 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
 	{
-		LogLocalError("[%][%]", adata.m_data->m_errnum(), adata.m_data->m_errmessage());
+		LogLocalError("[%][%][%]", actor_guid::make_type(id_guid(), ACTOR_ROLE), adata.m_data->m_errnum(), adata.m_data->m_errmessage());
 		return true;
 	}
 

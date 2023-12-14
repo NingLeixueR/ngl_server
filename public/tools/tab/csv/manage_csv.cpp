@@ -82,7 +82,7 @@ namespace ngl
 		loadcsv<tab_card, manage_csv<tab_card>>();
 		loadcsv<tab_servers, ttab_servers>();
 		loadcsv<tab_dbload, ttab_dbload>();
-		
+		loadcsv<tab_recharge, manage_csv<tab_recharge>>();
 	}
 
 	void allcsv::add(const char* akey, csvbase* ap)

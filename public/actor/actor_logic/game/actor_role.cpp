@@ -79,22 +79,31 @@ namespace ngl
 		ngl::manage_curl::set_param(*lhttp, lstream.str());
 		ngl::manage_curl::set_callback(*lhttp, [](int, _http& ahttp)
 			{
-				ojson ltempjson(ahttp.m_recvdata.c_str());
-				std::pair<const char*, const char*> orderid("orderid", "");
-				if (ltempjson >> orderid == false)
+				if (ahttp.m_recvdata.empty())
 					return;
-				std::pair<const char*, int32_t> rechargeid("rechargeid", 0);
-				if (ltempjson >> rechargeid == false)
-					return;
-				std::pair<const char*, int64_t> roleid("roleid", 0);
-				if (ltempjson >> roleid == false)
-					return;
-				auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE>();
-				auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE>>(-1, prot);
-				pro->data()->set_m_orderid(orderid.second);
-				pro->data()->set_m_rechargeid(rechargeid.second);
-				pro->data()->set_m_roleid(roleid.second);
-				actor::static_send_actor(roleid.second, actor_guid::make(), pro);
+				try
+				{
+					ojson ltempjson(ahttp.m_recvdata.c_str());
+					std::pair<const char*, const char*> orderid("orderid", "");
+					if (ltempjson >> orderid == false)
+						return;
+					std::pair<const char*, const char*> rechargeid("rechargeid", 0);
+					if (ltempjson >> rechargeid == false)
+						return;
+					std::pair<const char*, const char*> roleid("roleid", 0);
+					if (ltempjson >> roleid == false)
+						return;
+					auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE>();
+					auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE>>(-1, prot);
+					pro->data()->set_m_orderid(orderid.second);
+					pro->data()->set_m_rechargeid(boost::lexical_cast<int32_t>(rechargeid.second));
+					pro->data()->set_m_roleid(boost::lexical_cast<int64_t>(roleid.second));
+					actor::static_send_actor(boost::lexical_cast<int64_t>(roleid.second), actor_guid::make(), pro);
+				}
+				catch (...)
+				{
+
+				}				
 			});
 		ngl::manage_curl::getInstance().send(lhttp);
 	}
@@ -194,7 +203,8 @@ namespace ngl
 	bool actor_role::handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata)
 	{
 		// ### 
-		auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>(adata.m_data->identifier());
+		auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE_RESPONSE>();
+		auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>(adata.m_data->identifier(), prot);
 		int32_t lrechargeid = adata.m_data->data()->m_rechargeid();
 		pro->data()->set_m_rechargeid(lrechargeid);
 		tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);
@@ -247,6 +257,7 @@ namespace ngl
 		lstream
 			<< "orderid=" << adata.m_data->data()->m_orderid()
 			<< "&gm=0"
+			<< "&roleid=" << id_guid()
 			<< "&stat=0";
 
 		ngl::manage_curl::set_param(*lhttp, lstream.str());

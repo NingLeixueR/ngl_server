@@ -105,7 +105,8 @@ namespace ngl
 				ahttp.log(lretvalue);
 				return;
 			}
-			ahttp.m_impl_http()->m_callback(lretvalue, ahttp);
+			if(ahttp.m_impl_http()->m_callback != nullptr)
+				ahttp.m_impl_http()->m_callback(lretvalue, ahttp);
 		}
 
 		CURLcode visit(_http& ahttp)
