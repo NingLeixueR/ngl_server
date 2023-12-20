@@ -84,6 +84,17 @@ namespace ngl
 			return nullptr;
 		}
 
+		static void foreach_server(const std::function<void(const tab_servers*)>& afun)
+		{
+			for (const auto& [_area, _vec] : m_areaofserver)
+			{
+				for (const tab_servers* iserver : _vec)
+				{
+					afun(iserver);
+				}
+			}
+		}
+
 		static void foreach_server(NODE_TYPE atype, const std::function<void(const tab_servers*)>& afun)
 		{
 			for (const auto& [_area, _vec] : m_areaofserver)

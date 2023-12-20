@@ -292,7 +292,7 @@ namespace ngl
 		{
 			auto itor = m_group.find(agroupid);
 			if (itor == m_group.end())
-				return false;
+				return;
 			if (itor->second.m_actortype != ACTOR_ROBOT)
 			{
 				handle_pram lpram;
@@ -306,10 +306,10 @@ namespace ngl
 			}
 			else
 			{
-				std::initializer_list<i64_actorid> itor(itor->second.m_actorlist);
-				send_client(itor, adata);
+				std::initializer_list<i64_actorid> ltemp(itor->second.m_actorlist);
+				send_client(ltemp, adata);
 			}
-			return true;
+			return;
 		}
 #pragma endregion
 

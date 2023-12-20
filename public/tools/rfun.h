@@ -84,7 +84,7 @@ namespace ngl
 		template <typename TDerived, typename ...TARG>
 		static void registers(Tfun<TDerived, TARG...> afun, const char* amessage = "")
 		{
-			rguid lvalues(typeid(std::remove_const<TDerived>::type).hash_code());
+			rguid lvalues(typeid(typename std::remove_const<TDerived>::type).hash_code());
 			using targ = std::tuple<typename std::remove_reference<TARG>::type...>;
 			lvalues.init(targ{});
 			m_fun[lvalues] = mame_function
@@ -97,7 +97,7 @@ namespace ngl
 		template <typename TDerived, typename ...TARG>
 		static bool handle_switch(TDerived* aeffect, TARG&&... arg)
 		{
-			rguid lvalues(typeid(std::remove_const<TDerived>::type).hash_code());
+			rguid lvalues(typeid(typename std::remove_const<TDerived>::type).hash_code());
 			lvalues.init(arg...);
 			auto itor = m_fun.find(lvalues);
 			if (itor == m_fun.end())

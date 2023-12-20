@@ -83,8 +83,8 @@ namespace ngl
 		public:
 			static void fun(db* adb, T& adata)
 			{
-				char lbuff[] =
-					"INSERT INTO %s  (%s)VALUES(%s)  ON DUPLICATE KEY UPDATE %s;";
+				//char lbuff[] =
+				//	"INSERT INTO %s  (%s)VALUES(%s)  ON DUPLICATE KEY UPDATE %s;";
 
 				//REPLACE INTO 则会先删除数据，然后再插入。
 				char lbuff[] =

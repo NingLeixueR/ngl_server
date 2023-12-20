@@ -102,7 +102,7 @@ namespace ngl
 						}
 						Catch;
 				});
-				ltemp.init_rfun<T>();
+				ltemp.template init_rfun<T>();
 				T::actor_register();
 			}Catch;
 		}

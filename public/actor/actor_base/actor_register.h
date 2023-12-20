@@ -9,15 +9,15 @@
 namespace ngl
 {
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(const std::function<void(TDerived*, T&)>& afun)
+	template <typename TTTDerived, typename T>
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(const std::function<void(TTTDerived*, T&)>& afun)
 	{
 		m_fun[init_protobuf::protocol<T>()] = alogicfun
 		{
 			.m_isdbload = false,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				afun((TDerived*)aactor, *(T*)apram.m_data.get());
+				afun((TTTDerived*)aactor, *(T*)apram.m_data.get());
 			}
 		};
 		protocol::registry_actor<T, TYPE>((ENUM_ACTOR)TDerived::ACTOR_TYPE, init_protobuf::protocol_name<T>().c_str());
@@ -25,8 +25,8 @@ namespace ngl
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_nonet(Tfun<TDerived, T> afun, bool aisload/* = false*/)
+	template <typename TTTDerived, typename T>
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
 	{
 		m_fun[init_protobuf::protocol<T>()] = alogicfun
 		{
@@ -34,23 +34,23 @@ namespace ngl
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				message<T> lmessage(athreadid, apram.m_pack.get(), (T*)apram.m_data.get());
-				(((TDerived*)(aactor))->*afun)(lmessage);
+				(((TTTDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
 		return *this;
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TDerived, T> afun, bool aisload/* = false*/)
+	template <typename TTTDerived, typename T>
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
 	{
 		rfun(afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, aisload);
 		return *this;
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename T>
-	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
+	template <typename TTTDerived, typename T>
+	arfun<TDerived, TYPE>& arfun<TDerived, TYPE>::rfun(Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
 	{
 		rfun_nonet(afun, aisload);
 		protocol::registry_actor<T, TYPE>(atype, init_protobuf::protocol_name<T>().c_str());

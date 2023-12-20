@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-12-12 16:48:39
+// 创建时间 // 创建时间 23-12-15 17:18:28
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -45,6 +45,7 @@ enum NODE_TYPE
 	RELOADCSV = 9,	// 重载分发csv服务器
 	CROSS = 10,	// 跨服服务器
 	CROSSDB = 11,	// 跨服数据库服务器
+	PUSHSERVERCONFIG = 12,	// 将服务器配置上传lbgmsys
 	FAIL = -1,	// 服务器类型错误
 };
 enum ENET_PROTOCOL
@@ -146,6 +147,7 @@ struct tab_servers
 	int32_t		m_tcount;		// 同类型服务器的序号
 	ENET_PROTOCOL		m_net;		// 服务器协议(1tcp2udp3ws)
 	std::string		m_ip;		// ip
+	std::string		m_nip;		// 内网ip
 	int16_t		m_port;		// 端口
 	int32_t		m_threadnum;		// socket线程数
 	int32_t		m_actorthreadnum;		// actor线程池线程数
@@ -158,9 +160,9 @@ struct tab_servers
 /*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	def_portocol(tab_servers, m_id, m_name, m_remarks, m_area, m_type, m_tcount, m_net, m_ip, m_port, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver)
+	def_portocol(tab_servers, m_id, m_name, m_remarks, m_area, m_type, m_tcount, m_net, m_ip, m_nip, m_port, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_net,m_ip,m_port,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver)
+	def_rcsv(m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_net,m_ip,m_nip,m_port,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver)
 };
 struct tab_dbload
 {

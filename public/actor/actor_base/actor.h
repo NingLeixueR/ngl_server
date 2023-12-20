@@ -42,7 +42,7 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
-			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().rfun_nonet<timerparm>(afun, false);
+			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
@@ -54,7 +54,7 @@ namespace ngl
 		{
 			using tloaddb = actor_db_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
-			arfun<TDerived, TYPE>::instance().rfun<tloaddb>(lpfun, true);
+			arfun<TDerived, TYPE>::instance().template rfun<TDerived, tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -68,7 +68,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun<T>(afun);
+			arfun<TDerived, TYPE>::instance().template rfun<TDerived, T>(afun);
 		}
 
 #pragma region register_actor
@@ -111,7 +111,7 @@ namespace ngl
 
 #pragma region register_actornonet
 		// ## 与register_actor类似 只不过不注册网络层
-		template <EPROTOCOL_TYPE TYPE, typename TDerived	, typename T>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, T afun)
 		{
 			arfun<TDerived, TYPE>::instance().rfun_nonet(afun, aisload);
@@ -131,7 +131,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun_forward<IsForward>( afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, false);
+			arfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>( afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>

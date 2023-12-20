@@ -62,18 +62,20 @@ namespace ngl
 			return ltemp;
 		}
 
-		template <typename T>
-		arfun& rfun(const std::function<void(TDerived*, T&)>& afun);
+		template <typename TTTDerived, typename T>
+		arfun& rfun(const std::function<void(TTTDerived*, T&)>& afun);
 
 		//// #### bool aisload = false 是否允许db数据加载完成之前处理此消息
-		template <typename T>
-		arfun& rfun(Tfun<TDerived, T> afun, bool aisload = false);
+		template <typename TTTDerived, typename T>
+		arfun& rfun(Tfun<TTTDerived, T> afun, bool aisload = false);
 
-		template <typename T>
-		arfun& rfun(Tfun<TDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
+		template <typename TTTDerived, typename T>
+		arfun& rfun(Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
 
-		template <typename T>
-		arfun& rfun_nonet(Tfun<TDerived, T> afun, bool aisload = false);
+		template <typename TTTDerived, typename T>
+		arfun& rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload = false);
+
+
 
 		template <bool BOOL, typename T>
 		arfun& rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);

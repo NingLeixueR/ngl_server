@@ -349,6 +349,49 @@ bool start_cross()
 	return true;
 }
 
+bool start_pushserverconfig()
+{
+	// 将服务器配置上传lbgmsys
+
+	//std::function<void(const ngl::tab_servers*)>
+	ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
+	std::string lgmurl;
+	if (!lpublicxml->find("gmurl", lgmurl))
+		return false;
+	std::string lpushserver;
+	if (!lpublicxml->find("push_server_config", lpushserver))
+		return false;
+	lpushserver = lgmurl + "/" + lpushserver;
+
+	ngl::ttab_servers::foreach_server([&lpushserver](const ngl::tab_servers* aserver)
+		{
+			ngl::_http* lhttp = ngl::manage_curl::make_http();
+			ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+			ngl::manage_curl::set_url(*lhttp, lpushserver);
+
+			std::stringstream lstream;
+			lstream 
+				<< "id=" << aserver->m_id
+				<< "&name=" << aserver->m_name
+				<< "&area=" << aserver->m_area
+				<< "&ip=" << aserver->m_ip
+				<< "&nip=" << aserver->m_nip
+				<< "&type=" << aserver->m_type
+				<< "&port=" << aserver->m_port;
+			std::string lstr = lstream.str();
+			ngl::manage_curl::set_param(*lhttp, lstr);
+
+			ngl::manage_curl::set_callback(*lhttp, [lstr](int, ngl::_http& ahttp)
+				{
+					LogLocalError("[%]->[%]", lstr, ahttp.m_recvdata);
+				});
+			ngl::manage_curl::getInstance().send(lhttp);
+		});
+
+	return true;
+}
+
 bool start_reloadcsv()
 {
 	LogLocalError("[%] start", "RELOADCSV");

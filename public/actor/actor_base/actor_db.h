@@ -80,12 +80,9 @@ namespace ngl
 			//加载全部数据
 			Assert(m_tab->m_isloadall);
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
-
-			std::shared_ptr<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>> pro(new actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>
-				{
-					.m_stat = true,
-					.m_over = false,
-				});
+			auto pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
+			pro->m_stat = true;
+			pro->m_over = false;
 			pro->m_data.make();
 			ngl::dbdata<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, &pro](int aindex, TDBTAB& atab)
 				{
@@ -97,11 +94,9 @@ namespace ngl
 						if (aindex % lsendmaxcount == 0)
 						{
 							actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
-							pro = std::shared_ptr<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>(new actor_db_load_response<TDBTAB_TYPE, TDBTAB>
-								{
-									.m_stat = true,
-									.m_over = false,
-								});
+							pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
+							pro->m_stat = true;
+							pro->m_over = false;
 						}
 					}
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
@@ -111,11 +106,9 @@ namespace ngl
 						if (aindex % lsendmaxcount == 0)
 						{
 							actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
-							pro = std::shared_ptr<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>(new actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>
-								{
-									.m_stat = true,
-									.m_over = false,
-								});
+							pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
+							pro->m_stat = true;
+							pro->m_over = false;
 							pro->m_data.make();
 						}
 					}
@@ -338,7 +331,7 @@ namespace ngl
 
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	template <typename TDB>
-	static void actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
+	void actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
 	{
 		if (aset.empty())
 			return;

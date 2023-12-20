@@ -14,6 +14,7 @@ php/phpcode
 bin
 obj
 lib
+php
 tools/public/rebuild.exe
 tools/public/idl/IDL.exe
 tools/public/idl/idlfile

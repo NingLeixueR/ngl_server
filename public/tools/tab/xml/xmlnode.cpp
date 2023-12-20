@@ -94,6 +94,7 @@ namespace ngl
 		em<NODE_TYPE>::set(LOG, "log");
 		em<NODE_TYPE>::set(RELOADCSV, "reloadcsv");
 		em<NODE_TYPE>::set(CROSS, "cross");
+		em<NODE_TYPE>::set(PUSHSERVERCONFIG, "pushserverconfig");
 	}
 
 	NODE_TYPE xmlnode::node_type()

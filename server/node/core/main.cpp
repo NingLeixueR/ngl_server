@@ -93,6 +93,10 @@ int main(int argc, char** argv)
 	{
 		start_cross();
 	}
+	else if (nconfig::node_type() == ngl::PUSHSERVERCONFIG)
+	{
+		start_pushserverconfig();
+	}
 
 	ngl::test_attribute();
 	 
