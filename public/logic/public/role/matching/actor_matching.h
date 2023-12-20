@@ -29,8 +29,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum { ACTOR_TYPE = ACTOR_MATCHING};
-
 		// 匹配玩法
 		bool handle(message<mforward<pbnet::PROBUFF_NET_MATCHING>>& adata);
 		// 取消玩法

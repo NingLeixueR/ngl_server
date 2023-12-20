@@ -39,8 +39,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum { ACTOR_TYPE = ACTOR_MAIL};
-
 		// ---- ACTOR_PROTOCOL_ADD_MAIL,ĞÂÔöÓÊ¼ş
 		bool handle(message<actor_protocol_add_mail>& adata)
 		{

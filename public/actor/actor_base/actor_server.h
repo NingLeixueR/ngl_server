@@ -21,8 +21,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_ADDRESS_SERVER };
-
 		// ---- [actor client -> actor server] register
 		// 注册结点
 		bool handle(message<actor_node_register>& adata);

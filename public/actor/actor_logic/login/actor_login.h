@@ -51,8 +51,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_LOGIN};
-
 		virtual void loaddb_finish(bool adbishave);
 
 		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);

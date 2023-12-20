@@ -4,6 +4,7 @@
 #include "actor_base.h"
 #include "actor_rfun.h"
 #include "impl.h"
+#include "actor_type.h"
 
 namespace ngl
 {
@@ -54,7 +55,7 @@ namespace ngl
 		{
 			using tloaddb = actor_db_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
-			arfun<TDerived, TYPE>::instance().template rfun<TDerived, tloaddb>(lpfun, true);
+			arfun<TDerived, TYPE>::instance().template rfun<actor_base, tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -131,7 +132,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>( afun, (ENUM_ACTOR)TDerived::ACTOR_TYPE, false);
+			arfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>( afun, actor_type::type<TDerived>(), false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>

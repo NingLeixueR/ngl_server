@@ -26,9 +26,7 @@ namespace ngl
 		virtual ~actor_manage_role() {}
 
 		static void actor_register();
-
-		enum { ACTOR_TYPE = ACTOR_MANAGE_ROLE};
-		
+				
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	};
 }

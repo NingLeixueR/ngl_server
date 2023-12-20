@@ -28,8 +28,6 @@ namespace ngl
 
 		virtual ~actor_reloadcsv();
 
-		enum { ACTOR_TYPE = ACTOR_RELOADCSV};
-		
 		bool handle(message<actor_reloadcsv_pro>& adata);
 
 		// ¶¨Ê±Æ÷
@@ -52,9 +50,7 @@ namespace ngl
 		static void actor_register();
 
 		virtual ~actor_reloadcsv_distribute();
-
-		enum { ACTOR_TYPE = ACTOR_RELOADCSV_DISTRIBUTE};
-		
+				
 		bool handle(message<actor_reloadcsv_verify_version>& adata);
 	};
 }

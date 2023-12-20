@@ -27,8 +27,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_GATEWAY_CLIENT2GAME};
-
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(message<actor_forward<T, TYPE, false, ngl::forward>>& adata)
 		{

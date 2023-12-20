@@ -51,6 +51,7 @@ int main(int argc, char** argv)
 	ngl::actor_typename::getInstance();
 
 	ngl::actor_base::start_broadcast();
+	ngl::actor_type::init();
 
 	assert(nconfig::node_type() != ngl::FAIL);
 	if (nconfig::node_type() == ngl::DB)

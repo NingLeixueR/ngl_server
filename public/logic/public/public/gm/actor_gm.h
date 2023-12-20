@@ -38,9 +38,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum { ACTOR_TYPE = ACTOR_GM};
-
-
 		template <typename T>
 		void sendphpclient(mforward<T>& adata)
 		{

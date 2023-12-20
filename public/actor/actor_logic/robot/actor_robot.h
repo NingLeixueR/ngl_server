@@ -26,8 +26,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_ROBOT};
-
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata);
@@ -104,8 +102,6 @@ namespace ngl
 		virtual ~actor_manage_robot() {}
 
 		static void actor_register();
-
-		enum { ACTOR_TYPE = ACTOR_MANAGE_ROBOT};
 
 		void connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun)
 		{

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-12-12 16:02:28
+// 创建时间 23-12-20 18:19:51
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -41,6 +41,7 @@
 #include "actor_server.cpp"
 #include "actor_thread.cpp"
 #include "actor_timer.cpp"
+#include "actor_type.cpp"
 #include "asio_base.cpp"
 #include "asio_tcp.cpp"
 #include "asio_timer.cpp"

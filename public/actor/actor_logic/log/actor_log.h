@@ -29,8 +29,6 @@ namespace ngl
 
 		virtual ~actor_log();
 
-		enum { ACTOR_TYPE = ACTOR_LOG};
-
 		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_logitempro& adata);
 	};
 }

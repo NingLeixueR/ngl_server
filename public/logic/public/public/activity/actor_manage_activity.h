@@ -44,8 +44,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		enum { ACTOR_TYPE = ACTOR_ACTIVITY_MANAGE};
-
 	private:
 		bool open_activity(i64_actorid m_activityid);
 		bool close_activity(i64_actorid m_activityid);

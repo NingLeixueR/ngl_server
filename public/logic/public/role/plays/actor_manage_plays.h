@@ -24,8 +24,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		enum { ACTOR_TYPE = ACTOR_MANAGE_PLAYS};
-
 		// ´´½¨Íæ·¨
 		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata);
 

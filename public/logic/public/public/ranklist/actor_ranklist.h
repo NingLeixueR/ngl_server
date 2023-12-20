@@ -44,9 +44,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum { ACTOR_TYPE = ACTOR_RANKLIST};
-
-		
 		/*bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<GM::PROBUFF_GM_GET_NOTICE>& adata)
 		{
 			using type = mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>;

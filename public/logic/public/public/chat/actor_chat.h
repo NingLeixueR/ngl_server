@@ -43,9 +43,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum { ACTOR_TYPE = ACTOR_CHAT};
-
-
 		bool handle(
 			i32_threadid athread, 
 			const std::shared_ptr<pack>& apack, 

@@ -236,8 +236,6 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db : public actor
 	{
-	public:
-		enum { ACTOR_TYPE = PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE };
 	private:
 		actor_db() :
 			actor(
@@ -245,7 +243,7 @@ namespace ngl
 				{
 					.m_parm
 					{
-						.m_type = (ENUM_ACTOR)(ACTOR_TYPE), 
+						.m_type = actor_type::type<actor_db<PROTYPE,TDBTAB_TYPE,TDBTAB>>(),
 						.m_area = ttab_servers::tab()->m_area,
 						.m_id = nconfig::m_nodeid
 					},
@@ -339,7 +337,7 @@ namespace ngl
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
 
-		ENUM_ACTOR ltype = (ENUM_ACTOR)(actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>::ACTOR_TYPE);
+		ENUM_ACTOR ltype = actor_type::type<actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
 		i64_actorid lactorid = actor_guid::make(ltype, tab_self_area, nconfig::m_nodeid);
 		actor_base::static_send_actor(lactorid, actor_guid::make(), pro);
 	}

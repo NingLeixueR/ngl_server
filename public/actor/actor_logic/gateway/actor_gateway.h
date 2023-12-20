@@ -26,8 +26,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_GATEWAY};
-
 		gateway_info m_info;
 
 		// ## ֪ͨactor_server [actorid]->[gateway server id]

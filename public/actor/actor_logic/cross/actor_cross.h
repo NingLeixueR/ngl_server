@@ -37,8 +37,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		enum { ACTOR_TYPE = ACTOR_CROSS};
-
 		// ¶¨Ê±Æ÷
 		bool timer_handle(message<timerparm>& adata);
 

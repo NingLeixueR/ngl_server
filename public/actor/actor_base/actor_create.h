@@ -27,8 +27,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_CREATE};
-
 		// 在指定[Server]上创建[Actor]
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<actor_switch_process<T>>& pro)

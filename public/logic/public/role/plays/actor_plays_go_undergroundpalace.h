@@ -15,8 +15,6 @@ namespace ngl
 
 		static void actor_register();
 
-		enum { ACTOR_TYPE = ACTOR_PLAYS_GO_UNDERGROUNDPALACE};
-
 		// 初始化玩法后调用
 		virtual void init_after() {}
 		// 玩家进入

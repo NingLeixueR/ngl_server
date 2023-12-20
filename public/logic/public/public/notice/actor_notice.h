@@ -40,8 +40,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum { ACTOR_TYPE = ACTOR_NOTICE};
-
 		void get_notice_list(GM::PROBUFF_GM_GET_NOTICE_RESPONSE& anotice)
 		{
 			for (auto& [key, value] : m_notice.data())
