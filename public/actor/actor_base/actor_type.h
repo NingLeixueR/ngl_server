@@ -2,6 +2,7 @@
 
 #include "actor_enum.h"
 
+#define NOTUSING_BOOST_TYPEINFO
 #ifndef NOTUSING_BOOST_TYPEINFO 
 # include <boost/type_index.hpp>
 # define HASH_CODE_VALUE(_TYPE)	boost::typeindex::type_id<_TYPE>().hash_code()
