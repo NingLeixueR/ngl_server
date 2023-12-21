@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <iostream>
 #include <codecvt>
+#include <cstring>
 
 
 namespace ngl

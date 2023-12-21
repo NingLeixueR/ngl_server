@@ -1,4 +1,5 @@
 #include "bit.h"
+#include <cstring>
 
 namespace ngl
 {

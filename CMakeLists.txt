@@ -10,7 +10,8 @@ set(CMAKE_CXX_STANDARD 20)
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 #set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -std=c++0x -pthread -lrt -L/usr/lib64/mysql -lmysqlclient -lcurl")
 #-lboost_thread
-set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -Wfatal-errors -std=c++20 -pthread -lrt -L/usr/lib64/mysql -L/root/lbtest/lbtest/lib -lmysqlclient -lcurl -lcryptopp -lmycorekkk -lboost -lcryptopp -I/usr/include/mysql -I/usr/include/curl -I/root/lbtest/lbtest/3part/boost/libs/atomic/src/")
+set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -Wfatal-errors -std=c++20 -march=native -msse4.1 -O3 -pthread -lrt -L/usr/lib64/mysql -L/root/lbtest/lbtest/lib -lmysqlclient -lcurl -lcryptopp -lmycorekkk -lboost -lcryptopp -I/usr/include/mysql -I/usr/include/curl -I/root/lbtest/lbtest/3part/boost/libs/atomic/src/")
+INCLUDE_DIRECTORIES(3part/boost/libs/atomic/src)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
@@ -125,16 +126,22 @@ ADD_DEFINITIONS(-DBOOST_SP_USE_PTHREADS)
 ADD_DEFINITIONS(-DBOOST_AC_USE_PTHREADS)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
-#IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/Debug)
 #LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/3part/MPI/Lib/x86)
-#ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
-#add_subdirectory(3part)
+
+
+add_subdirectory(3part)
 add_subdirectory(public)
 add_subdirectory(server)
 

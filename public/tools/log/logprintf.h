@@ -4,6 +4,7 @@
 #include "xmlnode.h"
 #include "enum2name.h"
 #include "actor_protocol.h"
+#include "logformat.h"
 
 #include <fstream>
 #include <memory>

@@ -1,4 +1,5 @@
 #include "logserialize.h"
+#include <cstring>
 
 namespace ngl
 {

@@ -1,5 +1,6 @@
 #include <codecvt>
 #include <locale>
+#include <cstring>
 #include "conversion.h"
 
 

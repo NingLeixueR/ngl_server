@@ -1,4 +1,5 @@
 #include "server_main.h"
+#include "dumper.h"
 
 Dumper lDumper;
 
@@ -38,12 +39,12 @@ int main(int argc, char** argv)
 	LogLocalError("[%]", 123);
 	LogLocalError("[456]");
 	
-	
+
+	char lname[1024] = { 0x0 };
+	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
 
 #ifdef WIN32
 	// ### 设置控制台窗口名称
-	char lname[1024] = { 0x0 };
-	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
 	SetConsoleTitle(lname);
 #endif
 	Dumper::m_excname = lname;
@@ -51,7 +52,7 @@ int main(int argc, char** argv)
 	ngl::actor_typename::getInstance();
 
 	ngl::actor_base::start_broadcast();
-	ngl::actor_type::init();
+	ngl::init_actor_type();
 
 	assert(nconfig::node_type() != ngl::FAIL);
 	if (nconfig::node_type() == ngl::DB)

@@ -8,7 +8,6 @@
 #include "db_manage.h"
 #include "actor_db_client.h"
 #include "uuid.h"
-//#include "key_value.h"
 #include "account.h"
 #include "db.pb.h"
 #include "net.pb.h"

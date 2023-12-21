@@ -1,7 +1,7 @@
 #pragma once
 
 #include "manage_csv.h"
-
+#include "nlog.h"
 
 
 namespace ngl

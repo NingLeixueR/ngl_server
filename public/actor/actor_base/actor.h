@@ -132,7 +132,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>( afun, actor_type::type<TDerived>(), false);
+			arfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>(afun, actor_type<TDerived>::type(), false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>

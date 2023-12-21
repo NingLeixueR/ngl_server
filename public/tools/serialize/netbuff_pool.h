@@ -4,6 +4,7 @@
 #include <list>
 #include "threadtools.h"
 #include "nlog.h"
+#include "time_wheel.h"
 
 namespace ngl
 {
@@ -135,6 +136,7 @@ namespace ngl
 			}
 		}
 	};
+
 
 	enum
 	{

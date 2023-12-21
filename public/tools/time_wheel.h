@@ -7,6 +7,7 @@
 #include <iostream>
 #include <array>
 #include <mutex>
+#include <cmath>
 
 #include "threadtools.h"
 #include "impl.h"

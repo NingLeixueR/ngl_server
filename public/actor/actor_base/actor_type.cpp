@@ -27,43 +27,44 @@
 
 namespace ngl
 {
-	std::multimap<size_t, ENUM_ACTOR> actor_type::m_keyval;
-
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	void initdb()
 	{
-		actor_type::inits<
+		actor_type<
 			ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
-		>((ENUM_ACTOR)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE));
+		>::inits((ENUM_ACTOR)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE));
 	}
 
-	void actor_type::init()
+	void init_actor_type()
 	{
-		inits<actor_client>(ACTOR_ADDRESS_CLIENT);
-		inits<actor_create>(ACTOR_CREATE);
-		inits<actor_server>(ACTOR_ADDRESS_SERVER);
-		inits<actor_cross>(ACTOR_CROSS);
-		inits<actor_manage_role>(ACTOR_MANAGE_ROLE);
-		inits<actor_role>(ACTOR_ROLE);
-		inits<actor_gateway>(ACTOR_GATEWAY);
-		inits<actor_gateway_client2game>(ACTOR_GATEWAY_CLIENT2GAME);
-		inits<actor_gateway_game2client>(ACTOR_GATEWAY_GAME2CLIENT);
-		inits<actor_log>(ACTOR_LOG);
-		inits<actor_login>(ACTOR_LOGIN);
-		inits<actor_reloadcsv>(ACTOR_RELOADCSV);
-		inits<actor_reloadcsv_distribute>(ACTOR_RELOADCSV_DISTRIBUTE);
-		inits<actor_robot>(ACTOR_ROBOT);
-		inits<actor_manage_robot>(ACTOR_MANAGE_ROBOT);
-		inits<actor_manage_activity>(ACTOR_ACTIVITY_MANAGE);
-		inits<actor_brief>(ACTOR_BRIEF);
-		inits<actor_chat>(ACTOR_CHAT);
-		inits<actor_gm>(ACTOR_GM);
-		inits<actor_mail>(ACTOR_MAIL);
-		inits<actor_notice>(ACTOR_NOTICE);
-		inits<actor_ranklist>(ACTOR_RANKLIST);
-		inits<actor_matching>(ACTOR_MATCHING);
-		inits<actor_manage_plays>(ACTOR_MANAGE_PLAYS);
-		inits<actor_plays_go_undergroundpalace>(ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
+#define dinit_atype(ACTORCLASS, ACTORTYPE)	actor_type<ACTORCLASS>::inits(ACTORTYPE)
+
+		dinit_atype(actor_client, ACTOR_ADDRESS_CLIENT);
+		dinit_atype(actor_create, ACTOR_CREATE);
+		dinit_atype(actor_server, ACTOR_ADDRESS_SERVER);
+		dinit_atype(actor_cross, ACTOR_ADDRESS_CLIENT);
+		dinit_atype(actor_client, ACTOR_CROSS);
+		dinit_atype(actor_manage_role, ACTOR_MANAGE_ROLE);
+		dinit_atype(actor_role, ACTOR_ROLE);
+		dinit_atype(actor_gateway, ACTOR_GATEWAY);
+		dinit_atype(actor_gateway_client2game, ACTOR_GATEWAY_CLIENT2GAME);
+		dinit_atype(actor_gateway_game2client, ACTOR_GATEWAY_GAME2CLIENT);
+		dinit_atype(actor_log, ACTOR_LOG);
+		dinit_atype(actor_login, ACTOR_LOGIN);
+		dinit_atype(actor_reloadcsv, ACTOR_RELOADCSV);
+		dinit_atype(actor_reloadcsv_distribute, ACTOR_RELOADCSV_DISTRIBUTE);
+		dinit_atype(actor_robot, ACTOR_ROBOT);
+		dinit_atype(actor_manage_robot, ACTOR_MANAGE_ROBOT);
+		dinit_atype(actor_manage_activity, ACTOR_ACTIVITY_MANAGE);
+		dinit_atype(actor_brief, ACTOR_BRIEF);
+		dinit_atype(actor_chat, ACTOR_CHAT);
+		dinit_atype(actor_gm, ACTOR_GM);
+		dinit_atype(actor_mail, ACTOR_MAIL);
+		dinit_atype(actor_notice, ACTOR_NOTICE);
+		dinit_atype(actor_ranklist, ACTOR_RANKLIST);
+		dinit_atype(actor_matching, ACTOR_MATCHING);
+		dinit_atype(actor_manage_plays, ACTOR_MANAGE_PLAYS);
+		dinit_atype(actor_plays_go_undergroundpalace, ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
 
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>();
@@ -76,6 +77,5 @@ namespace ngl
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BRIEF, pbdb::db_brief>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>();
-
 	}
 }

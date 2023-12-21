@@ -7,6 +7,7 @@
 #include <inttypes.h>
 #include <set>
 #include <vector>
+#include <memory>
 
 namespace ngl
 {
