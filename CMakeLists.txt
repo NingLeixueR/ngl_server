@@ -10,12 +10,17 @@ set(CMAKE_CXX_STANDARD 20)
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 #set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -std=c++0x -pthread -lrt -L/usr/lib64/mysql -lmysqlclient -lcurl")
 #-lboost_thread
-set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -Wfatal-errors -std=c++20 -march=native -msse4.1 -O3 -pthread -lrt -L/usr/lib64/mysql -L/root/lbtest/lbtest/lib -lmysqlclient -lcurl -lcryptopp -lmycorekkk -lboost -lcryptopp -I/usr/include/mysql -I/usr/include/curl -I/root/lbtest/lbtest/3part/boost/libs/atomic/src/")
+#set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -D_GLIBCXX_USE_CXX11_ABI=0 -Wfatal-errors -std=c++20 -march=native -msse4.1 -O3 -pthread -lrt -lprotobuf -L/usr/lib64/mysql -L/root/lbtest/lbtest/lib -lmysqlclient -lcurl -lcryptopp -lmycorekkk -lboost -I/usr/include/mysql -I/usr/include/curl -I/root/lbtest/lbtest/3part/boost/libs/atomic/src/")
+set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -D_GLIBCXX_USE_CXX11_ABI=0 -Wfatal-errors -std=c++20 -march=native -msse4.1 -O3 -pthread -lrt -lprotobuf -lmysqlclient -lcurl -lcryptopp -L/root/ngl/lib -lmycorekkk -I/usr/include/mysql -I/usr/include/curl -I/root/lbtest/lbtest/3part/boost/libs/atomic/src/")
 INCLUDE_DIRECTORIES(3part/boost/libs/atomic/src)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
+IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib/Debug)
+ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 INCLUDE_DIRECTORIES(/)
 
 INCLUDE_DIRECTORIES(3part/MPI/Include)

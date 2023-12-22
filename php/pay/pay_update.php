@@ -6,5 +6,5 @@
 	$gm = $_GET['gm'];
 	$stat = $_GET['stat'];
 	
-	update_recharge($orderid, $roleid, $gm, $stat);
+	update_recharge($orderid, $roleid, $gm, $stat, isset($_GET['islog'])? true:false);
 ?>

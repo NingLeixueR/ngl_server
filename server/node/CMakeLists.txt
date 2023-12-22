@@ -32,10 +32,11 @@ ${CORE_PROTOBUF_LIST_CSRC}
 )
 #set_target_properties
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-target_link_libraries(node mycorekkk)
 target_link_libraries(node boost)
-target_link_libraries(node hiredis)
-target_link_libraries(node cryptopp)
+#target_link_libraries(node mycorekkk)
+#target_link_libraries(node boost)
+#target_link_libraries(node hiredis)
+#target_link_libraries(node cryptopp)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")

@@ -34,21 +34,20 @@
 		return intval(substr($orderid,25,10));
 	}
 	
-	function update_recharge($orderid, $roleid, $gm, $stat)
+	function update_recharge($orderid, $roleid, $gm, $stat, bool islog)
 	{
 		$rechargeid = rechargeid($orderid);
 		$area = area($orderid);
 		$id = id($orderid);
 		$createtime = createtime($orderid);
-		echo "[{$orderid}]###[area:{$area}][id:{$id}][rechargeid:{$rechargeid}][createtime:{$createtime}]<br/>";
+		//echo "[{$orderid}]###[area:{$area}][id:{$id}][rechargeid:{$rechargeid}][createtime:{$createtime}]<br/>";
 		
 		$con = mysql_connect(DB_IP . ":" . DB_PORT, DB_USER, DB_PASS);
 		if(!$con)
 		{
-			$Result['ret'] = 1;
-			$Result['msg'] = 'Can not connect: ' . mysql_error();
-			echo json_encode($Result);
-			return;
+			if(islog)
+				echo 'Can not connect: ' . mysql_error();
+			return false;
 		}
 		
 		mysql_select_db(GMSYS, $con);
@@ -66,8 +65,19 @@
 		
 		$QueryInster = "insert into db_recharge(orderid,roleid,rechargeid,createtime,gm,stat) values ('{$orderid}', {$roleid}, {$rechargeid}, now(), {$gm}, {$stat})";
 		$QueryInster = $QueryInster." on duplicate key update gm=values(gm),stat=values(stat);";
-		mysql_query($QueryInster);
-		echo "{$QueryInster}<br/>";
+		if(mysql_query($QueryInster))
+		{
+			if(islog)
+				echo $QueryInster." success";
+			return true;
+		}
+		else
+		{
+			if(islog)
+				echo $QueryInster." fail";
+			return false;
+		}
+		
 	}
 	
 	
