@@ -36,7 +36,7 @@ namespace ngl
 	struct protobuf_data
 	{
 		std::shared_ptr<T> m_data;
-		bool m_isbinary;			// 默认序列化为二进制，只有db保存的时候序列化为xml
+		bool m_isbinary;			// 默认序列化为二进制，只有db保存的时候序列化为json
 		
 		protobuf_data()
 			: m_data(nullptr)
