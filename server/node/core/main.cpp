@@ -15,6 +15,14 @@ Dumper lDumper;
 int main(int argc, char** argv)
 {	
 	{
+		const int64_t l64 = 1234567890123456789;
+		double ldou = l64;
+		int64_t l642 = ldou;
+		return 0;
+	}
+
+
+	{
 		std::string lstr;
 		for (int i = 0; i < 5000; ++i)
 		{

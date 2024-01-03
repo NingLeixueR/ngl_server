@@ -63,7 +63,10 @@ namespace ngl
 
 	ijson& ijson::operator << (const std::pair<const char*, int64_t>& adata)
 	{
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));
+
+		double ltemp;
+		memcpy(&ltemp, &adata.second, sizeof(double));
+		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(ltemp));
 		return *this;
 	}
 
@@ -87,7 +90,9 @@ namespace ngl
 
 	ijson& ijson::operator << (const std::pair<const char*, uint64_t>& adata)
 	{
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));
+		double ltemp;
+		memcpy(&ltemp, &adata.second, sizeof(double));
+		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(ltemp));
 		return *this;
 	}
 
