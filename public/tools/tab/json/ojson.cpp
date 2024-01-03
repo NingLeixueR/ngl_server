@@ -23,42 +23,42 @@ namespace ngl
 
 	bool ojson::operator >> (std::pair<const char*, int8_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number32(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, int16_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number32(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, int32_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number32(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, int64_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number64(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, uint8_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number32(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, uint16_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number32(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, uint32_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number32(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, uint64_t>& adata)
 	{
-		return _fun_number(adata);
+		return _fun_number64(adata);
 	}
 
 	bool ojson::operator >> (std::pair<const char*, float>& adata)

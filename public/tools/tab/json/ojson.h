@@ -15,12 +15,22 @@ namespace ngl
 		virtual ~ojson();
 
 		template <typename T>
-		bool _fun_number(std::pair<const char*, T>& adata)
+		bool _fun_number32(std::pair<const char*, T>& adata)
 		{
 			cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 			if (nullptr == ret || ret->type != cJSON_Number)
 				return false;
-			adata.second = ret->valueint;
+			adata.second = (T)ret->valueint;
+			return true;
+		}
+
+		template <typename T>
+		bool _fun_number64(std::pair<const char*, T>& adata)
+		{
+			cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
+			if (nullptr == ret || ret->type != cJSON_Number)
+				return false;
+			adata.second = (T)ret->valuedouble;
 			return true;
 		}
 

@@ -5,8 +5,40 @@ Dumper lDumper;
 
 #include "rfun.h"
 
+#include "ojson.h"
+#include "ijson.h"
+#include "manage_curl.h"
+
+#include <boost/lexical_cast.hpp>
+#include "operator_file.h"
+
 int main(int argc, char** argv)
 {	
+	{
+		std::string lstr;
+		for (int i = 0; i < 5000; ++i)
+		{
+			if (i != 0)
+				lstr += '#';
+			lstr += boost::lexical_cast<std::string>(830202986 + i);
+			lstr += '*';
+			lstr += boost::lexical_cast<std::string>(8302);
+			lstr += '*';
+			lstr += boost::lexical_cast<std::string>(11277 + i);
+			lstr += '*';
+			lstr += boost::lexical_cast<std::string>(3112 + i);
+			lstr += "libohhhhh";
+			lstr += boost::lexical_cast<std::string>(4209 + i);
+		}
+		ngl::writefile lfile("1.txt");
+		lfile.write(lstr);
+	}
+	
+
+
+
+	ngl::test_manage_curl();
+
 	std::cout <<
 	typeid(pbnet::PROBUFF_NET_GET_TIME_RESPONSE).name()
 		<< std::endl;

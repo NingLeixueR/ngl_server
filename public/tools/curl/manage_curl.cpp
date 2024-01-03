@@ -1,6 +1,7 @@
 #include "manage_curl.h"
 #include <thread>
 #include "ijson.h"
+#include "md5.h"
 
 namespace ngl
 {
@@ -219,11 +220,19 @@ namespace ngl
 
 	void manage_curl::param(std::string& astrparam, const char* akey, const char* aval)
 	{
+		if (astrparam.empty() == false)
+		{
+			astrparam = astrparam + '&';
+		}
 		astrparam = astrparam + akey + "=" + aval;
 	}
 
 	void manage_curl::param(std::string& astrparam, const char* akey, int aval)
 	{
+		if (astrparam.empty() == false)
+		{
+			astrparam = astrparam + '&';
+		}
 		astrparam = astrparam + akey + "=" + boost::lexical_cast<std::string>(aval);
 	}
 
@@ -239,11 +248,10 @@ namespace ngl
 	
 	void test_manage_curl()
 	{
-		return;
 		ngl::_http* lhttp = ngl::manage_curl::make_http();
 		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTPS);
 		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_POST);
-		ngl::manage_curl::set_url(*lhttp, "https://api.vsgame.vn/cp/user_login_auth");
+		ngl::manage_curl::set_url(*lhttp, "https://xxxxx/external/index/auth");
 
 
 		std::string lparm;
@@ -253,18 +261,28 @@ namespace ngl
 		//ngl::manage_curl::param(lparm, "token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWZ1bi5nYW1lcyIsImF1ZCI6ImZpZnVuLmdhbWVzIiwiaWF0IjoxNjkzOTIwMTQ0LCJleHAiOjE2OTY1MTIxNDQsIm5iZiI6MTY5MzkyMDE0NCwicGxhdGZvcm1fdWlkIjoyOTY5NDQ4LCJwbGF0Zm9ybV9hY2NvdW50Ijoiemh1Z29uZzMiLCJnYW1lX2lkIjo0NSwiZ2FtZV91aWQiOjQzNjg1MDYsInV1aWQiOiJlZjA5Yzg1MmQ4ZjRkYWE5Y2JiNGY2MjM1MjBlNjQ1OSJ9.nXnFg3gu1DdPVWtvcq4u6SmXNse0fUQ3OyMr3QvN0JE");
 		//ngl::manage_curl::param(lparm, "uid", "2969448");
 
-		ijson ltempjson;
-		ltempjson << std::make_pair("game_id", 45);
-		ltempjson << std::make_pair("sign", "1b529b390bc85f2743bcac7ca9e60142");
-		ltempjson << std::make_pair("timestamp", 1693994993);
-		ltempjson << std::make_pair("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWZ1bi5nYW1lcyIsImF1ZCI6ImZpZnVuLmdhbWVzIiwiaWF0IjoxNjkzOTkyODUzLCJleHAiOjE2OTY1ODQ4NTMsIm5iZiI6MTY5Mzk5Mjg1MywicGxhdGZvcm1fdWlkIjoyOTY5NDQ4LCJwbGF0Zm9ybV9hY2NvdW50Ijoiemh1Z29uZzMiLCJnYW1lX2lkIjo0NSwiZ2FtZV91aWQiOjQzNjg1MDYsInV1aWQiOiJlZjA5Yzg1MmQ4ZjRkYWE5Y2JiNGY2MjM1MjBlNjQ1OSJ9.AuBDG_20qpg_9xIfpSmFE8kwVw-wUUXDzYl2UBOmUPA");
-		ltempjson << std::make_pair("uid", 2969448);
+		//ijson ltempjson;
+		//ltempjson << std::make_pair("appid", 44);
+		//ltempjson << std::make_pair("uid", 1406739);
+		//ltempjson << std::make_pair("sessionid", "i461qbg8pia3pe04fdenue1hu4");
+		
 
-		ltempjson.set_nonformatstr(true);
-		std::string lparmkkk;
-		ltempjson >> lparmkkk;
-		ngl::manage_curl::set_param(*lhttp, lparmkkk);
+		//std::string ltemp;
+		//md5(appid.uid.sessionid.login_key);
+		//ltemp = boost::lexical_cast<std::string>(44) + "1406739" + "i461qbg8pia3pe04fdenue1hu4" + "2475836ac498942dbd06bc93f143adea";
+		//ngl::md5 varMd5(ltemp);
+		//ltempjson << std::make_pair("token", varMd5.values());
 
+		//ltempjson.set_nonformatstr(true);
+		//std::string lparmkkk;
+		//ltempjson >> lparmkkk;
+		//ngl::manage_curl::set_param(*lhttp, R"({ "appid":44, "uid" : 1406739, "sessionid" : "i461qbg8pia3pe04fdenue1hu4", "token" : "677d6d7bb4edd5cc4aa80079d5c63982" })");
+		//ngl::manage_curl::set_param(*lhttp, lparmkkk);
+		ngl::manage_curl::param(lparm, "appid", 11);
+		ngl::manage_curl::param(lparm, "uid", 11111);
+		ngl::manage_curl::param(lparm, "sessionid", "xxxx");
+		ngl::manage_curl::param(lparm, "token", "11111111111111111111111111");
+		ngl::manage_curl::set_param(*lhttp, lparm);
 		bool lbool = true;
 
 		ngl::manage_curl::set_callback(*lhttp, [&lbool](int anum, ngl::_http& aparm)
