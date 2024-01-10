@@ -104,7 +104,7 @@ namespace ngl
 				options.always_print_primitive_fields = false;
 				options.preserve_proto_field_names = false;
 				std::string json;
-				bool ret = google::protobuf::json::MessageToJsonString(*adata.m_data, &json, options).ok();
+				bool ret = google::protobuf::util::MessageToJsonString(*adata.m_data, &json, options).ok();
 				if (ret)
 				{
 					int32_t len = json.size() + 1;

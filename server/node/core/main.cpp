@@ -11,48 +11,54 @@ Dumper lDumper;
 
 #include <boost/lexical_cast.hpp>
 #include "operator_file.h"
+#include "init_protobuf.h"
+
+template <typename T>
+class abc
+{};
+
+class bcd1 {};
+class bcd2 {};
 
 int main(int argc, char** argv)
 {	
+	std::cout << __FILE__ << std::endl;
+	constexpr std::string_view str = __FILE__;
+	constexpr auto pos = str.rfind("/");
+	if constexpr (pos != std::string_view::npos)
 	{
-		const int64_t l64 = 1234567890123456789;
-		double ldou = l64;
-		int64_t l642 = ldou;
-		return 0;
+		constexpr std::string_view str2 = str.substr(pos + 1);
+		std::cout << str2 << std::endl;
 	}
 
 
-	{
-		std::string lstr;
-		for (int i = 0; i < 5000; ++i)
-		{
-			if (i != 0)
-				lstr += '#';
-			lstr += boost::lexical_cast<std::string>(830202986 + i);
-			lstr += '*';
-			lstr += boost::lexical_cast<std::string>(8302);
-			lstr += '*';
-			lstr += boost::lexical_cast<std::string>(11277 + i);
-			lstr += '*';
-			lstr += boost::lexical_cast<std::string>(3112 + i);
-			lstr += "libohhhhh";
-			lstr += boost::lexical_cast<std::string>(4209 + i);
-		}
-		ngl::writefile lfile("1.txt");
-		lfile.write(lstr);
-	}
+
+	std::cout << GM::PROBUFF_GM_DEL_NOTICE().GetDescriptor()->name() << std::endl;
+
+
+	using TTT = ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>;
+	std::cout << "boost name:" <<
+		boost::typeindex::type_id_with_cvr<TTT>().name()
+		<< std::endl;
+	std::cout << "boost raw_name:" <<
+		boost::typeindex::type_id_with_cvr<TTT>().raw_name()
+		<< std::endl;
+ 	std::cout << "boost pretty_name:" <<
+		boost::typeindex::type_id_with_cvr<TTT>().pretty_name()
+		<< std::endl;
 	
-
-
-
-	ngl::test_manage_curl();
-
-	std::cout <<
-	typeid(pbnet::PROBUFF_NET_GET_TIME_RESPONSE).name()
+	std::cout << "std name:" <<
+		typeid(TTT).name()
 		<< std::endl;
-	std::cout <<
-	typeid(ngl::actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>).name()
-		<< std::endl;
+
+	//std::cout << "std raw_name:" <<
+	//	typeid(TTT).raw_name()
+	//	<< std::endl;
+
+	//std::cout <<
+	//typeid(ngl::actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>).name()
+	//	<< std::endl;
+	//return 0;
 
 	if (argc <= 1)
 	{
@@ -70,6 +76,8 @@ int main(int argc, char** argv)
 	int32_t ltcount = boost::lexical_cast<int32_t>(argv[3]);
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	nconfig::set_server(argv[1], tab->m_id);
+
+	ngl::init_actor_type();
 
 	ngl::xmlprotocol::load();
 	ngl::init_protobuf::initall();
@@ -92,7 +100,6 @@ int main(int argc, char** argv)
 	ngl::actor_typename::getInstance();
 
 	ngl::actor_base::start_broadcast();
-	ngl::init_actor_type();
 
 	assert(nconfig::node_type() != ngl::FAIL);
 	if (nconfig::node_type() == ngl::DB)

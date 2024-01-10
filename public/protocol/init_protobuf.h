@@ -70,19 +70,20 @@ namespace ngl
 		template <typename T>
 		static bool init_protobufs()
 		{
-			int32_t lprotocol = xmlprotocol::protocol(typeid(T).name());
+			static std::string lname = boost::typeindex::type_id_with_cvr<T>().pretty_name();
+			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
-				LogLocalError("init_protobuf::init_protobufs(%) not xml!!!", typeid(T).name())
+				LogLocalError("init_protobuf::init_protobufs(%) not xml!!!", lname)
 				return false;
 			}
 			m_keyval.insert(std::make_pair(HASH_CODE_VALUE(T), pinfo
 				{
 					.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF,
 					.m_protocol = lprotocol,
-					.m_name = typeid(T).name()
+					.m_name = lname
 				}));
-			LogLocalInfo("#[%][EPROTOCOL_TYPE_PROTOCOLBUFF][%]", lprotocol, typeid(T).name());
+			LogLocalInfo("#[%][EPROTOCOL_TYPE_PROTOCOLBUFF][%]", lprotocol, lname);
 			return true;
 		}
 

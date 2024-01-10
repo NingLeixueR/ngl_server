@@ -36,13 +36,21 @@ namespace ngl
 
 #define LogFomat(llogformat, NAME, FORMAT,...)  llogformat.out(NAME, FORMAT,##__VA_ARGS__)	
 
+#ifdef WIN32
+# define FindSrcPos str.rfind("\\")
+#else
+# define FindSrcPos str.rfind("/")
+#endif
+
+
+
 #define LogSrcPos														\
 	constexpr std::string_view str = __FILE__;							\
-	constexpr auto pos = str.rfind("\\");								\
+	constexpr auto pos = FindSrcPos;									\
 	if constexpr (pos != std::string_view::npos)						\
 	{																	\
 		constexpr std::string_view str2 = str.substr(pos + 1);			\
-		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);\
+		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);		\
 	}
 
 

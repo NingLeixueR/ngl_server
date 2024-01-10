@@ -469,23 +469,48 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
             m_stream << "\t<config client = \"1\" name=\"class "
                 << lnamespace << "::" << messageDescriptor->name()
                 << "\" number=\"" << lnumber << "\"/>" << std::endl;
+            m_stream << "\t<config client = \"1\" name=\""
+                << lnamespace << "::" << messageDescriptor->name()
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
             //actor_forward<TYPE, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
-            m_stream << "\t<config client = \"0\" name=\""
-                << "struct ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,1,struct ngl::forward>"
+            m_stream << "\t<config client = \"0\" name=\"struct "
+                << "ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,1,struct ngl::forward>"
                 << "\" number=\"" << lnumber << "\"/>" << std::endl;
+           // linux
             m_stream << "\t<config client = \"0\" name=\""
-                << "struct ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,0,struct ngl::forward>"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-
-            m_stream << "\t<config client = \"0\" name=\""
-                << "struct ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,1,class " << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-            m_stream << "\t<config client = \"0\" name=\""
-                << "struct ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,0,class " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "ngl::actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, true, ngl::forward>"
                 << "\" number=\"" << lnumber << "\"/>" << std::endl;
 
+            m_stream << "\t<config client = \"0\" name=\"struct "
+                << "ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,0,struct ngl::forward>"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+            // linux
             m_stream << "\t<config client = \"0\" name=\""
-                << "struct ngl::actor_module_forward<class " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "ngl::actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, false, ngl::forward>"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+
+            m_stream << "\t<config client = \"0\" name=\"struct "
+                << "ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,1,class " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+            // linux
+            m_stream << "\t<config client = \"0\" name=\""
+                << "ngl::actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, true, " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+
+            m_stream << "\t<config client = \"0\" name=\"struct "
+                << "ngl::actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,0,class " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+            // linux
+            m_stream << "\t<config client = \"0\" name=\""
+                << "ngl::actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, false, " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+
+            m_stream << "\t<config client = \"0\" name=\"struct "
+                << "ngl::actor_module_forward<class " << lnamespace << "::" << messageDescriptor->name() << ">"
+                << "\" number=\"" << lnumber << "\"/>" << std::endl;
+            // linux
+            m_stream << "\t<config client = \"0\" name=\""
+                << "ngl::actor_module_forward<" << lnamespace << "::" << messageDescriptor->name() << ">"
                 << "\" number=\"" << lnumber << "\"/>" << std::endl;
         }
        
@@ -493,6 +518,9 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     m_stream << "</con>" << std::endl;
 
     lfile.write(m_stream.str());
+
+
+
 }
 void foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int32_t& aprotocol, const char* aname)
 {
@@ -834,44 +862,42 @@ int main(int argc, char** argv)
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", "../../tools/public/proto/");
   
-    g_stream << "#pragma once" << std::endl;
-    g_stream << "#include \"actor_lua.h\"" << std::endl;
-    g_stream << "#include \"lua_db.h\"" << std::endl;
-    g_stream << "#include \"lua_net.h\"" << std::endl;
-    g_stream << "namespace ngl{" << std::endl;
+   // g_stream << "#pragma once" << std::endl;
+   // g_stream << "#include \"actor_lua.h\"" << std::endl;
+   // g_stream << "#include \"lua_db.h\"" << std::endl;
+   // g_stream << "#include \"lua_net.h\"" << std::endl;
+   // g_stream << "namespace ngl{" << std::endl;
 
-    g_stream << "   class lua_struct_register" << std::endl;
-    g_stream << "   {" << std::endl;
-    g_stream << "   public:" << std::endl;
-    g_stream << "       static void init()" << std::endl;
-    g_stream << "       {" << std::endl;
+   // g_stream << "   class lua_struct_register" << std::endl;
+   // g_stream << "   {" << std::endl;
+   // g_stream << "   public:" << std::endl;
+   // g_stream << "       static void init()" << std::endl;
+   // g_stream << "       {" << std::endl;
 
-    g_stream_sql << "/*Date:" << ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
-    g_stream_sql << std::endl;
-    g_stream_sql << " DROP Database IF EXISTS `lbtest`;" << std::endl;
-    g_stream_sql << " CREATE DATABASE lbtest default charset utf8 COLLATE utf8_general_ci;" << std::endl;
-    g_stream_sql << " use lbtest;" << std::endl;
-    g_stream_sql << std::endl;
+   // g_stream_sql << "/*Date:" << ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
+   // g_stream_sql << std::endl;
+   // g_stream_sql << " DROP Database IF EXISTS `lbtest`;" << std::endl;
+   // g_stream_sql << " CREATE DATABASE lbtest default charset utf8 COLLATE utf8_general_ci;" << std::endl;
+   // g_stream_sql << " use lbtest;" << std::endl;
+   // g_stream_sql << std::endl;
 
-   
-
-    traverseProtobuf(sourceTree, "Template", "db");
-    traverseProtobuf(sourceTree, "PB", "net");
+   // traverseProtobuf(sourceTree, "Template", "db");
+   // traverseProtobuf(sourceTree, "PB", "net");
 
 
-    g_stream << "       }" << std::endl;
-    g_stream << "   };" << std::endl;
-    g_stream << "}" << std::endl;
-    ngl::writefile lfilecpp("lua_struct_register.h");
-    lfilecpp.write(g_stream.str());
+   // g_stream << "       }" << std::endl;
+   // g_stream << "   };" << std::endl;
+   // g_stream << "}" << std::endl;
+   // ngl::writefile lfilecpp("lua_struct_register.h");
+   // lfilecpp.write(g_stream.str());
 
 
-    ngl::writefile lxml("lua.xml");
-    lxml.write(g_stream_xml.str());
+   // ngl::writefile lxml("lua.xml");
+   // lxml.write(g_stream_xml.str());
 
     // 生成对应的sql文件
-    ngl::writefile lsql("create_db.sql");
-    lsql.write(g_stream_sql.str());
+   // ngl::writefile lsql("create_db.sql");
+   // lsql.write(g_stream_sql.str());
     // 自动关联结构体为其提供协议号    
     ngl::xmlprotocol::load();
     int32_t lnumber = 0;

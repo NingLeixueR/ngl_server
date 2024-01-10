@@ -241,9 +241,9 @@ namespace ngl
 		cpro->set_m_rechargeid(lrechargeid);
 		cpro->set_m_orderid(adata.m_data->data()->m_orderid());
 		cpro->set_m_gold(lgold);
-		for (std::pair<const int, int>& item : ldropmap)
+		for(auto itor = ldropmap.begin(); itor != ldropmap.end();++itor)
 		{
-			cpro->mutable_m_items()->insert(item);
+			(*cpro->mutable_m_items())[itor->first] = itor->second;
 		}
 		send2client(cpro);
 

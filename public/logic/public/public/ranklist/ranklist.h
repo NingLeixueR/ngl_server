@@ -96,16 +96,16 @@ namespace ngl
 				lstream << "ranklist###id:[" << lranklist.m_id() << "]" << std::endl;
 
 				auto lmap = lranklist.mutable_m_item();
-				for (std::pair<const int64_t, pbdb::rankitem>& lpair : *lmap)
+				for(auto itor = lmap->begin();itor != lmap->end();++itor)
 				{
 					//m_ranklist[lpair.first] = &lpair.second;
 					switch (id)
 					{
 					case type_lv://lv
-						m_ranklv.insert(&lpair.second);
+						m_ranklv.insert(&itor->second);
 						break;
 					}
-					lstream << "\t[" << lpair.first << "]-[" << lpair.second.m_name() << "]" << std::endl;
+					lstream << "\t[" << itor->first << "]-[" << itor->second.m_name() << "]" << std::endl;
 				}
 			}
 		}

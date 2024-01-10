@@ -42,8 +42,7 @@ namespace ngl
 		dinit_atype(actor_client, ACTOR_ADDRESS_CLIENT);
 		dinit_atype(actor_create, ACTOR_CREATE);
 		dinit_atype(actor_server, ACTOR_ADDRESS_SERVER);
-		dinit_atype(actor_cross, ACTOR_ADDRESS_CLIENT);
-		dinit_atype(actor_client, ACTOR_CROSS);
+		dinit_atype(actor_cross, ACTOR_CROSS);
 		dinit_atype(actor_manage_role, ACTOR_MANAGE_ROLE);
 		dinit_atype(actor_role, ACTOR_ROLE);
 		dinit_atype(actor_gateway, ACTOR_GATEWAY);

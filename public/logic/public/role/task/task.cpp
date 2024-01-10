@@ -83,7 +83,7 @@ namespace ngl
 	{
 		pbdb::db_task& ltask = db()->get(false);
 		auto lrundatas = ltask.mutable_m_rundatas();
-		for (std::pair<const int32_t, pbdb::db_task::data>& item : *lrundatas)
+		for (auto& item : *lrundatas)
 		{
 			auto lschedules = item.second.mutable_m_schedules();
 			for (pbdb::db_task::data_schedule& itemschedules : *lschedules)
@@ -195,7 +195,7 @@ namespace ngl
 						for (int32_t val : item.m_parmint)
 							lschedules->add_m_sumint(val);
 					}
-					lrundatas->insert(lpair);
+					(*lrundatas)[lpair.first] = lpair.second;
 					get_task(true);
 				}
 			});

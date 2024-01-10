@@ -50,7 +50,8 @@ namespace ngl
 				}Catch;
 				return nullptr;
 			};
-			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+			std::string lname = aname;
+			typefun_run lrunfun = [atype, lname](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
 				actor_guid lactorguid(apack->m_head.get_actor());
 				actor_guid lrequestactorguid(apack->m_head.get_request_actor());

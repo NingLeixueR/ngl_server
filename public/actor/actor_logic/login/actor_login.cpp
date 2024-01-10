@@ -45,18 +45,18 @@ namespace ngl
 
 	void actor_login::loaddb_finish(bool adbishave)
 	{
-		for (auto& item : m_account.data())
-		{
-			const pbdb::db_account& laccount = item.second.getconst();
-			LogLocalError("[%][%] area=% id=% ",
-				laccount.m_account(),
-				laccount.m_passworld(),
-				laccount.m_passworld(),
-				laccount.m_area(),
-				actor_guid(laccount.m_roleid()).actordataid()
-			);
-		}
-
+		LogLocalError("actor_login::loaddb_finish");
+		//for (auto& item : m_account.data())
+		//{
+		//	const pbdb::db_account& laccount = item.second.getconst();
+		//	LogLocalError("[%][%] area=% id=% ",
+		//		laccount.m_account(),
+		//		laccount.m_passworld(),
+		//		laccount.m_passworld(),
+		//		laccount.m_area(),
+		//		actor_guid(laccount.m_roleid()).actordataid()
+		//	);
+		//}
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
