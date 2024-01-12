@@ -221,7 +221,11 @@ namespace ngl
 		inline void nosafe_push_task_id(ptractor& lpactor, handle_pram& apram)
 		{
 			if (lpactor->get_activity_stat() == actor_stat_close || lpactor->get_activity_stat() == actor_stat_init)
+			{
+				std::cout << "activity_stat =  " << (int)lpactor->get_activity_stat() <<" !!!" << std::endl;
 				return;
+			}
+				
 			lpactor->push(apram);
 			if (lpactor->get_activity_stat() == actor_stat_free)
 			{
@@ -253,7 +257,10 @@ namespace ngl
 			ngl_lock;
 			ptractor lpptractor = nosafe_get_actorbyid(aguid, apram, abool);
 			if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
+			{
+				std::cout << "push_task_id fail !!!" << std::endl;
 				return;
+			}				
 			nosafe_push_task_id(lpptractor, apram);
 		}
 
@@ -262,7 +269,10 @@ namespace ngl
 			ngl_lock;
 			// 单例不允许群发
 			if (enum_actor::is_signle(atype) && aotherserver)
+			{
+				std::cout << "enum_actor::is_signle("<< atype <<") && "<< aotherserver << std::endl;
 				return;
+			}
 			// 1.先发给本机上的atype
 			for (auto& [key, value] : m_actorbytype[atype])
 			{

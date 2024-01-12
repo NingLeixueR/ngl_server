@@ -82,6 +82,16 @@ int main(int argc, char** argv)
 	ngl::xmlprotocol::load();
 	ngl::init_protobuf::initall();
 
+	std::string lnameksp = "ngl::actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, ngl::forward>";
+
+	int32_t lprotocol = ngl::xmlprotocol::protocol(lnameksp);
+	if (lprotocol == -1)
+	{
+		std::cout << "\n################[ngl::actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, ngl::forward>]###################" << std::endl;
+		return 0;
+	}
+
+
 	ngl::nlog::getInstance().isinitfinish() = true;
 
 	LogLocalError("[%]", 123);

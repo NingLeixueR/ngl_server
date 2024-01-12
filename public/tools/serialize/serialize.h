@@ -20,6 +20,7 @@
 #include "varint.h"
 #include "define.h"
 #include "db.pb.h"
+#include "tools.h"
 
 #include <google/protobuf/util/json_util.h>
 
@@ -41,12 +42,24 @@ namespace ngl
 		protobuf_data()
 			: m_data(nullptr)
 			, m_isbinary(true)
-		{}
+		{
+			std::string lname;
+			std::cout << "protobuf_data<" << tools::type_name<T>(lname) << ">()" << std::endl;
+		}
 
 		protobuf_data(std::shared_ptr<T>& adata) 
 			: m_data(adata)
 			, m_isbinary(true)
-		{}
+		{
+			std::string lname;
+			std::cout << "protobuf_data<" << tools::type_name<T>(lname) << ">(std::shared_ptr<T>& adata)" << std::endl;
+		}
+
+		~protobuf_data()
+		{
+			std::string lname;
+			std::cout << "~protobuf_data<" << tools::type_name<T>(lname) << ">()" << std::endl;
+		}
 
 		void make()
 		{
@@ -57,6 +70,8 @@ namespace ngl
 		{
 			return true;
 		}
+
+
 	};
 
 	class serialize
@@ -430,34 +445,44 @@ namespace ngl
 		template <typename T>
 		bool pop(protobuf_data<std::vector<T>>& adata)
 		{
-			if (adata.m_data == nullptr)
-				adata.make();
+			//if (adata.m_data == nullptr)
+			adata.make();
 			if (adata.m_isbinary)
 			{
-				std::vector<T>& lstl = *adata.m_data;
+				//std::vector<T>& lstl = *adata.m_data;
 				int16_t lsize = 0;
 				if (pop(lsize) == false)
 					return false;
+				std::string lname;
+				std::cout << tools::type_name<T>(lname) << ": lsize = " << lsize <<std::endl;
+
 				for (int i = 0; i < lsize; ++i)
 				{
 					int32_t lbytes = 0;
 					if (pop(lbytes) == false)
 						return false;
+					std::cout << tools::type_name<T>(lname) << ": lbytes = " << lbytes << std::endl;
 					T ltemp;
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
 						return false;
+					std::string json;
+					if (tools::protostr(ltemp, json))
+					{
+						std::cout << tools::type_name<T>(lname) << "recv actor_roleinfo [%]" << json << std::endl;
+					}
 					add_bytes(lbytes);
-					lstl.push_back(ltemp);
+					(*adata.m_data).push_back(ltemp);
 				}
-			}			
+			}
+			std::cout << "#####:" << (int64_t)(adata.m_data.get()) << std::endl;
 			return true;
 		}
 
 		template <typename T>
 		bool pop(const protobuf_data<std::list<T>>& adata)
 		{
-			if (adata.m_data == nullptr)
-				adata.make();
+			//if (adata.m_data == nullptr)
+			adata.make();
 			if (adata.m_isbinary)
 			{
 				std::list<T>& lstl = adata.m_data;

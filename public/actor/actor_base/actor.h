@@ -180,7 +180,7 @@ namespace ngl
 		virtual void broadcast() {}
 
 		// 广播处理函数
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_broadcast& adata);
+		bool handle(message<actor_broadcast>& adata);
 
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion

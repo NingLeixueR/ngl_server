@@ -29,6 +29,6 @@ namespace ngl
 
 		virtual ~actor_log();
 
-		bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_logitempro& adata);
+		bool handle(message<actor_logitempro>& adata);
 	};
 }

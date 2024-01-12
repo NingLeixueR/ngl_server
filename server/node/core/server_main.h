@@ -231,6 +231,7 @@ bool start_world()
 	ngl::actor_gm::getInstance();
 	ngl::actor_mail::getInstance();
 	ngl::actor_chat::getInstance();
+	ngl::actor_brief::getInstance();
 	ngl::actor_manage_activity::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
@@ -325,7 +326,6 @@ bool start_game()
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 	ngl::actor_manage_role::getInstance();
 	ngl::actor_create::getInstance();
-	ngl::actor_brief::getInstance();
 	//ngl::actor_reloadcsv::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();

@@ -41,12 +41,32 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		bool handle(
-			i32_threadid athread, 
-			const std::shared_ptr<pack>& apack, 
-			actor_roleinfo& adata)
+		bool handle(message<actor_roleinfo>& adata)
 		{
-			m_briefdb.update(*adata.m_vecinfo.m_data.get());
+			
+			std::cout << "#####:" << (int64_t)(adata.m_data->m_vecinfo.m_data.get()) << std::endl;
+			return true;
+			if (adata.m_data->m_vecinfo.m_data == nullptr)
+			{
+				std::cout << "adata.m_vecinfo.m_data == nullptr" << std::endl;
+				return true;
+			}
+
+			if (adata.m_data->m_vecinfo.m_isbinary)
+			{
+				std::cout << "adata.m_vecinfo.m_isbinary = "<< adata.m_data->m_vecinfo.m_isbinary << std::endl;
+				//return true;
+			}
+			for (auto& item : *adata.m_data->m_vecinfo.m_data)
+			{
+				std::string json;
+				if (tools::protostr(item, json))
+				{
+					LogLocalError("recv actor_roleinfo [%]", json);
+				}
+			}
+			return true;
+			/*m_briefdb.update(*adata.m_vecinfo.m_data.get());
 
 			auto pro = std::make_shared<actor_roleinfo>();
 			*pro = adata;
@@ -55,7 +75,7 @@ namespace ngl
 		
 			actor::static_send_actor(
 			actor_guid::make(ACTOR_CHAT,ttab_servers::tab()->m_crossarea, actor_guid::none_actordataid()),
-			actor_guid::make(), pro);
+			actor_guid::make(), pro);*/
 			return true;
 		}
 

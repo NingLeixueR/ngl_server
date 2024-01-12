@@ -9,8 +9,15 @@ namespace ngl
 		auto pro = std::make_shared<actor_roleinfo>();
 		pro->m_vecinfo.make();
 		pro->m_vecinfo.m_data->resize(1);
-		pbdb::db_brief& linfo = (*pro->m_vecinfo.m_data)[0];
-		linfo = m_base();
+		//pbdb::db_brief& linfo = (*pro->m_vecinfo.m_data)[0];
+		(*pro->m_vecinfo.m_data)[0] = m_base();
+
+		std::string ljson;
+		if (tools::protostr((*pro->m_vecinfo.m_data)[0], ljson))
+		{
+			LogLocalError("roleinfo::sync_actor_roleinfo [%]", ljson);
+		}
+
 		actor::static_send_actor(actor_guid::make_self(ACTOR_BRIEF), actor_guid::make(), pro);
 	}
 

@@ -40,9 +40,9 @@ namespace ngl
 	{
 	}
 
-	bool actor_log::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_logitempro& adata)
+	bool actor_log::handle(message<actor_logitempro>& adata)
 	{
-		actor_logitem& ldata = adata.m_data;
+		actor_logitem& ldata = adata.m_data->m_data;
 		m_log->printf(ldata);
 		return true;
 	}

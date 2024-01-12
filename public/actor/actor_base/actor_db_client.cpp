@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	bool actor::handle(i32_threadid athread, const std::shared_ptr<pack>& apack, actor_broadcast& adata)
+	bool actor::handle(message<actor_broadcast>& adata)
 	{
 		// ## ±£´æÊý¾Ý
 		if (get_actor_manage_dbclient() != nullptr)

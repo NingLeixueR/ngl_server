@@ -11,6 +11,7 @@
 #include "actor_register.h"
 #include "cache_list.h"
 #include "ttab_dbload.h"
+#include <boost/type_index.hpp>
 
 namespace ngl
 {
@@ -166,6 +167,8 @@ namespace ngl
 				
 				uint64_t lrequestactor = apack->m_head.get_request_actor();
 				actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
+				std::string lname;
+				LogLocalError("load finish: [%]", tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname));
 			}
 		}
 
@@ -279,7 +282,10 @@ namespace ngl
 		
 		bool handle(message<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			//LogLocalInfo(" actor_db actor_db_load<%,%> [%]", TDBTAB_TYPE, TDBTAB::name(), adata.m_id);
+			std::string lname;
+			LogLocalError("load: [%] [%]", 
+				tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname),
+				adata.m_data->m_id);
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}

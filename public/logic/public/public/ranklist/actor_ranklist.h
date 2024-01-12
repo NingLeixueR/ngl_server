@@ -44,7 +44,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		/*bool handle(i32_threadid athread, const std::shared_ptr<pack>& apack, mforward<GM::PROBUFF_GM_GET_NOTICE>& adata)
+		/*bool handle(message<mforward<GM::PROBUFF_GM_GET_NOTICE>>& adata)
 		{
 			using type = mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>;
 			std::shared_ptr<type> pro(new type(adata.identifier()));

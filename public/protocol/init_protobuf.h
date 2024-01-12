@@ -14,6 +14,8 @@
 # define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
 #endif
 
+#define TYPE_NAME(_TYPE) boost::typeindex::type_id_with_cvr<_TYPE>().pretty_name()
+
 namespace ngl
 {
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
@@ -55,7 +57,7 @@ namespace ngl
 				{
 					.m_type = atype,
 					.m_protocol = ++lcustoms,
-					.m_name = typeid(T).name()
+					.m_name = TYPE_NAME(T)
 				}));
 			LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name());
 		}
@@ -70,7 +72,7 @@ namespace ngl
 		template <typename T>
 		static bool init_protobufs()
 		{
-			static std::string lname = boost::typeindex::type_id_with_cvr<T>().pretty_name();
+			static std::string lname = TYPE_NAME(T);
 			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
@@ -97,7 +99,7 @@ namespace ngl
 			auto itor = m_keyval.find(lcode);
 			if (itor == m_keyval.end())
 			{
-				std::cout << typeid(TRC).name() << std::endl;
+				std::cout << TYPE_NAME(TRC) << std::endl;
 				assert(init_protobufs<TRC>());
 				itor = m_keyval.find(lcode);
 				assert(itor != m_keyval.end());

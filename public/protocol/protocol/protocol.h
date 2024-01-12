@@ -36,23 +36,42 @@ namespace ngl
 		template <typename T, EPROTOCOL_TYPE TYPE>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
-			typefun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
+			typefun_pack lpackfun = [atype](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
-				Try
-				{
-					T* lp = new T();
-					std::shared_ptr<void> ltemp(lp);
-					//std::cout << typeid(T).name() << std::endl;
-					if (structbytes<T>::tostruct(apack, *lp))
+					Try
 					{
-						return ltemp;
-					}
-				}Catch;
+						std::string lname;
+					
+						LogLocalError("registry_actor pop [%][%] beg"
+							, tools::type_name<T>(lname)
+							, atype
+						);
+						T* lp = new T();
+						std::shared_ptr<void> ltemp(lp);
+						//std::cout << typeid(T).name() << std::endl;
+						if (structbytes<T>::tostruct(apack, *lp))
+						{
+							LogLocalError("registry_actor pop [%][%] end"
+								, tools::type_name<T>(lname)
+								, atype
+							);
+							return ltemp;
+						}
+					}Catch;
+				LogLocalError("registry_actor pop [%][%] fail"
+					, boost::typeindex::type_id_with_cvr<T>().pretty_name()
+					, atype
+				);
 				return nullptr;
 			};
 			std::string lname = aname;
 			typefun_run lrunfun = [atype, lname](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
+					std::string lname;
+					LogLocalError("registry_actor dosth [%][%] beg"
+						, tools::type_name<T>(lname)
+						, atype
+					);
 				actor_guid lactorguid(apack->m_head.get_actor());
 				actor_guid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);

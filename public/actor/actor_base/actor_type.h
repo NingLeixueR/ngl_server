@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "actor_enum.h"
+#include <boost/type_index.hpp>
 
 namespace ngl
 {
@@ -16,7 +17,9 @@ namespace ngl
 
 		static ENUM_ACTOR type()
 		{
-			assert(m_type == ACTOR_NONE);
+			std::string lname;
+			std::cout << tools::type_name<T>(lname) << std::endl;
+			assert(m_type != ACTOR_NONE);
 			return m_type;
 		}
 	};

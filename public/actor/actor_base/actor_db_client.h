@@ -98,6 +98,7 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db;
 
+	
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	class actor_dbclient : public actor_dbclient_base
 	{
@@ -140,6 +141,12 @@ namespace ngl
 
 			i64_actorid ldbid = actor_guid::make(actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
 			nserver->sendtoserver(dbnodeid(), ldata, ldbid, m_actor->id_guid());
+
+			std::string lname;
+			LogLocalError("actor_dbclient loaddb [%] [%]"
+				, tools::type_name<actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>>(lname)
+				, aid
+			);
 		}
 
 		actor_guid m_id;
@@ -381,6 +388,8 @@ namespace ngl
 				{//加载失败  数据库中没有数据
 					return loadfinish();
 				}
+				std::string lname;
+				LogLocalError("db load respones:[%]", tools::type_name<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname));
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch;
 			return true;
