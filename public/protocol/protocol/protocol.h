@@ -32,46 +32,40 @@ namespace ngl
 			, const char* aname);
 		static i32_serverid nodeid();
 
+
+		template <typename T>
+		static void log(const char* astr)
+		{
+			std::string lname;
+			LogLocalError("% [%] success"
+				, astr
+				, tools::type_name<T>(lname)
+			);
+		}
+
 		//// --- ACTORº‰Õ®–≈ 
 		template <typename T, EPROTOCOL_TYPE TYPE>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
 			typefun_pack lpackfun = [atype](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
-					Try
+				Try
+				{
+					std::string lname;
+					T* lp = new T();
+					std::shared_ptr<void> ltemp(lp);
+					if (structbytes<T>::tostruct(apack, *lp))
 					{
-						std::string lname;
-					
-						LogLocalError("registry_actor pop [%][%] beg"
-							, tools::type_name<T>(lname)
-							, atype
-						);
-						T* lp = new T();
-						std::shared_ptr<void> ltemp(lp);
-						//std::cout << typeid(T).name() << std::endl;
-						if (structbytes<T>::tostruct(apack, *lp))
-						{
-							LogLocalError("registry_actor pop [%][%] end"
-								, tools::type_name<T>(lname)
-								, atype
-							);
-							return ltemp;
-						}
-					}Catch;
-				LogLocalError("registry_actor pop [%][%] fail"
-					, boost::typeindex::type_id_with_cvr<T>().pretty_name()
-					, atype
-				);
+						protocol::log<T>("pop success");
+						return ltemp;
+					}
+				}Catch;
+				protocol::log<T>("pop fail");
 				return nullptr;
 			};
 			std::string lname = aname;
 			typefun_run lrunfun = [atype, lname](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
-					std::string lname;
-					LogLocalError("registry_actor dosth [%][%] beg"
-						, tools::type_name<T>(lname)
-						, atype
-					);
 				actor_guid lactorguid(apack->m_head.get_actor());
 				actor_guid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
@@ -109,16 +103,19 @@ namespace ngl
 		{
 			typefun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
-					Try
+				Try
+				{
+					using typeforward = actor_forward<T, TYPE, ISTRUE, ngl::forward>;
+					typeforward* lp = new typeforward();
+					lp->m_recvpack = apack;
+					std::shared_ptr<void> ltemp(lp);
+					if (structbytes<typeforward>::tostruct(apack, *lp, true))
 					{
-						using typeforward = actor_forward<T, TYPE, ISTRUE, ngl::forward>;
-						typeforward* lp = new typeforward();
-						lp->m_recvpack = apack;
-						std::shared_ptr<void> ltemp(lp);
-						if (structbytes<typeforward>::tostruct(apack, *lp, true) == false)
-							return nullptr;
+						protocol::log<T>("pop success");
 						return ltemp;
+					}
 				}Catch;
+				protocol::log<T>("pop fail");
 				return nullptr;
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
@@ -142,15 +139,18 @@ namespace ngl
 		{
 			typefun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
-					Try
+				Try
+				{
+					using typeforward = actor_forward<T, TYPE, ISTRUE, T>;
+					typeforward* lp = new typeforward();
+					std::shared_ptr<void> ltemp(lp);
+					if (structbytes<typeforward>::tostruct(apack, *lp))
 					{
-						using typeforward = actor_forward<T, TYPE, ISTRUE, T>;
-						typeforward* lp = new typeforward();
-						std::shared_ptr<void> ltemp(lp);
-						if (structbytes<typeforward>::tostruct(apack, *lp) == false)
-							return nullptr;
+						protocol::log<T>("pop success");
 						return ltemp;
+					}					
 				}Catch;
+				protocol::log<T>("pop fail");
 				return nullptr;
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool

@@ -44,11 +44,11 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave) {}
 
 		
-		bool handle(
-			message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
+		bool handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 		{
-			
 			pbnet::PROBUFF_NET_CHAT& recv = *adata.m_data->data();
+			LogLocalError("recv [pbnet::PROBUFF_NET_CHAT] type:%", recv.m_type());
+		
 			if (recv.m_type() == pbnet::chat_speak)
 			{
 				auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();

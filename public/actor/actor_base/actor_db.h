@@ -81,11 +81,11 @@ namespace ngl
 			//加载全部数据
 			Assert(m_tab->m_isloadall);
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
-			auto pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
-			pro->m_stat = true;
-			pro->m_over = false;
-			pro->m_data.make();
-			ngl::dbdata<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, &pro](int aindex, TDBTAB& atab)
+			actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB> pro;
+			pro.m_stat = true;
+			pro.m_over = false;
+			pro.m_data.make();
+			ngl::dbdata<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
 
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
@@ -94,29 +94,29 @@ namespace ngl
 						pro->m_data.insert(std::make_pair(lguid, atab));
 						if (aindex % lsendmaxcount == 0)
 						{
-							actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
-							pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
-							pro->m_stat = true;
-							pro->m_over = false;
+							nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
+							pro = actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
+							pro.m_stat = true;
+							pro.m_over = false;
 						}
 					}
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 					{
 						actor_guid lguid(atab.m_id());
-						pro->m_data.m_data->insert(std::make_pair(lguid, atab));
+						pro.m_data.m_data->insert(std::make_pair(lguid, atab));
 						if (aindex % lsendmaxcount == 0)
 						{
-							actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
-							pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
-							pro->m_stat = true;
-							pro->m_over = false;
-							pro->m_data.make();
+							nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
+							pro = actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
+							pro.m_stat = true;
+							pro.m_over = false;
+							pro.m_data.make();
 						}
 					}
-					
+
 				});
-			pro->m_over = true;
-			actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
+			pro.m_over = true;
+			nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
 			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name());
 		}
 
@@ -153,22 +153,22 @@ namespace ngl
 				}
 					
 				load(athreadid, lid);
-				auto pro = std::make_shared<actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>>();
-				pro->m_data.make();
-				pro->m_over = true;
+				
+				actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB> pro;
+				pro.m_data.make();
+				pro.m_over = true;
 				if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
-					pro->m_stat = ngl::dbdata<TDBTAB>::get(lid, pro->m_data[adata.m_id]);
+					pro.m_stat = ngl::dbdata<TDBTAB>::get(lid, pro.m_data[adata.m_id]);
 				}
 				if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 				{
-					pro->m_stat = ngl::dbdata<TDBTAB>::get(lid, (*pro->m_data.m_data)[adata.m_id]);
+					pro.m_stat = ngl::dbdata<TDBTAB>::get(lid, (*pro.m_data.m_data)[adata.m_id]);
 				}
-				
-				uint64_t lrequestactor = apack->m_head.get_request_actor();
-				actor::static_send_actor(lrequestactor, actor_guid::make(), pro);
+				i64_actorid lrequestactor = apack->m_head.get_request_actor();
+				nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
 				std::string lname;
-				LogLocalError("load finish: [%]", tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname));
+				LogLocalError("load finish: [%][%]", lrequestactor, tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname));
 			}
 		}
 

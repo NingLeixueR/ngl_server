@@ -389,7 +389,10 @@ namespace ngl
 					return loadfinish();
 				}
 				std::string lname;
-				LogLocalError("db load respones:[%]", tools::type_name<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname));
+				LogLocalError("db load respones:[%] recv_over[%]"
+					, tools::type_name<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname)
+					, adata.m_data->m_over? "true":"false"
+				);
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch;
 			return true;
@@ -443,7 +446,11 @@ namespace ngl
 		bool on_load_finish(bool adbishave)
 		{
 			if (m_typedbclientmap.empty())
+			{
+				LogLocalError("on_load_finish m_typedbclientmap.empty()");
 				return false;
+			}
+				
 			for (auto itor = m_typedbclientmap.begin(); itor != m_typedbclientmap.end();)
 			{
 				if (!itor->second->isload())
@@ -456,7 +463,11 @@ namespace ngl
 				itor = m_typedbclientmap.erase(itor);
 			}
 			if (!m_typedbclientmap.empty())
+			{
+				LogLocalError("on_load_finish !m_typedbclientmap.empty()");
 				return false;
+			}
+				
 			m_actor->db_component_init_data();
 			// 1、将数据修改为[裁剪修改]
 			for (auto& [_, data] : m_dbclientmap)
