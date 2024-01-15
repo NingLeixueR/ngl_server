@@ -13,7 +13,8 @@ php/phpcode
 bin/Debug
 bin/Release
 obj
-lib
+lib/Debug
+lib/Release
 php
 tools/public/rebuild.exe
 tools/public/idl/IDL.exe
