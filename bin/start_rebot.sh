@@ -1,0 +1,1 @@
+ ./node robot 1 1 libo 1 1

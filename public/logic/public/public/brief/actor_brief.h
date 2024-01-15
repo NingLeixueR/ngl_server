@@ -45,37 +45,17 @@ namespace ngl
 		{
 			
 			std::cout << "#####:" << (int64_t)(adata.m_data->m_vecinfo.m_data.get()) << std::endl;
-			return true;
-			if (adata.m_data->m_vecinfo.m_data == nullptr)
-			{
-				std::cout << "adata.m_vecinfo.m_data == nullptr" << std::endl;
-				return true;
-			}
-
-			if (adata.m_data->m_vecinfo.m_isbinary)
-			{
-				std::cout << "adata.m_vecinfo.m_isbinary = "<< adata.m_data->m_vecinfo.m_isbinary << std::endl;
-				//return true;
-			}
-			for (auto& item : *adata.m_data->m_vecinfo.m_data)
-			{
-				std::string json;
-				if (tools::protostr(item, json))
-				{
-					LogLocalError("recv actor_roleinfo [%]", json);
-				}
-			}
-			return true;
-			/*m_briefdb.update(*adata.m_vecinfo.m_data.get());
+			
+			m_briefdb.update(*adata.m_data->m_vecinfo.m_data.get());
 
 			auto pro = std::make_shared<actor_roleinfo>();
-			*pro = adata;
+			*pro = *adata.m_data;
 			actor::static_send_actor(actor_guid::make_self(ACTOR_NOTICE), actor_guid::make(), pro);
 			actor::static_send_actor(actor_guid::make_self(ACTOR_CHAT), actor_guid::make(), pro);
 		
 			actor::static_send_actor(
 			actor_guid::make(ACTOR_CHAT,ttab_servers::tab()->m_crossarea, actor_guid::none_actordataid()),
-			actor_guid::make(), pro);*/
+			actor_guid::make(), pro);
 			return true;
 		}
 

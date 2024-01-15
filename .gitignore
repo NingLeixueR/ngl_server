@@ -11,7 +11,8 @@
 3part/behaviac-3.6.40
 3part/3part.rar
 php/phpcode
-bin
+bin/Debug
+bin/Release
 obj
 lib
 php
