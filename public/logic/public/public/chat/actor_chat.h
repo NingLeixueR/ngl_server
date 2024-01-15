@@ -43,12 +43,12 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		
 		bool handle(
-			i32_threadid athread, 
-			const std::shared_ptr<pack>& apack, 
-			mforward<pbnet::PROBUFF_NET_CHAT>& adata)
+			message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 		{
-			pbnet::PROBUFF_NET_CHAT& recv = *adata.data();
+			
+			pbnet::PROBUFF_NET_CHAT& recv = *adata.m_data->data();
 			if (recv.m_type() == pbnet::chat_speak)
 			{
 				auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
@@ -59,11 +59,11 @@ namespace ngl
 				tab_chat* ltab = allcsv::tab<tab_chat>(recv.m_channelid());
 				if (ltab == nullptr)
 				{
-					send_client(adata.identifier(), pro);
+					send_client(adata.m_data->identifier(), pro);
 					return true;
 				}
 
-				roleitem* lroleitem = type_roleitems::get_roleinfo(adata.identifier());
+				roleitem* lroleitem = type_roleitems::get_roleinfo(adata.m_data->identifier());
 				if (lroleitem == nullptr)
 				{
 					return true;
@@ -72,7 +72,7 @@ namespace ngl
 				int ltemputc = localtime::gettime() - lroleitem->m_lastspeakutc;
 				if (ltemputc < ltab->m_time)
 				{
-					send_client(adata.identifier(), pro);
+					send_client(adata.m_data->identifier(), pro);
 					return true;
 				}
 				lroleitem->m_lastspeakutc = localtime::gettime();
@@ -88,7 +88,7 @@ namespace ngl
 				lchatitem.set_m_roleid(lroleitem->m_info.m_id());
 
 				pro->set_m_stat(true);
-				send_client(adata.identifier(), pro);
+				send_client(adata.m_data->identifier(), pro);
 			}
 			else if (recv.m_type() == pbnet::get_chat_list)
 			{
@@ -100,7 +100,7 @@ namespace ngl
 				auto itor_channelid = m_chatitem.find(recv.m_channelid());
 				if (itor_channelid == m_chatitem.end())
 				{
-					send_client(adata.identifier(), pro);
+					send_client(adata.m_data->identifier(), pro);
 					return true;
 				}
 				for (pbnet::chatitem& item : itor_channelid->second)
@@ -111,7 +111,7 @@ namespace ngl
 				auto itor_update_channelid = m_update_chatitem.find(recv.m_channelid());
 				if (itor_update_channelid == m_update_chatitem.end())
 				{
-					send_client(adata.identifier(), pro);
+					send_client(adata.m_data->identifier(), pro);
 					return true;
 				}
 				for (pbnet::chatitem& item : itor_update_channelid->second)
@@ -120,7 +120,7 @@ namespace ngl
 				}
 
 				pro->set_m_stat(true);
-				send_client(adata.identifier(), pro);
+				send_client(adata.m_data->identifier(), pro);
 				
 				return true;
 			}
