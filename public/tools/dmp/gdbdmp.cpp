@@ -124,6 +124,10 @@ void sighandler(int sig)
 		exit(0);
 		return;
 	}
+
+	Dumper::m_excname += ".%e.%p.core";
+	setenv("core_pattern", Dumper::m_excname.c_str(), 1);
+
 	isDumping = true;
 
 	signal(SIGSEGV, SIG_DFL);
