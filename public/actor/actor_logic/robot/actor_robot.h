@@ -112,7 +112,7 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 		{
 			auto lrecv = adata.m_data;
-			std::cout << "#############["<< lrecv->m_account() <<"]登录成功#############" << std::endl;
+			std::cout << "#############["<< lrecv->m_account() <<"]#############" << std::endl;
 			_robot& lrobot = m_maprobot[lrecv->m_account()];
 			lrobot.m_robot = create(lrecv->m_area(), actor_guid::actordataid(lrecv->m_roleid()));
 			lrobot.m_account = lrecv->m_account();
@@ -120,9 +120,10 @@ namespace ngl
 
 			connect(lrecv->m_gatewayid(), [lrecv, &lrobot, this](int asession)
 				{
-					std::cout << "#############[" << lrecv->m_account() << "]已连接[GateWay]["<< asession <<"]#############" << std::endl;
+					std::cout << "#############[" << lrecv->m_account() << "][GateWay]["<< asession <<"]#############" << std::endl;
 					lrobot.m_session = asession;
 
+					std::cout << "#############roleid[" << lrecv->m_roleid() << std::endl;
 					pbnet::PROBUFF_NET_ROLE_LOGIN pro;
 					pro.set_m_roleid(lrecv->m_roleid());
 					pro.set_m_session(lrecv->m_session());

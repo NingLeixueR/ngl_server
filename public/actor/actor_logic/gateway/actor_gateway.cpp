@@ -27,6 +27,7 @@ namespace ngl
 			, dregister_fun_handle(actor_gateway, actor_role_login)
 			, (Tfun<actor_gateway, actor_switch_process<actor_switch_process_role>>) & actor_gateway::handle
 			, dregister_fun_handle(actor_gateway, actor_session_close)
+			, dregister_fun_handle(actor_gateway, actor_role_login)			
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gateway>(
@@ -139,6 +140,7 @@ namespace ngl
 		// ## 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 
+		nets::net()->send(adata.m_pack->m_id, *lparm, actor_guid::make_self(ACTOR_LOGIN), actor_guid::make());
 		return true;
 	}
 
@@ -149,9 +151,14 @@ namespace ngl
 			auto lpram = adata.m_data;
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
-			LogLocalError("############ GateWay Login[%][%][%] ############", lpack->m_id, lpram->m_roleid(), lpram->m_session());
+			LogLocalError("############ GateWay Login[%][%][%] ############"
+				, lpack->m_id
+				, lpram->m_roleid()
+				, lpram->m_session()
+			);
 			actor_guid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
+			
 			Assert(linfo != nullptr);
 			Assert(linfo->m_session == lpram->m_session());
 

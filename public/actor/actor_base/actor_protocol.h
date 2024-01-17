@@ -330,12 +330,15 @@ namespace ngl
 	{
 		std::string		m_session;
 		i64_accountid	m_accountid = 0;
+		std::string		m_account;
 		i64_actorid		m_roleid = 0;
 		i32_serverid	m_gameid = 0;
 		i32_serverid	m_gatewayid = 0;
 		i16_area		m_area = 0;
 		bool			m_iscreate = false;
-		def_portocol(actor_role_login, m_session, m_accountid, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate)
+		i32_socket		m_socketid = 0;
+		i64_actorid		m_request_actor = 0;
+		def_portocol(actor_role_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>

@@ -72,6 +72,8 @@ namespace ngl
 		bool handle(message<actor_server_connect>& adata);
 
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
+
+		bool handle(message<actor_role_login>& adata);
 	
 		bool handle(message<actor_disconnect_close>& adata);
 	};

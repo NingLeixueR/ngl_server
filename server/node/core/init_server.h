@@ -63,6 +63,8 @@ bool init_server(int aid)
 	if (!lpublicxml->find("robot_test", ngl::rebot_test::is_test))
 		return false;
 
+	std::cout << "init_server robot_test = " << (ngl::rebot_test::is_test ? "True" : "False") << std::endl;
+
 	// ### ÊÇ·ñ¿ªÆôvarint
 	if (!lpublicxml->varint(lvarint))
 		return false;

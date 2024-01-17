@@ -207,7 +207,7 @@ namespace ngl
 				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
 				{
 					std::shared_ptr<actor_server_connect> pro(new actor_server_connect{ .m_serverid = lserverid });
-					actor_guid lguid(ACTOR_LOGIN, tab_self_area, nconfig::m_nodeid);
+					actor_guid lguid = actor_guid::make_self(ACTOR_LOGIN);
 					handle_pram lparm;
 					handle_pram::create(lparm, lguid, guid(), pro);
 					actor_manage::getInstance().push_task_id(lguid, lparm, false);

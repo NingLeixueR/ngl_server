@@ -11,7 +11,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_LOGIN,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid,
+					//.m_id = nconfig::m_nodeid,
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff
@@ -40,6 +40,7 @@ namespace ngl
 
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_login>(true
 			, dregister_fun_handle(actor_login, actor_server_connect)
+			, dregister_fun_handle(actor_login, actor_role_login)
 		);
 	}
 
@@ -161,6 +162,17 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_login::handle(message<actor_role_login>& adata)
+	{
+		pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
+		pro.set_m_roleid(adata.m_data->m_roleid);
+		pro.set_m_area(adata.m_data->m_area);
+		pro.set_m_session(adata.m_data->m_session);
+		pro.set_m_account(adata.m_data->m_account);
+		pro.set_m_gatewayid(adata.m_data->m_gatewayid);
+		nserver->send(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());
+		return true;
+	}
 
 	bool actor_login::handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
 	{
@@ -201,23 +213,26 @@ namespace ngl
 			{
 				.m_session = lppair_account->m_session,
 				.m_accountid = lpaccount->getconst().m_id(),
+				.m_account = lparm->m_account(),
 				.m_roleid = lpaccount->getconst().m_roleid(),
 				.m_gameid = lppair_account->m_gameserverid,
 				.m_gatewayid = lppair_account->m_gatewayserverid,
 				.m_area = (int16_t)lpaccount->getconst().m_area(),
 				.m_iscreate = iscreate,
+				.m_socketid = adata.m_pack->m_id,
+				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
 			nserver->sendtoserver(pro.m_gatewayid, pro, actor_guid::moreactor(), id_guid());
 
-			{// 回复客户端
-				pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
-				pro.set_m_roleid(lpaccount->getconst().m_id());
-				pro.set_m_area(lpaccount->getconst().m_area());
-				pro.set_m_session(lppair_account->m_session);
-				pro.set_m_account(lparm->m_account());
-				pro.set_m_gatewayid(lppair_account->m_gatewayserverid);
-				nserver->send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
-			}
+			//{// 回复客户端
+			//	pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
+			//	pro.set_m_roleid(lpaccount->getconst().m_id());
+			//	pro.set_m_area(lpaccount->getconst().m_area());
+			//	pro.set_m_session(lppair_account->m_session);
+			//	pro.set_m_account(lparm->m_account());
+			//	pro.set_m_gatewayid(lppair_account->m_gatewayserverid);
+			//	nserver->send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
+			//}
 
 		}Catch;
 		return true;

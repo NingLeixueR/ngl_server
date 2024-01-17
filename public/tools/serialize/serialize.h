@@ -43,22 +43,16 @@ namespace ngl
 			: m_data(nullptr)
 			, m_isbinary(true)
 		{
-			std::string lname;
-			std::cout << "protobuf_data<" << tools::type_name<T>(lname) << ">()" << std::endl;
 		}
 
 		protobuf_data(std::shared_ptr<T>& adata) 
 			: m_data(adata)
 			, m_isbinary(true)
 		{
-			std::string lname;
-			std::cout << "protobuf_data<" << tools::type_name<T>(lname) << ">(std::shared_ptr<T>& adata)" << std::endl;
 		}
 
 		~protobuf_data()
 		{
-			std::string lname;
-			std::cout << "~protobuf_data<" << tools::type_name<T>(lname) << ">()" << std::endl;
 		}
 
 		void make()
@@ -70,8 +64,6 @@ namespace ngl
 		{
 			return true;
 		}
-
-
 	};
 
 	class serialize
