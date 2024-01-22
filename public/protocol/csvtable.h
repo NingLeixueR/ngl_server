@@ -1,10 +1,9 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 23-12-15 17:18:28
+// 创建时间 // 创建时间 24-01-22 11:16:40
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
 #include "csv.h"
-#include "csvpair.h"
 #include "serialize.h"
 namespace ngl{
 enum ENET_CONFIG

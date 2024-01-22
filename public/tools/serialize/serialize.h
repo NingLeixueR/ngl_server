@@ -13,7 +13,6 @@
 #include <unordered_set>
 #include <cstring>
 
-#include "csvpair.h"
 #include "logserialize.h"
 #include "csv.h"
 #include "bytes_order.h"

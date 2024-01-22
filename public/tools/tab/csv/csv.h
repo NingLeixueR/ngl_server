@@ -10,10 +10,18 @@
 #include <cstdint>
 #include <functional>
 
-#include "csvpair.h"
-
 namespace ngl
 {
+	struct csvpair
+	{
+		std::string m_data;
+		int m_pos;
+		bool m_doublequotationmarks; // Ë«ÒýºÅ
+		char m_fg;//Ä¬ÈÏ,
+
+		csvpair();
+		void clear();
+	};
 	
 	template <typename E, bool IS_ENUM>
 	class enum_operator_readcsv

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 23-12-20 18:19:51
+// 创建时间 24-01-22 11:08:42
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -57,7 +57,6 @@
 #include "consume.cpp"
 #include "conversion.cpp"
 #include "csv.cpp"
-#include "csvpair.cpp"
 #include "csvtable.cpp"
 #include "db.cpp"
 #include "db_modular.cpp"

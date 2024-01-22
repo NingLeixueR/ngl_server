@@ -15,11 +15,11 @@ namespace ngl
 	class csvbase
 	{
 	public:
-		virtual int32_t		version() = 0;
-		virtual const char*	csvname() = 0;
-		virtual void		load() = 0;
-		virtual void*		get(int aid) = 0;
-		virtual void		reload() = 0;
+		virtual int32_t		version()		= 0;
+		virtual const char*	csvname()		= 0;
+		virtual void		load()			= 0;
+		virtual void*		get(int aid)	= 0;
+		virtual void		reload()		= 0;
 	};
 
 	template <typename T>
@@ -175,5 +175,4 @@ namespace ngl
 			std::cout << "¼ÓÔØcsv[" << lcsvname << "]" << std::endl;
 		}
 	}
-
 }
