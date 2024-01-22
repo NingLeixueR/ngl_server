@@ -1,7 +1,4 @@
-3part/boost/doc
-3part/boost/libs
-3part/boost/boost.png
-3part/boost/Jamroot
+3part/boost
 3part/cryptopp
 3part/curl
 3part/hiredis
