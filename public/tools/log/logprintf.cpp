@@ -111,9 +111,10 @@ namespace ngl
 		std::string lpath("./");
 		lpath += m_config.m_dir;
 		lpath += '/';
-		lpath += m_isactor ? "actor/" : "local/";
-		lpath += nconfig::m_nodename;
-
+		lpath += m_isactor ? "net/" : "local/";
+		//lpath += nconfig::m_nodename;
+		std::cout<< "log dir:[" << lpath << "]" << std::endl;
+			
 		if (afirst)
 		{//检查目录是否存在
 			if (!std::filesystem::exists(lpath))
@@ -146,7 +147,8 @@ namespace ngl
 			break;
 		}
 		char lbuff[1024];
-		snprintf(lbuff, 1024, "/%s_%s_%d.log", lp, lbufftime, ++m_fcount);
+		
+		snprintf(lbuff, 1024, "/%d_%s_%s_%d.log", nconfig::m_nodeid, lp, lbufftime, ++m_fcount);
 		
 		m_stream.open(lpath + lbuff, std::ios::binary);
 		//m_errorstream.

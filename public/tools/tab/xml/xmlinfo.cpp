@@ -124,5 +124,4 @@ namespace ngl
 			return false;
 		return true;
 	}
-
 }

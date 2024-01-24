@@ -10,93 +10,32 @@ Dumper lDumper;
 #include "manage_curl.h"
 
 #include <boost/lexical_cast.hpp>
+#include <boost/process.hpp>
 #include "operator_file.h"
 #include "init_protobuf.h"
 
-template <typename T>
-class abc
-{};
-
-class bcd1 {};
-class bcd2 {};
-
 int main(int argc, char** argv)
 {	
-	std::cout << __FILE__ << std::endl;
-	constexpr std::string_view str = __FILE__;
-	constexpr auto pos = str.rfind("/");
-	if constexpr (pos != std::string_view::npos)
+	ngl::allcsv::load();
+	nconfig::init();
+	nconfig::load("config");
+
+	if (argc > 1)
 	{
-		constexpr std::string_view str2 = str.substr(pos + 1);
-		std::cout << str2 << std::endl;
-	}
-
-
-
-	std::cout << GM::PROBUFF_GM_DEL_NOTICE().GetDescriptor()->name() << std::endl;
-
-
-	using TTT = ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>;
-	std::cout << "boost name:" <<
-		boost::typeindex::type_id_with_cvr<TTT>().name()
-		<< std::endl;
-	std::cout << "boost raw_name:" <<
-		boost::typeindex::type_id_with_cvr<TTT>().raw_name()
-		<< std::endl;
- 	std::cout << "boost pretty_name:" <<
-		boost::typeindex::type_id_with_cvr<TTT>().pretty_name()
-		<< std::endl;
-	
-	std::cout << "std name:" <<
-		typeid(TTT).name()
-		<< std::endl;
-
-	//std::cout << "std raw_name:" <<
-	//	typeid(TTT).raw_name()
-	//	<< std::endl;
-
-	//std::cout <<
-	//typeid(ngl::actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>).name()
-	//	<< std::endl;
-	//return 0;
-
-	if (argc <= 1)
-	{
-		std::cout << "node [name] [tcount]" << std::endl;
-		std::cout << "[name]	tab_servers.m_name" << std::endl;
-		std::cout << "[tcount]	tab_servers.m_tcount" << std::endl;
+		std::cout << "参数错误" << std::endl;
 		return 0;
 	}
 
-	ngl::allcsv::load();
-
-	nconfig::init();
-	nconfig::load("config");
+	// 用参数 不用配置中的zoneid
 	int32_t larea = boost::lexical_cast<int32_t>(argv[2]);
 	int32_t ltcount = boost::lexical_cast<int32_t>(argv[3]);
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	nconfig::set_server(argv[1], tab->m_id);
 
 	ngl::init_actor_type();
-
 	ngl::xmlprotocol::load();
 	ngl::init_protobuf::initall();
-
-	std::string lnameksp = "ngl::actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, ngl::forward>";
-
-	int32_t lprotocol = ngl::xmlprotocol::protocol(lnameksp);
-	if (lprotocol == -1)
-	{
-		std::cout << "\n################[ngl::actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, ngl::forward>]###################" << std::endl;
-		return 0;
-	}
-
-
 	ngl::nlog::getInstance().isinitfinish() = true;
-
-	LogLocalError("[%]", 123);
-	LogLocalError("[456]");
-	
 
 	char lname[1024] = { 0x0 };
 	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
@@ -108,7 +47,6 @@ int main(int argc, char** argv)
 	Dumper::m_excname = lname;
 
 	ngl::actor_typename::getInstance();
-
 	ngl::actor_base::start_broadcast();
 
 	assert(nconfig::node_type() != ngl::FAIL);

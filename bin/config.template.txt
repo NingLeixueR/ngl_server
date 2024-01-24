@@ -1,0 +1,5 @@
+area = 1
+robotbeg = 1
+robotend = 1999
+robotname = libo
+cross = -100
