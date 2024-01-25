@@ -10,7 +10,6 @@ Dumper lDumper;
 #include "manage_curl.h"
 
 #include <boost/lexical_cast.hpp>
-#include <boost/process.hpp>
 #include "operator_file.h"
 #include "init_protobuf.h"
 
@@ -20,7 +19,7 @@ int main(int argc, char** argv)
 	nconfig::init();
 	nconfig::load("config");
 
-	if (argc > 1)
+	if (argc <= 1)
 	{
 		std::cout << "²ÎÊý´íÎó" << std::endl;
 		return 0;

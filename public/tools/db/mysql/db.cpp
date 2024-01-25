@@ -26,9 +26,16 @@ namespace ngl
 			return false;
 		}
 		m_arg = arg;
+		std::cout
+			<< "[mysql] "
+			<< m_arg.m_account << "@" << m_arg.m_ip << ":" << m_arg.m_port 
+			<< "|password=" << m_arg.m_passworld
+			<< "|dbname=" << m_arg.m_dbname
+			<< std::endl;
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)
 		{
+			std::cout << "[mysql] mysql_init" << std::endl;
 			return false;
 		}
 
@@ -50,20 +57,16 @@ namespace ngl
 		char value = 1;
 		mysql_options(m_mysql, MYSQL_OPT_RECONNECT, (char*)&value);
 
-		if (!m_arg.m_dbname.empty() && !changedb(m_mysql, m_arg.m_dbname))
-		{
-			closedb();
-			return false;
-		}
-
 		if (mysql_set_character_set(m_mysql, "utf8"))
 		{
+			std::cout << "[mysql] fail utf8" << std::endl;
 			closedb();
 			return false;
 		}
 
-		if (!changedb(m_mysql, m_arg.m_dbname))
+		if (!m_arg.m_dbname.empty() && !changedb(m_mysql, m_arg.m_dbname))
 		{
+			std::cout << "[mysql] fail dbname" << std::endl;
 			closedb();
 			return false;
 		}
