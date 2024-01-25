@@ -5,6 +5,7 @@ while IFS= read -r line; do
 	map["${array[0]}"]="${array[2]}"
 done < "$filename"
 
+nohup `pwd`/node actor ${map["area"]} 1 > /dev/null 2>&1 &
 nohup `pwd`/node game ${map["area"]} 1 > /dev/null 2>&1 &  
 nohup `pwd`/node db ${map["area"]} 1 > /dev/null 2>&1 &  
 nohup `pwd`/node login ${map["area"]} 1 > /dev/null 2>&1 &  

@@ -6,7 +6,7 @@ while IFS= read -r line; do
 done < "$filename"
 
 nohup `pwd`/node actor ${map["area"]} 1 > /dev/null 2>&1 &
-nohup `pwd`/node db ${map["area"]} 1 init 
+`pwd`/node db ${map["area"]} 1 init 
 sleep 3s
 ps -ef | grep `pwd`/node
 echo 'Done!'
