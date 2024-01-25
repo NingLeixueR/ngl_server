@@ -1,0 +1,4 @@
+int32_t,string,string,int32_t,int32_t,
+m_id,m_name,m_remarks,m_consume,m_generate,
+"","",""," 消耗列表"," 随机表(tab_rando)id 随机成功物品列表",
+version:0

@@ -1,0 +1,5 @@
+ip = 192.168.67.234
+usr = root
+password = 123456
+port = 22
+dir = /data

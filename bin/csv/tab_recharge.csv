@@ -1,0 +1,5 @@
+int32_t,string,string,int32_t,int32_t,int32_t,int32_t,int32_t,int32_t,int32_t,vector<int32_t>
+m_id,m_name,m_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid
+ 充值id,,, 价格, 获得的金币数量, 奖励的金币数量, 首充奖励的金币数量, 掉落, 充值该档位赠送的vip经验, 是否限制充值次数, 必须指定活动开启时才能充值这一档
+version:0,,,,,,,,,,
+1989,测试充值id,测试充值id,66,660,60,660,1,1000,1,

@@ -1,0 +1,13 @@
+int32_t,string,string,bool,bool,int
+m_id,m_name,m_remarks,m_isloadall,m_network,m_sendmaxcount
+,,, 是否需要启动加载全部数据, 是否允许通过网络分发, 单次最多发送数量
+version:0,,,,,
+1,DB_ACCOUNT,DB_ACCOUNT,1,1,100
+2,DB_NOTICE,DB_NOTICE,1,1,100
+3,DB_MAIL,DB_MAIL,1,1,1
+4,DB_ROLE,DB_ROLE,0,1,1
+5,DB_KEYVALUE,DB_KEYVALUE,0,1,100
+6,DB_BAG,DB_BAG,0,1,1
+7,DB_COUNTGROUP,DB_COUNTGROUP,0,1,1
+8,DB_ACTIVITY,DB_ACTIVITY,0,1,1
+9,DB_TASK,DB_TASK,0,1,1

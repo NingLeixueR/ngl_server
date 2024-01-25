@@ -1,0 +1,9 @@
+int32_t,string,string,float,int32_t,int32_t,int32_t
+m_id,m_name,m_remarks,m_fightcoefficient,m_initvalue,m_uplimit,m_lowlimit
+,,, 属性提供的战力系数, 属性初始值, 上限, 下限
+version:0,,,,,,
+1,攻击,攻击,5,0,1000000,0
+2,防御,防御,4,0,1000000,0
+3,血量,血量,3,0,1000000,0
+4,怒气,怒气,2,0,1000000,0
+5,速度,速度,1,0,1000000,0

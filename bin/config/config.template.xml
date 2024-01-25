@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<con>
+		<public>
+				
+				
+				<!-- 	[actor_delayed] #### 延时初始化 ## 让actor_id与actor_server同步给其他结点(actor_client) 多少毫秒 -->
+				<!-- 	[area] #### 区服id -->
+				<!-- 	[name] #### 服务名称 -->
+				<!-- 	[tnum] #### 对应的进程id -->
+				<config 
+					area = "1" name = "actor" tnum = "1"
+					actor_delayed ="1000" 
+					logserverid ="7001" 
+					varint = "true"
+					isxor = "true"
+					waiting = "1"
+					robot_test = "true"
+					xor_str="国际巅峰调酒大师、品酒大师，有酒神之称的李解冻，为了品尝出土的汉代美酒而醉死于而立之年。当他一觉醒来时，却发现自己来到了一个名叫五行大陆的世界，变成了一个叫做姬动的小乞丐。在这里，有一种极其特殊的职业，名叫阴阳魔师，奇异的十系魔技令人叹为观止。每一名阴阳魔师都有一顶属于自己的由本属性凝聚而成的阴阳冕。一次偶然的机遇，让他认识了地底世界的火焰女王烈焰，作为阴阳平衡体质的他，接受了阴阳极焰的传承，他的命运也从此走向了强者的道路。" 
+					reloadcsv_version = "0" reloadcsv = "AttributeTab.csv*AttributeModuleTab.csv"
+					gmurl = "http://127.0.0.1:800"
+					push_server_config = "push_server_config.php"
+				/>
+		</public>
+		<db>
+				<db_connect account="root" passworld="123456" dbname="lbtest" ip="192.168.0.152" port="3306"/>
+		</db>
+</con>

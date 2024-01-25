@@ -1,0 +1,4 @@
+int32_t,string,string,string,
+m_id,m_name,m_remarks,m_message,
+"","",""," 错误描述",
+version:0

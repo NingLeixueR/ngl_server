@@ -1,0 +1,4 @@
+int32_t,string,string,string,string,string,
+m_id,m_name,m_remarks,m_title,m_author,m_content,
+"","",""," 邮件标题"," 邮件作者"," 邮件内容",
+version:0
