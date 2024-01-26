@@ -28,8 +28,7 @@ namespace ngl
 		Try
 		{
 			return m_data.at(apos);
-		}
-		Catch;
+		}Catch;
 		return nullptr;
 	}
 }

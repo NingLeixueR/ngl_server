@@ -87,7 +87,6 @@ namespace ngl
 			pro.m_data.make();
 			ngl::dbdata<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
-
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 					{
 						actor_guid lguid(atab.const_mm_id());
@@ -113,7 +112,6 @@ namespace ngl
 							pro.m_data.make();
 						}
 					}
-
 				});
 			pro.m_over = true;
 			nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());

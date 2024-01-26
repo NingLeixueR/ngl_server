@@ -91,8 +91,4 @@ namespace ngl
 			return true;
 		}
 	};
-
-
-
-
 }
