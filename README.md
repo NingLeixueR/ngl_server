@@ -23,7 +23,13 @@ Actor based c++distributed game server framework
   * makeproto工程主要是根据proto文件生成对应的sql文件和 协议结构与协议号关联的xml(我们就不需要大费心神关联协议号与协议体了)
   * rebuild工程主要是遍历/public下的所有cpp文件,生成ub.cpp让libmycorekkk加速编译
   * node是节点文件,包含逻辑的全部代码,在其中我们可以修改实例化哪些actor将一些逻辑进行分离和集中,我们游戏可能稳定运行了一段时间,要更新“新玩法”我们可以把新功能和玩法进行抽离，放到线上等起稳定了再将其集中,当然我们也能因为某个节点压力太大可以运用分离,将压力分散
-
+  * 在linux编译运行
+  ** [root@localhost bin]# cat /etc/centos-release
+  ** CentOS Linux release 7.9.2009 (Core)
+  ** [root@localhost bin]# gcc --version
+  ** gcc (GCC) 13.1.0
+  * 在win编译运行
+  ** vs2022 
 # 使用
   * 如何定义一个actor?
 	```cpp
