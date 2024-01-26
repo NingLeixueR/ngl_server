@@ -10,8 +10,6 @@ namespace ngl
 
 	actor_typename::actor_typename()
 	{
-#define em_pram_set(ENAME)	em<ENUM_ACTOR>::set(em_pram(ENAME))
-
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_ROLE));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_ROBOT));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_GUILD));

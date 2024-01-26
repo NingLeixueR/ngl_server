@@ -110,9 +110,7 @@ namespace ngl
 		bool operator>(int64_t ar)const;
 		bool operator>(const actor_guid& r)const;
 
-		//def_portocol_function(actor_guid, m_id)
 		def_portocol_function(actor_guid, m_id)
-
 	};
 }
 

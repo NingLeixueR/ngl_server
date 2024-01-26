@@ -289,7 +289,6 @@ namespace ngl
 					return;
 				nosafe_push_task_id(itor->second, apram);
 			}
-
 		}
 
 		inline void broadcast_task(handle_pram& apram)
@@ -355,16 +354,16 @@ namespace ngl
 				}
 			}
 #else
-				auto lfun = [this]() 
-					{
-						bool ret = !m_actorlist.empty() && !m_workthread.empty() && !m_suspend;
-						return ret;
-					};
-
-				while (true)
+			auto lfun = [this]()
 				{
-					{
-						cv_lock(m_cv, m_mutex, lfun)
+					bool ret = !m_actorlist.empty() && !m_workthread.empty() && !m_suspend;
+					return ret;
+				};
+
+			while (true)
+			{
+				{
+					cv_lock(m_cv, m_mutex, lfun)
 						do
 						{
 							lpthread = *m_workthread.begin();
@@ -373,11 +372,10 @@ namespace ngl
 							m_workthread.pop_front();
 							lpactor->set_activity_stat(actor_stat_run);
 							lpthread->push(lpactor);
-						}while (lfun());
-					}
+						} while (lfun());
 				}
-#endif//OPEN_SEM
-				
+			}
+#endif//OPEN_SEM				
 		}
 	};
 

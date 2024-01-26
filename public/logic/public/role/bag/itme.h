@@ -27,11 +27,7 @@ namespace ngl
 			auto itor = m_data.find((EItemType)tab->m_type);
 			if (itor == m_data.end())
 				return false;
-
 			return itor->second->mode(arole, atid, acount, avec);
 		}
 	};
-
-
-
 }
