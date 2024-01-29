@@ -47,7 +47,7 @@ namespace ngl
 
 		for (i32_serverid iserverid : ttab_servers::tab()->m_actorserver)
 		{
-			actor_base::sendtoserver(
+			actor_base::send_server(
 				iserverid,
 				pro,
 				actor_guid::make(ACTOR_ADDRESS_SERVER, aguid.area(), actor_guid::none_actordataid()),
@@ -176,7 +176,7 @@ namespace ngl
 						}
 						// 断线重连或者其他设备顶号
 						pbnet::PROBUFF_NET_ROLE_SYNC pro;
-						nserver->sendtoserver(linfo->m_gameid, pro, actor_guid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
+						nserver->send_server(linfo->m_gameid, pro, actor_guid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
 						return true;
 					}
 				}
@@ -190,7 +190,7 @@ namespace ngl
 			linfo->m_iscreate = false;
 			lpram->set_m_gatewayid(nconfig::m_nodeid);
 			lpram->set_m_area(linfo->m_area);
-			nserver->sendtoserver(linfo->m_gameid, *lpram, actor_guid::moreactor(), id_guid());
+			nserver->send_server(linfo->m_gameid, *lpram, actor_guid::moreactor(), id_guid());
 
 			return true;
 		}Catch;

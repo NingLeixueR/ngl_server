@@ -53,7 +53,6 @@
 
 bool init_server(int aid)
 {
-
 	ngl::tab_servers* tab = ngl::ttab_servers::tab();
 	bool lvarint = false;
 	std::string lxor;

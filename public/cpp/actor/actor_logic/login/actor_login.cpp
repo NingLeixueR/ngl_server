@@ -222,7 +222,7 @@ namespace ngl
 				.m_socketid = adata.m_pack->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
-			nserver->sendtoserver(pro.m_gatewayid, pro, actor_guid::moreactor(), id_guid());
+			nserver->send_server(pro.m_gatewayid, pro, actor_guid::moreactor(), id_guid());
 
 			//{// »Ø¸´¿Í»§¶Ë
 			//	pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;

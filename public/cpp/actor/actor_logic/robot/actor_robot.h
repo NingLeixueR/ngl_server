@@ -96,7 +96,7 @@ namespace ngl
 			pro.set_m_password(apasswold);
 			tab_servers* tab = ttab_servers::tab();
 
-			nserver->sendtoserver(tab->m_login, pro, actor_guid::moreactor(), getInstance().id_guid());
+			nserver->send_server(tab->m_login, pro, actor_guid::moreactor(), getInstance().id_guid());
 		}
 
 		virtual ~actor_manage_robot() {}

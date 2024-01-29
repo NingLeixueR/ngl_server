@@ -43,9 +43,9 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::sendtoserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::net()->sendtoserver(aserverid, adata, aactorid, arequestactorid);
+		return nets::net()->send_server(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>

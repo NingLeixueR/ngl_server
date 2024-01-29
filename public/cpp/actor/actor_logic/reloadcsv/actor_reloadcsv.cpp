@@ -54,7 +54,7 @@ namespace ngl
 		actor_reloadcsv_verify_version pro;
 		allcsv::foreach_version(pro.m_version);
 		i64_actorid lrequest = actor_guid::make(ACTOR_RELOADCSV_DISTRIBUTE, tab_self_area, ttab_servers::tab()->m_reloadcsv);
-		sendtoserver(ttab_servers::tab()->m_reloadcsv, pro, lrequest, id_guid());
+		send_server(ttab_servers::tab()->m_reloadcsv, pro, lrequest, id_guid());
 		return true;
 	}
 

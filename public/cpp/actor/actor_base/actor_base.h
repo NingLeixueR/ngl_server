@@ -106,7 +106,7 @@ namespace ngl
 
 		// 发送数据到指定服务器
 		template <typename T>
-		static bool sendtoserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		// 发送pack到指定服务器
 		template <typename T>
@@ -147,7 +147,7 @@ namespace ngl
 				pro.m_uid.push_back(lguid.actordataid());
 				pro.m_area.push_back(lguid.area());
 				pro.set_data(adata);
-				sendtoserver(agatewayid, pro, actor_guid::make(), aid);
+				send_server(agatewayid, pro, actor_guid::make(), aid);
 			}
 		}
 	private:

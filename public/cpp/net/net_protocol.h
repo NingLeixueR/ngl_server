@@ -243,7 +243,7 @@ namespace ngl
 		i64_actorid moreactor();
 
 		template <typename T>
-		bool sendtoserver(i32_serverid aserverid, T& adata, uint64_t aactorid, uint64_t arequestactorid)
+		bool send_server(i32_serverid aserverid, T& adata, uint64_t aactorid, uint64_t arequestactorid)
 		{
 			i32_sessionid lsession = get_sessionid(aserverid);
 			if (lsession == -1)

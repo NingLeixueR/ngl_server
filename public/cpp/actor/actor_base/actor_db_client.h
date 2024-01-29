@@ -140,7 +140,7 @@ namespace ngl
 			ldata.m_id = aid;
 
 			i64_actorid ldbid = actor_guid::make(actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
-			nserver->sendtoserver(dbnodeid(), ldata, ldbid, m_actor->id_guid());
+			nserver->send_server(dbnodeid(), ldata, ldbid, m_actor->id_guid());
 
 			std::string lname;
 			LogLocalError("actor_dbclient loaddb [%] [%]"
