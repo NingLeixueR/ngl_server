@@ -1,3 +1,4 @@
+cd $(dirname $0)
 declare -A map
 filename="config.txt" # 指定要读取的文件名
 while IFS= read -r line; do
