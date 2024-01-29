@@ -1,0 +1,40 @@
+定时自动拉起
+
+*/1 * * * * root /home/sh/checkserver.sh
+
+#!/bin/bash
+CURRENT_DIR=$(cd `dirname $0`; pwd)
+data=`date "+%F-%H-%M"`
+path=`cat $CURRENT_DIR/server_path.txt`
+server=(actor game gateway login world)
+
+for j in $path
+do
+	ps -elf|grep $j|grep -v grep > $j/server_ps.txt
+	serverNum=${#server[*]}
+	downserverlist=""
+	for i in ${server[@]}
+	do
+        	server_tmp=`grep "$j/node $i"  "$j"/server_ps.txt`
+		if [ -z "$server_tmp" ];then
+            		downserverlist=${downserverlist}${data}" down "${i}" "
+            		let serverNum-=1
+        	fi
+    	done
+    	echo path=$j, serverNum=$serverNum
+	if [ $serverNum -lt 1 ];then
+		echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+        echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" >> "$j"/server_down.txt
+        cd "$j" && ./start
+ 	elif [ $serverNum -lt ${#server[*]} ];then
+		echo "##############################################"
+		echo $downserverlist
+		echo "##############################################"
+        echo "##############################################" >> "$j"/server_down.txt
+		echo $downserverlist >> "$j"/server_down.txt
+       	echo "##############################################" >> "$j"/server_down.txt
+       	cd "$j" && ./close
+  	fi
+done
+
+
