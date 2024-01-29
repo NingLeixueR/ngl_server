@@ -222,17 +222,6 @@ namespace ngl
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
 			nserver->send_server(pro.m_gatewayid, pro, actor_guid::moreactor(), id_guid());
-
-			//{// »Ø¸´¿Í»§¶Ë
-			//	pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
-			//	pro.set_m_roleid(lpaccount->getconst().m_id());
-			//	pro.set_m_area(lpaccount->getconst().m_area());
-			//	pro.set_m_session(lppair_account->m_session);
-			//	pro.set_m_account(lparm->m_account());
-			//	pro.set_m_gatewayid(lppair_account->m_gatewayserverid);
-			//	nserver->send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
-			//}
-
 		}Catch;
 		return true;
 	}
