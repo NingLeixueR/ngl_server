@@ -23,6 +23,11 @@ namespace ngl
 		actor_guid(int64_t aid);
 		actor_guid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);
 
+		void print()
+		{
+			std::cout << "id=" << id() << ",type=" << type() << ",arae=" << area() << ",dataid=" << actordataid() << std::endl;
+		}
+
 		// 可以将union强转为i64_actorid值
 		operator i64_actorid ()const;
 		// 获取guidid值
