@@ -193,7 +193,7 @@ namespace ngl
 		return readcsv(apair, adata); 
 	}
 
-	bool rcsv::readveccsv(csvpair& apair, int16_t& adata) 
+	/*bool rcsv::readveccsv(csvpair& apair, int16_t& adata) 
 	{ 
 		return readcsv(apair, adata); 
 	}
@@ -241,5 +241,5 @@ namespace ngl
 	bool rcsv::readveccsv(csvpair& apair, std::string& adata) 
 	{ 
 		return readcsv(apair, adata); 
-	}
+	}*/
 }

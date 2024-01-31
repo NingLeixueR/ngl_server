@@ -182,26 +182,12 @@ class Struct
 	std::string& m_str;
 	std::vector<StructVec>& m_struct;
 	std::vector<EnumVec>& m_enum;
-	static std::set<std::string> m_basetype;
 public:
 	Struct(std::string& astr, vector<StructVec>& astruct, vector<EnumVec>& aenum):
 		m_struct(astruct),
 		m_enum(aenum),
 		m_str(astr)
 	{
-		m_basetype.insert("int8_t");
-		m_basetype.insert("int16_t");
-		m_basetype.insert("int32_t");
-		m_basetype.insert("int64_t");
-		m_basetype.insert("uint8_t");
-		m_basetype.insert("uint16_t");
-		m_basetype.insert("uint32_t");
-		m_basetype.insert("uint64_t");
-
-		m_basetype.insert("float");
-		m_basetype.insert("double");
-		m_basetype.insert("bool");
-		m_basetype.insert("char");
 	}
 
 	std::string get_type(Data& item2)

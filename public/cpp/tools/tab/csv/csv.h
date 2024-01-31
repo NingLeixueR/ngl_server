@@ -102,8 +102,10 @@ namespace ngl
 				for (; !isok(lpair);)
 				{
 					T ltemp;
-					if (readveccsv(lpair, ltemp))
+					if (readcsv(lpair, ltemp))
 						afun(ltemp);
+					//if (readveccsv(lpair, ltemp))
+					//	afun(ltemp);
 				}
 				return true;
 			}

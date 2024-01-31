@@ -4,7 +4,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 add_subdirectory(rebuild)
 #add_subdirectory(libmycorekkk)
 add_subdirectory(makeproto)
-#add_subdirectory(idl)
+add_subdirectory(idl)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 add_subdirectory(node)

@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	//
 	idlcppprotocol::getInstance()._h();
 	idlcppprotocol::getInstance()._cpp();
-
+	idlcppprotocol::getInstance()._cs();
 	//Struct::init_sql();
 	//Struct::init_tab();
 	return 0;
