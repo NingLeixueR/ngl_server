@@ -418,29 +418,4 @@ namespace ngl
             return true;
         }
     }
-
-    class tab_attribute22 : ICsvRead, ICsv
-    {
-        /*********************************/
-        Int32 m_id;
-        string m_name;
-        string m_remarks;
-        float m_fightcoefficient;       // 属性提供的战力系数
-        Int32 m_initvalue;        // 属性初始值
-        Int32 m_uplimit;      // 上限
-        Int32 m_lowlimit;     // 下限
-        /*********************************/
-        public tab_attribute22() { }
-
-        public Int32 Id()
-        {
-            return 0;
-        }
-        public bool Read(csvpair apair)
-        {
-            if (rcsv.readcsv(apair, ref m_id) == false)
-                return false;
-            return true;
-        }
-    };
 }
