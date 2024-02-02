@@ -15,7 +15,7 @@ namespace ngl
     {
         static void Main(string[] args)
         {
-            xmlprotocol.load("C:\\net_protocol.xml");
+            //xmlprotocol.load("C:\\net_protocol.xml");
 
             var ltcp = new tcp();
 
