@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-01-22 11:16:40
+// 创建时间 // 创建时间 24-02-02 14:12:21
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -171,7 +171,7 @@ struct tab_dbload
 	std::string		m_remarks;		
 	bool		m_isloadall;		// 是否需要启动加载全部数据
 	bool		m_network;		// 是否允许通过网络分发
-	int		m_sendmaxcount;		// 单次最多发送数量
+	int32_t		m_sendmaxcount;		// 单次最多发送数量
 /*********************************/
 	tab_dbload();
 	// 序列化反序列化相关

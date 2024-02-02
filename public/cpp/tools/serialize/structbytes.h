@@ -104,7 +104,6 @@ namespace ngl
 					LogLocalError("[##structbytes_protobuff::operator()] -> [%] != [%]", apack->m_head.getvalue(EPH_BYTES), apack->m_pos/* - llen*/);
 					return false;
 				}
-
 				// ### encryption bytexor
 				if (encryption_bytexor::check_xor(apack))
 				{
