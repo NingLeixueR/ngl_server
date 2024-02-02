@@ -30,18 +30,8 @@ namespace ngl
 			, const typefun_pack& apackfun			// 解包回调
 			, const typefun_run& arunfun			// 逻辑回调
 			, const char* aname);
+
 		static i32_serverid nodeid();
-
-
-		template <typename T>
-		static void log(const char* astr)
-		{
-			std::string lname;
-			LogLocalError("% [%] success"
-				, astr
-				, tools::type_name<T>(lname)
-			);
-		}
 
 		//// --- ACTOR间通信 
 		template <typename T, EPROTOCOL_TYPE TYPE>
@@ -56,11 +46,9 @@ namespace ngl
 					std::shared_ptr<void> ltemp(lp);
 					if (structbytes<T>::tostruct(apack, *lp))
 					{
-						protocol::log<T>("pop success");
 						return ltemp;
 					}
 				}Catch;
-				protocol::log<T>("pop fail");
 				return nullptr;
 			};
 			std::string lname = aname;
@@ -111,11 +99,9 @@ namespace ngl
 					std::shared_ptr<void> ltemp(lp);
 					if (structbytes<typeforward>::tostruct(apack, *lp, true))
 					{
-						protocol::log<T>("pop success");
 						return ltemp;
 					}
 				}Catch;
-				protocol::log<T>("pop fail");
 				return nullptr;
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
@@ -146,11 +132,9 @@ namespace ngl
 					std::shared_ptr<void> ltemp(lp);
 					if (structbytes<typeforward>::tostruct(apack, *lp))
 					{
-						protocol::log<T>("pop success");
 						return ltemp;
 					}					
 				}Catch;
-				protocol::log<T>("pop fail");
 				return nullptr;
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
