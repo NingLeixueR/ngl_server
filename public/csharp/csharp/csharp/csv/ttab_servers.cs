@@ -37,8 +37,7 @@ namespace ngl
 
         public static tab_servers? tab()
         {
-            // return tab(nconfig::m_nodeid);
-            return null;
+            return tab(nconfig.m_nodeid);
         }
 
         public static tab_servers? tab(string aname, Int32 area, Int32 atcount)
@@ -51,100 +50,99 @@ namespace ngl
 			return null;
 		}
 
-//static ENET_PROTOCOL netprotocol(i32_serverid aserverid)
-//{
-//    tab_servers* ltab = tab(aserverid);
-//    if (ltab == nullptr)
-//        return ENET_TCP;
-//    return ltab->m_net;
-//}
+        public static ENET_PROTOCOL netprotocol(Int32 aserverid)
+        {
+            var ltab = tab(aserverid);
+            if (ltab == null)
+                return ENET_PROTOCOL.ENET_TCP;
+            return ltab.m_net;
+        }
 
-//static ENET_PROTOCOL netprotocol()
-//{
-//    return netprotocol(nconfig::m_nodeid);
-//}
+        public static ENET_PROTOCOL netprotocol()
+        {
+            return netprotocol(nconfig.m_nodeid);
+        }
 
-//static NODE_TYPE node_type(i32_serverid aserverid)
-//{
-//    tab_servers* ltab = tab(aserverid);
-//    assert(ltab != nullptr);
-//    return ltab->m_type;
-//}
+        public static NODE_TYPE node_type(Int32 aserverid)
+        {
+            var ltab = tab(aserverid);
+            if (ltab == null)
+                return NODE_TYPE.FAIL;
+            return ltab.m_type;
+        }
 
-//static NODE_TYPE node_type()
-//{
-//    return node_type(nconfig::m_nodeid);
-//}
+        public static NODE_TYPE node_type()
+        {
+            return node_type(nconfig.m_nodeid);
+        }
 
-//static tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
-//{
-//    ttab_servers* ttab = allcsv::get<ttab_servers>();
-//    assert(ttab != nullptr);
-//    for (std::pair <const int, tab_servers> &pair : ttab->tablecsv)
-//			{
-//    if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
-//        return &pair.second;
-//}
-//return nullptr;
-//		}
-
-//		static void foreach_server(const std::function<void(const tab_servers*)> &afun)
-//		{
-//    for (const auto&[_area, _vec] : m_areaofserver)
-//			{
-//        for (const tab_servers* iserver : _vec)
-//				{
-//            afun(iserver);
-//        }
-//    }
-//}
-
-//static void foreach_server(NODE_TYPE atype, const std::function<void(const tab_servers*)> &afun)
-//		{
-//    for (const auto&[_area, _vec] : m_areaofserver)
-//			{
-//        //if (aislocal && _area != tab()->m_area)
-//        //	continue;
-//        for (const tab_servers* iserver : _vec)
-//				{
-//            if (iserver->m_type == atype)
-//            {
-//                afun(iserver);
-//            }
-//        }
-//    }
-//}
-
-//static void foreach_server(NODE_TYPE atype, i16_area area, const std::function<void(const tab_servers*)> &afun)
-//		{
-//    for (const auto&[_area, _vec] : m_areaofserver)
-//			{
-//        if (_area != area)
-//            continue;
-//        for (const tab_servers* iserver : _vec)
-//				{
-//            if (iserver->m_type == atype)
-//            {
-//                afun(iserver);
-//            }
-//        }
-//    }
-//}
+        public static tab_servers? node_tnumber(NODE_TYPE atype, Int32 anumber)
+        {
+            foreach (var item in manage_csv<tab_servers>.tablecsv)
+            {
+                if (item.Value.m_type == atype && item.Value.m_tcount == anumber)
+                    return item.Value;
+            }
+            return null;
+        }
 
 
-//static tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)> &afun)
-//		{
-//    std::vector<tab_servers*>* litem = tools::findmap(m_areaofserver, tab()->m_area);
-//    if (litem == nullptr)
-//        return nullptr;
-//    for (tab_servers* iserver : *litem)
-//    {
-//        if (iserver->m_type == atype && afun(iserver))
-//        {
-//            return iserver;
-//        }
-//    }
-//    return nullptr;
-//}
+        public static void foreach_server(Action<tab_servers> afun)
+        {
+            foreach (var item in m_areaofserver)
+            {
+                foreach (tab_servers iserver in item.Value)
+                {
+                    afun(iserver);
+                }
+            }
+        }
+
+        public static void foreach_server(NODE_TYPE atype, Action<tab_servers> afun)
+        {
+            foreach (var item in m_areaofserver)
+            {
+                //if (aislocal && _area != tab()->m_area)
+                //	continue;
+                foreach (tab_servers iserver in item.Value)
+                {
+                    if (iserver.m_type == atype)
+                    {
+                        afun(iserver);
+                    }
+                }
+            }
+        }
+
+        public static void foreach_server(NODE_TYPE atype, Int16 area, Action<tab_servers> afun)
+        {
+            foreach (var item in m_areaofserver)
+            {
+                if (item.Key != area)
+                    continue;
+                foreach (tab_servers iserver in item.Value)
+                {
+                    if (iserver.m_type == atype)
+                    {
+                        afun(iserver);
+                    }
+                }
+            }
+        }
+
+        public delegate bool checkfun(tab_servers aserver);
+        public static tab_servers? find_first(NODE_TYPE atype, checkfun afun)
+        {
+            if (m_areaofserver.TryGetValue((Int16)atype, out List<tab_servers> ls) == false)
+                return null;
+            foreach (var iserver in ls)
+            {
+                if (iserver.m_type == atype && afun(iserver))
+                {
+                    return iserver;
+                }
+            }
+            return null;
+        }
     }
 }
