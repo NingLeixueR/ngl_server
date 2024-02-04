@@ -15,7 +15,18 @@ namespace ngl
     {
         static void Main(string[] args)
         {
-            //xmlprotocol.load("C:\\net_protocol.xml");
+            manage_csv<tab_servers>.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\csv\\tab_servers.csv");
+            xmlprotocol.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\Debug\\config\\net_protocol.xml");
+            nconfig.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\config\\config.template.xml");
+
+            if (Int32.TryParse(args[1], out Int32 larea) == false)
+                return;
+            if (Int32.TryParse(args[2], out Int32 ltcount) == false)
+                return;
+            var tab = ttab_servers.tab(args[0], larea, ltcount);
+            if (tab == null)
+                return;
+            nconfig.set_server(args[0], tab.Id());
 
             var ltcp = new tcp();
 
