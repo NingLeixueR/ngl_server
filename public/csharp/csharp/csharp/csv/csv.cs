@@ -39,9 +39,8 @@ namespace ngl
 
     partial class rcsv
     {
-        public string m_data;
-        public int m_pos;
-
+        public string m_data = "";
+        public int m_pos = 0;
         public bool read(string aname, ref Int32 aversion)
         {
             readfile lrf = new readfile(aname);

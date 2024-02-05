@@ -16,7 +16,6 @@ using Pbnet;
 
 namespace ngl
 {
-
     class tcp
     {
         IPEndPoint? m_endpoint = null;
@@ -183,7 +182,7 @@ namespace ngl
             if (m_propack == null)
                 return;
             List<pack> list = new List<pack>();
-            List<pack> temp = null;
+            List<pack>? temp = null;
             lock (m_packlist)
             {
                 if (m_packlist.Count <= 0)

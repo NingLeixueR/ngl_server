@@ -17,7 +17,7 @@ namespace ngl
             manage_csv<tab_servers>.load("tab_servers.csv");
             foreach(var item in manage_csv<tab_servers>.tablecsv)
 			{
-                List<tab_servers> ls = null;
+                List<tab_servers>? ls = null;
                 if (m_areaofserver.TryGetValue(item.Value.m_area, out ls) == false)
                 {
                     ls = new List<tab_servers>();
@@ -85,7 +85,6 @@ namespace ngl
             }
             return null;
         }
-
 
         public static void foreach_server(Action<tab_servers> afun)
         {

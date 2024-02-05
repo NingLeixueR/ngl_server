@@ -8,7 +8,7 @@ namespace ngl
     class readfile
     {
         private string m_filename;
-        private System.IO.StreamReader m_file;
+        private System.IO.StreamReader? m_file;
 
         public readfile(string filename)
         {
@@ -18,17 +18,23 @@ namespace ngl
 
         public void open()
         {
+            if (m_file != null)
+                return;
             m_file = new System.IO.StreamReader(m_filename);
         }
 
         public void close()
         {
+            if (m_file == null)
+                return;
             m_file.Close();
         }
 
         //跳过前三行
         public void jumpbegin(int anum, bool aiscsv)
         {
+            if (m_file == null)
+                return;
             if (aiscsv == false)
             {
                 while (--anum >= 0)
@@ -41,8 +47,7 @@ namespace ngl
                 Int32 lisshuyin = 0;
                 while (anum > 0)
                 {
-                    string line;
-                    line = m_file.ReadLine();
+                    string? line = m_file.ReadLine();
                     if (line == null)
                         return;
                     for (int i = 0; i < line.Length; ++i)
@@ -58,11 +63,15 @@ namespace ngl
 
         public string? readline()
         {
+            if (m_file == null)
+                return null;
             return m_file.ReadLine();
         }
 
         public string readcurrent()
         {
+            if (m_file == null)
+                return null;
             return m_file.ReadToEnd();
         }
     };
