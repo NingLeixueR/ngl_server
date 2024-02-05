@@ -19,5 +19,6 @@ tools/public/idl/idlfile
 tools/public/proto/pro
 public/csharp/csharp/.vs
 public/csharp/csharp/csharp/bin
+public/csharp/NodeConsoleApp1
 *.cpp text=auto charset=gbk
 *.h text=auto charset=gbk

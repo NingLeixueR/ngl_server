@@ -17,242 +17,26 @@ using Pbnet;
 namespace ngl
 {
 
-    enum EPROTOCOL_TYPE
-    {
-        EPROTOCOL_TYPE_CUSTOM,      // 自定义二进制协议
-        EPROTOCOL_TYPE_PROTOCOLBUFF,    // protobuff协议
-        EPROTOCOL_TYPE_COUNT,
-        EPROTOCOL_TYPE_ERROR,
-    }
-    public class tcp_pack
-    {
-        public Byte[] m_buff = null;
-        public int m_len = 0;
-        public int m_pos = 0;
-    }
-
-    public class tcp_buff
-    {
-        public Byte[] m_buff = null;
-        public int m_len = 0;
-        public int m_pos = 0;
-    }
-
-    //enum EPH
-    //{
-    //    EPH_BYTES = 0,                // 协议字节数
-    //    EPH_TIME,                     // 发送端的时间戳
-    //    EPH_PROTOCOLNUM,              // 协议号
-    //    EPH_PROTOCOLTYPE,             // 协议类型 EPROTOCOL_TYPE
-    //    EPH_ACTOR_TYPEAREA,           // ACTOR_TYPE_AREA
-    //    EPH_ACTOR_ID,                 // ACTOR_ID
-    //    EPH_REQUEST_ACTOR_TYPEAREA,   // Request REQUEST_ACTOR_TYPE_AREA
-    //    EPH_REQUEST_ACTOR_ID,         // Request ACTOR_ID
-    //    EPH_SUM,
-    //}
-    class pack_head
-    {
-        Byte[] m_data = new Byte[(Int32)EPH.EPH_SUM * sizeof(Int32)];
-        Int32 m_pos = 0;
-
-        public Int32 pos            //m_data 已接收数据
-        {
-            set { m_pos = value; }
-            get { return m_pos; }
-        }
-
-        public Byte[] buff
-        {
-            get { return m_data; }
-        }
-
-        public pack_head()
-        {
-            for (int i = 0; i < (Int32)EPH.EPH_SUM * sizeof(Int32); ++i)
-                m_data[i] = 0;
-        }
-
-        public static Int32 packheadbyte //包头长度
-        {
-            get { return (Int32)EPH.EPH_SUM * sizeof(Int32); }
-        }
-
-        void set_value(EPH aenum, Int32 avalue)
-        {
-            Buffer.BlockCopy(BitConverter.GetBytes(avalue)
-                , 0
-                , m_data
-                , (Int32)aenum * sizeof(Int32)
-                , sizeof(Int32)
-                );
-        }
-
-        Int32 get_value(EPH aenum)
-        {
-            return BitConverter.ToInt32(m_data, (Int32)aenum * sizeof(Int32));
-        }
-
-        void set_value64(EPH aenum, Int64 avalue)
-        {
-            Buffer.BlockCopy(BitConverter.GetBytes(avalue)
-                , 0
-                , m_data
-                , (Int32)aenum * sizeof(Int32)
-                , sizeof(Int64)
-                );
-        }
-
-        Int64 get_value64(EPH aenum)
-        {
-            return BitConverter.ToInt64(m_data, (Int32)aenum * sizeof(Int32));
-        }
-
-        //    EPH.EPH_BYTES = 0,                // 协议字节数
-        public Int32 bytes
-        {
-            get { return get_value(EPH.EPH_BYTES); }
-            set { set_value(EPH.EPH_BYTES, value); }
-        }
-
-        //    EPH.EPH_TIME,                     // 发送端的时间戳
-        public Int32 time 
-        {
-            get { return get_value(EPH.EPH_TIME); }
-            set { set_value(EPH.EPH_TIME, value); }
-        }
-
-        //    EPH.EPH_PROTOCOLNUM,              // 协议号
-        public Int32 protocolnum
-        {
-            get { return get_value(EPH.EPH_PROTOCOLNUM); }
-            set { set_value(EPH.EPH_PROTOCOLNUM, value); }
-        }
-
-        //    EPH.EPH_PROTOCOLTYPE,             // 协议类型 EPROTOCOL_TYPE
-        public Int32 protocoltype
-        {
-            get { return get_value(EPH.EPH_PROTOCOLTYPE); }
-            set { set_value(EPH.EPH_PROTOCOLTYPE, value); }
-        }
-
-        //    EPH_ACTOR_TYPEAREA,           // ACTOR_TYPE_AREA
-        //    EPH_ACTOR_ID,                 // ACTOR_ID
-        public Int64 actorid
-        {
-            get { return get_value64(EPH.EPH_ACTOR_TYPEAREA); }
-            set { set_value64(EPH.EPH_ACTOR_TYPEAREA, value); }
-        }
-
-        //    EPH_REQUEST_ACTOR_TYPEAREA,   // Request REQUEST_ACTOR_TYPE_AREA
-        //    EPH_REQUEST_ACTOR_ID,         // Request ACTOR_ID
-        public Int64 request_actorid
-        {
-            get { return get_value64(EPH.EPH_REQUEST_ACTOR_TYPEAREA); }
-            set { set_value64(EPH.EPH_REQUEST_ACTOR_TYPEAREA, value); }
-        }
-
-        public bool isready()
-        {
-            return m_pos >= (Int32)EPH.EPH_SUM;
-        }
-
-        public bool push_buff(tcp_buff abuff)
-        {
-            Int32 lrel = abuff.m_len - abuff.m_pos;
-            if (lrel <= 0)
-                return false;
-            Int32 lhavebyte = pack_head.packheadbyte - m_pos;
-            if (lhavebyte <= 0)
-                return false;
-            if (lhavebyte <= lrel)
-            {
-                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, lhavebyte);
-                m_pos += lhavebyte;
-                abuff.m_pos += lhavebyte;
-                return true;
-            }
-            else
-            {
-                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, lrel);
-                m_pos += lrel;
-                abuff.m_pos = abuff.m_len;
-                return false;
-            }
-        }
-    }
-
-    class pack
-    {
-        public Int32 m_session = 0;
-        public pack_head m_head = new pack_head();
-
-        public byte[] m_buff = null;
-        public Int32 m_pos = 0;
-
-        public bool isready()
-        {
-            if (!m_head.isready()) 
-                return false;
-            return m_pos >= m_head.bytes;
-        }
-
-        public bool push_buff(tcp_buff abuff)
-        {
-            if (!m_head.isready())
-            {////需要补全包头
-                if (!m_head.push_buff(abuff))
-                    return false;
-            }
-
-            if (isready())
-                return true;
-            if (m_buff == null)
-            {
-                m_buff = new byte[m_head.bytes];
-                m_pos = 0;
-            }
-
-            //// 说明包头已经收到
-            Int32 haveByte = m_head.bytes - m_pos;
-            Int32 lrel = abuff.m_len - abuff.m_pos;
-            if (haveByte <= lrel)
-            {
-                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_buff, m_pos, haveByte);
-                m_pos += haveByte;
-                abuff.m_pos += haveByte;
-                return true;
-            }
-            else
-            {
-                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_buff, m_pos, lrel);
-                m_pos += lrel;
-                abuff.m_pos = abuff.m_len;
-                return false;
-            }
-        }
-    }
-
     class tcp
     {
-        IPEndPoint m_endpoint = null;
-        Socket m_socket = null;
+        IPEndPoint? m_endpoint = null;
+        Socket? m_socket = null;
         //  连接成功的回调函数
-        public Action m_connectSuccessful = null;
+        public Action? m_connectSuccessful = null;
         //  连接失败的回调函数
-        public Action m_connectFail = null;
+        public Action? m_connectFail = null;
          
-
         byte[] m_temp = new byte[8192];
 
         private bool m_noDelay;
 
-        private pack m_pack = null;
+        private pack? m_pack = null;
         private List<pack> m_packlist = new List<pack>();
-        private protocol_pack m_propack = null;
+        private protocol_pack? m_propack = null;
 
         public void set_nodelay(bool anodelay)
         {
-            if(m_noDelay != anodelay)
+            if(m_socket != null && m_noDelay != anodelay)
             {
                 m_noDelay = anodelay;
                 m_socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, m_noDelay);
@@ -299,7 +83,8 @@ namespace ngl
                 return;
             }
             start_receiving();
-            m_connectSuccessful();
+            if(m_connectSuccessful != null)
+                m_connectSuccessful();
         }
 
         private void start_receiving()
@@ -341,6 +126,8 @@ namespace ngl
 
         private void on_receive(IAsyncResult result)
         {
+            if (m_socket == null)
+                return;
             int bytes = 0;
             try
             {
@@ -393,6 +180,8 @@ namespace ngl
 
         public void receive_allpack()
         {
+            if (m_propack == null)
+                return;
             List<pack> list = new List<pack>();
             List<pack> temp = null;
             lock (m_packlist)
@@ -409,7 +198,7 @@ namespace ngl
 
         public void receive_pack()
         {
-            pack lpack = null;
+            pack? lpack = null;
             lock (m_packlist)
             {
                 if (m_packlist.Count > 0)
@@ -427,7 +216,7 @@ namespace ngl
             m_propack = apack;
         }
 
-        public protocol_pack get_registry()
+        public protocol_pack? get_registry()
         {
             return m_propack;
         }
@@ -439,6 +228,8 @@ namespace ngl
         }
         public void send<T>(T apro) where T : IMessage, new()
         {
+            if (m_socket == null)
+                return;
             byte[] lbuff = apro.ToByteArray();
             pack_head lhead = new pack_head();
             lhead.bytes = lbuff.Length;
@@ -451,18 +242,20 @@ namespace ngl
             tcp_buff lbuffall = new tcp_buff();
             lbuffall.m_buff = new byte[pack_head.packheadbyte + lbuff.Length];
             lhead.buff.CopyTo(lbuffall.m_buff, 0);
+            encryption.bytexor(lbuff, lbuff.Length, 0);
             lbuff.CopyTo(lbuffall.m_buff, pack_head.packheadbyte);
-           
-            m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
 
+            m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
         }
 
 
         private void on_send(IAsyncResult result)
         {
+            if (m_socket == null)
+                return;
             int bytes = m_socket.EndSend(result);
-            tcp_buff buff = result.AsyncState as tcp_buff;
-            if (buff == null)
+            tcp_buff? buff = result.AsyncState as tcp_buff;
+            if (buff == null || buff.m_buff == null)
                 return;
             if (bytes < buff.m_len)
             {
@@ -494,23 +287,17 @@ namespace ngl
             xmlDoc.Load(apath);
             if (xmlDoc.DocumentElement == null)
                 return;
-            // 遍历con子节点
             foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
             {
-                if (node.Name == "config")
+                if (node.Name == "config" && node.Attributes != null)
                 {
-                    // 获取name属性值
-                    string nameValue = node.Attributes["name"].Value;
-                    string[] result1 = Regex.Split(nameValue, "::");
+                    string nameValue = nconfig.xmlgetString(node.Attributes, "name"); 
+                    string[] result = Regex.Split(nameValue, "::");
 
-                    // 获取number属性值
-                    string numberValue = node.Attributes["number"].Value;
-                    Int32 lnumber = 0;
-                    if (Int32.TryParse(numberValue, out lnumber) == false)
-                        continue;
-                    Console.WriteLine($"type:number => {result1[1]}:{lnumber}");
-                    if(m_protocol.ContainsKey(result1[1]) == false)
-                        m_protocol.Add(result1[1], lnumber);
+                    Int32 lnumber = nconfig.xmlgetInt32(node.Attributes, "number");
+                    Console.WriteLine($"type:number => {result[1]}:{lnumber}");
+                    if(m_protocol.ContainsKey(result[1]) == false)
+                        m_protocol.Add(result[1], lnumber);
                 }
             }
         }
@@ -535,6 +322,10 @@ namespace ngl
             Int32 lprotocol = xmlprotocol.protocol(lname.Descriptor.Name);
             m_protocol.Add(lprotocol, pack =>
             {
+                if (pack.m_buff == null)
+                    return;
+                encryption.bytexor(pack.m_buff, pack.m_head.bytes, 0);
+
                 T pro = new T();
                 pro = (T)pro.Descriptor.Parser.ParseFrom(pack.m_buff);
                 afun(pro);
@@ -543,7 +334,7 @@ namespace ngl
 
         public void logic_fun(pack apack)
         {
-            Action<pack> lfun = null;
+            Action<pack>? lfun = null;
             if (m_protocol.TryGetValue(apack.m_head.protocolnum, out lfun) == false)
                 return;
             lfun(apack);

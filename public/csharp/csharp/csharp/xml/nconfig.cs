@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Compiler;
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using static Pbdb.db_activity.Types;
 
 namespace ngl
 {
@@ -35,7 +37,7 @@ namespace ngl
             m_nodeid = anodeid;
         }
 
-        static Int32 xmlgetInt32(XmlAttributeCollection axml, string akey)
+        public static Int32 xmlgetInt32(XmlAttributeCollection axml, string akey)
         {
             var ltemp = axml[akey];
             if (ltemp == null)
@@ -45,7 +47,7 @@ namespace ngl
             return -1;
         }
 
-        static string xmlgetString(XmlAttributeCollection axml, string akey)
+        public static string xmlgetString(XmlAttributeCollection axml, string akey)
         {
             var ltemp = axml[akey];
             if (ltemp == null)
@@ -85,6 +87,8 @@ namespace ngl
                 m_reloadcsv.Add(item, 1);
             m_gmurl = xmlgetString(lAttributes, "gmurl");
             m_push_server_config = xmlgetString(lAttributes, "push_server_config");
+            var lbytes = System.Text.Encoding.Default.GetBytes(m_xor_str);
+            encryption.set_xor(m_isxor, lbytes, lbytes.Length);
         }
     }
 }
