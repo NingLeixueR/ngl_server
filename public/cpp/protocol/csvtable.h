@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-02-02 14:12:21
+// 创建时间 // 创建时间 24-02-05 14:46:56
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -19,9 +19,18 @@ enum EUDP_OPERATOR
 	EUDP_OPERATOR_DATA,	// 传输子数据包
 	EUDP_OPERATOR_HEARTBEAT,	// 心跳主要用来确认对端是否在线
 };
+enum EPH_HEAD_VAL
+{
+	EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
+	EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致
+	EPH_HEAD_VERSION_FOLLOW = 3,	// 无法对比版本,数据没有接收完成
+	EPH_HEAD_FOLLOW = 4,	// 包头数据没有接收完成
+	EPH_HEAD_SUCCESS = 5,	// 包头数据已接收完成
+};
 enum EPH
 {
-	EPH_BYTES = 0,	// 协议字节数
+	EPH_VERSION = 0,	// 协议版本号
+	EPH_BYTES,	// 协议字节数
 	EPH_TIME,	// 发送端的时间戳
 	EPH_PROTOCOLNUM,	// 协议号
 	EPH_PROTOCOLTYPE,	// 协议类型 EPROTOCOL_TYPE

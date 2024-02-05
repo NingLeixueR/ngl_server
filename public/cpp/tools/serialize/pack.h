@@ -24,7 +24,7 @@ namespace ngl
 
 		void free();
 	public:
-		i32_session m_id				= 0;
+		i32_session m_id			= 0;
 		pack_head m_head;
 		segpack* m_segpack			= nullptr;
 		bpool* m_bpool				= nullptr;
@@ -37,7 +37,7 @@ namespace ngl
 
 		void set(bpool& apool);
 		void reset();
-		bool isok();
+		bool isready();
 		bool malloc(int alen);
 		// 在数据包中设置actor
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);

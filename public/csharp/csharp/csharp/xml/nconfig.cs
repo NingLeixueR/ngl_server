@@ -14,9 +14,6 @@ namespace ngl
 {
     class nconfig
     {
-        public static Int32 m_area = 0;
-        public static string m_name = "";
-        public static Int32 m_tnum = 0;
         public static Int32 m_actor_delayed = 0;
         public static Int32 m_logserverid = 0;
         public static bool m_varint = false;
@@ -28,6 +25,7 @@ namespace ngl
         public static Dictionary<string, Int32> m_reloadcsv = new Dictionary<string, Int32>();
         public static string m_gmurl = "";
         public static string m_push_server_config = "";
+        public static Int32 m_head_version = 0;
 
         public static Int32 m_nodeid = 0;
         public static string m_servername = "";
@@ -67,9 +65,6 @@ namespace ngl
             if (lAttributes == null)
                 return;
 
-            m_area = xmlgetInt32(lAttributes, "area");
-            string name = xmlgetString(lAttributes, "name");
-            m_tnum = xmlgetInt32(lAttributes, "tnum");
             m_actor_delayed = xmlgetInt32(lAttributes, "actor_delayed");
             m_logserverid = xmlgetInt32(lAttributes, "logserverid");
             if (xmlgetString(lAttributes, "varint") == "true")
@@ -89,6 +84,8 @@ namespace ngl
             m_push_server_config = xmlgetString(lAttributes, "push_server_config");
             var lbytes = System.Text.Encoding.Default.GetBytes(m_xor_str);
             encryption.set_xor(m_isxor, lbytes, lbytes.Length);
+
+            m_head_version = xmlgetInt32(lAttributes, "head_version");
         }
     }
 }

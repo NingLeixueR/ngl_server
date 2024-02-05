@@ -90,12 +90,18 @@ namespace ngl
 					lpack->m_id = aid;
 					lpack->m_segpack = m_segpack;
 				}
-				if (!lpack->m_head.push(ap, alen))
+				EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen);
+				switch (lval)
 				{
+				
+				case ngl::EPH_HEAD_VERSION_FAIL:
+					return false;
+				case ngl::EPH_HEAD_VERSION_FOLLOW:
+				case ngl::EPH_HEAD_VERSION_SUCCESS:
+				case ngl::EPH_HEAD_FOLLOW:
 					m_data.insert(std::make_pair(aid, lpack));
 					return true;
 				}
-
 				if (alen < 0)
 					return true;
 				int len = lpack->m_head.getvalue(EPH_BYTES);
@@ -145,7 +151,7 @@ namespace ngl
 				lpack->m_pos += ltemp;
 				alen -= ltemp;
 				ap += ltemp;
-				if (lpack->isok())
+				if (lpack->isready())
 				{
 					if (!aislanip)
 					{

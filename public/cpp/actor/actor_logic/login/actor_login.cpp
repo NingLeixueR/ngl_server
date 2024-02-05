@@ -170,7 +170,7 @@ namespace ngl
 		pro.set_m_session(adata.m_data->m_session);
 		pro.set_m_account(adata.m_data->m_account);
 		pro.set_m_gatewayid(adata.m_data->m_gatewayid);
-		nserver->send(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());
+		nserver->send(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());		
 		return true;
 	}
 

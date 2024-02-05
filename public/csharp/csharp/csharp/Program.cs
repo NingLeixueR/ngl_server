@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using ngl;
 using Pbnet;
+using System.Collections.Generic;
 
 namespace ngl
 {
@@ -15,6 +16,7 @@ namespace ngl
     {
         static void Main(string[] args)
         {
+
             manage_csv<tab_servers>.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\csv\\tab_servers.csv");
             xmlprotocol.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\Debug\\config\\net_protocol.xml");
             nconfig.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\config\\config.template.xml");
@@ -36,9 +38,12 @@ namespace ngl
                 item =>
                 Console.WriteLine("##[PROBUFF_NET_RECHARGE]##")
                 );
+            Int32 lvalue = 0;
             pp.registry<PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>(
                 item =>
-                Console.WriteLine("##[PROBUFF_NET_ACOUNT_LOGIN_RESPONSE]##")
+                {
+                    Console.WriteLine($"{++lvalue}=>{item.MAccount}##{item.MArea}##{item.MSession}##{item.MGatewayid}");
+                }
                 );
 
             ltcp.m_connectSuccessful = () =>
@@ -71,7 +76,7 @@ namespace ngl
                 while (true)
                 {
                     Thread.Sleep(500);
-                    ltcp.receive_pack();
+                    ltcp.receive_allpack();
                 }
             });
             t1.Start();

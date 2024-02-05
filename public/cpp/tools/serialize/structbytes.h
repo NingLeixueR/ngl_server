@@ -138,6 +138,7 @@ namespace ngl
 			//std::cout << typeid(T).name() << std::endl;
 			apack->m_head.m_data[EPH_BYTES] = (apack->m_len - pack_head::size()) + encryption_bytexor::bytes(adata);
 
+			apack->m_head.set_version();
 			apack->m_head.set_protocol(init_protobuf::protocol<T>());
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();

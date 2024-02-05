@@ -4,10 +4,16 @@
 
 namespace ngl
 {
+	int32_t pack_head::m_version = 0;
+
 	pack_head::pack_head() :
 		m_wpos(0)
 	{
-		memset(m_data, 0x0, size());
+		if (m_version == 0)
+		{
+			ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
+			assert(lpublicxml->find("head_version", m_version));
+		}
 	}
 
 	void pack_head::head_set_actor(
@@ -46,14 +52,34 @@ namespace ngl
 		abuff[EPH::EPH_TIME] = localtime::gettime();
 	}
 
-	i32_time pack_head::head_get_time(int32_t* abuff)
+	i32_time pack_head::head_get_time(const int32_t* abuff)
 	{
 		return abuff[EPH::EPH_TIME];
 	}
 
-	i32_time pack_head::get_time()
+	i32_time pack_head::get_time()const
 	{
 		return head_get_time(m_data);
+	}
+
+	void pack_head::head_set_version(int32_t* abuff)
+	{
+		abuff[EPH::EPH_VERSION] = m_version;
+	}
+
+	int32_t pack_head::head_get_version(const int32_t* abuff)
+	{
+		return abuff[EPH::EPH_VERSION];
+	}
+
+	void pack_head::set_version()
+	{
+		pack_head::head_set_version(m_data);
+	}
+
+	int32_t pack_head::get_version()const
+	{
+		return pack_head::head_get_version(m_data);
 	}
 
 	i64_actorid pack_head::get_actor()const
@@ -107,9 +133,22 @@ namespace ngl
 		return EPH_SUM * sizeof(int);
 	}
 
-	bool pack_head::isok()const
+	EPH_HEAD_VAL pack_head::isready()const
 	{
-		return m_wpos >= size();
+		EPH_HEAD_VAL lval = isversion();
+		if (lval != EPH_HEAD_VERSION_SUCCESS)
+			return lval;
+		return m_wpos >= size() ? EPH_HEAD_SUCCESS : EPH_HEAD_FOLLOW;
+	}
+
+	EPH_HEAD_VAL pack_head::isversion()const
+	{
+		static int32_t lversionpos = (EPH::EPH_VERSION + 1) * sizeof(int32_t);
+		if (m_wpos < lversionpos)
+		{
+			return EPH_HEAD_VERSION_FOLLOW;
+		}
+		return get_version() == m_version ? EPH_HEAD_VERSION_SUCCESS : EPH_HEAD_VERSION_FAIL;
 	}
 
 	i32_protocolnum pack_head::protocolnum()const
@@ -137,18 +176,21 @@ namespace ngl
 		m_data[EPH::EPH_PROTOCOLTYPE] = atype;
 	}
 
-	bool pack_head::push(const char*& abuff, int& alen)
+	EPH_HEAD_VAL pack_head::push(const char*& abuff, int& alen)
 	{
-		if (isok())
-			return true;
-		int ltemp = size() - m_wpos;
-		ltemp = (alen < ltemp) ? alen : ltemp;
-		char* lp = (char*)m_data;
-		memcpy(&lp[m_wpos], abuff, ltemp);
-		alen -= ltemp;
-		abuff += ltemp;
-		m_wpos += ltemp;
-		return isok();
+		EPH_HEAD_VAL lval = isready();
+		if (lval == EPH_HEAD_VERSION_FOLLOW || lval == EPH_HEAD_FOLLOW)
+		{
+			int ltemp = size() - m_wpos;
+			ltemp = (alen < ltemp) ? alen : ltemp;
+			char* lp = (char*)m_data;
+			memcpy(&lp[m_wpos], abuff, ltemp);
+			alen -= ltemp;
+			abuff += ltemp;
+			m_wpos += ltemp;
+			return isready();
+		}
+		return lval;		
 	}
 
 	bool pack_head::push(ngl::serialize& aflow)

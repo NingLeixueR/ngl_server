@@ -13,6 +13,9 @@ using static Pbdb.db_activity.Types;
 using ProtoBuf;
 using Google.Protobuf.Compiler;
 using Pbnet;
+using System.Collections;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace ngl
 {
@@ -166,14 +169,26 @@ namespace ngl
 
             if (m_pack == null)
                 m_pack = new pack();
-            while (m_pack.push_buff(lbuff))
+
+            
+            while (lbuff.m_pos < lbuff.m_len)
             {
-                lock (m_packlist)
+                EPH_HEAD_VAL lval = m_pack.push_buff(lbuff);
+                if (lval == EPH_HEAD_VAL.EPH_HEAD_SUCCESS)
                 {
-                    m_packlist.Add(m_pack);
+                    lock (m_packlist)
+                    {
+                        m_packlist.Add(m_pack);
+                    }
+                    m_pack = new pack();
+                    continue;
                 }
-                m_pack = new pack();
-            }
+                else if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL)
+                {
+                    close();
+                }
+                break;
+            }            
             return true;
         }
 
@@ -182,15 +197,13 @@ namespace ngl
             if (m_propack == null)
                 return;
             List<pack> list = new List<pack>();
-            List<pack>? temp = null;
             lock (m_packlist)
             {
                 if (m_packlist.Count <= 0)
                     return;
-                temp = m_packlist;
-                m_packlist = list;
+                list.AddRange(m_packlist);
+                m_packlist.Clear();
             }
-            list = temp;
             list.ForEach(itempack => m_propack.logic_fun(itempack));
             list.Clear();
         }
@@ -233,6 +246,7 @@ namespace ngl
             pack_head lhead = new pack_head();
             lhead.bytes = lbuff.Length;
             lhead.time = utc();
+            lhead.version = nconfig.m_head_version;
             lhead.protocolnum = xmlprotocol.protocol(apro.Descriptor.Name);
             lhead.protocoltype = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
             lhead.actorid = -1;

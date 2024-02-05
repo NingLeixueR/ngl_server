@@ -47,9 +47,35 @@ namespace ngl
 			return true;
 		}
 	}
+	enum EPH_HEAD_VAL
+	{
+		EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
+		EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致
+		EPH_HEAD_VERSION_FOLLOW = 3,	// 无法对比版本,数据没有接收完成
+		EPH_HEAD_FOLLOW = 4,	// 包头数据没有接收完成
+		EPH_HEAD_SUCCESS = 5,	// 包头数据已接收完成
+	}
+	partial class rcsv
+	{
+		public static bool readcsv(csvpair apair, List<EPH_HEAD_VAL> avec)
+		{
+			string ltempstr = read(apair);
+			csvpair lpair = new csvpair();
+			lpair.m_data = ltempstr;
+			lpair.m_fg = '*';
+			for (; !isok(lpair);)
+			{
+				Int32 ltemp = 0;
+				if (readcsv(lpair, ref ltemp))
+					avec.Add((EPH_HEAD_VAL)ltemp);
+			}
+			return true;
+		}
+	}
 	enum EPH
 	{
-		EPH_BYTES = 0,	// 协议字节数
+		EPH_VERSION = 0,	// 协议版本号
+		EPH_BYTES,	// 协议字节数
 		EPH_TIME,	// 发送端的时间戳
 		EPH_PROTOCOLNUM,	// 协议号
 		EPH_PROTOCOLTYPE,	// 协议类型 EPROTOCOL_TYPE

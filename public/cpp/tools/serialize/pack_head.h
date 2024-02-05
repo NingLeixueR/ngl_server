@@ -15,13 +15,19 @@ namespace ngl
 		int32_t m_data[EPH_SUM] = {0};
 		int32_t m_wpos = 0;
 
+		static int32_t m_version;
+
 		pack_head();
 
 		static void		head_set_time(int32_t* abuff);
-		static i32_time head_get_time(int32_t* abuff);
+		static i32_time head_get_time(const int32_t* abuff);
 		void			set_time();
-		i32_time		get_time();
+		i32_time		get_time()const;
 
+		static void		head_set_version(int32_t* abuff);
+		static int32_t  head_get_version(const int32_t* abuff);
+		void			set_version();
+		int32_t			get_version()const;
 		///////////////////////////////////协议号相关///////////////////////////////////////////////
 		// 设置actor ################# 发送给哪个actor #### 哪个actor发送的
 		static void head_set_actor(
@@ -47,7 +53,8 @@ namespace ngl
 		int				getvalue(EPH aeph)const;
 		int				get_bytes()const;
 		static int		size();
-		bool			isok()const;
+		EPH_HEAD_VAL	isready()const;
+		EPH_HEAD_VAL	isversion()const;
 		i32_protocolnum protocolnum()const;
 		///// 获取协议号
 		i32_protocolnum get_protocolnumber()const;
@@ -56,7 +63,7 @@ namespace ngl
 		EPROTOCOL_TYPE	get_protocoltype()const;
 		void			set_protocoltype(EPROTOCOL_TYPE atype);
 		
-		bool push(const char*& abuff, int& alen);
+		EPH_HEAD_VAL push(const char*& abuff, int& alen);
 		bool push(ngl::serialize& aflow);
 		void reservebuff(char* abuff, int abufflen, std::pair<char*, int>& apair);
 		bool _log(logserialize& atstr, int anumber = EPH_BYTES)const;

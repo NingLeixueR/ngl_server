@@ -1,14 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <con>
 		<public>
-				
-				
-				<!-- 	[actor_delayed] #### 延时初始化 ## 让actor_id与actor_server同步给其他结点(actor_client) 多少毫秒 -->
-				<!-- 	[area] #### 区服id -->
-				<!-- 	[name] #### 服务名称 -->
-				<!-- 	[tnum] #### 对应的进程id -->
 				<config 
-					area = "1" name = "actor" tnum = "1"
 					actor_delayed ="1000" 
 					logserverid ="7001" 
 					varint = "true"
@@ -19,6 +12,7 @@
 					reloadcsv_version = "0" reloadcsv = "AttributeTab.csv*AttributeModuleTab.csv"
 					gmurl = "http://127.0.0.1:800"
 					push_server_config = "push_server_config.php"
+					head_version = "1"
 				/>
 		</public>
 		<db>

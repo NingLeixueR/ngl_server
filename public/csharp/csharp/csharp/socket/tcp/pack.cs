@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Google.Protobuf.Compiler;
+using Pbdb;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -88,7 +90,14 @@ namespace ngl
         {
             return BitConverter.ToInt64(m_data, (Int32)aenum * sizeof(Int32));
         }
-        //    EPH.EPH_BYTES = 0,                // 协议字节数
+        //    EPH_VERSION = 0,	                // 协议版本号
+        public Int32 version
+        {
+            get { return get_value(EPH.EPH_VERSION); }
+            set { set_value(EPH.EPH_VERSION, value); }
+        }
+
+        //    EPH.EPH_BYTES,                    // 协议字节数
         public Int32 bytes
         {
             get { return get_value(EPH.EPH_BYTES); }
@@ -126,33 +135,68 @@ namespace ngl
             get { return get_value64(EPH.EPH_REQUEST_ACTOR_TYPEAREA); }
             set { set_value64(EPH.EPH_REQUEST_ACTOR_TYPEAREA, value); }
         }
-        public bool isready()
+
+        public EPH_HEAD_VAL isready()
         {
-            return m_pos >= (Int32)EPH.EPH_SUM;
+            EPH_HEAD_VAL lval = isversion();
+            if (lval != EPH_HEAD_VAL.EPH_HEAD_VERSION_SUCCESS)
+                return lval;
+            return m_pos >= packheadbyte ? EPH_HEAD_VAL.EPH_HEAD_SUCCESS : EPH_HEAD_VAL.EPH_HEAD_FOLLOW;
         }
-        public bool push_buff(tcp_buff abuff)
+
+        static Int32 m_versionpos = ((Int32)EPH.EPH_VERSION + 1) * sizeof(Int32);
+        EPH_HEAD_VAL isversion()
         {
-            Int32 lrel = abuff.m_len - abuff.m_pos;
-            if (lrel <= 0)
-                return false;
-            Int32 lhavebyte = pack_head.packheadbyte - m_pos;
-            if (lhavebyte <= 0)
-                return false;
-            if (lhavebyte <= lrel)
+            if (m_pos < m_versionpos)
             {
-                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, lhavebyte);
-                m_pos += lhavebyte;
-                abuff.m_pos += lhavebyte;
-                return true;
+                return EPH_HEAD_VAL.EPH_HEAD_VERSION_FOLLOW;
             }
-            else
-            {
-                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, lrel);
-                m_pos += lrel;
-                abuff.m_pos = abuff.m_len;
-                return false;
-            }
+            return version == nconfig.m_head_version ? EPH_HEAD_VAL.EPH_HEAD_VERSION_SUCCESS : EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL;
         }
+
+        public EPH_HEAD_VAL push_buff(tcp_buff abuff)
+        {
+            if (abuff.m_buff == null)
+                return EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL;
+            EPH_HEAD_VAL lval = isready();
+            if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FOLLOW || lval == EPH_HEAD_VAL.EPH_HEAD_FOLLOW)
+            {
+                int ltemp = packheadbyte - m_pos;
+                int lpos = abuff.m_len - abuff.m_pos;
+                ltemp = (lpos < ltemp) ? lpos : ltemp;
+
+                Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, ltemp);
+                m_pos += ltemp;
+                abuff.m_pos += ltemp;
+                return isready();
+            }
+            return lval;
+        }
+        //public bool push_buff(tcp_buff abuff)
+        //{
+        //    if (abuff.m_buff == null)
+        //        return false;
+        //    Int32 lrel = abuff.m_len - abuff.m_pos;
+        //    if (lrel <= 0)
+        //        return false;
+        //    Int32 lhavebyte = pack_head.packheadbyte - m_pos;
+        //    if (lhavebyte <= 0)
+        //        return false;
+        //    if (lhavebyte <= lrel)
+        //    {
+        //        Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, lhavebyte);
+        //        m_pos += lhavebyte;
+        //        abuff.m_pos += lhavebyte;
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_data, m_pos, lrel);
+        //        m_pos += lrel;
+        //        abuff.m_pos = abuff.m_len;
+        //        return false;
+        //    }
+        //}
     }
 
     class pack
@@ -165,24 +209,23 @@ namespace ngl
 
         public bool isready()
         {
-            if (!m_head.isready())
-                return false;
-            return m_pos >= m_head.bytes;
+            return m_head.isready() == EPH_HEAD_VAL.EPH_HEAD_SUCCESS ? m_pos >= m_head.bytes /*+ EPH_SUM * sizeof(uint32_t)*/ : false;
         }
 
-        public bool push_buff(tcp_buff abuff)
+        public EPH_HEAD_VAL push_buff(tcp_buff abuff)
         {
-            if (abuff.m_buff == null)
-                return false;
+            if (abuff.m_buff == null)//不可恢复的错误需要断线
+                return EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL;
 
-            if (!m_head.isready())
+            EPH_HEAD_VAL lval = m_head.isready();
+            if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FOLLOW)
             {////需要补全包头
-                if (!m_head.push_buff(abuff))
-                    return false;
+                m_head.push_buff(abuff);
             }
 
             if (isready())
-                return true;
+                return EPH_HEAD_VAL.EPH_HEAD_SUCCESS;
+
             if (m_buff == null)
             {
                 m_buff = new byte[m_head.bytes];
@@ -197,14 +240,14 @@ namespace ngl
                 Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_buff, m_pos, haveByte);
                 m_pos += haveByte;
                 abuff.m_pos += haveByte;
-                return true;
+                return EPH_HEAD_VAL.EPH_HEAD_SUCCESS;
             }
             else
             {
                 Buffer.BlockCopy(abuff.m_buff, abuff.m_pos, m_buff, m_pos, lrel);
                 m_pos += lrel;
                 abuff.m_pos = abuff.m_len;
-                return false;
+                return EPH_HEAD_VAL.EPH_HEAD_FOLLOW;
             }
         }
     }
