@@ -13,8 +13,37 @@ Dumper lDumper;
 #include "operator_file.h"
 #include "init_protobuf.h"
 
+#include "asio_kcp.h"
+
 int main(int argc, char** argv)
 {	
+	std::string largv = argv[1];
+	if(largv == "client")
+	{
+		ngl::asio_kcp lkcp(10000+boost::lexical_cast<int>(argv[2]));
+		ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string("127.0.0.1"), 12345);
+		for (int i = 0; i < 3; ++i)
+		{
+			std::string lstr = boost::lexical_cast<std::string>(i);
+			lkcp.send(lendpoint, lstr.c_str(), lstr.size()+1);
+		}
+		
+		while (1)
+		{
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+		}
+	}
+	else if(largv == "server")
+	{
+		ngl::asio_kcp lkcp(12345);
+		while (1)
+		{
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+		}
+	}
+
+
+
 	ngl::allcsv::load();
 	nconfig::init();
 	nconfig::load("config");

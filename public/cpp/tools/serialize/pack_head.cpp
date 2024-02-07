@@ -171,6 +171,7 @@ namespace ngl
 	{
 		return (EPROTOCOL_TYPE)m_data[EPH::EPH_PROTOCOLTYPE];
 	}
+
 	void pack_head::set_protocoltype(EPROTOCOL_TYPE atype)
 	{
 		m_data[EPH::EPH_PROTOCOLTYPE] = atype;

@@ -139,16 +139,13 @@ namespace ngl
 		{
 			if (sessionid <= 0)
 				return;
-			std::unordered_map<i32_sessionid, service_ws*>::iterator itor = m_data.find(sessionid);
-			if (itor == m_data.end())
-				return;
 			LogLocalError("close sessionid[%]", sessionid);
 			// 通知逻辑层session断开连接
 			service_ws* lpservice = nullptr;
 			std::function<void()> lclosefun = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				std::unordered_map<i32_sessionid, service_ws*>::iterator itor = m_data.find(sessionid);
+				auto itor = m_data.find(sessionid);
 				if (itor != m_data.end())
 				{
 					//delete itor->second;
@@ -336,7 +333,7 @@ namespace ngl
 					{
 						ws->m_ws.async_write(
 							boost::asio::buffer(lpack->m_buff, lpack->m_pos),
-							[this, alist, ws, lpack](std::error_code ec, std::size_t /*length*/)
+							[this, alist, ws, lpack](const std::error_code& ec, std::size_t /*length*/)
 							{
 								alist->pop_front();
 								handle_write(ws, ec, lpack);
@@ -356,7 +353,7 @@ namespace ngl
 							return;
 						ws->m_ws.async_write(
 							boost::asio::buffer(&lpack->m_buff[lpack->m_pos], lsize),
-							[this, alist, ws, lpack](std::error_code ec, std::size_t /*length*/)
+							[this, alist, ws, lpack](const std::error_code& ec, std::size_t /*length*/)
 							{
 								alist->pop_front();
 								handle_write(ws, ec, lpack);
@@ -377,7 +374,7 @@ namespace ngl
 
 					ws->m_ws.async_write(
 						boost::asio::buffer(lpackptr->m_buff, lpackptr->m_pos),
-						[this, alist, ws, lpack](std::error_code ec, std::size_t /*length*/)
+						[this, alist, ws, lpack](const std::error_code& ec, std::size_t /*length*/)
 						{
 							alist->pop_front();
 							handle_write_void(ws, ec, lpack);

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-01-24 22:50:37
+// 创建时间 24-02-06 18:14:42
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -43,6 +43,7 @@
 #include "actor_timer.cpp"
 #include "actor_type.cpp"
 #include "asio_base.cpp"
+#include "asio_kcp.cpp"
 #include "asio_tcp.cpp"
 #include "asio_timer.cpp"
 #include "asio_ws.cpp"
@@ -122,4 +123,5 @@
 #include "xmlnode.cpp"
 #include "xmlprotocol.cpp"
 extern "C"{
+#include "ikcp.c"
 }//extern "C"
