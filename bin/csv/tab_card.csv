@@ -1,0 +1,4 @@
+int32_t,string,string,EQuality,vector<attributevalue>,
+m_id,m_name,m_remarks,m_quality,m_attributevalues,
+"","",""," 品质EQuality(0灰色1绿色2黄色3橙色4红色)"," 属性",
+version:0

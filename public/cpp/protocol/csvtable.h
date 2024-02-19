@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-02-05 14:46:56
+// 创建时间 // 创建时间 24-02-19 19:21:59
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -164,13 +164,14 @@ struct tab_servers
 	int32_t		m_reloadcsv;		// 连接的reloadcsv进程id
 	int32_t		m_login;		// 连接的login进程id
 	int16_t		m_crossarea;		// 跨服区服
+	bool		m_isopenkcp;		// 是否开启kcp(如果开启与tcp共用同一端口)
 	std::vector<int32_t>		m_actorserver;		// 连接的actorserver进程id(跨服需要填写多个actorserver)
 /*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	def_portocol(tab_servers, m_id, m_name, m_remarks, m_area, m_type, m_tcount, m_net, m_ip, m_nip, m_port, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver)
+	def_portocol(tab_servers, m_id, m_name, m_remarks, m_area, m_type, m_tcount, m_net, m_ip, m_nip, m_port, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_isopenkcp, m_actorserver)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_net,m_ip,m_nip,m_port,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver)
+	def_rcsv(m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_net,m_ip,m_nip,m_port,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_isopenkcp,m_actorserver)
 };
 struct tab_dbload
 {

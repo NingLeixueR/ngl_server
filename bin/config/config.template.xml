@@ -13,6 +13,8 @@
 					gmurl = "http://127.0.0.1:800"
 					push_server_config = "push_server_config.php"
 					head_version = "1"
+					kcp_ping = "10000"
+					kcp_ping_interval = "20000"
 				/>
 		</public>
 		<db>

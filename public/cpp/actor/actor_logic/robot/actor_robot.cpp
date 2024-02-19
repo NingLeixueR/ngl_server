@@ -19,6 +19,10 @@ namespace ngl
 			})
 	{
 		assert(aarea == ttab_servers::tab()->m_area);
+
+		tab_servers* tab = ttab_servers::tab();
+		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		connect_kcp(tabgame->m_ip, tabgame->m_port);
 	}
 
 	void actor_robot::actor_register()

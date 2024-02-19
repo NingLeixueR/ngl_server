@@ -464,6 +464,7 @@ namespace ngl
 		public Int32		m_reloadcsv;		// 连接的reloadcsv进程id
 		public Int32		m_login;		// 连接的login进程id
 		public Int16		m_crossarea;		// 跨服区服
+		public bool		m_isopenkcp;		// 是否开启kcp(如果开启与tcp共用同一端口)
 		public List<Int32>		m_actorserver = new List<Int32>();		// 连接的actorserver进程id(跨服需要填写多个actorserver)
 		/*********************************/
 		public Int32 Id(){return m_id;}
@@ -506,6 +507,8 @@ namespace ngl
 			if(rcsv.readcsv(apair, ref m_login) == false)
 				return false;
 			if(rcsv.readcsv(apair, ref m_crossarea) == false)
+				return false;
+			if(rcsv.readcsv(apair, ref m_isopenkcp) == false)
 				return false;
 			if(rcsv.readcsv(apair, m_actorserver) == false)
 				return false;

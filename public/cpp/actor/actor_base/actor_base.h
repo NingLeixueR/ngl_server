@@ -16,6 +16,7 @@
 #include "nlog.h"
 #include "impl.h"
 #include "ttab_servers.h"
+#include "udp_kcp.h"
 
 namespace ngl
 {
@@ -119,6 +120,44 @@ namespace ngl
 		// 给指定连接发送数据
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+
+		template <typename T>
+		static bool sendbykcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		{
+			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
+			return true;
+		}
+
+		template <typename T>
+		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		{
+			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
+			return true;
+		}
+
+		i32_session m_kcpsession;
+
+		template <typename T>
+		bool sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid)
+		{
+			tab_servers* tab = ttab_servers::tab();
+			if (tab->m_isopenkcp == false)
+				return false;
+			udp_kcp::getInstance().send(asession, adata, aactorid, id_guid());
+			return true;
+		}
+
+		bool connect_kcp(const std::string& aip, i16_port aprot)
+		{
+			tab_servers* tab = ttab_servers::tab();
+			if (tab->m_isopenkcp == false)
+				return false;
+			udp_kcp::getInstance().connect(aip, aprot, [this](i32_session asession)
+				{
+					m_kcpsession = asession;
+				});
+			return true;
+		}
 
 		// 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>

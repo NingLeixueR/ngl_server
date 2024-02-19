@@ -65,11 +65,13 @@ namespace ngl
 		struct _robot
 		{
 			i32_sessionid m_session;
+			i32_sessionid m_kcpsession;
 			std::string m_account;
 			actor_robot* m_robot;
 			i64_actorid m_actor_roleid;
 			_robot() :
 				m_session(-1),
+				m_kcpsession(-1),
 				m_robot(nullptr),
 				m_actor_roleid(actor_guid::moreactor())
 			{}
@@ -211,7 +213,7 @@ namespace ngl
 				pbnet::PROBUFF_NET_GET_TIME pro;
 				foreach([&pro, this](actor_manage_robot::_robot& arobot)
 					{
-						send(&arobot, pro);
+						sendkcp(&arobot, pro);
 						return true;
 					});	
 			}
@@ -253,6 +255,13 @@ namespace ngl
 		{
 			nserver->send(arobot->m_session, adata, actor_guid::moreactor(), arobot->m_actor_roleid);
 		}
+
+		template <typename T>
+		void sendkcp(_robot* arobot, T& adata)
+		{
+			udp_kcp::getInstance().send(arobot->m_kcpsession, adata, actor_guid::moreactor(), arobot->m_actor_roleid);
+		}
+		
 
 		bool getdata(_robot* arobot)
 		{

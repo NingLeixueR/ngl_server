@@ -6,6 +6,7 @@
 
 #include "asio_ws.h"
 #include "asio_tcp.h"
+#include "asio_kcp.h"
 #include "pack.h"
 #include "segpack.h"
 #include "handle_pram.h"

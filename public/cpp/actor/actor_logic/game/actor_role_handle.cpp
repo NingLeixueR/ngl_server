@@ -12,10 +12,16 @@ namespace ngl
 
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
-		pro->set_m_utc(localtime::gettime());
-		send2client(pro);
+		//auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
+		//pro->set_m_utc(localtime::gettime());
+		//send2client(pro);
 		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name());
+
+		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
+		pro.set_m_utc(localtime::gettime());
+		sendkcp(adata.m_pack->m_id, pro, adata.m_pack->m_head.get_actordataid());
+
+		//
 		return true;
 	}
 
