@@ -152,9 +152,11 @@ namespace ngl
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
-			udp_kcp::getInstance().connect(aip, aprot, [this](i32_session asession)
+			
+			udp_kcp::getInstance().connect(id_guid(), aip, aprot, [this](i32_session asession)
 				{
 					m_kcpsession = asession;
+					std::cout << "m_kcpsession = " << m_kcpsession << std::endl;
 				});
 			return true;
 		}

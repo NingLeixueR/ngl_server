@@ -54,11 +54,9 @@ namespace ngl
 	}
 
 
-#define DEF_LOG_LEVEL			(ngl::ELOG_ERROR)
+#define DEF_LOG_LEVEL			(ngl::ELOG_NONE)
 #define DEF_LOG_MAX_LINE		(100000)
 #define DEF_LOG_PRINTF			(true)
-
-
 
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)

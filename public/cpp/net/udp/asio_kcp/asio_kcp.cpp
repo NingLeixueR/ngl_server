@@ -29,12 +29,12 @@ namespace ngl
 		m_kcp = ltemp;
 	}
 
-	std::map<kcp_cmd::ecmd, std::function<void(session_endpoint*)>> kcp_cmd::m_cmdfun;
+	std::map<kcp_cmd::ecmd, kcp_cmd::ecmd_callback> kcp_cmd::m_cmdfun;
 
-	void kcp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, kcp_cmd::ecmd acmd)
+	void kcp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, kcp_cmd::ecmd acmd, const std::string& ajson)
 	{
 		std::stringstream lstream;
-		lstream << "ecmd:" << (int)acmd;
+		lstream << "ecmd*" << (int)acmd << "*" << ajson;
 		std::string lstr = lstream.str();
 		akcp->send(asession, lstr.c_str(), lstr.size()+1);
 	}
@@ -49,6 +49,9 @@ namespace ngl
 
 		auto lcallfun = [lpsession, this](session_endpoint* apstruct)->bool
 		{
+				return true;
+				if (nconfig::m_nodetype == ngl::ROBOT)
+					return true;
 				i32_sessionid session = apstruct->m_session;
 				xmlinfo* linfo = nconfig::get_publicconfig();
 				if (linfo == nullptr)
@@ -59,7 +62,6 @@ namespace ngl
 				int intervalms = 0;
 				if (linfo->find("kcp_ping_interval", intervalms) == false)
 					return false;
-
 				wheel_parm lparm
 				{
 					.m_ms = ms,
@@ -85,30 +87,30 @@ namespace ngl
 				return true;
 		};
 
-		kcp_cmd::register_fun(kcp_cmd::ecmd_connect, [this, lcallfun](session_endpoint* apstruct)
+		kcp_cmd::register_fun(kcp_cmd::ecmd_connect, [this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+			{
+				apstruct->m_isconnect = true;
+				apstruct->m_pingtm = localtime::gettime();
+				ojson ltempjson(ajson.c_str());
+				std::pair<const char*, i64_actorid> lactorpair("actorid", 0);
+				if ((ltempjson >> lactorpair) == false)
+					return;
+				apstruct->m_actorid = lactorpair.second;
+
+				if (lcallfun(apstruct))
+					kcp_cmd::sendcmd(this, apstruct->m_session, kcp_cmd::ecmd_connect_ret, "");
+			});
+
+		kcp_cmd::register_fun(kcp_cmd::ecmd_connect_ret, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
 
-				if (nconfig::m_nodetype != ngl::ROBOT)
-				{
-					if (lcallfun(apstruct))
-						kcp_cmd::sendcmd(this, apstruct->m_session, kcp_cmd::ecmd_connect_ret);
-				}				
+				lcallfun(apstruct);
+				m_connectfun(apstruct->m_session);
 			});
 
-		kcp_cmd::register_fun(kcp_cmd::ecmd_connect_ret, [lpsession, this, lcallfun](session_endpoint* apstruct)
-			{
-				apstruct->m_isconnect = true;
-				apstruct->m_pingtm = localtime::gettime();
-
-				if (nconfig::m_nodetype == ngl::ROBOT)
-				{
-					lcallfun(apstruct);
-				}
-			});
-
-		kcp_cmd::register_fun(kcp_cmd::ecmd_ping, [lpsession, this, lcallfun](session_endpoint* apstruct)
+		kcp_cmd::register_fun(kcp_cmd::ecmd_ping, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
 			{
 				apstruct->m_pingtm = localtime::gettime();
 			});
@@ -124,6 +126,7 @@ namespace ngl
 	{
 		// 获取包头
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
+		lpack->m_protocol = ENET_KCP;
 		lpack->m_id = apstruct->m_session;
 		//lpack->m_segpack = m_segpack;
 		EPH_HEAD_VAL lval = lpack->m_head.push(abuff, abufflen);
@@ -136,6 +139,7 @@ namespace ngl
 			return false;
 		lpack->malloc(len);
 		memcpy(lpack->m_buff, abuff, len);
+		lpack->m_pos = len;
 		if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + DEF_TIMEOUT_SECOND)
 		{
 			protocol::push(lpack);
@@ -154,7 +158,7 @@ namespace ngl
 			{
 				if (!ec && bytes_received > 0)
 				{
-					session_endpoint* lpstruct = m_session.add(m_remoteport);
+					session_endpoint* lpstruct = m_session.add(m_remoteport, -1);
 					int ret = lpstruct->m_kcp.input(m_buff, bytes_received);
 					if (ret >= 0)
 					{
@@ -177,6 +181,7 @@ namespace ngl
 							// 首先判断下是否kcp_cmd
 							if (kcp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
 							{
+								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
 								break;
 							}
 
@@ -191,7 +196,7 @@ namespace ngl
 								break;
 							}
 							
-							//std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
+							std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
 						}
 					}
 					else

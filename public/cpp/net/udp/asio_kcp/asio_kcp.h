@@ -8,6 +8,9 @@
 #include "impl.h"
 #include "ikcp.h"
 #include "time_wheel.h"
+#include "splite.h"
+#include "ijson.h"
+#include "ojson.h"
 
 #include <map>
 #include <memory>
@@ -105,6 +108,7 @@ namespace ngl
 		bool m_isconnect;		// 是否接收到kcp_cmd::ecmd_connect 或者ecmd_connect_ret
 		int m_pingtm;			// 进行ping计时 
 		int64_t m_pingtimerid;
+		i64_actorid m_actorid;
 
 		session_endpoint()
 			: m_session(0)
@@ -112,6 +116,9 @@ namespace ngl
 			, m_asiokcp(nullptr)
 			, m_timerid(0)
 			, m_isconnect(false)
+			, m_pingtm(0)
+			, m_pingtimerid(0)
+			, m_actorid(-1)
 		{}
 
 		void create(IUINT32 asessionid, void* auser)
@@ -134,7 +141,7 @@ namespace ngl
 	class session_manage
 	{
 		std::map<i32_sessionid, session_endpoint> m_dataofsession;
-		std::map<std::string, std::map<i16_port, session_endpoint>> m_dataofendpoint;
+		std::map<std::string, std::map<i16_port, session_endpoint*>> m_dataofendpoint;
 		int32_t m_sessionid;
 
 		std::shared_mutex m_mutex;
@@ -145,7 +152,7 @@ namespace ngl
 			m_asiokcp(asiokcp)
 		{}
 
-		session_endpoint* add(const asio_udp_endpoint& aendpoint)
+		session_endpoint* add(const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
 		{
 			std::string lip = aendpoint.address().to_string();
 			i16_port lport = aendpoint.port();
@@ -156,7 +163,7 @@ namespace ngl
 				auto itorport = itor->second.find(lport);
 				if (itorport != itor->second.end())
 				{
-					return &itorport->second;
+					return itorport->second;
 				}
 			}
 			session_endpoint& ltemp = m_dataofsession[++m_sessionid];
@@ -165,6 +172,7 @@ namespace ngl
 			ltemp.m_ip = lip;
 			ltemp.m_port = lport;
 			ltemp.m_asiokcp = m_asiokcp;
+			ltemp.m_actorid = aactorid;
 
 			ltemp.create(m_sessionid, (void*)&ltemp);
 			ltemp.m_kcp.setmtu(1400);
@@ -172,7 +180,7 @@ namespace ngl
 			ltemp.m_kcp.setoutput(udp_output);
 			ltemp.m_kcp.nodelay(1, 10, 2, 1);
 			//ikcp_wndsize(ltemp.get_kcp(), 128, 128);
-			m_dataofendpoint[lip][lport] = ltemp;
+			m_dataofendpoint[lip][lport] = &ltemp;
 
 			int64_t lcreatems = time_wheel::getms();
 			wheel_parm lparm
@@ -235,7 +243,7 @@ namespace ngl
 				auto itorport = itor->second.find(lport);
 				if (itorport != itor->second.end())
 				{
-					return &itorport->second;
+					return itorport->second;
 				}
 			}
 			return nullptr;
@@ -261,23 +269,27 @@ namespace ngl
 			ecmd_connect_ret,			// 被发起连接者的返回
 			ecmd_ping,					// 定时ping
 
-			ecmd_minlen = sizeof("ecmd:") - 1,
+			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
-		using ecmd_callback = std::function<void(session_endpoint*)>;
+		using ecmd_callback = std::function<void(session_endpoint*, const std::string&)>;
 		static std::map<ecmd, ecmd_callback> m_cmdfun;
 
 		static bool cmd(session_endpoint* apstruct, const char* abuf, int32_t alen)
 		{
 			if (alen < ecmd_minlen)
 				return false;
-			if (memcmp(abuf, "ecmd:", ecmd_minlen) != 0)
+			if (memcmp(abuf, "ecmd*", ecmd_minlen) != 0)
 				return false;
 			try
 			{
-				ecmd lnum = (ecmd)boost::lexical_cast<int32_t>(&abuf[ecmd_minlen]);
-				auto itor = m_cmdfun.find(lnum);
+				std::string lecmd;
+				int32_t lnum = 0;
+				std::string ljson;
+				splite::division(abuf, "*", lecmd, lnum, ljson);
+				//ecmd lnum = (ecmd)boost::lexical_cast<int32_t>(&abuf[ecmd_minlen]);
+				auto itor = m_cmdfun.find((ecmd)lnum);
 				if (itor != m_cmdfun.end())
-					itor->second(apstruct);
+					itor->second(apstruct, ljson);
 				return true;
 			}
 			catch (...)
@@ -291,12 +303,13 @@ namespace ngl
 			m_cmdfun[anum] = afun;
 		}
 
-		static void sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd);
+		static void sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
 	};
 
 	class asio_kcp 
 	{
 		session_manage m_session;
+		std::function<void(i32_session)> m_connectfun;
 	public:
 		asio_kcp(i16_port port);
 	private:
@@ -345,17 +358,31 @@ namespace ngl
 			lpstruct->m_kcp.flush();
 		}
 
-		void connect(const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
+		void connect(i64_actorid aactorid, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
 		{
 			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
-			connect(lendpoint, afun);
+			connect(aactorid, lendpoint, afun);
 		}
 
-		void connect(const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
+		void connect(i64_actorid aactorid, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
 		{
 			// #### 发起连接
-			session_endpoint* lpstruct = m_session.add(aendpoint);
-			kcp_cmd::sendcmd(this, lpstruct->m_session, kcp_cmd::ecmd_connect);
+			session_endpoint* lpstruct = m_session.add(aendpoint, aactorid);
+			ijson ltempjson;
+			ltempjson << std::make_pair("actorid", aactorid);
+			ltempjson.set_nonformatstr(true);
+			std::string lparm;
+			ltempjson >> lparm;
+			kcp_cmd::sendcmd(this, lpstruct->m_session, kcp_cmd::ecmd_connect, lparm);
+			m_connectfun = afun;
+		}
+
+		i64_actorid find_actorid(i32_session asession)
+		{
+			session_endpoint* lpstruct = m_session.find(asession);
+			if (lpstruct == nullptr)
+				return -1;
+			return lpstruct->m_actorid;
 		}
 
 		void close(i32_session asession)

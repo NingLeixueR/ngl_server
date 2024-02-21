@@ -30,8 +30,8 @@ namespace ngl
 			cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
 			if (nullptr == ret || ret->type != cJSON_Number)
 				return false;
-			memcpy(&adata.second, &ret->valuedouble, sizeof(T));
-			//adata.second = (T)ret->valuedouble;
+			//memcpy(&adata.second, &ret->valuedouble, sizeof(T));
+			adata.second = (T)ret->valuedouble;
 			return true;
 		}
 

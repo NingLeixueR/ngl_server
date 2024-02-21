@@ -75,15 +75,27 @@ namespace ngl
 		{
 			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
 		}
-
-		void connect(const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
+		
+		void connect(i64_actorid aactorid
+			, const std::string& aip
+			, i16_port aport
+			, const std::function<void(i32_session)>& afun
+		)
 		{
-			m_kcp.connect(aip, aport, afun);
+			m_kcp.connect(aactorid, aip, aport, afun);
 		}
 
-		void connect(const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
+		void connect(i64_actorid aactorid
+			, const asio_udp_endpoint& aendpoint
+			, const std::function<void(i32_session)>& afun
+		)
 		{
-			m_kcp.connect(aendpoint, afun);
+			m_kcp.connect(aactorid, aendpoint, afun);
+		}
+
+		i64_actorid find_actorid(i32_session asession)
+		{
+			return m_kcp.find_actorid(asession);
 		}
 	};
 }

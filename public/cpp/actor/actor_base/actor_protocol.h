@@ -455,6 +455,11 @@ namespace ngl
 			return m_data.m_data.get();
 		}
 
+		void make_data()
+		{
+			m_data.make();
+		}
+
 		actor_forward()
 		{}
 

@@ -84,7 +84,7 @@ bool init_server(int aid)
 
 	if (tab->m_isopenkcp)
 	{
-		ngl::udp_kcp::getInstance(tab->m_port);
+		ngl::udp_kcp::getInstance(tab->m_port + 10000);
 	}
 		
 	return true;

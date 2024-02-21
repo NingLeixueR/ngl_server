@@ -63,6 +63,7 @@ namespace ngl
 		{
 			return true;
 		}
+
 	};
 
 	class serialize

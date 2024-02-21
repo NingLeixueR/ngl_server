@@ -24,6 +24,9 @@ namespace ngl
 
 		void free();
 	public:
+		// 用来区分是协议类型
+		ENET_PROTOCOL m_protocol	= ENET_TCP;
+
 		i32_session m_id			= 0;
 		pack_head m_head;
 		segpack* m_segpack			= nullptr;

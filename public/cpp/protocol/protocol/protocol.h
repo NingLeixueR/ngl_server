@@ -41,7 +41,6 @@ namespace ngl
 			{
 				Try
 				{
-					std::string lname;
 					T* lp = new T();
 					std::shared_ptr<void> ltemp(lp);
 					if (structbytes<T>::tostruct(apack, *lp))
@@ -127,13 +126,34 @@ namespace ngl
 			{
 				Try
 				{
+
 					using typeforward = actor_forward<T, TYPE, ISTRUE, T>;
 					typeforward* lp = new typeforward();
 					std::shared_ptr<void> ltemp(lp);
-					if (structbytes<typeforward>::tostruct(apack, *lp))
+					if (apack->m_protocol == ENET_KCP
+					|| apack->m_protocol == ENET_UDP)
 					{
-						return ltemp;
-					}					
+						lp->make_data();
+						if (structbytes<T>::tostruct(apack, *lp->get_data()))
+						{
+							i64_actorid lactorid = udp_kcp::getInstance().find_actorid(apack->m_id);
+							//std::vector<i32_actordataid>	m_uid;
+							//std::vector<i16_area>			m_area;
+							lp->m_uid.push_back(actor_guid::actordataid(lactorid));
+							lp->m_area.push_back(actor_guid::area(lactorid));
+							return ltemp;
+						}
+						
+					}
+					else
+					{
+						std::shared_ptr<void> ltemp(lp);
+						if (structbytes<typeforward>::tostruct(apack, *lp))
+						{
+							return ltemp;
+						}
+					}
+					
 				}Catch;
 				return nullptr;
 			};
@@ -147,6 +167,11 @@ namespace ngl
 				{
 					actor_guid lguid(atype, lp->m_area[i], lp->m_uid[i]);
 					handle_pram lpram;
+					if (apack->m_protocol == ENET_KCP
+						|| apack->m_protocol == ENET_UDP)
+					{
+						lpram.m_pack = apack;
+					}
 					handle_pram::create<T, false, false>(lpram, lguid, lrequestguid, ldatapack);
 					actor_manage::getInstance().push_task_id(lguid, lpram, false);
 				}

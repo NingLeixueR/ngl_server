@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-02-19 19:21:59
+// 创建时间 // 创建时间 24-02-20 16:05:31
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "actor_define.h"
@@ -61,6 +61,7 @@ enum ENET_PROTOCOL
 	ENET_TCP = 1,	
 	ENET_UDP = 2,	
 	ENET_WS = 3,	
+	ENET_KCP = 4,	
 };
 enum EnumModule
 {
@@ -164,7 +165,7 @@ struct tab_servers
 	int32_t		m_reloadcsv;		// 连接的reloadcsv进程id
 	int32_t		m_login;		// 连接的login进程id
 	int16_t		m_crossarea;		// 跨服区服
-	bool		m_isopenkcp;		// 是否开启kcp(如果开启与tcp共用同一端口)
+	bool		m_isopenkcp;		// 是否开启kcp(m_port+10000)
 	std::vector<int32_t>		m_actorserver;		// 连接的actorserver进程id(跨服需要填写多个actorserver)
 /*********************************/
 	tab_servers();
