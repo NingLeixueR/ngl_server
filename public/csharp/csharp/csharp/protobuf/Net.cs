@@ -175,25 +175,28 @@ namespace Pbnet {
             "BCABKAVIAogBAUIJCgdfbV90eXBlQgsKCV9tX3Jvb21pZEILCglfbV9kYXRh",
             "aWQibAoXUFJPQlVGRl9ORVRfRU5URVJfUExBWVMSIgoGbV90eXBlGAEgASgO",
             "Mg0ucGJuZXQuZXBsYXlzSACIAQESFQoIbV9yb29taWQYAiABKAVIAYgBAUIJ",
-            "CgdfbV90eXBlQgsKCV9tX3Jvb21pZCpGCg9lbnVtX2xvZ2ljX2NoYXQSEQoN",
-            "Z2V0X2NoYXRfbGlzdBAAEg4KCmNoYXRfc3BlYWsQARIQCgx1cGRhdGFfc3Bl",
-            "Y2sQAio8CgVldW5pdBIOCgpldW5pdF9yb2xlEAASEQoNZXVuaXRfbW9uc3Rl",
-            "chABEhAKDGV1bml0X3JlZ2lvbhACKnMKCWV1bml0c3RhdBIUChBldW5pdHN0",
-            "YXRfbm9ybWFsEAASFAoQZXVuaXRzdGF0X25vbW92ZRABEhwKGGV1bml0c3Rh",
-            "dF9ub25vcm1hbGF0dGFjaxACEhwKGGV1bml0c3RhdF9ub3JlbGVhc2Vza2ls",
-            "bBAEKjsKBmVwbGF5cxIfChtlcGxheXNfZ29fdW5kZXJncm91bmRwYWxhY2UQ",
-            "ABIQCgxlcGxheXNfY291bnQQASqbAQoVZW1hdGNoaW5nX2NhbmNlbF9zdGF0",
-            "EhwKGGVtYXRjaGluZ19jYW5jZWxfc3VjY2VzcxAAEhoKFmVtYXRjaGluZ19j",
-            "YW5jZWxfc3RhZ2UQARIgChxlbWF0Y2hpbmdfY2FuY2VsX3Jvb21ub3RmaW5k",
-            "EAISJgoiZW1hdGNoaW5nX2NhbmNlbF9yb29tbWVtYmVybm90ZmluZBADKqsB",
-            "ChVldHlwZV9tYXRjaGluZ19jYW5jZWwSIAocZXR5cGVfbWF0Y2hpbmdfY2Fu",
-            "Y2VsX2FjdGl2ZRAAEiEKHWV0eXBlX21hdGNoaW5nX2NhbmNlbF90aW1lb3V0",
-            "EAESJgoiZXR5cGVfbWF0Y2hpbmdfd2FpdGNvbmZpcm1fdGltZW91dBACEiUK",
-            "IWV0eXBlX21hdGNoaW5nX3dhaXRjcmVhdGVfdGltZW91dBADKqABChZlbWF0",
-            "Y2hpbmdfY29uZmlybV9zdGF0Eh0KGWVtYXRjaGluZ19jb25maXJtX3N1Y2Nl",
-            "c3MQABIbChdlbWF0Y2hpbmdfY29uZmlybV9zdGFnZRABEiEKHWVtYXRjaGlu",
-            "Z19jb25maXJtX3Jvb21ub3RmaW5kEAISJwojZW1hdGNoaW5nX2NvbmZpcm1f",
-            "cm9vbW1lbWJlcm5vdGZpbmQQA0ICSAFiBnByb3RvMw=="));
+            "CgdfbV90eXBlQgsKCV9tX3Jvb21pZCIYChZQUk9CVUZGX05FVF9LQ1BTRVNT",
+            "SU9OIk0KH1BST0JVRkZfTkVUX0tDUFNFU1NJT05fUkVTUE9OU0USGQoMbV9r",
+            "Y3BzZXNzaW9uGAEgASgJSACIAQFCDwoNX21fa2Nwc2Vzc2lvbipGCg9lbnVt",
+            "X2xvZ2ljX2NoYXQSEQoNZ2V0X2NoYXRfbGlzdBAAEg4KCmNoYXRfc3BlYWsQ",
+            "ARIQCgx1cGRhdGFfc3BlY2sQAio8CgVldW5pdBIOCgpldW5pdF9yb2xlEAAS",
+            "EQoNZXVuaXRfbW9uc3RlchABEhAKDGV1bml0X3JlZ2lvbhACKnMKCWV1bml0",
+            "c3RhdBIUChBldW5pdHN0YXRfbm9ybWFsEAASFAoQZXVuaXRzdGF0X25vbW92",
+            "ZRABEhwKGGV1bml0c3RhdF9ub25vcm1hbGF0dGFjaxACEhwKGGV1bml0c3Rh",
+            "dF9ub3JlbGVhc2Vza2lsbBAEKjsKBmVwbGF5cxIfChtlcGxheXNfZ29fdW5k",
+            "ZXJncm91bmRwYWxhY2UQABIQCgxlcGxheXNfY291bnQQASqbAQoVZW1hdGNo",
+            "aW5nX2NhbmNlbF9zdGF0EhwKGGVtYXRjaGluZ19jYW5jZWxfc3VjY2VzcxAA",
+            "EhoKFmVtYXRjaGluZ19jYW5jZWxfc3RhZ2UQARIgChxlbWF0Y2hpbmdfY2Fu",
+            "Y2VsX3Jvb21ub3RmaW5kEAISJgoiZW1hdGNoaW5nX2NhbmNlbF9yb29tbWVt",
+            "YmVybm90ZmluZBADKqsBChVldHlwZV9tYXRjaGluZ19jYW5jZWwSIAocZXR5",
+            "cGVfbWF0Y2hpbmdfY2FuY2VsX2FjdGl2ZRAAEiEKHWV0eXBlX21hdGNoaW5n",
+            "X2NhbmNlbF90aW1lb3V0EAESJgoiZXR5cGVfbWF0Y2hpbmdfd2FpdGNvbmZp",
+            "cm1fdGltZW91dBACEiUKIWV0eXBlX21hdGNoaW5nX3dhaXRjcmVhdGVfdGlt",
+            "ZW91dBADKqABChZlbWF0Y2hpbmdfY29uZmlybV9zdGF0Eh0KGWVtYXRjaGlu",
+            "Z19jb25maXJtX3N1Y2Nlc3MQABIbChdlbWF0Y2hpbmdfY29uZmlybV9zdGFn",
+            "ZRABEiEKHWVtYXRjaGluZ19jb25maXJtX3Jvb21ub3RmaW5kEAISJwojZW1h",
+            "dGNoaW5nX2NvbmZpcm1fcm9vbW1lbWJlcm5vdGZpbmQQA0ICSAFiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Pbdb.DbReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbnet.enum_logic_chat), typeof(global::Pbnet.eunit), typeof(global::Pbnet.eunitstat), typeof(global::Pbnet.eplays), typeof(global::Pbnet.ematching_cancel_stat), typeof(global::Pbnet.etype_matching_cancel), typeof(global::Pbnet.ematching_confirm_stat), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -255,7 +258,9 @@ namespace Pbnet {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SYNC), global::Pbnet.PROBUFF_NET_MATCHING_SYNC.Parser, new[]{ "MType", "MRoomid", "MMember" }, new[]{ "MType", "MRoomid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.Parser, new[]{ "MType", "MRoomid", "MPlaysactorid" }, new[]{ "MType", "MRoomid", "MPlaysactorid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS.Parser, new[]{ "MType", "MRoomid", "MMember", "MDataid" }, new[]{ "MType", "MRoomid", "MDataid" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_ENTER_PLAYS), global::Pbnet.PROBUFF_NET_ENTER_PLAYS.Parser, new[]{ "MType", "MRoomid" }, new[]{ "MType", "MRoomid" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_ENTER_PLAYS), global::Pbnet.PROBUFF_NET_ENTER_PLAYS.Parser, new[]{ "MType", "MRoomid" }, new[]{ "MType", "MRoomid" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION), global::Pbnet.PROBUFF_NET_KCPSESSION.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE), global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.Parser, new[]{ "MKcpsession" }, new[]{ "MKcpsession" }, null, null, null)
           }));
     }
     #endregion
@@ -14352,6 +14357,327 @@ namespace Pbnet {
           }
           case 16: {
             MRoomid = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 获取连接kcp-session
+  /// </summary>
+  public sealed partial class PROBUFF_NET_KCPSESSION : pb::IMessage<PROBUFF_NET_KCPSESSION>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PROBUFF_NET_KCPSESSION> _parser = new pb::MessageParser<PROBUFF_NET_KCPSESSION>(() => new PROBUFF_NET_KCPSESSION());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PROBUFF_NET_KCPSESSION> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[58]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_KCPSESSION() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_KCPSESSION(PROBUFF_NET_KCPSESSION other) : this() {
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_KCPSESSION Clone() {
+      return new PROBUFF_NET_KCPSESSION(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PROBUFF_NET_KCPSESSION);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PROBUFF_NET_KCPSESSION other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PROBUFF_NET_KCPSESSION other) {
+      if (other == null) {
+        return;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class PROBUFF_NET_KCPSESSION_RESPONSE : pb::IMessage<PROBUFF_NET_KCPSESSION_RESPONSE>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PROBUFF_NET_KCPSESSION_RESPONSE> _parser = new pb::MessageParser<PROBUFF_NET_KCPSESSION_RESPONSE>(() => new PROBUFF_NET_KCPSESSION_RESPONSE());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PROBUFF_NET_KCPSESSION_RESPONSE> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[59]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_KCPSESSION_RESPONSE() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_KCPSESSION_RESPONSE(PROBUFF_NET_KCPSESSION_RESPONSE other) : this() {
+      mKcpsession_ = other.mKcpsession_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_KCPSESSION_RESPONSE Clone() {
+      return new PROBUFF_NET_KCPSESSION_RESPONSE(this);
+    }
+
+    /// <summary>Field number for the "m_kcpsession" field.</summary>
+    public const int MKcpsessionFieldNumber = 1;
+    private string mKcpsession_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string MKcpsession {
+      get { return mKcpsession_ ?? ""; }
+      set {
+        mKcpsession_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "m_kcpsession" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMKcpsession {
+      get { return mKcpsession_ != null; }
+    }
+    /// <summary>Clears the value of the "m_kcpsession" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMKcpsession() {
+      mKcpsession_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PROBUFF_NET_KCPSESSION_RESPONSE);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PROBUFF_NET_KCPSESSION_RESPONSE other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MKcpsession != other.MKcpsession) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMKcpsession) hash ^= MKcpsession.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMKcpsession) {
+        output.WriteRawTag(10);
+        output.WriteString(MKcpsession);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMKcpsession) {
+        output.WriteRawTag(10);
+        output.WriteString(MKcpsession);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMKcpsession) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(MKcpsession);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PROBUFF_NET_KCPSESSION_RESPONSE other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMKcpsession) {
+        MKcpsession = other.MKcpsession;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            MKcpsession = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            MKcpsession = input.ReadString();
             break;
           }
         }

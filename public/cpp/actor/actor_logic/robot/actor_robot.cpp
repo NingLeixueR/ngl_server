@@ -20,14 +20,15 @@ namespace ngl
 	{
 		assert(aarea == ttab_servers::tab()->m_area);
 
-		tab_servers* tab = ttab_servers::tab();
-		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-		connect_kcp(tabgame->m_ip, tabgame->m_port + 10000);
 	}
 
 	void actor_robot::actor_register()
 	{
 		gameclient_forward::g2c();
+		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_robot>(
+			false
+			, dregister_fun_handle(actor_robot, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE)
+		);
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
@@ -37,6 +38,11 @@ namespace ngl
 			LogLocalError("[LOGIC_ROLE_SYNC:%:%]", adata.m_data->m_role().m_base().m_name(),  adata.m_data->m_role().m_base().m_lv());
 			m_data = *adata.m_data;
 		}Catch;
+
+
+		// 获取kcp-session
+		pbnet::PROBUFF_NET_KCPSESSION pro;
+		nserver->send(m_session, pro, actor_guid::moreactor(), id_guid());
 		return true;
 	}
 
@@ -123,6 +129,16 @@ namespace ngl
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
 	{
 		LogLocalError("[%][%][%]", actor_guid::make_type(id_guid(), ACTOR_ROLE), adata.m_data->m_errnum(), adata.m_data->m_errmessage());
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
+	{
+		m_kcpsessionmd5 = adata.m_data->m_kcpsession();
+
+		tab_servers* tab = ttab_servers::tab();
+		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		connect_kcp(tabgame->m_ip, tabgame->m_port + 10000);
 		return true;
 	}
 

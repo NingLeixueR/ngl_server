@@ -95,6 +95,12 @@ namespace ngl
 				std::pair<const char*, i64_actorid> lactorpair("actorid", 0);
 				if ((ltempjson >> lactorpair) == false)
 					return;
+				std::pair<const char*, std::string> lsessionpair("session", "");
+				if ((ltempjson >> lsessionpair) == false)
+					return;
+				if (udp_kcp::check_session(lactorpair.second, lsessionpair.second) == false)
+					return;
+
 				apstruct->m_actorid = lactorpair.second;
 
 				if (lcallfun(apstruct))

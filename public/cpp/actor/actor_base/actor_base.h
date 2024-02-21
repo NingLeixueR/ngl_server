@@ -147,13 +147,22 @@ namespace ngl
 			return true;
 		}
 
+
+		virtual const char* kcpsessionmd5()
+		{
+			return "";
+		}
+
 		bool connect_kcp(const std::string& aip, i16_port aprot)
 		{
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
 			
-			udp_kcp::getInstance().connect(id_guid(), aip, aprot, [this](i32_session asession)
+			std::string lkcpsessionmd5 = kcpsessionmd5();
+			if (lkcpsessionmd5 == "")
+				return false;
+			udp_kcp::getInstance().connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 				{
 					m_kcpsession = asession;
 					std::cout << "m_kcpsession = " << m_kcpsession << std::endl;

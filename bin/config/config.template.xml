@@ -15,6 +15,7 @@
 					head_version = "1"
 					kcp_ping = "10000"
 					kcp_ping_interval = "20000"
+					kcp_session = "abcdefghigklmn"
 				/>
 		</public>
 		<db>

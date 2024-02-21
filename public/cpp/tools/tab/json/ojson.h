@@ -34,7 +34,7 @@ namespace ngl
 			adata.second = (T)ret->valuedouble;
 			return true;
 		}
-
+		bool operator >> (std::pair<const char*, std::string>& adata);
 		bool operator >> (std::pair<const char*, int8_t>& adata);
 		bool operator >> (std::pair<const char*, int16_t>& adata);
 		bool operator >> (std::pair<const char*, int32_t>& adata);

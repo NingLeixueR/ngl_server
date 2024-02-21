@@ -20,6 +20,15 @@ namespace ngl
 			cJSON_Delete(m_json);
 	}
 
+	bool ojson::operator >> (std::pair<const char*, std::string>& adata)
+	{
+		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
+		if (nullptr == ret || ret->type != cJSON_String)
+			return false;
+		//memcpy(&adata.second, &ret->valuedouble, sizeof(T));
+		adata.second = ret->valuestring;
+		return true;
+	}
 
 	bool ojson::operator >> (std::pair<const char*, int8_t>& adata)
 	{

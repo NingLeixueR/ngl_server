@@ -16,6 +16,9 @@ namespace ngl
 	{
 		// ----- Data Begin -----
 		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE m_data;
+		std::string m_kcpsessionmd5;
+	public:
+		i32_session m_session;
 		// ----- Data End   -----
 	public:
 		actor_robot(i16_area aarea, i32_actordataid arobotid, void*);
@@ -25,6 +28,11 @@ namespace ngl
 		virtual ~actor_robot() {}
 
 		static void actor_register();
+
+		virtual const char* kcpsessionmd5()
+		{
+			return m_kcpsessionmd5.c_str();
+		}
 
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
@@ -37,6 +45,8 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
+		
 		/*LOGIC_ROLE_SYNC& get()
 		{
 			return m_data;
@@ -122,7 +132,7 @@ namespace ngl
 				{
 					std::cout << "#############[" << lrecv->m_account() << "][GateWay]["<< asession <<"]#############" << std::endl;
 					lrobot.m_session = asession;
-
+					lrobot.m_robot->m_session = asession;
 					std::cout << "#############roleid[" << lrecv->m_roleid() << std::endl;
 					pbnet::PROBUFF_NET_ROLE_LOGIN pro;
 					pro.set_m_roleid(lrecv->m_roleid());

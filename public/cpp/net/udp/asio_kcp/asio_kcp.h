@@ -358,18 +358,19 @@ namespace ngl
 			lpstruct->m_kcp.flush();
 		}
 
-		void connect(i64_actorid aactorid, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
+		void connect(const std::string& akcpsess, i64_actorid aactorid, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
 		{
 			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
-			connect(aactorid, lendpoint, afun);
+			connect(akcpsess, aactorid, lendpoint, afun);
 		}
 
-		void connect(i64_actorid aactorid, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
+		void connect(const std::string& akcpsess, i64_actorid aactorid, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
 		{
 			// #### 发起连接
 			session_endpoint* lpstruct = m_session.add(aendpoint, aactorid);
 			ijson ltempjson;
 			ltempjson << std::make_pair("actorid", aactorid);
+			ltempjson << std::make_pair("session", akcpsess);
 			ltempjson.set_nonformatstr(true);
 			std::string lparm;
 			ltempjson >> lparm;

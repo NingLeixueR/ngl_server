@@ -52,7 +52,7 @@ struct TableStruct_net_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[63]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[65]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -132,6 +132,12 @@ extern PROBUFF_NET_GET_TIME_RESPONSEDefaultTypeInternal _PROBUFF_NET_GET_TIME_RE
 class PROBUFF_NET_HEARTBEAT;
 class PROBUFF_NET_HEARTBEATDefaultTypeInternal;
 extern PROBUFF_NET_HEARTBEATDefaultTypeInternal _PROBUFF_NET_HEARTBEAT_default_instance_;
+class PROBUFF_NET_KCPSESSION;
+class PROBUFF_NET_KCPSESSIONDefaultTypeInternal;
+extern PROBUFF_NET_KCPSESSIONDefaultTypeInternal _PROBUFF_NET_KCPSESSION_default_instance_;
+class PROBUFF_NET_KCPSESSION_RESPONSE;
+class PROBUFF_NET_KCPSESSION_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_KCPSESSION_RESPONSEDefaultTypeInternal _PROBUFF_NET_KCPSESSION_RESPONSE_default_instance_;
 class PROBUFF_NET_MAIL_DEL;
 class PROBUFF_NET_MAIL_DELDefaultTypeInternal;
 extern PROBUFF_NET_MAIL_DELDefaultTypeInternal _PROBUFF_NET_MAIL_DEL_default_instance_;
@@ -275,6 +281,8 @@ template<> ::pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE* Arena::CreateMaybeMessage<:
 template<> ::pbnet::PROBUFF_NET_GET_TIME* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_TIME>(Arena*);
 template<> ::pbnet::PROBUFF_NET_GET_TIME_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_TIME_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_HEARTBEAT* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_HEARTBEAT>(Arena*);
+template<> ::pbnet::PROBUFF_NET_KCPSESSION* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_KCPSESSION>(Arena*);
+template<> ::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MAIL_DEL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_DEL>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MAIL_DRAW* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_DRAW>(Arena*);
@@ -10362,6 +10370,279 @@ class PROBUFF_NET_ENTER_PLAYS PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 m_roomid_;
   friend struct ::TableStruct_net_2eproto;
 };
+// -------------------------------------------------------------------
+
+class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_KCPSESSION) */ {
+ public:
+  inline PROBUFF_NET_KCPSESSION() : PROBUFF_NET_KCPSESSION(nullptr) {}
+  virtual ~PROBUFF_NET_KCPSESSION();
+
+  PROBUFF_NET_KCPSESSION(const PROBUFF_NET_KCPSESSION& from);
+  PROBUFF_NET_KCPSESSION(PROBUFF_NET_KCPSESSION&& from) noexcept
+    : PROBUFF_NET_KCPSESSION() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_KCPSESSION& operator=(const PROBUFF_NET_KCPSESSION& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_KCPSESSION& operator=(PROBUFF_NET_KCPSESSION&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PROBUFF_NET_KCPSESSION& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PROBUFF_NET_KCPSESSION* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_KCPSESSION*>(
+               &_PROBUFF_NET_KCPSESSION_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    63;
+
+  friend void swap(PROBUFF_NET_KCPSESSION& a, PROBUFF_NET_KCPSESSION& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_KCPSESSION* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_KCPSESSION* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PROBUFF_NET_KCPSESSION* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_KCPSESSION>(nullptr);
+  }
+
+  PROBUFF_NET_KCPSESSION* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_KCPSESSION>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PROBUFF_NET_KCPSESSION& from);
+  void MergeFrom(const PROBUFF_NET_KCPSESSION& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_KCPSESSION* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbnet.PROBUFF_NET_KCPSESSION";
+  }
+  protected:
+  explicit PROBUFF_NET_KCPSESSION(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_net_2eproto);
+    return ::descriptor_table_net_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_KCPSESSION)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_net_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE) */ {
+ public:
+  inline PROBUFF_NET_KCPSESSION_RESPONSE() : PROBUFF_NET_KCPSESSION_RESPONSE(nullptr) {}
+  virtual ~PROBUFF_NET_KCPSESSION_RESPONSE();
+
+  PROBUFF_NET_KCPSESSION_RESPONSE(const PROBUFF_NET_KCPSESSION_RESPONSE& from);
+  PROBUFF_NET_KCPSESSION_RESPONSE(PROBUFF_NET_KCPSESSION_RESPONSE&& from) noexcept
+    : PROBUFF_NET_KCPSESSION_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_KCPSESSION_RESPONSE& operator=(const PROBUFF_NET_KCPSESSION_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_KCPSESSION_RESPONSE& operator=(PROBUFF_NET_KCPSESSION_RESPONSE&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PROBUFF_NET_KCPSESSION_RESPONSE& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PROBUFF_NET_KCPSESSION_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_KCPSESSION_RESPONSE*>(
+               &_PROBUFF_NET_KCPSESSION_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    64;
+
+  friend void swap(PROBUFF_NET_KCPSESSION_RESPONSE& a, PROBUFF_NET_KCPSESSION_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_KCPSESSION_RESPONSE* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_KCPSESSION_RESPONSE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PROBUFF_NET_KCPSESSION_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_KCPSESSION_RESPONSE>(nullptr);
+  }
+
+  PROBUFF_NET_KCPSESSION_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_KCPSESSION_RESPONSE>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PROBUFF_NET_KCPSESSION_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_KCPSESSION_RESPONSE& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_KCPSESSION_RESPONSE* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbnet.PROBUFF_NET_KCPSESSION_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_NET_KCPSESSION_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_net_2eproto);
+    return ::descriptor_table_net_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMKcpsessionFieldNumber = 1,
+  };
+  // string m_kcpsession = 1;
+  bool has_m_kcpsession() const;
+  private:
+  bool _internal_has_m_kcpsession() const;
+  public:
+  void clear_m_kcpsession();
+  const std::string& m_kcpsession() const;
+  void set_m_kcpsession(const std::string& value);
+  void set_m_kcpsession(std::string&& value);
+  void set_m_kcpsession(const char* value);
+  void set_m_kcpsession(const char* value, size_t size);
+  std::string* mutable_m_kcpsession();
+  std::string* release_m_kcpsession();
+  void set_allocated_m_kcpsession(std::string* m_kcpsession);
+  private:
+  const std::string& _internal_m_kcpsession() const;
+  void _internal_set_m_kcpsession(const std::string& value);
+  std::string* _internal_mutable_m_kcpsession();
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_kcpsession_;
+  friend struct ::TableStruct_net_2eproto;
+};
 // ===================================================================
 
 
@@ -15265,9 +15546,95 @@ inline void PROBUFF_NET_ENTER_PLAYS::set_m_roomid(::PROTOBUF_NAMESPACE_ID::int32
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ENTER_PLAYS.m_roomid)
 }
 
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_KCPSESSION
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_KCPSESSION_RESPONSE
+
+// string m_kcpsession = 1;
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_m_kcpsession() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION_RESPONSE::has_m_kcpsession() const {
+  return _internal_has_m_kcpsession();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::clear_m_kcpsession() {
+  m_kcpsession_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& PROBUFF_NET_KCPSESSION_RESPONSE::m_kcpsession() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+  return _internal_m_kcpsession();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(const std::string& value) {
+  _internal_set_m_kcpsession(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+}
+inline std::string* PROBUFF_NET_KCPSESSION_RESPONSE::mutable_m_kcpsession() {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+  return _internal_mutable_m_kcpsession();
+}
+inline const std::string& PROBUFF_NET_KCPSESSION_RESPONSE::_internal_m_kcpsession() const {
+  return m_kcpsession_.Get();
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::_internal_set_m_kcpsession(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_kcpsession_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_kcpsession_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  m_kcpsession_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  m_kcpsession_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+}
+inline std::string* PROBUFF_NET_KCPSESSION_RESPONSE::_internal_mutable_m_kcpsession() {
+  _has_bits_[0] |= 0x00000001u;
+  return m_kcpsession_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* PROBUFF_NET_KCPSESSION_RESPONSE::release_m_kcpsession() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+  if (!_internal_has_m_kcpsession()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return m_kcpsession_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_allocated_m_kcpsession(std::string* m_kcpsession) {
+  if (m_kcpsession != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  m_kcpsession_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_kcpsession,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
