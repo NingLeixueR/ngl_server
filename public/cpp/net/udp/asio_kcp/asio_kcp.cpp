@@ -13,7 +13,7 @@ namespace ngl
 
 	int udp_output(const char* buf, int len, ikcpcb* kcp, void* user)
 	{
-		std::cout << "send###" << buf << std::endl;
+		//std::cout << "send###" << buf << std::endl;
 		session_endpoint* lpstruct = (session_endpoint*)user;
 		lpstruct->m_asiokcp->sendbuff(lpstruct->m_endpoint, buf, len);
 		return len;
@@ -49,41 +49,73 @@ namespace ngl
 
 		auto lcallfun = [lpsession, this](session_endpoint* apstruct)->bool
 		{
-				return true;
-				if (nconfig::m_nodetype == ngl::ROBOT)
-					return true;
-				i32_sessionid session = apstruct->m_session;
-				xmlinfo* linfo = nconfig::get_publicconfig();
-				if (linfo == nullptr)
-					return false;
-				int ms = 0;
-				if (linfo->find("kcp_ping", ms) == false)
-					return false;
-				int intervalms = 0;
-				if (linfo->find("kcp_ping_interval", intervalms) == false)
-					return false;
-				wheel_parm lparm
+				// 定时监测连接是否可用
+				if (nconfig::m_nodetype != ngl::ROBOT)
 				{
-					.m_ms = ms,
-					.m_intervalms = [ms](int64_t) {return ms; } ,
-					.m_count = 0x7fffffff,
-					.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
+					i32_sessionid session = apstruct->m_session;
+					xmlinfo* linfo = nconfig::get_publicconfig();
+					if (linfo == nullptr)
+						return false;
+					int ms = 0;
+					if (linfo->find("kcp_ping", ms) == false)
+						return false;
+					int intervalms = 0;
+					if (linfo->find("kcp_ping_interval", intervalms) == false)
+						return false;
+					wheel_parm lparm
 					{
-						session_endpoint* lpstruct = lpsession->find(session);
-						if (lpstruct == nullptr)
+						.m_ms = intervalms,
+						.m_intervalms = [intervalms](int64_t) {return intervalms; } ,
+						.m_count = 0x7fffffff,
+						.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
 						{
-							m_kcptimer.removetimer(anode->m_timerid);
-							return;
+							session_endpoint* lpstruct = lpsession->find(session);
+							if (lpstruct == nullptr)
+							{
+								m_kcptimer.removetimer(anode->m_timerid);
+								return;
+							}
+							int32_t lnow = localtime::gettime();
+							if (lnow - lpstruct->m_pingtm > intervalms)
+							{
+								close(lpstruct->m_session);
+								m_kcptimer.removetimer(anode->m_timerid);
+							}
 						}
-						int32_t lnow = localtime::gettime();
-						if (lnow - lpstruct->m_pingtm > intervalms)
+					};
+					apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+				}
+				else
+				{
+					i32_sessionid session = apstruct->m_session;
+					xmlinfo* linfo = nconfig::get_publicconfig();
+					if (linfo == nullptr)
+						return false;
+					int ms = 0;
+					if (linfo->find("kcp_ping", ms) == false)
+						return false;
+					int intervalms = 0;
+					if (linfo->find("kcp_ping_interval", intervalms) == false)
+						return false;
+					wheel_parm lparm
+					{
+						.m_ms = ms,
+						.m_intervalms = [ms](int64_t) {return ms; } ,
+						.m_count = 0x7fffffff,
+						.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
 						{
-							close(lpstruct->m_session);
-							m_kcptimer.removetimer(anode->m_timerid);
+							session_endpoint* lpstruct = lpsession->find(session);
+							if (lpstruct == nullptr)
+							{
+								m_kcptimer.removetimer(anode->m_timerid);
+								return;
+							}
+							kcp_cmd::sendcmd(this, session, kcp_cmd::ecmd_ping, "");
 						}
-					}
-				};
-				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+					};
+					apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+				}
+				
 				return true;
 		};
 
@@ -111,6 +143,8 @@ namespace ngl
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
+
+				// 定时发送cmd:ping
 
 				lcallfun(apstruct);
 				m_connectfun(apstruct->m_session);
@@ -202,7 +236,7 @@ namespace ngl
 								break;
 							}
 							
-							std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
+							//std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
 						}
 					}
 					else

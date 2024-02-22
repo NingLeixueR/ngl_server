@@ -138,7 +138,7 @@ namespace ngl
 
 		tab_servers* tab = ttab_servers::tab();
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-		connect_kcp(tabgame->m_ip, tabgame->m_port + 10000);
+		connect_kcp(tabgame->m_ip, tabgame->m_port);
 		return true;
 	}
 
