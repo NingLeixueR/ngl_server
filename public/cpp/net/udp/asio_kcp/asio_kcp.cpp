@@ -29,9 +29,9 @@ namespace ngl
 		m_kcp = ltemp;
 	}
 
-	std::map<kcp_cmd::ecmd, kcp_cmd::ecmd_callback> kcp_cmd::m_cmdfun;
+	std::map<udp_cmd::ecmd, udp_cmd::ecmd_callback> udp_cmd::m_cmdfun;
 
-	void kcp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, kcp_cmd::ecmd acmd, const std::string& ajson)
+	void udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
 	{
 		std::stringstream lstream;
 		lstream << "ecmd*" << (int)acmd << "*" << ajson;
@@ -111,7 +111,7 @@ namespace ngl
 								m_kcptimer.removetimer(anode->m_timerid);
 								return;
 							}
-							kcp_cmd::sendcmd(this, session, kcp_cmd::ecmd_ping, "");
+							udp_cmd::sendcmd(this, session, udp_cmd::ecmd_ping, "");
 						}
 					};
 					apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
@@ -120,7 +120,7 @@ namespace ngl
 				return true;
 		};
 
-		kcp_cmd::register_fun(kcp_cmd::ecmd_connect, [this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect, [this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
@@ -137,10 +137,10 @@ namespace ngl
 				apstruct->m_actorid = lactorpair.second;
 
 				if (lcallfun(apstruct))
-					kcp_cmd::sendcmd(this, apstruct->m_session, kcp_cmd::ecmd_connect_ret, "");
+					udp_cmd::sendcmd(this, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
 			});
 
-		kcp_cmd::register_fun(kcp_cmd::ecmd_connect_ret, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
@@ -151,7 +151,7 @@ namespace ngl
 				m_connectfun(apstruct->m_session);
 			});
 
-		kcp_cmd::register_fun(kcp_cmd::ecmd_ping, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_ping, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
 			{
 				apstruct->m_pingtm = localtime::gettime();
 			});
@@ -220,7 +220,7 @@ namespace ngl
 							}
 
 							// 首先判断下是否kcp_cmd
-							if (kcp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
+							if (udp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
 							{
 								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
 								break;

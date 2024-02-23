@@ -267,7 +267,7 @@ namespace ngl
 
 	};
 
-	class kcp_cmd
+	class udp_cmd
 	{
 	public:
 		enum ecmd
@@ -381,7 +381,7 @@ namespace ngl
 			ltempjson.set_nonformatstr(true);
 			std::string lparm;
 			ltempjson >> lparm;
-			kcp_cmd::sendcmd(this, lpstruct->m_session, kcp_cmd::ecmd_connect, lparm);
+			udp_cmd::sendcmd(this, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
 			m_connectfun = afun;
 		}
 
