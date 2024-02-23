@@ -138,7 +138,31 @@ namespace ngl
 		i32_session m_kcpsession;
 
 		template <typename T>
-		bool sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid)
+		bool sendkcp(T& adata, i64_actorid aactorid)
+		{
+			tab_servers* tab = ttab_servers::tab();
+			if (tab->m_isopenkcp == false)
+				return false;
+			udp_kcp::getInstance().send(m_kcpsession, adata, aactorid, id_guid());
+			return true;
+		}
+
+		template <typename T>
+		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid)
+		{
+			tab_servers* tab = ttab_servers::tab();
+			if (tab->m_isopenkcp == false)
+				return false;
+			udp_kcp::getInstance().send(asession, adata, aactorid, id_guid());
+			return true;
+		}
+
+		template <typename T>
+		static bool static_sendkcp(
+			const std::vector<i32_sessionid>& asession
+			, T& adata
+			, i64_actorid aactorid
+		)
 		{
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)

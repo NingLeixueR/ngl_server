@@ -20,7 +20,7 @@ namespace ngl
 
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
 		pro.set_m_utc(localtime::gettime());
-		sendkcp(adata.m_pack->m_id, pro, adata.m_pack->m_head.get_actordataid());
+		sendkcp(pro, adata.m_pack->m_head.get_actordataid());
 
 		//
 		return true;
