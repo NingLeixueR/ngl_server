@@ -29,6 +29,7 @@ namespace ngl
 
         public static Int32 m_nodeid = 0;
         public static string m_servername = "";
+        public static Int32 m_kcp_ping = 0;
         public static void set_server(string aservertypename, Int32 anodeid)
         {
             m_servername = aservertypename;
@@ -86,6 +87,7 @@ namespace ngl
             encryption.set_xor(m_isxor, lbytes, lbytes.Length);
 
             m_head_version = xmlgetInt32(lAttributes, "head_version");
+            m_kcp_ping = xmlgetInt32(lAttributes, "kcp_ping");
         }
     }
 }

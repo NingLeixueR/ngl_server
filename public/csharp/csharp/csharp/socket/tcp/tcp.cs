@@ -21,27 +21,58 @@ namespace ngl
 {
     class tcp
     {
-        IPEndPoint? m_endpoint = null;
-        Socket? m_socket = null;
+        public class tcp_connect
+        {
+            public IPEndPoint? m_endpoint = null;
+            public Socket? m_socket = null;
+            public byte[] m_temp = new byte[8192];
+            public int m_session = 0;
+        }
+
+        private Dictionary<int, tcp_connect>? m_tcp = null;
+        private int m_gsesson = 0;
         //  连接成功的回调函数
-        public Action? m_connectSuccessful = null;
+        public Action<tcp_connect>? m_connectSuccessful = null;
         //  连接失败的回调函数
         public Action? m_connectFail = null;
-         
-        byte[] m_temp = new byte[8192];
+
+        //byte[] m_temp = new byte[8192];
 
         private bool m_noDelay;
 
         private pack? m_pack = null;
         private List<pack> m_packlist = new List<pack>();
         private protocol_pack? m_propack = null;
-
-        public void set_nodelay(bool anodelay)
+        public tcp()
         {
-            if(m_socket != null && m_noDelay != anodelay)
+            m_tcp = new Dictionary<int, tcp_connect>();
+        }
+        Socket? get_socket(int asession)
+        {
+            if (m_tcp == null)
+                return null;
+            if (m_tcp.TryGetValue(asession, out tcp_connect so))
+                return so.m_socket;
+            return null;
+        }
+
+        tcp_connect? get_tcp_connect(int asession)
+        {
+            if (m_tcp == null)
+                return null;
+            if (m_tcp.TryGetValue(asession, out tcp_connect so))
+                return so;
+            return null;
+        }
+        public void set_nodelay(int asession, bool anodelay)
+        {
+            var socket = get_socket(asession);
+            if (socket == null)
+                return;
+            if (m_noDelay != anodelay)
             {
                 m_noDelay = anodelay;
-                m_socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, m_noDelay);
+                socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, m_noDelay);
             }
         }
 
@@ -50,58 +81,63 @@ namespace ngl
             return m_noDelay;
         }
 
-        public bool connect(IPEndPoint aendpoint)
+        public int connect(IPEndPoint aendpoint)
         {
-            if (m_socket != null || m_endpoint != null || aendpoint == null)
-                return false;
-            m_endpoint = aendpoint;
+            if (m_tcp == null)
+                return -1;
             try
             {
-                m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                m_socket.NoDelay = true;
-                m_socket.BeginConnect(m_endpoint, on_connect, null);
-                return true;
+                var ltcp = new tcp_connect
+                {
+                    m_endpoint = aendpoint,
+                    m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp),
+                    m_session = ++m_gsesson,
+                };
+                m_tcp.Add(m_gsesson, ltcp);
+                ltcp.m_socket.NoDelay = true;
+                ltcp.m_socket.BeginConnect(aendpoint, (IAsyncResult result) => { on_connect(result, ltcp); }, null);
+                return m_gsesson;
             }
             catch (System.Exception ex)
             {
                 // Debug.LogWarning (ex);
             }
-            return false;
+            return -1;
         }
 
-        private void on_connect(IAsyncResult result)
+        private void on_connect(IAsyncResult result, tcp_connect aconnect)
         {
-            if (m_socket == null)
+            if (aconnect.m_socket == null)
                 return;
             try
             {
-                m_socket.EndConnect(result);
+                aconnect.m_socket.EndConnect(result);
             }
             catch (System.Exception ex)
             {
-                m_socket.Close();
+                aconnect.m_socket.Close();
                 if (m_connectFail != null)
                     m_connectFail();
                 return;
             }
-            start_receiving();
+            start_receiving(aconnect);
             if(m_connectSuccessful != null)
-                m_connectSuccessful();
+                m_connectSuccessful(aconnect);
         }
 
-        private void start_receiving()
+        private void start_receiving(tcp_connect aconnect)
         {
-            if (m_socket != null && m_socket.Connected)
+            if (aconnect.m_socket != null && aconnect.m_socket.Connected)
             {
                 try
                 {
                     //IPEndPoint remoteTcpEndPoint = (IPEndPoint)m_socket.RemoteEndPoint;
-                    m_socket.BeginReceive(m_temp, 0, m_temp.Length, SocketFlags.None, on_receive, null);
+                    aconnect.m_socket.BeginReceive(aconnect.m_temp, 0, aconnect.m_temp.Length, SocketFlags.None, (IAsyncResult result) => { on_receive(result, aconnect); }, null);
                 }
                 catch (System.Exception ex)
                 {
                     //if (!(ex is SocketException)) Debug.LogWarning(ex);
-                    close();
+                    close(aconnect.m_session);
                     if (m_connectFail != null)
                         m_connectFail();
                     return;
@@ -109,44 +145,47 @@ namespace ngl
             }
         }
 
-        public void close()
+        public void close(int asession)
         {
-            if (m_socket != null)
+            var socket = get_socket(asession);
+            if (socket == null)
+                return;
+            if (socket != null)
             {
                 try
                 {
-                    if (m_socket.Connected)
-                        m_socket.Shutdown(SocketShutdown.Both);
-                    m_socket.Close();
+                    if (socket.Connected)
+                        socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
                 }
                 catch (System.Exception) 
                 { 
                 }
-                m_socket = null;
+                socket = null;
             }
         }
 
-        private void on_receive(IAsyncResult result)
+        private void on_receive(IAsyncResult result, tcp_connect aconnect)
         {
-            if (m_socket == null)
+            if (aconnect.m_socket == null)
                 return;
             int bytes = 0;
             try
             {
-                bytes = m_socket.EndReceive(result);
+                bytes = aconnect.m_socket.EndReceive(result);
             }
             catch (System.Exception ex)
             {
-                close();
+                close(aconnect.m_session);
                 if (m_connectFail != null)
                     m_connectFail();
                 return;
             }
-            if (bytes > 0 && process_buffer(bytes))
+            if (bytes > 0 && process_buffer(bytes, aconnect))
             {
                 try
                 {
-                    m_socket.BeginReceive(m_temp, 0, m_temp.Length, SocketFlags.None, on_receive, null);
+                    aconnect.m_socket.BeginReceive(aconnect.m_temp, 0, aconnect.m_temp.Length, SocketFlags.None, (IAsyncResult result) => { on_receive(result, aconnect); }, null);
                     return;
                 }
                 catch (System.Exception ex)
@@ -154,16 +193,16 @@ namespace ngl
                 }
 
             }
-            close();
+            close(aconnect.m_session);
             if (m_connectFail != null)
                 m_connectFail();
         }
 
-        private bool process_buffer(int bytes)
+        private bool process_buffer(int bytes, tcp_connect aconnect)
         {
             // 收取包头
             tcp_buff lbuff = new tcp_buff();
-            lbuff.m_buff = m_temp;
+            lbuff.m_buff = aconnect.m_temp;
             lbuff.m_len = bytes;
             lbuff.m_pos = 0;
 
@@ -185,7 +224,7 @@ namespace ngl
                 }
                 else if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL)
                 {
-                    close();
+                    close(aconnect.m_session);
                 }
                 break;
             }            
@@ -238,9 +277,11 @@ namespace ngl
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
             return (Int32)(DateTime.UtcNow - startTime).TotalSeconds;
         }
-        public void send<T>(T apro) where T : IMessage, new()
+
+        public void send<T>(int asession, T apro) where T : IMessage, new()
         {
-            if (m_socket == null)
+            var ltcp_connect = get_tcp_connect(asession);
+            if (ltcp_connect == null || ltcp_connect.m_socket == null)
                 return;
             byte[] lbuff = apro.ToByteArray();
             pack_head lhead = new pack_head();
@@ -258,15 +299,14 @@ namespace ngl
             encryption.bytexor(lbuff, lbuff.Length, 0);
             lbuff.CopyTo(lbuffall.m_buff, pack_head.packheadbyte);
 
-            m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
+            ltcp_connect.m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, (IAsyncResult result) => { on_send(result, ltcp_connect); }, lbuffall);
         }
 
-
-        private void on_send(IAsyncResult result)
+        private void on_send(IAsyncResult result, tcp_connect atcp_connect)
         {
-            if (m_socket == null)
+            if (atcp_connect.m_socket == null)
                 return;
-            int bytes = m_socket.EndSend(result);
+            int bytes = atcp_connect.m_socket.EndSend(result);
             tcp_buff? buff = result.AsyncState as tcp_buff;
             if (buff == null || buff.m_buff == null)
                 return;
@@ -275,13 +315,13 @@ namespace ngl
                 try
                 {
                     buff.m_pos += bytes;
-                    m_socket.BeginSend(buff.m_buff, buff.m_pos, buff.m_len, SocketFlags.None, on_send, buff);
+                    atcp_connect.m_socket.BeginSend(buff.m_buff, buff.m_pos, buff.m_len, SocketFlags.None, (IAsyncResult result) => { on_send(result, atcp_connect); }, buff);
                     return;
                 }
                 catch (Exception ex)
                 {
                     //Debug.LogWarning (ex);
-                    close();
+                    close(atcp_connect.m_session);
                     if (m_connectFail != null)
                         m_connectFail();
                     return;
