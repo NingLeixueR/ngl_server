@@ -58,6 +58,12 @@ namespace ngl
 			return ikcp_nodelay(m_kcp.get(), nodelay, interval, resend, nc);
 		}
 
+		int wndsize(int sndwnd, int rcvwnd)
+		{
+			monopoly_shared_lock(*m_kcpmutex);
+			return ikcp_wndsize(m_kcp.get(), sndwnd, rcvwnd);
+		}
+
 		void update(IUINT32 current)
 		{
 			monopoly_shared_lock(*m_kcpmutex);
@@ -175,11 +181,12 @@ namespace ngl
 			ltemp.m_actorid = aactorid;
 
 			ltemp.create(m_sessionid, (void*)&ltemp);
-			ltemp.m_kcp.setmtu(1400);
+			
 			//设置kcp对象的回调函数
 			ltemp.m_kcp.setoutput(udp_output);
 			ltemp.m_kcp.nodelay(1, 10, 2, 1);
-			//ikcp_wndsize(ltemp.get_kcp(), 128, 128);
+			ltemp.m_kcp.wndsize(128, 128);
+			ltemp.m_kcp.setmtu(512);
 			m_dataofendpoint[lip][lport] = &ltemp;
 
 			int64_t lcreatems = time_wheel::getms();

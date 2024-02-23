@@ -49,6 +49,7 @@ namespace ngl
 
 		auto lcallfun = [lpsession, this](session_endpoint* apstruct)->bool
 		{
+				return true;
 				// 定时监测连接是否可用
 				if (nconfig::m_nodetype != ngl::ROBOT)
 				{

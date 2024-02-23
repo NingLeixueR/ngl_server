@@ -123,6 +123,10 @@ typedef unsigned long long IUINT64;
 #endif
 #endif
 
+#if (!defined(__cplusplus)) && (!defined(inline))
+#define inline INLINE
+#endif
+
 
 //=====================================================================
 // QUEUE DEFINITION                                                  
@@ -221,7 +225,7 @@ typedef struct IQUEUEHEAD iqueue_head;
 
 
 //---------------------------------------------------------------------
-// WORD ORDER
+// BYTE ORDER & ALIGNMENT
 //---------------------------------------------------------------------
 #ifndef IWORDS_BIG_ENDIAN
     #ifdef _BIG_ENDIAN_
@@ -232,7 +236,7 @@ typedef struct IQUEUEHEAD iqueue_head;
     #ifndef IWORDS_BIG_ENDIAN
         #if defined(__hppa__) || \
             defined(__m68k__) || defined(mc68000) || defined(_M_M68K) || \
-            (defined(__MIPS__) && defined(__MISPEB__)) || \
+            (defined(__MIPS__) && defined(__MIPSEB__)) || \
             defined(__ppc__) || defined(__POWERPC__) || defined(_M_PPC) || \
             defined(__sparc__) || defined(__powerpc__) || \
             defined(__mc68000__) || defined(__s390x__) || defined(__s390__)
@@ -244,6 +248,17 @@ typedef struct IQUEUEHEAD iqueue_head;
     #endif
 #endif
 
+#ifndef IWORDS_MUST_ALIGN
+	#if defined(__i386__) || defined(__i386) || defined(_i386_)
+		#define IWORDS_MUST_ALIGN 0
+	#elif defined(_M_IX86) || defined(_X86_) || defined(__x86_64__)
+		#define IWORDS_MUST_ALIGN 0
+	#elif defined(__amd64) || defined(__amd64__)
+		#define IWORDS_MUST_ALIGN 0
+	#else
+		#define IWORDS_MUST_ALIGN 1
+	#endif
+#endif
 
 
 //=====================================================================
@@ -267,7 +282,6 @@ struct IKCPSEG
 	char data[1];
 };
 
-typedef IUINT32 kcp_conv_t;
 
 //---------------------------------------------------------------------
 // IKCPCB
@@ -295,7 +309,8 @@ struct IKCPCB
 	void *user;
 	char *buffer;
 	int fastresend;
-	int nocwnd;
+	int fastlimit;
+	int nocwnd, stream;
 	int logmask;
 	int (*output)(const char *buf, int len, struct IKCPCB *kcp, void *user);
 	void (*writelog)(const char *log, struct IKCPCB *kcp, void *user);
@@ -333,6 +348,10 @@ ikcpcb* ikcp_create(IUINT32 conv, void *user);
 // release kcp control object
 void ikcp_release(ikcpcb *kcp);
 
+// set output callback, which will be invoked by kcp
+void ikcp_setoutput(ikcpcb *kcp, int (*output)(const char *buf, int len, 
+	ikcpcb *kcp, void *user));
+
 // user/upper level recv: returns size, returns below zero for EAGAIN
 int ikcp_recv(ikcpcb *kcp, char *buffer, int len);
 
@@ -352,12 +371,6 @@ void ikcp_update(ikcpcb *kcp, IUINT32 current);
 // schedule ikcp_update (eg. implementing an epoll-like mechanism, 
 // or optimize ikcp_update when handling massive kcp connections)
 IUINT32 ikcp_check(const ikcpcb *kcp, IUINT32 current);
-
-// Get conv from a udp packet.
-// you can use this func to find out one packet should bind to which ikcpcb obj.
-// return 1 if get conv success.
-// return 0 if get conv error.
-int ikcp_get_conv(const char *data, long size, IUINT32* conv_out);
 
 // when you received a low level packet (eg. UDP packet), call it
 int ikcp_input(ikcpcb *kcp, const char *data, long size);
@@ -384,13 +397,14 @@ int ikcp_waitsnd(const ikcpcb *kcp);
 // nc: 0:normal congestion control(default), 1:disable congestion control
 int ikcp_nodelay(ikcpcb *kcp, int nodelay, int interval, int resend, int nc);
 
-int ikcp_rcvbuf_count(const ikcpcb *kcp);
-int ikcp_sndbuf_count(const ikcpcb *kcp);
 
 void ikcp_log(ikcpcb *kcp, int mask, const char *fmt, ...);
 
 // setup allocator
 void ikcp_allocator(void* (*new_malloc)(size_t), void (*new_free)(void*));
+
+// read conv
+IUINT32 ikcp_getconv(const void *ptr);
 
 
 #ifdef __cplusplus
