@@ -1,0 +1,83 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<con>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE,1,1,struct ngl::forward>" number="111"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="111"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE,1,0,struct ngl::forward>" number="111"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="111"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE,1,1,class GM::PROBUFF_GM_GET_NOTICE>" number="111"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_GET_NOTICE>" number="111"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE,1,0,class GM::PROBUFF_GM_GET_NOTICE>" number="111"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_GET_NOTICE>" number="111"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_GET_NOTICE>" number="111"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_GET_NOTICE>" number="111"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE_RESPONSE,1,1,struct ngl::forward>" number="112"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="112"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE_RESPONSE,1,0,struct ngl::forward>" number="112"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="112"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE_RESPONSE,1,1,class GM::PROBUFF_GM_GET_NOTICE_RESPONSE>" number="112"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_GET_NOTICE_RESPONSE>" number="112"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_GET_NOTICE_RESPONSE,1,0,class GM::PROBUFF_GM_GET_NOTICE_RESPONSE>" number="112"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_GET_NOTICE_RESPONSE>" number="112"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_GET_NOTICE_RESPONSE>" number="112"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>" number="112"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE,1,1,struct ngl::forward>" number="113"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="113"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE,1,0,struct ngl::forward>" number="113"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="113"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE,1,1,class GM::PROBUFF_GM_ADD_NOTICE>" number="113"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_ADD_NOTICE>" number="113"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE,1,0,class GM::PROBUFF_GM_ADD_NOTICE>" number="113"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_ADD_NOTICE>" number="113"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_ADD_NOTICE>" number="113"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_ADD_NOTICE>" number="113"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE,1,1,struct ngl::forward>" number="114"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="114"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE,1,0,struct ngl::forward>" number="114"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="114"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE,1,1,class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>" number="114"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>" number="114"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE,1,0,class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>" number="114"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>" number="114"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>" number="114"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>" number="114"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE,1,1,struct ngl::forward>" number="115"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="115"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE,1,0,struct ngl::forward>" number="115"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="115"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE,1,1,class GM::PROBUFF_GM_DEL_NOTICE>" number="115"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_DEL_NOTICE>" number="115"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE,1,0,class GM::PROBUFF_GM_DEL_NOTICE>" number="115"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_DEL_NOTICE>" number="115"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_DEL_NOTICE>" number="115"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_DEL_NOTICE>" number="115"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE,1,1,struct ngl::forward>" number="116"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="116"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE,1,0,struct ngl::forward>" number="116"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="116"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE,1,1,class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>" number="116"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>" number="116"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE,1,0,class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>" number="116"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>" number="116"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>" number="116"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>" number="116"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE,1,1,struct ngl::forward>" number="117"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="117"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE,1,0,struct ngl::forward>" number="117"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="117"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE,1,1,class GM::PROBUFF_GM_RECHARGE>" number="117"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_RECHARGE>" number="117"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE,1,0,class GM::PROBUFF_GM_RECHARGE>" number="117"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_RECHARGE>" number="117"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_RECHARGE>" number="117"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_RECHARGE>" number="117"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE_RESPONSE,1,1,struct ngl::forward>" number="118"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="118"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE_RESPONSE,1,0,struct ngl::forward>" number="118"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="118"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE_RESPONSE,1,1,class GM::PROBUFF_GM_RECHARGE_RESPONSE>" number="118"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, true, GM::PROBUFF_GM_RECHARGE_RESPONSE>" number="118"/>
+	<config client = "0" name="struct ngl::actor_forward<class GM::PROBUFF_GM_RECHARGE_RESPONSE,1,0,class GM::PROBUFF_GM_RECHARGE_RESPONSE>" number="118"/>
+	<config client = "0" name="ngl::actor_forward<GM::PROBUFF_GM_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, false, GM::PROBUFF_GM_RECHARGE_RESPONSE>" number="118"/>
+	<config client = "0" name="struct ngl::actor_module_forward<class GM::PROBUFF_GM_RECHARGE_RESPONSE>" number="118"/>
+	<config client = "0" name="ngl::actor_module_forward<GM::PROBUFF_GM_RECHARGE_RESPONSE>" number="118"/>
+</con>
