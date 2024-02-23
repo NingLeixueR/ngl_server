@@ -15,6 +15,7 @@ namespace ngl
 		//auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
 		//pro->set_m_utc(localtime::gettime());
 		//send2client(pro);
+		std::cout << "######Get Server Time##" << localtime::gettime() << std::endl;
 		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name());
 
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;

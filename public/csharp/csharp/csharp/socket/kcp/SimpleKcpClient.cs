@@ -45,73 +45,24 @@ namespace ngl
             kcp.Send(datagram.AsSpan().Slice(0, bytes));
         }
 
-        //public async ValueTask<byte[]> ReceiveAsync()
-        //{
-        //    var (buffer, avalidLength) = kcp.TryRecv();
-        //    while (buffer == null)
-        //    {
-        //        await Task.Delay(10);
-        //        (buffer, avalidLength) = kcp.TryRecv();
-        //    }
-
-        //    var s = buffer.Memory.Span.Slice(0, avalidLength).ToArray();
-        //    return s;
-        //}
-        //public async ValueTask<tcp_buff> ReceiveAsync()
-        //{
-        //    var (buffer, avalidLength) = kcp.TryRecv();
-        //    while (buffer == null)
-        //    {
-        //        await Task.Delay(10);
-        //        (buffer, avalidLength) = kcp.TryRecv();
-        //    }
-
-        //    tcp_buff ret = new tcp_buff();
-        //    ret.m_buff = buffer.Memory.Span.Slice(0, avalidLength).ToArray();
-        //    ret.m_len = avalidLength;
-        //    ret.m_pos = 0;
-        //    return ret;
-        //}
-
-        //private async void BeginRecv()
-        //{
-        //    var res = await client.ReceiveAsync();
-        //    EndPoint = res.RemoteEndPoint;
-        //    kcp.Input(res.Buffer);
-        //    BeginRecv();
-        //}
-
-        // 对于 ReceiveAsync() 方法
-        private TaskCompletionSource<byte[]> receiveTaskCompletionSource;
-
         public async ValueTask<byte[]> ReceiveAsync()
         {
-            var (buffer, availableLength) = kcp.TryRecv();
-            if (buffer != null)
+            var (buffer, avalidLength) = kcp.TryRecv();
+            while (buffer == null)
             {
-                // 如果有可用数据，立即返回
-                return buffer.Memory.Slice(0, availableLength).ToArray();
+                await Task.Delay(10);
+                (buffer, avalidLength) = kcp.TryRecv();
             }
 
-            // 否则，等待数据到来
-            receiveTaskCompletionSource = new TaskCompletionSource<byte[]>();
-            return await receiveTaskCompletionSource.Task;
+            var s = buffer.Memory.Span.Slice(0, avalidLength).ToArray();
+            return s;
         }
 
-        // 在 BeginRecv() 方法中
         private async void BeginRecv()
         {
             var res = await client.ReceiveAsync();
             EndPoint = res.RemoteEndPoint;
             kcp.Input(res.Buffer);
-
-            // 检查是否有等待的任务
-            if (receiveTaskCompletionSource != null && !receiveTaskCompletionSource.Task.IsCompleted)
-            {
-                var buffer = await ReceiveAsync();
-                receiveTaskCompletionSource.SetResult(buffer);
-            }
-
             BeginRecv();
         }
     }

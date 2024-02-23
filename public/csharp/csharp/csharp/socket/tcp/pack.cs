@@ -41,7 +41,7 @@ namespace ngl
     //    EPH_REQUEST_ACTOR_ID,         // Request ACTOR_ID
     //    EPH_SUM,
     //}
-    class pack_head
+    public class pack_head
     {
         Byte[] m_data = new Byte[(Int32)EPH.EPH_SUM * sizeof(Int32)];
         Int32 m_pos = 0;
@@ -199,7 +199,7 @@ namespace ngl
         //}
     }
 
-    class pack
+    public class pack
     {
         public Int32 m_session = 0;
         public pack_head m_head = new pack_head();

@@ -99,6 +99,15 @@ namespace ngl
                 }
                 );
 
+            pp.registry<PROBUFF_NET_GET_TIME_RESPONSE>(
+               item =>
+               {
+                   DateTime dt = DateTime.SpecifyKind(new DateTime(1970, 1, 1).AddSeconds(item.MUtc), DateTimeKind.Utc);
+                   string str = dt.ToString("yyyy/MM/dd dddd HH:mm:ss");
+                   Console.WriteLine($"{str}");
+               }
+               );
+
 
             ltcp.m_connectSuccessful = (tcp.tcp_connect aconnect) =>
             {
@@ -113,6 +122,7 @@ namespace ngl
 
 
             ltcp.set_registry(pp);
+            kcptemp.set_registry(pp);
 
             // 连接服务器
             //IPAddress lIPAddress = null;
@@ -131,12 +141,21 @@ namespace ngl
                 {
                     Thread.Sleep(500);
                     ltcp.receive_allpack();
+                    kcptemp.receive_allpack();
                 }
             });
             t1.Start();
 
+            // 等待输入命令测试udp消息通信
+            char zx = Console.ReadKey().KeyChar;
+            Console.WriteLine($"##[{zx}]##");
+            var protm = new PROBUFF_NET_GET_TIME();
+            kcptemp.send(protm);
+
             while (true)
             {
+                
+
                 Thread.Sleep(500);
             }
         }

@@ -365,7 +365,7 @@ namespace ngl
     }
 
 
-    class protocol_pack
+    public class protocol_pack
     {
         private Dictionary<Int32, Action<pack>> m_protocol = new Dictionary<Int32, Action<pack>>();
 

@@ -208,7 +208,10 @@ namespace ngl
             kcpClient?.SendAsync(lbuffall.m_buff, pack_head.packheadbyte + lbuff.Length);
             ////m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
         }
-
+        public void set_registry(protocol_pack apack)
+        {
+            m_propack = apack;
+        }
         public void receive_allpack()
         {
             if (m_propack == null)
