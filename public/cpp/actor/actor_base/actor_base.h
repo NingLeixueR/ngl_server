@@ -128,13 +128,6 @@ namespace ngl
 			return true;
 		}
 
-		template <typename T>
-		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
-			return true;
-		}
-
 		i32_session m_kcpsession;
 
 		template <typename T>
@@ -148,12 +141,12 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid)
+		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
-			udp_kcp::getInstance().send(asession, adata, aactorid, id_guid());
+			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
 		}
 
@@ -162,12 +155,13 @@ namespace ngl
 			const std::vector<i32_sessionid>& asession
 			, T& adata
 			, i64_actorid aactorid
+			, i64_actorid arequestactorid
 		)
 		{
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
-			udp_kcp::getInstance().send(asession, adata, aactorid, id_guid());
+			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
 		}
 

@@ -122,6 +122,6 @@
 #include "xmlinfo.cpp"
 #include "xmlnode.cpp"
 #include "xmlprotocol.cpp"
-//extern "C"{
-//#include "ikcp.c"
-//}//extern "C"
+extern "C"{
+#include "ikcp.c"
+}//extern "C"
