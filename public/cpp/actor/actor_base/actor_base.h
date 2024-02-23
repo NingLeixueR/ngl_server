@@ -171,7 +171,6 @@ namespace ngl
 			return true;
 		}
 
-
 		virtual const char* kcpsessionmd5()
 		{
 			return "";
