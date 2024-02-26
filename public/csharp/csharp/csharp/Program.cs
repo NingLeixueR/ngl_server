@@ -94,7 +94,7 @@ namespace ngl
                         return;
                     if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))
                         return;
-                    IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_port);
+                    IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
                     kcptemp.connect(kcpIpPort, roleid, item.MKcpsession);
                 }
                 );

@@ -128,11 +128,19 @@ namespace ngl
 			return true;
 		}
 
-		i32_session m_kcpsession;
+		i32_session m_kcpsession = -1;
+
+		void set_kcpssion(i32_session asession)
+		{
+			if (m_kcpsession == -1)
+				m_kcpsession = asession;
+		}
 
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid)
 		{
+			if (m_kcpsession == -1)
+				return false;
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;

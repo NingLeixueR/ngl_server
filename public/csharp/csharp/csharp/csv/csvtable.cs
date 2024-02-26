@@ -47,7 +47,7 @@ namespace ngl
 			return true;
 		}
 	}
-    public enum EPH_HEAD_VAL
+	public enum EPH_HEAD_VAL
 	{
 		EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
 		EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致
@@ -458,6 +458,7 @@ namespace ngl
 		public string		m_ip;		// ip
 		public string		m_nip;		// 内网ip
 		public Int16		m_port;		// 端口
+		public Int16		m_uport;		// kcp端口
 		public Int32		m_threadnum;		// socket线程数
 		public Int32		m_actorthreadnum;		// actor线程池线程数
 		public bool		m_outernet;		// 是否允许外网访问
@@ -465,7 +466,7 @@ namespace ngl
 		public Int32		m_reloadcsv;		// 连接的reloadcsv进程id
 		public Int32		m_login;		// 连接的login进程id
 		public Int16		m_crossarea;		// 跨服区服
-		public bool		m_isopenkcp;		// 是否开启kcp(m_port+10000)
+		public bool		m_isopenkcp;		// 是否开启kcp
 		public List<Int32>		m_actorserver = new List<Int32>();		// 连接的actorserver进程id(跨服需要填写多个actorserver)
 		/*********************************/
 		public Int32 Id(){return m_id;}
@@ -494,6 +495,8 @@ namespace ngl
 			if(rcsv.readcsv(apair, ref m_nip) == false)
 				return false;
 			if(rcsv.readcsv(apair, ref m_port) == false)
+				return false;
+			if(rcsv.readcsv(apair, ref m_uport) == false)
 				return false;
 			if(rcsv.readcsv(apair, ref m_threadnum) == false)
 				return false;
