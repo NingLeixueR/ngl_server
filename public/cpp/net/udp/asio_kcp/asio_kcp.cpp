@@ -203,7 +203,7 @@ namespace ngl
 					if (memcmp(m_buff, "reset", sizeof("reset") - 1) == 0)
 					{//÷ÿ÷√¡¨Ω” "reset"
 						lpstruct = m_session.reset_add(m_remoteport, -1);
-						sendbuff(m_remoteport, "resetok", 7);
+						sendbuff(m_remoteport, "resetok", sizeof("resetok") - 1);
 						std::cout << "resetok" << std::endl;
 					}
 					else
@@ -255,7 +255,6 @@ namespace ngl
 						}
 					}
 					
-
 					start();
 				}
 			});

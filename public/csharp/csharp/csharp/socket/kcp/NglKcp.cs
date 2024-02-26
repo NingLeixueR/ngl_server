@@ -24,6 +24,7 @@ namespace ngl
             ecmd_connect_ret,           // 被发起连接者的返回
             ecmd_ping,                  // 定时ping
             ecmd_close,                 // 主动断开连接
+            ecmd_close_ret,				// 主动断开连接的返回
 
             ecmd_minlen = 5,
         };
@@ -99,6 +100,7 @@ namespace ngl
         private protocol_pack? m_propack = null;
         private int m_port = 0;
         IPEndPoint? m_endpoint = null;
+        private CancellationTokenSource? m_cancel = null;
 
         private udp_cmd cmd;
 
@@ -114,20 +116,37 @@ namespace ngl
             cmd.register_fun(udp_cmd.ecmd.ecmd_connect_ret, (string ajson)=>
             {
                 // 定时ecmd ping 
-                Task.Run(async () =>
+                if (m_cancel == null)
+                    return;
+                Task.Factory.StartNew(async () =>
                 {
                     while (true)
                     {
                         await Task.Delay(nconfig.m_kcp_ping);
                         cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
                     }
-                });               
+                }, m_cancel.Token);
+                //Task.Run(async () =>
+                //{
+                //    while (true)
+                //    {
+                //        await Task.Delay(nconfig.m_kcp_ping);
+                //        cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
+                //    }
+                //});               
+            });
+            cmd.register_fun(udp_cmd.ecmd.ecmd_close_ret, (string ajson) =>
+            {
+                close();
             });
         }
 
         public void connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
         {
+            if (m_cancel != null)
+                return;
             kcpClient = null;
+            m_cancel = new CancellationTokenSource();
             kcpClient = new SimpleKcpClient(m_port, aendpoint);
             kcpClient.kcp.TraceListener = new ConsoleTraceListener();
             kcpClient.kcp.NoDelay(1, 10, 2, 1);//fast
@@ -140,16 +159,16 @@ namespace ngl
                 return;
             kcpClient.BeginRecv();
 
-           Task.Run(async () =>
+            Task.Factory.StartNew(async () =>
             {
                 while (true)
                 {
                     kcpClient.kcp.Update(DateTimeOffset.UtcNow);
                     await Task.Delay(10);
                 }
-            });
+            }, m_cancel.Token);
 
-            Task.Run(async () =>
+            Task.Factory.StartNew(async () =>
             {
                 while (true)
                 {
@@ -178,7 +197,48 @@ namespace ngl
                         continue;
                     }
                 }
-            });
+            }, m_cancel.Token);
+
+
+            //Task.Run(async () =>
+            // {
+            //     while (true)
+            //     {
+            //         kcpClient.kcp.Update(DateTimeOffset.UtcNow);
+            //         await Task.Delay(10);
+            //     }
+            // });
+
+            //Task.Run(async () =>
+            //{
+            //    while (true)
+            //    {
+            //        var res = await kcpClient.ReceiveAsync();
+            //        if (res == null)
+            //            continue;
+
+            //        if (cmd.cmd(res) == true)
+            //            continue;
+
+            //        tcp_buff ret = new tcp_buff();
+            //        ret.m_buff = res;
+            //        ret.m_len = res.Length;
+            //        ret.m_pos = 0;
+
+            //        if (m_pack == null)
+            //            m_pack = new pack();
+            //        EPH_HEAD_VAL lval = m_pack.push_buff(ret);
+            //        if (lval == EPH_HEAD_VAL.EPH_HEAD_SUCCESS)
+            //        {
+            //            lock (m_packlist)
+            //            {
+            //                m_packlist.Add(m_pack);
+            //            }
+            //            m_pack = null;
+            //            continue;
+            //        }
+            //    }
+            //});
 
             kcpClient.EndPoint = aendpoint;
             m_endpoint = aendpoint;
