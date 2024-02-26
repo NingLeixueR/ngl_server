@@ -146,15 +146,15 @@ namespace ngl
             });
             t1.Start();
 
-            // 等待输入命令测试udp消息通信
-            char zx = Console.ReadKey().KeyChar;
-            Console.WriteLine($"##[{zx}]##");
-            var protm = new PROBUFF_NET_GET_TIME();
-            kcptemp.send(protm);
+           
 
             while (true)
             {
-                
+                // 等待输入命令测试udp消息通信
+                char zx = Console.ReadKey().KeyChar;
+                Console.WriteLine($"##[{zx}]##");
+                var protm = new PROBUFF_NET_GET_TIME();
+                kcptemp.send(protm);
 
                 Thread.Sleep(500);
             }

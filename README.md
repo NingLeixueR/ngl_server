@@ -7,7 +7,7 @@ Actor based c++distributed game server framework
   * ngl/public                   		库的源代码目录
   * ngl/public/actor             		actor模式的实现
   * ngl/public/logic             		简单的使用例子
-  * ngl/public/net               		网络相关(只支持tcp和ws)
+  * ngl/public/net               		网络相关(支持tcp、ws、kcp)
   * ngl/public/protocol          		生成的协议相关的文件
   * ngl/public/tools/serialize         	主要是tcp分包，包头，序列化
   * ngl/public/tools             		一些简单封装的工具(curl,dbmysql,log,xml,csv,json,md5......)
