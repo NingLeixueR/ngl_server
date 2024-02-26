@@ -23,6 +23,7 @@ namespace ngl
             ecmd_connect,               // 发起连接
             ecmd_connect_ret,           // 被发起连接者的返回
             ecmd_ping,                  // 定时ping
+            ecmd_close,                 // 主动断开连接
 
             ecmd_minlen = 5,
         };
@@ -50,7 +51,7 @@ namespace ngl
             //kcpClient.SendAsync(buffer, buffer.Length);
         }
 
-        private bool CheckByteEquals(byte[] b1, byte[] b2, int alen)
+        static public bool CheckByteEquals(byte[] b1, byte[] b2, int alen)
         {
             if (b1.Length < alen || b2.Length < alen)
                 return false;
@@ -126,13 +127,20 @@ namespace ngl
 
         public void connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
         {
+            kcpClient = null;
             kcpClient = new SimpleKcpClient(m_port, aendpoint);
             kcpClient.kcp.TraceListener = new ConsoleTraceListener();
             kcpClient.kcp.NoDelay(1, 10, 2, 1);//fast
             kcpClient.kcp.WndSize(128, 128);
             kcpClient.kcp.SetMtu(512);
 
-            Task.Run(async () =>
+            kcpClient.UdpSend(System.Text.Encoding.UTF8.GetBytes("reset"), aendpoint);
+            byte[] ret = kcpClient.Recv();
+            if (udp_cmd.CheckByteEquals(ret, System.Text.Encoding.UTF8.GetBytes("resetok"), 7) == false)
+                return;
+            kcpClient.BeginRecv();
+
+           Task.Run(async () =>
             {
                 while (true)
                 {
@@ -179,6 +187,10 @@ namespace ngl
             cmd.sendcmd(ecmd.ecmd_connect, jsonString);
         }
 
+        public void close()
+        {
+            cmd.sendcmd(ecmd.ecmd_close, "");
+        }
         private Int32 utc()
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));

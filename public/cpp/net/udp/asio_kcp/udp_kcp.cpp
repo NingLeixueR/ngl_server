@@ -3,5 +3,5 @@
 
 namespace ngl
 {
-	asio_kcp udp_kcp::m_kcp;
+	//asio_kcp udp_kcp::m_kcp;
 }

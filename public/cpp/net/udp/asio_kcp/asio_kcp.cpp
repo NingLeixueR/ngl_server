@@ -19,16 +19,6 @@ namespace ngl
 		return len;
 	}
 
-	void nkcp::create(IUINT32 asessionid, void* auser)
-	{
-		std::shared_ptr<ikcpcb> ltemp(ikcp_create(1, auser), [auser](ikcpcb* aikcpcb)
-			{
-				((session_endpoint*)auser)->removetimer();
-				ikcp_release(aikcpcb);
-			});
-		m_kcp = ltemp;
-	}
-
 	std::map<udp_cmd::ecmd, udp_cmd::ecmd_callback> udp_cmd::m_cmdfun;
 
 	void udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
@@ -47,7 +37,7 @@ namespace ngl
 		// 发起连接
 		session_manage* lpsession = &m_session;
 
-		auto lcallfun = [lpsession, this](session_endpoint* apstruct)->bool
+		auto lcallfun = [lpsession, this](ptr_se& apstruct)->bool
 		{
 				return true;
 				// 定时监测连接是否可用
@@ -70,7 +60,7 @@ namespace ngl
 						.m_count = 0x7fffffff,
 						.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
 						{
-							session_endpoint* lpstruct = lpsession->find(session);
+							ptr_se lpstruct = lpsession->find(session);
 							if (lpstruct == nullptr)
 							{
 								m_kcptimer.removetimer(anode->m_timerid);
@@ -105,7 +95,7 @@ namespace ngl
 						.m_count = 0x7fffffff,
 						.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
 						{
-							session_endpoint* lpstruct = lpsession->find(session);
+							ptr_se lpstruct = lpsession->find(session);
 							if (lpstruct == nullptr)
 							{
 								m_kcptimer.removetimer(anode->m_timerid);
@@ -120,7 +110,7 @@ namespace ngl
 				return true;
 		};
 
-		udp_cmd::register_fun(udp_cmd::ecmd_connect, [this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect, [this, lcallfun](ptr_se& apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
@@ -140,7 +130,7 @@ namespace ngl
 					udp_cmd::sendcmd(this, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
 			});
 
-		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [lpsession, this, lcallfun](ptr_se& apstruct, const std::string& ajson)
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
@@ -151,9 +141,19 @@ namespace ngl
 				m_connectfun(apstruct->m_session);
 			});
 
-		udp_cmd::register_fun(udp_cmd::ecmd_ping, [lpsession, this, lcallfun](session_endpoint* apstruct, const std::string& ajson)
+		udp_cmd::register_fun(udp_cmd::ecmd_ping, [lpsession, this, lcallfun](ptr_se& apstruct, const std::string& ajson)
 			{
 				apstruct->m_pingtm = localtime::gettime();
+			});
+
+		//ecmd_close
+		udp_cmd::register_fun(udp_cmd::ecmd_close, [lpsession, this, lcallfun](ptr_se& apstruct, const std::string& ajson)
+			{
+				apstruct->m_asiokcp->close(apstruct->m_session);
+			});
+		udp_cmd::register_fun(udp_cmd::ecmd_close_ret, [lpsession, this, lcallfun](ptr_se& apstruct, const std::string& ajson)
+			{
+				apstruct->m_asiokcp->close(apstruct->m_session, true);
 			});
 
 		new thread([this]()
@@ -163,7 +163,7 @@ namespace ngl
 		start();
 	}
 
-	bool asio_kcp::sempack(session_endpoint* apstruct, const char* abuff, int abufflen)
+	bool asio_kcp::sempack(ptr_se& apstruct, const char* abuff, int abufflen)
 	{
 		// 获取包头
 		std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
@@ -199,51 +199,62 @@ namespace ngl
 			{
 				if (!ec && bytes_received > 0)
 				{
-					session_endpoint* lpstruct = m_session.add(m_remoteport, -1);
-					int ret = lpstruct->m_kcp.input(m_buff, bytes_received);
-					if (ret >= 0)
-					{
-						while (true)
-						{
-
-							//从 buf中 提取真正数据，返回提取到的数据大小
-							int ret = lpstruct->m_kcp.recv(m_buffrecv, 10240);
-							if (ret == -3)
-							{
-								// ret == -3 m_buffrecv 的大小不够 
-								close(lpstruct->m_session);
-								break;
-							}
-							if (ret < 0)
-							{ 	
-								break;
-							}
-
-							// 首先判断下是否kcp_cmd
-							if (udp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
-							{
-								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
-								break;
-							}
-
-							if (lpstruct->m_isconnect == false)
-							{
-								break;
-							}
-
-							if (sempack(lpstruct, m_buffrecv, ret) == false)
-							{
-								close(lpstruct->m_session);
-								break;
-							}
-							
-							//std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
-						}
+					ptr_se lpstruct = nullptr;
+					if (memcmp(m_buff, "reset", sizeof("reset") - 1) == 0)
+					{//重置连接 "reset"
+						lpstruct = m_session.reset_add(m_remoteport, -1);
+						sendbuff(m_remoteport, "resetok", 7);
+						std::cout << "resetok" << std::endl;
 					}
 					else
 					{
-						std::cout << "input < 0" << std::endl;
+						lpstruct = m_session.add(m_remoteport, -1);
+						int ret = lpstruct->input(m_buff, bytes_received);
+						if (ret >= 0)
+						{
+							while (true)
+							{
+
+								//从 buf中 提取真正数据，返回提取到的数据大小
+								int ret = lpstruct->recv(m_buffrecv, 10240);
+								if (ret == -3)
+								{
+									// ret == -3 m_buffrecv 的大小不够 
+									close(lpstruct->m_session);
+									break;
+								}
+								if (ret < 0)
+								{
+									break;
+								}
+
+								// 首先判断下是否kcp_cmd
+								if (udp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
+								{
+									std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
+									break;
+								}
+
+								if (lpstruct->m_isconnect == false)
+								{
+									break;
+								}
+
+								if (sempack(lpstruct, m_buffrecv, ret) == false)
+								{
+									close(lpstruct->m_session);
+									break;
+								}
+
+								//std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
+							}
+						}
+						else
+						{
+							std::cout << "input < 0" << std::endl;
+						}
 					}
+					
 
 					start();
 				}

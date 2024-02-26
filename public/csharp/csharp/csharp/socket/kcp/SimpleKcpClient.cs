@@ -27,10 +27,10 @@ namespace ngl
             client = new UdpClient(port);
             kcp = new SimpleSegManager.Kcp(1, this);
             this.EndPoint = endPoint;
-            BeginRecv();
+            //BeginRecv();
         }
 
-        public SimpleSegManager.Kcp kcp { get; }
+        public SimpleSegManager.Kcp kcp { get; set; }
         public IPEndPoint EndPoint { get; set; }
 
         public void Output(IMemoryOwner<byte> buffer, int avalidLength)
@@ -38,6 +38,11 @@ namespace ngl
             var s = buffer.Memory.Span.Slice(0, avalidLength).ToArray();
             client.SendAsync(s, s.Length, EndPoint);
             buffer.Dispose();
+        }
+
+        public void UdpSend(byte[] buff, IPEndPoint aEndPoint)
+        {
+            client.Send(buff, buff.Length, aEndPoint);
         }
 
         public async void SendAsync(byte[] datagram, int bytes)
@@ -58,12 +63,18 @@ namespace ngl
             return s;
         }
 
-        private async void BeginRecv()
+        public async void BeginRecv()
         {
             var res = await client.ReceiveAsync();
             EndPoint = res.RemoteEndPoint;
             kcp.Input(res.Buffer);
             BeginRecv();
+        }
+
+        public byte[] Recv()
+        {
+            IPEndPoint? lep = null;
+            return client.Receive(ref lep);
         }
     }
 }

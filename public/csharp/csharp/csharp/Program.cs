@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using ngl;
 using Pbnet;
 using System.Collections.Generic;
+using Pbdb;
 
 namespace ngl
 {
@@ -81,21 +82,26 @@ namespace ngl
                    ltcp.send(lgatewayconnect, pro);
                }
                );
-
+            string lMKcpsession = "";
+            var lconnect = () =>
+            {
+                var tab = ttab_servers.tab();
+                if (tab == null)
+                    return;
+                var tabgame = ttab_servers.tab("game", tab.m_area, 1);
+                if (tab == null || tabgame == null)
+                    return;
+                if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))
+                    return;
+                IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
+                kcptemp.connect(kcpIpPort, roleid, lMKcpsession);
+            };
             pp.registry<PROBUFF_NET_KCPSESSION_RESPONSE>(
                 item =>
                 {
+                    lMKcpsession = item.MKcpsession;
                     // 连接GAME udp服务器
-                    var tab = ttab_servers.tab();
-                    if (tab == null)
-                        return;
-                    var tabgame = ttab_servers.tab("game", tab.m_area, 1);
-                    if (tab == null || tabgame == null)
-                        return;
-                    if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))
-                        return;
-                    IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
-                    kcptemp.connect(kcpIpPort, roleid, item.MKcpsession);
+                    lconnect();
                 }
                 );
 
@@ -155,6 +161,8 @@ namespace ngl
                 Console.WriteLine($"##[{zx}]##");
                 var protm = new PROBUFF_NET_GET_TIME();
                 kcptemp.send(protm);
+
+
 
                 Thread.Sleep(500);
             }
