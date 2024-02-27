@@ -42,6 +42,12 @@ namespace ngl
 
 		// 获取kcp-session
 		pbnet::PROBUFF_NET_KCPSESSION pro;
+		tab_servers* tab = ttab_servers::tab();
+		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		pro.set_m_serverid(tabgame->m_id);
+		pro.set_m_uip("127.0.0.1");
+		tab = ngl::ttab_servers::tab();
+		pro.set_m_uport(tab->m_uport);
 		nserver->send(m_session, pro, actor_guid::moreactor(), id_guid());
 		return true;
 	}
@@ -138,7 +144,7 @@ namespace ngl
 
 		tab_servers* tab = ttab_servers::tab();
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-		connect_kcp(tabgame->m_ip, tabgame->m_port);
+		connect_kcp(tabgame->m_ip, tabgame->m_uport);
 		return true;
 	}
 
