@@ -41,7 +41,6 @@ namespace ngl
 		int m_pingtm;			// 进行ping计时 
 		int64_t m_pingtimerid;
 		i64_actorid m_actorid;
-		std::shared_mutex m_mutex;
 
 		session_endpoint()
 			: m_session(0)
@@ -52,6 +51,7 @@ namespace ngl
 			, m_pingtm(0)
 			, m_pingtimerid(0)
 			, m_actorid(-1)
+			, m_kcp(nullptr)
 		{}
 
 		~session_endpoint()
@@ -62,13 +62,11 @@ namespace ngl
 
 		void create(IUINT32 asessionid, void* auser)
 		{
-			//monopoly_shared_lock(m_mutex);
 			m_kcp = ikcp_create(1, auser);
 		}
 
 		void removetimer()
 		{
-			//monopoly_shared_lock(m_mutex);
 			if (m_timerid != 0)
 			{
 				m_kcptimer.removetimer(m_timerid);
@@ -81,7 +79,6 @@ namespace ngl
 
 		int setmtu(int mtu)
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_setmtu(m_kcp, mtu);
 		}
 
@@ -89,55 +86,46 @@ namespace ngl
 
 		void setoutput(output afun)
 		{
-			monopoly_shared_lock(m_mutex);
 			m_kcp->output = afun;
 		}
 
 		int nodelay(int nodelay, int interval, int resend, int nc)
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_nodelay(m_kcp, nodelay, interval, resend, nc);
 		}
 
 		int wndsize(int sndwnd, int rcvwnd)
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_wndsize(m_kcp, sndwnd, rcvwnd);
 		}
 
 		void update(IUINT32 current)
 		{
-			monopoly_shared_lock(m_mutex);
 			ikcp_update(m_kcp, current);
 		}
 
 		int input(const char* data, long size)
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_input(m_kcp, data, size);
 		}
 
 		int recv(char* buffer, int len)
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_recv(m_kcp, buffer, len);
 		}
 
 		int send(const char* buffer, int len)
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_send(m_kcp, buffer, len);
 		}
 
 		void flush()
 		{
-			monopoly_shared_lock(m_mutex);
 			ikcp_flush(m_kcp);
 		}
 
 		void release()
 		{
-			monopoly_shared_lock(m_mutex);
 			return ikcp_release(m_kcp);
 		}
 	};
@@ -148,8 +136,6 @@ namespace ngl
 
 	class session_manage
 	{
-		// 
-		
 		std::map<i32_sessionid, ptr_se> m_dataofsession;
 		std::map<std::string, std::map<i16_port, ptr_se>> m_dataofendpoint;
 		int32_t m_sessionid;
@@ -309,7 +295,6 @@ namespace ngl
 			ecmd_connect_ret,			// 被发起连接者的返回
 			ecmd_ping,					// 定时ping
 			ecmd_close,					// 主动断开连接
-			ecmd_close_ret,				// 主动断开连接的返回
 
 			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
@@ -427,18 +412,9 @@ namespace ngl
 				return -1;
 			return lpstruct->m_actorid;
 		}
-		//  bool aactive 主动关闭
-		void close(i32_session asession, bool aactive = false)
+
+		void close(i32_session asession)
 		{
-			auto apstruct = m_session.find(asession);
-			if (aactive)
-			{
-				udp_cmd::sendcmd(this, apstruct->m_session, udp_cmd::ecmd_close, "");
-			}
-			else
-			{
-				udp_cmd::sendcmd(this, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
-			}
 			m_session.erase(asession);
 		}
 
@@ -467,12 +443,20 @@ namespace ngl
 				});
 			return 0;
 		}
+
+
+		void reset_add(const std::string& aip, i16_port aport)
+		{
+			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
+			m_session.reset_add(lendpoint, -1);
+		}
 	private:
 
 		boost::asio::io_context m_context;
 		asio_udp::socket m_socket;
 		asio_udp_endpoint m_remoteport;
 		char m_buff[1500];
+		std::size_t m_bytes_received;
 		char m_buffrecv[10240];
 	};
 

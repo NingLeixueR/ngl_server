@@ -10484,6 +10484,57 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kMUipFieldNumber = 2,
+    kMServeridFieldNumber = 1,
+    kMUportFieldNumber = 3,
+  };
+  // string m_uip = 2;
+  bool has_m_uip() const;
+  private:
+  bool _internal_has_m_uip() const;
+  public:
+  void clear_m_uip();
+  const std::string& m_uip() const;
+  void set_m_uip(const std::string& value);
+  void set_m_uip(std::string&& value);
+  void set_m_uip(const char* value);
+  void set_m_uip(const char* value, size_t size);
+  std::string* mutable_m_uip();
+  std::string* release_m_uip();
+  void set_allocated_m_uip(std::string* m_uip);
+  private:
+  const std::string& _internal_m_uip() const;
+  void _internal_set_m_uip(const std::string& value);
+  std::string* _internal_mutable_m_uip();
+  public:
+
+  // int64 m_serverid = 1;
+  bool has_m_serverid() const;
+  private:
+  bool _internal_has_m_serverid() const;
+  public:
+  void clear_m_serverid();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_serverid() const;
+  void set_m_serverid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_serverid() const;
+  void _internal_set_m_serverid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int32 m_uport = 3;
+  bool has_m_uport() const;
+  private:
+  bool _internal_has_m_uport() const;
+  public:
+  void clear_m_uport();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_uport() const;
+  void set_m_uport(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_uport() const;
+  void _internal_set_m_uport(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_KCPSESSION)
  private:
   class _Internal;
@@ -10491,7 +10542,11 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_uip_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_serverid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_uport_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -15549,6 +15604,136 @@ inline void PROBUFF_NET_ENTER_PLAYS::set_m_roomid(::PROTOBUF_NAMESPACE_ID::int32
 // -------------------------------------------------------------------
 
 // PROBUFF_NET_KCPSESSION
+
+// int64 m_serverid = 1;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_m_serverid() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_m_serverid() const {
+  return _internal_has_m_serverid();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_m_serverid() {
+  m_serverid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION::_internal_m_serverid() const {
+  return m_serverid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_KCPSESSION::m_serverid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.m_serverid)
+  return _internal_m_serverid();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_m_serverid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_serverid_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_serverid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_m_serverid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_serverid)
+}
+
+// string m_uip = 2;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_m_uip() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_m_uip() const {
+  return _internal_has_m_uip();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_m_uip() {
+  m_uip_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& PROBUFF_NET_KCPSESSION::m_uip() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+  return _internal_m_uip();
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_uip(const std::string& value) {
+  _internal_set_m_uip(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+}
+inline std::string* PROBUFF_NET_KCPSESSION::mutable_m_uip() {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+  return _internal_mutable_m_uip();
+}
+inline const std::string& PROBUFF_NET_KCPSESSION::_internal_m_uip() const {
+  return m_uip_.Get();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_m_uip(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_uip_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_uip(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_uip_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_uip(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  m_uip_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_uip(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  m_uip_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+}
+inline std::string* PROBUFF_NET_KCPSESSION::_internal_mutable_m_uip() {
+  _has_bits_[0] |= 0x00000001u;
+  return m_uip_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* PROBUFF_NET_KCPSESSION::release_m_uip() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+  if (!_internal_has_m_uip()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return m_uip_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PROBUFF_NET_KCPSESSION::set_allocated_m_uip(std::string* m_uip) {
+  if (m_uip != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  m_uip_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_uip,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
+}
+
+// int32 m_uport = 3;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_m_uport() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_m_uport() const {
+  return _internal_has_m_uport();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_m_uport() {
+  m_uport_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_KCPSESSION::_internal_m_uport() const {
+  return m_uport_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_KCPSESSION::m_uport() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.m_uport)
+  return _internal_m_uport();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_m_uport(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  m_uport_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_uport(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_uport(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_uport)
+}
 
 // -------------------------------------------------------------------
 

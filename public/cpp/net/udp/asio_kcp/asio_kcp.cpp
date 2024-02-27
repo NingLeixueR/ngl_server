@@ -151,10 +151,6 @@ namespace ngl
 			{
 				apstruct->m_asiokcp->close(apstruct->m_session);
 			});
-		udp_cmd::register_fun(udp_cmd::ecmd_close_ret, [lpsession, this, lcallfun](ptr_se& apstruct, const std::string& ajson)
-			{
-				apstruct->m_asiokcp->close(apstruct->m_session, true);
-			});
 
 		new thread([this]()
 			{
@@ -192,67 +188,72 @@ namespace ngl
 		return true;
 	}
 
+	
+
 	void asio_kcp::start()
 	{
 		m_socket.async_receive_from(boost::asio::buffer(m_buff, 1500), m_remoteport,
 			[this](const boost::system::error_code& ec, std::size_t bytes_received)
 			{
+				m_bytes_received = bytes_received;
 				if (!ec && bytes_received > 0)
 				{
-					ptr_se lpstruct = nullptr;
-					if (memcmp(m_buff, "reset", sizeof("reset") - 1) == 0)
-					{//重置连接 "reset"
-						lpstruct = m_session.reset_add(m_remoteport, -1);
-						sendbuff(m_remoteport, "resetok", sizeof("resetok") - 1);
-						std::cout << "resetok" << std::endl;
+					ptr_se lpstruct = m_session.add(m_remoteport, -1);
+					std::cout
+						<< "[conv:"
+						<< lpstruct->m_kcp->conv
+						<< "][current:"
+						<< lpstruct->m_kcp->current
+						<< "][dead_link:"
+						<< lpstruct->m_kcp->dead_link << "]" << std::endl;
+					//if (lpstruct->m_isreset)
+					//{
+					//	lpstruct = nullptr;
+					//	lpstruct = m_session.reset_add(m_remoteport, -1);
+					//}
+					int ret = lpstruct->input(m_buff, bytes_received);
+					if (ret >= 0)
+					{
+						while (true)
+						{
+							//从 buf中 提取真正数据，返回提取到的数据大小
+							int ret = lpstruct->recv(m_buffrecv, 10240);
+							if (ret == -3)
+							{
+								// ret == -3 m_buffrecv 的大小不够 
+								close(lpstruct->m_session);
+								break;
+							}
+							if (ret < 0)
+							{
+								break;
+							}
+
+							// 首先判断下是否kcp_cmd
+							if (udp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
+							{
+								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
+								break;
+							}
+
+							if (lpstruct->m_isconnect == false)
+							{
+								break;
+							}
+
+							if (sempack(lpstruct, m_buffrecv, ret) == false)
+							{
+								close(lpstruct->m_session);
+								break;
+							}
+						}
 					}
 					else
 					{
-						lpstruct = m_session.add(m_remoteport, -1);
-						int ret = lpstruct->input(m_buff, bytes_received);
-						if (ret >= 0)
-						{
-							while (true)
-							{
-
-								//从 buf中 提取真正数据，返回提取到的数据大小
-								int ret = lpstruct->recv(m_buffrecv, 10240);
-								if (ret == -3)
-								{
-									// ret == -3 m_buffrecv 的大小不够 
-									close(lpstruct->m_session);
-									break;
-								}
-								if (ret < 0)
-								{
-									break;
-								}
-
-								// 首先判断下是否kcp_cmd
-								if (udp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
-								{
-									std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
-									break;
-								}
-
-								if (lpstruct->m_isconnect == false)
-								{
-									break;
-								}
-
-								if (sempack(lpstruct, m_buffrecv, ret) == false)
-								{
-									close(lpstruct->m_session);
-									break;
-								}
-
-								//std::cout << "Received message: " << std::string(m_buffrecv, ret) << std::endl;
-							}
-						}
-						else
-						{
-							std::cout << "input < 0" << std::endl;
-						}
+						LogLocalError("[非kcp包:input < 0][%][%]"
+							, m_remoteport.address().to_string()
+							, m_remoteport.port()
+						);
 					}
 					
 					start();

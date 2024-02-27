@@ -24,6 +24,7 @@
 #include "actor_matching.h"
 #include "actor_manage_plays.h"
 #include "actor_plays_go_undergroundpalace.h"
+#include "actor_kcp.h"
 
 namespace ngl
 {
@@ -68,6 +69,7 @@ namespace ngl
 		dinit_atype(actor_matching, ACTOR_MATCHING);
 		dinit_atype(actor_manage_plays, ACTOR_MANAGE_PLAYS);
 		dinit_atype(actor_plays_go_undergroundpalace, ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
+		dinit_atype(actor_kcp, ACTOR_KCP);
 
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>();

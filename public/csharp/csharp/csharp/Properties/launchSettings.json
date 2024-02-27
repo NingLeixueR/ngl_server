@@ -2,7 +2,7 @@
   "profiles": {
     "csharp": {
       "commandName": "Project",
-      "commandLineArgs": "actor 1 1"
+      "commandLineArgs": "actor 1 1 12345 libo1"
     }
   }
 }

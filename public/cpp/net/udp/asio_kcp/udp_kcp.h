@@ -127,5 +127,10 @@ namespace ngl
 				return false;
 			return asession == lsession;
 		}
+
+		void reset_add(const std::string& aip, i16_port aport)
+		{
+			m_kcp.reset_add(aip, aport);
+		}
 	};
 }

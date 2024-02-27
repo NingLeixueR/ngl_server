@@ -32,6 +32,7 @@ namespace ngl
 		ACTOR_GATEWAY_GAME2CLIENT,								// 网关 [Game]	->[Client]
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_LOG,
+		ACTOR_KCP,
 		ACTOR_MANAGE_ROLE,
 		ACTOR_MANAGE_ROBOT,
 		ACTOR_MANAGE_GUILD,										// 工会管理器

@@ -17,8 +17,10 @@ namespace ngl
     {
         static void Main(string[] args)
         {
+            if (Int32.TryParse(args[3], out Int32 luport) == false)
+                return;
 
-            var kcptemp = new NglKcp(12345);
+            var kcptemp = new NglKcp(luport);
             
 
             manage_csv<tab_servers>.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\csv\\tab_servers.csv");
@@ -65,8 +67,6 @@ namespace ngl
                         pro.MRoleid = item.MRoleid;
                         pro.MIscreate = false;
                         ltcp.send(aconnect.m_session, pro);
-
-                      
                     };
                     if (!IPAddress.TryParse(tab.m_ip, out IPAddress GatewayIPAddress))
                         return;
@@ -79,6 +79,15 @@ namespace ngl
                item =>
                {
                    var pro = new PROBUFF_NET_KCPSESSION();
+                   var tab = ttab_servers.tab();
+                   if (tab == null)
+                       return;
+                   var tabgame = ttab_servers.tab("game", tab.m_area, 1);
+                   if (tabgame == null)
+                       return;
+                   pro.MServerid = tabgame.m_id;
+                   pro.MUport = luport;
+                   pro.MUip = "127.0.0.1";
                    ltcp.send(lgatewayconnect, pro);
                }
                );
@@ -89,7 +98,7 @@ namespace ngl
                 if (tab == null)
                     return;
                 var tabgame = ttab_servers.tab("game", tab.m_area, 1);
-                if (tab == null || tabgame == null)
+                if (tabgame == null)
                     return;
                 if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))
                     return;
@@ -118,7 +127,7 @@ namespace ngl
             ltcp.m_connectSuccessful = (tcp.tcp_connect aconnect) =>
             {
                 PROBUFF_NET_ACOUNT_LOGIN pro = new PROBUFF_NET_ACOUNT_LOGIN();
-                pro.MAccount = "libo1";
+                pro.MAccount = args[4];
                 pro.MArea = 1;
                 pro.MPassword = "123456";
                 ltcp.send(aconnect.m_session, pro);

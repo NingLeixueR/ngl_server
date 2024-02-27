@@ -14,6 +14,7 @@
 #include "actor_log.h"
 #include "actor_reloadcsv.h"
 #include "actor_chat.h"
+#include "actor_kcp.h"
 #include "xmlnode.h"
 #include "nlog.h"
 #include "splite.h"

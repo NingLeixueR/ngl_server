@@ -27,7 +27,8 @@ namespace ngl
 			, dregister_fun_handle(actor_gateway, actor_role_login)
 			, (Tfun<actor_gateway, actor_switch_process<actor_switch_process_role>>) & actor_gateway::handle
 			, dregister_fun_handle(actor_gateway, actor_session_close)
-			, dregister_fun_handle(actor_gateway, actor_role_login)			
+			, dregister_fun_handle(actor_gateway, actor_role_login)	
+			, dregister_fun_handle(actor_gateway, actor_protocol_kcp)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gateway>(
@@ -198,6 +199,18 @@ namespace ngl
 		return false;
 	}
 
+	bool actor_gateway::handle(message<actor_protocol_kcp>& adata)
+	{
+		auto lpram = adata.m_data;
+		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
+		pro.set_m_kcpsession(lpram->m_kcpsession);
+		nets::net()->send(lpram->m_sessionid, pro,
+			actor_guid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid)
+			, actor_guid::make()
+		);
+		return true;
+	}
+
 	// 获取kcp-session
 	bool actor_gateway::handle(message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
 	{
@@ -206,13 +219,23 @@ namespace ngl
 		gateway_socket* lpstruct = m_info.get(lpack->m_id);
 		if (lpstruct == nullptr)
 			return true;
-		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
+		
 		std::string lkcpsession;
 		if (udp_kcp::create_session(actor_guid::make(actor_guid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
 			return true;
-		pro.set_m_kcpsession(lkcpsession);
 		
-		nets::net()->send(lpack->m_id, pro, actor_guid::make(ACTOR_ROBOT, lpstruct->m_area, lpstruct->m_dataid), actor_guid::make());
+
+		// ### 通知kcp服务器创建连接
+		actor_protocol_kcp pro;
+		pro.m_kcpsession = lkcpsession;
+		pro.m_sessionid = lpack->m_id;
+		pro.m_area = lpstruct->m_area;
+		pro.m_dataid = lpstruct->m_dataid;
+		pro.m_uip = lpram->m_uip();
+		pro.m_uport = lpram->m_uport();
+
+		nets::net()->send_server(lpram->m_serverid(), pro, -1, -1);
+
 		return true;
 	}
 

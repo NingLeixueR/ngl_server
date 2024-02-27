@@ -24,7 +24,6 @@ namespace ngl
             ecmd_connect_ret,           // 被发起连接者的返回
             ecmd_ping,                  // 定时ping
             ecmd_close,                 // 主动断开连接
-            ecmd_close_ret,				// 主动断开连接的返回
 
             ecmd_minlen = 5,
         };
@@ -135,10 +134,6 @@ namespace ngl
                 //    }
                 //});               
             });
-            cmd.register_fun(udp_cmd.ecmd.ecmd_close_ret, (string ajson) =>
-            {
-                close();
-            });
         }
 
         public void connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
@@ -153,12 +148,12 @@ namespace ngl
             kcpClient.kcp.WndSize(128, 128);
             kcpClient.kcp.SetMtu(512);
 
-            kcpClient.UdpSend(System.Text.Encoding.UTF8.GetBytes("reset"), aendpoint);
-            byte[] ret = kcpClient.Recv();
-            if (udp_cmd.CheckByteEquals(ret, System.Text.Encoding.UTF8.GetBytes("resetok"), 7) == false)
-                return;
+            //kcpClient.UdpSend(System.Text.Encoding.UTF8.GetBytes("reset"), aendpoint);
+            //byte[] ret = kcpClient.Recv();
+            //if (udp_cmd.CheckByteEquals(ret, System.Text.Encoding.UTF8.GetBytes("resetok"), 7) == false)
+            //    return;
             kcpClient.BeginRecv();
-
+            
             Task.Factory.StartNew(async () =>
             {
                 while (true)
@@ -199,52 +194,19 @@ namespace ngl
                 }
             }, m_cancel.Token);
 
-
-            //Task.Run(async () =>
-            // {
-            //     while (true)
-            //     {
-            //         kcpClient.kcp.Update(DateTimeOffset.UtcNow);
-            //         await Task.Delay(10);
-            //     }
-            // });
-
-            //Task.Run(async () =>
-            //{
-            //    while (true)
-            //    {
-            //        var res = await kcpClient.ReceiveAsync();
-            //        if (res == null)
-            //            continue;
-
-            //        if (cmd.cmd(res) == true)
-            //            continue;
-
-            //        tcp_buff ret = new tcp_buff();
-            //        ret.m_buff = res;
-            //        ret.m_len = res.Length;
-            //        ret.m_pos = 0;
-
-            //        if (m_pack == null)
-            //            m_pack = new pack();
-            //        EPH_HEAD_VAL lval = m_pack.push_buff(ret);
-            //        if (lval == EPH_HEAD_VAL.EPH_HEAD_SUCCESS)
-            //        {
-            //            lock (m_packlist)
-            //            {
-            //                m_packlist.Add(m_pack);
-            //            }
-            //            m_pack = null;
-            //            continue;
-            //        }
-            //    }
-            //});
+            //cmd.sendcmd(ecmd.ecmd_reset, JsonConvert.SerializeObject(
+            //    new { reset =  DateTime.UtcNow.Ticks}
+            //    ));
 
             kcpClient.EndPoint = aendpoint;
             m_endpoint = aendpoint;
-            var obj = new { actorid = aactorid, session = asession };
-            string jsonString = JsonConvert.SerializeObject(obj);
-            cmd.sendcmd(ecmd.ecmd_connect, jsonString);
+            //var obj = new { actorid = aactorid, session = asession };
+            //string jsonString = JsonConvert.SerializeObject(
+            //    new { actorid = aactorid, session = asession }
+            //    );
+            cmd.sendcmd(ecmd.ecmd_connect, JsonConvert.SerializeObject(
+                new { actorid = aactorid, session = asession }
+                ));
         }
 
         public void close()

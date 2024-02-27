@@ -680,6 +680,19 @@ namespace ngl
 		bool		m_isnormal;	// 是否正常关闭
 		def_portocol(actor_protocol_close_activity, m_activityid, m_isnormal)
 	};
+
+
+	// ---- 通知kcp服务器创建连接
+	struct actor_protocol_kcp
+	{
+		std::string			m_kcpsession;
+		i32_session			m_sessionid;
+		i16_area			m_area;
+		i32_actordataid		m_dataid;
+		std::string			m_uip;
+		i16_port			m_uport;
+		def_portocol(actor_protocol_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport)
+	};
 }
 
 

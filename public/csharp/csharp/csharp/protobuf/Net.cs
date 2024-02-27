@@ -175,28 +175,30 @@ namespace Pbnet {
             "BCABKAVIAogBAUIJCgdfbV90eXBlQgsKCV9tX3Jvb21pZEILCglfbV9kYXRh",
             "aWQibAoXUFJPQlVGRl9ORVRfRU5URVJfUExBWVMSIgoGbV90eXBlGAEgASgO",
             "Mg0ucGJuZXQuZXBsYXlzSACIAQESFQoIbV9yb29taWQYAiABKAVIAYgBAUIJ",
-            "CgdfbV90eXBlQgsKCV9tX3Jvb21pZCIYChZQUk9CVUZGX05FVF9LQ1BTRVNT",
-            "SU9OIk0KH1BST0JVRkZfTkVUX0tDUFNFU1NJT05fUkVTUE9OU0USGQoMbV9r",
-            "Y3BzZXNzaW9uGAEgASgJSACIAQFCDwoNX21fa2Nwc2Vzc2lvbipGCg9lbnVt",
-            "X2xvZ2ljX2NoYXQSEQoNZ2V0X2NoYXRfbGlzdBAAEg4KCmNoYXRfc3BlYWsQ",
-            "ARIQCgx1cGRhdGFfc3BlY2sQAio8CgVldW5pdBIOCgpldW5pdF9yb2xlEAAS",
-            "EQoNZXVuaXRfbW9uc3RlchABEhAKDGV1bml0X3JlZ2lvbhACKnMKCWV1bml0",
-            "c3RhdBIUChBldW5pdHN0YXRfbm9ybWFsEAASFAoQZXVuaXRzdGF0X25vbW92",
-            "ZRABEhwKGGV1bml0c3RhdF9ub25vcm1hbGF0dGFjaxACEhwKGGV1bml0c3Rh",
-            "dF9ub3JlbGVhc2Vza2lsbBAEKjsKBmVwbGF5cxIfChtlcGxheXNfZ29fdW5k",
-            "ZXJncm91bmRwYWxhY2UQABIQCgxlcGxheXNfY291bnQQASqbAQoVZW1hdGNo",
-            "aW5nX2NhbmNlbF9zdGF0EhwKGGVtYXRjaGluZ19jYW5jZWxfc3VjY2VzcxAA",
-            "EhoKFmVtYXRjaGluZ19jYW5jZWxfc3RhZ2UQARIgChxlbWF0Y2hpbmdfY2Fu",
-            "Y2VsX3Jvb21ub3RmaW5kEAISJgoiZW1hdGNoaW5nX2NhbmNlbF9yb29tbWVt",
-            "YmVybm90ZmluZBADKqsBChVldHlwZV9tYXRjaGluZ19jYW5jZWwSIAocZXR5",
-            "cGVfbWF0Y2hpbmdfY2FuY2VsX2FjdGl2ZRAAEiEKHWV0eXBlX21hdGNoaW5n",
-            "X2NhbmNlbF90aW1lb3V0EAESJgoiZXR5cGVfbWF0Y2hpbmdfd2FpdGNvbmZp",
-            "cm1fdGltZW91dBACEiUKIWV0eXBlX21hdGNoaW5nX3dhaXRjcmVhdGVfdGlt",
-            "ZW91dBADKqABChZlbWF0Y2hpbmdfY29uZmlybV9zdGF0Eh0KGWVtYXRjaGlu",
-            "Z19jb25maXJtX3N1Y2Nlc3MQABIbChdlbWF0Y2hpbmdfY29uZmlybV9zdGFn",
-            "ZRABEiEKHWVtYXRjaGluZ19jb25maXJtX3Jvb21ub3RmaW5kEAISJwojZW1h",
-            "dGNoaW5nX2NvbmZpcm1fcm9vbW1lbWJlcm5vdGZpbmQQA0ICSAFiBnByb3Rv",
-            "Mw=="));
+            "CgdfbV90eXBlQgsKCV9tX3Jvb21pZCKAAQoWUFJPQlVGRl9ORVRfS0NQU0VT",
+            "U0lPThIXCgptX3NlcnZlcmlkGAEgASgDSACIAQESEgoFbV91aXAYAiABKAlI",
+            "AYgBARIUCgdtX3Vwb3J0GAMgASgFSAKIAQFCDQoLX21fc2VydmVyaWRCCAoG",
+            "X21fdWlwQgoKCF9tX3Vwb3J0Ik0KH1BST0JVRkZfTkVUX0tDUFNFU1NJT05f",
+            "UkVTUE9OU0USGQoMbV9rY3BzZXNzaW9uGAEgASgJSACIAQFCDwoNX21fa2Nw",
+            "c2Vzc2lvbipGCg9lbnVtX2xvZ2ljX2NoYXQSEQoNZ2V0X2NoYXRfbGlzdBAA",
+            "Eg4KCmNoYXRfc3BlYWsQARIQCgx1cGRhdGFfc3BlY2sQAio8CgVldW5pdBIO",
+            "CgpldW5pdF9yb2xlEAASEQoNZXVuaXRfbW9uc3RlchABEhAKDGV1bml0X3Jl",
+            "Z2lvbhACKnMKCWV1bml0c3RhdBIUChBldW5pdHN0YXRfbm9ybWFsEAASFAoQ",
+            "ZXVuaXRzdGF0X25vbW92ZRABEhwKGGV1bml0c3RhdF9ub25vcm1hbGF0dGFj",
+            "axACEhwKGGV1bml0c3RhdF9ub3JlbGVhc2Vza2lsbBAEKjsKBmVwbGF5cxIf",
+            "ChtlcGxheXNfZ29fdW5kZXJncm91bmRwYWxhY2UQABIQCgxlcGxheXNfY291",
+            "bnQQASqbAQoVZW1hdGNoaW5nX2NhbmNlbF9zdGF0EhwKGGVtYXRjaGluZ19j",
+            "YW5jZWxfc3VjY2VzcxAAEhoKFmVtYXRjaGluZ19jYW5jZWxfc3RhZ2UQARIg",
+            "ChxlbWF0Y2hpbmdfY2FuY2VsX3Jvb21ub3RmaW5kEAISJgoiZW1hdGNoaW5n",
+            "X2NhbmNlbF9yb29tbWVtYmVybm90ZmluZBADKqsBChVldHlwZV9tYXRjaGlu",
+            "Z19jYW5jZWwSIAocZXR5cGVfbWF0Y2hpbmdfY2FuY2VsX2FjdGl2ZRAAEiEK",
+            "HWV0eXBlX21hdGNoaW5nX2NhbmNlbF90aW1lb3V0EAESJgoiZXR5cGVfbWF0",
+            "Y2hpbmdfd2FpdGNvbmZpcm1fdGltZW91dBACEiUKIWV0eXBlX21hdGNoaW5n",
+            "X3dhaXRjcmVhdGVfdGltZW91dBADKqABChZlbWF0Y2hpbmdfY29uZmlybV9z",
+            "dGF0Eh0KGWVtYXRjaGluZ19jb25maXJtX3N1Y2Nlc3MQABIbChdlbWF0Y2hp",
+            "bmdfY29uZmlybV9zdGFnZRABEiEKHWVtYXRjaGluZ19jb25maXJtX3Jvb21u",
+            "b3RmaW5kEAISJwojZW1hdGNoaW5nX2NvbmZpcm1fcm9vbW1lbWJlcm5vdGZp",
+            "bmQQA0ICSAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Pbdb.DbReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbnet.enum_logic_chat), typeof(global::Pbnet.eunit), typeof(global::Pbnet.eunitstat), typeof(global::Pbnet.eplays), typeof(global::Pbnet.ematching_cancel_stat), typeof(global::Pbnet.etype_matching_cancel), typeof(global::Pbnet.ematching_confirm_stat), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -259,7 +261,7 @@ namespace Pbnet {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.Parser, new[]{ "MType", "MRoomid", "MPlaysactorid" }, new[]{ "MType", "MRoomid", "MPlaysactorid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS.Parser, new[]{ "MType", "MRoomid", "MMember", "MDataid" }, new[]{ "MType", "MRoomid", "MDataid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_ENTER_PLAYS), global::Pbnet.PROBUFF_NET_ENTER_PLAYS.Parser, new[]{ "MType", "MRoomid" }, new[]{ "MType", "MRoomid" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION), global::Pbnet.PROBUFF_NET_KCPSESSION.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION), global::Pbnet.PROBUFF_NET_KCPSESSION.Parser, new[]{ "MServerid", "MUip", "MUport" }, new[]{ "MServerid", "MUip", "MUport" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE), global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.Parser, new[]{ "MKcpsession" }, new[]{ "MKcpsession" }, null, null, null)
           }));
     }
@@ -14376,6 +14378,7 @@ namespace Pbnet {
   {
     private static readonly pb::MessageParser<PROBUFF_NET_KCPSESSION> _parser = new pb::MessageParser<PROBUFF_NET_KCPSESSION>(() => new PROBUFF_NET_KCPSESSION());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<PROBUFF_NET_KCPSESSION> Parser { get { return _parser; } }
 
@@ -14398,12 +14401,84 @@ namespace Pbnet {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PROBUFF_NET_KCPSESSION(PROBUFF_NET_KCPSESSION other) : this() {
+      _hasBits0 = other._hasBits0;
+      mServerid_ = other.mServerid_;
+      mUip_ = other.mUip_;
+      mUport_ = other.mUport_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PROBUFF_NET_KCPSESSION Clone() {
       return new PROBUFF_NET_KCPSESSION(this);
+    }
+
+    /// <summary>Field number for the "m_serverid" field.</summary>
+    public const int MServeridFieldNumber = 1;
+    private long mServerid_;
+    /// <summary>
+    /// 玩家要进行kcp连接的服务器
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long MServerid {
+      get { if ((_hasBits0 & 1) != 0) { return mServerid_; } else { return 0L; } }
+      set {
+        _hasBits0 |= 1;
+        mServerid_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_serverid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMServerid {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_serverid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMServerid() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "m_uip" field.</summary>
+    public const int MUipFieldNumber = 2;
+    private string mUip_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string MUip {
+      get { return mUip_ ?? ""; }
+      set {
+        mUip_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "m_uip" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMUip {
+      get { return mUip_ != null; }
+    }
+    /// <summary>Clears the value of the "m_uip" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMUip() {
+      mUip_ = null;
+    }
+
+    /// <summary>Field number for the "m_uport" field.</summary>
+    public const int MUportFieldNumber = 3;
+    private int mUport_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MUport {
+      get { if ((_hasBits0 & 2) != 0) { return mUport_; } else { return 0; } }
+      set {
+        _hasBits0 |= 2;
+        mUport_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_uport" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMUport {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "m_uport" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMUport() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -14419,12 +14494,18 @@ namespace Pbnet {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (MServerid != other.MServerid) return false;
+      if (MUip != other.MUip) return false;
+      if (MUport != other.MUport) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (HasMServerid) hash ^= MServerid.GetHashCode();
+      if (HasMUip) hash ^= MUip.GetHashCode();
+      if (HasMUport) hash ^= MUport.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -14441,6 +14522,18 @@ namespace Pbnet {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (HasMServerid) {
+        output.WriteRawTag(8);
+        output.WriteInt64(MServerid);
+      }
+      if (HasMUip) {
+        output.WriteRawTag(18);
+        output.WriteString(MUip);
+      }
+      if (HasMUport) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MUport);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -14450,6 +14543,18 @@ namespace Pbnet {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMServerid) {
+        output.WriteRawTag(8);
+        output.WriteInt64(MServerid);
+      }
+      if (HasMUip) {
+        output.WriteRawTag(18);
+        output.WriteString(MUip);
+      }
+      if (HasMUport) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MUport);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -14459,6 +14564,15 @@ namespace Pbnet {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (HasMServerid) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MServerid);
+      }
+      if (HasMUip) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(MUip);
+      }
+      if (HasMUport) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MUport);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -14469,6 +14583,15 @@ namespace Pbnet {
     public void MergeFrom(PROBUFF_NET_KCPSESSION other) {
       if (other == null) {
         return;
+      }
+      if (other.HasMServerid) {
+        MServerid = other.MServerid;
+      }
+      if (other.HasMUip) {
+        MUip = other.MUip;
+      }
+      if (other.HasMUport) {
+        MUport = other.MUport;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -14484,6 +14607,18 @@ namespace Pbnet {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
+          case 8: {
+            MServerid = input.ReadInt64();
+            break;
+          }
+          case 18: {
+            MUip = input.ReadString();
+            break;
+          }
+          case 24: {
+            MUport = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -14498,6 +14633,18 @@ namespace Pbnet {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
+          case 8: {
+            MServerid = input.ReadInt64();
+            break;
+          }
+          case 18: {
+            MUip = input.ReadString();
+            break;
+          }
+          case 24: {
+            MUport = input.ReadInt32();
+            break;
+          }
         }
       }
     }

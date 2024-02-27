@@ -1793,11 +1793,17 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBU
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ENTER_PLAYS, m_roomid_),
   0,
   1,
-  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION, m_serverid_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION, m_uip_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION, m_uport_),
+  1,
+  0,
+  2,
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1870,8 +1876,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 533, 541, sizeof(::pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)},
   { 544, 553, sizeof(::pbnet::PROBUFF_NET_MATCHING_SUCCESS)},
   { 557, 564, sizeof(::pbnet::PROBUFF_NET_ENTER_PLAYS)},
-  { 566, -1, sizeof(::pbnet::PROBUFF_NET_KCPSESSION)},
-  { 571, 577, sizeof(::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE)},
+  { 566, 574, sizeof(::pbnet::PROBUFF_NET_KCPSESSION)},
+  { 577, 583, sizeof(::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -2113,30 +2119,33 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "eB\013\n\t_m_roomidB\013\n\t_m_dataid\"l\n\027PROBUFF_N"
   "ET_ENTER_PLAYS\022\"\n\006m_type\030\001 \001(\0162\r.pbnet.e"
   "playsH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_"
-  "typeB\013\n\t_m_roomid\"\030\n\026PROBUFF_NET_KCPSESS"
-  "ION\"M\n\037PROBUFF_NET_KCPSESSION_RESPONSE\022\031"
-  "\n\014m_kcpsession\030\001 \001(\tH\000\210\001\001B\017\n\r_m_kcpsessi"
-  "on*F\n\017enum_logic_chat\022\021\n\rget_chat_list\020\000"
-  "\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*<\n\005eu"
-  "nit\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001\022\020"
-  "\n\014eunit_region\020\002*s\n\teunitstat\022\024\n\020eunitst"
-  "at_normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030eun"
-  "itstat_nonormalattack\020\002\022\034\n\030eunitstat_nor"
-  "eleaseskill\020\004*;\n\006eplays\022\037\n\033eplays_go_und"
-  "ergroundpalace\020\000\022\020\n\014eplays_count\020\001*\233\001\n\025e"
-  "matching_cancel_stat\022\034\n\030ematching_cancel"
-  "_success\020\000\022\032\n\026ematching_cancel_stage\020\001\022 "
-  "\n\034ematching_cancel_roomnotfind\020\002\022&\n\"emat"
-  "ching_cancel_roommembernotfind\020\003*\253\001\n\025ety"
-  "pe_matching_cancel\022 \n\034etype_matching_can"
-  "cel_active\020\000\022!\n\035etype_matching_cancel_ti"
-  "meout\020\001\022&\n\"etype_matching_waitconfirm_ti"
-  "meout\020\002\022%\n!etype_matching_waitcreate_tim"
-  "eout\020\003*\240\001\n\026ematching_confirm_stat\022\035\n\031ema"
-  "tching_confirm_success\020\000\022\033\n\027ematching_co"
-  "nfirm_stage\020\001\022!\n\035ematching_confirm_roomn"
-  "otfind\020\002\022\'\n#ematching_confirm_roommember"
-  "notfind\020\003B\002H\001b\006proto3"
+  "typeB\013\n\t_m_roomid\"\200\001\n\026PROBUFF_NET_KCPSES"
+  "SION\022\027\n\nm_serverid\030\001 \001(\003H\000\210\001\001\022\022\n\005m_uip\030\002"
+  " \001(\tH\001\210\001\001\022\024\n\007m_uport\030\003 \001(\005H\002\210\001\001B\r\n\013_m_se"
+  "rveridB\010\n\006_m_uipB\n\n\010_m_uport\"M\n\037PROBUFF_"
+  "NET_KCPSESSION_RESPONSE\022\031\n\014m_kcpsession\030"
+  "\001 \001(\tH\000\210\001\001B\017\n\r_m_kcpsession*F\n\017enum_logi"
+  "c_chat\022\021\n\rget_chat_list\020\000\022\016\n\nchat_speak\020"
+  "\001\022\020\n\014updata_speck\020\002*<\n\005eunit\022\016\n\neunit_ro"
+  "le\020\000\022\021\n\reunit_monster\020\001\022\020\n\014eunit_region\020"
+  "\002*s\n\teunitstat\022\024\n\020eunitstat_normal\020\000\022\024\n\020"
+  "eunitstat_nomove\020\001\022\034\n\030eunitstat_nonormal"
+  "attack\020\002\022\034\n\030eunitstat_noreleaseskill\020\004*;"
+  "\n\006eplays\022\037\n\033eplays_go_undergroundpalace\020"
+  "\000\022\020\n\014eplays_count\020\001*\233\001\n\025ematching_cancel"
+  "_stat\022\034\n\030ematching_cancel_success\020\000\022\032\n\026e"
+  "matching_cancel_stage\020\001\022 \n\034ematching_can"
+  "cel_roomnotfind\020\002\022&\n\"ematching_cancel_ro"
+  "ommembernotfind\020\003*\253\001\n\025etype_matching_can"
+  "cel\022 \n\034etype_matching_cancel_active\020\000\022!\n"
+  "\035etype_matching_cancel_timeout\020\001\022&\n\"etyp"
+  "e_matching_waitconfirm_timeout\020\002\022%\n!etyp"
+  "e_matching_waitcreate_timeout\020\003*\240\001\n\026emat"
+  "ching_confirm_stat\022\035\n\031ematching_confirm_"
+  "success\020\000\022\033\n\027ematching_confirm_stage\020\001\022!"
+  "\n\035ematching_confirm_roomnotfind\020\002\022\'\n#ema"
+  "tching_confirm_roommembernotfind\020\003B\002H\001b\006"
+  "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_net_2eproto_deps[1] = {
   &::descriptor_table_db_2eproto,
@@ -2210,7 +2219,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 7741,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 7846,
   &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 65, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
   file_level_metadata_net_2eproto, 65, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
@@ -17677,6 +17686,16 @@ void PROBUFF_NET_KCPSESSION::InitAsDefaultInstance() {
 }
 class PROBUFF_NET_KCPSESSION::_Internal {
  public:
+  using HasBits = decltype(std::declval<PROBUFF_NET_KCPSESSION>()._has_bits_);
+  static void set_has_m_serverid(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_m_uip(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_m_uport(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
 };
 
 PROBUFF_NET_KCPSESSION::PROBUFF_NET_KCPSESSION(::PROTOBUF_NAMESPACE_ID::Arena* arena)
@@ -17686,12 +17705,26 @@ PROBUFF_NET_KCPSESSION::PROBUFF_NET_KCPSESSION(::PROTOBUF_NAMESPACE_ID::Arena* a
   // @@protoc_insertion_point(arena_constructor:pbnet.PROBUFF_NET_KCPSESSION)
 }
 PROBUFF_NET_KCPSESSION::PROBUFF_NET_KCPSESSION(const PROBUFF_NET_KCPSESSION& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  m_uip_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_m_uip()) {
+    m_uip_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_m_uip(),
+      GetArena());
+  }
+  ::memcpy(&m_serverid_, &from.m_serverid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&m_uport_) -
+    reinterpret_cast<char*>(&m_serverid_)) + sizeof(m_uport_));
   // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_KCPSESSION)
 }
 
 void PROBUFF_NET_KCPSESSION::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PROBUFF_NET_KCPSESSION_net_2eproto.base);
+  m_uip_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(&m_serverid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&m_uport_) -
+      reinterpret_cast<char*>(&m_serverid_)) + sizeof(m_uport_));
 }
 
 PROBUFF_NET_KCPSESSION::~PROBUFF_NET_KCPSESSION() {
@@ -17702,6 +17735,7 @@ PROBUFF_NET_KCPSESSION::~PROBUFF_NET_KCPSESSION() {
 
 void PROBUFF_NET_KCPSESSION::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
+  m_uip_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void PROBUFF_NET_KCPSESSION::ArenaDtor(void* object) {
@@ -17725,16 +17759,55 @@ void PROBUFF_NET_KCPSESSION::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    m_uip_.ClearNonDefaultToEmpty();
+  }
+  if (cached_has_bits & 0x00000006u) {
+    ::memset(&m_serverid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&m_uport_) -
+        reinterpret_cast<char*>(&m_serverid_)) + sizeof(m_uport_));
+  }
+  _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* PROBUFF_NET_KCPSESSION::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
+    switch (tag >> 3) {
+      // int64 m_serverid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_m_serverid(&has_bits);
+          m_serverid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string m_uip = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_m_uip();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_KCPSESSION.m_uip"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 m_uport = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          _Internal::set_has_m_uport(&has_bits);
+          m_uport_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -17744,8 +17817,11 @@ const char* PROBUFF_NET_KCPSESSION::_InternalParse(const char* ptr, ::PROTOBUF_N
             ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
+      }
+    }  // switch
   }  // while
 success:
+  _has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -17758,6 +17834,28 @@ failure:
   // @@protoc_insertion_point(serialize_to_array_start:pbnet.PROBUFF_NET_KCPSESSION)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // int64 m_serverid = 1;
+  if (_internal_has_m_serverid()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_serverid(), target);
+  }
+
+  // string m_uip = 2;
+  if (_internal_has_m_uip()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_m_uip().data(), static_cast<int>(this->_internal_m_uip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "pbnet.PROBUFF_NET_KCPSESSION.m_uip");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_m_uip(), target);
+  }
+
+  // int32 m_uport = 3;
+  if (_internal_has_m_uport()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_uport(), target);
+  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -17775,6 +17873,30 @@ size_t PROBUFF_NET_KCPSESSION::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    // string m_uip = 2;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_m_uip());
+    }
+
+    // int64 m_serverid = 1;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+          this->_internal_m_serverid());
+    }
+
+    // int32 m_uport = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_uport());
+    }
+
+  }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -17806,6 +17928,19 @@ void PROBUFF_NET_KCPSESSION::MergeFrom(const PROBUFF_NET_KCPSESSION& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _internal_set_m_uip(from._internal_m_uip());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      m_serverid_ = from.m_serverid_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      m_uport_ = from.m_uport_;
+    }
+    _has_bits_[0] |= cached_has_bits;
+  }
 }
 
 void PROBUFF_NET_KCPSESSION::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -17829,6 +17964,14 @@ bool PROBUFF_NET_KCPSESSION::IsInitialized() const {
 void PROBUFF_NET_KCPSESSION::InternalSwap(PROBUFF_NET_KCPSESSION* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  m_uip_.Swap(&other->m_uip_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_KCPSESSION, m_uport_)
+      + sizeof(PROBUFF_NET_KCPSESSION::m_uport_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_KCPSESSION, m_serverid_)>(
+          reinterpret_cast<char*>(&m_serverid_),
+          reinterpret_cast<char*>(&other->m_serverid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_KCPSESSION::GetMetadata() const {

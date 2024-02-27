@@ -55,6 +55,7 @@ namespace ngl
 			, null<actor_protocol_close_activity>
 			, null<actor_gateway_id_updata>
 			, null<actor_switch_process<actor_switch_process_role>>
+			, null<actor_protocol_kcp>
 		);
 
 		init_customs_db<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();

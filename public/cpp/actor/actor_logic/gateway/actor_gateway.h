@@ -39,6 +39,7 @@ namespace ngl
 		// 玩家登陆
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 		// 获取kcp-session
+		bool handle(message<actor_protocol_kcp>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION>& adata);		
 		// 玩家切换game进程
 		bool handle(message<actor_switch_process<actor_switch_process_role>>& adata);

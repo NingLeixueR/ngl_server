@@ -326,6 +326,7 @@ bool start_game()
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 	ngl::actor_manage_role::getInstance();
 	ngl::actor_create::getInstance();
+	ngl::actor_kcp::getInstance();
 	//ngl::actor_reloadcsv::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
