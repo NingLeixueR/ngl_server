@@ -147,7 +147,6 @@ namespace ngl
 					}
 					else
 					{
-						std::shared_ptr<void> ltemp(lp);
 						if (structbytes<typeforward>::tostruct(apack, *lp))
 						{
 							return ltemp;
