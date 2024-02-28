@@ -149,7 +149,20 @@ namespace ngl
 		//ecmd_close
 		udp_cmd::register_fun(udp_cmd::ecmd_close, [lpsession, this, lcallfun](ptr_se& apstruct, const std::string& ajson)
 			{
-				apstruct->m_asiokcp->close(apstruct->m_session);
+				udp_cmd::sendcmd(this, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
+				int lession = apstruct->m_session;
+				//apstruct->m_asiokcp->close(apstruct->m_session);
+				wheel_parm lparm
+				{
+					.m_ms = 1000,
+					.m_intervalms = [](int64_t) {return 1000; } ,
+					.m_count = 0x7fffffff,
+					.m_fun = [lpsession,this,lession](wheel_node* anode)
+					{
+						close(lession);
+					}
+				};
+				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
 			});
 
 		new thread([this]()
@@ -206,11 +219,6 @@ namespace ngl
 						<< lpstruct->m_kcp->current
 						<< "][dead_link:"
 						<< lpstruct->m_kcp->dead_link << "]" << std::endl;
-					//if (lpstruct->m_isreset)
-					//{
-					//	lpstruct = nullptr;
-					//	lpstruct = m_session.reset_add(m_remoteport, -1);
-					//}
 					int linput = lpstruct->input(m_buff, bytes_received);
 					if (linput >= 0)
 					{

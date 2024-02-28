@@ -75,20 +75,25 @@ namespace ngl
                 }
                 );
 
+            var connect_fun = () =>
+            {
+                var pro = new PROBUFF_NET_KCPSESSION();
+                var tab = ttab_servers.tab();
+                if (tab == null)
+                    return;
+                var tabgame = ttab_servers.tab("game", tab.m_area, 1);
+                if (tabgame == null)
+                    return;
+                pro.MServerid = tabgame.m_id;
+                pro.MUport = luport;
+                pro.MUip = "127.0.0.1";
+                ltcp.send(lgatewayconnect, pro);
+            };
+
             pp.registry<PROBUFF_NET_ROLE_SYNC_RESPONSE>(
                item =>
                {
-                   var pro = new PROBUFF_NET_KCPSESSION();
-                   var tab = ttab_servers.tab();
-                   if (tab == null)
-                       return;
-                   var tabgame = ttab_servers.tab("game", tab.m_area, 1);
-                   if (tabgame == null)
-                       return;
-                   pro.MServerid = tabgame.m_id;
-                   pro.MUport = luport;
-                   pro.MUip = "127.0.0.1";
-                   ltcp.send(lgatewayconnect, pro);
+                   connect_fun();
                }
                );
             string lMKcpsession = "";
@@ -168,8 +173,19 @@ namespace ngl
                 // 等待输入命令测试udp消息通信
                 char zx = Console.ReadKey().KeyChar;
                 Console.WriteLine($"##[{zx}]##");
-                var protm = new PROBUFF_NET_GET_TIME();
-                kcptemp.send(protm);
+                if (zx == '1')
+                {
+                    kcptemp.close(() => 
+                    {
+                        connect_fun();
+                    });
+                }
+                else
+                {
+                    var protm = new PROBUFF_NET_GET_TIME();
+                    kcptemp.send(protm);
+                }
+              
 
 
 

@@ -24,7 +24,7 @@ namespace ngl
             ecmd_connect_ret,           // 被发起连接者的返回
             ecmd_ping,                  // 定时ping
             ecmd_close,                 // 主动断开连接
-
+            ecmd_close_ret,             // 主动断开连接的返回
             ecmd_minlen = 5,
         };
 
@@ -125,14 +125,10 @@ namespace ngl
                         cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
                     }
                 }, m_cancel.Token);
-                //Task.Run(async () =>
-                //{
-                //    while (true)
-                //    {
-                //        await Task.Delay(nconfig.m_kcp_ping);
-                //        cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
-                //    }
-                //});               
+            });
+            cmd.register_fun(udp_cmd.ecmd.ecmd_close_ret, (string ajson) =>
+            {
+                close();
             });
         }
 
@@ -148,12 +144,11 @@ namespace ngl
             kcpClient.kcp.WndSize(128, 128);
             kcpClient.kcp.SetMtu(512);
 
-            //kcpClient.UdpSend(System.Text.Encoding.UTF8.GetBytes("reset"), aendpoint);
-            //byte[] ret = kcpClient.Recv();
-            //if (udp_cmd.CheckByteEquals(ret, System.Text.Encoding.UTF8.GetBytes("resetok"), 7) == false)
-            //    return;
-            kcpClient.BeginRecv();
-            
+            Task.Factory.StartNew(() =>
+            {
+                kcpClient.BeginRecv();
+            }, m_cancel.Token);
+
             Task.Factory.StartNew(async () =>
             {
                 while (true)
@@ -194,25 +189,32 @@ namespace ngl
                 }
             }, m_cancel.Token);
 
-            //cmd.sendcmd(ecmd.ecmd_reset, JsonConvert.SerializeObject(
-            //    new { reset =  DateTime.UtcNow.Ticks}
-            //    ));
-
             kcpClient.EndPoint = aendpoint;
             m_endpoint = aendpoint;
-            //var obj = new { actorid = aactorid, session = asession };
-            //string jsonString = JsonConvert.SerializeObject(
-            //    new { actorid = aactorid, session = asession }
-            //    );
             cmd.sendcmd(ecmd.ecmd_connect, JsonConvert.SerializeObject(
                 new { actorid = aactorid, session = asession }
                 ));
         }
 
-        public void close()
+        Action? m_closefinish = null;
+        public void close(Action? aclosefinish = null)
         {
+            m_closefinish = aclosefinish;
             cmd.sendcmd(ecmd.ecmd_close, "");
         }
+
+        private void private_close()
+        {
+            if (m_cancel != null)
+                m_cancel.Cancel();
+            if (kcpClient != null)
+                kcpClient.close();
+            if (m_closefinish != null)
+            {
+                m_closefinish();
+            }
+        }
+
         private Int32 utc()
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));

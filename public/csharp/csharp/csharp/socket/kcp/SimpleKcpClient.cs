@@ -16,6 +16,10 @@ namespace ngl
     public class SimpleKcpClient : IKcpCallback
     {
         UdpClient client;
+        public void close()
+        {
+            client.Close();
+        }
 
         public SimpleKcpClient(int port)
             : this(port, null)
@@ -27,7 +31,6 @@ namespace ngl
             client = new UdpClient(port);
             kcp = new SimpleSegManager.Kcp(1, this);
             this.EndPoint = endPoint;
-            //BeginRecv();
         }
 
         public SimpleSegManager.Kcp kcp { get; set; }
@@ -65,10 +68,12 @@ namespace ngl
 
         public async void BeginRecv()
         {
-            var res = await client.ReceiveAsync();
-            EndPoint = res.RemoteEndPoint;
-            kcp.Input(res.Buffer);
-            BeginRecv();
+            while (true)
+            {
+                var res = await client.ReceiveAsync();
+                EndPoint = res.RemoteEndPoint;
+                kcp.Input(res.Buffer);
+            }
         }
 
         public byte[] Recv()
