@@ -105,7 +105,6 @@ namespace ngl
 					};
 					apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
 				}
-				
 				return true;
 		};
 
@@ -133,9 +132,7 @@ namespace ngl
 			{
 				apstruct->m_isconnect = true;
 				apstruct->m_pingtm = localtime::gettime();
-
 				// ¶¨Ê±·¢ËÍcmd:ping
-
 				lcallfun(apstruct);
 				m_connectfun(apstruct->m_session);
 			});
@@ -199,8 +196,6 @@ namespace ngl
 		}
 		return true;
 	}
-
-	
 
 	void asio_kcp::start()
 	{
@@ -275,5 +270,4 @@ namespace ngl
 				}
 			});
 	}
-
 }

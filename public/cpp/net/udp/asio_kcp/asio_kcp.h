@@ -18,15 +18,12 @@
 
 namespace ngl
 {
-
 	using asio_udp = boost::asio::ip::udp;
 	using asio_udp_endpoint = asio_udp::endpoint;
 
 	class asio_kcp;
 
 	extern time_wheel m_kcptimer;
-
-
 
 	struct session_endpoint
 	{
@@ -287,7 +284,6 @@ namespace ngl
 				return nullptr;
 			return &lpstruct->m_endpoint;
 		}
-
 	};
 
 	class udp_cmd
@@ -348,7 +344,6 @@ namespace ngl
 
 		bool sempack(ptr_se& apstruct, const char* abuff, int abufflen);
 		void start();
-
 	public:
 		bool sendudp(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 		{
@@ -390,9 +385,6 @@ namespace ngl
 
 		int send(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 		{
-			//session_endpoint* lpstruct = m_session.add(aendpoint);
-			//if (lpstruct == nullptr)
-			//	return false;
 			ptr_se lpstruct = m_session.find(aendpoint);
 			if(lpstruct == nullptr)
 				return false;
@@ -460,14 +452,12 @@ namespace ngl
 			return 0;
 		}
 
-
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport)
 		{
 			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
 			m_session.reset_add(aconv, lendpoint, -1);
 		}
 	private:
-
 		boost::asio::io_context m_context;
 		asio_udp::socket m_socket;
 		asio_udp_endpoint m_remoteport;

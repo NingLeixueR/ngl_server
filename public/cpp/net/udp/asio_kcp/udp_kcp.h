@@ -12,11 +12,12 @@ namespace ngl
 		asio_kcp m_kcp;
 		bpool m_pool;
 
-
 		udp_kcp(i16_port aprot) :
 			m_kcp(aprot)
 		{}
 	public:
+		static int32_t m_conv;
+
 		static udp_kcp& getInstance(i16_port aprot = -1)
 		{
 			static bool lfirst = true;
@@ -26,7 +27,6 @@ namespace ngl
 			static udp_kcp ltemp(aprot);
 			return ltemp;
 		}
-
 
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
@@ -45,7 +45,6 @@ namespace ngl
 				return false;
 			return m_kcp.sendpack(aendpoint, lpack);
 		}
-
 	private:
 		template <typename T, typename TITOR>
 		bool send(TITOR abeg, TITOR aend, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
@@ -58,7 +57,6 @@ namespace ngl
 			return true;
 		}
 	public:
-
 		template <typename T>
 		bool send(std::vector<i32_sessionid> avec, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -76,7 +74,6 @@ namespace ngl
 		{
 			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
 		}
-		static int32_t m_conv;
 
 		void connect(const std::string& akcpsess
 			, i64_actorid aactorid
