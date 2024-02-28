@@ -19,12 +19,11 @@ namespace ngl
         {
             if (Int32.TryParse(args[3], out Int32 luport) == false)
                 return;
-
-            var kcptemp = new NglKcp(luport);
+       
+            NglKcp.getInstance().Create(luport);
             
-
             manage_csv<tab_servers>.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\csv\\tab_servers.csv");
-            xmlprotocol.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\Debug\\config\\net_protocol.xml");
+            xmlprotocol.Load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\Debug\\config\\net_protocol.xml");
             nconfig.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\config\\config.template.xml");
 
             if (Int32.TryParse(args[1], out Int32 larea) == false)
@@ -36,11 +35,11 @@ namespace ngl
                 return;
             nconfig.set_server(args[0], tab.Id());
 
-            var ltcp = new tcp();
+            var ltcp = new Tcp();
 
-            protocol_pack pp = new protocol_pack();
+            ProtocolPack pp = new ProtocolPack();
 
-            pp.registry<PROBUFF_NET_ACOUNT_LOGIN>(
+            pp.Registry<PROBUFF_NET_ACOUNT_LOGIN>(
                 item =>
                 Console.WriteLine("##[PROBUFF_NET_RECHARGE]##")
                 );
@@ -48,7 +47,7 @@ namespace ngl
             Int64 roleid = 0;
             Int32 lloginconnect = 0;
             Int32 lgatewayconnect = 0;
-            pp.registry<PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>(
+            pp.Registry<PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>(
                 item =>
                 {
                     Console.WriteLine($"{++lvalue}=>{item.MAccount}##{item.MArea}##{item.MSession}##{item.MGatewayid}");
@@ -57,7 +56,7 @@ namespace ngl
                     var tab = ttab_servers.tab(item.MGatewayid);
                     if (tab == null)
                         return;
-                    ltcp.m_connectSuccessful = (tcp.tcp_connect aconnect) =>
+                    ltcp.m_connectSuccessful = (Tcp.TcpConnect aconnect) =>
                     {
                         // 登陆游戏
                         var pro = new PROBUFF_NET_ROLE_LOGIN();
@@ -66,16 +65,16 @@ namespace ngl
                         pro.MArea = item.MArea;
                         pro.MRoleid = item.MRoleid;
                         pro.MIscreate = false;
-                        ltcp.send(aconnect.m_session, pro);
+                        ltcp.Send(aconnect.m_session, pro);
                     };
                     if (!IPAddress.TryParse(tab.m_ip, out IPAddress GatewayIPAddress))
                         return;
                     IPEndPoint GatewayIpPort = new IPEndPoint(GatewayIPAddress, tab.m_port);
-                    lgatewayconnect = ltcp.connect(GatewayIpPort);
+                    lgatewayconnect = ltcp.Connect(GatewayIpPort);
                 }
                 );
 
-            var connect_fun = () =>
+            NglKcp.reconnect = () =>
             {
                 var pro = new PROBUFF_NET_KCPSESSION();
                 var tab = ttab_servers.tab();
@@ -87,13 +86,14 @@ namespace ngl
                 pro.MServerid = tabgame.m_id;
                 pro.MUport = luport;
                 pro.MUip = "127.0.0.1";
-                ltcp.send(lgatewayconnect, pro);
+                pro.MConv = (int)NglKcp.conv;
+                ltcp.Send(lgatewayconnect, pro);
             };
 
-            pp.registry<PROBUFF_NET_ROLE_SYNC_RESPONSE>(
+            pp.Registry<PROBUFF_NET_ROLE_SYNC_RESPONSE>(
                item =>
                {
-                   connect_fun();
+                   NglKcp.reconnect();
                }
                );
             string lMKcpsession = "";
@@ -108,9 +108,9 @@ namespace ngl
                 if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))
                     return;
                 IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
-                kcptemp.connect(kcpIpPort, roleid, lMKcpsession);
+                NglKcp.getInstance().Connect(kcpIpPort, roleid, lMKcpsession);
             };
-            pp.registry<PROBUFF_NET_KCPSESSION_RESPONSE>(
+            pp.Registry<PROBUFF_NET_KCPSESSION_RESPONSE>(
                 item =>
                 {
                     lMKcpsession = item.MKcpsession;
@@ -119,7 +119,7 @@ namespace ngl
                 }
                 );
 
-            pp.registry<PROBUFF_NET_GET_TIME_RESPONSE>(
+            pp.Registry<PROBUFF_NET_GET_TIME_RESPONSE>(
                item =>
                {
                    DateTime dt = DateTime.SpecifyKind(new DateTime(1970, 1, 1).AddSeconds(item.MUtc), DateTimeKind.Utc);
@@ -129,20 +129,20 @@ namespace ngl
                );
 
 
-            ltcp.m_connectSuccessful = (tcp.tcp_connect aconnect) =>
+            ltcp.m_connectSuccessful = (Tcp.TcpConnect aconnect) =>
             {
                 PROBUFF_NET_ACOUNT_LOGIN pro = new PROBUFF_NET_ACOUNT_LOGIN();
                 pro.MAccount = args[4];
                 pro.MArea = 1;
                 pro.MPassword = "123456";
-                ltcp.send(aconnect.m_session, pro);
+                ltcp.Send(aconnect.m_session, pro);
             };
             ltcp.m_connectFail = () => Console.WriteLine("##[connectFail]##");
 
 
 
-            ltcp.set_registry(pp);
-            kcptemp.set_registry(pp);
+            ltcp.SetRegistry(pp);
+            NglKcp.getInstance().SetRegistry(pp);
 
             // 连接服务器
             //IPAddress lIPAddress = null;
@@ -150,7 +150,7 @@ namespace ngl
             if (!IPAddress.TryParse("127.0.0.1", out IPAddress lIPAddress))
                 return;
             IPEndPoint _IpPort = new IPEndPoint(lIPAddress, 10006);
-            lloginconnect = ltcp.connect(_IpPort);
+            lloginconnect = ltcp.Connect(_IpPort);
             Thread.Sleep(5000);
 
             
@@ -160,8 +160,8 @@ namespace ngl
                 while (true)
                 {
                     Thread.Sleep(500);
-                    ltcp.receive_allpack();
-                    kcptemp.receive_allpack();
+                    ltcp.ReceiveAllPack();
+                    NglKcp.getInstance().ReceiveAllPack();
                 }
             });
             t1.Start();
@@ -175,15 +175,13 @@ namespace ngl
                 Console.WriteLine($"##[{zx}]##");
                 if (zx == '1')
                 {
-                    kcptemp.close(() => 
-                    {
-                        connect_fun();
-                    });
+                    NglKcp.getInstance().Close();
+                    NglKcp.reconnect();
                 }
                 else
                 {
                     var protm = new PROBUFF_NET_GET_TIME();
-                    kcptemp.send(protm);
+                    NglKcp.getInstance().Send(protm);
                 }
               
 

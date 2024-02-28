@@ -233,7 +233,7 @@ namespace ngl
 		pro.m_dataid = lpstruct->m_dataid;
 		pro.m_uip = lpram->m_uip();
 		pro.m_uport = lpram->m_uport();
-
+		pro.m_conv = lpram->m_conv();
 		nets::net()->send_server(lpram->m_serverid(), pro, -1, -1);
 
 		return true;

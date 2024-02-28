@@ -31,6 +31,7 @@ namespace ngl
         byte[]? m_cmdbyte = null;
         Dictionary<ecmd, Action<string>>? m_cmdfun = null;
         Action<byte[]>? m_sendfun = null;
+
         public udp_cmd(Action<byte[]> afun)
         {
             m_cmdfun = new Dictionary<ecmd, Action<string>>();
@@ -96,58 +97,65 @@ namespace ngl
 
         private pack? m_pack = null;
         private List<pack> m_packlist = new List<pack>();
-        private protocol_pack? m_propack = null;
+        private ProtocolPack? m_propack = null;
         private int m_port = 0;
         IPEndPoint? m_endpoint = null;
         private CancellationTokenSource? m_cancel = null;
 
         private udp_cmd cmd;
 
-        public NglKcp(int port)
+        public static uint conv = 1;
+        // 重新建立连接
+        public static Action? reconnect = null;
+
+        static NglKcp m_instance = new NglKcp();
+
+        public static NglKcp getInstance()
+        {
+            return m_instance;
+        }
+
+        public void Create(int port)
         {
             m_port = port;
-            cmd = new udp_cmd((byte[] abuff) => 
+            cmd = new udp_cmd((byte[] abuff) =>
             {
                 if (kcpClient == null)
                     return;
                 kcpClient.SendAsync(abuff, abuff.Length);
             });
-            cmd.register_fun(udp_cmd.ecmd.ecmd_connect_ret, (string ajson)=>
+            cmd.register_fun(udp_cmd.ecmd.ecmd_connect_ret, (string ajson) =>
             {
                 // 定时ecmd ping 
                 if (m_cancel == null)
                     return;
-                Task.Factory.StartNew(async () =>
-                {
-                    while (true)
-                    {
-                        await Task.Delay(nconfig.m_kcp_ping);
-                        cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
-                    }
-                }, m_cancel.Token);
-            });
-            cmd.register_fun(udp_cmd.ecmd.ecmd_close_ret, (string ajson) =>
-            {
-                close();
+                //Task.Factory.StartNew(async () =>
+                //{
+                //    while (true)
+                //    {
+                //        await Task.Delay(nconfig.m_kcp_ping);
+                //        cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
+                //    }
+                // }, m_cancel.Token);
             });
         }
 
-        public void connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
+        public void Connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
         {
             if (m_cancel != null)
                 return;
             kcpClient = null;
             m_cancel = new CancellationTokenSource();
-            kcpClient = new SimpleKcpClient(m_port, aendpoint);
+            kcpClient = new SimpleKcpClient(conv++, m_port, aendpoint);
             kcpClient.kcp.TraceListener = new ConsoleTraceListener();
             kcpClient.kcp.NoDelay(1, 10, 2, 1);//fast
             kcpClient.kcp.WndSize(128, 128);
             kcpClient.kcp.SetMtu(512);
 
-            Task.Factory.StartNew(() =>
-            {
-                kcpClient.BeginRecv();
-            }, m_cancel.Token);
+            //Task.Factory.StartNew(() =>
+           // {
+            //    kcpClient.BeginRecv();
+            //}, m_cancel.Token);
 
             Task.Factory.StartNew(async () =>
             {
@@ -196,23 +204,13 @@ namespace ngl
                 ));
         }
 
-        Action? m_closefinish = null;
-        public void close(Action? aclosefinish = null)
-        {
-            m_closefinish = aclosefinish;
-            cmd.sendcmd(ecmd.ecmd_close, "");
-        }
-
-        private void private_close()
+        public void Close()
         {
             if (m_cancel != null)
                 m_cancel.Cancel();
             if (kcpClient != null)
                 kcpClient.close();
-            if (m_closefinish != null)
-            {
-                m_closefinish();
-            }
+            m_cancel = null;
         }
 
         private Int32 utc()
@@ -221,7 +219,7 @@ namespace ngl
             return (Int32)(DateTime.UtcNow - startTime).TotalSeconds;
         }
 
-        public void send<T>(T apro) where T : IMessage, new()
+        public void Send<T>(T apro) where T : IMessage, new()
         {
             //if (m_socket == null)
             //    return;
@@ -230,7 +228,7 @@ namespace ngl
             lhead.bytes = lbuff.Length;
             lhead.time = utc();
             lhead.version = nconfig.m_head_version;
-            lhead.protocolnum = xmlprotocol.protocol(apro.Descriptor.Name);
+            lhead.protocolnum = xmlprotocol.Protocol(apro.Descriptor.Name);
             lhead.protocoltype = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
             lhead.actorid = -1;
             lhead.request_actorid = -1;
@@ -244,11 +242,11 @@ namespace ngl
             kcpClient?.SendAsync(lbuffall.m_buff, pack_head.packheadbyte + lbuff.Length);
             ////m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
         }
-        public void set_registry(protocol_pack apack)
+        public void SetRegistry(ProtocolPack apack)
         {
             m_propack = apack;
         }
-        public void receive_allpack()
+        public void ReceiveAllPack()
         {
             if (m_propack == null)
                 return;
@@ -260,11 +258,11 @@ namespace ngl
                 list.AddRange(m_packlist);
                 m_packlist.Clear();
             }
-            list.ForEach(itempack => m_propack.logic_fun(itempack));
+            list.ForEach(itempack => m_propack.LogicFun(itempack));
             list.Clear();
         }
 
-        public void receive_pack()
+        public void ReceivePack()
         {
             pack? lpack = null;
             lock (m_packlist)
@@ -276,7 +274,7 @@ namespace ngl
                 }
             }
             if (lpack != null && m_propack != null)
-                m_propack.logic_fun(lpack);
+                m_propack.LogicFun(lpack);
         }
 
     }

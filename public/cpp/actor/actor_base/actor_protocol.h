@@ -691,7 +691,8 @@ namespace ngl
 		i32_actordataid		m_dataid;
 		std::string			m_uip;
 		i16_port			m_uport;
-		def_portocol(actor_protocol_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport)
+		int32_t				m_conv;
+		def_portocol(actor_protocol_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
 	};
 }
 

@@ -76,7 +76,8 @@ namespace ngl
 		{
 			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
 		}
-		
+		static int32_t m_conv;
+
 		void connect(const std::string& akcpsess
 			, i64_actorid aactorid
 			, const std::string& aip
@@ -84,7 +85,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		)
 		{
-			m_kcp.connect(akcpsess, aactorid, aip, aport, afun);
+			m_kcp.connect(++m_conv, akcpsess, aactorid, aip, aport, afun);
 		}
 
 		void connect(const std::string& akcpsess
@@ -93,7 +94,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		)
 		{
-			m_kcp.connect(akcpsess, aactorid, aendpoint, afun);
+			m_kcp.connect(++m_conv, akcpsess, aactorid, aendpoint, afun);
 		}
 
 		i64_actorid find_actorid(i32_session asession)
@@ -128,9 +129,9 @@ namespace ngl
 			return asession == lsession;
 		}
 
-		void reset_add(const std::string& aip, i16_port aport)
+		void reset_add(int32_t aconv, const std::string& aip, i16_port aport)
 		{
-			m_kcp.reset_add(aip, aport);
+			m_kcp.reset_add(aconv, aip, aport);
 		}
 	};
 }

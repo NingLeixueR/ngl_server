@@ -10488,6 +10488,7 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
     kMUipFieldNumber = 2,
     kMServeridFieldNumber = 1,
     kMUportFieldNumber = 3,
+    kMConvFieldNumber = 4,
   };
   // string m_uip = 2;
   bool has_m_uip() const;
@@ -10535,6 +10536,19 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   void _internal_set_m_uport(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 m_conv = 4;
+  bool has_m_conv() const;
+  private:
+  bool _internal_has_m_conv() const;
+  public:
+  void clear_m_conv();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_conv() const;
+  void set_m_conv(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_conv() const;
+  void _internal_set_m_conv(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_KCPSESSION)
  private:
   class _Internal;
@@ -10547,6 +10561,7 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_uip_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_serverid_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_uport_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_conv_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -15733,6 +15748,34 @@ inline void PROBUFF_NET_KCPSESSION::_internal_set_m_uport(::PROTOBUF_NAMESPACE_I
 inline void PROBUFF_NET_KCPSESSION::set_m_uport(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_uport(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_uport)
+}
+
+// int32 m_conv = 4;
+inline bool PROBUFF_NET_KCPSESSION::_internal_has_m_conv() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_KCPSESSION::has_m_conv() const {
+  return _internal_has_m_conv();
+}
+inline void PROBUFF_NET_KCPSESSION::clear_m_conv() {
+  m_conv_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_KCPSESSION::_internal_m_conv() const {
+  return m_conv_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_KCPSESSION::m_conv() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_KCPSESSION.m_conv)
+  return _internal_m_conv();
+}
+inline void PROBUFF_NET_KCPSESSION::_internal_set_m_conv(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000008u;
+  m_conv_ = value;
+}
+inline void PROBUFF_NET_KCPSESSION::set_m_conv(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_conv(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_conv)
 }
 
 // -------------------------------------------------------------------

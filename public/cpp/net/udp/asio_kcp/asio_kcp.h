@@ -60,9 +60,9 @@ namespace ngl
 			release();
 		}
 
-		void create(IUINT32 asessionid, void* auser)
+		void create(int32_t aconv, IUINT32 asessionid, void* auser)
 		{
-			m_kcp = ikcp_create(1, auser);
+			m_kcp = ikcp_create(aconv, auser);
 		}
 
 		void removetimer()
@@ -147,8 +147,11 @@ namespace ngl
 			m_sessionid(0),
 			m_asiokcp(asiokcp)
 		{}
-
 		ptr_se add(const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
+		{
+			return add(-1, aendpoint, aactorid);
+		}
+		ptr_se add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
 		{
 			std::string lip = aendpoint.address().to_string();
 			i16_port lport = aendpoint.port();
@@ -162,6 +165,8 @@ namespace ngl
 					return itorport->second;
 				}
 			}
+			if (aconv == -1)
+				return nullptr;
 			ptr_se ltemp(new session_endpoint());
 			m_dataofsession[++m_sessionid] = ltemp;
 			ltemp->m_session = m_sessionid;
@@ -170,7 +175,7 @@ namespace ngl
 			ltemp->m_port = lport;
 			ltemp->m_asiokcp = m_asiokcp;
 			ltemp->m_actorid = aactorid;
-			ltemp->create(m_sessionid, (void*)ltemp.get());
+			ltemp->create(aconv, m_sessionid, (void*)ltemp.get());
 			
 			//设置kcp对象的回调函数
 			ltemp->setoutput(udp_output);
@@ -195,10 +200,10 @@ namespace ngl
 			return ltemp;
 		}
 
-		ptr_se reset_add(const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
+		ptr_se reset_add(int32_t aconv, const asio_udp_endpoint& aendpoint, i64_actorid aactorid)
 		{
 			erase(aendpoint);
-			return add(aendpoint, aactorid);
+			return add(aconv, aendpoint, aactorid);
 		}
 
 		ptr_se erase(const asio_udp_endpoint& aendpoint)
@@ -270,7 +275,6 @@ namespace ngl
 
 		ptr_se find(const asio_udp_endpoint& aendpoint)
 		{
-
 			monopoly_shared_lock(m_mutex);
 			return _find(aendpoint);
 		}
@@ -385,16 +389,16 @@ namespace ngl
 			lpstruct->flush();
 		}
 
-		void connect(const std::string& akcpsess, i64_actorid aactorid, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
+		void connect(int32_t aconv, const std::string& akcpsess, i64_actorid aactorid, const std::string& aip, i16_port aport, const std::function<void(i32_session)>& afun)
 		{
 			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
-			connect(akcpsess, aactorid, lendpoint, afun);
+			connect(aconv, akcpsess, aactorid, lendpoint, afun);
 		}
 
-		void connect(const std::string& akcpsess, i64_actorid aactorid, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
+		void connect(int32_t aconv, const std::string& akcpsess, i64_actorid aactorid, const asio_udp_endpoint& aendpoint, const std::function<void(i32_session)>& afun)
 		{
 			// #### 发起连接
-			ptr_se lpstruct = m_session.add(aendpoint, aactorid);
+			ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
 			ijson ltempjson;
 			ltempjson << std::make_pair("actorid", aactorid);
 			ltempjson << std::make_pair("session", akcpsess);
@@ -445,10 +449,10 @@ namespace ngl
 		}
 
 
-		void reset_add(const std::string& aip, i16_port aport)
+		void reset_add(int32_t aconv, const std::string& aip, i16_port aport)
 		{
 			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
-			m_session.reset_add(lendpoint, -1);
+			m_session.reset_add(aconv, lendpoint, -1);
 		}
 	private:
 

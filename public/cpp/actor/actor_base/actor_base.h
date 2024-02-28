@@ -132,8 +132,7 @@ namespace ngl
 
 		void set_kcpssion(i32_session asession)
 		{
-			if (m_kcpsession == -1)
-				m_kcpsession = asession;
+			m_kcpsession = asession;
 		}
 
 		template <typename T>

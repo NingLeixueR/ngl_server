@@ -18,19 +18,21 @@ namespace ngl
         UdpClient client;
         public void close()
         {
-            client.Close();
+            //kcp.Dispose();
+            client.Close();            
         }
 
-        public SimpleKcpClient(int port)
-            : this(port, null)
+        public SimpleKcpClient(uint conv_, int port)
+            : this(conv_, port, null)
         {
         }
 
-        public SimpleKcpClient(int port, IPEndPoint endPoint)
+        public SimpleKcpClient(uint conv_, int port, IPEndPoint endPoint)
         {
             client = new UdpClient(port);
-            kcp = new SimpleSegManager.Kcp(1, this);
+            kcp = new SimpleSegManager.Kcp(conv_, this);
             this.EndPoint = endPoint;
+            BeginRecv();
         }
 
         public SimpleSegManager.Kcp kcp { get; set; }
@@ -53,7 +55,7 @@ namespace ngl
             kcp.Send(datagram.AsSpan().Slice(0, bytes));
         }
 
-        public async ValueTask<byte[]> ReceiveAsync()
+        public async ValueTask<byte[]?> ReceiveAsync()
         {
             var (buffer, avalidLength) = kcp.TryRecv();
             while (buffer == null)
@@ -68,11 +70,26 @@ namespace ngl
 
         public async void BeginRecv()
         {
-            while (true)
+            bool lbool = true;
+            while (lbool)
             {
-                var res = await client.ReceiveAsync();
-                EndPoint = res.RemoteEndPoint;
-                kcp.Input(res.Buffer);
+                try
+                {
+                    var res = await client.ReceiveAsync();
+                    if (udp_cmd.CheckByteEquals(res.Buffer, System.Text.Encoding.Default.GetBytes("NFC"), 3))
+                    {//NFC = not find connect 服务器维护的连接失效了
+                        NglKcp.getInstance().Close();
+                        if (NglKcp.reconnect != null)
+                            NglKcp.reconnect();
+                        return;
+                    }
+                    EndPoint = res.RemoteEndPoint;
+                    kcp.Input(res.Buffer);
+                }
+                catch (Exception e)
+                {
+                    lbool = false;
+                }
             }
         }
 

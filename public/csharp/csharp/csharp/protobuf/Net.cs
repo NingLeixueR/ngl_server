@@ -175,30 +175,31 @@ namespace Pbnet {
             "BCABKAVIAogBAUIJCgdfbV90eXBlQgsKCV9tX3Jvb21pZEILCglfbV9kYXRh",
             "aWQibAoXUFJPQlVGRl9ORVRfRU5URVJfUExBWVMSIgoGbV90eXBlGAEgASgO",
             "Mg0ucGJuZXQuZXBsYXlzSACIAQESFQoIbV9yb29taWQYAiABKAVIAYgBAUIJ",
-            "CgdfbV90eXBlQgsKCV9tX3Jvb21pZCKAAQoWUFJPQlVGRl9ORVRfS0NQU0VT",
+            "CgdfbV90eXBlQgsKCV9tX3Jvb21pZCKgAQoWUFJPQlVGRl9ORVRfS0NQU0VT",
             "U0lPThIXCgptX3NlcnZlcmlkGAEgASgDSACIAQESEgoFbV91aXAYAiABKAlI",
-            "AYgBARIUCgdtX3Vwb3J0GAMgASgFSAKIAQFCDQoLX21fc2VydmVyaWRCCAoG",
-            "X21fdWlwQgoKCF9tX3Vwb3J0Ik0KH1BST0JVRkZfTkVUX0tDUFNFU1NJT05f",
-            "UkVTUE9OU0USGQoMbV9rY3BzZXNzaW9uGAEgASgJSACIAQFCDwoNX21fa2Nw",
-            "c2Vzc2lvbipGCg9lbnVtX2xvZ2ljX2NoYXQSEQoNZ2V0X2NoYXRfbGlzdBAA",
-            "Eg4KCmNoYXRfc3BlYWsQARIQCgx1cGRhdGFfc3BlY2sQAio8CgVldW5pdBIO",
-            "CgpldW5pdF9yb2xlEAASEQoNZXVuaXRfbW9uc3RlchABEhAKDGV1bml0X3Jl",
-            "Z2lvbhACKnMKCWV1bml0c3RhdBIUChBldW5pdHN0YXRfbm9ybWFsEAASFAoQ",
-            "ZXVuaXRzdGF0X25vbW92ZRABEhwKGGV1bml0c3RhdF9ub25vcm1hbGF0dGFj",
-            "axACEhwKGGV1bml0c3RhdF9ub3JlbGVhc2Vza2lsbBAEKjsKBmVwbGF5cxIf",
-            "ChtlcGxheXNfZ29fdW5kZXJncm91bmRwYWxhY2UQABIQCgxlcGxheXNfY291",
-            "bnQQASqbAQoVZW1hdGNoaW5nX2NhbmNlbF9zdGF0EhwKGGVtYXRjaGluZ19j",
-            "YW5jZWxfc3VjY2VzcxAAEhoKFmVtYXRjaGluZ19jYW5jZWxfc3RhZ2UQARIg",
-            "ChxlbWF0Y2hpbmdfY2FuY2VsX3Jvb21ub3RmaW5kEAISJgoiZW1hdGNoaW5n",
-            "X2NhbmNlbF9yb29tbWVtYmVybm90ZmluZBADKqsBChVldHlwZV9tYXRjaGlu",
-            "Z19jYW5jZWwSIAocZXR5cGVfbWF0Y2hpbmdfY2FuY2VsX2FjdGl2ZRAAEiEK",
-            "HWV0eXBlX21hdGNoaW5nX2NhbmNlbF90aW1lb3V0EAESJgoiZXR5cGVfbWF0",
-            "Y2hpbmdfd2FpdGNvbmZpcm1fdGltZW91dBACEiUKIWV0eXBlX21hdGNoaW5n",
-            "X3dhaXRjcmVhdGVfdGltZW91dBADKqABChZlbWF0Y2hpbmdfY29uZmlybV9z",
-            "dGF0Eh0KGWVtYXRjaGluZ19jb25maXJtX3N1Y2Nlc3MQABIbChdlbWF0Y2hp",
-            "bmdfY29uZmlybV9zdGFnZRABEiEKHWVtYXRjaGluZ19jb25maXJtX3Jvb21u",
-            "b3RmaW5kEAISJwojZW1hdGNoaW5nX2NvbmZpcm1fcm9vbW1lbWJlcm5vdGZp",
-            "bmQQA0ICSAFiBnByb3RvMw=="));
+            "AYgBARIUCgdtX3Vwb3J0GAMgASgFSAKIAQESEwoGbV9jb252GAQgASgFSAOI",
+            "AQFCDQoLX21fc2VydmVyaWRCCAoGX21fdWlwQgoKCF9tX3Vwb3J0QgkKB19t",
+            "X2NvbnYiTQofUFJPQlVGRl9ORVRfS0NQU0VTU0lPTl9SRVNQT05TRRIZCgxt",
+            "X2tjcHNlc3Npb24YASABKAlIAIgBAUIPCg1fbV9rY3BzZXNzaW9uKkYKD2Vu",
+            "dW1fbG9naWNfY2hhdBIRCg1nZXRfY2hhdF9saXN0EAASDgoKY2hhdF9zcGVh",
+            "axABEhAKDHVwZGF0YV9zcGVjaxACKjwKBWV1bml0Eg4KCmV1bml0X3JvbGUQ",
+            "ABIRCg1ldW5pdF9tb25zdGVyEAESEAoMZXVuaXRfcmVnaW9uEAIqcwoJZXVu",
+            "aXRzdGF0EhQKEGV1bml0c3RhdF9ub3JtYWwQABIUChBldW5pdHN0YXRfbm9t",
+            "b3ZlEAESHAoYZXVuaXRzdGF0X25vbm9ybWFsYXR0YWNrEAISHAoYZXVuaXRz",
+            "dGF0X25vcmVsZWFzZXNraWxsEAQqOwoGZXBsYXlzEh8KG2VwbGF5c19nb191",
+            "bmRlcmdyb3VuZHBhbGFjZRAAEhAKDGVwbGF5c19jb3VudBABKpsBChVlbWF0",
+            "Y2hpbmdfY2FuY2VsX3N0YXQSHAoYZW1hdGNoaW5nX2NhbmNlbF9zdWNjZXNz",
+            "EAASGgoWZW1hdGNoaW5nX2NhbmNlbF9zdGFnZRABEiAKHGVtYXRjaGluZ19j",
+            "YW5jZWxfcm9vbW5vdGZpbmQQAhImCiJlbWF0Y2hpbmdfY2FuY2VsX3Jvb21t",
+            "ZW1iZXJub3RmaW5kEAMqqwEKFWV0eXBlX21hdGNoaW5nX2NhbmNlbBIgChxl",
+            "dHlwZV9tYXRjaGluZ19jYW5jZWxfYWN0aXZlEAASIQodZXR5cGVfbWF0Y2hp",
+            "bmdfY2FuY2VsX3RpbWVvdXQQARImCiJldHlwZV9tYXRjaGluZ193YWl0Y29u",
+            "ZmlybV90aW1lb3V0EAISJQohZXR5cGVfbWF0Y2hpbmdfd2FpdGNyZWF0ZV90",
+            "aW1lb3V0EAMqoAEKFmVtYXRjaGluZ19jb25maXJtX3N0YXQSHQoZZW1hdGNo",
+            "aW5nX2NvbmZpcm1fc3VjY2VzcxAAEhsKF2VtYXRjaGluZ19jb25maXJtX3N0",
+            "YWdlEAESIQodZW1hdGNoaW5nX2NvbmZpcm1fcm9vbW5vdGZpbmQQAhInCiNl",
+            "bWF0Y2hpbmdfY29uZmlybV9yb29tbWVtYmVybm90ZmluZBADQgJIAWIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Pbdb.DbReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbnet.enum_logic_chat), typeof(global::Pbnet.eunit), typeof(global::Pbnet.eunitstat), typeof(global::Pbnet.eplays), typeof(global::Pbnet.ematching_cancel_stat), typeof(global::Pbnet.etype_matching_cancel), typeof(global::Pbnet.ematching_confirm_stat), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -261,7 +262,7 @@ namespace Pbnet {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS_RESPONSE.Parser, new[]{ "MType", "MRoomid", "MPlaysactorid" }, new[]{ "MType", "MRoomid", "MPlaysactorid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS.Parser, new[]{ "MType", "MRoomid", "MMember", "MDataid" }, new[]{ "MType", "MRoomid", "MDataid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_ENTER_PLAYS), global::Pbnet.PROBUFF_NET_ENTER_PLAYS.Parser, new[]{ "MType", "MRoomid" }, new[]{ "MType", "MRoomid" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION), global::Pbnet.PROBUFF_NET_KCPSESSION.Parser, new[]{ "MServerid", "MUip", "MUport" }, new[]{ "MServerid", "MUip", "MUport" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION), global::Pbnet.PROBUFF_NET_KCPSESSION.Parser, new[]{ "MServerid", "MUip", "MUport", "MConv" }, new[]{ "MServerid", "MUip", "MUport", "MConv" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE), global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.Parser, new[]{ "MKcpsession" }, new[]{ "MKcpsession" }, null, null, null)
           }));
     }
@@ -14405,6 +14406,7 @@ namespace Pbnet {
       mServerid_ = other.mServerid_;
       mUip_ = other.mUip_;
       mUport_ = other.mUport_;
+      mConv_ = other.mConv_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -14481,6 +14483,28 @@ namespace Pbnet {
       _hasBits0 &= ~2;
     }
 
+    /// <summary>Field number for the "m_conv" field.</summary>
+    public const int MConvFieldNumber = 4;
+    private int mConv_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MConv {
+      get { if ((_hasBits0 & 4) != 0) { return mConv_; } else { return 0; } }
+      set {
+        _hasBits0 |= 4;
+        mConv_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_conv" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMConv {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "m_conv" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMConv() {
+      _hasBits0 &= ~4;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as PROBUFF_NET_KCPSESSION);
@@ -14497,6 +14521,7 @@ namespace Pbnet {
       if (MServerid != other.MServerid) return false;
       if (MUip != other.MUip) return false;
       if (MUport != other.MUport) return false;
+      if (MConv != other.MConv) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -14506,6 +14531,7 @@ namespace Pbnet {
       if (HasMServerid) hash ^= MServerid.GetHashCode();
       if (HasMUip) hash ^= MUip.GetHashCode();
       if (HasMUport) hash ^= MUport.GetHashCode();
+      if (HasMConv) hash ^= MConv.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -14534,6 +14560,10 @@ namespace Pbnet {
         output.WriteRawTag(24);
         output.WriteInt32(MUport);
       }
+      if (HasMConv) {
+        output.WriteRawTag(32);
+        output.WriteInt32(MConv);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -14555,6 +14585,10 @@ namespace Pbnet {
         output.WriteRawTag(24);
         output.WriteInt32(MUport);
       }
+      if (HasMConv) {
+        output.WriteRawTag(32);
+        output.WriteInt32(MConv);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -14572,6 +14606,9 @@ namespace Pbnet {
       }
       if (HasMUport) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MUport);
+      }
+      if (HasMConv) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MConv);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -14592,6 +14629,9 @@ namespace Pbnet {
       }
       if (other.HasMUport) {
         MUport = other.MUport;
+      }
+      if (other.HasMConv) {
+        MConv = other.MConv;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -14619,6 +14659,10 @@ namespace Pbnet {
             MUport = input.ReadInt32();
             break;
           }
+          case 32: {
+            MConv = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -14643,6 +14687,10 @@ namespace Pbnet {
           }
           case 24: {
             MUport = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MConv = input.ReadInt32();
             break;
           }
         }

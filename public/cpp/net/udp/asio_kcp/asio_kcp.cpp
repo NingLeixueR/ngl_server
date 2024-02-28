@@ -39,7 +39,6 @@ namespace ngl
 
 		auto lcallfun = [lpsession, this](ptr_se& apstruct)->bool
 		{
-				return true;
 				// 定时监测连接是否可用
 				if (nconfig::m_nodetype != ngl::ROBOT)
 				{
@@ -211,58 +210,68 @@ namespace ngl
 				m_bytes_received = bytes_received;
 				if (!ec && bytes_received > 0)
 				{
-					ptr_se lpstruct = m_session.add(m_remoteport, -1);
-					std::cout
-						<< "[conv:"
-						<< lpstruct->m_kcp->conv
-						<< "][current:"
-						<< lpstruct->m_kcp->current
-						<< "][dead_link:"
-						<< lpstruct->m_kcp->dead_link << "]" << std::endl;
-					int linput = lpstruct->input(m_buff, bytes_received);
-					if (linput >= 0)
+					ptr_se lpstruct = m_session.find(m_remoteport);
+					//ptr_se lpstruct = m_session.add(m_remoteport, -1);
+					if (lpstruct != nullptr)
 					{
-						while (true)
+						std::cout
+							<< "[conv:"
+							<< lpstruct->m_kcp->conv
+							<< "][current:"
+							<< lpstruct->m_kcp->current
+							<< "][dead_link:"
+							<< lpstruct->m_kcp->dead_link << "]" << std::endl;
+						int linput = lpstruct->input(m_buff, bytes_received);
+						if (linput >= 0)
 						{
-							//从 buf中 提取真正数据，返回提取到的数据大小
-							int lrecv = lpstruct->recv(m_buffrecv, 10240);
-							if (lrecv == -3)
+							while (true)
 							{
-								// ret == -3 m_buffrecv 的大小不够 
-								close(lpstruct->m_session);
-								break;
-							}
-							if (lrecv < 0)
-							{
-								break;
-							}
+								//从 buf中 提取真正数据，返回提取到的数据大小
+								int lrecv = lpstruct->recv(m_buffrecv, 10240);
+								if (lrecv == -3)
+								{
+									// ret == -3 m_buffrecv 的大小不够 
+									close(lpstruct->m_session);
+									break;
+								}
+								if (lrecv < 0)
+								{
+									break;
+								}
 
-							// 首先判断下是否kcp_cmd
-							if (udp_cmd::cmd(lpstruct, m_buffrecv, lrecv))
-							{
-								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
-								break;
-							}
+								// 首先判断下是否kcp_cmd
+								if (udp_cmd::cmd(lpstruct, m_buffrecv, lrecv))
+								{
+									std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
+									break;
+								}
 
-							if (lpstruct->m_isconnect == false)
-							{
-								break;
-							}
+								if (lpstruct->m_isconnect == false)
+								{
+									break;
+								}
 
-							if (sempack(lpstruct, m_buffrecv, lrecv) == false)
-							{
-								close(lpstruct->m_session);
-								break;
+								if (sempack(lpstruct, m_buffrecv, lrecv) == false)
+								{
+									close(lpstruct->m_session);
+									break;
+								}
 							}
+						}
+						else
+						{
+							LogLocalError("[非kcp包:input < 0][%][%]"
+								, m_remoteport.address().to_string()
+								, m_remoteport.port()
+							);
 						}
 					}
 					else
 					{
-						LogLocalError("[非kcp包:input < 0][%][%]"
-							, m_remoteport.address().to_string()
-							, m_remoteport.port()
-						);
+						//NFC = not find connect
+						send(m_remoteport, "NFC", sizeof("NFC"));
 					}
+					
 					
 					start();
 				}

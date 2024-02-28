@@ -19,9 +19,9 @@ using System.Xml.Linq;
 
 namespace ngl
 {
-    class tcp
+    class Tcp
     {
-        public class tcp_connect
+        public class TcpConnect
         {
             public IPEndPoint? m_endpoint = null;
             public Socket? m_socket = null;
@@ -29,10 +29,10 @@ namespace ngl
             public int m_session = 0;
         }
 
-        private Dictionary<int, tcp_connect>? m_tcp = null;
+        private Dictionary<int, TcpConnect>? m_tcp = null;
         private int m_gsesson = 0;
         //  连接成功的回调函数
-        public Action<tcp_connect>? m_connectSuccessful = null;
+        public Action<TcpConnect>? m_connectSuccessful = null;
         //  连接失败的回调函数
         public Action? m_connectFail = null;
 
@@ -42,31 +42,31 @@ namespace ngl
 
         private pack? m_pack = null;
         private List<pack> m_packlist = new List<pack>();
-        private protocol_pack? m_propack = null;
-        public tcp()
+        private ProtocolPack? m_propack = null;
+        public Tcp()
         {
-            m_tcp = new Dictionary<int, tcp_connect>();
+            m_tcp = new Dictionary<int, TcpConnect>();
         }
-        Socket? get_socket(int asession)
+        Socket? GetSocket(int asession)
         {
             if (m_tcp == null)
                 return null;
-            if (m_tcp.TryGetValue(asession, out tcp_connect so))
+            if (m_tcp.TryGetValue(asession, out TcpConnect so))
                 return so.m_socket;
             return null;
         }
 
-        tcp_connect? get_tcp_connect(int asession)
+        TcpConnect? GetTcpConnect(int asession)
         {
             if (m_tcp == null)
                 return null;
-            if (m_tcp.TryGetValue(asession, out tcp_connect so))
+            if (m_tcp.TryGetValue(asession, out TcpConnect so))
                 return so;
             return null;
         }
-        public void set_nodelay(int asession, bool anodelay)
+        public void SetNodelay(int asession, bool anodelay)
         {
-            var socket = get_socket(asession);
+            var socket = GetSocket(asession);
             if (socket == null)
                 return;
             if (m_noDelay != anodelay)
@@ -76,18 +76,18 @@ namespace ngl
             }
         }
 
-        public bool get_nodelay()
+        public bool GetNodelay()
         {
             return m_noDelay;
         }
 
-        public int connect(IPEndPoint aendpoint)
+        public int Connect(IPEndPoint aendpoint)
         {
             if (m_tcp == null)
                 return -1;
             try
             {
-                var ltcp = new tcp_connect
+                var ltcp = new TcpConnect
                 {
                     m_endpoint = aendpoint,
                     m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp),
@@ -95,7 +95,7 @@ namespace ngl
                 };
                 m_tcp.Add(m_gsesson, ltcp);
                 ltcp.m_socket.NoDelay = true;
-                ltcp.m_socket.BeginConnect(aendpoint, (IAsyncResult result) => { on_connect(result, ltcp); }, null);
+                ltcp.m_socket.BeginConnect(aendpoint, (IAsyncResult result) => { OnConnect(result, ltcp); }, null);
                 return m_gsesson;
             }
             catch (System.Exception ex)
@@ -105,7 +105,7 @@ namespace ngl
             return -1;
         }
 
-        private void on_connect(IAsyncResult result, tcp_connect aconnect)
+        private void OnConnect(IAsyncResult result, TcpConnect aconnect)
         {
             if (aconnect.m_socket == null)
                 return;
@@ -120,24 +120,24 @@ namespace ngl
                     m_connectFail();
                 return;
             }
-            start_receiving(aconnect);
+            StartReceiving(aconnect);
             if(m_connectSuccessful != null)
                 m_connectSuccessful(aconnect);
         }
 
-        private void start_receiving(tcp_connect aconnect)
+        private void StartReceiving(TcpConnect aconnect)
         {
             if (aconnect.m_socket != null && aconnect.m_socket.Connected)
             {
                 try
                 {
                     //IPEndPoint remoteTcpEndPoint = (IPEndPoint)m_socket.RemoteEndPoint;
-                    aconnect.m_socket.BeginReceive(aconnect.m_temp, 0, aconnect.m_temp.Length, SocketFlags.None, (IAsyncResult result) => { on_receive(result, aconnect); }, null);
+                    aconnect.m_socket.BeginReceive(aconnect.m_temp, 0, aconnect.m_temp.Length, SocketFlags.None, (IAsyncResult result) => { OnReceive(result, aconnect); }, null);
                 }
                 catch (System.Exception ex)
                 {
                     //if (!(ex is SocketException)) Debug.LogWarning(ex);
-                    close(aconnect.m_session);
+                    Close(aconnect.m_session);
                     if (m_connectFail != null)
                         m_connectFail();
                     return;
@@ -145,9 +145,9 @@ namespace ngl
             }
         }
 
-        public void close(int asession)
+        public void Close(int asession)
         {
-            var socket = get_socket(asession);
+            var socket = GetSocket(asession);
             if (socket == null)
                 return;
             if (socket != null)
@@ -165,7 +165,7 @@ namespace ngl
             }
         }
 
-        private void on_receive(IAsyncResult result, tcp_connect aconnect)
+        private void OnReceive(IAsyncResult result, TcpConnect aconnect)
         {
             if (aconnect.m_socket == null)
                 return;
@@ -176,16 +176,16 @@ namespace ngl
             }
             catch (System.Exception ex)
             {
-                close(aconnect.m_session);
+                Close(aconnect.m_session);
                 if (m_connectFail != null)
                     m_connectFail();
                 return;
             }
-            if (bytes > 0 && process_buffer(bytes, aconnect))
+            if (bytes > 0 && ProcessBuffer(bytes, aconnect))
             {
                 try
                 {
-                    aconnect.m_socket.BeginReceive(aconnect.m_temp, 0, aconnect.m_temp.Length, SocketFlags.None, (IAsyncResult result) => { on_receive(result, aconnect); }, null);
+                    aconnect.m_socket.BeginReceive(aconnect.m_temp, 0, aconnect.m_temp.Length, SocketFlags.None, (IAsyncResult result) => { OnReceive(result, aconnect); }, null);
                     return;
                 }
                 catch (System.Exception ex)
@@ -193,12 +193,12 @@ namespace ngl
                 }
 
             }
-            close(aconnect.m_session);
+            Close(aconnect.m_session);
             if (m_connectFail != null)
                 m_connectFail();
         }
 
-        private bool process_buffer(int bytes, tcp_connect aconnect)
+        private bool ProcessBuffer(int bytes, TcpConnect aconnect)
         {
             // 收取包头
             tcp_buff lbuff = new tcp_buff();
@@ -224,14 +224,14 @@ namespace ngl
                 }
                 else if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL)
                 {
-                    close(aconnect.m_session);
+                    Close(aconnect.m_session);
                 }
                 break;
             }            
             return true;
         }
 
-        public void receive_allpack()
+        public void ReceiveAllPack()
         {
             if (m_propack == null)
                 return;
@@ -243,11 +243,11 @@ namespace ngl
                 list.AddRange(m_packlist);
                 m_packlist.Clear();
             }
-            list.ForEach(itempack => m_propack.logic_fun(itempack));
+            list.ForEach(itempack => m_propack.LogicFun(itempack));
             list.Clear();
         }
 
-        public void receive_pack()
+        public void ReceivePack()
         {
             pack? lpack = null;
             lock (m_packlist)
@@ -259,15 +259,15 @@ namespace ngl
                 }
             }
             if (lpack != null && m_propack != null)
-                m_propack.logic_fun(lpack);
+                m_propack.LogicFun(lpack);
         }
 
-        public void set_registry(protocol_pack apack)
+        public void SetRegistry(ProtocolPack apack)
         {
             m_propack = apack;
         }
 
-        public protocol_pack? get_registry()
+        public ProtocolPack? GetRegistry()
         {
             return m_propack;
         }
@@ -278,9 +278,9 @@ namespace ngl
             return (Int32)(DateTime.UtcNow - startTime).TotalSeconds;
         }
 
-        public void send<T>(int asession, T apro) where T : IMessage, new()
+        public void Send<T>(int asession, T apro) where T : IMessage, new()
         {
-            var ltcp_connect = get_tcp_connect(asession);
+            var ltcp_connect = GetTcpConnect(asession);
             if (ltcp_connect == null || ltcp_connect.m_socket == null)
                 return;
             byte[] lbuff = apro.ToByteArray();
@@ -288,7 +288,7 @@ namespace ngl
             lhead.bytes = lbuff.Length;
             lhead.time = utc();
             lhead.version = nconfig.m_head_version;
-            lhead.protocolnum = xmlprotocol.protocol(apro.Descriptor.Name);
+            lhead.protocolnum = xmlprotocol.Protocol(apro.Descriptor.Name);
             lhead.protocoltype = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
             lhead.actorid = -1;
             lhead.request_actorid = -1;
@@ -299,10 +299,10 @@ namespace ngl
             encryption.bytexor(lbuff, lbuff.Length, 0);
             lbuff.CopyTo(lbuffall.m_buff, pack_head.packheadbyte);
 
-            ltcp_connect.m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, (IAsyncResult result) => { on_send(result, ltcp_connect); }, lbuffall);
+            ltcp_connect.m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, (IAsyncResult result) => { OnSend(result, ltcp_connect); }, lbuffall);
         }
 
-        private void on_send(IAsyncResult result, tcp_connect atcp_connect)
+        private void OnSend(IAsyncResult result, TcpConnect atcp_connect)
         {
             if (atcp_connect.m_socket == null)
                 return;
@@ -315,13 +315,13 @@ namespace ngl
                 try
                 {
                     buff.m_pos += bytes;
-                    atcp_connect.m_socket.BeginSend(buff.m_buff, buff.m_pos, buff.m_len, SocketFlags.None, (IAsyncResult result) => { on_send(result, atcp_connect); }, buff);
+                    atcp_connect.m_socket.BeginSend(buff.m_buff, buff.m_pos, buff.m_len, SocketFlags.None, (IAsyncResult result) => { OnSend(result, atcp_connect); }, buff);
                     return;
                 }
                 catch (Exception ex)
                 {
                     //Debug.LogWarning (ex);
-                    close(atcp_connect.m_session);
+                    Close(atcp_connect.m_session);
                     if (m_connectFail != null)
                         m_connectFail();
                     return;
@@ -334,7 +334,7 @@ namespace ngl
     {
         private static Dictionary<string,Int32> m_protocol = new Dictionary<string, Int32>();
 
-        public static void load(string apath)
+        public static void Load(string apath)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(apath);
@@ -356,7 +356,7 @@ namespace ngl
         }
 
         // ### 获取协议号
-        public static Int32 protocol(string aname)
+        public static Int32 Protocol(string aname)
         {
             if (m_protocol.TryGetValue(aname, out Int32 lproto) == false)
                 return -1;
@@ -365,14 +365,14 @@ namespace ngl
     }
 
 
-    public class protocol_pack
+    public class ProtocolPack
     {
         private Dictionary<Int32, Action<pack>> m_protocol = new Dictionary<Int32, Action<pack>>();
 
-        public void registry<T>(Action<T> afun) where T : IMessage, new()
+        public void Registry<T>(Action<T> afun) where T : IMessage, new()
         {
             T lname = new T();
-            Int32 lprotocol = xmlprotocol.protocol(lname.Descriptor.Name);
+            Int32 lprotocol = xmlprotocol.Protocol(lname.Descriptor.Name);
             m_protocol.Add(lprotocol, pack =>
             {
                 if (pack.m_buff == null)
@@ -385,7 +385,7 @@ namespace ngl
             });
         }
 
-        public void logic_fun(pack apack)
+        public void LogicFun(pack apack)
         {
             Action<pack>? lfun = null;
             if (m_protocol.TryGetValue(apack.m_head.protocolnum, out lfun) == false)
