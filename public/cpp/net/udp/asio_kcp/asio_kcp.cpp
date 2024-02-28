@@ -211,28 +211,28 @@ namespace ngl
 					//	lpstruct = nullptr;
 					//	lpstruct = m_session.reset_add(m_remoteport, -1);
 					//}
-					int ret = lpstruct->input(m_buff, bytes_received);
-					if (ret >= 0)
+					int linput = lpstruct->input(m_buff, bytes_received);
+					if (linput >= 0)
 					{
 						while (true)
 						{
 							//从 buf中 提取真正数据，返回提取到的数据大小
-							int ret = lpstruct->recv(m_buffrecv, 10240);
-							if (ret == -3)
+							int lrecv = lpstruct->recv(m_buffrecv, 10240);
+							if (lrecv == -3)
 							{
 								// ret == -3 m_buffrecv 的大小不够 
 								close(lpstruct->m_session);
 								break;
 							}
-							if (ret < 0)
+							if (lrecv < 0)
 							{
 								break;
 							}
 
 							// 首先判断下是否kcp_cmd
-							if (udp_cmd::cmd(lpstruct, m_buffrecv, bytes_received))
+							if (udp_cmd::cmd(lpstruct, m_buffrecv, lrecv))
 							{
-								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, ret) << std::endl;
+								std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
 								break;
 							}
 
@@ -241,7 +241,7 @@ namespace ngl
 								break;
 							}
 
-							if (sempack(lpstruct, m_buffrecv, ret) == false)
+							if (sempack(lpstruct, m_buffrecv, lrecv) == false)
 							{
 								close(lpstruct->m_session);
 								break;
