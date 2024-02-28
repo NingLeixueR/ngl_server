@@ -54,8 +54,8 @@ namespace ngl
 						return false;
 					wheel_parm lparm
 					{
-						.m_ms = intervalms,
-						.m_intervalms = [intervalms](int64_t) {return intervalms; } ,
+						.m_ms = ms*1000,
+						.m_intervalms = [ms](int64_t) {return ms* 1000; } ,
 						.m_count = 0x7fffffff,
 						.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
 						{
@@ -269,10 +269,8 @@ namespace ngl
 					else
 					{
 						//NFC = not find connect
-						send(m_remoteport, "NFC", sizeof("NFC"));
+						sendudp(m_remoteport, "NFC", sizeof("NFC"));
 					}
-					
-					
 					start();
 				}
 			});

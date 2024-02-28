@@ -350,6 +350,18 @@ namespace ngl
 		void start();
 
 	public:
+		bool sendudp(const asio_udp_endpoint& aendpoint, const char* buf, int len)
+		{
+			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
+				{
+					if (ec)
+					{
+						std::cout << ec.what() << std::endl;
+					}
+				});
+			return true;
+		}
+
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 		{
 			ptr_se lpstruct = m_session.find(asessionid);

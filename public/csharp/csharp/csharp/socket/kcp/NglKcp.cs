@@ -129,14 +129,14 @@ namespace ngl
                 // 定时ecmd ping 
                 if (m_cancel == null)
                     return;
-                //Task.Factory.StartNew(async () =>
-                //{
-                //    while (true)
-                //    {
-                //        await Task.Delay(nconfig.m_kcp_ping);
-                //        cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
-                //    }
-                // }, m_cancel.Token);
+                Task.Factory.StartNew(async () =>
+                {
+                    while (true)
+                    {
+                        await Task.Delay(nconfig.m_kcp_ping);
+                        cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
+                    }
+                }, m_cancel.Token);
             });
         }
 
@@ -151,11 +151,6 @@ namespace ngl
             kcpClient.kcp.NoDelay(1, 10, 2, 1);//fast
             kcpClient.kcp.WndSize(128, 128);
             kcpClient.kcp.SetMtu(512);
-
-            //Task.Factory.StartNew(() =>
-           // {
-            //    kcpClient.BeginRecv();
-            //}, m_cancel.Token);
 
             Task.Factory.StartNew(async () =>
             {
@@ -206,10 +201,10 @@ namespace ngl
 
         public void Close()
         {
-            if (m_cancel != null)
-                m_cancel.Cancel();
             if (kcpClient != null)
                 kcpClient.close();
+            if (m_cancel != null)
+                m_cancel.Cancel();
             m_cancel = null;
         }
 
