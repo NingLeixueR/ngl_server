@@ -82,7 +82,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		)
 		{
-			m_kcp.connect(++m_conv, akcpsess, aactorid, aip, aport, afun);
+			m_kcp.connect(m_conv++, akcpsess, aactorid, aip, aport, afun);
 		}
 
 		void connect(const std::string& akcpsess
@@ -91,7 +91,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		)
 		{
-			m_kcp.connect(++m_conv, akcpsess, aactorid, aendpoint, afun);
+			m_kcp.connect(m_conv++, akcpsess, aactorid, aendpoint, afun);
 		}
 
 		i64_actorid find_actorid(i32_session asession)

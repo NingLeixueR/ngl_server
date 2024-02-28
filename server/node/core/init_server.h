@@ -85,6 +85,7 @@ bool init_server(int aid)
 
 	if (tab->m_isopenkcp)
 	{
+		std::cout << "init kcp server:port[" << tab->m_uport << "]" << std::endl;
 		ngl::udp_kcp::getInstance(tab->m_uport);
 	}
 		

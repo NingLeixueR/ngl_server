@@ -4,5 +4,5 @@
 namespace ngl
 {
 	//asio_kcp udp_kcp::m_kcp;
-	int32_t udp_kcp::m_conv = 0;
+	int32_t udp_kcp::m_conv = 1;
 }

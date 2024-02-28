@@ -57,6 +57,17 @@ namespace ngl
 			release();
 		}
 
+		static std::string ip(session_endpoint* ap)
+		{
+			return ap->m_endpoint.address().to_string();
+			
+		}
+
+		static i16_port port(session_endpoint* ap)
+		{
+			return ap->m_endpoint.port();
+		}
+
 		void create(int32_t aconv, IUINT32 asessionid, void* auser)
 		{
 			m_kcp = ikcp_create(aconv, auser);

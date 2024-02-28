@@ -39,6 +39,7 @@ namespace ngl
 
 		auto lcallfun = [lpsession, this](ptr_se& apstruct)->bool
 		{
+				return true;
 				// 定时监测连接是否可用
 				if (nconfig::m_nodetype != ngl::ROBOT)
 				{
@@ -123,6 +124,12 @@ namespace ngl
 					return;
 
 				apstruct->m_actorid = lactorpair.second;
+
+				std::cout << "kcp connect : "
+					<< session_endpoint::ip(apstruct.get())
+					<< "@"
+					<< session_endpoint::port(apstruct.get())
+					<< std::endl;
 
 				if (lcallfun(apstruct))
 					udp_cmd::sendcmd(this, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
