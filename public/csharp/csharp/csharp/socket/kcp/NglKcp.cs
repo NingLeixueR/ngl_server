@@ -133,7 +133,7 @@ namespace ngl
                 {
                     while (true)
                     {
-                        await Task.Delay(NConfig.m_kcp_ping);
+                        await Task.Delay(NConfig.m_kcp_ping*1000);
                         cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
                     }
                 }, m_cancel.Token);

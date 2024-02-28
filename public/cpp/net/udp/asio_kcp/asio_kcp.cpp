@@ -39,20 +39,20 @@ namespace ngl
 
 		auto lcallfun = [lpsession, this](ptr_se& apstruct)->bool
 		{
-				return true;
+				i32_sessionid session = apstruct->m_session;
+				xmlinfo* linfo = nconfig::get_publicconfig();
+				if (linfo == nullptr)
+					return false;
+				int ms = 0;
+				if (linfo->find("kcp_ping", ms) == false)
+					return false;
+				int intervalms = 0;
+				if (linfo->find("kcp_ping_interval", intervalms) == false)
+					return false;
+
 				// 定时监测连接是否可用
 				if (nconfig::m_nodetype != ngl::ROBOT)
 				{
-					i32_sessionid session = apstruct->m_session;
-					xmlinfo* linfo = nconfig::get_publicconfig();
-					if (linfo == nullptr)
-						return false;
-					int ms = 0;
-					if (linfo->find("kcp_ping", ms) == false)
-						return false;
-					int intervalms = 0;
-					if (linfo->find("kcp_ping_interval", intervalms) == false)
-						return false;
 					wheel_parm lparm
 					{
 						.m_ms = ms*1000,
@@ -78,20 +78,10 @@ namespace ngl
 				}
 				else
 				{
-					i32_sessionid session = apstruct->m_session;
-					xmlinfo* linfo = nconfig::get_publicconfig();
-					if (linfo == nullptr)
-						return false;
-					int ms = 0;
-					if (linfo->find("kcp_ping", ms) == false)
-						return false;
-					int intervalms = 0;
-					if (linfo->find("kcp_ping_interval", intervalms) == false)
-						return false;
 					wheel_parm lparm
 					{
-						.m_ms = ms,
-						.m_intervalms = [ms](int64_t) {return ms; } ,
+						.m_ms = ms * 1000,
+						.m_intervalms = [ms](int64_t) {return ms * 1000; } ,
 						.m_count = 0x7fffffff,
 						.m_fun = [lpsession,session,ms,intervalms, this](wheel_node* anode)
 						{
