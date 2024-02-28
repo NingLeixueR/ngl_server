@@ -1,16 +1,16 @@
 namespace ngl
 {
-    class manage_csv<TAB> where TAB : ICsvRead, ICsv, new()
+    class ManageCsv<TAB> where TAB : ICsvRead, ICsv, new()
     {
         public static Dictionary<Int32, TAB> tablecsv = new Dictionary<Int32, TAB>();
 
-        public static bool load(string aname)
+        public static bool Load(string aname)
         {
-            rcsv lcsv = new rcsv();
+            RCsv lcsv = new RCsv();
             Int32 lversion = 0;
-            if (lcsv.read(aname, ref lversion) == false)
+            if (lcsv.Read(aname, ref lversion) == false)
                 return false;
-            if (lcsv.readcsv(tablecsv) == false)
+            if (lcsv.ReadCsv(tablecsv) == false)
                 return false;
             return true;
         }

@@ -7,18 +7,18 @@ namespace ngl
 		net_config_logic_pthread_max_size = 8,	
 		net_config_socket_pthread_max_size = 8,	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<ENET_CONFIG> avec)
+		public static bool ReadCsv(CsvPair apair, List<ENET_CONFIG> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((ENET_CONFIG)ltemp);
 			}
 			return true;
@@ -30,18 +30,18 @@ namespace ngl
 		EUDP_OPERATOR_DATA,	// 传输子数据包
 		EUDP_OPERATOR_HEARTBEAT,	// 心跳主要用来确认对端是否在线
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EUDP_OPERATOR> avec)
+		public static bool ReadCsv(CsvPair apair, List<EUDP_OPERATOR> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EUDP_OPERATOR)ltemp);
 			}
 			return true;
@@ -55,18 +55,18 @@ namespace ngl
 		EPH_HEAD_FOLLOW = 4,	// 包头数据没有接收完成
 		EPH_HEAD_SUCCESS = 5,	// 包头数据已接收完成
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EPH_HEAD_VAL> avec)
+		public static bool ReadCsv(CsvPair apair, List<EPH_HEAD_VAL> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EPH_HEAD_VAL)ltemp);
 			}
 			return true;
@@ -85,18 +85,18 @@ namespace ngl
 		EPH_REQUEST_ACTOR_ID,	// Request ACTOR_ID
 		EPH_SUM,	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EPH> avec)
+		public static bool ReadCsv(CsvPair apair, List<EPH> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EPH)ltemp);
 			}
 			return true;
@@ -118,18 +118,18 @@ namespace ngl
 		PUSHSERVERCONFIG = 12,	// 将服务器配置上传lbgmsys
 		FAIL = -1,	// 服务器类型错误
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<NODE_TYPE> avec)
+		public static bool ReadCsv(CsvPair apair, List<NODE_TYPE> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((NODE_TYPE)ltemp);
 			}
 			return true;
@@ -142,18 +142,18 @@ namespace ngl
 		ENET_WS = 3,	
 		ENET_KCP = 4,	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<ENET_PROTOCOL> avec)
+		public static bool ReadCsv(CsvPair apair, List<ENET_PROTOCOL> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((ENET_PROTOCOL)ltemp);
 			}
 			return true;
@@ -171,18 +171,18 @@ namespace ngl
 		E_ModuleEquipPants = 7,	// 装备护腿
 		E_ModuleCount = 8,	// 数量 	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EnumModule> avec)
+		public static bool ReadCsv(CsvPair apair, List<EnumModule> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EnumModule)ltemp);
 			}
 			return true;
@@ -198,18 +198,18 @@ namespace ngl
 		E_Speed = 5,	// [速度]
 		E_Count = 6,	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EnumAttribute> avec)
+		public static bool ReadCsv(CsvPair apair, List<EnumAttribute> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EnumAttribute)ltemp);
 			}
 			return true;
@@ -220,18 +220,18 @@ namespace ngl
 		EItemSrcNoraml = 0,	
 		EItemSrcGM = 1,	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EItemSrc> avec)
+		public static bool ReadCsv(CsvPair apair, List<EItemSrc> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EItemSrc)ltemp);
 			}
 			return true;
@@ -242,18 +242,18 @@ namespace ngl
 		EItemConsumeNoraml = 0,	
 		EItemConsumeGM = 1,	
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EItemConsume> avec)
+		public static bool ReadCsv(CsvPair apair, List<EItemConsume> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EItemConsume)ltemp);
 			}
 			return true;
@@ -267,18 +267,18 @@ namespace ngl
 		EMoneySilver = 4,	// 银币
 		ECard = 5,	// 卡牌
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EItemType> avec)
+		public static bool ReadCsv(CsvPair apair, List<EItemType> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EItemType)ltemp);
 			}
 			return true;
@@ -292,18 +292,18 @@ namespace ngl
 		EQualityOrange = 3,	//橙色
 		EQualityRed = 4,	//红色
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EQuality> avec)
+		public static bool ReadCsv(CsvPair apair, List<EQuality> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EQuality)ltemp);
 			}
 			return true;
@@ -316,18 +316,18 @@ namespace ngl
 		EEquipCloth = 3,	// 衣服
 		EEquipPants = 4,	// 护腿
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EEquip> avec)
+		public static bool ReadCsv(CsvPair apair, List<EEquip> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EEquip)ltemp);
 			}
 			return true;
@@ -339,18 +339,18 @@ namespace ngl
 		ServerOpen = 1,	// 以开服时间以来的天数
 		RegularSlot = 2,	// 固定时间段
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<ECalendar> avec)
+		public static bool ReadCsv(CsvPair apair, List<ECalendar> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((ECalendar)ltemp);
 			}
 			return true;
@@ -360,18 +360,18 @@ namespace ngl
 	{
 		EActivityDrawCompliance = 1,	// 类似咸鱼之王的<<招募达标>>
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<EActivity> avec)
+		public static bool ReadCsv(CsvPair apair, List<EActivity> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((EActivity)ltemp);
 			}
 			return true;
@@ -383,18 +383,18 @@ namespace ngl
 		ETaskRoleVip = 2,	// 玩家vip等级
 		ETaskTaskId = 3,	// 完成某ID任务
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<ETask> avec)
+		public static bool ReadCsv(CsvPair apair, List<ETask> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((ETask)ltemp);
 			}
 			return true;
@@ -406,18 +406,18 @@ namespace ngl
 		ETaskTypeBranchLine,	// 支线任务
 		ETaskTypeDaily,	// 每日任务
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<ETaskType> avec)
+		public static bool ReadCsv(CsvPair apair, List<ETaskType> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((ETaskType)ltemp);
 			}
 			return true;
@@ -428,18 +428,18 @@ namespace ngl
 		eobstacles_pass = 0,	// 可以通过
 		eobstacles_nopass = 1,	// 无法通过
 	}
-	partial class rcsv
+	partial class RCsv
 	{
-		public static bool readcsv(csvpair apair, List<eobstacles> avec)
+		public static bool ReadCsv(CsvPair apair, List<eobstacles> avec)
 		{
-			string ltempstr = read(apair);
-			csvpair lpair = new csvpair();
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
 			lpair.m_data = ltempstr;
 			lpair.m_fg = '*';
-			for (; !isok(lpair);)
+			for (; !IsOk(lpair);)
 			{
 				Int32 ltemp = 0;
-				if (readcsv(lpair, ref ltemp))
+				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((eobstacles)ltemp);
 			}
 			return true;
@@ -470,51 +470,51 @@ namespace ngl
 		public List<Int32>		m_actorserver = new List<Int32>();		// 连接的actorserver进程id(跨服需要填写多个actorserver)
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_area) == false)
+			if(RCsv.ReadCsv(apair, ref m_area) == false)
 				return false;
 			Int32 lm_type = 0;
-			if(rcsv.readcsv(apair, ref lm_type) == false)
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (NODE_TYPE)lm_type;
-			if(rcsv.readcsv(apair, ref m_tcount) == false)
+			if(RCsv.ReadCsv(apair, ref m_tcount) == false)
 				return false;
 			Int32 lm_net = 0;
-			if(rcsv.readcsv(apair, ref lm_net) == false)
+			if(RCsv.ReadCsv(apair, ref lm_net) == false)
 				return false;
 			m_net = (ENET_PROTOCOL)lm_net;
-			if(rcsv.readcsv(apair, ref m_ip) == false)
+			if(RCsv.ReadCsv(apair, ref m_ip) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_nip) == false)
+			if(RCsv.ReadCsv(apair, ref m_nip) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_port) == false)
+			if(RCsv.ReadCsv(apair, ref m_port) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_uport) == false)
+			if(RCsv.ReadCsv(apair, ref m_uport) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_threadnum) == false)
+			if(RCsv.ReadCsv(apair, ref m_threadnum) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_actorthreadnum) == false)
+			if(RCsv.ReadCsv(apair, ref m_actorthreadnum) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_outernet) == false)
+			if(RCsv.ReadCsv(apair, ref m_outernet) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_db) == false)
+			if(RCsv.ReadCsv(apair, ref m_db) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_reloadcsv) == false)
+			if(RCsv.ReadCsv(apair, ref m_reloadcsv) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_login) == false)
+			if(RCsv.ReadCsv(apair, ref m_login) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_crossarea) == false)
+			if(RCsv.ReadCsv(apair, ref m_crossarea) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_isopenkcp) == false)
+			if(RCsv.ReadCsv(apair, ref m_isopenkcp) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_actorserver) == false)
+			if(RCsv.ReadCsv(apair, m_actorserver) == false)
 				return false;
 			return true;
 		}
@@ -530,19 +530,19 @@ namespace ngl
 		public Int32		m_sendmaxcount;		// 单次最多发送数量
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_isloadall) == false)
+			if(RCsv.ReadCsv(apair, ref m_isloadall) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_network) == false)
+			if(RCsv.ReadCsv(apair, ref m_network) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_sendmaxcount) == false)
+			if(RCsv.ReadCsv(apair, ref m_sendmaxcount) == false)
 				return false;
 			return true;
 		}
@@ -556,15 +556,15 @@ namespace ngl
 		public string		m_message;		// 错误描述
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_message) == false)
+			if(RCsv.ReadCsv(apair, ref m_message) == false)
 				return false;
 			return true;
 		}
@@ -578,15 +578,15 @@ namespace ngl
 		public string		m_value;		
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_value) == false)
+			if(RCsv.ReadCsv(apair, ref m_value) == false)
 				return false;
 			return true;
 		}
@@ -603,21 +603,21 @@ namespace ngl
 		public Int32		m_lowlimit;		// 下限
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_fightcoefficient) == false)
+			if(RCsv.ReadCsv(apair, ref m_fightcoefficient) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_initvalue) == false)
+			if(RCsv.ReadCsv(apair, ref m_initvalue) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_uplimit) == false)
+			if(RCsv.ReadCsv(apair, ref m_uplimit) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_lowlimit) == false)
+			if(RCsv.ReadCsv(apair, ref m_lowlimit) == false)
 				return false;
 			return true;
 		}
@@ -634,23 +634,23 @@ namespace ngl
 		public bool		m_isstack;		// 是否可堆叠
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_ranks) == false)
+			if(RCsv.ReadCsv(apair, ref m_ranks) == false)
 				return false;
 			Int32 lm_type = 0;
-			if(rcsv.readcsv(apair, ref lm_type) == false)
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (EItemType)lm_type;
-			if(rcsv.readcsv(apair, ref m_quality) == false)
+			if(RCsv.ReadCsv(apair, ref m_quality) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_isstack) == false)
+			if(RCsv.ReadCsv(apair, ref m_isstack) == false)
 				return false;
 			return true;
 		}
@@ -662,13 +662,13 @@ namespace ngl
 		public bool		m_isratio;		// 是否万分比属性
 		public Int32		m_value;		// 属性值
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_isratio) == false)
+			if(RCsv.ReadCsv(apair, ref m_isratio) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_value) == false)
+			if(RCsv.ReadCsv(apair, ref m_value) == false)
 				return false;
 			return true;
 		}
@@ -683,19 +683,19 @@ namespace ngl
 		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// 装备属性
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
 			Int32 lm_position = 0;
-			if(rcsv.readcsv(apair, ref lm_position) == false)
+			if(RCsv.ReadCsv(apair, ref lm_position) == false)
 				return false;
 			m_position = (EEquip)lm_position;
-			if(rcsv.readcsv(apair, m_attributevalues) == false)
+			if(RCsv.ReadCsv(apair, m_attributevalues) == false)
 				return false;
 			return true;
 		}
@@ -710,17 +710,17 @@ namespace ngl
 		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// 装备属性
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_consume) == false)
+			if(RCsv.ReadCsv(apair, ref m_consume) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_attributevalues) == false)
+			if(RCsv.ReadCsv(apair, m_attributevalues) == false)
 				return false;
 			return true;
 		}
@@ -735,19 +735,19 @@ namespace ngl
 		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// 属性
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
 			Int32 lm_quality = 0;
-			if(rcsv.readcsv(apair, ref lm_quality) == false)
+			if(RCsv.ReadCsv(apair, ref lm_quality) == false)
 				return false;
 			m_quality = (EQuality)lm_quality;
-			if(rcsv.readcsv(apair, m_attributevalues) == false)
+			if(RCsv.ReadCsv(apair, m_attributevalues) == false)
 				return false;
 			return true;
 		}
@@ -760,15 +760,15 @@ namespace ngl
 		public Int32		m_max;		
 		public Int32		m_weight;		
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_min) == false)
+			if(RCsv.ReadCsv(apair, ref m_min) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_max) == false)
+			if(RCsv.ReadCsv(apair, ref m_max) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_weight) == false)
+			if(RCsv.ReadCsv(apair, ref m_weight) == false)
 				return false;
 			return true;
 		}
@@ -786,23 +786,23 @@ namespace ngl
 		public List<Int32>		m_childrandomids = new List<Int32>();		// 子随机
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_exclusive) == false)
+			if(RCsv.ReadCsv(apair, ref m_exclusive) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_count) == false)
+			if(RCsv.ReadCsv(apair, ref m_count) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_calendarids) == false)
+			if(RCsv.ReadCsv(apair, ref m_calendarids) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_randomdatas) == false)
+			if(RCsv.ReadCsv(apair, m_randomdatas) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_childrandomids) == false)
+			if(RCsv.ReadCsv(apair, m_childrandomids) == false)
 				return false;
 			return true;
 		}
@@ -813,11 +813,11 @@ namespace ngl
 		public Int32		m_tid;		
 		public Int32		m_count;		
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_tid) == false)
+			if(RCsv.ReadCsv(apair, ref m_tid) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_count) == false)
+			if(RCsv.ReadCsv(apair, ref m_count) == false)
 				return false;
 			return true;
 		}
@@ -831,15 +831,15 @@ namespace ngl
 		public List<tconsume>		m_consumeitems = new List<tconsume>();		// tid*count
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_consumeitems) == false)
+			if(RCsv.ReadCsv(apair, m_consumeitems) == false)
 				return false;
 			return true;
 		}
@@ -854,17 +854,17 @@ namespace ngl
 		public Int32		m_generate;		// 随机表(tab_rando)id 随机成功物品列表
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_consume) == false)
+			if(RCsv.ReadCsv(apair, ref m_consume) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_generate) == false)
+			if(RCsv.ReadCsv(apair, ref m_generate) == false)
 				return false;
 			return true;
 		}
@@ -876,13 +876,13 @@ namespace ngl
 		public string		m_opentime;		//  开启时间 HH:mm:ss
 		public string		m_closetime;		//  结束时间 HH:mm:ss
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_week) == false)
+			if(RCsv.ReadCsv(apair, ref m_week) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_opentime) == false)
+			if(RCsv.ReadCsv(apair, ref m_opentime) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_closetime) == false)
+			if(RCsv.ReadCsv(apair, ref m_closetime) == false)
 				return false;
 			return true;
 		}
@@ -895,15 +895,15 @@ namespace ngl
 		public Int32		m_end;		// 开服后多少天结束
 		public string		m_closetime;		// 结束时间 HH:mm:ss
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_beg) == false)
+			if(RCsv.ReadCsv(apair, ref m_beg) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_opentime) == false)
+			if(RCsv.ReadCsv(apair, ref m_opentime) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_end) == false)
+			if(RCsv.ReadCsv(apair, ref m_end) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_closetime) == false)
+			if(RCsv.ReadCsv(apair, ref m_closetime) == false)
 				return false;
 			return true;
 		}
@@ -914,11 +914,11 @@ namespace ngl
 		public string		m_opentime;		// 开启时间 YYYY-MM-DD HH:mm:ss
 		public string		m_closetime;		// 结束时间 YYYY-MM-DD HH:mm:ss
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_opentime) == false)
+			if(RCsv.ReadCsv(apair, ref m_opentime) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_closetime) == false)
+			if(RCsv.ReadCsv(apair, ref m_closetime) == false)
 				return false;
 			return true;
 		}
@@ -935,23 +935,23 @@ namespace ngl
 		public List<tregularslot>		m_tregularslot = new List<tregularslot>();		//m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
 			Int32 lm_type = 0;
-			if(rcsv.readcsv(apair, ref lm_type) == false)
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (ECalendar)lm_type;
-			if(rcsv.readcsv(apair, m_week) == false)
+			if(RCsv.ReadCsv(apair, m_week) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_serveropen) == false)
+			if(RCsv.ReadCsv(apair, m_serveropen) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_tregularslot) == false)
+			if(RCsv.ReadCsv(apair, m_tregularslot) == false)
 				return false;
 			return true;
 		}
@@ -967,19 +967,19 @@ namespace ngl
 		public string		m_content;		// 邮件内容
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_title) == false)
+			if(RCsv.ReadCsv(apair, ref m_title) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_author) == false)
+			if(RCsv.ReadCsv(apair, ref m_author) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_content) == false)
+			if(RCsv.ReadCsv(apair, ref m_content) == false)
 				return false;
 			return true;
 		}
@@ -994,17 +994,17 @@ namespace ngl
 		public Int32		m_count;		// 聊天发言最大数量
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_time) == false)
+			if(RCsv.ReadCsv(apair, ref m_time) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_count) == false)
+			if(RCsv.ReadCsv(apair, ref m_count) == false)
 				return false;
 			return true;
 		}
@@ -1019,19 +1019,19 @@ namespace ngl
 		public Int32		m_calendarid;		// 关联的脚本日历
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
 			Int32 lm_type = 0;
-			if(rcsv.readcsv(apair, ref lm_type) == false)
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (EActivity)lm_type;
-			if(rcsv.readcsv(apair, ref m_calendarid) == false)
+			if(RCsv.ReadCsv(apair, ref m_calendarid) == false)
 				return false;
 			return true;
 		}
@@ -1046,17 +1046,17 @@ namespace ngl
 		public Int32		m_mailid;		// 邮件id
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_dropid) == false)
+			if(RCsv.ReadCsv(apair, ref m_dropid) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_mailid) == false)
+			if(RCsv.ReadCsv(apair, ref m_mailid) == false)
 				return false;
 			return true;
 		}
@@ -1067,13 +1067,13 @@ namespace ngl
 		public ETask		m_receivetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
 		public List<Int32>		m_parmint = new List<Int32>();		
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
 			Int32 lm_receivetype = 0;
-			if(rcsv.readcsv(apair, ref lm_receivetype) == false)
+			if(RCsv.ReadCsv(apair, ref lm_receivetype) == false)
 				return false;
 			m_receivetype = (ETask)lm_receivetype;
-			if(rcsv.readcsv(apair, m_parmint) == false)
+			if(RCsv.ReadCsv(apair, m_parmint) == false)
 				return false;
 			return true;
 		}
@@ -1084,13 +1084,13 @@ namespace ngl
 		public ETask		m_completetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
 		public List<Int32>		m_parmint = new List<Int32>();		
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
 			Int32 lm_completetype = 0;
-			if(rcsv.readcsv(apair, ref lm_completetype) == false)
+			if(RCsv.ReadCsv(apair, ref lm_completetype) == false)
 				return false;
 			m_completetype = (ETask)lm_completetype;
-			if(rcsv.readcsv(apair, m_parmint) == false)
+			if(RCsv.ReadCsv(apair, m_parmint) == false)
 				return false;
 			return true;
 		}
@@ -1107,23 +1107,23 @@ namespace ngl
 		public List<task_complete>		m_taskcomplete = new List<task_complete>();		// 完成此任务的条件
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
 			Int32 lm_type = 0;
-			if(rcsv.readcsv(apair, ref lm_type) == false)
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (ETaskType)lm_type;
-			if(rcsv.readcsv(apair, ref m_dropid) == false)
+			if(RCsv.ReadCsv(apair, ref m_dropid) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_taskreceive) == false)
+			if(RCsv.ReadCsv(apair, m_taskreceive) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_taskcomplete) == false)
+			if(RCsv.ReadCsv(apair, m_taskcomplete) == false)
 				return false;
 			return true;
 		}
@@ -1133,9 +1133,9 @@ namespace ngl
 		/*********************************/
 		public List<eobstacles>		m_data = new List<eobstacles>();		
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, m_data) == false)
+			if(RCsv.ReadCsv(apair, m_data) == false)
 				return false;
 			return true;
 		}
@@ -1155,27 +1155,27 @@ namespace ngl
 		public List<obstacles_data>		m_obstacles = new List<obstacles_data>();		// 地图数据
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_w) == false)
+			if(RCsv.ReadCsv(apair, ref m_w) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_l) == false)
+			if(RCsv.ReadCsv(apair, ref m_l) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_nx) == false)
+			if(RCsv.ReadCsv(apair, ref m_nx) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_ny) == false)
+			if(RCsv.ReadCsv(apair, ref m_ny) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_obstaclenx) == false)
+			if(RCsv.ReadCsv(apair, ref m_obstaclenx) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_obstacleny) == false)
+			if(RCsv.ReadCsv(apair, ref m_obstacleny) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_obstacles) == false)
+			if(RCsv.ReadCsv(apair, m_obstacles) == false)
 				return false;
 			return true;
 		}
@@ -1192,21 +1192,21 @@ namespace ngl
 		public Int32		m_waitconfirmtime;		// 等待确认的时间
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_count) == false)
+			if(RCsv.ReadCsv(apair, ref m_count) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_time) == false)
+			if(RCsv.ReadCsv(apair, ref m_time) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_iswaitconfirm) == false)
+			if(RCsv.ReadCsv(apair, ref m_iswaitconfirm) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_waitconfirmtime) == false)
+			if(RCsv.ReadCsv(apair, ref m_waitconfirmtime) == false)
 				return false;
 			return true;
 		}
@@ -1217,11 +1217,11 @@ namespace ngl
 		public Int32		m_x;		
 		public Int32		m_y;		
 		/*********************************/
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_x) == false)
+			if(RCsv.ReadCsv(apair, ref m_x) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_y) == false)
+			if(RCsv.ReadCsv(apair, ref m_y) == false)
 				return false;
 			return true;
 		}
@@ -1240,25 +1240,25 @@ namespace ngl
 		public List<Vector2>		m_birthpoint = new List<Vector2>();		// 出生点Vector2(m_x:int32_t,m_y:int32_t)	
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_type) == false)
+			if(RCsv.ReadCsv(apair, ref m_type) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_mapid) == false)
+			if(RCsv.ReadCsv(apair, ref m_mapid) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_preparation_tm) == false)
+			if(RCsv.ReadCsv(apair, ref m_preparation_tm) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_play_tm) == false)
+			if(RCsv.ReadCsv(apair, ref m_play_tm) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_settlement_tm) == false)
+			if(RCsv.ReadCsv(apair, ref m_settlement_tm) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_birthpoint) == false)
+			if(RCsv.ReadCsv(apair, m_birthpoint) == false)
 				return false;
 			return true;
 		}
@@ -1279,29 +1279,29 @@ namespace ngl
 		public List<Int32>		m_activityid = new List<Int32>();		// 必须指定活动开启时才能充值这一档
 		/*********************************/
 		public Int32 Id(){return m_id;}
-		public bool Read(csvpair apair)
+		public bool Read(CsvPair apair)
 		{
-			if(rcsv.readcsv(apair, ref m_id) == false)
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_name) == false)
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_remarks) == false)
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_price) == false)
+			if(RCsv.ReadCsv(apair, ref m_price) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_gold) == false)
+			if(RCsv.ReadCsv(apair, ref m_gold) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_bonus) == false)
+			if(RCsv.ReadCsv(apair, ref m_bonus) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_firstbonus) == false)
+			if(RCsv.ReadCsv(apair, ref m_firstbonus) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_dropid) == false)
+			if(RCsv.ReadCsv(apair, ref m_dropid) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_vipexp) == false)
+			if(RCsv.ReadCsv(apair, ref m_vipexp) == false)
 				return false;
-			if(rcsv.readcsv(apair, ref m_count) == false)
+			if(RCsv.ReadCsv(apair, ref m_count) == false)
 				return false;
-			if(rcsv.readcsv(apair, m_activityid) == false)
+			if(RCsv.ReadCsv(apair, m_activityid) == false)
 				return false;
 			return true;
 		}

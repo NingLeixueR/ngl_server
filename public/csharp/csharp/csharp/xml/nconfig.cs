@@ -12,7 +12,7 @@ using static Pbdb.db_activity.Types;
 
 namespace ngl
 {
-    class nconfig
+    class NConfig
     {
         public static Int32 m_actor_delayed = 0;
         public static Int32 m_logserverid = 0;
@@ -30,13 +30,13 @@ namespace ngl
         public static Int32 m_nodeid = 0;
         public static string m_servername = "";
         public static Int32 m_kcp_ping = 0;
-        public static void set_server(string aservertypename, Int32 anodeid)
+        public static void SetServer(string aservertypename, Int32 anodeid)
         {
             m_servername = aservertypename;
             m_nodeid = anodeid;
         }
 
-        public static Int32 xmlgetInt32(XmlAttributeCollection axml, string akey)
+        public static Int32 XmlGetInt32(XmlAttributeCollection axml, string akey)
         {
             var ltemp = axml[akey];
             if (ltemp == null)
@@ -46,7 +46,7 @@ namespace ngl
             return -1;
         }
 
-        public static string xmlgetString(XmlAttributeCollection axml, string akey)
+        public static string XmlGetString(XmlAttributeCollection axml, string akey)
         {
             var ltemp = axml[akey];
             if (ltemp == null)
@@ -54,7 +54,7 @@ namespace ngl
             return ltemp.Value;
         }
 
-        public static void load(string apath)
+        public static void Load(string apath)
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(apath);
@@ -66,28 +66,28 @@ namespace ngl
             if (lAttributes == null)
                 return;
 
-            m_actor_delayed = xmlgetInt32(lAttributes, "actor_delayed");
-            m_logserverid = xmlgetInt32(lAttributes, "logserverid");
-            if (xmlgetString(lAttributes, "varint") == "true")
+            m_actor_delayed = XmlGetInt32(lAttributes, "actor_delayed");
+            m_logserverid = XmlGetInt32(lAttributes, "logserverid");
+            if (XmlGetString(lAttributes, "varint") == "true")
                 m_varint = true;
-            if (xmlgetString(lAttributes, "isxor") == "true")
+            if (XmlGetString(lAttributes, "isxor") == "true")
                 m_isxor = true;
-            m_waiting = xmlgetInt32(lAttributes, "waiting");
-            if (xmlgetString(lAttributes, "robot_test") == "true")
+            m_waiting = XmlGetInt32(lAttributes, "waiting");
+            if (XmlGetString(lAttributes, "robot_test") == "true")
                 m_robot_test = true;
-            m_xor_str = xmlgetString(lAttributes, "xor_str");
-            m_reloadcsv_version = xmlgetInt32(lAttributes, "reloadcsv_version");
-            string lstr = xmlgetString(lAttributes, "reloadcsv");
+            m_xor_str = XmlGetString(lAttributes, "xor_str");
+            m_reloadcsv_version = XmlGetInt32(lAttributes, "reloadcsv_version");
+            string lstr = XmlGetString(lAttributes, "reloadcsv");
             string[] result = Regex.Split(lstr, "\\*");
             foreach (var item in result)
                 m_reloadcsv.Add(item, 1);
-            m_gmurl = xmlgetString(lAttributes, "gmurl");
-            m_push_server_config = xmlgetString(lAttributes, "push_server_config");
+            m_gmurl = XmlGetString(lAttributes, "gmurl");
+            m_push_server_config = XmlGetString(lAttributes, "push_server_config");
             var lbytes = System.Text.Encoding.Default.GetBytes(m_xor_str);
             encryption.set_xor(m_isxor, lbytes, lbytes.Length);
 
-            m_head_version = xmlgetInt32(lAttributes, "head_version");
-            m_kcp_ping = xmlgetInt32(lAttributes, "kcp_ping");
+            m_head_version = XmlGetInt32(lAttributes, "head_version");
+            m_kcp_ping = XmlGetInt32(lAttributes, "kcp_ping");
         }
     }
 }

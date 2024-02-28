@@ -5,21 +5,21 @@ using System.Xml.Linq;
 
 namespace ngl
 {
-    class csvpair
+    class CsvPair
     {
         public string m_data;
         public int m_pos;
         public bool m_doublequotationmarks;     // 双引号
         public char m_fg;                       // 默认,
 
-        public csvpair()
+        public CsvPair()
         {
             m_data = "";
             m_pos = 0;
             m_doublequotationmarks = false;
             m_fg = ',';
         }
-        public void clear()
+        public void Clear()
         {
             m_data = "";
             m_pos = 0;
@@ -29,7 +29,7 @@ namespace ngl
 
     interface ICsvRead
     {
-        public bool Read(csvpair apair);
+        public bool Read(CsvPair apair);
     }
 
     interface ICsv
@@ -37,17 +37,17 @@ namespace ngl
         public Int32 Id();
     }
 
-    partial class rcsv
+    partial class RCsv
     {
         public string m_data = "";
         public int m_pos = 0;
-        public bool read(string aname, ref Int32 aversion)
+        public bool Read(string aname, ref Int32 aversion)
         {
-            readfile lrf = new readfile(aname);
-            lrf.open();
+            ReadFile lrf = new ReadFile(aname);
+            lrf.Open();
             //# 跳过前3行表头
-            lrf.jumpbegin(3, true);
-            string? lversion = lrf.readline();
+            lrf.JumpBegin(3, true);
+            string? lversion = lrf.ReadLine();
             if (lversion != null)
             {
                 string[] result1 = Regex.Split(lversion, ",");
@@ -61,11 +61,11 @@ namespace ngl
                 if (Int32.TryParse(result2[1], out aversion) == false)
                     return false;
             }
-            m_data = lrf.readcurrent();
-            lrf.close();
+            m_data = lrf.ReadCurrent();
+            lrf.Close();
             return true;
         }
-        public bool readline(ref string adata)
+        public bool ReadLine(ref string adata)
         {
             adata = "";
             bool lbool = false;
@@ -87,7 +87,7 @@ namespace ngl
             return adata != "";
         }
 
-        public static string read(csvpair apair)
+        public static string Read(CsvPair apair)
         {
             string ltemp = "";
             for (; apair.m_pos < apair.m_data.Length; ++apair.m_pos)
@@ -117,30 +117,30 @@ namespace ngl
             return ltemp;
         }
 
-        public rcsv(string afilename, ref Int32 aversion)
+        public RCsv(string afilename, ref Int32 aversion)
         {
-            read(afilename, ref aversion);
+            Read(afilename, ref aversion);
         }
 
-        public rcsv()
+        public RCsv()
         {
             m_pos = 0;
         }
 
-        public static bool isok(csvpair apair)
+        public static bool IsOk(CsvPair apair)
         {
             return apair.m_pos >= apair.m_data.Length;
         }
 
-        public static bool readcsv(csvpair apair, ref string adata)
+        public static bool ReadCsv(CsvPair apair, ref string adata)
         {
-            adata = read(apair);
+            adata = Read(apair);
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref byte adata)
+        public static bool ReadCsv(CsvPair apair, ref byte adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (byte.TryParse(ltemp, out adata) == false)
@@ -151,9 +151,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref sbyte adata)
+        public static bool ReadCsv(CsvPair apair, ref sbyte adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (sbyte.TryParse(ltemp, out adata) == false)
@@ -164,9 +164,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref Int16 adata)
+        public static bool ReadCsv(CsvPair apair, ref Int16 adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (Int16.TryParse(ltemp, out adata) == false)
@@ -176,9 +176,9 @@ namespace ngl
                 adata = 0;
             return true;
         }
-        public static bool readcsv(csvpair apair, ref UInt16 adata)
+        public static bool ReadCsv(CsvPair apair, ref UInt16 adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (UInt16.TryParse(ltemp, out adata) == false)
@@ -189,9 +189,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref Int32 adata)
+        public static bool ReadCsv(CsvPair apair, ref Int32 adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (Int32.TryParse(ltemp, out adata) == false)
@@ -202,9 +202,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref UInt32 adata)
+        public static bool ReadCsv(CsvPair apair, ref UInt32 adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (UInt32.TryParse(ltemp, out adata) == false)
@@ -215,9 +215,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref Int64 adata)
+        public static bool ReadCsv(CsvPair apair, ref Int64 adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (Int64.TryParse(ltemp, out adata) == false)
@@ -228,9 +228,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref UInt64 adata)
+        public static bool ReadCsv(CsvPair apair, ref UInt64 adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (UInt64.TryParse(ltemp, out adata) == false)
@@ -241,9 +241,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref float adata)
+        public static bool ReadCsv(CsvPair apair, ref float adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (float.TryParse(ltemp, out adata) == false)
@@ -254,9 +254,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref double adata)
+        public static bool ReadCsv(CsvPair apair, ref double adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 if (double.TryParse(ltemp, out adata) == false)
@@ -267,9 +267,9 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, ref bool adata)
+        public static bool ReadCsv(CsvPair apair, ref bool adata)
         {
-            string ltemp = read(apair);
+            string ltemp = Read(apair);
             if (ltemp != "")
             {
                 adata = ltemp != "0";
@@ -279,12 +279,12 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv<T>(csvpair apair, List<T> avec) where T : ICsvRead, new()
+        public static bool ReadCsv<T>(CsvPair apair, List<T> avec) where T : ICsvRead, new()
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 T ltemp = new T();
                 if (ltemp.Read(lpair))
@@ -293,114 +293,114 @@ namespace ngl
             return true;
         }
 
-        public static bool readcsv(csvpair apair, List<Int16> avec)
+        public static bool ReadCsv(CsvPair apair, List<Int16> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 Int16 ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<UInt16> avec)
+        public static bool ReadCsv(CsvPair apair, List<UInt16> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 UInt16 ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<Int32> avec)
+        public static bool ReadCsv(CsvPair apair, List<Int32> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 Int32 ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<UInt32> avec)
+        public static bool ReadCsv(CsvPair apair, List<UInt32> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 UInt32 ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<Int64> avec)
+        public static bool ReadCsv(CsvPair apair, List<Int64> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 Int64 ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<UInt64> avec)
+        public static bool ReadCsv(CsvPair apair, List<UInt64> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 UInt64 ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<byte> avec)
+        public static bool ReadCsv(CsvPair apair, List<byte> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 byte ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public static bool readcsv(csvpair apair, List<sbyte> avec)
+        public static bool ReadCsv(CsvPair apair, List<sbyte> avec)
         {
-            string ltempstr = read(apair);
-            csvpair lpair = new csvpair();
+            string ltempstr = Read(apair);
+            CsvPair lpair = new CsvPair();
             lpair.m_data = ltempstr;
-            for (; !isok(lpair);)
+            for (; !IsOk(lpair);)
             {
                 sbyte ltemp = 0;
-                if (readcsv(lpair, ref ltemp))
+                if (ReadCsv(lpair, ref ltemp))
                     avec.Add(ltemp);
             }
             return true;
         }
-        public bool readcsv<T>(Dictionary<int, T> adata) where T : ICsvRead, ICsv, new()
+        public bool ReadCsv<T>(Dictionary<int, T> adata) where T : ICsvRead, ICsv, new()
         {
-            csvpair lpair = new csvpair();
-            for (; readline(ref lpair.m_data);)
+            CsvPair lpair = new CsvPair();
+            for (; ReadLine(ref lpair.m_data);)
             {
                 if (lpair.m_data != "")
                 {
@@ -410,7 +410,7 @@ namespace ngl
                     if (ltemp.Read(lpair))
                     {
                         adata[ltemp.Id()] = ltemp;
-                        lpair.clear();
+                        lpair.Clear();
                     }
                 }
             }

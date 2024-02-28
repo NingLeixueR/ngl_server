@@ -22,18 +22,18 @@ namespace ngl
        
             NglKcp.getInstance().Create(luport);
             
-            manage_csv<tab_servers>.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\csv\\tab_servers.csv");
+            ManageCsv<tab_servers>.Load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\csv\\tab_servers.csv");
             xmlprotocol.Load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\Debug\\config\\net_protocol.xml");
-            nconfig.load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\config\\config.template.xml");
+            NConfig.Load("C:\\Users\\Administrator\\Documents\\GitHub\\ngl\\bin\\config\\config.template.xml");
 
             if (Int32.TryParse(args[1], out Int32 larea) == false)
                 return;
             if (Int32.TryParse(args[2], out Int32 ltcount) == false)
                 return;
-            var tab = ttab_servers.tab(args[0], larea, ltcount);
+            var tab = ttab_servers.Tab(args[0], larea, ltcount);
             if (tab == null)
                 return;
-            nconfig.set_server(args[0], tab.Id());
+            NConfig.SetServer(args[0], tab.Id());
 
             var ltcp = new Tcp();
 
@@ -53,7 +53,7 @@ namespace ngl
                     Console.WriteLine($"{++lvalue}=>{item.MAccount}##{item.MArea}##{item.MSession}##{item.MGatewayid}");
                     roleid = item.MRoleid;
                     // 连接GateWay服务器
-                    var tab = ttab_servers.tab(item.MGatewayid);
+                    var tab = ttab_servers.Tab(item.MGatewayid);
                     if (tab == null)
                         return;
                     ltcp.m_connectSuccessful = (Tcp.TcpConnect aconnect) =>
@@ -77,10 +77,10 @@ namespace ngl
             NglKcp.reconnect = () =>
             {
                 var pro = new PROBUFF_NET_KCPSESSION();
-                var tab = ttab_servers.tab();
+                var tab = ttab_servers.Tab();
                 if (tab == null)
                     return;
-                var tabgame = ttab_servers.tab("game", tab.m_area, 1);
+                var tabgame = ttab_servers.Tab("game", tab.m_area, 1);
                 if (tabgame == null)
                     return;
                 pro.MServerid = tabgame.m_id;
@@ -99,10 +99,10 @@ namespace ngl
             string lMKcpsession = "";
             var lconnect = () =>
             {
-                var tab = ttab_servers.tab();
+                var tab = ttab_servers.Tab();
                 if (tab == null)
                     return;
-                var tabgame = ttab_servers.tab("game", tab.m_area, 1);
+                var tabgame = ttab_servers.Tab("game", tab.m_area, 1);
                 if (tabgame == null)
                     return;
                 if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))

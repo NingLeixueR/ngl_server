@@ -169,7 +169,7 @@ public:
 					}
 				}
 				m_stream << "	}\n";
-				m_stream << "	partial class rcsv" << std::endl;
+				m_stream << "	partial class RCsv" << std::endl;
 				m_stream << "	{" << std::endl;
 				//m_stream << "		public static bool readcsv(csvpair apair, ref "<< item.name<<" adata)" << std::endl;
 				//m_stream << "		{" << std::endl;
@@ -179,16 +179,16 @@ public:
 				//m_stream << "			adata = ("<< item.name <<")ltemp;" << std::endl;
 				//m_stream << "			return true;" << std::endl;
 				//m_stream << "		}" << std::endl;
-				m_stream << "		public static bool readcsv(csvpair apair, List<" << item.name << "> avec)" << std::endl;
+				m_stream << "		public static bool ReadCsv(CsvPair apair, List<" << item.name << "> avec)" << std::endl;
 				m_stream << "		{" << std::endl;
-				m_stream << "			string ltempstr = read(apair);" << std::endl;
-				m_stream << "			csvpair lpair = new csvpair();" << std::endl;
+				m_stream << "			string ltempstr = Read(apair);" << std::endl;
+				m_stream << "			CsvPair lpair = new CsvPair();" << std::endl;
 				m_stream << "			lpair.m_data = ltempstr;" << std::endl;
 				m_stream << "			lpair.m_fg = '*';" << std::endl;
-				m_stream << "			for (; !isok(lpair);)" << std::endl;
+				m_stream << "			for (; !IsOk(lpair);)" << std::endl;
 				m_stream << "			{" << std::endl;
 				m_stream << "				Int32 ltemp = 0;" << std::endl;
-				m_stream << "				if (readcsv(lpair, ref ltemp))" << std::endl;
+				m_stream << "				if (ReadCsv(lpair, ref ltemp))" << std::endl;
 				m_stream << "					avec.Add(("<< item.name <<")ltemp);" << std::endl;
 				m_stream << "			}" << std::endl;
 				m_stream << "			return true;" << std::endl;
@@ -231,7 +231,7 @@ public:
 				m_stream << "		/*********************************/" << std::endl;
 				if(lbool)
 					m_stream << "		public Int32 Id(){return m_id;}"<<std::endl;
-				m_stream << "		public bool Read(csvpair apair)" << std::endl;
+				m_stream << "		public bool Read(CsvPair apair)" << std::endl;
 				m_stream << "		{" << std::endl;
 				for (Data itemdata : item.dataVec)
 				{
@@ -239,18 +239,18 @@ public:
 					if (lsetenum.find(itemdata.m_type) != lsetenum.end())
 					{
 						m_stream << "			Int32 l" << itemdata.m_values_name << " = 0;" << std::endl;
-						m_stream << "			if(rcsv.readcsv(apair, ref l" << itemdata.m_values_name << ") == false)" << std::endl;
+						m_stream << "			if(RCsv.ReadCsv(apair, ref l" << itemdata.m_values_name << ") == false)" << std::endl;
 						m_stream << "				return false;" << std::endl;
 						m_stream << "			" << itemdata.m_values_name << " = ("<< itemdata.m_type <<")l"<< itemdata.m_values_name <<";" << std::endl;
 					}
 					else if(lsettype.find(itemdata.m_type) != lsettype.end())
 					{
-						m_stream << "			if(rcsv.readcsv(apair, ref " << itemdata.m_values_name << ") == false)" << std::endl;
+						m_stream << "			if(RCsv.ReadCsv(apair, ref " << itemdata.m_values_name << ") == false)" << std::endl;
 						m_stream << "				return false;" << std::endl;
 					}
 					else
 					{
-						m_stream << "			if(rcsv.readcsv(apair, " << itemdata.m_values_name << ") == false)" << std::endl;
+						m_stream << "			if(RCsv.ReadCsv(apair, " << itemdata.m_values_name << ") == false)" << std::endl;
 						m_stream << "				return false;" << std::endl;
 					}
 				}

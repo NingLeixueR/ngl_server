@@ -5,25 +5,25 @@ using System.Xml.Linq;
 
 namespace ngl
 {
-    class readfile
+    class ReadFile
     {
         private string m_filename;
         private System.IO.StreamReader? m_file;
 
-        public readfile(string filename)
+        public ReadFile(string filename)
         {
             m_filename = filename;
             m_file = null;
         }
 
-        public void open()
+        public void Open()
         {
             if (m_file != null)
                 return;
             m_file = new System.IO.StreamReader(m_filename);
         }
 
-        public void close()
+        public void Close()
         {
             if (m_file == null)
                 return;
@@ -31,7 +31,7 @@ namespace ngl
         }
 
         //跳过前三行
-        public void jumpbegin(int anum, bool aiscsv)
+        public void JumpBegin(int anum, bool aiscsv)
         {
             if (m_file == null)
                 return;
@@ -61,14 +61,14 @@ namespace ngl
             }
         }
 
-        public string? readline()
+        public string? ReadLine()
         {
             if (m_file == null)
                 return null;
             return m_file.ReadLine();
         }
 
-        public string readcurrent()
+        public string? ReadCurrent()
         {
             if (m_file == null)
                 return null;

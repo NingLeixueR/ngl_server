@@ -40,8 +40,8 @@ namespace ngl
 
         private bool m_noDelay;
 
-        private pack? m_pack = null;
-        private List<pack> m_packlist = new List<pack>();
+        private Pack? m_pack = null;
+        private List<Pack> m_packlist = new List<Pack>();
         private ProtocolPack? m_propack = null;
         public Tcp()
         {
@@ -207,19 +207,19 @@ namespace ngl
             lbuff.m_pos = 0;
 
             if (m_pack == null)
-                m_pack = new pack();
+                m_pack = new Pack();
 
             
             while (lbuff.m_pos < lbuff.m_len)
             {
-                EPH_HEAD_VAL lval = m_pack.push_buff(lbuff);
+                EPH_HEAD_VAL lval = m_pack.PushBuff(lbuff);
                 if (lval == EPH_HEAD_VAL.EPH_HEAD_SUCCESS)
                 {
                     lock (m_packlist)
                     {
                         m_packlist.Add(m_pack);
                     }
-                    m_pack = new pack();
+                    m_pack = new Pack();
                     continue;
                 }
                 else if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL)
@@ -235,7 +235,7 @@ namespace ngl
         {
             if (m_propack == null)
                 return;
-            List<pack> list = new List<pack>();
+            List<Pack> list = new List<Pack>();
             lock (m_packlist)
             {
                 if (m_packlist.Count <= 0)
@@ -249,7 +249,7 @@ namespace ngl
 
         public void ReceivePack()
         {
-            pack? lpack = null;
+            Pack? lpack = null;
             lock (m_packlist)
             {
                 if (m_packlist.Count > 0)
@@ -284,22 +284,22 @@ namespace ngl
             if (ltcp_connect == null || ltcp_connect.m_socket == null)
                 return;
             byte[] lbuff = apro.ToByteArray();
-            pack_head lhead = new pack_head();
-            lhead.bytes = lbuff.Length;
-            lhead.time = utc();
-            lhead.version = nconfig.m_head_version;
-            lhead.protocolnum = xmlprotocol.Protocol(apro.Descriptor.Name);
-            lhead.protocoltype = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
-            lhead.actorid = -1;
-            lhead.request_actorid = -1;
+            PackHead lhead = new PackHead();
+            lhead.Bytes = lbuff.Length;
+            lhead.Time = utc();
+            lhead.Version = NConfig.m_head_version;
+            lhead.ProtocolNum = xmlprotocol.Protocol(apro.Descriptor.Name);
+            lhead.ProtocolType = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
+            lhead.ActorId = -1;
+            lhead.RequestActorId = -1;
 
             tcp_buff lbuffall = new tcp_buff();
-            lbuffall.m_buff = new byte[pack_head.packheadbyte + lbuff.Length];
-            lhead.buff.CopyTo(lbuffall.m_buff, 0);
+            lbuffall.m_buff = new byte[PackHead.PackHeadByte + lbuff.Length];
+            lhead.Buff.CopyTo(lbuffall.m_buff, 0);
             encryption.bytexor(lbuff, lbuff.Length, 0);
-            lbuff.CopyTo(lbuffall.m_buff, pack_head.packheadbyte);
+            lbuff.CopyTo(lbuffall.m_buff, PackHead.PackHeadByte);
 
-            ltcp_connect.m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, (IAsyncResult result) => { OnSend(result, ltcp_connect); }, lbuffall);
+            ltcp_connect.m_socket.BeginSend(lbuffall.m_buff, 0, PackHead.PackHeadByte + lbuff.Length, SocketFlags.None, (IAsyncResult result) => { OnSend(result, ltcp_connect); }, lbuffall);
         }
 
         private void OnSend(IAsyncResult result, TcpConnect atcp_connect)
@@ -344,10 +344,10 @@ namespace ngl
             {
                 if (node.Name == "config" && node.Attributes != null)
                 {
-                    string nameValue = nconfig.xmlgetString(node.Attributes, "name"); 
+                    string nameValue = NConfig.XmlGetString(node.Attributes, "name"); 
                     string[] result = Regex.Split(nameValue, "::");
 
-                    Int32 lnumber = nconfig.xmlgetInt32(node.Attributes, "number");
+                    Int32 lnumber = NConfig.XmlGetInt32(node.Attributes, "number");
                     Console.WriteLine($"type:number => {result[1]}:{lnumber}");
                     if(m_protocol.ContainsKey(result[1]) == false)
                         m_protocol.Add(result[1], lnumber);
@@ -367,7 +367,7 @@ namespace ngl
 
     public class ProtocolPack
     {
-        private Dictionary<Int32, Action<pack>> m_protocol = new Dictionary<Int32, Action<pack>>();
+        private Dictionary<Int32, Action<Pack>> m_protocol = new Dictionary<Int32, Action<Pack>>();
 
         public void Registry<T>(Action<T> afun) where T : IMessage, new()
         {
@@ -377,7 +377,7 @@ namespace ngl
             {
                 if (pack.m_buff == null)
                     return;
-                encryption.bytexor(pack.m_buff, pack.m_head.bytes, 0);
+                encryption.bytexor(pack.m_buff, pack.m_head.Bytes, 0);
 
                 T pro = new T();
                 pro = (T)pro.Descriptor.Parser.ParseFrom(pack.m_buff);
@@ -385,10 +385,10 @@ namespace ngl
             });
         }
 
-        public void LogicFun(pack apack)
+        public void LogicFun(Pack apack)
         {
-            Action<pack>? lfun = null;
-            if (m_protocol.TryGetValue(apack.m_head.protocolnum, out lfun) == false)
+            Action<Pack>? lfun = null;
+            if (m_protocol.TryGetValue(apack.m_head.ProtocolNum, out lfun) == false)
                 return;
             lfun(apack);
         }

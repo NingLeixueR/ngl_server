@@ -95,8 +95,8 @@ namespace ngl
     {
         SimpleKcpClient? kcpClient = null;
 
-        private pack? m_pack = null;
-        private List<pack> m_packlist = new List<pack>();
+        private Pack? m_pack = null;
+        private List<Pack> m_packlist = new List<Pack>();
         private ProtocolPack? m_propack = null;
         private int m_port = 0;
         IPEndPoint? m_endpoint = null;
@@ -133,7 +133,7 @@ namespace ngl
                 {
                     while (true)
                     {
-                        await Task.Delay(nconfig.m_kcp_ping);
+                        await Task.Delay(NConfig.m_kcp_ping);
                         cmd.sendcmd(udp_cmd.ecmd.ecmd_ping, "");
                     }
                 }, m_cancel.Token);
@@ -178,8 +178,8 @@ namespace ngl
                     ret.m_pos = 0;
 
                     if (m_pack == null)
-                        m_pack = new pack();
-                    EPH_HEAD_VAL lval = m_pack.push_buff(ret);
+                        m_pack = new Pack();
+                    EPH_HEAD_VAL lval = m_pack.PushBuff(ret);
                     if (lval == EPH_HEAD_VAL.EPH_HEAD_SUCCESS)
                     {
                         lock (m_packlist)
@@ -219,22 +219,22 @@ namespace ngl
             //if (m_socket == null)
             //    return;
             byte[] lbuff = apro.ToByteArray();
-            pack_head lhead = new pack_head();
-            lhead.bytes = lbuff.Length;
-            lhead.time = utc();
-            lhead.version = nconfig.m_head_version;
-            lhead.protocolnum = xmlprotocol.Protocol(apro.Descriptor.Name);
-            lhead.protocoltype = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
-            lhead.actorid = -1;
-            lhead.request_actorid = -1;
+            PackHead lhead = new PackHead();
+            lhead.Bytes = lbuff.Length;
+            lhead.Time = utc();
+            lhead.Version = NConfig.m_head_version;
+            lhead.ProtocolNum = xmlprotocol.Protocol(apro.Descriptor.Name);
+            lhead.ProtocolType = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
+            lhead.ActorId = -1;
+            lhead.RequestActorId = -1;
 
             tcp_buff lbuffall = new tcp_buff();
-            lbuffall.m_buff = new byte[pack_head.packheadbyte + lbuff.Length];
-            lhead.buff.CopyTo(lbuffall.m_buff, 0);
+            lbuffall.m_buff = new byte[PackHead.PackHeadByte + lbuff.Length];
+            lhead.Buff.CopyTo(lbuffall.m_buff, 0);
             encryption.bytexor(lbuff, lbuff.Length, 0);
-            lbuff.CopyTo(lbuffall.m_buff, pack_head.packheadbyte);
+            lbuff.CopyTo(lbuffall.m_buff, PackHead.PackHeadByte);
 
-            kcpClient?.SendAsync(lbuffall.m_buff, pack_head.packheadbyte + lbuff.Length);
+            kcpClient?.SendAsync(lbuffall.m_buff, PackHead.PackHeadByte + lbuff.Length);
             ////m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
         }
         public void SetRegistry(ProtocolPack apack)
@@ -245,7 +245,7 @@ namespace ngl
         {
             if (m_propack == null)
                 return;
-            List<pack> list = new List<pack>();
+            List<Pack> list = new List<Pack>();
             lock (m_packlist)
             {
                 if (m_packlist.Count <= 0)
@@ -259,7 +259,7 @@ namespace ngl
 
         public void ReceivePack()
         {
-            pack? lpack = null;
+            Pack? lpack = null;
             lock (m_packlist)
             {
                 if (m_packlist.Count > 0)
