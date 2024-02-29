@@ -82,7 +82,7 @@ namespace ngl
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
 				return false;
-			return m_kcp.sendu(aendpoint, lpack);
+			return m_kcp.sendu(aendpoint, lpack->m_buff, lpack->m_len);
 		}
 #pragma endregion 
 
