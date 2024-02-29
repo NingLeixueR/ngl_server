@@ -7,24 +7,24 @@
 
 namespace ngl
 {
-	class udp_kcp
+	class ukcp
 	{
 		asio_kcp m_kcp;
 		bpool m_pool;
 
-		udp_kcp(i16_port aprot) :
+		ukcp(i16_port aprot) :
 			m_kcp(aprot)
 		{}
 	public:
 		static int32_t m_conv;
 
-		static udp_kcp& getInstance(i16_port aprot = -1)
+		static ukcp& getInstance(i16_port aprot = -1)
 		{
 			static bool lfirst = true;
 			if (lfirst && aprot == -1)
 				throw "udp_kcp::getInstance(-1) first";
 			lfirst = false;
-			static udp_kcp ltemp(aprot);
+			static ukcp ltemp(aprot);
 			return ltemp;
 		}
 

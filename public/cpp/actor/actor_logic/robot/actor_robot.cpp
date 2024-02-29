@@ -48,7 +48,7 @@ namespace ngl
 		pro.set_m_uip("127.0.0.1");
 		tab = ngl::ttab_servers::tab();
 		pro.set_m_uport(tab->m_uport);
-		pro.set_m_conv(udp_kcp::m_conv);
+		pro.set_m_conv(ukcp::m_conv);
 		nserver->send(m_session, pro, actor_guid::moreactor(), id_guid());
 		return true;
 	}

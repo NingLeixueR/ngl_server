@@ -16,7 +16,7 @@
 #include "nlog.h"
 #include "impl.h"
 #include "ttab_servers.h"
-#include "udp_kcp.h"
+#include "ukcp.h"
 
 namespace ngl
 {
@@ -124,7 +124,7 @@ namespace ngl
 		template <typename T>
 		static bool sendbykcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
+			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
 		}
 
@@ -143,7 +143,7 @@ namespace ngl
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
-			udp_kcp::getInstance().send(m_kcpsession, adata, aactorid, id_guid());
+			ukcp::getInstance().send(m_kcpsession, adata, aactorid, id_guid());
 			return true;
 		}
 
@@ -153,7 +153,7 @@ namespace ngl
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
-			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
+			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
 		}
 
@@ -168,7 +168,7 @@ namespace ngl
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
-			udp_kcp::getInstance().send(asession, adata, aactorid, arequestactorid);
+			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
 		}
 
@@ -186,7 +186,7 @@ namespace ngl
 			std::string lkcpsessionmd5 = kcpsessionmd5();
 			if (lkcpsessionmd5 == "")
 				return false;
-			udp_kcp::getInstance().connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
+			ukcp::getInstance().connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 				{
 					m_kcpsession = asession;
 					std::cout << "m_kcpsession = " << m_kcpsession << std::endl;

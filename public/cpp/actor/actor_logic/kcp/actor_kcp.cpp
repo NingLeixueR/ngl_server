@@ -1,5 +1,5 @@
 #include "actor_kcp.h"
-#include "udp_kcp.h"
+#include "ukcp.h"
 
 
 namespace ngl
@@ -32,7 +32,7 @@ namespace ngl
 	{
 		auto lpram = adata.m_data;
 		auto lpack = adata.m_pack;
-		udp_kcp::getInstance().reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport);
+		ukcp::getInstance().reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport);
 
 		nets::net()->send(lpack->m_id, *lpram, -1, -1);
 		return true;

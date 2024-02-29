@@ -267,9 +267,9 @@ namespace ngl
 		template <typename T>
 		void sendkcp(_robot* arobot, T& adata)
 		{
-			udp_kcp::getInstance().send(arobot->m_robot->m_kcpsession, adata, actor_guid::moreactor(), arobot->m_actor_roleid);
-		}
-		
+			arobot->m_robot->sendkcp(adata, actor_guid::moreactor());
+			//udp_kcp::getInstance().send(arobot->m_robot->m_kcpsession, adata, actor_guid::moreactor(), arobot->m_actor_roleid);
+		}		
 
 		bool getdata(_robot* arobot)
 		{

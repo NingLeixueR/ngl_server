@@ -14,56 +14,7 @@ Dumper lDumper;
 #include "init_protobuf.h"
 
 #include "asio_kcp.h"
-#include "udp_kcp.h"
-
-////void test_s(int argc, char** argv)
-////{
-////	if (!init_server(nconfig::m_nodeid))
-////		return;
-////	std::string largv = argv[4];
-////	if (largv == "client")
-////	{
-////		ngl::udp_kcp::getInstance(10000 + boost::lexical_cast<int>(argv[5]));
-////		ngl::udp_kcp::getInstance().connect("127.0.0.1", 12345, [](ngl::i32_session asession)
-////			{
-////				pbnet::PROBUFF_NET_GET_TIME pro;
-////				//pro.set_m_utc(ngl::localtime::gettime());
-////				ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string("127.0.0.1"), 12345);
-////				ngl::udp_kcp::getInstance().send(lendpoint, pro, -1, -1);
-////			});
-////		
-////
-////		//ngl::asio_kcp lkcp(10000+boost::lexical_cast<int>(argv[2]));
-////		//
-////		//ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string("127.0.0.1"), 12345);
-////		//std::string lstr;
-////		//for (int i = 0; i < 5000; ++i)
-////		//{
-////		//	lstr += 'a';
-////		//}
-////
-////		////lkcp.send(lendpoint, lstr.c_str(), lstr.size() + 1);
-////		//pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-////		//pro.set_m_utc(ngl::localtime::gettime());
-////		//lkcp.send(lendpoint, "a", 2);
-////
-////		//while (1)
-////		//{
-////		//	boost::this_thread::sleep(boost::posix_time::seconds(1));
-////		//}
-////	}
-////	else if (largv == "server")
-////	{
-////		//ngl::asio_kcp lkcp(12345);
-////		ngl::udp_kcp::getInstance(12345);
-////
-////		//while (1)
-////		//{
-////		//	boost::this_thread::sleep(boost::posix_time::seconds(1));
-////		//}
-////	}
-////}
-
+#include "ukcp.h"
 
 int main(int argc, char** argv)
 {	
@@ -71,7 +22,6 @@ int main(int argc, char** argv)
 	nconfig::init();
 	nconfig::load("config");
 
-	
 	if (argc <= 1)
 	{
 		std::cout << "²ÎÊý´íÎó" << std::endl;

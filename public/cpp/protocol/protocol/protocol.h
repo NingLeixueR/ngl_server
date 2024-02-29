@@ -136,7 +136,7 @@ namespace ngl
 						lp->make_data();
 						if (structbytes<T>::tostruct(apack, *lp->get_data()))
 						{
-							i64_actorid lactorid = udp_kcp::getInstance().find_actorid(apack->m_id);
+							i64_actorid lactorid = ukcp::getInstance().find_actorid(apack->m_id);
 							//std::vector<i32_actordataid>	m_uid;
 							//std::vector<i16_area>			m_area;
 							lp->m_uid.push_back(actor_guid::actordataid(lactorid));

@@ -221,7 +221,7 @@ namespace ngl
 			return true;
 		
 		std::string lkcpsession;
-		if (udp_kcp::create_session(actor_guid::make(actor_guid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
+		if (ukcp::create_session(actor_guid::make(actor_guid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
 			return true;
 		
 
