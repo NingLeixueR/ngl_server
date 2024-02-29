@@ -12,9 +12,7 @@ namespace ngl
 		asio_kcp m_kcp;
 		bpool m_pool;
 
-		ukcp(i16_port aprot) :
-			m_kcp(aprot)
-		{}
+		ukcp(i16_port aprot);
 	public:
 		static int32_t m_conv;
 
@@ -28,6 +26,7 @@ namespace ngl
 			return ltemp;
 		}
 
+#pragma region kcp_send
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -74,61 +73,42 @@ namespace ngl
 		{
 			return send(avec.begin(), avec.end(), adata, aactorid, arequestactorid);
 		}
+#pragma endregion 
 
+#pragma region udp_send
+		template <typename T>
+		bool sendu(const asio_udp_endpoint& aendpoint, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		{
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
+			if (lpack == nullptr)
+				return false;
+			return m_kcp.sendu(aendpoint, lpack);
+		}
+#pragma endregion 
+
+		// ## 发起连接
 		void connect(const std::string& akcpsess
 			, i64_actorid aactorid
 			, const std::string& aip
 			, i16_port aport
 			, const std::function<void(i32_session)>& afun
-		)
-		{
-			m_kcp.connect(m_conv++, akcpsess, aactorid, aip, aport, afun);
-		}
-
+		);
 		void connect(const std::string& akcpsess
 			, i64_actorid aactorid
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
-		)
-		{
-			m_kcp.connect(m_conv++, akcpsess, aactorid, aendpoint, afun);
-		}
+		);
 
-		i64_actorid find_actorid(i32_session asession)
-		{
-			return m_kcp.find_actorid(asession);
-		}
+		// ## 查找session对应的actorid
+		i64_actorid find_actorid(i32_session asession);
 
-		// 生成kcp-session以验证连接
-		static bool create_session(i64_actorid aactorid, std::string& asession)
-		{
-			xmlinfo* xml = nconfig::get_publicconfig();
-			std::string lkcpsession;
-			if (xml->find("kcp_session", lkcpsession) == false)
-				return false;
+		// ## 生成kcp-session以验证连接
+		static bool create_session(i64_actorid aactorid, std::string& asession);
 
-			lkcpsession += '&';
-			lkcpsession += boost::lexical_cast<std::string>(actor_guid::area(aactorid));
-			
-			lkcpsession += '&';
-			lkcpsession += boost::lexical_cast<std::string>(actor_guid::actordataid(aactorid));
+		// ## 检查kcp-session以验证连接
+		static bool check_session(i64_actorid aactorid, const std::string& asession);
 
-			md5 lmd5(lkcpsession);
-			asession = lmd5.values();
-			return true;
-		}
-
-		static bool check_session(i64_actorid aactorid, const std::string& asession)
-		{
-			std::string lsession;
-			if (create_session(aactorid, lsession) == false)
-				return false;
-			return asession == lsession;
-		}
-
-		void reset_add(int32_t aconv, const std::string& aip, i16_port aport)
-		{
-			m_kcp.reset_add(aconv, aip, aport);
-		}
+		// ## 重置连接
+		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
 	};
 }

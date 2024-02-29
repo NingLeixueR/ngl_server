@@ -351,8 +351,6 @@ namespace ngl
 			int intervalms = 0;
 			if (linfo->find("kcp_ping_interval", intervalms) == false)
 				return false;
-
-			
 			if (aconnect)
 			{
 				wheel_parm lparm
