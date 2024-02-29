@@ -102,7 +102,7 @@ namespace ngl
         IPEndPoint? m_endpoint = null;
         private CancellationTokenSource? m_cancel = null;
 
-        private udp_cmd cmd;
+        private udp_cmd? cmd = null;
 
         public static uint conv = 1;
         // 重新建立连接
@@ -163,6 +163,8 @@ namespace ngl
 
             Task.Factory.StartNew(async () =>
             {
+                if (cmd == null)
+                    return;
                 while (true)
                 {
                     var res = await kcpClient.ReceiveAsync();
@@ -216,8 +218,6 @@ namespace ngl
 
         public void Send<T>(T apro) where T : IMessage, new()
         {
-            //if (m_socket == null)
-            //    return;
             byte[] lbuff = apro.ToByteArray();
             PackHead lhead = new PackHead();
             lhead.Bytes = lbuff.Length;
@@ -235,7 +235,6 @@ namespace ngl
             lbuff.CopyTo(lbuffall.m_buff, PackHead.PackHeadByte);
 
             kcpClient?.SendAsync(lbuffall.m_buff, PackHead.PackHeadByte + lbuff.Length);
-            ////m_socket.BeginSend(lbuffall.m_buff, 0, pack_head.packheadbyte + lbuff.Length, SocketFlags.None, on_send, lbuffall);
         }
         public void SetRegistry(ProtocolPack apack)
         {

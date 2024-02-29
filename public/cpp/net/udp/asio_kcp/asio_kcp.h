@@ -33,13 +33,18 @@ namespace ngl
 		ngl::impl<impl_asio_kcp> m_impl_asio_kcp;
 	public:
 		asio_kcp(i16_port port);
+
 		~asio_kcp();
+
 		// ## 发送原始udp包
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
+
 		// ## 通过kcp发送pack
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
+
 		// ## 通过kcp发送pack
 		bool sendpack(const asio_udp_endpoint& aendpoint, std::shared_ptr<pack>& apack);
+
 		// ## 发起连接
 		void connect(int32_t aconv
 			, const std::string& akcpsess
@@ -48,6 +53,7 @@ namespace ngl
 			, i16_port aport
 			, const std::function<void(i32_session)>& afun
 		);
+
 		// ## 发起连接
 		void connect(int32_t aconv
 			, const std::string& akcpsess
@@ -55,10 +61,13 @@ namespace ngl
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
 		);
+
 		// ## 查找连接关联的actor
 		i64_actorid find_actorid(i32_session asession);
+
 		// ## 关闭连接
 		void close(i32_session asession);
+
 		// ## 重置连接
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
 

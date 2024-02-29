@@ -58,8 +58,10 @@ namespace ngl
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(apath);
-            XmlNode root = xmlDoc.DocumentElement;
-            XmlNode configNode = root.SelectSingleNode("//config");
+            XmlNode? root = xmlDoc.DocumentElement;
+            if (root == null)
+                return;
+            XmlNode? configNode = root.SelectSingleNode("//config");
             if (configNode == null)
                 return;
             var lAttributes = configNode.Attributes;
