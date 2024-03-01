@@ -128,6 +128,7 @@ namespace ngl
 			return true;
 		}
 
+#pragma region network_kcp
 		i32_session m_kcpsession = -1;
 
 		void set_kcpssion(i32_session asession)
@@ -139,7 +140,11 @@ namespace ngl
 		bool sendkcp(T& adata, i64_actorid aactorid)
 		{
 			if (m_kcpsession == -1)
+			{
+				LogLocalError("m_kcpsession = -1, is_single() == [%]", is_single());
 				return false;
+			}
+				
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
 				return false;
@@ -193,6 +198,8 @@ namespace ngl
 				});
 			return true;
 		}
+
+#pragma endregion //network_kcp
 
 		// 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>

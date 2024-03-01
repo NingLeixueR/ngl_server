@@ -337,7 +337,7 @@ namespace ngl
 	private:
 		//## [udp_cmd::ecmd_connect]		调用aconnect为true
 		//## [udp_cmd::ecmd_connect_ret]	调用aconnect为true
-		inline bool function_econnect(ptr_se& apstruct, bool aconnect)
+		inline bool function_econnect(ptr_se& apstruct, i64_actorid aactorid, bool aconnect)
 		{
 			i32_sessionid session = apstruct->m_session;
 			xmlinfo* linfo = nconfig::get_publicconfig();
@@ -351,6 +351,7 @@ namespace ngl
 				return false;
 			if (aconnect)
 			{
+				apstruct->m_actorid = aactorid;
 				wheel_parm lparm
 				{
 					.m_ms = ms * 1000,
@@ -421,7 +422,7 @@ namespace ngl
 						<< session_endpoint::port(apstruct.get())
 						<< std::endl;
 
-					if (function_econnect(apstruct, true))
+					if (function_econnect(apstruct, lactorpair.second, true))
 						udp_cmd::sendcmd(m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
 				});
 		}
@@ -436,7 +437,7 @@ namespace ngl
 					apstruct->m_isconnect = true;
 					apstruct->m_pingtm = localtime::gettime();
 					// 定时发送cmd:ping
-					function_econnect(apstruct, false);
+					function_econnect(apstruct, -1, false);
 					m_connectfun(apstruct->m_session);
 				});
 		}
@@ -493,6 +494,7 @@ namespace ngl
 			std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
 			lpack->m_protocol = ENET_KCP;
 			lpack->m_id = apstruct->m_session;
+			lpack->m_head.set_requestactor(apstruct->m_actorid);
 			//lpack->m_segpack = m_segpack;
 			EPH_HEAD_VAL lval = lpack->m_head.push(abuff, abufflen);
 			if (EPH_HEAD_SUCCESS != lval)

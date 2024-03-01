@@ -16,6 +16,13 @@ namespace ngl
 		//pro->set_m_utc(localtime::gettime());
 		//send2client(pro);
 		std::cout << "######Get Server Time##" << localtime::gettime() << std::endl;
+		
+		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
+		std::cout
+			<< " type			= " << actor_guid::type(lrequest)
+			<< " actordataid	= " << actor_guid::actordataid(lrequest)
+			<< " area			= " << actor_guid::area(lrequest)
+			<< std::endl;
 		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name());
 
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;

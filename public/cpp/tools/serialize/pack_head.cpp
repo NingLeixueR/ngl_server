@@ -42,6 +42,11 @@ namespace ngl
 		lserialize.push(((int32_t*)(&aactor))[0], ((int32_t*)(&aactor))[1]);
 	}
 
+	void pack_head::set_requestactor(i64_actorid arequestactor)
+	{
+		*(i64_actorid*)(&m_data[EPH::EPH_REQUEST_ACTOR_TYPEAREA]) = arequestactor;
+	}
+
 	void pack_head::set_time()
 	{
 		head_set_time(m_data);
