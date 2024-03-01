@@ -34,27 +34,27 @@ Actor based c++distributed game server framework
   ```
   * ngl/tools/public/idl
   ```
-  csv表生成       		
+    csv表生成       		
   ```
   * ngl/tools/public/proto
   ```
-  proto协议生成
+    proto协议生成
   ```
   * ngl/tools/public/rebuild.bat
   ```  
-   与cmake unity build类似的加速编译
-   ```
+    与cmake unity build类似的加速编译
+  ```
   * ngl/public/cpp
   ```            		  
-  cpp源码
+    cpp源码
   ```
   * ngl/public/csharp   
   ```            
-  cs源码
+    cs源码
   ```
   * ngl/server     
   ```     		        
-  项目源文件
+    项目源文件
   ```
 
 # Linux CentOs编译
@@ -71,3 +71,5 @@ Actor based c++distributed game server framework
      gcc (GCC) 13.1.0
      ```
   * 在win编译运行(vs2022)
+
+# QQ群56257994
