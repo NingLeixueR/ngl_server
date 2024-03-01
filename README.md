@@ -72,4 +72,5 @@ Actor based c++distributed game server framework
      ```
   * 在win编译运行(vs2022)
 
-# QQ群56257994
+# QQ群
+  * 56257994
