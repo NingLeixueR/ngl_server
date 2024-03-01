@@ -865,7 +865,8 @@ void traverseProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, co
 int main(int argc, char** argv) 
 {
     google::protobuf::compiler::DiskSourceTree sourceTree;
-    sourceTree.MapPath("", "../../tools/public/proto/");
+    sourceTree.MapPath("", argv[1]);
+    //sourceTree.MapPath("", "../../tools/public/proto/");
   
    // g_stream << "#pragma once" << std::endl;
    // g_stream << "#include \"actor_lua.h\"" << std::endl;
