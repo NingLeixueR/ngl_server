@@ -153,7 +153,12 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool static_sendkcp(
+			i32_sessionid asession
+			, T& adata
+			, i64_actorid aactorid
+			, i64_actorid arequestactorid
+		)
 		{
 			tab_servers* tab = ttab_servers::tab();
 			if (tab->m_isopenkcp == false)
