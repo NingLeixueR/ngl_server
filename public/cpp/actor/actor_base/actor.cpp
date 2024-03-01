@@ -55,7 +55,10 @@ namespace ngl
 				return false;
 			Try
 			{
-				if (aparm.m_pack != nullptr && aparm.m_pack->m_protocol == ENET_KCP)
+				if (aparm.m_pack != nullptr 
+					&& aparm.m_pack->m_protocol == ENET_KCP
+					&& aactor->is_single() == false
+				)
 				{
 					aactor->set_kcpssion(aparm.m_pack->m_id);
 				}

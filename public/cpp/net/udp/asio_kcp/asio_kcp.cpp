@@ -19,9 +19,9 @@ namespace ngl
 		asio_udp_endpoint	m_endpoint;
 		std::string			m_ip;
 		i16_port			m_port;
-		asio_kcp* m_asiokcp;
+		asio_kcp*			m_asiokcp;
 		int64_t				m_timerid;
-		ikcpcb* m_kcp;
+		ikcpcb*				m_kcp;
 		bool				m_isconnect;		// 是否接收到kcp_cmd::ecmd_connect 或者ecmd_connect_ret
 		int					m_pingtm;			// 进行ping计时 
 		int64_t				m_pingtimerid;
@@ -50,7 +50,6 @@ namespace ngl
 		static std::string ip(session_endpoint* ap)
 		{
 			return ap->m_endpoint.address().to_string();
-
 		}
 
 		static i16_port port(session_endpoint* ap)
@@ -134,7 +133,7 @@ namespace ngl
 		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;
 		int32_t												m_sessionid;
 		std::shared_mutex									m_mutex;
-		asio_kcp* m_asiokcp;
+		asio_kcp*											m_asiokcp;
 	public:
 		session_manage(asio_kcp* asiokcp) :
 			m_sessionid(0),
@@ -155,7 +154,7 @@ namespace ngl
 					return itorport->second;
 				}
 			}
-			if (aconv == -1)
+			if (aconv <= 0)
 				return nullptr;
 			ptr_se ltemp(new session_endpoint());
 			m_dataofsession[++m_sessionid] = ltemp;
@@ -186,7 +185,6 @@ namespace ngl
 				}
 			};
 			m_kcptimer.addtimer(lparm);
-
 			return ltemp;
 		}
 
@@ -227,7 +225,7 @@ namespace ngl
 			}
 			m_dataofsession.erase(asession);
 		}
-
+	private:
 		ptr_se _find(i32_sessionid asession)
 		{
 			auto itor = m_dataofsession.find(asession);
@@ -251,7 +249,7 @@ namespace ngl
 			}
 			return nullptr;
 		}
-
+	public:
 		ptr_se find(i32_sessionid asession)
 		{
 			monopoly_shared_lock(m_mutex);
@@ -527,7 +525,6 @@ namespace ngl
 					if (!ec && bytes_received > 0)
 					{
 						ptr_se lpstruct = m_session.find(m_remoteport);
-						//ptr_se lpstruct = m_session.add(m_remoteport, -1);
 						if (lpstruct != nullptr)
 						{
 							std::cout
@@ -590,7 +587,6 @@ namespace ngl
 						start();
 					}
 				});
-
 		};
 
 		// ## 发送原始udp包
@@ -649,9 +645,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), lpstruct->m_endpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-					{
-						std::cout << ec.what() << std::endl;
-					}
+						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
 				});
 			return 0;
 		}
@@ -662,7 +656,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						std::cout << ec.what() << std::endl;
+						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
 				});
 			return 0;
 		}
