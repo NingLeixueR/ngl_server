@@ -11,15 +11,15 @@ namespace ngl
 		std::shared_mutex m_mutex;
 		int m_weight;
 
-		impl_actor(const actorparm& aparm)
-			: m_weight(aparm.m_weight)
-			, m_stat(actor_stat_init)
+		explicit impl_actor(const actorparm& aparm)
+			: m_stat(actor_stat_init)
+			, m_weight(aparm.m_weight)
 		{
 		}
 
 		inline void release(actor* aactor)
 		{
-			actor_handle(0, 0x7fffffff);
+			actor_handle(nullptr, 0x7fffffff);
 			aactor->save();
 			m_list.clear();
 		}
@@ -49,7 +49,7 @@ namespace ngl
 		}
 
 	private:
-		inline bool ahandle(actor* aactor, i32_threadid athreadid, handle_pram& aparm)
+		inline bool ahandle(actor* aactor, i32_threadid athreadid, handle_pram& aparm)const
 		{
 			if (aactor == nullptr)
 				return false;
@@ -63,21 +63,30 @@ namespace ngl
 					aactor->set_kcpssion(aparm.m_pack->m_id);
 				}
 				arfunbase * lprfun = aactor->m_actorfun[aparm.m_protocoltype];
-				Assert(lprfun != nullptr);
+				Assert(lprfun != nullptr)
 				if (lprfun->handle_switch(aactor, athreadid, aparm))
 					return true;
 				lprfun->notfindfun(aactor, athreadid, aparm);
-			}Catch;
+			}Catch
 			return false;
+		}
+	private:
+		inline void swaplist(std::list<handle_pram>& als)
+		{
+			monopoly_shared_lock(m_mutex);
+			als.swap(m_list);
+		}
+
+		inline void insertlist(std::list<handle_pram>& als)
+		{
+			monopoly_shared_lock(m_mutex);
+			m_list.insert(m_list.begin(), als.begin(), als.end());
 		}
 	public:
 		inline void actor_handle(actor* aactor, i32_threadid athreadid, int aweight)
 		{
 			std::list<handle_pram> llist;
-			{
-				monopoly_shared_lock(m_mutex);
-				llist.swap(m_list);
-			}
+			swaplist(llist);
 			while (--aweight >= 0 && llist.empty() != true)
 			{
 				if (ahandle(aactor, athreadid, *llist.begin()) == true)
@@ -86,11 +95,7 @@ namespace ngl
 				}
 				llist.pop_front();
 			}
-
-			{
-				monopoly_shared_lock(m_mutex);
-				m_list.insert(m_list.begin(), llist.begin(), llist.end());
-			}
+			insertlist(llist);
 		}
 
 		inline void actor_handle(actor* aactor, i32_threadid athreadid)
