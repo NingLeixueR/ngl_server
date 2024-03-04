@@ -15,48 +15,65 @@ namespace ngl
     /// </summary>
     public class SimpleKcpClient : IKcpCallback
     {
-        UdpClient client;
+        UdpClient? client;
         public void close()
         {
             //kcp.Dispose();
-            client.Close();            
+            client?.Close();
+            client = null;
         }
 
-        public SimpleKcpClient(uint conv_, int port)
-            : this(conv_, port, null)
+
+        public SimpleKcpClient()
         {
+           
         }
 
-        public SimpleKcpClient(uint conv_, int port, IPEndPoint endPoint)
+        public void start_udp(int port)
         {
-            client = new UdpClient(port);
+            if(client == null)
+                client = new UdpClient(port);
+        }
+
+        public void start_kcp(uint conv_, IPEndPoint endPoint)
+        {
             kcp = new SimpleSegManager.Kcp(conv_, this);
             this.EndPoint = endPoint;
             BeginRecv();
         }
 
-        public SimpleSegManager.Kcp kcp { get; set; }
-        public IPEndPoint EndPoint { get; set; }
+        public SimpleSegManager.Kcp? kcp { get; set; } = null;
+        public IPEndPoint? EndPoint { get; set; } = null;
 
         public void Output(IMemoryOwner<byte> buffer, int avalidLength)
         {
             var s = buffer.Memory.Span.Slice(0, avalidLength).ToArray();
-            client.SendAsync(s, s.Length, EndPoint);
+            client?.SendAsync(s, s.Length, EndPoint);
             buffer.Dispose();
         }
 
         public void UdpSend(byte[] buff, IPEndPoint aEndPoint)
         {
-            client.Send(buff, buff.Length, aEndPoint);
+            client?.Send(buff, buff.Length, aEndPoint);
+        }
+
+        public byte[]? UdpRecv()
+        {
+            if (client == null)
+                return null;
+            IPEndPoint? lep = null;
+            return client.Receive(ref lep);
         }
 
         public async void SendAsync(byte[] datagram, int bytes)
         {
-            kcp.Send(datagram.AsSpan().Slice(0, bytes));
+            kcp?.Send(datagram.AsSpan().Slice(0, bytes));
         }
 
         public async ValueTask<byte[]?> ReceiveAsync()
         {
+            if (kcp == null)
+                return null;
             var (buffer, avalidLength) = kcp.TryRecv();
             while (buffer == null)
             {
@@ -70,6 +87,8 @@ namespace ngl
 
         public async void BeginRecv()
         {
+            if (client == null)
+                return;
             bool lbool = true;
             while (lbool)
             {
@@ -84,7 +103,7 @@ namespace ngl
                         return;
                     }
                     EndPoint = res.RemoteEndPoint;
-                    kcp.Input(res.Buffer);
+                    kcp?.Input(res.Buffer);
                 }
                 catch (Exception e)
                 {
@@ -93,11 +112,7 @@ namespace ngl
             }
         }
 
-        public byte[] Recv()
-        {
-            IPEndPoint? lep = null;
-            return client.Receive(ref lep);
-        }
+       
     }
 }
 

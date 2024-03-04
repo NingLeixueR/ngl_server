@@ -579,12 +579,25 @@ namespace ngl
 									, m_remoteport.address().to_string()
 									, m_remoteport.port()
 								);
+								if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
+								{
+									std::string lip = m_remoteport.address().to_string();
+									sendu(m_remoteport, lip.c_str(), lip.size());
+								}
 							}
 						}
 						else
 						{
-							//NFC = not find connect
-							sendu(m_remoteport, "NFC", sizeof("NFC"));
+							if (memcmp(m_buff, "GetIp", sizeof("GetIp")-1) == 0)
+							{
+								std::string lip = m_remoteport.address().to_string();
+								sendu(m_remoteport, lip.c_str(), lip.size());
+							}
+							else
+							{
+								//NFC = not find connect
+								sendu(m_remoteport, "NFC", sizeof("NFC"));
+							}							
 						}
 						start();
 					}

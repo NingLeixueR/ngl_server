@@ -140,13 +140,43 @@ namespace ngl
             });
         }
 
-        public void Connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
+        public static string? m_ip = null;
+
+        public void get_localip(IPEndPoint aendpoint)
         {
-            if (m_cancel != null)
+            if (m_cancel != null && m_ip == null)
                 return;
             kcpClient = null;
+            kcpClient = new SimpleKcpClient();
+            kcpClient.start_udp(m_port);
+            var buffer = System.Text.Encoding.UTF8.GetBytes("GetIp");
+            bool isconnect = true;
+            var lfun = async () =>
+            {
+                while (isconnect)
+                {
+                    kcpClient.UdpSend(buffer, aendpoint);
+                    await Task.Delay(1000);
+                }
+            };
+            lfun();
+            byte[]? lbuff = kcpClient.UdpRecv();
+            if (lbuff == null)
+                return;
+            m_ip = System.Text.Encoding.UTF8.GetString(lbuff);
+            isconnect = false;
+        }
+
+        public void Connect(IPEndPoint aendpoint, Int64 aactorid, string asession)
+        {
+            if (kcpClient == null)
+                return;
+            kcpClient.start_udp(m_port);
+
             m_cancel = new CancellationTokenSource();
-            kcpClient = new SimpleKcpClient(conv++, m_port, aendpoint);
+            kcpClient.start_kcp(conv++, aendpoint);
+            if (kcpClient.kcp == null)
+                return;
             kcpClient.kcp.TraceListener = new ConsoleTraceListener();
             kcpClient.kcp.NoDelay(1, 10, 2, 1);//fast
             kcpClient.kcp.WndSize(128, 128);
@@ -196,6 +226,8 @@ namespace ngl
 
             kcpClient.EndPoint = aendpoint;
             m_endpoint = aendpoint;
+            if (cmd == null)
+                return;
             cmd.sendcmd(ecmd.ecmd_connect, JsonConvert.SerializeObject(
                 new { actorid = aactorid, session = asession }
                 ));

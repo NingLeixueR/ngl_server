@@ -67,6 +67,7 @@ namespace ngl
 
 	void actor_role::loginpay()
 	{
+		return;
 		// ### 检查是否有充值未发货
 		ngl::_http* lhttp = ngl::manage_curl::make_http();
 		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);

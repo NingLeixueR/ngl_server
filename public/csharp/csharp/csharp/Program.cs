@@ -85,30 +85,38 @@ namespace ngl
                     return;
                 pro.MServerid = tabgame.m_id;
                 pro.MUport = luport;
-                pro.MUip = "127.0.0.1";
+                pro.MUip = NglKcp.m_ip;
                 pro.MConv = (int)NglKcp.conv;
                 ltcp.Send(lgatewayconnect, pro);
+            };
+
+            var lconnectgame = () =>
+            {
+                var tab = ttab_servers.Tab();
+                if (tab == null)
+                    return null;
+                var tabgame = ttab_servers.Tab("game", tab.m_area, 1);
+                if (tabgame == null)
+                    return null;
+                if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress? kcpIPAddress))
+                    return null;
+                IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
+                return kcpIpPort;
             };
 
             pp.Registry<PROBUFF_NET_ROLE_SYNC_RESPONSE>(
                item =>
                {
+                   NglKcp.getInstance().get_localip(lconnectgame());
                    NglKcp.reconnect();
                }
                );
+
             string lMKcpsession = "";
             var lconnect = () =>
             {
-                var tab = ttab_servers.Tab();
-                if (tab == null)
-                    return;
-                var tabgame = ttab_servers.Tab("game", tab.m_area, 1);
-                if (tabgame == null)
-                    return;
-                if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress kcpIPAddress))
-                    return;
-                IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
-                NglKcp.getInstance().Connect(kcpIpPort, roleid, lMKcpsession);
+               
+                NglKcp.getInstance().Connect(lconnectgame(), roleid, lMKcpsession);
             };
             pp.Registry<PROBUFF_NET_KCPSESSION_RESPONSE>(
                 item =>
