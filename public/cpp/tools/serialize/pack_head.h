@@ -45,8 +45,6 @@ namespace ngl
 
 		static void set_actor(uint32_t* abuff, i64_actorid aactor);
 
-		
-
 		i64_actorid		get_actor()const;
 		i64_actorid		get_request_actor()const;
 		i16_actortype	get_actortype()const;

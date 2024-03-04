@@ -82,5 +82,4 @@ namespace ngl
 			lpack->malloc(alen);
 		return lpack;
 	}
-
 }

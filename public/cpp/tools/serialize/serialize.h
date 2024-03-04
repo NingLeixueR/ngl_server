@@ -63,7 +63,6 @@ namespace ngl
 		{
 			return true;
 		}
-
 	};
 
 	class serialize
@@ -74,12 +73,12 @@ namespace ngl
 	public:
 		serialize(char* abuff, int32_t alen);
 
-		char* buff();
-		int byte();
-		int len();
-		void add_bytes(int abytes);
-		void dec_bytes(int abytes);
-		bool basetype(void* adata, int32_t alen);
+		char*	buff();
+		int		byte();
+		int		len();
+		void	add_bytes(int abytes);
+		void	dec_bytes(int abytes);
+		bool	basetype(void* adata, int32_t alen);
 
 		template <typename T>
 		bool basetype(const T& adata)
@@ -339,6 +338,7 @@ namespace ngl
 		}
 
 		bool push(const std::string& astr);
+
 		// 支持没有参数
 		bool push();
 
@@ -354,7 +354,6 @@ namespace ngl
 		const char* m_buff;
 		int32_t m_len;
 		int32_t m_pos;
-
 	public:
 		unserialize(const char* abuff, int32_t alen);
 		const char* buff();
