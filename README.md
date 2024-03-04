@@ -1,6 +1,6 @@
 # ngl
-Actor based c++distributed game server framework
-基于Actor的c++分布式游戏服务器框架
+* Actor based c++distributed game server framework
+* 基于Actor的c++分布式游戏服务器框架
 
 # 依赖的第三方库
   * bcp 剪裁的 boost
