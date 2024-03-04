@@ -81,7 +81,7 @@ namespace ngl
 		// 注册actor成员函数
 		template <
 			EPROTOCOL_TYPE TYPE			// 协议类型
-			, typename TDerived			// 注册的actor派生了
+			, typename TDerived			// 注册的actor派生类
 			, typename T				// Tfun<TDerived, T>
 		>
 		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun)
