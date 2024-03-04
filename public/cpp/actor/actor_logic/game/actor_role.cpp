@@ -67,7 +67,6 @@ namespace ngl
 
 	void actor_role::loginpay()
 	{
-		return;
 		// ### 检查是否有充值未发货
 		ngl::_http* lhttp = ngl::manage_curl::make_http();
 		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
@@ -85,6 +84,11 @@ namespace ngl
 				try
 				{
 					ojson ltempjson(ahttp.m_recvdata.c_str());
+					if (ltempjson.check() == false)
+					{
+						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata);
+						return;
+					}
 					std::pair<const char*, const char*> orderid("orderid", "");
 					if (ltempjson >> orderid == false)
 						return;

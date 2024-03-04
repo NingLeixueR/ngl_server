@@ -14,6 +14,11 @@ namespace ngl
 
 		virtual ~ojson();
 
+		bool check()
+		{
+			return m_json != nullptr;
+		}
+
 		template <typename T>
 		bool _fun_number32(std::pair<const char*, T>& adata)
 		{
