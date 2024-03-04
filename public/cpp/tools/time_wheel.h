@@ -109,8 +109,6 @@ namespace ngl
 		std::shared_ptr<wheel_node> pop_node();
 	};
 
-	void test_time_wheel();
-
 	class twheel
 	{
 		twheel() = delete;

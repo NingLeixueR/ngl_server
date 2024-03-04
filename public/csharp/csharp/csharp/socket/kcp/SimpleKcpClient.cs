@@ -25,9 +25,7 @@ namespace ngl
 
 
         public SimpleKcpClient()
-        {
-           
-        }
+        {}
 
         public void start_udp(int port)
         {
@@ -111,8 +109,6 @@ namespace ngl
                 }
             }
         }
-
-       
     }
 }
 

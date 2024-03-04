@@ -194,14 +194,14 @@ namespace ngl
 			return add(aconv, aendpoint, aactorid);
 		}
 
-		ptr_se erase(const asio_udp_endpoint& aendpoint)
+		void erase(const asio_udp_endpoint& aendpoint)
 		{
 			std::string lip = aendpoint.address().to_string();
 			i16_port lport = aendpoint.port();
 			monopoly_shared_lock(m_mutex);
 			ptr_se lpstruct = _find(aendpoint);
 			if (lpstruct == nullptr)
-				return nullptr;
+				return;
 			auto& lmap = m_dataofendpoint[lpstruct->m_ip];
 			lmap.erase(lpstruct->m_port);
 			if (lmap.empty())
@@ -649,10 +649,11 @@ namespace ngl
 		{
 			ptr_se lpstruct = m_session.find(aendpoint);
 			if (lpstruct == nullptr)
-				return false;
+				return -1;
 			int ret = lpstruct->send(buf, len);
 			// 快速flush一次 以更快让客户端收到数据
 			lpstruct->flush();
+			return ret;
 		}
 
 		// ## kcp发送回调会调用的方法
