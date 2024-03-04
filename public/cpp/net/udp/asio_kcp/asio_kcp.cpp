@@ -513,7 +513,11 @@ namespace ngl
 			}
 			else
 			{
-				LogLocalError("time[% < % + % ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), DEF_TIMEOUT_SECOND);
+				LogLocalError("time[% < % + % ]"
+					, localtime::gettime()
+					, lpack->m_head.getvalue(EPH_TIME)
+					, DEF_TIMEOUT_SECOND
+				);
 			}
 			return true;
 		}
@@ -529,13 +533,11 @@ namespace ngl
 						ptr_se lpstruct = m_session.find(m_remoteport);
 						if (lpstruct != nullptr)
 						{
-							std::cout
-								<< "[conv:"
-								<< lpstruct->m_kcp->conv
-								<< "][current:"
-								<< lpstruct->m_kcp->current
-								<< "][dead_link:"
-								<< lpstruct->m_kcp->dead_link << "]" << std::endl;
+							LogLocalError("[conv:%][current:%][dead_link:%]"
+								, lpstruct->m_kcp->conv
+								, lpstruct->m_kcp->current
+								, lpstruct->m_kcp->dead_link
+							);
 							int linput = lpstruct->input(m_buff, bytes_received);
 							if (linput >= 0)
 							{
