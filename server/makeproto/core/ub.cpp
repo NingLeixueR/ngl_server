@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-03-01 17:19:44
+// 创建时间 24-03-04 17:21:52
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -52,6 +52,7 @@
 #include "attribute_value.cpp"
 #include "autoitem.cpp"
 #include "bag.cpp"
+#include "base64.cpp"
 #include "bit.cpp"
 #include "briefdb.cpp"
 #include "bytes_order.cpp"
