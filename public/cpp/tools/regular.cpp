@@ -1,6 +1,5 @@
 #include "regular.h"
 
-
 namespace ngl
 {
 	void regular::sregex(const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun)
@@ -14,6 +13,7 @@ namespace ngl
 			afun(lstr);
 		}
 	}
+
 	///---- values = std::smatch[1];
 	void regular::smatch(const std::string& aexpression, const std::string& adata, const std::function<void(std::smatch&)>& afun)
 	{
@@ -39,5 +39,4 @@ namespace ngl
 		replace(aexpression, areleace, adata, aret);
 		return aret != adata;
 	}
-
 }

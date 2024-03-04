@@ -7,7 +7,6 @@
 #include <iostream>
 #include <cstring>
 
-
 namespace ngl
 {
 	struct rguid

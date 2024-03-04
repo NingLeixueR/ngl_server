@@ -11,9 +11,9 @@
 namespace ngl
 {
 	//using mutex			= std::shared_mutex;
-	//using shared_lock	= std::shared_lock<mutex>; // ¶ÁËø
-	//using unique_lock	= std::unique_lock<mutex>; // Ğ´Ëø
-	using thread		= std::thread;
+	//using shared_lock		= std::shared_lock<mutex>; // ¶ÁËø
+	//using unique_lock		= std::unique_lock<mutex>; // Ğ´Ëø
+	using thread			= std::thread;
 
 	class sem
 	{
@@ -130,7 +130,6 @@ namespace ngl
 			m_sem.post();
 		}
 	};
-
 
 	template <typename NODE>
 	class workcv_list

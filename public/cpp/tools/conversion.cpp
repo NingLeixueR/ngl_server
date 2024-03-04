@@ -3,7 +3,6 @@
 #include <cstring>
 #include "conversion.h"
 
-
 namespace ngl
 {
 	bool conversion::wasscii2asscii(const std::wstring& awstr, std::string& astr)
@@ -116,5 +115,4 @@ namespace ngl
 			return false;
 		return true;
 	}
-
 }

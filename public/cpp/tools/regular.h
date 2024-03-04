@@ -4,7 +4,6 @@
 #include <functional>
 #include <regex>
 
-
 namespace ngl
 {
 	class regular

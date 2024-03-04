@@ -16,7 +16,6 @@ namespace ngl
 		std::function<void(std::set<i64_actorid>&)> m_fun;
 		std::shared_mutex							m_mutex;
 	public:
-
 		static cache_list<T, NUM>& getInstance()
 		{
 			static cache_list<T, NUM> ltemp;

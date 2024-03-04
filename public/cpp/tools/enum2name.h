@@ -5,7 +5,6 @@
 #include <algorithm>
 #include "tools.h"
 
-
 namespace ngl
 {
 	//#######enum2name
@@ -50,9 +49,9 @@ namespace ngl
 		}
 	};
 
-
 	template <typename ENUMT, bool TOLOWER>
 	std::map<int, std::map<ENUMT, std::string>> enum2name<ENUMT, TOLOWER>::m_datae2n;
+
 	template <typename ENUMT, bool TOLOWER>
 	std::map<int, std::map<std::string, ENUMT>> enum2name<ENUMT, TOLOWER>::m_datan2e;
 

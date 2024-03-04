@@ -80,7 +80,6 @@ namespace ngl
 
 		struct impl_time_wheel;
 		ngl::impl<impl_time_wheel> m_impl_time_wheel;
-
 	public:
 		static int64_t getms();
 		time_wheel(const time_wheel_config& aconfig = time_wheel_config(), bool aisthreadcallback = true);

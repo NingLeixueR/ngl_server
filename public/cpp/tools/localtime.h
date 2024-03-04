@@ -4,7 +4,6 @@
 #include <cstdio>
 #include <ctime>
 
-
 namespace ngl
 {
 	class localtime

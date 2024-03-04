@@ -22,7 +22,6 @@ namespace ngl
 		static const bool value = true;
 	};
 
-
 	// VectorÀàĞÍÎªtrue
 	template<typename T, typename... Types>
 	struct is_containery_type<std::vector<T, Types...>>

@@ -15,10 +15,8 @@ namespace ngl
 		{
 			return false;
 		}
-
 		m_offset += (sti - lnow);
 		return true;
-
 	}
 
 	/** 获取时间*/
@@ -147,7 +145,6 @@ namespace ngl
 		return mktime(ltime);
 	}
 
-	//
 	time_t localtime::getsecond2time(int hour, int minute, int sec/*0-59*/)
 	{
 		time_t lnow = gettime();
@@ -168,7 +165,6 @@ namespace ngl
 			return lret + (24 * 60 * 60);
 		}
 	}
-
 
 	time_t localtime::getsecond2time(int minute/*0-59*/, int sec/*0-59*/)
 	{
@@ -226,6 +222,7 @@ namespace ngl
 		ltime->tm_sec = 0;
 		return mktime(ltime);
 	}
+
 	time_t localtime::getweekday(time_t utc, int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
 	{
 		struct tm tmTime;

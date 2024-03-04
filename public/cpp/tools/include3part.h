@@ -1,5 +1,4 @@
-#ifndef INCLUDE_3PART_H
-#define INCLUDE_3PART_H
+#pragma once
 
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio.hpp>
@@ -16,16 +15,13 @@
 #include <boost/system/error_code.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/date_time.hpp>
+
 #include <ctime>
 #include <strstream>
 #include <iostream>
 #include <string>
 #include <mysql.h>
 
-//#include "log.h"
-
 #ifdef WIN32
 #define snprintf _snprintf
 #endif //WIN32
-
-#endif //INCLUDE_3PART_H

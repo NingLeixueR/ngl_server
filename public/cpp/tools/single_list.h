@@ -52,14 +52,25 @@ namespace ngl
 			return nullptr;
 		}
 
+		// [ )
 		void insert(list_node<T>* ainsert, list_node<T>* abeg, list_node<T>* aend)
 		{
 			if (ainsert == nullptr || ainsert == m_tail)
 			{
-				for (auto itor = abeg; itor != aend ; ++itor)
+				m_head = abeg;
+				m_tail = aend;
+				m_tail->m_next = nullptr;
+			}
+			else
+			{
+				list_node<T>* lnext = ainsert->m_next;
+				ainsert->m_next = abeg;
+				list_node<T>* lrand = abeg;
+				while (lrand != aend)
 				{
-
+					lrand = lrand->m_next;
 				}
+				lrand->m_next = lnext;
 			}
 		}
 
@@ -94,7 +105,6 @@ namespace ngl
 		{ 
 			return m_size == 0; 
 		}
-
 
 		inline void clear()
 		{
@@ -325,6 +335,4 @@ namespace ngl
 			m_list.swap(ar);
 		}
 	};
-
-
 }
