@@ -1,8 +1,8 @@
 #include "actor_address.h"
-#include "net.h"
 #include "actor_enum.h"
 #include "actor_guid.h"
 #include "actor_base.h"
+#include "net.h"
 
 namespace ngl
 {
@@ -83,6 +83,7 @@ namespace ngl
 				//segpack::add_server(aserverid, asession);
 			}Catch;
 		}
+
 		// ªÒ»°session
 		inline i32_sessionid get_session(i32_serverid aserverid)
 		{

@@ -28,6 +28,7 @@ namespace ngl
 		using ergodic_callbackfun = std::function<bool(map_guidserver&, map_servernode&)>;
 		//##[foreach]»Øµ÷
 		using foreach_callbackfun = std::function<bool(const actor_node_session&)>;
+
 	private:
 		struct impl_actor_address;
 		ngl::impl<impl_actor_address> m_impl_actor_address;
@@ -35,6 +36,7 @@ namespace ngl
 		actor_address();
 
 		virtual ~actor_address();
+
 	public:
 		static actor_address& getInstance() 
 		{

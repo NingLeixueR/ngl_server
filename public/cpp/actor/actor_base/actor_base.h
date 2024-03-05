@@ -54,38 +54,44 @@ namespace ngl
 		actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
-		// 获取actor_manage_dbclient实例
+		// ## 获取actor_manage_dbclient实例
 		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient();
-		// 是否需要从数据库加载数据
+		// ## 是否需要从数据库加载数据
 		bool			isload();
-		// 是否加载完成
+		// ## 是否加载完成
 		bool			isloadfinish();
-		// 设置db_component组件
+		// ## 设置db_component组件
 		void			set_db_component(db_component* acomponent);
-		// 初始化数据(在数据加载完成后)
+		// ## 初始化数据(在数据加载完成后)
 		void			db_component_init_data();
 		void			init_db_component(bool acreate);
 		void			add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid);
-		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+		template <
+			EPROTOCOL_TYPE PROTYPE, 
+			pbdb::ENUM_DB DBTYPE,
+			typename TDBTAB, 
+			typename TACTOR
+		>
 		bool			handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
+
 #pragma region virtual_function
 		virtual ~actor_base();
-		virtual void init() {}
-		virtual actor_stat get_activity_stat() = 0;
-		virtual void set_activity_stat(actor_stat astat) = 0;
-		virtual bool list_empty() = 0;
-		virtual void actor_handle(i32_threadid athreadid) = 0;
-		virtual void push(handle_pram& apram) = 0;
-		// 派生actor重载此函数 会在数据加载完成后调用
-		virtual void loaddb_finish(bool adbishave) {} 
-		// 清空当前任务
-		virtual void clear_task() = 0;
-		// 执行handle之后调用
-		virtual void handle_after() {}
+		virtual void		init() {}
+		virtual actor_stat	get_activity_stat()						= 0;
+		virtual void		set_activity_stat(actor_stat astat)		= 0;
+		virtual bool		list_empty()							= 0;
+		virtual void		actor_handle(i32_threadid athreadid)	= 0;
+		virtual void		push(handle_pram& apram)				= 0;
+		// ## 清空当前任务
+		virtual void		clear_task()							= 0;
+		// ## 执行handle之后调用
+		virtual void		handle_after() {}
+		// ## 派生actor重载此函数 会在数据加载完成后调用
+		virtual void		loaddb_finish(bool adbishave) {}
 #pragma endregion 
 
-		// 删除actor时候会被调用
+		// ## 删除actor时候会被调用
 		virtual void	release() = 0;
 		virtual void	save();
 		bool			is_single();
@@ -101,41 +107,55 @@ namespace ngl
 		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
 #pragma region network_strat
-		// 生成包
+		// ## 生成包
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// 发送数据到指定服务器
+		// ## 发送数据到指定服务器
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// 发送pack到指定服务器
+		// ## 发送pack到指定服务器
 		template <typename T>
 		static bool sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		// 给指定连接发送数据
+		// ## 给指定连接发送数据
 		template <typename T>
 		static bool sendpackbysession(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		// 给指定连接发送数据
+		// ## 给指定连接发送数据
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		template <typename T>
-		static bool sendbykcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
-			return true;
-		}
+		
 
 #pragma region network_kcp
 		i32_session m_kcpsession = -1;
 
+		// ## 设置udp.kcp session
 		void set_kcpssion(i32_session asession)
 		{
 			m_kcpsession = asession;
 		}
 
+		bool iskcp()
+		{
+			enum elocalkcp
+			{
+				elocalkcp_ninit = 0,
+				elocalkcp_true = 1,
+				elocalkcp_false = 2,
+			};
+			static elocalkcp m_kcpstat = elocalkcp_ninit;
+			if (m_kcpstat == elocalkcp_ninit)
+			{
+				tab_servers* tab = ttab_servers::tab();
+				m_kcpstat = tab->m_isopenkcp ? elocalkcp_true : elocalkcp_false;
+			}
+			return m_kcpstat == elocalkcp_true;
+		}
+
+		// ## 通过udp.kcp发送数据
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid)
 		{
@@ -144,13 +164,13 @@ namespace ngl
 				LogLocalError("m_kcpsession = -1, is_single() == [%]", is_single());
 				return false;
 			}
-				
-			tab_servers* tab = ttab_servers::tab();
-			if (tab->m_isopenkcp == false)
+			if (iskcp() == false)
 				return false;
 			ukcp::getInstance().send(m_kcpsession, adata, aactorid, id_guid());
 			return true;
 		}
+
+	
 
 		template <typename T>
 		static bool static_sendkcp(
@@ -160,8 +180,7 @@ namespace ngl
 			, i64_actorid arequestactorid
 		)
 		{
-			tab_servers* tab = ttab_servers::tab();
-			if (tab->m_isopenkcp == false)
+			if (iskcp() == false)
 				return false;
 			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
@@ -175,8 +194,7 @@ namespace ngl
 			, i64_actorid arequestactorid
 		)
 		{
-			tab_servers* tab = ttab_servers::tab();
-			if (tab->m_isopenkcp == false)
+			if (iskcp() == false)
 				return false;
 			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
 			return true;
@@ -189,10 +207,8 @@ namespace ngl
 
 		bool connect_kcp(const std::string& aip, i16_port aprot)
 		{
-			tab_servers* tab = ttab_servers::tab();
-			if (tab->m_isopenkcp == false)
+			if (iskcp() == false)
 				return false;
-			
 			std::string lkcpsessionmd5 = kcpsessionmd5();
 			if (lkcpsessionmd5 == "")
 				return false;
@@ -352,7 +368,6 @@ namespace ngl
 			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
-
 #pragma region network_strat_group
 	private:
 		struct group_info

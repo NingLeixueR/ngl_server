@@ -25,6 +25,7 @@ namespace ngl
 
 		std::array<arfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
 	public:
+
 #pragma region register
 		template <typename TDerived>
 		void init_rfun()
@@ -34,12 +35,14 @@ namespace ngl
 
 			if (isbroadcast())
 			{
-				Tfun<actor, actor_broadcast> lpfun = (Tfun<actor, actor_broadcast>) & actor::handle;
-				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, lpfun);
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
+					true, 
+					(Tfun<actor, actor_broadcast>) & actor::handle
+				);
 			}
 		}
 
-		// 注册定时器
+		// #### 注册定时器
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
@@ -65,7 +68,7 @@ namespace ngl
 			register_db<TYPE, TDerived>(arg...);
 		}
 
-		// 用来注册匿名函数挂载在对应actor上
+		// #### 用来注册匿名函数挂载在对应actor上
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
@@ -74,11 +77,11 @@ namespace ngl
 
 #pragma region register_actor
 
-		// 简化[handle]方法注册
-#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
-#define dregister_fun(TDerived,T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
+		// #### 简化[handle]方法注册
+		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
+		#define dregister_fun(TDerived,T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
-		// 注册actor成员函数
+		// #### 注册actor成员函数
 		template <
 			EPROTOCOL_TYPE TYPE			// 协议类型
 			, typename TDerived			// 注册的actor派生类
@@ -125,9 +128,9 @@ namespace ngl
 			register_actornonet<TYPE, TDerived>(aisload, arg...);
 		}
 #pragma endregion 
-
 	private:
 		friend class gameclient_forward;
+
 		// ### 注册 [forward:转发协议]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
@@ -157,19 +160,25 @@ namespace ngl
 		}
 #pragma endregion 
 	public:
-		actor(const actorparm& aparm);
+		explicit actor(const actorparm& aparm);
 
 		virtual ~actor();
 
-		virtual actor_stat get_activity_stat();
-		virtual void set_activity_stat(actor_stat astat);
+		virtual actor_stat get_activity_stat() final;
+
+		virtual void set_activity_stat(actor_stat astat) final;
 
 	private:
 		virtual void release() final;
-		virtual bool list_empty();
-		virtual void push(handle_pram& apram);
-		virtual void clear_task();
-		virtual void actor_handle(i32_threadid athreadid);
+
+		virtual bool list_empty() final;
+
+		virtual void push(handle_pram& apram) final;
+
+		virtual void clear_task() final;
+
+		virtual void actor_handle(i32_threadid athreadid) final;
+
 	public:
 #pragma region ActorBroadcast
 		// ############# Start[Actor 全员广播] ############# 
@@ -178,10 +187,8 @@ namespace ngl
 		// ## 与actor_base::start_broadcast() 相呼应
 		// ## 重载此方法实现actor_base::m_broadcast毫秒触发事件
 		virtual void broadcast() {}
-
-		// 广播处理函数
+		// ## 广播处理函数
 		bool handle(message<actor_broadcast>& adata);
-
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion
 

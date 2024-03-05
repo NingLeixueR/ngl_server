@@ -5,7 +5,6 @@
 #include "db_modular.h"
 #include "actor_log.h"
 
-
 namespace ngl
 {
 	struct actor_base::impl_actor_base
