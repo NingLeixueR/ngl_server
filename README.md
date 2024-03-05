@@ -34,6 +34,11 @@
   * <b>ngl/public/csharp</b><br/>cs源码
   * <b>ngl/server</b><br/>项目源文件
 
+## 协议支持
+  * tcp
+  * ws
+  * kcp
+  
 ## Linux CentOs编译
   * 编译安装gcc (GCC) 13.1.0
   * 编译安装protobuf 3.13.0

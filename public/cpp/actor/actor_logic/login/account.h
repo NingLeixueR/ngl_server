@@ -11,6 +11,7 @@ namespace ngl
 		pbdb::db_account,
 		actor_login
 	>;
+
 	class account : public account_db_modular
 	{
 		struct accountname2db
