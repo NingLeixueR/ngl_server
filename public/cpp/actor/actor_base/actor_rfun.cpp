@@ -1,6 +1,5 @@
 ﻿#include "actor_rfun.h"
 
-
 namespace ngl
 {
 	arfunbase& arfunbase::set_notfindfun(const tnotfindfun& afun)

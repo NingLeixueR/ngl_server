@@ -1,16 +1,17 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "net.h"
+#include "actor_db_client.h"
+#include "actor_protocol.h"
+#include "actor_register.h"
 #include "db_data.h"
 #include "db.h"
 #include "db_pool.h"
 #include "db_manage.h"
-#include "actor_db_client.h"
-#include "actor_protocol.h"
-#include "actor_register.h"
+#include "net.h"
 #include "cache_list.h"
 #include "ttab_dbload.h"
+
 #include <boost/type_index.hpp>
 
 namespace ngl
@@ -70,7 +71,7 @@ namespace ngl
 				{
 					db_manage::select<PROTYPE, TDBTAB>::fun(actor_dbpool::get(0), m_idset);
 				}
-			}Catch;
+			}Catch
 		}
 
 		// 加载表中的所有数据
@@ -140,7 +141,7 @@ namespace ngl
 				{
 					Assert(m_tab->m_isloadall);
 					loadall(apack, adata);
-				}Catch;
+				}Catch
 			}
 			else
 			{

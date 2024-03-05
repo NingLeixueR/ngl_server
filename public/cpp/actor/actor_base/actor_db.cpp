@@ -5,6 +5,7 @@ namespace ngl
 {
 	std::vector<db*> actor_dbpool::m_data;
 	bool actor_dbpool::m_init = false;
+
 	void actor_dbpool::init()
 	{
 		if (m_init)
@@ -13,7 +14,6 @@ namespace ngl
 		{
 			m_init = true;
 			tab_servers* tab = ttab_servers::tab();
-
 			m_data.resize(tab->m_threadnum);
 			for (int i = 0; i < tab->m_threadnum; ++i)
 			{

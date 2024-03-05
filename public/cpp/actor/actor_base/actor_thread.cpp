@@ -10,7 +10,6 @@ namespace ngl
 		ptractor			m_actor;
 		bool				m_isactivity;
 		ngl::thread			m_thread;
-
 		std::shared_mutex	m_mutex;
 		ngl::sem			m_sem;
 

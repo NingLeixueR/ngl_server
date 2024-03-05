@@ -1,9 +1,9 @@
 #include "actor_client.h"
-#include "xmlnode.h"
-#include "actor_address.h"
-#include "net.h"
 #include "actor_manage.h"
 #include "actor_register.h"
+#include "actor_address.h"
+#include "xmlnode.h"
+#include "net.h"
 
 namespace ngl
 {

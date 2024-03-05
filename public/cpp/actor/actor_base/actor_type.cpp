@@ -1,5 +1,4 @@
 #include "actor_type.h"
-
 #include "actor_client.h"
 #include "actor_create.h"
 #include "actor_db.h"
@@ -41,8 +40,6 @@ namespace ngl
 #define dinit_atype(ACTORCLASS, ACTORTYPE)	\
 		actor_type<ACTORCLASS>::inits(ACTORTYPE);\
 		LogLocalError("init_actor_type [%]-[%]", boost::typeindex::type_id_with_cvr<ACTORCLASS>().pretty_name(), (int)(ACTORTYPE))
-
-
 
 		dinit_atype(actor_client, ACTOR_ADDRESS_CLIENT);
 		dinit_atype(actor_create, ACTOR_CREATE);

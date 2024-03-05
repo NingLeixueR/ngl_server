@@ -32,5 +32,4 @@ namespace ngl
 
 	template <typename TDerived, typename T>
 	std::map<i64_actorid, T> roleitems<TDerived, T>::m_roleitem;
-
 }

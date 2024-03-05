@@ -78,7 +78,6 @@ namespace ngl
 			{
 				apactor->set_activity_stat(actor_stat_free);
 			}
-
 			return true;
 		}
 

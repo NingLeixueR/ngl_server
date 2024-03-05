@@ -1,15 +1,15 @@
 #pragma once
 
+#include "actor.h"
 #include "actor_manage.h"
 #include "actor_enum.h"
 #include "actor_register.h"
-#include "actor.h"
+#include "actor_db.h"
 #include "net.h"
-#include "db_data.h"
 #include "db.h"
+#include "db_data.h"
 #include "db_pool.h"
 #include "db_manage.h"
-#include "actor_db.h"
 #include "ttab_dbload.h"
 
 namespace ngl
@@ -41,17 +41,17 @@ namespace ngl
 	protected:
 		bool m_ischange = false;
 	public:
-		virtual bool is_modified()const
+		bool is_modified()const
 		{
 			return m_ischange;
 		}
 
-		virtual void modified()
+		void modified()
 		{
 			m_ischange = true;
 		}
 
-		virtual void clear_modified()
+		void clear_modified()
 		{
 			m_ischange = false;
 		}
@@ -95,11 +95,19 @@ namespace ngl
 		}
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	template <
+		EPROTOCOL_TYPE PROTYPE, 
+		pbdb::ENUM_DB TDBTAB_TYPE, 
+		typename TDBTAB
+	>
 	class actor_db;
 
-	
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+	template <
+		EPROTOCOL_TYPE PROTYPE, 
+		pbdb::ENUM_DB DBTYPE, 
+		typename TDBTAB, 
+		typename TACTOR
+	>
 	class actor_dbclient : public actor_dbclient_base
 	{
 		tab_dbload* m_tab;
@@ -149,15 +157,14 @@ namespace ngl
 			);
 		}
 
-		actor_guid m_id;
+		actor_guid									m_id;
 		std::map<actor_guid, data_modified<TDBTAB>> m_data;
-		data_modified<TDBTAB>* m_dbdata;
-		bool m_load;
-		actor_manage_dbclient* m_manage_dbclient;
-		actor_base* m_actor;
-		std::vector<int64_t> m_dellist;
+		data_modified<TDBTAB>*						m_dbdata;
+		bool										m_load;
+		actor_manage_dbclient*						m_manage_dbclient;
+		actor_base*									m_actor;
+		std::vector<int64_t>						m_dellist;
 	public:
-
 		actor_dbclient():
 			m_id(actor_guid::make()),
 			m_load(false),
@@ -289,7 +296,7 @@ namespace ngl
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, larequestactorid);
 				if (lpack == nullptr)
 				{
-					//LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name());
+					// LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name());
 					return;
 				}
 				// ### 异步发送pack
@@ -379,7 +386,6 @@ namespace ngl
 			return true;
 		}
 
-		
 		bool handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 		{
 			Try
@@ -409,11 +415,12 @@ namespace ngl
 
 	class actor_manage_dbclient
 	{
-		actor_base* m_actor;
-		std::map<pbdb::ENUM_DB, actor_dbclient_base*> m_typedbclientmap;
-		std::map<pbdb::ENUM_DB, actor_dbclient_base*> m_dbclientmap;//已经加载完的
-		std::function<void(bool)> m_fun;//bool db数据库是否有该数据
-		bool m_finish;
+		using tmap_dbclient = std::map<pbdb::ENUM_DB, actor_dbclient_base*>;
+		actor_base*						m_actor;
+		tmap_dbclient					m_typedbclientmap;
+		tmap_dbclient					m_dbclientmap;			//已经加载完的
+		std::function<void(bool)>		m_fun;					//bool db数据库是否有该数据
+		bool							m_finish;
 	public:
 		actor_manage_dbclient(actor_base* aactor) :
 			m_actor(aactor),
@@ -494,20 +501,31 @@ namespace ngl
 			return (actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>*)(*lp);
 		}
 
+	private:
+		void foreach_function(const std::function<void(actor_dbclient_base*)>& afun)
+		{
+			for (auto itor = m_dbclientmap.begin();
+				itor != m_dbclientmap.end(); ++itor)
+			{
+				afun(itor->second);
+			}
+		}
+	public:
+
 		void save()
 		{
-			for(auto& [id, ldbclient_base] : m_dbclientmap)
-			{
-				ldbclient_base->savedb();
-			}
+			foreach_function([](actor_dbclient_base* ap)
+				{
+					ap->savedb();
+				});
 		}
 
 		void del()
 		{
-			for (auto& [id, ldbclient_base] : m_dbclientmap)
-			{
-				ldbclient_base->deldb();
-			}
+			foreach_function([](actor_dbclient_base* ap)
+				{
+					ap->deldb();
+				});
 		}
 	};
 }

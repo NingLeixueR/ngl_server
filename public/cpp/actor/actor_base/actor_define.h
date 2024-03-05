@@ -60,7 +60,6 @@
 		return #_Name;										\
 	}
 
-
 ///// 简化定义协议类
 // --- 名称 ....(成员)
 #define def_portocol_function(_Name,...)					\
@@ -76,8 +75,6 @@
 #else
 # define def_portocol(_Name,...)  def_portocol_function(_Name __VA_OPT__(,) ##__VA_ARGS__)
 #endif
-
-
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_rcsv(...)													\

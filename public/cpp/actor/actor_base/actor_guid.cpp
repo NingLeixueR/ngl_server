@@ -169,7 +169,7 @@ namespace ngl
 		return (i64_actorid)(lguid) == (i64_actorid)(*this);
 	}
 
-	//actor type 是否无效
+	// actor type 是否无效
 	bool actor_guid::is_actortypenone(i64_actorid actorid)
 	{
 		actor_guid lguid(actorid);
@@ -192,7 +192,7 @@ namespace ngl
 		return area() == none<i16_area>();
 	}
 
-	//actor id 是否无效
+	// actor id 是否无效
 	bool actor_guid::is_actoridnone(i64_actorid actorid)
 	{
 		actor_guid lguid(actorid);

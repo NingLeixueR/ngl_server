@@ -47,20 +47,24 @@ namespace ngl
 		forwardtype				m_forwardfun;	// 转发函数
 		std::function<void()>	m_failfun;		// 如何actor_client都找不到目标actor则调用
 
-		static i32_sessionid get_session(i32_serverid aserverid);
-		static i32_serverid get_server(i64_actorid aactorid);
-		static i32_serverid get_gatewayid(i64_actorid aactorid);
-		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
-		static bool is_actoridnone(const actor_guid& aguid);
+		// 根据[id]获取[连接]
+		static i32_sessionid	get_session(i32_serverid aserverid);
+		// 根据[连接]获取[id]
+		static i32_serverid		get_server(i64_actorid aactorid);
+		// 根据[actorid]获取[gatewayid]
+		static i32_serverid		get_gatewayid(i64_actorid aactorid);
+		// 根据[服务器类型]获取[服务器列表]
+		static void				get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
+		static bool				is_actoridnone(const actor_guid& aguid);
 
 		template <typename T>
-		static bool netsend(i32_sessionid asession, T& adata, const actor_guid& aactorid, const actor_guid& arequestactorid);
+		static bool	netsend(i32_sessionid asession, T& adata, const actor_guid& aactorid, const actor_guid& arequestactorid);
 		
-		static bool netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
-		static bool netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack);
+		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
 		template <typename T, bool IS_SEND = true>
-		static void make_forwardfun(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& apram)
+		static void	make_forwardfun(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& apram)
 		{
 			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<actor_guid, i32_serverid>& amap, handle_pram& adata)
 			{
@@ -69,7 +73,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void make_client(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& apram)
+		static void	make_client(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& apram)
 		{
 			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<actor_guid, i32_serverid>& amap, handle_pram& adata)
 				{

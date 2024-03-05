@@ -1,12 +1,12 @@
 #pragma once
 
-#include "protocol.h"
 #include "actor_base.h"
 #include "actor.h"
 #include "actor_protocol.h"
-#include "init_protobuf.h"
-#include "regular.h"
 #include "actor_type.h"
+#include "init_protobuf.h"
+#include "protocol.h"
+#include "regular.h"
 
 namespace ngl
 {

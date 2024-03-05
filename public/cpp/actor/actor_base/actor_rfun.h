@@ -2,14 +2,15 @@
 
 #include <functional>
 #include <map>
-#include "handle_pram.h"
+
 #include "actor_base.h"
+#include "handle_pram.h"
 #include "type.h"
 
 namespace ngl
 {
-	using tlogicfun = std::function<void(actor_base*, i32_threadid, handle_pram&)>;
-	using tnotfindfun = std::function<void(i32_threadid, handle_pram&)>;
+	using tlogicfun		= std::function<void(actor_base*, i32_threadid, handle_pram&)>;
+	using tnotfindfun	= std::function<void(i32_threadid, handle_pram&)>;
 
 	struct alogicfun
 	{
@@ -20,8 +21,8 @@ namespace ngl
 	class arfunbase
 	{
 	protected:
-		std::map<i32_protocolnum, alogicfun> m_fun;
-		tnotfindfun m_notfindfun;
+		std::map<i32_protocolnum, alogicfun>	m_fun;
+		tnotfindfun								m_notfindfun;
 	public:
 		arfunbase& set_notfindfun(const tnotfindfun& afun);
 
@@ -33,9 +34,9 @@ namespace ngl
 	template <typename T>
 	struct message
 	{
-		i32_threadid m_thread;
-		T* m_data;
-		const pack* m_pack;
+		i32_threadid	m_thread;
+		T*				m_data;
+		const pack*		m_pack;
 
 		message(i32_threadid athread, const pack* apack, T* adata) :
 			m_thread(athread),
@@ -74,8 +75,6 @@ namespace ngl
 
 		template <typename TTTDerived, typename T>
 		arfun& rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload = false);
-
-
 
 		template <bool BOOL, typename T>
 		arfun& rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);

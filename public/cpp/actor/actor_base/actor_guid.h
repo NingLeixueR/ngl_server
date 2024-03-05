@@ -119,5 +119,4 @@ namespace ngl
 	};
 }
 
-
 #define actor_guid_none_area actor_guid::none<i16_area>()
