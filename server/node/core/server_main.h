@@ -389,7 +389,6 @@ bool start_pushserverconfig()
 				});
 			ngl::manage_curl::getInstance().send(lhttp);
 		});
-
 	return true;
 }
 

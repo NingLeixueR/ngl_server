@@ -90,7 +90,7 @@ namespace ngl
 		}
 
 		// 获取session
-		inline i32_sessionid get_session(i32_serverid aserverid)
+		inline i32_sessionid get_session(i32_serverid aserverid)const
 		{
 			Try
 			{
@@ -102,7 +102,7 @@ namespace ngl
 		}
 
 		// 获取server id
-		inline i32_serverid get_server(const actor_guid& aguid)
+		inline i32_serverid get_server(const actor_guid& aguid)const
 		{
 			Try
 			{
