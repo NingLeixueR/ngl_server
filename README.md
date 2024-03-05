@@ -3,29 +3,27 @@
 * 基于Actor的c++分布式游戏服务器框架
 
 ## 依赖的第三方库
-  * bcp 剪裁的 boost
-   ```
-   ./bcp chrono ../boost_out
-   ./bcp date_time ../boost_out
-   ./bcp exception ../boost_out
-   ./bcp filesystem ../boost_out
-   ./bcp smart_ptr ../boost_out
-   ./bcp system thread ../boost_out
-   ./bcp bimap ../boost_out
-   ./bcp crc ../boost_out
-   ./bcp interprocess ../boost_out
-   ./bcp pool ../boost_out
-   ./bcp random.hpp ../boost_out
-   ./bcp algorithm ../boost_out
-   ./bcp random.hpp ../boost_out
-   ./bcp property_tree ../boost_out
-   ./bcp uuid ../boost_out
-   ```
-  * cryptopp
-  * curl
-  * hiredis
-  * mysql connect/c
-  * protobuf 3.13.0
+  * <b>bcp 剪裁的 boost</b>
+    <br/>./bcp chrono ../boost_out
+    <br/>./bcp date_time ../boost_out
+    <br/>./bcp exception ../boost_out
+    <br/>./bcp filesystem ../boost_out
+    <br/>./bcp smart_ptr ../boost_out
+    <br/>./bcp system thread ../boost_out
+    <br/>./bcp bimap ../boost_out
+    <br/>./bcp crc ../boost_out
+    <br/>./bcp interprocess ../boost_out
+    <br/>./bcp pool ../boost_out
+    <br/>./bcp random.hpp ../boost_out
+    <br/>./bcp algorithm ../boost_out
+    <br/>./bcp random.hpp ../boost_out
+    <br/>./bcp property_tree ../boost_out
+    <br/>./bcp uuid ../boost_out
+  * <b>cryptopp</b>
+  * <b>curl</b>
+  * <b>hiredis</b>
+  * <b>mysql connect/c</b>
+  * <b>protobuf 3.13.0</b>
 
 ## 目录
   * <b>ngl/3part</b><br/>此目录用于存放第三方库
