@@ -47,10 +47,10 @@ namespace ngl
 					Assert(m_tab != nullptr);
 				}
 				cache_list<TDBTAB, enum_clist_save>::getInstance().set_cachefun(
-					boost::bind(&actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
+					std::bind(&actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
 
 				cache_list<TDBTAB, enum_clist_del>::getInstance().set_cachefun(
-					boost::bind(&actor_dbtab<PROTYPE,TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
+					std::bind(&actor_dbtab<PROTYPE,TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
 
 				if (m_tab->m_isloadall == true)
 				{

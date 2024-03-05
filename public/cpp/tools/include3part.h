@@ -2,13 +2,11 @@
 
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/array.hpp>
 #include <boost/pool/pool.hpp> 
 #include <boost/pool/object_pool.hpp>    
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include <boost/function.hpp>
 #include <boost/thread.hpp>
 #include <boost/asio/placeholders.hpp>

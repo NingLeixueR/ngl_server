@@ -23,9 +23,12 @@ namespace ngl
 			lsocketthreadnum = net_config_socket_pthread_max_size;
 
 		std::function<bool(service_io*, const char*, uint32_t)> lfun
-			= boost::bind(&net_ws::socket_recv, this, _1, _2, _3);
+			= std::bind(&net_ws::socket_recv
+				, this
+				, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3
+			);
 
-		std::function<void(int)> lclosefun = boost::bind(&net_ws::close, this, _1);
+		std::function<void(int)> lclosefun = std::bind(&net_ws::close, this, std::placeholders::_1);
 		m_server = new asio_ws(port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {});
 		return true;
 	}

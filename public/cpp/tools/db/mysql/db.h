@@ -6,7 +6,6 @@
 #include <sstream> 
 #include <string>    
 #include <iostream>  
-#include <boost/bind.hpp>
 
 #include "include3part.h"
 #include "xmlinfo.h"

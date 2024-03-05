@@ -66,7 +66,8 @@ namespace ngl
 			}
 			m_acceptor->async_accept(
 				lservice->socket(),
-				boost::bind(&impl_asio_ws::handle_accept, this, lservice, boost::asio::placeholders::error)
+				boost::bind(
+					&impl_asio_ws::handle_accept, this, lservice, boost::asio::placeholders::error)
 			);
 		}
 
@@ -448,7 +449,6 @@ namespace ngl
 		inline void start(service_ws* aservice)
 		{
 			std::swap(aservice->m_buff1, aservice->m_buff2);
-			
 			aservice->m_ws.async_read_some(boost::asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize),
 				boost::bind(&impl_asio_ws::handle_read,
 					this,
