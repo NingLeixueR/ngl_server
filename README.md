@@ -28,34 +28,13 @@
   * protobuf 3.13.0
 
 ## 目录
-  * ngl/3part<br>此目录用于存放第三方库
-  ```
-    此目录用于存放第三方库
-  ```
-  * ngl/tools/public/idl
-  ```
-    csv表生成       		
-  ```
-  * ngl/tools/public/proto
-  ```
-    proto协议生成
-  ```
-  * ngl/tools/public/rebuild.bat
-  ```  
-    与cmake unity build类似的加速编译
-  ```
-  * ngl/public/cpp
-  ```            		  
-    cpp源码
-  ```
-  * ngl/public/csharp   
-  ```            
-    cs源码
-  ```
-  * ngl/server     
-  ```     		        
-    项目源文件
-  ```
+  * ngl/3part<br/>此目录用于存放第三方库
+  * ngl/tools/public/idl<br/>csv表生成
+  * ngl/tools/public/proto<br/>proto协议生成
+  * ngl/tools/public/rebuild.bat<br/>与cmake unity build类似的加速编译
+  * ngl/public/cpp<br/>cpp源码
+  * ngl/public/csharp<br/>cs源码
+  * ngl/server<br/>项目源文件
 
 ## Linux CentOs编译
   * 编译安装gcc (GCC) 13.1.0
