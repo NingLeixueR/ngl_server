@@ -43,7 +43,7 @@ namespace ngl
 		}
 		if (lpactor_base == nullptr)
 		{
-			LogLocalError("actor_base::create(%,%)", (int)atype, aid);
+			LogLocalError("actor_base::create(%,%)", (int)atype, aid)
 			return nullptr;
 		}
 		actor_manage::getInstance().add_actor(lpactor_base, [lpactor_base]() 

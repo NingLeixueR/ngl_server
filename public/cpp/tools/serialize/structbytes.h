@@ -101,7 +101,9 @@ namespace ngl
 			{
 				if (apack->m_head.getvalue(EPH_BYTES) != apack->m_pos)
 				{
-					LogLocalError("[##structbytes_protobuff::operator()] -> [%] != [%]", apack->m_head.getvalue(EPH_BYTES), apack->m_pos/* - llen*/);
+					LogLocalError("[##structbytes_protobuff::operator()] -> [%] != [%]"
+						, apack->m_head.getvalue(EPH_BYTES), apack->m_pos/* - llen*/
+					)
 					return false;
 				}
 				// ### encryption bytexor
@@ -124,7 +126,7 @@ namespace ngl
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
 			if (adata.SerializeToArray(lpair.first, lpair.second) == false)
 			{
-				LogLocalError("[##struct2bytes::operator()] push error");
+				LogLocalError("[##struct2bytes::operator()] push error")
 				return false;
 			}
 

@@ -20,7 +20,7 @@ namespace ngl
 		if (itor == m_fun.end())
 		{
 			if (aactor->type() != ACTOR_ADDRESS_CLIENT)
-				LogLocalError("handle_switch m_fun.find(%) == end", apram.m_enum);
+				LogLocalError("handle_switch m_fun.find(%) == end", apram.m_enum)
 			return false;
 		}
 		if (aactor->isloadfinish() == false && itor->second.m_isdbload == false)

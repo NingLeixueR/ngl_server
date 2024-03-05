@@ -46,7 +46,7 @@ namespace ngl
 
 	void actor_login::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_login::loaddb_finish");
+		LogLocalError("actor_login::loaddb_finish")
 		//for (auto& item : m_account.data())
 		//{
 		//	const pbdb::db_account& laccount = item.second.getconst();
@@ -56,7 +56,7 @@ namespace ngl
 		//		laccount.m_passworld(),
 		//		laccount.m_area(),
 		//		actor_guid(laccount.m_roleid()).actordataid()
-		//	);
+		//	)
 		//}
 	}
 
@@ -139,7 +139,7 @@ namespace ngl
 
 	void actor_login::printf_freeserver()
 	{
-		LogLocalError("game[%] \ngateway[%]", m_game, m_gateway);
+		LogLocalError("game[%] \ngateway[%]", m_game, m_gateway)
 	}
 	
 	bool actor_login::handle(message<actor_server_connect>& adata)

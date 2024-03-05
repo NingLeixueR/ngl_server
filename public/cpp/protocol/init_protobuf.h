@@ -50,7 +50,7 @@ namespace ngl
 			size_t lcode = hash_code<T>();
 			if (m_keyval.find(lcode) != m_keyval.end())
 			{
-				LogLocalError("init_customs(%) is same!!!", typeid(T).name());
+				LogLocalError("init_customs(%) is same!!!", typeid(T).name())
 				return;
 			}
 			m_keyval.insert(std::make_pair(lcode, pinfo

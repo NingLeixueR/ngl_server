@@ -87,7 +87,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_ranklist###loaddb_finish");
+			LogLocalError("actor_ranklist###loaddb_finish")
 			//std::map<actor_guid, data_modified<pbdb::db_notice>>& lnotice = data();
 			for (auto&& [id, dbranklist] : *get_ranklist())
 			{

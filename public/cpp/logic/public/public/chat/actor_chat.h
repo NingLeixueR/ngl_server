@@ -47,7 +47,7 @@ namespace ngl
 		bool handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 		{
 			pbnet::PROBUFF_NET_CHAT& recv = *adata.m_data->data();
-			LogLocalError("recv [pbnet::PROBUFF_NET_CHAT] type:%", recv.m_type());
+			LogLocalError("recv [pbnet::PROBUFF_NET_CHAT] type:%", recv.m_type())
 		
 			if (recv.m_type() == pbnet::chat_speak)
 			{

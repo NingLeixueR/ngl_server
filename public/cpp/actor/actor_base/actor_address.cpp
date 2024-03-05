@@ -18,7 +18,6 @@ namespace ngl
 		{
 			Try
 			{
-				const std::vector<i16_actortype>&lvec = anode.m_actortype;
 				int16_t lserverid = anode.m_serverid;
 				auto itor = m_session.find(lserverid);
 				bool ret = itor == m_session.end();
@@ -26,18 +25,24 @@ namespace ngl
 				_lnode.m_node = anode;
 				return ret;
 			}
-			Catch;
+			Catch
 			return false;
 		}
 
-		inline void print_address()
+		inline void print_address()const
 		{
-			LogLocalError("############################");
-			for (auto&& [_key, _value] : m_actorserver)
+			LogLocalError("############################")
+			for (const std::pair<actor_guid, i32_serverid>& ipair : m_actorserver)
 			{
-				LogLocalError("[%:%][%-%-%]", _key, _value, actor_guid::actordataid(_key), actor_typename::enum2name((ENUM_ACTOR)actor_guid::type(_key)), actor_guid::area(_key));
+				LogLocalError("[%:%][%-%-%]"
+					, ipair.first
+					, ipair.second
+					, actor_guid::actordataid(ipair.first)
+					, actor_typename::enum2name((ENUM_ACTOR)actor_guid::type(ipair.first))
+					, actor_guid::area(ipair.first)
+				)
 			}
-			LogLocalError("############################");
+			LogLocalError("############################")
 		}
 
 		inline i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid)
@@ -46,7 +51,7 @@ namespace ngl
 			{
 				i64_actorid lactorrole = actor_guid::make(ACTOR_ROLE, aarea, aroleid);
 				i32_serverid lserverid = get_server(lactorrole);
-				Assert(lserverid != -1);
+				Assert(lserverid != -1)
 				return get_session(lserverid);
 			}Catch;
 			return -1;
@@ -203,7 +208,7 @@ namespace ngl
 
 	void actor_address::actor_add(i32_serverid aserverid, i64_actorid adataid)
 	{
-		LogLocalError("######################serverid:actorid [%]:[%]", aserverid, adataid);
+		LogLocalError("######################serverid:actorid [%]:[%]", aserverid, adataid)
 		m_impl_actor_address()->actor_add(aserverid, adataid);
 	}
 

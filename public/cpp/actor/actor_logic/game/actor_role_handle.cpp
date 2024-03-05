@@ -6,7 +6,7 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();
-		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
+		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name())
 		return true;
 	}
 
@@ -23,7 +23,7 @@ namespace ngl
 			<< " actordataid	= " << actor_guid::actordataid(lrequest)
 			<< " area			= " << actor_guid::area(lrequest)
 			<< std::endl;
-		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name());
+		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name())
 
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
 		pro.set_m_utc(localtime::gettime());
@@ -42,14 +42,16 @@ namespace ngl
 		i32_sessionid lsession = nserver->get_sessionid(tab->m_id);
 		if (lsession == -1)
 		{
-			LogLocalError("LOGIC_SWITCH_LINE Error line[%] severid[%]", adata.m_data->m_line(), tab->m_id);
+			LogLocalError("LOGIC_SWITCH_LINE Error line[%] severid[%]"
+				, adata.m_data->m_line(), tab->m_id
+			)
 			return false;
 		}
 		actor_switch_process_role pro;
 		pro.m_create = false;
 		pro.m_gatewayid = m_gatewayid;
 		actor_create::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
-		//LogLocalError("######Switch Line##[%][%]", m_info.id(), m_info.db()->name());
+		//LogLocalError("######Switch Line##[%][%]", m_info.id(), m_info.db()->name())
 		//crossprocess<actor_role>(lserverid);
 		return true;
 	}

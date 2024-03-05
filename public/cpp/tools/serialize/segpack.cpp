@@ -114,7 +114,9 @@ namespace ngl
 					if (len >= net_config_recv_buff_maxbyte)
 					{
 						m_data.erase(aid);
-						LogLocalError("sockect recv [%] len >= SOCKECT_MAX_BUFF_SIZE(%)", lpack->m_head, (int)net_config_recv_buff_maxbyte);
+						LogLocalError("sockect recv [%] len >= SOCKECT_MAX_BUFF_SIZE(%)"
+							, lpack->m_head, (int)net_config_recv_buff_maxbyte
+						)
 						return false;
 					}
 				}
@@ -164,7 +166,11 @@ namespace ngl
 						protocol::push(lpack);
 					}
 					else
-						LogLocalError("time[% < % + % ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), DEF_TIMEOUT_SECOND);
+						LogLocalError("time[% < % + % ]"
+							, localtime::gettime()
+							, lpack->m_head.getvalue(EPH_TIME)
+							, DEF_TIMEOUT_SECOND
+						)
 					continue;
 				}
 				m_data[aid] = lpack;

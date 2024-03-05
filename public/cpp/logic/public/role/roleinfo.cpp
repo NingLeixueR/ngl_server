@@ -15,7 +15,7 @@ namespace ngl
 		std::string ljson;
 		if (tools::protostr((*pro->m_vecinfo.m_data)[0], ljson))
 		{
-			LogLocalError("roleinfo::sync_actor_roleinfo [%]", ljson);
+			LogLocalError("roleinfo::sync_actor_roleinfo [%]", ljson)
 		}
 
 		actor::static_send_actor(actor_guid::make_self(ACTOR_BRIEF), actor_guid::make(), pro);
@@ -23,10 +23,10 @@ namespace ngl
 
 	void roleinfo::initdata()
 	{
-		LogLocalError("#[roleinfo]	#[load finish]");
-		LogLocalError("#[id]		#[%]", actorbase()->id_guid());
-		LogLocalError("#[name]		#[%]", name());
-		LogLocalError("#[lv]		#[%]", lv());
+		LogLocalError("#[roleinfo]	#[load finish]")
+		LogLocalError("#[id]		#[%]", actorbase()->id_guid())
+		LogLocalError("#[name]		#[%]", name())
+		LogLocalError("#[lv]		#[%]", lv())
 	}
 
 	const int32_t roleinfo::m_id()

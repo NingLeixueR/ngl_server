@@ -47,7 +47,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_mail###loaddb_finish");
+			LogLocalError("actor_mail###loaddb_finish")
 			
 			for (const auto& [_roleid, _mails] : data())
 			{
@@ -81,7 +81,7 @@ namespace ngl
 			tab_mail* tab = allcsv::tab<tab_mail>(atid);
 			if (tab == nullptr)
 			{
-				LogLocalError("addmail tab id[%] not find!!!", atid);
+				LogLocalError("addmail tab id[%] not find!!!", atid)
 				return;
 			}
 			

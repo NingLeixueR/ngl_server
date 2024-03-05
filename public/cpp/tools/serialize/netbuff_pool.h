@@ -45,7 +45,7 @@ namespace ngl
 			char* lbuff = abuff - (sizeof(int) + sizeof(char));
 			if (*lbuff != 'k')
 			{
-				LogLocalError("netbuff<%,%>::free != k", InitBytes, Count);
+				LogLocalError("netbuff<%,%>::free != k", InitBytes, Count)
 				return;
 			}
 			int lindex = *(int*)(abuff - sizeof(int));

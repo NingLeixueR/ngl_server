@@ -154,7 +154,7 @@ namespace ngl
 			LogLocalError("actor_dbclient loaddb [%] [%]"
 				, tools::type_name<actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>>(lname)
 				, aid
-			);
+			)
 		}
 
 		actor_guid									m_id;
@@ -296,7 +296,7 @@ namespace ngl
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, larequestactorid);
 				if (lpack == nullptr)
 				{
-					// LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name());
+					// LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name())
 					return;
 				}
 				// ### 异步发送pack
@@ -329,7 +329,7 @@ namespace ngl
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, larequestactorid);
 				if (lpack == nullptr)
 				{
-					//LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name());
+					//LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name())
 					return;
 				}
 				// ### 异步发送pack
@@ -398,7 +398,7 @@ namespace ngl
 				LogLocalError("db load respones:[%] recv_over[%]"
 					, tools::type_name<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname)
 					, adata.m_data->m_over? "true":"false"
-				);
+				)
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch;
 			return true;
@@ -454,7 +454,7 @@ namespace ngl
 		{
 			if (m_typedbclientmap.empty())
 			{
-				LogLocalError("on_load_finish m_typedbclientmap.empty()");
+				LogLocalError("on_load_finish m_typedbclientmap.empty()")
 				return false;
 			}
 				
@@ -471,7 +471,7 @@ namespace ngl
 			}
 			if (!m_typedbclientmap.empty())
 			{
-				LogLocalError("on_load_finish !m_typedbclientmap.empty()");
+				LogLocalError("on_load_finish !m_typedbclientmap.empty()")
 				return false;
 			}
 				
@@ -538,13 +538,13 @@ namespace ngl
 		std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
 		if (mdbclient == nullptr)
 		{
-			//LogLocalError("get_actor_manage_dbclient() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid());
+			//LogLocalError("get_actor_manage_dbclient() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid())
 			return false;
 		}
 		actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
 		if (lp == nullptr)
 		{
-			//LogLocalError("mdbclient->data<DBTYPE, TDBTAB>() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid());
+			//LogLocalError("mdbclient->data<DBTYPE, TDBTAB>() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid())
 			return false;
 		}
 		return lp->handle(adata);

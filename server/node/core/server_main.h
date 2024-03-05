@@ -152,7 +152,7 @@ void init_DB_NOTICE()
 
 bool start_db(int argc, char** argv)
 {
-	LogLocalError("[%] start", "DB");
+	LogLocalError("[%] start", "DB")
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -216,7 +216,7 @@ bool start_db(int argc, char** argv)
 
 bool start_world()
 {
-	LogLocalError("[%] start", "WORLD");
+	LogLocalError("[%] start", "WORLD")
 	//config.m_nodetype = ngl::configxml_node::ACTORSERVER;
 
 	if (!init_server(nconfig::m_nodeid))
@@ -241,7 +241,7 @@ bool start_world()
 bool start_login()
 {
 	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
-	LogLocalError("[%] start", "LOGIN");
+	LogLocalError("[%] start", "LOGIN")
 	//config.m_nodetype = ngl::configxml_node::LOGIN;
 
 	if (!init_server(nconfig::m_nodeid))
@@ -259,7 +259,7 @@ bool start_login()
 bool start_gateway()
 {
 	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
-	LogLocalError("[%] start", "GATEWAY");
+	LogLocalError("[%] start", "GATEWAY")
 	//config.m_nodetype = ngl::configxml_node::GATEWAY;
 
 	if (!init_server(nconfig::m_nodeid))
@@ -280,7 +280,7 @@ bool start_gateway()
 bool start_log()
 {
 	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
-	LogLocalError("[%] start", "LOG");
+	LogLocalError("[%] start", "LOG")
 	//config.m_nodetype = ngl::configxml_node::LOG;
 
 	if (!init_server(nconfig::m_nodeid))
@@ -303,7 +303,7 @@ bool start_log()
 
 bool start_actor()
 {
-	LogLocalError("[%] start", "ACTORSERVER");
+	LogLocalError("[%] start", "ACTORSERVER")
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -316,7 +316,7 @@ bool start_actor()
 
 bool start_game()
 {
-	LogLocalError("[%] start", "GAME");
+	LogLocalError("[%] start", "GAME")
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -335,7 +335,7 @@ bool start_game()
 
 bool start_cross()
 {
-	LogLocalError("[%] start", "CROSS");
+	LogLocalError("[%] start", "CROSS")
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -385,7 +385,7 @@ bool start_pushserverconfig()
 
 			ngl::manage_curl::set_callback(*lhttp, [lstr](int, ngl::_http& ahttp)
 				{
-					LogLocalError("[%]->[%]", lstr, ahttp.m_recvdata);
+					LogLocalError("[%]->[%]", lstr, ahttp.m_recvdata)
 				});
 			ngl::manage_curl::getInstance().send(lhttp);
 		});
@@ -395,7 +395,7 @@ bool start_pushserverconfig()
 
 bool start_reloadcsv()
 {
-	LogLocalError("[%] start", "RELOADCSV");
+	LogLocalError("[%] start", "RELOADCSV")
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -413,7 +413,7 @@ bool start_reloadcsv()
 bool start_robot(int argc, char** argv)
 {
 	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
-	LogLocalError("[%] start", "ROBOT");
+	LogLocalError("[%] start", "ROBOT")
 	//config.m_nodetype = ngl::configxml_node::ROBOT;
 
 	if (!init_server(nconfig::m_nodeid))

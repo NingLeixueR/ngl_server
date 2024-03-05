@@ -33,7 +33,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_notice###loaddb_finish");
+			LogLocalError("actor_notice###loaddb_finish")
 			m_maxid = 0;
 			//std::map<actor_guid, data_modified<pbdb::db_notice>>& lnotice = data();
 			for (auto&& [id, dbnotice] : *get_notice())
@@ -44,7 +44,7 @@ namespace ngl
 					lnotice.m_notice(),
 					localtime::time2msstr(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S"),
 					localtime::time2msstr(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S")
-					);
+				)
 				if (m_maxid <= lnotice.m_id())
 					m_maxid = lnotice.m_id();
 			}

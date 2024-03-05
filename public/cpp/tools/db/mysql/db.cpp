@@ -49,7 +49,7 @@ namespace ngl
 			nullptr,
 			0))
 		{
-			LogLocalError("db::query[%]", mysql_error(m_mysql));
+			LogLocalError("db::query[%]", mysql_error(m_mysql))
 			closedb();
 			return false;
 		}
@@ -98,10 +98,10 @@ namespace ngl
 		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1));
 		if (ret != 0)
 		{
-			LogLocalError("db::query[%][%]", mysql_error(m_mysql), (const char*)asql);
+			LogLocalError("db::query[%][%]", mysql_error(m_mysql), (const char*)asql)
 			return false;
 		}
-		LogLocalError("db::query[%]", asql);
+		LogLocalError("db::query[%]", asql)
 		return true;
 	}
 

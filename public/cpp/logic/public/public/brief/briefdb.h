@@ -48,7 +48,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_brief###loaddb_finish");
+			LogLocalError("actor_brief###loaddb_finish")
 			
 			for (const std::pair<const actor_guid, data_modified<pbdb::db_brief>>& pair : data())
 			{

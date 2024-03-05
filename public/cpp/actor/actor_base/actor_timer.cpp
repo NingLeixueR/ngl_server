@@ -16,7 +16,7 @@ namespace ngl
 			{
 				if (actor_manage::getInstance().is_have_actor(lidguid) == false)
 				{
-					LogLocalError("time run fail: actorid[%]", lidguid);
+					LogLocalError("time run fail: actorid[%]", lidguid)
 					return;
 				}
 

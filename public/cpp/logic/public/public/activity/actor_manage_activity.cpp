@@ -118,7 +118,7 @@ namespace ngl
 			tab_activity* tab = lpcsv->find(aactivityid);
 			if (tab == nullptr)
 			{
-				LogLocalError("actor_manage_activity::init_activity() actorid=% tab_activitynot find!!!");
+				LogLocalError("actor_manage_activity::init_activity() actorid=% tab_activitynot find!!!")
 				return;
 			}
 			if (int32_t lbeg = 0, lend = 0; ttab_calendar::get(tab->m_calendarid, 0, lbeg, lend))

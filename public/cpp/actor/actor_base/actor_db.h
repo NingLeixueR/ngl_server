@@ -147,7 +147,9 @@ namespace ngl
 			{
 				if (m_idset.find(lid) == m_idset.end())
 				{
-					LogLocalError("load <<%>>===<<%>>", typeid(actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>).name(), lid);
+					LogLocalError("load <<%>>===<<%>>"
+						, typeid(actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>).name(), lid
+					)
 					return;
 				}
 					
@@ -167,7 +169,10 @@ namespace ngl
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
 				nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
 				std::string lname;
-				LogLocalError("load finish: [%][%]", lrequestactor, tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname));
+				LogLocalError("load finish: [%][%]"
+					, lrequestactor
+					, tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname)
+				)
 			}
 		}
 
@@ -284,7 +289,7 @@ namespace ngl
 			std::string lname;
 			LogLocalError("load: [%] [%]", 
 				tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname),
-				adata.m_data->m_id);
+				adata.m_data->m_id)
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}

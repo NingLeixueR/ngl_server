@@ -517,7 +517,7 @@ namespace ngl
 					, localtime::gettime()
 					, lpack->m_head.getvalue(EPH_TIME)
 					, DEF_TIMEOUT_SECOND
-				);
+				)
 			}
 			return true;
 		}
@@ -537,7 +537,7 @@ namespace ngl
 								, lpstruct->m_kcp->conv
 								, lpstruct->m_kcp->current
 								, lpstruct->m_kcp->dead_link
-							);
+							)
 							int linput = lpstruct->input(m_buff, bytes_received);
 							if (linput >= 0)
 							{
@@ -580,7 +580,7 @@ namespace ngl
 								LogLocalError("[·Çkcp°ü:input < 0][%][%]"
 									, m_remoteport.address().to_string()
 									, m_remoteport.port()
-								);
+								)
 								if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
 								{
 									std::string lip = m_remoteport.address().to_string();
@@ -663,7 +663,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), lpstruct->m_endpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
+						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what())
 				});
 			return 0;
 		}
@@ -674,7 +674,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
+						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what())
 				});
 			return 0;
 		}

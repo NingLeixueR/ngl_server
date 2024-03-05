@@ -28,18 +28,22 @@ namespace ngl
 				if (itor1 == m_protocolfun.end())
 				{
 					char m_hexstr[1024] = {0};
-					LogLocalError("protocol::push [%] Error protocolnum[%] ", lprotocoltype, protocoltools::hex_str(m_hexstr, lprotocolnum));
+					LogLocalError("protocol::push [%] Error protocolnum[%] "
+						, lprotocoltype, protocoltools::hex_str(m_hexstr, lprotocolnum)
+					)
 					return;
 				}
 				auto itor2 = itor1->second.find(lprotocolnum);
 				if (itor2 == itor1->second.end())
 				{
 					char m_hexstr[1024] = { 0 };
-					LogLocalError("protocol::push Error protocolnum[%] ", protocoltools::hex_str(m_hexstr, lprotocolnum));
+					LogLocalError("protocol::push Error protocolnum[%] "
+						, protocoltools::hex_str(m_hexstr, lprotocolnum)
+					)
 					return;
 				}
 				const char* lpprotocolname = protocoltools::name(lprotocolnum, lprotocoltype);
-				LogLocalError("protocol::push Info [%]", lpprotocolname);
+				LogLocalError("protocol::push Info [%]", lpprotocolname)
 				lpfun = &itor2->second;
 			}
 			std::shared_ptr<void> lptrpram = lpfun->m_packfun(apack);

@@ -117,7 +117,7 @@ namespace ngl
 		std::string lxmlname(dir);
 		lxmlname += axml;
 		lxmlname += ".xml";
-		LogLocalError("begin xmlnode read [%]", lxmlname);
+		LogLocalError("begin xmlnode read [%]", lxmlname)
 
 		if (!xml::read(lxmlname, m_root))
 			return;
@@ -126,7 +126,7 @@ namespace ngl
 		loadpublic();
 		loaddb();
 
-		LogLocalError("finish xmlnode read [%]", lxmlname);
+		LogLocalError("finish xmlnode read [%]", lxmlname)
 	}
 
 	void xmlnode::read_config(boost_ptree& apt, xmlinfo& anfo)

@@ -27,11 +27,11 @@ namespace ngl
 		char lbuff[1024] = { 0x0 };
 		if (names(lbuff, 1024, aprotocolname.c_str(), aprotocolnum, atype))
 		{
-			LogLocalError("protocol_push [%] ", lbuff);
+			LogLocalError("protocol_push [%] ", lbuff)
 			em<eprotocol>::set((eprotocol)aprotocolnum, lbuff, atype);
 		}
 		else
-			LogLocalError("protocol_push fail [%] ", lbuff);
+			LogLocalError("protocol_push fail [%] ", lbuff)
 	}
 
 	const char* protocoltools::name(i32_protocolnum aprotocolnum, EPROTOCOL_TYPE atype)

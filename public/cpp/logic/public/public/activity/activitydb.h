@@ -46,7 +46,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_manage_activity###loaddb_finish");
+			LogLocalError("actor_manage_activity###loaddb_finish")
 			
 			for (const auto& [_roleid, _activity] : data())
 			{

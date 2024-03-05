@@ -35,7 +35,10 @@ namespace ngl
 	{
 		Try
 		{
-			LogLocalError("[LOGIC_ROLE_SYNC:%:%]", adata.m_data->m_role().m_base().m_name(),  adata.m_data->m_role().m_base().m_lv());
+			LogLocalError("[LOGIC_ROLE_SYNC:%:%]"
+				, adata.m_data->m_role().m_base().m_name()
+				,  adata.m_data->m_role().m_base().m_lv()
+			)
 			m_data = *adata.m_data;
 		}Catch;
 
@@ -57,7 +60,7 @@ namespace ngl
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.m_data->m_utc(), "%y/%m/%d %H:%M:%S");
-		//LogLocalError("[%][%]", m_data.m_role().m_base().m_name(), lbuff);
+		//LogLocalError("[%][%]", m_data.m_role().m_base().m_name(), lbuff)
 		std::cout << m_data.m_role().m_base().m_name() << ":" << lbuff << std::endl;
 		return true;
 	}
@@ -73,14 +76,14 @@ namespace ngl
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
 
 				//LogLocalError("[%][%][%] %", lbuff, 
-				//	actor_guid::area(item.m_roleid()), item.m_rolename(), item.m_content());
+				//	actor_guid::area(item.m_roleid()), item.m_rolename(), item.m_content())
 
 				std::cout << actor_guid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
 			}
 		}
 		else if (lrecv->m_type() == pbnet::chat_speak)
 		{
-			//LogLocalError("%", (adata.m_stat() ? "[发言成功]" : "[发言失败] "));
+			//LogLocalError("%", (adata.m_stat() ? "[发言成功]" : "[发言失败] "))
 			std::cout << (lrecv->m_stat() ? "[发言成功]" : "[发言失败] ") << std::endl;
 		}
 		else if (lrecv->m_type() == pbnet::updata_speck)
@@ -90,7 +93,7 @@ namespace ngl
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
 				//LogLocalError("[%][%][%] %", lbuff,
-				//	actor_guid::area(item.m_roleid()), item.m_rolename(), item.m_content());
+				//	actor_guid::area(item.m_roleid()), item.m_rolename(), item.m_content())
 				std::cout << actor_guid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
 			}
 		}
@@ -135,7 +138,11 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
 	{
-		LogLocalError("[%][%][%]", actor_guid::make_type(id_guid(), ACTOR_ROLE), adata.m_data->m_errnum(), adata.m_data->m_errmessage());
+		LogLocalError("[%][%][%]"
+			, actor_guid::make_type(id_guid(), ACTOR_ROLE)
+			, adata.m_data->m_errnum()
+			, adata.m_data->m_errmessage()
+		)
 		return true;
 	}
 

@@ -23,7 +23,7 @@ namespace ngl
 			auto itor = m_taskdata.find(atype);
 			if (itor == m_taskdata.end())
 			{
-				LogLocalError("taskcheck::check type[%] not find!!!", (int)atype);
+				LogLocalError("taskcheck::check type[%] not find!!!", (int)atype)
 				return false;
 			}
 			return itor->second->check_receives(arole, aparmint);
@@ -34,7 +34,7 @@ namespace ngl
 			auto itor = m_taskdata.find(atype);
 			if (itor == m_taskdata.end())
 			{
-				LogLocalError("taskcheck::values type[%] not find!!!", (int)atype);
+				LogLocalError("taskcheck::values type[%] not find!!!", (int)atype)
 				return false;
 			}
 			itor->second->values(arole, aparmint);

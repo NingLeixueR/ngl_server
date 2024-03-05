@@ -161,7 +161,7 @@ namespace ngl
 		{
 			if (m_kcpsession == -1)
 			{
-				LogLocalError("m_kcpsession = -1, is_single() == [%]", is_single());
+				LogLocalError("m_kcpsession = -1, is_single() == [%]", is_single())
 				return false;
 			}
 			if (iskcp() == false)

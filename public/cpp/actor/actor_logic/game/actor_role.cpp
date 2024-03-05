@@ -86,7 +86,7 @@ namespace ngl
 					ojson ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
-						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata);
+						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata)
 						return;
 					}
 					std::pair<const char*, const char*> orderid("orderid", "");
@@ -115,7 +115,7 @@ namespace ngl
 
 	void actor_role::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_role###loaddb_finish#[%]", actor_guid(id_guid()));
+		LogLocalError("actor_role###loaddb_finish#[%]", actor_guid(id_guid()))
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
@@ -146,7 +146,7 @@ namespace ngl
 		*pro->mutable_m_bag() = m_bag.get()->getconst();
 		*pro->mutable_m_task() = m_task.get()->getconst();
 		send2client(pro);
-		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
+		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name())
 	}
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
@@ -167,7 +167,7 @@ namespace ngl
 		tab_recharge* tab = allcsv::tab<tab_recharge>(adata.m_data->m_rechargeid());
 		if (tab == nullptr)
 		{
-			LogLocalError("tab_recharge id[%] not find", adata.m_data->m_rechargeid());
+			LogLocalError("tab_recharge id[%] not find", adata.m_data->m_rechargeid())
 			pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_NotRechargeId);
 			send2client(pro);
 			return true;
@@ -215,7 +215,7 @@ namespace ngl
 		tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);
 		if (tab == nullptr)
 		{
-			LogLocalError("tab_recharge id[%] not find", lrechargeid);
+			LogLocalError("tab_recharge id[%] not find", lrechargeid)
 			pro->data()->set_m_stat(1);
 			return true;
 		}

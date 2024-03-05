@@ -21,7 +21,7 @@ namespace ngl
 		{
 			if (lreply)
 			{
-				LogLocalError("[ERROR] Redis[%] ", lreply->str);
+				LogLocalError("[ERROR] Redis[%] ", lreply->str)
 				freeReplyObject(lreply);
 			}
 			redisFree(m_rc);
@@ -50,7 +50,7 @@ namespace ngl
 		m_rc = redisConnect(arg.m_ip.c_str(), arg.m_port);
 		if (m_rc->err)
 		{
-			LogLocalError("[ERROR] Redis[%] ", m_rc->err);
+			LogLocalError("[ERROR] Redis[%] ", m_rc->err)
 			assert(0);
 			return;
 		}

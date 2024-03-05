@@ -47,7 +47,9 @@ namespace ngl
 		auto lpair = lbag.mutable_m_items()->insert({ aitem.m_id(), aitem });
 		if (lpair.second == false)
 		{
-			LogLocalError("add_item roleid=[%] tid=[%] mutable_m_items()->insert(%) == false", actor()->id_guid(), aitem.m_tid(), aitem.m_id());
+			LogLocalError("add_item roleid=[%] tid=[%] mutable_m_items()->insert(%) == false"
+				, actor()->id_guid(), aitem.m_tid(), aitem.m_id()
+			)
 			return nullptr;
 		}
 		lbag.set_m_maxid(lid);
@@ -96,7 +98,7 @@ namespace ngl
 			}
 		}
 		get_bag().set_m_maxid(lid);
-		LogBI("%|%|%|%", actorbase()->id_guid(), g_remakes(actor()), atid, acount);
+		LogBI("%|%|%|%", actorbase()->id_guid(), g_remakes(actor()), atid, acount)
 		return true;
 	}
 
