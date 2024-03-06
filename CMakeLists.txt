@@ -114,6 +114,9 @@ INCLUDE_DIRECTORIES(public/cpp/logic/public/public/brief)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
 INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 
+INCLUDE_DIRECTORIES(third)
+INCLUDE_DIRECTORIES(third/boost)
+INCLUDE_DIRECTORIES(third/protobuf)
 
 #ADD_DEFINITIONS(-DCMAKE_CXX_FLAGS=-DTBB_ALLOCATOR_TRAITS_BROKEN)
 
