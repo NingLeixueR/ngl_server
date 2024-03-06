@@ -138,7 +138,7 @@ namespace ngl
 			m_kcpsession = asession;
 		}
 
-		bool iskcp()
+		static bool iskcp()
 		{
 			enum elocalkcp
 			{
@@ -169,8 +169,6 @@ namespace ngl
 			ukcp::getInstance().send(m_kcpsession, adata, aactorid, id_guid());
 			return true;
 		}
-
-	
 
 		template <typename T>
 		static bool static_sendkcp(

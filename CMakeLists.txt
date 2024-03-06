@@ -150,10 +150,10 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 
 
-IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-add_subdirectory(3part)
-add_subdirectory(public)
-ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+#IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+#add_subdirectory(3part)
+#add_subdirectory(public)
+#ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 add_subdirectory(server)
 
 ######################使用多处理器编译########################
