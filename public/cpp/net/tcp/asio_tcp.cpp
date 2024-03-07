@@ -3,7 +3,6 @@
 #include "nlog.h"
 #include "pack.h"
 
-
 namespace ngl
 {
 	struct asio_tcp::impl_asio_tcp
@@ -402,7 +401,6 @@ namespace ngl
 				close(aservice);
 				LogLocalError("asio_tcp::handle_read[%]", error.message().c_str())
 			}
-
 		}
 
 		inline void start(service_tcp* aservice)

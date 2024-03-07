@@ -4,8 +4,7 @@
 #include "pack.h"
 
 namespace ngl
-{
-	
+{	
 	struct asio_ws::impl_asio_ws
 	{
 		boost::asio::ip::tcp::acceptor*					m_acceptor;
@@ -19,8 +18,6 @@ namespace ngl
 		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>> m_ipport;
 		std::unordered_map<i32_sessionid, std::function<void()>> m_sessionclose;
 		std::shared_mutex								m_ipportlock;
-
-		std::unique_ptr<work_list<node_pack>>			m_sendlist;
 
 		impl_asio_ws(
 			i16_port aport

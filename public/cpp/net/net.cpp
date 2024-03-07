@@ -20,5 +20,4 @@ namespace ngl
 		i32_sessionid lsession = lpnet->get_sessionid(aserverid);
 		return nets::net()->sendpack(lsession, apack);
 	}
-
 }//namespace ngl

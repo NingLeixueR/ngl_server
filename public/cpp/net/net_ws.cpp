@@ -52,7 +52,6 @@ namespace ngl
 			});
 	}
 
-	//## ·¢ËÍÏûÏ¢
 	bool net_ws::net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack)
 	{
 		return m_server->sendpack(asession, lpack);
@@ -67,5 +66,4 @@ namespace ngl
 	{
 		return m_server->exist_session(asession);
 	}
-
 }//namespace ngl

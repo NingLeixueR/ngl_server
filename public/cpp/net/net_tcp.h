@@ -6,7 +6,7 @@ namespace ngl
 {
 	class net_tcp : public net_protocol
 	{
-		asio_tcp* m_server;
+		asio_tcp*				m_server;
 		std::vector<segpack*>	m_segpackvec;
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, uint32_t abufflen);
@@ -30,5 +30,4 @@ namespace ngl
 
 		virtual bool exist_session(i32_sessionid asession);
 	};
-
 }

@@ -3,8 +3,8 @@
 #include "actor_enum.h"
 #include "actor_base.h"
 #include "actor_rfun.h"
-#include "impl.h"
 #include "actor_type.h"
+#include "impl.h"
 
 namespace ngl
 {
@@ -167,7 +167,6 @@ namespace ngl
 		virtual actor_stat get_activity_stat() final;
 
 		virtual void set_activity_stat(actor_stat astat) final;
-
 	private:
 		virtual void release() final;
 
@@ -178,7 +177,6 @@ namespace ngl
 		virtual void clear_task() final;
 
 		virtual void actor_handle(i32_threadid athreadid) final;
-
 	public:
 #pragma region ActorBroadcast
 		// ############# Start[Actor 全员广播] ############# 

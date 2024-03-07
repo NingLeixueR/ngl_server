@@ -7,12 +7,12 @@
 #include "asio_ws.h"
 #include "asio_tcp.h"
 #include "asio_kcp.h"
-#include "pack.h"
-#include "segpack.h"
-#include "handle_pram.h"
 #include "actor_base.h"
+#include "handle_pram.h"
 #include "structbytes.h"
 #include "impl.h"
+#include "pack.h"
+#include "segpack.h"
 
 namespace ngl
 {
@@ -105,6 +105,16 @@ namespace ngl
 		//## 服务器是否存在此session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
+		int socketthreadnum();
+		int port();
+		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
+		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+		void set_server(i32_serverid aserverid, i32_sessionid asession);
+		i32_sessionid get_sessionid(i32_serverid aserverid);
+		i32_serverid get_serverid(i32_sessionid asession);
+		i64_actorid moreactor();
+
 		virtual void set_close(
 			int asession
 			, const std::string& aip
@@ -127,10 +137,6 @@ namespace ngl
 			, bool areconnection
 		);
 
-		int socketthreadnum();
-
-		int port();
-
 		//// --- 发送消息
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
@@ -149,12 +155,6 @@ namespace ngl
 				return false;
 			return true;
 		}
-				
-		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
-
-		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
-
-		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
@@ -216,7 +216,6 @@ namespace ngl
 			return true;
 		}
 
-
 		template <typename T>
 		bool sendmore(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -234,14 +233,6 @@ namespace ngl
 		{
 			return sendmore_stl(asession, adata, aactorid, arequestactorid);
 		}
-
-		void set_server(i32_serverid aserverid, i32_sessionid asession);
-
-		i32_sessionid get_sessionid(i32_serverid aserverid);
-
-		i32_serverid get_serverid(i32_sessionid asession);
-
-		i64_actorid moreactor();
 
 		template <typename T>
 		bool send_server(i32_serverid aserverid, T& adata, uint64_t aactorid, uint64_t arequestactorid)

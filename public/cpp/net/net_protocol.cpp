@@ -10,12 +10,10 @@ namespace ngl
 		i32_threadsize			m_socketthreadnum;								// socket 接收数据线程数
 		bpool					m_pool;
 		bool					m_outernet;									    // 是否允许外网连接
-
 		std::map<i32_serverid, i32_sessionid> m_serverbysession;
 		std::map<i32_sessionid, i32_serverid> m_sessionbyserver;
-		std::shared_mutex	m_mutex;
-
-		std::list<pack> m_packlist;
+		std::shared_mutex		m_mutex;
+		std::list<pack>			m_packlist;
 
 		impl_net_protocol():
 			m_port(0x0),
@@ -198,5 +196,4 @@ namespace ngl
 	{
 		return actor_guid::moreactor();
 	}
-
 }
