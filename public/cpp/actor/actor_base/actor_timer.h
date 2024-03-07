@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "actor_define.h"
+#include "ndefine.h"
 #include "actor_protocol.h"
 #include "time_wheel.h"
 #include "serialize.h"

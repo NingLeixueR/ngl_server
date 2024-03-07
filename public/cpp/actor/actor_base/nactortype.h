@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-#include "actor_define.h"
+#include "ndefine.h"
 #include "csvtable.h"
 #include "data.pb.h"
 #include "db.pb.h"
@@ -63,13 +63,13 @@ namespace ngl
 	};
 
 	// 通过名字获取枚举
-	class actor_typename
+	class nactortype
 	{
-		actor_typename();
+		nactortype();
 	public:
-		static actor_typename& getInstance()
+		static nactortype& getInstance()
 		{
-			static actor_typename ltemp;
+			static nactortype ltemp;
 			return ltemp;
 		}
 

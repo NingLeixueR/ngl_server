@@ -1,5 +1,6 @@
 #include "server_main.h"
 #include "dumper.h"
+#include "nactortype.h"
 
 Dumper lDumper;
 
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
 #endif
 	Dumper::m_excname = lname;
 
-	ngl::actor_typename::getInstance();
+	ngl::nactortype::getInstance();
 	ngl::actor_base::start_broadcast();
 
 	assert(nconfig::node_type() != ngl::FAIL);

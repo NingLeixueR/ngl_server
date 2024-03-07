@@ -3,7 +3,7 @@
 #include "actor_manage.h"
 #include "actor_db_client.h"
 #include "actor_timer.h"
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "db_data.h"
 #include "db.h"
 #include "db_pool.h"

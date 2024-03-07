@@ -47,7 +47,7 @@ namespace ngl
 			return true;
 		}
 	}
-	public enum EPH_HEAD_VAL
+	enum EPH_HEAD_VAL
 	{
 		EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
 		EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致

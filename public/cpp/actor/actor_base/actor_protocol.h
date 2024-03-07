@@ -1,8 +1,8 @@
 #pragma once
 
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "serialize.h"
-#include "actor_define.h"
+#include "ndefine.h"
 #include "pack.h"
 #include "type.h"
 #include "nguid.h"

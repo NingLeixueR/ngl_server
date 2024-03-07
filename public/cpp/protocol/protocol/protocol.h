@@ -5,7 +5,7 @@
 #include "threadtools.h"
 #include "nlog.h"
 #include "type.h"
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "pack.h"
 #include "actor_protocol.h"
 #include "handle_pram.h"

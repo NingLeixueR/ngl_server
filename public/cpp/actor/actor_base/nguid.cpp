@@ -36,7 +36,7 @@ namespace ngl
 	{
 		nguid lguid(aactorid);
 		i16_actortype ltype = lguid.type();
-		return actor_typename::enum2name((ENUM_ACTOR)ltype);
+		return nactortype::enum2name((ENUM_ACTOR)ltype);
 	}
 
 	i64_actorid nguid::make(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid)

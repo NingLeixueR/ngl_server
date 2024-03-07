@@ -1,4 +1,4 @@
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "enum2name.h"
 
 namespace ngl
@@ -8,7 +8,7 @@ namespace ngl
 		return aenum >= ACTOR_SIGNLE_START;
 	}
 
-	actor_typename::actor_typename()
+	nactortype::nactortype()
 	{
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_ROLE));
 		em<ENUM_ACTOR>::set(em_pram(ACTOR_ROBOT));
@@ -41,7 +41,7 @@ namespace ngl
 		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_NOTICE)));
 	}
 
-	bool actor_typename::name2enum(const std::string& aenumname, ENUM_ACTOR& avalue)
+	bool nactortype::name2enum(const std::string& aenumname, ENUM_ACTOR& avalue)
 	{
 		auto lpair = em<ENUM_ACTOR>::get_enum(aenumname.c_str());
 		if (lpair.second == false)
@@ -50,7 +50,7 @@ namespace ngl
 		return true;
 	}
 
-	const char* actor_typename::enum2name(ENUM_ACTOR aenum)
+	const char* nactortype::enum2name(ENUM_ACTOR aenum)
 	{
 		auto lpair = em<ENUM_ACTOR>::get_name(aenum);
 		if (lpair.second == false)

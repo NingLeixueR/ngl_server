@@ -2,7 +2,7 @@
 
 #include "actor.h"
 #include "actor_manage.h"
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "nregister.h"
 #include "actor_db.h"
 #include "net.h"

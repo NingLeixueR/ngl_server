@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "actor_base.h"
 #include "actor_type.h"
 #include "nrfun.h"

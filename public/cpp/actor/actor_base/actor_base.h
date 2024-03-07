@@ -7,7 +7,7 @@
 #include <atomic>
 #include <list>
 
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "nguid.h"
 #include "actor_timer.h"
 #include "localtime.h"

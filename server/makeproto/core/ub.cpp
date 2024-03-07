@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-03-07 18:45:31
+// 创建时间 24-03-07 19:09:50
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -13,7 +13,6 @@
 #include "actor_cross.cpp"
 #include "actor_db.cpp"
 #include "actor_db_client.cpp"
-#include "actor_enum.cpp"
 #include "actor_gateway.cpp"
 #include "actor_gateway_client2game.cpp"
 #include "actor_gateway_game2client.cpp"
@@ -83,6 +82,7 @@
 #include "matching.cpp"
 #include "md5.cpp"
 #include "mdump.cpp"
+#include "nactortype.cpp"
 #include "naddress.cpp"
 #include "net.cpp"
 #include "net_protocol.cpp"

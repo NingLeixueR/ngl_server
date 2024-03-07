@@ -1,5 +1,5 @@
 #include "naddress.h"
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "nguid.h"
 #include "actor_base.h"
 #include "net.h"
@@ -38,7 +38,7 @@ namespace ngl
 					, ipair.first
 					, ipair.second
 					, nguid::actordataid(ipair.first)
-					, actor_typename::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
+					, nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
 					, nguid::area(ipair.first)
 				)
 			}

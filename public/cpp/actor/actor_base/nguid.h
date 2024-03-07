@@ -1,8 +1,8 @@
 #pragma once
 
-#include "actor_enum.h"
+#include "nactortype.h"
 #include "type.h"
-#include "actor_define.h"
+#include "ndefine.h"
 
 namespace ngl
 {
@@ -38,7 +38,7 @@ namespace ngl
 		i32_actordataid actordataid()const;
 		// 获取区服
 		i16_area area()const;
-		// 通过actor_typename::enum2name获取枚举对应字符串
+		// 通过nactortype::enum2name获取枚举对应字符串
 		static const char* name(i64_actorid aactorid);
 		// 根据类型、区服、数据id创建一个i64_actorid
 		static i64_actorid make(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);

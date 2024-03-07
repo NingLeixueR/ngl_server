@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "actor_enum.h"
+#include "nactortype.h"
 #include <boost/type_index.hpp>
 
 namespace ngl
