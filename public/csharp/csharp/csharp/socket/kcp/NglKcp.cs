@@ -302,6 +302,5 @@ namespace ngl
             if (lpack != null && m_propack != null)
                 m_propack.LogicFun(lpack);
         }
-
     }
 }

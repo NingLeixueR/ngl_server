@@ -65,7 +65,9 @@ namespace ngl
 
         public async void SendAsync(byte[] datagram, int bytes)
         {
-            kcp?.Send(datagram.AsSpan().Slice(0, bytes));
+            if (kcp == null)
+                return;
+           kcp.Send(datagram.AsSpan().Slice(0, bytes));
         }
 
         public async ValueTask<byte[]?> ReceiveAsync()

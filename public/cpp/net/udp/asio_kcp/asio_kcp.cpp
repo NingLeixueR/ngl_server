@@ -319,7 +319,7 @@ namespace ngl
 			m_cmdfun[anum] = afun;
 		}
 
-		static void sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
+		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
 	};
 
 	struct asio_kcp::impl_asio_kcp
@@ -776,12 +776,17 @@ namespace ngl
 
 	std::map<udp_cmd::ecmd, udp_cmd::ecmd_callback> udp_cmd::m_cmdfun;
 
-	void udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
+	bool udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
 	{
-		std::stringstream lstream;
-		lstream << "ecmd*" << (int)acmd << "*" << ajson;
-		std::string lstr = lstream.str();
-		akcp->get_impl()->send(asession, lstr.c_str(), lstr.size()+1);
+		char lbuff[1024] = { 0 };
+		int lsize = snprintf(lbuff, 1024, "ecmd*%d*%s", (int)acmd, ajson.c_str());
+		if (lsize <= 0)
+		{
+			LogLocalError("udp_cmd::sendcmd fail [%][%]", (int)acmd, ajson)
+			return false;
+		}
+		akcp->get_impl()->send(asession, lbuff, lsize);
+		return true;
 	}
 
 	asio_kcp::asio_kcp(i16_port port)
