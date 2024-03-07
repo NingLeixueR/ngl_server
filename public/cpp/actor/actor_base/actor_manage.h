@@ -7,7 +7,7 @@
 #include "actor_base.h"
 #include "actor_thread.h"
 #include "actor_client.h"
-#include "actor_address.h"
+#include "naddress.h"
 #include "threadtools.h"
 #include "pack.h"
 #include "net.h"
@@ -40,16 +40,16 @@ namespace ngl
 		bool add_actor(ptractor& apactor, const std::function<void()>& afun);
 
 		// 移除actor
-		void erase_actor_byid(const actor_guid& aguid, const std::function<void()>& afun = nullptr);
+		void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
 		// 是否存在某个actor
-		bool is_have_actor(const actor_guid& aguid);
+		bool is_have_actor(const nguid& aguid);
 
 		// 工作线程将actor添加到m_actorlist
 		void push(ptractor& apactor, actor_thread* atorthread = nullptr);
 
 		// 向actor中添加任务
-		void push_task_id(const actor_guid& aguid, handle_pram& apram, bool abool);
+		void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
 
 		// 向某个类型的actor中添加任务
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
@@ -103,7 +103,7 @@ namespace ngl
 						Catch;
 				});
 				ltemp.template init_rfun<T>();
-				T::actor_register();
+				T::nregister();
 			}Catch;
 		}
 		return ltemp;

@@ -37,7 +37,7 @@ namespace ngl
 			return actor_instance<actor_chat>::instance();
 		}
 
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_chat() {}
 

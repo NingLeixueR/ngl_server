@@ -1,5 +1,5 @@
 #include "pack_head.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "nlog.h"
 
 namespace ngl
@@ -99,22 +99,22 @@ namespace ngl
 
 	i16_actortype pack_head::get_actortype()const
 	{
-		return actor_guid::type(get_actor());
+		return nguid::type(get_actor());
 	}
 
 	i16_actortype pack_head::get_request_actortype()const
 	{
-		return actor_guid::type(get_request_actor());
+		return nguid::type(get_request_actor());
 	}
 
 	i16_area pack_head::get_actorearea()const
 	{
-		return actor_guid::area(get_actor());
+		return nguid::area(get_actor());
 	}
 
 	i32_actordataid pack_head::get_actordataid()const
 	{
-		return actor_guid::actordataid(get_actor());
+		return nguid::actordataid(get_actor());
 	}
 
 	void pack_head::reset()

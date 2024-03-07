@@ -29,7 +29,7 @@ namespace ngl
 		);
 	}
 
-	void actor_matching::actor_register()
+	void actor_matching::nregister()
 	{
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_matching>(&actor_matching::timer_handle);

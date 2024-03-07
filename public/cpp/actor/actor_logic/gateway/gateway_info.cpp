@@ -64,8 +64,8 @@ namespace ngl
 	// ### 删除连接信息
 	void gateway_info::remove_actorid(i64_actorid aactorid)
 	{
-		i32_actordataid lactordataid = actor_guid::actordataid(aactorid);
-		i32_actordataid larea = actor_guid::area(aactorid);
+		i32_actordataid lactordataid = nguid::actordataid(aactorid);
+		i32_actordataid larea = nguid::area(aactorid);
 		auto itor_area = m_info.find(larea);
 		if (itor_area == m_info.end())
 			return;
@@ -115,19 +115,19 @@ namespace ngl
 		{
 			for (auto&& [_roledataid, _info] : _map)
 			{
-				m_subscribe_to.insert(std::make_pair(ngl::actor_guid::make(ACTOR_ROLE, _area, _roledataid), _info.m_gatewayid));
+				m_subscribe_to.insert(std::make_pair(ngl::nguid::make(ACTOR_ROLE, _area, _roledataid), _info.m_gatewayid));
 			}
 		}
 	}
 
 	int64_t gateway_info::get_gatewayid(int64_t aid)
 	{
-		auto itor = m_info.find(ngl::actor_guid::area(aid));
+		auto itor = m_info.find(ngl::nguid::area(aid));
 		if (itor == m_info.end())
 		{
 			return -1;
 		}
-		auto itorinfo = itor->second.find(ngl::actor_guid::actordataid(aid));
+		auto itorinfo = itor->second.find(ngl::nguid::actordataid(aid));
 		return itorinfo->second.m_gatewayid;
 	}
 

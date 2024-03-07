@@ -1,18 +1,18 @@
-#include "actor_address.h"
+#include "naddress.h"
 #include "actor_enum.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "actor_base.h"
 #include "net.h"
 
 namespace ngl
 {
-	struct actor_address::impl_actor_address
+	struct naddress::impl_actor_address
 	{
 	private:
-		actor_address::map_guidserver		m_actorserver;
-		actor_address::map_typeguid			m_actortypeserver;
-		actor_address::map_servernode		m_session;
-		actor_address::map_rolegateway		m_rolegateway;
+		naddress::map_guidserver		m_actorserver;
+		naddress::map_typeguid			m_actortypeserver;
+		naddress::map_servernode		m_session;
+		naddress::map_rolegateway		m_rolegateway;
 	public:
 		inline bool set_node(const actor_node& anode)
 		{
@@ -32,14 +32,14 @@ namespace ngl
 		inline void print_address()const
 		{
 			LogLocalError("############################")
-			for (const std::pair<actor_guid, i32_serverid>& ipair : m_actorserver)
+			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
 			{
 				LogLocalError("[%:%][%-%-%]"
 					, ipair.first
 					, ipair.second
-					, actor_guid::actordataid(ipair.first)
-					, actor_typename::enum2name((ENUM_ACTOR)actor_guid::type(ipair.first))
-					, actor_guid::area(ipair.first)
+					, nguid::actordataid(ipair.first)
+					, actor_typename::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
+					, nguid::area(ipair.first)
 				)
 			}
 			LogLocalError("############################")
@@ -49,7 +49,7 @@ namespace ngl
 		{
 			Try
 			{
-				i64_actorid lactorrole = actor_guid::make(ACTOR_ROLE, aarea, aroleid);
+				i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
 				i32_serverid lserverid = get_server(lactorrole);
 				Assert(lserverid != -1)
 				return get_session(lserverid);
@@ -66,14 +66,14 @@ namespace ngl
 
 		inline void actor_add(i32_serverid aserverid, i64_actorid adataid)
 		{
-			actor_guid lguid(adataid);
+			nguid lguid(adataid);
 			m_actorserver[lguid] = aserverid;
 			m_actortypeserver[lguid.type()].insert(adataid);
 		}
 
 		inline void actor_del(i64_actorid adataid)
 		{
-			actor_guid lguid(adataid);
+			nguid lguid(adataid);
 			m_actorserver.erase(lguid);
 		}
 
@@ -102,7 +102,7 @@ namespace ngl
 		}
 
 		// 获取server id
-		inline i32_serverid get_server(const actor_guid& aguid)const
+		inline i32_serverid get_server(const nguid& aguid)const
 		{
 			Try
 			{
@@ -142,12 +142,12 @@ namespace ngl
 			afun(m_actorserver, m_session);
 		}
 
-		inline actor_address::map_guidserver& get_actorserver_map()
+		inline naddress::map_guidserver& get_actorserver_map()
 		{
 			return m_actorserver;
 		}
 
-		inline i32_serverid get_gatewayid(const actor_guid& aguid)
+		inline i32_serverid get_gatewayid(const nguid& aguid)
 		{
 			i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 			if (lpserverid == nullptr)
@@ -155,21 +155,21 @@ namespace ngl
 			return *lpserverid;
 		}
 
-		inline void add_gatewayid(const actor_guid& aguid, i32_serverid aserverid)
+		inline void add_gatewayid(const nguid& aguid, i32_serverid aserverid)
 		{
 			m_rolegateway[aguid] = aserverid;
 		}
 
-		inline void remove_gatewayid(const actor_guid& aguid)
+		inline void remove_gatewayid(const nguid& aguid)
 		{
 			m_rolegateway.erase(aguid);
 		}
 
-		inline void get_gatewayid(const std::set<actor_guid>& aactorset, std::set<i32_serverid>& aserverset)
+		inline void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 		{
-			for (const actor_guid& iactorid : aactorset)
+			for (const nguid& iactorid : aactorset)
 			{
-				actor_guid lguid(iactorid);
+				nguid lguid(iactorid);
 				i32_serverid* lserverid = tools::findmap(m_rolegateway, lguid);
 				if (lserverid == nullptr)
 					continue;
@@ -178,42 +178,42 @@ namespace ngl
 		}
 	};
 
-	actor_address::actor_address()
+	naddress::naddress()
 	{
 		m_impl_actor_address.make_unique();
 	}
 
-	actor_address::~actor_address()
+	naddress::~naddress()
 	{}
 
-	bool actor_address::set_node(const actor_node& anode)
+	bool naddress::set_node(const actor_node& anode)
 	{
 		return m_impl_actor_address()->set_node(anode);
 	}
 
-	void actor_address::print_address()
+	void naddress::print_address()
 	{
 		m_impl_actor_address()->print_address();
 	}
 
-	i32_sessionid actor_address::sessionbyrole(i16_area aarea, i32_actordataid aroleid)
+	i32_sessionid naddress::sessionbyrole(i16_area aarea, i32_actordataid aroleid)
 	{
 		return m_impl_actor_address()->sessionbyrole(aarea, aroleid);
 	}
 
-	bool actor_address::handle(handle_pram& apram)
+	bool naddress::handle(handle_pram& apram)
 	{
 		return m_impl_actor_address()->handle(apram);
 	}
 
-	void actor_address::actor_add(i32_serverid aserverid, i64_actorid adataid)
+	void naddress::actor_add(i32_serverid aserverid, i64_actorid adataid)
 	{
 		LogLocalError("######################serverid:actorid [%]:[%]", aserverid, adataid)
 		m_impl_actor_address()->actor_add(aserverid, adataid);
 	}
 
 	// 添加一组actor
-	void actor_address::actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
+	void naddress::actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 			actor_add(aserverid, item);
@@ -223,72 +223,72 @@ namespace ngl
 	}
 
 	// 删除actor
-	void actor_address::actor_del(i64_actorid adataid)
+	void naddress::actor_del(i64_actorid adataid)
 	{
 		m_impl_actor_address()->actor_del(adataid);
 	}
 
 	// 删除一组actor
-	void actor_address::actor_del(const std::vector<i64_actorid>& avec)
+	void naddress::actor_del(const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 			actor_del(item);
 	}
 
 	// 设置session
-	void actor_address::set_session(i32_serverid aserverid, i32_sessionid asession)
+	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
 		m_impl_actor_address()->set_session(aserverid, asession);
 	}
 
 	// 获取session
-	i32_sessionid actor_address::get_session(i32_serverid aserverid)
+	i32_sessionid naddress::get_session(i32_serverid aserverid)
 	{
 		return m_impl_actor_address()->get_session(aserverid);
 	}
 
 	// 获取server id
-	i32_serverid actor_address::get_server(const actor_guid& aguid)
+	i32_serverid naddress::get_server(const nguid& aguid)
 	{
 		return m_impl_actor_address()->get_server(aguid);
 	}
 
-	void actor_address::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
+	void naddress::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
 	{
 		m_impl_actor_address()->get_serverlist(atype, avec);
 	}
 
-	void actor_address::foreach(const foreach_callbackfun& afun)
+	void naddress::foreach(const foreach_callbackfun& afun)
 	{
 		m_impl_actor_address()->foreach(afun);
 	}
 
-	void actor_address::ergodic(const ergodic_callbackfun& afun)
+	void naddress::ergodic(const ergodic_callbackfun& afun)
 	{
 		m_impl_actor_address()->ergodic(afun);
 	}
 
-	actor_address::map_guidserver& actor_address::get_actorserver_map()
+	naddress::map_guidserver& naddress::get_actorserver_map()
 	{
 		return m_impl_actor_address()->get_actorserver_map();
 	}
 
-	i32_serverid actor_address::get_gatewayid(const actor_guid& aguid)
+	i32_serverid naddress::get_gatewayid(const nguid& aguid)
 	{
 		return m_impl_actor_address()->get_gatewayid(aguid);
 	}
 
-	void actor_address::add_gatewayid(const actor_guid& aguid, i32_serverid aserverid)
+	void naddress::add_gatewayid(const nguid& aguid, i32_serverid aserverid)
 	{
 		m_impl_actor_address()->add_gatewayid(aguid, aserverid);
 	}
 
-	void actor_address::remove_gatewayid(const actor_guid& aguid)
+	void naddress::remove_gatewayid(const nguid& aguid)
 	{
 		m_impl_actor_address()->remove_gatewayid(aguid);
 	}
 
-	void actor_address::get_gatewayid(const std::set<actor_guid>& aactorset, std::set<i32_serverid>& aserverset)
+	void naddress::get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
 		m_impl_actor_address()->get_gatewayid(aactorset, aserverset);
 	}

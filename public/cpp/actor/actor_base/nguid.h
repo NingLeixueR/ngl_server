@@ -13,15 +13,15 @@ namespace ngl
 	// ############ 64 bit ######### //
 	// #actor_type###areaid###id#### //
 	// #16bit########16bit####32bit# //
-	union actor_guid
+	union nguid
 	{
 		int64_t m_id;
 		int32_t m_value1[2];// m_value1[0] = type+area  m_value1[1]=actordataid
 		int16_t m_value2[4];// m_value2[0] = type  m_value2[1] = area
 
-		actor_guid();
-		actor_guid(int64_t aid);
-		actor_guid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);
+		nguid();
+		nguid(int64_t aid);
+		nguid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);
 
 		void print()
 		{
@@ -107,16 +107,16 @@ namespace ngl
 		}
 
 		bool operator<(int64_t ar)const;
-		bool operator<(const actor_guid& r)const;
+		bool operator<(const nguid& r)const;
 		bool operator==(int64_t ar)const;
-		bool operator==(const actor_guid& r)const;
+		bool operator==(const nguid& r)const;
 		bool operator!=(int64_t ar)const;
-		bool operator!=(const actor_guid& r)const;
+		bool operator!=(const nguid& r)const;
 		bool operator>(int64_t ar)const;
-		bool operator>(const actor_guid& r)const;
+		bool operator>(const nguid& r)const;
 
-		def_portocol_function(actor_guid, m_id)
+		def_portocol_function(nguid, m_id)
 	};
 }
 
-#define actor_guid_none_area actor_guid::none<i16_area>()
+#define nguid_none_area nguid::none<i16_area>()

@@ -8,7 +8,7 @@
 #include <list>
 
 #include "actor_enum.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "actor_timer.h"
 #include "localtime.h"
 #include "handle_pram.h"
@@ -27,9 +27,9 @@ namespace ngl
 
 	struct actorparmbase
 	{
-		ENUM_ACTOR m_type		= actor_guid::none_type();				// actor类型
+		ENUM_ACTOR m_type		= nguid::none_type();				// actor类型
 		i16_area m_area			= tab_self_area;						// 区服
-		i32_actordataid m_id	= actor_guid::none_actordataid();		// 数据id
+		i32_actordataid m_id	= nguid::none_actordataid();		// 数据id
 		bool m_manage_dbclient	= false;								// 是否有数据库依赖
 	};
 
@@ -95,14 +95,14 @@ namespace ngl
 		virtual void	release() = 0;
 		virtual void	save();
 		bool			is_single();
-		actor_guid&		guid();
+		nguid&		guid();
 		i64_actorid		id_guid();
 		i32_actordataid id();
 		i16_area		area();
 		ENUM_ACTOR		type();
 		void			erase_actor_byid();
-		static void		erase_actor_byid(const actor_guid& aguid);
-		static void		push_task_id(const actor_guid& aguid, handle_pram& apram, bool abool);
+		static void		erase_actor_byid(const nguid& aguid);
+		static void		push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
 		void			push_task_id(handle_pram& apram, bool abool);
 		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
@@ -193,7 +193,7 @@ namespace ngl
 			, i64_actorid aid
 			)
 		{
-			actor_guid lguid(aid);
+			nguid lguid(aid);
 			apro.m_uid.push_back(lguid.actordataid());
 			apro.m_area.push_back(lguid.area());
 		}
@@ -209,10 +209,10 @@ namespace ngl
 
 		static i64_actorid actorclient_guid()
 		{
-			static i64_actorid lid = actor_guid::make(
+			static i64_actorid lid = nguid::make(
 				ACTOR_ADDRESS_CLIENT
 				, ttab_servers::tab()->m_area
-				, actor_guid::none_actordataid()
+				, nguid::none_actordataid()
 			);
 			return lid;
 		}
@@ -224,8 +224,8 @@ namespace ngl
 			, i64_actorid aid
 		)
 		{
-			actor_guid lguid(aid);
-			handle_pram::create<tactor_forward<T>, true, true>(apram, lguid, actor_guid::make(), apro);
+			nguid lguid(aid);
+			handle_pram::create<tactor_forward<T>, true, true>(apram, lguid, nguid::make(), apro);
 		}
 
 		// 根据actor_role.guidid给所在客户端发送数据
@@ -252,8 +252,8 @@ namespace ngl
 			tactor_forward<T> pro;
 			actor_forward_init(pro, aid);
 			actor_forward_setdata(pro, adata);
-			actor_guid lguid(aid);
-			send_server(agatewayid, pro, actor_guid::make(), aid);
+			nguid lguid(aid);
+			send_server(agatewayid, pro, nguid::make(), aid);
 		}
 	private:
 		template < typename T, typename ITOR>
@@ -303,7 +303,7 @@ namespace ngl
 		{
 			ttab_servers::foreach_server(GATEWAY, [&adata](const tab_servers* atab)
 				{
-					send_client(atab->m_id, actor_guid::make(), adata);
+					send_client(atab->m_id, nguid::make(), adata);
 				});
 		}
 
@@ -313,13 +313,13 @@ namespace ngl
 		{
 			ttab_servers::foreach_server(GATEWAY, aarea, [&adata](const tab_servers* atab)
 				{
-					send_client(atab->m_id, actor_guid::make(), adata);
+					send_client(atab->m_id, nguid::make(), adata);
 				});
 		}
 
 		// 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
-		void send_actor(const actor_guid& aguid, std::shared_ptr<T>& adata)
+		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram; 
 			handle_pram::create<T, IS_SEND>(lpram, aguid, guid(), adata);
@@ -327,7 +327,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		void send_actor(const actor_guid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
 			handle_pram lpram;
 			handle_pram::create<T, IS_SEND>(lpram, aguid, guid(), adata, afailfun);
@@ -335,7 +335,7 @@ namespace ngl
 		}
 
 		// 向指定actor发送pack
-		void send_actor_pack(const actor_guid& aguid, std::shared_ptr<pack>& adata)
+		void send_actor_pack(const nguid& aguid, std::shared_ptr<pack>& adata)
 		{
 			handle_pram lpram;
 			handle_pram::create_pack(lpram, aguid, guid(), adata);
@@ -347,13 +347,13 @@ namespace ngl
 		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
 			handle_pram lpram;
-			handle_pram::create<T, IS_SEND>(lpram, actor_guid::make_self(atype), guid(), adata);
+			handle_pram::create<T, IS_SEND>(lpram, nguid::make_self(atype), guid(), adata);
 			push_task_type(atype, lpram, aotherserver);
 		}
 
 		// 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>& adata)
+		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram;
 			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata);
@@ -361,7 +361,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
 			handle_pram lpram;
 			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata, afailfun);
@@ -396,7 +396,7 @@ namespace ngl
 			if (itor->second.m_actortype != ACTOR_ROBOT)
 			{
 				handle_pram lpram;
-				handle_pram::create<T>(lpram, actor_guid::make(), guid(), adata);
+				handle_pram::create<T>(lpram, nguid::make(), guid(), adata);
 
 				for (i64_actorid actorid : itor->second)
 				{
@@ -415,7 +415,7 @@ namespace ngl
 
 		// 发送数据到指定的actor
 		template <typename T>
-		static void static_send_actor(const actor_guid& aguid, const actor_guid& arequestguid, std::shared_ptr<T>&& adata)
+		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>&& adata)
 		{
 			handle_pram lpram;
 			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
@@ -440,13 +440,13 @@ namespace ngl
 #pragma endregion 
 
 		template <typename TDerived>
-		static void first_actor_register()
+		static void first_nregister()
 		{
 			static bool lfirst = true;
 			if (lfirst)
 			{
 				lfirst = false;
-				TDerived::actor_register();
+				TDerived::nregister();
 			}
 		}
 

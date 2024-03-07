@@ -32,7 +32,7 @@ namespace ngl
 
 		virtual void init(){}
 
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_gm() {}
 
@@ -41,14 +41,14 @@ namespace ngl
 		template <typename T>
 		void sendphpclient(mforward<T>& adata)
 		{
-			send(adata.identifier(), *adata.data(), actor_guid::make(), actor_guid::make());
+			send(adata.identifier(), *adata.data(), nguid::make(), nguid::make());
 		}
 
 		template <typename T>
 		void send2other(ENUM_ACTOR atype, const pack* apack, T& apro)
 		{
 			std::shared_ptr<mforward<T>> pro(new mforward<T>(apack->m_id, apro));
-			send_actor(actor_guid::make_self(atype), pro);
+			send_actor(nguid::make_self(atype), pro);
 		}
 
 		template <typename T>

@@ -62,7 +62,7 @@ namespace ngl
 				{
 					aactor->set_kcpssion(aparm.m_pack->m_id);
 				}
-				arfunbase * lprfun = aactor->m_actorfun[aparm.m_protocoltype];
+				nrfunbase * lprfun = aactor->m_actorfun[aparm.m_protocoltype];
 				Assert(lprfun != nullptr)
 				if (lprfun->handle_switch(aactor, athreadid, aparm))
 					return true;

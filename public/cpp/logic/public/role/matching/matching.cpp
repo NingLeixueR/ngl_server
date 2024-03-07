@@ -146,7 +146,7 @@ namespace ngl
 			*pro->add_m_member() = item.second;
 		}
 		// 发送给[ACTOR_MANAGE_PLAYS]创建玩法
-		actor::static_send_actor(actor_guid::make_self(ACTOR_MANAGE_PLAYS), actor_guid::make(), pro);
+		actor::static_send_actor(nguid::make_self(ACTOR_MANAGE_PLAYS), nguid::make(), pro);
 		// 发送给所有玩家
 		send_client(pro);
 		return pbnet::ematching_confirm_success;
@@ -242,7 +242,7 @@ namespace ngl
 			{
 				*pro->add_m_member() = item.second;
 			}
-			actor::static_send_actor(actor_guid::make_self(ACTOR_MANAGE_PLAYS), actor_guid::make(), pro);
+			actor::static_send_actor(nguid::make_self(ACTOR_MANAGE_PLAYS), nguid::make(), pro);
 		}
 		return true;
 	}

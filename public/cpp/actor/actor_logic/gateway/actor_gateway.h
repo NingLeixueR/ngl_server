@@ -24,12 +24,12 @@ namespace ngl
 
 		virtual ~actor_gateway();
 
-		static void actor_register();
+		static void nregister();
 
 		gateway_info m_info;
 
 		// ## ֪ͨactor_server [actorid]->[gateway server id]
-		void sync_actorserver_gatewayid(const actor_guid& aguid, bool aisremove);
+		void sync_actorserver_gatewayid(const nguid& aguid, bool aisremove);
 
 		void update_gateway_info(actor_gateway_info_updata* ap);
 

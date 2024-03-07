@@ -2,8 +2,8 @@
 
 #include "actor_enum.h"
 #include "actor_base.h"
-#include "actor_rfun.h"
 #include "actor_type.h"
+#include "nrfun.h"
 #include "impl.h"
 
 namespace ngl
@@ -23,15 +23,15 @@ namespace ngl
 		struct impl_actor;
 		ngl::impl<impl_actor> m_impl_actor;
 
-		std::array<arfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
+		std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
 	public:
 
 #pragma region register
 		template <typename TDerived>
 		void init_rfun()
 		{
-			m_actorfun[EPROTOCOL_TYPE_CUSTOM]		= &arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance();
-			m_actorfun[EPROTOCOL_TYPE_PROTOCOLBUFF] = &arfun<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance();
+			m_actorfun[EPROTOCOL_TYPE_CUSTOM]		= &nrfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance();
+			m_actorfun[EPROTOCOL_TYPE_PROTOCOLBUFF] = &nrfun<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance();
 
 			if (isbroadcast())
 			{
@@ -46,7 +46,7 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
-			arfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().template rfun_nonet<TDerived, timerparm>(afun, false);
+			nrfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
@@ -58,7 +58,7 @@ namespace ngl
 		{
 			using tloaddb = actor_db_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
-			arfun<TDerived, TYPE>::instance().template rfun<actor_base, tloaddb>(lpfun, true);
+			nrfun<TDerived, TYPE>::instance().template rfun<actor_base, tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -72,7 +72,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
-			arfun<TDerived, TYPE>::instance().template rfun<TDerived, T>(afun);
+			nrfun<TDerived, TYPE>::instance().template rfun<TDerived, T>(afun);
 		}
 
 #pragma region register_actor
@@ -89,7 +89,7 @@ namespace ngl
 		>
 		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun(afun, atype, aisload);
+			nrfun<TDerived, TYPE>::instance().rfun(afun, atype, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
@@ -102,7 +102,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun(afun, aisload);
+			nrfun<TDerived, TYPE>::instance().rfun(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
@@ -118,7 +118,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun_nonet(afun, aisload);
+			nrfun<TDerived, TYPE>::instance().rfun_nonet(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
@@ -135,7 +135,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>(afun, actor_type<TDerived>::type(), false);
+			nrfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>(afun, actor_type<TDerived>::type(), false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>
@@ -149,7 +149,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(T afun)
 		{
-			arfun<TDerived, TYPE>::instance().rfun_recvforward(afun, false);
+			nrfun<TDerived, TYPE>::instance().rfun_recvforward(afun, false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>

@@ -20,7 +20,7 @@ namespace ngl
 
 	}
 
-	void actor_kcp::actor_register()
+	void actor_kcp::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_kcp>(
 			false

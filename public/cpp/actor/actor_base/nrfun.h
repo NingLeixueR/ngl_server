@@ -12,19 +12,19 @@ namespace ngl
 	using tlogicfun		= std::function<void(actor_base*, i32_threadid, handle_pram&)>;
 	using tnotfindfun	= std::function<void(i32_threadid, handle_pram&)>;
 
-	struct alogicfun
+	struct nlogicfun
 	{
 		bool m_isdbload = false;
 		tlogicfun m_fun = nullptr;
 	};
 
-	class arfunbase
+	class nrfunbase
 	{
 	protected:
-		std::map<i32_protocolnum, alogicfun>	m_fun;
+		std::map<i32_protocolnum, nlogicfun>	m_fun;
 		tnotfindfun								m_notfindfun;
 	public:
-		arfunbase& set_notfindfun(const tnotfindfun& afun);
+		nrfunbase& set_notfindfun(const tnotfindfun& afun);
 
 		void notfindfun(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 
@@ -53,34 +53,34 @@ namespace ngl
 	using Tfun = bool (TDerived::*)(message<TPRAM>&);
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	class arfun : public arfunbase
+	class nrfun : public nrfunbase
 	{
-		arfun() {}
+		nrfun() {}
 	public:
-		static arfun<TDerived, TYPE>& instance()
+		static nrfun<TDerived, TYPE>& instance()
 		{
-			static arfun<TDerived, TYPE> ltemp;
+			static nrfun<TDerived, TYPE> ltemp;
 			return ltemp;
 		}
 
 		template <typename TTTDerived, typename T>
-		arfun& rfun(const std::function<void(TTTDerived*, T&)>& afun);
+		nrfun& rfun(const std::function<void(TTTDerived*, T&)>& afun);
 
 		//// #### bool aisload = false 是否允许db数据加载完成之前处理此消息
 		template <typename TTTDerived, typename T>
-		arfun& rfun(Tfun<TTTDerived, T> afun, bool aisload = false);
+		nrfun& rfun(Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		template <typename TTTDerived, typename T>
-		arfun& rfun(Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
+		nrfun& rfun(Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		template <typename TTTDerived, typename T>
-		arfun& rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload = false);
+		nrfun& rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		template <bool BOOL, typename T>
-		arfun& rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
+		nrfun& rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		template <typename T>
-		arfun& rfun_recvforward(Tfun<TDerived, T> afun, bool aisload = false);
+		nrfun& rfun_recvforward(Tfun<TDerived, T> afun, bool aisload = false);
 	};
 
 

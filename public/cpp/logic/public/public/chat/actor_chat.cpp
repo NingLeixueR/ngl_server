@@ -27,7 +27,7 @@ namespace ngl
 	}
 
 
-	void actor_chat::actor_register()
+	void actor_chat::nregister()
 	{
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_chat>(&actor_chat::timer_handle);

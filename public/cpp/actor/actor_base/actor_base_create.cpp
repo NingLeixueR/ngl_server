@@ -10,7 +10,7 @@ namespace ngl
 	// 用于创建非单例actor
 	actor_base* actor_base::create(ENUM_ACTOR atype, i32_actordataid aid/*, actor_base* aactor*/, void* aparm/* = nullptr*/)
 	{
-		if (actor_manage::getInstance().is_have_actor(actor_guid::make(atype, tab_self_area, aid)))
+		if (actor_manage::getInstance().is_have_actor(nguid::make(atype, tab_self_area, aid)))
 			return nullptr;
 		actor_base* lpactor_base = nullptr;
 		switch (atype)
@@ -18,17 +18,17 @@ namespace ngl
 		case ACTOR_ROLE:
 			lpactor_base = new actor_role(tab_self_area, aid, aparm);
 			((actor_role*)(lpactor_base))->init_rfun<actor_role>();
-			actor_base::first_actor_register<actor_role>();
+			actor_base::first_nregister<actor_role>();
 			break;
 		case ACTOR_ROBOT:
 			lpactor_base = new actor_robot(tab_self_area, aid, aparm);
 			((actor_robot*)(lpactor_base))->init_rfun<actor_robot>();
-			actor_base::first_actor_register<actor_robot>();
+			actor_base::first_nregister<actor_robot>();
 			break;
 		case ACTOR_PLAYS_GO_UNDERGROUNDPALACE:
 			lpactor_base = new actor_plays_go_undergroundpalace(atype, aid, aparm);
 			((actor_plays_go_undergroundpalace*)(lpactor_base))->init_rfun<actor_plays_go_undergroundpalace>();
-			actor_base::first_actor_register<actor_plays_go_undergroundpalace>();
+			actor_base::first_nregister<actor_plays_go_undergroundpalace>();
 			break;
 		//case ACTOR_ACTIVITY:
 		//	lpactor_base = activity_create::create(aid, *(bool*)aparm);
@@ -36,7 +36,7 @@ namespace ngl
 		case ACTOR_LOG:
 			lpactor_base = new actor_log(*(ELOG_TYPE*)aparm);
 			((actor_log*)(lpactor_base))->init_rfun<actor_log>();
-			actor_base::first_actor_register<actor_log>();
+			actor_base::first_nregister<actor_log>();
 			break;
 		default:
 			break;

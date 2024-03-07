@@ -3,7 +3,7 @@
 #include "actor.h"
 #include "actor_manage.h"
 #include "actor_enum.h"
-#include "actor_register.h"
+#include "nregister.h"
 #include "actor_db.h"
 #include "net.h"
 #include "db.h"
@@ -26,8 +26,8 @@ namespace ngl
 		virtual void load() = 0;
 		virtual void savedb() = 0;
 		virtual void deldb() = 0;
-		virtual void create(const actor_guid& aid) = 0;
-		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const actor_guid& aid) = 0;
+		virtual void create(const nguid& aid) = 0;
+		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) = 0;
 		virtual void clear_modified() = 0;
 
 		pbdb::ENUM_DB type()
@@ -123,7 +123,7 @@ namespace ngl
 						.m_serverid = tab->m_db,
 						.m_fun = std::bind(&actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>::loaddb, this, m_id),
 					});
-				actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lclientguid = nguid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
 			}Catch;
 		}
@@ -142,12 +142,12 @@ namespace ngl
 			return -1;
 		}
 
-		void loaddb(const actor_guid& aid)
+		void loaddb(const nguid& aid)
 		{
 			actor_db_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 
-			i64_actorid ldbid = actor_guid::make(actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
+			i64_actorid ldbid = nguid::make(actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
 			nserver->send_server(dbnodeid(), ldata, ldbid, m_actor->id_guid());
 
 			std::string lname;
@@ -157,8 +157,8 @@ namespace ngl
 			)
 		}
 
-		actor_guid									m_id;
-		std::map<actor_guid, data_modified<TDBTAB>> m_data;
+		nguid									m_id;
+		std::map<nguid, data_modified<TDBTAB>> m_data;
 		data_modified<TDBTAB>*						m_dbdata;
 		bool										m_load;
 		actor_manage_dbclient*						m_manage_dbclient;
@@ -166,7 +166,7 @@ namespace ngl
 		std::vector<int64_t>						m_dellist;
 	public:
 		actor_dbclient():
-			m_id(actor_guid::make()),
+			m_id(nguid::make()),
 			m_load(false),
 			m_dbdata(nullptr),
 			m_tab(nullptr),
@@ -176,14 +176,14 @@ namespace ngl
 		{}
 
 		//// create
-		virtual void create(const actor_guid& aid)
+		virtual void create(const nguid& aid)
 		{
 			m_dbdata = &m_data[aid];
 			m_dbdata->get().set_m_id(aid);
 			m_id = aid;
 		}
 
-		void set_id(const actor_guid& aid)
+		void set_id(const nguid& aid)
 		{ 
 			m_id = aid;
 		}
@@ -194,12 +194,12 @@ namespace ngl
 			m_actor = aactor;
 		}
 
-		std::map<actor_guid, data_modified<TDBTAB>>& get_data()
+		std::map<nguid, data_modified<TDBTAB>>& get_data()
 		{ 
 			return m_data; 
 		}
 
-		data_modified<TDBTAB>* get_data(const actor_guid& aid)
+		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
 			if (aid == m_id && m_id != -1)
 				return m_dbdata;
@@ -214,7 +214,7 @@ namespace ngl
 			return m_dbdata;
 		}
 
-		void init(actor_manage_dbclient* amdb, actor_base* aactor, const actor_guid& aid)
+		void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid)
 		{
 			Try
 			{
@@ -249,7 +249,7 @@ namespace ngl
 			savedb(m_id); 
 		}
 
-		void savedb(const actor_guid& aid)
+		void savedb(const nguid& aid)
 		{
 			actor_db_save<PROTYPE, DBTYPE, TDBTAB> pro;
 			std::list<data_modified<TDBTAB>*> lclearlist;
@@ -287,7 +287,7 @@ namespace ngl
 			if (pro.empty() == false)
 			{
 				// ### 先序列化 再让actor_client确认位置
-				i64_actorid lactorid = actor_guid::make(
+				i64_actorid lactorid = nguid::make(
 					actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type()
 					, tab_self_area
 					, dbnodeid()
@@ -309,7 +309,7 @@ namespace ngl
 			}
 		}
 
-		void del(const actor_guid& aid)
+		void del(const nguid& aid)
 		{
 			m_dellist.push_back((int64_t)aid);
 			m_data.erase((int64_t)aid);
@@ -324,7 +324,7 @@ namespace ngl
 			if (pro.m_data.empty() == false)
 			{
 				// ### 先序列化 再让actor_client确认位置
-				i64_actorid lactorid = actor_guid::make((ENUM_ACTOR)(ACTOR_DB + DBTYPE), tab_self_area, dbnodeid());
+				i64_actorid lactorid = nguid::make((ENUM_ACTOR)(ACTOR_DB + DBTYPE), tab_self_area, dbnodeid());
 				i64_actorid larequestactorid = m_actor->guid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, larequestactorid);
 				if (lpack == nullptr)
@@ -333,11 +333,11 @@ namespace ngl
 					return;
 				}
 				// ### 异步发送pack
-				m_actor->send_actor_pack(actor_guid::make((ENUM_ACTOR)(ACTOR_DB + DBTYPE), tab_self_area, dbnodeid()), lpack);
+				m_actor->send_actor_pack(nguid::make((ENUM_ACTOR)(ACTOR_DB + DBTYPE), tab_self_area, dbnodeid()), lpack);
 			}
 		}
 	public:
-		const TDBTAB* set(const actor_guid& aid, const TDBTAB& adbtab)
+		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
 		{
 			m_data[aid] = adbtab;
 			if (aid == m_id)
@@ -345,7 +345,7 @@ namespace ngl
 			return &m_data[aid];
 		}
 
-		data_modified<TDBTAB>* add(const actor_guid& aid, const TDBTAB& adbtab)
+		data_modified<TDBTAB>* add(const nguid& aid, const TDBTAB& adbtab)
 		{
 			if (m_data.find(aid) != m_data.end())
 				return nullptr;
@@ -368,7 +368,7 @@ namespace ngl
 			return false;
 		}
 
-		bool loadfinish(std::map<actor_guid, TDBTAB>& adata, bool aisover)
+		bool loadfinish(std::map<nguid, TDBTAB>& adata, bool aisover)
 		{
 			for (auto& item : adata)
 			{
@@ -427,7 +427,7 @@ namespace ngl
 			m_finish(false)
 		{}
 
-		void add(actor_dbclient_base* adbclient, const actor_guid& aid)
+		void add(actor_dbclient_base* adbclient, const nguid& aid)
 		{
 			Try
 			{
@@ -442,7 +442,7 @@ namespace ngl
 			m_fun = afun;
 		}
 
-		void init(actor_dbclient_base* adbclient, actor_base* aactor, const actor_guid& aid)
+		void init(actor_dbclient_base* adbclient, actor_base* aactor, const nguid& aid)
 		{
 			Try
 			{

@@ -6,11 +6,10 @@
 #include <list>
 
 #include "aoi.h"
-#include "splite.h"
 #include "type.h"
-#include "csvtable.h"
 #include "unit.h"
-
+#include "splite.h"
+#include "csvtable.h"
 #include "net.pb.h"
 
 namespace ngl
@@ -89,9 +88,9 @@ namespace ngl
 
 	struct obstacle
 	{
-		int m_id;		// 格子编号
+		int m_id;			// 格子编号
 		eobstacles m_pass;	// 是否可以通过格子
-		int m_value;	// 付出的代价
+		int m_value;		// 付出的代价
 		int m_parent;
 
 		void clear()
@@ -145,7 +144,6 @@ namespace ngl
 		{
 			return is_pass(id(ax, ay));
 		}
-
 
 		bool find_path(int32_t ax1, int32_t ay1, int32_t ax2, int32_t ay2, std::list<int>& apath)
 		{
@@ -229,7 +227,7 @@ namespace ngl
 			std::stringstream lstr;
 			lstr << "(" << idx(aid) << "," << idy(aid) << ")";
 			return lstr.str();
-		};
+		}
 
 		void printf(int32_t aid1, int32_t aid2, std::list<int>& apath)
 		{

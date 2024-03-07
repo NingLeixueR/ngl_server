@@ -1,6 +1,6 @@
 #include "net_tcp.h"
 #include "protocol.h"
-#include "actor_guid.h"
+#include "nguid.h"
 
 namespace ngl
 {

@@ -5,7 +5,7 @@
 #include "actor_define.h"
 #include "pack.h"
 #include "type.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "localtime.h"
 #include "serialize.h"
 #include "db.pb.h"
@@ -91,7 +91,7 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load
 	{
-		actor_guid m_id;
+		nguid m_id;
 		def_portocol(actor_db_load, m_id)
 	};
 
@@ -104,11 +104,11 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
 	{
-		protobuf_data<std::map<actor_guid, T>>	m_data;
+		protobuf_data<std::map<nguid, T>>	m_data;
 		bool		m_stat = true;
 		bool		m_over = true;
 
-		std::map<actor_guid, T>& data()
+		std::map<nguid, T>& data()
 		{
 			return *m_data.m_data;
 		}
@@ -119,11 +119,11 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_load_response<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
 	{
-		std::map<actor_guid, T>	m_data;
+		std::map<nguid, T>	m_data;
 		bool		m_stat = true;
 		bool		m_over = true;
 
-		std::map<actor_guid, T>& data()
+		std::map<nguid, T>& data()
 		{
 			return m_data;
 		}
@@ -146,11 +146,11 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
 	{
-		protobuf_data<std::map<actor_guid, T>>	m_data;
+		protobuf_data<std::map<nguid, T>>	m_data;
 
 		actor_db_save() {}
 
-		void add(const actor_guid& akey, const T& avalue)
+		void add(const nguid& akey, const T& avalue)
 		{
 			if (m_data.m_data == nullptr)
 				m_data.make();
@@ -170,11 +170,11 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct actor_db_save<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
 	{
-		std::map<actor_guid, T>	m_data;
+		std::map<nguid, T>	m_data;
 
 		actor_db_save() {}
 
-		void add(const actor_guid& akey, const T& avalue)
+		void add(const nguid& akey, const T& avalue)
 		{
 			m_data.insert(std::make_pair(akey, avalue));
 		}

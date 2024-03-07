@@ -29,7 +29,7 @@ namespace ngl
 	void actor_log::init()
 	{}
 
-	void actor_log::actor_register()
+	void actor_log::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_log>(false
 			, dregister_fun_handle(actor_log, actor_logitempro)

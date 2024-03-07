@@ -3,7 +3,7 @@
 #include <map>
 
 #include "actor_protocol.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "rebot_test.h"
 
 namespace ngl

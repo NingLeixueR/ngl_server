@@ -34,7 +34,7 @@ namespace ngl
 		{
 			m_notice.set(this);
 		}
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_notice() {}
 
@@ -57,7 +57,7 @@ namespace ngl
 			using type = mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>;
 			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
 			get_notice_list(*pro->add_data());
-			send_actor(actor_guid::make_self(ACTOR_GM), pro);
+			send_actor(nguid::make_self(ACTOR_GM), pro);
 			return true;
 		}
 		
@@ -69,7 +69,7 @@ namespace ngl
 			using type = mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>;
 			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
 			pro->add_data()->set_m_stat(true);
-			send_actor(actor_guid::make_self(ACTOR_GM), pro);
+			send_actor(nguid::make_self(ACTOR_GM), pro);
 			return true;
 		}
 		
@@ -79,7 +79,7 @@ namespace ngl
 			using type = mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>;
 			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
 			pro->add_data()->set_m_stat(true);
-			send_actor(actor_guid::make_self(ACTOR_GM), pro);
+			send_actor(nguid::make_self(ACTOR_GM), pro);
 			return true;
 		}
 		

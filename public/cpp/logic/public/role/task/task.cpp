@@ -4,7 +4,6 @@
 
 namespace ngl
 {
-
 	class taskcheck
 	{
 		taskcheck() = delete;

@@ -75,7 +75,7 @@ namespace ngl
 			m_id = -1;
 		}
 
-		std::map<actor_guid, data_modified<pbdb::db_ranklist>>* get_ranklist()
+		std::map<nguid, data_modified<pbdb::db_ranklist>>* get_ranklist()
 		{
 			return &data();
 		}
@@ -88,7 +88,7 @@ namespace ngl
 		virtual void initdata()
 		{
 			LogLocalError("actor_ranklist###loaddb_finish")
-			//std::map<actor_guid, data_modified<pbdb::db_notice>>& lnotice = data();
+			//std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
 			for (auto&& [id, dbranklist] : *get_ranklist())
 			{
 				pbdb::db_ranklist& lranklist = dbranklist.get(false);

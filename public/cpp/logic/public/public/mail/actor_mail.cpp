@@ -21,7 +21,7 @@ namespace ngl
 	}
 
 
-	void actor_mail::actor_register()
+	void actor_mail::nregister()
 	{
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_mail>(

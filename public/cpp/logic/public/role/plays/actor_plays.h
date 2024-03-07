@@ -33,7 +33,7 @@ namespace ngl
 			set_timer(tparm);
 		}
 
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_plays() {}
 

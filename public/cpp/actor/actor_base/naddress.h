@@ -2,7 +2,7 @@
 
 #include "handle_pram.h"
 #include "type.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "nlog.h"
 #include "impl.h"
 
@@ -11,19 +11,19 @@
 namespace ngl
 {
 	// ## actor_client actor_server 用来管理actor地址
-	class actor_address
+	class naddress
 	{
 	public:
 		//##[ACTOR_ID] -> SERVER_ID
 		//##[ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID
-		using map_guidserver = std::map<actor_guid, i32_serverid>;
+		using map_guidserver = std::map<nguid, i32_serverid>;
 		//##[ACTOR_TYPE]  -> set<ACTOR_ID>
 		//##[ACTOR_TYPE]  -> set<ACTOR_TYPE + EARE_ID + DATA_ID>
-		using map_typeguid = std::map<i16_actortype, std::set<actor_guid>>;
+		using map_typeguid = std::map<i16_actortype, std::set<nguid>>;
 		//##[SERVER_ID] -> [SESSION_ID]
 		using map_servernode = std::map<i32_serverid, actor_node_session>;
 		//##[ACTOR_ID] -> [GATEWAY_SERVER_ID]
-		using map_rolegateway = std::map<actor_guid, i32_serverid>;
+		using map_rolegateway = std::map<nguid, i32_serverid>;
 		//##[ergodic]回调
 		using ergodic_callbackfun = std::function<bool(map_guidserver&, map_servernode&)>;
 		//##[foreach]回调
@@ -33,14 +33,14 @@ namespace ngl
 		struct impl_actor_address;
 		ngl::impl<impl_actor_address> m_impl_actor_address;
 
-		actor_address();
+		naddress();
 
-		virtual ~actor_address();
+		virtual ~naddress();
 
 	public:
-		static actor_address& getInstance() 
+		static naddress& getInstance() 
 		{
-			static actor_address ltemp;
+			static naddress ltemp;
 			return ltemp;
 		}
 
@@ -62,20 +62,20 @@ namespace ngl
 		// 获取session
 		i32_sessionid get_session(i32_serverid aserverid);
 		// 获取server id
-		i32_serverid get_server(const actor_guid& aguid);
+		i32_serverid get_server(const nguid& aguid);
 		// 获取ENUM_ACTOR 对应的服务器
 		void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 #pragma endregion
 
 #pragma region gateway
 		//##[ACTOR_ID(ACTOR_ROLE的actor)] -> [GATEWAY_SERVER_ID]
-		i32_serverid get_gatewayid(const actor_guid& aguid);
+		i32_serverid get_gatewayid(const nguid& aguid);
 		// 将actor_role.actorid与gatewayid关联
-		void add_gatewayid(const actor_guid& aguid, i32_serverid aserverid);
+		void add_gatewayid(const nguid& aguid, i32_serverid aserverid);
 		// 解除actor_role.actorid与gatewayid的关联
-		void remove_gatewayid(const actor_guid& aguid);
+		void remove_gatewayid(const nguid& aguid);
 		// 获取一组actor_role.actorid与gatewayid的关联
-		void get_gatewayid(const std::set<actor_guid>& aactorset, std::set<i32_serverid>& aserverset);
+		void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
 #pragma endregion
 
 		void foreach(const foreach_callbackfun& afun);

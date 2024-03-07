@@ -99,7 +99,7 @@ namespace ngl
 						pro->m_tid = _data.m_mailid;
 						if (drop::droplist(_data.m_dropid, 1, pro->m_items) == false)
 							continue;
-						actor::static_send_actor(actor_guid::make_self(ACTOR_MAIL), actor_guid::make(), pro);
+						actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
 
 						// 记录已领取
 						ldrawcompliance.add_m_reward(_data.m_id);

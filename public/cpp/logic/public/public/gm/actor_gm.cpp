@@ -17,7 +17,7 @@ namespace ngl
 	{
 	}
 
-	void actor_gm::actor_register()
+	void actor_gm::nregister()
 	{
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gm>(false

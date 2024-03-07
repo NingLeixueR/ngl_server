@@ -26,7 +26,7 @@ namespace ngl
 
 		virtual ~actor_gateway_game2client();
 
-		static void actor_register();
+		static void nregister();
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(message<actor_forward<T, TYPE, true, ngl::forward>>& adata)
@@ -45,7 +45,7 @@ namespace ngl
 				{
 					for (auto& itemfor2 : itemfor1.second)
 					{
-						lmap.insert(std::make_pair(itemfor2.second.m_socket, actor_guid::make(ACTOR_ROBOT, itemfor2.second.m_area, itemfor2.second.m_dataid)));
+						lmap.insert(std::make_pair(itemfor2.second.m_socket, nguid::make(ACTOR_ROBOT, itemfor2.second.m_area, itemfor2.second.m_dataid)));
 					}
 				}
 			}
@@ -57,7 +57,7 @@ namespace ngl
 				{
 					for (auto& itemfor1 : itemitor->second)
 					{
-						lmap.insert(std::make_pair(itemfor1.second.m_socket, actor_guid::make(ACTOR_ROBOT, itemfor1.second.m_area, itemfor1.second.m_dataid)));
+						lmap.insert(std::make_pair(itemfor1.second.m_socket, nguid::make(ACTOR_ROBOT, itemfor1.second.m_area, itemfor1.second.m_dataid)));
 					}
 				}
 			}
@@ -68,7 +68,7 @@ namespace ngl
 					info = m_info.get(lparm->m_area[i], lparm->m_uid[i]);
 					if (info == nullptr)
 						continue;
-					lmap.insert(std::make_pair(info->m_socket, actor_guid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i])));
+					lmap.insert(std::make_pair(info->m_socket, nguid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i])));
 				}
 			}
 			actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);

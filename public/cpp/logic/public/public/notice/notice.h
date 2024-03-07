@@ -25,7 +25,7 @@ namespace ngl
 			m_id = -1;
 		}
 
-		std::map<actor_guid, data_modified<pbdb::db_notice>>* get_notice()
+		std::map<nguid, data_modified<pbdb::db_notice>>* get_notice()
 		{
 			return &data();
 		}
@@ -35,7 +35,7 @@ namespace ngl
 		{
 			LogLocalError("actor_notice###loaddb_finish")
 			m_maxid = 0;
-			//std::map<actor_guid, data_modified<pbdb::db_notice>>& lnotice = data();
+			//std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
 			for (auto&& [id, dbnotice] : *get_notice())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
@@ -68,7 +68,7 @@ namespace ngl
 			if (lasttime == 0 || lnow > (lasttime + (10 * 60)))
 			{
 				lasttime = lnow;
-				std::map<actor_guid, data_modified<pbdb::db_notice>>& lnotice = data();
+				std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
 				for (auto&& [id, dbnotice] : lnotice)
 				{
 					if (dbnotice.getconst().m_finishtime() < lnow && dbnotice.getconst().m_finishtime() != -1)

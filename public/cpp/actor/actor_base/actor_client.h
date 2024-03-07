@@ -2,7 +2,7 @@
 
 #include "actor.h"
 #include "actor_protocol.h"
-#include "actor_address.h"
+#include "naddress.h"
 #include "xmlnode.h"
 #include "impl.h"
 #include "net.h"
@@ -11,9 +11,9 @@ namespace ngl
 {
 	// ### 每个进程都需要有一个actor_client或actor_server
 	// ### 通常一个区服只有一个进程中包含actor_server 其他所有进程都必须包含actor_client
-	// ### actor_client 用来纪录保存actor_guid与服务器id的对应关系，
+	// ### actor_client 用来纪录保存nguid与服务器id的对应关系，
 	// ### actor_client相当于actor框架的路由器，为actor提供路由功能
-	// ### 而actor_server负责分发各个actor_client中本地的actor_guid对应关系
+	// ### 而actor_server负责分发各个actor_client中本地的nguid对应关系
 	class actor_client : public actor
 	{
 		struct impl_actor_client;
@@ -29,7 +29,7 @@ namespace ngl
 		}
 		
 		// ## 注册需要处理的消息
-		static void actor_register();
+		static void nregister();
 	private:
 		void actor_server_register(i32_serverid aserverid);
 	public:

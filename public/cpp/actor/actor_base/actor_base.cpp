@@ -9,14 +9,14 @@ namespace ngl
 {
 	struct actor_base::impl_actor_base
 	{
-		actor_guid									m_guid;
+		nguid									m_guid;
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient;
 		bool										m_isload;			// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, db_component*>		m_dbcomponent;
 
 		impl_actor_base(actor_base* aactor, const actorparmbase& aparm)
 		{
-			m_guid = actor_guid(aparm.m_type, aparm.m_area, aparm.m_id);
+			m_guid = nguid(aparm.m_type, aparm.m_area, aparm.m_id);
 			m_dbclient = nullptr;
 			m_isload = aparm.m_manage_dbclient;
 			if (aparm.m_manage_dbclient)
@@ -36,10 +36,10 @@ namespace ngl
 
 		bool is_single()
 		{
-			return actor_guid::is_single(m_guid.type());
+			return nguid::is_single(m_guid.type());
 		}
 
-		actor_guid& guid()
+		nguid& guid()
 		{
 			return m_guid;
 		}
@@ -144,7 +144,7 @@ namespace ngl
 		return m_impl_actor_base()->is_single();
 	}
 
-	actor_guid& actor_base::guid()
+	nguid& actor_base::guid()
 	{
 		return m_impl_actor_base()->guid();
 	}
@@ -183,12 +183,12 @@ namespace ngl
 	{
 	}
 
-	void actor_base::erase_actor_byid(const actor_guid& aguid)
+	void actor_base::erase_actor_byid(const nguid& aguid)
 	{
 		actor_manage::getInstance().erase_actor_byid(aguid);
 	}
 
-	void actor_base::push_task_id(const actor_guid& aguid, handle_pram& apram, bool abool)
+	void actor_base::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 	{
 		actor_manage::getInstance().push_task_id(aguid, apram, abool);
 	}
@@ -242,7 +242,7 @@ namespace ngl
 			.m_count = 0x7fffffff,
 			.m_fun = [](wheel_node* anode)
 			{
-				actor_guid lguid;
+				nguid lguid;
 				lguid.none();
 				std::shared_ptr<actor_broadcast> pro(new actor_broadcast());
 				handle_pram lpram;
@@ -294,7 +294,7 @@ namespace ngl
 			return false;
 		}
 
-		actor_guid lguid(amember);
+		nguid lguid(amember);
 		ENUM_ACTOR ltype = itor->second.m_actortype;
 		if (ltype != ACTOR_NONE)
 		{

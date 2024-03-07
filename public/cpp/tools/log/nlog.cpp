@@ -45,7 +45,7 @@ namespace ngl
 			pro->m_data.m_str.swap(llogformat.data("src"));
 			pro->m_data.m_serverid = nconfig::m_nodeid;
 			pro->m_data.m_type = atype;
-			actor_base::static_send_actor(actor_guid::make(ACTOR_LOG, tab_self_area, ELOG_LOCAL), actor_guid::make(), pro);
+			actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_LOCAL), nguid::make(), pro);
 		}
 		else
 		{
@@ -55,7 +55,7 @@ namespace ngl
 			pro->m_data.m_str.swap(llogformat.data("src"));
 			pro->m_data.m_serverid = nconfig::m_nodeid;
 			pro->m_data.m_type = atype;
-			actor_base::static_send_actor(actor_guid::make(ACTOR_LOG, tab_self_area, ELOG_DEFAULT), actor_guid::make(), pro);
+			actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_DEFAULT), nguid::make(), pro);
 		}		
 	}
 
@@ -69,6 +69,6 @@ namespace ngl
 		pro->m_data.m_str.swap(llogformat.data("src"));
 		pro->m_data.m_serverid = nconfig::m_nodeid;
 		pro->m_data.m_type = atype;
-		actor_base::static_send_actor(actor_guid::make(ACTOR_LOG, tab_self_area, ELOG_BI), actor_guid::make(), pro);
+		actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_BI), nguid::make(), pro);
 	}
 }

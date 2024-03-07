@@ -1,5 +1,5 @@
 ﻿#include "actor_role.h"
-#include "actor_register.h"
+#include "nregister.h"
 #include "gameclient_forward.h"
 #include "net.pb.h"
 #include "actor_roleitem.h"
@@ -44,7 +44,7 @@ namespace ngl
 	actor_role::~actor_role() 
 	{}
 
-	void actor_role::actor_register()
+	void actor_role::nregister()
 	{
 		// 定时器
 		register_timer<actor_role>(&actor_role::timer_handle);
@@ -103,7 +103,7 @@ namespace ngl
 					pro->data()->set_m_orderid(orderid.second);
 					pro->data()->set_m_rechargeid(boost::lexical_cast<int32_t>(rechargeid.second));
 					pro->data()->set_m_roleid(boost::lexical_cast<int64_t>(roleid.second));
-					actor::static_send_actor(boost::lexical_cast<int64_t>(roleid.second), actor_guid::make(), pro);
+					actor::static_send_actor(boost::lexical_cast<int64_t>(roleid.second), nguid::make(), pro);
 				}
 				catch (...)
 				{
@@ -115,7 +115,7 @@ namespace ngl
 
 	void actor_role::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_role###loaddb_finish#[%]", actor_guid(id_guid()))
+		LogLocalError("actor_role###loaddb_finish#[%]", nguid(id_guid()))
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
@@ -239,7 +239,7 @@ namespace ngl
 		}
 		if (adata.m_data->identifier() > 0)
 		{
-			send_actor(actor_guid::make_self(ACTOR_GM), pro);
+			send_actor(nguid::make_self(ACTOR_GM), pro);
 		}
 
 		auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();

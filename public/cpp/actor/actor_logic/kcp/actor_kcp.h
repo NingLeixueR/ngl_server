@@ -23,7 +23,7 @@ namespace ngl
 
 		virtual ~actor_kcp() {}
 
-		static void actor_register();
+		static void nregister();
 
 		bool handle(message<actor_protocol_kcp>& adata);
 		

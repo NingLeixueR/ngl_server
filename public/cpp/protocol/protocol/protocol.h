@@ -10,7 +10,7 @@
 #include "actor_protocol.h"
 #include "handle_pram.h"
 #include "structbytes.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "actor_manage.h"
 #include "init_protobuf.h"
 
@@ -53,8 +53,8 @@ namespace ngl
 			std::string lname = aname;
 			typefun_run lrunfun = [atype, lname](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
-				actor_guid lactorguid(apack->m_head.get_actor());
-				actor_guid lrequestactorguid(apack->m_head.get_request_actor());
+				nguid lactorguid(apack->m_head.get_actor());
+				nguid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
 				handle_pram lpram;
 				handle_pram::create<T, false, false>(lpram
@@ -107,8 +107,8 @@ namespace ngl
 			{
 				using typeforward = actor_forward<T, TYPE, ISTRUE, ngl::forward>;
 				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
-				actor_guid lguid(atype, tab_self_area, nconfig::m_nodeid);
-				actor_guid lrequestguid(apack->m_head.get_request_actor());
+				nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+				nguid lrequestguid(apack->m_head.get_request_actor());
 				handle_pram lpram;
 				handle_pram::create(lpram, lguid, lrequestguid, ldatapack);
 				lpram.m_pack = apack;
@@ -139,8 +139,8 @@ namespace ngl
 							i64_actorid lactorid = ukcp::getInstance().find_actorid(apack->m_id);
 							//std::vector<i32_actordataid>	m_uid;
 							//std::vector<i16_area>			m_area;
-							lp->m_uid.push_back(actor_guid::actordataid(lactorid));
-							lp->m_area.push_back(actor_guid::area(lactorid));
+							lp->m_uid.push_back(nguid::actordataid(lactorid));
+							lp->m_area.push_back(nguid::area(lactorid));
 							return ltemp;
 						}
 						
@@ -159,12 +159,12 @@ namespace ngl
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
 				using typeforward = actor_forward<T, TYPE, ISTRUE, T>;
-				actor_guid lrequestguid(apack->m_head.get_request_actor());
+				nguid lrequestguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
 				typeforward* lp = (typeforward*)aptrpram.get();
 				for (int i = 0; i < lp->m_uid.size() && i < lp->m_area.size(); ++i)
 				{
-					actor_guid lguid(atype, lp->m_area[i], lp->m_uid[i]);
+					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
 					handle_pram lpram;
 					if (apack->m_protocol == ENET_KCP
 						|| apack->m_protocol == ENET_UDP)

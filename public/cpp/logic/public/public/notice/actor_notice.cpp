@@ -20,7 +20,7 @@ namespace ngl
 	{
 	}
 
-	void actor_notice::actor_register()
+	void actor_notice::nregister()
 	{
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_notice>(

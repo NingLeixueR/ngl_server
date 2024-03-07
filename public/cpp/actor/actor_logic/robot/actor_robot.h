@@ -27,7 +27,7 @@ namespace ngl
 
 		virtual ~actor_robot() {}
 
-		static void actor_register();
+		static void nregister();
 
 		virtual const char* kcpsessionmd5()
 		{
@@ -81,7 +81,7 @@ namespace ngl
 			_robot() :
 				m_session(-1),
 				m_robot(nullptr),
-				m_actor_roleid(actor_guid::moreactor())
+				m_actor_roleid(nguid::moreactor())
 			{}
 		};
 		std::map<std::string, _robot> m_maprobot;
@@ -106,12 +106,12 @@ namespace ngl
 			pro.set_m_password(apasswold);
 			tab_servers* tab = ttab_servers::tab();
 
-			nserver->send_server(tab->m_login, pro, actor_guid::moreactor(), getInstance().id_guid());
+			nserver->send_server(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
 		}
 
 		virtual ~actor_manage_robot() {}
 
-		static void actor_register();
+		static void nregister();
 
 		void connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun)
 		{
@@ -124,9 +124,9 @@ namespace ngl
 			auto lrecv = adata.m_data;
 			std::cout << "#############["<< lrecv->m_account() <<"]#############" << std::endl;
 			_robot& lrobot = m_maprobot[lrecv->m_account()];
-			lrobot.m_robot = create(lrecv->m_area(), actor_guid::actordataid(lrecv->m_roleid()));
+			lrobot.m_robot = create(lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
 			lrobot.m_account = lrecv->m_account();
-			lrobot.m_actor_roleid = actor_guid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
+			lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
 
 			connect(lrecv->m_gatewayid(), [lrecv, &lrobot, this](int asession)
 				{
@@ -140,7 +140,7 @@ namespace ngl
 					pro.set_m_area(lrecv->m_area());
 					pro.set_m_iscreate(false);
 					pro.set_m_gatewayid(lrecv->m_gatewayid());
-					nserver->send(asession, pro, actor_guid::moreactor(), this->id_guid());
+					nserver->send(asession, pro, nguid::moreactor(), this->id_guid());
 				});
 			
 			return true;
@@ -261,14 +261,14 @@ namespace ngl
 		template <typename T>
 		void send(_robot* arobot, T& adata)
 		{
-			nserver->send(arobot->m_session, adata, actor_guid::moreactor(), arobot->m_actor_roleid);
+			nserver->send(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}
 
 		template <typename T>
 		void sendkcp(_robot* arobot, T& adata)
 		{
-			arobot->m_robot->sendkcp(adata, actor_guid::moreactor());
-			//udp_kcp::getInstance().send(arobot->m_robot->m_kcpsession, adata, actor_guid::moreactor(), arobot->m_actor_roleid);
+			arobot->m_robot->sendkcp(adata, nguid::moreactor());
+			//udp_kcp::getInstance().send(arobot->m_robot->m_kcpsession, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}		
 
 		bool getdata(_robot* arobot)

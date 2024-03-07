@@ -1,5 +1,5 @@
 #include "dbredis.h"
-#include "actor_guid.h"
+#include "nguid.h"
 
 namespace ngl
 {
@@ -74,7 +74,7 @@ namespace ngl
 		//{
 		//	DB_ROLE ltemp;
 
-		//	ltemp.mm_id() = ngl::actor_guid::make(ngl::ACTOR_ROLE, 1, i);
+		//	ltemp.mm_id() = ngl::nguid::make(ngl::ACTOR_ROLE, 1, i);
 		//	ltemp.mm_name() = "libo";
 		//	ltemp.mm_name() += boost::lexical_cast<std::string>(i);
 		//	ltemp.mm_lv() = i;

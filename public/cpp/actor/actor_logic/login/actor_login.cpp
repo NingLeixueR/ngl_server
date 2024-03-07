@@ -1,5 +1,5 @@
 #include "actor_login.h"
-#include "actor_register.h"
+#include "nregister.h"
 
 namespace ngl
 {
@@ -28,7 +28,7 @@ namespace ngl
 
 	actor_login::~actor_login() {}
 
-	void actor_login::actor_register()
+	void actor_login::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_login>(false
 			, dregister_fun_handle(actor_login, pbnet::PROBUFF_NET_ACOUNT_LOGIN)
@@ -55,7 +55,7 @@ namespace ngl
 		//		laccount.m_passworld(),
 		//		laccount.m_passworld(),
 		//		laccount.m_area(),
-		//		actor_guid(laccount.m_roleid()).actordataid()
+		//		nguid(laccount.m_roleid()).actordataid()
 		//	)
 		//}
 	}
@@ -76,7 +76,7 @@ namespace ngl
 			pbdb::db_account laccount;
 			laccount.set_m_account(account);
 			laccount.set_m_passworld(apassworld);
-			int64_t lid = actor_guid::make(ACTOR_ROLE, m_config_area, ++m_account.keyvalue_accountid());
+			int64_t lid = nguid::make(ACTOR_ROLE, m_config_area, ++m_account.keyvalue_accountid());
 			laccount.set_m_id(lid);
 			laccount.set_m_roleid(lid);
 
@@ -221,7 +221,7 @@ namespace ngl
 				.m_socketid = adata.m_pack->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
-			nserver->send_server(pro.m_gatewayid, pro, actor_guid::moreactor(), id_guid());
+			nserver->send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
 		}Catch;
 		return true;
 	}

@@ -18,7 +18,7 @@ namespace ngl
 			LogLocalError("roleinfo::sync_actor_roleinfo [%]", ljson)
 		}
 
-		actor::static_send_actor(actor_guid::make_self(ACTOR_BRIEF), actor_guid::make(), pro);
+		actor::static_send_actor(nguid::make_self(ACTOR_BRIEF), nguid::make(), pro);
 	}
 
 	void roleinfo::initdata()

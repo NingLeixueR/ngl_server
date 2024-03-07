@@ -43,10 +43,10 @@ namespace ngl
 			return false;
 
 		lkcpsession += '&';
-		lkcpsession += boost::lexical_cast<std::string>(actor_guid::area(aactorid));
+		lkcpsession += boost::lexical_cast<std::string>(nguid::area(aactorid));
 
 		lkcpsession += '&';
-		lkcpsession += boost::lexical_cast<std::string>(actor_guid::actordataid(aactorid));
+		lkcpsession += boost::lexical_cast<std::string>(nguid::actordataid(aactorid));
 
 		md5 lmd5(lkcpsession);
 		asession = lmd5.values();

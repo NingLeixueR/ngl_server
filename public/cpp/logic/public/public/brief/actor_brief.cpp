@@ -20,7 +20,7 @@ namespace ngl
 	}
 
 
-	void actor_brief::actor_register()
+	void actor_brief::nregister()
 	{
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_brief>(

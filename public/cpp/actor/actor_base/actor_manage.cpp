@@ -18,13 +18,13 @@ namespace ngl
 		ngl_lockinit;
 
 		//// ----- 索引actor
-		std::map<actor_guid, ptractor>							m_actorbyid;
-		std::map<ENUM_ACTOR, std::map<actor_guid, ptractor>>	m_actorbytype;
+		std::map<nguid, ptractor>							m_actorbyid;
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>	m_actorbytype;
 		std::list<ptractor>										m_actorlist;	// 有任务的actor列表
 		std::set<i16_actortype>									m_actortype;
 
 		// 删除actor后需要执行的操作
-		std::map<actor_guid, std::function<void()>> m_delactorfun;
+		std::map<nguid, std::function<void()>> m_delactorfun;
 
 		impl_actor_manage() :
 			m_thread(&impl_actor_manage::run, this),
@@ -50,7 +50,7 @@ namespace ngl
 
 		inline bool add_actor(ptractor& apactor, const std::function<void()>& afun)
 		{
-			actor_guid& guid = apactor->guid();
+			nguid& guid = apactor->guid();
 			{
 				ngl_lock;
 				if (m_actorbyid.find(guid) != m_actorbyid.end())
@@ -69,9 +69,9 @@ namespace ngl
 				pro->m_mass.m_add.push_back(guid);
 				pro->m_mass.m_actorservermass = false;
 
-				actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lclientguid = nguid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				handle_pram lparm;
-				handle_pram::create(lparm, lclientguid, actor_guid::make(), pro);
+				handle_pram::create(lparm, lclientguid, nguid::make(), pro);
 				push_task_id(lclientguid, lparm, false);
 			}
 			else
@@ -81,7 +81,7 @@ namespace ngl
 			return true;
 		}
 
-		inline void erase_actor_byid(const actor_guid& aguid, const std::function<void()>& afun)
+		inline void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun)
 		{
 			bool isrunfun = false;
 			std::shared_ptr<actor_node_update_mass> pro(new actor_node_update_mass
@@ -93,9 +93,9 @@ namespace ngl
 					},
 				});
 			// 删除的actor 
-			actor_guid lclientguid(ACTOR_ADDRESS_CLIENT, actor_guid::none_area(), nconfig::m_nodeid);
+			nguid lclientguid(ACTOR_ADDRESS_CLIENT, nguid::none_area(), nconfig::m_nodeid);
 			handle_pram lparm;
-			handle_pram::create(lparm, lclientguid, actor_guid::make(), pro);
+			handle_pram::create(lparm, lclientguid, nguid::make(), pro);
 			push_task_id(lclientguid, lparm, false);
 
 			ptractor lpactor = nullptr;
@@ -143,7 +143,7 @@ namespace ngl
 
 		}
 
-		inline ptractor& nosafe_get_actor(const actor_guid& aguid)
+		inline ptractor& nosafe_get_actor(const nguid& aguid)
 		{
 			static ptractor lnullptr(nullptr);
 			auto itor = m_actorbyid.find(aguid);
@@ -152,13 +152,13 @@ namespace ngl
 			return itor->second;
 		}
 
-		inline ptractor& get_actor(const actor_guid& aguid)
+		inline ptractor& get_actor(const nguid& aguid)
 		{
 			ngl_lock;
 			return nosafe_get_actor(aguid);
 		}
 
-		inline bool is_have_actor(const actor_guid& aguid)
+		inline bool is_have_actor(const nguid& aguid)
 		{
 			ngl_lock;
 			return m_actorbyid.find(aguid) != m_actorbyid.end();
@@ -234,7 +234,7 @@ namespace ngl
 			ngl_post;
 		}
 
-		inline ptractor& nosafe_get_actorbyid(const actor_guid& aguid, handle_pram& apram, bool abool)
+		inline ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram, bool abool)
 		{
 			static ptractor lnull(nullptr);
 			auto itor = m_actorbyid.find(aguid);
@@ -243,7 +243,7 @@ namespace ngl
 				if (!abool)
 					return lnull;
 				//发给actor_client
-				actor_guid lguid(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lguid(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				itor = m_actorbyid.find(lguid);
 				if (itor == m_actorbyid.end())
 					return lnull;
@@ -251,7 +251,7 @@ namespace ngl
 			return itor->second;
 		}
 
-		inline void push_task_id(const actor_guid& aguid, handle_pram& apram, bool abool)
+		inline void push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 		{
 			ngl_lock;
 			ptractor lpptractor = nosafe_get_actorbyid(aguid, apram, abool);
@@ -282,7 +282,7 @@ namespace ngl
 			// 2.然后发给actor_client，发给其他服务器
 			if (aotherserver == true)
 			{
-				actor_guid lguid(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lguid(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				auto itor = m_actorbyid.find(lguid);
 				if (itor == m_actorbyid.end())
 					return;
@@ -409,12 +409,12 @@ namespace ngl
 		return add_actor(ltemp, afun);
 	}
 
-	void actor_manage::erase_actor_byid(const actor_guid& aguid, const std::function<void()>& afun /*= nullptr*/)
+	void actor_manage::erase_actor_byid(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
 		m_impl_actor_manage()->erase_actor_byid(aguid, afun);
 	}
 
-	bool actor_manage::is_have_actor(const actor_guid& aguid)
+	bool actor_manage::is_have_actor(const nguid& aguid)
 	{
 		return m_impl_actor_manage()->is_have_actor(aguid);
 	}
@@ -424,7 +424,7 @@ namespace ngl
 		m_impl_actor_manage()->push(apactor, atorthread);
 	}
 
-	void actor_manage::push_task_id(const actor_guid& aguid, handle_pram& apram, bool abool)
+	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 	{
 		m_impl_actor_manage()->push_task_id(aguid, apram, abool);
 	}

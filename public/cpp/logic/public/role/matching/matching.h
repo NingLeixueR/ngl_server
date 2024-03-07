@@ -287,7 +287,7 @@ namespace ngl
 			pro->set_m_playsactorid(aplayactorid);
 			for (std::pair<const int64_t, pbnet::MATCHING_MEMBER>& item : itor->second->member())
 			{
-				actor::static_send_actor(item.first, actor_guid::make(), pro);
+				actor::static_send_actor(item.first, nguid::make(), pro);
 				m_roombyroleid.erase(item.first);
 			}
 			m_roombyid.erase(aroomid);

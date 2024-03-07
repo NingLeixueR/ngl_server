@@ -23,7 +23,7 @@ namespace ngl
 				aparm->m_triggerms = anode->m_parm.m_timerstart + anode->m_parm.m_ms;
 				std::shared_ptr<timerparm> ltemp = aparm;
 				handle_pram lpram;
-				handle_pram::create<timerparm, false>(lpram, lidguid, actor_guid::moreactor(), ltemp);
+				handle_pram::create<timerparm, false>(lpram, lidguid, nguid::moreactor(), ltemp);
 				actor_manage::getInstance().push_task_id(lidguid, lpram, false);
 			}
 		};

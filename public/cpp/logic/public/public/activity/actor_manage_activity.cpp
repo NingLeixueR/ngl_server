@@ -27,7 +27,7 @@ namespace ngl
 	}
 
 
-	void actor_manage_activity::actor_register()
+	void actor_manage_activity::nregister()
 	{
 		// 定时器
 		actor::register_timer<actor_manage_activity>(&actor_manage_activity::timer_handle);
@@ -167,8 +167,8 @@ namespace ngl
 			post_timer(litem.m_beg(), [lactivity](wheel_node* anode)
 				{
 					actor::static_send_actor(
-						actor_guid::make_self(ACTOR_ACTIVITY_MANAGE)
-						, actor_guid::make()
+						nguid::make_self(ACTOR_ACTIVITY_MANAGE)
+						, nguid::make()
 						, std::make_shared<actor_protocol_open_activity>(lactivity)
 					);
 				});
@@ -198,8 +198,8 @@ namespace ngl
 			post_timer(litem.m_end(), [lactivity](wheel_node* anode)
 				{
 					actor::static_send_actor(
-						actor_guid::make_self(ACTOR_ACTIVITY_MANAGE)
-						, actor_guid::make()
+						nguid::make_self(ACTOR_ACTIVITY_MANAGE)
+						, nguid::make()
 						, std::make_shared<actor_protocol_close_activity>(lactivity)
 					);
 				});
@@ -220,7 +220,7 @@ namespace ngl
 		}
 
 		// ### 数据加载完成
-		for (std::pair<const actor_guid, data_modified<pbdb::db_activity>>& item : m_db.data())
+		for (std::pair<const nguid, data_modified<pbdb::db_activity>>& item : m_db.data())
 		{
 			start_activity(item.first);
 		}

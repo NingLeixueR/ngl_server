@@ -33,7 +33,7 @@ namespace ngl
 		{
 			m_mails.set(this);
 		}
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_mail() {}
 

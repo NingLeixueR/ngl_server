@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "actor_protocol.h"
-#include "actor_guid.h"
+#include "nguid.h"
 #include "type.h"
 #include "init_protobuf.h"
 
@@ -29,9 +29,9 @@ namespace ngl
 	class handle_pram_send
 	{
 	public:
-		static bool sendbyserver(i32_serverid aserverid, const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
-		static bool send(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
-		static bool sendclient(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata);
+		static bool sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata);
+		static bool send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata);
+		static bool sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata);
 	};
 
 	struct handle_pram
@@ -40,10 +40,10 @@ namespace ngl
 		std::shared_ptr<void>	m_data			= nullptr;
 		std::shared_ptr<pack>	m_pack			= nullptr;
 		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;
-		actor_guid				m_actor;
-		actor_guid				m_requestactor;
+		nguid				m_actor;
+		nguid				m_requestactor;
 
-		using forwardtype = std::function<void(std::map<i32_serverid, actor_node_session>&, std::map<actor_guid, i32_serverid>&, handle_pram&)>;
+		using forwardtype = std::function<void(std::map<i32_serverid, actor_node_session>&, std::map<nguid, i32_serverid>&, handle_pram&)>;
 		forwardtype				m_forwardfun;	// 转发函数
 		std::function<void()>	m_failfun;		// 如何actor_client都找不到目标actor则调用
 
@@ -55,34 +55,34 @@ namespace ngl
 		static i32_serverid		get_gatewayid(i64_actorid aactorid);
 		// 根据[服务器类型]获取[服务器列表]
 		static void				get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
-		static bool				is_actoridnone(const actor_guid& aguid);
+		static bool				is_actoridnone(const nguid& aguid);
 
 		template <typename T>
-		static bool	netsend(i32_sessionid asession, T& adata, const actor_guid& aactorid, const actor_guid& arequestactorid);
+		static bool	netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
 		
 		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
 		template <typename T, bool IS_SEND = true>
-		static void	make_forwardfun(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& apram)
+		static void	make_forwardfun(const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram)
 		{
-			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<actor_guid, i32_serverid>& amap, handle_pram& adata)
+			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, handle_pram& adata)
 			{
 				handle_pram_send<T, IS_SEND>::send(aactorid, arequestactorid, adata);
 			};
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void	make_client(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& apram)
+		static void	make_client(const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram)
 		{
-			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<actor_guid, i32_serverid>& amap, handle_pram& adata)
+			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, handle_pram& adata)
 				{
 					handle_pram_send<T, IS_SEND>::sendclient(aactorid, arequestactorid, adata);
 				};
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
+		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -96,7 +96,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
-		static void create(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
+		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -109,7 +109,7 @@ namespace ngl
 			apram.m_failfun = afailfun;
 		}
 
-		static void create_pack(handle_pram& apram, const actor_guid& aid, const actor_guid& arid, std::shared_ptr<pack>& apack)
+		static void create_pack(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<pack>& apack)
 		{
 			apram.m_data = apack;
 			apram.m_actor = aid;
@@ -119,7 +119,7 @@ namespace ngl
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
+	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 	{
 		if (IS_SEND == false)
 			return true;
@@ -131,7 +131,7 @@ namespace ngl
 	}
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::send(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
+	bool handle_pram_send<T, IS_SEND>::send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 	{
 		i32_serverid lserverid = handle_pram::get_server(aactorid);
 		if (lserverid == -1)
@@ -146,7 +146,7 @@ namespace ngl
 				}
 				return true;
 			}
-			//LogLocalWarn("#handle_pram_send[%][%][%]", actor_guid::name(aactorid), actor_guid::type(aactorid), actor_guid::id(aactorid));
+			//LogLocalWarn("#handle_pram_send[%][%][%]", nguid::name(aactorid), nguid::type(aactorid), nguid::id(aactorid));
 			return false;
 		}
 		return handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
@@ -157,12 +157,12 @@ namespace ngl
 	class handle_pram_send<pack, true>
 	{
 	public:
-		static bool sendbyserver(i32_serverid aserverid, const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
+		static bool sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 		{
 			return handle_pram::netsendpack(aserverid, adata.m_data);
 		}
 
-		static bool send(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
+		static bool send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 		{
 			i32_serverid lserverid = handle_pram::get_server(aactorid);
 			if (lserverid == -1)
@@ -179,7 +179,7 @@ namespace ngl
 				}
 				if (adata.m_failfun != nullptr)
 					adata.m_failfun();
-				//LogLocalWarn("#handle_pram_send[%][%][%]", actor_guid::name(aactorid), actor_guid::type(aactorid), actor_guid::id(aactorid));
+				//LogLocalWarn("#handle_pram_send[%][%][%]", nguid::name(aactorid), nguid::type(aactorid), nguid::id(aactorid));
 				return false;
 			}
 			return handle_pram_send<pack, true>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
@@ -187,7 +187,7 @@ namespace ngl
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendclient(const actor_guid& aactorid, const actor_guid& arequestactorid, handle_pram& adata)
+	bool handle_pram_send<T, IS_SEND>::sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 	{
 		using type_pro = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 		std::shared_ptr<type_pro> ldata = std::static_pointer_cast<type_pro>(adata.m_data);
@@ -196,13 +196,13 @@ namespace ngl
 		std::set<i32_serverid> lgateway;
 		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
 		{
-			i32_serverid lserverid = handle_pram::get_gatewayid(actor_guid::make(ACTOR_ROLE, larea[i], luid[i]));
+			i32_serverid lserverid = handle_pram::get_gatewayid(nguid::make(ACTOR_ROLE, larea[i], luid[i]));
 			if(lserverid > 0)
 				lgateway.insert(lserverid);
 		}
 		for (i32_serverid lserverid : lgateway)
 		{
-			handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, actor_guid::make(), arequestactorid, adata);
+			handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, nguid::make(), arequestactorid, adata);
 		}
 		return true;
 	}

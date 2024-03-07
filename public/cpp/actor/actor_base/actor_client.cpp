@@ -1,7 +1,7 @@
 #include "actor_client.h"
 #include "actor_manage.h"
-#include "actor_register.h"
-#include "actor_address.h"
+#include "nregister.h"
+#include "naddress.h"
 #include "xmlnode.h"
 #include "net.h"
 
@@ -32,18 +32,18 @@ namespace ngl
 	actor_client::~actor_client()
 	{}
 
-	void actor_client::actor_register()
+	void actor_client::nregister()
 	{
 		//###### 设置未找到协议处理函数
-		arfun<actor_client, EPROTOCOL_TYPE_CUSTOM>::instance().set_notfindfun(
+		nrfun<actor_client, EPROTOCOL_TYPE_CUSTOM>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
-				actor_address::getInstance().handle(apram); 
+				naddress::getInstance().handle(apram); 
 			});
-		arfun<actor_client, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance().set_notfindfun(
+		nrfun<actor_client, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance().set_notfindfun(
 			[](int, handle_pram& apram)
 			{
-				actor_address::getInstance().handle(apram);
+				naddress::getInstance().handle(apram);
 			});
 
 		//###### 注册协议
@@ -70,7 +70,7 @@ namespace ngl
 		nserver->connect(tabactor->m_id, tabactor->m_ip, tabactor->m_port,
 			[lactorid, tab, tabactor](int asession)
 			{
-				i64_actorid lactorserveractorid = ngl::actor_guid::make(ACTOR_ADDRESS_SERVER, tabactor->m_area, actor_guid::none_actordataid());
+				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_ADDRESS_SERVER, tabactor->m_area, nguid::none_actordataid());
 				{
 					actor_node lnode;
 					lnode.m_name = "actorserver";
@@ -78,9 +78,9 @@ namespace ngl
 					lnode.m_actortype.push_back(ACTOR_ADDRESS_SERVER);
 					lnode.m_ip = tabactor->m_ip;
 					lnode.m_port = tabactor->m_port;
-					actor_address::getInstance().set_node(lnode);
-					actor_address::getInstance().set_session(tabactor->m_id, asession);
-					actor_address::getInstance().actor_add(tabactor->m_id, lactorserveractorid);
+					naddress::getInstance().set_node(lnode);
+					naddress::getInstance().set_session(tabactor->m_id, asession);
+					naddress::getInstance().actor_add(tabactor->m_id, lactorserveractorid);
 				}
 				{//注册结点
 					actor_node_register lpram
@@ -95,9 +95,9 @@ namespace ngl
 					};
 					actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
 
-					actor_address::getInstance().ergodic(
+					naddress::getInstance().ergodic(
 						[&lpram](
-							std::map<actor_guid, i32_serverid>& aactorserver,
+							std::map<nguid, i32_serverid>& aactorserver,
 							std::map<i32_serverid, actor_node_session>& _)
 						{
 							for (auto&& [dataid, serverid] : aactorserver)
@@ -136,7 +136,7 @@ namespace ngl
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const actor_node& node = lparm->m_vec[i];
-				if (actor_address::getInstance().set_node(node))
+				if (naddress::getInstance().set_node(node))
 				{
 					// 比较id  较大的主动连接较小的
 					if (tab->m_id > node.m_serverid)
@@ -149,7 +149,7 @@ namespace ngl
 								LogLocalInfo("Connect Ok[%]", tab->m_id);
 								actor_client_node_connect pro;
 								pro.m_id = tab->m_id;
-								nserver->send(asession, pro, actor_guid::moreactor(), lactorid);
+								nserver->send(asession, pro, nguid::moreactor(), lactorid);
 							}, false, true);
 					}
 				}
@@ -162,12 +162,12 @@ namespace ngl
 	{
 		actor_node_update lpro;
 		lpro.m_id = alocalserverid;
-		for (auto&& [actorid, serverid] : actor_address::getInstance().get_actorserver_map())
+		for (auto&& [actorid, serverid] : naddress::getInstance().get_actorserver_map())
 		{
 			if (alocalserverid == serverid)
 				lpro.m_add.push_back(actorid);
 		}
-		nserver->send(asession, lpro, actor_guid::moreactor(), aclient->id_guid());
+		nserver->send(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
 	// 主动连接
@@ -177,7 +177,7 @@ namespace ngl
 		{
 			actor_client_node_connect pro;
 			pro.m_id = alocalserverid;
-			nserver->send(asession, pro, actor_guid::moreactor(), aclient->id_guid());
+			nserver->send(asession, pro, nguid::moreactor(), aclient->id_guid());
 			nserver->set_server(aserverid, asession);
 		}
 	}
@@ -193,7 +193,7 @@ namespace ngl
 
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
-			actor_address::getInstance().set_session(lserverid, lpack->m_id);
+			naddress::getInstance().set_session(lserverid, lpack->m_id);
 			nserver->set_server(lserverid, lpack->m_id);
 			set_connect_fnish(lparm->m_id);
 			connect_fnish();
@@ -207,7 +207,7 @@ namespace ngl
 				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
 				{
 					std::shared_ptr<actor_server_connect> pro(new actor_server_connect{ .m_serverid = lserverid });
-					actor_guid lguid = actor_guid::make_self(ACTOR_LOGIN);
+					nguid lguid = nguid::make_self(ACTOR_LOGIN);
 					handle_pram lparm;
 					handle_pram::create(lparm, lguid, guid(), pro);
 					actor_manage::getInstance().push_task_id(lguid, lparm, false);
@@ -223,8 +223,8 @@ namespace ngl
 		{
 			auto lparm = adata.m_data;
 			LogLocalInfo("##actor_node_update## add:[%] del[%]", lparm->m_add, lparm->m_del);
-			actor_address::getInstance().actor_add(lparm->m_id, lparm->m_add);
-			actor_address::getInstance().actor_del(lparm->m_del);
+			naddress::getInstance().actor_add(lparm->m_id, lparm->m_add);
+			naddress::getInstance().actor_del(lparm->m_del);
 		}Catch;
 		return true;
 	}
@@ -237,11 +237,11 @@ namespace ngl
 		message<actor_node_update> lmessage(lthreadid, lpack, &lparm->m_mass);
 		handle(lmessage);
 		i64_actorid lactorid = id_guid();
-		actor_address::getInstance().foreach(
+		naddress::getInstance().foreach(
 			[&lparm, lactorid](const actor_node_session& anode)->bool
 			{
 				if (anode.m_node.m_serverid != nconfig::m_nodeid)
-					nserver->send(anode.m_session, lparm->m_mass, actor_guid::moreactor(), lactorid);
+					nserver->send(anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid);
 				return true;
 			});
 		if (lparm->m_fun != nullptr)
@@ -293,11 +293,11 @@ namespace ngl
 		auto lparm = adata.m_data;
 		if (lparm->m_isremove)
 		{
-			actor_address::getInstance().remove_gatewayid(lparm->m_actorid);
+			naddress::getInstance().remove_gatewayid(lparm->m_actorid);
 		}
 		else
 		{
-			actor_address::getInstance().add_gatewayid(lparm->m_actorid, lparm->m_gatewayid);
+			naddress::getInstance().add_gatewayid(lparm->m_actorid, lparm->m_gatewayid);
 		}
 		return true;
 	}

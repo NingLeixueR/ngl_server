@@ -1,5 +1,5 @@
 ﻿#include "actor_gateway.h"
-#include "actor_register.h"
+#include "nregister.h"
 
 namespace ngl
 {
@@ -20,7 +20,7 @@ namespace ngl
 
 	actor_gateway::~actor_gateway() {}
 
-	void actor_gateway::actor_register()
+	void actor_gateway::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway>(
 			false
@@ -38,12 +38,12 @@ namespace ngl
 		);
 	}
 
-	void actor_gateway::sync_actorserver_gatewayid(const actor_guid& aguid, bool aisremove)
+	void actor_gateway::sync_actorserver_gatewayid(const nguid& aguid, bool aisremove)
 	{
 		actor_gateway_id_updata pro
 		{
 			.m_isremove = aisremove,
-			.m_actorid = actor_guid::make(ACTOR_ROLE, aguid.area(), aguid.actordataid()),
+			.m_actorid = nguid::make(ACTOR_ROLE, aguid.area(), aguid.actordataid()),
 			.m_gatewayid = ttab_servers::tab()->m_id,
 		};
 
@@ -52,8 +52,8 @@ namespace ngl
 			actor_base::send_server(
 				iserverid,
 				pro,
-				actor_guid::make(ACTOR_ADDRESS_SERVER, aguid.area(), actor_guid::none_actordataid()),
-				actor_guid::make()
+				nguid::make(ACTOR_ADDRESS_SERVER, aguid.area(), nguid::none_actordataid()),
+				nguid::make()
 			);
 		}
 	}
@@ -61,8 +61,8 @@ namespace ngl
 	void actor_gateway::update_gateway_info(actor_gateway_info_updata* ap)
 	{
 		std::shared_ptr<actor_gateway_info_updata> pro(ap);
-		send_actor(actor_guid::make(ACTOR_GATEWAY_GAME2CLIENT, tab_self_area, id()), pro);
-		send_actor(actor_guid::make(ACTOR_GATEWAY_CLIENT2GAME, tab_self_area, id()), pro);
+		send_actor(nguid::make(ACTOR_GATEWAY_GAME2CLIENT, tab_self_area, id()), pro);
+		send_actor(nguid::make(ACTOR_GATEWAY_CLIENT2GAME, tab_self_area, id()), pro);
 	}
 
 	void actor_gateway::session_close(gateway_socket* ainfo)
@@ -89,22 +89,22 @@ namespace ngl
 
 				if (linfo->m_socket == 0)
 				{
-					m_info.remove_actorid(actor_guid::make(ACTOR_NONE, larea, lroleid));
+					m_info.remove_actorid(nguid::make(ACTOR_NONE, larea, lroleid));
 				}
 
-				update_gateway_info(new actor_gateway_info_updata{.m_delactorid = {actor_guid::make(ACTOR_NONE, larea, lroleid)} });
+				update_gateway_info(new actor_gateway_info_updata{.m_delactorid = {nguid::make(ACTOR_NONE, larea, lroleid)} });
 
 				{
 					std::shared_ptr<actor_disconnect_close> pro(new actor_disconnect_close
 						{
-							.m_actorid = actor_guid::make(ACTOR_ROLE, larea, lroleid),
+							.m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid),
 						});
 					// ##### 通知game服务器 玩家已经断开连接
 					send_actor(pro->m_actorid, pro);
 					// ##### 通知login服务器 玩家已经断开连接
 					ttab_servers::foreach_server(LOGIN, [&pro, this](const tab_servers* atab)
 						{
-							actor_guid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
+							nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
 							send_actor(lguid, pro);
 						});
 				}
@@ -113,13 +113,13 @@ namespace ngl
 		};
 		twheel::wheel().addtimer(lparm);
 
-		sync_actorserver_gatewayid(actor_guid::make(ACTOR_ROLE, larea, lroleid), true);
+		sync_actorserver_gatewayid(nguid::make(ACTOR_ROLE, larea, lroleid), true);
 	}
 
 	bool actor_gateway::handle(message<actor_role_login>& adata)
 	{// login服务器通知GateWay服务器 玩家账号验证成功
 		auto lparm = adata.m_data;
-		actor_guid lguid(lparm->m_roleid);
+		nguid lguid(lparm->m_roleid);
 
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo != nullptr)
@@ -142,7 +142,7 @@ namespace ngl
 		// ## 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 
-		nets::net()->send(adata.m_pack->m_id, *lparm, actor_guid::make_self(ACTOR_LOGIN), actor_guid::make());
+		nets::net()->send(adata.m_pack->m_id, *lparm, nguid::make_self(ACTOR_LOGIN), nguid::make());
 		return true;
 	}
 
@@ -158,7 +158,7 @@ namespace ngl
 				, lpram->m_roleid()
 				, lpram->m_session()
 			)
-			actor_guid lguid(lpram->m_roleid());
+			nguid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 			
 			Assert(linfo != nullptr);
@@ -178,7 +178,7 @@ namespace ngl
 						}
 						// 断线重连或者其他设备顶号
 						pbnet::PROBUFF_NET_ROLE_SYNC pro;
-						nserver->send_server(linfo->m_gameid, pro, actor_guid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
+						nserver->send_server(linfo->m_gameid, pro, nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
 						return true;
 					}
 				}
@@ -192,7 +192,7 @@ namespace ngl
 			linfo->m_iscreate = false;
 			lpram->set_m_gatewayid(nconfig::m_nodeid);
 			lpram->set_m_area(linfo->m_area);
-			nserver->send_server(linfo->m_gameid, *lpram, actor_guid::moreactor(), id_guid());
+			nserver->send_server(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
 
 			return true;
 		}Catch;
@@ -205,8 +205,8 @@ namespace ngl
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_m_kcpsession(lpram->m_kcpsession);
 		nets::net()->send(lpram->m_sessionid, pro,
-			actor_guid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid)
-			, actor_guid::make()
+			nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid)
+			, nguid::make()
 		);
 		return true;
 	}
@@ -221,7 +221,7 @@ namespace ngl
 			return true;
 		
 		std::string lkcpsession;
-		if (ukcp::create_session(actor_guid::make(actor_guid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
+		if (ukcp::create_session(nguid::make(nguid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
 			return true;
 		
 
@@ -245,7 +245,7 @@ namespace ngl
 		{
 			auto lpram = adata.m_data;
 			LogLocalInfo("############ GateWay Transmit ############");
-			actor_guid lguid(lpram->m_actor);
+			nguid lguid(lpram->m_actor);
 
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 			Assert(linfo != nullptr);
@@ -275,7 +275,7 @@ namespace ngl
 				{
 					gateway_socket* linfo = m_info.get(item->m_area, item->m_dataid);
 					session_close(linfo);
-					LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", actor_guid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
+					LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 				}
 			}
 			else
@@ -283,7 +283,7 @@ namespace ngl
 				gateway_socket* linfo = m_info.get(lpram->m_sessionid);
 				Assert(linfo != nullptr);
 				session_close(linfo);
-				LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", actor_guid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
+				LogLocalInfo("############ earse_roleinfobysocket[%]:[%] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 			}
 
 			update_gateway_info(new actor_gateway_info_updata{.m_delsocket = {lpram->m_sessionid} });

@@ -1,6 +1,6 @@
 #include "actor_manage_role.h"
 #include "actor_timer.h"
-#include "actor_register.h"
+#include "nregister.h"
 #include "actor_create.h"
 
 namespace ngl
@@ -20,7 +20,7 @@ namespace ngl
 	{
 	}
 
-	void actor_manage_role::actor_register()
+	void actor_manage_role::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_role>(false
 			, dregister_fun_handle(actor_manage_role, pbnet::PROBUFF_NET_ROLE_LOGIN)
@@ -29,7 +29,7 @@ namespace ngl
 
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
-		actor_guid lguid(adata.m_data->m_roleid());
+		nguid lguid(adata.m_data->m_roleid());
 		std::cout << "actor_manage_role roleid:" << adata.m_data->m_roleid() << std::endl;
 		actor_switch_process_role pro
 		{

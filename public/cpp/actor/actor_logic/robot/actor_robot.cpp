@@ -1,5 +1,5 @@
 ﻿#include "actor_robot.h"
-#include "actor_register.h"
+#include "nregister.h"
 #include "gameclient_forward.h"
 
 namespace ngl
@@ -22,7 +22,7 @@ namespace ngl
 
 	}
 
-	void actor_robot::actor_register()
+	void actor_robot::nregister()
 	{
 		gameclient_forward::g2c();
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_robot>(
@@ -58,7 +58,7 @@ namespace ngl
 		tab = ngl::ttab_servers::tab();
 		pro.set_m_uport(tab->m_uport);
 		pro.set_m_conv(ukcp::m_conv);
-		nserver->send(m_session, pro, actor_guid::moreactor(), id_guid());
+		nserver->send(m_session, pro, nguid::moreactor(), id_guid());
 		return true;
 	}
 
@@ -82,9 +82,9 @@ namespace ngl
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
 
 				//LogLocalError("[%][%][%] %", lbuff, 
-				//	actor_guid::area(item.m_roleid()), item.m_rolename(), item.m_content())
+				//	nguid::area(item.m_roleid()), item.m_rolename(), item.m_content())
 
-				std::cout << actor_guid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
+				std::cout << nguid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
 			}
 		}
 		else if (lrecv->m_type() == pbnet::chat_speak)
@@ -99,8 +99,8 @@ namespace ngl
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
 				//LogLocalError("[%][%][%] %", lbuff,
-				//	actor_guid::area(item.m_roleid()), item.m_rolename(), item.m_content())
-				std::cout << actor_guid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
+				//	nguid::area(item.m_roleid()), item.m_rolename(), item.m_content())
+				std::cout << nguid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
 			}
 		}
 		return true;
@@ -145,7 +145,7 @@ namespace ngl
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
 	{
 		LogLocalError("[%][%][%]"
-			, actor_guid::make_type(id_guid(), ACTOR_ROLE)
+			, nguid::make_type(id_guid(), ACTOR_ROLE)
 			, adata.m_data->m_errnum()
 			, adata.m_data->m_errmessage()
 		)
@@ -162,7 +162,7 @@ namespace ngl
 		return true;
 	}
 
-	void actor_manage_robot::actor_register()
+	void actor_manage_robot::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>(
 			false

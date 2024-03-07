@@ -3,7 +3,7 @@
 #include "actor_manage.h"
 #include "actor_db_client.h"
 #include "actor_protocol.h"
-#include "actor_register.h"
+#include "nregister.h"
 #include "db_data.h"
 #include "db.h"
 #include "db_pool.h"
@@ -90,11 +90,11 @@ namespace ngl
 				{
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 					{
-						actor_guid lguid(atab.const_mm_id());
+						nguid lguid(atab.const_mm_id());
 						pro->m_data.insert(std::make_pair(lguid, atab));
 						if (aindex % lsendmaxcount == 0)
 						{
-							nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
+							nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
 							pro = actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
 							pro.m_stat = true;
 							pro.m_over = false;
@@ -102,11 +102,11 @@ namespace ngl
 					}
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 					{
-						actor_guid lguid(atab.m_id());
+						nguid lguid(atab.m_id());
 						pro.m_data.m_data->insert(std::make_pair(lguid, atab));
 						if (aindex % lsendmaxcount == 0)
 						{
-							nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
+							nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
 							pro = actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
 							pro.m_stat = true;
 							pro.m_over = false;
@@ -115,7 +115,7 @@ namespace ngl
 					}
 				});
 			pro.m_over = true;
-			nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
+			nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
 			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name());
 		}
 
@@ -167,7 +167,7 @@ namespace ngl
 					pro.m_stat = ngl::dbdata<TDBTAB>::get(lid, (*pro.m_data.m_data)[adata.m_id]);
 				}
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
-				nets::net()->send(apack->m_id, pro, lrequestactor, actor_guid::make());
+				nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
 				std::string lname;
 				LogLocalError("load finish: [%][%]"
 					, lrequestactor
@@ -215,8 +215,8 @@ namespace ngl
 		{
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
-				const std::map<actor_guid, TDBTAB>& lmap = adata.m_data;
-				for (const std::pair<const actor_guid, TDBTAB>& item : lmap)
+				const std::map<nguid, TDBTAB>& lmap = adata.m_data;
+				for (const std::pair<const nguid, TDBTAB>& item : lmap)
 				{
 					m_idset.insert(item.first.id());
 					save(athreadid, item.second);
@@ -224,8 +224,8 @@ namespace ngl
 			}
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
-				const std::map<actor_guid, TDBTAB>& lmap = *adata.m_data.m_data;
-				for (const std::pair<const actor_guid, TDBTAB>& item : lmap)
+				const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;
+				for (const std::pair<const nguid, TDBTAB>& item : lmap)
 				{
 					m_idset.insert(item.first.id());
 					save(athreadid, item.second);
@@ -270,7 +270,7 @@ namespace ngl
 
 		virtual ~actor_db() {}
 
-		static void actor_register()
+		static void nregister()
 		{
 			EPROTOCOL_TYPE ltype = PROTYPE;
 			using TDerived = actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
@@ -348,7 +348,7 @@ namespace ngl
 		pro->m_ls.swap(aset);
 
 		ENUM_ACTOR ltype = actor_type<actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>>::type();
-		i64_actorid lactorid = actor_guid::make(ltype, tab_self_area, nconfig::m_nodeid);
-		actor_base::static_send_actor(lactorid, actor_guid::make(), pro);
+		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nconfig::m_nodeid);
+		actor_base::static_send_actor(lactorid, nguid::make(), pro);
 	}
 }

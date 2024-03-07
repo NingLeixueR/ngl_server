@@ -48,7 +48,7 @@ namespace ngl
 
 		virtual ~actor_login();
 
-		static void actor_register();
+		static void nregister();
 
 		virtual void loaddb_finish(bool adbishave);
 

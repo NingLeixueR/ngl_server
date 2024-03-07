@@ -13,7 +13,7 @@ namespace ngl
 					.m_parm
 					{
 						.m_type = ACTOR_CROSS,
-						.m_area = actor_guid::none_area(),// 跨服此值无意义
+						.m_area = nguid::none_area(),// 跨服此值无意义
 						.m_id = nconfig::m_nodeid
 					},
 					.m_weight = 0x7fffffff,
@@ -31,7 +31,7 @@ namespace ngl
 		{
 			//m_info.set(this);
 		}
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_cross() {}
 

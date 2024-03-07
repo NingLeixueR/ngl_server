@@ -52,7 +52,7 @@ namespace ngl
 				return;
 			}
 			ENUM_ACTOR lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
-			if (lactortype == actor_guid::none<ENUM_ACTOR>())
+			if (lactortype == nguid::none<ENUM_ACTOR>())
 			{
 				for (auto itorrun = lpfun->m_runfun.begin(); itorrun != lpfun->m_runfun.end(); ++itorrun)
 				{

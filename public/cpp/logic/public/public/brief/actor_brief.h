@@ -30,7 +30,7 @@ namespace ngl
 			return actor_instance<actor_brief>::instance();
 		}
 
-		static void actor_register();
+		static void nregister();
 
 		virtual void init()
 		{
@@ -50,12 +50,12 @@ namespace ngl
 
 			auto pro = std::make_shared<actor_roleinfo>();
 			*pro = *adata.m_data;
-			actor::static_send_actor(actor_guid::make_self(ACTOR_NOTICE), actor_guid::make(), pro);
-			actor::static_send_actor(actor_guid::make_self(ACTOR_CHAT), actor_guid::make(), pro);
+			actor::static_send_actor(nguid::make_self(ACTOR_NOTICE), nguid::make(), pro);
+			actor::static_send_actor(nguid::make_self(ACTOR_CHAT), nguid::make(), pro);
 		
 			actor::static_send_actor(
-			actor_guid::make(ACTOR_CHAT,ttab_servers::tab()->m_crossarea, actor_guid::none_actordataid()),
-			actor_guid::make(), pro);
+			nguid::make(ACTOR_CHAT,ttab_servers::tab()->m_crossarea, nguid::none_actordataid()),
+			nguid::make(), pro);
 			return true;
 		}
 

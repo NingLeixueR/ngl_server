@@ -38,7 +38,7 @@ namespace ngl
 
 		virtual void init();
 
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_role();
 
@@ -85,7 +85,7 @@ namespace ngl
 		template <typename T>
 		int32_t dataid(T& adata)
 		{
-			return actor_guid::none_actordataid();
+			return nguid::none_actordataid();
 		}
 
 		template <ENUM_ACTOR ACTOR, typename T>
@@ -96,10 +96,10 @@ namespace ngl
 			switch (get_cross(*adata.m_data))
 			{
 			case ecross_ordinary:
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_area, dataid(*adata.m_data));
+				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, dataid(*adata.m_data));
 				break;
 			case ecross_cross_ordinary:
-				lguid = actor_guid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(*adata.m_data));
+				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(*adata.m_data));
 				break;
 			case ecross_play:
 				lguid = m_playactorid;

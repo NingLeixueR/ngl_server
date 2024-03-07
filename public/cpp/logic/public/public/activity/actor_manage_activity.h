@@ -38,7 +38,7 @@ namespace ngl
 			return actor_instance<actor_manage_activity>::instance();
 		}
 
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_manage_activity() {}
 

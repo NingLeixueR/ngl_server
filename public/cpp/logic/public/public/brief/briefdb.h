@@ -50,7 +50,7 @@ namespace ngl
 		{
 			LogLocalError("actor_brief###loaddb_finish")
 			
-			for (const std::pair<const actor_guid, data_modified<pbdb::db_brief>>& pair : data())
+			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
 			{
 				std::cout << "#####################" << std::endl;
 				

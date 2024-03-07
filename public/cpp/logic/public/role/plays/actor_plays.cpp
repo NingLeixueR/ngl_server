@@ -25,7 +25,7 @@ namespace ngl
 		pro->set_m_type((pbnet::eplays)tab->m_type);
 		pro->set_m_roomid(adataid);
 		pro->set_m_playsactorid(id_guid());
-		send_actor(actor_guid::make_self(ACTOR_MATCHING), pro);
+		send_actor(nguid::make_self(ACTOR_MATCHING), pro);
 
 		m_map.init(tab->m_mapid);
 
@@ -45,7 +45,7 @@ namespace ngl
 		preparation(true);
 	}
 
-	void actor_plays::actor_register()
+	void actor_plays::nregister()
 	{
 		// ¶¨Ê±Æ÷
 		register_timer<actor_plays>(&actor_plays::timer_handle);

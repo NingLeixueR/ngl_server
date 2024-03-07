@@ -25,7 +25,7 @@ namespace ngl
 
 		virtual ~actor_manage_role() {}
 
-		static void actor_register();
+		static void nregister();
 				
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	};

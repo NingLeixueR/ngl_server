@@ -24,7 +24,7 @@ namespace ngl
 		}
 
 		virtual void init();
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_reloadcsv();
 
@@ -47,7 +47,7 @@ namespace ngl
 		}
 
 		virtual void init();
-		static void actor_register();
+		static void nregister();
 
 		virtual ~actor_reloadcsv_distribute();
 				

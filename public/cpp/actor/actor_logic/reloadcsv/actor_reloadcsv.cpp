@@ -21,7 +21,7 @@ namespace ngl
 		set_timer(tparm);
 	}
 
-	void actor_reloadcsv::actor_register()
+	void actor_reloadcsv::nregister()
 	{
 		actor_reloadcsv::register_timer<actor_reloadcsv>(&actor_reloadcsv::timer_handle);
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv>(
@@ -53,7 +53,7 @@ namespace ngl
 		LogLocalError("############actor_reloadcsv::timer_handle###########")
 		actor_reloadcsv_verify_version pro;
 		allcsv::foreach_version(pro.m_version);
-		i64_actorid lrequest = actor_guid::make(ACTOR_RELOADCSV_DISTRIBUTE, tab_self_area, ttab_servers::tab()->m_reloadcsv);
+		i64_actorid lrequest = nguid::make(ACTOR_RELOADCSV_DISTRIBUTE, tab_self_area, ttab_servers::tab()->m_reloadcsv);
 		send_server(ttab_servers::tab()->m_reloadcsv, pro, lrequest, id_guid());
 		return true;
 	}
@@ -69,7 +69,7 @@ namespace ngl
 
 	void actor_reloadcsv_distribute::init() {}
 
-	void actor_reloadcsv_distribute::actor_register()
+	void actor_reloadcsv_distribute::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv_distribute>(
 			false

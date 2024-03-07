@@ -19,9 +19,9 @@ namespace ngl
 		
 		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
 		std::cout
-			<< " type			= " << actor_guid::type(lrequest)
-			<< " actordataid	= " << actor_guid::actordataid(lrequest)
-			<< " area			= " << actor_guid::area(lrequest)
+			<< " type			= " << nguid::type(lrequest)
+			<< " actordataid	= " << nguid::actordataid(lrequest)
+			<< " area			= " << nguid::area(lrequest)
 			<< std::endl;
 		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name())
 

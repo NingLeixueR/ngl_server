@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "actor_address.h"
+#include "naddress.h"
 #include "actor_manage.h"
 #include "xmlnode.h"
 #include "net.h"
@@ -19,7 +19,7 @@ namespace ngl
 
 		virtual ~actor_server();
 
-		static void actor_register();
+		static void nregister();
 
 		// ---- [actor client -> actor server] register
 		// 注册结点

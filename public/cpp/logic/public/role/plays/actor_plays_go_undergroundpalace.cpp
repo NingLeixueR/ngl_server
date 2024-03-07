@@ -8,9 +8,9 @@ namespace ngl
 
 	}
 
-	void actor_plays_go_undergroundpalace::actor_register()
+	void actor_plays_go_undergroundpalace::nregister()
 	{
-		actor_plays::actor_register();
+		actor_plays::nregister();
 
 
 	}

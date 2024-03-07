@@ -56,7 +56,7 @@ namespace ngl
 			}
 		}
 
-		std::map<actor_guid, data_modified<TDATA>>& data()
+		std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
 		}
@@ -67,7 +67,7 @@ namespace ngl
 		}
 
 		// 没有就添加
-		data_modified<TDATA>* get(actor_guid aid)
+		data_modified<TDATA>* get(nguid aid)
 		{
 			data_modified<TDATA>* ret = find(aid);
 			if (ret != nullptr)
@@ -77,7 +77,7 @@ namespace ngl
 			return &ldata;
 		}
 
-		data_modified<TDATA>* find(actor_guid aid)
+		data_modified<TDATA>* find(nguid aid)
 		{
 			auto itor = data().find(aid);
 			if (itor == data().end())
@@ -85,7 +85,7 @@ namespace ngl
 			return &itor->second;
 		}
 
-		void erase(actor_guid aid)
+		void erase(nguid aid)
 		{
 			m_data.del(aid);
 		}

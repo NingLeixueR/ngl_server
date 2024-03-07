@@ -13,7 +13,7 @@ namespace ngl
 
 		virtual ~actor_plays_go_undergroundpalace() {}
 
-		static void actor_register();
+		static void nregister();
 
 		// 初始化玩法后调用
 		virtual void init_after() {}

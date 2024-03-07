@@ -1,6 +1,6 @@
 #include "net_protocol.h"
 #include "protocol.h"
-#include "actor_guid.h"
+#include "nguid.h"
 
 namespace ngl
 {
@@ -47,8 +47,8 @@ namespace ngl
 		inline void close(i32_sessionid asession)
 		{
 			std::shared_ptr<actor_session_close> pro(new actor_session_close{ .m_sessionid = asession });
-			i64_actorid lactorid = actor_guid::make(ACTOR_GATEWAY, tab_self_area, nconfig::m_nodeid);
-			actor_base::static_send_actor(lactorid, actor_guid::make(), pro);
+			i64_actorid lactorid = nguid::make(ACTOR_GATEWAY, tab_self_area, nconfig::m_nodeid);
+			actor_base::static_send_actor(lactorid, nguid::make(), pro);
 		}
 
 		inline bool connect(
@@ -194,6 +194,6 @@ namespace ngl
 
 	i64_actorid net_protocol::moreactor()
 	{
-		return actor_guid::moreactor();
+		return nguid::moreactor();
 	}
 }

@@ -25,7 +25,7 @@ namespace ngl
 
 		virtual ~actor_gateway_client2game();
 
-		static void actor_register();
+		static void nregister();
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(message<actor_forward<T, TYPE, false, ngl::forward>>& adata)
@@ -38,7 +38,7 @@ namespace ngl
 			if (rebot_test::is_test)
 			{
 				i64_actorid lactorid = lpack->m_head.get_request_actor();
-				actor_guid lguid(lactorid);
+				nguid lguid(lactorid);
 				info = m_info.get(lguid.area(), lguid.actordataid());
 			}
 			else
@@ -50,7 +50,7 @@ namespace ngl
 			actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
 			ltemp.m_uid.push_back(info->m_dataid);
 			ltemp.m_area.push_back(info->m_area);
-			nserver->send_server(info->m_gameid, ltemp, actor_guid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
+			nserver->send_server(info->m_gameid, ltemp, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
 			return true;
 		}
 

@@ -1,5 +1,5 @@
 ﻿#include "actor_gateway_client2game.h"
-#include "actor_register.h"
+#include "nregister.h"
 #include "gameclient_forward.h"
 
 namespace ngl
@@ -22,7 +22,7 @@ namespace ngl
 
 	actor_gateway_client2game::~actor_gateway_client2game() {}
 
-	void actor_gateway_client2game::actor_register()
+	void actor_gateway_client2game::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway_client2game>(
 			false
