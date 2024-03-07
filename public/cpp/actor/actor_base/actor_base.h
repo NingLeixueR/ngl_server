@@ -184,36 +184,76 @@ namespace ngl
 		bool connect_kcp(const std::string& aip, i16_port aprot);
 
 #pragma endregion //network_kcp
+		template <typename T>
+		using tactor_forward = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
+
+		template <typename T>
+		static void actor_forward_init(
+			actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
+			, i64_actorid aid
+			)
+		{
+			actor_guid lguid(aid);
+			apro.m_uid.push_back(lguid.actordataid());
+			apro.m_area.push_back(lguid.area());
+		}
+
+		template <typename T>
+		static void actor_forward_setdata(
+			actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
+			, std::shared_ptr<T>& adata
+		)
+		{
+			apro.set_data(adata);
+		}
+
+		static i64_actorid actorclient_guid()
+		{
+			static i64_actorid lid = actor_guid::make(
+				ACTOR_ADDRESS_CLIENT
+				, ttab_servers::tab()->m_area
+				, actor_guid::none_actordataid()
+			);
+			return lid;
+		}
+
+		template <typename T>
+		static void pram_create(
+			std::shared_ptr<tactor_forward<T>>& apro
+			, handle_pram& apram
+			, i64_actorid aid
+		)
+		{
+			actor_guid lguid(aid);
+			handle_pram::create<tactor_forward<T>, true, true>(apram, lguid, actor_guid::make(), apro);
+		}
 
 		// 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
 		static void send_client(i64_actorid aid, std::shared_ptr<T>& adata)
 		{
+			auto pro = std::make_shared<tactor_forward<T>>();
+			actor_forward_init(*pro, aid);
+			actor_forward_setdata(*pro, adata);
 			handle_pram lpram;
-			auto pro = std::make_shared<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>();
-			actor_guid lguid(aid);
-			pro->m_uid.push_back(lguid.actordataid());
-			pro->m_area.push_back(lguid.area());
-			pro->set_data(adata);
-			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
-			using tactor_forward = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
-			handle_pram::create<tactor_forward,true, true>(lpram, lguid, actor_guid::make(), pro);
-			push_task_id(lclientguid, lpram, true);
+			pram_create(pro, lpram, aid);
+			push_task_id(actorclient_guid(), lpram, true);
 		}
 
 		// 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
 		static void send_client(i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata)
 		{
-			if (agatewayid != 0)
-			{
-				actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
-				actor_guid lguid(aid);
-				pro.m_uid.push_back(lguid.actordataid());
-				pro.m_area.push_back(lguid.area());
-				pro.set_data(adata);
-				send_server(agatewayid, pro, actor_guid::make(), aid);
-			}
+			tab_servers* tab = ttab_servers::tab(agatewayid);
+			if (tab == nullptr)
+				return;
+			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)
+				return;
+			tactor_forward<T> pro;
+			actor_forward_init(pro, aid);
+			actor_forward_setdata(pro, adata);
+			actor_guid lguid(aid);
+			send_server(agatewayid, pro, actor_guid::make(), aid);
 		}
 	private:
 		template < typename T, typename ITOR>
@@ -221,19 +261,15 @@ namespace ngl
 		{
 			if (abeg == aend)
 				return;
-			handle_pram lpram;
-			auto pro = std::make_shared<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>();
-			std::for_each(abeg, abeg, [&pro](i64_actorid aactorid)
+			auto pro = std::make_shared<tactor_forward<T>>();
+			std::for_each(abeg, aend, [&pro](i64_actorid aactorid)
 				{
-					actor_guid lguid(aactorid);
-					pro->m_uid.push_back(lguid.actordataid());
-					pro->m_area.push_back(lguid.area());
+					actor_forward_init(*pro, aactorid);
 				});
-			pro->set_data(adata);
-			actor_guid lclientguid = actor_guid::make(ACTOR_ADDRESS_CLIENT, ttab_servers::tab()->m_area, actor_guid::none_actordataid());
-			actor_guid lguid(*abeg);
-			handle_pram::create(lpram, lguid, actor_guid::make(), pro);
-			push_task_id(lclientguid, lpram, true);
+			actor_forward_setdata(*pro, adata);
+			handle_pram lpram;
+			pram_create(pro, lpram, *abeg);
+			push_task_id(actorclient_guid(), lpram, true);
 		}
 	public:
 		// 根据actor_role.guidid确定客户端，给一组客户端发送数据
@@ -402,6 +438,7 @@ namespace ngl
 		void		set_broadcast(bool aisbroadcast);
 		static void start_broadcast();
 #pragma endregion 
+
 		template <typename TDerived>
 		static void first_actor_register()
 		{
