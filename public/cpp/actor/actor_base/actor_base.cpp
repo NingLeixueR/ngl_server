@@ -318,4 +318,46 @@ namespace ngl
 			return;
 		itor->second.m_actorlist.erase(amember);
 	}
+
+	void actor_base::set_kcpssion(i32_session asession)
+	{
+		m_kcpsession = asession;
+	}
+
+	bool actor_base::iskcp()
+	{
+		enum elocalkcp
+		{
+			elocalkcp_ninit = 0,
+			elocalkcp_true = 1,
+			elocalkcp_false = 2,
+		};
+		static elocalkcp m_kcpstat = elocalkcp_ninit;
+		if (m_kcpstat == elocalkcp_ninit)
+		{
+			tab_servers* tab = ttab_servers::tab();
+			m_kcpstat = tab->m_isopenkcp ? elocalkcp_true : elocalkcp_false;
+		}
+		return m_kcpstat == elocalkcp_true;
+	}
+
+	const char* actor_base::kcpsessionmd5()
+	{
+		return "";
+	}
+
+	bool actor_base::connect_kcp(const std::string& aip, i16_port aprot)
+	{
+		if (iskcp() == false)
+			return false;
+		std::string lkcpsessionmd5 = kcpsessionmd5();
+		if (lkcpsessionmd5 == "")
+			return false;
+		ukcp::getInstance().connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
+			{
+				m_kcpsession = asession;
+				std::cout << "m_kcpsession = " << m_kcpsession << std::endl;
+			});
+		return true;
+	}
 }

@@ -15,6 +15,7 @@ namespace ngl
 		ukcp(i16_port aprot);
 	public:
 		static int32_t m_conv;
+		static std::string m_localuip;
 
 		static ukcp& getInstance(i16_port aprot = -1)
 		{
@@ -84,6 +85,24 @@ namespace ngl
 				return false;
 			return m_kcp.sendu(aendpoint, lpack->m_buff, lpack->m_len);
 		}
+
+		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
+		{
+			return m_kcp.sendu(aendpoint, buf, len);
+		}
+
+		// ## 发送原始udp包并等待其返回
+		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
+		{
+			std::unique_ptr<ngl::sem> lsem(new ngl::sem());
+			m_kcp.sendu_waitrecv(aendpoint, buf, len, [afun,&lsem](char* buff, int len)
+				{
+					afun(buff, len);
+					lsem->post();
+				});
+			lsem->wait();
+			return true;
+		}
 #pragma endregion 
 
 		// ## 发起连接
@@ -110,5 +129,7 @@ namespace ngl
 
 		// ## 重置连接
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
+
+		void reset_add(const std::string& aip, i16_port aport);
 	};
 }

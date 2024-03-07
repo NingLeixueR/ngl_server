@@ -4,6 +4,7 @@
 namespace ngl
 {
 	int32_t ukcp::m_conv = 1;
+	std::string ukcp::m_localuip = "";
 
 	ukcp::ukcp(i16_port aprot) :
 		m_kcp(aprot)
@@ -63,5 +64,10 @@ namespace ngl
 	void ukcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport)
 	{
 		m_kcp.reset_add(aconv, aip, aport);
+	}
+
+	void ukcp::reset_add(const std::string& aip, i16_port aport)
+	{
+		m_kcp.reset_add(m_conv++, aip, aport);
 	}
 }

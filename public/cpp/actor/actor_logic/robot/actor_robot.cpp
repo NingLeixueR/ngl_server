@@ -42,13 +42,19 @@ namespace ngl
 			m_data = *adata.m_data;
 		}Catch;
 
-
-		// 获取kcp-session
-		pbnet::PROBUFF_NET_KCPSESSION pro;
 		tab_servers* tab = ttab_servers::tab();
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		// 获取本机uip
+		ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(tabgame->m_ip), tabgame->m_uport);
+		ukcp::getInstance().sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+			, [](char* buff, int len)
+			{
+				ukcp::getInstance().m_localuip = buff;
+			});
+		// 获取kcp-session
+		pbnet::PROBUFF_NET_KCPSESSION pro;
 		pro.set_m_serverid(tabgame->m_id);
-		pro.set_m_uip("127.0.0.1");
+		pro.set_m_uip(ukcp::getInstance().m_localuip);
 		tab = ngl::ttab_servers::tab();
 		pro.set_m_uport(tab->m_uport);
 		pro.set_m_conv(ukcp::m_conv);
@@ -148,9 +154,9 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
+		tab_servers* tab = ttab_servers::tab();
 		m_kcpsessionmd5 = adata.m_data->m_kcpsession();
 
-		tab_servers* tab = ttab_servers::tab();
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
 		connect_kcp(tabgame->m_ip, tabgame->m_uport);
 		return true;

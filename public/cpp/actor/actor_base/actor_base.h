@@ -127,33 +127,14 @@ namespace ngl
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		
-
 #pragma region network_kcp
+
 		i32_session m_kcpsession = -1;
 
 		// ## 设置udp.kcp session
-		void set_kcpssion(i32_session asession)
-		{
-			m_kcpsession = asession;
-		}
+		void set_kcpssion(i32_session asession);
 
-		static bool iskcp()
-		{
-			enum elocalkcp
-			{
-				elocalkcp_ninit = 0,
-				elocalkcp_true = 1,
-				elocalkcp_false = 2,
-			};
-			static elocalkcp m_kcpstat = elocalkcp_ninit;
-			if (m_kcpstat == elocalkcp_ninit)
-			{
-				tab_servers* tab = ttab_servers::tab();
-				m_kcpstat = tab->m_isopenkcp ? elocalkcp_true : elocalkcp_false;
-			}
-			return m_kcpstat == elocalkcp_true;
-		}
+		static bool iskcp();
 
 		// ## 通过udp.kcp发送数据
 		template <typename T>
@@ -198,25 +179,9 @@ namespace ngl
 			return true;
 		}
 
-		virtual const char* kcpsessionmd5()
-		{
-			return "";
-		}
+		virtual const char* kcpsessionmd5();
 
-		bool connect_kcp(const std::string& aip, i16_port aprot)
-		{
-			if (iskcp() == false)
-				return false;
-			std::string lkcpsessionmd5 = kcpsessionmd5();
-			if (lkcpsessionmd5 == "")
-				return false;
-			ukcp::getInstance().connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
-				{
-					m_kcpsession = asession;
-					std::cout << "m_kcpsession = " << m_kcpsession << std::endl;
-				});
-			return true;
-		}
+		bool connect_kcp(const std::string& aip, i16_port aprot);
 
 #pragma endregion //network_kcp
 

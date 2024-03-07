@@ -334,6 +334,8 @@ namespace ngl
 		std::size_t							m_bytes_received;
 		char								m_buffrecv[10240];
 		asio_kcp*							m_kcp;
+		std::function<void(char*, int)>		m_wait;
+		asio_udp_endpoint					m_waitendpoint;
 	private:
 		//## [udp_cmd::ecmd_connect]		调用aconnect为true
 		//## [udp_cmd::ecmd_connect_ret]	调用aconnect为true
@@ -530,77 +532,87 @@ namespace ngl
 					m_bytes_received = bytes_received;
 					if (!ec && bytes_received > 0)
 					{
-						ptr_se lpstruct = m_session.find(m_remoteport);
-						if (lpstruct != nullptr)
+						if (m_wait != nullptr && m_remoteport == m_waitendpoint)
 						{
-							LogLocalError("[conv:%][current:%][dead_link:%]"
-								, lpstruct->m_kcp->conv
-								, lpstruct->m_kcp->current
-								, lpstruct->m_kcp->dead_link
-							)
-							int linput = lpstruct->input(m_buff, bytes_received);
-							if (linput >= 0)
-							{
-								while (true)
-								{
-									//从 buf中 提取真正数据，返回提取到的数据大小
-									int lrecv = lpstruct->recv(m_buffrecv, 10240);
-									if (lrecv == -3)
-									{
-										// ret == -3 m_buffrecv 的大小不够 
-										close(lpstruct->m_session);
-										break;
-									}
-									if (lrecv < 0)
-									{
-										break;
-									}
-
-									// 首先判断下是否kcp_cmd
-									if (udp_cmd::cmd(lpstruct, m_buffrecv, lrecv))
-									{
-										std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
-										break;
-									}
-
-									if (lpstruct->m_isconnect == false)
-									{
-										break;
-									}
-
-									if (sempack(lpstruct, m_buffrecv, lrecv) == false)
-									{
-										close(lpstruct->m_session);
-										break;
-									}
-								}
-							}
-							else
-							{
-								LogLocalError("[非kcp包:input < 0][%][%]"
-									, m_remoteport.address().to_string()
-									, m_remoteport.port()
-								)
-								if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
-								{
-									std::string lip = m_remoteport.address().to_string();
-									sendu(m_remoteport, lip.c_str(), lip.size());
-								}
-							}
+							m_wait(m_buff, bytes_received);
+							m_waitendpoint = asio_udp_endpoint();
+							m_wait = nullptr;
 						}
 						else
 						{
-							if (memcmp(m_buff, "GetIp", sizeof("GetIp")-1) == 0)
+							ptr_se lpstruct = m_session.find(m_remoteport);
+							if (lpstruct != nullptr)
 							{
-								std::string lip = m_remoteport.address().to_string();
-								sendu(m_remoteport, lip.c_str(), lip.size());
+								LogLocalError("[conv:%][current:%][dead_link:%]"
+									, lpstruct->m_kcp->conv
+									, lpstruct->m_kcp->current
+									, lpstruct->m_kcp->dead_link
+								)
+									int linput = lpstruct->input(m_buff, bytes_received);
+								if (linput >= 0)
+								{
+									while (true)
+									{
+										//从 buf中 提取真正数据，返回提取到的数据大小
+										int lrecv = lpstruct->recv(m_buffrecv, 10240);
+										if (lrecv == -3)
+										{
+											// ret == -3 m_buffrecv 的大小不够 
+											close(lpstruct->m_session);
+											break;
+										}
+										if (lrecv < 0)
+										{
+											break;
+										}
+
+										// 首先判断下是否kcp_cmd
+										if (udp_cmd::cmd(lpstruct, m_buffrecv, lrecv))
+										{
+											std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
+											break;
+										}
+
+										if (lpstruct->m_isconnect == false)
+										{
+											break;
+										}
+
+										if (sempack(lpstruct, m_buffrecv, lrecv) == false)
+										{
+											close(lpstruct->m_session);
+											break;
+										}
+									}
+								}
+								else
+								{
+									LogLocalError("[非kcp包:input < 0][%][%]"
+										, m_remoteport.address().to_string()
+										, m_remoteport.port()
+									)
+										if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
+										{
+											std::string lip = m_remoteport.address().to_string();
+											sendu(m_remoteport, lip.c_str(), lip.size() + 1);
+										}
+								}
 							}
 							else
 							{
-								//NFC = not find connect
-								sendu(m_remoteport, "NFC", sizeof("NFC"));
-							}							
+								if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
+								{
+									std::string lip = m_remoteport.address().to_string();
+									sendu(m_remoteport, lip.c_str(), lip.size() + 1);
+								}
+								else
+								{
+									//NFC = not find connect
+									sendu(m_remoteport, "NFC", sizeof("NFC"));
+								}
+							}
 						}
+						
 						start();
 					}
 				});
@@ -613,6 +625,31 @@ namespace ngl
 				{
 					if (ec)
 						std::cout << ec.what() << std::endl;
+				});
+			return true;
+		}
+
+		inline bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
+		{
+			m_wait = afun;
+			m_waitendpoint = aendpoint;
+			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [this, aendpoint, buf, len, afun](const boost::system::error_code& ec, std::size_t bytes_received)
+				{
+					if (ec)
+					{
+						std::cout << ec.what() << std::endl;
+						wheel_parm lparm
+						{
+							.m_ms = 1000,
+							.m_intervalms = [](int64_t) {return 1000; } ,
+							.m_count = 1,
+							.m_fun = [this, aendpoint, buf, len, afun](wheel_node* anode)
+							{
+								sendu_waitrecv(aendpoint, buf, len, afun);
+							}
+						};
+						m_kcptimer.addtimer(lparm);
+					}
 				});
 			return true;
 		}
@@ -757,6 +794,12 @@ namespace ngl
 	bool asio_kcp::sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 	{
 		return m_impl_asio_kcp()->sendu(aendpoint, buf, len);
+	}
+
+	// ## 发送原始udp包并等待其返回
+	bool asio_kcp::sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
+	{
+		return m_impl_asio_kcp()->sendu_waitrecv(aendpoint, buf, len, afun);
 	}
 
 	bool asio_kcp::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
