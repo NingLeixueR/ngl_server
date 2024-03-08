@@ -1,9 +1,9 @@
 ## ngl
 * Actor based c++distributed game server framework
-* åŸºäºActorçš„c++åˆ†å¸ƒå¼æ¸¸æˆæœåŠ¡å™¨æ¡†æ¶
+* »ùÓÚActorµÄc++·Ö²¼Ê½ÓÎÏ··şÎñÆ÷¿ò¼Ü
 
-## ä¾èµ–çš„ç¬¬ä¸‰æ–¹åº“
-  * <b>bcp å‰ªè£çš„ boost</b>
+## ÒÀÀµµÄµÚÈı·½¿â
+  * <b>bcp ¼ô²ÃµÄ boost</b>
     <br/>./bcp chrono ../boost_out
     <br/>./bcp date_time ../boost_out
     <br/>./bcp exception ../boost_out
@@ -25,34 +25,34 @@
   * <b>mysql connect/c</b>
   * <b>protobuf 3.13.0</b>
 
-## ç›®å½•
-  * <b>ngl/3part</b><br/>æ­¤ç›®å½•ç”¨äºå­˜æ”¾ç¬¬ä¸‰æ–¹åº“
-  * <b>ngl/tools/public/idl</b><br/>csvè¡¨ç”Ÿæˆ
-  * <b>ngl/tools/public/proto</b><br/>protoåè®®ç”Ÿæˆ
-  * <b>ngl/tools/public/rebuild.bat</b><br/>ä¸cmake unity buildç±»ä¼¼çš„åŠ é€Ÿç¼–è¯‘
-  * <b>ngl/public/cpp</b><br/>cppæºç 
-  * <b>ngl/public/csharp</b><br/>csæºç 
-  * <b>ngl/server</b><br/>é¡¹ç›®æºæ–‡ä»¶
+## Ä¿Â¼
+  * <b>ngl/3part</b><br/>´ËÄ¿Â¼ÓÃÓÚ´æ·ÅµÚÈı·½¿â
+  * <b>ngl/tools/public/idl</b><br/>csv±íÉú³É
+  * <b>ngl/tools/public/proto</b><br/>protoĞ­ÒéÉú³É
+  * <b>ngl/tools/public/rebuild.bat</b><br/>Óëcmake unity buildÀàËÆµÄ¼ÓËÙ±àÒë
+  * <b>ngl/public/cpp</b><br/>cppÔ´Âë
+  * <b>ngl/public/csharp</b><br/>csÔ´Âë
+  * <b>ngl/server</b><br/>ÏîÄ¿Ô´ÎÄ¼ş
 
-## åè®®æ”¯æŒ
+## Ğ­ÒéÖ§³Ö
   * tcp
   * ws
   * kcp
   
-## Linux CentOsç¼–è¯‘
-  * ç¼–è¯‘å®‰è£…gcc (GCC) 13.1.0
-  * ç¼–è¯‘å®‰è£…protobuf 3.13.0
-  * ä¸‹è½½æ–°ç‰ˆæœ¬çš„boost,boostç¼–è¯‘å¹¶å‰ªè£åå°†å…¶æ”¾ç½®åœ¨ç›®å½•/3part/boost/ä¸‹
-  * å…¶ä»–ç¬¬ä¸‰æ–¹åº“è‡ªè¡Œ  yum install è¿›è¡Œå®‰è£…
-  * åˆ›å»ºbuildç›®å½•ï¼Œåœ¨buildç›®å½•ä¸‹cmake .., ç„¶åmake
-  * åœ¨linuxç¼–è¯‘è¿è¡Œ
+## Linux CentOs±àÒë
+  * ±àÒë°²×°gcc (GCC) 13.1.0
+  * ±àÒë°²×°protobuf 3.13.0
+  * ÏÂÔØĞÂ°æ±¾µÄboost,boost±àÒë²¢¼ô²Ãºó½«Æä·ÅÖÃÔÚÄ¿Â¼/3part/boost/ÏÂ
+  * ÆäËûµÚÈı·½¿â×ÔĞĞ  yum install ½øĞĞ°²×°
+  * ´´½¨buildÄ¿Â¼£¬ÔÚbuildÄ¿Â¼ÏÂcmake .., È»ºómake
+  * ÔÚlinux±àÒëÔËĞĞ
      ```
      [root@localhost bin]# cat /etc/centos-release
      CentOS Linux release 7.9.2009 (Core)
      [root@localhost bin]# gcc --version
      gcc (GCC) 13.1.0
      ```
-  * åœ¨winç¼–è¯‘è¿è¡Œ(vs2022)
+  * ÔÚwin±àÒëÔËĞĞ(vs2022)
 
-## QQç¾¤
+## QQÈº
   * 56257994
