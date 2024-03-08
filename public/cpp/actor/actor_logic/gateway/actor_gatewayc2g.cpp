@@ -1,10 +1,10 @@
-﻿#include "actor_gateway_client2game.h"
+﻿#include "gameclient_forward.h"
+#include "actor_gatewayc2g.h"
 #include "nregister.h"
-#include "gameclient_forward.h"
 
 namespace ngl
 {
-	actor_gateway_client2game::actor_gateway_client2game() :
+	actor_gatewayc2g::actor_gatewayc2g() :
 		actor(
 			actorparm
 			{
@@ -20,19 +20,19 @@ namespace ngl
 	{
 	}
 
-	actor_gateway_client2game::~actor_gateway_client2game() {}
+	actor_gatewayc2g::~actor_gatewayc2g() {}
 
-	void actor_gateway_client2game::nregister()
+	void actor_gatewayc2g::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway_client2game>(
+		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gatewayc2g>(
 			false
-			, dregister_fun_handle(actor_gateway_client2game, actor_gateway_info_updata)
+			, dregister_fun_handle(actor_gatewayc2g, actor_gateway_info_updata)
 		);
 		// Client 2 Game
 		gameclient_forward::c2g();
 	}
 
-	bool actor_gateway_client2game::handle(message<actor_gateway_info_updata>& adata)
+	bool actor_gatewayc2g::handle(message<actor_gateway_info_updata>& adata)
 	{
 		auto lpram = adata.m_data;
 		for (auto& item : lpram->m_delsocket)

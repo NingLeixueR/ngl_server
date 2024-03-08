@@ -9,7 +9,7 @@ namespace ngl
 		m_type(aenum)
 	{}
 
-	void db_component::set_dbclient(actor_dbclient_base* adbclient)
+	void db_component::set_dbclient(ndbclient_base* adbclient)
 	{
 		m_dbclient = adbclient;
 	}
@@ -51,7 +51,7 @@ namespace ngl
 		m_dbclient->create(m_id);
 	}
 
-	actor_dbclient_base* db_component::dbclientbase()
+	ndbclient_base* db_component::dbclientbase()
 	{
 		return m_dbclient;
 	}

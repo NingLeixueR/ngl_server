@@ -1,6 +1,6 @@
 #include "actor_base.h"
 #include "actor_manage.h"
-#include "actor_db_client.h"
+#include "ndbclient.h"
 #include "xmlnode.h"
 #include "db_modular.h"
 #include "actor_log.h"
@@ -69,7 +69,7 @@ namespace ngl
 			return m_dbclient == nullptr || m_dbclient->isloadfinish();
 		}
 
-		void add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid)
+		void add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
 		{
 			Try
 			{
@@ -174,7 +174,7 @@ namespace ngl
 		return m_impl_actor_base()->isloadfinish();
 	}
 
-	void actor_base::add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid)
+	void actor_base::add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
 	{
 		m_impl_actor_base()->add_dbclient(adbclient, aid);
 	}

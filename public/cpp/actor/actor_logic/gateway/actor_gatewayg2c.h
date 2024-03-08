@@ -1,30 +1,30 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "net.h"
-#include "db_data.h"
-#include "db.h"
-#include "db_pool.h"
-#include "db_manage.h"
-#include "actor_db_client.h"
 #include "actor_role.h"
 #include "gateway_info.h"
+#include "db_manage.h"
+#include "ndbclient.h"
+#include "db_data.h"
+#include "db_pool.h"
+#include "net.h"
+#include "db.h"
 
 namespace ngl
 {
-	class actor_gateway_game2client : public actor
+	class actor_gatewayg2c : public actor
 	{
 		gateway_info m_info;
 
-		actor_gateway_game2client();
+		actor_gatewayg2c();
 	public:
-		friend class actor_instance<actor_gateway_game2client>;
-		static actor_gateway_game2client& getInstance()
+		friend class actor_instance<actor_gatewayg2c>;
+		static actor_gatewayg2c& getInstance()
 		{
-			return actor_instance<actor_gateway_game2client>::instance();
+			return actor_instance<actor_gatewayg2c>::instance();
 		}
 
-		virtual ~actor_gateway_game2client();
+		virtual ~actor_gatewayg2c();
 
 		static void nregister();
 

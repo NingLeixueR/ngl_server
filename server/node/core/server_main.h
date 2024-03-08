@@ -270,8 +270,8 @@ bool start_gateway()
 	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 	ngl::actor_gateway::getInstance();
-	ngl::actor_gateway_game2client::getInstance();
-	ngl::actor_gateway_client2game::getInstance();
+	ngl::actor_gatewayg2c::getInstance();
+	ngl::actor_gatewayc2g::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

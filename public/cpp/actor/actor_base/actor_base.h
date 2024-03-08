@@ -21,7 +21,7 @@
 namespace ngl
 {
 	class actor_base;
-	class actor_dbclient_base;
+	class ndbclient_base;
 	class actor_manage_dbclient;
 	class db_component;
 
@@ -65,7 +65,7 @@ namespace ngl
 		// ## 初始化数据(在数据加载完成后)
 		void			db_component_init_data();
 		void			init_db_component(bool acreate);
-		void			add_dbclient(actor_dbclient_base* adbclient, i64_actorid aid);
+		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 		template <
 			EPROTOCOL_TYPE PROTYPE, 
 			pbdb::ENUM_DB DBTYPE,

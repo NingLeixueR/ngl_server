@@ -1,7 +1,7 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "actor_db_client.h"
+#include "ndbclient.h"
 #include "actor_protocol.h"
 #include "nregister.h"
 #include "db_data.h"

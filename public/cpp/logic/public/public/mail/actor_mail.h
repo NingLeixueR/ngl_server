@@ -1,19 +1,18 @@
 #pragma once
 
+#include "actor_protocol.h"
+#include "actor_roleitem.h"
 #include "actor_manage.h"
-#include "net.h"
+#include "actor_create.h"
+#include "actor_timer.h"
+#include "ndbclient.h"
+#include "db_modular.h"
+#include "db_manage.h"
+#include "db_pool.h"
 #include "db_data.h"
 #include "db.h"
-#include "db_pool.h"
-#include "db_manage.h"
-#include "actor_db_client.h"
-#include "actor_protocol.h"
-#include "actor_timer.h"
-#include "actor_create.h"
-
-#include "db_modular.h"
 #include "mail.h"
-#include "actor_roleitem.h"
+#include "net.h"
 
 namespace ngl
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "actor_db_client.h"
+#include "ndbclient.h"
 #include "csvtable.h"
 #include "nlog.h"
 
@@ -11,11 +11,11 @@ namespace ngl
 	protected:
 		actor_base*				m_actor;
 		i64_actorid				m_id;
-		actor_dbclient_base*	m_dbclient;
+		ndbclient_base*	m_dbclient;
 		pbdb::ENUM_DB			m_type;
 
 		db_component(pbdb::ENUM_DB aenum);
-		void				set_dbclient(actor_dbclient_base* adbclient);
+		void				set_dbclient(ndbclient_base* adbclient);
 	public:
 		void				set(actor_base* aactor);
 		i64_actorid			id();
@@ -24,7 +24,7 @@ namespace ngl
 		virtual void		set_id();
 		void				init();
 		void				create();
-		actor_dbclient_base* dbclientbase();
+		ndbclient_base* dbclientbase();
 		// 当数据全部加载后调用
 		virtual void		init_data();
 	};
@@ -33,7 +33,7 @@ namespace ngl
 	class db_modular : public db_component
 	{
 	protected:
-		actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR> m_data;
+		ndbclient<PROTYPE, ENUM, TDATA, TACTOR> m_data;
 		db_modular():
 			db_component(ENUM)
 		{
@@ -43,7 +43,7 @@ namespace ngl
 		{
 		}
 	public:
-		actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>* dbclient()
+		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* dbclient()
 		{ 
 			return &m_data;
 		}
@@ -121,9 +121,9 @@ namespace ngl
 
 		virtual void initdata() = 0;
 
-		actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>* get_actor_dbclient()
+		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* get_actor_dbclient()
 		{
-			return (actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>*)m_dbclient;
+			return (ndbclient<PROTYPE, ENUM, TDATA, TACTOR>*)m_dbclient;
 		}
 
 		data_modified<TDATA>* add(i64_actorid aid, const TDATA& adbtab)

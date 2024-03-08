@@ -7,8 +7,8 @@
 #include "actor_manage_role.h"
 #include "actor_role.h"
 #include "actor_gateway.h"
-#include "actor_gateway_client2game.h"
-#include "actor_gateway_game2client.h"
+#include "actor_gatewayc2g.h"
+#include "actor_gatewayg2c.h"
 #include "actor_log.h"
 #include "actor_login.h"
 #include "actor_reloadcsv.h"
@@ -48,8 +48,8 @@ namespace ngl
 		dinit_atype(actor_manage_role, ACTOR_MANAGE_ROLE);
 		dinit_atype(actor_role, ACTOR_ROLE);
 		dinit_atype(actor_gateway, ACTOR_GATEWAY);
-		dinit_atype(actor_gateway_client2game, ACTOR_GATEWAY_CLIENT2GAME);
-		dinit_atype(actor_gateway_game2client, ACTOR_GATEWAY_GAME2CLIENT);
+		dinit_atype(actor_gatewayc2g, ACTOR_GATEWAY_CLIENT2GAME);
+		dinit_atype(actor_gatewayg2c, ACTOR_GATEWAY_GAME2CLIENT);
 		dinit_atype(actor_log, ACTOR_LOG);
 		dinit_atype(actor_login, ACTOR_LOGIN);
 		dinit_atype(actor_reloadcsv, ACTOR_RELOADCSV);

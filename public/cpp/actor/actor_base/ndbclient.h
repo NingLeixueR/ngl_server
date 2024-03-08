@@ -14,11 +14,11 @@
 
 namespace ngl
 {
-	class actor_dbclient_base
+	class ndbclient_base
 	{
 	protected:
 		pbdb::ENUM_DB m_type;
-		actor_dbclient_base(pbdb::ENUM_DB atype) :
+		ndbclient_base(pbdb::ENUM_DB atype) :
 			m_type(atype)
 		{}
 	public:
@@ -108,7 +108,7 @@ namespace ngl
 		typename TDBTAB, 
 		typename TACTOR
 	>
-	class actor_dbclient : public actor_dbclient_base
+	class ndbclient : public ndbclient_base
 	{
 		tab_dbload* m_tab;
 	public:
@@ -121,7 +121,7 @@ namespace ngl
 				std::shared_ptr<actor_node_actor_connect_task> pro(new actor_node_actor_connect_task
 					{
 						.m_serverid = tab->m_db,
-						.m_fun = std::bind(&actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>::loaddb, this, m_id),
+						.m_fun = std::bind(&ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>::loaddb, this, m_id),
 					});
 				nguid lclientguid = nguid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
@@ -152,7 +152,7 @@ namespace ngl
 
 			std::string lname;
 			LogLocalError("actor_dbclient loaddb [%] [%]"
-				, tools::type_name<actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>>(lname)
+				, tools::type_name<ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>>(lname)
 				, aid
 			)
 		}
@@ -165,12 +165,12 @@ namespace ngl
 		actor_base*									m_actor;
 		std::vector<int64_t>						m_dellist;
 	public:
-		actor_dbclient():
+		ndbclient():
 			m_id(nguid::make()),
 			m_load(false),
 			m_dbdata(nullptr),
 			m_tab(nullptr),
-			actor_dbclient_base(DBTYPE),
+			ndbclient_base(DBTYPE),
 			m_actor(nullptr),
 			m_manage_dbclient(nullptr)
 		{}
@@ -415,7 +415,7 @@ namespace ngl
 
 	class actor_manage_dbclient
 	{
-		using tmap_dbclient = std::map<pbdb::ENUM_DB, actor_dbclient_base*>;
+		using tmap_dbclient = std::map<pbdb::ENUM_DB, ndbclient_base*>;
 		actor_base*						m_actor;
 		tmap_dbclient					m_typedbclientmap;
 		tmap_dbclient					m_dbclientmap;			//已经加载完的
@@ -427,7 +427,7 @@ namespace ngl
 			m_finish(false)
 		{}
 
-		void add(actor_dbclient_base* adbclient, const nguid& aid)
+		void add(ndbclient_base* adbclient, const nguid& aid)
 		{
 			Try
 			{
@@ -442,7 +442,7 @@ namespace ngl
 			m_fun = afun;
 		}
 
-		void init(actor_dbclient_base* adbclient, actor_base* aactor, const nguid& aid)
+		void init(ndbclient_base* adbclient, actor_base* aactor, const nguid& aid)
 		{
 			Try
 			{
@@ -493,16 +493,16 @@ namespace ngl
 		}
 
 		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
-		actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>* data(bool aloadfinish)
+		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
-			actor_dbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, actor_dbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
+			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
 			if (lp == nullptr)
 				return nullptr;
-			return (actor_dbclient<PROTYPE, ENUM, TDATA, TACTOR>*)(*lp);
+			return (ndbclient<PROTYPE, ENUM, TDATA, TACTOR>*)(*lp);
 		}
 
 	private:
-		void foreach_function(const std::function<void(actor_dbclient_base*)>& afun)
+		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
 		{
 			for (auto itor = m_dbclientmap.begin();
 				itor != m_dbclientmap.end(); ++itor)
@@ -514,7 +514,7 @@ namespace ngl
 
 		void save()
 		{
-			foreach_function([](actor_dbclient_base* ap)
+			foreach_function([](ndbclient_base* ap)
 				{
 					ap->savedb();
 				});
@@ -522,7 +522,7 @@ namespace ngl
 
 		void del()
 		{
-			foreach_function([](actor_dbclient_base* ap)
+			foreach_function([](ndbclient_base* ap)
 				{
 					ap->deldb();
 				});
@@ -541,7 +541,7 @@ namespace ngl
 			//LogLocalError("get_actor_manage_dbclient() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid())
 			return false;
 		}
-		actor_dbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
+		ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
 		if (lp == nullptr)
 		{
 			//LogLocalError("mdbclient->data<DBTYPE, TDBTAB>() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid())

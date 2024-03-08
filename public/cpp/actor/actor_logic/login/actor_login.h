@@ -1,16 +1,16 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "net.h"
+#include "net.pb.h"
 #include "db_data.h"
-#include "db.h"
 #include "db_pool.h"
 #include "db_manage.h"
-#include "actor_db_client.h"
-#include "uuid.h"
-#include "account.h"
 #include "db.pb.h"
-#include "net.pb.h"
+#include "db.h"
+#include "ndbclient.h"
+#include "account.h"
+#include "uuid.h"
+#include "net.h"
 
 namespace ngl
 {

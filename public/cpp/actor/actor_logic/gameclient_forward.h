@@ -1,12 +1,12 @@
 ﻿#pragma once
 
-#include "actor.h"
-#include "actor_role.h"
+#include "actor_gatewayc2g.h"
+#include "actor_gatewayg2c.h"
 #include "actor_gateway.h"
-#include "xmlnode.h"
 #include "actor_robot.h"
-#include "actor_gateway_game2client.h"
-#include "actor_gateway_client2game.h"
+#include "actor_role.h"
+#include "actor.h"
+#include "xmlnode.h"
 
 namespace ngl
 {
@@ -21,8 +21,8 @@ namespace ngl
 				actor_role::register_recvforward<TYPE, actor_role>(dregister_fun_handle(actor_role, T));
 				break;
 			case ngl::GATEWAY:// client->gateway
-				actor_gateway_client2game::register_forward<TYPE, false, actor_gateway_client2game>(
-					(Tfun<actor_gateway_client2game, actor_forward<T, TYPE, false, ngl::forward>>)& actor_gateway_client2game::handle
+				actor_gatewayc2g::register_forward<TYPE, false, actor_gatewayc2g>(
+					(Tfun<actor_gatewayc2g, actor_forward<T, TYPE, false, ngl::forward>>)& actor_gatewayc2g::handle
 				);
 				break;
 			}
@@ -47,8 +47,8 @@ namespace ngl
 				actor_role::register_recvforward<TYPE, actor_role>((Tfun<actor_role, T>)& actor_role::handle_forward<ACTOR, T>);
 				break;
 			case ngl::GATEWAY:// client->gateway
-				actor_gateway_client2game::register_forward<TYPE, false, actor_gateway_client2game>(
-					(Tfun<actor_gateway_client2game, actor_forward<T, TYPE, false, ngl::forward>>) & actor_gateway_client2game::handle
+				actor_gatewayc2g::register_forward<TYPE, false, actor_gatewayc2g>(
+					(Tfun<actor_gatewayc2g, actor_forward<T, TYPE, false, ngl::forward>>) & actor_gatewayc2g::handle
 				);
 				break;
 			}
@@ -70,8 +70,8 @@ namespace ngl
 				actor_robot::register_actor<TYPE, actor_robot>(false, dregister_fun_handle(actor_robot, T));
 				break;
 			case ngl::GATEWAY:// game->gateway
-				actor_gateway_game2client::register_forward<TYPE, true, actor_gateway_game2client>(
-					(Tfun<actor_gateway_game2client, actor_forward<T, TYPE, true, ngl::forward>>)& actor_gateway_game2client::handle
+				actor_gatewayg2c::register_forward<TYPE, true, actor_gatewayg2c>(
+					(Tfun<actor_gatewayg2c, actor_forward<T, TYPE, true, ngl::forward>>)& actor_gatewayg2c::handle
 				);
 				break;
 			}
