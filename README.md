@@ -38,7 +38,7 @@
   * tcp
   * ws
   * kcp
-  
+
 ## Linux CentOs编译
   * 编译安装gcc (GCC) 13.1.0
   * 编译安装protobuf 3.13.0
@@ -53,6 +53,9 @@
      gcc (GCC) 13.1.0
      ```
   * 在win编译运行(vs2022)
+
+## 更多介绍
+  * [wiki](https://github.com/NingLeixueR/ngl/wiki)
 
 ## QQ群
   * 56257994
