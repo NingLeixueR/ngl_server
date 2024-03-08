@@ -1,11 +1,11 @@
 #pragma once
 
-#include "actor_protocol.h"
 #include "actor_timer.h"
 #include "actor_create.h"
 #include "actor_manage.h"
 #include "db_manage.h"
 #include "ndbclient.h"
+#include "nprotocol.h"
 #include "attribute.h"
 #include "autoitem.h"
 #include "roleinfo.h"

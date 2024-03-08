@@ -1,10 +1,10 @@
 #pragma once
 
 #include "actor_base.h"
-#include "actor.h"
-#include "actor_protocol.h"
 #include "actor_type.h"
+#include "actor.h"
 #include "init_protobuf.h"
+#include "nprotocol.h"
 #include "protocol.h"
 #include "regular.h"
 

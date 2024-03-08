@@ -1,6 +1,5 @@
 #pragma once
 
-#include "actor_protocol.h"
 #include "actor_roleitem.h"
 #include "actor_manage.h"
 #include "actor_timer.h"
@@ -12,8 +11,9 @@
 #include "db.h"
 #include "manage_csv.h"
 #include "activitydb.h"
-#include "activity.h"
 #include "ndbclient.h"
+#include "nprotocol.h"
+#include "activity.h"
 #include "net.pb.h"
 #include "net.h"
 

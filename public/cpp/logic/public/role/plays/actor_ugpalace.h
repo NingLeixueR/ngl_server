@@ -5,13 +5,13 @@
 
 namespace ngl
 {
-	class actor_plays_go_undergroundpalace : public actor_plays
+	class actor_ugpalace : public actor_plays
 	{
 
 	public:
-		actor_plays_go_undergroundpalace(ENUM_ACTOR atype, int32_t adataid, void* data);
+		actor_ugpalace(ENUM_ACTOR atype, int32_t adataid, void* data);
 
-		virtual ~actor_plays_go_undergroundpalace() {}
+		virtual ~actor_ugpalace() {}
 
 		static void nregister();
 

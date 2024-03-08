@@ -1,16 +1,16 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "ndbclient.h"
-#include "actor_protocol.h"
-#include "nregister.h"
-#include "db_data.h"
-#include "db.h"
-#include "db_pool.h"
-#include "db_manage.h"
-#include "net.h"
-#include "cache_list.h"
 #include "ttab_dbload.h"
+#include "cache_list.h"
+#include "ndbclient.h"
+#include "nregister.h"
+#include "nprotocol.h"
+#include "db_manage.h"
+#include "db_data.h"
+#include "db_pool.h"
+#include "db.h"
+#include "net.h"
 
 #include <boost/type_index.hpp>
 

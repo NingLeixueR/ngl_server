@@ -1,6 +1,6 @@
+#include "actor_manage.h"
 #include "actor.h"
 #include "net.h"
-#include "actor_manage.h"
 
 namespace ngl
 {

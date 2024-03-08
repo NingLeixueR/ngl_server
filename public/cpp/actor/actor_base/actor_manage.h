@@ -4,14 +4,14 @@
 #include <list>
 #include <set>
 
-#include "actor_base.h"
 #include "actor_thread.h"
 #include "actor_client.h"
-#include "naddress.h"
+#include "actor_base.h"
 #include "threadtools.h"
+#include "naddress.h"
 #include "pack.h"
-#include "net.h"
 #include "impl.h"
+#include "net.h"
 
 namespace ngl
 {

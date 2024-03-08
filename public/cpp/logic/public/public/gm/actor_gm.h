@@ -1,6 +1,5 @@
 #pragma once
 
-#include "actor_protocol.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "actor_timer.h"
@@ -13,6 +12,7 @@
 #include "db_data.h"
 #include "db.h"
 #include "ndbclient.h"
+#include "nprotocol.h"
 #include "notice.h"
 #include "splite.h"
 #include "gm.pb.h"

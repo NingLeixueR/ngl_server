@@ -1,13 +1,12 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "ndbclient.h"
 #include "actor_timer.h"
 #include "nactortype.h"
+#include "ndbclient.h"
 #include "db_data.h"
-#include "db.h"
 #include "db_pool.h"
-#include "db_manage.h"
+#include "db.h"
 #include "net.h"
 
 namespace ngl

@@ -1,9 +1,9 @@
-#include "actor_base.h"
+#include "actor_ugpalace.h"
 #include "actor_manage.h"
-#include "actor_role.h"
 #include "actor_robot.h"
+#include "actor_base.h"
+#include "actor_role.h"
 #include "actor_log.h"
-#include "actor_plays_go_undergroundpalace.h"
 
 namespace ngl
 {
@@ -26,9 +26,9 @@ namespace ngl
 			actor_base::first_nregister<actor_robot>();
 			break;
 		case ACTOR_PLAYS_GO_UNDERGROUNDPALACE:
-			lpactor_base = new actor_plays_go_undergroundpalace(atype, aid, aparm);
-			((actor_plays_go_undergroundpalace*)(lpactor_base))->init_rfun<actor_plays_go_undergroundpalace>();
-			actor_base::first_nregister<actor_plays_go_undergroundpalace>();
+			lpactor_base = new actor_ugpalace(atype, aid, aparm);
+			((actor_ugpalace*)(lpactor_base))->init_rfun<actor_ugpalace>();
+			actor_base::first_nregister<actor_ugpalace>();
 			break;
 		//case ACTOR_ACTIVITY:
 		//	lpactor_base = activity_create::create(aid, *(bool*)aparm);

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "actor_protocol.h"
 #include "actor_roleitem.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "actor_timer.h"
 #include "manage_csv.h"
 #include "ndbclient.h"
+#include "nprotocol.h"
 #include "net.pb.h"
 #include "net.h"
 #include "db_modular.h"

@@ -3,7 +3,7 @@
 #include "xmlinfo.h"
 #include "xmlnode.h"
 #include "enum2name.h"
-#include "actor_protocol.h"
+#include "nprotocol.h"
 #include "logformat.h"
 
 #include <fstream>

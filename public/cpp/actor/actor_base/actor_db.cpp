@@ -1,6 +1,5 @@
 #include "actor_db.h"
 
-
 namespace ngl
 {
 	std::vector<db*> actor_dbpool::m_data;

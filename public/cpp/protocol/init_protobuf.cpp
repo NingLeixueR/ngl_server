@@ -1,9 +1,9 @@
-#include "init_protobuf.h"
-#include "gm.pb.h"
-#include "net.pb.h"
-#include "actor_protocol.h"
 #include "actor_timer.h"
 #include "actor.h"
+#include "init_protobuf.h"
+#include "nprotocol.h"
+#include "net.pb.h"
+#include "gm.pb.h"
 
 namespace ngl
 {

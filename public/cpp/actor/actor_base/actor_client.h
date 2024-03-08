@@ -1,9 +1,9 @@
 #pragma once
 
-#include "actor.h"
-#include "actor_protocol.h"
+#include "nprotocol.h"
 #include "naddress.h"
 #include "xmlnode.h"
+#include "actor.h"
 #include "impl.h"
 #include "net.h"
 

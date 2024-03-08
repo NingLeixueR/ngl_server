@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-03-08 10:42:20
+// 创建时间 24-03-08 11:08:25
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -27,7 +27,6 @@
 #include "actor_matching.cpp"
 #include "actor_notice.cpp"
 #include "actor_plays.cpp"
-#include "actor_plays_go_undergroundpalace.cpp"
 #include "actor_ranklist.cpp"
 #include "actor_reloadcsv.cpp"
 #include "actor_robot.cpp"
@@ -38,6 +37,7 @@
 #include "actor_thread.cpp"
 #include "actor_timer.cpp"
 #include "actor_type.cpp"
+#include "actor_ugpalace.cpp"
 #include "asio_base.cpp"
 #include "asio_kcp.cpp"
 #include "asio_tcp.cpp"

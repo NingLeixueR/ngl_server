@@ -1,29 +1,29 @@
-#include "actor_type.h"
-#include "actor_client.h"
-#include "actor_create.h"
-#include "actor_db.h"
-#include "actor_server.h"
-#include "actor_cross.h"
+#include "actor_manage_activity.h"
+#include "actor_manage_plays.h"
 #include "actor_manage_role.h"
-#include "actor_role.h"
-#include "actor_gateway.h"
 #include "actor_gatewayc2g.h"
 #include "actor_gatewayg2c.h"
-#include "actor_log.h"
-#include "actor_login.h"
 #include "actor_reloadcsv.h"
-#include "actor_robot.h"
-#include "actor_manage_activity.h"
-#include "actor_brief.h"
-#include "actor_chat.h"
-#include "actor_gm.h"
-#include "actor_mail.h"
-#include "actor_notice.h"
 #include "actor_ranklist.h"
 #include "actor_matching.h"
-#include "actor_manage_plays.h"
-#include "actor_plays_go_undergroundpalace.h"
+#include "actor_ugpalace.h"
+#include "actor_gateway.h"
+#include "actor_notice.h"
+#include "actor_server.h"
+#include "actor_client.h"
+#include "actor_create.h"
+#include "actor_login.h"
+#include "actor_robot.h"
+#include "actor_brief.h"
+#include "actor_cross.h"
+#include "actor_chat.h"
+#include "actor_mail.h"
+#include "actor_type.h"
+#include "actor_role.h"
 #include "actor_kcp.h"
+#include "actor_log.h"
+#include "actor_db.h"
+#include "actor_gm.h"
 
 namespace ngl
 {
@@ -65,7 +65,7 @@ namespace ngl
 		dinit_atype(actor_ranklist, ACTOR_RANKLIST);
 		dinit_atype(actor_matching, ACTOR_MATCHING);
 		dinit_atype(actor_manage_plays, ACTOR_MANAGE_PLAYS);
-		dinit_atype(actor_plays_go_undergroundpalace, ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
+		dinit_atype(actor_ugpalace, ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
 		dinit_atype(actor_kcp, ACTOR_KCP);
 
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();

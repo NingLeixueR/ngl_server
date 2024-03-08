@@ -2,8 +2,8 @@
 
 #include <map>
 
-#include "actor_protocol.h"
 #include "nguid.h"
+#include "nprotocol.h"
 #include "rebot_test.h"
 
 namespace ngl

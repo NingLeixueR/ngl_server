@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <memory>
 
-#include "actor_protocol.h"
+#include "init_protobuf.h"
+#include "nprotocol.h"
 #include "nguid.h"
 #include "type.h"
-#include "init_protobuf.h"
 
 namespace ngl
 {

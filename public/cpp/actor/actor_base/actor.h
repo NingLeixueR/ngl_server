@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "nactortype.h"
 #include "actor_base.h"
 #include "actor_type.h"
+#include "nactortype.h"
 #include "nrfun.h"
 #include "impl.h"
 

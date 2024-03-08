@@ -1,9 +1,9 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "actor_protocol.h"
 #include "actor_timer.h"
 #include "actor_create.h"
+#include "nprotocol.h"
 #include "ndbclient.h"
 #include "logprintf.h"
 #include "db_manage.h"

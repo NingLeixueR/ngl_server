@@ -2,13 +2,13 @@
 
 #include "nactortype.h"
 #include "serialize.h"
-#include "ndefine.h"
-#include "pack.h"
-#include "type.h"
-#include "nguid.h"
 #include "localtime.h"
 #include "serialize.h"
+#include "ndefine.h"
+#include "nguid.h"
 #include "db.pb.h"
+#include "pack.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -26,7 +26,7 @@ namespace ngl
 		i32_serverid	m_serverid;// 服务器id
 		std::vector<i16_actortype>	m_actortype;// ENUM_ACTOR_TYPE
 		std::string		m_ip;// ip
-		i16_port	m_port;// 端口
+		i16_port		m_port;// 端口
 		def_portocol_function(actor_node, m_name, m_serverid, m_actortype, m_ip, m_port)
 	};
 
