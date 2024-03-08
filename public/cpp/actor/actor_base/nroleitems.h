@@ -1,11 +1,11 @@
 #pragma once
 
-#include "db_modular.h"
+#include "ndb_modular.h"
 
 namespace ngl
 {
 	template <typename TDerived, typename T>
-	struct roleitems
+	struct nroleitems
 	{
 		static std::map<i64_actorid, T> m_roleitem;
 	public:
@@ -31,5 +31,5 @@ namespace ngl
 	};
 
 	template <typename TDerived, typename T>
-	std::map<i64_actorid, T> roleitems<TDerived, T>::m_roleitem;
-}
+	std::map<i64_actorid, T> nroleitems<TDerived, T>::m_roleitem;
+}//namespace ngl

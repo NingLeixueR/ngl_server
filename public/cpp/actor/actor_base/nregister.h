@@ -95,4 +95,4 @@ namespace ngl
 		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(actor_type<TDerived>::type(), init_protobuf::protocol<type_forward>(), init_protobuf::protocol_name<type_forward>().c_str());
 		return *this;
 	}
-}
+}//namespace ngl

@@ -1,6 +1,5 @@
 #include "actor_role.h"
 
-
 namespace ngl
 {
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
@@ -75,5 +74,4 @@ namespace ngl
 		m_playactorid = adata.m_data->m_playsactorid();
 		return true;
 	}
-
-}
+}//namespace ngl

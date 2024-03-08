@@ -1,6 +1,6 @@
 ﻿#include "actor_robot.h"
 #include "nregister.h"
-#include "gameclient_forward.h"
+#include "nforward.h"
 
 namespace ngl
 {
@@ -24,7 +24,7 @@ namespace ngl
 
 	void actor_robot::nregister()
 	{
-		gameclient_forward::g2c();
+		nforward::g2c();
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_robot>(
 			false
 			, dregister_fun_handle(actor_robot, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE)
@@ -174,5 +174,4 @@ namespace ngl
 			, dregister_fun_handle(actor_manage_robot, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE)
 		);
 	}
-
-}
+}//namespace ngl

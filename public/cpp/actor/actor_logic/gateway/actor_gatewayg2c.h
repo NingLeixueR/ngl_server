@@ -77,8 +77,7 @@ namespace ngl
 		}
 
 		bool handle(message<actor_gateway_info_updata>& adata);
-	private:
 	};
 
-}
+}//namespace ngl
 

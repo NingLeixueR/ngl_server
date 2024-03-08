@@ -117,6 +117,6 @@ namespace ngl
 
 		def_portocol_function(nguid, m_id)
 	};
-}
+}//namespace ngl
 
 #define nguid_none_area nguid::none<i16_area>()

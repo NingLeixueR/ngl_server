@@ -1,10 +1,10 @@
-﻿#include "gameclient_forward.h"
+﻿#include "nforward.h"
 #include "net.pb.h"
 
 namespace ngl
 {
 	// ### client到game服务器 会注册gateway的转发与game的处理
-	void gameclient_forward::c2g()
+	void nforward::c2g()
 	{
 		register_recvforward<EPROTOCOL_TYPE_PROTOCOLBUFF>(
 			null<pbnet::PROBUFF_NET_GET_TIME>
@@ -32,7 +32,7 @@ namespace ngl
 	}
 
 	// ### game到client服务器 会注册gateway的转发与client的处理
-	void gameclient_forward::g2c()
+	void nforward::g2c()
 	{
 		register_forward<EPROTOCOL_TYPE_PROTOCOLBUFF>(
 			null<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>

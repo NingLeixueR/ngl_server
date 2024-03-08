@@ -45,9 +45,6 @@ namespace ngl
 		bool handle(message<actor_switch_process<actor_switch_process_role>>& adata);
 		// ¶Ï¿ªÁ¬½Ó
 		bool handle(message<actor_session_close>& adata);
-	private: 
-			
 	};
-
-}
+}//namespace ngl
 

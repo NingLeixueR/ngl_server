@@ -26,10 +26,5 @@ namespace ngl
 		static void nregister();
 
 		bool handle(message<actor_protocol_kcp>& adata);
-		
-	private:
-
 	};
-
-}
-
+}//namespace ngl

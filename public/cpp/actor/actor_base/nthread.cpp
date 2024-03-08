@@ -1,10 +1,9 @@
-﻿#include "actor_thread.h"
-#include "actor_manage.h"
-
+﻿#include "actor_manage.h"
+#include "nthread.h"
 
 namespace ngl
 {
-	struct actor_thread::impl_actor_thread
+	struct nthread::impl_nthread
 	{
 		i32_threadid		m_id;
 		ptractor			m_actor;
@@ -13,11 +12,11 @@ namespace ngl
 		std::shared_mutex	m_mutex;
 		ngl::sem			m_sem;
 
-		impl_actor_thread(i32_threadid aid, actor_thread* athread) :
+		impl_nthread(i32_threadid aid, nthread* athread) :
 			m_id(aid),
 			m_actor(nullptr),
 			m_isactivity(false),
-			m_thread(&actor_thread::run, athread)
+			m_thread(&nthread::run, athread)
 		{}
 
 		bool isactivity()
@@ -34,7 +33,7 @@ namespace ngl
 			m_sem.post();
 		}
 
-		void run(actor_thread* athread)
+		void run(nthread* athread)
 		{
 			ptractor lpactor = nullptr;
 			while (true)
@@ -58,28 +57,28 @@ namespace ngl
 		}
 	};
 
-	actor_thread::actor_thread(i32_threadid aid)
+	nthread::nthread(i32_threadid aid)
 	{
 		m_impl_actor_thread.make_unique(aid, this);
 	}
 
-	i32_threadid actor_thread::id()
+	i32_threadid nthread::id()
 	{
 		return m_impl_actor_thread()->m_id;
 	}
 
-	bool actor_thread::isactivity()
+	bool nthread::isactivity()
 	{
 		return m_impl_actor_thread()->isactivity();
 	}
 
-	void actor_thread::push(ptractor abase)
+	void nthread::push(ptractor abase)
 	{
 		m_impl_actor_thread()->push(abase);
 	}
 
-	void actor_thread::run()
+	void nthread::run()
 	{
 		m_impl_actor_thread()->run(this);
 	}
-}
+}//namespace ngl

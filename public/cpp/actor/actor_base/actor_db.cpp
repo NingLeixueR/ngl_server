@@ -30,4 +30,4 @@ namespace ngl
 		}Catch;
 		return nullptr;
 	}
-}
+}//namespace ngl

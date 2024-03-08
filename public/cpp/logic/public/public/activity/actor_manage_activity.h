@@ -1,14 +1,14 @@
 #pragma once
 
-#include "actor_roleitem.h"
 #include "actor_manage.h"
 #include "actor_timer.h"
 #include "actor_create.h"
 #include "db_manage.h"
-#include "db_modular.h"
 #include "db_data.h"
 #include "db_pool.h"
 #include "db.h"
+#include "ndb_modular.h"
+#include "nroleitems.h"
 #include "manage_csv.h"
 #include "activitydb.h"
 #include "ndbclient.h"
@@ -27,7 +27,7 @@ namespace ngl
 		{
 			pbdb::db_brief m_info;
 		};
-		using type_roleitems = roleitems<actor_manage_activity, roleitem>;
+		using type_roleitems = nroleitems<actor_manage_activity, roleitem>;
 
 		activitydb m_db;
 		std::map<int64_t, activity*> m_allactivity;

@@ -1,6 +1,6 @@
-﻿#include "gameclient_forward.h"
-#include "actor_gatewayg2c.h"
+﻿#include "actor_gatewayg2c.h"
 #include "nregister.h"
+#include "nforward.h"
 
 namespace ngl
 {
@@ -29,7 +29,7 @@ namespace ngl
 			, dregister_fun_handle(actor_gatewayg2c, actor_gateway_info_updata)
 		);
 		// Game 2 Client
-		gameclient_forward::g2c();
+		nforward::g2c();
 	}
 
 	bool actor_gatewayg2c::handle(message<actor_gateway_info_updata>& adata)
@@ -49,4 +49,4 @@ namespace ngl
 		}
 		return true;
 	}
-}
+}//namespace ngl

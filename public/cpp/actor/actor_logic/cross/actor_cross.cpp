@@ -6,8 +6,6 @@ namespace ngl
 	{
 		// ¶¨Ê±Æ÷
 		actor_cross::register_timer<actor_cross>(&actor_cross::timer_handle);
-		
-
 	}
 
 	void actor_cross::loaddb_finish(bool adbishave)
@@ -19,4 +17,4 @@ namespace ngl
 	{
 		return true;
 	}
-}
+}//namespace ngl

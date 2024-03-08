@@ -39,7 +39,6 @@ namespace ngl
 		def_portocol(timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
 	};
 
-
 	class make_timerparm
 	{
 	public:
@@ -156,4 +155,4 @@ namespace ngl
 		// 抛出一个定时器
 		static int addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm);
 	};
-}
+}//namespace ngl

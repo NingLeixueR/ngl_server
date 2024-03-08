@@ -1,14 +1,14 @@
 #pragma once
 
-#include <cstdint>
-#include <map>
-#include <string>
-
 #include "ndefine.h"
 #include "csvtable.h"
 #include "data.pb.h"
 #include "db.pb.h"
 #include "net.pb.h"
+
+#include <cstdint>
+#include <map>
+#include <string>
 
 namespace ngl
 {
@@ -76,5 +76,5 @@ namespace ngl
 		static bool name2enum(const std::string& aenumname, ENUM_ACTOR& avalue);
 		static const char* enum2name(ENUM_ACTOR aenum);
 	};
-}
+}//namespace ngl
 

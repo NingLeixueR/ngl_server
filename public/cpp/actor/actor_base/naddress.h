@@ -1,8 +1,8 @@
 #pragma once
 
 #include "handle_pram.h"
-#include "type.h"
 #include "nguid.h"
+#include "type.h"
 #include "nlog.h"
 #include "impl.h"
 
@@ -85,4 +85,4 @@ namespace ngl
 	public:
 		bool handle(handle_pram& apram);
 	};
-}
+}//namespace ngl

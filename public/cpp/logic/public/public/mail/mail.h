@@ -1,15 +1,16 @@
 #pragma once
 
-#include "db_modular.h"
-#include "localtime.h"
+#include "ndb_modular.h"
 #include "manage_csv.h"
+#include "localtime.h"
+
 #include <string>
 #include <map>
 
 namespace ngl
 {
 	class actor_mail;
-	using mail_db_modular = db_modular<
+	using mail_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
 		pbdb::ENUM_DB_MAIL,
 		pbdb::db_mail,

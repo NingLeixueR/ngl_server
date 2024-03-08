@@ -99,5 +99,4 @@ namespace ngl
 			send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
 		return true;
 	}
-
-}
+}//namespace ngl

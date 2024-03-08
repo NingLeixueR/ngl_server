@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_modular.h"
+#include "ndb_modular.h"
 #include "manage_csv.h"
 #include "db.pb.h"
 #include "net.pb.h"
@@ -10,7 +10,7 @@ namespace ngl
 {
 	//actor_dbclient<ENUM_DB_ROLE, DB_ROLE> m_role;
 	class actor_role;
-	using roleinfo_db_modular = db_modular<
+	using roleinfo_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF
 		, pbdb::ENUM_DB_ROLE
 		, pbdb::db_role

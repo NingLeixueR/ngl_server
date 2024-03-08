@@ -1,8 +1,8 @@
 #pragma once
 
-#include "actor.h"
-#include "actor_roleitem.h"
+#include "nroleitems.h"
 #include "matching.h"
+#include "actor.h"
 
 namespace ngl
 {
@@ -14,7 +14,7 @@ namespace ngl
 		matching m_matching;
 
 	public:
-		using type_roleitems = roleitems<actor_matching, pbdb::db_brief>;
+		using type_roleitems = nroleitems<actor_matching, pbdb::db_brief>;
 		friend class actor_instance<actor_matching>;
 		static actor_matching& getInstance()
 		{

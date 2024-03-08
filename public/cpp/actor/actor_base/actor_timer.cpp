@@ -1,7 +1,6 @@
 ﻿#include "actor_timer.h"
 #include "actor_manage.h"
 
-
 namespace ngl
 {
 	int actor_timer::addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm)
@@ -30,4 +29,4 @@ namespace ngl
 		aparm->m_timerid = twheel::wheel().addtimer(lparm);
 		return aparm->m_timerid;
 	}
-}
+}//namespace ngl

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_modular.h"
+#include "ndb_modular.h"
 #include "db.pb.h"
 
 #include <sstream>
@@ -11,7 +11,7 @@ namespace ngl
 {
 	class actor_ranklist;
 
-	using ranklist_db_modular = db_modular<
+	using ranklist_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF
 		, pbdb::ENUM_DB_RANKLIST
 		, pbdb::db_ranklist

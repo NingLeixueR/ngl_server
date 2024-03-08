@@ -1,7 +1,7 @@
 #include "actor_manage_role.h"
+#include "actor_create.h"
 #include "actor_timer.h"
 #include "nregister.h"
-#include "actor_create.h"
 
 namespace ngl
 {
@@ -39,4 +39,4 @@ namespace ngl
 		actor_create::switch_process(adata.m_data->m_roleid(), 0, nconfig::m_nodeid, pro);
 		return true;
 	}
-}
+}//namespace ngl

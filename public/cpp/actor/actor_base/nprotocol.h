@@ -694,7 +694,7 @@ namespace ngl
 		int32_t				m_conv;
 		def_portocol(actor_protocol_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
 	};
-}
+}//namespace ngl
 
 
 

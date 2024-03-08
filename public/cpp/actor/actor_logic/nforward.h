@@ -10,7 +10,7 @@
 
 namespace ngl
 {
-	class gameclient_forward
+	class nforward
 	{
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		static void register_recvforward(const T* apdata)
@@ -31,8 +31,8 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename T, typename ...ARG>
 		static void register_recvforward(const T* apdata, const ARG*... arg)
 		{
-			gameclient_forward::register_recvforward<TYPE>(apdata);
-			gameclient_forward::register_recvforward<TYPE>(arg...);
+			nforward::register_recvforward<TYPE>(apdata);
+			nforward::register_recvforward<TYPE>(arg...);
 		}
 
 		// 二次转发   [client]->[gateway]			->			[game]		->		[module]
@@ -57,8 +57,8 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename T, typename ...ARG>
 		static void register_recvforward2(const T* apdata, const ARG*... arg)
 		{
-			gameclient_forward::register_recvforward2<TYPE, ACTOR>(apdata);
-			gameclient_forward::register_recvforward2<TYPE, ACTOR>(arg...);
+			nforward::register_recvforward2<TYPE, ACTOR>(apdata);
+			nforward::register_recvforward2<TYPE, ACTOR>(arg...);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
@@ -80,8 +80,8 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename T, typename ...ARG>
 		static void register_forward(const T* ap, const ARG*... arg)
 		{
-			gameclient_forward::register_forward<TYPE>(ap);
-			gameclient_forward::register_forward<TYPE>(arg...);
+			nforward::register_forward<TYPE>(ap);
+			nforward::register_forward<TYPE>(arg...);
 		}
 
 	public:
@@ -91,4 +91,4 @@ namespace ngl
 		////// ### game->gateway->client
 		static void g2c();
 	};
-}
+}//namespace ngl

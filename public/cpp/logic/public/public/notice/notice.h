@@ -1,12 +1,12 @@
 #pragma once
 
-#include "db_modular.h"
+#include "ndb_modular.h"
 #include "db.pb.h"
 
 namespace ngl
 {
 	class actor_notice;
-	using notice_db_modular = db_modular<
+	using notice_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
 		pbdb::ENUM_DB_NOTICE,
 		pbdb::db_notice,

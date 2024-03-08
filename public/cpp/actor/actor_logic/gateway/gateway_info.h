@@ -1,10 +1,10 @@
 #pragma once
 
-#include <map>
-
 #include "nguid.h"
 #include "nprotocol.h"
 #include "rebot_test.h"
+
+#include <map>
 
 namespace ngl
 {
@@ -36,4 +36,4 @@ namespace ngl
 
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 	};
-}
+}//namespace ngl

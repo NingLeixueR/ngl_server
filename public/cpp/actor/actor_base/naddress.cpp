@@ -1,7 +1,7 @@
-#include "naddress.h"
-#include "nactortype.h"
-#include "nguid.h"
 #include "actor_base.h"
+#include "nactortype.h"
+#include "naddress.h"
+#include "nguid.h"
 #include "net.h"
 
 namespace ngl
@@ -292,4 +292,4 @@ namespace ngl
 	{
 		m_impl_actor_address()->get_gatewayid(aactorset, aserverset);
 	}
-}
+}//namespace ngl

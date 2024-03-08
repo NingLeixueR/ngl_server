@@ -113,7 +113,6 @@ namespace ngl
 
 		// 登录请求未发货充值
 		void loginpay();
-
 		// CMD 协议
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
@@ -127,13 +126,8 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_RECHARGE>& adata);
 		bool is_first_recharge(int32_t arechargeid);
 		bool handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata);
-
 		// 定时器
 		bool timer_handle(message<timerparm>& adata);
 	};
-
-	
-
-
-}
+}//namespace ngl
 

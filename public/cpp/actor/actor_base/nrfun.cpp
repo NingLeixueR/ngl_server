@@ -28,4 +28,4 @@ namespace ngl
 		itor->second.m_fun(aactor, athreadid, apram);
 		return true;
 	}
-}
+}//namespace ngl

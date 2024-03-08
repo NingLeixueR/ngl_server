@@ -1,11 +1,11 @@
-﻿#include "actor_role.h"
+﻿#include "manage_curl.h"
+#include "nroleitems.h"
+#include "actor_role.h"
 #include "nregister.h"
-#include "gameclient_forward.h"
+#include "nforward.h"
 #include "net.pb.h"
-#include "actor_roleitem.h"
-#include "drop.h"
-#include "manage_curl.h"
 #include "ojson.h"
+#include "drop.h"
 
 namespace ngl
 {
@@ -62,7 +62,7 @@ namespace ngl
 		);
 
 		// 协议注册
-		gameclient_forward::c2g();
+		nforward::c2g();
 	}
 
 	void actor_role::loginpay()
@@ -275,4 +275,4 @@ namespace ngl
 	{
 		return true;
 	}
-}
+}//namespace ngl

@@ -1,17 +1,17 @@
 #pragma once
 
-#include <map>
-#include <list>
-#include <set>
-
-#include "actor_thread.h"
 #include "actor_client.h"
 #include "actor_base.h"
 #include "threadtools.h"
 #include "naddress.h"
+#include "nthread.h"
 #include "pack.h"
 #include "impl.h"
 #include "net.h"
+
+#include <list>
+#include <map>
+#include <set>
 
 namespace ngl
 {
@@ -46,7 +46,7 @@ namespace ngl
 		bool is_have_actor(const nguid& aguid);
 
 		// 工作线程将actor添加到m_actorlist
-		void push(ptractor& apactor, actor_thread* atorthread = nullptr);
+		void push(ptractor& apactor, nthread* atorthread = nullptr);
 
 		// 向actor中添加任务
 		void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
@@ -108,4 +108,4 @@ namespace ngl
 		}
 		return ltemp;
 	}
-}
+}//namespace ngl

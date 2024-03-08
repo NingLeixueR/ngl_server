@@ -1,10 +1,9 @@
 #include "account.h"
 
-
 namespace ngl
 {
 	account::account() :
-		db_modular(),
+		ndb_modular(),
 		m_keyvalue_accountid(1)
 	{
 	}
@@ -34,4 +33,4 @@ namespace ngl
 	{
 		return m_data[area].m_accountbyaccount;
 	}
-}
+}//namespace ngl

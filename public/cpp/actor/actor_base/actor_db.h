@@ -12,8 +12,6 @@
 #include "db.h"
 #include "net.h"
 
-#include <boost/type_index.hpp>
-
 namespace ngl
 {
 	// db¡¨Ω”≥ÿ
@@ -351,4 +349,4 @@ namespace ngl
 		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nconfig::m_nodeid);
 		actor_base::static_send_actor(lactorid, nguid::make(), pro);
 	}
-}
+}//namespace ngl

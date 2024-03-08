@@ -29,5 +29,5 @@ namespace ngl
 				
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	};
-}
+}//namespace ngl
 

@@ -77,5 +77,4 @@ namespace ngl
 	
 		bool handle(message<actor_disconnect_close>& adata);
 	};
-
-}
+}//namespace ngl

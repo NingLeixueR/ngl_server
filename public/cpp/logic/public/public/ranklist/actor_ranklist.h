@@ -1,14 +1,14 @@
 #pragma once
 
-#include "actor_roleitem.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "actor_timer.h"
-#include "db_modular.h"
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
 #include "db.h"
+#include "ndb_modular.h"
+#include "nroleitems.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
 #include "ranklist.h"
@@ -21,7 +21,7 @@ namespace ngl
 	{
 		ranklist m_ranklist;
 
-		using type_roleitems = roleitems<actor_ranklist, pbdb::db_brief>;
+		using type_roleitems = nroleitems<actor_ranklist, pbdb::db_brief>;
 		actor_ranklist();
 	public:
 		friend class actor_instance<actor_ranklist>;

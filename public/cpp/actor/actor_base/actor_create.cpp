@@ -23,4 +23,4 @@ namespace ngl
 			})
 	{
 	}
-}
+}//namespace ngl

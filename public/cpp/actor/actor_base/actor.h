@@ -129,7 +129,7 @@ namespace ngl
 		}
 #pragma endregion 
 	private:
-		friend class gameclient_forward;
+		friend class nforward;
 
 		// ### 注册 [forward:转发协议]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
@@ -189,8 +189,5 @@ namespace ngl
 		bool handle(message<actor_broadcast>& adata);
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion
-
 	};
-
-
-}
+}//namespace ngl

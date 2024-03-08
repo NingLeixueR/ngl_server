@@ -1,13 +1,13 @@
 #pragma once
 
+#include "ndb_modular.h"
 #include "db.pb.h"
-#include "db_modular.h"
 #include "type.h"
 
 namespace ngl
 {
 	class actor_role;
-	using task_db_modular = db_modular<
+	using task_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF,
 		pbdb::ENUM_DB_TASK,
 		pbdb::db_task,

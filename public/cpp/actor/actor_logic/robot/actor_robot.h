@@ -46,12 +46,6 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
-		
-		/*LOGIC_ROLE_SYNC& get()
-		{
-			return m_data;
-		}*/
-	private:
 	};
 
 	class actor_manage_robot : public actor
@@ -145,9 +139,7 @@ namespace ngl
 			
 			return true;
 		}
-
 	public:
-		
 		bool handle(message<robot_pram>& adata)
 		{
 			auto lrecv = adata.m_data;
@@ -279,5 +271,5 @@ namespace ngl
 			return true;
 		}
 	};
-}
+}//namespace ngl
 	

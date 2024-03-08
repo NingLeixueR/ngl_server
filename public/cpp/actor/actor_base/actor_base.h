@@ -1,11 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <atomic>
-#include <list>
-#include <set>
-#include <map>
-
 #include "ttab_servers.h"
 #include "actor_timer.h"
 #include "handle_pram.h"
@@ -17,12 +11,18 @@
 #include "impl.h"
 #include "ukcp.h"
 
+#include <vector>
+#include <atomic>
+#include <list>
+#include <set>
+#include <map>
+
 namespace ngl
 {
 	class actor_base;
 	class ndbclient_base;
 	class actor_manage_dbclient;
-	class db_component;
+	class ndb_component;
 
 	struct actorparmbase
 	{
@@ -60,7 +60,7 @@ namespace ngl
 		// ## 是否加载完成
 		bool			isloadfinish();
 		// ## 设置db_component组件
-		void			set_db_component(db_component* acomponent);
+		void			set_db_component(ndb_component* acomponent);
 		// ## 初始化数据(在数据加载完成后)
 		void			db_component_init_data();
 		void			init_db_component(bool acreate);
@@ -460,5 +460,4 @@ namespace ngl
 		// 定义在 actor_manage.h
 		static T& instance();
 	};
-
-}
+}//namespace ngl

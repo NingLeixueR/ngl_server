@@ -10,4 +10,4 @@ namespace ngl
 	public:
 		static bool is_test;
 	};
-}
+}//namespace ngl

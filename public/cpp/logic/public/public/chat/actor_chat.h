@@ -1,6 +1,5 @@
 #pragma once
 
-#include "actor_roleitem.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "actor_timer.h"
@@ -9,7 +8,8 @@
 #include "nprotocol.h"
 #include "net.pb.h"
 #include "net.h"
-#include "db_modular.h"
+#include "nroleitems.h"
+#include "ndb_modular.h"
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
@@ -26,7 +26,7 @@ namespace ngl
 			pbdb::db_brief m_info;
 			int32_t m_lastspeakutc = 0;
 		};
-		using type_roleitems = roleitems<actor_chat, roleitem>;
+		using type_roleitems = nroleitems<actor_chat, roleitem>;
 
 		std::map<int, std::list<pbnet::chatitem>> m_chatitem;
 		std::map<int, std::list<pbnet::chatitem>> m_update_chatitem;

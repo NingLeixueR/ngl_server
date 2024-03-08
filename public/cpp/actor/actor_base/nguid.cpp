@@ -264,4 +264,4 @@ namespace ngl
 	{
 		return m_id > r.m_id;
 	}
-}
+}//namespace ngl

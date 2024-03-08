@@ -9,9 +9,9 @@ namespace ngl
 	struct actor_manage::impl_actor_manage
 	{
 		//// ---- 线程相关
-		std::list<actor_thread*>	m_workthread;		// 工作线程
+		std::list<nthread*>	m_workthread;		// 工作线程
 		bool m_suspend;
-		std::list<actor_thread*>	m_suspendthread;	// 挂起的工作线程
+		std::list<nthread*>	m_suspendthread;	// 挂起的工作线程
 		std::thread					m_thread;			// 管理线程
 		i32_threadsize				m_threadnum;		// 工作线程数量
 
@@ -39,7 +39,7 @@ namespace ngl
 
 			m_threadnum = apthreadnum;
 			for (int i = 0; i < m_threadnum; ++i)
-				m_workthread.push_back(new actor_thread(i));
+				m_workthread.push_back(new nthread(i));
 		}
 
 		inline void get_type(std::vector<i16_actortype>& aactortype)
@@ -164,7 +164,7 @@ namespace ngl
 			return m_actorbyid.find(aguid) != m_actorbyid.end();
 		}
 
-		inline void push(ptractor& apactor, actor_thread* atorthread)
+		inline void push(ptractor& apactor, nthread* atorthread)
 		{
 			std::function<void()> lfun = nullptr;
 			while (true)
@@ -328,7 +328,7 @@ namespace ngl
 
 		inline void run()
 		{
-			actor_thread* lpthread = nullptr;
+			nthread* lpthread = nullptr;
 			ptractor lpactor = nullptr;
 			
 #ifdef OPEN_SEM
@@ -419,7 +419,7 @@ namespace ngl
 		return m_impl_actor_manage()->is_have_actor(aguid);
 	}
 
-	void actor_manage::push(ptractor& apactor, actor_thread* atorthread/* = nullptr*/)
+	void actor_manage::push(ptractor& apactor, nthread* atorthread/* = nullptr*/)
 	{
 		m_impl_actor_manage()->push(apactor, atorthread);
 	}
@@ -448,5 +448,5 @@ namespace ngl
 	{
 		m_impl_actor_manage()->finish_suspend_thread();
 	}
-}
+}//namespace ngl
 

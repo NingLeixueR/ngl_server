@@ -1,15 +1,15 @@
 #pragma once
 
+#include "ndb_modular.h"
+#include "remakes.h"
 #include "db.pb.h"
 #include "itme.h"
-#include "db_modular.h"
-#include "remakes.h"
 
 namespace ngl
 {
 	struct autoitem;
 	class actor_role;
-	using bag_db_modular = db_modular<
+	using bag_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
 		pbdb::ENUM_DB_BAG,
 		pbdb::db_bag,

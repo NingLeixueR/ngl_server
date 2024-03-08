@@ -146,4 +146,4 @@ namespace ngl
 	actor::~actor() 
 	{
 	}
-}
+}//namespace ngl

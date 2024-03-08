@@ -1,6 +1,5 @@
 #include "actor_log.h"
 
-
 namespace ngl
 {
 	actor_log::actor_log(ELOG_TYPE atype) :
@@ -46,4 +45,4 @@ namespace ngl
 		m_log->printf(ldata);
 		return true;
 	}
-}
+}//namespace ngl

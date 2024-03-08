@@ -549,4 +549,4 @@ namespace ngl
 		}
 		return lp->handle(adata);
 	}
-}
+}//namespace ngl

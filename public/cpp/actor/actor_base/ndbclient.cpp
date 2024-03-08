@@ -14,4 +14,4 @@ namespace ngl
 		broadcast();
 		return true;
 	}
-}
+}//namespace ngl

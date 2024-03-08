@@ -6,7 +6,7 @@
 
 namespace ngl
 {
-	class db_component
+	class ndb_component
 	{
 	protected:
 		actor_base*				m_actor;
@@ -14,7 +14,7 @@ namespace ngl
 		ndbclient_base*	m_dbclient;
 		pbdb::ENUM_DB			m_type;
 
-		db_component(pbdb::ENUM_DB aenum);
+		ndb_component(pbdb::ENUM_DB aenum);
 		void				set_dbclient(ndbclient_base* adbclient);
 	public:
 		void				set(actor_base* aactor);
@@ -30,16 +30,16 @@ namespace ngl
 	};
 
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
-	class db_modular : public db_component
+	class ndb_modular : public ndb_component
 	{
 	protected:
 		ndbclient<PROTYPE, ENUM, TDATA, TACTOR> m_data;
-		db_modular():
-			db_component(ENUM)
+		ndb_modular():
+			ndb_component(ENUM)
 		{
 			set_dbclient(&m_data);
 		}
-		~db_modular()
+		~ndb_modular()
 		{
 		}
 	public:
@@ -136,4 +136,4 @@ namespace ngl
 			get_actor_dbclient()->del(aid);
 		}
 	};
-}
+}//namespace ngl

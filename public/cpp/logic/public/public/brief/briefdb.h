@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_modular.h"
+#include "ndb_modular.h"
 #include "localtime.h"
 #include "manage_csv.h"
 #include <string>
@@ -10,7 +10,7 @@ namespace ngl
 {
 	class actor_brief;
 
-	using brief_db_modular = db_modular<
+	using brief_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
 		pbdb::ENUM_DB_BRIEF,
 		pbdb::db_brief,

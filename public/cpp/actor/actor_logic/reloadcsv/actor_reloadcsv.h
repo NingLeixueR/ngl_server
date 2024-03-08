@@ -53,4 +53,4 @@ namespace ngl
 				
 		bool handle(message<actor_reloadcsv_verify_version>& adata);
 	};
-}
+}//namespace ngl

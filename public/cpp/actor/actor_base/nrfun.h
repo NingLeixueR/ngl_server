@@ -1,11 +1,11 @@
 #pragma once
 
-#include <functional>
-#include <map>
-
 #include "actor_base.h"
 #include "handle_pram.h"
 #include "type.h"
+
+#include <functional>
+#include <map>
 
 namespace ngl
 {
@@ -82,6 +82,4 @@ namespace ngl
 		template <typename T>
 		nrfun& rfun_recvforward(Tfun<TDerived, T> afun, bool aisload = false);
 	};
-
-
-}
+}//namespace ngl

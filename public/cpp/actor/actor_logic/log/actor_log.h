@@ -31,4 +31,4 @@ namespace ngl
 
 		bool handle(message<actor_logitempro>& adata);
 	};
-}
+}//namespace ngl

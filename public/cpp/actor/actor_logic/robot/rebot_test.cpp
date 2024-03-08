@@ -5,4 +5,4 @@
 namespace ngl
 {
 	bool rebot_test::is_test = false;
-}
+}//namespace ngl

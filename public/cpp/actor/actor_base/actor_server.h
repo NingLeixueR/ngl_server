@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "naddress.h"
 #include "actor_manage.h"
+#include "naddress.h"
 #include "xmlnode.h"
 #include "net.h"
 
@@ -30,6 +30,4 @@ namespace ngl
 		bool handle(message<actor_gateway_id_updata>& adata);
 	private:
 	};
-
-
-}
+}//namespace ngl

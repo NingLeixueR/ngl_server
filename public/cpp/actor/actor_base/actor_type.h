@@ -1,7 +1,6 @@
 #pragma once 
 
 #include "nactortype.h"
-#include <boost/type_index.hpp>
 
 namespace ngl
 {
@@ -28,4 +27,4 @@ namespace ngl
 	ENUM_ACTOR actor_type<T>::m_type = ACTOR_NONE;
 
 	void init_actor_type();
-}
+}//namespace ngl

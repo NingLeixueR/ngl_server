@@ -42,4 +42,4 @@ namespace ngl
 	{
 		return aguid.is_actoridnone();
 	}
-}
+}//namespace ngl

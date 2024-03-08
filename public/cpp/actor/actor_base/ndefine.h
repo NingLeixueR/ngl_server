@@ -89,12 +89,3 @@
 		return ngl::rcsv::readcsv(apair __VA_OPT__(,) ##__VA_ARGS__);	\
 	}
 #endif
-
-
-
-
-
-
-
-
-

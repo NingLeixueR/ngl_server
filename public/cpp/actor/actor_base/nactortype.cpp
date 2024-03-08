@@ -57,4 +57,4 @@ namespace ngl
 			return "nullptr";
 		return lpair.first;
 	}
-}
+}//namespace ngl

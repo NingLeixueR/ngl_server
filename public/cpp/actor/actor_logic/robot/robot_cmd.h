@@ -1,10 +1,10 @@
 #pragma once
 
+#include "actor_robot.h"
+
 #include <string>
 #include <vector>
 #include <boost/lexical_cast.hpp>
-
-#include "actor_robot.h"
 
 enum ROBOT_CMD
 {
@@ -13,13 +13,9 @@ enum ROBOT_CMD
 
 namespace ngl
 {
-
 	class robot_cmd
 	{
 	public:
-
-		
-
 		static bool parse_command(std::vector<std::string>& aparm)
 		{
 			//if (aparm.size() < 2)
@@ -33,8 +29,5 @@ namespace ngl
 			actor_manage::getInstance().push_task_id(lid, lparm, false);
 			return true;
 		}
-
-
 	};
-
-}
+}//namespace ngl

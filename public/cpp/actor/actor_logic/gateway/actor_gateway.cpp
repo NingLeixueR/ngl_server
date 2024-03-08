@@ -293,4 +293,4 @@ namespace ngl
 		}Catch;
 		return false;
 	}
-}
+}//namespace ngl

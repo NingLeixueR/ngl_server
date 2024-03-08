@@ -1,7 +1,7 @@
 #include "actor_manage.h"
 #include "actor_base.h"
 #include "actor_log.h"
-#include "db_modular.h"
+#include "ndb_modular.h"
 #include "ndbclient.h"
 #include "xmlnode.h"
 
@@ -12,7 +12,7 @@ namespace ngl
 		nguid									m_guid;
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient;
 		bool										m_isload;			// 数据是否加载完成
-		std::map<pbdb::ENUM_DB, db_component*>		m_dbcomponent;
+		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
 
 		impl_actor_base(actor_base* aactor, const actorparmbase& aparm)
 		{
@@ -93,7 +93,7 @@ namespace ngl
 			return m_isload;
 		}
 
-		void set_db_component(db_component* acomponent)
+		void set_db_component(ndb_component* acomponent)
 		{
 			m_dbcomponent[acomponent->type()] = acomponent;
 		}
@@ -218,7 +218,7 @@ namespace ngl
 		return m_impl_actor_base()->isload();
 	}
 
-	void actor_base::set_db_component(db_component* acomponent)
+	void actor_base::set_db_component(ndb_component* acomponent)
 	{
 		m_impl_actor_base()->set_db_component(acomponent);
 	}
@@ -360,4 +360,4 @@ namespace ngl
 			});
 		return true;
 	}
-}
+}//namespace ngl

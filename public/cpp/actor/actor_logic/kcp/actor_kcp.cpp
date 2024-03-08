@@ -1,7 +1,6 @@
 #include "actor_kcp.h"
 #include "ukcp.h"
 
-
 namespace ngl
 {
 	actor_kcp::actor_kcp():
@@ -37,4 +36,4 @@ namespace ngl
 		nets::net()->send(lpack->m_id, *lpram, -1, -1);
 		return true;
 	}
-}
+}//namespace ngl

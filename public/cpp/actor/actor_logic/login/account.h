@@ -1,11 +1,11 @@
 #pragma once
 
-#include "db_modular.h"
+#include "ndb_modular.h"
 
 namespace ngl
 {
 	class actor_login;
-	using account_db_modular = db_modular<
+	using account_db_modular = ndb_modular<
 		EPROTOCOL_TYPE_PROTOCOLBUFF,
 		pbdb::ENUM_DB_ACCOUNT,
 		pbdb::db_account,
@@ -32,5 +32,4 @@ namespace ngl
 
 		std::map<std::string, data_modified<pbdb::db_account>*>& accountbyaccount(int area);
 	};
-
-}
+}//namespace ngl
