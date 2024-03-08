@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "actor_base.h"
-#include "actor_type.h"
+#include "nactor_type.h"
 #include "nactortype.h"
+#include "actor_base.h"
 #include "nrfun.h"
 #include "impl.h"
 
@@ -135,7 +135,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			nrfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>(afun, actor_type<TDerived>::type(), false);
+			nrfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>(afun, nactor_type<TDerived>::type(), false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>

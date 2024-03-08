@@ -256,7 +256,7 @@ namespace ngl
 	int32_t actor_base::set_timer(const timerparm& aparm)
 	{
 		std::shared_ptr<timerparm> lptr(new timerparm(aparm));
-		return actor_timer::addtimer(this, lptr);
+		return ntimer::addtimer(this, lptr);
 	}
 
 	bool actor_base::isbroadcast()

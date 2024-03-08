@@ -18,27 +18,27 @@
 #include "actor_cross.h"
 #include "actor_chat.h"
 #include "actor_mail.h"
-#include "actor_type.h"
 #include "actor_role.h"
 #include "actor_kcp.h"
 #include "actor_log.h"
 #include "actor_db.h"
 #include "actor_gm.h"
+#include "nactor_type.h"
 
 namespace ngl
 {
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	void initdb()
 	{
-		actor_type<
+		nactor_type<
 			ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
 		>::inits((ENUM_ACTOR)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE));
 	}
 
-	void init_actor_type()
+	void init_nactor_type()
 	{
 #define dinit_atype(ACTORCLASS, ACTORTYPE)	\
-		actor_type<ACTORCLASS>::inits(ACTORTYPE);\
+		nactor_type<ACTORCLASS>::inits(ACTORTYPE);\
 		LogLocalError("init_actor_type [%]-[%]", boost::typeindex::type_id_with_cvr<ACTORCLASS>().pretty_name(), (int)(ACTORTYPE))
 
 		dinit_atype(actor_client, ACTOR_ADDRESS_CLIENT);

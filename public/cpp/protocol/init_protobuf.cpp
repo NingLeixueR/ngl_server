@@ -1,7 +1,7 @@
-#include "actor_timer.h"
 #include "actor.h"
 #include "init_protobuf.h"
 #include "nprotocol.h"
+#include "ntimer.h"
 #include "net.pb.h"
 #include "gm.pb.h"
 

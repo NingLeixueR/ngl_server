@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include "actor_gatewayc2g.h"
 #include "actor_gatewayg2c.h"
@@ -35,9 +35,9 @@ namespace ngl
 			nforward::register_recvforward<TYPE>(arg...);
 		}
 
-		// äºŒæ¬¡è½¬å‘   [client]->[gateway]			->			[game]		->		[module]
-		// ##############################		ç¬¬ä¸€æ¬¡è½¬å‘		######	ç¬¬äºŒæ¬¡è½¬å‘	#######
-		// éœ€è¦æ”¯æŒäºŒæ¬¡è½¬å‘
+		// ¶þ´Î×ª·¢   [client]->[gateway]			->			[game]		->		[module]
+		// ##############################		µÚÒ»´Î×ª·¢		######	µÚ¶þ´Î×ª·¢	#######
+		// ÐèÒªÖ§³Ö¶þ´Î×ª·¢
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename T>
 		static void register_recvforward2(const T* apdata)
 		{

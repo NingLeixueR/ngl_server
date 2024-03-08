@@ -248,7 +248,7 @@ namespace ngl
 				{
 					.m_parm
 					{
-						.m_type = actor_type<actor_db<PROTYPE,TDBTAB_TYPE,TDBTAB>>::type(),
+						.m_type = nactor_type<actor_db<PROTYPE,TDBTAB_TYPE,TDBTAB>>::type(),
 						.m_area = ttab_servers::tab()->m_area,
 						.m_id = nconfig::m_nodeid
 					},
@@ -345,7 +345,7 @@ namespace ngl
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
 
-		ENUM_ACTOR ltype = actor_type<actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>>::type();
+		ENUM_ACTOR ltype = nactor_type<actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>>::type();
 		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nconfig::m_nodeid);
 		actor_base::static_send_actor(lactorid, nguid::make(), pro);
 	}

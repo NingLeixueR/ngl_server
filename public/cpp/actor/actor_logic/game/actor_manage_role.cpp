@@ -1,7 +1,7 @@
 #include "actor_manage_role.h"
 #include "actor_create.h"
-#include "actor_timer.h"
 #include "nregister.h"
+#include "ntimer.h"
 
 namespace ngl
 {

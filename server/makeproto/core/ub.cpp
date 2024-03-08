@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-03-08 16:10:05
+// 创建时间 24-03-08 17:11:59
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -34,8 +34,6 @@
 #include "actor_role_cmd.cpp"
 #include "actor_role_handle.cpp"
 #include "actor_server.cpp"
-#include "actor_timer.cpp"
-#include "actor_type.cpp"
 #include "actor_ugpalace.cpp"
 #include "asio_base.cpp"
 #include "asio_kcp.cpp"
@@ -78,6 +76,7 @@
 #include "matching.cpp"
 #include "md5.cpp"
 #include "mdump.cpp"
+#include "nactor_type.cpp"
 #include "nactortype.cpp"
 #include "naddress.cpp"
 #include "ndb_modular.cpp"
@@ -92,6 +91,7 @@
 #include "notify.cpp"
 #include "nrfun.cpp"
 #include "nthread.cpp"
+#include "ntimer.cpp"
 #include "ojson.cpp"
 #include "operator_file.cpp"
 #include "pack.cpp"

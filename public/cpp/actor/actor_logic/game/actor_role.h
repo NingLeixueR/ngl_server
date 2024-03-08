@@ -1,6 +1,5 @@
 #pragma once
 
-#include "actor_timer.h"
 #include "actor_create.h"
 #include "actor_manage.h"
 #include "db_manage.h"
@@ -12,6 +11,7 @@
 #include "remakes.h"
 #include "db_pool.h"
 #include "db_data.h"
+#include "ntimer.h"
 #include "net.pb.h"
 #include "task.h"
 #include "bag.h"

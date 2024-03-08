@@ -1,9 +1,9 @@
-﻿#include "actor_timer.h"
-#include "actor_manage.h"
+﻿#include "actor_manage.h"
+#include "ntimer.h"
 
 namespace ngl
 {
-	int actor_timer::addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm)
+	int ntimer::addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm)
 	{
 		i64_actorid lidguid = actor->id_guid();
 		wheel_parm lparm

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ttab_servers.h"
-#include "actor_timer.h"
 #include "handle_pram.h"
 #include "nactortype.h"
 #include "localtime.h"
+#include "ntimer.h"
 #include "nguid.h"
 #include "type.h"
 #include "nlog.h"

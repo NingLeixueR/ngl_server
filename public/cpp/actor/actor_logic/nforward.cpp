@@ -1,9 +1,9 @@
-ï»¿#include "nforward.h"
+#include "nforward.h"
 #include "net.pb.h"
 
 namespace ngl
 {
-	// ### clientåˆ°gameæœåŠ¡å™¨ ä¼šæ³¨å†Œgatewayçš„è½¬å‘ä¸gameçš„å¤„ç†
+	// ### clientµ½game·şÎñÆ÷ »á×¢²ágatewayµÄ×ª·¢ÓëgameµÄ´¦Àí
 	void nforward::c2g()
 	{
 		register_recvforward<EPROTOCOL_TYPE_PROTOCOLBUFF>(
@@ -12,7 +12,7 @@ namespace ngl
 			, null<pbnet::PROBUFF_NET_SWITCH_LINE>
 		);
 
-		// ACTOR_MAIL æ¨¡å—äºŒæ¬¡è½¬å‘
+		// ACTOR_MAIL Ä£¿é¶ş´Î×ª·¢
 		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF,ACTOR_MAIL>(
 			null<pbnet::PROBUFF_NET_MAIL_LIST>
 			, null<pbnet::PROBUFF_NET_MAIL_READ>
@@ -20,18 +20,18 @@ namespace ngl
 			, null<pbnet::PROBUFF_NET_MAIL_DEL>
 		);
 
-		// ACTOR_NOTICE æ¨¡å—äºŒæ¬¡è½¬å‘
+		// ACTOR_NOTICE Ä£¿é¶ş´Î×ª·¢
 		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE>(
 			null<pbnet::PROBUFF_NET_GET_NOTICE>
 		);
 
-		// ACTOR_CHAT æ¨¡å—äºŒæ¬¡è½¬å‘
+		// ACTOR_CHAT Ä£¿é¶ş´Î×ª·¢
 		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_CHAT>(
 			null<pbnet::PROBUFF_NET_CHAT>
 		);
 	}
 
-	// ### gameåˆ°clientæœåŠ¡å™¨ ä¼šæ³¨å†Œgatewayçš„è½¬å‘ä¸clientçš„å¤„ç†
+	// ### gameµ½client·şÎñÆ÷ »á×¢²ágatewayµÄ×ª·¢ÓëclientµÄ´¦Àí
 	void nforward::g2c()
 	{
 		register_forward<EPROTOCOL_TYPE_PROTOCOLBUFF>(
@@ -48,4 +48,4 @@ namespace ngl
 			, null<pbnet::PROBUFF_NET_ERROR_RESPONSE>
 		);
 	}
-}
+}//namespace ngl

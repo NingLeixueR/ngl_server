@@ -2,18 +2,18 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "actor_timer.h"
-#include "db_manage.h"
-#include "db_data.h"
-#include "db_pool.h"
-#include "db.h"
 #include "ndb_modular.h"
 #include "nroleitems.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
 #include "ranklist.h"
+#include "ntimer.h"
 #include "notice.h"
 #include "net.h"
+#include "db_manage.h"
+#include "db_data.h"
+#include "db_pool.h"
+#include "db.h"
 
 namespace ngl
 {

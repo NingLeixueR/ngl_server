@@ -5,7 +5,7 @@
 namespace ngl
 {
 	template <typename T>
-	class actor_type
+	class nactor_type
 	{
 		static ENUM_ACTOR m_type;
 	public:
@@ -24,7 +24,7 @@ namespace ngl
 	};
 
 	template <typename T>
-	ENUM_ACTOR actor_type<T>::m_type = ACTOR_NONE;
+	ENUM_ACTOR nactor_type<T>::m_type = ACTOR_NONE;
 
-	void init_actor_type();
+	void init_nactor_type();
 }//namespace ngl

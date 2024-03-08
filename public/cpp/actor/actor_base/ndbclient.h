@@ -147,7 +147,7 @@ namespace ngl
 			actor_db_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 
-			i64_actorid ldbid = nguid::make(actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
+			i64_actorid ldbid = nguid::make(nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
 			nserver->send_server(dbnodeid(), ldata, ldbid, m_actor->id_guid());
 
 			std::string lname;
@@ -288,7 +288,7 @@ namespace ngl
 			{
 				// ### 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = nguid::make(
-					actor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type()
+					nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type()
 					, tab_self_area
 					, dbnodeid()
 				);

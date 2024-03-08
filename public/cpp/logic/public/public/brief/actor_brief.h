@@ -2,7 +2,6 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "actor_timer.h"
 #include "manage_csv.h"
 #include "db_manage.h"
 #include "db_data.h"
@@ -13,6 +12,7 @@
 #include "nprotocol.h"
 #include "ndbclient.h"
 #include "briefdb.h"
+#include "ntimer.h"
 #include "net.pb.h"
 #include "net.h"
 

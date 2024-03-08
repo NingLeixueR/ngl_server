@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -15,20 +15,20 @@ namespace ngl
 		enum E_ACTOR_TIMER
 		{
 			ET_NULL,
-			ET_MONTH,		// æ¯æœˆè§¦å‘
-			ET_WEEK,		// æ¯å‘¨è§¦å‘
-			ET_DAY,			// æ¯æ—¥è§¦å‘		ahouræ—¶aminåˆ†asecç§’
-			ET_HOUR,		// æ¯å°æ—¶è§¦å‘	aminåˆ†asecç§’
-			ET_MIN,			// æ¯åˆ†é’Ÿè§¦å‘	asecç§’
-			ET_INTERVAL_SEC,// é—´éš”nç§’è§¦å‘
+			ET_MONTH,		// Ã¿ÔÂ´¥·¢
+			ET_WEEK,		// Ã¿ÖÜ´¥·¢
+			ET_DAY,			// Ã¿ÈÕ´¥·¢		ahourÊ±amin·ÖasecÃë
+			ET_HOUR,		// Ã¿Ğ¡Ê±´¥·¢	amin·ÖasecÃë
+			ET_MIN,			// Ã¿·ÖÖÓ´¥·¢	asecÃë
+			ET_INTERVAL_SEC,// ¼ä¸ônÃë´¥·¢
 		};
 		int							m_type = 0;
 		int							m_timerid = 0;
-		int64_t						m_ms = 0;					// ç›¸å¯¹äºå½“å‰æ—¶é—´ ms
-		int							m_count = 1;				// è§¦å‘æ¬¡æ•°
-		std::function<int(int64_t)> m_intervalms = nullptr;		// è§¦å‘é—´éš”
-		std::shared_ptr<void>		m_parm = nullptr;			// è‡ªå®šä¹‰å‚æ•°
-		int64_t						m_triggerms = 0;			// è§¦å‘æ—¶çš„æ¯«ç§’
+		int64_t						m_ms = 0;					// Ïà¶ÔÓÚµ±Ç°Ê±¼ä ms
+		int							m_count = 1;				// ´¥·¢´ÎÊı
+		std::function<int(int64_t)> m_intervalms = nullptr;		// ´¥·¢¼ä¸ô
+		std::shared_ptr<void>		m_parm = nullptr;			// ×Ô¶¨Òå²ÎÊı
+		int64_t						m_triggerms = 0;			// ´¥·¢Ê±µÄºÁÃë
 
 		template <typename T>
 		void set_parm(T* aparm)
@@ -51,7 +51,7 @@ namespace ngl
 			return (lfirst - anow) * localtime::MILLISECOND;
 		}
 
-		//ET_MONTH,		// æ¯æœˆè§¦å‘
+		//ET_MONTH,		// Ã¿ÔÂ´¥·¢
 		static void month(timerparm& aparm, int amonthday = 1/*1-31*/, int ahour = 0, int amin = 0, int asec = 0, int acount = 0x7fffffff)
 		{
 			assert(amonthday >= 1 && amonthday <= 31);
@@ -85,7 +85,7 @@ namespace ngl
 			aparm.m_count = acount;
 		}
 
-		// æ¯æ—¥è§¦å‘  ahouræ—¶aminåˆ†asecç§’
+		// Ã¿ÈÕ´¥·¢  ahourÊ±amin·ÖasecÃë
 		static void day(timerparm& aparm, int ahour, int amin = 0, int asec = 0, int acount = 0x7fffffff)
 		{
 			assert(ahour >= 0 && ahour <= 23);
@@ -102,7 +102,7 @@ namespace ngl
 			aparm.m_count = acount;
 		}
 
-		// æ¯å°æ—¶è§¦å‘  aminåˆ†asecç§’
+		// Ã¿Ğ¡Ê±´¥·¢  amin·ÖasecÃë
 		static void hour(timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
 			assert(amin >= 0 && amin <= 59);
@@ -118,7 +118,7 @@ namespace ngl
 			aparm.m_count = acount;
 		}
 
-		// æ¯åˆ†é’Ÿè§¦å‘  asecç§’
+		// Ã¿·ÖÖÓ´¥·¢  asecÃë
 		static void min(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			assert(asec >= 0 && asec <= 59);
@@ -133,7 +133,7 @@ namespace ngl
 			aparm.m_count = acount;
 		}
 
-		// æ¯nç§’è§¦å‘
+		// Ã¿nÃë´¥·¢
 		static void make_interval(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
 			assert(asec >= 0);
@@ -149,10 +149,10 @@ namespace ngl
 
 	class actor_base;
 
-	class actor_timer
+	class ntimer
 	{
 	public:
-		// æŠ›å‡ºä¸€ä¸ªå®šæ—¶å™¨
+		// Å×³öÒ»¸ö¶¨Ê±Æ÷
 		static int addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm);
 	};
 }//namespace ngl

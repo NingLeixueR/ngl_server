@@ -1,9 +1,9 @@
 #pragma once
 
 #include "actor_base.h"
-#include "actor_type.h"
 #include "actor.h"
 #include "init_protobuf.h"
+#include "nactor_type.h"
 #include "nprotocol.h"
 #include "protocol.h"
 #include "regular.h"
@@ -22,7 +22,7 @@ namespace ngl
 				afun((TTTDerived*)aactor, *(T*)apram.m_data.get());
 			}
 		};
-		protocol::registry_actor<T, TYPE>(actor_type<TDerived>::type(), init_protobuf::protocol_name<T>().c_str());
+		protocol::registry_actor<T, TYPE>(nactor_type<TDerived>::type(), init_protobuf::protocol_name<T>().c_str());
 		return *this;
 	}
 
@@ -46,7 +46,7 @@ namespace ngl
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
 	{
-		rfun<TTTDerived, T>(afun, actor_type<TDerived>::type(), aisload);
+		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
 		return *this;
 	}
 
@@ -92,7 +92,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(actor_type<TDerived>::type(), init_protobuf::protocol<type_forward>(), init_protobuf::protocol_name<type_forward>().c_str());
+		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(nactor_type<TDerived>::type(), init_protobuf::protocol<type_forward>(), init_protobuf::protocol_name<type_forward>().c_str());
 		return *this;
 	}
 }//namespace ngl

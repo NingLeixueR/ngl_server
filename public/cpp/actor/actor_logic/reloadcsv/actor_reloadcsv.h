@@ -2,9 +2,9 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "actor_timer.h"
 #include "nprotocol.h"
 #include "ndbclient.h"
+#include "ntimer.h"
 #include "db_manage.h"
 #include "db_pool.h"
 #include "db_data.h"
