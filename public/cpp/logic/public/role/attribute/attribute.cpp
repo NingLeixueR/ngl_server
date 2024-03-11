@@ -133,8 +133,6 @@ namespace ngl
 		root().printf();
 	}
 
-
-
 	attribute_value init_attribute_value(EnumModule amodule, double avalues)
 	{
 		attribute_value lvalue;
@@ -201,4 +199,4 @@ namespace ngl
 
 		lattr2.printf();
 	}
-}
+}// namespace ngl

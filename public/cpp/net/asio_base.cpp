@@ -87,4 +87,4 @@ namespace ngl
 	service_ws::~service_ws()
 	{
 	}
-}
+}// namespace ngl

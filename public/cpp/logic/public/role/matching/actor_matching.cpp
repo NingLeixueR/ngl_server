@@ -1,11 +1,12 @@
 #include "actor_matching.h"
-#include <map>
-#include <list>
-#include <forward_list>
-#include "type.h"
 #include "localtime.h"
-#include "net.pb.h"
 #include "matching.h"
+#include "net.pb.h"
+#include "type.h"
+
+#include <forward_list>
+#include <list>
+#include <map>
 
 namespace ngl
 {
@@ -91,4 +92,4 @@ namespace ngl
 		m_matching.do_match();
 		return true;
 	}
-}
+}// namespace ngl

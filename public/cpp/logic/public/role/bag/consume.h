@@ -1,12 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <map>
 #include <string>
+#include <map>
 
 #include "actor_role.h"
-#include "nlog.h"
 #include "tools.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -18,5 +18,4 @@ namespace ngl
 		static bool check(actor_role* arole, int atid, int acount);
 		static bool use(actor_role* arole, int atid, int acount);
 	};
-
-}
+}// namespace ngl

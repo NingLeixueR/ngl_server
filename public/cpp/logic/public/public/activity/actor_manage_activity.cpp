@@ -1,6 +1,6 @@
 #include "actor_manage_activity.h"
-#include "net.pb.h"
 #include "ttab_calendar.h"
+#include "net.pb.h"
 
 namespace ngl
 {
@@ -25,7 +25,6 @@ namespace ngl
 			}
 		);
 	}
-
 
 	void actor_manage_activity::nregister()
 	{
@@ -175,8 +174,6 @@ namespace ngl
 			return;
 		}
 
-		
-
 		if (lnow > litem.m_end() && litem.m_start() == true)
 		{// 活动已开启并且已过关闭时间  
 			// 关闭活动逻辑
@@ -232,5 +229,4 @@ namespace ngl
 			return true;
 		return true;
 	}
-
-}
+}// namespace ngl

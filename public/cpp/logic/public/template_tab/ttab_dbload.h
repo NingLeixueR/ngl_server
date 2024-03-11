@@ -3,7 +3,6 @@
 #include "manage_csv.h"
 #include "regular.h"
 
-
 namespace ngl
 {
 	struct ttab_dbload : public manage_csv<tab_dbload>
@@ -35,4 +34,4 @@ namespace ngl
 			return *tab;
 		}
 	};
-}
+}// namespace ngl

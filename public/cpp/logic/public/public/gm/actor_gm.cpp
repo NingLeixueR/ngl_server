@@ -1,6 +1,5 @@
 #include "actor_gm.h"
 
-
 namespace ngl
 {
 	actor_gm::actor_gm() :
@@ -31,5 +30,4 @@ namespace ngl
 			, (Tfun<actor_gm, mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>) & actor_gm::handle
 		);
 	}
-
-}
+}// namespace ngl

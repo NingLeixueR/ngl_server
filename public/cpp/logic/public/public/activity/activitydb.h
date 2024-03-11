@@ -15,6 +15,7 @@ namespace ngl
 		pbdb::ENUM_DB_ACTIVITY,
 		pbdb::db_activity,
 		actor_manage_activity>;
+
 	class activitydb : public activity_db_modular
 	{
 	public:
@@ -27,7 +28,6 @@ namespace ngl
 		{
 			m_id = -1;
 		}
-
 
 		const pbdb::db_activity* get_constactivity(int64_t aactivity)
 		{
@@ -71,10 +71,8 @@ namespace ngl
 						<< std::endl;
 					std::cout << "#####################" << std::endl;
 				}
-				
 			}
 		}
-
 
 		void init_data(int64_t aactivity, int32_t abeg, int32_t aend)
 		{
@@ -87,4 +85,4 @@ namespace ngl
 			lpitem->set_m_finish(false);
 		}
 	};
-}
+}// namespace ngl

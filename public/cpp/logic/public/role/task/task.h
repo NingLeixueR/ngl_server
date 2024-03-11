@@ -43,6 +43,4 @@ namespace ngl
 		// avalue ¸Ä±äÖµ
 		void task_condition(ETask atype, const std::vector<int32_t>& avalue);
 	};
-
-
-}
+}// namespace ngl

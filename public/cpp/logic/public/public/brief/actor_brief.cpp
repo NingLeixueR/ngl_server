@@ -27,7 +27,5 @@ namespace ngl
 			false
 			, dregister_fun_handle(actor_brief, np_actor_roleinfo)
 			);
-
 	}
-
 }

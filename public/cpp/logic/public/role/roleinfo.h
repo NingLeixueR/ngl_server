@@ -5,7 +5,6 @@
 #include "db.pb.h"
 #include "net.pb.h"
 
-
 namespace ngl
 {
 	//actor_dbclient<ENUM_DB_ROLE, DB_ROLE> m_role;
@@ -16,6 +15,7 @@ namespace ngl
 		, pbdb::db_role
 		, actor_role
 	>;
+
 	class roleinfo : public roleinfo_db_modular
 	{
 	public:

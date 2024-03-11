@@ -1,17 +1,18 @@
 #pragma once 
 
-#include <set>
-#include <map>
+#include <functional>
 #include <vector>
 #include <array>
-#include <functional>
-#include "net.h"
-#include "nlog.h"
-#include "manage_csv.h"
-#include "ttab_attribute.h"
+#include <set>
+#include <map>
+
 #include "attribute_value.h"
-#include "event.h"
+#include "ttab_attribute.h"
+#include "manage_csv.h"
 #include "net.pb.h"
+#include "event.h"
+#include "nlog.h"
+#include "net.h"
 
 namespace ngl
 {
@@ -31,10 +32,8 @@ namespace ngl
 
 		void update_module(EnumModule aenum);
 	public:
-		
 		attribute();
 		
-
 		bool issync();
 
 		void set_issync(bool aissync);
@@ -138,4 +137,4 @@ namespace ngl
 	};
 
 	void test_attribute();
-}
+}// namespace ngl

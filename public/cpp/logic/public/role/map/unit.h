@@ -60,5 +60,4 @@ namespace ngl
 			unit(pbnet::eunit_region, aid)
 		{}
 	};
-	
-}
+}// namespace ngl

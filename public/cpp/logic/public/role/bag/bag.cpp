@@ -2,7 +2,6 @@
 #include "actor_role.h"
 #include "autoitem.h"
 
-
 namespace ngl
 {
 	bag::bag()
@@ -208,4 +207,4 @@ namespace ngl
 		}
 		actor()->send2client(pro);
 	}
-}
+}// namespace ngl

@@ -58,10 +58,5 @@ namespace ngl
 			nguid::make(), pro);
 			return true;
 		}
-
-
-		
-
-	private:
 	};
 }

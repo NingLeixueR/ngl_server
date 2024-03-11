@@ -1,9 +1,7 @@
 #include "actor_mail.h"
 
-
 namespace ngl
 {
-
 	actor_mail::actor_mail() :
 		actor(
 			actorparm
@@ -20,7 +18,6 @@ namespace ngl
 	{
 	}
 
-
 	void actor_mail::nregister()
 	{
 		// Ð­Òé×¢²á
@@ -29,5 +26,4 @@ namespace ngl
 			, dregister_fun_handle(actor_mail, np_actor_addmail)
 			);
 	}
-
-}
+}// namespace ngl

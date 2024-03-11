@@ -26,8 +26,6 @@ namespace ngl
 					drawmail(aroleid, aid);
 				});
 		}
-
-		
 		return true;
 	}
 }

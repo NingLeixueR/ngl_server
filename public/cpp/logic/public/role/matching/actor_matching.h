@@ -12,7 +12,6 @@ namespace ngl
 		actor_matching();
 
 		matching m_matching;
-
 	public:
 		using type_roleitems = nroleitems<actor_matching, pbdb::db_brief>;
 		friend class actor_instance<actor_matching>;
@@ -40,5 +39,4 @@ namespace ngl
 		
 		bool timer_handle(message<timerparm>& adata);
 	};
-
-}
+}// namespace ngl

@@ -1,6 +1,5 @@
 #include "map.h"
 
-
 namespace ngl
 {
 	aoimap::aoimap() :
@@ -261,4 +260,4 @@ namespace ngl
 			move(itor->second, lpos.m_x(), lpos.m_y());
 		}
 	}
-}
+}// namespace ngl

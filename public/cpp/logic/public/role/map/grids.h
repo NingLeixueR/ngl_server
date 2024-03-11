@@ -1,16 +1,16 @@
 #pragma once
 
-#include <set>
-#include <map>
 #include <vector>
 #include <list>
+#include <map>
+#include <set>
 
-#include "aoi.h"
-#include "type.h"
-#include "unit.h"
-#include "splite.h"
 #include "csvtable.h"
 #include "net.pb.h"
+#include "splite.h"
+#include "type.h"
+#include "unit.h"
+#include "aoi.h"
 
 namespace ngl
 {
@@ -286,4 +286,4 @@ namespace ngl
 			}
 		}
 	};
-}
+}// namespace ngl

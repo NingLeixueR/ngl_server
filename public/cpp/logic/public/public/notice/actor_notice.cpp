@@ -1,9 +1,7 @@
 #include "actor_notice.h"
 
-
 namespace ngl
 {
-
 	actor_notice::actor_notice() :
 		actor(
 			actorparm
@@ -30,5 +28,4 @@ namespace ngl
 			, dregister_fun_handle(actor_notice, mforward<GM::PROBUFF_GM_DEL_NOTICE>)
 		);
 	}
-
 }

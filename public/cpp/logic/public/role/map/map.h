@@ -52,4 +52,4 @@ namespace ngl
 
 		void update(int64_t ams);
 	};
-}
+}// namespace ngl

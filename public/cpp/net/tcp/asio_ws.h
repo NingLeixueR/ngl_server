@@ -58,6 +58,5 @@ namespace ngl
 		struct impl_asio_ws;
 		ngl::impl<impl_asio_ws> m_impl_asio_ws;
 	};
-
-}
+}//namespace ngl
 

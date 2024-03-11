@@ -11,6 +11,7 @@ namespace ngl
 		pbdb::ENUM_DB_NOTICE,
 		pbdb::db_notice,
 		actor_notice>;
+
 	class notice : public notice_db_modular
 	{
 		int64_t m_maxid;
@@ -29,7 +30,6 @@ namespace ngl
 		{
 			return &data();
 		}
-
 
 		virtual void initdata()
 		{

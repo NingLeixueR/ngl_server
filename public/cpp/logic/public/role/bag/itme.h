@@ -1,8 +1,7 @@
 #pragma once
 
-#include "db.pb.h"
 #include "manage_csv.h"
-
+#include "db.pb.h"
 
 namespace ngl
 {
@@ -30,4 +29,4 @@ namespace ngl
 			return itor->second->mode(arole, atid, acount, avec);
 		}
 	};
-}
+}// namespace ngl

@@ -15,6 +15,7 @@ namespace ngl
 		pbdb::db_bag,
 		actor_role
 	>;
+
 	class bag :
 		public bag_db_modular
 	{
@@ -46,4 +47,4 @@ namespace ngl
 
 		void sync_client();
 	};
-}
+}// namespace ngl

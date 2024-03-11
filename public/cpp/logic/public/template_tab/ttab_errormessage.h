@@ -2,8 +2,6 @@
 
 #include "manage_csv.h"
 
-
-
 namespace ngl
 {
 	struct ttab_errormessage : public manage_csv<tab_errormessage>
@@ -12,8 +10,6 @@ namespace ngl
 		{}
 
 		virtual void reload()
-		{
-
-		}
+		{}
 	};
-}
+}// namespace ngl

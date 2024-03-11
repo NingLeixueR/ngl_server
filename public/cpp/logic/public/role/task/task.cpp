@@ -1,7 +1,6 @@
 #include "task.h"
 #include "actor_role.h"
 
-
 namespace ngl
 {
 	class taskcheck
@@ -75,7 +74,6 @@ namespace ngl
 		{}
 	};
 
-
 	taskcheck_rolelv g_taskcheck_rolelv;
 
 	void task::task_condition(ETask atype, const std::vector<int32_t>& avalue)
@@ -143,7 +141,6 @@ namespace ngl
 		return true;
 	}
 
-
 	void task::initdata()
 	{
 		pbdb::db_task& ltask = db()->get(false);
@@ -199,4 +196,5 @@ namespace ngl
 				}
 			});
 	}
-}
+
+}// namespace ngl

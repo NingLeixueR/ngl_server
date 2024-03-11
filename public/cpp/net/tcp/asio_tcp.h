@@ -59,5 +59,5 @@ namespace ngl
 		struct impl_asio_tcp;
 		ngl::impl<impl_asio_tcp> m_impl_asio_tcp;
 	};	
-}
+}// namespace ngl
 

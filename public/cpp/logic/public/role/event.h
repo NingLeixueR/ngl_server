@@ -2,7 +2,6 @@
 
 #include "type.h"
 
-
 namespace ngl
 {
 	class aoimap;
@@ -11,6 +10,5 @@ namespace ngl
 	public:
 		// ËÀÍö
 		static void on_death(aoimap* amap, int32_t aunitid);
-
 	};
-}
+}// namespace ngl

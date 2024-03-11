@@ -108,7 +108,6 @@ namespace ngl
 		}
 	};
 
-
 	net_protocol::net_protocol()
 	{
 		m_impl_net_protocol.make_unique();
@@ -196,4 +195,4 @@ namespace ngl
 	{
 		return nguid::moreactor();
 	}
-}
+}// namespace ngl

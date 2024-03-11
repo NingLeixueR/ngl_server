@@ -1,15 +1,15 @@
 #pragma once
 
-#include <map>
-#include <list>
 #include <forward_list>
 #include <cstdint>
-#include "type.h"
+#include <list>
+#include <map>
+
 #include "localtime.h"
-#include "net.pb.h"
 #include "csvtable.h"
+#include "net.pb.h"
 #include "actor.h"
-#include "actor.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -245,7 +245,6 @@ namespace ngl
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_SYNC>();
 			pro->set_m_roomid(lproom->id());
 			 
-
 			return true;
 		}
 
@@ -271,11 +270,6 @@ namespace ngl
 
 		void remove_success(pbnet::eplays atype, int32_t aroomid, i64_actorid aplayactorid)
 		{
-			//std::array<std::list<prt_room>, pbnet::eplays_count> m_room;
-			//std::array<int32_t, pbnet::eplays_count> m_currentroom;
-			//std::map<int32_t, room*> m_roombyid;							// key roomid
-			//std::map<i64_actorid, int32_t> m_roombyroleid;					// key roleid value roomid
-
 			auto itor = m_roombyid.find(aroomid);
 			if (itor == m_roombyid.end())
 			{
@@ -320,4 +314,4 @@ namespace ngl
 			check_playscount();
 		}
 	};
-}
+}// namespace ngl

@@ -1,5 +1,5 @@
-#include "itme.h"
 #include "actor_role.h"
+#include "itme.h"
 
 namespace ngl
 {
@@ -94,7 +94,4 @@ namespace ngl
 	item_create_money		g_item_create_moneysilver(EMoneySilver);
 	item_create_equip		g_item_create_equip;
 	item_create_card		g_item_create_card;
-
-
-
-}
+}// namespace ngl

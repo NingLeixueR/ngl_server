@@ -1,5 +1,5 @@
-#include "synthesis.h"
 #include "actor_role.h"
+#include "synthesis.h"
 #include "consume.h"
 #include "drop.h"
 
@@ -16,4 +16,4 @@ namespace ngl
 		drop::use(arole, tab->m_generate, 1);
 		return true;
 	}
-}
+}// namespace ngl

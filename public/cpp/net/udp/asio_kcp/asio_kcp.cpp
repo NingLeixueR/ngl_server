@@ -1,7 +1,6 @@
 #include "asio_kcp.h"
 #include "protocol.h"
 
-
 namespace ngl
 {
 	time_wheel m_kcptimer(time_wheel_config
@@ -857,4 +856,4 @@ namespace ngl
 	{
 		return m_impl_asio_kcp().get();
 	}
-}
+}// namespace ngl

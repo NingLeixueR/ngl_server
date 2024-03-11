@@ -1,5 +1,5 @@
-#include "autoitem.h"
 #include "actor_role.h"
+#include "autoitem.h"
 
 namespace ngl
 {
@@ -22,4 +22,4 @@ namespace ngl
 	{
 		m_addnostackitems.push_back(aid);
 	}
-}
+}// namespace ngl

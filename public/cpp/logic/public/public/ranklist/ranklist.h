@@ -131,4 +131,4 @@ namespace ngl
 			m_ranklv.insert(&litem);
 		}
 	};
-}
+}// namespace ngl

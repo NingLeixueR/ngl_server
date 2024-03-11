@@ -88,4 +88,4 @@ namespace ngl
 		apos.set_m_x(x() + (speed() * cos(angle()) * lvalue));
 		apos.set_m_y(y() + (speed() * sin(angle()) * lvalue));
 	}
-}
+}// namespace ngl

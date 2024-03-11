@@ -79,9 +79,7 @@ namespace ngl
 				ls.pop_front();
 			}
 		}
-
 		m_update_chatitem.clear();
 		return true;
 	}
-
-}
+}// namespace ngl

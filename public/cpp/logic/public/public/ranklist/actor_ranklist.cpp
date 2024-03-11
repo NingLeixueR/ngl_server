@@ -1,9 +1,7 @@
 #include "actor_ranklist.h"
 
-
 namespace ngl
 {
-
 	actor_ranklist::actor_ranklist() :
 		actor(
 			actorparm
@@ -25,5 +23,4 @@ namespace ngl
 			}
 		);
 	}
-
-}
+}// namespace ngl

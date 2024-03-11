@@ -108,7 +108,5 @@ namespace ngl
 			sendphpclient(*adata.m_data);
 			return true;
 		}
-
-		private:
 	};
-}
+}// namespace ngl

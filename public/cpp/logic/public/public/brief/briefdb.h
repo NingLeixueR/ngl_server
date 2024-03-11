@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ndb_modular.h"
-#include "localtime.h"
 #include "manage_csv.h"
+#include "localtime.h"
+
 #include <string>
 #include <map>
 
@@ -28,7 +29,6 @@ namespace ngl
 		{
 			m_id = -1;
 		}
-
 
 		const pbdb::db_brief* get_constbrief(i64_actorid aroleid)
 		{
@@ -66,4 +66,4 @@ namespace ngl
 			}
 		}
 	};
-}
+}// namespace ngl

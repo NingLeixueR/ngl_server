@@ -34,6 +34,7 @@ namespace ngl
 		{
 			m_ranklist.set(this);
 		}
+
 		static void nregister()
 		{
 		}
@@ -50,7 +51,5 @@ namespace ngl
 			send_actor(nguid::make_self(ACTOR_GM), pro);
 			return true;
 		}*/
-
-	private:
 	};
-}
+}// namespace ngl

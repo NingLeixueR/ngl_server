@@ -1,7 +1,8 @@
 #pragma once
 
-#include "type.h"
 #include "define.h"
+#include "type.h"
+
 #include <string>
 
 namespace ngl
@@ -16,4 +17,4 @@ namespace ngl
 		static void			push(i32_protocolnum aprotocolnum, const std::string& aprotocolname, EPROTOCOL_TYPE atype);
 		static const char*	name(i32_protocolnum aprotocolnum, EPROTOCOL_TYPE atype);
 	};
-}
+}// namespace ngl

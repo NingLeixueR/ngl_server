@@ -1,8 +1,7 @@
+#include "protocoltools.h"
 #include "protocol.h"
-
 #include "xmlnode.h"
 #include "xmlinfo.h"
-#include "protocoltools.h"
 
 namespace ngl
 {
@@ -111,4 +110,4 @@ namespace ngl
 	{
 		return nconfig::m_nodeid;
 	}
-}
+}// namespace ngl

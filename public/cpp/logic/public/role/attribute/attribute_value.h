@@ -1,14 +1,15 @@
 #pragma once
 
-#include <set>
-#include <map>
+#include <functional>
 #include <vector>
 #include <array>
-#include <functional>
-#include "net.h"
-#include "nlog.h"
-#include "manage_csv.h"
+#include <set>
+#include <map>
+
 #include "ttab_attribute.h"
+#include "manage_csv.h"
+#include "nlog.h"
+#include "net.h"
 
 namespace ngl
 {
@@ -73,5 +74,4 @@ namespace ngl
 			}
 		}
 	};
-
-}
+}// namespace ngl

@@ -2,12 +2,10 @@
 
 #include "actor_plays.h"
 
-
 namespace ngl
 {
 	class actor_ugpalace : public actor_plays
 	{
-
 	public:
 		actor_ugpalace(ENUM_ACTOR atype, int32_t adataid, void* data);
 

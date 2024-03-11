@@ -1,8 +1,8 @@
 #pragma once
 
+#include "net_protocol.h"
 #include "asio_kcp.h"
 #include "type.h"
-#include "net_protocol.h"
 #include "md5.h"
 
 namespace ngl
@@ -132,4 +132,4 @@ namespace ngl
 
 		void reset_add(const std::string& aip, i16_port aport);
 	};
-}
+}// namespace ngl

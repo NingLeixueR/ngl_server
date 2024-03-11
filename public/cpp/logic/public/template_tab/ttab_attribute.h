@@ -2,8 +2,6 @@
 
 #include "manage_csv.h"
 
-
-
 namespace ngl
 {
 	using map_attribute = std::map<EnumAttribute, int64_t>;
@@ -89,4 +87,4 @@ namespace ngl
 				al[key] -= value;
 		}
 	};
-}
+}// namespace ngl

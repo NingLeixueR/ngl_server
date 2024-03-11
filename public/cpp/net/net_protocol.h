@@ -1,18 +1,18 @@
 #pragma once
 
-#include <boost/array.hpp>
 #include <vector>
 #include <memory>
+#include <boost/array.hpp>
 
-#include "asio_ws.h"
-#include "asio_tcp.h"
-#include "asio_kcp.h"
-#include "actor_base.h"
 #include "handle_pram.h"
 #include "structbytes.h"
+#include "actor_base.h"
+#include "asio_tcp.h"
+#include "asio_kcp.h"
+#include "asio_ws.h"
+#include "segpack.h"
 #include "impl.h"
 #include "pack.h"
-#include "segpack.h"
 
 namespace ngl
 {
@@ -268,4 +268,4 @@ namespace ngl
 				sendtoserver(agateway, pro, moreactor(), moreactor());
 		}
 	};
-}
+}// namespace ngl

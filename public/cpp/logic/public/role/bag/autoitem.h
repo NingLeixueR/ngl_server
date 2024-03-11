@@ -1,8 +1,8 @@
 #pragma once
 
-#include <map>
-#include <list>
 #include <vector>
+#include <list>
+#include <map>
 
 #include "type.h"
 
@@ -22,5 +22,4 @@ namespace ngl
 		void del(int32_t aid, int32_t acount);
 		void del(int32_t aid);
 	};
-
-}
+}// namespace ngl

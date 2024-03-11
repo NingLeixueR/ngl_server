@@ -1,5 +1,5 @@
-#include "net_ws.h"
 #include "protocol.h"
+#include "net_ws.h"
 #include "nguid.h"
 
 namespace ngl
@@ -66,4 +66,4 @@ namespace ngl
 	{
 		return m_server->exist_session(asession);
 	}
-}//namespace ngl
+}// namespace ngl

@@ -1,5 +1,5 @@
-#include "asio_tcp.h"
 #include "asio_timer.h"
+#include "asio_tcp.h"
 #include "nlog.h"
 #include "pack.h"
 
@@ -478,5 +478,5 @@ namespace ngl
 	{
 		m_impl_asio_tcp()->set_close(asession, afun);
 	}
-}
+}// namespace ngl
 

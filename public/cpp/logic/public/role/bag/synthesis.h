@@ -2,7 +2,6 @@
 
 #include "manage_csv.h"
 
-
 namespace ngl
 {
 	class actor_role;
@@ -12,4 +11,4 @@ namespace ngl
 	public:
 		static bool use(actor_role* arole, int32_t aid);
 	};
-}
+}// namespace ngl

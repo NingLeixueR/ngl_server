@@ -1,13 +1,13 @@
 #pragma once
 
 #include <vector>
-#include <map>
 #include <string>
+#include <map>
 
 #include "manage_csv.h"
-#include "nlog.h"
-#include "tools.h"
 #include "splite.h"
+#include "tools.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -21,5 +21,5 @@ namespace ngl
 		static bool droplist(int aid, int acount, std::map<int, int>& amap);
 		static bool use(actor_role* arole, int aid, int acount);
 	};
-}
+}// namespace ngl
 

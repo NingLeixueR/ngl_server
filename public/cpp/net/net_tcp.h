@@ -30,4 +30,4 @@ namespace ngl
 
 		virtual bool exist_session(i32_sessionid asession);
 	};
-}
+}// namespace ngl

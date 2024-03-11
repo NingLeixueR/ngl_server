@@ -15,6 +15,7 @@ namespace ngl
 		pbdb::ENUM_DB_MAIL,
 		pbdb::db_mail,
 		actor_mail>;
+
 	class mails : public mail_db_modular
 	{
 		std::map<i64_actorid, int32_t> m_maxid;
@@ -208,4 +209,4 @@ namespace ngl
 
 	////	void getmailbyrole(int64_t aroleid, std::vector<DB_MAIL>& avec);
 	};
-}
+}// namespace ngl

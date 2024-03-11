@@ -1,6 +1,6 @@
 #include "actor_manage_plays.h"
-#include "matching.h"
 #include "actor_create.h"
+#include "matching.h"
 
 namespace ngl
 {

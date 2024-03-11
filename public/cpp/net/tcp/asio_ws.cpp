@@ -1,5 +1,5 @@
-#include "asio_ws.h"
 #include "asio_timer.h"
+#include "asio_ws.h"
 #include "nlog.h"
 #include "pack.h"
 
@@ -256,7 +256,6 @@ namespace ngl
 			start(ap);
 			afun(ap->m_sessionid);
 		}
-
 
 		template <typename T>
 		inline bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack)
@@ -533,4 +532,4 @@ namespace ngl
 	{
 		return m_impl_asio_ws()->set_close(asession, afun);
 	}
-}
+}// namespace ngl

@@ -1,6 +1,5 @@
-#include "roleinfo.h"
 #include "actor_role.h"
-
+#include "roleinfo.h"
 
 namespace ngl
 {
@@ -96,4 +95,4 @@ namespace ngl
 		lrb->set_m_moneysilver(lrb->m_moneysilver() + avalues);
 		sync_actor_roleinfo();
 	}
-}
+}// namespace ngl

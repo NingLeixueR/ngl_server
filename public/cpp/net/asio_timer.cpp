@@ -11,4 +11,4 @@ namespace ngl
 			.m_time_wheel_count = 4
 		}
 	);
-}
+}// namespace ngl

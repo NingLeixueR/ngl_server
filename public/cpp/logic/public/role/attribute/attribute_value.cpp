@@ -1,6 +1,5 @@
 #include "attribute_value.h"
 
-
 namespace ngl
 {
 	attribute_value::attribute_value() :
@@ -108,4 +107,4 @@ namespace ngl
 	{
 		return m_crattr[amodule][atype];
 	}
-}
+}// namespace ngl

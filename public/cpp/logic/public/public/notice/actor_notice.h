@@ -32,6 +32,7 @@ namespace ngl
 		{
 			m_notice.set(this);
 		}
+
 		static void nregister();
 
 		virtual ~actor_notice() {}
@@ -91,7 +92,5 @@ namespace ngl
 			send_client(adata.m_data->identifier(), pro);
 			return true;			
 		}
-
-	private:
 	};
 }

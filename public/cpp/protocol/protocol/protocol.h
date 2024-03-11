@@ -1,4 +1,5 @@
 #pragma once
+
 #include "init_protobuf.h"
 #include "actor_manage.h"
 #include "threadtools.h"
@@ -179,4 +180,4 @@ namespace ngl
 			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);			
 		}
 	};
-}
+}// namespace ngl

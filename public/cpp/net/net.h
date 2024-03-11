@@ -1,9 +1,9 @@
 #pragma once
 
+#include "ttab_servers.h"
+#include "xmlnode.h"
 #include "net_tcp.h"
 #include "net_ws.h"
-#include "xmlnode.h"
-#include "ttab_servers.h"
 
 namespace ngl
 {

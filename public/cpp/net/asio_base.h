@@ -1,29 +1,29 @@
 #pragma once
 
-#include <boost/function.hpp>
-#include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/array.hpp>
-#include <boost/pool/pool.hpp> 
-#include <boost/pool/object_pool.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/placeholders.hpp>
 #include <boost/system/error_code.hpp>
+#include <boost/pool/object_pool.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/pool/pool.hpp> 
 #include <boost/bind/bind.hpp>
 #include <boost/date_time.hpp>
+#include <boost/function.hpp>
+#include <boost/array.hpp>
 #include <boost/beast.hpp>
+#include <boost/asio.hpp>
 
-#include <string>
-#include <set>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
 #include <atomic>
+#include <string>
+#include <set>
 
-#include "type.h"
 #include "threadtools.h"
 #include "node_pack.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -63,7 +63,6 @@ namespace ngl
 		bool					m_issend;
 		std::list<node_pack>	m_list; // 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
 
-		
 		static i32_sessionid global_sessionid();
 
 		service_io(serviceio_info& amsi, int asessionid);
@@ -89,4 +88,4 @@ namespace ngl
 		service_ws(serviceio_info& amsi, int asessionid);
 		~service_ws();
 	};
-}
+}// namespace ngl

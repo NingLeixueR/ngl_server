@@ -1,8 +1,8 @@
-#include "drop.h"
-#include "bag.h"
+#include "ttab_calendar.h"
 #include "actor_role.h"
 #include "manage_csv.h"
-#include "ttab_calendar.h"
+#include "drop.h"
+#include "bag.h"
 
 namespace ngl
 {
@@ -99,4 +99,4 @@ namespace ngl
 		std::map<int, int> lmap;
 		return droplist(aid, acount, lmap) && arole->m_bag.add_item(lmap)? true : false;
 	}
-}
+}// namespace ngl

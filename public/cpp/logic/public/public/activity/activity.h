@@ -1,4 +1,5 @@
 #pragma once
+
 #include "activitydb.h"
 #include "drop.h"
 
@@ -50,7 +51,6 @@ namespace ngl
 		// »î¶¯¹Ø±Õ
 		virtual bool close() = 0;
 	};
-
 
 	class activity_drawcompliance : public activity
 	{
@@ -109,4 +109,4 @@ namespace ngl
 		}
 
 	};
-}
+}// namespace ngl

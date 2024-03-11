@@ -1,8 +1,8 @@
 #pragma once
 
+#include "threadtools.h"
 #include "pack.h"
 #include "nlog.h"
-#include "threadtools.h"
 #include "impl.h"
 
 namespace ngl
@@ -58,4 +58,4 @@ namespace ngl
 				return (pack*)m_packvoid.get();
 		}
 	};
-}
+}// namespace ngl

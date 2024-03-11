@@ -1,5 +1,4 @@
 #include "protocoltools.h"
-
 #include "enum2name.h"
 #include "nlog.h"
 
@@ -41,4 +40,4 @@ namespace ngl
 			return "[not find protocol name]";
 		return lpair.first;
 	}
-}
+}// namespace ngl

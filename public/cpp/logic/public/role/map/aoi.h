@@ -1,14 +1,14 @@
 #pragma once
 
+#include <functional>
 #include <iostream>
 #include <cstdint>
-#include <set>
-#include <vector>
-#include <list>
-#include <string>
-#include <map>
 #include <numeric>
-#include <functional>
+#include <vector>
+#include <string>
+#include <list>
+#include <set>
+#include <map>
 
 #include "net.pb.h"
 
@@ -162,4 +162,4 @@ namespace ngl
 			return distance(apos1.m_x(), apos1.m_y(), apos2.m_x(), apos2.m_y());
 		}
 	};
-}
+}// namespace ngl

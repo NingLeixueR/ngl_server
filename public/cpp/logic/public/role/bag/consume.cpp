@@ -1,6 +1,6 @@
+#include "manage_csv.h"
 #include "consume.h"
 #include "bag.h"
-#include "manage_csv.h"
 
 namespace ngl
 {
@@ -51,4 +51,4 @@ namespace ngl
 		}
 		return true;
 	}
-}
+}// namespace ngl

@@ -1,6 +1,6 @@
-#include "net.h"
 #include "protocol.h"
 #include "nguid.h"
+#include "net.h"
 
 namespace ngl
 {

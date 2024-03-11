@@ -1,9 +1,8 @@
 #pragma once
 
 #include "manage_csv.h"
-#include "type.h"
 #include "xmlnode.h"
-
+#include "type.h"
 
 namespace ngl
 {
@@ -128,7 +127,6 @@ namespace ngl
 			}
 		}
 
-
 		static tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)>& afun)
 		{
 			std::vector<tab_servers*>* litem = tools::findmap(m_areaofserver, tab()->m_area);
@@ -144,8 +142,6 @@ namespace ngl
 			return nullptr;
 		}
 	};
-
-
-}
+}//namespace ngl
 
 #define tab_self_area  ttab_servers::tab()->m_area

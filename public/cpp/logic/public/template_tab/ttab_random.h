@@ -3,7 +3,6 @@
 #include "manage_csv.h"
 #include "nlog.h"
 
-
 namespace ngl
 {
 	struct ttab_random : public manage_csv<tab_random>
@@ -26,7 +25,6 @@ namespace ngl
 			return true;
 		}
 
-
 		virtual void reload()
 		{
 			// ## 检查所有子掉落是否循环引用
@@ -41,4 +39,4 @@ namespace ngl
 			}
 		}
 	};
-}
+}//namespace ngl

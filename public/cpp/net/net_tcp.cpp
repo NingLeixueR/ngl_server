@@ -1,5 +1,5 @@
-#include "net_tcp.h"
 #include "protocol.h"
+#include "net_tcp.h"
 #include "nguid.h"
 
 namespace ngl

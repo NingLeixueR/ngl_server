@@ -1,6 +1,5 @@
-#include "matching.h"
 #include "actor_matching.h"
-
+#include "matching.h"
 
 namespace ngl
 {
@@ -251,4 +250,4 @@ namespace ngl
 		m_currentroom({ 0 })
 	{
 	}
-}
+}// namespace ngl
