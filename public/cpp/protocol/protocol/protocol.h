@@ -24,6 +24,7 @@ namespace ngl
 		using typefun_run = std::function<bool(std::shared_ptr<pack>&, std::shared_ptr<void>&)>;
 	public:
 		static void push(std::shared_ptr<pack>& apack);
+
 		static void register_protocol(
 			EPROTOCOL_TYPE atype					// 协议类型
 			, i32_protocolnum aprotocolnumber		// 协议号
@@ -48,7 +49,7 @@ namespace ngl
 					{
 						return ltemp;
 					}
-				}Catch;
+				}Catch
 				return nullptr;
 			};
 			std::string lname = aname;
@@ -101,7 +102,7 @@ namespace ngl
 					{
 						return ltemp;
 					}
-				}Catch;
+				}Catch
 				return nullptr;
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
@@ -127,7 +128,6 @@ namespace ngl
 			{
 				Try
 				{
-
 					using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 					typeforward* lp = new typeforward();
 					std::shared_ptr<void> ltemp(lp);
@@ -144,7 +144,6 @@ namespace ngl
 							lp->m_area.push_back(nguid::area(lactorid));
 							return ltemp;
 						}
-						
 					}
 					else
 					{
@@ -153,8 +152,7 @@ namespace ngl
 							return ltemp;
 						}
 					}
-					
-				}Catch;
+				}Catch
 				return nullptr;
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
