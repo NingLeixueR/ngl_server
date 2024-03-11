@@ -72,7 +72,7 @@ namespace ngl
 			{
 				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_ADDRESS_SERVER, tabactor->m_area, nguid::none_actordataid());
 				{
-					np_actornode lnode;
+					nactornode lnode;
 					lnode.m_name = "actorserver";
 					lnode.m_serverid = tabactor->m_id;
 					lnode.m_actortype.push_back(ACTOR_ADDRESS_SERVER);
@@ -135,7 +135,7 @@ namespace ngl
 			tab_servers* tab = ttab_servers::tab();
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
-				const np_actornode& node = lparm->m_vec[i];
+				const nactornode& node = lparm->m_vec[i];
 				if (naddress::getInstance().set_node(node))
 				{
 					// 比较id  较大的主动连接较小的

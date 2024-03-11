@@ -8,12 +8,12 @@ namespace ngl
 		m_session(-1)
 	{}
 
-	actor_node_session::actor_node_session(i32_sessionid asession, const np_actornode& anode) :
+	actor_node_session::actor_node_session(i32_sessionid asession, const nactornode& anode) :
 		m_session(asession),
 		m_node(anode)
 	{}
 
-	actor_node_session::actor_node_session(const np_actornode& anode) :
+	actor_node_session::actor_node_session(const nactornode& anode) :
 		m_session(-1),
 		m_node(anode)
 	{}

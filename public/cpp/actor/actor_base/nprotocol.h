@@ -20,21 +20,21 @@ namespace ngl
 		def_portocol(np_robot_pram, m_parm)
 	};
 
-	struct np_actornode
+	struct nactornode
 	{
 		std::string		m_name;// 服务器名称
 		i32_serverid	m_serverid;// 服务器id
 		std::vector<i16_actortype>	m_actortype;// ENUM_ACTOR_TYPE
 		std::string		m_ip;// ip
 		i16_port		m_port;// 端口
-		def_portocol_function(np_actornode, m_name, m_serverid, m_actortype, m_ip, m_port)
+		def_portocol_function(nactornode, m_name, m_serverid, m_actortype, m_ip, m_port)
 	};
 
 	// ---- [actor client -> actor server] register
 	// 注册结点
 	struct np_actornode_register
 	{
-		np_actornode m_node;
+		nactornode m_node;
 		std::vector<i64_actorid> m_add;
 		def_portocol(np_actornode_register, m_node, m_add)
 	};
@@ -43,7 +43,7 @@ namespace ngl
 	// 注册结点
 	struct np_actornode_register_response
 	{
-		std::vector<np_actornode> m_vec;
+		std::vector<nactornode> m_vec;
 		def_portocol(np_actornode_register_response, m_vec)
 	};
 

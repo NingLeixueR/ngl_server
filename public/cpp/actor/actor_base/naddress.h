@@ -48,7 +48,7 @@ namespace ngl
 		// debug 打印
 		void print_address();
 		// 设置结点
-		bool set_node(const np_actornode& anode);
+		bool set_node(const nactornode& anode);
 		// 添加actor
 		void actor_add(i32_serverid aserverid, i64_actorid adataid);
 		// 添加一组actor

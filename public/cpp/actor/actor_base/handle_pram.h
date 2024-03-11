@@ -16,11 +16,11 @@ namespace ngl
 	struct actor_node_session
 	{
 		i32_sessionid m_session;
-		np_actornode m_node;
+		nactornode m_node;
 
 		actor_node_session();
-		actor_node_session(i32_sessionid asession, const np_actornode& anode);
-		actor_node_session(const np_actornode& anode);
+		actor_node_session(i32_sessionid asession, const nactornode& anode);
+		actor_node_session(const nactornode& anode);
 	};
 
 	struct handle_pram;
