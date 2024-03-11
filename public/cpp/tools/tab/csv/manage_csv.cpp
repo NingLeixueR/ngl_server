@@ -1,12 +1,12 @@
-#include "manage_csv.h"
-#include "csvtable.h"
-#include "drop.h"
 #include "ttab_errormessage.h"
 #include "ttab_attribute.h"
 #include "ttab_calendar.h"
-#include "ttab_random.h"
 #include "ttab_servers.h"
+#include "ttab_random.h"
 #include "ttab_dbload.h"
+#include "manage_csv.h"
+#include "csvtable.h"
+#include "drop.h"
 
 namespace ngl
 {
@@ -108,4 +108,4 @@ namespace ngl
 	{
 		return m_data;
 	}
-}
+}// namespace ngl

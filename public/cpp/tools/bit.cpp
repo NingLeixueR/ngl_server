@@ -131,4 +131,4 @@ namespace ngl
 		}
 		return -1;
 	}
-}
+}// namespace ngl

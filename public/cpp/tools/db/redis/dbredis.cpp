@@ -93,5 +93,4 @@ namespace ngl
 		//DB_ROLE ltemp2;
 		//lredis.get(1, ltemp2);
 	}
-
-}
+}// namespace ngl

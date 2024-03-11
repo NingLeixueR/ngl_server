@@ -1,8 +1,8 @@
 #pragma once
 
+#include "serialize.h"
 #include "hiredis.h"
 #include "nlog.h"
-#include "serialize.h"
 #include "type.h"
 
 #define REDIS_DATA_MAX (10240)
@@ -125,4 +125,4 @@ namespace ngl
 	};
 
 	void test_hiredis();
-}//namespace ngl
+}// namespace ngl

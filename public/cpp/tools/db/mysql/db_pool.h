@@ -11,4 +11,4 @@ namespace ngl
 		static bool init(uint32_t asize, const dbarg& arg);
 		static db* get(uint32_t aindex);
 	};
-}
+}// namespace ngl

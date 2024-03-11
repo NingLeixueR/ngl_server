@@ -1,6 +1,5 @@
 #include "bytes_order.h"
 
-
 namespace ngl
 {
 	constexpr bool bytes_order::islittle()
@@ -48,4 +47,4 @@ namespace ngl
 			| static_cast<int64_t>(value_p[7]);
 		return avalues;
 	}
-}
+}// namespace ngl

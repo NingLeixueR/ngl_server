@@ -71,4 +71,4 @@ namespace ngl
 		pro->m_data.m_type = atype;
 		actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_BI), nguid::make(), pro);
 	}
-}
+}// namespace ngl

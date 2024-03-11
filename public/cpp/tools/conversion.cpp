@@ -1,6 +1,7 @@
 #include <codecvt>
-#include <locale>
 #include <cstring>
+#include <locale>
+
 #include "conversion.h"
 
 namespace ngl
@@ -115,4 +116,4 @@ namespace ngl
 			return false;
 		return true;
 	}
-}
+}//namespace ngl

@@ -79,4 +79,4 @@ namespace ngl
 		static void recast(const std::vector<float>& avec, const char afg, std::string& astr);
 		static void recast(const std::vector<double>& avec, const char afg, std::string& astr);
 	};
-}
+}// namespace ngl

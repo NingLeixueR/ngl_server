@@ -19,4 +19,4 @@ namespace ngl
 			return m_impl;
 		}
 	};
-}
+}// namespace ngl

@@ -1,8 +1,9 @@
 #pragma once
 
-#include <map>
-#include <string>
 #include <algorithm>
+#include <string>
+#include <map>
+
 #include "tools.h"
 
 namespace ngl
@@ -59,4 +60,4 @@ namespace ngl
 	using em = enum2name<ENUMT, TOLOWER>;
 
 	#define em_pram(NAME) NAME,#NAME
-}
+}// namespace ngl

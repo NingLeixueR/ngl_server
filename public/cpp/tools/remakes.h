@@ -1,8 +1,8 @@
 #pragma once
 
 #include <thread>
-#include <stack>
 #include <string>
+#include <stack>
 
 namespace ngl
 {
@@ -30,7 +30,7 @@ namespace ngl
 
 		static const char* get_remake(actor_role*);
 	};
-}
+}// namespace ngl
 
 #define d_remakes(ROLE, REMAKES)	ngl::dremakes ldremakes(ROLE, REMAKES)
 #define g_remakes(ROLE)				ngl::dremakes::get_remake(ROLE)

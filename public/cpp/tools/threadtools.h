@@ -35,7 +35,7 @@ namespace ngl
 		// ### œﬂ≥ÃÀØ√ﬂ[avalue]∫¡√Î
 		static void milliseconds(int32_t avalue);
 	};
-}
+}// namespace ngl
 
 #define lock_read(MUTEX)			std::shared_lock<std::shared_mutex> __Lock__(MUTEX)
 #define lock_write(MUTEX)			std::lock_guard<std::shared_mutex> __Lock__(MUTEX)
@@ -183,4 +183,4 @@ namespace ngl
 			}
 		}
 	};
-}
+}// namespace ngl

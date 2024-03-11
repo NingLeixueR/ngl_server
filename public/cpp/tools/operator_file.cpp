@@ -1,8 +1,8 @@
-#include "operator_file.h"
-#include "nlog.h"
-
 #include <fstream>
 #include <string>
+
+#include "operator_file.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -22,6 +22,7 @@ namespace ngl
 		}
 		catch (...) {}
 	}
+
 	//跳过前三行
 	void readfile::jumpbegin(int anum, bool aiscsv)
 	{
@@ -91,7 +92,6 @@ namespace ngl
 		}
 	}
 
-
 	writefile::writefile(const std::string& filename)
 	{
 		m_file.open(filename, std::ios::binary);
@@ -122,10 +122,9 @@ namespace ngl
 		return ::remove(afilename.c_str()) == 0;
 	}
 
-
 	bool filetools::exist(const std::string& afilename)
 	{
 		std::ifstream f(afilename.c_str());
 		return f.good();
 	}
-}
+}// namespace ngl

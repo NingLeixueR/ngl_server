@@ -3,18 +3,17 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/typeof/typeof.hpp>
 
-#include "xmlinfo.h"
-#include "type.h"
 #include <functional>
 #include <string>
 #include <map>
-#include "regular.h"
-#include "csvtable.h"
 
+#include "csvtable.h"
+#include "regular.h"
+#include "xmlinfo.h"
+#include "type.h"
 
 namespace ngl
 {
-
 	using boost_ptree = boost::property_tree::ptree;
 
 	class xml
@@ -24,6 +23,7 @@ namespace ngl
 		static xml& getInstance() { static xml ltemp; return ltemp; }
 
 		static bool read(std::string aname, boost_ptree& apt);
+
 		static bool write(std::string aname, boost_ptree& apt);
 
 		template <typename T>
@@ -66,12 +66,12 @@ namespace ngl
 	class xmlnode
 	{
 	public:
-		static boost_ptree m_root;
-		static dbserver_info m_db;
-		static xmlinfo m_publicinfo;
-		static std::string m_nodename;
-		static NODE_TYPE m_nodetype;
-		static i32_id m_nodeid;
+		static boost_ptree		m_root;
+		static dbserver_info	m_db;
+		static xmlinfo			m_publicinfo;
+		static std::string		m_nodename;
+		static NODE_TYPE		m_nodetype;
+		static i32_id			m_nodeid;
 
 		static void init();
 
@@ -90,5 +90,5 @@ namespace ngl
 
 		static xmlinfo* get_publicconfig() { return &m_publicinfo; }
 	};
-}
+}// namespace ngl
 using nconfig = ngl::xmlnode;

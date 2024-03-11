@@ -1,8 +1,7 @@
-#include "segpack.h"
-
-#include "nlog.h"
 #include "localtime.h"
 #include "protocol.h"
+#include "segpack.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -196,5 +195,4 @@ namespace ngl
 	{//有可能缓存餐包
 		m_impl_segpack()->erase(aid);
 	}
-
-}
+}// namespace ngl

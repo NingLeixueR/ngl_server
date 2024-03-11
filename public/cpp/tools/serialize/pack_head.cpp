@@ -222,4 +222,4 @@ namespace ngl
 	{
 		return atstr("HEAD[") && _log(atstr) && atstr("]");
 	}
-}
+}// namespace ngl

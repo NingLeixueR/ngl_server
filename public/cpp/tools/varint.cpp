@@ -253,46 +253,4 @@ namespace ngl
             return true;
         }
     }
-    
-    void test_varint()
-    {
-       /* std::vector<int32_t> lvec;
-        for (int i = 0; i < 10000; ++i)
-            lvec.push_back(rand());
-        {
-            ngl::varint::set(true);
-            char lbuff[402400] = { 0 };
-            ngl::serialize lserialize(lbuff, 402400);
-
-            lserialize.push((int)lvec.size());
-            for (int i = 0; i < lvec.size(); ++i)
-                lserialize.push(lvec[i]);
-            std::cout << "varint open:" << lserialize.byte() << std::endl;
-            std::vector<int32_t> lvec2;
-            ngl::unserialize lunserialize(lbuff, 402400);
-            int lsize = 0;
-            lunserialize.pop(lsize);
-            lvec2.resize(lsize);
-
-            for (int i = 0; i < lvec2.size(); ++i)
-                lunserialize.pop(lvec2[i]);
-        }
-        {
-            ngl::varint::set(false);
-            char lbuff[402400] = { 0 };
-            ngl::serialize lserialize(lbuff, 402400);
-            lserialize.push((int)lvec.size());
-            for (int i = 0; i < lvec.size(); ++i)
-                lserialize.push(lvec[i]);
-            std::cout << "varint not open:" << lserialize.byte() << std::endl;
-            std::vector<int64_t> lvec2;
-            ngl::unserialize lunserialize(lbuff, 402400);
-            int lsize = 0;
-            lunserialize.pop(lsize);
-            lvec2.resize(lsize);
-
-            for (int i = 0; i < lvec2.size(); ++i)
-                lunserialize.pop(lvec2[i]);
-        }*/
-    }
 }

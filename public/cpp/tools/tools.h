@@ -56,5 +56,4 @@ namespace ngl
 			return astr;
 		}
 	};
-
-}
+}//namespace ngl

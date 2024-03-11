@@ -1,11 +1,11 @@
 #pragma once
 
-#include <cstdint>
 #include <functional>
-#include <map>
-#include <string>
 #include <iostream>
+#include <cstdint>
 #include <cstring>
+#include <string>
+#include <map>
 
 namespace ngl
 {
@@ -110,4 +110,4 @@ namespace ngl
 	};
 
 	void test_rfun();
-}
+}// namespace ngl

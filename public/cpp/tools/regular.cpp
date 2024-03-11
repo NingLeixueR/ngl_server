@@ -39,4 +39,4 @@ namespace ngl
 		replace(aexpression, areleace, adata, aret);
 		return aret != adata;
 	}
-}
+}//namespace ngl

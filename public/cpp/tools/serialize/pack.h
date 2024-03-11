@@ -1,10 +1,11 @@
 #pragma once
 
-#include <cstdint>
 #include <functional>
+#include <cstdint>
 #include <atomic>
-#include "type.h"
+
 #include "pack_head.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -47,5 +48,4 @@ namespace ngl
 		// ·ÖÅä°ü
 		static std::shared_ptr<pack> make_pack(bpool* apool, int alen);
 	};
-
-}
+}// namespace ngl

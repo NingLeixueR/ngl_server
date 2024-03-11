@@ -51,4 +51,4 @@ namespace ngl
 			return false;
 		return memcmp(astr1, astr2, llen1) == 0;
 	}
-}
+}//namespace ngl

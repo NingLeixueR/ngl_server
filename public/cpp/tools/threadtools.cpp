@@ -18,6 +18,7 @@ namespace ngl
 	{
 		((type_sem*)m_sem)->acquire();
 	}
+
 	void sem::post()
 	{
 		((type_sem*)m_sem)->release();		
@@ -37,4 +38,4 @@ namespace ngl
 	{
 		std::this_thread::sleep_for(std::chrono::hours(avalue));
 	}
-}
+}// namespace ngl

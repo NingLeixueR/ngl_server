@@ -14,4 +14,4 @@ namespace ngl
 		static int32_t transformlittle(int32_t& avalues);
 		static int64_t transformlittle(int64_t avalues);
 	};
-}
+}// namespace ngl

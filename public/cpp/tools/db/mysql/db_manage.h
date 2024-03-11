@@ -1,10 +1,10 @@
 #pragma once
 
-#include "db_data.h"
-#include "db.h"
 #include "serialize.h"
 #include "hexbytes.h"
 #include "regular.h"
+#include "db_data.h"
+#include "db.h"
 
 namespace ngl
 {
@@ -384,4 +384,4 @@ namespace ngl
 
 	template <typename T>
 	protobuf_data<T> db_manage::save<EPROTOCOL_TYPE_PROTOCOLBUFF, T>::m_savetemp;
-}
+}// namespace ngl

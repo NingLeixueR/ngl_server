@@ -1,8 +1,9 @@
 #include <boost/asio.hpp>
+
 #include "serialize.h"
-#include "bit.h"
 #include "varint.h"
 #include "db.pb.h"
+#include "bit.h"
 
 namespace ngl
 {
@@ -868,4 +869,4 @@ namespace ngl
 		 bytes(int16_t(astr.size()));
 		 return m_size += astr.size() * sizeof(char);
 	 }
-}
+}// namespace ngl

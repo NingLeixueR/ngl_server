@@ -1,4 +1,5 @@
 #include "notify.h"
+
 #include <iostream>
 
 namespace ngl
@@ -108,4 +109,4 @@ namespace ngl
 		lparm1.m_test = 1988;
 		notify<notify_parm_test1>::execute(lparm1);
 	}
-}
+}// namespace ngl

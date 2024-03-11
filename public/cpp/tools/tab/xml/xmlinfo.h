@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <set>
+
 #include "type.h"
 #include "tools.h"
 
@@ -64,4 +65,4 @@ namespace ngl
 	{
 		dbarg m_dbarg;
 	};	
-}
+}// namespace ngl

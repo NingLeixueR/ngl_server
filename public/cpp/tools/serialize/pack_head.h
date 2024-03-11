@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <map>
 
-#include "type.h"
-#include "serialize.h"
 #include "logserialize.h"
+#include "serialize.h"
 #include "csvtable.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -71,4 +71,4 @@ namespace ngl
 		bool _log(logserialize& atstr, int anumber = EPH_BYTES)const;
 		bool log(logserialize& atstr)const;
 	};
-}
+}// namespace ngl

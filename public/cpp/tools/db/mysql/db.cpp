@@ -1,6 +1,6 @@
-#include "db.h"
-#include "nlog.h"
 #include "conversion.h"
+#include "nlog.h"
+#include "db.h"
 
 #define _SQL_BUFF1_SIZE_ (102400)
 #define _SQL_BUFF2_SIZE_ (102400)
@@ -147,5 +147,4 @@ namespace ngl
 		mysql_real_escape_string(m_mysql, lbuff, asql, strlen(asql));
 		aoutsql = lbuff;
 	}
-
-}//namespace ngl
+}// namespace ngl

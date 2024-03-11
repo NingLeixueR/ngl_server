@@ -2,13 +2,12 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/function.hpp>
-#include <map>
 #include <string>
-#include <array>
 #include <vector>
-#include <set>
+#include <array>
 #include <list>
 #include <map>
+#include <set>
 
 #include "cJSON.h"
 
@@ -16,7 +15,6 @@ namespace ngl
 {
 	class json
 	{
-		
 	public:
 		cJSON* m_json;
 

@@ -54,4 +54,4 @@ namespace ngl
 	//md5 lmd5(lmd5str);
 	//amd5 = lmd5.values().c_str();
 	///////////////////
-}
+}// namespace ngl

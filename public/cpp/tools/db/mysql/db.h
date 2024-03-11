@@ -1,11 +1,11 @@
 #pragma once
-
-#include <map>
-#include <vector>
+  
+#include <iostream> 
 #include <cstdint>
 #include <sstream> 
-#include <string>    
-#include <iostream>  
+#include <vector> 
+#include <string>
+#include <map>  
 
 #include "include3part.h"
 #include "xmlinfo.h"
@@ -14,9 +14,9 @@ namespace ngl
 {
 	class db
 	{
-		bool m_connectdb;
-		MYSQL* m_mysql;
-		dbarg m_arg;
+		bool	m_connectdb;
+		MYSQL*	m_mysql;
+		dbarg	m_arg;
 	public:
 		db();
 		//// --- 连接数据库
@@ -31,11 +31,11 @@ namespace ngl
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, uint32_t, uint32_t)>;
 		bool select(const char* asql, int asqllen, callback aback);
 
-		char* m_buff1;
-		char* m_buff2;
-		char* m_buffsql;
-		int m_bufflen1;
-		int m_bufflen2;
-		int m_buffsqllen;
+		char*	m_buff1;
+		char*	m_buff2;
+		char*	m_buffsql;
+		int		m_bufflen1;
+		int		m_bufflen2;
+		int		m_buffsqllen;
 	};
-}//namespace ngl
+}// namespace ngl

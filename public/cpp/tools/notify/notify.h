@@ -1,8 +1,9 @@
 #pragma once
-#include <map>
-#include <vector>
+
 #include <functional>
+#include <vector>
 #include <list>
+#include <map>
 
 namespace ngl
 {
@@ -126,8 +127,5 @@ namespace ngl
 
 	};
 
-
-
-	
 	void test_notify();
-}
+}// namespace ngl

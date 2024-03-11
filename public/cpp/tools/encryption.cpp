@@ -1,18 +1,20 @@
 #include "encryption.h"
 #include "hexbytes.h"
-#include <cryptopp/aes.h>
-#include <cryptopp/filters.h>
-#include <cryptopp/modes.h>
+
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/secblock.h>
+#include <cryptopp/filters.h>
+#include <cryptopp/base64.h>
+#include <cryptopp/modes.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/files.h>
 #include <cryptopp/cmac.h>
+#include <cryptopp/hmac.h>
 #include <cryptopp/aes.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/sha.h>
-#include <cryptopp/hmac.h>
-#include <cryptopp/base64.h>
+#include <cryptopp/aes.h>
+
 #include <iostream>
 #include <stdio.h>
 
@@ -86,4 +88,4 @@ namespace ngl
 			ap[i] = ap[i] ^ encryption_xor::m_xorkey[j & encryption_xor::m_xorkeynum];
 		}
 	}
-}
+}// namespace ngl

@@ -1,9 +1,7 @@
 #include "ojson.h"
 
-
 namespace ngl
 {
-
 	ojson::ojson(const char* astr) :
 		json(cJSON_Parse(astr)),
 		m_free(true)
@@ -131,7 +129,4 @@ namespace ngl
 			adata.second = ret;
 		return true;
 	}
-
-
-
-}//namespace ngl
+}// namespace ngl

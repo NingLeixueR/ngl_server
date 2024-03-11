@@ -8,7 +8,6 @@
 #include <codecvt>
 #include <cstring>
 
-
 namespace ngl
 {
 
@@ -332,4 +331,4 @@ namespace ngl
     }
     //////////////////////////////
 
-}
+}// namespace ngl

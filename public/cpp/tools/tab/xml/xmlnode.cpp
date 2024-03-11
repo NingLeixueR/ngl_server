@@ -1,13 +1,13 @@
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <boost/typeof/typeof.hpp>
 
-#include "xmlnode.h"
 #include "enum2name.h"
+#include "csvtable.h"
+#include "xmlnode.h"
 #include "splite.h"
 #include "tools.h"
 #include "nlog.h"
-#include "csvtable.h"
 
 namespace ngl
 {
@@ -74,7 +74,6 @@ namespace ngl
 		}
 	}
 
-
 	boost_ptree				xmlnode::m_root;
 	dbserver_info			xmlnode::m_db;
 	xmlinfo					xmlnode::m_publicinfo;
@@ -121,7 +120,6 @@ namespace ngl
 
 		if (!xml::read(lxmlname, m_root))
 			return;
-
 
 		loadpublic();
 		loaddb();
@@ -206,4 +204,4 @@ namespace ngl
 	{
 		read_db_arg(m_db.m_dbarg);
 	}
-}
+}// namespace ngl

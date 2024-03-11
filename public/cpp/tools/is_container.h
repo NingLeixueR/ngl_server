@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <list>
 #include <set>
 #include <map>
-#include <list>
 
 namespace ngl
 {
@@ -73,4 +73,4 @@ namespace ngl
 	// 定义获取容器类型的模板
 	template<typename T, typename... Types>
 	constexpr bool is_container = is_containery_type<T, Types...>::value;
-}
+}// namespace ngl

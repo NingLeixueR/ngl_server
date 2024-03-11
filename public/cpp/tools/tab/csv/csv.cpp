@@ -1,8 +1,9 @@
-#include "csv.h"
-#include "tools.h"
 #include "operator_file.h"
 #include "splite.h"
+#include "tools.h"
 #include "nlog.h"
+#include "csv.h"
+
 #include <boost/lexical_cast.hpp>
 
 namespace ngl
@@ -192,54 +193,4 @@ namespace ngl
 	{ 
 		return readcsv(apair, adata); 
 	}
-
-	/*bool rcsv::readveccsv(csvpair& apair, int16_t& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, int32_t& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, int64_t& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, uint8_t& adata) 
-	{ 
-		return readcsv(apair, adata);
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, uint16_t& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, uint32_t& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, uint64_t& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, float& adata) 
-	{ 
-		return readcsv(apair, adata);
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, double& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}
-
-	bool rcsv::readveccsv(csvpair& apair, std::string& adata) 
-	{ 
-		return readcsv(apair, adata); 
-	}*/
-}
+}// namespace ngl

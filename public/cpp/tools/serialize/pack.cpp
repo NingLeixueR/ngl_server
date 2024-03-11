@@ -1,6 +1,6 @@
-#include "pack.h"
-#include "segpack.h"
 #include "netbuff_pool.h"
+#include "segpack.h"
+#include "pack.h"
 
 namespace ngl
 {
@@ -82,4 +82,4 @@ namespace ngl
 			lpack->malloc(alen);
 		return lpack;
 	}
-}
+}// namespace ngl

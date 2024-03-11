@@ -555,4 +555,4 @@ namespace ngl
 	{
 		return getmoonday(gettime());
 	}
-}
+}// namespace ngl

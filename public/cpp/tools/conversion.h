@@ -15,4 +15,4 @@ namespace ngl
 		static bool to_asscii(const std::string& astr1, std::string& astr2);
 		static bool to_utf8(const std::string& astr1, std::string& astr2);
 	};
-}
+}// namespace ngl

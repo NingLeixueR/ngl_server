@@ -1,14 +1,13 @@
 #pragma once
 
-#include "xmlinfo.h"
-#include "xmlnode.h"
 #include "enum2name.h"
 #include "nprotocol.h"
 #include "logformat.h"
+#include "xmlinfo.h"
+#include "xmlnode.h"
 
 #include <fstream>
 #include <memory>
-
 
 namespace ngl
 {
@@ -23,9 +22,9 @@ namespace ngl
 
 	enum ELOG_TYPE
 	{
-		ELOG_LOCAL = 0,
-		ELOG_DEFAULT = 1,
-		ELOG_BI = 2,
+		ELOG_LOCAL		= 0,
+		ELOG_DEFAULT	= 1,
+		ELOG_BI			= 2,
 		ELOG_COUNT,
 	};
 
@@ -39,15 +38,15 @@ namespace ngl
 	{
 		struct config
 		{
-			ELOG_TYPE m_type;			// 日志类型 ELOG_TYPE
+			ELOG_TYPE	m_type;			// 日志类型 ELOG_TYPE
 			std::string m_dir;			// 文件夹
-			int m_flush_time;			// 写入文件的间隔
+			int			m_flush_time;	// 写入文件的间隔
 		};
-		std::ofstream m_stream;
-		config m_config;
-		int m_count;
-		int m_fcount;
-		bool m_isactor;
+		std::ofstream	m_stream;
+		config			m_config;
+		int				m_count;
+		int				m_fcount;
+		bool			m_isactor;
 
 		logfile(bool aisactor, const config& aconfig);
 		void create(bool afirst);
@@ -57,4 +56,4 @@ namespace ngl
 
 		static std::shared_ptr<logfile> create_make(bool aisactor, const config& aconfig);
 	};
-}
+}// namespace ngl

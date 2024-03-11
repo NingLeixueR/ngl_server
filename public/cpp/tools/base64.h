@@ -1,8 +1,8 @@
 #pragma once
 
+#include <utility>
 #include <cctype>
 #include <string>
-#include <utility>
 
 namespace ngl
 {

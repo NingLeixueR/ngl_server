@@ -1,6 +1,5 @@
 #include "xmlprotocol.h"
 
-
 namespace ngl
 {
 	std::map<std::string, int32_t> xmlprotocol::m_protocol;
@@ -63,4 +62,4 @@ namespace ngl
 		lset.insert(lvalue);
 		return lvalue;
 	}
-}
+}// namespace ngl

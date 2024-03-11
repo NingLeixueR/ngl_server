@@ -1,5 +1,5 @@
-#include "remakes.h"
 #include "actor_role.h"
+#include "remakes.h"
 
 namespace ngl
 {
@@ -44,4 +44,4 @@ namespace ngl
 	{
 		return arole->m_remakes.get_remakes();
 	}
-}
+}//namespace ngl

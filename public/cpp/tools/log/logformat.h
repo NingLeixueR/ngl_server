@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 #include <map>
+
 #include "logserialize.h"
 
 namespace ngl
@@ -115,4 +116,4 @@ namespace ngl
 			return lstr;
 		}
 	};
-}
+}// namespace ngl

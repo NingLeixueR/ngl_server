@@ -182,4 +182,4 @@ namespace ngl
     {
         return base64_decode(data.data(), data.size());
     }
-}
+}// namespace ngl

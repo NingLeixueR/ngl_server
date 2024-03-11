@@ -1,13 +1,14 @@
 #pragma once
 
+#include <inttypes.h>
+
+#include <fstream>
+#include <vector>
+#include <memory>
 #include <string>
 #include <list>
 #include <map>
-#include <fstream>
-#include <inttypes.h>
 #include <set>
-#include <vector>
-#include <memory>
 
 namespace ngl
 {
@@ -36,7 +37,6 @@ namespace ngl
 		bool operator()(const std::string& avalue);		
 		bool operator()(bool avalue);
 		bool operator()(const char* avalue);
-
 	private:
 		template <typename T>
 		bool number(const char* aformat, T adata)
@@ -176,5 +176,4 @@ namespace ngl
 			return (*this)(avalue) && (*this)("*") && (*this)(arg...);
 		}
 	};
-
-}
+}// namespace ngl

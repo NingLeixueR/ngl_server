@@ -2,9 +2,10 @@
 
 #include <array>
 #include <list>
+
 #include "threadtools.h"
-#include "nlog.h"
 #include "time_wheel.h"
+#include "nlog.h"
 
 namespace ngl
 {
@@ -137,7 +138,6 @@ namespace ngl
 		}
 	};
 
-
 	enum
 	{
 		enum_pool_count = 10,
@@ -166,4 +166,4 @@ namespace ngl
 			getInstance().free_private(abuff);
 		}
 	};
-}
+}// namespace ngl

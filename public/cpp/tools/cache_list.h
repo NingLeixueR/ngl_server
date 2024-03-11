@@ -1,10 +1,11 @@
 #pragma once
 
-#include <set>
 #include <functional>
-#include "type.h"
-#include "time_wheel.h"
+#include <set>
+
 #include "threadtools.h"
+#include "time_wheel.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -61,4 +62,4 @@ namespace ngl
 			}
 		}
 	};
-}
+}// namespace ngl

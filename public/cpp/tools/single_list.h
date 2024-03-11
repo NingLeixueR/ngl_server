@@ -1,11 +1,12 @@
 #pragma once
 
 #include <functional>
-#include "localtime.h"
-#include "type.h"
+
 #include "threadtools.h"
 #include "time_wheel.h"
+#include "localtime.h"
 #include "nlog.h"
+#include "type.h"
 
 namespace ngl
 {
@@ -335,4 +336,4 @@ namespace ngl
 			m_list.swap(ar);
 		}
 	};
-}
+}// namespace ngl

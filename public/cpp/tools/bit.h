@@ -19,8 +19,9 @@ namespace ngl
 		static bool set(int abit, int8_t& avalues, bool abool);
 
 		bool set(int abit, bool abool);
+
 		bool get(int abit)const;
 
 		int find_first(bool abool);
 	};
-}
+}// namespace ngl

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "db.h"
 #include "serialize.h"
 #include "type.h"
+#include "db.h"
+
 #include <set>
 
 namespace ngl
@@ -75,4 +76,4 @@ namespace ngl
 				afun(++lindex, data);
 		}
 	};
-}
+}// namespace ngl

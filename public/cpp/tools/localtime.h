@@ -30,7 +30,6 @@ namespace ngl
 
 			MINUTES_SECOND = 1 * 60,							// 一分钟多少秒
 			MINUTES_MILLISECOND = MINUTES_SECOND * MILLISECOND,	// 一分钟多少毫秒
-
 		};
 
 		/** 设置时间 */
@@ -110,4 +109,4 @@ namespace ngl
 	private:
 		static time_t m_offset;		//时间偏移量
 	};
-}
+}// namespace ngl

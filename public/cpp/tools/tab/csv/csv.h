@@ -1,14 +1,14 @@
 #pragma once
 
-#include <string>
-#include <list>
-#include <fstream>
+#include <functional>
 #include <iostream>
+#include <cstdint>
+#include <fstream>
+#include <string>
 #include <vector>
+#include <list>
 #include <map>
 #include <set>
-#include <cstdint>
-#include <functional>
 
 namespace ngl
 {
@@ -257,4 +257,4 @@ namespace ngl
 			return false;
 		}
 	};
-}
+}//namespace ngl

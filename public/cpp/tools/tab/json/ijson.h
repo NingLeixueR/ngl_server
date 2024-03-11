@@ -163,7 +163,5 @@ namespace ngl
 		bool m_isnonformatstr;
 		bool m_free;
 	};
-
-
-}
+}// namespace ngl
 

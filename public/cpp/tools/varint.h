@@ -38,6 +38,4 @@ namespace ngl
 		static bool	encode(parm<int32_t>& aparm);
 		static bool	decode(parm<int32_t>& aparm);		
 	};
-
-	void test_varint();
 }

@@ -39,7 +39,6 @@ namespace ngl
 		}
 	};
 
-
 	struct tparm
 	{
 		int m_id;
@@ -77,6 +76,5 @@ namespace ngl
 		testrfun4 ld;
 		rfuns::registers(&testrfun4::handle, "777777777");
 		rfuns::handle_switch(&ld, ltparm);
-
 	}
-}
+}// namespace ngl

@@ -1,7 +1,6 @@
 #include "splite.h"
 #include "tools.h"
 
-
 namespace ngl
 {
 	template <typename T>
@@ -71,5 +70,4 @@ namespace ngl
 	{
 		_tostr(avec, afg, astr);
 	}
-
-}
+}// namespace ngl

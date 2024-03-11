@@ -6,10 +6,10 @@
 #include <string>
 #include <map>
 
-#include "xmlinfo.h"
-#include "type.h"
 #include "regular.h"
 #include "xmlnode.h"
+#include "xmlinfo.h"
+#include "type.h"
 #include "nlog.h"
 
 namespace ngl
@@ -27,4 +27,4 @@ namespace ngl
 		// ### makeproto工具调用 所以不需要索引
 		static int32_t free_protocol();
 	};
-}
+}// namespace ngl

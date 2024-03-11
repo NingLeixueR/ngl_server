@@ -1,4 +1,5 @@
 #include "hexbytes.h"
+
 #include <assert.h>
 
 namespace ngl
@@ -56,4 +57,4 @@ namespace ngl
 		}
 		return alen / 2;
 	}
-}
+}// namespace ngl

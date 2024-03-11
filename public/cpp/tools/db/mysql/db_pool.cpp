@@ -20,4 +20,4 @@ namespace ngl
 	{
 		return m_vec[aindex];
 	}
-}
+}// namespace ngl

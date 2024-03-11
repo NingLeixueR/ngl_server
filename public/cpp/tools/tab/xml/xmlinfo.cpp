@@ -1,5 +1,6 @@
 #include "xmlinfo.h"
 #include "tools.h"
+
 #include <string>
 
 namespace ngl
@@ -124,4 +125,4 @@ namespace ngl
 			return false;
 		return true;
 	}
-}
+}// namespace ngl

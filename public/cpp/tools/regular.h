@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <functional>
+#include <string>
 #include <regex>
 
 namespace ngl
@@ -35,4 +35,4 @@ namespace ngl
 			, std::string& aret
 		);
 	};
-}
+}//namespace ngl

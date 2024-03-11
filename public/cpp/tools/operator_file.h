@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <fstream>
+#include <string>
 
 namespace ngl
 {
@@ -33,5 +33,4 @@ namespace ngl
 		static bool exist(const std::string& afilename);
 		static bool remove(const std::string& afilename);
 	};
-
-}
+}//namespace ngl

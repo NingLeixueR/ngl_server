@@ -2,14 +2,14 @@
 
 #include <map>
 #include <string>
-#include "xmlnode.h"
+
 #include "logformat.h"
 #include "localtime.h"
 #include "logprintf.h"
+#include "xmlnode.h"
 
 namespace ngl
 {
-
 	class elog_name
 	{
 	public:
@@ -42,8 +42,6 @@ namespace ngl
 # define FindSrcPos str.rfind("/")
 #endif
 
-
-
 #define LogSrcPos														\
 	constexpr std::string_view str = __FILE__;							\
 	constexpr auto pos = FindSrcPos;									\
@@ -53,11 +51,9 @@ namespace ngl
 		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);		\
 	}
 
-
 #define DEF_LOG_LEVEL			(ngl::ELOG_ERROR)
 #define DEF_LOG_MAX_LINE		(100000)
 #define DEF_LOG_PRINTF			(true)
-
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 # define dlogmsg(ELOG_LEVEL, ISSYSYTEM, FORMAT,...)										\
@@ -113,7 +109,6 @@ namespace ngl
 #define LogLocalWarn(FORMAT,...)		dlogmsg(ngl::ELOG_WARN, true, FORMAT  __VA_OPT__(,) ##__VA_ARGS__)
 #endif
 
-
 #define LogBI(FORMAT,...)				dlogmsg_bi(FORMAT,##__VA_ARGS__)
 
 #define Try				try
@@ -148,4 +143,3 @@ namespace ngl
 		{									\
 			ngl::logformat::out([](char* abuff) {throw abuff; }, #ISOK":"##FORMAT, ##__VA_ARGS__); \
 		}
-
