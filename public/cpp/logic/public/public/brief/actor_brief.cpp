@@ -25,7 +25,7 @@ namespace ngl
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_brief>(
 			false
-			, dregister_fun_handle(actor_brief, actor_roleinfo)
+			, dregister_fun_handle(actor_brief, np_actor_roleinfo)
 			);
 
 	}

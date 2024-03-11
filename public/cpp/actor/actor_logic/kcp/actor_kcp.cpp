@@ -23,11 +23,11 @@ namespace ngl
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_kcp>(
 			false
-			, dregister_fun_handle(actor_kcp, actor_protocol_kcp)
+			, dregister_fun_handle(actor_kcp, np_actor_kcp)
 		);
 	}
 
-	bool actor_kcp::handle(message<actor_protocol_kcp>& adata)
+	bool actor_kcp::handle(message<np_actor_kcp>& adata)
 	{
 		auto lpram = adata.m_data;
 		auto lpack = adata.m_pack;

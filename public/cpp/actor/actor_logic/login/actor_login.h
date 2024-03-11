@@ -69,12 +69,12 @@ namespace ngl
 		void printf_freeserver();
 
 		
-		bool handle(message<actor_server_connect>& adata);
+		bool handle(message<np_actorserver_connect>& adata);
 
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
 
-		bool handle(message<actor_role_login>& adata);
+		bool handle(message<np_actorrole_login>& adata);
 	
-		bool handle(message<actor_disconnect_close>& adata);
+		bool handle(message<np_actor_disconnect_close>& adata);
 	};
 }//namespace ngl

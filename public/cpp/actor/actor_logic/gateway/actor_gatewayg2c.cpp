@@ -26,13 +26,13 @@ namespace ngl
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gatewayg2c>(
 			false
-			, dregister_fun_handle(actor_gatewayg2c, actor_gateway_info_updata)
+			, dregister_fun_handle(actor_gatewayg2c, np_actor_gatewayinfo_updata)
 		);
 		// Game 2 Client
 		nforward::g2c();
 	}
 
-	bool actor_gatewayg2c::handle(message<actor_gateway_info_updata>& adata)
+	bool actor_gatewayg2c::handle(message<np_actor_gatewayinfo_updata>& adata)
 	{
 		auto lpram = adata.m_data;
 		for (auto& item : lpram->m_delsocket)

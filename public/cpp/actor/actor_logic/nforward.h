@@ -22,7 +22,7 @@ namespace ngl
 				break;
 			case ngl::GATEWAY:// client->gateway
 				actor_gatewayc2g::register_forward<TYPE, false, actor_gatewayc2g>(
-					(Tfun<actor_gatewayc2g, actor_forward<T, TYPE, false, ngl::forward>>)& actor_gatewayc2g::handle
+					(Tfun<actor_gatewayc2g, np_actor_forward<T, TYPE, false, ngl::forward>>)& actor_gatewayc2g::handle
 				);
 				break;
 			}
@@ -48,7 +48,7 @@ namespace ngl
 				break;
 			case ngl::GATEWAY:// client->gateway
 				actor_gatewayc2g::register_forward<TYPE, false, actor_gatewayc2g>(
-					(Tfun<actor_gatewayc2g, actor_forward<T, TYPE, false, ngl::forward>>) & actor_gatewayc2g::handle
+					(Tfun<actor_gatewayc2g, np_actor_forward<T, TYPE, false, ngl::forward>>) & actor_gatewayc2g::handle
 				);
 				break;
 			}
@@ -71,7 +71,7 @@ namespace ngl
 				break;
 			case ngl::GATEWAY:// game->gateway
 				actor_gatewayg2c::register_forward<TYPE, true, actor_gatewayg2c>(
-					(Tfun<actor_gatewayg2c, actor_forward<T, TYPE, true, ngl::forward>>)& actor_gatewayg2c::handle
+					(Tfun<actor_gatewayg2c, np_actor_forward<T, TYPE, true, ngl::forward>>)& actor_gatewayg2c::handle
 				);
 				break;
 			}

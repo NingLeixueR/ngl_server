@@ -94,7 +94,7 @@ namespace ngl
 					if (lfun(_data.m_id))
 					{
 						// ·¢ËÍ
-						auto pro = std::make_shared<actor_protocol_add_mail>();
+						auto pro = std::make_shared<np_actor_addmail>();
 						pro->m_roleid = aroleid;
 						pro->m_tid = _data.m_mailid;
 						if (drop::droplist(_data.m_dropid, 1, pro->m_items) == false)

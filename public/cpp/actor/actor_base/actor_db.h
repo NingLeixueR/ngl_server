@@ -73,14 +73,14 @@ namespace ngl
 		}
 
 		// 加载表中的所有数据
-		static void loadall(const pack* apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		static void loadall(const pack* apack, const np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network) return;
 			int lsendmaxcount = m_tab->m_sendmaxcount;
 			//加载全部数据
 			Assert(m_tab->m_isloadall);
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
-			actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB> pro;
+			np_actordb_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB> pro;
 			pro.m_stat = true;
 			pro.m_over = false;
 			pro.m_data.make();
@@ -93,7 +93,7 @@ namespace ngl
 						if (aindex % lsendmaxcount == 0)
 						{
 							nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
-							pro = actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
+							pro = np_actordb_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
 							pro.m_stat = true;
 							pro.m_over = false;
 						}
@@ -105,7 +105,7 @@ namespace ngl
 						if (aindex % lsendmaxcount == 0)
 						{
 							nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
-							pro = actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
+							pro = np_actordb_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
 							pro.m_stat = true;
 							pro.m_over = false;
 							pro.m_data.make();
@@ -127,7 +127,7 @@ namespace ngl
 		}
 
 		// 加载数据 ：同步方式
-		static void load(i32_threadid athreadid, const pack* apack, const actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
 				return;
@@ -153,7 +153,7 @@ namespace ngl
 					
 				load(athreadid, lid);
 				
-				actor_db_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB> pro;
+				np_actordb_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB> pro;
 				pro.m_data.make();
 				pro.m_over = true;
 				if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
@@ -169,7 +169,7 @@ namespace ngl
 				std::string lname;
 				LogLocalError("load finish: [%][%]"
 					, lrequestactor
-					, tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname)
+					, tools::type_name<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname)
 				)
 			}
 		}
@@ -209,7 +209,7 @@ namespace ngl
 			cache_list<TDBTAB, enum_clist_del>::getInstance().push(aid);
 		}
 
-		static void save(i32_threadid athreadid, const pack* apack, const actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
+		static void save(i32_threadid athreadid, const pack* apack, const np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
@@ -274,25 +274,25 @@ namespace ngl
 			using TDerived = actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 			TDerived::template register_actor<PROTYPE, TDerived>(
 				true
-				, (Tfun<TDerived, actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>)&TDerived::handle
-				, (Tfun<TDerived, actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
-				, (Tfun<TDerived, actor_db_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
-				, (Tfun<TDerived, actor_time_db_cache<PROTYPE, TDBTAB>>) & TDerived::handle
+				, (Tfun<TDerived, np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>)&TDerived::handle
+				, (Tfun<TDerived, np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
+				, (Tfun<TDerived, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
+				, (Tfun<TDerived, np_actortime_db_cache<PROTYPE, TDBTAB>>) & TDerived::handle
 				);
 		}
 
 		
-		bool handle(message<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
+		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			std::string lname;
 			LogLocalError("load: [%] [%]", 
-				tools::type_name<actor_db_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname),
+				tools::type_name<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname),
 				adata.m_data->m_id)
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}
 
-		bool handle(message<actor_db_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
+		bool handle(message<np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			//for (auto& [key, value] : adata.m_data)
 			//	LogLocalInfo(" actor_db actor_db_save<%,%,false> [%:%:%]", TDBTAB_TYPE, TDBTAB::name(), key.type(), key.area(), key.actordataid());
@@ -300,7 +300,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<actor_db_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
+		bool handle(message<np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			//for (auto& id : adata.m_data)
 			//	LogLocalInfo(" actor_db actor_db_delete<%,%,false> [%]", TDBTAB_TYPE, TDBTAB::name(), id);
@@ -309,7 +309,7 @@ namespace ngl
 		}
 
 		////// ----ACTOR_TIMER_DB_CACHE, db cache list  保存缓存列表
-		bool handle(message<actor_time_db_cache<PROTYPE, TDBTAB>>& adata)
+		bool handle(message<np_actortime_db_cache<PROTYPE, TDBTAB>>& adata)
 		{
 			auto lrecv = adata.m_data;
 			for (i64_actorid id : lrecv->m_ls)
@@ -341,7 +341,7 @@ namespace ngl
 	{
 		if (aset.empty())
 			return;
-		std::shared_ptr<actor_time_db_cache<PROTYPE, TDB>> pro(new actor_time_db_cache<PROTYPE, TDB>());
+		std::shared_ptr<np_actortime_db_cache<PROTYPE, TDB>> pro(new np_actortime_db_cache<PROTYPE, TDB>());
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
 

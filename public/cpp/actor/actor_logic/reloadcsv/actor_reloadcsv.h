@@ -28,7 +28,7 @@ namespace ngl
 
 		virtual ~actor_reloadcsv();
 
-		bool handle(message<actor_reloadcsv_pro>& adata);
+		bool handle(message<np_actor_reloadcsv>& adata);
 
 		// 定时器
 		// 间接定时器 
@@ -51,6 +51,6 @@ namespace ngl
 
 		virtual ~actor_reloadcsv_distribute();
 				
-		bool handle(message<actor_reloadcsv_verify_version>& adata);
+		bool handle(message<np_actor_csv_verify_version>& adata);
 	};
 }//namespace ngl

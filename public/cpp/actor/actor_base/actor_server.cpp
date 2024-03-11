@@ -7,9 +7,9 @@ namespace ngl
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_server>(
 			true
-			, dregister_fun_handle(actor_server, actor_node_register)
-			, dregister_fun_handle(actor_server, actor_node_update)
-			, dregister_fun_handle(actor_server, actor_gateway_id_updata)
+			, dregister_fun_handle(actor_server, np_actornode_register)
+			, dregister_fun_handle(actor_server, np_actornode_update)
+			, dregister_fun_handle(actor_server, np_actor_gatewayid_updata)
 		);
 	}
 
@@ -31,7 +31,7 @@ namespace ngl
 	actor_server::~actor_server()
 	{}
 
-	bool actor_server::handle(message<actor_node_register>& adata)
+	bool actor_server::handle(message<np_actornode_register>& adata)
 	{
 		Try
 		{
@@ -55,13 +55,13 @@ namespace ngl
 			{
 				if (!lvec.empty())
 				{
-					actor_node_register_response lpram;
+					np_actornode_register_response lpram;
 					lpram.m_vec.push_back(lrecv->m_node);
 					nserver->sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 				}
 			}
 			{// -- 回复
-				actor_node_register_response lpram;
+				np_actornode_register_response lpram;
 				naddress::getInstance().foreach(
 					[&adata, &lpram, lpack](const actor_node_session& anode)->bool
 					{
@@ -72,7 +72,7 @@ namespace ngl
 				nserver->send(lpack->m_id, lpram, nguid::moreactor(), id_guid());
 			}
 			{// -- actor_client_node_update 给其他结点
-				actor_node_update lpram
+				np_actornode_update lpram
 				{
 					.m_id = lserverid,
 					.m_add = lrecv->m_add,
@@ -81,7 +81,7 @@ namespace ngl
 					nserver->sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
-				std::map<uint32_t, actor_node_update> lmapprotocol;
+				std::map<uint32_t, np_actornode_update> lmapprotocol;
 				naddress::getInstance().ergodic(
 					[lrecv, &lmapprotocol](std::map<nguid, i32_serverid>& amap, std::map<i32_serverid, actor_node_session>& asession)->bool
 					{
@@ -93,7 +93,7 @@ namespace ngl
 								continue;
 							if (lrecv->m_node.m_serverid == serverid)
 								continue;
-							actor_node_update& pro = lmapprotocol[serverid];
+							np_actornode_update& pro = lmapprotocol[serverid];
 							pro.m_id = serverid;
 							pro.m_add.push_back(guid.id());
 						}
@@ -109,7 +109,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(message<actor_node_update>& adata)
+	bool actor_server::handle(message<np_actornode_update>& adata)
 	{
 		Try
 		{
@@ -139,7 +139,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(message<actor_gateway_id_updata>& adata)
+	bool actor_server::handle(message<np_actor_gatewayid_updata>& adata)
 	{
 		auto lrecv = adata.m_data;
 		auto lpack = adata.m_pack;

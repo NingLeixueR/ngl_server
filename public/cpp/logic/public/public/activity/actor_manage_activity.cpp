@@ -34,8 +34,8 @@ namespace ngl
 		// Ð­Òé×¢²á
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_activity>(
 			false
-			, dregister_fun_handle(actor_manage_activity, actor_protocol_open_activity)
-			, dregister_fun_handle(actor_manage_activity, actor_protocol_close_activity)
+			, dregister_fun_handle(actor_manage_activity, np_actor_openactivity)
+			, dregister_fun_handle(actor_manage_activity, np_actor_closeactivity)
 			);
 	}
 
@@ -97,12 +97,12 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_manage_activity::handle(message<actor_protocol_open_activity>& adata)
+	bool actor_manage_activity::handle(message<np_actor_openactivity>& adata)
 	{
 		return open_activity(adata.m_data->m_activityid);
 	}
 
-	bool actor_manage_activity::handle(message<actor_protocol_close_activity>& adata)
+	bool actor_manage_activity::handle(message<np_actor_closeactivity>& adata)
 	{
 		return close_activity(adata.m_data->m_activityid);
 	}
@@ -169,7 +169,7 @@ namespace ngl
 					actor::static_send_actor(
 						nguid::make_self(ACTOR_ACTIVITY_MANAGE)
 						, nguid::make()
-						, std::make_shared<actor_protocol_open_activity>(lactivity)
+						, std::make_shared<np_actor_openactivity>(lactivity)
 					);
 				});
 			return;
@@ -200,7 +200,7 @@ namespace ngl
 					actor::static_send_actor(
 						nguid::make_self(ACTOR_ACTIVITY_MANAGE)
 						, nguid::make()
-						, std::make_shared<actor_protocol_close_activity>(lactivity)
+						, std::make_shared<np_actor_closeactivity>(lactivity)
 					);
 				});
 			return;

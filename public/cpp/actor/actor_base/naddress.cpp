@@ -14,7 +14,7 @@ namespace ngl
 		naddress::map_servernode		m_session;
 		naddress::map_rolegateway		m_rolegateway;
 	public:
-		inline bool set_node(const actor_node& anode)
+		inline bool set_node(const np_actornode& anode)
 		{
 			Try
 			{
@@ -186,7 +186,7 @@ namespace ngl
 	naddress::~naddress()
 	{}
 
-	bool naddress::set_node(const actor_node& anode)
+	bool naddress::set_node(const np_actornode& anode)
 	{
 		return m_impl_actor_address()->set_node(anode);
 	}

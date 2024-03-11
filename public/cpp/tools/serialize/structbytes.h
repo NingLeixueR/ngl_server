@@ -21,25 +21,25 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static int bytes(actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata)
+		static int bytes(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata)
 		{
 			return adata.m_recvpack->m_len - adata.m_recvpack->m_pos;
 		}
 
 		template <typename Y>
-		static int bytes(actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata)
+		static int bytes(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata)
 		{
 			return adata.m_recvpack->m_len - adata.m_recvpack->m_pos;
 		}
 
 		template <typename Y>
-		static int bytes(actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata)
+		static int bytes(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata)
 		{
 			return adata.m_recvpack->m_len - adata.m_recvpack->m_pos;
 		}
 
 		template <typename Y>
-		static int bytes(actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata)
+		static int bytes(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata)
 		{
 			return adata.m_recvpack->m_len - adata.m_recvpack->m_pos;
 		}
@@ -51,25 +51,25 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static int recv_bytes(actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata)
+		static int recv_bytes(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata)
 		{
 			return adata.m_recvpack != nullptr ? adata.m_recvpack->m_len : 0;
 		}
 
 		template <typename Y>
-		static int recv_bytes(actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata)
+		static int recv_bytes(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata)
 		{
 			return adata.m_recvpack != nullptr ? adata.m_recvpack->m_len : 0;
 		}
 
 		template <typename Y>
-		static int recv_bytes(actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata)
+		static int recv_bytes(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata)
 		{
 			return adata.m_recvpack != nullptr ? adata.m_recvpack->m_len : 0;
 		}
 
 		template <typename Y>
-		static int recv_bytes(actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata)
+		static int recv_bytes(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata)
 		{
 			return adata.m_recvpack != nullptr ? adata.m_recvpack->m_len : 0;
 		}

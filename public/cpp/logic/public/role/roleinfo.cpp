@@ -6,7 +6,7 @@ namespace ngl
 {
 	void roleinfo::sync_actor_roleinfo()
 	{
-		auto pro = std::make_shared<actor_roleinfo>();
+		auto pro = std::make_shared<np_actor_roleinfo>();
 		pro->m_vecinfo.make();
 		pro->m_vecinfo.m_data->resize(1);
 		//pbdb::db_brief& linfo = (*pro->m_vecinfo.m_data)[0];

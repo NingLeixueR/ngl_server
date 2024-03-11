@@ -20,11 +20,11 @@ namespace ngl
 	{
 		init_protobuf::init_customs(
 			EPROTOCOL_TYPE_PROTOCOLBUFF
-			, null<actor_db_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<actor_db_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<actor_db_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<actor_db_delete<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<actor_time_db_cache<EPROTOCOL_TYPE_PROTOCOLBUFF, TDB>>
+			, null<np_actordb_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
+			, null<np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
+			, null<np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
+			, null<np_actordb_delete<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
+			, null<np_actortime_db_cache<EPROTOCOL_TYPE_PROTOCOLBUFF, TDB>>
 		);
 	}
 
@@ -32,30 +32,30 @@ namespace ngl
 	{
 		init_customs(EPROTOCOL_TYPE_CUSTOM
 			, null<timerparm>
-			, null<robot_pram>
-			, null<actor_node_register>
-			, null<actor_node_register_response>
-			, null<actor_client_node_connect>
-			, null<actor_node_update>
-			, null<actor_node_update_mass>
-			, null<actor_node_actor_connect_task>
-			, null<actor_role_login>
-			, null<actor_server_connect>
-			, null<actor_session_close>
-			, null<actor_disconnect_close>
-			, null<actor_logitempro>
-			, null<actor_broadcast>
-			, null<actor_reloadcsv_pro>
-			, null<actor_reloadcsv_verify_version>
-			, null<actor_send_item>
-			, null<actor_roleinfo>
-			, null<actor_gateway_info_updata>
-			, null<actor_protocol_add_mail>
-			, null<actor_protocol_open_activity>
-			, null<actor_protocol_close_activity>
-			, null<actor_gateway_id_updata>
-			, null<actor_switch_process<actor_switch_process_role>>
-			, null<actor_protocol_kcp>
+			, null<np_robot_pram>
+			, null<np_actornode_register>
+			, null<np_actornode_register_response>
+			, null<np_actorclient_node_connect>
+			, null<np_actornode_update>
+			, null<np_actornode_update_mass>
+			, null<np_actornode_connect_task>
+			, null<np_actorrole_login>
+			, null<np_actorserver_connect>
+			, null<np_actor_session_close>
+			, null<np_actor_disconnect_close>
+			, null<ng_actor_logitem>
+			, null<np_actor_broadcast>
+			, null<np_actor_reloadcsv>
+			, null<np_actor_csv_verify_version>
+			, null<np_actor_senditem>
+			, null<np_actor_roleinfo>
+			, null<np_actor_gatewayinfo_updata>
+			, null<np_actor_addmail>
+			, null<np_actor_openactivity>
+			, null<np_actor_closeactivity>
+			, null<np_actor_gatewayid_updata>
+			, null<np_actorswitch_process<np_actorswitch_process_role>>
+			, null<np_actor_kcp>
 		);
 
 		init_customs_db<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();

@@ -63,7 +63,7 @@ namespace ngl
 			if (apactor->type() != ACTOR_ADDRESS_CLIENT && apactor->type() != ACTOR_ADDRESS_SERVER)
 			{
 				// ÐÂÔöµÄactor 
-				std::shared_ptr<actor_node_update_mass> pro(new actor_node_update_mass());
+				std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass());
 				pro->m_fun = afun;
 				pro->m_mass.m_id = nconfig::m_nodeid;
 				pro->m_mass.m_add.push_back(guid);
@@ -84,9 +84,9 @@ namespace ngl
 		inline void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun)
 		{
 			bool isrunfun = false;
-			std::shared_ptr<actor_node_update_mass> pro(new actor_node_update_mass
+			std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass
 				{
-					.m_mass = actor_node_update
+					.m_mass = np_actornode_update
 					{
 						.m_id = nconfig::m_nodeid,
 						.m_del = {aguid.id()}

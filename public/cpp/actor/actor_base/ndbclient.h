@@ -118,7 +118,7 @@ namespace ngl
 			{
 				tab_servers* tab = ttab_servers::tab();
 				// 向actor client 设置连接后事件
-				std::shared_ptr<actor_node_actor_connect_task> pro(new actor_node_actor_connect_task
+				std::shared_ptr<np_actornode_connect_task> pro(new np_actornode_connect_task
 					{
 						.m_serverid = tab->m_db,
 						.m_fun = std::bind(&ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>::loaddb, this, m_id),
@@ -144,7 +144,7 @@ namespace ngl
 
 		void loaddb(const nguid& aid)
 		{
-			actor_db_load<PROTYPE, DBTYPE, TDBTAB> ldata;
+			np_actordb_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 
 			i64_actorid ldbid = nguid::make(nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
@@ -251,7 +251,7 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
-			actor_db_save<PROTYPE, DBTYPE, TDBTAB> pro;
+			np_actordb_save<PROTYPE, DBTYPE, TDBTAB> pro;
 			std::list<data_modified<TDBTAB>*> lclearlist;
 			if (aid != (int64_t)-1)
 			{
@@ -317,7 +317,7 @@ namespace ngl
 
 		virtual void deldb()
 		{
-			actor_db_delete<PROTYPE, DBTYPE, TDBTAB> pro;
+			np_actordb_delete<PROTYPE, DBTYPE, TDBTAB> pro;
 			if (m_dellist.empty())
 				return;
 			pro.m_data.swap(m_dellist);
@@ -386,7 +386,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
+		bool handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 		{
 			Try
 			{
@@ -396,7 +396,7 @@ namespace ngl
 				}
 				std::string lname;
 				LogLocalError("db load respones:[%] recv_over[%]"
-					, tools::type_name<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname)
+					, tools::type_name<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname)
 					, adata.m_data->m_over? "true":"false"
 				)
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
@@ -533,7 +533,7 @@ namespace ngl
 namespace ngl
 {
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	bool actor_base::handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
+	bool actor_base::handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 	{
 		std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
 		if (mdbclient == nullptr)

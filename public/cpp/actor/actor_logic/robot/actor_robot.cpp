@@ -166,7 +166,7 @@ namespace ngl
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>(
 			false
-			, dregister_fun_handle(actor_manage_robot, robot_pram)
+			, dregister_fun_handle(actor_manage_robot, np_robot_pram)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_robot>(

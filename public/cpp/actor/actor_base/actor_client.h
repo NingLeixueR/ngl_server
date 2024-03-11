@@ -42,16 +42,16 @@ namespace ngl
 		void connect_fnish();
 	public:
 		// ## 注册结点
-		bool handle(message<actor_node_register_response>& adata);
+		bool handle(message<np_actornode_register_response>& adata);
 		// ## actor客户端间相互连接
-		bool handle(message<actor_client_node_connect>& adata);
+		bool handle(message<np_actorclient_node_connect>& adata);
 		// ## 服务器向actor客户端同步结点信息
-		bool handle(message<actor_node_update>& adata);
+		bool handle(message<np_actornode_update>& adata);
 		// ## 向actor客户端同步结点信息(群发)
-		bool handle(message<actor_node_update_mass>& adata);
+		bool handle(message<np_actornode_update_mass>& adata);
 		// ## 连接成功后执行任务
-		bool handle(message<actor_node_actor_connect_task>& adata);
+		bool handle(message<np_actornode_connect_task>& adata);
 		// ## 同步actor_role对应的gateway
-		bool handle(message<actor_gateway_id_updata>& adata);
+		bool handle(message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

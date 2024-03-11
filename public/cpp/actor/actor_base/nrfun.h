@@ -77,7 +77,7 @@ namespace ngl
 		nrfun& rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		template <bool BOOL, typename T>
-		nrfun& rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
+		nrfun& rfun_forward(Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		template <typename T>
 		nrfun& rfun_recvforward(Tfun<TDerived, T> afun, bool aisload = false);

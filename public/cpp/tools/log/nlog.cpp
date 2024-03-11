@@ -39,7 +39,7 @@ namespace ngl
 
 		if (aislocal)
 		{
-			std::shared_ptr<actor_logitempro> pro(new actor_logitempro());
+			std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
 			pro->m_data.m_head.swap(llogformat.data("head"));
 			pro->m_data.m_pos.swap(llogformat.data("pos"));
 			pro->m_data.m_str.swap(llogformat.data("src"));
@@ -49,7 +49,7 @@ namespace ngl
 		}
 		else
 		{
-			std::shared_ptr<actor_logitempro> pro(new actor_logitempro());
+			std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
 			pro->m_data.m_head.swap(llogformat.data("head"));
 			pro->m_data.m_pos.swap(llogformat.data("pos"));
 			pro->m_data.m_str.swap(llogformat.data("src"));
@@ -63,7 +63,7 @@ namespace ngl
 	{
 		if (DEF_LOG_PRINTF)
 			logprintf::printf(atype, llogformat.data("pos").c_str(), llogformat.data("head").c_str(), llogformat.data("src").c_str());
-		std::shared_ptr<actor_logitempro> pro(new actor_logitempro());
+		std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
 		pro->m_data.m_head.swap(llogformat.data("head"));
 		pro->m_data.m_pos.swap(llogformat.data("pos"));
 		pro->m_data.m_str.swap(llogformat.data("src"));

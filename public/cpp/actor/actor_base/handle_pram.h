@@ -16,11 +16,11 @@ namespace ngl
 	struct actor_node_session
 	{
 		i32_sessionid m_session;
-		actor_node m_node;
+		np_actornode m_node;
 
 		actor_node_session();
-		actor_node_session(i32_sessionid asession, const actor_node& anode);
-		actor_node_session(const actor_node& anode);
+		actor_node_session(i32_sessionid asession, const np_actornode& anode);
+		actor_node_session(const np_actornode& anode);
 	};
 
 	struct handle_pram;
@@ -96,7 +96,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
-		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
+		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			apram.m_enum = init_protobuf::protocol<T>();
 			apram.m_data = adata;
@@ -189,7 +189,7 @@ namespace ngl
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 	{
-		using type_pro = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
+		using type_pro = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 		std::shared_ptr<type_pro> ldata = std::static_pointer_cast<type_pro>(adata.m_data);
 		std::vector<i32_actordataid>& luid = ldata->m_uid;
 		std::vector<i16_area>& larea = ldata->m_area;

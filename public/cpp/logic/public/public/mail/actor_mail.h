@@ -39,7 +39,7 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave) {}
 
 		// ---- ACTOR_PROTOCOL_ADD_MAIL,ĞÂÔöÓÊ¼ş
-		bool handle(message<actor_protocol_add_mail>& adata)
+		bool handle(message<np_actor_addmail>& adata)
 		{
 			auto lparm = adata.m_data;
 			m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);

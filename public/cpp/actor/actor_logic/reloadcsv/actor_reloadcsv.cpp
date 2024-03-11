@@ -26,7 +26,7 @@ namespace ngl
 		actor_reloadcsv::register_timer<actor_reloadcsv>(&actor_reloadcsv::timer_handle);
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv>(
 			false
-			, dregister_fun_handle(actor_reloadcsv, actor_reloadcsv_pro)
+			, dregister_fun_handle(actor_reloadcsv, np_actor_reloadcsv)
 		);
 	}
 
@@ -34,7 +34,7 @@ namespace ngl
 	{
 	}
 
-	bool actor_reloadcsv::handle(message<actor_reloadcsv_pro>& adata)
+	bool actor_reloadcsv::handle(message<np_actor_reloadcsv>& adata)
 	{
 		for (auto& [key, value] : adata.m_data->m_csvcontent)
 		{
@@ -51,7 +51,7 @@ namespace ngl
 	bool actor_reloadcsv::timer_handle(message<timerparm>& adata)
 	{
 		LogLocalError("############actor_reloadcsv::timer_handle###########")
-		actor_reloadcsv_verify_version pro;
+		np_actor_csv_verify_version pro;
 		allcsv::foreach_version(pro.m_version);
 		i64_actorid lrequest = nguid::make(ACTOR_RELOADCSV_DISTRIBUTE, tab_self_area, ttab_servers::tab()->m_reloadcsv);
 		send_server(ttab_servers::tab()->m_reloadcsv, pro, lrequest, id_guid());
@@ -73,7 +73,7 @@ namespace ngl
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_reloadcsv_distribute>(
 			false
-			, dregister_fun_handle(actor_reloadcsv_distribute, actor_reloadcsv_verify_version)
+			, dregister_fun_handle(actor_reloadcsv_distribute, np_actor_csv_verify_version)
 		);
 	}
 
@@ -81,12 +81,12 @@ namespace ngl
 	{
 	}
 
-	bool actor_reloadcsv_distribute::handle(message<actor_reloadcsv_verify_version>& adata)
+	bool actor_reloadcsv_distribute::handle(message<np_actor_csv_verify_version>& adata)
 	{
 		LogLocalError("############actor_reloadcsv_distribute::handle###########")
 		auto lparm = adata.m_data;
 		auto lpack = adata.m_pack;
-		actor_reloadcsv_pro pro;
+		np_actor_reloadcsv pro;
 		std::map<std::string, csvbase*>& lversion = allcsv::all();
 		for (auto [key, value] : lversion)
 		{

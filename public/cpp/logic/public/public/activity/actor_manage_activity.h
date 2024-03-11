@@ -51,8 +51,8 @@ namespace ngl
 		void start_activity(int64_t aactivityid);
 	public:
 		
-		bool handle(message<actor_protocol_open_activity>& adata);
-		bool handle(message<actor_protocol_close_activity>& adata);
+		bool handle(message<np_actor_openactivity>& adata);
+		bool handle(message<np_actor_closeactivity>& adata);
 
 		virtual void init();
 

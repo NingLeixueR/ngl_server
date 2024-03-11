@@ -49,12 +49,12 @@ namespace ngl
 		//###### 注册协议
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_client>(
 			true
-			, dregister_fun_handle(actor_client, actor_node_register_response)
-			, dregister_fun_handle(actor_client, actor_client_node_connect)
-			, dregister_fun_handle(actor_client, actor_node_update)
-			, dregister_fun_handle(actor_client, actor_node_actor_connect_task)
-			, dregister_fun_handle(actor_client, actor_node_update_mass)
-			, dregister_fun_handle(actor_client, actor_gateway_id_updata)
+			, dregister_fun_handle(actor_client, np_actornode_register_response)
+			, dregister_fun_handle(actor_client, np_actorclient_node_connect)
+			, dregister_fun_handle(actor_client, np_actornode_update)
+			, dregister_fun_handle(actor_client, np_actornode_connect_task)
+			, dregister_fun_handle(actor_client, np_actornode_update_mass)
+			, dregister_fun_handle(actor_client, np_actor_gatewayid_updata)
 			);
 	}
 
@@ -72,7 +72,7 @@ namespace ngl
 			{
 				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_ADDRESS_SERVER, tabactor->m_area, nguid::none_actordataid());
 				{
-					actor_node lnode;
+					np_actornode lnode;
 					lnode.m_name = "actorserver";
 					lnode.m_serverid = tabactor->m_id;
 					lnode.m_actortype.push_back(ACTOR_ADDRESS_SERVER);
@@ -83,7 +83,7 @@ namespace ngl
 					naddress::getInstance().actor_add(tabactor->m_id, lactorserveractorid);
 				}
 				{//注册结点
-					actor_node_register lpram
+					np_actornode_register lpram
 					{
 						.m_node
 						{
@@ -127,7 +127,7 @@ namespace ngl
 		}Catch;
 	}
 
-	bool actor_client::handle(message<actor_node_register_response>& adata)
+	bool actor_client::handle(message<np_actornode_register_response>& adata)
 	{
 		Try
 		{
@@ -135,7 +135,7 @@ namespace ngl
 			tab_servers* tab = ttab_servers::tab();
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
-				const actor_node& node = lparm->m_vec[i];
+				const np_actornode& node = lparm->m_vec[i];
 				if (naddress::getInstance().set_node(node))
 				{
 					// 比较id  较大的主动连接较小的
@@ -147,7 +147,7 @@ namespace ngl
 						nserver->connect(lserverid, node.m_ip, node.m_port, [tab, lserverid, lactorid](int asession)
 							{
 								LogLocalInfo("Connect Ok[%]", tab->m_id);
-								actor_client_node_connect pro;
+								np_actorclient_node_connect pro;
 								pro.m_id = tab->m_id;
 								nserver->send(asession, pro, nguid::moreactor(), lactorid);
 							}, false, true);
@@ -160,7 +160,7 @@ namespace ngl
 
 	void node_update(actor_client* aclient, i32_serverid alocalserverid, i32_session asession)
 	{
-		actor_node_update lpro;
+		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
 		for (auto&& [actorid, serverid] : naddress::getInstance().get_actorserver_map())
 		{
@@ -175,14 +175,14 @@ namespace ngl
 	{
 		if (aserverid > alocalserverid)
 		{
-			actor_client_node_connect pro;
+			np_actorclient_node_connect pro;
 			pro.m_id = alocalserverid;
 			nserver->send(asession, pro, nguid::moreactor(), aclient->id_guid());
 			nserver->set_server(aserverid, asession);
 		}
 	}
 
-	bool actor_client::handle(message<actor_client_node_connect>& adata)
+	bool actor_client::handle(message<np_actorclient_node_connect>& adata)
 	{
 		Try
 		{
@@ -206,7 +206,7 @@ namespace ngl
 				NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
 				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
 				{
-					std::shared_ptr<actor_server_connect> pro(new actor_server_connect{ .m_serverid = lserverid });
+					std::shared_ptr<np_actorserver_connect> pro(new np_actorserver_connect{ .m_serverid = lserverid });
 					nguid lguid = nguid::make_self(ACTOR_LOGIN);
 					handle_pram lparm;
 					handle_pram::create(lparm, lguid, guid(), pro);
@@ -217,7 +217,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(message<actor_node_update>& adata)
+	bool actor_client::handle(message<np_actornode_update>& adata)
 	{
 		Try
 		{
@@ -229,12 +229,12 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(message<actor_node_update_mass>& adata)
+	bool actor_client::handle(message<np_actornode_update_mass>& adata)
 	{
 		auto lparm = adata.m_data;
 		auto lpack = adata.m_pack;
 		int32_t lthreadid = adata.m_thread;
-		message<actor_node_update> lmessage(lthreadid, lpack, &lparm->m_mass);
+		message<np_actornode_update> lmessage(lthreadid, lpack, &lparm->m_mass);
 		handle(lmessage);
 		i64_actorid lactorid = id_guid();
 		naddress::getInstance().foreach(
@@ -272,7 +272,7 @@ namespace ngl
 		}
 	}
 	
-	bool actor_client::handle(message<actor_node_actor_connect_task>& adata)
+	bool actor_client::handle(message<np_actornode_connect_task>& adata)
 	{
 		Try
 		{
@@ -288,7 +288,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(message<actor_gateway_id_updata>& adata)
+	bool actor_client::handle(message<np_actor_gatewayid_updata>& adata)
 	{
 		auto lparm = adata.m_data;
 		if (lparm->m_isremove)

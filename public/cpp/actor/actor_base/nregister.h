@@ -61,9 +61,9 @@ namespace ngl
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <bool BOOL, typename T>
-	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_forward(Tfun<TDerived, actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
+	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_forward(Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
 	{
-		using type_forward = actor_forward<T, TYPE, BOOL, ngl::forward>;
+		using type_forward = np_actor_forward<T, TYPE, BOOL, ngl::forward>;
 		m_fun[init_protobuf::protocol<type_forward>()] = nlogicfun
 		{
 			.m_isdbload = aisload,
@@ -81,7 +81,7 @@ namespace ngl
 	template <typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_recvforward(Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
-		using type_forward = actor_forward<T, TYPE, false, T>;
+		using type_forward = np_actor_forward<T, TYPE, false, T>;
 		m_fun[init_protobuf::protocol<type_forward>()] = nlogicfun
 		{
 			.m_isdbload = aisload,

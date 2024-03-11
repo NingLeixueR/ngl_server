@@ -12,7 +12,7 @@ namespace ngl
 		static void init(const std::function<void(std::map<i64_actorid, T>&, pbdb::db_brief&)>& afun)
 		{
 			// ×¢²áÐ­Òé
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, actor_roleinfo>([afun](TDerived* apTDerived,actor_roleinfo& ainfo)
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_roleinfo>([afun](TDerived* apTDerived,np_actor_roleinfo& ainfo)
 				{
 					for (pbdb::db_brief& item : *ainfo.m_vecinfo.m_data)
 					{

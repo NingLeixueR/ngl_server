@@ -31,7 +31,7 @@ namespace ngl
 	{
 		nguid lguid(adata.m_data->m_roleid());
 		std::cout << "actor_manage_role roleid:" << adata.m_data->m_roleid() << std::endl;
-		actor_switch_process_role pro
+		np_actorswitch_process_role pro
 		{
 			.m_create = adata.m_data->m_iscreate(),
 			.m_gatewayid = adata.m_data->m_gatewayid(),

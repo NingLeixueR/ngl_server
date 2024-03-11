@@ -29,7 +29,7 @@ namespace ngl
 		static void nregister();
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(message<actor_forward<T, TYPE, true, ngl::forward>>& adata)
+		bool handle(message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)
 		{
 			auto lparm = adata.m_data;
 			auto lpack = adata.m_pack;
@@ -71,12 +71,12 @@ namespace ngl
 					lmap.insert(std::make_pair(info->m_socket, nguid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i])));
 				}
 			}
-			actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);
+			np_actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);
 			nserver->sendmore(lmap, ltemp, lpack->m_head.get_request_actor());
 			return true;
 		}
 
-		bool handle(message<actor_gateway_info_updata>& adata);
+		bool handle(message<np_actor_gatewayinfo_updata>& adata);
 	};
 
 }//namespace ngl

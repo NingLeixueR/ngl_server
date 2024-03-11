@@ -19,7 +19,7 @@
 namespace ngl
 {
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
-	struct actor_forward;
+	struct np_actor_forward;
 
 	// protobuf3不支持默认值
 	class init_protobuf

@@ -37,7 +37,7 @@ namespace ngl
 			{
 				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
 					true, 
-					(Tfun<actor, actor_broadcast>) & actor::handle
+					(Tfun<actor, np_actor_broadcast>) & actor::handle
 				);
 			}
 		}
@@ -56,7 +56,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
-			using tloaddb = actor_db_load_response<TYPE, DBTYPE, TDBTAB>;
+			using tloaddb = np_actordb_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
 			nrfun<TDerived, TYPE>::instance().template rfun<actor_base, tloaddb>(lpfun, true);
 		}
@@ -186,7 +186,7 @@ namespace ngl
 		// ## 重载此方法实现actor_base::m_broadcast毫秒触发事件
 		virtual void broadcast() {}
 		// ## 广播处理函数
-		bool handle(message<actor_broadcast>& adata);
+		bool handle(message<np_actor_broadcast>& adata);
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion
 	};

@@ -12,7 +12,7 @@ namespace ngl
 				return false;
 			if (ltemp->m_draw() == true)
 				return false;
-			std::shared_ptr<actor_send_item> pro(new actor_send_item());
+			std::shared_ptr<np_actor_senditem> pro(new np_actor_senditem());
 			for (int i = 0; i < ltemp->m_items_size(); ++i)
 			{
 				pro->m_item.insert({ ltemp->m_items()[i].m_itemtid(), ltemp->m_items()[i].m_count()});

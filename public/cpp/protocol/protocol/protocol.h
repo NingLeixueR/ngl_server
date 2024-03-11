@@ -92,7 +92,7 @@ namespace ngl
 			{
 				Try
 				{
-					using typeforward = actor_forward<T, TYPE, ISTRUE, ngl::forward>;
+					using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
 					typeforward* lp = new typeforward();
 					lp->m_recvpack = apack;
 					std::shared_ptr<void> ltemp(lp);
@@ -105,7 +105,7 @@ namespace ngl
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
-				using typeforward = actor_forward<T, TYPE, ISTRUE, ngl::forward>;
+				using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
 				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
 				nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
 				nguid lrequestguid(apack->m_head.get_request_actor());
@@ -127,7 +127,7 @@ namespace ngl
 				Try
 				{
 
-					using typeforward = actor_forward<T, TYPE, ISTRUE, T>;
+					using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 					typeforward* lp = new typeforward();
 					std::shared_ptr<void> ltemp(lp);
 					if (apack->m_protocol == ENET_KCP
@@ -158,7 +158,7 @@ namespace ngl
 			};
 			typefun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
-				using typeforward = actor_forward<T, TYPE, ISTRUE, T>;
+				using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 				nguid lrequestguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
 				typeforward* lp = (typeforward*)aptrpram.get();

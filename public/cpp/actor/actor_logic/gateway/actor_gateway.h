@@ -31,20 +31,20 @@ namespace ngl
 		// ## 通知actor_server [actorid]->[gateway server id]
 		void sync_actorserver_gatewayid(const nguid& aguid, bool aisremove);
 
-		void update_gateway_info(actor_gateway_info_updata* ap);
+		void update_gateway_info(np_actor_gatewayinfo_updata* ap);
 
 		void session_close(gateway_socket* ainfo);
 		// actor_login通知gateway玩家已经登录(并纪录session及对应的game服务器)
-		bool handle(message<actor_role_login>& adata);
+		bool handle(message<np_actorrole_login>& adata);
 		// 玩家登陆
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 		// 获取kcp-session
-		bool handle(message<actor_protocol_kcp>& adata);
+		bool handle(message<np_actor_kcp>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION>& adata);		
 		// 玩家切换game进程
-		bool handle(message<actor_switch_process<actor_switch_process_role>>& adata);
+		bool handle(message<np_actorswitch_process<np_actorswitch_process_role>>& adata);
 		// 断开连接
-		bool handle(message<actor_session_close>& adata);
+		bool handle(message<np_actor_session_close>& adata);
 	};
 }//namespace ngl
 

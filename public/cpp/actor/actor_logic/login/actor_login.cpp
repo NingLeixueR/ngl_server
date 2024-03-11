@@ -35,12 +35,12 @@ namespace ngl
 			);
 
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_login>(false
-			, dregister_fun_handle(actor_login, actor_disconnect_close)
+			, dregister_fun_handle(actor_login, np_actor_disconnect_close)
 		);
 
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_login>(true
-			, dregister_fun_handle(actor_login, actor_server_connect)
-			, dregister_fun_handle(actor_login, actor_role_login)
+			, dregister_fun_handle(actor_login, np_actorserver_connect)
+			, dregister_fun_handle(actor_login, np_actorrole_login)
 		);
 	}
 
@@ -142,7 +142,7 @@ namespace ngl
 		LogLocalError("game[%] \ngateway[%]", m_game, m_gateway)
 	}
 	
-	bool actor_login::handle(message<actor_server_connect>& adata)
+	bool actor_login::handle(message<np_actorserver_connect>& adata)
 	{
 		auto lparm = adata.m_data;
 		server_info ltemp
@@ -162,7 +162,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_login::handle(message<actor_role_login>& adata)
+	bool actor_login::handle(message<np_actorrole_login>& adata)
 	{
 		pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
 		pro.set_m_roleid(adata.m_data->m_roleid);
@@ -208,7 +208,7 @@ namespace ngl
 			}
 
 			// 通知gateway服务器				
-			actor_role_login pro
+			np_actorrole_login pro
 			{
 				.m_session = lppair_account->m_session,
 				.m_accountid = lpaccount->getconst().m_id(),
@@ -226,7 +226,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_login::handle(message<actor_disconnect_close>& adata)
+	bool actor_login::handle(message<np_actor_disconnect_close>& adata)
 	{
 		auto itor = m_actorbyserver.find(adata.m_data->m_actorid);
 		if (itor == m_actorbyserver.end())

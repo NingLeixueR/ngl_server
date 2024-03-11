@@ -13,96 +13,96 @@
 namespace ngl
 {
 	// 机器人测试
-	struct robot_pram
+	struct np_robot_pram
 	{
 		std::vector<std::string> m_parm;
 
-		def_portocol(robot_pram, m_parm)
+		def_portocol(np_robot_pram, m_parm)
 	};
 
-	struct actor_node
+	struct np_actornode
 	{
 		std::string		m_name;// 服务器名称
 		i32_serverid	m_serverid;// 服务器id
 		std::vector<i16_actortype>	m_actortype;// ENUM_ACTOR_TYPE
 		std::string		m_ip;// ip
 		i16_port		m_port;// 端口
-		def_portocol_function(actor_node, m_name, m_serverid, m_actortype, m_ip, m_port)
+		def_portocol_function(np_actornode, m_name, m_serverid, m_actortype, m_ip, m_port)
 	};
 
 	// ---- [actor client -> actor server] register
 	// 注册结点
-	struct actor_node_register
+	struct np_actornode_register
 	{
-		actor_node m_node;
+		np_actornode m_node;
 		std::vector<i64_actorid> m_add;
-		def_portocol(actor_node_register, m_node, m_add)
+		def_portocol(np_actornode_register, m_node, m_add)
 	};
 
 	// ---- [actor client -> actor server] register
 	// 注册结点
-	struct actor_node_register_response
+	struct np_actornode_register_response
 	{
-		std::vector<actor_node> m_vec;
-		def_portocol(actor_node_register_response, m_vec)
+		std::vector<np_actornode> m_vec;
+		def_portocol(np_actornode_register_response, m_vec)
 	};
 
 	// ---- [actor client -> actor client] connect(actor客户端相互连接,id大的) 
 	// 客户端间相互连接
-	struct actor_client_node_connect
+	struct np_actorclient_node_connect
 	{
 		i32_serverid m_id;
-		def_portocol(actor_client_node_connect, m_id)
+		def_portocol(np_actorclient_node_connect, m_id)
 	};
 
 	// ---- [actor server -> actor client]	[actor client -> actor server] 
 	// ---- 服务器向客户端同步结点信息		客户端向服务器同步结点信息
 	// 向actor客户端同步结点信息
-	struct actor_node_update
+	struct np_actornode_update
 	{
 		i32_serverid m_id;// 服务器id
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
 		bool m_actorservermass = true; // 是否给actorclient进行广播
-		def_portocol(actor_node_update, m_id, m_add, m_del, m_actorservermass)
+		def_portocol(np_actornode_update, m_id, m_add, m_del, m_actorservermass)
 	};
 
 	// 向actor客户端同步结点信息(群发)
-	struct actor_node_update_mass
+	struct np_actornode_update_mass
 	{
-		actor_node_update m_mass;
+		np_actornode_update m_mass;
 		std::function<void()> m_fun;
-		def_portocol(actor_node_update_mass, m_mass)
+		def_portocol(np_actornode_update_mass, m_mass)
 	};
 
 	// ---- [local actor client]
 	// ---- 连接成功后执行任务
 	// 将任务添加到ActorClient中,当指定类型的Actor连接成功后执行该任务
-	struct actor_node_actor_connect_task
+	struct np_actornode_connect_task
 	{
 		i32_serverid m_serverid;
 		std::function<void()> m_fun;
-		def_portocol(actor_node_actor_connect_task, m_serverid)
+		def_portocol(np_actornode_connect_task, m_serverid)
 	};
 
 	// ---- [actor db client -> actor db server]
 	// ---- 从db server加载数据
 	// 从db server加载数据
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_load
+	struct np_actordb_load
 	{
 		nguid m_id;
-		def_portocol(actor_db_load, m_id)
+		def_portocol(np_actordb_load, m_id)
 	};
 
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_load_response
+	struct np_actordb_load_response
 	{
 		def_portocol(actor_db_load_response<T>)
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
+	struct np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
 	{
 		protobuf_data<std::map<nguid, T>>	m_data;
 		bool		m_stat = true;
@@ -117,7 +117,7 @@ namespace ngl
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_load_response<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
+	struct np_actordb_load_response<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
 	{
 		std::map<nguid, T>	m_data;
 		bool		m_stat = true;
@@ -136,19 +136,19 @@ namespace ngl
 	// ---- 保存数据
 	// 从db server加载数据
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_save
+	struct np_actordb_save
 	{
-		actor_db_save() {}
+		np_actordb_save() {}
 
 		def_portocol(actor_db_save<T>)
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
+	struct np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
 	{
 		protobuf_data<std::map<nguid, T>>	m_data;
 
-		actor_db_save() {}
+		np_actordb_save() {}
 
 		void add(const nguid& akey, const T& avalue)
 		{
@@ -168,11 +168,11 @@ namespace ngl
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_save<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
+	struct np_actordb_save<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
 	{
 		std::map<nguid, T>	m_data;
 
-		actor_db_save() {}
+		np_actordb_save() {}
 
 		void add(const nguid& akey, const T& avalue)
 		{
@@ -189,11 +189,11 @@ namespace ngl
 
 	// 从db server删除数据
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
-	struct actor_db_delete
+	struct np_actordb_delete
 	{
 		std::vector<int64_t> m_data;
 
-		actor_db_delete() {}
+		np_actordb_delete() {}
 
 		def_portocol(actor_db_delete<T>, m_data)
 	};
@@ -205,7 +205,7 @@ namespace ngl
 		enum_clist_del = 2,
 	};
 	template <EPROTOCOL_TYPE PROTYPE, typename T>
-	struct actor_time_db_cache
+	struct np_actortime_db_cache
 	{
 		enum_cache_list			m_type;
 		std::set<i64_actorid>	m_ls;
@@ -215,29 +215,29 @@ namespace ngl
 
 	// ---- 模块间转发
 	template <typename T>
-	struct actor_module_forward
+	struct np_actormodule_forward
 	{
 	private:
 		int64_t				m_identifier = 0;
 		std::shared_ptr<T>	m_data;
 	public:
-		actor_module_forward(int64_t aidentifier, std::shared_ptr<T>& adata) :
+		np_actormodule_forward(int64_t aidentifier, std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
 			m_data(adata)
 		{}
 
-		actor_module_forward(int64_t aidentifier, T& adata) :
+		np_actormodule_forward(int64_t aidentifier, T& adata) :
 			m_identifier(aidentifier),
 			m_data(new T(adata))
 		{
 		}
 
-		actor_module_forward(int64_t aidentifier) :
+		np_actormodule_forward(int64_t aidentifier) :
 			m_identifier(aidentifier),
 			m_data(nullptr)
 		{}
 
-		actor_module_forward() :
+		np_actormodule_forward() :
 			m_identifier(0),
 			m_data(nullptr)
 		{}
@@ -321,12 +321,12 @@ namespace ngl
 
 
 	template <typename TDATA>
-	using mforward = actor_module_forward<TDATA>;
+	using mforward = np_actormodule_forward<TDATA>;
 
 	// ---- [login -> game]
 	// ---- [login -> gateway]
 	// ---- 通知服务器玩家账号验证通过
-	struct actor_role_login
+	struct np_actorrole_login
 	{
 		std::string		m_session;
 		i64_accountid	m_accountid = 0;
@@ -338,11 +338,11 @@ namespace ngl
 		bool			m_iscreate = false;
 		i32_socket		m_socketid = 0;
 		i64_actorid		m_request_actor = 0;
-		def_portocol(actor_role_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
+		def_portocol(np_actorrole_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
-	struct actor_forward
+	struct np_actor_forward
 	{
 		using BASE_TYPE = T;
 		static const bool isusing = ISUSING;
@@ -354,7 +354,7 @@ namespace ngl
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
-	struct actor_forward<T, PROTYPE, true, ngl::forward>
+	struct np_actor_forward<T, PROTYPE, true, ngl::forward>
 	{
 		using BASE_TYPE = T;
 		static const bool				isusing = true;
@@ -362,11 +362,11 @@ namespace ngl
 		std::vector<i16_area>			m_area;
 		std::shared_ptr<pack>			m_recvpack;
 
-		actor_forward() 
+		np_actor_forward() 
 		{
 		}
 
-		actor_forward(actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
+		np_actor_forward(np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
 		{
 		}
@@ -376,20 +376,20 @@ namespace ngl
 			return nullptr;
 		}
 		
-		def_portocol(actor_forward, m_uid, m_area/*, m_data*/)	
+		def_portocol(np_actor_forward, m_uid, m_area/*, m_data*/)	
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
-	struct actor_forward<T, PROTYPE, false, ngl::forward>
+	struct np_actor_forward<T, PROTYPE, false, ngl::forward>
 	{
 		using BASE_TYPE = T;
 		static const bool isusing = false;
 		std::shared_ptr<pack> m_recvpack;
 
-		actor_forward() 
+		np_actor_forward() 
 		{}
 
-		actor_forward(actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
+		np_actor_forward(np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
 		{}
 
@@ -398,12 +398,12 @@ namespace ngl
 			return nullptr;
 		}
 		
-		def_portocol(actor_forward, /*m_uid, m_area,*/ /*m_data*/)		
+		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)		
 	};
 
 
 	template <typename T>
-	struct actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
+	struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
 	{
 		using BASE_TYPE = T;
 		static const bool				isusing = true;
@@ -422,21 +422,21 @@ namespace ngl
 			return m_data.m_data.get();
 		}
 
-		actor_forward()
+		np_actor_forward()
 		{}
 
-		actor_forward(actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
+		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
-		~actor_forward()
+		~np_actor_forward()
 		{}
 
-		def_portocol(actor_forward,m_uid, m_area, m_data)
+		def_portocol(np_actor_forward,m_uid, m_area, m_data)
 	};
 
 	template <typename T>
-	struct actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>
+	struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>
 	{
 		using BASE_TYPE = T;
 		static const bool				isusing = false;
@@ -460,22 +460,22 @@ namespace ngl
 			m_data.make();
 		}
 
-		actor_forward()
+		np_actor_forward()
 		{}
 
-		actor_forward(actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
+		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
-		~actor_forward()
+		~np_actor_forward()
 		{}
 
-		def_portocol(actor_forward, m_uid, m_area, m_data)
+		def_portocol(np_actor_forward, m_uid, m_area, m_data)
 	};
 
 
 	template <typename T, bool ISUSING>
-	struct actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
+	struct np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
 	{
 		using BASE_TYPE = T;
 		static const bool				isusing = ISUSING;
@@ -495,117 +495,117 @@ namespace ngl
 			return m_data != nullptr ? m_data : &m_data_;
 		}
 
-		actor_forward()
+		np_actor_forward()
 			:m_data(nullptr)
 		{}
 
-		actor_forward(actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ~ISUSING, T>& adata)
+		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ~ISUSING, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 
-		~actor_forward()
+		~np_actor_forward()
 		{}
 
-		def_portocol(actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
+		def_portocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
 	};
 
 	// ---- actor 切换进程
 	//ACTOR_SPROCESS_ROLE
 	template <typename T>
-	struct actor_switch_process
+	struct np_actorswitch_process
 	{
 		i64_actorid		m_actor = 0;
 		i32_serverid	m_serverid = 0;
 		i32_serverid	m_toserverid = 0;
 		T				m_pram;
-		def_portocol(actor_switch_process, m_actor, m_serverid, m_toserverid, m_pram);
+		def_portocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
-	struct actor_switch_process_role
+	struct np_actorswitch_process_role
 	{
 		bool	m_create = false;
 		int		m_gatewayid = 0;
-		def_portocol(actor_switch_process_role, m_create, m_gatewayid);
+		def_portocol(np_actorswitch_process_role, m_create, m_gatewayid);
 	};
 
-	struct actor_switch_process_plays
+	struct np_actorswitch_process_plays
 	{
 		std::vector<i64_actorid> m_players;
-		def_portocol(actor_switch_process_plays, m_players);
+		def_portocol(np_actorswitch_process_plays, m_players);
 	};
 
 	// ---- 服务器会通过此消息告诉对方连接成功 
-	struct actor_server_connect
+	struct np_actorserver_connect
 	{
 		i32_serverid m_serverid;
-		def_portocol(actor_server_connect, m_serverid);
+		def_portocol(np_actorserver_connect, m_serverid);
 	};
 
 	// ---- SESSION断开连接		ACTOR_SESSION_CLOSE
-	struct actor_session_close
+	struct np_actor_session_close
 	{
 		i32_sessionid m_sessionid = 0;
-		def_portocol(actor_session_close, m_sessionid)
+		def_portocol(np_actor_session_close, m_sessionid)
 	};
 
 	// ---- [game,login] 玩家与gateway断开连接  ACTOR_DISCONNECT_CLOSE,
-	struct actor_disconnect_close
+	struct np_actor_disconnect_close
 	{
 		i64_actorid m_actorid;
-		def_portocol(actor_disconnect_close, m_actorid)
+		def_portocol(np_actor_disconnect_close, m_actorid)
 	};
 	
-	struct actor_gateway_id_updata
+	struct np_actor_gatewayid_updata
 	{
 		bool			m_isremove;
 		i64_actorid		m_actorid;
 		i32_serverid	m_gatewayid;
-		def_portocol(actor_gateway_id_updata, m_isremove, m_actorid, m_gatewayid)
+		def_portocol(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
 	// ---- 日志发送 
-	struct actor_logitem
+	struct logitem
 	{
 		int				m_serverid = 0;				// 服务器id
 		int				m_type;						// ELOG
 		std::string		m_head;						// 日志头
 		std::string		m_pos;						// 触发日志的文件位置
 		std::string		m_str;						// 日志内容
-		def_portocol_function(actor_logitem, m_serverid, m_type, m_head, m_pos, m_str)
+		def_portocol_function(logitem, m_serverid, m_type, m_head, m_pos, m_str)
 	};
-	struct actor_logitempro
+	struct ng_actor_logitem
 	{
-		actor_logitem m_data;
-		def_portocol(actor_logitempro, m_data)
+		logitem m_data;
+		def_portocol(ng_actor_logitem, m_data)
 	};
 
 	// ---- 间隔一段时间发起的全员(所有actor)广播
 	// ## 可以在这个广播里推送一些需要处理的任务,例如 保存数据
-	struct actor_broadcast
+	struct np_actor_broadcast
 	{
-		def_portocol(actor_broadcast)
+		def_portocol(np_actor_broadcast)
 	};
 
 	// ---- 重新加载csv
-	struct actor_reloadcsv_pro
+	struct np_actor_reloadcsv
 	{
 		std::map<std::string, std::string> m_csvcontent; 
-		def_portocol(actor_reloadcsv_pro, m_csvcontent)
+		def_portocol(np_actor_reloadcsv, m_csvcontent)
 	};
 
 	// ---- 核实csv版本
-	struct actor_reloadcsv_verify_version
+	struct np_actor_csv_verify_version
 	{
 		std::map<std::string, int32_t> m_version; // key: tab typeid(TAB).hash_code()
-		def_portocol(actor_reloadcsv_verify_version, m_version)
+		def_portocol(np_actor_csv_verify_version, m_version)
 	};
 
 	// ---- 发送物品给actor role模块
-	struct actor_send_item
+	struct np_actor_senditem
 	{
 		std::string					m_src;//物品来源
 		std::map<int32_t, int32_t>	m_item;
-		def_portocol(actor_send_item, m_src, m_item)
+		def_portocol(np_actor_senditem, m_src, m_item)
 	};
 
 	struct chat
@@ -619,10 +619,10 @@ namespace ngl
 	};
 
 	// ---- role信息同步
-	struct actor_roleinfo
+	struct np_actor_roleinfo
 	{
 		protobuf_data<std::vector<pbdb::db_brief>> m_vecinfo;
-		def_portocol(actor_roleinfo, m_vecinfo)
+		def_portocol(np_actor_roleinfo, m_vecinfo)
 	};
 	
 	struct gateway_socket
@@ -639,51 +639,51 @@ namespace ngl
 	};
 
 	// ---- 更新连接数据
-	struct actor_gateway_info_updata
+	struct np_actor_gatewayinfo_updata
 	{
 		std::vector<gateway_socket>	m_add;
 		std::vector<i32_socket>		m_delsocket;
 		std::vector<i64_actorid>	m_delactorid;
-		def_portocol(actor_gateway_info_updata, m_add, m_delsocket, m_delactorid)
+		def_portocol(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
 	};
 
 	// ---- 新增邮件
-	struct actor_protocol_add_mail
+	struct np_actor_addmail
 	{
 		i64_actorid					m_roleid;
 		int32_t						m_tid;
 		std::map<int32_t,int32_t>	m_items;
 		std::string					m_parm;
 
-		def_portocol(actor_protocol_add_mail, m_roleid, m_tid, m_items, m_parm)
+		def_portocol(np_actor_addmail, m_roleid, m_tid, m_items, m_parm)
 	};
 
 	// ---- 通知actor_manage_activity开启活动
-	struct actor_protocol_open_activity
+	struct np_actor_openactivity
 	{
 		i64_actorid m_activityid;
-		actor_protocol_open_activity(i64_actorid aactivityid) :
+		np_actor_openactivity(i64_actorid aactivityid) :
 			m_activityid(aactivityid)
 		{}
 
-		actor_protocol_open_activity() :
+		np_actor_openactivity() :
 			m_activityid(-1)
 		{}
 
-		def_portocol(actor_protocol_open_activity, m_activityid)
+		def_portocol(np_actor_openactivity, m_activityid)
 	};
 
 	// ---- 通知actor_manage_activity关闭活动
-	struct actor_protocol_close_activity
+	struct np_actor_closeactivity
 	{
 		i64_actorid m_activityid;
 		bool		m_isnormal;	// 是否正常关闭
-		def_portocol(actor_protocol_close_activity, m_activityid, m_isnormal)
+		def_portocol(np_actor_closeactivity, m_activityid, m_isnormal)
 	};
 
 
 	// ---- 通知kcp服务器创建连接
-	struct actor_protocol_kcp
+	struct np_actor_kcp
 	{
 		std::string			m_kcpsession;
 		i32_session			m_sessionid;
@@ -692,7 +692,7 @@ namespace ngl
 		std::string			m_uip;
 		i16_port			m_uport;
 		int32_t				m_conv;
-		def_portocol(actor_protocol_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
+		def_portocol(np_actor_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
 	};
 }//namespace ngl
 

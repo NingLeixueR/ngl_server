@@ -140,7 +140,7 @@ namespace ngl
 			return true;
 		}
 	public:
-		bool handle(message<robot_pram>& adata)
+		bool handle(message<np_robot_pram>& adata)
 		{
 			auto lrecv = adata.m_data;
 			if (lrecv->m_parm.size() > 1)

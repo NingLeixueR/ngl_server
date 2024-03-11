@@ -25,6 +25,6 @@ namespace ngl
 
 		static void nregister();
 
-		bool handle(message<actor_protocol_kcp>& adata);
+		bool handle(message<np_actor_kcp>& adata);
 	};
 }//namespace ngl

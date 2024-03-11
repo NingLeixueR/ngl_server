@@ -39,7 +39,7 @@ namespace ngl
 		int32_t tid = roomid::tid(lrecv->m_roomid());
 		auto tab = allcsv::tab<tab_plays>(tid);
 		assert(tab != nullptr);
-		actor_switch_process_plays pram;
+		np_actorswitch_process_plays pram;
 		std::for_each(lrecv->mutable_m_member()->begin(), lrecv->mutable_m_member()->end(), [&pram](const pbnet::MATCHING_MEMBER& adata)
 			{
 				pram.m_players.push_back(adata.m_id());

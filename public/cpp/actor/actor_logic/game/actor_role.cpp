@@ -23,7 +23,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 				.m_broadcast = true,
 			})
-		, m_gatewayid(((actor_switch_process_role*)(adata))->m_gatewayid)
+		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
 		, m_playactorid(0)
 	{
 		assert(aarea == ttab_servers::tab()->m_area);
@@ -51,7 +51,7 @@ namespace ngl
 
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
 			true
-			, dregister_fun_handle(actor_role, actor_disconnect_close)
+			, dregister_fun_handle(actor_role, np_actor_disconnect_close)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>(
@@ -228,7 +228,6 @@ namespace ngl
 		}
 
 		m_info.change_gold(lgold);
-
 
 		std::map<int, int> ldropmap;
 		if (tab->m_dropid > 0)

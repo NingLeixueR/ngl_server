@@ -118,8 +118,8 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
-		bool handle(message<actor_send_item>& adata);
-		bool handle(message<actor_disconnect_close>& adata);
+		bool handle(message<np_actor_senditem>& adata);
+		bool handle(message<np_actor_disconnect_close>& adata);
 		//玩法创建成功  记录玩法actorid
 		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
 		void createorder(std::string& aorder, int32_t arechargeid);

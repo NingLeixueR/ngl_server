@@ -43,7 +43,7 @@ namespace ngl
 
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(
-			actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata
+			np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata
 		)
 		{
 			return adata.m_recvpack;
@@ -51,7 +51,7 @@ namespace ngl
 
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(
-			actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata
+			np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata
 		)
 		{
 			return adata.m_recvpack;
@@ -59,7 +59,7 @@ namespace ngl
 
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(
-			actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata
+			np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata
 		)
 		{
 			return adata.m_recvpack;
@@ -67,7 +67,7 @@ namespace ngl
 
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(
-			actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata
+			np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata
 		)
 		{
 			return adata.m_recvpack;
@@ -246,7 +246,7 @@ namespace ngl
 		template <typename T>
 		void send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
 		{
-			actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
+			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
 			pro.m_uid.push_back(auid);
 			pro.m_area.push_back(aarea);
 			pro.set_data(&adata);
@@ -257,7 +257,7 @@ namespace ngl
 		template <typename T>
 		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 		{
-			actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
+			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
 			for (int i = 0; i < avec.size(); ++i)
 			{
 				pro.m_uid.push_back(avec[i].first);

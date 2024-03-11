@@ -28,7 +28,7 @@ namespace ngl
 		static void nregister();
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(message<actor_forward<T, TYPE, false, ngl::forward>>& adata)
+		bool handle(message<np_actor_forward<T, TYPE, false, ngl::forward>>& adata)
 		{
 			//Client->Gate  需要把这个消息传递给Game服务器
 			//adata.m_uid == socket id
@@ -47,14 +47,14 @@ namespace ngl
 			}
 			if (info == nullptr)
 				return false;
-			actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
+			np_actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
 			ltemp.m_uid.push_back(info->m_dataid);
 			ltemp.m_area.push_back(info->m_area);
 			nserver->send_server(info->m_gameid, ltemp, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
 			return true;
 		}
 
-		bool handle(message<actor_gateway_info_updata>& adata);
+		bool handle(message<np_actor_gatewayinfo_updata>& adata);
 	};
 }//namespace ngl
 

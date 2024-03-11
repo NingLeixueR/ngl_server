@@ -2,7 +2,7 @@
 
 namespace ngl
 {
-	bool actor::handle(message<actor_broadcast>& adata)
+	bool actor::handle(message<np_actor_broadcast>& adata)
 	{
 		// ## ±£´æÊý¾Ý
 		if (get_actor_manage_dbclient() != nullptr)

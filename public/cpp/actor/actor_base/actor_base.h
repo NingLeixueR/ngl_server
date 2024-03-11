@@ -71,7 +71,7 @@ namespace ngl
 			typename TDBTAB, 
 			typename TACTOR
 		>
-		bool			handle(message<actor_db_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
+		bool			handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
 
 #pragma region virtual_function
@@ -184,11 +184,11 @@ namespace ngl
 
 #pragma endregion //network_kcp
 		template <typename T>
-		using tactor_forward = actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
+		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 
 		template <typename T>
 		static void actor_forward_init(
-			actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
+			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
 			, i64_actorid aid
 			)
 		{
@@ -199,7 +199,7 @@ namespace ngl
 
 		template <typename T>
 		static void actor_forward_setdata(
-			actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
+			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
 			, std::shared_ptr<T>& adata
 		)
 		{
