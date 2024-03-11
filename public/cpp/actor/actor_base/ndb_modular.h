@@ -72,6 +72,8 @@ namespace ngl
 			data_modified<TDATA>* ret = find(aid);
 			if (ret != nullptr)
 				return ret;
+			if (m_id != -1 && m_id != aid)
+				return nullptr;
 			data_modified<TDATA>& ldata = data()[aid];
 			ldata.get().set_m_id(aid);
 			return &ldata;
