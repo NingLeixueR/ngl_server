@@ -102,51 +102,10 @@ namespace ngl
 					start(lservice);
 					afun(lservice->m_sessionid);
 				}
-				//boost::bind(&impl_asio_tcp::conn_handler, this, boost::asio::placeholders::error, lservice, aip, aport, afun, acount)
 			);
 			//////////////
 			return lservice;
 		}
-
-		//inline void conn_handler(
-		//	const boost::system::error_code& ec
-		//	, service_tcp* ap
-		//	, const str_ip& aip
-		//	, i16_port aport
-		//	, const tcp_connectcallback& afun
-		//	, int acount
-		//)
-		//{
-		//	if (ec)
-		//	{
-		//		if (acount > 0)
-		//		{
-		//			LogLocalError("连接[%:%]失败[%] 加入定时队列 ", aip, aport, ec.message())
-		//			//加入定时队列
-		//			wheel_parm lparm
-		//			{
-		//				.m_ms = 1000,
-		//				.m_intervalms = [](int64_t) {return 1000; } ,
-		//				.m_count = 1,
-		//				.m_fun = [this, aip, aport, afun, acount](wheel_node* anode) 
-		//				{
-		//					impl_asio_tcp::connect(aip, aport, afun, acount - 1); 
-		//				}
-		//			};
-		//			asio_timer::wheel().addtimer(lparm);
-		//		}
-		//		return;
-		//	}
-		//	{
-		//		monopoly_shared_lock(m_ipportlock);
-		//		std::pair<str_ip, i16_port>& lipport = m_ipport[ap->m_sessionid];
-		//		lipport.first = ap->m_socket.remote_endpoint().address().to_string();
-		//		lipport.second = ap->m_socket.remote_endpoint().port();
-		//		ap->m_is_lanip = tools::is_lanip(lipport.first);
-		//	}
-		//	start(ap);
-		//	afun(ap->m_sessionid);
-		//}
 
 		inline service_tcp* get_tcp(i32_sessionid asessionid)
 		{
@@ -414,7 +373,6 @@ namespace ngl
 					}
 					accept();
 				}
-				//boost::bind(&impl_asio_tcp::handle_accept, this, lservice, boost::asio::placeholders::error)
 			);
 		}
 

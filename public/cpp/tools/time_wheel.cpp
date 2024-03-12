@@ -265,7 +265,6 @@ namespace ngl
 
 		std::shared_ptr<wheel_node> pop_node()
 		{
-
 			wheel_node* ret = nullptr;
 			if (m_worldnodehead == m_worldnodetail)
 			{
