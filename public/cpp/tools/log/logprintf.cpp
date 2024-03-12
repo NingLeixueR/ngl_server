@@ -137,8 +137,8 @@ namespace ngl
 		case ELOG_LOCAL:
 			lp = "local";
 			break;
-		case ELOG_DEFAULT:
-			lp = "default";
+		case ELOG_NETWORK:
+			lp = "network";
 			break;
 		case ELOG_BI:
 			lp = "bi";
@@ -211,7 +211,7 @@ namespace ngl
 		{
 		case ELOG_LOCAL:
 			return std::shared_ptr<logfile>(new logfile_default(aisactor, aconfig));
-		case ELOG_DEFAULT:
+		case ELOG_NETWORK:
 			return std::shared_ptr<logfile>(new logfile_default(aisactor, aconfig));
 		case ELOG_BI:
 			return std::shared_ptr<logfile>(new logfile_bi(aisactor, aconfig));
