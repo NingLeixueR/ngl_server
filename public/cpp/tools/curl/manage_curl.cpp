@@ -1,21 +1,21 @@
 #include "manage_curl.h"
-#include <thread>
 #include "ijson.h"
 #include "md5.h"
 
+#include <thread>
+
 namespace ngl
 {
-
 	struct _http::impl_http
 	{
-		ENUM_MODE m_mode;
-		ENUM_TYPE m_type;
-		CURL* m_curl;
-		std::string m_url;
-		std::string m_param;
-		int m_timeout;
-		std::string m_cookies;
-		curl_slist* m_http_headers;
+		ENUM_MODE		m_mode;
+		ENUM_TYPE		m_type;
+		CURL*			m_curl;
+		std::string		m_url;
+		std::string		m_param;
+		int				m_timeout;
+		std::string		m_cookies;
+		curl_slist*		m_http_headers;
 		std::function<void(int, _http&)> m_callback;
 
 		impl_http() :
@@ -80,8 +80,8 @@ namespace ngl
 
 	struct manage_curl::impl_manage_curl
 	{
-		std::unique_ptr<std::thread> m_thread;
-		work_list<_http*> m_list;
+		std::unique_ptr<std::thread>	m_thread;
+		work_list<_http*>				m_list;
 
 		impl_manage_curl() :
 			m_thread(nullptr),
@@ -253,7 +253,6 @@ namespace ngl
 		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_POST);
 		ngl::manage_curl::set_url(*lhttp, "https://xxxxx/external/index/auth");
 
-
 		std::string lparm;
 		//ngl::manage_curl::param(lparm, "game_id", 45);
 		//ngl::manage_curl::param(lparm, "sign", "13d89fa2af33de479deaf48da67ba01f");
@@ -261,11 +260,13 @@ namespace ngl
 		//ngl::manage_curl::param(lparm, "token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWZ1bi5nYW1lcyIsImF1ZCI6ImZpZnVuLmdhbWVzIiwiaWF0IjoxNjkzOTIwMTQ0LCJleHAiOjE2OTY1MTIxNDQsIm5iZiI6MTY5MzkyMDE0NCwicGxhdGZvcm1fdWlkIjoyOTY5NDQ4LCJwbGF0Zm9ybV9hY2NvdW50Ijoiemh1Z29uZzMiLCJnYW1lX2lkIjo0NSwiZ2FtZV91aWQiOjQzNjg1MDYsInV1aWQiOiJlZjA5Yzg1MmQ4ZjRkYWE5Y2JiNGY2MjM1MjBlNjQ1OSJ9.nXnFg3gu1DdPVWtvcq4u6SmXNse0fUQ3OyMr3QvN0JE");
 		//ngl::manage_curl::param(lparm, "uid", "2969448");
 
-		//ijson ltempjson;
-		//ltempjson << std::make_pair("appid", 44);
-		//ltempjson << std::make_pair("uid", 1406739);
-		//ltempjson << std::make_pair("sessionid", "i461qbg8pia3pe04fdenue1hu4");
-		
+		ijson ltempjson;
+		ltempjson << std::make_pair("appid", 44);
+		ltempjson << std::make_pair("uid", 1406739);
+		ltempjson << std::make_pair("sessionid", "i461qbg8pia3pe04fdenue1hu4");
+		ltempjson.free_nonformatstr();
+		std::string ljsonstr;
+		ltempjson >> ljsonstr;
 
 		//std::string ltemp;
 		//md5(appid.uid.sessionid.login_key);
@@ -296,5 +297,4 @@ namespace ngl
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 		}
 	}
-
 }//namespace ngl

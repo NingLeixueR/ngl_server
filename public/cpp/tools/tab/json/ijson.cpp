@@ -35,7 +35,6 @@ namespace ngl
 			cJSON_Delete(m_json);
 			m_json = nullptr;
 		}
-
 	}
 
 	cJSON* ijson::get()

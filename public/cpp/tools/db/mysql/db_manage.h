@@ -29,9 +29,7 @@ namespace ngl
 
 	class db_manage
 	{ 
-
 	public:
-
 		template <typename T>
 		static char* serialize(db* adb, T& adata, bool aistohex = true)
 		{
@@ -85,7 +83,6 @@ namespace ngl
 			{
 				//char lbuff[] =
 				//	"INSERT INTO %s  (%s)VALUES(%s)  ON DUPLICATE KEY UPDATE %s;";
-
 				//REPLACE INTO 则会先删除数据，然后再插入。
 				char lbuff[] =
 					"REPLACE INTO %s (%s)VALUES(%s);";

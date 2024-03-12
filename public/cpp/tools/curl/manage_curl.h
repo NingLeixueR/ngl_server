@@ -1,15 +1,12 @@
 #pragma once
 
+#include <functional>
+#include <string>
 #include <curl.h>
-#include <string>
-#include <vector>
-#include <functional>
-#include <string>
 #include <list>
-#include <functional>
 
-#include "nlog.h"
 #include "threadtools.h"
+#include "nlog.h"
 #include "impl.h"
 
 #ifdef WIN32
@@ -63,7 +60,6 @@ namespace ngl
 			static manage_curl temp;
 			return temp;
 		}
-		
 		/** …Ë÷√http¿‡–Õ */
 		static void set_mode(_http& ahttp, ENUM_MODE aval);
 		static void set_type(_http& ahttp, ENUM_TYPE aval);

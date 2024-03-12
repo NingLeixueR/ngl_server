@@ -37,7 +37,6 @@ namespace ngl
 				db_data<T>::m_data.erase(id);
 		}
 		
-
 		static bool isload(i64_actorid aid)
 		{
 			auto itor = db_data<T>::m_data.find(aid);

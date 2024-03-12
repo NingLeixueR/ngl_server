@@ -30,7 +30,6 @@ namespace ngl
 
 		template <typename T>
 		static bool execute(T& aparm);
-
 	};
 
 	template <typename TNOTIFY>
@@ -124,7 +123,6 @@ namespace ngl
 		def_construction(notify_parm_test1);
 
 		int m_test;
-
 	};
 
 	void test_notify();
