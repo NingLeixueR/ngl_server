@@ -7,6 +7,7 @@ namespace ngl
 	void _splite(const char* abuff, const char* afg, std::vector<T>& avec)
 	{
 		std::vector<std::string> lvec;
+		
 		boost::split(lvec, abuff, boost::is_any_of(afg));
 		for (std::vector<std::string>::iterator itor = lvec.begin();
 			itor != lvec.end(); ++itor)

@@ -1,10 +1,7 @@
 #pragma once
 
 #include <boost/system/error_code.hpp>
-#include <boost/pool/object_pool.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/pool/pool.hpp>
 #include <boost/date_time.hpp>
 #include <boost/beast.hpp>
 #include <boost/array.hpp>
