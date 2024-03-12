@@ -37,26 +37,15 @@ namespace ngl
 		if (isinitfinish() == false)
 			return;
 
-		if (aislocal)
-		{
-			std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
-			pro->m_data.m_head.swap(llogformat.data("head"));
-			pro->m_data.m_pos.swap(llogformat.data("pos"));
-			pro->m_data.m_str.swap(llogformat.data("src"));
-			pro->m_data.m_serverid = nconfig::m_nodeid;
-			pro->m_data.m_type = atype;
-			actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_LOCAL), nguid::make(), pro);
-		}
-		else
-		{
-			std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
-			pro->m_data.m_head.swap(llogformat.data("head"));
-			pro->m_data.m_pos.swap(llogformat.data("pos"));
-			pro->m_data.m_str.swap(llogformat.data("src"));
-			pro->m_data.m_serverid = nconfig::m_nodeid;
-			pro->m_data.m_type = atype;
-			actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_DEFAULT), nguid::make(), pro);
-		}		
+		std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
+		pro->m_data.m_head.swap(llogformat.data("head"));
+		pro->m_data.m_pos.swap(llogformat.data("pos"));
+		pro->m_data.m_str.swap(llogformat.data("src"));
+		pro->m_data.m_serverid = nconfig::m_nodeid;
+		pro->m_data.m_type = atype;
+
+		i64_actorid lactorid = nguid::make(ACTOR_LOG, tab_self_area, aislocal ? ELOG_LOCAL : ELOG_NETWORK);
+		actor_base::static_send_actor(lactorid, nguid::make(), pro);	
 	}
 
 	void nlog::plog_bi(ELOG atype, ngl::logformat& llogformat)

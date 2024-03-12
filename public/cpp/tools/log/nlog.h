@@ -1,12 +1,12 @@
 #pragma once
 
-#include <map>
-#include <string>
-
 #include "logformat.h"
 #include "localtime.h"
 #include "logprintf.h"
 #include "xmlnode.h"
+
+#include <string>
+#include <map>
 
 namespace ngl
 {

@@ -1,9 +1,10 @@
 #pragma once
-#include <map>
-#include "gm.pb.h"
+#include "xmlprotocol.h"
 #include "net.pb.h"
 #include "define.h"
-#include "xmlprotocol.h"
+#include "gm.pb.h"
+
+#include <map>
 
 // typeid(T).hash_code() 因为c++标准并没有强制要求只是建议编译器 不同类型生成不同的hash值
 #define NOTUSING_BOOST_TYPEINFO
