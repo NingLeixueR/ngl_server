@@ -23,7 +23,7 @@ namespace ngl
 	enum ELOG_TYPE
 	{
 		ELOG_LOCAL		= 0,
-		ELOG_DEFAULT	= 1,
+		ELOG_NETWORK	= 1,
 		ELOG_BI			= 2,
 		ELOG_COUNT,
 	};

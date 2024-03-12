@@ -29,7 +29,7 @@ namespace ngl
 		return m_isinitfinish;
 	}
 
-	void nlog::plog(ELOG atype, ngl::logformat& llogformat, bool aislocal/* = false*/)
+	void nlog::plog(ELOG atype, ngl::logformat& llogformat, ELOG_TYPE altype)
 	{
 		if (DEF_LOG_PRINTF)
 			logprintf::printf(atype, llogformat.data("pos").c_str(), llogformat.data("head").c_str(), llogformat.data("src").c_str());
@@ -44,20 +44,7 @@ namespace ngl
 		pro->m_data.m_serverid = nconfig::m_nodeid;
 		pro->m_data.m_type = atype;
 
-		i64_actorid lactorid = nguid::make(ACTOR_LOG, tab_self_area, aislocal ? ELOG_LOCAL : ELOG_NETWORK);
+		i64_actorid lactorid = nguid::make(ACTOR_LOG, tab_self_area, altype);
 		actor_base::static_send_actor(lactorid, nguid::make(), pro);	
-	}
-
-	void nlog::plog_bi(ELOG atype, ngl::logformat& llogformat)
-	{
-		if (DEF_LOG_PRINTF)
-			logprintf::printf(atype, llogformat.data("pos").c_str(), llogformat.data("head").c_str(), llogformat.data("src").c_str());
-		std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
-		pro->m_data.m_head.swap(llogformat.data("head"));
-		pro->m_data.m_pos.swap(llogformat.data("pos"));
-		pro->m_data.m_str.swap(llogformat.data("src"));
-		pro->m_data.m_serverid = nconfig::m_nodeid;
-		pro->m_data.m_type = atype;
-		actor_base::static_send_actor(nguid::make(ACTOR_LOG, tab_self_area, ELOG_BI), nguid::make(), pro);
 	}
 }// namespace ngl

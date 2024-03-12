@@ -1,6 +1,7 @@
-#include "bag.h"
 #include "actor_role.h"
 #include "autoitem.h"
+#include "nlog.h"
+#include "bag.h"
 
 namespace ngl
 {

@@ -294,7 +294,7 @@ bool start_log()
 	ltype = ngl::ELOG_BI;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 
-	ltype = ngl::ELOG_DEFAULT;
+	ltype = ngl::ELOG_NETWORK;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 
 	ngl::actor_client::getInstance().actor_server_register();
