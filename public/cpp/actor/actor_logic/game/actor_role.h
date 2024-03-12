@@ -20,6 +20,18 @@
 
 namespace ngl
 {
+	class role_cmd
+	{
+	public:
+		using callback = std::function<void(actor_role*, const char*)>;
+	private:
+		static std::map<std::string, std::function<void(actor_role*, const char*)>> m_cmd;
+	public:
+		static void init();
+
+		static const callback& find(const char* akey);
+	};
+
 	class actor_manage_role;
 	class actor_role : public actor
 	{
