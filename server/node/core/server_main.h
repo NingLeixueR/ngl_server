@@ -442,7 +442,7 @@ bool start_robot(int argc, char** argv)
 	{
 		for (int i = 0; i < 15; ++i)
 		{
-			boost::this_thread::sleep(boost::posix_time::seconds(1));
+			ngl::sleep::seconds(1);
 			std::cout << "---------------[" << i << "]---------------" << std::endl;
 		}
 		std::string lcmd;
@@ -466,7 +466,7 @@ bool start_robot(int argc, char** argv)
 		std::cout << "---------------[" << lcmd << "]---------------" << std::endl;
 		for (int i = 0; i < 1; ++i)
 		{
-			boost::this_thread::sleep(boost::posix_time::seconds(1));
+			ngl::sleep::seconds(1);
 			std::cout << "---------------[" << i << "]---------------" << std::endl;
 		}
 		int lnum = 10000;
@@ -476,7 +476,7 @@ bool start_robot(int argc, char** argv)
 		bool ltest = false;
 		std::vector<int> lms;
 		std::vector<std::vector<std::string>> lcmdvec;
-		boost::thread lthread([&ltest, &lms, &lcmdvec]()
+		std::thread lthread([&ltest, &lms, &lcmdvec]()
 			{
 				std::string lcmd;
 				std::vector<std::string> lvec;
@@ -531,12 +531,12 @@ bool start_robot(int argc, char** argv)
 		{
 			if (!ltest)
 			{
-				boost::this_thread::sleep(boost::posix_time::seconds(1));
+				ngl::sleep::seconds(1);
 				continue;
 			}			
 			for (int j = 0; j < lcmdvec.size() && j < lms.size(); ++j)
 			{
-				boost::this_thread::sleep(boost::posix_time::milliseconds(lms[j]));
+				ngl::sleep::milliseconds(lms[j]);
 				std::vector<std::string> lcmdvec2 = lcmdvec[j];
 				lcmdvec2.push_back(boost::lexical_cast<std::string>(i));
 				ngl::robot_cmd::parse_command(lcmdvec2);

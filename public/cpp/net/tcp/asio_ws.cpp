@@ -63,54 +63,97 @@ namespace ngl
 			}
 			m_acceptor->async_accept(
 				lservice->socket(),
-				boost::bind(
-					&impl_asio_ws::handle_accept, this, lservice, boost::asio::placeholders::error)
+				[this, lservice](const boost::system::error_code& error)
+				{
+					if (error)
+					{
+						close(lservice);
+						LogLocalError("asio_tcp::handle_accept[%]", error.message().c_str())
+					}
+					else
+					{
+						// Set suggested timeout settings for the websocket
+						lservice->m_ws.set_option(boost::beast::websocket::stream_base::timeout{
+							std::chrono::seconds(30),
+							std::chrono::seconds(600),//boost::beast::websocket::stream_base::none(),
+							false });
+
+						// Set a decorator to change the Server of the handshake
+						lservice->m_ws.set_option(boost::beast::websocket::stream_base::decorator(
+							[](boost::beast::websocket::response_type& res)
+							{
+								res.set(boost::beast::http::field::server,
+								std::string(BOOST_BEAST_VERSION_STRING) +
+								" websocket-server-coro");
+							}));
+
+						lservice->m_ws.async_accept([this, lservice](::boost::beast::error_code aerr)
+							{
+								if (aerr)
+								{
+									LogLocalError("asio_tcp::handle_accept[%]", aerr.message().c_str())
+										return;
+								}
+								{
+									monopoly_shared_lock(m_ipportlock);
+									std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
+									lipport.first = lservice->socket().remote_endpoint().address().to_string();
+									lipport.second = lservice->socket().remote_endpoint().port();
+									lservice->m_is_lanip = tools::is_lanip(lipport.first);
+								}
+								start(lservice);
+							});
+					}
+					accept();
+				}
+				//boost::bind(
+				//	&impl_asio_ws::handle_accept, this, lservice, boost::asio::placeholders::error)
 			);
 		}
 
-		inline void handle_accept(service_ws* aservice, const boost::system::error_code& error)
-		{
-			if (error)
-			{
-				close(aservice);
-				LogLocalError("asio_tcp::handle_accept[%]", error.message().c_str())				
-			}
-			else
-			{
-				// Set suggested timeout settings for the websocket
-				aservice->m_ws.set_option(boost::beast::websocket::stream_base::timeout{
-					std::chrono::seconds(30),
-					std::chrono::seconds(600),//boost::beast::websocket::stream_base::none(),
-					false });
+		//inline void handle_accept(service_ws* aservice, const boost::system::error_code& error)
+		//{
+		//	if (error)
+		//	{
+		//		close(aservice);
+		//		LogLocalError("asio_tcp::handle_accept[%]", error.message().c_str())				
+		//	}
+		//	else
+		//	{
+		//		// Set suggested timeout settings for the websocket
+		//		aservice->m_ws.set_option(boost::beast::websocket::stream_base::timeout{
+		//			std::chrono::seconds(30),
+		//			std::chrono::seconds(600),//boost::beast::websocket::stream_base::none(),
+		//			false });
 
-				// Set a decorator to change the Server of the handshake
-				aservice->m_ws.set_option(boost::beast::websocket::stream_base::decorator(
-					[](boost::beast::websocket::response_type& res)
-					{
-						res.set(boost::beast::http::field::server,
-						std::string(BOOST_BEAST_VERSION_STRING) +
-						" websocket-server-coro");
-					}));
+		//		// Set a decorator to change the Server of the handshake
+		//		aservice->m_ws.set_option(boost::beast::websocket::stream_base::decorator(
+		//			[](boost::beast::websocket::response_type& res)
+		//			{
+		//				res.set(boost::beast::http::field::server,
+		//				std::string(BOOST_BEAST_VERSION_STRING) +
+		//				" websocket-server-coro");
+		//			}));
 
-				aservice->m_ws.async_accept([this, aservice](::boost::beast::error_code aerr)
-					{
-						if (aerr)
-						{
-							LogLocalError("asio_tcp::handle_accept[%]", aerr.message().c_str())
-							return;
-						}
-						{
-							monopoly_shared_lock(m_ipportlock);
-							std::pair<str_ip, i16_port>& lipport = m_ipport[aservice->m_sessionid];
-							lipport.first = aservice->socket().remote_endpoint().address().to_string();
-							lipport.second = aservice->socket().remote_endpoint().port();
-							aservice->m_is_lanip = tools::is_lanip(lipport.first);
-						}
-						start(aservice);
-					});
-			}
-			accept();
-		}
+		//		aservice->m_ws.async_accept([this, aservice](::boost::beast::error_code aerr)
+		//			{
+		//				if (aerr)
+		//				{
+		//					LogLocalError("asio_tcp::handle_accept[%]", aerr.message().c_str())
+		//					return;
+		//				}
+		//				{
+		//					monopoly_shared_lock(m_ipportlock);
+		//					std::pair<str_ip, i16_port>& lipport = m_ipport[aservice->m_sessionid];
+		//					lipport.first = aservice->socket().remote_endpoint().address().to_string();
+		//					lipport.second = aservice->socket().remote_endpoint().port();
+		//					aservice->m_is_lanip = tools::is_lanip(lipport.first);
+		//				}
+		//				start(aservice);
+		//			});
+		//	}
+		//	accept();
+		//}
 
 		inline void close_net(i32_sessionid sessionid)
 		{
@@ -197,65 +240,112 @@ namespace ngl
 
 			lservice->socket().async_connect(
 				endpoint,
-				boost::bind(&impl_asio_ws::conn_handler, this, boost::asio::placeholders::error, lservice, ahost, aport, afun, acount)
+				[this, lservice, ahost, aport, afun, acount](const boost::system::error_code& ec)
+				{
+					if (ec)
+					{
+						if (acount > 0)
+						{
+							LogLocalError("连接[%:%]失败[%] 加入定时队列 ", ahost, aport, ec.message())
+								//加入定时队列
+								wheel_parm lparm
+							{
+								.m_ms = 1000,
+								.m_intervalms = [](int64_t) {return 1000; } ,
+								.m_count = 1,
+								.m_fun = [this, ahost, aport, afun, acount](wheel_node* anode) {impl_asio_ws::connect(ahost, aport, afun, acount - 1); }
+							};
+							asio_timer::wheel().addtimer(lparm);
+						}
+						return;
+					}
+
+					// Set suggested timeout settings for the websocket
+					lservice->m_ws.set_option(boost::beast::websocket::stream_base::timeout{
+						std::chrono::seconds(30),
+						std::chrono::seconds(600),//boost::beast::websocket::stream_base::none(),
+						false });
+
+					// Set a decorator to change the Server of the handshake
+					lservice->m_ws.set_option(boost::beast::websocket::stream_base::decorator(
+						[](boost::beast::websocket::response_type& res)
+						{
+							res.set(boost::beast::http::field::server,
+							std::string(BOOST_BEAST_VERSION_STRING) +
+							" websocket-server-coro");
+						}));
+
+					lservice->m_ws.handshake("0.0.0.0", "/");
+					{
+						monopoly_shared_lock(m_ipportlock);
+						std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
+						lipport.first = lservice->socket().remote_endpoint().address().to_string();
+						lipport.second = lservice->socket().remote_endpoint().port();
+						lservice->m_is_lanip = tools::is_lanip(lipport.first);
+					}
+
+					start(lservice);
+					afun(lservice->m_sessionid);
+				}
+				//boost::bind(&impl_asio_ws::conn_handler, this, boost::asio::placeholders::error, lservice, ahost, aport, afun, acount)
 			);
 			//////////////
 			return lservice;
 		}
 
-		inline void conn_handler(
-			const boost::system::error_code& ec
-			, service_ws* ap
-			, const str_host& ahost
-			, i16_port aport
-			, const ws_connectcallback& afun
-			, int acount)
-		{
-			if (ec)
-			{
-				if (acount > 0)
-				{
-					LogLocalError("连接[%:%]失败[%] 加入定时队列 ", ahost, aport, ec.message())
-					//加入定时队列
-					wheel_parm lparm
-					{
-						.m_ms = 1000,
-						.m_intervalms = [](int64_t) {return 1000; } ,
-						.m_count = 1,
-						.m_fun = [this, ahost, aport, afun, acount](wheel_node* anode) {impl_asio_ws::connect(ahost, aport, afun, acount - 1); }
-					};
-					asio_timer::wheel().addtimer(lparm);
-				}
-				return;
-			}
+		//inline void conn_handler(
+		//	const boost::system::error_code& ec
+		//	, service_ws* ap
+		//	, const str_host& ahost
+		//	, i16_port aport
+		//	, const ws_connectcallback& afun
+		//	, int acount)
+		//{
+		//	if (ec)
+		//	{
+		//		if (acount > 0)
+		//		{
+		//			LogLocalError("连接[%:%]失败[%] 加入定时队列 ", ahost, aport, ec.message())
+		//			//加入定时队列
+		//			wheel_parm lparm
+		//			{
+		//				.m_ms = 1000,
+		//				.m_intervalms = [](int64_t) {return 1000; } ,
+		//				.m_count = 1,
+		//				.m_fun = [this, ahost, aport, afun, acount](wheel_node* anode) {impl_asio_ws::connect(ahost, aport, afun, acount - 1); }
+		//			};
+		//			asio_timer::wheel().addtimer(lparm);
+		//		}
+		//		return;
+		//	}
 
-			// Set suggested timeout settings for the websocket
-			ap->m_ws.set_option(boost::beast::websocket::stream_base::timeout{
-				std::chrono::seconds(30),
-				std::chrono::seconds(600),//boost::beast::websocket::stream_base::none(),
-				false });
+		//	// Set suggested timeout settings for the websocket
+		//	ap->m_ws.set_option(boost::beast::websocket::stream_base::timeout{
+		//		std::chrono::seconds(30),
+		//		std::chrono::seconds(600),//boost::beast::websocket::stream_base::none(),
+		//		false });
 
-			// Set a decorator to change the Server of the handshake
-			ap->m_ws.set_option(boost::beast::websocket::stream_base::decorator(
-				[](boost::beast::websocket::response_type& res)
-				{
-					res.set(boost::beast::http::field::server,
-					std::string(BOOST_BEAST_VERSION_STRING) +
-					" websocket-server-coro");
-				}));
+		//	// Set a decorator to change the Server of the handshake
+		//	ap->m_ws.set_option(boost::beast::websocket::stream_base::decorator(
+		//		[](boost::beast::websocket::response_type& res)
+		//		{
+		//			res.set(boost::beast::http::field::server,
+		//			std::string(BOOST_BEAST_VERSION_STRING) +
+		//			" websocket-server-coro");
+		//		}));
 
-			ap->m_ws.handshake("0.0.0.0", "/");
-			{
-				monopoly_shared_lock(m_ipportlock);
-				std::pair<str_ip, i16_port>& lipport = m_ipport[ap->m_sessionid];
-				lipport.first = ap->socket().remote_endpoint().address().to_string();
-				lipport.second = ap->socket().remote_endpoint().port();
-				ap->m_is_lanip = tools::is_lanip(lipport.first);
-			}
+		//	ap->m_ws.handshake("0.0.0.0", "/");
+		//	{
+		//		monopoly_shared_lock(m_ipportlock);
+		//		std::pair<str_ip, i16_port>& lipport = m_ipport[ap->m_sessionid];
+		//		lipport.first = ap->socket().remote_endpoint().address().to_string();
+		//		lipport.second = ap->socket().remote_endpoint().port();
+		//		ap->m_is_lanip = tools::is_lanip(lipport.first);
+		//	}
 
-			start(ap);
-			afun(ap->m_sessionid);
-		}
+		//	start(ap);
+		//	afun(ap->m_sessionid);
+		//}
 
 		template <typename T>
 		inline bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack)
@@ -445,13 +535,30 @@ namespace ngl
 		inline void start(service_ws* aservice)
 		{
 			std::swap(aservice->m_buff1, aservice->m_buff2);
+			char* lbuff = aservice->m_buff1;
 			aservice->m_ws.async_read_some(boost::asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize),
-				boost::bind(&impl_asio_ws::handle_read,
+				[this, aservice, lbuff](const boost::system::error_code& error, size_t bytes_transferred)
+				{
+					if (!error)
+					{
+						if (!m_fun(aservice, lbuff, (uint32_t)bytes_transferred))
+							close(aservice);
+						else
+							start(aservice);
+					}
+					else
+					{
+						//关闭连接
+						close(aservice);
+						LogLocalError("asio_tcp::handle_read[%]", error.message().c_str())
+					}
+				}
+				/*boost::bind(&impl_asio_ws::handle_read,
 					this,
 					boost::asio::placeholders::error,
 					aservice,
 					aservice->m_buff1,
-					boost::asio::placeholders::bytes_transferred)
+					boost::asio::placeholders::bytes_transferred)*/
 			);
 		}
 

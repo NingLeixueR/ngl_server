@@ -70,50 +70,83 @@ namespace ngl
 			///////////
 			lservice->m_socket.async_connect(
 				basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport),
-				boost::bind(&impl_asio_tcp::conn_handler, this, boost::asio::placeholders::error, lservice, aip, aport, afun, acount));
+				[this, lservice, aip, aport, afun, acount](const boost::system::error_code& ec)
+				{
+					if (ec)
+					{
+						if (acount > 0)
+						{
+							LogLocalError("连接[%:%]失败[%] 加入定时队列 ", aip, aport, ec.message())
+							// 加入定时队列
+							wheel_parm lparm
+							{
+								.m_ms = 1000,
+								.m_intervalms = [](int64_t) {return 1000; } ,
+								.m_count = 1,
+								.m_fun = [this, aip, aport, afun, acount](wheel_node* anode)
+								{
+									impl_asio_tcp::connect(aip, aport, afun, acount - 1);
+								}
+							};
+							asio_timer::wheel().addtimer(lparm);
+						}
+						return;
+					}
+					{
+						monopoly_shared_lock(m_ipportlock);
+						std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
+						lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
+						lipport.second = lservice->m_socket.remote_endpoint().port();
+						lservice->m_is_lanip = tools::is_lanip(lipport.first);
+					}
+					start(lservice);
+					afun(lservice->m_sessionid);
+				}
+				//boost::bind(&impl_asio_tcp::conn_handler, this, boost::asio::placeholders::error, lservice, aip, aport, afun, acount)
+			);
 			//////////////
 			return lservice;
 		}
 
-		inline void conn_handler(
-			const boost::system::error_code& ec
-			, service_tcp* ap
-			, const str_ip& aip
-			, i16_port aport
-			, const tcp_connectcallback& afun
-			, int acount
-		)
-		{
-			if (ec)
-			{
-				if (acount > 0)
-				{
-					LogLocalError("连接[%:%]失败[%] 加入定时队列 ", aip, aport, ec.message())
-					//加入定时队列
-					wheel_parm lparm
-					{
-						.m_ms = 1000,
-						.m_intervalms = [](int64_t) {return 1000; } ,
-						.m_count = 1,
-						.m_fun = [this, aip, aport, afun, acount](wheel_node* anode) 
-						{
-							impl_asio_tcp::connect(aip, aport, afun, acount - 1); 
-						}
-					};
-					asio_timer::wheel().addtimer(lparm);
-				}
-				return;
-			}
-			{
-				monopoly_shared_lock(m_ipportlock);
-				std::pair<str_ip, i16_port>& lipport = m_ipport[ap->m_sessionid];
-				lipport.first = ap->m_socket.remote_endpoint().address().to_string();
-				lipport.second = ap->m_socket.remote_endpoint().port();
-				ap->m_is_lanip = tools::is_lanip(lipport.first);
-			}
-			start(ap);
-			afun(ap->m_sessionid);
-		}
+		//inline void conn_handler(
+		//	const boost::system::error_code& ec
+		//	, service_tcp* ap
+		//	, const str_ip& aip
+		//	, i16_port aport
+		//	, const tcp_connectcallback& afun
+		//	, int acount
+		//)
+		//{
+		//	if (ec)
+		//	{
+		//		if (acount > 0)
+		//		{
+		//			LogLocalError("连接[%:%]失败[%] 加入定时队列 ", aip, aport, ec.message())
+		//			//加入定时队列
+		//			wheel_parm lparm
+		//			{
+		//				.m_ms = 1000,
+		//				.m_intervalms = [](int64_t) {return 1000; } ,
+		//				.m_count = 1,
+		//				.m_fun = [this, aip, aport, afun, acount](wheel_node* anode) 
+		//				{
+		//					impl_asio_tcp::connect(aip, aport, afun, acount - 1); 
+		//				}
+		//			};
+		//			asio_timer::wheel().addtimer(lparm);
+		//		}
+		//		return;
+		//	}
+		//	{
+		//		monopoly_shared_lock(m_ipportlock);
+		//		std::pair<str_ip, i16_port>& lipport = m_ipport[ap->m_sessionid];
+		//		lipport.first = ap->m_socket.remote_endpoint().address().to_string();
+		//		lipport.second = ap->m_socket.remote_endpoint().port();
+		//		ap->m_is_lanip = tools::is_lanip(lipport.first);
+		//	}
+		//	start(ap);
+		//	afun(ap->m_sessionid);
+		//}
 
 		inline service_tcp* get_tcp(i32_sessionid asessionid)
 		{
@@ -359,61 +392,54 @@ namespace ngl
 			}
 			m_acceptor->async_accept(
 				lservice->m_socket,
-				boost::bind(&impl_asio_tcp::handle_accept, this, lservice, boost::asio::placeholders::error)
-			);
-		}
-
-		inline void handle_accept(service_tcp* aservice, const boost::system::error_code& error)
-		{
-			if (error)
-			{
-				close(aservice);
-				LogLocalError("asio_tcp::handle_accept[%]", error.message().c_str())
-			}
-			else
-			{
-
+				[this,lservice](const boost::system::error_code& error)
 				{
-					monopoly_shared_lock(m_ipportlock);
-					std::pair<str_ip, i16_port>& lipport = m_ipport[aservice->m_sessionid];
-					lipport.first = aservice->m_socket.remote_endpoint().address().to_string();
-					lipport.second = aservice->m_socket.remote_endpoint().port();
-					aservice->m_is_lanip = tools::is_lanip(lipport.first);
+					if (error)
+					{
+						close(lservice);
+						LogLocalError("asio_tcp::handle_accept[%]", error.message().c_str())
+					}
+					else
+					{
+
+						{
+							monopoly_shared_lock(m_ipportlock);
+							std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
+							lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
+							lipport.second = lservice->m_socket.remote_endpoint().port();
+							lservice->m_is_lanip = tools::is_lanip(lipport.first);
+						}
+
+						start(lservice);
+					}
+					accept();
 				}
-
-				start(aservice);
-			}
-			accept();
-		}
-
-		inline void handle_read(const boost::system::error_code& error, service_tcp* aservice, char* abuff, size_t bytes_transferred)
-		{
-			if (!error)
-			{
-				if (!m_fun(aservice, abuff, (uint32_t)bytes_transferred))
-					close(aservice);
-				else
-					start(aservice);
-			}
-			else
-			{
-				//关闭连接
-				close(aservice);
-				LogLocalError("asio_tcp::handle_read[%]", error.message().c_str())
-			}
+				//boost::bind(&impl_asio_tcp::handle_accept, this, lservice, boost::asio::placeholders::error)
+			);
 		}
 
 		inline void start(service_tcp* aservice)
 		{
 			std::swap(aservice->m_buff1, aservice->m_buff2);
+			char* lbuff = aservice->m_buff1;
 			aservice->m_socket.async_read_some(
 				boost::asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize),
-				boost::bind(&impl_asio_tcp::handle_read,
-					this,
-					boost::asio::placeholders::error,
-					aservice,
-					aservice->m_buff1,
-					boost::asio::placeholders::bytes_transferred)
+				[this, lbuff, aservice](const boost::system::error_code& error, size_t bytes_transferred)
+				{
+					if (!error)
+					{
+						if (!m_fun(aservice, lbuff, (uint32_t)bytes_transferred))
+							close(aservice);
+						else
+							start(aservice);
+					}
+					else
+					{
+						//关闭连接
+						close(aservice);
+						LogLocalError("asio_tcp::handle_read[%]", error.message().c_str())
+					}
+				}
 			);
 		}
 
