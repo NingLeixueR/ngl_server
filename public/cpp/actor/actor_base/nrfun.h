@@ -1,7 +1,7 @@
 #pragma once
 
-#include "actor_base.h"
 #include "handle_pram.h"
+#include "actor_base.h"
 #include "type.h"
 
 #include <functional>
@@ -38,6 +38,7 @@ namespace ngl
 		T*				m_data;
 		const pack*		m_pack;
 
+		message() = delete;
 		message(i32_threadid athread, const pack* apack, T* adata) :
 			m_thread(athread),
 			m_pack(apack),
@@ -45,9 +46,6 @@ namespace ngl
 		{
 		}
 	};
-
-	//template <typename TDerived, typename TPRAM>
-	//using Tfun = bool (TDerived::*)(i32_threadid, const std::shared_ptr<pack>&, TPRAM&);
 
 	template <typename TDerived, typename TPRAM>
 	using Tfun = bool (TDerived::*)(message<TPRAM>&);

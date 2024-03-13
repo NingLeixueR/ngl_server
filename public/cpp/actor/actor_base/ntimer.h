@@ -1,12 +1,12 @@
 #pragma once
 
-#include <memory>
-
 #include "time_wheel.h"
 #include "nprotocol.h"
 #include "serialize.h"
 #include "ndefine.h"
 #include "pack.h"
+
+#include <memory>
 
 namespace ngl
 {

@@ -34,14 +34,17 @@ namespace ngl
 	{
 	protected:
 		ndbclient<PROTYPE, ENUM, TDATA, TACTOR> m_data;
+
 		ndb_modular():
 			ndb_component(ENUM)
 		{
 			set_dbclient(&m_data);
 		}
+
 		~ndb_modular()
 		{
 		}
+
 	public:
 		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* dbclient()
 		{ 
