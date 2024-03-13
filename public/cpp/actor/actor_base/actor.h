@@ -10,9 +10,9 @@ namespace ngl
 {
 	struct actorparm
 	{
-		actorparmbase m_parm;
-		int m_weight = 10;
-		bool m_broadcast = false;
+		actorparmbase	m_parm;
+		int				m_weight	= 10;			// 权重:单次获取线程后处理消息的数量		
+		bool			m_broadcast	= false;		// 是否支持广播
 	};
 
 	template <typename T>
@@ -27,12 +27,20 @@ namespace ngl
 	public:
 
 #pragma region register
+		template <typename TDerived, EPROTOCOL_TYPE TYPE>
+		static nrfun<TDerived, TYPE>& ninst()
+		{
+			return nrfun<TDerived, TYPE>::instance();
+		}
+
 		template <typename TDerived>
 		void init_rfun()
 		{
-			m_actorfun[EPROTOCOL_TYPE_CUSTOM]		= &nrfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance();
-			m_actorfun[EPROTOCOL_TYPE_PROTOCOLBUFF] = &nrfun<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance();
-
+			m_actorfun[EPROTOCOL_TYPE_CUSTOM]
+				= &ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>();
+			m_actorfun[EPROTOCOL_TYPE_PROTOCOLBUFF]
+				= &ninst<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>();
+		
 			if (isbroadcast())
 			{
 				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
@@ -46,7 +54,7 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
-			nrfun<TDerived, EPROTOCOL_TYPE_CUSTOM>::instance().template rfun_nonet<TDerived, timerparm>(afun, false);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
@@ -58,7 +66,7 @@ namespace ngl
 		{
 			using tloaddb = np_actordb_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
-			nrfun<TDerived, TYPE>::instance().template rfun<actor_base, tloaddb>(lpfun, true);
+			ninst<TDerived, TYPE>().template rfun<actor_base, tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -72,7 +80,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
-			nrfun<TDerived, TYPE>::instance().template rfun<TDerived, T>(afun);
+			ninst<TDerived, TYPE>().template rfun<TDerived, T>(afun);
 		}
 
 #pragma region register_actor
@@ -89,7 +97,7 @@ namespace ngl
 		>
 		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun)
 		{
-			nrfun<TDerived, TYPE>::instance().rfun(afun, atype, aisload);
+			ninst<TDerived, TYPE>().rfun(afun, atype, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
@@ -102,7 +110,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
 		{
-			nrfun<TDerived, TYPE>::instance().rfun(afun, aisload);
+			ninst<TDerived, TYPE>().rfun(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
@@ -118,7 +126,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, T afun)
 		{
-			nrfun<TDerived, TYPE>::instance().rfun_nonet(afun, aisload);
+			ninst<TDerived, TYPE>().rfun_nonet(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
@@ -135,7 +143,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			nrfun<TDerived, TYPE>::instance().template rfun_forward<IsForward>(afun, nactor_type<TDerived>::type(), false);
+			ninst<TDerived, TYPE>().template rfun_forward<IsForward>(afun, nactor_type<TDerived>::type(), false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>
@@ -149,7 +157,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(T afun)
 		{
-			nrfun<TDerived, TYPE>::instance().rfun_recvforward(afun, false);
+			ninst<TDerived, TYPE>().rfun_recvforward(afun, false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
