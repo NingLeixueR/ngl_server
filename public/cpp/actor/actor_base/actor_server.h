@@ -21,13 +21,14 @@ namespace ngl
 
 		static void nregister();
 
-		// ---- [actor client -> actor server] register
+		// ## [actor client -> actor server] register
 		// 注册结点
 		bool handle(message<np_actornode_register>& adata);
+
 		// 更新结点中的actor
 		bool handle(message<np_actornode_update>& adata);
+
 		// 更新gateway表 actor_role.guidid与gateway server id对应关系
 		bool handle(message<np_actor_gatewayid_updata>& adata);
-	private:
 	};
 }//namespace ngl

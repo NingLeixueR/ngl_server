@@ -39,13 +39,13 @@ namespace ngl
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
 
-			naddress::getInstance().set_node(lrecv->m_node);
-			naddress::getInstance().set_session(lrecv->m_node.m_serverid, lpack->m_id);
-			naddress::getInstance().actor_add(lrecv->m_node.m_serverid, lrecv->m_add);
+			Assert(naddress::set_node(lrecv->m_node));
+			naddress::set_session(lrecv->m_node.m_serverid, lpack->m_id);
+			naddress::actor_add(lrecv->m_node.m_serverid, lrecv->m_add);
 
 			i32_serverid lserverid = lrecv->m_node.m_serverid;
 			std::vector<i32_sessionid> lvec;
-			naddress::getInstance().foreach(
+			naddress::foreach(
 				[lrecv, &lvec, lpack](const actor_node_session& anode)->bool
 				{
 					if (lpack->m_id != anode.m_session)
@@ -62,7 +62,7 @@ namespace ngl
 			}
 			{// -- 回复
 				np_actornode_register_response lpram;
-				naddress::getInstance().foreach(
+				naddress::foreach(
 					[&adata, &lpram, lpack](const actor_node_session& anode)->bool
 					{
 						if (lpack->m_id != anode.m_session)
@@ -82,7 +82,7 @@ namespace ngl
 			}
 			{
 				std::map<uint32_t, np_actornode_update> lmapprotocol;
-				naddress::getInstance().ergodic(
+				naddress::ergodic(
 					[lrecv, &lmapprotocol](std::map<nguid, i32_serverid>& amap, std::map<i32_serverid, actor_node_session>& asession)->bool
 					{
 						std::map<i32_serverid, actor_node_session>::iterator itor;
@@ -117,13 +117,13 @@ namespace ngl
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
 			uint16_t lserverid = lpack->m_id;
-			naddress::getInstance().actor_add(lserverid, lrecv->m_add);
-			naddress::getInstance().actor_del(lrecv->m_del);
+			naddress::actor_add(lserverid, lrecv->m_add);
+			naddress::actor_del(lrecv->m_del);
 			if (lrecv->m_actorservermass)
 			{
 				// -- 分发给其他结点
 				std::vector<i32_sessionid> lvec;
-				naddress::getInstance().foreach(
+				naddress::foreach(
 					[lserverid, &lvec](const actor_node_session& anode)->bool
 					{
 						if (anode.m_node.m_serverid != lserverid)
@@ -145,14 +145,14 @@ namespace ngl
 		auto lpack = adata.m_pack;
 		if (lrecv->m_isremove)
 		{
-			naddress::getInstance().remove_gatewayid(lrecv->m_actorid);
+			naddress::remove_gatewayid(lrecv->m_actorid);
 		}
 		else
 		{
-			naddress::getInstance().add_gatewayid(lrecv->m_actorid, lrecv->m_gatewayid);
+			naddress::add_gatewayid(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
 		std::vector<i32_sessionid> lvec;
-		naddress::getInstance().foreach(
+		naddress::foreach(
 			[&adata, &lvec, lpack](const actor_node_session& anode)->bool
 			{
 				if (lpack->m_id != anode.m_session)

@@ -15,4 +15,4 @@ namespace ngl
 			return m_wheel;
 		}
 	};
-}
+}// namespace ngl

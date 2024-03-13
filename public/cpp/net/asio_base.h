@@ -1,5 +1,9 @@
 #pragma once
 
+#include "threadtools.h"
+#include "node_pack.h"
+#include "type.h"
+
 #include <boost/beast.hpp>
 #include <boost/asio.hpp>
 #include <unordered_map>
@@ -8,10 +12,6 @@
 #include <atomic>
 #include <string>
 #include <set>
-
-#include "threadtools.h"
-#include "node_pack.h"
-#include "type.h"
 
 namespace ngl
 {

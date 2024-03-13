@@ -1,9 +1,4 @@
 #pragma once
-
-#include <vector>
-#include <memory>
-#include <boost/array.hpp>
-
 #include "handle_pram.h"
 #include "structbytes.h"
 #include "actor_base.h"
@@ -13,6 +8,10 @@
 #include "segpack.h"
 #include "impl.h"
 #include "pack.h"
+
+#include <vector>
+#include <memory>
+#include <boost/array.hpp>
 
 namespace ngl
 {
@@ -88,31 +87,49 @@ namespace ngl
 
 		bpool& get_pool();
 		
-		//## i16_port		aport				端口号
-		//## i32_threadsize asocketthreadnum	线程数
-		//## bool			aouternet			是否允许非内网主动连接
-		virtual bool init(i16_port aport, i32_threadsize asocketthreadnum, bool	aouternet);
+		//## 初始化net_protocol
+		//## aport			i16_port		端口号
+		//## athreadnum		i32_threadsize 	线程数
+		//## aouternet		bool			是否允许非内网主动连接
+		virtual bool init(i16_port aport, i32_threadsize athreadnum, bool aouternet);
 
 		//## 关闭socket连接以及加载的数据
 		//## 通知上层应用
 		virtual void close(i32_sessionid asession);
+
 		//## 逻辑层主动关闭连接(这样就不需要通知上层应用)
 		virtual void close_net(i32_sessionid asession) = 0;
 
 		//## 发送消息
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
+
 		//## 服务器是否存在此session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
+		//## 获取线程数量
 		int socketthreadnum();
+
+		//## 获取监听端口号
 		int port();
+
+		//## 发送pack
 		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
+
+		//## 向某个服务器发送pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+
+		//## 服务器id与socket session id关联
 		void set_server(i32_serverid aserverid, i32_sessionid asession);
+
+		//## 根据服务器id获取sessionid
 		i32_sessionid get_sessionid(i32_serverid aserverid);
+
+		//## 根据session id获取服务器id
 		i32_serverid get_serverid(i32_sessionid asession);
+
+		//## actor guid 的-1值
 		i64_actorid moreactor();
 
 		virtual void set_close(
@@ -137,7 +154,7 @@ namespace ngl
 			, bool areconnection
 		);
 
-		//// --- 发送消息
+		//## 发送消息
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -156,6 +173,7 @@ namespace ngl
 			return true;
 		}
 
+		//## 给一组sesion发送消息
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
 		template <typename T>
@@ -188,6 +206,8 @@ namespace ngl
 			return  true;
 		}
 
+	
+	private:
 		template <typename T, typename TSTL>
 		bool sendmore_stl(const TSTL& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -215,7 +235,8 @@ namespace ngl
 			}
 			return true;
 		}
-
+	
+	public:
 		template <typename T>
 		bool sendmore(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
