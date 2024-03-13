@@ -26,7 +26,7 @@ namespace ngl
 		std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
 	public:
 
-#pragma region register
+#pragma region register // 消息注册接口
 		template <typename TDerived, EPROTOCOL_TYPE TYPE>
 		static nrfun<TDerived, TYPE>& ninst()
 		{
@@ -50,23 +50,26 @@ namespace ngl
 			}
 		}
 
-		// #### 注册定时器
+		//# 注册定时器
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
 		{
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, timerparm>(afun, false);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().
+				template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		class db_pair{};
 
-		// #### 注册db加载
+		//# 注册db加载
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
 			using tloaddb = np_actordb_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
-			ninst<TDerived, TYPE>().template rfun<actor_base, tloaddb>(lpfun, true);
+
+			ninst<TDerived, TYPE>().
+				template rfun<actor_base, tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -76,20 +79,21 @@ namespace ngl
 			register_db<TYPE, TDerived>(arg...);
 		}
 
-		// #### 用来注册匿名函数挂载在对应actor上
+		//# 用来注册匿名函数挂载在对应actor上
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
-			ninst<TDerived, TYPE>().template rfun<TDerived, T>(afun);
+			ninst<TDerived, TYPE>().
+				template rfun<TDerived, T>(afun);
 		}
 
 #pragma region register_actor
 
-		// #### 简化[handle]方法注册
+		//# 简化[handle]方法注册
 		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
 		#define dregister_fun(TDerived,T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
-		// #### 注册actor成员函数
+		//# 注册actor成员函数
 		template <
 			EPROTOCOL_TYPE TYPE			// 协议类型
 			, typename TDerived			// 注册的actor派生类
@@ -122,7 +126,7 @@ namespace ngl
 #pragma endregion 
 
 #pragma region register_actornonet
-		// ## 与register_actor类似 只不过不注册网络层
+		//# 与register_actor类似 只不过不注册网络层
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, T afun)
 		{
@@ -139,11 +143,12 @@ namespace ngl
 	private:
 		friend class nforward;
 
-		// ### 注册 [forward:转发协议]
+		//# 注册 [forward:转发协议]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
 		static void register_forward(T afun)
 		{
-			ninst<TDerived, TYPE>().template rfun_forward<IsForward>(afun, nactor_type<TDerived>::type(), false);
+			ninst<TDerived, TYPE>().
+				template rfun_forward<IsForward>(afun, nactor_type<TDerived>::type(), false);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>
@@ -153,7 +158,7 @@ namespace ngl
 			register_forward<TYPE, IsForward, TDerived, ARG...>(arg...);
 		}
 
-		// 注册 [forward:转发协议] recvforward
+		//# 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(T afun)
 		{

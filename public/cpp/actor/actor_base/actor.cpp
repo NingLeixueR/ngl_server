@@ -6,10 +6,10 @@ namespace ngl
 {
 	struct actor::impl_actor
 	{
-		std::list<handle_pram> m_list;
-		actor_stat m_stat;
-		std::shared_mutex m_mutex;
-		int m_weight;
+		std::list<handle_pram>	m_list;		// 待处理消息列表
+		actor_stat				m_stat;		// actor状态
+		std::shared_mutex		m_mutex;	// 锁:[m_list:待处理消息列表]
+		int						m_weight;	// 权重
 
 		explicit impl_actor(const actorparm& aparm)
 			: m_stat(actor_stat_init)

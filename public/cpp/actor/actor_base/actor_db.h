@@ -42,7 +42,7 @@ namespace ngl
 				if (m_tab == nullptr)
 				{
 					m_tab = ttab_dbload::get_tabdb<TDBTAB>();
-					Assert(m_tab != nullptr);
+					Assert(m_tab != nullptr)
 				}
 				cache_list<TDBTAB, enum_clist_save>::getInstance().set_cachefun(
 					std::bind(&actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
@@ -114,7 +114,7 @@ namespace ngl
 				});
 			pro.m_over = true;
 			nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
-			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name());
+			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name())
 		}
 
 		// 加载表中的指定数据

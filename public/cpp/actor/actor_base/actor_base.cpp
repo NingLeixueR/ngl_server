@@ -9,16 +9,16 @@ namespace ngl
 {
 	struct actor_base::impl_actor_base
 	{
-		nguid									m_guid;
-		std::unique_ptr<actor_manage_dbclient>		m_dbclient;
+		nguid										m_guid;				// actor guid
+		std::unique_ptr<actor_manage_dbclient>		m_dbclient;			// dbclient组件管理器
 		bool										m_isload;			// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
 
 		impl_actor_base(actor_base* aactor, const actorparmbase& aparm)
 		{
-			m_guid = nguid(aparm.m_type, aparm.m_area, aparm.m_id);
-			m_dbclient = nullptr;
-			m_isload = aparm.m_manage_dbclient;
+			m_guid		= nguid(aparm.m_type, aparm.m_area, aparm.m_id);
+			m_dbclient	= nullptr;
+			m_isload	= aparm.m_manage_dbclient;
 			if (aparm.m_manage_dbclient)
 			{
 				m_dbclient = std::make_unique<actor_manage_dbclient>(aactor);

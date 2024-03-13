@@ -61,10 +61,11 @@ namespace ngl
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
 		tab_servers* tab = ttab_servers::tab();
-		Assert(aactorserver > 0);
+		Assert(aactorserver > 0)
 		tab_servers* tabactor = ttab_servers::tab(aactorserver);
 
-		LogLocalInfo("Connect Actor Server %:%@%:%", tabactor->m_id, tabactor->m_name, tabactor->m_ip, tabactor->m_port);
+		LogLocalInfo("Connect Actor Server %:%@%:%", 
+			tabactor->m_id, tabactor->m_name, tabactor->m_ip, tabactor->m_port)
 
 		uint64_t lactorid = id_guid();
 		nserver->connect(tabactor->m_id, tabactor->m_ip, tabactor->m_port,
@@ -117,8 +118,8 @@ namespace ngl
 		Try
 		{
 			//// --- 需要尝试连接Actor Server结点 并向其注册自己
-			Assert(ttab_servers::node_type() != ngl::ACTORSERVER);
-			Assert(ttab_servers::node_type() != ngl::ROBOT);
+			Assert(ttab_servers::node_type() != ngl::ACTORSERVER)
+			Assert(ttab_servers::node_type() != ngl::ROBOT)
 			tab_servers* tab = ttab_servers::tab();
 			for (int32_t id : tab->m_actorserver)
 			{
@@ -141,12 +142,13 @@ namespace ngl
 					// 比较id  较大的主动连接较小的
 					if (tab->m_id > node.m_serverid)
 					{
-						LogLocalInfo("To Other Client Connect!![%]:[%][%][%]", node.m_serverid, tab->m_id, node.m_ip, node.m_port);
+						LogLocalInfo("To Other Client Connect!![%]:[%][%][%]", 
+							node.m_serverid, tab->m_id, node.m_ip, node.m_port)
 						uint32_t lserverid = node.m_serverid;
 						uint64_t lactorid = id_guid();
 						nserver->connect(lserverid, node.m_ip, node.m_port, [tab, lserverid, lactorid](int asession)
 							{
-								LogLocalInfo("Connect Ok[%]", tab->m_id);
+								LogLocalInfo("Connect Ok[%]", tab->m_id)
 								np_actorclient_node_connect pro;
 								pro.m_id = tab->m_id;
 								nserver->send(asession, pro, nguid::moreactor(), lactorid);
@@ -154,7 +156,7 @@ namespace ngl
 					}
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 
@@ -213,7 +215,7 @@ namespace ngl
 					actor_manage::getInstance().push_task_id(lguid, lparm, false);
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 	
@@ -222,10 +224,10 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.m_data;
-			LogLocalInfo("##actor_node_update## add:[%] del[%]", lparm->m_add, lparm->m_del);
+			LogLocalInfo("##actor_node_update## add:[%] del[%]", lparm->m_add, lparm->m_del)
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
-		}Catch;
+		}Catch
 		return true;
 	}
 	
@@ -284,7 +286,7 @@ namespace ngl
 				return true;
 			}
 			m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
-		}Catch;
+		}Catch
 		return true;
 	}
 	

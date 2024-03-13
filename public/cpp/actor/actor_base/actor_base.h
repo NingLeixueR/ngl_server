@@ -53,18 +53,27 @@ namespace ngl
 		actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
-		// ## 获取actor_manage_dbclient实例
+		//# 获取actor_manage_dbclient实例
 		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient();
-		// ## 是否需要从数据库加载数据
+
+		//# 是否需要从数据库加载数据
 		bool			isload();
-		// ## 是否加载完成
+
+		//# 是否加载完成
 		bool			isloadfinish();
-		// ## 设置db_component组件
+
+		//# 设置db_component组件
 		void			set_db_component(ndb_component* acomponent);
-		// ## 初始化数据(在数据加载完成后)
+
+		//# 初始化数据(在数据加载完成后)
 		void			db_component_init_data();
+
+		//# 初始化db_component
 		void			init_db_component(bool acreate);
+
+		//# 添加dbclient
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
+
 		template <
 			EPROTOCOL_TYPE PROTYPE, 
 			pbdb::ENUM_DB DBTYPE,
@@ -76,53 +85,94 @@ namespace ngl
 
 #pragma region virtual_function
 		virtual ~actor_base();
+
+		//# 初始化数据
+		//# 一般actor对象会在其重载虚函数中
+		//# 让dbclient与actor对象进行绑定
 		virtual void		init() {}
+
+		//# 获取actor状态
 		virtual actor_stat	get_activity_stat()						= 0;
+
+		//# 设置actor状态
 		virtual void		set_activity_stat(actor_stat astat)		= 0;
+
+		//# 检查任务列表是否为空
 		virtual bool		list_empty()							= 0;
+
+		//# 进行任务
 		virtual void		actor_handle(i32_threadid athreadid)	= 0;
+
+		//# 添加任务
 		virtual void		push(handle_pram& apram)				= 0;
-		// ## 清空当前任务
+
+		//# 清空当前任务
 		virtual void		clear_task()							= 0;
-		// ## 执行handle之后调用
+
+		//# 执行handle之后调用
 		virtual void		handle_after() {}
-		// ## 派生actor重载此函数 会在数据加载完成后调用
+
+		//# 派生actor重载此函数 会在数据加载完成后调用
 		virtual void		loaddb_finish(bool adbishave) {}
 #pragma endregion 
 
-		// ## 删除actor时候会被调用
+		//# 删除actor时候会被调用
 		virtual void	release() = 0;
+
+		//# 保存dbclient
 		virtual void	save();
+
+		//# 是否为单例
 		bool			is_single();
+
+		//# 获取actor guid
 		nguid&			guid();
+
+		//# 获取actor guid i64_actorid
 		i64_actorid		id_guid();
+
+		//# 获取actor guid的数据id
 		i32_actordataid id();
+
+		//# 获取actor guid的区服id
 		i16_area		area();
+
+		//# 获取actor guid的actor type
 		ENUM_ACTOR		type();
+
+		//# 移除actor自身
 		void			erase_actor_byid();
+
+		//# 移除指定actor
 		static void		erase_actor_byid(const nguid& aguid);
+
+		//# 向指定actor添加任务
 		static void		push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
+
+		//# 给actor自身添加任务
 		void			push_task_id(handle_pram& apram, bool abool);
+
+		//# 给指定类型的actor添加任务
 		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
 #pragma region network_strat
-		// ## 生成包
+		//# 生成包
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// ## 发送数据到指定服务器
+		//# 发送数据到指定服务器
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
-		// ## 发送pack到指定服务器
+		//# 发送pack到指定服务器
 		template <typename T>
 		static bool sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		// ## 给指定连接发送数据
+		//# 给指定连接发送数据
 		template <typename T>
 		static bool sendpackbysession(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		// ## 给指定连接发送数据
+		//# 给指定连接发送数据
 		template <typename T>
 		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
@@ -130,9 +180,10 @@ namespace ngl
 
 		i32_session m_kcpsession = -1;
 
-		// ## 设置udp.kcp session
+		//# 设置udp.kcp session
 		void set_kcpssion(i32_session asession);
 
+		//# 是否支持udp.kcp
 		static bool iskcp();
 
 		// ## 通过udp.kcp发送数据
@@ -227,7 +278,7 @@ namespace ngl
 			handle_pram::create<tactor_forward<T>, true, true>(apram, lguid, nguid::make(), apro);
 		}
 
-		// 根据actor_role.guidid给所在客户端发送数据
+		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
 		static void send_client(i64_actorid aid, std::shared_ptr<T>& adata)
 		{
@@ -239,7 +290,7 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 
-		// 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
+		//# 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
 		static void send_client(i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata)
 		{
@@ -271,7 +322,7 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 	public:
-		// 根据actor_role.guidid确定客户端，给一组客户端发送数据
+		//# 根据actor_role.guidid确定客户端，给一组客户端发送数据
 		template <typename T>
 		static void send_client(std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata)
 		{
@@ -296,7 +347,7 @@ namespace ngl
 			client_pro(asetid.begin(), asetid.end(), adata);
 		}
 
-		// 向所有客户端发送消息
+		//# 向所有客户端发送消息
 		template <typename T>
 		static void send_allclient(std::shared_ptr<T>& adata)
 		{
@@ -306,7 +357,7 @@ namespace ngl
 				});
 		}
 
-		// 往指定区服所有客户端发送消息
+		//# 往指定区服所有客户端发送消息
 		template <typename T>
 		static void send_allclient(i16_area aarea, std::shared_ptr<T>& adata)
 		{
@@ -316,7 +367,7 @@ namespace ngl
 				});
 		}
 
-		// 向指定actor发送数据
+		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata)
 		{
@@ -333,7 +384,7 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
-		// 向指定actor发送pack
+		//# 向指定actor发送pack
 		void send_actor_pack(const nguid& aguid, std::shared_ptr<pack>& adata)
 		{
 			handle_pram lpram;
@@ -341,7 +392,7 @@ namespace ngl
 			push_task_id(aguid, lpram, true);
 		}
 
-		// 群发给指定类型的所有actor
+		//# 群发给指定类型的所有actor
 		template <typename T, bool IS_SEND = true>
 		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
@@ -350,7 +401,7 @@ namespace ngl
 			push_task_type(atype, lpram, aotherserver);
 		}
 
-		// 发送数据到指定的actor
+		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
 		{
@@ -373,19 +424,23 @@ namespace ngl
 			ENUM_ACTOR m_actortype;
 			std::set<i64_actorid> m_actorlist;
 		};
-		// 分组数据
+		//# 分组数据
 		std::map<int, group_info> m_group;
 		int m_currentoffset = 0;
 	public:
-		// 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
+		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
 		int add_group(ENUM_ACTOR aactortype = ACTOR_NONE);
-		// 移除一个分组
+		
+		//# 移除一个分组
 		void remove_group(int agroupid);
-		// 将成员加入某个群发分组
+		
+		//# 将成员加入某个群发分组
 		bool add_group_member(int agroupid, i64_actorid amember);
-		// 将成员从某个群发分组中移除
+		
+		//# 将成员从某个群发分组中移除
 		void remove_group_member(int agroupid, i64_actorid amember);
-		// 给一组成员发送消息
+		
+		//# 给一组成员发送消息
 		template <typename T>
 		void send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
@@ -396,7 +451,6 @@ namespace ngl
 			{
 				handle_pram lpram;
 				handle_pram::create<T>(lpram, nguid::make(), guid(), adata);
-
 				for (i64_actorid actorid : itor->second)
 				{
 					lpram.m_actor = actorid;
@@ -425,19 +479,23 @@ namespace ngl
 		
 #pragma region timer
 	private:
-		// ## 间隔一段时间发起的全员(所有actor)广播
-		// ## 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+		//# 间隔一段时间发起的全员(所有actor)广播
+		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
 		static int m_broadcast;			// 推送全员广播的 单位(毫秒)
 		static int m_broadcasttimer;	// 推送广播的定时器id
-		// ## 是否接收广播消息
-		bool m_isbroadcast;
+		bool m_isbroadcast;				// 是否接收广播消息
 	public:
+		//# 设置定时任务参数
 		int32_t		set_timer(const timerparm& aparm);
+		//# 是否支持广播
 		bool		isbroadcast();
+		//# 设置是否支持广播
 		void		set_broadcast(bool aisbroadcast);
+		//# 启动广播定时器
 		static void start_broadcast();
 #pragma endregion 
 
+		//# actor_base::create 构造actor对象会自动被调用
 		template <typename TDerived>
 		static void first_nregister()
 		{
@@ -449,7 +507,7 @@ namespace ngl
 			}
 		}
 
-		// 用于创建非单例actor
+		//# 用于创建非单例actor
 		static actor_base* create(ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr);
 	};
 
