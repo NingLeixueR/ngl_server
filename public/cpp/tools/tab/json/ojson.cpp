@@ -3,12 +3,12 @@
 namespace ngl
 {
 	ojson::ojson(const char* astr) :
-		json(cJSON_Parse(astr)),
+		m_json(cJSON_Parse(astr)),
 		m_free(true)
 	{}
 
 	ojson::ojson() :
-		json(),
+		m_json(nullptr),
 		m_free(false)
 	{}
 
@@ -108,15 +108,6 @@ namespace ngl
 		{
 			adata.second = true;
 		}
-		return true;
-	}
-
-	bool ojson::operator >> (std::pair<const char*, json>& adata)
-	{
-		cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
-		if (nullptr == ret || ret->type != cJSON_Object)
-			return false;
-		adata.second.set(ret);
 		return true;
 	}
 

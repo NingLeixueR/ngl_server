@@ -3,7 +3,7 @@
 namespace ngl
 {
 	ijson::ijson() :
-		json(cJSON_CreateObject()),
+		m_json(cJSON_CreateObject()),
 		m_nonformatstr(nullptr),
 		m_str(nullptr),
 		m_isnonformatstr(false),
@@ -12,7 +12,7 @@ namespace ngl
 	}
 
 	ijson::ijson(bool _):
-		json(cJSON_CreateObject()),
+		m_json(cJSON_CreateObject()),
 		m_nonformatstr(nullptr),
 		m_str(nullptr),
 		m_isnonformatstr(false),
@@ -118,13 +118,6 @@ namespace ngl
 	{ 
 		cJSON_AddItemToObject(m_json, adata.first, adata.second ? cJSON_CreateTrue() : cJSON_CreateFalse()); 
 		return *this;
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, json*>& adata)
-	{ 
-		std::pair<const char*, cJSON*> lpair(adata.first, adata.second->get());
-		this->operator<<(lpair);
-		return *this; 
 	}
 
 	ijson& ijson::operator << (const std::pair<const char*, cJSON*>& adata)

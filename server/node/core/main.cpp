@@ -1,21 +1,18 @@
-#include "server_main.h"
-#include "dumper.h"
-#include "nactortype.h"
-
-Dumper lDumper;
-
-#include "rfun.h"
-
-#include "ojson.h"
-#include "ijson.h"
-#include "manage_curl.h"
-
-#include <boost/lexical_cast.hpp>
 #include "operator_file.h"
 #include "init_protobuf.h"
-
+#include "server_main.h"
+#include "manage_curl.h"
+#include "nactortype.h"
 #include "asio_kcp.h"
+#include "dumper.h"
+#include "ojson.h"
+#include "ijson.h"
 #include "ukcp.h"
+#include "rfun.h"
+
+#include <boost/lexical_cast.hpp>
+
+Dumper lDumper;
 
 int main(int argc, char** argv)
 {	

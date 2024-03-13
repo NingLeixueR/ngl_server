@@ -1,10 +1,17 @@
 #pragma once
 
-#include "basejson.h"
+#include <string>
+#include <vector>
+#include <array>
+#include <list>
+#include <map>
+#include <set>
+
+#include "cJSON.h"
 
 namespace ngl
 {
-	class ijson : public json
+	class ijson
 	{
 	public:
 		ijson();
@@ -24,7 +31,6 @@ namespace ngl
 		ijson& operator << (const std::pair<const char*, double>& adata);
 		ijson& operator << (const std::pair<const char*, const char*>& adata);
 		ijson& operator << (const std::pair<const char*, bool>& adata);
-		ijson& operator << (const std::pair<const char*, json*>& adata);
 		ijson& operator << (const std::pair<const char*, cJSON*>& adata);
 		ijson& operator << (const std::pair<const char*, std::string>& adata);
 
@@ -36,7 +42,7 @@ namespace ngl
 			ltemp << adata.second;
 			return (*this) << std::make_pair(adata.first, ltemp.get());
 		}
-
+	private:
 		template <typename T>
 		void _fun_array(cJSON* tempArray, const T& adata)
 		{
@@ -49,38 +55,47 @@ namespace ngl
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const int16_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const int32_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const int64_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const uint8_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const uint16_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const uint32_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const uint64_t& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
 		}
+		
 		void _fun_array(cJSON* tempArray, const bool& adata)
 		{
 			cJSON_AddItemToArray(tempArray, adata? cJSON_CreateTrue(): cJSON_CreateFalse());
 		}
+		
 		void _fun_array(cJSON* tempArray, const char*& adata)
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateString(adata));
@@ -90,7 +105,7 @@ namespace ngl
 		{
 			cJSON_AddItemToArray(tempArray, cJSON_CreateString(adata.c_str()));
 		}
-
+	public:
 		//// --- Êý×éÀà
 		template <typename TITOR>
 		ijson& operator << (std::pair<const char*, std::pair<TITOR, TITOR>>& adata)
@@ -158,10 +173,11 @@ namespace ngl
 			}
 		}
 	private:
-		const char* m_nonformatstr;
-		const char* m_str;
-		bool m_isnonformatstr;
-		bool m_free;
+		cJSON*			m_json;
+		const char*		m_nonformatstr;
+		const char*		m_str;
+		bool			m_isnonformatstr;
+		bool			m_free;
 	};
 }// namespace ngl
 

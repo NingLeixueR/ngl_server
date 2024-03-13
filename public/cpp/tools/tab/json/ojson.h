@@ -1,12 +1,20 @@
 #pragma once
 
-#include "basejson.h"
+#include <string>
+#include <vector>
+#include <array>
+#include <list>
+#include <map>
+#include <set>
+
+#include "cJSON.h"
 
 namespace ngl
 {
-	class ojson : public json
+	class ojson
 	{
-		bool m_free;
+		cJSON*	m_json;
+		bool	m_free;
 	public:
 		ojson(const char* astr);
 
@@ -39,6 +47,7 @@ namespace ngl
 			adata.second = (T)ret->valuedouble;
 			return true;
 		}
+
 		bool operator >> (std::pair<const char*, std::string>& adata);
 		bool operator >> (std::pair<const char*, int8_t>& adata);
 		bool operator >> (std::pair<const char*, int16_t>& adata);
@@ -52,22 +61,9 @@ namespace ngl
 		bool operator >> (std::pair<const char*, double>& adata);
 		bool operator >> (std::pair<const char*, const char*>& adata);
 		bool operator >> (std::pair<const char*, bool>& adata);
-		bool operator >> (std::pair<const char*, json>& adata);
 		bool operator >> (std::pair<const char*, cJSON*>& adata);
 
-		//// --- ½á¹¹Ìå
-		template <typename T>
-		bool operator >> (std::pair<const char*, T>& adata)
-		{
-			cJSON* ljson = nullptr;
-			if ((*this) >> std::make_pair(adata.first, ljson) == false)
-				return false;
-			ojson ltemp;
-			ltemp.set(ljson);
-			ltemp >> adata.second;
-			return true;
-		}
-
+	private:
 		template <typename T>
 		bool _fun_number(T& adata)
 		{
@@ -83,14 +79,17 @@ namespace ngl
 		{
 			return _fun_number(adata);
 		}
+
 		bool operator >> (int16_t& adata)
 		{
 			return _fun_number(adata);
 		}
+
 		bool operator >> (int32_t& adata)
 		{
 			return _fun_number(adata);
 		}
+
 		bool operator >> (int64_t& adata)
 		{
 			return _fun_number(adata);
@@ -126,7 +125,7 @@ namespace ngl
 			ojson ltemp;
 			for (int i = 0; i < lsize; i++)
 			{
-				ltemp.set(cJSON_GetArrayItem(lpair.second, i));
+				ltemp.m_json = cJSON_GetArrayItem(lpair.second, i);
 				T lT;
 				ltemp >> lT;
 				adata.second.push_back(lT);
@@ -143,7 +142,7 @@ namespace ngl
 			ojson ltemp;
 			for (int i = 0; i < lsize; i++)
 			{
-				ltemp.set(cJSON_GetArrayItem(lpair.second, i));
+				ltemp.m_json = cJSON_GetArrayItem(lpair.second, i);
 				T lT;
 				ltemp >> lT;
 				adata.second.push_back(lT);
@@ -160,7 +159,7 @@ namespace ngl
 			ojson ltemp;
 			for (int i = 0; i < lsize; i++)
 			{
-				ltemp.set(cJSON_GetArrayItem(lpair.second, i));
+				ltemp.m_json = cJSON_GetArrayItem(lpair.second, i);
 				T lT;
 				ltemp >> lT;
 				adata.second.insert(lT);
@@ -177,7 +176,7 @@ namespace ngl
 			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
 			(*this) >> lpair;
 			ojson ljson;
-			ljson.set(lpair.second);
+			ljson.m_json = lpair.second;
 			ljson >> lkeypair >> lvalpair;
 
 			typename std::list<TKEY>::iterator itorkey = lkeypair.second.begin();
