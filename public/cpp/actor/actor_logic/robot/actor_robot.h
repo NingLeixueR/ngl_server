@@ -116,7 +116,6 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 		{
 			auto lrecv = adata.m_data;
-			std::cout << "#############["<< lrecv->m_account() <<"]#############" << std::endl;
 			_robot& lrobot = m_maprobot[lrecv->m_account()];
 			lrobot.m_robot = create(lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
 			lrobot.m_account = lrecv->m_account();
@@ -124,7 +123,6 @@ namespace ngl
 
 			connect(lrecv->m_gatewayid(), [lrecv, &lrobot, this](int asession)
 				{
-					std::cout << "#############[" << lrecv->m_account() << "][GateWay]["<< asession <<"]#############" << std::endl;
 					lrobot.m_session = asession;
 					lrobot.m_robot->m_session = asession;
 					std::cout << "#############roleid[" << lrecv->m_roleid() << std::endl;

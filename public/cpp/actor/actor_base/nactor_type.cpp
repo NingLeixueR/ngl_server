@@ -33,13 +33,22 @@ namespace ngl
 		nactor_type<
 			ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
 		>::inits((ENUM_ACTOR)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE));
+		LogLocalError("init_actor_type [%]-[%]", 
+			boost::typeindex::type_id_with_cvr<
+				ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
+				>().pretty_name(), 
+			(int)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE)
+		)
 	}
 
 	void init_nactor_type()
 	{
-#define dinit_atype(ACTORCLASS, ACTORTYPE)	\
-		nactor_type<ACTORCLASS>::inits(ACTORTYPE);\
-		LogLocalError("init_actor_type [%]-[%]", boost::typeindex::type_id_with_cvr<ACTORCLASS>().pretty_name(), (int)(ACTORTYPE))
+#define dinit_atype(ACTORCLASS, ACTORTYPE)									\
+		nactor_type<ACTORCLASS>::inits(ACTORTYPE);							\
+		LogLocalError("init_actor_type [%]-[%]",							\
+			boost::typeindex::type_id_with_cvr<ACTORCLASS>().pretty_name(),	\
+			(int)(ACTORTYPE)												\
+		)
 
 		dinit_atype(actor_client, ACTOR_ADDRESS_CLIENT);
 		dinit_atype(actor_create, ACTOR_CREATE);

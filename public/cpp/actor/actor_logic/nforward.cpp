@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	// ### client到game服务器 会注册gateway的转发与game的处理
+	//# client到game服务器 会注册gateway的转发与game的处理
 	void nforward::c2g()
 	{
 		register_recvforward<EPROTOCOL_TYPE_PROTOCOLBUFF>(

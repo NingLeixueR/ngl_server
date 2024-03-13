@@ -11,7 +11,7 @@ namespace ngl
 	protected:
 		actor_base*				m_actor;
 		i64_actorid				m_id;
-		ndbclient_base*	m_dbclient;
+		ndbclient_base*			m_dbclient;
 		pbdb::ENUM_DB			m_type;
 
 		ndb_component(pbdb::ENUM_DB aenum);
@@ -24,7 +24,7 @@ namespace ngl
 		virtual void		set_id();
 		void				init();
 		void				create();
-		ndbclient_base* dbclientbase();
+		ndbclient_base*		dbclientbase();
 		// 当数据全部加载后调用
 		virtual void		init_data();
 	};

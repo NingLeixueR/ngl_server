@@ -10,18 +10,18 @@ namespace ngl
 	{
 		//// ---- 线程相关
 		std::list<nthread*>	m_workthread;		// 工作线程
-		bool m_suspend;
+		bool				m_suspend;			// 是否挂起
 		std::list<nthread*>	m_suspendthread;	// 挂起的工作线程
-		std::thread					m_thread;			// 管理线程
-		i32_threadsize				m_threadnum;		// 工作线程数量
+		std::thread			m_thread;			// 管理线程
+		i32_threadsize		m_threadnum;		// 工作线程数量
 
 		ngl_lockinit;
 
 		//// ----- 索引actor
 		std::map<nguid, ptractor>							m_actorbyid;
-		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>	m_actorbytype;
-		std::list<ptractor>										m_actorlist;	// 有任务的actor列表
-		std::set<i16_actortype>									m_actortype;
+		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>		m_actorbytype;
+		std::list<ptractor>									m_actorlist;	// 有任务的actor列表
+		std::set<i16_actortype>								m_actortype;	// 包含哪些actortype
 
 		// 删除actor后需要执行的操作
 		std::map<nguid, std::function<void()>> m_delactorfun;
@@ -386,7 +386,6 @@ namespace ngl
 	{
 		m_impl_actor_manage.make_unique();
 	}
-
 
 	void actor_manage::init(i32_threadsize apthreadnum)
 	{

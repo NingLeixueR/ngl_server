@@ -64,7 +64,8 @@ namespace ngl
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const std::function<void(TTTDerived*, T&)>& afun);
 
-		//// #### bool aisload = false 是否允许db数据加载完成之前处理此消息
+		//# bool aisload = false 
+		//# 是否允许db数据加载完成之前处理此消息
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(Tfun<TTTDerived, T> afun, bool aisload = false);
 

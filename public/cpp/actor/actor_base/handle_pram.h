@@ -1,12 +1,12 @@
 #pragma once
 
-#include <cstdint>
-#include <memory>
-
 #include "init_protobuf.h"
 #include "nprotocol.h"
 #include "nguid.h"
 #include "type.h"
+
+#include <cstdint>
+#include <memory>
 
 namespace ngl
 {
@@ -40,21 +40,26 @@ namespace ngl
 		std::shared_ptr<void>	m_data			= nullptr;
 		std::shared_ptr<pack>	m_pack			= nullptr;
 		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;
-		nguid				m_actor;
-		nguid				m_requestactor;
+		nguid					m_actor;
+		nguid					m_requestactor;
 
 		using forwardtype = std::function<void(std::map<i32_serverid, actor_node_session>&, std::map<nguid, i32_serverid>&, handle_pram&)>;
 		forwardtype				m_forwardfun;	// 转发函数
 		std::function<void()>	m_failfun;		// 如何actor_client都找不到目标actor则调用
 
-		// 根据[id]获取[连接]
+		//# 根据[id]获取[连接]
 		static i32_sessionid	get_session(i32_serverid aserverid);
-		// 根据[连接]获取[id]
+
+		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
-		// 根据[actorid]获取[gatewayid]
+
+		//# 根据[actorid]获取[gatewayid]
 		static i32_serverid		get_gatewayid(i64_actorid aactorid);
-		// 根据[服务器类型]获取[服务器列表]
+
+		//# 根据[服务器类型]获取[服务器列表]
 		static void				get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
+
+		//# 是否是无效的actor guid
 		static bool				is_actoridnone(const nguid& aguid);
 
 		template <typename T>
@@ -151,7 +156,6 @@ namespace ngl
 		}
 		return handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
 	}
-
 
 	template <>
 	class handle_pram_send<pack, true>

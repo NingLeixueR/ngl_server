@@ -29,35 +29,35 @@ namespace ngl
 			return ltemp;
 		}
 
-		// 初始化 设置工作线程数量
+		//# 初始化 设置工作线程数量
 		void init(i32_threadsize apthreadnum);
 
-		// 获取本进程存在的actor类型
+		//# 获取本进程存在的actor类型
 		void get_type(std::vector<i16_actortype>& aactortype);
 
-		// 添加actor
+		//# 添加actor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 		bool add_actor(ptractor& apactor, const std::function<void()>& afun);
 
-		// 移除actor
+		//# 移除actor
 		void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
-		// 是否存在某个actor
+		//# 是否存在某个actor
 		bool is_have_actor(const nguid& aguid);
 
-		// 工作线程将actor添加到m_actorlist
+		//# 工作线程将actor添加到m_actorlist
 		void push(ptractor& apactor, nthread* atorthread = nullptr);
 
-		// 向actor中添加任务
+		//# 向actor中添加任务
 		void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
 
-		// 向某个类型的actor中添加任务
+		//# 向某个类型的actor中添加任务
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
-		// 向当前进程所有actor广播消息
+		//# 向当前进程所有actor广播消息
 		void broadcast_task(handle_pram& apram);
 
-		// ## 暂时挂起所有线程，已执行单步操作(热更数据表)
+		//# 暂时挂起所有线程，已执行单步操作(热更数据表)
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
 	};

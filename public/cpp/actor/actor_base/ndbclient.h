@@ -1,16 +1,16 @@
 #pragma once
 
-#include "actor.h"
 #include "actor_manage.h"
+#include "actor_db.h"
+#include "actor.h"
+#include "ttab_dbload.h"
 #include "nactortype.h"
 #include "nregister.h"
-#include "actor_db.h"
-#include "net.h"
-#include "db.h"
+#include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
-#include "db_manage.h"
-#include "ttab_dbload.h"
+#include "db.h"
+#include "net.h"
 
 namespace ngl
 {
@@ -157,8 +157,8 @@ namespace ngl
 			)
 		}
 
-		nguid									m_id;
-		std::map<nguid, data_modified<TDBTAB>> m_data;
+		nguid										m_id;
+		std::map<nguid, data_modified<TDBTAB>>		m_data;
 		data_modified<TDBTAB>*						m_dbdata;
 		bool										m_load;
 		actor_manage_dbclient*						m_manage_dbclient;
@@ -231,7 +231,7 @@ namespace ngl
 					actor::template register_db<PROTYPE, TACTOR, DBTYPE, TDBTAB>(nullptr);
 				}
 				init_load();
-			}Catch;
+			}Catch
 		}
 
 		virtual bool isload()	
@@ -400,7 +400,7 @@ namespace ngl
 					, adata.m_data->m_over? "true":"false"
 				)
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
-			}Catch;
+			}Catch
 			return true;
 		}
 
@@ -431,10 +431,10 @@ namespace ngl
 		{
 			Try
 			{
-				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end());
+				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end())
 				m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 				init(adbclient, m_actor,  aid);
-			}Catch;			
+			}Catch		
 		}
 
 		void set_loadfinish_function(const std::function<void(bool)>& afun)
