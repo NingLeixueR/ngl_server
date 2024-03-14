@@ -30,8 +30,8 @@
   * <b>ngl/tools/public/idl</b><br/>csv表生成
   * <b>ngl/tools/public/proto</b><br/>proto协议生成
   * <b>ngl/tools/public/rebuild.bat</b><br/>与cmake unity build类似的加速编译
-  * <b>ngl/public/cpp</b><br/>cpp源码
-  * <b>ngl/public/csharp</b><br/>cs源码
+  * <b>ngl/public/cpp</b><br/>cpp服务器源码
+  * <b>ngl/public/csharp</b><br/>cs客户端源码(主要包含消息、网络、csv的读取)
   * <b>ngl/server</b><br/>项目源文件
 
 ## 协议支持
