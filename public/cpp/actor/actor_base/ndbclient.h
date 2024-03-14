@@ -22,10 +22,10 @@ namespace ngl
 			m_type(atype)
 		{}
 	public:
-		virtual bool isload() = 0;
-		virtual void load() = 0;
-		virtual void savedb() = 0;
-		virtual void deldb() = 0;
+		virtual bool isload()	= 0;
+		virtual void load()		= 0;
+		virtual void savedb()	= 0;
+		virtual void deldb()	= 0;
 		virtual void create(const nguid& aid) = 0;
 		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) = 0;
 		virtual void clear_modified() = 0;
@@ -125,7 +125,7 @@ namespace ngl
 					});
 				nguid lclientguid = nguid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
-			}Catch;
+			}Catch
 		}
 	private:
 		void init_load()
@@ -135,20 +135,21 @@ namespace ngl
 
 		i32_actordataid dbnodeid()
 		{
-			static i32_actordataid ldbnodeid = -1;
-			if (ldbnodeid != -1)
-				return ldbnodeid;
-			return ttab_servers::tab()->m_db;
-			return -1;
+			tab_servers* tab = ttab_servers::tab();
+			return tab->m_db;
+		}
+
+		inline i64_actorid dbguid()
+		{
+			ENUM_ACTOR ltype = nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type();
+			return nguid::make(ltype, tab_self_area, dbnodeid());
 		}
 
 		void loaddb(const nguid& aid)
 		{
 			np_actordb_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
-
-			i64_actorid ldbid = nguid::make(nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type(), tab_self_area, dbnodeid());
-			nserver->send_server(dbnodeid(), ldata, ldbid, m_actor->id_guid());
+			nserver->send_server(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 
 			std::string lname;
 			LogLocalError("actor_dbclient loaddb [%] [%]"
@@ -175,7 +176,6 @@ namespace ngl
 			m_manage_dbclient(nullptr)
 		{}
 
-		//// create
 		virtual void create(const nguid& aid)
 		{
 			m_dbdata = &m_data[aid];
@@ -287,13 +287,8 @@ namespace ngl
 			if (pro.empty() == false)
 			{
 				// ### 先序列化 再让actor_client确认位置
-				i64_actorid lactorid = nguid::make(
-					nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type()
-					, tab_self_area
-					, dbnodeid()
-				);
-				i64_actorid larequestactorid = m_actor->guid();
-				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, larequestactorid);
+				i64_actorid lactorid = dbguid();
+				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
 					// LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name())
@@ -324,16 +319,15 @@ namespace ngl
 			if (pro.m_data.empty() == false)
 			{
 				// ### 先序列化 再让actor_client确认位置
-				i64_actorid lactorid = nguid::make((ENUM_ACTOR)(ACTOR_DB + DBTYPE), tab_self_area, dbnodeid());
-				i64_actorid larequestactorid = m_actor->guid();
-				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, larequestactorid);
+				i64_actorid lactorid = dbguid();
+				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
 					//LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name())
 					return;
 				}
 				// ### 异步发送pack
-				m_actor->send_actor_pack(nguid::make((ENUM_ACTOR)(ACTOR_DB + DBTYPE), tab_self_area, dbnodeid()), lpack);
+				m_actor->send_actor_pack(lactorid, lpack);
 			}
 		}
 	public:
@@ -483,7 +477,6 @@ namespace ngl
 			}
 			// 2、做一些初始化之类的工作,并且需要的话将其发送给客户端
 			m_fun(adbishave);
-			LogLocalInfo("##############load_finish##############");
 			return true;
 		}
 
@@ -538,13 +531,11 @@ namespace ngl
 		std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
 		if (mdbclient == nullptr)
 		{
-			//LogLocalError("get_actor_manage_dbclient() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid())
 			return false;
 		}
 		ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
 		if (lp == nullptr)
 		{
-			//LogLocalError("mdbclient->data<DBTYPE, TDBTAB>() == nullptr, DBTYPE = [%], actorid = [%]", DBTYPE, id_guid())
 			return false;
 		}
 		return lp->handle(adata);
