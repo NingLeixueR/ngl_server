@@ -4,7 +4,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/lexical_cast.hpp>
 
 enum ROBOT_CMD
 {
