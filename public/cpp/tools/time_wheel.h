@@ -14,7 +14,7 @@
 
 namespace ngl
 {
-	class wheel_node;
+	struct wheel_node;
 	class wheel;
 
 	struct wheel_parm

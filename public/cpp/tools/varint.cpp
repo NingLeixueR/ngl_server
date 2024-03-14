@@ -1,6 +1,5 @@
-#include "varint.h"
-#include <vector>
 #include "serialize.h"
+#include "varint.h"
 
 namespace ngl
 {

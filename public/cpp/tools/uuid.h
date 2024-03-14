@@ -10,4 +10,4 @@ namespace ngl
 	public:
 		static std::string& make(std::string& strUUID);
 	};
-}
+}// namespace ngl

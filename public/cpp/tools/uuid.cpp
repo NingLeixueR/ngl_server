@@ -14,4 +14,4 @@ namespace ngl
 		strUUID = boost::uuids::to_string(a_uuid);
 		return strUUID;
 	}
-}
+}// namespace ngl
