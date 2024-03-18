@@ -8,9 +8,9 @@
 
 namespace ngl
 {
-	using ws_callback = std::function<bool(service_ws*, const char*, uint32_t)>;
-	using ws_closecallback = std::function<void(i32_sessionid)>;
-	using ws_connectcallback = std::function<void(i32_sessionid)>;
+	using ws_callback			= std::function<bool(service_ws*, const char*, uint32_t)>;
+	using ws_closecallback		= std::function<void(i32_sessionid)>;
+	using ws_connectcallback	= std::function<void(i32_sessionid)>;
 	using ws_sendfinishcallback = std::function<void(i32_sessionid, bool, pack*)>;
 
 	class asio_ws
@@ -59,4 +59,3 @@ namespace ngl
 		ngl::impl<impl_asio_ws> m_impl_asio_ws;
 	};
 }//namespace ngl
-

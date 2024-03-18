@@ -80,7 +80,7 @@ namespace ngl
 			typename TDBTAB, 
 			typename TACTOR
 		>
-		bool			handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
+		bool handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
 
 #pragma region virtual_function
@@ -306,7 +306,7 @@ namespace ngl
 			send_server(agatewayid, pro, nguid::make(), aid);
 		}
 	private:
-		template < typename T, typename ITOR>
+		template <typename T, typename ITOR>
 		static void client_pro(ITOR abeg, ITOR aend, std::shared_ptr<T>& adata)
 		{
 			if (abeg == aend)
@@ -322,7 +322,8 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 	public:
-		//# 根据actor_role.guidid确定客户端，给一组客户端发送数据
+		//# 根据actor_role.guidid确定客户端，
+		//# 给一组客户端发送数据
 		template <typename T>
 		static void send_client(std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata)
 		{

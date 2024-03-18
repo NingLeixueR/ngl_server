@@ -203,8 +203,8 @@ namespace ngl
 						if (acount > 0)
 						{
 							LogLocalError("连接[%:%]失败[%] 加入定时队列 ", ahost, aport, ec.message())
-								//加入定时队列
-								wheel_parm lparm
+							//加入定时队列
+							wheel_parm lparm
 							{
 								.m_ms = 1000,
 								.m_intervalms = [](int64_t) {return 1000; } ,
@@ -243,7 +243,6 @@ namespace ngl
 					start(lservice);
 					afun(lservice->m_sessionid);
 				}
-				//boost::bind(&impl_asio_ws::conn_handler, this, boost::asio::placeholders::error, lservice, ahost, aport, afun, acount)
 			);
 			//////////////
 			return lservice;

@@ -208,7 +208,10 @@ namespace ngl
 				NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
 				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
 				{
-					std::shared_ptr<np_actorserver_connect> pro(new np_actorserver_connect{ .m_serverid = lserverid });
+					std::shared_ptr<np_actorserver_connect> pro(new np_actorserver_connect
+						{ 
+							.m_serverid = lserverid 
+						});
 					nguid lguid = nguid::make_self(ACTOR_LOGIN);
 					handle_pram lparm;
 					handle_pram::create(lparm, lguid, guid(), pro);

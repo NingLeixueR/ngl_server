@@ -60,4 +60,3 @@ namespace ngl
 		ngl::impl<impl_asio_tcp> m_impl_asio_tcp;
 	};	
 }// namespace ngl
-
