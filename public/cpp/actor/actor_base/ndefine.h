@@ -3,27 +3,27 @@
 #include "serialize.h"
 #include "logserialize.h"
 
-#define def_portocol_function_pop(...)						\
-	inline bool pop(ngl::unserialize& ser)					\
-	{														\
-		return ser.pop(__VA_ARGS__);						\
-	}														\
-	inline bool ParseFromArray(const void* data, int size)	\
-	{														\
-		ngl::unserialize lunserialize((const char*)data, size);\
-		return pop(lunserialize);							\
+#define def_portocol_function_pop(...)							\
+	inline bool pop(ngl::unserialize& ser)						\
+	{															\
+		return ser.pop(__VA_ARGS__);							\
+	}															\
+	inline bool ParseFromArray(const void* data, int size)		\
+	{															\
+		ngl::unserialize lunserialize((const char*)data, size);	\
+		return pop(lunserialize);								\
 	}
 
 
-#define def_portocol_function_push(...)						\
-	inline bool push(ngl::serialize& ser)const				\
-	{														\
-		return ser.push(__VA_ARGS__);						\
-	}														\
-	inline bool SerializeToArray(void* data, int size) const\
-	{														\
-		ngl::serialize lserialize((char*)data, size);		\
-		return push(lserialize);							\
+#define def_portocol_function_push(...)							\
+	inline bool push(ngl::serialize& ser)const					\
+	{															\
+		return ser.push(__VA_ARGS__);							\
+	}															\
+	inline bool SerializeToArray(void* data, int size) const	\
+	{															\
+		ngl::serialize lserialize((char*)data, size);			\
+		return push(lserialize);								\
 	}
 
 

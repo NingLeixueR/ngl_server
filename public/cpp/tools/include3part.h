@@ -3,6 +3,7 @@
 #include <boost/system/error_code.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/date_time.hpp>
+#include <boost/asio.hpp>
 #include <boost/beast.hpp>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>

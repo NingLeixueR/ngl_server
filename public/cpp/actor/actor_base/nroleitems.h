@@ -7,6 +7,7 @@ namespace ngl
 	//# nroleitems<TDerived,T>
 	//# 为actor对象TDerived提供对
 	//# std::vector<pbdb::db_brief>的离线数据同步
+
 	template <typename TDerived, typename T>
 	struct nroleitems
 	{

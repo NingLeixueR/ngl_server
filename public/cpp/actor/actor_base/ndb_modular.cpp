@@ -56,6 +56,5 @@ namespace ngl
 		return m_dbclient;
 	}
 
-	// 当数据全部加载后调用
 	void ndb_component::init_data() {}
 }//namespace ngl

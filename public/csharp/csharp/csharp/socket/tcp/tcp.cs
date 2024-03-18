@@ -51,7 +51,7 @@ namespace ngl
         {
             if (m_tcp == null)
                 return null;
-            if (m_tcp.TryGetValue(asession, out TcpConnect so))
+            if (m_tcp.TryGetValue(asession, out TcpConnect? so))
                 return so.m_socket;
             return null;
         }
@@ -60,7 +60,7 @@ namespace ngl
         {
             if (m_tcp == null)
                 return null;
-            if (m_tcp.TryGetValue(asession, out TcpConnect so))
+            if (m_tcp.TryGetValue(asession, out TcpConnect? so))
                 return so;
             return null;
         }

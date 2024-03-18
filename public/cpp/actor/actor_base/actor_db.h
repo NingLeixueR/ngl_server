@@ -241,6 +241,7 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db : public actor
 	{
+		using tactor_db = actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 	private:
 		actor_db() :
 			actor(
@@ -248,7 +249,7 @@ namespace ngl
 				{
 					.m_parm
 					{
-						.m_type = nactor_type<actor_db<PROTYPE,TDBTAB_TYPE,TDBTAB>>::type(),
+						.m_type = nactor_type<tactor_db>::type(),
 						.m_area = ttab_servers::tab()->m_area,
 						.m_id = nconfig::m_nodeid
 					},
@@ -260,10 +261,10 @@ namespace ngl
 		}
 	public:
 		//db m_db;
-		friend class actor_instance<actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>>;
-		static actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>& getInstance()
+		friend class actor_instance<tactor_db>;
+		static tactor_db& getInstance()
 		{
-			return actor_instance<actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>>::instance();
+			return actor_instance<tactor_db>::instance();
 		}
 
 		virtual ~actor_db() {}
@@ -271,17 +272,15 @@ namespace ngl
 		static void nregister()
 		{
 			EPROTOCOL_TYPE ltype = PROTYPE;
-			using TDerived = actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			TDerived::template register_actor<PROTYPE, TDerived>(
+			tactor_db::template register_actor<PROTYPE, tactor_db>(
 				true
-				, (Tfun<TDerived, np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>)&TDerived::handle
-				, (Tfun<TDerived, np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
-				, (Tfun<TDerived, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & TDerived::handle
-				, (Tfun<TDerived, np_actortime_db_cache<PROTYPE, TDBTAB>>) & TDerived::handle
+				, (Tfun<tactor_db, np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>)& tactor_db::handle
+				, (Tfun<tactor_db, np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & tactor_db::handle
+				, (Tfun<tactor_db, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & tactor_db::handle
+				, (Tfun<tactor_db, np_actortime_db_cache<PROTYPE, TDBTAB>>) & tactor_db::handle
 				);
 		}
 
-		
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			std::string lname;
@@ -294,16 +293,12 @@ namespace ngl
 
 		bool handle(message<np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			//for (auto& [key, value] : adata.m_data)
-			//	LogLocalInfo(" actor_db actor_db_save<%,%,false> [%:%:%]", TDBTAB_TYPE, TDBTAB::name(), key.type(), key.area(), key.actordataid());
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::save(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}
 
 		bool handle(message<np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			//for (auto& id : adata.m_data)
-			//	LogLocalInfo(" actor_db actor_db_delete<%,%,false> [%]", TDBTAB_TYPE, TDBTAB::name(), id);
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::del(adata.m_thread, adata.m_data->m_data);
 			return true;
 		}

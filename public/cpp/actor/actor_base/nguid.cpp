@@ -1,5 +1,5 @@
-#include "nguid.h"
 #include "ttab_servers.h"
+#include "nguid.h"
 
 namespace ngl
 {
@@ -138,7 +138,6 @@ namespace ngl
 		return m_value2[1];
 	}
 
-	// sendmore 发送给同类型的所有actor
 	i64_actorid nguid::moreactor(ENUM_ACTOR atype)
 	{
 		return make(atype, none_area(), none_actordataid());
@@ -156,7 +155,6 @@ namespace ngl
 		m_value1[1] = none_actordataid();
 	}
 
-	//是否发给同类型的所有actor
 	bool nguid::is_moreactor(i64_actorid actorid, ENUM_ACTOR atype)
 	{
 		nguid lguid(actorid);
@@ -169,7 +167,6 @@ namespace ngl
 		return (i64_actorid)(lguid) == (i64_actorid)(*this);
 	}
 
-	// actor type 是否无效
 	bool nguid::is_actortypenone(i64_actorid actorid)
 	{
 		nguid lguid(actorid);
@@ -192,7 +189,6 @@ namespace ngl
 		return area() == none<i16_area>();
 	}
 
-	// actor id 是否无效
 	bool nguid::is_actoridnone(i64_actorid actorid)
 	{
 		nguid lguid(actorid);
@@ -223,7 +219,6 @@ namespace ngl
 	{
 		return none<i32_actordataid>();
 	}
-
 
 	bool nguid::operator<(int64_t ar)const
 	{

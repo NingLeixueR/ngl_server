@@ -10,9 +10,9 @@ namespace ngl
 	{
 	private:
 		static naddress::map_guidserver		m_actorserver;
-		static naddress::map_typeguid			m_actortypeserver;
+		static naddress::map_typeguid		m_actortypeserver;
 		static naddress::map_servernode		m_session;
-		static naddress::map_rolegateway		m_rolegateway;
+		static naddress::map_rolegateway	m_rolegateway;
 	public:
 		static bool set_node(const nactornode& anode)
 		{

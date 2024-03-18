@@ -14,65 +14,65 @@ namespace ngl
 	class naddress
 	{
 	public:
-		//##[ACTOR_ID] -> SERVER_ID
-		//##[ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID
+		//# [ACTOR_ID] -> SERVER_ID
+		//# [ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID
 		using map_guidserver = std::map<nguid, i32_serverid>;
-		//##[ACTOR_TYPE]  -> set<ACTOR_ID>
-		//##[ACTOR_TYPE]  -> set<ACTOR_TYPE + EARE_ID + DATA_ID>
-		using map_typeguid = std::map<i16_actortype, std::set<nguid>>;
-		//##[SERVER_ID] -> [SESSION_ID]
+		//# [ACTOR_TYPE]  -> set<ACTOR_ID>
+		//# [ACTOR_TYPE]  -> set<ACTOR_TYPE + EARE_ID + DATA_ID>
+		using map_typeguid		= std::map<i16_actortype, std::set<nguid>>;
+		//# [SERVER_ID] -> [SESSION_ID]
 		using map_servernode = std::map<i32_serverid, actor_node_session>;
-		//##[ACTOR_ID] -> [GATEWAY_SERVER_ID]
+		//# [ACTOR_ID] -> [GATEWAY_SERVER_ID]
 		using map_rolegateway = std::map<nguid, i32_serverid>;
-		//##[ergodic]回调
+		//# [ergodic]回调
 		using ergodic_callbackfun = std::function<bool(map_guidserver&, map_servernode&)>;
-		//##[foreach]回调
+		//# [foreach]回调
 		using foreach_callbackfun = std::function<bool(const actor_node_session&)>;
 
 	public:
 #pragma region base
-		// debug 打印
+		//# debug 打印
 		static void print_address();
 
-		// 设置结点
+		//# 设置结点
 		static bool set_node(const nactornode& anode);
 
-		// 添加actor
+		//# 添加actor
 		static void actor_add(i32_serverid aserverid, i64_actorid adataid);
 
-		// 添加一组actor
+		//# 添加一组actor
 		static void actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
 
-		// 删除actor
+		//# 删除actor
 		static void actor_del(i64_actorid adataid);
 
-		// 删除一组actor
+		//# 删除一组actor
 		static void actor_del(const std::vector<i64_actorid>& avec);
 
-		// 设置session
+		//# 设置session
 		static void set_session(i32_serverid aserverid, i32_sessionid asession);
 
-		// 获取session
+		//# 获取session
 		static i32_sessionid get_session(i32_serverid aserverid);
 
-		// 获取server id
+		//# 获取server id
 		static i32_serverid get_server(const nguid& aguid);
 
-		// 获取ENUM_ACTOR 对应的服务器
+		//# 获取ENUM_ACTOR 对应的服务器
 		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 #pragma endregion
 
 #pragma region gateway
-		//##[ACTOR_ID(ACTOR_ROLE的actor)] -> [GATEWAY_SERVER_ID]
+		//# [ACTOR_ID(ACTOR_ROLE的actor)] -> [GATEWAY_SERVER_ID]
 		static i32_serverid get_gatewayid(const nguid& aguid);
 
-		// 将actor_role.actorid与gatewayid关联
+		//# 将actor_role.actorid与gatewayid关联
 		static void add_gatewayid(const nguid& aguid, i32_serverid aserverid);
 
-		// 解除actor_role.actorid与gatewayid的关联
+		//# 解除actor_role.actorid与gatewayid的关联
 		static void remove_gatewayid(const nguid& aguid);
 
-		// 获取一组actor_role.actorid与gatewayid的关联
+		//# 获取一组actor_role.actorid与gatewayid的关联
 		static void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
 #pragma endregion
 
