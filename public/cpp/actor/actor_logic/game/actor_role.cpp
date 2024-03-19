@@ -207,9 +207,10 @@ namespace ngl
 
 	bool actor_role::handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata)
 	{
-		// ### 
 		auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE_RESPONSE>();
-		auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>(adata.m_data->identifier(), prot);
+		auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>
+			(adata.m_data->identifier(), prot);
+
 		int32_t lrechargeid = adata.m_data->data()->m_rechargeid();
 		pro->data()->set_m_rechargeid(lrechargeid);
 		tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);

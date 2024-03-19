@@ -1,7 +1,6 @@
 #include "actor_chat.h"
 #include "net.pb.h"
 
-
 namespace ngl
 {
 	actor_chat::actor_chat() :
@@ -26,7 +25,6 @@ namespace ngl
 		);
 	}
 
-
 	void actor_chat::nregister()
 	{
 		// ¶¨Ê±Æ÷
@@ -36,7 +34,6 @@ namespace ngl
 			false
 			, dregister_fun_handle(actor_chat, mforward<pbnet::PROBUFF_NET_CHAT>)
 			);
-
 	}
 
 	void actor_chat::init()
@@ -58,7 +55,6 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
 		pro->set_m_stat(true);
 		pro->set_m_type(pbnet::updata_speck);
-
 
 		for (const auto& [_channelid, _update] : m_update_chatitem)
 		{

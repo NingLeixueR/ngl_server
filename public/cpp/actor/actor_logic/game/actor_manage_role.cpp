@@ -18,7 +18,6 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		role_cmd::init();
 	}
 
 	void actor_manage_role::nregister()

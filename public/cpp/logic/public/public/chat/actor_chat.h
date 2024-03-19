@@ -43,7 +43,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		
 		bool handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 		{
 			pbnet::PROBUFF_NET_CHAT& recv = *adata.m_data->data();
@@ -127,12 +126,8 @@ namespace ngl
 			return true;
 		}
 
-
-		
-
 		virtual void init();
 
 		bool timer_handle(message<timerparm>& adata);
-	private:
 	};
 }

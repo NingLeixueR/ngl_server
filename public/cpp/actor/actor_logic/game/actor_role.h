@@ -25,10 +25,9 @@ namespace ngl
 	public:
 		using callback = std::function<void(actor_role*, const char*)>;
 	private:
-		static std::map<std::string, std::function<void(actor_role*, const char*)>> m_cmd;
+		static std::map<std::string, callback> m_cmd;
 	public:
 		static void init();
-
 		static const callback& find(const char* akey);
 	};
 
@@ -50,18 +49,19 @@ namespace ngl
 
 		virtual void init();
 
+		//# 注册需要处理的协议
 		static void nregister();
 
 		virtual ~actor_role();
 
 		virtual void loaddb_finish(bool adbishave);
 
-		// 执行handle之后调用
+		//# 执行handle之后调用
 		virtual void handle_after();
 
 		i64_actorid roleid();
 
-		// #### 设置更新角色属性
+		//# 设置更新角色属性
 		void update_attribute(EnumModule amodule, attribute_value& avalue)
 		{
 			m_attribute.updata(amodule, avalue);
@@ -82,7 +82,7 @@ namespace ngl
 			ecross_play,				// 玩法转发(但是转发的actorid已确认)
 		};
 
-		// 重载(跨服模块转发)
+		//# 重载(跨服模块转发)
 		template <typename T>
 		ecross forward_way(T& adata)
 		{
@@ -123,21 +123,38 @@ namespace ngl
 			return true;
 		}
 
-		// 登录请求未发货充值
+		//# 登录请求未发货充值
 		void loginpay();
-		// CMD 协议
+
+		//# CMD 协议
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
+
+		//# 获取role数据
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
+
+		//# 获取服务器时间
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata);
+
+		//# 切换线路服务器
 		bool handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
+
+		//# 发送物品
 		bool handle(message<np_actor_senditem>& adata);
+
+		//# 断开连接
 		bool handle(message<np_actor_disconnect_close>& adata);
-		//玩法创建成功  记录玩法actorid
+
+		//# 玩法创建成功  记录玩法actorid
 		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
+
+		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
 		bool handle(message<pbnet::PROBUFF_NET_RECHARGE>& adata);
 		bool is_first_recharge(int32_t arechargeid);
+
+		//# 请求创建订单
 		bool handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata);
+
 		// 定时器
 		bool timer_handle(message<timerparm>& adata);
 	};
