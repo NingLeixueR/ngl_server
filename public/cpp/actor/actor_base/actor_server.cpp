@@ -105,7 +105,7 @@ namespace ngl
 					nserver->send(lpack->m_id, item.second, nguid::moreactor(), id_guid());
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 
@@ -135,7 +135,7 @@ namespace ngl
 					nserver->sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 

@@ -219,7 +219,8 @@ namespace ngl
 
 		inline void nosafe_push_task_id(ptractor& lpactor, handle_pram& apram)
 		{
-			if (lpactor->get_activity_stat() == actor_stat_close || lpactor->get_activity_stat() == actor_stat_init)
+			if (lpactor->get_activity_stat() == actor_stat_close 
+				|| lpactor->get_activity_stat() == actor_stat_init)
 			{
 				std::cout << "activity_stat =  " << (int)lpactor->get_activity_stat() <<" !!!" << std::endl;
 				return;

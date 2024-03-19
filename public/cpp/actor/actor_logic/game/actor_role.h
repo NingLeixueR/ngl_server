@@ -84,12 +84,12 @@ namespace ngl
 
 		// 重载(跨服模块转发)
 		template <typename T>
-		ecross get_cross(T& adata)
+		ecross forward_way(T& adata)
 		{
 			return ecross_ordinary;
 		}
 
-		ecross get_cross(pbnet::PROBUFF_NET_CHAT& adata)
+		ecross forward_way(pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			return adata.m_channelid() == 2 ? ecross_cross_ordinary : ecross_ordinary;
 		}
@@ -105,7 +105,7 @@ namespace ngl
 		{
 			std::shared_ptr<mforward<T>> pro(new mforward<T>(id_guid(), *adata.m_data));
 			i64_actorid lguid;
-			switch (get_cross(*adata.m_data))
+			switch (forward_way(*adata.m_data))
 			{
 			case ecross_ordinary:
 				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, dataid(*adata.m_data));
