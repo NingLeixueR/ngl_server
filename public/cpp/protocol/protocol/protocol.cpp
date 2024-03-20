@@ -7,20 +7,20 @@ namespace ngl
 {
 	class impl_protocol
 	{
-		struct protocol_fun
+		struct pfun
 		{
-			protocol::typefun_pack						m_packfun;
-			std::map<ENUM_ACTOR, protocol::typefun_run> m_runfun;
+			protocol::fun_pack						m_packfun;
+			std::map<ENUM_ACTOR, protocol::fun_run> m_runfun;
 		};
 
-		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, protocol_fun>> m_protocolfun;
+		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, pfun>> m_protocolfun;
 		static std::shared_mutex	m_mutex;
 	public:
-		static void push(std::shared_ptr<pack>& apack)
+		static void push(protocol::tpptr& apack)
 		{
 			i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
 			EPROTOCOL_TYPE lprotocoltype = apack->m_head.get_protocoltype();
-			protocol_fun* lpfun = nullptr;
+			pfun* lpfun = nullptr;
 			{
 				lock_read(m_mutex);
 				auto itor1 = m_protocolfun.find(lprotocoltype);
@@ -73,24 +73,24 @@ namespace ngl
 			EPROTOCOL_TYPE atype, 
 			int aprotocolnumber,
 			ENUM_ACTOR aenumactor, 
-			const protocol::typefun_pack& apackfun, 
-			const protocol::typefun_run& arunfun, 
+			const protocol::fun_pack& apackfun, 
+			const protocol::fun_run& arunfun, 
 			const char* aname)
 		{
 			protocoltools::push(aprotocolnumber, aname, atype);
 			{
 				lock_write(m_mutex);
-				protocol_fun& lprotocol = m_protocolfun[atype][aprotocolnumber];
+				pfun& lprotocol = m_protocolfun[atype][aprotocolnumber];
 				lprotocol.m_packfun = apackfun;
 				lprotocol.m_runfun[aenumactor] = arunfun;
 			}
 		}
 	};
 
-	std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, impl_protocol::protocol_fun>> impl_protocol::m_protocolfun;
+	std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, impl_protocol::pfun>> impl_protocol::m_protocolfun;
 	std::shared_mutex impl_protocol::m_mutex;
 
-	void protocol::push(std::shared_ptr<pack>& apack)
+	void protocol::push(protocol::tpptr& apack)
 	{
 		impl_protocol::push(apack);
 	}
@@ -99,8 +99,8 @@ namespace ngl
 		EPROTOCOL_TYPE atype
 		, i32_protocolnum aprotocolnumber
 		, ENUM_ACTOR aenumactor
-		, const typefun_pack& apackfun
-		, const typefun_run& arunfun
+		, const protocol::fun_pack& apackfun
+		, const protocol::fun_run& arunfun
 		, const char* aname)
 	{
 		impl_protocol::register_protocol(atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname);

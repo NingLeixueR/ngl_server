@@ -54,7 +54,7 @@ namespace ngl
 					lpactor_base->init();
 					lpactor_base->init_db_component(false);
 				}
-				Catch;
+				Catch
 			});
 		return lpactor_base;
 	}

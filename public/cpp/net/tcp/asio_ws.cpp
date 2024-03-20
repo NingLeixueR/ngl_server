@@ -106,8 +106,6 @@ namespace ngl
 					}
 					accept();
 				}
-				//boost::bind(
-				//	&impl_asio_ws::handle_accept, this, lservice, boost::asio::placeholders::error)
 			);
 		}
 

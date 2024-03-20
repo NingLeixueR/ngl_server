@@ -234,6 +234,7 @@ namespace ngl
 		bool connect_kcp(const std::string& aip, i16_port aprot);
 
 #pragma endregion //network_kcp
+	private:
 		template <typename T>
 		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 
@@ -278,6 +279,7 @@ namespace ngl
 			handle_pram::create<tactor_forward<T>, true, true>(apram, lguid, nguid::make(), apro);
 		}
 
+	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
 		static void send_client(i64_actorid aid, std::shared_ptr<T>& adata)
@@ -496,16 +498,16 @@ namespace ngl
 		static void start_broadcast();
 #pragma endregion 
 
-		//# actor_base::create 构造actor对象会自动被调用
+		//# actor_base::create 
+		//# 构造actor对象会自动被调用
 		template <typename TDerived>
 		static void first_nregister()
 		{
 			static bool lfirst = true;
-			if (lfirst)
-			{
-				lfirst = false;
-				TDerived::nregister();
-			}
+			if (lfirst == false)
+				return;
+			lfirst = false;
+			TDerived::nregister();
 		}
 
 		//# 用于创建非单例actor

@@ -93,7 +93,7 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		pbnet::PROBUFF_NET_CMD& lparm = *adata.m_data;
-		LogInfo("cmd[%]", lparm.m_cmd());
+		LogInfo("cmd[%]", lparm.m_cmd())
 
 		std::vector<std::string> lvec;
 		ngl::splite::division(lparm.m_cmd().c_str(), "|", lvec);
