@@ -141,26 +141,21 @@ namespace ngl
 			return dec(akey[aindex].c_str(), avalue);
 		}
 		
-		template <typename T, typename ...ARG>
+		/*template <typename T, typename ...ARG>
 		bool dec(const std::vector<std::string>& akey, int aindex, T& avalue, ARG&... arg)
 		{
 			if (dec(akey[aindex].c_str(), avalue) == false)
 				return false;
 			return dec(akey, ++aindex, arg...);
+		}*/
+
+		template <typename T, typename ...ARG>
+		bool dec(const char* akey, T& avalue, ARG&... arg)
+		{
+			if (dec(akey, avalue) == false)
+				return false;
+			return dec(arg...);
 		}
 	};
 }// namespace ngl
-
-#define jsondecfunc(KEYVEC, ...)	\
-inline bool dec(ngl::ojson& ijsn, const char* akey)\
-{\
-	ngl::ojson ltemp;\
-	if (ijsn.dec(akey, ltemp) == false)\
-		return false;\
-	return dec(ltemp);\
-}\
-inline bool dec(ngl::ojson& ijsn)\
-{\
-	return ijsn.dec(KEYVEC, 0, __VA_ARGS__);\
-}
 

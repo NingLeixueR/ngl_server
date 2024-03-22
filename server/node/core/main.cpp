@@ -1,12 +1,11 @@
 #include "operator_file.h"
 #include "server_main.h"
 #include "manage_curl.h"
+#include "define_json.h"
 #include "nactortype.h"
 #include "initproto.h"
 #include "asio_kcp.h"
 #include "dumper.h"
-#include "ojson.h"
-#include "ijson.h"
 #include "ukcp.h"
 #include "rfun.h"
 
@@ -22,33 +21,11 @@ struct abc
 	std::vector<int32_t> m_4;
 	std::map<int32_t, float> m_5;
 
-	jsonaddfunc( "_1", m_1, "_2", m_2, "_3", m_3, "_4", m_4,"_5", m_5)
-	
-	//jsondecfunc({ "_1","_2","_3","_4","_5" }, m_1, m_2, m_3, m_4, m_5)
-
-	inline bool dec(ngl::ojson& ijsn, const char* akey)
-	{
-		ngl::ojson ltemp;
-		if (ijsn.dec(akey, ltemp) == false)
-			return false;
-		return dec(ltemp);
-	}
-
-	inline bool dec(ngl::ojson& ijsn)
-	{
-		return ijsn.dec({ "_1","_2","_3","_4","_5" }, 0, m_1, m_2, m_3, m_4, m_5);
-	}
-	
+	jsonfunc( "_1", m_1, "_2", m_2, "_3", m_3, "_4", m_4,"_5", m_5)
 };
-#include "manage_curl.h"
 
 int main(int argc, char** argv)
 {	
-	/*ngl::test_manage_curl();
-	while (1)
-	{
-		ngl::sleep::seconds(1);
-	}*/
 	ngl::ijson lijson;
 	std::vector<int32_t> lv;
 	for (int i = 0; i < 10; ++i)

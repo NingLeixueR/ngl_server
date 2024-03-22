@@ -123,15 +123,3 @@ namespace ngl
 		bool			m_free;
 	};
 }// namespace ngl
-
-#define jsonaddfunc(...)										\
-	inline void add(ngl::ijson& ijsn, const char* akey)const	\
-	{															\
-		ngl::ijson ltemp;										\
-		add(ltemp);												\
-		ijsn.add(akey, ltemp.nofree());							\
-	}															\
-	inline void add(ngl::ijson& ijsn)const						\
-	{															\
-		ijsn.add(__VA_ARGS__);									\
-	}
