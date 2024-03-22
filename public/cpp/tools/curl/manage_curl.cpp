@@ -251,7 +251,7 @@ namespace ngl
 		ngl::_http* lhttp = ngl::manage_curl::make_http();
 		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTPS);
 		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_POST);
-		ngl::manage_curl::set_url(*lhttp, "https://wapi.xitwxi.com/user/verifyAccount/");
+		ngl::manage_curl::set_url(*lhttp, "xxx");
 
 		std::string lparm;
 		//ngl::manage_curl::param(lparm, "game_id", 45);
