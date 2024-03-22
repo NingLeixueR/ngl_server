@@ -1,6 +1,6 @@
 #pragma once
 
-#include "init_protobuf.h"
+#include "initproto.h"
 #include "nprotocol.h"
 #include "nguid.h"
 #include "type.h"
@@ -15,8 +15,8 @@ namespace ngl
 
 	struct actor_node_session
 	{
-		i32_sessionid m_session;
-		nactornode m_node;
+		i32_sessionid	m_session;
+		nactornode		m_node;
 
 		actor_node_session();
 		actor_node_session(i32_sessionid asession, const nactornode& anode);
@@ -89,11 +89,11 @@ namespace ngl
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
 		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			apram.m_enum = init_protobuf::protocol<T>();
+			apram.m_enum = initproto::protocol<T>();
 			apram.m_data = adata;
 			apram.m_actor = aid;
 			apram.m_requestactor = arid;
-			apram.m_protocoltype = (EPROTOCOL_TYPE)init_protobuf::protocol_type<T>();
+			apram.m_protocoltype = (EPROTOCOL_TYPE)initproto::protocol_type<T>();
 			apram.m_forwardfun = nullptr;
 			if (IS_FORWARDFUN)
 				make_forwardfun<T, IS_SEND>(aid, arid, apram);
@@ -103,11 +103,11 @@ namespace ngl
 		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
 		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			apram.m_enum = init_protobuf::protocol<T>();
+			apram.m_enum = initproto::protocol<T>();
 			apram.m_data = adata;
 			apram.m_actor = aid;
 			apram.m_requestactor = arid;
-			apram.m_protocoltype = (EPROTOCOL_TYPE)init_protobuf::protocol_type<T>();
+			apram.m_protocoltype = (EPROTOCOL_TYPE)initproto::protocol_type<T>();
 			apram.m_forwardfun = nullptr;
 			if (IS_CLIENT)
 				make_client<T, IS_SEND>(aid, arid, apram);

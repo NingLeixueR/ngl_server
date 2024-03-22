@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-03-13 10:31:18
+// 创建时间 24-03-20 18:29:01
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -64,7 +64,7 @@
 #include "handle_pram.cpp"
 #include "hexbytes.cpp"
 #include "ijson.cpp"
-#include "init_protobuf.cpp"
+#include "initproto.cpp"
 #include "itme.cpp"
 #include "localtime.cpp"
 #include "logprintf.cpp"

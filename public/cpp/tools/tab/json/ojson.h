@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 #include <vector>
 #include <array>
@@ -27,166 +28,139 @@ namespace ngl
 			return m_json != nullptr;
 		}
 
+		bool dec(const char* akey, std::string& adata);
+		bool dec(const char* akey, int8_t& adata);
+		bool dec(const char* akey, int16_t& adata);
+		bool dec(const char* akey, int32_t& adata);
+		bool dec(const char* akey, int64_t& adata);
+		bool dec(const char* akey, uint8_t& adata);
+		bool dec(const char* akey, uint16_t& adata);
+		bool dec(const char* akey, uint32_t& adata);
+		bool dec(const char* akey, uint64_t& adata);
+		bool dec(const char* akey, float& adata);
+		bool dec(const char* akey, double& adata);
+		bool dec(const char* akey, bool& adata);
+		bool dec(const char* akey, cJSON*& adata);
+		bool dec(const char* akey, ojson& adata);
+
+		
 		template <typename T>
-		bool _fun_number32(std::pair<const char*, T>& adata)
+		bool dec_number(
+			const char* akey
+			, std::vector<T>& aval
+			, const std::function<bool(cJSON* ajson, T& aval)>& afun
+		)
 		{
-			cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
-			if (nullptr == ret || ret->type != cJSON_Number)
+			cJSON* ltemp = nullptr;
+			if (dec(akey, ltemp) == false)
 				return false;
-			adata.second = (T)ret->valueint;
+			int lsize = cJSON_GetArraySize(ltemp);
+			for (int i = 0; i < lsize; ++i)
+			{
+				cJSON* ret = cJSON_GetArrayItem(ltemp, i);
+				T lval;
+				if (afun(ret, lval) == false)
+					continue;
+				aval.push_back(lval);
+			}
 			return true;
 		}
 
+		bool dec(const char* akey, std::vector<int8_t>& adata);
+		bool dec(const char* akey, std::vector<int16_t>& adata);
+		bool dec(const char* akey, std::vector<int32_t>& adata);
+		bool dec(const char* akey, std::vector<int64_t>& adata);
+		bool dec(const char* akey, std::vector<uint8_t>& adata);
+		bool dec(const char* akey, std::vector<uint16_t>& adata);
+		bool dec(const char* akey, std::vector<uint32_t>& adata);
+		bool dec(const char* akey, std::vector<uint64_t>& adata);
+		bool dec(const char* akey, std::vector<float>& adata);
+		bool dec(const char* akey, std::vector<double>& adata);
+		bool dec(const char* akey, std::vector<bool>& adata);
+
 		template <typename T>
-		bool _fun_number64(std::pair<const char*, T>& adata)
+		bool dec(const char* akey, T& adata)
 		{
-			cJSON* ret = cJSON_GetObjectItem(m_json, adata.first);
-			if (nullptr == ret || ret->type != cJSON_Number)
+			return adata.dec(*this, akey);
+		}
+
+		template <typename T>
+		bool dec(const char* akey, std::vector<T>& adata)
+		{
+			cJSON* ret = cJSON_GetObjectItem(m_json, akey);
+			if (nullptr == ret || ret->type != cJSON_Array)
 				return false;
-			//memcpy(&adata.second, &ret->valuedouble, sizeof(T));
-			adata.second = (T)ret->valuedouble;
+			int lsize = cJSON_GetArraySize(ret);
+			for (int i = 0; i < lsize; ++i)
+			{
+				cJSON* tempret = cJSON_GetArrayItem(ret, i);
+				T ltemp;
+				ojson lretobj;
+				lretobj.m_free = false;
+				lretobj.m_json = tempret;
+				ltemp.dec(lretobj);
+				adata.push_back(ltemp);
+			}
 			return true;
 		}
 
-		bool operator >> (std::pair<const char*, std::string>& adata);
-		bool operator >> (std::pair<const char*, int8_t>& adata);
-		bool operator >> (std::pair<const char*, int16_t>& adata);
-		bool operator >> (std::pair<const char*, int32_t>& adata);
-		bool operator >> (std::pair<const char*, int64_t>& adata);
-		bool operator >> (std::pair<const char*, uint8_t>& adata);
-		bool operator >> (std::pair<const char*, uint16_t>& adata);
-		bool operator >> (std::pair<const char*, uint32_t>& adata);
-		bool operator >> (std::pair<const char*, uint64_t>& adata);
-		bool operator >> (std::pair<const char*, float>& adata);
-		bool operator >> (std::pair<const char*, double>& adata);
-		bool operator >> (std::pair<const char*, const char*>& adata);
-		bool operator >> (std::pair<const char*, bool>& adata);
-		bool operator >> (std::pair<const char*, cJSON*>& adata);
-
-	private:
-		template <typename T>
-		bool _fun_number(T& adata)
+		template <typename KEY, typename VAL>
+		bool dec(const char* akey, std::map<KEY, VAL>& aval)
 		{
-			if (m_json->type == cJSON_Number)
+			std::vector<KEY> lkey;
+			std::vector<VAL> lval;
+			
+			std::string lkeystr = akey;
+			lkeystr += "_key";
+			if (dec(lkeystr.c_str(), lkey) == false)
+				return false;
+			std::string lvalstr = akey;
+			lvalstr += "_val";
+			if (dec(lvalstr.c_str(), lval) == false)
+				return false;
+			for (int i = 0; i < lkey.size() && i < lval.size(); ++i)
 			{
-				adata = m_json->valueint;
-				return true;
-			}
-			return false;
-		}
-
-		bool operator >> (int8_t& adata)
-		{
-			return _fun_number(adata);
-		}
-
-		bool operator >> (int16_t& adata)
-		{
-			return _fun_number(adata);
-		}
-
-		bool operator >> (int32_t& adata)
-		{
-			return _fun_number(adata);
-		}
-
-		bool operator >> (int64_t& adata)
-		{
-			return _fun_number(adata);
-		}
-
-		bool operator >> (std::string& adata)
-		{
-			if (m_json->type == cJSON_String)
-			{
-				adata = m_json->valuestring;
-				return true;
-			}
-			return false;
-		}
-
-		bool operator >> (const char*& adata)
-		{
-			if (m_json->type == cJSON_String)
-			{
-				adata = m_json->valuestring;
-				return true;
-			}
-			return false;
-		}
-
-		//// --- Êý×éÀà
-		template <typename T>
-		bool operator >> (std::pair<const char*, std::vector<T>>& adata)
-		{
-			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
-			(*this) >> lpair;
-			int lsize = cJSON_GetArraySize(lpair.second);
-			ojson ltemp;
-			for (int i = 0; i < lsize; i++)
-			{
-				ltemp.m_json = cJSON_GetArrayItem(lpair.second, i);
-				T lT;
-				ltemp >> lT;
-				adata.second.push_back(lT);
+				aval.insert({ lkey[i], lval[i] });
 			}
 			return true;
 		}
 
 		template <typename T>
-		bool operator >> (std::pair<const char*, std::list<T>>& adata)
+		bool dec(const char* akey, std::list<T>& aval)
 		{
-			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
-			(*this) >> lpair;
-			int lsize = cJSON_GetArraySize(lpair.second);
-			ojson ltemp;
-			for (int i = 0; i < lsize; i++)
-			{
-				ltemp.m_json = cJSON_GetArrayItem(lpair.second, i);
-				T lT;
-				ltemp >> lT;
-				adata.second.push_back(lT);
-			}
+			std::vector<T> lvec;
+			if (dec(akey, lvec) == false)
+				return false;
+			aval.assign(lvec);
 			return true;
 		}
 
-		template <typename T>
-		bool operator >> (std::pair<const char*, std::set<T>>& adata)
+		template <typename T, typename ...ARG>
+		bool dec(const std::vector<std::string>& akey, int aindex, T& avalue)
 		{
-			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
-			(*this) >> lpair;
-			int lsize = cJSON_GetArraySize(lpair.second);
-			ojson ltemp;
-			for (int i = 0; i < lsize; i++)
-			{
-				ltemp.m_json = cJSON_GetArrayItem(lpair.second, i);
-				T lT;
-				ltemp >> lT;
-				adata.second.insert(lT);
-			}
-			return true;
+			return dec(akey[aindex].c_str(), avalue);
 		}
-
-		template <typename TKEY, typename TVALUE>
-		bool operator >> (std::pair<const char*, std::map<TKEY, TVALUE>>& adata)
+		
+		template <typename T, typename ...ARG>
+		bool dec(const std::vector<std::string>& akey, int aindex, T& avalue, ARG&... arg)
 		{
-			std::pair<const char*, std::list<TKEY>> lkeypair("key", std::list<TKEY>());
-			std::pair<const char*, std::list<TVALUE>> lvalpair("value", std::list<TVALUE>());
-
-			std::pair<const char*, cJSON*> lpair(adata.first, nullptr);
-			(*this) >> lpair;
-			ojson ljson;
-			ljson.m_json = lpair.second;
-			ljson >> lkeypair >> lvalpair;
-
-			typename std::list<TKEY>::iterator itorkey = lkeypair.second.begin();
-			typename std::list<TVALUE>::iterator itorval = lvalpair.second.begin();
-			for (; itorkey != lkeypair.second.end() && itorval != lvalpair.second.end(); ++itorkey, ++itorval)
-			{
-				adata.second.insert(std::make_pair(*itorkey,*itorval));
-			}
-			return true;
+			if (dec(akey[aindex].c_str(), avalue) == false)
+				return false;
+			return dec(akey, ++aindex, arg...);
 		}
 	};
 }// namespace ngl
+
+#define jsondecfunc(KEYVEC, ...)	\
+inline bool dec(ngl::ojson& ijsn, const char* akey)\
+{\
+	ngl::ojson ltemp;\
+	if (ijsn.dec(akey, ltemp) == false)\
+		return false;\
+	return dec(ltemp);\
+}\
+inline bool dec(ngl::ojson& ijsn)\
+{\
+	return ijsn.dec(KEYVEC, 0, __VA_ARGS__);\
+}
 

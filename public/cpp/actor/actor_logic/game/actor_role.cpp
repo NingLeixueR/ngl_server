@@ -89,21 +89,22 @@ namespace ngl
 						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata)
 						return;
 					}
-					std::pair<const char*, const char*> orderid("orderid", "");
-					if (ltempjson >> orderid == false)
+					std::string lorderid;
+					if (ltempjson.dec("orderid", lorderid) == false)
 						return;
-					std::pair<const char*, const char*> rechargeid("rechargeid", 0);
-					if (ltempjson >> rechargeid == false)
+					std::string lrechargeid;
+					if (ltempjson.dec("rechargeid", lrechargeid) == false)
 						return;
-					std::pair<const char*, const char*> roleid("roleid", 0);
-					if (ltempjson >> roleid == false)
+					std::string lroleid;
+					if (ltempjson.dec("roleid", lroleid) == false)
 						return;
+					
 					auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE>();
 					auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE>>(-1, prot);
-					pro->data()->set_m_orderid(orderid.second);
-					pro->data()->set_m_rechargeid(boost::lexical_cast<int32_t>(rechargeid.second));
-					pro->data()->set_m_roleid(boost::lexical_cast<int64_t>(roleid.second));
-					actor::static_send_actor(boost::lexical_cast<int64_t>(roleid.second), nguid::make(), pro);
+					pro->data()->set_m_orderid(lorderid);
+					pro->data()->set_m_rechargeid(boost::lexical_cast<int32_t>(lrechargeid));
+					pro->data()->set_m_roleid(boost::lexical_cast<int64_t>(lroleid));
+					actor::static_send_actor(boost::lexical_cast<int64_t>(lroleid), nguid::make(), pro);
 				}
 				catch (...)
 				{

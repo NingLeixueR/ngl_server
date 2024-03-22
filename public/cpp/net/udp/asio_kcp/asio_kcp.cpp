@@ -406,16 +406,17 @@ namespace ngl
 					apstruct->m_isconnect = true;
 					apstruct->m_pingtm = localtime::gettime();
 					ojson ltempjson(ajson.c_str());
-					std::pair<const char*, i64_actorid> lactorpair("actorid", 0);
-					if ((ltempjson >> lactorpair) == false)
+
+					i64_actorid lactorid;
+					if (ltempjson.dec("actorid", lactorid) == false)
 						return;
-					std::pair<const char*, std::string> lsessionpair("session", "");
-					if ((ltempjson >> lsessionpair) == false)
+					std::string lsession;
+					if (ltempjson.dec("session", lsession) == false)
 						return;
-					if (ukcp::check_session(lactorpair.second, lsessionpair.second) == false)
+					if (ukcp::check_session(lactorid, lsession) == false)
 						return;
 
-					apstruct->m_actorid = lactorpair.second;
+					apstruct->m_actorid = lactorid;
 
 					std::cout << "kcp connect : "
 						<< session_endpoint::ip(apstruct.get())
@@ -423,7 +424,7 @@ namespace ngl
 						<< session_endpoint::port(apstruct.get())
 						<< std::endl;
 
-					if (function_econnect(apstruct, lactorpair.second, true))
+					if (function_econnect(apstruct, lactorid, true))
 						udp_cmd::sendcmd(m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
 				});
 		}
@@ -737,11 +738,11 @@ namespace ngl
 			// #### 发起连接
 			ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
 			ijson ltempjson;
-			ltempjson << std::make_pair("actorid", aactorid);
-			ltempjson << std::make_pair("session", akcpsess);
+			ltempjson.add("actorid", aactorid);
+			ltempjson.add("session", akcpsess);
 			ltempjson.set_nonformatstr(true);
 			std::string lparm;
-			ltempjson >> lparm;
+			ltempjson.get(lparm);
 			udp_cmd::sendcmd(m_kcp, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
 			m_connectfun = afun;
 		}

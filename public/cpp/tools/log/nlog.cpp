@@ -37,7 +37,7 @@ namespace ngl
 		if (isinitfinish() == false)
 			return;
 
-		std::shared_ptr<ng_actor_logitem> pro(new ng_actor_logitem());
+		std::shared_ptr<np_actor_logitem> pro(new np_actor_logitem());
 		pro->m_data.m_head.swap(llogformat.data("head"));
 		pro->m_data.m_pos.swap(llogformat.data("pos"));
 		pro->m_data.m_str.swap(llogformat.data("src"));

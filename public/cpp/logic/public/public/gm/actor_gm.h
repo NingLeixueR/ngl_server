@@ -2,12 +2,12 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "init_protobuf.h"
 #include "manage_curl.h"
 #include "manage_csv.h"
 #include "ndb_modular.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
+#include "initproto.h"
 #include "ntimer.h"
 #include "notice.h"
 #include "splite.h"
@@ -47,14 +47,14 @@ namespace ngl
 		template <typename T>
 		void send2other(ENUM_ACTOR atype, const pack* apack, T& apro)
 		{
-			std::shared_ptr<mforward<T>> pro(new mforward<T>(apack->m_id, apro));
+			auto pro = std::make_shared<mforward<T>>(apack->m_id, apro);
 			send_actor(nguid::make_self(atype), pro);
 		}
 
 		template <typename T>
 		void send2role(const pack* apack, T& apro, const std::function<void()>& afailfun)
 		{
-			std::shared_ptr<mforward<T>> pro(new mforward<T>(apack->m_id, apro));
+			auto pro = std::make_shared<mforward<T>>(apack->m_id, apro);
 			send_actor(apro.m_roleid(), pro, afailfun);
 		}
 

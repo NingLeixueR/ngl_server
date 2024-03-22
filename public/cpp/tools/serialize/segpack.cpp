@@ -45,7 +45,7 @@ namespace ngl
 
 	bool segpack_heartbeat::is_heartbeat(int aprotocolnum)
 	{		
-		return init_protobuf::protocol<pbnet::PROBUFF_NET_HEARTBEAT>() == aprotocolnum;
+		return initproto::protocol<pbnet::PROBUFF_NET_HEARTBEAT>() == aprotocolnum;
 	}
 
 	struct segpack::impl_segpack

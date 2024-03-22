@@ -31,7 +31,7 @@ namespace ngl
 	void actor_log::nregister()
 	{
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_log>(false
-			, dregister_fun_handle(actor_log, ng_actor_logitem)
+			, dregister_fun_handle(actor_log, np_actor_logitem)
 		);
 	}
 
@@ -39,7 +39,7 @@ namespace ngl
 	{
 	}
 
-	bool actor_log::handle(message<ng_actor_logitem>& adata)
+	bool actor_log::handle(message<np_actor_logitem>& adata)
 	{
 		logitem& ldata = adata.m_data->m_data;
 		m_log->printf(ldata);

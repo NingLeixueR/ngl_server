@@ -15,163 +15,106 @@ namespace ngl
 	{
 	public:
 		ijson();
-		ijson(bool _);
 		virtual ~ijson();
 		virtual cJSON* get();
 
-		ijson& operator << (const std::pair<const char*, int8_t>& adata);
-		ijson& operator << (const std::pair<const char*, int16_t>& adata);
-		ijson& operator << (const std::pair<const char*, int32_t>& adata);
-		ijson& operator << (const std::pair<const char*, int64_t>& adata);
-		ijson& operator << (const std::pair<const char*, uint8_t>& adata);
-		ijson& operator << (const std::pair<const char*, uint16_t>& adata);
-		ijson& operator << (const std::pair<const char*, uint32_t>& adata);
-		ijson& operator << (const std::pair<const char*, uint64_t>& adata);
-		ijson& operator << (const std::pair<const char*, float>& adata);
-		ijson& operator << (const std::pair<const char*, double>& adata);
-		ijson& operator << (const std::pair<const char*, const char*>& adata);
-		ijson& operator << (const std::pair<const char*, bool>& adata);
-		ijson& operator << (const std::pair<const char*, cJSON*>& adata);
-		ijson& operator << (const std::pair<const char*, std::string>& adata);
-
-		//// --- 结构体
-		template <typename T>
-		ijson& operator << (const std::pair<const char*, T>& adata)
-		{
-			ijson ltemp(false);
-			ltemp << adata.second;
-			return (*this) << std::make_pair(adata.first, ltemp.get());
-		}
+		void add(const char* akey, int8_t aval);
+		void add(const char* akey, int16_t aval);
+		void add(const char* akey, int32_t aval);
+		void add(const char* akey, uint8_t aval);
+		void add(const char* akey, uint16_t aval);
+		void add(const char* akey, uint32_t aval);
+		// Json标准是不支持int64这么大的数字的，
+		// 它最大只支持到2^53-1，
+		// 如果超过最大值可能会导致Json的解析出错误
+		// 所以我们想要传输int64，就先转换成string
+		void add(const char* akey, const int64_t aval);
+		void add(const char* akey, const uint64_t aval);
+		void add(const char* akey, const float aval);
+		void add(const char* akey, const double aval);
+		void add(const char* akey, const char* aval);
+		void add(const char* akey, const bool aval);
+		void add(const char* akey, cJSON* aval);
+		void add(const char* akey, ijson& aval);
+		void add(const char* akey, const std::string& aval);
 	private:
-		template <typename T>
-		void _fun_array(cJSON* tempArray, const T& adata)
-		{
-			ijson ltemp(false);
-			ltemp << adata;////---基本类型不支持  只支持类外定义的结构体
-			cJSON_AddItemToArray(tempArray, ltemp.get());
-		}
-
-		void _fun_array(cJSON* tempArray, const int8_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const int16_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const int32_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const int64_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const uint8_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const uint16_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const uint32_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const uint64_t& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateNumber(adata));
-		}
-		
-		void _fun_array(cJSON* tempArray, const bool& adata)
-		{
-			cJSON_AddItemToArray(tempArray, adata? cJSON_CreateTrue(): cJSON_CreateFalse());
-		}
-		
-		void _fun_array(cJSON* tempArray, const char*& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateString(adata));
-		}
-
-		void _fun_array(cJSON* tempArray, const std::string& adata)
-		{
-			cJSON_AddItemToArray(tempArray, cJSON_CreateString(adata.c_str()));
-		}
+		void addnumber(const char* akey, const std::vector<int32_t>& aval);
+		void addnumber(const char* akey, const std::vector<uint32_t>& aval);
 	public:
-		//// --- 数组类
-		template <typename TITOR>
-		ijson& operator << (std::pair<const char*, std::pair<TITOR, TITOR>>& adata)
+		void add(const char* akey, const std::vector<int8_t>& aval);
+		void add(const char* akey, const std::vector<int16_t>& aval);
+		void add(const char* akey, const std::vector<int32_t>& aval);
+		void add(const char* akey, const std::vector<uint8_t>& aval);
+		void add(const char* akey, const std::vector<uint16_t>& aval);
+		void add(const char* akey, const std::vector<uint32_t>& aval);
+		void add(const char* akey, const std::vector<float>& aval);
+		void add(const char* akey, const std::vector<double>& aval);
+		void add(const char* akey, const std::vector<int64_t>& aval);
+		void add(const char* akey, const std::vector<uint64_t>& aval);
+
+		template <typename KEY, typename VAL>
+		void add(const char* akey, const std::map<KEY, VAL>& aval)
 		{
-			cJSON* tempArray = cJSON_CreateArray();
-			for (; adata.second.first != adata.second.second;++adata.second.first)
+			std::vector<KEY> lkey;
+			std::vector<VAL> lval;
+			for (auto itor = aval.begin(); itor != aval.end(); ++itor)
 			{
-				_fun_array(tempArray,*adata.second.first);
+				lkey.push_back(itor->first);
+				lval.push_back(itor->second);
 			}
-			return (*this) << std::make_pair(adata.first, tempArray);
+			std::string lkeystr = akey;
+			lkeystr += "_key";
+			add(lkeystr.c_str(), lkey);
+			std::string lvalstr = akey;
+			lvalstr += "_val";
+			add(lvalstr.c_str(), lval);
 		}
 
 		template <typename T>
-		ijson& operator << (std::pair<const char*, std::vector<T>>& adata)
+		void add(const char* akey, const std::list<T>& aval)
 		{
-			return (*this) << std::make_pair(adata.first, std::make_pair(adata.second.begin(), adata.second.end()));
+			std::vector<T> ltemp(aval.begin(), aval.end());
+			add(akey, ltemp);
 		}
 
 		template <typename T>
-		ijson& operator << (std::pair<const char*, std::list<T>>& adata)
+		void add(const char* akey, const T& aval)
 		{
-			return (*this) << std::make_pair(adata.first, std::make_pair(adata.second.begin(), adata.second.end()));
+			aval.add(akey, aval);
 		}
 
 		template <typename T>
-		ijson& operator << (std::pair<const char*, std::set<T>>& adata)
+		void add(const char* akey, const std::vector<T>& aval)
 		{
-			return (*this) << std::make_pair(adata.first, std::make_pair(adata.second.begin(), adata.second.end()));
-		}
-
-		template <typename TKEY,typename TVALUE>
-		ijson& operator << (std::pair<const char*, std::map<TKEY, TVALUE>>& adata)
-		{
-			std::pair<const char*, std::list<TKEY>> lkeypair("key", std::list<TKEY>());
-			std::pair<const char*, std::list<TVALUE>> lvalpair("value", std::list<TVALUE>());
-			for (const std::pair<TKEY, TVALUE>& item : adata.second)
+			cJSON* larray = cJSON_CreateArray();
+			for (const T& item : aval)
 			{
-				lkeypair.second.push_back(item.first);
-				lvalpair.second.push_back(item.second);
+				ngl::ijson ltemp;
+				item.add(ltemp);
+				cJSON_AddItemToArray(larray, ltemp.nofree());
 			}
-			ijson ltemp(false);
-			ltemp << lkeypair << lvalpair;
-			return (*this) << std::make_pair(adata.first, ltemp.get());
+			add(akey, larray);
 		}
 
-		ijson& operator >> (std::string& adata);
+		// 支持没有参数
+		void add();
+
+		template <typename T, typename ...ARG>
+		void add(const char* akey, const T& avalue, const ARG&... arg)
+		{
+			add(akey, avalue);
+			add(arg...);
+		}
+
+		void get(std::string& adata);
 
 		void set_nonformatstr(bool abool);
 
-		void free_str()
-		{
-			if (m_str != nullptr)
-			{
-				free((void*)m_str);
-				m_str = nullptr;
-			}
-		}
+		void free_str();
 
-		void free_nonformatstr()
-		{
-			if (m_nonformatstr != nullptr)
-			{
-				free((void*)m_nonformatstr);
-				m_nonformatstr = nullptr;
-			}
-		}
+		void free_nonformatstr();
+
+		cJSON* nofree();
 	private:
 		cJSON*			m_json;
 		const char*		m_nonformatstr;
@@ -181,3 +124,14 @@ namespace ngl
 	};
 }// namespace ngl
 
+#define jsonaddfunc(...)										\
+	inline void add(ngl::ijson& ijsn, const char* akey)const	\
+	{															\
+		ngl::ijson ltemp;										\
+		add(ltemp);												\
+		ijsn.add(akey, ltemp.nofree());							\
+	}															\
+	inline void add(ngl::ijson& ijsn)const						\
+	{															\
+		ijsn.add(__VA_ARGS__);									\
+	}

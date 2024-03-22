@@ -1,4 +1,4 @@
-#include "init_protobuf.h"
+#include "initproto.h"
 #include "nprotocol.h"
 #include "ntimer.h"
 #include "net.pb.h"
@@ -7,10 +7,10 @@
 
 namespace ngl
 {
-	std::multimap<size_t, init_protobuf::pinfo> init_protobuf::m_keyval;
-	int32_t init_protobuf::lcustoms = 200000000;
+	std::multimap<size_t, initproto::pinfo> initproto::m_keyval;
+	int32_t initproto::lcustoms = 200000000;
 
-	void init_protobuf::initall()
+	void initproto::initall()
 	{
 		init_customs();
 	}
@@ -18,7 +18,7 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
-		init_protobuf::init_customs(
+		initproto::init_customs(
 			EPROTOCOL_TYPE_PROTOCOLBUFF
 			, null<np_actordb_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
 			, null<np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
@@ -28,7 +28,7 @@ namespace ngl
 		);
 	}
 
-	void init_protobuf::init_customs()
+	void initproto::init_customs()
 	{
 		init_customs(EPROTOCOL_TYPE_CUSTOM
 			, null<timerparm>
@@ -43,7 +43,7 @@ namespace ngl
 			, null<np_actorserver_connect>
 			, null<np_actor_session_close>
 			, null<np_actor_disconnect_close>
-			, null<ng_actor_logitem>
+			, null<np_actor_logitem>
 			, null<np_actor_broadcast>
 			, null<np_actor_reloadcsv>
 			, null<np_actor_csv_verify_version>

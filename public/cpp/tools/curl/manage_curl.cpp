@@ -251,7 +251,7 @@ namespace ngl
 		ngl::_http* lhttp = ngl::manage_curl::make_http();
 		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTPS);
 		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_POST);
-		ngl::manage_curl::set_url(*lhttp, "https://xxxxx/external/index/auth");
+		ngl::manage_curl::set_url(*lhttp, "https://wapi.xitwxi.com/user/verifyAccount/");
 
 		std::string lparm;
 		//ngl::manage_curl::param(lparm, "game_id", 45);
@@ -260,13 +260,13 @@ namespace ngl
 		//ngl::manage_curl::param(lparm, "token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWZ1bi5nYW1lcyIsImF1ZCI6ImZpZnVuLmdhbWVzIiwiaWF0IjoxNjkzOTIwMTQ0LCJleHAiOjE2OTY1MTIxNDQsIm5iZiI6MTY5MzkyMDE0NCwicGxhdGZvcm1fdWlkIjoyOTY5NDQ4LCJwbGF0Zm9ybV9hY2NvdW50Ijoiemh1Z29uZzMiLCJnYW1lX2lkIjo0NSwiZ2FtZV91aWQiOjQzNjg1MDYsInV1aWQiOiJlZjA5Yzg1MmQ4ZjRkYWE5Y2JiNGY2MjM1MjBlNjQ1OSJ9.nXnFg3gu1DdPVWtvcq4u6SmXNse0fUQ3OyMr3QvN0JE");
 		//ngl::manage_curl::param(lparm, "uid", "2969448");
 
-		ijson ltempjson;
-		ltempjson << std::make_pair("appid", 44);
-		ltempjson << std::make_pair("uid", 1406739);
-		ltempjson << std::make_pair("sessionid", "i461qbg8pia3pe04fdenue1hu4");
-		ltempjson.free_nonformatstr();
+		/*ijson ltemp;
+		ltemp.add("appid", 44);
+		ltemp.add("uid", 1406739);
+		ltemp.add("sessionid", "i461qbg8pia3pe04fdenue1hu4");
+		ltemp.free_nonformatstr();
 		std::string ljsonstr;
-		ltempjson >> ljsonstr;
+		ltemp.get(ljsonstr);*/
 
 		//std::string ltemp;
 		//md5(appid.uid.sessionid.login_key);
@@ -279,10 +279,17 @@ namespace ngl
 		//ltempjson >> lparmkkk;
 		//ngl::manage_curl::set_param(*lhttp, R"({ "appid":44, "uid" : 1406739, "sessionid" : "i461qbg8pia3pe04fdenue1hu4", "token" : "677d6d7bb4edd5cc4aa80079d5c63982" })");
 		//ngl::manage_curl::set_param(*lhttp, lparmkkk);
-		ngl::manage_curl::param(lparm, "appid", 11);
-		ngl::manage_curl::param(lparm, "uid", 11111);
-		ngl::manage_curl::param(lparm, "sessionid", "xxxx");
-		ngl::manage_curl::param(lparm, "token", "11111111111111111111111111");
+		std::stringstream lstream;
+		lstream
+			<< "userID=" << 7709523
+			<< "token=" << "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B"
+			<< "yWpx3hWQHFhSnTCj#311#6KuRKuaAjLJ5sYRy";
+		ngl::md5 varMd5(lstream.str());
+
+		ngl::manage_curl::param(lparm, "appid", 311);
+		ngl::manage_curl::param(lparm, "userID", 7709523);
+		ngl::manage_curl::param(lparm, "token", "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B");
+		ngl::manage_curl::param(lparm, "sign", varMd5.values().c_str());
 		ngl::manage_curl::set_param(*lhttp, lparm);
 		bool lbool = true;
 

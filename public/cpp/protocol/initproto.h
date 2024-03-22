@@ -22,8 +22,7 @@ namespace ngl
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
 	struct np_actor_forward;
 
-	// protobuf3不支持默认值
-	class init_protobuf
+	class initproto
 	{
 	private:
 		struct pinfo
@@ -60,7 +59,7 @@ namespace ngl
 					.m_protocol = ++lcustoms,
 					.m_name = TYPE_NAME(T)
 				}));
-			LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name());
+			LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name())
 		}
 
 		template <typename T, typename ...ARG>
@@ -86,7 +85,7 @@ namespace ngl
 					.m_protocol = lprotocol,
 					.m_name = lname
 				}));
-			LogLocalInfo("#[%][EPROTOCOL_TYPE_PROTOCOLBUFF][%]", lprotocol, lname);
+			LogLocalInfo("#[%][EPROTOCOL_TYPE_PROTOCOLBUFF][%]", lprotocol, lname)
 			return true;
 		}
 
@@ -133,4 +132,3 @@ namespace ngl
 	};
 	
 }
-

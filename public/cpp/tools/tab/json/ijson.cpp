@@ -1,4 +1,5 @@
 #include "ijson.h"
+#include "lexical_cast.hpp"
 
 namespace ngl
 {
@@ -8,15 +9,6 @@ namespace ngl
 		m_str(nullptr),
 		m_isnonformatstr(false),
 		m_free(true)
-	{
-	}
-
-	ijson::ijson(bool _):
-		m_json(cJSON_CreateObject()),
-		m_nonformatstr(nullptr),
-		m_str(nullptr),
-		m_isnonformatstr(false),
-		m_free(false)
 	{
 	}
 
@@ -42,98 +34,167 @@ namespace ngl
 		return m_json;
 	}
 
-	ijson& ijson::operator << (const std::pair<const char*, int8_t>& adata)
+	void ijson::add(const char* akey, const int8_t aval)
 	{
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this;
+		cJSON_AddNumberToObject(m_json, akey, aval);
 	}
 
-	ijson& ijson::operator << (const std::pair<const char*, int16_t>& adata)
+	void ijson::add(const char* akey, const int16_t aval)
 	{
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this;
+		cJSON_AddNumberToObject(m_json, akey, aval);
 	}
-
-	ijson& ijson::operator << (const std::pair<const char*, int32_t>& adata)
+	
+	void ijson::add(const char* akey, const int32_t aval)
 	{
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this;
+		cJSON_AddNumberToObject(m_json, akey, aval);
 	}
-
-	ijson& ijson::operator << (const std::pair<const char*, int64_t>& adata)
+		
+	void ijson::add(const char* akey, const int64_t aval)
 	{
-
-		//double ltemp;
-		//memcpy(&ltemp, &adata.second, sizeof(double));
-		cJSON_AddNumberToObject(m_json, adata.first, adata.second);
-		//cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(ltemp));
-		return *this;
+		std::string lvalue = boost::lexical_cast<std::string>(aval);
+		add(akey, lvalue);
 	}
-
-	ijson& ijson::operator << (const std::pair<const char*, uint8_t>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this; 
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, uint16_t>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this; 
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, uint32_t>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this; 
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, uint64_t>& adata)
+		
+	void ijson::add(const char* akey, const uint8_t aval)
 	{
-		double ltemp;
-		memcpy(&ltemp, &adata.second, sizeof(double));
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(ltemp));
-		return *this;
+		cJSON_AddNumberToObject(m_json, akey, aval);
 	}
-
-	ijson& ijson::operator << (const std::pair<const char*, float>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this; 
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, double>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateNumber(adata.second));  
-		return *this; 
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, const char*>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, cJSON_CreateString(adata.second)); 
-		return *this; 
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, bool>& adata)
-	{ 
-		cJSON_AddItemToObject(m_json, adata.first, adata.second ? cJSON_CreateTrue() : cJSON_CreateFalse()); 
-		return *this;
-	}
-
-	ijson& ijson::operator << (const std::pair<const char*, cJSON*>& adata)
+		
+	void ijson::add(const char* akey, const uint16_t aval)
 	{
-		cJSON_AddItemToObject(m_json, adata.first, adata.second);
-		return *this;
+		std::string lvalue = boost::lexical_cast<std::string>(aval);
+		add(akey, lvalue);
 	}
-
-	ijson& ijson::operator << (const std::pair<const char*, std::string>& adata)
+		
+	void ijson::add(const char* akey, const uint32_t aval)
 	{
-		std::pair<const char*, const char*> lpair(adata.first, adata.second.c_str());
-		*this << lpair;
-		return *this;
+		cJSON_AddNumberToObject(m_json, akey, aval);
+	}
+		
+	void ijson::add(const char* akey, const uint64_t aval)
+	{
+		std::string lvalue = boost::lexical_cast<std::string>(aval);
+		add(akey, lvalue);
+	}
+		
+	void ijson::add(const char* akey, const float aval)
+	{
+		cJSON_AddNumberToObject(m_json, akey, aval);
+	}
+		
+	void ijson::add(const char* akey, const double aval)
+	{
+		cJSON_AddNumberToObject(m_json, akey, aval);
 	}
 
-	ijson& ijson::operator >> (std::string& adata)
+	void ijson::add(const char* akey, const char* aval)
+	{ 
+		cJSON_AddItemToObject(m_json, akey, cJSON_CreateString(aval));
+	}
+
+	void ijson::add(const char* akey, const bool aval)
+	{
+		cJSON_AddItemToObject(m_json, akey, 
+			aval? cJSON_CreateTrue() : cJSON_CreateFalse()
+		);
+	}
+
+	void ijson::add(const char* akey, cJSON* aval)
+	{
+		cJSON_AddItemToObject(m_json, akey, aval);
+	}
+
+	void ijson::add(const char* akey, ijson& aval)
+	{
+		cJSON_AddItemToObject(m_json, akey, aval.nofree());
+	}
+
+	void ijson::add(const char* akey, const std::string& aval)
+	{
+		return add(akey, aval.c_str());
+	}
+
+	void ijson::addnumber(const char* akey, const std::vector<int32_t>& aval)
+	{
+		cJSON* ljson = cJSON_CreateIntArray(aval.data(), aval.size());
+		add(akey, ljson);
+	}
+
+	void ijson::addnumber(const char* akey, const std::vector<uint32_t>& aval)
+	{
+		cJSON* ljson = cJSON_CreateIntArray((int32_t*)aval.data(), aval.size());
+		add(akey, ljson);
+	}
+
+	void ijson::add(const char* akey, const std::vector<int8_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		addnumber(akey, lvec);
+	}
+
+	void ijson::add(const char* akey, const std::vector<int16_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		addnumber(akey, lvec);
+	}
+
+	void ijson::add(const char* akey, const std::vector<int32_t>& aval)
+	{
+		addnumber(akey, aval);
+	}
+
+	void ijson::add(const char* akey, const std::vector<uint8_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		addnumber(akey, lvec);
+	}
+
+	void ijson::add(const char* akey, const std::vector<uint16_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		addnumber(akey, lvec);
+	}
+
+	void ijson::add(const char* akey, const std::vector<uint32_t>& aval)
+	{
+		addnumber(akey, aval);
+	}
+
+	void ijson::add(const char* akey, const std::vector<float>& aval)
+	{
+		cJSON* ljson = cJSON_CreateFloatArray(aval.data(), aval.size());
+		add(akey, ljson);
+	}
+
+	void ijson::add(const char* akey, const std::vector<double>& aval)
+	{
+		cJSON* ljson = cJSON_CreateDoubleArray(aval.data(), aval.size());
+		add(akey, ljson);
+	}
+
+	void ijson::add(const char* akey, const std::vector<int64_t>& aval)
+	{
+		cJSON* ljson = cJSON_CreateArray();
+		for (int64_t item : aval)
+		{
+			std::string lnumber = boost::lexical_cast<std::string>(item);
+			cJSON_AddItemToArray(ljson, cJSON_CreateString(lnumber.c_str()));
+		}
+		add(akey, ljson);
+	}
+
+	void ijson::add(const char* akey, const std::vector<uint64_t>& aval)
+	{
+		cJSON* ljson = cJSON_CreateArray();
+		for (int64_t item : aval)
+		{
+			std::string lnumber = boost::lexical_cast<std::string>(item);
+			cJSON_AddItemToArray(ljson, cJSON_CreateString(lnumber.c_str()));
+		}
+		add(akey, ljson);
+	}
+
+	void ijson::get(std::string& adata)
 	{
 		if (m_isnonformatstr)
 		{
@@ -147,7 +208,6 @@ namespace ngl
 			m_str = cJSON_Print(m_json);
 			adata = m_str;
 		}
-		return *this;
 	}
 
 	void ijson::set_nonformatstr(bool abool)
@@ -155,4 +215,31 @@ namespace ngl
 		m_isnonformatstr = abool;
 	}
 
+	void ijson::add()
+	{
+	}
+
+	void ijson::free_str()
+	{
+		if (m_str != nullptr)
+		{
+			free((void*)m_str);
+			m_str = nullptr;
+		}
+	}
+
+	void ijson::free_nonformatstr()
+	{
+		if (m_nonformatstr != nullptr)
+		{
+			free((void*)m_nonformatstr);
+			m_nonformatstr = nullptr;
+		}
+	}
+
+	cJSON* ijson::nofree()
+	{
+		m_free = false;
+		return m_json;
+	}
 }//namespace ngl

@@ -573,10 +573,10 @@ namespace ngl
 		std::string		m_str;						// 日志内容
 		def_portocol_function(logitem, m_serverid, m_type, m_head, m_pos, m_str)
 	};
-	struct ng_actor_logitem
+	struct np_actor_logitem
 	{
 		logitem m_data;
-		def_portocol(ng_actor_logitem, m_data)
+		def_portocol(np_actor_logitem, m_data)
 	};
 
 	// ---- 间隔一段时间发起的全员(所有actor)广播

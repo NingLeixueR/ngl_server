@@ -2,9 +2,9 @@
 
 #include "actor_base.h"
 #include "actor.h"
-#include "init_protobuf.h"
 #include "nactor_type.h"
 #include "nprotocol.h"
+#include "initproto.h"
 #include "protocol.h"
 #include "regular.h"
 
@@ -14,7 +14,7 @@ namespace ngl
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(const std::function<void(TTTDerived*, T&)>& afun)
 	{
-		m_fun[init_protobuf::protocol<T>()] = nlogicfun
+		m_fun[initproto::protocol<T>()] = nlogicfun
 		{
 			.m_isdbload = false,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
@@ -22,7 +22,7 @@ namespace ngl
 				afun((TTTDerived*)aactor, *(T*)apram.m_data.get());
 			}
 		};
-		protocol::registry_actor<T, TYPE>(nactor_type<TDerived>::type(), init_protobuf::protocol_name<T>().c_str());
+		protocol::registry_actor<T, TYPE>(nactor_type<TDerived>::type(), initproto::protocol_name<T>().c_str());
 		return *this;
 	}
 
@@ -30,7 +30,7 @@ namespace ngl
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
 	{
-		m_fun[init_protobuf::protocol<T>()] = nlogicfun
+		m_fun[initproto::protocol<T>()] = nlogicfun
 		{
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
@@ -55,7 +55,7 @@ namespace ngl
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
 	{
 		rfun_nonet<TTTDerived, T>(afun, aisload);
-		protocol::registry_actor<T, TYPE>(atype, init_protobuf::protocol_name<T>().c_str());
+		protocol::registry_actor<T, TYPE>(atype, initproto::protocol_name<T>().c_str());
 		return *this;
 	}
 
@@ -64,7 +64,7 @@ namespace ngl
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_forward(Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
 	{
 		using type_forward = np_actor_forward<T, TYPE, BOOL, ngl::forward>;
-		m_fun[init_protobuf::protocol<type_forward>()] = nlogicfun
+		m_fun[initproto::protocol<type_forward>()] = nlogicfun
 		{
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
@@ -73,7 +73,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_forward<T, type_forward::isusing, TYPE>(atype, init_protobuf::protocol<type_forward>(), init_protobuf::protocol_name<type_forward>().c_str());
+		protocol::registry_actor_forward<T, type_forward::isusing, TYPE>(atype, initproto::protocol<type_forward>(), initproto::protocol_name<type_forward>().c_str());
 		return *this;
 	}
 
@@ -82,7 +82,7 @@ namespace ngl
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_recvforward(Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
 		using type_forward = np_actor_forward<T, TYPE, false, T>;
-		m_fun[init_protobuf::protocol<type_forward>()] = nlogicfun
+		m_fun[initproto::protocol<type_forward>()] = nlogicfun
 		{
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
@@ -92,7 +92,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(nactor_type<TDerived>::type(), init_protobuf::protocol<type_forward>(), init_protobuf::protocol_name<type_forward>().c_str());
+		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(nactor_type<TDerived>::type(), initproto::protocol<type_forward>(), initproto::protocol_name<type_forward>().c_str());
 		return *this;
 	}
 }//namespace ngl
