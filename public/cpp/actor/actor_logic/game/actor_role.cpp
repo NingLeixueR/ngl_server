@@ -90,13 +90,13 @@ namespace ngl
 						return;
 					}
 					std::string lorderid;
-					if (ltempjson.dec("orderid", lorderid) == false)
+					if (ltempjson.read("orderid", lorderid) == false)
 						return;
 					std::string lrechargeid;
-					if (ltempjson.dec("rechargeid", lrechargeid) == false)
+					if (ltempjson.read("rechargeid", lrechargeid) == false)
 						return;
 					std::string lroleid;
-					if (ltempjson.dec("roleid", lroleid) == false)
+					if (ltempjson.read("roleid", lroleid) == false)
 						return;
 					
 					auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE>();

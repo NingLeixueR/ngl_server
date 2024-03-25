@@ -18,42 +18,42 @@ namespace ngl
 		virtual ~ijson();
 		virtual cJSON* get();
 
-		void add(const char* akey, int8_t aval);
-		void add(const char* akey, int16_t aval);
-		void add(const char* akey, int32_t aval);
-		void add(const char* akey, uint8_t aval);
-		void add(const char* akey, uint16_t aval);
-		void add(const char* akey, uint32_t aval);
+		void write(const char* akey, int8_t aval);
+		void write(const char* akey, int16_t aval);
+		void write(const char* akey, int32_t aval);
+		void write(const char* akey, uint8_t aval);
+		void write(const char* akey, uint16_t aval);
+		void write(const char* akey, uint32_t aval);
 		// Json标准是不支持int64这么大的数字的，
 		// 它最大只支持到2^53-1，
 		// 如果超过最大值可能会导致Json的解析出错误
 		// 所以我们想要传输int64，就先转换成string
-		void add(const char* akey, const int64_t aval);
-		void add(const char* akey, const uint64_t aval);
-		void add(const char* akey, const float aval);
-		void add(const char* akey, const double aval);
-		void add(const char* akey, const char* aval);
-		void add(const char* akey, const bool aval);
-		void add(const char* akey, cJSON* aval);
-		void add(const char* akey, ijson& aval);
-		void add(const char* akey, const std::string& aval);
+		void write(const char* akey, const int64_t aval);
+		void write(const char* akey, const uint64_t aval);
+		void write(const char* akey, const float aval);
+		void write(const char* akey, const double aval);
+		void write(const char* akey, const char* aval);
+		void write(const char* akey, const bool aval);
+		void write(const char* akey, cJSON* aval);
+		void write(const char* akey, ijson& aval);
+		void write(const char* akey, const std::string& aval);
 	private:
-		void addnumber(const char* akey, const std::vector<int32_t>& aval);
-		void addnumber(const char* akey, const std::vector<uint32_t>& aval);
+		void writenumber(const char* akey, const std::vector<int32_t>& aval);
+		void writenumber(const char* akey, const std::vector<uint32_t>& aval);
 	public:
-		void add(const char* akey, const std::vector<int8_t>& aval);
-		void add(const char* akey, const std::vector<int16_t>& aval);
-		void add(const char* akey, const std::vector<int32_t>& aval);
-		void add(const char* akey, const std::vector<uint8_t>& aval);
-		void add(const char* akey, const std::vector<uint16_t>& aval);
-		void add(const char* akey, const std::vector<uint32_t>& aval);
-		void add(const char* akey, const std::vector<float>& aval);
-		void add(const char* akey, const std::vector<double>& aval);
-		void add(const char* akey, const std::vector<int64_t>& aval);
-		void add(const char* akey, const std::vector<uint64_t>& aval);
+		void write(const char* akey, const std::vector<int8_t>& aval);
+		void write(const char* akey, const std::vector<int16_t>& aval);
+		void write(const char* akey, const std::vector<int32_t>& aval);
+		void write(const char* akey, const std::vector<uint8_t>& aval);
+		void write(const char* akey, const std::vector<uint16_t>& aval);
+		void write(const char* akey, const std::vector<uint32_t>& aval);
+		void write(const char* akey, const std::vector<float>& aval);
+		void write(const char* akey, const std::vector<double>& aval);
+		void write(const char* akey, const std::vector<int64_t>& aval);
+		void write(const char* akey, const std::vector<uint64_t>& aval);
 
 		template <typename KEY, typename VAL>
-		void add(const char* akey, const std::map<KEY, VAL>& aval)
+		void write(const char* akey, const std::map<KEY, VAL>& aval)
 		{
 			std::vector<KEY> lkey;
 			std::vector<VAL> lval;
@@ -64,46 +64,46 @@ namespace ngl
 			}
 			std::string lkeystr = akey;
 			lkeystr += "_key";
-			add(lkeystr.c_str(), lkey);
+			write(lkeystr.c_str(), lkey);
 			std::string lvalstr = akey;
 			lvalstr += "_val";
-			add(lvalstr.c_str(), lval);
+			write(lvalstr.c_str(), lval);
 		}
 
 		template <typename T>
-		void add(const char* akey, const std::list<T>& aval)
+		void write(const char* akey, const std::list<T>& aval)
 		{
 			std::vector<T> ltemp(aval.begin(), aval.end());
-			add(akey, ltemp);
+			write(akey, ltemp);
 		}
 
 		template <typename T>
-		void add(const char* akey, const T& aval)
+		void write(const char* akey, const T& aval)
 		{
-			aval.add(akey, aval);
+			aval.write(akey, aval);
 		}
 
 		template <typename T>
-		void add(const char* akey, const std::vector<T>& aval)
+		void write(const char* akey, const std::vector<T>& aval)
 		{
 			cJSON* larray = cJSON_CreateArray();
 			for (const T& item : aval)
 			{
 				ngl::ijson ltemp;
-				item.add(ltemp);
+				item.write(ltemp);
 				cJSON_AddItemToArray(larray, ltemp.nofree());
 			}
-			add(akey, larray);
+			write(akey, larray);
 		}
 
 		// 支持没有参数
-		void add();
+		void write();
 
 		template <typename T, typename ...ARG>
-		void add(const char* akey, const T& avalue, const ARG&... arg)
+		void write(const char* akey, const T& avalue, const ARG&... arg)
 		{
-			add(akey, avalue);
-			add(arg...);
+			write(akey, avalue);
+			write(arg...);
 		}
 
 		void get(std::string& adata);

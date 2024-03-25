@@ -358,7 +358,7 @@ namespace ngl
 					.m_ms = ms * 1000,
 					.m_intervalms = [ms](int64_t) {return ms * 1000; } ,
 					.m_count = 0x7fffffff,
-					.m_fun = [session,ms,intervalms, this](wheel_node* anode)
+					.m_fun = [session, ms, intervalms, this](wheel_node* anode)
 					{
 						ptr_se lpstruct = m_session.find(session);
 						if (lpstruct == nullptr)
@@ -408,10 +408,10 @@ namespace ngl
 					ojson ltempjson(ajson.c_str());
 
 					i64_actorid lactorid;
-					if (ltempjson.dec("actorid", lactorid) == false)
+					if (ltempjson.read("actorid", lactorid) == false)
 						return;
 					std::string lsession;
-					if (ltempjson.dec("session", lsession) == false)
+					if (ltempjson.read("session", lsession) == false)
 						return;
 					if (ukcp::check_session(lactorid, lsession) == false)
 						return;
@@ -543,12 +543,7 @@ namespace ngl
 							ptr_se lpstruct = m_session.find(m_remoteport);
 							if (lpstruct != nullptr)
 							{
-								LogLocalError("[conv:%][current:%][dead_link:%]"
-									, lpstruct->m_kcp->conv
-									, lpstruct->m_kcp->current
-									, lpstruct->m_kcp->dead_link
-								)
-									int linput = lpstruct->input(m_buff, bytes_received);
+								int linput = lpstruct->input(m_buff, bytes_received);
 								if (linput >= 0)
 								{
 									while (true)
@@ -587,15 +582,11 @@ namespace ngl
 								}
 								else
 								{
-									LogLocalError("[非kcp包:input < 0][%][%]"
-										, m_remoteport.address().to_string()
-										, m_remoteport.port()
-									)
-										if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
-										{
-											std::string lip = m_remoteport.address().to_string();
-											sendu(m_remoteport, lip.c_str(), lip.size() + 1);
-										}
+									if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
+									{
+										std::string lip = m_remoteport.address().to_string();
+										sendu(m_remoteport, lip.c_str(), lip.size() + 1);
+									}
 								}
 							}
 							else
@@ -738,8 +729,8 @@ namespace ngl
 			// #### 发起连接
 			ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
 			ijson ltempjson;
-			ltempjson.add("actorid", aactorid);
-			ltempjson.add("session", akcpsess);
+			ltempjson.write("actorid", aactorid);
+			ltempjson.write("session", akcpsess);
 			ltempjson.set_nonformatstr(true);
 			std::string lparm;
 			ltempjson.get(lparm);

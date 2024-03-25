@@ -95,7 +95,7 @@ namespace ngl
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
 		{
 			std::unique_ptr<ngl::sem> lsem(new ngl::sem());
-			m_kcp.sendu_waitrecv(aendpoint, buf, len, [afun,&lsem](char* buff, int len)
+			m_kcp.sendu_waitrecv(aendpoint, buf, len, [afun, &lsem](char* buff, int len)
 				{
 					afun(buff, len);
 					lsem->post();

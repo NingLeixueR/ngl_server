@@ -4,24 +4,24 @@
 #include "ojson.h"
 
 #define jsonfunc(...)											\
-	inline void add(ngl::ijson& ijsn, const char* akey)const	\
+	inline void write(ngl::ijson& ijsn, const char* akey)const	\
 	{															\
 		ngl::ijson ltemp;										\
-		add(ltemp);												\
-		ijsn.add(akey, ltemp.nofree());							\
+		write(ltemp);											\
+		ijsn.write(akey, ltemp.nofree());						\
 	}															\
-	inline void add(ngl::ijson& ijsn)const						\
+	inline void write(ngl::ijson& ijsn)const					\
 	{															\
-		ijsn.add(__VA_ARGS__);									\
+		ijsn.write(__VA_ARGS__);								\
 	}															\
-	inline bool dec(ngl::ojson& ijsn, const char* akey)			\
+	inline bool read(ngl::ojson& ijsn, const char* akey)		\
 	{															\
 		ngl::ojson ltemp;										\
-		if (ijsn.dec(akey, ltemp) == false)						\
+		if (ijsn.read(akey, ltemp) == false)					\
 		return false;											\
-		return dec(ltemp);										\
+		return read(ltemp);										\
 	}															\
-	inline bool dec(ngl::ojson& ijsn)							\
+	inline bool read(ngl::ojson& ijsn)							\
 	{															\
-		return ijsn.dec(__VA_ARGS__);							\
+		return ijsn.read(__VA_ARGS__);							\
 	}

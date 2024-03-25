@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 	std::vector<int32_t> lv;
 	for (int i = 0; i < 10; ++i)
 		lv.push_back(i);
-	lijson.add("test", lv);
+	lijson.write("test", lv);
 
 	abc ltemp;
 	ltemp.m_1 = 1989;
@@ -41,13 +41,13 @@ int main(int argc, char** argv)
 	ltemp.m_5.insert(std::make_pair(1, 1.1));
 	ltemp.m_5.insert(std::make_pair(2, 2.1));
 
-	ltemp.add(lijson, "kkk");
+	ltemp.write(lijson, "kkk");
 
 	std::vector<abc> lvecabc;
 	lvecabc.push_back(ltemp);
 	ltemp.m_1 += 1000;
 	lvecabc.push_back(ltemp);
-	lijson.add("kkk2", lvecabc);
+	lijson.write("kkk2", lvecabc);
 
 	std::string ljson;
 	lijson.get(ljson);
@@ -56,11 +56,11 @@ int main(int argc, char** argv)
 
 	ngl::ojson lojson(ljson.c_str());
 	std::vector<int32_t> lv2;
-	lojson.dec("test", lv2);
+	lojson.read("test", lv2);
 	abc ltemp2;
-	ltemp2.dec(lojson, "kkk");
+	ltemp2.read(lojson, "kkk");
 	std::vector<abc> lvecabc2;
-	lojson.dec("kkk2", lvecabc2);
+	lojson.read("kkk2", lvecabc2);
 	//cJSON_CreateArray*/
 
 
