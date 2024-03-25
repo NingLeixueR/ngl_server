@@ -36,6 +36,7 @@ namespace ngl
 		inline wheel_node* shift_current_pos(wheel* awheel);
 	};
 
+
 	struct time_wheel::impl_time_wheel
 	{
 		time_wheel_config	m_config;
@@ -53,9 +54,11 @@ namespace ngl
 		wheel_node*			m_worldnodehead;
 		wheel_node*			m_worldnodetail;
 		int64_t				m_timerid;							// 定时器自增id
-		std::map<int64_t, wheel_node*> m_timer;					// 用于快速删除定时器
+		std::map<int64_t, bool> m_timer;						// 用于快速删除定时器
+		time_wheel*			m_twheel;
 
-		impl_time_wheel(time_wheel* atwheel,const time_wheel_config& aconfig, bool aisthreadcallback):
+		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback):
+			m_twheel(atwheel),
 			m_isthreadcallback(aisthreadcallback),
 			m_thread(nullptr),
 			m_timerid(1),
@@ -102,8 +105,8 @@ namespace ngl
 				auto itor = m_timer.find(lpnode->m_timerid);
 				if (itor == m_timer.end())
 					return;
-				delete itor->second;
 				m_timer.erase(itor);
+				delete lpnode;
 			}
 		}
 
@@ -154,7 +157,7 @@ namespace ngl
 					if (item->push(lpnode))
 					{
 						lbool = true;
-						ltimer.insert(std::make_pair(m_timerid, lpnode));
+						m_timer.insert(std::make_pair(m_timerid, &lpnode->m_remove));
 						break;
 					}
 				}
@@ -175,7 +178,7 @@ namespace ngl
 			auto itor = m_timer.find(atimerid);
 			if (itor == m_timer.end())
 				return;
-			itor->second->m_remove = true;
+			itor->second = true;
 		}
 
 		void push(wheel_node* apnode)
@@ -257,7 +260,6 @@ namespace ngl
 					lnextnode = pnode->m_next;
 					if (pnode->m_remove != true)
 						pnode->m_parm.m_fun(pnode);
-					m_timer.erase(pnode->m_timerid);
 					delete pnode;
 				}
 				lpnode = nullptr;
@@ -288,11 +290,7 @@ namespace ngl
 		{
 			bool lbool = true;
 			std::shared_ptr<wheel_node> lpnode(
-				new wheel_node
-				{ 
-					.m_timerid = ++(m_timerid),
-					.m_parm = apram, 
-				},
+				new wheel_node(m_twheel, ++m_timerid, apram),
 				[&lbool](wheel_node* ap) 
 				{
 					if (lbool)
@@ -309,7 +307,35 @@ namespace ngl
 			lbool = false;
 			return m_timerid;
 		}
+
+		bool& get_remove(int64_t atimerid)
+		{
+			auto itor = m_timer.find(atimerid);
+			if (itor == m_timer.end())
+			{
+				bool& ret = m_timer[atimerid];
+				ret = false;
+				return ret;
+			}
+			return itor->second;
+		}
 	};
+
+	wheel_node::wheel_node(time_wheel* atw, int64_t atimerid, const wheel_parm& aparm) :
+		m_tw(atw)
+		, m_remove(atw->get_remove(atimerid))
+		, m_timerid(atimerid)
+		, m_next(nullptr)
+		, m_parm(aparm)
+	{}
+
+	wheel_node::wheel_node(const wheel_node& aparm) :
+		m_tw(aparm.m_tw)
+		, m_remove(aparm.m_remove)
+		, m_timerid(aparm.m_timerid)
+		, m_next(nullptr)
+		, m_parm(aparm.m_parm)
+	{}
 
 	wheel::wheel() :
 		m_nextround(nullptr),
@@ -421,7 +447,6 @@ namespace ngl
 				//lpnode->m_fun(m_current_ms);
 				if (lpnode->m_parm.m_intervalms != nullptr)
 				{
-					
 					int lintervalms = lpnode->m_parm.m_intervalms(
 						m_time_wheel->m_impl_time_wheel()->m_current_ms);
 					if (lintervalms > 0 && --lpnode->m_parm.m_count > 0)//拷贝
@@ -502,6 +527,11 @@ namespace ngl
 	std::shared_ptr<wheel_node> time_wheel::pop_node()
 	{
 		return m_impl_time_wheel()->pop_node();
+	}
+
+	bool& time_wheel::get_remove(int64_t atimerid)
+	{
+		return m_impl_time_wheel()->get_remove(atimerid);
 	}
 
 	time_wheel twheel::m_wheel;

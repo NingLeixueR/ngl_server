@@ -16,6 +16,7 @@ namespace ngl
 {
 	struct wheel_node;
 	class wheel;
+	class time_wheel;
 
 	struct wheel_parm
 	{
@@ -32,10 +33,17 @@ namespace ngl
 	{
 		using timecallback = std::function<void(wheel_node*)>;
 
-		int64_t			m_timerid	= 0;
-		bool			m_remove	= false;				// 定时器是否被移除
-		wheel_node*		m_next		= nullptr;
+		time_wheel*		m_tw;
+		int64_t			m_timerid;
+		bool&			m_remove;				// 定时器是否被移除
+		wheel_node*		m_next;
 		wheel_parm		m_parm;
+
+		wheel_node(time_wheel* atw, int64_t atimerid, const wheel_parm& aparm);
+
+		wheel_node(const wheel_node& aparm);
+
+		wheel_node() = delete;
 	};
 
 	struct time_wheel_config
@@ -107,6 +115,8 @@ namespace ngl
 
 		//m_isthreadcallback == false
 		std::shared_ptr<wheel_node> pop_node();
+
+		bool& get_remove(int64_t atimerid);
 	};
 
 	class twheel
