@@ -43,7 +43,6 @@ namespace ngl
 		bool read(const char* akey, cJSON*& adata);
 		bool read(const char* akey, ojson& adata);
 
-		
 		template <typename T>
 		bool read_number(
 			const char* akey
