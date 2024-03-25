@@ -257,6 +257,7 @@ namespace ngl
 					lnextnode = pnode->m_next;
 					if (pnode->m_remove != true)
 						pnode->m_parm.m_fun(pnode);
+					m_timer.erase(pnode->m_timerid);
 					delete pnode;
 				}
 				lpnode = nullptr;
@@ -287,17 +288,25 @@ namespace ngl
 		{
 			bool lbool = true;
 			std::shared_ptr<wheel_node> lpnode(
-				new wheel_node{ .m_timerid = ++(m_timerid),.m_parm = apram, },
-				[&lbool](wheel_node* ap) {if (lbool)delete ap; });
+				new wheel_node
+				{ 
+					.m_timerid = ++(m_timerid),
+					.m_parm = apram, 
+				},
+				[&lbool](wheel_node* ap) 
+				{
+					if (lbool)
+						delete ap; 
+				});
 			lpnode->m_parm.m_timerstart = getms();
 			lpnode->m_parm.m_ms += getms() - m_server_start_ms;
 			if (lpnode->m_parm.m_ms < 0)
 				return -1;
 			if (lpnode->m_parm.m_count == -1)
 				lpnode->m_parm.m_count = 0x7fffffff;
-			lbool = false;
 			if (addtimer(lpnode.get()) == false)
 				return -1;
+			lbool = false;
 			return m_timerid;
 		}
 	};
