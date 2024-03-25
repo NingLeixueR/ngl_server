@@ -337,7 +337,7 @@ namespace ngl
 		asio_udp_endpoint					m_waitendpoint;
 	private:
 		//## [udp_cmd::ecmd_connect]		调用aconnect为true
-		//## [udp_cmd::ecmd_connect_ret]	调用aconnect为true
+		//## [udp_cmd::ecmd_connect_ret]	调用aconnect为false
 		inline bool function_econnect(ptr_se& apstruct, i64_actorid aactorid, bool aconnect)
 		{
 			i32_sessionid session = apstruct->m_session;
