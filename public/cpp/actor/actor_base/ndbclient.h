@@ -76,10 +76,12 @@ namespace ngl
 			m_pdata(nullptr)
 		{}
 
-		void set(const TDBTAB& adata)
+		void set(const TDBTAB& adata, bool achange = false)
 		{
 			m_data = adata;
 			m_pdata = nullptr;
+			if (achange)
+				m_ischange = true;
 		}
 
 		TDBTAB& get(bool achange = true)
@@ -344,7 +346,7 @@ namespace ngl
 			if (m_data.find(aid) != m_data.end())
 				return nullptr;
 			data_modified<TDBTAB>* lpdata = &m_data[aid];
-			lpdata->set(adbtab);
+			lpdata->set(adbtab, true);
 			savedb(aid);
 			if(aid == m_id)
 				m_dbdata = lpdata;
