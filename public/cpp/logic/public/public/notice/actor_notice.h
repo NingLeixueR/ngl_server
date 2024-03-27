@@ -75,7 +75,7 @@ namespace ngl
 				lcmd["get_notice"] = [this](int id, ngl::ojson& aos)
 					{
 						// ·µ»Ø {"notice":gm_notice[]}
-						gcmd<get_notice_responce> pro;
+						gcmd<std::vector<gm_notice>> pro;
 						pro.id = id;
 						pro.m_operator = "get_notice_responce";
 						for (auto& [key, value] : m_notice.data())
@@ -86,7 +86,7 @@ namespace ngl
 							//ltemp.m_notice = value.getconst().m_notice();
 							ltemp.m_starttime = value.getconst().m_starttime();
 							ltemp.m_finishtime = value.getconst().m_finishtime();
-							pro.m_data.m_notice.push_back(ltemp);
+							pro.m_data.push_back(ltemp);
 						}
 					};
 				lcmd["add_notice"] = [this](int id, ngl::ojson& aos)
