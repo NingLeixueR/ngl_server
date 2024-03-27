@@ -908,8 +908,6 @@ int main(int argc, char** argv)
     ngl::xmlprotocol::load();
     int32_t lnumber = 0;
     foreachProtobuf(sourceTree, lnumber, "net");
-    lnumber = 100000000;
-    foreachProtobuf(sourceTree, lnumber, "gm");
    
     return 0;
 }

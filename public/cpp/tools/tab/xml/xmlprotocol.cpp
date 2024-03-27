@@ -29,8 +29,6 @@ namespace ngl
 
 	void xmlprotocol::load()
 	{
-		read("./config/gm_protocol.xml");
-		read("./config/gmserver_protocol.xml");
 		read("./config/net_protocol.xml");
 		read("./config/netserver_protocol.xml");
 	}
