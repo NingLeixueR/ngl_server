@@ -149,7 +149,7 @@ namespace ngl
 
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
-		bool handle(message<pbnet::PROBUFF_NET_RECHARGE>& adata);
+		bool handle(message<mforward<np_gm_response>>& adata);
 		bool is_first_recharge(int32_t arechargeid);
 
 		//# 请求创建订单

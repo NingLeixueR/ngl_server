@@ -6,6 +6,7 @@
 #include "net.pb.h"
 #include "ojson.h"
 #include "drop.h"
+#include "gcmd.h"
 
 namespace ngl
 {
@@ -52,13 +53,13 @@ namespace ngl
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
 			true
 			, dregister_fun_handle(actor_role, np_actor_disconnect_close)
+			, dregister_fun_handle(actor_role, mforward<np_gm_response>)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>(
 			true
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_ROLE_SYNC)
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
-			, dregister_fun_handle(actor_role, mforward<GM::PROBUFF_GM_RECHARGE>)
 		);
 
 		// 协议注册
@@ -182,37 +183,62 @@ namespace ngl
 		aorder = lbillno;
 	}
 
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_RECHARGE>& adata)
+	bool actor_role::handle(message<mforward<np_gm_response>>& adata)
 	{
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>();
-		pro->set_m_rechargeid(adata.m_data->m_rechargeid());
-		const pbdb::db_role& lrole = m_info.m_role();
-		tab_recharge* tab = allcsv::tab<tab_recharge>(adata.m_data->m_rechargeid());
-		if (tab == nullptr)
+		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+		std::string loperator;
+		if (lojson.read("operator", loperator) == false)
 		{
-			LogLocalError("tab_recharge id[%] not find", adata.m_data->m_rechargeid())
-			pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_NotRechargeId);
-			send2client(pro);
 			return true;
 		}
-		if (tab->m_count > 0)
+
+		static std::map<std::string, std::function<void(int, ngl::ojson&)>> lcmd;
+		if (lcmd.empty())
 		{
-			int lcount = 0;
-			for (auto& item : lrole.m_recharge())
-			{
-				if (item.m_rechargeid() == adata.m_data->m_rechargeid())
-					++lcount;
-			}
-			if (lcount > tab->m_count)
-			{
-				pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_MaxCount);
-				send2client(pro);
-				return true;
-			}
+			lcmd["pay"] = [this](int id, ngl::ojson& aos)
+				{
+					struct pay
+					{
+						std::string m_orderid;
+						int32_t m_rechargeid;
+						jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid)
+					};
+					pay lpay;
+					if (aos.read("data", lpay) == false)
+						return;
+
+					// 返回 {"data":int32_t}
+					gcmd<int32_t> pro;
+					pro.id = id;
+					pro.m_operator = "get_notice_responce";
+					pro.m_data = 1;
+
+					tab_recharge* tab = allcsv::tab<tab_recharge>(lpay.m_rechargeid);
+					if (tab == nullptr)
+					{
+						LogLocalError("tab_recharge id[%] not find", lpay.m_rechargeid)
+						pro.m_data = 2;
+						return;
+					}
+					auto psenditem = std::make_shared<np_actor_senditem>();
+					psenditem->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", lpay.m_orderid, lpay.m_rechargeid, id_guid());
+					if (drop::droplist(tab->m_dropid, 1, psenditem->m_item) == false)
+					{
+						pro.m_data = 3;
+						return;
+					}
+					message<np_actor_senditem> ltemp(0, nullptr, psenditem.get());
+					handle(ltemp);
+				};
 		}
-		createorder(*pro->mutable_m_orderid(), adata.m_data->m_rechargeid());
-		pro->set_m_stat(pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat_Success);
-		send2client(pro);
+
+		auto itor = lcmd.find(loperator);
+		if (itor == lcmd.end())
+		{
+			LogLocalError("GM actor_role operator[%] ERROR", loperator);
+			return true;
+		}
+		itor->second(adata.m_data->identifier(), lojson);
 		return true;
 	}
 
