@@ -38,75 +38,39 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		template <typename T>
-		void sendphpclient(mforward<T>& adata)
-		{
-			send(adata.identifier(), *adata.data(), nguid::make(), nguid::make());
-		}
+		//bool handle_role_fail(const message<GM::PROBUFF_GM_RECHARGE>& adata)
+		//{
+		//	// ### 玩家不在线 记录订单
+		//	ngl::_http* lhttp = ngl::manage_curl::make_http();
+		//	ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+		//	ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+		//	ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
 
-		template <typename T>
-		void send2other(ENUM_ACTOR atype, const pack* apack, T& apro)
+		//	std::stringstream lstream;
+		//	lstream
+		//		<< "orderid=" << adata.m_data->m_orderid()
+		//		<< "&gm=0"
+		//		<< "&stat=1";
+
+		//	ngl::manage_curl::set_param(*lhttp, lstream.str());
+		//	ngl::manage_curl::getInstance().send(lhttp);
+		//	return true;
+		//}
+
+		void sendsign(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro)
 		{
-			auto pro = std::make_shared<mforward<T>>(apack->m_id, apro);
+			auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
 			send_actor(nguid::make_self(atype), pro);
 		}
 
-		template <typename T>
-		void send2role(const pack* apack, T& apro, const std::function<void()>& afailfun)
+		void sendnosign(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro)
 		{
-			auto pro = std::make_shared<mforward<T>>(apack->m_id, apro);
-			send_actor(apro.m_roleid(), pro, afailfun);
+			auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
+			send_actor(aactorid, pro);
 		}
 
-		template <ENUM_ACTOR MODULE,typename T>
-		bool handle(message<T>& adata)
-		{
-			send2other(MODULE, adata.m_pack, *adata.m_data);
-			return true;
-		}
+		bool handle(message<ngl::np_gm>& adata);
 
-		template <typename T>
-		bool handle_role_fail(const message<T>& adata)
-		{
-			return true;
-		}
-
-		bool handle_role_fail(const message<GM::PROBUFF_GM_RECHARGE>& adata)
-		{
-			// ### 玩家不在线 记录订单
-			ngl::_http* lhttp = ngl::manage_curl::make_http();
-			ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-			ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
-
-			std::stringstream lstream;
-			lstream
-				<< "orderid=" << adata.m_data->m_orderid()
-				<< "&gm=0"
-				<< "&stat=1";
-
-			ngl::manage_curl::set_param(*lhttp, lstream.str());
-			ngl::manage_curl::getInstance().send(lhttp);
-			return true;
-		}
-
-		// 发送给actor_role
-		template <typename T>
-		bool handle_role(message<T>& adata)
-		{
-			// ### actor_role 可能不在线
-			send2role(adata.m_pack, *adata.m_data, [this, adata]()
-				{
-					handle_role_fail(adata);
-				});
-			return true;
-		}
-		
-		template <typename T>
-		bool handle(message<mforward<T>>& adata)
-		{
-			sendphpclient(*adata.m_data);
-			return true;
-		}
+		bool handle(message<mforward<ngl::np_gm_response>>& adata);
 	};
 }// namespace ngl

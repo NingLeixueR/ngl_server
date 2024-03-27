@@ -31,6 +31,10 @@ namespace ngl
 	void initproto::init_customs()
 	{
 		init_customs(EPROTOCOL_TYPE_CUSTOM
+			, null<np_gm>				// 200000001
+			, null<np_gm_response>		// 200000002
+			, null<mforward<np_gm>>			// 200000003
+			, null<mforward<np_gm_response>>  // 200000004
 			, null<timerparm>
 			, null<np_robot_pram>
 			, null<np_actornode_register>

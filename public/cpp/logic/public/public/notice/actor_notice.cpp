@@ -21,11 +21,9 @@ namespace ngl
 	void actor_notice::nregister()
 	{
 		// Ð­Òé×¢²á
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_notice>(
+		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_notice>(
 			true
-			, dregister_fun_handle(actor_notice, mforward<GM::PROBUFF_GM_GET_NOTICE>)
-			, dregister_fun_handle(actor_notice, mforward<GM::PROBUFF_GM_ADD_NOTICE>)
-			, dregister_fun_handle(actor_notice, mforward<GM::PROBUFF_GM_DEL_NOTICE>)
+			, dregister_fun_handle(actor_notice, mforward<np_gm>)
 		);
 	}
 }

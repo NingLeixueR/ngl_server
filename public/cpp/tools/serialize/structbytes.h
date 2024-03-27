@@ -76,6 +76,10 @@ namespace ngl
 
 		static bool check_xor(int aprotocolnum)
 		{
+			bool isret = initproto::protocol<np_gm>() == aprotocolnum
+				|| initproto::protocol<np_gm_response>() == aprotocolnum;
+			if (isret)
+				return false;
 			return ISBYTEXOR;
 		}
 

@@ -80,7 +80,7 @@ namespace ngl
 		template <typename T>
 		void write(const char* akey, const T& aval)
 		{
-			aval.write(akey, aval);
+			aval.write(*this, akey);
 		}
 
 		template <typename T>

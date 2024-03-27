@@ -31,72 +31,188 @@ namespace ngl
 	bool ojson::read(const char* akey, int8_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = (int8_t)ret->valueint;
+		if (ret->type == cJSON_Number)
+		{
+			adata = (int8_t)ret->valueint;
+			return true;
+		}
+		if (ret->type == cJSON_String)
+		{
+			try
+			{
+				adata = boost::lexical_cast<int8_t>(ret->valuestring);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
 	bool ojson::read(const char* akey, int16_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = (int16_t)ret->valueint;
+		if (ret->type == cJSON_Number)
+		{
+			adata = (int16_t)ret->valueint;
+			return true;
+		}
+		if (ret->type == cJSON_String)
+		{
+			try
+			{
+				adata = boost::lexical_cast<int16_t>(ret->valuestring);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
 	bool ojson::read(const char* akey, int32_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = ret->valueint;
-		return true;
+		if (ret->type == cJSON_Number)
+		{
+			adata = ret->valueint;
+			return true;
+		}
+		if (ret->type == cJSON_String)
+		{
+			try
+			{
+				adata = boost::lexical_cast<int32_t>(ret->valuestring);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
+		return false;
 	}
 
 	bool ojson::read(const char* akey, int64_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_String)
+		if (nullptr == ret)
 			return false;
-		adata = boost::lexical_cast<int64_t>(ret->valuestring);
+		if (ret->type != cJSON_String)
+		{
+			adata = boost::lexical_cast<int64_t>(ret->valuestring);
+			return false;
+		}
+		// ³¢ÊÔint32_t
+		if (ret->type == cJSON_Number)
+		{
+			adata = ret->valueint;
+			return true;
+		}
 		return true;
 	}
 
 	bool ojson::read(const char* akey, uint8_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = (uint8_t)ret->valueint;
+		if (ret->type == cJSON_Number)
+		{
+			adata = (uint8_t)ret->valueint;
+			return true;
+		}
+		if (ret->type == cJSON_String)
+		{
+			try
+			{
+				adata = boost::lexical_cast<uint8_t>(ret->valuestring);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
 	bool ojson::read(const char* akey, uint16_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = (uint16_t)ret->valueint;
+		if (ret->type == cJSON_Number)
+		{
+			adata = (uint16_t)ret->valueint;
+			return true;
+		}
+		if (ret->type == cJSON_String)
+		{
+			try
+			{
+				adata = boost::lexical_cast<uint16_t>(ret->valuestring);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
 	bool ojson::read(const char* akey, uint32_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = (uint32_t)ret->valueint;
+		if (ret->type == cJSON_Number)
+		{
+			adata = (uint32_t)ret->valueint;
+			return true;
+		}
+		if (ret->type == cJSON_String)
+		{
+			try
+			{
+				adata = boost::lexical_cast<uint32_t>(ret->valuestring);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 
 	bool ojson::read(const char* akey, uint64_t& adata)
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_String)
+		if (nullptr == ret)
 			return false;
-		adata = boost::lexical_cast<uint64_t>(ret->valuestring);
+		if (ret->type != cJSON_String)
+		{
+			adata = boost::lexical_cast<uint64_t>(ret->valuestring);
+			return false;
+		}
+		// ³¢ÊÔint32_t
+		if (ret->type == cJSON_Number)
+		{
+			adata = ret->valueint;
+			return true;
+		}
 		return true;
 	}
 
