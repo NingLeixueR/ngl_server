@@ -15,7 +15,7 @@
 	mysql_select_db(GMSYS, $con);
 	mysql_query("set names 'utf8'");
 		
-	$QuerySelect = "select * from db_recharge where roleid = {$roleid} AND stat=1;";
+	$QuerySelect = "select * from db_recharge where roleid = {$roleid} AND stat!=1;";
 	$Result = mysql_query($QuerySelect);
 	if ($Row = mysql_fetch_array($Result, MYSQL_ASSOC))
 	{
