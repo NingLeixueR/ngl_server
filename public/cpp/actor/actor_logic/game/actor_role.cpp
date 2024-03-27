@@ -92,19 +92,41 @@ namespace ngl
 					std::string lorderid;
 					if (ltempjson.read("orderid", lorderid) == false)
 						return;
-					std::string lrechargeid;
+					int32_t lrechargeid = -1;
 					if (ltempjson.read("rechargeid", lrechargeid) == false)
 						return;
-					std::string lroleid;
+					int64_t lroleid = -1;
 					if (ltempjson.read("roleid", lroleid) == false)
 						return;
 					
-					auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE>();
-					auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE>>(-1, prot);
-					pro->data()->set_m_orderid(lorderid);
-					pro->data()->set_m_rechargeid(boost::lexical_cast<int32_t>(lrechargeid));
-					pro->data()->set_m_roleid(boost::lexical_cast<int64_t>(lroleid));
-					actor::static_send_actor(boost::lexical_cast<int64_t>(lroleid), nguid::make(), pro);
+					// ### 发货
+					tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);
+					if (tab == nullptr)
+					{
+						return;
+					}
+					auto pro = std::make_shared<np_actor_senditem>();
+					pro->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", lorderid, lrechargeid, lroleid);
+					if (drop::droplist(tab->m_dropid, 1, pro->m_item) == false)
+					{
+						return;
+					}
+					actor::static_send_actor(lroleid, -1, pro);
+
+					ngl::_http* lhttp = ngl::manage_curl::make_http();
+					ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+					ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+					ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
+
+					std::stringstream lstream;
+					lstream
+						<< "orderid=" << lorderid
+						<< "&gm=0"
+						<< "&stat=1";
+
+					ngl::manage_curl::set_param(*lhttp, lstream.str());
+					ngl::manage_curl::getInstance().send(lhttp);
+				
 				}
 				catch (...)
 				{

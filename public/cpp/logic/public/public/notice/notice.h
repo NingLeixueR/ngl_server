@@ -60,6 +60,11 @@ namespace ngl
 			add(m_maxid, lnotice);
 		}
 
+		void del_notice(int64_t aid)
+		{
+			erase(aid);
+		}
+
 		void remove_notice()
 		{
 			static int32_t lasttime = 0;

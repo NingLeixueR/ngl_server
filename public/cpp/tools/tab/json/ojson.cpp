@@ -108,10 +108,10 @@ namespace ngl
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type != cJSON_String)
+		if (ret->type == cJSON_String)
 		{
 			adata = boost::lexical_cast<int64_t>(ret->valuestring);
-			return false;
+			return true;
 		}
 		// ³¢ÊÔint32_t
 		if (ret->type == cJSON_Number)
@@ -119,7 +119,7 @@ namespace ngl
 			adata = ret->valueint;
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	bool ojson::read(const char* akey, uint8_t& adata)
@@ -202,10 +202,10 @@ namespace ngl
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type != cJSON_String)
+		if (ret->type == cJSON_String)
 		{
 			adata = boost::lexical_cast<uint64_t>(ret->valuestring);
-			return false;
+			return true;
 		}
 		// ³¢ÊÔint32_t
 		if (ret->type == cJSON_Number)
@@ -213,7 +213,7 @@ namespace ngl
 			adata = ret->valueint;
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	bool ojson::read(const char* akey, float& adata)

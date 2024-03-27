@@ -93,17 +93,26 @@ namespace ngl
 					{
 						// ·µ»Ø bool
 						gm_notice recv;
-						aos.read("data", recv);
+						if (aos.read("data", recv) == false)
+							return;
 						gcmd<bool> pro;
 						pro.id = id;
 						pro.m_operator = "add_notice_responce";
 						pro.m_data = true;
-						//if (m_notice.get(recv.m_notice.m_id) != nullptr)
-						//{
-						//	pro.m_data = false;
-						//	return;
-						//}
 						m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+					};
+
+				lcmd["del_notice"] = [this](int id, ngl::ojson& aos)
+					{
+						// ·µ»Ø bool
+						int64_t lid = 0;
+						if (aos.read("data", lid) == false)
+							return;
+						gcmd<bool> pro;
+						pro.id = id;
+						pro.m_operator = "del_notice_responce";
+						pro.m_data = true;
+						m_notice.del_notice(lid);
 					};
 
 			}
@@ -114,43 +123,8 @@ namespace ngl
 				LogLocalError("GM actor_notice operator[%] ERROR", loperator);
 				return true;
 			}
-			gm_notice recv;
-			lojson.read("data", recv);
 			itor->second(adata.m_data->identifier(), lojson);
 			return true;
-		}
-		
-		bool handle(message<mforward<GM::PROBUFF_GM_ADD_NOTICE>>& adata)
-		{
-			GM::PROBUFF_GM_ADD_NOTICE* lptr = adata.m_data->data();
-			m_notice.add_notice(lptr->m_notice().m_notice(), lptr->m_notice().m_starttime(), lptr->m_notice().m_finishtime());
-			
-			using type = mforward<GM::PROBUFF_GM_ADD_NOTICE_RESPONSE>;
-			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
-			pro->add_data()->set_m_stat(true);
-			send_actor(nguid::make_self(ACTOR_GM), pro);
-			return true;
-		}
-		
-		bool handle(message<mforward<GM::PROBUFF_GM_DEL_NOTICE>>& adata)
-		{
-			m_notice.erase(adata.m_data->data()->m_id());
-			using type = mforward<GM::PROBUFF_GM_DEL_NOTICE_RESPONSE>;
-			std::shared_ptr<type> pro(new type(adata.m_data->identifier()));
-			pro->add_data()->set_m_stat(true);
-			send_actor(nguid::make_self(ACTOR_GM), pro);
-			return true;
-		}
-		
-		bool handle(message<mforward<pbnet::PROBUFF_NET_GET_NOTICE>>& adata)
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE>();
-			for (const auto& [_id, _notice] : m_notice.data())
-			{
-				*pro->add_m_notices() = _notice.getconst();
-			}
-			send_client(adata.m_data->identifier(), pro);
-			return true;			
 		}
 	};
 }

@@ -182,7 +182,7 @@ namespace ngl
 		public:
 			static void fun(db* adb, i64_actorid aid)
 			{
-				char lbuff[] = "DELETE FROM %s WHERE id='%';";
+				char lbuff[] = "DELETE FROM %s WHERE id='%lld';";
 				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, protobuf_tabname<T>::tabname().c_str(), aid);
 				if (llen <= 0)
 					return;
@@ -199,7 +199,7 @@ namespace ngl
 					lwhere += i != 0 ? " OR id = " : " id = ";
 					lwhere += boost::lexical_cast<std::string>(aid[i]);
 				}
-				char lbuff[] = "DELETE FROM %s WHERE %;";
+				char lbuff[] = "DELETE FROM %s WHERE %s;";
 				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, protobuf_tabname<T>::tabname().c_str(), lwhere.c_str());
 				if (llen <= 0)
 					return;
@@ -213,7 +213,7 @@ namespace ngl
 		public:
 			static void fun(db* adb, i64_actorid aid)
 			{
-				char lbuff[] = "DELETE FROM %s WHERE id='%';";
+				char lbuff[] = "DELETE FROM %s WHERE id='%lld';";
 				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, T::name(), aid);
 				if (llen <= 0)
 					return;
@@ -230,7 +230,7 @@ namespace ngl
 					lwhere += i != 0 ? " OR id = " : " id = ";
 					lwhere += boost::lexical_cast<std::string>(aid[i]);
 				}
-				char lbuff[] = "DELETE FROM %s WHERE %;";
+				char lbuff[] = "DELETE FROM %s WHERE %s;";
 				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, T::name(), lwhere.c_str());
 				if (llen <= 0)
 					return;
