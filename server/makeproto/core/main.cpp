@@ -860,10 +860,46 @@ void traverseProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, co
 }
 
 #include "localtime.h"
-
+#include "manage_curl.h"
+#include "manage_csv.h"
 
 int main(int argc, char** argv) 
 {
+
+    if (argc > 1)
+    {
+        if (std::string(argv[1]) == "push_config")
+        {
+            ngl::allcsv::load();
+            ngl::manage_csv<ngl::tab_servers>* mang = ngl::allcsv::get<ngl::manage_csv<ngl::tab_servers>>();
+            mang->foreach([](ngl::tab_servers& tab)
+                {
+                    ngl::_http* lhttp = ngl::manage_curl::make_http();
+                    ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+                    ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+                    ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/push_server_config.php");
+
+                    std::stringstream lstream;
+                    //xx=xx&xx=xx&xx=xx
+                    lstream
+                        << "id=" << tab.m_id << "&"
+                        << "area=" << tab.m_area << "&"
+                        << "name=" << tab.m_name << "&"
+                        << "ip=" << tab.m_ip << "&"
+                        << "nip=" << tab.m_nip << "&"
+                        << "port=" << tab.m_port << "&"
+                        << "type=" << tab.m_type;
+
+                    ngl::manage_curl::set_param(*lhttp, lstream.str());
+                    ngl::manage_curl::getInstance().send(lhttp);
+                });
+            while (1)
+            {
+                ngl::sleep::seconds(1);
+            }
+        }
+    }
+
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);
     //sourceTree.MapPath("", "../../tools/public/proto/");
