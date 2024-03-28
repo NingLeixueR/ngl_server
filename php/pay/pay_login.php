@@ -6,9 +6,6 @@
 	$con = mysql_connect(DB_IP . ":" . DB_PORT, DB_USER, DB_PASS);
 	if(!$con)
 	{
-		$Result['ret'] = 1;
-		$Result['msg'] = 'Can not connect: ' . mysql_error();
-		echo json_encode($Result);
 		return;
 	}
 		

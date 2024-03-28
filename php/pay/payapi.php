@@ -1,21 +1,23 @@
 <?php
 	require_once '../config.php';
 	
-	//$orderid = $_GET['orderid'];
-	//$rechargeid = $_GET['rechargeid'];
-	//$gm = $_GET['gm'];
-	//$stat = $_GET['stat'];
-	
-	//$orderid
-	//%05d%010d%010d%010d%02d
-	//area(), id(), arechargeid, localtime::gettime(), ++billnoindex
-	
-	// stat 
-	// 0  成功
-	// 1  玩家不在线发货失败
-	
 	class payapi{
 	
+		function write_log($data)
+		{
+				file_put_contents("test.txt", "\n".date('Y-m-d H-i-s') . "   " . $data."\n", FILE_APPEND);
+		}
+
+		function ret_value($err, $msg)
+		{
+			$resultData = array();
+			$resultData['ret'] = -2;
+			$resultData['msg'] = "sign fail";
+			$resultDataJson = json_encode($resultData);
+			echo $resultDataJson;
+			$this->write_log($resultDataJson);
+		}
+		
 		function area($orderid)
 		{
 			return intval(substr($orderid,0,5));
@@ -36,7 +38,7 @@
 			return intval(substr($orderid,25,10));
 		}
 		
-		function update_recharge($orderid, $roleid, $gm, $stat, bool islog)
+		function update_recharge($orderid, $roleid, $gm, $stat)
 		{
 			$rechargeid = rechargeid($orderid);
 			$area = area($orderid);
@@ -47,9 +49,7 @@
 			$con = mysql_connect(DB_IP . ":" . DB_PORT, DB_USER, DB_PASS);
 			if(!$con)
 			{
-				if(islog)
-					echo 'Can not connect: ' . mysql_error();
-				return false;
+				return -1;
 			}
 			
 			mysql_select_db(GMSYS, $con);
@@ -59,15 +59,11 @@
 			$QueryInster = $QueryInster." on duplicate key update gm=values(gm),stat=values(stat);";
 			if(mysql_query($QueryInster))
 			{
-				if(islog)
-					echo $QueryInster." success";
-				return true;
+				return 1;
 			}
 			else
 			{
-				if(islog)
-					echo $QueryInster." fail";
-				return false;
+				return -2;
 			}
 		}
 	}

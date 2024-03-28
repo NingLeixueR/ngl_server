@@ -7,13 +7,13 @@
 3part/behaviac-3.6.40
 3part/3part.7z
 3part
-php/phpcode
+php/db
+php/vendor
 bin/Debug
 bin/Release
 obj
 lib/Debug
 lib/Release
-php
 tools/public/rebuild.exe
 tools/public/idl/IDL.exe
 tools/public/idl/idlfile

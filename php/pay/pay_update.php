@@ -6,5 +6,7 @@
 	$gm = $_GET['gm'];
 	$stat = $_GET['stat'];
 	
-	update_recharge($orderid, $roleid, $gm, $stat, isset($_GET['islog'])? true:false);
+	
+	$controller = new payapi();
+	$controller->update_recharge($orderid, $roleid, $gm, $stat);
 ?>
