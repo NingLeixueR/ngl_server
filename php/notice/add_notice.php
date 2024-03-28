@@ -2,18 +2,18 @@
  include '../SocketByte.php';
  
  $so = new SocketByte();
- if($so->connect("127.0.0.1", 10010) == false)
+ if($so->connectServer($_POST['server']) == false)
  {
 	 echo "connect err!!!";
 	 return;
  }
  
  /*
-	éœ€è¦å‘é€ç»™æœåŠ¡å™¨çš„å­—æ®µåŒ…æ‹¬
-	actor_name  æŒ‡å®šactorçš„ç±»å‹  å•ä¾‹å¿…é¡»
-	actor_id	æ“ä½œåˆ¶å®šactor    éå•ä¾‹å¿…é¡»
-	operator	åˆ¶å®šæ“ä½œç±»å‹ï¼ˆè‡ªå®šä¹‰å­—ç¬¦ä¸²ï¼‰
-	data        å¯é€‰æ•°æ®	
+	ĞèÒª·¢ËÍ¸ø·şÎñÆ÷µÄ×Ö¶Î°üÀ¨
+	actor_name  Ö¸¶¨actorµÄÀàĞÍ  µ¥Àı±ØĞë
+	actor_id	²Ù×÷ÖÆ¶¨actor    ·Çµ¥Àı±ØĞë
+	operator	ÖÆ¶¨²Ù×÷ÀàĞÍ£¨×Ô¶¨Òå×Ö·û´®£©
+	data        ¿ÉÑ¡Êı¾İ	
  */
  
  $arr = array(

@@ -1,21 +1,46 @@
 <?php
+require_once 'config.php';
+
 class SocketByte {
 	private $socket;
 	
 	public function connect($server, $port) 
 	{
+		//echo "<br/>$server, $port<br/>";
 		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		if ($this->socket === false) {
-			//echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+			echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
 			return false;
 		}
 		socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => 15, 'usec' => 0));
 		$result = socket_connect($this->socket, $server, $port);
 		if ($result === false) {
-			//echo "socket_connect() failed.\nReason:  ($server)($port)($result) " . socket_strerror(socket_last_error($this->socket)) . "\n";
+			echo "socket_connect() failed.\nReason:  ($server)($port)($result) " . socket_strerror(socket_last_error($this->socket)) . "\n";
 			return false;
 		}
 		return true;
+	}
+	
+	public function connectServer($id)
+	{
+		$con = mysql_connect(DB_IP . ":" . DB_PORT, DB_USER, DB_PASS);
+		if(!$con)
+		{
+			echo 'Can not connect: ' . mysql_error();
+			return false;
+		}
+			
+		mysql_select_db(GMSYS, $con);
+		mysql_query("set names 'utf8'");
+		
+		$QueryStr = "select * from db_server where id={$id};";
+		//echo $QueryStr."<br/>";
+		$QueryResult = mysql_query($QueryStr);
+		if ($Row = mysql_fetch_array($QueryResult, MYSQL_ASSOC))
+		{
+			return $this->connect($Row['ip'], $Row['port']);
+		}
+		return false;
 	}
 	
 	public function close() 
@@ -149,10 +174,12 @@ class SocketByte {
 			return false;
 		}
 		
+		$recvhead = array();
 		for($i = 0; $i < 4*$this->EPH_SUM ;$i += 4)
 		{
 			$bin = substr($rst, $i, $i+4);
-			$recvhead[$i/4] = (unpack("V", $bin))[1];
+			$arr = unpack("V", $bin);
+			$recvhead[$i/4] = $arr[1];
 		}
 		
 		//print_r($recvhead);

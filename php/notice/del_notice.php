@@ -1,8 +1,8 @@
 <?php
  include '../SocketByte.php';
  
- $so = new SocketByte();
- if($so->connect("127.0.0.1", 10010) == false)
+$so = new SocketByte();
+ if($so->connectServer($_POST['server']) == false)
  {
 	 echo "connect err!!!";
 	 return;

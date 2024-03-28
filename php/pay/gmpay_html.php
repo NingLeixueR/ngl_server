@@ -1,9 +1,12 @@
 <html>
-	<h2>gmå……å€¼</h2>
+	<h2>gm³äÖµ</h2>
 	<form action="./gmpay.php" method="post" accept-charset="UTF-8">
-		å……å€¼id:<input name="rechangeid" type="text" size="32"/><br/>
-		ç©å®¶id:<input name="roleid" type="text" size="32"/><br/>
-		<input type="submit" value="æ·»åŠ "/><br/>
+		<?php 
+			require_once "../serverls.php";
+		?>
+		³äÖµid:<input name="rechangeid" type="text" size="32"/><br/>
+		Íæ¼Òid:<input name="roleid" type="text" size="32"/><br/>
+		<input type="submit" value="Ìí¼Ó"/><br/>
 	</form>
 </body>
 </html>

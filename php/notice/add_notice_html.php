@@ -1,10 +1,11 @@
 <html>
-	<h2>æ·»åŠ å…¬å‘Š</h2>
+	<h2>Ìí¼Ó¹«¸æ</h2>
 	<form action="./add_notice.php" method="post" accept-charset="UTF-8">
-		å…¬å‘Šå†…å®¹:<input name="notice" type="text" size="32"/><br/>
-		å¼€å§‹æ—¶é—´:<input name="starttime" type="text"/><br/>
-		ç»“æŸæ—¶é—´:<input name="finishtime" type="text"/><br/>
-		<input type="submit" value="æ·»åŠ "/><br/>
+		<?php require_once "../serverls.php";?>
+		¹«¸æÄÚÈÝ:<input name="notice" type="text" size="32"/><br/>
+		¿ªÊ¼Ê±¼ä:<input name="starttime" type="text"/><br/>
+		½áÊøÊ±¼ä:<input name="finishtime" type="text"/><br/>
+		<input type="submit" value="Ìí¼Ó"/><br/>
 	</form>
 </body>
 </html>
