@@ -66,6 +66,15 @@ namespace ngl
 		nforward::c2g();
 	}
 
+	struct prorechange
+	{
+		std::string m_orderid;
+		int32_t m_rechargeid;
+		int64_t m_roleid;
+
+		jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
+	};
+
 	void actor_role::loginpay()
 	{
 		// ### 检查是否有充值未发货
@@ -100,34 +109,15 @@ namespace ngl
 					if (ltempjson.read("roleid", lroleid) == false)
 						return;
 					
-					// ### 发货
-					tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);
-					if (tab == nullptr)
-					{
-						return;
-					}
-					auto pro = std::make_shared<np_actor_senditem>();
-					pro->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", lorderid, lrechargeid, lroleid);
-					if (drop::droplist(tab->m_dropid, 1, pro->m_item) == false)
-					{
-						return;
-					}
-					actor::static_send_actor(lroleid, -1, pro);
-
-					ngl::_http* lhttp = ngl::manage_curl::make_http();
-					ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-					ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-					ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
-
-					std::stringstream lstream;
-					lstream
-						<< "orderid=" << lorderid
-						<< "&gm=0"
-						<< "&stat=1";
-
-					ngl::manage_curl::set_param(*lhttp, lstream.str());
-					ngl::manage_curl::getInstance().send(lhttp);
-				
+					
+					auto pro = std::make_shared<mforward<np_gm_response>>();
+					np_gm_response* lp = pro->add_data();
+					prorechange prore;
+					ngl::ijson lwrite;
+					lwrite.write("operator", "rechange");
+					lwrite.write("data", prore);
+					lwrite.get(lp->m_json);
+					actor::static_send_actor(lroleid, nguid::make(), pro);
 				}
 				catch (...)
 				{
@@ -183,6 +173,69 @@ namespace ngl
 		aorder = lbillno;
 	}
 
+	int32_t actor_role::rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting)
+	{
+		int32_t lstat = 1;
+		int32_t lgold = 0;
+		auto psenditem = std::make_shared<np_actor_senditem>();
+		tab_recharge* tab = allcsv::tab<tab_recharge>(arechargeid);
+		if (tab != nullptr)
+		{
+			psenditem->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", aorderid, arechargeid, id_guid());
+			if (drop::droplist(tab->m_dropid, 1, psenditem->m_item))
+			{
+				message<np_actor_senditem> ltemp(0, nullptr, psenditem.get());
+				handle(ltemp);
+				lgold += tab->m_gold;
+				lgold += tab->m_bonus;
+				if (is_first_recharge(arechargeid))
+				{
+					lgold += tab->m_firstbonus;
+				}
+				m_info.change_gold(lgold);
+			}
+			else
+			{
+				lstat = 2;
+			}
+		}
+		else
+		{
+			lstat = 3;
+		}
+		
+		if (areporting)
+		{
+			// ### 发货成功上报gm ###
+			ngl::_http* lhttp = ngl::manage_curl::make_http();
+			ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
+			ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
+
+			std::stringstream lstream;
+			lstream
+				<< "orderid=" << aorderid
+				<< "&gm=" << (agm ? 1 : 0)
+				<< "&roleid=" << id_guid()
+				<< "&stat=" << lstat;
+
+			ngl::manage_curl::set_param(*lhttp, lstream.str());
+			ngl::manage_curl::getInstance().send(lhttp);
+		}
+
+		auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
+		cpro->set_m_rechargeid(arechargeid);
+		cpro->set_m_orderid(aorderid);
+		cpro->set_m_gold(lgold);
+		for (auto itor = psenditem->m_item.begin(); itor != psenditem->m_item.end(); ++itor)
+		{
+			(*cpro->mutable_m_items())[itor->first] = itor->second;
+		}
+		send2client(cpro);
+
+		return lstat;
+	}
+
 	bool actor_role::handle(message<mforward<np_gm_response>>& adata)
 	{
 		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
@@ -210,25 +263,31 @@ namespace ngl
 					// 返回 {"data":int32_t}
 					gcmd<int32_t> pro;
 					pro.id = id;
-					pro.m_operator = "get_notice_responce";
-					pro.m_data = 1;
+					pro.m_operator = "pay_responce";
+					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
+				};
+			lcmd["gmrechange"] = [this](int id, ngl::ojson& aos)
+				{
+					int32_t lrechargeid;
+					if (aos.read("data", lrechargeid) == false)
+						return;
 
-					tab_recharge* tab = allcsv::tab<tab_recharge>(lpay.m_rechargeid);
-					if (tab == nullptr)
-					{
-						LogLocalError("tab_recharge id[%] not find", lpay.m_rechargeid)
-						pro.m_data = 2;
+					std::string lorder;
+					createorder(lorder, lrechargeid);
+					
+					// 返回 {"data":int32_t}
+					gcmd<int32_t> pro;
+					pro.id = id;
+					pro.m_operator = "rechange_responce";
+					pro.m_data = rechange(lorder, lrechargeid, true, true);
+				};
+			lcmd["rechange"] = [this](int id, ngl::ojson& aos)
+				{//actor_role::loginpay() callback
+					prorechange lrechange;
+					if (aos.read("data", lrechange) == false)
 						return;
-					}
-					auto psenditem = std::make_shared<np_actor_senditem>();
-					psenditem->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", lpay.m_orderid, lpay.m_rechargeid, id_guid());
-					if (drop::droplist(tab->m_dropid, 1, psenditem->m_item) == false)
-					{
-						pro.m_data = 3;
-						return;
-					}
-					message<np_actor_senditem> ltemp(0, nullptr, psenditem.get());
-					handle(ltemp);
+
+					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				};
 		}
 
@@ -251,72 +310,6 @@ namespace ngl
 			if (item.m_rechargeid() == arechargeid)
 				return false;
 		}
-		return true;
-	}
-
-	bool actor_role::handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata)
-	{
-		auto prot = std::make_shared<GM::PROBUFF_GM_RECHARGE_RESPONSE>();
-		auto pro = std::make_shared<mforward<GM::PROBUFF_GM_RECHARGE_RESPONSE>>
-			(adata.m_data->identifier(), prot);
-
-		int32_t lrechargeid = adata.m_data->data()->m_rechargeid();
-		pro->data()->set_m_rechargeid(lrechargeid);
-		tab_recharge* tab = allcsv::tab<tab_recharge>(lrechargeid);
-		if (tab == nullptr)
-		{
-			LogLocalError("tab_recharge id[%] not find", lrechargeid)
-			pro->data()->set_m_stat(1);
-			return true;
-		}
-		int lgold = 0;
-		lgold += tab->m_gold;
-		lgold += tab->m_bonus;
-		if (is_first_recharge(lrechargeid))
-		{
-			lgold += tab->m_firstbonus;
-		}
-
-		m_info.change_gold(lgold);
-
-		std::map<int, int> ldropmap;
-		if (tab->m_dropid > 0)
-		{
-			drop::droplist(tab->m_dropid, 1, ldropmap);
-			m_bag.add_item(ldropmap);
-			//drop::use(this, tab->m_dropid, 1);
-		}
-		if (adata.m_data->identifier() > 0)
-		{
-			send_actor(nguid::make_self(ACTOR_GM), pro);
-		}
-
-		auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
-		cpro->set_m_rechargeid(lrechargeid);
-		cpro->set_m_orderid(adata.m_data->data()->m_orderid());
-		cpro->set_m_gold(lgold);
-		for(auto itor = ldropmap.begin(); itor != ldropmap.end();++itor)
-		{
-			(*cpro->mutable_m_items())[itor->first] = itor->second;
-		}
-		send2client(cpro);
-
-		// ### 发货成功上报gm ###
-		ngl::_http* lhttp = ngl::manage_curl::make_http();
-		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-		ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
-
-		std::stringstream lstream;
-		lstream
-			<< "orderid=" << adata.m_data->data()->m_orderid()
-			<< "&gm=0"
-			<< "&roleid=" << id_guid()
-			<< "&stat=0";
-
-		ngl::manage_curl::set_param(*lhttp, lstream.str());
-		ngl::manage_curl::getInstance().send(lhttp);
-		
 		return true;
 	}
 

@@ -147,13 +147,12 @@ namespace ngl
 		//# 玩法创建成功  记录玩法actorid
 		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
 
+		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
+
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
 		bool handle(message<mforward<np_gm_response>>& adata);
 		bool is_first_recharge(int32_t arechargeid);
-
-		//# 请求创建订单
-		bool handle(message<mforward<GM::PROBUFF_GM_RECHARGE>>& adata);
 
 		// 定时器
 		bool timer_handle(message<timerparm>& adata);
