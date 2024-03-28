@@ -53,7 +53,7 @@ namespace ngl
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
 			true
 			, dregister_fun_handle(actor_role, np_actor_disconnect_close)
-			, dregister_fun_handle(actor_role, mforward<np_gm_response>)
+			, dregister_fun_handle(actor_role, mforward<np_gm>)
 		);
 
 		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>(
@@ -223,20 +223,23 @@ namespace ngl
 			ngl::manage_curl::getInstance().send(lhttp);
 		}
 
-		auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
-		cpro->set_m_rechargeid(arechargeid);
-		cpro->set_m_orderid(aorderid);
-		cpro->set_m_gold(lgold);
-		for (auto itor = psenditem->m_item.begin(); itor != psenditem->m_item.end(); ++itor)
+		if (lgold > 0 || !psenditem->m_item.empty())
 		{
-			(*cpro->mutable_m_items())[itor->first] = itor->second;
-		}
-		send2client(cpro);
+			auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
+			cpro->set_m_rechargeid(arechargeid);
+			cpro->set_m_orderid(aorderid);
+			cpro->set_m_gold(lgold);
+			for (auto itor = psenditem->m_item.begin(); itor != psenditem->m_item.end(); ++itor)
+			{
+				(*cpro->mutable_m_items())[itor->first] = itor->second;
+			}
+			send2client(cpro);
+		}	
 
 		return lstat;
 	}
 
-	bool actor_role::handle(message<mforward<np_gm_response>>& adata)
+	bool actor_role::handle(message<mforward<np_gm>>& adata)
 	{
 		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
 		std::string loperator;

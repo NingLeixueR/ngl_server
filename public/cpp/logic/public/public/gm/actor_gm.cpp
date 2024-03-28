@@ -37,38 +37,34 @@ namespace ngl
 	{
 		ngl::ojson lreadjson(adata.m_data->m_json.c_str());
 
-		std::string lactorname;
-		if (lreadjson.read("actor_name", lactorname) == false)
-		{
-			return true;
-		}
-
-		if (lactorname == "ACTOR_GM")
-		{
-			return true;
-		}
-
 		// ### µ¥Àý
-		static std::map<std::string, ENUM_ACTOR> lsignlocal
-		{
-			{"ACTOR_NOTICE", ACTOR_NOTICE},
-		};
-		auto itor = lsignlocal.find(lactorname);
-		if (itor != lsignlocal.end())
-		{
-			sendsign(itor->second, adata.m_pack, *adata.m_data);
-			return true;
-		}
-		
-
+		std::string lactorname;
 		// ### ·Çµ¥Àý
 		i64_actorid lactorid;
-		if (lreadjson.read("actor_id", lactorid) == false)
+		if (lreadjson.read("actor_name", lactorname))
 		{
+			if (lactorname == "ACTOR_GM")
+			{
+				return true;
+			}
+
+			static std::map<std::string, ENUM_ACTOR> lsignlocal
+			{
+				{"ACTOR_NOTICE", ACTOR_NOTICE},
+			};
+			auto itor = lsignlocal.find(lactorname);
+			if (itor != lsignlocal.end())
+			{
+				sendsign(itor->second, adata.m_pack, *adata.m_data);
+				return true;
+			}
 			return true;
 		}
-
-		sendnosign(lactorid, adata.m_pack, *adata.m_data);
+		else if (lreadjson.read("actor_id", lactorid))
+		{
+			sendnosign(lactorid, adata.m_pack, *adata.m_data);
+			return true;
+		}
 
 		return true;
 	}

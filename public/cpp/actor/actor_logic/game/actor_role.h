@@ -151,7 +151,7 @@ namespace ngl
 
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
-		bool handle(message<mforward<np_gm_response>>& adata);
+		bool handle(message<mforward<np_gm>>& adata);
 		bool is_first_recharge(int32_t arechargeid);
 
 		// 定时器
