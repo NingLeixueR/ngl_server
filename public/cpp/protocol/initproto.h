@@ -2,7 +2,6 @@
 #include "xmlprotocol.h"
 #include "net.pb.h"
 #include "define.h"
-#include "gm.pb.h"
 
 #include <map>
 

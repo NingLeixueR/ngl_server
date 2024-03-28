@@ -2,7 +2,6 @@
 
 #include "encryption.h"
 #include "serialize.h"
-#include "gm.pb.h"
 #include "type.h"
 #include "pack.h"
 #include "nlog.h"

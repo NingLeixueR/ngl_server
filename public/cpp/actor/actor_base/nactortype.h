@@ -2,7 +2,6 @@
 
 #include "csvtable.h"
 #include "ndefine.h"
-#include "data.pb.h"
 #include "net.pb.h"
 #include "db.pb.h"
 
