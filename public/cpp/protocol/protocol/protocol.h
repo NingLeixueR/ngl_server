@@ -139,7 +139,7 @@ namespace ngl
 					using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 					typeforward* lp = new typeforward();
 					tvptr ltemp(lp);
-					if (apack->m_protocol == ENET_KCP || apack->m_protocol == ENET_UDP)
+					if (apack->m_protocol == ENET_KCP)
 					{
 						lp->make_data();
 						if (structbytes<T>::tostruct(apack, *lp->get_data()))
@@ -168,7 +168,7 @@ namespace ngl
 				{
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
 					handle_pram lpram;
-					if (apack->m_protocol == ENET_KCP || apack->m_protocol == ENET_UDP)
+					if (apack->m_protocol == ENET_KCP)
 						lpram.m_pack = apack;
 					handle_pram::create<T, false, false>(lpram, lguid, lrequestguid, ldatapack);
 					actor_manage::getInstance().push_task_id(lguid, lpram, false);

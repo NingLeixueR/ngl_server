@@ -18,13 +18,14 @@ namespace ngl
 	using i32_actordataid	= int32_t;
 	using i32_threadid		= int32_t;
 	using i32_protocolnum	= int32_t;
-	using i16_port			= int16_t;
+	using i16_port			= uint16_t;
 	using i32_threadsize	= int32_t;
 	using i32_id			= int32_t;
 	using i32_line			= int32_t;
 	using i64_accountid		= int64_t;
 	using i32_threadnumber	= int32_t;
 	using i32_session		= int32_t;
+	using i8_sesindex		= int8_t;
 	using str_ip			= std::string;
 	using str_host			= std::string;
 	using str_hostport		= std::string;

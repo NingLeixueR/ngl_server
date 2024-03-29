@@ -18,9 +18,11 @@ namespace ngl
 		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>> m_ipport;
 		std::unordered_map<i32_sessionid, std::function<void()>> m_sessionclose;
 		std::shared_mutex								m_ipportlock;
+		int32_t											m_sessionid;
 
 		impl_asio_ws(
-			i16_port aport
+			i8_sesindex aindex
+			, i16_port aport
 			, i32_threadsize athread
 			, const ws_callback& acallfun
 			, const ws_closecallback& aclosefun
@@ -30,7 +32,8 @@ namespace ngl
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
 			m_port(aport),
-			m_service_io_(athread, 10240)
+			m_service_io_(athread, 10240),
+			m_sessionid(aindex << 24)
 		{
 			boost::asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
 			m_acceptor = new boost::asio::ip::tcp::acceptor(lioservice, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), m_port));
@@ -40,7 +43,8 @@ namespace ngl
 		}
 
 		impl_asio_ws(
-			i32_threadsize athread
+			i8_sesindex aindex
+			, i32_threadsize athread
 			, const ws_callback& acallfun
 			, const ws_closecallback& aclosefun
 			, const ws_sendfinishcallback& asendfinishfun
@@ -58,7 +62,7 @@ namespace ngl
 			service_ws* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				lservice = new service_ws(m_service_io_, service_io::global_sessionid());
+				lservice = new service_ws(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			m_acceptor->async_accept(
@@ -186,7 +190,7 @@ namespace ngl
 			service_ws* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				lservice = new service_ws(m_service_io_, service_io::global_sessionid());
+				lservice = new service_ws(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			auto const address = boost::asio::ip::make_address(ahost);
@@ -463,24 +467,26 @@ namespace ngl
 	};
 
 	asio_ws::asio_ws(
-		i16_port aport
+		i8_sesindex aindex
+		, i16_port aport
 		, i32_threadsize athread
 		, const ws_callback& acallfun
 		, const ws_closecallback& aclosefun
 		, const ws_sendfinishcallback& asendfinishfun
 	)
 	{
-		m_impl_asio_ws.make_unique(aport, athread, acallfun, aclosefun, asendfinishfun);
+		m_impl_asio_ws.make_unique(aindex, aport, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
 	asio_ws::asio_ws(
-		i32_threadsize athread
+		i8_sesindex aindex
+		, i32_threadsize athread
 		, const ws_callback& acallfun
 		, const ws_closecallback& aclosefun
 		, const ws_sendfinishcallback& asendfinishfun
 	)
 	{
-		m_impl_asio_ws.make_unique(athread, acallfun, aclosefun, asendfinishfun);
+		m_impl_asio_ws.make_unique(aindex, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
 	service_ws* asio_ws::connect(

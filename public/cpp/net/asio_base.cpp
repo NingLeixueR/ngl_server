@@ -3,8 +3,6 @@
 
 namespace ngl
 {
-	std::atomic<int32_t> service_io::m_globalsessionid = 1;
-
 	basio_ioservice* serviceio_info::get_ioservice(int athreadid)
 	{
 		return std::get<0>(m_ioservices[athreadid]);
@@ -53,11 +51,6 @@ namespace ngl
 	{
 		delete[]m_buff1;
 		delete[]m_buff2;
-	}
-
-	i32_sessionid service_io::global_sessionid()
-	{
-		return m_globalsessionid.fetch_add(1);
 	}
 
 	service_tcp::service_tcp(serviceio_info& amsi, int asessionid) :

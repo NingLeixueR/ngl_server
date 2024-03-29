@@ -26,7 +26,7 @@ namespace ngl
 			= std::bind(&net_tcp::socket_recv, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 		std::function<void(int)> lclosefun = std::bind(&net_tcp::close, this, std::placeholders::_1);
-		m_server = new asio_tcp(port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {});
+		m_server = new asio_tcp(m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {});
 		return true;
 	}
 

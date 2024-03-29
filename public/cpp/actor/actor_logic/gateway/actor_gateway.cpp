@@ -142,7 +142,7 @@ namespace ngl
 		// ## 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 
-		nets::net()->send(adata.m_pack->m_id, *lparm, nguid::make_self(ACTOR_LOGIN), nguid::make());
+		nets::sendbysession(adata.m_pack->m_id, *lparm, nguid::make_self(ACTOR_LOGIN), nguid::make());
 		return true;
 	}
 
@@ -170,7 +170,7 @@ namespace ngl
 				{
 					if (linfo->m_socket > 0)
 					{
-						nserver->close_net(linfo->m_socket);
+						nets::net(linfo->m_socket)->close_net(linfo->m_socket);
 						linfo->m_socket = 0;
 						if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 						{
@@ -178,7 +178,7 @@ namespace ngl
 						}
 						// 断线重连或者其他设备顶号
 						pbnet::PROBUFF_NET_ROLE_SYNC pro;
-						nserver->send_server(linfo->m_gameid, pro, nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
+						nets::sendbyserver(linfo->m_gameid, pro, nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
 						return true;
 					}
 				}
@@ -192,8 +192,7 @@ namespace ngl
 			linfo->m_iscreate = false;
 			lpram->set_m_gatewayid(nconfig::m_nodeid);
 			lpram->set_m_area(linfo->m_area);
-			nserver->send_server(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
-
+			nets::sendbyserver(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
 			return true;
 		}Catch;
 		return false;
@@ -204,8 +203,9 @@ namespace ngl
 		auto lpram = adata.m_data;
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_m_kcpsession(lpram->m_kcpsession);
-		nets::net()->send(lpram->m_sessionid, pro,
-			nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid)
+		nets::sendbysession(lpram->m_sessionid
+			, pro
+			, nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid)
 			, nguid::make()
 		);
 		return true;
@@ -234,7 +234,7 @@ namespace ngl
 		pro.m_uip = lpram->m_uip();
 		pro.m_uport = lpram->m_uport();
 		pro.m_conv = lpram->m_conv();
-		nets::net()->send_server(lpram->m_serverid(), pro, -1, -1);
+		nets::sendbyserver(lpram->m_serverid(), pro, nguid::make(), nguid::make());
 
 		return true;
 	}

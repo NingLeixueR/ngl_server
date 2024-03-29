@@ -336,7 +336,7 @@ namespace ngl
 		if (m_kcpstat == elocalkcp_ninit)
 		{
 			tab_servers* tab = ttab_servers::tab();
-			m_kcpstat = tab->m_isopenkcp ? elocalkcp_true : elocalkcp_false;
+			m_kcpstat = (ttab_servers::nworks(ENET_KCP, tab) != nullptr) ? elocalkcp_true : elocalkcp_false;
 		}
 		return m_kcpstat == elocalkcp_true;
 	}

@@ -151,7 +151,7 @@ namespace ngl
 		{
 			np_actordb_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
-			nserver->send_server(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
+			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 
 			std::string lname;
 			LogLocalError("actor_dbclient loaddb [%] [%]"

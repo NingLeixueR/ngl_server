@@ -38,7 +38,7 @@ namespace ngl
 		tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.m_data->m_line());
 		if (tab == nullptr)
 			return false;
-		i32_sessionid lsession = nserver->get_sessionid(tab->m_id);
+		i32_sessionid lsession = manage_session::get_sessionid(tab->m_id);
 		if (lsession == -1)
 		{
 			LogLocalError("LOGIC_SWITCH_LINE Error line[%] severid[%]"
@@ -50,8 +50,6 @@ namespace ngl
 		pro.m_create = false;
 		pro.m_gatewayid = m_gatewayid;
 		actor_create::switch_process(id_guid(), nconfig::m_nodeid, tab->m_id, pro);
-		//LogLocalError("######Switch Line##[%][%]", m_info.id(), m_info.db()->name())
-		//crossprocess<actor_role>(lserverid);
 		return true;
 	}
 

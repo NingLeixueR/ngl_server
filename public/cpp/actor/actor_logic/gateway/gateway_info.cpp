@@ -8,7 +8,7 @@ namespace ngl
 		gateway_socket& linfo = m_info[ainfo.m_area][ainfo.m_dataid];
 		if (linfo.m_socket != 0 && linfo.m_socket != ainfo.m_socket)
 		{
-			nserver->close(linfo.m_socket);
+			nets::net(linfo.m_socket)->close(linfo.m_socket);
 			remove_socket(linfo.m_socket);
 		}
 		linfo = ainfo;

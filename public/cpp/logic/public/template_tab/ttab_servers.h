@@ -47,17 +47,73 @@ namespace ngl
 			return nullptr;
 		}
 
-		static ENET_PROTOCOL netprotocol(i32_serverid aserverid)
+		static net_works const* nworks(ENET_PROTOCOL atype, tab_servers* atab)
 		{
-			tab_servers* ltab = tab(aserverid);
-			if (ltab == nullptr)
-				return ENET_TCP;
-			return ltab->m_net;
+			for (auto& item : atab->m_net)
+			{
+				if (item.m_type == atype)
+					return &item;
+			}
+			return nullptr;
 		}
 
-		static ENET_PROTOCOL netprotocol()
+		static net_works const* get_nworks(ENET_PROTOCOL atype)
 		{
-			return netprotocol(nconfig::m_nodeid);
+			//nconfig::m_nodeid
+			tab_servers* ltab =  tab();
+			if (ltab == nullptr)
+				return nullptr;
+			return nworks(atype, ltab);
+		}
+
+		static net_works const* get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype)
+		{
+			tab_servers* ltab = tab(aname, area, atcount);
+			if (ltab == nullptr)
+				return nullptr;
+			return nworks(atype, ltab);
+		}
+
+		static bool isefficient(ENET_PROTOCOL atype)
+		{
+			return atype == ENET_TCP || atype == ENET_WS;
+		}
+	private:
+		static net_works const* connect(i32_serverid alocalserver, i32_serverid aotherserver)
+		{
+			assert(alocalserver != aotherserver);
+			tab_servers* ltab1 = tab(alocalserver);
+			tab_servers* ltab2 = tab(aotherserver);
+			if (alocalserver > aotherserver)
+			{
+				std::swap(ltab1, ltab2);
+			}
+			for (net_works& item1 : ltab1->m_net)
+			{
+				if (isefficient(item1.m_type) == false)
+					continue;
+				for (net_works& item2 : ltab2->m_net)
+				{
+					if (item1.m_type == item2.m_type)
+					{
+						// 返回other的结构
+						if (alocalserver > aotherserver)
+						{
+							return &item1;
+						}
+						else
+						{
+							return &item2;
+						}
+					}
+				}
+			}
+			return nullptr;
+		}
+	public:
+		static net_works const* connect(i32_serverid aserverid)
+		{
+			return connect(nconfig::m_nodeid, aserverid);
 		}
 
 		static NODE_TYPE node_type(i32_serverid aserverid)

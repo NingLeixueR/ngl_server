@@ -61,15 +61,9 @@ namespace ngl
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
 		tab_servers* tab = ttab_servers::tab();
-		Assert(aactorserver > 0)
+		i64_actorid lactorid = id_guid();
 		tab_servers* tabactor = ttab_servers::tab(aactorserver);
-
-		LogLocalInfo("Connect Actor Server %:%@%:%", 
-			tabactor->m_id, tabactor->m_name, tabactor->m_ip, tabactor->m_port)
-
-		uint64_t lactorid = id_guid();
-		nserver->connect(tabactor->m_id, tabactor->m_ip, tabactor->m_port,
-			[lactorid, tab, tabactor](int asession)
+		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
 			{
 				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_ADDRESS_SERVER, tabactor->m_area, nguid::none_actordataid());
 				{
@@ -77,8 +71,6 @@ namespace ngl
 					lnode.m_name = "actorserver";
 					lnode.m_serverid = tabactor->m_id;
 					lnode.m_actortype.push_back(ACTOR_ADDRESS_SERVER);
-					lnode.m_ip = tabactor->m_ip;
-					lnode.m_port = tabactor->m_port;
 					naddress::set_node(lnode);
 					naddress::set_session(tabactor->m_id, asession);
 					naddress::actor_add(tabactor->m_id, lactorserveractorid);
@@ -90,8 +82,6 @@ namespace ngl
 						{
 							.m_name = std::string("actorclient") + boost::lexical_cast<std::string>(tab->m_id),
 							.m_serverid = tab->m_id,
-							.m_ip = tab->m_ip,
-							.m_port = tab->m_port,
 						}
 					};
 					actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
@@ -108,7 +98,7 @@ namespace ngl
 							}
 							return true;
 						});
-					nserver->send(asession, lpram, lactorserveractorid, lactorid);
+					nets::sendbysession(asession, lpram, lactorserveractorid, lactorid);
 				}
 			}, true, true);
 	}
@@ -140,18 +130,17 @@ namespace ngl
 				if (naddress::set_node(node))
 				{
 					// 比较id  较大的主动连接较小的
-					if (tab->m_id > node.m_serverid)
+					NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
+					if (lservertype == ngl::LOGIN || tab->m_id > node.m_serverid)
 					{
-						LogLocalInfo("To Other Client Connect!![%]:[%][%][%]", 
-							node.m_serverid, tab->m_id, node.m_ip, node.m_port)
 						uint32_t lserverid = node.m_serverid;
 						uint64_t lactorid = id_guid();
-						nserver->connect(lserverid, node.m_ip, node.m_port, [tab, lserverid, lactorid](int asession)
+						nets::connect(lserverid, [tab, lserverid, lactorid](int asession)
 							{
 								LogLocalInfo("Connect Ok[%]", tab->m_id)
 								np_actorclient_node_connect pro;
 								pro.m_id = tab->m_id;
-								nserver->send(asession, pro, nguid::moreactor(), lactorid);
+								nets::sendbysession(asession, pro, nguid::moreactor(), lactorid);
 							}, false, true);
 					}
 				}
@@ -169,7 +158,7 @@ namespace ngl
 			if (alocalserverid == serverid)
 				lpro.m_add.push_back(actorid);
 		}
-		nserver->send(asession, lpro, nguid::moreactor(), aclient->id_guid());
+		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
 	// 主动连接
@@ -179,8 +168,8 @@ namespace ngl
 		{
 			np_actorclient_node_connect pro;
 			pro.m_id = alocalserverid;
-			nserver->send(asession, pro, nguid::moreactor(), aclient->id_guid());
-			nserver->set_server(aserverid, asession);
+			nets::sendbysession(asession, pro, nguid::moreactor(), aclient->id_guid());
+			manage_session::add(aserverid, asession);
 		}
 	}
 
@@ -196,7 +185,7 @@ namespace ngl
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
 			naddress::set_session(lserverid, lpack->m_id);
-			nserver->set_server(lserverid, lpack->m_id);
+			manage_session::add(lserverid, lpack->m_id);
 			set_connect_fnish(lparm->m_id);
 			connect_fnish();
 
@@ -246,7 +235,7 @@ namespace ngl
 			[&lparm, lactorid](const actor_node_session& anode)->bool
 			{
 				if (anode.m_node.m_serverid != nconfig::m_nodeid)
-					nserver->send(anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid);
+					nets::sendbysession(anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid);
 				return true;
 			});
 		if (lparm->m_fun != nullptr)

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-03-07 19:01:35
+// 创建时间 // 创建时间 24-03-29 17:47:25
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "csv.h"
@@ -58,10 +58,11 @@ enum NODE_TYPE
 };
 enum ENET_PROTOCOL
 {
-	ENET_TCP = 1,	
-	ENET_UDP = 2,	
-	ENET_WS = 3,	
-	ENET_KCP = 4,	
+	ENET_NULL = -1,	
+	ENET_TCP = 0,	
+	ENET_WS = 1,	
+	ENET_KCP = 2,	
+	ENET_COUNT = 3,	
 };
 enum EnumModule
 {
@@ -145,6 +146,20 @@ enum eobstacles
 	eobstacles_pass = 0,	// 可以通过
 	eobstacles_nopass = 1,	// 无法通过
 };
+struct net_works
+{
+/*********************************/
+	ENET_PROTOCOL		m_type;		
+	std::string		m_ip;		
+	std::string		m_nip;		
+	uint16_t		m_port;		
+/*********************************/
+	net_works();
+	// 序列化反序列化相关
+	def_portocol(net_works, m_type, m_ip, m_nip, m_port)
+	// csv相关
+	def_rcsv(m_type,m_ip,m_nip,m_port)
+};
 struct tab_servers
 {
 /*********************************/
@@ -154,11 +169,6 @@ struct tab_servers
 	int16_t		m_area;		// 区服
 	NODE_TYPE		m_type;		// 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
 	int32_t		m_tcount;		// 同类型服务器的序号
-	ENET_PROTOCOL		m_net;		// 服务器协议(1tcp2udp3ws)
-	std::string		m_ip;		// ip
-	std::string		m_nip;		// 内网ip
-	int16_t		m_port;		// 端口
-	int16_t		m_uport;		// kcp端口
 	int32_t		m_threadnum;		// socket线程数
 	int32_t		m_actorthreadnum;		// actor线程池线程数
 	bool		m_outernet;		// 是否允许外网访问
@@ -166,14 +176,14 @@ struct tab_servers
 	int32_t		m_reloadcsv;		// 连接的reloadcsv进程id
 	int32_t		m_login;		// 连接的login进程id
 	int16_t		m_crossarea;		// 跨服区服
-	bool		m_isopenkcp;		// 是否开启kcp
 	std::vector<int32_t>		m_actorserver;		// 连接的actorserver进程id(跨服需要填写多个actorserver)
+	std::vector<net_works>		m_net;		// 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
 /*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	def_portocol(tab_servers, m_id, m_name, m_remarks, m_area, m_type, m_tcount, m_net, m_ip, m_nip, m_port, m_uport, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_isopenkcp, m_actorserver)
+	def_portocol(tab_servers, m_id, m_name, m_remarks, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver, m_net)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_net,m_ip,m_nip,m_port,m_uport,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_isopenkcp,m_actorserver)
+	def_rcsv(m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver,m_net)
 };
 struct tab_dbload
 {

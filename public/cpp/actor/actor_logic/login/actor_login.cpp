@@ -170,7 +170,7 @@ namespace ngl
 		pro.set_m_session(adata.m_data->m_session);
 		pro.set_m_account(adata.m_data->m_account);
 		pro.set_m_gatewayid(adata.m_data->m_gatewayid);
-		nserver->send(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());		
+		nets::sendbysession(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());
 		return true;
 	}
 
@@ -221,7 +221,7 @@ namespace ngl
 				.m_socketid = adata.m_pack->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
-			nserver->send_server(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
+			nets::sendbyserver(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
 		}Catch;
 		return true;
 	}

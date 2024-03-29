@@ -44,8 +44,10 @@ namespace ngl
 
 		tab_servers* tab = ttab_servers::tab();
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
+		net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
 		// 获取本机uip
-		ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(tabgame->m_ip), tabgame->m_uport);
+		ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
 		ukcp::getInstance().sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
 			, [](char* buff, int len)
 			{
@@ -56,9 +58,9 @@ namespace ngl
 		pro.set_m_serverid(tabgame->m_id);
 		pro.set_m_uip(ukcp::getInstance().m_localuip);
 		tab = ngl::ttab_servers::tab();
-		pro.set_m_uport(tab->m_uport);
+		pro.set_m_uport(lpstruct->m_port);
 		pro.set_m_conv(ukcp::m_conv);
-		nserver->send(m_session, pro, nguid::moreactor(), id_guid());
+		nets::sendbysession(m_session, pro, nguid::moreactor(), id_guid());
 		return true;
 	}
 
@@ -158,8 +160,10 @@ namespace ngl
 		m_kcpsessionmd5 = adata.m_data->m_kcpsession();
 
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-		connect_kcp(tabgame->m_ip, tabgame->m_uport);
-		return true;
+		net_works const*  lpworks = ttab_servers::nworks(ENET_KCP, tabgame);
+		if (lpworks == nullptr)
+			return false;
+		return connect_kcp(lpworks->m_ip, lpworks->m_port);
 	}
 
 	void actor_manage_robot::nregister()

@@ -40,9 +40,7 @@ namespace ngl
 		std::string		m_name;// 服务器名称
 		i32_serverid	m_serverid;// 服务器id
 		std::vector<i16_actortype>	m_actortype;// ENUM_ACTOR_TYPE
-		std::string		m_ip;// ip
-		i16_port		m_port;// 端口
-		def_portocol_function(nactornode, m_name, m_serverid, m_actortype, m_ip, m_port)
+		def_portocol_function(nactornode, m_name, m_serverid, m_actortype)
 	};
 
 	// ---- [actor client -> actor server] register

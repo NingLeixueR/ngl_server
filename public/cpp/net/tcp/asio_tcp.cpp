@@ -18,9 +18,11 @@ namespace ngl
 		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>> m_ipport;
 		std::unordered_map<i32_sessionid, std::function<void()>> m_sessionclose;
 		std::shared_mutex					m_ipportlock;
+		int32_t								m_sessionid;
 
 		impl_asio_tcp(
-			i16_port aport
+			i8_sesindex aindex
+			, i16_port aport
 			, i32_threadsize athread
 			, const tcp_callback& acallfun
 			, const tcp_closecallback& aclosefun
@@ -30,7 +32,8 @@ namespace ngl
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
 			m_port(aport),
-			m_service_io_(athread, 10240)
+			m_service_io_(athread, 10240),
+			m_sessionid(aindex << 24)
 		{
 			boost::asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
 			m_acceptor = new boost::asio::ip::tcp::acceptor(lioservice, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), m_port));
@@ -40,7 +43,8 @@ namespace ngl
 		}
 
 		impl_asio_tcp(
-			i32_threadsize athread
+			i8_sesindex aindex
+			, i32_threadsize athread
 			, const tcp_callback& acallfun
 			, const tcp_closecallback& aclosefun
 			, const tcp_sendfinishcallback& asendfinishfun
@@ -49,7 +53,8 @@ namespace ngl
 			m_closefun(aclosefun),
 			m_sendfinishfun(asendfinishfun),
 			m_port(-1),
-			m_service_io_(athread + 1, 10240)
+			m_service_io_(athread + 1, 10240),
+			m_sessionid(aindex << 24)
 		{
 		}
 
@@ -64,7 +69,7 @@ namespace ngl
 			service_tcp* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				lservice = new service_tcp(m_service_io_, service_io::global_sessionid());
+				lservice = new service_tcp(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			///////////
@@ -346,7 +351,7 @@ namespace ngl
 			service_tcp* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				lservice = new service_tcp(m_service_io_, service_io::global_sessionid());
+				lservice = new service_tcp(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			m_acceptor->async_accept(
@@ -408,14 +413,14 @@ namespace ngl
 		}
 	};
 
-	asio_tcp::asio_tcp(i16_port aport, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun)
+	asio_tcp::asio_tcp(i8_sesindex aindex, i16_port aport, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun)
 	{
-		m_impl_asio_tcp.make_unique(aport, athread, acallfun, aclosefun, asendfinishfun);
+		m_impl_asio_tcp.make_unique(aindex, aport, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
-	asio_tcp::asio_tcp(i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun)
+	asio_tcp::asio_tcp(i8_sesindex aindex, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun)
 	{
-		m_impl_asio_tcp.make_unique(athread, acallfun, aclosefun, asendfinishfun);
+		m_impl_asio_tcp.make_unique(aindex, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
 	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount/* = 5*/)

@@ -47,7 +47,7 @@ namespace ngl
 			return true;
 		}
 	}
-	public enum EPH_HEAD_VAL
+	enum EPH_HEAD_VAL
 	{
 		EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
 		EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致
@@ -137,10 +137,11 @@ namespace ngl
 	}
 	enum ENET_PROTOCOL
 	{
-		ENET_TCP = 1,	
-		ENET_UDP = 2,	
-		ENET_WS = 3,	
-		ENET_KCP = 4,	
+		ENET_NULL = -1,	
+		ENET_TCP = 0,	
+		ENET_WS = 1,	
+		ENET_KCP = 2,	
+		ENET_COUNT = 3,	
 	}
 	partial class RCsv
 	{
@@ -445,6 +446,29 @@ namespace ngl
 			return true;
 		}
 	}
+	class net_works : ICsvRead
+	{
+		/*********************************/
+		public ENET_PROTOCOL		m_type;		
+		public string		m_ip;		
+		public string		m_nip;		
+		public UInt16		m_port;		
+		/*********************************/
+		public bool Read(CsvPair apair)
+		{
+			Int32 lm_type = 0;
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
+				return false;
+			m_type = (ENET_PROTOCOL)lm_type;
+			if(RCsv.ReadCsv(apair, ref m_ip) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_nip) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_port) == false)
+				return false;
+			return true;
+		}
+	}
 	class tab_servers : ICsvRead, ICsv
 	{
 		/*********************************/
@@ -454,11 +478,6 @@ namespace ngl
 		public Int16		m_area;		// 区服
 		public NODE_TYPE		m_type;		// 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
 		public Int32		m_tcount;		// 同类型服务器的序号
-		public ENET_PROTOCOL		m_net;		// 服务器协议(1tcp2udp3ws)
-		public string		m_ip;		// ip
-		public string		m_nip;		// 内网ip
-		public Int16		m_port;		// 端口
-		public Int16		m_uport;		// kcp端口
 		public Int32		m_threadnum;		// socket线程数
 		public Int32		m_actorthreadnum;		// actor线程池线程数
 		public bool		m_outernet;		// 是否允许外网访问
@@ -466,8 +485,8 @@ namespace ngl
 		public Int32		m_reloadcsv;		// 连接的reloadcsv进程id
 		public Int32		m_login;		// 连接的login进程id
 		public Int16		m_crossarea;		// 跨服区服
-		public bool		m_isopenkcp;		// 是否开启kcp
 		public List<Int32>		m_actorserver = new List<Int32>();		// 连接的actorserver进程id(跨服需要填写多个actorserver)
+		public List<net_works>		m_net = new List<net_works>();		// 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -486,18 +505,6 @@ namespace ngl
 			m_type = (NODE_TYPE)lm_type;
 			if(RCsv.ReadCsv(apair, ref m_tcount) == false)
 				return false;
-			Int32 lm_net = 0;
-			if(RCsv.ReadCsv(apair, ref lm_net) == false)
-				return false;
-			m_net = (ENET_PROTOCOL)lm_net;
-			if(RCsv.ReadCsv(apair, ref m_ip) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, ref m_nip) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, ref m_port) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, ref m_uport) == false)
-				return false;
 			if(RCsv.ReadCsv(apair, ref m_threadnum) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_actorthreadnum) == false)
@@ -512,9 +519,9 @@ namespace ngl
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_crossarea) == false)
 				return false;
-			if(RCsv.ReadCsv(apair, ref m_isopenkcp) == false)
-				return false;
 			if(RCsv.ReadCsv(apair, m_actorserver) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, m_net) == false)
 				return false;
 			return true;
 		}

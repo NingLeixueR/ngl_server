@@ -26,8 +26,6 @@ public:
 
 	void _h()
 	{
-		
-
 		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{

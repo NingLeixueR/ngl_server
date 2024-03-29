@@ -18,11 +18,11 @@ namespace ngl
 		m_node(anode)
 	{}
 
-	i32_sessionid handle_pram::get_session(i32_serverid aserverid)
-	{
-		return naddress::get_session(aserverid);
-	}
-
+	//i32_sessionid handle_pram::get_session(i32_serverid aserverid)
+	//{
+	//	return naddress::get_session(aserverid);
+	//}
+	
 	i32_serverid handle_pram::get_server(i64_actorid aactorid)
 	{
 		return naddress::get_server(aactorid);

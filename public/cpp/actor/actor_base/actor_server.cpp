@@ -57,7 +57,7 @@ namespace ngl
 				{
 					np_actornode_register_response lpram;
 					lpram.m_vec.push_back(lrecv->m_node);
-					nserver->sendmore(lvec, lpram, nguid::moreactor(), id_guid());
+					nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 				}
 			}
 			{// -- 回复
@@ -69,7 +69,7 @@ namespace ngl
 							lpram.m_vec.push_back(anode.m_node);
 						return true;
 					});
-				nserver->send(lpack->m_id, lpram, nguid::moreactor(), id_guid());
+				nets::sendbysession(lpack->m_id, lpram, nguid::moreactor(), id_guid());
 			}
 			{// -- actor_client_node_update 给其他结点
 				np_actornode_update lpram
@@ -78,7 +78,7 @@ namespace ngl
 					.m_add = lrecv->m_add,
 				};
 				if (!lvec.empty())
-					nserver->sendmore(lvec, lpram, nguid::moreactor(), id_guid());
+					nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
 				std::map<uint32_t, np_actornode_update> lmapprotocol;
@@ -102,7 +102,7 @@ namespace ngl
 
 				for (auto&& item : lmapprotocol)
 				{
-					nserver->send(lpack->m_id, item.second, nguid::moreactor(), id_guid());
+					nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
 				}
 			}
 		}Catch
@@ -132,7 +132,7 @@ namespace ngl
 					});
 				if (!lvec.empty())
 				{
-					nserver->sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
+					nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
 				}
 			}
 		}Catch
@@ -161,7 +161,7 @@ namespace ngl
 			});
 		if (lvec.empty() == false)
 		{
-			nserver->sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
+			nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
 		}
 		return true;
 	}

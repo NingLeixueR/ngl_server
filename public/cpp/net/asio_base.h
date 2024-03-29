@@ -39,7 +39,6 @@ namespace ngl
 
 	class service_io
 	{
-		static std::atomic<int32_t> m_globalsessionid;
 	public:
 		i32_threadid			m_threadid;
 		i32_sessionid			m_sessionid;
@@ -51,7 +50,6 @@ namespace ngl
 		bool					m_issend;
 		std::list<node_pack>	m_list; // 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
 
-		static i32_sessionid global_sessionid();
 
 		service_io(serviceio_info& amsi, int asessionid);
 		virtual ~service_io();

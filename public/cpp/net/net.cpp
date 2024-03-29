@@ -4,20 +4,21 @@
 
 namespace ngl
 {
-	net_protocol* nets::m_net;
-	ENET_PROTOCOL nets::m_type;
+	std::array<net_protocol*, ENET_COUNT> nets::m_net;
 
 	bool handle_pram::netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		net_protocol* lpnet = nets::net();
-		i32_sessionid lsession = lpnet->get_sessionid(aserverid);
-		return nets::net()->sendpack(lsession, apack);
+		i32_session lsession = manage_session::get_sessionid(aserverid);
+		if (lsession == -1)
+			return false;
+		return nets::net(lsession)->sendpack(lsession, apack);
 	}
 
 	bool handle_pram::netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack)
 	{
-		net_protocol* lpnet = nets::net();
-		i32_sessionid lsession = lpnet->get_sessionid(aserverid);
-		return nets::net()->sendpack(lsession, apack);
+		i32_session lsession = manage_session::get_sessionid(aserverid);
+		if (lsession == -1)
+			return false;
+		return nets::net(lsession)->sendpack(lsession, apack);
 	}
 }//namespace ngl

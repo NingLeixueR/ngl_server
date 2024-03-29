@@ -1,7 +1,10 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-03-07 19:01:35
+// 创建时间 // 创建时间 24-03-29 17:47:25
 #include "csvtable.h"
 namespace ngl{
+net_works::net_works()
+{
+}
 tab_servers::tab_servers()
 {
 }

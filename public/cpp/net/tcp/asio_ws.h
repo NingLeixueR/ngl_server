@@ -20,7 +20,8 @@ namespace ngl
 
 		// ---服务器
 		asio_ws(
-			i16_port aport									// 监听端口
+			i8_sesindex aindex
+			, i16_port aport									// 监听端口
 			, i32_threadsize athread						// 线程数
 			, const ws_callback& acallfun					// 回调
 			, const ws_closecallback& aclosefun				// 关闭回调
@@ -29,7 +30,8 @@ namespace ngl
 
 		// ---客户端
 		asio_ws(
-			i32_threadsize athread							// 线程数
+			i8_sesindex aindex
+			, i32_threadsize athread							// 线程数
 			, const ws_callback& acallfun					// 回调	
 			, const ws_closecallback& aclosefun				// 关闭回调	
 			, const ws_sendfinishcallback& asendfinishfun	// 发送失败的回调			

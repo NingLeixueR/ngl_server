@@ -104,7 +104,7 @@ namespace ngl
 						pro.m_data.m_data->insert(std::make_pair(lguid, atab));
 						if (aindex % lsendmaxcount == 0)
 						{
-							nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
+							nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 							pro = np_actordb_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
 							pro.m_stat = true;
 							pro.m_over = false;
@@ -113,7 +113,7 @@ namespace ngl
 					}
 				});
 			pro.m_over = true;
-			nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
+			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name())
 		}
 
@@ -165,7 +165,7 @@ namespace ngl
 					pro.m_stat = ngl::dbdata<TDBTAB>::get(lid, (*pro.m_data.m_data)[adata.m_id]);
 				}
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
-				nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
+				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 				std::string lname;
 				LogLocalError("load finish: [%][%]"
 					, lrequestactor

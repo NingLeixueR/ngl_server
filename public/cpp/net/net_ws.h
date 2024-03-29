@@ -6,12 +6,13 @@ namespace ngl
 {
 	class net_ws : public net_protocol
 	{
-		asio_ws* m_server;
+		asio_ws*				m_server;
 		std::vector<segpack*>	m_segpackvec;
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, uint32_t abufflen);
 	public:
-		net_ws():
+		net_ws(int8_t aindex):
+			net_protocol(aindex),
 			m_server(nullptr)
 		{}
 

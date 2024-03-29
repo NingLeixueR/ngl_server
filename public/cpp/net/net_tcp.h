@@ -11,7 +11,8 @@ namespace ngl
 	private:
 		bool socket_recv(service_io* ap, const char* abuff, uint32_t abufflen);
 	public:
-		net_tcp():
+		net_tcp(int8_t aindex):
+			net_protocol(aindex),
 			m_server(nullptr)
 		{}
 

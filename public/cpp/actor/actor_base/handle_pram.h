@@ -47,9 +47,6 @@ namespace ngl
 		forwardtype				m_forwardfun;	// 转发函数
 		std::function<void()>	m_failfun;		// 如何actor_client都找不到目标actor则调用
 
-		//# 根据[id]获取[连接]
-		static i32_sessionid	get_session(i32_serverid aserverid);
-
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
 
@@ -122,18 +119,6 @@ namespace ngl
 			make_forwardfun<pack, true>(aid, arid, apram);
 		}
 	};
-
-	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
-	{
-		if (IS_SEND == false)
-			return true;
-		i32_sessionid lsession = handle_pram::get_session(aserverid);
-		if (lsession == -1)
-			return false;
-		handle_pram::netsend(lsession, *(T*)adata.m_data.get(), aactorid, arequestactorid);
-		return true;
-	}
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)

@@ -100,7 +100,7 @@ namespace ngl
 			pro.set_m_password(apasswold);
 			tab_servers* tab = ttab_servers::tab();
 
-			nserver->send_server(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
+			nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
 		}
 
 		virtual ~actor_manage_robot() {}
@@ -110,7 +110,9 @@ namespace ngl
 		void connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun)
 		{
 			tab_servers* tab = ttab_servers::tab(aserverid);
-			nserver->connect(aserverid, tab->m_ip, tab->m_port, afun, true, false);
+			net_works const* lnet = ttab_servers::connect(aserverid);
+			assert(lnet != nullptr);
+			nets::connect(aserverid, afun, true, false);
 		}
 
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
@@ -132,7 +134,7 @@ namespace ngl
 					pro.set_m_area(lrecv->m_area());
 					pro.set_m_iscreate(false);
 					pro.set_m_gatewayid(lrecv->m_gatewayid());
-					nserver->send(asession, pro, nguid::moreactor(), this->id_guid());
+					nets::sendbysession(asession, pro, nguid::moreactor(), this->id_guid());
 				});
 			
 			return true;
@@ -251,7 +253,7 @@ namespace ngl
 		template <typename T>
 		void send(_robot* arobot, T& adata)
 		{
-			nserver->send(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
+			nets::sendbysession(arobot->m_session, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}
 
 		template <typename T>

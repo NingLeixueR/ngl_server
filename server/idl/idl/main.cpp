@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-	vector<const char*> lv = { /*"game_gm", "game_enum","game_shared","game_logic", "game_db", */"csvtable"/*, "game_worldgame"*/};
+	vector<const char*> lv = { "csvtable"};
 	for (const char* item : lv)
 		idl::getInstance().analysis(string(item) + ".idl");
 	//

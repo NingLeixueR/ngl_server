@@ -72,7 +72,7 @@ namespace ngl
 				}
 			}
 			np_actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);
-			nserver->sendmore(lmap, ltemp, lpack->m_head.get_request_actor());
+			nets::sendmore(lmap, ltemp, lpack->m_head.get_request_actor());
 			return true;
 		}
 

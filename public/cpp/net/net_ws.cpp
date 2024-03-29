@@ -29,7 +29,7 @@ namespace ngl
 			);
 
 		std::function<void(int)> lclosefun = std::bind(&net_ws::close, this, std::placeholders::_1);
-		m_server = new asio_ws(port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {});
+		m_server = new asio_ws(m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {});
 		return true;
 	}
 

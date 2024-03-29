@@ -372,14 +372,29 @@ bool start_pushserverconfig()
 			ngl::manage_curl::set_url(*lhttp, lpushserver);
 
 			std::stringstream lstream;
-			lstream 
+			lstream
 				<< "id=" << aserver->m_id
 				<< "&name=" << aserver->m_name
-				<< "&area=" << aserver->m_area
-				<< "&ip=" << aserver->m_ip
-				<< "&nip=" << aserver->m_nip
-				<< "&type=" << aserver->m_type
-				<< "&port=" << aserver->m_port;
+				<< "&area=" << aserver->m_area;
+
+			//ENET_TCP = 0,
+			//	ENET_WS = 1,
+			//	ENET_KCP = 2,
+			ngl::ijson lwrite;
+			std::array<std::string, ngl::ENET_COUNT> lparm = { "tcp","ws","kcp" };
+			for (const ngl::net_works& item : aserver->m_net)
+			{
+				ngl::ijson lwritetemp;
+				lwritetemp.write("type", (int8_t)item.m_type);
+				lwritetemp.write("ip", item.m_ip);
+				lwritetemp.write("nip", item.m_nip);
+				lwritetemp.write("port", item.m_port);
+				lwrite.write(lparm[item.m_type].c_str(), lwritetemp);
+			}
+			std::string lnet;
+			lwrite.get(lnet);
+			lstream << "&net=" << lnet;
+			
 			std::string lstr = lstream.str();
 			ngl::manage_curl::set_param(*lhttp, lstr);
 

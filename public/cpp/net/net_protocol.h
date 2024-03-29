@@ -1,4 +1,6 @@
 #pragma once
+
+#include "manage_session.h"
 #include "handle_pram.h"
 #include "structbytes.h"
 #include "actor_base.h"
@@ -78,8 +80,9 @@ namespace ngl
 	protected:
 		struct impl_net_protocol;
 		ngl::impl<impl_net_protocol> m_impl_net_protocol;
+		int8_t					m_index;
 
-		net_protocol();
+		net_protocol(int8_t aindex);
 
 		bool socket_recv(int asessionid, int aislanip, const char* abuff, uint32_t abufflen);
 	public:
@@ -87,6 +90,11 @@ namespace ngl
 
 		bpool& get_pool();
 		
+		inline bool typeindex(i32_session asession)
+		{
+			return m_index == (int8_t)(asession >> 24);
+		}
+
 		//## 初始化net_protocol
 		//## aport			i16_port		端口号
 		//## athreadnum		i32_threadsize 	线程数
@@ -120,14 +128,11 @@ namespace ngl
 		//## 向某个服务器发送pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		//## 服务器id与socket session id关联
-		void set_server(i32_serverid aserverid, i32_sessionid asession);
+		////## 根据服务器id获取sessionid
+		//i32_sessionid get_sessionid(i32_serverid aserverid);
 
-		//## 根据服务器id获取sessionid
-		i32_sessionid get_sessionid(i32_serverid aserverid);
-
-		//## 根据session id获取服务器id
-		i32_serverid get_serverid(i32_sessionid asession);
+		////## 根据session id获取服务器id
+		//i32_serverid get_serverid(i32_sessionid asession);
 
 		//## actor guid 的-1值
 		i64_actorid moreactor();
@@ -145,9 +150,7 @@ namespace ngl
 			, const std::function<void(i32_sessionid)>& afun
 		) = 0;
 
-		virtual bool connect(
-			i32_serverid aserverid
-			, const std::string& aip
+		virtual bool connect(const std::string& aip
 			, i16_port aport
 			, const std::function<void(i32_sessionid)>& afun
 			, bool await
@@ -173,95 +176,58 @@ namespace ngl
 			return true;
 		}
 
+
+		template <typename T>
+		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
+
 		//## 给一组sesion发送消息
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
-		template <typename T>
-		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, T& adata, i64_actorid aactorid)
+		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, 0);
-			if (lpack == nullptr)
-				return false;
-			//LogLocalWarn("SEND Session[%] Protocol Num[%] Name[%] Data[%]!", asession, (int)T::PROTOCOL, T::name(), adata);
-
-			std::shared_ptr<pack>& lpack_ = sendpack_t::get_pack(adata);
-			if (lpack_ != nullptr)
-			{
-				if (encryption_bytexor::check_xor(lpack_))
-				{
-					char* lbuff = &lpack_->m_buff[lpack_->m_pos];
-					int32_t llen = lpack_->m_len - lpack_->m_pos;
-					int32_t lpos = lpack->m_len - pack_head::size();
-					ngl::encryption::bytexor(lbuff, llen, lpos);
-				}
-			}
-			
 			for (auto& item : asession)
 			{
-				lpack->set_actor(item.second, aactorid);
-				net_send(item.first, lpack);
-				if (lpack_ != nullptr)
-					net_send(item.first, lpack_);
+				if (typeindex(item.first) == false)
+					continue;
+				apair.first->set_actor(item.second, aactorid);
+				net_send(item.first, apair.first);
+				if (apair.second != nullptr)
+					net_send(item.first, apair.second);
 			}
 			return  true;
 		}
 
 	
 	private:
-		template <typename T, typename TSTL>
-		bool sendmore_stl(const TSTL& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename TSTL>
+		bool sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, arequestactorid);
-			if (lpack == nullptr)
-				return false;
-			//LogLocalWarn("SEND Session[%] Protocol Num[%] Name[%] Data[%]!", asession, (int)T::PROTOCOL, T::name(), adata);
-			std::shared_ptr<pack>& lpack_ = sendpack_t::get_pack(adata);
-			if (lpack_ != nullptr)
+			for (i32_sessionid item : asession)
 			{
-				if (encryption_bytexor::check_xor(lpack_))
-				{
-					char* lbuff = &lpack_->m_buff[lpack_->m_pos];
-					int32_t llen = lpack_->m_len - lpack_->m_pos;
-					int32_t lpos = lpack->m_len - pack_head::size();
-					ngl::encryption::bytexor(lbuff, llen, lpos);
-				}
+				if (typeindex(item) == false)
+					continue;
+				apair.first->set_actor(arequestactorid, aactorid);
+				net_send(item, apair.first);
+				if (apair.second != nullptr)
+					net_send(item, apair.second);
 			}
-			
-			for (auto& item : asession)
-			{
-				net_send(item, lpack);
-				if (lpack_ != nullptr)
-					net_send(item, lpack_);				
-			}
-			return true;
+			return  true;
 		}
 	
 	public:
-		template <typename T>
-		bool sendmore(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool sendmore(const std::vector<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{
-			return sendmore_stl(asession, adata, aactorid, arequestactorid);
+			return sendmore_stl(asession, aactorid, arequestactorid, apair);
 		}
 
-		template <typename T>
-		bool sendmore(const std::list<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool sendmore(const std::list<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{
-			return sendmore_stl(asession, adata, aactorid, arequestactorid);
+			return sendmore_stl(asession, aactorid, arequestactorid, apair);
 		}
 
-		template <typename T>
-		bool sendmore(const std::set<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{
-			return sendmore_stl(asession, adata, aactorid, arequestactorid);
-		}
-
-		template <typename T>
-		bool send_server(i32_serverid aserverid, T& adata, uint64_t aactorid, uint64_t arequestactorid)
-		{
-			i32_sessionid lsession = get_sessionid(aserverid);
-			if (lsession == -1)
-				return false;
-			return send(lsession, adata, aactorid, arequestactorid);
+			return sendmore_stl(asession, aactorid, arequestactorid, apair);
 		}
 
 		template <typename T>
@@ -272,7 +238,12 @@ namespace ngl
 			pro.m_area.push_back(aarea);
 			pro.set_data(&adata);
 			if (agateway != 0)
-				sendtoserver(agateway, pro, moreactor(), moreactor());
+			{
+				i32_session lsession = manage_session::get_session(agateway);
+				if (lsession == -1)
+					return;
+				send(lsession, pro, moreactor(), moreactor());
+			}				
 		}
 
 		template <typename T>
@@ -286,7 +257,12 @@ namespace ngl
 			}
 			pro.set_data(&adata);
 			if (agateway != 0)
-				sendtoserver(agateway, pro, moreactor(), moreactor());
+			{
+				i32_session lsession = manage_session::get_session(agateway);
+				if (lsession == -1)
+					return;
+				send(lsession, pro, moreactor(), moreactor());
+			}
 		}
 	};
 }// namespace ngl

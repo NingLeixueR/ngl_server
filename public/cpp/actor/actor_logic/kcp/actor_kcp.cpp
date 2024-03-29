@@ -33,7 +33,7 @@ namespace ngl
 		auto lpack = adata.m_pack;
 		ukcp::getInstance().reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport);
 
-		nets::net()->send(lpack->m_id, *lpram, -1, -1);
+		nets::sendbysession(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		return true;
 	}
 }//namespace ngl

@@ -10,8 +10,6 @@ namespace ngl
 		i32_threadsize			m_socketthreadnum;								// socket 接收数据线程数
 		bpool					m_pool;
 		bool					m_outernet;									    // 是否允许外网连接
-		std::map<i32_serverid, i32_sessionid> m_serverbysession;
-		std::map<i32_sessionid, i32_serverid> m_sessionbyserver;
 		std::shared_mutex		m_mutex;
 		std::list<pack>			m_packlist;
 
@@ -53,7 +51,6 @@ namespace ngl
 
 		inline bool connect(
 			net_protocol* anetprotocol
-			, i32_serverid aserverid
 			, const std::string& aip
 			, i16_port aport
 			, const std::function<void(i32_sessionid)>& afun
@@ -61,54 +58,48 @@ namespace ngl
 			, bool areconnection					// 断线是否重连
 		)
 		{
-			i32_sessionid lsession = get_sessionid(aserverid);
-			if (lsession == -1)
-			{
-				boost::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
-				anetprotocol->connect(aip, aport, [this, anetprotocol, aserverid, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
-					{
-						set_server(aserverid, asession);
-						afun(asession);
-						if (lsem != nullptr)
-							lsem->post();
-						if(areconnection)
-							anetprotocol->set_close(asession, aip, aport, afun);
-					});
-				if (lsem != nullptr)
-					lsem->wait();
-			}
-			else
-				afun(lsession);
+			boost::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
+			anetprotocol->connect(aip, aport, [this, anetprotocol, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
+				{
+					afun(asession);
+					if (lsem != nullptr)
+						lsem->post();
+					if (areconnection)
+						anetprotocol->set_close(asession, aip, aport, afun);
+				});
+			if (lsem != nullptr)
+				lsem->wait();
 			return true;
 		}
 
-		inline void set_server(i32_serverid aserverid, i32_sessionid asession)
-		{
-			lock_write(m_mutex);
-			m_serverbysession[aserverid] = asession;
-			m_sessionbyserver[asession] = aserverid;
-		}
+		//inline void set_server(i32_serverid aserverid, i32_sessionid asession)
+		//{
+		//	lock_write(m_mutex);
+		//	m_serverbysession[aserverid] = asession;
+		//	m_sessionbyserver[asession] = aserverid;
+		//}
 
-		inline i32_sessionid get_sessionid(i32_serverid aserverid)
-		{
-			lock_read(m_mutex);
-			i32_sessionid* lsessionid = tools::findmap(m_serverbysession, aserverid);
-			if (lsessionid == nullptr)
-				return -1;
-			return *lsessionid;
-		}
+		//inline i32_sessionid get_sessionid(i32_serverid aserverid)
+		//{
+		//	lock_read(m_mutex);
+		//	i32_sessionid* lsessionid = tools::findmap(m_serverbysession, aserverid);
+		//	if (lsessionid == nullptr)
+		//		return -1;
+		//	return *lsessionid;
+		//}
 
-		inline i32_serverid get_serverid(i32_sessionid asession)
-		{
-			lock_read(m_mutex);
-			i32_serverid* lsessionid = tools::findmap/*<, i32_sessionid>*/(m_sessionbyserver, asession);
-			if (lsessionid == nullptr)
-				return -1;
-			return *lsessionid;
-		}
+		//inline i32_serverid get_serverid(i32_sessionid asession)
+		//{
+		//	lock_read(m_mutex);
+		//	i32_serverid* lsessionid = tools::findmap/*<, i32_sessionid>*/(m_sessionbyserver, asession);
+		//	if (lsessionid == nullptr)
+		//		return -1;
+		//	return *lsessionid;
+		//}
 	};
 
-	net_protocol::net_protocol()
+	net_protocol::net_protocol(int8_t aindex):
+		m_index(aindex)
 	{
 		m_impl_net_protocol.make_unique();
 	}
@@ -136,16 +127,14 @@ namespace ngl
 		m_impl_net_protocol()->close(asession);
 	}
 
-	bool net_protocol::connect(
-		i32_serverid aserverid
-		, const std::string& aip
+	bool net_protocol::connect(const std::string& aip
 		, i16_port aport
 		, const std::function<void(i32_sessionid)>& afun
 		, bool await
 		, bool areconnection					// 断线是否重连
 	)
 	{
-		return m_impl_net_protocol()->connect(this, aserverid, aip, aport, afun, await, areconnection);
+		return m_impl_net_protocol()->connect(this, aip, aport, afun, await, areconnection);
 	}
 
 	int net_protocol::socketthreadnum()
@@ -170,18 +159,13 @@ namespace ngl
 
 	bool net_protocol::sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_sessionid lsession = get_sessionid(aserverid);
+		i32_sessionid lsession = manage_session::get_sessionid(aserverid);
 		if (lsession == -1)
 			return false;
 		return net_send(lsession, apack);
 	}
 
-	void net_protocol::set_server(i32_serverid aserverid, i32_sessionid asession)
-	{
-		m_impl_net_protocol()->set_server(aserverid, asession);
-	}
-
-	i32_sessionid net_protocol::get_sessionid(i32_serverid aserverid)
+	/*i32_sessionid net_protocol::get_sessionid(i32_serverid aserverid)
 	{
 		return m_impl_net_protocol()->get_sessionid(aserverid);
 	}
@@ -189,7 +173,7 @@ namespace ngl
 	i32_serverid net_protocol::get_serverid(i32_sessionid asession)
 	{
 		return m_impl_net_protocol()->get_serverid(asession);
-	}
+	}*/
 
 	i64_actorid net_protocol::moreactor()
 	{
