@@ -86,11 +86,8 @@ bool init_server(int aid)
 		ngl::ukcp::getInstance(lpstruct->m_port);
 	}
 
-
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 	LogLocalError("ngl::actor_manage::getInstance().init(%)", tab->m_actorthreadnum)
 
-
-		
 	return true;
 }
