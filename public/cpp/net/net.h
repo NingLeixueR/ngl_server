@@ -17,9 +17,7 @@ namespace ngl
 			for (int i = 0; i < ENET_COUNT; ++i)
 			{
 				if (m_net[i] != nullptr)
-				{
 					return m_net[i];
-				}
 			}
 			return nullptr;
 		}
@@ -32,10 +30,10 @@ namespace ngl
 		static net_protocol* net(i32_session asession)
 		{
 			ENET_PROTOCOL ltype = session2type(asession);
-			return net_type(ltype);
+			return nettype(ltype);
 		}
 
-		static net_protocol* net_type(ENET_PROTOCOL atype)
+		static net_protocol* nettype(ENET_PROTOCOL atype)
 		{
 			if (ttab_servers::isefficient(atype) && m_net[atype] != nullptr)
 			{
@@ -109,7 +107,7 @@ namespace ngl
 			}
 			for (ENET_PROTOCOL item : lset)
 			{
-				net_protocol* lpprotocol = ngl::nets::net_type(item);
+				net_protocol* lpprotocol = ngl::nets::nettype(item);
 				if (lpprotocol != nullptr)
 				{
 					lpprotocol->sendmore(asession, aactorid, lpair);
@@ -137,7 +135,7 @@ namespace ngl
 			}
 			for (ENET_PROTOCOL item : lset)
 			{
-				net_protocol* lpprotocol = ngl::nets::net_type(item);
+				net_protocol* lpprotocol = ngl::nets::nettype(item);
 				if (lpprotocol != nullptr)
 				{
 					lpprotocol->sendmore(asession, aactorid, arequestactorid, lpair);
@@ -249,7 +247,6 @@ namespace ngl
 	{
 		if (IS_SEND == false)
 			return true;
-
 		return nets::sendbyserver(aserverid, *(T*)adata.m_data.get(), aactorid, arequestactorid);
 	}
 
@@ -289,8 +286,6 @@ namespace ngl
 		return nets::sendbysession(asession, adata, aactorid, arequestactorid);
 	}
 }//namespace ngl
-
-//#define nserver(SESSION) (ngl::nets::net(SESSION))
 
 
 

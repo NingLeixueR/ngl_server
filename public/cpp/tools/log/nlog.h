@@ -50,7 +50,7 @@ namespace ngl
 		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);		\
 	}
 
-#define DEF_LOG_LEVEL			(ngl::ELOG_ERROR)
+#define DEF_LOG_LEVEL			(ngl::ELOG_WARN)
 #define DEF_LOG_MAX_LINE		(100000)
 #define DEF_LOG_PRINTF			(true)
 

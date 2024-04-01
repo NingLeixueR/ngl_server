@@ -118,6 +118,20 @@ namespace ngl
 		}Catch;
 	}
 
+	void actor_client::activ_connect(i32_serverid aserverid)
+	{
+		if (nconfig::m_nodeid > aserverid)
+		{
+			nets::connect(aserverid, [this](i32_session asession)
+				{
+					LogLocalWarn("Connect Ok[%]", nconfig::m_nodeid);
+					np_actorclient_node_connect pro;
+					pro.m_id = nconfig::m_nodeid;
+					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());
+				}, false, true);
+		}
+	}
+
 	bool actor_client::handle(message<np_actornode_register_response>& adata)
 	{
 		Try
@@ -127,22 +141,11 @@ namespace ngl
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const nactornode& node = lparm->m_vec[i];
-				if (naddress::set_node(node))
+				if(manage_session::get_sessionid(node.m_serverid) == -1)
 				{
 					// 比较id  较大的主动连接较小的
-					NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
-					if (lservertype == ngl::LOGIN || tab->m_id > node.m_serverid)
-					{
-						uint32_t lserverid = node.m_serverid;
-						uint64_t lactorid = id_guid();
-						nets::connect(lserverid, [tab, lserverid, lactorid](int asession)
-							{
-								LogLocalInfo("Connect Ok[%]", tab->m_id)
-								np_actorclient_node_connect pro;
-								pro.m_id = tab->m_id;
-								nets::sendbysession(asession, pro, nguid::moreactor(), lactorid);
-							}, false, true);
-					}
+					// NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
+					activ_connect(node.m_serverid);
 				}
 			}
 		}Catch
@@ -161,18 +164,6 @@ namespace ngl
 		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
-	// 主动连接
-	void active_connect(actor_client* aclient, i32_serverid aserverid, i32_serverid alocalserverid, i32_session asession)
-	{
-		if (aserverid > alocalserverid)
-		{
-			np_actorclient_node_connect pro;
-			pro.m_id = alocalserverid;
-			nets::sendbysession(asession, pro, nguid::moreactor(), aclient->id_guid());
-			manage_session::add(aserverid, asession);
-		}
-	}
-
 	bool actor_client::handle(message<np_actorclient_node_connect>& adata)
 	{
 		Try
@@ -186,11 +177,17 @@ namespace ngl
 
 			naddress::set_session(lserverid, lpack->m_id);
 			manage_session::add(lserverid, lpack->m_id);
-			set_connect_fnish(lparm->m_id);
-			connect_fnish();
 
 			// 主动连接
-			active_connect(this, lserverid, nconfig::m_nodeid, lpack->m_id);
+			if (nconfig::m_nodeid < lserverid)
+			{
+				np_actorclient_node_connect pro;
+				pro.m_id = nconfig::m_nodeid;
+				nets::sendbysession(lpack->m_id, pro, nguid::moreactor(), id_guid());
+			}
+
+			set_connect_fnish(lparm->m_id);
+			connect_fnish();
 
 			if (xmlnode::node_type() == ngl::LOGIN)
 			{

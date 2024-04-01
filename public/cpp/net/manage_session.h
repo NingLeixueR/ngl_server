@@ -14,6 +14,8 @@ namespace ngl
 	public:
 		static void add(i32_serverid aserverid, i32_sessionid asession)
 		{
+			
+			LogLocalWarn("connect [%:%] [%]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
 			lock_write(m_mutex);
 			m_server[aserverid] = asession;
 			m_session[asession] = aserverid;
@@ -36,9 +38,5 @@ namespace ngl
 				return -1;
 			return *lpserverid;
 		}
-
 	};
-	
-
-
 }

@@ -71,31 +71,6 @@ namespace ngl
 				lsem->wait();
 			return true;
 		}
-
-		//inline void set_server(i32_serverid aserverid, i32_sessionid asession)
-		//{
-		//	lock_write(m_mutex);
-		//	m_serverbysession[aserverid] = asession;
-		//	m_sessionbyserver[asession] = aserverid;
-		//}
-
-		//inline i32_sessionid get_sessionid(i32_serverid aserverid)
-		//{
-		//	lock_read(m_mutex);
-		//	i32_sessionid* lsessionid = tools::findmap(m_serverbysession, aserverid);
-		//	if (lsessionid == nullptr)
-		//		return -1;
-		//	return *lsessionid;
-		//}
-
-		//inline i32_serverid get_serverid(i32_sessionid asession)
-		//{
-		//	lock_read(m_mutex);
-		//	i32_serverid* lsessionid = tools::findmap/*<, i32_sessionid>*/(m_sessionbyserver, asession);
-		//	if (lsessionid == nullptr)
-		//		return -1;
-		//	return *lsessionid;
-		//}
 	};
 
 	net_protocol::net_protocol(int8_t aindex):
@@ -163,20 +138,5 @@ namespace ngl
 		if (lsession == -1)
 			return false;
 		return net_send(lsession, apack);
-	}
-
-	/*i32_sessionid net_protocol::get_sessionid(i32_serverid aserverid)
-	{
-		return m_impl_net_protocol()->get_sessionid(aserverid);
-	}
-
-	i32_serverid net_protocol::get_serverid(i32_sessionid asession)
-	{
-		return m_impl_net_protocol()->get_serverid(asession);
-	}*/
-
-	i64_actorid net_protocol::moreactor()
-	{
-		return nguid::moreactor();
 	}
 }// namespace ngl

@@ -41,6 +41,8 @@ namespace ngl
 		//# 连接成功后调用
 		void connect_fnish();
 	public:
+		void activ_connect(i32_serverid aserverid);
+
 		//# 注册结点
 		bool handle(message<np_actornode_register_response>& adata);
 

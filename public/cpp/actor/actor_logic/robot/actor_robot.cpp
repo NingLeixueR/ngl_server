@@ -41,7 +41,7 @@ namespace ngl
 			)
 			m_data = *adata.m_data;
 		}Catch;
-
+		
 		tab_servers* tab = ttab_servers::tab();
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
 		net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);

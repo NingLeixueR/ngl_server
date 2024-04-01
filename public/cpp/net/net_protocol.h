@@ -11,9 +11,9 @@
 #include "impl.h"
 #include "pack.h"
 
+#include <boost/array.hpp>
 #include <vector>
 #include <memory>
-#include <boost/array.hpp>
 
 namespace ngl
 {
@@ -79,8 +79,8 @@ namespace ngl
 	{
 	protected:
 		struct impl_net_protocol;
-		ngl::impl<impl_net_protocol> m_impl_net_protocol;
-		int8_t					m_index;
+		ngl::impl<impl_net_protocol>	m_impl_net_protocol;
+		int8_t							m_index;
 
 		net_protocol(int8_t aindex);
 
@@ -128,15 +128,6 @@ namespace ngl
 		//## 向某个服务器发送pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
-		////## 根据服务器id获取sessionid
-		//i32_sessionid get_sessionid(i32_serverid aserverid);
-
-		////## 根据session id获取服务器id
-		//i32_serverid get_serverid(i32_sessionid asession);
-
-		//## actor guid 的-1值
-		i64_actorid moreactor();
-
 		virtual void set_close(
 			int asession
 			, const std::string& aip
@@ -176,7 +167,6 @@ namespace ngl
 			return true;
 		}
 
-
 		template <typename T>
 		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
 
@@ -196,8 +186,6 @@ namespace ngl
 			}
 			return  true;
 		}
-
-	
 	private:
 		template <typename TSTL>
 		bool sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
@@ -206,14 +194,13 @@ namespace ngl
 			{
 				if (typeindex(item) == false)
 					continue;
-				apair.first->set_actor(arequestactorid, aactorid);
+				apair.first->set_actor(aactorid, arequestactorid);
 				net_send(item, apair.first);
 				if (apair.second != nullptr)
 					net_send(item, apair.second);
 			}
 			return  true;
 		}
-	
 	public:
 		bool sendmore(const std::vector<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{
@@ -242,7 +229,7 @@ namespace ngl
 				i32_session lsession = manage_session::get_session(agateway);
 				if (lsession == -1)
 					return;
-				send(lsession, pro, moreactor(), moreactor());
+				send(lsession, pro, nguid::make(), nguid::make());
 			}				
 		}
 
@@ -261,7 +248,7 @@ namespace ngl
 				i32_session lsession = manage_session::get_session(agateway);
 				if (lsession == -1)
 					return;
-				send(lsession, pro, moreactor(), moreactor());
+				send(lsession, pro, nguid::make(), nguid::make());
 			}
 		}
 	};

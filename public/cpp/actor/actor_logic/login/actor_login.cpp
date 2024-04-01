@@ -159,6 +159,7 @@ namespace ngl
 			m_gateway.insert(std::make_pair(lparm->m_serverid, ltemp));
 			break;
 		}
+		LogLocalError("message<np_actorserver_connect>:%", lparm->m_serverid);
 		return true;
 	}
 

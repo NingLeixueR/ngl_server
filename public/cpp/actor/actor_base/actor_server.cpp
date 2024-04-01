@@ -52,13 +52,11 @@ namespace ngl
 						lvec.push_back(anode.m_session);
 					return true;
 				});
+			if (!lvec.empty())
 			{
-				if (!lvec.empty())
-				{
-					np_actornode_register_response lpram;
-					lpram.m_vec.push_back(lrecv->m_node);
-					nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
-				}
+				np_actornode_register_response lpram;
+				lpram.m_vec.push_back(lrecv->m_node);
+				nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{// -- 回复
 				np_actornode_register_response lpram;
@@ -71,14 +69,14 @@ namespace ngl
 					});
 				nets::sendbysession(lpack->m_id, lpram, nguid::moreactor(), id_guid());
 			}
+			if (!lvec.empty())
 			{// -- actor_client_node_update 给其他结点
 				np_actornode_update lpram
 				{
 					.m_id = lserverid,
 					.m_add = lrecv->m_add,
 				};
-				if (!lvec.empty())
-					nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
+				nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
 				std::map<uint32_t, np_actornode_update> lmapprotocol;
