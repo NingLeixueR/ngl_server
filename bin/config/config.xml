@@ -1,10 +1,11 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <con>
 		<public>
+			<!-- 为了php可以使用自定义协议，需要将varint禁用 -->
 				<config 
 					actor_delayed ="1000" 
-					logserverid ="7001" 
-					varint = "true"
+					logserverid ="7001"
+					varint = "false"
 					isxor = "true"
 					waiting = "1"
 					robot_test = "true"

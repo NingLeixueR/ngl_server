@@ -51,6 +51,7 @@ namespace ngl
 		ukcp::getInstance().sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
 			, [](char* buff, int len)
 			{
+				std::cout << "GetIp Finish : " << buff << std::endl;
 				ukcp::getInstance().m_localuip = buff;
 			});
 		// 获取kcp-session

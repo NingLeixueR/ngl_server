@@ -1,3 +1,107 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <con>
+	<config client = "1" name="class pbnet::PROBUFF_NET_HEARTBEAT" number="61"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_HEARTBEAT" number="61"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_RECHARGE" number="62"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_RECHARGE" number="62"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_RECHARGE_RESPONSE" number="63"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_RECHARGE_RESPONSE" number="63"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE" number="64"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE" number="64"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ERROR" number="65"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ERROR" number="65"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ERROR_RESPONSE" number="66"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ERROR_RESPONSE" number="66"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_GET_TIME" number="67"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_GET_TIME" number="67"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_GET_TIME_RESPONSE" number="68"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_GET_TIME_RESPONSE" number="68"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_GET_NOTICE" number="69"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_GET_NOTICE" number="69"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE" number="70"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE" number="70"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ACOUNT_LOGIN" number="71"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ACOUNT_LOGIN" number="71"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE" number="72"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE" number="72"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_LOGIN" number="73"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_LOGIN" number="73"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_SYNC" number="74"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_SYNC" number="74"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE" number="75"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE" number="75"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_BAG_SYNC" number="76"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_BAG_SYNC" number="76"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE" number="77"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE" number="77"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_BAG_UPDATE" number="78"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_BAG_UPDATE" number="78"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE" number="79"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE" number="79"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_CMD" number="80"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_CMD" number="80"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_CHAT" number="81"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_CHAT" number="81"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_CHAT_RESPONSE" number="82"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_CHAT_RESPONSE" number="82"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SWITCH_LINE" number="83"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SWITCH_LINE" number="83"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE" number="84"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE" number="84"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_LIST" number="85"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_LIST" number="85"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE" number="86"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE" number="86"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_READ" number="87"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_READ" number="87"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE" number="88"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_READ_RESPONSE" number="88"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_DRAW" number="89"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_DRAW" number="89"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE" number="90"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE" number="90"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_DEL" number="91"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_DEL" number="91"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE" number="92"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE" number="92"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE" number="93"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_ATTRIBUTE" number="93"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_UNIT" number="94"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_UNIT" number="94"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW" number="95"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW" number="95"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_POSITION" number="96"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_POSITION" number="96"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_CHANGE_ANGLE" number="97"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_CHANGE_ANGLE" number="97"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING" number="98"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING" number="98"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_RESPONSE" number="99"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_RESPONSE" number="99"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_CANCEL" number="100"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_CANCEL" number="100"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE" number="101"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE" number="101"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL" number="102"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL" number="102"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM" number="103"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM" number="103"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_CONFIRM" number="104"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_CONFIRM" number="104"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE" number="105"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE" number="105"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM" number="106"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM" number="106"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_SYNC" number="107"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_SYNC" number="107"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE" number="108"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE" number="108"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_MATCHING_SUCCESS" number="109"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_MATCHING_SUCCESS" number="109"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_ENTER_PLAYS" number="110"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_ENTER_PLAYS" number="110"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_KCPSESSION" number="111"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_KCPSESSION" number="111"/>
+	<config client = "1" name="class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE" number="112"/>
+	<config client = "1" name="pbnet::PROBUFF_NET_KCPSESSION_RESPONSE" number="112"/>
 </con>
