@@ -41,7 +41,7 @@ namespace ngl
 	void actor_manage_activity::init()
 	{
 		timerparm tparm;
-		make_timerparm::make_interval(tparm, 1);
+		make_timerparm::make_interval(tparm, 5);
 		set_timer(tparm);
 		m_db.set(this);
 	}

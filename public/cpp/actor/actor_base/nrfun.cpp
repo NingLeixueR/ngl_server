@@ -1,4 +1,5 @@
 ﻿#include "nrfun.h"
+#include "time_consuming.h"
 
 namespace ngl
 {
@@ -23,9 +24,24 @@ namespace ngl
 				LogLocalError("handle_switch m_fun.find(%) == end", apram.m_enum)
 			return false;
 		}
-		if (aactor->isloadfinish() == false && itor->second.m_isdbload == false)
+		bool lisloadfinish = aactor->isloadfinish();
+		if (lisloadfinish == false && itor->second.m_isdbload == false)
+		{
+			LogLocalError("%::handle_switch isloadfinish() == %", nactortype::enum2name(aactor->type()), lisloadfinish)
 			return false;
-		itor->second.m_fun(aactor, athreadid, apram);
+		}
+		if (aactor->type() != ACTOR_LOG)
+		{
+			time_consuming lconsuming(nactortype::enum2name(aactor->type()), [](int64_t abeg, int64_t aend)->bool
+				{
+					return aend - abeg > 100;
+				});
+			itor->second.m_fun(aactor, athreadid, apram);
+		}
+		else
+		{
+			itor->second.m_fun(aactor, athreadid, apram);
+		}
 		return true;
 	}
 }//namespace ngl
