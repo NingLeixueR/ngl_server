@@ -221,7 +221,7 @@ namespace ngl
 	{
 		for (i32_sessionid item : asession)
 		{
-			if (nets::session2type(item) == (ENET_PROTOCOL)m_index)
+			if (nets::session2type(item) != (ENET_PROTOCOL)m_index)
 				continue;
 			apair.first->set_actor(aactorid, arequestactorid);
 			net_send(item, apair.first);

@@ -63,7 +63,6 @@ namespace ngl
 		return twheel::wheel().addtimer(lparm);
 	}
 
-
 	bool actor_manage_activity::open_activity(i64_actorid aactivityid)
 	{
 		activity** lpactivity = tools::findmap(m_allactivity, aactivityid);
@@ -202,7 +201,6 @@ namespace ngl
 				});
 			return;
 		}
-
 	}
 
 	void actor_manage_activity::loaddb_finish(bool adbishave) 
