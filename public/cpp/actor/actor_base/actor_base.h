@@ -20,9 +20,9 @@
 namespace ngl
 {
 	class actor_base;
+	class ndb_component;
 	class ndbclient_base;
 	class actor_manage_dbclient;
-	class ndb_component;
 
 	struct actorparmbase
 	{

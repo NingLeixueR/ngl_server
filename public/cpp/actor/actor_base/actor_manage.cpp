@@ -140,7 +140,6 @@ namespace ngl
 				lpactor->release();
 				afun();
 			}
-
 		}
 
 		inline ptractor& nosafe_get_actor(const nguid& aguid)

@@ -16,6 +16,7 @@ namespace ngl
 		r.append(&dig2, 1);
 		return r;
 	}
+
 	std::string url::encode(const std::string& c)
 	{
 
@@ -39,7 +40,6 @@ namespace ngl
 		}
 		return std::move(escaped);
 	}
-
 
 	std::string url::decode(const std::string& szToDecode)
 	{

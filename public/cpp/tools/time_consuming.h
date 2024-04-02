@@ -5,7 +5,6 @@
 
 namespace ngl
 {
-	
 	class time_consuming
 	{
 		std::string m_name;
@@ -16,6 +15,7 @@ namespace ngl
 		time_consuming(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun) :
 			m_name(aname),
 			m_beg(time_wheel::getms()),
+			m_end(0),
 			m_fun(afun)
 		{
 			LogLocalWarn("time consuming [%] start", aname);
@@ -34,5 +34,4 @@ namespace ngl
 			}
 		}
 	};
-
 }

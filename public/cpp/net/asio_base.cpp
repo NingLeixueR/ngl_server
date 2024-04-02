@@ -76,7 +76,6 @@ namespace ngl
 		m_ws.binary(true);
 	}
 
-
 	service_ws::~service_ws()
 	{
 	}

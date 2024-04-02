@@ -164,7 +164,6 @@ namespace ngl
 			return lpprotocol->net_send(asession, apack);
 		}
 
-
 		static const std::string& ip(net_works const* apstruct)
 		{
 			return nconfig::node_type() != ROBOT ? apstruct->m_nip : apstruct->m_ip;
@@ -202,9 +201,7 @@ namespace ngl
 			}
 			LogLocalInfo("Connect Server %@%:%", aserverid, lpair.first, lpair.second);
 
-			return lserver->connect(lpair.first
-				, lpair.second
-				, [aserverid, afun](i32_session asession)
+			return lserver->connect(lpair.first, lpair.second , [aserverid, afun](i32_session asession)
 				{
 					manage_session::add(aserverid, asession);
 					if (afun != nullptr)
@@ -238,6 +235,7 @@ namespace ngl
 		lpair.first = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
 		if (lpair.first == nullptr)
 			return std::make_pair<std::shared_ptr<pack>, std::shared_ptr<pack>>(nullptr, nullptr);
+
 		//LogLocalWarn("SEND Session[%] Protocol Num[%] Name[%] Data[%]!", asession, (int)T::PROTOCOL, T::name(), adata);
 
 		std::shared_ptr<pack>& lpack_ = sendpack_t::get_pack(adata);
@@ -254,7 +252,6 @@ namespace ngl
 		lpair.second = lpack_;
 		return lpair;
 	}
-
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
