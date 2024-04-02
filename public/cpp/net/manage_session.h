@@ -1,8 +1,10 @@
 #pragma once
 
+#include "ttab_servers.h"
 #include "threadtools.h"
 #include "tools.h"
 #include "type.h"
+#include "nlog.h"
 
 namespace ngl
 {

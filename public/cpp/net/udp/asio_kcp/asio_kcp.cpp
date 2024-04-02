@@ -135,7 +135,7 @@ namespace ngl
 		asio_kcp*											m_asiokcp;
 	public:
 		session_manage(asio_kcp* asiokcp) :
-			m_sessionid(0),
+			m_sessionid(((int32_t)ENET_KCP << 24)),
 			m_asiokcp(asiokcp)
 		{}
 
@@ -837,6 +837,11 @@ namespace ngl
 	void asio_kcp::close(i32_session asession)
 	{
 		m_impl_asio_kcp()->close(asession);
+	}
+
+	void asio_kcp::close_net(i32_session asession)
+	{
+		close(asession);
 	}
 
 	void asio_kcp::reset_add(int32_t aconv, const std::string& aip, i16_port aport)

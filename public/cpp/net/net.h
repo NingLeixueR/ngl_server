@@ -216,6 +216,20 @@ namespace ngl
 
 namespace ngl
 {
+	template <typename TSTL>
+	bool net_protocol::sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+	{
+		for (i32_sessionid item : asession)
+		{
+			if (nets::session2type(item) == (ENET_PROTOCOL)m_index)
+				continue;
+			apair.first->set_actor(aactorid, arequestactorid);
+			net_send(item, apair.first);
+			if (apair.second != nullptr)
+				net_send(item, apair.second);
+		}
+		return  true;
+	}
 
 	template <typename T>
 	static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> net_protocol::more_pack(T& adata, i64_actorid aactorid)

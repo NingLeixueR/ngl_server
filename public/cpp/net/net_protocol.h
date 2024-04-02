@@ -89,11 +89,6 @@ namespace ngl
 		~net_protocol();
 
 		bpool& get_pool();
-		
-		inline bool typeindex(i32_session asession)
-		{
-			return m_index == (int8_t)(asession >> 24);
-		}
 
 		//## 初始化net_protocol
 		//## aport			i16_port		端口号
@@ -173,34 +168,10 @@ namespace ngl
 		//## 给一组sesion发送消息
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
-		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
-		{
-			for (auto& item : asession)
-			{
-				if (typeindex(item.first) == false)
-					continue;
-				apair.first->set_actor(item.second, aactorid);
-				net_send(item.first, apair.first);
-				if (apair.second != nullptr)
-					net_send(item.first, apair.second);
-			}
-			return  true;
-		}
+		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
 	private:
 		template <typename TSTL>
-		bool sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
-		{
-			for (i32_sessionid item : asession)
-			{
-				if (typeindex(item) == false)
-					continue;
-				apair.first->set_actor(aactorid, arequestactorid);
-				net_send(item, apair.first);
-				if (apair.second != nullptr)
-					net_send(item, apair.second);
-			}
-			return  true;
-		}
+		bool sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
 	public:
 		bool sendmore(const std::vector<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
 		{

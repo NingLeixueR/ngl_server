@@ -70,6 +70,8 @@ namespace ngl
 		// ## 关闭连接
 		void close(i32_session asession);
 
+		void close_net(i32_session asession);
+
 		// ## 重置连接
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
 

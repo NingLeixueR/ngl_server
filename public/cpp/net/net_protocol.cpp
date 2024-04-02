@@ -139,4 +139,18 @@ namespace ngl
 			return false;
 		return net_send(lsession, apack);
 	}
+
+	bool net_protocol::sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+	{
+		for (auto& item : asession)
+		{
+			if (nets::session2type(item.first) == (ENET_PROTOCOL)m_index)
+				continue;
+			apair.first->set_actor(item.second, aactorid);
+			net_send(item.first, apair.first);
+			if (apair.second != nullptr)
+				net_send(item.first, apair.second);
+		}
+		return  true;
+	}
 }// namespace ngl
