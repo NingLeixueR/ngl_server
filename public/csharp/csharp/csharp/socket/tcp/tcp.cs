@@ -367,7 +367,7 @@ namespace ngl
 
     public class ProtocolPack
     {
-        private Dictionary<Int32, Action<Pack>> m_protocol = new Dictionary<Int32, Action<Pack>>();
+        private Dictionary<Int32, Action<Pack?>> m_protocol = new Dictionary<Int32, Action<Pack>>();
 
         public void Registry<T>(Action<T> afun) where T : IMessage, new()
         {
@@ -385,8 +385,10 @@ namespace ngl
             });
         }
 
-        public void LogicFun(Pack apack)
+        public void LogicFun(Pack? apack)
         {
+            if (apack == null)
+                return;
             Action<Pack>? lfun = null;
             if (m_protocol.TryGetValue(apack.m_head.ProtocolNum, out lfun) == false)
                 return;

@@ -53,8 +53,8 @@ namespace ngl
                     Console.WriteLine($"{++lvalue}=>{item.MAccount}##{item.MArea}##{item.MSession}##{item.MGatewayid}");
                     roleid = item.MRoleid;
                     // 连接GateWay服务器
-                    var tab = ttab_servers.Tab(item.MGatewayid);
-                    if (tab == null)
+                    net_works? lnet = ttab_servers.NetProtocol(item.MGatewayid);
+                    if (lnet == null)
                         return;
                     ltcp.m_connectSuccessful = (Tcp.TcpConnect aconnect) =>
                     {
@@ -67,9 +67,9 @@ namespace ngl
                         pro.MIscreate = false;
                         ltcp.Send(aconnect.m_session, pro);
                     };
-                    if (!IPAddress.TryParse(tab.m_ip, out IPAddress GatewayIPAddress))
+                    if (!IPAddress.TryParse(lnet.m_ip, out IPAddress? GatewayIPAddress))
                         return;
-                    IPEndPoint GatewayIpPort = new IPEndPoint(GatewayIPAddress, tab.m_port);
+                    IPEndPoint GatewayIpPort = new IPEndPoint(GatewayIPAddress, lnet.m_port);
                     lgatewayconnect = ltcp.Connect(GatewayIpPort);
                 }
                 );
@@ -98,9 +98,12 @@ namespace ngl
                 var tabgame = ttab_servers.Tab("game", tab.m_area, 1);
                 if (tabgame == null)
                     return null;
-                if (!IPAddress.TryParse(tabgame.m_ip, out IPAddress? kcpIPAddress))
+                var lnet = ttab_servers.NetProtocol(tabgame.m_id, ENET_PROTOCOL.ENET_KCP);
+                if (lnet == null)
                     return null;
-                IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, tabgame.m_uport);
+                if (!IPAddress.TryParse(lnet.m_ip, out IPAddress? kcpIPAddress))
+                    return null;
+                IPEndPoint kcpIpPort = new IPEndPoint(kcpIPAddress, lnet.m_port);
                 return kcpIpPort;
             };
 
@@ -155,7 +158,7 @@ namespace ngl
             // 连接服务器
             //IPAddress lIPAddress = null;
             //if (!IPAddress.TryParse("152.136.107.233", out lIPAddress))
-            if (!IPAddress.TryParse("127.0.0.1", out IPAddress lIPAddress))
+            if (!IPAddress.TryParse("127.0.0.1", out IPAddress? lIPAddress))
                 return;
             IPEndPoint _IpPort = new IPEndPoint(lIPAddress, 10006);
             lloginconnect = ltcp.Connect(_IpPort);

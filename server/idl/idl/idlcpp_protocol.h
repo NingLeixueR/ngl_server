@@ -152,7 +152,7 @@ public:
 			for (auto& item : item.second.m_enum)
 			{
 				lsetenum.insert(item.name);
-				m_stream << "	enum " << item.name << "\n";
+				m_stream << "	public enum " << item.name << "\n";
 				m_stream << "	{\n";
 				
 				for (auto& itemdata : item.dataVec)

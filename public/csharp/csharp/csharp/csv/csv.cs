@@ -283,6 +283,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -297,6 +298,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -310,6 +312,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -323,6 +326,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -336,6 +340,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -349,6 +354,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -362,6 +368,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -375,6 +382,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {
@@ -388,6 +396,7 @@ namespace ngl
         {
             string ltempstr = Read(apair);
             CsvPair lpair = new CsvPair();
+            lpair.m_fg = '*';
             lpair.m_data = ltempstr;
             for (; !IsOk(lpair);)
             {

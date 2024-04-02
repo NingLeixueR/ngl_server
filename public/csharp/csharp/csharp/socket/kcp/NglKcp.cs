@@ -229,7 +229,7 @@ namespace ngl
             if (cmd == null)
                 return;
             cmd.sendcmd(ecmd.ecmd_connect, JsonConvert.SerializeObject(
-                new { actorid = aactorid, session = asession }
+                new { actorid = aactorid.ToString(), session = asession }
                 ));
         }
 

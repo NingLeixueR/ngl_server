@@ -145,7 +145,7 @@ namespace ngl
         }
 
         static Int32 m_versionpos = ((Int32)EPH.EPH_VERSION + 1) * sizeof(Int32);
-        EPH_HEAD_VAL IsVersion()
+        public EPH_HEAD_VAL IsVersion()
         {
             if (m_pos < m_versionpos)
             {

@@ -1,6 +1,6 @@
 namespace ngl
 {
-	enum ENET_CONFIG
+	public enum ENET_CONFIG
 	{
 		net_config_send_buff_maxbyte = 8129,	
 		net_config_recv_buff_maxbyte = 8129,	
@@ -24,7 +24,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EUDP_OPERATOR
+	public enum EUDP_OPERATOR
 	{
 		EUDP_OPERATOR_ACK,	// 确认包
 		EUDP_OPERATOR_DATA,	// 传输子数据包
@@ -47,7 +47,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EPH_HEAD_VAL
+	public enum EPH_HEAD_VAL
 	{
 		EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
 		EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致
@@ -72,7 +72,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EPH
+	public enum EPH
 	{
 		EPH_VERSION = 0,	// 协议版本号
 		EPH_BYTES,	// 协议字节数
@@ -102,7 +102,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum NODE_TYPE
+	public enum NODE_TYPE
 	{
 		DB = 1,	// 数据库服务器
 		ACTORSERVER = 2,	// actor 服务器
@@ -135,7 +135,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum ENET_PROTOCOL
+	public enum ENET_PROTOCOL
 	{
 		ENET_NULL = -1,	
 		ENET_TCP = 0,	
@@ -160,7 +160,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EnumModule
+	public enum EnumModule
 	{
 		E_ModuleNull = 0,	// 空	
 		E_ModuleRoot = 1,	// 卡牌(链尾)
@@ -189,7 +189,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EnumAttribute
+	public enum EnumAttribute
 	{
 		E_Null = 0,	
 		E_Attack = 1,	// [攻击]
@@ -216,7 +216,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EItemSrc
+	public enum EItemSrc
 	{
 		EItemSrcNoraml = 0,	
 		EItemSrcGM = 1,	
@@ -238,7 +238,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EItemConsume
+	public enum EItemConsume
 	{
 		EItemConsumeNoraml = 0,	
 		EItemConsumeGM = 1,	
@@ -260,7 +260,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EItemType
+	public enum EItemType
 	{
 		EEquipment = 1,	// 装备
 		EMaterial = 2,	// 材料
@@ -285,7 +285,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EQuality
+	public enum EQuality
 	{
 		EQualityGrey = 0,	//灰色
 		EQualityGreen = 1,	//绿色
@@ -310,7 +310,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EEquip
+	public enum EEquip
 	{
 		EEquipWeapon = 1,	// 武器
 		EEquipHelmet = 2,	// 头盔
@@ -334,7 +334,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum ECalendar
+	public enum ECalendar
 	{
 		Week = 0,	// 周几
 		ServerOpen = 1,	// 以开服时间以来的天数
@@ -357,7 +357,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum EActivity
+	public enum EActivity
 	{
 		EActivityDrawCompliance = 1,	// 类似咸鱼之王的<<招募达标>>
 	}
@@ -378,7 +378,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum ETask
+	public enum ETask
 	{
 		ETaskRoleLv = 1,	// 玩家等级
 		ETaskRoleVip = 2,	// 玩家vip等级
@@ -401,7 +401,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum ETaskType
+	public enum ETaskType
 	{
 		ETaskTypePrincipalLine,	// 主线任务
 		ETaskTypeBranchLine,	// 支线任务
@@ -424,7 +424,7 @@ namespace ngl
 			return true;
 		}
 	}
-	enum eobstacles
+	public enum eobstacles
 	{
 		eobstacles_pass = 0,	// 可以通过
 		eobstacles_nopass = 1,	// 无法通过
