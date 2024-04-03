@@ -23,6 +23,16 @@ namespace ngl
 			m_session[asession] = aserverid;
 		}
 
+		static void remove(i32_sessionid asession)
+		{
+			lock_write(m_mutex);
+			auto itor = m_session.find(asession);
+			if (itor == m_session.end())
+				return;
+			m_server.erase(itor->second);
+			m_session.erase(itor);
+		}
+
 		static i32_sessionid get_sessionid(i32_serverid aserverid)
 		{
 			lock_read(m_mutex);

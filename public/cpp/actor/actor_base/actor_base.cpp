@@ -326,19 +326,8 @@ namespace ngl
 
 	bool actor_base::iskcp()
 	{
-		enum elocalkcp
-		{
-			elocalkcp_ninit = 0,
-			elocalkcp_true = 1,
-			elocalkcp_false = 2,
-		};
-		static elocalkcp m_kcpstat = elocalkcp_ninit;
-		if (m_kcpstat == elocalkcp_ninit)
-		{
-			tab_servers* tab = ttab_servers::tab();
-			m_kcpstat = (ttab_servers::nworks(ENET_KCP, tab) != nullptr) ? elocalkcp_true : elocalkcp_false;
-		}
-		return m_kcpstat == elocalkcp_true;
+		static bool lkcp = (ttab_servers::nworks(ENET_KCP) != nullptr) ? true : false;
+		return lkcp;
 	}
 
 	const char* actor_base::kcpsessionmd5()

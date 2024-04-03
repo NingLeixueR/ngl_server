@@ -118,9 +118,14 @@ namespace ngl
 		}Catch;
 	}
 
+	bool isactiv_connect(i32_serverid aserverid)
+	{
+		return nconfig::m_nodeid > aserverid;
+	}
+
 	void actor_client::activ_connect(i32_serverid aserverid)
 	{
-		if (nconfig::m_nodeid > aserverid)
+		if (isactiv_connect(aserverid))
 		{
 			nets::connect(aserverid, [this](i32_session asession)
 				{
@@ -179,7 +184,7 @@ namespace ngl
 			manage_session::add(lserverid, lpack->m_id);
 
 			// 主动连接
-			if (nconfig::m_nodeid < lserverid)
+			if (isactiv_connect(lserverid) == false)
 			{
 				np_actorclient_node_connect pro;
 				pro.m_id = nconfig::m_nodeid;

@@ -57,6 +57,11 @@ namespace ngl
 			return nullptr;
 		}
 
+		static net_works const* nworks(ENET_PROTOCOL atype)
+		{
+			return nworks(atype, tab());
+		}
+
 		static net_works const* get_nworks(ENET_PROTOCOL atype)
 		{
 			//nconfig::m_nodeid
