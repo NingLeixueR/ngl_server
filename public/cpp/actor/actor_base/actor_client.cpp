@@ -146,7 +146,7 @@ namespace ngl
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const nactornode& node = lparm->m_vec[i];
-				if(manage_session::get_sessionid(node.m_serverid) == -1)
+				if(msession::sessionid(node.m_serverid) == -1)
 				{
 					// 比较id  较大的主动连接较小的
 					// NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
@@ -181,7 +181,7 @@ namespace ngl
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
 			naddress::set_session(lserverid, lpack->m_id);
-			manage_session::add(lserverid, lpack->m_id);
+			msession::add(lserverid, lpack->m_id);
 
 			// 主动连接
 			if (isactiv_connect(lserverid) == false)

@@ -38,7 +38,7 @@ namespace ngl
 		tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.m_data->m_line());
 		if (tab == nullptr)
 			return false;
-		i32_sessionid lsession = manage_session::get_sessionid(tab->m_id);
+		i32_sessionid lsession = msession::sessionid(tab->m_id);
 		if (lsession == -1)
 		{
 			LogLocalError("LOGIC_SWITCH_LINE Error line[%] severid[%]"

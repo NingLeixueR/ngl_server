@@ -1,7 +1,7 @@
 #pragma once
 
-#include "manage_session.h"
 #include "ttab_servers.h"
+#include "net_protocol.h"
 #include "xmlnode.h"
 #include "net_tcp.h"
 #include "net_ws.h"
@@ -71,7 +71,7 @@ namespace ngl
 		template <typename T>
 		static bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			i32_session lsession = manage_session::get_sessionid(aserverid);
+			i32_session lsession = msession::sessionid(aserverid);
 			if (lsession == -1)
 				return false;
 			return sendbysession(lsession, adata, aactorid, arequestactorid);
@@ -182,7 +182,7 @@ namespace ngl
 
 		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection)
 		{
-			i32_session lsession = manage_session::get_sessionid(aserverid);
+			i32_session lsession = msession::sessionid(aserverid);
 			if (lsession != -1)
 			{
 				afun(lsession);
@@ -203,7 +203,7 @@ namespace ngl
 
 			return lserver->connect(lpair.first, lpair.second , [aserverid, afun](i32_session asession)
 				{
-					manage_session::add(aserverid, asession);
+					msession::add(aserverid, asession);
 					if (afun != nullptr)
 						afun(asession);
 				}, await, areconnection);
@@ -229,7 +229,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> net_protocol::more_pack(T& adata, i64_actorid aactorid)
+	std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> net_protocol::more_pack(T& adata, i64_actorid aactorid)
 	{
 		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> lpair;
 		lpair.first = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
@@ -264,7 +264,7 @@ namespace ngl
 	template <typename T>
 	bool handle_pram::netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
 	{
-		return nets::net()->send(asession, adata, aactorid.id(), arequestactorid.id());
+		return nets::sendbysession(asession, adata, aactorid.id(), arequestactorid.id());
 	}
 
 	template <typename T>
@@ -276,13 +276,16 @@ namespace ngl
 	template <typename T>
 	bool actor_base::sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		return nets::net()->sendpackbyserver(aserverid, apack);
+		i32_session lsession = msession::session(aserverid);
+		if (lsession == -1)
+			return;
+		return nets::sendpack(lsession, apack);
 	}
 
 	template <typename T>
 	bool actor_base::sendpackbysession(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
-		return nets::net()->sendpack(asession, apack);
+		return nets::sendpack(asession, apack);
 	}
 
 	template <typename T>

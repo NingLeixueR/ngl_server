@@ -1,6 +1,5 @@
 #pragma once
 
-#include "manage_session.h"
 #include "handle_pram.h"
 #include "structbytes.h"
 #include "actor_base.h"
@@ -17,6 +16,19 @@
 
 namespace ngl
 {
+	class msession
+	{
+		static std::map<i32_serverid, i32_sessionid>	m_server;
+		static std::map<i32_sessionid, i32_serverid>	m_session;
+		static std::shared_mutex						m_mutex;
+	public:
+		static void add(i32_serverid aserverid, i32_sessionid asession);
+		static void remove(i32_sessionid asession);
+
+		static i32_sessionid sessionid(i32_serverid aserverid);
+		static i32_serverid serverid(i32_sessionid asessionid);
+	};
+
 	template <typename T>
 	class net_pack
 	{
@@ -90,37 +102,37 @@ namespace ngl
 
 		bpool& get_pool();
 
-		//## ³õÊ¼»¯net_protocol
-		//## aport			i16_port		¶Ë¿ÚºÅ
-		//## athreadnum		i32_threadsize 	Ïß³ÌÊı
-		//## aouternet		bool			ÊÇ·ñÔÊĞí·ÇÄÚÍøÖ÷¶¯Á¬½Ó
+		//## åˆå§‹åŒ–net_protocol
+		//## aport			i16_port		ç«¯å£å·
+		//## athreadnum		i32_threadsize 	çº¿ç¨‹æ•°
+		//## aouternet		bool			æ˜¯å¦å…è®¸éå†…ç½‘ä¸»åŠ¨è¿æ¥
 		virtual bool init(i16_port aport, i32_threadsize athreadnum, bool aouternet);
 
-		//## ¹Ø±ÕsocketÁ¬½ÓÒÔ¼°¼ÓÔØµÄÊı¾İ
-		//## Í¨ÖªÉÏ²ãÓ¦ÓÃ
+		//## å…³é—­socketè¿æ¥ä»¥åŠåŠ è½½çš„æ•°æ®
+		//## é€šçŸ¥ä¸Šå±‚åº”ç”¨
 		virtual void close(i32_sessionid asession);
 
-		//## Âß¼­²ãÖ÷¶¯¹Ø±ÕÁ¬½Ó(ÕâÑù¾Í²»ĞèÒªÍ¨ÖªÉÏ²ãÓ¦ÓÃ)
+		//## é€»è¾‘å±‚ä¸»åŠ¨å…³é—­è¿æ¥(è¿™æ ·å°±ä¸éœ€è¦é€šçŸ¥ä¸Šå±‚åº”ç”¨)
 		virtual void close_net(i32_sessionid asession) = 0;
 
-		//## ·¢ËÍÏûÏ¢
+		//## å‘é€æ¶ˆæ¯
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
 
-		//## ·şÎñÆ÷ÊÇ·ñ´æÔÚ´Ësession id
+		//## æœåŠ¡å™¨æ˜¯å¦å­˜åœ¨æ­¤session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
-		//## »ñÈ¡Ïß³ÌÊıÁ¿
+		//## è·å–çº¿ç¨‹æ•°é‡
 		int socketthreadnum();
 
-		//## »ñÈ¡¼àÌı¶Ë¿ÚºÅ
+		//## è·å–ç›‘å¬ç«¯å£å·
 		int port();
 
-		//## ·¢ËÍpack
+		//## å‘é€pack
 		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
-		//## ÏòÄ³¸ö·şÎñÆ÷·¢ËÍpack
+		//## å‘æŸä¸ªæœåŠ¡å™¨å‘é€pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		virtual void set_close(
@@ -143,7 +155,7 @@ namespace ngl
 			, bool areconnection
 		);
 
-		//## ·¢ËÍÏûÏ¢
+		//## å‘é€æ¶ˆæ¯
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -165,7 +177,7 @@ namespace ngl
 		template <typename T>
 		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
 
-		//## ¸øÒ»×ésesion·¢ËÍÏûÏ¢
+		//## ç»™ä¸€ç»„sesionå‘é€æ¶ˆæ¯
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
 		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
@@ -197,11 +209,11 @@ namespace ngl
 			pro.set_data(&adata);
 			if (agateway != 0)
 			{
-				i32_session lsession = manage_session::get_session(agateway);
+				i32_session lsession = msession::session(agateway);
 				if (lsession == -1)
 					return;
 				send(lsession, pro, nguid::make(), nguid::make());
-			}				
+			}
 		}
 
 		template <typename T>
@@ -216,7 +228,7 @@ namespace ngl
 			pro.set_data(&adata);
 			if (agateway != 0)
 			{
-				i32_session lsession = manage_session::get_session(agateway);
+				i32_session lsession = msession::session(agateway);
 				if (lsession == -1)
 					return;
 				send(lsession, pro, nguid::make(), nguid::make());

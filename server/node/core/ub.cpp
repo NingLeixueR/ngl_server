@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-03-29 16:47:02
+// 创建时间 24-04-03 17:43:55
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -72,7 +72,6 @@
 #include "mail.cpp"
 #include "manage_csv.cpp"
 #include "manage_curl.cpp"
-#include "manage_session.cpp"
 #include "map.cpp"
 #include "matching.cpp"
 #include "md5.cpp"
@@ -111,6 +110,7 @@
 #include "synthesis.cpp"
 #include "task.cpp"
 #include "threadtools.cpp"
+#include "time_consuming.cpp"
 #include "time_wheel.cpp"
 #include "tools.cpp"
 #include "ttab_attribute.cpp"
