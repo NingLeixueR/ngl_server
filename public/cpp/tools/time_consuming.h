@@ -60,11 +60,11 @@ namespace ngl
 		{
 			if (awarn)
 			{
-				LogLocalWarn("time consuming [%] finish [%]-[%]=[%] ", aname, aitem->m_end, aitem->m_beg, aitem->m_end - aitem->m_beg);
+				LogLocalWarn("time consuming [%:%] [%] [%] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 			}
 			else
 			{
-				LogLocalError("time consuming [%] finish [%]-[%]=[%] ", aname, aitem->m_end, aitem->m_beg, aitem->m_end - aitem->m_beg);
+				LogLocalError("time consuming [%:%] [%] [%] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 			}
 		}
 
@@ -89,7 +89,8 @@ namespace ngl
 					auto itor = lremove.find(item->m_id);
 					if (itor != lremove.end())
 					{
-						if (item->m_fun(item->m_beg, end) == true)
+						item->m_end = itor->second;
+						if (item->m_fun(item->m_beg, item->m_end) == true)
 						{
 							printf_log(true, "finish", item);
 						}
@@ -100,7 +101,8 @@ namespace ngl
 						delete item;
 						continue;
 					}
-					if (item->m_fun(item->m_beg, end) == false)
+					item->m_end = end;
+					if (item->m_fun(item->m_beg, item->m_end) == false)
 					{
 						printf_log(false, "overtime", item);
 					}
