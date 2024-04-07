@@ -21,17 +21,19 @@ namespace ngl
 			m_end(0),
 			m_fun(afun)
 		{
-			LogLocalWarn("time consuming [%:%] start", aname, m_id);
+			LogLocalInfo("time consuming [%:%] start", aname, m_id);
 		}
 
 	};
 
 	class tconsuming_thread
 	{
-		ngl::thread			m_thread;
-		std::shared_mutex	m_mutex;
-		std::list<tconsuming*> m_list;
-		std::map<int32_t,int64_t> m_remove;
+		using ptr_tconsuming = std::shared_ptr<tconsuming>;
+
+		ngl::thread					m_thread;
+		std::shared_mutex			m_mutex;
+		std::list<ptr_tconsuming>	m_list;
+		std::map<int32_t,int64_t>	m_remove;
 
 		tconsuming_thread() :
 			m_thread(&tconsuming_thread::run, this)
@@ -60,7 +62,7 @@ namespace ngl
 		{
 			if (awarn)
 			{
-				LogLocalWarn("time consuming [%:%] [%] [%] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+				LogLocalInfo("time consuming [%:%] [%] [%] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 			}
 			else
 			{
@@ -70,7 +72,7 @@ namespace ngl
 
 		void run()
 		{
-			std::list<tconsuming*> llist;
+			std::list<ptr_tconsuming> llist;
 			std::map<int32_t, int64_t> lremove;
 			while (true)
 			{
@@ -83,28 +85,20 @@ namespace ngl
 				}
 				int64_t end = time_wheel::getms();
 				// ÒÆ³ý
-				std::list<tconsuming*> llist2;
-				for (tconsuming* item : llist)
+				std::list<ptr_tconsuming> llist2;
+				for (ptr_tconsuming& item : llist)
 				{
 					auto itor = lremove.find(item->m_id);
 					if (itor != lremove.end())
 					{
 						item->m_end = itor->second;
-						if (item->m_fun(item->m_beg, item->m_end) == true)
-						{
-							printf_log(true, "finish", item);
-						}
-						else
-						{
-							printf_log(false, "finish", item);
-						}
-						delete item;
+						printf_log(item->m_fun(item->m_beg, item->m_end) == false, "finish", item.get());
 						continue;
 					}
 					item->m_end = end;
 					if (item->m_fun(item->m_beg, item->m_end) == false)
 					{
-						printf_log(false, "overtime", item);
+						printf_log(false, "overtime", item.get());
 					}
 					llist2.push_back(item);
 				}
@@ -116,7 +110,6 @@ namespace ngl
 						m_list.insert(m_list.begin(), llist2.begin(), llist2.end());
 					}
 				}
-				
 			}
 		}
 	};

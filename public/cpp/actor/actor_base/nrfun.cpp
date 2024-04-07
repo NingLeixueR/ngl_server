@@ -3,6 +3,8 @@
 
 namespace ngl
 {
+	const int32_t g_consumings = 100;
+
 	nrfunbase& nrfunbase::set_notfindfun(const tnotfindfun& afun)
 	{
 		m_notfindfun = afun;
@@ -32,9 +34,11 @@ namespace ngl
 		}
 		if (aactor->type() != ACTOR_LOG)
 		{
-			time_consuming lconsuming(nactortype::enum2name(aactor->type()), [](int64_t abeg, int64_t aend)->bool
+			time_consuming lconsuming(
+				std::format("{}-{}", nactortype::enum2name(aactor->type()), apram.m_enum),
+				[](int64_t abeg, int64_t aend)->bool
 				{
-					return aend - abeg > 100;
+					return (aend - abeg) > g_consumings;
 				});
 			itor->second.m_fun(aactor, athreadid, apram);
 		}
