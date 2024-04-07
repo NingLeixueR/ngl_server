@@ -1,8 +1,8 @@
 #pragma once
 
+#include "gateway_info.h"
 #include "actor_manage.h"
 #include "actor_role.h"
-#include "gateway_info.h"
 #include "db_manage.h"
 #include "ndbclient.h"
 #include "db_data.h"

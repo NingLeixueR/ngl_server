@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nguid.h"
-#include "nprotocol.h"
 #include "rebot_test.h"
+#include "nprotocol.h"
+#include "nguid.h"
 
 #include <map>
 
@@ -23,6 +23,7 @@ namespace ngl
 
 		// ### 只是断开连接
 		void remove_socket(i32_socket asocket);
+
 		// ### 删除连接信息
 		void remove_actorid(i64_actorid aactorid);
 

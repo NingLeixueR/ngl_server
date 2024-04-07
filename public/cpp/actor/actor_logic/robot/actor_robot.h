@@ -78,8 +78,8 @@ namespace ngl
 				m_actor_roleid(nguid::moreactor())
 			{}
 		};
-		std::map<std::string, _robot> m_maprobot;
 
+		std::map<std::string, _robot> m_maprobot;
 
 		friend class actor_instance<actor_manage_robot>;
 		static actor_manage_robot& getInstance() 

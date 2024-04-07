@@ -27,6 +27,4 @@ namespace ngl
 	ENUM_ACTOR nactor_type<T>::m_type = ACTOR_NONE;
 
 	void init_nactor_type();
-
-
 }//namespace ngl

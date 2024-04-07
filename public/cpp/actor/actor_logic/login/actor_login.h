@@ -68,7 +68,6 @@ namespace ngl
 
 		void printf_freeserver();
 
-		
 		bool handle(message<np_actorserver_connect>& adata);
 
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
