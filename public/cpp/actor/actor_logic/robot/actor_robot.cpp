@@ -19,7 +19,6 @@ namespace ngl
 			})
 	{
 		assert(aarea == ttab_servers::tab()->m_area);
-
 	}
 
 	void actor_robot::nregister()
@@ -38,7 +37,7 @@ namespace ngl
 			LogLocalError("[LOGIC_ROLE_SYNC:%:%]"
 				, adata.m_data->m_role().m_base().m_name()
 				,  adata.m_data->m_role().m_base().m_lv()
-			)
+			);
 			m_data = *adata.m_data;
 		}Catch;
 		
@@ -48,20 +47,23 @@ namespace ngl
 		net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
 		// 获取本机uip
 		ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
+		i32_session lsession = m_session;
+		i64_actorid lactorid = id_guid();
 		ukcp::getInstance().sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-			, [](char* buff, int len)
+			, [tabgame, lpstruct, lsession, lactorid](char* buff, int len)
 			{
 				std::cout << "GetIp Finish : " << buff << std::endl;
 				ukcp::getInstance().m_localuip = buff;
+
+				// 获取kcp-session
+				pbnet::PROBUFF_NET_KCPSESSION pro;
+				pro.set_m_serverid(tabgame->m_id);
+				pro.set_m_uip(ukcp::getInstance().m_localuip);
+				pro.set_m_uport(lpstruct->m_port);
+				pro.set_m_conv(ukcp::m_conv);
+				nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 			});
-		// 获取kcp-session
-		pbnet::PROBUFF_NET_KCPSESSION pro;
-		pro.set_m_serverid(tabgame->m_id);
-		pro.set_m_uip(ukcp::getInstance().m_localuip);
-		tab = ngl::ttab_servers::tab();
-		pro.set_m_uport(lpstruct->m_port);
-		pro.set_m_conv(ukcp::m_conv);
-		nets::sendbysession(m_session, pro, nguid::moreactor(), id_guid());
+		
 		return true;
 	}
 
