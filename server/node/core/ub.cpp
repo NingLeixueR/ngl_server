@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-04-07 15:17:59
+// 创建时间 24-04-07 17:03:57
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -106,6 +106,7 @@
 #include "roleinfo.cpp"
 #include "segpack.cpp"
 #include "serialize.cpp"
+#include "server_session.cpp"
 #include "splite.cpp"
 #include "synthesis.cpp"
 #include "task.cpp"

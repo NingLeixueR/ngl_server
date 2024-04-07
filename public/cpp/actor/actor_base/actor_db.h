@@ -92,7 +92,7 @@ namespace ngl
 						pro->m_data.insert(std::make_pair(lguid, atab));
 						if (aindex % lsendmaxcount == 0)
 						{
-							nets::net()->send(apack->m_id, pro, lrequestactor, nguid::make());
+							nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 							pro = np_actordb_load_response<PROTYPE, TDBTAB_TYPE, TDBTAB>();
 							pro.m_stat = true;
 							pro.m_over = false;

@@ -4,46 +4,6 @@
 
 namespace ngl
 {
-	std::map<i32_serverid, i32_sessionid> msession::m_server;
-	std::map<i32_sessionid, i32_serverid> msession::m_session;
-	std::shared_mutex msession::m_mutex;
-
-	void msession::add(i32_serverid aserverid, i32_sessionid asession)
-	{
-		LogLocalWarn("connect [%:%] [%]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
-		lock_write(m_mutex);
-		m_server[aserverid] = asession;
-		m_session[asession] = aserverid;
-	}
-
-	void msession::remove(i32_sessionid asession)
-	{
-		lock_write(m_mutex);
-		auto itor = m_session.find(asession);
-		if (itor == m_session.end())
-			return;
-		m_server.erase(itor->second);
-		m_session.erase(itor);
-	}
-
-	i32_sessionid msession::sessionid(i32_serverid aserverid)
-	{
-		lock_read(m_mutex);
-		i32_sessionid* lpsessionid = tools::findmap(m_server, aserverid);
-		if (lpsessionid == nullptr)
-			return -1;
-		return *lpsessionid;
-	}
-
-	i32_serverid msession::serverid(i32_sessionid asessionid)
-	{
-		lock_read(m_mutex);
-		i32_serverid* lpserverid = tools::findmap(m_session, asessionid);
-		if (lpserverid == nullptr)
-			return -1;
-		return *lpserverid;
-	}
-
 	struct net_protocol::impl_net_protocol
 	{
 		i16_port				m_port;											// ·þÎñÆ÷¼àÌý¶Ë¿ÚºÅ
@@ -88,7 +48,7 @@ namespace ngl
 			i64_actorid lactorid = nguid::make(ACTOR_GATEWAY, tab_self_area, nconfig::m_nodeid);
 			actor_base::static_send_actor(lactorid, nguid::make(), pro);
 
-			msession::remove(asession);
+			server_session::remove(asession);
 		}
 
 		inline bool connect(
@@ -176,7 +136,7 @@ namespace ngl
 
 	bool net_protocol::sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_sessionid lsession = msession::sessionid(aserverid);
+		i32_sessionid lsession = server_session::get_sessionid(aserverid);
 		if (lsession == -1)
 			return false;
 		return net_send(lsession, apack);

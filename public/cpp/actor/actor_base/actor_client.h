@@ -5,7 +5,6 @@
 #include "xmlnode.h"
 #include "actor.h"
 #include "impl.h"
-#include "net.h"
 
 namespace ngl
 {

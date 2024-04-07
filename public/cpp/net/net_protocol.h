@@ -1,8 +1,10 @@
 #pragma once
 
+#include "server_session.h"
 #include "handle_pram.h"
 #include "structbytes.h"
 #include "actor_base.h"
+#include "net_pack.h"
 #include "asio_tcp.h"
 #include "asio_kcp.h"
 #include "asio_ws.h"
@@ -16,34 +18,6 @@
 
 namespace ngl
 {
-	class msession
-	{
-		static std::map<i32_serverid, i32_sessionid>	m_server;
-		static std::map<i32_sessionid, i32_serverid>	m_session;
-		static std::shared_mutex						m_mutex;
-	public:
-		static void add(i32_serverid aserverid, i32_sessionid asession);
-		static void remove(i32_sessionid asession);
-
-		static i32_sessionid sessionid(i32_serverid aserverid);
-		static i32_serverid serverid(i32_sessionid asessionid);
-	};
-
-	template <typename T>
-	class net_pack
-	{
-	public:
-		static std::shared_ptr<pack> npack(bpool* apool, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
-		{
-			ngl::serialize_bytes lbytes;
-			int lbuffbyte = adata.ByteSize() + pack_head::size();
-			std::shared_ptr<pack> lpack = pack::make_pack(apool, lbuffbyte);			
-			if (structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid) == false)
-				return nullptr;
-			return lpack;
-		}
-	};
-
 	class sendpack_t
 	{
 	public:
@@ -209,7 +183,7 @@ namespace ngl
 			pro.set_data(&adata);
 			if (agateway != 0)
 			{
-				i32_session lsession = msession::session(agateway);
+				i32_session lsession = server_session::get_sessionid(agateway);
 				if (lsession == -1)
 					return;
 				send(lsession, pro, nguid::make(), nguid::make());
@@ -228,7 +202,7 @@ namespace ngl
 			pro.set_data(&adata);
 			if (agateway != 0)
 			{
-				i32_session lsession = msession::session(agateway);
+				i32_session lsession = server_session::get_sessionid(agateway);
 				if (lsession == -1)
 					return;
 				send(lsession, pro, nguid::make(), nguid::make());

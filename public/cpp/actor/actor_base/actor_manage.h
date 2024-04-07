@@ -7,7 +7,6 @@
 #include "nthread.h"
 #include "pack.h"
 #include "impl.h"
-#include "net.h"
 
 #include <list>
 #include <map>

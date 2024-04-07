@@ -3,8 +3,6 @@
 #include "ttab_servers.h"
 #include "net_protocol.h"
 #include "xmlnode.h"
-#include "net_tcp.h"
-#include "net_ws.h"
 
 namespace ngl
 {
@@ -12,66 +10,20 @@ namespace ngl
 	{
 		static std::array<net_protocol*, ENET_COUNT> m_net;
 	public:
-		static net_protocol* net_first()
-		{
-			for (int i = 0; i < ENET_COUNT; ++i)
-			{
-				if (m_net[i] != nullptr)
-					return m_net[i];
-			}
-			return nullptr;
-		}
+		static net_protocol* net_first();
 
-		static ENET_PROTOCOL session2type(i32_session asession)
-		{
-			return (ENET_PROTOCOL)(asession >> 24);
-		}
+		static ENET_PROTOCOL session2type(i32_session asession);
 
-		static net_protocol* net(i32_session asession)
-		{
-			ENET_PROTOCOL ltype = session2type(asession);
-			return nettype(ltype);
-		}
+		static net_protocol* net(i32_session asession);
 
-		static net_protocol* nettype(ENET_PROTOCOL atype)
-		{
-			if (ttab_servers::isefficient(atype) && m_net[atype] != nullptr)
-			{
-				return m_net[atype];
-			}
-			return nullptr;
-		}
+		static net_protocol* nettype(ENET_PROTOCOL atype);
 
-		static bool init(i32_threadsize asocketthreadnum, bool aouternet)
-		{
-			tab_servers* tab = ttab_servers::tab();
-			if (tab == nullptr)
-				return false;
-			for (net_works& item : tab->m_net)
-			{
-				if (m_net[item.m_type] != nullptr)
-					continue;
-				auto& lserver = m_net[item.m_type];
-				switch (item.m_type)
-				{
-				case ENET_TCP:
-					lserver = new net_tcp((int8_t)ENET_TCP);
-					break;
-				case ENET_WS:
-					lserver = new net_ws((int8_t)ENET_WS);
-					break;
-				default:
-					continue;
-				}
-				lserver->init(item.m_port, asocketthreadnum, aouternet);
-			}
-			return true;
-		}
+		static bool init(i32_threadsize asocketthreadnum, bool aouternet);
 
 		template <typename T>
 		static bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			i32_session lsession = msession::sessionid(aserverid);
+			i32_session lsession = server_session::get_sessionid(aserverid);
 			if (lsession == -1)
 				return false;
 			return sendbysession(lsession, adata, aactorid, arequestactorid);
@@ -144,70 +96,15 @@ namespace ngl
 			return true;
 		}
 
-		static bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack)
-		{
-			net_protocol* lpprotocol = net(asession);
-			if (lpprotocol == nullptr)
-			{
-				return false;
-			}
-			return lpprotocol->net_send(asession, apack);
-		}
+		static bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
-		static bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack)
-		{
-			net_protocol* lpprotocol = net(asession);
-			if (lpprotocol == nullptr)
-			{
-				return false;
-			}
-			return lpprotocol->net_send(asession, apack);
-		}
+		static bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
-		static const std::string& ip(net_works const* apstruct)
-		{
-			return nconfig::node_type() != ROBOT ? apstruct->m_nip : apstruct->m_ip;
-		}
+		static const std::string& ip(net_works const* apstruct);
 
-		static net_works const* ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair)
-		{
-			net_works const* lpstruct = ttab_servers::connect(aserverid);
-			if (lpstruct == nullptr)
-			{
-				return nullptr;
-			}
-			apair = std::make_pair(ip(lpstruct), lpstruct->m_port);
-			return lpstruct;
-		}
+		static net_works const* ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair);
 
-		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection)
-		{
-			i32_session lsession = msession::sessionid(aserverid);
-			if (lsession != -1)
-			{
-				afun(lsession);
-				return true;
-			}
-			std::pair<str_ip, i16_port> lpair;
-			net_works const*  lpstruct = ipport(aserverid, lpair);
-			if (lpstruct == nullptr)
-			{
-				return false;
-			}
-			net_protocol* lserver = m_net[lpstruct->m_type];
-			if (lserver == nullptr)
-			{
-				return false;
-			}
-			LogLocalInfo("Connect Server %@%:%", aserverid, lpair.first, lpair.second);
-
-			return lserver->connect(lpair.first, lpair.second , [aserverid, afun](i32_session asession)
-				{
-					msession::add(aserverid, asession);
-					if (afun != nullptr)
-						afun(asession);
-				}, await, areconnection);
-		}
+		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
 	};
 }
 
@@ -276,9 +173,9 @@ namespace ngl
 	template <typename T>
 	bool actor_base::sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_session lsession = msession::session(aserverid);
+		i32_session lsession = server_session::get_sessionid(aserverid);
 		if (lsession == -1)
-			return;
+			return false;
 		return nets::sendpack(lsession, apack);
 	}
 
