@@ -210,6 +210,37 @@ namespace ngl
 			}
 			else if (lrecv->m_parm[0] == "X1")
 			{
+
+				foreach([this](actor_manage_robot::_robot& arobot)
+					{
+						tab_servers* tab = ttab_servers::tab();
+						tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+						net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
+						net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
+						// 获取本机uip
+						ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
+						i32_session lsession = arobot.m_session;
+						i64_actorid lactorid = id_guid();
+						ukcp::getInstance().sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+							, [tabgame, lpstruct, lsession, lactorid](char* buff, int len)
+							{
+								std::cout << "GetIp Finish : " << buff << std::endl;
+								ukcp::getInstance().m_localuip = buff;
+
+								// 获取kcp-session
+								pbnet::PROBUFF_NET_KCPSESSION pro;
+								pro.set_m_serverid(tabgame->m_id);
+								pro.set_m_uip(ukcp::getInstance().m_localuip);
+								pro.set_m_uport(lpstruct->m_port);
+								pro.set_m_conv(ukcp::m_conv);
+								nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
+							});
+						return true;
+					});
+
+			}
+			else if (lrecv->m_parm[0] == "X2")
+			{
 				pbnet::PROBUFF_NET_GET_TIME pro;
 				foreach([&pro, this](actor_manage_robot::_robot& arobot)
 					{
@@ -217,6 +248,7 @@ namespace ngl
 						return true;
 					});	
 			}
+			
 			return true;
 		}
 		
