@@ -29,8 +29,8 @@ namespace ngl
 		
 		virtual void init()
 		{
-			//m_info.set(this);
 		}
+
 		static void nregister();
 
 		virtual ~actor_cross() {}
