@@ -19,6 +19,7 @@ namespace ngl
 		std::string m_kcpsessionmd5;
 	public:
 		i32_session m_session;
+		int16_t m_kcp;
 		// ----- Data End   -----
 	public:
 		actor_robot(i16_area aarea, i32_actordataid arobotid, void*);
@@ -220,18 +221,22 @@ namespace ngl
 						// 获取本机uip
 						ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
 						i32_session lsession = arobot.m_session;
-						i64_actorid lactorid = id_guid();
-						ukcp::getInstance().sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-							, [tabgame, lpstruct, lsession, lactorid](char* buff, int len)
+						//i64_actorid lactorid = id_guid();
+						i64_actorid lactorid = arobot.m_robot->id_guid();
+
+						int16_t lkcp = nets::create_kcp();
+						arobot.m_robot->m_kcp = lkcp;
+						nets::kcp(arobot.m_robot->m_kcp)->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+							, [tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
 							{
 								std::cout << "GetIp Finish : " << buff << std::endl;
-								ukcp::getInstance().m_localuip = buff;
+								ukcp::m_localuip = buff;
 
 								// 获取kcp-session
 								pbnet::PROBUFF_NET_KCPSESSION pro;
 								pro.set_m_serverid(tabgame->m_id);
-								pro.set_m_uip(ukcp::getInstance().m_localuip);
-								pro.set_m_uport(lpstruct->m_port);
+								pro.set_m_uip(ukcp::m_localuip);
+								pro.set_m_uport(lkcp);
 								pro.set_m_conv(ukcp::m_conv);
 								nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 							});
@@ -245,6 +250,7 @@ namespace ngl
 				foreach([&pro, this](actor_manage_robot::_robot& arobot)
 					{
 						sendkcp(&arobot, pro);
+						//ngl::sleep::seconds(10);
 						return true;
 					});	
 			}
@@ -291,7 +297,7 @@ namespace ngl
 		template <typename T>
 		void sendkcp(_robot* arobot, T& adata)
 		{
-			arobot->m_robot->sendkcp(adata, nguid::moreactor());
+			arobot->m_robot->sendkcp(adata, nguid::moreactor(), arobot->m_robot->m_kcp);
 			//udp_kcp::getInstance().send(arobot->m_robot->m_kcpsession, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}		
 

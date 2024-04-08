@@ -287,9 +287,9 @@ namespace ngl
 			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
 		using ecmd_callback = std::function<void(ptr_se&, const std::string&)>;
-		static std::map<ecmd, ecmd_callback> m_cmdfun;
+		std::map<ecmd, ecmd_callback> m_cmdfun;
 
-		static bool cmd(ptr_se& apstruct, const char* abuf, int32_t alen)
+		bool cmd(ptr_se& apstruct, const char* abuf, int32_t alen)
 		{
 			if (alen < ecmd_minlen)
 				return false;
@@ -313,12 +313,12 @@ namespace ngl
 			}
 		}
 
-		static void register_fun(ecmd anum, const ecmd_callback& afun)
+		void register_fun(ecmd anum, const ecmd_callback& afun)
 		{
 			m_cmdfun[anum] = afun;
 		}
 
-		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
+		bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
 	};
 
 	struct asio_kcp::impl_asio_kcp
@@ -335,6 +335,8 @@ namespace ngl
 		asio_kcp*							m_kcp;
 		std::function<void(char*, int)>		m_wait;
 		asio_udp_endpoint					m_waitendpoint;
+		i16_port							m_port;
+		udp_cmd								m_cmd;
 	private:
 		//## [udp_cmd::ecmd_connect]		调用aconnect为true
 		//## [udp_cmd::ecmd_connect_ret]	调用aconnect为false
@@ -353,7 +355,7 @@ namespace ngl
 			if (aconnect)
 			{
 				apstruct->m_actorid = aactorid;
-				wheel_parm lparm
+				/*wheel_parm lparm
 				{
 					.m_ms = ms * 1000,
 					.m_intervalms = [ms](int64_t) {return ms * 1000; } ,
@@ -374,11 +376,11 @@ namespace ngl
 						}
 					}
 				};
-				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);*/
 			}
 			else
 			{
-				wheel_parm lparm
+				/*wheel_parm lparm
 				{
 					.m_ms = ms * 1000,
 					.m_intervalms = [ms](int64_t) {return ms * 1000; } ,
@@ -394,14 +396,14 @@ namespace ngl
 						udp_cmd::sendcmd(m_kcp, session, udp_cmd::ecmd_ping, "");
 					}
 				};
-				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);*/
 			}
 			return true;
 		}
 		//## udp_cmd::ecmd_connect
 		inline void function_ecmd_connect()
 		{
-			udp_cmd::register_fun(udp_cmd::ecmd_connect, [this](ptr_se& apstruct, const std::string& ajson)
+			m_cmd.register_fun(udp_cmd::ecmd_connect, [this](ptr_se& apstruct, const std::string& ajson)
 				{
 					apstruct->m_isconnect = true;
 					apstruct->m_pingtm = localtime::gettime();
@@ -425,7 +427,7 @@ namespace ngl
 						<< std::endl;
 
 					if (function_econnect(apstruct, lactorid, true))
-						udp_cmd::sendcmd(m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
+						m_cmd.sendcmd(m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
 				});
 		}
 		//## udp_cmd::ecmd_connect_ret
@@ -434,7 +436,7 @@ namespace ngl
 			// 除了robot 其他服务器均不允许定时ping 
 			//if (nconfig::m_nodetype != ngl::ROBOT)
 			//	return;
-			udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [this](ptr_se& apstruct, const std::string& ajson)
+			m_cmd.register_fun(udp_cmd::ecmd_connect_ret, [this](ptr_se& apstruct, const std::string& ajson)
 				{
 					apstruct->m_isconnect = true;
 					apstruct->m_pingtm = localtime::gettime();
@@ -446,7 +448,7 @@ namespace ngl
 		//## udp_cmd::ecmd_ping
 		inline void function_ecmd_ping()
 		{
-			udp_cmd::register_fun(udp_cmd::ecmd_ping, [this](ptr_se& apstruct, const std::string& ajson)
+			m_cmd.register_fun(udp_cmd::ecmd_ping, [this](ptr_se& apstruct, const std::string& ajson)
 				{
 					apstruct->m_pingtm = localtime::gettime();
 				});
@@ -454,9 +456,9 @@ namespace ngl
 		//## udp_cmd::ecmd_close
 		inline void function_ecmd_close()
 		{
-			udp_cmd::register_fun(udp_cmd::ecmd_close, [this](ptr_se& apstruct, const std::string& ajson)
+			m_cmd.register_fun(udp_cmd::ecmd_close, [this](ptr_se& apstruct, const std::string& ajson)
 				{
-					udp_cmd::sendcmd(m_kcp, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
+					m_cmd.sendcmd(m_kcp, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
 					int lession = apstruct->m_session;
 					wheel_parm lparm
 					{
@@ -474,6 +476,7 @@ namespace ngl
 	public:
 		inline impl_asio_kcp(asio_kcp* akcp, i16_port port)
 			: m_context()
+			, m_port(port)
 			, m_socket(m_context, asio_udp_endpoint(asio_udp::v4(), port))
 			, m_session(akcp)
 			, m_kcp(akcp)
@@ -562,7 +565,7 @@ namespace ngl
 										}
 
 										// 首先判断下是否kcp_cmd
-										if (udp_cmd::cmd(lpstruct, m_buffrecv, lrecv))
+										if (m_cmd.cmd(lpstruct, m_buffrecv, lrecv))
 										{
 											std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
 											break;
@@ -734,7 +737,7 @@ namespace ngl
 			ltempjson.set_nonformatstr(true);
 			std::string lparm;
 			ltempjson.get(lparm);
-			udp_cmd::sendcmd(m_kcp, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
+			m_cmd.sendcmd(m_kcp, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
 			m_connectfun = afun;
 		}
 
@@ -764,8 +767,6 @@ namespace ngl
 		lpstruct->m_asiokcp->get_impl()->sendbuff(lpstruct->m_endpoint, buf, len);
 		return len;
 	}
-
-	std::map<udp_cmd::ecmd, udp_cmd::ecmd_callback> udp_cmd::m_cmdfun;
 
 	bool udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
 	{

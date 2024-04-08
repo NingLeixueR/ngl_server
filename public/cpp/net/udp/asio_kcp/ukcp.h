@@ -14,10 +14,10 @@ namespace ngl
 
 		ukcp(i16_port aprot);
 	public:
-		static int32_t m_conv;
+		static const int32_t m_conv = 1;
 		static std::string m_localuip;
 
-		static ukcp& getInstance(i16_port aprot = -1)
+		/*static ukcp& getInstance(i16_port aprot = -1)
 		{
 			static bool lfirst = true;
 			if (lfirst && aprot == -1)
@@ -25,6 +25,11 @@ namespace ngl
 			lfirst = false;
 			static ukcp ltemp(aprot);
 			return ltemp;
+		}*/
+
+		static ukcp* create(i16_port aprot)
+		{
+			return new ukcp(aprot);
 		}
 
 #pragma region kcp_send

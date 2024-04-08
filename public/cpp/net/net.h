@@ -4,11 +4,15 @@
 #include "net_protocol.h"
 #include "xmlnode.h"
 
+#define isystemindex (0)
+
 namespace ngl
 {
 	class nets
 	{
 		static std::array<net_protocol*, ENET_COUNT> m_net;
+		static std::map<int16_t, ukcp*> m_kcpnet;
+		static int16_t m_kcpindex;
 	public:
 		static net_protocol* net_first();
 
@@ -19,6 +23,14 @@ namespace ngl
 		static net_protocol* nettype(ENET_PROTOCOL atype);
 
 		static bool init(i32_threadsize asocketthreadnum, bool aouternet);
+
+		// 服务器只监听一个端口
+		static bool check_serverkcp();
+
+		// robot 创建随机端口
+		static int16_t create_kcp();
+
+		static ukcp* kcp(int16_t anum = isystemindex);
 
 		template <typename T>
 		static bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
@@ -195,6 +207,51 @@ namespace ngl
 	bool actor_base::send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return nets::sendbysession(asession, adata, aactorid, arequestactorid);
+	}
+
+	template <typename T>
+	bool actor_base::sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex/* = 0*/)
+	{
+		if (m_kcpsession == -1)
+		{
+			LogLocalError("m_kcpsession = -1, is_single() == [%]", is_single());
+			return false;
+		}
+		if (iskcp() == false)
+			return false;
+
+		nets::kcp(asystemindex)->send(m_kcpsession, adata, aactorid, id_guid());
+		return true;
+	}
+
+	template <typename T>
+	bool actor_base::static_sendkcp(
+		i32_sessionid asession
+		, T& adata
+		, i64_actorid aactorid
+		, i64_actorid arequestactorid
+		, int16_t asystemindex/* = 0*/
+	)
+	{
+		if (iskcp() == false)
+			return false;
+		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
+		return true;
+	}
+
+	template <typename T>
+	bool actor_base::static_sendkcp(
+		const std::vector<i32_sessionid>& asession
+		, T& adata
+		, i64_actorid aactorid
+		, i64_actorid arequestactorid
+		, int16_t asystemindex/* = 0*/
+	)
+	{
+		if (iskcp() == false)
+			return false;
+		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
+		return true;
 	}
 }//namespace ngl
 

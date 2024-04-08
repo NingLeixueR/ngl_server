@@ -188,18 +188,7 @@ namespace ngl
 
 		// ## 通过udp.kcp发送数据
 		template <typename T>
-		bool sendkcp(T& adata, i64_actorid aactorid)
-		{
-			if (m_kcpsession == -1)
-			{
-				LogLocalError("m_kcpsession = -1, is_single() == [%]", is_single())
-				return false;
-			}
-			if (iskcp() == false)
-				return false;
-			ukcp::getInstance().send(m_kcpsession, adata, aactorid, id_guid());
-			return true;
-		}
+		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
 
 		template <typename T>
 		static bool static_sendkcp(
@@ -207,13 +196,8 @@ namespace ngl
 			, T& adata
 			, i64_actorid aactorid
 			, i64_actorid arequestactorid
-		)
-		{
-			if (iskcp() == false)
-				return false;
-			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
-			return true;
-		}
+			, int16_t asystemindex = 0
+		);
 
 		template <typename T>
 		static bool static_sendkcp(
@@ -221,17 +205,14 @@ namespace ngl
 			, T& adata
 			, i64_actorid aactorid
 			, i64_actorid arequestactorid
-		)
-		{
-			if (iskcp() == false)
-				return false;
-			ukcp::getInstance().send(asession, adata, aactorid, arequestactorid);
-			return true;
-		}
+			, int16_t asystemindex = 0
+		);
 
+#pragma region network_kcpclient
 		virtual const char* kcpsessionmd5();
 
-		bool connect_kcp(const std::string& aip, i16_port aprot);
+		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
+#pragma endregion //network_kcpclient
 
 #pragma endregion //network_kcp
 	private:

@@ -2,7 +2,7 @@
 
 namespace ngl
 {
-	int32_t ukcp::m_conv = 1;
+	//int32_t ukcp::m_conv = 1;
 	std::string ukcp::m_localuip = "";
 
 	ukcp::ukcp(i16_port aprot) :
@@ -16,7 +16,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		m_kcp.connect(m_conv++, akcpsess, aactorid, aip, aport, afun);
+		m_kcp.connect(m_conv, akcpsess, aactorid, aip, aport, afun);
 	}
 
 	void ukcp::connect(const std::string& akcpsess
@@ -25,7 +25,7 @@ namespace ngl
 		, const std::function<void(i32_session)>& afun
 	)
 	{
-		m_kcp.connect(m_conv++, akcpsess, aactorid, aendpoint, afun);
+		m_kcp.connect(m_conv, akcpsess, aactorid, aendpoint, afun);
 	}
 
 	i64_actorid ukcp::find_actorid(i32_session asession)
@@ -67,6 +67,6 @@ namespace ngl
 
 	void ukcp::reset_add(const std::string& aip, i16_port aport)
 	{
-		m_kcp.reset_add(m_conv++, aip, aport);
+		m_kcp.reset_add(m_conv, aip, aport);
 	}
 }// namespace ngl

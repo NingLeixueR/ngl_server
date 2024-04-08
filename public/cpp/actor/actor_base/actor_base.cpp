@@ -4,6 +4,7 @@
 #include "ndb_modular.h"
 #include "ndbclient.h"
 #include "xmlnode.h"
+#include "net.h"
 
 namespace ngl
 {
@@ -335,14 +336,15 @@ namespace ngl
 		return "";
 	}
 
-	bool actor_base::connect_kcp(const std::string& aip, i16_port aprot)
+	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot)
 	{
 		if (iskcp() == false)
 			return false;
 		std::string lkcpsessionmd5 = kcpsessionmd5();
 		if (lkcpsessionmd5 == "")
 			return false;
-		ukcp::getInstance().connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
+		
+		nets::kcp(anum)->connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				m_kcpsession = asession;
 				std::cout << "m_kcpsession = " << m_kcpsession << std::endl;

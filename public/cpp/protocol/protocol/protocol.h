@@ -11,6 +11,7 @@
 #include "nlog.h"
 #include "type.h"
 #include "pack.h"
+#include "net.h"
 
 #include <functional>
 #include <map>
@@ -144,7 +145,7 @@ namespace ngl
 						lp->make_data();
 						if (structbytes<T>::tostruct(apack, *lp->get_data()))
 						{
-							i64_actorid lactorid = ukcp::getInstance().find_actorid(apack->m_id);
+							i64_actorid lactorid = nets::kcp()->find_actorid(apack->m_id);
 							lp->m_uid.push_back(nguid::actordataid(lactorid));
 							lp->m_area.push_back(nguid::area(lactorid));
 							return ltemp;

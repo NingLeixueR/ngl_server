@@ -47,8 +47,8 @@ namespace ngl
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.m_data->m_utc(), "%y/%m/%d %H:%M:%S");
-		//LogLocalError("[%][%]", m_data.m_role().m_base().m_name(), lbuff)
-		std::cout << m_data.m_role().m_base().m_name() << ":" << lbuff << std::endl;
+		LogLocalError("[%][%]", m_data.m_role().m_base().m_name(), lbuff)
+		//std::cout << m_data.m_role().m_base().m_name() << ":" << lbuff << std::endl;
 		return true;
 	}
 
@@ -142,7 +142,7 @@ namespace ngl
 		net_works const*  lpworks = ttab_servers::nworks(ENET_KCP, tabgame);
 		if (lpworks == nullptr)
 			return false;
-		return connect_kcp(lpworks->m_ip, lpworks->m_port);
+		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
 	}
 
 	void actor_manage_robot::nregister()

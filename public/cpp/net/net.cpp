@@ -8,6 +8,8 @@
 namespace ngl
 {
 	std::array<net_protocol*, ENET_COUNT> nets::m_net;
+	std::map<int16_t, ukcp*> nets::m_kcpnet;
+	int16_t nets::m_kcpindex = 1000;
 
 	net_protocol* nets::net_first()
 	{
@@ -39,28 +41,72 @@ namespace ngl
 		return nullptr;
 	}
 
-	bool nets::init(i32_threadsize asocketthreadnum, bool aouternet)
+	bool nets::check_serverkcp()
 	{
 		tab_servers* tab = ttab_servers::tab();
 		if (tab == nullptr)
 			return false;
+		int32_t lnum = 0;
 		for (net_works& item : tab->m_net)
 		{
-			if (m_net[item.m_type] != nullptr)
-				continue;
-			auto& lserver = m_net[item.m_type];
-			switch (item.m_type)
+			if (item.m_type == ENET_KCP && item.m_port != -1)
 			{
-			case ENET_TCP:
-				lserver = new net_tcp((int8_t)ENET_TCP);
-				break;
-			case ENET_WS:
-				lserver = new net_ws((int8_t)ENET_WS);
-				break;
-			default:
-				continue;
+				++lnum;
+				if (lnum > 1)
+					return false;
 			}
-			lserver->init(item.m_port, asocketthreadnum, aouternet);
+		}
+		return true;
+	}
+
+	ukcp* nets::kcp(int16_t anum /*= isystemindex*/)
+	{
+		auto itor = m_kcpnet.find(anum);
+		if (itor == m_kcpnet.end())
+			return nullptr;
+		return itor->second;
+	}
+
+	int16_t nets::create_kcp()
+	{
+		++m_kcpindex;
+		m_kcpnet[m_kcpindex] = ukcp::create(m_kcpindex);
+		return m_kcpindex;
+	}
+
+	bool nets::init(i32_threadsize asocketthreadnum, bool aouternet)
+	{
+		if (check_serverkcp() == false)
+			return false;
+
+		tab_servers* tab = ttab_servers::tab();
+		if (tab == nullptr)
+			return false;
+		
+		for (net_works& item : tab->m_net)
+		{
+			if (item.m_type == ENET_TCP || item.m_type == ENET_WS)
+			{
+				if (m_net[item.m_type] != nullptr)
+					continue;
+				auto& lserver = m_net[item.m_type];
+				if (item.m_type == ENET_TCP)
+				{
+					lserver = new net_tcp((int8_t)ENET_TCP);
+				}
+				else if (item.m_type == ENET_WS)
+				{
+					lserver = new net_ws((int8_t)ENET_WS);
+				}
+				lserver->init(item.m_port, asocketthreadnum, aouternet);
+			}
+			else if (item.m_type == ENET_KCP)
+			{
+				if (item.m_port != -1)
+				{
+					m_kcpnet[isystemindex] = ukcp::create(item.m_port);
+				}
+			}
 		}
 		return true;
 	}

@@ -31,7 +31,7 @@ namespace ngl
 	{
 		auto lpram = adata.m_data;
 		auto lpack = adata.m_pack;
-		ukcp::getInstance().reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport);
+		nets::kcp()->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport);
 
 		nets::sendbysession(lpack->m_id, *lpram, nguid::make(), nguid::make());
 		return true;

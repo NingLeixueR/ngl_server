@@ -216,24 +216,29 @@ namespace ngl
 	{
 		auto lpram = adata.m_data;
 		auto lpack = adata.m_pack;
-		gateway_socket* lpstruct = m_info.get(lpack->m_id);
-		if (lpstruct == nullptr)
-			return true;
+		//gateway_socket* lpstruct = m_info.get(lpack->m_id);
+		//if (lpstruct == nullptr)
+		//	return true;
+		//
+		//std::string lkcpsession;
+		//if (ukcp::create_session(nguid::make(nguid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
+		//	return true;
 		
+		i64_actorid request_actor = lpack->m_head.get_request_actor();
 		std::string lkcpsession;
-		if (ukcp::create_session(nguid::make(nguid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
+		if (ukcp::create_session(nguid::make(nguid::none_type(), nguid::area(request_actor), nguid::actordataid(request_actor)), lkcpsession) == false)
 			return true;
-		
 
 		// ### 通知kcp服务器创建连接
 		np_actor_kcp pro;
 		pro.m_kcpsession = lkcpsession;
 		pro.m_sessionid = lpack->m_id;
-		pro.m_area = lpstruct->m_area;
-		pro.m_dataid = lpstruct->m_dataid;
+		pro.m_area = nguid::area(request_actor);
+		pro.m_dataid = nguid::actordataid(request_actor);
 		pro.m_uip = lpram->m_uip();
 		pro.m_uport = lpram->m_uport();
 		pro.m_conv = lpram->m_conv();
+
 		nets::sendbyserver(lpram->m_serverid(), pro, nguid::make(), nguid::make());
 
 		return true;

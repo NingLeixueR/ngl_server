@@ -14,19 +14,22 @@ namespace ngl
 		//auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
 		//pro->set_m_utc(localtime::gettime());
 		//send2client(pro);
-		std::cout << "######Get Server Time##" << localtime::gettime() << std::endl;
+		//std::cout << "######Get Server Time##" << localtime::gettime() << std::endl;
 		
 		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
-		std::cout
+		/*std::cout
 			<< " type			= " << nguid::type(lrequest)
 			<< " actordataid	= " << nguid::actordataid(lrequest)
 			<< " area			= " << nguid::area(lrequest)
-			<< std::endl;
+			<< std::endl;*/
+
+		LogLocalError("type=%,actordataid=%,area=%,NAME=%", nguid::type(lrequest), nguid::actordataid(lrequest), nguid::area(lrequest), m_info.get()->getconst().m_base().m_name());
+
 		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name())
 
 		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
 		pro.set_m_utc(localtime::gettime());
-		sendkcp(pro, adata.m_pack->m_head.get_actordataid());
+		sendkcp(pro, lrequest);
 
 		//
 		return true;

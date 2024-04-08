@@ -79,13 +79,6 @@ bool init_server(int aid)
 
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
-
-	ngl::net_works const* lpstruct = ngl::ttab_servers::get_nworks(ngl::ENET_KCP);
-	if (lpstruct != nullptr)
-	{
-		ngl::ukcp::getInstance(lpstruct->m_port);
-	}
-
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 	LogLocalError("ngl::actor_manage::getInstance().init(%)", tab->m_actorthreadnum)
 
