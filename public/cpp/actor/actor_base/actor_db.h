@@ -10,6 +10,7 @@
 #include "db_data.h"
 #include "db_pool.h"
 #include "db.h"
+#include "gcmd.h"
 #include "net.h"
 
 namespace ngl
@@ -251,7 +252,7 @@ namespace ngl
 					{
 						.m_type = nactor_type<tactor_db>::type(),
 						.m_area = ttab_servers::tab()->m_area,
-						.m_id = nconfig::m_nodeid
+						.m_id = nguid::none_actordataid()
 					},
 					.m_weight = 0x7fffffff,
 				})
@@ -279,6 +280,11 @@ namespace ngl
 				, (Tfun<tactor_db, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & tactor_db::handle
 				, (Tfun<tactor_db, np_actortime_db_cache<PROTYPE, TDBTAB>>) & tactor_db::handle
 				);
+
+			tactor_db::template register_actor<EPROTOCOL_TYPE_CUSTOM, tactor_db>(
+				true
+				, dregister_fun_handle(tactor_db, mforward<np_gm>)
+			);
 		}
 
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
@@ -327,6 +333,73 @@ namespace ngl
 				}
 			}
 			return true;
+		}
+
+		bool handle(message<mforward<np_gm>>& adata)
+		{
+			ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+
+			std::string loperator;
+			if (lojson.read("operator", loperator) == false)
+			{
+				return true;
+			}
+			static std::map<std::string, std::function<void(int, int, ngl::ojson&)>> lcmd;
+			if (lcmd.empty())
+			{
+				lcmd["query"] = [this](int athread, int id, ngl::ojson& aos)
+					{
+						int64_t lid = 0;
+						if (aos.read("data", lid) == false)
+							return;
+						if (ngl::dbdata<TDBTAB>::find(lid) == nullptr)
+							db_manage::select<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), lid);
+						protobuf_data<TDBTAB> m_savetemp;
+						m_savetemp.m_isbinary = false;
+						m_savetemp.m_data = std::make_shared<TDBTAB>();
+						if (ngl::dbdata<TDBTAB>::get(lid, *m_savetemp.m_data.get()))
+						{
+							char lbuff[10240] = { 0 };
+							ngl::serialize lserialize(lbuff, 10240);
+							if (lserialize.push(m_savetemp))
+							{
+								// ·µ»Ø {"data":""}
+								gcmd<std::string> pro;
+								pro.id = id;
+								pro.m_operator = "query_responce";
+								pro.m_data = lbuff;
+							}
+						}
+					};
+				lcmd["change"] = [this](int athread, int id, ngl::ojson& aos)
+					{
+						gcmd<bool> pro;
+						pro.id = id;
+						pro.m_operator = "change_responce";
+						pro.m_data = false;
+
+						std::string ljson;
+						if (aos.read("data", ljson) == false)
+							return;
+						protobuf_data<TDBTAB> ldata;
+						ldata.m_isbinary = false;
+						ngl::unserialize lunser(ljson.c_str(), ljson.size()+1);
+						if (!lunser.pop(ldata))
+							return;
+						ngl::dbdata<TDBTAB>::set(ldata.m_data->m_id(), *ldata.m_data);
+						db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), ldata.m_data->m_id());
+						// ·µ»Ø {"data":""}
+						
+						pro.m_data = true;
+					};
+			}
+			auto itor = lcmd.find(loperator);
+			if (itor == lcmd.end())
+			{
+				LogLocalError("GM actor_db operator[%] ERROR", loperator);
+				return true;
+			}
+			itor->second(adata.m_thread, adata.m_data->identifier(), lojson);
 		}
 	};
 

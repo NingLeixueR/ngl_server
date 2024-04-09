@@ -60,7 +60,7 @@ namespace ngl
 
 		bool handle(message<mforward<np_gm>>& adata)
 		{
-			using type = mforward<np_gm_response>;
+			//using type = mforward<np_gm_response>;
 			ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
 
 			std::string loperator;

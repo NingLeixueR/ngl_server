@@ -50,6 +50,19 @@ namespace ngl
 				sendsign(itor->second, adata.m_pack, *adata.m_data);
 				return true;
 			}
+			else if (lactorname == "ACTOR_DB")
+			{
+				int32_t ltype = 0;
+				if (lreadjson.read("db", ltype))
+				{
+					lactorid = nguid::make(
+						dbvalue(EPROTOCOL_TYPE::EPROTOCOL_TYPE_PROTOCOLBUFF, (pbdb::ENUM_DB)(ltype)),
+						ttab_servers::tab()->m_area,
+						nguid::none_actordataid()
+					);
+					sendnosign(lactorid, adata.m_pack, *adata.m_data);
+				}				
+			}
 			return true;
 		}
 		else if (lreadjson.read("actor_id", lactorid))

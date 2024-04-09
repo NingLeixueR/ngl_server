@@ -32,6 +32,7 @@
 
 #include "conversion.h"
 #include "xmlprotocol.h"
+#include "ttab_servers.h"
 
 std::map<std::string, std::string> g_typearr = { {"bool", "bool"}, {"int32", "int32_t"}, {"int64", "int64_t"}, {"string", "const char*"}, {"float", "float"}, {"double", "double"}};
 
@@ -879,15 +880,19 @@ int main(int argc, char** argv)
                     ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
                     ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/push_server_config.php");
 
+                    ngl::net_works const* lpstruct = ngl::ttab_servers::nworks(ngl::ENET_PROTOCOL::ENET_TCP, &tab);
+                    if (lpstruct == nullptr)
+                        return;
+
                     std::stringstream lstream;
                     //xx=xx&xx=xx&xx=xx
                     lstream
                         << "id=" << tab.m_id << "&"
                         << "area=" << tab.m_area << "&"
                         << "name=" << tab.m_name << "&"
-                        << "ip=" << tab.m_ip << "&"
-                        << "nip=" << tab.m_nip << "&"
-                        << "port=" << tab.m_port << "&"
+                        << "ip=" << lpstruct->m_ip << "&"
+                        << "nip=" << lpstruct->m_nip << "&"
+                        << "port=" << lpstruct->m_port << "&"
                         << "type=" << tab.m_type;
 
                     ngl::manage_curl::set_param(*lhttp, lstream.str());

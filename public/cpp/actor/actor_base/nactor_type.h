@@ -26,5 +26,7 @@ namespace ngl
 	template <typename T>
 	ENUM_ACTOR nactor_type<T>::m_type = ACTOR_NONE;
 
+	ENUM_ACTOR dbvalue(EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE);
+
 	void init_nactor_type();
 }//namespace ngl

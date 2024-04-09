@@ -144,7 +144,7 @@ namespace ngl
 		inline i64_actorid dbguid()
 		{
 			ENUM_ACTOR ltype = nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type();
-			return nguid::make(ltype, tab_self_area, dbnodeid());
+			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 
 		void loaddb(const nguid& aid)

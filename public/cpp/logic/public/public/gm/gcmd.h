@@ -1,23 +1,8 @@
 #pragma once
 
 #include "define_json.h"
-#include "actor_manage.h"
-#include "actor_create.h"
-#include "manage_curl.h"
-#include "manage_csv.h"
-#include "ndb_modular.h"
-#include "ndbclient.h"
-#include "nprotocol.h"
-#include "initproto.h"
-#include "ntimer.h"
-#include "notice.h"
-#include "splite.h"
-#include "net.h"
-#include "db_manage.h"
-#include "db_pool.h"
-#include "db_data.h"
-#include "db.h"
-
+#include "conversion.h"
+#include "actor.h"
 
 namespace ngl
 {
