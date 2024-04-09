@@ -27,8 +27,9 @@ namespace ngl
 
 	class asio_kcp
 	{
-	private:
+	public:
 		struct impl_asio_kcp;
+	private:		
 		ngl::impl<impl_asio_kcp> m_impl_asio_kcp;
 	public:
 		asio_kcp(i16_port port);
