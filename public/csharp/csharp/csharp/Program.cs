@@ -87,7 +87,7 @@ namespace ngl
                 pro.MUport = luport;
                 pro.MUip = NglKcp.m_ip;
                 pro.MConv = (int)NglKcp.conv;
-                ltcp.Send(lgatewayconnect, pro);
+                ltcp.Send(lgatewayconnect, pro, -1, roleid);
             };
 
             var lconnectgame = () =>

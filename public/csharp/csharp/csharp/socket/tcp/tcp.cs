@@ -278,7 +278,7 @@ namespace ngl
             return (Int32)(DateTime.UtcNow - startTime).TotalSeconds;
         }
 
-        public void Send<T>(int asession, T apro) where T : IMessage, new()
+        public void Send<T>(int asession, T apro, Int64 ActorId = -1, Int64 RequestActorId = -1) where T : IMessage, new()
         {
             var ltcp_connect = GetTcpConnect(asession);
             if (ltcp_connect == null || ltcp_connect.m_socket == null)
@@ -290,8 +290,8 @@ namespace ngl
             lhead.Version = NConfig.m_head_version;
             lhead.ProtocolNum = xmlprotocol.Protocol(apro.Descriptor.Name);
             lhead.ProtocolType = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
-            lhead.ActorId = -1;
-            lhead.RequestActorId = -1;
+            lhead.ActorId = ActorId;
+            lhead.RequestActorId = RequestActorId;
 
             tcp_buff lbuffall = new tcp_buff();
             lbuffall.m_buff = new byte[PackHead.PackHeadByte + lbuff.Length];
