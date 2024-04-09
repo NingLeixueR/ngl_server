@@ -216,17 +216,21 @@ namespace ngl
 	{
 		auto lpram = adata.m_data;
 		auto lpack = adata.m_pack;
+
+		/////////////////////////////////////
+		// 多robot公用一个tcp连接会有问题
 		//gateway_socket* lpstruct = m_info.get(lpack->m_id);
 		//if (lpstruct == nullptr)
 		//	return true;
-		//
-		//std::string lkcpsession;
-		//if (ukcp::create_session(nguid::make(nguid::none_type(), lpstruct->m_area, lpstruct->m_dataid), lkcpsession) == false)
-		//	return true;
-		
+		//i16_area larea = lpstruct->m_area;
+		//i32_actordataid lactordataid = lpstruct->m_dataid;
 		i64_actorid request_actor = lpack->m_head.get_request_actor();
+		i16_area larea = nguid::area(request_actor);
+		i32_actordataid lactordataid = nguid::actordataid(request_actor);
+		///////////////////////////////
+
 		std::string lkcpsession;
-		if (ukcp::create_session(nguid::make(nguid::none_type(), nguid::area(request_actor), nguid::actordataid(request_actor)), lkcpsession) == false)
+		if (ukcp::create_session(nguid::make(nguid::none_type(), larea, lactordataid), lkcpsession) == false)
 			return true;
 
 		// ### 通知kcp服务器创建连接
