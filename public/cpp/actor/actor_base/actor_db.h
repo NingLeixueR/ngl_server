@@ -349,6 +349,11 @@ namespace ngl
 			{
 				lcmd["query"] = [this](int athread, int id, ngl::ojson& aos)
 					{
+						// ·µ»Ø {"data":""}
+						gcmd<std::string> pro;
+						pro.id = id;
+						pro.m_operator = "query_responce";
+						pro.m_data = "";
 						int64_t lid = 0;
 						if (aos.read("data", lid) == false)
 							return;
@@ -364,9 +369,6 @@ namespace ngl
 							if (lserialize.push(m_savetemp))
 							{
 								// ·µ»Ø {"data":""}
-								gcmd<std::string> pro;
-								pro.id = id;
-								pro.m_operator = "query_responce";
 								pro.m_data = lbuff;
 							}
 						}
