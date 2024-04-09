@@ -607,7 +607,6 @@ namespace ngl
 								}
 							}
 						}
-						
 						start();
 					}
 				});

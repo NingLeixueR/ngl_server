@@ -2,7 +2,6 @@
 
 namespace ngl
 {
-	//int32_t ukcp::m_conv = 1;
 	std::string ukcp::m_localuip = "";
 
 	ukcp::ukcp(i16_port aprot) :
