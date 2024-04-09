@@ -38,6 +38,8 @@ class SocketByte {
 		$QueryResult = mysql_query($QueryStr);
 		if ($Row = mysql_fetch_array($QueryResult, MYSQL_ASSOC))
 		{
+			//echo "{$Row['ip']}:{$Row['port']}<br/>";
+			//return false;
 			return $this->connect($Row['ip'], $Row['port']);
 		}
 		return false;
@@ -162,7 +164,7 @@ class SocketByte {
 		socket_write($this->socket, $sbuff, 4*$this->EPH_SUM+2+strlen($this->datajson));		
 	}
 	
-	public function wait_response() 
+	public function wait_response($isjson = true) 
 	{
 		$rst = socket_read($this->socket, 4*$this->EPH_SUM);
 		if (!$rst) 
@@ -187,7 +189,8 @@ class SocketByte {
 		//echo "<br/>$rst<br/>";
 		$rst = substr($rst, 2);
 		//echo "<br/>收到的json<br/>$rst<br/>";
-		header('Content-Type: application/json');
+		if($isjson)
+			header('Content-Type: application/json');
 		echo "$rst";
 		return json_decode($rst, true);
 	}
