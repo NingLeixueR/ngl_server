@@ -56,7 +56,7 @@ namespace ngl
 				if (lreadjson.read("db", ltype))
 				{
 					lactorid = nguid::make(
-						dbvalue(EPROTOCOL_TYPE::EPROTOCOL_TYPE_PROTOCOLBUFF, (pbdb::ENUM_DB)(ltype)),
+						db_enum(EPROTOCOL_TYPE::EPROTOCOL_TYPE_PROTOCOLBUFF, (pbdb::ENUM_DB)(ltype)),
 						ttab_servers::tab()->m_area,
 						nguid::none_actordataid()
 					);

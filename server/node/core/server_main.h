@@ -330,6 +330,7 @@ bool start_game()
 	//ngl::actor_reloadcsv::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
+	ngl::role_cmd::init();
 	return true;
 }
 

@@ -27,7 +27,7 @@
 
 namespace ngl
 {
-	ENUM_ACTOR dbvalue(EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE)
+	ENUM_ACTOR db_enum(EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE)
 	{
 		return (ENUM_ACTOR)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE);
 	}
@@ -37,7 +37,7 @@ namespace ngl
 	{
 		nactor_type<
 			ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
-		>::inits(dbvalue(PROTYPE, TDBTAB_TYPE));
+		>::inits(db_enum(PROTYPE, TDBTAB_TYPE));
 		LogLocalError("init_actor_type [%]-[%]", 
 			boost::typeindex::type_id_with_cvr<
 				ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
