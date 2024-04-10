@@ -6,6 +6,8 @@
 #include "db_data.h"
 #include "db.h"
 
+#define DEF_SAVEDB_ISBINARY	(true)
+
 namespace ngl
 {
 	template <typename T>
@@ -127,11 +129,11 @@ namespace ngl
 				if (m_savetemp.m_data == nullptr)
 				{
 					m_savetemp.make();
-					m_savetemp.m_isbinary = false;
+					m_savetemp.m_isbinary = DEF_SAVEDB_ISBINARY;
 				}
 				*m_savetemp.m_data = adata;
 
-				char* lsql = ngl::db_manage::serialize(adb, m_savetemp, false);
+				char* lsql = ngl::db_manage::serialize(adb, m_savetemp, DEF_SAVEDB_ISBINARY ? true : false);
 				if (lsql == nullptr)
 					return;
 
@@ -328,8 +330,8 @@ namespace ngl
 					[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
-						ldata.m_isbinary = false;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], false) == false)
+						ldata.m_isbinary = DEF_SAVEDB_ISBINARY;
+						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DEF_SAVEDB_ISBINARY ? true : false) == false)
 							return false;
 						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
@@ -350,8 +352,8 @@ namespace ngl
 					[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
-						ldata.m_isbinary = false;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], false) == false)
+						ldata.m_isbinary = DEF_SAVEDB_ISBINARY;
+						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DEF_SAVEDB_ISBINARY ? true : false) == false)
 							return false;
 						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
