@@ -1,5 +1,5 @@
 <html>
-	<h2>查询数据</h2>
+	<h2>更新数据</h2>
 	<form action="./changedb.php" method="post" accept-charset="UTF-8">
 		<?php require_once "../serverls.php";?>
 		<?php
@@ -32,8 +32,8 @@
 			<option value="9">活动数据</option>
 			<option value="10">任务数据</option>
 		</select><br/>
-		data:<textarea id="data" name="data" rows="4" cols="50">
-			</textarea>
+		data:<br/>
+		<textarea id="data" name="data" rows="50" cols="100"></textarea><br/>
 		<input type="submit" value="查询"/><br/>
 	</form>
 </body>
