@@ -147,6 +147,9 @@ namespace ngl
 		//# 玩法创建成功  记录玩法actorid
 		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
 
+		//# 领取任务奖励
+		bool handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
+
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
 		//# 请求创建订单

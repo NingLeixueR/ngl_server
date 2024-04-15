@@ -19,6 +19,7 @@ namespace ngl
 		static void init();
 		static bool weight(int aid, std::map<int, int>& amap);
 		static bool droplist(int aid, int acount, std::map<int, int>& amap);
+		static bool droplist(int aid, int acount, google::protobuf::Map<int32_t, int32_t>& amap);
 		static bool use(actor_role* arole, int aid, int acount);
 	};
 }// namespace ngl

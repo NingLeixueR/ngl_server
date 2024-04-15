@@ -81,26 +81,27 @@ namespace Pbdb {
             "d2FyZBgCIAMoBUIKCghfbV9jb3VudBpdChRNRHJhd2NvbXBsaWFuY2VFbnRy",
             "eRILCgNrZXkYASABKAMSNAoFdmFsdWUYAiABKAsyJS5wYmRiLmRiX2FjdGl2",
             "aXR5LmRhdGEuZHJhd2NvbXBsaWFuY2U6AjgBQggKBl9tX2JlZ0IICgZfbV9l",
-            "bmRCCgoIX21fc3RhcnRCCwoJX21fZmluaXNoQgcKBV9tX2lkItEECgdkYl90",
+            "bmRCCgoIX21fc3RhcnRCCwoJX21fZmluaXNoQgcKBV9tX2lkIvcECgdkYl90",
             "YXNrEhEKBG1faWQYASABKANIAIgBARIwCgptX3J1bmRhdGFzGAIgAygLMhwu",
             "cGJkYi5kYl90YXNrLk1SdW5kYXRhc0VudHJ5EjwKEG1fY29tcGxldGVkZGF0",
             "YXMYAyADKAsyIi5wYmRiLmRiX3Rhc2suTUNvbXBsZXRlZGRhdGFzRW50cnka",
             "dQoNZGF0YV9zY2hlZHVsZRITCgZtX3R5cGUYASABKAVIAIgBARIUCgdtX3Zh",
             "bHVlGAIgASgFSAGIAQESFQoIbV9zdW1pbnQYAyABKAVIAogBAUIJCgdfbV90",
-            "eXBlQgoKCF9tX3ZhbHVlQgsKCV9tX3N1bWludBqwAQoEZGF0YRIVCghtX3Rh",
+            "eXBlQgoKCF9tX3ZhbHVlQgsKCV9tX3N1bWludBrWAQoEZGF0YRIVCghtX3Rh",
             "c2tpZBgBIAEoBUgAiAEBEhkKDG1fcmVjZWl2ZXV0YxgCIAEoBUgBiAEBEhcK",
             "Cm1fZmluc2h1dGMYAyABKAVIAogBARIwCgttX3NjaGVkdWxlcxgEIAMoCzIb",
-            "LnBiZGIuZGJfdGFzay5kYXRhX3NjaGVkdWxlQgsKCV9tX3Rhc2tpZEIPCg1f",
-            "bV9yZWNlaXZldXRjQg0KC19tX2ZpbnNodXRjGkQKDk1SdW5kYXRhc0VudHJ5",
-            "EgsKA2tleRgBIAEoBRIhCgV2YWx1ZRgCIAEoCzISLnBiZGIuZGJfdGFzay5k",
-            "YXRhOgI4ARpKChRNQ29tcGxldGVkZGF0YXNFbnRyeRILCgNrZXkYASABKAUS",
-            "IQoFdmFsdWUYAiABKAsyEi5wYmRiLmRiX3Rhc2suZGF0YToCOAFCBwoFX21f",
-            "aWQq9AEKB0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5UEAASEAoMRU5VTV9E",
-            "Ql9ST0xFEAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VOVU1fREJfQkFHEAMS",
-            "FAoQRU5VTV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJfTUFJTBAFEhEKDUVO",
-            "VU1fREJfR1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAHEhQKEEVOVU1fREJf",
-            "UkFOS0xJU1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkSEAoMRU5VTV9EQl9U",
-            "QVNLEAoSEQoNRU5VTV9EQl9DT1VOVBALYgZwcm90bzM="));
+            "LnBiZGIuZGJfdGFzay5kYXRhX3NjaGVkdWxlEhYKCW1fcmVjZWl2ZRgFIAEo",
+            "CEgDiAEBQgsKCV9tX3Rhc2tpZEIPCg1fbV9yZWNlaXZldXRjQg0KC19tX2Zp",
+            "bnNodXRjQgwKCl9tX3JlY2VpdmUaRAoOTVJ1bmRhdGFzRW50cnkSCwoDa2V5",
+            "GAEgASgFEiEKBXZhbHVlGAIgASgLMhIucGJkYi5kYl90YXNrLmRhdGE6AjgB",
+            "GkoKFE1Db21wbGV0ZWRkYXRhc0VudHJ5EgsKA2tleRgBIAEoBRIhCgV2YWx1",
+            "ZRgCIAEoCzISLnBiZGIuZGJfdGFzay5kYXRhOgI4AUIHCgVfbV9pZCr0AQoH",
+            "RU5VTV9EQhITCg9FTlVNX0RCX0FDQ09VTlQQABIQCgxFTlVNX0RCX1JPTEUQ",
+            "ARIRCg1FTlVNX0RCX0JSSUVGEAISDwoLRU5VTV9EQl9CQUcQAxIUChBFTlVN",
+            "X0RCX0tFWVZBTFVFEAQSEAoMRU5VTV9EQl9NQUlMEAUSEQoNRU5VTV9EQl9H",
+            "VUlMRBAGEhIKDkVOVU1fREJfTk9USUNFEAcSFAoQRU5VTV9EQl9SQU5LTElT",
+            "VBAIEhQKEEVOVU1fREJfQUNUSVZJVFkQCRIQCgxFTlVNX0RCX1RBU0sQChIR",
+            "Cg1FTlVNX0RCX0NPVU5UEAtiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -120,7 +121,7 @@ namespace Pbdb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity), global::Pbdb.db_activity.Parser, new[]{ "MId", "MDatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.data), global::Pbdb.db_activity.Types.data.Parser, new[]{ "MBeg", "MEnd", "MStart", "MFinish", "MDrawcompliance" }, new[]{ "MBeg", "MEnd", "MStart", "MFinish" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.data.Types.drawcompliance), global::Pbdb.db_activity.Types.data.Types.drawcompliance.Parser, new[]{ "MCount", "MReward" }, new[]{ "MCount" }, null, null, null),
             null, })}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task), global::Pbdb.db_task.Parser, new[]{ "MId", "MRundatas", "MCompleteddatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data_schedule), global::Pbdb.db_task.Types.data_schedule.Parser, new[]{ "MType", "MValue", "MSumint" }, new[]{ "MType", "MValue", "MSumint" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data), global::Pbdb.db_task.Types.data.Parser, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MSchedules" }, new[]{ "MTaskid", "MReceiveutc", "MFinshutc" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data), global::Pbdb.db_task.Types.data.Parser, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MSchedules", "MReceive" }, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MReceive" }, null, null, null),
             null, null, })
           }));
     }
@@ -5954,6 +5955,7 @@ namespace Pbdb {
           mReceiveutc_ = other.mReceiveutc_;
           mFinshutc_ = other.mFinshutc_;
           mSchedules_ = other.mSchedules_.Clone();
+          mReceive_ = other.mReceive_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -6050,6 +6052,31 @@ namespace Pbdb {
           get { return mSchedules_; }
         }
 
+        /// <summary>Field number for the "m_receive" field.</summary>
+        public const int MReceiveFieldNumber = 5;
+        private bool mReceive_;
+        /// <summary>
+        /// 任务奖励是否已领取
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool MReceive {
+          get { if ((_hasBits0 & 8) != 0) { return mReceive_; } else { return false; } }
+          set {
+            _hasBits0 |= 8;
+            mReceive_ = value;
+          }
+        }
+        /// <summary>Gets whether the "m_receive" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasMReceive {
+          get { return (_hasBits0 & 8) != 0; }
+        }
+        /// <summary>Clears the value of the "m_receive" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearMReceive() {
+          _hasBits0 &= ~8;
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as data);
@@ -6067,6 +6094,7 @@ namespace Pbdb {
           if (MReceiveutc != other.MReceiveutc) return false;
           if (MFinshutc != other.MFinshutc) return false;
           if(!mSchedules_.Equals(other.mSchedules_)) return false;
+          if (MReceive != other.MReceive) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -6077,6 +6105,7 @@ namespace Pbdb {
           if (HasMReceiveutc) hash ^= MReceiveutc.GetHashCode();
           if (HasMFinshutc) hash ^= MFinshutc.GetHashCode();
           hash ^= mSchedules_.GetHashCode();
+          if (HasMReceive) hash ^= MReceive.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -6106,6 +6135,10 @@ namespace Pbdb {
             output.WriteInt32(MFinshutc);
           }
           mSchedules_.WriteTo(output, _repeated_mSchedules_codec);
+          if (HasMReceive) {
+            output.WriteRawTag(40);
+            output.WriteBool(MReceive);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -6128,6 +6161,10 @@ namespace Pbdb {
             output.WriteInt32(MFinshutc);
           }
           mSchedules_.WriteTo(ref output, _repeated_mSchedules_codec);
+          if (HasMReceive) {
+            output.WriteRawTag(40);
+            output.WriteBool(MReceive);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -6147,6 +6184,9 @@ namespace Pbdb {
             size += 1 + pb::CodedOutputStream.ComputeInt32Size(MFinshutc);
           }
           size += mSchedules_.CalculateSize(_repeated_mSchedules_codec);
+          if (HasMReceive) {
+            size += 1 + 1;
+          }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
           }
@@ -6168,6 +6208,9 @@ namespace Pbdb {
             MFinshutc = other.MFinshutc;
           }
           mSchedules_.Add(other.mSchedules_);
+          if (other.HasMReceive) {
+            MReceive = other.MReceive;
+          }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -6198,6 +6241,10 @@ namespace Pbdb {
                 mSchedules_.AddEntriesFrom(input, _repeated_mSchedules_codec);
                 break;
               }
+              case 40: {
+                MReceive = input.ReadBool();
+                break;
+              }
             }
           }
         #endif
@@ -6226,6 +6273,10 @@ namespace Pbdb {
               }
               case 34: {
                 mSchedules_.AddEntriesFrom(ref input, _repeated_mSchedules_codec);
+                break;
+              }
+              case 40: {
+                MReceive = input.ReadBool();
                 break;
               }
             }

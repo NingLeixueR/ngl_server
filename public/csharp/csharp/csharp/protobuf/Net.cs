@@ -180,26 +180,34 @@ namespace Pbnet {
             "AYgBARIUCgdtX3Vwb3J0GAMgASgFSAKIAQESEwoGbV9jb252GAQgASgFSAOI",
             "AQFCDQoLX21fc2VydmVyaWRCCAoGX21fdWlwQgoKCF9tX3Vwb3J0QgkKB19t",
             "X2NvbnYiTQofUFJPQlVGRl9ORVRfS0NQU0VTU0lPTl9SRVNQT05TRRIZCgxt",
-            "X2tjcHNlc3Npb24YASABKAlIAIgBAUIPCg1fbV9rY3BzZXNzaW9uKkYKD2Vu",
-            "dW1fbG9naWNfY2hhdBIRCg1nZXRfY2hhdF9saXN0EAASDgoKY2hhdF9zcGVh",
-            "axABEhAKDHVwZGF0YV9zcGVjaxACKjwKBWV1bml0Eg4KCmV1bml0X3JvbGUQ",
-            "ABIRCg1ldW5pdF9tb25zdGVyEAESEAoMZXVuaXRfcmVnaW9uEAIqcwoJZXVu",
-            "aXRzdGF0EhQKEGV1bml0c3RhdF9ub3JtYWwQABIUChBldW5pdHN0YXRfbm9t",
-            "b3ZlEAESHAoYZXVuaXRzdGF0X25vbm9ybWFsYXR0YWNrEAISHAoYZXVuaXRz",
-            "dGF0X25vcmVsZWFzZXNraWxsEAQqOwoGZXBsYXlzEh8KG2VwbGF5c19nb191",
-            "bmRlcmdyb3VuZHBhbGFjZRAAEhAKDGVwbGF5c19jb3VudBABKpsBChVlbWF0",
-            "Y2hpbmdfY2FuY2VsX3N0YXQSHAoYZW1hdGNoaW5nX2NhbmNlbF9zdWNjZXNz",
-            "EAASGgoWZW1hdGNoaW5nX2NhbmNlbF9zdGFnZRABEiAKHGVtYXRjaGluZ19j",
-            "YW5jZWxfcm9vbW5vdGZpbmQQAhImCiJlbWF0Y2hpbmdfY2FuY2VsX3Jvb21t",
-            "ZW1iZXJub3RmaW5kEAMqqwEKFWV0eXBlX21hdGNoaW5nX2NhbmNlbBIgChxl",
-            "dHlwZV9tYXRjaGluZ19jYW5jZWxfYWN0aXZlEAASIQodZXR5cGVfbWF0Y2hp",
-            "bmdfY2FuY2VsX3RpbWVvdXQQARImCiJldHlwZV9tYXRjaGluZ193YWl0Y29u",
-            "ZmlybV90aW1lb3V0EAISJQohZXR5cGVfbWF0Y2hpbmdfd2FpdGNyZWF0ZV90",
-            "aW1lb3V0EAMqoAEKFmVtYXRjaGluZ19jb25maXJtX3N0YXQSHQoZZW1hdGNo",
-            "aW5nX2NvbmZpcm1fc3VjY2VzcxAAEhsKF2VtYXRjaGluZ19jb25maXJtX3N0",
-            "YWdlEAESIQodZW1hdGNoaW5nX2NvbmZpcm1fcm9vbW5vdGZpbmQQAhInCiNl",
-            "bWF0Y2hpbmdfY29uZmlybV9yb29tbWVtYmVybm90ZmluZBADQgJIAWIGcHJv",
-            "dG8z"));
+            "X2tjcHNlc3Npb24YASABKAlIAIgBAUIPCg1fbV9rY3BzZXNzaW9uIkQKHlBS",
+            "T0JVRkZfTkVUX1RBU0tfUkVDRUlWRV9BV0FSRBIVCghtX3Rhc2tpZBgBIAEo",
+            "BUgAiAEBQgsKCV9tX3Rhc2tpZCJNCglkcm9wX2l0ZW0SEwoGbV9pdGVtGAEg",
+            "ASgFSACIAQESFAoHbV9jb3VudBgCIAEoBUgBiAEBQgkKB19tX2l0ZW1CCgoI",
+            "X21fY291bnQi5gEKJ1BST0JVRkZfTkVUX1RBU0tfUkVDRUlWRV9BV0FSRF9S",
+            "RVNQT05TRRIVCghtX3Rhc2tpZBgBIAEoBUgAiAEBEhMKBm1fc3RhdBgCIAEo",
+            "CEgBiAEBEkkKBm1fZHJvcBgDIAMoCzI5LnBibmV0LlBST0JVRkZfTkVUX1RB",
+            "U0tfUkVDRUlWRV9BV0FSRF9SRVNQT05TRS5NRHJvcEVudHJ5GiwKCk1Ecm9w",
+            "RW50cnkSCwoDa2V5GAEgASgFEg0KBXZhbHVlGAIgASgFOgI4AUILCglfbV90",
+            "YXNraWRCCQoHX21fc3RhdCpGCg9lbnVtX2xvZ2ljX2NoYXQSEQoNZ2V0X2No",
+            "YXRfbGlzdBAAEg4KCmNoYXRfc3BlYWsQARIQCgx1cGRhdGFfc3BlY2sQAio8",
+            "CgVldW5pdBIOCgpldW5pdF9yb2xlEAASEQoNZXVuaXRfbW9uc3RlchABEhAK",
+            "DGV1bml0X3JlZ2lvbhACKnMKCWV1bml0c3RhdBIUChBldW5pdHN0YXRfbm9y",
+            "bWFsEAASFAoQZXVuaXRzdGF0X25vbW92ZRABEhwKGGV1bml0c3RhdF9ub25v",
+            "cm1hbGF0dGFjaxACEhwKGGV1bml0c3RhdF9ub3JlbGVhc2Vza2lsbBAEKjsK",
+            "BmVwbGF5cxIfChtlcGxheXNfZ29fdW5kZXJncm91bmRwYWxhY2UQABIQCgxl",
+            "cGxheXNfY291bnQQASqbAQoVZW1hdGNoaW5nX2NhbmNlbF9zdGF0EhwKGGVt",
+            "YXRjaGluZ19jYW5jZWxfc3VjY2VzcxAAEhoKFmVtYXRjaGluZ19jYW5jZWxf",
+            "c3RhZ2UQARIgChxlbWF0Y2hpbmdfY2FuY2VsX3Jvb21ub3RmaW5kEAISJgoi",
+            "ZW1hdGNoaW5nX2NhbmNlbF9yb29tbWVtYmVybm90ZmluZBADKqsBChVldHlw",
+            "ZV9tYXRjaGluZ19jYW5jZWwSIAocZXR5cGVfbWF0Y2hpbmdfY2FuY2VsX2Fj",
+            "dGl2ZRAAEiEKHWV0eXBlX21hdGNoaW5nX2NhbmNlbF90aW1lb3V0EAESJgoi",
+            "ZXR5cGVfbWF0Y2hpbmdfd2FpdGNvbmZpcm1fdGltZW91dBACEiUKIWV0eXBl",
+            "X21hdGNoaW5nX3dhaXRjcmVhdGVfdGltZW91dBADKqABChZlbWF0Y2hpbmdf",
+            "Y29uZmlybV9zdGF0Eh0KGWVtYXRjaGluZ19jb25maXJtX3N1Y2Nlc3MQABIb",
+            "ChdlbWF0Y2hpbmdfY29uZmlybV9zdGFnZRABEiEKHWVtYXRjaGluZ19jb25m",
+            "aXJtX3Jvb21ub3RmaW5kEAISJwojZW1hdGNoaW5nX2NvbmZpcm1fcm9vbW1l",
+            "bWJlcm5vdGZpbmQQA0ICSAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Pbdb.DbReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbnet.enum_logic_chat), typeof(global::Pbnet.eunit), typeof(global::Pbnet.eunitstat), typeof(global::Pbnet.eplays), typeof(global::Pbnet.ematching_cancel_stat), typeof(global::Pbnet.etype_matching_cancel), typeof(global::Pbnet.ematching_confirm_stat), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -263,7 +271,10 @@ namespace Pbnet {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS), global::Pbnet.PROBUFF_NET_MATCHING_SUCCESS.Parser, new[]{ "MType", "MRoomid", "MMember", "MDataid" }, new[]{ "MType", "MRoomid", "MDataid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_ENTER_PLAYS), global::Pbnet.PROBUFF_NET_ENTER_PLAYS.Parser, new[]{ "MType", "MRoomid" }, new[]{ "MType", "MRoomid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION), global::Pbnet.PROBUFF_NET_KCPSESSION.Parser, new[]{ "MServerid", "MUip", "MUport", "MConv" }, new[]{ "MServerid", "MUip", "MUport", "MConv" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE), global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.Parser, new[]{ "MKcpsession" }, new[]{ "MKcpsession" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE), global::Pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.Parser, new[]{ "MKcpsession" }, new[]{ "MKcpsession" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD), global::Pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD.Parser, new[]{ "MTaskid" }, new[]{ "MTaskid" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.drop_item), global::Pbnet.drop_item.Parser, new[]{ "MItem", "MCount" }, new[]{ "MItem", "MCount" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE), global::Pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE.Parser, new[]{ "MTaskid", "MStat", "MDrop" }, new[]{ "MTaskid", "MStat" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
     #endregion
@@ -14873,6 +14884,695 @@ namespace Pbnet {
             break;
           case 10: {
             MKcpsession = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 领取任务奖励
+  /// </summary>
+  public sealed partial class PROBUFF_NET_TASK_RECEIVE_AWARD : pb::IMessage<PROBUFF_NET_TASK_RECEIVE_AWARD>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PROBUFF_NET_TASK_RECEIVE_AWARD> _parser = new pb::MessageParser<PROBUFF_NET_TASK_RECEIVE_AWARD>(() => new PROBUFF_NET_TASK_RECEIVE_AWARD());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PROBUFF_NET_TASK_RECEIVE_AWARD> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[60]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_TASK_RECEIVE_AWARD() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_TASK_RECEIVE_AWARD(PROBUFF_NET_TASK_RECEIVE_AWARD other) : this() {
+      _hasBits0 = other._hasBits0;
+      mTaskid_ = other.mTaskid_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_TASK_RECEIVE_AWARD Clone() {
+      return new PROBUFF_NET_TASK_RECEIVE_AWARD(this);
+    }
+
+    /// <summary>Field number for the "m_taskid" field.</summary>
+    public const int MTaskidFieldNumber = 1;
+    private int mTaskid_;
+    /// <summary>
+    /// 任务id
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MTaskid {
+      get { if ((_hasBits0 & 1) != 0) { return mTaskid_; } else { return 0; } }
+      set {
+        _hasBits0 |= 1;
+        mTaskid_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_taskid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMTaskid {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_taskid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMTaskid() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PROBUFF_NET_TASK_RECEIVE_AWARD);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PROBUFF_NET_TASK_RECEIVE_AWARD other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MTaskid != other.MTaskid) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMTaskid) hash ^= MTaskid.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMTaskid) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MTaskid);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMTaskid) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MTaskid);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMTaskid) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MTaskid);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PROBUFF_NET_TASK_RECEIVE_AWARD other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMTaskid) {
+        MTaskid = other.MTaskid;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MTaskid = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MTaskid = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class drop_item : pb::IMessage<drop_item>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<drop_item> _parser = new pb::MessageParser<drop_item>(() => new drop_item());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<drop_item> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[61]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public drop_item() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public drop_item(drop_item other) : this() {
+      _hasBits0 = other._hasBits0;
+      mItem_ = other.mItem_;
+      mCount_ = other.mCount_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public drop_item Clone() {
+      return new drop_item(this);
+    }
+
+    /// <summary>Field number for the "m_item" field.</summary>
+    public const int MItemFieldNumber = 1;
+    private int mItem_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MItem {
+      get { if ((_hasBits0 & 1) != 0) { return mItem_; } else { return 0; } }
+      set {
+        _hasBits0 |= 1;
+        mItem_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_item" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMItem {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_item" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMItem() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "m_count" field.</summary>
+    public const int MCountFieldNumber = 2;
+    private int mCount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MCount {
+      get { if ((_hasBits0 & 2) != 0) { return mCount_; } else { return 0; } }
+      set {
+        _hasBits0 |= 2;
+        mCount_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMCount {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "m_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMCount() {
+      _hasBits0 &= ~2;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as drop_item);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(drop_item other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MItem != other.MItem) return false;
+      if (MCount != other.MCount) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMItem) hash ^= MItem.GetHashCode();
+      if (HasMCount) hash ^= MCount.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMItem) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MItem);
+      }
+      if (HasMCount) {
+        output.WriteRawTag(16);
+        output.WriteInt32(MCount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMItem) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MItem);
+      }
+      if (HasMCount) {
+        output.WriteRawTag(16);
+        output.WriteInt32(MCount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMItem) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MItem);
+      }
+      if (HasMCount) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MCount);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(drop_item other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMItem) {
+        MItem = other.MItem;
+      }
+      if (other.HasMCount) {
+        MCount = other.MCount;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MItem = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            MCount = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MItem = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            MCount = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE : pb::IMessage<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE> _parser = new pb::MessageParser<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>(() => new PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[62]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE other) : this() {
+      _hasBits0 = other._hasBits0;
+      mTaskid_ = other.mTaskid_;
+      mStat_ = other.mStat_;
+      mDrop_ = other.mDrop_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE Clone() {
+      return new PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE(this);
+    }
+
+    /// <summary>Field number for the "m_taskid" field.</summary>
+    public const int MTaskidFieldNumber = 1;
+    private int mTaskid_;
+    /// <summary>
+    /// 任务id
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MTaskid {
+      get { if ((_hasBits0 & 1) != 0) { return mTaskid_; } else { return 0; } }
+      set {
+        _hasBits0 |= 1;
+        mTaskid_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_taskid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMTaskid {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_taskid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMTaskid() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "m_stat" field.</summary>
+    public const int MStatFieldNumber = 2;
+    private bool mStat_;
+    /// <summary>
+    /// 是否领取成功
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool MStat {
+      get { if ((_hasBits0 & 2) != 0) { return mStat_; } else { return false; } }
+      set {
+        _hasBits0 |= 2;
+        mStat_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_stat" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMStat {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "m_stat" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMStat() {
+      _hasBits0 &= ~2;
+    }
+
+    /// <summary>Field number for the "m_drop" field.</summary>
+    public const int MDropFieldNumber = 3;
+    private static readonly pbc::MapField<int, int>.Codec _map_mDrop_codec
+        = new pbc::MapField<int, int>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForInt32(16, 0), 26);
+    private readonly pbc::MapField<int, int> mDrop_ = new pbc::MapField<int, int>();
+    /// <summary>
+    /// 奖励 key:itemid value:itemcount
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<int, int> MDrop {
+      get { return mDrop_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MTaskid != other.MTaskid) return false;
+      if (MStat != other.MStat) return false;
+      if (!MDrop.Equals(other.MDrop)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMTaskid) hash ^= MTaskid.GetHashCode();
+      if (HasMStat) hash ^= MStat.GetHashCode();
+      hash ^= MDrop.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMTaskid) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MTaskid);
+      }
+      if (HasMStat) {
+        output.WriteRawTag(16);
+        output.WriteBool(MStat);
+      }
+      mDrop_.WriteTo(output, _map_mDrop_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMTaskid) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MTaskid);
+      }
+      if (HasMStat) {
+        output.WriteRawTag(16);
+        output.WriteBool(MStat);
+      }
+      mDrop_.WriteTo(ref output, _map_mDrop_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMTaskid) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MTaskid);
+      }
+      if (HasMStat) {
+        size += 1 + 1;
+      }
+      size += mDrop_.CalculateSize(_map_mDrop_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMTaskid) {
+        MTaskid = other.MTaskid;
+      }
+      if (other.HasMStat) {
+        MStat = other.MStat;
+      }
+      mDrop_.Add(other.mDrop_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MTaskid = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            MStat = input.ReadBool();
+            break;
+          }
+          case 26: {
+            mDrop_.AddEntriesFrom(input, _map_mDrop_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MTaskid = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            MStat = input.ReadBool();
+            break;
+          }
+          case 26: {
+            mDrop_.AddEntriesFrom(ref input, _map_mDrop_codec);
             break;
           }
         }

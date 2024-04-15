@@ -779,10 +779,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_db_2eproto::offsets[] PROTOBUF
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data, m_receiveutc_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data, m_finshutc_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data, m_schedules_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data, m_receive_),
   0,
   1,
   2,
   ~0u,
+  3,
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_MRundatasEntry_DoNotUse, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_MRundatasEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -836,10 +838,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 219, 229, sizeof(::pbdb::db_activity_data)},
   { 234, 241, sizeof(::pbdb::db_activity)},
   { 243, 251, sizeof(::pbdb::db_task_data_schedule)},
-  { 254, 263, sizeof(::pbdb::db_task_data)},
-  { 267, 274, sizeof(::pbdb::db_task_MRundatasEntry_DoNotUse)},
-  { 276, 283, sizeof(::pbdb::db_task_MCompleteddatasEntry_DoNotUse)},
-  { 285, 293, sizeof(::pbdb::db_task)},
+  { 254, 264, sizeof(::pbdb::db_task_data)},
+  { 269, 276, sizeof(::pbdb::db_task_MRundatasEntry_DoNotUse)},
+  { 278, 285, sizeof(::pbdb::db_task_MCompleteddatasEntry_DoNotUse)},
+  { 287, 295, sizeof(::pbdb::db_task)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -937,28 +939,29 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "key\030\001 \001(\003\0224\n\005value\030\002 \001(\0132%.pbdb.db_activ"
   "ity.data.drawcompliance:\0028\001B\010\n\006_m_begB\010\n"
   "\006_m_endB\n\n\010_m_startB\013\n\t_m_finishB\007\n\005_m_i"
-  "d\"\321\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_ru"
+  "d\"\367\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_ru"
   "ndatas\030\002 \003(\0132\034.pbdb.db_task.MRundatasEnt"
   "ry\022<\n\020m_completeddatas\030\003 \003(\0132\".pbdb.db_t"
   "ask.MCompleteddatasEntry\032u\n\rdata_schedul"
   "e\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H"
   "\001\210\001\001\022\025\n\010m_sumint\030\003 \001(\005H\002\210\001\001B\t\n\007_m_typeB\n"
-  "\n\010_m_valueB\013\n\t_m_sumint\032\260\001\n\004data\022\025\n\010m_ta"
+  "\n\010_m_valueB\013\n\t_m_sumint\032\326\001\n\004data\022\025\n\010m_ta"
   "skid\030\001 \001(\005H\000\210\001\001\022\031\n\014m_receiveutc\030\002 \001(\005H\001\210"
   "\001\001\022\027\n\nm_finshutc\030\003 \001(\005H\002\210\001\001\0220\n\013m_schedul"
-  "es\030\004 \003(\0132\033.pbdb.db_task.data_scheduleB\013\n"
-  "\t_m_taskidB\017\n\r_m_receiveutcB\r\n\013_m_finshu"
-  "tc\032D\n\016MRundatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005val"
-  "ue\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001\032J\n\024MCom"
-  "pleteddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002"
-  " \001(\0132\022.pbdb.db_task.data:\0028\001B\007\n\005_m_id*\364\001"
-  "\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014ENUM_D"
-  "B_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENUM_DB_B"
-  "AG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM_DB_MA"
-  "IL\020\005\022\021\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_DB_NOTIC"
-  "E\020\007\022\024\n\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM_DB_ACT"
-  "IVITY\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\021\n\rENUM_DB_COU"
-  "NT\020\013b\006proto3"
+  "es\030\004 \003(\0132\033.pbdb.db_task.data_schedule\022\026\n"
+  "\tm_receive\030\005 \001(\010H\003\210\001\001B\013\n\t_m_taskidB\017\n\r_m"
+  "_receiveutcB\r\n\013_m_finshutcB\014\n\n_m_receive"
+  "\032D\n\016MRundatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value"
+  "\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001\032J\n\024MCompl"
+  "eteddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002 \001"
+  "(\0132\022.pbdb.db_task.data:\0028\001B\007\n\005_m_id*\364\001\n\007"
+  "ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014ENUM_DB_"
+  "ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENUM_DB_BAG"
+  "\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM_DB_MAIL"
+  "\020\005\022\021\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_DB_NOTICE\020"
+  "\007\022\024\n\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM_DB_ACTIV"
+  "ITY\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\021\n\rENUM_DB_COUNT"
+  "\020\013b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
@@ -992,7 +995,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 3452,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 3490,
   &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 26, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
   file_level_metadata_db_2eproto, 26, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
@@ -6689,6 +6692,9 @@ class db_task_data::_Internal {
   static void set_has_m_finshutc(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
+  static void set_has_m_receive(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
 };
 
 db_task_data::db_task_data(::PROTOBUF_NAMESPACE_ID::Arena* arena)
@@ -6704,16 +6710,16 @@ db_task_data::db_task_data(const db_task_data& from)
       m_schedules_(from.m_schedules_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&m_taskid_, &from.m_taskid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_finshutc_) -
-    reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_finshutc_));
+    static_cast<size_t>(reinterpret_cast<char*>(&m_receive_) -
+    reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_receive_));
   // @@protoc_insertion_point(copy_constructor:pbdb.db_task.data)
 }
 
 void db_task_data::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_db_task_data_db_2eproto.base);
   ::memset(&m_taskid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_finshutc_) -
-      reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_finshutc_));
+      reinterpret_cast<char*>(&m_receive_) -
+      reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_receive_));
 }
 
 db_task_data::~db_task_data() {
@@ -6749,10 +6755,10 @@ void db_task_data::Clear() {
 
   m_schedules_.Clear();
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     ::memset(&m_taskid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_finshutc_) -
-        reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_finshutc_));
+        reinterpret_cast<char*>(&m_receive_) -
+        reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_receive_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -6801,6 +6807,14 @@ const char* db_task_data::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // bool m_receive = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          _Internal::set_has_m_receive(&has_bits);
+          m_receive_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -6858,6 +6872,12 @@ failure:
       InternalWriteMessage(4, this->_internal_m_schedules(i), target, stream);
   }
 
+  // bool m_receive = 5;
+  if (_internal_has_m_receive()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->_internal_m_receive(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -6882,7 +6902,7 @@ size_t db_task_data::ByteSizeLong() const {
   }
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     // int32 m_taskid = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -6902,6 +6922,11 @@ size_t db_task_data::ByteSizeLong() const {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_m_finshutc());
+    }
+
+    // bool m_receive = 5;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 + 1;
     }
 
   }
@@ -6938,7 +6963,7 @@ void db_task_data::MergeFrom(const db_task_data& from) {
 
   m_schedules_.MergeFrom(from.m_schedules_);
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       m_taskid_ = from.m_taskid_;
     }
@@ -6947,6 +6972,9 @@ void db_task_data::MergeFrom(const db_task_data& from) {
     }
     if (cached_has_bits & 0x00000004u) {
       m_finshutc_ = from.m_finshutc_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      m_receive_ = from.m_receive_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -6976,8 +7004,8 @@ void db_task_data::InternalSwap(db_task_data* other) {
   swap(_has_bits_[0], other->_has_bits_[0]);
   m_schedules_.InternalSwap(&other->m_schedules_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(db_task_data, m_finshutc_)
-      + sizeof(db_task_data::m_finshutc_)
+      PROTOBUF_FIELD_OFFSET(db_task_data, m_receive_)
+      + sizeof(db_task_data::m_receive_)
       - PROTOBUF_FIELD_OFFSET(db_task_data, m_taskid_)>(
           reinterpret_cast<char*>(&m_taskid_),
           reinterpret_cast<char*>(&other->m_taskid_));

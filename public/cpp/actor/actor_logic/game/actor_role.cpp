@@ -60,6 +60,7 @@ namespace ngl
 			true
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_ROLE_SYNC)
 			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
+			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD)
 		);
 
 		// 协议注册

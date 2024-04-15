@@ -55,5 +55,23 @@ namespace ngl
 			astr = boost::typeindex::type_id_with_cvr<T>().pretty_name();
 			return astr;
 		}
+
+		template <typename TKEY, typename TVAL>
+		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
+		{
+			for (std::pair<const TKEY, TVAL>& item : asource)
+			{
+				atarget.insert({ item.first, item.second });
+			}
+		}
+
+		template <typename TKEY, typename TVAL>
+		static void copy(const google::protobuf::Map<TKEY, TVAL>& asource, std::map<TKEY, TVAL>& atarget)
+		{
+			for (google::protobuf::MapPair<const TKEY, TVAL>& item : asource)
+			{
+				atarget.insert({ item.first, item.second });
+			}
+		}
 	};
 }//namespace ngl

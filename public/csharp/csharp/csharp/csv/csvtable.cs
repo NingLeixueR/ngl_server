@@ -1096,7 +1096,7 @@ namespace ngl
 	class task_condition : ICsvRead
 	{
 		/*********************************/
-		public ETask		m_type;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
+		public ETask		m_type;		// ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)
 		public ETaskCondition		m_condition;		
 		public Int32		m_parmint;		
 		/*********************************/
@@ -1123,8 +1123,10 @@ namespace ngl
 		public string		m_remarks;		
 		public ETaskType		m_type;		
 		public Int32		m_dropid;		// 任务奖励
-		public List<task_condition>		m_taskreceive = new List<task_condition>();		// 接收此任务的前提
-		public List<task_condition>		m_taskcomplete = new List<task_condition>();		// 完成此任务的条件
+		public bool		m_autoreceive;		// 是否自动领取
+		public Int32		m_mailid;		// 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
+		public List<task_condition>		m_taskreceive = new List<task_condition>();		// 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+		public List<task_condition>		m_taskcomplete = new List<task_condition>();		// 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1140,6 +1142,10 @@ namespace ngl
 				return false;
 			m_type = (ETaskType)lm_type;
 			if(RCsv.ReadCsv(apair, ref m_dropid) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_autoreceive) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_mailid) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, m_taskreceive) == false)
 				return false;

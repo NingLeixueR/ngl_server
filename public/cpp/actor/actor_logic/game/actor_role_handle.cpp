@@ -1,4 +1,6 @@
 #include "actor_role.h"
+#include "ttab_task.h"
+#include "drop.h"
 
 namespace ngl
 {
@@ -73,6 +75,26 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
 	{
 		m_playactorid = adata.m_data->m_playsactorid();
+		return true;
+	}
+
+	bool actor_role::handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
+	{
+		tab_task* tab = ttab_task::tab(adata.m_data->m_taskid());
+		if (tab == nullptr)
+			return true;
+
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>();
+		pro->set_m_taskid(adata.m_data->m_taskid());
+		
+		std::map<int, int> ldrop;
+		if (drop::droplist(tab->m_dropid, 1, ldrop) == false)
+		{
+			LogLocalError("task[%] drop[%] not find!!!", adata.m_data->m_taskid(), tab->m_dropid);
+			return true;
+		}
+		tools::copy(ldrop, *pro->mutable_m_drop());
+		m_bag.add_item(ldrop);
 		return true;
 	}
 }//namespace ngl

@@ -94,6 +94,20 @@ namespace ngl
 		return true;
 	}
 
+	bool drop::droplist(int aid, int acount, google::protobuf::Map<int32_t, int32_t>& amap)
+	{
+		std::map<int, int> lmap;
+		if (droplist(aid, acount, lmap))
+		{
+			for (std::pair<const int, int>& item : lmap)
+			{
+				amap.insert({ item.first, item.second });
+			}
+			return true;
+		}
+		return false;		
+	}
+
 	bool drop::use(actor_role* arole, int aid, int acount)
 	{
 		std::map<int, int> lmap;

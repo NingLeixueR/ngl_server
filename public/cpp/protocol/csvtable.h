@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-04-11 11:36:00
+// 创建时间 // 创建时间 24-04-15 15:21:25
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "csv.h"
@@ -522,7 +522,7 @@ struct tab_activity_drawcompliance
 struct task_condition
 {
 /*********************************/
-	ETask		m_type;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
+	ETask		m_type;		// ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)
 	ETaskCondition		m_condition;		
 	int32_t		m_parmint;		
 /*********************************/
@@ -540,14 +540,16 @@ struct tab_task
 	std::string		m_remarks;		
 	ETaskType		m_type;		
 	int32_t		m_dropid;		// 任务奖励
-	std::vector<task_condition>		m_taskreceive;		// 接收此任务的前提
-	std::vector<task_condition>		m_taskcomplete;		// 完成此任务的条件
+	bool		m_autoreceive;		// 是否自动领取
+	int32_t		m_mailid;		// 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
+	std::vector<task_condition>		m_taskreceive;		// 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+	std::vector<task_condition>		m_taskcomplete;		// 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
 /*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	def_portocol(tab_task, m_id, m_name, m_remarks, m_type, m_dropid, m_taskreceive, m_taskcomplete)
+	def_portocol(tab_task, m_id, m_name, m_remarks, m_type, m_dropid, m_autoreceive, m_mailid, m_taskreceive, m_taskcomplete)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_type,m_dropid,m_taskreceive,m_taskcomplete)
+	def_rcsv(m_id,m_name,m_remarks,m_type,m_dropid,m_autoreceive,m_mailid,m_taskreceive,m_taskcomplete)
 };
 struct obstacles_data
 {

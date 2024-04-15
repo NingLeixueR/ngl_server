@@ -1,7 +1,9 @@
 #include "actor_role.h"
+#include "actor_mail.h"
 #include "ttab_task.h"
 #include "db.pb.h"
 #include "task.h"
+#include "drop.h"
 
 namespace ngl
 {
@@ -154,7 +156,35 @@ namespace ngl
 		std::vector<task_condition>* lvecfinish = ttab_task::get_task_condition(ataskid, false);
 		if (lvecfinish != nullptr && check_condition(arole, *lvecfinish))
 		{
+
 			auto itor = run(arole).find(ataskid);
+			// ·¢ËÍ½±Àø
+			tab_task* tab = ttab_task::tab(ataskid);
+			if (tab == nullptr)
+				return;
+			if (tab->m_autoreceive)
+			{
+				if (tab->m_mailid > 0)
+				{
+					// ·¢ËÍÓÊ¼þ
+					if (actor_mail::sendmail(arole->id_guid()
+						, tab->m_mailid
+						, tab->m_dropid
+						, ""
+					) == false)
+					{
+						LogLocalError("task[%] actor_mail::sendmail(%,%,%)"
+							, ataskid
+							, arole->id_guid()
+							, tab->m_mailid
+							, tab->m_dropid
+						);
+						return;
+					}
+					itor->second.set_m_receive(true);
+				}
+			}
+			itor->second.set_m_finshutc(localtime::gettime());
 			complete(arole).insert({ ataskid, itor->second });
 			run(arole).erase(itor);
 			update_change(arole, ETaskTaskId, ataskid);

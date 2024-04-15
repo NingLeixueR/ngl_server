@@ -25,6 +25,7 @@ extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::S
 extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_DELIVER_GOODS_RECHARGE_MItemsEntry_DoNotUse_net_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_PROBUFF_NET_MAIL_LIST_RESPONSE_MMailEntry_DoNotUse_net_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse_net_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_net_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_UNIT_net_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UNIT_POSITION_net_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_net_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UnitAttribute_net_2eproto;
@@ -292,6 +293,22 @@ class PROBUFF_NET_KCPSESSION_RESPONSEDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_KCPSESSION_RESPONSE> _instance;
 } _PROBUFF_NET_KCPSESSION_RESPONSE_default_instance_;
+class PROBUFF_NET_TASK_RECEIVE_AWARDDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_TASK_RECEIVE_AWARD> _instance;
+} _PROBUFF_NET_TASK_RECEIVE_AWARD_default_instance_;
+class drop_itemDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<drop_item> _instance;
+} _drop_item_default_instance_;
+class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse> _instance;
+} _PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_default_instance_;
+class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSEDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE> _instance;
+} _PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_default_instance_;
 }  // namespace pbnet
 static void InitDefaultsscc_info_MATCHING_MEMBER_net_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -1120,6 +1137,48 @@ static void InitDefaultsscc_info_PROBUFF_NET_SYNC_UNIT_net_2eproto() {
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_PROBUFF_NET_SYNC_UNIT_net_2eproto}, {
       &scc_info_UNIT_net_2eproto.base,}};
 
+static void InitDefaultsscc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_net_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbnet::_PROBUFF_NET_TASK_RECEIVE_AWARD_default_instance_;
+    new (ptr) ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_net_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_net_2eproto}, {}};
+
+static void InitDefaultsscc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_net_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbnet::_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_default_instance_;
+    new (ptr) ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_net_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_net_2eproto}, {
+      &scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_net_2eproto.base,}};
+
+static void InitDefaultsscc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_net_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbnet::_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_default_instance_;
+    new (ptr) ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse();
+  }
+  ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_net_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_net_2eproto}, {}};
+
 static void InitDefaultsscc_info_UNIT_net_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -1222,7 +1281,21 @@ static void InitDefaultsscc_info_chatitem_net_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_chatitem_net_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_chatitem_net_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_net_2eproto[65];
+static void InitDefaultsscc_info_drop_item_net_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbnet::_drop_item_default_instance_;
+    new (ptr) ::pbnet::drop_item();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbnet::drop_item::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_drop_item_net_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_drop_item_net_2eproto}, {}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_net_2eproto[69];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_net_2eproto[8];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_net_2eproto = nullptr;
 
@@ -1813,6 +1886,42 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBU
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, m_kcpsession_),
   0,
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, m_taskid_),
+  0,
+  PROTOBUF_FIELD_OFFSET(::pbnet::drop_item, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::drop_item, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbnet::drop_item, m_item_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::drop_item, m_count_),
+  0,
+  1,
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse, value_),
+  0,
+  1,
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, m_taskid_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, m_stat_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, m_drop_),
+  0,
+  1,
+  ~0u,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::pbnet::PROBUFF_NET_HEARTBEAT)},
@@ -1880,6 +1989,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 557, 564, sizeof(::pbnet::PROBUFF_NET_ENTER_PLAYS)},
   { 566, 575, sizeof(::pbnet::PROBUFF_NET_KCPSESSION)},
   { 579, 585, sizeof(::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE)},
+  { 586, 592, sizeof(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD)},
+  { 593, 600, sizeof(::pbnet::drop_item)},
+  { 602, 609, sizeof(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse)},
+  { 611, 619, sizeof(::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1948,6 +2061,10 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_ENTER_PLAYS_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_KCPSESSION_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_KCPSESSION_RESPONSE_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_TASK_RECEIVE_AWARD_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_drop_item_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_default_instance_),
 };
 
 const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -2127,32 +2244,42 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "v\030\004 \001(\005H\003\210\001\001B\r\n\013_m_serveridB\010\n\006_m_uipB\n\n"
   "\010_m_uportB\t\n\007_m_conv\"M\n\037PROBUFF_NET_KCPS"
   "ESSION_RESPONSE\022\031\n\014m_kcpsession\030\001 \001(\tH\000\210"
-  "\001\001B\017\n\r_m_kcpsession*F\n\017enum_logic_chat\022\021"
-  "\n\rget_chat_list\020\000\022\016\n\nchat_speak\020\001\022\020\n\014upd"
-  "ata_speck\020\002*<\n\005eunit\022\016\n\neunit_role\020\000\022\021\n\r"
-  "eunit_monster\020\001\022\020\n\014eunit_region\020\002*s\n\teun"
-  "itstat\022\024\n\020eunitstat_normal\020\000\022\024\n\020eunitsta"
-  "t_nomove\020\001\022\034\n\030eunitstat_nonormalattack\020\002"
-  "\022\034\n\030eunitstat_noreleaseskill\020\004*;\n\006eplays"
-  "\022\037\n\033eplays_go_undergroundpalace\020\000\022\020\n\014epl"
-  "ays_count\020\001*\233\001\n\025ematching_cancel_stat\022\034\n"
-  "\030ematching_cancel_success\020\000\022\032\n\026ematching"
-  "_cancel_stage\020\001\022 \n\034ematching_cancel_room"
-  "notfind\020\002\022&\n\"ematching_cancel_roommember"
-  "notfind\020\003*\253\001\n\025etype_matching_cancel\022 \n\034e"
-  "type_matching_cancel_active\020\000\022!\n\035etype_m"
-  "atching_cancel_timeout\020\001\022&\n\"etype_matchi"
-  "ng_waitconfirm_timeout\020\002\022%\n!etype_matchi"
-  "ng_waitcreate_timeout\020\003*\240\001\n\026ematching_co"
-  "nfirm_stat\022\035\n\031ematching_confirm_success\020"
-  "\000\022\033\n\027ematching_confirm_stage\020\001\022!\n\035ematch"
-  "ing_confirm_roomnotfind\020\002\022\'\n#ematching_c"
-  "onfirm_roommembernotfind\020\003B\002H\001b\006proto3"
+  "\001\001B\017\n\r_m_kcpsession\"D\n\036PROBUFF_NET_TASK_"
+  "RECEIVE_AWARD\022\025\n\010m_taskid\030\001 \001(\005H\000\210\001\001B\013\n\t"
+  "_m_taskid\"M\n\tdrop_item\022\023\n\006m_item\030\001 \001(\005H\000"
+  "\210\001\001\022\024\n\007m_count\030\002 \001(\005H\001\210\001\001B\t\n\007_m_itemB\n\n\010"
+  "_m_count\"\346\001\n\'PROBUFF_NET_TASK_RECEIVE_AW"
+  "ARD_RESPONSE\022\025\n\010m_taskid\030\001 \001(\005H\000\210\001\001\022\023\n\006m"
+  "_stat\030\002 \001(\010H\001\210\001\001\022I\n\006m_drop\030\003 \003(\01329.pbnet"
+  ".PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE"
+  ".MDropEntry\032,\n\nMDropEntry\022\013\n\003key\030\001 \001(\005\022\r"
+  "\n\005value\030\002 \001(\005:\0028\001B\013\n\t_m_taskidB\t\n\007_m_sta"
+  "t*F\n\017enum_logic_chat\022\021\n\rget_chat_list\020\000\022"
+  "\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*<\n\005eun"
+  "it\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001\022\020\n"
+  "\014eunit_region\020\002*s\n\teunitstat\022\024\n\020eunitsta"
+  "t_normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030euni"
+  "tstat_nonormalattack\020\002\022\034\n\030eunitstat_nore"
+  "leaseskill\020\004*;\n\006eplays\022\037\n\033eplays_go_unde"
+  "rgroundpalace\020\000\022\020\n\014eplays_count\020\001*\233\001\n\025em"
+  "atching_cancel_stat\022\034\n\030ematching_cancel_"
+  "success\020\000\022\032\n\026ematching_cancel_stage\020\001\022 \n"
+  "\034ematching_cancel_roomnotfind\020\002\022&\n\"ematc"
+  "hing_cancel_roommembernotfind\020\003*\253\001\n\025etyp"
+  "e_matching_cancel\022 \n\034etype_matching_canc"
+  "el_active\020\000\022!\n\035etype_matching_cancel_tim"
+  "eout\020\001\022&\n\"etype_matching_waitconfirm_tim"
+  "eout\020\002\022%\n!etype_matching_waitcreate_time"
+  "out\020\003*\240\001\n\026ematching_confirm_stat\022\035\n\031emat"
+  "ching_confirm_success\020\000\022\033\n\027ematching_con"
+  "firm_stage\020\001\022!\n\035ematching_confirm_roomno"
+  "tfind\020\002\022\'\n#ematching_confirm_roommembern"
+  "otfind\020\003B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_net_2eproto_deps[1] = {
   &::descriptor_table_db_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net_2eproto_sccs[65] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net_2eproto_sccs[69] = {
   &scc_info_MATCHING_MEMBER_net_2eproto.base,
   &scc_info_PROBUFF_NET_ACOUNT_LOGIN_net_2eproto.base,
   &scc_info_PROBUFF_NET_ACOUNT_LOGIN_RESPONSE_net_2eproto.base,
@@ -2211,6 +2338,9 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
   &scc_info_PROBUFF_NET_SYNC_POSITION_net_2eproto.base,
   &scc_info_PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse_net_2eproto.base,
   &scc_info_PROBUFF_NET_SYNC_UNIT_net_2eproto.base,
+  &scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_net_2eproto.base,
+  &scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_net_2eproto.base,
+  &scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse_net_2eproto.base,
   &scc_info_UNIT_net_2eproto.base,
   &scc_info_UNIT_POSITION_net_2eproto.base,
   &scc_info_UnitAttribute_net_2eproto.base,
@@ -2218,13 +2348,14 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
   &scc_info_VECTOR2_net_2eproto.base,
   &scc_info_VECTOR3_net_2eproto.base,
   &scc_info_chatitem_net_2eproto.base,
+  &scc_info_drop_item_net_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 7878,
-  &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 65, 1,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 8260,
+  &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 69, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
-  file_level_metadata_net_2eproto, 65, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
+  file_level_metadata_net_2eproto, 69, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -18230,6 +18361,797 @@ void PROBUFF_NET_KCPSESSION_RESPONSE::InternalSwap(PROBUFF_NET_KCPSESSION_RESPON
 }
 
 
+// ===================================================================
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::InitAsDefaultInstance() {
+}
+class PROBUFF_NET_TASK_RECEIVE_AWARD::_Internal {
+ public:
+  using HasBits = decltype(std::declval<PROBUFF_NET_TASK_RECEIVE_AWARD>()._has_bits_);
+  static void set_has_m_taskid(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+PROBUFF_NET_TASK_RECEIVE_AWARD::PROBUFF_NET_TASK_RECEIVE_AWARD(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+}
+PROBUFF_NET_TASK_RECEIVE_AWARD::PROBUFF_NET_TASK_RECEIVE_AWARD(const PROBUFF_NET_TASK_RECEIVE_AWARD& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  m_taskid_ = from.m_taskid_;
+  // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::SharedCtor() {
+  m_taskid_ = 0;
+}
+
+PROBUFF_NET_TASK_RECEIVE_AWARD::~PROBUFF_NET_TASK_RECEIVE_AWARD() {
+  // @@protoc_insertion_point(destructor:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::ArenaDtor(void* object) {
+  PROBUFF_NET_TASK_RECEIVE_AWARD* _this = reinterpret_cast< PROBUFF_NET_TASK_RECEIVE_AWARD* >(object);
+  (void)_this;
+}
+void PROBUFF_NET_TASK_RECEIVE_AWARD::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void PROBUFF_NET_TASK_RECEIVE_AWARD::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const PROBUFF_NET_TASK_RECEIVE_AWARD& PROBUFF_NET_TASK_RECEIVE_AWARD::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_net_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  m_taskid_ = 0;
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PROBUFF_NET_TASK_RECEIVE_AWARD::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int32 m_taskid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_m_taskid(&has_bits);
+          m_taskid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* PROBUFF_NET_TASK_RECEIVE_AWARD::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 m_taskid = 1;
+  if (_internal_has_m_taskid()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_taskid(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  return target;
+}
+
+size_t PROBUFF_NET_TASK_RECEIVE_AWARD::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // int32 m_taskid = 1;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_m_taskid());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PROBUFF_NET_TASK_RECEIVE_AWARD* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PROBUFF_NET_TASK_RECEIVE_AWARD>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+    MergeFrom(*source);
+  }
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::MergeFrom(const PROBUFF_NET_TASK_RECEIVE_AWARD& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_m_taskid()) {
+    _internal_set_m_taskid(from._internal_m_taskid());
+  }
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::CopyFrom(const PROBUFF_NET_TASK_RECEIVE_AWARD& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PROBUFF_NET_TASK_RECEIVE_AWARD::IsInitialized() const {
+  return true;
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD::InternalSwap(PROBUFF_NET_TASK_RECEIVE_AWARD* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  swap(m_taskid_, other->m_taskid_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_TASK_RECEIVE_AWARD::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void drop_item::InitAsDefaultInstance() {
+}
+class drop_item::_Internal {
+ public:
+  using HasBits = decltype(std::declval<drop_item>()._has_bits_);
+  static void set_has_m_item(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_m_count(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+};
+
+drop_item::drop_item(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbnet.drop_item)
+}
+drop_item::drop_item(const drop_item& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&m_item_, &from.m_item_,
+    static_cast<size_t>(reinterpret_cast<char*>(&m_count_) -
+    reinterpret_cast<char*>(&m_item_)) + sizeof(m_count_));
+  // @@protoc_insertion_point(copy_constructor:pbnet.drop_item)
+}
+
+void drop_item::SharedCtor() {
+  ::memset(&m_item_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&m_count_) -
+      reinterpret_cast<char*>(&m_item_)) + sizeof(m_count_));
+}
+
+drop_item::~drop_item() {
+  // @@protoc_insertion_point(destructor:pbnet.drop_item)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void drop_item::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void drop_item::ArenaDtor(void* object) {
+  drop_item* _this = reinterpret_cast< drop_item* >(object);
+  (void)_this;
+}
+void drop_item::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void drop_item::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const drop_item& drop_item::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_drop_item_net_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void drop_item::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbnet.drop_item)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    ::memset(&m_item_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&m_count_) -
+        reinterpret_cast<char*>(&m_item_)) + sizeof(m_count_));
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* drop_item::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int32 m_item = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_m_item(&has_bits);
+          m_item_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 m_count = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          _Internal::set_has_m_count(&has_bits);
+          m_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* drop_item::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbnet.drop_item)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 m_item = 1;
+  if (_internal_has_m_item()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_item(), target);
+  }
+
+  // int32 m_count = 2;
+  if (_internal_has_m_count()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_count(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbnet.drop_item)
+  return target;
+}
+
+size_t drop_item::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbnet.drop_item)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    // int32 m_item = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_item());
+    }
+
+    // int32 m_count = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_count());
+    }
+
+  }
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void drop_item::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbnet.drop_item)
+  GOOGLE_DCHECK_NE(&from, this);
+  const drop_item* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<drop_item>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbnet.drop_item)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbnet.drop_item)
+    MergeFrom(*source);
+  }
+}
+
+void drop_item::MergeFrom(const drop_item& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbnet.drop_item)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      m_item_ = from.m_item_;
+    }
+    if (cached_has_bits & 0x00000002u) {
+      m_count_ = from.m_count_;
+    }
+    _has_bits_[0] |= cached_has_bits;
+  }
+}
+
+void drop_item::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbnet.drop_item)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void drop_item::CopyFrom(const drop_item& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbnet.drop_item)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool drop_item::IsInitialized() const {
+  return true;
+}
+
+void drop_item::InternalSwap(drop_item* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(drop_item, m_count_)
+      + sizeof(drop_item::m_count_)
+      - PROTOBUF_FIELD_OFFSET(drop_item, m_item_)>(
+          reinterpret_cast<char*>(&m_item_),
+          reinterpret_cast<char*>(&other->m_item_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata drop_item::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse() {}
+PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+    : SuperType(arena) {}
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::MergeFrom(const PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::MergeFrom(
+    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
+  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::InitAsDefaultInstance() {
+}
+class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::_Internal {
+ public:
+  using HasBits = decltype(std::declval<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>()._has_bits_);
+  static void set_has_m_taskid(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_m_stat(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+};
+
+PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  m_drop_(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+}
+PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE(const PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  m_drop_.MergeFrom(from.m_drop_);
+  ::memcpy(&m_taskid_, &from.m_taskid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&m_stat_) -
+    reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_stat_));
+  // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_net_2eproto.base);
+  ::memset(&m_taskid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&m_stat_) -
+      reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_stat_));
+}
+
+PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::~PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE() {
+  // @@protoc_insertion_point(destructor:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::ArenaDtor(void* object) {
+  PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE* _this = reinterpret_cast< PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE* >(object);
+  (void)_this;
+}
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_net_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  m_drop_.Clear();
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    ::memset(&m_taskid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&m_stat_) -
+        reinterpret_cast<char*>(&m_taskid_)) + sizeof(m_stat_));
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int32 m_taskid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_m_taskid(&has_bits);
+          m_taskid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // bool m_stat = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          _Internal::set_has_m_stat(&has_bits);
+          m_stat_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // map<int32, int32> m_drop = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(&m_drop_, ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 m_taskid = 1;
+  if (_internal_has_m_taskid()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_taskid(), target);
+  }
+
+  // bool m_stat = 2;
+  if (_internal_has_m_stat()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_m_stat(), target);
+  }
+
+  // map<int32, int32> m_drop = 3;
+  if (!this->_internal_m_drop().empty()) {
+    typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >::const_pointer
+        ConstPtr;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::SortItem< ::PROTOBUF_NAMESPACE_ID::int32, ConstPtr > SortItem;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByFirstField<SortItem> Less;
+
+    if (stream->IsSerializationDeterministic() &&
+        this->_internal_m_drop().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->_internal_m_drop().size()]);
+      typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >::size_type size_type;
+      size_type n = 0;
+      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >::const_iterator
+          it = this->_internal_m_drop().begin();
+          it != this->_internal_m_drop().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      for (size_type i = 0; i < n; i++) {
+        target = PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::Funcs::InternalSerialize(3, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+      }
+    } else {
+      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >::const_iterator
+          it = this->_internal_m_drop().begin();
+          it != this->_internal_m_drop().end(); ++it) {
+        target = PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::Funcs::InternalSerialize(3, it->first, it->second, target, stream);
+      }
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  return target;
+}
+
+size_t PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // map<int32, int32> m_drop = 3;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_m_drop_size());
+  for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >::const_iterator
+      it = this->_internal_m_drop().begin();
+      it != this->_internal_m_drop().end(); ++it) {
+    total_size += PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+  }
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    // int32 m_taskid = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_taskid());
+    }
+
+    // bool m_stat = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 + 1;
+    }
+
+  }
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+    MergeFrom(*source);
+  }
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::MergeFrom(const PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  m_drop_.MergeFrom(from.m_drop_);
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      m_taskid_ = from.m_taskid_;
+    }
+    if (cached_has_bits & 0x00000002u) {
+      m_stat_ = from.m_stat_;
+    }
+    _has_bits_[0] |= cached_has_bits;
+  }
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::CopyFrom(const PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbnet.PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::IsInitialized() const {
+  return true;
+}
+
+void PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::InternalSwap(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  m_drop_.Swap(&other->m_drop_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, m_stat_)
+      + sizeof(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::m_stat_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, m_taskid_)>(
+          reinterpret_cast<char*>(&m_taskid_),
+          reinterpret_cast<char*>(&other->m_taskid_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace pbnet
 PROTOBUF_NAMESPACE_OPEN
@@ -18427,6 +19349,18 @@ template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_KCPSESSION* Arena::CreateMaybe
 }
 template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbnet::drop_item* Arena::CreateMaybeMessage< ::pbnet::drop_item >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbnet::drop_item >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MDropEntry_DoNotUse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

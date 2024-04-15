@@ -7,6 +7,7 @@
 #include "ndbclient.h"
 #include "nprotocol.h"
 #include "ntimer.h"
+#include "nlog.h"
 #include "mail.h"
 #include "net.h"
 #include "db_manage.h"
@@ -37,6 +38,25 @@ namespace ngl
 		virtual ~actor_mail() {}
 
 		virtual void loaddb_finish(bool adbishave) {}
+
+		static bool sendmail(i64_actorid actorid, int32_t amailid, int32_t adropid, const std::string& aparm)
+		{
+			auto pro = std::make_shared<np_actor_addmail>();
+			pro->m_roleid = actorid;
+			pro->m_tid = amailid;
+			if (drop::droplist(adropid, 1, pro->m_items) == false)
+			{
+				LogLocalError("drop[%] not find!!!", adropid);
+				return false;
+			}
+			pro->m_parm = aparm;
+			actor::static_send_actor(
+				nguid::make(ACTOR_MAIL, ttab_servers::tab()->m_area, nguid::none_actordataid())
+				, nguid::make()
+				, pro
+			);
+			return true;
+		}
 
 		// ---- ACTOR_PROTOCOL_ADD_MAIL,ÐÂÔöÓÊ¼þ
 		bool handle(message<np_actor_addmail>& adata)

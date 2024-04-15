@@ -3836,6 +3836,7 @@ class db_task_data PROTOBUF_FINAL :
     kMTaskidFieldNumber = 1,
     kMReceiveutcFieldNumber = 2,
     kMFinshutcFieldNumber = 3,
+    kMReceiveFieldNumber = 5,
   };
   // repeated .pbdb.db_task.data_schedule m_schedules = 4;
   int m_schedules_size() const;
@@ -3894,6 +3895,19 @@ class db_task_data PROTOBUF_FINAL :
   void _internal_set_m_finshutc(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // bool m_receive = 5;
+  bool has_m_receive() const;
+  private:
+  bool _internal_has_m_receive() const;
+  public:
+  void clear_m_receive();
+  bool m_receive() const;
+  void set_m_receive(bool value);
+  private:
+  bool _internal_m_receive() const;
+  void _internal_set_m_receive(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbdb.db_task.data)
  private:
   class _Internal;
@@ -3907,6 +3921,7 @@ class db_task_data PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 m_taskid_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_receiveutc_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_finshutc_;
+  bool m_receive_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
@@ -6713,6 +6728,34 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_task_data_sch
 db_task_data::m_schedules() const {
   // @@protoc_insertion_point(field_list:pbdb.db_task.data.m_schedules)
   return m_schedules_;
+}
+
+// bool m_receive = 5;
+inline bool db_task_data::_internal_has_m_receive() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool db_task_data::has_m_receive() const {
+  return _internal_has_m_receive();
+}
+inline void db_task_data::clear_m_receive() {
+  m_receive_ = false;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline bool db_task_data::_internal_m_receive() const {
+  return m_receive_;
+}
+inline bool db_task_data::m_receive() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data.m_receive)
+  return _internal_m_receive();
+}
+inline void db_task_data::_internal_set_m_receive(bool value) {
+  _has_bits_[0] |= 0x00000008u;
+  m_receive_ = value;
+}
+inline void db_task_data::set_m_receive(bool value) {
+  _internal_set_m_receive(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_task.data.m_receive)
 }
 
 // -------------------------------------------------------------------
