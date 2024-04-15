@@ -17,13 +17,6 @@ namespace ngl
 	class task
 		: public task_db_modular
 	{
-		// 检查任务是否可以接取
-		bool check_receive(int32_t ataskid);
-		// 检查是否完成任务
-		bool check_complete(pbdb::db_task::data_schedule& adata);
-		bool check_complete(pbdb::db_task::data& adata);
-		bool check_complete(int32_t ataskid);
-
 	public:
 		task() 
 		{}
@@ -39,8 +32,32 @@ namespace ngl
 		}
 
 		virtual void initdata();
-
-		// avalue 改变值
-		void task_condition(ETask atype, const std::vector<int32_t>& avalue);
 	};
+
+	class static_task
+	{
+	public:
+		// 检查条件是否都完成
+		static bool check_condition(actor_role* arole, std::vector<task_condition>& acondition);
+
+		static google::protobuf::Map<int32_t, pbdb::db_task_data>&			complete(actor_role* arole);
+		static google::protobuf::Map<int32_t, pbdb::db_task_data>&			run(actor_role* arole);
+		static const google::protobuf::Map<int32_t, pbdb::db_task_data>&	const_complete(actor_role* arole);
+		static const google::protobuf::Map<int32_t, pbdb::db_task_data>&	const_run(actor_role* arole);
+
+		// 任务是否完成
+		static bool isfinish_task(actor_role* arole, i32_taskid ataskid);
+		static bool isreceive_task(actor_role* arole, i32_taskid ataskid);
+
+		static void finish_task(actor_role* arole, i32_taskid ataskid);
+		// 检查任务是否可以被接取
+		static void receive_task(actor_role* arole, i32_taskid ataskid);
+
+		// 是否有可以接受任务
+		// 因为某个条件完成
+		static bool update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset);
+		static bool update_change(actor_role* arole, ETask atype, int32_t avalues);
+	};
+
+
 }// namespace ngl

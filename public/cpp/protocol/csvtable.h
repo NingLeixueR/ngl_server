@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-04-01 19:16:17
+// 创建时间 // 创建时间 24-04-11 11:36:00
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "csv.h"
@@ -131,9 +131,17 @@ enum EActivity
 };
 enum ETask
 {
-	ETaskRoleLv = 1,	// 玩家等级
-	ETaskRoleVip = 2,	// 玩家vip等级
-	ETaskTaskId = 3,	// 完成某ID任务
+	ETaskRoleLv = 0,	// 玩家等级
+	ETaskRoleVip = 1,	// 玩家vip等级
+	ETaskTaskId = 2,	// 完成某ID任务
+	ETaskCount,	
+};
+enum ETaskCondition
+{
+	ETaskConditionMore = 0,	// 大于等于
+	ETaskConditionLess = 1,	// 小于等于
+	ETaskConditionEqual = 2,	// 等于
+	ETaskConditionCount,	
 };
 enum ETaskType
 {
@@ -511,29 +519,18 @@ struct tab_activity_drawcompliance
 	// csv相关
 	def_rcsv(m_id,m_name,m_remarks,m_dropid,m_mailid)
 };
-struct task_receive
+struct task_condition
 {
 /*********************************/
-	ETask		m_receivetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
-	std::vector<int32_t>		m_parmint;		
+	ETask		m_type;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
+	ETaskCondition		m_condition;		
+	int32_t		m_parmint;		
 /*********************************/
-	task_receive();
+	task_condition();
 	// 序列化反序列化相关
-	def_portocol(task_receive, m_receivetype, m_parmint)
+	def_portocol(task_condition, m_type, m_condition, m_parmint)
 	// csv相关
-	def_rcsv(m_receivetype,m_parmint)
-};
-struct task_complete
-{
-/*********************************/
-	ETask		m_completetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
-	std::vector<int32_t>		m_parmint;		
-/*********************************/
-	task_complete();
-	// 序列化反序列化相关
-	def_portocol(task_complete, m_completetype, m_parmint)
-	// csv相关
-	def_rcsv(m_completetype,m_parmint)
+	def_rcsv(m_type,m_condition,m_parmint)
 };
 struct tab_task
 {
@@ -543,8 +540,8 @@ struct tab_task
 	std::string		m_remarks;		
 	ETaskType		m_type;		
 	int32_t		m_dropid;		// 任务奖励
-	std::vector<task_receive>		m_taskreceive;		// 接收此任务的前提
-	std::vector<task_complete>		m_taskcomplete;		// 完成此任务的条件
+	std::vector<task_condition>		m_taskreceive;		// 接收此任务的前提
+	std::vector<task_condition>		m_taskcomplete;		// 完成此任务的条件
 /*********************************/
 	tab_task();
 	// 序列化反序列化相关

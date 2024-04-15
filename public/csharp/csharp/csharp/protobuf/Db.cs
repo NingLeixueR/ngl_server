@@ -81,25 +81,26 @@ namespace Pbdb {
             "d2FyZBgCIAMoBUIKCghfbV9jb3VudBpdChRNRHJhd2NvbXBsaWFuY2VFbnRy",
             "eRILCgNrZXkYASABKAMSNAoFdmFsdWUYAiABKAsyJS5wYmRiLmRiX2FjdGl2",
             "aXR5LmRhdGEuZHJhd2NvbXBsaWFuY2U6AjgBQggKBl9tX2JlZ0IICgZfbV9l",
-            "bmRCCgoIX21fc3RhcnRCCwoJX21fZmluaXNoQgcKBV9tX2lkIrAECgdkYl90",
+            "bmRCCgoIX21fc3RhcnRCCwoJX21fZmluaXNoQgcKBV9tX2lkItEECgdkYl90",
             "YXNrEhEKBG1faWQYASABKANIAIgBARIwCgptX3J1bmRhdGFzGAIgAygLMhwu",
             "cGJkYi5kYl90YXNrLk1SdW5kYXRhc0VudHJ5EjwKEG1fY29tcGxldGVkZGF0",
             "YXMYAyADKAsyIi5wYmRiLmRiX3Rhc2suTUNvbXBsZXRlZGRhdGFzRW50cnka",
-            "VAoNZGF0YV9zY2hlZHVsZRITCgZtX3R5cGUYASABKAVIAIgBARIRCgltX3Bh",
-            "cm1pbnQYAiADKAUSEAoIbV9zdW1pbnQYAyADKAVCCQoHX21fdHlwZRqwAQoE",
-            "ZGF0YRIVCghtX3Rhc2tpZBgBIAEoBUgAiAEBEhkKDG1fcmVjZWl2ZXV0YxgC",
-            "IAEoBUgBiAEBEhcKCm1fZmluc2h1dGMYAyABKAVIAogBARIwCgttX3NjaGVk",
-            "dWxlcxgEIAMoCzIbLnBiZGIuZGJfdGFzay5kYXRhX3NjaGVkdWxlQgsKCV9t",
-            "X3Rhc2tpZEIPCg1fbV9yZWNlaXZldXRjQg0KC19tX2ZpbnNodXRjGkQKDk1S",
-            "dW5kYXRhc0VudHJ5EgsKA2tleRgBIAEoBRIhCgV2YWx1ZRgCIAEoCzISLnBi",
-            "ZGIuZGJfdGFzay5kYXRhOgI4ARpKChRNQ29tcGxldGVkZGF0YXNFbnRyeRIL",
-            "CgNrZXkYASABKAUSIQoFdmFsdWUYAiABKAsyEi5wYmRiLmRiX3Rhc2suZGF0",
-            "YToCOAFCBwoFX21faWQq9AEKB0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5U",
-            "EAASEAoMRU5VTV9EQl9ST0xFEAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VO",
-            "VU1fREJfQkFHEAMSFAoQRU5VTV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJf",
-            "TUFJTBAFEhEKDUVOVU1fREJfR1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAH",
-            "EhQKEEVOVU1fREJfUkFOS0xJU1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkS",
-            "EAoMRU5VTV9EQl9UQVNLEAoSEQoNRU5VTV9EQl9DT1VOVBALYgZwcm90bzM="));
+            "dQoNZGF0YV9zY2hlZHVsZRITCgZtX3R5cGUYASABKAVIAIgBARIUCgdtX3Zh",
+            "bHVlGAIgASgFSAGIAQESFQoIbV9zdW1pbnQYAyABKAVIAogBAUIJCgdfbV90",
+            "eXBlQgoKCF9tX3ZhbHVlQgsKCV9tX3N1bWludBqwAQoEZGF0YRIVCghtX3Rh",
+            "c2tpZBgBIAEoBUgAiAEBEhkKDG1fcmVjZWl2ZXV0YxgCIAEoBUgBiAEBEhcK",
+            "Cm1fZmluc2h1dGMYAyABKAVIAogBARIwCgttX3NjaGVkdWxlcxgEIAMoCzIb",
+            "LnBiZGIuZGJfdGFzay5kYXRhX3NjaGVkdWxlQgsKCV9tX3Rhc2tpZEIPCg1f",
+            "bV9yZWNlaXZldXRjQg0KC19tX2ZpbnNodXRjGkQKDk1SdW5kYXRhc0VudHJ5",
+            "EgsKA2tleRgBIAEoBRIhCgV2YWx1ZRgCIAEoCzISLnBiZGIuZGJfdGFzay5k",
+            "YXRhOgI4ARpKChRNQ29tcGxldGVkZGF0YXNFbnRyeRILCgNrZXkYASABKAUS",
+            "IQoFdmFsdWUYAiABKAsyEi5wYmRiLmRiX3Rhc2suZGF0YToCOAFCBwoFX21f",
+            "aWQq9AEKB0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5UEAASEAoMRU5VTV9E",
+            "Ql9ST0xFEAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VOVU1fREJfQkFHEAMS",
+            "FAoQRU5VTV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJfTUFJTBAFEhEKDUVO",
+            "VU1fREJfR1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAHEhQKEEVOVU1fREJf",
+            "UkFOS0xJU1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkSEAoMRU5VTV9EQl9U",
+            "QVNLEAoSEQoNRU5VTV9EQl9DT1VOVBALYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -118,7 +119,7 @@ namespace Pbdb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_ranklist), global::Pbdb.db_ranklist.Parser, new[]{ "MId", "MItem" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity), global::Pbdb.db_activity.Parser, new[]{ "MId", "MDatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.data), global::Pbdb.db_activity.Types.data.Parser, new[]{ "MBeg", "MEnd", "MStart", "MFinish", "MDrawcompliance" }, new[]{ "MBeg", "MEnd", "MStart", "MFinish" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.data.Types.drawcompliance), global::Pbdb.db_activity.Types.data.Types.drawcompliance.Parser, new[]{ "MCount", "MReward" }, new[]{ "MCount" }, null, null, null),
             null, })}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task), global::Pbdb.db_task.Parser, new[]{ "MId", "MRundatas", "MCompleteddatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data_schedule), global::Pbdb.db_task.Types.data_schedule.Parser, new[]{ "MType", "MParmint", "MSumint" }, new[]{ "MType" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task), global::Pbdb.db_task.Parser, new[]{ "MId", "MRundatas", "MCompleteddatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data_schedule), global::Pbdb.db_task.Types.data_schedule.Parser, new[]{ "MType", "MValue", "MSumint" }, new[]{ "MType", "MValue", "MSumint" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data), global::Pbdb.db_task.Types.data.Parser, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MSchedules" }, new[]{ "MTaskid", "MReceiveutc", "MFinshutc" }, null, null, null),
             null, null, })
           }));
@@ -5662,8 +5663,8 @@ namespace Pbdb {
         public data_schedule(data_schedule other) : this() {
           _hasBits0 = other._hasBits0;
           mType_ = other.mType_;
-          mParmint_ = other.mParmint_.Clone();
-          mSumint_ = other.mSumint_.Clone();
+          mValue_ = other.mValue_;
+          mSumint_ = other.mSumint_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -5676,7 +5677,7 @@ namespace Pbdb {
         public const int MTypeFieldNumber = 1;
         private int mType_;
         /// <summary>
-        ///EFinshTask
+        /// csvtable.ETask
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int MType {
@@ -5697,24 +5698,54 @@ namespace Pbdb {
           _hasBits0 &= ~1;
         }
 
-        /// <summary>Field number for the "m_parmint" field.</summary>
-        public const int MParmintFieldNumber = 2;
-        private static readonly pb::FieldCodec<int> _repeated_mParmint_codec
-            = pb::FieldCodec.ForInt32(18);
-        private readonly pbc::RepeatedField<int> mParmint_ = new pbc::RepeatedField<int>();
+        /// <summary>Field number for the "m_value" field.</summary>
+        public const int MValueFieldNumber = 2;
+        private int mValue_;
+        /// <summary>
+        /// 当前值 
+        /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public pbc::RepeatedField<int> MParmint {
-          get { return mParmint_; }
+        public int MValue {
+          get { if ((_hasBits0 & 2) != 0) { return mValue_; } else { return 0; } }
+          set {
+            _hasBits0 |= 2;
+            mValue_ = value;
+          }
+        }
+        /// <summary>Gets whether the "m_value" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasMValue {
+          get { return (_hasBits0 & 2) != 0; }
+        }
+        /// <summary>Clears the value of the "m_value" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearMValue() {
+          _hasBits0 &= ~2;
         }
 
         /// <summary>Field number for the "m_sumint" field.</summary>
         public const int MSumintFieldNumber = 3;
-        private static readonly pb::FieldCodec<int> _repeated_mSumint_codec
-            = pb::FieldCodec.ForInt32(26);
-        private readonly pbc::RepeatedField<int> mSumint_ = new pbc::RepeatedField<int>();
+        private int mSumint_;
+        /// <summary>
+        /// 总值
+        /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public pbc::RepeatedField<int> MSumint {
-          get { return mSumint_; }
+        public int MSumint {
+          get { if ((_hasBits0 & 4) != 0) { return mSumint_; } else { return 0; } }
+          set {
+            _hasBits0 |= 4;
+            mSumint_ = value;
+          }
+        }
+        /// <summary>Gets whether the "m_sumint" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasMSumint {
+          get { return (_hasBits0 & 4) != 0; }
+        }
+        /// <summary>Clears the value of the "m_sumint" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearMSumint() {
+          _hasBits0 &= ~4;
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5731,8 +5762,8 @@ namespace Pbdb {
             return true;
           }
           if (MType != other.MType) return false;
-          if(!mParmint_.Equals(other.mParmint_)) return false;
-          if(!mSumint_.Equals(other.mSumint_)) return false;
+          if (MValue != other.MValue) return false;
+          if (MSumint != other.MSumint) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -5740,8 +5771,8 @@ namespace Pbdb {
         public override int GetHashCode() {
           int hash = 1;
           if (HasMType) hash ^= MType.GetHashCode();
-          hash ^= mParmint_.GetHashCode();
-          hash ^= mSumint_.GetHashCode();
+          if (HasMValue) hash ^= MValue.GetHashCode();
+          if (HasMSumint) hash ^= MSumint.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -5762,8 +5793,14 @@ namespace Pbdb {
             output.WriteRawTag(8);
             output.WriteInt32(MType);
           }
-          mParmint_.WriteTo(output, _repeated_mParmint_codec);
-          mSumint_.WriteTo(output, _repeated_mSumint_codec);
+          if (HasMValue) {
+            output.WriteRawTag(16);
+            output.WriteInt32(MValue);
+          }
+          if (HasMSumint) {
+            output.WriteRawTag(24);
+            output.WriteInt32(MSumint);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -5777,8 +5814,14 @@ namespace Pbdb {
             output.WriteRawTag(8);
             output.WriteInt32(MType);
           }
-          mParmint_.WriteTo(ref output, _repeated_mParmint_codec);
-          mSumint_.WriteTo(ref output, _repeated_mSumint_codec);
+          if (HasMValue) {
+            output.WriteRawTag(16);
+            output.WriteInt32(MValue);
+          }
+          if (HasMSumint) {
+            output.WriteRawTag(24);
+            output.WriteInt32(MSumint);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -5791,8 +5834,12 @@ namespace Pbdb {
           if (HasMType) {
             size += 1 + pb::CodedOutputStream.ComputeInt32Size(MType);
           }
-          size += mParmint_.CalculateSize(_repeated_mParmint_codec);
-          size += mSumint_.CalculateSize(_repeated_mSumint_codec);
+          if (HasMValue) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(MValue);
+          }
+          if (HasMSumint) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(MSumint);
+          }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
           }
@@ -5807,8 +5854,12 @@ namespace Pbdb {
           if (other.HasMType) {
             MType = other.MType;
           }
-          mParmint_.Add(other.mParmint_);
-          mSumint_.Add(other.mSumint_);
+          if (other.HasMValue) {
+            MValue = other.MValue;
+          }
+          if (other.HasMSumint) {
+            MSumint = other.MSumint;
+          }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -5827,14 +5878,12 @@ namespace Pbdb {
                 MType = input.ReadInt32();
                 break;
               }
-              case 18:
               case 16: {
-                mParmint_.AddEntriesFrom(input, _repeated_mParmint_codec);
+                MValue = input.ReadInt32();
                 break;
               }
-              case 26:
               case 24: {
-                mSumint_.AddEntriesFrom(input, _repeated_mSumint_codec);
+                MSumint = input.ReadInt32();
                 break;
               }
             }
@@ -5855,14 +5904,12 @@ namespace Pbdb {
                 MType = input.ReadInt32();
                 break;
               }
-              case 18:
               case 16: {
-                mParmint_.AddEntriesFrom(ref input, _repeated_mParmint_codec);
+                MValue = input.ReadInt32();
                 break;
               }
-              case 26:
               case 24: {
-                mSumint_.AddEntriesFrom(ref input, _repeated_mSumint_codec);
+                MSumint = input.ReadInt32();
                 break;
               }
             }

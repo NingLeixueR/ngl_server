@@ -1,142 +1,218 @@
-#include "task.h"
 #include "actor_role.h"
+#include "ttab_task.h"
+#include "db.pb.h"
+#include "task.h"
 
 namespace ngl
 {
-	class taskcheck
+	class task_check
 	{
-		taskcheck() = delete;
-
-		static std::map<ETask, taskcheck*> m_taskdata;
-		virtual bool check_receives(actor_role* arole, const std::vector<int32_t>& aparmint) = 0;
-		virtual void values(actor_role* arole, std::vector<int32_t>& aparmint) = 0;
-	protected:
-		taskcheck(ETask atype)
-		{
-			m_taskdata[atype] = this;
-		}
+		static std::array<task_check*, ETaskCount> m_data;
 	public:
-		static bool check_receive(actor_role* arole, ETask atype, const std::vector<int32_t>& aparmint)
+
+		// 检查条件是否满足
+		static bool check(actor_role* arole, task_condition& atab)
 		{
-			auto itor = m_taskdata.find(atype);
-			if (itor == m_taskdata.end())
+			if (atab.m_condition == ETaskConditionMore)
 			{
-				LogLocalError("taskcheck::check type[%] not find!!!", (int)atype)
-				return false;
+				return m_data[atab.m_type]->values(arole, atab) >= atab.m_parmint;
 			}
-			return itor->second->check_receives(arole, aparmint);
+			else if (atab.m_condition == ETaskConditionLess)
+			{
+				return m_data[atab.m_type]->values(arole, atab) <= atab.m_parmint;
+			}
+			else if (atab.m_condition == ETaskConditionEqual)
+			{
+				return m_data[atab.m_type]->values(arole, atab) == atab.m_parmint;
+			}
+			return false;
 		}
 
-		static bool values(actor_role* arole, ETask atype, std::vector<int32_t>& aparmint)
+		static void schedules(actor_role* arole, pbdb::db_task::data_schedule& adata, task_condition& atab)
 		{
-			auto itor = m_taskdata.find(atype);
-			if (itor == m_taskdata.end())
-			{
-				LogLocalError("taskcheck::values type[%] not find!!!", (int)atype)
-				return false;
-			}
-			itor->second->values(arole, aparmint);
-			return true;
+			adata.set_m_type(atab.m_type);
+			adata.set_m_sumint(atab.m_parmint);
+			adata.set_m_value(m_data[atab.m_type]->values(arole, atab));
 		}
 
-		template <typename TLIST>
-		static bool check_complete(const TLIST& aparmint, const TLIST& asumint)
+		virtual int32_t values(actor_role* arole, task_condition& atab) = 0;
+	};
+
+	// 条件检查:ETaskRoleLv 玩家等级
+	class taskcheck_rolelv : public task_check
+	{
+		virtual int32_t values(actor_role* arole, task_condition& atab)
 		{
-			for (auto parmitor = aparmint.begin(), sumitor = asumint.begin();
-				parmitor != aparmint.end() && sumitor != asumint.end();++parmitor,++sumitor)
-			{
-				if (*parmitor < *sumitor)
-					return false;
-			}
-			return true;
+			return arole->m_info.lv();
 		}
 	};
 
-	std::map<ETask, taskcheck*> taskcheck::m_taskdata;
-
-	class taskcheck_rolelv
-		: public taskcheck
+	// 条件检查:ETaskRoleVip 玩家vip等级
+	class taskcheck_rolevip : public task_check
 	{
-		virtual bool check_receives(actor_role* arole, const std::vector<int32_t>& aparmint)
+		virtual int32_t values(actor_role* arole, task_condition& atab)
 		{
-			if (aparmint.empty())
-				return true;
-			return arole->m_info.lv() >= aparmint[0];
+			return arole->m_info.vip();
 		}
-		virtual void values(actor_role* arole, std::vector<int32_t>& aparmint)
-		{
-			aparmint.clear();
-			aparmint.push_back(arole->m_info.lv());
-		}
-	public:
-		taskcheck_rolelv() :
-			taskcheck(ETaskRoleLv)
-		{}
 	};
 
-	taskcheck_rolelv g_taskcheck_rolelv;
-
-	void task::task_condition(ETask atype, const std::vector<int32_t>& avalue)
+	// 条件检查:ETaskTaskId 完成某ID任务
+	class taskcheck_taskid : public task_check
 	{
-		pbdb::db_task& ltask = db()->get(false);
-		auto lrundatas = ltask.mutable_m_rundatas();
-		for (auto& item : *lrundatas)
+		virtual int32_t values(actor_role* arole, task_condition& atab)
 		{
-			auto lschedules = item.second.mutable_m_schedules();
-			for (pbdb::db_task::data_schedule& itemschedules : *lschedules)
-			{
-				if (itemschedules.m_type() == atype)
-				{
-					for (int i = 0; i < avalue.size() && i < itemschedules.mutable_m_parmint()->size(); ++i)
-					{
-						(*itemschedules.mutable_m_parmint())[i] += avalue[i];
-					}
-				}
-			}
+			auto& lmap = arole->m_task.get_consttask().m_completeddatas();
+			return lmap.find(atab.m_parmint) != lmap.end()? atab.m_parmint :-1;
 		}
-	}
+	};
 
-	bool task::check_complete(pbdb::db_task::data_schedule& adata)
+	std::array<task_check*, ETaskCount> task_check::m_data =
 	{
-		return taskcheck::check_complete(adata.m_parmint(), adata.m_sumint());
-	}
+		(task_check*)new taskcheck_rolelv(),
+		(task_check*)new taskcheck_rolevip(),
+		(task_check*)new taskcheck_taskid()
+	};
 
-	bool task::check_complete(pbdb::db_task::data& adata)
+	bool static_task::check_condition(actor_role* arole, std::vector<task_condition>& acondition)
 	{
-		for (pbdb::db_task::data_schedule& item : *adata.mutable_m_schedules())
+		for (task_condition& item : acondition)
 		{
-			if (check_complete(item) == false)
+			if (task_check::check(arole, item) == false)
 				return false;
 		}
 		return true;
 	}
 
-	bool task::check_complete(int32_t ataskid)
+	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::complete(actor_role* arole)
 	{
-		auto itor = db()->get(false).mutable_m_rundatas()->find(ataskid);
-		if (itor == db()->get(false).mutable_m_rundatas()->end())
-			return false;
-		return check_complete(itor->second);
+		return *arole->m_task.get_task().mutable_m_completeddatas();
 	}
 
-	bool task::check_receive(int32_t ataskid)
+	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::run(actor_role* arole)
 	{
-		tab_task* tab = allcsv::tab<tab_task>(ataskid);
-		if (tab == nullptr)
-			return false;
+		return *arole->m_task.get_task().mutable_m_rundatas();
+	}
 
-		const pbdb::db_task& ldbtask = get_consttask();
-		auto lcompleteddatas = ldbtask.m_completeddatas();
-		if (lcompleteddatas.find(ataskid) != lcompleteddatas.end())
-			return false;
-		auto lrundatas = ldbtask.m_rundatas();
-		if (lrundatas.find(ataskid) != lrundatas.end())
-			return false;
-		
-		for (task_receive& item : tab->m_taskreceive)
+	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_complete(actor_role* arole)
+	{
+		return arole->m_task.get_task().m_completeddatas();
+	}
+
+	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_run(actor_role* arole)
+	{
+		return arole->m_task.get_task().m_rundatas();
+	}
+
+	bool static_task::isfinish_task(actor_role* arole, i32_taskid ataskid)
+	{
+		auto& lcomplete = const_complete(arole);
+		return lcomplete.find(ataskid) != lcomplete.end();
+	}
+
+	bool static_task::isreceive_task(actor_role* arole, i32_taskid ataskid)
+	{
+		auto& lrun = const_run(arole);
+		return lrun.find(ataskid) != lrun.end();
+	}
+
+	void static_task::receive_task(actor_role* arole, i32_taskid ataskid)
+	{
+		//## 接收任务前先查看是否已经完成了
+		if (isfinish_task(arole, ataskid))
+			return;
+		//## 此任务是否已经被接收
+		if (isreceive_task(arole, ataskid))
+			return;
+
+		std::vector<task_condition>* lvec = ttab_task::get_task_condition(ataskid, true);
+		if (lvec == nullptr)
+			return;
+
+		if (check_condition(arole, *lvec) == false)
+			return;
+
+		arole->m_task.get_consttask();
+		pbdb::db_task::data ltemp;
+		ltemp.set_m_taskid(ataskid);
+		ltemp.set_m_receiveutc(localtime::gettime());
+		ltemp.set_m_finshutc(-1);
+		for (auto& item : *lvec)
 		{
-			if (taskcheck::check_receive(actor(), item.m_receivetype, item.m_parmint) == false)
+			task_check::schedules(arole, *ltemp.mutable_m_schedules()->Add(), item);
+		}
+		arole->m_task.get()->get().mutable_m_rundatas()->insert({ ataskid, ltemp });
+	}
+
+	void static_task::finish_task(actor_role* arole, i32_taskid ataskid)
+	{
+		//## 接收任务前先查看是否已经完成了
+		if (isfinish_task(arole, ataskid))
+			return;
+		//## 此任务是否已经被接收
+		if (isreceive_task(arole, ataskid) == false)
+			return;
+		std::vector<task_condition>* lvecfinish = ttab_task::get_task_condition(ataskid, false);
+		if (lvecfinish != nullptr && check_condition(arole, *lvecfinish))
+		{
+			auto itor = run(arole).find(ataskid);
+			complete(arole).insert({ ataskid, itor->second });
+			run(arole).erase(itor);
+			update_change(arole, ETaskTaskId, ataskid);
+		}
+	}
+
+	bool static_task::update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset)
+	{
+		auto& lconst_complete = const_complete(arole);
+		auto& lconst_rundatas = const_run(arole);
+		for (i32_taskid taskid : *ataskset)
+		{
+			//## 接收任务前先查看是否已经接收过了
+			auto itorrun = lconst_rundatas.find(taskid);
+			if (itorrun != lconst_rundatas.end())
+			{
+				//## 已接收任务更新进度
+				for (int i = 0; i < itorrun->second.m_schedules_size(); ++i)
+				{
+					auto& lcomplete = run(arole);
+					for (auto itor = lcomplete.begin(); itor != lcomplete.end(); ++itor)
+					{
+						for (pbdb::db_task::data_schedule& lschedule : *itor->second.mutable_m_schedules())
+						{
+							if (lschedule.m_type() == atype)
+							{
+								task_condition* lpcondition = ttab_task::get_task_condition(taskid, atype, false);
+								if (lpcondition != nullptr)
+								{
+									task_check::schedules(arole, lschedule, *lpcondition);
+								}
+								break;
+							}
+						}
+					}
+				}
+				finish_task(arole, taskid);
+				continue;
+			}
+			
+			receive_task(arole, taskid);
+		}
+		return true;
+	}
+
+	bool static_task::update_change(actor_role* arole, ETask atype, int32_t avalues)
+	{
+		{
+			std::set<i32_taskid>* ltaskset = ttab_task::check(atype, avalues, true);
+			if (ltaskset == nullptr)
 				return false;
+			update_change(arole, atype, ltaskset);
+		}
+		{
+			std::set<i32_taskid>* ltaskset = ttab_task::check(atype, avalues, false);
+			if (ltaskset == nullptr)
+				return false;
+			update_change(arole, atype, ltaskset);
 		}
 		return true;
 	}
@@ -162,38 +238,39 @@ namespace ngl
 		}
 		std::cout << "===]" << std::endl;
 
-
+		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务
 		auto tabs = allcsv::get<manage_csv<tab_task>>();
-		tabs->foreach([this](tab_task& atask)
+		tabs->foreach([this, lrole](tab_task& atask)
 			{
-				if (check_receive(atask.m_id))
+				if (static_task::isfinish_task(lrole, atask.m_id))
+					return;
+				if (static_task::isreceive_task(lrole, atask.m_id))
 				{
-					auto lrundatas = get_task(false).mutable_m_rundatas();
-					std::pair<int32_t, pbdb::db_task::data> lpair;
-					lpair.first = atask.m_id;
-					pbdb::db_task::data& ldata = lpair.second;
-					ldata.set_m_receiveutc(localtime::gettime());
-
-					tab_task* tab = allcsv::tab<tab_task>(atask.m_id);
-					if (tab == nullptr)
+					// 是否可完成
+					std::vector<task_condition>* lvec = ttab_task::get_task_condition(atask.m_id, false);
+					if (lvec == nullptr)
 						return;
-					for (task_complete& item : tab->m_taskcomplete)
+					if (static_task::check_condition(lrole, *lvec) == false)
+						return;
+					pbdb::db_task& ldb = lrole->m_task.get_task();
+					
+					auto itor = ldb.mutable_m_rundatas()->find(atask.m_id);
+					if (itor == ldb.mutable_m_rundatas()->end())
+						return;
+
+					itor->second.clear_m_schedules();
+					for (auto& item : *lvec)
 					{
-						//if (taskcheck::check(actor(), item.m_receivetype, item.m_parmint) == false)
-						//	return false;
-						//update_schedule(item, *ldata.add_m_schedules());
-						std::vector<int32_t> lparm;
-						taskcheck::values(actor(), item.m_completetype, lparm);
-						auto lschedules = ldata.add_m_schedules();
-						for(int32_t val : lparm)
-							lschedules->add_m_parmint(val);
-						for (int32_t val : item.m_parmint)
-							lschedules->add_m_sumint(val);
+						task_check::schedules(lrole, *itor->second.add_m_schedules(), item);
 					}
-					(*lrundatas)[lpair.first] = lpair.second;
-					get_task(true);
+
+					ldb.mutable_m_completeddatas()->insert({ atask.m_id, itor->second });
+					ldb.mutable_m_rundatas()->erase(itor);
+					return;
 				}
+
+				static_task::receive_task(lrole, atask.m_id);
 			});
 	}
 

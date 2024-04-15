@@ -38,6 +38,9 @@ namespace ngl
 		int32_t lv();
 		void change_lv(int avalues);
 
+		int32_t vip();
+		void change_vip(int avalues);
+
 		const char* name();
 		void change_name(const char* aname);
 

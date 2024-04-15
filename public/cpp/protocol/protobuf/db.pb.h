@@ -3660,54 +3660,10 @@ class db_task_data_schedule PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMParmintFieldNumber = 2,
-    kMSumintFieldNumber = 3,
     kMTypeFieldNumber = 1,
+    kMValueFieldNumber = 2,
+    kMSumintFieldNumber = 3,
   };
-  // repeated int32 m_parmint = 2;
-  int m_parmint_size() const;
-  private:
-  int _internal_m_parmint_size() const;
-  public:
-  void clear_m_parmint();
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_parmint(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-      _internal_m_parmint() const;
-  void _internal_add_m_parmint(::PROTOBUF_NAMESPACE_ID::int32 value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-      _internal_mutable_m_parmint();
-  public:
-  ::PROTOBUF_NAMESPACE_ID::int32 m_parmint(int index) const;
-  void set_m_parmint(int index, ::PROTOBUF_NAMESPACE_ID::int32 value);
-  void add_m_parmint(::PROTOBUF_NAMESPACE_ID::int32 value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-      m_parmint() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-      mutable_m_parmint();
-
-  // repeated int32 m_sumint = 3;
-  int m_sumint_size() const;
-  private:
-  int _internal_m_sumint_size() const;
-  public:
-  void clear_m_sumint();
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_sumint(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-      _internal_m_sumint() const;
-  void _internal_add_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-      _internal_mutable_m_sumint();
-  public:
-  ::PROTOBUF_NAMESPACE_ID::int32 m_sumint(int index) const;
-  void set_m_sumint(int index, ::PROTOBUF_NAMESPACE_ID::int32 value);
-  void add_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-      m_sumint() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-      mutable_m_sumint();
-
   // int32 m_type = 1;
   bool has_m_type() const;
   private:
@@ -3721,6 +3677,32 @@ class db_task_data_schedule PROTOBUF_FINAL :
   void _internal_set_m_type(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 m_value = 2;
+  bool has_m_value() const;
+  private:
+  bool _internal_has_m_value() const;
+  public:
+  void clear_m_value();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_value() const;
+  void set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_value() const;
+  void _internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 m_sumint = 3;
+  bool has_m_sumint() const;
+  private:
+  bool _internal_has_m_sumint() const;
+  public:
+  void clear_m_sumint();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_sumint() const;
+  void set_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_sumint() const;
+  void _internal_set_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbdb.db_task.data_schedule)
  private:
   class _Internal;
@@ -3730,11 +3712,9 @@ class db_task_data_schedule PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 > m_parmint_;
-  mutable std::atomic<int> _m_parmint_cached_byte_size_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 > m_sumint_;
-  mutable std::atomic<int> _m_sumint_cached_byte_size_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_type_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_value_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_sumint_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
@@ -6552,98 +6532,60 @@ inline void db_task_data_schedule::set_m_type(::PROTOBUF_NAMESPACE_ID::int32 val
   // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_type)
 }
 
-// repeated int32 m_parmint = 2;
-inline int db_task_data_schedule::_internal_m_parmint_size() const {
-  return m_parmint_.size();
+// int32 m_value = 2;
+inline bool db_task_data_schedule::_internal_has_m_value() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
 }
-inline int db_task_data_schedule::m_parmint_size() const {
-  return _internal_m_parmint_size();
+inline bool db_task_data_schedule::has_m_value() const {
+  return _internal_has_m_value();
 }
-inline void db_task_data_schedule::clear_m_parmint() {
-  m_parmint_.Clear();
+inline void db_task_data_schedule::clear_m_value() {
+  m_value_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::_internal_m_parmint(int index) const {
-  return m_parmint_.Get(index);
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::_internal_m_value() const {
+  return m_value_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::m_parmint(int index) const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_parmint)
-  return _internal_m_parmint(index);
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::m_value() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_value)
+  return _internal_m_value();
 }
-inline void db_task_data_schedule::set_m_parmint(int index, ::PROTOBUF_NAMESPACE_ID::int32 value) {
-  m_parmint_.Set(index, value);
-  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_parmint)
+inline void db_task_data_schedule::_internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_value_ = value;
 }
-inline void db_task_data_schedule::_internal_add_m_parmint(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  m_parmint_.Add(value);
-}
-inline void db_task_data_schedule::add_m_parmint(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_add_m_parmint(value);
-  // @@protoc_insertion_point(field_add:pbdb.db_task.data_schedule.m_parmint)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-db_task_data_schedule::_internal_m_parmint() const {
-  return m_parmint_;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-db_task_data_schedule::m_parmint() const {
-  // @@protoc_insertion_point(field_list:pbdb.db_task.data_schedule.m_parmint)
-  return _internal_m_parmint();
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-db_task_data_schedule::_internal_mutable_m_parmint() {
-  return &m_parmint_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-db_task_data_schedule::mutable_m_parmint() {
-  // @@protoc_insertion_point(field_mutable_list:pbdb.db_task.data_schedule.m_parmint)
-  return _internal_mutable_m_parmint();
+inline void db_task_data_schedule::set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_value(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_value)
 }
 
-// repeated int32 m_sumint = 3;
-inline int db_task_data_schedule::_internal_m_sumint_size() const {
-  return m_sumint_.size();
+// int32 m_sumint = 3;
+inline bool db_task_data_schedule::_internal_has_m_sumint() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
 }
-inline int db_task_data_schedule::m_sumint_size() const {
-  return _internal_m_sumint_size();
+inline bool db_task_data_schedule::has_m_sumint() const {
+  return _internal_has_m_sumint();
 }
 inline void db_task_data_schedule::clear_m_sumint() {
-  m_sumint_.Clear();
+  m_sumint_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::_internal_m_sumint(int index) const {
-  return m_sumint_.Get(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::m_sumint(int index) const {
-  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_sumint)
-  return _internal_m_sumint(index);
-}
-inline void db_task_data_schedule::set_m_sumint(int index, ::PROTOBUF_NAMESPACE_ID::int32 value) {
-  m_sumint_.Set(index, value);
-  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_sumint)
-}
-inline void db_task_data_schedule::_internal_add_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  m_sumint_.Add(value);
-}
-inline void db_task_data_schedule::add_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_add_m_sumint(value);
-  // @@protoc_insertion_point(field_add:pbdb.db_task.data_schedule.m_sumint)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-db_task_data_schedule::_internal_m_sumint() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::_internal_m_sumint() const {
   return m_sumint_;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-db_task_data_schedule::m_sumint() const {
-  // @@protoc_insertion_point(field_list:pbdb.db_task.data_schedule.m_sumint)
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_task_data_schedule::m_sumint() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_task.data_schedule.m_sumint)
   return _internal_m_sumint();
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-db_task_data_schedule::_internal_mutable_m_sumint() {
-  return &m_sumint_;
+inline void db_task_data_schedule::_internal_set_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  m_sumint_ = value;
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-db_task_data_schedule::mutable_m_sumint() {
-  // @@protoc_insertion_point(field_mutable_list:pbdb.db_task.data_schedule.m_sumint)
-  return _internal_mutable_m_sumint();
+inline void db_task_data_schedule::set_m_sumint(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_sumint(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_task.data_schedule.m_sumint)
 }
 
 // -------------------------------------------------------------------

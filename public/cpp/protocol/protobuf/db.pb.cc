@@ -765,11 +765,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_db_2eproto::offsets[] PROTOBUF
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data_schedule, m_type_),
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data_schedule, m_parmint_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data_schedule, m_value_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data_schedule, m_sumint_),
   0,
-  ~0u,
-  ~0u,
+  1,
+  2,
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_task_data, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -937,27 +937,28 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "key\030\001 \001(\003\0224\n\005value\030\002 \001(\0132%.pbdb.db_activ"
   "ity.data.drawcompliance:\0028\001B\010\n\006_m_begB\010\n"
   "\006_m_endB\n\n\010_m_startB\013\n\t_m_finishB\007\n\005_m_i"
-  "d\"\260\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_ru"
+  "d\"\321\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_ru"
   "ndatas\030\002 \003(\0132\034.pbdb.db_task.MRundatasEnt"
   "ry\022<\n\020m_completeddatas\030\003 \003(\0132\".pbdb.db_t"
-  "ask.MCompleteddatasEntry\032T\n\rdata_schedul"
-  "e\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\021\n\tm_parmint\030\002 \003("
-  "\005\022\020\n\010m_sumint\030\003 \003(\005B\t\n\007_m_type\032\260\001\n\004data\022"
-  "\025\n\010m_taskid\030\001 \001(\005H\000\210\001\001\022\031\n\014m_receiveutc\030\002"
-  " \001(\005H\001\210\001\001\022\027\n\nm_finshutc\030\003 \001(\005H\002\210\001\001\0220\n\013m_"
-  "schedules\030\004 \003(\0132\033.pbdb.db_task.data_sche"
-  "duleB\013\n\t_m_taskidB\017\n\r_m_receiveutcB\r\n\013_m"
-  "_finshutc\032D\n\016MRundatasEntry\022\013\n\003key\030\001 \001(\005"
-  "\022!\n\005value\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001\032"
-  "J\n\024MCompleteddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005"
-  "value\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001B\007\n\005_"
-  "m_id*\364\001\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n"
-  "\014ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013EN"
-  "UM_DB_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENU"
-  "M_DB_MAIL\020\005\022\021\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_D"
-  "B_NOTICE\020\007\022\024\n\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM"
-  "_DB_ACTIVITY\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\021\n\rENUM"
-  "_DB_COUNT\020\013b\006proto3"
+  "ask.MCompleteddatasEntry\032u\n\rdata_schedul"
+  "e\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H"
+  "\001\210\001\001\022\025\n\010m_sumint\030\003 \001(\005H\002\210\001\001B\t\n\007_m_typeB\n"
+  "\n\010_m_valueB\013\n\t_m_sumint\032\260\001\n\004data\022\025\n\010m_ta"
+  "skid\030\001 \001(\005H\000\210\001\001\022\031\n\014m_receiveutc\030\002 \001(\005H\001\210"
+  "\001\001\022\027\n\nm_finshutc\030\003 \001(\005H\002\210\001\001\0220\n\013m_schedul"
+  "es\030\004 \003(\0132\033.pbdb.db_task.data_scheduleB\013\n"
+  "\t_m_taskidB\017\n\r_m_receiveutcB\r\n\013_m_finshu"
+  "tc\032D\n\016MRundatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005val"
+  "ue\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001\032J\n\024MCom"
+  "pleteddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002"
+  " \001(\0132\022.pbdb.db_task.data:\0028\001B\007\n\005_m_id*\364\001"
+  "\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014ENUM_D"
+  "B_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENUM_DB_B"
+  "AG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM_DB_MA"
+  "IL\020\005\022\021\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_DB_NOTIC"
+  "E\020\007\022\024\n\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM_DB_ACT"
+  "IVITY\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\021\n\rENUM_DB_COU"
+  "NT\020\013b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
@@ -991,7 +992,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 3419,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 3452,
   &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 26, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
   file_level_metadata_db_2eproto, 26, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
@@ -6400,28 +6401,34 @@ class db_task_data_schedule::_Internal {
   static void set_has_m_type(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
+  static void set_has_m_value(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_m_sumint(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
 };
 
 db_task_data_schedule::db_task_data_schedule(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  m_parmint_(arena),
-  m_sumint_(arena) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:pbdb.db_task.data_schedule)
 }
 db_task_data_schedule::db_task_data_schedule(const db_task_data_schedule& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _has_bits_(from._has_bits_),
-      m_parmint_(from.m_parmint_),
-      m_sumint_(from.m_sumint_) {
+      _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  m_type_ = from.m_type_;
+  ::memcpy(&m_type_, &from.m_type_,
+    static_cast<size_t>(reinterpret_cast<char*>(&m_sumint_) -
+    reinterpret_cast<char*>(&m_type_)) + sizeof(m_sumint_));
   // @@protoc_insertion_point(copy_constructor:pbdb.db_task.data_schedule)
 }
 
 void db_task_data_schedule::SharedCtor() {
-  m_type_ = 0;
+  ::memset(&m_type_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&m_sumint_) -
+      reinterpret_cast<char*>(&m_type_)) + sizeof(m_sumint_));
 }
 
 db_task_data_schedule::~db_task_data_schedule() {
@@ -6455,9 +6462,12 @@ void db_task_data_schedule::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  m_parmint_.Clear();
-  m_sumint_.Clear();
-  m_type_ = 0;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    ::memset(&m_type_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&m_sumint_) -
+        reinterpret_cast<char*>(&m_type_)) + sizeof(m_sumint_));
+  }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -6479,23 +6489,19 @@ const char* db_task_data_schedule::_InternalParse(const char* ptr, ::PROTOBUF_NA
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated int32 m_parmint = 2;
+      // int32 m_value = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_m_parmint(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16) {
-          _internal_add_m_parmint(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          _Internal::set_has_m_value(&has_bits);
+          m_value_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated int32 m_sumint = 3;
+      // int32 m_sumint = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_m_sumint(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24) {
-          _internal_add_m_sumint(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          _Internal::set_has_m_sumint(&has_bits);
+          m_sumint_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -6534,22 +6540,16 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_type(), target);
   }
 
-  // repeated int32 m_parmint = 2;
-  {
-    int byte_size = _m_parmint_cached_byte_size_.load(std::memory_order_relaxed);
-    if (byte_size > 0) {
-      target = stream->WriteInt32Packed(
-          2, _internal_m_parmint(), byte_size, target);
-    }
+  // int32 m_value = 2;
+  if (_internal_has_m_value()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_value(), target);
   }
 
-  // repeated int32 m_sumint = 3;
-  {
-    int byte_size = _m_sumint_cached_byte_size_.load(std::memory_order_relaxed);
-    if (byte_size > 0) {
-      target = stream->WriteInt32Packed(
-          3, _internal_m_sumint(), byte_size, target);
-    }
+  // int32 m_sumint = 3;
+  if (_internal_has_m_sumint()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_sumint(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -6568,44 +6568,30 @@ size_t db_task_data_schedule::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated int32 m_parmint = 2;
-  {
-    size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      Int32Size(this->m_parmint_);
-    if (data_size > 0) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
-    }
-    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
-    _m_parmint_cached_byte_size_.store(cached_size,
-                                    std::memory_order_relaxed);
-    total_size += data_size;
-  }
-
-  // repeated int32 m_sumint = 3;
-  {
-    size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      Int32Size(this->m_sumint_);
-    if (data_size > 0) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
-    }
-    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
-    _m_sumint_cached_byte_size_.store(cached_size,
-                                    std::memory_order_relaxed);
-    total_size += data_size;
-  }
-
-  // int32 m_type = 1;
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_m_type());
-  }
+  if (cached_has_bits & 0x00000007u) {
+    // int32 m_type = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_type());
+    }
 
+    // int32 m_value = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_value());
+    }
+
+    // int32 m_sumint = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_sumint());
+    }
+
+  }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -6637,10 +6623,18 @@ void db_task_data_schedule::MergeFrom(const db_task_data_schedule& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  m_parmint_.MergeFrom(from.m_parmint_);
-  m_sumint_.MergeFrom(from.m_sumint_);
-  if (from._internal_has_m_type()) {
-    _internal_set_m_type(from._internal_m_type());
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      m_type_ = from.m_type_;
+    }
+    if (cached_has_bits & 0x00000002u) {
+      m_value_ = from.m_value_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      m_sumint_ = from.m_sumint_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -6666,9 +6660,12 @@ void db_task_data_schedule::InternalSwap(db_task_data_schedule* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  m_parmint_.InternalSwap(&other->m_parmint_);
-  m_sumint_.InternalSwap(&other->m_sumint_);
-  swap(m_type_, other->m_type_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(db_task_data_schedule, m_sumint_)
+      + sizeof(db_task_data_schedule::m_sumint_)
+      - PROTOBUF_FIELD_OFFSET(db_task_data_schedule, m_type_)>(
+          reinterpret_cast<char*>(&m_type_),
+          reinterpret_cast<char*>(&other->m_type_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata db_task_data_schedule::GetMetadata() const {

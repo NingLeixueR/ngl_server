@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-04-07 17:03:57
+// 创建时间 24-04-15 14:36:59
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -119,6 +119,8 @@
 #include "ttab_dbload.cpp"
 #include "ttab_random.cpp"
 #include "ttab_servers.cpp"
+#include "ttab_specialid.cpp"
+#include "ttab_task.cpp"
 #include "ukcp.cpp"
 #include "unit.cpp"
 #include "url.cpp"

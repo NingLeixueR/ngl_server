@@ -380,9 +380,10 @@ namespace ngl
 	}
 	public enum ETask
 	{
-		ETaskRoleLv = 1,	// 玩家等级
-		ETaskRoleVip = 2,	// 玩家vip等级
-		ETaskTaskId = 3,	// 完成某ID任务
+		ETaskRoleLv = 0,	// 玩家等级
+		ETaskRoleVip = 1,	// 玩家vip等级
+		ETaskTaskId = 2,	// 完成某ID任务
+		ETaskCount,	
 	}
 	partial class RCsv
 	{
@@ -397,6 +398,30 @@ namespace ngl
 				Int32 ltemp = 0;
 				if (ReadCsv(lpair, ref ltemp))
 					avec.Add((ETask)ltemp);
+			}
+			return true;
+		}
+	}
+	public enum ETaskCondition
+	{
+		ETaskConditionMore = 0,	// 大于等于
+		ETaskConditionLess = 1,	// 小于等于
+		ETaskConditionEqual = 2,	// 等于
+		ETaskConditionCount,	
+	}
+	partial class RCsv
+	{
+		public static bool ReadCsv(CsvPair apair, List<ETaskCondition> avec)
+		{
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
+			lpair.m_data = ltempstr;
+			lpair.m_fg = '*';
+			for (; !IsOk(lpair);)
+			{
+				Int32 ltemp = 0;
+				if (ReadCsv(lpair, ref ltemp))
+					avec.Add((ETaskCondition)ltemp);
 			}
 			return true;
 		}
@@ -1068,36 +1093,24 @@ namespace ngl
 			return true;
 		}
 	}
-	class task_receive : ICsvRead
+	class task_condition : ICsvRead
 	{
 		/*********************************/
-		public ETask		m_receivetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
-		public List<Int32>		m_parmint = new List<Int32>();		
+		public ETask		m_type;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
+		public ETaskCondition		m_condition;		
+		public Int32		m_parmint;		
 		/*********************************/
 		public bool Read(CsvPair apair)
 		{
-			Int32 lm_receivetype = 0;
-			if(RCsv.ReadCsv(apair, ref lm_receivetype) == false)
+			Int32 lm_type = 0;
+			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
-			m_receivetype = (ETask)lm_receivetype;
-			if(RCsv.ReadCsv(apair, m_parmint) == false)
+			m_type = (ETask)lm_type;
+			Int32 lm_condition = 0;
+			if(RCsv.ReadCsv(apair, ref lm_condition) == false)
 				return false;
-			return true;
-		}
-	}
-	class task_complete : ICsvRead
-	{
-		/*********************************/
-		public ETask		m_completetype;		// ETask(1.玩家等级达到X 2.主公vip等级达到x 3.完成某ID任务)
-		public List<Int32>		m_parmint = new List<Int32>();		
-		/*********************************/
-		public bool Read(CsvPair apair)
-		{
-			Int32 lm_completetype = 0;
-			if(RCsv.ReadCsv(apair, ref lm_completetype) == false)
-				return false;
-			m_completetype = (ETask)lm_completetype;
-			if(RCsv.ReadCsv(apair, m_parmint) == false)
+			m_condition = (ETaskCondition)lm_condition;
+			if(RCsv.ReadCsv(apair, ref m_parmint) == false)
 				return false;
 			return true;
 		}
@@ -1110,8 +1123,8 @@ namespace ngl
 		public string		m_remarks;		
 		public ETaskType		m_type;		
 		public Int32		m_dropid;		// 任务奖励
-		public List<task_receive>		m_taskreceive = new List<task_receive>();		// 接收此任务的前提
-		public List<task_complete>		m_taskcomplete = new List<task_complete>();		// 完成此任务的条件
+		public List<task_condition>		m_taskreceive = new List<task_condition>();		// 接收此任务的前提
+		public List<task_condition>		m_taskcomplete = new List<task_condition>();		// 完成此任务的条件
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)

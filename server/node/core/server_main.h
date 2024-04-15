@@ -87,8 +87,8 @@ void init_DB_TASK(const char* aname, int beg)
 		lpair.second.set_m_finshutc(0);
 		auto lschedules = lpair.second.mutable_m_schedules();
 		auto lschedulesnode = lschedules->Add();
-		lschedulesnode->add_m_parmint(1);
-		lschedulesnode->add_m_sumint(10);
+		lschedulesnode->set_m_value(1);
+		lschedulesnode->set_m_sumint(10);
 		(*lrundatas)[lpair.first] = lpair.second;
 
 		ngl::actor_dbtab<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>::save(0, ltemp);
