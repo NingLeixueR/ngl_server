@@ -51,7 +51,7 @@ namespace ngl
 			}
 			pro->m_parm = aparm;
 			actor::static_send_actor(
-				nguid::make(ACTOR_MAIL, ttab_servers::tab()->m_area, nguid::none_actordataid())
+				nguid::make(ACTOR_MAIL, nguid::area(actorid), nguid::none_actordataid())
 				, nguid::make()
 				, pro
 			);
