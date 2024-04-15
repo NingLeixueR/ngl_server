@@ -59,7 +59,7 @@ namespace ngl
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
 		{
-			for (std::pair<const TKEY, TVAL>& item : asource)
+			for (const std::pair<const TKEY, TVAL>& item : asource)
 			{
 				atarget.insert({ item.first, item.second });
 			}
@@ -68,7 +68,7 @@ namespace ngl
 		template <typename TKEY, typename TVAL>
 		static void copy(const google::protobuf::Map<TKEY, TVAL>& asource, std::map<TKEY, TVAL>& atarget)
 		{
-			for (google::protobuf::MapPair<const TKEY, TVAL>& item : asource)
+			for (const google::protobuf::MapPair<const TKEY, TVAL>& item : asource)
 			{
 				atarget.insert({ item.first, item.second });
 			}
