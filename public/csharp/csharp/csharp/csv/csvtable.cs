@@ -497,21 +497,21 @@ namespace ngl
 	class tab_servers : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int16		m_area;		// 区服
-		public NODE_TYPE		m_type;		// 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
-		public Int32		m_tcount;		// 同类型服务器的序号
-		public Int32		m_threadnum;		// socket线程数
-		public Int32		m_actorthreadnum;		// actor线程池线程数
-		public bool		m_outernet;		// 是否允许外网访问
-		public Int32		m_db;		// 连接的db进程id
-		public Int32		m_reloadcsv;		// 连接的reloadcsv进程id
-		public Int32		m_login;		// 连接的login进程id
-		public Int16		m_crossarea;		// 跨服区服
-		public List<Int32>		m_actorserver = new List<Int32>();		// 连接的actorserver进程id(跨服需要填写多个actorserver)
-		public List<net_works>		m_net = new List<net_works>();		// 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int16		m_area;		// [index:3] 区服
+		public NODE_TYPE		m_type;		// [index:4] 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
+		public Int32		m_tcount;		// [index:5] 同类型服务器的序号
+		public Int32		m_threadnum;		// [index:6] socket线程数
+		public Int32		m_actorthreadnum;		// [index:7] actor线程池线程数
+		public bool		m_outernet;		// [index:8] 是否允许外网访问
+		public Int32		m_db;		// [index:9] 连接的db进程id
+		public Int32		m_reloadcsv;		// [index:10] 连接的reloadcsv进程id
+		public Int32		m_login;		// [index:11] 连接的login进程id
+		public Int16		m_crossarea;		// [index:12] 跨服区服
+		public List<Int32>		m_actorserver = new List<Int32>();		// [index:13] 连接的actorserver进程id(跨服需要填写多个actorserver)
+		public List<net_works>		m_net = new List<net_works>();		// [index:14] 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -554,12 +554,12 @@ namespace ngl
 	class tab_dbload : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public bool		m_isloadall;		// 是否需要启动加载全部数据
-		public bool		m_network;		// 是否允许通过网络分发
-		public Int32		m_sendmaxcount;		// 单次最多发送数量
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public bool		m_isloadall;		// [index:3] 是否需要启动加载全部数据
+		public bool		m_network;		// [index:4] 是否允许通过网络分发
+		public Int32		m_sendmaxcount;		// [index:5] 单次最多发送数量
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -582,10 +582,10 @@ namespace ngl
 	class tab_errormessage : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public string		m_message;		// 错误描述
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public string		m_message;		// [index:3] 错误描述
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -604,10 +604,10 @@ namespace ngl
 	class tab_specialid : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public string		m_value;		
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public string		m_value;		// [index:3] 值
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -626,13 +626,13 @@ namespace ngl
 	class tab_attribute : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public float		m_fightcoefficient;		// 属性提供的战力系数
-		public Int32		m_initvalue;		// 属性初始值
-		public Int32		m_uplimit;		// 上限
-		public Int32		m_lowlimit;		// 下限
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public float		m_fightcoefficient;		// [index:3] 属性提供的战力系数
+		public Int32		m_initvalue;		// [index:4] 属性初始值
+		public Int32		m_uplimit;		// [index:5] 上限
+		public Int32		m_lowlimit;		// [index:6] 下限
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -657,13 +657,13 @@ namespace ngl
 	class tab_item : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_ranks;		// 排序值
-		public EItemType		m_type;		// 物品类型EItemType(1装备,2材料,3金币,4银币)
-		public Int32		m_quality;		// 物品品质(EQuality)
-		public bool		m_isstack;		// 是否可堆叠
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_ranks;		// [index:3] 排序值
+		public EItemType		m_type;		// [index:4] 物品类型EItemType(1装备,2材料,3金币,4银币)
+		public Int32		m_quality;		// [index:5] 物品品质(EQuality)
+		public bool		m_isstack;		// [index:6] 是否可堆叠
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -708,11 +708,11 @@ namespace ngl
 	class tab_equip : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public EEquip		m_position;		// 部位EEquip(1武器2头盔3衣服4护腿)
-		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// 装备属性
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public EEquip		m_position;		// [index:3] 部位EEquip(1武器2头盔3衣服4护腿)
+		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// [index:4] 装备属性
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -735,11 +735,11 @@ namespace ngl
 	class tab_equiplv : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_consume;		// 升级消耗id
-		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// 装备属性
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_consume;		// [index:3] 升级消耗id
+		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// [index:4] 装备属性
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -760,11 +760,11 @@ namespace ngl
 	class tab_card : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public EQuality		m_quality;		// 品质EQuality(0灰色1绿色2黄色3橙色4红色)
-		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// 属性
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public EQuality		m_quality;		// [index:3] 品质EQuality(0灰色1绿色2黄色3橙色4红色)
+		public List<attributevalue>		m_attributevalues = new List<attributevalue>();		// [index:4] 属性
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -808,14 +808,14 @@ namespace ngl
 	class tab_random : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public bool		m_exclusive;		// 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
-		public Int32		m_count;		// 随机数量
-		public Int32		m_calendarids;		// 是否关联日历表,只有日历触发才会执行此掉落
-		public List<trandom>		m_randomdatas = new List<trandom>();		// trandom(id*min*max*weight)
-		public List<Int32>		m_childrandomids = new List<Int32>();		// 子随机
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public List<trandom>		m_randomdatas = new List<trandom>();		// [index:3] trandom(id*min*max*weight)
+		public bool		m_exclusive;		// [index:4] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
+		public Int32		m_count;		// [index:5] 随机数量
+		public Int32		m_calendarids;		// [index:6] 是否关联日历表,只有日历触发才会执行此掉落
+		public List<Int32>		m_childrandomids = new List<Int32>();		// [index:7] 子随机
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -826,13 +826,13 @@ namespace ngl
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
 				return false;
+			if(RCsv.ReadCsv(apair, m_randomdatas) == false)
+				return false;
 			if(RCsv.ReadCsv(apair, ref m_exclusive) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_count) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_calendarids) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, m_randomdatas) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, m_childrandomids) == false)
 				return false;
@@ -857,10 +857,10 @@ namespace ngl
 	class tab_consume : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public List<tconsume>		m_consumeitems = new List<tconsume>();		// tid*count
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public List<tconsume>		m_consumeitems = new List<tconsume>();		// [index:3] tid*count
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -879,11 +879,11 @@ namespace ngl
 	class tab_synthesis : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_consume;		// 消耗列表
-		public Int32		m_generate;		// 随机表(tab_rando)id 随机成功物品列表
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_consume;		// [index:3] 消耗列表
+		public Int32		m_generate;		// [index:4] 随机表(tab_rando)id 随机成功物品列表
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -958,13 +958,13 @@ namespace ngl
 	class tab_calendar : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public ECalendar		m_type;		//ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
-		public List<tweek>		m_week = new List<tweek>();		//m_type=0,tweek(周几(1-7)*开启时间HH:mm:ss*结束时间HH:mm:ss)
-		public List<tserveropen>		m_serveropen = new List<tserveropen>();		//m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
-		public List<tregularslot>		m_tregularslot = new List<tregularslot>();		//m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public ECalendar		m_type;		// [index:3] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
+		public List<tweek>		m_week = new List<tweek>();		// [index:4] m_type=0,tweek(周几(1-7)*开启时间HH:mm:ss*结束时间HH:mm:ss)
+		public List<tserveropen>		m_serveropen = new List<tserveropen>();		// [index:5] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
+		public List<tregularslot>		m_tregularslot = new List<tregularslot>();		// [index:6] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -991,12 +991,12 @@ namespace ngl
 	class tab_mail : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public string		m_title;		// 邮件标题
-		public string		m_author;		// 邮件作者
-		public string		m_content;		// 邮件内容
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public string		m_title;		// [index:3] 邮件标题
+		public string		m_author;		// [index:4] 邮件作者
+		public string		m_content;		// [index:5] 邮件内容
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1019,11 +1019,11 @@ namespace ngl
 	class tab_chat : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_time;		// 聊天发言间隔
-		public Int32		m_count;		// 聊天发言最大数量
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_time;		// [index:3] 聊天发言间隔
+		public Int32		m_count;		// [index:4] 聊天发言最大数量
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1044,11 +1044,11 @@ namespace ngl
 	class tab_activity : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		// 活动id
-		public string		m_name;		
-		public string		m_remarks;		
-		public EActivity		m_type;		// 活动类型(1类似咸鱼之王的<<招募达标>>)
-		public Int32		m_calendarid;		// 关联的脚本日历
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public EActivity		m_type;		// [index:3] 活动类型(1类似咸鱼之王的<<招募达标>>)
+		public Int32		m_calendarid;		// [index:4] 关联的脚本日历
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1118,38 +1118,38 @@ namespace ngl
 	class tab_task : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		// 任务id
-		public string		m_name;		
-		public string		m_remarks;		
+		public Int32		m_id;		// [index:0] id 
 		public ETaskType		m_type;		
-		public Int32		m_dropid;		// 任务奖励
-		public bool		m_autoreceive;		// 是否自动领取
-		public Int32		m_mailid;		// 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
-		public List<task_condition>		m_taskreceive = new List<task_condition>();		// 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
-		public List<task_condition>		m_taskcomplete = new List<task_condition>();		// 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public List<task_condition>		m_taskreceive = new List<task_condition>();		// [index:3] 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+		public List<task_condition>		m_taskcomplete = new List<task_condition>();		// [index:4] 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+		public Int32		m_dropid;		// [index:5] 任务奖励
+		public bool		m_autoreceive;		// [index:6] 是否自动领取
+		public Int32		m_mailid;		// [index:7] 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
 		{
 			if(RCsv.ReadCsv(apair, ref m_id) == false)
 				return false;
-			if(RCsv.ReadCsv(apair, ref m_name) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
-				return false;
 			Int32 lm_type = 0;
 			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (ETaskType)lm_type;
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, m_taskreceive) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, m_taskcomplete) == false)
+				return false;
 			if(RCsv.ReadCsv(apair, ref m_dropid) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_autoreceive) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_mailid) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, m_taskreceive) == false)
-				return false;
-			if(RCsv.ReadCsv(apair, m_taskcomplete) == false)
 				return false;
 			return true;
 		}
@@ -1169,16 +1169,16 @@ namespace ngl
 	class tab_map : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		// 地图id
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_w;		// x轴宽度
-		public Int32		m_l;		// y轴长度
-		public Int32		m_nx;		// [视野]x轴格子数量
-		public Int32		m_ny;		// [视野]y轴格子数量
-		public Int32		m_obstaclenx;		// [寻路]x轴格子数量
-		public Int32		m_obstacleny;		// [寻路]y轴格子数量
-		public List<obstacles_data>		m_obstacles = new List<obstacles_data>();		// 地图数据
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_w;		// [index:3] x轴宽度
+		public Int32		m_l;		// [index:4] y轴长度
+		public Int32		m_nx;		// [index:5] [视野]x轴格子数量
+		public Int32		m_ny;		// [index:6] [视野]y轴格子数量
+		public Int32		m_obstaclenx;		// [index:7] [寻路]x轴格子数量
+		public Int32		m_obstacleny;		// [index:8] [寻路]y轴格子数量
+		public List<obstacles_data>		m_obstacles = new List<obstacles_data>();		// [index:9] 地图数据
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1209,13 +1209,13 @@ namespace ngl
 	class tab_matching : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		// 玩法类型 pbnet::eplays
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_count;		// 玩法达到此人数可以开启玩法
-		public Int32		m_time;		// 匹配最长时间
-		public bool		m_iswaitconfirm;		// 是否需要等待确认
-		public Int32		m_waitconfirmtime;		// 等待确认的时间
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_count;		// [index:3] 玩法达到此人数可以开启玩法
+		public Int32		m_time;		// [index:4] 匹配最长时间
+		public bool		m_iswaitconfirm;		// [index:5] 是否需要等待确认
+		public Int32		m_waitconfirmtime;		// [index:6] 等待确认的时间
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1255,15 +1255,15 @@ namespace ngl
 	class tab_plays : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		// 玩法
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_type;		// 玩法类型 pbnet::eplays
-		public Int32		m_mapid;		// 在哪个地图应用该玩法
-		public Int32		m_preparation_tm;		// 准备阶段时间
-		public Int32		m_play_tm;		// 玩法时间
-		public Int32		m_settlement_tm;		// 结算时间
-		public List<Vector2>		m_birthpoint = new List<Vector2>();		// 出生点Vector2(m_x:int32_t,m_y:int32_t)	
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_type;		// [index:3] 玩法类型 pbnet::eplays
+		public Int32		m_mapid;		// [index:4] 在哪个地图应用该玩法
+		public Int32		m_preparation_tm;		// [index:5] 准备阶段时间
+		public Int32		m_play_tm;		// [index:6] 玩法时间
+		public Int32		m_settlement_tm;		// [index:7] 结算时间
+		public List<Vector2>		m_birthpoint = new List<Vector2>();		// [index:8] 出生点Vector2(m_x:int32_t,m_y:int32_t)	
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1292,17 +1292,17 @@ namespace ngl
 	class tab_recharge : ICsvRead, ICsv
 	{
 		/*********************************/
-		public Int32		m_id;		// 充值id
-		public string		m_name;		
-		public string		m_remarks;		
-		public Int32		m_price;		// 价格
-		public Int32		m_gold;		// 获得的金币数量
-		public Int32		m_bonus;		// 奖励的金币数量
-		public Int32		m_firstbonus;		// 首充奖励的金币数量
-		public Int32		m_dropid;		// 掉落
-		public Int32		m_vipexp;		// 充值该档位赠送的vip经验
-		public Int32		m_count;		// 是否限制充值次数
-		public List<Int32>		m_activityid = new List<Int32>();		// 必须指定活动开启时才能充值这一档
+		public Int32		m_id;		// [index:0] id 
+		public string		m_name;		// [index:1] 名字 
+		public string		m_remarks;		// [index:2] 备注
+		public Int32		m_price;		// [index:3] 价格
+		public Int32		m_gold;		// [index:4] 获得的金币数量
+		public Int32		m_bonus;		// [index:5] 奖励的金币数量
+		public Int32		m_firstbonus;		// [index:6] 首充奖励的金币数量
+		public Int32		m_dropid;		// [index:7] 掉落
+		public Int32		m_vipexp;		// [index:8] 充值该档位赠送的vip经验
+		public Int32		m_count;		// [index:9] 是否限制充值次数
+		public List<Int32>		m_activityid = new List<Int32>();		// [index:10] 必须指定活动开启时才能充值这一档
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)

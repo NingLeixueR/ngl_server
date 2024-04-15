@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-04-15 15:21:25
+// 创建时间 // 创建时间 24-04-15 21:13:04
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "csv.h"
@@ -171,21 +171,21 @@ struct net_works
 struct tab_servers
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int16_t		m_area;		// 区服
-	NODE_TYPE		m_type;		// 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
-	int32_t		m_tcount;		// 同类型服务器的序号
-	int32_t		m_threadnum;		// socket线程数
-	int32_t		m_actorthreadnum;		// actor线程池线程数
-	bool		m_outernet;		// 是否允许外网访问
-	int32_t		m_db;		// 连接的db进程id
-	int32_t		m_reloadcsv;		// 连接的reloadcsv进程id
-	int32_t		m_login;		// 连接的login进程id
-	int16_t		m_crossarea;		// 跨服区服
-	std::vector<int32_t>		m_actorserver;		// 连接的actorserver进程id(跨服需要填写多个actorserver)
-	std::vector<net_works>		m_net;		// 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int16_t		m_area;		// [index:3] 区服
+	NODE_TYPE		m_type;		// [index:4] 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
+	int32_t		m_tcount;		// [index:5] 同类型服务器的序号
+	int32_t		m_threadnum;		// [index:6] socket线程数
+	int32_t		m_actorthreadnum;		// [index:7] actor线程池线程数
+	bool		m_outernet;		// [index:8] 是否允许外网访问
+	int32_t		m_db;		// [index:9] 连接的db进程id
+	int32_t		m_reloadcsv;		// [index:10] 连接的reloadcsv进程id
+	int32_t		m_login;		// [index:11] 连接的login进程id
+	int16_t		m_crossarea;		// [index:12] 跨服区服
+	std::vector<int32_t>		m_actorserver;		// [index:13] 连接的actorserver进程id(跨服需要填写多个actorserver)
+	std::vector<net_works>		m_net;		// [index:14] 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
 /*********************************/
 	tab_servers();
 	// 序列化反序列化相关
@@ -196,12 +196,12 @@ struct tab_servers
 struct tab_dbload
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	bool		m_isloadall;		// 是否需要启动加载全部数据
-	bool		m_network;		// 是否允许通过网络分发
-	int32_t		m_sendmaxcount;		// 单次最多发送数量
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	bool		m_isloadall;		// [index:3] 是否需要启动加载全部数据
+	bool		m_network;		// [index:4] 是否允许通过网络分发
+	int32_t		m_sendmaxcount;		// [index:5] 单次最多发送数量
 /*********************************/
 	tab_dbload();
 	// 序列化反序列化相关
@@ -212,10 +212,10 @@ struct tab_dbload
 struct tab_errormessage
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	std::string		m_message;		// 错误描述
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	std::string		m_message;		// [index:3] 错误描述
 /*********************************/
 	tab_errormessage();
 	// 序列化反序列化相关
@@ -226,10 +226,10 @@ struct tab_errormessage
 struct tab_specialid
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	std::string		m_value;		
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	std::string		m_value;		// [index:3] 值
 /*********************************/
 	tab_specialid();
 	// 序列化反序列化相关
@@ -240,13 +240,13 @@ struct tab_specialid
 struct tab_attribute
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	float		m_fightcoefficient;		// 属性提供的战力系数
-	int32_t		m_initvalue;		// 属性初始值
-	int32_t		m_uplimit;		// 上限
-	int32_t		m_lowlimit;		// 下限
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	float		m_fightcoefficient;		// [index:3] 属性提供的战力系数
+	int32_t		m_initvalue;		// [index:4] 属性初始值
+	int32_t		m_uplimit;		// [index:5] 上限
+	int32_t		m_lowlimit;		// [index:6] 下限
 /*********************************/
 	tab_attribute();
 	// 序列化反序列化相关
@@ -257,13 +257,13 @@ struct tab_attribute
 struct tab_item
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_ranks;		// 排序值
-	EItemType		m_type;		// 物品类型EItemType(1装备,2材料,3金币,4银币)
-	int32_t		m_quality;		// 物品品质(EQuality)
-	bool		m_isstack;		// 是否可堆叠
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_ranks;		// [index:3] 排序值
+	EItemType		m_type;		// [index:4] 物品类型EItemType(1装备,2材料,3金币,4银币)
+	int32_t		m_quality;		// [index:5] 物品品质(EQuality)
+	bool		m_isstack;		// [index:6] 是否可堆叠
 /*********************************/
 	tab_item();
 	// 序列化反序列化相关
@@ -287,11 +287,11 @@ struct attributevalue
 struct tab_equip
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	EEquip		m_position;		// 部位EEquip(1武器2头盔3衣服4护腿)
-	std::vector<attributevalue>		m_attributevalues;		// 装备属性
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	EEquip		m_position;		// [index:3] 部位EEquip(1武器2头盔3衣服4护腿)
+	std::vector<attributevalue>		m_attributevalues;		// [index:4] 装备属性
 /*********************************/
 	tab_equip();
 	// 序列化反序列化相关
@@ -302,11 +302,11 @@ struct tab_equip
 struct tab_equiplv
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_consume;		// 升级消耗id
-	std::vector<attributevalue>		m_attributevalues;		// 装备属性
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_consume;		// [index:3] 升级消耗id
+	std::vector<attributevalue>		m_attributevalues;		// [index:4] 装备属性
 /*********************************/
 	tab_equiplv();
 	// 序列化反序列化相关
@@ -317,11 +317,11 @@ struct tab_equiplv
 struct tab_card
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	EQuality		m_quality;		// 品质EQuality(0灰色1绿色2黄色3橙色4红色)
-	std::vector<attributevalue>		m_attributevalues;		// 属性
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	EQuality		m_quality;		// [index:3] 品质EQuality(0灰色1绿色2黄色3橙色4红色)
+	std::vector<attributevalue>		m_attributevalues;		// [index:4] 属性
 /*********************************/
 	tab_card();
 	// 序列化反序列化相关
@@ -346,20 +346,20 @@ struct trandom
 struct tab_random
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	bool		m_exclusive;		// 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
-	int32_t		m_count;		// 随机数量
-	int32_t		m_calendarids;		// 是否关联日历表,只有日历触发才会执行此掉落
-	std::vector<trandom>		m_randomdatas;		// trandom(id*min*max*weight)
-	std::vector<int32_t>		m_childrandomids;		// 子随机
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	std::vector<trandom>		m_randomdatas;		// [index:3] trandom(id*min*max*weight)
+	bool		m_exclusive;		// [index:4] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
+	int32_t		m_count;		// [index:5] 随机数量
+	int32_t		m_calendarids;		// [index:6] 是否关联日历表,只有日历触发才会执行此掉落
+	std::vector<int32_t>		m_childrandomids;		// [index:7] 子随机
 /*********************************/
 	tab_random();
 	// 序列化反序列化相关
-	def_portocol(tab_random, m_id, m_name, m_remarks, m_exclusive, m_count, m_calendarids, m_randomdatas, m_childrandomids)
+	def_portocol(tab_random, m_id, m_name, m_remarks, m_randomdatas, m_exclusive, m_count, m_calendarids, m_childrandomids)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_exclusive,m_count,m_calendarids,m_randomdatas,m_childrandomids)
+	def_rcsv(m_id,m_name,m_remarks,m_randomdatas,m_exclusive,m_count,m_calendarids,m_childrandomids)
 };
 struct tconsume
 {
@@ -376,10 +376,10 @@ struct tconsume
 struct tab_consume
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	std::vector<tconsume>		m_consumeitems;		// tid*count
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	std::vector<tconsume>		m_consumeitems;		// [index:3] tid*count
 /*********************************/
 	tab_consume();
 	// 序列化反序列化相关
@@ -390,11 +390,11 @@ struct tab_consume
 struct tab_synthesis
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_consume;		// 消耗列表
-	int32_t		m_generate;		// 随机表(tab_rando)id 随机成功物品列表
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_consume;		// [index:3] 消耗列表
+	int32_t		m_generate;		// [index:4] 随机表(tab_rando)id 随机成功物品列表
 /*********************************/
 	tab_synthesis();
 	// 序列化反序列化相关
@@ -444,13 +444,13 @@ struct tregularslot
 struct tab_calendar
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	ECalendar		m_type;		//ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
-	std::vector<tweek>		m_week;		//m_type=0,tweek(周几(1-7)*开启时间HH:mm:ss*结束时间HH:mm:ss)
-	std::vector<tserveropen>		m_serveropen;		//m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
-	std::vector<tregularslot>		m_tregularslot;		//m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	ECalendar		m_type;		// [index:3] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
+	std::vector<tweek>		m_week;		// [index:4] m_type=0,tweek(周几(1-7)*开启时间HH:mm:ss*结束时间HH:mm:ss)
+	std::vector<tserveropen>		m_serveropen;		// [index:5] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
+	std::vector<tregularslot>		m_tregularslot;		// [index:6] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
 /*********************************/
 	tab_calendar();
 	// 序列化反序列化相关
@@ -461,12 +461,12 @@ struct tab_calendar
 struct tab_mail
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	std::string		m_title;		// 邮件标题
-	std::string		m_author;		// 邮件作者
-	std::string		m_content;		// 邮件内容
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	std::string		m_title;		// [index:3] 邮件标题
+	std::string		m_author;		// [index:4] 邮件作者
+	std::string		m_content;		// [index:5] 邮件内容
 /*********************************/
 	tab_mail();
 	// 序列化反序列化相关
@@ -477,11 +477,11 @@ struct tab_mail
 struct tab_chat
 {
 /*********************************/
-	int32_t		m_id;		
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_time;		// 聊天发言间隔
-	int32_t		m_count;		// 聊天发言最大数量
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_time;		// [index:3] 聊天发言间隔
+	int32_t		m_count;		// [index:4] 聊天发言最大数量
 /*********************************/
 	tab_chat();
 	// 序列化反序列化相关
@@ -492,11 +492,11 @@ struct tab_chat
 struct tab_activity
 {
 /*********************************/
-	int32_t		m_id;		// 活动id
-	std::string		m_name;		
-	std::string		m_remarks;		
-	EActivity		m_type;		// 活动类型(1类似咸鱼之王的<<招募达标>>)
-	int32_t		m_calendarid;		// 关联的脚本日历
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	EActivity		m_type;		// [index:3] 活动类型(1类似咸鱼之王的<<招募达标>>)
+	int32_t		m_calendarid;		// [index:4] 关联的脚本日历
 /*********************************/
 	tab_activity();
 	// 序列化反序列化相关
@@ -535,21 +535,21 @@ struct task_condition
 struct tab_task
 {
 /*********************************/
-	int32_t		m_id;		// 任务id
-	std::string		m_name;		
-	std::string		m_remarks;		
+	int32_t		m_id;		// [index:0] id 
 	ETaskType		m_type;		
-	int32_t		m_dropid;		// 任务奖励
-	bool		m_autoreceive;		// 是否自动领取
-	int32_t		m_mailid;		// 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
-	std::vector<task_condition>		m_taskreceive;		// 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
-	std::vector<task_condition>		m_taskcomplete;		// 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	std::vector<task_condition>		m_taskreceive;		// [index:3] 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+	std::vector<task_condition>		m_taskcomplete;		// [index:4] 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
+	int32_t		m_dropid;		// [index:5] 任务奖励
+	bool		m_autoreceive;		// [index:6] 是否自动领取
+	int32_t		m_mailid;		// [index:7] 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)
 /*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	def_portocol(tab_task, m_id, m_name, m_remarks, m_type, m_dropid, m_autoreceive, m_mailid, m_taskreceive, m_taskcomplete)
+	def_portocol(tab_task, m_id, m_type, m_name, m_remarks, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_type,m_dropid,m_autoreceive,m_mailid,m_taskreceive,m_taskcomplete)
+	def_rcsv(m_id,m_type,m_name,m_remarks,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid)
 };
 struct obstacles_data
 {
@@ -565,16 +565,16 @@ struct obstacles_data
 struct tab_map
 {
 /*********************************/
-	int32_t		m_id;		// 地图id
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_w;		// x轴宽度
-	int32_t		m_l;		// y轴长度
-	int32_t		m_nx;		// [视野]x轴格子数量
-	int32_t		m_ny;		// [视野]y轴格子数量
-	int32_t		m_obstaclenx;		// [寻路]x轴格子数量
-	int32_t		m_obstacleny;		// [寻路]y轴格子数量
-	std::vector<obstacles_data>		m_obstacles;		// 地图数据
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_w;		// [index:3] x轴宽度
+	int32_t		m_l;		// [index:4] y轴长度
+	int32_t		m_nx;		// [index:5] [视野]x轴格子数量
+	int32_t		m_ny;		// [index:6] [视野]y轴格子数量
+	int32_t		m_obstaclenx;		// [index:7] [寻路]x轴格子数量
+	int32_t		m_obstacleny;		// [index:8] [寻路]y轴格子数量
+	std::vector<obstacles_data>		m_obstacles;		// [index:9] 地图数据
 /*********************************/
 	tab_map();
 	// 序列化反序列化相关
@@ -585,13 +585,13 @@ struct tab_map
 struct tab_matching
 {
 /*********************************/
-	int32_t		m_id;		// 玩法类型 pbnet::eplays
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_count;		// 玩法达到此人数可以开启玩法
-	int32_t		m_time;		// 匹配最长时间
-	bool		m_iswaitconfirm;		// 是否需要等待确认
-	int32_t		m_waitconfirmtime;		// 等待确认的时间
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_count;		// [index:3] 玩法达到此人数可以开启玩法
+	int32_t		m_time;		// [index:4] 匹配最长时间
+	bool		m_iswaitconfirm;		// [index:5] 是否需要等待确认
+	int32_t		m_waitconfirmtime;		// [index:6] 等待确认的时间
 /*********************************/
 	tab_matching();
 	// 序列化反序列化相关
@@ -614,15 +614,15 @@ struct Vector2
 struct tab_plays
 {
 /*********************************/
-	int32_t		m_id;		// 玩法
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_type;		// 玩法类型 pbnet::eplays
-	int32_t		m_mapid;		// 在哪个地图应用该玩法
-	int32_t		m_preparation_tm;		// 准备阶段时间
-	int32_t		m_play_tm;		// 玩法时间
-	int32_t		m_settlement_tm;		// 结算时间
-	std::vector<Vector2>		m_birthpoint;		// 出生点Vector2(m_x:int32_t,m_y:int32_t)	
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_type;		// [index:3] 玩法类型 pbnet::eplays
+	int32_t		m_mapid;		// [index:4] 在哪个地图应用该玩法
+	int32_t		m_preparation_tm;		// [index:5] 准备阶段时间
+	int32_t		m_play_tm;		// [index:6] 玩法时间
+	int32_t		m_settlement_tm;		// [index:7] 结算时间
+	std::vector<Vector2>		m_birthpoint;		// [index:8] 出生点Vector2(m_x:int32_t,m_y:int32_t)	
 /*********************************/
 	tab_plays();
 	// 序列化反序列化相关
@@ -633,17 +633,17 @@ struct tab_plays
 struct tab_recharge
 {
 /*********************************/
-	int32_t		m_id;		// 充值id
-	std::string		m_name;		
-	std::string		m_remarks;		
-	int32_t		m_price;		// 价格
-	int32_t		m_gold;		// 获得的金币数量
-	int32_t		m_bonus;		// 奖励的金币数量
-	int32_t		m_firstbonus;		// 首充奖励的金币数量
-	int32_t		m_dropid;		// 掉落
-	int32_t		m_vipexp;		// 充值该档位赠送的vip经验
-	int32_t		m_count;		// 是否限制充值次数
-	std::vector<int32_t>		m_activityid;		// 必须指定活动开启时才能充值这一档
+	int32_t		m_id;		// [index:0] id 
+	std::string		m_name;		// [index:1] 名字 
+	std::string		m_remarks;		// [index:2] 备注
+	int32_t		m_price;		// [index:3] 价格
+	int32_t		m_gold;		// [index:4] 获得的金币数量
+	int32_t		m_bonus;		// [index:5] 奖励的金币数量
+	int32_t		m_firstbonus;		// [index:6] 首充奖励的金币数量
+	int32_t		m_dropid;		// [index:7] 掉落
+	int32_t		m_vipexp;		// [index:8] 充值该档位赠送的vip经验
+	int32_t		m_count;		// [index:9] 是否限制充值次数
+	std::vector<int32_t>		m_activityid;		// [index:10] 必须指定活动开启时才能充值这一档
 /*********************************/
 	tab_recharge();
 	// 序列化反序列化相关

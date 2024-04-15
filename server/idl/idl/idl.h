@@ -31,6 +31,12 @@ struct Data
 	std::string panduan;			/* 判断 **/
 	std::string zhushi;				/* 注释 **/
 	std::string m_typestr;			/* 数据库需要 给string添加长度 **/
+	int m_index = 0;
+
+	bool operator<(const Data& ar)
+	{
+		return m_index < ar.m_index;
+	}
 };
 
 struct EnumVec
@@ -578,6 +584,13 @@ public:
 				ldataStr.m_values_name = awhat[4];
 				ldataStr.m_values_init = awhat[5];
 				ldataStr.zhushi = awhat[6];
+
+				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
+					{
+						ldataStr.m_index = boost::lexical_cast<int32_t>(awhat[1]);
+					});
+
+
 				lstructString.dataVec.push_back(ldataStr);
 			});
 
@@ -598,6 +611,12 @@ public:
 				ldataStr.m_values_init = awhat[5];
 				ldataStr.zhushi = awhat[6];
 
+				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
+					{
+						ldataStr.m_index = boost::lexical_cast<int32_t>(awhat[1]);
+					});
+
+
 				if (ldataStr.m_type.size() > sizeof("derived_class<") - 1)
 				{
 					if (memcmp("derived_class<", ldataStr.m_type.c_str(), sizeof("derived_class<") - 1) == 0)
@@ -612,6 +631,28 @@ public:
 
 			m_data[aname].m_struct.push_back(lstructString);
 		});
+		for (int i = 0; i < m_data[aname].m_struct.size(); ++i)
+		{
+			int lpos = m_data[aname].m_struct[i].name.find("tab_");
+			if (lpos >= 0)
+			{
+				
+				std::set<int32_t> lset;
+				bool lbool = true;
+				std::for_each(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end(), [&lset,&lbool](Data& adata)
+					{
+						if (lbool)
+						{
+							lbool = lset.insert(adata.m_index).second;
+						}				
+					});
+
+				assert(lbool);
+
+				std::sort(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end());
+
+			}			
+		}
 	}
 
 };
