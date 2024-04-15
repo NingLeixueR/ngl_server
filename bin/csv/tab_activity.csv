@@ -1,4 +1,4 @@
 int32_t,string,string,EActivity,int32_t,
 m_id,m_name,m_remarks,m_type,m_calendarid,
-" 活动id","",""," 活动类型(1类似咸鱼之王的<<招募达标>>)"," 关联的脚本日历",
+" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 活动类型(1类似咸鱼之王的<<招募达标>>)"," [index:4] 关联的脚本日历",
 version:0

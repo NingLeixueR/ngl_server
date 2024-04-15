@@ -1,4 +1,4 @@
 int32_t,string,string,EEquip,vector<attributevalue>,
 m_id,m_name,m_remarks,m_position,m_attributevalues,
-"","",""," 部位EEquip(1武器2头盔3衣服4护腿)"," 装备属性",
+" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 部位EEquip(1武器2头盔3衣服4护腿)"," [index:4] 装备属性",
 version:0

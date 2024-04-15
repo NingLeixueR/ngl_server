@@ -1,6 +1,6 @@
-int32_t,string,string,int32_t,int32_t
-m_id,m_name,m_remarks,m_time,m_count
-,,, 聊天发言间隔, 聊天发言最大数量
+int32_t,string,string,int32_t,int32_t,
+m_id,m_name,m_remarks,m_time,m_count,
+" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 聊天发言间隔"," [index:4] 聊天发言最大数量",
 version:0,,,,
 1,世界频道,世界频道,10,100
 2,跨服频道,跨服频道,10,100

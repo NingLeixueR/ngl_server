@@ -1,4 +1,4 @@
 int32_t,string,string,int32_t,vector<attributevalue>,
 m_id,m_name,m_remarks,m_consume,m_attributevalues,
-"","",""," 升级消耗id"," 装备属性",
+" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 升级消耗id"," [index:4] 装备属性",
 version:0

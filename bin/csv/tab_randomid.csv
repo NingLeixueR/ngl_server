@@ -1,4 +1,0 @@
-int32_t,string,string,bool,int32_t,int32_t,int32_t,vector<string>,
-m_id,m_name,m_remarks,m_exclusive,m_count,m_childrandomids,m_calendarids,m_randomdatas,
-,,,// 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）,// 随机数量,// 子随机,// 是否关联日志表,只有日历触发才会执行此掉落,// id*min*max*weight,
-version:0

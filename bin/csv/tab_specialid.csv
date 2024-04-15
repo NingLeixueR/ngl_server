@@ -1,4 +1,4 @@
 int32_t,string,string,string,
 m_id,m_name,m_remarks,m_value,
-"","","","",
+" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 值",
 version:0
