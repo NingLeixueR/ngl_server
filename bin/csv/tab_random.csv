@@ -1,17 +1,17 @@
-int32_t,string,string,vector<trandom>,bool,int32_t,int32_t,vector<int32_t>,
-m_id,m_name,m_remarks,m_randomdatas,m_exclusive,m_count,m_calendarids,m_childrandomids,
-" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] trandom(id*min*max*weight)"," [index:4] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）"," [index:5] 随机数量"," [index:6] 是否关联日历表,只有日历触发才会执行此掉落"," [index:7] 子随机",
+int32_t,string,string,vector<trandom>,bool,int32_t,int32_t,vector<int32_t>
+m_id,m_name,m_remarks,m_randomdatas,m_exclusive,m_count,m_calendarids,m_childrandomids
+ [index:0] id , [index:1] 名字 , [index:2] 备注, [index:3] trandom(id*min*max*weight), [index:4] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）, [index:5] 随机数量," [index:6] 是否关联日历表,只有日历触发才会执行此掉落", [index:7] 子随机
 version:0,,,,,,,
-1,掉落1,掉落1,0,1,1,"1*1*10*1
+1,掉落1,掉落1,"1*1*10*1
 2*10*20*1
-3*20*30*1","2
+3*20*30*1",0,1,1,"2
 3"
-2,掉落2,掉落2,1,2,2,"4*1*10*1
+2,掉落2,掉落2,"4*1*10*1
 5*10*20*1
-6*20*30*2",4
-3,掉落3,掉落3,0,1,3,"7*1*10*1
+6*20*30*2",1,2,2,4
+3,掉落3,掉落3,"7*1*10*1
 8*10*20*1
-9*20*30*3",
-4,掉落4,掉落4,1,2,4,"10*1*10*1
+9*20*30*3",0,3,1,
+4,掉落4,掉落4,"10*1*10*1
 11*10*20*1
-12*20*30*4",
+12*20*30*4",1,4,2,
