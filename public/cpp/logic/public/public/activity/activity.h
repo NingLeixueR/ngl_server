@@ -7,106 +7,85 @@ namespace ngl
 {
 	class activity
 	{
+
+	private:
+		static std::map<EActivity, activity*> m_activityall;
+		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) = 0;
+	public:
+		static std::shared_ptr<activity> make(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb)
+		{
+			tab_activity* tab = allcsv::tab<tab_activity>(aactivityid);
+			auto itor = m_activityall.find(tab->m_type);
+			if (itor == m_activityall.end())
+			{
+				return nullptr;
+			}
+			return itor->second->create(acalendarid, aactivityid, atime, adb);
+		}
 	protected:
 		int64_t m_activityid;
-		EActivity m_type;
 		data_modified<pbdb::db_activity>* m_activity;
-		pbdb::db_activity::data* m_activitydata;
 	public:
-		activity(int64_t activityid, data_modified<pbdb::db_activity>* aactivity) :
-			m_activityid(activityid)
-			, m_activity(aactivity)
+		activity(int32_t acalendarid, int64_t activityid, int64_t atime, activitydb& adb);
+		activity();
+
+		pbdb::db_activity* activitydata()
 		{
-			tab_activity* tab = allcsv::tab<tab_activity>(activityid);
-			if (tab == nullptr)
-			{
-				LogLocalError("tab_activity id[%] not find!!!", activityid)
-				return;
-			}
+			return &m_activity->get();
 		}
 
-		pbdb::db_activity::data* activitydata()
+		pbdb::db_activity const* const_activitydata()
 		{
-			int lsize = m_activity->get().m_datas_size();
-			return m_activity->get().mutable_m_datas(lsize - 1);
+			return &m_activity->getconst();
 		}
 
 		EActivity type()
 		{
-			return m_type;
+			tab_activity* tab = allcsv::tab<tab_activity>(m_activityid);
+			assert(tab != nullptr);
+			return tab->m_type;
 		}
 
-		virtual bool isstart()
+		virtual bool is_start()
 		{
-			int lcount = m_activity->getconst().m_datas_size();
-			return m_activity->getconst().m_datas(lcount).m_start();
+			return const_activitydata()->m_start();
 		}
-		virtual bool isfinish()
-		{
-			int lcount = m_activity->getconst().m_datas_size();
-			return m_activity->getconst().m_datas(lcount).m_finish();
-		}
-		// 活动开启
-		virtual bool start() = 0;
-		// 活动关闭
-		virtual bool close() = 0;
-	};
 
-	class activity_drawcompliance : public activity
-	{
+		virtual bool is_finish()
+		{
+			return const_activitydata()->m_finish();
+		}
+
+		int32_t start_utc()
+		{
+			return m_activity->getconst().m_beg();
+		}
+
+		int32_t finish_utc()
+		{
+			return m_activity->getconst().m_end();
+		}
+
+		int32_t calendarid()
+		{
+			return m_activity->getconst().m_calendarid();
+		}
+
+	private:
+		void post(bool astart);
 	public:
-		// 活动开启
-		virtual bool start()
+		void post_timer()
 		{
-			return true;
+			post(true);
+			post(false);
 		}
+
+		// 活动开启
+		virtual void start() = 0;
 
 		// 活动关闭
-		virtual bool close()
-		{
-			return true;
-		}
-
-		void update(i64_actorid aroleid, int acount)
-		{
-			//m_drawcompliance
-			pbdb::db_activity::data::drawcompliance& ldrawcompliance = 
-				activitydata()->mutable_m_drawcompliance()->operator[](aroleid);
-			ldrawcompliance.set_m_count(ldrawcompliance.m_count() + acount);
-
-			
-			auto lfun = [&ldrawcompliance](int acount)
-				{
-					for (int count : ldrawcompliance.m_reward())
-					{
-						if (acount == count)
-							return false;
-					}
-					return true;
-				};
-
-			manage_csv<tab_activity_drawcompliance>* lpmanagecsv = 
-				allcsv::get<manage_csv<tab_activity_drawcompliance>>();
-			for (const auto& [_id, _data] : lpmanagecsv->tablecsv)
-			{
-				if (ldrawcompliance.m_count() > _id)
-				{
-					if (lfun(_data.m_id))
-					{
-						// 发送
-						auto pro = std::make_shared<np_actor_addmail>();
-						pro->m_roleid = aroleid;
-						pro->m_tid = _data.m_mailid;
-						if (drop::droplist(_data.m_dropid, 1, pro->m_items) == false)
-							continue;
-						actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
-
-						// 记录已领取
-						ldrawcompliance.add_m_reward(_data.m_id);
-					}
-				}
-			}
-		}
-
+		virtual void finish() = 0;
 	};
+
+	
 }// namespace ngl

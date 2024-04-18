@@ -13,29 +13,112 @@ namespace ngl
 		struct data
 		{
 			tab_calendar* m_tab;
-			struct begend_utc
+
+			void add(int32_t abeg, int32_t aend)
 			{
-				int32_t m_beg;
-				int32_t m_end;
-			};
+				m_utc.insert(time(abeg, aend));
+			}
+
+			static int64_t time(int32_t abeg, int32_t aend)
+			{
+				int32_t lvalue[2];
+				lvalue[0] = abeg;
+				lvalue[1] = aend;
+				return *(int64_t*)lvalue;
+			}
+
+			static int32_t beg(int64_t atime)
+			{
+				int32_t lvalue[2];
+				*(int64_t*)lvalue = atime;
+				return lvalue[0];
+			}
+
+			static int32_t end(int64_t atime)
+			{
+				int32_t lvalue[2];
+				*(int64_t*)lvalue = atime;
+				return lvalue[1];
+			}
+
 			// week
-			std::vector<begend_utc> m_utc;			
+			std::set<int64_t> m_utc;	//key:m_time	
 		};
 
 		static std::map<int32_t, data> m_data;
 
+		static bool reload_calendar(int32_t acalendar)
+		{
+			m_data[acalendar].m_utc.clear();
+			auto ltab = tab(acalendar);
+			m_data[acalendar].m_tab = ltab;
+			if (ltab->m_type == ECalendar::Week)
+			{
+				init_week(ltab->m_id, ltab->m_week);
+			}
+			else if (ltab->m_type == ECalendar::ServerOpen)
+			{
+				init_serveropen(ltab->m_id, ltab->m_serveropen);
+			}
+			else if (ltab->m_type == ECalendar::RegularSlot)
+			{
+				init_tregularslot(ltab->m_id, ltab->m_tregularslot);
+			}
+			return m_data[acalendar].m_utc.empty() != true;
+		}
+
+		static int64_t net_calendar(int32_t acalendar, int64_t atime)
+		{
+			auto itor = m_data.find(acalendar);
+			if (itor == m_data.end())
+				return -1;
+			if (atime == -1)
+			{
+				if (itor->second.m_utc.empty())
+					return -1;
+				else
+				{
+					return *itor->second.m_utc.begin();
+				}
+			}
+			auto itorutc = itor->second.m_utc.find(atime);
+			if (itorutc == itor->second.m_utc.end())
+			{
+				if (reload_calendar(acalendar) == false)
+				{
+					return -1;
+				}
+				else
+				{
+					return net_calendar(acalendar, -1);
+				}
+			}
+			
+			return *itorutc;
+		}
+
 		ttab_calendar()
 		{}
 
+		static tab_calendar* tab(int32_t aid)
+		{
+			ttab_calendar* ttab = allcsv::get<ttab_calendar>();
+			assert(ttab != nullptr);
+			auto itor = ttab->tablecsv.find(aid);
+			return &itor->second;
+		}
+
+		static void post(tab_calendar* atab, int64_t autc, pbdb::db_calendar& acalendar);
+
 		// 获取开服时间utc
-		int32_t serveropen()
+		static int32_t serveropen()
 		{
 			const char* lpopenserver = "2023/10/11 10:00:00";
 			return localtime::st2time(lpopenserver);
 		}
 
 		// 今日流失的秒数
-		std::pair<bool,int32_t> daysecond(const char* astr)
+		static std::pair<bool,int32_t> daysecond(const char* astr)
 		{
 			//HH:mm:ss
 			int hour = 0;
@@ -53,70 +136,58 @@ namespace ngl
 			week_utc = 7 * day_utc,
 		};
 
-		void printf_time(int aid)
+		static void printf_time(int aid)
 		{
-			std::string lbeg = localtime::time2msstr(m_data[aid].m_utc.rbegin()->m_beg, "%y/%m/%d %H:%M:%S");
-			std::string lend = localtime::time2msstr(m_data[aid].m_utc.rbegin()->m_beg, "%y/%m/%d %H:%M:%S");
-			LogLocalInfo("tab_calendar[%][%->%]", aid, lbeg, lend);
+			std::stringstream m_stream;
+			m_stream << "\n";
+			m_stream << aid <<":{";
+			for (int64_t ltime : m_data[aid].m_utc)
+			{
+				m_stream 
+					<< "	[" 
+					<< localtime::time2msstr(data::beg(ltime), "%y/%m/%d %H:%M:%S")
+					<< "->" 
+					<< localtime::time2msstr(data::end(ltime), "%y/%m/%d %H:%M:%S")
+					<< "]\n";
+			}
+			m_stream << "}\n";
+			LogLocalError("%", m_stream.str());
 		}
 
-		// 
-		void init_week(int aid, std::vector<tweek>& aweek)
+		static void init_week(int aid, std::vector<tweek>& aweek)
 		{
+			int32_t lnow = localtime::gettime();
 			std::vector<int32_t> lvec;
+			int32_t lid = 0;
 			for (auto& item : aweek)
 			{
-				int lweekday = localtime::getweekday(item.m_week == 7?0: item.m_week, 0, 0, 0);
+				int lweekdaystart = localtime::getweekday(item.m_weekstart == 7?0: item.m_weekstart, 0, 0, 0);
+				int lweekdayfinish = localtime::getweekday(item.m_weekfinish == 7 ? 0 : item.m_weekfinish, 0, 0, 0);
 
 				std::pair<bool, int32_t> lpairopen = daysecond(item.m_opentime.c_str());
 				std::pair<bool, int32_t> lpairclose = daysecond(item.m_closetime.c_str());
 				if (lpairclose.first && lpairopen.first)
 				{
 					assert(lpairclose.second > lpairopen.second);
-				}
-				
-				data::begend_utc lbegend;
-				if (lpairopen.first)
-					lvec.push_back(lweekday + lpairopen.second);
-				else
-					lvec.push_back(-1);
-
-				if (lpairclose.first)
-					lvec.push_back(lweekday + lpairclose.second);
-				else
-					lvec.push_back(-1);
-			}
-			std::vector<int32_t> lweek;
-			// 整理
-			for (int i = 0; i < lvec.size(); ++i)
-			{
-				if (lvec[i] == -1)
-					continue;
-				lweek.push_back(lvec[i]);
-				// 有效数字应该保持两个数组奇偶对应
-				// 比如1代表有效-1代表无效
-				// 例子1 {1,-1,1,1,1,1}   第二个有效数字(偶数位置)却是奇数位置 所有这个数列是有问题的
-				assert(lweek.size() % 2 == (i + 1) % 2);
-			}
-
-			// 产生m_count组数据
-			for (int i = 0; i < m_count; ++i)
-			{
-				for (int j = 0; j < lweek.size(); j += 2)
-				{
-					m_data[aid].m_utc.push_back(data::begend_utc
-						{
-							.m_beg = lweek[j] + i * week_utc,
-							.m_end = lweek[j + 1] + i * week_utc,
-						});
-					printf_time(aid);
+					int lbeg = lweekdaystart + lpairopen.second;
+					int lend = lweekdayfinish + lpairopen.second;
+					assert(lend > lbeg);
+					if (lnow > lend)
+					{
+						lbeg += week_utc;
+						lend += week_utc;
+					}
+					m_data[aid].add(lbeg, lend);
 				}
 			}
+			printf_time(aid);
 		}
 
-		void init_serveropen(int aid, std::vector<tserveropen>& atserveropen)
+		static void init_serveropen(int aid, std::vector<tserveropen>& atserveropen)
 		{
+			int32_t lnow = localtime::gettime();
 			int32_t lopentime = serveropen();
+			int32_t lid = 0;
 			for (auto& item : atserveropen)
 			{
 				// 开启时间
@@ -129,30 +200,28 @@ namespace ngl
 				std::pair<bool, int32_t> lpairclose = daysecond(item.m_closetime.c_str());
 				assert(lpairclose.first);
 				lend += lpairclose.second;
-				m_data[aid].m_utc.push_back(data::begend_utc
-					{
-						.m_beg = lbeg,
-						.m_end = lend,
-					});
-
-				printf_time(aid);
+				if (lnow > lend)
+				{
+					continue;
+				}
+				m_data[aid].add(lbeg, lend);
 			}
+
+			printf_time(aid);
 		}
 
-		void init_tregularslot(int aid, std::vector<tregularslot>& atregularslot)
+		static void init_tregularslot(int aid, std::vector<tregularslot>& atregularslot)
 		{
+			int32_t lnow = localtime::gettime();
 			for (auto& item : atregularslot)
 			{
 				int32_t lbeg = localtime::st2time(item.m_opentime.c_str());
 				int32_t lclose = localtime::st2time(item.m_closetime.c_str());
-				m_data[aid].m_utc.push_back(data::begend_utc
-					{
-						.m_beg = lbeg,
-						.m_end = lclose,
-					});
-
-				printf_time(aid);
+				if (lnow > lclose)
+					continue;
+				m_data[aid].add(lbeg, lclose);
 			}
+			printf_time(aid);
 		}
 
 		virtual void reload()
@@ -183,32 +252,10 @@ namespace ngl
 			if (lpdata == nullptr)
 				return false;
 			int32_t lnow = localtime::gettime();
-			for (auto& item : lpdata->m_utc)
+			for (int64_t item : lpdata->m_utc)
 			{
-				if (lnow >= item.m_beg && lnow <= item.m_end)
+				if (lnow >= data::beg(item) && lnow <= data::end(item))
 					return true;
-			}
-			return false;
-		}
-
-		static bool get(
-			int aid
-			, int alastendutc // 上次结束时候的utc
-			, int32_t& abeg
-			, int32_t& aend)
-		{
-			data* lpdata = tools::findmap(m_data, aid);
-			if (lpdata == nullptr)
-				return false;
-			int32_t lnow = localtime::gettime();
-			for (auto& item : lpdata->m_utc)
-			{
-				if (lnow <= item.m_end && item.m_beg > alastendutc)
-				{
-					abeg = item.m_beg;
-					aend = item.m_end;
-					return true;
-				}
 			}
 			return false;
 		}

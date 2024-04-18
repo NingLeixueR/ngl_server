@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-04-15 21:13:04
+// 创建时间 // 创建时间 24-04-18 11:09:48
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "csv.h"
@@ -124,6 +124,11 @@ enum ECalendar
 	Week = 0,	// 周几
 	ServerOpen = 1,	// 以开服时间以来的天数
 	RegularSlot = 2,	// 固定时间段
+};
+enum ECalendarType
+{
+	ECalendarTypeEveryDay,	// 每日定时刷新
+	ECalendarTypeActivity,	// 活动开启与关闭
 };
 enum EActivity
 {
@@ -405,15 +410,16 @@ struct tab_synthesis
 struct tweek
 {
 /*********************************/
-	int32_t		m_week;		// 周几
-	std::string		m_opentime;		//  开启时间 HH:mm:ss
-	std::string		m_closetime;		//  结束时间 HH:mm:ss
+	int32_t		m_weekstart;		// 周几开始
+	std::string		m_opentime;		// 开启时间 HH:mm:ss
+	int32_t		m_weekfinish;		// 周几结束
+	std::string		m_closetime;		// 结束时间 HH:mm:ss
 /*********************************/
 	tweek();
 	// 序列化反序列化相关
-	def_portocol(tweek, m_week, m_opentime, m_closetime)
+	def_portocol(tweek, m_weekstart, m_opentime, m_weekfinish, m_closetime)
 	// csv相关
-	def_rcsv(m_week,m_opentime,m_closetime)
+	def_rcsv(m_weekstart,m_opentime,m_weekfinish,m_closetime)
 };
 struct tserveropen
 {
@@ -448,15 +454,17 @@ struct tab_calendar
 	std::string		m_name;		// [index:1] 名字 
 	std::string		m_remarks;		// [index:2] 备注
 	ECalendar		m_type;		// [index:3] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
-	std::vector<tweek>		m_week;		// [index:4] m_type=0,tweek(周几(1-7)*开启时间HH:mm:ss*结束时间HH:mm:ss)
+	std::vector<tweek>		m_week;		// [index:4] m_type=0,tweek(周几开始(1-7)*开启时间HH:mm:ss*周几结束(1-7)*结束时间HH:mm:ss)
 	std::vector<tserveropen>		m_serveropen;		// [index:5] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
 	std::vector<tregularslot>		m_tregularslot;		// [index:6] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
+	ECalendarType		m_carendar;		// [index:7] (0.每日定时刷新1.活动开启与关闭)
+	std::vector<int32_t>		m_carendarparm;		// [index:8] (m_carendar == ECalendarTypeActivity:活动id)
 /*********************************/
 	tab_calendar();
 	// 序列化反序列化相关
-	def_portocol(tab_calendar, m_id, m_name, m_remarks, m_type, m_week, m_serveropen, m_tregularslot)
+	def_portocol(tab_calendar, m_id, m_name, m_remarks, m_type, m_week, m_serveropen, m_tregularslot, m_carendar, m_carendarparm)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_type,m_week,m_serveropen,m_tregularslot)
+	def_rcsv(m_id,m_name,m_remarks,m_type,m_week,m_serveropen,m_tregularslot,m_carendar,m_carendarparm)
 };
 struct tab_mail
 {
@@ -496,13 +504,12 @@ struct tab_activity
 	std::string		m_name;		// [index:1] 名字 
 	std::string		m_remarks;		// [index:2] 备注
 	EActivity		m_type;		// [index:3] 活动类型(1类似咸鱼之王的<<招募达标>>)
-	int32_t		m_calendarid;		// [index:4] 关联的脚本日历
 /*********************************/
 	tab_activity();
 	// 序列化反序列化相关
-	def_portocol(tab_activity, m_id, m_name, m_remarks, m_type, m_calendarid)
+	def_portocol(tab_activity, m_id, m_name, m_remarks, m_type)
 	// csv相关
-	def_rcsv(m_id,m_name,m_remarks,m_type,m_calendarid)
+	def_rcsv(m_id,m_name,m_remarks,m_type)
 };
 struct tab_activity_drawcompliance
 {

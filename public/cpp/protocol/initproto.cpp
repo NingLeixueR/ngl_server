@@ -54,8 +54,7 @@ namespace ngl
 			, null<np_actor_roleinfo>
 			, null<np_actor_gatewayinfo_updata>
 			, null<np_actor_addmail>
-			, null<np_actor_openactivity>
-			, null<np_actor_closeactivity>
+			, null<np_actor_activity>
 			, null<np_actor_gatewayid_updata>
 			, null<np_actorswitch_process<np_actorswitch_process_role>>
 			, null<np_actor_kcp>

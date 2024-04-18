@@ -30,7 +30,7 @@ namespace ngl
 		using type_roleitems = nroleitems<actor_manage_activity, roleitem>;
 
 		activitydb m_db;
-		std::map<int64_t, activity*> m_allactivity;
+		std::map<int64_t, std::shared_ptr<activity>> m_allactivity;
 	public:
 		friend class actor_instance<actor_manage_activity>;
 		static actor_manage_activity& getInstance()
@@ -44,15 +44,29 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-	private:
-		bool open_activity(i64_actorid m_activityid);
-		bool close_activity(i64_actorid m_activityid);
-		void init_activity(int64_t aactivityid);
-		void start_activity(int64_t aactivityid);
+		void activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid);
+		void activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 	public:
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_ACTIVITY_MANAGE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
+		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ)
+		{
+			auto itor = m_allactivity.insert(std::make_pair(actorid, activ));
+			if (itor.second == false)
+			{
+				return;
+			}
+			if (activ->calendarid() < 0)
+			{
+				activ->post_timer();
+			}
+		}
 		
-		bool handle(message<np_actor_openactivity>& adata);
-		bool handle(message<np_actor_closeactivity>& adata);
+		bool handle(message<np_actor_activity>& adata);
 
 		virtual void init();
 

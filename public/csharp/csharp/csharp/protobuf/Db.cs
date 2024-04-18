@@ -71,37 +71,43 @@ namespace Pbdb {
             "X21fbHZ0aW1lIpUBCgtkYl9yYW5rbGlzdBIRCgRtX2lkGAEgASgDSACIAQES",
             "LAoGbV9pdGVtGAIgAygLMhwucGJkYi5kYl9yYW5rbGlzdC5NSXRlbUVudHJ5",
             "GjwKCk1JdGVtRW50cnkSCwoDa2V5GAEgASgDEh0KBXZhbHVlGAIgASgLMg4u",
-            "cGJkYi5yYW5raXRlbToCOAFCBwoFX21faWQiyQMKC2RiX2FjdGl2aXR5EhEK",
-            "BG1faWQYASABKANIAIgBARInCgdtX2RhdGFzGAIgAygLMhYucGJkYi5kYl9h",
-            "Y3Rpdml0eS5kYXRhGvQCCgRkYXRhEhIKBW1fYmVnGAIgASgFSACIAQESEgoF",
-            "bV9lbmQYAyABKAVIAYgBARIUCgdtX3N0YXJ0GAQgASgISAKIAQESFQoIbV9m",
-            "aW5pc2gYBSABKAhIA4gBARJFChBtX2RyYXdjb21wbGlhbmNlGAYgAygLMisu",
-            "cGJkYi5kYl9hY3Rpdml0eS5kYXRhLk1EcmF3Y29tcGxpYW5jZUVudHJ5GkQK",
-            "DmRyYXdjb21wbGlhbmNlEhQKB21fY291bnQYASABKAVIAIgBARIQCghtX3Jl",
-            "d2FyZBgCIAMoBUIKCghfbV9jb3VudBpdChRNRHJhd2NvbXBsaWFuY2VFbnRy",
-            "eRILCgNrZXkYASABKAMSNAoFdmFsdWUYAiABKAsyJS5wYmRiLmRiX2FjdGl2",
-            "aXR5LmRhdGEuZHJhd2NvbXBsaWFuY2U6AjgBQggKBl9tX2JlZ0IICgZfbV9l",
-            "bmRCCgoIX21fc3RhcnRCCwoJX21fZmluaXNoQgcKBV9tX2lkIvcECgdkYl90",
-            "YXNrEhEKBG1faWQYASABKANIAIgBARIwCgptX3J1bmRhdGFzGAIgAygLMhwu",
-            "cGJkYi5kYl90YXNrLk1SdW5kYXRhc0VudHJ5EjwKEG1fY29tcGxldGVkZGF0",
-            "YXMYAyADKAsyIi5wYmRiLmRiX3Rhc2suTUNvbXBsZXRlZGRhdGFzRW50cnka",
-            "dQoNZGF0YV9zY2hlZHVsZRITCgZtX3R5cGUYASABKAVIAIgBARIUCgdtX3Zh",
-            "bHVlGAIgASgFSAGIAQESFQoIbV9zdW1pbnQYAyABKAVIAogBAUIJCgdfbV90",
-            "eXBlQgoKCF9tX3ZhbHVlQgsKCV9tX3N1bWludBrWAQoEZGF0YRIVCghtX3Rh",
-            "c2tpZBgBIAEoBUgAiAEBEhkKDG1fcmVjZWl2ZXV0YxgCIAEoBUgBiAEBEhcK",
-            "Cm1fZmluc2h1dGMYAyABKAVIAogBARIwCgttX3NjaGVkdWxlcxgEIAMoCzIb",
-            "LnBiZGIuZGJfdGFzay5kYXRhX3NjaGVkdWxlEhYKCW1fcmVjZWl2ZRgFIAEo",
-            "CEgDiAEBQgsKCV9tX3Rhc2tpZEIPCg1fbV9yZWNlaXZldXRjQg0KC19tX2Zp",
-            "bnNodXRjQgwKCl9tX3JlY2VpdmUaRAoOTVJ1bmRhdGFzRW50cnkSCwoDa2V5",
-            "GAEgASgFEiEKBXZhbHVlGAIgASgLMhIucGJkYi5kYl90YXNrLmRhdGE6AjgB",
-            "GkoKFE1Db21wbGV0ZWRkYXRhc0VudHJ5EgsKA2tleRgBIAEoBRIhCgV2YWx1",
-            "ZRgCIAEoCzISLnBiZGIuZGJfdGFzay5kYXRhOgI4AUIHCgVfbV9pZCr0AQoH",
-            "RU5VTV9EQhITCg9FTlVNX0RCX0FDQ09VTlQQABIQCgxFTlVNX0RCX1JPTEUQ",
-            "ARIRCg1FTlVNX0RCX0JSSUVGEAISDwoLRU5VTV9EQl9CQUcQAxIUChBFTlVN",
-            "X0RCX0tFWVZBTFVFEAQSEAoMRU5VTV9EQl9NQUlMEAUSEQoNRU5VTV9EQl9H",
-            "VUlMRBAGEhIKDkVOVU1fREJfTk9USUNFEAcSFAoQRU5VTV9EQl9SQU5LTElT",
-            "VBAIEhQKEEVOVU1fREJfQUNUSVZJVFkQCRIQCgxFTlVNX0RCX1RBU0sQChIR",
-            "Cg1FTlVNX0RCX0NPVU5UEAtiBnByb3RvMw=="));
+            "cGJkYi5yYW5raXRlbToCOAFCBwoFX21faWQimQQKC2RiX2FjdGl2aXR5EhEK",
+            "BG1faWQYASABKANIAIgBARISCgVtX2JlZxgCIAEoBUgBiAEBEhIKBW1fZW5k",
+            "GAMgASgFSAKIAQESFAoHbV9zdGFydBgEIAEoCEgDiAEBEhUKCG1fZmluaXNo",
+            "GAUgASgISASIAQESGQoMbV9jYWxlbmRhcmlkGAYgASgFSAWIAQESQAoQbV9k",
+            "cmF3Y29tcGxpYW5jZRgHIAMoCzImLnBiZGIuZGJfYWN0aXZpdHkuTURyYXdj",
+            "b21wbGlhbmNlRW50cnkaowEKDmRyYXdjb21wbGlhbmNlEhQKB21fY291bnQY",
+            "ASABKAVIAIgBARI/CghtX3Jld2FyZBgCIAMoCzItLnBiZGIuZGJfYWN0aXZp",
+            "dHkuZHJhd2NvbXBsaWFuY2UuTVJld2FyZEVudHJ5Gi4KDE1SZXdhcmRFbnRy",
+            "eRILCgNrZXkYASABKAUSDQoFdmFsdWUYAiABKAg6AjgBQgoKCF9tX2NvdW50",
+            "GlgKFE1EcmF3Y29tcGxpYW5jZUVudHJ5EgsKA2tleRgBIAEoAxIvCgV2YWx1",
+            "ZRgCIAEoCzIgLnBiZGIuZGJfYWN0aXZpdHkuZHJhd2NvbXBsaWFuY2U6AjgB",
+            "QgcKBV9tX2lkQggKBl9tX2JlZ0IICgZfbV9lbmRCCgoIX21fc3RhcnRCCwoJ",
+            "X21fZmluaXNoQg8KDV9tX2NhbGVuZGFyaWQi9wQKB2RiX3Rhc2sSEQoEbV9p",
+            "ZBgBIAEoA0gAiAEBEjAKCm1fcnVuZGF0YXMYAiADKAsyHC5wYmRiLmRiX3Rh",
+            "c2suTVJ1bmRhdGFzRW50cnkSPAoQbV9jb21wbGV0ZWRkYXRhcxgDIAMoCzIi",
+            "LnBiZGIuZGJfdGFzay5NQ29tcGxldGVkZGF0YXNFbnRyeRp1Cg1kYXRhX3Nj",
+            "aGVkdWxlEhMKBm1fdHlwZRgBIAEoBUgAiAEBEhQKB21fdmFsdWUYAiABKAVI",
+            "AYgBARIVCghtX3N1bWludBgDIAEoBUgCiAEBQgkKB19tX3R5cGVCCgoIX21f",
+            "dmFsdWVCCwoJX21fc3VtaW50GtYBCgRkYXRhEhUKCG1fdGFza2lkGAEgASgF",
+            "SACIAQESGQoMbV9yZWNlaXZldXRjGAIgASgFSAGIAQESFwoKbV9maW5zaHV0",
+            "YxgDIAEoBUgCiAEBEjAKC21fc2NoZWR1bGVzGAQgAygLMhsucGJkYi5kYl90",
+            "YXNrLmRhdGFfc2NoZWR1bGUSFgoJbV9yZWNlaXZlGAUgASgISAOIAQFCCwoJ",
+            "X21fdGFza2lkQg8KDV9tX3JlY2VpdmV1dGNCDQoLX21fZmluc2h1dGNCDAoK",
+            "X21fcmVjZWl2ZRpECg5NUnVuZGF0YXNFbnRyeRILCgNrZXkYASABKAUSIQoF",
+            "dmFsdWUYAiABKAsyEi5wYmRiLmRiX3Rhc2suZGF0YToCOAEaSgoUTUNvbXBs",
+            "ZXRlZGRhdGFzRW50cnkSCwoDa2V5GAEgASgFEiEKBXZhbHVlGAIgASgLMhIu",
+            "cGJkYi5kYl90YXNrLmRhdGE6AjgBQgcKBV9tX2lkIo8BCgtkYl9jYWxlbmRh",
+            "chIRCgRtX2lkGAEgASgDSACIAQESEwoGbV90aW1lGAIgASgDSAGIAQESFAoH",
+            "bV9zdGFydBgDIAEoCEgCiAEBEhUKCG1fZmluaXNoGAQgASgISAOIAQFCBwoF",
+            "X21faWRCCQoHX21fdGltZUIKCghfbV9zdGFydEILCglfbV9maW5pc2gqigIK",
+            "B0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5UEAASEAoMRU5VTV9EQl9ST0xF",
+            "EAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VOVU1fREJfQkFHEAMSFAoQRU5V",
+            "TV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJfTUFJTBAFEhEKDUVOVU1fREJf",
+            "R1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAHEhQKEEVOVU1fREJfUkFOS0xJ",
+            "U1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkSEAoMRU5VTV9EQl9UQVNLEAoS",
+            "FAoQRU5VTV9EQl9DQUxFTkRBUhALEhEKDUVOVU1fREJfQ09VTlQQDGIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -118,11 +124,12 @@ namespace Pbdb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_notice), global::Pbdb.db_notice.Parser, new[]{ "MId", "MNotice", "MStarttime", "MFinishtime" }, new[]{ "MId", "MNotice", "MStarttime", "MFinishtime" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.rankitem), global::Pbdb.rankitem.Parser, new[]{ "MRoleid", "MName", "MLv", "MLvtime" }, new[]{ "MRoleid", "MName", "MLv", "MLvtime" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_ranklist), global::Pbdb.db_ranklist.Parser, new[]{ "MId", "MItem" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity), global::Pbdb.db_activity.Parser, new[]{ "MId", "MDatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.data), global::Pbdb.db_activity.Types.data.Parser, new[]{ "MBeg", "MEnd", "MStart", "MFinish", "MDrawcompliance" }, new[]{ "MBeg", "MEnd", "MStart", "MFinish" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.data.Types.drawcompliance), global::Pbdb.db_activity.Types.data.Types.drawcompliance.Parser, new[]{ "MCount", "MReward" }, new[]{ "MCount" }, null, null, null),
-            null, })}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity), global::Pbdb.db_activity.Parser, new[]{ "MId", "MBeg", "MEnd", "MStart", "MFinish", "MCalendarid", "MDrawcompliance" }, new[]{ "MId", "MBeg", "MEnd", "MStart", "MFinish", "MCalendarid" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.drawcompliance), global::Pbdb.db_activity.Types.drawcompliance.Parser, new[]{ "MCount", "MReward" }, new[]{ "MCount" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task), global::Pbdb.db_task.Parser, new[]{ "MId", "MRundatas", "MCompleteddatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data_schedule), global::Pbdb.db_task.Types.data_schedule.Parser, new[]{ "MType", "MValue", "MSumint" }, new[]{ "MType", "MValue", "MSumint" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data), global::Pbdb.db_task.Types.data.Parser, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MSchedules", "MReceive" }, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MReceive" }, null, null, null),
-            null, null, })
+            null, null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_calendar), global::Pbdb.db_calendar.Parser, new[]{ "MId", "MTime", "MStart", "MFinish" }, new[]{ "MId", "MTime", "MStart", "MFinish" }, null, null, null)
           }));
     }
     #endregion
@@ -174,7 +181,11 @@ namespace Pbdb {
     /// 任务数据
     /// </summary>
     [pbr::OriginalName("ENUM_DB_TASK")] Task = 10,
-    [pbr::OriginalName("ENUM_DB_COUNT")] Count = 11,
+    /// <summary>
+    /// 脚本日历数据
+    /// </summary>
+    [pbr::OriginalName("ENUM_DB_CALENDAR")] Calendar = 11,
+    [pbr::OriginalName("ENUM_DB_COUNT")] Count = 12,
   }
 
   #endregion
@@ -4604,7 +4615,12 @@ namespace Pbdb {
     public db_activity(db_activity other) : this() {
       _hasBits0 = other._hasBits0;
       mId_ = other.mId_;
-      mDatas_ = other.mDatas_.Clone();
+      mBeg_ = other.mBeg_;
+      mEnd_ = other.mEnd_;
+      mStart_ = other.mStart_;
+      mFinish_ = other.mFinish_;
+      mCalendarid_ = other.mCalendarid_;
+      mDrawcompliance_ = other.mDrawcompliance_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4638,17 +4654,139 @@ namespace Pbdb {
       _hasBits0 &= ~1;
     }
 
-    /// <summary>Field number for the "m_datas" field.</summary>
-    public const int MDatasFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Pbdb.db_activity.Types.data> _repeated_mDatas_codec
-        = pb::FieldCodec.ForMessage(18, global::Pbdb.db_activity.Types.data.Parser);
-    private readonly pbc::RepeatedField<global::Pbdb.db_activity.Types.data> mDatas_ = new pbc::RepeatedField<global::Pbdb.db_activity.Types.data>();
+    /// <summary>Field number for the "m_beg" field.</summary>
+    public const int MBegFieldNumber = 2;
+    private int mBeg_;
     /// <summary>
-    /// 活动数据
+    /// 活动开启时间
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Pbdb.db_activity.Types.data> MDatas {
-      get { return mDatas_; }
+    public int MBeg {
+      get { if ((_hasBits0 & 2) != 0) { return mBeg_; } else { return 0; } }
+      set {
+        _hasBits0 |= 2;
+        mBeg_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_beg" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMBeg {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "m_beg" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMBeg() {
+      _hasBits0 &= ~2;
+    }
+
+    /// <summary>Field number for the "m_end" field.</summary>
+    public const int MEndFieldNumber = 3;
+    private int mEnd_;
+    /// <summary>
+    /// 活动结束时间
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MEnd {
+      get { if ((_hasBits0 & 4) != 0) { return mEnd_; } else { return 0; } }
+      set {
+        _hasBits0 |= 4;
+        mEnd_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_end" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMEnd {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "m_end" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMEnd() {
+      _hasBits0 &= ~4;
+    }
+
+    /// <summary>Field number for the "m_start" field.</summary>
+    public const int MStartFieldNumber = 4;
+    private bool mStart_;
+    /// <summary>
+    /// 是否开启
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool MStart {
+      get { if ((_hasBits0 & 8) != 0) { return mStart_; } else { return false; } }
+      set {
+        _hasBits0 |= 8;
+        mStart_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_start" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMStart {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "m_start" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMStart() {
+      _hasBits0 &= ~8;
+    }
+
+    /// <summary>Field number for the "m_finish" field.</summary>
+    public const int MFinishFieldNumber = 5;
+    private bool mFinish_;
+    /// <summary>
+    /// 是否关闭
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool MFinish {
+      get { if ((_hasBits0 & 16) != 0) { return mFinish_; } else { return false; } }
+      set {
+        _hasBits0 |= 16;
+        mFinish_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_finish" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMFinish {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "m_finish" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMFinish() {
+      _hasBits0 &= ~16;
+    }
+
+    /// <summary>Field number for the "m_calendarid" field.</summary>
+    public const int MCalendaridFieldNumber = 6;
+    private int mCalendarid_;
+    /// <summary>
+    /// >0:脚本日历控制 &lt;0:activity自行控制开关
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MCalendarid {
+      get { if ((_hasBits0 & 32) != 0) { return mCalendarid_; } else { return 0; } }
+      set {
+        _hasBits0 |= 32;
+        mCalendarid_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_calendarid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMCalendarid {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "m_calendarid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMCalendarid() {
+      _hasBits0 &= ~32;
+    }
+
+    /// <summary>Field number for the "m_drawcompliance" field.</summary>
+    public const int MDrawcomplianceFieldNumber = 7;
+    private static readonly pbc::MapField<long, global::Pbdb.db_activity.Types.drawcompliance>.Codec _map_mDrawcompliance_codec
+        = new pbc::MapField<long, global::Pbdb.db_activity.Types.drawcompliance>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForMessage(18, global::Pbdb.db_activity.Types.drawcompliance.Parser), 58);
+    private readonly pbc::MapField<long, global::Pbdb.db_activity.Types.drawcompliance> mDrawcompliance_ = new pbc::MapField<long, global::Pbdb.db_activity.Types.drawcompliance>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<long, global::Pbdb.db_activity.Types.drawcompliance> MDrawcompliance {
+      get { return mDrawcompliance_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4665,7 +4803,12 @@ namespace Pbdb {
         return true;
       }
       if (MId != other.MId) return false;
-      if(!mDatas_.Equals(other.mDatas_)) return false;
+      if (MBeg != other.MBeg) return false;
+      if (MEnd != other.MEnd) return false;
+      if (MStart != other.MStart) return false;
+      if (MFinish != other.MFinish) return false;
+      if (MCalendarid != other.MCalendarid) return false;
+      if (!MDrawcompliance.Equals(other.MDrawcompliance)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4673,7 +4816,12 @@ namespace Pbdb {
     public override int GetHashCode() {
       int hash = 1;
       if (HasMId) hash ^= MId.GetHashCode();
-      hash ^= mDatas_.GetHashCode();
+      if (HasMBeg) hash ^= MBeg.GetHashCode();
+      if (HasMEnd) hash ^= MEnd.GetHashCode();
+      if (HasMStart) hash ^= MStart.GetHashCode();
+      if (HasMFinish) hash ^= MFinish.GetHashCode();
+      if (HasMCalendarid) hash ^= MCalendarid.GetHashCode();
+      hash ^= MDrawcompliance.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4694,7 +4842,27 @@ namespace Pbdb {
         output.WriteRawTag(8);
         output.WriteInt64(MId);
       }
-      mDatas_.WriteTo(output, _repeated_mDatas_codec);
+      if (HasMBeg) {
+        output.WriteRawTag(16);
+        output.WriteInt32(MBeg);
+      }
+      if (HasMEnd) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MEnd);
+      }
+      if (HasMStart) {
+        output.WriteRawTag(32);
+        output.WriteBool(MStart);
+      }
+      if (HasMFinish) {
+        output.WriteRawTag(40);
+        output.WriteBool(MFinish);
+      }
+      if (HasMCalendarid) {
+        output.WriteRawTag(48);
+        output.WriteInt32(MCalendarid);
+      }
+      mDrawcompliance_.WriteTo(output, _map_mDrawcompliance_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4708,7 +4876,27 @@ namespace Pbdb {
         output.WriteRawTag(8);
         output.WriteInt64(MId);
       }
-      mDatas_.WriteTo(ref output, _repeated_mDatas_codec);
+      if (HasMBeg) {
+        output.WriteRawTag(16);
+        output.WriteInt32(MBeg);
+      }
+      if (HasMEnd) {
+        output.WriteRawTag(24);
+        output.WriteInt32(MEnd);
+      }
+      if (HasMStart) {
+        output.WriteRawTag(32);
+        output.WriteBool(MStart);
+      }
+      if (HasMFinish) {
+        output.WriteRawTag(40);
+        output.WriteBool(MFinish);
+      }
+      if (HasMCalendarid) {
+        output.WriteRawTag(48);
+        output.WriteInt32(MCalendarid);
+      }
+      mDrawcompliance_.WriteTo(ref output, _map_mDrawcompliance_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4721,7 +4909,22 @@ namespace Pbdb {
       if (HasMId) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(MId);
       }
-      size += mDatas_.CalculateSize(_repeated_mDatas_codec);
+      if (HasMBeg) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MBeg);
+      }
+      if (HasMEnd) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MEnd);
+      }
+      if (HasMStart) {
+        size += 1 + 1;
+      }
+      if (HasMFinish) {
+        size += 1 + 1;
+      }
+      if (HasMCalendarid) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MCalendarid);
+      }
+      size += mDrawcompliance_.CalculateSize(_map_mDrawcompliance_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -4736,7 +4939,22 @@ namespace Pbdb {
       if (other.HasMId) {
         MId = other.MId;
       }
-      mDatas_.Add(other.mDatas_);
+      if (other.HasMBeg) {
+        MBeg = other.MBeg;
+      }
+      if (other.HasMEnd) {
+        MEnd = other.MEnd;
+      }
+      if (other.HasMStart) {
+        MStart = other.MStart;
+      }
+      if (other.HasMFinish) {
+        MFinish = other.MFinish;
+      }
+      if (other.HasMCalendarid) {
+        MCalendarid = other.MCalendarid;
+      }
+      mDrawcompliance_.Add(other.mDrawcompliance_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -4755,8 +4973,28 @@ namespace Pbdb {
             MId = input.ReadInt64();
             break;
           }
-          case 18: {
-            mDatas_.AddEntriesFrom(input, _repeated_mDatas_codec);
+          case 16: {
+            MBeg = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            MEnd = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MStart = input.ReadBool();
+            break;
+          }
+          case 40: {
+            MFinish = input.ReadBool();
+            break;
+          }
+          case 48: {
+            MCalendarid = input.ReadInt32();
+            break;
+          }
+          case 58: {
+            mDrawcompliance_.AddEntriesFrom(input, _map_mDrawcompliance_codec);
             break;
           }
         }
@@ -4777,8 +5015,28 @@ namespace Pbdb {
             MId = input.ReadInt64();
             break;
           }
-          case 18: {
-            mDatas_.AddEntriesFrom(ref input, _repeated_mDatas_codec);
+          case 16: {
+            MBeg = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            MEnd = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MStart = input.ReadBool();
+            break;
+          }
+          case 40: {
+            MFinish = input.ReadBool();
+            break;
+          }
+          case 48: {
+            MCalendarid = input.ReadInt32();
+            break;
+          }
+          case 58: {
+            mDrawcompliance_.AddEntriesFrom(ref input, _map_mDrawcompliance_codec);
             break;
           }
         }
@@ -4790,16 +5048,19 @@ namespace Pbdb {
     /// <summary>Container for nested types declared in the db_activity message type.</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
-      public sealed partial class data : pb::IMessage<data>
+      /// <summary>
+      /// tab_activity.m_type == EActivityDrawCompliance
+      /// </summary>
+      public sealed partial class drawcompliance : pb::IMessage<drawcompliance>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
       #endif
       {
-        private static readonly pb::MessageParser<data> _parser = new pb::MessageParser<data>(() => new data());
+        private static readonly pb::MessageParser<drawcompliance> _parser = new pb::MessageParser<drawcompliance>(() => new drawcompliance());
         private pb::UnknownFieldSet _unknownFields;
         private int _hasBits0;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pb::MessageParser<data> Parser { get { return _parser; } }
+        public static pb::MessageParser<drawcompliance> Parser { get { return _parser; } }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor {
@@ -4812,167 +5073,86 @@ namespace Pbdb {
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public data() {
+        public drawcompliance() {
           OnConstruction();
         }
 
         partial void OnConstruction();
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public data(data other) : this() {
+        public drawcompliance(drawcompliance other) : this() {
           _hasBits0 = other._hasBits0;
-          mBeg_ = other.mBeg_;
-          mEnd_ = other.mEnd_;
-          mStart_ = other.mStart_;
-          mFinish_ = other.mFinish_;
-          mDrawcompliance_ = other.mDrawcompliance_.Clone();
+          mCount_ = other.mCount_;
+          mReward_ = other.mReward_.Clone();
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public data Clone() {
-          return new data(this);
+        public drawcompliance Clone() {
+          return new drawcompliance(this);
         }
 
-        /// <summary>Field number for the "m_beg" field.</summary>
-        public const int MBegFieldNumber = 2;
-        private int mBeg_;
+        /// <summary>Field number for the "m_count" field.</summary>
+        public const int MCountFieldNumber = 1;
+        private int mCount_;
         /// <summary>
-        /// 活动开启时间
+        /// 累计次数
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public int MBeg {
-          get { if ((_hasBits0 & 1) != 0) { return mBeg_; } else { return 0; } }
+        public int MCount {
+          get { if ((_hasBits0 & 1) != 0) { return mCount_; } else { return 0; } }
           set {
             _hasBits0 |= 1;
-            mBeg_ = value;
+            mCount_ = value;
           }
         }
-        /// <summary>Gets whether the "m_beg" field is set</summary>
+        /// <summary>Gets whether the "m_count" field is set</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasMBeg {
+        public bool HasMCount {
           get { return (_hasBits0 & 1) != 0; }
         }
-        /// <summary>Clears the value of the "m_beg" field</summary>
+        /// <summary>Clears the value of the "m_count" field</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearMBeg() {
+        public void ClearMCount() {
           _hasBits0 &= ~1;
         }
 
-        /// <summary>Field number for the "m_end" field.</summary>
-        public const int MEndFieldNumber = 3;
-        private int mEnd_;
+        /// <summary>Field number for the "m_reward" field.</summary>
+        public const int MRewardFieldNumber = 2;
+        private static readonly pbc::MapField<int, bool>.Codec _map_mReward_codec
+            = new pbc::MapField<int, bool>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForBool(16, false), 18);
+        private readonly pbc::MapField<int, bool> mReward_ = new pbc::MapField<int, bool>();
         /// <summary>
-        /// 活动结束时间
+        /// 累计领取哪些奖励
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public int MEnd {
-          get { if ((_hasBits0 & 2) != 0) { return mEnd_; } else { return 0; } }
-          set {
-            _hasBits0 |= 2;
-            mEnd_ = value;
-          }
-        }
-        /// <summary>Gets whether the "m_end" field is set</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasMEnd {
-          get { return (_hasBits0 & 2) != 0; }
-        }
-        /// <summary>Clears the value of the "m_end" field</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearMEnd() {
-          _hasBits0 &= ~2;
-        }
-
-        /// <summary>Field number for the "m_start" field.</summary>
-        public const int MStartFieldNumber = 4;
-        private bool mStart_;
-        /// <summary>
-        /// 是否开启
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool MStart {
-          get { if ((_hasBits0 & 4) != 0) { return mStart_; } else { return false; } }
-          set {
-            _hasBits0 |= 4;
-            mStart_ = value;
-          }
-        }
-        /// <summary>Gets whether the "m_start" field is set</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasMStart {
-          get { return (_hasBits0 & 4) != 0; }
-        }
-        /// <summary>Clears the value of the "m_start" field</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearMStart() {
-          _hasBits0 &= ~4;
-        }
-
-        /// <summary>Field number for the "m_finish" field.</summary>
-        public const int MFinishFieldNumber = 5;
-        private bool mFinish_;
-        /// <summary>
-        /// 是否关闭
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool MFinish {
-          get { if ((_hasBits0 & 8) != 0) { return mFinish_; } else { return false; } }
-          set {
-            _hasBits0 |= 8;
-            mFinish_ = value;
-          }
-        }
-        /// <summary>Gets whether the "m_finish" field is set</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasMFinish {
-          get { return (_hasBits0 & 8) != 0; }
-        }
-        /// <summary>Clears the value of the "m_finish" field</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearMFinish() {
-          _hasBits0 &= ~8;
-        }
-
-        /// <summary>Field number for the "m_drawcompliance" field.</summary>
-        public const int MDrawcomplianceFieldNumber = 6;
-        private static readonly pbc::MapField<long, global::Pbdb.db_activity.Types.data.Types.drawcompliance>.Codec _map_mDrawcompliance_codec
-            = new pbc::MapField<long, global::Pbdb.db_activity.Types.data.Types.drawcompliance>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForMessage(18, global::Pbdb.db_activity.Types.data.Types.drawcompliance.Parser), 50);
-        private readonly pbc::MapField<long, global::Pbdb.db_activity.Types.data.Types.drawcompliance> mDrawcompliance_ = new pbc::MapField<long, global::Pbdb.db_activity.Types.data.Types.drawcompliance>();
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public pbc::MapField<long, global::Pbdb.db_activity.Types.data.Types.drawcompliance> MDrawcompliance {
-          get { return mDrawcompliance_; }
+        public pbc::MapField<int, bool> MReward {
+          get { return mReward_; }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
-          return Equals(other as data);
+          return Equals(other as drawcompliance);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool Equals(data other) {
+        public bool Equals(drawcompliance other) {
           if (ReferenceEquals(other, null)) {
             return false;
           }
           if (ReferenceEquals(other, this)) {
             return true;
           }
-          if (MBeg != other.MBeg) return false;
-          if (MEnd != other.MEnd) return false;
-          if (MStart != other.MStart) return false;
-          if (MFinish != other.MFinish) return false;
-          if (!MDrawcompliance.Equals(other.MDrawcompliance)) return false;
+          if (MCount != other.MCount) return false;
+          if (!MReward.Equals(other.MReward)) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
-          if (HasMBeg) hash ^= MBeg.GetHashCode();
-          if (HasMEnd) hash ^= MEnd.GetHashCode();
-          if (HasMStart) hash ^= MStart.GetHashCode();
-          if (HasMFinish) hash ^= MFinish.GetHashCode();
-          hash ^= MDrawcompliance.GetHashCode();
+          if (HasMCount) hash ^= MCount.GetHashCode();
+          hash ^= MReward.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -4989,23 +5169,11 @@ namespace Pbdb {
         #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           output.WriteRawMessage(this);
         #else
-          if (HasMBeg) {
-            output.WriteRawTag(16);
-            output.WriteInt32(MBeg);
+          if (HasMCount) {
+            output.WriteRawTag(8);
+            output.WriteInt32(MCount);
           }
-          if (HasMEnd) {
-            output.WriteRawTag(24);
-            output.WriteInt32(MEnd);
-          }
-          if (HasMStart) {
-            output.WriteRawTag(32);
-            output.WriteBool(MStart);
-          }
-          if (HasMFinish) {
-            output.WriteRawTag(40);
-            output.WriteBool(MFinish);
-          }
-          mDrawcompliance_.WriteTo(output, _map_mDrawcompliance_codec);
+          mReward_.WriteTo(output, _map_mReward_codec);
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -5015,23 +5183,11 @@ namespace Pbdb {
         #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-          if (HasMBeg) {
-            output.WriteRawTag(16);
-            output.WriteInt32(MBeg);
+          if (HasMCount) {
+            output.WriteRawTag(8);
+            output.WriteInt32(MCount);
           }
-          if (HasMEnd) {
-            output.WriteRawTag(24);
-            output.WriteInt32(MEnd);
-          }
-          if (HasMStart) {
-            output.WriteRawTag(32);
-            output.WriteBool(MStart);
-          }
-          if (HasMFinish) {
-            output.WriteRawTag(40);
-            output.WriteBool(MFinish);
-          }
-          mDrawcompliance_.WriteTo(ref output, _map_mDrawcompliance_codec);
+          mReward_.WriteTo(ref output, _map_mReward_codec);
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -5041,19 +5197,10 @@ namespace Pbdb {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
-          if (HasMBeg) {
-            size += 1 + pb::CodedOutputStream.ComputeInt32Size(MBeg);
+          if (HasMCount) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(MCount);
           }
-          if (HasMEnd) {
-            size += 1 + pb::CodedOutputStream.ComputeInt32Size(MEnd);
-          }
-          if (HasMStart) {
-            size += 1 + 1;
-          }
-          if (HasMFinish) {
-            size += 1 + 1;
-          }
-          size += mDrawcompliance_.CalculateSize(_map_mDrawcompliance_codec);
+          size += mReward_.CalculateSize(_map_mReward_codec);
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
           }
@@ -5061,23 +5208,14 @@ namespace Pbdb {
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(data other) {
+        public void MergeFrom(drawcompliance other) {
           if (other == null) {
             return;
           }
-          if (other.HasMBeg) {
-            MBeg = other.MBeg;
+          if (other.HasMCount) {
+            MCount = other.MCount;
           }
-          if (other.HasMEnd) {
-            MEnd = other.MEnd;
-          }
-          if (other.HasMStart) {
-            MStart = other.MStart;
-          }
-          if (other.HasMFinish) {
-            MFinish = other.MFinish;
-          }
-          mDrawcompliance_.Add(other.mDrawcompliance_);
+          mReward_.Add(other.mReward_);
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -5092,24 +5230,12 @@ namespace Pbdb {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
-              case 16: {
-                MBeg = input.ReadInt32();
+              case 8: {
+                MCount = input.ReadInt32();
                 break;
               }
-              case 24: {
-                MEnd = input.ReadInt32();
-                break;
-              }
-              case 32: {
-                MStart = input.ReadBool();
-                break;
-              }
-              case 40: {
-                MFinish = input.ReadBool();
-                break;
-              }
-              case 50: {
-                mDrawcompliance_.AddEntriesFrom(input, _map_mDrawcompliance_codec);
+              case 18: {
+                mReward_.AddEntriesFrom(input, _map_mReward_codec);
                 break;
               }
             }
@@ -5126,258 +5252,18 @@ namespace Pbdb {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
-              case 16: {
-                MBeg = input.ReadInt32();
+              case 8: {
+                MCount = input.ReadInt32();
                 break;
               }
-              case 24: {
-                MEnd = input.ReadInt32();
-                break;
-              }
-              case 32: {
-                MStart = input.ReadBool();
-                break;
-              }
-              case 40: {
-                MFinish = input.ReadBool();
-                break;
-              }
-              case 50: {
-                mDrawcompliance_.AddEntriesFrom(ref input, _map_mDrawcompliance_codec);
+              case 18: {
+                mReward_.AddEntriesFrom(ref input, _map_mReward_codec);
                 break;
               }
             }
           }
         }
         #endif
-
-        #region Nested types
-        /// <summary>Container for nested types declared in the data message type.</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static partial class Types {
-          /// <summary>
-          /// tab_activity.m_type == EActivityDrawCompliance
-          /// </summary>
-          public sealed partial class drawcompliance : pb::IMessage<drawcompliance>
-          #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-              , pb::IBufferMessage
-          #endif
-          {
-            private static readonly pb::MessageParser<drawcompliance> _parser = new pb::MessageParser<drawcompliance>(() => new drawcompliance());
-            private pb::UnknownFieldSet _unknownFields;
-            private int _hasBits0;
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public static pb::MessageParser<drawcompliance> Parser { get { return _parser; } }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public static pbr::MessageDescriptor Descriptor {
-              get { return global::Pbdb.db_activity.Types.data.Descriptor.NestedTypes[0]; }
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            pbr::MessageDescriptor pb::IMessage.Descriptor {
-              get { return Descriptor; }
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public drawcompliance() {
-              OnConstruction();
-            }
-
-            partial void OnConstruction();
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public drawcompliance(drawcompliance other) : this() {
-              _hasBits0 = other._hasBits0;
-              mCount_ = other.mCount_;
-              mReward_ = other.mReward_.Clone();
-              _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public drawcompliance Clone() {
-              return new drawcompliance(this);
-            }
-
-            /// <summary>Field number for the "m_count" field.</summary>
-            public const int MCountFieldNumber = 1;
-            private int mCount_;
-            /// <summary>
-            /// 累计次数
-            /// </summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public int MCount {
-              get { if ((_hasBits0 & 1) != 0) { return mCount_; } else { return 0; } }
-              set {
-                _hasBits0 |= 1;
-                mCount_ = value;
-              }
-            }
-            /// <summary>Gets whether the "m_count" field is set</summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public bool HasMCount {
-              get { return (_hasBits0 & 1) != 0; }
-            }
-            /// <summary>Clears the value of the "m_count" field</summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public void ClearMCount() {
-              _hasBits0 &= ~1;
-            }
-
-            /// <summary>Field number for the "m_reward" field.</summary>
-            public const int MRewardFieldNumber = 2;
-            private static readonly pb::FieldCodec<int> _repeated_mReward_codec
-                = pb::FieldCodec.ForInt32(18);
-            private readonly pbc::RepeatedField<int> mReward_ = new pbc::RepeatedField<int>();
-            /// <summary>
-            /// 累计领取哪些奖励
-            /// </summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public pbc::RepeatedField<int> MReward {
-              get { return mReward_; }
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public override bool Equals(object other) {
-              return Equals(other as drawcompliance);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public bool Equals(drawcompliance other) {
-              if (ReferenceEquals(other, null)) {
-                return false;
-              }
-              if (ReferenceEquals(other, this)) {
-                return true;
-              }
-              if (MCount != other.MCount) return false;
-              if(!mReward_.Equals(other.mReward_)) return false;
-              return Equals(_unknownFields, other._unknownFields);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public override int GetHashCode() {
-              int hash = 1;
-              if (HasMCount) hash ^= MCount.GetHashCode();
-              hash ^= mReward_.GetHashCode();
-              if (_unknownFields != null) {
-                hash ^= _unknownFields.GetHashCode();
-              }
-              return hash;
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public override string ToString() {
-              return pb::JsonFormatter.ToDiagnosticString(this);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public void WriteTo(pb::CodedOutputStream output) {
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-              output.WriteRawMessage(this);
-            #else
-              if (HasMCount) {
-                output.WriteRawTag(8);
-                output.WriteInt32(MCount);
-              }
-              mReward_.WriteTo(output, _repeated_mReward_codec);
-              if (_unknownFields != null) {
-                _unknownFields.WriteTo(output);
-              }
-            #endif
-            }
-
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-              if (HasMCount) {
-                output.WriteRawTag(8);
-                output.WriteInt32(MCount);
-              }
-              mReward_.WriteTo(ref output, _repeated_mReward_codec);
-              if (_unknownFields != null) {
-                _unknownFields.WriteTo(ref output);
-              }
-            }
-            #endif
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public int CalculateSize() {
-              int size = 0;
-              if (HasMCount) {
-                size += 1 + pb::CodedOutputStream.ComputeInt32Size(MCount);
-              }
-              size += mReward_.CalculateSize(_repeated_mReward_codec);
-              if (_unknownFields != null) {
-                size += _unknownFields.CalculateSize();
-              }
-              return size;
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public void MergeFrom(drawcompliance other) {
-              if (other == null) {
-                return;
-              }
-              if (other.HasMCount) {
-                MCount = other.MCount;
-              }
-              mReward_.Add(other.mReward_);
-              _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public void MergeFrom(pb::CodedInputStream input) {
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-              input.ReadRawMessage(this);
-            #else
-              uint tag;
-              while ((tag = input.ReadTag()) != 0) {
-                switch(tag) {
-                  default:
-                    _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                    break;
-                  case 8: {
-                    MCount = input.ReadInt32();
-                    break;
-                  }
-                  case 18:
-                  case 16: {
-                    mReward_.AddEntriesFrom(input, _repeated_mReward_codec);
-                    break;
-                  }
-                }
-              }
-            #endif
-            }
-
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-              uint tag;
-              while ((tag = input.ReadTag()) != 0) {
-                switch(tag) {
-                  default:
-                    _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-                    break;
-                  case 8: {
-                    MCount = input.ReadInt32();
-                    break;
-                  }
-                  case 18:
-                  case 16: {
-                    mReward_.AddEntriesFrom(ref input, _repeated_mReward_codec);
-                    break;
-                  }
-                }
-              }
-            }
-            #endif
-
-          }
-
-        }
-        #endregion
 
       }
 
@@ -6288,6 +6174,344 @@ namespace Pbdb {
 
     }
     #endregion
+
+  }
+
+  public sealed partial class db_calendar : pb::IMessage<db_calendar>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<db_calendar> _parser = new pb::MessageParser<db_calendar>(() => new db_calendar());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<db_calendar> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbdb.DbReflection.Descriptor.MessageTypes[15]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public db_calendar() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public db_calendar(db_calendar other) : this() {
+      _hasBits0 = other._hasBits0;
+      mId_ = other.mId_;
+      mTime_ = other.mTime_;
+      mStart_ = other.mStart_;
+      mFinish_ = other.mFinish_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public db_calendar Clone() {
+      return new db_calendar(this);
+    }
+
+    /// <summary>Field number for the "m_id" field.</summary>
+    public const int MIdFieldNumber = 1;
+    private long mId_;
+    /// <summary>
+    /// 脚本日历id
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long MId {
+      get { if ((_hasBits0 & 1) != 0) { return mId_; } else { return 0L; } }
+      set {
+        _hasBits0 |= 1;
+        mId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMId() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "m_time" field.</summary>
+    public const int MTimeFieldNumber = 2;
+    private long mTime_;
+    /// <summary>
+    /// 32bit 开始时间 32 结束时间
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long MTime {
+      get { if ((_hasBits0 & 2) != 0) { return mTime_; } else { return 0L; } }
+      set {
+        _hasBits0 |= 2;
+        mTime_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMTime {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "m_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMTime() {
+      _hasBits0 &= ~2;
+    }
+
+    /// <summary>Field number for the "m_start" field.</summary>
+    public const int MStartFieldNumber = 3;
+    private bool mStart_;
+    /// <summary>
+    /// 是否开启
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool MStart {
+      get { if ((_hasBits0 & 4) != 0) { return mStart_; } else { return false; } }
+      set {
+        _hasBits0 |= 4;
+        mStart_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_start" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMStart {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "m_start" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMStart() {
+      _hasBits0 &= ~4;
+    }
+
+    /// <summary>Field number for the "m_finish" field.</summary>
+    public const int MFinishFieldNumber = 4;
+    private bool mFinish_;
+    /// <summary>
+    /// 是否结束
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool MFinish {
+      get { if ((_hasBits0 & 8) != 0) { return mFinish_; } else { return false; } }
+      set {
+        _hasBits0 |= 8;
+        mFinish_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_finish" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMFinish {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "m_finish" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMFinish() {
+      _hasBits0 &= ~8;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as db_calendar);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(db_calendar other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MId != other.MId) return false;
+      if (MTime != other.MTime) return false;
+      if (MStart != other.MStart) return false;
+      if (MFinish != other.MFinish) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMId) hash ^= MId.GetHashCode();
+      if (HasMTime) hash ^= MTime.GetHashCode();
+      if (HasMStart) hash ^= MStart.GetHashCode();
+      if (HasMFinish) hash ^= MFinish.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMId) {
+        output.WriteRawTag(8);
+        output.WriteInt64(MId);
+      }
+      if (HasMTime) {
+        output.WriteRawTag(16);
+        output.WriteInt64(MTime);
+      }
+      if (HasMStart) {
+        output.WriteRawTag(24);
+        output.WriteBool(MStart);
+      }
+      if (HasMFinish) {
+        output.WriteRawTag(32);
+        output.WriteBool(MFinish);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMId) {
+        output.WriteRawTag(8);
+        output.WriteInt64(MId);
+      }
+      if (HasMTime) {
+        output.WriteRawTag(16);
+        output.WriteInt64(MTime);
+      }
+      if (HasMStart) {
+        output.WriteRawTag(24);
+        output.WriteBool(MStart);
+      }
+      if (HasMFinish) {
+        output.WriteRawTag(32);
+        output.WriteBool(MFinish);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMId) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MId);
+      }
+      if (HasMTime) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MTime);
+      }
+      if (HasMStart) {
+        size += 1 + 1;
+      }
+      if (HasMFinish) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(db_calendar other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMId) {
+        MId = other.MId;
+      }
+      if (other.HasMTime) {
+        MTime = other.MTime;
+      }
+      if (other.HasMStart) {
+        MStart = other.MStart;
+      }
+      if (other.HasMFinish) {
+        MFinish = other.MFinish;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MId = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            MTime = input.ReadInt64();
+            break;
+          }
+          case 24: {
+            MStart = input.ReadBool();
+            break;
+          }
+          case 32: {
+            MFinish = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MId = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            MTime = input.ReadInt64();
+            break;
+          }
+          case 24: {
+            MStart = input.ReadBool();
+            break;
+          }
+          case 32: {
+            MFinish = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
 
   }
 

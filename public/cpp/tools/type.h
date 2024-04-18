@@ -33,4 +33,6 @@ namespace ngl
 	using i32_taskid = int32_t;
 	using i32_rolelv = int32_t;
 	using i32_rolevip = int32_t;
+
+	using i64_startfinishtime = int64_t;
 }

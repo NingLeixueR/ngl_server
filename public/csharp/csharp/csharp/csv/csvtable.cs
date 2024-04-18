@@ -357,6 +357,28 @@ namespace ngl
 			return true;
 		}
 	}
+	public enum ECalendarType
+	{
+		ECalendarTypeEveryDay,	// 每日定时刷新
+		ECalendarTypeActivity,	// 活动开启与关闭
+	}
+	partial class RCsv
+	{
+		public static bool ReadCsv(CsvPair apair, List<ECalendarType> avec)
+		{
+			string ltempstr = Read(apair);
+			CsvPair lpair = new CsvPair();
+			lpair.m_data = ltempstr;
+			lpair.m_fg = '*';
+			for (; !IsOk(lpair);)
+			{
+				Int32 ltemp = 0;
+				if (ReadCsv(lpair, ref ltemp))
+					avec.Add((ECalendarType)ltemp);
+			}
+			return true;
+		}
+	}
 	public enum EActivity
 	{
 		EActivityDrawCompliance = 1,	// 类似咸鱼之王的<<招募达标>>
@@ -904,15 +926,18 @@ namespace ngl
 	class tweek : ICsvRead
 	{
 		/*********************************/
-		public Int32		m_week;		// 周几
-		public string		m_opentime;		//  开启时间 HH:mm:ss
-		public string		m_closetime;		//  结束时间 HH:mm:ss
+		public Int32		m_weekstart;		// 周几开始
+		public string		m_opentime;		// 开启时间 HH:mm:ss
+		public Int32		m_weekfinish;		// 周几结束
+		public string		m_closetime;		// 结束时间 HH:mm:ss
 		/*********************************/
 		public bool Read(CsvPair apair)
 		{
-			if(RCsv.ReadCsv(apair, ref m_week) == false)
+			if(RCsv.ReadCsv(apair, ref m_weekstart) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_opentime) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_weekfinish) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_closetime) == false)
 				return false;
@@ -962,9 +987,11 @@ namespace ngl
 		public string		m_name;		// [index:1] 名字 
 		public string		m_remarks;		// [index:2] 备注
 		public ECalendar		m_type;		// [index:3] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
-		public List<tweek>		m_week = new List<tweek>();		// [index:4] m_type=0,tweek(周几(1-7)*开启时间HH:mm:ss*结束时间HH:mm:ss)
+		public List<tweek>		m_week = new List<tweek>();		// [index:4] m_type=0,tweek(周几开始(1-7)*开启时间HH:mm:ss*周几结束(1-7)*结束时间HH:mm:ss)
 		public List<tserveropen>		m_serveropen = new List<tserveropen>();		// [index:5] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
 		public List<tregularslot>		m_tregularslot = new List<tregularslot>();		// [index:6] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
+		public ECalendarType		m_carendar;		// [index:7] (0.每日定时刷新1.活动开启与关闭)
+		public List<Int32>		m_carendarparm = new List<Int32>();		// [index:8] (m_carendar == ECalendarTypeActivity:活动id)
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -984,6 +1011,12 @@ namespace ngl
 			if(RCsv.ReadCsv(apair, m_serveropen) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, m_tregularslot) == false)
+				return false;
+			Int32 lm_carendar = 0;
+			if(RCsv.ReadCsv(apair, ref lm_carendar) == false)
+				return false;
+			m_carendar = (ECalendarType)lm_carendar;
+			if(RCsv.ReadCsv(apair, m_carendarparm) == false)
 				return false;
 			return true;
 		}
@@ -1048,7 +1081,6 @@ namespace ngl
 		public string		m_name;		// [index:1] 名字 
 		public string		m_remarks;		// [index:2] 备注
 		public EActivity		m_type;		// [index:3] 活动类型(1类似咸鱼之王的<<招募达标>>)
-		public Int32		m_calendarid;		// [index:4] 关联的脚本日历
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -1063,8 +1095,6 @@ namespace ngl
 			if(RCsv.ReadCsv(apair, ref lm_type) == false)
 				return false;
 			m_type = (EActivity)lm_type;
-			if(RCsv.ReadCsv(apair, ref m_calendarid) == false)
-				return false;
 			return true;
 		}
 	}

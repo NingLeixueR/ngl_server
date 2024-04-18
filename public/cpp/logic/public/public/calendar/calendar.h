@@ -1,0 +1,142 @@
+#pragma once
+
+#include "calendar_function.h"
+#include "ttab_calendar.h"
+#include "ndb_modular.h"
+#include "manage_csv.h"
+#include "localtime.h"
+
+#include <string>
+#include <map>
+
+namespace ngl
+{
+	class actor_calendar;
+	using mail_db_calendar = ndb_modular<
+		EPROTOCOL_TYPE_PROTOCOLBUFF, 
+		pbdb::ENUM_DB_CALENDAR,
+		pbdb::db_calendar,
+		actor_calendar>;
+
+	class calendar : public mail_db_calendar
+	{
+		
+
+	public:
+		calendar() :
+			mail_db_calendar()
+		{
+			
+		}
+
+		virtual void set_id()
+		{
+			m_id = -1;
+		}
+
+		std::map<nguid, data_modified<pbdb::db_calendar>>* get_calendar()
+		{
+			return &data();
+		}
+
+		void erase_calendar(int64_t acalendarid, int64_t atime)
+		{
+			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
+			auto itor = lmap->find(acalendarid);
+			if (itor == lmap->end())
+				return;
+			pbdb::db_calendar& lcalendar = itor->second.get();
+			int64_t ltime = ttab_calendar::net_calendar(acalendarid, atime);
+			if (ltime <= 0)
+				return;
+			lcalendar.set_m_id(acalendarid);
+			lcalendar.set_m_time(ltime);
+			lcalendar.set_m_finish(false);
+			lcalendar.set_m_start(false);
+			ttab_calendar::post(ttab_calendar::tab(acalendarid), ltime, lcalendar);
+		}
+
+		pbdb::db_calendar* get_calendar(int64_t acalendarid, bool achange = true)
+		{
+			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
+			auto itor = lmap->find(acalendarid);
+			if (itor == lmap->end())
+				return nullptr;
+			return &itor->second.get(achange);
+		}
+
+
+		pbdb::db_calendar const* get_constcalendar(int64_t acalendarid)
+		{
+			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
+			auto itor = lmap->find(acalendarid);
+			if (itor == lmap->end())
+				return nullptr;
+			return &itor->second.getconst();
+		}
+
+		virtual void initdata()
+		{
+			LogLocalError("actor_calendar###loaddb_finish")
+			
+			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
+
+			int32_t lnow = localtime::gettime();
+			for (std::pair<const nguid, data_modified<pbdb::db_calendar> >& item : *lmap)
+			{
+				std::cout << "calendar[" << item.first.id() << "]" << std::endl;
+				const pbdb::db_calendar& lcalendar = item.second.getconst();
+
+
+				int64_t ltime = lcalendar.m_time();
+				int32_t lbeg = ttab_calendar::data::beg(ltime);
+				int32_t lend = ttab_calendar::data::end(ltime);
+				std::cout
+					<< "start[" << localtime::time2msstr(lbeg, "%y/%m/%d %H:%M:%S")
+					<< (lcalendar.m_start() ? "true" : "false")
+					<< "]"
+					"finish[" << localtime::time2msstr(lend, "%y/%m/%d %H:%M:%S")
+					<< (lcalendar.m_finish() ? "true" : "false")
+					<< "]" << std::endl;
+
+				//if (lcalendar.m_start() == false && lnow >= lbeg)
+				//{
+				//	// Ö´ÐÐ start
+				//}
+				if (lcalendar.m_finish() == false && lnow >= lend)
+				{
+					// Ö´ÐÐ finish
+					pbdb::db_calendar* itemcalendar = get_calendar(item.first.id());
+					if (itemcalendar != nullptr)
+					{
+						tab_calendar* tab = ttab_calendar::tab(item.first);
+						if (tab != nullptr)
+						{
+							calendar_function::finish(tab, ltime, itemcalendar);
+						}
+					}
+				}
+			}
+
+			// ##
+			for (std::pair<const int32_t, ttab_calendar::data>& item :ttab_calendar::m_data)
+			{
+				if (get_constcalendar(item.first) == nullptr)
+				{
+					pbdb::db_calendar lcalendar;
+					int64_t ltime = ttab_calendar::net_calendar(item.first, -1);
+					if (ltime <= 0)
+						continue;
+					lcalendar.set_m_id(item.first);
+					lcalendar.set_m_time(ltime);
+					lcalendar.set_m_finish(false);
+					lcalendar.set_m_start(false);
+					add(item.first, lcalendar);
+					ttab_calendar::post(ttab_calendar::tab(item.first), ltime, *get_calendar(item.first));
+				}
+			}
+
+		}
+
+	};
+}// namespace ngl

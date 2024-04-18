@@ -671,29 +671,15 @@ namespace ngl
 		def_portocol(np_actor_addmail, m_roleid, m_tid, m_items, m_parm)
 	};
 
-	// ---- 通知actor_manage_activity开启活动
-	struct np_actor_openactivity
+	// ---- 通知actor_manage_activity开启关闭活动
+	struct np_actor_activity
 	{
-		i64_actorid m_activityid;
-		np_actor_openactivity(i64_actorid aactivityid) :
-			m_activityid(aactivityid)
-		{}
-
-		np_actor_openactivity() :
-			m_activityid(-1)
-		{}
-
-		def_portocol(np_actor_openactivity, m_activityid)
+		std::vector<i64_actorid> m_activityids;
+		int64_t m_time;
+		int32_t m_calendarid;
+		bool m_start;
+		def_portocol(np_actor_openactivity, m_activityids, m_time, m_calendarid, m_start)
 	};
-
-	// ---- 通知actor_manage_activity关闭活动
-	struct np_actor_closeactivity
-	{
-		i64_actorid m_activityid;
-		bool		m_isnormal;	// 是否正常关闭
-		def_portocol(np_actor_closeactivity, m_activityid, m_isnormal)
-	};
-
 
 	// ---- 通知kcp服务器创建连接
 	struct np_actor_kcp
@@ -706,6 +692,22 @@ namespace ngl
 		i16_port			m_uport;
 		int32_t				m_conv;
 		def_portocol(np_actor_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
+	};
+
+	struct calendar_utc
+	{
+		int64_t m_time;
+		int32_t m_beg;
+		int32_t m_end;
+		def_portocol_function(calendar_utc, m_time, m_beg, m_end)
+	};
+
+	struct np_calendar
+	{
+		int32_t m_calendarid;
+		int64_t m_time;
+		bool m_start;
+		def_portocol(np_calendar, m_calendarid, m_time, m_start)
 	};
 }//namespace ngl
 

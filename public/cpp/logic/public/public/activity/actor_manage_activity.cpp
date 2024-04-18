@@ -1,5 +1,6 @@
 #include "actor_manage_activity.h"
 #include "ttab_calendar.h"
+#include "activity.h"
 #include "net.pb.h"
 
 namespace ngl
@@ -33,8 +34,7 @@ namespace ngl
 		// 协议注册
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_activity>(
 			false
-			, dregister_fun_handle(actor_manage_activity, np_actor_openactivity)
-			, dregister_fun_handle(actor_manage_activity, np_actor_closeactivity)
+			, dregister_fun_handle(actor_manage_activity, np_actor_activity)
 			);
 	}
 
@@ -63,162 +63,51 @@ namespace ngl
 		return twheel::wheel().addtimer(lparm);
 	}
 
-	bool actor_manage_activity::open_activity(i64_actorid aactivityid)
+	void actor_manage_activity::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
-		activity** lpactivity = tools::findmap(m_allactivity, aactivityid);
-		if (lpactivity == nullptr)
-			return true;
-		return (*lpactivity)->start();
+		auto itor = m_allactivity.find(aactivityid);
+		if (itor != m_allactivity.end())
+		{
+			return;
+		}
+		tab_activity* tab = allcsv::tab<tab_activity>(aactivityid);
+		if (tab == nullptr)
+		{
+			return;
+		}
+		std::shared_ptr<activity> lactivity = activity::make(acalendarid, aactivityid, atime, m_db);
+		add_activity(aactivityid, lactivity);
 	}
 
-	bool actor_manage_activity::close_activity(i64_actorid aactivityid)
+	void actor_manage_activity::activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
-		activity** lpactivity = tools::findmap(m_allactivity, aactivityid);
-		if (lpactivity == nullptr)
-			return true;
-		(*lpactivity)->close();
-		m_allactivity.erase(aactivityid);
-		const pbdb::db_activity* ldb = m_db.get_constactivity(aactivityid);
-		if (ldb == nullptr)
+		auto itor = m_allactivity.find(aactivityid);
+		if (itor == m_allactivity.end())
 		{
-			return true;
+			return;
 		}
-		int lcount = ldb->m_datas_size();
-		if (lcount == 0)
-		{
-			return true;
-		}
-		const pbdb::db_activity_data& litem = ldb->m_datas(lcount - 1);
-
-		init_activity(aactivityid);
-		start_activity(aactivityid);
-		return true;
+		itor->second->finish();
 	}
 	
-	bool actor_manage_activity::handle(message<np_actor_openactivity>& adata)
+	bool actor_manage_activity::handle(message<np_actor_activity>& adata)
 	{
-		return open_activity(adata.m_data->m_activityid);
-	}
-
-	bool actor_manage_activity::handle(message<np_actor_closeactivity>& adata)
-	{
-		return close_activity(adata.m_data->m_activityid);
-	}
-
-	void actor_manage_activity::init_activity(int64_t aactivityid)
-	{
-		manage_csv<tab_activity>* lpcsv = allcsv::get<manage_csv<tab_activity>>();
-		if (lpcsv == nullptr)
-			return;
-		const pbdb::db_activity* ldb = m_db.get_constactivity(aactivityid);
-		if (ldb == nullptr)
+		np_actor_activity& lrecv = *adata.m_data;
+		for (i64_actorid item : lrecv.m_activityids)
 		{
-			tab_activity* tab = lpcsv->find(aactivityid);
-			if (tab == nullptr)
+			if (lrecv.m_start)
 			{
-				LogLocalError("actor_manage_activity::init_activity() actorid=% tab_activitynot find!!!")
-				return;
-			}
-			if (int32_t lbeg = 0, lend = 0; ttab_calendar::get(tab->m_calendarid, 0, lbeg, lend))
-			{
-				m_db.init_data(tab->m_id, lbeg, lend);
-			}
-		}
-	}
-
-	void actor_manage_activity::start_activity(int64_t aactivityid)
-	{
-		manage_csv<tab_activity>* lpcsv = allcsv::get<manage_csv<tab_activity>>();
-		if (lpcsv == nullptr)
-			return;
-		int32_t lnow = localtime::gettime();
-		const pbdb::db_activity* ldb = m_db.get_constactivity(aactivityid);
-		if (ldb == nullptr)
-		{
-			return;
-		}
-		int lcount = ldb->m_datas_size();
-		if (lcount == 0)
-		{
-			return;
-		}
-		const pbdb::db_activity_data& litem = ldb->m_datas(lcount-1);
-
-		if (lnow > litem.m_end() && litem.m_start() == false)
-		{// 活动没开启并且已过关闭时间
-			// 活动下次执行时间
-			tab_activity* tab = lpcsv->find(aactivityid);
-			if (tab == nullptr)
-				return;
-			if (int32_t lbeg = 0, lend = 0; ttab_calendar::get(tab->m_calendarid, litem.m_end(), lbeg, lend))
-			{
-				m_db.init_data(aactivityid, lbeg, lend);
+				activity_start(item, lrecv.m_time, lrecv.m_calendarid);
 			}
 			else
-				return;
+			{
+				activity_finish(item, lrecv.m_time, lrecv.m_calendarid);
+			}
 		}
-
-		if (lnow < litem.m_beg() && litem.m_start() == false)
-		{// 活动没开启并且未到开启时间 
-			// 定时开启逻辑 定时关闭
-			int64_t lactivity = ldb->m_id();
-			post_timer(litem.m_beg(), [lactivity](wheel_node* anode)
-				{
-					actor::static_send_actor(
-						nguid::make_self(ACTOR_ACTIVITY_MANAGE)
-						, nguid::make()
-						, std::make_shared<np_actor_openactivity>(lactivity)
-					);
-				});
-			return;
-		}
-
-		if (lnow > litem.m_end() && litem.m_start() == true)
-		{// 活动已开启并且已过关闭时间  
-			// 关闭活动逻辑
-			close_activity(ldb->m_id());
-			return;
-		}
-
-		if (lnow > litem.m_beg() && lnow < litem.m_end() && litem.m_start() == false)
-		{// 活动没开启并且已过开启时间 
-			// 开启逻辑
-			open_activity(ldb->m_id());
-			return;
-		}
-
-		if (lnow > litem.m_beg() && lnow < litem.m_end() && litem.m_start() == true && litem.m_finish() == false)
-		{// 活动已开启并且未关闭未到关闭时间 
-			// 定时关闭逻辑
-			int64_t lactivity = ldb->m_id();
-			post_timer(litem.m_end(), [lactivity](wheel_node* anode)
-				{
-					actor::static_send_actor(
-						nguid::make_self(ACTOR_ACTIVITY_MANAGE)
-						, nguid::make()
-						, std::make_shared<np_actor_closeactivity>(lactivity)
-					);
-				});
-			return;
-		}
+		return true;
 	}
 
 	void actor_manage_activity::loaddb_finish(bool adbishave) 
 	{
-		int32_t lnow = localtime::gettime();
-		manage_csv<tab_activity>* lpcsv = allcsv::get<manage_csv<tab_activity>>();
-		if (lpcsv == nullptr)
-			return;
-		for (auto& [_id, _tab] : lpcsv->tablecsv)
-		{
-			init_activity(_id);
-		}
-
-		// ### 数据加载完成
-		for (std::pair<const nguid, data_modified<pbdb::db_activity>>& item : m_db.data())
-		{
-			start_activity(item.first);
-		}
 	}
 
 	bool actor_manage_activity::timer_handle(message<timerparm>& adata)
