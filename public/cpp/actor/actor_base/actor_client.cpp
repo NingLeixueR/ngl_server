@@ -20,7 +20,7 @@ namespace ngl
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_ADDRESS_CLIENT,
+					.m_type = ACTOR_CLIENT,
 					.m_area = ttab_servers::tab()->m_area,
 					.m_id = nconfig::m_nodeid
 				},
@@ -66,12 +66,12 @@ namespace ngl
 		tab_servers* tabactor = ttab_servers::tab(aactorserver);
 		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
 			{
-				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_ADDRESS_SERVER, tabactor->m_area, nguid::none_actordataid());
+				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_SERVER, tabactor->m_area, nguid::none_actordataid());
 				{
 					nactornode lnode;
 					lnode.m_name = "actorserver";
 					lnode.m_serverid = tabactor->m_id;
-					lnode.m_actortype.push_back(ACTOR_ADDRESS_SERVER);
+					lnode.m_actortype.push_back(ACTOR_SERVER);
 					naddress::set_node(lnode);
 					naddress::set_session(tabactor->m_id, asession);
 					naddress::actor_add(tabactor->m_id, lactorserveractorid);

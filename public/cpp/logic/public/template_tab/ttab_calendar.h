@@ -2,6 +2,7 @@
 
 #include "manage_csv.h"
 #include "localtime.h"
+#include "xmlinfo.h"
 #include "splite.h"
 #include "nlog.h"
 
@@ -93,7 +94,6 @@ namespace ngl
 					return net_calendar(acalendar, -1);
 				}
 			}
-			
 			return *itorutc;
 		}
 
@@ -113,8 +113,11 @@ namespace ngl
 		// 获取开服时间utc
 		static int32_t serveropen()
 		{
-			const char* lpopenserver = "2023/10/11 10:00:00";
-			return localtime::st2time(lpopenserver);
+			xmlinfo* xml = nconfig::get_publicconfig();
+			std::string lopenserve;
+			if (xml->find("open_server_time", lopenserve) == false)
+				return -1;
+			return localtime::st2time(lopenserve.c_str());
 		}
 
 		// 今日流失的秒数
@@ -145,9 +148,9 @@ namespace ngl
 			{
 				m_stream 
 					<< "	[" 
-					<< localtime::time2msstr(data::beg(ltime), "%y/%m/%d %H:%M:%S")
-					<< "->" 
-					<< localtime::time2msstr(data::end(ltime), "%y/%m/%d %H:%M:%S")
+					<< localtime::time2str(data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S")
+					<< "]->[" 
+					<< localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S")
 					<< "]\n";
 			}
 			m_stream << "}\n";
@@ -170,7 +173,7 @@ namespace ngl
 				{
 					assert(lpairclose.second > lpairopen.second);
 					int lbeg = lweekdaystart + lpairopen.second;
-					int lend = lweekdayfinish + lpairopen.second;
+					int lend = lweekdayfinish + lpairclose.second;
 					assert(lend > lbeg);
 					if (lnow > lend)
 					{
@@ -229,20 +232,7 @@ namespace ngl
 			//std::map<int, tab_calendar> tablecsv;
 			for (std::pair<const int, tab_calendar>& ipair : tablecsv)
 			{
-				tab_calendar& tab = ipair.second;
-				m_data[tab.m_id].m_tab = &tab;
-				if (tab.m_type == ECalendar::Week)
-				{
-					init_week(tab.m_id, tab.m_week);
-				}
-				else if (tab.m_type == ECalendar::ServerOpen)
-				{
-					init_serveropen(tab.m_id, tab.m_serveropen);
-				}
-				else if (tab.m_type == ECalendar::RegularSlot)
-				{
-					init_tregularslot(tab.m_id, tab.m_tregularslot);
-				}
+				reload_calendar(ipair.first);
 			}
 		}
 

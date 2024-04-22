@@ -15,10 +15,10 @@ Dumper lDumper;
 
 
 int main(int argc, char** argv)
-{	
-	ngl::allcsv::load();
+{
 	nconfig::init();
 	nconfig::load("config");
+	ngl::allcsv::load();
 
 	if (argc <= 1)
 	{
@@ -34,7 +34,6 @@ int main(int argc, char** argv)
 
 	ngl::init_nactor_type();
 	ngl::xmlprotocol::load();
-	ngl::initproto::initall();
 	ngl::nlog::getInstance().isinitfinish() = true;
 
 	char lname[1024] = { 0x0 };

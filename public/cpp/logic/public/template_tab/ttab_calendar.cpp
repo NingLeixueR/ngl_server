@@ -13,14 +13,14 @@ namespace ngl
 		pro->m_calendarid = atab->m_id;
 		pro->m_start = astart;
 		pro->m_time = autc;
-		actor::static_send_actor(nguid::make(ACTOR_CALENDAR, ttab_servers::tab()->m_area, nguid::none_actordataid()), nguid::make(), pro);
+		actor::static_send_actor(actor_calendar::actorid(), nguid::make(), pro);
 	}
 
 	void ttab_calendar_post(tab_calendar* atab, int64_t autc, bool astart)
 	{
 		int lnow = localtime::gettime();
 		
-		int ltime = lnow - (astart? ttab_calendar::data::beg(autc) : ttab_calendar::data::end(autc));
+		int ltime = (astart ? ttab_calendar::data::beg(autc) : ttab_calendar::data::end(autc)) - lnow;
 		if (ltime < 0)
 		{
 			send_calendar(atab, autc, astart);
@@ -37,7 +37,6 @@ namespace ngl
 			}
 		};
 		calendar_wheel.addtimer(lparm);
-
 	}
 
 	void ttab_calendar::post(tab_calendar* atab, int64_t autc, pbdb::db_calendar& acalendar)

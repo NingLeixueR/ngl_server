@@ -22,7 +22,7 @@ namespace ngl
 		auto itor = m_fun.find(apram.m_enum);
 		if (itor == m_fun.end())
 		{
-			if (aactor->type() != ACTOR_ADDRESS_CLIENT)
+			if (aactor->type() != ACTOR_CLIENT)
 				LogLocalError("handle_switch m_fun.find(%) == end", apram.m_enum)
 			return false;
 		}

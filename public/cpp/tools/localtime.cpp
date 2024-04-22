@@ -61,6 +61,15 @@ namespace ngl
 		return strftime(str, len, format, ltime);
 	}
 
+	std::string localtime::time2str(time_t anow, const char* format)
+	{
+		char lbuff[1024] = { 0 };
+		size_t lindex = time2str(lbuff, 1024, anow, format);
+		if (lindex < 0)
+			return "";
+		return lbuff;
+	}
+
 	size_t localtime::time2msstr(char* str, int len, time_t anow, const char* format)
 	{
 		size_t lindex = time2str(str, len, anow, format);

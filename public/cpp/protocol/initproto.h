@@ -88,8 +88,6 @@ namespace ngl
 			return true;
 		}
 
-		static void init_customs();
-
 		template <typename T>
 		static pinfo& get()
 		{
@@ -129,5 +127,4 @@ namespace ngl
 
 		static void initall();
 	};
-	
 }

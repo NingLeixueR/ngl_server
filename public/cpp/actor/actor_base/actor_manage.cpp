@@ -60,7 +60,7 @@ namespace ngl
 				m_actorbytype[apactor->type()][guid] = apactor;
 			}
 
-			if (apactor->type() != ACTOR_ADDRESS_CLIENT && apactor->type() != ACTOR_ADDRESS_SERVER)
+			if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
 			{
 				// 新增的actor 
 				std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass());
@@ -69,7 +69,7 @@ namespace ngl
 				pro->m_mass.m_add.push_back(guid);
 				pro->m_mass.m_actorservermass = false;
 
-				nguid lclientguid = nguid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lclientguid = nguid::make(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
 				handle_pram lparm;
 				handle_pram::create(lparm, lclientguid, nguid::make(), pro);
 				push_task_id(lclientguid, lparm, false);
@@ -93,7 +93,7 @@ namespace ngl
 					},
 				});
 			// 删除的actor 
-			nguid lclientguid(ACTOR_ADDRESS_CLIENT, nguid::none_area(), nconfig::m_nodeid);
+			nguid lclientguid(ACTOR_CLIENT, nguid::none_area(), nconfig::m_nodeid);
 			handle_pram lparm;
 			handle_pram::create(lparm, lclientguid, nguid::make(), pro);
 			push_task_id(lclientguid, lparm, false);
@@ -243,7 +243,7 @@ namespace ngl
 				if (!abool)
 					return lnull;
 				//发给actor_client
-				nguid lguid(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lguid(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
 				itor = m_actorbyid.find(lguid);
 				if (itor == m_actorbyid.end())
 					return lnull;
@@ -282,7 +282,7 @@ namespace ngl
 			// 2.然后发给actor_client，发给其他服务器
 			if (aotherserver == true)
 			{
-				nguid lguid(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lguid(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
 				auto itor = m_actorbyid.find(lguid);
 				if (itor == m_actorbyid.end())
 					return;

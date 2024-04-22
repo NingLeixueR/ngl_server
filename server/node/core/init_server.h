@@ -5,6 +5,7 @@
 #include "actor_gatewayg2c.h"
 #include "actor_gatewayc2g.h"
 #include "actor_reloadcsv.h"
+#include "actor_calendar.h"
 #include "actor_gateway.h"
 #include "actor_server.h"
 #include "actor_create.h"

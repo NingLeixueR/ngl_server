@@ -199,6 +199,9 @@ bool start_db(int argc, char** argv)
 	using actor_db_task = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>;
 	actor_db_task::getInstance();
 
+	using actor_db_calendar = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar>;
+	actor_db_calendar::getInstance();
+
 	ngl::actor_client::getInstance().actor_server_register();
 
 	// ----------------test start-------------------- //
@@ -327,6 +330,7 @@ bool start_game()
 	ngl::actor_manage_role::getInstance();
 	ngl::actor_create::getInstance();
 	ngl::actor_kcp::getInstance();
+	ngl::actor_calendar::getInstance();
 	//ngl::actor_reloadcsv::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
@@ -561,5 +565,79 @@ bool start_robot(int argc, char** argv)
 
 	}
 
+	return true;
+}
+
+
+bool start_tools(int argc, char** argv)
+{
+	std::string lcmd("tools_init_actor");
+	if (lcmd == argv[1])
+	{
+		std::string ldir = argv[2];
+		ldir += "\\actor.txt";
+		ngl::readfile lread(ldir);
+
+		std::string ldir2 = argv[2];
+		ldir2 += "\\nactortype_auto.cpp";
+		ngl::writefile lwrite(ldir2);
+
+		std::string line;
+		std::stringstream m_stream;
+		m_stream << "#include \"nactortype.h\"" << std::endl;
+		m_stream << "#include \"enum2name.h\"" << std::endl;
+		m_stream << std::endl;
+		m_stream << "namespace ngl" << std::endl;
+		m_stream << "{" << std::endl;
+		m_stream << "	template <typename TK, typename TV>" << std::endl;
+		m_stream << "	void em_actor(const TK akey, const TV aval)" << std::endl;
+		m_stream << "	{" << std::endl;
+		m_stream << "		em<ENUM_ACTOR>::set(akey, aval);" << std::endl;
+		m_stream << "	}" << std::endl;
+		
+		m_stream << "	template <typename TK, typename TV, typename ...ARG>" << std::endl;
+		m_stream << "	void em_actor(const TK & akey, const TV & aval, const ARG&... arg)" << std::endl;
+		m_stream << "	{" << std::endl;
+		m_stream << "		em_actor(akey, aval);" << std::endl;
+		m_stream << "		em_actor(arg...);" << std::endl;
+		m_stream << "	}" << std::endl;
+		m_stream << "	nactortype::nactortype()" << std::endl;
+		m_stream << "	{" << std::endl;
+		m_stream << "		em_actor(" << std::endl;
+		bool isfirst = true;
+		while (lread.readline(line))
+		{
+			if (line[0] == '#')
+			{
+				continue;
+			}
+			std::vector<std::string> lvec;
+			ngl::splite::division(line.c_str(), ",", lvec);
+			if (lvec.empty())
+				continue;
+			if (lvec[0] == "")
+				continue;
+			if (isfirst)
+				m_stream << "			";
+			else
+				m_stream << "			,";
+			if (lvec.size() >= 2)
+			{
+				m_stream << lvec[0] << ",\"" << lvec[1] << "\"" << std::endl;
+			}
+			else
+			{
+				
+				m_stream << lvec[0] << ",\"" << lvec[0] << "\"" << std::endl;
+			}
+			isfirst = false;
+		}
+		m_stream << "		);" << std::endl;
+		m_stream << "	}" << std::endl;
+		m_stream << "}" << std::endl;
+		lwrite.write(m_stream.str());
+	}
+
+	ngl::sleep::seconds(3);
 	return true;
 }

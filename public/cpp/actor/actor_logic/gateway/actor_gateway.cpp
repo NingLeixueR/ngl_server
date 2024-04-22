@@ -52,7 +52,7 @@ namespace ngl
 			actor_base::send_server(
 				iserverid,
 				pro,
-				nguid::make(ACTOR_ADDRESS_SERVER, aguid.area(), nguid::none_actordataid()),
+				nguid::make(ACTOR_SERVER, aguid.area(), nguid::none_actordataid()),
 				nguid::make()
 			);
 		}
@@ -61,8 +61,8 @@ namespace ngl
 	void actor_gateway::update_gateway_info(np_actor_gatewayinfo_updata* ap)
 	{
 		std::shared_ptr<np_actor_gatewayinfo_updata> pro(ap);
-		send_actor(nguid::make(ACTOR_GATEWAY_GAME2CLIENT, tab_self_area, id()), pro);
-		send_actor(nguid::make(ACTOR_GATEWAY_CLIENT2GAME, tab_self_area, id()), pro);
+		send_actor(nguid::make(ACTOR_GATEWAY_G2C, tab_self_area, id()), pro);
+		send_actor(nguid::make(ACTOR_GATEWAY_C2G, tab_self_area, id()), pro);
 	}
 
 	void actor_gateway::session_close(gateway_socket* ainfo)

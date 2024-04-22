@@ -39,7 +39,7 @@ namespace ngl
 			return &data();
 		}
 
-		void erase_calendar(int64_t acalendarid, int64_t atime)
+		void next_calendar(int64_t acalendarid, int64_t atime)
 		{
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 			auto itor = lmap->find(acalendarid);
@@ -99,22 +99,30 @@ namespace ngl
 					<< (lcalendar.m_finish() ? "true" : "false")
 					<< "]" << std::endl;
 
-				//if (lcalendar.m_start() == false && lnow >= lbeg)
-				//{
-				//	// Ö´ÐÐ start
-				//}
+				pbdb::db_calendar* itemcalendar = get_calendar(item.first.id());
+				if (itemcalendar == nullptr)
+					continue;
+				tab_calendar* tab = ttab_calendar::tab(item.first);
+				if (tab == nullptr)
+					continue;
+
+				if (lcalendar.m_start() == false && lnow >= lbeg)
+				{
+					// Ö´ÐÐ start
+					calendar_function::start(tab, ltime, itemcalendar);
+				}
+				else
+				{
+					ttab_calendar::post(tab, ltime, *itemcalendar);
+				}
 				if (lcalendar.m_finish() == false && lnow >= lend)
 				{
 					// Ö´ÐÐ finish
-					pbdb::db_calendar* itemcalendar = get_calendar(item.first.id());
-					if (itemcalendar != nullptr)
-					{
-						tab_calendar* tab = ttab_calendar::tab(item.first);
-						if (tab != nullptr)
-						{
-							calendar_function::finish(tab, ltime, itemcalendar);
-						}
-					}
+					calendar_function::finish(tab, ltime, itemcalendar);
+				}
+				else
+				{
+					ttab_calendar::post(tab, ltime, *itemcalendar);
 				}
 			}
 

@@ -8,51 +8,6 @@ namespace ngl
 		return aenum >= ACTOR_SIGNLE_START;
 	}
 
-	nactortype::nactortype()
-	{
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_ROLE));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_ROBOT));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_GUILD));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_PLAYS)); 
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_ADDRESS_SERVER));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_ADDRESS_CLIENT));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_LOGIN));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_GATEWAY));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_GATEWAY_CLIENT2GAME));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_GATEWAY_GAME2CLIENT));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_CREATE));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_LOG));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_KCP));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_ROLE));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_ROBOT));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_GUILD));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_RELOADCSV));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_RELOADCSV_DISTRIBUTE));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_NOTICE));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_GM));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MAIL));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_CHAT));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_RANKLIST));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_ACTIVITY_MANAGE));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_BRIEF));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_CROSS));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_CROSSDB));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_CROSSCHAT));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MANAGE_PLAYS));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_MATCHING));
-		em<ENUM_ACTOR>::set(em_pram(ACTOR_DB));
-
-#define _DBNAME(A,B) ((ENUM_ACTOR)((int)A + (int)B))
-
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_ACCOUNT)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_ROLE)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_BAG)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_KEYVALUE)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_MAIL)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_GUILD)));
-		em<ENUM_ACTOR>::set(em_pram(_DBNAME(ACTOR_DB, pbdb::ENUM_DB_NOTICE)));
-	}
-
 	bool nactortype::name2enum(const std::string& aenumname, ENUM_ACTOR& avalue)
 	{
 		auto lpair = em<ENUM_ACTOR>::get_enum(aenumname.c_str());
@@ -68,5 +23,5 @@ namespace ngl
 		if (lpair.second == false)
 			return "nullptr";
 		return lpair.first;
-	}
+	}	
 }//namespace ngl

@@ -57,6 +57,13 @@ namespace ngl
 		if (m_file.eof())
 			return false;
 		getline(m_file, aline);
+		if (aline.empty() == false)
+		{
+			if (*aline.rbegin() == '\r')
+			{
+				aline.resize(aline.size() - 1);
+			}
+		}
 		return true;
 	}
 

@@ -242,7 +242,7 @@ namespace ngl
 		static i64_actorid actorclient_guid()
 		{
 			static i64_actorid lid = nguid::make(
-				ACTOR_ADDRESS_CLIENT
+				ACTOR_CLIENT
 				, ttab_servers::tab()->m_area
 				, nguid::none_actordataid()
 			);

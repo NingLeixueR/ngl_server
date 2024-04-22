@@ -125,7 +125,7 @@ namespace ngl
 						.m_serverid = tab->m_db,
 						.m_fun = std::bind(&ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>::loaddb, this, m_id),
 					});
-				nguid lclientguid = nguid::make(ACTOR_ADDRESS_CLIENT, tab_self_area, nconfig::m_nodeid);
+				nguid lclientguid = nguid::make(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
 			}Catch
 		}

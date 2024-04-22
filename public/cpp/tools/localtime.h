@@ -43,6 +43,7 @@ namespace ngl
 		static void printf_time2str(time_t anow, const char* format);
 		//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
 		static size_t time2str(char* str, int len, time_t anow, const char* format);
+		static std::string time2str(time_t anow, const char* format);
 		static size_t time2msstr(char* str, int len, time_t anow, const char* format);
 		static std::string time2msstr(time_t anow, const char* format);
 		static std::string time2msstr(const char* format);

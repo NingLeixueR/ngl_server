@@ -49,7 +49,7 @@ namespace ngl
 		else
 		{
 			calendar_function::finish(tab, recv.m_time, lcalendar);
-			m_calendar.erase_calendar(recv.m_calendarid, recv.m_time);
+			m_calendar.next_calendar(recv.m_calendarid, recv.m_time);
 		}
 		return true;
 	}

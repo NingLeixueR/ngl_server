@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-04-18 22:08:54
+// 创建时间 24-04-22 11:26:37
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -80,7 +80,7 @@
 #include "matching.cpp"
 #include "md5.cpp"
 #include "mdump.cpp"
-#include "nactor_type.cpp"
+#include "nactor_auto.cpp"
 #include "nactortype.cpp"
 #include "naddress.cpp"
 #include "ndb_modular.cpp"

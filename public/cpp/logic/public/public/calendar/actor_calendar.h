@@ -40,6 +40,11 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CALENDAR, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
 		bool handle(message<np_calendar>& adata);
 	};
 }

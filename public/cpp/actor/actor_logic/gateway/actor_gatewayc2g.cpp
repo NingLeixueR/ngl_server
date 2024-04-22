@@ -10,7 +10,7 @@ namespace ngl
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_GATEWAY_CLIENT2GAME,
+					.m_type = ACTOR_GATEWAY_C2G,
 					.m_area = ttab_servers::tab()->m_area,
 					.m_id = nconfig::m_nodeid,
 					.m_manage_dbclient = false

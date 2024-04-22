@@ -19,7 +19,7 @@ namespace ngl
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_ADDRESS_SERVER,
+					.m_type = ACTOR_SERVER,
 					.m_area = ttab_servers::tab()->m_area,
 					//.m_id = nconfig::m_nodeid,
 				},

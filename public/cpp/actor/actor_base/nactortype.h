@@ -24,12 +24,12 @@ namespace ngl
 		ACTOR_PLAYS_END = ACTOR_PLAYS + pbnet::eplays_count,
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
-		ACTOR_ADDRESS_SERVER = ACTOR_SIGNLE_START,				// 单例 actor address server  管理分发地址的中心
-		ACTOR_ADDRESS_CLIENT,									// 单例 actor address client 
+		ACTOR_SERVER = ACTOR_SIGNLE_START,				// 单例 actor address server  管理分发地址的中心
+		ACTOR_CLIENT,									// 单例 actor address client 
 		ACTOR_LOGIN,
 		ACTOR_GATEWAY,											// 网关
-		ACTOR_GATEWAY_CLIENT2GAME,								// 网关 [Client]->[Game]
-		ACTOR_GATEWAY_GAME2CLIENT,								// 网关 [Game]	->[Client]
+		ACTOR_GATEWAY_C2G,								// 网关 [Client]->[Game]
+		ACTOR_GATEWAY_G2C,								// 网关 [Game]	->[Client]
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_LOG,
 		ACTOR_KCP,
@@ -46,8 +46,6 @@ namespace ngl
 		ACTOR_ACTIVITY_MANAGE,									// 活动管理
 		ACTOR_BRIEF,											// brief简要信息
 		ACTOR_CROSS,											// 跨服
-		ACTOR_CROSSDB,											// 跨服数据库
-		ACTOR_CROSSCHAT,										// 跨服聊天
 		ACTOR_MANAGE_PLAYS,										// 创建玩法
 		ACTOR_MATCHING,											// 匹配
 		ACTOR_CALENDAR,											// 脚本日历
@@ -65,7 +63,7 @@ namespace ngl
 	// 通过名字获取枚举
 	class nactortype
 	{
-		nactortype();
+		nactortype() {}
 	public:
 		static nactortype& getInstance()
 		{
