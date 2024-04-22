@@ -13,7 +13,6 @@
 
 Dumper lDumper;
 
-
 int main(int argc, char** argv)
 {
 	nconfig::init();
