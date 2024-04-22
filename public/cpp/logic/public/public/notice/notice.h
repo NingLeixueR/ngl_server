@@ -59,6 +59,11 @@ namespace ngl
 			lnotice.set_m_starttime(abeg);
 			lnotice.set_m_finishtime(aend);
 			add(m_maxid, lnotice);
+
+			auto pro = sync_notice(m_maxid);
+			if (pro == nullptr)
+				return;
+			actor::send_allclient(pro);
 		}
 
 		void del_notice(int64_t aid)

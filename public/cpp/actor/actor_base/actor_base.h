@@ -282,11 +282,11 @@ private:
 				return;
 			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)
 				return;
-			tactor_forward<T> pro;
-			actor_forward_init(pro, aid);
-			actor_forward_setdata(pro, adata);
+			auto pro = std::make_shared<tactor_forward<T>>();
+			actor_forward_init(*pro, aid);
+			actor_forward_setdata(*pro, adata);
 			nguid lguid(aid);
-			send_server(agatewayid, pro, nguid::make(), aid);
+			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 	private:
 		template <typename T, typename ITOR>
