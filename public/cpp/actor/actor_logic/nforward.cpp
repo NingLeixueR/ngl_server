@@ -22,7 +22,7 @@ namespace ngl
 
 		// ACTOR_NOTICE 模块二次转发
 		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE>(
-			null<pbnet::PROBUFF_NET_GET_NOTICE>
+			null<pbnet::PROBUFF_NET_NOTICE>
 		);
 
 		// ACTOR_CHAT 模块二次转发
@@ -39,7 +39,7 @@ namespace ngl
 			, null<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>
 			, null<pbnet::PROBUFF_NET_CHAT_RESPONSE>
 			, null<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>
-			, null<pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE>
+			, null<pbnet::PROBUFF_NET_NOTICE_RESPONSE>
 			, null<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>
 			, null<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>
 			, null<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>

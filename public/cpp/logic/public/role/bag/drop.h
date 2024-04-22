@@ -12,7 +12,6 @@
 namespace ngl
 {
 	class actor_role;
-
 	class drop
 	{
 	public:

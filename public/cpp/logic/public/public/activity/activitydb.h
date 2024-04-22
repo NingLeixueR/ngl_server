@@ -14,7 +14,8 @@ namespace ngl
 		EPROTOCOL_TYPE_PROTOCOLBUFF, 
 		pbdb::ENUM_DB_ACTIVITY,
 		pbdb::db_activity,
-		actor_manage_activity>;
+		actor_manage_activity
+	>;
 
 	class activitydb : public activity_db_modular
 	{

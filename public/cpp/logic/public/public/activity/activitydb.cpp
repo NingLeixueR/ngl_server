@@ -23,4 +23,4 @@ namespace ngl
 			lactor->add_activity(item.first, lactivity);
 		}
 	}
-}
+}//namespace ngl

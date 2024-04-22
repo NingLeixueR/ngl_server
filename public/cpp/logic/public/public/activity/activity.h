@@ -86,6 +86,4 @@ namespace ngl
 		// »î¶¯¹Ø±Õ
 		virtual void finish() = 0;
 	};
-
-	
 }// namespace ngl

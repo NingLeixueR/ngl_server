@@ -13,6 +13,7 @@
 #include "db_manage.h"
 #include "db_pool.h"
 #include "db_data.h"
+#include "drop.h"
 #include "db.h"
 
 namespace ngl
@@ -39,10 +40,15 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		static bool sendmail(i64_actorid actorid, int32_t amailid, int32_t adropid, const std::string& aparm)
+		static i64_actorid actorid(i16_area area)
+		{
+			return nguid::make(ACTOR_MAIL, area, nguid::none_actordataid());
+		}
+
+		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)
 		{
 			auto pro = std::make_shared<np_actor_addmail>();
-			pro->m_roleid = actorid;
+			pro->m_roleid = aactorid;
 			pro->m_tid = amailid;
 			if (drop::droplist(adropid, 1, pro->m_items) == false)
 			{
@@ -51,7 +57,7 @@ namespace ngl
 			}
 			pro->m_parm = aparm;
 			actor::static_send_actor(
-				nguid::make(ACTOR_MAIL, nguid::area(actorid), nguid::none_actordataid())
+				actorid(nguid::area(aactorid))
 				, nguid::make()
 				, pro
 			);

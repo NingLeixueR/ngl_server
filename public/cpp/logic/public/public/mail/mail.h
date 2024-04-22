@@ -170,7 +170,6 @@ namespace ngl
 			return true;
 		}
 
-
 		bool drawmail(int64_t aroleid, int64_t aid);
 
 		bool delmail(i64_actorid aroleid, int64_t aid)
@@ -198,15 +197,7 @@ namespace ngl
 						delmail(aroleid, aid);
 					});
 			}
-			
 			return true;
 		}
-	////	void rollback_drawmail(int64_t aroleid, int amailid);
-	////	// 领取单个邮件
-	////	bool drawmail(int64_t aid, int64_t aroleid);
-	////	// 一键领取邮件
-	////	bool drawmail(int64_t aroleid);
-
-	////	void getmailbyrole(int64_t aroleid, std::vector<DB_MAIL>& avec);
 	};
 }// namespace ngl

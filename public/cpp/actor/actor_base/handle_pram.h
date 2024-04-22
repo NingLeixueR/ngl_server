@@ -97,7 +97,7 @@ namespace ngl
 			apram.m_failfun = afailfun;
 		}
 
-		template <typename T, bool IS_SEND = true, bool IS_CLIENT = false>
+		template <typename T, bool IS_SEND = true>
 		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			apram.m_enum = initproto::protocol<T>();
@@ -106,8 +106,7 @@ namespace ngl
 			apram.m_requestactor = arid;
 			apram.m_protocoltype = (EPROTOCOL_TYPE)initproto::protocol_type<T>();
 			apram.m_forwardfun = nullptr;
-			if (IS_CLIENT)
-				make_client<T, IS_SEND>(aid, arid, apram);
+			make_client<T, IS_SEND>(aid, arid, apram);
 			apram.m_failfun = afailfun;
 		}
 
@@ -175,24 +174,25 @@ namespace ngl
 		}
 	};
 
-	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
-	{
-		using type_pro = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
-		std::shared_ptr<type_pro> ldata = std::static_pointer_cast<type_pro>(adata.m_data);
-		std::vector<i32_actordataid>& luid = ldata->m_uid;
-		std::vector<i16_area>& larea = ldata->m_area;
-		std::set<i32_serverid> lgateway;
-		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
-		{
-			i32_serverid lserverid = handle_pram::get_gatewayid(nguid::make(ACTOR_ROLE, larea[i], luid[i]));
-			if(lserverid > 0)
-				lgateway.insert(lserverid);
-		}
-		for (i32_serverid lserverid : lgateway)
-		{
-			handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, nguid::make(), arequestactorid, adata);
-		}
-		return true;
-	}
+	//template <typename T, bool IS_SEND /*= true*/>
+	//bool handle_pram_send<T, IS_SEND>::sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
+	//{
+	//	auto ldata = std::static_pointer_cast<actor_base::tactor_forward<T>>(adata.m_data);
+	//	std::vector<i32_actordataid>& luid = ldata->m_uid;
+	//	std::vector<i16_area>& larea = ldata->m_area;
+	//	std::set<i32_serverid> lgateway;
+	//	for (int i = 0; i < luid.size() && i < larea.size(); ++i)
+	//	{
+	//		i32_serverid lserverid = handle_pram::get_gatewayid(nguid::make(ACTOR_ROLE, larea[i], luid[i]));
+	//		if(lserverid > 0)
+	//			lgateway.insert(lserverid);
+	//	}
+	//	for (i32_serverid lserverid : lgateway)
+	//	{
+	//		nets::sendbyserver(aserverid, ldata, aactorid, arequestactorid);
+	//		//np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& pro = *(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)adata.m_data.get();
+	//		handle_pram_send<actor_base::tactor_forward<T>, IS_SEND>::sendbyserver(lserverid, nguid::make(), arequestactorid, adata);
+	//	}
+	//	return true;
+	//}
 }//namespace ngl

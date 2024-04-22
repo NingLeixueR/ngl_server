@@ -25,6 +25,5 @@ namespace ngl
 			ngl::conversion::to_utf8(ljson, pro->add_data()->m_json);			
 			actor::static_send_actor(nguid::make_self(ACTOR_GM), -1, pro);
 		}
-
 	};
-}
+}//namespace ngl

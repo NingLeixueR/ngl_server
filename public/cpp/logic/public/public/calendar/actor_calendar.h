@@ -47,4 +47,4 @@ namespace ngl
 
 		bool handle(message<np_calendar>& adata);
 	};
-}
+}//namespace ngl

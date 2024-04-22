@@ -39,7 +39,7 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata);

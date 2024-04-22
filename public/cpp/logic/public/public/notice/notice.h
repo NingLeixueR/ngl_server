@@ -17,7 +17,8 @@ namespace ngl
 		int64_t m_maxid;
 	public:
 		notice() :
-			notice_db_modular()
+			notice_db_modular(),
+			m_maxid(0)
 		{
 		}
 
@@ -84,9 +85,6 @@ namespace ngl
 			}
 		}
 
-		void sync_notice()
-		{
-
-		}
+		std::shared_ptr<pbnet::PROBUFF_NET_NOTICE_RESPONSE> sync_notice(i64_actorid aactorid = -1);
 	};
-}
+}//namespace ngl

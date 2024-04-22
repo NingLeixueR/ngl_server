@@ -117,12 +117,6 @@ extern PROBUFF_NET_ERRORDefaultTypeInternal _PROBUFF_NET_ERROR_default_instance_
 class PROBUFF_NET_ERROR_RESPONSE;
 class PROBUFF_NET_ERROR_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_ERROR_RESPONSEDefaultTypeInternal _PROBUFF_NET_ERROR_RESPONSE_default_instance_;
-class PROBUFF_NET_GET_NOTICE;
-class PROBUFF_NET_GET_NOTICEDefaultTypeInternal;
-extern PROBUFF_NET_GET_NOTICEDefaultTypeInternal _PROBUFF_NET_GET_NOTICE_default_instance_;
-class PROBUFF_NET_GET_NOTICE_RESPONSE;
-class PROBUFF_NET_GET_NOTICE_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_GET_NOTICE_RESPONSEDefaultTypeInternal _PROBUFF_NET_GET_NOTICE_RESPONSE_default_instance_;
 class PROBUFF_NET_GET_TIME;
 class PROBUFF_NET_GET_TIMEDefaultTypeInternal;
 extern PROBUFF_NET_GET_TIMEDefaultTypeInternal _PROBUFF_NET_GET_TIME_default_instance_;
@@ -198,6 +192,12 @@ extern PROBUFF_NET_MATCHING_WAITCONFIRMDefaultTypeInternal _PROBUFF_NET_MATCHING
 class PROBUFF_NET_MEMBER_MATCHING_CANCEL;
 class PROBUFF_NET_MEMBER_MATCHING_CANCELDefaultTypeInternal;
 extern PROBUFF_NET_MEMBER_MATCHING_CANCELDefaultTypeInternal _PROBUFF_NET_MEMBER_MATCHING_CANCEL_default_instance_;
+class PROBUFF_NET_NOTICE;
+class PROBUFF_NET_NOTICEDefaultTypeInternal;
+extern PROBUFF_NET_NOTICEDefaultTypeInternal _PROBUFF_NET_NOTICE_default_instance_;
+class PROBUFF_NET_NOTICE_RESPONSE;
+class PROBUFF_NET_NOTICE_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_NOTICE_RESPONSEDefaultTypeInternal _PROBUFF_NET_NOTICE_RESPONSE_default_instance_;
 class PROBUFF_NET_RECHARGE;
 class PROBUFF_NET_RECHARGEDefaultTypeInternal;
 extern PROBUFF_NET_RECHARGEDefaultTypeInternal _PROBUFF_NET_RECHARGE_default_instance_;
@@ -288,8 +288,6 @@ template<> ::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW* Arena::CreateMaybeMessage<::pb
 template<> ::pbnet::PROBUFF_NET_ENTER_PLAYS* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ENTER_PLAYS>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ERROR* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ERROR>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ERROR_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ERROR_RESPONSE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_GET_NOTICE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_NOTICE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_GET_TIME* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_TIME>(Arena*);
 template<> ::pbnet::PROBUFF_NET_GET_TIME_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_TIME_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_HEARTBEAT* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_HEARTBEAT>(Arena*);
@@ -315,6 +313,8 @@ template<> ::pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE* Arena::CreateMaybeMes
 template<> ::pbnet::PROBUFF_NET_MATCHING_SYNC* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_SYNC>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>(Arena*);
+template<> ::pbnet::PROBUFF_NET_NOTICE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_NOTICE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_NOTICE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_NOTICE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RECHARGE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RECHARGE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RECHARGE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RECHARGE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ROLE_LOGIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLE_LOGIN>(Arena*);
@@ -1837,23 +1837,23 @@ class PROBUFF_NET_GET_TIME_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_GET_NOTICE) */ {
+class PROBUFF_NET_NOTICE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_NOTICE) */ {
  public:
-  inline PROBUFF_NET_GET_NOTICE() : PROBUFF_NET_GET_NOTICE(nullptr) {}
-  virtual ~PROBUFF_NET_GET_NOTICE();
+  inline PROBUFF_NET_NOTICE() : PROBUFF_NET_NOTICE(nullptr) {}
+  virtual ~PROBUFF_NET_NOTICE();
 
-  PROBUFF_NET_GET_NOTICE(const PROBUFF_NET_GET_NOTICE& from);
-  PROBUFF_NET_GET_NOTICE(PROBUFF_NET_GET_NOTICE&& from) noexcept
-    : PROBUFF_NET_GET_NOTICE() {
+  PROBUFF_NET_NOTICE(const PROBUFF_NET_NOTICE& from);
+  PROBUFF_NET_NOTICE(PROBUFF_NET_NOTICE&& from) noexcept
+    : PROBUFF_NET_NOTICE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_GET_NOTICE& operator=(const PROBUFF_NET_GET_NOTICE& from) {
+  inline PROBUFF_NET_NOTICE& operator=(const PROBUFF_NET_NOTICE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_GET_NOTICE& operator=(PROBUFF_NET_GET_NOTICE&& from) noexcept {
+  inline PROBUFF_NET_NOTICE& operator=(PROBUFF_NET_NOTICE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1871,20 +1871,20 @@ class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_GET_NOTICE& default_instance();
+  static const PROBUFF_NET_NOTICE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_GET_NOTICE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_GET_NOTICE*>(
-               &_PROBUFF_NET_GET_NOTICE_default_instance_);
+  static inline const PROBUFF_NET_NOTICE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_NOTICE*>(
+               &_PROBUFF_NET_NOTICE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     9;
 
-  friend void swap(PROBUFF_NET_GET_NOTICE& a, PROBUFF_NET_GET_NOTICE& b) {
+  friend void swap(PROBUFF_NET_NOTICE& a, PROBUFF_NET_NOTICE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_GET_NOTICE* other) {
+  inline void Swap(PROBUFF_NET_NOTICE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -1892,7 +1892,7 @@ class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_GET_NOTICE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_NOTICE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -1900,17 +1900,17 @@ class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_GET_NOTICE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_GET_NOTICE>(nullptr);
+  inline PROBUFF_NET_NOTICE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_NOTICE>(nullptr);
   }
 
-  PROBUFF_NET_GET_NOTICE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_GET_NOTICE>(arena);
+  PROBUFF_NET_NOTICE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_NOTICE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_GET_NOTICE& from);
-  void MergeFrom(const PROBUFF_NET_GET_NOTICE& from);
+  void CopyFrom(const PROBUFF_NET_NOTICE& from);
+  void MergeFrom(const PROBUFF_NET_NOTICE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -1924,13 +1924,13 @@ class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_GET_NOTICE* other);
+  void InternalSwap(PROBUFF_NET_NOTICE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_GET_NOTICE";
+    return "pbnet.PROBUFF_NET_NOTICE";
   }
   protected:
-  explicit PROBUFF_NET_GET_NOTICE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_NOTICE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -1949,7 +1949,7 @@ class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_GET_NOTICE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_NOTICE)
  private:
   class _Internal;
 
@@ -1961,23 +1961,23 @@ class PROBUFF_NET_GET_NOTICE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_GET_NOTICE_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE) */ {
+class PROBUFF_NET_NOTICE_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_NOTICE_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_GET_NOTICE_RESPONSE() : PROBUFF_NET_GET_NOTICE_RESPONSE(nullptr) {}
-  virtual ~PROBUFF_NET_GET_NOTICE_RESPONSE();
+  inline PROBUFF_NET_NOTICE_RESPONSE() : PROBUFF_NET_NOTICE_RESPONSE(nullptr) {}
+  virtual ~PROBUFF_NET_NOTICE_RESPONSE();
 
-  PROBUFF_NET_GET_NOTICE_RESPONSE(const PROBUFF_NET_GET_NOTICE_RESPONSE& from);
-  PROBUFF_NET_GET_NOTICE_RESPONSE(PROBUFF_NET_GET_NOTICE_RESPONSE&& from) noexcept
-    : PROBUFF_NET_GET_NOTICE_RESPONSE() {
+  PROBUFF_NET_NOTICE_RESPONSE(const PROBUFF_NET_NOTICE_RESPONSE& from);
+  PROBUFF_NET_NOTICE_RESPONSE(PROBUFF_NET_NOTICE_RESPONSE&& from) noexcept
+    : PROBUFF_NET_NOTICE_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_GET_NOTICE_RESPONSE& operator=(const PROBUFF_NET_GET_NOTICE_RESPONSE& from) {
+  inline PROBUFF_NET_NOTICE_RESPONSE& operator=(const PROBUFF_NET_NOTICE_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_GET_NOTICE_RESPONSE& operator=(PROBUFF_NET_GET_NOTICE_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_NOTICE_RESPONSE& operator=(PROBUFF_NET_NOTICE_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1995,20 +1995,20 @@ class PROBUFF_NET_GET_NOTICE_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_GET_NOTICE_RESPONSE& default_instance();
+  static const PROBUFF_NET_NOTICE_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_GET_NOTICE_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_GET_NOTICE_RESPONSE*>(
-               &_PROBUFF_NET_GET_NOTICE_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_NOTICE_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_NOTICE_RESPONSE*>(
+               &_PROBUFF_NET_NOTICE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     10;
 
-  friend void swap(PROBUFF_NET_GET_NOTICE_RESPONSE& a, PROBUFF_NET_GET_NOTICE_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_NOTICE_RESPONSE& a, PROBUFF_NET_NOTICE_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_GET_NOTICE_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_NOTICE_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -2016,7 +2016,7 @@ class PROBUFF_NET_GET_NOTICE_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_GET_NOTICE_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_NOTICE_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -2024,17 +2024,17 @@ class PROBUFF_NET_GET_NOTICE_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_GET_NOTICE_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_GET_NOTICE_RESPONSE>(nullptr);
+  inline PROBUFF_NET_NOTICE_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_NOTICE_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_GET_NOTICE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_GET_NOTICE_RESPONSE>(arena);
+  PROBUFF_NET_NOTICE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_NOTICE_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_GET_NOTICE_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_GET_NOTICE_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_NOTICE_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_NOTICE_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -2048,13 +2048,13 @@ class PROBUFF_NET_GET_NOTICE_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_GET_NOTICE_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_NOTICE_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE";
+    return "pbnet.PROBUFF_NET_NOTICE_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_GET_NOTICE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_NOTICE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -2094,7 +2094,7 @@ class PROBUFF_NET_GET_NOTICE_RESPONSE PROTOBUF_FINAL :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_notice >&
       m_notices() const;
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_NOTICE_RESPONSE)
  private:
   class _Internal;
 
@@ -11758,45 +11758,45 @@ inline void PROBUFF_NET_GET_TIME_RESPONSE::set_m_utc(::PROTOBUF_NAMESPACE_ID::in
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_GET_NOTICE
+// PROBUFF_NET_NOTICE
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_GET_NOTICE_RESPONSE
+// PROBUFF_NET_NOTICE_RESPONSE
 
 // repeated .pbdb.db_notice m_notices = 1;
-inline int PROBUFF_NET_GET_NOTICE_RESPONSE::_internal_m_notices_size() const {
+inline int PROBUFF_NET_NOTICE_RESPONSE::_internal_m_notices_size() const {
   return m_notices_.size();
 }
-inline int PROBUFF_NET_GET_NOTICE_RESPONSE::m_notices_size() const {
+inline int PROBUFF_NET_NOTICE_RESPONSE::m_notices_size() const {
   return _internal_m_notices_size();
 }
-inline ::pbdb::db_notice* PROBUFF_NET_GET_NOTICE_RESPONSE::mutable_m_notices(int index) {
-  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE.m_notices)
+inline ::pbdb::db_notice* PROBUFF_NET_NOTICE_RESPONSE::mutable_m_notices(int index) {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_NOTICE_RESPONSE.m_notices)
   return m_notices_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_notice >*
-PROBUFF_NET_GET_NOTICE_RESPONSE::mutable_m_notices() {
-  // @@protoc_insertion_point(field_mutable_list:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE.m_notices)
+PROBUFF_NET_NOTICE_RESPONSE::mutable_m_notices() {
+  // @@protoc_insertion_point(field_mutable_list:pbnet.PROBUFF_NET_NOTICE_RESPONSE.m_notices)
   return &m_notices_;
 }
-inline const ::pbdb::db_notice& PROBUFF_NET_GET_NOTICE_RESPONSE::_internal_m_notices(int index) const {
+inline const ::pbdb::db_notice& PROBUFF_NET_NOTICE_RESPONSE::_internal_m_notices(int index) const {
   return m_notices_.Get(index);
 }
-inline const ::pbdb::db_notice& PROBUFF_NET_GET_NOTICE_RESPONSE::m_notices(int index) const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE.m_notices)
+inline const ::pbdb::db_notice& PROBUFF_NET_NOTICE_RESPONSE::m_notices(int index) const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_NOTICE_RESPONSE.m_notices)
   return _internal_m_notices(index);
 }
-inline ::pbdb::db_notice* PROBUFF_NET_GET_NOTICE_RESPONSE::_internal_add_m_notices() {
+inline ::pbdb::db_notice* PROBUFF_NET_NOTICE_RESPONSE::_internal_add_m_notices() {
   return m_notices_.Add();
 }
-inline ::pbdb::db_notice* PROBUFF_NET_GET_NOTICE_RESPONSE::add_m_notices() {
-  // @@protoc_insertion_point(field_add:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE.m_notices)
+inline ::pbdb::db_notice* PROBUFF_NET_NOTICE_RESPONSE::add_m_notices() {
+  // @@protoc_insertion_point(field_add:pbnet.PROBUFF_NET_NOTICE_RESPONSE.m_notices)
   return _internal_add_m_notices();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_notice >&
-PROBUFF_NET_GET_NOTICE_RESPONSE::m_notices() const {
-  // @@protoc_insertion_point(field_list:pbnet.PROBUFF_NET_GET_NOTICE_RESPONSE.m_notices)
+PROBUFF_NET_NOTICE_RESPONSE::m_notices() const {
+  // @@protoc_insertion_point(field_list:pbnet.PROBUFF_NET_NOTICE_RESPONSE.m_notices)
   return m_notices_;
 }
 

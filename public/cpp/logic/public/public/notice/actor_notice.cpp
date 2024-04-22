@@ -25,8 +25,11 @@ namespace ngl
 			true
 			, dregister_fun_handle(actor_notice, mforward<np_gm>)
 		);
+		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_notice>(
+			true
+			, dregister_fun_handle(actor_notice, mforward<pbnet::PROBUFF_NET_NOTICE>)
+		);
 	}
-
 
 	struct gm_notice
 	{
@@ -111,6 +114,13 @@ namespace ngl
 			return true;
 		}
 		itor->second(adata.m_data->identifier(), lojson);
+		return true;
+	}
+
+	bool actor_notice::handle(message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
+	{
+		auto pro = m_notice.sync_notice(-1);
+		send_client(adata.m_data->identifier(), pro);
 		return true;
 	}
 }

@@ -1,3 +1,4 @@
+#include "actor_notice.h"
 #include "actor_role.h"
 #include "splite.h"
 
@@ -79,6 +80,12 @@ namespace ngl
 				pro->set_m_errnum(0);
 				pro->set_m_errmessage(lorderid);
 				role->send2client(pro);
+			};
+		m_cmd["/notices"] = [](actor_role* role, const char* aparm)
+			{
+				pbnet::PROBUFF_NET_NOTICE lparm;
+				message<pbnet::PROBUFF_NET_NOTICE> pro(1, nullptr, &lparm);
+				role->handle_forward<ACTOR_NOTICE>(pro);
 			};
 	}
 

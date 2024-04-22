@@ -45,4 +45,4 @@ namespace ngl
 			}
 		};
 	}
-}
+}//namespace ngl

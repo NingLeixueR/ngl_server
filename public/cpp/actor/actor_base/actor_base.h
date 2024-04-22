@@ -215,10 +215,10 @@ namespace ngl
 #pragma endregion //network_kcpclient
 
 #pragma endregion //network_kcp
-	private:
+public:
 		template <typename T>
 		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
-
+private:
 		template <typename T>
 		static void actor_forward_init(
 			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
@@ -257,7 +257,7 @@ namespace ngl
 		)
 		{
 			nguid lguid(aid);
-			handle_pram::create<tactor_forward<T>, true, true>(apram, lguid, nguid::make(), apro);
+			handle_pram::create(apram, lguid, nguid::make(), apro);
 		}
 
 	public:

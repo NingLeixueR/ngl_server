@@ -39,6 +39,4 @@ namespace ngl
 			acalendar->set_m_finish(true);
 		}
 	};
-
-
-}
+}//namespace ngl

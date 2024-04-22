@@ -37,25 +37,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		//bool handle_role_fail(const message<GM::PROBUFF_GM_RECHARGE>& adata)
-		//{
-		//	// ### 玩家不在线 记录订单
-		//	ngl::_http* lhttp = ngl::manage_curl::make_http();
-		//	ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-		//	ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-		//	ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
-
-		//	std::stringstream lstream;
-		//	lstream
-		//		<< "orderid=" << adata.m_data->m_orderid()
-		//		<< "&gm=0"
-		//		<< "&stat=1";
-
-		//	ngl::manage_curl::set_param(*lhttp, lstream.str());
-		//	ngl::manage_curl::getInstance().send(lhttp);
-		//	return true;
-		//}
-
 		void sendsign(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro)
 		{
 			auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);

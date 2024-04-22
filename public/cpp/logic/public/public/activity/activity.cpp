@@ -8,7 +8,6 @@ namespace ngl
 	std::map<EActivity, activity*> activity::m_activityall;
 	activity_drawcompliance g_activity_drawcompliance;
 
-
 	activity::activity() :
 		m_activityid(-1)
 		, m_activity(nullptr)
@@ -81,6 +80,4 @@ namespace ngl
 			}
 		}
 	}
-
-
-}
+}//namespace ngl

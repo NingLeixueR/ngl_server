@@ -43,5 +43,8 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave) {}
 
 		bool handle(message<mforward<np_gm>>& adata);
+
+		//# 客户端拉取公告
+		bool handle(message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);		
 	};
 }

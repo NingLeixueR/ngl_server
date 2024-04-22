@@ -73,4 +73,4 @@ namespace ngl
 		bool timer_handle(message<timerparm>& adata);
 	private:
 	};
-}
+}//namespace ngl

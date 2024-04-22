@@ -2,4 +2,4 @@
 
 namespace ngl
 {
-}
+}//namespace ngl

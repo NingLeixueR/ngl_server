@@ -92,8 +92,53 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_GET_NOTICE_RESPONSE>& adata)
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
 	{
+		struct noticeitem
+		{
+			int64_t		m_id;			// 公告id 
+			std::string m_notice;		// 内容
+			std::string m_starttime;	// 开始时间
+			std::string m_finishtime;	// 结束时间
+			jsonfunc(
+				"id", m_id
+				, "notice", m_notice
+				, "starttime", m_starttime
+				, "finishtime", m_finishtime
+			)
+		};
+
+		struct notices
+		{
+			std::vector<noticeitem> m_notices;
+			jsonfunc(
+				"notices", m_notices
+			)
+		};
+		ijson ljson;
+		notices lnotices;
+		char lbuffstart[1024] = { 0 };
+		char lbufffinish[1024] = { 0 };
+		for (auto& item : adata.m_data->m_notices())
+		{
+			ngl::localtime::time2str(lbuffstart, 1024, item.m_starttime(), "%Y/%m/%d %H:%M:%S");
+			ngl::localtime::time2str(lbufffinish, 1024, item.m_finishtime(), "%Y/%m/%d %H:%M:%S");
+			lnotices.m_notices.push_back(
+				noticeitem
+				{
+					.m_id = item.m_id(),
+					.m_notice = item.m_notice(),
+					.m_starttime = lbuffstart,
+					.m_finishtime = lbufffinish,
+				}
+			);
+		}
+		ljson.write("notice_list", lnotices);
+		std::string lstr;
+		ljson.get(lstr);
+		std::string lstrasscii;
+		ngl::conversion::to_asscii(lstr, lstrasscii);
+		LogLocalError("[%:%] %", area(), m_data.m_role().m_base().m_name(), lstrasscii);
 		return true;
 	}
 
