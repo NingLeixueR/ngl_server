@@ -50,6 +50,11 @@ namespace ngl
 
 		static void nregister();
 
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_LOGIN, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
 		virtual void loaddb_finish(bool adbishave);
 
 		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);

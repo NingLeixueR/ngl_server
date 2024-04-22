@@ -26,6 +26,11 @@ namespace ngl
 		virtual ~actor_manage_role() {}
 
 		static void nregister();
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
 				
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	};

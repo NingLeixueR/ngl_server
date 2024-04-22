@@ -1,4 +1,5 @@
 #include "actor_base.h"
+#include "actor_log.h"
 #include "logprintf.h"
 #include "nprotocol.h"
 #include "xmlnode.h"
@@ -44,7 +45,6 @@ namespace ngl
 		pro->m_data.m_serverid = nconfig::m_nodeid;
 		pro->m_data.m_type = atype;
 
-		i64_actorid lactorid = nguid::make(ACTOR_LOG, tab_self_area, altype);
-		actor_base::static_send_actor(lactorid, nguid::make(), pro);	
+		actor_base::static_send_actor(actor_log::actorid(altype), nguid::make(), pro);
 	}
 }// namespace ngl

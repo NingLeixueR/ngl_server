@@ -27,6 +27,11 @@ namespace ngl
 
 		static void nregister();
 
+		static i64_actorid actorid(i32_actordataid adataid)
+		{
+			return nguid::make(ACTOR_CREATE, ttab_servers::tab()->m_area, adataid);
+		}
+
 		// 在指定[Server]上创建[Actor]
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<np_actorswitch_process<T>>& pro)
@@ -41,7 +46,7 @@ namespace ngl
 				actor_base::static_send_actor(lactorgatewayid, nguid::make(), pro);
 			}
 			//// #### 3 发给去的进程
-			i64_actorid lactortoserverid = nguid::make(ACTOR_CREATE, tab_self_area, pro->m_toserverid);
+			i64_actorid lactortoserverid = actor_create::actorid(pro->m_toserverid);
 			actor_base::static_send_actor(lactortoserverid, nguid::make(), pro);
 		}
 
@@ -62,7 +67,7 @@ namespace ngl
 			if (aserverid > 0)
 			{
 				// #### 1 发给actor目前所在的进程
-				i64_actorid lcreateactor = nguid::make(ACTOR_CREATE, tab_self_area, aserverid);
+				i64_actorid lcreateactor = actor_create::actorid(aserverid);
 				actor_base::static_send_actor(lcreateactor, nguid::make(), pro);
 			}
 			else

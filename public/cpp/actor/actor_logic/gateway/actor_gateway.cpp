@@ -1,4 +1,7 @@
-﻿#include "actor_gateway.h"
+﻿#include "actor_gatewayc2g.h"
+#include "actor_gatewayg2c.h"
+#include "actor_gateway.h"
+#include "actor_server.h"
 #include "nregister.h"
 
 namespace ngl
@@ -11,7 +14,8 @@ namespace ngl
 				{
 					.m_type = ACTOR_GATEWAY,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid, .m_manage_dbclient = false
+					.m_id = nconfig::m_nodeid, 
+					.m_manage_dbclient = false
 				},
 				.m_weight = 0x7fffffff
 			})
@@ -49,20 +53,21 @@ namespace ngl
 
 		for (i32_serverid iserverid : ttab_servers::tab()->m_actorserver)
 		{
+			i64_actorid lactorserve = actor_server::actorid();
 			actor_base::send_server(
-				iserverid,
-				pro,
-				nguid::make(ACTOR_SERVER, aguid.area(), nguid::none_actordataid()),
-				nguid::make()
+				iserverid
+				, pro
+				, lactorserve
+				, nguid::make()
 			);
 		}
 	}
 
 	void actor_gateway::update_gateway_info(np_actor_gatewayinfo_updata* ap)
 	{
-		std::shared_ptr<np_actor_gatewayinfo_updata> pro(ap);
-		send_actor(nguid::make(ACTOR_GATEWAY_G2C, tab_self_area, id()), pro);
-		send_actor(nguid::make(ACTOR_GATEWAY_C2G, tab_self_area, id()), pro);
+		std::shared_ptr<np_actor_gatewayinfo_updata> pro(ap);		
+		send_actor(actor_gatewayc2g::actorid(id()), pro);
+		send_actor(actor_gatewayg2c::actorid(id()), pro);
 	}
 
 	void actor_gateway::session_close(gateway_socket* ainfo)

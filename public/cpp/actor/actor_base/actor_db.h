@@ -252,7 +252,7 @@ namespace ngl
 					{
 						.m_type = nactor_type<tactor_db>::type(),
 						.m_area = ttab_servers::tab()->m_area,
-						.m_id = nguid::none_actordataid()
+						//.m_id = nguid::none_actordataid()
 					},
 					.m_weight = 0x7fffffff,
 				})
@@ -402,6 +402,7 @@ namespace ngl
 				return true;
 			}
 			itor->second(adata.m_thread, adata.m_data->identifier(), lojson);
+			return true;
 		}
 	};
 

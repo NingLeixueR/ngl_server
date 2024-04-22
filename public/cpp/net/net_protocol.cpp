@@ -1,3 +1,5 @@
+
+#include "actor_gateway.h"
 #include "net_protocol.h"
 #include "protocol.h"
 #include "nguid.h"
@@ -44,8 +46,13 @@ namespace ngl
 
 		inline void close(i32_sessionid asession)
 		{
-			std::shared_ptr<np_actor_session_close> pro(new np_actor_session_close{ .m_sessionid = asession });
-			i64_actorid lactorid = nguid::make(ACTOR_GATEWAY, tab_self_area, nconfig::m_nodeid);
+			std::shared_ptr<np_actor_session_close> pro(
+				new np_actor_session_close
+				{ 
+					.m_sessionid = asession 
+				}
+			);
+			i64_actorid lactorid = actor_gateway::actorid(nconfig::m_nodeid);
 			actor_base::static_send_actor(lactorid, nguid::make(), pro);
 
 			server_session::remove(asession);

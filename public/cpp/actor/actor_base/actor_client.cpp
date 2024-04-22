@@ -1,5 +1,6 @@
 #include "server_session.h"
 #include "actor_client.h"
+#include "actor_server.h"
 #include "actor_manage.h"
 #include "nregister.h"
 #include "naddress.h"
@@ -22,7 +23,6 @@ namespace ngl
 				{
 					.m_type = ACTOR_CLIENT,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid
 				},
 				.m_weight = 0x7fffffff
 			})
@@ -66,7 +66,7 @@ namespace ngl
 		tab_servers* tabactor = ttab_servers::tab(aactorserver);
 		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
 			{
-				i64_actorid lactorserveractorid = ngl::nguid::make(ACTOR_SERVER, tabactor->m_area, nguid::none_actordataid());
+				i64_actorid lactorserve = actor_server::actorid();
 				{
 					nactornode lnode;
 					lnode.m_name = "actorserver";
@@ -74,7 +74,7 @@ namespace ngl
 					lnode.m_actortype.push_back(ACTOR_SERVER);
 					naddress::set_node(lnode);
 					naddress::set_session(tabactor->m_id, asession);
-					naddress::actor_add(tabactor->m_id, lactorserveractorid);
+					naddress::actor_add(tabactor->m_id, lactorserve);
 				}
 				{//×¢²á½áµã
 					np_actornode_register lpram
@@ -99,7 +99,7 @@ namespace ngl
 							}
 							return true;
 						});
-					nets::sendbysession(asession, lpram, lactorserveractorid, lactorid);
+					nets::sendbysession(asession, lpram, lactorserve, lactorid);
 				}
 			}, true, true);
 	}

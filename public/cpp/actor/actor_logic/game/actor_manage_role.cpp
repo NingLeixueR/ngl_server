@@ -13,7 +13,6 @@ namespace ngl
 				{
 					.m_type = ACTOR_MANAGE_ROLE,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid
 				},
 				.m_weight = 0x7fffffff,
 			})

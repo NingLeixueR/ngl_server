@@ -11,7 +11,6 @@ namespace ngl
 				{
 					.m_type = ACTOR_LOGIN,
 					.m_area = ttab_servers::tab()->m_area,
-					//.m_id = nconfig::m_nodeid,
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff

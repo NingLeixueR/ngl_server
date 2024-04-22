@@ -29,6 +29,11 @@ namespace ngl
 
 		virtual ~actor_log();
 
+		static i64_actorid actorid(ELOG_TYPE atype)
+		{
+			return nguid::make(ACTOR_LOG, ttab_servers::tab()->m_area, atype);
+		}
+
 		bool handle(message<np_actor_logitem>& adata);
 	};
 }//namespace ngl

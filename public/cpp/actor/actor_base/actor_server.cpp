@@ -21,7 +21,6 @@ namespace ngl
 				{
 					.m_type = ACTOR_SERVER,
 					.m_area = ttab_servers::tab()->m_area,
-					//.m_id = nconfig::m_nodeid,
 				},
 				.m_weight = 0x7fffffff,
 			})

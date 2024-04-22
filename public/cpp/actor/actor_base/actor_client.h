@@ -40,6 +40,12 @@ namespace ngl
 		//# 连接成功后调用
 		void connect_fnish();
 	public:
+		//# actor_client的actorid
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CLIENT, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
 		void activ_connect(i32_serverid aserverid);
 
 		//# 注册结点

@@ -14,7 +14,6 @@ namespace ngl
 					{
 						.m_type = ACTOR_CROSS,
 						.m_area = nguid::none_area(),// 跨服此值无意义
-						.m_id = nconfig::m_nodeid
 					},
 					.m_weight = 0x7fffffff,
 				})
@@ -31,9 +30,14 @@ namespace ngl
 		{
 		}
 
+		virtual ~actor_cross() {}
+
 		static void nregister();
 
-		virtual ~actor_cross() {}
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CROSS, nguid::none_area(), nguid::none_actordataid());
+		}
 
 		virtual void loaddb_finish(bool adbishave);
 
