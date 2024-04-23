@@ -61,17 +61,12 @@ namespace ngl
 			for (auto& item : lrecv->m_chatlist())
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
-
-				//LogLocalError("[%][%][%] %", lbuff, 
-				//	nguid::area(item.m_roleid()), item.m_rolename(), item.m_content())
-
-				std::cout << nguid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
+				LogLocalError("[%:%:%] %", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
 			}
 		}
 		else if (lrecv->m_type() == pbnet::chat_speak)
 		{
-			//LogLocalError("%", (adata.m_stat() ? "[发言成功]" : "[发言失败] "))
-			std::cout << (lrecv->m_stat() ? "[发言成功]" : "[发言失败] ") << std::endl;
+			LogLocalError("%", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
 		}
 		else if (lrecv->m_type() == pbnet::updata_speck)
 		{
@@ -79,9 +74,7 @@ namespace ngl
 			for (auto& item : lrecv->m_chatlist())
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
-				//LogLocalError("[%][%][%] %", lbuff,
-				//	nguid::area(item.m_roleid()), item.m_rolename(), item.m_content())
-				std::cout << nguid::area(item.m_roleid()) << ":" << item.m_rolename() << ":" << item.m_content() << std::endl;
+				LogLocalError("[%:%:%] %", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
 			}
 		}
 		return true;
@@ -100,20 +93,12 @@ namespace ngl
 			std::string m_notice;		// 内容
 			std::string m_starttime;	// 开始时间
 			std::string m_finishtime;	// 结束时间
-			jsonfunc(
-				"id", m_id
-				, "notice", m_notice
-				, "starttime", m_starttime
-				, "finishtime", m_finishtime
-			)
+			jsonfunc("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
 		};
-
 		struct notices
 		{
 			std::vector<noticeitem> m_notices;
-			jsonfunc(
-				"notices", m_notices
-			)
+			jsonfunc("notices", m_notices)
 		};
 		ijson ljson;
 		notices lnotices;

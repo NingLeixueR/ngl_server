@@ -253,26 +253,6 @@ namespace ngl
 		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
 		return true;
 	}
-
-	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
-	{
-		auto ldata = std::static_pointer_cast<actor_base::tactor_forward<T>>(adata.m_data);
-		std::vector<i32_actordataid>& luid = ldata->m_uid;
-		std::vector<i16_area>& larea = ldata->m_area;
-		std::set<i32_serverid> lgateway;
-		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
-		{
-			i32_serverid lserverid = handle_pram::get_gatewayid(nguid::make(ACTOR_ROLE, larea[i], luid[i]));
-			if (lserverid > 0)
-				lgateway.insert(lserverid);
-		}
-		for (i32_serverid lserverid : lgateway)
-		{
-			nets::sendbyserver(lserverid, *ldata.get(), nguid::make(), arequestactorid);
-		}
-		return true;
-	}
 }//namespace ngl
 
 

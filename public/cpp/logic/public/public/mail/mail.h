@@ -30,7 +30,6 @@ namespace ngl
 			m_id = -1;
 		}
 
-
 		const google::protobuf::Map<int32_t, pbdb::mail>* get_constmails(i64_actorid aroleid)
 		{
 			auto itor = data().find(aroleid);
@@ -198,6 +197,20 @@ namespace ngl
 					});
 			}
 			return true;
+		}
+
+		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
+		{
+			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid);
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
+			if (lpmap == nullptr)
+			{
+				return pro;
+			}
+			for (const auto& [_mailid, _mails] : *lpmap)
+			{
+				pro->mutable_m_mail()->insert({ _mailid, _mails });
+			}
 		}
 	};
 }// namespace ngl

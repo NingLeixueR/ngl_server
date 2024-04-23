@@ -87,6 +87,12 @@ namespace ngl
 				message<pbnet::PROBUFF_NET_NOTICE> pro(1, nullptr, &lparm);
 				role->handle_forward<ACTOR_NOTICE>(pro);
 			};
+		m_cmd["/mails"] = [](actor_role* role, const char* aparm)
+			{
+				pbnet::PROBUFF_NET_MAIL_LIST lparm;
+				message<pbnet::PROBUFF_NET_MAIL_LIST> pro(1, nullptr, &lparm);
+				role->handle_forward<ACTOR_MAIL>(pro);
+			};
 	}
 
 	const role_cmd::callback& role_cmd::find(const char* akey)

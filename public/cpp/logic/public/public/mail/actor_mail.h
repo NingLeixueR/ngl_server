@@ -34,6 +34,7 @@ namespace ngl
 		{
 			m_mails.set(this);
 		}
+
 		static void nregister();
 
 		virtual ~actor_mail() {}
@@ -69,6 +70,20 @@ namespace ngl
 		{
 			auto lparm = adata.m_data;
 			m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);
+			return true;
+		}
+
+		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
+		{
+			auto lparm = adata.m_data;
+			pbnet::PROBUFF_NET_MAIL_LIST* lpdata = lparm->data();
+			if (lpdata == nullptr)
+				return true;
+			i64_actorid roleid = adata.m_data->identifier();
+			auto pro = m_mails.sync_mail(roleid);
+			if (pro == nullptr)
+				return true;
+			send_client(roleid, pro);
 			return true;
 		}
 		

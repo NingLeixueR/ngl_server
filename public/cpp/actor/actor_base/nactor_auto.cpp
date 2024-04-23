@@ -128,35 +128,35 @@ namespace ngl
 
 		// 新增内部协议需要补充
 		initproto::init_customs(EPROTOCOL_TYPE_CUSTOM
-			, null<np_gm>						// 200000001
-			, null<np_gm_response>				// 200000002
-			, null<mforward<np_gm>>				// 200000003
-			, null<mforward<np_gm_response>>	// 200000004
-			, null<timerparm>
-			, null<np_robot_pram>
-			, null<np_actornode_register>
-			, null<np_actornode_register_response>
-			, null<np_actorclient_node_connect>
-			, null<np_actornode_update>
-			, null<np_actornode_update_mass>
-			, null<np_actornode_connect_task>
-			, null<np_actorrole_login>
-			, null<np_actorserver_connect>
-			, null<np_actor_session_close>
-			, null<np_actor_disconnect_close>
-			, null<np_actor_logitem>
-			, null<np_actor_broadcast>
-			, null<np_actor_reloadcsv>
-			, null<np_actor_csv_verify_version>
-			, null<np_actor_senditem>
-			, null<np_actor_roleinfo>
-			, null<np_actor_gatewayinfo_updata>
-			, null<np_actor_addmail>
-			, null<np_actor_activity>
-			, null<np_actor_gatewayid_updata>
-			, null<np_actorswitch_process<np_actorswitch_process_role>>
-			, null<np_actor_kcp>
-			, null<np_calendar>
+			/*200000001*/, null<np_gm>						
+			/*200000002*/, null<np_gm_response>				// 200000002
+			/*200000003*/, null<mforward<np_gm>>				// 200000003
+			/*200000004*/, null<mforward<np_gm_response>>	// 200000004
+			/*200000005*/, null<timerparm>
+			/*200000006*/, null<np_robot_pram>
+			/*200000007*/, null<np_actornode_register>
+			/*200000008*/, null<np_actornode_register_response>
+			/*200000009*/, null<np_actorclient_node_connect>
+			/*200000010*/, null<np_actornode_update>
+			/*200000011*/, null<np_actornode_update_mass>
+			/*200000012*/, null<np_actornode_connect_task>
+			/*200000013*/, null<np_actorrole_login>
+			/*200000014*/, null<np_actorserver_connect>
+			/*200000015*/, null<np_actor_session_close>
+			/*200000016*/, null<np_actor_disconnect_close>
+			/*200000017*/, null<np_actor_logitem>
+			/*200000018*/, null<np_actor_broadcast>
+			/*200000019*/, null<np_actor_reloadcsv>
+			/*200000020*/, null<np_actor_csv_verify_version>
+			/*200000021*/, null<np_actor_senditem>
+			/*200000022*/, null<np_actor_roleinfo>
+			/*200000023*/, null<np_actor_gatewayinfo_updata>
+			/*200000024*/, null<np_actor_addmail>
+			/*200000025*/, null<np_actor_activity>
+			/*200000026*/, null<np_actor_gatewayid_updata>
+			/*200000027*/, null<np_actorswitch_process<np_actorswitch_process_role>>
+			/*200000028*/, null<np_actor_kcp>
+			/*200000029*/, null<np_calendar>
 		);
 
 		// 新增数据存储需要补全

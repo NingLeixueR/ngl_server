@@ -46,17 +46,17 @@ namespace ngl
 	void actor_login::loaddb_finish(bool adbishave)
 	{
 		LogLocalError("actor_login::loaddb_finish")
-		//for (auto& item : m_account.data())
-		//{
-		//	const pbdb::db_account& laccount = item.second.getconst();
-		//	LogLocalError("[%][%] area=% id=% ",
-		//		laccount.m_account(),
-		//		laccount.m_passworld(),
-		//		laccount.m_passworld(),
-		//		laccount.m_area(),
-		//		nguid(laccount.m_roleid()).actordataid()
-		//	)
-		//}
+		for (auto& item : m_account.data())
+		{
+			const pbdb::db_account& laccount = item.second.getconst();
+			LogLocalError("[%][%] area=% id=% ",
+				laccount.m_account(),
+				laccount.m_passworld(),
+				laccount.m_passworld(),
+				laccount.m_area(),
+				nguid(laccount.m_roleid()).actordataid()
+			);
+		}
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
@@ -164,13 +164,13 @@ namespace ngl
 
 	bool actor_login::handle(message<np_actorrole_login>& adata)
 	{
-		pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
+		/*pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
 		pro.set_m_roleid(adata.m_data->m_roleid);
 		pro.set_m_area(adata.m_data->m_area);
 		pro.set_m_session(adata.m_data->m_session);
 		pro.set_m_account(adata.m_data->m_account);
 		pro.set_m_gatewayid(adata.m_data->m_gatewayid);
-		nets::sendbysession(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());
+		nets::sendbysession(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());*/
 		return true;
 	}
 
@@ -222,6 +222,15 @@ namespace ngl
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
 			nets::sendbyserver(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
+
+			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE procli;
+			procli.set_m_roleid(pro.m_roleid);
+			procli.set_m_area(pro.m_area);
+			procli.set_m_session(pro.m_session);
+			procli.set_m_account(pro.m_account);
+			procli.set_m_gatewayid(pro.m_gatewayid);
+			nets::sendbysession(adata.m_pack->m_id, procli, lpack->m_head.get_request_actor(), id_guid());
+
 		}Catch;
 		return true;
 	}

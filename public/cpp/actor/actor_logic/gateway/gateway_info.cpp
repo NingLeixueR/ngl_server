@@ -82,16 +82,6 @@ namespace ngl
 
 	gateway_socket* gateway_info::get(i16_area aarea, i32_actordataid aroleid)
 	{
-		std::cout << "##<<<<<<<<<<<<<<<<<<<<<<<<<<<["<< aarea << ":" << aroleid << "]" << std::endl;
-		for (auto& item : m_info)
-		{
-			std::cout << "# " << item.first << std::endl;
-			for (auto& item2 : item.second)
-			{
-				std::cout << "## " << item2.first << std::endl;
-			}
-		}
-		std::cout << "##>>>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
 		auto itor = m_info.find(aarea);
 		if (itor == m_info.end())
 			return nullptr;
