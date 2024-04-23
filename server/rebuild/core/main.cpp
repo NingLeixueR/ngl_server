@@ -45,8 +45,16 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 	{
 		if (std::filesystem::is_directory(*iter))
 		{
-			std::cout << "dir:[" << iter->path().string() << "]" << std::endl;
-			adir.insert(iter->path().string());
+			std::string lpath = "";
+			for (char ch : iter->path().string())
+			{
+				lpath += (ch == '\\' ? '/' : ch);
+			}
+
+
+			std::string lpath2 = &lpath.c_str()[sizeof("../../")-1];
+			std::cout << "dir:[" << lpath2 << "]" << std::endl;
+			adir.insert(lpath2);
 			find(awz, atxt, iter->path().string(), adir, avec1, avec2);
 		}
 		else
@@ -61,6 +69,7 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 				else
 					lname += *itor;
 			}
+			
 
 			if (is_sname(lname, atxt))
 			{
