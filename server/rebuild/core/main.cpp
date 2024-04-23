@@ -1,34 +1,25 @@
-﻿#include <boost/filesystem.hpp>
-#include <string>
-#include <iostream>
+﻿#include <type_traits>
+#include <filesystem>
 #include <functional>
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
 #include <algorithm>
 #include <iostream>
+#include <typeinfo>
+#include <fstream> 
+#include <ranges>
+#include <memory> 
 #include <string>
-#include <vector>
-#include <fstream>  
-#include <string>  
-#include <iostream> 
+#include <vector> 
 #include <regex>
 #include <set>
 #include <map>
-#include <boost/lexical_cast.hpp> 
-#include <filesystem>
-#include <memory>
-#include <functional>
-#include <iostream>
-#include <type_traits>
-#include <typeinfo>
-#include <ranges>
-#include <iostream>
 
-#include "impl.h"
+#include <boost/lexical_cast.hpp> 
+#include <boost/filesystem.hpp>
+
 #include "operator_file.h"
 #include "localtime.h"
+#include "impl.h"
+
 
 bool is_sname(const std::string& astrname, const std::string& akey)
 {
@@ -79,22 +70,6 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 					avec1.insert(lname);
 				continue;
 			}
-
-			/* int lindex = lname.find(atxt);
-			 if (lindex > 0)
-			 {
-				 if(awz)
-					 avec1.insert(targetPath + lname);
-				 else
-					 avec1.insert(lname);
-				 continue;
-			 }*/
-			 //lindex = lname.find(".cc");
-			// if (lindex > 0)
-			// {
-			//     avec2.insert(lname);
-			//     continue;
-			// }
 		}
 	}
 }
@@ -130,8 +105,6 @@ int main(int argc, char** argv)
 		m_stream << "#include \"" << item << "\"\n";
 	for (auto item : lvec2)
 		m_stream << "#include \"" << item << "\"\n";
-	//for (auto item : lvec3)
-	//    m_stream << "#include \"" << item << "\"\n";
 
 	m_stream << "extern \"C\"{\n";
 	for (auto item : lvec5)

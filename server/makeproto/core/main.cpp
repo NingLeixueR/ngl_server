@@ -1,38 +1,26 @@
-#include <boost/filesystem.hpp>
-#include <iostream>
 #include <functional>
-#include "operator_file.h"
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
+#include <filesystem>
 #include <algorithm>
 #include <iostream>
+#include <fstream> 
+#include <memory>
 #include <string>
 #include <vector>
-#include <fstream>  
-#include <string>  
-#include <iostream> 
 #include <regex>
 #include <set>
 #include <map>
-#include <boost/lexical_cast.hpp> 
-#include <filesystem>
 
-#include "regular.h"
-
-#include <memory>
-#include <functional>
-
-
-#include <iostream>
-#include <google/protobuf/descriptor.h>
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
+#include <google/protobuf/descriptor.h>
+#include <boost/lexical_cast.hpp> 
+#include <boost/filesystem.hpp>
 
-#include "conversion.h"
-#include "xmlprotocol.h"
+#include "operator_file.h"
 #include "ttab_servers.h"
+#include "xmlprotocol.h"
+#include "conversion.h"
+#include "regular.h"
 
 std::map<std::string, std::string> g_typearr = { {"bool", "bool"}, {"int32", "int32_t"}, {"int64", "int64_t"}, {"string", "const char*"}, {"float", "float"}, {"double", "double"}};
 
@@ -55,7 +43,6 @@ std::string type_name(const char* apackname, const google::protobuf::FieldDescri
 
 static std::stringstream g_stream_sql;
 static std::stringstream g_stream_xml;
-
 
 void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
 {
@@ -143,6 +130,7 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     lfileserver.write(m_streamserver.str());
 
 }
+
 void foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int32_t& aprotocol, const char* aname)
 {
     google::protobuf::compiler::Importer importer(&sourceTree, nullptr);
@@ -239,7 +227,6 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
                     ngl::regular::replace("Template.", "", lparmname, lparmname);
                     ngl::regular::replace("Pb.", "", lparmname, lparmname);
                 }
-               
             }
 
             ls->push_back(tmessage
@@ -280,9 +267,9 @@ void traverseProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, co
     traverseProtobufMessages(apackname, aname, fileDescriptor);
 }
 
-#include "localtime.h"
 #include "manage_curl.h"
 #include "manage_csv.h"
+#include "localtime.h"
 
 int main(int argc, char** argv) 
 {
@@ -327,20 +314,7 @@ int main(int argc, char** argv)
 
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);
-    //sourceTree.MapPath("", "../../tools/public/proto/");
-  
-   // g_stream << "#pragma once" << std::endl;
-   // g_stream << "#include \"actor_lua.h\"" << std::endl;
-   // g_stream << "#include \"lua_db.h\"" << std::endl;
-   // g_stream << "#include \"lua_net.h\"" << std::endl;
-   // g_stream << "namespace ngl{" << std::endl;
-
-   // g_stream << "   class lua_struct_register" << std::endl;
-   // g_stream << "   {" << std::endl;
-   // g_stream << "   public:" << std::endl;
-   // g_stream << "       static void init()" << std::endl;
-   // g_stream << "       {" << std::endl;
-
+   
     g_stream_sql << "/*Date:" << ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
     g_stream_sql << std::endl;
     g_stream_sql << " DROP Database IF EXISTS `lbtest`;" << std::endl;
@@ -349,19 +323,7 @@ int main(int argc, char** argv)
     g_stream_sql << std::endl;
 
    traverseProtobuf(sourceTree, "Template", "db");
-   // traverseProtobuf(sourceTree, "PB", "net");
-
-
-   // g_stream << "       }" << std::endl;
-   // g_stream << "   };" << std::endl;
-   // g_stream << "}" << std::endl;
-   // ngl::writefile lfilecpp("lua_struct_register.h");
-   // lfilecpp.write(g_stream.str());
-
-
-   // ngl::writefile lxml("lua.xml");
-   // lxml.write(g_stream_xml.str());
-
+  
     // 生成对应的sql文件
     ngl::writefile lsql("create_db.sql");
     lsql.write(g_stream_sql.str());
