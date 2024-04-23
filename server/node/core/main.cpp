@@ -15,7 +15,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();
@@ -49,9 +48,6 @@ int main(int argc, char** argv)
 	ngl::actor_base::start_broadcast();
 
 	assert(nconfig::node_type() != ngl::FAIL);
-
-	//test_s(argc, argv);
-
 
 	if (nconfig::node_type() == ngl::DB)
 	{

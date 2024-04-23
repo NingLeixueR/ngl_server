@@ -51,7 +51,6 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 				lpath += (ch == '\\' ? '/' : ch);
 			}
 
-
 			std::string lpath2 = &lpath.c_str()[sizeof("../../")-1];
 			std::cout << "dir:[" << lpath2 << "]" << std::endl;
 			adir.insert(lpath2);
@@ -70,7 +69,6 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 					lname += *itor;
 			}
 			
-
 			if (is_sname(lname, atxt))
 			{
 				if (awz)
