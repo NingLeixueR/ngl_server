@@ -24,6 +24,105 @@ namespace ngl
 		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_mail>(
 			true
 			, dregister_fun_handle(actor_mail, np_actor_addmail)
-			);
+			, dregister_fun_handle(actor_mail, mforward<np_gm>)
+		);
+		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_mail>(
+			true
+			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_LIST>)
+			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_READ>)
+			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>)
+			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_DEL>)
+		);
+	}
+
+	bool actor_mail::handle(message<mforward<np_gm>>& adata)
+	{
+		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+		std::string loperator;
+		if (lojson.read("operator", loperator) == false)
+		{
+			return true;
+		}
+		static std::map<std::string, std::function<void(int, ngl::ojson&)>> lcmd;
+		if (lcmd.empty())
+		{
+			lcmd["get_mails"] = [this](int id, ngl::ojson& aos)
+				{
+					int64_t roleid = 0;
+					if (aos.read("data", roleid) == false)
+						return;
+					gcmd<std::string> pro;
+					pro.id = id;
+					pro.m_operator = "get_mails_responce";
+					const pbdb::db_mail* ldb = m_mails.get_db_mail(roleid);
+					if (ldb == nullptr)
+						return;
+					serialize::proto_json(*ldb, pro.m_data);
+					pro.m_istoutf8 = false;
+				};
+			lcmd["add_mail"] = [this](int id, ngl::ojson& aos)
+				{
+					struct gm_mailitem
+					{
+						int32_t m_itemtid;
+						int32_t m_count;
+						jsonfunc("itemtid", m_itemtid, "itemtcount", m_count)
+					};
+					struct gm_mail
+					{
+						int64_t m_roleid;
+						std::string m_content;				// 邮件内容
+						std::vector<gm_mailitem>  m_items;	// 邮件附件
+
+						jsonfunc("roleid", m_roleid, "content", m_content, "items", m_items)
+					};
+					// 返回 bool
+					gm_mail recv;
+					if (aos.read("data", recv) == false)
+						return;
+					std::map<int32_t, int32_t> litem;
+					for (gm_mailitem& gmailitem : recv.m_items)
+					{
+						litem[gmailitem.m_itemtid] += gmailitem.m_count;
+					}
+
+					gcmd<bool> pro;
+					pro.id = id;
+					pro.m_operator = "add_mail_responce";
+					pro.m_data = false;
+					if (m_mails.addmail(recv.m_roleid, litem, recv.m_content) == false)
+					{
+						return;
+					}
+					pro.m_data = true;
+				};
+			lcmd["del_mail"] = [this](int id, ngl::ojson& aos)
+				{
+					// 返回 bool
+					struct gm_deletemail
+					{
+						int64_t m_roleid;
+						int32_t m_mailid;
+						jsonfunc("roleid", m_roleid, "mailid", m_mailid)
+					};
+					gm_deletemail ldelmail;
+					if (aos.read("data", ldelmail) == false)
+						return;
+					gcmd<bool> pro;
+					pro.id = id;
+					pro.m_operator = "del_mail_responce";
+					pro.m_data = true;
+					m_mails.delmail(ldelmail.m_roleid, ldelmail.m_mailid, false);
+				};
+
+		}
+		auto itor = lcmd.find(loperator);
+		if (itor == lcmd.end())
+		{
+			LogLocalError("GM actor_mail operator[%] ERROR", loperator);
+			return true;
+		}
+		itor->second(adata.m_data->identifier(), lojson);
+		return true;
 	}
 }// namespace ngl

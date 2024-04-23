@@ -50,64 +50,64 @@ namespace Pbdb {
             "FAoHbV92YWx1ZRgDIAEoCUgCiAEBQgcKBV9tX2lkQggKBl9tX2tleUIKCghf",
             "bV92YWx1ZSJSCghtYWlsaXRlbRIWCgltX2l0ZW10aWQYASABKAVIAIgBARIU",
             "CgdtX2NvdW50GAIgASgFSAGIAQFCDAoKX21faXRlbXRpZEIKCghfbV9jb3Vu",
-            "dCLtAQoEbWFpbBIRCgRtX2lkGAEgASgFSACIAQESGAoLbV9jcmVhdGV1dGMY",
+            "dCKTAgoEbWFpbBIRCgRtX2lkGAEgASgFSACIAQESGAoLbV9jcmVhdGV1dGMY",
             "AiABKAVIAYgBARISCgVtX3RpZBgDIAEoBUgCiAEBEhQKB21fcHJhbXMYBCAB",
-            "KAlIA4gBARIfCgdtX2l0ZW1zGAUgAygLMg4ucGJkYi5tYWlsaXRlbRITCgZt",
-            "X3JlYWQYBiABKAhIBIgBARITCgZtX2RyYXcYByABKAhIBYgBAUIHCgVfbV9p",
-            "ZEIOCgxfbV9jcmVhdGV1dGNCCAoGX21fdGlkQgoKCF9tX3ByYW1zQgkKB19t",
-            "X3JlYWRCCQoHX21fZHJhdyKJAQoHZGJfbWFpbBIRCgRtX2lkGAEgASgDSACI",
-            "AQESKAoGbV9tYWlsGAIgAygLMhgucGJkYi5kYl9tYWlsLk1NYWlsRW50cnka",
-            "OAoKTU1haWxFbnRyeRILCgNrZXkYASABKAUSGQoFdmFsdWUYAiABKAsyCi5w",
-            "YmRiLm1haWw6AjgBQgcKBV9tX2lkIn8KCGRiX2d1aWxkEhEKBG1faWQYASAB",
-            "KANIAIgBARIUCgdtX2d1aWxkGAIgASgJSAGIAQESFQoIbV9sZWFkZXIYAyAB",
-            "KANIAogBARIRCgltX21lbWJlcnMYBCADKANCBwoFX21faWRCCgoIX21fZ3Vp",
-            "bGRCCwoJX21fbGVhZGVyIqEBCglkYl9ub3RpY2USEQoEbV9pZBgBIAEoA0gA",
-            "iAEBEhUKCG1fbm90aWNlGAIgASgJSAGIAQESGAoLbV9zdGFydHRpbWUYAyAB",
-            "KAVIAogBARIZCgxtX2ZpbmlzaHRpbWUYBCABKAVIA4gBAUIHCgVfbV9pZEIL",
-            "CglfbV9ub3RpY2VCDgoMX21fc3RhcnR0aW1lQg8KDV9tX2ZpbmlzaHRpbWUi",
-            "jgEKCHJhbmtpdGVtEhUKCG1fcm9sZWlkGAEgASgDSACIAQESEwoGbV9uYW1l",
-            "GAIgASgJSAGIAQESEQoEbV9sdhgDIAEoBUgCiAEBEhUKCG1fbHZ0aW1lGAQg",
-            "ASgFSAOIAQFCCwoJX21fcm9sZWlkQgkKB19tX25hbWVCBwoFX21fbHZCCwoJ",
-            "X21fbHZ0aW1lIpUBCgtkYl9yYW5rbGlzdBIRCgRtX2lkGAEgASgDSACIAQES",
-            "LAoGbV9pdGVtGAIgAygLMhwucGJkYi5kYl9yYW5rbGlzdC5NSXRlbUVudHJ5",
-            "GjwKCk1JdGVtRW50cnkSCwoDa2V5GAEgASgDEh0KBXZhbHVlGAIgASgLMg4u",
-            "cGJkYi5yYW5raXRlbToCOAFCBwoFX21faWQimQQKC2RiX2FjdGl2aXR5EhEK",
-            "BG1faWQYASABKANIAIgBARISCgVtX2JlZxgCIAEoBUgBiAEBEhIKBW1fZW5k",
-            "GAMgASgFSAKIAQESFAoHbV9zdGFydBgEIAEoCEgDiAEBEhUKCG1fZmluaXNo",
-            "GAUgASgISASIAQESGQoMbV9jYWxlbmRhcmlkGAYgASgFSAWIAQESQAoQbV9k",
-            "cmF3Y29tcGxpYW5jZRgHIAMoCzImLnBiZGIuZGJfYWN0aXZpdHkuTURyYXdj",
-            "b21wbGlhbmNlRW50cnkaowEKDmRyYXdjb21wbGlhbmNlEhQKB21fY291bnQY",
-            "ASABKAVIAIgBARI/CghtX3Jld2FyZBgCIAMoCzItLnBiZGIuZGJfYWN0aXZp",
-            "dHkuZHJhd2NvbXBsaWFuY2UuTVJld2FyZEVudHJ5Gi4KDE1SZXdhcmRFbnRy",
-            "eRILCgNrZXkYASABKAUSDQoFdmFsdWUYAiABKAg6AjgBQgoKCF9tX2NvdW50",
-            "GlgKFE1EcmF3Y29tcGxpYW5jZUVudHJ5EgsKA2tleRgBIAEoAxIvCgV2YWx1",
-            "ZRgCIAEoCzIgLnBiZGIuZGJfYWN0aXZpdHkuZHJhd2NvbXBsaWFuY2U6AjgB",
-            "QgcKBV9tX2lkQggKBl9tX2JlZ0IICgZfbV9lbmRCCgoIX21fc3RhcnRCCwoJ",
-            "X21fZmluaXNoQg8KDV9tX2NhbGVuZGFyaWQi9wQKB2RiX3Rhc2sSEQoEbV9p",
-            "ZBgBIAEoA0gAiAEBEjAKCm1fcnVuZGF0YXMYAiADKAsyHC5wYmRiLmRiX3Rh",
-            "c2suTVJ1bmRhdGFzRW50cnkSPAoQbV9jb21wbGV0ZWRkYXRhcxgDIAMoCzIi",
-            "LnBiZGIuZGJfdGFzay5NQ29tcGxldGVkZGF0YXNFbnRyeRp1Cg1kYXRhX3Nj",
-            "aGVkdWxlEhMKBm1fdHlwZRgBIAEoBUgAiAEBEhQKB21fdmFsdWUYAiABKAVI",
-            "AYgBARIVCghtX3N1bWludBgDIAEoBUgCiAEBQgkKB19tX3R5cGVCCgoIX21f",
-            "dmFsdWVCCwoJX21fc3VtaW50GtYBCgRkYXRhEhUKCG1fdGFza2lkGAEgASgF",
-            "SACIAQESGQoMbV9yZWNlaXZldXRjGAIgASgFSAGIAQESFwoKbV9maW5zaHV0",
-            "YxgDIAEoBUgCiAEBEjAKC21fc2NoZWR1bGVzGAQgAygLMhsucGJkYi5kYl90",
-            "YXNrLmRhdGFfc2NoZWR1bGUSFgoJbV9yZWNlaXZlGAUgASgISAOIAQFCCwoJ",
-            "X21fdGFza2lkQg8KDV9tX3JlY2VpdmV1dGNCDQoLX21fZmluc2h1dGNCDAoK",
-            "X21fcmVjZWl2ZRpECg5NUnVuZGF0YXNFbnRyeRILCgNrZXkYASABKAUSIQoF",
-            "dmFsdWUYAiABKAsyEi5wYmRiLmRiX3Rhc2suZGF0YToCOAEaSgoUTUNvbXBs",
-            "ZXRlZGRhdGFzRW50cnkSCwoDa2V5GAEgASgFEiEKBXZhbHVlGAIgASgLMhIu",
-            "cGJkYi5kYl90YXNrLmRhdGE6AjgBQgcKBV9tX2lkIo8BCgtkYl9jYWxlbmRh",
-            "chIRCgRtX2lkGAEgASgDSACIAQESEwoGbV90aW1lGAIgASgDSAGIAQESFAoH",
-            "bV9zdGFydBgDIAEoCEgCiAEBEhUKCG1fZmluaXNoGAQgASgISAOIAQFCBwoF",
-            "X21faWRCCQoHX21fdGltZUIKCghfbV9zdGFydEILCglfbV9maW5pc2gqigIK",
-            "B0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5UEAASEAoMRU5VTV9EQl9ST0xF",
-            "EAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VOVU1fREJfQkFHEAMSFAoQRU5V",
-            "TV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJfTUFJTBAFEhEKDUVOVU1fREJf",
-            "R1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAHEhQKEEVOVU1fREJfUkFOS0xJ",
-            "U1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkSEAoMRU5VTV9EQl9UQVNLEAoS",
-            "FAoQRU5VTV9EQl9DQUxFTkRBUhALEhEKDUVOVU1fREJfQ09VTlQQDGIGcHJv",
-            "dG8z"));
+            "KAlIA4gBARIWCgltX2NvbnRlbnQYBSABKAlIBIgBARIfCgdtX2l0ZW1zGAYg",
+            "AygLMg4ucGJkYi5tYWlsaXRlbRITCgZtX3JlYWQYByABKAhIBYgBARITCgZt",
+            "X2RyYXcYCCABKAhIBogBAUIHCgVfbV9pZEIOCgxfbV9jcmVhdGV1dGNCCAoG",
+            "X21fdGlkQgoKCF9tX3ByYW1zQgwKCl9tX2NvbnRlbnRCCQoHX21fcmVhZEIJ",
+            "CgdfbV9kcmF3IokBCgdkYl9tYWlsEhEKBG1faWQYASABKANIAIgBARIoCgZt",
+            "X21haWwYAiADKAsyGC5wYmRiLmRiX21haWwuTU1haWxFbnRyeRo4CgpNTWFp",
+            "bEVudHJ5EgsKA2tleRgBIAEoBRIZCgV2YWx1ZRgCIAEoCzIKLnBiZGIubWFp",
+            "bDoCOAFCBwoFX21faWQifwoIZGJfZ3VpbGQSEQoEbV9pZBgBIAEoA0gAiAEB",
+            "EhQKB21fZ3VpbGQYAiABKAlIAYgBARIVCghtX2xlYWRlchgDIAEoA0gCiAEB",
+            "EhEKCW1fbWVtYmVycxgEIAMoA0IHCgVfbV9pZEIKCghfbV9ndWlsZEILCglf",
+            "bV9sZWFkZXIioQEKCWRiX25vdGljZRIRCgRtX2lkGAEgASgDSACIAQESFQoI",
+            "bV9ub3RpY2UYAiABKAlIAYgBARIYCgttX3N0YXJ0dGltZRgDIAEoBUgCiAEB",
+            "EhkKDG1fZmluaXNodGltZRgEIAEoBUgDiAEBQgcKBV9tX2lkQgsKCV9tX25v",
+            "dGljZUIOCgxfbV9zdGFydHRpbWVCDwoNX21fZmluaXNodGltZSKOAQoIcmFu",
+            "a2l0ZW0SFQoIbV9yb2xlaWQYASABKANIAIgBARITCgZtX25hbWUYAiABKAlI",
+            "AYgBARIRCgRtX2x2GAMgASgFSAKIAQESFQoIbV9sdnRpbWUYBCABKAVIA4gB",
+            "AUILCglfbV9yb2xlaWRCCQoHX21fbmFtZUIHCgVfbV9sdkILCglfbV9sdnRp",
+            "bWUilQEKC2RiX3JhbmtsaXN0EhEKBG1faWQYASABKANIAIgBARIsCgZtX2l0",
+            "ZW0YAiADKAsyHC5wYmRiLmRiX3JhbmtsaXN0Lk1JdGVtRW50cnkaPAoKTUl0",
+            "ZW1FbnRyeRILCgNrZXkYASABKAMSHQoFdmFsdWUYAiABKAsyDi5wYmRiLnJh",
+            "bmtpdGVtOgI4AUIHCgVfbV9pZCKZBAoLZGJfYWN0aXZpdHkSEQoEbV9pZBgB",
+            "IAEoA0gAiAEBEhIKBW1fYmVnGAIgASgFSAGIAQESEgoFbV9lbmQYAyABKAVI",
+            "AogBARIUCgdtX3N0YXJ0GAQgASgISAOIAQESFQoIbV9maW5pc2gYBSABKAhI",
+            "BIgBARIZCgxtX2NhbGVuZGFyaWQYBiABKAVIBYgBARJAChBtX2RyYXdjb21w",
+            "bGlhbmNlGAcgAygLMiYucGJkYi5kYl9hY3Rpdml0eS5NRHJhd2NvbXBsaWFu",
+            "Y2VFbnRyeRqjAQoOZHJhd2NvbXBsaWFuY2USFAoHbV9jb3VudBgBIAEoBUgA",
+            "iAEBEj8KCG1fcmV3YXJkGAIgAygLMi0ucGJkYi5kYl9hY3Rpdml0eS5kcmF3",
+            "Y29tcGxpYW5jZS5NUmV3YXJkRW50cnkaLgoMTVJld2FyZEVudHJ5EgsKA2tl",
+            "eRgBIAEoBRINCgV2YWx1ZRgCIAEoCDoCOAFCCgoIX21fY291bnQaWAoUTURy",
+            "YXdjb21wbGlhbmNlRW50cnkSCwoDa2V5GAEgASgDEi8KBXZhbHVlGAIgASgL",
+            "MiAucGJkYi5kYl9hY3Rpdml0eS5kcmF3Y29tcGxpYW5jZToCOAFCBwoFX21f",
+            "aWRCCAoGX21fYmVnQggKBl9tX2VuZEIKCghfbV9zdGFydEILCglfbV9maW5p",
+            "c2hCDwoNX21fY2FsZW5kYXJpZCL3BAoHZGJfdGFzaxIRCgRtX2lkGAEgASgD",
+            "SACIAQESMAoKbV9ydW5kYXRhcxgCIAMoCzIcLnBiZGIuZGJfdGFzay5NUnVu",
+            "ZGF0YXNFbnRyeRI8ChBtX2NvbXBsZXRlZGRhdGFzGAMgAygLMiIucGJkYi5k",
+            "Yl90YXNrLk1Db21wbGV0ZWRkYXRhc0VudHJ5GnUKDWRhdGFfc2NoZWR1bGUS",
+            "EwoGbV90eXBlGAEgASgFSACIAQESFAoHbV92YWx1ZRgCIAEoBUgBiAEBEhUK",
+            "CG1fc3VtaW50GAMgASgFSAKIAQFCCQoHX21fdHlwZUIKCghfbV92YWx1ZUIL",
+            "CglfbV9zdW1pbnQa1gEKBGRhdGESFQoIbV90YXNraWQYASABKAVIAIgBARIZ",
+            "CgxtX3JlY2VpdmV1dGMYAiABKAVIAYgBARIXCgptX2ZpbnNodXRjGAMgASgF",
+            "SAKIAQESMAoLbV9zY2hlZHVsZXMYBCADKAsyGy5wYmRiLmRiX3Rhc2suZGF0",
+            "YV9zY2hlZHVsZRIWCgltX3JlY2VpdmUYBSABKAhIA4gBAUILCglfbV90YXNr",
+            "aWRCDwoNX21fcmVjZWl2ZXV0Y0INCgtfbV9maW5zaHV0Y0IMCgpfbV9yZWNl",
+            "aXZlGkQKDk1SdW5kYXRhc0VudHJ5EgsKA2tleRgBIAEoBRIhCgV2YWx1ZRgC",
+            "IAEoCzISLnBiZGIuZGJfdGFzay5kYXRhOgI4ARpKChRNQ29tcGxldGVkZGF0",
+            "YXNFbnRyeRILCgNrZXkYASABKAUSIQoFdmFsdWUYAiABKAsyEi5wYmRiLmRi",
+            "X3Rhc2suZGF0YToCOAFCBwoFX21faWQijwEKC2RiX2NhbGVuZGFyEhEKBG1f",
+            "aWQYASABKANIAIgBARITCgZtX3RpbWUYAiABKANIAYgBARIUCgdtX3N0YXJ0",
+            "GAMgASgISAKIAQESFQoIbV9maW5pc2gYBCABKAhIA4gBAUIHCgVfbV9pZEIJ",
+            "CgdfbV90aW1lQgoKCF9tX3N0YXJ0QgsKCV9tX2ZpbmlzaCqKAgoHRU5VTV9E",
+            "QhITCg9FTlVNX0RCX0FDQ09VTlQQABIQCgxFTlVNX0RCX1JPTEUQARIRCg1F",
+            "TlVNX0RCX0JSSUVGEAISDwoLRU5VTV9EQl9CQUcQAxIUChBFTlVNX0RCX0tF",
+            "WVZBTFVFEAQSEAoMRU5VTV9EQl9NQUlMEAUSEQoNRU5VTV9EQl9HVUlMRBAG",
+            "EhIKDkVOVU1fREJfTk9USUNFEAcSFAoQRU5VTV9EQl9SQU5LTElTVBAIEhQK",
+            "EEVOVU1fREJfQUNUSVZJVFkQCRIQCgxFTlVNX0RCX1RBU0sQChIUChBFTlVN",
+            "X0RCX0NBTEVOREFSEAsSEQoNRU5VTV9EQl9DT1VOVBAMYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -118,7 +118,7 @@ namespace Pbdb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_bag), global::Pbdb.db_bag.Parser, new[]{ "MId", "MItems", "MMaxid" }, new[]{ "MId", "MMaxid" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_keyvalue), global::Pbdb.db_keyvalue.Parser, new[]{ "MId", "MKey", "MValue" }, new[]{ "MId", "MKey", "MValue" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.mailitem), global::Pbdb.mailitem.Parser, new[]{ "MItemtid", "MCount" }, new[]{ "MItemtid", "MCount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.mail), global::Pbdb.mail.Parser, new[]{ "MId", "MCreateutc", "MTid", "MPrams", "MItems", "MRead", "MDraw" }, new[]{ "MId", "MCreateutc", "MTid", "MPrams", "MRead", "MDraw" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.mail), global::Pbdb.mail.Parser, new[]{ "MId", "MCreateutc", "MTid", "MPrams", "MContent", "MItems", "MRead", "MDraw" }, new[]{ "MId", "MCreateutc", "MTid", "MPrams", "MContent", "MRead", "MDraw" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_mail), global::Pbdb.db_mail.Parser, new[]{ "MId", "MMail" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_guild), global::Pbdb.db_guild.Parser, new[]{ "MId", "MGuild", "MLeader", "MMembers" }, new[]{ "MId", "MGuild", "MLeader" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_notice), global::Pbdb.db_notice.Parser, new[]{ "MId", "MNotice", "MStarttime", "MFinishtime" }, new[]{ "MId", "MNotice", "MStarttime", "MFinishtime" }, null, null, null),
@@ -2736,6 +2736,7 @@ namespace Pbdb {
       mCreateutc_ = other.mCreateutc_;
       mTid_ = other.mTid_;
       mPrams_ = other.mPrams_;
+      mContent_ = other.mContent_;
       mItems_ = other.mItems_.Clone();
       mRead_ = other.mRead_;
       mDraw_ = other.mDraw_;
@@ -2798,7 +2799,7 @@ namespace Pbdb {
     public const int MTidFieldNumber = 3;
     private int mTid_;
     /// <summary>
-    /// 邮件表id
+    ///// [邮件内容] 1.邮件表id关联参数
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int MTid {
@@ -2843,10 +2844,34 @@ namespace Pbdb {
       mPrams_ = null;
     }
 
+    /// <summary>Field number for the "m_content" field.</summary>
+    public const int MContentFieldNumber = 5;
+    private string mContent_;
+    /// <summary>
+    ///// [邮件内容] 2.字符串
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string MContent {
+      get { return mContent_ ?? ""; }
+      set {
+        mContent_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "m_content" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMContent {
+      get { return mContent_ != null; }
+    }
+    /// <summary>Clears the value of the "m_content" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMContent() {
+      mContent_ = null;
+    }
+
     /// <summary>Field number for the "m_items" field.</summary>
-    public const int MItemsFieldNumber = 5;
+    public const int MItemsFieldNumber = 6;
     private static readonly pb::FieldCodec<global::Pbdb.mailitem> _repeated_mItems_codec
-        = pb::FieldCodec.ForMessage(42, global::Pbdb.mailitem.Parser);
+        = pb::FieldCodec.ForMessage(50, global::Pbdb.mailitem.Parser);
     private readonly pbc::RepeatedField<global::Pbdb.mailitem> mItems_ = new pbc::RepeatedField<global::Pbdb.mailitem>();
     /// <summary>
     /// 邮件附件
@@ -2857,7 +2882,7 @@ namespace Pbdb {
     }
 
     /// <summary>Field number for the "m_read" field.</summary>
-    public const int MReadFieldNumber = 6;
+    public const int MReadFieldNumber = 7;
     private bool mRead_;
     /// <summary>
     /// 是否已读
@@ -2882,7 +2907,7 @@ namespace Pbdb {
     }
 
     /// <summary>Field number for the "m_draw" field.</summary>
-    public const int MDrawFieldNumber = 7;
+    public const int MDrawFieldNumber = 8;
     private bool mDraw_;
     /// <summary>
     /// 是否领取附件	
@@ -2923,6 +2948,7 @@ namespace Pbdb {
       if (MCreateutc != other.MCreateutc) return false;
       if (MTid != other.MTid) return false;
       if (MPrams != other.MPrams) return false;
+      if (MContent != other.MContent) return false;
       if(!mItems_.Equals(other.mItems_)) return false;
       if (MRead != other.MRead) return false;
       if (MDraw != other.MDraw) return false;
@@ -2936,6 +2962,7 @@ namespace Pbdb {
       if (HasMCreateutc) hash ^= MCreateutc.GetHashCode();
       if (HasMTid) hash ^= MTid.GetHashCode();
       if (HasMPrams) hash ^= MPrams.GetHashCode();
+      if (HasMContent) hash ^= MContent.GetHashCode();
       hash ^= mItems_.GetHashCode();
       if (HasMRead) hash ^= MRead.GetHashCode();
       if (HasMDraw) hash ^= MDraw.GetHashCode();
@@ -2971,13 +2998,17 @@ namespace Pbdb {
         output.WriteRawTag(34);
         output.WriteString(MPrams);
       }
+      if (HasMContent) {
+        output.WriteRawTag(42);
+        output.WriteString(MContent);
+      }
       mItems_.WriteTo(output, _repeated_mItems_codec);
       if (HasMRead) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteBool(MRead);
       }
       if (HasMDraw) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteBool(MDraw);
       }
       if (_unknownFields != null) {
@@ -3005,13 +3036,17 @@ namespace Pbdb {
         output.WriteRawTag(34);
         output.WriteString(MPrams);
       }
+      if (HasMContent) {
+        output.WriteRawTag(42);
+        output.WriteString(MContent);
+      }
       mItems_.WriteTo(ref output, _repeated_mItems_codec);
       if (HasMRead) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteBool(MRead);
       }
       if (HasMDraw) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteBool(MDraw);
       }
       if (_unknownFields != null) {
@@ -3034,6 +3069,9 @@ namespace Pbdb {
       }
       if (HasMPrams) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(MPrams);
+      }
+      if (HasMContent) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(MContent);
       }
       size += mItems_.CalculateSize(_repeated_mItems_codec);
       if (HasMRead) {
@@ -3064,6 +3102,9 @@ namespace Pbdb {
       }
       if (other.HasMPrams) {
         MPrams = other.MPrams;
+      }
+      if (other.HasMContent) {
+        MContent = other.MContent;
       }
       mItems_.Add(other.mItems_);
       if (other.HasMRead) {
@@ -3103,14 +3144,18 @@ namespace Pbdb {
             break;
           }
           case 42: {
+            MContent = input.ReadString();
+            break;
+          }
+          case 50: {
             mItems_.AddEntriesFrom(input, _repeated_mItems_codec);
             break;
           }
-          case 48: {
+          case 56: {
             MRead = input.ReadBool();
             break;
           }
-          case 56: {
+          case 64: {
             MDraw = input.ReadBool();
             break;
           }
@@ -3145,14 +3190,18 @@ namespace Pbdb {
             break;
           }
           case 42: {
+            MContent = input.ReadString();
+            break;
+          }
+          case 50: {
             mItems_.AddEntriesFrom(ref input, _repeated_mItems_codec);
             break;
           }
-          case 48: {
+          case 56: {
             MRead = input.ReadBool();
             break;
           }
-          case 56: {
+          case 64: {
             MDraw = input.ReadBool();
             break;
           }

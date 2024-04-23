@@ -15,6 +15,7 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();

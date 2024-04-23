@@ -57,11 +57,7 @@ namespace ngl
 				return false;
 			}
 			pro->m_parm = aparm;
-			actor::static_send_actor(
-				actorid(nguid::area(aactorid))
-				, nguid::make()
-				, pro
-			);
+			actor::static_send_actor(actorid(nguid::area(aactorid)) , nguid::make() , pro);
 			return true;
 		}
 
@@ -72,6 +68,9 @@ namespace ngl
 			m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);
 			return true;
 		}
+
+		// ## GM²Ù×÷mail
+		bool handle(message<mforward<np_gm>>& adata);
 
 		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
 		{

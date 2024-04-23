@@ -1861,15 +1861,16 @@ class mail PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMItemsFieldNumber = 5,
+    kMItemsFieldNumber = 6,
     kMPramsFieldNumber = 4,
+    kMContentFieldNumber = 5,
     kMIdFieldNumber = 1,
     kMCreateutcFieldNumber = 2,
     kMTidFieldNumber = 3,
-    kMReadFieldNumber = 6,
-    kMDrawFieldNumber = 7,
+    kMReadFieldNumber = 7,
+    kMDrawFieldNumber = 8,
   };
-  // repeated .pbdb.mailitem m_items = 5;
+  // repeated .pbdb.mailitem m_items = 6;
   int m_items_size() const;
   private:
   int _internal_m_items_size() const;
@@ -1905,6 +1906,26 @@ class mail PROTOBUF_FINAL :
   const std::string& _internal_m_prams() const;
   void _internal_set_m_prams(const std::string& value);
   std::string* _internal_mutable_m_prams();
+  public:
+
+  // string m_content = 5;
+  bool has_m_content() const;
+  private:
+  bool _internal_has_m_content() const;
+  public:
+  void clear_m_content();
+  const std::string& m_content() const;
+  void set_m_content(const std::string& value);
+  void set_m_content(std::string&& value);
+  void set_m_content(const char* value);
+  void set_m_content(const char* value, size_t size);
+  std::string* mutable_m_content();
+  std::string* release_m_content();
+  void set_allocated_m_content(std::string* m_content);
+  private:
+  const std::string& _internal_m_content() const;
+  void _internal_set_m_content(const std::string& value);
+  std::string* _internal_mutable_m_content();
   public:
 
   // int32 m_id = 1;
@@ -1946,7 +1967,7 @@ class mail PROTOBUF_FINAL :
   void _internal_set_m_tid(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // bool m_read = 6;
+  // bool m_read = 7;
   bool has_m_read() const;
   private:
   bool _internal_has_m_read() const;
@@ -1959,7 +1980,7 @@ class mail PROTOBUF_FINAL :
   void _internal_set_m_read(bool value);
   public:
 
-  // bool m_draw = 7;
+  // bool m_draw = 8;
   bool has_m_draw() const;
   private:
   bool _internal_has_m_draw() const;
@@ -1983,6 +2004,7 @@ class mail PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::mailitem > m_items_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_prams_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_content_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_id_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_createutc_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_tid_;
@@ -5424,7 +5446,7 @@ inline void mailitem::set_m_count(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int32 m_id = 1;
 inline bool mail::_internal_has_m_id() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool mail::has_m_id() const {
@@ -5432,7 +5454,7 @@ inline bool mail::has_m_id() const {
 }
 inline void mail::clear_m_id() {
   m_id_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 mail::_internal_m_id() const {
   return m_id_;
@@ -5442,7 +5464,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 mail::m_id() const {
   return _internal_m_id();
 }
 inline void mail::_internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   m_id_ = value;
 }
 inline void mail::set_m_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -5452,7 +5474,7 @@ inline void mail::set_m_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int32 m_createutc = 2;
 inline bool mail::_internal_has_m_createutc() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
   return value;
 }
 inline bool mail::has_m_createutc() const {
@@ -5460,7 +5482,7 @@ inline bool mail::has_m_createutc() const {
 }
 inline void mail::clear_m_createutc() {
   m_createutc_ = 0;
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 mail::_internal_m_createutc() const {
   return m_createutc_;
@@ -5470,7 +5492,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 mail::m_createutc() const {
   return _internal_m_createutc();
 }
 inline void mail::_internal_set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   m_createutc_ = value;
 }
 inline void mail::set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -5480,7 +5502,7 @@ inline void mail::set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int32 m_tid = 3;
 inline bool mail::_internal_has_m_tid() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
   return value;
 }
 inline bool mail::has_m_tid() const {
@@ -5488,7 +5510,7 @@ inline bool mail::has_m_tid() const {
 }
 inline void mail::clear_m_tid() {
   m_tid_ = 0;
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 mail::_internal_m_tid() const {
   return m_tid_;
@@ -5498,7 +5520,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 mail::m_tid() const {
   return _internal_m_tid();
 }
 inline void mail::_internal_set_m_tid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
   m_tid_ = value;
 }
 inline void mail::set_m_tid(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -5580,7 +5602,81 @@ inline void mail::set_allocated_m_prams(std::string* m_prams) {
   // @@protoc_insertion_point(field_set_allocated:pbdb.mail.m_prams)
 }
 
-// repeated .pbdb.mailitem m_items = 5;
+// string m_content = 5;
+inline bool mail::_internal_has_m_content() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool mail::has_m_content() const {
+  return _internal_has_m_content();
+}
+inline void mail::clear_m_content() {
+  m_content_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline const std::string& mail::m_content() const {
+  // @@protoc_insertion_point(field_get:pbdb.mail.m_content)
+  return _internal_m_content();
+}
+inline void mail::set_m_content(const std::string& value) {
+  _internal_set_m_content(value);
+  // @@protoc_insertion_point(field_set:pbdb.mail.m_content)
+}
+inline std::string* mail::mutable_m_content() {
+  // @@protoc_insertion_point(field_mutable:pbdb.mail.m_content)
+  return _internal_mutable_m_content();
+}
+inline const std::string& mail::_internal_m_content() const {
+  return m_content_.Get();
+}
+inline void mail::_internal_set_m_content(const std::string& value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_content_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void mail::set_m_content(std::string&& value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_content_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:pbdb.mail.m_content)
+}
+inline void mail::set_m_content(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000002u;
+  m_content_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:pbdb.mail.m_content)
+}
+inline void mail::set_m_content(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000002u;
+  m_content_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:pbdb.mail.m_content)
+}
+inline std::string* mail::_internal_mutable_m_content() {
+  _has_bits_[0] |= 0x00000002u;
+  return m_content_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* mail::release_m_content() {
+  // @@protoc_insertion_point(field_release:pbdb.mail.m_content)
+  if (!_internal_has_m_content()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000002u;
+  return m_content_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void mail::set_allocated_m_content(std::string* m_content) {
+  if (m_content != nullptr) {
+    _has_bits_[0] |= 0x00000002u;
+  } else {
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  m_content_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_content,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:pbdb.mail.m_content)
+}
+
+// repeated .pbdb.mailitem m_items = 6;
 inline int mail::_internal_m_items_size() const {
   return m_items_.size();
 }
@@ -5619,9 +5715,9 @@ mail::m_items() const {
   return m_items_;
 }
 
-// bool m_read = 6;
+// bool m_read = 7;
 inline bool mail::_internal_has_m_read() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
   return value;
 }
 inline bool mail::has_m_read() const {
@@ -5629,7 +5725,7 @@ inline bool mail::has_m_read() const {
 }
 inline void mail::clear_m_read() {
   m_read_ = false;
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline bool mail::_internal_m_read() const {
   return m_read_;
@@ -5639,7 +5735,7 @@ inline bool mail::m_read() const {
   return _internal_m_read();
 }
 inline void mail::_internal_set_m_read(bool value) {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
   m_read_ = value;
 }
 inline void mail::set_m_read(bool value) {
@@ -5647,9 +5743,9 @@ inline void mail::set_m_read(bool value) {
   // @@protoc_insertion_point(field_set:pbdb.mail.m_read)
 }
 
-// bool m_draw = 7;
+// bool m_draw = 8;
 inline bool mail::_internal_has_m_draw() const {
-  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
   return value;
 }
 inline bool mail::has_m_draw() const {
@@ -5657,7 +5753,7 @@ inline bool mail::has_m_draw() const {
 }
 inline void mail::clear_m_draw() {
   m_draw_ = false;
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline bool mail::_internal_m_draw() const {
   return m_draw_;
@@ -5667,7 +5763,7 @@ inline bool mail::m_draw() const {
   return _internal_m_draw();
 }
 inline void mail::_internal_set_m_draw(bool value) {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
   m_draw_ = value;
 }
 inline void mail::set_m_draw(bool value) {

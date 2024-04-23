@@ -49,6 +49,12 @@ namespace ngl
 			send_actor(aactorid, pro);
 		}
 
+		bool ret_gm(const pack* apack, ngl::np_gm_response& adata)
+		{
+			send(apack->m_id, adata, nguid::make(), nguid::make());
+			return true;
+		}
+
 		bool handle(message<ngl::np_gm>& adata);
 
 		bool handle(message<mforward<ngl::np_gm_response>>& adata);

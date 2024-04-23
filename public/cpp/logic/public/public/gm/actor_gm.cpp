@@ -37,32 +37,60 @@ namespace ngl
 		{
 			if (lactorname == "ACTOR_GM")
 			{
+				std::string loperator;
+				if (lreadjson.read("operator", loperator) == false)
+				{
+					return true;
+				}
+				if (loperator == "guid")
+				{
+					struct gm_guid
+					{
+						std::string m_actor_name;
+						int16_t m_area;
+						int32_t m_dataid;
+
+						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
+					};
+					gm_guid lguid;
+					if (lreadjson.read("data", lguid))
+					{
+						ENUM_ACTOR ltype;
+						if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
+							return true;
+						ngl::ijson lwritejson;
+						lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
+						ngl::np_gm_response lresponse;
+						lwritejson.get(lresponse.m_json);
+						ret_gm(adata.m_pack, lresponse);
+						
+						return true;
+					}
+				}
+
 				return true;
 			}
 
-			static std::map<std::string, ENUM_ACTOR> lsignlocal
+			ENUM_ACTOR ltype;
+			if (nactortype::getInstance().name2enum(lactorname, ltype) == false)
 			{
-				{"ACTOR_NOTICE", ACTOR_NOTICE},
-			};
-			auto itor = lsignlocal.find(lactorname);
-			if (itor != lsignlocal.end())
-			{
-				sendsign(itor->second, adata.m_pack, *adata.m_data);
+				if (lactorname == "ACTOR_DB")
+				{
+					int32_t ltype = 0;
+					if (lreadjson.read("db", ltype))
+					{
+						lactorid = nguid::make(
+							db_enum(EPROTOCOL_TYPE::EPROTOCOL_TYPE_PROTOCOLBUFF, (pbdb::ENUM_DB)(ltype)),
+							ttab_servers::tab()->m_area,
+							nguid::none_actordataid()
+						);
+						sendnosign(lactorid, adata.m_pack, *adata.m_data);
+					}
+				}
 				return true;
 			}
-			else if (lactorname == "ACTOR_DB")
-			{
-				int32_t ltype = 0;
-				if (lreadjson.read("db", ltype))
-				{
-					lactorid = nguid::make(
-						db_enum(EPROTOCOL_TYPE::EPROTOCOL_TYPE_PROTOCOLBUFF, (pbdb::ENUM_DB)(ltype)),
-						ttab_servers::tab()->m_area,
-						nguid::none_actordataid()
-					);
-					sendnosign(lactorid, adata.m_pack, *adata.m_data);
-				}				
-			}
+			
+			sendsign(ltype, adata.m_pack, *adata.m_data);
 			return true;
 		}
 		else if (lreadjson.read("actor_id", lactorid))

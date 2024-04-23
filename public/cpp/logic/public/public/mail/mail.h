@@ -46,6 +46,14 @@ namespace ngl
 			return itor->second.get(achange).mutable_m_mail();
 		}
 
+		const pbdb::db_mail* get_db_mail(i64_actorid aroleid)
+		{
+			auto itor = data().find(aroleid);
+			if (itor == data().end())
+				return nullptr;
+			return &itor->second.getconst();
+		}
+
 		virtual void initdata()
 		{
 			LogLocalError("actor_mail###loaddb_finish")
@@ -77,13 +85,16 @@ namespace ngl
 			return itor->second;
 		}
 
-		void addmail(i64_actorid aroleid, int atid, std::map<int32_t, int32_t>& aitem, const std::string& aparm = "")
+		bool addmail(i64_actorid aroleid, int atid, std::map<int32_t, int32_t>& aitem, const std::string& acontent, const std::string& aparm)
 		{
-			tab_mail* tab = allcsv::tab<tab_mail>(atid);
-			if (tab == nullptr)
+			if (atid != -1)
 			{
-				LogLocalError("addmail tab id[%] not find!!!", atid)
-				return;
+				tab_mail* tab = allcsv::tab<tab_mail>(atid);
+				if (tab == nullptr)
+				{
+					LogLocalError("addmail tab id[%] not find!!!", atid);
+					return false;
+				}
 			}
 			
 			pbdb::mail lmail;
@@ -94,6 +105,7 @@ namespace ngl
 			lmail.set_m_draw(false);
 			lmail.set_m_read(false);
 			lmail.set_m_prams(aparm);
+			lmail.set_m_content(acontent);
 			for (auto [itemid, count] : aitem)
 			{
 				pbdb::mailitem* lpmailitem = lmail.add_m_items();
@@ -107,9 +119,21 @@ namespace ngl
 				ldbmail.set_m_id(aroleid);
 				ldbmail.mutable_m_mail()->insert({ lid, lmail });
 				add(aroleid, ldbmail);
-				return;
+				return true;
 			}
 			lpmap->insert({ lid, lmail });
+			return true;
+		}
+
+		bool addmail(i64_actorid aroleid, int atid, std::map<int32_t, int32_t>& aitem, const std::string& aparm = "")
+		{
+			return addmail(aroleid, atid, aitem, "", aparm);
+		}
+
+
+		bool addmail(i64_actorid aroleid, std::map<int32_t, int32_t>& aitem, const std::string& acontent)
+		{
+			return addmail(aroleid, -1, aitem, acontent, "");
 		}
 
 		pbdb::mail* get_mail(i64_actorid aroleid, int64_t aid)
@@ -171,18 +195,21 @@ namespace ngl
 
 		bool drawmail(int64_t aroleid, int64_t aid);
 
-		bool delmail(i64_actorid aroleid, int64_t aid)
+		bool delmail(i64_actorid aroleid, int64_t aid, bool acheckdrawread = true)
 		{
 			if (aid != -1)
 			{
 				pbdb::mail* ltemp = get_mail(aroleid, aid);
 				if (ltemp == nullptr)
 					return false;
-				if (ltemp->m_draw() == false || ltemp->m_read() == false)
+				if (acheckdrawread)
 				{
-					return false;
+					if (ltemp->m_draw() == false || ltemp->m_read() == false)
+					{
+						return false;
+					}
 				}
-
+				
 				google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
 				if (lmap == nullptr)
 					return false;

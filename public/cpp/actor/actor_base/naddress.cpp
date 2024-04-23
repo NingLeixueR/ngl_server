@@ -205,7 +205,6 @@ namespace ngl
 
 	void naddress::actor_add(i32_serverid aserverid, i64_actorid adataid)
 	{
-		//LogLocalError("######################serverid:actorid [%]:[%]", aserverid, adataid)
 		impl_actor_address::actor_add(aserverid, adataid);
 	}
 
