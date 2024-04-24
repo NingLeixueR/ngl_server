@@ -377,4 +377,21 @@ namespace ngl
 				return true;
 			});
 	}
+
+	bool ojson::read(const char* akey, std::vector<std::string>& adata)
+	{
+		cJSON* ltemp = nullptr;
+		if (read(akey, ltemp) == false)
+			return false;
+		int lsize = cJSON_GetArraySize(ltemp);
+		for (int i = 0; i < lsize; ++i)
+		{
+			cJSON* ret = cJSON_GetArrayItem(ltemp, i);
+			if (nullptr == ret || ret->type != cJSON_String)
+				continue;
+			std::string lval;
+			adata.push_back(ret->valuestring);
+		}
+		return true;
+	}
 }// namespace ngl

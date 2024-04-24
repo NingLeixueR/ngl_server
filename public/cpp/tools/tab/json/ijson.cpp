@@ -194,6 +194,16 @@ namespace ngl
 		write(akey, ljson);
 	}
 
+	void ijson::write(const char* akey, const std::vector<std::string>& aval)
+	{
+		cJSON* ljson = cJSON_CreateArray();
+		for (const std::string& item : aval)
+		{
+			cJSON_AddItemToArray(ljson, cJSON_CreateString(item.c_str()));
+		}
+		write(akey, ljson);
+	}
+
 	void ijson::get(std::string& adata)
 	{
 		if (m_isnonformatstr)

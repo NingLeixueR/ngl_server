@@ -709,6 +709,16 @@ namespace ngl
 		bool m_start;
 		def_portocol(np_calendar, m_calendarid, m_time, m_start)
 	};
+
+	// ---- 新增邮件
+	struct np_actor_addnotice
+	{
+		std::string m_notice;	// 内容
+		int32_t m_starttime;	// 开始时间
+		int32_t m_finishtime;	// 结束时间
+
+		def_portocol(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
+	};
 }//namespace ngl
 
 

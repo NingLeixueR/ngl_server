@@ -42,6 +42,23 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_NOTICE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
+		static bool sendnotice(const std::string& anotice, int32_t astarttime, int32_t afinishtime)
+		{
+			auto pro = std::make_shared<np_actor_addnotice>();
+			pro->m_notice = anotice;
+			pro->m_starttime = astarttime;
+			pro->m_finishtime = afinishtime;
+			actor::static_send_actor(actorid(), nguid::make(), pro);
+			return true;
+		}
+
+		bool handle(message<np_actor_addnotice>& adata);
+
 		using handle_cmd = cmd<actor_notice, std::string, int, ngl::ojson&>;
 		bool handle(message<mforward<np_gm>>& adata);
 

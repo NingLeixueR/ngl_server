@@ -76,6 +76,7 @@ namespace ngl
 		bool read(const char* akey, std::vector<float>& adata);
 		bool read(const char* akey, std::vector<double>& adata);
 		bool read(const char* akey, std::vector<bool>& adata);
+		bool read(const char* akey, std::vector<std::string> & adata);
 
 		template <typename T>
 		bool read(const char* akey, T& adata)
@@ -134,12 +135,6 @@ namespace ngl
 			return true;
 		}
 
-		template <typename T, typename ...ARG>
-		bool read(const std::vector<std::string>& akey, int aindex, T& avalue)
-		{
-			return read(akey[aindex].c_str(), avalue);
-		}
-		
 		template <typename T, typename ...ARG>
 		bool read(const char* akey, T& avalue, ARG&... arg)
 		{

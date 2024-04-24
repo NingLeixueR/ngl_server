@@ -31,6 +31,13 @@ namespace ngl
 		);
 	}
 
+	bool actor_notice::handle(message<np_actor_addnotice>& adata)
+	{
+		auto& recv = *adata.m_data;
+		m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+		return true;
+	}
+
 	struct gm_notice
 	{
 		int64_t		m_id;// 公告id
@@ -39,13 +46,6 @@ namespace ngl
 		int32_t		m_finishtime;// 结束时间
 
 		jsonfunc("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
-	};
-
-	struct get_notice_responce
-	{
-		std::vector<gm_notice> m_notice;
-
-		jsonfunc("notice", m_notice)
 	};
 
 	bool actor_notice::handle(message<mforward<np_gm>>& adata)
@@ -63,19 +63,17 @@ namespace ngl
 		{
 			handle_cmd::push("get_notice", [this](int id, ngl::ojson& aos)
 				{// 返回 {"notice":gm_notice[]}
-					gcmd<std::vector<gm_notice>> pro;
+					gcmd<std::vector<std::string>> pro;
 					pro.id = id;
 					pro.m_operator = "get_notice_responce";
-					for (auto& [key, value] : m_notice.data())
+					
+					std::map<nguid, data_modified<pbdb::db_notice>>& lmapdb = m_notice.data();
+					for (const auto& [_guid, _data] : lmapdb)
 					{
-						gm_notice ltemp;
-						ltemp.m_id = value.getconst().m_id();
-						ngl::conversion::to_asscii(value.getconst().m_notice(), ltemp.m_notice);
-						//ltemp.m_notice = value.getconst().m_notice();
-						ltemp.m_starttime = value.getconst().m_starttime();
-						ltemp.m_finishtime = value.getconst().m_finishtime();
-						pro.m_data.push_back(ltemp);
+						pro.m_data.resize(pro.m_data.size() + 1);
+						serialize::proto_json(_data.getconst(), *pro.m_data.rbegin());
 					}
+					pro.m_istoutf8 = false;
 				}
 			);
 			handle_cmd::push("add_notice", [this](int id, ngl::ojson& aos)

@@ -51,6 +51,7 @@ namespace ngl
 		void write(const char* akey, const std::vector<double>& aval);
 		void write(const char* akey, const std::vector<int64_t>& aval);
 		void write(const char* akey, const std::vector<uint64_t>& aval);
+		void write(const char* akey, const std::vector<std::string>& aval);
 
 		template <typename KEY, typename VAL>
 		void write(const char* akey, const std::map<KEY, VAL>& aval)
