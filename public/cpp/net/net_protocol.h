@@ -76,37 +76,37 @@ namespace ngl
 
 		bpool& get_pool();
 
-		//## åˆå§‹åŒ–net_protocol
-		//## aport			i16_port		ç«¯å£å·
-		//## athreadnum		i32_threadsize 	çº¿ç¨‹æ•°
-		//## aouternet		bool			æ˜¯å¦å…è®¸éå†…ç½‘ä¸»åŠ¨è¿æ¥
+		//## ³õÊ¼»¯net_protocol
+		//## aport			i16_port		¶Ë¿ÚºÅ
+		//## athreadnum		i32_threadsize 	Ïß³ÌÊı
+		//## aouternet		bool			ÊÇ·ñÔÊĞí·ÇÄÚÍøÖ÷¶¯Á¬½Ó
 		virtual bool init(i16_port aport, i32_threadsize athreadnum, bool aouternet);
 
-		//## å…³é—­socketè¿æ¥ä»¥åŠåŠ è½½çš„æ•°æ®
-		//## é€šçŸ¥ä¸Šå±‚åº”ç”¨
+		//## ¹Ø±ÕsocketÁ¬½ÓÒÔ¼°¼ÓÔØµÄÊı¾İ
+		//## Í¨ÖªÉÏ²ãÓ¦ÓÃ
 		virtual void close(i32_sessionid asession);
 
-		//## é€»è¾‘å±‚ä¸»åŠ¨å…³é—­è¿æ¥(è¿™æ ·å°±ä¸éœ€è¦é€šçŸ¥ä¸Šå±‚åº”ç”¨)
+		//## Âß¼­²ãÖ÷¶¯¹Ø±ÕÁ¬½Ó(ÕâÑù¾Í²»ĞèÒªÍ¨ÖªÉÏ²ãÓ¦ÓÃ)
 		virtual void close_net(i32_sessionid asession) = 0;
 
-		//## å‘é€æ¶ˆæ¯
+		//## ·¢ËÍÏûÏ¢
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
 
-		//## æœåŠ¡å™¨æ˜¯å¦å­˜åœ¨æ­¤session id
+		//## ·şÎñÆ÷ÊÇ·ñ´æÔÚ´Ësession id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
-		//## è·å–çº¿ç¨‹æ•°é‡
+		//## »ñÈ¡Ïß³ÌÊıÁ¿
 		int socketthreadnum();
 
-		//## è·å–ç›‘å¬ç«¯å£å·
+		//## »ñÈ¡¼àÌı¶Ë¿ÚºÅ
 		int port();
 
-		//## å‘é€pack
+		//## ·¢ËÍpack
 		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
-		//## å‘æŸä¸ªæœåŠ¡å™¨å‘é€pack
+		//## ÏòÄ³¸ö·şÎñÆ÷·¢ËÍpack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		virtual void set_close(
@@ -129,7 +129,7 @@ namespace ngl
 			, bool areconnection
 		);
 
-		//## å‘é€æ¶ˆæ¯
+		//## ·¢ËÍÏûÏ¢
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -151,7 +151,7 @@ namespace ngl
 		template <typename T>
 		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
 
-		//## ç»™ä¸€ç»„sesionå‘é€æ¶ˆæ¯
+		//## ¸øÒ»×ésesion·¢ËÍÏûÏ¢
 		// key: session values:aactorid
 		// std::map<uint32_t, uint32_t>& asession
 		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);

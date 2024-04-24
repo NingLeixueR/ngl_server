@@ -112,7 +112,7 @@ namespace Pbnet {
             "KAsyDi5wYm5ldC5WRUNUT1IySAGIAQESFAoHbV9hbmdsZRgEIAEoBUgCiAEB",
             "EhQKB21fc3BlZWQYBSABKAVIA4gBAUIHCgVfbV9pZEINCgtfbV9wb3NpdGlv",
             "bkIKCghfbV9hbmdsZUIKCghfbV9zcGVlZCJRCg1Vbml0QXR0cmlidXRlEhMK",
-            "Bm1fdHlwZRgBIAEoBUgAiAEBEhQKB21fdmFsdWUYAiABKAVIAYgBAUIJCgdf",
+            "Bm1fdHlwZRgBIAEoBUgAiAEBEhQKB21fdmFsdWUYAiABKANIAYgBAUIJCgdf",
             "bV90eXBlQgoKCF9tX3ZhbHVlIlcKClVuaXRNb2R1bGUSFAoHbV9tdHlwZRgB",
             "IAEoBUgAiAEBEicKCW1fbW9kdWxlcxgCIAMoCzIULnBibmV0LlVuaXRBdHRy",
             "aWJ1dGVCCgoIX21fbXR5cGUi5gEKBFVOSVQSIQoGbV90eXBlGAEgASgOMgwu",
@@ -9075,13 +9075,13 @@ namespace Pbnet {
 
     /// <summary>Field number for the "m_value" field.</summary>
     public const int MValueFieldNumber = 2;
-    private int mValue_;
+    private long mValue_;
     /// <summary>
     /// 属性值
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int MValue {
-      get { if ((_hasBits0 & 2) != 0) { return mValue_; } else { return 0; } }
+    public long MValue {
+      get { if ((_hasBits0 & 2) != 0) { return mValue_; } else { return 0L; } }
       set {
         _hasBits0 |= 2;
         mValue_ = value;
@@ -9143,7 +9143,7 @@ namespace Pbnet {
       }
       if (HasMValue) {
         output.WriteRawTag(16);
-        output.WriteInt32(MValue);
+        output.WriteInt64(MValue);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -9160,7 +9160,7 @@ namespace Pbnet {
       }
       if (HasMValue) {
         output.WriteRawTag(16);
-        output.WriteInt32(MValue);
+        output.WriteInt64(MValue);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -9175,7 +9175,7 @@ namespace Pbnet {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MType);
       }
       if (HasMValue) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MValue);
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MValue);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -9213,7 +9213,7 @@ namespace Pbnet {
             break;
           }
           case 16: {
-            MValue = input.ReadInt32();
+            MValue = input.ReadInt64();
             break;
           }
         }
@@ -9235,7 +9235,7 @@ namespace Pbnet {
             break;
           }
           case 16: {
-            MValue = input.ReadInt32();
+            MValue = input.ReadInt64();
             break;
           }
         }

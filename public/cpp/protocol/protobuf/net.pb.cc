@@ -1653,8 +1653,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBU
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::pbnet::UnitAttribute, m_type_),
   PROTOBUF_FIELD_OFFSET(::pbnet::UnitAttribute, m_value_),
-  0,
   1,
+  0,
   PROTOBUF_FIELD_OFFSET(::pbnet::UnitModule, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbnet::UnitModule, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2167,7 +2167,7 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "OR2H\001\210\001\001\022\024\n\007m_angle\030\004 \001(\005H\002\210\001\001\022\024\n\007m_spee"
   "d\030\005 \001(\005H\003\210\001\001B\007\n\005_m_idB\r\n\013_m_positionB\n\n\010"
   "_m_angleB\n\n\010_m_speed\"Q\n\rUnitAttribute\022\023\n"
-  "\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H\001\210\001\001"
+  "\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\003H\001\210\001\001"
   "B\t\n\007_m_typeB\n\n\010_m_value\"W\n\nUnitModule\022\024\n"
   "\007m_mtype\030\001 \001(\005H\000\210\001\001\022\'\n\tm_modules\030\002 \003(\0132\024"
   ".pbnet.UnitAttributeB\n\n\010_m_mtype\"\346\001\n\004UNI"
@@ -11995,10 +11995,10 @@ class UnitAttribute::_Internal {
  public:
   using HasBits = decltype(std::declval<UnitAttribute>()._has_bits_);
   static void set_has_m_type(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
+    (*has_bits)[0] |= 2u;
   }
   static void set_has_m_value(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
+    (*has_bits)[0] |= 1u;
   }
 };
 
@@ -12012,16 +12012,16 @@ UnitAttribute::UnitAttribute(const UnitAttribute& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_type_, &from.m_type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_value_) -
-    reinterpret_cast<char*>(&m_type_)) + sizeof(m_value_));
+  ::memcpy(&m_value_, &from.m_value_,
+    static_cast<size_t>(reinterpret_cast<char*>(&m_type_) -
+    reinterpret_cast<char*>(&m_value_)) + sizeof(m_type_));
   // @@protoc_insertion_point(copy_constructor:pbnet.UnitAttribute)
 }
 
 void UnitAttribute::SharedCtor() {
-  ::memset(&m_type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_value_) -
-      reinterpret_cast<char*>(&m_type_)) + sizeof(m_value_));
+  ::memset(&m_value_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&m_type_) -
+      reinterpret_cast<char*>(&m_value_)) + sizeof(m_type_));
 }
 
 UnitAttribute::~UnitAttribute() {
@@ -12057,9 +12057,9 @@ void UnitAttribute::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_type_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_value_) -
-        reinterpret_cast<char*>(&m_type_)) + sizeof(m_value_));
+    ::memset(&m_value_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&m_type_) -
+        reinterpret_cast<char*>(&m_value_)) + sizeof(m_type_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -12082,7 +12082,7 @@ const char* UnitAttribute::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 m_value = 2;
+      // int64 m_value = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           _Internal::set_has_m_value(&has_bits);
@@ -12125,10 +12125,10 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_type(), target);
   }
 
-  // int32 m_value = 2;
+  // int64 m_value = 2;
   if (_internal_has_m_value()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_value(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_m_value(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -12149,18 +12149,18 @@ size_t UnitAttribute::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // int32 m_type = 1;
+    // int64 m_value = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_type());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+          this->_internal_m_value());
     }
 
-    // int32 m_value = 2;
+    // int32 m_type = 1;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_value());
+          this->_internal_m_type());
     }
 
   }
@@ -12198,10 +12198,10 @@ void UnitAttribute::MergeFrom(const UnitAttribute& from) {
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      m_type_ = from.m_type_;
+      m_value_ = from.m_value_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_value_ = from.m_value_;
+      m_type_ = from.m_type_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -12230,11 +12230,11 @@ void UnitAttribute::InternalSwap(UnitAttribute* other) {
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UnitAttribute, m_value_)
-      + sizeof(UnitAttribute::m_value_)
-      - PROTOBUF_FIELD_OFFSET(UnitAttribute, m_type_)>(
-          reinterpret_cast<char*>(&m_type_),
-          reinterpret_cast<char*>(&other->m_type_));
+      PROTOBUF_FIELD_OFFSET(UnitAttribute, m_type_)
+      + sizeof(UnitAttribute::m_type_)
+      - PROTOBUF_FIELD_OFFSET(UnitAttribute, m_value_)>(
+          reinterpret_cast<char*>(&m_value_),
+          reinterpret_cast<char*>(&other->m_value_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UnitAttribute::GetMetadata() const {

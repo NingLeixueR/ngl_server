@@ -41,7 +41,7 @@ namespace ngl
 
 		EActivity type()
 		{
-			tab_activity* tab = allcsv::tab<tab_activity>(m_activityid);
+			tab_activity* tab = allcsv::tab<tab_activity>((int32_t)m_activityid);
 			assert(tab != nullptr);
 			return tab->m_type;
 		}

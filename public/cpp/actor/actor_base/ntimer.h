@@ -93,7 +93,7 @@ namespace ngl
 			return false;			
 		}
 
-		// 1-7
+		// √ø÷‹¥•∑¢ 1-7
 		static bool week(timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
 			if (check_week(aweek) && check_hour(ahour) && check_min(amin) && check_sec(asec))

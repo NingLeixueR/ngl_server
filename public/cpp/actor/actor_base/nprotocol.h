@@ -486,7 +486,6 @@ namespace ngl
 		def_portocol(np_actor_forward, m_uid, m_area, m_data)
 	};
 
-
 	template <typename T, bool ISUSING>
 	struct np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
 	{
@@ -512,7 +511,7 @@ namespace ngl
 			:m_data(nullptr)
 		{}
 
-		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ~ISUSING, T>& adata)
+		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING?false:true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 

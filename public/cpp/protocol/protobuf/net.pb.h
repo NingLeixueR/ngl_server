@@ -6813,9 +6813,22 @@ class UnitAttribute PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMTypeFieldNumber = 1,
     kMValueFieldNumber = 2,
+    kMTypeFieldNumber = 1,
   };
+  // int64 m_value = 2;
+  bool has_m_value() const;
+  private:
+  bool _internal_has_m_value() const;
+  public:
+  void clear_m_value();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_value() const;
+  void set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_value() const;
+  void _internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
   // int32 m_type = 1;
   bool has_m_type() const;
   private:
@@ -6829,19 +6842,6 @@ class UnitAttribute PROTOBUF_FINAL :
   void _internal_set_m_type(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 m_value = 2;
-  bool has_m_value() const;
-  private:
-  bool _internal_has_m_value() const;
-  public:
-  void clear_m_value();
-  ::PROTOBUF_NAMESPACE_ID::int32 m_value() const;
-  void set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_value() const;
-  void _internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:pbnet.UnitAttribute)
  private:
   class _Internal;
@@ -6851,8 +6851,8 @@ class UnitAttribute PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_value_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_type_;
-  ::PROTOBUF_NAMESPACE_ID::int32 m_value_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -14317,7 +14317,7 @@ inline void UNIT_POSITION::set_m_speed(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int32 m_type = 1;
 inline bool UnitAttribute::_internal_has_m_type() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool UnitAttribute::has_m_type() const {
@@ -14325,7 +14325,7 @@ inline bool UnitAttribute::has_m_type() const {
 }
 inline void UnitAttribute::clear_m_type() {
   m_type_ = 0;
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 UnitAttribute::_internal_m_type() const {
   return m_type_;
@@ -14335,7 +14335,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 UnitAttribute::m_type() const {
   return _internal_m_type();
 }
 inline void UnitAttribute::_internal_set_m_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   m_type_ = value;
 }
 inline void UnitAttribute::set_m_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -14343,30 +14343,30 @@ inline void UnitAttribute::set_m_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:pbnet.UnitAttribute.m_type)
 }
 
-// int32 m_value = 2;
+// int64 m_value = 2;
 inline bool UnitAttribute::_internal_has_m_value() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline bool UnitAttribute::has_m_value() const {
   return _internal_has_m_value();
 }
 inline void UnitAttribute::clear_m_value() {
-  m_value_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
+  m_value_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 UnitAttribute::_internal_m_value() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 UnitAttribute::_internal_m_value() const {
   return m_value_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 UnitAttribute::m_value() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 UnitAttribute::m_value() const {
   // @@protoc_insertion_point(field_get:pbnet.UnitAttribute.m_value)
   return _internal_m_value();
 }
-inline void UnitAttribute::_internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000002u;
+inline void UnitAttribute::_internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000001u;
   m_value_ = value;
 }
-inline void UnitAttribute::set_m_value(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void UnitAttribute::set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_value(value);
   // @@protoc_insertion_point(field_set:pbnet.UnitAttribute.m_value)
 }
