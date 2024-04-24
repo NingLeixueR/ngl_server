@@ -41,7 +41,11 @@ namespace ngl
 	void actor_manage_activity::init()
 	{
 		timerparm tparm;
-		make_timerparm::make_interval(tparm, 5);
+		if (make_timerparm::make_interval(tparm, 5) == false)
+		{
+			LogLocalError("actor_manage_activity::init() make_timerparm::make_interval(tparm, 5) == false!!!");
+			return;
+		}
 		set_timer(tparm);
 		m_db.set(this);
 	}

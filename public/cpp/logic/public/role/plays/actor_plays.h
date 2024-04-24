@@ -29,7 +29,11 @@ namespace ngl
 		virtual void init()
 		{
 			timerparm tparm;
-			make_timerparm::make_interval(tparm, 1);
+			if (make_timerparm::make_interval(tparm, 1) == false)
+			{
+				LogLocalError("actor_plays::init() make_timerparm::make_interval(tparm, 1) == false!!!");
+				return;
+			}
 			set_timer(tparm);
 		}
 

@@ -38,7 +38,11 @@ namespace ngl
 	void actor_chat::init()
 	{
 		timerparm tparm;
-		make_timerparm::make_interval(tparm, 2);
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			LogLocalError("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
 		set_timer(tparm);			
 	}
 	

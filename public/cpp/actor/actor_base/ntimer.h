@@ -42,108 +42,148 @@ namespace ngl
 	class make_timerparm
 	{
 	public:
-		static time_t month_ms(int anow, int autc, int amonthday = 1/*1-31*/, int ahour = 0, int amin = 0, int asec = 0)
+		static time_t month_ms(time_t anow, int amonthday/*1-31*/, int ahour, int amin, int asec)
 		{
-			time_t lfirst = localtime::getmothday(autc, amonthday, ahour, amin, asec);
+			time_t lfirst = localtime::getmothday(anow, amonthday, ahour, amin, asec);
 			char lbuff[1024] = { 0 };
 			ngl::localtime::time2str(lbuff, 1024, lfirst, "%y/%m/%d %H:%M:%S");
 			std::cout << lbuff << std::endl;
 			return (lfirst - anow) * localtime::MILLISECOND;
 		}
 
-		//ET_MONTH,		// 每月触发
-		static void month(timerparm& aparm, int amonthday = 1/*1-31*/, int ahour = 0, int amin = 0, int asec = 0, int acount = 0x7fffffff)
+		static bool check_monthday(int amonthday)
 		{
-			assert(amonthday >= 1 && amonthday <= 31);
-			assert(ahour >= 0 && ahour <= 23);
-			assert(amin >= 0 && amin <= 59);
-			assert(asec >= 0 && asec <= 59);
-			aparm.m_type = timerparm::ET_WEEK;
-			aparm.m_ms = month_ms(localtime::gettime(), amonthday, ahour, amin, asec);
-			aparm.m_intervalms = [amonthday, ahour, amin, asec](int64_t ams)
-				{
-					return make_timerparm::month_ms(localtime::gettime(), ams / 1000 + 1, amonthday, ahour, amin, asec);
-				};
-			aparm.m_count = acount;
+			return amonthday >= 1 && amonthday <= 31;
+		}
+
+		static bool check_hour(int ahour)
+		{
+			return ahour >= 0 && ahour <= 23;
+		}
+
+		static bool check_min(int amin)
+		{
+			return amin >= 0 && amin <= 59;
+		}
+
+		static bool check_sec(int asec)
+		{
+			return asec >= 0 && asec <= 59;
+		}
+
+		static bool check_week(int aweek)
+		{
+			return aweek >= 1 && aweek <= 7;
+		}
+
+		//ET_MONTH,		// 每月触发
+		static bool month(timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
+		{
+			if (check_monthday(amonthday) && check_hour(ahour) && check_min(amin) && check_sec(asec))
+			{
+				aparm.m_type = timerparm::ET_WEEK;
+				aparm.m_ms = month_ms(localtime::gettime(), amonthday, ahour, amin, asec);
+				aparm.m_intervalms = [amonthday, ahour, amin, asec](int64_t ams)
+					{
+						return make_timerparm::month_ms(ams / 1000 + 1, amonthday, ahour, amin, asec);
+					};
+				aparm.m_count = acount;
+				return true;
+			}
+			return false;			
 		}
 
 		// 1-7
-		static void week(timerparm& aparm, int aweek = 1/*1-7*/, int ahour = 0, int amin = 0, int asec = 0, int acount = 0x7fffffff)
+		static bool week(timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			assert(aweek >= 1 && aweek <= 7);
-			assert(ahour >= 0 && ahour <= 23);
-			assert(amin >= 0 && amin <= 59);
-			assert(asec >= 0 && asec <= 59);
-			aparm.m_type = timerparm::ET_WEEK;
-			time_t lnow = localtime::gettime();
-			time_t lfirst = localtime::getweekday(aweek >= 7 ? 0 : aweek, ahour, amin, asec);
-			aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
-			aparm.m_intervalms = [](int64_t)
-				{
-					return localtime::WEEK_MILLISECOND;
-				};
-			aparm.m_count = acount;
+			if (check_week(aweek) && check_hour(ahour) && check_min(amin) && check_sec(asec))
+			{
+				aparm.m_type = timerparm::ET_WEEK;
+				time_t lnow = localtime::gettime();
+				time_t lfirst = localtime::getweekday(aweek >= 7 ? 0 : aweek, ahour, amin, asec);
+				aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
+				aparm.m_intervalms = [](int64_t)
+					{
+						return localtime::WEEK_MILLISECOND;
+					};
+				aparm.m_count = acount;
+				return true;
+			}
+			return false;
 		}
 
 		// 每日触发  ahour时amin分asec秒
-		static void day(timerparm& aparm, int ahour, int amin = 0, int asec = 0, int acount = 0x7fffffff)
+		static bool day(timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			assert(ahour >= 0 && ahour <= 23);
-			assert(amin >= 0 && amin <= 59);
-			assert(asec >= 0 && asec <= 59);
-			aparm.m_type = timerparm::ET_DAY;
-			time_t lnow = localtime::gettime();
-			time_t lfirst = localtime::getsecond2time(ahour, amin, asec);
-			aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
-			aparm.m_intervalms = [](int64_t)
-				{
-					return localtime::DAY_MILLISECOND;
-				};
-			aparm.m_count = acount;
+			if (check_hour(ahour) && check_min(amin) && check_sec(asec))
+			{
+				aparm.m_type = timerparm::ET_DAY;
+				time_t lnow = localtime::gettime();
+				time_t lfirst = localtime::getsecond2time(ahour, amin, asec);
+				aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
+				aparm.m_intervalms = [](int64_t)
+					{
+						return localtime::DAY_MILLISECOND;
+					};
+				aparm.m_count = acount;
+				return true;
+			}
+			return false;
 		}
 
 		// 每小时触发  amin分asec秒
-		static void hour(timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
+		static bool hour(timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
-			assert(amin >= 0 && amin <= 59);
-			assert(asec >= 0 && asec <= 59);
-			aparm.m_type = timerparm::ET_HOUR;
-			time_t lnow = localtime::gettime();
-			time_t lfirst = localtime::getsecond2time(amin, asec);
-			aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
-			aparm.m_intervalms = [](int64_t)
-				{
-					return localtime::HOUR_MILLISECOND;
-				};
-			aparm.m_count = acount;
+			if (check_min(amin) && check_sec(asec))
+			{
+				aparm.m_type = timerparm::ET_HOUR;
+				time_t lnow = localtime::gettime();
+				time_t lfirst = localtime::getsecond2time(amin, asec);
+				aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
+				aparm.m_intervalms = [](int64_t)
+					{
+						return localtime::HOUR_MILLISECOND;
+					};
+				aparm.m_count = acount;
+				return true;
+			}
+			return false;
 		}
 
 		// 每分钟触发  asec秒
-		static void min(timerparm& aparm, int asec, int acount = 0x7fffffff)
+		static bool min(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
-			assert(asec >= 0 && asec <= 59);
-			aparm.m_type = timerparm::ET_MIN;
-			time_t lnow = localtime::gettime();
-			time_t lfirst = localtime::getsecond2time(asec);
-			aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
-			aparm.m_intervalms = [](int64_t)
-				{
-					return localtime::MINUTES_MILLISECOND;
-				};
-			aparm.m_count = acount;
+			if (check_sec(asec))
+			{
+				aparm.m_type = timerparm::ET_MIN;
+				time_t lnow = localtime::gettime();
+				time_t lfirst = localtime::getsecond2time(asec);
+				aparm.m_ms = (lfirst - lnow) * localtime::MILLISECOND;
+				aparm.m_intervalms = [](int64_t)
+					{
+						return localtime::MINUTES_MILLISECOND;
+					};
+				aparm.m_count = acount;
+				return true;
+			}
+			return false;
 		}
 
 		// 每n秒触发
-		static void make_interval(timerparm& aparm, int asec, int acount = 0x7fffffff)
+		static bool make_interval(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
-			assert(asec >= 0);
-			aparm.m_type = timerparm::ET_INTERVAL_SEC;
-			aparm.m_ms = asec * localtime::MILLISECOND;
-			aparm.m_intervalms = [asec](int64_t)
-				{
-					return asec * localtime::MILLISECOND;
-				};
-			aparm.m_count = acount;
+			if (asec >= 0)
+			{
+				aparm.m_type = timerparm::ET_INTERVAL_SEC;
+				aparm.m_ms = asec * localtime::MILLISECOND;
+				aparm.m_intervalms = [asec](int64_t)
+					{
+						return asec * localtime::MILLISECOND;
+					};
+				aparm.m_count = acount;
+				return true;
+			}
+			return false;
 		}
 	};
 

@@ -17,7 +17,11 @@ namespace ngl
 	void actor_reloadcsv::init()
 	{
 		timerparm tparm;
-		make_timerparm::make_interval(tparm, 60);
+		if (make_timerparm::make_interval(tparm, 60) == false)
+		{
+			LogLocalError("actor_reloadcsv::init() make_timerparm::make_interval(tparm, 60) == false!!!");
+			return;
+		}
 		set_timer(tparm);
 	}
 
