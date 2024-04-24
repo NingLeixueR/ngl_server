@@ -24,7 +24,7 @@ namespace ngl
 		std::set<i16_actortype>								m_actortype;	// 包含哪些actortype
 
 		// 删除actor后需要执行的操作
-		std::map<nguid, std::function<void()>> m_delactorfun;
+		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
 			m_thread(&impl_actor_manage::run, this),
@@ -111,7 +111,7 @@ namespace ngl
 
 				if (lpactor->get_activity_stat() == actor_stat_list)
 				{
-					for (std::list<ptractor>::iterator itor_actorlist = m_actorlist.begin(); itor_actorlist != m_actorlist.end(); ++itor_actorlist)
+					for (auto itor_actorlist = m_actorlist.begin(); itor_actorlist != m_actorlist.end(); ++itor_actorlist)
 					{
 						if (aguid == (*itor_actorlist)->id_guid())
 						{
@@ -448,4 +448,3 @@ namespace ngl
 		m_impl_actor_manage()->finish_suspend_thread();
 	}
 }//namespace ngl
-

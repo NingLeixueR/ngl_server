@@ -6,8 +6,8 @@
 #include "db_data.h"
 #include "db_pool.h"
 #include "ntimer.h"
-#include "db.h"
 #include "net.h"
+#include "db.h"
 
 namespace ngl
 {

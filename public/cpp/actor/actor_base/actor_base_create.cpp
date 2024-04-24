@@ -30,9 +30,6 @@ namespace ngl
 			((actor_ugpalace*)(lpactor_base))->init_rfun<actor_ugpalace>();
 			actor_base::first_nregister<actor_ugpalace>();
 			break;
-		//case ACTOR_ACTIVITY:
-		//	lpactor_base = activity_create::create(aid, *(bool*)aparm);
-		//	break;
 		case ACTOR_LOG:
 			lpactor_base = new actor_log(*(ELOG_TYPE*)aparm);
 			((actor_log*)(lpactor_base))->init_rfun<actor_log>();

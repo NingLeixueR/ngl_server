@@ -125,7 +125,7 @@ namespace ngl
 				return true;
 			if (m_tab->m_birthpoint.empty())
 			{
-				LogLocalError("actor_plays::handle(pbnet::PROBUFF_NET_ENTER_PLAYS) m_birthpoint.empty()")
+				LogLocalError("actor_plays::handle(pbnet::PROBUFF_NET_ENTER_PLAYS) m_birthpoint.empty()");
 				return true;
 			}
 			int lindex = std::rand() % m_tab->m_birthpoint.size();
