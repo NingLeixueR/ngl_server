@@ -14,23 +14,13 @@
 #include "ntimer.h"
 #include "net.pb.h"
 #include "task.h"
+#include "cmd.h"
 #include "bag.h"
 #include "net.h"
 #include "db.h"
 
 namespace ngl
 {
-	class role_cmd
-	{
-	public:
-		using callback = std::function<void(actor_role*, const char*)>;
-	private:
-		static std::map<std::string, callback> m_cmd;
-	public:
-		static void init();
-		static const callback& find(const char* akey);
-	};
-
 	class actor_manage_role;
 	class actor_role : public actor
 	{
@@ -126,6 +116,8 @@ namespace ngl
 		//# 登录请求未发货充值
 		void loginpay();
 
+		struct tar {};
+		using handle_cmd = cmd<tar, actor_role*, const char*>;
 		//# CMD 协议
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
 

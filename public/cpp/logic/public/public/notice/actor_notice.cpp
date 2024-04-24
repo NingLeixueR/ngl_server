@@ -59,12 +59,10 @@ namespace ngl
 			return true;
 		}
 
-		static std::map<std::string, std::function<void(int, ngl::ojson&)>> lcmd;
-		if (lcmd.empty())
+		if (handle_cmd::empty())
 		{
-			lcmd["get_notice"] = [this](int id, ngl::ojson& aos)
-				{
-					// 返回 {"notice":gm_notice[]}
+			handle_cmd::push("get_notice", [this](int id, ngl::ojson& aos)
+				{// 返回 {"notice":gm_notice[]}
 					gcmd<std::vector<gm_notice>> pro;
 					pro.id = id;
 					pro.m_operator = "get_notice_responce";
@@ -78,8 +76,9 @@ namespace ngl
 						ltemp.m_finishtime = value.getconst().m_finishtime();
 						pro.m_data.push_back(ltemp);
 					}
-				};
-			lcmd["add_notice"] = [this](int id, ngl::ojson& aos)
+				}
+			);
+			handle_cmd::push("add_notice", [this](int id, ngl::ojson& aos)
 				{
 					// 返回 bool
 					gm_notice recv;
@@ -90,9 +89,9 @@ namespace ngl
 					pro.m_operator = "add_notice_responce";
 					pro.m_data = true;
 					m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
-				};
-
-			lcmd["del_notice"] = [this](int id, ngl::ojson& aos)
+				}
+			);
+			handle_cmd::push("del_notice", [this](int id, ngl::ojson& aos)
 				{
 					// 返回 bool
 					int64_t lid = 0;
@@ -103,17 +102,13 @@ namespace ngl
 					pro.m_operator = "del_notice_responce";
 					pro.m_data = true;
 					m_notice.del_notice(lid);
-				};
-
+				}
+			);
 		}
-
-		auto itor = lcmd.find(loperator);
-		if (itor == lcmd.end())
+		if (handle_cmd::function(loperator, adata.m_data->identifier(), lojson) == false)
 		{
 			LogLocalError("GM actor_notice operator[%] ERROR", loperator);
-			return true;
 		}
-		itor->second(adata.m_data->identifier(), lojson);
 		return true;
 	}
 

@@ -9,9 +9,10 @@
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
-#include "db.h"
 #include "gcmd.h"
+#include "cmd.h"
 #include "net.h"
+#include "db.h"
 
 namespace ngl
 {
@@ -28,12 +29,17 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_dbtab
 	{
-		static tab_dbload* m_tab;
+		static tab_dbload*			m_tab;
 		// ## 加载出id 防止内存穿透
-		static std::set<int64_t> m_idset;
+		static std::set<int64_t>	m_idset;
 
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
+
+		static cache_list<TDBTAB, enum_clist_save>& cachelist_inst()
+		{
+			return cache_list<TDBTAB, enum_clist_save>::getInstance();
+		}
 	public:
 		// 初始化
 		static void init()
@@ -45,11 +51,9 @@ namespace ngl
 					m_tab = ttab_dbload::get_tabdb<TDBTAB>();
 					Assert(m_tab != nullptr)
 				}
-				cache_list<TDBTAB, enum_clist_save>::getInstance().set_cachefun(
-					std::bind(&actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
-
-				cache_list<TDBTAB, enum_clist_del>::getInstance().set_cachefun(
-					std::bind(&actor_dbtab<PROTYPE,TDBTAB_TYPE, TDBTAB>::cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
+				
+				cachelist_inst().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
+				cachelist_inst().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
 
 				if (m_tab->m_isloadall == true)
 				{
@@ -115,7 +119,7 @@ namespace ngl
 				});
 			pro.m_over = true;
 			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name())
+			LogLocalInfo("loadall[%]", TDBTAB().descriptor()->full_name());
 		}
 
 		// 加载表中的指定数据
@@ -252,7 +256,6 @@ namespace ngl
 					{
 						.m_type = nactor_type<tactor_db>::type(),
 						.m_area = ttab_servers::tab()->m_area,
-						//.m_id = nguid::none_actordataid()
 					},
 					.m_weight = 0x7fffffff,
 				})
@@ -335,6 +338,9 @@ namespace ngl
 			return true;
 		}
 
+		struct tar {};
+		using handle_cmd = cmd<tar, int, int, ngl::ojson&>;
+
 		bool handle(message<mforward<np_gm>>& adata)
 		{
 			ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
@@ -344,10 +350,10 @@ namespace ngl
 			{
 				return true;
 			}
-			static std::map<std::string, std::function<void(int, int, ngl::ojson&)>> lcmd;
-			if (lcmd.empty())
+
+			if (handle_cmd::empty())
 			{
-				lcmd["query"] = [this](int athread, int id, ngl::ojson& aos)
+				handle_cmd::push("query", [this](int athread, int id, ngl::ojson& aos)
 					{
 						// 返回 {"data":""}
 						gcmd<std::string> pro;
@@ -372,8 +378,8 @@ namespace ngl
 								pro.m_data = lbuff;
 							}
 						}
-					};
-				lcmd["change"] = [this](int athread, int id, ngl::ojson& aos)
+					});
+				handle_cmd::push("change", [this](int athread, int id, ngl::ojson& aos)
 					{
 						gcmd<bool> pro;
 						pro.id = id;
@@ -385,23 +391,21 @@ namespace ngl
 							return;
 						protobuf_data<TDBTAB> ldata;
 						ldata.m_isbinary = false;
-						ngl::unserialize lunser(ljson.c_str(), ljson.size()+1);
+						ngl::unserialize lunser(ljson.c_str(), ljson.size() + 1);
 						if (!lunser.pop(ldata))
 							return;
 						ngl::dbdata<TDBTAB>::set(ldata.m_data->m_id(), *ldata.m_data);
 						db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), ldata.m_data->m_id());
 						// 返回 {"data":""}
-						
+
 						pro.m_data = true;
-					};
+					});
 			}
-			auto itor = lcmd.find(loperator);
-			if (itor == lcmd.end())
+
+			if (handle_cmd::function(loperator, adata.m_thread, adata.m_data->identifier(), lojson) == false)
 			{
 				LogLocalError("GM actor_db operator[%] ERROR", loperator);
-				return true;
 			}
-			itor->second(adata.m_thread, adata.m_data->identifier(), lojson);
 			return true;
 		}
 	};

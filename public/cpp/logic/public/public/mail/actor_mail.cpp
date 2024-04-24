@@ -43,10 +43,9 @@ namespace ngl
 		{
 			return true;
 		}
-		static std::map<std::string, std::function<void(int, ngl::ojson&)>> lcmd;
-		if (lcmd.empty())
+		if (handle_cmd::empty())
 		{
-			lcmd["get_mails"] = [this](int id, ngl::ojson& aos)
+			handle_cmd::push("get_mails", [this](int id, ngl::ojson& aos)
 				{
 					int64_t roleid = 0;
 					if (aos.read("data", roleid) == false)
@@ -59,8 +58,9 @@ namespace ngl
 						return;
 					serialize::proto_json(*ldb, pro.m_data);
 					pro.m_istoutf8 = false;
-				};
-			lcmd["add_mail"] = [this](int id, ngl::ojson& aos)
+				}
+			);
+			handle_cmd::push("add_mail", [this](int id, ngl::ojson& aos)
 				{
 					struct gm_mailitem
 					{
@@ -95,8 +95,9 @@ namespace ngl
 						return;
 					}
 					pro.m_data = true;
-				};
-			lcmd["del_mail"] = [this](int id, ngl::ojson& aos)
+				}
+			);
+			handle_cmd::push("del_mail", [this](int id, ngl::ojson& aos)
 				{
 					// ·µ»Ø bool
 					struct gm_deletemail
@@ -113,16 +114,14 @@ namespace ngl
 					pro.m_operator = "del_mail_responce";
 					pro.m_data = true;
 					m_mails.delmail(ldelmail.m_roleid, ldelmail.m_mailid, false);
-				};
-
+				}
+			);
 		}
-		auto itor = lcmd.find(loperator);
-		if (itor == lcmd.end())
+
+		if (handle_cmd::function(loperator, adata.m_data->identifier(), lojson) == false)
 		{
 			LogLocalError("GM actor_mail operator[%] ERROR", loperator);
-			return true;
 		}
-		itor->second(adata.m_data->identifier(), lojson);
 		return true;
 	}
 }// namespace ngl

@@ -69,6 +69,8 @@ namespace ngl
 			return true;
 		}
 
+		struct tar {};
+		using handle_cmd = cmd<tar, int, ngl::ojson&>;
 		// ## GM²Ù×÷mail
 		bool handle(message<mforward<np_gm>>& adata);
 
