@@ -116,8 +116,7 @@ namespace ngl
 		//# 登录请求未发货充值
 		void loginpay();
 
-		struct tar {};
-		using handle_cmd = cmd<tar, actor_role*, const char*>;
+		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
 		//# CMD 协议
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
 

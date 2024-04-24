@@ -338,8 +338,7 @@ namespace ngl
 			return true;
 		}
 
-		struct tar {};
-		using handle_cmd = cmd<tar, int, int, ngl::ojson&>;
+		using handle_cmd = cmd<tactor_db, std::string, int, int, ngl::ojson&>;
 
 		bool handle(message<mforward<np_gm>>& adata)
 		{

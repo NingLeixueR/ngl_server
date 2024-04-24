@@ -69,8 +69,7 @@ namespace ngl
 			return true;
 		}
 
-		struct tar {};
-		using handle_cmd = cmd<tar, int, ngl::ojson&>;
+		using handle_cmd = cmd<actor_mail, std::string, int, ngl::ojson&>;
 		// ## GM²Ù×÷mail
 		bool handle(message<mforward<np_gm>>& adata);
 

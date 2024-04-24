@@ -42,8 +42,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		struct tar {};
-		using handle_cmd = cmd<tar, int, ngl::ojson&>;
+		using handle_cmd = cmd<actor_notice, std::string, int, ngl::ojson&>;
 		bool handle(message<mforward<np_gm>>& adata);
 
 		//# 客户端拉取公告
