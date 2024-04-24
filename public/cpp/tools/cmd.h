@@ -28,6 +28,7 @@ namespace ngl
 				return false;
 			}
 			itor->second(arg...);
+			return true;
 		}
 	};
 

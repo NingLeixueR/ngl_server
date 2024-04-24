@@ -18,9 +18,6 @@ Dumper lDumper;
 int main(int argc, char** argv)
 {
 	ngl::init_event();
-	ngl::event_parm_death lparm;
-	ngl::event_death::execute(&lparm);
-
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();

@@ -111,7 +111,7 @@ namespace ngl
 		static void post(tab_calendar* atab, int64_t autc, pbdb::db_calendar& acalendar);
 
 		// 获取开服时间utc
-		static int32_t serveropen()
+		static time_t serveropen()
 		{
 			xmlinfo* xml = nconfig::get_publicconfig();
 			std::string lopenserve;

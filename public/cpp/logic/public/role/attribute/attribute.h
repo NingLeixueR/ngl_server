@@ -106,7 +106,6 @@ namespace ngl
 				pram.m_unitid = -1;
 				pram.m_deathunitid = m_unitid;
 				event_death::execute(&pram);
-				//mapevent::on_death(m_map, m_unitid);
 			}
 		}
 
