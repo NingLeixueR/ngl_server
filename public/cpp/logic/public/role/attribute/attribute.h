@@ -67,7 +67,7 @@ namespace ngl
 			}
 		}
 	};
-
+	class aoimap;
 	// 动态属性,可以在战斗中改变的属性
 	class dynamic_attribute
 	{
@@ -102,7 +102,11 @@ namespace ngl
 			m_dynamic[aattribute] += avalue;
 			if (is_death())
 			{
-				mapevent::on_death(m_map, m_unitid);
+				event_parm_death pram;
+				pram.m_unitid = -1;
+				pram.m_deathunitid = m_unitid;
+				event_death::execute(&pram);
+				//mapevent::on_death(m_map, m_unitid);
 			}
 		}
 
