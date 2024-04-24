@@ -94,8 +94,6 @@ int main(int argc, char** argv)
 		start_pushserverconfig();
 	}
 
-	ngl::test_attribute();
-	 
 	while (1)
 	{
 		ngl::sleep::seconds(1);
