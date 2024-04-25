@@ -36,10 +36,14 @@ namespace ngl
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 
-		template <enum_cache_list ENUM_CACHE>
-		static cache_list<TDBTAB, ENUM_CACHE>& cachelist_inst()
+		static cache_list<TDBTAB, enum_clist_save>& inst_save()
 		{
-			return cache_list<TDBTAB, ENUM_CACHE>::getInstance();
+			return cache_list<TDBTAB, enum_clist_save>::getInstance();
+		}
+
+		static cache_list<TDBTAB, enum_clist_del>& inst_del()
+		{
+			return cache_list<TDBTAB, enum_clist_del>::getInstance();
 		}
 	public:
 		// ≥ı ºªØ
@@ -53,8 +57,8 @@ namespace ngl
 					Assert(m_tab != nullptr)
 				}
 				
-				cachelist_inst<enum_clist_save>().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
-				cachelist_inst<enum_clist_del>().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
+				inst_save().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
+				inst_del().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
 
 				if (m_tab->m_isloadall == true)
 				{
@@ -187,13 +191,13 @@ namespace ngl
 			{
 				m_idset.insert(adata.const_mm_id());
 				ngl::dbdata<TDBTAB>::set(adata.const_mm_id(), adata);
-				cachelist_inst<enum_clist_save>().push(adata.const_mm_id());
+				inst_save().push(adata.const_mm_id());
 			}
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
 				m_idset.insert(adata.m_id());
 				ngl::dbdata<TDBTAB>::set(adata.m_id(), adata);
-				cachelist_inst<enum_clist_save>().push(adata.m_id());
+				inst_save().push(adata.m_id());
 			}
 		}
 
@@ -202,7 +206,7 @@ namespace ngl
 		{
 			m_idset.erase(aid);
 			ngl::dbdata<TDBTAB>::remove(aid);
-			cachelist_inst<enum_clist_del>().push(aid);
+			inst_del().push(aid);
 		}
 
 		static void del(i32_threadid athreadid, std::vector<i64_actorid>& aid)
@@ -212,7 +216,7 @@ namespace ngl
 				m_idset.erase(id);
 			}
 			ngl::dbdata<TDBTAB>::remove(aid);
-			cachelist_inst<enum_clist_del>().push(aid);
+			inst_del().push(aid);
 		}
 
 		static void save(i32_threadid athreadid, const pack* apack, const np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
