@@ -15,9 +15,10 @@
 
 Dumper lDumper;
 
+#include "tools.h"
+
 int main(int argc, char** argv)
 {
-	ngl::init_event();
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();

@@ -167,6 +167,7 @@ namespace ngl
 		actor_manage_dbclient*						m_manage_dbclient;
 		actor_base*									m_actor;
 		std::vector<int64_t>						m_dellist;
+		std::string									m_name;					// 主要调试需要知道TACTOR的名字
 	public:
 		ndbclient():
 			m_id(nguid::make()),
@@ -176,7 +177,9 @@ namespace ngl
 			ndbclient_base(DBTYPE),
 			m_actor(nullptr),
 			m_manage_dbclient(nullptr)
-		{}
+		{
+			tools::type_name<TACTOR>(m_name);
+		}
 
 		virtual void create(const nguid& aid)
 		{
@@ -253,6 +256,11 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
+			LogLocalWarn("actor_dbclient<%> save 1", m_name);
+			if (m_name == "class ngl::actor_mail")
+			{
+				std::cout << std::endl;
+			}
 			np_actordb_save<PROTYPE, DBTYPE, TDBTAB> pro;
 			std::list<data_modified<TDBTAB>*> lclearlist;
 			if (aid != (int64_t)-1)
@@ -288,12 +296,13 @@ namespace ngl
 			}
 			if (pro.empty() == false)
 			{
+				LogLocalError("actor_dbclient<%> save 2", m_name);
 				// ### 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
-					// LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name())
+					LogLocalError("actor_dbclient<%> actor_base::net_pack fail", m_name);
 					return;
 				}
 				// ### 异步发送pack

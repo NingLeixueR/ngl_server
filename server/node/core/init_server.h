@@ -81,7 +81,9 @@ bool init_server(int aid)
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
-	LogLocalError("ngl::actor_manage::getInstance().init(%)", tab->m_actorthreadnum)
+	LogLocalError("ngl::actor_manage::getInstance().init(%)", tab->m_actorthreadnum);
+
+	ngl::init_event();
 
 	return true;
 }

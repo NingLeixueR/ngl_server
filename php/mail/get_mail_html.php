@@ -1,9 +1,9 @@
 <html>
-	<h2>鏌ョ湅閭欢</h2>
+	<h2>查看邮件</h2>
 	<form action="./get_mail.php" method="post" accept-charset="UTF-8">
 		<?php require_once "../serverls.php";?>
-		鐜╁id:<input name="roleid" type="text"/><br/>
-		<input type="submit" value="鏌ョ湅"/><br/>
+		玩家id:<input name="roleid" type="text"/><br/>
+		<input type="submit" value="查看"/><br/>
 	</form>
 </body>
 </html>

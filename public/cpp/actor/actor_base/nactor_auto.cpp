@@ -62,19 +62,16 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	void initdb()
 	{
+		using type_actor_db = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>;
 		ENUM_ACTOR lenum = db_enum(PROTYPE, TDBTAB_TYPE);
-		nactor_type<
-			ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
-		>::inits(lenum);
+		nactor_type<type_actor_db>::inits(lenum);
 
 		init_customs_db<TDBTAB_TYPE, TDBTAB>();
-		nactor_type<ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>>::inits(lenum);
 
-		LogLocalError("init_actor_type [%]-[%]",
-			boost::typeindex::type_id_with_cvr<
-			ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>
-			>().pretty_name(),
-			(int)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE)
+		//tools::type_name<type_actor_db>();
+		LogLocalError("init_actor_type [%]-[%]"
+			, boost::typeindex::type_id_with_cvr<type_actor_db>().pretty_name()
+			, (int)(lenum)
 		);
 	}
 
