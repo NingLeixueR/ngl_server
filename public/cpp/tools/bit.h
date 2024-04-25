@@ -14,12 +14,13 @@ namespace ngl
 
 		void init(int8_t* abit, int32_t abitarraycount);
 
-		void set_all(bool abool);
-
 		static bool set(int abit, int8_t& avalues, bool abool);
 
+		//# 将所有位都设置为abool
+		bool set(bool abool);
+		//# 把abit位设置为abool
 		bool set(int abit, bool abool);
-
+		//# 获取abit位的bool
 		bool get(int abit)const;
 
 		int find_first(bool abool);

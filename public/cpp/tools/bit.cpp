@@ -25,9 +25,12 @@ namespace ngl
 		m_bitarraycount = abitarraycount;
 	}
 
-	void bit::set_all(bool abool)
+	bool bit::set(bool abool)
 	{
+		if (m_bitarraycount < 0)
+			return false;
 		memset(m_bit, abool ? 0xFF : 0x0, m_bitarraycount);
+		return true;
 	}
 
 	template <int N>

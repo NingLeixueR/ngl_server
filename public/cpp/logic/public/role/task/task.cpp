@@ -303,5 +303,4 @@ namespace ngl
 				static_task::receive_task(lrole, atask.m_id);
 			});
 	}
-
 }// namespace ngl

@@ -7,10 +7,10 @@ namespace ngl
 {
 	struct tconsuming
 	{
-		int32_t m_id;
-		std::string m_name;
-		int64_t m_beg;
-		int64_t m_end;
+		int32_t			m_id;
+		std::string		m_name;
+		int64_t			m_beg;
+		int64_t			m_end;
 		std::function<bool(int64_t, int64_t)> m_fun;
 		static std::atomic<int32_t> m_indexid;
 

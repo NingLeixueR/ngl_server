@@ -6,7 +6,9 @@
 #include "db_data.h"
 #include "db.h"
 
-#define DEF_SAVEDB_ISBINARY	(true)
+// 如果此值为true 将把"proto的二进制"转换为十六进制字符串并保存
+// 如果此值为false 将把"proto的json串"保存
+#define DDBSAVE_PROTO_BINARY (true)
 
 namespace ngl
 {
@@ -58,7 +60,15 @@ namespace ngl
 		{
 			if (aistohex)
 			{
-				ngl::unserialize lunser(adb->m_buff2, hexbytes::to_bytes(abuff, alen, adb->m_buff2));
+				int lbufflen = 0;
+				if (hexbytes::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
+				{
+					std::string ltname;
+					LogLocalError("db_manage::unserialize(%, %)", tools::type_name<T>(ltname), abuff);
+					return false;
+				}
+					
+				ngl::unserialize lunser(adb->m_buff2, lbufflen);
 				if (!lunser.pop(adata))
 					return false;
 			}
@@ -129,11 +139,11 @@ namespace ngl
 				if (m_savetemp.m_data == nullptr)
 				{
 					m_savetemp.make();
-					m_savetemp.m_isbinary = DEF_SAVEDB_ISBINARY;
+					m_savetemp.m_isbinary = DDBSAVE_PROTO_BINARY;
 				}
 				*m_savetemp.m_data = adata;
 
-				char* lsql = ngl::db_manage::serialize(adb, m_savetemp, DEF_SAVEDB_ISBINARY ? true : false);
+				char* lsql = ngl::db_manage::serialize(adb, m_savetemp, DDBSAVE_PROTO_BINARY ? true : false);
 				if (lsql == nullptr)
 					return;
 
@@ -330,8 +340,8 @@ namespace ngl
 					[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
-						ldata.m_isbinary = DEF_SAVEDB_ISBINARY;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DEF_SAVEDB_ISBINARY ? true : false) == false)
+						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
+						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false) == false)
 							return false;
 						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
@@ -352,8 +362,8 @@ namespace ngl
 					[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
-						ldata.m_isbinary = DEF_SAVEDB_ISBINARY;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DEF_SAVEDB_ISBINARY ? true : false) == false)
+						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
+						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false) == false)
 							return false;
 						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;

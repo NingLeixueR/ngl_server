@@ -228,16 +228,17 @@ namespace ngl
 
 		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
 		{
-			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid);
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
+			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid); 
 			if (lpmap == nullptr)
 			{
-				return pro;
+				return nullptr;
 			}
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
 			for (const auto& [_mailid, _mails] : *lpmap)
 			{
 				pro->mutable_m_mail()->insert({ _mailid, _mails });
 			}
+			return pro;
 		}
 	};
 }// namespace ngl

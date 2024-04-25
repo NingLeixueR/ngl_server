@@ -4,18 +4,20 @@
 
 namespace ngl
 {
-	unsigned char _hexget(unsigned char avalues)
+	unsigned char _hexget(unsigned char asource, unsigned char& atarget)
 	{
-		if (avalues >= 'a' && avalues <= 'f')
+		if (asource >= 'a' && asource <= 'f')
 		{
 			unsigned char lret = 10;
-			return lret + (avalues - 'a');
+			atarget = lret + (asource - 'a');
+			return true;
 		}
-
-		if (avalues >= '0' && avalues <= '9')
-			return (avalues - '0');
-
-		assert(false);
+		if (asource >= '0' && asource <= '9')
+		{
+			atarget = (asource - '0');
+			return true;
+		}
+		return false;
 	}
 
 	void _bh(unsigned char& apso, unsigned char& apto1, unsigned char& apto2)
@@ -25,11 +27,17 @@ namespace ngl
 		apto2 = arr[0x0f & apso];
 	}
 
-	void _hb(unsigned char* apso, unsigned char* apto)
+	bool _hb(unsigned char* apso, unsigned char* apto)
 	{
 		(*apto) = 0;
-		(*apto) |= _hexget(*apso) << 4;
-		(*apto) |= _hexget(*&apso[1]);
+		unsigned char ltarget = 0;
+		if (_hexget(*apso, ltarget) == false)
+			return false;
+		(*apto) |= ltarget << 4;
+		if (_hexget(*&apso[1], ltarget) == false)
+			return false;
+		(*apto) |= ltarget;
+		return true;
 	}
 
 	int hexbytes::to_hex(void* apso, int alen, void* apto)
@@ -47,14 +55,16 @@ namespace ngl
 		return llen;
 	}
 
-	int hexbytes::to_bytes(void* apso, int alen, void* apto)
+	bool hexbytes::to_bytes(void* apso, int alen, void* apto, int& apotlen)
 	{
 		int llen = 0;
 		for (int i = 0; i < alen / 2; ++i)
 		{
-			_hb(&((unsigned char*)apso)[i * 2], &((unsigned char*)apto)[i]);
+			if (_hb(&((unsigned char*)apso)[i * 2], &((unsigned char*)apto)[i]) == false)
+				return false;
 			llen += 2;
 		}
-		return alen / 2;
+		apotlen = alen / 2;
+		return true;
 	}
 }// namespace ngl

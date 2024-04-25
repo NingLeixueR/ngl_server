@@ -58,6 +58,4 @@ namespace ngl
 		static bool update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset);
 		static bool update_change(actor_role* arole, ETask atype, int32_t avalues);
 	};
-
-
 }// namespace ngl

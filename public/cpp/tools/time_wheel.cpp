@@ -56,6 +56,9 @@ namespace ngl
 		int64_t				m_timerid;							// 定时器自增id
 		std::map<int64_t, bool> m_timer;						// 用于快速删除定时器
 		time_wheel*			m_twheel;
+		bool				m_stop;
+		ngl::sem			m_stopsem;
+		ngl::sem			m_stopsem_callback;
 
 		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback):
 			m_twheel(atwheel),
@@ -64,7 +67,8 @@ namespace ngl
 			m_timerid(1),
 			m_worldnodehead(nullptr),
 			m_worldnodetail(nullptr),
-			m_config(aconfig)
+			m_config(aconfig),
+			m_stop(false)
 		{
 			m_server_start_ms = getms();
 			m_current_ms = m_server_start_ms;
@@ -91,6 +95,7 @@ namespace ngl
 
 		~impl_time_wheel()
 		{
+			stop();
 			for (auto item : m_wheel)
 				delete item;
 			m_wheel.clear();
@@ -223,12 +228,20 @@ namespace ngl
 				m_worldnodetail = ltailnode;
 			}
 		}
+		
+		void stop()
+		{
+			m_stop = true;
+			m_sem.post();
+			m_stopsem.wait();
+			m_stopsem_callback.wait();
+		}
 
 		void run()
 		{
 			int ltemp = 0;
 			int ltempsleep = 0;
-			while (true)
+			while (m_stop == false)
 			{
 				ltemp = getms() - m_current_ms;
 				ltempsleep = m_config.m_time_wheel_precision - ltemp;
@@ -241,12 +254,13 @@ namespace ngl
 					addtimer(lpbnode);
 				m_current_ms += m_config.m_time_wheel_precision;
 			}
+			m_stopsem.post();
 		}
 
 		void runcallback()
 		{
 			wheel_node* lpnode = nullptr;
-			while (true)
+			while (m_stop == false)
 			{
 				m_sem.wait();
 				{
@@ -264,6 +278,7 @@ namespace ngl
 				}
 				lpnode = nullptr;
 			}
+			m_stopsem_callback.post();
 		}
 
 		std::shared_ptr<wheel_node> pop_node()

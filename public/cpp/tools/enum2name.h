@@ -1,14 +1,13 @@
 #pragma once
 
+#include "tools.h"
+
 #include <algorithm>
 #include <string>
 #include <map>
 
-#include "tools.h"
-
 namespace ngl
 {
-	//#######enum2name
 	template <typename ENUMT, bool TOLOWER = true>
 	class enum2name
 	{
