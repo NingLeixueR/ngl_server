@@ -17,7 +17,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	return 0;
 	ngl::init_event();
 	nconfig::init();
 	nconfig::load("config");
