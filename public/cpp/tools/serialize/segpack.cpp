@@ -165,11 +165,13 @@ namespace ngl
 						protocol::push(lpack);
 					}
 					else
+					{
 						LogLocalError("time[% < % + % ]"
 							, localtime::gettime()
 							, lpack->m_head.getvalue(EPH_TIME)
 							, DEF_TIMEOUT_SECOND
-						)
+						);
+					}
 					continue;
 				}
 				m_data[aid] = lpack;

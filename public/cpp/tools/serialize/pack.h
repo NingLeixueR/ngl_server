@@ -1,11 +1,11 @@
 #pragma once
 
+#include "pack_head.h"
+#include "type.h"
+
 #include <functional>
 #include <cstdint>
 #include <atomic>
-
-#include "pack_head.h"
-#include "type.h"
 
 namespace ngl
 {

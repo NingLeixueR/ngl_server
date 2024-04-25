@@ -1,12 +1,12 @@
 #pragma once
 
-#include <cstdint>
-#include <map>
-
 #include "logserialize.h"
 #include "serialize.h"
 #include "csvtable.h"
 #include "type.h"
+
+#include <cstdint>
+#include <map>
 
 namespace ngl
 {

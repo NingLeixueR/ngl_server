@@ -1,4 +1,5 @@
 #include "pack_head.h"
+#include "xmlnode.h"
 #include "nguid.h"
 #include "nlog.h"
 
@@ -212,9 +213,12 @@ namespace ngl
 
 	bool pack_head::_log(logserialize& atstr, int anumber/* = EPH_BYTES*/)const
 	{
-		if (atstr(m_data[anumber])) return false;
-		if (atstr("#"))				return false;
-		if (EPH_SUM != anumber)		return _log(atstr, anumber + 1);
+		if (atstr(m_data[anumber]))
+			return false;
+		if (atstr("#"))
+			return false;
+		if (EPH_SUM != anumber)
+			return _log(atstr, anumber + 1);
 		return true;
 	}
 

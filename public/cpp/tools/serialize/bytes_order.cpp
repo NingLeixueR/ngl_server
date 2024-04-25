@@ -4,8 +4,6 @@ namespace ngl
 {
 	constexpr bool bytes_order::islittle()
 	{
-		//static int lint = 1;
-		//return ((char*)&lint)[0] == 1;
 		return std::endian::native == std::endian::little;
 	}
 

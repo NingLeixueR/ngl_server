@@ -140,8 +140,8 @@ namespace ngl
 
 	enum
 	{
-		enum_pool_count = 10,
-		enum_pool_buff_bytes = 64,
+		enum_pool_count			= 10,
+		enum_pool_buff_bytes	= 64,
 	};
 
 	class netbuff_pool : public netbuff<enum_pool_buff_bytes, enum_pool_count>
