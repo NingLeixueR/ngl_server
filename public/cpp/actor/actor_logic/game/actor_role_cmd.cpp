@@ -111,7 +111,9 @@ namespace ngl
 			);
 		}
 
-		if (handle_cmd::function(lvec[0], this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
+		std::string& lkey = lvec[0];
+		std::transform(lkey.begin(), lkey.end(), lkey.begin(), tolower);
+		if (handle_cmd::function(lkey, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
 			LogLocalError("actor_role cmd [%] ERROR", lvec[0]);
 		}
