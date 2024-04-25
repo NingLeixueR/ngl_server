@@ -10,6 +10,9 @@
 #include "localtime.h"
 #include "enum2name.h"
 #include "logformat.h"
+#include "nprotocol.h"
+#include "xmlinfo.h"
+#include "xmlnode.h"
 #include "nlog.h"
 
 namespace ngl
@@ -158,7 +161,7 @@ namespace ngl
 	struct logfile_default : public logfile
 	{
 		logfile_default(bool aisactor, const config& aconfig);
-		virtual void printf(const logitem& alog);
+		virtual void printf(const logitem* alog);
 		virtual void local_printf(ELOG atype, ngl::logformat& llogformat);
 	};
 
@@ -166,17 +169,17 @@ namespace ngl
 		logfile(aisactor, aconfig)
 	{}
 
-	void logfile_default::printf(const logitem& alog)
+	void logfile_default::printf(const logitem* alog)
 	{
-		tab_servers* tab = ttab_servers::tab(alog.m_serverid);
+		tab_servers* tab = ttab_servers::tab(alog->m_serverid);
 		m_stream << 
-			"[server:" << tab->m_name << "#" << alog.m_serverid 
+			"[server:" << tab->m_name << "#" << alog->m_serverid
 			<< "][" <<
-			elog_name::get((ELOG)alog.m_type) 
+			elog_name::get((ELOG)alog->m_type)
 			<< "][" << 
-			alog.m_pos 
+			alog->m_pos
 			<< "][" 
-			<< alog.m_head << "]\t" << alog.m_str << std::endl;
+			<< alog->m_head << "]\t" << alog->m_str << std::endl;
 		++m_count;
 		create(false);
 	}
@@ -192,16 +195,16 @@ namespace ngl
 	struct logfile_bi : public logfile
 	{
 		logfile_bi(bool aisactor, const config& aconfig);
-		virtual void printf(const logitem& alog);
+		virtual void printf(const logitem* alog);
 	};
 
 	logfile_bi::logfile_bi(bool aisactor, const config& aconfig) :
 		logfile(aisactor, aconfig)
 	{}
 
-	void logfile_bi::printf(const logitem& alog)
+	void logfile_bi::printf(const logitem* alog)
 	{
-		m_stream << alog.m_str << std::endl;
+		m_stream << alog->m_str << std::endl;
 	}
 
 	std::shared_ptr<logfile> logfile::create_make(bool aisactor, const config& aconfig)

@@ -42,7 +42,7 @@ namespace ngl
 	bool actor_log::handle(message<np_actor_logitem>& adata)
 	{
 		logitem& ldata = adata.m_data->m_data;
-		m_log->printf(ldata);
+		m_log->printf(&ldata);
 		return true;
 	}
 }//namespace ngl

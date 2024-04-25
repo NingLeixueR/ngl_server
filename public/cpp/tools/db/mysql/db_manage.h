@@ -4,6 +4,7 @@
 #include "hexbytes.h"
 #include "regular.h"
 #include "db_data.h"
+#include "tools.h"
 #include "db.h"
 
 // 如果此值为true 将把"proto的二进制"转换为十六进制字符串并保存
@@ -63,8 +64,7 @@ namespace ngl
 				int lbufflen = 0;
 				if (hexbytes::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
 				{
-					std::string ltname;
-					LogLocalError("db_manage::unserialize(%, %)", tools::type_name<T>(ltname), abuff);
+					LogLocalError("db_manage::unserialize(%, %)", dtype_name(T), abuff);
 					return false;
 				}
 					

@@ -19,7 +19,11 @@ namespace ngl
 	{
 		xml() {}
 	public:
-		static xml& getInstance() { static xml ltemp; return ltemp; }
+		static xml& getInstance() 
+		{ 
+			static xml ltemp; 
+			return ltemp; 
+		}
 
 		static bool read(std::string aname, boost_ptree& apt);
 

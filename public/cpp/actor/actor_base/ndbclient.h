@@ -112,6 +112,7 @@ namespace ngl
 	>
 	class ndbclient : public ndbclient_base
 	{
+		using type_ndbclient = ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>;
 		tab_dbload* m_tab;
 	public:
 		virtual void load()
@@ -123,7 +124,7 @@ namespace ngl
 				std::shared_ptr<np_actornode_connect_task> pro(new np_actornode_connect_task
 					{
 						.m_serverid = tab->m_db,
-						.m_fun = std::bind(&ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>::loaddb, this, m_id),
+						.m_fun = std::bind(&type_ndbclient::loaddb, this, m_id),
 					});
 				nguid lclientguid = actor_client::actorid();
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
@@ -153,11 +154,7 @@ namespace ngl
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 
-			std::string lname;
-			LogLocalError("actor_dbclient loaddb [%] [%]"
-				, tools::type_name<ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>>(lname)
-				, aid
-			);
+			LogLocalError("actor_dbclient loaddb [%] [%]", dtype_name(type_ndbclient), aid);
 		}
 
 		nguid										m_id;
@@ -178,7 +175,7 @@ namespace ngl
 			m_actor(nullptr),
 			m_manage_dbclient(nullptr)
 		{
-			tools::type_name<TACTOR>(m_name);
+			m_name = dtype_name(TACTOR);
 		}
 
 		virtual void create(const nguid& aid)
@@ -256,7 +253,6 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
-			LogLocalWarn("actor_dbclient<%> save 1", m_name);
 			if (m_name == "class ngl::actor_mail")
 			{
 				std::cout << std::endl;
@@ -296,7 +292,7 @@ namespace ngl
 			}
 			if (pro.empty() == false)
 			{
-				LogLocalError("actor_dbclient<%> save 2", m_name);
+				LogLocalError("actor_dbclient<%> save %", m_name, aid);
 				// ### 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
@@ -399,11 +395,8 @@ namespace ngl
 				{//加载失败  数据库中没有数据
 					return loadfinish();
 				}
-				std::string lname;
-				LogLocalError("db load respones:[%] recv_over[%]"
-					, tools::type_name<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>(lname)
-					, adata.m_data->m_over? "true":"false"
-				)
+				using type_message = np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>;
+				LogLocalError("db load respones:[%] recv_over[%]", dtype_name(type_message), adata.m_data->m_over ? "true" : "false");
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch
 			return true;

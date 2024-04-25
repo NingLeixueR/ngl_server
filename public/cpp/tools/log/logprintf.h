@@ -1,11 +1,5 @@
 #pragma once
 
-#include "enum2name.h"
-#include "nprotocol.h"
-#include "logformat.h"
-#include "xmlinfo.h"
-#include "xmlnode.h"
-
 #include <fstream>
 #include <memory>
 
@@ -34,6 +28,8 @@ namespace ngl
 		static void printf(ELOG acolor, const char* apos, const char* atimestr, const char* amsg);
 	};
 
+	struct logitem;
+
 	struct logfile
 	{
 		struct config
@@ -51,7 +47,7 @@ namespace ngl
 		logfile(bool aisactor, const config& aconfig);
 		void create(bool afirst);
 
-		virtual void printf(const logitem& alog) = 0;
+		virtual void printf(const logitem* alog) = 0;
 		virtual void local_printf(ELOG atype, ngl::logformat& llogformat) {}
 
 		static std::shared_ptr<logfile> create_make(bool aisactor, const config& aconfig);

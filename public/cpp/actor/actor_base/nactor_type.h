@@ -16,8 +16,7 @@ namespace ngl
 
 		static ENUM_ACTOR type()
 		{
-			std::string lname;
-			std::cout << tools::type_name<T>(lname) << std::endl;
+			std::cout << dtype_name(T) << std::endl;
 			assert(m_type != ACTOR_NONE);
 			return m_type;
 		}

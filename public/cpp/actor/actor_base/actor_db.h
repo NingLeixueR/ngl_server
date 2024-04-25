@@ -176,11 +176,9 @@ namespace ngl
 				}
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-				std::string lname;
-				LogLocalError("load finish: [%][%]"
-					, lrequestactor
-					, tools::type_name<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname)
-				)
+
+				using type_message = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+				LogLocalError("load finish: [%][%]", lrequestactor, dtype_name(type_message));
 			}
 		}
 
@@ -297,10 +295,8 @@ namespace ngl
 
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			std::string lname;
-			LogLocalError("load: [%] [%]", 
-				tools::type_name<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>(lname),
-				adata.m_data->m_id)
+			using type_message = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			LogLocalError("load: [%] [%]", dtype_name(type_message), adata.m_data->m_id)
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}

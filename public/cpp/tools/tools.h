@@ -49,13 +49,6 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
-		template <typename T>
-		static std::string& type_name(std::string& astr)
-		{
-			astr = boost::typeindex::type_id_with_cvr<T>().pretty_name();
-			return astr;
-		}
-
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
 		{
@@ -75,3 +68,5 @@ namespace ngl
 		}
 	};
 }//namespace ngl
+
+#define dtype_name(TYPE_) boost::typeindex::type_id_with_cvr<TYPE_>().pretty_name()

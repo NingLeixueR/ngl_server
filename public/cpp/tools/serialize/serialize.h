@@ -19,6 +19,7 @@
 #include "define.h"
 #include "db.pb.h"
 #include "tools.h"
+#include "nlog.h"
 #include "csv.h"
 
 #include <google/protobuf/util/json_util.h>
@@ -67,7 +68,7 @@ namespace ngl
 
 	class serialize
 	{
-		char* m_buff;
+		char*	m_buff;
 		int32_t m_len;
 		int32_t m_pos;
 	public:
@@ -124,26 +125,17 @@ namespace ngl
 					return true;
 				}
 				return false;
-				/*google::protobuf::util::JsonPrintOptions options;
-				options.add_whitespace = false;
-				options.always_print_primitive_fields = false;
-				options.preserve_proto_field_names = false;
-				std::string json;
-				bool ret = google::protobuf::util::MessageToJsonString(*adata.m_data, &json, options).ok();
-				if (ret)
-				{
-					int32_t len = json.size() + 1;
-					memcpy(&buff()[byte()], json.c_str(), len);
-					add_bytes(len);
-				}
-				return ret;*/
 			}
 		}
 
 		template <typename KEY, typename VALUE>
 		bool push(const protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
-			assert(adata.m_data != nullptr);
+			if (adata.m_data == nullptr)
+			{
+				LogLocalError("serialize::push<%,%>(protobuf_data:std::map)", dtype_name(KEY), dtype_name(VALUE));
+				return false;
+			}
 			if (adata.m_isbinary)
 			{
 				int16_t lsize = adata.m_data->size();
@@ -167,7 +159,11 @@ namespace ngl
 		template <typename T>
 		bool push(const protobuf_data<std::vector<T>>& adata)
 		{
-			assert(adata.m_data != nullptr);
+			if (adata.m_data == nullptr)
+			{
+				LogLocalError("serialize::push<%>(protobuf_data:std::vector)", dtype_name(T));
+				return false;
+			}
 			if (adata.m_isbinary)
 			{
 				int16_t lsize = adata.m_data->size();
@@ -189,7 +185,11 @@ namespace ngl
 		template <typename T>
 		bool push(const protobuf_data<std::list<T>>& adata)
 		{
-			assert(adata.m_data != nullptr);
+			if (adata.m_data == nullptr)
+			{
+				LogLocalError("serialize::push<%>(protobuf_data:std::list)", dtype_name(T));
+				return false;
+			}
 			if (adata.m_isbinary)
 			{
 				int16_t lsize = adata.m_data->size();
@@ -455,43 +455,36 @@ namespace ngl
 		template <typename T>
 		bool pop(protobuf_data<std::vector<T>>& adata)
 		{
-			//if (adata.m_data == nullptr)
 			adata.make();
 			if (adata.m_isbinary)
 			{
-				//std::vector<T>& lstl = *adata.m_data;
 				int16_t lsize = 0;
 				if (pop(lsize) == false)
 					return false;
-				std::string lname;
-				std::cout << tools::type_name<T>(lname) << ": lsize = " << lsize <<std::endl;
-
 				for (int i = 0; i < lsize; ++i)
 				{
 					int32_t lbytes = 0;
 					if (pop(lbytes) == false)
 						return false;
-					std::cout << tools::type_name<T>(lname) << ": lbytes = " << lbytes << std::endl;
 					T ltemp;
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
 						return false;
 					std::string json;
-					if (tools::protostr(ltemp, json))
+					if (tools::protostr(ltemp, json) == false)
 					{
-						std::cout << tools::type_name<T>(lname) << "recv actor_roleinfo [%]" << json << std::endl;
+						LogLocalError("pop [%] error", dtype_name(T));
+						return false;
 					}
 					add_bytes(lbytes);
 					(*adata.m_data).push_back(ltemp);
 				}
 			}
-			std::cout << "#####:" << (int64_t)(adata.m_data.get()) << std::endl;
 			return true;
 		}
 
 		template <typename T>
 		bool pop(const protobuf_data<std::list<T>>& adata)
 		{
-			//if (adata.m_data == nullptr)
 			adata.make();
 			if (adata.m_isbinary)
 			{
