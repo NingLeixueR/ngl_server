@@ -661,7 +661,6 @@ namespace ngl
 				TVALUE& lvalue = adata[lkey];
 				if (!pop(lvalue))
 					return false;
-				//adata.insert(std::make_pair(lkey, lvalue));
 			}
 			return true;
 		}
@@ -682,7 +681,6 @@ namespace ngl
 				TVALUE& lvalue = adata[lkey];
 				if (!pop(lvalue))
 					return false;
-				//adata.insert(std::make_pair(lkey, lvalue));
 			}
 			return true;
 		}
