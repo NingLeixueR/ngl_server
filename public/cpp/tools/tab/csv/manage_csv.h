@@ -28,8 +28,8 @@ namespace ngl
 	{
 		using TAB = T;
 
-		std::map<int, T> tablecsv;
-		int m_version;
+		std::map<int, T>	tablecsv;
+		int					m_version;
 
 		virtual int32_t version()
 		{

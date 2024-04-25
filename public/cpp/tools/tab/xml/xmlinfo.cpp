@@ -1,5 +1,6 @@
 #include "xmlinfo.h"
 #include "tools.h"
+#include "nlog.h"
 
 #include <string>
 
@@ -7,7 +8,14 @@ namespace ngl
 {
 	void xmlinfo::log()
 	{
-		//LogLocalInfo("configxml_node::read_config[%]", m_data);
+		std::stringstream lstream;
+		lstream << "##########xmlinfo start##########" << std::endl;
+		for (const auto& [_key, _val] : m_data)
+		{
+			lstream << "[" << _key << ":" << _val << "]" << std::endl;
+		}
+		lstream << "##########xmlinfo finish#########" << std::endl;
+		LogLocalError("[%]", lstream.str());
 	}
 	
 	bool xmlinfo::find(const char* akey, bool& adata)
@@ -83,13 +91,6 @@ namespace ngl
 		return find("area", avalue);
 	}
 
-	bool xmlinfo::outernet(bool& avalue)
-	{
-		if (find("outernet", avalue) == false)
-			avalue = false;
-		return true;
-	}
-
 	bool xmlinfo::varint(bool& avalue)
 	{
 		if (find("varint", avalue) == false)
@@ -115,14 +116,6 @@ namespace ngl
 	{
 		if (find("reloadcsv", avalue) == false)
 			avalue = false;
-		return true;
-	}
-
-	bool xmlinfo::isuselua()
-	{
-		bool isuselua = false;
-		if (find("reloadcsv", isuselua) == false)
-			return false;
 		return true;
 	}
 }// namespace ngl
