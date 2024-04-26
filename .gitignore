@@ -5,8 +5,7 @@
 3part/mysql
 3part/protobuf
 3part/behaviac-3.6.40
-3part/3part.7z
-3part
+3part/CMakeLists.txt
 php/vendor
 bin/Debug
 bin/Release
