@@ -57,8 +57,6 @@ namespace ngl
 		std::map<int64_t, bool> m_timer;						// 用于快速删除定时器
 		time_wheel*			m_twheel;
 		bool				m_stop;
-		ngl::sem			m_stopsem;
-		ngl::sem			m_stopsem_callback;
 
 		impl_time_wheel(time_wheel* atwheel, const time_wheel_config& aconfig, bool aisthreadcallback):
 			m_twheel(atwheel),
@@ -233,8 +231,6 @@ namespace ngl
 		{
 			m_stop = true;
 			m_sem.post();
-			m_stopsem.wait();
-			m_stopsem_callback.wait();
 		}
 
 		void run()
@@ -254,7 +250,6 @@ namespace ngl
 					addtimer(lpbnode);
 				m_current_ms += m_config.m_time_wheel_precision;
 			}
-			m_stopsem.post();
 		}
 
 		void runcallback()
@@ -278,7 +273,6 @@ namespace ngl
 				}
 				lpnode = nullptr;
 			}
-			m_stopsem_callback.post();
 		}
 
 		std::shared_ptr<wheel_node> pop_node()

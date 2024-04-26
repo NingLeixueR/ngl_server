@@ -69,6 +69,19 @@ namespace ngl
 					}
 				}
 			);
+
+			handle_cmd::push("/chatlist", [](actor_role* role, const char* aparm) 
+				{
+					pbnet::PROBUFF_NET_CHAT pro;
+					pro.set_m_type(pbnet::enum_logic_chat::get_chat_list);
+					int lchannelid = 0;
+					ngl::splite::division(aparm, "*", lchannelid);
+					pro.set_m_channelid(lchannelid);
+					message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, &pro);
+					role->handle_forward<ACTOR_CHAT>(lmessage);
+				}
+			);
+
 			handle_cmd::push("/switch", [](actor_role* role, const char* aparm)
 				{
 					pbnet::PROBUFF_NET_SWITCH_LINE pro;
