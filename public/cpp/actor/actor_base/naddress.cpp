@@ -31,18 +31,20 @@ namespace ngl
 
 		static void print_address()
 		{
-			LogLocalError("############################")
+			LogLocalStreamError(lstream);
+			lstream << "############################" << std::endl;
 			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
 			{
-				LogLocalError("[%:%][%-%-%]"
-					, ipair.first
-					, ipair.second
-					, nguid::actordataid(ipair.first)
-					, nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
-					, nguid::area(ipair.first)
-				)
+				lstream
+					<< "[" << ipair.first << ":" << ipair.second << "]"
+					<< "[" << nguid::actordataid(ipair.first)
+					<< "-" << nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
+					<< "-" << nguid::area(ipair.first)
+					<< "]"
+					<< std::endl;
 			}
-			LogLocalError("############################")
+			lstream << "############################" << std::endl;
+			lstream.print();
 		}
 
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid)

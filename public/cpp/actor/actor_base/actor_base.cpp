@@ -291,7 +291,7 @@ namespace ngl
 		auto itor = m_group.find(agroupid);
 		if (itor == m_group.end())
 		{
-			LogLocalError("add_group_member not find groupid[%]", agroupid)
+			LogLocalError("add_group_member not find groupid[%]", agroupid);
 			return false;
 		}
 
@@ -303,7 +303,7 @@ namespace ngl
 			{
 				LogLocalError("itor->second.m_actortype != lguid.type()==[%]([%]!=[%])"
 					, agroupid, (int)ltype, (int)lguid.type()
-				)
+				);
 				return false;
 			}
 		}

@@ -4,8 +4,8 @@
 #include "localtime.h"
 #include "logprintf.h"
 
+#include <sstream>
 #include <string>
-#include <map>
 
 namespace ngl
 {
@@ -35,14 +35,14 @@ namespace ngl
 #define LogFomat(llogformat, NAME, FORMAT,...)  llogformat.out(NAME, FORMAT,##__VA_ARGS__)	
 
 #ifdef WIN32
-# define FindSrcPos str.rfind("\\")
+# define FindSrcPos(STR) STR.rfind("\\")
 #else
-# define FindSrcPos str.rfind("/")
+# define FindSrcPos(STR) STR.rfind("/")
 #endif
 
 #define LogSrcPos														\
 	constexpr std::string_view str = __FILE__;							\
-	constexpr auto pos = FindSrcPos;									\
+	constexpr auto pos = FindSrcPos(str);								\
 	if constexpr (pos != std::string_view::npos)						\
 	{																	\
 		constexpr std::string_view str2 = str.substr(pos + 1);			\
@@ -129,3 +129,58 @@ namespace ngl
 		{									\
 			ngl::logformat::out([](char* abuff) {throw abuff; }, #ISOK":"##FORMAT, ##__VA_ARGS__); \
 		}
+
+
+namespace ngl
+{
+	class logstream
+	{
+		std::stringstream m_stream;
+		ELOG m_log;
+		ELOG_TYPE m_type;
+	public:
+		logstream(ELOG alog, ELOG_TYPE atype):
+			m_log(alog),
+			m_type(atype)
+		{}
+
+		template <typename T>
+		logstream& operator<<(const T& adata)
+		{
+			m_stream << adata;
+			return *this;
+		}
+
+		// 重载 << 操作符以输出 std::endl
+		logstream& operator<<(std::ostream& (*manipulator)(std::ostream&)) 
+		{
+			m_stream << manipulator;
+			return *this;
+		}
+
+		void print(const std::source_location& asource = std::source_location::current())
+		{
+			ngl::logformat llogformat;
+			std::string_view str = asource.file_name();
+			auto pos = FindSrcPos(str);
+			if(pos != std::string_view::npos)
+			{
+				std::string_view str2 = str.substr(pos + 1);
+				llogformat.format("pos", "(%:%)", str2.data(), asource.line());
+			}			
+			llogformat.data("head") = ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S");
+			llogformat.format("src", "%", m_stream.str().c_str());
+			ngl::nlog::getInstance().plog(m_log, llogformat, m_type);
+		}
+	};
+}//namespace ngl
+
+# define LogStreamDebug(STREAM)			ngl::logstream STREAM(ngl::ELOG_DEBUG, ngl::ELOG_NETWORK)
+# define LogStreamError(STREAM)			ngl::logstream STREAM(ngl::ELOG_ERROR, ngl::ELOG_NETWORK)
+# define LogStreamInfo(STREAM)			ngl::logstream STREAM(ngl::ELOG_INFO, ngl::ELOG_NETWORK)
+# define LogStreamWarn(STREAM)			ngl::logstream STREAM(ngl::ELOG_WARN, ngl::ELOG_NETWORK)
+
+# define LogLocalStreamDebug(STREAM)	ngl::logstream STREAM(ngl::ELOG_DEBUG, ngl::ELOG_LOCAL)
+# define LogLocalStreamError(STREAM)	ngl::logstream STREAM(ngl::ELOG_ERROR, ngl::ELOG_LOCAL)
+# define LogLocalStreamInfo(STREAM)		ngl::logstream STREAM(ngl::ELOG_INFO, ngl::ELOG_LOCAL)
+# define LogLocalStreamWarn(STREAM)		ngl::logstream STREAM(ngl::ELOG_WARN, ngl::ELOG_LOCAL)

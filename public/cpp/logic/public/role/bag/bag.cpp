@@ -49,7 +49,7 @@ namespace ngl
 		{
 			LogLocalError("add_item roleid=[%] tid=[%] mutable_m_items()->insert(%) == false"
 				, actor()->id_guid(), aitem.m_tid(), aitem.m_id()
-			)
+			);
 			return nullptr;
 		}
 		lbag.set_m_maxid(lid);

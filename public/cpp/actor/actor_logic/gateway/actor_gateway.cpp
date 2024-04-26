@@ -162,7 +162,7 @@ namespace ngl
 				, lpack->m_id
 				, lpram->m_roleid()
 				, lpram->m_session()
-			)
+			);
 			nguid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 			

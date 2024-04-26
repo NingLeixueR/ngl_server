@@ -10,7 +10,7 @@ namespace ngl
 
 	void actor_cross::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_cross###loaddb_finish#[%]", nguid(id_guid()))
+		LogLocalError("actor_cross###loaddb_finish#[%]", nguid(id_guid()));
 	}
 	
 	bool actor_cross::timer_handle(message<timerparm>& adata)

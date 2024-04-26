@@ -116,7 +116,7 @@ namespace ngl
 				T ldata;
 				if (dbdata<T>::get(aid, ldata) == false)
 				{
-					LogLocalError("save by id[%] !!![%]", aid, T::name())
+					LogLocalError("save by id[%] !!![%]", aid, T::name());
 					return;
 				}
 				fun(adb, ldata);
@@ -169,7 +169,7 @@ namespace ngl
 				T ldata;
 				if (dbdata<T>::get(aid, ldata) == false)
 				{
-					LogLocalError("save by id[%] !!![%]", aid, protobuf_tabname<T>::tabname())
+					LogLocalError("save by id[%] !!![%]", aid, protobuf_tabname<T>::tabname());
 					return;
 				}
 				fun(adb, ldata);

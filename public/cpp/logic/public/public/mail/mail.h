@@ -56,8 +56,8 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_mail###loaddb_finish")
-			
+			LogLocalStreamError(lstream);
+			lstream << "actor_mail###loaddb_finish" << std::endl;
 			for (const auto& [_roleid, _mails] : data())
 			{
 				int32_t& lid = m_maxid[_roleid];
@@ -65,11 +65,11 @@ namespace ngl
 				{
 					if (lid < _id)
 						lid = _id;
-					std::cout << "#####################roleid[" << _roleid << "]" << std::endl;
-					std::cout << "id:" << _mail.m_id() << std::endl;
-					std::cout << "tid:" << _mail.m_tid() << std::endl;
-					std::cout << "draw:" << (_mail.m_draw() ? "yes" : "no") << std::endl;
-					std::cout << "read:" << (_mail.m_read() ? "yes" : "no") << std::endl;
+					lstream << "#####################roleid[" << _roleid << "]" << std::endl;
+					lstream << "id:" << _mail.m_id() << std::endl;
+					lstream << "tid:" << _mail.m_tid() << std::endl;
+					lstream << "draw:" << (_mail.m_draw() ? "yes" : "no") << std::endl;
+					lstream << "read:" << (_mail.m_read() ? "yes" : "no") << std::endl;
 				}				
 			}
 		}

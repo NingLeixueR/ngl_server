@@ -45,18 +45,18 @@ namespace ngl
 
 	void actor_login::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_login::loaddb_finish")
+		LogLocalStreamError(lstream);
+		lstream << "actor_login::loaddb_finish" << std::endl;
 		for (auto& item : m_account.data())
 		{
 			const pbdb::db_account& laccount = item.second.getconst();
-			LogLocalError("[%][%] area=% id=% ",
-				laccount.m_account(),
-				laccount.m_passworld(),
-				laccount.m_passworld(),
-				laccount.m_area(),
-				nguid(laccount.m_roleid()).actordataid()
-			);
+			lstream
+				<< "[" << laccount.m_account() << "]"
+				<< "[" << laccount.m_passworld() << "]"
+				<< "area=" << laccount.m_area() << " "
+				<< "id=" << nguid(laccount.m_roleid()).actordataid();
 		}
+		lstream.print();
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
@@ -138,7 +138,7 @@ namespace ngl
 
 	void actor_login::printf_freeserver()
 	{
-		LogLocalError("game[%] \ngateway[%]", m_game, m_gateway)
+		LogLocalError("game[%] \ngateway[%]", m_game, m_gateway);
 	}
 	
 	bool actor_login::handle(message<np_actorserver_connect>& adata)

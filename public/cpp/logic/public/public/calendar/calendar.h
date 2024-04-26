@@ -76,22 +76,22 @@ namespace ngl
 		}
 
 		virtual void initdata()
-		{
-			LogLocalError("actor_calendar###loaddb_finish")
-			
+		{		
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 
+			LogLocalStreamError(lstream);
+			lstream << "actor_calendar###loaddb_finish" << std::endl;
 			int32_t lnow = localtime::gettime();
 			for (std::pair<const nguid, data_modified<pbdb::db_calendar> >& item : *lmap)
 			{
-				std::cout << "calendar[" << item.first.id() << "]" << std::endl;
+				lstream << "calendar[" << item.first.id() << "]" << std::endl;
 				const pbdb::db_calendar& lcalendar = item.second.getconst();
 
 
 				int64_t ltime = lcalendar.m_time();
 				int32_t lbeg = ttab_calendar::data::beg(ltime);
 				int32_t lend = ttab_calendar::data::end(ltime);
-				std::cout
+				lstream
 					<< "start[" << localtime::time2msstr(lbeg, "%y/%m/%d %H:%M:%S")
 					<< (lcalendar.m_start() ? "true" : "false")
 					<< "]"
@@ -125,7 +125,7 @@ namespace ngl
 					ttab_calendar::post(tab, ltime, *itemcalendar);
 				}
 			}
-
+			lstream.print();
 			// ##
 			for (std::pair<const int32_t, ttab_calendar::data>& item :ttab_calendar::m_data)
 			{

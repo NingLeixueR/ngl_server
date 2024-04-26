@@ -115,7 +115,7 @@ namespace ngl
 		std::transform(lkey.begin(), lkey.end(), lkey.begin(), tolower);
 		if (handle_cmd::function(lkey, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
-			LogLocalError("actor_role cmd [%] ERROR", lvec[0]);
+			LogLocalError("actor_role cmd [%] ERROR", lkey);
 		}
 		return true;
 	}

@@ -8,14 +8,14 @@ namespace ngl
 {
 	void xmlinfo::log()
 	{
-		std::stringstream lstream;
+		LogLocalStreamError(lstream);
 		lstream << "##########xmlinfo start##########" << std::endl;
 		for (const auto& [_key, _val] : m_data)
 		{
 			lstream << "[" << _key << ":" << _val << "]" << std::endl;
 		}
 		lstream << "##########xmlinfo finish#########" << std::endl;
-		LogLocalError("[%]", lstream.str());
+		lstream.print();
 	}
 	
 	bool xmlinfo::find(const char* akey, bool& adata)

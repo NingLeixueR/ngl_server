@@ -29,17 +29,13 @@ namespace ngl
 					char m_hexstr[1024] = {0};
 					LogLocalError("protocol::push [%] Error protocolnum[%] "
 						, lprotocoltype, protocoltools::hex_str(m_hexstr, lprotocolnum)
-					)
+					);
 					return;
 				}
 				auto itor2 = itor1->second.find(lprotocolnum);
 				if (itor2 == itor1->second.end())
 				{
-					//char m_hexstr[1024] = { 0 };
-					LogLocalError("protocol::push Error protocolnum[%] "
-						, lprotocolnum
-						//, protocoltools::hex_str(m_hexstr, lprotocolnum)
-					)
+					LogLocalError("protocol::push Error protocolnum[%] ", lprotocolnum);
 					return;
 				}
 				const char* lpprotocolname = protocoltools::name(lprotocolnum, lprotocoltype);

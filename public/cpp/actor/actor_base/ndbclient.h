@@ -153,7 +153,6 @@ namespace ngl
 			np_actordb_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-
 			LogLocalError("actor_dbclient loaddb [%] [%]", dtype_name(type_ndbclient), aid);
 		}
 
@@ -330,7 +329,7 @@ namespace ngl
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
-					//LogLocalError("actor_dbclient<%> actor_base::net_pack fail", TDBTAB::name())
+					LogLocalError("actor_dbclient<%> actor_base::net_pack fail", m_name);
 					return;
 				}
 				// ### “Ï≤Ω∑¢ÀÕpack
@@ -452,7 +451,7 @@ namespace ngl
 		{
 			if (m_typedbclientmap.empty())
 			{
-				LogLocalError("on_load_finish m_typedbclientmap.empty()")
+				LogLocalError("on_load_finish m_typedbclientmap.empty()");
 				return false;
 			}
 				
@@ -469,7 +468,7 @@ namespace ngl
 			}
 			if (!m_typedbclientmap.empty())
 			{
-				LogLocalError("on_load_finish !m_typedbclientmap.empty()")
+				LogLocalError("on_load_finish !m_typedbclientmap.empty()");
 				return false;
 			}
 				

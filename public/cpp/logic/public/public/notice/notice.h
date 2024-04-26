@@ -34,21 +34,24 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_notice###loaddb_finish")
+			LogLocalStreamError(lstream);
+			lstream << "actor_notice###loaddb_finish" << std::endl;
 			m_maxid = 0;
-			//std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
 			for (auto&& [id, dbnotice] : *get_notice())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
-				LogLocalError("notice###id:[%] notice:[%] time[%-%]", 
-					lnotice.m_id(),
-					lnotice.m_notice(),
-					localtime::time2msstr(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S"),
-					localtime::time2msstr(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S")
-				)
+				lstream 
+					<< "notice###id:[" << lnotice.m_id() << "] "
+					<< "notice:[" << lnotice.m_notice() << "] "
+					<< "time:[" 
+					<< localtime::time2msstr(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S") 
+					<< "-" 
+					<< localtime::time2msstr(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S") << "]"
+					<< std::endl;
 				if (m_maxid <= lnotice.m_id())
 					m_maxid = lnotice.m_id();
 			}
+			lstream.print();
 		}
 
 		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)

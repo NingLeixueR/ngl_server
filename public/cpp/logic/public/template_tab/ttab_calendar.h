@@ -141,20 +141,20 @@ namespace ngl
 
 		static void printf_time(int aid)
 		{
-			std::stringstream m_stream;
-			m_stream << "\n";
-			m_stream << aid <<":{";
+			LogLocalStreamError(lstream);
+			lstream << std::endl;
+			lstream << aid <<":{";
 			for (int64_t ltime : m_data[aid].m_utc)
 			{
-				m_stream 
+				lstream
 					<< "	[" 
 					<< localtime::time2str(data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S")
 					<< "]->[" 
 					<< localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S")
 					<< "]\n";
 			}
-			m_stream << "}\n";
-			LogLocalError("%", m_stream.str());
+			lstream << "}\n";
+			lstream.print();
 		}
 
 		static void init_week(int aid, std::vector<tweek>& aweek)

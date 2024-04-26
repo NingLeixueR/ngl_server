@@ -67,7 +67,7 @@ namespace ngl
 			{
 				*pro->add_m_chatlist() = item;
 			}
-			LogLocalError("Send All [pbnet::PROBUFF_NET_CHAT_RESPONSE]")
+			LogLocalError("Send All [pbnet::PROBUFF_NET_CHAT_RESPONSE]");
 			send_allclient(pro);
 			std::list<pbnet::chatitem>& ls = m_chatitem[_channelid];
 			ls.insert(ls.end(), _update.begin(), _update.end());

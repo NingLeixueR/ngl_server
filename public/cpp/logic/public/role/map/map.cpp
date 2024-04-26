@@ -44,7 +44,7 @@ namespace ngl
 		auto tab = allcsv::tab<tab_map>(atid);
 		if (tab == nullptr)
 		{
-			LogLocalError("allcsv::tab<tab_map>(%) == nullptr", m_tabid)
+			LogLocalError("allcsv::tab<tab_map>(%) == nullptr", m_tabid);
 			return false;
 		}
 		m_grids.init(tab->m_w, tab->m_l, tab->m_nx, tab->m_ny);
@@ -86,7 +86,7 @@ namespace ngl
 
 		if (find_unit(aunit->id()) != nullptr)
 		{
-			LogLocalError("aoi_map::enter(tid=%,id=%,agid=%) enter find_unit() != nullptr", m_tabid, aunit->id())
+			LogLocalError("aoi_map::enter(tid=%,id=%,agid=%) enter find_unit() != nullptr", m_tabid, aunit->id());
 			return false;
 		}
 

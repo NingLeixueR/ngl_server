@@ -49,7 +49,7 @@ namespace ngl
 			size_t lcode = hash_code<T>();
 			if (m_keyval.find(lcode) != m_keyval.end())
 			{
-				LogLocalError("init_customs(%) is same!!!", typeid(T).name())
+				LogLocalError("init_customs(%) is same!!!", typeid(T).name());
 				return;
 			}
 			m_keyval.insert(std::make_pair(lcode, pinfo
@@ -75,7 +75,7 @@ namespace ngl
 			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
-				LogLocalError("init_protobuf::init_protobufs(%) not xml!!!", lname)
+				LogLocalError("init_protobuf::init_protobufs(%) not xml!!!", lname);
 				return false;
 			}
 			m_keyval.insert(std::make_pair(HASH_CODE_VALUE(T), pinfo

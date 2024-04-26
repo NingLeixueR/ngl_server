@@ -523,7 +523,7 @@ namespace ngl
 					, localtime::gettime()
 					, lpack->m_head.getvalue(EPH_TIME)
 					, DEF_TIMEOUT_SECOND
-				)
+				);
 			}
 			return true;
 		}
@@ -694,7 +694,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), lpstruct->m_endpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what())
+						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
 				});
 			return 0;
 		}
@@ -705,7 +705,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what())
+						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
 				});
 			return 0;
 		}
@@ -774,7 +774,7 @@ namespace ngl
 		int lsize = snprintf(lbuff, 1024, "ecmd*%d*%s", (int)acmd, ajson.c_str());
 		if (lsize <= 0)
 		{
-			LogLocalError("udp_cmd::sendcmd fail [%][%]", (int)acmd, ajson)
+			LogLocalError("udp_cmd::sendcmd fail [%][%]", (int)acmd, ajson);
 			return false;
 		}
 		akcp->get_impl()->send(asession, lbuff, lsize);

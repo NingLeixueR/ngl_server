@@ -46,6 +46,7 @@ namespace ngl
 			return cache_list<TDBTAB, enum_clist_del>::getInstance();
 		}
 	public:
+		using type_actor_dbtab = actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 		// ≥ı ºªØ
 		static void init()
 		{
@@ -67,11 +68,11 @@ namespace ngl
 						{
 							if constexpr(PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 							{
-								actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::m_idset.insert(adata.m_id());
+								type_actor_dbtab::m_idset.insert(adata.m_id());
 							}
 							if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 							{
-								actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::m_idset.insert(adata.const_mm_id());
+								type_actor_dbtab::m_idset.insert(adata.const_mm_id());
 							}
 						});
 				}
@@ -155,9 +156,7 @@ namespace ngl
 			{
 				if (m_idset.find(lid) == m_idset.end())
 				{
-					LogLocalError("load <<%>>===<<%>>"
-						, typeid(actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>).name(), lid
-					)
+					LogLocalError("load <<%>>===<<%>>", dtype_name(type_actor_dbtab), lid);
 					return;
 				}
 					
@@ -296,7 +295,7 @@ namespace ngl
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			using type_message = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			LogLocalError("load: [%] [%]", dtype_name(type_message), adata.m_data->m_id)
+			LogLocalError("load: [%] [%]", dtype_name(type_message), adata.m_data->m_id);
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}

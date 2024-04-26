@@ -22,10 +22,12 @@ namespace ngl
 
 	void roleinfo::initdata()
 	{
-		LogLocalError("#[roleinfo]	#[load finish]")
-		LogLocalError("#[id]		#[%]", actorbase()->id_guid())
-		LogLocalError("#[name]		#[%]", name())
-		LogLocalError("#[lv]		#[%]", lv())
+		LogLocalStreamError(lstream);
+		lstream << "#[roleinfo]	#[load finish]" << std::endl;
+		lstream << "#[id]		#["<< actorbase()->id_guid() <<"]" << std::endl;
+		lstream << "#[name]		#[" << name() << "]" << std::endl;
+		lstream << "#[lv]		#[" << lv() << "]" << std::endl;
+		lstream.print();
 	}
 
 	const int32_t roleinfo::m_id()

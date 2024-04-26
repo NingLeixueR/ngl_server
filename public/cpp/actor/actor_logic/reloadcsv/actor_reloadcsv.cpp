@@ -54,7 +54,7 @@ namespace ngl
 
 	bool actor_reloadcsv::timer_handle(message<timerparm>& adata)
 	{
-		LogLocalError("############actor_reloadcsv::timer_handle###########")
+		LogLocalError("############actor_reloadcsv::timer_handle###########");
 		np_actor_csv_verify_version pro;
 		allcsv::foreach_version(pro.m_version);
 		i64_actorid lrequest = nguid::make(ACTOR_RELOADCSV_DISTRIBUTE, tab_self_area, ttab_servers::tab()->m_reloadcsv);
@@ -87,7 +87,7 @@ namespace ngl
 
 	bool actor_reloadcsv_distribute::handle(message<np_actor_csv_verify_version>& adata)
 	{
-		LogLocalError("############actor_reloadcsv_distribute::handle###########")
+		LogLocalError("############actor_reloadcsv_distribute::handle###########");
 		auto lparm = adata.m_data;
 		auto lpack = adata.m_pack;
 		np_actor_reloadcsv pro;

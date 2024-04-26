@@ -7,33 +7,26 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();
-		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name())
+		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
 		return true;
 	}
 
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
-		//auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
-		//pro->set_m_utc(localtime::gettime());
-		//send2client(pro);
-		//std::cout << "######Get Server Time##" << localtime::gettime() << std::endl;
-		
 		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
-		/*std::cout
-			<< " type			= " << nguid::type(lrequest)
-			<< " actordataid	= " << nguid::actordataid(lrequest)
-			<< " area			= " << nguid::area(lrequest)
-			<< std::endl;*/
-
 		LogLocalError("type=%,actordataid=%,area=%,NAME=%", nguid::type(lrequest), nguid::actordataid(lrequest), nguid::area(lrequest), m_info.get()->getconst().m_base().m_name());
-
-		//LogLocalError("######Get Server Time##[%][%]", m_info.id(), m_info.db()->name())
-
-		pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-		pro.set_m_utc(localtime::gettime());
-		sendkcp(pro, lrequest);
-
-		//
+		if (adata.m_pack->m_protocol == ENET_KCP)
+		{
+			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
+			pro.set_m_utc(localtime::gettime());
+			sendkcp(pro, lrequest);
+		}
+		else
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
+			pro->set_m_utc(localtime::gettime());
+			send2client(pro);
+		}
 		return true;
 	}
 
@@ -48,7 +41,7 @@ namespace ngl
 		{
 			LogLocalError("LOGIC_SWITCH_LINE Error line[%] severid[%]"
 				, adata.m_data->m_line(), tab->m_id
-			)
+			);
 			return false;
 		}
 		np_actorswitch_process_role pro;

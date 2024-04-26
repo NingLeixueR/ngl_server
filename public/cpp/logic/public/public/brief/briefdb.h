@@ -48,18 +48,20 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_brief###loaddb_finish");
+			LogLocalStreamError(lstream);
+			lstream << "actor_brief###loaddb_finish" << std::endl;
 			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
 			{
-				std::cout << "#####################" << std::endl;
-				std::cout << "#m_id=" << pair.second.getconst().m_id() << std::endl;
-				std::cout << "#m_lv=" << pair.second.getconst().m_lv() << std::endl;
-				std::cout << "#m_moneygold=" << pair.second.getconst().m_moneygold() << std::endl;
-				std::cout << "#m_moneysilver=" << pair.second.getconst().m_moneysilver() << std::endl;
-				std::cout << "#m_name=" << pair.second.getconst().m_name() << std::endl;
-				std::cout << "#m_vip=" << pair.second.getconst().m_vip() << std::endl;
-				std::cout << "#####################" << std::endl;				
+				lstream << "#####################" << std::endl;
+				lstream << "#m_id=" << pair.second.getconst().m_id() << std::endl;
+				lstream << "#m_lv=" << pair.second.getconst().m_lv() << std::endl;
+				lstream << "#m_moneygold=" << pair.second.getconst().m_moneygold() << std::endl;
+				lstream << "#m_moneysilver=" << pair.second.getconst().m_moneysilver() << std::endl;
+				lstream << "#m_name=" << pair.second.getconst().m_name() << std::endl;
+				lstream << "#m_vip=" << pair.second.getconst().m_vip() << std::endl;
+				lstream << "#####################" << std::endl;
 			}
+			lstream.print();
 		}
 
 		void update(const std::vector<pbdb::db_brief>& m_vecinfo)

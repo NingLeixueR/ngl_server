@@ -87,14 +87,12 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalError("actor_ranklist###loaddb_finish")
-			//std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
+			LogLocalStreamError(lstream);
+			lstream << "actor_ranklist###loaddb_finish" << std::endl;
 			for (auto&& [id, dbranklist] : *get_ranklist())
 			{
 				pbdb::db_ranklist& lranklist = dbranklist.get(false);
-				std::stringstream lstream;
 				lstream << "ranklist###id:[" << lranklist.m_id() << "]" << std::endl;
-
 				auto lmap = lranklist.mutable_m_item();
 				for(auto itor = lmap->begin();itor != lmap->end();++itor)
 				{
@@ -108,6 +106,7 @@ namespace ngl
 					lstream << "\t[" << itor->first << "]-[" << itor->second.m_name() << "]" << std::endl;
 				}
 			}
+			lstream.print();
 		}
 
 		data_modified<pbdb::db_ranklist>& find(type atype)

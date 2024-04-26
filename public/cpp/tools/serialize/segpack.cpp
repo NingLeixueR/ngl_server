@@ -115,7 +115,7 @@ namespace ngl
 						m_data.erase(aid);
 						LogLocalError("sockect recv [%] len >= SOCKECT_MAX_BUFF_SIZE(%)"
 							, lpack->m_head, (int)net_config_recv_buff_maxbyte
-						)
+						);
 						return false;
 					}
 				}

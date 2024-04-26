@@ -130,7 +130,7 @@ namespace ngl
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
 			if (adata.SerializeToArray(lpair.first, lpair.second) == false)
 			{
-				LogLocalError("[##struct2bytes::operator()] push error")
+				LogLocalError("[##struct2bytes::operator()] push error");
 				return false;
 			}
 

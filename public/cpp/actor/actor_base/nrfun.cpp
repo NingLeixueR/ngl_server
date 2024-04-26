@@ -23,13 +23,13 @@ namespace ngl
 		if (itor == m_fun.end())
 		{
 			if (aactor->type() != ACTOR_CLIENT)
-				LogLocalError("handle_switch m_fun.find(%) == end", apram.m_enum)
+				LogLocalError("handle_switch m_fun.find(%) == end", apram.m_enum);
 			return false;
 		}
 		bool lisloadfinish = aactor->isloadfinish();
 		if (lisloadfinish == false && itor->second.m_isdbload == false)
 		{
-			LogLocalError("%::handle_switch isloadfinish() == %", nactortype::enum2name(aactor->type()), lisloadfinish)
+			LogLocalError("%::handle_switch isloadfinish() == %", nactortype::enum2name(aactor->type()), lisloadfinish);
 			return false;
 		}
 		if (aactor->type() != ACTOR_LOG)

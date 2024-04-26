@@ -99,7 +99,7 @@ namespace ngl
 					ojson ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
-						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata)
+						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata);
 						return;
 					}
 					std::string lorderid;
@@ -132,7 +132,7 @@ namespace ngl
 
 	void actor_role::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_role###loaddb_finish#[%]", nguid(id_guid()))
+		LogLocalError("actor_role###loaddb_finish#[%]", nguid(id_guid()));
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
@@ -163,7 +163,7 @@ namespace ngl
 		*pro->mutable_m_bag() = m_bag.get()->getconst();
 		*pro->mutable_m_task() = m_task.get()->getconst();
 		send2client(pro);
-		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name())
+		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
 	}
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
