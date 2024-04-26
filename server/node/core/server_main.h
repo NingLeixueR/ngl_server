@@ -220,7 +220,6 @@ bool start_db(int argc, char** argv)
 bool start_world()
 {
 	LogLocalError("[%] start", "WORLD");
-	//config.m_nodetype = ngl::configxml_node::ACTORSERVER;
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -243,9 +242,7 @@ bool start_world()
 
 bool start_login()
 {
-	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
 	LogLocalError("[%] start", "LOGIN");
-	//config.m_nodetype = ngl::configxml_node::LOGIN;
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -261,9 +258,7 @@ bool start_login()
 
 bool start_gateway()
 {
-	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
 	LogLocalError("[%] start", "GATEWAY");
-	//config.m_nodetype = ngl::configxml_node::GATEWAY;
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -282,9 +277,7 @@ bool start_gateway()
 
 bool start_log()
 {
-	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
 	LogLocalError("[%] start", "LOG");
-	//config.m_nodetype = ngl::configxml_node::LOG;
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -357,8 +350,6 @@ bool start_cross()
 bool start_pushserverconfig()
 {
 	// 将服务器配置上传lbgmsys
-
-	//std::function<void(const ngl::tab_servers*)>
 	ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
@@ -430,9 +421,7 @@ bool start_reloadcsv()
 
 bool start_robot(int argc, char** argv)
 {
-	//ngl::logdef::m_loglevel = ngl::DO_NOT_PRINT;
 	LogLocalError("[%] start", "ROBOT");
-	//config.m_nodetype = ngl::configxml_node::ROBOT;
 
 	if (!init_server(nconfig::m_nodeid))
 		return 0;
