@@ -50,11 +50,6 @@ namespace ngl
 	{
 		if (adata.m_data->m_type != timerparm::ET_INTERVAL_SEC)
 			return true;
-		
-		//std::cout << "actor_chat::timer_handle ["; 
-		//ngl::localtime::printf_time2str(0, "%y/%m/%d %H:%M:%S");
-		//std::cout << "]" << std::endl;
-
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
 		pro->set_m_stat(true);
 		pro->set_m_type(pbnet::updata_speck);
@@ -67,16 +62,7 @@ namespace ngl
 			{
 				*pro->add_m_chatlist() = item;
 			}
-			LogLocalError("Send All [pbnet::PROBUFF_NET_CHAT_RESPONSE]");
 			send_allclient(pro);
-			std::list<pbnet::chatitem>& ls = m_chatitem[_channelid];
-			ls.insert(ls.end(), _update.begin(), _update.end());
-			tab_chat* ltab = allcsv::tab<tab_chat>(_channelid);
-			assert(ltab != nullptr);
-			for (int i = ls.size() - ltab->m_count; i > 0; --i)
-			{
-				ls.pop_front();
-			}
 		}
 		m_update_chatitem.clear();
 		return true;
@@ -124,8 +110,17 @@ namespace ngl
 			lchatitem.set_m_content(recv.m_content());
 			lchatitem.set_m_roleid(lroleitem->m_info.m_id());
 
+			std::list<pbnet::chatitem>& lschatitem = m_chatitem[recv.m_channelid()];
+			lschatitem.push_back(lchatitem);
+			if (lschatitem.size() > ltab->m_count)
+			{
+				lschatitem.pop_front();
+			}
+
 			pro->set_m_stat(true);
 			send_client(adata.m_data->identifier(), pro);
+
+
 		}
 		else if (recv.m_type() == pbnet::get_chat_list)
 		{
@@ -144,18 +139,6 @@ namespace ngl
 			{
 				*pro->add_m_chatlist() = item;
 			}
-
-			auto itor_update_channelid = m_update_chatitem.find(recv.m_channelid());
-			if (itor_update_channelid == m_update_chatitem.end())
-			{
-				send_client(adata.m_data->identifier(), pro);
-				return true;
-			}
-			for (pbnet::chatitem& item : itor_update_channelid->second)
-			{
-				*pro->add_m_chatlist() = item;
-			}
-
 			pro->set_m_stat(true);
 			send_client(adata.m_data->identifier(), pro);
 			return true;
