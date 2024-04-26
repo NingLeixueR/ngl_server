@@ -101,9 +101,6 @@ int main(int argc, char** argv)
 	while (1)
 	{
 		ngl::sleep::seconds(1);
-		ngl::logstream log(ngl::ELOG_DEBUG, ngl::ELOG_NETWORK);
-		log << "123" << 456 << std::endl;
-		log.print();
 	}
 	return 0;
 }
