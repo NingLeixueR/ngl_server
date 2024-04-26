@@ -66,7 +66,7 @@ namespace ngl
 		}
 		else if (lrecv->m_type() == pbnet::chat_speak)
 		{
-			LogLocalError("%", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
+			//LogLocalError("%", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
 		}
 		else if (lrecv->m_type() == pbnet::updata_speck)
 		{
