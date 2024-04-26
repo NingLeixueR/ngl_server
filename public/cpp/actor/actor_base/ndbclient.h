@@ -252,10 +252,6 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
-			if (m_name == "class ngl::actor_mail")
-			{
-				std::cout << std::endl;
-			}
 			np_actordb_save<PROTYPE, DBTYPE, TDBTAB> pro;
 			std::list<data_modified<TDBTAB>*> lclearlist;
 			if (aid != (int64_t)-1)
