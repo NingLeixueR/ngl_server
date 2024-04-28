@@ -21,9 +21,10 @@ namespace ngl
 
 	void actor_manage_role::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_role>(false
-			, dregister_fun_handle(actor_manage_role, pbnet::PROBUFF_NET_ROLE_LOGIN)
-			);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_manage_role
+			, pbnet::PROBUFF_NET_ROLE_LOGIN
+		>(false);
 	}
 
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)

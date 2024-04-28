@@ -18,7 +18,8 @@ namespace ngl
 	template <typename T>
 	constexpr T* null = (T*)nullptr;
 
-	class actor : public actor_base
+	class actor : 
+		public actor_base
 	{
 		struct impl_actor;
 		ngl::impl<impl_actor> m_impl_actor;
@@ -52,7 +53,7 @@ namespace ngl
 
 		//# 注册定时器
 		template <typename TDerived>
-		static void register_timer(Tfun<TDerived, timerparm> afun/* = &TDerived::timer_handle*/)
+		static void register_timer(Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
 		{
 			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().
 				template rfun_nonet<TDerived, timerparm>(afun, false);
@@ -68,8 +69,7 @@ namespace ngl
 			using tloaddb = np_actordb_load_response<TYPE, DBTYPE, TDBTAB>;
 			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
 
-			ninst<TDerived, TYPE>().
-				template rfun<actor_base, tloaddb>(lpfun, true);
+			ninst<TDerived, TYPE>().template rfun<actor_base, tloaddb>(lpfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -83,8 +83,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
-			ninst<TDerived, TYPE>().
-				template rfun<TDerived, T>(afun);
+			ninst<TDerived, TYPE>().template rfun<TDerived, T>(afun);
 		}
 
 #pragma region register_actor
@@ -93,24 +92,18 @@ namespace ngl
 		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
 		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
+		template <typename TDerived>
+		class TDerivedHandle
+		{
+		public:
+			template <typename T>
+			static Tfun<TDerived, T> Handle()
+			{
+				return (Tfun<TDerived, T>) & TDerived::handle;
+			}
+		};
+
 		//# 注册actor成员函数
-		template <
-			EPROTOCOL_TYPE TYPE			// 协议类型
-			, typename TDerived			// 注册的actor派生类
-			, typename T				// Tfun<TDerived, T>
-		>
-		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun)
-		{
-			ninst<TDerived, TYPE>().rfun(afun, atype, aisload);
-		}
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_actor(bool aisload, ENUM_ACTOR atype, T afun, ARG... argfun)
-		{
-			register_actor<TYPE, TDerived>(aisload, atype, afun);
-			register_actor<TYPE, TDerived, ARG...>(aisload, atype, argfun...);
-		}
-
 		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
 		{
@@ -123,6 +116,27 @@ namespace ngl
 			register_actor<TYPE, TDerived>(aisload, afun);
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
+		static void register_actor_handle(bool aisload, T*)
+		{
+			register_actor<TYPE, TDerived>(aisload, (Tfun<TDerived, T>) & TDerived::handle);
+		}
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
+		static void register_actor_handle(bool aisload)
+		{
+			register_actor_handle<TYPE, TDerived, T>(aisload, nullptr);
+			if constexpr (sizeof...(ARG) > 1)
+			{
+				register_actor_handle<TYPE, TDerived, ARG...>(aisload);
+			}
+			if constexpr (sizeof...(ARG) == 1)
+			{
+				register_actor_handle<TYPE, TDerived, ARG...>(aisload, nullptr);
+			}
+		}
+
 #pragma endregion 
 
 #pragma region register_actornonet

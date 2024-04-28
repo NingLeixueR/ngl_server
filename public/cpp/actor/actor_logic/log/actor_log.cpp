@@ -30,9 +30,10 @@ namespace ngl
 
 	void actor_log::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_log>(false
-			, dregister_fun_handle(actor_log, np_actor_logitem)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_log
+			, np_actor_logitem
+		>(false);
 	}
 
 	actor_log::~actor_log()

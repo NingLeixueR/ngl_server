@@ -278,18 +278,18 @@ namespace ngl
 		static void nregister()
 		{
 			EPROTOCOL_TYPE ltype = PROTYPE;
-			tactor_db::template register_actor<PROTYPE, tactor_db>(
-				true
-				, (Tfun<tactor_db, np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>)& tactor_db::handle
-				, (Tfun<tactor_db, np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & tactor_db::handle
-				, (Tfun<tactor_db, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>>) & tactor_db::handle
-				, (Tfun<tactor_db, np_actortime_db_cache<PROTYPE, TDBTAB>>) & tactor_db::handle
-				);
+			tactor_db::template register_actor_handle<PROTYPE
+				, tactor_db
+				, np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>
+				, np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>
+				, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>
+				, np_actortime_db_cache<PROTYPE, TDBTAB>
+			>(true);
 
-			tactor_db::template register_actor<EPROTOCOL_TYPE_CUSTOM, tactor_db>(
-				true
-				, dregister_fun_handle(tactor_db, mforward<np_gm>)
-			);
+			tactor_db::template register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+				, tactor_db
+				, mforward<np_gm>
+			> (true);
 		}
 
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
@@ -423,4 +423,19 @@ namespace ngl
 		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		actor_base::static_send_actor(lactorid, nguid::make(), pro);
 	}
+
+
+	using actor_db_account	= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>;
+	using actor_db_role		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>;
+	using actor_db_bag		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BAG, pbdb::db_bag>;
+	using actor_db_keyvalue = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>;
+	using actor_db_mail		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_MAIL, pbdb::db_mail>;
+	using actor_db_guild	= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_GUILD, pbdb::db_guild>;
+	using actor_db_notice	= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_NOTICE, pbdb::db_notice>;
+	using actor_db_activity = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity>;
+	using actor_db_brief	= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BRIEF, pbdb::db_brief>;
+	using actor_db_ranklist = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>;
+	using actor_db_task		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>;
+	using actor_db_calendar = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar>;
+
 }//namespace ngl

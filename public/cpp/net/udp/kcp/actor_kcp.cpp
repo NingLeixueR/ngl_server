@@ -21,10 +21,10 @@ namespace ngl
 
 	void actor_kcp::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_kcp>(
-			false
-			, dregister_fun_handle(actor_kcp, np_actor_kcp)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_kcp
+			, np_actor_kcp
+		>(false);
 	}
 
 	bool actor_kcp::handle(message<np_actor_kcp>& adata)

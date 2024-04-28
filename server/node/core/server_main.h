@@ -166,41 +166,29 @@ bool start_db(int argc, char** argv)
 	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 
-	using actor_db_account = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>;
-	actor_db_account::getInstance();
+	ngl::actor_db_account::getInstance();
 
-	using actor_db_role = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>;
-	actor_db_role::getInstance();
+	ngl::actor_db_role::getInstance();
 
-	using actor_db_bag = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BAG, pbdb::db_bag>;
-	actor_db_bag::getInstance();
+	ngl::actor_db_bag::getInstance();
 
-	using actor_db_keyvalue = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>;
-	actor_db_keyvalue::getInstance();
+	ngl::actor_db_keyvalue::getInstance();
 
-	using actor_db_mail = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_MAIL, pbdb::db_mail>;
-	actor_db_mail::getInstance();
+	ngl::actor_db_mail::getInstance();
 
-	using actor_db_guild = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_GUILD, pbdb::db_guild>;
-	actor_db_guild::getInstance();
+	ngl::actor_db_guild::getInstance();
 
-	using actor_db_notice = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_NOTICE, pbdb::db_notice>;
-	actor_db_notice::getInstance();
+	ngl::actor_db_notice::getInstance();
 
-	using actor_db_activity = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity>;
-	actor_db_activity::getInstance();
+	ngl::actor_db_activity::getInstance();
 
-	using actor_db_brief = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BRIEF, pbdb::db_brief>;
-	actor_db_brief::getInstance();
+	ngl::actor_db_brief::getInstance();
 
-	using actor_db_ranklist = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>;
-	actor_db_ranklist::getInstance();
+	ngl::actor_db_ranklist::getInstance();
 
-	using actor_db_task = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>;
-	actor_db_task::getInstance();
+	ngl::actor_db_task::getInstance();
 
-	using actor_db_calendar = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar>;
-	actor_db_calendar::getInstance();
+	ngl::actor_db_calendar::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 

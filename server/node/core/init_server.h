@@ -83,6 +83,5 @@ bool init_server(int aid)
 	LogLocalError("ngl::actor_manage::getInstance().init(%)", tab->m_actorthreadnum);
 
 	ngl::init_event();
-
 	return true;
 }

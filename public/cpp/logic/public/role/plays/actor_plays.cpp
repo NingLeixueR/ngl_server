@@ -50,10 +50,9 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		register_timer<actor_plays>(&actor_plays::timer_handle);
 
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_plays>(
-			true
-			, ACTOR_PLAYS
-			, dregister_fun_handle(actor_plays, mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_plays
+			, mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>
+		>(true);
 	}
 }

@@ -29,18 +29,21 @@ namespace ngl
 
 	void actor_login::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_login>(false
-			, dregister_fun_handle(actor_login, pbnet::PROBUFF_NET_ACOUNT_LOGIN)
-			);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_login
+			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
+		>(false);
 
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_login>(false
-			, dregister_fun_handle(actor_login, np_actor_disconnect_close)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_login
+			, np_actor_disconnect_close
+		>(false);
 
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_login>(true
-			, dregister_fun_handle(actor_login, np_actorserver_connect)
-			, dregister_fun_handle(actor_login, np_actorrole_login)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_login
+			, np_actorserver_connect
+			, np_actorrole_login
+		>(true);
 	}
 
 	void actor_login::loaddb_finish(bool adbishave)

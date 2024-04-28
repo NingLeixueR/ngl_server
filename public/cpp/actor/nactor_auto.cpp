@@ -121,6 +121,7 @@ namespace ngl
 			, null<actor_ugpalace>, em_pram(ACTOR_PLAYS_GO_UNDERGROUNDPALACE)
 			, null<actor_kcp>, em_pram(ACTOR_KCP)
 			, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
+			, null<actor_plays>, em_pram(ACTOR_PLAYS)			
 		);
 
 		// 新增内部协议需要补充

@@ -21,18 +21,18 @@ namespace ngl
 	void actor_mail::nregister()
 	{
 		// Ð­Òé×¢²á
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_mail>(
-			true
-			, dregister_fun_handle(actor_mail, np_actor_addmail)
-			, dregister_fun_handle(actor_mail, mforward<np_gm>)
-		);
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_mail>(
-			true
-			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_LIST>)
-			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_READ>)
-			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>)
-			, dregister_fun_handle(actor_mail, mforward<pbnet::PROBUFF_NET_MAIL_DEL>)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_mail
+			, np_actor_addmail
+			, mforward<np_gm>
+		>(true);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_mail
+			, mforward<pbnet::PROBUFF_NET_MAIL_LIST>
+			, mforward<pbnet::PROBUFF_NET_MAIL_READ>
+			, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>
+			, mforward<pbnet::PROBUFF_NET_MAIL_DEL>
+		>(true);
 	}
 
 	bool actor_mail::handle(message<mforward<np_gm>>& adata)

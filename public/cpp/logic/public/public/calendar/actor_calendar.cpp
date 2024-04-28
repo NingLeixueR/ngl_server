@@ -23,10 +23,10 @@ namespace ngl
 	void actor_calendar::nregister()
 	{
 		// Ð­Òé×¢²á
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_calendar>(
-			true
-			, dregister_fun_handle(actor_calendar, np_calendar)
-			);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_calendar
+			, np_calendar
+		>(true);
 	}
 
 	bool actor_calendar::handle(message<np_calendar>& adata)

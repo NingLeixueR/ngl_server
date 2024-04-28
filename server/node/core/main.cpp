@@ -6,16 +6,16 @@
 #include "initproto.h"
 #include "asio_kcp.h"
 #include "dumper.h"
+#include "event.h"
+#include "tools.h"
 #include "ukcp.h"
 #include "rfun.h"
 
 #include <boost/lexical_cast.hpp>
 
-#include "event.h"
 
 Dumper lDumper;
 
-#include "tools.h"
 
 int main(int argc, char** argv)
 {

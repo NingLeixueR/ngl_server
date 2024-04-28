@@ -34,14 +34,13 @@ namespace ngl
 	{
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_matching>(&actor_matching::timer_handle);
-
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_matching>(
-			true
-			, dregister_fun_handle(actor_matching, mforward<pbnet::PROBUFF_NET_MATCHING>)
-			, dregister_fun_handle(actor_matching, mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>)
-			, dregister_fun_handle(actor_matching, mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>)
-			, dregister_fun_handle(actor_matching, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_matching
+			, mforward<pbnet::PROBUFF_NET_MATCHING>
+			, mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>
+			, mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>
+			, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE
+		>(true);
 	}
 
 	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING>>& adata)

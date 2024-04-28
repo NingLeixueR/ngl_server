@@ -32,10 +32,11 @@ namespace ngl
 	void actor_csvclient::nregister()
 	{
 		actor_csvclient::register_timer<actor_csvclient>(&actor_csvclient::timer_handle);
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_csvclient>(
-			false
-			, dregister_fun_handle(actor_csvclient, np_actor_reloadcsv)
-		);
+		
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_csvclient
+			, np_actor_reloadcsv
+		>(true);
 	}
 
 	actor_csvclient::~actor_csvclient()

@@ -5,12 +5,12 @@ namespace ngl
 {
 	void actor_server::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_server>(
-			true
-			, dregister_fun_handle(actor_server, np_actornode_register)
-			, dregister_fun_handle(actor_server, np_actornode_update)
-			, dregister_fun_handle(actor_server, np_actor_gatewayid_updata)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_server
+			, np_actornode_register
+			, np_actornode_update
+			, np_actor_gatewayid_updata
+		>(true);
 	}
 
 	actor_server::actor_server() :

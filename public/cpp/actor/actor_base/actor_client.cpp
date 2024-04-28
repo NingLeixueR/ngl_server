@@ -49,15 +49,15 @@ namespace ngl
 			});
 
 		//###### ×¢²áÐ­Òé
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_client>(
-			true
-			, dregister_fun_handle(actor_client, np_actornode_register_response)
-			, dregister_fun_handle(actor_client, np_actorclient_node_connect)
-			, dregister_fun_handle(actor_client, np_actornode_update)
-			, dregister_fun_handle(actor_client, np_actornode_connect_task)
-			, dregister_fun_handle(actor_client, np_actornode_update_mass)
-			, dregister_fun_handle(actor_client, np_actor_gatewayid_updata)
-			);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_client
+			, np_actornode_register_response
+			, np_actorclient_node_connect
+			, np_actornode_update
+			, np_actornode_connect_task
+			, np_actornode_update_mass
+			, np_actor_gatewayid_updata
+		>(true);
 	}
 
 	void actor_client::actor_server_register(i32_serverid aactorserver)

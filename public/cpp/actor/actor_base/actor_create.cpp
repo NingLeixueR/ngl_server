@@ -4,9 +4,10 @@ namespace ngl
 {
 	void actor_create::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_create>(false
-			, (Tfun<actor_create, np_actorswitch_process<np_actorswitch_process_role>>) & actor_create::handle
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_create
+			, np_actorswitch_process<np_actorswitch_process_role>
+		>(false);
 	}
 
 	actor_create::actor_create() :

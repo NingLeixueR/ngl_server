@@ -24,10 +24,10 @@ namespace ngl
 
 	void actor_gatewayg2c::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gatewayg2c>(
-			false
-			, dregister_fun_handle(actor_gatewayg2c, np_actor_gatewayinfo_updata)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_gatewayg2c
+			, np_actor_gatewayinfo_updata
+		>(false);
 		// Game 2 Client
 		nforward::g2c();
 	}

@@ -19,10 +19,10 @@ namespace ngl
 
 	void actor_csvserver::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_csvserver>(
-			false
-			, dregister_fun_handle(actor_csvserver, np_actor_csv_verify_version)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_csvserver
+			, np_actor_csv_verify_version
+		>(true);
 	}
 
 	actor_csvserver::~actor_csvserver()

@@ -19,10 +19,11 @@ namespace ngl
 	void actor_gm::nregister()
 	{
 		// Ð­Òé×¢²á
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gm>(false
-			, dregister_fun_handle(actor_gm, ngl::np_gm)
-			, dregister_fun_handle(actor_gm, mforward<ngl::np_gm_response>)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_gm
+			, ngl::np_gm
+			, mforward<ngl::np_gm_response>
+		>(false);
 	}
 
 	bool actor_gm::handle(message<ngl::np_gm>& adata)

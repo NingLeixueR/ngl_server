@@ -24,10 +24,10 @@ namespace ngl
 	void actor_robot::nregister()
 	{
 		nforward::g2c();
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_robot>(
-			false
-			, dregister_fun_handle(actor_robot, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_robot
+			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
+		>(false);
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
@@ -193,14 +193,14 @@ namespace ngl
 
 	void actor_manage_robot::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>(
-			false
-			, dregister_fun_handle(actor_manage_robot, np_robot_pram)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_manage_robot
+			, np_robot_pram
+		>(false);
 
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_robot>(
-			false
-			, dregister_fun_handle(actor_manage_robot, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_manage_robot
+			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+		>(false);
 	}
 }//namespace ngl

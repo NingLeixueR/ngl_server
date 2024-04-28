@@ -26,20 +26,20 @@ namespace ngl
 
 	void actor_gateway::nregister()
 	{
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_gateway>(
-			false
-			, dregister_fun_handle(actor_gateway, np_actorrole_login)
-			, (Tfun<actor_gateway, np_actorswitch_process<np_actorswitch_process_role>>) & actor_gateway::handle
-			, dregister_fun_handle(actor_gateway, np_actor_session_close)
-			, dregister_fun_handle(actor_gateway, np_actorrole_login)	
-			, dregister_fun_handle(actor_gateway, np_actor_kcp)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_gateway
+			, np_actorrole_login
+			, np_actorswitch_process<np_actorswitch_process_role>
+			, np_actor_session_close
+			, np_actorrole_login
+			, np_actor_kcp
+		>(false);
 
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gateway>(
-			false
-			, dregister_fun_handle(actor_gateway, pbnet::PROBUFF_NET_ROLE_LOGIN)
-			, dregister_fun_handle(actor_gateway, pbnet::PROBUFF_NET_KCPSESSION)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_gateway
+			, pbnet::PROBUFF_NET_ROLE_LOGIN
+			, pbnet::PROBUFF_NET_KCPSESSION
+		>(false);
 	}
 
 	void actor_gateway::sync_actorserver_gatewayid(const nguid& aguid, bool aisremove)

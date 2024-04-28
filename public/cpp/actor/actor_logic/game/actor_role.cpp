@@ -50,18 +50,18 @@ namespace ngl
 		// 定时器
 		register_timer<actor_role>(&actor_role::timer_handle);
 
-		register_actor<EPROTOCOL_TYPE_CUSTOM, actor_role>(
-			true
-			, dregister_fun_handle(actor_role, np_actor_disconnect_close)
-			, dregister_fun_handle(actor_role, mforward<np_gm>)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
+			, actor_role
+			, np_actor_disconnect_close
+			, mforward<np_gm>
+		>(true);
 
-		register_actor<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>(
-			true
-			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_ROLE_SYNC)
-			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE)
-			, dregister_fun_handle(actor_role, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD)
-		);
+		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, actor_role
+			, pbnet::PROBUFF_NET_ROLE_SYNC
+			, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE
+			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
+		>(true);
 
 		// 协议注册
 		nforward::c2g();
