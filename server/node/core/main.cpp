@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 	}
 	else if (nconfig::node_type() == ngl::RELOADCSV)
 	{
-		start_reloadcsv();
+		start_csvserver();
 	}
 	else if (nconfig::node_type() == ngl::ROBOT)
 	{

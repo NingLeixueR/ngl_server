@@ -24,20 +24,20 @@ namespace ngl
 		ACTOR_PLAYS_END = ACTOR_PLAYS + pbnet::eplays_count,
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
-		ACTOR_SERVER = ACTOR_SIGNLE_START,				// 单例 actor address server  管理分发地址的中心
-		ACTOR_CLIENT,									// 单例 actor address client 
+		ACTOR_SERVER = ACTOR_SIGNLE_START,						// 单例 actor address server  管理分发地址的中心
+		ACTOR_CLIENT,											// 单例 actor address client 
 		ACTOR_LOGIN,
 		ACTOR_GATEWAY,											// 网关
-		ACTOR_GATEWAY_C2G,								// 网关 [Client]->[Game]
-		ACTOR_GATEWAY_G2C,								// 网关 [Game]	->[Client]
+		ACTOR_GATEWAY_C2G,										// 网关 [Client]->[Game]
+		ACTOR_GATEWAY_G2C,										// 网关 [Game]	->[Client]
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_LOG,
 		ACTOR_KCP,
 		ACTOR_MANAGE_ROLE,
 		ACTOR_MANAGE_ROBOT,
 		ACTOR_MANAGE_GUILD,										// 工会管理器
-		ACTOR_RELOADCSV,										// 接收分发然后重载csv
-		ACTOR_RELOADCSV_DISTRIBUTE,								// 分发csv
+		ACTOR_CSVCLIENT,										// 热更csv client
+		ACTOR_CSVSERVER,										// 热更csv server
 		ACTOR_NOTICE,											// 公告
 		ACTOR_GM,												// GM
 		ACTOR_MAIL,												// 邮件

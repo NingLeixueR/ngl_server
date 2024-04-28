@@ -91,7 +91,7 @@ namespace ngl
 
 		//# 简化[handle]方法注册
 		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
-		#define dregister_fun(TDerived,T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
+		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
 		//# 注册actor成员函数
 		template <

@@ -3,7 +3,8 @@
 #include "actor_manage_role.h"
 #include "actor_gatewayc2g.h"
 #include "actor_gatewayg2c.h"
-#include "actor_reloadcsv.h"
+#include "actor_csvserver.h"
+#include "actor_csvclient.h"
 #include "actor_ranklist.h"
 #include "actor_matching.h"
 #include "actor_ugpalace.h"
@@ -104,8 +105,8 @@ namespace ngl
 			, null<actor_gatewayg2c>, em_pram(ACTOR_GATEWAY_G2C)
 			, null<actor_log>, em_pram(ACTOR_LOG)
 			, null<actor_login>, em_pram(ACTOR_LOGIN)
-			, null<actor_reloadcsv>, em_pram(ACTOR_RELOADCSV)
-			, null<actor_reloadcsv_distribute>, em_pram(ACTOR_RELOADCSV_DISTRIBUTE)
+			, null<actor_csvserver>, em_pram(ACTOR_CSVSERVER)
+			, null<actor_csvclient>, em_pram(ACTOR_CSVCLIENT)
 			, null<actor_robot>, em_pram(ACTOR_ROBOT)
 			, null<actor_manage_robot>, em_pram(ACTOR_MANAGE_ROBOT)
 			, null<actor_manage_activity>, em_pram(ACTOR_ACTIVITY_MANAGE)

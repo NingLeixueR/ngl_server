@@ -402,7 +402,7 @@ bool start_pushserverconfig()
 	return true;
 }
 
-bool start_reloadcsv()
+bool start_csvserver()
 {
 	LogLocalError("[%] start", "RELOADCSV");
 
@@ -413,7 +413,7 @@ bool start_reloadcsv()
 
 	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
-	ngl::actor_reloadcsv_distribute::getInstance();
+	ngl::actor_csvserver::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

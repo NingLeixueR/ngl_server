@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-04-25 23:06:12
+// 创建时间 24-04-28 15:22:20
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -13,6 +13,8 @@
 #include "actor_client.cpp"
 #include "actor_create.cpp"
 #include "actor_cross.cpp"
+#include "actor_csvclient.cpp"
+#include "actor_csvserver.cpp"
 #include "actor_db.cpp"
 #include "actor_gateway.cpp"
 #include "actor_gatewayc2g.cpp"
@@ -30,7 +32,6 @@
 #include "actor_notice.cpp"
 #include "actor_plays.cpp"
 #include "actor_ranklist.cpp"
-#include "actor_reloadcsv.cpp"
 #include "actor_robot.cpp"
 #include "actor_role.cpp"
 #include "actor_role_cmd.cpp"
