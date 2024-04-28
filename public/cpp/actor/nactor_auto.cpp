@@ -123,7 +123,6 @@ namespace ngl
 			, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
 		);
 
-
 		// 新增内部协议需要补充
 		initproto::init_customs(EPROTOCOL_TYPE_CUSTOM
 			/*200000001*/, null<np_gm>						
@@ -173,7 +172,6 @@ namespace ngl
 
 	}
 }
-
 
 #include "nforward.h"
 #include "net.pb.h"

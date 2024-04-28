@@ -53,49 +53,41 @@ int main(int argc, char** argv)
 
 	assert(nconfig::node_type() != ngl::FAIL);
 
-	if (nconfig::node_type() == ngl::DB)
+	switch (nconfig::node_type())
 	{
+	case ngl::DB:
 		start_db(argc, argv);
-	}
-	else if (nconfig::node_type() == ngl::GAME)
-	{
+		break;
+	case ngl::GAME:
 		start_game();
-	}
-	else if (nconfig::node_type() == ngl::ACTORSERVER)
-	{
+		break;
+	case ngl::ACTORSERVER:
 		start_actor();
-	}
-	else if (nconfig::node_type() == ngl::LOG)
-	{
-		start_log();		
-	}
-	else if (nconfig::node_type() == ngl::GATEWAY)
-	{
+		break;
+	case ngl::LOG:
+		start_log();
+		break;
+	case ngl::GATEWAY:
 		start_gateway();
-	}
-	else if (nconfig::node_type() == ngl::LOGIN)
-	{
+		break;
+	case ngl::LOGIN:
 		start_login();
-	}
-	else if (nconfig::node_type() == ngl::WORLD)
-	{
+		break;
+	case ngl::WORLD:
 		start_world();
-	}
-	else if (nconfig::node_type() == ngl::RELOADCSV)
-	{
+		break;
+	case ngl::RELOADCSV:
 		start_csvserver();
-	}
-	else if (nconfig::node_type() == ngl::ROBOT)
-	{
+		break;
+	case ngl::ROBOT:
 		start_robot(argc, argv);
-	}
-	else if (nconfig::node_type() == ngl::CROSS)
-	{
+		break;
+	case ngl::CROSS:
 		start_cross();
-	}
-	else if (nconfig::node_type() == ngl::PUSHSERVERCONFIG)
-	{
+		break;
+	case ngl::PUSHSERVERCONFIG:
 		start_pushserverconfig();
+		break;
 	}
 
 	while (1)
