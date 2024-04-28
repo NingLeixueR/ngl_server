@@ -57,7 +57,6 @@ namespace ngl
 		service_io(amsi, asessionid),
 		m_socket(m_ioservice)
 	{
-		//std::cout << "service_io [" << m_threadid << "]" << std::endl;
 	}
 
 	service_tcp::~service_tcp()

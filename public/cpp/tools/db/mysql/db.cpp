@@ -26,16 +26,11 @@ namespace ngl
 			return false;
 		}
 		m_arg = arg;
-		std::cout
-			<< "[mysql] "
-			<< m_arg.m_account << "@" << m_arg.m_ip << ":" << m_arg.m_port 
-			<< "|password=" << m_arg.m_passworld
-			<< "|dbname=" << m_arg.m_dbname
-			<< std::endl;
+		LogLocalError("[mysql] %@%:% [password=%][dbname=%]", m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_passworld, m_arg.m_dbname);
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)
 		{
-			std::cout << "[mysql] mysql_init" << std::endl;
+			LogLocalError("[mysql] err mysql_init");
 			return false;
 		}
 
@@ -49,7 +44,7 @@ namespace ngl
 			nullptr,
 			0))
 		{
-			LogLocalError("db::query[%]", mysql_error(m_mysql));
+			LogLocalError("[mysql] err db::query[%]", mysql_error(m_mysql));
 			closedb();
 			return false;
 		}
@@ -59,14 +54,14 @@ namespace ngl
 
 		if (mysql_set_character_set(m_mysql, "utf8"))
 		{
-			std::cout << "[mysql] fail utf8" << std::endl;
+			LogLocalError("[mysql] err utf8");
 			closedb();
 			return false;
 		}
 
 		if (!m_arg.m_dbname.empty() && !changedb(m_mysql, m_arg.m_dbname))
 		{
-			std::cout << "[mysql] fail dbname" << std::endl;
+			LogLocalError("[mysql] err dbname");
 			closedb();
 			return false;
 		}

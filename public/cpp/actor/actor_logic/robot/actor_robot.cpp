@@ -47,8 +47,7 @@ namespace ngl
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.m_data->m_utc(), "%y/%m/%d %H:%M:%S");
-		LogLocalError("[%][%]", m_data.m_role().m_base().m_name(), lbuff)
-		//std::cout << m_data.m_role().m_base().m_name() << ":" << lbuff << std::endl;
+		LogLocalError("[%][%]", m_data.m_role().m_base().m_name(), lbuff);
 		return true;
 	}
 

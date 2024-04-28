@@ -43,8 +43,6 @@ namespace ngl
 
 		bool handle(message<np_actor_roleinfo>& adata)
 		{
-			std::cout << "#####:" << (int64_t)(adata.m_data->m_vecinfo.m_data.get()) << std::endl;
-			
 			m_briefdb.update(*adata.m_data->m_vecinfo.m_data.get());
 
 			auto pro = std::make_shared<np_actor_roleinfo>();

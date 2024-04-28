@@ -347,7 +347,7 @@ namespace ngl
 		nets::kcp(anum)->connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				m_kcpsession = asession;
-				std::cout << "m_kcpsession = " << m_kcpsession << std::endl;
+				LogLocalError("kcp m_kcpsession = %", m_kcpsession);
 			});
 		return true;
 	}

@@ -421,12 +421,8 @@ namespace ngl
 
 					apstruct->m_actorid = lactorid;
 
-					std::cout << "kcp connect : "
-						<< session_endpoint::ip(apstruct.get())
-						<< "@"
-						<< session_endpoint::port(apstruct.get())
-						<< std::endl;
-
+					LogLocalError("kcp connect : %@%", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
+					
 					if (ap->function_econnect(apstruct, lactorid, true))
 						udp_cmd::sendcmd(ap->m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
 				});
@@ -568,7 +564,7 @@ namespace ngl
 										// 首先判断下是否kcp_cmd
 										if (udp_cmd::cmd(this, lpstruct, m_buffrecv, lrecv))
 										{
-											std::cout << "kcp_cmd::cmd: " << std::string(m_buffrecv, lrecv) << std::endl;
+											LogLocalError("kcp cmd [%]", std::string(m_buffrecv, lrecv));
 											break;
 										}
 
@@ -618,7 +614,9 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						std::cout << ec.what() << std::endl;
+					{
+						LogLocalError("sendu err [%]", ec.what());
+					}
 				});
 			return true;
 		}
@@ -631,7 +629,7 @@ namespace ngl
 				{
 					if (ec)
 					{
-						std::cout << ec.what() << std::endl;
+						LogLocalError("async_send_to err [%]", ec.what());
 						wheel_parm lparm
 						{
 							.m_ms = 1000,
@@ -701,7 +699,6 @@ namespace ngl
 
 		inline int sendbuff(asio_udp_endpoint& aendpoint, const char* buf, int len)
 		{
-			std::cout << aendpoint.address().to_string() << ":" << aendpoint.port() << std::endl;
 			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)

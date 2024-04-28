@@ -100,6 +100,15 @@ namespace ngl
 		m_logwheel.addtimer(lparm);
 	}
 
+	bool file_exists(std::string& apath)
+	{
+		if (!std::filesystem::exists(apath))
+		{
+			return std::filesystem::create_directories(apath);
+		}
+		return true;
+	}
+
 	void logfile::create(bool afirst)
 	{
 		if (afirst == false)
@@ -113,45 +122,33 @@ namespace ngl
 
 		std::string lpath("./");
 		lpath += m_config.m_dir;
-		lpath += '/';
-		lpath += m_isactor ? "net/" : "local/";
-		//lpath += nconfig::m_nodename;
-		std::cout<< "log dir:[" << lpath << "]" << std::endl;
-			
 		if (afirst)
-		{//检查目录是否存在
-			if (!std::filesystem::exists(lpath))
+		{
+			if (file_exists(lpath) == false)
 			{
-				bool ret = std::filesystem::create_directories(lpath);
-				if (!ret)
-				{
-					throw "not create path" + lpath;
-				}
+				throw "not create path" + lpath;
 			}
 		}
+		
+		lpath += '/';
+		lpath += m_isactor ? "net" : "local";
+
+		if (afirst)
+		{
+			if (file_exists(lpath) == false)
+			{
+				throw "not create path" + lpath;
+			}
+		}
+		lpath += '/';
+
+		std::cout << "log dir:[" << lpath << "]" << std::endl;
 
 		char lbufftime[1024] = { 0 };
-		localtime::time2str(lbufftime, 1024, time(nullptr), "%Y%m%d_%H%M%S");
+		localtime::time2str(lbufftime, 1024, time(nullptr), "%Y%m%d%H%M%S");
 
-		const char* lp = nullptr;
-		switch (m_config.m_type)
-		{
-		case ELOG_LOCAL:
-			lp = "local";
-			break;
-		case ELOG_NETWORK:
-			lp = "network";
-			break;
-		case ELOG_BI:
-			lp = "bi";
-			break;
-		default:
-			lp = "";
-			break;
-		}
 		char lbuff[1024];
-		
-		snprintf(lbuff, 1024, "/%d_%s_%s_%d.log", nconfig::m_nodeid, lp, lbufftime, ++m_fcount);
+		snprintf(lbuff, 1024, "/%s_%d.log", lbufftime, ++m_fcount);
 		
 		m_stream.open(lpath + lbuff, std::ios::binary);
 		//m_errorstream.
@@ -172,14 +169,10 @@ namespace ngl
 	void logfile_default::printf(const logitem* alog)
 	{
 		tab_servers* tab = ttab_servers::tab(alog->m_serverid);
-		m_stream << 
-			"[server:" << tab->m_name << "#" << alog->m_serverid
-			<< "][" <<
-			elog_name::get((ELOG)alog->m_type)
-			<< "][" << 
-			alog->m_pos
-			<< "][" 
-			<< alog->m_head << "]\t" << alog->m_str << std::endl;
+		m_stream << "[" << tab->m_name << ":" << alog->m_serverid << "]";
+		m_stream << "[" << alog->m_pos << "]";
+		m_stream << "[" << alog->m_head << "]\t";
+		m_stream << alog->m_str << std::endl;
 		++m_count;
 		create(false);
 	}

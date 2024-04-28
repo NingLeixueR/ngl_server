@@ -45,9 +45,6 @@ namespace ngl
 		static time_t month_ms(time_t anow, int amonthday/*1-31*/, int ahour, int amin, int asec)
 		{
 			time_t lfirst = localtime::getmothday(anow, amonthday, ahour, amin, asec);
-			char lbuff[1024] = { 0 };
-			ngl::localtime::time2str(lbuff, 1024, lfirst, "%y/%m/%d %H:%M:%S");
-			std::cout << lbuff << std::endl;
 			return (lfirst - anow) * localtime::MILLISECOND;
 		}
 

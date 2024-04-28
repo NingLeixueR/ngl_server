@@ -66,7 +66,6 @@ namespace ngl
 	{
 		for (BOOST_AUTO(pos, apt.begin()); pos != apt.end(); ++pos)
 		{
-			//std::cout << pos->first << std::endl;
 			if (memcmp(pos->first.c_str(), "<xmlattr>", sizeof("<xmlattr>")) == 0)
 			{
 				_foreach(pos->second, afun);

@@ -244,7 +244,6 @@ namespace ngl
 				if (ltempsleep > 0)
 					std::this_thread::sleep_for(std::chrono::milliseconds(ltempsleep));
 				monopoly_shared_lock(m_mutex);
-				//std::cout << "############" << std::endl;
 				wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
 				if (lpbnode != nullptr)
 					addtimer(lpbnode);

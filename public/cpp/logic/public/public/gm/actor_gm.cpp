@@ -27,6 +27,7 @@ namespace ngl
 
 	bool actor_gm::handle(message<ngl::np_gm>& adata)
 	{
+		LogLocalError("php2gm [%]", adata.m_data->m_json);
 		ngl::ojson lreadjson(adata.m_data->m_json.c_str());
 
 		// ### µ¥Àý
@@ -104,7 +105,7 @@ namespace ngl
 
 	bool actor_gm::handle(message<mforward<ngl::np_gm_response>>& adata)
 	{
-		std::cout << adata.m_data->data()->m_json << std::endl;
+		LogLocalError("gm2php [%]", adata.m_data->data()->m_json);
 		send(adata.m_data->identifier(), *adata.m_data->data(), nguid::make(), nguid::make());
 		return true;
 	}

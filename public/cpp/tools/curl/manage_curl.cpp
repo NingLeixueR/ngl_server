@@ -165,9 +165,7 @@ namespace ngl
 			{
 				return 0;
 			}
-			//std::cout << (char*)buffer << std::endl;
 			char* pData = (char*)buffer;
-			//*lpVoid = pData;
 			lpVoid->append(pData, size * nmemb);
 			return nmemb;
 		}
@@ -295,7 +293,7 @@ namespace ngl
 
 		ngl::manage_curl::set_callback(*lhttp, [&lbool](int anum, ngl::_http& aparm)
 			{
-				std::cout << aparm.m_recvdata << std::endl;
+				LogLocalError("curl callback [%]", aparm.m_recvdata);
 				lbool = false;
 			});
 		ngl::manage_curl::getInstance().send(lhttp);

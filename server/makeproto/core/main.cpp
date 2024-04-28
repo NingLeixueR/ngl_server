@@ -191,7 +191,6 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
             }
             else
             {
-
                 std::cout << fieldDescriptor->camelcase_name() << std::endl;
                 // 判断字段是否为map类型
                 if (fieldDescriptor->is_map()) {

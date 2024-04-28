@@ -3,3 +3,6 @@ TESTS 1000 C /chat 1 1 ribenrensb3
 TESTS 1000 C /time
 TESTS 2000 C /chat 1 2 china
 START
+
+TESTS 2000 X
+START

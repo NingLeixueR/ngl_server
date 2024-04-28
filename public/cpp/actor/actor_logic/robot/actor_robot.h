@@ -128,7 +128,6 @@ namespace ngl
 				{
 					lrobot.m_session = asession;
 					lrobot.m_robot->m_session = asession;
-					std::cout << "#############roleid[" << lrecv->m_roleid() << std::endl;
 					pbnet::PROBUFF_NET_ROLE_LOGIN pro;
 					pro.set_m_roleid(lrecv->m_roleid());
 					pro.set_m_session(lrecv->m_session());
@@ -229,7 +228,7 @@ namespace ngl
 						nets::kcp(arobot.m_robot->m_kcp)->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
 							, [tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
 							{
-								std::cout << "GetIp Finish : " << buff << std::endl;
+								LogLocalError("GetIp Finish : %", buff);
 								ukcp::m_localuip = buff;
 
 								// »ñÈ¡kcp-session
