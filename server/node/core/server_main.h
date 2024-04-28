@@ -471,12 +471,6 @@ bool start_robot(int argc, char** argv)
 		std::vector<std::string> lvec;
 		ngl::splite::division(lcmd.c_str(), " ", lvec);
 		ngl::robot_cmd::parse_command(lvec);
-		std::cout << "---------------[" << lcmd << "]---------------" << std::endl;
-		for (int i = 0; i < 1; ++i)
-		{
-			ngl::sleep::seconds(1);
-			std::cout << "---------------[" << i << "]---------------" << std::endl;
-		}
 		int lnum = 10000;
 		//boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
 		//while (lnum-- > 0)
