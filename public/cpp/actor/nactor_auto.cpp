@@ -191,22 +191,29 @@ namespace ngl
 
 
 		//// ACTOR_MAIL 模块二次转发
-		template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_MAIL>>::func<
-			pbnet::PROBUFF_NET_MAIL_LIST
+		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_MAIL
+			, pbnet::PROBUFF_NET_MAIL_LIST
 			, pbnet::PROBUFF_NET_MAIL_READ
 			, pbnet::PROBUFF_NET_MAIL_DRAW
 			, pbnet::PROBUFF_NET_MAIL_DEL
 		>();
 
+		/*template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_MAIL>>::func<
+			pbnet::PROBUFF_NET_MAIL_LIST
+			, pbnet::PROBUFF_NET_MAIL_READ
+			, pbnet::PROBUFF_NET_MAIL_DRAW
+			, pbnet::PROBUFF_NET_MAIL_DEL
+		>();*/
+
 		// ACTOR_NOTICE 模块二次转发
-		template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE>>::func<
+		/*template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE>>::func<
 			pbnet::PROBUFF_NET_NOTICE
-		>();
+		>();*/
 
 		// ACTOR_CHAT 模块二次转发
-		template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_CHAT>>::func<
+		/*template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_CHAT>>::func<
 			pbnet::PROBUFF_NET_CHAT
-		>();
+		>();*/
 	}
 
 	// # 注册game到client的消息

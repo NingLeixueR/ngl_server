@@ -121,26 +121,6 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		using type_register_actor_handle = template_arg<actor::register_actor_handle<TYPE, TDerived>, bool>;
 
-		/*template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_actor_handle(bool aisload, T*)
-		{
-			register_actor<TYPE, TDerived>(aisload, (Tfun<TDerived, T>) & TDerived::handle);
-		}
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_actor_handle(bool aisload)
-		{
-			register_actor_handle<TYPE, TDerived, T>(aisload, nullptr);
-			if constexpr (sizeof...(ARG) > 1)
-			{
-				register_actor_handle<TYPE, TDerived, ARG...>(aisload);
-			}
-			if constexpr (sizeof...(ARG) == 1)
-			{
-				register_actor_handle<TYPE, TDerived, ARG...>(aisload, nullptr);
-			}
-		}*/
-
 #pragma endregion 
 
 #pragma region register_actornonet
@@ -176,6 +156,22 @@ namespace ngl
 			register_forward<TYPE, IsForward, TDerived, ARG...>(arg...);
 		}
 
+		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
+		class register_forward_handle
+		{
+		public:
+			template <typename T>
+			static void func()
+			{
+				ninst<TDerived, TYPE>().
+					template rfun_forward<IsForward>((Tfun<TDerived, np_actor_forward<T, TYPE, false, ngl::forward>>) & TDerived::handle, nactor_type<TDerived>::type(), false);
+			}
+		};
+
+		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
+		using type_register_forward_handle = template_arg<actor::register_forward_handle<TYPE, IsForward, TDerived>>;
+
+
 		//# 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(T afun)
@@ -189,6 +185,22 @@ namespace ngl
 			register_recvforward<TYPE, TDerived>(ap);
 			register_recvforward<TYPE, TDerived>(arg...);
 		}
+
+		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
+		class register_recvforward_handle
+		{
+		public:
+			template <typename T>
+			static void func()
+			{
+				Tfun<TDerived, T> lfun = &TDerived::template handle_forward<ACTOR, T>;
+				ninst<TDerived, TYPE>().rfun_recvforward(lfun, false);
+			}
+		};
+
+		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
+		using type_register_recvforward_handle = template_arg<actor::register_recvforward_handle<TYPE, ACTOR, TDerived>>;
+
 #pragma endregion 
 	public:
 		explicit actor(const actorparm& aparm);
