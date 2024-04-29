@@ -73,17 +73,6 @@ namespace ngl
 				actor_role::type_register_recvforward_handle<TYPE, ACTOR, actor_role>:: template func<ARG...>();
 				return;
 			}
-				switch (xmlnode::m_nodetype)
-				{
-				case ngl::GAME:// gateway->game
-					
-					break;
-				case ngl::GATEWAY:// client->gateway
-					actor_gatewayc2g::type_register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<
-						ARG...
-					>();
-					break;
-				}
 		}
 
 		template <EPROTOCOL_TYPE TYPE>
