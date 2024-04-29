@@ -70,7 +70,7 @@ namespace ngl
 			}
 			if (xmlnode::m_nodetype == ngl::GATEWAY)
 			{
-				actor_role::type_register_recvforward_handle<TYPE, ACTOR, actor_role>:: template func<ARG...>();
+				actor_gatewayc2g::type_register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
 				return;
 			}
 		}
