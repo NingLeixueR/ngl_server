@@ -42,6 +42,24 @@ namespace ngl
 		}
 
 		template <typename T>
+		static bool sendbyserver(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		{
+			std::vector<i32_session> lsessionvec;
+			for (i32_serverid iserverid : aserverid)
+			{
+				i32_session lsession = server_session::get_sessionid(iserverid);
+				if (lsession == -1)
+					continue;
+				lsessionvec.push_back(lsession);
+			}
+			if (lsessionvec.empty() != true)
+			{
+				return sendmore(lsessionvec, adata, aactorid, arequestactorid);
+			}
+			return false;
+		}
+
+		template <typename T>
 		static bool sendbysession(i32_session asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			net_protocol* lpprotocol = net(asession);
@@ -181,6 +199,13 @@ namespace ngl
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
+
+	template <typename T>
+	bool actor_base::send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	{
+		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
+	}
+
 
 	template <typename T>
 	bool actor_base::sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)

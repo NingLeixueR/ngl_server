@@ -164,6 +164,10 @@ namespace ngl
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
+		template <typename T>
+		static bool send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+
+
 		//# 发送pack到指定服务器
 		template <typename T>
 		static bool sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
@@ -265,6 +269,8 @@ private:
 		template <typename T>
 		static void send_client(i64_actorid aid, std::shared_ptr<T>& adata)
 		{
+			if (aid == nguid::make())
+				return;
 			auto pro = std::make_shared<tactor_forward<T>>();
 			actor_forward_init(*pro, aid);
 			actor_forward_setdata(*pro, adata);
@@ -285,7 +291,17 @@ private:
 			auto pro = std::make_shared<tactor_forward<T>>();
 			actor_forward_init(*pro, aid);
 			actor_forward_setdata(*pro, adata);
-			nguid lguid(aid);
+			//nguid lguid(aid);
+			send_server(agatewayid, *pro.get(), nguid::make(), aid);
+		}
+
+		template <typename T>
+		static void send_client(const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, std::shared_ptr<T>& adata)
+		{
+			auto pro = std::make_shared<tactor_forward<T>>();
+			actor_forward_init(*pro, aid);
+			actor_forward_setdata(*pro, adata);
+			//nguid lguid(aid);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 	private:
@@ -335,10 +351,12 @@ private:
 		template <typename T>
 		static void send_allclient(std::shared_ptr<T>& adata)
 		{
-			ttab_servers::foreach_server(GATEWAY, [&adata](const tab_servers* atab)
-				{
-					send_client(atab->m_id, nguid::make(), adata);
-				});
+			std::vector<i32_serverid> lvecserver;
+			if (ttab_servers::get_server(GATEWAY, ttab_servers::tab()->m_area, lvecserver) == false)
+			{
+				return;
+			}
+			send_client(lvecserver, nguid::make(), adata);
 		}
 
 		//# 往指定区服所有客户端发送消息

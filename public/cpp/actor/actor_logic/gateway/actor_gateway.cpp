@@ -14,7 +14,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_GATEWAY,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid, 
+					.m_id	= nconfig::m_nodeid, 
 					.m_manage_dbclient = false
 				},
 				.m_weight = 0x7fffffff
@@ -54,12 +54,7 @@ namespace ngl
 		for (i32_serverid iserverid : ttab_servers::tab()->m_actorserver)
 		{
 			i64_actorid lactorserve = actor_server::actorid();
-			actor_base::send_server(
-				iserverid
-				, pro
-				, lactorserve
-				, nguid::make()
-			);
+			actor_base::send_server(iserverid, pro, lactorserve, nguid::make());
 		}
 	}
 
@@ -107,7 +102,7 @@ namespace ngl
 					// ##### 通知game服务器 玩家已经断开连接
 					send_actor(pro->m_actorid, pro);
 					// ##### 通知login服务器 玩家已经断开连接
-					ttab_servers::foreach_server(LOGIN, [&pro, this](const tab_servers* atab)
+					ttab_servers::foreach_server(LOGIN, ttab_servers::tab()->m_area, [&pro, this](const tab_servers* atab)
 						{
 							nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
 							send_actor(lguid, pro);

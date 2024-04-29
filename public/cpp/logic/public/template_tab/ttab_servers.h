@@ -145,6 +145,7 @@ namespace ngl
 			return nullptr;
 		}
 
+		// 便利所有服务器
 		static void foreach_server(const std::function<void(const tab_servers*)>& afun)
 		{
 			for (const auto& [_area, _vec] : m_areaofserver)
@@ -156,15 +157,55 @@ namespace ngl
 			}
 		}
 
-		static void foreach_server(NODE_TYPE atype, const std::function<void(const tab_servers*)>& afun)
+		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
+		static bool get_area(i16_area aarea, std::set<i16_area>& asetarea)
 		{
+			if (aarea < 0)
+			{
+				auto itor = m_areaofserver.find(aarea);
+				if (itor == m_areaofserver.end())
+					return false;
+				if (itor->second.empty())
+					return false;
+				const tab_servers* ltab = *itor->second.begin();
+				if (ltab == nullptr)
+					return false;
+				for (i32_serverid itemid : ltab->m_actorserver)
+				{
+					const tab_servers* tabactor = tab(itemid);
+					if (ltab == nullptr)
+						continue;
+					asetarea.insert(tabactor->m_area);
+				}
+			}
+			else
+			{
+				asetarea.insert(aarea);
+			}
+			return true;
+		}
+
+		// 服务器类型	atype
+		// 区服			aarea（负数代表跨服,需要提供跨服内所有atype服务器）
+		static bool foreach_server(NODE_TYPE atype, i16_area aarea, const std::function<void(const tab_servers*)>& afun)
+		{
+			std::set<i16_area> larea;
+			if (get_area(aarea, larea) == false)
+			{
+				return false;
+			}			
+
 			for (const auto& [_area, _vec] : m_areaofserver)
 			{
-				//if (aislocal && _area != tab()->m_area)
-				//	continue;
+				if (larea.find(_area) == larea.end())
+					continue;
 				for (const tab_servers* iserver : _vec)
 				{
-					if (iserver->m_type == atype)
+					if (atype == FAIL)
+					{
+						afun(iserver);
+					}
+					else if (iserver->m_type == atype)
 					{
 						afun(iserver);
 					}
@@ -172,20 +213,12 @@ namespace ngl
 			}
 		}
 
-		static void foreach_server(NODE_TYPE atype, i16_area area, const std::function<void(const tab_servers*)>& afun)
+		static bool get_server(NODE_TYPE atype, i16_area aarea, std::vector<i32_serverid>& avec)
 		{
-			for (const auto& [_area, _vec] : m_areaofserver)
-			{
-				if (_area != area)
-					continue;
-				for (const tab_servers* iserver : _vec)
+			return foreach_server(atype, aarea, [&avec](const tab_servers* iserver)
 				{
-					if (iserver->m_type == atype)
-					{
-						afun(iserver);
-					}
-				}
-			}
+					avec.push_back(iserver->m_id);
+				});
 		}
 
 		static tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)>& afun)

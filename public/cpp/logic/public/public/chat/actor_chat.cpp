@@ -119,8 +119,6 @@ namespace ngl
 
 			pro->set_m_stat(true);
 			send_client(adata.m_data->identifier(), pro);
-
-
 		}
 		else if (recv.m_type() == pbnet::get_chat_list)
 		{
