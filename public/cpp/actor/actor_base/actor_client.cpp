@@ -61,6 +61,9 @@ namespace ngl
 
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
+		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+			return;
+
 		tab_servers* tab = ttab_servers::tab();
 		i64_actorid lactorid = id_guid();
 		tab_servers* tabactor = ttab_servers::tab(aactorserver);
@@ -106,6 +109,8 @@ namespace ngl
 
 	void actor_client::actor_server_register()
 	{
+		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+			return;
 		Try
 		{
 			//// --- 需要尝试连接Actor Server结点 并向其注册自己
@@ -140,6 +145,8 @@ namespace ngl
 
 	bool actor_client::handle(message<np_actornode_register_response>& adata)
 	{
+		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+			return true;
 		Try
 		{
 			auto lparm = adata.m_data;
@@ -172,6 +179,8 @@ namespace ngl
 
 	bool actor_client::handle(message<np_actorclient_node_connect>& adata)
 	{
+		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+			return true;
 		Try
 		{
 			auto lparm = adata.m_data;
@@ -233,14 +242,19 @@ namespace ngl
 		int32_t lthreadid = adata.m_thread;
 		message<np_actornode_update> lmessage(lthreadid, lpack, &lparm->m_mass);
 		handle(lmessage);
-		i64_actorid lactorid = id_guid();
-		naddress::foreach(
-			[&lparm, lactorid](const actor_node_session& anode)->bool
-			{
-				if (anode.m_node.m_serverid != nconfig::m_nodeid)
-					nets::sendbysession(anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid);
-				return true;
-			});
+
+		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)
+		{
+			i64_actorid lactorid = id_guid();
+			naddress::foreach(
+				[&lparm, lactorid](const actor_node_session& anode)->bool
+				{
+					if (anode.m_node.m_serverid != nconfig::m_nodeid)
+						nets::sendbysession(anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid);
+					return true;
+				});
+		}
+		
 		if (lparm->m_fun != nullptr)
 			lparm->m_fun();
 		return true;
@@ -271,6 +285,8 @@ namespace ngl
 	
 	bool actor_client::handle(message<np_actornode_connect_task>& adata)
 	{
+		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+			return true;
 		Try
 		{
 			auto lparm = adata.m_data;
@@ -287,6 +303,8 @@ namespace ngl
 	
 	bool actor_client::handle(message<np_actor_gatewayid_updata>& adata)
 	{
+		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+			return true;
 		auto lparm = adata.m_data;
 		if (lparm->m_isremove)
 		{
