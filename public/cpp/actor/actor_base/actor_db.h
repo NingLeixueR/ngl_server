@@ -277,19 +277,20 @@ namespace ngl
 
 		static void nregister()
 		{
-			EPROTOCOL_TYPE ltype = PROTYPE;
-			tactor_db::template register_actor_handle<PROTYPE
-				, tactor_db
-				, np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>
-				, np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>
-				, np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>
-				, np_actortime_db_cache<PROTYPE, TDBTAB>
+			using type_np_actordb_load = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			using type_np_actordb_save = np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			using type_np_actordb_delete = np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			using type_np_actortime_db_cache = np_actortime_db_cache<PROTYPE, TDBTAB>;
+			actor::type_register_actor_handle<PROTYPE, tactor_db>::template func<
+				type_np_actordb_load
+				, type_np_actordb_save
+				, type_np_actordb_delete
+				, type_np_actortime_db_cache
 			>(true);
 
-			tactor_db::template register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-				, tactor_db
-				, mforward<np_gm>
-			> (true);
+			actor::type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, tactor_db>::template func<
+				mforward<np_gm>
+			>(true);
 		}
 
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)

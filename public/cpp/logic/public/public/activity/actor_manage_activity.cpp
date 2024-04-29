@@ -32,9 +32,8 @@ namespace ngl
 		// 定时器
 		actor::register_timer<actor_manage_activity>(&actor_manage_activity::timer_handle);
 		// 协议注册
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_manage_activity
-			, np_actor_activity
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_manage_activity>::func<
+			np_actor_activity
 		>(false);
 	}
 

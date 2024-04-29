@@ -20,9 +20,8 @@ namespace ngl
 	void actor_brief::nregister()
 	{
 		// Ð­Òé×¢²á
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_brief
-			, np_actor_roleinfo
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_brief>::func<
+			np_actor_roleinfo
 		>(false);
 	}
 }//namespace ngl

@@ -29,9 +29,8 @@ namespace ngl
 		// 定时器
 		actor::register_timer<actor_chat>(&actor_chat::timer_handle);
 		// 协议注册
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_chat
-			, mforward<pbnet::PROBUFF_NET_CHAT>
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_chat>::func<
+			mforward<pbnet::PROBUFF_NET_CHAT>
 		>(false);
 	}
 

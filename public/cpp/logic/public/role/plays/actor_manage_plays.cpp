@@ -23,9 +23,8 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		register_timer<actor_manage_plays>(&actor_manage_plays::timer_handle);
 
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_manage_plays
-			, pbnet::PROBUFF_NET_MATCHING_SUCCESS
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_plays>::func<
+			pbnet::PROBUFF_NET_MATCHING_SUCCESS
 		>(true);
 	}
 

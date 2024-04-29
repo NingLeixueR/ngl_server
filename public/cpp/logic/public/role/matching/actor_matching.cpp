@@ -34,9 +34,9 @@ namespace ngl
 	{
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_matching>(&actor_matching::timer_handle);
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_matching
-			, mforward<pbnet::PROBUFF_NET_MATCHING>
+
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_matching>::func<
+			mforward<pbnet::PROBUFF_NET_MATCHING>
 			, mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>
 			, mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>
 			, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE

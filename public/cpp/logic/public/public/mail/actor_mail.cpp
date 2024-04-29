@@ -21,14 +21,13 @@ namespace ngl
 	void actor_mail::nregister()
 	{
 		// Ð­Òé×¢²á
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_mail
-			, np_actor_addmail
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_mail>::func<
+			np_actor_addmail
 			, mforward<np_gm>
 		>(true);
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_mail
-			, mforward<pbnet::PROBUFF_NET_MAIL_LIST>
+
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_mail>::func<
+			mforward<pbnet::PROBUFF_NET_MAIL_LIST>
 			, mforward<pbnet::PROBUFF_NET_MAIL_READ>
 			, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>
 			, mforward<pbnet::PROBUFF_NET_MAIL_DEL>

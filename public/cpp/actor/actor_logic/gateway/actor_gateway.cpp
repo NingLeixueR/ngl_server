@@ -26,18 +26,16 @@ namespace ngl
 
 	void actor_gateway::nregister()
 	{
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_gateway
-			, np_actorrole_login
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_gateway>::func<
+			np_actorrole_login
 			, np_actorswitch_process<np_actorswitch_process_role>
 			, np_actor_session_close
 			, np_actorrole_login
 			, np_actor_kcp
 		>(false);
 
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_gateway
-			, pbnet::PROBUFF_NET_ROLE_LOGIN
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_gateway>::func<
+			pbnet::PROBUFF_NET_ROLE_LOGIN
 			, pbnet::PROBUFF_NET_KCPSESSION
 		>(false);
 	}

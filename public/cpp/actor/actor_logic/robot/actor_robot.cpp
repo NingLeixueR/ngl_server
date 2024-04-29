@@ -24,9 +24,9 @@ namespace ngl
 	void actor_robot::nregister()
 	{
 		nforward::g2c();
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_robot
-			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
+
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_robot>::func<
+			pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
 		>(false);
 	}
 
@@ -193,14 +193,12 @@ namespace ngl
 
 	void actor_manage_robot::nregister()
 	{
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_manage_robot
-			, np_robot_pram
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_manage_robot>::func<
+			np_robot_pram
 		>(false);
-
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_manage_robot
-			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+		
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_manage_robot>::func<
+			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 		>(false);
 	}
 }//namespace ngl

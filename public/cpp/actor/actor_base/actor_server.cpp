@@ -5,9 +5,8 @@ namespace ngl
 {
 	void actor_server::nregister()
 	{
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_server
-			, np_actornode_register
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_server>::func<
+			np_actornode_register
 			, np_actornode_update
 			, np_actor_gatewayid_updata
 		>(true);

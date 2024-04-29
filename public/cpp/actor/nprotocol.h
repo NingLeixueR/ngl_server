@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nactortype.h"
+#include "nprotocol.h"
 #include "serialize.h"
 #include "localtime.h"
 #include "serialize.h"

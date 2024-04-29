@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "template_arg.h"
 #include "nactor_type.h"
 #include "nactortype.h"
 #include "actor_base.h"
@@ -92,17 +93,6 @@ namespace ngl
 		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
 		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
-		template <typename TDerived>
-		class TDerivedHandle
-		{
-		public:
-			template <typename T>
-			static Tfun<TDerived, T> Handle()
-			{
-				return (Tfun<TDerived, T>) & TDerived::handle;
-			}
-		};
-
 		//# 注册actor成员函数
 		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
@@ -117,7 +107,21 @@ namespace ngl
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
 
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
+		class register_actor_handle
+		{
+		public:
+			template <typename T>
+			static void func(bool aisload)
+			{
+				ninst<TDerived, TYPE>().rfun((Tfun<TDerived, T>) & TDerived::handle, aisload);
+			}
+		};
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
+		using type_register_actor_handle = template_arg<actor::register_actor_handle<TYPE, TDerived>, bool>;
+
+		/*template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_handle(bool aisload, T*)
 		{
 			register_actor<TYPE, TDerived>(aisload, (Tfun<TDerived, T>) & TDerived::handle);
@@ -135,7 +139,7 @@ namespace ngl
 			{
 				register_actor_handle<TYPE, TDerived, ARG...>(aisload, nullptr);
 			}
-		}
+		}*/
 
 #pragma endregion 
 

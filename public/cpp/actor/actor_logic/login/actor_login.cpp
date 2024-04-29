@@ -29,19 +29,16 @@ namespace ngl
 
 	void actor_login::nregister()
 	{
-		register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, actor_login
-			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
+		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_login>::func<
+			pbnet::PROBUFF_NET_ACOUNT_LOGIN
 		>(false);
 
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_login
-			, np_actor_disconnect_close
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_login>::func<
+			np_actor_disconnect_close
 		>(false);
 
-		register_actor_handle<EPROTOCOL_TYPE_CUSTOM
-			, actor_login
-			, np_actorserver_connect
+		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_login>::func<
+			np_actorserver_connect
 			, np_actorrole_login
 		>(true);
 	}
