@@ -164,7 +164,7 @@ namespace ngl
 			static void func()
 			{
 				ninst<TDerived, TYPE>().
-					template rfun_forward<IsForward>((Tfun<TDerived, np_actor_forward<T, TYPE, false, ngl::forward>>) & TDerived::handle, nactor_type<TDerived>::type(), false);
+					template rfun_forward<IsForward>((Tfun<TDerived, np_actor_forward<T, TYPE, IsForward, ngl::forward>>) & TDerived::handle, nactor_type<TDerived>::type(), false);
 			}
 		};
 

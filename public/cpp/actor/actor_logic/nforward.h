@@ -14,7 +14,7 @@ namespace ngl
 	class nforward
 	{
 		template <EPROTOCOL_TYPE TYPE, typename ...ARG>
-		static void register_recvforward()
+		static void register_c2g()
 		{
 			if (xmlnode::m_nodetype == ngl::GAME)
 			{
@@ -32,7 +32,7 @@ namespace ngl
 		// ##############################		第一次转发		######	第二次转发	#######
 		// 需要支持二次转发
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename ...ARG>
-		static void register_recvforward2()
+		static void register_c2g_2()
 		{
 			if (xmlnode::m_nodetype == ngl::GAME)
 			{
@@ -46,27 +46,21 @@ namespace ngl
 			}
 		}
 
-		template <EPROTOCOL_TYPE TYPE>
-		class register_forward
+		template <EPROTOCOL_TYPE TYPE, typename ...ARG>
+		static void register_g2c()
 		{
-		public:
-			template <typename T>
-			static void func()
+			if (xmlnode::m_nodetype == ngl::ROBOT)
 			{
-				
-				switch (xmlnode::m_nodetype)
-				{
-				case ngl::ROBOT:// gateway->client
-					actor::type_register_actor_handle<TYPE, actor_robot>::template func<T>(false);
-					break;
-				case ngl::GATEWAY:// game->gateway
-					actor_gatewayg2c::register_forward<TYPE, true, actor_gatewayg2c>(
-						(Tfun<actor_gatewayg2c, np_actor_forward<T, TYPE, true, ngl::forward>>) & actor_gatewayg2c::handle
-					);
-					break;
-				}
+				actor_robot::type_register_actor_handle<TYPE, actor_robot>::template func<ARG...>(false);
+				//actor_robot::type_register_recvforward_handle<TYPE, actor_robot>:: template func<ARG...>();
+				return;
 			}
-		};
+			if (xmlnode::m_nodetype == ngl::GATEWAY)
+			{
+				actor_gatewayg2c::type_register_forward_handle<TYPE, true, actor_gatewayg2c>:: template func<ARG...>();
+				return;
+			}
+		}
 
 	public:
 		//// ### client->gateway->game
