@@ -186,8 +186,23 @@ namespace ngl
 			register_recvforward<TYPE, TDerived>(arg...);
 		}
 
-		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_recvforward_handle
+		{
+		public:
+			template <typename T>
+			static void func()
+			{
+				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
+			}
+		};
+
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
+		using type_register_recvforward_handle = template_arg<actor::register_recvforward_handle<TYPE, TDerived>>;
+
+		// 服务于二次转发
+		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
+		class register_recvforward_handle2
 		{
 		public:
 			template <typename T>
@@ -199,7 +214,7 @@ namespace ngl
 		};
 
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
-		using type_register_recvforward_handle = template_arg<actor::register_recvforward_handle<TYPE, ACTOR, TDerived>>;
+		using type_register_recvforward_handle2 = template_arg<actor::register_recvforward_handle2<TYPE, ACTOR, TDerived>>;
 
 #pragma endregion 
 	public:

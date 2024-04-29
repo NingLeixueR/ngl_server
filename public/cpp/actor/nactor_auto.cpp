@@ -183,12 +183,11 @@ namespace ngl
 	// # 会注册gateway的转发与game的处理
 	void nforward::c2g()
 	{
-		template_arg<register_recvforward<EPROTOCOL_TYPE_PROTOCOLBUFF>>::func<
-			pbnet::PROBUFF_NET_GET_TIME
+		register_recvforward<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, pbnet::PROBUFF_NET_GET_TIME
 			, pbnet::PROBUFF_NET_CMD
 			, pbnet::PROBUFF_NET_SWITCH_LINE
 		>();
-
 
 		//// ACTOR_MAIL 模块二次转发
 		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_MAIL
@@ -198,22 +197,15 @@ namespace ngl
 			, pbnet::PROBUFF_NET_MAIL_DEL
 		>();
 
-		/*template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_MAIL>>::func<
-			pbnet::PROBUFF_NET_MAIL_LIST
-			, pbnet::PROBUFF_NET_MAIL_READ
-			, pbnet::PROBUFF_NET_MAIL_DRAW
-			, pbnet::PROBUFF_NET_MAIL_DEL
-		>();*/
-
 		// ACTOR_NOTICE 模块二次转发
-		/*template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE>>::func<
-			pbnet::PROBUFF_NET_NOTICE
-		>();*/
+		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE
+			, pbnet::PROBUFF_NET_NOTICE
+		>();
 
 		// ACTOR_CHAT 模块二次转发
-		/*template_arg<register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_CHAT>>::func<
-			pbnet::PROBUFF_NET_CHAT
-		>();*/
+		register_recvforward2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_CHAT
+			, pbnet::PROBUFF_NET_CHAT
+		>();
 	}
 
 	// # 注册game到client的消息
