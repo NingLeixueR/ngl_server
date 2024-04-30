@@ -249,6 +249,53 @@ namespace ngl
 			return true;
 		}
 
+		if (handle_rechangecmd::empty())
+		{
+			handle_rechangecmd::push("pay", [this](int id, ngl::ojson& aos)
+				{
+					struct pay
+					{
+						std::string m_orderid;
+						int32_t m_rechargeid;
+						jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid)
+					};
+					pay lpay;
+					if (aos.read("data", lpay) == false)
+						return;
+
+					// 返回 {"data":int32_t}
+					gcmd<int32_t> pro;
+					pro.id = id;
+					pro.m_operator = "pay_responce";
+					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
+				}
+			);
+			handle_rechangecmd::push("gmrechange", [this](int id, ngl::ojson& aos)
+				{
+					int32_t lrechargeid;
+					if (aos.read("data", lrechargeid) == false)
+						return;
+
+					std::string lorder;
+					createorder(lorder, lrechargeid);
+
+					// 返回 {"data":int32_t}
+					gcmd<int32_t> pro;
+					pro.id = id;
+					pro.m_operator = "rechange_responce";
+					pro.m_data = rechange(lorder, lrechargeid, true, true);
+				});
+			handle_rechangecmd::push("rechange", [this](int id, ngl::ojson& aos)
+				{//actor_role::loginpay() callback
+					prorechange lrechange;
+					if (aos.read("data", lrechange) == false)
+						return;
+
+					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
+				});
+		}
+
+
 		static std::map<std::string, std::function<void(int, ngl::ojson&)>> lcmd;
 		if (lcmd.empty())
 		{
@@ -295,13 +342,10 @@ namespace ngl
 				};
 		}
 
-		auto itor = lcmd.find(loperator);
-		if (itor == lcmd.end())
+		if (handle_rechangecmd::function(loperator, adata.m_data->identifier(), lojson) == false)
 		{
-			LogLocalError("GM actor_role operator[%] ERROR", loperator);
-			return true;
+			LogLocalError("GM actor_role rechange operator[%] ERROR", loperator);
 		}
-		itor->second(adata.m_data->identifier(), lojson);
 		return true;
 	}
 

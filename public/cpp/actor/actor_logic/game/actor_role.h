@@ -46,6 +46,8 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
+		using handle_rechangecmd = cmd<actor_role, std::string, int, ngl::ojson&>;
+
 		//# 执行handle之后调用
 		virtual void handle_after();
 
