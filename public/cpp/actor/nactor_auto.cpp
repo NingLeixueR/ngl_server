@@ -50,14 +50,13 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
-		initproto::init_customs(
-			EPROTOCOL_TYPE_PROTOCOLBUFF
-			, null<np_actordb_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<np_actordb_delete<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>>
-			, null<np_actortime_db_cache<EPROTOCOL_TYPE_PROTOCOLBUFF, TDB>>
-		);
+		initproto::type_customs::template func<
+			np_actordb_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
+			, np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
+			, np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
+			, np_actordb_delete<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
+			, np_actortime_db_cache<EPROTOCOL_TYPE_PROTOCOLBUFF, TDB>
+		>(EPROTOCOL_TYPE_PROTOCOLBUFF);
 	}
 
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
@@ -125,38 +124,38 @@ namespace ngl
 		);
 
 		// 新增内部协议需要补充
-		initproto::init_customs(EPROTOCOL_TYPE_CUSTOM
-			/*200000001*/, null<np_gm>						
-			/*200000002*/, null<np_gm_response>				// 200000002
-			/*200000003*/, null<mforward<np_gm>>				// 200000003
-			/*200000004*/, null<mforward<np_gm_response>>	// 200000004
-			/*200000005*/, null<timerparm>
-			/*200000006*/, null<np_robot_pram>
-			/*200000007*/, null<np_actornode_register>
-			/*200000008*/, null<np_actornode_register_response>
-			/*200000009*/, null<np_actorclient_node_connect>
-			/*200000010*/, null<np_actornode_update>
-			/*200000011*/, null<np_actornode_update_mass>
-			/*200000012*/, null<np_actornode_connect_task>
-			/*200000013*/, null<np_actorrole_login>
-			/*200000014*/, null<np_actorserver_connect>
-			/*200000015*/, null<np_actor_session_close>
-			/*200000016*/, null<np_actor_disconnect_close>
-			/*200000017*/, null<np_actor_logitem>
-			/*200000018*/, null<np_actor_broadcast>
-			/*200000019*/, null<np_actor_reloadcsv>
-			/*200000020*/, null<np_actor_csv_verify_version>
-			/*200000021*/, null<np_actor_senditem>
-			/*200000022*/, null<np_actor_roleinfo>
-			/*200000023*/, null<np_actor_gatewayinfo_updata>
-			/*200000024*/, null<np_actor_addmail>
-			/*200000025*/, null<np_actor_activity>
-			/*200000026*/, null<np_actor_gatewayid_updata>
-			/*200000027*/, null<np_actorswitch_process<np_actorswitch_process_role>>
-			/*200000028*/, null<np_actor_kcp>
-			/*200000029*/, null<np_calendar>
-		);
-
+		initproto::type_customs::template func<
+			/*200000001*/np_gm
+			/*200000002*/, np_gm_response
+			/*200000003*/, mforward<np_gm>
+			/*200000004*/, mforward<np_gm_response>
+			/*200000005*/, timerparm
+			/*200000006*/, np_robot_pram
+			/*200000007*/, np_actornode_register
+			/*200000008*/, np_actornode_register_response
+			/*200000009*/, np_actorclient_node_connect
+			/*200000010*/, np_actornode_update
+			/*200000011*/, np_actornode_update_mass
+			/*200000012*/, np_actornode_connect_task
+			/*200000013*/, np_actorrole_login
+			/*200000014*/, np_actorserver_connect
+			/*200000015*/, np_actor_session_close
+			/*200000016*/, np_actor_disconnect_close
+			/*200000017*/, np_actor_logitem
+			/*200000018*/, np_actor_broadcast
+			/*200000019*/, np_actor_reloadcsv
+			/*200000020*/, np_actor_csv_verify_version
+			/*200000021*/, np_actor_senditem
+			/*200000022*/, np_actor_roleinfo
+			/*200000023*/, np_actor_gatewayinfo_updata
+			/*200000024*/, np_actor_addmail
+			/*200000025*/, np_actor_activity
+			/*200000026*/, np_actor_gatewayid_updata
+			/*200000027*/, np_actorswitch_process<np_actorswitch_process_role>
+			/*200000028*/, np_actor_kcp
+			/*200000029*/, np_calendar
+		>(EPROTOCOL_TYPE_CUSTOM);
+		
 		// 新增数据存储需要补全
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>();
@@ -170,7 +169,6 @@ namespace ngl
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>();
 		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar>();
-
 	}
 }
 

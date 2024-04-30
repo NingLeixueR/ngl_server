@@ -1,4 +1,5 @@
 #pragma once
+#include "template_arg.h"
 #include "xmlprotocol.h"
 #include "net.pb.h"
 #include "define.h"
@@ -43,30 +44,28 @@ namespace ngl
 		}
 	public:
 		//CUSTOM
-		template <typename T>
-		static void init_customs(EPROTOCOL_TYPE atype, const T*)
+		class customs
 		{
-			size_t lcode = hash_code<T>();
-			if (m_keyval.find(lcode) != m_keyval.end())
+		public:
+			template <typename T>
+			static void func(EPROTOCOL_TYPE atype)
 			{
-				LogLocalError("init_customs(%) is same!!!", typeid(T).name());
-				return;
-			}
-			m_keyval.insert(std::make_pair(lcode, pinfo
+				size_t lcode = hash_code<T>();
+				if (m_keyval.find(lcode) != m_keyval.end())
 				{
-					.m_type = atype,
-					.m_protocol = ++lcustoms,
-					.m_name = TYPE_NAME(T)
-				}));
-			LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name())
-		}
-
-		template <typename T, typename ...ARG>
-		static void init_customs(EPROTOCOL_TYPE atype, const T* adata, const ARG*... args)
-		{
-			init_customs(atype, adata);
-			init_customs(atype, args...);
-		}
+					LogLocalError("init_customs(%) is same!!!", typeid(T).name());
+					return;
+				}
+				m_keyval.insert(std::make_pair(lcode, pinfo
+					{
+						.m_type = atype,
+						.m_protocol = ++lcustoms,
+						.m_name = TYPE_NAME(T)
+					}));
+				LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name())
+			}
+		};
+		using type_customs = template_arg<customs, EPROTOCOL_TYPE>;
 
 		template <typename T>
 		static bool init_protobufs()
