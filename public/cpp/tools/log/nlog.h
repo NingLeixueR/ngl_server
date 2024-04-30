@@ -17,8 +17,9 @@ namespace ngl
 
 	class nlog
 	{
-		nlog(){}
+		nlog();
 		bool m_isinitfinish = false;
+		bool m_iswrite = true;
 	public:
 		static nlog& getInstance()
 		{
@@ -27,6 +28,7 @@ namespace ngl
 		}
 
 		bool& isinitfinish();
+		bool& iswrite();
 
 		void plog(ELOG atype, ngl::logformat& llogformat, ELOG_TYPE altype);
 	};

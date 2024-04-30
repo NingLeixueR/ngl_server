@@ -30,12 +30,24 @@ namespace ngl
 		return m_isinitfinish;
 	}
 
+	nlog::nlog()
+	{
+		
+	}
+
+	bool& nlog::iswrite()
+	{
+		return m_iswrite;		
+	}
+
 	void nlog::plog(ELOG atype, ngl::logformat& llogformat, ELOG_TYPE altype)
 	{
 		if (DEF_LOG_PRINTF)
 			logprintf::printf(atype, llogformat.data("pos").c_str(), llogformat.data("head").c_str(), llogformat.data("src").c_str());
 		
 		if (isinitfinish() == false)
+			return;
+		if (m_iswrite == false)
 			return;
 
 		std::shared_ptr<np_actor_logitem> pro(new np_actor_logitem());

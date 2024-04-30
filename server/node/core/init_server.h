@@ -77,6 +77,9 @@ bool init_server(int aid)
 		return false;
 	ngl::encryption::set_xor(lisxor, lxor.c_str(), lxor.size());
 
+	if (!lpublicxml->find("log_iswrite", ngl::nlog::getInstance().iswrite()))
+		return false;
+
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
