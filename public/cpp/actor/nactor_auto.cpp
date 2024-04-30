@@ -190,7 +190,8 @@ namespace ngl
 		>();
 
 		//// ACTOR_MAIL 模块二次转发
-		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_MAIL
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_MAIL
 			, pbnet::PROBUFF_NET_MAIL_LIST
 			, pbnet::PROBUFF_NET_MAIL_READ
 			, pbnet::PROBUFF_NET_MAIL_DRAW
@@ -198,12 +199,14 @@ namespace ngl
 		>();
 
 		// ACTOR_NOTICE 模块二次转发
-		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_NOTICE
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_NOTICE
 			, pbnet::PROBUFF_NET_NOTICE
 		>();
 
 		// ACTOR_CHAT 模块二次转发
-		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_CHAT
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_CHAT
 			, pbnet::PROBUFF_NET_CHAT
 		>();
 	}

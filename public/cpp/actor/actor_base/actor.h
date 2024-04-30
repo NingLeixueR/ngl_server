@@ -171,7 +171,6 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
 		using type_register_forward_handle = template_arg<actor::register_forward_handle<TYPE, IsForward, TDerived>>;
 
-
 		//# 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_recvforward(T afun)
@@ -208,8 +207,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				Tfun<TDerived, T> lfun = &TDerived::template handle_forward<ACTOR, T>;
-				ninst<TDerived, TYPE>().rfun_recvforward(lfun, false);
+				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
 			}
 		};
 
