@@ -141,6 +141,5 @@ namespace ngl
 			}
 			return func(++aindex, afg, astr, args...);
 		}
-
 	};
 }// namespace ngl
