@@ -4,77 +4,38 @@
 
 namespace ngl
 {
-	class testrfunbase
+	class sb1
 	{
 	public:
-		virtual int64_t hash_code() = 0;
-	}; 
-	
-	std::map<rguid, rfuns::mame_function> rfuns::m_fun;
-
-	class testrfun1
+		template <typename T>
+		static void func()
+		{
+			std::cout << dtype_name(T) << std::endl;
+		}
+	};
+	class testrfun
 	{
 	public:
-		void handle(const int athread, const int& avalue)
+		void handle1(const int athread, const int& avalue)
 		{
 			std::cout << avalue << std::endl;
 		}
-	};
 
-	class testrfun2
-	{
-	public:
-		void handle(const int& athread, const float& avalue)
+		void handle2(const sb1& athread)
 		{
-			std::cout << avalue << std::endl;
-		}
-	};
-
-	class testrfun3
-	{
-	public:
-		void handle(const float& avalue)
-		{
-			std::cout << avalue << std::endl;
-		}
-	};
-
-	struct tparm
-	{
-		int m_id;
-	};
-
-	class testrfun4
-	{
-	public:
-		void handle(tparm& avalue)
-		{
-			std::cout << avalue.m_id << std::endl;
+			std::cout << std::endl;
 		}
 	};
 
 	void test_rfun()
 	{
-		rfuns::registers(&testrfun1::handle, "¹þ¹þ¹þ");
-		rfuns::registers(&testrfun2::handle, "²âÊÔÒ»ÏÂ");
-
-		testrfun1 la;
-		testrfun2 lb;
+		ngl::rfuns lrfuns;
+		lrfuns.registers(&testrfun::handle1, "void handle(const int athread, const int& avalue)");
+		lrfuns.registers(&testrfun::handle2, "void handle(const sb1& athread)");
+		testrfun la;
 		int lvint = 1989;
-		float lvfloat = 2001;
-		rfuns::handle_switch(&la, 1, lvint);
-		rfuns::handle_switch(&la, 1, lvfloat);
-
-		rfuns::handle_switch(&lb, 1, lvint);
-		rfuns::handle_switch(&lb, 1, lvfloat);
-
-		rfuns::registers(&testrfun3::handle, "6666666");
-		rfuns::handle_switch(&lb, lvfloat);
-
-		tparm ltparm;
-		ltparm.m_id = 798;
-		testrfun4 ld;
-		rfuns::registers(&testrfun4::handle, "777777777");
-		rfuns::handle_switch(&ld, ltparm);
+		lrfuns.handle_switch<testrfun, const int, const int&>(&la, 1, lvint);
+		sb1 lsb1;
+		lrfuns.handle_switch<testrfun, const sb1&>(&la, lsb1);
 	}
 }// namespace ngl

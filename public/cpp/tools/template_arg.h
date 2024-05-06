@@ -11,22 +11,22 @@ namespace ngl
 	{
 	public:
 		template <typename T>
-		static void func(const TARG&... args, T*)
+		static void func2(TARG... args)
 		{
 			TF::template func<T>(args...);
 		}
 
 		template <typename T, typename ...ARG>
-		static void func(const TARG&... args)
+		static void func(TARG... args)
 		{
-			func<T>(args..., nullptr);
+			func2<T>(args.../*, (T*)nullptr*/);
 			if constexpr (sizeof...(ARG) > 1)
 			{
 				func<ARG...>(args...);
 			}
 			if constexpr (sizeof...(ARG) == 1)
 			{
-				func<ARG...>(args..., nullptr);
+				func2<ARG...>(args.../*, nullptr*/);
 			}
 		}
 	};

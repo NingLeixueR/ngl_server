@@ -1,5 +1,7 @@
 #pragma once
 
+#include "template_arg.h"
+
 #include <functional>
 #include <iostream>
 #include <cstdint>
@@ -13,15 +15,26 @@ namespace ngl
 	{
 		std::vector<int64_t> m_64vlaues;
 		
-		rguid(int64_t aid)
+		rguid()
 		{
-			m_64vlaues.push_back(aid);
 		}
 
-		rguid(){}
+		class _handle
+		{
+		public:
+			template <typename T>
+			static void func(rguid& arguid)
+			{
+				using t1 = std::remove_reference<T>::type;
+				using t2 = std::remove_const<t1>::type;
+				arguid.m_64vlaues.push_back(typeid(t2).hash_code());
+			}
+		};
+		using type_handle = template_arg<rguid::_handle, rguid&>;
+
 
 		template <typename T>
-		void init(const T& avalue)
+		void push()
 		{
 			using t1 = std::remove_reference<T>::type;
 			using t2 = std::remove_const<t1>::type;
@@ -29,16 +42,10 @@ namespace ngl
 		}
 
 		template <typename T, typename ...TARG>
-		void init(const T& avalue, const TARG&... arg)
+		void push()
 		{
-			init(avalue);
-			init(arg...);
-		}
-
-		template <typename... T>
-		void init(const std::tuple<T...>&)
-		{
-			init(T{}...);
+			push<T>();
+			push<TARG...>();
 		}
 
 		bool operator<(const rguid& r)const
@@ -62,7 +69,7 @@ namespace ngl
 			void* m_function = nullptr;		// 类成员函数
 			std::string m_message;			// 方便调试查看
 		};
-		static std::map<rguid, mame_function> m_fun;
+		std::map<rguid, mame_function> m_fun;
 
 		template <typename T, typename F>
 		static T supercast(F f)
@@ -82,12 +89,15 @@ namespace ngl
 	
 	public:
 		template <typename TDerived, typename ...TARG>
-		static void registers(Tfun<TDerived, TARG...> afun, const char* amessage = "")
+		void registers(Tfun<TDerived, TARG...> afun, const char* amessage = "")
 		{
-			rguid lvalues(typeid(typename std::remove_const<TDerived>::type).hash_code());
-			using targ = std::tuple<typename std::remove_reference<TARG>::type...>;
-			lvalues.init(targ{});
-			m_fun[lvalues] = mame_function
+			rguid lguid;
+			rguid::type_handle::func<
+				TDerived
+				, TARG...
+			>(lguid);
+
+			m_fun[lguid] = mame_function
 			{
 				.m_function	= supercast<void*>(afun),
 				.m_message	= amessage
@@ -95,15 +105,19 @@ namespace ngl
 		}
 
 		template <typename TDerived, typename ...TARG>
-		static bool handle_switch(TDerived* aeffect, TARG&&... arg)
+		bool handle_switch(TDerived* aeffect, TARG... arg)
 		{
-			rguid lvalues(typeid(typename std::remove_const<TDerived>::type).hash_code());
-			lvalues.init(arg...);
-			auto itor = m_fun.find(lvalues);
+			rguid lguid;
+			rguid::type_handle::func<
+				TDerived
+				, TARG...
+			>(lguid);
+
+			auto itor = m_fun.find(lguid);
 			if (itor == m_fun.end())
 				return false;
 			std::cout << "handle_switch[" << itor->second.m_message << "]" << std::endl;
-			Tfun<TDerived, TARG...> lpfun = supercast<Tfun<TDerived, TARG...>>(itor->second.m_function);
+			Tfun<TDerived, const TARG&...> lpfun = supercast<Tfun<TDerived, const TARG&...>>(itor->second.m_function);
 			((aeffect)->*lpfun)(arg...);
 			return true;
 		}
