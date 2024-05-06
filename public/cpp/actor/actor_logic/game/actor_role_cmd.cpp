@@ -10,8 +10,8 @@ namespace ngl
 		LogInfo("cmd[%]", lparm.m_cmd())
 
 		std::vector<std::string> lvec;
-		ngl::splite::division(lparm.m_cmd().c_str(), "|", lvec);
-
+		if (ngl::splite::func(lparm.m_cmd().c_str(), "|", lvec) == false)
+			return true;
 		if (handle_cmd::empty())
 		{
 			handle_cmd::push("/time", [](actor_role* role, const char* aparm)
@@ -50,7 +50,8 @@ namespace ngl
 					// c 3 0 channelid			// 获取所有聊天记录
 					// c 3 1 channelid "xxxx"	// 聊天发言	
 					std::vector<std::string> lvec;
-					ngl::splite::division(aparm, "*", lvec);
+					if (ngl::splite::func(aparm, "*", lvec) == false)
+						return;
 					if (lvec.size() >= 2)
 					{
 						pbnet::PROBUFF_NET_CHAT pro;
@@ -75,7 +76,8 @@ namespace ngl
 					pbnet::PROBUFF_NET_CHAT pro;
 					pro.set_m_type(pbnet::enum_logic_chat::get_chat_list);
 					int lchannelid = 0;
-					ngl::splite::division(aparm, "*", lchannelid);
+					if (ngl::splite::func(aparm, "*", lchannelid) == false)
+						return;
 					pro.set_m_channelid(lchannelid);
 					message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, &pro);
 					role->handle_forward<ACTOR_CHAT>(lmessage);

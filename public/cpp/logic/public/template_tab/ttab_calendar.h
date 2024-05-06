@@ -127,7 +127,8 @@ namespace ngl
 			int hour = 0;
 			int minute = 0;
 			int second = 0;
-			splite::division(astr, ":", hour, minute, second);
+			if(splite::func(astr, ":", hour, minute, second) == false)
+				return std::make_pair(false, -1);
 			if (hour == -1 || minute == -1 || second == -1)
 				return std::make_pair(false,-1);
 			return std::make_pair(true, hour * 60 * 60 + minute * 60 + second);
