@@ -11,7 +11,7 @@ namespace ngl
 	{
 	public:
 		template <typename T>
-		static void func(TARG... args, T*)
+		static void func(const TARG&... args, T*)
 		{
 			TF::template func<T>(args...);
 		}

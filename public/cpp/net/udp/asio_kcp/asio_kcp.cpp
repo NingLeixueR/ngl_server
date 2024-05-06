@@ -300,7 +300,8 @@ namespace ngl
 				std::string lecmd;
 				int32_t lnum = 0;
 				std::string ljson;
-				splite::division(abuf, "*", lecmd, lnum, ljson);
+				if (ngl::splite::func(abuf, "*", lecmd, lnum, ljson) == false)
+					return false;
 				//ecmd lnum = (ecmd)boost::lexical_cast<int32_t>(&abuf[ecmd_minlen]);
 				auto itor = m_cmdfun.find((ecmd)lnum);
 				if (itor != m_cmdfun.end())

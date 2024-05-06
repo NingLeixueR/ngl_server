@@ -430,7 +430,8 @@ bool start_robot(int argc, char** argv)
 			char lbuff[4096] = { 0 };
 			std::cin.getline(lbuff, 4096);
 			std::vector<std::string> lvec;
-			ngl::splite::division(lbuff, " ", lvec);
+			if (ngl::splite::func(lbuff, " ", lvec) == false)
+				continue;
 			ngl::robot_cmd::parse_command(lvec);
 		}
 	}
@@ -457,7 +458,8 @@ bool start_robot(int argc, char** argv)
 			lcmd += argv[6];
 		}
 		std::vector<std::string> lvec;
-		ngl::splite::division(lcmd.c_str(), " ", lvec);
+		if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
+			return false;
 		ngl::robot_cmd::parse_command(lvec);
 		int lnum = 10000;
 		//boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
@@ -476,7 +478,8 @@ bool start_robot(int argc, char** argv)
 					char lbuff[1024] = { 0x0 };
 					std::cin.getline(lbuff, 1024);
 					lcmd = lbuff;
-					ngl::splite::division(lcmd.c_str(), " ", lvec);
+					if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
+						continue;
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
 						lms.clear();
@@ -512,7 +515,8 @@ bool start_robot(int argc, char** argv)
 						ltest = true;
 						continue;
 					}
-					ngl::splite::division(lcmd.c_str(), " ", lvec);
+					if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
+						continue;
 					ngl::robot_cmd::parse_command(lvec);
 				}
 			});
@@ -532,82 +536,6 @@ bool start_robot(int argc, char** argv)
 				ngl::robot_cmd::parse_command(lcmdvec2);
 			}
 		}
-
 	}
-
-	return true;
-}
-
-
-bool start_tools(int argc, char** argv)
-{
-	std::string lcmd("tools_init_actor");
-	if (lcmd == argv[1])
-	{
-		std::string ldir = argv[2];
-		ldir += "\\actor.txt";
-		ngl::readfile lread(ldir);
-
-		std::string ldir2 = argv[2];
-		ldir2 += "\\nactortype_auto.cpp";
-		ngl::writefile lwrite(ldir2);
-
-		std::string line;
-		std::stringstream m_stream;
-		m_stream << "#include \"nactortype.h\"" << std::endl;
-		m_stream << "#include \"enum2name.h\"" << std::endl;
-		m_stream << std::endl;
-		m_stream << "namespace ngl" << std::endl;
-		m_stream << "{" << std::endl;
-		m_stream << "	template <typename TK, typename TV>" << std::endl;
-		m_stream << "	void em_actor(const TK akey, const TV aval)" << std::endl;
-		m_stream << "	{" << std::endl;
-		m_stream << "		em<ENUM_ACTOR>::set(akey, aval);" << std::endl;
-		m_stream << "	}" << std::endl;
-		
-		m_stream << "	template <typename TK, typename TV, typename ...ARG>" << std::endl;
-		m_stream << "	void em_actor(const TK & akey, const TV & aval, const ARG&... arg)" << std::endl;
-		m_stream << "	{" << std::endl;
-		m_stream << "		em_actor(akey, aval);" << std::endl;
-		m_stream << "		em_actor(arg...);" << std::endl;
-		m_stream << "	}" << std::endl;
-		m_stream << "	nactortype::nactortype()" << std::endl;
-		m_stream << "	{" << std::endl;
-		m_stream << "		em_actor(" << std::endl;
-		bool isfirst = true;
-		while (lread.readline(line))
-		{
-			if (line[0] == '#')
-			{
-				continue;
-			}
-			std::vector<std::string> lvec;
-			ngl::splite::division(line.c_str(), ",", lvec);
-			if (lvec.empty())
-				continue;
-			if (lvec[0] == "")
-				continue;
-			if (isfirst)
-				m_stream << "			";
-			else
-				m_stream << "			,";
-			if (lvec.size() >= 2)
-			{
-				m_stream << lvec[0] << ",\"" << lvec[1] << "\"" << std::endl;
-			}
-			else
-			{
-				
-				m_stream << lvec[0] << ",\"" << lvec[0] << "\"" << std::endl;
-			}
-			isfirst = false;
-		}
-		m_stream << "		);" << std::endl;
-		m_stream << "	}" << std::endl;
-		m_stream << "}" << std::endl;
-		lwrite.write(m_stream.str());
-	}
-
-	ngl::sleep::seconds(3);
 	return true;
 }

@@ -10,73 +10,137 @@ namespace ngl
 	class splite
 	{
 	public:
-		// ·Ö¸î×Ö·û´®
-		static void division(const char* abuff, const char* afg, std::vector<int>& avec);
-		static void division(const char* abuff, const char* afg, std::vector<float>& avec);
-		static void division(const char* abuff, const char* afg, std::vector<double>& avec);
-		static void division(const char* abuff, const char* afg, std::vector<std::string>& avec);
-
-		template <typename TYPE>
-		static void division(std::vector<std::string>& avec, int apos, TYPE& aval)
-		{
-			if (apos >= avec.size())
-				return;
-			aval = boost::lexical_cast<TYPE>(avec[apos]);
-		}
-
-		template <typename TYPE, typename ...ARG>
-		static void division(std::vector<std::string>& avec, int apos, TYPE& aval, ARG&... arg)
-		{
-			if (apos >= avec.size())
-				return;
-			aval = boost::lexical_cast<TYPE>(avec[apos]);
-			division(avec, ++apos, arg...);
-		}
-
-		template <typename ...ARG>
-		static void division(const char* abuff, const char* afg, ARG&... arg)
+		template <typename T>
+		static bool func(const char* abuff, const char* afg, std::vector<T>& avec)
 		{
 			std::vector<std::string> lvec;
-			boost::split(lvec, abuff, boost::is_any_of(afg));
-			division(lvec, 0, arg...);
+			func(abuff, afg, lvec);
+			for (std::string& item : lvec)
+			{
+				avec.push_back(boost::lexical_cast<T>(item));
+			}
+			return true;
+		}
+
+		static bool func(const char* abuff, const char* afg, std::vector<std::string>& avec)
+		{
+			boost::split(avec, abuff, boost::is_any_of(afg));
+			return true;
+		}
+
+		template <typename ...ARGS>
+		static bool func(const char* abuff, const char* afg, ARGS&... args)
+		{
+			std::vector<std::string> lvec;
+			func(abuff, afg, lvec);
+			func(0, lvec, args...);
+			return true;
+		}
+
+	private:
+		template <typename T>
+		static void cast(std::string& astr, T& adata)
+		{
+			adata = boost::lexical_cast<T>(astr);
 		}
 
 		template <typename T>
-		static void division(const char* abuff, const char* afg1, const char* afg2, std::vector<std::vector<T>>& avec)
+		static bool func(int32_t aindex, std::vector<std::string>& avec, T& adata)
 		{
-			std::vector<std::string> lvec;
-			division(abuff, afg1, lvec);
-			avec.resize(lvec.size());
-			for (int i = 0; i < lvec.size(); ++i)
+			if (aindex > avec.size())
+				return false;
+			try
 			{
-				division(lvec[i].c_str(), afg2, avec[i]);
+				cast(avec[aindex], adata);
 			}
+			catch (...)
+			{
+				return false;
+			}
+			return true;
 		}
 
-		template <typename TYPE>
-		static void recast(std::stringstream& astream, const TYPE& arg)
+		template <typename T,typename ...ARGS>
+		static bool func(int32_t aindex, std::vector<std::string>& avec, T& adata, ARGS&... args)
 		{
-			astream << arg;
+			if (aindex > avec.size())
+				return false;
+			try
+			{
+				cast(avec[aindex], adata);
+			}
+			catch (...)
+			{
+				return false;
+			}
+			return func(++aindex, avec, args...);
 		}
+	};
 
-		template <typename TYPE, typename ...ARG>
-		static void recast(std::stringstream& astream, const TYPE& aval, const ARG&... arg)
+	class splicing
+	{
+	public:
+		template <typename T>
+		static bool func(const std::vector<T>& avec, const char* afg, std::string& astr)
 		{
-			recast(astream, aval);
-			recast(astream, arg...);
+			for (int i = 0; i < avec.size(); ++i)
+			{
+				if (i != 0)
+					astr += afg;
+				astr += boost::lexical_cast<std::string>(avec[i]);
+			}
+			return true;
 		}
 
-		template <typename ...ARG>
-		static void recast(std::string& astr, const ARG&... arg)
+		static bool func(const std::vector<std::string>& avec, const char* afg, std::string& astr)
 		{
-			std::stringstream m_stream;
-			recast(m_stream, arg...);
-			astr += m_stream.str();
+			for (int i = 0; i < avec.size(); ++i)
+			{
+				if (i != 0)
+					astr += afg;
+				astr += avec[i];
+			}
+			return true;
 		}
 
-		static void recast(const std::vector<std::string>& avec, const char afg, std::string& astr);
-		static void recast(const std::vector<int>& avec, const char afg, std::string& astr);
-		static void recast(const std::vector<float>& avec, const char afg, std::string& astr);
-		static void recast(const std::vector<double>& avec, const char afg, std::string& astr);
+		template <typename ...ARGS>
+		static bool func(const char* afg, std::string& astr, ARGS... args)
+		{
+			return func(0, afg, astr, args...);
+		}
+
+	private:
+		template <typename T>
+		static bool func(int32_t aindex, const char* afg, std::string& astr, T& adata)
+		{
+			try
+			{
+				if (aindex != 0)
+					astr += afg;
+				astr += boost::lexical_cast<std::string>(adata);
+			}
+			catch (...)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		template <typename T, typename ...ARGS>
+		static bool func(int32_t aindex, const char* afg, std::string& astr, T& adata, ARGS&... args)
+		{
+			try
+			{
+				if (aindex != 0)
+					astr += afg;
+				astr += boost::lexical_cast<std::string>(adata);
+			}
+			catch (...)
+			{
+				return false;
+			}
+			return func(++aindex, afg, astr, args...);
+		}
+
 	};
 }// namespace ngl

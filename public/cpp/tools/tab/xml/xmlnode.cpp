@@ -180,7 +180,8 @@ namespace ngl
 		{
 			std::string lstr = xml::get_xmlattr<std::string>(apt, "type");
 			std::vector<std::string> lvec;
-			splite::division(lstr.c_str(), "|", lvec);
+			if (ngl::splite::func(lstr.c_str(), "|", lvec) == false)
+				return;
 			std::function<void(std::string&)> lfun = [&anet](std::string& avalue)
 			{
 				std::pair<NODE_TYPE, bool> lpair = em<NODE_TYPE>::get_enum(avalue.c_str());

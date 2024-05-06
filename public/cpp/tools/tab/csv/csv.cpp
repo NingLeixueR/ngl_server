@@ -35,10 +35,12 @@ namespace ngl
 		Try
 		{
 			std::vector<std::string>  lvec;
-			splite::division(lversion.c_str(), ",", lvec);
+			if (ngl::splite::func(lversion.c_str(), ",", lvec) == false)
+				return;
 			Assert(lvec.empty() == false);
 			std::string lver;
-			splite::division(lvec[0].c_str(), ":", lver, aversion);
+			if (ngl::splite::func(lvec[0].c_str(), ":", lver, aversion) == false)
+				return;
 			Assert(lver == "version");
 		}Catch;
 		

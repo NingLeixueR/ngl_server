@@ -39,7 +39,8 @@ namespace ngl
 		if (aip == "127.0.0.1")
 			return true;
 		std::vector<std::string> lvec;
-		splite::division(aip.c_str(), ".", lvec);
+		if (ngl::splite::func(aip.c_str(), ".", lvec) == false)
+			return false;
 		return is_a_address(lvec) || is_b_address(lvec) || is_c_address(lvec);
 	}
 
