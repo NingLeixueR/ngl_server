@@ -301,8 +301,10 @@ namespace ngl
 		{
 			if (itor->second.m_actortype != lguid.type())
 			{
-				LogLocalError("itor->second.m_actortype != lguid.type()==[%]([%]!=[%])"
-					, agroupid, (int)ltype, (int)lguid.type()
+				LogLocalError("m_actortype != lguid.type()==[%]([%]!=[%])"
+					, agroupid
+					, (int)ltype
+					, (int)lguid.type()
 				);
 				return false;
 			}

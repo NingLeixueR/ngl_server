@@ -67,10 +67,11 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
-			using tloaddb = np_actordb_load_response<TYPE, DBTYPE, TDBTAB>;
-			auto lpfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
-
-			ninst<TDerived, TYPE>().template rfun<actor_base, tloaddb>(lpfun, true);
+			ninst<TDerived, TYPE>().
+				template rfun<actor_base, np_actordb_load_response<TYPE, DBTYPE, TDBTAB>>(
+					&actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>
+					, true
+				);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
