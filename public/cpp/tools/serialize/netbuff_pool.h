@@ -7,6 +7,8 @@
 #include "time_wheel.h"
 #include "nlog.h"
 
+#define ISUSENETPOOL	(false)
+
 namespace ngl
 {
 	template <int InitBytes, int Count>
@@ -158,12 +160,21 @@ namespace ngl
 
 		static char* malloc(int abytes)
 		{
-			return getInstance().malloc_private(abytes);
+			if constexpr (ISUSENETPOOL == true)
+			{
+				return getInstance().malloc_private(abytes);
+			}
+			return new char[abytes];
 		}
 
 		static void free(char* abuff)
 		{
-			getInstance().free_private(abuff);
+			if constexpr (ISUSENETPOOL == true)
+			{
+				getInstance().free_private(abuff);
+				return;
+			}
+			delete[] abuff;
 		}
 	};
 }// namespace ngl
