@@ -27,9 +27,9 @@ namespace ngl
 	private:
 		struct pinfo
 		{
-			EPROTOCOL_TYPE m_type;
-			int m_protocol;
-			std::string m_name;
+			EPROTOCOL_TYPE	m_type;
+			int				m_protocol;
+			std::string		m_name;
 		};
 		static std::multimap<size_t, pinfo> m_keyval;
 		// net/gm		[1			-  100000000];

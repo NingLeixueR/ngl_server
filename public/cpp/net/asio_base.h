@@ -21,8 +21,7 @@ namespace ngl
 	using basio_iptcpendpoint	= boost::asio::ip::tcp::endpoint;
 	using basio_ipaddress		= boost::asio::ip::address;
 	using tuple_ioservice		= std::tuple<basio_ioservice*, basio_ioservicework*, std::thread*>;
-
-	using basio_websocket = boost::beast::websocket::stream<boost::beast::tcp_stream>;
+	using basio_websocket		= boost::beast::websocket::stream<boost::beast::tcp_stream>;
 
 	struct serviceio_info
 	{

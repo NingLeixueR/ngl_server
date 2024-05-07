@@ -4,18 +4,6 @@
 
 namespace ngl
 {
-	char* protocoltools::hex_str(char* abuff, int anumber)
-	{
-		//itoa(anumber, &abuff[2], 16);
-		//abuff[0] = '0';
-		//abuff[1] = 'x';
-		std::ostringstream ss;
-		ss << std::hex << anumber;
-		std::string str = ss.str();
-		memcpy(abuff, str.c_str(), str.size());
-		return abuff;
-	}
-
 	bool protocoltools::names(char* abuff, int abuffsize, const char* aname, i32_protocolnum aprotocolnumber, EPROTOCOL_TYPE atype)
 	{
 		return snprintf(abuff, 1024, "%d:%s:%d", atype, aname, aprotocolnumber) > 0;
@@ -30,7 +18,9 @@ namespace ngl
 			em<eprotocol>::set((eprotocol)aprotocolnum, lbuff, atype);
 		}
 		else
+		{
 			LogLocalError("protocol_push fail [%] ", lbuff);
+		}
 	}
 
 	const char* protocoltools::name(i32_protocolnum aprotocolnum, EPROTOCOL_TYPE atype)

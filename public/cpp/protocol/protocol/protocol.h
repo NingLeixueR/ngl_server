@@ -21,11 +21,11 @@ namespace ngl
 	class protocol
 	{
 	public:
-		using tpptr = std::shared_ptr<pack>;
-		using tvptr = std::shared_ptr<void>;
+		using tpptr		= std::shared_ptr<pack>;
+		using tvptr		= std::shared_ptr<void>;
 
 		template <typename T>
-		using tptr = std::shared_ptr<T>;
+		using tptr		= std::shared_ptr<T>;
 
 		using fun_pack	= std::function<tvptr(tpptr&)>;
 		using fun_run	= std::function<bool(tpptr&, tvptr&)>;
@@ -57,7 +57,7 @@ namespace ngl
 					{
 						return ltemp;
 					}
-				}Catch
+				}Catch;
 				return nullptr;
 			};
 			std::string lname = aname;
@@ -84,10 +84,14 @@ namespace ngl
 				{
 					if (lactorguid.type() == atype)
 					{
-						if (lactorguid.is_actoridnone())// actor id 是否无效
+						if (lactorguid.is_actoridnone())
+						{// actor id 是否无效
 							lmanages.push_task_type(atype, lpram);
+						}							
 						else
+						{
 							lmanages.push_task_id(lactorguid.id(), lpram, false);
+						}
 					}
 				}
 				return true;
