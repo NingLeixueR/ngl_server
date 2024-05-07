@@ -16,6 +16,7 @@ namespace ngl
 		}
 
 		virtual void init();
+
 		static void nregister();
 
 		virtual ~actor_csvclient();

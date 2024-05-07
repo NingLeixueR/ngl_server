@@ -70,16 +70,6 @@ namespace ngl
 		return copy_unit(lpunit, aunit);
 	}
 
-	void aoimap::set_enterview(const std::function<void(i64_actorid, std::set<i64_actorid>&)>& afun)
-	{
-		m_enterview = afun;
-	}
-
-	void aoimap::set_leaveview(const std::function<void(i64_actorid, std::set<i64_actorid>&)>& afun)
-	{
-		m_leaveview = afun;
-	}
-
 	bool aoimap::enter(unit* aunit, int32_t ax, int32_t ay)
 	{
 		int32_t lenter_pos = m_grids.id(ax, ay);
@@ -121,7 +111,10 @@ namespace ngl
 		{
 			pro->set_m_isenter(false);
 			actor::send_client(lview, pro);
-			m_leaveview(aunit->id(), lview);
+			event_parm_leaveview lparm;
+			lparm.m_leaveunitid = aunit->id();
+			lparm.m_unitids.swap(lview);
+			events::execute(&lparm);
 		}
 
 		lview.clear();
@@ -145,7 +138,10 @@ namespace ngl
 		{
 			pro->set_m_isenter(true);
 			actor::send_client(lview, pro);
-			m_enterview(aunit->id(), lview);
+			event_parm_enterview lparm;
+			lparm.m_enterunitid = aunit->id();
+			lparm.m_unitids.swap(lview);
+			events::execute(&lparm);
 		}
 
 		aunit->set_x(ax);

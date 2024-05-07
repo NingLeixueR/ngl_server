@@ -3,11 +3,11 @@
 #include "actor_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
-#include "net.pb.h"
-#include "net.h"
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
+#include "net.pb.h"
+#include "net.h"
 #include "db.h"
 
 namespace ngl
@@ -15,11 +15,11 @@ namespace ngl
 	class actor_robot : public actor
 	{
 		// ----- Data Begin -----
-		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE m_data;
-		std::string m_kcpsessionmd5;
+		pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE	m_data;
+		std::string								m_kcpsessionmd5;
 	public:
-		i32_session m_session;
-		int16_t m_kcp;
+		i32_session								m_session;
+		int16_t									m_kcp;
 		// ----- Data End   -----
 	public:
 		actor_robot(i16_area aarea, i32_actordataid arobotid, void*);
@@ -30,10 +30,7 @@ namespace ngl
 
 		static void nregister();
 
-		virtual const char* kcpsessionmd5()
-		{
-			return m_kcpsessionmd5.c_str();
-		}
+		virtual const char* kcpsessionmd5();
 
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
@@ -59,7 +56,7 @@ namespace ngl
 					{
 						.m_type = ACTOR_MANAGE_ROBOT, 
 						.m_area = ttab_servers::tab()->m_area,
-						.m_id = nconfig::m_nodeid, 
+						.m_id	= nconfig::m_nodeid, 
 						.m_manage_dbclient = false
 					},
 					.m_weight = 0x7fffffff,
@@ -69,10 +66,10 @@ namespace ngl
 	public:
 		struct _robot
 		{
-			i32_sessionid m_session;
-			std::string m_account;
-			actor_robot* m_robot;
-			i64_actorid m_actor_roleid;
+			i32_sessionid	m_session;
+			std::string		m_account;
+			actor_robot*	m_robot;
+			i64_actorid		m_actor_roleid;
 			_robot() :
 				m_session(-1),
 				m_robot(nullptr),

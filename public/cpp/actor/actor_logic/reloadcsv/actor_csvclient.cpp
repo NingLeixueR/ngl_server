@@ -12,7 +12,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_CSVCLIENT,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid
+					.m_id	= nconfig::m_nodeid
 				},
 				.m_weight = 0x7fffffff,
 			})

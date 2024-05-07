@@ -45,10 +45,8 @@ namespace ngl
 		
 			if (isbroadcast())
 			{
-				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
-					true, 
-					(Tfun<actor, np_actor_broadcast>) & actor::handle
-				);
+				auto lfun = (Tfun<actor, np_actor_broadcast>) & actor::handle;
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, lfun);
 			}
 		}
 
@@ -56,8 +54,7 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().
-				template rfun_nonet<TDerived, timerparm>(afun, false);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
@@ -67,11 +64,8 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
-			ninst<TDerived, TYPE>().
-				template rfun<actor_base, np_actordb_load_response<TYPE, DBTYPE, TDBTAB>>(
-					&actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>
-					, true
-				);
+			auto lfun = &actor_base::template handle<TYPE, DBTYPE, TDBTAB, TDerived>;
+			ninst<TDerived, TYPE>().template rfun<actor_base, np_actordb_load_response<TYPE, DBTYPE, TDBTAB>>(lfun, true);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
@@ -94,7 +88,8 @@ namespace ngl
 		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
 		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
-		//# 注册actor成员函数
+		//////////////////////////////////////////////////////////////////////
+		//################ 注册actor成员函数(可以是非handle) #################
 		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
 		{
@@ -107,7 +102,7 @@ namespace ngl
 			register_actor<TYPE, TDerived>(aisload, afun);
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
-
+		//################ 注册actor成员handle函数 #################
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_actor_handle
 		{
@@ -121,7 +116,7 @@ namespace ngl
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		using type_register_actor_handle = template_arg<actor::register_actor_handle<TYPE, TDerived>, bool>;
-
+		//////////////////////////////////////////////////////////////////////////////////////
 #pragma endregion 
 
 #pragma region register_actornonet
@@ -131,32 +126,11 @@ namespace ngl
 		{
 			ninst<TDerived, TYPE>().rfun_nonet(afun, aisload);
 		}
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_actornonet(bool aisload, T apdata, ARG... arg)
-		{
-			register_actornonet<TYPE, TDerived>(aisload, apdata);
-			register_actornonet<TYPE, TDerived>(aisload, arg...);
-		}
 #pragma endregion 
 	private:
 		friend class nforward;
 
 		//# 注册 [forward:转发协议]
-		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T>
-		static void register_forward(T afun)
-		{
-			ninst<TDerived, TYPE>().
-				template rfun_forward<IsForward>(afun, nactor_type<TDerived>::type(), false);
-		}
-
-		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived, typename T, typename ...ARG>
-		static void register_forward(T ap, ARG... arg)
-		{
-			register_forward<TYPE, IsForward, TDerived, T>(ap);
-			register_forward<TYPE, IsForward, TDerived, ARG...>(arg...);
-		}
-
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
 		class register_forward_handle
 		{
@@ -173,19 +147,6 @@ namespace ngl
 		using type_register_forward_handle = template_arg<actor::register_forward_handle<TYPE, IsForward, TDerived>>;
 
 		//# 注册 [forward:转发协议] recvforward
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_recvforward(T afun)
-		{
-			ninst<TDerived, TYPE>().rfun_recvforward(afun, false);
-		}
-
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
-		static void register_recvforward(T ap, ARG... arg)
-		{
-			register_recvforward<TYPE, TDerived>(ap);
-			register_recvforward<TYPE, TDerived>(arg...);
-		}
-
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_recvforward_handle
 		{
@@ -200,7 +161,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		using type_register_recvforward_handle = template_arg<actor::register_recvforward_handle<TYPE, TDerived>>;
 
-		// 服务于二次转发
+		//# 服务于二次转发
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
 		class register_recvforward_handle2
 		{

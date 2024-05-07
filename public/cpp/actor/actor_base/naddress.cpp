@@ -53,9 +53,9 @@ namespace ngl
 			{
 				i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
 				i32_serverid lserverid = get_server(lactorrole);
-				Assert(lserverid != -1)
+				Assert(lserverid != -1);
 				return get_session(lserverid);
-			}Catch
+			}Catch;
 			return -1;
 		}
 
@@ -99,7 +99,7 @@ namespace ngl
 				auto itor = m_session.find(aserverid);
 				Assert(itor != m_session.end());
 				return itor->second.m_session;
-			}Catch
+			}Catch;
 			return -1;
 		}
 
@@ -111,7 +111,7 @@ namespace ngl
 				auto itor = m_actorserver.find(aguid);
 				Assert(itor != m_actorserver.end());
 				return itor->second;
-			}Catch
+			}Catch;
 			return -1;
 		}
 
@@ -127,7 +127,7 @@ namespace ngl
 						avec.insert(get_server(lid));
 					}
 				}
-			}Catch
+			}Catch;
 		}
 
 		static void foreach(const naddress::foreach_callbackfun& afun)

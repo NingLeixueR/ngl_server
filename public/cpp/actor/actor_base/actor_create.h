@@ -27,10 +27,7 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid(i32_actordataid adataid)
-		{
-			return nguid::make(ACTOR_CREATE, ttab_servers::tab()->m_area, adataid);
-		}
+		static i64_actorid actorid(i32_actordataid adataid);
 
 		// 在指定[Server]上创建[Actor]
 		template <typename T>

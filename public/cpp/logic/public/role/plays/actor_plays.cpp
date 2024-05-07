@@ -30,14 +30,14 @@ namespace ngl
 		m_map.init(tab->m_mapid);
 
 		std::vector<i64_actorid>& lplays = ((np_actorswitch_process_plays*)data)->m_players;
-		m_map.set_enterview([this](i64_actorid aroleid, std::set<i64_actorid>& aother)
+		/*m_map.set_enterview([this](i64_actorid aroleid, std::set<i64_actorid>& aother)
 			{
 				player_enterview(aroleid, aother);
 			});
 		m_map.set_leaveview([this](i64_actorid aroleid, std::set<i64_actorid>& aother)
 			{
 				player_leaveview(aroleid, aother);
-			});
+			});*/
 
 		init_after();
 		// 开始准备阶段

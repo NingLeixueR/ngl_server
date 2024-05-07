@@ -39,6 +39,7 @@ namespace ngl
 		const pack*		m_pack;
 
 		message() = delete;
+
 		message(i32_threadid athread, const pack* apack, T* adata) :
 			m_thread(athread),
 			m_pack(apack),

@@ -30,6 +30,11 @@ namespace ngl
 		>(false);
 	}
 
+	const char* actor_robot::kcpsessionmd5()
+	{
+		return m_kcpsessionmd5.c_str();
+	}
+
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
 	{
 		Try

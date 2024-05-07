@@ -3,58 +3,85 @@
 #include "type.h"
 #include "cmd.h"
 
+#include <set>
+
 namespace ngl
 {
 	enum enum_event
 	{
-		enum_event_death,
+		enum_event_death,		// 死亡
+		enum_event_enterview,	// 进入视野(enterview)
+		enum_event_leaveview,	// 离开视野(leaveview)
 	};
 
 	class event_parm
-	{};
+	{
+		event_parm() = delete;
+	public:
+		enum_event m_type;
+
+		event_parm(enum_event aenum):
+			m_type(aenum)
+		{
+
+		}
+	};
 
 	class event_parm_death : public event_parm
 	{
 	public:
+		event_parm_death() :
+			event_parm(enum_event_death)
+		{}
+
 		int64_t m_unitid;		// 导致死亡的unitid
 		int64_t m_deathunitid;	// 死亡的unitid
 	};
 
-	class event_tar
-	{};
+	//i64_actorid, std::set<i64_actorid>&
+	class event_parm_leaveview : public event_parm
+	{
+	public:
+		event_parm_leaveview() :
+			event_parm(enum_event_leaveview)
+		{}
 
-	template <enum_event ENUM, typename TEVEN_PARM>
-	class event
+		i64_actorid m_leaveunitid;			// 离开视野的unity
+		std::set<i64_actorid> m_unitids;	// 都离开了谁的视野
+	};
+
+	class event_parm_enterview : public event_parm
+	{
+	public:
+		event_parm_enterview() :
+			event_parm(enum_event_enterview)
+		{}
+
+		i64_actorid m_enterunitid;			// 进入视野的unity
+		std::set<i64_actorid> m_unitids;	// 都进入了谁的视野
+	};
+
+	class event_tar{};
+
+	class events
 	{
 		using event_cmd = cmd<event_tar, enum_event, event_parm*>;
-		static std::function<void(TEVEN_PARM*)> m_fun;
 	public:
-		static void init()
+		static void init();
+
+		template <typename TEVEN_PARM>
+		static void push(enum_event atype, const std::function<void(TEVEN_PARM*)>& afun)
 		{
-			event_cmd::push(ENUM, [](const event_parm* aparm)
+			event_cmd::push(atype, [afun](const event_parm* aparm)
 				{
-					TEVEN_PARM* lparm = (TEVEN_PARM*)aparm;
-					m_fun(lparm);
-					return true;
+					afun((TEVEN_PARM*)aparm);
 				}
 			);
 		}
 
-		static void push(const std::function<void(TEVEN_PARM*)>& afun)
-		{
-			m_fun = afun;
-		}
-
 		static bool execute(event_parm* aparm)
 		{
-			return event_cmd::function(ENUM, aparm);
+			return event_cmd::function(aparm->m_type, aparm);
 		}
 	};
-
-	template <enum_event ENUM, typename TEVEN_PARM>
-	std::function<void(TEVEN_PARM*)> event<ENUM, TEVEN_PARM>::m_fun;
-
-	using event_death = event<ngl::enum_event_death, ngl::event_parm_death>;
-
-	extern void init_event();
 }// namespace ngl

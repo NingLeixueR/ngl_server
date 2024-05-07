@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-07 11:15:15
+// 创建时间 24-05-07 18:41:08
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -38,6 +38,7 @@
 #include "actor_role_handle.cpp"
 #include "actor_server.cpp"
 #include "actor_ugpalace.cpp"
+#include "aoi.cpp"
 #include "asio_base.cpp"
 #include "asio_kcp.cpp"
 #include "asio_tcp.cpp"
@@ -66,6 +67,8 @@
 #include "event.cpp"
 #include "gateway_info.cpp"
 #include "gdbdmp.cpp"
+#include "grid.cpp"
+#include "grids.cpp"
 #include "handle_pram.cpp"
 #include "hexbytes.cpp"
 #include "ijson.cpp"

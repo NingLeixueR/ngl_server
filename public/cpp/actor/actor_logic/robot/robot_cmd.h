@@ -17,9 +17,6 @@ namespace ngl
 	public:
 		static bool parse_command(std::vector<std::string>& aparm)
 		{
-			//if (aparm.size() < 2)
-			//	return false;
-
 			std::shared_ptr<np_robot_pram> ldata(new np_robot_pram());
 			ldata->m_parm.swap(aparm);
 			i64_actorid lid = ngl::nguid::make(ACTOR_MANAGE_ROBOT, tab_self_area, nconfig::m_nodeid);

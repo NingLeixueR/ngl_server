@@ -1,89 +1,43 @@
 #pragma once
 
-#include <vector>
-#include <list>
-#include <map>
-#include <set>
-
 #include "csvtable.h"
 #include "net.pb.h"
 #include "splite.h"
 #include "type.h"
 #include "unit.h"
+#include "grid.h"
 #include "aoi.h"
+
+#include <vector>
+#include <list>
+#include <map>
+#include <set>
 
 namespace ngl
 {
-	class grid
-	{
-		std::set<i64_actorid> m_unitlist;
-	public:
-		// ####进入格子
-		bool enter(unit* aunit)
-		{
-			return m_unitlist.insert(aunit->id()).second;
-		}
-
-		// ####离开格子
-		void leave(unit* aunit)
-		{
-			m_unitlist.erase(aunit->id());
-		}
-
-		std::set<i64_actorid>* get_unitlist()
-		{
-			return &m_unitlist;
-		}
-	};
-
 	class grids : public aoi
 	{
 		std::vector<grid> m_grid;
 	public:
-		virtual void init(int32_t aw, int32_t al, int32_t anx, int32_t any)
-		{
-			aoi::init(aw, al, anx, any);
-			m_grid.resize(grid_count());
-		}
+		virtual void init(int32_t aw, int32_t al, int32_t anx, int32_t any);
 
-		bool enter(unit* aunit, int32_t ax, int32_t ay)
-		{
-			return enter(aunit, id(ax, ay));
-		}
+		// # 根据坐标(ax,ay)进入格子
+		bool enter(unit* aunit, int32_t ax, int32_t ay);
 
-		bool enter(unit* aunit, int32_t agid)
-		{
-			if (agid >= m_grid.size())
-				return false;
-			return m_grid[agid].enter(aunit);
-		}
+		// # 根据格子编号进入格子
+		bool enter(unit* aunit, int32_t agid);
 
-		void leave(unit* aunit, int32_t ax, int32_t ay)
-		{
-			leave(aunit, id(ax, ay));
-		}
+		// # 根据坐标(ax,ay)离开格子
+		void leave(unit* aunit, int32_t ax, int32_t ay);
 
-		void leave(unit* aunit, int32_t agid)
-		{
-			if (agid >= m_grid.size())
-				return;
-			return m_grid[agid].leave(aunit);
-		}
+		// # 根据格子编号离开格子
+		void leave(unit* aunit, int32_t agid);
 
-		grid* get_grid(int32_t agid)
-		{
-			if (agid >= m_grid.size())
-				return nullptr;
-			return &m_grid[agid];
-		}
+		// # 根据格子编号获取格子
+		grid* get_grid(int32_t agid);
 
-		grid* get_grid(int32_t ax, int32_t ay)
-		{
-			uint32_t agid = id(ax, ay);
-			if (agid >= m_grid.size())
-				return nullptr;
-			return &m_grid[agid];
-		}
+		// # 根据坐标(ax,ay)获取格子
+		grid* get_grid(int32_t ax, int32_t ay);
 	};
 
 	struct obstacle

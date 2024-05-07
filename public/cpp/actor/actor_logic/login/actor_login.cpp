@@ -25,7 +25,14 @@ namespace ngl
 		m_account.set(this);
 	}
 
-	actor_login::~actor_login() {}
+	actor_login::~actor_login() 
+	{
+	}
+
+	i64_actorid actor_login::actorid()
+	{
+		return nguid::make(ACTOR_LOGIN, ttab_servers::tab()->m_area, nguid::none_actordataid());
+	}
 
 	void actor_login::nregister()
 	{
@@ -39,7 +46,6 @@ namespace ngl
 
 		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_login>::func<
 			np_actorserver_connect
-			, np_actorrole_login
 		>(true);
 	}
 
@@ -159,18 +165,6 @@ namespace ngl
 			break;
 		}
 		LogLocalError("message<np_actorserver_connect>:%", lparm->m_serverid);
-		return true;
-	}
-
-	bool actor_login::handle(message<np_actorrole_login>& adata)
-	{
-		/*pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
-		pro.set_m_roleid(adata.m_data->m_roleid);
-		pro.set_m_area(adata.m_data->m_area);
-		pro.set_m_session(adata.m_data->m_session);
-		pro.set_m_account(adata.m_data->m_account);
-		pro.set_m_gatewayid(adata.m_data->m_gatewayid);
-		nets::sendbysession(adata.m_data->m_socketid, pro, adata.m_data->m_request_actor, id_guid());*/
 		return true;
 	}
 

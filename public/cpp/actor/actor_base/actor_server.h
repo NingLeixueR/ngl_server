@@ -21,10 +21,7 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid()
-		{
-			return nguid::make(ACTOR_SERVER, ttab_servers::tab()->m_area, nguid::none_actordataid());
-		}
+		static i64_actorid actorid();
 
 		// ## [actor client -> actor server] register
 		// 注册结点

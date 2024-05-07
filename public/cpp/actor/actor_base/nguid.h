@@ -105,11 +105,13 @@ namespace ngl
 		//# actor area 是否无效
 		static bool is_actorareanone(i64_actorid actorid);
 
+		//# actor area 是否无效
 		bool is_actorareanone()const;
 
 		//# actor id 是否无效
 		static bool is_actoridnone(i64_actorid actorid);
 
+		//# actor id 是否无效
 		bool is_actoridnone()const;
 
 		//# ENUM_ACTOR 是否单例

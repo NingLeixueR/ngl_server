@@ -31,25 +31,25 @@ namespace ngl
 		
 		//# 注册需要处理的消息
 		static void nregister();
+
 	private:
 		//# 主动向actor_server注册actor_client
 		void actor_server_register(i32_serverid aserverid);
+
+		//# 设置连接后时间 例如actor_dbclient会注册连接后事件（加载数据）
+		void set_connect_fnish(i32_serverid aserverid);
+
+		//# 连接成功后调用
+		void connect_fnish();
+
+		//# 主动连接
+		void activ_connect(i32_serverid aserverid);
 	public:
 		//# 向actor_server注册结点
 		void actor_server_register();
-	private:
-		//# 设置连接后时间 例如actor_dbclient会注册连接后事件（加载数据）
-		void set_connect_fnish(i32_serverid aserverid);
-		//# 连接成功后调用
-		void connect_fnish();
-	public:
-		//# actor_client的actorid
-		static i64_actorid actorid()
-		{
-			return nguid::make(ACTOR_CLIENT, ttab_servers::tab()->m_area, nconfig::m_nodeid);
-		}
 
-		void activ_connect(i32_serverid aserverid);
+		//# actor_client的actorid
+		static i64_actorid actorid();
 
 		//# 注册结点
 		bool handle(message<np_actornode_register_response>& adata);

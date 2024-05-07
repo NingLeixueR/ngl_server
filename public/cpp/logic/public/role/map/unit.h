@@ -7,11 +7,11 @@ namespace ngl
 {
 	class unit
 	{
-		pbnet::eunit m_type;		
-		attribute m_attribute;
-		int64_t m_id;
-		pbnet::UNIT_POSITION m_position;
-		int64_t m_lastupdate;
+		pbnet::eunit			m_type;		
+		attribute				m_attribute;
+		int64_t					m_id;
+		pbnet::UNIT_POSITION	m_position;
+		int64_t					m_lastupdate;
 	public:
 		unit(pbnet::eunit atype, int64_t aid);
 

@@ -12,6 +12,11 @@ namespace ngl
 		>(true);
 	}
 
+	i64_actorid actor_server::actorid()
+	{
+		return nguid::make(ACTOR_SERVER, ttab_servers::tab()->m_area, nguid::none_actordataid());
+	}
+
 	actor_server::actor_server() :
 		actor(
 			actorparm

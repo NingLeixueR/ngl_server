@@ -6,12 +6,11 @@
 #include "db_manage.h"
 #include "db_pool.h"
 #include "db_data.h"
-#include "db.h"
 #include "net.h"
+#include "db.h"
 
 namespace ngl
 {
-
 	class actor_gatewayc2g : public actor
 	{
 		gateway_info m_info;
@@ -27,10 +26,7 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid(i32_actordataid aactordataid)
-		{
-			return nguid::make(ACTOR_GATEWAY_C2G, ttab_servers::tab()->m_area, aactordataid);
-		}
+		static i64_actorid actorid(i32_actordataid aactordataid);
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(message<np_actor_forward<T, TYPE, false, ngl::forward>>& adata)

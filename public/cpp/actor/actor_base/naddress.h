@@ -16,19 +16,18 @@ namespace ngl
 	public:
 		//# [ACTOR_ID] -> SERVER_ID
 		//# [ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID
-		using map_guidserver = std::map<nguid, i32_serverid>;
+		using map_guidserver		= std::map<nguid, i32_serverid>;
 		//# [ACTOR_TYPE]  -> set<ACTOR_ID>
 		//# [ACTOR_TYPE]  -> set<ACTOR_TYPE + EARE_ID + DATA_ID>
-		using map_typeguid		= std::map<i16_actortype, std::set<nguid>>;
+		using map_typeguid			= std::map<i16_actortype, std::set<nguid>>;
 		//# [SERVER_ID] -> [SESSION_ID]
-		using map_servernode = std::map<i32_serverid, actor_node_session>;
+		using map_servernode		= std::map<i32_serverid, actor_node_session>;
 		//# [ACTOR_ID] -> [GATEWAY_SERVER_ID]
-		using map_rolegateway = std::map<nguid, i32_serverid>;
+		using map_rolegateway		= std::map<nguid, i32_serverid>;
 		//# [ergodic]回调
-		using ergodic_callbackfun = std::function<bool(map_guidserver&, map_servernode&)>;
+		using ergodic_callbackfun	= std::function<bool(map_guidserver&, map_servernode&)>;
 		//# [foreach]回调
-		using foreach_callbackfun = std::function<bool(const actor_node_session&)>;
-
+		using foreach_callbackfun	= std::function<bool(const actor_node_session&)>;
 	public:
 #pragma region base
 		//# debug 打印

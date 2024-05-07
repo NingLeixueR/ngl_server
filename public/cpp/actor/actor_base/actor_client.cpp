@@ -34,6 +34,11 @@ namespace ngl
 	actor_client::~actor_client()
 	{}
 
+	i64_actorid actor_client::actorid()
+	{
+		return nguid::make(ACTOR_CLIENT, ttab_servers::tab()->m_area, nconfig::m_nodeid);
+	}
+
 	void actor_client::nregister()
 	{
 		//###### 设置未找到协议处理函数
@@ -154,14 +159,14 @@ namespace ngl
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const nactornode& node = lparm->m_vec[i];
-				if(server_session::get_sessionid(node.m_serverid) == -1)
+				if (server_session::get_sessionid(node.m_serverid) == -1)
 				{
 					// 比较id  较大的主动连接较小的
 					// NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
 					activ_connect(node.m_serverid);
 				}
 			}
-		}Catch
+		}Catch;
 		return true;
 	}
 
@@ -210,8 +215,8 @@ namespace ngl
 				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
 				{
 					std::shared_ptr<np_actorserver_connect> pro(new np_actorserver_connect
-						{ 
-							.m_serverid = lserverid 
+						{
+							.m_serverid = lserverid
 						});
 					nguid lguid = nguid::make_self(ACTOR_LOGIN);
 					handle_pram lparm;
@@ -219,7 +224,7 @@ namespace ngl
 					actor_manage::getInstance().push_task_id(lguid, lparm, false);
 				}
 			}
-		}Catch
+		}Catch;
 		return true;
 	}
 	
@@ -231,7 +236,7 @@ namespace ngl
 			LogLocalInfo("##actor_node_update## add:[%] del[%]", lparm->m_add, lparm->m_del)
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
-		}Catch
+		}Catch;
 		return true;
 	}
 	
@@ -297,7 +302,7 @@ namespace ngl
 				return true;
 			}
 			m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
-		}Catch
+		}Catch;
 		return true;
 	}
 	

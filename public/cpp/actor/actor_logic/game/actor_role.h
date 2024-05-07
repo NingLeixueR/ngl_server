@@ -119,6 +119,7 @@ namespace ngl
 		void loginpay();
 
 		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
+
 		//# CMD 协议
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
 
@@ -150,9 +151,10 @@ namespace ngl
 
 		bool handle(message<mforward<np_gm>>& adata);
 
+		//# 是否首次充值
 		bool is_first_recharge(int32_t arechargeid);
 
-		// 定时器
+		//# 定时器
 		bool timer_handle(message<timerparm>& adata);
 	};
 }//namespace ngl

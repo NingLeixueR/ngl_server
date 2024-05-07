@@ -110,7 +110,7 @@ namespace ngl
 		}
 	}
 
-	int64_t gateway_info::get_gatewayid(int64_t aid)
+	int64_t gateway_info::get_gatewayid(i64_actorid aid)
 	{
 		auto itor = m_info.find(ngl::nguid::area(aid));
 		if (itor == m_info.end())

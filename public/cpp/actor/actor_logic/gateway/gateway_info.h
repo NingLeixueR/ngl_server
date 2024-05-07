@@ -21,19 +21,22 @@ namespace ngl
 
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>>& info();
 
-		// ### 只是断开连接
+		// # 只是断开连接
 		void remove_socket(i32_socket asocket);
 
-		// ### 删除连接信息
+		// # 删除连接信息
 		void remove_actorid(i64_actorid aactorid);
 
+		// # 根据area和dataid获取gateway_socket
 		gateway_socket* get(i16_area aarea, i32_actordataid aroleid);
 
+		// # 根据socket获取gateway_socket
 		gateway_socket* get(i32_socket asocket);
 
 		void get_subscribe_to(std::map<i64_actorid, i32_serverid>& m_subscribe_to);
 
-		int64_t get_gatewayid(int64_t aid);
+		// # 根据actorid获取gatewayid
+		int64_t get_gatewayid(i64_actorid aid);
 
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 	};

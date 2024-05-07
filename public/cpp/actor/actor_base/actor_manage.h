@@ -1,8 +1,8 @@
 #pragma once
 
 #include "actor_client.h"
-#include "actor_base.h"
 #include "threadtools.h"
+#include "actor_base.h"
 #include "naddress.h"
 #include "nthread.h"
 #include "pack.h"
@@ -36,6 +36,8 @@ namespace ngl
 
 		//# Ìí¼Óactor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
+
+		//# Ìí¼Óactor
 		bool add_actor(ptractor& apactor, const std::function<void()>& afun);
 
 		//# ÒÆ³ýactor

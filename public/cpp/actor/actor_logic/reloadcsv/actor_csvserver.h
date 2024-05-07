@@ -19,12 +19,9 @@ namespace ngl
 
 		static void nregister();
 
-		virtual ~actor_csvserver();
+		static i64_actorid actorid();
 
-		static i64_actorid actorid()
-		{
-			return nguid::make(ACTOR_CSVSERVER, nguid::none_area(), nguid::none_actordataid());
-		}
+		virtual ~actor_csvserver();
 
 		bool handle(message<np_actor_csv_verify_version>& adata);
 	};

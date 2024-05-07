@@ -39,7 +39,8 @@ namespace ngl
 				[](int64_t abeg, int64_t aend)->bool
 				{
 					return (aend - abeg) > g_consumings;
-				});
+				}
+			);
 			itor->second.m_fun(aactor, athreadid, apram);
 		}
 		else

@@ -1,14 +1,14 @@
 #pragma once
 
 #include "actor_manage.h"
-#include "actor_db.h"
-#include "actor.h"
 #include "ttab_dbload.h"
 #include "nactortype.h"
 #include "nregister.h"
 #include "db_manage.h"
+#include "actor_db.h"
 #include "db_data.h"
 #include "db_pool.h"
+#include "actor.h"
 #include "db.h"
 #include "net.h"
 
@@ -119,16 +119,16 @@ namespace ngl
 		{
 			Try
 			{
-				tab_servers* tab = ttab_servers::tab();
+				tab_servers * tab = ttab_servers::tab();
 				// 向actor client 设置连接后事件
 				std::shared_ptr<np_actornode_connect_task> pro(new np_actornode_connect_task
-					{
-						.m_serverid = tab->m_db,
-						.m_fun = std::bind(&type_ndbclient::loaddb, this, m_id),
-					});
+				{
+					.m_serverid = tab->m_db,
+					.m_fun = std::bind(&type_ndbclient::loaddb, this, m_id),
+				});
 				nguid lclientguid = actor_client::actorid();
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
-			}Catch
+			}Catch;
 		}
 	private:
 		void init_load()
@@ -232,7 +232,7 @@ namespace ngl
 					actor::template register_db<PROTYPE, TACTOR, DBTYPE, TDBTAB>(nullptr);
 				}
 				init_load();
-			}Catch
+			}Catch;
 		}
 
 		virtual bool isload()	
@@ -393,7 +393,7 @@ namespace ngl
 				using type_message = np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>;
 				LogLocalError("db load respones:[%] recv_over[%]", dtype_name(type_message), adata.m_data->m_over ? "true" : "false");
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
-			}Catch
+			}Catch;
 			return true;
 		}
 
@@ -424,10 +424,10 @@ namespace ngl
 		{
 			Try
 			{
-				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end())
+				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end());
 				m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 				init(adbclient, m_actor,  aid);
-			}Catch		
+			}Catch;
 		}
 
 		void set_loadfinish_function(const std::function<void(bool)>& afun)

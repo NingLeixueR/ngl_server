@@ -213,7 +213,6 @@ namespace ngl
 				apactor->release();
 				lfun();
 			}
-			//LogLocalInfo("actor_manage thread[%]", m_workthread.size());
 		}
 
 		inline void nosafe_push_task_id(ptractor& lpactor, handle_pram& apram)

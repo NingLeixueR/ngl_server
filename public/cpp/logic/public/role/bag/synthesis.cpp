@@ -10,9 +10,8 @@ namespace ngl
 		tab_synthesis* tab = allcsv::tab<tab_synthesis>(aid);
 		if (tab == nullptr)
 			return false;
-		if (consume::check(arole, tab->m_consume, 1) == false)
+		if (consume::use(arole, tab->m_consume, 1) == false)
 			return false;
-		consume::use(arole, tab->m_consume, 1);
 		drop::use(arole, tab->m_generate, 1);
 		return true;
 	}

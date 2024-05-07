@@ -45,6 +45,7 @@ namespace ngl
 		{
 			return cache_list<TDBTAB, enum_clist_del>::getInstance();
 		}
+
 	public:
 		using type_actor_dbtab = actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 		// 初始化
@@ -86,8 +87,11 @@ namespace ngl
 		// 加载表中的所有数据
 		static void loadall(const pack* apack, const np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			if (!m_tab->m_network) return;
+			if (!m_tab->m_network) 
+				return;
 			int lsendmaxcount = m_tab->m_sendmaxcount;
+			if (lsendmaxcount <= 0)
+				lsendmaxcount = 10;
 			//加载全部数据
 			Assert(m_tab->m_isloadall);
 			i64_actorid lrequestactor = apack->m_head.get_request_actor();
@@ -150,7 +154,7 @@ namespace ngl
 				{
 					Assert(m_tab->m_isloadall);
 					loadall(apack, adata);
-				}Catch
+				}Catch;
 			}
 			else
 			{
@@ -266,28 +270,28 @@ namespace ngl
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::init();
 		}
 	public:
-		//db m_db;
 		friend class actor_instance<tactor_db>;
 		static tactor_db& getInstance()
 		{
 			return actor_instance<tactor_db>::instance();
 		}
 
-		virtual ~actor_db() {}
+		virtual ~actor_db() 
+		{
+		}
 
 		static void nregister()
 		{
-			using type_np_actordb_load = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			using type_np_actordb_save = np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			using type_np_actordb_delete = np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			using type_np_actortime_db_cache = np_actortime_db_cache<PROTYPE, TDBTAB>;
+			using type_np_actordb_load			= np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			using type_np_actordb_save			= np_actordb_save<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			using type_np_actordb_delete		= np_actordb_delete<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			using type_np_actortime_db_cache	= np_actortime_db_cache<PROTYPE, TDBTAB>;
 			actor::type_register_actor_handle<PROTYPE, tactor_db>::template func<
 				type_np_actordb_load
 				, type_np_actordb_save
 				, type_np_actordb_delete
 				, type_np_actortime_db_cache
 			>(true);
-
 			actor::type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, tactor_db>::template func<
 				mforward<np_gm>
 			>(true);
@@ -425,7 +429,6 @@ namespace ngl
 		actor_base::static_send_actor(lactorid, nguid::make(), pro);
 	}
 
-
 	using actor_db_account	= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>;
 	using actor_db_role		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>;
 	using actor_db_bag		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BAG, pbdb::db_bag>;
@@ -438,5 +441,4 @@ namespace ngl
 	using actor_db_ranklist = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>;
 	using actor_db_task		= ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>;
 	using actor_db_calendar = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar>;
-
 }//namespace ngl

@@ -105,7 +105,7 @@ namespace ngl
 				event_parm_death pram;
 				pram.m_unitid = -1;
 				pram.m_deathunitid = m_unitid;
-				event_death::execute(&pram);
+				events::execute(&pram);
 			}
 		}
 

@@ -28,6 +28,11 @@ namespace ngl
 	void actor_log::init()
 	{}
 
+	i64_actorid actor_log::actorid(ELOG_TYPE atype)
+	{
+		return nguid::make(ACTOR_LOG, ttab_servers::tab()->m_area, atype);
+	}
+
 	void actor_log::nregister()
 	{
 		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_log>::func<

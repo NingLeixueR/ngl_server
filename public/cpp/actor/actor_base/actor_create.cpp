@@ -9,6 +9,11 @@ namespace ngl
 		>(false);
 	}
 
+	i64_actorid actor_create::actorid(i32_actordataid adataid)
+	{
+		return nguid::make(ACTOR_CREATE, ttab_servers::tab()->m_area, adataid);
+	}
+
 	actor_create::actor_create() :
 		actor(
 			actorparm

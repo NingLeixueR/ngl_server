@@ -26,6 +26,11 @@ namespace ngl
 		>(false);
 	}
 
+	i64_actorid actor_manage_role::actorid()
+	{
+		return nguid::make(ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+	}
+
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		nguid lguid(adata.m_data->m_roleid());

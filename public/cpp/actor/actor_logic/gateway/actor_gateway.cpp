@@ -24,13 +24,17 @@ namespace ngl
 
 	actor_gateway::~actor_gateway() {}
 
+	i64_actorid actor_gateway::actorid(i32_actordataid aactordataid)
+	{
+		return nguid::make(ACTOR_GATEWAY, ttab_servers::tab()->m_area, aactordataid);
+	}
+
 	void actor_gateway::nregister()
 	{
 		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_gateway>::func<
 			np_actorrole_login
 			, np_actorswitch_process<np_actorswitch_process_role>
 			, np_actor_session_close
-			, np_actorrole_login
 			, np_actor_kcp
 		>(false);
 
@@ -140,7 +144,6 @@ namespace ngl
 		// ## 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
 
-		nets::sendbysession(adata.m_pack->m_id, *lparm, nguid::make_self(ACTOR_LOGIN), nguid::make());
 		return true;
 	}
 

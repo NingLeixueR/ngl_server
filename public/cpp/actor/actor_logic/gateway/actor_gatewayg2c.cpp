@@ -22,6 +22,11 @@ namespace ngl
 
 	actor_gatewayg2c::~actor_gatewayg2c() {}
 
+	i64_actorid actor_gatewayg2c::actorid(i32_actordataid aactordataid)
+	{
+		return nguid::make(ACTOR_GATEWAY_G2C, ttab_servers::tab()->m_area, aactordataid);
+	}
+
 	void actor_gatewayg2c::nregister()
 	{
 		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_gatewayg2c>::func<

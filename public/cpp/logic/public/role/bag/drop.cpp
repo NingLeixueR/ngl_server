@@ -81,6 +81,7 @@ namespace ngl
 			lstream << key << ":" << value << ",";
 		}
 		lstream << "]" << std::endl;
+		lstream.print();
 	}
 
 	bool drop::droplist(int aid, int acount, std::map<int, int>& amap)
