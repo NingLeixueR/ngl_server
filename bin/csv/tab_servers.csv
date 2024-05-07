@@ -1,6 +1,6 @@
-int32_t,string,string,int16_t,NODE_TYPE,int32_t,int32_t,int32_t,bool,int32_t,int32_t,int32_t,int16_t,vector<int32_t>,vector<net_works>,
-m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver,m_net,
-" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 区服"," [index:4] 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)"," [index:5] 同类型服务器的序号"," [index:6] socket线程数"," [index:7] actor线程池线程数"," [index:8] 是否允许外网访问"," [index:9] 连接的db进程id"," [index:10] 连接的reloadcsv进程id"," [index:11] 连接的login进程id"," [index:12] 跨服区服"," [index:13] 连接的actorserver进程id(跨服需要填写多个actorserver)"," [index:14] 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)",
+int32_t,string,string,int16_t,NODE_TYPE,int32_t,int32_t,int32_t,bool,int32_t,int32_t,int32_t,int16_t,vector<int32_t>,vector<net_works>
+m_id,m_name,m_remarks,m_area,m_type,m_tcount,m_threadnum,m_actorthreadnum,m_outernet,m_db,m_reloadcsv,m_login,m_crossarea,m_actorserver,m_net
+ [index:0] id , [index:1] 名字 , [index:2] 备注, [index:3] 区服, [index:4] 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools), [index:5] 同类型服务器的序号, [index:6] socket线程数, [index:7] actor线程池线程数, [index:8] 是否允许外网访问, [index:9] 连接的db进程id, [index:10] 连接的reloadcsv进程id, [index:11] 连接的login进程id, [index:12] 跨服区服, [index:13] 连接的actorserver进程id(跨服需要填写多个actorserver)," [index:14] 服务器网络相关(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)"
 version:0,,,,,,,,,,,,,,
 #第1区,,,,,,,,,,,,,,
 1,actor,ActorServer,1,2,1,4,4,0,,,,,1,0*127.0.0.1*127.0.0.1*10001
@@ -53,4 +53,5 @@ version:0,,,,,,,,,,,,,,
 #跨服,,,,,,,,,,,,,,
 101,cross,CrossServer,-100,10,1,4,4,0,102,,,,"1
 21",0*127.0.0.1*127.0.0.1*10201
-102,crossdb,CrossDBServer,-100,11,1,4,4,0,,,,,1,0*127.0.0.1*127.0.0.1*10202
+102,crossdb,CrossDBServer,-100,11,1,4,4,0,,,,,"1
+21",0*127.0.0.1*127.0.0.1*10202
