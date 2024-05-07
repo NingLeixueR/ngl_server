@@ -18,8 +18,10 @@ namespace ngl
 
 		//# 将所有位都设置为abool
 		bool set(bool abool);
+
 		//# 把abit位设置为abool
 		bool set(int abit, bool abool);
+
 		//# 获取abit位的bool
 		bool get(int abit)const;
 

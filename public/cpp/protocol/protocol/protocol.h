@@ -6,7 +6,7 @@
 #include "structbytes.h"
 #include "nactortype.h"
 #include "nprotocol.h"
-#include "initproto.h"
+#include "tprotocol.h"
 #include "nguid.h"
 #include "nlog.h"
 #include "type.h"
@@ -92,7 +92,7 @@ namespace ngl
 				}
 				return true;
 			};
-			register_protocol(TYPE, initproto::protocol<T>(), atype, lpackfun, lrunfun, aname);
+			register_protocol(TYPE, tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
 		// 转发[负责转发的actor必须是单例actor]

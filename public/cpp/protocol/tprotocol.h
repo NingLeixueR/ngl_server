@@ -22,7 +22,7 @@ namespace ngl
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
 	struct np_actor_forward;
 
-	class initproto
+	class tprotocol
 	{
 	private:
 		struct pinfo

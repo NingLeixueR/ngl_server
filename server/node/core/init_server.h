@@ -29,7 +29,7 @@
 #include "robot_cmd.h"
 #include "ndbclient.h"
 #include "attribute.h"
-#include "initproto.h"
+#include "tprotocol.h"
 #include "xmlnode.h"
 #include "dbredis.h"
 #include "ntimer.h"

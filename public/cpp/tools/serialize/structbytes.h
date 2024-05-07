@@ -75,8 +75,8 @@ namespace ngl
 
 		static bool check_xor(int aprotocolnum)
 		{
-			bool isret = initproto::protocol<np_gm>() == aprotocolnum
-				|| initproto::protocol<np_gm_response>() == aprotocolnum;
+			bool isret = tprotocol::protocol<np_gm>() == aprotocolnum
+				|| tprotocol::protocol<np_gm_response>() == aprotocolnum;
 			if (isret)
 				return false;
 			return ISBYTEXOR;
@@ -90,7 +90,7 @@ namespace ngl
 		template <typename Y>
 		static bool check_xor(Y& adata)
 		{
-			return check_xor(initproto::protocol<Y>());
+			return check_xor(tprotocol::protocol<Y>());
 		}
 	};
 
@@ -144,10 +144,10 @@ namespace ngl
 			apack->m_head.m_data[EPH_BYTES] = (apack->m_len - pack_head::size()) + encryption_bytexor::bytes(adata);
 
 			apack->m_head.set_version();
-			apack->m_head.set_protocol(initproto::protocol<T>());
+			apack->m_head.set_protocol(tprotocol::protocol<T>());
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();
-			apack->m_head.set_protocoltype(initproto::protocol_type<T>());
+			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
 			//apack->m_head
 			// ### sethead finish ###
 

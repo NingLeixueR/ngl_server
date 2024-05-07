@@ -3,19 +3,19 @@
 
 namespace ngl
 {
-	redis_cmd::redis_cmd(redisContext* arc) :
-		m_rc(arc) {}
+	//redis_cmd::redis_cmd(redisContext* arc) :
+	//	m_rc(arc) {}
 
-	redisReply* redis_cmd::cmd(const char* format, ...)
+	redisReply* redis_cmd::cmd(redisContext* arc, const char* format, ...)
 	{
 		redisReply* lreply;
-		if (m_rc == nullptr)
+		if (arc == nullptr)
 		{
 			return nullptr;
 		}
 		va_list lvalist;
 		va_start(lvalist, format);
-		lreply = (redisReply*)redisvCommand(m_rc, format, lvalist);
+		lreply = (redisReply*)redisvCommand(arc, format, lvalist);
 		va_end(lvalist);
 		if (lreply == nullptr || lreply->type == REDIS_REPLY_ERROR)
 		{
@@ -24,23 +24,21 @@ namespace ngl
 				LogLocalError("[ERROR] Redis[%] ", lreply->str);
 				freeReplyObject(lreply);
 			}
-			redisFree(m_rc);
+			redisFree(arc);
 			return nullptr;
 		}
 		return lreply;
 	}
 
-	bool redis_cmd::del(const char* atab, int aid)
+	bool redis_cmd::del(redisContext* arc, const char* atab, int aid)
 	{
-		bool lret = false;
-		redisReply* lreply = cmd("DEL %s:%d", atab, aid);
+		redisReply* lreply = cmd(arc, "DEL %s:%d", atab, aid);
 		if (lreply != nullptr)
 		{
 			freeReplyObject(lreply);
-			lreply = nullptr;
-			lret = true;
+			return true;
 		}
-		return lret;
+		return false;
 	}
 
 	redis::redis(const redis_arg& arg) :
@@ -54,8 +52,7 @@ namespace ngl
 			assert(0);
 			return;
 		}
-		redis_cmd lcmd(m_rc);
-		if (!lcmd.cmd("AUTH %s", arg.m_passworld.c_str()))
+		if (!redis_cmd::cmd(m_rc, "AUTH %s", arg.m_passworld.c_str()))
 		{
 			assert(0);
 			return;

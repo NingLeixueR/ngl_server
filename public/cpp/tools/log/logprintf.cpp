@@ -3,6 +3,7 @@
 #endif
 #include <filesystem>
 #include <iostream>
+#include <format>
 
 #include "ttab_servers.h"
 #include "time_wheel.h"
@@ -179,7 +180,12 @@ namespace ngl
 
 	void logfile_default::local_printf(ELOG atype, ngl::logformat& llogformat)
 	{
-		m_stream << "[serverid:" << nconfig::m_nodeid << "][" << elog_name::get(atype) << "][" << llogformat.data("pos") << "][" << llogformat.data("head") << "]\t" << llogformat.data("src") << std::endl;
+		m_stream 
+			<< "[serid:" << nconfig::m_nodeid << "]"
+			<< "[" << elog_name::get(atype) << "]"
+			<< "[" << llogformat.data("pos") << "]"
+			<< "[" << llogformat.data("head") << "]\t" 
+			<< llogformat.data("src") << std::endl;
 		++m_count;
 		create(false);
 	}

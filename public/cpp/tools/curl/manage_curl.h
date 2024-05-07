@@ -17,7 +17,6 @@
 //#pragma comment(lib,"libcurl-d.lib")
 #endif //WIN32
 
-
 namespace ngl
 {
 	enum ENUM_MODE

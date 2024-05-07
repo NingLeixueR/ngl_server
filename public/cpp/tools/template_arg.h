@@ -9,13 +9,12 @@ namespace ngl
 	template <typename TF, typename ...TARG>
 	class template_arg
 	{
-	public:
 		template <typename T>
 		static void func2(TARG... args)
 		{
 			TF::template func<T>(args...);
 		}
-
+	public:
 		template <typename T, typename ...ARG>
 		static void func(TARG... args)
 		{

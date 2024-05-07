@@ -100,6 +100,13 @@ namespace ngl
 		return true;
 	}
 
+	void db::escape(const char* asql, std::string& aoutsql)
+	{
+		char lbuff[10240] = { 0 };
+		mysql_real_escape_string(m_mysql, lbuff, asql, strlen(asql));
+		aoutsql = lbuff;
+	}
+
 	bool db::select(const char* asql, int asqllen, callback aback)
 	{
 		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen));
@@ -134,12 +141,5 @@ namespace ngl
 			LogLocalError("db::select[%][%]", mysql_error(m_mysql), (const char*)asql);
 		}
 		return false;
-	}
-
-	void db::escape(const char* asql, std::string& aoutsql)
-	{
-		char lbuff[10240] = { 0 };
-		mysql_real_escape_string(m_mysql, lbuff, asql, strlen(asql));
-		aoutsql = lbuff;
 	}
 }// namespace ngl

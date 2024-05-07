@@ -2,6 +2,7 @@
 #include "ijson.h"
 #include "md5.h"
 
+#include <boost/lexical_cast.hpp>
 #include <thread>
 
 namespace ngl

@@ -7,7 +7,7 @@
 #include "ndb_modular.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
-#include "initproto.h"
+#include "tprotocol.h"
 #include "ntimer.h"
 #include "notice.h"
 #include "splite.h"

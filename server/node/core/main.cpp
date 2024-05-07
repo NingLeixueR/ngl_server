@@ -4,7 +4,7 @@
 #include "manage_curl.h"
 #include "define_json.h"
 #include "nactortype.h"
-#include "initproto.h"
+#include "tprotocol.h"
 #include "asio_kcp.h"
 #include "dumper.h"
 #include "event.h"

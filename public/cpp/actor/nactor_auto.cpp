@@ -28,7 +28,7 @@
 #include "nactor_type.h"
 #include "nactortype.h"
 #include "enum2name.h"
-#include "initproto.h"
+#include "tprotocol.h"
 #include "nprotocol.h"
 #include "ntimer.h"
 #include "net.pb.h"
@@ -50,7 +50,7 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
-		initproto::type_customs::template func<
+		tprotocol::type_customs::template func<
 			np_actordb_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
 			, np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
 			, np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
@@ -124,7 +124,7 @@ namespace ngl
 		);
 
 		// 新增内部协议需要补充
-		initproto::type_customs::template func<
+		tprotocol::type_customs::template func<
 			/*200000001*/np_gm
 			/*200000002*/, np_gm_response
 			/*200000003*/, mforward<np_gm>

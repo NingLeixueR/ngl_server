@@ -50,8 +50,6 @@ LONG WINAPI TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 		isDumping = true;
 	}/** 锁作用域 */
 	
-
-
 //	EXCEPTION_EXECUTE_HANDLER = 1
 //	EXCEPTION_CONTINUE_EXECUTION = -1
 //	这两个返回值都应该由调用UnhandledExceptionFilter后返回。
@@ -98,8 +96,6 @@ LONG WINAPI TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 			//if (!GetTempPath( _MAX_PATH, szDumpPath ))
 			//if (!GetModuleFileName(nullptr, szDumpPath, _MAX_PATH ))
 			//	_tcscpy( szDumpPath, "c:\\temp\\" );
-
-
 
 			// get the time now
 			char szTime[_MAX_PATH];
@@ -167,16 +163,10 @@ LONG WINAPI TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 		(*dumperHandler)();
 	}
 
-
 	if (szResult)
 		::MessageBox(nullptr, szResult, "MiniDump", MB_OK );
 
 	return retval;
 }
-
-
-
-
-Dumper dumper;
 
 #endif

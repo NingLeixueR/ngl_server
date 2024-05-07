@@ -114,7 +114,6 @@ Dumper::Dumper() {
 	signal(SIGFPE, &sighandler);
 	signal(SIGPIPE, &sighandler);
 }
-//Dumper dumper;
 
 void sighandler(int sig)
 {

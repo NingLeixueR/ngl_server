@@ -19,7 +19,7 @@ namespace ngl
 	{
 		nlog();
 		bool m_isinitfinish = false;
-		bool m_iswrite = true;
+		bool m_iswrite		= true;
 	public:
 		static nlog& getInstance()
 		{

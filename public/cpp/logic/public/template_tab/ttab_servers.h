@@ -211,6 +211,7 @@ namespace ngl
 					}
 				}
 			}
+			return true;
 		}
 
 		static bool get_server(NODE_TYPE atype, i16_area aarea, std::vector<i32_serverid>& avec)

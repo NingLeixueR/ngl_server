@@ -1,6 +1,6 @@
 #pragma once
 
-#include "initproto.h"
+#include "tprotocol.h"
 #include "nprotocol.h"
 #include "nguid.h"
 #include "type.h"
@@ -86,11 +86,11 @@ namespace ngl
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
 		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			apram.m_enum = initproto::protocol<T>();
+			apram.m_enum = tprotocol::protocol<T>();
 			apram.m_data = adata;
 			apram.m_actor = aid;
 			apram.m_requestactor = arid;
-			apram.m_protocoltype = (EPROTOCOL_TYPE)initproto::protocol_type<T>();
+			apram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			apram.m_forwardfun = nullptr;
 			if (IS_FORWARDFUN)
 				make_forwardfun<T, IS_SEND>(aid, arid, apram);
@@ -100,11 +100,11 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			apram.m_enum = initproto::protocol<T>();
+			apram.m_enum = tprotocol::protocol<T>();
 			apram.m_data = adata;
 			apram.m_actor = aid;
 			apram.m_requestactor = arid;
-			apram.m_protocoltype = (EPROTOCOL_TYPE)initproto::protocol_type<T>();
+			apram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			apram.m_forwardfun = nullptr;
 			make_client<T, IS_SEND>(aid, arid, apram);
 			apram.m_failfun = afailfun;

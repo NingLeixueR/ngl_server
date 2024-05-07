@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-06 16:03:56
+// 创建时间 24-05-07 11:15:14
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -69,7 +69,6 @@
 #include "handle_pram.cpp"
 #include "hexbytes.cpp"
 #include "ijson.cpp"
-#include "initproto.cpp"
 #include "itme.cpp"
 #include "localtime.cpp"
 #include "logprintf.cpp"
@@ -119,6 +118,7 @@
 #include "time_consuming.cpp"
 #include "time_wheel.cpp"
 #include "tools.cpp"
+#include "tprotocol.cpp"
 #include "ttab_attribute.cpp"
 #include "ttab_calendar.cpp"
 #include "ttab_dbload.cpp"
