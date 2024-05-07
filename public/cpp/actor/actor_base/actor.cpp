@@ -55,7 +55,8 @@ namespace ngl
 				return false;
 			Try
 			{
-				if (aparm.m_pack != nullptr 
+				if (
+					aparm.m_pack != nullptr 
 					&& aparm.m_pack->m_protocol == ENET_KCP
 					&& aactor->is_single() == false
 				)
@@ -136,7 +137,9 @@ namespace ngl
 		m_impl_actor()->push(apram);
 	}
 
-	void actor::clear_task() {}
+	void actor::clear_task() 
+	{
+	}
 
 	void actor::actor_handle(i32_threadid athreadid)
 	{

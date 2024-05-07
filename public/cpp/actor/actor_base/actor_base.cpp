@@ -126,8 +126,8 @@ namespace ngl
 		}
 	};
 
-	int actor_base::m_broadcast = 10000;			// 推送全员广播的 单位(毫秒)
-	int actor_base::m_broadcasttimer = -1;			// 推送广播的定时器id
+	int actor_base::m_broadcast			= 10000;		// 推送全员广播的 单位(毫秒)
+	int actor_base::m_broadcasttimer	= -1;			// 推送广播的定时器id
 
 	actor_base::actor_base(const actorparmbase& aparm) :
 		m_isbroadcast(false)

@@ -102,6 +102,7 @@ namespace ngl
 			register_actor<TYPE, TDerived>(aisload, afun);
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
+
 		//################ 注册actor成员handle函数 #################
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_actor_handle

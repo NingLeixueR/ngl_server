@@ -164,9 +164,9 @@ namespace ngl
 		template <typename T>
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
+		//# 向一组服务器发送数据
 		template <typename T>
 		static bool send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
-
 
 		//# 发送pack到指定服务器
 		template <typename T>
@@ -190,9 +190,10 @@ namespace ngl
 		//# 是否支持udp.kcp
 		static bool iskcp();
 
-		// ## 通过udp.kcp发送数据
+		//# 通过udp.kcp发送数据
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
+
 
 		template <typename T>
 		static bool static_sendkcp(
@@ -263,7 +264,6 @@ private:
 			nguid lguid(aid);
 			handle_pram::create(apram, lguid, nguid::make(), apro);
 		}
-
 	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
@@ -378,6 +378,7 @@ private:
 			push_task_id(aguid, lpram, true);
 		}
 
+		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
@@ -412,6 +413,7 @@ private:
 			push_task_id(aguid, lpram, true);
 		}
 
+		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
@@ -423,12 +425,12 @@ private:
 	private:
 		struct group_info
 		{
-			ENUM_ACTOR m_actortype;
-			std::set<i64_actorid> m_actorlist;
+			ENUM_ACTOR				m_actortype;
+			std::set<i64_actorid>	m_actorlist;
 		};
 		//# 分组数据
-		std::map<int, group_info> m_group;
-		int m_currentoffset = 0;
+		std::map<int, group_info>	m_group;
+		int							m_currentoffset = 0;
 	public:
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
 		int add_group(ENUM_ACTOR aactortype = ACTOR_NONE);
@@ -467,7 +469,6 @@ private:
 			return;
 		}
 #pragma endregion
-
 		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>&& adata)
@@ -476,23 +477,25 @@ private:
 			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
-
 #pragma endregion
 		
 #pragma region timer
 	private:
 		//# 间隔一段时间发起的全员(所有actor)广播
 		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
-		static int m_broadcast;			// 推送全员广播的 单位(毫秒)
-		static int m_broadcasttimer;	// 推送广播的定时器id
-		bool m_isbroadcast;				// 是否接收广播消息
+		static int	m_broadcast;			// 推送全员广播的 单位(毫秒)
+		static int	m_broadcasttimer;		// 推送广播的定时器id
+		bool		m_isbroadcast;			// 是否接收广播消息
 	public:
 		//# 设置定时任务参数
 		int32_t		set_timer(const timerparm& aparm);
+
 		//# 是否支持广播
 		bool		isbroadcast();
+
 		//# 设置是否支持广播
 		void		set_broadcast(bool aisbroadcast);
+
 		//# 启动广播定时器
 		static void start_broadcast();
 #pragma endregion 
