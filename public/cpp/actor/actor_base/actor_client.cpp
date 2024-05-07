@@ -11,8 +11,8 @@ namespace ngl
 {
 	struct actor_client::impl_actor_client
 	{
-		std::map<i32_serverid, std::list<std::function<void()>>> m_connectfun;
-		std::set<uint32_t> m_connectserverid;
+		std::map<i32_serverid, std::list<std::function<void()>>>	m_connectfun;
+		std::set<uint32_t>											m_connectserverid;
 	};
 
 	actor_client::actor_client() :
@@ -23,9 +23,9 @@ namespace ngl
 				{
 					.m_type = ACTOR_CLIENT,
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = nconfig::m_nodeid
+					.m_id	= nconfig::m_nodeid
 				},
-				.m_weight = 0x7fffffff
+				.m_weight	= 0x7fffffff
 			})
 	{
 		m_impl_actor_client.make_unique();
@@ -69,16 +69,16 @@ namespace ngl
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return;
 
-		tab_servers* tab = ttab_servers::tab();
-		i64_actorid lactorid = id_guid();
-		tab_servers* tabactor = ttab_servers::tab(aactorserver);
+		tab_servers* tab		= ttab_servers::tab();
+		i64_actorid lactorid	= id_guid();
+		tab_servers* tabactor	= ttab_servers::tab(aactorserver);
 		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
 			{
 				i64_actorid lactorserve = actor_server::actorid();
 				{
 					nactornode lnode;
-					lnode.m_name = "actorserver";
-					lnode.m_serverid = tabactor->m_id;
+					lnode.m_name		= "actorserver";
+					lnode.m_serverid	= tabactor->m_id;
 					lnode.m_actortype.push_back(ACTOR_SERVER);
 					naddress::set_node(lnode);
 					naddress::set_session(tabactor->m_id, asession);
@@ -89,7 +89,7 @@ namespace ngl
 					{
 						.m_node
 						{
-							.m_name = std::string("actorclient") + boost::lexical_cast<std::string>(tab->m_id),
+							.m_name		= std::string("actorclient") + boost::lexical_cast<std::string>(tab->m_id),
 							.m_serverid = tab->m_id,
 						}
 					};
@@ -154,8 +154,8 @@ namespace ngl
 			return true;
 		Try
 		{
-			auto lparm = adata.m_data;
-			tab_servers* tab = ttab_servers::tab();
+			auto lparm			= adata.m_data;
+			tab_servers* tab	= ttab_servers::tab();
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const nactornode& node = lparm->m_vec[i];
