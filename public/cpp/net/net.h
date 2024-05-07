@@ -10,9 +10,9 @@ namespace ngl
 {
 	class nets
 	{
-		static std::array<net_protocol*, ENET_COUNT> m_net;
-		static std::map<int16_t, ukcp*> m_kcpnet;
-		static int16_t m_kcpindex;
+		static std::array<net_protocol*, ENET_COUNT>	m_net;
+		static std::map<int16_t, ukcp*>					m_kcpnet;
+		static int16_t									m_kcpindex;
 	public:
 		static net_protocol* net_first();
 
