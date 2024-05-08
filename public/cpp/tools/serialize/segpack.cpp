@@ -40,8 +40,8 @@ namespace ngl
 		return true;
 	}
 
-	int segpack_rate::m_max_rate_count = rate_size;
-	int segpack_rate::m_rate_interval = rate_interval;
+	int segpack_rate::m_max_rate_count	= rate_size;
+	int segpack_rate::m_rate_interval	= rate_interval;
 
 	bool segpack_heartbeat::is_heartbeat(int aprotocolnum)
 	{		
@@ -51,9 +51,9 @@ namespace ngl
 	struct segpack::impl_segpack
 	{
 		std::map<i32_socket, std::shared_ptr<pack>> m_data; //残包暂时保管
-		bpool m_pool;
-		segpack_rate m_rate;
-		segpack* m_segpack;
+		bpool			m_pool;
+		segpack_rate	m_rate;
+		segpack*		m_segpack;
 
 		impl_segpack(segpack* asegpack) :
 			m_segpack(asegpack)
@@ -194,7 +194,8 @@ namespace ngl
 	}
 
 	void segpack::close(i32_socket aid)
-	{//有可能缓存餐包
+	{
+		//有可能缓存残包
 		m_impl_segpack()->erase(aid);
 	}
 }// namespace ngl

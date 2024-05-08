@@ -116,10 +116,10 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 		{
 			auto lrecv = adata.m_data;
-			_robot& lrobot = m_maprobot[lrecv->m_account()];
-			lrobot.m_robot = create(lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
-			lrobot.m_account = lrecv->m_account();
-			lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
+			_robot& lrobot			= m_maprobot[lrecv->m_account()];
+			lrobot.m_robot			= create(lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
+			lrobot.m_account		= lrecv->m_account();
+			lrobot.m_actor_roleid	= nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
 
 			connect(lrecv->m_gatewayid(), [lrecv, &lrobot, this](int asession)
 				{
@@ -188,12 +188,6 @@ namespace ngl
 			}
 			else if (lrecv->m_parm[0] == "X")
 			{
-				//pbnet::PROBUFF_NET_GET_TIME pro;
-				//foreach([&pro, this](actor_manage_robot::_robot& arobot)
-				//	{
-				//		send(&arobot, pro);
-				//		return true;
-				//	});	
 				pbnet::PROBUFF_NET_CHAT pro;
 				pro.set_m_type(1);
 				pro.set_m_channelid(1);
@@ -202,8 +196,7 @@ namespace ngl
 					{
 						send(&arobot, pro);
 						return true;
-					});	
-
+					});
 			}
 			else if (lrecv->m_parm[0] == "X1")
 			{
@@ -227,7 +220,6 @@ namespace ngl
 							{
 								LogLocalError("GetIp Finish : %", buff);
 								ukcp::m_localuip = buff;
-
 								// »ñÈ¡kcp-session
 								pbnet::PROBUFF_NET_KCPSESSION pro;
 								pro.set_m_serverid(tabgame->m_id);
@@ -238,7 +230,6 @@ namespace ngl
 							});
 						return true;
 					});
-
 			}
 			else if (lrecv->m_parm[0] == "X2")
 			{
@@ -246,11 +237,9 @@ namespace ngl
 				foreach([&pro, this](actor_manage_robot::_robot& arobot)
 					{
 						sendkcp(&arobot, pro);
-						//ngl::sleep::seconds(10);
 						return true;
 					});	
 			}
-			
 			return true;
 		}
 		
@@ -294,14 +283,12 @@ namespace ngl
 		void sendkcp(_robot* arobot, T& adata)
 		{
 			arobot->m_robot->sendkcp(adata, nguid::moreactor(), arobot->m_robot->m_kcp);
-			//udp_kcp::getInstance().send(arobot->m_robot->m_kcpsession, adata, nguid::moreactor(), arobot->m_actor_roleid);
 		}		
 
 		bool getdata(_robot* arobot)
 		{
 			if (arobot == nullptr)
 				return false;
-			//LogLocalInfo("[%]## [%]", arobot->m_account, arobot->m_robot->get());
 			return true;
 		}
 	};

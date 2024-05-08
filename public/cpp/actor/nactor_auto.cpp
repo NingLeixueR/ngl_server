@@ -68,9 +68,8 @@ namespace ngl
 
 		init_customs_db<TDBTAB_TYPE, TDBTAB>();
 
-		//tools::type_name<type_actor_db>();
 		LogLocalError("init_actor_type [%]-[%]"
-			, boost::typeindex::type_id_with_cvr<type_actor_db>().pretty_name()
+			, dtype_name(type_actor_db)
 			, (int)(lenum)
 		);
 	}
@@ -93,7 +92,7 @@ namespace ngl
 	{
 		// ### 新增actor需要补全
 		auto_actor(
-			null<actor_client>, em_pram(ACTOR_CLIENT)
+			null<actor_client>,	em_pram(ACTOR_CLIENT)
 			, null<actor_create>, em_pram(ACTOR_CREATE)
 			, null<actor_server>, em_pram(ACTOR_SERVER)
 			, null<actor_cross>, em_pram(ACTOR_CROSS)

@@ -22,7 +22,6 @@
 #include "actor_gm.h"
 #include "xmlprotocol.h"
 #include "manage_curl.h"
-#include "rebot_test.h"
 #include "encryption.h"
 #include "conversion.h"
 #include "time_wheel.h"
@@ -30,6 +29,7 @@
 #include "ndbclient.h"
 #include "attribute.h"
 #include "tprotocol.h"
+#include "sysconfig.h"
 #include "xmlnode.h"
 #include "dbredis.h"
 #include "ntimer.h"
@@ -56,31 +56,8 @@
 bool init_server(int aid)
 {
 	ngl::tab_servers* tab = ngl::ttab_servers::tab();
-	bool lvarint = false;
-	std::string lxor;
 
-	ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
-
-	if (!lpublicxml->find("robot_test", ngl::rebot_test::is_test))
-		return false;
-
-	// ### 是否开启varint
-	if (!lpublicxml->varint(lvarint))
-		return false;
-
-	ngl::varint::set(lvarint);
-
-	// 设置简单加密
-	bool lisxor = false;
-	if (!lpublicxml->isxor(lisxor))
-		return false;
-
-	if (!lpublicxml->xor_str(lxor))
-		return false;
-
-	ngl::encryption::set_xor(lisxor, lxor.c_str(), lxor.size());
-
-	ngl::nlogsys::init();
+	ngl::sysconfig::init();
 
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 

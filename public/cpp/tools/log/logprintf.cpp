@@ -112,7 +112,7 @@ namespace ngl
 
 	bool logfile::check_count()
 	{
-		return m_count >= nlogsys::fline();
+		return m_count >= sysconfig::logline();
 	}
 
 	void logfile::close_fstream()

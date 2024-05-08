@@ -17,6 +17,7 @@ namespace ngl
 		{
 		}
 
+		// 释放actor所持有的资源
 		inline void release(actor* aactor)
 		{
 			actor_handle(nullptr, 0x7fffffff);
@@ -24,45 +25,53 @@ namespace ngl
 			m_list.clear();
 		}
 
+		// actor 消息列表是否为空
 		inline bool list_empty()
 		{
 			monopoly_shared_lock(m_mutex);
 			return m_list.empty();
 		}
 
+		// 获取actor状态
 		inline actor_stat get_activity_stat()
 		{
 			monopoly_shared_lock(m_mutex);
 			return m_stat;
 		}
 
+		// 设置actor状态
 		inline void set_activity_stat(actor_stat astat)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_stat = astat;
 		}
 
+		// 向actor消息列表中添加消息
 		inline void push(handle_pram& apram)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_list.push_back(std::move(apram));
 		}
-
 	private:
+		// 设置kcp
+		inline void set_kcp(actor* aactor, handle_pram& aparm)const
+		{
+			if (aparm.m_pack != nullptr
+				&& aparm.m_pack->m_protocol == ENET_KCP
+				&& aactor->is_single() == false
+				)
+			{
+				aactor->set_kcpssion(aparm.m_pack->m_id);
+			}
+		}
+
 		inline bool ahandle(actor* aactor, i32_threadid athreadid, handle_pram& aparm)const
 		{
 			if (aactor == nullptr)
 				return false;
 			Try
 			{
-				if (
-					aparm.m_pack != nullptr
-					&& aparm.m_pack->m_protocol == ENET_KCP
-					&& aactor->is_single() == false
-				)
-				{
-					aactor->set_kcpssion(aparm.m_pack->m_id);
-				}
+				set_kcp(aactor, aparm);
 				nrfunbase* lprfun = aactor->m_actorfun[aparm.m_protocoltype];
 				Assert(lprfun != nullptr);
 				if (lprfun->handle_switch(aactor, athreadid, aparm))
@@ -106,7 +115,8 @@ namespace ngl
 	};
 
 	actor::actor(const actorparm& aparm) :
-		actor_base(aparm.m_parm)
+		actor_base(aparm.m_parm),
+		m_actorfun({nullptr})
 	{
 		m_impl_actor.make_unique(aparm);
 		set_broadcast(aparm.m_broadcast);

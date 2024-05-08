@@ -12,20 +12,20 @@ namespace ngl
 		std::shared_mutex	m_mutex;
 		ngl::sem			m_sem;
 
-		impl_nthread(i32_threadid aid, nthread* athread) :
+		inline impl_nthread(i32_threadid aid, nthread* athread) :
 			m_id(aid),
 			m_actor(nullptr),
 			m_isactivity(false),
 			m_thread(&nthread::run, athread)
 		{}
 
-		bool isactivity()
+		inline bool isactivity()
 		{
 			monopoly_shared_lock(m_mutex);
 			return m_isactivity;
 		}
 
-		void push(ptractor& abase)
+		inline void push(ptractor& abase)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_actor = abase;
@@ -33,7 +33,7 @@ namespace ngl
 			m_sem.post();
 		}
 
-		void run(nthread* athread)
+		inline void run(nthread* athread)
 		{
 			ptractor lpactor = nullptr;
 			while (true)

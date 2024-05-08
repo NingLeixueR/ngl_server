@@ -1,4 +1,5 @@
 #include "encryption.h"
+#include "sysconfig.h"
 #include "hexbytes.h"
 
 #include <cryptopp/cryptlib.h>
@@ -48,44 +49,15 @@ namespace ngl
 		value = byDigest;
 	}
 
-	struct encryption_xor
-	{
-		static std::string m_xorkey;
-		static int32_t m_xorkeynum; //2^n-1 n为xorkey的字符数
-		static bool m_isxor;
-	};
-
-	std::string encryption_xor::m_xorkey;
-	int32_t encryption_xor::m_xorkeynum = 0; //2^n-1 n为xorkey的字符数
-	bool encryption_xor::m_isxor = false;
-
-	void encryption::set_xor(bool aisxor, const char* axorkey, int32_t axorkeylen)
-	{
-		encryption_xor::m_isxor = aisxor;
-		encryption_xor::m_xorkey = axorkey;
-		for (int i = 1;; ++i)
-		{
-			if (axorkeylen < ((1 << i) - 1))
-			{
-				encryption_xor::m_xorkeynum = i - 1;
-				break;
-			}
-		}
-		if (encryption_xor::m_xorkeynum <= 0)
-		{
-			encryption_xor::m_isxor = false;
-		}
-	}
-
 	void encryption::bytexor(char* ap, int32_t aplen, int apos)
 	{
-		if (encryption_xor::m_isxor == false)
+		if (sysconfig::isxor() == false)
 			return;
-		if (encryption_xor::m_xorkeynum < 1 || encryption_xor::m_xorkey.empty())
+		if (sysconfig::xorkeynum() < 1 || sysconfig::xorkey().empty())
 			return;
 		for (int i = 0, j = apos; i < aplen; ++i,++j)
 		{
-			ap[i] = ap[i] ^ encryption_xor::m_xorkey[j & encryption_xor::m_xorkeynum];
+			ap[i] = ap[i] ^ sysconfig::xorkey()[j & sysconfig::xorkeynum()];
 		}
 	}
 }// namespace ngl

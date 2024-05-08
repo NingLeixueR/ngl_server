@@ -36,7 +36,7 @@ namespace ngl
 			auto lpram = adata.m_data;
 			auto lpack = adata.m_pack;
 			gateway_socket* info = nullptr;
-			if (rebot_test::is_test)
+			if (sysconfig::robot_test())
 			{
 				i64_actorid lactorid = lpack->m_head.get_request_actor();
 				nguid lguid(lactorid);

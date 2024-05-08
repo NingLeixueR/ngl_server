@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-07 18:41:07
+// 创建时间 24-05-08 22:18:23
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -106,7 +106,6 @@
 #include "protocol.cpp"
 #include "protocoltools.cpp"
 #include "ranklist.cpp"
-#include "rebot_test.cpp"
 #include "regular.cpp"
 #include "remakes.cpp"
 #include "rfun.cpp"
@@ -115,6 +114,7 @@
 #include "serialize.cpp"
 #include "server_session.cpp"
 #include "synthesis.cpp"
+#include "sysconfig.cpp"
 #include "task.cpp"
 #include "template_arg.cpp"
 #include "threadtools.cpp"

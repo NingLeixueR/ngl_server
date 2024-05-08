@@ -16,9 +16,9 @@ namespace ngl
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_ROLE,
-					.m_area = aarea,
-					.m_id = aroleid,
+					.m_type		= ACTOR_ROLE,
+					.m_area		= aarea,
+					.m_id		= aroleid,
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,

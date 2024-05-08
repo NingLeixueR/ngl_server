@@ -1,10 +1,9 @@
 ﻿#include "nrfun.h"
 #include "time_consuming.h"
+#include "sysconfig.h"
 
 namespace ngl
 {
-	const int32_t g_consumings = 100;
-
 	nrfunbase& nrfunbase::set_notfindfun(const tnotfindfun& afun)
 	{
 		m_notfindfun = afun;
@@ -38,7 +37,7 @@ namespace ngl
 				std::format("{}-{}", nactortype::enum2name(aactor->type()), apram.m_enum),
 				[](int64_t abeg, int64_t aend)->bool
 				{
-					return (aend - abeg) > g_consumings;
+					return (aend - abeg) > sysconfig::consumings();
 				}
 			);
 			itor->second.m_fun(aactor, athreadid, apram);

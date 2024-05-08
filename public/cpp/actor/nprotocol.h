@@ -13,7 +13,6 @@
 
 namespace ngl
 {
-
 	struct np_gm
 	{
 		std::string m_json;
@@ -145,7 +144,6 @@ namespace ngl
 		def_portocol(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
-	
 	// ---- [actor db server -> actor db client]
 	// ---- 保存数据
 	// 从db server加载数据

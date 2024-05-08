@@ -37,7 +37,7 @@ namespace ngl
 	// ### 只是断开连接
 	void gateway_info::remove_socket(i32_socket asocket)
 	{
-		if (rebot_test::is_test)
+		if (sysconfig::robot_test())
 		{
 			for (std::pair<const i16_area, std::map<i32_actordataid, gateway_socket>>& item : m_info)
 			{

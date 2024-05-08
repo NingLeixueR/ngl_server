@@ -3,16 +3,10 @@
 #include <fstream>
 #include <memory>
 
+#include "sysconfig.h"
+
 namespace ngl
 {
-	enum ELOG
-	{
-		ELOG_DEBUG,   // 测试信息
-		ELOG_INFO,    // 打印
-		ELOG_WARN,    // 警告
-		ELOG_ERROR,   // 错误
-		ELOG_NONE,    // 无
-	};
 
 	enum ELOG_TYPE
 	{

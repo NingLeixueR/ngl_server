@@ -142,15 +142,12 @@ namespace ngl
 			
 			// ### sethead start ###
 			apack->m_head.m_data[EPH_BYTES] = (apack->m_len - pack_head::size()) + encryption_bytexor::bytes(adata);
-
 			apack->m_head.set_version();
 			apack->m_head.set_protocol(tprotocol::protocol<T>());
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();
 			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
-
-			//LogLocalError("##tobytes## tprotocol::protocol<%>() = %", dtype_name(T), tprotocol::protocol<T>());
-			//apack->m_head
+			// LogLocalError("##tobytes## tprotocol::protocol<%>() = %", dtype_name(T), tprotocol::protocol<T>());
 			// ### sethead finish ###
 
 			ngl::serialize lser2(apack->m_buff, apack->m_len);

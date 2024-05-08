@@ -3,6 +3,7 @@
 #include "logformat.h"
 #include "localtime.h"
 #include "logprintf.h"
+#include "sysconfig.h"
 
 #include <sstream>
 #include <string>
@@ -49,51 +50,10 @@ namespace ngl
 		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);		\
 	}
 
-namespace ngl
-{
-	class nlogsys
-	{
-		static ELOG		m_level;		// 日志等级
-		static int32_t	m_line;			// 单个日志文件的行数
-		static int32_t	m_flushtime;	// 日志flush时间
-		static bool		m_iswrite;		// 日志是否写入文件
-		static bool		m_console;		// 是否打印到控制台
-	public:
-		static void init();
-
-		static ELOG level()
-		{
-			return m_level;
-		}
-
-		static int32_t fline()
-		{
-			return m_line;
-		}
-
-		static int32_t flushtime()
-		{
-			return m_flushtime;
-		}
-
-		static bool iswrite()
-		{
-			return m_iswrite;
-		}
-
-		static bool console()
-		{
-			return m_console;
-		}
-	};
-}
-
-
-
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-# define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)										\
+# define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)											\
 	{																					\
-		if(ngl::nlogsys::level() <= ELOG_LEVEL)													\
+		if(ngl::sysconfig::loglevel() <= ELOG_LEVEL)									\
 		{																				\
 			ngl::logformat llogformat;													\
 			LogSrcPos																	\
@@ -112,9 +72,9 @@ namespace ngl
 #define LogLocalWarn(FORMAT,...)		dlogmsg(ngl::ELOG_WARN,  ngl::ELOG_LOCAL, FORMAT,##__VA_ARGS__)
 #define LogBI(FORMAT,...)				dlogmsg(ngl::ELOG_ERROR,  ngl::ELOG_BI, FORMAT,##__VA_ARGS__)
 #else
-# define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)										\
+# define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)											\
 	{																					\
-		if(ngl::nlogsys::level() <= ELOG_LEVEL)											\
+		if(ngl::sysconfig::loglevel() <= ELOG_LEVEL)									\
 		{																				\
 			ngl::logformat llogformat;													\
 			LogSrcPos																	\

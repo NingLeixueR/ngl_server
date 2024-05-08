@@ -15,8 +15,6 @@
 # define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
 #endif
 
-//#define TYPE_NAME(_TYPE) boost::typeindex::type_id_with_cvr<_TYPE>().pretty_name()
-
 namespace ngl
 {
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
@@ -125,7 +123,5 @@ namespace ngl
 			pinfo& linfo = get<T>();
 			return linfo.m_name;
 		}
-
-		static void initall();
 	};
-}
+}// namespace ngl

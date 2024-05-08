@@ -1,11 +1,11 @@
 #include "serialize.h"
+#include "sysconfig.h"
 #include "varint.h"
 
 namespace ngl
 {
     struct varint_impl
     {
-        static bool m_isopen;
         static const int32_t m_64maxpos/* = 10*/;
         static const int32_t m_32maxpos/* = 5*/;
 
@@ -30,18 +30,12 @@ namespace ngl
         }
     };
 
-    bool varint_impl::m_isopen;
     const int32_t varint_impl::m_64maxpos = 10;
     const int32_t varint_impl::m_32maxpos = 5;
 
-    void varint::set(bool aisopen)
-    {
-        varint_impl::m_isopen = aisopen;
-    }
-    
     int	varint::length(parm_length<int64_t>& avaluearrays)
 	{
-        if (varint_impl::m_isopen)
+        if (sysconfig::varint())
         {
             uint64_t ln = varint_impl::zigzag64encode(avaluearrays.m_value);
             if ((ln & (0xffffffffffff << 7)) == 0)
@@ -71,7 +65,7 @@ namespace ngl
 
     int varint::length(parm_length<int32_t>& avaluearrays)
     {
-        if (varint_impl::m_isopen)
+        if (sysconfig::varint())
         {
             uint64_t ln = varint_impl::zigzag64encode(avaluearrays.m_value);
             if ((ln & (0xffffffffffff << 7)) == 0)
@@ -101,7 +95,7 @@ namespace ngl
 
     bool varint::encode(parm<int64_t>& aparm)
     {
-        if (varint_impl::m_isopen == false)
+        if (sysconfig::varint() == false)
         {
             if (encodebasetype(aparm.m_buf, aparm.m_len, &aparm.m_value, 1, aparm.m_bytes) == false)
                 return false;
@@ -138,7 +132,7 @@ namespace ngl
 
     bool varint::encode(parm<int32_t>& aparm)
     {
-        if (varint_impl::m_isopen == false)
+        if (sysconfig::varint() == false)
         {
             if (encodebasetype(aparm.m_buf, aparm.m_len, &aparm.m_value, 1, aparm.m_bytes) == false)
                 return false;
@@ -186,7 +180,7 @@ namespace ngl
 
     bool varint::decode(parm<int64_t>& aparm)
     {
-        if (varint_impl::m_isopen == false)
+        if (sysconfig::varint() == false)
         {
             if (decodebasetype(aparm.m_buf, aparm.m_len, aparm.m_bytes, &aparm.m_value, 1) == false)
                 return false;
@@ -220,7 +214,7 @@ namespace ngl
 
     bool varint::decode(parm<int32_t>& aparm)
     {
-        if (varint_impl::m_isopen == false)
+        if (sysconfig::varint() == false)
         {
             int32_t lbytes = 0;
             if (decodebasetype(aparm.m_buf, aparm.m_len, &lbytes, &aparm.m_value, 1) == false)

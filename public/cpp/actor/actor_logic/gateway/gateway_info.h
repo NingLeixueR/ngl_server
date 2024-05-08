@@ -1,6 +1,5 @@
 #pragma once
 
-#include "rebot_test.h"
 #include "nprotocol.h"
 #include "nguid.h"
 

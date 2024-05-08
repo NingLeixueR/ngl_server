@@ -165,7 +165,7 @@ namespace ngl
 			Assert(linfo != nullptr);
 			Assert(linfo->m_session == lpram->m_session());
 
-			if (rebot_test::is_test == false)
+			if (sysconfig::robot_test() == false)
 			{
 				if (lpack->m_id != linfo->m_socket)
 				{
@@ -273,7 +273,7 @@ namespace ngl
 		Try
 		{
 			auto lpram = adata.m_data;
-			if (rebot_test::is_test)
+			if (sysconfig::robot_test())
 			{
 				std::vector<gateway_socket*> lvec;
 				m_info.foreach([&lvec, lpram](gateway_socket* agetway)
