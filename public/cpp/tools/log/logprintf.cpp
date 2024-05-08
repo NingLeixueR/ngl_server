@@ -150,7 +150,6 @@ namespace ngl
 		snprintf(lbuff, 1024, "/%s_%d.log", lbufftime, ++m_fcount);
 		
 		m_stream.open(lpath + lbuff, std::ios::binary);
-		//m_errorstream.
 		m_count = 0;
 	}
 
