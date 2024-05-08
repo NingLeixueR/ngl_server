@@ -20,8 +20,9 @@ namespace ngl
 		{
 			.m_type = atype,
 			.m_dir = "log/" + ttab_servers::tab()->m_name,
-			.m_flush_time = 60,
+			.m_flush_time = 10,
 		};
+		nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
 		m_log = logfile::create_make(atype != ELOG_LOCAL, lconfig);
 	}
 

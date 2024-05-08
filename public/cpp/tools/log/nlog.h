@@ -19,7 +19,6 @@ namespace ngl
 	{
 		nlog();
 		bool m_isinitfinish = false;
-		bool m_iswrite		= true;
 	public:
 		static nlog& getInstance()
 		{
@@ -28,7 +27,6 @@ namespace ngl
 		}
 
 		bool& isinitfinish();
-		bool& iswrite();
 
 		void plog(ELOG atype, ngl::logformat& llogformat, ELOG_TYPE altype);
 	};
@@ -51,14 +49,51 @@ namespace ngl
 		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);		\
 	}
 
-#define DEF_LOG_LEVEL			(ngl::ELOG_WARN)
-#define DEF_LOG_MAX_LINE		(100000)
-#define DEF_LOG_PRINTF			(true)
+namespace ngl
+{
+	class nlogsys
+	{
+		static ELOG		m_level;		// 日志等级
+		static int32_t	m_line;			// 单个日志文件的行数
+		static int32_t	m_flushtime;	// 日志flush时间
+		static bool		m_iswrite;		// 日志是否写入文件
+		static bool		m_console;		// 是否打印到控制台
+	public:
+		static void init();
+
+		static ELOG level()
+		{
+			return m_level;
+		}
+
+		static int32_t fline()
+		{
+			return m_line;
+		}
+
+		static int32_t flushtime()
+		{
+			return m_flushtime;
+		}
+
+		static bool iswrite()
+		{
+			return m_iswrite;
+		}
+
+		static bool console()
+		{
+			return m_console;
+		}
+	};
+}
+
+
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 # define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)										\
 	{																					\
-		if(DEF_LOG_LEVEL <= ELOG_LEVEL)													\
+		if(ngl::nlogsys::level() <= ELOG_LEVEL)													\
 		{																				\
 			ngl::logformat llogformat;													\
 			LogSrcPos																	\
@@ -79,7 +114,7 @@ namespace ngl
 #else
 # define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)										\
 	{																					\
-		if(DEF_LOG_LEVEL <= ELOG_LEVEL)													\
+		if(ngl::nlogsys::level() <= ELOG_LEVEL)											\
 		{																				\
 			ngl::logformat llogformat;													\
 			LogSrcPos																	\

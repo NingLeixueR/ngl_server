@@ -86,7 +86,7 @@ namespace ngl
 		m_count(0),
 		m_fcount(0)
 	{
-		create(true);
+		create();
 
 		wheel_parm lparm
 		{
@@ -110,36 +110,34 @@ namespace ngl
 		return true;
 	}
 
-	void logfile::create(bool afirst)
+	bool logfile::check_count()
 	{
-		if (afirst == false)
-		{
-			if (m_count < DEF_LOG_MAX_LINE)
-				return;
-		}
-		
-		if (m_stream.is_open())
-			m_stream.close();
+		return m_count >= nlogsys::fline();
+	}
 
+	void logfile::close_fstream()
+	{
+		//if (m_stream.is_open())
+		//{
+			m_stream.close();
+		//}
+	}
+
+	void logfile::create()
+	{	
 		std::string lpath("./");
 		lpath += m_config.m_dir;
-		if (afirst)
+		if (file_exists(lpath) == false)
 		{
-			if (file_exists(lpath) == false)
-			{
-				throw "not create path" + lpath;
-			}
+			throw "not create path" + lpath;
 		}
 		
 		lpath += '/';
 		lpath += m_isactor ? "net" : "local";
 
-		if (afirst)
+		if (file_exists(lpath) == false)
 		{
-			if (file_exists(lpath) == false)
-			{
-				throw "not create path" + lpath;
-			}
+			throw "not create path" + lpath;
 		}
 		lpath += '/';
 
@@ -175,7 +173,11 @@ namespace ngl
 		m_stream << "[" << alog->m_head << "]\t";
 		m_stream << alog->m_str << std::endl;
 		++m_count;
-		create(false);
+		if (check_count())
+		{
+			close_fstream();
+			create();
+		}
 	}
 
 	void logfile_default::local_printf(ELOG atype, ngl::logformat& llogformat)
@@ -187,7 +189,11 @@ namespace ngl
 			<< "[" << llogformat.data("head") << "]\t" 
 			<< llogformat.data("src") << std::endl;
 		++m_count;
-		create(false);
+		if (check_count())
+		{
+			close_fstream();
+			create();
+		}
 	}
 
 	// ### BI

@@ -45,9 +45,15 @@ namespace ngl
 		bool			m_isactor;
 
 		logfile(bool aisactor, const config& aconfig);
-		void create(bool afirst);
+
+		bool check_count();
+
+		void close_fstream();
+
+		void create();
 
 		virtual void printf(const logitem* alog) = 0;
+
 		virtual void local_printf(ELOG atype, ngl::logformat& llogformat) {}
 
 		static std::shared_ptr<logfile> create_make(bool aisactor, const config& aconfig);

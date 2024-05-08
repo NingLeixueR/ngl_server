@@ -67,18 +67,20 @@ bool init_server(int aid)
 	// ### 是否开启varint
 	if (!lpublicxml->varint(lvarint))
 		return false;
+
 	ngl::varint::set(lvarint);
 
 	// 设置简单加密
 	bool lisxor = false;
 	if (!lpublicxml->isxor(lisxor))
 		return false;
+
 	if (!lpublicxml->xor_str(lxor))
 		return false;
+
 	ngl::encryption::set_xor(lisxor, lxor.c_str(), lxor.size());
 
-	if (!lpublicxml->find("log_iswrite", ngl::nlog::getInstance().iswrite()))
-		return false;
+	ngl::nlogsys::init();
 
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
