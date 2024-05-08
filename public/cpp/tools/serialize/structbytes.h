@@ -148,6 +148,8 @@ namespace ngl
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();
 			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
+
+			//LogLocalError("##tobytes## tprotocol::protocol<%>() = %", dtype_name(T), tprotocol::protocol<T>());
 			//apack->m_head
 			// ### sethead finish ###
 

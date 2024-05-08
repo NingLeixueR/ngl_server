@@ -15,7 +15,7 @@
 # define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
 #endif
 
-#define TYPE_NAME(_TYPE) boost::typeindex::type_id_with_cvr<_TYPE>().pretty_name()
+//#define TYPE_NAME(_TYPE) boost::typeindex::type_id_with_cvr<_TYPE>().pretty_name()
 
 namespace ngl
 {
@@ -60,7 +60,7 @@ namespace ngl
 					{
 						.m_type = atype,
 						.m_protocol = ++lcustoms,
-						.m_name = TYPE_NAME(T)
+						.m_name = dtype_name(T)
 					}));
 				LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name())
 			}
@@ -70,7 +70,7 @@ namespace ngl
 		template <typename T>
 		static bool init_protobufs()
 		{
-			static std::string lname = TYPE_NAME(T);
+			static std::string lname = dtype_name(T);
 			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
@@ -95,10 +95,12 @@ namespace ngl
 			auto itor = m_keyval.find(lcode);
 			if (itor == m_keyval.end())
 			{
-				std::cout << TYPE_NAME(TRC) << std::endl;
-				assert(init_protobufs<TRC>());
+				std::cout << dtype_name(TRC) << std::endl;
+				if (init_protobufs<TRC>() == false)
+					throw "init_protobufs<TRC>() == false";
 				itor = m_keyval.find(lcode);
-				assert(itor != m_keyval.end());
+				if (itor == m_keyval.end())
+					throw "itor == m_keyval.end()";
 			}
 			return itor->second;
 		}

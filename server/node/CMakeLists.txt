@@ -45,9 +45,8 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../lib/Debug/hiredis.lib)
 	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/Release/hiredis.lib)
 	TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../lib/Debug/libprotobufd.lib)
-	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/Release/libprotobufd.lib)
 	TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../lib/Debug/libprotocd.lib)
-	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/Release/libprotocd.lib)
+	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/Release/libprotobuf.lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 

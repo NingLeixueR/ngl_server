@@ -16,7 +16,10 @@ namespace ngl
 
 		static ENUM_ACTOR type()
 		{
-			assert(m_type != ACTOR_NONE);
+			if (m_type == ACTOR_NONE)
+			{
+				throw "m_type == ACTOR_NONE";
+			}
 			return m_type;
 		}
 	};
