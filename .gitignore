@@ -11,6 +11,7 @@ bin/Debug
 bin/Release
 obj
 lib
+doc
 tools/public/rebuild.exe
 tools/public/idl/IDL.exe
 tools/public/idl/idlfile
