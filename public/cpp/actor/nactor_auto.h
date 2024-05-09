@@ -15,6 +15,7 @@ namespace ngl
 		using db_modular = ndb_modular<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>;
 
 		static void init();
+		static void instance();
 	};
 
 	class actor_login;
@@ -41,4 +42,5 @@ namespace ngl
 	using typedb_brief = typedb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BRIEF, pbdb::db_brief, actor_brief>;
 	using typedb_ranklist = typedb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist, actor_ranklist>;
 	using typedb_calendar = typedb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar, actor_calendar>;
+
 }//namespace ngl

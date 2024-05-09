@@ -73,8 +73,18 @@ namespace ngl
 			, dtype_name(type_actor_db)
 			, (int)(lenum)
 		);
+
+		if (nconfig::m_nodetype == DB)
+		{
+			instance();
+		}
 	}
 
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
+	void typedb<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>::instance()
+	{
+		db_actor::getInstance();
+	}
 
 	template <typename TACTOR>
 	void auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
