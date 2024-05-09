@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "manage_csv.h"
 #include "localtime.h"
 
@@ -11,17 +11,10 @@ namespace ngl
 {
 	class actor_brief;
 
-	using brief_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_BRIEF,
-		pbdb::db_brief,
-		actor_brief>;
-
-	class briefdb : public brief_db_modular
+	class briefdb : public typedb_brief::db_modular
 	{
 	public:
-		briefdb() :
-			brief_db_modular()
+		briefdb()
 		{
 		}
 

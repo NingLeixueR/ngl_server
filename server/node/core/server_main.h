@@ -166,30 +166,20 @@ bool start_db(int argc, char** argv)
 	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 
-	ngl::actor_db_account::getInstance();
-
-	ngl::actor_db_role::getInstance();
-
-	ngl::actor_db_bag::getInstance();
-
-	ngl::actor_db_keyvalue::getInstance();
-
-	ngl::actor_db_mail::getInstance();
-
-	ngl::actor_db_guild::getInstance();
-
-	ngl::actor_db_notice::getInstance();
-
-	ngl::actor_db_activity::getInstance();
-
-	ngl::actor_db_brief::getInstance();
-
-	ngl::actor_db_ranklist::getInstance();
-
-	ngl::actor_db_task::getInstance();
-
-	ngl::actor_db_calendar::getInstance();
-
+	ngl::typedb_account::db_actor::getInstance();
+	ngl::typedb_brief::db_actor::getInstance();
+	ngl::typedb_role::db_actor::getInstance();
+	ngl::typedb_bag::db_actor::getInstance();
+	ngl::typedb_task::db_actor::getInstance();
+	ngl::typedb_rolekv::db_actor::getInstance();
+	ngl::typedb_mail::db_actor::getInstance();
+	ngl::typedb_guild::db_actor::getInstance();
+	ngl::typedb_notice::db_actor::getInstance();
+	ngl::typedb_activity::db_actor::getInstance();
+	ngl::typedb_brief::db_actor::getInstance();
+	ngl::typedb_ranklist::db_actor::getInstance();
+	ngl::typedb_calendar::db_actor::getInstance();
+	
 	ngl::actor_client::getInstance().actor_server_register();
 
 	// ----------------test start-------------------- //

@@ -1,3 +1,4 @@
+#include "actor_notice.h"
 #include "notice.h"
 #include "net.pb.h"
 

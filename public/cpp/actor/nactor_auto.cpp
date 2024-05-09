@@ -14,6 +14,7 @@
 #include "actor_server.h"
 #include "actor_client.h"
 #include "actor_create.h"
+#include "nactor_auto.h"
 #include "actor_login.h"
 #include "actor_robot.h"
 #include "actor_brief.h"
@@ -59,10 +60,10 @@ namespace ngl
 		>(EPROTOCOL_TYPE_PROTOCOLBUFF);
 	}
 
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	void initdb()
+	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
+	void typedb<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>::init()
 	{
-		using type_actor_db = ngl::actor_db<EPROTOCOL_TYPE_PROTOCOLBUFF, TDBTAB_TYPE, TDBTAB>;
+		using type_actor_db = ngl::actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 		ENUM_ACTOR lenum = db_enum(PROTYPE, TDBTAB_TYPE);
 		nactor_type<type_actor_db>::inits(lenum);
 
@@ -73,6 +74,7 @@ namespace ngl
 			, (int)(lenum)
 		);
 	}
+
 
 	template <typename TACTOR>
 	void auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
@@ -156,18 +158,19 @@ namespace ngl
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
 		// 新增数据存储需要补全
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ROLE, pbdb::db_role>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BAG, pbdb::db_bag>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_MAIL, pbdb::db_mail>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_GUILD, pbdb::db_guild>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_NOTICE, pbdb::db_notice>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_BRIEF, pbdb::db_brief>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_TASK, pbdb::db_task>();
-		initdb<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar>();
+		typedb_account::init();
+		typedb_brief::init();
+		typedb_role::init();
+		typedb_bag::init();
+		typedb_task::init();
+		typedb_rolekv::init();
+		typedb_mail::init();
+		typedb_guild::init();
+		typedb_notice::init();
+		typedb_activity::init();
+		typedb_brief::init();
+		typedb_ranklist::init();
+		typedb_calendar::init();
 	}
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "manage_csv.h"
 #include "localtime.h"
 
@@ -9,19 +9,11 @@
 
 namespace ngl
 {
-	class actor_mail;
-	using mail_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_MAIL,
-		pbdb::db_mail,
-		actor_mail>;
-
-	class mails : public mail_db_modular
+	class mails : public typedb_mail::db_modular
 	{
 		std::map<i64_actorid, int32_t> m_maxid;
 	public:
-		mails() :
-			mail_db_modular()
+		mails()
 		{
 		}
 

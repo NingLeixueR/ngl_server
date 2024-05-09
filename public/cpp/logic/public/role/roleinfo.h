@@ -1,26 +1,16 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "manage_csv.h"
 #include "db.pb.h"
 #include "net.pb.h"
 
 namespace ngl
 {
-	//actor_dbclient<ENUM_DB_ROLE, DB_ROLE> m_role;
-	class actor_role;
-	using roleinfo_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF
-		, pbdb::ENUM_DB_ROLE
-		, pbdb::db_role
-		, actor_role
-	>;
-
-	class roleinfo : public roleinfo_db_modular
+	class roleinfo : public typedb_role::db_modular
 	{
 	public:
 		roleinfo() 
-			:roleinfo_db_modular()
 		{}
 
 		~roleinfo(){}

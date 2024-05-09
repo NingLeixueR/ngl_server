@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "db.pb.h"
 
 #include <sstream>
@@ -18,7 +18,7 @@ namespace ngl
 		, actor_ranklist
 	>;
 
-	class ranklist : public ranklist_db_modular
+	class ranklist : public typedb_ranklist::db_modular
 	{
 		template <typename T>
 		class operator_value
@@ -65,8 +65,7 @@ namespace ngl
 
 		std::set<pbdb::rankitem*, operator_value<operator_lv>> m_ranklv;
 	public:
-		ranklist() :
-			ranklist_db_modular()
+		ranklist()
 		{
 		}
 

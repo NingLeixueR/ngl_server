@@ -1,9 +1,9 @@
+#include "actor_login.h"
 #include "account.h"
 
 namespace ngl
 {
 	account::account() :
-		ndb_modular(),
 		m_keyvalue_accountid(1)
 	{
 	}

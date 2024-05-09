@@ -1,21 +1,13 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "db.pb.h"
 #include "type.h"
 
 namespace ngl
 {
-	class actor_role;
-	using task_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF,
-		pbdb::ENUM_DB_TASK,
-		pbdb::db_task,
-		actor_role
-	>;
-
 	class task
-		: public task_db_modular
+		: public typedb_task::db_modular
 	{
 	public:
 		task() 

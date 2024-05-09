@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "manage_csv.h"
 #include "localtime.h"
 
@@ -10,18 +10,11 @@
 namespace ngl
 {
 	class actor_manage_activity;
-	using activity_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_ACTIVITY,
-		pbdb::db_activity,
-		actor_manage_activity
-	>;
 
-	class activitydb : public activity_db_modular
+	class activitydb : public typedb_activity::db_modular
 	{
 	public:
-		activitydb() :
-			activity_db_modular()
+		activitydb()
 		{
 		}
 

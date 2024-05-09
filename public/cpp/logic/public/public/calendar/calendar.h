@@ -2,7 +2,7 @@
 
 #include "calendar_function.h"
 #include "ttab_calendar.h"
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "manage_csv.h"
 #include "localtime.h"
 
@@ -11,20 +11,10 @@
 
 namespace ngl
 {
-	class actor_calendar;
-	using mail_db_calendar = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_CALENDAR,
-		pbdb::db_calendar,
-		actor_calendar>;
-
-	class calendar : public mail_db_calendar
+	class calendar : public typedb_calendar::db_modular
 	{
-		
-
 	public:
-		calendar() :
-			mail_db_calendar()
+		calendar()
 		{
 			
 		}

@@ -1,18 +1,10 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 
 namespace ngl
 {
-	class actor_login;
-	using account_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF,
-		pbdb::ENUM_DB_ACCOUNT,
-		pbdb::db_account,
-		actor_login
-	>;
-
-	class account : public account_db_modular
+	class account : public typedb_account::db_modular
 	{
 		struct accountname2db
 		{

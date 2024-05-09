@@ -6,8 +6,7 @@
 namespace ngl
 {
 	bag::bag()
-		: bag_db_modular()
-		, m_autoitem(new autoitem())
+		: m_autoitem(new autoitem())
 	{}
 
 	pbdb::db_bag& bag::get_bag()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "remakes.h"
 #include "db.pb.h"
 #include "itme.h"
@@ -8,16 +8,9 @@
 namespace ngl
 {
 	struct autoitem;
-	class actor_role;
-	using bag_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_BAG,
-		pbdb::db_bag,
-		actor_role
-	>;
 
 	class bag :
-		public bag_db_modular
+		public typedb_bag::db_modular
 	{
 		std::map<int, pbdb::item*> m_stackitems;				// key tid 可堆叠的物品
 		std::map<int, pbdb::item*> m_nostackitems;				// key id  不可堆叠的物品

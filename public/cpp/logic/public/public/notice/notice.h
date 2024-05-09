@@ -1,23 +1,15 @@
 #pragma once
 
-#include "ndb_modular.h"
+#include "nactor_auto.h"
 #include "db.pb.h"
 
 namespace ngl
 {
-	class actor_notice;
-	using notice_db_modular = ndb_modular<
-		EPROTOCOL_TYPE_PROTOCOLBUFF, 
-		pbdb::ENUM_DB_NOTICE,
-		pbdb::db_notice,
-		actor_notice>;
-
-	class notice : public notice_db_modular
+	class notice : public typedb_notice::db_modular
 	{
 		int64_t m_maxid;
 	public:
 		notice() :
-			notice_db_modular(),
 			m_maxid(0)
 		{
 		}
