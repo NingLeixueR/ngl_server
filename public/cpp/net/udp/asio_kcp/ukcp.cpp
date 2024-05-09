@@ -1,3 +1,5 @@
+#include "sysconfig.h"
+#include "nguid.h"
 #include "ukcp.h"
 
 namespace ngl
@@ -35,10 +37,7 @@ namespace ngl
 	// 生成kcp-session以验证连接
 	bool ukcp::create_session(i64_actorid aactorid, std::string& asession)
 	{
-		xmlinfo* xml = nconfig::get_publicconfig();
-		std::string lkcpsession;
-		if (xml->find("kcp_session", lkcpsession) == false)
-			return false;
+		std::string lkcpsession = sysconfig::kcpsession();
 
 		lkcpsession += '&';
 		lkcpsession += boost::lexical_cast<std::string>(nguid::area(aactorid));

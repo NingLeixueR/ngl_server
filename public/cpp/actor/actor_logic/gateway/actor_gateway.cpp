@@ -75,13 +75,10 @@ namespace ngl
 		i32_actordataid lroleid = ainfo->m_dataid;
 		i16_area larea = ainfo->m_area;
 
-		int lwaiting = 0;
-		nconfig::m_publicinfo.find("waiting", lwaiting);
-
 		wheel_parm lparm
 		{
-			.m_ms = lwaiting * 1000,
-			.m_intervalms = [lwaiting](int64_t) {return lwaiting * 1000; } ,
+			.m_ms = sysconfig::sessionwait() * 1000,
+			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * 1000; } ,
 			.m_count = 1,
 			.m_fun = [this, lroleid, larea](wheel_node* anode)
 			{

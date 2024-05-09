@@ -15,10 +15,9 @@ namespace ngl
 		int32_t m_data[EPH_SUM] = {0};
 		int32_t m_wpos = 0;
 
-		static int32_t m_version;
-
 		pack_head();
 
+		// 给包头设置或者获取时间
 		static void		head_set_time(int32_t* abuff);
 		static i32_time head_get_time(const int32_t* abuff);
 		void			set_time();

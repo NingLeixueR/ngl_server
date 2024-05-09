@@ -29,19 +29,16 @@ namespace ngl
 			itor->second.reset();
 			return true;
 		}
-		if (lnow >= itor->second.m_resetutc + m_rate_interval)
+		if (lnow >= itor->second.m_resetutc + sysconfig::rate_interval())
 		{
 			itor->second.reset();
 			return true;
 		}
 		++itor->second.m_ratecount;
-		if (m_max_rate_count < itor->second.m_ratecount)
+		if (sysconfig::rate_count() < itor->second.m_ratecount)
 			return false;
 		return true;
 	}
-
-	int segpack_rate::m_max_rate_count	= rate_size;
-	int segpack_rate::m_rate_interval	= rate_interval;
 
 	bool segpack_heartbeat::is_heartbeat(int aprotocolnum)
 	{		
@@ -160,7 +157,7 @@ namespace ngl
 							return false;
 					}
 
-					if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + DEF_TIMEOUT_SECOND)
+					if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 					{
 						protocol::push(lpack);
 					}
@@ -169,7 +166,7 @@ namespace ngl
 						LogLocalError("time[% < % + % ]"
 							, localtime::gettime()
 							, lpack->m_head.getvalue(EPH_TIME)
-							, DEF_TIMEOUT_SECOND
+							, sysconfig::net_timeout()
 						);
 					}
 					continue;

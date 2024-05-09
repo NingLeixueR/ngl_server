@@ -110,16 +110,6 @@ namespace ngl
 
 		static void post(tab_calendar* atab, int64_t autc, pbdb::db_calendar& acalendar);
 
-		// 获取开服时间utc
-		static time_t serveropen()
-		{
-			xmlinfo* xml = nconfig::get_publicconfig();
-			std::string lopenserve;
-			if (xml->find("open_server_time", lopenserve) == false)
-				return -1;
-			return localtime::st2time(lopenserve.c_str());
-		}
-
 		// 今日流失的秒数
 		static std::pair<bool,int32_t> daysecond(const char* astr)
 		{
@@ -190,7 +180,7 @@ namespace ngl
 		static void init_serveropen(int aid, std::vector<tserveropen>& atserveropen)
 		{
 			int32_t lnow = localtime::gettime();
-			int32_t lopentime = serveropen();
+			int32_t lopentime = sysconfig::open_servertime();
 			int32_t lid = 0;
 			for (auto& item : atserveropen)
 			{

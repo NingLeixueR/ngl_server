@@ -186,7 +186,7 @@ namespace ngl
 	{
 		return push_vector_number_compile(avec);
 	}
-	// 单双浮点型,不需要考虑字节序
+
 	bool serialize::push(const std::vector<float>& avec)
 	{
 		return push_vector_number(avec);
@@ -211,7 +211,6 @@ namespace ngl
 		return basetype((void*)astr.c_str(), sizeof(char) * astr.size());
 	}
 
-	// 支持没有参数
 	bool serialize::push()
 	{
 		return true;
@@ -495,7 +494,6 @@ namespace ngl
 		 m_size(0)
 	 {}
 
-	 // 支持没有参数
 	 int serialize_bytes::bytes()
 	 {
 		 return m_size;

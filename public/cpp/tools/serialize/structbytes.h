@@ -6,8 +6,6 @@
 #include "pack.h"
 #include "nlog.h"
 
-#define ISBYTEXOR (true)
-
 namespace ngl
 {
 	class encryption_bytexor
@@ -75,11 +73,10 @@ namespace ngl
 
 		static bool check_xor(int aprotocolnum)
 		{
-			bool isret = tprotocol::protocol<np_gm>() == aprotocolnum
-				|| tprotocol::protocol<np_gm_response>() == aprotocolnum;
-			if (isret)
+			if (tprotocol::protocol<np_gm>() == aprotocolnum
+				|| tprotocol::protocol<np_gm_response>() == aprotocolnum)
 				return false;
-			return ISBYTEXOR;
+			return sysconfig::isxor();
 		}
 
 		static bool check_xor(std::shared_ptr<pack>& apack)

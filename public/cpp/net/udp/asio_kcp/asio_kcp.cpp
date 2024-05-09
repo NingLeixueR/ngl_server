@@ -1,3 +1,4 @@
+#include "sysconfig.h"
 #include "asio_kcp.h"
 #include "protocol.h"
 
@@ -348,21 +349,15 @@ namespace ngl
 			xmlinfo* linfo = nconfig::get_publicconfig();
 			if (linfo == nullptr)
 				return false;
-			int ms = 0;
-			if (linfo->find("kcp_ping", ms) == false)
-				return false;
-			int intervalms = 0;
-			if (linfo->find("kcp_ping_interval", intervalms) == false)
-				return false;
 			if (aconnect)
 			{
 				apstruct->m_actorid = aactorid;
-				/*wheel_parm lparm
+				wheel_parm lparm
 				{
-					.m_ms = ms * 1000,
-					.m_intervalms = [ms](int64_t) {return ms * 1000; } ,
+					.m_ms = sysconfig::kcpping() * 1000,
+					.m_intervalms = [](int64_t) {return sysconfig::kcpping() * 1000; } ,
 					.m_count = 0x7fffffff,
-					.m_fun = [session, ms, intervalms, this](wheel_node* anode)
+					.m_fun = [session, this](wheel_node* anode)
 					{
 						ptr_se lpstruct = m_session.find(session);
 						if (lpstruct == nullptr)
@@ -371,23 +366,23 @@ namespace ngl
 							return;
 						}
 						int32_t lnow = localtime::gettime();
-						if (lnow - lpstruct->m_pingtm > intervalms)
+						if (lnow - lpstruct->m_pingtm > sysconfig::kcppinginterval())
 						{
 							m_kcp->close(lpstruct->m_session);
 							m_kcptimer.removetimer(anode->m_timerid);
 						}
 					}
 				};
-				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);*/
+				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
 			}
 			else
 			{
-				/*wheel_parm lparm
+				wheel_parm lparm
 				{
-					.m_ms = ms * 1000,
-					.m_intervalms = [ms](int64_t) {return ms * 1000; } ,
+					.m_ms = sysconfig::kcpping() * 1000,
+					.m_intervalms = [](int64_t) {return sysconfig::kcpping() * 1000; } ,
 					.m_count = 0x7fffffff,
-					.m_fun = [session, ms, intervalms, this](wheel_node* anode)
+					.m_fun = [session, this](wheel_node* anode)
 					{
 						ptr_se lpstruct = m_session.find(session);
 						if (lpstruct == nullptr)
@@ -398,7 +393,7 @@ namespace ngl
 						udp_cmd::sendcmd(m_kcp, session, udp_cmd::ecmd_ping, "");
 					}
 				};
-				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);*/
+				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
 			}
 			return true;
 		}
@@ -510,7 +505,7 @@ namespace ngl
 			lpack->malloc(len);
 			memcpy(lpack->m_buff, abuff, len);
 			lpack->m_pos = len;
-			if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + DEF_TIMEOUT_SECOND)
+			if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 			{
 				protocol::push(lpack);
 			}
@@ -519,7 +514,7 @@ namespace ngl
 				LogLocalError("time[% < % + % ]"
 					, localtime::gettime()
 					, lpack->m_head.getvalue(EPH_TIME)
-					, DEF_TIMEOUT_SECOND
+					, sysconfig::net_timeout()
 				);
 			}
 			return true;

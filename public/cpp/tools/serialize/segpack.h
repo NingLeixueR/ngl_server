@@ -9,16 +9,8 @@
 #include <functional>
 #include <map>
 
-#define DEF_TIMEOUT_SECOND (600000)
-
 namespace ngl
 {
-	enum enum_segpack
-	{
-		rate_interval		= 1,			// 速率检测的间隔(单位秒)
-		rate_size			= 20,			// 速率 每秒多少条
-		heart_beat_interval = 10,			// 心跳间隔(单位秒)
-	};
 
 	struct segpack_rate_interval
 	{
@@ -33,9 +25,6 @@ namespace ngl
 	{
 		std::map<i32_socket, segpack_rate_interval> m_data;
 	public:
-		static int m_max_rate_count;
-		static int m_rate_interval;
-
 		bool add(i32_socket aid);
 	};
 

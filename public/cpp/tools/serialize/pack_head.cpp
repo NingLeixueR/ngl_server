@@ -5,16 +5,9 @@
 
 namespace ngl
 {
-	int32_t pack_head::m_version = 0;
-
 	pack_head::pack_head() :
 		m_wpos(0)
 	{
-		if (m_version == 0)
-		{
-			ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
-			assert(lpublicxml->find("head_version", m_version));
-		}
 	}
 
 	void pack_head::head_set_actor(
@@ -70,7 +63,7 @@ namespace ngl
 
 	void pack_head::head_set_version(int32_t* abuff)
 	{
-		abuff[EPH::EPH_VERSION] = m_version;
+		abuff[EPH::EPH_VERSION] = sysconfig::head_version();
 	}
 
 	int32_t pack_head::head_get_version(const int32_t* abuff)
@@ -154,7 +147,7 @@ namespace ngl
 		{
 			return EPH_HEAD_VERSION_FOLLOW;
 		}
-		return get_version() == m_version ? EPH_HEAD_VERSION_SUCCESS : EPH_HEAD_VERSION_FAIL;
+		return get_version() == sysconfig::head_version() ? EPH_HEAD_VERSION_SUCCESS : EPH_HEAD_VERSION_FAIL;
 	}
 
 	i32_protocolnum pack_head::protocolnum()const

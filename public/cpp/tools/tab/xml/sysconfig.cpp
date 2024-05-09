@@ -12,10 +12,20 @@ namespace ngl
 	bool	sysconfig::m_logconsole		= false;
 	int32_t	sysconfig::m_consumings		= 100;
 	std::string	sysconfig::m_xorkey;
-	int32_t	sysconfig::m_xorkeynum		= 0;	//2^n-1 nÎªxorkeyµÄ×Ö·ûÊı
+	int32_t	sysconfig::m_xorkeynum		= 0;
 	bool	sysconfig::m_isxor			= false;
 	bool	sysconfig::m_varint			= false;
 	bool	sysconfig::m_robot_test		= false;
+	int32_t	sysconfig::m_kcpping		= 10;
+	int32_t	sysconfig::m_kcppinginterval= 20;
+	int32_t sysconfig::m_sessionewait	= 1;
+	std::string	sysconfig::m_kcpsession;
+	int32_t sysconfig::m_open_servertime = 0;
+	int32_t sysconfig::m_head_version	= 1;
+	int32_t sysconfig::m_rate_interval	= 1;
+	int32_t sysconfig::m_rate_count		= 20;
+	int32_t sysconfig::m_heart_beat_interval = 10;
+	int32_t sysconfig::m_net_timeout	= 600000;
 
 	void sysconfig::init()
 	{
@@ -54,5 +64,16 @@ namespace ngl
 		lpublicxml->varint(m_varint);
 
 		lpublicxml->find("robot_test", m_robot_test);
+		lpublicxml->find("kcpping", m_kcpping);
+		lpublicxml->find("kcppinginterval", m_kcppinginterval);
+		lpublicxml->find("sessionewait", m_sessionewait);
+		lpublicxml->find("kcpsession", m_kcpsession);
+
+		std::string lopen_servertime;
+		lpublicxml->find("open_servertime", lopen_servertime);
+		m_open_servertime = localtime::st2time(lopen_servertime.c_str());
+		
+		lpublicxml->find("head_version", m_head_version);
+		
 	}
 }

@@ -100,7 +100,8 @@ namespace ngl
 		template <typename T, bool IS_FORWARD>
 		bool push(const protobuf_data<T, IS_FORWARD>& adata)
 		{
-			assert(adata.m_data != nullptr);
+			if (adata.m_data == nullptr)
+				return false;
 			if (adata.m_isbinary)
 			{
 				int32_t lbytes = adata.m_data->ByteSize();
