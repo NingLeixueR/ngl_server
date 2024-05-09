@@ -7,7 +7,7 @@
 #include "time_wheel.h"
 #include "nlog.h"
 
-#define ISUSENETPOOL	(false)
+#define ISUSENETPOOL	(true)
 
 namespace ngl
 {

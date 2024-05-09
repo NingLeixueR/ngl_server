@@ -4,17 +4,31 @@
 
 namespace ngl
 {
-
-	std::map<i32_serverid, i32_sessionid> server_session::m_server;
-	std::map<i32_sessionid, i32_serverid> server_session::m_session;
+	std::multimap<i32_serverid, i32_sessionid> server_session::m_server;
+	std::multimap<i32_sessionid, i32_serverid> server_session::m_session;
 	std::shared_mutex server_session::m_mutex;
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
 		LogLocalWarn("connect [%:%] [%]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
 		lock_write(m_mutex);
-		m_server[aserverid] = asession;
-		m_session[asession] = aserverid;
+		
+		{
+			auto itor = m_server.find(aserverid);
+			if (itor != m_server.end())
+			{
+				m_server.erase(itor);
+			}
+		}
+		{
+			auto itor = m_session.find(asession);
+			if (itor != m_session.end())
+			{
+				m_session.erase(itor);
+			}
+		}
+		m_server.insert(std::make_pair(aserverid, asession));
+		m_session.insert(std::make_pair(asession, aserverid));
 	}
 
 	void server_session::remove(i32_sessionid asession)
@@ -30,18 +44,18 @@ namespace ngl
 	i32_sessionid server_session::get_sessionid(i32_serverid aserverid)
 	{
 		lock_read(m_mutex);
-		i32_sessionid* lpsessionid = tools::findmap(m_server, aserverid);
-		if (lpsessionid == nullptr)
+		auto itor = m_server.find(aserverid);
+		if (itor == m_server.end())
 			return -1;
-		return *lpsessionid;
+		return itor->second;
 	}
 
 	i32_serverid server_session::get_serverid(i32_sessionid asessionid)
 	{
 		lock_read(m_mutex);
-		i32_serverid* lpserverid = tools::findmap(m_session, asessionid);
-		if (lpserverid == nullptr)
+		auto itor = m_session.find(asessionid);
+		if (itor == m_session.end())
 			return -1;
-		return *lpserverid;
+		return itor->second;
 	}
-}
+}//namespace ngl

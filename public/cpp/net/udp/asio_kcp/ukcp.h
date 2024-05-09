@@ -17,16 +17,6 @@ namespace ngl
 		static const int32_t m_conv = 1;
 		static std::string m_localuip;
 
-		/*static ukcp& getInstance(i16_port aprot = -1)
-		{
-			static bool lfirst = true;
-			if (lfirst && aprot == -1)
-				throw "udp_kcp::getInstance(-1) first";
-			lfirst = false;
-			static ukcp ltemp(aprot);
-			return ltemp;
-		}*/
-
 		static ukcp* create(i16_port aprot)
 		{
 			return new ukcp(aprot);
