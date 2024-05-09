@@ -10,8 +10,7 @@ php/vendor
 bin/Debug
 bin/Release
 obj
-lib/Debug
-lib/Release
+lib
 tools/public/rebuild.exe
 tools/public/idl/IDL.exe
 tools/public/idl/idlfile
