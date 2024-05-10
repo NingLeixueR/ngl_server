@@ -15,7 +15,10 @@ namespace ngl
 		using db_modular = ndb_modular<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>;
 
 		static void init();
-		static void instance();
+		static void instance()
+		{
+			db_actor::getInstance();
+		}
 	};
 
 	class actor_login;
