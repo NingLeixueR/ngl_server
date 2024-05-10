@@ -62,18 +62,25 @@ namespace ngl
 	}
 
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
-	void typedb<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>::init()
+	void typedb<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
 	{
-		using type_actor_db = ngl::actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-		ENUM_ACTOR lenum = db_enum(PROTYPE, TDBTAB_TYPE);
-		nactor_type<type_actor_db>::inits(lenum);
+		if (ainit == true)
+		{
+			using type_actor_db = ngl::actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
+			ENUM_ACTOR lenum = db_enum(PROTYPE, TDBTAB_TYPE);
+			nactor_type<type_actor_db>::inits(lenum);
 
-		init_customs_db<TDBTAB_TYPE, TDBTAB>();
+			init_customs_db<TDBTAB_TYPE, TDBTAB>();
 
-		LogLocalError("init_actor_type [%]-[%]"
-			, dtype_name(type_actor_db)
-			, (int)(lenum)
-		);
+			LogLocalError("init_actor_type [%]-[%]"
+				, dtype_name(type_actor_db)
+				, (int)(lenum)
+			);
+		}
+		else
+		{
+			db_actor::getInstance();
+		}
 	}
 
 	template <typename TACTOR>
@@ -90,87 +97,90 @@ namespace ngl
 		auto_actor(arg...);
 	}
 
-	void init_nactor_type()
+	void init_nactor_type(bool aregister)
 	{
-		// ### 新增actor需要补全
-		auto_actor(
-			null<actor_client>,	em_pram(ACTOR_CLIENT)
-			, null<actor_create>, em_pram(ACTOR_CREATE)
-			, null<actor_server>, em_pram(ACTOR_SERVER)
-			, null<actor_cross>, em_pram(ACTOR_CROSS)
-			, null<actor_manage_role>, em_pram(ACTOR_MANAGE_ROLE)
-			, null<actor_role>, em_pram(ACTOR_ROLE)
-			, null<actor_gateway>, em_pram(ACTOR_GATEWAY)
-			, null<actor_gatewayc2g>, em_pram(ACTOR_GATEWAY_C2G)
-			, null<actor_gatewayg2c>, em_pram(ACTOR_GATEWAY_G2C)
-			, null<actor_log>, em_pram(ACTOR_LOG)
-			, null<actor_login>, em_pram(ACTOR_LOGIN)
-			, null<actor_csvserver>, em_pram(ACTOR_CSVSERVER)
-			, null<actor_csvclient>, em_pram(ACTOR_CSVCLIENT)
-			, null<actor_robot>, em_pram(ACTOR_ROBOT)
-			, null<actor_manage_robot>, em_pram(ACTOR_MANAGE_ROBOT)
-			, null<actor_manage_activity>, em_pram(ACTOR_ACTIVITY_MANAGE)
-			, null<actor_brief>, em_pram(ACTOR_BRIEF)
-			, null<actor_chat>, em_pram(ACTOR_CHAT)
-			, null<actor_gm>, em_pram(ACTOR_GM)
-			, null<actor_mail>, em_pram(ACTOR_MAIL)
-			, null<actor_notice>, em_pram(ACTOR_NOTICE)
-			, null<actor_ranklist>, em_pram(ACTOR_RANKLIST)
-			, null<actor_matching>, em_pram(ACTOR_MATCHING)
-			, null<actor_manage_plays>, em_pram(ACTOR_MANAGE_PLAYS)
-			, null<actor_ugpalace>, em_pram(ACTOR_PLAYS_GO_UNDERGROUNDPALACE)
-			, null<actor_kcp>, em_pram(ACTOR_KCP)
-			, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
-			, null<actor_plays>, em_pram(ACTOR_PLAYS)			
-		);
+		if (aregister == true)
+		{
+			// ### 新增actor需要补全
+			auto_actor(
+				null<actor_client>, em_pram(ACTOR_CLIENT)
+				, null<actor_create>, em_pram(ACTOR_CREATE)
+				, null<actor_server>, em_pram(ACTOR_SERVER)
+				, null<actor_cross>, em_pram(ACTOR_CROSS)
+				, null<actor_manage_role>, em_pram(ACTOR_MANAGE_ROLE)
+				, null<actor_role>, em_pram(ACTOR_ROLE)
+				, null<actor_gateway>, em_pram(ACTOR_GATEWAY)
+				, null<actor_gatewayc2g>, em_pram(ACTOR_GATEWAY_C2G)
+				, null<actor_gatewayg2c>, em_pram(ACTOR_GATEWAY_G2C)
+				, null<actor_log>, em_pram(ACTOR_LOG)
+				, null<actor_login>, em_pram(ACTOR_LOGIN)
+				, null<actor_csvserver>, em_pram(ACTOR_CSVSERVER)
+				, null<actor_csvclient>, em_pram(ACTOR_CSVCLIENT)
+				, null<actor_robot>, em_pram(ACTOR_ROBOT)
+				, null<actor_manage_robot>, em_pram(ACTOR_MANAGE_ROBOT)
+				, null<actor_manage_activity>, em_pram(ACTOR_ACTIVITY_MANAGE)
+				, null<actor_brief>, em_pram(ACTOR_BRIEF)
+				, null<actor_chat>, em_pram(ACTOR_CHAT)
+				, null<actor_gm>, em_pram(ACTOR_GM)
+				, null<actor_mail>, em_pram(ACTOR_MAIL)
+				, null<actor_notice>, em_pram(ACTOR_NOTICE)
+				, null<actor_ranklist>, em_pram(ACTOR_RANKLIST)
+				, null<actor_matching>, em_pram(ACTOR_MATCHING)
+				, null<actor_manage_plays>, em_pram(ACTOR_MANAGE_PLAYS)
+				, null<actor_ugpalace>, em_pram(ACTOR_PLAYS_GO_UNDERGROUNDPALACE)
+				, null<actor_kcp>, em_pram(ACTOR_KCP)
+				, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
+				, null<actor_plays>, em_pram(ACTOR_PLAYS)
+			);
 
-		// 新增内部协议需要补充
-		tprotocol::type_customs::template func<
-			/*200000001*/np_gm
-			/*200000002*/, np_gm_response
-			/*200000003*/, mforward<np_gm>
-			/*200000004*/, mforward<np_gm_response>
-			/*200000005*/, timerparm
-			/*200000006*/, np_robot_pram
-			/*200000007*/, np_actornode_register
-			/*200000008*/, np_actornode_register_response
-			/*200000009*/, np_actorclient_node_connect
-			/*200000010*/, np_actornode_update
-			/*200000011*/, np_actornode_update_mass
-			/*200000012*/, np_actornode_connect_task
-			/*200000013*/, np_actorrole_login
-			/*200000014*/, np_actorserver_connect
-			/*200000015*/, np_actor_session_close
-			/*200000016*/, np_actor_disconnect_close
-			/*200000017*/, np_actor_logitem
-			/*200000018*/, np_actor_broadcast
-			/*200000019*/, np_actor_reloadcsv
-			/*200000020*/, np_actor_csv_verify_version
-			/*200000021*/, np_actor_senditem
-			/*200000022*/, np_actor_roleinfo
-			/*200000023*/, np_actor_gatewayinfo_updata
-			/*200000024*/, np_actor_addmail
-			/*200000025*/, np_actor_activity
-			/*200000026*/, np_actor_gatewayid_updata
-			/*200000027*/, np_actorswitch_process<np_actorswitch_process_role>
-			/*200000028*/, np_actor_kcp
-			/*200000029*/, np_calendar
-		>(EPROTOCOL_TYPE_CUSTOM);
+			// 新增内部协议需要补充
+			tprotocol::type_customs::template func <
+				/*200000001*/np_gm
+				/*200000002*/, np_gm_response
+				/*200000003*/, mforward<np_gm>
+				/*200000004*/, mforward<np_gm_response>
+				/*200000005*/, timerparm
+				/*200000006*/, np_robot_pram
+				/*200000007*/, np_actornode_register
+				/*200000008*/, np_actornode_register_response
+				/*200000009*/, np_actorclient_node_connect
+				/*200000010*/, np_actornode_update
+				/*200000011*/, np_actornode_update_mass
+				/*200000012*/, np_actornode_connect_task
+				/*200000013*/, np_actorrole_login
+				/*200000014*/, np_actorserver_connect
+				/*200000015*/, np_actor_session_close
+				/*200000016*/, np_actor_disconnect_close
+				/*200000017*/, np_actor_logitem
+				/*200000018*/, np_actor_broadcast
+				/*200000019*/, np_actor_reloadcsv
+				/*200000020*/, np_actor_csv_verify_version
+				/*200000021*/, np_actor_senditem
+				/*200000022*/, np_actor_roleinfo
+				/*200000023*/, np_actor_gatewayinfo_updata
+				/*200000024*/, np_actor_addmail
+				/*200000025*/, np_actor_activity
+				/*200000026*/, np_actor_gatewayid_updata
+				/*200000027*/, np_actorswitch_process<np_actorswitch_process_role>
+				/*200000028*/, np_actor_kcp
+				/*200000029*/, np_calendar
+			> (EPROTOCOL_TYPE_CUSTOM);
+		}
 		
 		// 新增数据存储需要补全
-		typedb_account::init();
-		typedb_brief::init();
-		typedb_role::init();
-		typedb_bag::init();
-		typedb_task::init();
-		typedb_rolekv::init();
-		typedb_mail::init();
-		typedb_guild::init();
-		typedb_notice::init();
-		typedb_activity::init();
-		typedb_brief::init();
-		typedb_ranklist::init();
-		typedb_calendar::init();
+		typedb_account::init(aregister);
+		typedb_brief::init(aregister);
+		typedb_role::init(aregister);
+		typedb_bag::init(aregister);
+		typedb_task::init(aregister);
+		typedb_rolekv::init(aregister);
+		typedb_mail::init(aregister);
+		typedb_guild::init(aregister);
+		typedb_notice::init(aregister);
+		typedb_activity::init(aregister);
+		typedb_brief::init(aregister);
+		typedb_ranklist::init(aregister);
+		typedb_calendar::init(aregister);
 	}
 }
 

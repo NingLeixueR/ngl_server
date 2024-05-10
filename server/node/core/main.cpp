@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	nconfig::set_server(argv[1], tab->m_id);
 
-	ngl::init_nactor_type();
+	ngl::init_nactor_type(true);
 	ngl::xmlprotocol::load();
 	ngl::nlog::getInstance().isinitfinish() = true;
 

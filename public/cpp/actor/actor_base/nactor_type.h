@@ -30,5 +30,7 @@ namespace ngl
 	// 根据pbdb::ENUM_DB获取ENUM_ACTOR
 	ENUM_ACTOR db_enum(EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE);
 
-	void init_nactor_type();
+	// [aregister == true] 主要是注册协议,宏与类型的绑定
+	// [aregister == false] 实例化db_actor,db server需要
+	void init_nactor_type(bool aregister);
 }//namespace ngl

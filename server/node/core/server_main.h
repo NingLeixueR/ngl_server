@@ -166,7 +166,8 @@ bool start_db(int argc, char** argv)
 	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 
-	ngl::typedb_account::instance();
+	ngl::init_nactor_type(false);
+	/*ngl::typedb_account::instance();
 	ngl::typedb_brief::instance();
 	ngl::typedb_role::instance();
 	ngl::typedb_bag::instance();
@@ -178,7 +179,7 @@ bool start_db(int argc, char** argv)
 	ngl::typedb_activity::instance();
 	ngl::typedb_brief::instance();
 	ngl::typedb_ranklist::instance();
-	ngl::typedb_calendar::instance();
+	ngl::typedb_calendar::instance();*/
 	
 	ngl::actor_client::getInstance().actor_server_register();
 
