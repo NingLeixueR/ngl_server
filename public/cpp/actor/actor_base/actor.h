@@ -45,9 +45,10 @@ namespace ngl
 		
 			if (isbroadcast())
 			{
-				auto lfun = (Tfun<actor, np_actor_broadcast>) & actor::handle;
-				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, lfun);
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, (Tfun<actor, np_actor_broadcast>) & actor::handle);
 			}
+
+			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, (Tfun<actor, np_actor_close>) & actor::handle);
 		}
 
 		//# 注册定时器
@@ -208,5 +209,11 @@ namespace ngl
 		bool handle(message<np_actor_broadcast>& adata);
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion
+
+		bool handle(message<np_actor_close>& adata)
+		{
+			erase_actor_byid();
+			return true;
+		}
 	};
 }//namespace ngl

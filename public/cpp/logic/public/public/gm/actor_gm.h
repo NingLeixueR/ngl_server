@@ -55,6 +55,8 @@ namespace ngl
 			return true;
 		}
 
+		using handle_cmd = cmd<actor_gm, std::string, int, ngl::ojson&>;
+
 		bool handle(message<ngl::np_gm>& adata);
 
 		bool handle(message<mforward<ngl::np_gm_response>>& adata);

@@ -717,6 +717,12 @@ namespace ngl
 
 		def_portocol(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
+
+	// ---- 关闭指定actor(不能关闭actor_role)
+	struct np_actor_close
+	{
+		def_portocol(np_actor_close)
+	};
 }//namespace ngl
 
 

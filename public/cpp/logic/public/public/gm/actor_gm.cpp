@@ -43,7 +43,7 @@ namespace ngl
 				{
 					return true;
 				}
-				if (loperator == "guid")
+				if (handle_cmd::empty())
 				{
 					struct gm_guid
 					{
@@ -53,20 +53,44 @@ namespace ngl
 
 						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 					};
-					gm_guid lguid;
-					if (lreadjson.read("data", lguid))
-					{
-						ENUM_ACTOR ltype;
-						if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
-							return true;
-						ngl::ijson lwritejson;
-						lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
-						ngl::np_gm_response lresponse;
-						lwritejson.get(lresponse.m_json);
-						ret_gm(adata.m_pack, lresponse);
-						
-						return true;
-					}
+
+					handle_cmd::push("guid", [this,&adata](int id, ngl::ojson& aos)
+						{
+							gm_guid lguid;
+							if (aos.read("data", lguid))
+							{
+								ENUM_ACTOR ltype;
+								if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
+									return true;
+								ngl::ijson lwritejson;
+								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
+								ngl::np_gm_response lresponse;
+								lwritejson.get(lresponse.m_json);
+								ret_gm(adata.m_pack, lresponse);
+								return true;
+							}
+						}
+					);
+
+					handle_cmd::push("close_actor", [this, &adata](int id, ngl::ojson& aos)
+						{
+							gm_guid lguid;
+							if (aos.read("data", lguid))
+							{
+								ENUM_ACTOR ltype;
+								if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
+									return true;
+								nguid::make(ltype, lguid.m_area, lguid.m_dataid);
+								auto pro = std::make_shared<np_actor_close>();
+								send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
+								return true;
+							}
+						});
+				}
+
+				if (loperator == "guid")
+				{
+					
 				}
 
 				return true;

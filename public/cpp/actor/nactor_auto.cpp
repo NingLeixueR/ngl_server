@@ -164,6 +164,7 @@ namespace ngl
 				/*200000027*/, np_actorswitch_process<np_actorswitch_process_role>
 				/*200000028*/, np_actor_kcp
 				/*200000029*/, np_calendar
+				/*200000030*/, np_actor_close
 			> (EPROTOCOL_TYPE_CUSTOM);
 		}
 		

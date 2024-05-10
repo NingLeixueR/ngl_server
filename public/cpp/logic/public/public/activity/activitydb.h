@@ -9,8 +9,6 @@
 
 namespace ngl
 {
-	class actor_manage_activity;
-
 	class activitydb : public tdb_activity::db_modular
 	{
 	public:
