@@ -34,9 +34,7 @@ int main(int argc, char** argv)
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	nconfig::set_server(argv[1], tab->m_id);
 
-	ngl::init_nactor_type(true);
-	ngl::xmlprotocol::load();
-	ngl::nlog::getInstance().isinitfinish() = true;
+	
 
 	char lname[1024] = { 0x0 };
 	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
@@ -46,11 +44,6 @@ int main(int argc, char** argv)
 	SetConsoleTitle(lname);
 #endif
 	Dumper::m_excname = lname;
-
-	ngl::nactortype::getInstance();
-	ngl::actor_base::start_broadcast();
-
-	assert(nconfig::node_type() != ngl::FAIL);
 
 	switch (nconfig::node_type())
 	{
@@ -87,6 +80,8 @@ int main(int argc, char** argv)
 	case ngl::PUSHSERVERCONFIG:
 		start_pushserverconfig();
 		break;
+	default:
+		return 0;
 	}
 
 	while (1)
