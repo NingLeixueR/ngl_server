@@ -351,11 +351,14 @@ private:
 		template <typename T>
 		static void send_allclient(std::shared_ptr<T>& adata)
 		{
-			std::vector<i32_serverid> lvecserver;
-			if (ttab_servers::get_server(GATEWAY, ttab_servers::tab()->m_area, lvecserver) == false)
+			static std::vector<i32_serverid> lvecserver;
+			if (lvecserver.empty())
 			{
-				return;
-			}
+				if (ttab_servers::get_server(GATEWAY, ttab_servers::tab()->m_area, lvecserver) == false)
+				{
+					return;
+				}
+			}			
 			send_client(lvecserver, nguid::make(), adata);
 		}
 
