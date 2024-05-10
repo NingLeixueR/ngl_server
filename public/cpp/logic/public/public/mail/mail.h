@@ -9,7 +9,7 @@
 
 namespace ngl
 {
-	class mails : public typedb_mail::db_modular
+	class mails : public tdb_mail::db_modular
 	{
 		std::map<i64_actorid, int32_t> m_maxid;
 	public:

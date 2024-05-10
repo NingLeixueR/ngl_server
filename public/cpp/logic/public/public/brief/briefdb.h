@@ -11,7 +11,7 @@ namespace ngl
 {
 	class actor_brief;
 
-	class briefdb : public typedb_brief::db_modular
+	class briefdb : public tdb_brief::db_modular
 	{
 	public:
 		briefdb()

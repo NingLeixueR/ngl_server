@@ -4,7 +4,7 @@
 
 namespace ngl
 {
-	class account : public typedb_account::db_modular
+	class account : public tdb_account::db_modular
 	{
 		struct accountname2db
 		{

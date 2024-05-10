@@ -11,7 +11,7 @@ namespace ngl
 {
 	class actor_manage_activity;
 
-	class activitydb : public typedb_activity::db_modular
+	class activitydb : public tdb_activity::db_modular
 	{
 	public:
 		activitydb()

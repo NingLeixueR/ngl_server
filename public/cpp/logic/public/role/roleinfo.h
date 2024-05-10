@@ -7,7 +7,7 @@
 
 namespace ngl
 {
-	class roleinfo : public typedb_role::db_modular
+	class roleinfo : public tdb_role::db_modular
 	{
 	public:
 		roleinfo() 

@@ -5,7 +5,7 @@
 
 namespace ngl
 {
-	class notice : public typedb_notice::db_modular
+	class notice : public tdb_notice::db_modular
 	{
 		int64_t m_maxid;
 	public:

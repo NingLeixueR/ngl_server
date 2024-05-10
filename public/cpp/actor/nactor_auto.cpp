@@ -168,19 +168,19 @@ namespace ngl
 		}
 		
 		// 新增数据存储需要补全
-		typedb_account::init(aregister);
-		typedb_brief::init(aregister);
-		typedb_role::init(aregister);
-		typedb_bag::init(aregister);
-		typedb_task::init(aregister);
-		typedb_rolekv::init(aregister);
-		typedb_mail::init(aregister);
-		typedb_guild::init(aregister);
-		typedb_notice::init(aregister);
-		typedb_activity::init(aregister);
-		typedb_brief::init(aregister);
-		typedb_ranklist::init(aregister);
-		typedb_calendar::init(aregister);
+		tdb_account::init(aregister);
+		tdb_brief::init(aregister);
+		tdb_role::init(aregister);
+		tdb_bag::init(aregister);
+		tdb_task::init(aregister);
+		tdb_rolekv::init(aregister);
+		tdb_mail::init(aregister);
+		tdb_guild::init(aregister);
+		tdb_notice::init(aregister);
+		tdb_activity::init(aregister);
+		tdb_brief::init(aregister);
+		tdb_ranklist::init(aregister);
+		tdb_calendar::init(aregister);
 	}
 }
 

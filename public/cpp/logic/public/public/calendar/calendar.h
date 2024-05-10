@@ -11,7 +11,7 @@
 
 namespace ngl
 {
-	class calendar : public typedb_calendar::db_modular
+	class calendar : public tdb_calendar::db_modular
 	{
 	public:
 		calendar()

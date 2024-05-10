@@ -18,7 +18,7 @@ namespace ngl
 		, actor_ranklist
 	>;
 
-	class ranklist : public typedb_ranklist::db_modular
+	class ranklist : public tdb_ranklist::db_modular
 	{
 		template <typename T>
 		class operator_value

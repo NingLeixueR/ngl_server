@@ -167,19 +167,19 @@ bool start_db(int argc, char** argv)
 	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
 
 	ngl::init_nactor_type(false);
-	/*ngl::typedb_account::instance();
-	ngl::typedb_brief::instance();
-	ngl::typedb_role::instance();
-	ngl::typedb_bag::instance();
-	ngl::typedb_task::instance();
-	ngl::typedb_rolekv::instance();
-	ngl::typedb_mail::instance();
-	ngl::typedb_guild::instance();
-	ngl::typedb_notice::instance();
-	ngl::typedb_activity::instance();
-	ngl::typedb_brief::instance();
-	ngl::typedb_ranklist::instance();
-	ngl::typedb_calendar::instance();*/
+	/*ngl::tdb_account::instance();
+	ngl::tdb_brief::instance();
+	ngl::tdb_role::instance();
+	ngl::tdb_bag::instance();
+	ngl::tdb_task::instance();
+	ngl::tdb_rolekv::instance();
+	ngl::tdb_mail::instance();
+	ngl::tdb_guild::instance();
+	ngl::tdb_notice::instance();
+	ngl::tdb_activity::instance();
+	ngl::tdb_brief::instance();
+	ngl::tdb_ranklist::instance();
+	ngl::tdb_calendar::instance();*/
 	
 	ngl::actor_client::getInstance().actor_server_register();
 
