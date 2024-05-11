@@ -9,43 +9,49 @@ namespace ngl
 	{
 		struct pfun
 		{
-			protocol::fun_pack						m_packfun;
-			std::map<ENUM_ACTOR, protocol::fun_run> m_runfun;
+			protocol::fun_pack								m_packfun;
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;
 		};
 
 		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, pfun>> m_protocolfun;
 		static std::shared_mutex	m_mutex;
+
+		static pfun* find(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
+		{
+			lock_read(m_mutex);
+			auto itor1 = m_protocolfun.find(aprotocoltype);
+			if (itor1 == m_protocolfun.end())
+			{
+				char m_hexstr[1024] = { 0 };
+				LogLocalError("protocol::push [%] Error protocolnum[%] "
+					, aprotocoltype
+					, aprotocolnum
+				);
+				return nullptr;
+			}
+			auto itor2 = itor1->second.find(aprotocolnum);
+			if (itor2 == itor1->second.end())
+			{
+				LogLocalError("protocol::push Error protocolnum[%] "
+					, aprotocolnum
+				);
+				return nullptr;
+			}
+			////
+			//const char* lpprotocolname = protocoltools::name(aprotocolnum, aprotocoltype);
+			//LogLocalError("protocol::push Info [%]", lpprotocolname)
+			////
+			return &itor2->second;
+		}
 	public:
 		static void push(protocol::tpptr& apack)
 		{
-			i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
 			EPROTOCOL_TYPE lprotocoltype = apack->m_head.get_protocoltype();
-			pfun* lpfun = nullptr;
+			i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
+			pfun* lpfun = find(lprotocoltype, lprotocolnum);
+			if(lpfun == nullptr)
 			{
-				lock_read(m_mutex);
-				auto itor1 = m_protocolfun.find(lprotocoltype);
-				if (itor1 == m_protocolfun.end())
-				{
-					char m_hexstr[1024] = {0};
-					LogLocalError(
-						"protocol::push [%] Error protocolnum[%] "
-						, lprotocoltype
-						, lprotocolnum
-					);
-					return;
-				}
-				auto itor2 = itor1->second.find(lprotocolnum);
-				if (itor2 == itor1->second.end())
-				{
-					LogLocalError(
-						"protocol::push Error protocolnum[%] "
-						, lprotocolnum
-					);
-					return;
-				}
-				const char* lpprotocolname = protocoltools::name(lprotocolnum, lprotocoltype);
-				//LogLocalError("protocol::push Info [%]", lpprotocolname)
-				lpfun = &itor2->second;
+				return;
 			}
 			std::shared_ptr<void> lptrpram = lpfun->m_packfun(apack);
 			if (lptrpram == nullptr)
