@@ -115,7 +115,7 @@ namespace ngl
 					{
 						return ltemp;
 					}
-				}Catch
+				}Catch;
 				return nullptr;
 			};
 			fun_run lrunfun = [atype](tpptr& apack, tvptr& aptrpram)->bool
@@ -160,7 +160,7 @@ namespace ngl
 						if (structbytes<typeforward>::tostruct(apack, *lp))
 							return ltemp;
 					}
-				}Catch
+				}Catch;
 				return nullptr;
 			};
 			fun_run lrunfun = [atype](tpptr& apack, tvptr& aptrpram)->bool

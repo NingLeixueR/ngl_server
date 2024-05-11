@@ -75,10 +75,10 @@ namespace ngl
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
 		template <
-			EPROTOCOL_TYPE PROTYPE, 
-			pbdb::ENUM_DB DBTYPE,
-			typename TDBTAB, 
-			typename TACTOR
+			EPROTOCOL_TYPE PROTYPE
+			, pbdb::ENUM_DB DBTYPE
+			, typename TDBTAB
+			, typename TACTOR
 		>
 		bool handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
 #pragma endregion 

@@ -44,6 +44,7 @@ namespace ngl
 			return &itor2->second;
 		}
 	public:
+		// # 解析网络数据包[net pack],交付给上层逻辑 
 		static void push(protocol::tpptr& apack)
 		{
 			EPROTOCOL_TYPE lprotocoltype = apack->m_head.get_protocoltype();
@@ -77,21 +78,22 @@ namespace ngl
 			return;
 		}
 
+		// # 注册网络协议
 		static void register_protocol(
-			EPROTOCOL_TYPE atype
-			, int aprotocolnumber
-			, ENUM_ACTOR aenumactor
-			, const protocol::fun_pack& apackfun
-			, const protocol::fun_run& arunfun
-			, const char* aname
+			EPROTOCOL_TYPE atype					// 协议类型
+			, int aprotocolnumber					// 协议号
+			, ENUM_ACTOR aenumactor					// 处理此网络协议的actor类型
+			, const protocol::fun_pack& apackfun	// 解析数据包函数
+			, const protocol::fun_run& arunfun		// 交付给actor_manage的函数
+			, const char* aname						// 用于调试
 		)
 		{
 			protocoltools::push(aprotocolnumber, aname, atype);
 			{
 				lock_write(m_mutex);
-				pfun& lprotocol					= m_protocolfun[atype][aprotocolnumber];
-				lprotocol.m_packfun				= apackfun;
-				lprotocol.m_runfun[aenumactor]	= arunfun;
+				pfun& lprotocol = m_protocolfun[atype][aprotocolnumber];
+				lprotocol.m_packfun = apackfun;
+				lprotocol.m_runfun[aenumactor] = arunfun;
 			}
 		}
 	};
