@@ -153,7 +153,7 @@ namespace ngl
 			np_actordb_load<PROTYPE, DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-			LogLocalError("actor_dbclient loaddb [%] [%]", dtype_name(type_ndbclient), aid);
+			log()->error("actor_dbclient loaddb [{}] [{}]", dtype_name(type_ndbclient), aid);
 		}
 
 		nguid										m_id;
@@ -287,13 +287,13 @@ namespace ngl
 			}
 			if (pro.empty() == false)
 			{
-				LogLocalError("actor_dbclient<%> save %", m_name, aid);
+				log()->error("actor_dbclient<{}> save {}", m_name, aid);
 				// ### 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
-					LogLocalError("actor_dbclient<%> actor_base::net_pack fail", m_name);
+					log()->error("actor_dbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
 				// ### 异步发送pack
@@ -325,7 +325,7 @@ namespace ngl
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
-					LogLocalError("actor_dbclient<%> actor_base::net_pack fail", m_name);
+					log()->error("actor_dbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
 				// ### 异步发送pack
@@ -391,7 +391,7 @@ namespace ngl
 					return loadfinish();
 				}
 				using type_message = np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>;
-				LogLocalError("db load respones:[%] recv_over[%]", dtype_name(type_message), adata.m_data->m_over ? "true" : "false");
+				log()->error("db load respones:[%] recv_over[%]", dtype_name(type_message), adata.m_data->m_over ? "true" : "false");
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch;
 			return true;
@@ -447,7 +447,7 @@ namespace ngl
 		{
 			if (m_typedbclientmap.empty())
 			{
-				LogLocalError("on_load_finish m_typedbclientmap.empty()");
+				log()->error("on_load_finish m_typedbclientmap.empty()");
 				return false;
 			}
 				
@@ -464,7 +464,7 @@ namespace ngl
 			}
 			if (!m_typedbclientmap.empty())
 			{
-				LogLocalError("on_load_finish !m_typedbclientmap.empty()");
+				log()->error("on_load_finish !m_typedbclientmap.empty()");
 				return false;
 			}
 				

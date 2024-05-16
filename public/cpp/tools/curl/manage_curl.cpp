@@ -1,5 +1,7 @@
 #include "manage_curl.h"
+#include "nprotocol.h"
 #include "ijson.h"
+#include "nlog.h"
 #include "md5.h"
 
 #include <boost/lexical_cast.hpp>
@@ -51,9 +53,9 @@ namespace ngl
 			}
 		}
 
-		void log(int aerror, std::string& arecv)
+		void plog(int aerror, std::string& arecv)
 		{
-			LogLocalInfo("error[%]url[%]param[%]mode[%]type[%]data[%]",
+			ngl::log()->info("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]",
 				aerror, m_url, m_param,
 				(m_mode == ENUM_MODE_HTTP ? "http" : "https"),
 				(m_type == ENUM_TYPE_POST ? "post" : "get"),
@@ -76,7 +78,7 @@ namespace ngl
 
 	void _http::log(int aerror)
 	{
-		m_impl_http()->log(aerror, m_recvdata);
+		m_impl_http()->plog(aerror, m_recvdata);
 	}
 
 	struct manage_curl::impl_manage_curl
@@ -294,7 +296,7 @@ namespace ngl
 
 		ngl::manage_curl::set_callback(*lhttp, [&lbool](int anum, ngl::_http& aparm)
 			{
-				LogLocalError("curl callback [%]", aparm.m_recvdata);
+				log()->error("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;
 			});
 		ngl::manage_curl::getInstance().send(lhttp);

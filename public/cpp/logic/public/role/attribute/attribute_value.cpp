@@ -51,8 +51,8 @@ namespace ngl
 
 	void attribute_value::printf()
 	{
-		LogStreamError(lstream);
-		lstream << "##############" << std::endl;
+		auto lstream = log();
+		(*lstream) << "##############" << std::endl;
 		std::map<EnumAttribute, std::string> lmapname
 		{
 			{E_Null, "нч"},
@@ -64,11 +64,11 @@ namespace ngl
 		};
 		for (auto&& [key, values] : m_fight)
 		{
-			lstream << "[" << lmapname[key] << "]:[" << values << "]" << std::endl;
+			(*lstream) << "[" << lmapname[key] << "]:[" << values << "]" << std::endl;
 		}
-		lstream << "fight:" << m_fightscore << std::endl;
-		lstream << "##############" << std::endl;
-		lstream.print();
+		(*lstream) << "fight:" << m_fightscore << std::endl;
+		(*lstream) << "##############" << std::endl;
+		(*lstream).error("");
 	}
 
 	void attribute_value::clear()

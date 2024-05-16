@@ -42,7 +42,7 @@ namespace ngl
 		timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 5) == false)
 		{
-			LogLocalError("actor_manage_activity::init() make_timerparm::make_interval(tparm, 5) == false!!!");
+			log()->error("actor_manage_activity::init() make_timerparm::make_interval(tparm, 5) == false!!!");
 			return;
 		}
 		set_timer(tparm);

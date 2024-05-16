@@ -417,7 +417,7 @@ namespace ngl
 
 					apstruct->m_actorid = lactorid;
 
-					LogLocalError("kcp connect : %@%", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
+					log()->error("kcp connect : {}@{}", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
 					
 					if (ap->function_econnect(apstruct, lactorid, true))
 						udp_cmd::sendcmd(ap->m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
@@ -511,7 +511,7 @@ namespace ngl
 			}
 			else
 			{
-				LogLocalError("time[% < % + % ]"
+				log()->error("time[{} < {} + {} ]"
 					, localtime::gettime()
 					, lpack->m_head.getvalue(EPH_TIME)
 					, sysconfig::net_timeout()
@@ -560,7 +560,7 @@ namespace ngl
 										// 首先判断下是否kcp_cmd
 										if (udp_cmd::cmd(this, lpstruct, m_buffrecv, lrecv))
 										{
-											LogLocalError("kcp cmd [%]", std::string(m_buffrecv, lrecv));
+											log()->error("kcp cmd [{}]", std::string(m_buffrecv, lrecv));
 											break;
 										}
 
@@ -611,7 +611,7 @@ namespace ngl
 				{
 					if (ec)
 					{
-						LogLocalError("sendu err [%]", ec.what());
+						log()->error("sendu err [{}]", ec.what());
 					}
 				});
 			return true;
@@ -625,7 +625,7 @@ namespace ngl
 				{
 					if (ec)
 					{
-						LogLocalError("async_send_to err [%]", ec.what());
+						log()->error("async_send_to err [{}]", ec.what());
 						wheel_parm lparm
 						{
 							.m_ms = 1000,
@@ -688,7 +688,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), lpstruct->m_endpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
+						log()->error("impl_asio_kcp::sendbuff error [{}]", ec.what());
 				});
 			return 0;
 		}
@@ -698,7 +698,7 @@ namespace ngl
 			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						LogLocalError("impl_asio_kcp::sendbuff error [%]", ec.what());
+						log()->error("impl_asio_kcp::sendbuff error [{}]", ec.what());
 				});
 			return 0;
 		}
@@ -767,7 +767,7 @@ namespace ngl
 		int lsize = snprintf(lbuff, 1024, "ecmd*%d*%s", (int)acmd, ajson.c_str());
 		if (lsize <= 0)
 		{
-			LogLocalError("udp_cmd::sendcmd fail [%][%]", (int)acmd, ajson);
+			log()->error("udp_cmd::sendcmd fail [{}][{}]", (int)acmd, ajson);
 			return false;
 		}
 		akcp->get_impl()->send(asession, lbuff, lsize);

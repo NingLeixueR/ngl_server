@@ -64,7 +64,7 @@ namespace ngl
 				int lbufflen = 0;
 				if (hexbytes::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
 				{
-					LogLocalError("db_manage::unserialize(%, %)", dtype_name(T), abuff);
+					log()->error("db_manage::unserialize({}, {})", dtype_name(T), abuff);
 					return false;
 				}
 					
@@ -116,7 +116,7 @@ namespace ngl
 				T ldata;
 				if (dbdata<T>::get(aid, ldata) == false)
 				{
-					LogLocalError("save by id[%] !!![%]", aid, T::name());
+					log()->error("save by id[{}] !!![{}]", aid, T::name());
 					return;
 				}
 				fun(adb, ldata);
@@ -169,7 +169,7 @@ namespace ngl
 				T ldata;
 				if (dbdata<T>::get(aid, ldata) == false)
 				{
-					LogLocalError("save by id[%] !!![%]", aid, protobuf_tabname<T>::tabname());
+					log()->error("save by id[{}] !!![{}]", aid, protobuf_tabname<T>::tabname());
 					return;
 				}
 				fun(adb, ldata);

@@ -105,6 +105,16 @@ namespace ngl
 			return (TACTOR*)m_actor; 
 		}
 
+		std::shared_ptr<np_actor_logitem> log(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->lognet(asource);
+		}
+
 		void create()
 		{
 			m_id = m_actor->id_guid();

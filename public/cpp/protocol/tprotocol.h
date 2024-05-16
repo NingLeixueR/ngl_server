@@ -51,7 +51,7 @@ namespace ngl
 				size_t lcode = hash_code<T>();
 				if (m_keyval.find(lcode) != m_keyval.end())
 				{
-					LogLocalError("init_customs(%) is same!!!", typeid(T).name());
+					log()->error("init_customs({}) is same!!!", typeid(T).name());
 					return;
 				}
 				m_keyval.insert(std::make_pair(lcode, pinfo
@@ -60,7 +60,7 @@ namespace ngl
 						.m_protocol = ++lcustoms,
 						.m_name = dtype_name(T)
 					}));
-				LogLocalInfo("#[%][EPROTOCOL_TYPE_CUSTOM][%]", lcustoms, typeid(T).name())
+				log()->info("#[{}][EPROTOCOL_TYPE_CUSTOM][{}]", lcustoms, typeid(T).name());
 			}
 		};
 		using type_customs = template_arg<customs, EPROTOCOL_TYPE>;
@@ -72,7 +72,7 @@ namespace ngl
 			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
-				LogLocalError("init_protobuf::init_protobufs(%) not xml!!!", lname);
+				log()->error("init_protobuf::init_protobufs({}) not xml!!!", lname);
 				return false;
 			}
 			m_keyval.insert(std::make_pair(HASH_CODE_VALUE(T), pinfo
@@ -81,7 +81,7 @@ namespace ngl
 					.m_protocol = lprotocol,
 					.m_name = lname
 				}));
-			LogLocalInfo("#[%][EPROTOCOL_TYPE_PROTOCOLBUFF][%]", lprotocol, lname)
+			//log()->error("#[{}][EPROTOCOL_TYPE_PROTOCOLBUFF][{}]", lprotocol, lname);
 			return true;
 		}
 
@@ -93,7 +93,7 @@ namespace ngl
 			auto itor = m_keyval.find(lcode);
 			if (itor == m_keyval.end())
 			{
-				std::cout << dtype_name(TRC) << std::endl;
+				//std::cout << dtype_name(TRC) << std::endl;
 				if (init_protobufs<TRC>() == false)
 					throw "init_protobufs<TRC>() == false";
 				itor = m_keyval.find(lcode);

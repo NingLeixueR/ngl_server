@@ -31,7 +31,7 @@ namespace ngl
 			timerparm tparm;
 			if (make_timerparm::make_interval(tparm, 1) == false)
 			{
-				LogLocalError("actor_plays::init() make_timerparm::make_interval(tparm, 1) == false!!!");
+				log()->error("actor_plays::init() make_timerparm::make_interval(tparm, 1) == false!!!");
 				return;
 			}
 			set_timer(tparm);
@@ -129,7 +129,7 @@ namespace ngl
 				return true;
 			if (m_tab->m_birthpoint.empty())
 			{
-				LogLocalError("actor_plays::handle(pbnet::PROBUFF_NET_ENTER_PLAYS) m_birthpoint.empty()");
+				log()->error("actor_plays::handle(pbnet::PROBUFF_NET_ENTER_PLAYS) m_birthpoint.empty()");
 				return true;
 			}
 			int lindex = std::rand() % m_tab->m_birthpoint.size();

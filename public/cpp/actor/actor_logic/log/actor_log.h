@@ -27,7 +27,7 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid(ELOG_TYPE atype);
+		static i64_actorid actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype);
 
 		virtual ~actor_log();
 

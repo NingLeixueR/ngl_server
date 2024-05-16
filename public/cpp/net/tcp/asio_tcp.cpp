@@ -1,4 +1,5 @@
 #include "asio_timer.h"
+#include "nprotocol.h"
 #include "asio_tcp.h"
 #include "nlog.h"
 #include "pack.h"
@@ -65,7 +66,7 @@ namespace ngl
 			, int acount
 		)
 		{
-			LogLocalError("connect ip[%] port[%]", aip, aport);
+			log()->error("connect ip[{}] port[{}]", aip, aport);
 			service_tcp* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
@@ -81,7 +82,7 @@ namespace ngl
 					{
 						if (acount > 0)
 						{
-							LogLocalError("连接[%:%]失败[%] 加入定时队列 ", aip, aport, ec.message());
+							log()->error("连接[{}:{}]失败[{}] 加入定时队列 ", aip, aport, ec.message());
 							// 加入定时队列
 							wheel_parm lparm
 							{
@@ -245,7 +246,7 @@ namespace ngl
 		{
 			if (error)
 			{
-				LogLocalError("asio_tcp::handle_write[%]", error.message().c_str());
+				log()->error("asio_tcp::handle_write[{}]", error.message().c_str());
 				close(ap);
 			}
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
@@ -255,7 +256,7 @@ namespace ngl
 		{
 			if (error)
 			{
-				LogLocalError("asio_tcp::handle_write[%]", error.message().c_str());
+				log()->error("asio_tcp::handle_write[{}]", error.message().c_str());
 				close(ap);
 			}
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, (pack*)apack.get());
@@ -278,7 +279,7 @@ namespace ngl
 					lpservice = itor->second;
 					m_data.erase(itor);
 				}
-				LogLocalError("close sessionid[%]", sessionid);
+				log()->error("close sessionid[{}]", sessionid);
 
 				auto lclosefunitor = m_sessionclose.find(sessionid);
 				if (lclosefunitor != m_sessionclose.end())
@@ -303,7 +304,7 @@ namespace ngl
 
 		inline void close(service_tcp* ap)
 		{
-			LogLocalError("asio_tcp::close[%]", ap->m_sessionid);
+			log()->error("asio_tcp::close[{}]", ap->m_sessionid);
 			close(ap->m_sessionid);
 		}
 
@@ -361,7 +362,7 @@ namespace ngl
 					if (error)
 					{
 						close(lservice);
-						LogLocalError("asio_tcp::handle_accept[%]", error.message().c_str());
+						log()->error("asio_tcp::handle_accept[{}]", error.message().c_str());
 					}
 					else
 					{
@@ -400,7 +401,7 @@ namespace ngl
 					{
 						//关闭连接
 						close(aservice);
-						LogLocalError("asio_tcp::handle_read[%]", error.message().c_str());
+						log()->error("asio_tcp::handle_read[{}]", error.message().c_str());
 					}
 				}
 			);

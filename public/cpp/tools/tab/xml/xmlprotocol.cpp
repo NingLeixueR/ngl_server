@@ -21,7 +21,7 @@ namespace ngl
 				{
 					xmlprotocol::m_protocol[lname] = lnumber;
 				}
-				ltemp.log();
+				ltemp.plog();
 			};
 		boost_ptree lchild = xml::get_child(lroot, "con");
 		xml::_foreach(lchild, "config", lfun);

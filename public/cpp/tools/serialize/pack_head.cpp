@@ -204,19 +204,17 @@ namespace ngl
 		apair.second = abufflen - size();
 	}
 
-	bool pack_head::_log(logserialize& atstr, int anumber/* = EPH_BYTES*/)const
+	void pack_head::_log(np_actor_logitem& astream, int anumber/* = EPH_BYTES*/)const
 	{
-		if (atstr(m_data[anumber]))
-			return false;
-		if (atstr("#"))
-			return false;
+		astream << m_data[anumber] << "#";
 		if (EPH_SUM != anumber)
-			return _log(atstr, anumber + 1);
-		return true;
+			return _log(astream, anumber + 1);
 	}
 
-	bool pack_head::log(logserialize& atstr)const
+	void pack_head::log(np_actor_logitem& astream)const
 	{
-		return atstr("HEAD[") && _log(atstr) && atstr("]");
+		astream << "HEAD[";
+		_log(astream);
+		astream << "]";
 	}
 }// namespace ngl

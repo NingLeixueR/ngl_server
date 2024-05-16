@@ -5,109 +5,25 @@
 #include "logprintf.h"
 #include "sysconfig.h"
 
+#include <format>
 #include <sstream>
 #include <string>
+#include <vector>
+#include <map>
+
 
 namespace ngl
 {
 	class elog_name
 	{
 	public:
-		static const char* get(ELOG atype);
+		static const char* get(ELOGLEVEL atype);
 	};
+	struct np_actor_logitem;
+	extern std::shared_ptr<np_actor_logitem> log(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource = std::source_location::current());
 
-	class nlog
-	{
-		nlog();
-		bool m_isinitfinish = false;
-	public:
-		static nlog& getInstance()
-		{
-			static nlog ltemp;
-			return ltemp;
-		}
-
-		bool& isinitfinish();
-
-		void plog(ELOG atype, ngl::logformat& llogformat, ELOG_TYPE altype);
-	};
 }
-
-#define LogFomat(llogformat, NAME, FORMAT,...)  llogformat.out(NAME, FORMAT,##__VA_ARGS__)	
-
-#ifdef WIN32
-# define FindSrcPos(STR) STR.rfind("\\")
-#else
-# define FindSrcPos(STR) STR.rfind("/")
-#endif
-
-#define LogSrcPos														\
-	constexpr std::string_view str = __FILE__;							\
-	constexpr auto pos = FindSrcPos(str);								\
-	if constexpr (pos != std::string_view::npos)						\
-	{																	\
-		constexpr std::string_view str2 = str.substr(pos + 1);			\
-		llogformat.format("pos", "(%:%)",str2.data(), __LINE__);		\
-	}
-
-#if defined(WIN32)||defined(WINCE)||defined(WIN64)
-# define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)											\
-	{																					\
-		if(ngl::sysconfig::loglevel() <= ELOG_LEVEL)									\
-		{																				\
-			ngl::logformat llogformat;													\
-			LogSrcPos																	\
-			llogformat.data("head") = ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S");	\
-			llogformat.format("src", FORMAT,##__VA_ARGS__);								\
-			ngl::nlog::getInstance().plog(ELOG_LEVEL, llogformat, TYPE);				\
-		}																				\
-	}
-# define LogDebug(FORMAT,...)			dlogmsg(ngl::ELOG_DEBUG, ngl::ELOG_NETWORK,	FORMAT,##__VA_ARGS__)
-# define LogError(FORMAT,...)			dlogmsg(ngl::ELOG_ERROR, ngl::ELOG_NETWORK,	FORMAT,##__VA_ARGS__)
-# define LogInfo(FORMAT,...)			dlogmsg(ngl::ELOG_INFO,	 ngl::ELOG_NETWORK,	FORMAT, ##__VA_ARGS__)
-# define LogWarn(FORMAT,...)			dlogmsg(ngl::ELOG_WARN,  ngl::ELOG_NETWORK,	FORMAT,##__VA_ARGS__)
-#define LogLocalDebug(FORMAT,...)		dlogmsg(ngl::ELOG_DEBUG, ngl::ELOG_LOCAL, FORMAT,##__VA_ARGS__)
-#define LogLocalError(FORMAT,...)		dlogmsg(ngl::ELOG_ERROR, ngl::ELOG_LOCAL, FORMAT,##__VA_ARGS__)
-#define LogLocalInfo(FORMAT,...)		dlogmsg(ngl::ELOG_INFO,  ngl::ELOG_LOCAL,	FORMAT,##__VA_ARGS__)
-#define LogLocalWarn(FORMAT,...)		dlogmsg(ngl::ELOG_WARN,  ngl::ELOG_LOCAL, FORMAT,##__VA_ARGS__)
-#define LogBI(FORMAT,...)				dlogmsg(ngl::ELOG_ERROR,  ngl::ELOG_BI, FORMAT,##__VA_ARGS__)
-#else
-# define dlogmsg(ELOG_LEVEL, TYPE, FORMAT,...)											\
-	{																					\
-		if(ngl::sysconfig::loglevel() <= ELOG_LEVEL)									\
-		{																				\
-			ngl::logformat llogformat;													\
-			LogSrcPos																	\
-			llogformat.data("head") = ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S");	\
-			llogformat.format("src", FORMAT __VA_OPT__(,) ##__VA_ARGS__);				\
-			ngl::nlog::getInstance().plog(ELOG_LEVEL, llogformat, TYPE);				\
-		}																				\
-	}
-# define LogDebug(FORMAT,...)			dlogmsg(ngl::ELOG_DEBUG, ngl::ELOG_NETWORK, FORMAT __VA_OPT__(,) ##__VA_ARGS__)
-# define LogError(FORMAT,...)			dlogmsg(ngl::ELOG_ERROR, ngl::ELOG_NETWORK, FORMAT __VA_OPT__(,) ##__VA_ARGS__)
-# define LogInfo(FORMAT,...)			dlogmsg(ngl::ELOG_INFO, ngl::ELOG_NETWORK,FORMAT __VA_OPT__(,)  ##__VA_ARGS__)
-# define LogWarn(FORMAT,...)			dlogmsg(ngl::ELOG_WARN, ngl::ELOG_NETWORK, FORMAT __VA_OPT__(,) ##__VA_ARGS__)
-#define LogLocalDebug(FORMAT,...)		dlogmsg(ngl::ELOG_DEBUG, ngl::ELOG_LOCAL, FORMAT __VA_OPT__(,) ##__VA_ARGS__)
-#define LogLocalError(FORMAT,...)		dlogmsg(ngl::ELOG_ERROR, ngl::ELOG_LOCAL, FORMAT  __VA_OPT__(,) ##__VA_ARGS__)
-#define LogLocalInfo(FORMAT,...)		dlogmsg(ngl::ELOG_INFO, ngl::ELOG_LOCAL,FORMAT __VA_OPT__(,) ##__VA_ARGS__)
-#define LogLocalWarn(FORMAT,...)		dlogmsg(ngl::ELOG_WARN, ngl::ELOG_LOCAL, FORMAT  __VA_OPT__(,) ##__VA_ARGS__)
-#define LogBI(FORMAT,...)				dlogmsg(ngl::ELOG_WARN, ngl::ELOG_BI, FORMAT  __VA_OPT__(,) ##__VA_ARGS__)
-#endif
-
-#define Try				try
-#define Catch																					\
-	catch(const char* errormsg)																	\
-	{																							\
-		LogLocalError("function[%][%]",__FUNCTION__,errormsg)									\
-	}																							\
-	catch(const std::exception& e)																\
-	{																							\
-		LogLocalError("function[%][%]",__FUNCTION__,e.what())									\
-	}																							\
-	catch(...)																					\
-	{																							\
-		LogLocalError("function[%]",__FUNCTION__)												\
-	}
 
 #define Assert(ISOK)	\
 		if(ISOK)		\
@@ -118,66 +34,83 @@ namespace ngl
 			throw #ISOK;\
 		}
 
-#define AssertFormat(ISOK,FORMAT,...)		\
-		if(ISOK)							\
-		{									\
-		}									\
-		else								\
-		{									\
-			ngl::logformat::out([](char* abuff) {throw abuff; }, #ISOK":"##FORMAT, ##__VA_ARGS__); \
-		}
+#define Try				try
+#define Catch																					\
+	catch(const char* errormsg)																	\
+	{																							\
+		ngl::log()->error("function[{}][{}]", __FUNCTION__, errormsg);							\
+	}																							\
+	catch(const std::exception& e)																\
+	{																							\
+		ngl::log()->error("function[{}][{}]", __FUNCTION__, e.what());							\
+	}																							\
+	catch(...)																					\
+	{																							\
+		ngl::log()->error("function[{}]", __FUNCTION__);										\
+	}
 
 
-namespace ngl
+
+
+template <typename T>
+struct std::formatter<std::vector<T>>
 {
-	class logstream
+	auto parse(std::format_parse_context& ctx)
 	{
-		std::stringstream m_stream;
-		ELOG m_log;
-		ELOG_TYPE m_type;
-	public:
-		logstream(ELOG alog, ELOG_TYPE atype):
-			m_log(alog),
-			m_type(atype)
-		{}
+		return ctx.begin();
+	}
 
-		template <typename T>
-		logstream& operator<<(const T& adata)
+	auto format(const std::vector<T>& vec, std::format_context& ctx)
+	{
+		auto out = ctx.out();
+		std::format_to(out, "[");
+		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
-			m_stream << adata;
-			return *this;
+			std::format_to(out, "{},", *it);
 		}
+		format_to(out, "]");
+		return out;
+	}
+};
 
-		// 重载 << 操作符以输出 std::endl
-		logstream& operator<<(std::ostream& (*manipulator)(std::ostream&)) 
+template <typename T>
+struct std::formatter<std::list<T>>
+{
+	auto parse(std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const std::vector<T>& vec, std::format_context& ctx)
+	{
+		auto out = ctx.out();
+		std::format_to(out, "[");
+		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
-			m_stream << manipulator;
-			return *this;
+			std::format_to(out, "{},", *it);
 		}
+		format_to(out, "]");
+		return out;
+	}
+};
 
-		void print(const std::source_location& asource = std::source_location::current())
+template <typename TKEY, typename TVAL>
+struct std::formatter<std::map<TKEY, TVAL>>
+{
+	auto parse(std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const std::map<TKEY, TVAL>& vec, std::format_context& ctx)
+	{
+		auto out = ctx.out();
+		std::format_to(out, "[");
+		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
-			ngl::logformat llogformat;
-			std::string_view str = asource.file_name();
-			auto pos = FindSrcPos(str);
-			if(pos != std::string_view::npos)
-			{
-				std::string_view str2 = str.substr(pos + 1);
-				llogformat.format("pos", "(%:%)", str2.data(), asource.line());
-			}			
-			llogformat.data("head") = ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S");
-			llogformat.format("src", "%", m_stream.str().c_str());
-			ngl::nlog::getInstance().plog(m_log, llogformat, m_type);
+			std::format_to(out, "({}:{}),", it->first, it->second);
 		}
-	};
-}//namespace ngl
-
-# define LogStreamDebug(STREAM)			ngl::logstream STREAM(ngl::ELOG_DEBUG, ngl::ELOG_NETWORK)
-# define LogStreamError(STREAM)			ngl::logstream STREAM(ngl::ELOG_ERROR, ngl::ELOG_NETWORK)
-# define LogStreamInfo(STREAM)			ngl::logstream STREAM(ngl::ELOG_INFO, ngl::ELOG_NETWORK)
-# define LogStreamWarn(STREAM)			ngl::logstream STREAM(ngl::ELOG_WARN, ngl::ELOG_NETWORK)
-
-# define LogLocalStreamDebug(STREAM)	ngl::logstream STREAM(ngl::ELOG_DEBUG, ngl::ELOG_LOCAL)
-# define LogLocalStreamError(STREAM)	ngl::logstream STREAM(ngl::ELOG_ERROR, ngl::ELOG_LOCAL)
-# define LogLocalStreamInfo(STREAM)		ngl::logstream STREAM(ngl::ELOG_INFO, ngl::ELOG_LOCAL)
-# define LogLocalStreamWarn(STREAM)		ngl::logstream STREAM(ngl::ELOG_WARN, ngl::ELOG_LOCAL)
+		format_to(out, "]");
+		return out;
+	}
+};

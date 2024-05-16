@@ -1,5 +1,6 @@
 #include "server_session.h"
 #include "ttab_servers.h"
+#include "nprotocol.h"
 #include "nlog.h"
 
 namespace ngl
@@ -10,7 +11,7 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		LogLocalWarn("connect [%:%] [%]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
+		log()->warn("connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
 		lock_write(m_mutex);
 		
 		{

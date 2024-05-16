@@ -7,7 +7,6 @@
 #include "ntimer.h"
 #include "nguid.h"
 #include "type.h"
-#include "nlog.h"
 #include "impl.h"
 #include "ukcp.h"
 
@@ -226,7 +225,7 @@ public:
 private:
 		template <typename T>
 		static void actor_forward_init(
-			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
+			tactor_forward<T>& apro
 			, i64_actorid aid
 			)
 		{
@@ -237,7 +236,7 @@ private:
 
 		template <typename T>
 		static void actor_forward_setdata(
-			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& apro
+			tactor_forward<T>& apro
 			, std::shared_ptr<T>& adata
 		)
 		{
@@ -291,7 +290,6 @@ private:
 			auto pro = std::make_shared<tactor_forward<T>>();
 			actor_forward_init(*pro, aid);
 			actor_forward_setdata(*pro, adata);
-			//nguid lguid(aid);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 
@@ -347,19 +345,27 @@ private:
 			client_pro(asetid.begin(), asetid.end(), adata);
 		}
 
+	private:
+		static std::vector<i32_serverid> m_gatewayids;
+	public:
+		static void init_gatewayser()
+		{
+			m_gatewayids.clear();
+			if (ttab_servers::get_server(GATEWAY, ttab_servers::tab()->m_area, m_gatewayids) == false)
+			{
+				return;
+			}
+		}
+
 		//# 向所有客户端发送消息
 		template <typename T>
 		static void send_allclient(std::shared_ptr<T>& adata)
 		{
-			static std::vector<i32_serverid> lvecserver;
-			if (lvecserver.empty())
+			if (m_gatewayids.empty())
 			{
-				if (ttab_servers::get_server(GATEWAY, ttab_servers::tab()->m_area, lvecserver) == false)
-				{
-					return;
-				}
-			}			
-			send_client(lvecserver, nguid::make(), adata);
+				return;
+			}
+			send_client(m_gatewayids, nguid::make(), adata);
 		}
 
 		//# 往指定区服所有客户端发送消息
@@ -502,6 +508,17 @@ private:
 		//# 启动广播定时器
 		static void start_broadcast();
 #pragma endregion 
+
+		//# 日志相关
+		std::shared_ptr<np_actor_logitem> log(const std::source_location& asource = std::source_location::current())
+		{
+			return std::make_shared<np_actor_logitem>(type(), ELOG_LOCAL, asource);;
+		}
+
+		std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource = std::source_location::current())
+		{
+			return std::make_shared<np_actor_logitem>(type(), ELOG_NETWORK, asource);;
+		}
 
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用

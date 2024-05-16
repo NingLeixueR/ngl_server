@@ -20,7 +20,7 @@ namespace ngl
 {
 	time_wheel m_logwheel;
 
-	void logprintf::printf(ELOG acolor, const char* apos, const char* atimestr, const char* amsg)
+	void logprintf::printf(ELOGLEVEL acolor, const char* apos, const char* atimestr, const char* amsg)
 	{
 		switch (acolor)
 		{
@@ -157,7 +157,7 @@ namespace ngl
 	{
 		logfile_default(bool aisactor, const config& aconfig);
 		virtual void printf(const logitem* alog);
-		virtual void local_printf(ELOG atype, ngl::logformat& llogformat);
+		virtual void local_printf(ELOGLEVEL atype, ngl::logformat& llogformat);
 	};
 
 	logfile_default::logfile_default(bool aisactor, const config& aconfig) :
@@ -168,9 +168,8 @@ namespace ngl
 	{
 		tab_servers* tab = ttab_servers::tab(alog->m_serverid);
 		m_stream << "[" << tab->m_name << ":" << alog->m_serverid << "]";
-		m_stream << "[" << alog->m_pos << "]";
-		m_stream << "[" << alog->m_head << "]\t";
-		m_stream << alog->m_str << std::endl;
+		m_stream << "[" << alog->m_src << "]";
+		m_stream << alog->m_data << std::endl;
 		++m_count;
 		if (check_count())
 		{
@@ -179,7 +178,7 @@ namespace ngl
 		}
 	}
 
-	void logfile_default::local_printf(ELOG atype, ngl::logformat& llogformat)
+	void logfile_default::local_printf(ELOGLEVEL atype, ngl::logformat& llogformat)
 	{
 		m_stream 
 			<< "[serid:" << nconfig::m_nodeid << "]"
@@ -208,7 +207,7 @@ namespace ngl
 
 	void logfile_bi::printf(const logitem* alog)
 	{
-		m_stream << alog->m_str << std::endl;
+		m_stream << alog->m_data << std::endl;
 	}
 
 	std::shared_ptr<logfile> logfile::create_make(bool aisactor, const config& aconfig)

@@ -88,7 +88,7 @@ namespace ngl
 
 
 		ngl::manage_curl::set_param(*lhttp, lstream.str());
-		ngl::manage_curl::set_callback(*lhttp, [](int, _http& ahttp)
+		ngl::manage_curl::set_callback(*lhttp, [this](int, _http& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 					return;
@@ -97,7 +97,7 @@ namespace ngl
 					ojson ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
-						LogLocalError("ngl::manage_curl::callback fail [%]", ahttp.m_recvdata);
+						log()->error("ngl::manage_curl::callback fail [{}]", ahttp.m_recvdata);
 						return;
 					}
 					std::string lorderid;
@@ -130,7 +130,7 @@ namespace ngl
 
 	void actor_role::loaddb_finish(bool adbishave)
 	{
-		LogLocalError("actor_role###loaddb_finish#[%]", nguid(id_guid()));
+		log()->error("actor_role###loaddb_finish#[{}]", nguid(id_guid()));
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
@@ -161,7 +161,7 @@ namespace ngl
 		*pro->mutable_m_bag() = m_bag.get()->getconst();
 		*pro->mutable_m_task() = m_task.get()->getconst();
 		send2client(pro);
-		LogLocalError("[sync]###[%]", m_info.get()->getconst().m_base().m_name());
+		log()->error("[sync]###[{}]", m_info.get()->getconst().m_base().m_name());
 	}
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
@@ -344,7 +344,7 @@ namespace ngl
 
 		if (handle_rechangecmd::function(loperator, adata.m_data->identifier(), lojson) == false)
 		{
-			LogLocalError("GM actor_role rechange operator[%] ERROR", loperator);
+			log()->error("GM actor_role rechange operator[{}] ERROR", loperator);
 		}
 		return true;
 	}

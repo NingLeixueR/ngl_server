@@ -1,5 +1,6 @@
 #include "protocoltools.h"
 #include "enum2name.h"
+#include "nprotocol.h"
 #include "nlog.h"
 
 namespace ngl
@@ -14,12 +15,12 @@ namespace ngl
 		char lbuff[1024] = { 0x0 };
 		if (names(lbuff, 1024, aprotocolname.c_str(), aprotocolnum, atype))
 		{
-			LogLocalError("protocol_push [%] ", lbuff);
+			//log()->error("protocol_push [{}] ", lbuff);
 			em<eprotocol>::set((eprotocol)aprotocolnum, lbuff, atype);
 		}
 		else
 		{
-			LogLocalError("protocol_push fail [%] ", lbuff);
+			log()->error("protocol_push fail [{}] ", lbuff);
 		}
 	}
 

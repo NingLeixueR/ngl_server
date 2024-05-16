@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include "template_arg.h"
 #include "nactor_type.h"
@@ -6,14 +6,15 @@
 #include "actor_base.h"
 #include "nrfun.h"
 #include "impl.h"
+#include "nlog.h"
 
 namespace ngl
 {
 	struct actorparm
 	{
 		actorparmbase	m_parm;
-		int				m_weight	= 10;			// æƒé‡:å•æ¬¡è·å–çº¿ç¨‹åå¤„ç†æ¶ˆæ¯çš„æ•°é‡		
-		bool			m_broadcast	= false;		// æ˜¯å¦æ”¯æŒå¹¿æ’­
+		int				m_weight	= 10;			// È¨ÖØ:µ¥´Î»ñÈ¡Ïß³Ìºó´¦ÀíÏûÏ¢µÄÊıÁ¿		
+		bool			m_broadcast	= false;		// ÊÇ·ñÖ§³Ö¹ã²¥
 	};
 
 	template <typename T>
@@ -28,7 +29,7 @@ namespace ngl
 		std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
 	public:
 
-#pragma region register // æ¶ˆæ¯æ³¨å†Œæ¥å£
+#pragma region register // ÏûÏ¢×¢²á½Ó¿Ú
 		template <typename TDerived, EPROTOCOL_TYPE TYPE>
 		static nrfun<TDerived, TYPE>& ninst()
 		{
@@ -51,7 +52,7 @@ namespace ngl
 			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(true, (Tfun<actor, np_actor_close>) & actor::handle);
 		}
 
-		//# æ³¨å†Œå®šæ—¶å™¨
+		//# ×¢²á¶¨Ê±Æ÷
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
 		{
@@ -61,7 +62,7 @@ namespace ngl
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		class db_pair{};
 
-		//# æ³¨å†ŒdbåŠ è½½
+		//# ×¢²ádb¼ÓÔØ
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
@@ -76,7 +77,7 @@ namespace ngl
 			register_db<TYPE, TDerived>(arg...);
 		}
 
-		//# ç”¨æ¥æ³¨å†ŒåŒ¿åå‡½æ•°æŒ‚è½½åœ¨å¯¹åº”actorä¸Š
+		//# ÓÃÀ´×¢²áÄäÃûº¯Êı¹ÒÔØÔÚ¶ÔÓ¦actorÉÏ
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
 		{
@@ -85,12 +86,12 @@ namespace ngl
 
 #pragma region register_actor
 
-		//# ç®€åŒ–[handle]æ–¹æ³•æ³¨å†Œ
+		//# ¼ò»¯[handle]·½·¨×¢²á
 		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
 		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
 		//////////////////////////////////////////////////////////////////////
-		//################ æ³¨å†Œactoræˆå‘˜å‡½æ•°(å¯ä»¥æ˜¯éhandle) #################
+		//################ ×¢²áactor³ÉÔ±º¯Êı(¿ÉÒÔÊÇ·Çhandle) #################
 		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
 		static void register_actor(bool aisload, T afun)
 		{
@@ -104,7 +105,7 @@ namespace ngl
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
 
-		//################ æ³¨å†Œactoræˆå‘˜handleå‡½æ•° #################
+		//################ ×¢²áactor³ÉÔ±handleº¯Êı #################
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_actor_handle
 		{
@@ -122,7 +123,7 @@ namespace ngl
 #pragma endregion 
 
 #pragma region register_actornonet
-		//# ä¸register_actorç±»ä¼¼ åªä¸è¿‡ä¸æ³¨å†Œç½‘ç»œå±‚
+		//# Óëregister_actorÀàËÆ Ö»²»¹ı²»×¢²áÍøÂç²ã
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, T afun)
 		{
@@ -132,7 +133,7 @@ namespace ngl
 	private:
 		friend class nforward;
 
-		//# æ³¨å†Œ [forward:è½¬å‘åè®®]
+		//# ×¢²á [forward:×ª·¢Ğ­Òé]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
 		class register_forward_handle
 		{
@@ -148,7 +149,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
 		using type_register_forward_handle = template_arg<actor::register_forward_handle<TYPE, IsForward, TDerived>>;
 
-		//# æ³¨å†Œ [forward:è½¬å‘åè®®] recvforward
+		//# ×¢²á [forward:×ª·¢Ğ­Òé] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_recvforward_handle
 		{
@@ -163,7 +164,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		using type_register_recvforward_handle = template_arg<actor::register_recvforward_handle<TYPE, TDerived>>;
 
-		//# æœåŠ¡äºäºŒæ¬¡è½¬å‘
+		//# ·şÎñÓÚ¶ş´Î×ª·¢
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
 		class register_recvforward_handle2
 		{
@@ -199,15 +200,15 @@ namespace ngl
 		virtual void actor_handle(i32_threadid athreadid) final;
 	public:
 #pragma region ActorBroadcast
-		// ############# Start[Actor å…¨å‘˜å¹¿æ’­] ############# 
-		// ## é—´éš”ä¸€æ®µæ—¶é—´å‘èµ·çš„å…¨å‘˜(æ‰€æœ‰actor)å¹¿æ’­
-		// ## å¯ä»¥åœ¨è¿™ä¸ªå¹¿æ’­é‡Œæ¨é€ä¸€äº›éœ€è¦å¤„ç†çš„ä»»åŠ¡,ä¾‹å¦‚ ä¿å­˜æ•°æ®
-		// ## ä¸actor_base::start_broadcast() ç›¸å‘¼åº”
-		// ## é‡è½½æ­¤æ–¹æ³•å®ç°actor_base::m_broadcastæ¯«ç§’è§¦å‘äº‹ä»¶
+		// ############# Start[Actor È«Ô±¹ã²¥] ############# 
+		// ## ¼ä¸ôÒ»¶ÎÊ±¼ä·¢ÆğµÄÈ«Ô±(ËùÓĞactor)¹ã²¥
+		// ## ¿ÉÒÔÔÚÕâ¸ö¹ã²¥ÀïÍÆËÍÒ»Ğ©ĞèÒª´¦ÀíµÄÈÎÎñ,ÀıÈç ±£´æÊı¾İ
+		// ## Óëactor_base::start_broadcast() ÏàºôÓ¦
+		// ## ÖØÔØ´Ë·½·¨ÊµÏÖactor_base::m_broadcastºÁÃë´¥·¢ÊÂ¼ş
 		virtual void broadcast() {}
-		// ## å¹¿æ’­å¤„ç†å‡½æ•°
+		// ## ¹ã²¥´¦Àíº¯Êı
 		bool handle(message<np_actor_broadcast>& adata);
-		// ############# End[Actor å…¨å‘˜å¹¿æ’­] ############# 
+		// ############# End[Actor È«Ô±¹ã²¥] ############# 
 #pragma endregion
 
 		bool handle(message<np_actor_close>& adata)

@@ -67,7 +67,7 @@ namespace ngl
 		EPH_HEAD_VAL push(const char*& abuff, int& alen);
 		bool push(ngl::serialize& aflow);
 		void reservebuff(char* abuff, int abufflen, std::pair<char*, int>& apair);
-		bool _log(logserialize& atstr, int anumber = EPH_BYTES)const;
-		bool log(logserialize& atstr)const;
+		void _log(np_actor_logitem& atstr, int anumber = EPH_BYTES)const;
+		void log(np_actor_logitem& atstr)const;
 	};
 }// namespace ngl

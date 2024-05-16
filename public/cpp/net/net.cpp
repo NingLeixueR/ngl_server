@@ -166,7 +166,7 @@ namespace ngl
 		{
 			return false;
 		}
-		LogLocalInfo("Connect Server %@%:%", aserverid, lpair.first, lpair.second);
+		log()->info("Connect Server {}@{}:{}", aserverid, lpair.first, lpair.second);
 
 		return lserver->connect(lpair.first, lpair.second, [aserverid, afun](i32_session asession)
 			{

@@ -1,21 +1,23 @@
+#include "nprotocol.h"
 #include "xmlinfo.h"
 #include "tools.h"
+#include "nlog.h"
 #include "nlog.h"
 
 #include <string>
 
 namespace ngl
 {
-	void xmlinfo::log()
+	void xmlinfo::plog()
 	{
-		LogLocalStreamError(lstream);
-		lstream << "##########xmlinfo start##########" << std::endl;
+		std::shared_ptr<np_actor_logitem> lstream = log();
+		(*lstream) << "##########xmlinfo start##########" << std::endl;
 		for (const auto& [_key, _val] : m_data)
 		{
-			lstream << "[" << _key << ":" << _val << "]" << std::endl;
+			(*lstream) << "[" << _key << ":" << _val << "]" << std::endl;
 		}
-		lstream << "##########xmlinfo finish#########" << std::endl;
-		lstream.print();
+		(*lstream) << "##########xmlinfo finish#########" << std::endl;
+		lstream->error("");
 	}
 	
 	bool xmlinfo::find(const char* akey, bool& adata)

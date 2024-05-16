@@ -31,11 +31,11 @@ namespace ngl
 
 		static void print_address()
 		{
-			LogLocalStreamError(lstream);
-			lstream << "############################" << std::endl;
+			std::shared_ptr<np_actor_logitem> lstream = log();
+			(*lstream) << "############################" << std::endl;
 			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
 			{
-				lstream
+				(*lstream)
 					<< "[" << ipair.first << ":" << ipair.second << "]"
 					<< "[" << nguid::actordataid(ipair.first)
 					<< "-" << nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
@@ -43,8 +43,8 @@ namespace ngl
 					<< "]"
 					<< std::endl;
 			}
-			lstream << "############################" << std::endl;
-			lstream.print();
+			(*lstream) << "############################" << std::endl;
+			(*lstream).error("");
 		}
 
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid)

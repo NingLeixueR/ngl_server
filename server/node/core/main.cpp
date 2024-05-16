@@ -11,8 +11,10 @@
 #include "tools.h"
 #include "ukcp.h"
 #include "rfun.h"
+#include "nlog.h"
 
 #include <boost/lexical_cast.hpp>
+#include <queue>
 
 Dumper lDumper;
 

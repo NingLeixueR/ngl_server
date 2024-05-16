@@ -152,7 +152,7 @@ void init_DB_NOTICE()
 
 bool start_db(int argc, char** argv)
 {
-	LogLocalError("[%] start", "DB");
+	ngl::log()->error("[{}] start", "DB");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -198,7 +198,7 @@ bool start_db(int argc, char** argv)
 
 bool start_world()
 {
-	LogLocalError("[%] start", "WORLD");
+	ngl::log()->error("[{}] start", "WORLD");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -221,7 +221,7 @@ bool start_world()
 
 bool start_login()
 {
-	LogLocalError("[%] start", "LOGIN");
+	ngl::log()->error("[{}] start", "LOGIN");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -237,7 +237,7 @@ bool start_login()
 
 bool start_gateway()
 {
-	LogLocalError("[%] start", "GATEWAY");
+	ngl::log()->error("[{}] start", "GATEWAY");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -256,7 +256,7 @@ bool start_gateway()
 
 bool start_log()
 {
-	LogLocalError("[%] start", "LOG");
+	ngl::log()->error("[{}] start", "LOG");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -278,7 +278,7 @@ bool start_log()
 
 bool start_actor()
 {
-	LogLocalError("[%] start", "ACTORSERVER");
+	ngl::log()->error("[{}] start", "ACTORSERVER");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -291,7 +291,7 @@ bool start_actor()
 
 bool start_game()
 {
-	LogLocalError("[%] start", "GAME");
+	ngl::log()->error("[{}] start", "GAME");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -311,7 +311,7 @@ bool start_game()
 
 bool start_cross()
 {
-	LogLocalError("[%] start", "CROSS");
+	ngl::log()->error("[{}] start", "CROSS");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -374,7 +374,7 @@ bool start_pushserverconfig()
 
 			ngl::manage_curl::set_callback(*lhttp, [lstr](int, ngl::_http& ahttp)
 				{
-					LogLocalError("[%]->[%]", lstr, ahttp.m_recvdata);
+					ngl::log()->error("[{}]->[{}]", lstr, ahttp.m_recvdata);
 				});
 			ngl::manage_curl::getInstance().send(lhttp);
 		});
@@ -383,7 +383,7 @@ bool start_pushserverconfig()
 
 bool start_csvserver()
 {
-	LogLocalError("[%] start", "RELOADCSV");
+	ngl::log()->error("[{}] start", "RELOADCSV");
 
 	if (!init_server(nconfig::m_nodeid))
 		return false;
@@ -400,7 +400,7 @@ bool start_csvserver()
 
 bool start_robot(int argc, char** argv)
 {
-	LogLocalError("[%] start", "ROBOT");
+	ngl::log()->error("[{}] start", "ROBOT");
 
 	if (!init_server(nconfig::m_nodeid))
 		return 0;

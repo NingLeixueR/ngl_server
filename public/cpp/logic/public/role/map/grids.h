@@ -185,44 +185,44 @@ namespace ngl
 
 		void printf(int32_t aid1, int32_t aid2, std::list<int>& apath)
 		{
-			LogStreamError(lstream);
+			auto lstream = log();
 			if (apath.empty())
 			{
-				lstream << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
-				lstream << "path:" << "路径不通" << std::endl;
+				(*lstream) << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
+				(*lstream) << "path:" << "路径不通" << std::endl;
 			}
 			else
 			{
-				lstream << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
-				lstream << "path:" << std::endl;
+				(*lstream) << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
+				(*lstream) << "path:" << std::endl;
 				for (int lid : apath)
 				{
-					lstream << printf_point(lid);
+					(*lstream) << printf_point(lid);
 				}
-				lstream << std::endl;
+				(*lstream) << std::endl;
 				for (int x = 0; x < nx(); ++x)
 				{
-					lstream << x << "\t";
+					(*lstream) << x << "\t";
 					for (int y = 0; y < ny(); ++y)
 					{
 						int ltempid = id(x, y);
 						if (m_grid[ltempid].m_pass == false)
 						{
-							lstream << "#";
+							(*lstream) << "#";
 						}
 						else
 						{
 							if (std::find(apath.begin(), apath.end(), ltempid) == apath.end())
 							{
-								lstream << "@";
+								(*lstream) << "@";
 							}
 							else
 							{
-								lstream << "*";
+								(*lstream) << "*";
 							}
 						}
 					}
-					lstream << std::endl;
+					(*lstream) << std::endl;
 				}
 			}
 		}

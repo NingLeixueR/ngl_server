@@ -26,13 +26,13 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			LogLocalStreamError(lstream);
-			lstream << "actor_notice###loaddb_finish" << std::endl;
+			auto lstream = log();
+			(*lstream) << "actor_notice###loaddb_finish" << std::endl;
 			m_maxid = 0;
 			for (auto&& [id, dbnotice] : *get_notice())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
-				lstream 
+				(*lstream)
 					<< "notice###id:[" << lnotice.m_id() << "] "
 					<< "notice:[" << lnotice.m_notice() << "] "
 					<< "time:[" 
@@ -43,7 +43,7 @@ namespace ngl
 				if (m_maxid <= lnotice.m_id())
 					m_maxid = lnotice.m_id();
 			}
-			lstream.print();
+			(*lstream).error("");
 		}
 
 		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)

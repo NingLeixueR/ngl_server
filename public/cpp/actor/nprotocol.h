@@ -1,15 +1,22 @@
 #pragma once
 
 #include "nactortype.h"
-#include "nprotocol.h"
 #include "serialize.h"
 #include "localtime.h"
 #include "serialize.h"
+#include "sysconfig.h"
+#include "logprintf.h"
 #include "ndefine.h"
+#include "xmlnode.h"
 #include "nguid.h"
 #include "db.pb.h"
 #include "pack.h"
 #include "type.h"
+
+#include <sstream>
+#include <iostream>
+#include <source_location>
+#include <format>
 
 namespace ngl
 {
@@ -273,7 +280,7 @@ namespace ngl
 		{
 			return m_identifier;
 		}
-		
+
 		static const char* name()
 		{
 			return "actor_module_forward";
@@ -374,7 +381,7 @@ namespace ngl
 		std::vector<i16_area>			m_area;
 		std::shared_ptr<pack>			m_recvpack;
 
-		np_actor_forward() 
+		np_actor_forward()
 		{
 		}
 
@@ -387,8 +394,8 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		
-		def_portocol(np_actor_forward, m_uid, m_area/*, m_data*/)	
+
+		def_portocol(np_actor_forward, m_uid, m_area/*, m_data*/)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
@@ -398,7 +405,7 @@ namespace ngl
 		static const bool isusing = false;
 		std::shared_ptr<pack> m_recvpack;
 
-		np_actor_forward() 
+		np_actor_forward()
 		{}
 
 		np_actor_forward(np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
@@ -409,8 +416,8 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		
-		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)		
+
+		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
 	};
 
 
@@ -444,7 +451,7 @@ namespace ngl
 		~np_actor_forward()
 		{}
 
-		def_portocol(np_actor_forward,m_uid, m_area, m_data)
+		def_portocol(np_actor_forward, m_uid, m_area, m_data)
 	};
 
 	template <typename T>
@@ -496,9 +503,9 @@ namespace ngl
 		T m_data_;
 		T* m_data;
 	public:
-		void set_data(T& adata) 
-		{ 
-			m_data = &adata; 
+		void set_data(T& adata)
+		{
+			m_data = &adata;
 		}
 
 		T* get_data()
@@ -510,7 +517,7 @@ namespace ngl
 			:m_data(nullptr)
 		{}
 
-		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING?false:true, T>& adata)
+		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING ? false : true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 
@@ -565,29 +572,13 @@ namespace ngl
 		i64_actorid m_actorid;
 		def_portocol(np_actor_disconnect_close, m_actorid)
 	};
-	
+
 	struct np_actor_gatewayid_updata
 	{
 		bool			m_isremove;
 		i64_actorid		m_actorid;
 		i32_serverid	m_gatewayid;
 		def_portocol(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
-	};
-
-	// ---- 日志发送 
-	struct logitem
-	{
-		int				m_serverid = 0;				// 服务器id
-		int				m_type;						// ELOG
-		std::string		m_head;						// 日志头
-		std::string		m_pos;						// 触发日志的文件位置
-		std::string		m_str;						// 日志内容
-		def_portocol_function(logitem, m_serverid, m_type, m_head, m_pos, m_str)
-	};
-	struct np_actor_logitem
-	{
-		logitem m_data;
-		def_portocol(np_actor_logitem, m_data)
 	};
 
 	// ---- 间隔一段时间发起的全员(所有actor)广播
@@ -600,7 +591,7 @@ namespace ngl
 	// ---- 重新加载csv
 	struct np_actor_reloadcsv
 	{
-		std::map<std::string, std::string> m_csvcontent; 
+		std::map<std::string, std::string> m_csvcontent;
 		def_portocol(np_actor_reloadcsv, m_csvcontent)
 	};
 
@@ -635,7 +626,7 @@ namespace ngl
 		protobuf_data<std::vector<pbdb::db_brief>> m_vecinfo;
 		def_portocol(np_actor_roleinfo, m_vecinfo)
 	};
-	
+
 	struct gateway_socket
 	{
 		std::string			m_session;
@@ -663,7 +654,7 @@ namespace ngl
 	{
 		i64_actorid					m_roleid;
 		int32_t						m_tid;
-		std::map<int32_t,int32_t>	m_items;
+		std::map<int32_t, int32_t>	m_items;
 		std::string					m_parm;
 
 		def_portocol(np_actor_addmail, m_roleid, m_tid, m_items, m_parm)
@@ -723,6 +714,145 @@ namespace ngl
 	{
 		def_portocol(np_actor_close)
 	};
+
+#ifdef WIN32
+# define FindSrcPos(STR) STR.rfind("\\")
+#else
+# define FindSrcPos(STR) STR.rfind("/")
+#endif
+
+	// ---- 日志发送 
+	struct logitem
+	{
+		int				m_serverid = 0;				// 服务器id
+		ELOGLEVEL			m_loglevel;					// 日志类型
+		std::string		m_src;						// 触发日志的文件位置
+		std::string		m_data;						// 日志内容
+		int32_t			m_time;						// 日志发生时间
+
+		def_portocol_function(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
+	};
+	struct np_actor_logitem :public std::enable_shared_from_this<np_actor_logitem>
+	{
+		logitem m_data;
+	private:		
+		/** 临时数据 **/
+		std::string				m_src;						// 触发日志的文件位置
+		ENUM_ACTOR				m_actortype;
+		ELOG_TYPE				m_logtype;
+		std::source_location	m_source;
+	public:
+		std::stringstream	m_stream;
+		/** 临时数据 **/
+		static bool m_init;
+	public:
+		np_actor_logitem() {}
+		np_actor_logitem(ENUM_ACTOR	aactortype, ELOG_TYPE alogtype, const std::source_location& asource = std::source_location::current()):
+			m_actortype(aactortype),
+			m_logtype(alogtype),
+			m_source(asource)
+		{
+			
+		}
+
+		void set_source()
+		{
+			std::string_view str = m_source.file_name();
+			auto pos = FindSrcPos(str);
+			if (pos != std::string_view::npos)
+			{
+				m_src = str.substr(pos + 1);
+			}
+			else
+			{
+				m_src = str;
+			}
+			m_src = std::format("{:#^20}:{:#^5}", m_src, m_source.line());
+		}
+
+		void set(ENUM_ACTOR	aactortype, ELOG_TYPE alogtype)
+		{
+			m_actortype = aactortype;
+			m_logtype = alogtype;
+		}
+	private:
+		
+		void send(std::shared_ptr<np_actor_logitem> pro);
+
+		template <typename ...ARGS>
+		void print(ELOGLEVEL alevel, const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
+		{
+			if (m_init && alevel >= ngl::sysconfig::loglevel())
+			{
+				if (sysconfig::logconsole() == false && sysconfig::logiswrite() == false)
+					return;
+				std::string ldata = m_stream.str();
+				ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
+				m_data.m_time = localtime::gettime();
+				set_source();
+				if (sysconfig::logconsole())
+				{
+					char ltimebuff[1024];
+					ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
+					logprintf::printf(alevel, m_src.c_str(), ltimebuff, ldata.c_str());
+				}
+				if (sysconfig::logiswrite() == false)
+					return;
+
+				m_data.m_loglevel = alevel;
+				m_data.m_serverid = nconfig::m_nodeid;
+				m_data.m_src.swap(m_src);
+				m_data.m_data.swap(ldata);
+				send(shared_from_this());
+			}
+		}
+	public:
+		template <typename ...ARGS>
+		void error(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
+		{
+			print(ELOG_ERROR, aformat, aargs...);
+		}
+
+		template <typename ...ARGS>
+		void warn(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
+		{
+			print(ELOG_WARN, aformat, aargs...);
+		}
+
+		template <typename ...ARGS>
+		void info(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
+		{
+			print(ELOG_INFO, aformat, aargs...);
+		}
+
+		template <typename ...ARGS>
+		void debug(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
+		{
+			print(ELOG_DEBUG, aformat, aargs...);
+		}
+
+		template <typename T>
+		np_actor_logitem& operator<<(const T& adata)
+		{
+			if (m_init == false)
+				return *this;
+			m_stream << adata;
+			return *this;
+		}
+
+		// 重载 << 操作符以输出 std::endl
+		np_actor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
+		{
+			if (m_init == false)
+				return *this;
+			m_stream << manipulator;
+			return *this;
+		}
+
+		def_portocol(np_actor_logitem, m_data)
+	};
+
+
 }//namespace ngl
 
 

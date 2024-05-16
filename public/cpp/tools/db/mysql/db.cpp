@@ -1,4 +1,5 @@
 #include "conversion.h"
+#include "nprotocol.h"
 #include "nlog.h"
 #include "db.h"
 
@@ -26,11 +27,16 @@ namespace ngl
 			return false;
 		}
 		m_arg = arg;
-		LogLocalError("[mysql] %@%:% [password=%][dbname=%]", m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_passworld, m_arg.m_dbname);
+		log()->error("[mysql] {}@{}:{} [password={}][dbname={}]"
+			, m_arg.m_account
+			, m_arg.m_ip, m_arg.m_port
+			, m_arg.m_passworld
+			, m_arg.m_dbname
+		);
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)
 		{
-			LogLocalError("[mysql] err mysql_init");
+			log()->error("[mysql] err mysql_init");
 			return false;
 		}
 
@@ -44,7 +50,7 @@ namespace ngl
 			nullptr,
 			0))
 		{
-			LogLocalError("[mysql] err db::query[%]", mysql_error(m_mysql));
+			log()->error("[mysql] err db::query[{}]", mysql_error(m_mysql));
 			closedb();
 			return false;
 		}
@@ -54,14 +60,14 @@ namespace ngl
 
 		if (mysql_set_character_set(m_mysql, "utf8"))
 		{
-			LogLocalError("[mysql] err utf8");
+			log()->error("[mysql] err utf8");
 			closedb();
 			return false;
 		}
 
 		if (!m_arg.m_dbname.empty() && !changedb(m_mysql, m_arg.m_dbname))
 		{
-			LogLocalError("[mysql] err dbname");
+			log()->error("[mysql] err dbname");
 			closedb();
 			return false;
 		}
@@ -93,10 +99,10 @@ namespace ngl
 		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1));
 		if (ret != 0)
 		{
-			LogLocalError("db::query[%][%]", mysql_error(m_mysql), (const char*)asql);
+			log()->error("db::query[{}][{}]", mysql_error(m_mysql), (const char*)asql);
 			return false;
 		}
-		LogLocalError("db::query[%]", asql);
+		log()->error("db::query[{}]", asql);
 		return true;
 	}
 
@@ -138,7 +144,7 @@ namespace ngl
 		}
 		else
 		{
-			LogLocalError("db::select[%][%]", mysql_error(m_mysql), (const char*)asql);
+			log()->error("db::select[{}][{}]", mysql_error(m_mysql), (const char*)asql);
 		}
 		return false;
 	}

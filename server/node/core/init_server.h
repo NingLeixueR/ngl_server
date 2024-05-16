@@ -59,11 +59,13 @@ bool init_server(int aid)
 
 	ngl::xmlprotocol::load();
 
-	ngl::nlog::getInstance().isinitfinish() = true;
+	//ngl::nlog::getInstance().isinitfinish() = true;
 
 	ngl::nactortype::getInstance();
 
 	ngl::actor_base::start_broadcast();
+
+	ngl::actor_base::init_gatewayser();
 
 	ngl::tab_servers* tab = ngl::ttab_servers::tab();
 
@@ -75,7 +77,8 @@ bool init_server(int aid)
 
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 
-	LogLocalError("ngl::actor_manage::getInstance().init(%)", tab->m_actorthreadnum);
+	ngl::np_actor_logitem::m_init = true;
+	ngl::log()->error("ngl::actor_manage::getInstance().init({})", tab->m_actorthreadnum);
 
 	return true;
 }

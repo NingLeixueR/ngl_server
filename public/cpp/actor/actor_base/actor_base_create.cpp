@@ -40,18 +40,14 @@ namespace ngl
 		}
 		if (lpactor_base == nullptr)
 		{
-			LogLocalError("actor_base::create(%,%)", (int)atype, aid);
+			ngl::log()->error("actor_base::create({},{})", (int)atype, aid);
 			return nullptr;
 		}
 		actor_manage::getInstance().add_actor(lpactor_base, [lpactor_base]() 
 			{
-				Try
-				{
-					lpactor_base->set_activity_stat(actor_stat_free);
-					lpactor_base->init();
-					lpactor_base->init_db_component(false);
-				}
-				Catch
+				lpactor_base->set_activity_stat(actor_stat_free);
+				lpactor_base->init();
+				lpactor_base->init_db_component(false);
 			});
 		return lpactor_base;
 	}

@@ -7,7 +7,7 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		pbnet::PROBUFF_NET_CMD& lparm = *adata.m_data;
-		LogInfo("cmd[%]", lparm.m_cmd())
+		log()->error("cmd[{}]", lparm.m_cmd());
 
 		std::vector<std::string> lvec;
 		if (ngl::splite::func(lparm.m_cmd().c_str(), "|", lvec) == false)
@@ -130,7 +130,7 @@ namespace ngl
 		std::transform(lkey.begin(), lkey.end(), lkey.begin(), tolower);
 		if (handle_cmd::function(lkey, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
-			LogLocalError("actor_role cmd [%] ERROR", lkey);
+			log()->error("actor_role cmd [{}] ERROR", lkey);
 		}
 		return true;
 	}

@@ -216,9 +216,9 @@ namespace ngl
 						int16_t lkcp = nets::create_kcp();
 						arobot.m_robot->m_kcp = lkcp;
 						nets::kcp(arobot.m_robot->m_kcp)->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-							, [tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
+							, [this, tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
 							{
-								LogLocalError("GetIp Finish : %", buff);
+								log()->error("GetIp Finish : {}", buff);
 								ukcp::m_localuip = buff;
 								// ªÒ»°kcp-session
 								pbnet::PROBUFF_NET_KCPSESSION pro;

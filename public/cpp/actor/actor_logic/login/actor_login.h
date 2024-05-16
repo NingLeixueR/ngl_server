@@ -12,10 +12,13 @@
 #include "net.h"
 #include "db.h"
 
+#include <format>
+
 namespace ngl
 {
 	class actor_login : public actor
 	{
+	public:
 		struct server_info
 		{
 			int32_t	m_id = 0;
@@ -23,6 +26,7 @@ namespace ngl
 
 			def_portocol_function_log(m_id, m_rolesize)
 		};
+	private:
 		// ----- Data Begin -----
 		account								m_account;
 		std::map<i32_serverid, server_info> m_game;
@@ -86,3 +90,23 @@ namespace ngl
 		bool handle(message<np_actor_disconnect_close>& adata);
 	};
 }//namespace ngl
+
+template <>
+struct std::formatter<ngl::actor_login::server_info>
+{
+	auto parse(std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::actor_login::server_info& aval, std::format_context& ctx)
+	{
+		return std::format_to(
+			ctx.out()
+			, "[server_info:id{}-rolesize{}]"
+			, aval.m_id
+			, aval.m_rolesize
+		);
+	}
+};
+

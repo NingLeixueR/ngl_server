@@ -119,7 +119,7 @@ namespace ngl
 
 		if (handle_cmd::function(loperator, adata.m_data->identifier(), lojson) == false)
 		{
-			LogLocalError("GM actor_mail operator[%] ERROR", loperator);
+			log()->error("GM actor_mail operator[{}] ERROR", loperator);
 		}
 		return true;
 	}

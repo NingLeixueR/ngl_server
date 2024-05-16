@@ -72,7 +72,7 @@ namespace ngl
 
 			init_customs_db<TDBTAB_TYPE, TDBTAB>();
 
-			LogLocalError("init_actor_type [%]-[%]"
+			log()->error("init_actor_type [{}]-[{}]"
 				, dtype_name(type_actor_db)
 				, (int)(lenum)
 			);

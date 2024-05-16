@@ -9,7 +9,7 @@
 
 namespace ngl
 {
-	const char* elog_name::get(ELOG atype)
+	const char* elog_name::get(ELOGLEVEL atype)
 	{
 		switch (atype)
 		{
@@ -25,34 +25,14 @@ namespace ngl
 		return "none";
 	}
 
-	bool& nlog::isinitfinish()
+	std::shared_ptr<np_actor_logitem> log(const std::source_location& asource/* = std::source_location::current()*/)
 	{
-		return m_isinitfinish;
+		return std::make_shared<np_actor_logitem>(ACTOR_NONE, ELOG_LOCAL, asource);
 	}
 
-	nlog::nlog()
+	std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource/* = std::source_location::current()*/)
 	{
-		
+		return std::make_shared<np_actor_logitem>(ACTOR_NONE, ELOG_NETWORK, asource);
 	}
 
-	void nlog::plog(ELOG atype, ngl::logformat& llogformat, ELOG_TYPE altype)
-	{
-		if (sysconfig::logconsole())
-			logprintf::printf(atype, llogformat.data("pos").c_str(), llogformat.data("head").c_str(), llogformat.data("src").c_str());
-		
-		if (isinitfinish() == false)
-			return;
-
-		if (sysconfig::logiswrite() == false)
-			return;
-
-		std::shared_ptr<np_actor_logitem> pro(new np_actor_logitem());
-		pro->m_data.m_head.swap(llogformat.data("head"));
-		pro->m_data.m_pos.swap(llogformat.data("pos"));
-		pro->m_data.m_str.swap(llogformat.data("src"));
-		pro->m_data.m_serverid = nconfig::m_nodeid;
-		pro->m_data.m_type = atype;
-
-		actor_base::static_send_actor(actor_log::actorid(altype), nguid::make(), pro);
-	}
 }// namespace ngl

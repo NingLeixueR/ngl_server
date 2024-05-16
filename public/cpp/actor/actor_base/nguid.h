@@ -4,6 +4,8 @@
 #include "ndefine.h"
 #include "type.h"
 
+#include <format>
+
 namespace ngl
 {
 	// actorΨһid(64bit)
@@ -150,4 +152,43 @@ namespace ngl
 
 		def_portocol_function(nguid, m_id)
 	};
+
+	union nnum32
+	{
+		int32_t m_value32;
+		int16_t m_value16[2];
+
+		nnum32(int32_t avalue) :
+			m_value32(avalue)
+		{}
+
+		nnum32(int16_t avalue1, int16_t avalue2) :
+			m_value32(0)
+		{
+			m_value16[0] = avalue1;
+			m_value16[1] = avalue2;
+		}
+	};
+
+
 }//namespace ngl
+
+template <>
+struct std::formatter<ngl::nguid>
+{
+	auto parse(std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::nguid& aval, std::format_context& ctx)
+	{
+		return std::format_to(
+			ctx.out()
+			, "[guid:{}-{}-{}]"
+			, (int)aval.type()
+			, aval.area()
+			, aval.actordataid()
+		);
+	}
+};

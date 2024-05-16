@@ -23,7 +23,7 @@ namespace ngl
 		timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 60) == false)
 		{
-			LogLocalError("actor_csvclient::init() make_timerparm::make_interval(tparm, 60) == false!!!");
+			log()->error("actor_csvclient::init() make_timerparm::make_interval(tparm, 60) == false!!!");
 			return;
 		}
 		set_timer(tparm);
@@ -58,7 +58,7 @@ namespace ngl
 
 	bool actor_csvclient::timer_handle(message<timerparm>& adata)
 	{
-		LogLocalError("############actor_csvclient::timer_handle###########");
+		log()->error("############actor_csvclient::timer_handle###########");
 		auto pro = std::make_shared<np_actor_csv_verify_version>();
 		allcsv::foreach_version(pro->m_version);
 		send_actor(actor_csvserver::actorid(), pro);

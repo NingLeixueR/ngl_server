@@ -2,14 +2,22 @@
 #include "actor.h"
 #include "net.h"
 
+#include <deque>
+#include <queue>
+
 namespace ngl
 {
 	struct actor::impl_actor
 	{
-		std::list<handle_pram>	m_list;		// 待处理消息列表
-		actor_stat				m_stat;		// actor状态
-		std::shared_mutex		m_mutex;	// 锁:[m_list:待处理消息列表]
-		int						m_weight;	// 权重
+		template <typename T>
+		using tls = std::list<T>;
+		//template <typename T>
+		//using tls = std::deque<T>;
+		tls<handle_pram>				m_list;		// 待处理消息列表
+
+		actor_stat						m_stat;		// actor状态
+		std::shared_mutex				m_mutex;	// 锁:[m_list:待处理消息列表]
+		int								m_weight;	// 权重
 
 		explicit impl_actor(const actorparm& aparm)
 			: m_stat(actor_stat_init)
@@ -81,13 +89,13 @@ namespace ngl
 			return false;
 		}
 	private:
-		inline void swaplist(std::list<handle_pram>& als)
+		inline void swaplist(tls<handle_pram>& als)
 		{
 			monopoly_shared_lock(m_mutex);
-			als.swap(m_list);
+			m_list.swap(als);
 		}
 
-		inline void insertlist(std::list<handle_pram>& als)
+		inline void insertlist(tls<handle_pram>& als)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_list.insert(m_list.begin(), als.begin(), als.end());
@@ -95,17 +103,20 @@ namespace ngl
 	public:
 		inline void actor_handle(actor* aactor, i32_threadid athreadid, int aweight)
 		{
-			std::list<handle_pram> llist;
+			tls<handle_pram> llist;
 			swaplist(llist);
 			while (--aweight >= 0 && llist.empty() != true)
 			{
-				if (ahandle(aactor, athreadid, *llist.begin()) == true)
+				if (ahandle(aactor, athreadid, llist.front()) == true)
 				{
 					aactor->handle_after();
 				}
 				llist.pop_front();
 			}
-			insertlist(llist);
+			if (llist.empty() == false)
+			{
+				insertlist(llist);
+			}
 		}
 
 		inline void actor_handle(actor* aactor, i32_threadid athreadid)

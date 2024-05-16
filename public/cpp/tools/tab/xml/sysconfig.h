@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	enum ELOG
+	enum ELOGLEVEL
 	{
 		ELOG_DEBUG,   // 测试信息
 		ELOG_INFO,    // 打印
@@ -16,7 +16,7 @@ namespace ngl
 	{
 	private:
 		//##### 日志相关
-		static ELOG			m_loglevel;				// 日志等级
+		static ELOGLEVEL			m_loglevel;				// 日志等级
 		static int32_t		m_logline;				// 单个日志文件的行数
 		static int32_t		m_logflushtime;			// 日志flush时间
 		static bool			m_logiswrite;			// 日志是否写入文件
@@ -49,7 +49,7 @@ namespace ngl
 	public:
 		static void init();
 
-		static ELOG loglevel()
+		static ELOGLEVEL loglevel()
 		{ 
 			return m_loglevel;
 		}

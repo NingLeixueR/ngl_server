@@ -173,7 +173,7 @@ namespace ngl
 						, ""
 					) == false)
 					{
-						LogLocalError("task[%] actor_mail::sendmail(%,%,%)"
+						log()->error("task[{}] actor_mail::sendmail({},{},{})"
 							, ataskid
 							, arole->id_guid()
 							, tab->m_mailid
@@ -253,21 +253,21 @@ namespace ngl
 		auto lcompleteddatas = ltask.mutable_m_completeddatas();
 		auto lrundatas = ltask.mutable_m_rundatas();
 
-		LogStreamError(lstream);
-		lstream << "###已完成的任务[===" << std::endl;
-		lstream << "[===" << std::endl;
+		auto lstream = log();
+		(*lstream) << "###已完成的任务[===" << std::endl;
+		(*lstream) << "[===" << std::endl;
 		for (const auto& [_id, _data] : *lcompleteddatas)
 		{
-			lstream << _id << std::endl;
+			(*lstream) << _id << std::endl;
 		}
-		lstream << "===]" << std::endl;
-		lstream << "###正在进行的任务[===" << std::endl;
-		lstream << "[===" << std::endl;
+		(*lstream) << "===]" << std::endl;
+		(*lstream) << "###正在进行的任务[===" << std::endl;
+		(*lstream) << "[===" << std::endl;
 		for (const auto& [_id, _data] : *lrundatas)
 		{
-			lstream << _id << std::endl;
+			(*lstream) << _id << std::endl;
 		}
-		lstream << "===]" << std::endl;
+		(*lstream) << "===]" << std::endl;
 
 		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务

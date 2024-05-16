@@ -27,7 +27,7 @@ namespace ngl
 	public:
 		std::map<std::string, std::string> m_data;
 
-		void log();
+		void plog();
 
 		//# ¸ù¾İkey²éÕÒ
 		template <typename TVALUE>

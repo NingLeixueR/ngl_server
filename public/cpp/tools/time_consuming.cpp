@@ -1,4 +1,5 @@
 #include "time_consuming.h"
+#include "nprotocol.h"
 
 namespace ngl
 {
@@ -11,7 +12,7 @@ namespace ngl
 		m_end(0),
 		m_fun(afun)
 	{
-		LogLocalInfo("time consuming [%:%] start", aname, m_id);
+		//log()->error("time consuming [{}:{}] start", aname, m_id);
 	}
 
 	tconsuming_thread::tconsuming_thread() :
@@ -35,11 +36,11 @@ namespace ngl
 	{
 		if (awarn)
 		{
-			LogLocalInfo("time consuming [%:%] [%] [%] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+			log()->info("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 		}
 		else
 		{
-			LogLocalError("time consuming [%:%] [%] [%] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+			log()->error("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 		}
 	}
 

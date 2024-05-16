@@ -1,3 +1,4 @@
+#include "nprotocol.h"
 #include "dbredis.h"
 #include "nguid.h"
 
@@ -21,7 +22,7 @@ namespace ngl
 		{
 			if (lreply)
 			{
-				LogLocalError("[ERROR] Redis[%] ", lreply->str);
+				log()->error("[ERROR] Redis[{}] ", lreply->str);
 				freeReplyObject(lreply);
 			}
 			redisFree(arc);
@@ -48,7 +49,7 @@ namespace ngl
 		m_rc = redisConnect(arg.m_ip.c_str(), arg.m_port);
 		if (m_rc->err)
 		{
-			LogLocalError("[ERROR] Redis[%] ", m_rc->err);
+			log()->error("[ERROR] Redis[{}] ", m_rc->err);
 			assert(0);
 			return;
 		}

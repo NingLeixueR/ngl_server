@@ -116,7 +116,7 @@ namespace ngl
 			auto itor = m_fun.find(lguid);
 			if (itor == m_fun.end())
 				return false;
-			std::cout << "handle_switch[" << itor->second.m_message << "]" << std::endl;
+			//std::cout << "handle_switch[" << itor->second.m_message << "]" << std::endl;
 			Tfun<TDerived, const TARG&...> lpfun = supercast<Tfun<TDerived, const TARG&...>>(itor->second.m_function);
 			((aeffect)->*lpfun)(arg...);
 			return true;

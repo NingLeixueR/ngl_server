@@ -5,7 +5,7 @@
 namespace ngl
 {
 
-	ELOG	sysconfig::m_loglevel		= ELOG_ERROR;
+	ELOGLEVEL	sysconfig::m_loglevel		= ELOG_ERROR;
 	int32_t	sysconfig::m_logline		= 10000;
 	int32_t	sysconfig::m_logflushtime	= 10;
 	bool	sysconfig::m_logiswrite		= true;
@@ -36,7 +36,7 @@ namespace ngl
 		lpublicxml->find("logconsole", m_logconsole);
 		int llevel = 0;
 		lpublicxml->find("loglevel", llevel);
-		m_loglevel = (ELOG)llevel;
+		m_loglevel = (ELOGLEVEL)llevel;
 
 		lpublicxml->find("consumings", m_consumings);
 		

@@ -74,6 +74,7 @@ namespace ngl
 		{
 			Try
 			{
+				if(m_dbclient == nullptr)
 				Assert(m_dbclient != nullptr)
 				m_dbclient->add(adbclient, aid);
 			}Catch;
@@ -128,6 +129,8 @@ namespace ngl
 
 	int actor_base::m_broadcast			= 10000;		// 推送全员广播的 单位(毫秒)
 	int actor_base::m_broadcasttimer	= -1;			// 推送广播的定时器id
+
+	std::vector<i32_serverid> actor_base::m_gatewayids;
 
 	actor_base::actor_base(const actorparmbase& aparm) :
 		m_isbroadcast(false)
@@ -291,7 +294,7 @@ namespace ngl
 		auto itor = m_group.find(agroupid);
 		if (itor == m_group.end())
 		{
-			LogLocalError("add_group_member not find groupid[%]", agroupid);
+			log()->error("add_group_member not find groupid[{}]", agroupid);
 			return false;
 		}
 
@@ -301,7 +304,7 @@ namespace ngl
 		{
 			if (itor->second.m_actortype != lguid.type())
 			{
-				LogLocalError("m_actortype != lguid.type()==[%]([%]!=[%])"
+				log()->error("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
 					, agroupid
 					, (int)ltype
 					, (int)lguid.type()
@@ -349,7 +352,7 @@ namespace ngl
 		nets::kcp(anum)->connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				m_kcpsession = asession;
-				LogLocalError("kcp m_kcpsession = %", m_kcpsession);
+				log()->error("kcp m_kcpsession = {}", m_kcpsession);
 			});
 		return true;
 	}

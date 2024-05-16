@@ -25,7 +25,8 @@ namespace ngl
 		static tab_servers* tab(i32_serverid aserverid)
 		{
 			ttab_servers* ttab = allcsv::get<ttab_servers>();
-			assert(ttab != nullptr);
+			if (ttab == nullptr)
+				return nullptr;
 			auto itor = ttab->tablecsv.find(aserverid);
 			return &itor->second;
 		}

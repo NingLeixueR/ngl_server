@@ -140,7 +140,7 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this](i32_session asession)
 				{
-					LogLocalWarn("Connect Ok[%]", nconfig::m_nodeid);
+					log()->warn("Connect Ok[{}]", nconfig::m_nodeid);
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
 					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());
@@ -233,7 +233,7 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.m_data;
-			LogLocalInfo("##actor_node_update## add:[%] del[%]", lparm->m_add, lparm->m_del)
+			//log()->error("##actor_node_update## add:[{}] del[{}]", lparm->m_add, lparm->m_del);
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
 		}Catch;

@@ -3,6 +3,7 @@
 #include <boost/typeof/typeof.hpp>
 
 #include "enum2name.h"
+#include "nprotocol.h"
 #include "csvtable.h"
 #include "xmlnode.h"
 #include "splite.h"
@@ -115,7 +116,7 @@ namespace ngl
 		std::string lxmlname(dir);
 		lxmlname += axml;
 		lxmlname += ".xml";
-		LogLocalError("begin xmlnode read [%]", lxmlname);
+		log()->error("begin xmlnode read [{}]", lxmlname);
 
 		if (!xml::read(lxmlname, m_root))
 			return;
@@ -123,7 +124,7 @@ namespace ngl
 		loadpublic();
 		loaddb();
 
-		LogLocalError("finish xmlnode read [%]", lxmlname);
+		log()->error("finish xmlnode read [{}]", lxmlname);
 	}
 
 	void xmlnode::read_config(boost_ptree& apt, xmlinfo& anfo)
@@ -141,7 +142,7 @@ namespace ngl
 			xmlinfo ltemp;
 			xmlnode::read_config(apt, ltemp);
 			anfo = ltemp;
-			ltemp.log();
+			ltemp.plog();
 		};
 		boost_ptree lchild = xml::get_child(m_root, "con.public");
 		xml::_foreach(lchild, "config", lfun);
@@ -159,7 +160,7 @@ namespace ngl
 			if (ltemp.id(lid))
 				anfo[lid] = ltemp;
 
-			ltemp.log();
+			ltemp.plog();
 		};
 		boost_ptree lchild = xml::get_child(m_root, akey);
 		xml::_foreach(lchild, "config", lfun);
