@@ -18,22 +18,22 @@ namespace ngl
 		case ACTOR_ROLE:
 			lpactor_base = new actor_role(tab_self_area, aid, aparm);
 			((actor_role*)(lpactor_base))->init_rfun<actor_role>();
-			actor_base::first_nregister<actor_role>();
+			actor_base::first_nregister<actor_role>(ACTOR_ROLE);
 			break;
 		case ACTOR_ROBOT:
 			lpactor_base = new actor_robot(tab_self_area, aid, aparm);
 			((actor_robot*)(lpactor_base))->init_rfun<actor_robot>();
-			actor_base::first_nregister<actor_robot>();
+			actor_base::first_nregister<actor_robot>(ACTOR_ROBOT);
 			break;
 		case ACTOR_PLAYS_GO_UNDERGROUNDPALACE:
 			lpactor_base = new actor_ugpalace(atype, aid, aparm);
 			((actor_ugpalace*)(lpactor_base))->init_rfun<actor_ugpalace>();
-			actor_base::first_nregister<actor_ugpalace>();
+			actor_base::first_nregister<actor_ugpalace>(ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
 			break;
 		case ACTOR_LOG:
-			lpactor_base = new actor_log(*(ELOG_TYPE*)aparm);
+			lpactor_base = new actor_log(aid);
 			((actor_log*)(lpactor_base))->init_rfun<actor_log>();
-			actor_base::first_nregister<actor_log>();
+			actor_base::first_nregister<actor_log>(ACTOR_LOG);
 			break;
 		default:
 			break;

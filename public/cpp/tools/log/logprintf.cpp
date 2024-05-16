@@ -157,7 +157,6 @@ namespace ngl
 	{
 		logfile_default(bool aisactor, const config& aconfig);
 		virtual void printf(const logitem* alog);
-		virtual void local_printf(ELOGLEVEL atype, ngl::logformat& llogformat);
 	};
 
 	logfile_default::logfile_default(bool aisactor, const config& aconfig) :
@@ -170,22 +169,6 @@ namespace ngl
 		m_stream << "[" << tab->m_name << ":" << alog->m_serverid << "]";
 		m_stream << "[" << alog->m_src << "]";
 		m_stream << alog->m_data << std::endl;
-		++m_count;
-		if (check_count())
-		{
-			close_fstream();
-			create();
-		}
-	}
-
-	void logfile_default::local_printf(ELOGLEVEL atype, ngl::logformat& llogformat)
-	{
-		m_stream 
-			<< "[serid:" << nconfig::m_nodeid << "]"
-			<< "[" << elog_name::get(atype) << "]"
-			<< "[" << llogformat.data("pos") << "]"
-			<< "[" << llogformat.data("head") << "]\t" 
-			<< llogformat.data("src") << std::endl;
 		++m_count;
 		if (check_count())
 		{

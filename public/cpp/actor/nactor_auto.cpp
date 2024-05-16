@@ -38,8 +38,8 @@
 
 namespace ngl
 {
-	template <typename TK, typename TV>
-	void em_actor(const TK akey, const TV aval)
+	template <typename TK>
+	void em_actor(const TK akey, const char* aval)
 	{
 		em<ENUM_ACTOR>::set(akey, aval);
 	}
@@ -69,6 +69,18 @@ namespace ngl
 			using type_actor_db = ngl::actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 			ENUM_ACTOR lenum = db_enum(PROTYPE, TDBTAB_TYPE);
 			nactor_type<type_actor_db>::inits(lenum);
+			std::string ldbname("actor_");
+			std::string ltemp = dtype_name(TDBTAB);
+			auto pos = ltemp.rfind(":");
+			if (pos != std::string_view::npos)
+			{
+				ldbname += ltemp.substr(pos + 1);
+			}
+			else
+			{
+				ldbname += ltemp;
+			}
+			em_actor(lenum, ldbname.c_str());
 
 			init_customs_db<TDBTAB_TYPE, TDBTAB>();
 

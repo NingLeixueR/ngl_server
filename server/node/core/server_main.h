@@ -163,23 +163,10 @@ bool start_db(int argc, char** argv)
 
 	ngl::actor_client::getInstance();
 
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
 
 	ngl::init_nactor_type(false);
-	/*ngl::tdb_account::instance();
-	ngl::tdb_brief::instance();
-	ngl::tdb_role::instance();
-	ngl::tdb_bag::instance();
-	ngl::tdb_task::instance();
-	ngl::tdb_rolekv::instance();
-	ngl::tdb_mail::instance();
-	ngl::tdb_guild::instance();
-	ngl::tdb_notice::instance();
-	ngl::tdb_activity::instance();
-	ngl::tdb_brief::instance();
-	ngl::tdb_ranklist::instance();
-	ngl::tdb_calendar::instance();*/
 	
 	ngl::actor_client::getInstance().actor_server_register();
 
@@ -206,8 +193,9 @@ bool start_world()
 	
 	ngl::actor_client::getInstance();
 
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
 	ngl::actor_notice::getInstance();
 	ngl::actor_gm::getInstance();
 	ngl::actor_mail::getInstance();
@@ -227,8 +215,10 @@ bool start_login()
 		return false;
 
 	ngl::actor_client::getInstance();
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
 	ngl::actor_login::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
@@ -244,8 +234,9 @@ bool start_gateway()
 
 	ngl::actor_client::getInstance();
 
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
 	ngl::actor_gateway::getInstance();
 	ngl::actor_gatewayg2c::getInstance();
 	ngl::actor_gatewayc2g::getInstance();
@@ -263,14 +254,8 @@ bool start_log()
 
 	ngl::actor_client::getInstance();
 
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
-
-	ltype = ngl::ELOG_BI;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
-
-	ltype = ngl::ELOG_NETWORK;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -284,8 +269,11 @@ bool start_actor()
 		return false;
 
 	ngl::actor_server::getInstance();
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
+
 	return true;
 }
 
@@ -297,8 +285,10 @@ bool start_game()
 		return false;
 
 	ngl::actor_client::getInstance();
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
 	ngl::actor_manage_role::getInstance();
 	ngl::actor_create::getInstance();
 	ngl::actor_kcp::getInstance();
@@ -317,8 +307,10 @@ bool start_cross()
 		return false;
 
 	ngl::actor_client::getInstance();
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
 	ngl::actor_chat::getInstance();
 	//ngl::actor_reloadcsv::getInstance();
 
@@ -390,8 +382,9 @@ bool start_csvserver()
 
 	ngl::actor_client::getInstance();
 
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
 	ngl::actor_csvserver::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
@@ -406,8 +399,11 @@ bool start_robot(int argc, char** argv)
 		return 0;
 
 	ngl::actor_client::getInstance();
-	ngl::ELOG_TYPE ltype = ngl::ELOG_LOCAL;
-	ngl::actor_base::create(ngl::ACTOR_LOG, 0, &ltype);
+
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+
+
 	ngl::actor_manage_robot::getInstance();
 
 	ngl::actor_manage_robot::getInstance().connect(ngl::ttab_servers::tab()->m_login, [](int asession)

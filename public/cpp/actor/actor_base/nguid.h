@@ -153,20 +153,41 @@ namespace ngl
 		def_portocol_function(nguid, m_id)
 	};
 
-	union nnum32
+	union nlogactor
 	{
 		int32_t m_value32;
-		int16_t m_value16[2];
-
-		nnum32(int32_t avalue) :
+		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
+		nlogactor(int32_t avalue) :
 			m_value32(avalue)
 		{}
 
-		nnum32(int16_t avalue1, int16_t avalue2) :
+		nlogactor(ENUM_ACTOR avalue1, ELOG_TYPE avalue2) :
 			m_value32(0)
 		{
 			m_value16[0] = avalue1;
 			m_value16[1] = avalue2;
+		}
+
+		ENUM_ACTOR actor_type()
+		{
+			return (ENUM_ACTOR)m_value16[0];
+		}
+
+		ELOG_TYPE log_type()
+		{
+			return (ELOG_TYPE)m_value16[1];
+		}
+
+		static ENUM_ACTOR actor_type(int32_t avalue)
+		{
+			nlogactor ltemp(avalue);
+			return ltemp.actor_type();
+		}
+
+		static ELOG_TYPE log_type(int32_t avalue)
+		{
+			nlogactor ltemp(avalue);
+			return ltemp.log_type();
 		}
 	};
 

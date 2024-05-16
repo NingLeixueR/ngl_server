@@ -523,13 +523,18 @@ private:
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用
 		template <typename TDerived>
-		static void first_nregister()
+		static void first_nregister(ENUM_ACTOR atype)
 		{
 			static bool lfirst = true;
 			if (lfirst == false)
 				return;
 			lfirst = false;
-			TDerived::nregister();
+			TDerived::nregister();	
+			if (atype != ngl::ACTOR_LOG)
+			{
+				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
+				ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+			}
 		}
 
 		//# 用于创建非单例actor

@@ -21,7 +21,7 @@ namespace ngl
 	{
 		std::shared_ptr<logfile> m_log;
 	public:
-		actor_log(ELOG_TYPE atype);
+		actor_log(i32_actordataid aid);
 
 		virtual void init();
 

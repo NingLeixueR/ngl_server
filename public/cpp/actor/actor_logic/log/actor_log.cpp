@@ -2,7 +2,7 @@
 
 namespace ngl
 {
-	actor_log::actor_log(ELOG_TYPE atype) :
+	actor_log::actor_log(i32_actordataid aid):
 		m_log(nullptr),
 		actor(
 			actorparm
@@ -11,19 +11,22 @@ namespace ngl
 				{
 					.m_type = ACTOR_LOG, 
 					.m_area = ttab_servers::tab()->m_area,
-					.m_id = atype
+					.m_id = aid
 				},
 				.m_weight = 0x7fffffff
 			})
 	{
+		ENUM_ACTOR lactortype = nlogactor::actor_type(aid);
+		nactortype::enum2name(lactortype);
+
 		logfile::config lconfig
 		{
-			.m_type = atype,
-			.m_dir = "log/" + ttab_servers::tab()->m_name,
+			.m_type = nlogactor::log_type(aid),
+			.m_dir = "log/" + ttab_servers::tab()->m_name + "/"+nactortype::enum2name(lactortype),
 			.m_flush_time = 10,
 		};
 		nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
-		m_log = logfile::create_make(atype != ELOG_LOCAL, lconfig);
+		m_log = logfile::create_make(nlogactor::log_type(aid) != ELOG_LOCAL, lconfig);
 	}
 
 	void actor_log::init()
@@ -31,7 +34,7 @@ namespace ngl
 
 	i64_actorid actor_log::actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype)
 	{
-		nnum32 ltemp(aactortype, alogtype);
+		nlogactor ltemp(aactortype, alogtype);
 		return nguid::make(ACTOR_LOG, ttab_servers::tab()->m_area, ltemp.m_value32);
 	}
 
