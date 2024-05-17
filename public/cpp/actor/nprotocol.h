@@ -772,7 +772,7 @@ namespace ngl
 		template <typename ...ARGS>
 		void print(const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
 		{
-			if (m_init && m_level >= ngl::sysconfig::loglevel())
+			if (m_level >= ngl::sysconfig::loglevel())
 			{
 				if (sysconfig::logconsole() == false && sysconfig::logiswrite() == false)
 					return;
@@ -786,7 +786,7 @@ namespace ngl
 					ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
 					logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
 				}
-				if (sysconfig::logiswrite() == false)
+				if (m_init == false || sysconfig::logiswrite() == false)
 					return;
 
 				m_data.m_loglevel = m_level;
