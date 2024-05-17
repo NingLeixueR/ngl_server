@@ -61,16 +61,21 @@ namespace ngl
 		}
 		/** 设置http类型 */
 		static void set_mode(std::shared_ptr<_http>& ahttp, ENUM_MODE aval);
+		/** 设置post/get类型 */
 		static void set_type(std::shared_ptr<_http>& ahttp, ENUM_TYPE aval);
+		/** url */
 		static void set_url(std::shared_ptr<_http>& ahttp, const std::string& aurl);
 		static void set_url(std::shared_ptr<_http>& ahttp, const char* aurl);
-		//xx=xx&xx=xx&xx=xx
+		/** parm xx=xx&xx=xx&xx=xx */
 		static void set_param(std::shared_ptr<_http>& ahttp, const std::string& astrparam);
+		/** 设置http头 */
 		static void set_headers(std::shared_ptr<_http>& ahttp, std::vector<std::string>& aheaders);
+		/** 设置回调 */
 		static void set_callback(std::shared_ptr<_http>& ahttp, std::function<void(int, _http&)> aback);
 		static void param(std::string& astrparam, const char* akey, const char* aval);
 		static void param(std::string& astrparam, const char* akey, int aval);
-		void send(std::shared_ptr<_http>& adata);
+		/** 发送 */
+		static void send(std::shared_ptr<_http>& adata);
 		static std::shared_ptr<_http> make_http();
 	};
 

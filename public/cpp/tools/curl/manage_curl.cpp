@@ -201,7 +201,6 @@ namespace ngl
 		ahttp->m_impl_http()->m_url = aurl; 
 	}
 
-	//xx=xx&xx=xx&xx=xx
 	void manage_curl::set_param(std::shared_ptr<_http>& ahttp, const std::string& astrparam)
 	{ 
 		ahttp->m_impl_http()->m_param = astrparam; 
@@ -237,7 +236,7 @@ namespace ngl
 
 	void manage_curl::send(std::shared_ptr<_http>& adata)
 	{
-		m_impl_manage_curl()->send(adata);
+		getInstance().m_impl_manage_curl()->send(adata);
 	}
 
 	std::shared_ptr<_http> manage_curl::make_http()
