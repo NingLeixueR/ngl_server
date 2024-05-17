@@ -54,45 +54,44 @@ namespace ngl
 						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 					};
 
-					handle_cmd::push("guid", [this,&adata](int id, ngl::ojson& aos)
+					handle_cmd::push("guid", [this,&adata](ngl::ojson& aos)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))
 							{
 								ENUM_ACTOR ltype;
 								if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
-									return true;
+									return;
 								ngl::ijson lwritejson;
 								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 								ngl::np_gm_response lresponse;
 								lwritejson.get(lresponse.m_json);
 								ret_gm(adata.m_pack, lresponse);
-								return true;
+								return;
 							}
 						}
 					);
 
-					handle_cmd::push("close_actor", [this, &adata](int id, ngl::ojson& aos)
+					handle_cmd::push("close_actor", [this, &adata](ngl::ojson& aos)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))
 							{
 								ENUM_ACTOR ltype;
 								if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
-									return true;
+									return;
 								nguid::make(ltype, lguid.m_area, lguid.m_dataid);
 								auto pro = std::make_shared<np_actor_close>();
 								send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
-								return true;
+								return;
 							}
 						});
 				}
 
-				if (loperator == "guid")
+				if (handle_cmd::function(loperator, lreadjson) == false)
 				{
-					
+					log_error()->print("GM actor_gm operator[{}] ERROR", loperator);
 				}
-
 				return true;
 			}
 
