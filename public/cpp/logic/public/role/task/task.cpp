@@ -253,7 +253,7 @@ namespace ngl
 		auto lcompleteddatas = ltask.mutable_m_completeddatas();
 		auto lrundatas = ltask.mutable_m_rundatas();
 
-		auto lstream = log();
+		auto lstream = log_error();
 		(*lstream) << "###已完成的任务[===" << std::endl;
 		(*lstream) << "[===" << std::endl;
 		for (const auto& [_id, _data] : *lcompleteddatas)
@@ -268,6 +268,7 @@ namespace ngl
 			(*lstream) << _id << std::endl;
 		}
 		(*lstream) << "===]" << std::endl;
+		lstream->print("");
 
 		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务
