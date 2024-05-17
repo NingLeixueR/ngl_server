@@ -1,7 +1,6 @@
 #pragma once
 
 #include "serialize.h"
-#include "logserialize.h"
 
 #define def_portocol_function_pop(...)							\
 	inline bool pop(ngl::unserialize& ser)						\
@@ -38,22 +37,6 @@
 		return bytes(lserialize_bytes);						\
 	}
 
-#if defined(WIN32)||defined(WINCE)||defined(WIN64)
-# define _va_args_def_portocol_function_log(...)  if (!atstr('{', ##__VA_ARGS__))
-#else
-# define _va_args_def_portocol_function_log(...)  if (!atstr('{' __VA_OPT__(,) ##__VA_ARGS__))
-#endif
-
-
-#define def_portocol_function_log(...)						\
-	inline bool log(ngl::logserialize& atstr)const			\
-	{														\
-		_va_args_def_portocol_function_log(__VA_ARGS__)		\
-			return false;									\
-		if (!atstr('}'))									\
-			return false;									\
-		return true;										\
-	}
 #define def_portocol_function_name(_Name)					\
 	static const char* name()								\
 	{														\
@@ -66,7 +49,6 @@
 	def_portocol_function_pop	(__VA_ARGS__)				\
 	def_portocol_function_push	(__VA_ARGS__)				\
 	def_portocol_function_bytes	(__VA_ARGS__)				\
-	def_portocol_function_log	(__VA_ARGS__)				\
 	def_portocol_function_name	(_Name)
 
 // --- 协议号  协议类型  名称 ....(成员)

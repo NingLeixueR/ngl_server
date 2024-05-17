@@ -1,6 +1,5 @@
 #pragma once
 
-#include "logformat.h"
 #include "localtime.h"
 #include "logprintf.h"
 #include "sysconfig.h"

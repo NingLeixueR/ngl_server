@@ -10,7 +10,6 @@
 #include "logprintf.h"
 #include "localtime.h"
 #include "enum2name.h"
-#include "logformat.h"
 #include "nprotocol.h"
 #include "xmlinfo.h"
 #include "xmlnode.h"

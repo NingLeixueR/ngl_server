@@ -13,7 +13,6 @@
 #include <set>
 #include <map>
 
-#include "logserialize.h"
 #include "bytes_order.h"
 #include "varint.h"
 #include "define.h"
@@ -58,11 +57,6 @@ namespace ngl
 		void make()
 		{
 			m_data = std::make_shared<T>();
-		}
-
-		bool log(ngl::logserialize& atstr)const
-		{
-			return true;
 		}
 	};
 
@@ -984,26 +978,6 @@ namespace ngl
 			}
 		};
 
-		template <typename E, bool IS_ENUM>
-		class enum_operator_log
-		{
-		public:
-			static bool operator_log(logserialize& astr, const E& adata)
-			{
-				return adata.log(astr);
-			}
-		};
-
-		template <typename E>
-		class enum_operator_log<E, true>
-		{
-		public:
-			static bool operator_log(logserialize& astr, const E& adata)
-			{
-				return astr((int32_t)adata);
-			}
-		};
-
 	public:
 		static bool push(ngl::serialize& ser, const T& adata)
 		{
@@ -1018,11 +992,6 @@ namespace ngl
 		static int bytes(ngl::serialize_bytes& abytes, const T& adata)
 		{
 			return enum_operator_bytes<T, std::is_enum<T>::value>::operator_bytes(abytes, adata);
-		}
-
-		static bool log(logserialize& astr, const T& adata)
-		{
-			return enum_operator_log<T, std::is_enum<T>::value || std::is_integral<T>::value>::operator_log(astr, adata);
 		}
 
 		template <typename T1, typename ...ARG>
@@ -1050,12 +1019,6 @@ namespace ngl
 		return enum_operator<T>::push(*this, adata);
 	}
 
-	template <typename T>
-	bool logserialize::operator()(const T& avalue)
-	{
-		return enum_operator<T>::log(*this, avalue);
-	}
-
 	struct forward
 	{
 		uint32_t m_len = 0;
@@ -1063,7 +1026,6 @@ namespace ngl
 		bool pop(unserialize& ser);
 		bool push(serialize& ser)const;
 		int bytes(serialize_bytes& abytes)const;
-		bool log(logserialize& atstr)const { return true; }
 		const char* name() { return "forward"; }
 	};
 

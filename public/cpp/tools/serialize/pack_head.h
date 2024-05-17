@@ -1,6 +1,5 @@
 #pragma once
 
-#include "logserialize.h"
 #include "serialize.h"
 #include "csvtable.h"
 #include "type.h"

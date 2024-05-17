@@ -23,8 +23,6 @@ namespace ngl
 		{
 			int32_t	m_id = 0;
 			int32_t	m_rolesize = 0;
-
-			def_portocol_function_log(m_id, m_rolesize)
 		};
 	private:
 		// ----- Data Begin -----

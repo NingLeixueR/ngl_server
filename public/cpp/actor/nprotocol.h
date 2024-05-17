@@ -286,15 +286,6 @@ namespace ngl
 			return "actor_module_forward";
 		}
 
-		inline bool log(ngl::logserialize& atstr)const
-		{
-			_va_args_def_portocol_function_log(m_identifier)
-				return false;
-			if (!atstr('}'))
-				return false;
-			return true;
-		}
-
 		inline bool push(ngl::serialize& ser)const
 		{
 			if (ser.push(m_identifier) == false)
@@ -742,19 +733,21 @@ namespace ngl
 		ELOG_TYPE				m_logtype;
 		std::source_location	m_source;
 	public:
-		std::stringstream	m_stream;
+		std::stringstream		m_stream;
 		/** ÁÙÊ±Êý¾Ý **/
 		static bool m_init;
 	public:
-		np_actor_logitem() {}
+		np_actor_logitem():
+			m_actortype(ACTOR_NONE),
+			m_logtype(ELOG_LOCAL)
+		{
+		}
 		np_actor_logitem(ENUM_ACTOR	aactortype, ELOG_TYPE alogtype, const std::source_location& asource = std::source_location::current()):
 			m_actortype(aactortype),
 			m_logtype(alogtype),
 			m_source(asource)
-		{
-			
-		}
-
+		{}
+	private:
 		void set_source()
 		{
 			std::string_view str = m_source.file_name();
@@ -770,13 +763,6 @@ namespace ngl
 			m_src = std::format("{:#^20}:{:#^5}", m_src, m_source.line());
 		}
 
-		void set(ENUM_ACTOR	aactortype, ELOG_TYPE alogtype)
-		{
-			m_actortype = aactortype;
-			m_logtype = alogtype;
-		}
-	private:
-		
 		void send(std::shared_ptr<np_actor_logitem> pro);
 
 		template <typename ...ARGS>

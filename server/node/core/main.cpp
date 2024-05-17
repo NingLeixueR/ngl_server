@@ -36,8 +36,6 @@ int main(int argc, char** argv)
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	nconfig::set_server(argv[1], tab->m_id);
 
-	
-
 	char lname[1024] = { 0x0 };
 	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
 
