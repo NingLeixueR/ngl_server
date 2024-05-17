@@ -25,14 +25,102 @@ namespace ngl
 		return "none";
 	}
 
-	std::shared_ptr<np_actor_logitem> log(const std::source_location& asource/* = std::source_location::current()*/)
+	std::shared_ptr<np_actor_logitem> g_nonelog = std::make_shared<np_actor_logitem>();
+	std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource)
 	{
-		return std::make_shared<np_actor_logitem>(ACTOR_NONE, ELOG_LOCAL, asource);
+		if (ELOG_DEBUG >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_DEBUG, ACTOR_NONE, ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
 	}
 
-	std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource/* = std::source_location::current()*/)
+	std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource)
 	{
-		return std::make_shared<np_actor_logitem>(ACTOR_NONE, ELOG_NETWORK, asource);
+		if (ELOG_DEBUG >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_DEBUG, ACTOR_NONE, ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
 	}
+	
+	std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource)
+	{
+		if (ELOG_INFO >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_INFO, ACTOR_NONE, ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource)
+	{
+		if (ELOG_INFO >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_INFO, ACTOR_NONE, ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource)
+	{
+		if (ELOG_WARN >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_WARN, ACTOR_NONE, ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource)
+	{
+		if (ELOG_WARN >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_WARN, ACTOR_NONE, ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource)
+	{
+		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_ERROR, ACTOR_NONE, ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource)
+	{
+		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_ERROR, ACTOR_NONE, ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return g_nonelog;
+		}
+	}
+
 
 }// namespace ngl

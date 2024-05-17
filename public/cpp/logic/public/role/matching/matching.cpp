@@ -14,7 +14,7 @@ namespace ngl
 		m_tab = allcsv::tab<tab_matching>(atid);
 		if (m_tab == nullptr)
 		{
-			log()->error("allcsv::tab<tab_matching>({}) == nullptr", atid);
+			log_error()->print("allcsv::tab<tab_matching>({}) == nullptr", atid);
 			return;
 		}
 	}

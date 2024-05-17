@@ -19,8 +19,15 @@ namespace ngl
 		static const char* get(ELOGLEVEL atype);
 	};
 	struct np_actor_logitem;
-	extern std::shared_ptr<np_actor_logitem> log(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource = std::source_location::current());
+
+	extern std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
 
 }
 
@@ -37,15 +44,15 @@ namespace ngl
 #define Catch																					\
 	catch(const char* errormsg)																	\
 	{																							\
-		ngl::log()->error("function[{}][{}]", __FUNCTION__, errormsg);							\
+		ngl::log_error()->print("function[{}][{}]", __FUNCTION__, errormsg);					\
 	}																							\
 	catch(const std::exception& e)																\
 	{																							\
-		ngl::log()->error("function[{}][{}]", __FUNCTION__, e.what());							\
+		ngl::log_error()->print("function[{}][{}]", __FUNCTION__, e.what());					\
 	}																							\
 	catch(...)																					\
 	{																							\
-		ngl::log()->error("function[{}]", __FUNCTION__);										\
+		ngl::log_error()->print("function[{}]", __FUNCTION__);									\
 	}
 
 

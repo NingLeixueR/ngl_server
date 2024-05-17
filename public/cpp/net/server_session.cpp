@@ -11,7 +11,7 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		log()->warn("connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
+		log_warn()->print("connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
 		lock_write(m_mutex);
 		
 		{

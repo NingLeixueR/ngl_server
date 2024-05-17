@@ -22,7 +22,7 @@ namespace ngl
 		{
 			if (lreply)
 			{
-				log()->error("[ERROR] Redis[{}] ", lreply->str);
+				log_error()->print("[ERROR] Redis[{}] ", lreply->str);
 				freeReplyObject(lreply);
 			}
 			redisFree(arc);
@@ -49,7 +49,7 @@ namespace ngl
 		m_rc = redisConnect(arg.m_ip.c_str(), arg.m_port);
 		if (m_rc->err)
 		{
-			log()->error("[ERROR] Redis[{}] ", m_rc->err);
+			log_error()->print("[ERROR] Redis[{}] ", m_rc->err);
 			assert(0);
 			return;
 		}

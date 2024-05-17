@@ -26,7 +26,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log();
+			auto lstream = log_error();
 			(*lstream) << "actor_notice###loaddb_finish" << std::endl;
 			m_maxid = 0;
 			for (auto&& [id, dbnotice] : *get_notice())
@@ -43,7 +43,7 @@ namespace ngl
 				if (m_maxid <= lnotice.m_id())
 					m_maxid = lnotice.m_id();
 			}
-			(*lstream).error("");
+			(*lstream).print("");
 		}
 
 		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)

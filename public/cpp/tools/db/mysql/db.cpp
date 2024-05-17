@@ -27,7 +27,7 @@ namespace ngl
 			return false;
 		}
 		m_arg = arg;
-		log()->error("[mysql] {}@{}:{} [password={}][dbname={}]"
+		log_error()->print("[mysql] {}@{}:{} [password={}][dbname={}]"
 			, m_arg.m_account
 			, m_arg.m_ip, m_arg.m_port
 			, m_arg.m_passworld
@@ -36,7 +36,7 @@ namespace ngl
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)
 		{
-			log()->error("[mysql] err mysql_init");
+			log_error()->print("[mysql] err mysql_init");
 			return false;
 		}
 
@@ -50,7 +50,7 @@ namespace ngl
 			nullptr,
 			0))
 		{
-			log()->error("[mysql] err db::query[{}]", mysql_error(m_mysql));
+			log_error()->print("[mysql] err db::query[{}]", mysql_error(m_mysql));
 			closedb();
 			return false;
 		}
@@ -60,14 +60,14 @@ namespace ngl
 
 		if (mysql_set_character_set(m_mysql, "utf8"))
 		{
-			log()->error("[mysql] err utf8");
+			log_error()->print("[mysql] err utf8");
 			closedb();
 			return false;
 		}
 
 		if (!m_arg.m_dbname.empty() && !changedb(m_mysql, m_arg.m_dbname))
 		{
-			log()->error("[mysql] err dbname");
+			log_error()->print("[mysql] err dbname");
 			closedb();
 			return false;
 		}
@@ -99,10 +99,10 @@ namespace ngl
 		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1));
 		if (ret != 0)
 		{
-			log()->error("db::query[{}][{}]", mysql_error(m_mysql), (const char*)asql);
+			log_error()->print("db::query[{}][{}]", mysql_error(m_mysql), (const char*)asql);
 			return false;
 		}
-		log()->error("db::query[{}]", asql);
+		log_error()->print("db::query[{}]", asql);
 		return true;
 	}
 
@@ -144,7 +144,7 @@ namespace ngl
 		}
 		else
 		{
-			log()->error("db::select[{}][{}]", mysql_error(m_mysql), (const char*)asql);
+			log_error()->print("db::select[{}][{}]", mysql_error(m_mysql), (const char*)asql);
 		}
 		return false;
 	}

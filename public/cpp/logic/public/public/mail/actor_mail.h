@@ -53,7 +53,7 @@ namespace ngl
 			pro->m_tid = amailid;
 			if (drop::droplist(adropid, 1, pro->m_items) == false)
 			{
-				ngl::log()->error("drop[{}] not find!!!", adropid);
+				ngl::log_error()->print("drop[{}] not find!!!", adropid);
 				return false;
 			}
 			pro->m_parm = aparm;

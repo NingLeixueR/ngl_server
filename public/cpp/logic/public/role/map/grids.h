@@ -185,7 +185,7 @@ namespace ngl
 
 		void printf(int32_t aid1, int32_t aid2, std::list<int>& apath)
 		{
-			auto lstream = log();
+			auto lstream = log_error();
 			if (apath.empty())
 			{
 				(*lstream) << "[" << printf_point(aid1) << "->" << printf_point(aid2) << "]" << std::endl;
@@ -225,6 +225,7 @@ namespace ngl
 					(*lstream) << std::endl;
 				}
 			}
+			lstream->print("");
 		}
 
 		bool print_findpath(int32_t aid1, int32_t aid2, std::list<int>& apath)

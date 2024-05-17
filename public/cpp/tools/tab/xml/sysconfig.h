@@ -5,11 +5,11 @@ namespace ngl
 {
 	enum ELOGLEVEL
 	{
-		ELOG_DEBUG,   // ²âÊÔÐÅÏ¢
-		ELOG_INFO,    // ´òÓ¡
-		ELOG_WARN,    // ¾¯¸æ
-		ELOG_ERROR,   // ´íÎó
-		ELOG_NONE,    // ÎÞ
+		ELOG_NONE = -1,		// ÎÞ
+		ELOG_DEBUG = 0,		// ²âÊÔÐÅÏ¢
+		ELOG_INFO,			// ´òÓ¡
+		ELOG_WARN,			// ¾¯¸æ
+		ELOG_ERROR,			// ´íÎó
 	};
 
 	struct sysconfig

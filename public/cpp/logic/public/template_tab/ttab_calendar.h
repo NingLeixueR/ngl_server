@@ -132,7 +132,7 @@ namespace ngl
 
 		static void printf_time(int aid)
 		{
-			auto lstream = log();
+			auto lstream = log_error();
 			(*lstream) << std::endl;
 			(*lstream) << aid <<":{";
 			for (int64_t ltime : m_data[aid].m_utc)
@@ -145,7 +145,7 @@ namespace ngl
 					<< "]\n";
 			}
 			(*lstream) << "}\n";
-			(*lstream).error("");
+			(*lstream).print("");
 		}
 
 		static void init_week(int aid, std::vector<tweek>& aweek)

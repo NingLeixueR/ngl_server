@@ -510,15 +510,38 @@ private:
 #pragma endregion 
 
 		//# 日志相关
-		std::shared_ptr<np_actor_logitem> log(const std::source_location& asource = std::source_location::current())
-		{
-			return std::make_shared<np_actor_logitem>(type(), ELOG_LOCAL, asource);;
-		}
+		static std::shared_ptr<np_actor_logitem> m_nonelog;
+		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
 
-		std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource = std::source_location::current())
-		{
-			return std::make_shared<np_actor_logitem>(type(), ELOG_NETWORK, asource);;
-		}
+		//std::shared_ptr<np_actor_logitem> log(ELOGLEVEL alevel, const std::source_location& asource = std::source_location::current())
+		//{
+		//	if (alevel >= ngl::sysconfig::loglevel())
+		//	{
+		//		return std::make_shared<np_actor_logitem>(alevel, type(), ELOG_LOCAL, asource);
+		//	}
+		//	else
+		//	{
+		//		return m_nonelog;
+		//	}
+		//}
+		//std::shared_ptr<np_actor_logitem> lognet(ELOGLEVEL alevel, const std::source_location& asource = std::source_location::current())
+		//{
+		//	if (alevel >= ngl::sysconfig::loglevel())
+		//	{
+		//		return std::make_shared<np_actor_logitem>(alevel, type(), ELOG_NETWORK, asource);;
+		//	}
+		//	else
+		//	{
+		//		return m_nonelog;
+		//	}
+		//}
 
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用

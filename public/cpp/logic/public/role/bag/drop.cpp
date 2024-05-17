@@ -74,14 +74,14 @@ namespace ngl
 
 	void print_weight(std::map<int, int>& amap)
 	{
-		auto lstream = log();
+		auto lstream = log_error();
 		(*lstream) << "weight[";
 		for (const auto& [key, value] : amap)
 		{
 			(*lstream) << key << ":" << value << ",";
 		}
 		(*lstream) << "]" << std::endl;
-		(*lstream).error("");
+		(*lstream).print("");
 	}
 
 	bool drop::droplist(int aid, int acount, std::map<int, int>& amap)

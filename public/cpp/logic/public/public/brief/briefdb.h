@@ -41,7 +41,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log();
+			auto lstream = log_error();
 			(*lstream) << "actor_brief###loaddb_finish" << std::endl;
 			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
 			{
@@ -54,7 +54,7 @@ namespace ngl
 				(*lstream) << "#m_vip=" << pair.second.getconst().m_vip() << std::endl;
 				(*lstream) << "#####################" << std::endl;
 			}
-			(*lstream).error("");
+			(*lstream).print("");
 		}
 
 		void update(const std::vector<pbdb::db_brief>& m_vecinfo)

@@ -31,7 +31,7 @@ namespace ngl
 
 		static void print_address()
 		{
-			std::shared_ptr<np_actor_logitem> lstream = log();
+			auto lstream = log_error();
 			(*lstream) << "############################" << std::endl;
 			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
 			{
@@ -44,7 +44,7 @@ namespace ngl
 					<< std::endl;
 			}
 			(*lstream) << "############################" << std::endl;
-			(*lstream).error("");
+			(*lstream).print("");
 		}
 
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid)

@@ -68,7 +68,7 @@ namespace ngl
 	public:
 		actor_suspendthread()
 		{
-			log()->info("start actor_suspendthread");
+			log_info()->print("start actor_suspendthread");
 			actor_manage::getInstance().statrt_suspend_thread();
 		}
 
@@ -77,7 +77,7 @@ namespace ngl
 			Try
 			{
 				actor_manage::getInstance().finish_suspend_thread();
-				log()->info("finish actor_suspendthread");
+				log_info()->print("finish actor_suspendthread");
 			}Catch;			
 		}
 	};

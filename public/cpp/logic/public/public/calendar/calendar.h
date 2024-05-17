@@ -69,7 +69,7 @@ namespace ngl
 		{		
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 
-			auto lstream = log();
+			auto lstream = log_error();
 			(*lstream) << "actor_calendar###loaddb_finish" << std::endl;
 			int32_t lnow = localtime::gettime();
 			for (std::pair<const nguid, data_modified<pbdb::db_calendar> >& item : *lmap)
@@ -115,7 +115,7 @@ namespace ngl
 					ttab_calendar::post(tab, ltime, *itemcalendar);
 				}
 			}
-			(*lstream).error("");
+			(*lstream).print("");
 			// ##
 			for (std::pair<const int32_t, ttab_calendar::data>& item :ttab_calendar::m_data)
 			{

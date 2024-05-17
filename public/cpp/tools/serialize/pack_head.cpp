@@ -203,18 +203,4 @@ namespace ngl
 		apair.first = &(abuff[size()]);
 		apair.second = abufflen - size();
 	}
-
-	void pack_head::_log(np_actor_logitem& astream, int anumber/* = EPH_BYTES*/)const
-	{
-		astream << m_data[anumber] << "#";
-		if (EPH_SUM != anumber)
-			return _log(astream, anumber + 1);
-	}
-
-	void pack_head::log(np_actor_logitem& astream)const
-	{
-		astream << "HEAD[";
-		_log(astream);
-		astream << "]";
-	}
 }// namespace ngl

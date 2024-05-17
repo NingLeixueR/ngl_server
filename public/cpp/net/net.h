@@ -237,7 +237,7 @@ namespace ngl
 	{
 		if (m_kcpsession == -1)
 		{
-			log()->error("m_kcpsession = -1, is_single() == [{}]", is_single());
+			log_error()->print("m_kcpsession = -1, is_single() == [{}]", is_single());
 			return false;
 		}
 		if (iskcp() == false)

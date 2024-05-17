@@ -9,12 +9,12 @@ namespace ngl
 		// ## 死亡
 		push<event_parm_death>(enum_event_death, [](event_parm_death* apram)
 			{
-				log()->error("#enum_event_death unitid:{} deathunitid:{}", apram->m_unitid, apram->m_deathunitid);
+				log_error()->print("#enum_event_death unitid:{} deathunitid:{}", apram->m_unitid, apram->m_deathunitid);
 			});
 		// ## 进入视野(enterview)
 		push<event_parm_enterview>(enum_event_enterview, [](event_parm_enterview* apram)
 			{
-				auto lstream = log();
+				auto lstream = log_error();
 				(*lstream) << "#enum_event_enterview enterunitid:" << apram->m_enterunitid;
 				(*lstream) << "enterunitid:[";
 				for (auto itor = apram->m_unitids.begin(); itor != apram->m_unitids.end(); ++itor)
@@ -24,12 +24,12 @@ namespace ngl
 					(*lstream) << *itor;
 				}
 				(*lstream) << "]";
-				(*lstream).error("");
+				(*lstream).print("");
 			});
 		// ## 离开视野(leaveview)
 		push<event_parm_leaveview>(enum_event_leaveview, [](event_parm_leaveview* apram)
 			{
-				auto lstream = log();
+				auto lstream = log_error();
 				(*lstream) << "#enum_event_leaveview enterunitid:" << apram->m_leaveunitid;
 				(*lstream) << "enterunitid:[";
 				for (auto itor = apram->m_unitids.begin(); itor != apram->m_unitids.end(); ++itor)
@@ -39,7 +39,7 @@ namespace ngl
 					(*lstream) << *itor;
 				}
 				(*lstream) << "]";
-				(*lstream).error("");
+				(*lstream).print("");
 			});
 	}
 }

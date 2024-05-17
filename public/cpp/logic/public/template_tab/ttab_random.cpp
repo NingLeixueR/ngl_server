@@ -12,7 +12,7 @@ namespace ngl
 			std::set<int32_t> lset;
 			if (is_loop(tab.m_id, lset) == false)
 			{
-				log()->error("ttab_random::reload random[{}] loop!!!", tab.m_id);
+				log_error()->print("ttab_random::reload random[{}] loop!!!", tab.m_id);
 			}
 		}
 	}

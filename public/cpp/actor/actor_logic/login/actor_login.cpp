@@ -51,7 +51,7 @@ namespace ngl
 
 	void actor_login::loaddb_finish(bool adbishave)
 	{
-		auto lstream = log();
+		auto lstream = log_error();
 		(*lstream) << "actor_login::loaddb_finish" << std::endl;
 		for (auto& item : m_account.data())
 		{
@@ -62,7 +62,7 @@ namespace ngl
 				<< "area=" << laccount.m_area() << " "
 				<< "id=" << nguid(laccount.m_roleid()).actordataid();
 		}
-		(*lstream).error("");
+		(*lstream).print("");
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
@@ -144,7 +144,7 @@ namespace ngl
 
 	void actor_login::printf_freeserver()
 	{
-		log()->error("game[{}] \ngateway[{}]", m_game, m_gateway);
+		log_error()->print("game[{}] \ngateway[{}]", m_game, m_gateway);
 	}
 	
 	bool actor_login::handle(message<np_actorserver_connect>& adata)
@@ -164,7 +164,7 @@ namespace ngl
 			m_gateway.insert(std::make_pair(lparm->m_serverid, ltemp));
 			break;
 		}
-		log()->error("message<np_actorserver_connect>:{}", lparm->m_serverid);
+		log_error()->print("message<np_actorserver_connect>:{}", lparm->m_serverid);
 		return true;
 	}
 
@@ -175,7 +175,7 @@ namespace ngl
 			auto lparm = adata.m_data;
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
-			log()->info("############ Login[{}][{}][{}] ############", lparm->m_area(), lparm->m_account(), lparm->m_password());
+			log_info()->print("############ Login[{}][{}][{}] ############", lparm->m_area(), lparm->m_account(), lparm->m_password());
 			bool iscreate = false;
 
 			data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);

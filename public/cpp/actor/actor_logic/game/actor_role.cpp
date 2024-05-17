@@ -97,7 +97,7 @@ namespace ngl
 					ojson ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
-						log()->error("ngl::manage_curl::callback fail [{}]", ahttp.m_recvdata);
+						log_error()->print("ngl::manage_curl::callback fail [{}]", ahttp.m_recvdata);
 						return;
 					}
 					std::string lorderid;
@@ -130,7 +130,7 @@ namespace ngl
 
 	void actor_role::loaddb_finish(bool adbishave)
 	{
-		log()->error("actor_role###loaddb_finish#[{}]", nguid(id_guid()));
+		log_error()->print("actor_role###loaddb_finish#[{}]", nguid(id_guid()));
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
@@ -161,7 +161,7 @@ namespace ngl
 		*pro->mutable_m_bag() = m_bag.get()->getconst();
 		*pro->mutable_m_task() = m_task.get()->getconst();
 		send2client(pro);
-		log()->error("[sync]###[{}]", m_info.get()->getconst().m_base().m_name());
+		log_error()->print("[sync]###[{}]", m_info.get()->getconst().m_base().m_name());
 	}
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
@@ -344,7 +344,7 @@ namespace ngl
 
 		if (handle_rechangecmd::function(loperator, adata.m_data->identifier(), lojson) == false)
 		{
-			log()->error("GM actor_role rechange operator[{}] ERROR", loperator);
+			log_error()->print("GM actor_role rechange operator[{}] ERROR", loperator);
 		}
 		return true;
 	}

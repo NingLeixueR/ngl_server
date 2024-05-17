@@ -86,7 +86,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log();
+			auto lstream = log_error();
 			(*lstream) << "actor_ranklist###loaddb_finish" << std::endl;
 			for (auto&& [id, dbranklist] : *get_ranklist())
 			{
@@ -105,7 +105,7 @@ namespace ngl
 					(*lstream) << "\t[" << itor->first << "]-[" << itor->second.m_name() << "]" << std::endl;
 				}
 			}
-			(*lstream).error("");
+			(*lstream).print("");
 		}
 
 		data_modified<pbdb::db_ranklist>& find(type atype)

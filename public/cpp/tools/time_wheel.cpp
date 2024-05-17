@@ -398,7 +398,7 @@ namespace ngl
 			}
 			else if (lcallcount != lcount)
 			{
-				//log()->error("wheel.push_slots({},{})", lcallcount, lcount);
+				//log_error()->print("wheel.push_slots({},{})", lcallcount, lcount);
 				return true;
 			}
 		}

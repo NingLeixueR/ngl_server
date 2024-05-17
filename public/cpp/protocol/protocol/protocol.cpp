@@ -23,7 +23,7 @@ namespace ngl
 			if (itor1 == m_protocolfun.end())
 			{
 				char m_hexstr[1024] = { 0 };
-				log()->error("protocol::push [{}] Error protocolnum[{}] "
+				log_error()->print("protocol::push [{}] Error protocolnum[{}] "
 					, (int)aprotocoltype
 					, aprotocolnum
 				);
@@ -32,7 +32,7 @@ namespace ngl
 			auto itor2 = itor1->second.find(aprotocolnum);
 			if (itor2 == itor1->second.end())
 			{
-				log()->error("protocol::push Error protocolnum[{}] "
+				log_error()->print("protocol::push Error protocolnum[{}] "
 					, aprotocolnum
 				);
 				return nullptr;
@@ -40,7 +40,7 @@ namespace ngl
 			
 			/////////
 			//const char* lpprotocolname = protocoltools::name(aprotocolnum, aprotocoltype);
-			//log()->error("protocol::push Info [{}]", lpprotocolname);
+			//log_error()->print("protocol::push Info [{}]", lpprotocolname);
 			////////
 
 			return &itor2->second;

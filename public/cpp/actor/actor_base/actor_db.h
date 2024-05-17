@@ -129,7 +129,7 @@ namespace ngl
 				});
 			pro.m_over = true;
 			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-			log()->info("loadall[{}]", TDBTAB().descriptor()->full_name());
+			log_info()->print("loadall[{}]", TDBTAB().descriptor()->full_name());
 		}
 
 		// 加载表中的指定数据
@@ -160,7 +160,7 @@ namespace ngl
 			{
 				if (m_idset.find(lid) == m_idset.end())
 				{
-					log()->error("load <<{}>>===<<{}>>", dtype_name(type_actor_dbtab), lid);
+					log_error()->print("load <<{}>>===<<{}>>", dtype_name(type_actor_dbtab), lid);
 					return;
 				}
 					
@@ -181,7 +181,7 @@ namespace ngl
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 
 				using type_message = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-				log()->error("load finish: [{}][{}]", lrequestactor, dtype_name(type_message));
+				log_error()->print("load finish: [{}][{}]", lrequestactor, dtype_name(type_message));
 			}
 		}
 
@@ -300,7 +300,7 @@ namespace ngl
 		bool handle(message<np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			using type_message = np_actordb_load<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			log()->error("load: [{}] [{}]", dtype_name(type_message), adata.m_data->m_id);
+			log_error()->print("load: [{}] [{}]", dtype_name(type_message), adata.m_data->m_id);
 			actor_dbtab<PROTYPE, TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
 			return true;
 		}
@@ -408,7 +408,7 @@ namespace ngl
 
 			if (handle_cmd::function(loperator, adata.m_thread, adata.m_data->identifier(), lojson) == false)
 			{
-				log()->error("GM actor_db operator[{}] ERROR", loperator);
+				log_error()->print("GM actor_db operator[{}] ERROR", loperator);
 			}
 			return true;
 		}

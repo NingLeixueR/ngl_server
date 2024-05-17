@@ -151,7 +151,7 @@ namespace ngl
 			auto lpram = adata.m_data;
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
-			log()->error("############ GateWay Login[{}][{}][{}] ############"
+			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
 				, lpack->m_id
 				, lpram->m_roleid()
 				, lpram->m_session()
@@ -251,7 +251,7 @@ namespace ngl
 		Try
 		{
 			auto lpram = adata.m_data;
-			log()->info("############ GateWay Transmit ############");
+			log_info()->print("############ GateWay Transmit ############");
 			nguid lguid(lpram->m_actor);
 
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
@@ -282,7 +282,7 @@ namespace ngl
 				{
 					gateway_socket* linfo = m_info.get(item->m_area, item->m_dataid);
 					session_close(linfo);
-					log()->info("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
+					log_info()->print("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 				}
 			}
 			else
@@ -290,7 +290,7 @@ namespace ngl
 				gateway_socket* linfo = m_info.get(lpram->m_sessionid);
 				Assert(linfo != nullptr);
 				session_close(linfo);
-				log()->info("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
+				log_info()->print("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 			}
 
 			update_gateway_info(new np_actor_gatewayinfo_updata{.m_delsocket = {lpram->m_sessionid} });

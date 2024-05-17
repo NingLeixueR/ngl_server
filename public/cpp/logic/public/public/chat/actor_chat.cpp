@@ -39,7 +39,7 @@ namespace ngl
 		timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
-			log()->error("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		set_timer(tparm);			
@@ -70,7 +70,7 @@ namespace ngl
 	bool actor_chat::handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 	{
 		pbnet::PROBUFF_NET_CHAT& recv = *adata.m_data->data();
-		//log()->error("recv [pbnet::PROBUFF_NET_CHAT] type:{}", recv.m_type());
+		//log_error()->print("recv [pbnet::PROBUFF_NET_CHAT] type:{}", recv.m_type());
 
 		if (recv.m_type() == pbnet::chat_speak)
 		{

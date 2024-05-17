@@ -22,7 +22,7 @@ namespace ngl
 		tab_activity* tab = allcsv::tab<tab_activity>(activityid);
 		if (tab == nullptr)
 		{
-			ngl::log()->error("tab_activity id[{}] not find!!!", activityid);
+			log_error()->print("tab_activity id[{}] not find!!!", activityid);
 			return;
 		}
 		auto itor = adb.data().find(activityid);

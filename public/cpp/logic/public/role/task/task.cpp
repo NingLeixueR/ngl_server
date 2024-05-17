@@ -173,7 +173,7 @@ namespace ngl
 						, ""
 					) == false)
 					{
-						log()->error("task[{}] actor_mail::sendmail({},{},{})"
+						log_error()->print("task[{}] actor_mail::sendmail({},{},{})"
 							, ataskid
 							, arole->id_guid()
 							, tab->m_mailid

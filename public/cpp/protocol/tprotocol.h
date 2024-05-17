@@ -51,7 +51,6 @@ namespace ngl
 				size_t lcode = hash_code<T>();
 				if (m_keyval.find(lcode) != m_keyval.end())
 				{
-					log()->error("init_customs({}) is same!!!", typeid(T).name());
 					return;
 				}
 				m_keyval.insert(std::make_pair(lcode, pinfo
@@ -60,7 +59,6 @@ namespace ngl
 						.m_protocol = ++lcustoms,
 						.m_name = dtype_name(T)
 					}));
-				log()->info("#[{}][EPROTOCOL_TYPE_CUSTOM][{}]", lcustoms, typeid(T).name());
 			}
 		};
 		using type_customs = template_arg<customs, EPROTOCOL_TYPE>;
@@ -72,7 +70,6 @@ namespace ngl
 			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
-				log()->error("init_protobuf::init_protobufs({}) not xml!!!", lname);
 				return false;
 			}
 			m_keyval.insert(std::make_pair(HASH_CODE_VALUE(T), pinfo
@@ -81,7 +78,6 @@ namespace ngl
 					.m_protocol = lprotocol,
 					.m_name = lname
 				}));
-			//log()->error("#[{}][EPROTOCOL_TYPE_PROTOCOLBUFF][{}]", lprotocol, lname);
 			return true;
 		}
 

@@ -8,6 +8,101 @@
 
 namespace ngl
 {
+	std::shared_ptr<np_actor_logitem> actor_base::m_nonelog = std::make_shared<np_actor_logitem>();
+
+	std::shared_ptr<np_actor_logitem> actor_base::log_debug(const std::source_location& asource)
+	{
+		if (ELOG_DEBUG >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_DEBUG, type(), ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> actor_base::log_debug_net(const std::source_location& asource)
+	{
+		if (ELOG_DEBUG >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_DEBUG, type(), ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> actor_base::log_info(const std::source_location& asource)
+	{
+		if (ELOG_INFO >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_INFO, type(), ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+	std::shared_ptr<np_actor_logitem> actor_base::log_info_net(const std::source_location& asource)
+	{
+		if (ELOG_INFO >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_INFO, type(), ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> actor_base::log_warn(const std::source_location& asource)
+	{
+		if (ELOG_WARN >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_WARN, type(), ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+	std::shared_ptr<np_actor_logitem> actor_base::log_warn_net(const std::source_location& asource)
+	{
+		if (ELOG_WARN >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_WARN, type(), ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+
+	std::shared_ptr<np_actor_logitem> actor_base::log_error(const std::source_location& asource)
+	{
+		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_ERROR, type(), ELOG_LOCAL, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+	std::shared_ptr<np_actor_logitem> actor_base::log_error_net(const std::source_location& asource)
+	{
+		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
+		{
+			return std::make_shared<np_actor_logitem>(ELOG_ERROR, type(), ELOG_NETWORK, asource);
+		}
+		else
+		{
+			return m_nonelog;
+		}
+	}
+
 	struct actor_base::impl_actor_base
 	{
 		nguid										m_guid;				// actor guid
@@ -294,7 +389,7 @@ namespace ngl
 		auto itor = m_group.find(agroupid);
 		if (itor == m_group.end())
 		{
-			log()->error("add_group_member not find groupid[{}]", agroupid);
+			log_error()->print("add_group_member not find groupid[{}]", agroupid);
 			return false;
 		}
 
@@ -304,7 +399,7 @@ namespace ngl
 		{
 			if (itor->second.m_actortype != lguid.type())
 			{
-				log()->error("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
+				log_error()->print("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
 					, agroupid
 					, (int)ltype
 					, (int)lguid.type()
@@ -352,7 +447,7 @@ namespace ngl
 		nets::kcp(anum)->connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				m_kcpsession = asession;
-				log()->error("kcp m_kcpsession = {}", m_kcpsession);
+				log_error()->print("kcp m_kcpsession = {}", m_kcpsession);
 			});
 		return true;
 	}

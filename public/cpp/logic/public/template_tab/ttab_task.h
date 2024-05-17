@@ -32,7 +32,7 @@ namespace ngl
 			{//>=
 				if (amaxvalue == -1)
 				{
-					log()->error("task[{}] [ETaskConditionMore] maxvalue == -1", ataskid);
+					log_error()->print("task[{}] [ETaskConditionMore] maxvalue == -1", ataskid);
 					return;
 				}
 				for (int i = aitem.m_parmint; i > amaxvalue; ++i)
@@ -46,7 +46,7 @@ namespace ngl
 				{
 					if (amaxvalue == -1)
 					{
-						log()->error("task[{}] [ETaskConditionMore] maxvalue == -1", ataskid);
+						log_error()->print("task[{}] [ETaskConditionMore] maxvalue == -1", ataskid);
 						return;
 					}
 					arc[i].first.insert(ataskid);
@@ -72,7 +72,7 @@ namespace ngl
 				{
 					if (m_maxval.find(item.m_type) == m_maxval.end())
 					{
-						log()->error("ttab_task m_maxval.find({}) == m_maxval.end()", (int32_t)item.m_type);
+						log_error()->print("ttab_task m_maxval.find({}) == m_maxval.end()", (int32_t)item.m_type);
 						continue;
 					}
 					set_data(ltask.m_id
@@ -86,7 +86,7 @@ namespace ngl
 				{
 					if (m_maxval.find(item.m_type) == m_maxval.end())
 					{
-						log()->error("ttab_task taskid[{}] m_maxval.find({}) == m_maxval.end()", ltask.m_id, (int32_t)item.m_type);
+						log_error()->print("ttab_task taskid[{}] m_maxval.find({}) == m_maxval.end()", ltask.m_id, (int32_t)item.m_type);
 						continue;
 					}
 					set_data(ltask.m_id

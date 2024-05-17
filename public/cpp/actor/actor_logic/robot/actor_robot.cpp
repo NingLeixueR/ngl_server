@@ -39,7 +39,7 @@ namespace ngl
 	{
 		Try
 		{
-			log()->error("[LOGIC_ROLE_SYNC:{}:{}]"
+			log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
 				, adata.m_data->m_role().m_base().m_name()
 				,  adata.m_data->m_role().m_base().m_lv()
 			);
@@ -52,7 +52,7 @@ namespace ngl
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.m_data->m_utc(), "%y/%m/%d %H:%M:%S");
-		log()->error("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
+		log_error()->print("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
 		return true;
 	}
 
@@ -65,12 +65,12 @@ namespace ngl
 			for (auto& item : lrecv->m_chatlist())
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
-				log()->error("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
+				log_error()->print("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
 			}
 		}
 		else if (lrecv->m_type() == pbnet::chat_speak)
 		{
-			//log()->error("{}", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
+			//log_error()->print("{}", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
 		}
 		else if (lrecv->m_type() == pbnet::updata_speck)
 		{
@@ -78,7 +78,7 @@ namespace ngl
 			for (auto& item : lrecv->m_chatlist())
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
-				log()->error("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
+				log_error()->print("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
 			}
 		}
 		return true;
@@ -127,7 +127,7 @@ namespace ngl
 		ljson.get(lstr);
 		std::string lstrasscii;
 		ngl::conversion::to_asscii(lstr, lstrasscii);
-		log()->error("[{}:{}] {}", area(), m_data.m_role().m_base().m_name(), lstrasscii);
+		log_error()->print("[{}:{}] {}", area(), m_data.m_role().m_base().m_name(), lstrasscii);
 		return true;
 	}
 
@@ -135,7 +135,7 @@ namespace ngl
 	{
 		pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.m_data;
 		char lbuff[1024] = { 0 };
-		auto lstream = log();
+		auto lstream = log_error();
 		for (const auto& [_id, _mail] : pro.m_mail())
 		{
 			(*lstream) << "[####################################################################]" << std::endl;
@@ -149,7 +149,7 @@ namespace ngl
 			(*lstream) << "[draw:		" << (_mail.m_draw() ? "yes" : "no") << "]" << std::endl;
 			(*lstream) << "[####################################################################]" << std::endl;
 		}
-		(*lstream).error("");
+		(*lstream).print("");
 		return true;
 	}
 
@@ -170,13 +170,13 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
 	{
-		log()->error("发货成功！！！");
+		log_error()->print("发货成功！！！");
 		return true;
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
 	{
-		log()->error("[{}][{}][{}]"
+		log_error()->print("[{}][{}][{}]"
 			, nguid::make_type(id_guid(), ACTOR_ROLE)
 			, adata.m_data->m_errnum()
 			, adata.m_data->m_errmessage()

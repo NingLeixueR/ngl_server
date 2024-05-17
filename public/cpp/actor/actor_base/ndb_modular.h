@@ -105,14 +105,44 @@ namespace ngl
 			return (TACTOR*)m_actor; 
 		}
 
-		std::shared_ptr<np_actor_logitem> log(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())
 		{
-			return actor()->log(asource);
+			return actor()->log_debug(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> lognet(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())
 		{
-			return actor()->lognet(asource);
+			return actor()->log_debug_net(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log_info(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log_info_net(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log_warn(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log_warn_net(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log_error(asource);
+		}
+
+		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())
+		{
+			return actor()->log_error_net(asource);
 		}
 
 		void create()

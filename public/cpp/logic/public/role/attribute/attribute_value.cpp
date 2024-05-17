@@ -51,7 +51,7 @@ namespace ngl
 
 	void attribute_value::printf()
 	{
-		auto lstream = log();
+		auto lstream = log_error();
 		(*lstream) << "##############" << std::endl;
 		std::map<EnumAttribute, std::string> lmapname
 		{
@@ -68,7 +68,7 @@ namespace ngl
 		}
 		(*lstream) << "fight:" << m_fightscore << std::endl;
 		(*lstream) << "##############" << std::endl;
-		(*lstream).error("");
+		(*lstream).print("");
 	}
 
 	void attribute_value::clear()

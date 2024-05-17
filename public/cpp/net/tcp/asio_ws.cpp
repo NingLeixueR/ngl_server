@@ -73,7 +73,7 @@ namespace ngl
 					if (error)
 					{
 						close(lservice);
-						log()->error("asio_tcp::handle_accept[{}]", error.message().c_str());
+						log_error()->print("asio_tcp::handle_accept[{}]", error.message().c_str());
 					}
 					else
 					{
@@ -96,7 +96,7 @@ namespace ngl
 							{
 								if (aerr)
 								{
-									log()->error("asio_tcp::handle_accept[{}]", aerr.message().c_str());
+									log_error()->print("asio_tcp::handle_accept[{}]", aerr.message().c_str());
 										return;
 								}
 								{
@@ -139,7 +139,7 @@ namespace ngl
 		{
 			if (sessionid <= 0)
 				return;
-			log()->error("close sessionid[{}]", sessionid);
+			log_error()->print("close sessionid[{}]", sessionid);
 			// 通知逻辑层session断开连接
 			service_ws* lpservice = nullptr;
 			std::function<void()> lclosefun = nullptr;
@@ -176,7 +176,7 @@ namespace ngl
 
 		inline void close(service_ws* ap)
 		{
-			log()->error("asio_ws::close[{}]", ap->m_sessionid);
+			log_error()->print("asio_ws::close[{}]", ap->m_sessionid);
 			close(ap->m_sessionid);
 		}
 
@@ -187,7 +187,7 @@ namespace ngl
 			, int acount
 		)
 		{
-			log()->error("connect host[{}] port[{}]", ahost, aport);
+			log_error()->print("connect host[{}] port[{}]", ahost, aport);
 			service_ws* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
@@ -205,7 +205,7 @@ namespace ngl
 					{
 						if (acount > 0)
 						{
-							log()->error("连接[{}:{}]失败[{}] 加入定时队列 ", ahost, aport, ec.message());
+							log_error()->print("连接[{}:{}]失败[{}] 加入定时队列 ", ahost, aport, ec.message());
 							//加入定时队列
 							wheel_parm lparm
 							{
@@ -385,7 +385,7 @@ namespace ngl
 		{
 			if (error)
 			{
-				log()->error("asio_ws::handle_write[{}]", error.message().c_str());
+				log_error()->print("asio_ws::handle_write[{}]", error.message().c_str());
 				close(ap);
 			}
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, (pack*)apack.get());
@@ -395,7 +395,7 @@ namespace ngl
 		{
 			if (error)
 			{
-				log()->error("asio_ws::handle_write[{}]", error.message().c_str());
+				log_error()->print("asio_ws::handle_write[{}]", error.message().c_str());
 				close(ap);
 			}
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, (pack*)apack.get());
@@ -432,7 +432,7 @@ namespace ngl
 			{
 				//关闭连接
 				close(aservice);
-				log()->error("asio_tcp::handle_read[{}]", error.message().c_str());
+				log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
 			}
 		}
 
@@ -454,7 +454,7 @@ namespace ngl
 					{
 						//关闭连接
 						close(aservice);
-						log()->error("asio_tcp::handle_read[{}]", error.message().c_str());
+						log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
 					}
 				}
 			);

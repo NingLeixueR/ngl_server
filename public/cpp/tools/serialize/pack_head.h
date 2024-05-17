@@ -70,3 +70,24 @@ namespace ngl
 		void log(np_actor_logitem& atstr)const;
 	};
 }// namespace ngl
+
+template <>
+struct std::formatter<ngl::pack_head>
+{
+	auto parse(std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::pack_head& val, std::format_context& ctx)
+	{
+		auto out = ctx.out();
+		std::format_to(out, "HEAD[");
+		for (int i = 0; i < ngl::EPH_BYTES; ++i)
+		{
+			std::format_to(out, "{}#,", val.m_data[i]);
+		}
+		std::format_to(out, "]");
+		return out;
+	}
+};

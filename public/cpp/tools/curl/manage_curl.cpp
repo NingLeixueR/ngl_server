@@ -55,7 +55,7 @@ namespace ngl
 
 		void plog(int aerror, std::string& arecv)
 		{
-			ngl::log()->info("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]",
+			ngl::log_info()->print("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]",
 				aerror, m_url, m_param,
 				(m_mode == ENUM_MODE_HTTP ? "http" : "https"),
 				(m_type == ENUM_TYPE_POST ? "post" : "get"),
@@ -296,7 +296,7 @@ namespace ngl
 
 		ngl::manage_curl::set_callback(*lhttp, [&lbool](int anum, ngl::_http& aparm)
 			{
-				log()->error("curl callback [{}]", aparm.m_recvdata);
+				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;
 			});
 		ngl::manage_curl::getInstance().send(lhttp);

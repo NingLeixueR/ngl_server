@@ -12,7 +12,7 @@ namespace ngl
 		m_end(0),
 		m_fun(afun)
 	{
-		//log()->error("time consuming [{}:{}] start", aname, m_id);
+		//log_error()->print("time consuming [{}:{}] start", aname, m_id);
 	}
 
 	tconsuming_thread::tconsuming_thread() :
@@ -36,11 +36,11 @@ namespace ngl
 	{
 		if (awarn)
 		{
-			log()->info("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+			log_info()->print("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 		}
 		else
 		{
-			log()->error("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+			log_error()->print("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
 		}
 	}
 

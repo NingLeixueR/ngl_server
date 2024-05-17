@@ -48,7 +48,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log();
+			auto lstream = log_error();
 			(*lstream) << "actor_mail###loaddb_finish" << std::endl;
 			for (const auto& [_roleid, _mails] : data())
 			{
@@ -64,7 +64,7 @@ namespace ngl
 					(*lstream) << "read:" << (_mail.m_read() ? "yes" : "no") << std::endl;
 				}				
 			}
-			(*lstream).error("");
+			(*lstream).print("");
 		}
 
 		int32_t& maxid(i64_actorid aroleid)
@@ -85,7 +85,7 @@ namespace ngl
 				tab_mail* tab = allcsv::tab<tab_mail>(atid);
 				if (tab == nullptr)
 				{
-					log()->error("addmail tab id[{}] not find!!!", atid);
+					log_error()->print("addmail tab id[{}] not find!!!", atid);
 					return false;
 				}
 			}

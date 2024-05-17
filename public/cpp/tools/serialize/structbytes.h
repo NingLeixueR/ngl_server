@@ -101,7 +101,7 @@ namespace ngl
 			{
 				if (apack->m_head.getvalue(EPH_BYTES) != apack->m_pos)
 				{
-					log()->error("[##structbytes_protobuff::operator()] -> [{}] != [{}]"
+					log_error()->print("[##structbytes_protobuff::operator()] -> [{}] != [{}]"
 						, apack->m_head.getvalue(EPH_BYTES), apack->m_pos/* - llen*/
 					);
 					return false;
@@ -127,7 +127,7 @@ namespace ngl
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
 			if (adata.SerializeToArray(lpair.first, lpair.second) == false)
 			{
-				log()->error("[##struct2bytes::operator()] push error");
+				log_error()->print("[##struct2bytes::operator()] push error");
 				return false;
 			}
 
@@ -144,7 +144,7 @@ namespace ngl
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();
 			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
-			//log()->error("##tobytes## tprotocol::protocol<{}>() = {}", dtype_name(T), tprotocol::protocol<T>());
+			//log_error()->print("##tobytes## tprotocol::protocol<{}>() = {}", dtype_name(T), tprotocol::protocol<T>());
 			// ### sethead finish ###
 
 			ngl::serialize lser2(apack->m_buff, apack->m_len);

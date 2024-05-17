@@ -7,7 +7,7 @@ namespace ngl
 {
 	void activitydb::initdata()
 	{
-		auto lstream = log();
+		auto lstream = log_error();
 		(*lstream) << "actor_manage_activity###loaddb_finish" << std::endl;
 		for (std::pair<const nguid, data_modified<pbdb::db_activity>>& item : data())
 		{
@@ -21,6 +21,6 @@ namespace ngl
 			);
 			lactor->add_activity(item.first, lactivity);
 		}
-		(*lstream).error("");
+		(*lstream).print("");
 	}
 }//namespace ngl

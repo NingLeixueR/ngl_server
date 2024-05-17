@@ -734,18 +734,22 @@ namespace ngl
 		std::source_location	m_source;
 	public:
 		std::stringstream		m_stream;
+		ELOGLEVEL				m_level;
 		/** 临时数据 **/
 		static bool m_init;
 	public:
-		np_actor_logitem():
+		np_actor_logitem(ELOGLEVEL alevel = ELOG_NONE):
 			m_actortype(ACTOR_NONE),
-			m_logtype(ELOG_LOCAL)
+			m_logtype(ELOG_LOCAL),
+			m_level(alevel)
 		{
+
 		}
-		np_actor_logitem(ENUM_ACTOR	aactortype, ELOG_TYPE alogtype, const std::source_location& asource = std::source_location::current()):
+		np_actor_logitem(ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype, const std::source_location& asource = std::source_location::current()):
 			m_actortype(aactortype),
 			m_logtype(alogtype),
-			m_source(asource)
+			m_source(asource),
+			m_level(alevel)
 		{}
 	private:
 		void set_source()
@@ -764,11 +768,11 @@ namespace ngl
 		}
 
 		void send(std::shared_ptr<np_actor_logitem> pro);
-
+	public:
 		template <typename ...ARGS>
-		void print(ELOGLEVEL alevel, const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
+		void print(const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
 		{
-			if (m_init && alevel >= ngl::sysconfig::loglevel())
+			if (m_init && m_level >= ngl::sysconfig::loglevel())
 			{
 				if (sysconfig::logconsole() == false && sysconfig::logiswrite() == false)
 					return;
@@ -780,58 +784,36 @@ namespace ngl
 				{
 					char ltimebuff[1024];
 					ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
-					logprintf::printf(alevel, m_src.c_str(), ltimebuff, ldata.c_str());
+					logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
 				}
 				if (sysconfig::logiswrite() == false)
 					return;
 
-				m_data.m_loglevel = alevel;
+				m_data.m_loglevel = m_level;
 				m_data.m_serverid = nconfig::m_nodeid;
 				m_data.m_src.swap(m_src);
 				m_data.m_data.swap(ldata);
 				send(shared_from_this());
 			}
 		}
-	public:
-		template <typename ...ARGS>
-		void error(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
-		{
-			print(ELOG_ERROR, aformat, aargs...);
-		}
-
-		template <typename ...ARGS>
-		void warn(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
-		{
-			print(ELOG_WARN, aformat, aargs...);
-		}
-
-		template <typename ...ARGS>
-		void info(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
-		{
-			print(ELOG_INFO, aformat, aargs...);
-		}
-
-		template <typename ...ARGS>
-		void debug(const std::format_string<ARGS...> aformat, const ARGS&... aargs)
-		{
-			print(ELOG_DEBUG, aformat, aargs...);
-		}
 
 		template <typename T>
 		np_actor_logitem& operator<<(const T& adata)
 		{
-			if (m_init == false)
-				return *this;
-			m_stream << adata;
+			if (m_init && m_level >= ngl::sysconfig::loglevel())
+			{
+				m_stream << adata;
+			}
 			return *this;
 		}
 
 		// 重载 << 操作符以输出 std::endl
 		np_actor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
 		{
-			if (m_init == false)
-				return *this;
-			m_stream << manipulator;
+			if (m_init && m_level >= ngl::sysconfig::loglevel())
+			{
+				m_stream << manipulator;
+			}
 			return *this;
 		}
 
