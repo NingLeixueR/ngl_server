@@ -77,18 +77,18 @@ namespace ngl
 	void actor_role::loginpay()
 	{
 		// ### 检查是否有充值未发货
-		ngl::_http* lhttp = ngl::manage_curl::make_http();
-		ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-		ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-		ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_login.php");
+		auto lhttp = ngl::manage_curl::make_http();
+		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+		ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/pay/pay_login.php");
 
 		std::stringstream lstream;
 		lstream << "roleid=" << id_guid();
-		ngl::manage_curl::set_param(*lhttp, lstream.str());
+		ngl::manage_curl::set_param(lhttp, lstream.str());
 
 
-		ngl::manage_curl::set_param(*lhttp, lstream.str());
-		ngl::manage_curl::set_callback(*lhttp, [this](int, _http& ahttp)
+		ngl::manage_curl::set_param(lhttp, lstream.str());
+		ngl::manage_curl::set_callback(lhttp, [this](int, _http& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 					return;
@@ -208,10 +208,10 @@ namespace ngl
 		if (areporting)
 		{
 			// ### 发货成功上报gm ###
-			ngl::_http* lhttp = ngl::manage_curl::make_http();
-			ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-			ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/pay/pay_update.php");
+			auto lhttp = ngl::manage_curl::make_http();
+			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+			ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/pay/pay_update.php");
 
 			std::stringstream lstream;
 			lstream
@@ -220,7 +220,7 @@ namespace ngl
 				<< "&roleid=" << id_guid()
 				<< "&stat=" << lstat;
 
-			ngl::manage_curl::set_param(*lhttp, lstream.str());
+			ngl::manage_curl::set_param(lhttp, lstream.str());
 			ngl::manage_curl::getInstance().send(lhttp);
 		}
 

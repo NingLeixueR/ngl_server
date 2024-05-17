@@ -1,13 +1,13 @@
 #pragma once
 
+#include "threadtools.h"
+#include "nlog.h"
+#include "impl.h"
+
 #include <functional>
 #include <string>
 #include <curl.h>
 #include <list>
-
-#include "threadtools.h"
-#include "nlog.h"
-#include "impl.h"
 
 #ifdef WIN32
 #pragma comment ( lib, "ws2_32.lib" )
@@ -60,18 +60,18 @@ namespace ngl
 			return temp;
 		}
 		/** …Ë÷√http¿‡–Õ */
-		static void set_mode(_http& ahttp, ENUM_MODE aval);
-		static void set_type(_http& ahttp, ENUM_TYPE aval);
-		static void set_url(_http& ahttp, const std::string& aurl);
-		static void set_url(_http& ahttp, const char* aurl);
+		static void set_mode(std::shared_ptr<_http>& ahttp, ENUM_MODE aval);
+		static void set_type(std::shared_ptr<_http>& ahttp, ENUM_TYPE aval);
+		static void set_url(std::shared_ptr<_http>& ahttp, const std::string& aurl);
+		static void set_url(std::shared_ptr<_http>& ahttp, const char* aurl);
 		//xx=xx&xx=xx&xx=xx
-		static void set_param(_http& ahttp, const std::string& astrparam);
-		static void set_headers(_http& ahttp, std::vector<std::string>& aheaders);
-		static void set_callback(_http& ahttp, std::function<void(int, _http&)> aback);
+		static void set_param(std::shared_ptr<_http>& ahttp, const std::string& astrparam);
+		static void set_headers(std::shared_ptr<_http>& ahttp, std::vector<std::string>& aheaders);
+		static void set_callback(std::shared_ptr<_http>& ahttp, std::function<void(int, _http&)> aback);
 		static void param(std::string& astrparam, const char* akey, const char* aval);
 		static void param(std::string& astrparam, const char* akey, int aval);
-		void send(_http* adata);
-		static _http* make_http();
+		void send(std::shared_ptr<_http>& adata);
+		static std::shared_ptr<_http> make_http();
 	};
 
 	void test_manage_curl();

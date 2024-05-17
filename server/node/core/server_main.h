@@ -332,10 +332,10 @@ bool start_pushserverconfig()
 
 	ngl::ttab_servers::foreach_server([&lpushserver](const ngl::tab_servers* aserver)
 		{
-			ngl::_http* lhttp = ngl::manage_curl::make_http();
-			ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-			ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-			ngl::manage_curl::set_url(*lhttp, lpushserver);
+			auto lhttp = ngl::manage_curl::make_http();
+			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+			ngl::manage_curl::set_url(lhttp, lpushserver);
 
 			std::stringstream lstream;
 			lstream
@@ -362,9 +362,9 @@ bool start_pushserverconfig()
 			lstream << "&net=" << lnet;
 			
 			std::string lstr = lstream.str();
-			ngl::manage_curl::set_param(*lhttp, lstr);
+			ngl::manage_curl::set_param(lhttp, lstr);
 
-			ngl::manage_curl::set_callback(*lhttp, [lstr](int, ngl::_http& ahttp)
+			ngl::manage_curl::set_callback(lhttp, [lstr](int, ngl::_http& ahttp)
 				{
 					ngl::log_error()->print("[{}]->[{}]", lstr, ahttp.m_recvdata);
 				});
