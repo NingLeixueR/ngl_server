@@ -520,29 +520,6 @@ private:
 		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
 
-		//std::shared_ptr<np_actor_logitem> log(ELOGLEVEL alevel, const std::source_location& asource = std::source_location::current())
-		//{
-		//	if (alevel >= ngl::sysconfig::loglevel())
-		//	{
-		//		return std::make_shared<np_actor_logitem>(alevel, type(), ELOG_LOCAL, asource);
-		//	}
-		//	else
-		//	{
-		//		return m_nonelog;
-		//	}
-		//}
-		//std::shared_ptr<np_actor_logitem> lognet(ELOGLEVEL alevel, const std::source_location& asource = std::source_location::current())
-		//{
-		//	if (alevel >= ngl::sysconfig::loglevel())
-		//	{
-		//		return std::make_shared<np_actor_logitem>(alevel, type(), ELOG_NETWORK, asource);;
-		//	}
-		//	else
-		//	{
-		//		return m_nonelog;
-		//	}
-		//}
-
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用
 		template <typename TDerived>
