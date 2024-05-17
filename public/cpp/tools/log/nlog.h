@@ -19,7 +19,6 @@ namespace ngl
 		static const char* get(ELOGLEVEL atype);
 	};
 	struct np_actor_logitem;
-
 	extern std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
 	extern std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
 	extern std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current());

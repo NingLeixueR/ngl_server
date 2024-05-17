@@ -764,7 +764,7 @@ namespace ngl
 			{
 				m_src = str;
 			}
-			m_src = std::format("{:#^20}:{:#^5}", m_src, m_source.line());
+			m_src = std::format("{:^20}:{:^5}", m_src, m_source.line());
 		}
 
 		void send(std::shared_ptr<np_actor_logitem> pro);
