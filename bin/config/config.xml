@@ -28,10 +28,10 @@
 					kcppinginterval = "20"
 					kcpsession = "abcdefghigklmn"
 					open_servertime = "2023/10/11 10:00:00"
-					logiswrite = "false"
+					logiswrite = "true"
 					logflushtime = "10"
 					logline = "50000"
-					loglevel = "2"
+					loglevel = "-1"
 					logconsole = "true"
 					consumings = "100"
 				/>
