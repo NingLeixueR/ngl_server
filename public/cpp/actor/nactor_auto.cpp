@@ -83,11 +83,6 @@ namespace ngl
 			em_actor(lenum, ldbname.c_str());
 
 			init_customs_db<TDBTAB_TYPE, TDBTAB>();
-
-			log()->error("init_actor_type [{}]-[{}]"
-				, dtype_name(type_actor_db)
-				, (int)(lenum)
-			);
 		}
 		else
 		{
