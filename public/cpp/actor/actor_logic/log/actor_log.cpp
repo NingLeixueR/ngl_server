@@ -17,12 +17,12 @@ namespace ngl
 			})
 	{
 		ENUM_ACTOR lactortype = nlogactor::actor_type(aid);
-		nactortype::enum2name(lactortype);
+		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : nactortype::enum2name(lactortype);
 
 		logfile::config lconfig
 		{
 			.m_type = nlogactor::log_type(aid),
-			.m_dir = "log/" + ttab_servers::tab()->m_name + "/"+nactortype::enum2name(lactortype),
+			.m_dir = "log/" + ttab_servers::tab()->m_name + "/"+ lname,
 			.m_flush_time = 10,
 		};
 		nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
