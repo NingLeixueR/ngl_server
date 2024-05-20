@@ -10,7 +10,6 @@
 #include <vector>
 #include <map>
 
-
 namespace ngl
 {
 	class elog_name
@@ -27,8 +26,7 @@ namespace ngl
 	extern std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
 	extern std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
 	extern std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
-
-}
+}//namespace ngl
 
 #define Assert(ISOK)	\
 		if(ISOK)		\
@@ -53,9 +51,6 @@ namespace ngl
 	{																							\
 		ngl::log_error()->print("function[{}]", __FUNCTION__);									\
 	}
-
-
-
 
 template <typename T>
 struct std::formatter<std::vector<T>>
