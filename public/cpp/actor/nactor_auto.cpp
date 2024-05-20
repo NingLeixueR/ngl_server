@@ -27,7 +27,6 @@
 #include "actor_log.h"
 #include "actor_db.h"
 #include "actor_gm.h"
-#include "nactor_type.h"
 #include "nactortype.h"
 #include "enum2name.h"
 #include "tprotocol.h"

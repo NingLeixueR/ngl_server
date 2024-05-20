@@ -19,7 +19,7 @@ namespace ngl
 				m_data[i] = new db();
 				Assert(m_data[i]->connectdb(nconfig::m_db.m_dbarg));
 			}
-		}Catch
+		}Catch;
 	}
 
 	db* actor_dbpool::get(int apos)
@@ -27,7 +27,7 @@ namespace ngl
 		Try
 		{
 			return m_data.at(apos);
-		}Catch
+		}Catch;
 		return nullptr;
 	}
 }//namespace ngl

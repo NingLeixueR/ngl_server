@@ -58,7 +58,7 @@ namespace ngl
 					m_tab = ttab_dbload::get_tabdb<TDBTAB>();
 					Assert(m_tab != nullptr)
 				}
-				
+
 				inst_save().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
 				inst_del().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
 
@@ -67,7 +67,7 @@ namespace ngl
 					db_manage::select<PROTYPE,TDBTAB>::fun(actor_dbpool::get(0));
 					ngl::dbdata<TDBTAB>::foreach([](TDBTAB& adata)
 						{
-							if constexpr(PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
+							if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 							{
 								type_actor_dbtab::m_idset.insert(adata.m_id());
 							}
@@ -81,7 +81,7 @@ namespace ngl
 				{
 					db_manage::select<PROTYPE, TDBTAB>::fun(actor_dbpool::get(0), m_idset);
 				}
-			}Catch
+			}Catch;
 		}
 
 		// 加载表中的所有数据
@@ -359,7 +359,6 @@ namespace ngl
 			{
 				handle_cmd::push("query", [this](int athread, int id, ngl::ojson& aos)
 					{
-						// 返回 {"data":""}
 						gcmd<std::string> pro;
 						pro.id = id;
 						pro.m_operator = "query_responce";
@@ -378,7 +377,6 @@ namespace ngl
 							ngl::serialize lserialize(lbuff, 10240);
 							if (lserialize.push(m_savetemp))
 							{
-								// 返回 {"data":""}
 								pro.m_data = lbuff;
 							}
 						}
@@ -400,8 +398,6 @@ namespace ngl
 							return;
 						ngl::dbdata<TDBTAB>::set(ldata.m_data->m_id(), *ldata.m_data);
 						db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), ldata.m_data->m_id());
-						// 返回 {"data":""}
-
 						pro.m_data = true;
 					});
 			}

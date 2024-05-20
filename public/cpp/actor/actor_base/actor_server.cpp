@@ -106,7 +106,7 @@ namespace ngl
 					nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
 				}
 			}
-		}Catch
+		}Catch;
 		return true;
 	}
 
@@ -136,7 +136,7 @@ namespace ngl
 					nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
 				}
 			}
-		}Catch
+		}Catch;
 		return true;
 	}
 

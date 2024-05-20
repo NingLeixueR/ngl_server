@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nactor_type.h"
+#include "nactortype.h"
 #include "actor_base.h"
 #include "nprotocol.h"
 #include "tprotocol.h"

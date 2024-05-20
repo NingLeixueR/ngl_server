@@ -31,7 +31,6 @@ namespace ngl
 		
 		//# 注册需要处理的消息
 		static void nregister();
-
 	private:
 		//# 主动向actor_server注册actor_client
 		void actor_server_register(i32_serverid aserverid);

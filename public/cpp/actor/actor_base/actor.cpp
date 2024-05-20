@@ -9,10 +9,10 @@ namespace ngl
 {
 	struct actor::impl_actor
 	{
-		template <typename T>
-		using tls = std::list<T>;
 		//template <typename T>
-		//using tls = std::deque<T>;
+		//using tls = std::list<T>;
+		template <typename T>
+		using tls = std::deque<T>;
 		tls<handle_pram>				m_list;		// 待处理消息列表
 
 		actor_stat						m_stat;		// actor状态

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "template_arg.h"
-#include "nactor_type.h"
 #include "nactortype.h"
 #include "actor_base.h"
 #include "nrfun.h"
