@@ -16,7 +16,7 @@ namespace ngl
 	{
 	private:
 		//##### 日志相关
-		static ELOGLEVEL			m_loglevel;				// 日志等级
+		static ELOGLEVEL	m_loglevel;				// 日志等级
 		static int32_t		m_logline;				// 单个日志文件的行数
 		static int32_t		m_logflushtime;			// 日志flush时间
 		static bool			m_logiswrite;			// 日志是否写入文件
