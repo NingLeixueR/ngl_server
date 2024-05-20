@@ -169,7 +169,6 @@ namespace ngl
 		{
 			Try
 			{
-				if(m_dbclient == nullptr)
 				Assert(m_dbclient != nullptr)
 				m_dbclient->add(adbclient, aid);
 			}Catch;
