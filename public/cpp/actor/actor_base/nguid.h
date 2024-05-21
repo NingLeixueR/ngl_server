@@ -190,8 +190,6 @@ namespace ngl
 			return ltemp.log_type();
 		}
 	};
-
-
 }//namespace ngl
 
 template <>

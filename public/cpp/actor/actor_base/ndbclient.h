@@ -458,7 +458,6 @@ namespace ngl
 					++itor;
 					continue;
 				}
-				//itor->second->remove_rfun(m_actor);
 				m_dbclientmap.insert(std::make_pair(itor->first, itor->second));
 				itor = m_typedbclientmap.erase(itor);
 			}
@@ -527,16 +526,14 @@ namespace ngl
 	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	bool actor_base::handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
 	{
-		std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
-		if (mdbclient == nullptr)
+		Try
 		{
-			return false;
-		}
-		ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
-		if (lp == nullptr)
-		{
-			return false;
-		}
-		return lp->handle(adata);
+			std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
+			Assert(mdbclient != nullptr);
+			ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
+			Assert(lp != nullptr);
+			return lp->handle(adata);
+		}Catch;
+		return true;
 	}
 }//namespace ngl

@@ -2,8 +2,8 @@
 
 #include "nactortype.h"
 #include "actor_base.h"
-#include "nprotocol.h"
 #include "tprotocol.h"
+#include "nprotocol.h"
 #include "protocol.h"
 #include "regular.h"
 #include "actor.h"
