@@ -137,6 +137,8 @@ namespace ngl
 			return true;
 		}
 	public:
+		using handle_cmd = cmd<actor_manage_robot, std::string, std::vector<std::string>&>;
+
 		bool handle(message<np_robot_pram>& adata)
 		{
 			auto lrecv = adata.m_data;
@@ -144,102 +146,103 @@ namespace ngl
 			{
 				std::transform(lrecv->m_parm[1].begin(), lrecv->m_parm[1].end(), lrecv->m_parm[1].begin(), tolower);
 			}
-			if (lrecv->m_parm[0] == "logins" || lrecv->m_parm[0] == "LOGINS")
-			{
-				create_robots(lrecv->m_parm[1], boost::lexical_cast<int>(lrecv->m_parm[2]), boost::lexical_cast<int>(lrecv->m_parm[3]));
-			}
-			else if (lrecv->m_parm[0] == "login" || lrecv->m_parm[0] == "LOGIN")
-			{
-				create_robot(lrecv->m_parm[1]);
-			}
-			else if (lrecv->m_parm[0] == "c")
-			{//c libo1 1
-				pbnet::PROBUFF_NET_CMD pro;
-				std::string lstr;
-				for (int i = 2; i < lrecv->m_parm.size(); ++i)
-				{
-					if (i == 3)
-						lstr += '|';
-					else if(i >= 4)
-						lstr += '*';
-					lstr += lrecv->m_parm[i];
-				}
-				pro.set_m_cmd(lstr);
-				send(get_robot(lrecv->m_parm[1]), pro);
-			}
-			else if (lrecv->m_parm[0] == "C")
-			{//C 1
-				pbnet::PROBUFF_NET_CMD pro;
-				std::string lstr;
-				for (int i = 1; i < lrecv->m_parm.size(); ++i)
-				{
-					if (i == 2)
-						lstr += '|';
-					else if (i >= 3)
-						lstr += '*';
-					lstr += lrecv->m_parm[i];
-				}
-				pro.set_m_cmd(lstr);
-				foreach([&pro,this](actor_manage_robot::_robot& arobot)
-					{
-						send(&arobot, pro);
-						return true;
-					});
-			}
-			else if (lrecv->m_parm[0] == "X")
-			{
-				pbnet::PROBUFF_NET_CHAT pro;
-				pro.set_m_type(1);
-				pro.set_m_channelid(1);
-				pro.set_m_content("ribenrensb3");
-				foreach([&pro, this](actor_manage_robot::_robot& arobot)
-					{
-						send(&arobot, pro);
-						return true;
-					});
-			}
-			else if (lrecv->m_parm[0] == "X1")
-			{
 
-				foreach([this](actor_manage_robot::_robot& arobot)
+			if (handle_cmd::empty())
+			{
+				handle_cmd::push("logins", [this](std::vector<std::string>& avec)
 					{
-						tab_servers* tab = ttab_servers::tab();
-						tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-						net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
-						net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
-						// 获取本机uip
-						ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
-						i32_session lsession = arobot.m_session;
-						//i64_actorid lactorid = id_guid();
-						i64_actorid lactorid = arobot.m_robot->id_guid();
-
-						int16_t lkcp = nets::create_kcp();
-						arobot.m_robot->m_kcp = lkcp;
-						nets::kcp(arobot.m_robot->m_kcp)->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
-							, [this, tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
+						create_robots(avec[1], boost::lexical_cast<int>(avec[2]), boost::lexical_cast<int>(avec[3]));
+					});
+				handle_cmd::push("login", [this](std::vector<std::string>& avec)
+					{
+						create_robot(avec[1]);
+					});
+				// c libo1 1
+				handle_cmd::push("c", [this](std::vector<std::string>& avec)
+					{
+						pbnet::PROBUFF_NET_CMD pro;
+						std::string lstr;
+						for (int i = 2; i < avec.size(); ++i)
+						{
+							if (i == 3)
+								lstr += '|';
+							else if (i >= 4)
+								lstr += '*';
+							lstr += avec[i];
+						}
+						pro.set_m_cmd(lstr);
+						send(get_robot(avec[1]), pro);
+					});
+				// C 1
+				handle_cmd::push("d", [this](std::vector<std::string>& avec)
+					{
+						pbnet::PROBUFF_NET_CMD pro;
+						std::string lstr;
+						for (int i = 1; i < avec.size(); ++i)
+						{
+							if (i == 2)
+								lstr += '|';
+							else if (i >= 3)
+								lstr += '*';
+							lstr += avec[i];
+						}
+						pro.set_m_cmd(lstr);
+						foreach([&pro, this](actor_manage_robot::_robot& arobot)
 							{
-								log_error()->print("GetIp Finish : {}", buff);
-								ukcp::m_localuip = buff;
-								// 获取kcp-session
-								pbnet::PROBUFF_NET_KCPSESSION pro;
-								pro.set_m_serverid(tabgame->m_id);
-								pro.set_m_uip(ukcp::m_localuip);
-								pro.set_m_uport(lkcp);
-								pro.set_m_conv(ukcp::m_conv);
-								nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
+								send(&arobot, pro);
+								return true;
 							});
-						return true;
+					});
+				// 进行kcp连接
+				handle_cmd::push("x1", [this](std::vector<std::string>& avec)
+					{
+						foreach([this](actor_manage_robot::_robot& arobot)
+							{
+								tab_servers* tab = ttab_servers::tab();
+								tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+								net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
+								net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
+								// 获取本机uip
+								ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
+								i32_session lsession = arobot.m_session;
+								//i64_actorid lactorid = id_guid();
+								i64_actorid lactorid = arobot.m_robot->id_guid();
+
+								int16_t lkcp = nets::create_kcp();
+								arobot.m_robot->m_kcp = lkcp;
+								nets::kcp(arobot.m_robot->m_kcp)->sendu_waitrecv(lendpoint, "GetIp", sizeof("GetIp")
+									, [this, tabgame, lpstruct, lsession, lactorid, lkcp](char* buff, int len)
+									{
+										log_error()->print("GetIp Finish : {}", buff);
+										ukcp::m_localuip = buff;
+										// 获取kcp-session
+										pbnet::PROBUFF_NET_KCPSESSION pro;
+										pro.set_m_serverid(tabgame->m_id);
+										pro.set_m_uip(ukcp::m_localuip);
+										pro.set_m_uport(lkcp);
+										pro.set_m_conv(ukcp::m_conv);
+										nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
+									});
+								return true;
+							});
+					});
+				// 使用kcp连接发送GET_TIME协议
+				handle_cmd::push("x2", [this](std::vector<std::string>& avec)
+					{
+						pbnet::PROBUFF_NET_GET_TIME pro;
+						foreach([&pro, this](actor_manage_robot::_robot& arobot)
+							{
+								sendkcp(&arobot, pro);
+								return true;
+							});
 					});
 			}
-			else if (lrecv->m_parm[0] == "X2")
+
+			if (handle_cmd::function(lrecv->m_parm[0], lrecv->m_parm) == false)
 			{
-				pbnet::PROBUFF_NET_GET_TIME pro;
-				foreach([&pro, this](actor_manage_robot::_robot& arobot)
-					{
-						sendkcp(&arobot, pro);
-						return true;
-					});	
+				log_error()->print("actor_manage_robot cmd notfind {}", lrecv->m_parm);
 			}
+
 			return true;
 		}
 		

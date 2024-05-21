@@ -3,11 +3,11 @@
 #include "actor_gatewayc2g.h"
 #include "actor_gatewayg2c.h"
 #include "actor_gateway.h"
+#include "template_arg.h"
 #include "actor_robot.h"
 #include "actor_role.h"
-#include "actor.h"
-#include "template_arg.h"
 #include "xmlnode.h"
+#include "actor.h"
 
 namespace ngl
 {
@@ -52,7 +52,6 @@ namespace ngl
 			if (xmlnode::m_nodetype == ngl::ROBOT)
 			{
 				actor_robot::type_register_actor_handle<TYPE, actor_robot>::template func<ARG...>(false);
-				//actor_robot::type_register_recvforward_handle<TYPE, actor_robot>:: template func<ARG...>();
 				return;
 			}
 			if (xmlnode::m_nodetype == ngl::GATEWAY)
@@ -66,7 +65,7 @@ namespace ngl
 		//// ### client->gateway->game
 		static void c2g();
 
-		////// ### game->gateway->client
+		//// ### game->gateway->client
 		static void g2c();
 	};
 }//namespace ngl
