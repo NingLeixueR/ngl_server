@@ -13,8 +13,8 @@ namespace ngl
 			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;
 		};
 
-		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, pfun>> m_protocolfun;
-		static std::shared_mutex	m_mutex;
+		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, pfun>>	m_protocolfun;
+		static std::shared_mutex											m_mutex;
 
 		static pfun* find(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
 		{

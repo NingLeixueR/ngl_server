@@ -105,6 +105,9 @@ namespace ngl
 		{
 			tls<handle_pram> llist;
 			swaplist(llist);
+			if(aweight < llist.size())
+				ngl::log_error()->print("actor_handle [{}]", llist.size());
+
 			while (--aweight >= 0 && llist.empty() != true)
 			{
 				if (ahandle(aactor, athreadid, llist.front()) == true)

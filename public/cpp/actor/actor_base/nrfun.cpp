@@ -22,7 +22,7 @@ namespace ngl
 		if (itor == m_fun.end())
 		{
 			if (aactor->type() != ACTOR_CLIENT)
-				log_error()->print("handle_switch m_fun.find({}) == end", apram.m_enum);
+				log_error()->print("handle_switch [{}] m_fun.find({}) == end", aactor->guid(), apram.m_enum);
 			return false;
 		}
 		bool lisloadfinish = aactor->isloadfinish();

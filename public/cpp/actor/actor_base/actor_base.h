@@ -299,7 +299,6 @@ private:
 			auto pro = std::make_shared<tactor_forward<T>>();
 			actor_forward_init(*pro, aid);
 			actor_forward_setdata(*pro, adata);
-			//nguid lguid(aid);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 	private:

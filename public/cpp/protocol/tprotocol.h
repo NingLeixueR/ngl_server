@@ -89,7 +89,6 @@ namespace ngl
 			auto itor = m_keyval.find(lcode);
 			if (itor == m_keyval.end())
 			{
-				//std::cout << dtype_name(TRC) << std::endl;
 				if (init_protobufs<TRC>() == false)
 					throw "init_protobufs<TRC>() == false";
 				itor = m_keyval.find(lcode);

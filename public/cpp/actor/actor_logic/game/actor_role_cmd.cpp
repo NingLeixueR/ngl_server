@@ -7,7 +7,7 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		pbnet::PROBUFF_NET_CMD& lparm = *adata.m_data;
-		log_error()->print("cmd[{}]", lparm.m_cmd());
+		log_info()->print("cmd[{}]", lparm.m_cmd());
 
 		std::vector<std::string> lvec;
 		if (ngl::splite::func(lparm.m_cmd().c_str(), "|", lvec) == false)

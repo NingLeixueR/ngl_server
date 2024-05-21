@@ -12,7 +12,6 @@ namespace ngl
 		std::shared_ptr<void>	m_packvoid;
 		bool					m_ispack;
 		i32_sessionid			m_sessionid;
-
 	public:
 		node_pack(i32_sessionid asessionid, std::shared_ptr<pack>& apack) :
 			m_pack(apack),

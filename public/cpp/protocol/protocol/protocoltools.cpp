@@ -15,7 +15,6 @@ namespace ngl
 		char lbuff[1024] = { 0x0 };
 		if (names(lbuff, 1024, aprotocolname.c_str(), aprotocolnum, atype))
 		{
-			//log_error()->print("protocol_push [{}] ", lbuff);
 			em<eprotocol>::set((eprotocol)aprotocolnum, lbuff, atype);
 		}
 		else
