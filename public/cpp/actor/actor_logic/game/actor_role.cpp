@@ -86,7 +86,6 @@ namespace ngl
 		lstream << "roleid=" << id_guid();
 		ngl::manage_curl::set_param(lhttp, lstream.str());
 
-
 		ngl::manage_curl::set_param(lhttp, lstream.str());
 		ngl::manage_curl::set_callback(lhttp, [this](int, _http& ahttp)
 			{
