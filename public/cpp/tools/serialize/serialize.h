@@ -25,9 +25,6 @@
 
 namespace ngl
 {
-	template <typename TBASE>
-	struct derived_class;
-
 	struct forward;
 
 	class serialize_bytes;
@@ -520,18 +517,6 @@ namespace ngl
 				return false;
 			adata = new T();
 			return pop(*adata);
-		}
-
-		template <typename TBASE>
-		bool pop(derived_class<TBASE>& adata)
-		{
-			if (!pop(adata.m_enum))
-				return false;
-			if (!adata.set_tbase())
-				return false;
-			if (!adata.m_base->pop(*this))
-				return false;
-			return true;
 		}
 
 		bool pop(int8_t& adata);

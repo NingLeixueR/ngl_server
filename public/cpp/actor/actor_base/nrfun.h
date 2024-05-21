@@ -62,6 +62,7 @@ namespace ngl
 			return ltemp;
 		}
 
+		//# 允许任意std::function<void(TTTDerived*, T&)>挂载到指定actor上
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const std::function<void(TTTDerived*, T&)>& afun);
 

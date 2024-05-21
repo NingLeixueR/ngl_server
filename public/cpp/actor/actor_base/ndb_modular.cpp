@@ -56,5 +56,7 @@ namespace ngl
 		return m_dbclient;
 	}
 
-	void ndb_component::init_data() {}
+	void ndb_component::init_data() 
+	{
+	}
 }//namespace ngl

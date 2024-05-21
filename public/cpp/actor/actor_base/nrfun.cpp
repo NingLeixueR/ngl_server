@@ -34,7 +34,7 @@ namespace ngl
 		if (aactor->type() != ACTOR_LOG)
 		{
 			time_consuming lconsuming(
-				std::format("{}-{}", nactortype::enum2name(aactor->type()), apram.m_enum),
+				std::format("{}-{}", aactor->guid(), apram.m_enum),
 				[](int64_t abeg, int64_t aend)->bool
 				{
 					return (aend - abeg) > sysconfig::consumings();

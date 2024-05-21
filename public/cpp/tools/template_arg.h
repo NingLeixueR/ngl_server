@@ -18,14 +18,14 @@ namespace ngl
 		template <typename T, typename ...ARG>
 		static void func(TARG... args)
 		{
-			func2<T>(args.../*, (T*)nullptr*/);
+			func2<T>(args...);
 			if constexpr (sizeof...(ARG) > 1)
 			{
 				func<ARG...>(args...);
 			}
 			if constexpr (sizeof...(ARG) == 1)
 			{
-				func2<ARG...>(args.../*, nullptr*/);
+				func2<ARG...>(args...);
 			}
 		}
 	};

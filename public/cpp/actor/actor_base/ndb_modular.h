@@ -41,7 +41,7 @@ namespace ngl
 			set_dbclient(&m_data);
 		}
 
-		~ndb_modular()
+		virtual ~ndb_modular()
 		{
 		}
 
@@ -69,7 +69,16 @@ namespace ngl
 			return get(m_id);
 		}
 
-		// 没有就添加
+		// # 查找指定数据
+		data_modified<TDATA>* find(nguid aid)
+		{
+			auto itor = data().find(aid);
+			if (itor == data().end())
+				return nullptr;
+			return &itor->second;
+		}
+
+		// # 与find类似(只是没有就添加)
 		data_modified<TDATA>* get(nguid aid)
 		{
 			data_modified<TDATA>* ret = find(aid);
@@ -82,14 +91,7 @@ namespace ngl
 			return &ldata;
 		}
 
-		data_modified<TDATA>* find(nguid aid)
-		{
-			auto itor = data().find(aid);
-			if (itor == data().end())
-				return nullptr;
-			return &itor->second;
-		}
-
+		// # 删除指定数据
 		void erase(nguid aid)
 		{
 			m_data.del(aid);

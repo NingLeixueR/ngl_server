@@ -119,7 +119,8 @@ namespace ngl
 		{
 			Try
 			{
-				tab_servers * tab = ttab_servers::tab();
+				tab_servers* tab = ttab_servers::tab();
+				Assert(tab != nullptr);
 				// 向actor client 设置连接后事件
 				std::shared_ptr<np_actornode_connect_task> pro(new np_actornode_connect_task
 				{

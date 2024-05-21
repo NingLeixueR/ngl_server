@@ -6,6 +6,12 @@
 
 namespace ngl
 {
+	// 用于提供key/std::function<void(ARG...)>结构
+	// 通过成员函数push提供key与std::function<void(ARG...)>
+	// 通过成员函数function执行对应的方法
+	// TAG标记,无意义,主要用于产生不同类型
+	// TKEY用于查找的key类型
+	// ...ARG 用于指定std::function<void(ARG...)>的参数
 	template <typename TAG, typename TKEY, typename ...ARG>
 	class cmd
 	{

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nactortype.h"
+#include "enum2name.h"
 #include "ndefine.h"
 #include "type.h"
 
@@ -8,13 +9,15 @@
 
 namespace ngl
 {
-	// actor唯一id(64bit)
-	// 16位			类型ENUM_ACTOR
-	// 16位			区服id	
-	// 32位			数据id
+	///////////////////////////////////
+	// actor唯一id(64bit)			 //
+	// 16位			类型ENUM_ACTOR	 //
+	// 16位			区服id			 //
+	// 32位			数据id			 //
 	// ############ 64 bit ######### //
 	// #actor_type###areaid###id#### //
 	// #16bit########16bit####32bit# //
+	///////////////////////////////////
 	union nguid
 	{
 		int64_t m_id;
@@ -153,10 +156,15 @@ namespace ngl
 		def_portocol_function(nguid, m_id)
 	};
 
+	////////////////////////////////////////
+	// 用于生成actor_log的guid的32位dataid部分
+	// 16位用于存储记录日志的actor的ENUM_ACTOR
+	// 16位用于存储日志类型(本地日志、网络日志、bi日志)
 	union nlogactor
 	{
 		int32_t m_value32;
 		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
+
 		nlogactor(int32_t avalue) :
 			m_value32(avalue)
 		{}
@@ -202,12 +210,24 @@ struct std::formatter<ngl::nguid>
 
 	auto format(const ngl::nguid& aval, std::format_context& ctx)
 	{
-		return std::format_to(
-			ctx.out()
-			, "[guid:{}-{}-{}]"
-			, (int)aval.type()
-			, aval.area()
-			, aval.actordataid()
-		);
+		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::name(aval.type());
+		if (lanme == nullptr)
+		{
+			return std::format_to(ctx.out()
+				, "guid<{}-{}-{}>"
+				, (int)aval.type()
+				, aval.area()
+				, aval.actordataid()
+			);
+		}
+		else
+		{
+			return std::format_to(ctx.out()
+				, "guid<{}-{}-{}>"
+				, lanme
+				, aval.area()
+				, aval.actordataid()
+			);
+		}
 	}
 };

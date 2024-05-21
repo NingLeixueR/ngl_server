@@ -25,6 +25,7 @@ namespace ngl
 		//# 获取abit位的bool
 		bool get(int abit)const;
 
+		//# 查找首个出现abool值的位置
 		int find_first(bool abool);
 	};
 }// namespace ngl
