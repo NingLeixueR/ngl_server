@@ -137,6 +137,18 @@ namespace ngl
 			return true;
 		}
 	public:
+
+		static bool parse_command(std::vector<std::string>& aparm)
+		{
+			std::shared_ptr<np_robot_pram> ldata(new np_robot_pram());
+			ldata->m_parm.swap(aparm);
+			i64_actorid lid = ngl::nguid::make(ACTOR_MANAGE_ROBOT, tab_self_area, nconfig::m_nodeid);
+			handle_pram lparm;
+			ngl::handle_pram::create<np_robot_pram, false, false>(lparm, lid, nguid::moreactor(), ldata);
+			actor_manage::getInstance().push_task_id(lid, lparm, false);
+			return true;
+		}
+
 		using handle_cmd = cmd<actor_manage_robot, std::string, std::vector<std::string>&>;
 
 		bool handle(message<np_robot_pram>& adata)

@@ -419,7 +419,7 @@ bool start_robot(int argc, char** argv)
 			std::vector<std::string> lvec;
 			if (ngl::splite::func(lbuff, " ", lvec) == false)
 				continue;
-			ngl::robot_cmd::parse_command(lvec);
+			ngl::actor_manage_robot::parse_command(lvec);
 		}
 	}
 	else
@@ -447,7 +447,7 @@ bool start_robot(int argc, char** argv)
 		std::vector<std::string> lvec;
 		if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
 			return false;
-		ngl::robot_cmd::parse_command(lvec);
+		ngl::actor_manage_robot::parse_command(lvec);
 		int lnum = 10000;
 		//boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
 		//while (lnum-- > 0)
@@ -504,7 +504,7 @@ bool start_robot(int argc, char** argv)
 					}
 					if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
 						continue;
-					ngl::robot_cmd::parse_command(lvec);
+					ngl::actor_manage_robot::parse_command(lvec);
 				}
 			});
 
@@ -520,7 +520,7 @@ bool start_robot(int argc, char** argv)
 				ngl::sleep::milliseconds(lms[j]);
 				std::vector<std::string> lcmdvec2 = lcmdvec[j];
 				lcmdvec2.push_back(boost::lexical_cast<std::string>(i));
-				ngl::robot_cmd::parse_command(lcmdvec2);
+				ngl::actor_manage_robot::parse_command(lcmdvec2);
 			}
 		}
 	}

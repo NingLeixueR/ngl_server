@@ -25,7 +25,6 @@
 #include "encryption.h"
 #include "conversion.h"
 #include "time_wheel.h"
-#include "robot_cmd.h"
 #include "ndbclient.h"
 #include "attribute.h"
 #include "tprotocol.h"
