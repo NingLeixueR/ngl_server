@@ -58,8 +58,6 @@ bool init_server(int aid)
 
 	ngl::xmlprotocol::load();
 
-	//ngl::nlog::getInstance().isinitfinish() = true;
-
 	ngl::nactortype::getInstance();
 
 	ngl::actor_base::start_broadcast();
