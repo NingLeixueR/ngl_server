@@ -70,6 +70,7 @@ INCLUDE_DIRECTORIES(public/cpp/tools/curl/)
 INCLUDE_DIRECTORIES(public/cpp/tools/log/)
 INCLUDE_DIRECTORIES(public/cpp/tools/luatools/)
 INCLUDE_DIRECTORIES(public/cpp/tools/notify/)
+INCLUDE_DIRECTORIES(public/cpp/tools/uuid/)
 
 INCLUDE_DIRECTORIES(public/cpp/logic/)
 INCLUDE_DIRECTORIES(public/cpp/logic/public)

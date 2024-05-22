@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-22 18:16:15
+// 创建时间 24-05-22 20:53:44
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -133,7 +133,6 @@
 #include "ukcp.cpp"
 #include "unit.cpp"
 #include "url.cpp"
-#include "uuid.cpp"
 #include "varint.cpp"
 #include "xmlinfo.cpp"
 #include "xmlnode.cpp"
