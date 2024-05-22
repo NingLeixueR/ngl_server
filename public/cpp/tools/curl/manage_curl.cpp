@@ -56,11 +56,14 @@ namespace ngl
 
 		void plog(int aerror, std::string& arecv)
 		{
-			ngl::log_info()->print("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]",
-				aerror, m_url, m_param,
-				(m_mode == ENUM_MODE_HTTP ? "http" : "https"),
-				(m_type == ENUM_TYPE_POST ? "post" : "get"),
-				arecv.c_str());
+			ngl::log_info()->print("error[{}]url[{}]param[{}]mode[{}]type[{}]data[{}]"
+				, aerror
+				, m_url
+				, m_param
+				, (m_mode == ENUM_MODE_HTTP ? "http" : "https")
+				, (m_type == ENUM_TYPE_POST ? "post" : "get")
+				, arecv.c_str()
+			);
 		}
 	};
 
