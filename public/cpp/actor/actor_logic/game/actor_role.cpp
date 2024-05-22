@@ -1,10 +1,11 @@
 ﻿#include "manage_curl.h"
 #include "nroleitems.h"
 #include "actor_role.h"
+#include "json_write.h"
+#include "json_read.h"
 #include "nregister.h"
 #include "nforward.h"
 #include "net.pb.h"
-#include "ojson.h"
 #include "drop.h"
 #include "gcmd.h"
 
@@ -93,7 +94,7 @@ namespace ngl
 					return;
 				try
 				{
-					ojson ltempjson(ahttp.m_recvdata.c_str());
+					json_read ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
 						log_error()->print("ngl::manage_curl::callback fail [{}]", ahttp.m_recvdata);
@@ -113,7 +114,7 @@ namespace ngl
 					auto pro = std::make_shared<mforward<np_gm_response>>();
 					np_gm_response* lp = pro->add_data();
 					prorechange prore;
-					ngl::ijson lwrite;
+					ngl::json_write lwrite;
 					lwrite.write("operator", "rechange");
 					lwrite.write("data", prore);
 					lwrite.get(lp->m_json);
@@ -241,7 +242,7 @@ namespace ngl
 
 	bool actor_role::handle(message<mforward<np_gm>>& adata)
 	{
-		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+		ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
 		std::string loperator;
 		if (lojson.read("operator", loperator) == false)
 		{
@@ -250,7 +251,7 @@ namespace ngl
 
 		if (handle_rechangecmd::empty())
 		{
-			handle_rechangecmd::push("pay", [this](int id, ngl::ojson& aos)
+			handle_rechangecmd::push("pay", [this](int id, ngl::json_read& aos)
 				{
 					struct pay
 					{
@@ -269,7 +270,7 @@ namespace ngl
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				}
 			);
-			handle_rechangecmd::push("gmrechange", [this](int id, ngl::ojson& aos)
+			handle_rechangecmd::push("gmrechange", [this](int id, ngl::json_read& aos)
 				{
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
@@ -284,7 +285,7 @@ namespace ngl
 					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				});
-			handle_rechangecmd::push("rechange", [this](int id, ngl::ojson& aos)
+			handle_rechangecmd::push("rechange", [this](int id, ngl::json_read& aos)
 				{//actor_role::loginpay() callback
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)
@@ -295,10 +296,10 @@ namespace ngl
 		}
 
 
-		static std::map<std::string, std::function<void(int, ngl::ojson&)>> lcmd;
+		static std::map<std::string, std::function<void(int, ngl::json_read&)>> lcmd;
 		if (lcmd.empty())
 		{
-			lcmd["pay"] = [this](int id, ngl::ojson& aos)
+			lcmd["pay"] = [this](int id, ngl::json_read& aos)
 				{
 					struct pay
 					{
@@ -316,7 +317,7 @@ namespace ngl
 					pro.m_operator = "pay_responce";
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				};
-			lcmd["gmrechange"] = [this](int id, ngl::ojson& aos)
+			lcmd["gmrechange"] = [this](int id, ngl::json_read& aos)
 				{
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
@@ -331,7 +332,7 @@ namespace ngl
 					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				};
-			lcmd["rechange"] = [this](int id, ngl::ojson& aos)
+			lcmd["rechange"] = [this](int id, ngl::json_read& aos)
 				{//actor_role::loginpay() callback
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)

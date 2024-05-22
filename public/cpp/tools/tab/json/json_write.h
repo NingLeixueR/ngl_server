@@ -11,11 +11,11 @@
 
 namespace ngl
 {
-	class ijson
+	class json_write
 	{
 	public:
-		ijson();
-		virtual ~ijson();
+		json_write();
+		virtual ~json_write();
 		virtual cJSON* get();
 
 		void write(const char* akey, int8_t aval);
@@ -35,7 +35,7 @@ namespace ngl
 		void write(const char* akey, const char* aval);
 		void write(const char* akey, const bool aval);
 		void write(const char* akey, cJSON* aval);
-		void write(const char* akey, ijson& aval);
+		void write(const char* akey, json_write& aval);
 		void write(const char* akey, const std::string& aval);
 	private:
 		void writenumber(const char* akey, const std::vector<int32_t>& aval);
@@ -90,7 +90,7 @@ namespace ngl
 			cJSON* larray = cJSON_CreateArray();
 			for (const T& item : aval)
 			{
-				ngl::ijson ltemp;
+				ngl::json_write ltemp;
 				item.write(ltemp);
 				cJSON_AddItemToArray(larray, ltemp.nofree());
 			}

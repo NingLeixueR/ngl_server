@@ -104,7 +104,7 @@ namespace ngl
 			std::vector<noticeitem> m_notices;
 			jsonfunc("notices", m_notices)
 		};
-		ijson ljson;
+		json_write ljson;
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };

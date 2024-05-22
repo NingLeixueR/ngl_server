@@ -343,11 +343,11 @@ namespace ngl
 			return true;
 		}
 
-		using handle_cmd = cmd<tactor_db, std::string, int, int, ngl::ojson&>;
+		using handle_cmd = cmd<tactor_db, std::string, int, int, ngl::json_read&>;
 
 		bool handle(message<mforward<np_gm>>& adata)
 		{
-			ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+			ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
 
 			std::string loperator;
 			if (lojson.read("operator", loperator) == false)
@@ -357,7 +357,7 @@ namespace ngl
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::push("query", [this](int athread, int id, ngl::ojson& aos)
+				handle_cmd::push("query", [this](int athread, int id, ngl::json_read& aos)
 					{
 						gcmd<std::string> pro;
 						pro.id = id;
@@ -381,7 +381,7 @@ namespace ngl
 							}
 						}
 					});
-				handle_cmd::push("change", [this](int athread, int id, ngl::ojson& aos)
+				handle_cmd::push("change", [this](int athread, int id, ngl::json_read& aos)
 					{
 						gcmd<bool> pro;
 						pro.id = id;

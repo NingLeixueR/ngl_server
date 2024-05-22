@@ -36,7 +36,7 @@ namespace ngl
 
 	bool actor_mail::handle(message<mforward<np_gm>>& adata)
 	{
-		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+		ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
 		std::string loperator;
 		if (lojson.read("operator", loperator) == false)
 		{
@@ -44,7 +44,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("get_mails", [this](int id, ngl::ojson& aos)
+			handle_cmd::push("get_mails", [this](int id, ngl::json_read& aos)
 				{
 					int64_t roleid = 0;
 					if (aos.read("data", roleid) == false)
@@ -59,7 +59,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				}
 			);
-			handle_cmd::push("add_mail", [this](int id, ngl::ojson& aos)
+			handle_cmd::push("add_mail", [this](int id, ngl::json_read& aos)
 				{
 					struct gm_mailitem
 					{
@@ -96,7 +96,7 @@ namespace ngl
 					pro.m_data = true;
 				}
 			);
-			handle_cmd::push("del_mail", [this](int id, ngl::ojson& aos)
+			handle_cmd::push("del_mail", [this](int id, ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
 					struct gm_deletemail

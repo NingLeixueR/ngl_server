@@ -346,11 +346,11 @@ bool start_pushserverconfig()
 			//  ENET_TCP = 0,
 			//	ENET_WS = 1,
 			//	ENET_KCP = 2,
-			ngl::ijson lwrite;
+			ngl::json_write lwrite;
 			std::array<std::string, ngl::ENET_COUNT> lparm = { "tcp","ws","kcp" };
 			for (const ngl::net_works& item : aserver->m_net)
 			{
-				ngl::ijson lwritetemp;
+				ngl::json_write lwritetemp;
 				lwritetemp.write("type", (int8_t)item.m_type);
 				lwritetemp.write("ip", item.m_ip);
 				lwritetemp.write("nip", item.m_nip);

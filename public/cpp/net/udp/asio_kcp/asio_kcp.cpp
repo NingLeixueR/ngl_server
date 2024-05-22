@@ -404,7 +404,7 @@ namespace ngl
 				{
 					apstruct->m_isconnect = true;
 					apstruct->m_pingtm = localtime::gettime();
-					ojson ltempjson(ajson.c_str());
+					json_read ltempjson(ajson.c_str());
 
 					i64_actorid lactorid;
 					if (ltempjson.read("actorid", lactorid) == false)
@@ -724,7 +724,7 @@ namespace ngl
 		{
 			// #### 发起连接
 			ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
-			ijson ltempjson;
+			json_write ltempjson;
 			ltempjson.write("actorid", aactorid);
 			ltempjson.write("session", akcpsess);
 			ltempjson.set_nonformatstr(true);

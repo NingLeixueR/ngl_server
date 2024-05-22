@@ -28,7 +28,7 @@ namespace ngl
 	bool actor_gm::handle(message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.m_data->m_json);
-		ngl::ojson lreadjson(adata.m_data->m_json.c_str());
+		ngl::json_read lreadjson(adata.m_data->m_json.c_str());
 
 		// ### µ¥Àý
 		std::string lactorname;
@@ -54,7 +54,7 @@ namespace ngl
 						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 					};
 
-					handle_cmd::push("guid", [this,&adata](ngl::ojson& aos)
+					handle_cmd::push("guid", [this,&adata](ngl::json_read& aos)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))
@@ -62,7 +62,7 @@ namespace ngl
 								ENUM_ACTOR ltype;
 								if (nactortype::getInstance().name2enum(lguid.m_actor_name, ltype) == false)
 									return;
-								ngl::ijson lwritejson;
+								ngl::json_write lwritejson;
 								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 								ngl::np_gm_response lresponse;
 								lwritejson.get(lresponse.m_json);
@@ -72,7 +72,7 @@ namespace ngl
 						}
 					);
 
-					handle_cmd::push("close_actor", [this, &adata](ngl::ojson& aos)
+					handle_cmd::push("close_actor", [this, &adata](ngl::json_read& aos)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))

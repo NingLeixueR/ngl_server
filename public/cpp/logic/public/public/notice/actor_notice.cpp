@@ -50,7 +50,7 @@ namespace ngl
 	bool actor_notice::handle(message<mforward<np_gm>>& adata)
 	{
 		//using type = mforward<np_gm_response>;
-		ngl::ojson lojson(adata.m_data->data()->m_json.c_str());
+		ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
 
 		std::string loperator;
 		if (lojson.read("operator", loperator) == false)
@@ -60,7 +60,7 @@ namespace ngl
 
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("get_notice", [this](int id, ngl::ojson& aos)
+			handle_cmd::push("get_notice", [this](int id, ngl::json_read& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro;
 					pro.id = id;
@@ -75,7 +75,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				}
 			);
-			handle_cmd::push("add_notice", [this](int id, ngl::ojson& aos)
+			handle_cmd::push("add_notice", [this](int id, ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
 					gm_notice recv;
@@ -88,7 +88,7 @@ namespace ngl
 					m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
 				}
 			);
-			handle_cmd::push("del_notice", [this](int id, ngl::ojson& aos)
+			handle_cmd::push("del_notice", [this](int id, ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
 					int64_t lid = 0;

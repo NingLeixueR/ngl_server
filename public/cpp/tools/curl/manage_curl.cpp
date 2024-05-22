@@ -1,6 +1,7 @@
 #include "manage_curl.h"
+#include "json_write.h"
+#include "json_read.h"
 #include "nprotocol.h"
-#include "ijson.h"
 #include "nlog.h"
 #include "md5.h"
 
@@ -258,7 +259,7 @@ namespace ngl
 		//ngl::manage_curl::param(lparm, "token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWZ1bi5nYW1lcyIsImF1ZCI6ImZpZnVuLmdhbWVzIiwiaWF0IjoxNjkzOTIwMTQ0LCJleHAiOjE2OTY1MTIxNDQsIm5iZiI6MTY5MzkyMDE0NCwicGxhdGZvcm1fdWlkIjoyOTY5NDQ4LCJwbGF0Zm9ybV9hY2NvdW50Ijoiemh1Z29uZzMiLCJnYW1lX2lkIjo0NSwiZ2FtZV91aWQiOjQzNjg1MDYsInV1aWQiOiJlZjA5Yzg1MmQ4ZjRkYWE5Y2JiNGY2MjM1MjBlNjQ1OSJ9.nXnFg3gu1DdPVWtvcq4u6SmXNse0fUQ3OyMr3QvN0JE");
 		//ngl::manage_curl::param(lparm, "uid", "2969448");
 
-		/*ijson ltemp;
+		/*json_write ltemp;
 		ltemp.add("appid", 44);
 		ltemp.add("uid", 1406739);
 		ltemp.add("sessionid", "i461qbg8pia3pe04fdenue1hu4");

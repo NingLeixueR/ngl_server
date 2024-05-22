@@ -69,7 +69,7 @@ namespace ngl
 			return true;
 		}
 
-		using handle_cmd = cmd<actor_mail, std::string, int, ngl::ojson&>;
+		using handle_cmd = cmd<actor_mail, std::string, int, ngl::json_read&>;
 		// ## GM²Ù×÷mail
 		bool handle(message<mforward<np_gm>>& adata);
 

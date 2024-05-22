@@ -1,27 +1,27 @@
 #pragma once
 
-#include "ijson.h"
-#include "ojson.h"
+#include "json_write.h"
+#include "json_read.h"
 
 #define jsonfunc(...)											\
-	inline void write(ngl::ijson& ijsn, const char* akey)const	\
+	inline void write(ngl::json_write& ijsn, const char* akey)const	\
 	{															\
-		ngl::ijson ltemp;										\
+		ngl::json_write ltemp;										\
 		write(ltemp);											\
 		ijsn.write(akey, ltemp.nofree());						\
 	}															\
-	inline void write(ngl::ijson& ijsn)const					\
+	inline void write(ngl::json_write& ijsn)const					\
 	{															\
 		ijsn.write(__VA_ARGS__);								\
 	}															\
-	inline bool read(ngl::ojson& ijsn, const char* akey)		\
+	inline bool read(ngl::json_read& ijsn, const char* akey)		\
 	{															\
-		ngl::ojson ltemp;										\
+		ngl::json_read ltemp;										\
 		if (ijsn.read(akey, ltemp) == false)					\
 		return false;											\
 		return read(ltemp);										\
 	}															\
-	inline bool read(ngl::ojson& ijsn)							\
+	inline bool read(ngl::json_read& ijsn)							\
 	{															\
 		return ijsn.read(__VA_ARGS__);							\
 	}

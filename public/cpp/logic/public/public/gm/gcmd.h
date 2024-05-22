@@ -20,7 +20,7 @@ namespace ngl
 
 		~gcmd()
 		{
-			ngl::ijson lwrite;
+			ngl::json_write lwrite;
 			lwrite.write("operator", m_operator);
 			lwrite.write("data", m_data);
 

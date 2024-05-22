@@ -20,6 +20,8 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	auto lstr = std::format("abc{}", 123);
+
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();

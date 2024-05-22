@@ -12,16 +12,16 @@
 
 namespace ngl
 {
-	class ojson
+	class json_read
 	{
 		cJSON*	m_json;
 		bool	m_free;
 	public:
-		ojson(const char* astr);
+		json_read(const char* astr);
 
-		ojson();
+		json_read();
 
-		virtual ~ojson();
+		virtual ~json_read();
 
 		bool check()
 		{
@@ -41,7 +41,7 @@ namespace ngl
 		bool read(const char* akey, double& adata);
 		bool read(const char* akey, bool& adata);
 		bool read(const char* akey, cJSON*& adata);
-		bool read(const char* akey, ojson& adata);
+		bool read(const char* akey, json_read& adata);
 
 		template <typename T>
 		bool read_number(
@@ -95,7 +95,7 @@ namespace ngl
 			{
 				cJSON* tempret = cJSON_GetArrayItem(ret, i);
 				T ltemp;
-				ojson lretobj;
+				json_read lretobj;
 				lretobj.m_free = false;
 				lretobj.m_json = tempret;
 				ltemp.read(lretobj);
