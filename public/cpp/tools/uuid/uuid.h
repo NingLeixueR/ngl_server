@@ -19,7 +19,7 @@ namespace ngl
     class uuid
     {
     public:
-        static std::string make(std::string& astr)
+        static bool make(std::string& astr)
         {
 #if defined(_WIN32)
             char buf[GUID_LEN] = { 0 };
@@ -27,7 +27,7 @@ namespace ngl
 
             if (CoCreateGuid(&guid))
             {
-                return std::move(std::string(""));
+                return false;
             }
 
             sprintf(buf,
@@ -38,6 +38,7 @@ namespace ngl
                 guid.Data4[6], guid.Data4[7]);
 
             astr = buf;
+            return true;
 #elif defined(__linux__)
             char buf[GUID_LEN] = { 0 };
 
@@ -56,6 +57,7 @@ namespace ngl
             }
 
             astr = buf;
+            return true;
 #endif
         }
     };

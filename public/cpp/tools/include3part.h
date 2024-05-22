@@ -5,7 +5,6 @@
 #include <boost/date_time.hpp>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
-#include <boost/array.hpp>
 #include <boost/asio.hpp>
 #include <strstream>
 #include <iostream>
