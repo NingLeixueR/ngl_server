@@ -8,7 +8,7 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_account ltemp;
-		ltemp.set_m_account(std::string(aname) + boost::lexical_cast<std::string>(i % DEF_COUNT));
+		ltemp.set_m_account(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
 		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
 		ltemp.set_m_passworld("123456");
 		ltemp.set_m_roleid(ltemp.m_id());
@@ -38,7 +38,7 @@ void init_DB_ROLE(const char* aname, int beg)
 		ltemp.set_m_id(lid);
 		pbdb::db_brief* lrolebase = ltemp.mutable_m_base();
 		lrolebase->set_m_id(lid);
-		lrolebase->set_m_name(std::string(aname) + boost::lexical_cast<std::string>(i % DEF_COUNT));
+		lrolebase->set_m_name(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
 		lrolebase->set_m_lv(i);
 		lrolebase->set_m_moneygold(i + 1000);
 		lrolebase->set_m_moneysilver(i + 2000);
@@ -470,7 +470,7 @@ bool start_robot(int argc, char** argv)
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
 						lms.clear();
-						lms.push_back(boost::lexical_cast<int>(lvec[1]));
+						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1]));
 						lcmdvec.clear();
 						lcmdvec.push_back(std::vector<std::string>());
 						for (int i = 2; i < lvec.size(); ++i)
@@ -489,7 +489,7 @@ bool start_robot(int argc, char** argv)
 					}
 					else if (lvec[0] == "tests" || lvec[0] == "TESTS")
 					{
-						lms.push_back(boost::lexical_cast<int>(lvec[1]));
+						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1]));
 						lcmdvec.push_back(std::vector<std::string>());
 						for (int i = 2; i < lvec.size(); ++i)
 						{
@@ -519,7 +519,7 @@ bool start_robot(int argc, char** argv)
 			{
 				ngl::sleep::milliseconds(lms[j]);
 				std::vector<std::string> lcmdvec2 = lcmdvec[j];
-				lcmdvec2.push_back(boost::lexical_cast<std::string>(i));
+				lcmdvec2.push_back(ngl::tools::lexical_cast<std::string>(i));
 				ngl::actor_manage_robot::parse_command(lcmdvec2);
 			}
 		}

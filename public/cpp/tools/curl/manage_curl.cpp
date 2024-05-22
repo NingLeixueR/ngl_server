@@ -5,7 +5,6 @@
 #include "nlog.h"
 #include "md5.h"
 
-#include <boost/lexical_cast.hpp>
 #include <thread>
 
 namespace ngl
@@ -235,7 +234,7 @@ namespace ngl
 		{
 			astrparam = astrparam + '&';
 		}
-		astrparam = astrparam + akey + "=" + boost::lexical_cast<std::string>(aval);
+		astrparam = astrparam + akey + "=" + tools::lexical_cast<std::string>(aval);
 	}
 
 	void manage_curl::send(std::shared_ptr<_http>& adata)
@@ -272,7 +271,7 @@ namespace ngl
 
 		//std::string ltemp;
 		//md5(appid.uid.sessionid.login_key);
-		//ltemp = boost::lexical_cast<std::string>(44) + "1406739" + "i461qbg8pia3pe04fdenue1hu4" + "2475836ac498942dbd06bc93f143adea";
+		//ltemp = tools::lexical_cast<std::string>(44) + "1406739" + "i461qbg8pia3pe04fdenue1hu4" + "2475836ac498942dbd06bc93f143adea";
 		//ngl::md5 varMd5(ltemp);
 		//ltempjson << std::make_pair("token", varMd5.values());
 

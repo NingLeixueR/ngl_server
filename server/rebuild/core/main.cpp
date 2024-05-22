@@ -13,7 +13,6 @@
 #include <set>
 #include <map>
 
-#include <boost/lexical_cast.hpp> 
 #include <boost/filesystem.hpp>
 
 #include "operator_file.h"

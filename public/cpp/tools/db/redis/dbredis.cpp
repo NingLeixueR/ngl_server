@@ -74,7 +74,7 @@ namespace ngl
 
 		//	ltemp.mm_id() = ngl::nguid::make(ngl::ACTOR_ROLE, 1, i);
 		//	ltemp.mm_name() = "libo";
-		//	ltemp.mm_name() += boost::lexical_cast<std::string>(i);
+		//	ltemp.mm_name() += tools::lexical_cast<std::string>(i);
 		//	ltemp.mm_lv() = i;
 		//	ltemp.mm_gold() = i;// 金币
 		//	ltemp.mm_mapid() = i;// 所在地图

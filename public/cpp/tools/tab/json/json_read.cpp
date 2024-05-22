@@ -1,5 +1,5 @@
-#include <boost/lexical_cast.hpp>
 #include "json_read.h"
+#include "tools.h"
 
 namespace ngl
 {
@@ -42,7 +42,7 @@ namespace ngl
 		{
 			try
 			{
-				adata = boost::lexical_cast<int8_t>(ret->valuestring);
+				adata = tools::lexical_cast<int8_t>(ret->valuestring);
 				return true;
 			}
 			catch (...)
@@ -67,7 +67,7 @@ namespace ngl
 		{
 			try
 			{
-				adata = boost::lexical_cast<int16_t>(ret->valuestring);
+				adata = tools::lexical_cast<int16_t>(ret->valuestring);
 				return true;
 			}
 			catch (...)
@@ -92,7 +92,7 @@ namespace ngl
 		{
 			try
 			{
-				adata = boost::lexical_cast<int32_t>(ret->valuestring);
+				adata = tools::lexical_cast<int32_t>(ret->valuestring);
 				return true;
 			}
 			catch (...)
@@ -110,7 +110,7 @@ namespace ngl
 			return false;
 		if (ret->type == cJSON_String)
 		{
-			adata = boost::lexical_cast<int64_t>(ret->valuestring);
+			adata = tools::lexical_cast<int64_t>(ret->valuestring);
 			return true;
 		}
 		// ≥¢ ‘int32_t
@@ -136,7 +136,7 @@ namespace ngl
 		{
 			try
 			{
-				adata = boost::lexical_cast<uint8_t>(ret->valuestring);
+				adata = tools::lexical_cast<uint8_t>(ret->valuestring);
 				return true;
 			}
 			catch (...)
@@ -161,7 +161,7 @@ namespace ngl
 		{
 			try
 			{
-				adata = boost::lexical_cast<uint16_t>(ret->valuestring);
+				adata = tools::lexical_cast<uint16_t>(ret->valuestring);
 				return true;
 			}
 			catch (...)
@@ -186,7 +186,7 @@ namespace ngl
 		{
 			try
 			{
-				adata = boost::lexical_cast<uint32_t>(ret->valuestring);
+				adata = tools::lexical_cast<uint32_t>(ret->valuestring);
 				return true;
 			}
 			catch (...)
@@ -204,7 +204,7 @@ namespace ngl
 			return false;
 		if (ret->type == cJSON_String)
 		{
-			adata = boost::lexical_cast<uint64_t>(ret->valuestring);
+			adata = tools::lexical_cast<uint64_t>(ret->valuestring);
 			return true;
 		}
 		// ≥¢ ‘int32_t
@@ -298,7 +298,7 @@ namespace ngl
 			{
 				if (nullptr == ajson || ajson->type != cJSON_String)
 					return false;
-				aval = boost::lexical_cast<int64_t>(ajson->valuestring);
+				aval = tools::lexical_cast<int64_t>(ajson->valuestring);
 				return true;
 			});
 	}
@@ -341,7 +341,7 @@ namespace ngl
 			{
 				if (nullptr == ajson || ajson->type != cJSON_String)
 					return false;
-				aval = boost::lexical_cast<uint64_t>(ajson->valuestring);
+				aval = tools::lexical_cast<uint64_t>(ajson->valuestring);
 				return true;
 			});
 	}

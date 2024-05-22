@@ -5,7 +5,6 @@
 #include <map>
 
 #include <google/protobuf/util/json_util.h>
-#include <boost/type_index.hpp>
 
 namespace ngl
 {
@@ -66,7 +65,17 @@ namespace ngl
 				atarget.insert({ item.first, item.second });
 			}
 		}
+
+		template <typename Target, typename Source>
+		static Target lexical_cast(const Source& arg)
+		{
+			std::stringstream m_stream;
+			m_stream << arg;
+			Target ltemp;
+			m_stream >> ltemp;
+			return ltemp;
+		}
 	};
 }//namespace ngl
 
-#define dtype_name(TYPE_) boost::typeindex::type_id_with_cvr<TYPE_>().pretty_name()
+#define dtype_name(TYPE_) typeid(TYPE_).name()

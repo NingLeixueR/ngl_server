@@ -6,14 +6,9 @@
 
 #include <map>
 
-// typeid(T).hash_code() 因为c++标准并没有强制要求只是建议编译器 不同类型生成不同的hash值
-#define NOTUSING_BOOST_TYPEINFO
-#ifndef NOTUSING_BOOST_TYPEINFO 
-# include <boost/type_index.hpp>
-# define HASH_CODE_VALUE(_TYPE)	boost::typeindex::type_id<_TYPE>().hash_code()
-#else
-# define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
-#endif
+// typeid(T).hash_code() #c++标准并没有强制要求只是建议编译器 不同类型生成不同的hash值
+#define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
+
 
 namespace ngl
 {

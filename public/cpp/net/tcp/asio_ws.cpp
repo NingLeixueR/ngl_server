@@ -195,7 +195,7 @@ namespace ngl
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			auto const address = boost::asio::ip::make_address(ahost);
-			boost::asio::ip::tcp::endpoint endpoint(address, boost::lexical_cast<uint16_t>(aport));
+			boost::asio::ip::tcp::endpoint endpoint(address, tools::lexical_cast<uint16_t>(aport));
 
 			lservice->socket().async_connect(
 				endpoint,

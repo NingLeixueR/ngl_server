@@ -1,7 +1,6 @@
 #include "splite.h"
 #include "tools.h"
 
-#include <boost/lexical_cast.hpp>
 #include <vector>
 #include <string>
 
@@ -22,7 +21,7 @@ namespace ngl
 			return false;
 		if (lvec[0] != "172")
 			return false;
-		int lnum = boost::lexical_cast<int>(lvec[1]);
+		int lnum = tools::lexical_cast<int>(lvec[1]);
 		return lnum >= 16 && lnum <= 31;
 	}
 

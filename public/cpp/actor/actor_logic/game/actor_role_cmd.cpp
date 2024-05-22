@@ -29,19 +29,19 @@ namespace ngl
 			);
 			handle_cmd::push("/lv", [](actor_role* role, const char* aparm)
 				{
-					role->m_info.change_lv(boost::lexical_cast<int>(aparm));
+					role->m_info.change_lv(tools::lexical_cast<int>(aparm));
 					role->sync_data_client();
 				}
 			);
 			handle_cmd::push("/gold", [](actor_role* role, const char* aparm)
 				{
-					role->m_info.change_gold(boost::lexical_cast<int>(aparm));
+					role->m_info.change_gold(tools::lexical_cast<int>(aparm));
 					role->sync_data_client();
 				}
 			);
 			handle_cmd::push("/silver", [](actor_role* role, const char* aparm)
 				{
-					role->m_info.change_silver(boost::lexical_cast<int>(aparm));
+					role->m_info.change_silver(tools::lexical_cast<int>(aparm));
 					role->sync_data_client();
 				}
 			);
@@ -55,8 +55,8 @@ namespace ngl
 					if (lvec.size() >= 2)
 					{
 						pbnet::PROBUFF_NET_CHAT pro;
-						pro.set_m_type((pbnet::enum_logic_chat)boost::lexical_cast<int>(lvec[0]));
-						pro.set_m_channelid(boost::lexical_cast<int>(lvec[1]));
+						pro.set_m_type((pbnet::enum_logic_chat)tools::lexical_cast<int>(lvec[0]));
+						pro.set_m_channelid(tools::lexical_cast<int>(lvec[1]));
 						if (pro.m_type() == pbnet::chat_speak)
 						{
 							if (lvec.size() < 3)

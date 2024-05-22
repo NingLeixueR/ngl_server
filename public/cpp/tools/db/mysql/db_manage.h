@@ -209,7 +209,7 @@ namespace ngl
 				for (int i = 0; i < aid.size(); ++i)
 				{
 					lwhere += i != 0 ? " OR id = " : " id = ";
-					lwhere += boost::lexical_cast<std::string>(aid[i]);
+					lwhere += tools::lexical_cast<std::string>(aid[i]);
 				}
 				char lbuff[] = "DELETE FROM %s WHERE %s;";
 				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, protobuf_tabname<T>::tabname().c_str(), lwhere.c_str());
@@ -240,7 +240,7 @@ namespace ngl
 				for (int i = 0; i < aid.size(); ++i)
 				{
 					lwhere += i != 0 ? " OR id = " : " id = ";
-					lwhere += boost::lexical_cast<std::string>(aid[i]);
+					lwhere += tools::lexical_cast<std::string>(aid[i]);
 				}
 				char lbuff[] = "DELETE FROM %s WHERE %s;";
 				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, T::name(), lwhere.c_str());
@@ -316,7 +316,7 @@ namespace ngl
 					lbuff2, llen,
 					[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
-						aidset.insert(boost::lexical_cast<int64_t>(amysqlrow[0]));
+						aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));
 						return true;
 					});
 			}
@@ -384,7 +384,7 @@ namespace ngl
 					lbuff2, llen,
 					[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
-						aidset.insert(boost::lexical_cast<int64_t>(amysqlrow[0]));
+						aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));
 						return true;
 					});
 			}

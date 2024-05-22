@@ -12,7 +12,6 @@
 #include "impl.h"
 #include "pack.h"
 
-#include <boost/array.hpp>
 #include <vector>
 #include <memory>
 

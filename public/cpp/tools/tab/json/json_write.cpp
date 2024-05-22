@@ -1,5 +1,5 @@
-#include <boost/lexical_cast.hpp>
 #include "json_write.h"
+#include "tools.h"
 
 namespace ngl
 {
@@ -51,7 +51,7 @@ namespace ngl
 		
 	void json_write::write(const char* akey, const int64_t aval)
 	{
-		std::string lvalue = boost::lexical_cast<std::string>(aval);
+		std::string lvalue = tools::lexical_cast<std::string>(aval);
 		write(akey, lvalue);
 	}
 		
@@ -62,7 +62,7 @@ namespace ngl
 		
 	void json_write::write(const char* akey, const uint16_t aval)
 	{
-		std::string lvalue = boost::lexical_cast<std::string>(aval);
+		std::string lvalue = tools::lexical_cast<std::string>(aval);
 		write(akey, lvalue);
 	}
 		
@@ -73,7 +73,7 @@ namespace ngl
 		
 	void json_write::write(const char* akey, const uint64_t aval)
 	{
-		std::string lvalue = boost::lexical_cast<std::string>(aval);
+		std::string lvalue = tools::lexical_cast<std::string>(aval);
 		write(akey, lvalue);
 	}
 		
@@ -177,7 +177,7 @@ namespace ngl
 		cJSON* ljson = cJSON_CreateArray();
 		for (int64_t item : aval)
 		{
-			std::string lnumber = boost::lexical_cast<std::string>(item);
+			std::string lnumber = tools::lexical_cast<std::string>(item);
 			cJSON_AddItemToArray(ljson, cJSON_CreateString(lnumber.c_str()));
 		}
 		write(akey, ljson);
@@ -188,7 +188,7 @@ namespace ngl
 		cJSON* ljson = cJSON_CreateArray();
 		for (int64_t item : aval)
 		{
-			std::string lnumber = boost::lexical_cast<std::string>(item);
+			std::string lnumber = tools::lexical_cast<std::string>(item);
 			cJSON_AddItemToArray(ljson, cJSON_CreateString(lnumber.c_str()));
 		}
 		write(akey, ljson);

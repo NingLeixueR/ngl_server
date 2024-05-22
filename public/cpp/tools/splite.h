@@ -1,9 +1,11 @@
 #pragma once
 
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
-#include <vector>
+#include "tools.h"
+
+#include <iostream>
 #include <string>
+#include <vector>
+#include <ranges>
 
 namespace ngl
 {
@@ -17,16 +19,17 @@ namespace ngl
 			func(abuff, afg, lvec);
 			for (std::string& item : lvec)
 			{
-				avec.push_back(boost::lexical_cast<T>(item));
+				avec.push_back(tools::lexical_cast<T>(item));
 			}
 			return true;
 		}
 
-		static bool func(const char* abuff, const char* afg, std::vector<std::string>& avec)
+		/*static bool func(const char* abuff, const char* afg, std::vector<std::string>& avec)
 		{
 			boost::split(avec, abuff, boost::is_any_of(afg));
 			return true;
-		}
+		}*/
+		static bool func(const char* abuff, const char* afg, std::vector<std::string>& avec);
 
 		template <typename ...ARGS>
 		static bool func(const char* abuff, const char* afg, ARGS&... args)
@@ -41,7 +44,7 @@ namespace ngl
 		template <typename T>
 		static void cast(std::string& astr, T& adata)
 		{
-			adata = boost::lexical_cast<T>(astr);
+			adata = tools::lexical_cast<T>(astr);
 		}
 
 		template <typename T>
@@ -87,7 +90,7 @@ namespace ngl
 			{
 				if (i != 0)
 					astr += afg;
-				astr += boost::lexical_cast<std::string>(avec[i]);
+				astr += tools::lexical_cast<std::string>(avec[i]);
 			}
 			return true;
 		}
@@ -117,7 +120,7 @@ namespace ngl
 			{
 				if (aindex != 0)
 					astr += afg;
-				astr += boost::lexical_cast<std::string>(adata);
+				astr += tools::lexical_cast<std::string>(adata);
 			}
 			catch (...)
 			{
@@ -133,7 +136,7 @@ namespace ngl
 			{
 				if (aindex != 0)
 					astr += afg;
-				astr += boost::lexical_cast<std::string>(adata);
+				astr += tools::lexical_cast<std::string>(adata);
 			}
 			catch (...)
 			{

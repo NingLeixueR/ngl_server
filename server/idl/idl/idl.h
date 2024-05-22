@@ -9,11 +9,11 @@
 #include <regex>
 #include <set>
 #include <map>
-#include <boost/lexical_cast.hpp> 
 
 #include "operator_file.h"
 #include "regular.h"
 #include "conversion.h"
+#include "tools.h"
 using namespace std;
 
 struct Data
@@ -581,7 +581,7 @@ public:
 
 				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
-						ldataStr.m_index = boost::lexical_cast<int32_t>(awhat[1]);
+						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1]);
 					});
 
 
@@ -607,7 +607,7 @@ public:
 
 				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
-						ldataStr.m_index = boost::lexical_cast<int32_t>(awhat[1]);
+						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1]);
 					});
 
 

@@ -303,7 +303,7 @@ namespace ngl
 				std::string ljson;
 				if (ngl::splite::func(abuf, "*", lecmd, lnum, ljson) == false)
 					return false;
-				//ecmd lnum = (ecmd)boost::lexical_cast<int32_t>(&abuf[ecmd_minlen]);
+				//ecmd lnum = (ecmd)tools::lexical_cast<int32_t>(&abuf[ecmd_minlen]);
 				auto itor = m_cmdfun.find((ecmd)lnum);
 				if (itor != m_cmdfun.end())
 					itor->second(ap, apstruct, ljson);

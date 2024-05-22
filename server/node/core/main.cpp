@@ -13,15 +13,12 @@
 #include "rfun.h"
 #include "nlog.h"
 
-#include <boost/lexical_cast.hpp>
 #include <queue>
 
 Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	auto lstr = std::format("abc{}", 123);
-
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();
@@ -33,8 +30,8 @@ int main(int argc, char** argv)
 	}
 
 	// 用参数 不用配置中的zoneid
-	int32_t larea = boost::lexical_cast<int32_t>(argv[2]);
-	int32_t ltcount = boost::lexical_cast<int32_t>(argv[3]);
+	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
+	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	nconfig::set_server(argv[1], tab->m_id);
 

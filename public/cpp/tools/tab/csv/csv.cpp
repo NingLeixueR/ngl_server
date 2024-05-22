@@ -4,7 +4,6 @@
 #include "nlog.h"
 #include "csv.h"
 
-#include <boost/lexical_cast.hpp>
 
 namespace ngl
 {
@@ -124,7 +123,7 @@ namespace ngl
 		std::string ltemp;
 		rcsv::read(apair, ltemp);
 		if (ltemp != "")
-			adata = boost::lexical_cast<TNUMBER>(ltemp);
+			adata = tools::lexical_cast<TNUMBER>(ltemp);
 		else
 			adata = TNUMBER();
 		return true;

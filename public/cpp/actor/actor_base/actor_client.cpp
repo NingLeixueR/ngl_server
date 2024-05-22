@@ -89,7 +89,7 @@ namespace ngl
 					{
 						.m_node
 						{
-							.m_name		= std::string("actorclient") + boost::lexical_cast<std::string>(tab->m_id),
+							.m_name		= std::string("actorclient") + tools::lexical_cast<std::string>(tab->m_id),
 							.m_serverid = tab->m_id,
 						}
 					};

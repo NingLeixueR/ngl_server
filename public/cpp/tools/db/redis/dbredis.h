@@ -63,7 +63,7 @@ namespace ngl
 					int lid = 0;
 					if (found != std::string::npos)
 					{
-						lid = boost::lexical_cast<int>(&(lreply->element[i]->str[found + 1]));
+						lid = tools::lexical_cast<int>(&(lreply->element[i]->str[found + 1]));
 						get(atab, lid, adata[lid]);
 					}
 				}

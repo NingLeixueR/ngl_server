@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/lexical_cast.hpp>
 #include <string>
 #include <map>
 #include <set>
@@ -36,7 +35,7 @@ namespace ngl
 			std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
 			if (lp == nullptr)
 				return false;
-			adata = boost::lexical_cast<TVALUE>(*lp);
+			adata = tools::lexical_cast<TVALUE>(*lp);
 			return true;
 		}
 		bool find(const char* akey, bool& adata);
