@@ -18,9 +18,9 @@ typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hF
 
 static LONG WINAPI TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo );
 
+#include "threadtools.h"
 #include "dumper.h"
 #include "time.h"
-#include <boost/thread.hpp>
 
 DumperHandler Dumper::dumperHandler;
 std::string Dumper::m_excname;
@@ -37,12 +37,12 @@ Dumper::Dumper()
 	::SetUnhandledExceptionFilter( TopLevelFilter );
 }
 
-boost::mutex m_lock;
+std::shared_mutex m_mutex;
 bool isDumping = false;
 LONG WINAPI TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 {
 	{/** Ëø×÷ÓÃÓò */
-		boost::mutex::scoped_lock llock(m_lock);
+		monopoly_shared_lock(m_mutex);
 		if (isDumping) {
 			::MessageBox(nullptr, "Already crushing...", "MiniDump", MB_OK);
 			return EXCEPTION_EXECUTE_HANDLER;
