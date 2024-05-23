@@ -18,8 +18,8 @@ ADD_EXECUTABLE(IDL
 	${CORE_LIST_CSRC}
 )
 
-TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../lib/Debug/libboost.lib)
-TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../lib/Release/libboost.lib)
+TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/libboost.lib)
+TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/libboost.lib)
 
 
 

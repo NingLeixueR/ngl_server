@@ -13,7 +13,6 @@
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
 #include <google/protobuf/descriptor.h>
-#include <boost/filesystem.hpp>
 
 #include "operator_file.h"
 #include "ttab_servers.h"
@@ -280,10 +279,10 @@ int main(int argc, char** argv)
             ngl::manage_csv<ngl::tab_servers>* mang = ngl::allcsv::get<ngl::manage_csv<ngl::tab_servers>>();
             mang->foreach([](ngl::tab_servers& tab)
                 {
-                    ngl::_http* lhttp = ngl::manage_curl::make_http();
-                    ngl::manage_curl::set_mode(*lhttp, ngl::ENUM_MODE_HTTP);
-                    ngl::manage_curl::set_type(*lhttp, ngl::ENUM_TYPE_GET);
-                    ngl::manage_curl::set_url(*lhttp, "http://127.0.0.1:800/push_server_config.php");
+                   auto lhttp = ngl::manage_curl::make_http();
+                    ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+                    ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+                    ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/push_server_config.php");
 
                     ngl::net_works const* lpstruct = ngl::ttab_servers::nworks(ngl::ENET_PROTOCOL::ENET_TCP, &tab);
                     if (lpstruct == nullptr)
@@ -300,7 +299,7 @@ int main(int argc, char** argv)
                         << "port=" << lpstruct->m_port << "&"
                         << "type=" << tab.m_type;
 
-                    ngl::manage_curl::set_param(*lhttp, lstream.str());
+                    ngl::manage_curl::set_param(lhttp, lstream.str());
                     ngl::manage_curl::getInstance().send(lhttp);
                 });
             while (1)
@@ -313,7 +312,7 @@ int main(int argc, char** argv)
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);
    
-    g_stream_sql << "/*Date:" << ngl::localtime::time2msstr("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
+    g_stream_sql << "/*Date:" << ngl::localtime::time2str("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
     g_stream_sql << std::endl;
     g_stream_sql << " DROP Database IF EXISTS `lbtest`;" << std::endl;
     g_stream_sql << " CREATE DATABASE lbtest default charset utf8 COLLATE utf8_general_ci;" << std::endl;

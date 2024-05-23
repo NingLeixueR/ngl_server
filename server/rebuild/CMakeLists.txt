@@ -20,8 +20,8 @@ ADD_EXECUTABLE(rebuild
 SET_TARGET_PROPERTIES(rebuild PROPERTIES COMPILE_FLAGS "/EHa" )
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-	TARGET_LINK_LIBRARIES(rebuild debug ${PROJECT_SOURCE_DIR}/../../lib/Debug/libboost.lib)
-	TARGET_LINK_LIBRARIES(rebuild optimized ${PROJECT_SOURCE_DIR}/../../lib/Release/libboost.lib)
+	TARGET_LINK_LIBRARIES(rebuild debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/libboost.lib)
+	TARGET_LINK_LIBRARIES(rebuild optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/libboost.lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 

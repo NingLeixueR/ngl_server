@@ -1,6 +1,6 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <boost/typeof/typeof.hpp>
+//#include <boost/typeof/typeof.hpp>
 
 #include "enum2name.h"
 #include "nprotocol.h"
@@ -48,7 +48,7 @@ namespace ngl
 
 	void xml::_foreach(boost_ptree& apt, const std::string& anode, const std::function<void(boost_ptree& apt)> afun)
 	{
-		for (BOOST_AUTO(pos, apt.begin()); pos != apt.end(); ++pos)
+		for (auto pos = apt.begin(); pos != apt.end(); ++pos)
 		{
 			if (pos->first == anode)
 				afun(pos->second);
@@ -57,7 +57,7 @@ namespace ngl
 
 	void xml::_foreach(boost_ptree& apt, const std::function<void(boost_ptree& apt, const std::string&)> afun)
 	{
-		for (BOOST_AUTO(pos, apt.begin()); pos != apt.end(); ++pos)
+		for (auto pos = apt.begin(); pos != apt.end(); ++pos)
 		{
 			afun(pos->second, pos->first);
 		}
@@ -65,7 +65,7 @@ namespace ngl
 
 	void xml::_foreach_xmlattr(boost_ptree& apt, const std::function<void(boost_ptree& apt, const std::string&)> afun)
 	{
-		for (BOOST_AUTO(pos, apt.begin()); pos != apt.end(); ++pos)
+		for (auto pos = apt.begin(); pos != apt.end(); ++pos)
 		{
 			if (memcmp(pos->first.c_str(), "<xmlattr>", sizeof("<xmlattr>")) == 0)
 			{

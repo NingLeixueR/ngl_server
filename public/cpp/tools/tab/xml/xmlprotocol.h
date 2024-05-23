@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boost/property_tree/ptree.hpp>
-#include <boost/typeof/typeof.hpp>
+//#include <boost/typeof/typeof.hpp>
 #include <functional>
 #include <string>
 #include <map>
