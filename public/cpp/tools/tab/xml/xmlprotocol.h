@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/property_tree/ptree.hpp>
 #include <functional>
 #include <string>
 #include <map>
