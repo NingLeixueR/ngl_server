@@ -1,6 +1,5 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-//#include <boost/typeof/typeof.hpp>
 
 #include "enum2name.h"
 #include "nprotocol.h"
