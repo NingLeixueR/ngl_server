@@ -6,8 +6,8 @@
 #include "template_arg.h"
 #include "actor_robot.h"
 #include "actor_role.h"
-#include "xmlnode.h"
 #include "actor.h"
+#include "xml.h"
 
 namespace ngl
 {

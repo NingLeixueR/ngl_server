@@ -3,7 +3,7 @@
 #include "actor_log.h"
 #include "ndb_modular.h"
 #include "ndbclient.h"
-#include "xmlnode.h"
+#include "xml.h"
 #include "net.h"
 
 namespace ngl

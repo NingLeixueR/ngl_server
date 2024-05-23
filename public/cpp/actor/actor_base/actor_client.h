@@ -2,7 +2,6 @@
 
 #include "nprotocol.h"
 #include "naddress.h"
-#include "xmlnode.h"
 #include "actor.h"
 #include "impl.h"
 

@@ -6,7 +6,6 @@
 #include <map>
 
 #include "regular.h"
-#include "xmlnode.h"
 #include "xmlinfo.h"
 #include "type.h"
 #include "nlog.h"

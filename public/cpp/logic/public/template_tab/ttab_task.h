@@ -2,9 +2,9 @@
 
 #include "ttab_specialid.h"
 #include "manage_csv.h"
-#include "xmlnode.h"
 #include "type.h"
 #include "nlog.h"
+#include "xml.h"
 
 namespace ngl
 {

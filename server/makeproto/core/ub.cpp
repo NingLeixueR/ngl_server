@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-22 23:05:41
+// 创建时间 24-05-23 21:59:41
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -121,6 +121,7 @@
 #include "threadtools.cpp"
 #include "time_consuming.cpp"
 #include "time_wheel.cpp"
+#include "tinyxml2.cpp"
 #include "tools.cpp"
 #include "tprotocol.cpp"
 #include "ttab_attribute.cpp"
@@ -134,8 +135,8 @@
 #include "unit.cpp"
 #include "url.cpp"
 #include "varint.cpp"
+#include "xml.cpp"
 #include "xmlinfo.cpp"
-#include "xmlnode.cpp"
 #include "xmlprotocol.cpp"
 extern "C"{
 #include "ikcp.c"

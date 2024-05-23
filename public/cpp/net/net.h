@@ -2,7 +2,6 @@
 
 #include "ttab_servers.h"
 #include "net_protocol.h"
-#include "xmlnode.h"
 
 #define isystemindex (0)
 

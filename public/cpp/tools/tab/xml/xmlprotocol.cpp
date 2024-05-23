@@ -1,4 +1,5 @@
 #include "xmlprotocol.h"
+#include "xml.h"
 
 namespace ngl
 {
@@ -6,11 +7,12 @@ namespace ngl
 
 	void xmlprotocol::read(const std::string& axmlname)
 	{
-		boost_ptree	lroot;
-		if (!xml::read(axmlname, lroot))
+		tinyxml2::XMLDocument ldoc;
+		tinyxml2::XMLElement* lcon;
+		if (!xml::readxml(axmlname.c_str(), ldoc, lcon))
 			return;
 
-		std::function<void(boost_ptree&)> lfun = [](boost_ptree& apt)
+		std::function<void(tinyxml2::XMLElement*)> lfun = [](tinyxml2::XMLElement* apt)
 			{
 				xmlinfo ltemp;
 				xmlnode::read_config(apt, ltemp);
@@ -23,8 +25,7 @@ namespace ngl
 				}
 				ltemp.plog();
 			};
-		boost_ptree lchild = xml::get_child(lroot, "con");
-		xml::_foreach(lchild, "config", lfun);
+		xml::foreach(lcon, "config", lfun);
 	}
 
 	void xmlprotocol::load()

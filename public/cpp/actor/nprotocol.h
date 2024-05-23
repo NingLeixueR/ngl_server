@@ -7,11 +7,11 @@
 #include "sysconfig.h"
 #include "logprintf.h"
 #include "ndefine.h"
-#include "xmlnode.h"
 #include "nguid.h"
 #include "db.pb.h"
 #include "pack.h"
 #include "type.h"
+#include "xml.h"
 
 #include <sstream>
 #include <iostream>

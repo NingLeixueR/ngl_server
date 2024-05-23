@@ -2,8 +2,8 @@
 #include "actor_log.h"
 #include "logprintf.h"
 #include "nprotocol.h"
-#include "xmlnode.h"
 #include "nlog.h"
+#include "xml.h"
 
 #include <iostream>
 

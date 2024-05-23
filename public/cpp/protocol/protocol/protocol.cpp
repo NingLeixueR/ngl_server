@@ -1,7 +1,7 @@
 #include "protocoltools.h"
 #include "protocol.h"
-#include "xmlnode.h"
 #include "xmlinfo.h"
+#include "xml.h"
 
 namespace ngl
 {

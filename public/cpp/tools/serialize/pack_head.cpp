@@ -1,7 +1,7 @@
 #include "pack_head.h"
-#include "xmlnode.h"
 #include "nguid.h"
 #include "nlog.h"
+#include "xml.h"
 
 namespace ngl
 {

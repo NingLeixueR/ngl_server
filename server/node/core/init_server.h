@@ -29,7 +29,6 @@
 #include "attribute.h"
 #include "tprotocol.h"
 #include "sysconfig.h"
-#include "xmlnode.h"
 #include "dbredis.h"
 #include "ntimer.h"
 #include "varint.h"
@@ -43,6 +42,7 @@
 #include "nlog.h"
 #include "nlog.h"
 #include "csv.h"
+#include "xml.h"
 
 #include <chrono>
 #include <thread>

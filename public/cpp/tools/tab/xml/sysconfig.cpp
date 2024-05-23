@@ -1,5 +1,5 @@
 #include "sysconfig.h"
-#include "xmlnode.h"
+#include "xml.h"
 
 
 namespace ngl

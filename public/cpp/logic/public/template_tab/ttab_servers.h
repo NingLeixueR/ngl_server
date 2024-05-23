@@ -1,7 +1,6 @@
 #pragma once
 
 #include "manage_csv.h"
-#include "xmlnode.h"
 #include "type.h"
 
 namespace ngl

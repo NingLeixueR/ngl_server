@@ -12,8 +12,8 @@
 #include "enum2name.h"
 #include "nprotocol.h"
 #include "xmlinfo.h"
-#include "xmlnode.h"
 #include "nlog.h"
+#include "xml.h"
 
 namespace ngl
 {

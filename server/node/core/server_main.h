@@ -465,6 +465,7 @@ bool start_robot(int argc, char** argv)
 					char lbuff[1024] = { 0x0 };
 					std::cin.getline(lbuff, 1024);
 					lcmd = lbuff;
+					lvec.clear();
 					if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
 						continue;
 					if (lvec[0] == "test" || lvec[0] == "TEST")
