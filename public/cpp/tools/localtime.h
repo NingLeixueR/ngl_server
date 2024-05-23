@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boost/date_time/c_time.hpp>
 #include <cstdio>
+#include <string>
 #include <ctime>
 
 namespace ngl
@@ -44,11 +44,8 @@ namespace ngl
 		//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
 		static size_t time2str(char* str, int len, time_t anow, const char* format);
 		static std::string time2str(time_t anow, const char* format);
-		static size_t time2msstr(char* str, int len, time_t anow, const char* format);
-		static std::string time2msstr(time_t anow, const char* format);
-		static std::string time2msstr(const char* format);
-		//static const char* time2str(int anow, const char* format, char* abuff);
-		static time_t st2time(const char* str);
+		static std::string time2str(const char* format);
+		static time_t str2time(const char* astr, const char* format = "%Y-%m-%d %H:%M:%S");
 		// 获取utc时刻那天的 小时分钟的utc
 		static time_t getsecond2time(time_t utc, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 		// 获取今天的指定 小时分钟的utc(如果时间已过则获取下一天的指定小时分钟的utc)

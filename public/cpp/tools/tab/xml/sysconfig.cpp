@@ -71,7 +71,7 @@ namespace ngl
 
 		std::string lopen_servertime;
 		lpublicxml->find("open_servertime", lopen_servertime);
-		m_open_servertime = localtime::st2time(lopen_servertime.c_str());
+		m_open_servertime = localtime::str2time(lopen_servertime.c_str(), "%Y/%m/%d %H:%M:%S");
 		
 		lpublicxml->find("head_version", m_head_version);
 		

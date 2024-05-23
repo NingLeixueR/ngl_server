@@ -36,9 +36,9 @@ namespace ngl
 					<< "notice###id:[" << lnotice.m_id() << "] "
 					<< "notice:[" << lnotice.m_notice() << "] "
 					<< "time:[" 
-					<< localtime::time2msstr(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S") 
+					<< localtime::time2str(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S") 
 					<< "-" 
-					<< localtime::time2msstr(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S") << "]"
+					<< localtime::time2str(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S") << "]"
 					<< std::endl;
 				if (m_maxid <= lnotice.m_id())
 					m_maxid = lnotice.m_id();

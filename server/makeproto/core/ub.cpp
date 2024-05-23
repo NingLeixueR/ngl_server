@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-22 21:42:37
+// 创建时间 24-05-22 23:05:41
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -63,6 +63,7 @@
 #include "db_pool.cpp"
 #include "dbredis.cpp"
 #include "drop.cpp"
+#include "encryption.cpp"
 #include "event.cpp"
 #include "gateway_info.cpp"
 #include "gdbdmp.cpp"

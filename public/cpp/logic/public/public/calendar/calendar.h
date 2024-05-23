@@ -82,10 +82,10 @@ namespace ngl
 				int32_t lbeg = ttab_calendar::data::beg(ltime);
 				int32_t lend = ttab_calendar::data::end(ltime);
 				(*lstream)
-					<< "start[" << localtime::time2msstr(lbeg, "%y/%m/%d %H:%M:%S")
+					<< "start[" << localtime::time2str(lbeg, "%y/%m/%d %H:%M:%S")
 					<< (lcalendar.m_start() ? "true" : "false")
 					<< "]"
-					"finish[" << localtime::time2msstr(lend, "%y/%m/%d %H:%M:%S")
+					"finish[" << localtime::time2str(lend, "%y/%m/%d %H:%M:%S")
 					<< (lcalendar.m_finish() ? "true" : "false")
 					<< "]" << std::endl;
 

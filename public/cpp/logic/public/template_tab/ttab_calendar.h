@@ -209,8 +209,8 @@ namespace ngl
 			int32_t lnow = localtime::gettime();
 			for (auto& item : atregularslot)
 			{
-				int32_t lbeg = localtime::st2time(item.m_opentime.c_str());
-				int32_t lclose = localtime::st2time(item.m_closetime.c_str());
+				int32_t lbeg = localtime::str2time(item.m_opentime.c_str(), "%Y-%m-%d %H:%M:%S");
+				int32_t lclose = localtime::str2time(item.m_closetime.c_str(), "%Y-%m-%d %H:%M:%S");
 				if (lnow > lclose)
 					continue;
 				m_data[aid].add(lbeg, lclose);
