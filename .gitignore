@@ -6,6 +6,7 @@
 3part/protobuf
 3part/behaviac-3.6.40
 3part/CMakeLists.txt
+3part
 php/vendor
 bin/Debug
 bin/Release

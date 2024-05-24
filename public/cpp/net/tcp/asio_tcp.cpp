@@ -8,7 +8,7 @@ namespace ngl
 {
 	struct asio_tcp::impl_asio_tcp
 	{
-		boost::asio::ip::tcp::acceptor*		m_acceptor;
+		asio::ip::tcp::acceptor*		m_acceptor;
 		i16_port							m_port;
 		tcp_callback						m_fun;
 		tcp_closecallback					m_closefun;
@@ -36,8 +36,8 @@ namespace ngl
 			m_service_io_(athread, 10240),
 			m_sessionid(aindex << 24)
 		{
-			boost::asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
-			m_acceptor = new boost::asio::ip::tcp::acceptor(lioservice, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), m_port));
+			asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
+			m_acceptor = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
 			//m_acceptor = new boost::asio::ip::tcp::acceptor(lioservice, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), m_port));
 
 			accept();
@@ -76,7 +76,7 @@ namespace ngl
 			///////////
 			lservice->m_socket.async_connect(
 				basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport),
-				[this, lservice, aip, aport, afun, acount](const boost::system::error_code& ec)
+				[this, lservice, aip, aport, afun, acount](const std::error_code& ec)
 				{
 					if (ec)
 					{
@@ -185,7 +185,7 @@ namespace ngl
 					if (lpack->m_pos == lpack->m_len)
 					{
 						tcp->m_socket.async_send(
-							boost::asio::buffer(lpack->m_buff, lpack->m_pos),
+							asio::buffer(lpack->m_buff, lpack->m_pos),
 							[this, alist, tcp, lpack](const std::error_code& ec, std::size_t /*length*/)
 							{
 								alist->pop_front();
@@ -204,7 +204,7 @@ namespace ngl
 						if (lsize < 0)
 							return;
 						tcp->m_socket.async_send(
-							boost::asio::buffer(&lpack->m_buff[lpack->m_pos], lsize),
+							asio::buffer(&lpack->m_buff[lpack->m_pos], lsize),
 							[this, alist, tcp, lpack](const std::error_code& ec, std::size_t /*length*/)
 							{
 								alist->pop_front();
@@ -225,7 +225,7 @@ namespace ngl
 					pack* lpackptr = (pack*)lpack.get();
 
 					tcp->m_socket.async_send(
-						boost::asio::buffer(lpackptr->m_buff, lpackptr->m_pos),
+						asio::buffer(lpackptr->m_buff, lpackptr->m_pos),
 						[this, alist, tcp, lpack](const std::error_code& ec, std::size_t /*length*/)
 						{
 							alist->pop_front();
@@ -242,7 +242,7 @@ namespace ngl
 			}
 		}
 
-		inline void handle_write(service_tcp* ap, const boost::system::error_code& error, std::shared_ptr<pack> apack)
+		inline void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack)
 		{
 			if (error)
 			{
@@ -252,7 +252,7 @@ namespace ngl
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
 		}
 
-		inline void handle_write_void(service_tcp* ap, const boost::system::error_code& error, std::shared_ptr<void> apack)
+		inline void handle_write_void(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack)
 		{
 			if (error)
 			{
@@ -357,7 +357,7 @@ namespace ngl
 			}
 			m_acceptor->async_accept(
 				lservice->m_socket,
-				[this,lservice](const boost::system::error_code& error)
+				[this,lservice](const std::error_code& error)
 				{
 					if (error)
 					{
@@ -387,8 +387,8 @@ namespace ngl
 			std::swap(aservice->m_buff1, aservice->m_buff2);
 			char* lbuff = aservice->m_buff1;
 			aservice->m_socket.async_read_some(
-				boost::asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize),
-				[this, lbuff, aservice](const boost::system::error_code& error, size_t bytes_transferred)
+				asio::buffer(aservice->m_buff1, m_service_io_.m_buffmaxsize),
+				[this, lbuff, aservice](const std::error_code& error, size_t bytes_transferred)
 				{
 					if (!error)
 					{

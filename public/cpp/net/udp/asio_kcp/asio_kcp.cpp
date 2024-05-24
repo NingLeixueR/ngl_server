@@ -330,7 +330,7 @@ namespace ngl
 		session_manage						m_session;
 		std::function<void(i32_session)>	m_connectfun;
 		bpool								m_pool;
-		boost::asio::io_context				m_context;
+		asio::io_context					m_context;
 		asio_udp::socket					m_socket;
 		asio_udp_endpoint					m_remoteport;
 		char								m_buff[1500];
@@ -522,8 +522,8 @@ namespace ngl
 
 		inline void start()
 		{
-			m_socket.async_receive_from(boost::asio::buffer(m_buff, 1500), m_remoteport,
-				[this](const boost::system::error_code& ec, std::size_t bytes_received)
+			m_socket.async_receive_from(asio::buffer(m_buff, 1500), m_remoteport,
+				[this](const std::error_code& ec, std::size_t bytes_received)
 				{
 					m_bytes_received = bytes_received;
 					if (!ec && bytes_received > 0)
@@ -607,11 +607,11 @@ namespace ngl
 		// ## 发送原始udp包
 		inline bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 		{
-			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
+			m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
 					{
-						log_error()->print("sendu err [{}]", ec.what());
+						log_error()->print("sendu err [{}]", ec.message());
 					}
 				});
 			return true;
@@ -621,11 +621,11 @@ namespace ngl
 		{
 			m_wait = afun;
 			m_waitendpoint = aendpoint;
-			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [this, aendpoint, buf, len, afun](const boost::system::error_code& ec, std::size_t bytes_received)
+			m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [this, aendpoint, buf, len, afun](const std::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
 					{
-						log_error()->print("async_send_to err [{}]", ec.what());
+						log_error()->print("async_send_to err [{}]", ec.message());
 						wheel_parm lparm
 						{
 							.m_ms = 1000,
@@ -685,20 +685,20 @@ namespace ngl
 		inline int sendbuff(i32_session asession, const char* buf, int len)
 		{
 			ptr_se lpstruct = m_session.find(asession);
-			m_socket.async_send_to(boost::asio::buffer(buf, len), lpstruct->m_endpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
+			m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, [](const std::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.what());
+						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
 				});
 			return 0;
 		}
 
 		inline int sendbuff(asio_udp_endpoint& aendpoint, const char* buf, int len)
 		{
-			m_socket.async_send_to(boost::asio::buffer(buf, len), aendpoint, [](const boost::system::error_code& ec, std::size_t bytes_received)
+			m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t bytes_received)
 				{
 					if (ec)
-						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.what());
+						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
 				});
 			return 0;
 		}
@@ -711,7 +711,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		)
 		{
-			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
+			ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
 			connect(aconv, akcpsess, aactorid, lendpoint, afun);
 		}
 
@@ -749,7 +749,7 @@ namespace ngl
 
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport)
 		{
-			ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(aip), aport);
+			ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(aip), aport);
 			m_session.reset_add(aconv, lendpoint, -1);
 		}
 	};

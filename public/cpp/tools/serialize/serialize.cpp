@@ -1,5 +1,3 @@
-#include <boost/asio.hpp>
-
 #include "serialize.h"
 #include "varint.h"
 #include "db.pb.h"

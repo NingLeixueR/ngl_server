@@ -7,7 +7,6 @@
 #include "net_pack.h"
 #include "asio_tcp.h"
 #include "asio_kcp.h"
-#include "asio_ws.h"
 #include "segpack.h"
 #include "impl.h"
 #include "pack.h"

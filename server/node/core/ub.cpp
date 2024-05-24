@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-23 21:59:40
+// 创建时间 24-05-24 15:55:58
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -43,7 +43,6 @@
 #include "asio_kcp.cpp"
 #include "asio_tcp.cpp"
 #include "asio_timer.cpp"
-#include "asio_ws.cpp"
 #include "attribute.cpp"
 #include "attribute_value.cpp"
 #include "autoitem.cpp"
@@ -91,7 +90,6 @@
 #include "net.cpp"
 #include "net_protocol.cpp"
 #include "net_tcp.cpp"
-#include "net_ws.cpp"
 #include "nguid.cpp"
 #include "nlog.cpp"
 #include "notice.cpp"

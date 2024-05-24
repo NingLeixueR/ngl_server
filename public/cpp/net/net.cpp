@@ -1,7 +1,6 @@
 #include "server_session.h"
 #include "protocol.h"
 #include "net_tcp.h"
-#include "net_ws.h"
 #include "nguid.h"
 #include "net.h"
 
@@ -94,10 +93,10 @@ namespace ngl
 				{
 					lserver = new net_tcp((int8_t)ENET_TCP);
 				}
-				else if (item.m_type == ENET_WS)
-				{
-					lserver = new net_ws((int8_t)ENET_WS);
-				}
+				//else if (item.m_type == ENET_WS)
+				//{
+				//	lserver = new net_ws((int8_t)ENET_WS);
+				//}
 				lserver->init(item.m_port, asocketthreadnum, aouternet);
 			}
 			else if (item.m_type == ENET_KCP)

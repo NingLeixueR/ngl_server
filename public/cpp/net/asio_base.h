@@ -4,8 +4,7 @@
 #include "node_pack.h"
 #include "type.h"
 
-#include <boost/beast.hpp>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
@@ -15,13 +14,12 @@
 
 namespace ngl
 {
-	using basio_ioservice		= boost::asio::io_service;
-	using basio_ioservicework	= boost::asio::io_service::work;
-	using basio_iptcpsocket		= boost::asio::ip::tcp::socket;
-	using basio_iptcpendpoint	= boost::asio::ip::tcp::endpoint;
-	using basio_ipaddress		= boost::asio::ip::address;
+	using basio_ioservice		= asio::io_service;
+	using basio_ioservicework	= asio::io_service::work;
+	using basio_iptcpsocket		= asio::ip::tcp::socket;
+	using basio_iptcpendpoint	= asio::ip::tcp::endpoint;
+	using basio_ipaddress		= asio::ip::address;
 	using tuple_ioservice		= std::tuple<basio_ioservice*, basio_ioservicework*, std::thread*>;
-	using basio_websocket		= boost::beast::websocket::stream<boost::beast::tcp_stream>;
 
 	struct serviceio_info
 	{
@@ -61,16 +59,5 @@ namespace ngl
 
 		service_tcp(serviceio_info& amsi, int asessionid);
 		virtual ~service_tcp();
-	};
-
-	class service_ws : public service_io
-	{
-	public:
-		basio_websocket m_ws;
-		
-		basio_iptcpsocket& socket();
-
-		service_ws(serviceio_info& amsi, int asessionid);
-		~service_ws();
 	};
 }// namespace ngl

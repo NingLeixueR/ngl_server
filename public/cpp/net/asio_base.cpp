@@ -62,20 +62,4 @@ namespace ngl
 	service_tcp::~service_tcp()
 	{
 	}
-
-	basio_iptcpsocket& service_ws::socket()
-	{
-		return m_ws.next_layer().socket();
-	}
-
-	service_ws::service_ws(serviceio_info& amsi, int asessionid) :
-		service_io(amsi, asessionid),
-		m_ws(basio_iptcpsocket(*(amsi.get_ioservice(m_threadid))))
-	{
-		m_ws.binary(true);
-	}
-
-	service_ws::~service_ws()
-	{
-	}
 }// namespace ngl

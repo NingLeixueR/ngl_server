@@ -66,7 +66,7 @@ namespace ngl
 			, bool areconnection					// 断线是否重连
 		)
 		{
-			boost::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
+			std::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
 			anetprotocol->connect(aip, aport, [this, anetprotocol, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
 				{
 					afun(asession);

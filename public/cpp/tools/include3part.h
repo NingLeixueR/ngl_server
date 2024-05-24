@@ -1,10 +1,6 @@
 #pragma once
 
-#include <boost/system/error_code.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio.hpp>
-#include <boost/beast.hpp>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <strstream>
 #include <iostream>
 #include <string>

@@ -13,12 +13,13 @@
 #include "ikcp.h"
 #include "impl.h"
 
+#include <asio.hpp>
 #include <memory>
 #include <map>
 
 namespace ngl
 {
-	using asio_udp			= boost::asio::ip::udp;
+	using asio_udp			= asio::ip::udp;
 	using asio_udp_endpoint = asio_udp::endpoint;
 
 	class asio_kcp;

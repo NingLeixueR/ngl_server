@@ -215,7 +215,7 @@ namespace ngl
 								net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
 								net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
 								// 获取本机uip
-								ngl::asio_udp_endpoint lendpoint(boost::asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
+								ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
 								i32_session lsession = arobot.m_session;
 								//i64_actorid lactorid = id_guid();
 								i64_actorid lactorid = arobot.m_robot->id_guid();
