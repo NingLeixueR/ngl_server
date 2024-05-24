@@ -3,7 +3,7 @@
 * 基于Actor的c++分布式游戏服务器框架
 
 ## 依赖的第三方库
-  * <b>boost</b>
+  * <b>非boost独立版本的asio</b>
   * <b>cryptopp</b>
   * <b>curl</b>
   * <b>hiredis</b>
