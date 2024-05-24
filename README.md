@@ -21,7 +21,7 @@
 
 ## 协议支持
   * tcp
-  * ws
+  * ws(暂时移除)
   * kcp
 
 ## Linux CentOs编译
