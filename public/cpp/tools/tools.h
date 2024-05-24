@@ -69,10 +69,10 @@ namespace ngl
 		template <typename Target, typename Source>
 		static Target lexical_cast(const Source& arg)
 		{
-			std::stringstream m_stream;
-			m_stream << arg;
+			std::stringstream lstream;
+			lstream << arg;
 			Target ltemp;
-			m_stream >> ltemp;
+			lstream >> ltemp;
 			return ltemp;
 		}
 	};

@@ -19,8 +19,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	std::cout << "[" << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() << "]" << std::endl;
-
 	nconfig::init();
 	nconfig::load("config");
 	ngl::allcsv::load();

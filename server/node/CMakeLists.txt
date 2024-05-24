@@ -44,8 +44,8 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/hiredis.lib)
 	TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/libprotobuf.lib)
 	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/libprotobuf.lib)
-	TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/cryptlib.lib)
-	TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/cryptlib.lib)
+	#TARGET_LINK_LIBRARIES(node debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/cryptlib.lib)
+	#TARGET_LINK_LIBRARIES(node optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/cryptlib.lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 
