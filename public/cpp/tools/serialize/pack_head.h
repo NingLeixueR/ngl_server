@@ -74,12 +74,13 @@ namespace ngl
 template <>
 struct std::formatter<ngl::pack_head>
 {
-	auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const ngl::pack_head& val, std::format_context& ctx)
+	template <typename FormatContext>
+	auto format(const ngl::pack_head& val, FormatContext& ctx)const
 	{
 		auto out = ctx.out();
 		std::format_to(out, "HEAD[");

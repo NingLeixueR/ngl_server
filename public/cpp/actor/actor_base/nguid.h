@@ -203,12 +203,12 @@ namespace ngl
 template <>
 struct std::formatter<ngl::nguid>
 {
-	auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const ngl::nguid& aval, std::format_context& ctx)
+	auto format(const ngl::nguid& aval, std::format_context& ctx)const
 	{
 		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::name(aval.type());
 		if (lanme == nullptr)

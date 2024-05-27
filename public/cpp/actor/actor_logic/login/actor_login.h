@@ -8,7 +8,7 @@
 #include "db_pool.h"
 #include "net.pb.h"
 #include "db.pb.h"
-#include "uuid.h"
+#include "guuid.h"
 #include "net.h"
 #include "db.h"
 
@@ -92,12 +92,12 @@ namespace ngl
 template <>
 struct std::formatter<ngl::actor_login::server_info>
 {
-	auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const ngl::actor_login::server_info& aval, std::format_context& ctx)
+	auto format(const ngl::actor_login::server_info& aval, std::format_context& ctx)const
 	{
 		return std::format_to(
 			ctx.out()

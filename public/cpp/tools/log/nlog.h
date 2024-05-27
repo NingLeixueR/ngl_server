@@ -56,12 +56,12 @@ namespace ngl
 template <typename T>
 struct std::formatter<std::vector<T>>
 {
-	auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const std::vector<T>& vec, std::format_context& ctx)
+	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
 		std::format_to(out, "[");
@@ -77,12 +77,12 @@ struct std::formatter<std::vector<T>>
 template <typename T>
 struct std::formatter<std::list<T>>
 {
-	auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const std::vector<T>& vec, std::format_context& ctx)
+	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
 		std::format_to(out, "[");
@@ -98,12 +98,12 @@ struct std::formatter<std::list<T>>
 template <typename TKEY, typename TVAL>
 struct std::formatter<std::map<TKEY, TVAL>>
 {
-	auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const std::map<TKEY, TVAL>& vec, std::format_context& ctx)
+	auto format(const std::map<TKEY, TVAL>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
 		std::format_to(out, "[");
