@@ -20,42 +20,140 @@ namespace ngl
 	{
 		// 模块属性(只能模块间发生变化通过updata[EnumModule,attribute_value])
 		std::map<EnumModule, attribute_value> m_moduledata;
-		bool m_issync;
+		bool m_sync;
 
-		attribute_value& root();
+		attribute_value& root()
+		{
+			return m_moduledata[EnumModule::E_ModuleRoot];
+		}
 
-		void add_module(EnumModule aenum);
-		void dec_module(EnumModule aenum);
+		void add_module(EnumModule aenum)
+		{
+			auto itor = m_moduledata.find(aenum);
+			if (itor == m_moduledata.end())
+				return;
+			for (const auto& [key, value] : itor->second.m_crattr)
+			{
+				ttab_attribute::add(m_moduledata[key].m_orattr, value);
+			}
+		}
 
-		bool is_module_root(EnumModule aenum);
-		bool is_module_null(EnumModule aenum);
+		void dec_module(EnumModule aenum)
+		{
+			auto itor = m_moduledata.find(aenum);
+			if (itor == m_moduledata.end())
+				return;
+			ttab_attribute::dec(root().m_attr, itor->second.m_fight);
+			for (const auto& [key, value] : itor->second.m_crattr)
+			{
+				ttab_attribute::dec(m_moduledata[key].m_orattr, value);
+				if (key != EnumModule::E_ModuleRoot)
+					ttab_attribute::dec(root().m_attr, m_moduledata[key].m_fight);
+			}
+		}
 
-		void update_module(EnumModule aenum);
+		bool is_module_root(EnumModule aenum)
+		{
+			return aenum == EnumModule::E_ModuleRoot;
+		}
+
+		bool is_module_null(EnumModule aenum)
+		{
+			return aenum == EnumModule::E_ModuleNull;
+		}
+
+		void update_module(EnumModule aenum)
+		{
+			auto itor = m_moduledata.find(aenum);
+			if (itor == m_moduledata.end())
+				return;
+			itor->second.update();
+			ttab_attribute::add(root().m_attr, itor->second.m_fight);
+			for (auto&& [key, value] : itor->second.m_crattr)
+			{
+				ttab_attribute::add(m_moduledata[key].m_orattr, value);
+				if (is_module_root(key) == false)
+				{
+					m_moduledata[key].update();
+					ttab_attribute::add(root().m_attr, m_moduledata[key].m_fight);
+				}
+			}
+
+			root().update();
+		}
 	public:
-		attribute();
+		attribute() :
+			m_sync(false)
+		{}
 		
-		bool issync();
+		bool sync()
+		{
+			return m_sync;
+		}
 
-		void set_issync(bool aissync);
+		void set_sync(bool async)
+		{
+			m_sync = async;
+		}
 
 		// #### 初始化数据 将模块属性输入
-		void init_data(EnumModule aenum, attribute_value& avalue);
+		void init_data(EnumModule aenum, attribute_value& avalue)
+		{
+			m_moduledata[aenum] = avalue;
+			m_moduledata[aenum].m_module = aenum;
+		}
 
 		// #### 计算输入的模块属性 生成最终属性与战力
-		void init();
+		void init()
+		{
+			for (EnumModule i = E_ModuleRoot;
+				i < E_ModuleCount;
+				i = (EnumModule)(i + 1))
+			{
+				add_module(i);
+			}
+			for (auto&& [key, value] : m_moduledata)
+			{
+				if (key == E_ModuleRoot)
+					continue;
+				value.update();
+				ttab_attribute::add(root().m_attr, value.m_fight);
+			}
+			root().update();
+		}
 
 		// #### 更新模块属性
-		void updata(EnumModule aenum, attribute_value& avalue);
+		void updata(EnumModule aenum, attribute_value& avalue)
+		{
+			dec_module(aenum);
+			avalue.m_orattr.swap(m_moduledata[aenum].m_orattr);
+			m_moduledata[aenum] = avalue;
+			m_moduledata[aenum].m_module = aenum;
+			update_module(aenum);
+			m_sync = true;
+		}
 
 		// #### 战力
-		int64_t fight();
+		int64_t fight()
+		{
+			return root().m_fightscore;
+		}
 
-		const map_attr& get_attribute();
+		const map_attr& get_attribute()
+		{
+			return root().m_fight;
+		}
 
 		//EnumModule aenum
-		const map_attr& get_attribute(EnumModule aenum);
+		const map_attr& get_attribute(EnumModule aenum)
+		{
+			return m_moduledata[aenum].m_fight;
+		}
 
-		void printf();
+		void printf()
+		{
+			root().printf();
+		}
 
 		template <typename T>
 		void topb(T& apro)

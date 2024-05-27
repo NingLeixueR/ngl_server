@@ -2,6 +2,7 @@
 
 #include "manage_csv.h"
 #include "type.h"
+#include "xml.h"
 
 namespace ngl
 {

@@ -8,15 +8,13 @@
 3part/CMakeLists.txt
 3part
 php/vendor
+bin/idl/idlfile
+bin/proto/pro
 bin/Debug
 bin/Release
 obj
 lib
 doc
-tools/public/rebuild.exe
-tools/public/idl/IDL.exe
-tools/public/idl/idlfile
-tools/public/proto/pro
 public/csharp/csharp/.vs
 public/csharp/csharp/csharp/bin
 public/csharp/NodeConsoleApp1

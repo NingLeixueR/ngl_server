@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-04-18 11:09:48
+// 创建时间 // 创建时间 24-05-27 12:08:51
 #ifndef _csvtable_H_
 #define _csvtable_H_
 #include "csv.h"
@@ -78,13 +78,12 @@ enum EnumModule
 };
 enum EnumAttribute
 {
-	E_Null = 0,	
-	E_Attack = 1,	// [攻击]
-	E_Defense = 2,	// [防御]
-	E_Hp = 3,	// [血量]
-	E_Anger = 4,	// [怒气]
-	E_Speed = 5,	// [速度]
-	E_Count = 6,	
+	E_Attack,	// [攻击]
+	E_Defense,	// [防御]
+	E_Hp,	// [血量]
+	E_Anger,	// [怒气]
+	E_Speed,	// [速度]
+	E_Count,	
 };
 enum EItemSrc
 {
@@ -190,7 +189,7 @@ struct tab_servers
 	int32_t		m_login;		// [index:11] 连接的login进程id
 	int16_t		m_crossarea;		// [index:12] 跨服区服
 	std::vector<int32_t>		m_actorserver;		// [index:13] 连接的actorserver进程id(跨服需要填写多个actorserver)
-	std::vector<net_works>		m_net;		// [index:14] 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
+	std::vector<net_works>		m_net;		// [index:14] 服务器网络相关(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)
 /*********************************/
 	tab_servers();
 	// 序列化反序列化相关

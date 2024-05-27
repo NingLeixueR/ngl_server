@@ -140,9 +140,9 @@ namespace ngl
 	{
 		// ### 同步这次消息的背包变动
 		m_bag.sync_client();
-		if (m_attribute.issync())
+		if (m_attribute.sync())
 		{
-			m_attribute.set_issync(false);
+			m_attribute.set_sync(false);
 			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
 			m_attribute.topb(*pro);
 			send2client(pro);

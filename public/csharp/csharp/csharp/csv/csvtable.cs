@@ -191,13 +191,12 @@ namespace ngl
 	}
 	public enum EnumAttribute
 	{
-		E_Null = 0,	
-		E_Attack = 1,	// [攻击]
-		E_Defense = 2,	// [防御]
-		E_Hp = 3,	// [血量]
-		E_Anger = 4,	// [怒气]
-		E_Speed = 5,	// [速度]
-		E_Count = 6,	
+		E_Attack,	// [攻击]
+		E_Defense,	// [防御]
+		E_Hp,	// [血量]
+		E_Anger,	// [怒气]
+		E_Speed,	// [速度]
+		E_Count,	
 	}
 	partial class RCsv
 	{
@@ -533,7 +532,7 @@ namespace ngl
 		public Int32		m_login;		// [index:11] 连接的login进程id
 		public Int16		m_crossarea;		// [index:12] 跨服区服
 		public List<Int32>		m_actorserver = new List<Int32>();		// [index:13] 连接的actorserver进程id(跨服需要填写多个actorserver)
-		public List<net_works>		m_net = new List<net_works>();		// [index:14] 服务器网络相关(net_works:m_type(1tcp2ws),m_ip,m_nip,m_port)
+		public List<net_works>		m_net = new List<net_works>();		// [index:14] 服务器网络相关(net_works:m_type(0tcp1ws2kcp),m_ip,m_nip,m_port)
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
