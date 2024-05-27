@@ -38,7 +38,7 @@
 #include "dumper.h"
 #include "varint.h"
 #include "db.pb.h"
-#include "uuid.h"
+#include "guuid.h"
 #include "nlog.h"
 #include "nlog.h"
 #include "csv.h"

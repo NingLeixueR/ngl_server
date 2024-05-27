@@ -1,22 +1,20 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdint.h>
+#include <cstdint>
+#include <cstdio>
 #include <string>
 
 #if defined(_WIN32)
 #include <objbase.h>
-#elif defined(__linux__)
-#include <uuid/uuid.h>
 #else
-#error "uuid unsupport platform"
+#include <uuid/uuid.h>
 #endif
 
 #define GUID_LEN 64
 
 namespace ngl
 {
-    class uuid
+    class guuid
     {
     public:
         static bool make(std::string& astr)
@@ -39,24 +37,14 @@ namespace ngl
 
             astr = buf;
             return true;
-#elif defined(__linux__)
-            char buf[GUID_LEN] = { 0 };
+#else
+            uuid_t uuid;
+            uuid_generate(uuid);
 
-            uuid_t uu;
-            uuid_generate(uu);
+            char str[37];
+            uuid_unparse(uuid, str);
 
-            int32_t index = 0;
-            for (int32_t i = 0; i < 16; i++)
-            {
-                int32_t len = i < 15 ?
-                    sprintf(buf + index, "%02X-", uu[i]) :
-                    sprintf(buf + index, "%02X", uu[i]);
-                if (len < 0)
-                    return std::move(std::string(""));
-                index += len;
-            }
-
-            astr = buf;
+            astr = str;
             return true;
 #endif
         }
