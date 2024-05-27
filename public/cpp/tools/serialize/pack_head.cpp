@@ -101,7 +101,7 @@ namespace ngl
 		return nguid::type(get_request_actor());
 	}
 
-	i16_area pack_head::get_actorearea()const
+	i16_area pack_head::get_actorarea()const
 	{
 		return nguid::area(get_actor());
 	}

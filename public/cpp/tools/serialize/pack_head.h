@@ -16,7 +16,7 @@ namespace ngl
 
 		pack_head();
 
-		// 给包头设置或者获取时间
+		// # 给包头设置或者获取时间
 		static void		head_set_time(int32_t* abuff);
 		static i32_time head_get_time(const int32_t* abuff);
 		void			set_time();
@@ -26,8 +26,10 @@ namespace ngl
 		static int32_t  head_get_version(const int32_t* abuff);
 		void			set_version();
 		int32_t			get_version()const;
-		///////////////////////////////////协议号相关///////////////////////////////////////////////
-		// 设置actor ################# 发送给哪个actor #### 哪个actor发送的
+
+		// # 设置actor 
+		// # aactor:发送给哪个actor 
+		// # arequestactorid:哪个actor发送的
 		static void head_set_actor(
 			int32_t* abuff
 			, i64_actorid aactor	/* aenum == ACTOR_NONE 此值无效 */
@@ -43,31 +45,49 @@ namespace ngl
 
 		static void set_actor(uint32_t* abuff, i64_actorid aactor);
 
+		// # 获取要发送给哪个actor
 		i64_actorid		get_actor()const;
+
+		// # 获取谁发送的actor
 		i64_actorid		get_request_actor()const;
+
+		// # 获取要发送给的actor的type
 		i16_actortype	get_actortype()const;
+
+		// # 获取谁发送的actor的type
 		i16_actortype	get_request_actortype()const;
-		i16_area		get_actorearea()const;
+
+		// # 获取要发送给的actor的area
+		i16_area		get_actorarea()const;
+
+		// # 获取要发送给的actor的dataid
 		i32_actordataid get_actordataid()const;
+
+		// # 重置head
 		void			reset();
+
+		// # 获取EPH对应的值
 		int				getvalue(EPH aeph)const;
+
+		// # 获取协议字节数
 		int				get_bytes()const;
+
+		// # 获取包头长度
 		static int		size();
+		// # 包头是否接收完毕
 		EPH_HEAD_VAL	isready()const;
 		EPH_HEAD_VAL	isversion()const;
 		i32_protocolnum protocolnum()const;
-		///// 获取协议号
+		// # 获取/设置协议号
 		i32_protocolnum get_protocolnumber()const;
 		void			set_protocol(i32_protocolnum aprotocolnum);
-		// 设置协议类型
+		// # 获取/设置协议类型
 		EPROTOCOL_TYPE	get_protocoltype()const;
 		void			set_protocoltype(EPROTOCOL_TYPE atype);
 		
 		EPH_HEAD_VAL push(const char*& abuff, int& alen);
 		bool push(ngl::serialize& aflow);
 		void reservebuff(char* abuff, int abufflen, std::pair<char*, int>& apair);
-		void _log(np_actor_logitem& atstr, int anumber = EPH_BYTES)const;
-		void log(np_actor_logitem& atstr)const;
 	};
 }// namespace ngl
 
