@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-05-24 15:55:58
+// 创建时间 24-05-27 10:34:23
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"

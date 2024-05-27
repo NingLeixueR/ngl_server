@@ -58,10 +58,10 @@ namespace ngl
 			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
+		//# ×¢²ádb¼ÓÔØ
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		class db_pair{};
 
-		//# ×¢²ádb¼ÓÔØ
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
