@@ -50,15 +50,15 @@ namespace ngl
 	template <typename TTAB,typename TTABCLASS>
 	void loadcsv()
 	{
-		//static bool isinitload = false;
-		//if (isinitload == false)
-		//{
+		static bool isinitload = false;
+		if (isinitload == false)
+		{
 			csvbase* lp = new TTABCLASS();
 			allcsv::add(TTAB::name(), lp);
 			lp->load();
-			//lp->reload();
-		//	isinitload = true;
-		//}
+			lp->reload();
+			isinitload = true;
+		}
 	}
 
 	void allcsv::load()
