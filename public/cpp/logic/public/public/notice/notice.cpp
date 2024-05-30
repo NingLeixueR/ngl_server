@@ -9,7 +9,7 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE_RESPONSE>();
 		if (aactorid == -1)
 		{
-			for (auto&& [id, dbnotice] : *get_notice())
+			for (const auto& [id, dbnotice] : *get_notice())
 			{
 				*pro->add_m_notices() = dbnotice.getconst();
 			}

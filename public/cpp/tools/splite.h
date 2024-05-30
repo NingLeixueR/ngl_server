@@ -19,7 +19,7 @@ namespace ngl
 			func(abuff, afg, lvec);
 			for (std::string& item : lvec)
 			{
-				avec.push_back(tools::lexical_cast<T>(item));
+				avec.push_back(tools::lexical_cast<T>(item.c_str()));
 			}
 			return true;
 		}
@@ -44,7 +44,7 @@ namespace ngl
 		template <typename T>
 		static void cast(std::string& astr, T& adata)
 		{
-			adata = tools::lexical_cast<T>(astr);
+			adata = tools::lexical_cast<T>(astr.c_str());
 		}
 
 		template <typename T>

@@ -16,7 +16,7 @@ namespace ngl
 	class csvbase
 	{
 	public:
-		virtual int32_t		version()		= 0;
+		virtual int32_t		version()const	= 0;
 		virtual const char*	csvname()		= 0;
 		virtual void		load()			= 0;
 		virtual void*		get(int aid)	= 0;
@@ -31,7 +31,7 @@ namespace ngl
 		std::map<int, T>	tablecsv;
 		int					m_version;
 
-		virtual int32_t version()
+		virtual int32_t version()const
 		{
 			return m_version;
 		}
@@ -55,13 +55,27 @@ namespace ngl
 		virtual void* get(int aid)
 		{
 			auto itor = tablecsv.find(aid);
-			return itor == tablecsv.end() ? nullptr : &itor->second;
+			if (itor == tablecsv.end())
+			{
+				return nullptr;
+			}
+			else
+			{
+				return &itor->second;
+			}
 		}
 
 		T* find(int aid)
 		{
 			auto itor = tablecsv.find(aid);
-			return itor == tablecsv.end() ? nullptr : &itor->second;
+			if (itor == tablecsv.end())
+			{
+				return nullptr;
+			}
+			else
+			{
+				return &itor->second;
+			}
 		}
 
 		virtual void reload()
@@ -129,7 +143,6 @@ namespace ngl
 		};
 		static std::map<std::string, trefun> m_fun;
 	public:
-
 		template <typename T>
 		static void register_csv()
 		{

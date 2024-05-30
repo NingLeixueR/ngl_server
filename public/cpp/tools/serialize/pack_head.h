@@ -74,13 +74,20 @@ namespace ngl
 
 		// # 获取包头长度
 		static int		size();
+
 		// # 包头是否接收完毕
 		EPH_HEAD_VAL	isready()const;
+
+		// # 对比版本号
 		EPH_HEAD_VAL	isversion()const;
+
+		// # 获取协议号
 		i32_protocolnum protocolnum()const;
+
 		// # 获取/设置协议号
 		i32_protocolnum get_protocolnumber()const;
 		void			set_protocol(i32_protocolnum aprotocolnum);
+
 		// # 获取/设置协议类型
 		EPROTOCOL_TYPE	get_protocoltype()const;
 		void			set_protocoltype(EPROTOCOL_TYPE atype);

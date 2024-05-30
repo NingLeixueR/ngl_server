@@ -109,7 +109,7 @@ namespace ngl
 		{
 			auto lstream = log_error();
 			(*lstream) << "##############" << std::endl;
-			for (auto&& [key, values] : m_fight)
+			for (const auto& [key, values] : m_fight)
 			{
 				(*lstream) << "[" << enum_attr_str::str(key) << "]:[" << values << "]" << std::endl;
 			}

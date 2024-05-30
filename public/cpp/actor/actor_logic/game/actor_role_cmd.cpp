@@ -55,8 +55,8 @@ namespace ngl
 					if (lvec.size() >= 2)
 					{
 						pbnet::PROBUFF_NET_CHAT pro;
-						pro.set_m_type((pbnet::enum_logic_chat)tools::lexical_cast<int>(lvec[0]));
-						pro.set_m_channelid(tools::lexical_cast<int>(lvec[1]));
+						pro.set_m_type((pbnet::enum_logic_chat)tools::lexical_cast<int>(lvec[0].c_str()));
+						pro.set_m_channelid(tools::lexical_cast<int>(lvec[1].c_str()));
 						if (pro.m_type() == pbnet::chat_speak)
 						{
 							if (lvec.size() < 3)

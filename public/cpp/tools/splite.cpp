@@ -4,22 +4,38 @@ namespace ngl
 {
 	bool splite::func(const char* abuff, const char* afg, std::vector<std::string>& avec)
 	{
-		std::string_view buff(abuff);
-		std::string_view fg(afg);
-		for (const auto& token : buff | std::views::split(fg)) 
-		{
-			avec.emplace_back(token.begin(), token.end());
-		}
-		return true;
-	}
-	/*{
-		std::string_view buff(abuff);
-		std::string_view fg(afg);
-		for (const std::string_view sv : std::ranges::split_view(buff, fg))
-		{
-			avec.emplace_back(sv);
-		}
+        if (!abuff || !afg)
+            return false;
+        std::cout << "buff = " << abuff << " afg = " << afg << std::endl;
 
-		return true;
-	}*/
+        std::string ltemp;
+        for (const char* lp1 = abuff; *lp1 != '\0';)
+        {
+            int lpos = 0;
+            bool lfg = true;
+            const char* lp2 = lp1;
+            for (; lp2[lpos] != '\0' && afg[lpos] != '\0'; ++lpos)
+            {
+                if (lp2[lpos] != afg[lpos])
+                {
+                    lfg = false;
+                    break;
+                }
+            }
+            if (lfg)
+            {
+                avec.push_back(ltemp);
+                ltemp = "";
+                lp1 += lpos;
+            }
+            else
+            {
+                ltemp += *lp1;
+                ++lp1;
+            }
+        }
+        if(ltemp.empty() == false)
+            avec.push_back(ltemp);
+        return true;
+    }
 }

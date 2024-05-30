@@ -132,7 +132,7 @@ namespace ngl
 
 		static void foreach(const naddress::foreach_callbackfun& afun)
 		{
-			for (auto&& [_, nsession] : m_session)
+			for (const auto& [_, nsession] : m_session)
 			{
 				if (afun(nsession) == false)
 					return;

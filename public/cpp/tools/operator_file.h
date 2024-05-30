@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <string>
+#include <memory>
 
 namespace ngl
 {
@@ -14,7 +15,7 @@ namespace ngl
 		//跳过前三行
 		void jumpbegin(int anum, bool aiscsv);
 		bool readline(std::string& aline);
-		std::pair<char*, int> readcurrent();
+		bool readcurrent(std::string& astr);
 		void read(std::string& aneirong);
 	};
 

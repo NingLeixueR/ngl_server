@@ -1,13 +1,13 @@
-#include "bytes_order.h"
+#include "bytesorder.h"
 
 namespace ngl
 {
-	constexpr bool bytes_order::islittle()
+	constexpr bool bytesorder::islittle()
 	{
 		return std::endian::native == std::endian::little;
 	}
 
-	int16_t bytes_order::transformlittle(int16_t avalues)
+	int16_t bytesorder::transformlittle(int16_t avalues)
 	{
 		if constexpr (islittle())
 			return avalues;
@@ -18,7 +18,7 @@ namespace ngl
 		return avalues;
 	}
 
-	int32_t bytes_order::transformlittle(int32_t& avalues)
+	int32_t bytesorder::transformlittle(int32_t& avalues)
 	{
 		if constexpr (islittle())
 			return avalues;
@@ -30,7 +30,7 @@ namespace ngl
 		return avalues;
 	}
 
-	int64_t bytes_order::transformlittle(int64_t avalues)
+	int64_t bytesorder::transformlittle(int64_t avalues)
 	{
 		if constexpr (islittle())
 			return avalues;

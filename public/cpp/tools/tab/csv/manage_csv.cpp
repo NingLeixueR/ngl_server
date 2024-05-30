@@ -50,15 +50,15 @@ namespace ngl
 	template <typename TTAB,typename TTABCLASS>
 	void loadcsv()
 	{
-		static bool isinitload = false;
-		if (isinitload == false)
-		{
+		//static bool isinitload = false;
+		//if (isinitload == false)
+		//{
 			csvbase* lp = new TTABCLASS();
 			allcsv::add(TTAB::name(), lp);
 			lp->load();
-			lp->reload();
-			isinitload = true;
-		}
+			//lp->reload();
+		//	isinitload = true;
+		//}
 	}
 
 	void allcsv::load()
@@ -87,6 +87,11 @@ namespace ngl
 
 	void allcsv::add(const char* akey, csvbase* ap)
 	{
+		if (m_data[akey] != nullptr)
+		{
+			delete m_data[akey];
+			m_data[akey] = nullptr;
+		}
 		m_data[akey] = ap;
 	}
 
@@ -98,7 +103,7 @@ namespace ngl
 
 	void allcsv::foreach_version(std::map<std::string, int32_t>& aversion)
 	{
-		for (auto [key, value] : m_data)
+		for (const auto& [key, value] : m_data)
 		{
 			aversion.insert(std::make_pair(key, value->version()));
 		}

@@ -5,7 +5,7 @@
 
 namespace ngl
 {
-	class bytes_order
+	class bytesorder
 	{
 	public:
 		static constexpr bool islittle();

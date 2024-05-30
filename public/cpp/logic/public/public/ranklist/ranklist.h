@@ -88,15 +88,16 @@ namespace ngl
 		{
 			auto lstream = log_error();
 			(*lstream) << "actor_ranklist###loaddb_finish" << std::endl;
-			for (auto&& [id, dbranklist] : *get_ranklist())
+
+			for (std::pair<const nguid, data_modified<pbdb::db_ranklist>>& lpair : *get_ranklist())
 			{
-				pbdb::db_ranklist& lranklist = dbranklist.get(false);
+				pbdb::db_ranklist& lranklist = lpair.second.get(false);
 				(*lstream) << "ranklist###id:[" << lranklist.m_id() << "]" << std::endl;
 				auto lmap = lranklist.mutable_m_item();
 				for(auto itor = lmap->begin();itor != lmap->end();++itor)
 				{
 					//m_ranklist[lpair.first] = &lpair.second;
-					switch (id)
+					switch (lpair.first)
 					{
 					case type_lv://lv
 						m_ranklv.insert(&itor->second);

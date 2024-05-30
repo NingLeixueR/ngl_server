@@ -31,7 +31,10 @@ namespace ngl
 			std::string line;
 			while (--anum >= 0)
 			{
-				getline(m_file, line);
+				if (!std::getline(m_file, line))
+				{
+					break;
+				}
 			}
 		}
 		else
@@ -40,14 +43,21 @@ namespace ngl
 			while (anum > 0)
 			{
 				std::string line;
-				getline(m_file, line);
-				for (int i = 0; i < line.size(); ++i)
+				if (std::getline(m_file, line))
 				{
-					if (line[i] == '\"')
-						++lisshuyin;
+					int lsize = line.size();
+					for (int i = 0; i < lsize; ++i)
+					{
+						if (line[i] == '\"')
+							++lisshuyin;
+					}
+					if (lisshuyin % 2 == 0)
+						--anum;
 				}
-				if(lisshuyin%2 == 0)
-					--anum;
+				else
+				{
+					break;
+				}
 			}
 		}
 	}
@@ -56,7 +66,10 @@ namespace ngl
 	{
 		if (m_file.eof())
 			return false;
-		getline(m_file, aline);
+		if (!std::getline(m_file, aline))
+		{
+			return false;
+		}
 		if (aline.empty() == false)
 		{
 			if (*aline.rbegin() == '\r')
@@ -67,21 +80,26 @@ namespace ngl
 		return true;
 	}
 
-	std::pair<char*, int> readfile::readcurrent()
+	bool readfile::readcurrent(std::string& astr)
 	{
 		if (m_file.is_open())
 		{
-			size_t lsizecurrent = m_file.tellg();
+			int lsizecurrent = m_file.tellg();
+			if (lsizecurrent == -1)
+				return false;
 			m_file.seekg(0, std::ios::end);
-			size_t lsize = m_file.tellg();
+			int lsize = m_file.tellg();
 			m_file.seekg(lsizecurrent, std::ios::beg);
-			std::pair<char*, int> lpair(new char[lsize - lsizecurrent + 1], lsize - lsizecurrent);
-			memset(lpair.first, 0x0, lpair.second + 1);
-			m_file.read(lpair.first, lpair.second);
-			//aneirong.assign(lbuff.get());
-			return lpair;
+
+			if (lsize == lsizecurrent)
+			{
+				return false;
+			}	
+			astr.resize(lsize - lsizecurrent);
+			m_file.read(astr.data(), lsize - lsizecurrent);
+			return true;
 		}
-		return std::pair<char*, int>(nullptr, 0);
+		return false;
 	}
 
 	void readfile::read(std::string& aneirong)

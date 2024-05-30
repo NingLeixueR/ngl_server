@@ -79,7 +79,6 @@ void find(bool awz, const std::string& atxt, const std::string& targetPath, std:
 	}
 }
 
-
 int main(int argc, char** argv)
 {
 	std::set<std::string> lvec1;

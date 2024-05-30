@@ -87,7 +87,7 @@ namespace ngl
 					[lrecv, &lmapprotocol](std::map<nguid, i32_serverid>& amap, std::map<i32_serverid, actor_node_session>& asession)->bool
 					{
 						std::map<i32_serverid, actor_node_session>::iterator itor;
-						for (auto&& [guid, serverid] : amap)
+						for (const auto& [guid, serverid] : amap)
 						{
 							itor = asession.find(serverid);
 							if (itor == asession.end())
@@ -101,7 +101,7 @@ namespace ngl
 						return true;
 					});
 
-				for (auto&& item : lmapprotocol)
+				for (const auto& item : lmapprotocol)
 				{
 					nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
 				}

@@ -41,7 +41,7 @@ namespace ngl
 		{
 			m_uplowlimit.resize(EnumAttribute::E_Count);
 			auto tabcsv = allcsv::get<manage_csv<tab_attribute>>();
-			for (auto&& [key, value] : tabcsv->tablecsv)
+			for (const auto& [key, value] : tabcsv->tablecsv)
 			{
 				m_uplowlimit[key].first = value.m_uplimit;
 				m_uplowlimit[key].second = value.m_lowlimit;

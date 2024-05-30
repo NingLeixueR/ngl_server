@@ -581,7 +581,7 @@ public:
 
 				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
-						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1]);
+						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1].str().c_str());
 					});
 
 
@@ -607,7 +607,7 @@ public:
 
 				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
-						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1]);
+						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1].str().c_str());
 					});
 
 

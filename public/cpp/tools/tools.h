@@ -1,6 +1,16 @@
 #pragma once
 
 #include <unordered_map>
+#include <type_traits>
+#include <algorithm>
+#include <stdexcept>
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
+#include <string>
+#include <cctype>
+#include <format>
 #include <string>
 #include <map>
 
@@ -8,6 +18,195 @@
 
 namespace ngl
 {
+	static const std::string m_true1 = "true";
+	static const std::string m_true2 = "TRUE";
+
+	template <typename Target>
+	struct lexical_cast2
+	{
+
+	};
+
+	template <>
+	struct lexical_cast2<std::string>
+	{
+		template <typename Source>
+		static std::string fun(const Source& source)
+		{
+			return std::move(std::format("{}", source));
+		}
+
+		static std::string fun(const std::string& source)
+		{
+			return source;
+		}
+
+		static std::string fun(const char* source)
+		{
+			return source;
+		}
+	};
+
+	template <>
+	struct lexical_cast2<int32_t>
+	{
+		static int32_t fun(const std::string& source)
+		{
+			return atoi(source.c_str());
+		}
+		static int32_t fun(const char* source)
+		{
+			return atoi(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<uint32_t>
+	{
+		static uint32_t fun(const std::string& source)
+		{
+			return atoi(source.c_str());
+		}
+		static uint32_t fun(const char* source)
+		{
+			return atoi(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<int16_t>
+	{
+		static int16_t fun(const std::string& source)
+		{
+			return atoi(source.c_str());
+		}
+		static int16_t fun(const char* source)
+		{
+			return atoi(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<uint16_t>
+	{
+		static uint16_t fun(const std::string& source)
+		{
+			return atoi(source.c_str());
+		}
+		static uint16_t fun(const char* source)
+		{
+			return atoi(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<int8_t>
+	{
+		static int8_t fun(const std::string& source)
+		{
+			return atoi(source.c_str());
+		}
+		static int8_t fun(const char* source)
+		{
+			return atoi(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<uint8_t>
+	{
+		static uint8_t fun(const std::string& source)
+		{
+			return atoi(source.c_str());
+		}
+		static uint8_t fun(const char* source)
+		{
+			return atoi(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<int64_t>
+	{
+		static int64_t fun(const std::string& source)
+		{
+			return atoll(source.c_str());
+		}
+
+		static int64_t fun(const char* source)
+		{
+			return atoll(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<uint64_t>
+	{
+		static uint64_t fun(const std::string& source)
+		{
+			return atoll(source.c_str());
+		}
+
+		static uint64_t fun(const char* source)
+		{
+			return atoll(source);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<float>
+	{
+		static float fun(const std::string& source)
+		{
+			return (float)std::atof(source.c_str());
+		}
+
+		static float fun(const char* source)
+		{
+			return (float)std::atof(source);
+		}
+	};
+
+
+	template <>
+	struct lexical_cast2<double>
+	{
+		static double fun(const std::string& source)
+		{
+			return std::atof(source.c_str());
+		}
+
+		static double fun(const char* source)
+		{
+			return std::atof(source);
+		}
+	};
+
+
+	template <>
+	struct lexical_cast2<bool>
+	{
+		static bool fun(const std::string& source)
+		{
+			if (source == m_true1 || source == m_true2)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		static bool fun(const char* source)
+		{
+			std::string lstr(source);
+			return fun(lstr);
+		}
+
+		static bool fun(int64_t source)
+		{
+			return source != 0;
+		}
+	};
+
 	class tools
 	{
 	public:
@@ -65,16 +264,15 @@ namespace ngl
 				atarget.insert({ item.first, item.second });
 			}
 		}
+		
+		
 
-		template <typename Target, typename Source>
-		static Target lexical_cast(const Source& arg)
+		template <typename To, typename From>
+		static To lexical_cast(const From& from)
 		{
-			std::stringstream lstream;
-			lstream << arg;
-			Target ltemp;
-			lstream >> ltemp;
-			return ltemp;
+			return lexical_cast2<To>::fun(from);
 		}
+
 	};
 }//namespace ngl
 

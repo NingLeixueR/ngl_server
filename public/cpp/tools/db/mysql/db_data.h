@@ -71,8 +71,8 @@ namespace ngl
 		static void foreach_index(const std::function<void(int, T&)>& afun)
 		{
 			int lindex = 0;
-			for (auto&& [_, data] : db_data<T>::m_data)
-				afun(++lindex, data);
+			for (std::pair<const i64_actorid, T>& lpair : db_data<T>::m_data)
+				afun(++lindex, lpair.second);
 		}
 	};
 }// namespace ngl

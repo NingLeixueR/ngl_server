@@ -220,11 +220,10 @@ namespace ngl
 
 		virtual void reload()
 		{
-			//std::map<int, tab_calendar> tablecsv;
-			for (std::pair<const int, tab_calendar>& ipair : tablecsv)
-			{
-				reload_calendar(ipair.first);
-			}
+			//for (std::pair<const int, tab_calendar>& ipair : tablecsv)
+			//{
+			//	reload_calendar(ipair.first);
+			//}
 		}
 
 		static bool is_period(int aid)

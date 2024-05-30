@@ -61,6 +61,10 @@ namespace ngl
 		template <typename T>
 		static bool get_xmlattr(tinyxml2::XMLElement* aele, const char* akey, T& aval)
 		{
+			if (aele == nullptr)
+			{
+				return false;
+			}
 			const char* val = aele->Attribute(akey);
 			if (!val) 
 			{

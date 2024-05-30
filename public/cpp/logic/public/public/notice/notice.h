@@ -29,7 +29,7 @@ namespace ngl
 			auto lstream = log_error();
 			(*lstream) << "actor_notice###loaddb_finish" << std::endl;
 			m_maxid = 0;
-			for (auto&& [id, dbnotice] : *get_notice())
+			for (const auto& [id, dbnotice] : *get_notice())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
 				(*lstream)
@@ -75,7 +75,7 @@ namespace ngl
 			{
 				lasttime = lnow;
 				std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
-				for (auto&& [id, dbnotice] : lnotice)
+				for (const auto& [id, dbnotice] : lnotice)
 				{
 					if (dbnotice.getconst().m_finishtime() < lnow && dbnotice.getconst().m_finishtime() != -1)
 					{

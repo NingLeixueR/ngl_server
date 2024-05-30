@@ -53,9 +53,9 @@ namespace ngl
 
 		void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
 		{
-			for (auto&& [_, value] : data())
+			for (std::pair<const nguid, data_modified<TDATA>>& lpair : data())
 			{
-				afun(value);
+				afun(lpair.second);
 			}
 		}
 

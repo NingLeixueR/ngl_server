@@ -471,7 +471,7 @@ bool start_robot(int argc, char** argv)
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
 						lms.clear();
-						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1]));
+						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.clear();
 						lcmdvec.push_back(std::vector<std::string>());
 						for (int i = 2; i < lvec.size(); ++i)
@@ -490,7 +490,7 @@ bool start_robot(int argc, char** argv)
 					}
 					else if (lvec[0] == "tests" || lvec[0] == "TESTS")
 					{
-						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1]));
+						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.push_back(std::vector<std::string>());
 						for (int i = 2; i < lvec.size(); ++i)
 						{

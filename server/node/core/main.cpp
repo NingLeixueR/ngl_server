@@ -19,20 +19,22 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	nconfig::init();
-	nconfig::load("config");
-	ngl::allcsv::load();
-
 	if (argc <= 1)
 	{
 		std::cout << "参数错误" << std::endl;
 		return 0;
 	}
 
+	nconfig::init();
+	nconfig::load("config");
+	ngl::allcsv::load();
+
 	// 用参数 不用配置中的zoneid
 	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
 	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
+	if (tab == nullptr)
+		return 0;
 	nconfig::set_server(argv[1], tab->m_id);
 
 	char lname[1024] = { 0x0 };

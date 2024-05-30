@@ -101,9 +101,9 @@ namespace ngl
 
 	void gateway_info::get_subscribe_to(std::map<i64_actorid, i32_serverid>& m_subscribe_to)
 	{
-		for (auto&& [_area, _map] : m_info)
+		for (const auto& [_area, _map] : m_info)
 		{
-			for (auto&& [_roledataid, _info] : _map)
+			for (const auto& [_roledataid, _info] : _map)
 			{
 				m_subscribe_to.insert(std::make_pair(ngl::nguid::make(ACTOR_ROLE, _area, _roledataid), _info.m_gatewayid));
 			}

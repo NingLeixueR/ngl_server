@@ -13,7 +13,7 @@ namespace ngl
 		~readfile();
 		//跳过前三行
 		void jumpbegin(int anum);
-		void readline(std::string& aline);
+		bool readline(std::string& aline);
 		void readcurrent(std::string& aneirong);
 		void read(std::string& aneirong);
 	};

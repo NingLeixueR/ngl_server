@@ -99,7 +99,7 @@ namespace ngl
 							std::map<nguid, i32_serverid>& aactorserver,
 							std::map<i32_serverid, actor_node_session>& _)
 						{
-							for (auto&& [dataid, serverid] : aactorserver)
+							for (const auto& [dataid, serverid] : aactorserver)
 							{
 								if (lpram.m_node.m_serverid == serverid)
 									lpram.m_add.push_back(dataid);
@@ -173,7 +173,7 @@ namespace ngl
 	{
 		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
-		for (auto&& [actorid, serverid] : naddress::get_actorserver_map())
+		for (const auto& [actorid, serverid] : naddress::get_actorserver_map())
 		{
 			if (alocalserverid == serverid)
 				lpro.m_add.push_back(actorid);

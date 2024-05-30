@@ -163,7 +163,7 @@ namespace ngl
 			{
 				handle_cmd::push("logins", [this](std::vector<std::string>& avec)
 					{
-						create_robots(avec[1], tools::lexical_cast<int>(avec[2]), tools::lexical_cast<int>(avec[3]));
+						create_robots(avec[1], tools::lexical_cast<int>(avec[2].c_str()), tools::lexical_cast<int>(avec[3]));
 					});
 				handle_cmd::push("login", [this](std::vector<std::string>& avec)
 					{

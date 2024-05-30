@@ -26,9 +26,9 @@ namespace ngl
 		}
 	}
 
-	void readfile::readline(std::string& aline)
+	bool readfile::readline(std::string& aline)
 	{
-		getline(m_file, aline);
+		return std::getline(m_file, aline);
 	}
 
 	void readfile::readcurrent(std::string& aneirong)

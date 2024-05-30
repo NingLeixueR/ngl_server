@@ -124,7 +124,7 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				for (auto&& [_, data] : db_data<T>::m_data)
+				for (const auto& [_, data] : db_data<T>::m_data)
 					fun(adb, data);
 			}
 		};
@@ -177,7 +177,7 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				for (auto&& [_, data] : db_data<T>::m_data)
+				for (const auto& [_, data] : db_data<T>::m_data)
 					save(adb, data);
 			}
 		};

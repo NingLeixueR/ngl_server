@@ -22,11 +22,11 @@ namespace ngl
 				tab_specialid& ltab = pair.second;
 				if (ltab.m_name == "rolemaxlv")
 				{
-					m_rolemaxlv = tools::lexical_cast<i32_rolelv>(ltab.m_value);
+					m_rolemaxlv = tools::lexical_cast<i32_rolelv>(ltab.m_value.c_str());
 				}
 				else if (ltab.m_name == "rolemaxvip")
 				{
-					m_rolemaxvip = tools::lexical_cast<i32_rolevip>(ltab.m_value);
+					m_rolemaxvip = tools::lexical_cast<i32_rolevip>(ltab.m_value.c_str());
 				}
 			}
 		}

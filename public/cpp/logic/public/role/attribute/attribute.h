@@ -69,7 +69,7 @@ namespace ngl
 				return;
 			itor->second.update();
 			ttab_attribute::add(root().m_attr, itor->second.m_fight);
-			for (auto&& [key, value] : itor->second.m_crattr)
+			for (const auto& [key, value] : itor->second.m_crattr)
 			{
 				ttab_attribute::add(m_moduledata[key].m_orattr, value);
 				if (is_module_root(key) == false)
@@ -112,12 +112,12 @@ namespace ngl
 			{
 				add_module(i);
 			}
-			for (auto&& [key, value] : m_moduledata)
+			for (std::pair<const EnumModule, attribute_value>& lpair : m_moduledata)
 			{
-				if (key == E_ModuleRoot)
+				if (lpair.first == E_ModuleRoot)
 					continue;
-				value.update();
-				ttab_attribute::add(root().m_attr, value.m_fight);
+				lpair.second.update();
+				ttab_attribute::add(root().m_attr, lpair.second.m_fight);
 			}
 			root().update();
 		}

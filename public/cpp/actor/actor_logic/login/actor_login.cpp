@@ -97,13 +97,13 @@ namespace ngl
 		apair.first = -1;
 		apair.second = -1;
 		server_info* lpinfo = nullptr;
-		for (auto&& [serverid, serverin] : amap)
+		for (std::pair<const i32_serverid, server_info>& lpair : amap)
 		{
-			if (apair.second == -1 || apair.second > serverin.m_rolesize)
+			if (apair.second == -1 || apair.second > lpair.second.m_rolesize)
 			{
-				apair.first = serverin.m_id;
-				apair.second = serverin.m_rolesize;
-				lpinfo = &serverin;
+				apair.first = lpair.second.m_id;
+				apair.second = lpair.second.m_rolesize;
+				lpinfo = &lpair.second;
 			}
 		}
 		if (lpinfo != nullptr)

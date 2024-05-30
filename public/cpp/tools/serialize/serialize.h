@@ -13,15 +13,15 @@
 #include <set>
 #include <map>
 
-#include "bytes_order.h"
+#include <google/protobuf/util/json_util.h>
+
+#include "bytesorder.h"
 #include "varint.h"
 #include "define.h"
 #include "db.pb.h"
 #include "tools.h"
 #include "nlog.h"
 #include "csv.h"
-
-#include <google/protobuf/util/json_util.h>
 
 namespace ngl
 {
@@ -32,8 +32,8 @@ namespace ngl
 	template <typename T, bool IS_FORWARD = false>
 	struct protobuf_data
 	{
-		std::shared_ptr<T> m_data;
-		bool m_isbinary;			// 默认序列化为二进制，只有db保存的时候序列化为json
+		std::shared_ptr<T>	m_data;
+		bool				m_isbinary;			// 默认序列化为二进制，只有db保存的时候序列化为json
 		
 		protobuf_data()
 			: m_data(nullptr)
@@ -63,17 +63,46 @@ namespace ngl
 		int32_t m_len;
 		int32_t m_pos;
 	public:
-		serialize(char* abuff, int32_t alen);
+		inline serialize(char* abuff, int32_t alen)
+			:m_buff(abuff), m_len(alen), m_pos(0)
+		{}
 
-		char*	buff();
-		int		byte();
-		int		len();
-		void	add_bytes(int abytes);
-		void	dec_bytes(int abytes);
-		bool	basetype(void* adata, int32_t alen);
+		inline char* buff()
+		{
+			return m_buff;
+		}
+
+		inline int byte()
+		{
+			return m_pos;
+		}
+
+		inline int len()
+		{
+			return m_len;
+		}
+
+		inline void add_bytes(int abytes)
+		{
+			m_pos += abytes;
+		}
+
+		inline void dec_bytes(int abytes)
+		{
+			m_pos -= abytes;
+		}
+
+		inline bool basetype(void* adata, int32_t alen)
+		{
+			if (m_pos + alen > m_len)
+				return false;
+			memcpy(&m_buff[m_pos], adata, alen);
+			m_pos += alen;
+			return true;
+		}
 
 		template <typename T>
-		bool basetype(const T& adata)
+		inline bool basetype(const T& adata)
 		{
 			return basetype((void*)&adata, sizeof(T));
 		}
@@ -89,7 +118,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_FORWARD>
-		bool push(const protobuf_data<T, IS_FORWARD>& adata)
+		inline bool push(const protobuf_data<T, IS_FORWARD>& adata)
 		{
 			if (adata.m_data == nullptr)
 				return false;
@@ -121,7 +150,7 @@ namespace ngl
 		}
 
 		template <typename KEY, typename VALUE>
-		bool push(const protobuf_data<std::map<KEY, VALUE>>& adata)
+		inline bool push(const protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
 			if (adata.m_data == nullptr)
 			{
@@ -149,7 +178,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool push(const protobuf_data<std::vector<T>>& adata)
+		inline bool push(const protobuf_data<std::vector<T>>& adata)
 		{
 			if (adata.m_data == nullptr)
 			{
@@ -175,7 +204,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool push(const protobuf_data<std::list<T>>& adata)
+		inline bool push(const protobuf_data<std::list<T>>& adata)
 		{
 			if (adata.m_data == nullptr)
 			{
@@ -202,7 +231,7 @@ namespace ngl
 
 		// 普通指针不支持序列化派生类
 		template <typename T>
-		bool push(T* adata)
+		inline bool push(T* adata)
 		{
 			if (adata == nullptr)
 			{
@@ -214,40 +243,148 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool push(const T* adata)
+		inline bool push(const T* adata)
 		{
 			return push(*adata);
 		}
 
 		template <typename T>
-		bool push(const std::shared_ptr<T>& adata)
+		inline bool push(const std::shared_ptr<T>& adata)
 		{
 			return push(*adata);
 		}
 
 		template <typename T>
-		bool push(const T& adata);
+		inline bool push(const T& adata);
 
-		bool push(const forward& adata);
-		bool push(forward& adata);
-		// 基本类型
-		bool push(const int8_t adata);
-		bool push(const uint8_t adata);
-		bool push(const int16_t adata);
-		bool push(const uint16_t adata);
-		bool push(const int32_t adata);
-		bool push(const uint32_t adata);
-		bool push(const int64_t adata);
-		bool push(const uint64_t adata);
-		bool push(const float adata);
-		bool push(const double adata);
-		bool push(const bool adata);
-		bool push(const std::vector<bool>& avec);
-		bool push(const std::vector<int8_t>& avec);
-		bool push(const std::vector<uint8_t>& avec);
+		inline bool push(const forward& adata);
+
+		inline bool push(forward& adata);
+
+#pragma region basetype // 基础类型
+		// # 基本类型
+		inline bool push(const int8_t adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool push(const uint8_t adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool push(const int16_t adata)
+		{
+			int16_t lvalues = adata;
+			lvalues = bytesorder::transformlittle(lvalues);
+			return basetype(lvalues);
+		}
+
+		inline bool push(const uint16_t adata)
+		{
+			return push((const int16_t)adata);
+		}
+
+		inline bool push(const int32_t adata)
+		{
+			int32_t lvalues = adata;
+			lvalues = bytesorder::transformlittle(lvalues);
+			varint::parm<int32_t> lparm
+			{
+				.m_value = lvalues,
+				.m_buf = &m_buff[m_pos],
+				.m_len = m_len - m_pos,
+				.m_bytes = &m_pos,
+			};
+			return varint::encode(lparm);
+		}
+
+		inline bool push(const uint32_t adata)
+		{
+			return push((const int32_t)adata);
+		}
+
+		inline bool push(const int64_t adata)
+		{
+			int64_t lvalues = adata;
+			lvalues = bytesorder::transformlittle(lvalues);
+			varint::parm<int64_t> lparm
+			{
+				.m_value = lvalues,
+				.m_buf = &m_buff[m_pos],
+				.m_len = m_len - m_pos,
+				.m_bytes = &m_pos,
+			};
+			return varint::encode(lparm);
+		}
+
+		inline bool push(const uint64_t adata)
+		{
+			return push((const int64_t)adata);
+		}
+
+		inline bool push(const float adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool push(const double adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool push(const bool adata)
+		{
+			return basetype(adata);
+		}
+
+#pragma endregion 
+
+		template <typename T>
+		inline bool push_vector_number(const std::vector<T>& avec)
+		{
+			if (push_stlsize(avec) == false)
+				return false;
+			if (avec.empty())
+				return true;
+			return basetype((void*)&avec[0], avec.size() * sizeof(T));
+		}
+
+		inline bool push(const std::vector<bool>& avec)
+		{
+			if (push_stlsize(avec) == false)
+				return false;
+			for (bool lbool : avec)
+			{
+				if (push(lbool) == false)
+					return false;
+			}
+			return true;
+		}
+
+		inline bool push(const std::vector<int8_t>& avec)
+		{
+			return push_vector_number(avec);
+		}
+
+		inline bool push(const std::vector<uint8_t>& avec)
+		{
+			return push_vector_number(avec);
+		}
+
+		// # 单双浮点型,不需要考虑字节序
+		inline bool push(const std::vector<float>& avec)
+		{
+			return push_vector_number(avec);
+		}
+
+		inline bool push(const std::vector<double>& avec)
+		{
+			return push_vector_number(avec);
+		}
 
 		template <typename TSTL>
-		bool push_vector_number_compile(const TSTL& avec)
+		inline bool push_vector_number_compile(const TSTL& avec)
 		{
 			if (push_stlsize(avec) == false)
 				return false;
@@ -261,23 +398,35 @@ namespace ngl
 			return true;
 		}
 
-		bool push(const std::vector<int32_t>& avec);
-		bool push(const std::vector<uint32_t>& avec);
-		bool push(const std::vector<int64_t>& avec);
-		bool push(const std::vector<uint64_t>& avec);
-		// 单双浮点型,不需要考虑字节序
-		bool push(const std::vector<float>& avec);
-		bool push(const std::vector<double>& avec);
+		inline bool push(const std::vector<int32_t>& avec)
+		{
+			return push_vector_number_compile(avec);
+		}
+
+		inline bool push(const std::vector<uint32_t>& avec)
+		{
+			return push_vector_number_compile(avec);
+		}
+
+		inline bool push(const std::vector<int64_t>& avec)
+		{
+			return push_vector_number_compile(avec);
+		}
+
+		inline bool push(const std::vector<uint64_t>& avec)
+		{
+			return push_vector_number_compile(avec);
+		}
 
 		template <typename T>
-		bool push_stlsize(const T& astl)
+		inline bool push_stlsize(const T& astl)
 		{
 			int16_t lsize = astl.size();
 			return push(lsize);
 		}
 
 		template <typename T>
-		bool push(const std::vector<T>& avec)
+		inline bool push(const std::vector<T>& avec)
 		{
 			if (!push_stlsize(avec))
 				return false;
@@ -289,38 +438,33 @@ namespace ngl
 			return true;
 		}
 
-		bool push(std::pair<uint32_t, const char*>& adata);
-
-		template <typename T>
-		bool push_vector_number(const std::vector<T>& avec)
+		inline bool push(std::pair<uint32_t, const char*>& adata)
 		{
-			if (push_stlsize(avec) == false)
+			if (!push(adata.first))
 				return false;
-			if (avec.empty())
-				return true;
-			return basetype((void*)&avec[0], avec.size()*sizeof(T));
+			return basetype((void*)adata.second, adata.first);
 		}
 
 		template <typename T>
-		bool push(const std::list<T>& alist)
+		inline bool push(const std::list<T>& alist)
 		{
 			return push_vector_number_compile(alist);
 		}
 
 		template <typename T>
-		bool push(const std::set<T>& aset)
+		inline bool push(const std::set<T>& aset)
 		{
 			return push_vector_number_compile(aset);
 		}
 
 		template <typename T>
-		bool push(const std::unordered_set<T>& aset)
+		inline bool push(const std::unordered_set<T>& aset)
 		{
 			return push_vector_number_compile(aset);
 		}
 
 		template <typename TKEY, typename TVALUE>
-		bool push(const std::map<TKEY, TVALUE>& amap)
+		inline bool push(const std::map<TKEY, TVALUE>& amap)
 		{
 			if (!push_stlsize(amap))
 				return false;
@@ -335,7 +479,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		bool push(const std::unordered_map<TKEY, TVALUE>& amap)
+		inline bool push(const std::unordered_map<TKEY, TVALUE>& amap)
 		{
 			if (!push_stlsize(amap))
 				return false;
@@ -348,13 +492,22 @@ namespace ngl
 			return true;
 		}
 
-		bool push(const std::string& astr);
 
-		// 支持没有参数
-		bool push();
+		inline bool push(const std::string& astr)
+		{
+			if (!push_stlsize(astr))
+				return false;
+			return basetype((void*)astr.c_str(), sizeof(char) * astr.size());
+		}
+
+		// # 支持没有参数
+		inline bool push()
+		{
+			return true;
+		}
 
 		template <typename T, typename ...ARG>
-		bool push(const T& avalue, const ARG&... arg)
+		inline bool push(const T& avalue, const ARG&... arg)
 		{
 			return push(avalue) && push(arg...);
 		}
@@ -366,15 +519,39 @@ namespace ngl
 		int32_t m_len;
 		int32_t m_pos;
 	public:
-		unserialize(const char* abuff, int32_t alen);
-		const char* buff();
-		int byte();
-		int len();
-		void add_bytes(int abytes);
-		void dec_bytes(int abytes);
+		inline unserialize(const char* abuff, int32_t alen) :
+			m_buff(abuff),
+			m_len(alen),
+			m_pos(0)
+		{}
+
+		inline const char* buff()
+		{
+			return m_buff;
+		}
+
+		inline int byte()
+		{
+			return m_pos;
+		}
+
+		inline int len()
+		{
+			return m_len;
+		}
+
+		inline void add_bytes(int abytes)
+		{
+			m_pos += abytes;
+		}
+
+		inline void dec_bytes(int abytes)
+		{
+			m_pos -= abytes;
+		}
 
 		template <typename T>
-		bool basetype(T& adata)
+		inline bool basetype(T& adata)
 		{
 			if (m_pos + sizeof(T) > m_len)
 				return false;
@@ -383,10 +560,17 @@ namespace ngl
 			return true;
 		}
 
-		bool basetype(void* adata, int32_t alen);
+		inline bool basetype(void* adata, int32_t alen)
+		{
+			if (m_pos + alen > m_len)
+				return false;
+			memcpy(adata, &m_buff[m_pos], alen);
+			m_pos += alen;
+			return true;
+		}
 
 		template <typename T, bool IS_FORWARD>
-		bool pop(protobuf_data<T, IS_FORWARD>& adata)
+		inline bool pop(protobuf_data<T, IS_FORWARD>& adata)
 		{
 			if (adata.m_data == nullptr)
 				adata.make();
@@ -417,7 +601,7 @@ namespace ngl
 		}
 
 		template <typename KEY, typename VALUE>
-		bool pop(protobuf_data<std::map<KEY, VALUE>>& adata)
+		inline bool pop(protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
 			if (adata.m_data == nullptr)
 				adata.make();
@@ -445,7 +629,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool pop(protobuf_data<std::vector<T>>& adata)
+		inline bool pop(protobuf_data<std::vector<T>>& adata)
 		{
 			adata.make();
 			if (adata.m_isbinary)
@@ -475,7 +659,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool pop(const protobuf_data<std::list<T>>& adata)
+		inline bool pop(const protobuf_data<std::list<T>>& adata)
 		{
 			adata.make();
 			if (adata.m_isbinary)
@@ -500,7 +684,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool pop(std::shared_ptr<T>& adata)
+		inline bool pop(std::shared_ptr<T>& adata)
 		{
 			adata = std::shared_ptr<T>(new T());
 			return pop(*adata);
@@ -510,7 +694,7 @@ namespace ngl
 		bool pop(T& adata);
 
 		template <typename T>
-		bool pop(T*& adata)
+		inline bool pop(T*& adata)
 		{
 			bool lbool = false;
 			if (pop(lbool) == false)
@@ -519,32 +703,248 @@ namespace ngl
 			return pop(*adata);
 		}
 
-		bool pop(int8_t& adata);
-		bool pop(uint8_t& adata);
-		bool pop(int16_t& adata);
-		bool pop(uint16_t& adata);
-		bool pop(int32_t& adata);
-		bool pop(uint32_t& adata);
-		bool pop(int64_t& adata);
-		bool pop(uint64_t& adata);
-		bool pop(float& adata);
-		bool pop(double& adata);
-		bool pop(bool& adata);
-		bool pop(std::vector<bool>& adata);
-		bool pop(std::vector<int8_t>& adata);
-		bool pop(std::vector<uint8_t>& adata);
-		bool pop(std::vector<int32_t>& adata);
-		bool pop(std::vector<uint32_t>& adata);
-		bool pop(std::vector<int64_t>& adata);
-		bool pop(std::vector<uint64_t>& adata);
-		bool pop(std::vector<float>& adata);
-		bool pop(std::vector<double>& adata);
-		bool pop(std::pair<uint32_t, const char*>& adata);
-		bool pop(forward& adata);
-		bool pop(std::string& adata);
+#pragma region basetype // 基础类型
+
+		inline bool pop(int8_t& adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool pop(uint8_t& adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool pop(int16_t& adata)
+		{
+			if (basetype(adata) == false)
+				return false;
+			adata = bytesorder::transformlittle(adata);
+			return true;
+		}
+
+		inline bool pop(uint16_t& adata)
+		{
+			int16_t ltemp = adata;
+			if (pop(ltemp) == false)
+				return false;
+			adata = ltemp;
+			return true;
+		}
+
+		inline bool pop(int32_t& adata)
+		{
+			varint::parm<int32_t> lparm
+			{
+				.m_value = adata,
+				.m_buf = (char*)&m_buff[m_pos],
+				.m_len = m_len - m_pos,
+				.m_bytes = &m_pos,
+			};
+			if (varint::decode(lparm) == false)
+				return false;
+			adata = lparm.m_value;
+			adata = bytesorder::transformlittle(adata);
+			return true;
+		}
+
+		inline bool pop(uint32_t& adata)
+		{
+			int32_t ldata = 0;
+			if (pop(ldata) == false)
+				return false;
+			adata = ldata;
+			return true;
+		}
+
+		inline bool pop(int64_t& adata)
+		{
+			varint::parm<int64_t> lparm
+			{
+				.m_value = adata,
+				.m_buf = (char*)&m_buff[m_pos],
+				.m_len = m_len - m_pos,
+				.m_bytes = &m_pos,
+			};
+			if (varint::decode(lparm) == false)
+				return false;
+			adata = lparm.m_value;
+			adata = bytesorder::transformlittle(adata);
+			return true;
+		}
+
+		inline bool pop(uint64_t& adata)
+		{
+			int64_t ldata = 0;
+			if (pop(ldata) == false)
+				return false;
+			adata = ldata;
+			return true;
+		}
+
+		inline bool pop(float& adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool pop(double& adata)
+		{
+			return basetype(adata);
+		}
+
+		inline bool pop(bool& adata)
+		{
+			if (basetype(adata))
+				return true;
+			return false;
+		}
+#pragma endregion 
+
+#pragma region vector
+		inline bool pop(std::vector<bool>& adata)
+		{
+			int16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize < 0)
+				return false;
+			adata.resize(lsize);
+			for (int i = 0; i < lsize; ++i)
+			{
+				bool lbool = false;
+				if (pop(lbool) == false)
+					return false;
+				adata[i] = lbool;
+			}
+			return true;
+		}
 
 		template <typename T>
-		bool pop(std::vector<T>& adata)
+		inline bool pop_vector_number(std::vector<T>& adata)
+		{
+			int16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize < 0)
+				return false;
+			adata.resize(lsize);
+			return basetype(&adata[0], sizeof(T) * lsize);
+		}
+
+		inline bool pop(std::vector<int8_t>& adata)
+		{
+			return pop_vector_number(adata);
+		}
+
+		inline bool pop(std::vector<uint8_t>& adata)
+		{
+			return pop_vector_number(adata);
+		}
+
+		inline bool pop(std::vector<int32_t>& adata)
+		{
+			int16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize < 0)
+				return false;
+			adata.resize(lsize);
+			for (auto& item : adata)
+			{
+				if (pop(item) == false)
+					return false;
+			}
+			return true;
+		}
+
+		inline bool pop(std::vector<uint32_t>& adata)
+		{
+			int16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize < 0)
+				return false;
+			adata.resize(lsize);
+			for (auto& item : adata)
+			{
+				if (pop(item) == false)
+					return false;
+			}
+			return true;
+		}
+
+		inline bool pop(std::vector<int64_t>& adata)
+		{
+			int16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize < 0)
+				return false;
+			adata.resize(lsize);
+			for (auto& item : adata)
+			{
+				if (pop(item) == false)
+					return false;
+			}
+			return true;
+		}
+
+		inline bool pop(std::vector<uint64_t>& adata)
+		{
+			int16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize < 0)
+				return false;
+			adata.resize(lsize);
+			for (auto& item : adata)
+			{
+				if (pop(item) == false)
+					return false;
+			}
+			return true;
+		}
+
+		inline bool pop(std::vector<float>& adata)
+		{
+			return pop_vector_number(adata);
+		}
+
+		inline bool pop(std::vector<double>& adata)
+		{
+			return pop_vector_number(adata);
+		}
+#pragma endregion 
+
+		inline bool pop(std::pair<uint32_t, const char*>& adata)
+		{
+			if (!pop(adata.first))
+				return false;
+			if (m_pos + adata.first > m_len)
+				return false;
+			adata.second = &m_buff[m_pos];
+			m_pos += adata.first;
+			return true;
+		}
+
+		bool pop(forward& adata);
+
+		inline bool pop(std::string& adata)
+		{
+			uint16_t lsize = 0;
+			if (!pop(lsize))
+				return false;
+			if (lsize > 0)
+			{
+				adata.resize(lsize);
+				if (!basetype((void*)&adata[0], lsize))
+					return false;
+			}
+			return true;
+		}
+
+		template <typename T>
+		inline bool pop(std::vector<T>& adata)
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
@@ -560,19 +960,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool pop_vector_number(std::vector<T>& adata)
-		{
-			int16_t lsize = 0;
-			if (!pop(lsize))
-				return false;
-			if (lsize < 0)
-				return false;
-			adata.resize(lsize);
-			return basetype(&adata[0], sizeof(T) * lsize);
-		}
-
-		template <typename T>
-		bool pop(std::list<T>& adata)
+		inline bool pop(std::list<T>& adata)
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
@@ -590,7 +978,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool pop(std::set<T>& adata)
+		inline bool pop(std::set<T>& adata)
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
@@ -608,7 +996,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool pop(std::unordered_set<T>& adata)
+		inline bool pop(std::unordered_set<T>& adata)
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
@@ -626,7 +1014,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		bool pop(std::map<TKEY, TVALUE>& adata)
+		inline bool pop(std::map<TKEY, TVALUE>& adata)
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
@@ -646,7 +1034,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		bool pop(std::unordered_map<TKEY, TVALUE>& adata)
+		inline bool pop(std::unordered_map<TKEY, TVALUE>& adata)
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
@@ -665,11 +1053,15 @@ namespace ngl
 			return true;
 		}
 
-		// 支持没有参数
-		bool pop();
+		// # 支持没有参数
+		inline bool pop()
+		{
+			return true;
+		}
+
 
 		template <typename T, typename ...ARG>
-		bool pop(T& avalue, ARG&... arg)
+		inline bool pop(T& avalue, ARG&... arg)
 		{
 			return pop(avalue) && pop(arg...);
 		}
@@ -679,13 +1071,23 @@ namespace ngl
 	{
 		int m_size;
 	public:
-		serialize_bytes();
-		// 支持没有参数
-		int bytes();
-		int add_bytes(int abytes);
+		inline serialize_bytes() :
+			m_size(0)
+		{}
+
+		// # 支持没有参数
+		inline int bytes()
+		{
+			return m_size;
+		}
+
+		inline int add_bytes(int abytes)
+		{
+			return m_size += abytes;
+		}
 
 		template <typename T, bool IS_FORWARD>
-		int bytes(const protobuf_data<T, IS_FORWARD>& adata)
+		inline int bytes(const protobuf_data<T, IS_FORWARD>& adata)
 		{
 			assert(adata.m_data != nullptr);
 			if (adata.m_isbinary)
@@ -702,7 +1104,7 @@ namespace ngl
 		}
 
 		template <typename KEY, typename VALUE>
-		int bytes(const protobuf_data<std::map<KEY, VALUE>>& adata)
+		inline int bytes(const protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
 			assert(adata.m_data != nullptr);
 			bytes(int16_t(adata.m_data->size()));
@@ -718,7 +1120,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		int bytes(const protobuf_data<std::vector<T>>& adata)
+		inline int bytes(const protobuf_data<std::vector<T>>& adata)
 		{
 			assert(adata.m_data != nullptr);
 			bytes(int16_t(adata.m_data->size()));
@@ -733,7 +1135,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		int bytes(const protobuf_data<std::list<T>>& adata)
+		inline int bytes(const protobuf_data<std::list<T>>& adata)
 		{
 			assert(adata.m_data != nullptr);
 			bytes(int16_t(adata.m_data.size()));
@@ -748,13 +1150,13 @@ namespace ngl
 		}
 
 		template <typename T>
-		int bytes(const T* adata)
+		inline int bytes(const T* adata)
 		{
 			return bytes(*adata);
 		}
 
 		template <typename T>
-		int bytes(T* adata)
+		inline int bytes(T* adata)
 		{
 			return bytes(*adata);
 		}
@@ -763,7 +1165,7 @@ namespace ngl
 		int bytes(const T& adata);
 
 		template <typename T>
-		int bytes(const std::shared_ptr<T>& adata)
+		inline int bytes(const std::shared_ptr<T>& adata)
 		{
 			(*adata).bytes(*this);
 			return m_size;
@@ -771,62 +1173,373 @@ namespace ngl
 
 		int bytes(const forward& adata);
 		int bytes(forward& adata);
-		int bytes(const int8_t adata);
-		int bytes(const uint8_t adata);
-		int bytes(const int16_t adata);
-		int bytes(const uint16_t adata);
-		int bytes(const int32_t adata);
-		int bytes(const uint32_t adata);
-		int bytes(const int64_t adata);
-		int bytes(const uint64_t adata);
-		int bytes(const float adata);
-		int bytes(const double adata);
-		int bytes(const bool adata);
-		int bytes(const std::vector<bool>& avec);
-		int bytes(const std::vector<int8_t>& avec);
-		int bytes(const std::vector<uint8_t>& avec);
-		int bytes(const std::vector<int16_t>& avec);
-		int bytes(const std::vector<uint16_t>& avec);
-		int bytes(const std::vector<int32_t>& avec);
-		int bytes(const std::vector<uint32_t>& avec);
-		int bytes(const std::vector<int64_t>& avec);
-		int bytes(const std::vector<uint64_t>& avec);
-		int bytes(const std::vector<float>& avec);
-		int bytes(const std::vector<double>& avec);
-		int bytes(const std::list<int8_t>& avec);
-		int bytes(const std::list<uint8_t>& avec);
-		int bytes(const std::list<int16_t>& avec);
-		int bytes(const std::list<uint16_t>& avec);
-		int bytes(const std::list<int32_t>& avec);
-		int bytes(const std::list<uint32_t>& avec);
-		int bytes(const std::list<int64_t>& avec);
-		int bytes(const std::list<uint64_t>& avec);
-		int bytes(const std::list<float>& avec);
-		int bytes(const std::list<double>& avec);
-		int bytes(const std::set<int8_t>& avec);
-		int bytes(const std::set<uint8_t>& avec);
-		int bytes(const std::set<int16_t>& avec);
-		int bytes(const std::set<uint16_t>& avec);
-		int bytes(const std::set<int32_t>& avec);
-		int bytes(const std::set<uint32_t>& avec);
-		int bytes(const std::set<int64_t>& avec);
-		int bytes(const std::set<uint64_t>& avec);
-		int bytes(const std::set<float>& avec);
-		int bytes(const std::set<double>& avec);
-		int bytes(const std::unordered_set<int8_t>& avec);
-		int bytes(const std::unordered_set<uint8_t>& avec);
-		int bytes(const std::unordered_set<int16_t>& avec);
-		int bytes(const std::unordered_set<uint16_t>& avec);
-		int bytes(const std::unordered_set<int32_t>& avec);
-		int bytes(const std::unordered_set<uint32_t>& avec);
-		int bytes(const std::unordered_set<int64_t>& avec);
-		int bytes(const std::unordered_set<uint64_t>& avec);
-		int bytes(const std::unordered_set<float>& avec);
-		int bytes(const std::unordered_set<double>& avec);
-		int bytes(const std::string& astr);
+
+#pragma region basetype // 基础类型
+		inline int bytes(const int8_t adata)
+		{
+			return m_size += sizeof(int8_t);
+		}
+
+		inline int bytes(const uint8_t adata)
+		{
+			return m_size += sizeof(uint8_t);
+		}
+
+		inline int bytes(const int16_t adata)
+		{
+			return m_size += sizeof(int16_t);
+		}
+
+		inline int bytes(const uint16_t adata)
+		{
+			return m_size += sizeof(uint16_t);
+		}
+
+		inline int bytes(const int32_t adata)
+		{
+			int32_t lvalues = adata;
+			lvalues = bytesorder::transformlittle(lvalues);
+			varint::parm_length<int32_t> laprm{ .m_value = lvalues };
+			return m_size += varint::length(laprm);
+		}
+
+		inline int bytes(const uint32_t adata)
+		{
+			return bytes((const int32_t)adata);
+		}
+
+		inline int bytes(const int64_t adata)
+		{
+			int64_t lvalues = adata;
+			lvalues = bytesorder::transformlittle(lvalues);
+			varint::parm_length<int64_t> laprm{ .m_value = lvalues };
+			return m_size += varint::length(laprm);
+		}
+
+		inline int bytes(const uint64_t adata)
+		{
+			return bytes((const int64_t)adata);
+		}
+
+		inline int bytes(const float adata)
+		{
+			return m_size += sizeof(adata);
+		}
+
+		inline int bytes(const double adata)
+		{
+			return m_size += sizeof(adata);
+		}
+
+		inline int bytes(const bool adata)
+		{
+			return m_size += sizeof(adata);
+		}
+#pragma endregion 
+
+#pragma region vector
+		inline int bytes(const std::vector<bool>& avec)
+		{
+			bytes(uint16_t(avec.size()));
+			return m_size += avec.size() * sizeof(bool);
+		}
+
+		inline int bytes(const std::vector<int8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int8_t) * avec.size();
+		}
+
+		inline int bytes(const std::vector<uint8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint8_t) * avec.size();
+		}
+
+		inline int bytes(const std::vector<int16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int16_t) * avec.size();
+		}
+
+		inline int bytes(const std::vector<uint16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint16_t) * avec.size();
+		}
+
+		inline int bytes(const std::vector<int32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int i = 0; i < avec.size(); ++i)
+			{
+				bytes(avec[i]);
+			}
+			return m_size;
+		}
+
+		inline int bytes(const std::vector<uint32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int i = 0; i < avec.size(); ++i)
+			{
+				bytes(avec[i]);
+			}
+			return m_size;
+		}
+
+		inline int bytes(const std::vector<int64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int i = 0; i < avec.size(); ++i)
+			{
+				bytes(avec[i]);
+			}
+			return m_size;
+		}
+
+		inline int bytes(const std::vector<uint64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int i = 0; i < avec.size(); ++i)
+			{
+				bytes(avec[i]);
+			}
+			return m_size;
+		}
+
+		inline int bytes(const std::vector<float>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(float) * avec.size();
+		}
+
+		inline int bytes(const std::vector<double>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(double) * avec.size();
+		}
+#pragma endregion 
+
+#pragma region list
+		inline int bytes(const std::list<int8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int8_t) * avec.size();
+		}
+
+		inline int bytes(const std::list<uint8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint8_t) * avec.size();
+		}
+
+		inline int bytes(const std::list<int16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int16_t) * avec.size();
+		}
+
+		inline int bytes(const std::list<uint16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint16_t) * avec.size();
+		}
+
+		inline int bytes(const std::list<int32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int32_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::list<uint32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (uint32_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::list<int64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int64_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::list<uint64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (uint64_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::list<float>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(float) * avec.size();
+		}
+
+		inline int bytes(const std::list<double>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(double) * avec.size();
+		}
+
+#pragma endregion 
+
+#pragma region set
+		inline int bytes(const std::set<int8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int8_t) * avec.size();
+		}
+
+		inline int bytes(const std::set<uint8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint8_t) * avec.size();
+		}
+
+		inline int bytes(const std::set<int16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int16_t) * avec.size();
+		}
+
+		inline int bytes(const std::set<uint16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint16_t) * avec.size();
+		}
+
+		inline int bytes(const std::set<int32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int32_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::set<uint32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (uint32_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::set<int64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int64_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::set<uint64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (uint64_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::set<float>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(float) * avec.size();
+		}
+
+		inline int bytes(const std::set<double>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(double) * avec.size();
+		}
+#pragma endregion 
+
+#pragma region unordered_set
+		inline int bytes(const std::unordered_set<int8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int8_t) * avec.size();
+		}
+
+		inline int bytes(const std::unordered_set<uint8_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint8_t) * avec.size();
+		}
+
+		inline int bytes(const std::unordered_set<int16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(int16_t) * avec.size();
+		}
+
+		inline int bytes(const std::unordered_set<uint16_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(uint16_t) * avec.size();
+		}
+
+		inline int bytes(const std::unordered_set<int32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int32_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::unordered_set<uint32_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (uint32_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::unordered_set<int64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (int64_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::unordered_set<uint64_t>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			for (uint64_t item : avec)
+				bytes(item);
+			return m_size;
+		}
+
+		inline int bytes(const std::unordered_set<float>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(float) * avec.size();
+		}
+
+		inline int bytes(const std::unordered_set<double>& avec)
+		{
+			bytes(int16_t(avec.size()));
+			return m_size += sizeof(double) * avec.size();
+		}
+#pragma endregion 
+
+		inline int bytes(const std::string& astr)
+		{
+			bytes(int16_t(astr.size()));
+			return m_size += astr.size() * sizeof(char);
+		}
 
 		template <typename T>
-		int bytes(const std::vector<T>& avec)
+		inline int bytes(const std::vector<T>& avec)
 		{
 			bytes(int16_t(avec.size()));
 			for (int i = 0; i < avec.size(); ++i)
@@ -835,7 +1548,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		int bytes(const std::list<T>& alist)
+		inline int bytes(const std::list<T>& alist)
 		{
 			bytes(int16_t(alist.size()));
 			for (const T& item : alist)
@@ -844,7 +1557,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		int bytes(const std::set<T>& aset)
+		inline int bytes(const std::set<T>& aset)
 		{
 			bytes(int16_t(aset.size()));
 			for (const T& item : aset)
@@ -853,7 +1566,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		int bytes(const std::unordered_set<T>& aset)
+		inline int bytes(const std::unordered_set<T>& aset)
 		{
 			bytes(int16_t(aset.size()));
 			for (const T& item : aset)
@@ -862,7 +1575,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		int bytes(const std::map<TKEY, TVALUE>& amap)
+		inline int bytes(const std::map<TKEY, TVALUE>& amap)
 		{
 			bytes(int16_t(amap.size()));
 			for (const std::pair<const TKEY, TVALUE>& item : amap)
@@ -874,7 +1587,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		int bytes(const std::unordered_map<TKEY, TVALUE>& amap)
+		inline int bytes(const std::unordered_map<TKEY, TVALUE>& amap)
 		{
 			bytes(int16_t(amap.size()));
 			for (const std::pair<const TKEY, TVALUE>& item : amap)
@@ -886,7 +1599,7 @@ namespace ngl
 		}
 
 		template <typename T, typename ...ARG>
-		int bytes(const T& avalue, const ARG&... arg)
+		inline int bytes(const T& avalue, const ARG&... arg)
 		{
 			bytes(avalue) && bytes(arg...);
 			return m_size;
