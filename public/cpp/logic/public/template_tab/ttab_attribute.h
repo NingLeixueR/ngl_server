@@ -43,8 +43,11 @@ namespace ngl
 			auto tabcsv = allcsv::get<manage_csv<tab_attribute>>();
 			for (const auto& [key, value] : tabcsv->tablecsv)
 			{
-				m_uplowlimit[key].first = value.m_uplimit;
-				m_uplowlimit[key].second = value.m_lowlimit;
+				if (key < EnumAttribute::E_Count)
+				{
+					m_uplowlimit[key].first = value.m_uplimit;
+					m_uplowlimit[key].second = value.m_lowlimit;
+				}
 			}
 		}
 

@@ -198,7 +198,7 @@ namespace ngl
 		static bool fun(const char* source)
 		{
 			std::string lstr(source);
-			return fun(lstr);
+			return (lstr == "0" || lstr.empty()) ? false : true;
 		}
 
 		static bool fun(int64_t source)

@@ -6,8 +6,6 @@ namespace ngl
 	{
         if (!abuff || !afg)
             return false;
-        std::cout << "buff = " << abuff << " afg = " << afg << std::endl;
-
         std::string ltemp;
         for (const char* lp1 = abuff; *lp1 != '\0';)
         {

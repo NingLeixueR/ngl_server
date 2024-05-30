@@ -206,7 +206,7 @@ namespace ngl
 				read(apair, ltempstr);
 				csvpair lpair;
 				lpair.m_data = ltempstr;
-				for (; apair.m_pos < apair.m_data.size();)
+				for (; lpair.m_pos < lpair.m_data.size();)
 				{
 					T ltemp;
 					int32_t lret = readveccsv(lpair, ltemp);
@@ -233,7 +233,7 @@ namespace ngl
 				read(apair, ltempstr);
 				csvpair lpair;
 				lpair.m_data = ltempstr;
-				for (; apair.m_pos < lpair.m_data.size();)
+				for (; lpair.m_pos < lpair.m_data.size();)
 				{
 					T ltemp;
 					if (readcsv(lpair, ltemp))
