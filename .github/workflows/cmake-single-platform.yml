@@ -33,9 +33,11 @@ jobs:
         
     - name: Download and build protobuf
       run: |
-        git clone https://github.com/protocolbuffers/protobuf.git
-        cd protobuf
-        ./autogen.sh
+        # 下载 Protobuf 3.13.0 源代码
+        curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz
+        tar -xzf protobuf-all-3.13.0.tar.gz
+        cd protobuf-3.13.0
+        # 编译和安装 Protobuf
         ./configure
         make
         sudo make install
