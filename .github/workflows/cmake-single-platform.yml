@@ -43,12 +43,13 @@ jobs:
         sudo make install
         
     - name: Download and build MySQL C Connector
-      run: |
-        git clone https://github.com/mysql/mysql-connector-c.git
-        cd mysql-connector-c
-        mkdir build
-        cd build
-        cmake ..
+    run: |
+        curl -OL https://dev.mysql.com/get/Downloads/Connector-C/mysql-connector-c-8.0.28-src.tar.gz
+        tar -xzf mysql-connector-c-8.0.28-src.tar.gz
+        cd mysql-connector-c-8.0.28-src
+        # 使用 cmake 配置
+        cmake .
+        # 编译和安装 MySQL Connect/C
         make
         sudo make install
 
