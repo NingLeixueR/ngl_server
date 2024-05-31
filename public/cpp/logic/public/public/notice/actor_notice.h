@@ -23,6 +23,9 @@ namespace ngl
 	{
 		notice m_notice;
 
+		actor_notice(const actor_notice&) = delete;
+		actor_notice& operator=(const actor_notice&) = delete;
+
 		actor_notice();
 	public:
 		friend class actor_instance<actor_notice>;

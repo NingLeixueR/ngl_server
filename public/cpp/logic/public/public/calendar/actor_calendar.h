@@ -21,6 +21,9 @@ namespace ngl
 	{
 		calendar m_calendar;
 
+		actor_calendar(const actor_calendar&) = delete;
+		actor_calendar& operator=(const actor_calendar&) = delete;
+
 		actor_calendar();
 	public:
 		friend class actor_instance<actor_calendar>;

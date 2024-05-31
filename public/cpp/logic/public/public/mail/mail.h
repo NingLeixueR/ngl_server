@@ -13,6 +13,9 @@ namespace ngl
 	{
 		std::map<i64_actorid, int32_t> m_maxid;
 	public:
+		mails(const mails&) = delete;
+		mails& operator=(const mails&) = delete;
+
 		mails()
 		{
 		}

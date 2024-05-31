@@ -11,6 +11,9 @@ namespace ngl
 			return lret;
 		}
 	public:
+		activity_drawcompliance(const activity_drawcompliance&) = delete;
+		activity_drawcompliance& operator=(const activity_drawcompliance&) = delete;
+
 		activity_drawcompliance(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) :
 			activity(acalendarid, aactivityid, atime, adb)
 		{}

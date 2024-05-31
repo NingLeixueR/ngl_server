@@ -19,6 +19,9 @@ namespace ngl
 		struct impl_actor_manage;
 		ngl::impl<impl_actor_manage> m_impl_actor_manage;
 
+		actor_manage(const actor_manage&) = delete;
+		actor_manage& operator=(const actor_manage&) = delete;
+
 		actor_manage();
 		~actor_manage();
 	public:

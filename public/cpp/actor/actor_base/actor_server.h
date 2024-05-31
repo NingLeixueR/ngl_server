@@ -8,6 +8,9 @@ namespace ngl
 {
 	class actor_server : public actor
 	{
+		actor_server(const actor_server&) = delete;
+		actor_server& operator=(const actor_server&) = delete;
+
 		actor_server();
 	public:
 		friend class actor_instance<actor_server>;

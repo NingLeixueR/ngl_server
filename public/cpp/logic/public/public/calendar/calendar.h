@@ -13,6 +13,8 @@ namespace ngl
 {
 	class calendar : public tdb_calendar::db_modular
 	{
+		calendar(const calendar&) = delete;
+		calendar& operator=(const calendar&) = delete;
 	public:
 		calendar()
 		{

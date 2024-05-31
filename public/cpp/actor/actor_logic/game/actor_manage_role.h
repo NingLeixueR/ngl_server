@@ -15,6 +15,9 @@ namespace ngl
 {
 	class actor_manage_role : public actor
 	{
+		actor_manage_role(const actor_manage_role&) = delete;
+		actor_manage_role& operator=(const actor_manage_role&) = delete;
+
 		actor_manage_role();
 	public:
 		friend class actor_instance<actor_manage_role>;

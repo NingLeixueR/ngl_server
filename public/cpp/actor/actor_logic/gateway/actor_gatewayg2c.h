@@ -16,6 +16,9 @@ namespace ngl
 	{
 		gateway_info m_info;
 
+		actor_gatewayg2c(const actor_gatewayg2c&) = delete;
+		actor_gatewayg2c& operator=(const actor_gatewayg2c&) = delete;
+
 		actor_gatewayg2c();
 	public:
 		friend class actor_instance<actor_gatewayg2c>;

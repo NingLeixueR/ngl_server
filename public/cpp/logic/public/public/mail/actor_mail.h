@@ -22,6 +22,9 @@ namespace ngl
 	{
 		mails m_mails;
 
+		actor_mail(const actor_mail&) = delete;
+		actor_mail& operator=(const actor_mail&) = delete;
+
 		actor_mail();
 	public:
 		friend class actor_instance<actor_mail>;

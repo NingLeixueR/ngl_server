@@ -9,6 +9,9 @@ namespace ngl
 	{
 		int64_t m_maxid;
 	public:
+		notice(const notice&) = delete;
+		notice& operator=(const notice&) = delete;
+
 		notice() :
 			m_maxid(0)
 		{

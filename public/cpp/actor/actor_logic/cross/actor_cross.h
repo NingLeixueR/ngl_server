@@ -6,6 +6,9 @@ namespace ngl
 {
 	class actor_cross : public actor
 	{
+		actor_cross(const actor_cross&) = delete;
+		actor_cross& operator=(const actor_cross&) = delete;
+
 		actor_cross();
 	public:
 		friend class actor_instance<actor_cross>;

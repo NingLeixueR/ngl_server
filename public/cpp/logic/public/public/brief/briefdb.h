@@ -14,6 +14,9 @@ namespace ngl
 	class briefdb : public tdb_brief::db_modular
 	{
 	public:
+		briefdb(const briefdb&) = delete;
+		briefdb& operator=(const briefdb&) = delete;
+
 		briefdb()
 		{
 		}

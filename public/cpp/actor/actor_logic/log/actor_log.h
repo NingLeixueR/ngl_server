@@ -21,6 +21,10 @@ namespace ngl
 	{
 		std::shared_ptr<logfile> m_log;
 	public:
+		actor_log(const actor_log&) = delete;
+		actor_log& operator=(const actor_log&) = delete;
+		actor_log() = delete;
+
 		actor_log(i32_actordataid aid);
 
 		virtual void init();

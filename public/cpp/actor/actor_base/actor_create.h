@@ -15,6 +15,9 @@ namespace ngl
 	// actor内部临时数据无法迁移
 	class actor_create : public actor
 	{
+		actor_create(const actor_create&) = delete;
+		actor_create& operator=(const actor_create&) = delete;
+
 		actor_create();
 	public:
 		friend class actor_instance<actor_create>;

@@ -22,6 +22,10 @@ namespace ngl
 		int16_t									m_kcp;
 		// ----- Data End   -----
 	public:
+		actor_robot() = delete;
+		actor_robot(const actor_robot&) = delete;
+		actor_robot& operator=(const actor_robot&) = delete;
+
 		actor_robot(i16_area aarea, i32_actordataid arobotid, void*);
 
 		virtual void init(){}

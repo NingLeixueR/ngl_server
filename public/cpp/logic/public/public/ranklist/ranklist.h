@@ -65,6 +65,9 @@ namespace ngl
 
 		std::set<pbdb::rankitem*, operator_value<operator_lv>> m_ranklv;
 	public:
+		ranklist(const ranklist&) = delete;
+		ranklist& operator=(const ranklist&) = delete;
+
 		ranklist()
 		{
 		}

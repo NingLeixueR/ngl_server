@@ -7,6 +7,9 @@ namespace ngl
 	class actor_csvserver
 		: public actor
 	{
+		actor_csvserver(const actor_csvserver&) = delete;
+		actor_csvserver& operator=(const actor_csvserver&) = delete;
+
 		actor_csvserver();
 	public:
 		friend class actor_instance<actor_csvserver>;

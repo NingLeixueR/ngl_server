@@ -11,6 +11,8 @@ namespace ngl
 {
 	class activitydb : public tdb_activity::db_modular
 	{
+		activitydb(const activitydb&) = delete;
+		activitydb& operator=(const activitydb&) = delete;
 	public:
 		activitydb()
 		{

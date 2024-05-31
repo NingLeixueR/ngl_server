@@ -22,6 +22,10 @@ namespace ngl
 		ranklist m_ranklist;
 
 		using type_roleitems = nroleitems<actor_ranklist, pbdb::db_brief>;
+
+		actor_ranklist(const actor_ranklist&) = delete;
+		actor_ranklist& operator=(const actor_ranklist&) = delete;
+
 		actor_ranklist();
 	public:
 		friend class actor_instance<actor_ranklist>;

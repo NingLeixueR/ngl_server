@@ -19,6 +19,9 @@ namespace ngl
 {
 	class actor_chat : public actor
 	{
+		actor_chat(const actor_chat&) = delete;
+		actor_chat& operator=(const actor_chat&) = delete;
+
 		actor_chat();
 
 		struct roleitem

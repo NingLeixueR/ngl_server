@@ -13,6 +13,9 @@ namespace ngl
 {
 	class actor_gatewayc2g : public actor
 	{
+		actor_gatewayc2g(const actor_gatewayc2g&) = delete;
+		actor_gatewayc2g& operator=(const actor_gatewayc2g&) = delete;
+
 		gateway_info m_info;
 		actor_gatewayc2g();
 	public:

@@ -7,7 +7,6 @@ namespace ngl
 {
 	class activity
 	{
-
 	private:
 		static std::map<EActivity, activity*> m_activityall;
 		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) = 0;

@@ -33,6 +33,9 @@ namespace ngl
 		i32_serverid m_gatewayid;
 		i64_actorid  m_playactorid;
 	public:
+		actor_role(const actor_role&) = delete;
+		actor_role& operator=(const actor_role&) = delete;
+
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);
 
 		virtual i32_serverid get_getwayserverid();

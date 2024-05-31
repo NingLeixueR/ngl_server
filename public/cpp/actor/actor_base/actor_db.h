@@ -254,6 +254,10 @@ namespace ngl
 	{
 		using tactor_db = actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
 	private:
+
+		actor_db(const actor_db&) = delete;
+		actor_db& operator=(const actor_db&) = delete;
+
 		actor_db() :
 			actor(
 				actorparm

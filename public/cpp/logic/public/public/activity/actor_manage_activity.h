@@ -21,6 +21,9 @@ namespace ngl
 {
 	class actor_manage_activity : public actor
 	{
+		actor_manage_activity(const actor_manage_activity&) = delete;
+		actor_manage_activity& operator=(const actor_manage_activity&) = delete;
+
 		actor_manage_activity();
 
 		struct roleitem

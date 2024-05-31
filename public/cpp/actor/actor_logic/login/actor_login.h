@@ -39,6 +39,9 @@ namespace ngl
 		std::map<i64_actorid, pair_account> m_actorbyserver;
 		// ----- Data End   -----
 
+		actor_login(const actor_login&) = delete;
+		actor_login& operator=(const actor_login&) = delete;
+
 		actor_login();
 	public:
 		friend class actor_instance<actor_login>;
