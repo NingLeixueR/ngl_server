@@ -21,8 +21,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Download and Install CMake
+      run: |
+        curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
+        tar -xzvf cmake-3.21.3-linux-x86_64.tar.gz
+        sudo mv cmake-3.21.3-linux-x86_64 /usr/local/cmake
+        echo 'export PATH="/usr/local/cmake/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+        
     - name: Install dependencies
       run: |
         sudo apt-get update
