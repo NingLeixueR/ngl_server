@@ -21,12 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-
     - name: Install CMake
-      uses: chrislennon/action-cmake@v1
-      with:
-        cmake-version: '3.5'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake=3.5.*
         
     - name: Install dependencies
       run: |
