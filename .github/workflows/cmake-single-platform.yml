@@ -23,6 +23,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install CMake
+      uses: chrislennon/action-cmake@v1
+      with:
+        cmake-version: '3.520'
+        
     - name: Install dependencies
       run: |
         sudo apt-get update
