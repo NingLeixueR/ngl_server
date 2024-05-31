@@ -26,7 +26,7 @@ jobs:
     - name: Install CMake
       uses: chrislennon/action-cmake@v1
       with:
-        cmake-version: '3.520'
+        cmake-version: '3.20'
         
     - name: Install dependencies
       run: |
