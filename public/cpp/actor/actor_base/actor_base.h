@@ -112,9 +112,6 @@ namespace ngl
 		//# 添加任务
 		virtual void		push(handle_pram& apram)				= 0;
 
-		//# 清空当前任务
-		virtual void		clear_task()							= 0;
-
 		//# 执行handle之后调用
 		virtual void		handle_after(handle_pram&) {}
 
@@ -199,7 +196,6 @@ namespace ngl
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
-
 
 		template <typename T>
 		static bool static_sendkcp(
@@ -309,8 +305,6 @@ private:
 				});
 			actor_forward_setdata(*pro, adata);
 			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
-			//handle_pram lpram;
-			//pram_create(pro, lpram, *abeg);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 	public:
@@ -502,12 +496,12 @@ private:
 		//# 日志相关
 		static std::shared_ptr<np_actor_logitem> m_nonelog;
 		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
-		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current());
-		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current());
-		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
+		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
 
 		//# actor_base::create 

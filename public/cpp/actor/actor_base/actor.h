@@ -58,6 +58,7 @@ namespace ngl
 			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, timerparm>(afun, false);
 		}
 
+#pragma region register_db
 		//# 注册db加载
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		class db_pair{};
@@ -82,6 +83,7 @@ namespace ngl
 		{
 			ninst<TDerived, TYPE>().template rfun<TDerived, T>(afun);
 		}
+#pragma endregion 
 
 #pragma region register_actor
 
@@ -129,6 +131,7 @@ namespace ngl
 			ninst<TDerived, TYPE>().rfun_nonet(afun, aisload);
 		}
 #pragma endregion 
+
 	private:
 		friend class nforward;
 
@@ -141,7 +144,11 @@ namespace ngl
 			static void func()
 			{
 				ninst<TDerived, TYPE>().
-					template rfun_forward<IsForward>((Tfun<TDerived, np_actor_forward<T, TYPE, IsForward, ngl::forward>>) & TDerived::handle, nactor_type<TDerived>::type(), false);
+					template rfun_forward<IsForward>(
+						(Tfun<TDerived, np_actor_forward<T, TYPE, IsForward, ngl::forward>>) & TDerived::handle
+						, nactor_type<TDerived>::type()
+						, false
+					);
 			}
 		};
 
@@ -171,7 +178,11 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
+				ninst<TDerived, TYPE>()
+					.rfun_recvforward(
+						(Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>
+						, false
+					);
 			}
 		};
 
@@ -180,6 +191,9 @@ namespace ngl
 
 #pragma endregion 
 	public:
+		actor() = delete;
+		actor(const actor&) = delete;
+
 		explicit actor(const actorparm& aparm);
 
 		virtual ~actor();
@@ -188,15 +202,18 @@ namespace ngl
 
 		virtual void set_activity_stat(actor_stat astat) final;
 	private:
+		// # 释放actor消息列表
 		virtual void release() final;
 
+		// # 消息列表是否为空
 		virtual bool list_empty() final;
 
+		// # 向消息列表中添加新的消息
 		virtual void push(handle_pram& apram) final;
 
-		virtual void clear_task() final;
-
+		// # 由线程主动调用消费消息
 		virtual void actor_handle(i32_threadid athreadid) final;
+
 	public:
 #pragma region ActorBroadcast
 		// ############# Start[Actor 全员广播] ############# 
@@ -209,7 +226,8 @@ namespace ngl
 		bool handle(message<np_actor_broadcast>& adata);
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion
-
+		
+		// # 关闭此actor
 		bool handle(message<np_actor_close>& adata)
 		{
 			erase_actor_byid();
