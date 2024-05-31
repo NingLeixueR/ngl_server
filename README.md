@@ -4,7 +4,6 @@
 
 ## 依赖的第三方库
   * <b>非boost独立版本的asio</b>
-  * <b>cryptopp</b>
   * <b>curl</b>
   * <b>hiredis</b>
   * <b>mysql connect/c</b>
@@ -12,9 +11,9 @@
 
 ## 目录
   * <b>ngl/3part</b><br/>此目录用于存放第三方库
-  * <b>ngl/tools/public/idl</b><br/>csv表生成
-  * <b>ngl/tools/public/proto</b><br/>proto协议生成
-  * <b>ngl/tools/public/rebuild.bat</b><br/>与cmake unity build类似的加速编译
+  * <b>ngl/bin/idl</b><br/>csv表生成
+  * <b>ngl/bin/proto</b><br/>proto协议生成
+  * <b>ngl/bin/rebuild.bat</b><br/>与cmake unity build类似的加速编译
   * <b>ngl/public/cpp</b><br/>cpp服务器源码
   * <b>ngl/public/csharp</b><br/>cs客户端源码(主要包含消息、网络、csv的读取)
   * <b>ngl/server</b><br/>项目源文件
