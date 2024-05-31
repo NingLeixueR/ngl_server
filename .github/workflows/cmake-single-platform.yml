@@ -44,9 +44,9 @@ jobs:
         
     - name: Download and build MySQL C Connector
       run: |
-        curl -OL https://dev.mysql.com/get/Downloads/Connector-C/mysql-connector-c-8.0.28-src.tar.gz
-        tar -xzf mysql-connector-c-8.0.28-src.tar.gz
-        cd mysql-connector-c-8.0.28-src
+        curl -OL https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-src.tar.gz
+        tar -xzf mysql-connector-c-6.1.11-src.tar.gz
+        cd mysql-connector-c-6.1.11-src
         # 使用 cmake 配置
         cmake .
         # 编译和安装 MySQL Connect/C
