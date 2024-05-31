@@ -343,8 +343,7 @@ namespace ngl
 				nguid lguid;
 				lguid.none();
 				std::shared_ptr<np_actor_broadcast> pro(new np_actor_broadcast());
-				handle_pram lpram;
-				handle_pram::create<np_actor_broadcast, false>(lpram, lguid, lguid, pro);
+				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(lguid, lguid, pro);
 				actor_manage::getInstance().broadcast_task(lpram);
 			}
 		};

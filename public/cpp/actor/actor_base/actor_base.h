@@ -25,12 +25,13 @@ namespace ngl
 
 	struct actorparmbase
 	{
-		ENUM_ACTOR m_type		= nguid::none_type();				// actor类型
-		i16_area m_area			= tab_self_area;					// 区服
-		i32_actordataid m_id	= nguid::none_actordataid();		// 数据id
-		bool m_manage_dbclient	= false;							// 是否有数据库依赖
+		ENUM_ACTOR		m_type				= nguid::none_type();				// actor类型
+		i16_area		m_area				= tab_self_area;					// 区服
+		i32_actordataid m_id				= nguid::none_actordataid();		// 数据id
+		bool			m_manage_dbclient	= false;							// 是否有数据库依赖
 	};
 
+	// # actor的状态
 	enum actor_stat
 	{
 		actor_stat_init,  // 初始化阶段
@@ -40,6 +41,7 @@ namespace ngl
 		actor_stat_close, // 关闭状态
 	};
 
+	// # 消息的简单封装
 	template <typename T>
 	struct message;
 
@@ -49,11 +51,15 @@ namespace ngl
 		struct impl_actor_base;
 		ngl::impl<impl_actor_base> m_impl_actor_base;
 	protected:
+		actor_base() = delete;
+		actor_base(const actor_base&) = delete;
 		actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
+
 		//# 获取actor_manage_dbclient实例
-		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient();
+		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
+		ptr_manage_dbc& get_actor_manage_dbclient();
 
 		//# 是否需要从数据库加载数据
 		bool			isload();
@@ -73,11 +79,12 @@ namespace ngl
 		//# 添加dbclient
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
+		//# 向actor_db发送数据请求后的返回
 		template <
-			EPROTOCOL_TYPE PROTYPE
-			, pbdb::ENUM_DB DBTYPE
-			, typename TDBTAB
-			, typename TACTOR
+			EPROTOCOL_TYPE	PROTYPE		// 协议类型
+			, pbdb::ENUM_DB DBTYPE		// 数据类型
+			, typename		TDBTAB		// 数据表
+			, typename		TACTOR		// 持有该数据表的actor
 		>
 		bool handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
@@ -109,7 +116,7 @@ namespace ngl
 		virtual void		clear_task()							= 0;
 
 		//# 执行handle之后调用
-		virtual void		handle_after() {}
+		virtual void		handle_after(handle_pram&) {}
 
 		//# 派生actor重载此函数 会在数据加载完成后调用
 		virtual void		loaddb_finish(bool adbishave) {}
@@ -252,17 +259,6 @@ private:
 			);
 			return lid;
 		}
-
-		template <typename T>
-		static void pram_create(
-			std::shared_ptr<tactor_forward<T>>& apro
-			, handle_pram& apram
-			, i64_actorid aid
-		)
-		{
-			nguid lguid(aid);
-			handle_pram::create(apram, lguid, nguid::make(), apro);
-		}
 	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
@@ -273,8 +269,7 @@ private:
 			auto pro = std::make_shared<tactor_forward<T>>();
 			actor_forward_init(*pro, aid);
 			actor_forward_setdata(*pro, adata);
-			handle_pram lpram;
-			pram_create(pro, lpram, aid);
+			handle_pram lpram = handle_pram::create(aid, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 
@@ -313,8 +308,9 @@ private:
 					actor_forward_init(*pro, aactorid);
 				});
 			actor_forward_setdata(*pro, adata);
-			handle_pram lpram;
-			pram_create(pro, lpram, *abeg);
+			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
+			//handle_pram lpram;
+			//pram_create(pro, lpram, *abeg);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 	public:
@@ -381,8 +377,7 @@ private:
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata)
 		{
-			handle_pram lpram; 
-			handle_pram::create<T, IS_SEND>(lpram, aguid, guid(), adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata);
 			push_task_id(aguid, lpram, true);
 		}
 
@@ -390,16 +385,14 @@ private:
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
-			handle_pram lpram;
-			handle_pram::create<T, IS_SEND>(lpram, aguid, guid(), adata, afailfun);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 
 		//# 向指定actor发送pack
 		void send_actor_pack(const nguid& aguid, std::shared_ptr<pack>& adata)
 		{
-			handle_pram lpram;
-			handle_pram::create_pack(lpram, aguid, guid(), adata);
+			handle_pram lpram = handle_pram::create_pack(aguid, guid(), adata);
 			push_task_id(aguid, lpram, true);
 		}
 
@@ -407,8 +400,7 @@ private:
 		template <typename T, bool IS_SEND = true>
 		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
-			handle_pram lpram;
-			handle_pram::create<T, IS_SEND>(lpram, nguid::make_self(atype), guid(), adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), guid(), adata);
 			push_task_type(atype, lpram, aotherserver);
 		}
 
@@ -416,8 +408,7 @@ private:
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
 		{
-			handle_pram lpram;
-			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
 

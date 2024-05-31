@@ -84,38 +84,44 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const nguid& aid, const nguid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			apram.m_enum = tprotocol::protocol<T>();
-			apram.m_data = adata;
-			apram.m_actor = aid;
-			apram.m_requestactor = arid;
-			apram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
-			apram.m_forwardfun = nullptr;
+			handle_pram lpram;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
+			lpram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
+			lpram.m_forwardfun = nullptr;
 			if (IS_FORWARDFUN)
-				make_forwardfun<T, IS_SEND>(aid, arid, apram);
-			apram.m_failfun = afailfun;
+				make_forwardfun<T, IS_SEND>(aid, arid, lpram);
+			lpram.m_failfun = afailfun;
+			return std::move(lpram);
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void create(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(const nguid& aid, const nguid& arid, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, const std::function<void()>& afailfun = nullptr)
 		{
-			apram.m_enum = tprotocol::protocol<T>();
-			apram.m_data = adata;
-			apram.m_actor = aid;
-			apram.m_requestactor = arid;
-			apram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
-			apram.m_forwardfun = nullptr;
-			make_client<T, IS_SEND>(aid, arid, apram);
-			apram.m_failfun = afailfun;
+			handle_pram lpram;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
+			lpram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
+			lpram.m_forwardfun = nullptr;
+			make_client<T, IS_SEND>(aid, arid, lpram);
+			lpram.m_failfun = afailfun;
+			return std::move(lpram);
 		}
 
-		static void create_pack(handle_pram& apram, const nguid& aid, const nguid& arid, std::shared_ptr<pack>& apack)
+		static handle_pram create_pack(const nguid& aid, const nguid& arid, std::shared_ptr<pack>& apack)
 		{
-			apram.m_data = apack;
-			apram.m_actor = aid;
-			apram.m_requestactor = arid;
-			make_forwardfun<pack, true>(aid, arid, apram);
+			handle_pram lpram;
+			lpram.m_data = apack;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
+			make_forwardfun<pack, true>(aid, arid, lpram);
+			return std::move(lpram);
 		}
 	};
 

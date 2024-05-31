@@ -70,8 +70,7 @@ namespace ngl
 				pro->m_mass.m_actorservermass = false;
 
 				nguid lclientguid = actor_client::actorid();
-				handle_pram lparm;
-				handle_pram::create(lparm, lclientguid, nguid::make(), pro);
+				handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);
 				push_task_id(lclientguid, lparm, false);
 			}
 			else
@@ -94,8 +93,7 @@ namespace ngl
 				});
 			// É¾³ýµÄactor 
 			nguid lclientguid = actor_client::actorid();
-			handle_pram lparm;
-			handle_pram::create(lparm, lclientguid, nguid::make(), pro);
+			handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);
 			push_task_id(lclientguid, lparm, false);
 
 			ptractor lpactor = nullptr;

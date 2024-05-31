@@ -110,9 +110,10 @@ namespace ngl
 
 			while (--aweight >= 0 && llist.empty() != true)
 			{
-				if (ahandle(aactor, athreadid, llist.front()) == true)
+				handle_pram& lparm = llist.front();
+				if (ahandle(aactor, athreadid, lparm) == true)
 				{
-					aactor->handle_after();
+					aactor->handle_after(lparm);
 				}
 				llist.pop_front();
 			}

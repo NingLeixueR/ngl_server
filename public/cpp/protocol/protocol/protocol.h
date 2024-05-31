@@ -66,9 +66,8 @@ namespace ngl
 				nguid lactorguid(apack->m_head.get_actor());
 				nguid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
-				handle_pram lpram;
-				handle_pram::create<T, false, false>(lpram
-					, lactorguid
+				handle_pram lpram = handle_pram::create<T, false, false>(
+					lactorguid
 					, lrequestactorguid
 					, ldatapack
 				);
@@ -124,8 +123,7 @@ namespace ngl
 				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
 				nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
 				nguid lrequestguid(apack->m_head.get_request_actor());
-				handle_pram lpram;
-				handle_pram::create(lpram, lguid, lrequestguid, ldatapack);
+				handle_pram lpram = handle_pram::create(lguid, lrequestguid, ldatapack);
 				lpram.m_pack = apack;
 				actor_manage::getInstance().push_task_id(lguid, lpram, false);
 				return true;
@@ -172,10 +170,9 @@ namespace ngl
 				for (int i = 0; i < lp->m_uid.size() && i < lp->m_area.size(); ++i)
 				{
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
-					handle_pram lpram;
+					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
 					if (apack->m_protocol == ENET_KCP)
 						lpram.m_pack = apack;
-					handle_pram::create<T, false, false>(lpram, lguid, lrequestguid, ldatapack);
 					actor_manage::getInstance().push_task_id(lguid, lpram, false);
 				}
 				return true;
