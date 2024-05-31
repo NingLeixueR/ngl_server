@@ -1,7 +1,6 @@
 #include "serialize.h"
 #include "varint.h"
 #include "db.pb.h"
-#include "bit.h"
 
 namespace ngl
 {

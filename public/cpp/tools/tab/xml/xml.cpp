@@ -99,6 +99,7 @@ namespace ngl
 		if (lchild == nullptr)
 			return false;
 		xml::foreach_xmlattr(lchild, lfun);
+		return true;
 	}
 
 	bool xmlnode::read_db_arg(dbarg& m_dbarg)

@@ -10,7 +10,6 @@
 #include "event.h"
 #include "tools.h"
 #include "ukcp.h"
-#include "rfun.h"
 #include "nlog.h"
 
 #include <queue>

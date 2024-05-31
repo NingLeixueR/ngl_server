@@ -11,7 +11,6 @@ namespace ngl
 	// 用于关联枚举和字符串名字
 	// ENUMT需要关联的枚举
 	// TOLOWER是否统一将字符串进行小写处理
-
 	enum enum_e2n
 	{
 		e2n_tolower,	// 转换为小写
