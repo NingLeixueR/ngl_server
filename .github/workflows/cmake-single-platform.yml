@@ -44,14 +44,7 @@ jobs:
         
     - name: Download and build MySQL C Connector
       run: |
-        curl -OL https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-src.tar.gz
-        tar -xzf mysql-connector-c-6.1.11-src.tar.gz
-        cd mysql-connector-c-6.1.11-src
-        # 使用 cmake 配置
-        cmake .
-        # 编译和安装 MySQL Connect/C
-        make
-        sudo make install
+        sudo apt-get update && sudo apt-get install -y libmysqlclient-dev
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
