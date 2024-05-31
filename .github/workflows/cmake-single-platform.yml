@@ -26,21 +26,21 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libcurl4-openssl-dev libprotobuf-dev protobuf-compiler libmysqlclient-dev  # 安装依赖
+    - name: Download and install GCC 13.1.0
+      run: |
+        wget https://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.gz
+        tar -xf gcc-13.1.0.tar.gz
+        cd gcc-13.1.0
+        ./configure
+        make -j$(nproc)
+        sudo make install
         
     - name: Download and build curl
       run: |
        sudo apt install curl -y
         
-    - name: Download and build protobuf
-      run: |
-        # 下载 Protobuf 3.13.0 源代码
-        curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz
-        tar -xzf protobuf-all-3.13.0.tar.gz
-        cd protobuf-3.13.0
-        # 编译和安装 Protobuf
-        ./configure
-        make
-        sudo make install
+    - name: Install Protocol Buffers
+      run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
         
     - name: Download and build MySQL C Connector
       run: |
