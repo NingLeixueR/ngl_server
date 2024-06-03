@@ -44,18 +44,19 @@
 #include "csv.h"
 #include "xml.h"
 
-#include <chrono>
-#include <thread>
 #include <string_view>
 #include <encryption.h>
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 bool init_server(int aid)
 {
 	ngl::init_nactor_type(true);
 
+	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
 
 	ngl::nactortype::getInstance();

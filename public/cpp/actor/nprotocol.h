@@ -743,9 +743,14 @@ namespace ngl
 			m_logtype(ELOG_LOCAL),
 			m_level(alevel)
 		{
-
 		}
-		np_actor_logitem(ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype, const std::source_location& asource = std::source_location::current()):
+
+		np_actor_logitem(
+			ELOGLEVEL alevel
+			, ENUM_ACTOR aactortype
+			, ELOG_TYPE alogtype
+			, const std::source_location& asource = std::source_location::current()
+		):
 			m_actortype(aactortype),
 			m_logtype(alogtype),
 			m_source(asource),

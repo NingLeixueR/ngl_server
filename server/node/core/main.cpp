@@ -25,11 +25,13 @@ int main(int argc, char** argv)
 	}
 
 	nconfig::init();
+	// # 加载xml配置
 	nconfig::load("config");
+	// # 加载csv配置
 	ngl::allcsv::load();
 
-	// 用参数 不用配置中的zoneid
-	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
+	// # 用参数 不用配置中的zoneid
+	int32_t larea	= ngl::tools::lexical_cast<int32_t>(argv[2]);
 	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
@@ -40,9 +42,10 @@ int main(int argc, char** argv)
 	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
 
 #ifdef WIN32
-	// ### 设置控制台窗口名称
+	// # 设置控制台窗口名称
 	SetConsoleTitle(lname);
 #endif
+
 	Dumper::m_excname = lname;
 
 	switch (nconfig::node_type())
