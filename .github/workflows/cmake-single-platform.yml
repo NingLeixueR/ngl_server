@@ -71,7 +71,6 @@ jobs:
         ./configure
         make
         sudo make install
-        dpkg-query -L libprotobuf
         
     - name: Download and build MySQL C Connector
       run: |
