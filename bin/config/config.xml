@@ -28,13 +28,13 @@
 					kcppinginterval = "20"
 					kcpsession = "abcdefghigklmn"
 					open_servertime = "2023/10/11 10:00:00"
-					logiswrite = "true"
+					logiswrite = "false"
 					logflushtime = "10"
 					logline = "50000"
-					loglevel = "-1"
+					loglevel = "3"
 					logconsole = "true"
 					consumings = "100"
-				/>
+				></config>
 		</public>
 		<db>
 				<db_connect account="root" passworld="123456" dbname="lbtest" ip="127.0.0.1" port="3306"/>
