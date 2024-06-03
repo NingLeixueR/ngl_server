@@ -65,7 +65,7 @@ jobs:
         
     - name: Download and build curl
       run: |
-       ssudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
+       sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
         
     - name: Install Protocol Buffers
       run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
