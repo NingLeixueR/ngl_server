@@ -63,18 +63,8 @@ jobs:
       run: |
        gcc --version
 
-    - name: Download and extract MySQL Connect/C source
-      run: |
-          wget https://dev.mysql.com/get/Downloads/Connector-C/mysql-connector-c-X.Y.Z.tar.gz
-          tar -xzvf mysql-connector-c-X.Y.Z.tar.gz
-          mv mysql-connector-c-X.Y.Z mysql-connector-c
-
-    - name: Build and install MySQL Connect/C
-      run: |
-          cd mysql-connector-c
-          cmake .
-          make
-          sudo make install
+    - name: Install MySQL Connector/C
+      run: sudo apt-get update && sudo apt-get install -y libmysqlclient-dev && dpkg-query -L libmysqlclient-dev
     
     - name: Download and install Protobuf
       run: |
