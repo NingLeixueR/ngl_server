@@ -152,6 +152,7 @@ namespace ngl
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
 
+		//# gm请求
 		bool handle(message<mforward<np_gm>>& adata);
 
 		//# 是否首次充值

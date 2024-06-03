@@ -110,7 +110,6 @@ namespace ngl
 					if (ltempjson.read("roleid", lroleid) == false)
 						return;
 					
-					
 					auto pro = std::make_shared<mforward<np_gm_response>>();
 					np_gm_response* lp = pro->add_data();
 					prorechange prore;
@@ -293,53 +292,6 @@ namespace ngl
 
 					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
-		}
-
-
-		static std::map<std::string, std::function<void(int, ngl::json_read&)>> lcmd;
-		if (lcmd.empty())
-		{
-			lcmd["pay"] = [this](int id, ngl::json_read& aos)
-				{
-					struct pay
-					{
-						std::string m_orderid;
-						int32_t m_rechargeid;
-						jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid)
-					};
-					pay lpay;
-					if (aos.read("data", lpay) == false)
-						return;
-
-					// 返回 {"data":int32_t}
-					gcmd<int32_t> pro;
-					pro.id = id;
-					pro.m_operator = "pay_responce";
-					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
-				};
-			lcmd["gmrechange"] = [this](int id, ngl::json_read& aos)
-				{
-					int32_t lrechargeid;
-					if (aos.read("data", lrechargeid) == false)
-						return;
-
-					std::string lorder;
-					createorder(lorder, lrechargeid);
-					
-					// 返回 {"data":int32_t}
-					gcmd<int32_t> pro;
-					pro.id = id;
-					pro.m_operator = "rechange_responce";
-					pro.m_data = rechange(lorder, lrechargeid, true, true);
-				};
-			lcmd["rechange"] = [this](int id, ngl::json_read& aos)
-				{//actor_role::loginpay() callback
-					prorechange lrechange;
-					if (aos.read("data", lrechange) == false)
-						return;
-
-					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
-				};
 		}
 
 		if (handle_rechangecmd::function(loperator, adata.m_data->identifier(), lojson) == false)

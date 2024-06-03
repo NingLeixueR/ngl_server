@@ -20,7 +20,9 @@ namespace ngl
 	{
 	}
 
-	actor_cross::~actor_cross() {}
+	actor_cross::~actor_cross() 
+	{
+	}
 
 	void actor_cross::nregister()
 	{

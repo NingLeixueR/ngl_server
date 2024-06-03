@@ -34,7 +34,7 @@ namespace ngl
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		nguid lguid(adata.m_data->m_roleid());
-		std::cout << "actor_manage_role roleid:" << adata.m_data->m_roleid() << std::endl;
+		log_error()->print("actor_manage_role roleid:{}", adata.m_data->m_roleid());
 		np_actorswitch_process_role pro
 		{
 			.m_create = adata.m_data->m_iscreate(),
