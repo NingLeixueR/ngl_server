@@ -63,11 +63,16 @@ namespace ngl
 			if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
 			{
 				// ÐÂÔöµÄactor 
-				std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass());
-				pro->m_fun = afun;
-				pro->m_mass.m_id = nconfig::m_nodeid;
-				pro->m_mass.m_add.push_back(guid);
-				pro->m_mass.m_actorservermass = false;
+				std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass
+					{
+						.m_mass = np_actornode_update
+						{
+							.m_id = nconfig::m_nodeid,
+							.m_add = {guid},
+							.m_actorservermass = false
+						},
+						.m_fun = afun,
+					});
 
 				nguid lclientguid = actor_client::actorid();
 				handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);
