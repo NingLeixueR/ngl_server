@@ -26,6 +26,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	target_link_libraries(node uuid)
 	target_link_libraries(node mysqlclient)
 	target_link_libraries(node curl)
+	target_link_libraries(node redis)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
