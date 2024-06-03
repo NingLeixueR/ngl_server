@@ -72,7 +72,7 @@ jobs:
         
     - name: Download and build curl
       run: |
-       sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev && find / -name 'curl.h'
+       sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev && find /user/include -name 'curl.h'
         
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
