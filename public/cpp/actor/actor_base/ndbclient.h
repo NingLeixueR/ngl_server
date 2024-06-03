@@ -277,19 +277,20 @@ namespace ngl
 			}
 			else
 			{
-				for (auto& [_, data] : m_data)
+				for (std::pair<const nguid, data_modified<TDBTAB>>& lpair : m_data)
 				{
-					if (data.is_modified())
+					data_modified<TDBTAB>& ldata = lpair.second;
+					if (ldata.is_modified())
 					{
-						lclearlist.push_back(&data);
-						pro.add(data.getconst().m_id(), data.getconst());
+						lclearlist.push_back(&ldata);
+						pro.add(ldata.getconst().m_id(), ldata.getconst());
 					}
 				}
 			}
 			if (pro.empty() == false)
 			{
 				log_error()->print("actor_dbclient<{}> save {}", m_name, aid);
-				// ### 先序列化 再让actor_client确认位置
+				// # 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -297,9 +298,9 @@ namespace ngl
 					log_error()->print("actor_dbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// ### 异步发送pack
+				// # 异步发送pack
 				m_actor->send_actor_pack(lactorid, lpack);
-				// ### 执行清空[裁剪修改]标志位 
+				// # 执行清空[裁剪修改]标志位 
 				for (data_modified<TDBTAB>* dataptr : lclearlist)
 				{
 					dataptr->clear_modified();
@@ -321,7 +322,7 @@ namespace ngl
 			pro.m_data.swap(m_dellist);
 			if (pro.m_data.empty() == false)
 			{
-				// ### 先序列化 再让actor_client确认位置
+				// # 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
@@ -329,7 +330,7 @@ namespace ngl
 					log_error()->print("actor_dbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
-				// ### 异步发送pack
+				// # 异步发送pack
 				m_actor->send_actor_pack(lactorid, lpack);
 			}
 		}
@@ -354,6 +355,7 @@ namespace ngl
 			return lpdata;
 		}
 
+		// # 加载完成
 		bool loadfinish()
 		{
 			if (m_id != (int64_t)-1)
@@ -392,7 +394,11 @@ namespace ngl
 					return loadfinish();
 				}
 				using type_message = np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>;
-				log_error()->print("db load respones:[{}] recv_over[{}]", dtype_name(type_message), adata.m_data->m_over ? "true" : "false");
+				log_error()->print(
+					"db load respones:[{}] recv_over[{}]"
+					, dtype_name(type_message)
+					, adata.m_data->m_over ? "true" : "false"
+				);
 				loadfinish(adata.m_data->data(), adata.m_data->m_over);
 			}Catch;
 			return true;
@@ -400,9 +406,9 @@ namespace ngl
 
 		virtual void clear_modified()
 		{
-			for (auto& [_, data] : m_data)
+			for(std::pair<const nguid, data_modified<TDBTAB>>& lpair : m_data)
 			{
-				data.clear_modified();
+				lpair.second.clear_modified();
 			}
 		}
 	};
@@ -462,6 +468,7 @@ namespace ngl
 				m_dbclientmap.insert(std::make_pair(itor->first, itor->second));
 				itor = m_typedbclientmap.erase(itor);
 			}
+
 			if (!m_typedbclientmap.empty())
 			{
 				log_error()->print("on_load_finish !m_typedbclientmap.empty()");
@@ -469,11 +476,13 @@ namespace ngl
 			}
 				
 			m_actor->db_component_init_data();
+
 			// 1、将数据修改为[裁剪修改]
 			for (auto& [_, data] : m_dbclientmap)
 			{
 				data->clear_modified();
 			}
+
 			// 2、做一些初始化之类的工作,并且需要的话将其发送给客户端
 			m_fun(adbishave);
 			return true;
@@ -487,7 +496,10 @@ namespace ngl
 		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
-			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM);
+			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(
+				aloadfinish? m_dbclientmap : m_typedbclientmap
+				, ENUM
+			);
 			if (lp == nullptr)
 				return nullptr;
 			return (ndbclient<PROTYPE, ENUM, TDATA, TACTOR>*)(*lp);
@@ -503,7 +515,6 @@ namespace ngl
 			}
 		}
 	public:
-
 		void save()
 		{
 			foreach_function([](ndbclient_base* ap)

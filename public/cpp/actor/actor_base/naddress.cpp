@@ -20,12 +20,18 @@ namespace ngl
 			{
 				int16_t lserverid = anode.m_serverid;
 				auto itor = m_session.find(lserverid);
-				bool ret = itor == m_session.end();
-				actor_node_session& _lnode = ret ? m_session[lserverid] : itor->second;
-				_lnode.m_node = anode;
-				return ret;
+				if (itor != m_session.end())
+				{
+					itor->second.m_node = anode;
+					return false;
+				}
+				else
+				{
+					m_session.insert(std::make_pair(lserverid, anode));
+					return true;
+				}
 			}
-			Catch
+			Catch;
 			return false;
 		}
 
@@ -87,8 +93,7 @@ namespace ngl
 				auto itor = m_session.find(aserverid);
 				Assert(itor != m_session.end());
 				itor->second.m_session = asession;
-				//segpack::add_server(aserverid, asession);
-			}Catch
+			}Catch;
 		}
 
 		// ªÒ»°session

@@ -30,7 +30,7 @@ namespace ngl
 	class actor_dbtab
 	{
 		static tab_dbload*			m_tab;
-		// ## ¼ÓÔØ³öid ·ÀÖ¹ÄÚ´æ´©Í¸
+		// # ¼ÓÔØ³öid ·ÀÖ¹ÄÚ´æ´©Í¸
 		static std::set<int64_t>	m_idset;
 
 		template <typename TDB>
@@ -53,11 +53,8 @@ namespace ngl
 		{
 			Try
 			{
-				if (m_tab == nullptr)
-				{
-					m_tab = ttab_dbload::get_tabdb<TDBTAB>();
-					Assert(m_tab != nullptr)
-				}
+				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
+				Assert(m_tab != nullptr);
 
 				inst_save().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
 				inst_del().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
@@ -355,9 +352,7 @@ namespace ngl
 
 			std::string loperator;
 			if (lojson.read("operator", loperator) == false)
-			{
 				return true;
-			}
 
 			if (handle_cmd::empty())
 			{
