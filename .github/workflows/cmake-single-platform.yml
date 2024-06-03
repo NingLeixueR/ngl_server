@@ -65,12 +65,11 @@ jobs:
     
     - name: Download and install Protobuf
       run: |
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz
-        tar -xzvf protobuf-all-3.13.0.tar.gz
-        cd protobuf-3.13.0
-        ./configure
-        make
-        sudo make install
+        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip
+        unzip protoc-3.13.0-linux-x86_64.zip -d protoc3
+        sudo mv protoc3/bin/* /usr/local/bin/
+        sudo mv protoc3/include/* /usr/local/include/
+        sudo chmod +x /usr/local/bin/protoc
         
     - name: Download and build MySQL C Connector
       run: |
