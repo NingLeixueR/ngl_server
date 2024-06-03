@@ -10,7 +10,7 @@ ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 set(CMAKE_CXX_STANDARD 20)
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -std=c++20 -march=native -msse4.1 -O3 -lrt -L/usr/lib64/mysql/ -lmysqlclient -lcurl -lcryptopp -L/usr/lib64/ -L/usr/lib64/protocol -L`pwd`/../../../lib -I/usr/include/mysql -I/usr/include/curl -I/usr/include -I/usr/include/protobuf")
+set(CMAKE_CXX_FLAGS "${COLLECT_GCC} -std=c++20 -march=native -msse4.1 -O3 -lrt -L/usr/lib64/mysql/ -lmysqlclient -lcurl -lcryptopp -L/usr/lib64/ -L/usr/lib64/protocol -L`pwd`/../../../lib -I/usr/include/mysql -I/usr/include/curl -I/usr/include/x86_64-linux-gnu/curl -L/usr/lib/x86_64-linux-gnu/ -I/usr/include -I/usr/include/protobuf")
 INCLUDE_DIRECTORIES(3part/boost/libs/atomic/src)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
