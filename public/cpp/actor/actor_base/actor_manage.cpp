@@ -114,13 +114,13 @@ namespace ngl
 
 				if (lpactor->get_activity_stat() == actor_stat_list)
 				{
-					for (auto itor_actorlist = m_actorlist.begin(); itor_actorlist != m_actorlist.end(); ++itor_actorlist)
-					{
-						if (aguid == (*itor_actorlist)->id_guid())
+					auto litorfind = std::find(m_actorlist.begin(), m_actorlist.end(), [&aguid](ptractor& ap)->bool
 						{
-							m_actorlist.erase(itor_actorlist);
-							break;
-						}
+							return aguid == ap->id_guid();
+						});
+					if (litorfind != m_actorlist.end())
+					{
+						m_actorlist.erase(litorfind);
 					}
 					lpactor->set_activity_stat(actor_stat_close);
 					isrunfun = true;
