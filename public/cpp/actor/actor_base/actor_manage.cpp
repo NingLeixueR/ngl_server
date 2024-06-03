@@ -114,10 +114,14 @@ namespace ngl
 
 				if (lpactor->get_activity_stat() == actor_stat_list)
 				{
-					auto litorfind = std::find(m_actorlist.begin(), m_actorlist.end(), [&aguid](ptractor& ap)->bool
+					auto litorfind = std::find_if(
+						m_actorlist.begin(), 
+						m_actorlist.end(), 
+						[&aguid](ptractor& ap)->bool
 						{
 							return aguid == ap->id_guid();
-						});
+						}
+					);
 					if (litorfind != m_actorlist.end())
 					{
 						m_actorlist.erase(litorfind);
