@@ -23,8 +23,6 @@ ADD_EXECUTABLE(node
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	target_link_libraries(node protobuf)
 	target_link_libraries(node pthread)
-	target_link_libraries(node hiredis)
-	target_link_libraries(node cryptopp)
 	target_link_libraries(node uuid)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
