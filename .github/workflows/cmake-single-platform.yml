@@ -65,6 +65,13 @@ jobs:
 
     - name: Install MySQL Connector/C
       run: sudo apt-get update && sudo apt-get install -y libmysqlclient-dev && dpkg-query -L libmysqlclient-dev
+
+    - name: Download and build hiredis
+      run: |
+          git clone https://github.com/redis/hiredis.git
+          cd hiredis
+          make
+          sudo make install
     
     - name: Download and install Protobuf
       run: |
