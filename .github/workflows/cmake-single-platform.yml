@@ -56,9 +56,9 @@ jobs:
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 
-    - name: Remove old GCC versions
-      run: |
-       sudo apt-get remove gcc-11 g++-11 -y
+   # - name: Remove old GCC versions
+   #   run: |
+   #    sudo apt-get remove gcc-11 g++-11 -y
     - name: Verify GCC version
       run: |
        gcc --version
