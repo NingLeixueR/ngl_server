@@ -63,8 +63,15 @@ jobs:
       run: |
        gcc --version
     
-    - name: Install Protocol Buffers
-      run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
+    - name: Download and install Protobuf
+      run: |
+        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz
+        tar -xzvf protobuf-all-3.13.0.tar.gz
+        cd protobuf-3.13.0
+        ./configure
+        make
+        sudo make install
+        dpkg-query -L libprotobuf
         
     - name: Download and build MySQL C Connector
       run: |
