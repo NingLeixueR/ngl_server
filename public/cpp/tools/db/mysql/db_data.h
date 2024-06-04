@@ -15,8 +15,7 @@ namespace ngl
 	struct db_data
 	{
 	private:
-		template <typename T>
-		friend struct dbdata;
+		friend struct dbdata<T>;
 		static std::map<i64_actorid, T> m_data;
 	};
 
