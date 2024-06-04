@@ -37,19 +37,19 @@ namespace ngl
 
 		~asio_kcp();
 
-		// ## 发送原始udp包
+		// # 发送原始udp包
 		bool sendu(const asio_udp_endpoint& aendpoint, const char* buf, int len);
 
-		// ## 发送原始udp包并等待其返回
+		// # 发送原始udp包并等待其返回
 		bool sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun);
 
-		// ## 通过kcp发送pack
+		// # 通过kcp发送pack
 		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
 
-		// ## 通过kcp发送pack
+		// # 通过kcp发送pack
 		bool sendpack(const asio_udp_endpoint& aendpoint, std::shared_ptr<pack>& apack);
 
-		// ## 发起连接
+		// # 发起连接
 		void connect(int32_t aconv
 			, const std::string& akcpsess
 			, i64_actorid aactorid
@@ -58,7 +58,7 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// ## 发起连接
+		// # 发起连接
 		void connect(int32_t aconv
 			, const std::string& akcpsess
 			, i64_actorid aactorid
@@ -66,15 +66,15 @@ namespace ngl
 			, const std::function<void(i32_session)>& afun
 		);
 
-		// ## 查找连接关联的actor
+		// # 查找连接关联的actor
 		i64_actorid find_actorid(i32_session asession);
 
-		// ## 关闭连接
+		// # 关闭连接
 		void close(i32_session asession);
 
 		void close_net(i32_session asession);
 
-		// ## 重置连接
+		// # 重置连接
 		void reset_add(int32_t aconv, const std::string& aip, i16_port aport);
 
 		impl_asio_kcp* get_impl();	
