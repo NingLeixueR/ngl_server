@@ -279,10 +279,10 @@ namespace ngl
 				return;
 			}
 			// 1.先发给本机上的atype
-			for (auto& [key, value] : m_actorbytype[atype])
+			for (std::pair<const nguid, ptractor>& lpair : m_actorbytype[atype])
 			{
-				if (value->get_activity_stat() != actor_stat_close)
-					nosafe_push_task_id(value, apram);
+				if (lpair.second->get_activity_stat() != actor_stat_close)
+					nosafe_push_task_id(lpair.second, apram);
 			}
 			ngl_post;
 			// 2.然后发给actor_client，发给其他服务器
@@ -299,10 +299,10 @@ namespace ngl
 		inline void broadcast_task(handle_pram& apram)
 		{
 			ngl_lock;
-			for (auto& [key, value] : m_actorbyid)
+			for (std::pair<const nguid, ptractor>& lpair : m_actorbyid)
 			{
-				if (value->isbroadcast())
-					nosafe_push_task_id(value, apram);
+				if (lpair.second->isbroadcast())
+					nosafe_push_task_id(lpair.second, apram);
 			}
 			ngl_post;
 		}

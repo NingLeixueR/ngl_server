@@ -18,7 +18,7 @@ namespace ngl
 
 	bool consume::check(actor_role* arole, std::map<int32_t, int32_t>& amap)
 	{
-		for (auto [tid, count] : amap)
+		for (const auto& [tid, count] : amap)
 		{
 			if (arole->m_bag.checkbytid(tid, count) == false)
 				return false;
@@ -45,7 +45,7 @@ namespace ngl
 		if (check(arole, lmap) == false)
 			return false;
 
-		for (auto [tid, count] : lmap)
+		for (const auto& [tid, count] : lmap)
 		{
 			arole->m_bag.add_item(tid, count);
 		}

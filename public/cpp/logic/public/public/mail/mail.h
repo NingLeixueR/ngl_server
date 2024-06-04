@@ -102,7 +102,7 @@ namespace ngl
 			lmail.set_m_read(false);
 			lmail.set_m_prams(aparm);
 			lmail.set_m_content(acontent);
-			for (auto [itemid, count] : aitem)
+			for (const auto& [itemid, count] : aitem)
 			{
 				pbdb::mailitem* lpmailitem = lmail.add_m_items();
 				lpmailitem->set_m_itemtid(itemid);

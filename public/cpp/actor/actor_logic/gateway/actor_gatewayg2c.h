@@ -46,9 +46,9 @@ namespace ngl
 			if (lparm->m_area[0] == -1 && lparm->m_uid[0] == -1)
 			{
 				// 发给所有客户端
-				for (auto& itemfor1 : m_info.info())
+				for (const auto& itemfor1 : m_info.info())
 				{
-					for (auto& itemfor2 : itemfor1.second)
+					for (const auto& itemfor2 : itemfor1.second)
 					{
 						lmap.insert(std::make_pair(itemfor2.second.m_socket, nguid::make(ACTOR_ROBOT, itemfor2.second.m_area, itemfor2.second.m_dataid)));
 					}
@@ -60,7 +60,7 @@ namespace ngl
 				auto itemitor = m_info.info().find(lparm->m_area[0]);
 				if (itemitor != m_info.info().end())
 				{
-					for (auto& itemfor1 : itemitor->second)
+					for (const auto& itemfor1 : itemitor->second)
 					{
 						lmap.insert(std::make_pair(itemfor1.second.m_socket, nguid::make(ACTOR_ROBOT, itemfor1.second.m_area, itemfor1.second.m_dataid)));
 					}

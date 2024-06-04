@@ -279,7 +279,7 @@ namespace ngl
 
 		void foreach(const std::function<bool(_robot&)>& afun)
 		{
-			for (auto& item : m_maprobot)
+			for (std::pair<const std::string, _robot>& item : m_maprobot)
 				afun(item.second);
 		}
 

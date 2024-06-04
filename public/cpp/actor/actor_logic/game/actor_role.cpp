@@ -305,7 +305,7 @@ namespace ngl
 	{
 		const pbdb::db_role& lrole = m_info.m_role();
 		int lcount = 0;
-		for (auto& item : lrole.m_recharge())
+		for (const auto& item : lrole.m_recharge())
 		{
 			if (item.m_rechargeid() == arechargeid)
 				return false;

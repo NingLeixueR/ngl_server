@@ -369,9 +369,9 @@ namespace ngl
 
 		bool loadfinish(std::map<nguid, TDBTAB>& adata, bool aisover)
 		{
-			for (auto& item : adata)
+			for (std::pair<const nguid, TDBTAB>& lpair : adata)
 			{
-				m_data[item.first].set(item.second);
+				m_data[lpair.first].set(lpair.second);
 			}
 
 			auto itor = m_data.find(m_id);
@@ -478,9 +478,9 @@ namespace ngl
 			m_actor->db_component_init_data();
 
 			// 1、将数据修改为[裁剪修改]
-			for (auto& [_, data] : m_dbclientmap)
+			for (std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
 			{
-				data->clear_modified();
+				lpair.second->clear_modified();
 			}
 
 			// 2、做一些初始化之类的工作,并且需要的话将其发送给客户端

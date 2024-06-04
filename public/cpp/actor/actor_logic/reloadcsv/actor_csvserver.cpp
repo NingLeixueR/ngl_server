@@ -42,7 +42,7 @@ namespace ngl
 		auto lpack = adata.m_pack;
 		np_actor_reloadcsv pro;
 		std::map<std::string, csvbase*>& lversion = allcsv::all();
-		for (auto [key, value] : lversion)
+		for (const auto [key, value] : lversion)
 		{
 			auto itor = lparm->m_version.find(key);
 			if (itor != lparm->m_version.end() && itor->second >= value->version())

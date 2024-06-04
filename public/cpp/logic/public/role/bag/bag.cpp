@@ -182,7 +182,7 @@ namespace ngl
 		}
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>();
 		auto ladditems = pro->mutable_m_additems();
-		for (auto [_id, _count] : m_autoitem->m_addstackitems)
+		for (const auto& [_id, _count] : m_autoitem->m_addstackitems)
 		{
 			auto ladditem = ladditems->Add();
 			ladditem->set_m_id(_id);
@@ -194,7 +194,7 @@ namespace ngl
 			laddnostackitems->Add(itemid);
 		}
 		auto ldelitems = pro->mutable_m_delitems();
-		for (auto [_id, _count] : m_autoitem->m_delstackitems)
+		for (const auto& [_id, _count] : m_autoitem->m_delstackitems)
 		{
 			auto ldelitem = ldelitems->Add();
 			ldelitem->set_m_id(_id);

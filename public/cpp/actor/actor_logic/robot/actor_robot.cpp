@@ -62,7 +62,7 @@ namespace ngl
 		if (lrecv->m_type() == pbnet::get_chat_list)
 		{
 			char lbuff[1024] = { 0 };
-			for (auto& item : lrecv->m_chatlist())
+			for (const auto& item : lrecv->m_chatlist())
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
 				log_error()->print("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
@@ -75,7 +75,7 @@ namespace ngl
 		else if (lrecv->m_type() == pbnet::updata_speck)
 		{
 			char lbuff[1024] = { 0 };
-			for (auto& item : lrecv->m_chatlist())
+			for (const auto& item : lrecv->m_chatlist())
 			{
 				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
 				log_error()->print("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
@@ -108,7 +108,7 @@ namespace ngl
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };
-		for (auto& item : adata.m_data->m_notices())
+		for (const auto& item : adata.m_data->m_notices())
 		{
 			ngl::localtime::time2str(lbuffstart, 1024, item.m_starttime(), "%Y/%m/%d %H:%M:%S");
 			ngl::localtime::time2str(lbufffinish, 1024, item.m_finishtime(), "%Y/%m/%d %H:%M:%S");

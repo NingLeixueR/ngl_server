@@ -196,7 +196,7 @@ namespace ngl
 
 		void db_component_init_data()
 		{
-			for (auto& item : m_dbcomponent)
+			for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 			{
 				item.second->init_data();
 			}
@@ -206,14 +206,14 @@ namespace ngl
 		{
 			if (acreate)
 			{
-				for (auto& item : m_dbcomponent)
+				for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 				{
 					item.second->create();
 				}
 			}
 			else
 			{
-				for (auto& item : m_dbcomponent)
+				for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 				{
 					item.second->init();
 				}

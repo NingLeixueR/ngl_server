@@ -70,7 +70,7 @@ namespace ngl
 			int lindex = 0;
 			for (obstacles_data& item : aobstacles)
 			{
-				for (eobstacles eitem : item.m_data)
+				for (eobstacles& eitem : item.m_data)
 				{
 					obstacle& lobstacle = m_grid[lindex];
 					lobstacle.m_id = lindex;

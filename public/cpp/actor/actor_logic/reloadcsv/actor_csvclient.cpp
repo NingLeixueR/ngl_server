@@ -44,12 +44,12 @@ namespace ngl
 
 	bool actor_csvclient::handle(message<np_actor_reloadcsv>& adata)
 	{
-		for (auto& [key, value] : adata.m_data->m_csvcontent)
+		for (const auto& [key, value] : adata.m_data->m_csvcontent)
 		{
 			reload_csv::save(key, value);
 		}
 		actor_suspendthread ltemp;
-		for (auto& [key, value] : adata.m_data->m_csvcontent)
+		for (const auto& [key, value] : adata.m_data->m_csvcontent)
 		{
 			reload_csv::reload(key);
 		}

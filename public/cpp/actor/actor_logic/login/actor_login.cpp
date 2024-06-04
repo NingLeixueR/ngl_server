@@ -53,7 +53,7 @@ namespace ngl
 	{
 		auto lstream = log_error();
 		(*lstream) << "actor_login::loaddb_finish" << std::endl;
-		for (auto& item : m_account.data())
+		for (const auto& item : m_account.data())
 		{
 			const pbdb::db_account& laccount = item.second.getconst();
 			(*lstream)
