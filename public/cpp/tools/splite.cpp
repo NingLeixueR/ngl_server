@@ -4,7 +4,7 @@ namespace ngl
 {
 	bool splite::func(const char* abuff, const char* afg, std::vector<std::string>& avec)
 	{
-        if (!abuff || !afg)
+        if (abuff == nullptr || afg == nullptr)
             return false;
         std::string ltemp;
         for (const char* lp1 = abuff; *lp1 != '\0';)

@@ -16,7 +16,8 @@ namespace ngl
 		static bool func(const char* abuff, const char* afg, std::vector<T>& avec)
 		{
 			std::vector<std::string> lvec;
-			func(abuff, afg, lvec);
+			if (func(abuff, afg, lvec) == false)
+				return false;
 			for (std::string& item : lvec)
 			{
 				avec.push_back(tools::lexical_cast<T>(item.c_str()));

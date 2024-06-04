@@ -124,8 +124,10 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				for (const auto& [_, data] : db_data<T>::m_data)
-					fun(adb, data);
+				dbdata<T>::foreach([this, adb](T& adata)
+					{
+						fun(adb, adata);
+					});
 			}
 		};
 
@@ -177,8 +179,10 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				for (const auto& [_, data] : db_data<T>::m_data)
-					save(adb, data);
+				dbdata<T>::foreach([this, adb](T& adata)
+					{
+						fun(adb, adata);
+					});
 			}
 		};
 

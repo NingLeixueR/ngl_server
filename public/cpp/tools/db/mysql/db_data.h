@@ -9,8 +9,14 @@
 namespace ngl
 {
 	template <typename T>
+	struct dbdata;
+	// ### 除了[dbdata<T>]可以直接使用 其他对象均不允许直接操纵
+	template <typename T>
 	struct db_data
 	{
+	private:
+		template <typename T>
+		friend struct dbdata;
 		static std::map<i64_actorid, T> m_data;
 	};
 
