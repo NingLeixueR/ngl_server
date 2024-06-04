@@ -160,7 +160,6 @@ namespace ngl
 		*pro->mutable_m_bag() = m_bag.get()->getconst();
 		*pro->mutable_m_task() = m_task.get()->getconst();
 		send2client(pro);
-		log_error()->print("[sync]###[{}]", m_info.get()->getconst().m_base().m_name());
 	}
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)

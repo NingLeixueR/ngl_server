@@ -98,7 +98,7 @@ namespace ngl
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(message<T>& adata)
 		{
-			std::shared_ptr<mforward<T>> pro(new mforward<T>(id_guid(), *adata.m_data));
+			std::shared_ptr<mforward<T>> pro = std::make_shared<mforward<T>>(id_guid(), *adata.m_data);
 			i64_actorid lguid;
 			switch (forward_way(*adata.m_data))
 			{

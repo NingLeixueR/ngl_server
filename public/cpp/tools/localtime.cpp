@@ -8,7 +8,6 @@ namespace ngl
 {
 	time_t localtime::m_offset = 0;
 
-	/** 设置时间 */
 	bool localtime::settime(time_t sti)
 	{
 		time_t lnow = gettime();
@@ -20,7 +19,6 @@ namespace ngl
 		return true;
 	}
 
-	/** 获取时间*/
 	time_t localtime::gettime()
 	{
 		time_t lnow = time(nullptr);
@@ -78,7 +76,6 @@ namespace ngl
 		return std::mktime(&tm_struct);
 	}
 
-	//获取utc时刻那天的 小时分钟的utc
 	time_t localtime::getsecond2time(time_t utc, int hour, int minute, int sec/*0-59*/)
 	{
 		std::tm tmTime = *std::localtime(&utc);
@@ -219,7 +216,6 @@ namespace ngl
 		return getmothday(lnow, amday, hour, minute, sec);
 	}
 
-	//获取两个时间之间相差的天数
 	time_t localtime::getspandays(time_t curr, time_t last)
 	{
 		std::tm ltime = *std::localtime(&curr);
@@ -287,14 +283,11 @@ namespace ngl
 		return last >= getnextweekdaytime(curr, weekday, hour, minute);
 	}
 
-	//获得两个时间之间相差多少周
 	time_t localtime::getspanweeks(time_t curr, time_t last, int weekday)
 	{
 		return (getnextweekdaytime(curr, weekday) - getnextweekdaytime(last, weekday)) / (24 * 60 * 60 * 7);
 	}
 
-	/**
-	获取指定小时，分钟时间和目前时间的差值，返回负数则表示指定时间已过 */
 	time_t localtime::getdesttimevalue(int hour, int minute, int sec)
 	{
 		time_t curr = gettime();  // 使用服务器的当前时间
@@ -308,9 +301,6 @@ namespace ngl
 		return dest - curr;
 	}
 
-	/*
-	获取utc那天的第x天的0点的utc时间，utc当天算第0天，utc明天算第1天
-	*/
 	time_t localtime::getutcbyday(time_t utc, int dayNum)
 	{
 		time_t utcDayUTC = getsecond2time(utc, 0, 0);
@@ -318,8 +308,6 @@ namespace ngl
 
 	}
 
-	/**
-	获取指定年，月，日，小时，分钟时间和目前时间的差值，返回负数则表示指定时间已过 */
 	time_t localtime::getdestdayvalue(time_t curr, int year, int month, int day, int hour, int minute)
 	{
 		time_t dest = curr;

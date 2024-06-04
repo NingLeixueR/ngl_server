@@ -1,11 +1,11 @@
 #pragma once
 
-#include <asio.hpp>
 #include <strstream>
 #include <iostream>
 #include <string>
 #include <ctime>
 
+#include <asio.hpp>
 #include <mysql.h>
 
 #ifdef WIN32

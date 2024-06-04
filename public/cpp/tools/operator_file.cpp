@@ -2,6 +2,7 @@
 #include <string>
 
 #include "operator_file.h"
+#include "nprotocol.h"
 #include "nlog.h"
 
 namespace ngl

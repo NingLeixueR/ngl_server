@@ -6,6 +6,7 @@
 
 namespace ngl
 {
+	///////////////////////////////////////////////////////////
 	// 用于提供key/std::function<void(ARG...)>结构
 	// 通过成员函数push提供key与std::function<void(ARG...)>
 	// 通过成员函数function执行对应的方法

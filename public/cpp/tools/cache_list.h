@@ -12,7 +12,11 @@ namespace ngl
 	template <typename T, int NUM>
 	class cache_list
 	{
+		cache_list(const cache_list&) = delete;
+		cache_list& operator=(const cache_list&) = delete;
+
 		cache_list() {}
+
 		std::set<i64_actorid>						m_ls;
 		std::function<void(std::set<i64_actorid>&)> m_fun;
 		std::shared_mutex							m_mutex;
@@ -26,7 +30,6 @@ namespace ngl
 		void set_cachefun(const std::function<void(std::set<i64_actorid>&)>& afun)
 		{
 			m_fun = afun;
-
 			twheel::wheel().addtimer(wheel_parm
 				{
 					.m_ms = 1 * 1000,

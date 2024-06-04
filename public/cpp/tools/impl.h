@@ -9,7 +9,7 @@ namespace ngl
 		std::unique_ptr<T> m_impl;
 	public:
 		template <typename ...ARG>
-		void make_unique(const ARG&... args)
+		inline void make_unique(const ARG&... args)
 		{
 			m_impl = std::make_unique<T>(args...);
 		}

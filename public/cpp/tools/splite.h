@@ -1,11 +1,11 @@
 #pragma once
 
-#include "tools.h"
-
 #include <iostream>
 #include <string>
 #include <vector>
 #include <ranges>
+
+#include "tools.h"
 
 namespace ngl
 {
@@ -24,11 +24,6 @@ namespace ngl
 			return true;
 		}
 
-		/*static bool func(const char* abuff, const char* afg, std::vector<std::string>& avec)
-		{
-			boost::split(avec, abuff, boost::is_any_of(afg));
-			return true;
-		}*/
 		static bool func(const char* abuff, const char* afg, std::vector<std::string>& avec);
 
 		template <typename ...ARGS>

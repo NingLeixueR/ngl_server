@@ -243,7 +243,8 @@ namespace ngl
 		np_actormodule_forward(int64_t aidentifier, std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
 			m_data(adata)
-		{}
+		{
+		}
 
 		np_actormodule_forward(int64_t aidentifier, T& adata) :
 			m_identifier(aidentifier),
@@ -254,12 +255,18 @@ namespace ngl
 		np_actormodule_forward(int64_t aidentifier) :
 			m_identifier(aidentifier),
 			m_data(nullptr)
-		{}
+		{
+		}
 
 		np_actormodule_forward() :
 			m_identifier(0),
 			m_data(nullptr)
-		{}
+		{
+		}
+
+		~np_actormodule_forward()
+		{
+		}
 
 		T* add_data()
 		{
