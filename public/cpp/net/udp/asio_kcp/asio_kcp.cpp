@@ -1,6 +1,7 @@
 #include "sysconfig.h"
 #include "asio_kcp.h"
 #include "protocol.h"
+#include "cmd.h"
 
 namespace ngl
 {
@@ -288,7 +289,8 @@ namespace ngl
 			ecmd_minlen = sizeof("ecmd*") - 1,
 		};
 		using ecmd_callback = std::function<void(asio_kcp::impl_asio_kcp*,ptr_se&, const std::string&)>;
-		static std::map<ecmd, ecmd_callback> m_cmdfun;
+
+		using handle_cmd = cmd<udp_cmd, ecmd, asio_kcp::impl_asio_kcp*, ptr_se&, const std::string&>;
 
 		static bool cmd(asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const char* abuf, int32_t alen)
 		{
@@ -303,10 +305,7 @@ namespace ngl
 				std::string ljson;
 				if (ngl::splite::func(abuf, "*", lecmd, lnum, ljson) == false)
 					return false;
-				//ecmd lnum = (ecmd)tools::lexical_cast<int32_t>(&abuf[ecmd_minlen]);
-				auto itor = m_cmdfun.find((ecmd)lnum);
-				if (itor != m_cmdfun.end())
-					itor->second(ap, apstruct, ljson);
+				handle_cmd::function((ecmd)lnum, ap, apstruct, ljson);
 				return true;
 			}
 			catch (...)
@@ -317,13 +316,12 @@ namespace ngl
 
 		static void register_fun(ecmd anum, const ecmd_callback& afun)
 		{
-			m_cmdfun[anum] = afun;
+			handle_cmd::push(anum, afun);
 		}
 
 		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
 	};
 
-	std::map<udp_cmd::ecmd, udp_cmd::ecmd_callback> udp_cmd::m_cmdfun;
 
 	struct asio_kcp::impl_asio_kcp
 	{
@@ -352,6 +350,7 @@ namespace ngl
 			if (aconnect)
 			{
 				apstruct->m_actorid = aactorid;
+#ifdef USE_WHEEL_TIMER 
 				wheel_parm lparm
 				{
 					.m_ms = sysconfig::kcpping() * 1000,
@@ -374,9 +373,11 @@ namespace ngl
 					}
 				};
 				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+#endif//USE_WHEEL_TIMER
 			}
 			else
 			{
+#ifdef USE_WHEEL_TIMER 
 				wheel_parm lparm
 				{
 					.m_ms = sysconfig::kcpping() * 1000,
@@ -394,6 +395,7 @@ namespace ngl
 					}
 				};
 				apstruct->m_pingtimerid = m_kcptimer.addtimer(lparm);
+#endif//USE_WHEEL_TIMER
 			}
 			return true;
 		}
@@ -763,14 +765,13 @@ namespace ngl
 
 	bool udp_cmd::sendcmd(asio_kcp* akcp, i32_sessionid asession, udp_cmd::ecmd acmd, const std::string& ajson)
 	{
-		char lbuff[1024] = { 0 };
-		int lsize = snprintf(lbuff, 1024, "ecmd*%d*%s", (int)acmd, ajson.c_str());
-		if (lsize <= 0)
+		std::string lbuff = std::format("ecmd*{}*{}", (int)acmd, ajson.c_str());
+		if (lbuff.empty())
 		{
 			log_error()->print("udp_cmd::sendcmd fail [{}][{}]", (int)acmd, ajson);
 			return false;
 		}
-		akcp->get_impl()->send(asession, lbuff, lsize);
+		akcp->get_impl()->send(asession, lbuff.c_str(), lbuff.size());
 		return true;
 	}
 
