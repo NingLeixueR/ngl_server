@@ -179,7 +179,7 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				dbdata<T>::foreach([this, adb](T& adata)
+				dbdata<T>::foreach([adb](T& adata)
 					{
 						save<EPROTOCOL_TYPE_PROTOCOLBUFF, T>::fun(adb, adata);
 					});
