@@ -114,7 +114,7 @@ namespace ngl
 			static void fun(db* adb, i64_actorid aid)
 			{
 				T ldata;
-				if (dbdata<T>::get(aid, ldata) == false)
+				if (db_data<T>::get(aid, ldata) == false)
 				{
 					log_error()->print("save by id[{}] !!![{}]", aid, T::name());
 					return;
@@ -124,7 +124,7 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				dbdata<T>::foreach([adb](T& adata)
+				db_data<T>::foreach([adb](T& adata)
 					{
 						save<EPROTOCOL_TYPE_CUSTOM, T>::fun(adb, adata);
 					});
@@ -169,7 +169,7 @@ namespace ngl
 			static void fun(db* adb, i64_actorid aid)
 			{
 				T ldata;
-				if (dbdata<T>::get(aid, ldata) == false)
+				if (db_data<T>::get(aid, ldata) == false)
 				{
 					log_error()->print("save by id[{}] !!![{}]", aid, protobuf_tabname<T>::tabname());
 					return;
@@ -179,7 +179,7 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				dbdata<T>::foreach([adb](T& adata)
+				db_data<T>::foreach([adb](T& adata)
 					{
 						save<EPROTOCOL_TYPE_PROTOCOLBUFF, T>::fun(adb, adata);
 					});
@@ -280,7 +280,7 @@ namespace ngl
 						T ldata;
 						if (T::copy2struct(adb, amysqlrow, alens, arol, acol, ldata) == false)
 							return false;
-						ngl::dbdata<T>::set(ldata.const_mm_id(), ldata);
+						ngl::db_data<T>::set(ldata.const_mm_id(), ldata);
 						return true;
 					});
 			}
@@ -301,7 +301,7 @@ namespace ngl
 						T ldata;
 				if (T::copy2struct(adb, amysqlrow, alens, arol, acol, ldata) == false)
 					return false;
-				ngl::dbdata<T>::set(ldata.const_mm_id(), ldata);
+				ngl::db_data<T>::set(ldata.const_mm_id(), ldata);
 				return true;
 					});
 			}
@@ -347,7 +347,7 @@ namespace ngl
 						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
 						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false) == false)
 							return false;
-						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
+						ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
 					});
 			}
@@ -369,7 +369,7 @@ namespace ngl
 						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
 						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false) == false)
 							return false;
-						ngl::dbdata<T>::set(ldata.m_data->m_id(), *ldata.m_data);
+						ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
 					});
 			}

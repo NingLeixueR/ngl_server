@@ -56,13 +56,15 @@ namespace ngl
 				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
 				Assert(m_tab != nullptr);
 
+				db_data<TDBTAB>::init();
+
 				inst_save().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1));
 				inst_del().set_cachefun(std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1));
 
 				if (m_tab->m_isloadall == true)
 				{
 					db_manage::select<PROTYPE,TDBTAB>::fun(actor_dbpool::get(0));
-					ngl::dbdata<TDBTAB>::foreach([](TDBTAB& adata)
+					ngl::db_data<TDBTAB>::foreach([](TDBTAB& adata)
 						{
 							if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 							{
@@ -96,7 +98,7 @@ namespace ngl
 			pro.m_stat = true;
 			pro.m_over = false;
 			pro.m_data.make();
-			ngl::dbdata<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
+			ngl::db_data<TDBTAB>::foreach_index([lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
 					if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 					{
@@ -134,7 +136,7 @@ namespace ngl
 		{
 			if (aid == -1)
 				return;
-			if (ngl::dbdata<TDBTAB>::isload(aid) == false)
+			if (ngl::db_data<TDBTAB>::isload(aid) == false)
 				db_manage::select<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athreadid), aid);
 		}
 
@@ -168,11 +170,11 @@ namespace ngl
 				pro.m_over = true;
 				if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
-					pro.m_stat = ngl::dbdata<TDBTAB>::get(lid, pro.m_data[adata.m_id]);
+					pro.m_stat = ngl::db_data<TDBTAB>::get(lid, pro.m_data[adata.m_id]);
 				}
 				if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 				{
-					pro.m_stat = ngl::dbdata<TDBTAB>::get(lid, (*pro.m_data.m_data)[adata.m_id]);
+					pro.m_stat = ngl::db_data<TDBTAB>::get(lid, (*pro.m_data.m_data)[adata.m_id]);
 				}
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
@@ -188,13 +190,13 @@ namespace ngl
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
 				m_idset.insert(adata.const_mm_id());
-				ngl::dbdata<TDBTAB>::set(adata.const_mm_id(), adata);
+				ngl::db_data<TDBTAB>::set(adata.const_mm_id(), adata);
 				inst_save().push(adata.const_mm_id());
 			}
 			if constexpr (PROTYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
 				m_idset.insert(adata.m_id());
-				ngl::dbdata<TDBTAB>::set(adata.m_id(), adata);
+				ngl::db_data<TDBTAB>::set(adata.m_id(), adata);
 				inst_save().push(adata.m_id());
 			}
 		}
@@ -203,7 +205,7 @@ namespace ngl
 		static void del(i32_threadid athreadid, i64_actorid aid)
 		{
 			m_idset.erase(aid);
-			ngl::dbdata<TDBTAB>::remove(aid);
+			ngl::db_data<TDBTAB>::remove(aid);
 			inst_del().push(aid);
 		}
 
@@ -213,7 +215,7 @@ namespace ngl
 			{
 				m_idset.erase(id);
 			}
-			ngl::dbdata<TDBTAB>::remove(aid);
+			ngl::db_data<TDBTAB>::remove(aid);
 			inst_del().push(aid);
 		}
 
@@ -328,14 +330,14 @@ namespace ngl
 				{
 				case enum_clist_save:
 				{
-					if (ngl::dbdata<TDBTAB>::find(id) == nullptr)
+					if (ngl::db_data<TDBTAB>::find(id) == nullptr)
 						continue;
 					db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(adata.m_thread), id);
 				}
 				break;
 				case enum_clist_del:
 				{
-					ngl::dbdata<TDBTAB>::remove(id);
+					ngl::db_data<TDBTAB>::remove(id);
 					db_manage::del<PROTYPE, TDBTAB>::fun(actor_dbpool::get(adata.m_thread), id);
 				}
 				break;
@@ -365,12 +367,12 @@ namespace ngl
 						int64_t lid = 0;
 						if (aos.read("data", lid) == false)
 							return;
-						if (ngl::dbdata<TDBTAB>::find(lid) == nullptr)
+						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
 							db_manage::select<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), lid);
 						protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
 						m_savetemp.m_data = std::make_shared<TDBTAB>();
-						if (ngl::dbdata<TDBTAB>::get(lid, *m_savetemp.m_data.get()))
+						if (ngl::db_data<TDBTAB>::get(lid, *m_savetemp.m_data.get()))
 						{
 							char lbuff[10240] = { 0 };
 							ngl::serialize lserialize(lbuff, 10240);
@@ -395,7 +397,7 @@ namespace ngl
 						ngl::unserialize lunser(ljson.c_str(), ljson.size() + 1);
 						if (!lunser.pop(ldata))
 							return;
-						ngl::dbdata<TDBTAB>::set(ldata.m_data->m_id(), *ldata.m_data);
+						ngl::db_data<TDBTAB>::set(ldata.m_data->m_id(), *ldata.m_data);
 						db_manage::save<PROTYPE, TDBTAB>::fun(actor_dbpool::get(athread), ldata.m_data->m_id());
 						pro.m_data = true;
 					});
