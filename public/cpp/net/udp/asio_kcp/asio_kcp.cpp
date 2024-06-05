@@ -292,7 +292,7 @@ namespace ngl
 
 		using handle_cmd = cmd<udp_cmd, ecmd, asio_kcp::impl_asio_kcp*, ptr_se&, const std::string&>;
 
-		static bool cmd(asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const char* abuf, int32_t alen)
+		static bool run_cmd(asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const char* abuf, int32_t alen)
 		{
 			if (alen < ecmd_minlen)
 				return false;
@@ -560,7 +560,7 @@ namespace ngl
 										}
 
 										// 首先判断下是否kcp_cmd
-										if (udp_cmd::cmd(this, lpstruct, m_buffrecv, lrecv))
+										if (udp_cmd::run_cmd(this, lpstruct, m_buffrecv, lrecv))
 										{
 											log_error()->print("kcp cmd [{}]", std::string(m_buffrecv, lrecv));
 											break;
