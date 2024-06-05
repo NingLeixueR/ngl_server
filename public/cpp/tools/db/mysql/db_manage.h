@@ -124,9 +124,9 @@ namespace ngl
 
 			static void fun(db* adb)
 			{
-				dbdata<T>::foreach([this, adb](T& adata)
+				dbdata<T>::foreach([adb](T& adata)
 					{
-						fun(adb, adata);
+						save<EPROTOCOL_TYPE_CUSTOM, T>::fun(adb, adata);
 					});
 			}
 		};
@@ -181,7 +181,7 @@ namespace ngl
 			{
 				dbdata<T>::foreach([this, adb](T& adata)
 					{
-						fun(adb, adata);
+						save<EPROTOCOL_TYPE_PROTOCOLBUFF, T>::fun(adb, adata);
 					});
 			}
 		};
