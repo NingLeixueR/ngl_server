@@ -1,6 +1,6 @@
-#include "actor_manage.h"
 #include "actor_client.h"
 #include "actor_server.h"
+#include "actor_manage.h"
 #include "actor_db.h"
 #include "tools.h"
 
@@ -138,10 +138,8 @@ namespace ngl
 					if (afun != nullptr)
 						m_delactorfun.insert(std::make_pair(lpactor->id_guid(), afun));
 				}
-
 				lpactor->set_activity_stat(actor_stat_close);
 			}
-
 			if (isrunfun)
 			{
 				lpactor->release();
@@ -176,7 +174,6 @@ namespace ngl
 			while (true)
 			{
 				ngl_lock;
-
 				if (atorthread != nullptr)
 				{
 					if (m_suspend)
@@ -184,7 +181,6 @@ namespace ngl
 					else
 						m_workthread.push_back(atorthread);
 				}
-
 				auto itor = m_actorbyid.find(apactor->id_guid());
 				if (itor == m_actorbyid.end())
 				{//erase_actor_byid
@@ -200,7 +196,6 @@ namespace ngl
 						break;
 					}
 				}
-
 				if (apactor->list_empty() == false)
 				{
 					m_actorlist.push_back(apactor);
@@ -210,11 +205,9 @@ namespace ngl
 				{
 					apactor->set_activity_stat(actor_stat_free);
 				}
-
 				ngl_post;
 				break;
 			}
-
 			if (lfun != nullptr)
 			{
 				apactor->release();
@@ -230,7 +223,6 @@ namespace ngl
 				std::cout << "activity_stat =  " << (int)lpactor->get_activity_stat() <<" !!!" << std::endl;
 				return;
 			}
-				
 			lpactor->push(apram);
 			if (lpactor->get_activity_stat() == actor_stat_free)
 			{

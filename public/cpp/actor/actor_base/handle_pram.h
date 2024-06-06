@@ -97,7 +97,12 @@ namespace ngl
 			, handle_pram& apram
 		)
 		{
-			apram.m_forwardfun = [aactorid, arequestactorid](std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, handle_pram& adata)
+			apram.m_forwardfun = 
+				[aactorid, arequestactorid](
+					std::map<i32_serverid, actor_node_session> asession,
+					std::map<nguid, i32_serverid>& amap,
+					handle_pram& adata
+				)
 			{
 				handle_pram_send<T, IS_SEND>::send(aactorid, arequestactorid, adata);
 			};
@@ -111,7 +116,7 @@ namespace ngl
 					std::map<i32_serverid, actor_node_session> asession
 					, std::map<nguid, i32_serverid>& amap
 					, handle_pram& adata
-					)
+				)
 				{
 					handle_pram_send<T, IS_SEND>::sendclient(aactorid, arequestactorid, adata);
 				};
@@ -155,7 +160,7 @@ namespace ngl
 			lpram.m_forwardfun		= nullptr;
 			make_client<T, IS_SEND>(aid, arid, lpram);
 			lpram.m_failfun			= afailfun;
-			return lpram;
+			return std::move(lpram);
 		}
 
 		static handle_pram create_pack(
@@ -169,7 +174,7 @@ namespace ngl
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
 			make_forwardfun<pack, true>(aid, arid, lpram);
-			return lpram;
+			return std::move(lpram);
 		}
 	};
 
