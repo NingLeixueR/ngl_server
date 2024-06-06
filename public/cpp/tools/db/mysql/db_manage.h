@@ -133,7 +133,7 @@ namespace ngl
 			{
 				db_data<T>::foreach([adb](T& adata)
 					{
-						save<EPROTOCOL_TYPE_PROTOCOLBUFF, T>::fun(adb, adata);
+						save<T>::fun(adb, adata);
 					});
 			}
 		};
