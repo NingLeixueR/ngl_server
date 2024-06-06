@@ -29,11 +29,11 @@ namespace ngl
 		virtual void		init_data();
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
+	template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 	class ndb_modular : public ndb_component
 	{
 	protected:
-		ndbclient<PROTYPE, ENUM, TDATA, TACTOR> m_data;
+		ndbclient<ENUM, TDATA, TACTOR> m_data;
 
 		ndb_modular():
 			ndb_component(ENUM)
@@ -46,7 +46,7 @@ namespace ngl
 		}
 
 	public:
-		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* dbclient()
+		ndbclient<ENUM, TDATA, TACTOR>* dbclient()
 		{ 
 			return &m_data;
 		}
@@ -184,9 +184,9 @@ namespace ngl
 
 		virtual void initdata() = 0;
 
-		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* get_actor_dbclient()
+		ndbclient<ENUM, TDATA, TACTOR>* get_actor_dbclient()
 		{
-			return (ndbclient<PROTYPE, ENUM, TDATA, TACTOR>*)m_dbclient;
+			return (ndbclient<ENUM, TDATA, TACTOR>*)m_dbclient;
 		}
 
 		data_modified<TDATA>* add(i64_actorid aid, const TDATA& adbtab)

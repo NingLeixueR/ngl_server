@@ -15,7 +15,8 @@ namespace ngl
 	//# actor_client相当于actor框架的路由器，为actor提供路由功能
 	//# 而actor_server负责分发各个actor_client中本地的nguid对应关系
 	//###################################################################
-	class actor_client : public actor
+	class actor_client : 
+		public actor
 	{
 		struct impl_actor_client;
 		ngl::impl<impl_actor_client> m_impl_actor_client;
@@ -47,6 +48,7 @@ namespace ngl
 
 		//# 主动连接
 		void activ_connect(i32_serverid aserverid);
+
 	public:
 		//# 向actor_server注册结点
 		void actor_server_register();

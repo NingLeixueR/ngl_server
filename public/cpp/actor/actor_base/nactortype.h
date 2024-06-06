@@ -102,7 +102,7 @@ namespace ngl
 	ENUM_ACTOR nactor_type<TACTOR>::m_type = ACTOR_NONE;
 
 	// 根据pbdb::ENUM_DB获取ENUM_ACTOR
-	ENUM_ACTOR db_enum(EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE);
+	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);
 
 	// [aregister == true] 主要是注册协议,宏与类型的绑定
 	// [aregister == false] 实例化db_actor,db server需要

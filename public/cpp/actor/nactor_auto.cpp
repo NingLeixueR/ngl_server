@@ -43,30 +43,30 @@ namespace ngl
 		em<ENUM_ACTOR>::set(akey, aval);
 	}
 
-	ENUM_ACTOR db_enum(EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE)
+	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
 	{
-		return (ENUM_ACTOR)(PROTYPE * 1000 + ACTOR_DB + TDBTAB_TYPE);
+		return (ENUM_ACTOR)(EPROTOCOL_TYPE_PROTOCOLBUFF * 1000 + ACTOR_DB + TDBTAB_TYPE);
 	}
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
 		tprotocol::type_customs::template func<
-			np_actordb_load<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
-			, np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
-			, np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
-			, np_actordb_delete<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, TDB>
-			, np_actortime_db_cache<EPROTOCOL_TYPE_PROTOCOLBUFF, TDB>
+			np_actordb_load<DBTYPE, TDB>
+			, np_actordb_load_response<DBTYPE, TDB>
+			, np_actordb_save<DBTYPE, TDB>
+			, np_actordb_delete<DBTYPE, TDB>
+			, np_actortime_db_cache<TDB>
 		>(EPROTOCOL_TYPE_PROTOCOLBUFF);
 	}
 
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
-	void typedb<PROTYPE, TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
+	void typedb<TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
 	{
 		if (ainit == true)
 		{
-			using type_actor_db = ngl::actor_db<PROTYPE, TDBTAB_TYPE, TDBTAB>;
-			ENUM_ACTOR lenum = db_enum(PROTYPE, TDBTAB_TYPE);
+			using type_actor_db = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
+			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
 			nactor_type<type_actor_db>::inits(lenum);
 			std::string ldbname("actor_");
 			std::string ltemp = dtype_name(TDBTAB);
@@ -175,19 +175,19 @@ namespace ngl
 		}
 		
 		// 新增数据存储需要补全
-		tdb_account::init(aregister);
-		tdb_brief::init(aregister);
-		tdb_role::init(aregister);
-		tdb_bag::init(aregister);
-		tdb_task::init(aregister);
-		tdb_rolekv::init(aregister);
-		tdb_mail::init(aregister);
-		tdb_guild::init(aregister);
-		tdb_notice::init(aregister);
-		tdb_activity::init(aregister);
-		tdb_brief::init(aregister);
 		tdb_ranklist::init(aregister);
 		tdb_calendar::init(aregister);
+		tdb_activity::init(aregister);
+		tdb_account::init(aregister);
+		tdb_notice::init(aregister);
+		tdb_rolekv::init(aregister);
+		tdb_brief::init(aregister);
+		tdb_guild::init(aregister);
+		tdb_brief::init(aregister);
+		tdb_mail::init(aregister);
+		tdb_task::init(aregister);
+		tdb_role::init(aregister);
+		tdb_bag::init(aregister);
 	}
 }
 

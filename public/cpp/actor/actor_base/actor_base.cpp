@@ -1,7 +1,7 @@
 #include "actor_manage.h"
+#include "ndb_modular.h"
 #include "actor_base.h"
 #include "actor_log.h"
-#include "ndb_modular.h"
 #include "ndbclient.h"
 #include "xml.h"
 #include "net.h"
@@ -45,6 +45,7 @@ namespace ngl
 			return m_nonelog;
 		}
 	}
+
 	std::shared_ptr<np_actor_logitem> actor_base::log_info_net(const std::source_location& asource)
 	{
 		if (ELOG_INFO >= ngl::sysconfig::loglevel())
@@ -68,6 +69,7 @@ namespace ngl
 			return m_nonelog;
 		}
 	}
+
 	std::shared_ptr<np_actor_logitem> actor_base::log_warn_net(const std::source_location& asource)
 	{
 		if (ELOG_WARN >= ngl::sysconfig::loglevel())
@@ -91,6 +93,7 @@ namespace ngl
 			return m_nonelog;
 		}
 	}
+
 	std::shared_ptr<np_actor_logitem> actor_base::log_error_net(const std::source_location& asource)
 	{
 		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
@@ -335,10 +338,10 @@ namespace ngl
 	{
 		wheel_parm lparm
 		{
-			.m_ms = m_broadcast,
-			.m_intervalms = [](int64_t) {return actor_base::m_broadcast; } ,
-			.m_count = 0x7fffffff,
-			.m_fun = [](wheel_node* anode)
+			.m_ms			= m_broadcast,
+			.m_intervalms	= [](int64_t) {return actor_base::m_broadcast; } ,
+			.m_count		= 0x7fffffff,
+			.m_fun			= [](wheel_node* anode)
 			{
 				nguid lguid;
 				lguid.none();

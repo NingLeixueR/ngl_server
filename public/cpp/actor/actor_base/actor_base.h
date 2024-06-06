@@ -81,12 +81,11 @@ namespace ngl
 
 		//# 向actor_db发送数据请求后的返回
 		template <
-			EPROTOCOL_TYPE	PROTYPE		// 协议类型
-			, pbdb::ENUM_DB DBTYPE		// 数据类型
+			pbdb::ENUM_DB DBTYPE		// 数据类型
 			, typename		TDBTAB		// 数据表
 			, typename		TACTOR		// 持有该数据表的actor
 		>
-		bool handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata);
+		bool handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
 
 #pragma region virtual_function
@@ -219,9 +218,10 @@ namespace ngl
 		virtual const char* kcpsessionmd5();
 
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
-#pragma endregion //network_kcpclient
+#pragma endregion
 
-#pragma endregion //network_kcp
+#pragma endregion
+
 public:
 		template <typename T>
 		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
@@ -292,6 +292,7 @@ private:
 			actor_forward_setdata(*pro, adata);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
+
 	private:
 		template <typename T, typename ITOR>
 		static void client_pro(ITOR abeg, ITOR aend, std::shared_ptr<T>& adata)
@@ -307,6 +308,7 @@ private:
 			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
+
 	public:
 		//# 根据actor_role.guidid确定客户端，
 		//# 给一组客户端发送数据
@@ -414,7 +416,7 @@ private:
 			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
-#pragma region network_strat_group
+#pragma region
 	private:
 		struct group_info
 		{
@@ -493,6 +495,7 @@ private:
 		static void start_broadcast();
 #pragma endregion 
 
+#pragma region log
 		//# 日志相关
 		static std::shared_ptr<np_actor_logitem> m_nonelog;
 		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
@@ -503,6 +506,7 @@ private:
 		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
 		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
+#pragma endregion 
 
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用

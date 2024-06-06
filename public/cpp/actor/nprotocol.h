@@ -108,21 +108,15 @@ namespace ngl
 	// ---- [actor db client -> actor db server]
 	// ---- 从db server加载数据
 	// 从db server加载数据
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
+	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load
 	{
 		nguid m_id;
 		def_portocol(np_actordb_load, m_id)
 	};
 
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
-	struct np_actordb_load_response
-	{
-		def_portocol(actor_db_load_response<T>)
-	};
-
 	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct np_actordb_load_response<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
+	struct np_actordb_load_response
 	{
 		protobuf_data<std::map<nguid, T>>	m_data;
 		bool		m_stat = true;
@@ -136,34 +130,11 @@ namespace ngl
 		def_portocol(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
-	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct np_actordb_load_response<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
-	{
-		std::map<nguid, T>	m_data;
-		bool		m_stat = true;
-		bool		m_over = true;
-
-		std::map<nguid, T>& data()
-		{
-			return m_data;
-		}
-
-		def_portocol(actor_db_load_response<T>, m_stat, m_data, m_over)
-	};
-
 	// ---- [actor db server -> actor db client]
 	// ---- 保存数据
 	// 从db server加载数据
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
-	struct np_actordb_save
-	{
-		np_actordb_save() {}
-
-		def_portocol(actor_db_save<T>)
-	};
-
 	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct np_actordb_save<EPROTOCOL_TYPE_PROTOCOLBUFF, DBTYPE, T>
+	struct np_actordb_save
 	{
 		protobuf_data<std::map<nguid, T>>	m_data;
 
@@ -186,28 +157,8 @@ namespace ngl
 		def_portocol(actor_db_save<T>, m_data)
 	};
 
-	template <pbdb::ENUM_DB DBTYPE, typename T>
-	struct np_actordb_save<EPROTOCOL_TYPE_CUSTOM, DBTYPE, T>
-	{
-		std::map<nguid, T>	m_data;
-
-		np_actordb_save() {}
-
-		void add(const nguid& akey, const T& avalue)
-		{
-			m_data.insert(std::make_pair(akey, avalue));
-		}
-
-		bool empty()
-		{
-			return m_data.empty();
-		}
-
-		def_portocol(actor_db_save<T>, m_data)
-	};
-
 	// 从db server删除数据
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename T>
+	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_delete
 	{
 		std::vector<int64_t> m_data;
@@ -223,7 +174,7 @@ namespace ngl
 		enum_clist_save = 1,
 		enum_clist_del = 2,
 	};
-	template <EPROTOCOL_TYPE PROTYPE, typename T>
+	template <typename T>
 	struct np_actortime_db_cache
 	{
 		enum_cache_list			m_type;

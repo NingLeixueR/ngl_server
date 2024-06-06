@@ -117,7 +117,7 @@ namespace ngl
 			return;
 		Try
 		{
-			//// --- 需要尝试连接Actor Server结点 并向其注册自己
+			// # 需要尝试连接ActorServer结点 并向其注册自己
 			Assert(ttab_servers::node_type() != ngl::ACTORSERVER)
 			Assert(ttab_servers::node_type() != ngl::ROBOT)
 			tab_servers* tab = ttab_servers::tab();
@@ -160,8 +160,8 @@ namespace ngl
 				const nactornode& node = lparm->m_vec[i];
 				if (server_session::get_sessionid(node.m_serverid) == -1)
 				{
-					// 比较id  较大的主动连接较小的
-					// NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
+					// # 比较id(较大的主动连接较小的)
+					// # NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
 					activ_connect(node.m_serverid);
 				}
 			}

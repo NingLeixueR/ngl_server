@@ -97,22 +97,17 @@ namespace ngl
 		}
 	};
 
-	template <
-		EPROTOCOL_TYPE PROTYPE, 
-		pbdb::ENUM_DB TDBTAB_TYPE, 
-		typename TDBTAB
-	>
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db;
 
 	template <
-		EPROTOCOL_TYPE PROTYPE, 
 		pbdb::ENUM_DB DBTYPE, 
 		typename TDBTAB, 
 		typename TACTOR
 	>
 	class ndbclient : public ndbclient_base
 	{
-		using type_ndbclient = ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>;
+		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
 		tab_dbload* m_tab;
 	public:
 		virtual void load()
@@ -145,13 +140,13 @@ namespace ngl
 
 		inline i64_actorid dbguid()
 		{
-			ENUM_ACTOR ltype = nactor_type<actor_db<PROTYPE, DBTYPE, TDBTAB>>::type();
+			ENUM_ACTOR ltype = nactor_type<actor_db<DBTYPE, TDBTAB>>::type();
 			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 
 		void loaddb(const nguid& aid)
 		{
-			np_actordb_load<PROTYPE, DBTYPE, TDBTAB> ldata;
+			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 			log_error()->print("actor_dbclient loaddb [{}] [{}]", dtype_name(type_ndbclient), aid);
@@ -230,7 +225,7 @@ namespace ngl
 				if (m_register == false)
 				{
 					m_register = true;
-					actor::template register_db<PROTYPE, TACTOR, DBTYPE, TDBTAB>(nullptr);
+					actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
 				}
 				init_load();
 			}Catch;
@@ -253,7 +248,7 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
-			np_actordb_save<PROTYPE, DBTYPE, TDBTAB> pro;
+			np_actordb_save<DBTYPE, TDBTAB> pro;
 			std::list<data_modified<TDBTAB>*> lclearlist;
 			if (aid != (int64_t)-1)
 			{
@@ -316,7 +311,7 @@ namespace ngl
 
 		virtual void deldb()
 		{
-			np_actordb_delete<PROTYPE, DBTYPE, TDBTAB> pro;
+			np_actordb_delete<DBTYPE, TDBTAB> pro;
 			if (m_dellist.empty())
 				return;
 			pro.m_data.swap(m_dellist);
@@ -385,7 +380,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
+		bool handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 		{
 			Try
 			{
@@ -393,7 +388,7 @@ namespace ngl
 				{//加载失败  数据库中没有数据
 					return loadfinish();
 				}
-				using type_message = np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>;
+				using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
 				log_error()->print(
 					"db load respones:[{}] recv_over[{}]"
 					, dtype_name(type_message)
@@ -493,8 +488,8 @@ namespace ngl
 			return m_typedbclientmap.empty();
 		}
 
-		template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
-		ndbclient<PROTYPE, ENUM, TDATA, TACTOR>* data(bool aloadfinish)
+		template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
+		ndbclient<ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
 			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(
 				aloadfinish? m_dbclientmap : m_typedbclientmap
@@ -502,7 +497,7 @@ namespace ngl
 			);
 			if (lp == nullptr)
 				return nullptr;
-			return (ndbclient<PROTYPE, ENUM, TDATA, TACTOR>*)(*lp);
+			return (ndbclient<ENUM, TDATA, TACTOR>*)(*lp);
 		}
 
 	private:
@@ -535,14 +530,14 @@ namespace ngl
 
 namespace ngl
 {
-	template <EPROTOCOL_TYPE PROTYPE, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	bool actor_base::handle(message<np_actordb_load_response<PROTYPE, DBTYPE, TDBTAB>>& adata)
+	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
+	bool actor_base::handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 	{
 		Try
 		{
 			std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
 			Assert(mdbclient != nullptr);
-			ndbclient<PROTYPE, DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<PROTYPE, DBTYPE, TDBTAB, TACTOR>(false);
+			ndbclient<DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<DBTYPE, TDBTAB, TACTOR>(false);
 			Assert(lp != nullptr);
 			return lp->handle(adata);
 		}Catch;

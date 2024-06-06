@@ -25,7 +25,7 @@ namespace ngl
 		{
 		}
 
-		// 释放actor所持有的资源
+		// # 释放actor所持有的资源
 		inline void release(actor* aactor)
 		{
 			actor_handle(nullptr, 0x7fffffff);
@@ -33,35 +33,35 @@ namespace ngl
 			m_list.clear();
 		}
 
-		// actor 消息列表是否为空
+		// # actor 消息列表是否为空
 		inline bool list_empty()
 		{
 			monopoly_shared_lock(m_mutex);
 			return m_list.empty();
 		}
 
-		// 获取actor状态
+		// # 获取actor状态
 		inline actor_stat get_activity_stat()
 		{
 			monopoly_shared_lock(m_mutex);
 			return m_stat;
 		}
 
-		// 设置actor状态
+		// # 设置actor状态
 		inline void set_activity_stat(actor_stat astat)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_stat = astat;
 		}
 
-		// 向actor消息列表中添加消息
+		// # 向actor消息列表中添加消息
 		inline void push(handle_pram& apram)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_list.push_back(std::move(apram));
 		}
 	private:
-		// 设置kcp
+		// # 设置kcp
 		inline void set_kcp(actor* aactor, handle_pram& aparm)const
 		{
 			if (aparm.m_pack != nullptr
