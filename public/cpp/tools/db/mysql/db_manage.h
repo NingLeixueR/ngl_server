@@ -188,8 +188,13 @@ namespace ngl
 					{
 						protobuf_data<T> ldata;
 						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false) == false)
+						bool lunserialize = ngl::db_manage::unserialize(
+							adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false
+						);
+						if (lunserialize == false)
+						{
 							return false;
+						}
 						ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
 					});
@@ -210,8 +215,13 @@ namespace ngl
 					{
 						protobuf_data<T> ldata;
 						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
-						if (ngl::db_manage::unserialize(adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false) == false)
+						bool lunserialize = ngl::db_manage::unserialize(
+							adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false
+						);
+						if (lunserialize == false)
+						{
 							return false;
+						}
 						ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 						return true;
 					});
