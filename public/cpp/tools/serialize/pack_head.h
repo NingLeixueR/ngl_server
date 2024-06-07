@@ -2,6 +2,7 @@
 
 #include "serialize.h"
 #include "csvtable.h"
+#include "tools.h"
 #include "type.h"
 
 #include <cstdint>

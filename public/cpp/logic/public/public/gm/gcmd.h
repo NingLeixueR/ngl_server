@@ -1,7 +1,6 @@
 #pragma once
 
 #include "define_json.h"
-#include "conversion.h"
 #include "actor.h"
 
 namespace ngl
@@ -28,7 +27,7 @@ namespace ngl
 			std::string ljson;
 			lwrite.get(ljson);
 			if(m_istoutf8)
-				ngl::conversion::to_utf8(ljson, pro->add_data()->m_json);
+				ngl::tools::to_utf8(ljson, pro->add_data()->m_json);
 			else
 			{
 				pro->add_data()->m_json = ljson;

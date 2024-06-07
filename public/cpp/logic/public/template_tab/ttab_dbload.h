@@ -1,7 +1,6 @@
 #pragma once
 
 #include "manage_csv.h"
-#include "regular.h"
 
 namespace ngl
 {
@@ -25,7 +24,7 @@ namespace ngl
 		static tab_dbload* get_tabdb()
 		{
 			std::string lname = T().descriptor()->full_name();
-			ngl::regular::replace("pbdb.", "", lname, lname);
+			ngl::tools::replace("pbdb.", "", lname, lname);
 			std::transform(lname.begin(), lname.end(), lname.begin(), toupper);
 
 			tab_dbload** tab = tools::findmap(m_name2data, lname);

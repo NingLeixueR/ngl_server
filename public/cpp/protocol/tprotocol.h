@@ -3,6 +3,7 @@
 #include "xmlprotocol.h"
 #include "net.pb.h"
 #include "define.h"
+#include "tools.h"
 
 #include <map>
 

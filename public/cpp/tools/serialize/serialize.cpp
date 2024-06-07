@@ -1,5 +1,4 @@
 #include "serialize.h"
-#include "varint.h"
 #include "db.pb.h"
 
 namespace ngl

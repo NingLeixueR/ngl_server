@@ -5,7 +5,6 @@
 #include "tprotocol.h"
 #include "nprotocol.h"
 #include "protocol.h"
-#include "regular.h"
 #include "actor.h"
 
 namespace ngl

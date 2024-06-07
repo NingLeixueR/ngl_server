@@ -126,7 +126,7 @@ namespace ngl
 		std::string lstr;
 		ljson.get(lstr);
 		std::string lstrasscii;
-		ngl::conversion::to_asscii(lstr, lstrasscii);
+		ngl::tools::to_asscii(lstr, lstrasscii);
 		log_error()->print("[{}:{}] {}", area(), m_data.m_role().m_base().m_name(), lstrasscii);
 		return true;
 	}
@@ -141,7 +141,7 @@ namespace ngl
 			(*lstream) << "[####################################################################]" << std::endl;
 			(*lstream) << "[mailid:	" << _mail.m_id() << "]" << std::endl;
 			std::string lcontent;
-			conversion::to_asscii(_mail.m_content(), lcontent);
+			tools::to_asscii(_mail.m_content(), lcontent);
 			(*lstream) << "[content:	" << lcontent << "]" << std::endl;
 			ngl::localtime::time2str(lbuff, 1024, _mail.m_createutc(), "%y/%m/%d %H:%M:%S");
 			(*lstream) << "[createutc:	" << lbuff << "]" << std::endl;

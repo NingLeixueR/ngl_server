@@ -2,7 +2,6 @@
 
 #include "serialize.h"
 #include "hexbytes.h"
-#include "regular.h"
 #include "db_data.h"
 #include "tools.h"
 #include "db.h"
@@ -23,7 +22,7 @@ namespace ngl
 			if (m_dbtabname.empty())
 			{
 				m_dbtabname = T().descriptor()->full_name();
-				ngl::regular::replace("pbdb.", "", m_dbtabname, m_dbtabname);
+				ngl::tools::replace("pbdb.", "", m_dbtabname, m_dbtabname);
 			}
 			return m_dbtabname;
 		}

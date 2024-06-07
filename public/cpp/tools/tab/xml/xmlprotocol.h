@@ -4,7 +4,6 @@
 #include <string>
 #include <map>
 
-#include "regular.h"
 #include "xmlinfo.h"
 #include "type.h"
 #include "nlog.h"

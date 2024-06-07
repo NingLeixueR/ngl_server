@@ -49,10 +49,7 @@ namespace ngl
 		void push(std::vector<i64_actorid>& aidlist)
 		{
 			monopoly_shared_lock(m_mutex);
-			for (i64_actorid id : aidlist)
-			{
-				m_ls.insert(id);
-			}
+			m_ls.insert(aidlist.begin(), aidlist.end());
 		}
 
 		void execute(wheel_node*)

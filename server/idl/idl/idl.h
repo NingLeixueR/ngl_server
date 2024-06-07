@@ -11,8 +11,6 @@
 #include <map>
 
 #include "operator_file.h"
-#include "regular.h"
-#include "conversion.h"
 #include "tools.h"
 using namespace std;
 
@@ -167,7 +165,7 @@ public:
 				else
 				{
 					std::string lvalues_name;
-					ngl::regular::replace("::", ".", item2.m_values_name, lvalues_name);
+					ngl::tools::replace("::", ".", item2.m_values_name, lvalues_name);
 					m_stream << "		" << item2.m_type << " = " + lvalues_name << ",\t" << item2.zhushi << "\n";
 				}
 			}
@@ -194,15 +192,15 @@ public:
 	{
 		std::string ltempstr(item2.m_type);
 		std::string ltempstr2;
-		ngl::regular::replace_ret("map<", "std::map<", ltempstr, ltempstr2);
+		ngl::tools::replace_ret("map<", "std::map<", ltempstr, ltempstr2);
 		ltempstr = ltempstr2;
-		ngl::regular::replace_ret("list<", "std::list<", ltempstr, ltempstr2);
+		ngl::tools::replace_ret("list<", "std::list<", ltempstr, ltempstr2);
 		ltempstr = ltempstr2;
-		ngl::regular::replace_ret("vector<", "std::vector<", ltempstr, ltempstr2);
+		ngl::tools::replace_ret("vector<", "std::vector<", ltempstr, ltempstr2);
 		ltempstr = ltempstr2;
-		ngl::regular::replace_ret("set<", "std::set<", ltempstr, ltempstr2);
+		ngl::tools::replace_ret("set<", "std::set<", ltempstr, ltempstr2);
 		ltempstr = ltempstr2;
-		ngl::regular::replace_ret("string", "std::string", ltempstr, ltempstr2);
+		ngl::tools::replace_ret("string", "std::string", ltempstr, ltempstr2);
 		ltempstr = ltempstr2;
 		return ltempstr;
 	}
@@ -412,12 +410,12 @@ public:
 	void _helpDefine(std::string& aname,string& ldata)
 	{
 		static string pattern("#define[ \t]+[a-zA-Z0-9_ ]+[ \t]+[\(]+[^)^(]+[)]+[ \t]+[/][/][^\r^\n]*");
-		ngl::regular::sregex(pattern, ldata, [this, aname](std::string& adata)
+		ngl::tools::sregex(pattern, ldata, [this, aname](std::string& adata)
 		{
 			static string expression("#define[ \t]+([a-zA-Z0-9_ ]+)[ \t]+[\(]+([^)]+)[)]+[ \t]+[/][/][^\r^\n]*");
 			DefVec lDefVec;
 			lDefVec.name = adata;
-			ngl::regular::smatch(expression, adata, [&lDefVec](std::smatch& awhat)
+			ngl::tools::smatch(expression, adata, [&lDefVec](std::smatch& awhat)
 			{
 				Data ldataStr;
 				ldataStr.m_values_name = awhat[1];
@@ -431,7 +429,7 @@ public:
 	void _helpInclude(std::string& aname, string& ldata)
 	{
 		static string pattern("#include[ ]+[\"\<][a-zA-Z0-9\/]+(\.[a-zA-Z]+)*[\"\>]");
-		ngl::regular::sregex(pattern, ldata, [aname,this](std::string& adata)
+		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			m_data[aname].m_include.insert(adata);
 		});
@@ -440,12 +438,12 @@ public:
 	void _helpEnum(std::string& aname, string& ldata)
 	{
 		static string pattern("enum[ ][^\{\}]*[\{][^\{\}]*[\}][^\;]*[\;]");
-		ngl::regular::sregex(pattern, ldata, [aname,this](std::string& adata)
+		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			EnumVec lenumString;
 		//获取结构名称
 		static string lpattern("enum[ \n\r\t]+([^ \n\r\t]+)");
-		ngl::regular::smatch(lpattern, adata, [&lenumString](std::smatch& awhat)
+		ngl::tools::smatch(lpattern, adata, [&lenumString](std::smatch& awhat)
 			{
 				lenumString.name = awhat[1];
 			});
@@ -463,7 +461,7 @@ public:
 			lpattern2 += "[ \t]*";//空白
 			lpattern2 += "([\/\/]*[^\r\n]*)";//注释
 		}
-		ngl::regular::smatch(lpattern2, adata, [&lenumString](std::smatch& awhat)
+		ngl::tools::smatch(lpattern2, adata, [&lenumString](std::smatch& awhat)
 			{
 				Data ldataStr;
 		ldataStr.m_type = awhat[1];
@@ -480,12 +478,12 @@ public:
 	void _helpStruct(std::string& aname, string& ldata)
 	{
 		static string pattern("struct[^\{\}]*[\{][^\{\}]*[\}][^\;]*[\;]");
-		ngl::regular::sregex(pattern, ldata, [aname,this](std::string& adata)
+		ngl::tools::sregex(pattern, ldata, [aname,this](std::string& adata)
 		{
 			StructVec lstructString;
 			//获取结构名称
 			static string lpattern("struct[ \t]+([^ \t\n\r]+)");
-			ngl::regular::smatch(lpattern, adata, [&lstructString](std::smatch& awhat)
+			ngl::tools::smatch(lpattern, adata, [&lstructString](std::smatch& awhat)
 			{
 				lstructString.name = awhat[1];
 				if (lstructString.name.size() > sizeof("DERIVED<")-1)
@@ -562,7 +560,7 @@ public:
 					+ "[\r\n]*[\r\n]*";
 			}
 
-			ngl::regular::smatch(lpattern2, adata, [&lstructString](std::smatch& awhat)
+			ngl::tools::smatch(lpattern2, adata, [&lstructString](std::smatch& awhat)
 			{
 				Data ldataStr;
 				ldataStr.panduan = awhat[1];
@@ -588,7 +586,7 @@ public:
 				lstructString.dataVec.push_back(ldataStr);
 			});
 
-			ngl::regular::smatch(lpattern3, adata, [&lstructString](std::smatch& awhat)
+			ngl::tools::smatch(lpattern3, adata, [&lstructString](std::smatch& awhat)
 			{
 				Data ldataStr;
 				ldataStr.panduan = awhat[1];
@@ -605,7 +603,7 @@ public:
 				ldataStr.m_values_init = awhat[5];
 				ldataStr.zhushi = awhat[6];
 
-				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
+				ngl::tools::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
 						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1].str().c_str());
 					});

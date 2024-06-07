@@ -3,7 +3,6 @@
 #include "tinyxml2.h"
 #include "csvtable.h"
 #include "xmlinfo.h"
-#include "splite.h"
 #include "tools.h"
 #include "type.h"
 #include "nlog.h"
@@ -29,7 +28,7 @@ namespace ngl
 		static tinyxml2::XMLElement* get_child(tinyxml2::XMLElement* aele, const char* astr)
 		{
 			std::vector<std::string> lvec;
-			if (splite::func<std::string>(astr, ".", lvec) == false)
+			if (tools::splite(astr, ".", lvec) == false)
 				return nullptr;
 			tinyxml2::XMLElement* valElement = aele;
 			for (std::string& item : lvec)

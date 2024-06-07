@@ -2,7 +2,6 @@
 
 #include "operator_file.h"
 #include "nprotocol.h"
-#include "splite.h"
 #include "tools.h"
 #include "nlog.h"
 

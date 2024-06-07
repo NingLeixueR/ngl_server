@@ -3,7 +3,6 @@
 #include "tinyxml2.h"
 #include "csvtable.h"
 #include "xmlinfo.h"
-#include "splite.h"
 #include "tools.h"
 #include "type.h"
 #include "nlog.h"

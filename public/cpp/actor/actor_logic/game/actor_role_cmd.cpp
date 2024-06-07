@@ -1,6 +1,5 @@
 #include "actor_notice.h"
 #include "actor_role.h"
-#include "splite.h"
 
 namespace ngl
 {
@@ -10,7 +9,7 @@ namespace ngl
 		log_info()->print("cmd[{}]", lparm.m_cmd());
 
 		std::vector<std::string> lvec;
-		if (ngl::splite::func(lparm.m_cmd().c_str(), "|", lvec) == false)
+		if (tools::splite(lparm.m_cmd().c_str(), "|", lvec) == false)
 			return true;
 		if (handle_cmd::empty())
 		{
@@ -50,7 +49,7 @@ namespace ngl
 					// c 3 0 channelid			// 获取所有聊天记录
 					// c 3 1 channelid "xxxx"	// 聊天发言	
 					std::vector<std::string> lvec;
-					if (ngl::splite::func(aparm, "*", lvec) == false)
+					if (tools::splite(aparm, "*", lvec) == false)
 						return;
 					if (lvec.size() >= 2)
 					{
@@ -76,7 +75,7 @@ namespace ngl
 					pbnet::PROBUFF_NET_CHAT pro;
 					pro.set_m_type(pbnet::enum_logic_chat::get_chat_list);
 					int lchannelid = 0;
-					if (ngl::splite::func(aparm, "*", lchannelid) == false)
+					if (tools::splite(aparm, "*", lchannelid) == false)
 						return;
 					pro.set_m_channelid(lchannelid);
 					message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, &pro);

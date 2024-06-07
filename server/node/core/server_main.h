@@ -142,7 +142,7 @@ void init_DB_NOTICE()
 		ltemp.set_m_id(i);
 
 
-		if (ngl::conversion::to_utf8(lvec[i], lvec[i]) == false)
+		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
 
 		ltemp.set_m_notice(lvec[i]);
@@ -174,7 +174,7 @@ bool start_db(int argc, char** argv)
 	ngl::actor_client::getInstance().actor_server_register();
 
 	// ----------------test start-------------------- //
-	if (argc >= 5 && ngl::tools::is_mem(argv[4], "init"))
+	if (argc >= 5 && ngl::tools::is_equal(argv[4], "init"))
 	{
 		init_DB_ACCOUNT();
 		init_DB_ROLE();
@@ -420,7 +420,7 @@ bool start_robot(int argc, char** argv)
 			char lbuff[4096] = { 0 };
 			std::cin.getline(lbuff, 4096);
 			std::vector<std::string> lvec;
-			if (ngl::splite::func(lbuff, " ", lvec) == false)
+			if (ngl::tools::splite(lbuff, " ", lvec) == false)
 				continue;
 			ngl::actor_manage_robot::parse_command(lvec);
 		}
@@ -448,7 +448,7 @@ bool start_robot(int argc, char** argv)
 			lcmd += argv[6];
 		}
 		std::vector<std::string> lvec;
-		if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
+		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 			return false;
 		ngl::actor_manage_robot::parse_command(lvec);
 		int lnum = 10000;
@@ -469,7 +469,7 @@ bool start_robot(int argc, char** argv)
 					std::cin.getline(lbuff, 1024);
 					lcmd = lbuff;
 					lvec.clear();
-					if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
+					if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 						continue;
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
@@ -506,7 +506,7 @@ bool start_robot(int argc, char** argv)
 						ltest = true;
 						continue;
 					}
-					if (ngl::splite::func(lcmd.c_str(), " ", lvec) == false)
+					if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 						continue;
 					ngl::actor_manage_robot::parse_command(lvec);
 				}

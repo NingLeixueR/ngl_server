@@ -8,7 +8,6 @@
 #include "db_pool.h"
 #include "net.pb.h"
 #include "db.pb.h"
-#include "guuid.h"
 #include "net.h"
 #include "db.h"
 

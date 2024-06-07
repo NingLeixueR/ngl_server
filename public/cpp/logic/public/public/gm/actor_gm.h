@@ -10,7 +10,6 @@
 #include "tprotocol.h"
 #include "ntimer.h"
 #include "notice.h"
-#include "splite.h"
 #include "net.h"
 #include "db_manage.h"
 #include "db_pool.h"

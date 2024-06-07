@@ -303,7 +303,7 @@ namespace ngl
 				std::string lecmd;
 				int32_t lnum = 0;
 				std::string ljson;
-				if (ngl::splite::func(abuf, "*", lecmd, lnum, ljson) == false)
+				if (tools::splite(abuf, "*", lecmd, lnum, ljson) == false)
 					return false;
 				handle_cmd::function((ecmd)lnum, ap, apstruct, ljson);
 				return true;

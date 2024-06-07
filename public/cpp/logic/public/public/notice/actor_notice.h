@@ -8,7 +8,6 @@
 #include "db.h"
 #include "ndb_modular.h"
 #include "define_json.h"
-#include "conversion.h"
 #include "nroleitems.h"
 #include "ndbclient.h"
 #include "nprotocol.h"

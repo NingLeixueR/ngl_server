@@ -3,7 +3,6 @@
 #include "manage_csv.h"
 #include "localtime.h"
 #include "xmlinfo.h"
-#include "splite.h"
 #include "nlog.h"
 
 namespace ngl
@@ -117,7 +116,7 @@ namespace ngl
 			int hour = 0;
 			int minute = 0;
 			int second = 0;
-			if(splite::func(astr, ":", hour, minute, second) == false)
+			if(tools::splite(astr, ":", hour, minute, second) == false)
 				return std::make_pair(false, -1);
 			if (hour == -1 || minute == -1 || second == -1)
 				return std::make_pair(false,-1);

@@ -2,7 +2,6 @@
 
 #include "csvtable.h"
 #include "net.pb.h"
-#include "splite.h"
 #include "type.h"
 #include "unit.h"
 #include "grid.h"

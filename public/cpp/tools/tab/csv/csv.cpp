@@ -1,5 +1,4 @@
 #include "operator_file.h"
-#include "splite.h"
 #include "tools.h"
 #include "nlog.h"
 #include "csv.h"
@@ -22,11 +21,11 @@ namespace ngl
 		Try
 		{
 			std::vector<std::string>  lvec;
-			if (ngl::splite::func(lversion.c_str(), ",", lvec) == false)
+			if (tools::splite(lversion.c_str(), ",", lvec) == false)
 				return;
 			Assert(lvec.empty() == false);
 			std::string lver;
-			if (ngl::splite::func(lvec[0].c_str(), ":", lver, aversion) == false)
+			if (tools::splite(lvec[0].c_str(), ":", lver, aversion) == false)
 				return;
 			Assert(lver == "version");
 		}Catch;

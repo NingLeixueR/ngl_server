@@ -17,8 +17,6 @@
 #include "operator_file.h"
 #include "ttab_servers.h"
 #include "xmlprotocol.h"
-#include "conversion.h"
-#include "regular.h"
 
 std::map<std::string, std::string> g_typearr = { {"bool", "bool"}, {"int32", "int32_t"}, {"int64", "int64_t"}, {"string", "const char*"}, {"float", "float"}, {"double", "double"}};
 
@@ -33,7 +31,7 @@ std::string type_name(const char* apackname, const google::protobuf::FieldDescri
         std::cout << nestedDescriptor->DebugString() << std::endl;
         std::cout << "Nested message type name: " << nestedMessageTypeName << std::endl;
         std::string lparmname;
-        ngl::regular::replace(std::string(apackname) + ".", "", nestedMessageTypeName, lparmname);
+        ngl::tools::replace(std::string(apackname) + ".", "", nestedMessageTypeName, lparmname);
         return lparmname;
     }
     return "";
@@ -151,7 +149,7 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
 
         std::cout << "name: " << messageDescriptor->name() << std::endl;
         std::string lmessage;
-        ngl::regular::replace(std::string(apackname) + ".", "", messageDescriptor->name(), lmessage);
+        ngl::tools::replace(std::string(apackname) + ".", "", messageDescriptor->name(), lmessage);
 
         std::stringstream lstream_parm1;
 		std::stringstream lstream_parm2;
@@ -214,15 +212,15 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
                         lparmname2 = g_typearr[lparmname2];
                         lis_type2_base = true;
                     }
-                    ngl::regular::replace("Template.", "", lparmname2, lparmname2);
-                    ngl::regular::replace("Pb.", "", lparmname2, lparmname2);
+                    ngl::tools::replace("Template.", "", lparmname2, lparmname2);
+                    ngl::tools::replace("Pb.", "", lparmname2, lparmname2);
                 }
                 else
                 {
                     ls = &lpair.second;
                     lparmname = type_name(apackname, fieldDescriptor);
-                    ngl::regular::replace("Template.", "", lparmname, lparmname);
-                    ngl::regular::replace("Pb.", "", lparmname, lparmname);
+                    ngl::tools::replace("Template.", "", lparmname, lparmname);
+                    ngl::tools::replace("Pb.", "", lparmname, lparmname);
                 }
             }
 

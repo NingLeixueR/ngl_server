@@ -15,8 +15,6 @@
 
 #include <google/protobuf/util/json_util.h>
 
-#include "bytesorder.h"
-#include "varint.h"
 #include "define.h"
 #include "db.pb.h"
 #include "tools.h"
@@ -276,7 +274,7 @@ namespace ngl
 		inline bool push(const int16_t adata)
 		{
 			int16_t lvalues = adata;
-			lvalues = bytesorder::transformlittle(lvalues);
+			lvalues = tools::transformlittle(lvalues);
 			return basetype(lvalues);
 		}
 
@@ -288,15 +286,15 @@ namespace ngl
 		inline bool push(const int32_t adata)
 		{
 			int32_t lvalues = adata;
-			lvalues = bytesorder::transformlittle(lvalues);
-			varint::parm<int32_t> lparm
+			lvalues = tools::transformlittle(lvalues);
+			tools::varint_parm<int32_t> lparm
 			{
 				.m_value = lvalues,
 				.m_buf = &m_buff[m_pos],
 				.m_len = m_len - m_pos,
 				.m_bytes = &m_pos,
 			};
-			return varint::encode(lparm);
+			return tools::varint_encode(lparm);
 		}
 
 		inline bool push(const uint32_t adata)
@@ -307,15 +305,15 @@ namespace ngl
 		inline bool push(const int64_t adata)
 		{
 			int64_t lvalues = adata;
-			lvalues = bytesorder::transformlittle(lvalues);
-			varint::parm<int64_t> lparm
+			lvalues = tools::transformlittle(lvalues);
+			tools::varint_parm<int64_t> lparm
 			{
 				.m_value = lvalues,
 				.m_buf = &m_buff[m_pos],
 				.m_len = m_len - m_pos,
 				.m_bytes = &m_pos,
 			};
-			return varint::encode(lparm);
+			return tools::varint_encode(lparm);
 		}
 
 		inline bool push(const uint64_t adata)
@@ -719,7 +717,7 @@ namespace ngl
 		{
 			if (basetype(adata) == false)
 				return false;
-			adata = bytesorder::transformlittle(adata);
+			adata = tools::transformlittle(adata);
 			return true;
 		}
 
@@ -734,17 +732,17 @@ namespace ngl
 
 		inline bool pop(int32_t& adata)
 		{
-			varint::parm<int32_t> lparm
+			tools::varint_parm<int32_t> lparm
 			{
 				.m_value = adata,
 				.m_buf = (char*)&m_buff[m_pos],
 				.m_len = m_len - m_pos,
 				.m_bytes = &m_pos,
 			};
-			if (varint::decode(lparm) == false)
+			if (tools::varint_decode(lparm) == false)
 				return false;
 			adata = lparm.m_value;
-			adata = bytesorder::transformlittle(adata);
+			adata = tools::transformlittle(adata);
 			return true;
 		}
 
@@ -759,17 +757,17 @@ namespace ngl
 
 		inline bool pop(int64_t& adata)
 		{
-			varint::parm<int64_t> lparm
+			tools::varint_parm<int64_t> lparm
 			{
 				.m_value = adata,
 				.m_buf = (char*)&m_buff[m_pos],
 				.m_len = m_len - m_pos,
 				.m_bytes = &m_pos,
 			};
-			if (varint::decode(lparm) == false)
+			if (tools::varint_decode(lparm) == false)
 				return false;
 			adata = lparm.m_value;
-			adata = bytesorder::transformlittle(adata);
+			adata = tools::transformlittle(adata);
 			return true;
 		}
 
@@ -1198,9 +1196,12 @@ namespace ngl
 		inline int bytes(const int32_t adata)
 		{
 			int32_t lvalues = adata;
-			lvalues = bytesorder::transformlittle(lvalues);
-			varint::parm_length<int32_t> laprm{ .m_value = lvalues };
-			return m_size += varint::length(laprm);
+			lvalues = tools::transformlittle(lvalues);
+			tools::varint_length_parm<int32_t> lparm
+			{
+				.m_value = adata,
+			};
+			return m_size += tools::varint_length(lparm);
 		}
 
 		inline int bytes(const uint32_t adata)
@@ -1211,9 +1212,12 @@ namespace ngl
 		inline int bytes(const int64_t adata)
 		{
 			int64_t lvalues = adata;
-			lvalues = bytesorder::transformlittle(lvalues);
-			varint::parm_length<int64_t> laprm{ .m_value = lvalues };
-			return m_size += varint::length(laprm);
+			lvalues = tools::transformlittle(lvalues);
+			tools::varint_length_parm<int64_t> lparm
+			{
+				.m_value = adata,
+			};
+			return m_size += tools::varint_length(lparm);
 		}
 
 		inline int bytes(const uint64_t adata)
