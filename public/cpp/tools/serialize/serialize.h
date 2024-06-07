@@ -273,9 +273,9 @@ namespace ngl
 
 		inline bool push(const int16_t adata)
 		{
-			int16_t lvalues = adata;
-			lvalues = tools::transformlittle(lvalues);
-			return basetype(lvalues);
+			tools::parm lparm(adata);
+			lparm.m_value = tools::transformlittle(lparm);
+			return basetype(lparm.m_value);
 		}
 
 		inline bool push(const uint16_t adata)
@@ -285,11 +285,11 @@ namespace ngl
 
 		inline bool push(const int32_t adata)
 		{
-			int32_t lvalues = adata;
-			lvalues = tools::transformlittle(lvalues);
+			tools::parm lparmtrans(adata);
+			lparmtrans.m_value = tools::transformlittle(lparmtrans);
 			tools::varint_parm<int32_t> lparm
 			{
-				.m_value = lvalues,
+				.m_value = lparmtrans.m_value,
 				.m_buf = &m_buff[m_pos],
 				.m_len = m_len - m_pos,
 				.m_bytes = &m_pos,
@@ -304,11 +304,11 @@ namespace ngl
 
 		inline bool push(const int64_t adata)
 		{
-			int64_t lvalues = adata;
-			lvalues = tools::transformlittle(lvalues);
+			tools::parm lparmtrans(adata);
+			lparmtrans.m_value = tools::transformlittle(lparmtrans);
 			tools::varint_parm<int64_t> lparm
 			{
-				.m_value = lvalues,
+				.m_value = lparmtrans.m_value,
 				.m_buf = &m_buff[m_pos],
 				.m_len = m_len - m_pos,
 				.m_bytes = &m_pos,
@@ -717,7 +717,8 @@ namespace ngl
 		{
 			if (basetype(adata) == false)
 				return false;
-			adata = tools::transformlittle(adata);
+			tools::parm<int16_t> lparm(adata);
+			adata = tools::transformlittle(lparm);
 			return true;
 		}
 
@@ -741,8 +742,8 @@ namespace ngl
 			};
 			if (tools::varint_decode(lparm) == false)
 				return false;
-			adata = lparm.m_value;
-			adata = tools::transformlittle(adata);
+			tools::parm lparmtrans(lparm.m_value);
+			adata = tools::transformlittle(lparmtrans);
 			return true;
 		}
 
@@ -766,8 +767,8 @@ namespace ngl
 			};
 			if (tools::varint_decode(lparm) == false)
 				return false;
-			adata = lparm.m_value;
-			adata = tools::transformlittle(adata);
+			tools::parm lparmtrans(lparm.m_value);
+			adata = tools::transformlittle(lparmtrans);
 			return true;
 		}
 
@@ -1195,12 +1196,8 @@ namespace ngl
 
 		inline int bytes(const int32_t adata)
 		{
-			int32_t lvalues = adata;
-			lvalues = tools::transformlittle(lvalues);
-			tools::varint_length_parm<int32_t> lparm
-			{
-				.m_value = adata,
-			};
+			tools::parm<int32_t> lparm(adata);
+			lparm.m_value = tools::transformlittle(lparm);
 			return m_size += tools::varint_length(lparm);
 		}
 
@@ -1211,12 +1208,8 @@ namespace ngl
 
 		inline int bytes(const int64_t adata)
 		{
-			int64_t lvalues = adata;
-			lvalues = tools::transformlittle(lvalues);
-			tools::varint_length_parm<int64_t> lparm
-			{
-				.m_value = adata,
-			};
+			tools::parm<int64_t> lparm(adata);
+			lparm.m_value = tools::transformlittle(lparm);
 			return m_size += tools::varint_length(lparm);
 		}
 
@@ -1611,114 +1604,77 @@ namespace ngl
 	};
 
 	//### 用于序列化枚举类型
-	template <typename T>
-	class enum_operator
+
+	template <typename E, bool IS_ENUM>
+	class enum_operator_push
 	{
-		template <typename E, bool IS_ENUM>
-		class enum_operator_push
-		{
-		public:
-			static bool operator_push(serialize& ser, const E& adata)
-			{
-				return adata.push(ser);
-			}
-		};
-
-		template <typename E>
-		class enum_operator_push<E, true>
-		{
-		public:
-			static bool operator_push(serialize& ser, const E& adata)
-			{
-				return ser.push((int)adata);
-			}
-		};
-
-		template <typename E, bool IS_ENUM>
-		class enum_operator_pop
-		{
-		public:
-			static bool operator_pop(ngl::unserialize& ser, T& adata)
-			{
-				return adata.pop(ser);
-			}
-		};
-
-		template <typename E>
-		class enum_operator_pop<E, true>
-		{
-		public:
-			static bool operator_pop(ngl::unserialize& ser, E& adata)
-			{
-				int ltemp = 0;
-				if (ser.pop(ltemp))
-				{
-					adata = (E)ltemp;
-					return true;
-				}
-				return false;
-			}
-		};
-
-		template <typename E, bool IS_ENUM>
-		class enum_operator_bytes
-		{
-		public:
-			static bool operator_bytes(ngl::serialize_bytes& ser, const E& adata)
-			{
-				return adata.bytes(ser);
-			}
-		};
-
-		template <typename E>
-		class enum_operator_bytes<E, true>
-		{
-		public:
-			static bool operator_bytes(ngl::serialize_bytes& ser, const E& adata)
-			{
-				return ser.bytes((int)adata);
-			}
-		};
-
 	public:
-		static bool push(ngl::serialize& ser, const T& adata)
+		static bool fun(serialize& ser, const E& adata)
 		{
-			return enum_operator_push<T, std::is_enum<T>::value>::operator_push(ser, adata);
+			return adata.push(ser);
 		}
+	};
 
-		static bool pop(ngl::unserialize& ser, T& adata)
+	template <typename E>
+	class enum_operator_push<E, true>
+	{
+	public:
+		static bool fun(serialize& ser, const E& adata)
 		{
-			return enum_operator_pop<T, std::is_enum<T>::value>::operator_pop(ser, adata);
+			return ser.push((int)adata);
 		}
+	};
 
-		static int bytes(ngl::serialize_bytes& abytes, const T& adata)
+	template <typename E, bool IS_ENUM>
+	class enum_operator_pop
+	{
+	public:
+		static bool fun(ngl::unserialize& ser, E& adata)
 		{
-			return enum_operator_bytes<T, std::is_enum<T>::value>::operator_bytes(abytes, adata);
+			return adata.pop(ser);
 		}
+	};
 
-		template <typename T1, typename ...ARG>
-		static bool push(ngl::serialize& ser, const T1& avalue, const ARG& ... arg)
+	template <typename E>
+	class enum_operator_pop<E, true>
+	{
+	public:
+		static bool fun(ngl::unserialize& ser, E& adata)
 		{
-			return push(ser, avalue) && push(ser, arg...);
+			int ltemp = 0;
+			if (ser.pop(ltemp))
+			{
+				adata = (E)ltemp;
+				return true;
+			}
+			return false;
 		}
+	};
 
-		template <typename T1, typename ...ARG>
-		static bool pop(ngl::serialize& ser, T1& avalue, ARG& ... arg)
+	template <typename E, bool IS_ENUM>
+	class enum_operator_bytes
+	{
+	public:
+		static bool fun(ngl::serialize_bytes& ser, const E& adata)
 		{
-			return pop(ser, avalue) && pop(ser, arg...);
+			return adata.bytes(ser);
 		}
+	};
 
-		template <typename T1, typename ...ARG>
-		static int bytes(ngl::serialize_bytes& abytes, const T1& adata, ARG& ... arg)
+	template <typename E>
+	class enum_operator_bytes<E, true>
+	{
+	public:
+		static bool fun(ngl::serialize_bytes& ser, const E& adata)
 		{
-			return bytes(abytes, adata) && bytes(abytes, arg...);
+			return ser.bytes((int)adata);
 		}
 	};
 
 	template <typename T>
 	bool serialize::push(const T& adata)
 	{
-		return enum_operator<T>::push(*this, adata);
+		return enum_operator_push<T, std::is_enum<T>::value>::fun(*this, adata);
 	}
 
 	struct forward
@@ -1734,13 +1690,13 @@ namespace ngl
 	template <typename T>
 	bool unserialize::pop(T& adata)
 	{
-		return ngl::enum_operator<T>::pop(*this, adata);
+		return enum_operator_pop<T, std::is_enum<T>::value>::fun(*this, adata);
 	}
 
 	template <typename T>
 	int serialize_bytes::bytes(const T& adata)
 	{
-		m_size += enum_operator<T>::bytes(*this, adata);
+		m_size += enum_operator_bytes<T, std::is_enum<T>::value>::fun(*this, adata);
 		return m_size;
 	}	
 }// namespace ngl

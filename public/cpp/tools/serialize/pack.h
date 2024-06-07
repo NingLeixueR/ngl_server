@@ -32,11 +32,11 @@ namespace ngl
 		pack_head		m_head;
 		segpack*		m_segpack		= nullptr;
 		bpool*			m_bpool			= nullptr;
-		////如果包来自网络 START///
+		/*[如果包来自网络 Start]*/
 		char*			m_buff			= nullptr;
 		int				m_len			= 0;
 		int				m_pos			= 0;
-		////如果包来自网络 FINISH///
+		/*[如果包来自网络 Finish]*/
 
 		~pack();
 

@@ -281,6 +281,20 @@ namespace ngl
 			return from;
 		}
 
+		template <typename T>
+		struct parm
+		{
+			T m_value;
+
+			parm(T avalue):
+				m_value(avalue)
+			{}
+
+			parm() = delete;
+			parm(const parm&) = delete;
+			parm& operator=(const parm&) = delete;
+		};
+
 #pragma region bytesorder
 		// # 是否是小端?
 		static constexpr bool islittle()
@@ -289,9 +303,12 @@ namespace ngl
 		}
 
 		// # 转换为小端
-		static int16_t transformlittle(int16_t avalues);
-		static int32_t transformlittle(int32_t& avalues);
-		static int64_t transformlittle(int64_t avalues);
+		static int16_t	transformlittle(parm<int16_t>& avalues);
+		static uint16_t transformlittle(parm<uint16_t>& avalues);
+		static int32_t	transformlittle(parm<int32_t>& avalues);
+		static uint32_t transformlittle(parm<uint32_t>& avalues);
+		static int64_t	transformlittle(parm<int64_t>& avalues);
+		static uint64_t	transformlittle(parm<uint64_t>& avalues);
 #pragma endregion
 
 #pragma region base64
@@ -481,14 +498,9 @@ namespace ngl
 	// 64位整型数据编码后占用1~10个字节。
 	// 在实际场景中小数字的使用率远远多于大数字，
 	// 因此通过Varint编码对于大部分场景都可以起到很好的压缩效果。
-	template <typename T>
-	struct varint_length_parm
-	{
-		T m_value;
-	};
-
-	static int varint_length(varint_length_parm<int32_t>& avalue);
-	static int varint_length(varint_length_parm<int64_t>& avalue);
+	
+	static int varint_length(parm<int32_t>& avalue);
+	static int varint_length(parm<int64_t>& avalue);
 
 	template <typename T>
 	struct varint_parm
