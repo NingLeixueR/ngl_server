@@ -31,7 +31,7 @@ public:
 		{
 			std::string lstr;
 			lstr += m_tit;
-			Ifndef* lIfndef = new Ifndef(lstr, item.first);
+			lstr += "#pragma once\n\n";
 			Include lInclude(lstr, item.second.m_include);
 			Define lDefine(lstr, item.second.m_define);
 			Inamespace* lpInamespace = new Inamespace(lstr);
@@ -46,7 +46,6 @@ public:
 				lStruct._h_protocol();
 			}
 			delete lpInamespace;
-			delete lIfndef;
 			ngl::writefile lfile(".\\idlfile\\" + item.first + ".h");
 			lfile.write(lstr);
 			//_h(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");

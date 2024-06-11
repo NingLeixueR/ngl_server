@@ -14,11 +14,24 @@
 #include <google/protobuf/dynamic_message.h>
 #include <google/protobuf/descriptor.h>
 
+#include "tools.h"
 #include "operator_file.h"
-#include "ttab_servers.h"
 #include "xmlprotocol.h"
+//#include "manage_csv.h"
+//#include "ttab_servers.h"
+//#include "manage_curl.h"
+//
+//#include "localtime.h"
 
-std::map<std::string, std::string> g_typearr = { {"bool", "bool"}, {"int32", "int32_t"}, {"int64", "int64_t"}, {"string", "const char*"}, {"float", "float"}, {"double", "double"}};
+std::map<std::string, std::string> g_typearr = 
+{ 
+    {"bool", "bool"}, 
+    {"int32", "int32_t"}, 
+    {"int64", "int64_t"}, 
+    {"string", "const char*"}, 
+    {"float", "float"}, 
+    {"double", "double"}
+};
 
 std::string type_name(const char* apackname, const google::protobuf::FieldDescriptor* fieldDescriptor)
 {
@@ -135,7 +148,6 @@ void foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int
         std::cerr << "Failed to import protobuf file descriptor" << std::endl;
         return;
     }
-
     foreachProtobufMessages(fileDescriptor, aprotocol, aname);
 }
 
@@ -262,50 +274,45 @@ void traverseProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, co
     traverseProtobufMessages(apackname, aname, fileDescriptor);
 }
 
-#include "manage_curl.h"
-#include "manage_csv.h"
-#include "localtime.h"
-
 int main(int argc, char** argv) 
 {
+    //if (argc > 1)
+    //{
+    //    if (std::string(argv[1]) == "push_config")
+    //    {
+    //        ngl::allcsv::load();
+    //        ngl::manage_csv<ngl::tab_servers>* mang = ngl::allcsv::get<ngl::manage_csv<ngl::tab_servers>>();
+    //        mang->foreach([](ngl::tab_servers& tab)
+    //            {
+    //               auto lhttp = ngl::manage_curl::make_http();
+    //                ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+    //                ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+    //                ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/push_server_config.php");
 
-    if (argc > 1)
-    {
-        if (std::string(argv[1]) == "push_config")
-        {
-            ngl::allcsv::load();
-            ngl::manage_csv<ngl::tab_servers>* mang = ngl::allcsv::get<ngl::manage_csv<ngl::tab_servers>>();
-            mang->foreach([](ngl::tab_servers& tab)
-                {
-                   auto lhttp = ngl::manage_curl::make_http();
-                    ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-                    ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-                    ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/push_server_config.php");
+    //                ngl::net_works const* lpstruct = ngl::ttab_servers::nworks(ngl::ENET_PROTOCOL::ENET_TCP, &tab);
+    //                if (lpstruct == nullptr)
+    //                    return;
 
-                    ngl::net_works const* lpstruct = ngl::ttab_servers::nworks(ngl::ENET_PROTOCOL::ENET_TCP, &tab);
-                    if (lpstruct == nullptr)
-                        return;
+    //                std::stringstream lstream;
+    //                //xx=xx&xx=xx&xx=xx
+    //                lstream
+    //                    << "id=" << tab.m_id << "&"
+    //                    << "area=" << tab.m_area << "&"
+    //                    << "name=" << tab.m_name << "&"
+    //                    << "ip=" << lpstruct->m_ip << "&"
+    //                    << "nip=" << lpstruct->m_nip << "&"
+    //                    << "port=" << lpstruct->m_port << "&"
+    //                    << "type=" << tab.m_type;
 
-                    std::stringstream lstream;
-                    //xx=xx&xx=xx&xx=xx
-                    lstream
-                        << "id=" << tab.m_id << "&"
-                        << "area=" << tab.m_area << "&"
-                        << "name=" << tab.m_name << "&"
-                        << "ip=" << lpstruct->m_ip << "&"
-                        << "nip=" << lpstruct->m_nip << "&"
-                        << "port=" << lpstruct->m_port << "&"
-                        << "type=" << tab.m_type;
-
-                    ngl::manage_curl::set_param(lhttp, lstream.str());
-                    ngl::manage_curl::getInstance().send(lhttp);
-                });
-            while (1)
-            {
-                ngl::sleep::seconds(1);
-            }
-        }
-    }
+    //                ngl::manage_curl::set_param(lhttp, lstream.str());
+    //                ngl::manage_curl::getInstance().send(lhttp);
+    //            });
+    //        while (1)
+    //        {
+    //            ngl::sleep::seconds(1);
+    //        }
+    //    }
+    //}
 
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);

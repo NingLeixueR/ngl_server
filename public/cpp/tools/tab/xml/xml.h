@@ -135,8 +135,6 @@ namespace ngl
 
 		static bool read_db_arg(dbarg& m_dbarg);
 
-		static void read_net_tab(const char* akey, const char* akey2, std::set<NODE_TYPE>& anet);
-
 		static void loaddb();
 
 		static void loadpublic();

@@ -51,28 +51,6 @@ struct DefVec
 	std::vector<Data> dataVec;			/* 类的数据 **/
 };
 
-class Ifndef
-{
-	std::string& m_str;
-	std::string m_def;
-	
-public:
-	Ifndef(std::string& astr, string def) :
-		m_str(astr),
-		m_def(def)
-	{
-		std::stringstream m_stream;
-		m_stream << "#ifndef _" << m_def << "_H_\n";
-		m_stream << "#define _" << m_def << "_H_\n";
-		m_str += m_stream.str();
-	}
-	~Ifndef()
-	{
-		std::stringstream m_stream;
-		m_stream << "#endif //_" << m_def << "_H_\n";
-		m_str += m_stream.str();
-	}
-};
 
 class Inamespace
 {
@@ -254,7 +232,7 @@ public:
 
 		//## 转换为utf8
 		std::string lstr;
-		ngl::conversion::to_utf8(lstreamcsv.str(), lstr);
+		ngl::tools::to_utf8(lstreamcsv.str(), lstr);
 
 		lfilecsv.write(lstr.c_str());
 	}
@@ -577,7 +555,7 @@ public:
 				ldataStr.m_values_init = awhat[5];
 				ldataStr.zhushi = awhat[6];
 
-				ngl::regular::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
+				ngl::tools::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
 						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1].str().c_str());
 					});
