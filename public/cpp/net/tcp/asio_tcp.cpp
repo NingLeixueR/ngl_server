@@ -8,7 +8,7 @@ namespace ngl
 {
 	struct asio_tcp::impl_asio_tcp
 	{
-		asio::ip::tcp::acceptor*		m_acceptor;
+		asio::ip::tcp::acceptor*			m_acceptor;
 		i16_port							m_port;
 		tcp_callback						m_fun;
 		tcp_closecallback					m_closefun;
@@ -34,7 +34,8 @@ namespace ngl
 			m_sendfinishfun(asendfinishfun),
 			m_port(aport),
 			m_service_io_(athread, 10240),
-			m_sessionid(aindex << 24)
+			m_sessionid(aindex << 24),
+			m_acceptor(nullptr)
 		{
 			asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
 			m_acceptor = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
@@ -55,7 +56,8 @@ namespace ngl
 			m_sendfinishfun(asendfinishfun),
 			m_port(-1),
 			m_service_io_(athread + 1, 10240),
-			m_sessionid(aindex << 24)
+			m_sessionid(aindex << 24),
+			m_acceptor(nullptr)
 		{
 		}
 

@@ -27,6 +27,10 @@ namespace ngl
 
 	class asio_kcp
 	{
+		asio_kcp() = delete;
+		asio_kcp(const asio_kcp&) = delete;
+		asio_kcp& operator=(const asio_kcp&) = delete;
+
 	public:
 		struct impl_asio_kcp;
 	private:		

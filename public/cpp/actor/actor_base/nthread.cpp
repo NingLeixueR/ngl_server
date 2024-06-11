@@ -25,10 +25,10 @@ namespace ngl
 			return m_isactivity;
 		}
 
-		inline void push(ptractor& abase)
+		inline void push(ptractor& aactor)
 		{
 			monopoly_shared_lock(m_mutex);
-			m_actor = abase;
+			m_actor = aactor;
 			m_isactivity = false;
 			m_sem.post();
 		}
@@ -72,9 +72,9 @@ namespace ngl
 		return m_impl_actor_thread()->isactivity();
 	}
 
-	void nthread::push(ptractor abase)
+	void nthread::push(ptractor aactor)
 	{
-		m_impl_actor_thread()->push(abase);
+		m_impl_actor_thread()->push(aactor);
 	}
 
 	void nthread::run()

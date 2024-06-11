@@ -54,6 +54,9 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	class nrfun : public nrfunbase
 	{
+		nrfun(const nrfun&) = delete;
+		nrfun& operator=(const nrfun&) = delete;
+
 		nrfun() {}
 	public:
 		static nrfun<TDerived, TYPE>& instance()

@@ -23,12 +23,12 @@ namespace ngl
 		inline bool socket_recv(int asessionid, int aislanip, const char* abuff, uint32_t abufflen)
 		{
 			if (abuff == nullptr && abufflen == 0)
-			{//// --- 连接被异常中断 net -> application
+			{// # 连接被异常中断 net -> application
 				close(asessionid);
 				return true;
 			}
 			if (m_outernet == false)
-			{// 不允许外网访问
+			{// # 不允许外网访问
 				if (aislanip == false)
 					return false;//连接不是内网
 			}

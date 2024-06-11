@@ -18,6 +18,9 @@ namespace ngl
 {
 	class sendpack_t
 	{
+		sendpack_t() = delete;
+		sendpack_t(const sendpack_t&) = delete;
+		sendpack_t& operator=(const sendpack_t&) = delete;
 	public:
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(Y&)
@@ -61,6 +64,9 @@ namespace ngl
 
 	class net_protocol
 	{
+		net_protocol() = delete;
+		net_protocol(const net_protocol&) = delete;
+		net_protocol& operator=(const net_protocol&) = delete;
 	protected:
 		struct impl_net_protocol;
 		ngl::impl<impl_net_protocol>	m_impl_net_protocol;
@@ -74,37 +80,37 @@ namespace ngl
 
 		bpool& get_pool();
 
-		//## 初始化net_protocol
-		//## aport			i16_port		端口号
-		//## athreadnum		i32_threadsize 	线程数
-		//## aouternet		bool			是否允许非内网主动连接
+		// # 初始化net_protocol
+		// # aport			i16_port		端口号
+		// # athreadnum		i32_threadsize 	线程数
+		// # aouternet		bool			是否允许非内网主动连接
 		virtual bool init(i16_port aport, i32_threadsize athreadnum, bool aouternet);
 
-		//## 关闭socket连接以及加载的数据
-		//## 通知上层应用
+		// # 关闭socket连接以及加载的数据
+		// # 通知上层应用
 		virtual void close(i32_sessionid asession);
 
-		//## 逻辑层主动关闭连接(这样就不需要通知上层应用)
+		// # 逻辑层主动关闭连接(这样就不需要通知上层应用)
 		virtual void close_net(i32_sessionid asession) = 0;
 
-		//## 发送消息
+		// # 发送消息
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<pack>& lpack) = 0;
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack) = 0;
 
 		//## 服务器是否存在此session id
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
-		//## 获取线程数量
+		// # 获取线程数量
 		int socketthreadnum();
 
-		//## 获取监听端口号
+		// # 获取监听端口号
 		int port();
 
-		//## 发送pack
+		// # 发送pack
 		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);
 		bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
-		//## 向某个服务器发送pack
+		// # 向某个服务器发送pack
 		bool sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		virtual void set_close(
@@ -127,7 +133,7 @@ namespace ngl
 			, bool areconnection
 		);
 
-		//## 发送消息
+		// # 发送消息
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
@@ -149,9 +155,9 @@ namespace ngl
 		template <typename T>
 		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
 
-		//## 给一组sesion发送消息
-		// key: session values:aactorid
-		// std::map<uint32_t, uint32_t>& asession
+		// # 给一组sesion发送消息
+		// # key: session values:aactorid
+		// # std::map<uint32_t, uint32_t>& asession
 		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
 	private:
 		template <typename TSTL>

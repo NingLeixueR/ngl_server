@@ -10,6 +10,10 @@ namespace ngl
 	template <typename TDerived, typename T>
 	struct nroleitems
 	{
+		nroleitems() = delete;
+		nroleitems(const nroleitems&) = delete;
+		nroleitems& operator=(const nroleitems&) = delete;
+
 		static std::map<i64_actorid, T> m_roleitem;
 	public:
 		static void init(const std::function<void(std::map<i64_actorid, T>&, pbdb::db_brief&)>& afun)

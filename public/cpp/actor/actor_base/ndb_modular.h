@@ -112,6 +112,7 @@ namespace ngl
 			return (TACTOR*)m_actor; 
 		}
 
+#pragma region log
 		std::shared_ptr<np_actor_logitem> log_debug(
 			const std::source_location& asource = std::source_location::current()
 		)
@@ -167,6 +168,7 @@ namespace ngl
 		{
 			return actor()->log_error_net(asource);
 		}
+#pragma endregion
 
 		void create()
 		{

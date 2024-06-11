@@ -149,7 +149,11 @@ namespace ngl
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-			log_error()->print("actor_dbclient loaddb [{}] [{}]", dtype_name(type_ndbclient), aid);
+			log_error()->print(
+				"actor_dbclient loaddb [{}] [{}]", 
+				dtype_name(type_ndbclient), 
+				aid
+			);
 		}
 
 		nguid										m_id;
@@ -215,10 +219,11 @@ namespace ngl
 		{
 			Try
 			{
-				m_actor = aactor;
-				m_manage_dbclient = amdb;
-				m_id = aid;
-				m_load = false;
+				m_actor				= aactor;
+				m_manage_dbclient	= amdb;
+				m_id				= aid;
+				m_load				= false;
+
 				Assert(m_tab = ttab_dbload::get_tabdb<TDBTAB>(); m_tab != nullptr);
 
 				static bool m_register = false;

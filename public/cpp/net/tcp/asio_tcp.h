@@ -15,6 +15,9 @@ namespace ngl
 
 	class asio_tcp
 	{
+		asio_tcp() = delete;
+		asio_tcp(const asio_tcp&) = delete;
+		asio_tcp& operator=(const asio_tcp&) = delete;
 	public:
 		friend class service_tcp;
 

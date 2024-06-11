@@ -41,6 +41,9 @@ namespace ngl
 
 	class make_timerparm
 	{
+		make_timerparm() = delete;
+		make_timerparm(const make_timerparm&) = delete;
+		make_timerparm& operator=(const make_timerparm&) = delete;
 	public:
 		static time_t month_ms(time_t anow, int amonthday/*1-31*/, int ahour, int amin, int asec)
 		{
@@ -188,6 +191,9 @@ namespace ngl
 
 	class ntimer
 	{
+		ntimer() = delete;
+		ntimer(const ntimer&) = delete;
+		ntimer& operator=(const ntimer&) = delete;
 	public:
 		// 抛出一个定时器
 		static int addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm);

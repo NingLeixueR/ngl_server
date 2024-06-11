@@ -8,6 +8,8 @@ namespace ngl
 {
 	class node_pack
 	{
+		node_pack() = delete;
+
 		std::shared_ptr<pack>	m_pack;
 		std::shared_ptr<void>	m_packvoid;
 		bool					m_ispack;
