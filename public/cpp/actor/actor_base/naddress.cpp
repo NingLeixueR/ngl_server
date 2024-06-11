@@ -38,7 +38,7 @@ namespace ngl
 		static void print_address()
 		{
 			auto lstream = log_error();
-			(*lstream) << "############################" << std::endl;
+			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
 			{
 				(*lstream)
@@ -49,7 +49,7 @@ namespace ngl
 					<< "]"
 					<< std::endl;
 			}
-			(*lstream) << "############################" << std::endl;
+			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			(*lstream).print("");
 		}
 
@@ -85,7 +85,6 @@ namespace ngl
 			m_actorserver.erase(lguid);
 		}
 
-		// 设置session
 		static void set_session(i32_serverid aserverid, i32_sessionid asession)
 		{
 			Try
@@ -96,7 +95,6 @@ namespace ngl
 			}Catch;
 		}
 
-		// 获取session
 		static i32_sessionid get_session(i32_serverid aserverid)
 		{
 			Try
@@ -108,7 +106,6 @@ namespace ngl
 			return -1;
 		}
 
-		// 获取server id
 		static i32_serverid get_server(const nguid& aguid)
 		{
 			Try
@@ -225,32 +222,27 @@ namespace ngl
 		//#endif
 	}
 
-	// 删除actor
 	void naddress::actor_del(i64_actorid adataid)
 	{
 		impl_actor_address::actor_del(adataid);
 	}
 
-	// 删除一组actor
 	void naddress::actor_del(const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 			actor_del(item);
 	}
 
-	// 设置session
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)
 	{
 		impl_actor_address::set_session(aserverid, asession);
 	}
 
-	// 获取session
 	i32_sessionid naddress::get_session(i32_serverid aserverid)
 	{
 		return impl_actor_address::get_session(aserverid);
 	}
 
-	// 获取server id
 	i32_serverid naddress::get_server(const nguid& aguid)
 	{
 		return impl_actor_address::get_server(aguid);

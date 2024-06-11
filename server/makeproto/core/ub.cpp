@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-06-07 11:47:30
+// 创建时间 24-06-11 14:49:40
 #include "account.cpp"
 #include "activity.cpp"
 #include "activity_drawcompliance.cpp"
@@ -89,7 +89,6 @@
 #include "nguid.cpp"
 #include "nlog.cpp"
 #include "notice.cpp"
-#include "notify.cpp"
 #include "nprotocol.cpp"
 #include "nrfun.cpp"
 #include "nthread.cpp"

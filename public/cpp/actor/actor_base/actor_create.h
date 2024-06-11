@@ -32,11 +32,11 @@ namespace ngl
 
 		static i64_actorid actorid(i32_actordataid adataid);
 
-		// 在指定[Server]上创建[Actor]
+		// # 在指定[Server]上创建[Actor]
 		template <typename T>
 		static void switch_process_send(std::shared_ptr<np_actorswitch_process<T>>& pro)
 		{
-			// #### 2 如果是actor_role发给gateway
+			// # 2 如果是actor_role发给gateway
 			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(pro->m_actor);
 			if (ltype == ENUM_ACTOR::ACTOR_ROLE)
 			{
@@ -45,7 +45,7 @@ namespace ngl
 				i64_actorid lactorgatewayid = nguid::make(ACTOR_GATEWAY, tab_self_area, lp->m_gatewayid);
 				actor_base::static_send_actor(lactorgatewayid, nguid::make(), pro);
 			}
-			//// #### 3 发给去的进程
+			// # 3 发给去的进程
 			i64_actorid lactortoserverid = actor_create::actorid(pro->m_toserverid);
 			actor_base::static_send_actor(lactortoserverid, nguid::make(), pro);
 		}
@@ -66,7 +66,7 @@ namespace ngl
 
 			if (aserverid > 0)
 			{
-				// #### 1 发给actor目前所在的进程
+				// # 1 发给actor目前所在的进程
 				i64_actorid lcreateactor = actor_create::actorid(aserverid);
 				actor_base::static_send_actor(lcreateactor, nguid::make(), pro);
 			}

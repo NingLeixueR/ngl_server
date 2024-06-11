@@ -81,7 +81,7 @@ namespace ngl
 			}Catch;
 		}
 
-		// 加载表中的所有数据
+		// # 加载表中的所有数据
 		static void loadall(const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network) 
@@ -115,7 +115,7 @@ namespace ngl
 			log_info()->print("loadall[{}]", TDBTAB().descriptor()->full_name());
 		}
 
-		// 加载表中的指定数据
+		// # 加载表中的指定数据
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
 			if (aid == -1)
@@ -124,7 +124,7 @@ namespace ngl
 				db_manage::select<TDBTAB>::fun(actor_dbpool::get(athreadid), aid);
 		}
 
-		// 加载数据 ：同步方式
+		// # 加载数据 ：同步方式
 		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
@@ -161,7 +161,7 @@ namespace ngl
 			}
 		}
 
-		// 异步保存数据  将需要保存的数据添加到缓存保存队列
+		// # 异步保存数据  将需要保存的数据添加到缓存保存队列
 		static void save(i32_threadid athreadid, const TDBTAB& adata)
 		{
 			int64_t lid = adata.m_id();
@@ -170,7 +170,7 @@ namespace ngl
 			inst<enum_clist_save>().push(lid);
 		}
 
-		// 异步删除数据  将需要删除的数据添加到缓存保存队列
+		// # 异步删除数据  将需要删除的数据添加到缓存保存队列
 		static void del(i32_threadid athreadid, i64_actorid aid)
 		{
 			m_idset.erase(aid);

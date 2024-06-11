@@ -8,6 +8,9 @@ namespace ngl
 {
 	class ndb_component
 	{
+		ndb_component() = delete;
+		ndb_component(const ndb_component&) = delete;
+		ndb_component& operator=(const ndb_component&) = delete;
 	protected:
 		actor_base*				m_actor;
 		i64_actorid				m_id;
@@ -25,13 +28,15 @@ namespace ngl
 		void				init();
 		void				create();
 		ndbclient_base*		dbclientbase();
-		// 当数据全部加载后调用
+		// # 当数据全部加载后调用
 		virtual void		init_data();
 	};
 
 	template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
 	class ndb_modular : public ndb_component
 	{
+		ndb_modular(const ndb_modular&) = delete;
+		ndb_modular& operator=(const ndb_modular&) = delete;
 	protected:
 		ndbclient<ENUM, TDATA, TACTOR> m_data;
 

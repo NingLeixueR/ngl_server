@@ -40,7 +40,6 @@ namespace ngl
 		{
 			m_actorfun[PTYPE] = &ninst<TDerived, PTYPE>();
 		}
-
 	public:
 		template <typename TDerived>
 		void init_rfun()
@@ -105,7 +104,7 @@ namespace ngl
 		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
 
 		// # 注册actor成员函数(可以是非handle)
-		template <EPROTOCOL_TYPE TYPE , typename TDerived , typename T>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor(bool aisload, T afun)
 		{
 			ninst<TDerived, TYPE>().rfun(afun, aisload);
@@ -181,12 +180,15 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
+				ninst<TDerived, TYPE>().
+					rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
 			}
 		};
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
-		using type_register_recvforward_handle = template_arg<actor::register_recvforward_handle<TYPE, TDerived>>;
+		using type_register_recvforward_handle = template_arg<
+			actor::register_recvforward_handle<TYPE, TDerived>
+		>;
 
 		//# 服务于二次转发
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
@@ -205,8 +207,9 @@ namespace ngl
 		};
 
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
-		using type_register_recvforward_handle2 = template_arg<actor::register_recvforward_handle2<TYPE, ACTOR, TDerived>>;
-
+		using type_register_recvforward_handle2 = template_arg<
+			actor::register_recvforward_handle2<TYPE, ACTOR, TDerived>
+		>;
 #pragma endregion 
 	public:
 		actor() = delete;

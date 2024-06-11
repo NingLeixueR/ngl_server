@@ -56,7 +56,6 @@ namespace ngl
 		actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
-
 		//# 获取actor_manage_dbclient实例
 		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
 		ptr_manage_dbc& get_actor_manage_dbclient();
