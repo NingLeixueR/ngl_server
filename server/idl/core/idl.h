@@ -24,6 +24,7 @@ struct Data
 	std::string zhushi;				/* 注释 **/
 	std::string m_typestr;			/* 数据库需要 给string添加长度 **/
 	int m_index = 0;
+	std::string m_load;
 
 	bool operator<(const Data& ar)
 	{
@@ -201,6 +202,8 @@ public:
 		astream << "	def_portocol("<< astruct.name;
 		for (Data item_ : astruct.dataVec)
 		{
+			if (item_.m_load == "n")
+				continue;
 			astream << ", " << item_.m_values_name;
 		}
 		astream << ")" << std::endl;
@@ -239,13 +242,24 @@ public:
 
 	void _h_member(std::stringstream& astream, StructVec& astruct)
 	{
-		astream << "/*********************************/" << std::endl;
+		astream << "\t/*********************************/" << std::endl;
 		for (Data item_ : astruct.dataVec)
 		{
 			item_.m_type = get_type(item_);
-			astream << "	" << item_.m_type << "\t\t" << item_.m_values_name << ";" << "\t\t" << item_.zhushi << std::endl;
+			if (item_.m_load == "n")
+			{
+				continue;
+			}
+			astream
+				<< std::format(
+					"\t{:32} {:32}; {}"
+					,item_.m_type
+					, item_.m_values_name
+					, item_.zhushi
+				) 
+				<< std::endl;
 		}
-		astream << "/*********************************/" << std::endl;
+		astream << "\t/*********************************/" << std::endl;
 
 		astream << "	" << astruct.name << "();" << std::endl;
 
@@ -261,14 +275,35 @@ public:
 			_h_member(lstream, item);
 			_h_serialize(lstream, item);
 			lstream << "	// csv相关" << std::endl;
-			lstream << "	def_rcsv(";
+			lstream << "	inline bool rcsv(ngl::csvpair& apair)" << std::endl;
+			lstream << "	{" << std::endl;
 			for (int i = 0; i < item.dataVec.size(); ++i)
 			{
-				if (i != 0)
-					lstream << ",";
-				lstream << item.dataVec[i].m_values_name;
+				if (item.dataVec[i].m_load == "n")
+				{
+					lstream << std::format("		{} l{};"
+						, get_type(item.dataVec[i])
+						, item.dataVec[i].m_values_name
+					) << std::endl;
+				}
 			}
-			lstream << ")"<< std::endl;
+			lstream << "		def_rcsv2(";
+			for (int i = 0, index = 0; i < item.dataVec.size(); ++i)
+			{
+				if (index != 0)
+					lstream << ",";
+				if (item.dataVec[i].m_load == "y" || item.dataVec[i].m_load == "")
+				{
+					lstream << item.dataVec[i].m_values_name;
+					++index;
+				}
+				else
+				{
+					lstream << "l" << item.dataVec[i].m_values_name;
+				}
+			}
+			lstream << ");"<< std::endl;
+			lstream << "	}" << std::endl;
 			lstream << "};\n";
 		}
 		m_str += lstream.str();
@@ -559,7 +594,10 @@ public:
 					{
 						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1].str().c_str());
 					});
-
+				ngl::tools::smatch("load:([yn]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
+					{
+						ldataStr.m_load = awhat[1].str().c_str();
+					});
 
 				lstructString.dataVec.push_back(ldataStr);
 			});
@@ -584,6 +622,10 @@ public:
 				ngl::tools::smatch("index:([0-9]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
 					{
 						ldataStr.m_index = ngl::tools::lexical_cast<int32_t>(awhat[1].str().c_str());
+					});
+				ngl::tools::smatch("load:([yn]+)", ldataStr.zhushi, [&ldataStr](std::smatch& awhat)
+					{
+						ldataStr.m_load = awhat[1].str().c_str();
 					});
 
 
