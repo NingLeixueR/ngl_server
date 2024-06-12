@@ -200,7 +200,6 @@ namespace ngl
 			i64_actorid aactorid, 
 			i64_actorid arequestactorid
 		);
-
 #pragma region network_kcp
 
 		//# 设置udp.kcp session
@@ -240,7 +239,7 @@ namespace ngl
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
 #pragma endregion
 
-#pragma endregion // network_kcp
+#pragma endregion //network_kcp
 
 public:
 		template <typename T>
@@ -502,7 +501,7 @@ private:
 			{
 				send_client(*lpair.first, adata);
 			}
-			return;
+			return true;
 		}
 #pragma endregion
 		// 发送数据到指定的actor
