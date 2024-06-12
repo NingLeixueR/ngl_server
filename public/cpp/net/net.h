@@ -238,15 +238,16 @@ namespace ngl
 	template <typename T>
 	bool actor_base::sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex/* = 0*/)
 	{
-		if (m_kcpsession == -1)
+		i32_session lkcpsession = get_kcpssion();
+		if (lkcpsession == -1)
 		{
-			log_error()->print("m_kcpsession = -1, is_single() == [{}]", is_single());
+			log_error()->print("get_kcpssion() = -1, is_single() == [{}]", is_single());
 			return false;
 		}
 		if (iskcp() == false)
 			return false;
 
-		nets::kcp(asystemindex)->send(m_kcpsession, adata, aactorid, id_guid());
+		nets::kcp(asystemindex)->send(lkcpsession, adata, aactorid, id_guid());
 		return true;
 	}
 

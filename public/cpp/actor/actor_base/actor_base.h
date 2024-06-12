@@ -203,10 +203,11 @@ namespace ngl
 
 #pragma region network_kcp
 
-		i32_session m_kcpsession = -1;
-
 		//# 设置udp.kcp session
 		void set_kcpssion(i32_session asession);
+
+		//# 获取udp.kcp session
+		i32_session get_kcpssion();
 
 		//# 是否支持udp.kcp
 		static bool iskcp();

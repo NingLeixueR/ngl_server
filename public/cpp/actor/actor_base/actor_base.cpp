@@ -189,8 +189,12 @@ namespace ngl
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient;			// dbclient组件管理器
 		bool										m_isload;			// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
+
+		i32_session									m_kcpsession;
+
 		
-		impl_actor_base(actor_base* aactor, const actorparmbase& aparm)
+		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
+			m_kcpsession(-1)
 		{
 			m_guid		= nguid(aparm.m_type, aparm.m_area, aparm.m_id);
 			m_dbclient	= nullptr;
@@ -205,47 +209,47 @@ namespace ngl
 			}
 		}
 
-		void erase_actor_byid()
+		inline void erase_actor_byid()
 		{
 			actor_manage::getInstance().erase_actor_byid(m_guid);
 		}
 
-		bool is_single()
+		inline bool is_single()
 		{
 			return nguid::is_single(m_guid.type());
 		}
 
-		nguid& guid()
+		inline nguid& guid()
 		{
 			return m_guid;
 		}
 
-		i64_actorid id_guid()
+		inline i64_actorid id_guid()
 		{
 			return (i64_actorid)(m_guid);
 		}
 
-		i32_actordataid id()
+		inline i32_actordataid id()
 		{
 			return m_guid.actordataid();
 		}
 
-		i16_area area()
+		inline i16_area area()
 		{
 			return m_guid.area();
 		}
 
-		ENUM_ACTOR type()
+		inline ENUM_ACTOR type()
 		{
 			return m_guid.type();
 		}
 
-		bool isloadfinish()
+		inline bool isloadfinish()
 		{
 			return m_dbclient == nullptr || m_dbclient->isloadfinish();
 		}
 
-		void add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
+		inline void add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
 		{
 			Try
 			{
@@ -254,27 +258,27 @@ namespace ngl
 			}Catch;
 		}
 
-		void save()
+		inline void save()
 		{
 			m_dbclient->save();
 		}
 
-		std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient()
+		inline std::unique_ptr<actor_manage_dbclient>& get_actor_manage_dbclient()
 		{
 			return m_dbclient;
 		}
 
-		bool isload()
+		inline bool isload()
 		{
 			return m_isload;
 		}
 
-		void set_db_component(ndb_component* acomponent)
+		inline void set_db_component(ndb_component* acomponent)
 		{
 			m_dbcomponent[acomponent->type()] = acomponent;
 		}
 
-		void db_component_init_data()
+		inline void db_component_init_data()
 		{
 			for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 			{
@@ -282,7 +286,7 @@ namespace ngl
 			}
 		}
 
-		void init_db_component(bool acreate)
+		inline void init_db_component(bool acreate)
 		{
 			if (acreate)
 			{
@@ -298,6 +302,16 @@ namespace ngl
 					item.second->init();
 				}
 			}
+		}
+
+		void set_kcpssion(i32_session asession)
+		{
+			m_kcpsession = asession;
+		}
+
+		i32_session get_kcpssion()
+		{
+			return m_kcpsession;
 		}
 	};
 
@@ -474,7 +488,12 @@ namespace ngl
 
 	void actor_base::set_kcpssion(i32_session asession)
 	{
-		m_kcpsession = asession;
+		m_impl_actor_base()->set_kcpssion(asession);
+	}
+
+	i32_session actor_base::get_kcpssion()
+	{
+		return m_impl_actor_base()->get_kcpssion();
 	}
 
 	bool actor_base::iskcp()
@@ -498,8 +517,8 @@ namespace ngl
 		
 		nets::kcp(anum)->connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
 			{
-				m_kcpsession = asession;
-				log_error()->print("kcp m_kcpsession = {}", m_kcpsession);
+				set_kcpssion(asession);
+				log_error()->print("kcp m_kcpsession = {}", get_kcpssion());
 			});
 		return true;
 	}
