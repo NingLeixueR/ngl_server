@@ -240,7 +240,7 @@ namespace ngl
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
 #pragma endregion
 
-#pragma endregion
+#pragma endregion // network_kcp
 
 public:
 		template <typename T>
