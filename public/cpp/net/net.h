@@ -209,7 +209,7 @@ namespace ngl
 
 
 	template <typename T>
-	bool actor_base::sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
+	bool actor_base::sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
 		i32_session lsession = server_session::get_sessionid(aserverid);
 		if (lsession == -1)
@@ -218,7 +218,7 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool actor_base::sendpackbysession(i32_sessionid asession, std::shared_ptr<pack>& apack)
+	bool actor_base::sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack)
 	{
 		return nets::sendpack(asession, apack);
 	}

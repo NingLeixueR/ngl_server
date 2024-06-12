@@ -106,13 +106,90 @@ namespace ngl
 		}
 	}
 
+	struct actor_base::impl_group
+	{
+		struct ginfo
+		{
+			ENUM_ACTOR				m_actortype;
+			std::set<i64_actorid>	m_actorlist;
+		};
+		std::map<int, ginfo>		m_group;
+		int							m_currentoffset;
+		actor_base*					m_actor;
+	public:
+		inline impl_group(actor_base* aactor):
+			m_currentoffset(0),
+			m_actor(aactor)
+		{}
+
+		inline int create_group(ENUM_ACTOR aactortype)
+		{
+			ginfo& linfo = m_group[++m_currentoffset];
+			linfo.m_actortype = aactortype;
+			linfo.m_actorlist.clear();
+			return m_currentoffset;
+		}
+
+		inline void remove_group(int agroupid)
+		{
+			m_group.erase(agroupid);
+		}
+
+		inline bool add_group_member(int agroupid, i64_actorid amember)
+		{
+			ginfo* lginfo = tools::findmap(m_group, agroupid);
+			if (lginfo == nullptr)
+			{
+				m_actor->log_error()->print(
+					"add_group_member not find groupid[{}]",
+					agroupid
+				);
+				return false;
+			}
+			nguid lguid(amember);
+			ENUM_ACTOR ltype = lginfo->m_actortype;
+			if (ltype != ACTOR_NONE)
+			{
+				if (lginfo->m_actortype != lguid.type())
+				{
+					m_actor->log_error()->print("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
+						, agroupid
+						, (int)ltype
+						, (int)lguid.type()
+					);
+					return false;
+				}
+			}
+			lginfo->m_actorlist.insert(amember);
+			return true;
+		}
+
+		inline void remove_group_member(int agroupid, i64_actorid amember)
+		{
+			ginfo* lginfo = tools::findmap(m_group, agroupid);
+			if (lginfo == nullptr)
+				return;
+			lginfo->m_actorlist.erase(amember);
+		}
+
+		inline bool get_group(int agroupid, std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair)
+		{
+			ginfo* lginfo = tools::findmap(m_group, agroupid);
+			if (lginfo == nullptr)
+				return false;
+			apair.first = &lginfo->m_actorlist;
+			apair.second = lginfo->m_actortype;
+			return true;
+		}
+	};
+
 	struct actor_base::impl_actor_base
 	{
 		nguid										m_guid;				// actor guid
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient;			// dbclient组件管理器
 		bool										m_isload;			// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
-
+		
 		impl_actor_base(actor_base* aactor, const actorparmbase& aparm)
 		{
 			m_guid		= nguid(aparm.m_type, aparm.m_area, aparm.m_id);
@@ -233,6 +310,7 @@ namespace ngl
 		m_isbroadcast(false)
 	{
 		m_impl_actor_base.make_unique(this, aparm);
+		m_impl_group.make_unique(this);
 	}
 
 	void actor_base::erase_actor_byid()
@@ -369,56 +447,29 @@ namespace ngl
 		m_isbroadcast = aisbroadcast;
 	}
 
-	// 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
-	int actor_base::add_group(ENUM_ACTOR aactortype/* = ACTOR_NONE*/)
+	int actor_base::create_group(ENUM_ACTOR aactortype)
 	{
-		group_info& linfo = m_group[++m_currentoffset];
-		linfo.m_actortype = aactortype;
-		linfo.m_actorlist.clear();
-		return m_currentoffset;
+		return m_impl_group()->create_group(aactortype);
 	}
 
-	// 移除一个分组
 	void actor_base::remove_group(int agroupid)
 	{
-		m_group.erase(agroupid);
+		m_impl_group()->remove_group(agroupid);
 	}
 
-	// 将成员加入某个群发分组
 	bool actor_base::add_group_member(int agroupid, i64_actorid amember)
 	{
-		auto itor = m_group.find(agroupid);
-		if (itor == m_group.end())
-		{
-			log_error()->print("add_group_member not find groupid[{}]", agroupid);
-			return false;
-		}
-
-		nguid lguid(amember);
-		ENUM_ACTOR ltype = itor->second.m_actortype;
-		if (ltype != ACTOR_NONE)
-		{
-			if (itor->second.m_actortype != lguid.type())
-			{
-				log_error()->print("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
-					, agroupid
-					, (int)ltype
-					, (int)lguid.type()
-				);
-				return false;
-			}
-		}
-		itor->second.m_actorlist.insert(amember);
-		return true;
+		return m_impl_group()->add_group_member(agroupid, amember);
 	}
 
-	// 将成员从某个群发分组中移除
 	void actor_base::remove_group_member(int agroupid, i64_actorid amember)
 	{
-		auto itor = m_group.find(agroupid);
-		if (itor == m_group.end())
-			return;
-		itor->second.m_actorlist.erase(amember);
+		m_impl_group()->remove_group_member(agroupid, amember);
+	}
+
+	bool actor_base::get_group(int agroupid, std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair)
+	{
+		return m_impl_group()->get_group(agroupid, apair);
 	}
 
 	void actor_base::set_kcpssion(i32_session asession)

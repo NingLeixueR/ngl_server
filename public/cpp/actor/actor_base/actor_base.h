@@ -49,7 +49,9 @@ namespace ngl
 	{
 	protected:
 		struct impl_actor_base;
-		ngl::impl<impl_actor_base> m_impl_actor_base;
+		struct impl_group;
+		ngl::impl<impl_actor_base>	m_impl_actor_base;
+		ngl::impl<impl_group>		m_impl_group;
 	protected:
 		actor_base() = delete;
 		actor_base(const actor_base&) = delete;
@@ -79,11 +81,10 @@ namespace ngl
 		void			add_dbclient(ndbclient_base* adbclient, i64_actorid aid);
 
 		//# 向actor_db发送数据请求后的返回
-		template <
-			pbdb::ENUM_DB DBTYPE		// 数据类型
-			, typename		TDBTAB		// 数据表
-			, typename		TACTOR		// 持有该数据表的actor
-		>
+		//# DBTYPE 数据类型
+		//# TDBTAB 数据表
+		//# TACTOR 持有该数据表的actor
+		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 		bool handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
 
@@ -159,27 +160,46 @@ namespace ngl
 #pragma region network_strat
 		//# 生成包
 		template <typename T>
-		static std::shared_ptr<pack> net_pack(T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		static std::shared_ptr<pack> net_pack(
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		);
 
 		//# 发送数据到指定服务器
 		template <typename T>
-		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		static bool send_server(
+			i32_serverid aserverid, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		);
 
 		//# 向一组服务器发送数据
 		template <typename T>
-		static bool send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		static bool send_server(
+			const std::vector<i32_serverid>& aserverid, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		);
 
 		//# 发送pack到指定服务器
 		template <typename T>
-		static bool sendpacktoserver(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+		static bool sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		//# 给指定连接发送数据
 		template <typename T>
-		static bool sendpackbysession(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		static bool sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack);
 
 		//# 给指定连接发送数据
 		template <typename T>
-		static bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		static bool send(
+			i32_sessionid asession, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		);
 
 #pragma region network_kcp
 
@@ -270,7 +290,11 @@ private:
 
 		//# 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
-		static void send_client(i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata)
+		static void send_client(
+			i32_gatewayid agatewayid, 
+			i64_actorid aid, 
+			std::shared_ptr<T>& adata
+		)
 		{
 			tab_servers* tab = ttab_servers::tab(agatewayid);
 			if (tab == nullptr)
@@ -284,7 +308,11 @@ private:
 		}
 
 		template <typename T>
-		static void send_client(const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, std::shared_ptr<T>& adata)
+		static void send_client(
+			const std::vector<i32_gatewayid>& agatewayid, 
+			i64_actorid aid, 
+			std::shared_ptr<T>& adata
+		)
 		{
 			auto pro = std::make_shared<tactor_forward<T>>();
 			actor_forward_init(*pro, aid);
@@ -307,7 +335,6 @@ private:
 			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
-
 	public:
 		//# 根据actor_role.guidid确定客户端，
 		//# 给一组客户端发送数据
@@ -378,7 +405,11 @@ private:
 
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
-		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		void send_actor(
+			const nguid& aguid, 
+			std::shared_ptr<T>& adata, 
+			const std::function<void()>& afailfun
+		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata, afailfun);
 			push_task_id(aguid, lpram, true);
@@ -393,7 +424,11 @@ private:
 
 		//# 群发给指定类型的所有actor
 		template <typename T, bool IS_SEND = true>
-		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
+		void send_actor(
+			ENUM_ACTOR atype,
+			std::shared_ptr<T>& adata, 
+			bool aotherserver = false
+		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), guid(), adata);
 			push_task_type(atype, lpram, aotherserver);
@@ -401,7 +436,11 @@ private:
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
+		static void static_send_actor(
+			const nguid& aguid, 
+			const nguid& arequestguid, 
+			std::shared_ptr<T>& adata
+		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
@@ -409,25 +448,20 @@ private:
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		static void static_send_actor(
+			const nguid& aguid, 
+			const nguid& arequestguid, 
+			std::shared_ptr<T>& adata, 
+			const std::function<void()>& afailfun
+		)
 		{
-			handle_pram lpram;
-			handle_pram::create<T, IS_SEND>(lpram, aguid, arequestguid, adata, afailfun);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 #pragma region
-	private:
-		struct group_info
-		{
-			ENUM_ACTOR				m_actortype;
-			std::set<i64_actorid>	m_actorlist;
-		};
-		//# 分组数据
-		std::map<int, group_info>	m_group;
-		int							m_currentoffset = 0;
 	public:
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
-		int add_group(ENUM_ACTOR aactortype = ACTOR_NONE);
+		int create_group(ENUM_ACTOR aactortype);
 		
 		//# 移除一个分组
 		void remove_group(int agroupid);
@@ -438,18 +472,26 @@ private:
 		//# 将成员从某个群发分组中移除
 		void remove_group_member(int agroupid, i64_actorid amember);
 		
+		//#  获取group id中的actor列表与类型
+		bool get_group(int agroupid, std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair);
+
 		//# 给一组成员发送消息
 		template <typename T>
-		void send_group(int agroupid, std::shared_ptr<T>& adata)
+		bool send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
-			auto itor = m_group.find(agroupid);
-			if (itor == m_group.end())
-				return;
-			if (itor->second.m_actortype != ACTOR_ROBOT)
+			std::pair<std::set<i64_actorid>*, ENUM_ACTOR> lpair;
+			if(get_group(agroupid, lpair) == false)
 			{
-				handle_pram lpram;
-				handle_pram::create<T>(lpram, nguid::make(), guid(), adata);
-				for (i64_actorid actorid : itor->second)
+				return false;
+			}
+			if (lpair.first == nullptr)
+			{
+				return false;
+			}
+			if (lpair.second != ACTOR_ROBOT)
+			{
+				handle_pram lpram = handle_pram::create<T>(nguid::make(), guid(), adata);
+				for (i64_actorid actorid : *lpair.first)
 				{
 					lpram.m_actor = actorid;
 					push_task_id(actorid, lpram, true);
@@ -457,8 +499,7 @@ private:
 			}
 			else
 			{
-				std::initializer_list<i64_actorid> ltemp(itor->second.m_actorlist);
-				send_client(ltemp, adata);
+				send_client(*lpair.first, adata);
 			}
 			return;
 		}
