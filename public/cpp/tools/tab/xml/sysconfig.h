@@ -1,5 +1,6 @@
 #pragma once
 
+#include "type.h"
 
 namespace ngl
 {
@@ -46,6 +47,8 @@ namespace ngl
 		static int32_t		m_rate_count;			// 速率 每秒多少条
 		static int32_t		m_heart_beat_interval;	// 心跳间隔(单位秒)
 		static int32_t		m_net_timeout;			// 用来检查包头中的时间与服务器时间
+		// # 网关列表
+		static std::vector<i32_serverid> m_gatewayids;
 	public:
 		static void init();
 
@@ -153,5 +156,9 @@ namespace ngl
 		{
 			return m_net_timeout;
 		}
+
+		static void init_gatewayids();
+
+		static std::vector<i32_serverid>& gatewayids();
 	};
 }//namespace ngl

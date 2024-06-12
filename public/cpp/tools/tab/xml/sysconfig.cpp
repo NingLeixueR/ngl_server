@@ -1,3 +1,4 @@
+#include "ttab_servers.h"
 #include "sysconfig.h"
 #include "xml.h"
 
@@ -26,6 +27,7 @@ namespace ngl
 	int32_t sysconfig::m_rate_count		= 20;
 	int32_t sysconfig::m_heart_beat_interval = 10;
 	int32_t sysconfig::m_net_timeout	= 600000;
+	std::vector<i32_serverid> sysconfig::m_gatewayids;
 
 	void sysconfig::init()
 	{
@@ -74,6 +76,21 @@ namespace ngl
 		m_open_servertime = localtime::str2time(lopen_servertime.c_str(), "%Y/%m/%d %H:%M:%S");
 		
 		lpublicxml->find("head_version", m_head_version);
-		
+
+		init_gatewayids();
+	}
+
+	void sysconfig::init_gatewayids()
+	{
+		m_gatewayids.clear();
+		if (ttab_servers::get_server(GATEWAY, ttab_servers::tab()->m_area, m_gatewayids) == false)
+		{
+			return;
+		}
+	}
+
+	std::vector<i32_serverid>& sysconfig::gatewayids()
+	{
+		return m_gatewayids;
 	}
 }

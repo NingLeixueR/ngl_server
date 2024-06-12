@@ -57,8 +57,6 @@ bool init_server(int aid)
 
 	ngl::actor_base::start_broadcast();
 
-	ngl::actor_base::init_gatewayser();
-
 	ngl::tab_servers* tab = ngl::ttab_servers::tab();
 
 	ngl::sysconfig::init();

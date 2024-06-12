@@ -8,7 +8,8 @@
 
 namespace ngl
 {
-	std::shared_ptr<np_actor_logitem> actor_base::m_nonelog = std::make_shared<np_actor_logitem>();
+	//# 日志相关
+	std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
 
 	std::shared_ptr<np_actor_logitem> actor_base::log_debug(const std::source_location& asource)
 	{
@@ -18,7 +19,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -30,7 +31,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -42,7 +43,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -54,7 +55,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -66,7 +67,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -78,7 +79,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -90,7 +91,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -102,7 +103,7 @@ namespace ngl
 		}
 		else
 		{
-			return m_nonelog;
+			return g_actor_nonelog;
 		}
 	}
 
@@ -189,12 +190,20 @@ namespace ngl
 		std::unique_ptr<actor_manage_dbclient>		m_dbclient;			// dbclient组件管理器
 		bool										m_isload;			// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
+		actor_base*									m_actor;
 
 		i32_session									m_kcpsession;
 
-		
+		//# 间隔一段时间发起的全员(所有actor)广播
+		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+		static int									m_broadcast;			// 推送全员广播的 单位(毫秒)
+		static int									m_broadcasttimer;		// 推送广播的定时器id
+		bool										m_isbroadcast;			// 是否接收广播消息
+
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
-			m_kcpsession(-1)
+			m_kcpsession(-1),
+			m_isbroadcast(false),
+			m_actor(aactor)
 		{
 			m_guid		= nguid(aparm.m_type, aparm.m_area, aparm.m_id);
 			m_dbclient	= nullptr;
@@ -313,15 +322,47 @@ namespace ngl
 		{
 			return m_kcpsession;
 		}
+
+		int32_t set_timer(const timerparm& aparm)
+		{
+			std::shared_ptr<timerparm> lptr(new timerparm(aparm));
+			return ntimer::addtimer(m_actor, lptr);
+		}
+
+		bool isbroadcast()
+		{
+			return m_isbroadcast;
+		}
+
+		void set_broadcast(bool aisbroadcast)
+		{
+			m_isbroadcast = aisbroadcast;
+		}
+
+		static void start_broadcast()
+		{
+			wheel_parm lparm
+			{
+				.m_ms = m_broadcast,
+				.m_intervalms = [](int64_t) {return actor_base::impl_actor_base::m_broadcast; } ,
+				.m_count = 0x7fffffff,
+				.m_fun = [](wheel_node* anode)
+				{
+					nguid lguid;
+					lguid.none();
+					std::shared_ptr<np_actor_broadcast> pro(new np_actor_broadcast());
+					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(lguid, lguid, pro);
+					actor_manage::getInstance().broadcast_task(lpram);
+				}
+			};
+			m_broadcasttimer = twheel::wheel().addtimer(lparm);
+		}
 	};
 
-	int actor_base::m_broadcast			= 10000;		// 推送全员广播的 单位(毫秒)
-	int actor_base::m_broadcasttimer	= -1;			// 推送广播的定时器id
+	int actor_base::impl_actor_base::m_broadcast			= 10000;		// 推送全员广播的 单位(毫秒)
+	int actor_base::impl_actor_base::m_broadcasttimer		= -1;			// 推送广播的定时器id
 
-	std::vector<i32_serverid> actor_base::m_gatewayids;
-
-	actor_base::actor_base(const actorparmbase& aparm) :
-		m_isbroadcast(false)
+	actor_base::actor_base(const actorparmbase& aparm)
 	{
 		m_impl_actor_base.make_unique(this, aparm);
 		m_impl_group.make_unique(this);
@@ -428,37 +469,22 @@ namespace ngl
 
 	void actor_base::start_broadcast()
 	{
-		wheel_parm lparm
-		{
-			.m_ms			= m_broadcast,
-			.m_intervalms	= [](int64_t) {return actor_base::m_broadcast; } ,
-			.m_count		= 0x7fffffff,
-			.m_fun			= [](wheel_node* anode)
-			{
-				nguid lguid;
-				lguid.none();
-				std::shared_ptr<np_actor_broadcast> pro(new np_actor_broadcast());
-				handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(lguid, lguid, pro);
-				actor_manage::getInstance().broadcast_task(lpram);
-			}
-		};
-		m_broadcasttimer = twheel::wheel().addtimer(lparm);
+		impl_actor_base::start_broadcast();
 	}
 
 	int32_t actor_base::set_timer(const timerparm& aparm)
 	{
-		std::shared_ptr<timerparm> lptr(new timerparm(aparm));
-		return ntimer::addtimer(this, lptr);
+		return m_impl_actor_base()->set_timer(aparm);
 	}
 
 	bool actor_base::isbroadcast()
 	{
-		return m_isbroadcast;
+		return m_impl_actor_base()->isbroadcast();
 	}
 
 	void actor_base::set_broadcast(bool aisbroadcast)
 	{
-		m_isbroadcast = aisbroadcast;
+		m_impl_actor_base()->set_broadcast(aisbroadcast);
 	}
 
 	int actor_base::create_group(ENUM_ACTOR aactortype)
