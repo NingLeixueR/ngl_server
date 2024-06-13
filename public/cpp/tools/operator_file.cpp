@@ -97,8 +97,9 @@ namespace ngl
 			{
 				return false;
 			}	
-			astr.resize(lsize - lsizecurrent);
-			m_file.read(astr.data(), lsize - lsizecurrent);
+			int lstrlen = astr.size();
+			astr.resize(lstrlen + (lsize - lsizecurrent));
+			m_file.read(&astr.data()[lstrlen], lsize - lsizecurrent);
 			return true;
 		}
 		return false;

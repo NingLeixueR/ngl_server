@@ -6,7 +6,7 @@
 
 namespace ngl
 {
-	void rcsv::read(const std::string& aname, std::string& averify)
+	bool rcsv::read(const std::string& aname, std::string& averify)
 	{
 		//# ¶ÁÈ¡ÎÄ¼ş
 		readfile lrf(aname);
@@ -15,10 +15,12 @@ namespace ngl
 
 		if (lrf.readcurrent(m_data) == false)
 		{
-			log_error()->print("!!!! {} !!!!", aname);
+			std::cout << std::format("loadcsv fail #{}", aname) << std::endl;
+			return false;
 		}
 		md5 lmd5(m_data);
 		averify = lmd5.values();
 		std::cout << std::format("loadcsv#{}#{}", aname, averify) << std::endl;
+		return true;
 	}
 }// namespace ngl

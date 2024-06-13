@@ -184,8 +184,11 @@ namespace ngl
 		tablecsv.clear();
 		{//º”‘ÿxxx.csv
 			std::string lcsvname = path();
-			ngl::rcsv lrcsv(lcsvname, m_verify);
-			lrcsv.readcsv(tablecsv);
+			ngl::rcsv lrcsv;
+			if (lrcsv.read(lcsvname, m_verify) == true)
+			{
+				lrcsv.readcsv(tablecsv);
+			}			
 		}
 	}
 }// namespace ngl
