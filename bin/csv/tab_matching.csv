@@ -1,4 +1,3 @@
 int32_t,string,string,int32_t,int32_t,bool,int32_t,
 m_id,m_name,m_remarks,m_count,m_time,m_iswaitconfirm,m_waitconfirmtime,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 玩法达到此人数可以开启玩法"," [index:4] 匹配最长时间"," [index:5] 是否需要等待确认"," [index:6] 等待确认的时间",
-version:0

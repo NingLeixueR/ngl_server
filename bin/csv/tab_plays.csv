@@ -1,4 +1,3 @@
 int32_t,string,string,int32_t,int32_t,int32_t,int32_t,int32_t,vector<Vector2>,
 m_id,m_name,m_remarks,m_type,m_mapid,m_preparation_tm,m_play_tm,m_settlement_tm,m_birthpoint,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 玩法类型 pbnet::eplays"," [index:4] 在哪个地图应用该玩法"," [index:5] 准备阶段时间"," [index:6] 玩法时间"," [index:7] 结算时间"," [index:8] 出生点Vector2(m_x:int32_t,m_y:int32_t)	",
-version:0

@@ -1,4 +1,3 @@
 int32_t,ETaskType,string,string,vector<task_condition>,vector<task_condition>,int32_t,bool,int32_t,
 m_id,m_type,m_name,m_remarks,m_taskreceive,m_taskcomplete,m_dropid,m_autoreceive,m_mailid,
 " [index:0] id ",""," [index:1] 名字 "," [index:2] 备注"," [index:3] 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))"," [index:4] 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))"," [index:5] 任务奖励"," [index:6] 是否自动领取"," [index:7] 自动领取后是否发送邮件的邮件id(自动领取的邮件id:m_autoreceive == true,当m_autoreceive为ture可以为-1)",
-version:0

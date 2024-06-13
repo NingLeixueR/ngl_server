@@ -1,4 +1,3 @@
 int32_t,string,string,int32_t,int32_t,
 m_id,m_name,m_remarks,m_dropid,m_mailid,
 " 累计次数","",""," 掉落id"," 邮件id",
-version:0

@@ -1,4 +1,3 @@
 int32_t,string,string,EQuality,vector<attributevalue>,
 m_id,m_name,m_remarks,m_quality,m_attributevalues,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 品质EQuality(0灰色1绿色2黄色3橙色4红色)"," [index:4] 属性",
-version:0

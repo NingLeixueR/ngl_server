@@ -1,7 +1,6 @@
 int32_t,string,string,float,int32_t,int32_t,int32_t,
 m_id,m_name,m_remarks,m_fightcoefficient,m_initvalue,m_uplimit,m_lowlimit,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 属性提供的战力系数"," [index:4] 属性初始值"," [index:5] 上限"," [index:6] 下限",
-version:0,,,,,,
 1,攻击,攻击,5,0,1000000,0
 2,防御,防御,4,0,1000000,0
 3,血量,血量,3,0,1000000,0

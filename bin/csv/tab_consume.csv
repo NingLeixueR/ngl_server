@@ -1,7 +1,6 @@
 int32_t,string,string,vector<tconsume>,
 m_id,m_name,m_remarks,m_consumeitems,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] tid*count",
-version:0,,,
 1,测试消耗1,测试消耗1,"1*100
 2*100
 3*100"

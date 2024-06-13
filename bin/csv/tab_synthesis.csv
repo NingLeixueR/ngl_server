@@ -1,4 +1,3 @@
 int32_t,string,string,int32_t,int32_t,
 m_id,m_name,m_remarks,m_consume,m_generate,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 消耗列表"," [index:4] 随机表(tab_rando)id 随机成功物品列表",
-version:0

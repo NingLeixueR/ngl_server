@@ -1,4 +1,3 @@
 int32_t,string,string,string,string,string,
 m_id,m_name,m_remarks,m_title,m_author,m_content,
 " [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 邮件标题"," [index:4] 邮件作者"," [index:5] 邮件内容",
-version:0

@@ -1,7 +1,6 @@
 int32_t,string,string,ECalendar,vector<tweek>,vector<tserveropen>,vector<tregularslot>,ECalendarType,vector<int32_t>
 m_id,m_name,m_remarks,m_type,m_week,m_serveropen,m_tregularslot,m_carendar,m_carendarparm
  [index:0] id , [index:1] 名字 , [index:2] 备注," [index:3] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)"," [index:4] m_type=0,tweek(周几开始(1-7)*开启时间HH:mm:ss*周几结束(1-7)*结束时间HH:mm:ss)"," [index:5] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)"," [index:6] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)", [index:7] (0.每日定时刷新1.活动开启与关闭), [index:8] (m_carendar == ECalendarTypeActivity:活动id)
-version:0,,,,,,,,
 1,每一三五,8->9,0,"1*08:00:00*1*09:00:00
 3*08:00:00*3*09:00:00
 5*08:00:00*5*09:00:00",,,0,
