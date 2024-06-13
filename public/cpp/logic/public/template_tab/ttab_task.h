@@ -120,9 +120,9 @@ namespace ngl
 			return aisreceive ? &lpaor.first : &lpaor.second;
 		}
 
-		static task_condition* get_task_condition(i32_taskid ataskid, ETask atype, bool aisreceive)
+		static task_condition* condition_receive(i32_taskid ataskid, ETask atype)
 		{
-			std::vector<task_condition>* lvec = get_task_condition(ataskid, aisreceive);
+			std::vector<task_condition>* lvec = condition_receive(ataskid);
 			if (lvec == nullptr)
 				return nullptr;
 			for (task_condition& item : *lvec)
@@ -133,13 +133,35 @@ namespace ngl
 			return nullptr;
 		}
 
-		// 获取条件
-		static std::vector<task_condition>* get_task_condition(i32_taskid ataskid, bool aisreceive)
+		// # 获取任务接取条件
+		static std::vector<task_condition>* condition_receive(i32_taskid ataskid)
 		{
 			tab_task* table = tab(ataskid);
 			if (table == nullptr)
 				return nullptr;
-			return aisreceive ? &table->m_taskreceive : &table->m_taskcomplete;
+			return &table->m_taskreceive;
+		}
+
+		static task_condition* condition_complete(i32_taskid ataskid, ETask atype)
+		{
+			std::vector<task_condition>* lvec = condition_complete(ataskid);
+			if (lvec == nullptr)
+				return nullptr;
+			for (task_condition& item : *lvec)
+			{
+				if (item.m_type == atype)
+					return &item;
+			}
+			return nullptr;
+		}
+
+		// # 获取任务完成条件
+		static std::vector<task_condition>* condition_complete(i32_taskid ataskid)
+		{
+			tab_task* table = tab(ataskid);
+			if (table == nullptr)
+				return nullptr;
+			return &table->m_taskcomplete;
 		}
 	};
 }//namespace ngl

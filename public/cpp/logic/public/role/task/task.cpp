@@ -11,7 +11,6 @@ namespace ngl
 	{
 		static std::array<task_check*, ETaskCount> m_data;
 	public:
-
 		// 检查条件是否满足
 		static bool check(actor_role* arole, task_condition& atab)
 		{
@@ -126,7 +125,7 @@ namespace ngl
 		if (isreceive_task(arole, ataskid))
 			return;
 
-		std::vector<task_condition>* lvec = ttab_task::get_task_condition(ataskid, true);
+		std::vector<task_condition>* lvec = ttab_task::condition_receive(ataskid);
 		if (lvec == nullptr)
 			return;
 
@@ -145,23 +144,25 @@ namespace ngl
 		arole->m_task.get()->get().mutable_m_rundatas()->insert({ ataskid, ltemp });
 	}
 
-	void static_task::finish_task(actor_role* arole, i32_taskid ataskid)
+	bool static_task::finish_task(actor_role* arole, i32_taskid ataskid)
 	{
-		//## 接收任务前先查看是否已经完成了
+		// # 接收任务前先查看是否已经完成了
 		if (isfinish_task(arole, ataskid))
-			return;
-		//## 此任务是否已经被接收
+			return false;
+		// # 此任务是否已经接收
 		if (isreceive_task(arole, ataskid) == false)
-			return;
-		std::vector<task_condition>* lvecfinish = ttab_task::get_task_condition(ataskid, false);
+			return false;
+		std::vector<task_condition>* lvecfinish = ttab_task::condition_complete(ataskid);
 		if (lvecfinish != nullptr && check_condition(arole, *lvecfinish))
 		{
-
-			auto itor = run(arole).find(ataskid);
-			// 发送奖励
+			auto& lruntask = run(arole);
+			auto itor = lruntask.find(ataskid);
+			if (itor == lruntask.end())
+				return false;
+			// # 发送奖励
 			tab_task* tab = ttab_task::tab(ataskid);
 			if (tab == nullptr)
-				return;
+				return false;
 			if (tab->m_autoreceive)
 			{
 				if (tab->m_mailid > 0)
@@ -179,7 +180,7 @@ namespace ngl
 							, tab->m_mailid
 							, tab->m_dropid
 						);
-						return;
+						return false;
 					}
 					itor->second.set_m_receive(true);
 				}
@@ -188,7 +189,9 @@ namespace ngl
 			complete(arole).insert({ ataskid, itor->second });
 			run(arole).erase(itor);
 			update_change(arole, ETaskTaskId, ataskid);
+			return true;
 		}
+		return false;
 	}
 
 	bool static_task::update_change(actor_role* arole, ETask atype, std::set<i32_taskid>* ataskset)
@@ -211,7 +214,7 @@ namespace ngl
 						{
 							if (lschedule.m_type() == atype)
 							{
-								task_condition* lpcondition = ttab_task::get_task_condition(taskid, atype, false);
+								task_condition* lpcondition = ttab_task::condition_complete(taskid, atype);
 								if (lpcondition != nullptr)
 								{
 									task_check::schedules(arole, lschedule, *lpcondition);
@@ -280,7 +283,7 @@ namespace ngl
 				if (static_task::isreceive_task(lrole, atask.m_id))
 				{
 					// 是否可完成
-					std::vector<task_condition>* lvec = ttab_task::get_task_condition(atask.m_id, false);
+					std::vector<task_condition>* lvec = ttab_task::condition_complete(atask.m_id);
 					if (lvec == nullptr)
 						return;
 					if (static_task::check_condition(lrole, *lvec) == false)
