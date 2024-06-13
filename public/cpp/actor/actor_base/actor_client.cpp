@@ -158,7 +158,7 @@ namespace ngl
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const nactornode& node = lparm->m_vec[i];
-				if (server_session::get_sessionid(node.m_serverid) == -1)
+				if (server_session::sessionid(node.m_serverid) == -1)
 				{
 					// # 比较id(较大的主动连接较小的)
 					// # NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);

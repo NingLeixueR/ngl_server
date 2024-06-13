@@ -142,7 +142,7 @@ namespace ngl
 
 	bool net_protocol::sendpackbyserver(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_sessionid lsession = server_session::get_sessionid(aserverid);
+		i32_sessionid lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 			return false;
 		return net_send(lsession, apack);

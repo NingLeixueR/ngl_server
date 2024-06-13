@@ -11,7 +11,12 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		log_warn()->print("connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
+		log_warn()->print(
+			"connect [{}:{}] [{}]", 
+			aserverid, 
+			ttab_servers::tab(aserverid)->m_name, 
+			asession
+		);
 		lock_write(m_mutex);
 		
 		{
@@ -42,7 +47,7 @@ namespace ngl
 		m_session.erase(itor);
 	}
 
-	i32_sessionid server_session::get_sessionid(i32_serverid aserverid)
+	i32_sessionid server_session::sessionid(i32_serverid aserverid)
 	{
 		lock_read(m_mutex);
 		auto itor = m_server.find(aserverid);
@@ -51,7 +56,7 @@ namespace ngl
 		return itor->second;
 	}
 
-	i32_serverid server_session::get_serverid(i32_sessionid asessionid)
+	i32_serverid server_session::serverid(i32_sessionid asessionid)
 	{
 		lock_read(m_mutex);
 		auto itor = m_session.find(asessionid);

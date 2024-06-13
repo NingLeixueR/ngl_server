@@ -148,7 +148,7 @@ namespace ngl
 
 	bool nets::connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection)
 	{
-		i32_session lsession = server_session::get_sessionid(aserverid);
+		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession != -1)
 		{
 			afun(lsession);
@@ -177,7 +177,7 @@ namespace ngl
 
 	bool handle_pram::netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_session lsession = server_session::get_sessionid(aserverid);
+		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 			return false;
 		return nets::net(lsession)->sendpack(lsession, apack);
@@ -185,7 +185,7 @@ namespace ngl
 
 	bool handle_pram::netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack)
 	{
-		i32_session lsession = server_session::get_sessionid(aserverid);
+		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 			return false;
 		return nets::net(lsession)->sendpack(lsession, apack);

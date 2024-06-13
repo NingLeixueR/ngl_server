@@ -187,7 +187,7 @@ namespace ngl
 			pro.set_data(&adata);
 			if (agateway != 0)
 			{
-				i32_session lsession = server_session::get_sessionid(agateway);
+				i32_session lsession = server_session::sessionid(agateway);
 				if (lsession == -1)
 					return;
 				send(lsession, pro, nguid::make(), nguid::make());
@@ -206,7 +206,7 @@ namespace ngl
 			pro.set_data(&adata);
 			if (agateway != 0)
 			{
-				i32_session lsession = server_session::get_sessionid(agateway);
+				i32_session lsession = server_session::sessionid(agateway);
 				if (lsession == -1)
 					return;
 				send(lsession, pro, nguid::make(), nguid::make());

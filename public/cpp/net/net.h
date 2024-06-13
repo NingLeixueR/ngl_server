@@ -38,7 +38,7 @@ namespace ngl
 		template <typename T>
 		static bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			i32_session lsession = server_session::get_sessionid(aserverid);
+			i32_session lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
 				return false;
 			return sendbysession(lsession, adata, aactorid, arequestactorid);
@@ -50,7 +50,7 @@ namespace ngl
 			std::vector<i32_session> lsessionvec;
 			for (i32_serverid iserverid : aserverid)
 			{
-				i32_session lsession = server_session::get_sessionid(iserverid);
+				i32_session lsession = server_session::sessionid(iserverid);
 				if (lsession == -1)
 					continue;
 				lsessionvec.push_back(lsession);
@@ -211,7 +211,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)
 	{
-		i32_session lsession = server_session::get_sessionid(aserverid);
+		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
 			return false;
 		return nets::sendpack(lsession, apack);
