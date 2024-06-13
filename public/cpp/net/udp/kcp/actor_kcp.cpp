@@ -21,7 +21,7 @@ namespace ngl
 
 	void actor_kcp::nregister()
 	{
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_kcp>::func<
+		register_handle_custom<actor_kcp>::func<
 			np_actor_kcp
 		>(false);
 	}

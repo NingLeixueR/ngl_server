@@ -41,13 +41,14 @@ namespace ngl
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
 			{
-				(*lstream)
-					<< "[" << ipair.first << ":" << ipair.second << "]"
-					<< "[" << nguid::actordataid(ipair.first)
-					<< "-" << nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first))
-					<< "-" << nguid::area(ipair.first)
-					<< "]"
-					<< std::endl;
+				(*lstream) << std::format(
+					"[{}:{}][{}-{}-{}]", 
+					ipair.first,
+					ipair.second,
+					nguid::actordataid(ipair.first),
+					nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first)),
+					nguid::area(ipair.first)
+				) << std::endl;
 			}
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			(*lstream).print("");

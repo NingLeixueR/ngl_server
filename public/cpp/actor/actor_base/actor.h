@@ -130,9 +130,15 @@ namespace ngl
 		};
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
-		using type_register_actor_handle = template_arg<
+		using register_handle = template_arg<
 			actor::register_actor_handle<TYPE, TDerived>, bool
 		>;
+
+		template <typename TDerived>
+		using register_handle_custom = register_handle<EPROTOCOL_TYPE_CUSTOM, TDerived>;
+
+		template <typename TDerived>
+		using register_handle_proto = register_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived>;
 #pragma endregion 
 
 #pragma region register_actornonet

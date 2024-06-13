@@ -53,7 +53,7 @@ namespace ngl
 			});
 
 		//###### зЂВса­вщ
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_client>::func<
+		register_handle_custom<actor_client>::func<
 			np_actornode_register_response
 			, np_actorclient_node_connect
 			, np_actornode_update

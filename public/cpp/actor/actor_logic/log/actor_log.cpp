@@ -40,7 +40,7 @@ namespace ngl
 
 	void actor_log::nregister()
 	{
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_log>::func<
+		register_handle_custom<actor_log>::func<
 			np_actor_logitem
 		>(false);
 	}

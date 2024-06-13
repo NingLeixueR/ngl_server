@@ -29,7 +29,7 @@ namespace ngl
 
 	void actor_gatewayg2c::nregister()
 	{
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_gatewayg2c>::func<
+		register_handle_custom<actor_gatewayg2c>::func<
 			np_actor_gatewayinfo_updata
 		>(false);
 		// Game 2 Client

@@ -12,6 +12,9 @@ namespace ngl
 	// ## actor_client actor_server 用来管理actor地址
 	class naddress
 	{
+		naddress() = delete;
+		naddress(const naddress&) = delete;
+		naddress& operator=(const naddress&) = delete;
 	public:
 		//# [ACTOR_ID] -> SERVER_ID
 		//# [ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID

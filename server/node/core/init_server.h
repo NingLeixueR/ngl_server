@@ -53,8 +53,6 @@ bool init_server(int aid)
 	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
 
-	ngl::nactortype::getInstance();
-
 	ngl::actor_base::start_broadcast();
 
 	ngl::tab_servers* tab = ngl::ttab_servers::tab();

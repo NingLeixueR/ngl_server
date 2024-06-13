@@ -5,6 +5,10 @@ namespace ngl
 {
 	struct nthread::impl_nthread
 	{
+		impl_nthread() = delete;
+		impl_nthread(const impl_nthread&) = delete;
+		impl_nthread& operator=(const impl_nthread&) = delete;
+
 		i32_threadid		m_id;
 		ptractor			m_actor;
 		bool				m_isactivity;

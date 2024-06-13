@@ -21,11 +21,11 @@ namespace ngl
 	void actor_notice::nregister()
 	{
 		// Ð­Òé×¢²á
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_notice>::func<
+		register_handle_custom<actor_notice>::func<
 			mforward<np_gm>
 		>(true);
 
-		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_notice>::func<
+		register_handle_proto<actor_notice>::func<
 			mforward<pbnet::PROBUFF_NET_NOTICE>
 		>(true);
 	}

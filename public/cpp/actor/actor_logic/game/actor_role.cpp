@@ -51,12 +51,12 @@ namespace ngl
 		// 定时器
 		register_timer<actor_role>(&actor_role::timer_handle);
 
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_role>::func<
+		register_handle_custom<actor_role>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
 		>(true);
 
-		type_register_actor_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_role>::func<
+		register_handle_proto<actor_role>::func<
 			pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD

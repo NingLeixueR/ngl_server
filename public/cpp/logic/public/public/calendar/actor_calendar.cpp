@@ -23,7 +23,7 @@ namespace ngl
 	void actor_calendar::nregister()
 	{
 		// Ð­Òé×¢²á
-		type_register_actor_handle<EPROTOCOL_TYPE_CUSTOM, actor_calendar>::func<
+		register_handle_custom<actor_calendar>::func<
 			np_calendar
 		>(true);
 	}

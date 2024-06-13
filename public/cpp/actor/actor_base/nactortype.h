@@ -65,14 +65,10 @@ namespace ngl
 	// # 通过名字获取枚举
 	class nactortype
 	{
-		nactortype() {}
+		nactortype() = delete;
+		nactortype(const nactortype&) = delete;
+		nactortype& operator=(const nactortype&) = delete;
 	public:
-		static nactortype& getInstance()
-		{
-			static nactortype ltemp;
-			return ltemp;
-		}
-
 		static bool name2enum(const std::string& aenumname, ENUM_ACTOR& avalue);
 		static const char* enum2name(ENUM_ACTOR aenum);
 	};

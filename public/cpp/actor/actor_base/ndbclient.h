@@ -9,8 +9,8 @@
 #include "db_data.h"
 #include "db_pool.h"
 #include "actor.h"
-#include "db.h"
 #include "net.h"
+#include "db.h"
 
 namespace ngl
 {
@@ -64,6 +64,9 @@ namespace ngl
 		TDBTAB m_data;
 		TDBTAB* m_pdata = nullptr;
 	public:
+		data_modified(const data_modified&) = delete;
+		data_modified& operator=(const data_modified&) = delete;
+
 		data_modified(TDBTAB* adata):
 			m_pdata(adata)
 		{}
@@ -107,6 +110,9 @@ namespace ngl
 	>
 	class ndbclient : public ndbclient_base
 	{
+		ndbclient(const ndbclient&) = delete;
+		ndbclient& operator=(const ndbclient&) = delete;
+
 		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
 		tab_dbload* m_tab;
 	public:
@@ -127,23 +133,27 @@ namespace ngl
 			}Catch;
 		}
 	private:
+		// # 加载数据
 		void init_load()
 		{
 			load();
 		}
 
+		// # db结点的id
 		i32_actordataid dbnodeid()
 		{
 			tab_servers* tab = ttab_servers::tab();
 			return tab->m_db;
 		}
 
+		// # 获取db actor的guid
 		inline i64_actorid dbguid()
 		{
 			ENUM_ACTOR ltype = nactor_type<actor_db<DBTYPE, TDBTAB>>::type();
 			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 
+		// # 加载数据
 		void loaddb(const nguid& aid)
 		{
 			np_actordb_load<DBTYPE, TDBTAB> ldata;

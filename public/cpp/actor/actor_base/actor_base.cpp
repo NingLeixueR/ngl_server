@@ -109,6 +109,10 @@ namespace ngl
 
 	struct actor_base::impl_group
 	{
+		impl_group() = delete;
+		impl_group(const impl_group&) = delete;
+		impl_group& operator=(const impl_group&) = delete;
+
 		struct ginfo
 		{
 			ENUM_ACTOR				m_actortype;
@@ -313,28 +317,28 @@ namespace ngl
 			}
 		}
 
-		void set_kcpssion(i32_session asession)
+		inline void set_kcpssion(i32_session asession)
 		{
 			m_kcpsession = asession;
 		}
 
-		i32_session get_kcpssion()
+		inline i32_session get_kcpssion()
 		{
 			return m_kcpsession;
 		}
 
-		int32_t set_timer(const timerparm& aparm)
+		inline int32_t set_timer(const timerparm& aparm)
 		{
 			std::shared_ptr<timerparm> lptr(new timerparm(aparm));
 			return ntimer::addtimer(m_actor, lptr);
 		}
 
-		bool isbroadcast()
+		inline bool isbroadcast()
 		{
 			return m_isbroadcast;
 		}
 
-		void set_broadcast(bool aisbroadcast)
+		inline void set_broadcast(bool aisbroadcast)
 		{
 			m_isbroadcast = aisbroadcast;
 		}

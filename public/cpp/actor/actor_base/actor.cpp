@@ -1,4 +1,5 @@
 #include "actor_manage.h"
+#include "ndbclient.h"
 #include "actor.h"
 #include "net.h"
 
@@ -9,12 +10,15 @@ namespace ngl
 {
 	struct actor::impl_actor
 	{
+		impl_actor(const impl_actor&) = delete;
+		impl_actor& operator=(const impl_actor&) = delete;
+
 		//template <typename T>
 		//using tls = std::list<T>;
 		template <typename T>
 		using tls = std::deque<T>;
-		tls<handle_pram>				m_list;		// 待处理消息列表
 
+		tls<handle_pram>				m_list;		// 待处理消息列表
 		actor_stat						m_stat;		// actor状态
 		std::shared_mutex				m_mutex;	// 锁:[m_list:待处理消息列表]
 		int								m_weight;	// 权重
@@ -169,5 +173,18 @@ namespace ngl
 
 	actor::~actor() 
 	{
+	}
+
+	bool actor::handle(message<np_actor_broadcast>& adata)
+	{
+		// # 保存数据
+		if (get_actor_manage_dbclient() != nullptr)
+		{
+			get_actor_manage_dbclient()->save();
+			get_actor_manage_dbclient()->del();
+		}
+		// # actor派生类自定义处理逻辑
+		broadcast();
+		return true;
 	}
 }//namespace ngl

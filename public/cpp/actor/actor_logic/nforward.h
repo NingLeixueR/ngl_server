@@ -51,7 +51,7 @@ namespace ngl
 		{
 			if (xmlnode::m_nodetype == ngl::ROBOT)
 			{
-				actor_robot::type_register_actor_handle<TYPE, actor_robot>::template func<ARG...>(false);
+				actor_robot::register_handle<TYPE, actor_robot>::template func<ARG...>(false);
 				return;
 			}
 			if (xmlnode::m_nodetype == ngl::GATEWAY)
