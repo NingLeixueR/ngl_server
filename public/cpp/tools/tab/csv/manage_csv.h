@@ -16,11 +16,11 @@ namespace ngl
 	class csvbase
 	{
 	public:
-		virtual int32_t		version()const	= 0;
-		virtual const char*	csvname()		= 0;
-		virtual void		load()			= 0;
-		virtual void*		get(int aid)	= 0;
-		virtual void		reload()		= 0;
+		virtual const std::string&	verify()const	= 0;
+		virtual const char*			csvname()		= 0;
+		virtual void				load()			= 0;
+		virtual void*				get(int aid)	= 0;
+		virtual void				reload()		= 0;
 	};
 
 	template <typename T>
@@ -29,11 +29,11 @@ namespace ngl
 		using TAB = T;
 
 		std::map<int, T>	tablecsv;
-		int					m_version;
-
-		virtual int32_t version()const
+		std::string			m_verify;		// 内容的md5值
+		
+		virtual const std::string& verify()const
 		{
-			return m_version;
+			return m_verify;
 		}
 
 		virtual const char* csvname()
@@ -128,7 +128,7 @@ namespace ngl
 			return (TAB*)(lptab);
 		}
 
-		static void foreach_version(std::map<std::string, int32_t>& aversion);
+		static void foreach_verify(std::map<std::string, std::string>& averify);
 
 		static std::map<std::string, csvbase*>& all();
 	};
@@ -184,9 +184,8 @@ namespace ngl
 		tablecsv.clear();
 		{//加载xxx.csv
 			std::string lcsvname = path();
-			ngl::rcsv lrcsv(lcsvname, m_version);
+			ngl::rcsv lrcsv(lcsvname, m_verify);
 			lrcsv.readcsv(tablecsv);
-			std::cout << "加载csv[" << lcsvname << "]" << std::endl;
 		}
 	}
 }// namespace ngl

@@ -101,11 +101,11 @@ namespace ngl
 		return lp == nullptr ? nullptr : *lp;
 	}
 
-	void allcsv::foreach_version(std::map<std::string, int32_t>& aversion)
+	void allcsv::foreach_verify(std::map<std::string, std::string>& averify)
 	{
 		for (const auto& [key, value] : m_data)
 		{
-			aversion.insert(std::make_pair(key, value->version()));
+			averify.insert(std::make_pair(key, value->verify()));
 		}
 	}
 

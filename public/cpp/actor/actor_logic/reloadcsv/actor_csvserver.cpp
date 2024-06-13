@@ -44,8 +44,8 @@ namespace ngl
 		std::map<std::string, csvbase*>& lversion = allcsv::all();
 		for (const auto [key, value] : lversion)
 		{
-			auto itor = lparm->m_version.find(key);
-			if (itor != lparm->m_version.end() && itor->second >= value->version())
+			auto itor = lparm->m_verify.find(key);
+			if (itor != lparm->m_verify.end() && itor->second != value->verify())
 				continue;
 			reload_csv::readcsv(key, pro.m_csvcontent[key]);
 		}

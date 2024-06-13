@@ -547,8 +547,8 @@ namespace ngl
 	// ---- 核实csv版本
 	struct np_actor_csv_verify_version
 	{
-		std::map<std::string, int32_t> m_version; // key: tab typeid(TAB).hash_code()
-		def_portocol(np_actor_csv_verify_version, m_version)
+		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
+		def_portocol(np_actor_csv_verify_version, m_verify)
 	};
 
 	// ---- 发送物品给actor role模块

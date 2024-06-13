@@ -54,7 +54,7 @@ namespace ngl
 		std::string m_data;
 		int m_pos;
 	public:
-		void read(const std::string& aname, int32_t& aversion);
+		void read(const std::string& aname, std::string& averify);
 
 		bool readline(std::string& adata)
 		{
@@ -111,10 +111,10 @@ namespace ngl
 			}
 		}
 
-		rcsv(const std::string& afilename, int32_t& aversion) :
+		rcsv(const std::string& afilename, std::string& averify) :
 			m_pos(0)
 		{
-			read(afilename, aversion);
+			read(afilename, averify);
 		}
 
 		rcsv() :

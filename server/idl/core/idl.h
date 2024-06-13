@@ -229,7 +229,7 @@ public:
 			lstreamcsv << "\"" << (&astruct.dataVec[i].zhushi.c_str()[2]) << "\",";
 		}
 		lstreamcsv << std::endl;
-		lstreamcsv << "version:0";
+		//lstreamcsv << "version:0";
 
 		ngl::writefile lfilecsv("./idlfile/"+ astruct.name + ".csv");
 
