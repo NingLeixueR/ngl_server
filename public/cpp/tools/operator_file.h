@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace ngl
 {
@@ -33,5 +34,7 @@ namespace ngl
 	public:
 		static bool exist(const std::string& afilename);
 		static bool remove(const std::string& afilename);
+		// 获取dir下所有目录
+		static void dir(const std::string& apath, std::vector<std::string>& afilevec);
 	};
 }//namespace ngl

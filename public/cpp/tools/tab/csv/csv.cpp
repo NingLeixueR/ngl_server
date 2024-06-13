@@ -6,7 +6,6 @@
 
 namespace ngl
 {
-	
 	void rcsv::read(const std::string& aname, int32_t& aversion)
 	{
 		//# ╤ах║нд╪Ч
