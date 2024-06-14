@@ -130,7 +130,7 @@ namespace ngl
 				return false;
 			}
 
-			// ### encryption bytexor
+			// # encryption bytexor
 			if(encryption_bytexor::check_xor(adata))
 			{
 				ngl::tools::bytexor(lpair.first, lpair.second, 0);
@@ -143,7 +143,11 @@ namespace ngl
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();
 			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
-			//log_error()->print("##tobytes## tprotocol::protocol<{}>() = {}", dtype_name(T), tprotocol::protocol<T>());
+			//log_error()->print(
+			// "##tobytes## tprotocol::protocol<{}>() = {}", 
+			// dtype_name(T), 
+			// tprotocol::protocol<T>()
+			//);
 			// ### sethead finish ###
 
 			ngl::serialize lser2(apack->m_buff, apack->m_len);

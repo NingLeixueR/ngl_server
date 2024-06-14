@@ -4,7 +4,6 @@
 
 #define _SQL_BUFF1_SIZE_ (102400)
 #define _SQL_BUFF2_SIZE_ (102400)
-#define _SQL_BUFFSQL_SIZE_ (409600)
 
 namespace ngl
 {
@@ -13,10 +12,8 @@ namespace ngl
 		m_mysql(nullptr),
 		m_buff1(new char[_SQL_BUFF1_SIZE_]),
 		m_buff2(new char[_SQL_BUFF2_SIZE_]),
-		m_buffsql(new char[_SQL_BUFFSQL_SIZE_]),
 		m_bufflen1(_SQL_BUFF1_SIZE_),
-		m_bufflen2(_SQL_BUFF2_SIZE_),
-		m_buffsqllen(_SQL_BUFFSQL_SIZE_)
+		m_bufflen2(_SQL_BUFF2_SIZE_)
 	{}
 
 	bool db::connectdb(const dbarg& arg)

@@ -33,13 +33,13 @@ namespace ngl
 	class db_manage
 	{ 
 	public:
-		template <typename T>
-		static char* serialize(db* adb, T& adata, bool aistohex = true)
+		template <bool PROTO_BINARY, typename T>
+		static char* serialize(db* adb, T& adata)
 		{
 			ngl::serialize lserialize(adb->m_buff1, adb->m_bufflen1);
 			if (lserialize.push(adata))
 			{
-				if (aistohex)
+				if constexpr (PROTO_BINARY)
 				{
 					int lpos = tools::to_hex(adb->m_buff1, lserialize.byte(), adb->m_buff2);
 					adb->m_buff2[lpos] = '\0';
@@ -54,10 +54,10 @@ namespace ngl
 			return nullptr;
 		}
 
-		template <typename T>
-		static bool unserialize(db* adb, T& adata, char* abuff, int alen, bool aistohex = true)
+		template <bool PROTO_BINARY, typename T>
+		static bool unserialize(db* adb, T& adata, char* abuff, int alen)
 		{
-			if (aistohex)
+			if constexpr (PROTO_BINARY)
 			{
 				int lbufflen = 0;
 				if (tools::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
@@ -93,7 +93,7 @@ namespace ngl
 				}
 				*m_savetemp.m_data = adata;
 
-				char* lsql = ngl::db_manage::serialize(adb, m_savetemp, DDBSAVE_PROTO_BINARY ? true : false);
+				char* lsql = ngl::db_manage::serialize<DDBSAVE_PROTO_BINARY>(adb, m_savetemp);
 				if (lsql == nullptr)
 					return;
 
@@ -186,8 +186,8 @@ namespace ngl
 					{
 						protobuf_data<T> ldata;
 						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
-						bool lunserialize = ngl::db_manage::unserialize(
-							adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false
+						bool lunserialize = ngl::db_manage::unserialize<DDBSAVE_PROTO_BINARY>(
+							adb, ldata, amysqlrow[1], alens[1]
 						);
 						if (lunserialize == false)
 						{
@@ -213,8 +213,8 @@ namespace ngl
 					{
 						protobuf_data<T> ldata;
 						ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
-						bool lunserialize = ngl::db_manage::unserialize(
-							adb, ldata, amysqlrow[1], alens[1], DDBSAVE_PROTO_BINARY ? true : false
+						bool lunserialize = ngl::db_manage::unserialize<DDBSAVE_PROTO_BINARY>(
+							adb, ldata, amysqlrow[1], alens[1]
 						);
 						if (lunserialize == false)
 						{

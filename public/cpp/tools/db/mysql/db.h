@@ -14,36 +14,38 @@ namespace ngl
 {
 	class db
 	{
+		db(const db&) = delete;
+		db& operator=(const db&) = delete;
+
 		bool	m_connectdb;
 		MYSQL*	m_mysql;
 		dbarg	m_arg;
+
 	public:
 		db();
 
-		// ## 连接数据库
+		// # 连接数据库
 		bool connectdb(const dbarg& arg);
 
-		// ## 关闭数据库
+		// # 关闭数据库
 		void closedb();
 
-		// ## 选择数据库
+		// # 选择数据库
 		bool changedb(MYSQL* amysql, std::string& adbname);
 
-		// ## 执行sql语句
+		// # 执行sql语句
 		bool query(const char* asql, int alen);
 
-		// ## 转义 SQL 语句中使用的字符串中的特殊字符
+		// # 转义 SQL 语句中使用的字符串中的特殊字符
 		void escape(const char* asql, std::string& aoutsql);
 
-		// ## 在callback中转化数据
+		// # 在callback中转化数据
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, uint32_t, uint32_t)>;
 		bool select(const char* asql, int asqllen, callback aback);
 
-		char*	m_buff1;
-		char*	m_buff2;
-		char*	m_buffsql;
-		int		m_bufflen1;
-		int		m_bufflen2;
-		int		m_buffsqllen;
+		char*		m_buff1;
+		char*		m_buff2;
+		const int	m_bufflen1;
+		const int	m_bufflen2;
 	};
 }// namespace ngl
