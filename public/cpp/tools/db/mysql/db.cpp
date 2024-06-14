@@ -2,19 +2,14 @@
 #include "nlog.h"
 #include "db.h"
 
-#define _SQL_BUFF1_SIZE_ (102400)
-#define _SQL_BUFF2_SIZE_ (102400)
 
 namespace ngl
 {
 	db::db() :
 		m_connectdb(false),
-		m_mysql(nullptr),
-		m_buff1(new char[_SQL_BUFF1_SIZE_]),
-		m_buff2(new char[_SQL_BUFF2_SIZE_]),
-		m_bufflen1(_SQL_BUFF1_SIZE_),
-		m_bufflen2(_SQL_BUFF2_SIZE_)
-	{}
+		m_mysql(nullptr)
+	{
+	}
 
 	bool db::connectdb(const dbarg& arg)
 	{

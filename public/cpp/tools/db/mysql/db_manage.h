@@ -34,48 +34,33 @@ namespace ngl
 	{ 
 	public:
 		template <bool PROTO_BINARY, typename T>
-		static char* serialize(db* adb, T& adata)
+		static int32_t serialize(db* adb, db::ptr& aptr, T& adata)
 		{
-			ngl::serialize lserialize(adb->m_buff1, adb->m_bufflen1);
-			if (lserialize.push(adata))
+			int32_t lpos = 0;
+			while(lpos < 10)
 			{
-				if constexpr (PROTO_BINARY)
+				adb->malloc_buff(aptr, lpos);
+				ngl::serialize lserialize(aptr.m_buff, aptr.m_bufflen);
+				if (lserialize.push(adata))
 				{
-					int lpos = tools::to_hex(adb->m_buff1, lserialize.byte(), adb->m_buff2);
-					adb->m_buff2[lpos] = '\0';
-					return adb->m_buff2;
+					return lserialize.byte();
 				}
 				else
 				{
-					std::swap(adb->m_buff1, adb->m_buff2);
-					return adb->m_buff2;
+					++lpos;
+					adb->free_buff(aptr);
+					continue;
 				}
 			}
-			return nullptr;
+			throw std::runtime_error("db_manage::serialize");
 		}
 
 		template <bool PROTO_BINARY, typename T>
 		static bool unserialize(db* adb, T& adata, char* abuff, int alen)
 		{
-			if constexpr (PROTO_BINARY)
-			{
-				int lbufflen = 0;
-				if (tools::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
-				{
-					log_error()->print("db_manage::unserialize({}, {})", dtype_name(T), abuff);
-					return false;
-				}
-					
-				ngl::unserialize lunser(adb->m_buff2, lbufflen);
-				if (!lunser.pop(adata))
-					return false;
-			}
-			else
-			{
-				ngl::unserialize lunser(abuff, alen);
-				if (!lunser.pop(adata))
-					return false;
-			}
+			ngl::unserialize lunser(abuff, alen);
+			if (!lunser.pop(adata))
+				return false;
 			return true;
 		}
 
@@ -93,27 +78,30 @@ namespace ngl
 				}
 				*m_savetemp.m_data = adata;
 
-				char* lsql = ngl::db_manage::serialize<DDBSAVE_PROTO_BINARY>(adb, m_savetemp);
-				if (lsql == nullptr)
-					return;
+				db::ptr lbinptr;
+				int32_t lbuffpos = ngl::db_manage::serialize<DDBSAVE_PROTO_BINARY>(adb, lbinptr, m_savetemp);
 
-				//char lbuff[] =
-				//	"INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s;";
-				//REPLACE INTO 则会先删除数据，然后再插入。
-				char lbuff[] =
-					"REPLACE INTO %s (id,data)VALUES(%lld,'%s');";
+				MYSQL_BIND lbind[1];
+				memset(lbind, 0, sizeof(MYSQL_BIND));
+				lbind[0].buffer_type = MYSQL_TYPE_LONG_BLOB;
+				lbind[0].buffer = (void*)lbinptr.m_buff;
+				lbind[0].buffer_length = lbuffpos;
+
+				// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
+				// # REPLACE INTO 则会先删除数据，然后再插入。
+				char lbuff[1024] = { 0 };
 				int llen = snprintf(
-					adb->m_buff1
-					, adb->m_bufflen1
-					, lbuff
+					lbuff
+					, 1024
+					, "INSERT INTO %s (id,data)VALUES(%lld,?)  ON DUPLICATE KEY UPDATE data=values(data);"
 					, protobuf_tabname<T>::tabname().c_str()
 					, adata.m_id()
-					, lsql
 				);
 
 				if (llen <= 0)
 					return;
-				adb->query(adb->m_buff1, llen);
+				adb->stmt_query(lbuff, llen, lbind);
+				adb->free_buff(lbinptr);
 			}
 
 			static void fun(db* adb, i64_actorid aid)
@@ -146,28 +134,17 @@ namespace ngl
 		public:
 			static void fun(db* adb, i64_actorid aid)
 			{
-				char lbuff[] = "DELETE FROM %s WHERE id='%lld';";
-				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, protobuf_tabname<T>::tabname().c_str(), aid);
+				char lbuff[1024] = { 0 };				
+				int llen = snprintf(
+					lbuff, 
+					1024, 
+					"DELETE FROM %s WHERE id='%lld';",
+					protobuf_tabname<T>::tabname().c_str(), 
+					aid
+				);
 				if (llen <= 0)
 					return;
-				adb->query(adb->m_buff1, llen);
-			}
-
-			static void fun(db* adb, std::vector<i64_actorid>& aid)
-			{
-				if (aid.empty())
-					return;
-				std::string lwhere = "";
-				for (int i = 0; i < aid.size(); ++i)
-				{
-					lwhere += i != 0 ? " OR id = " : " id = ";
-					lwhere += tools::lexical_cast<std::string>(aid[i]);
-				}
-				char lbuff[] = "DELETE FROM %s WHERE %s;";
-				int llen = snprintf(adb->m_buff1, adb->m_bufflen1, lbuff, protobuf_tabname<T>::tabname().c_str(), lwhere.c_str());
-				if (llen <= 0)
-					return;
-				adb->query(adb->m_buff1, llen);
+				adb->query(lbuff, llen);
 			}
 		};
 
@@ -177,15 +154,19 @@ namespace ngl
 		public:
 			static bool fun(db* adb, i64_actorid aid)
 			{
-				//// --- 从数据库中加载
-				char lbuff[] =
-					"SELECT id,data FROM %s WHERE id = '%lld';";
-				char lbuff2[1024] = { 0 };
-				int llen = snprintf(lbuff2, 1024, lbuff, protobuf_tabname<T>::tabname().c_str(), aid);
+				// # 从数据库中加载
+				char lbuff[1024] = { 0 };
+				int llen = snprintf(
+					lbuff, 
+					1024, 
+					"SELECT id,data FROM %s WHERE id = '%lld';", 
+					protobuf_tabname<T>::tabname().c_str(), 
+					aid
+				);
 				if (llen <= 0)
 					return false;
 				return adb->select(
-					lbuff2, llen,
+					lbuff, llen,
 					[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
@@ -204,15 +185,18 @@ namespace ngl
 
 			static bool fun(db* adb)
 			{
-				//// --- 从数据库中加载
-				char lbuff[] =
-					"SELECT id,data FROM %s;";
-				char lbuff2[1024] = { 0 };
-				int llen = snprintf(lbuff2, 1024, lbuff, protobuf_tabname<T>::tabname().c_str());
+				// # 从数据库中加载
+				char lbuff[1024] = { 0 };
+				int llen = snprintf(
+					lbuff, 
+					1024, 
+					"SELECT id,data FROM %s;", 
+					protobuf_tabname<T>::tabname().c_str()
+				);
 				if (llen <= 0)
 					return false;
 				return adb->select(
-					lbuff2, llen,
+					lbuff, llen,
 					[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						protobuf_data<T> ldata;
@@ -229,18 +213,21 @@ namespace ngl
 					});
 			}
 
-			// ## 加载出id 防止内存穿透
+			// # 加载出id 防止内存穿透
 			static bool fun(db* adb, std::set<int64_t>& aidset)
 			{
-				//// --- 从数据库中加载
-				char lbuff[] =
-					"SELECT id FROM %s;";
-				char lbuff2[1024] = { 0 };
-				int llen = snprintf(lbuff2, 1024, lbuff, protobuf_tabname<T>::tabname().c_str());
+				// # 从数据库中加载
+				char lbuff[1024] = { 0 };
+				int llen = snprintf(
+					lbuff, 
+					1024, 
+					"SELECT id FROM %s;", 
+					protobuf_tabname<T>::tabname().c_str()
+				);
 				if (llen <= 0)
 					return false;
 				return adb->select(
-					lbuff2, llen,
+					lbuff, llen,
 					[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 					{
 						aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));
