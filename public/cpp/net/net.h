@@ -166,7 +166,7 @@ namespace ngl
 		if (lpair.first == nullptr)
 			return std::make_pair<std::shared_ptr<pack>, std::shared_ptr<pack>>(nullptr, nullptr);
 
-		std::shared_ptr<pack>& lpack_ = sendpack_t::get_pack(adata);
+		std::shared_ptr<pack>& lpack_ = forward_pack::get_pack(adata);
 		if (lpack_ != nullptr)
 		{
 			if (encryption_bytexor::check_xor(lpack_))

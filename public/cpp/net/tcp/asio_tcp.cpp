@@ -8,18 +8,22 @@ namespace ngl
 {
 	struct asio_tcp::impl_asio_tcp
 	{
-		asio::ip::tcp::acceptor*			m_acceptor;
-		i16_port							m_port;
-		tcp_callback						m_fun;
-		tcp_closecallback					m_closefun;
-		tcp_sendfinishcallback				m_sendfinishfun;
-		std::unordered_map<i32_sessionid, service_tcp*> m_data;
-		std::shared_mutex					m_maplock;
-		serviceio_info						m_service_io_;
-		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>> m_ipport;
-		std::unordered_map<i32_sessionid, std::function<void()>> m_sessionclose;
-		std::shared_mutex					m_ipportlock;
-		int32_t								m_sessionid;
+		impl_asio_tcp() = delete;
+		impl_asio_tcp(const impl_asio_tcp&) = delete;
+		impl_asio_tcp& operator=(const impl_asio_tcp&) = delete;
+
+		asio::ip::tcp::acceptor*										m_acceptor;
+		i16_port														m_port;
+		tcp_callback													m_fun;
+		tcp_closecallback												m_closefun;
+		tcp_sendfinishcallback											m_sendfinishfun;
+		std::shared_mutex												m_maplock;
+		serviceio_info													m_service_io_;
+		std::shared_mutex												m_ipportlock;
+		int32_t															m_sessionid;
+		std::unordered_map<i32_sessionid, service_tcp*>					m_data;
+		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>	m_ipport;
+		std::unordered_map<i32_sessionid, std::function<void()>>		m_sessionclose;
 
 		impl_asio_tcp(
 			i8_sesindex aindex
@@ -38,9 +42,14 @@ namespace ngl
 			m_acceptor(nullptr)
 		{
 			asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
-			m_acceptor = new asio::ip::tcp::acceptor(lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port));
-			//m_acceptor = new boost::asio::ip::tcp::acceptor(lioservice, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), m_port));
-
+			m_acceptor = new asio::ip::tcp::acceptor(
+				lioservice, 
+				asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port)
+			);
+			// m_acceptor = new boost::asio::ip::tcp::acceptor(
+			//  lioservice, 
+			//  boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), m_port)
+			// );
 			accept();
 		}
 
@@ -75,7 +84,6 @@ namespace ngl
 				lservice = new service_tcp(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
-			///////////
 			lservice->m_socket.async_connect(
 				basio_iptcpendpoint(basio_ipaddress::from_string(aip), aport),
 				[this, lservice, aip, aport, afun, acount](const std::error_code& ec)
@@ -111,19 +119,14 @@ namespace ngl
 					afun(lservice->m_sessionid);
 				}
 			);
-			//////////////
 			return lservice;
 		}
 
 		inline service_tcp* get_tcp(i32_sessionid asessionid)
 		{
 			monopoly_shared_lock(m_maplock);
-			auto itor = m_data.find(asessionid);
-			if (itor != m_data.end())
-			{
-				return itor->second;
-			}
-			return nullptr;
+			service_tcp** lp = tools::findmap(m_data, asessionid);
+			return lp == nullptr ? nullptr : *lp;
 		}
 
 		template <typename T>
@@ -244,7 +247,11 @@ namespace ngl
 			}
 		}
 
-		inline void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack)
+		inline void handle_write(
+			service_tcp* ap, 
+			const std::error_code& error, 
+			std::shared_ptr<pack> apack
+		)
 		{
 			if (error)
 			{
@@ -254,7 +261,11 @@ namespace ngl
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
 		}
 
-		inline void handle_write_void(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack)
+		inline void handle_write_void(
+			service_tcp* ap, 
+			const std::error_code& error, 
+			std::shared_ptr<void> apack
+		)
 		{
 			if (error)
 			{
@@ -331,10 +342,10 @@ namespace ngl
 			}
 		}
 
-		inline bool sessionid2ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
+		inline bool get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
 		{
 			monopoly_shared_lock(m_ipportlock);
-			std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>::iterator itor = m_ipport.find(assionid);
+			auto itor = m_ipport.find(assionid);
 			if (itor == m_ipport.end())
 			{
 				return false;
@@ -368,7 +379,6 @@ namespace ngl
 					}
 					else
 					{
-
 						{
 							monopoly_shared_lock(m_ipportlock);
 							std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
@@ -376,7 +386,6 @@ namespace ngl
 							lipport.second = lservice->m_socket.remote_endpoint().port();
 							lservice->m_is_lanip = tools::is_lanip(lipport.first);
 						}
-
 						start(lservice);
 					}
 					accept();
@@ -416,17 +425,35 @@ namespace ngl
 		}
 	};
 
-	asio_tcp::asio_tcp(i8_sesindex aindex, i16_port aport, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun)
+	asio_tcp::asio_tcp(
+		i8_sesindex aindex, 
+		i16_port aport, 
+		i32_threadsize athread, 
+		const tcp_callback& acallfun, 
+		const tcp_closecallback& aclosefun, 
+		const tcp_sendfinishcallback& asendfinishfun
+	)
 	{
 		m_impl_asio_tcp.make_unique(aindex, aport, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
-	asio_tcp::asio_tcp(i8_sesindex aindex, i32_threadsize athread, const tcp_callback& acallfun, const tcp_closecallback& aclosefun, const tcp_sendfinishcallback& asendfinishfun)
+	asio_tcp::asio_tcp(
+		i8_sesindex aindex, 
+		i32_threadsize athread, 
+		const tcp_callback& acallfun, 
+		const tcp_closecallback& aclosefun, 
+		const tcp_sendfinishcallback& asendfinishfun
+	)
 	{
 		m_impl_asio_tcp.make_unique(aindex, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
-	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount/* = 5*/)
+	service_tcp* asio_tcp::connect(
+		const str_ip& aip, 
+		i16_port aport, 
+		const tcp_connectcallback& afun, 
+		int acount/* = 5*/
+	)
 	{
 		return m_impl_asio_tcp()->connect(aip, aport, afun, acount);
 	}
@@ -456,9 +483,9 @@ namespace ngl
 		m_impl_asio_tcp()->close_net(sessionid);
 	}
 
-	bool asio_tcp::sessionid2ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
+	bool asio_tcp::get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
 	{
-		return m_impl_asio_tcp()->sessionid2ipport(assionid, apair);
+		return m_impl_asio_tcp()->get_ipport(assionid, apair);
 	}
 
 	bool asio_tcp::exist_session(i32_sessionid asession)

@@ -22,15 +22,33 @@ namespace ngl
 		if (lsocketthreadnum > net_config_socket_pthread_max_size || lsocketthreadnum <= 0)
 			lsocketthreadnum = net_config_socket_pthread_max_size;
 
-		std::function<bool(service_io*, const char*, uint32_t)> lfun
-			= std::bind(&net_tcp::socket_recv, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		std::function<bool(service_io*, const char*, uint32_t)> lfun 
+			= std::bind(
+				&net_tcp::socket_recv, 
+				this, 
+				std::placeholders::_1, 
+				std::placeholders::_2,
+				std::placeholders::_3
+			);
 
 		std::function<void(int)> lclosefun = std::bind(&net_tcp::close, this, std::placeholders::_1);
-		m_server = new asio_tcp(m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {});
+		m_server = new asio_tcp(
+			m_index, 
+			port(), 
+			lsocketthreadnum, 
+			lfun, 
+			lclosefun, 
+			[](i32_sessionid, bool, pack* apack) 
+			{}
+		);
 		return true;
 	}
 
-	bool net_tcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
+	bool net_tcp::connect(
+		const std::string& aip, 
+		i16_port aport, 
+		const std::function<void(i32_sessionid)>& afun
+	)
 	{
 		m_server->connect(aip, aport, afun);
 		return true;
@@ -41,7 +59,12 @@ namespace ngl
 		m_server->close_net(asession);
 	}
 
-	void net_tcp::set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
+	void net_tcp::set_close(
+		int asession, 
+		const std::string& aip, 
+		i16_port aport, 
+		const std::function<void(i32_sessionid)>& afun
+	)
 	{
 		m_server->set_close(asession, [this, aip, aport, afun]()
 			{

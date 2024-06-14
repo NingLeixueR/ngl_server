@@ -10,9 +10,10 @@ namespace ngl
 		asio_timer(const asio_timer&) = delete;
 		asio_timer& operator=(const asio_timer&) = delete;
 
+		asio_timer() {}
+
 		static time_wheel m_wheel;
 	public:
-		asio_timer() {}
 		static time_wheel& wheel()
 		{
 			return m_wheel;

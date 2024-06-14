@@ -24,7 +24,8 @@ namespace ngl
 		virtual void close_net(i32_sessionid asession);
 		
 		virtual bool connect(
-			const std::string& aip, i16_port aport, 
+			const std::string& aip, 
+			i16_port aport, 
 			const std::function<void(i32_sessionid)>& afun
 		);
 		
@@ -39,6 +40,7 @@ namespace ngl
 		//# 发送消息
 		virtual bool net_send(i32_sessionid asession, std::shared_ptr<void>& lpack);	
 
+		//# 查询session是否存在
 		virtual bool exist_session(i32_sessionid asession);
 	};
 }// namespace ngl

@@ -16,11 +16,11 @@
 
 namespace ngl
 {
-	class sendpack_t
+	class forward_pack
 	{
-		sendpack_t() = delete;
-		sendpack_t(const sendpack_t&) = delete;
-		sendpack_t& operator=(const sendpack_t&) = delete;
+		forward_pack() = delete;
+		forward_pack(const forward_pack&) = delete;
+		forward_pack& operator=(const forward_pack&) = delete;
 	public:
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(Y&)
@@ -126,6 +126,10 @@ namespace ngl
 			, const std::function<void(i32_sessionid)>& afun
 		) = 0;
 
+		// # aip/aport		要连接的ip/端口
+		// # afun			连接回调
+		// # await			是否等待连接成功
+		// # areconnection	断线是否重连
 		virtual bool connect(const std::string& aip
 			, i16_port aport
 			, const std::function<void(i32_sessionid)>& afun
@@ -135,14 +139,19 @@ namespace ngl
 
 		// # 发送消息
 		template <typename T>
-		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool send(
+			i32_sessionid asession, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
 				return false;
 			if (sendpack(asession, lpack) == false)
 				return false;
-			std::shared_ptr<pack>& lpack2 = sendpack_t::get_pack(adata);
+			std::shared_ptr<pack>& lpack2 = forward_pack::get_pack(adata);
 			if (lpack2 == nullptr)
 				return true;
 			if (encryption_bytexor::check_xor(lpack2))
@@ -153,33 +162,69 @@ namespace ngl
 		}
 
 		template <typename T>
-		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
+		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(
+			T& adata, 
+			i64_actorid aactorid
+		);
 
 		// # 给一组sesion发送消息
 		// # key: session values:aactorid
 		// # std::map<uint32_t, uint32_t>& asession
-		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
+		bool sendmore(
+			const std::map<i32_sessionid, i64_actorid>& asession, 
+			i64_actorid aactorid, 
+			std::pair<std::shared_ptr<pack>, 
+			std::shared_ptr<pack>>& apair
+		);
 	private:
 		template <typename TSTL>
-		bool sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
+		bool sendmore_stl(
+			const TSTL& asession, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid, 
+			std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
+		);
 	public:
-		bool sendmore(const std::vector<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+		bool sendmore(
+			const std::vector<i32_sessionid>& asession, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid, 
+			std::pair<std::shared_ptr<pack>,
+			std::shared_ptr<pack>>& apair
+		)
 		{
 			return sendmore_stl(asession, aactorid, arequestactorid, apair);
 		}
 
-		bool sendmore(const std::list<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+		bool sendmore(
+			const std::list<i32_sessionid>& asession, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid, 
+			std::pair<std::shared_ptr<pack>, 
+			std::shared_ptr<pack>>& apair
+		)
 		{
 			return sendmore_stl(asession, aactorid, arequestactorid, apair);
 		}
 
-		bool sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+		bool sendmore(
+			const std::set<i32_sessionid>& asession, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid, 
+			std::pair<std::shared_ptr<pack>, 
+			std::shared_ptr<pack>>& apair
+		)
 		{
 			return sendmore_stl(asession, aactorid, arequestactorid, apair);
 		}
 
 		template <typename T>
-		void send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
+		void send_client(
+			i32_actordataid auid, 
+			i16_area aarea, 
+			i32_gatewayid agateway, 
+			T& adata
+		)
 		{
 			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
 			pro.m_uid.push_back(auid);
@@ -195,7 +240,11 @@ namespace ngl
 		}
 
 		template <typename T>
-		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
+		void send_client(
+			const std::vector<std::pair<i32_actordataid, i16_area>>& avec, 
+			i32_gatewayid agateway, 
+			T& adata
+		)
 		{
 			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
 			for (int i = 0; i < avec.size(); ++i)
