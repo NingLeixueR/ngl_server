@@ -454,8 +454,7 @@ namespace ngl
 		template <typename T>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>&& adata)
 		{
-			handle_pram lpram;
-			handle_pram::create<T>(lpram, aguid, arequestguid, adata);
+			handle_pram lpram = handle_pram::create<T>(aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
 #pragma endregion

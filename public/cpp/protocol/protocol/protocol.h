@@ -75,7 +75,8 @@ namespace ngl
 
 				actor_manage& lmanages = actor_manage::getInstance();
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
-				{// actor type 是否无效  || //发给同类型的所有actor
+				{
+					// actor type 是否无效  || //发给同类型的所有actor
 					lmanages.push_task_type(atype, lpram);
 					return true;
 				}
@@ -84,7 +85,8 @@ namespace ngl
 					if (lactorguid.type() == atype)
 					{
 						if (lactorguid.is_actoridnone())
-						{// actor id 是否无效
+						{
+							// actor id 是否无效
 							lmanages.push_task_type(atype, lpram);
 						}							
 						else

@@ -10,7 +10,6 @@
 // typeid(T).hash_code() #c++标准并没有强制要求只是建议编译器 不同类型生成不同的hash值
 #define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
 
-
 namespace ngl
 {
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
@@ -25,10 +24,10 @@ namespace ngl
 			int				m_protocol;
 			std::string		m_name;
 		};
-		static std::multimap<size_t, pinfo> m_keyval;
+		static std::multimap<size_t, pinfo>		m_keyval;
 		// net/gm		[1			-  100000000];
 		// custom		[200000001	-  300000000];
-		static int32_t lcustoms/* = 200000000*/;
+		static int32_t							lcustoms/* = 200000000*/;
 
 		template <typename T>
 		static size_t hash_code()
