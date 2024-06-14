@@ -174,7 +174,7 @@ namespace ngl
 				char* lbuff = &lpack_->m_buff[lpack_->m_pos];
 				int32_t llen = lpack_->m_len - lpack_->m_pos;
 				int32_t lpos = lpair.first->m_len - pack_head::size();
-				ngl::encryption::bytexor(lbuff, llen, lpos);
+				ngl::tools::bytexor(lbuff, llen, lpos);
 			}
 		}
 		lpair.second = lpack_;

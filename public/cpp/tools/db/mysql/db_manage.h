@@ -1,7 +1,6 @@
 #pragma once
 
 #include "serialize.h"
-#include "hexbytes.h"
 #include "db_data.h"
 #include "tools.h"
 #include "db.h"
@@ -42,7 +41,7 @@ namespace ngl
 			{
 				if (aistohex)
 				{
-					int lpos = hexbytes::to_hex(adb->m_buff1, lserialize.byte(), adb->m_buff2);
+					int lpos = tools::to_hex(adb->m_buff1, lserialize.byte(), adb->m_buff2);
 					adb->m_buff2[lpos] = '\0';
 					return adb->m_buff2;
 				}
@@ -61,7 +60,7 @@ namespace ngl
 			if (aistohex)
 			{
 				int lbufflen = 0;
-				if (hexbytes::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
+				if (tools::to_bytes(abuff, alen, adb->m_buff2, lbufflen) == false)
 				{
 					log_error()->print("db_manage::unserialize({}, {})", dtype_name(T), abuff);
 					return false;

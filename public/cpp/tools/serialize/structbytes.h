@@ -1,6 +1,5 @@
 #pragma once
 
-#include "encryption.h"
 #include "serialize.h"
 #include "type.h"
 #include "pack.h"
@@ -110,7 +109,7 @@ namespace ngl
 				// ### encryption bytexor
 				if (encryption_bytexor::check_xor(apack))
 				{
-					ngl::encryption::bytexor(apack->m_buff, apack->m_len, 0);
+					ngl::tools::bytexor(apack->m_buff, apack->m_len, 0);
 				}
 				
 				if (adata.ParseFromArray(apack->m_buff, apack->m_head.getvalue(EPH_BYTES)) == false)
@@ -134,7 +133,7 @@ namespace ngl
 			// ### encryption bytexor
 			if(encryption_bytexor::check_xor(adata))
 			{
-				ngl::encryption::bytexor(lpair.first, lpair.second, 0);
+				ngl::tools::bytexor(lpair.first, lpair.second, 0);
 			}
 			
 			// ### sethead start ###

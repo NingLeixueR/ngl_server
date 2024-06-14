@@ -12,7 +12,6 @@ namespace ngl
 		m_end(0),
 		m_fun(afun)
 	{
-		//log_error()->print("time consuming [{}:{}] start", aname, m_id);
 	}
 
 	tconsuming_thread::tconsuming_thread() :
@@ -36,11 +35,23 @@ namespace ngl
 	{
 		if (awarn)
 		{
-			log_info()->print("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+			log_info()->print(
+				"time consuming [{}:{}] [{}] [{}] ", 
+				aitem->m_name,
+				aitem->m_id, 
+				aname, 
+				aitem->m_end - aitem->m_beg
+			);
 		}
 		else
 		{
-			log_error()->print("time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg);
+			log_error()->print(
+				"time consuming [{}:{}] [{}] [{}] ", 
+				aitem->m_name, 
+				aitem->m_id, 
+				aname, 
+				aitem->m_end - aitem->m_beg
+			);
 		}
 	}
 
@@ -87,7 +98,10 @@ namespace ngl
 		}
 	}
 
-	time_consuming::time_consuming(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun)
+	time_consuming::time_consuming(
+		const std::string& aname, 
+		const std::function<bool(int64_t, int64_t)>& afun
+	)
 	{
 		m_id = tconsuming_thread::getInstance().add(aname, afun);
 	}

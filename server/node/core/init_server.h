@@ -22,7 +22,6 @@
 #include "actor_gm.h"
 #include "xmlprotocol.h"
 #include "manage_curl.h"
-#include "encryption.h"
 #include "time_wheel.h"
 #include "ndbclient.h"
 #include "attribute.h"
@@ -39,7 +38,6 @@
 #include "xml.h"
 
 #include <string_view>
-#include <encryption.h>
 #include <cstdint>
 #include <string>
 #include <vector>

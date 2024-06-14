@@ -3,10 +3,8 @@
 
 namespace ngl
 {
-	using type_sem = std::counting_semaphore<1>;
-
 	sem::sem() :
-		m_sem(new type_sem(0))
+		m_sem(new std::counting_semaphore<1>(0))
 	{
 	}
 
@@ -16,12 +14,12 @@ namespace ngl
 
 	void sem::wait()
 	{
-		((type_sem*)m_sem)->acquire();
+		((std::counting_semaphore<1>*)m_sem)->acquire();
 	}
 
 	void sem::post()
 	{
-		((type_sem*)m_sem)->release();		
+		((std::counting_semaphore<1>*)m_sem)->release();
 	}
 
 	void sleep::seconds(int32_t avalue)

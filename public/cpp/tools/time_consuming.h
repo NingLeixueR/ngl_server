@@ -14,11 +14,17 @@ namespace ngl
 		std::function<bool(int64_t, int64_t)> m_fun;
 		static std::atomic<int32_t> m_indexid;
 
-		tconsuming(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun);
+		tconsuming(
+			const std::string& aname, 
+			const std::function<bool(int64_t, int64_t)>& afun
+		);
 	};
 
 	class tconsuming_thread
 	{
+		tconsuming_thread(const tconsuming_thread&) = delete;
+		tconsuming_thread& operator=(const tconsuming_thread&) = delete;
+
 		using ptr_tconsuming = std::shared_ptr<tconsuming>;
 
 		ngl::thread					m_thread;
@@ -34,7 +40,10 @@ namespace ngl
 			return ltemp;
 		}
 
-		int32_t add(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun);
+		int32_t add(
+			const std::string& aname, 
+			const std::function<bool(int64_t, int64_t)>& afun
+		);
 
 		void remove(int32_t aid);
 
@@ -45,9 +54,16 @@ namespace ngl
 
 	class time_consuming
 	{
+		time_consuming() = delete;
+		time_consuming(const time_consuming&) = delete;
+		time_consuming& operator=(const time_consuming&) = delete;
+
 		int32_t m_id;
 	public:
-		time_consuming(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun);
+		time_consuming(
+			const std::string& aname, 
+			const std::function<bool(int64_t, int64_t)>& afun
+		);
 		~time_consuming();
 	};
 }

@@ -320,8 +320,8 @@ namespace ngl
 
 		static bool uuid_make(std::string& astr);
 
-		// 宽字符与ASCII相互转换  utf8
 #pragma region asscii_utf8
+		// 宽字符与ASCII相互转换  utf8
 		static bool wasscii2asscii(const std::wstring& awstr, std::string& astr);
 		static bool asscii2wasscii(const std::string& astr, std::wstring& awstr);
 		static bool wasscii2utf8(const std::wstring& awstr, std::string& astr);
@@ -516,6 +516,16 @@ namespace ngl
 	static bool	varint_decode(varint_parm<int32_t>& aparm);
 
 #pragma endregion
+
+#pragma region hexbytes
+	static int	to_hex(void* apso, int alen, void* apto);
+	static bool to_bytes(void* apso, int alen, void* apto, int& apotlen);
+#pragma endregion
+
+#pragma region encryption
+	static void bytexor(char* ap, int32_t aplen, int apos);
+#pragma endregion
+
 	};
 }//namespace ngl
 

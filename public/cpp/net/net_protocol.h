@@ -155,7 +155,7 @@ namespace ngl
 			if (lpack2 == nullptr)
 				return true;
 			if (encryption_bytexor::check_xor(lpack2))
-				ngl::encryption::bytexor(lpack2->m_buff, lpack2->m_len, lpack->m_len - pack_head::size());
+				ngl::tools::bytexor(lpack2->m_buff, lpack2->m_len, lpack->m_len - pack_head::size());
 			if (sendpack(asession, lpack2) == false)
 				return false;
 			return true;
