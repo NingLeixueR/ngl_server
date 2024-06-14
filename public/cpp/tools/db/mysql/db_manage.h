@@ -121,7 +121,11 @@ namespace ngl
 				T ldata;
 				if (db_data<T>::get(aid, ldata) == false)
 				{
-					log_error()->print("save by id[{}] !!![{}]", aid, protobuf_tabname<T>::tabname());
+					log_error()->print(
+						"save by id[{}] !!![{}]",
+						aid,
+						protobuf_tabname<T>::tabname()
+					);
 					return;
 				}
 				fun(adb, ldata);
