@@ -28,7 +28,7 @@ namespace ngl
 
 	bool actor_kcp::handle(message<np_actor_kcp>& adata)
 	{
-		auto lpram = adata.m_data;
+		auto lpram = adata.get_data();
 		auto lpack = adata.m_pack;
 		nets::kcp()->reset_add(lpram->m_conv, lpram->m_uip, lpram->m_uport);
 

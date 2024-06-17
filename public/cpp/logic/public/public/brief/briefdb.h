@@ -34,12 +34,18 @@ namespace ngl
 			return &itor->second.getconst();
 		}
 
-		pbdb::db_brief* get_activity(i64_actorid aroleid, bool achange = true)
+		pbdb::db_brief* get_brief(i64_actorid aroleid, bool achange = true)
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
 				return nullptr;
 			return &itor->second.get(achange);
+		}
+
+		// 没有就添加
+		void update_brief(const pbdb::db_brief* adata)
+		{
+			data()[adata->m_id()].get() = *adata;
 		}
 
 		virtual void initdata()
@@ -64,7 +70,7 @@ namespace ngl
 		{
 			for (const pbdb::db_brief& item : m_vecinfo)
 			{
-				data()[item.m_id()].get() = item;
+				update_brief(&item);
 			}
 		}
 	};

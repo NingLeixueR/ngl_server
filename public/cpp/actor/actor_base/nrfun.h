@@ -38,17 +38,49 @@ namespace ngl
 	template <typename T>
 	struct message
 	{
-		i32_threadid	m_thread;
-		T*				m_data;
-		const pack*		m_pack;
+	private:
+		std::shared_ptr<T>	m_shared_data;
+		T*					m_original_data;
+	public:
+		i32_threadid		m_thread;
+		const pack*			m_pack;
 
 		message() = delete;
 
-		message(i32_threadid athread, const pack* apack, T* adata) :
+		message(
+			i32_threadid athread, 
+			const pack* apack, 
+			std::shared_ptr<T>& adata
+		) :
 			m_thread(athread),
 			m_pack(apack),
-			m_data(adata)
+			m_shared_data(adata),
+			m_original_data(nullptr)
 		{
+		}
+
+		message(
+			i32_threadid athread,
+			const pack* apack,
+			T* adata
+		) :
+			m_thread(athread),
+			m_pack(apack),
+			m_original_data(adata),
+			m_shared_data(nullptr)
+		{
+		}
+
+		T* get_data()
+		{
+			if (m_shared_data != nullptr)
+				return m_shared_data.get();
+			return m_original_data;
+		}
+
+		std::shared_ptr<T>& get_shared_data()
+		{
+			return m_shared_data;
 		}
 	};
 

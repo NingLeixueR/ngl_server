@@ -153,7 +153,7 @@ namespace ngl
 			return true;
 		Try
 		{
-			auto lparm			= adata.m_data;
+			auto lparm			= adata.get_data();
 			tab_servers* tab	= ttab_servers::tab();
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
@@ -187,7 +187,7 @@ namespace ngl
 			return true;
 		Try
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
 			i32_serverid lserverid = lparm->m_id;
 			Assert(lserverid != nconfig::m_nodeid);
@@ -230,7 +230,7 @@ namespace ngl
 	{
 		Try
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			//log_error()->print("##actor_node_update## add:[{}] del[{}]", lparm->m_add, lparm->m_del);
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
@@ -240,10 +240,12 @@ namespace ngl
 	
 	bool actor_client::handle(message<np_actornode_update_mass>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		auto lpack = adata.m_pack;
 		int32_t lthreadid = adata.m_thread;
+
 		message<np_actornode_update> lmessage(lthreadid, lpack, &lparm->m_mass);
+
 		handle(lmessage);
 
 		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)
@@ -292,7 +294,7 @@ namespace ngl
 			return true;
 		Try
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
 			if (lconnectserverid.find(lparm->m_serverid) != lconnectserverid.end())
 			{
@@ -308,7 +310,7 @@ namespace ngl
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		if (lparm->m_isremove)
 		{
 			naddress::remove_gatewayid(lparm->m_actorid);

@@ -40,10 +40,10 @@ namespace ngl
 		Try
 		{
 			log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
-				, adata.m_data->m_role().m_base().m_name()
-				,  adata.m_data->m_role().m_base().m_lv()
+				, adata.get_data()->m_role().m_base().m_name()
+				,  adata.get_data()->m_role().m_base().m_lv()
 			);
-			m_data = *adata.m_data;
+			m_data = *adata.get_data();
 		}Catch;
 		return true;
 	}
@@ -51,14 +51,14 @@ namespace ngl
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
 	{
 		char lbuff[1024] = { 0 };
-		ngl::localtime::time2str(lbuff, 1024, adata.m_data->m_utc(), "%y/%m/%d %H:%M:%S");
+		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->m_utc(), "%y/%m/%d %H:%M:%S");
 		log_error()->print("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
 		return true;
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
 	{
-		auto lrecv = adata.m_data;
+		auto lrecv = adata.get_data();
 		if (lrecv->m_type() == pbnet::get_chat_list)
 		{
 			char lbuff[1024] = { 0 };
@@ -108,7 +108,7 @@ namespace ngl
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };
-		for (const auto& item : adata.m_data->m_notices())
+		for (const auto& item : adata.get_data()->m_notices())
 		{
 			ngl::localtime::time2str(lbuffstart, 1024, item.m_starttime(), "%Y/%m/%d %H:%M:%S");
 			ngl::localtime::time2str(lbufffinish, 1024, item.m_finishtime(), "%Y/%m/%d %H:%M:%S");
@@ -133,7 +133,7 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
 	{
-		pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.m_data;
+		pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.get_data();
 		char lbuff[1024] = { 0 };
 		auto lstream = log_error();
 		for (const auto& [_id, _mail] : pro.m_mail())
@@ -178,8 +178,8 @@ namespace ngl
 	{
 		log_error()->print("[{}][{}][{}]"
 			, nguid::make_type(id_guid(), ACTOR_ROLE)
-			, adata.m_data->m_errnum()
-			, adata.m_data->m_errmessage()
+			, adata.get_data()->m_errnum()
+			, adata.get_data()->m_errmessage()
 		);
 		return true;
 	}
@@ -187,7 +187,7 @@ namespace ngl
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
 		tab_servers* tab = ttab_servers::tab();
-		m_kcpsessionmd5 = adata.m_data->m_kcpsession();
+		m_kcpsessionmd5 = adata.get_data()->m_kcpsession();
 
 		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
 		net_works const*  lpworks = ttab_servers::nworks(ENET_KCP, tabgame);

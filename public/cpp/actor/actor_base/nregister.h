@@ -34,7 +34,8 @@ namespace ngl
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				message<T> lmessage(athreadid, apram.m_pack.get(), (T*)apram.m_data.get());
+				std::shared_ptr<T> lptr = std::static_pointer_cast<T>(apram.m_data);
+				message<T> lmessage(athreadid, apram.m_pack.get(), lptr);
 				(((TTTDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
@@ -68,7 +69,8 @@ namespace ngl
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				message<type_forward> lmessage(athreadid, apram.m_pack.get(), (type_forward*)apram.m_data.get());
+				std::shared_ptr<type_forward> lptr = std::static_pointer_cast<type_forward>(apram.m_data);
+				message<type_forward> lmessage(athreadid, apram.m_pack.get(), lptr);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
@@ -87,7 +89,8 @@ namespace ngl
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
 				type_forward* ltemp = (type_forward*)apram.m_data.get();
-				message<T> lmessage(athreadid, apram.m_pack.get(), ltemp->get_data());
+				std::shared_ptr<T> pro = ltemp->get_shared();
+				message<T> lmessage(athreadid, apram.m_pack.get(), pro);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};

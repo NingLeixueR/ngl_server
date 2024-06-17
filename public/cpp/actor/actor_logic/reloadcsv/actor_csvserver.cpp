@@ -38,7 +38,7 @@ namespace ngl
 	bool actor_csvserver::handle(message<np_actor_csv_verify_version>& adata)
 	{
 		log_error()->print("############actor_reloadcsv_distribute::handle###########");
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		auto lpack = adata.m_pack;
 		np_actor_reloadcsv pro;
 		std::map<std::string, csvbase*>& lversion = allcsv::all();

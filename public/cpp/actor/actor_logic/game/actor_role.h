@@ -98,15 +98,28 @@ namespace ngl
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(message<T>& adata)
 		{
-			std::shared_ptr<mforward<T>> pro = std::make_shared<mforward<T>>(id_guid(), *adata.m_data);
+			std::shared_ptr<mforward<T>> pro = std::make_shared<mforward<T>>(
+				id_guid(), 
+				adata.get_shared_data()
+			);
 			i64_actorid lguid;
-			switch (forward_way(*adata.m_data))
+			switch (forward_way(*adata.get_data()))
 			{
 			case ecross_ordinary:
-				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, dataid(*adata.m_data));
+				lguid = nguid::make(
+					ACTOR, 
+					ttab_servers::tab()->m_area, 
+					dataid(*adata.get_data()
+					)
+				);
 				break;
 			case ecross_cross_ordinary:
-				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_crossarea, dataid(*adata.m_data));
+				lguid = nguid::make(
+					ACTOR, 
+					ttab_servers::tab()->m_crossarea, 
+					dataid(*adata.get_data()
+					)
+				);
 				break;
 			case ecross_play:
 				lguid = m_playactorid;

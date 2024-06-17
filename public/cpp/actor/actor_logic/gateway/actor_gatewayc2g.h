@@ -36,7 +36,7 @@ namespace ngl
 		{
 			//Client->Gate  需要把这个消息传递给Game服务器
 			//adata.m_uid == socket id
-			auto lpram = adata.m_data;
+			auto lpram = adata.get_data();
 			auto lpack = adata.m_pack;
 			gateway_socket* info = nullptr;
 			if (sysconfig::robot_test())

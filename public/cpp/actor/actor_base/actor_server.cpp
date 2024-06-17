@@ -38,7 +38,7 @@ namespace ngl
 	{
 		Try
 		{
-			auto lrecv = adata.m_data;
+			auto lrecv = adata.get_data();
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
 
@@ -116,7 +116,7 @@ namespace ngl
 	{
 		Try
 		{
-			auto lrecv = adata.m_data;
+			auto lrecv = adata.get_data();
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
 			uint16_t lserverid = lpack->m_id;
@@ -145,7 +145,7 @@ namespace ngl
 
 	bool actor_server::handle(message<np_actor_gatewayid_updata>& adata)
 	{
-		auto lrecv = adata.m_data;
+		auto lrecv = adata.get_data();
 		auto lpack = adata.m_pack;
 		if (lrecv->m_isremove)
 		{

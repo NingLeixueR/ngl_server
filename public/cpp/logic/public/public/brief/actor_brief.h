@@ -44,19 +44,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		bool handle(message<np_actor_roleinfo>& adata)
-		{
-			m_briefdb.update(*adata.m_data->m_vecinfo.m_data.get());
-
-			auto pro = std::make_shared<np_actor_roleinfo>();
-			*pro = *adata.m_data;
-			actor::static_send_actor(nguid::make_self(ACTOR_NOTICE), nguid::make(), pro);
-			actor::static_send_actor(nguid::make_self(ACTOR_CHAT), nguid::make(), pro);
-		
-			actor::static_send_actor(
-			nguid::make(ACTOR_CHAT,ttab_servers::tab()->m_crossarea, nguid::none_actordataid()),
-			nguid::make(), pro);
-			return true;
-		}
+		bool handle(message<np_actor_roleinfo>& adata);
 	};
 }//namespace ngl

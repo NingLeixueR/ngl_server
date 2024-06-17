@@ -79,7 +79,7 @@ namespace ngl
 		template <typename T>
 		bool handle(message<np_actorswitch_process<T>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			if (lparm->m_toserverid == nconfig::m_nodeid)
 			{
 				nguid lguid(lparm->m_actor);

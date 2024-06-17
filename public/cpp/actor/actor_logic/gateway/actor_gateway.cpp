@@ -117,7 +117,7 @@ namespace ngl
 
 	bool actor_gateway::handle(message<np_actorrole_login>& adata)
 	{// login服务器通知GateWay服务器 玩家账号验证成功
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
 
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
@@ -148,7 +148,7 @@ namespace ngl
 	{
 		Try
 		{
-			auto lpram = adata.m_data;
+			auto lpram = adata.get_data();
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
 			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
@@ -198,7 +198,7 @@ namespace ngl
 
 	bool actor_gateway::handle(message<np_actor_kcp>& adata)
 	{
-		auto lpram = adata.m_data;
+		auto lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_m_kcpsession(lpram->m_kcpsession);
 		nets::sendbysession(lpram->m_sessionid
@@ -212,7 +212,7 @@ namespace ngl
 	// 获取kcp-session
 	bool actor_gateway::handle(message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
 	{
-		auto lpram = adata.m_data;
+		auto lpram = adata.get_data();
 		auto lpack = adata.m_pack;
 
 		/////////////////////////////////////
@@ -250,7 +250,7 @@ namespace ngl
 	{
 		Try
 		{
-			auto lpram = adata.m_data;
+			auto lpram = adata.get_data();
 			log_info()->print("############ GateWay Transmit ############");
 			nguid lguid(lpram->m_actor);
 
@@ -269,7 +269,7 @@ namespace ngl
 	{
 		Try
 		{
-			auto lpram = adata.m_data;
+			auto lpram = adata.get_data();
 			if (sysconfig::robot_test())
 			{
 				std::vector<gateway_socket*> lvec;

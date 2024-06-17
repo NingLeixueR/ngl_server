@@ -38,7 +38,7 @@ namespace ngl
 
 	bool actor_gatewayg2c::handle(message<np_actor_gatewayinfo_updata>& adata)
 	{
-		auto lpram = adata.m_data;
+		auto lpram = adata.get_data();
 		for (auto& item : lpram->m_delsocket)
 		{
 			m_info.remove_socket(item);

@@ -319,6 +319,11 @@ namespace ngl
 		{
 			return nullptr;
 		}
+
+		std::shared_ptr<T> get_shared()
+		{
+			return nullptr;
+		}
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
@@ -340,6 +345,11 @@ namespace ngl
 		}
 
 		T* get_data()
+		{
+			return nullptr;
+		}
+
+		std::shared_ptr<T> get_shared()
 		{
 			return nullptr;
 		}
@@ -366,6 +376,11 @@ namespace ngl
 			return nullptr;
 		}
 
+		std::shared_ptr<T> get_shared()
+		{
+			return nullptr;
+		}
+
 		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
 	};
 
@@ -388,6 +403,11 @@ namespace ngl
 		T* get_data()
 		{
 			return m_data.m_data.get();
+		}
+
+		std::shared_ptr<T> get_shared()
+		{
+			return m_data.m_data;
 		}
 
 		np_actor_forward()
@@ -421,6 +441,11 @@ namespace ngl
 		T* get_data()
 		{
 			return m_data.m_data.get();
+		}
+
+		std::shared_ptr<T> get_shared()
+		{
+			return m_data.m_data;
 		}
 
 		void make_data()

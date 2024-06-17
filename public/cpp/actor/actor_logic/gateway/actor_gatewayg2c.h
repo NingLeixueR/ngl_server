@@ -36,7 +36,7 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
 			//Game->Gate  需要把这个消息传递给Client服务器
 			gateway_socket* info = nullptr;
@@ -50,7 +50,16 @@ namespace ngl
 				{
 					for (const auto& itemfor2 : itemfor1.second)
 					{
-						lmap.insert(std::make_pair(itemfor2.second.m_socket, nguid::make(ACTOR_ROBOT, itemfor2.second.m_area, itemfor2.second.m_dataid)));
+						lmap.insert(
+							std::make_pair(
+								itemfor2.second.m_socket, 
+								nguid::make(
+									ACTOR_ROBOT, 
+									itemfor2.second.m_area, 
+									itemfor2.second.m_dataid
+								)
+							)
+						);
 					}
 				}
 			}
@@ -62,7 +71,16 @@ namespace ngl
 				{
 					for (const auto& itemfor1 : itemitor->second)
 					{
-						lmap.insert(std::make_pair(itemfor1.second.m_socket, nguid::make(ACTOR_ROBOT, itemfor1.second.m_area, itemfor1.second.m_dataid)));
+						lmap.insert(
+							std::make_pair(
+								itemfor1.second.m_socket,
+								nguid::make(
+									ACTOR_ROBOT,
+									itemfor1.second.m_area,
+									itemfor1.second.m_dataid
+								)
+							)
+						);
 					}
 				}
 			}
@@ -73,7 +91,16 @@ namespace ngl
 					info = m_info.get(lparm->m_area[i], lparm->m_uid[i]);
 					if (info == nullptr)
 						continue;
-					lmap.insert(std::make_pair(info->m_socket, nguid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i])));
+					lmap.insert(
+						std::make_pair(
+							info->m_socket, 
+							nguid::make(
+								ACTOR_ROBOT, 
+								lparm->m_area[i], 
+								lparm->m_uid[i]
+							)
+						)
+					);
 				}
 			}
 			np_actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);

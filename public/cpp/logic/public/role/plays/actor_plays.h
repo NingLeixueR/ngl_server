@@ -124,7 +124,7 @@ namespace ngl
 
 		bool handle(message<mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			if (m_role.find(lparm->identifier()) != m_role.end())
 				return true;
 			if (m_tab->m_birthpoint.empty())
@@ -150,7 +150,7 @@ namespace ngl
 			}
 			else
 			{
-				m_map.update(adata.m_data->m_ms);
+				m_map.update(adata.get_data()->m_ms);
 			}
 			return true;
 		}

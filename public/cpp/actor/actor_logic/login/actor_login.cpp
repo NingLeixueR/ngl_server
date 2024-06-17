@@ -149,7 +149,7 @@ namespace ngl
 	
 	bool actor_login::handle(message<np_actorserver_connect>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		server_info ltemp
 		{
 			.m_id = lparm->m_serverid,
@@ -172,10 +172,15 @@ namespace ngl
 	{
 		Try
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr);
-			log_info()->print("############ Login[{}][{}][{}] ############", lparm->m_area(), lparm->m_account(), lparm->m_password());
+			log_info()->print(
+				"############ Login[{}][{}][{}] ############", 
+				lparm->m_area(), 
+				lparm->m_account(), 
+				lparm->m_password()
+			);
 			bool iscreate = false;
 
 			data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
@@ -231,7 +236,7 @@ namespace ngl
 
 	bool actor_login::handle(message<np_actor_disconnect_close>& adata)
 	{
-		auto itor = m_actorbyserver.find(adata.m_data->m_actorid);
+		auto itor = m_actorbyserver.find(adata.get_data()->m_actorid);
 		if (itor == m_actorbyserver.end())
 			return true;
 		dec_freeserver_game(itor->second.m_gameserverid);

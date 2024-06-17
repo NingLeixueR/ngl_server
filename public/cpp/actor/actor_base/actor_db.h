@@ -256,27 +256,31 @@ namespace ngl
 		bool handle(message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
-			log_error()->print("load: [{}] [{}]", dtype_name(type_message), adata.m_data->m_id);
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.m_data);
+			log_error()->print(
+				"load: [{}] [{}]", 
+				dtype_name(type_message), 
+				adata.get_data()->m_id
+			);
+			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
 		}
 
 		bool handle(message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::save(adata.m_thread, adata.m_pack, *adata.m_data);
+			actor_dbtab<TDBTAB_TYPE, TDBTAB>::save(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
 		}
 
 		bool handle(message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::del(adata.m_thread, adata.m_data->m_data);
+			actor_dbtab<TDBTAB_TYPE, TDBTAB>::del(adata.m_thread, adata.get_data()->m_data);
 			return true;
 		}
 
 		// # ACTOR_TIMER_DB_CACHE, db cache list  ±£¥Êª∫¥Ê¡–±Ì
 		bool handle(message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
-			auto lrecv = adata.m_data;
+			auto lrecv = adata.get_data();
 			for (i64_actorid id : lrecv->m_ls)
 			{
 				switch (lrecv->m_type)
@@ -303,7 +307,8 @@ namespace ngl
 
 		bool handle(message<mforward<np_gm>>& adata)
 		{
-			ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
+			mforward<np_gm>& parm = *adata.get_data();
+			ngl::json_read lojson(parm.data()->m_json.c_str());
 
 			std::string loperator;
 			if (lojson.read("operator", loperator) == false)
@@ -357,7 +362,7 @@ namespace ngl
 					});
 			}
 
-			if (handle_cmd::function(loperator, adata.m_thread, adata.m_data->identifier(), lojson) == false)
+			if (handle_cmd::function(loperator, adata.m_thread, parm.identifier(), lojson) == false)
 			{
 				log_error()->print("GM actor_db operator[{}] ERROR", loperator);
 			}

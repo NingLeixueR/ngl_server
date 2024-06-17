@@ -45,7 +45,7 @@ namespace ngl
 
 	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING>>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		pbnet::PROBUFF_NET_MATCHING* lpdata = lparm->data();
 		m_matching.add_member(lpdata->m_type(), lpdata->m_tid(), lparm->identifier());
 		return true;
@@ -53,7 +53,7 @@ namespace ngl
 	
 	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		pbnet::PROBUFF_NET_MATCHING_CANCEL* lpdata = lparm->data();
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>();
@@ -67,7 +67,7 @@ namespace ngl
 	
 	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		pbnet::PROBUFF_NET_MATCHING_CONFIRM* lpdata = lparm->data();
 		pbnet::ematching_confirm_stat lstat = m_matching.confirm(lpdata->m_roomid(), lparm->identifier());
 
@@ -80,7 +80,7 @@ namespace ngl
 	
 	bool actor_matching::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		// É¾³ý·¿¼ä
 		m_matching.remove_success(lparm->m_type(), lparm->m_roomid(), lparm->m_playsactorid());
 		return true;

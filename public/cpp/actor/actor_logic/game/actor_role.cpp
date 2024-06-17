@@ -240,7 +240,7 @@ namespace ngl
 
 	bool actor_role::handle(message<mforward<np_gm>>& adata)
 	{
-		ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
+		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
 		if (lojson.read("operator", loperator) == false)
 		{
@@ -293,7 +293,7 @@ namespace ngl
 				});
 		}
 
-		if (handle_rechangecmd::function(loperator, adata.m_data->identifier(), lojson) == false)
+		if (handle_rechangecmd::function(loperator, adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role rechange operator[{}] ERROR", loperator);
 		}

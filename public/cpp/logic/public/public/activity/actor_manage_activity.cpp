@@ -94,7 +94,7 @@ namespace ngl
 	
 	bool actor_manage_activity::handle(message<np_actor_activity>& adata)
 	{
-		np_actor_activity& lrecv = *adata.m_data;
+		np_actor_activity& lrecv = *adata.get_data();
 		for (i64_actorid item : lrecv.m_activityids)
 		{
 			if (lrecv.m_start)
@@ -115,7 +115,7 @@ namespace ngl
 
 	bool actor_manage_activity::timer_handle(message<timerparm>& adata)
 	{
-		if (adata.m_data->m_type != timerparm::ET_INTERVAL_SEC)
+		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
 			return true;
 		return true;
 	}

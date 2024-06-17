@@ -119,7 +119,7 @@ namespace ngl
 
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 		{
-			auto lrecv = adata.m_data;
+			auto lrecv = adata.get_data();
 			_robot& lrobot			= m_maprobot[lrecv->m_account()];
 			lrobot.m_robot			= create(lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
 			lrobot.m_account		= lrecv->m_account();
@@ -156,7 +156,7 @@ namespace ngl
 
 		bool handle(message<np_robot_pram>& adata)
 		{
-			auto lrecv = adata.m_data;
+			auto lrecv = adata.get_data();
 			if (lrecv->m_parm.size() > 1)
 			{
 				std::transform(lrecv->m_parm[1].begin(), lrecv->m_parm[1].end(), lrecv->m_parm[1].begin(), tolower);

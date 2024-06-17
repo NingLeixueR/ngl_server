@@ -5,7 +5,7 @@ namespace ngl
 {
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
-		pbnet::PROBUFF_NET_CMD& lparm = *adata.m_data;
+		pbnet::PROBUFF_NET_CMD& lparm = *adata.get_data();
 		log_info()->print("cmd[{}]", lparm.m_cmd());
 
 		std::vector<std::string> lvec;

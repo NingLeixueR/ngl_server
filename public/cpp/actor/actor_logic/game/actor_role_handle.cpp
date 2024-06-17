@@ -33,14 +33,16 @@ namespace ngl
 	// PROBUFF_PROTOCOLNUM_LOGIC_SWITCH_LINE		= 18;			// [ÇëÇó]ÇÐ»»ÏßÂ·
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.m_data->m_line());
+		tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.get_data()->m_line());
 		if (tab == nullptr)
 			return false;
 		i32_sessionid lsession = server_session::sessionid(tab->m_id);
 		if (lsession == -1)
 		{
-			log_error()->print("LOGIC_SWITCH_LINE Error line[{}] severid[{}]"
-				, adata.m_data->m_line(), tab->m_id
+			log_error()->print(
+				"LOGIC_SWITCH_LINE Error line[{}] severid[{}]", 
+				adata.get_data()->m_line(), 
+				tab->m_id
 			);
 			return false;
 		}
@@ -53,7 +55,7 @@ namespace ngl
 
 	bool actor_role::handle(message<np_actor_senditem>& adata)
 	{
-		auto lparm = adata.m_data;
+		auto lparm = adata.get_data();
 		d_remakes(this, lparm->m_src);
 		m_bag.add_item(lparm->m_item);
 		return true;
@@ -67,23 +69,27 @@ namespace ngl
 
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
 	{
-		m_playactorid = adata.m_data->m_playsactorid();
+		m_playactorid = adata.get_data()->m_playsactorid();
 		return true;
 	}
 
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
-		tab_task* tab = ttab_task::tab(adata.m_data->m_taskid());
+		tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());
 		if (tab == nullptr)
 			return true;
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>();
-		pro->set_m_taskid(adata.m_data->m_taskid());
+		pro->set_m_taskid(adata.get_data()->m_taskid());
 		
 		std::map<int, int> ldrop;
 		if (drop::droplist(tab->m_dropid, 1, ldrop) == false)
 		{
-			log_error()->print("task[{}] drop[{}] not find!!!", adata.m_data->m_taskid(), tab->m_dropid);
+			log_error()->print(
+				"task[{}] drop[{}] not find!!!", 
+				adata.get_data()->m_taskid(), 
+				tab->m_dropid
+			);
 			return true;
 		}
 		tools::copy(ldrop, *pro->mutable_m_drop());

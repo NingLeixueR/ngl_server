@@ -67,7 +67,7 @@ namespace ngl
 		// ---- ACTOR_PROTOCOL_ADD_MAIL,ĞÂÔöÓÊ¼ş
 		bool handle(message<np_actor_addmail>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);
 			return true;
 		}
@@ -78,11 +78,11 @@ namespace ngl
 
 		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			pbnet::PROBUFF_NET_MAIL_LIST* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;
-			i64_actorid roleid = adata.m_data->identifier();
+			i64_actorid roleid = lparm->identifier();
 			auto pro = m_mails.sync_mail(roleid);
 			if (pro == nullptr)
 				return true;
@@ -92,7 +92,7 @@ namespace ngl
 		
 		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			pbnet::PROBUFF_NET_MAIL_READ* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;
@@ -104,7 +104,7 @@ namespace ngl
 
 		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;
@@ -116,7 +116,7 @@ namespace ngl
 		
 		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
 		{
-			auto lparm = adata.m_data;
+			auto lparm = adata.get_data();
 			pbnet::PROBUFF_NET_MAIL_DEL* lpdata = lparm->data();
 			if (lpdata == nullptr)
 				return true;

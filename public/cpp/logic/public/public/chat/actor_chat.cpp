@@ -47,7 +47,7 @@ namespace ngl
 	
 	bool actor_chat::timer_handle(message<timerparm>& adata)
 	{
-		if (adata.m_data->m_type != timerparm::ET_INTERVAL_SEC)
+		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
 			return true;
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
 		pro->set_m_stat(true);
@@ -69,7 +69,7 @@ namespace ngl
 
 	bool actor_chat::handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 	{
-		pbnet::PROBUFF_NET_CHAT& recv = *adata.m_data->data();
+		pbnet::PROBUFF_NET_CHAT& recv = *adata.get_data()->data();
 		//log_error()->print("recv [pbnet::PROBUFF_NET_CHAT] type:{}", recv.m_type());
 
 		if (recv.m_type() == pbnet::chat_speak)
@@ -82,11 +82,11 @@ namespace ngl
 			tab_chat* ltab = allcsv::tab<tab_chat>(recv.m_channelid());
 			if (ltab == nullptr)
 			{
-				send_client(adata.m_data->identifier(), pro);
+				send_client(adata.get_data()->identifier(), pro);
 				return true;
 			}
 
-			roleitem* lroleitem = type_roleitems::get_roleinfo(adata.m_data->identifier());
+			roleitem* lroleitem = type_roleitems::get_roleinfo(adata.get_data()->identifier());
 			if (lroleitem == nullptr)
 			{
 				return true;
@@ -117,7 +117,7 @@ namespace ngl
 			}
 
 			pro->set_m_stat(true);
-			send_client(adata.m_data->identifier(), pro);
+			send_client(adata.get_data()->identifier(), pro);
 		}
 		else if (recv.m_type() == pbnet::get_chat_list)
 		{
@@ -129,7 +129,7 @@ namespace ngl
 			auto itor_channelid = m_chatitem.find(recv.m_channelid());
 			if (itor_channelid == m_chatitem.end())
 			{
-				send_client(adata.m_data->identifier(), pro);
+				send_client(adata.get_data()->identifier(), pro);
 				return true;
 			}
 			for (pbnet::chatitem& item : itor_channelid->second)
@@ -137,7 +137,7 @@ namespace ngl
 				*pro->add_m_chatlist() = item;
 			}
 			pro->set_m_stat(true);
-			send_client(adata.m_data->identifier(), pro);
+			send_client(adata.get_data()->identifier(), pro);
 			return true;
 		}
 		return true;

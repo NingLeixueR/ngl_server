@@ -27,8 +27,8 @@ namespace ngl
 
 	bool actor_gm::handle(message<ngl::np_gm>& adata)
 	{
-		log_error()->print("php2gm [{}]", adata.m_data->m_json);
-		ngl::json_read lreadjson(adata.m_data->m_json.c_str());
+		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
+		ngl::json_read lreadjson(adata.get_data()->m_json.c_str());
 
 		// ### µ¥Àı
 		std::string lactorname;
@@ -108,18 +108,18 @@ namespace ngl
 							ttab_servers::tab()->m_area,
 							nguid::none_actordataid()
 						);
-						sendnosign(lactorid, adata.m_pack, *adata.m_data);
+						sendnosign(lactorid, adata.m_pack, *adata.get_data());
 					}
 				}
 				return true;
 			}
 			
-			sendsign(ltype, adata.m_pack, *adata.m_data);
+			sendsign(ltype, adata.m_pack, *adata.get_data());
 			return true;
 		}
 		else if (lreadjson.read("actor_id", lactorid))
 		{
-			sendnosign(lactorid, adata.m_pack, *adata.m_data);
+			sendnosign(lactorid, adata.m_pack, *adata.get_data());
 			return true;
 		}
 
@@ -128,8 +128,8 @@ namespace ngl
 
 	bool actor_gm::handle(message<mforward<ngl::np_gm_response>>& adata)
 	{
-		log_error()->print("gm2php [{}]", adata.m_data->data()->m_json);
-		send(adata.m_data->identifier(), *adata.m_data->data(), nguid::make(), nguid::make());
+		log_error()->print("gm2php [{}]", adata.get_data()->data()->m_json);
+		send(adata.get_data()->identifier(), *adata.get_data()->data(), nguid::make(), nguid::make());
 		return true;
 	}
 

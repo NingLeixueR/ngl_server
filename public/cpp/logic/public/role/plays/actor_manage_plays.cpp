@@ -34,7 +34,7 @@ namespace ngl
 
 	bool actor_manage_plays::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata)
 	{
-		auto lrecv = adata.m_data;
+		auto lrecv = adata.get_data();
 		int32_t tid = roomid::tid(lrecv->m_roomid());
 		auto tab = allcsv::tab<tab_plays>(tid);
 		assert(tab != nullptr);

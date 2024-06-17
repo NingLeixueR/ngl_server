@@ -399,7 +399,7 @@ namespace ngl
 		{
 			Try
 			{
-				if (!adata.m_data->m_stat)
+				if (!adata.get_data()->m_stat)
 				{//加载失败  数据库中没有数据
 					return loadfinish();
 				}
@@ -407,9 +407,9 @@ namespace ngl
 				log_error()->print(
 					"db load respones:[{}] recv_over[{}]"
 					, dtype_name(type_message)
-					, adata.m_data->m_over ? "true" : "false"
+					, adata.get_data()->m_over ? "true" : "false"
 				);
-				loadfinish(adata.m_data->data(), adata.m_data->m_over);
+				loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
 			}Catch;
 			return true;
 		}

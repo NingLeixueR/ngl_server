@@ -21,7 +21,7 @@ namespace ngl
 		i32_threadid id();
 		// # 是否活跃
 		bool isactivity();
-		// # 想线程中添加actor
+		// # 向线程中添加actor
 		void push(ptractor aactor);
 	private:
 		void run();

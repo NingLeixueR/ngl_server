@@ -32,7 +32,7 @@ namespace ngl
 
 	bool actor_notice::handle(message<np_actor_addnotice>& adata)
 	{
-		auto& recv = *adata.m_data;
+		auto& recv = *adata.get_data();
 		m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
 		return true;
 	}
@@ -50,7 +50,7 @@ namespace ngl
 	bool actor_notice::handle(message<mforward<np_gm>>& adata)
 	{
 		//using type = mforward<np_gm_response>;
-		ngl::json_read lojson(adata.m_data->data()->m_json.c_str());
+		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 
 		std::string loperator;
 		if (lojson.read("operator", loperator) == false)
@@ -102,7 +102,7 @@ namespace ngl
 				}
 			);
 		}
-		if (handle_cmd::function(loperator, adata.m_data->identifier(), lojson) == false)
+		if (handle_cmd::function(loperator, adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_notice operator[{}] ERROR", loperator);
 		}
@@ -112,7 +112,7 @@ namespace ngl
 	bool actor_notice::handle(message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
 	{
 		auto pro = m_notice.sync_notice(-1);
-		send_client(adata.m_data->identifier(), pro);
+		send_client(adata.get_data()->identifier(), pro);
 		return true;
 	}
 }
