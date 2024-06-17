@@ -109,7 +109,11 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void	make_client(const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram)
+		static void	make_client(
+			const nguid& aactorid, 
+			const nguid& arequestactorid, 
+			handle_pram& apram
+		)
 		{
 			apram.m_forwardfun = 
 				[aactorid, arequestactorid](
@@ -194,13 +198,23 @@ namespace ngl
 				handle_pram::get_serverlist(aactorid.type(), lset);
 				for (i32_serverid ltempserverid : lset)
 				{
-					handle_pram_send<T, IS_SEND>::sendbyserver(ltempserverid, aactorid, arequestactorid, adata);
+					handle_pram_send<T, IS_SEND>::sendbyserver(
+						ltempserverid, 
+						aactorid, 
+						arequestactorid, 
+						adata
+					);
 				}
 				return true;
 			}
 			return false;
 		}
-		return handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
+		return handle_pram_send<T, IS_SEND>::sendbyserver(
+			lserverid, 
+			aactorid, 
+			arequestactorid, 
+			adata
+		);
 	}
 
 	template <>
@@ -245,7 +259,12 @@ namespace ngl
 					adata.m_failfun();
 				return false;
 			}
-			return handle_pram_send<pack, true>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
+			return handle_pram_send<pack, true>::sendbyserver(
+				lserverid, 
+				aactorid, 
+				arequestactorid, 
+				adata
+			);
 		}
 	};
 
