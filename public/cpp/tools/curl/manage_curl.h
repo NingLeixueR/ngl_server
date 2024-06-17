@@ -47,17 +47,21 @@ namespace ngl
 
 	class manage_curl
 	{
+		manage_curl(const manage_curl&) = delete;
+		manage_curl& operator=(const manage_curl&) = delete;
+
 		struct impl_manage_curl;
 		ngl::impl<impl_manage_curl> m_impl_manage_curl;
 
 		manage_curl();
 		~manage_curl();
-	public:
+
 		static manage_curl& getInstance()
 		{
 			static manage_curl temp;
 			return temp;
 		}
+	public:
 
 		// # …Ë÷√http¿‡–Õ
 		static void set_mode(std::shared_ptr<_http>& ahttp, ENUM_MODE aval);

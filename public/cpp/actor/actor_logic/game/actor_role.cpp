@@ -124,7 +124,7 @@ namespace ngl
 
 				}				
 			});
-		ngl::manage_curl::getInstance().send(lhttp);
+		ngl::manage_curl::send(lhttp);
 	}
 
 	void actor_role::loaddb_finish(bool adbishave)
@@ -219,7 +219,7 @@ namespace ngl
 				<< "&stat=" << lstat;
 
 			ngl::manage_curl::set_param(lhttp, lstream.str());
-			ngl::manage_curl::getInstance().send(lhttp);
+			ngl::manage_curl::send(lhttp);
 		}
 
 		if (lgold > 0 || !psenditem->m_item.empty())

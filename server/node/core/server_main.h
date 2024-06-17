@@ -371,7 +371,7 @@ bool start_pushserverconfig()
 				{
 					ngl::log_error()->print("[{}]->[{}]", lstr, ahttp.m_recvdata);
 				});
-			ngl::manage_curl::getInstance().send(lhttp);
+			ngl::manage_curl::send(lhttp);
 		});
 	return true;
 }

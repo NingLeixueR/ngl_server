@@ -299,7 +299,7 @@ namespace ngl
 				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;
 			});
-		ngl::manage_curl::getInstance().send(lhttp);
+		ngl::manage_curl::send(lhttp);
 		while (lbool)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
