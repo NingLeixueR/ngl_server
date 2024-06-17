@@ -46,8 +46,11 @@ namespace ngl
 		auto lpair = lbag.mutable_m_items()->insert({ aitem.m_id(), aitem });
 		if (lpair.second == false)
 		{
-			log_error()->print("add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false"
-				, actor()->id_guid(), aitem.m_tid(), aitem.m_id()
+			log_error()->print(
+				"add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false", 
+				actor()->id_guid(), 
+				aitem.m_tid(), 
+				aitem.m_id()
 			);
 			return nullptr;
 		}
