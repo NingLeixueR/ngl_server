@@ -88,7 +88,7 @@ namespace ngl
 		{
 			if (m_type == ACTOR_NONE)
 			{
-				throw "m_type == ACTOR_NONE";
+				Throw("m_type == ACTOR_NONE");
 			}
 			return m_type;
 		}

@@ -116,10 +116,7 @@ namespace ngl
 
 	void logfile::close_fstream()
 	{
-		//if (m_stream.is_open())
-		//{
-			m_stream.close();
-		//}
+		m_stream.close();
 	}
 
 	void logfile::create()
@@ -128,7 +125,7 @@ namespace ngl
 		lpath += m_config.m_dir;
 		if (file_exists(lpath) == false)
 		{
-			throw "not create path" + lpath;
+			Throw("not create path {}", lpath);
 		}
 		
 		lpath += '/';
@@ -136,7 +133,7 @@ namespace ngl
 
 		if (file_exists(lpath) == false)
 		{
-			throw "not create path" + lpath;
+			Throw("not create path {}", lpath);
 		}
 		lpath += '/';
 
@@ -165,9 +162,15 @@ namespace ngl
 	void logfile_default::printf(const logitem* alog)
 	{
 		tab_servers* tab = ttab_servers::tab(alog->m_serverid);
-		m_stream << "[" << tab->m_name << ":" << alog->m_serverid << "]";
-		m_stream << "[" << alog->m_src << "]";
-		m_stream << alog->m_data << std::endl;
+		m_stream 
+			<< std::format(
+				"[{}:{}][{}]", 
+				tab->m_name,
+				alog->m_serverid, 
+				alog->m_src, 
+				alog->m_data
+			)
+			<< std::endl;
 		++m_count;
 		if (check_count())
 		{

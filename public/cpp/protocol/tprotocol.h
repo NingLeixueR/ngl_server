@@ -85,10 +85,10 @@ namespace ngl
 			if (itor == m_keyval.end())
 			{
 				if (init_protobufs<TRC>() == false)
-					throw "init_protobufs<TRC>() == false";
+					Throw("init_protobufs<TRC>() == false");
 				itor = m_keyval.find(lcode);
 				if (itor == m_keyval.end())
-					throw "itor == m_keyval.end()";
+					Throw("itor == m_keyval.end()");
 			}
 			return itor->second;
 		}

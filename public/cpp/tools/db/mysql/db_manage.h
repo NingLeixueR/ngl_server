@@ -5,8 +5,10 @@
 #include "tools.h"
 #include "db.h"
 
-// 如果此值为true 将把"proto的二进制"转换为十六进制字符串并保存
-// 如果此值为false 将把"proto的json串"保存
+// 如果此值为true 
+// 将"proto的二进制"保存
+// 如果此值为false 
+// 将把"proto的json串"保存
 #define DDBSAVE_PROTO_BINARY (true)
 
 namespace ngl
@@ -37,7 +39,7 @@ namespace ngl
 		static int32_t serialize(db* adb, db::ptr& aptr, T& adata)
 		{
 			int32_t lpos = 0;
-			while(lpos < 10)
+			while(lpos < _SQL_BUFF_COUNT_)
 			{
 				adb->malloc_buff(aptr, lpos);
 				ngl::serialize lserialize(aptr.m_buff, aptr.m_bufflen);
@@ -52,7 +54,7 @@ namespace ngl
 					continue;
 				}
 			}
-			throw std::runtime_error("db_manage::serialize");
+			Throw("db_manage::serialize");
 		}
 
 		template <bool PROTO_BINARY, typename T>
