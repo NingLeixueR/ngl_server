@@ -20,10 +20,11 @@ namespace ngl
 	///////////////////////////////////
 	union nguid
 	{
+	private:
 		int64_t m_id;
 		int32_t m_value1[2];// m_value1[0] = type+area  m_value1[1]=actordataid
 		int16_t m_value2[4];// m_value2[0] = type		m_value2[1] = area
-
+	public:
 		nguid();
 		nguid(int64_t aid);
 		nguid(ENUM_ACTOR atype, i16_area aareaid, i32_actordataid aid);
