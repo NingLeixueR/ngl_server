@@ -146,6 +146,7 @@ namespace ngl
 		{
 			return false;
 		}
+		aptr.free();
 		int32_t llen = _SQL_BUFF_SIZE_ * (apos + 1);
 		for (auto itor = m_bufflist.begin(); itor != m_bufflist.end(); ++itor)
 		{

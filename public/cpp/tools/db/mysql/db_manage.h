@@ -50,7 +50,6 @@ namespace ngl
 				else
 				{
 					++lpos;
-					adb->free_buff(aptr);
 					continue;
 				}
 			}
@@ -80,7 +79,7 @@ namespace ngl
 				}
 				*m_savetemp.m_data = adata;
 
-				db::ptr lbinptr;
+				db::ptr lbinptr(adb);
 				int32_t lbuffpos = ngl::db_manage::serialize<DDBSAVE_PROTO_BINARY>(adb, lbinptr, m_savetemp);
 
 				MYSQL_BIND lbind[1];
@@ -103,7 +102,6 @@ namespace ngl
 				if (llen <= 0)
 					return;
 				adb->stmt_query(lbuff, llen, lbind);
-				adb->free_buff(lbinptr);
 			}
 
 			static void fun(db* adb, i64_actorid aid)

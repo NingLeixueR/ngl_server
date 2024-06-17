@@ -54,12 +54,6 @@ namespace ngl
 			char* m_buff;
 			int32_t m_bufflen;
 
-			ptr() :
-				m_buff(nullptr),
-				m_bufflen(0),
-				m_db(nullptr)
-			{}
-
 			ptr(db* adb) :
 				m_buff(nullptr),
 				m_bufflen(0),
@@ -72,15 +66,29 @@ namespace ngl
 				m_db(adb)
 			{}
 
+			void free()
+			{
+				if (m_db != nullptr && m_buff != nullptr && m_bufflen > 0)
+				{
+					m_db->free_buff(*this);
+					m_buff = nullptr;
+					m_bufflen = 0;
+				}
+			}
+
 			~ptr()
 			{
+				if (m_db != nullptr && m_buff != nullptr && m_bufflen > 0)
+				{
+					m_db->free_buff(*this);
+				}
 			}
 		};
 
 		bool malloc_buff(ptr& aptr, int32_t apos);
-
+	private:
 		void free_buff(ptr& aptr);
-
+	public:
 		// # stmt ฯเนุ
 		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);
 	private:
