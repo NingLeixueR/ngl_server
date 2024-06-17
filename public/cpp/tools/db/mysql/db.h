@@ -141,9 +141,6 @@ namespace ngl
 			mysql_stmt_close(lstmt);
 			return true;
 		}
-		
-
-
 	private:
 		std::list<std::pair<char*,int32_t>> m_bufflist;
 	};
