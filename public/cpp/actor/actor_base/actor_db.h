@@ -125,7 +125,11 @@ namespace ngl
 		}
 
 		// # 加载数据 ：同步方式
-		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
+		static void load(
+			i32_threadid athreadid, 
+			const pack* apack, 
+			const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata
+		)
 		{
 			if (!m_tab->m_network)
 				return;
@@ -143,7 +147,11 @@ namespace ngl
 			{
 				if (m_idset.find(lid) == m_idset.end())
 				{
-					log_error()->print("load <<{}>>===<<{}>>", dtype_name(type_actor_dbtab), lid);
+					log_error()->print(
+						"load <<{}>>===<<{}>>", 
+						dtype_name(type_actor_dbtab), 
+						lid
+					);
 					return;
 				}
 					
@@ -157,7 +165,11 @@ namespace ngl
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 
 				using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
-				log_error()->print("load finish: [{}][{}]", lrequestactor, dtype_name(type_message));
+				log_error()->print(
+					"load finish: [{}][{}]", 
+					lrequestactor, 
+					dtype_name(type_message)
+				);
 			}
 		}
 
@@ -188,7 +200,11 @@ namespace ngl
 			inst<enum_clist_del>().push(aid);
 		}
 
-		static void save(i32_threadid athreadid, const pack* apack, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
+		static void save(
+			i32_threadid athreadid, 
+			const pack* apack, 
+			const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata
+		)
 		{
 			const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;
 			for (const std::pair<const nguid, TDBTAB>& item : lmap)
