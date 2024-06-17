@@ -44,12 +44,12 @@ namespace ngl
 		nrfun<actor_client, EPROTOCOL_TYPE_CUSTOM>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
-				naddress::handle(apram); 
+				naddress::forward(apram);
 			});
 		nrfun<actor_client, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance().set_notfindfun(
 			[](int, handle_pram& apram)
 			{
-				naddress::handle(apram);
+				naddress::forward(apram);
 			});
 
 		//###### ×¢²áĞ­Òé

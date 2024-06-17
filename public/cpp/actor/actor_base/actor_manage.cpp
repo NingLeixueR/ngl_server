@@ -34,9 +34,8 @@ namespace ngl
 
 		inline void init(i32_threadsize apthreadnum)
 		{
-			if (!m_workthread.empty())
+			if (m_workthread.empty() == false)
 				return;
-
 			m_threadnum = apthreadnum;
 			for (int i = 0; i < m_threadnum; ++i)
 				m_workthread.push_back(new nthread(i));

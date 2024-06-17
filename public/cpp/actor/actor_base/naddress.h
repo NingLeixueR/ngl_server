@@ -74,7 +74,10 @@ namespace ngl
 		static void remove_gatewayid(const nguid& aguid);
 
 		//# 获取一组actor_role.actorid与gatewayid的关联
-		static void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset);
+		static void get_gatewayid(
+			const std::set<nguid>& aactorset, 
+			std::set<i32_serverid>& aserverset
+		);
 #pragma endregion
 		//# 遍历[std::function<bool(const actor_node_session&)>] 
 		//# 如果返回值为false
@@ -90,6 +93,7 @@ namespace ngl
 		//# 根据area与dataid获取session
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid);
 	public:
-		static bool handle(handle_pram& apram);
+		//# 转发
+		static bool forward(handle_pram& apram);
 	};
 }//namespace ngl

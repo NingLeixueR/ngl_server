@@ -66,7 +66,7 @@ namespace ngl
 			return -1;
 		}
 
-		static bool handle(handle_pram& apram)
+		static bool forward(handle_pram& apram)
 		{
 			if (apram.m_forwardfun != nullptr)
 				apram.m_forwardfun(m_session, m_actorserver, apram);
@@ -203,9 +203,9 @@ namespace ngl
 		return impl_actor_address::sessionbyrole(aarea, aroleid);
 	}
 
-	bool naddress::handle(handle_pram& apram)
+	bool naddress::forward(handle_pram& apram)
 	{
-		return impl_actor_address::handle(apram);
+		return impl_actor_address::forward(apram);
 	}
 
 	void naddress::actor_add(i32_serverid aserverid, i64_actorid adataid)
@@ -284,7 +284,10 @@ namespace ngl
 		impl_actor_address::remove_gatewayid(aguid);
 	}
 
-	void naddress::get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
+	void naddress::get_gatewayid(
+		const std::set<nguid>& aactorset, 
+		std::set<i32_serverid>& aserverset
+	)
 	{
 		impl_actor_address::get_gatewayid(aactorset, aserverset);
 	}

@@ -77,6 +77,10 @@ namespace ngl
 	template <typename TACTOR>
 	class nactor_type
 	{
+		nactor_type() = delete;
+		nactor_type(const nactor_type&) = delete;
+		nactor_type& operator=(const nactor_type&) = delete;
+
 		static ENUM_ACTOR m_type;
 	public:
 		static void inits(ENUM_ACTOR atype)
