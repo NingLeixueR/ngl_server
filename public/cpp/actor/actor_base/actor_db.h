@@ -66,7 +66,7 @@ namespace ngl
 
 				if (m_tab->m_isloadall == true)
 				{
-					db_manage::select<TDBTAB>::fun(actor_dbpool::get(0));
+					db_manage::select<TDBTAB>(actor_dbpool::get(0));
 					ngl::db_data<TDBTAB>::foreach([](TDBTAB& adata)
 						{
 							type_actor_dbtab::m_idset.insert(
@@ -76,7 +76,7 @@ namespace ngl
 				}
 				else
 				{
-					db_manage::select<TDBTAB>::fun(actor_dbpool::get(0), m_idset);
+					db_manage::select<TDBTAB>(actor_dbpool::get(0), m_idset);
 				}
 			}Catch;
 		}
@@ -121,7 +121,7 @@ namespace ngl
 			if (aid == -1)
 				return;
 			if (ngl::db_data<TDBTAB>::isload(aid) == false)
-				db_manage::select<TDBTAB>::fun(actor_dbpool::get(athreadid), aid);
+				db_manage::select<TDBTAB>(actor_dbpool::get(athreadid), aid);
 		}
 
 		// # 加载数据 ：同步方式
@@ -285,13 +285,13 @@ namespace ngl
 				{
 					if (ngl::db_data<TDBTAB>::find(id) == nullptr)
 						continue;
-					db_manage::save<TDBTAB>::fun(actor_dbpool::get(adata.m_thread), id);
+					db_manage::save<TDBTAB>(actor_dbpool::get(adata.m_thread), id);
 				}
 				break;
 				case enum_clist_del:
 				{
 					ngl::db_data<TDBTAB>::remove(id);
-					db_manage::del<TDBTAB>::fun(actor_dbpool::get(adata.m_thread), id);
+					db_manage::del<TDBTAB>(actor_dbpool::get(adata.m_thread), id);
 				}
 				break;
 				}
@@ -321,7 +321,7 @@ namespace ngl
 						if (aos.read("data", lid) == false)
 							return;
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
-							db_manage::select<TDBTAB>::fun(actor_dbpool::get(athread), lid);
+							db_manage::select<TDBTAB>(actor_dbpool::get(athread), lid);
 						protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
 						m_savetemp.m_data = std::make_shared<TDBTAB>();
@@ -352,7 +352,7 @@ namespace ngl
 							return;
 						int64_t lid = ldata.m_data->m_id();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
-						db_manage::save<TDBTAB>::fun(actor_dbpool::get(athread), lid);
+						db_manage::save<TDBTAB>(actor_dbpool::get(athread), lid);
 						pro.m_data = true;
 					});
 			}

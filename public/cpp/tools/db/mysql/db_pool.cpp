@@ -18,6 +18,8 @@ namespace ngl
 
 	db* db_pool::get(uint32_t aindex)
 	{
+		if (aindex >= m_vec.size())
+			return nullptr;
 		return m_vec[aindex];
 	}
 }// namespace ngl
