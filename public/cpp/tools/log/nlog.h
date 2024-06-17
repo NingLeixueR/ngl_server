@@ -57,7 +57,7 @@ namespace ngl
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 # define Throw(FORMAT,...) throw std::runtime_error(std::format(FORMAT, ##__VA_ARGS__));
 #else
-# define Throw(FORMAT,...) throw std::runtime_error(std::format(FORMAT, __VA_OPT__(,) ##__VA_ARGS__));
+# define Throw(FORMAT,...) throw std::runtime_error(std::format(FORMAT __VA_OPT__(,) ##__VA_ARGS__));
 #endif
 
 template <typename T>
