@@ -38,19 +38,22 @@ namespace ngl
 
 	class data_modified_base
 	{
-	protected:
+	private:
 		bool m_ischange = false;
 	public:
+		// # 是否发生修改
 		bool is_modified()const
 		{
 			return m_ischange;
 		}
 
+		// # 设置为修改状态
 		void modified()
 		{
 			m_ischange = true;
 		}
 
+		// # 清空修改状态
 		void clear_modified()
 		{
 			m_ischange = false;
@@ -84,13 +87,13 @@ namespace ngl
 			m_data = adata;
 			m_pdata = nullptr;
 			if (achange)
-				m_ischange = true;
+				modified();
 		}
 
 		TDBTAB& get(bool achange = true)
 		{
 			if (achange)
-				m_ischange = true;
+				modified();
 			return m_pdata == nullptr ? m_data : *m_pdata;
 		}
 
@@ -116,13 +119,14 @@ namespace ngl
 		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
 		tab_dbload* m_tab;
 	public:
+		// # 向actor_client设置连接后事件
+		// # 当与db服务器发生连接时触发加载数据事件
 		virtual void load()
 		{
 			Try
 			{
 				tab_servers* tab = ttab_servers::tab();
 				Assert(tab != nullptr);
-				// 向actor client 设置连接后事件
 				std::shared_ptr<np_actornode_connect_task> pro(new np_actornode_connect_task
 				{
 					.m_serverid = tab->m_db,
@@ -199,17 +203,20 @@ namespace ngl
 			m_id = aid;
 		}
 
+		// # 设置持有此数据的actor
 		void set_actor(actor_base* aactor)
 		{
 			m_manage_dbclient = aactor->get_actor_manage_dbclient();
 			m_actor = aactor;
 		}
 
+		// # 获取数据
 		std::map<nguid, data_modified<TDBTAB>>& get_data()
 		{ 
 			return m_data; 
 		}
 
+		// # 获取nguid数据
 		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
 			if (aid == m_id && m_id != -1)
@@ -220,6 +227,7 @@ namespace ngl
 			return &itor->second;
 		}
 
+		// # 获取数据
 		data_modified<TDBTAB>* get_dbdata()
 		{
 			return m_dbdata;
