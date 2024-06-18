@@ -38,7 +38,7 @@ namespace ngl
 		{
 			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
-			//Game->Gate  需要把这个消息传递给Client服务器
+			// Game->Gate  需要把这个消息传递给Client服务器
 			gateway_socket* info = nullptr;
 			std::map<i32_sessionid, i64_actorid> lmap;
 			if (lparm->m_uid.empty())
@@ -53,11 +53,7 @@ namespace ngl
 						lmap.insert(
 							std::make_pair(
 								itemfor2.second.m_socket, 
-								nguid::make(
-									ACTOR_ROBOT, 
-									itemfor2.second.m_area, 
-									itemfor2.second.m_dataid
-								)
+								nguid::make(ACTOR_ROBOT,itemfor2.second.m_area,itemfor2.second.m_dataid)
 							)
 						);
 					}
@@ -94,11 +90,7 @@ namespace ngl
 					lmap.insert(
 						std::make_pair(
 							info->m_socket, 
-							nguid::make(
-								ACTOR_ROBOT, 
-								lparm->m_area[i], 
-								lparm->m_uid[i]
-							)
+							nguid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i])
 						)
 					);
 				}

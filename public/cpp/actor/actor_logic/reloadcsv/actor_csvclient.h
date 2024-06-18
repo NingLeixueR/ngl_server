@@ -26,8 +26,7 @@ namespace ngl
 
 		bool handle(message<np_actor_reloadcsv>& adata);
 
-		// 定时器
-		// 间接定时器 
+		// # 定时器
 		bool timer_handle(message<timerparm>& adata);
 	};
 }//namespace ngl

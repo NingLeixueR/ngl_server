@@ -34,7 +34,6 @@ namespace ngl
 		return m_info;
 	}
 
-	// ### 只是断开连接
 	void gateway_info::remove_socket(i32_socket asocket)
 	{
 		if (sysconfig::robot_test())
@@ -61,7 +60,6 @@ namespace ngl
 		}
 	}
 
-	// ### 删除连接信息
 	void gateway_info::remove_actorid(i64_actorid aactorid)
 	{
 		i32_actordataid lactordataid = nguid::actordataid(aactorid);

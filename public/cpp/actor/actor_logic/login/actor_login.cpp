@@ -57,15 +57,23 @@ namespace ngl
 		{
 			const pbdb::db_account& laccount = item.second.getconst();
 			(*lstream)
-				<< "[" << laccount.m_account() << "]"
-				<< "[" << laccount.m_passworld() << "]"
-				<< "area=" << laccount.m_area() << " "
-				<< "id=" << nguid(laccount.m_roleid()).actordataid();
+				<< std::format(
+					"[{}][{}] area={} id={}",
+					laccount.m_account(),
+					laccount.m_passworld(),
+					laccount.m_area(),
+					nguid(laccount.m_roleid()).actordataid()
+				) << std::endl;
 		}
 		(*lstream).print("");
 	}
 
-	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
+	data_modified<pbdb::db_account>* actor_login::get_account(
+		int area, 
+		const std::string& account, 
+		const std::string& apassworld, 
+		bool& aiscreate
+	)
 	{
 		aiscreate = false;
 		auto& lmap = m_account.accountbyaccount(area);
@@ -92,7 +100,10 @@ namespace ngl
 		}
 	}
 
-	bool actor_login::get_freeserver(std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair)
+	bool actor_login::get_freeserver(
+		std::map<i32_serverid, server_info>& amap, 
+		std::pair<i32_serverid, int32_t>& apair
+	)
 	{
 		apair.first = -1;
 		apair.second = -1;
@@ -123,7 +134,10 @@ namespace ngl
 		return get_freeserver(m_gateway, apair);
 	}
 
-	bool actor_login::dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid)
+	bool actor_login::dec_freeserver(
+		std::map<i32_serverid, server_info>& amap, 
+		i32_serverid aserverid
+	)
 	{
 		auto itor = amap.find(aserverid);
 		if (itor == amap.end())

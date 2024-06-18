@@ -54,7 +54,12 @@ namespace ngl
 			np_actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
 			ltemp.m_uid.push_back(info->m_dataid);
 			ltemp.m_area.push_back(info->m_area);
-			nets::sendbyserver(info->m_gameid, ltemp, nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), lpack->m_head.get_request_actor());
+			nets::sendbyserver(
+				info->m_gameid, 
+				ltemp, 
+				nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid), 
+				lpack->m_head.get_request_actor()
+			);
 			return true;
 		}
 

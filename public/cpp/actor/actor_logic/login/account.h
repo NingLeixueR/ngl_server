@@ -6,6 +6,9 @@ namespace ngl
 {
 	class account : public tdb_account::db_modular
 	{
+		account(const account&) = delete;
+		account& operator=(const account&) = delete;
+
 		struct accountname2db
 		{
 			std::map<std::string, data_modified<pbdb::db_account>*> m_accountbyaccount;

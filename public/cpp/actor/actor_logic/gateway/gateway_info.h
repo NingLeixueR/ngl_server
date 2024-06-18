@@ -9,11 +9,16 @@ namespace ngl
 {
 	class gateway_info
 	{
+		gateway_info(const gateway_info&) = delete;
+		gateway_info& operator=(const gateway_info&) = delete;
+
 		// key area  value key roleid
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>> m_info;
 		// key socket
 		std::map<i32_socket, gateway_socket*> m_sockinfo;
 	public:
+		gateway_info() {}
+
 		void updata(gateway_socket& ainfo);
 
 		bool updata_socket(i16_area aarea, i32_actordataid aactordataid, i32_socket asocket);

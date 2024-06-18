@@ -19,12 +19,12 @@ namespace ngl
 {
 	class actor_log : public actor
 	{
-		std::shared_ptr<logfile> m_log;
-	public:
+		actor_log() = delete;
 		actor_log(const actor_log&) = delete;
 		actor_log& operator=(const actor_log&) = delete;
-		actor_log() = delete;
 
+		std::shared_ptr<logfile> m_log;
+	public:
 		actor_log(i32_actordataid aid);
 
 		virtual void init();

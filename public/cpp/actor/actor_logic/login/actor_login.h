@@ -60,10 +60,18 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave);
 
 		// # 根据账号密码获取pbdb::db_account
-		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);
+		data_modified<pbdb::db_account>* get_account(
+			int area, 
+			const std::string& account, 
+			const std::string& apassworld, 
+			bool& aiscreate
+		);
 
 		// # 获取amap中相对空闲的服务器
-		bool get_freeserver(std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair);
+		bool get_freeserver(
+			std::map<i32_serverid, server_info>& amap, 
+			std::pair<i32_serverid, int32_t>& apair
+		);
 
 		// # 获取game服务器中相对空闲的服务器
 		bool get_freeserver_game(std::pair<i32_serverid, int32_t>& apair);
@@ -72,7 +80,10 @@ namespace ngl
 		bool get_freeserver_gateway(std::pair<int32_t, int32_t>& apair);
 
 		// # 减少amap中aserverid对应服务器的承载人数
-		bool dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid);
+		bool dec_freeserver(
+			std::map<i32_serverid, server_info>& amap, 
+			i32_serverid aserverid
+		);
 
 		// # 减少game服务器中aserverid对应服务器的承载人数
 		bool dec_freeserver_game(i32_serverid aserverid);
