@@ -10,8 +10,14 @@ namespace ngl
 {
 	struct actor_client::impl_actor_client
 	{
+		impl_actor_client(const impl_actor_client&) = delete;
+		impl_actor_client& operator=(const impl_actor_client&) = delete;
+
 		std::map<i32_serverid, std::list<std::function<void()>>>	m_connectfun;
 		std::set<uint32_t>											m_connectserverid;
+
+		impl_actor_client()
+		{}
 	};
 
 	actor_client::actor_client() :
@@ -40,7 +46,7 @@ namespace ngl
 
 	void actor_client::nregister()
 	{
-		//###### 设置未找到协议处理函数
+		//# 设置未找到协议处理函数
 		nrfun<actor_client, EPROTOCOL_TYPE_CUSTOM>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
@@ -52,7 +58,7 @@ namespace ngl
 				naddress::forward(apram);
 			});
 
-		//###### 注册协议
+		//# 注册协议
 		register_handle_custom<actor_client>::func<
 			np_actornode_register_response
 			, np_actorclient_node_connect
@@ -88,12 +94,11 @@ namespace ngl
 					{
 						.m_node
 						{
-							.m_name		= std::string("actorclient") + tools::lexical_cast<std::string>(tab->m_id),
+							.m_name		= std::format("actorclient{}", tab->m_id),
 							.m_serverid = tab->m_id,
 						}
 					};
 					actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
-
 					naddress::ergodic(
 						[&lpram](
 							std::map<nguid, i32_serverid>& aactorserver,
@@ -139,7 +144,7 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this](i32_session asession)
 				{
-					log_warn()->print("Connect Ok[{}]", nconfig::m_nodeid);
+					log_warn()->print("connect success[{}]", nconfig::m_nodeid);
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
 					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());
@@ -231,7 +236,11 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			//log_error()->print("##actor_node_update## add:[{}] del[{}]", lparm->m_add, lparm->m_del);
+			//log_error()->print(
+			// "##actor_node_update## add:[{}] del[{}]", 
+			// lparm->m_add, 
+			// lparm->m_del
+			// );
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
 		}Catch;

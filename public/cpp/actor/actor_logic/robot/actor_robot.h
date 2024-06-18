@@ -34,7 +34,7 @@ namespace ngl
 
 		static void nregister();
 
-		virtual const char* kcpsessionmd5();
+		virtual const char* kcp_session();
 
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);

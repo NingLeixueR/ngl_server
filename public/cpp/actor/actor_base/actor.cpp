@@ -10,6 +10,7 @@ namespace ngl
 {
 	struct actor::impl_actor
 	{
+		impl_actor() = delete;
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
 

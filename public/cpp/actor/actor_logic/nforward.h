@@ -18,12 +18,12 @@ namespace ngl
 		{
 			if (xmlnode::m_nodetype == ngl::GAME)
 			{
-				actor_role::type_register_recvforward_handle<TYPE, actor_role>:: template func<ARG...>();
+				actor_role::register_recvforward_handle<TYPE, actor_role>:: template func<ARG...>();
 				return;
 			}
 			if (xmlnode::m_nodetype == ngl::GATEWAY)
 			{
-				actor_gatewayc2g::type_register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
+				actor_gatewayc2g::register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
 				return;
 			}
 		}
@@ -36,12 +36,12 @@ namespace ngl
 		{
 			if (xmlnode::m_nodetype == ngl::GAME)
 			{
-				actor_role::type_register_recvforward_handle2<TYPE, ACTOR, actor_role>:: template func<ARG...>();
+				actor_role::register_recvforward_handle2<TYPE, ACTOR, actor_role>:: template func<ARG...>();
 				return;
 			}
 			if (xmlnode::m_nodetype == ngl::GATEWAY)
 			{
-				actor_gatewayc2g::type_register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
+				actor_gatewayc2g::register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
 				return;
 			}
 		}
@@ -56,7 +56,7 @@ namespace ngl
 			}
 			if (xmlnode::m_nodetype == ngl::GATEWAY)
 			{
-				actor_gatewayg2c::type_register_forward_handle<TYPE, true, actor_gatewayg2c>:: template func<ARG...>();
+				actor_gatewayg2c::register_forward_handle<TYPE, true, actor_gatewayg2c>:: template func<ARG...>();
 				return;
 			}
 		}

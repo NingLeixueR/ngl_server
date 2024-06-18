@@ -47,14 +47,16 @@ namespace ngl
 
 	class actor_base
 	{
+		actor_base() = delete;
+		actor_base(const actor_base&) = delete;
+		actor_base& operator=(const actor_base&) = delete;
+
 	protected:
 		struct impl_actor_base;
 		struct impl_group;
 		ngl::impl<impl_actor_base>	m_impl_actor_base;
 		ngl::impl<impl_group>		m_impl_group;
-	protected:
-		actor_base() = delete;
-		actor_base(const actor_base&) = delete;
+
 		actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
@@ -157,8 +159,6 @@ namespace ngl
 		//# 给指定类型的actor添加任务
 		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
-		
-
 #pragma region net
 		//# 生成包
 		template <typename T>
@@ -218,6 +218,7 @@ namespace ngl
 		template <typename T>
 		bool sendkcp(T& adata, i64_actorid aactorid, int16_t asystemindex = 0);
 
+		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
 			i32_sessionid asession
@@ -227,6 +228,7 @@ namespace ngl
 			, int16_t asystemindex = 0
 		);
 
+		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
 			const std::vector<i32_sessionid>& asession
@@ -236,8 +238,9 @@ namespace ngl
 			, int16_t asystemindex = 0
 		);
 
-		virtual const char* kcpsessionmd5();
+		virtual const char* kcp_session();
 
+		//# 发起kcp连接
 		bool connect_kcp(int16_t anum, const std::string& aip, i16_port aprot);
 #pragma endregion 
 

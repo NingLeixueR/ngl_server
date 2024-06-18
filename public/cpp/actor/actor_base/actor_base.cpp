@@ -431,7 +431,11 @@ namespace ngl
 		actor_manage::getInstance().push_task_id(aguid, apram, abool);
 	}
 
-	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
+	void actor_base::push_task_type(
+		ENUM_ACTOR atype, 
+		handle_pram& apram, 
+		bool aotherserver/* = false*/
+	)
 	{
 		actor_manage::getInstance().push_task_type(atype, apram, aotherserver);
 	}
@@ -532,7 +536,7 @@ namespace ngl
 		return lkcp;
 	}
 
-	const char* actor_base::kcpsessionmd5()
+	const char* actor_base::kcp_session()
 	{
 		return "";
 	}
@@ -541,11 +545,11 @@ namespace ngl
 	{
 		if (iskcp() == false)
 			return false;
-		std::string lkcpsessionmd5 = kcpsessionmd5();
-		if (lkcpsessionmd5 == "")
+		std::string lkcpsession = kcp_session();
+		if (lkcpsession == "")
 			return false;
 		
-		nets::kcp(anum)->connect(lkcpsessionmd5, id_guid(), aip, aprot, [this](i32_session asession)
+		nets::kcp(anum)->connect(lkcpsession, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				set_kcpssion(asession);
 				log_error()->print("kcp m_kcpsession = {}", get_kcpssion());

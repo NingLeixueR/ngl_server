@@ -18,11 +18,11 @@ namespace ngl
 	class actor_client : 
 		public actor
 	{
-		struct impl_actor_client;
-		ngl::impl<impl_actor_client> m_impl_actor_client;
-
 		actor_client(const actor_client&) = delete;
 		actor_client& operator=(const actor_client&) = delete;
+
+		struct impl_actor_client;
+		ngl::impl<impl_actor_client> m_impl_actor_client;
 
 		actor_client();
 		virtual ~actor_client();

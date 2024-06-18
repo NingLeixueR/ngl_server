@@ -22,6 +22,10 @@ namespace ngl
 	class actor : 
 		public actor_base
 	{
+		actor() = delete;
+		actor(const actor&) = delete;
+		actor& operator=(const actor&) = delete;
+
 		struct impl_actor;
 		ngl::impl<impl_actor> m_impl_actor;
 
@@ -117,6 +121,7 @@ namespace ngl
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
 
+	private:
 		// # 注册actor成员handle函数
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class register_actor_handle
@@ -128,7 +133,7 @@ namespace ngl
 				ninst<TDerived, TYPE>().rfun((Tfun<TDerived, T>) & TDerived::handle, aisload);
 			}
 		};
-
+	public:
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		using register_handle = template_arg<
 			actor::register_actor_handle<TYPE, TDerived>, bool
@@ -155,7 +160,7 @@ namespace ngl
 
 		//# 注册 [forward:转发协议]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
-		class register_forward_handle
+		class cregister_forward_handle
 		{
 		public:
 			template <typename T>
@@ -174,13 +179,13 @@ namespace ngl
 		};
 
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
-		using type_register_forward_handle = template_arg<
-			actor::register_forward_handle<TYPE, IsForward, TDerived>
+		using register_forward_handle = template_arg<
+			actor::cregister_forward_handle<TYPE, IsForward, TDerived>
 		>;
 
 		//# 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
-		class register_recvforward_handle
+		class cregister_recvforward_handle
 		{
 		public:
 			template <typename T>
@@ -192,13 +197,13 @@ namespace ngl
 		};
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
-		using type_register_recvforward_handle = template_arg<
-			actor::register_recvforward_handle<TYPE, TDerived>
+		using register_recvforward_handle = template_arg<
+			actor::cregister_recvforward_handle<TYPE, TDerived>
 		>;
 
 		//# 服务于二次转发
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
-		class register_recvforward_handle2
+		class cregister_recvforward_handle2
 		{
 		public:
 			template <typename T>
@@ -213,14 +218,11 @@ namespace ngl
 		};
 
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
-		using type_register_recvforward_handle2 = template_arg<
-			actor::register_recvforward_handle2<TYPE, ACTOR, TDerived>
+		using register_recvforward_handle2 = template_arg<
+			actor::cregister_recvforward_handle2<TYPE, ACTOR, TDerived>
 		>;
 #pragma endregion 
 	public:
-		actor() = delete;
-		actor(const actor&) = delete;
-
 		explicit actor(const actorparm& aparm);
 
 		virtual ~actor();
@@ -244,12 +246,12 @@ namespace ngl
 	public:
 #pragma region ActorBroadcast
 		// ############# Start[Actor 全员广播] ############# 
-		// ## 间隔一段时间发起的全员(所有actor)广播
-		// ## 可以在这个广播里推送一些需要处理的任务,例如 保存数据
-		// ## 与actor_base::start_broadcast() 相呼应
-		// ## 重载此方法实现actor_base::m_broadcast毫秒触发事件
+		// # 间隔一段时间发起的全员(所有actor)广播
+		// # 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+		// # 与actor_base::start_broadcast() 相呼应
+		// # 重载此方法实现actor_base::m_broadcast毫秒触发事件
 		virtual void broadcast() {}
-		// ## 广播处理函数
+		// # 广播处理函数
 		bool handle(message<np_actor_broadcast>& adata);
 		// ############# End[Actor 全员广播] ############# 
 #pragma endregion

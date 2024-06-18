@@ -30,7 +30,7 @@ namespace ngl
 		>(false);
 	}
 
-	const char* actor_robot::kcpsessionmd5()
+	const char* actor_robot::kcp_session()
 	{
 		return m_kcpsessionmd5.c_str();
 	}
