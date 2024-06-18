@@ -4,27 +4,27 @@
 #include "actor_create.h"
 #include "ndb_modular.h"
 #include "nroleitems.h"
+#include "db_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
 #include "ranklist.h"
+#include "db_data.h"
+#include "db_pool.h"
 #include "ntimer.h"
 #include "notice.h"
 #include "net.h"
-#include "db_manage.h"
-#include "db_data.h"
-#include "db_pool.h"
 #include "db.h"
 
 namespace ngl
 {
 	class actor_ranklist : public actor
 	{
+		actor_ranklist(const actor_ranklist&) = delete;
+		actor_ranklist& operator=(const actor_ranklist&) = delete;
+
 		ranklist m_ranklist;
 
 		using type_roleitems = nroleitems<actor_ranklist, pbdb::db_brief>;
-
-		actor_ranklist(const actor_ranklist&) = delete;
-		actor_ranklist& operator=(const actor_ranklist&) = delete;
 
 		actor_ranklist();
 	public:

@@ -40,9 +40,9 @@ namespace ngl
 			return actor_instance<actor_chat>::instance();
 		}
 
-		static void nregister();
-
 		virtual ~actor_chat() {}
+
+		static void nregister();
 
 		virtual void loaddb_finish(bool adbishave) {}
 

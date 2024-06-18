@@ -19,6 +19,10 @@ namespace ngl
 	// db连接池
 	class actor_dbpool
 	{
+		actor_dbpool() = delete;
+		actor_dbpool(const actor_dbpool&) = delete;
+		actor_dbpool& operator=(const actor_dbpool&) = delete;
+
 		static std::vector<db*> m_data;
 		static bool m_init;
 	public:
@@ -29,6 +33,10 @@ namespace ngl
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_dbtab
 	{
+		actor_dbtab() = delete;
+		actor_dbtab(const actor_dbtab&) = delete;
+		actor_dbtab& operator=(const actor_dbtab&) = delete;
+
 		static tab_dbload*			m_tab;
 		// # 加载出id 防止内存穿透
 		static std::set<int64_t>	m_idset;
@@ -136,10 +144,10 @@ namespace ngl
 			i64_actorid lid = adata.m_id.id();
 			if (lid == -1)
 			{
-				//加载全部数据
 				Try
 				{
 					Assert(m_tab->m_isloadall);
+					//加载全部数据
 					loadall(apack, adata);
 				}Catch;
 			}

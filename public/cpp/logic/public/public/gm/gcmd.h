@@ -8,10 +8,15 @@ namespace ngl
 	template <typename T>
 	struct gcmd
 	{
+	private:
+		gcmd(const gcmd&) = delete;
+		gcmd& operator=(const gcmd&) = delete;
+	public:
 		std::string m_operator;
-		T m_data;
-		int id;
-		bool m_istoutf8;
+		T			m_data;
+		int			id;
+		bool		m_istoutf8;
+
 		gcmd() :
 			id(-1),
 			m_istoutf8(true)

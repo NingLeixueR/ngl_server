@@ -53,7 +53,11 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_ACTIVITY_MANAGE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+			return nguid::make(
+				ACTOR_ACTIVITY_MANAGE, 
+				ttab_servers::tab()->m_area, 
+				nguid::none_actordataid()
+			);
 		}
 
 		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ)

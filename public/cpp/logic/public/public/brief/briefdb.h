@@ -13,10 +13,10 @@ namespace ngl
 
 	class briefdb : public tdb_brief::db_modular
 	{
-	public:
 		briefdb(const briefdb&) = delete;
 		briefdb& operator=(const briefdb&) = delete;
 
+	public:
 		briefdb()
 		{
 		}
@@ -54,14 +54,24 @@ namespace ngl
 			(*lstream) << "actor_brief###loaddb_finish" << std::endl;
 			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
 			{
-				(*lstream) << "#####################" << std::endl;
-				(*lstream) << "#m_id=" << pair.second.getconst().m_id() << std::endl;
-				(*lstream) << "#m_lv=" << pair.second.getconst().m_lv() << std::endl;
-				(*lstream) << "#m_moneygold=" << pair.second.getconst().m_moneygold() << std::endl;
-				(*lstream) << "#m_moneysilver=" << pair.second.getconst().m_moneysilver() << std::endl;
-				(*lstream) << "#m_name=" << pair.second.getconst().m_name() << std::endl;
-				(*lstream) << "#m_vip=" << pair.second.getconst().m_vip() << std::endl;
-				(*lstream) << "#####################" << std::endl;
+				const pbdb::db_brief& lbrief = pair.second.getconst();
+				std::format(R"(
+++++++++++++++++++++++
++m_id={}
++m_lv={}
++m_moneygold={}
++m_moneysilver={}
++m_name={}
++m_vip={}
+++++++++++++++++++++++
+)", 
+					lbrief.m_id(),
+					lbrief.m_lv(),
+					lbrief.m_moneygold(),
+					lbrief.m_moneysilver(),
+					lbrief.m_name(),
+					lbrief.m_vip()
+					);
 			}
 			(*lstream).print("");
 		}

@@ -1,8 +1,7 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-06-14 14:41:00
+// 创建时间 24-06-18 18:53:43
 #include "account.cpp"
 #include "activity.cpp"
-#include "activity_drawcompliance.cpp"
 #include "activitydb.cpp"
 #include "actor.cpp"
 #include "actor_base.cpp"
@@ -47,9 +46,7 @@
 #include "attribute_value.cpp"
 #include "autoitem.cpp"
 #include "bag.cpp"
-#include "briefdb.cpp"
 #include "cJSON.cpp"
-#include "calendar.cpp"
 #include "calendar_function.cpp"
 #include "consume.cpp"
 #include "csv.cpp"

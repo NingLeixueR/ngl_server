@@ -76,20 +76,25 @@ namespace ngl
 			int32_t lnow = localtime::gettime();
 			for (std::pair<const nguid, data_modified<pbdb::db_calendar> >& item : *lmap)
 			{
-				(*lstream) << "calendar[" << item.first.id() << "]" << std::endl;
+				(*lstream) << std::format("calendar[{}]", item.first.id()) << std::endl;
 				const pbdb::db_calendar& lcalendar = item.second.getconst();
 
 
 				int64_t ltime = lcalendar.m_time();
 				int32_t lbeg = ttab_calendar::data::beg(ltime);
 				int32_t lend = ttab_calendar::data::end(ltime);
+				
 				(*lstream)
-					<< "start[" << localtime::time2str(lbeg, "%y/%m/%d %H:%M:%S")
-					<< (lcalendar.m_start() ? "true" : "false")
-					<< "]"
-					"finish[" << localtime::time2str(lend, "%y/%m/%d %H:%M:%S")
-					<< (lcalendar.m_finish() ? "true" : "false")
-					<< "]" << std::endl;
+					<< std::format(
+						"start[{}:{}]",
+						localtime::time2str(lbeg, "%y/%m/%d %H:%M:%S"),
+						lcalendar.m_start() ? "true" : "false"
+					)
+					<< std::format(
+						"finish[{}:{}]",
+						localtime::time2str(lend, "%y/%m/%d %H:%M:%S"),
+						lcalendar.m_finish() ? "true" : "false"
+					) << std::endl;
 
 				pbdb::db_calendar* itemcalendar = get_calendar(item.first.id());
 				if (itemcalendar == nullptr)
@@ -132,11 +137,13 @@ namespace ngl
 					lcalendar.set_m_finish(false);
 					lcalendar.set_m_start(false);
 					add(item.first, lcalendar);
-					ttab_calendar::post(ttab_calendar::tab(item.first), ltime, *get_calendar(item.first));
+					ttab_calendar::post(
+						ttab_calendar::tab(item.first), 
+						ltime, 
+						*get_calendar(item.first)
+					);
 				}
 			}
-
 		}
-
 	};
 }// namespace ngl

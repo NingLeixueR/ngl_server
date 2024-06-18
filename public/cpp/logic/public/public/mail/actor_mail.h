@@ -20,10 +20,10 @@ namespace ngl
 {
 	class actor_mail : public actor
 	{
-		mails m_mails;
-
 		actor_mail(const actor_mail&) = delete;
 		actor_mail& operator=(const actor_mail&) = delete;
+
+		mails m_mails;
 
 		actor_mail();
 	public:
@@ -49,7 +49,12 @@ namespace ngl
 			return nguid::make(ACTOR_MAIL, area, nguid::none_actordataid());
 		}
 
-		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)
+		static bool sendmail(
+			i64_actorid aactorid, 
+			int32_t amailid, 
+			int32_t adropid, 
+			const std::string& aparm
+		)
 		{
 			auto pro = std::make_shared<np_actor_addmail>();
 			pro->m_roleid = aactorid;
@@ -126,4 +131,4 @@ namespace ngl
 			return true;
 		}
 	};
-}
+}// namespace ngl

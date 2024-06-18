@@ -11,11 +11,11 @@ namespace ngl
 {
 	class mails : public tdb_mail::db_modular
 	{
-		std::map<i64_actorid, int32_t> m_maxid;
-	public:
 		mails(const mails&) = delete;
 		mails& operator=(const mails&) = delete;
 
+		std::map<i64_actorid, int32_t> m_maxid;
+	public:
 		mails()
 		{
 		}
@@ -33,7 +33,10 @@ namespace ngl
 			return &itor->second.getconst().m_mail();
 		}
 
-		google::protobuf::Map<int32_t, pbdb::mail>* get_mails(i64_actorid aroleid, bool achange = true)
+		google::protobuf::Map<int32_t, pbdb::mail>* get_mails(
+			i64_actorid aroleid, 
+			bool achange = true
+		)
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
@@ -60,11 +63,11 @@ namespace ngl
 				{
 					if (lid < _id)
 						lid = _id;
-					(*lstream) << "#####################roleid[" << _roleid << "]" << std::endl;
-					(*lstream) << "id:" << _mail.m_id() << std::endl;
-					(*lstream) << "tid:" << _mail.m_tid() << std::endl;
-					(*lstream) << "draw:" << (_mail.m_draw() ? "yes" : "no") << std::endl;
-					(*lstream) << "read:" << (_mail.m_read() ? "yes" : "no") << std::endl;
+					(*lstream) << std::format("+++++++++++++roleid[{}]", _roleid) << std::endl;
+					(*lstream) << std::format("id:{}", _mail.m_id()) << std::endl;
+					(*lstream) << std::format("tid:{}", _mail.m_tid()) << std::endl;
+					(*lstream) << std::format("draw:{}", (_mail.m_draw() ? "yes" : "no")) << std::endl;
+					(*lstream) << std::format("read:{}", (_mail.m_read() ? "yes" : "no")) << std::endl;
 				}				
 			}
 			(*lstream).print("");
@@ -81,7 +84,12 @@ namespace ngl
 			return itor->second;
 		}
 
-		bool addmail(i64_actorid aroleid, int atid, std::map<int32_t, int32_t>& aitem, const std::string& acontent, const std::string& aparm)
+		bool addmail(
+			i64_actorid aroleid, 
+			int atid, std::map<int32_t, int32_t>& aitem, 
+			const std::string& acontent, 
+			const std::string& aparm
+		)
 		{
 			if (atid != -1)
 			{
@@ -121,13 +129,22 @@ namespace ngl
 			return true;
 		}
 
-		bool addmail(i64_actorid aroleid, int atid, std::map<int32_t, int32_t>& aitem, const std::string& aparm = "")
+		bool addmail(
+			i64_actorid aroleid, 
+			int atid, 
+			std::map<int32_t, int32_t>& aitem, 
+			const std::string& aparm = ""
+		)
 		{
 			return addmail(aroleid, atid, aitem, "", aparm);
 		}
 
 
-		bool addmail(i64_actorid aroleid, std::map<int32_t, int32_t>& aitem, const std::string& acontent)
+		bool addmail(
+			i64_actorid aroleid, 
+			std::map<int32_t, int32_t>& aitem, 
+			const std::string& acontent
+		)
 		{
 			return addmail(aroleid, -1, aitem, acontent, "");
 		}
@@ -222,7 +239,10 @@ namespace ngl
 			return true;
 		}
 
-		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
+		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(
+			i64_actorid aroleid, 
+			i64_actorid amailid = -1
+		)
 		{
 			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid); 
 			if (lpmap == nullptr)

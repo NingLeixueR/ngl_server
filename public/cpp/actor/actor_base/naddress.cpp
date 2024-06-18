@@ -8,6 +8,9 @@ namespace ngl
 {
 	struct impl_actor_address
 	{
+		impl_actor_address() = delete;
+		impl_actor_address(const impl_actor_address&) = delete;
+		impl_actor_address& operator=(const impl_actor_address&) = delete;
 	private:
 		static naddress::map_guidserver		m_actorserver;
 		static naddress::map_typeguid		m_actortypeserver;

@@ -16,11 +16,11 @@ namespace ngl
 {
 	class actor_manage
 	{
-		struct impl_actor_manage;
-		ngl::impl<impl_actor_manage> m_impl_actor_manage;
-
 		actor_manage(const actor_manage&) = delete;
 		actor_manage& operator=(const actor_manage&) = delete;
+
+		struct impl_actor_manage;
+		ngl::impl<impl_actor_manage> m_impl_actor_manage;
 
 		actor_manage();
 		~actor_manage();

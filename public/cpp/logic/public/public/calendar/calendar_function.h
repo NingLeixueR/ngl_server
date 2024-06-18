@@ -10,6 +10,9 @@ namespace ngl
 
 	class calendar_function
 	{
+		calendar_function(const calendar_function&) = delete;
+		calendar_function& operator=(const calendar_function&) = delete;
+
 		using typecallback = std::function<void(tab_calendar*, int64_t)>;
 		struct callback
 		{

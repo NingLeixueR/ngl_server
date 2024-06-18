@@ -164,6 +164,8 @@ namespace ngl
 	/////////////////////////////////////////////////////
 	union nlogactor
 	{
+		nlogactor() = delete;
+
 		int32_t m_value32;
 		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 

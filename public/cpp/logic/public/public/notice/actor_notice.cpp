@@ -44,7 +44,12 @@ namespace ngl
 		int32_t		m_starttime;// 开始时间
 		int32_t		m_finishtime;// 结束时间
 
-		jsonfunc("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
+		jsonfunc(
+			"id", m_id, 
+			"notice", m_notice, 
+			"starttime", m_starttime, 
+			"finishtime", m_finishtime
+		)
 	};
 
 	bool actor_notice::handle(message<mforward<np_gm>>& adata)

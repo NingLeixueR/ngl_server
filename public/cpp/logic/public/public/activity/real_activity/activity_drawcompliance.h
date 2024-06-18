@@ -5,16 +5,34 @@ namespace ngl
 {
 	class activity_drawcompliance : public activity
 	{
-		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb)
-		{
-			std::shared_ptr<activity> lret(new activity_drawcompliance(acalendarid, aactivityid, atime, adb));
-			return lret;
-		}
-	public:
 		activity_drawcompliance(const activity_drawcompliance&) = delete;
 		activity_drawcompliance& operator=(const activity_drawcompliance&) = delete;
 
-		activity_drawcompliance(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) :
+		virtual std::shared_ptr<activity> create(
+			int32_t acalendarid, 
+			int32_t aactivityid, 
+			int64_t atime, 
+			activitydb& adb
+		)
+		{
+			std::shared_ptr<activity> lret(
+				new activity_drawcompliance(
+					acalendarid, 
+					aactivityid, 
+					atime, 
+					adb
+				)
+			);
+			return lret;
+		}
+	public:
+
+		activity_drawcompliance(
+			int32_t acalendarid, 
+			int32_t aactivityid, 
+			int64_t atime, 
+			activitydb& adb
+		) :
 			activity(acalendarid, aactivityid, atime, adb)
 		{}
 

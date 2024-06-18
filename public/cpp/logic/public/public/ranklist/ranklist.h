@@ -3,8 +3,8 @@
 #include "nactor_auto.h"
 #include "db.pb.h"
 
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <list>
 
 namespace ngl
@@ -19,6 +19,9 @@ namespace ngl
 
 	class ranklist : public tdb_ranklist::db_modular
 	{
+		ranklist(const ranklist&) = delete;
+		ranklist& operator=(const ranklist&) = delete;
+
 		template <typename T>
 		class operator_value
 		{
@@ -64,9 +67,6 @@ namespace ngl
 
 		std::set<pbdb::rankitem*, operator_value<operator_lv>> m_ranklv;
 	public:
-		ranklist(const ranklist&) = delete;
-		ranklist& operator=(const ranklist&) = delete;
-
 		ranklist()
 		{
 		}

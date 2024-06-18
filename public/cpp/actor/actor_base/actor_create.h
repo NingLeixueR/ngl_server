@@ -41,8 +41,12 @@ namespace ngl
 			if (ltype == ENUM_ACTOR::ACTOR_ROLE)
 			{
 				nguid lguid(pro->m_actor);
-				np_actorswitch_process_role* lp = (np_actorswitch_process_role*)&(pro.get()->m_pram);
-				i64_actorid lactorgatewayid = nguid::make(ACTOR_GATEWAY, tab_self_area, lp->m_gatewayid);
+				auto lp = (np_actorswitch_process_role*)&(pro.get()->m_pram);
+				i64_actorid lactorgatewayid = nguid::make(
+					ACTOR_GATEWAY, 
+					tab_self_area, 
+					lp->m_gatewayid
+				);
 				actor_base::static_send_actor(lactorgatewayid, nguid::make(), pro);
 			}
 			// # 3 发给去的进程
@@ -51,7 +55,12 @@ namespace ngl
 		}
 
 		template <typename T>
-		static void switch_process(i64_actorid aactor, i32_serverid aserverid, i32_serverid atoserverid, T& adata)
+		static void switch_process(
+			i64_actorid aactor, 
+			i32_serverid aserverid, 
+			i32_serverid atoserverid, 
+			T& adata
+		)
 		{
 			if (aserverid == atoserverid)
 				return;
@@ -89,7 +98,7 @@ namespace ngl
 			{
 				actor_manage::getInstance().erase_actor_byid(lparm->m_actor, [lparm]()
 					{
-						std::shared_ptr<np_actorswitch_process<T>> pro(new np_actorswitch_process<T>(*lparm));
+						auto pro = std::make_shared<np_actorswitch_process<T>>(*lparm);
 						actor_create::switch_process_send<T>(pro);
 					});
 			}

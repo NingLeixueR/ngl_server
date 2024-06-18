@@ -7,7 +7,9 @@ namespace ngl
 {
 	class activity
 	{
-	private:
+		activity(const activity&) = delete;
+		activity& operator=(const activity&) = delete;
+
 		static std::map<EActivity, activity*> m_activityall;
 		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) = 0;
 	public:
@@ -41,7 +43,7 @@ namespace ngl
 		EActivity type()
 		{
 			tab_activity* tab = allcsv::tab<tab_activity>((int32_t)m_activityid);
-			assert(tab != nullptr);
+			Assert(tab != nullptr);
 			return tab->m_type;
 		}
 

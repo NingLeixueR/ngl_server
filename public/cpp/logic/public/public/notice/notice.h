@@ -7,11 +7,11 @@ namespace ngl
 {
 	class notice : public tdb_notice::db_modular
 	{
-		int64_t m_maxid;
-	public:
 		notice(const notice&) = delete;
 		notice& operator=(const notice&) = delete;
 
+		int64_t m_maxid;
+	public:
 		notice() :
 			m_maxid(0)
 		{
@@ -35,14 +35,13 @@ namespace ngl
 			for (const auto& [id, dbnotice] : *get_notice())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
-				(*lstream)
-					<< "notice###id:[" << lnotice.m_id() << "] "
-					<< "notice:[" << lnotice.m_notice() << "] "
-					<< "time:[" 
-					<< localtime::time2str(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S") 
-					<< "-" 
-					<< localtime::time2str(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S") << "]"
-					<< std::endl;
+				(*lstream)<< std::format(
+					"notice###id:[{}] notice:[{}] time:[{}]",
+					lnotice.m_id(),
+					lnotice.m_notice(),
+					localtime::time2str(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S"),
+					localtime::time2str(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S")
+				) << std::endl;
 				if (m_maxid <= lnotice.m_id())
 					m_maxid = lnotice.m_id();
 			}
@@ -80,9 +79,10 @@ namespace ngl
 				std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
 				for (const auto& [id, dbnotice] : lnotice)
 				{
-					if (dbnotice.getconst().m_finishtime() < lnow && dbnotice.getconst().m_finishtime() != -1)
+					const pbdb::db_notice& lnotice = dbnotice.getconst();
+					if (lnotice.m_finishtime() < lnow && lnotice.m_finishtime() != -1)
 					{
-						remove(dbnotice.getconst().m_id());
+						remove(lnotice.m_id());
 					}
 				}
 			}

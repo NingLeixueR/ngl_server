@@ -20,10 +20,10 @@ namespace ngl
 {
 	class actor_notice : public actor
 	{
-		notice m_notice;
-
 		actor_notice(const actor_notice&) = delete;
 		actor_notice& operator=(const actor_notice&) = delete;
+
+		notice m_notice;
 
 		actor_notice();
 	public:
@@ -46,7 +46,11 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_NOTICE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+			return nguid::make(
+				ACTOR_NOTICE, 
+				ttab_servers::tab()->m_area, 
+				nguid::none_actordataid()
+			);
 		}
 
 		static bool sendnotice(const std::string& anotice, int32_t astarttime, int32_t afinishtime)

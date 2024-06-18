@@ -8,6 +8,9 @@ namespace ngl
 {
 	struct actor_manage::impl_actor_manage
 	{
+		impl_actor_manage(const impl_actor_manage&) = delete;
+		impl_actor_manage& operator=(const impl_actor_manage&) = delete;
+
 		//// ---- 线程相关
 		std::list<nthread*>	m_workthread;		// 工作线程
 		bool				m_suspend;			// 是否挂起

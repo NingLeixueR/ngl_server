@@ -10,6 +10,9 @@ namespace ngl
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
 	class typedb
 	{
+		typedb() = delete;
+		typedb(const typedb&) = delete;
+		typedb& operator=(const typedb&) = delete;
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;

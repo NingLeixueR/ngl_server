@@ -64,11 +64,12 @@ namespace ngl
 	struct data_modified : data_modified_base
 	{
 	private:
+		data_modified(const data_modified&) = delete;
+		data_modified& operator=(const data_modified&) = delete;
+
 		TDBTAB m_data;
 		TDBTAB* m_pdata = nullptr;
 	public:
-		data_modified(const data_modified&) = delete;
-		data_modified& operator=(const data_modified&) = delete;
 
 		data_modified(TDBTAB* adata):
 			m_pdata(adata)
@@ -415,7 +416,7 @@ namespace ngl
 				log_error()->print(
 					"db load respones:[{}] recv_over[{}]"
 					, dtype_name(type_message)
-					, adata.get_data()->m_over ? "true" : "false"
+					, adata.get_data()->m_over ? "finish" : "no finishi"
 				);
 				loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
 			}Catch;

@@ -1,5 +1,5 @@
-#include "mail.h"
 #include "actor_mail.h"
+#include "mail.h"
 
 namespace ngl
 {
