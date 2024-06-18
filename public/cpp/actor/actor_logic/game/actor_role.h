@@ -95,13 +95,45 @@ namespace ngl
 			return nguid::none_actordataid();
 		}
 
+		template <typename T>
+		inline std::shared_ptr<mforward<T>> forward_pro(message<T>& adata)
+		{
+			std::shared_ptr<mforward<T>> lshared;
+			if (adata.get_shared_data() == nullptr)
+			{
+				lshared = std::make_shared<mforward<T>>(
+					id_guid(),
+					adata.get_data()
+				);
+			}
+			else
+			{
+				lshared = std::make_shared<mforward<T>>(
+					id_guid(),
+					adata.get_shared_data()
+				);
+			}
+			return lshared;
+		}
+
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(message<T>& adata)
 		{
-			std::shared_ptr<mforward<T>> pro = std::make_shared<mforward<T>>(
-				id_guid(), 
-				adata.get_shared_data()
-			);
+			std::shared_ptr<mforward<T>> pro(nullptr);
+			if (adata.get_shared_data() == nullptr)
+			{
+				pro = std::make_shared<mforward<T>>(
+					id_guid(),
+					*adata.get_data()
+				);
+			}
+			else
+			{
+				pro = std::make_shared<mforward<T>>(
+					id_guid(),
+					adata.get_shared_data()
+				);
+			}
 			i64_actorid lguid;
 			switch (forward_way(*adata.get_data()))
 			{

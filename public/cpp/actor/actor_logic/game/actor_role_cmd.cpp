@@ -23,25 +23,21 @@ namespace ngl
 			handle_cmd::push("/name", [](actor_role* role, const char* aparm)
 				{
 					role->m_info.change_name(aparm);
-					role->sync_data_client();
 				}
 			);
 			handle_cmd::push("/lv", [](actor_role* role, const char* aparm)
 				{
 					role->m_info.change_lv(tools::lexical_cast<int>(aparm));
-					role->sync_data_client();
 				}
 			);
 			handle_cmd::push("/gold", [](actor_role* role, const char* aparm)
 				{
 					role->m_info.change_gold(tools::lexical_cast<int>(aparm));
-					role->sync_data_client();
 				}
 			);
 			handle_cmd::push("/silver", [](actor_role* role, const char* aparm)
 				{
 					role->m_info.change_silver(tools::lexical_cast<int>(aparm));
-					role->sync_data_client();
 				}
 			);
 			handle_cmd::push("/chat", [](actor_role* role, const char* aparm)
@@ -53,18 +49,18 @@ namespace ngl
 						return;
 					if (lvec.size() >= 2)
 					{
-						pbnet::PROBUFF_NET_CHAT pro;
-						pro.set_m_type((pbnet::enum_logic_chat)tools::lexical_cast<int>(lvec[0].c_str()));
-						pro.set_m_channelid(tools::lexical_cast<int>(lvec[1].c_str()));
-						if (pro.m_type() == pbnet::chat_speak)
+						auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT>();
+						pro->set_m_type((pbnet::enum_logic_chat)tools::lexical_cast<int>(lvec[0].c_str()));
+						pro->set_m_channelid(tools::lexical_cast<int>(lvec[1].c_str()));
+						if (pro->m_type() == pbnet::chat_speak)
 						{
 							if (lvec.size() < 3)
 							{
 								return;
 							}
-							pro.set_m_content(lvec[2]);
+							pro->set_m_content(lvec[2]);
 						}
-						message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, &pro);
+						message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, pro);
 						role->handle_forward<ACTOR_CHAT>(lmessage);
 					}
 				}
@@ -72,20 +68,20 @@ namespace ngl
 
 			handle_cmd::push("/chatlist", [](actor_role* role, const char* aparm) 
 				{
-					pbnet::PROBUFF_NET_CHAT pro;
-					pro.set_m_type(pbnet::enum_logic_chat::get_chat_list);
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT>();
+					pro->set_m_type(pbnet::enum_logic_chat::get_chat_list);
 					int lchannelid = 0;
 					if (tools::splite(aparm, "*", lchannelid) == false)
 						return;
-					pro.set_m_channelid(lchannelid);
-					message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, &pro);
+					pro->set_m_channelid(lchannelid);
+					message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, pro);
 					role->handle_forward<ACTOR_CHAT>(lmessage);
 				}
 			);
 
 			handle_cmd::push("/switch", [](actor_role* role, const char* aparm)
 				{
-					pbnet::PROBUFF_NET_SWITCH_LINE pro;
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
 					tab_servers* tab = ttab_servers::find_first(GAME, [](tab_servers* atab)->bool
 						{
 							return atab->m_id != nconfig::m_nodeid;
@@ -94,8 +90,8 @@ namespace ngl
 					if (tab == nullptr)
 						return;
 
-					pro.set_m_line(tab->m_tcount);
-					message<pbnet::PROBUFF_NET_SWITCH_LINE> lmessage(0, nullptr, &pro);
+					pro->set_m_line(tab->m_tcount);
+					message<pbnet::PROBUFF_NET_SWITCH_LINE> lmessage(0, nullptr, pro);
 					role->handle(lmessage);
 				}
 			);
@@ -111,16 +107,16 @@ namespace ngl
 			);
 			handle_cmd::push("/notices", [](actor_role* role, const char* aparm)
 				{
-					pbnet::PROBUFF_NET_NOTICE lparm;
-					message<pbnet::PROBUFF_NET_NOTICE> pro(1, nullptr, &lparm);
-					role->handle_forward<ACTOR_NOTICE>(pro);
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE>();
+					message<pbnet::PROBUFF_NET_NOTICE> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_NOTICE>(lmessage);
 				}
 			);
 			handle_cmd::push("/mails", [](actor_role* role, const char* aparm)
 				{
-					pbnet::PROBUFF_NET_MAIL_LIST lparm;
-					message<pbnet::PROBUFF_NET_MAIL_LIST> pro(1, nullptr, &lparm);
-					role->handle_forward<ACTOR_MAIL>(pro);
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST>();
+					message<pbnet::PROBUFF_NET_MAIL_LIST> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_MAIL>(lmessage);
 				}
 			);
 		}
