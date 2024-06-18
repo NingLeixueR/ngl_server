@@ -9,6 +9,10 @@ namespace ngl
 	template <typename TF, typename ...TARG>
 	class template_arg
 	{
+		template_arg() = delete;
+		template_arg(const template_arg&) = delete;
+		template_arg& operator=(const template_arg&) = delete;
+
 		template <typename T>
 		static void func2(TARG... args)
 		{

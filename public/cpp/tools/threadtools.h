@@ -17,6 +17,9 @@ namespace ngl
 
 	class sem
 	{
+		sem(const sem&) = delete;
+		sem& operator=(const sem&) = delete;
+
 		void* m_sem;
 	public:
 		sem();
@@ -27,6 +30,10 @@ namespace ngl
 
 	class sleep
 	{
+		sleep() = delete;
+		sleep(const sleep&) = delete;
+		sleep& operator=(const sleep&) = delete;
+
 	public:
 		// ### 线程睡眠[avalue]小时
 		static void hours(int32_t avalue);
@@ -79,6 +86,10 @@ namespace ngl
 	template <typename NODE>
 	class work_list
 	{
+		work_list() = delete;
+		work_list(const work_list&) = delete;
+		work_list& operator=(const work_list&) = delete;
+
 		std::shared_mutex			m_mutex;
 		ngl::sem					m_sem;
 		std::list<NODE>				m_list;
@@ -134,6 +145,10 @@ namespace ngl
 	template <typename NODE>
 	class workcv_list
 	{
+		workcv_list() = delete;
+		workcv_list(const workcv_list&) = delete;
+		workcv_list& operator=(const workcv_list&) = delete;
+
 		std::mutex					m_mutex;
 		std::condition_variable		m_cv;
 		std::list<NODE>				m_list;
