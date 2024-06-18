@@ -130,6 +130,10 @@ namespace ngl
 
 	class session_manage
 	{
+		session_manage() = delete;
+		session_manage(const session_manage&) = delete;
+		session_manage& operator=(const session_manage&) = delete;
+
 		std::map<i32_sessionid, ptr_se>						m_dataofsession;
 		std::map<std::string, std::map<i16_port, ptr_se>>	m_dataofendpoint;
 		int32_t												m_sessionid;
@@ -292,7 +296,12 @@ namespace ngl
 
 		using handle_cmd = cmd<udp_cmd, ecmd, asio_kcp::impl_asio_kcp*, ptr_se&, const std::string&>;
 
-		static bool run_cmd(asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const char* abuf, int32_t alen)
+		static bool run_cmd(
+			asio_kcp::impl_asio_kcp* ap, 
+			ptr_se& apstruct, 
+			const char* abuf, 
+			int32_t alen
+		)
 		{
 			if (alen < ecmd_minlen)
 				return false;
@@ -319,7 +328,12 @@ namespace ngl
 			handle_cmd::push(anum, afun);
 		}
 
-		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
+		static bool sendcmd(
+			asio_kcp* akcp, 
+			i32_sessionid asession, 
+			ecmd acmd, 
+			const std::string& ajson
+		);
 	};
 
 

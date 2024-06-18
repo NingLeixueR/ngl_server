@@ -12,7 +12,7 @@ namespace ngl
 		(*pro->m_vecinfo.m_data)[0] = m_base();
 
 		std::string ljson;
-		if (tools::protostr((*pro->m_vecinfo.m_data)[0], ljson))
+		if (tools::protojson((*pro->m_vecinfo.m_data)[0], ljson))
 		{
 			log_error()->print("roleinfo::sync_actor_roleinfo [{}]", ljson);
 		}

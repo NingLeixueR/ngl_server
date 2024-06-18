@@ -7,6 +7,9 @@ namespace ngl
 {
 	struct net_protocol::impl_net_protocol
 	{
+		impl_net_protocol(const impl_net_protocol&) = delete;
+		impl_net_protocol& operator=(const impl_net_protocol&) = delete;
+
 		i16_port				m_port;											// 服务器监听端口号
 		i32_threadsize			m_socketthreadnum;								// socket 接收数据线程数
 		bpool					m_pool;
@@ -95,7 +98,12 @@ namespace ngl
 		return m_impl_net_protocol()->m_pool;
 	}
 
-	bool net_protocol::socket_recv(int asessionid, int aislanip, const char* abuff, uint32_t abufflen)
+	bool net_protocol::socket_recv(
+		int asessionid, 
+		int aislanip, 
+		const char* abuff,
+		uint32_t abufflen
+	)
 	{
 		return m_impl_net_protocol()->socket_recv(asessionid, aislanip, abuff, abufflen);
 	}
@@ -148,7 +156,12 @@ namespace ngl
 		return net_send(lsession, apack);
 	}
 
-	bool net_protocol::sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+	bool net_protocol::sendmore(
+		const std::map<i32_sessionid, i64_actorid>& asession, 
+		i64_actorid aactorid, 
+		std::pair<std::shared_ptr<pack>, 
+		std::shared_ptr<pack>>& apair
+	)
 	{
 		for (auto& item : asession)
 		{

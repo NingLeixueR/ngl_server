@@ -6,6 +6,7 @@ namespace ngl
 {
 	class net_tcp : public net_protocol
 	{
+		net_tcp() = delete;
 		net_tcp(const net_tcp&) = delete;
 		net_tcp& operator=(const net_tcp&) = delete;
 
@@ -30,7 +31,9 @@ namespace ngl
 		);
 		
 		virtual void set_close(
-			int asession, const std::string& aip, i16_port aport, 
+			int asession, 
+			const std::string& aip, 
+			i16_port aport, 
 			const std::function<void(i32_sessionid)>& afun
 		);
 

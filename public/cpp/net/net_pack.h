@@ -11,7 +11,12 @@ namespace ngl
 		net_pack(const net_pack&) = delete;
 		net_pack& operator=(const net_pack&) = delete;
 	public:
-		static std::shared_ptr<pack> npack(bpool* apool, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static std::shared_ptr<pack> npack(
+			bpool* apool, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		)
 		{
 			ngl::serialize_bytes lbytes;
 			int lbuffbyte = adata.ByteSize() + pack_head::size();

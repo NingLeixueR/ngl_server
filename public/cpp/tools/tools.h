@@ -209,6 +209,10 @@ namespace ngl
 
 	class tools
 	{
+		tools() = delete;
+		tools(const tools&) = delete;
+		tools& operator=(const tools&) = delete;
+
 	public:
 #pragma region findmap
 		// map²Ù×÷·â×°
@@ -242,7 +246,7 @@ namespace ngl
 		static bool is_equal(const char* astr1, const char* astr2, int32_t abyte);
 
 		template <typename T>
-		static bool protostr(T& adata, std::string& json)
+		static bool protojson(T& adata, std::string& json)
 		{
 			google::protobuf::util::JsonPrintOptions options;
 			options.add_whitespace = false;
@@ -406,6 +410,7 @@ namespace ngl
 		{
 			if (aindex > avec.size())
 				return false;
+
 			try
 			{
 				adata = tools::lexical_cast<T>(avec[aindex].c_str());

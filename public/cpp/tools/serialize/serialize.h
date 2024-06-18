@@ -644,7 +644,7 @@ namespace ngl
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
 						return false;
 					std::string json;
-					if (tools::protostr(ltemp, json) == false)
+					if (tools::protojson(ltemp, json) == false)
 					{
 						//log_error()->print("pop [{}] error", dtype_name(T));
 						return false;

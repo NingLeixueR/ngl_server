@@ -21,6 +21,7 @@ namespace ngl
 		forward_pack() = delete;
 		forward_pack(const forward_pack&) = delete;
 		forward_pack& operator=(const forward_pack&) = delete;
+
 	public:
 		template <typename Y>
 		static std::shared_ptr<pack>& get_pack(Y&)
@@ -67,6 +68,7 @@ namespace ngl
 		net_protocol() = delete;
 		net_protocol(const net_protocol&) = delete;
 		net_protocol& operator=(const net_protocol&) = delete;
+
 	protected:
 		struct impl_net_protocol;
 		ngl::impl<impl_net_protocol>	m_impl_net_protocol;
@@ -146,7 +148,12 @@ namespace ngl
 			i64_actorid arequestactorid
 		)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, arequestactorid);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(
+				&get_pool(), 
+				adata, 
+				aactorid, 
+				arequestactorid
+			);
 			if (lpack == nullptr)
 				return false;
 			if (sendpack(asession, lpack) == false)
