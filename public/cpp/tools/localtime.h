@@ -8,6 +8,9 @@ namespace ngl
 {
 	class localtime
 	{
+		localtime() = delete;
+		localtime(const localtime&) = delete;
+		localtime& operator=(const localtime&) = delete;
 	public:
 		enum
 		{

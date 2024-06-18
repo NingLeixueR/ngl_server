@@ -22,6 +22,10 @@ namespace ngl
 	template <typename ENUMT, enum_e2n TOLOWER = e2n_never>
 	class enum2name
 	{
+		enum2name() = delete;
+		enum2name(const enum2name&) = delete;
+		enum2name& operator=(const enum2name&) = delete;
+
 		static std::map<int, std::map<ENUMT, std::string>> m_datae2n;
 		static std::map<int, std::map<std::string, ENUMT>> m_datan2e;
 

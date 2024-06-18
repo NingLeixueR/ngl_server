@@ -6,8 +6,14 @@ namespace ngl
 	template <typename T>
 	class impl
 	{
+		impl(const impl&) = delete;
+		impl& operator=(const impl&) = delete;
+
 		std::unique_ptr<T> m_impl;
 	public:
+		impl()
+		{}
+
 		template <typename ...ARG>
 		inline void make_unique(const ARG&... args)
 		{

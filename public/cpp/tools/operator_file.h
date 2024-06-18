@@ -9,6 +9,10 @@ namespace ngl
 {
 	class readfile
 	{
+		readfile() = delete;
+		readfile(const readfile&) = delete;
+		readfile& operator=(const readfile&) = delete;
+
 		std::ifstream m_file;
 	public:
 		readfile(const std::string& filename);
@@ -22,6 +26,10 @@ namespace ngl
 
 	class writefile
 	{
+		writefile() = delete;
+		writefile(const writefile&) = delete;
+		writefile& operator=(const writefile&) = delete;
+
 		std::ofstream m_file;
 	public:
 		writefile(const std::string& filename);
@@ -31,6 +39,10 @@ namespace ngl
 
 	class filetools
 	{
+		filetools() = delete;
+		filetools(const filetools&) = delete;
+		filetools& operator=(const filetools&) = delete;
+
 	public:
 		static bool exist(const std::string& afilename);
 		static bool remove(const std::string& afilename);

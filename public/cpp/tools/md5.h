@@ -10,6 +10,8 @@ namespace ngl
 {
 	class md5
 	{
+		md5(const md5&) = delete;
+		md5& operator=(const md5&) = delete;
 	public:
 		typedef unsigned int size_type; // must be 32bit
 

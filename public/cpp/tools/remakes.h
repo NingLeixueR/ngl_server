@@ -9,12 +9,16 @@ namespace ngl
 	class dremakes;
 	class remakes
 	{
+		remakes(const remakes&) = delete;
+		remakes& operator=(const remakes&) = delete;
+
 		friend class dremakes;
 	private:
 		std::stack<std::string> m_remakes;
 		void add_remakes(const char* aremakes);
 		void erase_remakes();
 	public:
+		remakes() {}
 		const char* get_remakes();
 	};
 
@@ -22,6 +26,9 @@ namespace ngl
 
 	class dremakes
 	{
+		dremakes(const dremakes&) = delete;
+		dremakes& operator=(const dremakes&) = delete;
+
 		actor_role* m_role;
 	public:
 		dremakes(actor_role* arole, const char* aremakes);

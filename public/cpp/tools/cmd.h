@@ -16,6 +16,10 @@ namespace ngl
 	template <typename TAG, typename TKEY, typename ...ARG>
 	class cmd
 	{
+		cmd() = delete;
+		cmd(const cmd&) = delete;
+		cmd& operator=(const cmd&) = delete;
+
 		static std::map<TKEY, std::function<void(ARG...)>> m_fun;
 	public:
 		static bool empty()
