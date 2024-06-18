@@ -62,10 +62,10 @@ namespace ngl
 		}
 
 	public:
-		//// ### client->gateway->game
+		// # client->gateway->game
 		static void c2g();
 
-		//// ### game->gateway->client
+		// # game->gateway->client
 		static void g2c();
 	};
 }//namespace ngl

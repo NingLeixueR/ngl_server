@@ -21,7 +21,7 @@ namespace ngl
 	void actor_csvclient::init()
 	{
 		timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 60) == false)
+		if (make_timerparm::make_interval(tparm, 5*60) == false)
 		{
 			log_error()->print("actor_csvclient::init() make_timerparm::make_interval(tparm, 60) == false!!!");
 			return;
