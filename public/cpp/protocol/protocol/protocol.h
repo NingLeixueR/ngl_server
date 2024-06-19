@@ -20,17 +20,14 @@ namespace ngl
 {
 	class protocol
 	{
+		protocol() = delete;
+		protocol(const protocol&) = delete;
+		protocol& operator=(const protocol&) = delete;
 	public:
-		using tpptr		= std::shared_ptr<pack>;
-		using tvptr		= std::shared_ptr<void>;
+		using fun_pack	= std::function<std::shared_ptr<void>(std::shared_ptr<pack>&)>;
+		using fun_run	= std::function<bool(std::shared_ptr<pack>&, std::shared_ptr<void>&)>;
 
-		template <typename T>
-		using tptr		= std::shared_ptr<T>;
-
-		using fun_pack	= std::function<tvptr(tpptr&)>;
-		using fun_run	= std::function<bool(tpptr&, tvptr&)>;
-
-		static void push(tpptr& apack);
+		static void push(std::shared_ptr<pack>& apack);
 
 		static void register_protocol(
 			EPROTOCOL_TYPE atype					// 协议类型
@@ -47,12 +44,12 @@ namespace ngl
 		template <typename T, EPROTOCOL_TYPE TYPE>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
-			fun_pack lpackfun = [atype](tpptr& apack)->tvptr
+			fun_pack lpackfun = [atype](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
 				Try
 				{
 					T* lp = new T();
-					tvptr ltemp(lp);
+					std::shared_ptr<void> ltemp(lp);
 					if (structbytes<T>::tostruct(apack, *lp))
 					{
 						return ltemp;
@@ -61,7 +58,10 @@ namespace ngl
 				return nullptr;
 			};
 			std::string lname = aname;
-			fun_run lrunfun = [atype, lname](tpptr& apack, tvptr& aptrpram)->bool
+			fun_run lrunfun = [atype, lname](
+				std::shared_ptr<pack>& apack, 
+				std::shared_ptr<void>& aptrpram
+				)->bool
 			{
 				nguid lactorguid(apack->m_head.get_actor());
 				nguid lrequestactorguid(apack->m_head.get_request_actor());
@@ -102,16 +102,20 @@ namespace ngl
 
 		// 转发[负责转发的actor必须是单例actor]
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
-		static void registry_actor_forward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		static void registry_actor_forward(
+			ENUM_ACTOR atype, 
+			int32_t aprotocolnum, 
+			const char* aname
+		)
 		{
-			fun_pack lpackfun = [](tpptr& apack)->tvptr
+			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
 				Try
 				{
 					using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
 					typeforward* lp = new typeforward();
 					lp->m_recvpack = apack;
-					tvptr ltemp(lp);
+					std::shared_ptr<void> ltemp(lp);
 					if (structbytes<typeforward>::tostruct(apack, *lp, true))
 					{
 						return ltemp;
@@ -119,7 +123,10 @@ namespace ngl
 				}Catch;
 				return nullptr;
 			};
-			fun_run lrunfun = [atype](tpptr& apack, tvptr& aptrpram)->bool
+			fun_run lrunfun = [atype](
+				std::shared_ptr<pack>& apack, 
+				std::shared_ptr<void>& aptrpram
+				)->bool
 			{
 				using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
 				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
@@ -135,15 +142,19 @@ namespace ngl
 
 		// 接收转发的消息
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
-		static void registry_actor_recvforward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		static void registry_actor_recvforward(
+			ENUM_ACTOR atype, 
+			int32_t aprotocolnum, 
+			const char* aname
+		)
 		{
-			fun_pack lpackfun = [](tpptr& apack)->tvptr
+			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
 				Try
 				{
 					using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 					typeforward* lp = new typeforward();
-					tvptr ltemp(lp);
+					std::shared_ptr<void> ltemp(lp);
 					if (apack->m_protocol == ENET_KCP)
 					{
 						lp->make_data();
@@ -163,7 +174,10 @@ namespace ngl
 				}Catch;
 				return nullptr;
 			};
-			fun_run lrunfun = [atype](tpptr& apack, tvptr& aptrpram)->bool
+			fun_run lrunfun = [atype](
+				std::shared_ptr<pack>& apack, 
+				std::shared_ptr<void>& aptrpram
+				)->bool
 			{
 				using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 				nguid lrequestguid(apack->m_head.get_request_actor());
@@ -172,7 +186,10 @@ namespace ngl
 				for (int i = 0; i < lp->m_uid.size() && i < lp->m_area.size(); ++i)
 				{
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
-					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
+					handle_pram lpram = handle_pram::create<T, false, false>(
+						lguid, lrequestguid, 
+						ldatapack
+					);
 					if (apack->m_protocol == ENET_KCP)
 						lpram.m_pack = apack;
 					actor_manage::getInstance().push_task_id(lguid, lpram, false);

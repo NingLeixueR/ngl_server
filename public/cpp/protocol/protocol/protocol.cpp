@@ -42,12 +42,11 @@ namespace ngl
 			//const char* lpprotocolname = protocoltools::name(aprotocolnum, aprotocoltype);
 			//log_error()->print("protocol::push Info [{}]", lpprotocolname);
 			////////
-
 			return &itor2->second;
 		}
 	public:
 		// # 解析网络数据包[net pack],交付给上层逻辑 
-		static void push(protocol::tpptr& apack)
+		static void push(std::shared_ptr<pack>& apack)
 		{
 			EPROTOCOL_TYPE lprotocoltype = apack->m_head.get_protocoltype();
 			i32_protocolnum lprotocolnum = apack->m_head.get_protocolnumber();
@@ -64,9 +63,9 @@ namespace ngl
 			ENUM_ACTOR lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
 			if (lactortype == nguid::none<ENUM_ACTOR>())
 			{
-				for (auto itorrun = lpfun->m_runfun.begin(); itorrun != lpfun->m_runfun.end(); ++itorrun)
+				for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
 				{
-					itorrun->second(apack, lptrpram);
+					item.second(apack, lptrpram);
 				}
 			}
 			else
@@ -103,7 +102,7 @@ namespace ngl
 	std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, impl_protocol::pfun>> impl_protocol::m_protocolfun;
 	std::shared_mutex impl_protocol::m_mutex;
 
-	void protocol::push(protocol::tpptr& apack)
+	void protocol::push(std::shared_ptr<pack>& apack)
 	{
 		impl_protocol::push(apack);
 	}
@@ -116,7 +115,14 @@ namespace ngl
 		, const protocol::fun_run& arunfun
 		, const char* aname)
 	{
-		impl_protocol::register_protocol(atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname);
+		impl_protocol::register_protocol(
+			atype, 
+			aprotocolnumber, 
+			aenumactor, 
+			apackfun, 
+			arunfun, 
+			aname
+		);
 	}
 
 	i32_serverid protocol::nodeid()
