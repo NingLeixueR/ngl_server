@@ -19,12 +19,16 @@ namespace ngl
 
 		~rolekv() {}
 
+		//## 可以缓存，防止多次解析vales
+
 		virtual void initdata()
 		{
 			auto lstream = log_error();
 			(*lstream) << "#[rolekv]	#[load finish]" << std::endl;
 			(*lstream) << "#[id]		#[" << actorbase()->id_guid() << "]" << std::endl;
 			(*lstream).print("");
+
+
 		}
 
 		const pbdb::db_rolekeyvalue& get_constkv()
@@ -36,8 +40,6 @@ namespace ngl
 		{
 			return db()->get();
 		}
-
-		//## 可以缓存，防止多次解析vales
 
 
 	};
