@@ -21,7 +21,7 @@ namespace ngl
 		estage m_stage;			// 玩法阶段
 		int32_t m_begtm;		// 阶段开始时间
 		tab_plays* m_tab;
-		std::map<int64_t, std::shared_ptr<unit_role>> m_role;
+		std::map<int64_t, std::shared_ptr<unit_role>> get_constrole;
 
 	public:
 		actor_plays(ENUM_ACTOR atype, int32_t adataid, void* data);
@@ -125,7 +125,7 @@ namespace ngl
 		bool handle(message<mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>>& adata)
 		{
 			auto lparm = adata.get_data();
-			if (m_role.find(lparm->identifier()) != m_role.end())
+			if (get_constrole.find(lparm->identifier()) != get_constrole.end())
 				return true;
 			if (m_tab->m_birthpoint.empty())
 			{
@@ -133,7 +133,7 @@ namespace ngl
 				return true;
 			}
 			int lindex = std::rand() % m_tab->m_birthpoint.size();
-			auto& item = m_role[lparm->identifier()];
+			auto& item = get_constrole[lparm->identifier()];
 			item.reset(new unit_role(lparm->identifier()));
 			m_map.enter(item.get(), m_tab->m_birthpoint[lindex].m_x, m_tab->m_birthpoint[lindex].m_y);
 			enter(lparm->identifier());

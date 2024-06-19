@@ -22,6 +22,7 @@ extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SC
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_mail_MMailEntry_DoNotUse_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_ranklist_MItemEntry_DoNotUse_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_role_recharge_db_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_rolekeyvalue_MDataEntry_DoNotUse_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_task_MCompleteddatasEntry_DoNotUse_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_task_MRundatasEntry_DoNotUse_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_task_data_db_2eproto;
@@ -63,6 +64,14 @@ class db_keyvalueDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_keyvalue> _instance;
 } _db_keyvalue_default_instance_;
+class db_rolekeyvalue_MDataEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_rolekeyvalue_MDataEntry_DoNotUse> _instance;
+} _db_rolekeyvalue_MDataEntry_DoNotUse_default_instance_;
+class db_rolekeyvalueDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_rolekeyvalue> _instance;
+} _db_rolekeyvalue_default_instance_;
 class mailitemDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<mailitem> _instance;
@@ -398,6 +407,34 @@ static void InitDefaultsscc_info_db_role_recharge_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_role_recharge_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_role_recharge_db_2eproto}, {}};
 
+static void InitDefaultsscc_info_db_rolekeyvalue_db_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbdb::_db_rolekeyvalue_default_instance_;
+    new (ptr) ::pbdb::db_rolekeyvalue();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbdb::db_rolekeyvalue::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_rolekeyvalue_db_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_db_rolekeyvalue_db_2eproto}, {
+      &scc_info_db_rolekeyvalue_MDataEntry_DoNotUse_db_2eproto.base,}};
+
+static void InitDefaultsscc_info_db_rolekeyvalue_MDataEntry_DoNotUse_db_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbdb::_db_rolekeyvalue_MDataEntry_DoNotUse_default_instance_;
+    new (ptr) ::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse();
+  }
+  ::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_rolekeyvalue_MDataEntry_DoNotUse_db_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_rolekeyvalue_MDataEntry_DoNotUse_db_2eproto}, {}};
+
 static void InitDefaultsscc_info_db_task_db_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -528,7 +565,7 @@ static void InitDefaultsscc_info_rankitem_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_rankitem_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_rankitem_db_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[27];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[29];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_db_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_db_2eproto = nullptr;
 
@@ -631,6 +668,24 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_db_2eproto::offsets[] PROTOBUF
   2,
   0,
   1,
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse, value_),
+  0,
+  1,
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue, m_id_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_rolekeyvalue, m_data_),
+  0,
+  ~0u,
   PROTOBUF_FIELD_OFFSET(::pbdb::mailitem, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbdb::mailitem, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -860,25 +915,27 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 67, 74, sizeof(::pbdb::db_bag_MItemsEntry_DoNotUse)},
   { 76, 84, sizeof(::pbdb::db_bag)},
   { 87, 95, sizeof(::pbdb::db_keyvalue)},
-  { 98, 105, sizeof(::pbdb::mailitem)},
-  { 107, 120, sizeof(::pbdb::mail)},
-  { 128, 135, sizeof(::pbdb::db_mail_MMailEntry_DoNotUse)},
-  { 137, 144, sizeof(::pbdb::db_mail)},
-  { 146, 155, sizeof(::pbdb::db_guild)},
-  { 159, 168, sizeof(::pbdb::db_notice)},
-  { 172, 181, sizeof(::pbdb::rankitem)},
-  { 185, 192, sizeof(::pbdb::db_ranklist_MItemEntry_DoNotUse)},
-  { 194, 201, sizeof(::pbdb::db_ranklist)},
-  { 203, 210, sizeof(::pbdb::db_activity_drawcompliance_MRewardEntry_DoNotUse)},
-  { 212, 219, sizeof(::pbdb::db_activity_drawcompliance)},
-  { 221, 228, sizeof(::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse)},
-  { 230, 242, sizeof(::pbdb::db_activity)},
-  { 249, 257, sizeof(::pbdb::db_task_data_schedule)},
-  { 260, 270, sizeof(::pbdb::db_task_data)},
-  { 275, 282, sizeof(::pbdb::db_task_MRundatasEntry_DoNotUse)},
-  { 284, 291, sizeof(::pbdb::db_task_MCompleteddatasEntry_DoNotUse)},
-  { 293, 301, sizeof(::pbdb::db_task)},
-  { 304, 313, sizeof(::pbdb::db_calendar)},
+  { 98, 105, sizeof(::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse)},
+  { 107, 114, sizeof(::pbdb::db_rolekeyvalue)},
+  { 116, 123, sizeof(::pbdb::mailitem)},
+  { 125, 138, sizeof(::pbdb::mail)},
+  { 146, 153, sizeof(::pbdb::db_mail_MMailEntry_DoNotUse)},
+  { 155, 162, sizeof(::pbdb::db_mail)},
+  { 164, 173, sizeof(::pbdb::db_guild)},
+  { 177, 186, sizeof(::pbdb::db_notice)},
+  { 190, 199, sizeof(::pbdb::rankitem)},
+  { 203, 210, sizeof(::pbdb::db_ranklist_MItemEntry_DoNotUse)},
+  { 212, 219, sizeof(::pbdb::db_ranklist)},
+  { 221, 228, sizeof(::pbdb::db_activity_drawcompliance_MRewardEntry_DoNotUse)},
+  { 230, 237, sizeof(::pbdb::db_activity_drawcompliance)},
+  { 239, 246, sizeof(::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse)},
+  { 248, 260, sizeof(::pbdb::db_activity)},
+  { 267, 275, sizeof(::pbdb::db_task_data_schedule)},
+  { 278, 288, sizeof(::pbdb::db_task_data)},
+  { 293, 300, sizeof(::pbdb::db_task_MRundatasEntry_DoNotUse)},
+  { 302, 309, sizeof(::pbdb::db_task_MCompleteddatasEntry_DoNotUse)},
+  { 311, 319, sizeof(::pbdb::db_task)},
+  { 322, 331, sizeof(::pbdb::db_calendar)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -890,6 +947,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_bag_MItemsEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_bag_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_keyvalue_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_rolekeyvalue_MDataEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_rolekeyvalue_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_mailitem_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_mail_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_mail_MMailEntry_DoNotUse_default_instance_),
@@ -939,78 +998,82 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "\007\n\005_m_idB\n\n\010_m_maxid\"i\n\013db_keyvalue\022\021\n\004m"
   "_id\030\001 \001(\003H\000\210\001\001\022\022\n\005m_key\030\002 \001(\tH\001\210\001\001\022\024\n\007m_"
   "value\030\003 \001(\tH\002\210\001\001B\007\n\005_m_idB\010\n\006_m_keyB\n\n\010_"
-  "m_value\"R\n\010mailitem\022\026\n\tm_itemtid\030\001 \001(\005H\000"
-  "\210\001\001\022\024\n\007m_count\030\002 \001(\005H\001\210\001\001B\014\n\n_m_itemtidB"
-  "\n\n\010_m_count\"\223\002\n\004mail\022\021\n\004m_id\030\001 \001(\005H\000\210\001\001\022"
-  "\030\n\013m_createutc\030\002 \001(\005H\001\210\001\001\022\022\n\005m_tid\030\003 \001(\005"
-  "H\002\210\001\001\022\024\n\007m_prams\030\004 \001(\tH\003\210\001\001\022\026\n\tm_content"
-  "\030\005 \001(\tH\004\210\001\001\022\037\n\007m_items\030\006 \003(\0132\016.pbdb.mail"
-  "item\022\023\n\006m_read\030\007 \001(\010H\005\210\001\001\022\023\n\006m_draw\030\010 \001("
-  "\010H\006\210\001\001B\007\n\005_m_idB\016\n\014_m_createutcB\010\n\006_m_ti"
-  "dB\n\n\010_m_pramsB\014\n\n_m_contentB\t\n\007_m_readB\t"
-  "\n\007_m_draw\"\211\001\n\007db_mail\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001"
-  "\022(\n\006m_mail\030\002 \003(\0132\030.pbdb.db_mail.MMailEnt"
-  "ry\0328\n\nMMailEntry\022\013\n\003key\030\001 \001(\005\022\031\n\005value\030\002"
-  " \001(\0132\n.pbdb.mail:\0028\001B\007\n\005_m_id\"\177\n\010db_guil"
-  "d\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\024\n\007m_guild\030\002 \001(\tH\001\210"
-  "\001\001\022\025\n\010m_leader\030\003 \001(\003H\002\210\001\001\022\021\n\tm_members\030\004"
-  " \003(\003B\007\n\005_m_idB\n\n\010_m_guildB\013\n\t_m_leader\"\241"
-  "\001\n\tdb_notice\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\025\n\010m_not"
-  "ice\030\002 \001(\tH\001\210\001\001\022\030\n\013m_starttime\030\003 \001(\005H\002\210\001\001"
-  "\022\031\n\014m_finishtime\030\004 \001(\005H\003\210\001\001B\007\n\005_m_idB\013\n\t"
-  "_m_noticeB\016\n\014_m_starttimeB\017\n\r_m_finishti"
-  "me\"\216\001\n\010rankitem\022\025\n\010m_roleid\030\001 \001(\003H\000\210\001\001\022\023"
-  "\n\006m_name\030\002 \001(\tH\001\210\001\001\022\021\n\004m_lv\030\003 \001(\005H\002\210\001\001\022\025"
-  "\n\010m_lvtime\030\004 \001(\005H\003\210\001\001B\013\n\t_m_roleidB\t\n\007_m"
-  "_nameB\007\n\005_m_lvB\013\n\t_m_lvtime\"\225\001\n\013db_rankl"
-  "ist\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022,\n\006m_item\030\002 \003(\0132\034"
-  ".pbdb.db_ranklist.MItemEntry\032<\n\nMItemEnt"
-  "ry\022\013\n\003key\030\001 \001(\003\022\035\n\005value\030\002 \001(\0132\016.pbdb.ra"
-  "nkitem:\0028\001B\007\n\005_m_id\"\231\004\n\013db_activity\022\021\n\004m"
-  "_id\030\001 \001(\003H\000\210\001\001\022\022\n\005m_beg\030\002 \001(\005H\001\210\001\001\022\022\n\005m_"
-  "end\030\003 \001(\005H\002\210\001\001\022\024\n\007m_start\030\004 \001(\010H\003\210\001\001\022\025\n\010"
-  "m_finish\030\005 \001(\010H\004\210\001\001\022\031\n\014m_calendarid\030\006 \001("
-  "\005H\005\210\001\001\022@\n\020m_drawcompliance\030\007 \003(\0132&.pbdb."
-  "db_activity.MDrawcomplianceEntry\032\243\001\n\016dra"
-  "wcompliance\022\024\n\007m_count\030\001 \001(\005H\000\210\001\001\022\?\n\010m_r"
-  "eward\030\002 \003(\0132-.pbdb.db_activity.drawcompl"
-  "iance.MRewardEntry\032.\n\014MRewardEntry\022\013\n\003ke"
-  "y\030\001 \001(\005\022\r\n\005value\030\002 \001(\010:\0028\001B\n\n\010_m_count\032X"
-  "\n\024MDrawcomplianceEntry\022\013\n\003key\030\001 \001(\003\022/\n\005v"
-  "alue\030\002 \001(\0132 .pbdb.db_activity.drawcompli"
-  "ance:\0028\001B\007\n\005_m_idB\010\n\006_m_begB\010\n\006_m_endB\n\n"
-  "\010_m_startB\013\n\t_m_finishB\017\n\r_m_calendarid\""
-  "\367\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_rund"
-  "atas\030\002 \003(\0132\034.pbdb.db_task.MRundatasEntry"
-  "\022<\n\020m_completeddatas\030\003 \003(\0132\".pbdb.db_tas"
-  "k.MCompleteddatasEntry\032u\n\rdata_schedule\022"
-  "\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H\001\210"
-  "\001\001\022\025\n\010m_sumint\030\003 \001(\005H\002\210\001\001B\t\n\007_m_typeB\n\n\010"
-  "_m_valueB\013\n\t_m_sumint\032\326\001\n\004data\022\025\n\010m_task"
-  "id\030\001 \001(\005H\000\210\001\001\022\031\n\014m_receiveutc\030\002 \001(\005H\001\210\001\001"
-  "\022\027\n\nm_finshutc\030\003 \001(\005H\002\210\001\001\0220\n\013m_schedules"
-  "\030\004 \003(\0132\033.pbdb.db_task.data_schedule\022\026\n\tm"
-  "_receive\030\005 \001(\010H\003\210\001\001B\013\n\t_m_taskidB\017\n\r_m_r"
-  "eceiveutcB\r\n\013_m_finshutcB\014\n\n_m_receive\032D"
-  "\n\016MRundatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002"
-  " \001(\0132\022.pbdb.db_task.data:\0028\001\032J\n\024MComplet"
-  "eddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002 \001(\013"
-  "2\022.pbdb.db_task.data:\0028\001B\007\n\005_m_id\"\217\001\n\013db"
-  "_calendar\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\023\n\006m_time\030\002"
-  " \001(\003H\001\210\001\001\022\024\n\007m_start\030\003 \001(\010H\002\210\001\001\022\025\n\010m_fin"
-  "ish\030\004 \001(\010H\003\210\001\001B\007\n\005_m_idB\t\n\007_m_timeB\n\n\010_m"
-  "_startB\013\n\t_m_finish*\212\002\n\007ENUM_DB\022\023\n\017ENUM_"
-  "DB_ACCOUNT\020\000\022\020\n\014ENUM_DB_ROLE\020\001\022\021\n\rENUM_D"
-  "B_BRIEF\020\002\022\017\n\013ENUM_DB_BAG\020\003\022\024\n\020ENUM_DB_KE"
-  "YVALUE\020\004\022\020\n\014ENUM_DB_MAIL\020\005\022\021\n\rENUM_DB_GU"
-  "ILD\020\006\022\022\n\016ENUM_DB_NOTICE\020\007\022\024\n\020ENUM_DB_RAN"
-  "KLIST\020\010\022\024\n\020ENUM_DB_ACTIVITY\020\t\022\020\n\014ENUM_DB"
-  "_TASK\020\n\022\024\n\020ENUM_DB_CALENDAR\020\013\022\021\n\rENUM_DB"
-  "_COUNT\020\014b\006proto3"
+  "m_value\"\215\001\n\017db_rolekeyvalue\022\021\n\004m_id\030\001 \001("
+  "\003H\000\210\001\001\0220\n\006m_data\030\002 \003(\0132 .pbdb.db_rolekey"
+  "value.MDataEntry\032,\n\nMDataEntry\022\013\n\003key\030\001 "
+  "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007\n\005_m_id\"R\n\010maili"
+  "tem\022\026\n\tm_itemtid\030\001 \001(\005H\000\210\001\001\022\024\n\007m_count\030\002"
+  " \001(\005H\001\210\001\001B\014\n\n_m_itemtidB\n\n\010_m_count\"\223\002\n\004"
+  "mail\022\021\n\004m_id\030\001 \001(\005H\000\210\001\001\022\030\n\013m_createutc\030\002"
+  " \001(\005H\001\210\001\001\022\022\n\005m_tid\030\003 \001(\005H\002\210\001\001\022\024\n\007m_prams"
+  "\030\004 \001(\tH\003\210\001\001\022\026\n\tm_content\030\005 \001(\tH\004\210\001\001\022\037\n\007m"
+  "_items\030\006 \003(\0132\016.pbdb.mailitem\022\023\n\006m_read\030\007"
+  " \001(\010H\005\210\001\001\022\023\n\006m_draw\030\010 \001(\010H\006\210\001\001B\007\n\005_m_idB"
+  "\016\n\014_m_createutcB\010\n\006_m_tidB\n\n\010_m_pramsB\014\n"
+  "\n_m_contentB\t\n\007_m_readB\t\n\007_m_draw\"\211\001\n\007db"
+  "_mail\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022(\n\006m_mail\030\002 \003(\013"
+  "2\030.pbdb.db_mail.MMailEntry\0328\n\nMMailEntry"
+  "\022\013\n\003key\030\001 \001(\005\022\031\n\005value\030\002 \001(\0132\n.pbdb.mail"
+  ":\0028\001B\007\n\005_m_id\"\177\n\010db_guild\022\021\n\004m_id\030\001 \001(\003H"
+  "\000\210\001\001\022\024\n\007m_guild\030\002 \001(\tH\001\210\001\001\022\025\n\010m_leader\030\003"
+  " \001(\003H\002\210\001\001\022\021\n\tm_members\030\004 \003(\003B\007\n\005_m_idB\n\n"
+  "\010_m_guildB\013\n\t_m_leader\"\241\001\n\tdb_notice\022\021\n\004"
+  "m_id\030\001 \001(\003H\000\210\001\001\022\025\n\010m_notice\030\002 \001(\tH\001\210\001\001\022\030"
+  "\n\013m_starttime\030\003 \001(\005H\002\210\001\001\022\031\n\014m_finishtime"
+  "\030\004 \001(\005H\003\210\001\001B\007\n\005_m_idB\013\n\t_m_noticeB\016\n\014_m_"
+  "starttimeB\017\n\r_m_finishtime\"\216\001\n\010rankitem\022"
+  "\025\n\010m_roleid\030\001 \001(\003H\000\210\001\001\022\023\n\006m_name\030\002 \001(\tH\001"
+  "\210\001\001\022\021\n\004m_lv\030\003 \001(\005H\002\210\001\001\022\025\n\010m_lvtime\030\004 \001(\005"
+  "H\003\210\001\001B\013\n\t_m_roleidB\t\n\007_m_nameB\007\n\005_m_lvB\013"
+  "\n\t_m_lvtime\"\225\001\n\013db_ranklist\022\021\n\004m_id\030\001 \001("
+  "\003H\000\210\001\001\022,\n\006m_item\030\002 \003(\0132\034.pbdb.db_ranklis"
+  "t.MItemEntry\032<\n\nMItemEntry\022\013\n\003key\030\001 \001(\003\022"
+  "\035\n\005value\030\002 \001(\0132\016.pbdb.rankitem:\0028\001B\007\n\005_m"
+  "_id\"\231\004\n\013db_activity\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\022"
+  "\n\005m_beg\030\002 \001(\005H\001\210\001\001\022\022\n\005m_end\030\003 \001(\005H\002\210\001\001\022\024"
+  "\n\007m_start\030\004 \001(\010H\003\210\001\001\022\025\n\010m_finish\030\005 \001(\010H\004"
+  "\210\001\001\022\031\n\014m_calendarid\030\006 \001(\005H\005\210\001\001\022@\n\020m_draw"
+  "compliance\030\007 \003(\0132&.pbdb.db_activity.MDra"
+  "wcomplianceEntry\032\243\001\n\016drawcompliance\022\024\n\007m"
+  "_count\030\001 \001(\005H\000\210\001\001\022\?\n\010m_reward\030\002 \003(\0132-.pb"
+  "db.db_activity.drawcompliance.MRewardEnt"
+  "ry\032.\n\014MRewardEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value"
+  "\030\002 \001(\010:\0028\001B\n\n\010_m_count\032X\n\024MDrawcomplianc"
+  "eEntry\022\013\n\003key\030\001 \001(\003\022/\n\005value\030\002 \001(\0132 .pbd"
+  "b.db_activity.drawcompliance:\0028\001B\007\n\005_m_i"
+  "dB\010\n\006_m_begB\010\n\006_m_endB\n\n\010_m_startB\013\n\t_m_"
+  "finishB\017\n\r_m_calendarid\"\367\004\n\007db_task\022\021\n\004m"
+  "_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_rundatas\030\002 \003(\0132\034.pbd"
+  "b.db_task.MRundatasEntry\022<\n\020m_completedd"
+  "atas\030\003 \003(\0132\".pbdb.db_task.MCompleteddata"
+  "sEntry\032u\n\rdata_schedule\022\023\n\006m_type\030\001 \001(\005H"
+  "\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H\001\210\001\001\022\025\n\010m_sumint\030\003"
+  " \001(\005H\002\210\001\001B\t\n\007_m_typeB\n\n\010_m_valueB\013\n\t_m_s"
+  "umint\032\326\001\n\004data\022\025\n\010m_taskid\030\001 \001(\005H\000\210\001\001\022\031\n"
+  "\014m_receiveutc\030\002 \001(\005H\001\210\001\001\022\027\n\nm_finshutc\030\003"
+  " \001(\005H\002\210\001\001\0220\n\013m_schedules\030\004 \003(\0132\033.pbdb.db"
+  "_task.data_schedule\022\026\n\tm_receive\030\005 \001(\010H\003"
+  "\210\001\001B\013\n\t_m_taskidB\017\n\r_m_receiveutcB\r\n\013_m_"
+  "finshutcB\014\n\n_m_receive\032D\n\016MRundatasEntry"
+  "\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002 \001(\0132\022.pbdb.db_t"
+  "ask.data:\0028\001\032J\n\024MCompleteddatasEntry\022\013\n\003"
+  "key\030\001 \001(\005\022!\n\005value\030\002 \001(\0132\022.pbdb.db_task."
+  "data:\0028\001B\007\n\005_m_id\"\217\001\n\013db_calendar\022\021\n\004m_i"
+  "d\030\001 \001(\003H\000\210\001\001\022\023\n\006m_time\030\002 \001(\003H\001\210\001\001\022\024\n\007m_s"
+  "tart\030\003 \001(\010H\002\210\001\001\022\025\n\010m_finish\030\004 \001(\010H\003\210\001\001B\007"
+  "\n\005_m_idB\t\n\007_m_timeB\n\n\010_m_startB\013\n\t_m_fin"
+  "ish*\244\002\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014"
+  "ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENU"
+  "M_DB_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM"
+  "_DB_MAIL\020\005\022\021\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_DB"
+  "_NOTICE\020\007\022\024\n\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM_"
+  "DB_ACTIVITY\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\024\n\020ENUM_"
+  "DB_CALENDAR\020\013\022\030\n\024ENUM_DB_ROLEKEYVALUE\020\014\022"
+  "\021\n\rENUM_DB_COUNT\020\rb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[27] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[29] = {
   &scc_info_db_account_db_2eproto.base,
   &scc_info_db_activity_db_2eproto.base,
   &scc_info_db_activity_MDrawcomplianceEntry_DoNotUse_db_2eproto.base,
@@ -1029,6 +1092,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
   &scc_info_db_ranklist_MItemEntry_DoNotUse_db_2eproto.base,
   &scc_info_db_role_db_2eproto.base,
   &scc_info_db_role_recharge_db_2eproto.base,
+  &scc_info_db_rolekeyvalue_db_2eproto.base,
+  &scc_info_db_rolekeyvalue_MDataEntry_DoNotUse_db_2eproto.base,
   &scc_info_db_task_db_2eproto.base,
   &scc_info_db_task_MCompleteddatasEntry_DoNotUse_db_2eproto.base,
   &scc_info_db_task_MRundatasEntry_DoNotUse_db_2eproto.base,
@@ -1041,10 +1106,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 3776,
-  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 27, 0,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 3946,
+  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 29, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
-  file_level_metadata_db_2eproto, 27, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
+  file_level_metadata_db_2eproto, 29, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1069,6 +1134,7 @@ bool ENUM_DB_IsValid(int value) {
     case 10:
     case 11:
     case 12:
+    case 13:
       return true;
     default:
       return false;
@@ -3350,6 +3416,303 @@ void db_keyvalue::InternalSwap(db_keyvalue* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata db_keyvalue::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+db_rolekeyvalue_MDataEntry_DoNotUse::db_rolekeyvalue_MDataEntry_DoNotUse() {}
+db_rolekeyvalue_MDataEntry_DoNotUse::db_rolekeyvalue_MDataEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+    : SuperType(arena) {}
+void db_rolekeyvalue_MDataEntry_DoNotUse::MergeFrom(const db_rolekeyvalue_MDataEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::PROTOBUF_NAMESPACE_ID::Metadata db_rolekeyvalue_MDataEntry_DoNotUse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+void db_rolekeyvalue_MDataEntry_DoNotUse::MergeFrom(
+    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
+  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+void db_rolekeyvalue::InitAsDefaultInstance() {
+}
+class db_rolekeyvalue::_Internal {
+ public:
+  using HasBits = decltype(std::declval<db_rolekeyvalue>()._has_bits_);
+  static void set_has_m_id(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+db_rolekeyvalue::db_rolekeyvalue(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  m_data_(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbdb.db_rolekeyvalue)
+}
+db_rolekeyvalue::db_rolekeyvalue(const db_rolekeyvalue& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  m_data_.MergeFrom(from.m_data_);
+  m_id_ = from.m_id_;
+  // @@protoc_insertion_point(copy_constructor:pbdb.db_rolekeyvalue)
+}
+
+void db_rolekeyvalue::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_db_rolekeyvalue_db_2eproto.base);
+  m_id_ = PROTOBUF_LONGLONG(0);
+}
+
+db_rolekeyvalue::~db_rolekeyvalue() {
+  // @@protoc_insertion_point(destructor:pbdb.db_rolekeyvalue)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void db_rolekeyvalue::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void db_rolekeyvalue::ArenaDtor(void* object) {
+  db_rolekeyvalue* _this = reinterpret_cast< db_rolekeyvalue* >(object);
+  (void)_this;
+}
+void db_rolekeyvalue::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void db_rolekeyvalue::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const db_rolekeyvalue& db_rolekeyvalue::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_db_rolekeyvalue_db_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void db_rolekeyvalue::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbdb.db_rolekeyvalue)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  m_data_.Clear();
+  m_id_ = PROTOBUF_LONGLONG(0);
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* db_rolekeyvalue::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int64 m_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_m_id(&has_bits);
+          m_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // map<string, string> m_data = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(&m_data_, ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* db_rolekeyvalue::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbdb.db_rolekeyvalue)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 m_id = 1;
+  if (_internal_has_m_id()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_id(), target);
+  }
+
+  // map<string, string> m_data = 2;
+  if (!this->_internal_m_data().empty()) {
+    typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+          "pbdb.db_rolekeyvalue.MDataEntry.key");
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+          p->second.data(), static_cast<int>(p->second.length()),
+          ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+          "pbdb.db_rolekeyvalue.MDataEntry.value");
+      }
+    };
+
+    if (stream->IsSerializationDeterministic() &&
+        this->_internal_m_data().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->_internal_m_data().size()]);
+      typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::size_type size_type;
+      size_type n = 0;
+      for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
+          it = this->_internal_m_data().begin();
+          it != this->_internal_m_data().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      for (size_type i = 0; i < n; i++) {
+        target = db_rolekeyvalue_MDataEntry_DoNotUse::Funcs::InternalSerialize(2, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
+      }
+    } else {
+      for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
+          it = this->_internal_m_data().begin();
+          it != this->_internal_m_data().end(); ++it) {
+        target = db_rolekeyvalue_MDataEntry_DoNotUse::Funcs::InternalSerialize(2, it->first, it->second, target, stream);
+        Utf8Check::Check(&(*it));
+      }
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbdb.db_rolekeyvalue)
+  return target;
+}
+
+size_t db_rolekeyvalue::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbdb.db_rolekeyvalue)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // map<string, string> m_data = 2;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_m_data_size());
+  for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
+      it = this->_internal_m_data().begin();
+      it != this->_internal_m_data().end(); ++it) {
+    total_size += db_rolekeyvalue_MDataEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+  }
+
+  // int64 m_id = 1;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+        this->_internal_m_id());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void db_rolekeyvalue::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbdb.db_rolekeyvalue)
+  GOOGLE_DCHECK_NE(&from, this);
+  const db_rolekeyvalue* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<db_rolekeyvalue>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbdb.db_rolekeyvalue)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbdb.db_rolekeyvalue)
+    MergeFrom(*source);
+  }
+}
+
+void db_rolekeyvalue::MergeFrom(const db_rolekeyvalue& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbdb.db_rolekeyvalue)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  m_data_.MergeFrom(from.m_data_);
+  if (from._internal_has_m_id()) {
+    _internal_set_m_id(from._internal_m_id());
+  }
+}
+
+void db_rolekeyvalue::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbdb.db_rolekeyvalue)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void db_rolekeyvalue::CopyFrom(const db_rolekeyvalue& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbdb.db_rolekeyvalue)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool db_rolekeyvalue::IsInitialized() const {
+  return true;
+}
+
+void db_rolekeyvalue::InternalSwap(db_rolekeyvalue* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  m_data_.Swap(&other->m_data_);
+  swap(m_id_, other->m_id_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata db_rolekeyvalue::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -7645,6 +8008,12 @@ template<> PROTOBUF_NOINLINE ::pbdb::db_bag* Arena::CreateMaybeMessage< ::pbdb::
 }
 template<> PROTOBUF_NOINLINE ::pbdb::db_keyvalue* Arena::CreateMaybeMessage< ::pbdb::db_keyvalue >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbdb::db_keyvalue >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse* Arena::CreateMaybeMessage< ::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbdb::db_rolekeyvalue_MDataEntry_DoNotUse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbdb::db_rolekeyvalue* Arena::CreateMaybeMessage< ::pbdb::db_rolekeyvalue >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbdb::db_rolekeyvalue >(arena);
 }
 template<> PROTOBUF_NOINLINE ::pbdb::mailitem* Arena::CreateMaybeMessage< ::pbdb::mailitem >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbdb::mailitem >(arena);

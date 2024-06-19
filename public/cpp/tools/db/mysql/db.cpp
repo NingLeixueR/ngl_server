@@ -7,7 +7,8 @@ namespace ngl
 {
 	db::db() :
 		m_connectdb(false),
-		m_mysql(nullptr)
+		m_mysql(nullptr),
+		m_malloc(_SQL_BUFF_COUNT_, _SQL_BUFF_SIZE_)
 	{
 	}
 
@@ -138,37 +139,6 @@ namespace ngl
 			log_error()->print("db::select[{}][{}]", mysql_error(m_mysql), (const char*)asql);
 		}
 		return false;
-	}
-
-	bool db::malloc_buff(ptr& aptr, int32_t apos)
-	{
-		if (_SQL_BUFF_COUNT_ <= apos)
-		{
-			return false;
-		}
-		aptr.free();
-		int32_t llen = _SQL_BUFF_SIZE_ * (apos + 1);
-		for (auto itor = m_bufflist.begin(); itor != m_bufflist.end(); ++itor)
-		{
-			if (itor->second >= llen)
-			{
-				aptr.m_buff = itor->first;
-				aptr.m_bufflen = itor->second;
-				m_bufflist.pop_front();
-				return true;
-			}
-		}
-
-		aptr.m_buff = new char[llen];
-		aptr.m_bufflen = llen;
-		return true;
-	}
-
-	void db::free_buff(ptr& aptr)
-	{
-		m_bufflist.push_back(std::make_pair(aptr.m_buff, aptr.m_bufflen));
-		aptr.m_buff = nullptr;
-		aptr.m_bufflen = 0;
 	}
 
 	// # stmt ฯเนุ

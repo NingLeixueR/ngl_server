@@ -8,8 +8,8 @@
 #include <map>  
 
 #include "include3part.h"
+#include "malloc_buff.h"
 #include "xmlinfo.h"
-
 
 #define _SQL_BUFF_SIZE_ (102400)
 #define _SQL_BUFF_COUNT_ (10)
@@ -47,51 +47,10 @@ namespace ngl
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, uint32_t, uint32_t)>;
 		bool select(const char* asql, int asqllen, callback aback);
 
-		class ptr
-		{
-			db* m_db;
-		public:
-			char* m_buff;
-			int32_t m_bufflen;
-
-			ptr(db* adb) :
-				m_buff(nullptr),
-				m_bufflen(0),
-				m_db(adb)
-			{}
-
-			ptr(db* adb, char* abuff, int32_t abufflen) :
-				m_buff(abuff),
-				m_bufflen(abufflen),
-				m_db(adb)
-			{}
-
-			void free()
-			{
-				if (m_db != nullptr && m_buff != nullptr && m_bufflen > 0)
-				{
-					m_db->free_buff(*this);
-					m_buff = nullptr;
-					m_bufflen = 0;
-				}
-			}
-
-			~ptr()
-			{
-				if (m_db != nullptr && m_buff != nullptr && m_bufflen > 0)
-				{
-					m_db->free_buff(*this);
-				}
-			}
-		};
-
-		bool malloc_buff(ptr& aptr, int32_t apos);
-	private:
-		void free_buff(ptr& aptr);
-	public:
 		// # stmt ฯเนุ
 		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);
+
+		malloc_buff m_malloc;
 	private:
-		std::list<std::pair<char*,int32_t>> m_bufflist;
 	};
 }// namespace ngl

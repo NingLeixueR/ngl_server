@@ -39,6 +39,7 @@ namespace ngl
 	{
 		Try
 		{
+			
 			log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
 				, adata.get_data()->m_role().m_base().m_name()
 				,  adata.get_data()->m_role().m_base().m_lv()
@@ -127,7 +128,12 @@ namespace ngl
 		ljson.get(lstr);
 		std::string lstrasscii;
 		ngl::tools::to_asscii(lstr, lstrasscii);
-		log_error()->print("[{}:{}] {}", area(), m_data.m_role().m_base().m_name(), lstrasscii);
+		log_error()->print(
+			"[{}:{}] {}", 
+			area(), 
+			m_data.m_role().m_base().m_name(), 
+			lstrasscii
+		);
 		return true;
 	}
 

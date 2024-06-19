@@ -9,7 +9,7 @@ namespace ngl
 		pro->m_vecinfo.make();
 		pro->m_vecinfo.m_data->resize(1);
 		//pbdb::db_brief& linfo = (*pro->m_vecinfo.m_data)[0];
-		(*pro->m_vecinfo.m_data)[0] = m_base();
+		(*pro->m_vecinfo.m_data)[0] = get_constbrief();
 
 		std::string ljson;
 		if (tools::protojson((*pro->m_vecinfo.m_data)[0], ljson))
@@ -35,12 +35,12 @@ namespace ngl
 		return db()->getconst().m_id();
 	}
 
-	const pbdb::db_role& roleinfo::m_role()
+	const pbdb::db_role& roleinfo::get_constrole()
 	{
 		return db()->getconst();
 	}
 
-	const pbdb::db_brief& roleinfo::m_base()
+	const pbdb::db_brief& roleinfo::get_constbrief()
 	{
 		return db()->getconst().m_base();
 	}

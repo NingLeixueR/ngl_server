@@ -9,6 +9,8 @@ namespace ngl
 {
 	class roleinfo : public tdb_role::db_modular
 	{
+		roleinfo(const roleinfo&) = delete;
+		roleinfo& operator=(const roleinfo&) = delete;
 	public:
 		roleinfo() 
 		{}
@@ -19,9 +21,9 @@ namespace ngl
 
 		const int32_t m_id();
 
-		const pbdb::db_role& m_role();
+		const pbdb::db_role& get_constrole();
 
-		const pbdb::db_brief& m_base();
+		const pbdb::db_brief& get_constbrief();
 
 		void sync_actor_roleinfo();
 

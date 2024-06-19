@@ -7,14 +7,23 @@ namespace ngl
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();
-		log_error()->print("[sync]###[{}]", m_info.get()->getconst().m_base().m_name());
+		log_error()->print(
+			"[sync]###[{}]", 
+			m_info.name()
+		);
 		return true;
 	}
 
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
 		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
-		log_error()->print("type={},actordataid={},area={},NAME={}", nguid::type(lrequest), nguid::actordataid(lrequest), nguid::area(lrequest), m_info.get()->getconst().m_base().m_name());
+		log_error()->print(
+			"type={},actordataid={},area={},NAME={}", 
+			nguid::type(lrequest), 
+			nguid::actordataid(lrequest), 
+			nguid::area(lrequest), 
+			m_info.get_constrole().m_base().m_name()
+		);
 		if (adata.m_pack->m_protocol == ENET_KCP)
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;

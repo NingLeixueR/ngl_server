@@ -26,9 +26,9 @@ namespace ngl
 	}
 
 	dremakes::dremakes(actor_role* arole, const char* aremakes):
-		m_role(arole)
+		get_constrole(arole)
 	{
-		m_role->m_remakes.add_remakes(aremakes);
+		get_constrole->m_remakes.add_remakes(aremakes);
 	}
 
 	dremakes::dremakes(actor_role* arole, const std::string& aremakes) :
@@ -37,7 +37,7 @@ namespace ngl
 
 	dremakes::~dremakes()
 	{
-		m_role->m_remakes.erase_remakes();
+		get_constrole->m_remakes.erase_remakes();
 	}
 
 	const char* dremakes::get_remake(actor_role* arole)

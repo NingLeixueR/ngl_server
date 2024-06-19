@@ -1,5 +1,6 @@
 #pragma once
 
+#include "malloc_buff.h"
 #include "serialize.h"
 #include "db_data.h"
 #include "tools.h"
@@ -36,24 +37,9 @@ namespace ngl
 	{ 
 	public:
 		template <typename T>
-		static int32_t serialize(db* adb, db::ptr& aptr, T& adata)
+		static int serialize(db* adb, malloc_buff::ptr& aptr, T& adata)
 		{
-			int32_t lpos = 0;
-			while(lpos < _SQL_BUFF_COUNT_)
-			{
-				adb->malloc_buff(aptr, lpos);
-				ngl::serialize lserialize(aptr.m_buff, aptr.m_bufflen);
-				if (lserialize.push(adata))
-				{
-					return lserialize.byte();
-				}
-				else
-				{
-					++lpos;
-					continue;
-				}
-			}
-			Throw("db_manage::serialize");
+			return adb->m_malloc.serialize(aptr, adata);
 		}
 
 		template <typename T>
@@ -76,7 +62,7 @@ namespace ngl
 			}
 			*m_savetemp.m_data = adata;
 
-			db::ptr lbinptr(adb);
+			malloc_buff::ptr lbinptr(&adb->m_malloc);
 			int32_t lbuffpos = db_manage::serialize(adb, lbinptr, m_savetemp);
 
 			MYSQL_BIND lbind[1];
