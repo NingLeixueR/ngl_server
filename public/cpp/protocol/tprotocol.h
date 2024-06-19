@@ -17,7 +17,10 @@ namespace ngl
 
 	class tprotocol
 	{
-	private:
+		tprotocol() = delete;
+		tprotocol(const tprotocol&) = delete;
+		tprotocol& operator=(const tprotocol&) = delete;
+
 		struct pinfo
 		{
 			EPROTOCOL_TYPE	m_type;
@@ -56,7 +59,6 @@ namespace ngl
 					}));
 			}
 		};
-
 	public:
 		using customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
 
