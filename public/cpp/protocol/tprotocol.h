@@ -35,9 +35,9 @@ namespace ngl
 			static size_t lcode = HASH_CODE_VALUE(T);
 			return lcode;
 		}
-	public:
+
 		//CUSTOM
-		class customs
+		class tcustoms
 		{
 		public:
 			template <typename T>
@@ -56,7 +56,9 @@ namespace ngl
 					}));
 			}
 		};
-		using type_customs = template_arg<customs, EPROTOCOL_TYPE>;
+
+	public:
+		using customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
 
 		template <typename T>
 		static bool init_protobufs()

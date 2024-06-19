@@ -11,6 +11,9 @@ namespace ngl
 
 	class protocoltools
 	{
+		protocoltools() = delete;
+		protocoltools(const protocoltools&) = delete;
+		protocoltools& operator=(const protocoltools&) = delete;
 	public:
 		static bool names(
 			char* abuff, 

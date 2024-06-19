@@ -51,7 +51,7 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
-		tprotocol::type_customs::template func<
+		tprotocol::customs::template func<
 			np_actordb_load<DBTYPE, TDB>
 			, np_actordb_load_response<DBTYPE, TDB>
 			, np_actordb_save<DBTYPE, TDB>
@@ -140,7 +140,7 @@ namespace ngl
 			);
 
 			// 新增内部协议需要补充
-			tprotocol::type_customs::template func <
+			tprotocol::customs::template func <
 				/*200000001*/np_gm
 				/*200000002*/, np_gm_response
 				/*200000003*/, mforward<np_gm>
