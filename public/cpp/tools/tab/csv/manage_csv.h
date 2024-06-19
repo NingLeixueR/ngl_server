@@ -15,7 +15,11 @@ namespace ngl
 {
 	class csvbase
 	{
+		csvbase(const csvbase&) = delete;
+		csvbase& operator=(const csvbase&) = delete;
 	public:
+		csvbase()
+		{}
 		virtual const std::string&	verify()const	= 0;
 		virtual const char*			csvname()		= 0;
 		virtual void				load()			= 0;
@@ -26,10 +30,16 @@ namespace ngl
 	template <typename T>
 	struct manage_csv : public csvbase
 	{
+		manage_csv(const manage_csv&) = delete;
+		manage_csv& operator=(const manage_csv&) = delete;
+
 		using TAB = T;
 
 		std::map<int, T>	tablecsv;
 		std::string			m_verify;		// ÄÚÈÝµÄmd5Öµ
+
+		manage_csv()
+		{}
 		
 		virtual const std::string& verify()const
 		{

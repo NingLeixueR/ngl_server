@@ -9,6 +9,9 @@ namespace ngl
 {
 	struct ttab_calendar : public manage_csv<tab_calendar>
 	{
+		ttab_calendar(const ttab_calendar&) = delete;
+		ttab_calendar& operator=(const ttab_calendar&) = delete;
+
 		static const int m_count = 10;
 		struct data
 		{

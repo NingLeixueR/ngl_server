@@ -8,6 +8,9 @@ namespace ngl
 {
 	struct ttab_servers : public manage_csv<tab_servers>
 	{
+		ttab_servers(const ttab_servers&) = delete;
+		ttab_servers& operator=(const ttab_servers&) = delete;
+
 		static std::map<int16_t, std::vector<tab_servers*>> m_areaofserver;
 
 		ttab_servers()

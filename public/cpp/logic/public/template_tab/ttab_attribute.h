@@ -12,6 +12,8 @@ namespace ngl
 
 	struct ttab_attribute : public manage_csv<tab_attribute>
 	{
+		ttab_attribute(const ttab_attribute&) = delete;
+		ttab_attribute& operator=(const ttab_attribute&) = delete;
 	private:
 		static std::vector<std::pair<int32_t, int32_t>> m_uplowlimit;
 	public:

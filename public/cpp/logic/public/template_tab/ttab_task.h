@@ -14,6 +14,9 @@ namespace ngl
 
 	struct ttab_task : public manage_csv<tab_task>
 	{
+		ttab_task(const ttab_task&) = delete;
+		ttab_task& operator=(const ttab_task&) = delete;
+
 		// first	: 根据可接受条件进行分类 
 		// second	: 根据可完成条件进行分类 
 		using receive_complete = std::pair<std::set<i32_taskid>, std::set<i32_taskid>>;

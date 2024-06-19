@@ -9,6 +9,9 @@ namespace ngl
 
 	struct ttab_specialid : public manage_csv<tab_specialid>
 	{
+		ttab_specialid(const ttab_specialid&) = delete;
+		ttab_specialid& operator=(const ttab_specialid&) = delete;
+
 		static i32_rolelv m_rolemaxlv; // 玩家最大等级
 		static i32_rolevip m_rolemaxvip; // 玩家最大vip等级
 
