@@ -24,11 +24,12 @@ namespace ngl
 		virtual void initdata()
 		{
 			auto lstream = log_error();
-			(*lstream) << "#[rolekv]	#[load finish]" << std::endl;
-			(*lstream) << "#[id]		#[" << actorbase()->id_guid() << "]" << std::endl;
+			(*lstream) 
+				<< std::format(
+					"[db_rolekeyvalue load finish] id{}", 
+					actorbase()->id_guid())
+				<< std::endl;
 			(*lstream).print("");
-
-
 		}
 
 		const pbdb::db_rolekeyvalue& get_constkv()
