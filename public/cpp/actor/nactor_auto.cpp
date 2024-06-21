@@ -171,6 +171,9 @@ namespace ngl
 				/*200000028*/, np_actor_kcp
 				/*200000029*/, np_calendar
 				/*200000030*/, np_actor_close
+				/*200000031*/, np_channel_data<pbdb::db_brief>
+				/*200000032*/, np_channel_register
+				/*200000033*/, np_channel_register_reply
 			> (EPROTOCOL_TYPE_CUSTOM);
 		}
 		

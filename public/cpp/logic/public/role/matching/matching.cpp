@@ -39,7 +39,7 @@ namespace ngl
 
 	bool room::initmember(i64_actorid aroleid, pbnet::MATCHING_MEMBER& amember)
 	{
-		pbdb::db_brief* lpbrief = actor_matching::type_roleitems::get_roleinfo(aroleid);
+		const pbdb::db_brief* lpbrief = actor_matching::nclient::get(aroleid);
 		if (lpbrief == nullptr)
 			return false;
 		amember.set_m_id(aroleid);

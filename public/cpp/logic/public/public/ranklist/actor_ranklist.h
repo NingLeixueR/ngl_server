@@ -3,7 +3,8 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "nroleitems.h"
+#include "nsp_server.h"
+#include "nsp_client.h"
 #include "db_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
@@ -24,7 +25,11 @@ namespace ngl
 
 		ranklist m_ranklist;
 
-		using type_roleitems = nroleitems<actor_ranklist, pbdb::db_brief>;
+		using nclient = nsp_client<
+			echannel_brief,
+			actor_ranklist,
+			pbdb::db_brief
+		>;
 
 		actor_ranklist();
 	public:

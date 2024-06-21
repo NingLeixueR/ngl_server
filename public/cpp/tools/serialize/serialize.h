@@ -152,7 +152,11 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 			{
-				log_error()->print("serialize::push<{},{}>(protobuf_data:std::map)", dtype_name(KEY), dtype_name(VALUE));
+				log_error()->print(
+					"serialize::push<{},{}>(protobuf_data:std::map)", 
+					dtype_name(KEY), 
+					dtype_name(VALUE)
+				);
 				return false;
 			}
 			if (adata.m_isbinary)

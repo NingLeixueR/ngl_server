@@ -7,7 +7,8 @@
 #include "db_pool.h"
 #include "db.h"
 #include "ndb_modular.h"
-#include "nroleitems.h"
+#include "nsp_server.h"
+#include "nsp_client.h"
 #include "manage_csv.h"
 #include "activitydb.h"
 #include "ndbclient.h"
@@ -26,11 +27,11 @@ namespace ngl
 
 		actor_manage_activity();
 
-		struct roleitem
-		{
-			pbdb::db_brief m_info;
-		};
-		using type_roleitems = nroleitems<actor_manage_activity, roleitem>;
+		using nclient = nsp_client<
+			echannel_brief,
+			actor_manage_activity,
+			pbdb::db_brief
+		>;
 
 		activitydb m_db;
 		std::map<int64_t, std::shared_ptr<activity>> m_allactivity;

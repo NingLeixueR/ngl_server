@@ -3,7 +3,7 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "nroleitems.h"
+#include "nsp_server.h"
 #include "manage_csv.h"
 #include "nprotocol.h"
 #include "db_manage.h"
@@ -43,6 +43,15 @@ namespace ngl
 		virtual ~actor_brief() {}
 
 		virtual void loaddb_finish(bool adbishave) {}
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(
+				ACTOR_BRIEF, 
+				ttab_servers::tab()->m_area, 
+				nguid::none_actordataid()
+			);
+		}
 
 		bool handle(message<np_actor_roleinfo>& adata);
 	};

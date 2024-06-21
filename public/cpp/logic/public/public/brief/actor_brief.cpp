@@ -1,5 +1,6 @@
 #include "actor_brief.h"
 #include "net.pb.h"
+#include "nsp_server.h"
 
 namespace ngl
 {
@@ -15,6 +16,12 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
+		nsp_server<
+			echannel_brief,
+			pbdb::ENUM_DB_BRIEF,
+			actor_brief,
+			pbdb::db_brief
+		>::init(&m_briefdb);
 	}
 
 	void actor_brief::nregister()
@@ -23,27 +30,27 @@ namespace ngl
 		register_handle_custom<actor_brief>::func<
 			np_actor_roleinfo
 		>(false);
+		
 	}
 
 	bool actor_brief::handle(message<np_actor_roleinfo>& adata)
 	{
-		m_briefdb.update(*adata.get_data()->m_vecinfo.m_data.get());
+		std::vector<pbdb::db_brief>& linfovec = *adata.get_data()->m_vecinfo.m_data.get();
+		m_briefdb.update(linfovec);
 
-		std::shared_ptr<np_actor_roleinfo>& lparm = adata.get_shared_data();
-		if (lparm == nullptr)
-			return true;
-		actor::static_send_actor(nguid::make_self(ACTOR_NOTICE), nguid::make(), lparm);
-		actor::static_send_actor(nguid::make_self(ACTOR_CHAT), nguid::make(), lparm);
-
-		actor::static_send_actor(
-			nguid::make(
-				ACTOR_CHAT,
-				ttab_servers::tab()->m_crossarea,
-				nguid::none_actordataid()
-			),
-			nguid::make(),
-			lparm
-		);
+		std::vector<i64_actorid> lactoridvec;
+		std::for_each(
+			linfovec.begin(), linfovec.end(), 
+			[&lactoridvec](pbdb::db_brief& abrief)
+			{
+				lactoridvec.push_back(abrief.m_id());
+			});
+		nsp_server<
+			echannel_brief,
+			pbdb::ENUM_DB_BRIEF,
+			actor_brief,
+			pbdb::db_brief
+		>::publish(lactoridvec);
 		return true;
 	}
 }//namespace ngl

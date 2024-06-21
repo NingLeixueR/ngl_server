@@ -3,7 +3,8 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "nroleitems.h"
+#include "nsp_server.h"
+#include "nsp_client.h"
 #include "manage_csv.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
@@ -24,15 +25,15 @@ namespace ngl
 
 		actor_chat();
 
-		struct roleitem
-		{
-			pbdb::db_brief m_info;
-			int32_t m_lastspeakutc = 0;
-		};
-		using type_roleitems = nroleitems<actor_chat, roleitem>;
+		using nclient = nsp_client<
+			echannel_brief,
+			actor_chat,
+			pbdb::db_brief
+		>;
 
-		std::map<int, std::list<pbnet::chatitem>> m_chatitem;
-		std::map<int, std::list<pbnet::chatitem>> m_update_chatitem;
+		std::map<int64_t, int>						m_lastspeakutc;
+		std::map<int, std::list<pbnet::chatitem>>	m_chatitem;
+		std::map<int, std::list<pbnet::chatitem>>	m_update_chatitem;
 	public:
 		friend class actor_instance<actor_chat>;
 		static actor_chat& getInstance()

@@ -66,6 +66,7 @@ namespace ngl
 		loadcsv<tab_random, ttab_random>();
 		loadcsv<tab_calendar, ttab_calendar>();
 		loadcsv<tab_attribute, ttab_attribute>();
+		loadcsv<tab_servers, ttab_servers>();
 
 		loadcsv<tab_consume, manage_csv<tab_consume>>();
 		loadcsv<tab_mail, manage_csv<tab_mail>>();

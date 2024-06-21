@@ -601,6 +601,14 @@ namespace ngl
 		def_portocol(np_actor_roleinfo, m_vecinfo)
 	};
 
+	// ---- module_sync
+	template <typename DB_TAB>
+	struct np_module_sync
+	{
+		protobuf_data<std::vector<DB_TAB>> m_data;
+		def_portocol(np_module_sync, m_data)
+	};
+
 	struct gateway_socket
 	{
 		std::string			m_session;
@@ -808,6 +816,31 @@ namespace ngl
 		def_portocol(np_actor_logitem, m_data)
 	};
 
+	enum echannel
+	{
+		echannel_brief,		// 玩家离线数据
+	};
+
+	struct np_channel_register
+	{
+		echannel m_enum;
+		i64_actorid m_actorid;
+		def_portocol(np_channel_register, m_enum, m_actorid)
+	};
+
+	struct np_channel_register_reply
+	{
+		echannel m_enum;
+		i64_actorid m_actorid;
+		def_portocol(np_channel_register_reply, m_enum, m_actorid)
+	};
+
+	template <typename TDB>
+	struct np_channel_data
+	{
+		protobuf_data<std::map<int64_t, TDB>> m_data;
+		def_portocol(np_channel_data<TDB>, m_data)
+	};
 
 }//namespace ngl
 

@@ -1,4 +1,5 @@
 #include "actor_matching.h"
+#include "actor_brief.h"
 #include "localtime.h"
 #include "matching.h"
 #include "net.pb.h"
@@ -22,12 +23,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		type_roleitems::init(
-			[](std::map<i64_actorid, pbdb::db_brief>& amap, pbdb::db_brief& ainfo)
-			{
-				amap[ainfo.m_id()] = ainfo;
-			}
-		);
+		nclient::init(actor_brief::actorid(), this);
 	}
 
 	void actor_matching::nregister()

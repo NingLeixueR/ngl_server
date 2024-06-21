@@ -1,5 +1,6 @@
 ﻿#include "manage_curl.h"
-#include "nroleitems.h"
+#include "nsp_server.h"
+#include "nsp_client.h"
 #include "actor_role.h"
 #include "json_write.h"
 #include "json_read.h"

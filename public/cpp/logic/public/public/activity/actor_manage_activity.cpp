@@ -1,5 +1,6 @@
 #include "actor_manage_activity.h"
 #include "ttab_calendar.h"
+#include "actor_brief.h"
 #include "activity.h"
 #include "net.pb.h"
 
@@ -18,13 +19,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		type_roleitems::init(
-			[](std::map<i64_actorid, roleitem>& amap, pbdb::db_brief& ainfo)
-			{
-				roleitem& rinfo = amap[ainfo.m_id()];
-				rinfo.m_info = ainfo;
-			}
-		);
+		nclient::init(actor_brief::actorid(), this);
 	}
 
 	void actor_manage_activity::nregister()

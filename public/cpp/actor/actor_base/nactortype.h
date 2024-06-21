@@ -50,6 +50,7 @@ namespace ngl
 		ACTOR_MANAGE_PLAYS,										// 创建玩法
 		ACTOR_MATCHING,											// 匹配
 		ACTOR_CALENDAR,											// 脚本日历
+		ACTOR_CHANNEL,											// 订阅/发布 
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,

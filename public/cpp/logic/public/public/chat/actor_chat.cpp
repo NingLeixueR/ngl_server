@@ -1,3 +1,4 @@
+#include "actor_brief.h"
 #include "actor_chat.h"
 #include "net.pb.h"
 
@@ -15,13 +16,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		type_roleitems::init(
-			[](std::map<i64_actorid, roleitem>& amap, pbdb::db_brief& ainfo)
-			{
-				roleitem& rinfo = amap[ainfo.m_id()];
-				rinfo.m_info = ainfo;
-			}
-		);
+		nclient::init(actor_brief::actorid(), this);
 	}
 
 	void actor_chat::nregister()
@@ -86,28 +81,27 @@ namespace ngl
 				return true;
 			}
 
-			roleitem* lroleitem = type_roleitems::get_roleinfo(adata.get_data()->identifier());
-			if (lroleitem == nullptr)
-			{
-				return true;
-			}
-
-			//int ltemputc = localtime::gettime() - lroleitem->m_lastspeakutc;
+			int& llastspeakutc = m_lastspeakutc[adata.get_data()->identifier()];
+			//int ltemputc = localtime::gettime() - llastspeakutc;
 			//if (ltemputc < ltab->m_time)
 			//{
 			//	send_client(adata.m_data->identifier(), pro);
 			//	return true;
 			//}
-			lroleitem->m_lastspeakutc = localtime::gettime();
+			llastspeakutc = localtime::gettime();
+
+			const pbdb::db_brief* lpbrief = nclient::get(adata.get_data()->identifier());
+			if (lpbrief == nullptr)
+				return true;
 
 			std::list<pbnet::chatitem>& lvec = m_update_chatitem[recv.m_channelid()];
 			lvec.push_back(pbnet::chatitem());
 			pbnet::chatitem& lchatitem = *lvec.rbegin();
 
-			lchatitem.set_m_rolename(lroleitem->m_info.m_name());
+			lchatitem.set_m_rolename(lpbrief->m_name());
 			lchatitem.set_m_utc(localtime::gettime());
 			lchatitem.set_m_content(recv.m_content());
-			lchatitem.set_m_roleid(lroleitem->m_info.m_id());
+			lchatitem.set_m_roleid(lpbrief->m_id());
 
 			std::list<pbnet::chatitem>& lschatitem = m_chatitem[recv.m_channelid()];
 			lschatitem.push_back(lchatitem);

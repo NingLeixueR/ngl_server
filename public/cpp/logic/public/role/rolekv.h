@@ -20,7 +20,6 @@ namespace ngl
 		~rolekv() {}
 
 		//## 可以缓存，防止多次解析vales
-
 		virtual void initdata()
 		{
 			auto lstream = log_error();
@@ -41,8 +40,6 @@ namespace ngl
 		{
 			return db()->get();
 		}
-
-
 	};
 
 

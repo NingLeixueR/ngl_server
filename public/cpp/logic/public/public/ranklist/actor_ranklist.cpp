@@ -1,4 +1,5 @@
 #include "actor_ranklist.h"
+#include "actor_brief.h"
 
 namespace ngl
 {
@@ -16,11 +17,6 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		type_roleitems::init(
-			[](std::map<i64_actorid, pbdb::db_brief>& amap, pbdb::db_brief& ainfo)
-			{
-				amap[ainfo.m_id()] = ainfo;
-			}
-		);
+		nclient::init(actor_brief::actorid(), this);
 	}
 }// namespace ngl

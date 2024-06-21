@@ -531,6 +531,13 @@ namespace ngl
 	static void bytexor(char* ap, int32_t aplen, int apos);
 #pragma endregion
 
+	template <typename T>
+	static std::string type_name()
+	{
+		std::string lname = typeid(T).name();
+		return std::move(lname);
+	}
+
 	};
 }//namespace ngl
 
