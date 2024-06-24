@@ -698,7 +698,7 @@ namespace ngl
 	struct logitem
 	{
 		int				m_serverid = 0;				// 服务器id
-		ELOGLEVEL			m_loglevel;					// 日志类型
+		ELOGLEVEL		m_loglevel;					// 日志类型
 		std::string		m_src;						// 触发日志的文件位置
 		std::string		m_data;						// 日志内容
 		int32_t			m_time;						// 日志发生时间
@@ -807,23 +807,16 @@ namespace ngl
 		def_portocol(np_actor_logitem, m_data)
 	};
 
-	enum echannel
-	{
-		echannel_brief,		// 玩家离线数据
-	};
-
 	struct np_channel_register
 	{
-		echannel m_enum;
 		i64_actorid m_actorid;
-		def_portocol(np_channel_register, m_enum, m_actorid)
+		def_portocol(np_channel_register, m_actorid)
 	};
 
 	struct np_channel_register_reply
 	{
-		echannel m_enum;
 		i64_actorid m_actorid;
-		def_portocol(np_channel_register_reply, m_enum, m_actorid)
+		def_portocol(np_channel_register_reply, m_actorid)
 	};
 
 	template <typename TDB>

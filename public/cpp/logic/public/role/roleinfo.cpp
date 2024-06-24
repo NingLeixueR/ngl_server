@@ -8,7 +8,6 @@ namespace ngl
 		auto pro = std::make_shared<np_actor_roleinfo>();
 		pro->m_vecinfo.make();
 		pro->m_vecinfo.m_data->resize(1);
-		//pbdb::db_brief& linfo = (*pro->m_vecinfo.m_data)[0];
 		(*pro->m_vecinfo.m_data)[0] = get_constbrief();
 
 		std::string ljson;

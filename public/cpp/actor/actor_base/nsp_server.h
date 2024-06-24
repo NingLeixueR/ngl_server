@@ -23,7 +23,6 @@ namespace ngl
 				{
 					m_publishlist.insert(ainfo.m_actorid);
 					auto pro = std::make_shared<np_channel_register_reply>();
-					pro->m_enum = ainfo.m_enum;
 					pro->m_actorid = ainfo.m_actorid;
 					m_dbmodule->actor()->send_actor(ainfo.m_actorid, pro);
 					m_dbmodule->log_error()->print(

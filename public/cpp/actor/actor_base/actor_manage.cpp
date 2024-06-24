@@ -20,13 +20,17 @@ namespace ngl
 
 		ngl_lockinit;
 
-		//// ----- 索引actor
+		// # 索引actor
 		std::map<nguid, ptractor>							m_actorbyid;
+		// # 支持广播的actor
+		std::map<nguid, ptractor>							m_actorbroadcast;
+		// # 按类型索引actor
 		std::map<ENUM_ACTOR, std::map<nguid, ptractor>>		m_actorbytype;
-		std::list<ptractor>									m_actorlist;	// 有任务的actor列表
-		std::set<i16_actortype>								m_actortype;	// 包含哪些actortype
-
-		// 删除actor后需要执行的操作
+		// # 有任务的actor列表
+		std::list<ptractor>									m_actorlist;
+		// # 包含哪些actortype
+		std::set<i16_actortype>								m_actortype;
+		// # 删除actor后需要执行的操作
 		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
@@ -58,6 +62,8 @@ namespace ngl
 				if (m_actorbyid.find(guid) != m_actorbyid.end())
 					return false;
 				m_actorbyid[guid] = apactor;
+				if(apactor->isbroadcast())
+					m_actorbroadcast[guid] = apactor;
 				m_actortype.insert(apactor->type());
 				m_actorbytype[apactor->type()][guid] = apactor;
 			}
@@ -113,6 +119,7 @@ namespace ngl
 
 				m_actorbyid.erase(itor);
 				m_actorbytype[aguid.type()].erase(aguid);
+				m_actorbroadcast.erase(aguid);
 
 				if (lpactor->get_activity_stat() == actor_stat_list)
 				{
@@ -293,7 +300,7 @@ namespace ngl
 		inline void broadcast_task(handle_pram& apram)
 		{
 			ngl_lock;
-			for (std::pair<const nguid, ptractor>& lpair : m_actorbyid)
+			for (std::pair<const nguid, ptractor>& lpair : m_actorbroadcast)
 			{
 				if (lpair.second->isbroadcast())
 					nosafe_push_task_id(lpair.second, apram);

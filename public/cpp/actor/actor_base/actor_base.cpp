@@ -348,14 +348,16 @@ namespace ngl
 			wheel_parm lparm
 			{
 				.m_ms = m_broadcast,
-				.m_intervalms = [](int64_t) {return actor_base::impl_actor_base::m_broadcast; } ,
+				.m_intervalms = [](int64_t) 
+				{
+					return actor_base::impl_actor_base::m_broadcast; 
+				} ,
 				.m_count = 0x7fffffff,
 				.m_fun = [](wheel_node* anode)
 				{
-					nguid lguid;
-					lguid.none();
-					std::shared_ptr<np_actor_broadcast> pro(new np_actor_broadcast());
-					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(lguid, lguid, pro);
+					auto pro = std::make_shared<np_actor_broadcast>();
+					handle_pram lpram = handle_pram::create<
+						np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
 					actor_manage::getInstance().broadcast_task(lpram);
 				}
 			};
