@@ -151,13 +151,15 @@ namespace ngl
 		static void		erase_actor_byid(const nguid& aguid);
 
 		//# 向指定actor添加任务
-		static void		push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
+		static void		push_task_id(
+			const nguid& aguid, handle_pram& apram, bool abool);
 
 		//# 给actor自身添加任务
 		void			push_task_id(handle_pram& apram, bool abool);
 
 		//# 给指定类型的actor添加任务
-		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
+		void			push_task_type(
+			ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
 #pragma region net
 		//# 生成包
@@ -405,7 +407,8 @@ namespace ngl
 			const std::function<void()>& afailfun
 		)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata, afailfun);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(
+				aguid, guid(), adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 
@@ -424,7 +427,8 @@ namespace ngl
 			bool aotherserver = false
 		)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), guid(), adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(
+				nguid::make_self(atype), guid(), adata);
 			push_task_type(atype, lpram, aotherserver);
 		}
 
@@ -436,7 +440,8 @@ namespace ngl
 			std::shared_ptr<T>& adata
 		)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(
+				aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
 		}
 
@@ -449,13 +454,18 @@ namespace ngl
 			const std::function<void()>& afailfun
 		)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(
+				aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 
 		// 发送数据到指定的actor
 		template <typename T>
-		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>&& adata)
+		static void static_send_actor(
+			const nguid& aguid, 
+			const nguid& arequestguid, 
+			std::shared_ptr<T>&& adata
+		)
 		{
 			handle_pram lpram = handle_pram::create<T>(aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
@@ -476,7 +486,10 @@ namespace ngl
 		void remove_group_member(int agroupid, i64_actorid amember);
 		
 		//#  获取group id中的actor列表与类型
-		bool get_group(int agroupid, std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair);
+		bool get_group(
+			int agroupid, 
+			std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair
+		);
 
 		//# 给一组成员发送消息
 		template <typename T>
@@ -563,7 +576,11 @@ namespace ngl
 		}
 
 		//# 用于创建非单例actor
-		static actor_base* create(ENUM_ACTOR atype, i32_actordataid aid, void* aparm = nullptr);
+		static actor_base* create(
+			ENUM_ACTOR atype, 
+			i32_actordataid aid, 
+			void* aparm = nullptr
+		);
 	};
 
 	template <typename T>
