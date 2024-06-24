@@ -190,11 +190,13 @@ namespace ngl
 
 		//# 发送pack到指定服务器
 		template <typename T>
-		static bool sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
+		static bool sendpack_server(
+			i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
 		//# 给指定连接发送数据
 		template <typename T>
-		static bool sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack);
+		static bool sendpack_session(
+			i32_sessionid asession, std::shared_ptr<pack>& apack);
 
 		//# 给指定连接发送数据
 		template <typename T>
@@ -344,25 +346,29 @@ namespace ngl
 		//# 根据actor_role.guidid确定客户端，
 		//# 给一组客户端发送数据
 		template <typename T>
-		static void send_client(std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata)
+		static void send_client(
+			std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata)
 		{
 			client_pro(alist.begin(), alist.end(), adata);
 		}
 
 		template <typename T>
-		static void send_client(const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata)
+		static void send_client(
+			const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata)
 		{
 			client_pro(avecid.begin(), avecid.end(), adata);
 		}
 
 		template <typename T>
-		static void send_client(const std::list<i64_actorid>& avecid, std::shared_ptr<T>& adata)
+		static void send_client(
+			const std::list<i64_actorid>& avecid, std::shared_ptr<T>& adata)
 		{
 			client_pro(avecid.begin(), avecid.end(), adata);
 		}
 
 		template <typename T>
-		static void send_client(const std::set<i64_actorid>& asetid, std::shared_ptr<T>& adata)
+		static void send_client(
+			const std::set<i64_actorid>& asetid, std::shared_ptr<T>& adata)
 		{
 			client_pro(asetid.begin(), asetid.end(), adata);
 		}

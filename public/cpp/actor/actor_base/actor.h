@@ -67,7 +67,8 @@ namespace ngl
 
 		// # 注册定时器
 		template <typename TDerived>
-		static void register_timer(Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
+		static void register_timer(
+			Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
 		{
 			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().
 				template rfun_nonet<TDerived, timerparm>(afun, false);
@@ -130,7 +131,8 @@ namespace ngl
 			template <typename T>
 			static void func(bool aisload)
 			{
-				ninst<TDerived, TYPE>().rfun((Tfun<TDerived, T>) & TDerived::handle, aisload);
+				ninst<TDerived, TYPE>().rfun(
+					(Tfun<TDerived, T>) & TDerived::handle, aisload);
 			}
 		};
 	public:
@@ -143,7 +145,8 @@ namespace ngl
 		using register_handle_custom = register_handle<EPROTOCOL_TYPE_CUSTOM, TDerived>;
 
 		template <typename TDerived>
-		using register_handle_proto = register_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived>;
+		using register_handle_proto = register_handle<
+			EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived>;
 #pragma endregion 
 
 #pragma region register_actornonet
@@ -245,15 +248,16 @@ namespace ngl
 
 	public:
 #pragma region ActorBroadcast
-		// ############# Start[Actor 全员广播] ############# 
-		// # 间隔一段时间发起的全员(所有actor)广播
-		// # 可以在这个广播里推送一些需要处理的任务,例如 保存数据
+		// ############# [广播] ############# 
+		// # 间隔一段时间发起的广播
+		// # 1、保存数据 
+		// # 2、调用broadcast函数
 		// # 与actor_base::start_broadcast() 相呼应
 		// # 重载此方法实现actor_base::m_broadcast毫秒触发事件
 		virtual void broadcast() {}
 		// # 广播处理函数
 		bool handle(message<np_actor_broadcast>& adata);
-		// ############# End[Actor 全员广播] ############# 
+		// ############# [广播] ############# 
 #pragma endregion
 		
 		// # 关闭此actor
