@@ -17,6 +17,6 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		nclient::init(actor_brief::actorid(), this);
+		tdb_brief::nsp_cli<actor_ranklist>::init(actor_brief::actorid(), this);
 	}
 }// namespace ngl

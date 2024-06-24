@@ -25,12 +25,6 @@ namespace ngl
 
 		ranklist m_ranklist;
 
-		using nclient = nsp_client<
-			echannel_brief,
-			actor_ranklist,
-			pbdb::db_brief
-		>;
-
 		actor_ranklist();
 	public:
 		friend class actor_instance<actor_ranklist>;

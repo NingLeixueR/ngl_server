@@ -16,12 +16,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		nsp_server<
-			echannel_brief,
-			pbdb::ENUM_DB_BRIEF,
-			actor_brief,
-			pbdb::db_brief
-		>::init(&m_briefdb);
+		tdb_brief::nsp_ser::init(&m_briefdb);
 	}
 
 	void actor_brief::nregister()
@@ -45,12 +40,7 @@ namespace ngl
 			{
 				lactoridvec.push_back(abrief.m_id());
 			});
-		nsp_server<
-			echannel_brief,
-			pbdb::ENUM_DB_BRIEF,
-			actor_brief,
-			pbdb::db_brief
-		>::publish(lactoridvec);
+		tdb_brief::nsp_ser::publish(lactoridvec);
 		return true;
 	}
 }//namespace ngl

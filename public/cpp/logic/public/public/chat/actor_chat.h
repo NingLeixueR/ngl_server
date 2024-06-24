@@ -25,12 +25,6 @@ namespace ngl
 
 		actor_chat();
 
-		using nclient = nsp_client<
-			echannel_brief,
-			actor_chat,
-			pbdb::db_brief
-		>;
-
 		std::map<int64_t, int>						m_lastspeakutc;
 		std::map<int, std::list<pbnet::chatitem>>	m_chatitem;
 		std::map<int, std::list<pbnet::chatitem>>	m_update_chatitem;

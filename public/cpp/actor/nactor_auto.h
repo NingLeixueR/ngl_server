@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ndb_modular.h"
+#include "nsp_client.h"
+#include "nsp_server.h"
 #include "actor_db.h"
 #include "define.h"
 #include "db.pb.h"
@@ -16,6 +18,9 @@ namespace ngl
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
+		using nsp_ser = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
+		template <typename TDerived>
+		using nsp_cli = nsp_client<TDerived, TDBTAB>;
 		// [aregister == true] 主要是注册协议,宏与类型的绑定
 		// [aregister == false] 实例化db_actor,db server需要
 		static void init(bool aregister);

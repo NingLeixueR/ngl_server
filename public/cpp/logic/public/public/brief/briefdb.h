@@ -49,21 +49,6 @@ namespace ngl
 			data()[adata->m_id()].get() = *adata;
 		}
 
-		void sync_module(i64_actorid aguid, std::shared_ptr<np_actor_roleinfo>& apro);
-		
-		void sync_module(std::shared_ptr<np_actor_roleinfo>& apro)
-		{
-			sync_module(nguid::make_self(ACTOR_NOTICE), apro);
-			sync_module(nguid::make_self(ACTOR_CHAT), apro);
-			i64_actorid lchatcross = nguid::make(
-				ACTOR_CHAT,
-				ttab_servers::tab()->m_crossarea,
-				nguid::none_actordataid()
-			);
-			sync_module(lchatcross, apro);
-		}
-
-
 		virtual void initdata()
 		{
 			auto lstream = log_error();

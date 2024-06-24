@@ -16,7 +16,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		nclient::init(actor_brief::actorid(), this);
+		tdb_brief::nsp_cli<actor_chat>::init(actor_brief::actorid(), this);
 	}
 
 	void actor_chat::nregister()
@@ -90,7 +90,7 @@ namespace ngl
 			//}
 			llastspeakutc = localtime::gettime();
 
-			const pbdb::db_brief* lpbrief = nclient::get(adata.get_data()->identifier());
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_chat>::get(adata.get_data()->identifier());
 			if (lpbrief == nullptr)
 				return true;
 

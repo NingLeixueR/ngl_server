@@ -4,16 +4,15 @@
 
 namespace ngl
 {
-	template <echannel ENUM, typename TDerived, typename T>
+	template <typename TDerived, typename T>
 	class nsp_client
 	{
+		static i64_actorid				m_nspserver;
+		static actor*					m_actor;
+		static bool						m_register;
 	public:
 		static std::map<i64_actorid, T> m_data;
-		static i64_actorid				m_nspserver;
-		static actor* m_actor;
-		static bool						m_register;
 
-		// # aactor nsp_serverµÄactor id
 		static void init(i64_actorid anspserver, TDerived* aactor)
 		{
 			m_nspserver = anspserver;
@@ -88,15 +87,15 @@ namespace ngl
 		}
 	};
 
-	template <echannel ENUM, typename TDerived, typename T>
-	std::map<i64_actorid, T> nsp_client<ENUM, TDerived, T>::m_data;
+	template <typename TDerived, typename T>
+	std::map<i64_actorid, T> nsp_client<TDerived, T>::m_data;
 
-	template <echannel ENUM, typename TDerived, typename T>
-	i64_actorid nsp_client<ENUM, TDerived, T>::m_nspserver = -1;
+	template <typename TDerived, typename T>
+	i64_actorid nsp_client<TDerived, T>::m_nspserver = -1;
 
-	template <echannel ENUM, typename TDerived, typename T>
-	actor* nsp_client<ENUM, TDerived, T>::m_actor = nullptr;
+	template <typename TDerived, typename T>
+	actor* nsp_client<TDerived, T>::m_actor = nullptr;
 
-	template <echannel ENUM, typename TDerived, typename T>
-	bool nsp_client<ENUM, TDerived, T>::m_register = false;
+	template <typename TDerived, typename T>
+	bool nsp_client<TDerived, T>::m_register = false;
 }

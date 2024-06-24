@@ -19,7 +19,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		nclient::init(actor_brief::actorid(), this);
+		tdb_brief::nsp_cli<actor_manage_activity>::init(actor_brief::actorid(), this);
 	}
 
 	void actor_manage_activity::nregister()

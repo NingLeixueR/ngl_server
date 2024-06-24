@@ -27,12 +27,6 @@ namespace ngl
 
 		actor_manage_activity();
 
-		using nclient = nsp_client<
-			echannel_brief,
-			actor_manage_activity,
-			pbdb::db_brief
-		>;
-
 		activitydb m_db;
 		std::map<int64_t, std::shared_ptr<activity>> m_allactivity;
 	public:

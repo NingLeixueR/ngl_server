@@ -1,5 +1,6 @@
 #pragma once
 
+#include "nactor_auto.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "matching.h"
@@ -14,11 +15,7 @@ namespace ngl
 
 		matching m_matching;
 	public:
-		using nclient = nsp_client<
-			echannel_brief,
-			actor_matching,
-			pbdb::db_brief
-		>;
+		using nclient = tdb_brief::nsp_cli<actor_matching>;
 
 		friend class actor_instance<actor_matching>;
 		static actor_matching& getInstance()

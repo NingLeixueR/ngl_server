@@ -4,8 +4,8 @@
 
 namespace ngl
 {
-	//# 订阅/发布(Subscription/Publishing)
-	template <echannel ENUMCHAN, pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
+	//# 订阅/发布[数据副本](Subscription/Publishing)
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
 	class nsp_server
 	{
 		static std::set<i64_actorid> m_publishlist; // 发布列表
@@ -27,13 +27,12 @@ namespace ngl
 					pro->m_actorid = ainfo.m_actorid;
 					m_dbmodule->actor()->send_actor(ainfo.m_actorid, pro);
 					m_dbmodule->log_error()->print(
-						"nsp_server {}:{}:{}",
+						"nsp_server register {}:{}:{}",
 						tools::type_name<TDerived>(),
 						tools::type_name<TDATA>(),
 						nguid(ainfo.m_actorid)
 					);
 				});
-			
 		}
 
 		static void publish(const std::vector<i64_actorid>& aactoridvec)
@@ -83,10 +82,10 @@ namespace ngl
 		}
 	};
 
-	template <echannel ENUMCHAN, pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
-	std::set<i64_actorid> nsp_server<ENUMCHAN, ENUMDB, TDerived, TDATA>::m_publishlist;
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
+	std::set<i64_actorid> nsp_server<ENUMDB, TDerived, TDATA>::m_publishlist;
 
-	template <echannel ENUMCHAN, pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
-	ndb_modular<ENUMDB, TDATA, TDerived>* nsp_server<ENUMCHAN, ENUMDB, TDerived, TDATA>::m_dbmodule;
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
+	ndb_modular<ENUMDB, TDATA, TDerived>* nsp_server<ENUMDB, TDerived, TDATA>::m_dbmodule;
 
 }

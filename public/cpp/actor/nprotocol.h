@@ -223,7 +223,6 @@ namespace ngl
 		{
 			if (m_data == nullptr)
 				m_data = std::shared_ptr<T>(new T());
-			//init_protobuf::init(*m_data);
 			return m_data.get();
 		}
 
@@ -599,14 +598,6 @@ namespace ngl
 	{
 		protobuf_data<std::vector<pbdb::db_brief>> m_vecinfo;
 		def_portocol(np_actor_roleinfo, m_vecinfo)
-	};
-
-	// ---- module_sync
-	template <typename DB_TAB>
-	struct np_module_sync
-	{
-		protobuf_data<std::vector<DB_TAB>> m_data;
-		def_portocol(np_module_sync, m_data)
 	};
 
 	struct gateway_socket
