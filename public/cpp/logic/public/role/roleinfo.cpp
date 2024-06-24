@@ -5,13 +5,12 @@ namespace ngl
 {
 	void roleinfo::sync_actor_roleinfo()
 	{
-		auto pro = std::make_shared<np_actor_roleinfo>();
-		pro->m_vecinfo.make();
-		pro->m_vecinfo.m_data->resize(1);
-		(*pro->m_vecinfo.m_data)[0] = get_constbrief();
-
+		auto pro = std::make_shared<np_channel_data<pbdb::db_brief>>();
+		pro->m_data.make();
+		pro->m_data.m_data->insert(std::make_pair(actor()->id_guid(), get_constbrief()));
+	
 		std::string ljson;
-		if (tools::protojson((*pro->m_vecinfo.m_data)[0], ljson))
+		if (tools::protojson(get_constbrief(), ljson))
 		{
 			log_error()->print("roleinfo::sync_actor_roleinfo [{}]", ljson);
 		}

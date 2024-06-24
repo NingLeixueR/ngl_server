@@ -23,7 +23,8 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		tdb_brief::nsp_cli<actor_matching>::init(actor_brief::actorid(), this);
+		std::set<i64_actorid> ldataid;
+		tdb_brief::nsp_cli<actor_matching>::init(actor_brief::actorid(), this, ldataid);
 	}
 
 	void actor_matching::nregister()

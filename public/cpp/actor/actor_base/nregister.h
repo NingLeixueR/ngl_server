@@ -12,7 +12,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(
-		const std::function<void(TTTDerived*, T&)>& afun
+		const std::function<void(TTTDerived*, message<T>&)>& afun
 	)
 	{
 		m_fun[tprotocol::protocol<T>()] = nlogicfun
@@ -20,7 +20,9 @@ namespace ngl
 			.m_isdbload = false,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				afun((TTTDerived*)aactor, *(T*)apram.m_data.get());
+				std::shared_ptr<T> lptr = std::static_pointer_cast<T>(apram.m_data);
+				message<T> lmessage(athreadid, apram.m_pack.get(), lptr);
+				afun((TTTDerived*)aactor, lmessage);
 			}
 		};
 		protocol::registry_actor<T, TYPE>(

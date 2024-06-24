@@ -99,7 +99,7 @@ namespace ngl
 
 		// # 用来注册匿名函数挂载在对应actor上
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
-		static void register_actor_s(const std::function<void(TDerived*, T&)>& afun)
+		static void register_actor_s(const std::function<void(TDerived*, message<T>&)>& afun)
 		{
 			ninst<TDerived, TYPE>().template rfun<TDerived, T>(afun);
 		}

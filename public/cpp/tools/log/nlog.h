@@ -11,6 +11,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
 
 namespace ngl
 {
@@ -92,8 +93,29 @@ struct std::formatter<std::list<T>>
 	auto format(const std::vector<T>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
-		std::format_to(out, "[");
+		std::format_to(out, "vector[");
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
+		{
+			std::format_to(out, "{},", *it);
+		}
+		format_to(out, "]");
+		return out;
+	}
+};
+
+template <typename T>
+struct std::formatter<std::set<T>>
+{
+	constexpr auto parse(std::format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	auto format(const std::set<T>& aset, std::format_context& ctx)const
+	{
+		auto out = ctx.out();
+		std::format_to(out, "set[");
+		for (auto it = aset.begin(); it != aset.end(); ++it)
 		{
 			std::format_to(out, "{},", *it);
 		}
@@ -113,7 +135,7 @@ struct std::formatter<std::map<TKEY, TVAL>>
 	auto format(const std::map<TKEY, TVAL>& vec, std::format_context& ctx)const
 	{
 		auto out = ctx.out();
-		std::format_to(out, "[");
+		std::format_to(out, "map[");
 		for (auto it = vec.begin(); it != vec.end(); ++it) 
 		{
 			std::format_to(out, "({}:{}),", it->first, it->second);

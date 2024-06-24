@@ -180,6 +180,31 @@ template<> ::pbdb::rankitem* Arena::CreateMaybeMessage<::pbdb::rankitem>(Arena*)
 PROTOBUF_NAMESPACE_CLOSE
 namespace pbdb {
 
+enum db_keyvalue_ekv : int {
+  db_keyvalue_ekv_ekv_none = 0,
+  db_keyvalue_ekv_ekv_serveropentime = 1,
+  db_keyvalue_ekv_db_keyvalue_ekv_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  db_keyvalue_ekv_db_keyvalue_ekv_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool db_keyvalue_ekv_IsValid(int value);
+constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MIN = db_keyvalue_ekv_ekv_none;
+constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MAX = db_keyvalue_ekv_ekv_serveropentime;
+constexpr int db_keyvalue_ekv_ekv_ARRAYSIZE = db_keyvalue_ekv_ekv_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* db_keyvalue_ekv_descriptor();
+template<typename T>
+inline const std::string& db_keyvalue_ekv_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, db_keyvalue_ekv>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function db_keyvalue_ekv_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    db_keyvalue_ekv_descriptor(), enum_t_value);
+}
+inline bool db_keyvalue_ekv_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, db_keyvalue_ekv* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<db_keyvalue_ekv>(
+    db_keyvalue_ekv_descriptor(), name, value);
+}
 enum ENUM_DB : int {
   ENUM_DB_ACCOUNT = 0,
   ENUM_DB_ROLE = 1,
@@ -1524,34 +1549,43 @@ class db_keyvalue PROTOBUF_FINAL :
 
   // nested types ----------------------------------------------------
 
+  typedef db_keyvalue_ekv ekv;
+  static constexpr ekv ekv_none =
+    db_keyvalue_ekv_ekv_none;
+  static constexpr ekv ekv_serveropentime =
+    db_keyvalue_ekv_ekv_serveropentime;
+  static inline bool ekv_IsValid(int value) {
+    return db_keyvalue_ekv_IsValid(value);
+  }
+  static constexpr ekv ekv_MIN =
+    db_keyvalue_ekv_ekv_MIN;
+  static constexpr ekv ekv_MAX =
+    db_keyvalue_ekv_ekv_MAX;
+  static constexpr int ekv_ARRAYSIZE =
+    db_keyvalue_ekv_ekv_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  ekv_descriptor() {
+    return db_keyvalue_ekv_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& ekv_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, ekv>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function ekv_Name.");
+    return db_keyvalue_ekv_Name(enum_t_value);
+  }
+  static inline bool ekv_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      ekv* value) {
+    return db_keyvalue_ekv_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMKeyFieldNumber = 2,
-    kMValueFieldNumber = 3,
+    kMValueFieldNumber = 2,
     kMIdFieldNumber = 1,
   };
-  // string m_key = 2;
-  bool has_m_key() const;
-  private:
-  bool _internal_has_m_key() const;
-  public:
-  void clear_m_key();
-  const std::string& m_key() const;
-  void set_m_key(const std::string& value);
-  void set_m_key(std::string&& value);
-  void set_m_key(const char* value);
-  void set_m_key(const char* value, size_t size);
-  std::string* mutable_m_key();
-  std::string* release_m_key();
-  void set_allocated_m_key(std::string* m_key);
-  private:
-  const std::string& _internal_m_key() const;
-  void _internal_set_m_key(const std::string& value);
-  std::string* _internal_mutable_m_key();
-  public:
-
-  // string m_value = 3;
+  // string m_value = 2;
   bool has_m_value() const;
   private:
   bool _internal_has_m_value() const;
@@ -1593,7 +1627,6 @@ class db_keyvalue PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_key_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_value_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   friend struct ::TableStruct_db_2eproto;
@@ -5416,7 +5449,7 @@ inline void db_bag::set_m_maxid(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int64 m_id = 1;
 inline bool db_keyvalue::_internal_has_m_id() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool db_keyvalue::has_m_id() const {
@@ -5424,7 +5457,7 @@ inline bool db_keyvalue::has_m_id() const {
 }
 inline void db_keyvalue::clear_m_id() {
   m_id_ = PROTOBUF_LONGLONG(0);
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int64 db_keyvalue::_internal_m_id() const {
   return m_id_;
@@ -5434,7 +5467,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int64 db_keyvalue::m_id() const {
   return _internal_m_id();
 }
 inline void db_keyvalue::_internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000002u;
   m_id_ = value;
 }
 inline void db_keyvalue::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
@@ -5442,83 +5475,9 @@ inline void db_keyvalue::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_keyvalue.m_id)
 }
 
-// string m_key = 2;
-inline bool db_keyvalue::_internal_has_m_key() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
-  return value;
-}
-inline bool db_keyvalue::has_m_key() const {
-  return _internal_has_m_key();
-}
-inline void db_keyvalue::clear_m_key() {
-  m_key_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline const std::string& db_keyvalue::m_key() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_keyvalue.m_key)
-  return _internal_m_key();
-}
-inline void db_keyvalue::set_m_key(const std::string& value) {
-  _internal_set_m_key(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_keyvalue.m_key)
-}
-inline std::string* db_keyvalue::mutable_m_key() {
-  // @@protoc_insertion_point(field_mutable:pbdb.db_keyvalue.m_key)
-  return _internal_mutable_m_key();
-}
-inline const std::string& db_keyvalue::_internal_m_key() const {
-  return m_key_.Get();
-}
-inline void db_keyvalue::_internal_set_m_key(const std::string& value) {
-  _has_bits_[0] |= 0x00000001u;
-  m_key_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
-}
-inline void db_keyvalue::set_m_key(std::string&& value) {
-  _has_bits_[0] |= 0x00000001u;
-  m_key_.Set(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:pbdb.db_keyvalue.m_key)
-}
-inline void db_keyvalue::set_m_key(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000001u;
-  m_key_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-              GetArena());
-  // @@protoc_insertion_point(field_set_char:pbdb.db_keyvalue.m_key)
-}
-inline void db_keyvalue::set_m_key(const char* value,
-    size_t size) {
-  _has_bits_[0] |= 0x00000001u;
-  m_key_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:pbdb.db_keyvalue.m_key)
-}
-inline std::string* db_keyvalue::_internal_mutable_m_key() {
-  _has_bits_[0] |= 0x00000001u;
-  return m_key_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline std::string* db_keyvalue::release_m_key() {
-  // @@protoc_insertion_point(field_release:pbdb.db_keyvalue.m_key)
-  if (!_internal_has_m_key()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000001u;
-  return m_key_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void db_keyvalue::set_allocated_m_key(std::string* m_key) {
-  if (m_key != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  m_key_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_key,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:pbdb.db_keyvalue.m_key)
-}
-
-// string m_value = 3;
+// string m_value = 2;
 inline bool db_keyvalue::_internal_has_m_value() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline bool db_keyvalue::has_m_value() const {
@@ -5526,7 +5485,7 @@ inline bool db_keyvalue::has_m_value() const {
 }
 inline void db_keyvalue::clear_m_value() {
   m_value_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline const std::string& db_keyvalue::m_value() const {
   // @@protoc_insertion_point(field_get:pbdb.db_keyvalue.m_value)
@@ -5544,31 +5503,31 @@ inline const std::string& db_keyvalue::_internal_m_value() const {
   return m_value_.Get();
 }
 inline void db_keyvalue::_internal_set_m_value(const std::string& value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000001u;
   m_value_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
 }
 inline void db_keyvalue::set_m_value(std::string&& value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000001u;
   m_value_.Set(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
   // @@protoc_insertion_point(field_set_rvalue:pbdb.db_keyvalue.m_value)
 }
 inline void db_keyvalue::set_m_value(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000001u;
   m_value_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_keyvalue.m_value)
 }
 inline void db_keyvalue::set_m_value(const char* value,
     size_t size) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000001u;
   m_value_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
   // @@protoc_insertion_point(field_set_pointer:pbdb.db_keyvalue.m_value)
 }
 inline std::string* db_keyvalue::_internal_mutable_m_value() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000001u;
   return m_value_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline std::string* db_keyvalue::release_m_value() {
@@ -5576,14 +5535,14 @@ inline std::string* db_keyvalue::release_m_value() {
   if (!_internal_has_m_value()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000001u;
   return m_value_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline void db_keyvalue::set_allocated_m_value(std::string* m_value) {
   if (m_value != nullptr) {
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000001u;
   } else {
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000001u;
   }
   m_value_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_value,
       GetArena());
@@ -7460,6 +7419,11 @@ inline void db_calendar::set_m_finish(bool value) {
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::pbdb::db_keyvalue_ekv> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::db_keyvalue_ekv>() {
+  return ::pbdb::db_keyvalue_ekv_descriptor();
+}
 template <> struct is_proto_enum< ::pbdb::ENUM_DB> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::ENUM_DB>() {

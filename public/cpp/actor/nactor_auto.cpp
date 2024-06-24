@@ -162,18 +162,17 @@ namespace ngl
 				/*200000019*/, np_actor_reloadcsv
 				/*200000020*/, np_actor_csv_verify_version
 				/*200000021*/, np_actor_senditem
-				/*200000022*/, np_actor_roleinfo
-				/*200000023*/, np_actor_gatewayinfo_updata
-				/*200000024*/, np_actor_addmail
-				/*200000025*/, np_actor_activity
-				/*200000026*/, np_actor_gatewayid_updata
-				/*200000027*/, np_actorswitch_process<np_actorswitch_process_role>
-				/*200000028*/, np_actor_kcp
-				/*200000029*/, np_calendar
-				/*200000030*/, np_actor_close
-				/*200000031*/, np_channel_data<pbdb::db_brief>
-				/*200000032*/, np_channel_register
-				/*200000033*/, np_channel_register_reply
+				/*200000022*/, np_actor_gatewayinfo_updata
+				/*200000023*/, np_actor_addmail
+				/*200000024*/, np_actor_activity
+				/*200000025*/, np_actor_gatewayid_updata
+				/*200000026*/, np_actorswitch_process<np_actorswitch_process_role>
+				/*200000027*/, np_actor_kcp
+				/*200000028*/, np_calendar
+				/*200000029*/, np_actor_close
+				/*200000030*/, np_channel_register
+				/*200000031*/, np_channel_register_reply
+				/*200000032*/, np_channel_data<pbdb::db_brief>
 			> (EPROTOCOL_TYPE_CUSTOM);
 		}
 		

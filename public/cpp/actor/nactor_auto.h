@@ -68,4 +68,8 @@ namespace ngl
 	using tdb_calendar	
 		= typedb<pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar, actor_calendar>;
 
+	class actor_keyvalue;
+	using tdb_keyvalue
+		= typedb<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue, actor_keyvalue>;
+
 }//namespace ngl

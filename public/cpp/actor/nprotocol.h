@@ -593,13 +593,6 @@ namespace ngl
 		def_portocol_function(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
 	};
 
-	// ---- role信息同步
-	struct np_actor_roleinfo
-	{
-		protobuf_data<std::vector<pbdb::db_brief>> m_vecinfo;
-		def_portocol(np_actor_roleinfo, m_vecinfo)
-	};
-
 	struct gateway_socket
 	{
 		std::string			m_session;
@@ -809,8 +802,9 @@ namespace ngl
 
 	struct np_channel_register
 	{
-		i64_actorid m_actorid;
-		def_portocol(np_channel_register, m_actorid)
+		i64_actorid				m_actorid;
+		std::set<i64_actorid>	m_dataid;
+		def_portocol(np_channel_register, m_actorid, m_dataid)
 	};
 
 	struct np_channel_register_reply
@@ -825,6 +819,7 @@ namespace ngl
 		protobuf_data<std::map<int64_t, TDB>> m_data;
 		def_portocol(np_channel_data<TDB>, m_data)
 	};
+
 
 }//namespace ngl
 

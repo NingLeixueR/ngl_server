@@ -20,27 +20,6 @@ namespace ngl
 	}
 
 	void actor_brief::nregister()
-	{
-		// Ð­Òé×¢²á
-		register_handle_custom<actor_brief>::func<
-			np_actor_roleinfo
-		>(false);
-		
-	}
-
-	bool actor_brief::handle(message<np_actor_roleinfo>& adata)
-	{
-		std::vector<pbdb::db_brief>& linfovec = *adata.get_data()->m_vecinfo.m_data.get();
-		m_briefdb.update(linfovec);
-
-		std::vector<i64_actorid> lactoridvec;
-		std::for_each(
-			linfovec.begin(), linfovec.end(), 
-			[&lactoridvec](pbdb::db_brief& abrief)
-			{
-				lactoridvec.push_back(abrief.m_id());
-			});
-		tdb_brief::nsp_ser::publish(lactoridvec);
-		return true;
+	{		
 	}
 }//namespace ngl

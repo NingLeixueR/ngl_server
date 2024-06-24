@@ -496,48 +496,47 @@ namespace ngl
 #pragma endregion
 
 #pragma region varint
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Varint是一种使用一个或多个字节序列化整数的方法会把整数编码为变长字节。
-	// 对于32位整型数据经过Varint编码后需要1~5个字节，
-	// 小的数字使用1个byte，大的数字使用5个bytes。
-	// 64位整型数据编码后占用1~10个字节。
-	// 在实际场景中小数字的使用率远远多于大数字，
-	// 因此通过Varint编码对于大部分场景都可以起到很好的压缩效果。
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Varint是一种使用一个或多个字节序列化整数的方法会把整数编码为变长字节。
+		// 对于32位整型数据经过Varint编码后需要1~5个字节，
+		// 小的数字使用1个byte，大的数字使用5个bytes。
+		// 64位整型数据编码后占用1~10个字节。
+		// 在实际场景中小数字的使用率远远多于大数字，
+		// 因此通过Varint编码对于大部分场景都可以起到很好的压缩效果。
 	
-	static int varint_length(parm<int32_t>& avalue);
-	static int varint_length(parm<int64_t>& avalue);
+		static int varint_length(parm<int32_t>& avalue);
+		static int varint_length(parm<int64_t>& avalue);
 
-	template <typename T>
-	struct varint_parm
-	{
-		T m_value;
-		char* m_buf = nullptr;
-		int m_len = 0;
-		int32_t* m_bytes = 0;
-	};
-	static bool varint_encode(varint_parm<int64_t>& aparm);
-	static bool	varint_decode(varint_parm<int64_t>& aparm);
-	static bool	varint_encode(varint_parm<int32_t>& aparm);
-	static bool	varint_decode(varint_parm<int32_t>& aparm);
+		template <typename T>
+		struct varint_parm
+		{
+			T m_value;
+			char* m_buf = nullptr;
+			int m_len = 0;
+			int32_t* m_bytes = 0;
+		};
+		static bool varint_encode(varint_parm<int64_t>& aparm);
+		static bool	varint_decode(varint_parm<int64_t>& aparm);
+		static bool	varint_encode(varint_parm<int32_t>& aparm);
+		static bool	varint_decode(varint_parm<int32_t>& aparm);
 
-#pragma endregion
+	#pragma endregion
 
-#pragma region hexbytes
-	static int	to_hex(void* apso, int alen, void* apto);
-	static bool to_bytes(void* apso, int alen, void* apto, int& apotlen);
-#pragma endregion
+	#pragma region hexbytes
+		static int	to_hex(void* apso, int alen, void* apto);
+		static bool to_bytes(void* apso, int alen, void* apto, int& apotlen);
+	#pragma endregion
 
-#pragma region encryption
-	static void bytexor(char* ap, int32_t aplen, int apos);
-#pragma endregion
+	#pragma region encryption
+		static void bytexor(char* ap, int32_t aplen, int apos);
+	#pragma endregion
 
-	template <typename T>
-	static std::string type_name()
-	{
-		std::string lname = typeid(T).name();
-		return std::move(lname);
-	}
-
+		template <typename T>
+		static std::string type_name()
+		{
+			std::string lname = typeid(T).name();
+			return std::move(lname);
+		}
 	};
 }//namespace ngl
 

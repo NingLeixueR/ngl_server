@@ -52,7 +52,5 @@ namespace ngl
 				nguid::none_actordataid()
 			);
 		}
-
-		bool handle(message<np_actor_roleinfo>& adata);
 	};
 }//namespace ngl

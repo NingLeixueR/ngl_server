@@ -17,6 +17,7 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		tdb_brief::nsp_cli<actor_ranklist>::init(actor_brief::actorid(), this);
+		std::set<i64_actorid> ldataid;
+		tdb_brief::nsp_cli<actor_ranklist>::init(actor_brief::actorid(), this, ldataid);
 	}
 }// namespace ngl
