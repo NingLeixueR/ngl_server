@@ -35,7 +35,7 @@ namespace ngl
 	void ndb_modular<ENUM, TDATA, TACTOR>::init_data()
 	{
 		initdata();
-		typedb<ENUM, TDATA, TACTOR>::nsp_ser::sync();
+		typedb<ENUM, TDATA, TACTOR>::nsp_ser::loadfish_sync();
 	}
 
 	class actor_login;
