@@ -137,12 +137,8 @@ namespace ngl
 				, null<actor_kcp>, em_pram(ACTOR_KCP)
 				, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
 				, null<actor_plays>, em_pram(ACTOR_PLAYS)
+				, null<actor_keyvalue>, em_pram(ACTOR_KEYVALUE)
 			);
-
-#define DEF_CHANNEL(TDB)						\
-			np_channel_register<TDB>			\
-			, np_channel_register_reply<TDB>	\
-			, np_channel_data<TDB>
 
 			// 新增内部协议需要补充
 			tprotocol::customs::template func <
@@ -175,8 +171,12 @@ namespace ngl
 				/*200000027*/, np_actor_kcp
 				/*200000028*/, np_calendar
 				/*200000029*/, np_actor_close
-				/*200000030 - 200000032*/, DEF_CHANNEL(pbdb::db_brief)
-				/*200000033 - 200000035*/, DEF_CHANNEL(pbdb::db_keyvalue)
+				/*200000030*/, np_channel_register<pbdb::db_brief>
+				/*200000031*/, np_channel_register_reply<pbdb::db_brief>
+				/*200000032*/, np_channel_data<pbdb::db_brief>
+				/*200000033*/, np_channel_register<pbdb::db_keyvalue>
+				/*200000034*/, np_channel_register_reply<pbdb::db_keyvalue>
+				/*200000035*/, np_channel_data<pbdb::db_keyvalue>
 			> (EPROTOCOL_TYPE_CUSTOM);
 		}
 		

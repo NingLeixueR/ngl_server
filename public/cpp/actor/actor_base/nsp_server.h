@@ -17,6 +17,7 @@ namespace ngl
 		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist; 
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 	public:
+
 		static void init(ndb_modular<ENUMDB, TDATA, TDerived>* adbmodule)
 		{
 			m_dbmodule = adbmodule;
@@ -39,6 +40,8 @@ namespace ngl
 						nguid(recv.m_actorid),
 						recv.m_dataid
 					);
+					// # 同步需要的数据
+					sync(recv.m_actorid);
 				});
 
 			actor::register_actor_s<
@@ -61,6 +64,51 @@ namespace ngl
 					publish(lactorset, pro);
 				});
 				
+		}
+
+		static void sync(i64_actorid aactor)
+		{
+			if (m_publishlist.empty())
+				return;
+			std::set<i64_actorid>* lpset = tools::findmap(m_publishlist, aactor);
+			if (lpset == nullptr)
+			{
+				return;
+			}
+
+			auto pro = std::make_shared<np_channel_data<TDATA>>();
+			pro->m_data.make();
+			std::map<int64_t, TDATA>& lmap = *pro->m_data.m_data;
+			if (lpset->empty())
+			{
+				std::map<nguid, data_modified<TDATA>>& ldatamap = m_dbmodule->data();
+				for (const auto& lpair : ldatamap)
+				{
+					lmap[lpair.first] = lpair.second.getconst();
+				}
+			}
+			else
+			{
+				for (i64_actorid actorid : *lpset)
+				{
+					data_modified<TDATA>* lp = m_dbmodule->get(actorid);
+					lmap[lp->getconst().m_id()] = lp->getconst();
+				}
+			}	
+			if (!lmap.empty())
+			{
+				actor::static_send_actor(aactor, nguid::make(), pro);
+			}			
+		}
+
+		static void sync()
+		{
+			if (m_publishlist.empty())
+				return;
+			for (const auto& lpair : m_publishlist)
+			{
+				sync(lpair.first);
+			}
 		}
 
 		static void publish(

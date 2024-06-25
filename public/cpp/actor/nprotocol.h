@@ -800,7 +800,7 @@ namespace ngl
 		def_portocol(np_actor_logitem, m_data)
 	};
 
-	template <typename TDB>
+	template <typename TDATA>
 	struct np_channel_register
 	{
 		i64_actorid				m_actorid;
@@ -808,18 +808,18 @@ namespace ngl
 		def_portocol(np_channel_register, m_actorid, m_dataid)
 	};
 
-	template <typename TDB>
+	template <typename TDATA>
 	struct np_channel_register_reply
 	{
 		i64_actorid m_actorid;
 		def_portocol(np_channel_register_reply, m_actorid)
 	};
 
-	template <typename TDB>
+	template <typename TDATA>
 	struct np_channel_data
 	{
-		protobuf_data<std::map<int64_t, TDB>> m_data;
-		def_portocol(np_channel_data<TDB>, m_data)
+		protobuf_data<std::map<int64_t, TDATA>> m_data;
+		def_portocol(np_channel_data<TDATA>, m_data)
 	};
 
 

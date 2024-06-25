@@ -9,7 +9,11 @@
 
 namespace ngl
 {
-	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
+	template <
+		pbdb::ENUM_DB TDBTAB_TYPE, 
+		typename TDBTAB, 
+		typename TACTOR
+	>
 	class typedb
 	{
 		typedb() = delete;
@@ -25,6 +29,13 @@ namespace ngl
 		// [aregister == false] 实例化db_actor,db server需要
 		static void init(bool aregister);
 	};
+
+	template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
+	void ndb_modular<ENUM, TDATA, TACTOR>::init_data()
+	{
+		initdata();
+		typedb<ENUM, TDATA, TACTOR>::nsp_ser::sync();
+	}
 
 	class actor_login;
 	using tdb_account

@@ -209,11 +209,12 @@ bool start_world()
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
 
-	ngl::actor_notice::getInstance();
 	ngl::actor_gm::getInstance();
 	ngl::actor_mail::getInstance();
 	ngl::actor_chat::getInstance();
 	ngl::actor_brief::getInstance();
+	ngl::actor_notice::getInstance();
+	ngl::actor_keyvalue::getInstance();
 	ngl::actor_manage_activity::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();

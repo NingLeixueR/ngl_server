@@ -185,10 +185,7 @@ namespace ngl
 		}
 
 		// 当数据全部加载后调用
-		virtual void init_data() final
-		{
-			initdata();
-		}
+		virtual void init_data() final;
 
 		virtual void initdata() = 0;
 

@@ -94,7 +94,14 @@ namespace ngl
 		{
 			if (m_type == ACTOR_NONE)
 			{
-				Throw("m_type == ACTOR_NONE");
+				log_error()->print(
+					"nactor_type<{}>::type() == ACTOR_NONE", 
+					tools::type_name<TACTOR>()
+				);
+				Throw(
+					"nactor_type<{}>::type() == ACTOR_NONE", 
+					tools::type_name<TACTOR>()
+				);
 			}
 			return m_type;
 		}

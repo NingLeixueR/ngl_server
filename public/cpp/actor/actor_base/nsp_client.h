@@ -119,7 +119,7 @@ namespace ngl
 				tools::type_name<TDerived>(),
 				tools::type_name<T>()
 			);
-			auto pro = std::make_shared<np_channel_register_reply<T>>();
+			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
 			actor::static_send_actor(m_nspserver, nguid::make(), pro);
 		}
