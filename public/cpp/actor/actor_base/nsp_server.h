@@ -109,10 +109,15 @@ namespace ngl
 			for (std::pair<const i64_actorid, std::set<i64_actorid>>& lpair : 
 				m_publishlist)
 			{
-				if (lpair.second.empty() || lpair.second == aactorid)
+				if (!lpair.second.empty())
 				{
-					actor::static_send_actor(lpair.first, nguid::make(), apro);
+					continue;
 				}
+				if (lpair.second.find(aactorid) == lpair.second.end())
+				{
+					continue;
+				}
+				actor::static_send_actor(lpair.first, nguid::make(), apro);
 			}
 		}
 	};
