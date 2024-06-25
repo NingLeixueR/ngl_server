@@ -156,8 +156,9 @@ void init_DB_KEYVAL()
 {
 	pbdb::db_keyvalue ltemp;
 	ltemp.set_m_id(pbdb::db_keyvalue_ekv_serveropentime);
-	std::string ltimestr = ngl::localtime::time2str("%y/%m/%d %H:%M:%S");
-	ltemp.set_m_value(ltimestr.c_str());
+	int lnow = ngl::localtime::gettime();
+	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
+	ltemp.set_m_value(ltempstr);
 	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
 }
 
