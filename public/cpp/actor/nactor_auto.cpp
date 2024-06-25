@@ -139,6 +139,11 @@ namespace ngl
 				, null<actor_plays>, em_pram(ACTOR_PLAYS)
 			);
 
+#define DEF_CHANNEL(TDB)						\
+			np_channel_register<TDB>			\
+			, np_channel_register_reply<TDB>	\
+			, np_channel_data<TDB>
+
 			// 新增内部协议需要补充
 			tprotocol::customs::template func <
 				/*200000001*/np_gm
@@ -170,16 +175,18 @@ namespace ngl
 				/*200000027*/, np_actor_kcp
 				/*200000028*/, np_calendar
 				/*200000029*/, np_actor_close
-				/*200000030*/, np_channel_register
-				/*200000031*/, np_channel_register_reply
-				/*200000032*/, np_channel_data<pbdb::db_brief>
+				/*200000030 - 200000032*/, DEF_CHANNEL(pbdb::db_brief)
+				/*200000033 - 200000035*/, DEF_CHANNEL(pbdb::db_keyvalue)
 			> (EPROTOCOL_TYPE_CUSTOM);
+
+
 		}
 		
 		// 新增数据存储需要补全
 		tdb_ranklist::init(aregister);
 		tdb_calendar::init(aregister);
 		tdb_activity::init(aregister);
+		tdb_keyvalue::init(aregister);
 		tdb_account::init(aregister);
 		tdb_notice::init(aregister);
 		tdb_rolekv::init(aregister);

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-06-24 11:44:05
+// 创建时间 24-06-25 09:58:24
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -20,6 +20,7 @@
 #include "actor_gatewayg2c.cpp"
 #include "actor_gm.cpp"
 #include "actor_kcp.cpp"
+#include "actor_keyvalue.cpp"
 #include "actor_log.cpp"
 #include "actor_login.cpp"
 #include "actor_mail.cpp"

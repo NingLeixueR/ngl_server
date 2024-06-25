@@ -800,6 +800,7 @@ namespace ngl
 		def_portocol(np_actor_logitem, m_data)
 	};
 
+	template <typename TDB>
 	struct np_channel_register
 	{
 		i64_actorid				m_actorid;
@@ -807,6 +808,7 @@ namespace ngl
 		def_portocol(np_channel_register, m_actorid, m_dataid)
 	};
 
+	template <typename TDB>
 	struct np_channel_register_reply
 	{
 		i64_actorid m_actorid;

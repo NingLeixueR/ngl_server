@@ -58,8 +58,8 @@ namespace ngl
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM,
 				TDerived,
-				np_channel_register_reply
-			>([](TDerived* apTDerived, message<np_channel_register_reply>& ainfo)
+				np_channel_register_reply<T>
+			>([](TDerived* apTDerived, message<np_channel_register_reply<T>>& ainfo)
 				{
 					m_actor->log_error()->print(
 						"nsp_client register reply {}:{}",
@@ -119,9 +119,8 @@ namespace ngl
 				tools::type_name<TDerived>(),
 				tools::type_name<T>()
 			);
-			auto pro = std::make_shared<np_channel_register>();
+			auto pro = std::make_shared<np_channel_register_reply<T>>();
 			pro->m_actorid = m_actor->id_guid();
-			pro->m_dataid = m_dataid;
 			actor::static_send_actor(m_nspserver, nguid::make(), pro);
 		}
 	};

@@ -181,14 +181,14 @@ PROTOBUF_NAMESPACE_CLOSE
 namespace pbdb {
 
 enum db_keyvalue_ekv : int {
-  db_keyvalue_ekv_ekv_none = 0,
-  db_keyvalue_ekv_ekv_serveropentime = 1,
+  db_keyvalue_ekv_none = 0,
+  db_keyvalue_ekv_serveropentime = 1,
   db_keyvalue_ekv_db_keyvalue_ekv_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   db_keyvalue_ekv_db_keyvalue_ekv_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool db_keyvalue_ekv_IsValid(int value);
-constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MIN = db_keyvalue_ekv_ekv_none;
-constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MAX = db_keyvalue_ekv_ekv_serveropentime;
+constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MIN = db_keyvalue_ekv_none;
+constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MAX = db_keyvalue_ekv_serveropentime;
 constexpr int db_keyvalue_ekv_ekv_ARRAYSIZE = db_keyvalue_ekv_ekv_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* db_keyvalue_ekv_descriptor();
@@ -1550,10 +1550,10 @@ class db_keyvalue PROTOBUF_FINAL :
   // nested types ----------------------------------------------------
 
   typedef db_keyvalue_ekv ekv;
-  static constexpr ekv ekv_none =
-    db_keyvalue_ekv_ekv_none;
-  static constexpr ekv ekv_serveropentime =
-    db_keyvalue_ekv_ekv_serveropentime;
+  static constexpr ekv none =
+    db_keyvalue_ekv_none;
+  static constexpr ekv serveropentime =
+    db_keyvalue_ekv_serveropentime;
   static inline bool ekv_IsValid(int value) {
     return db_keyvalue_ekv_IsValid(value);
   }

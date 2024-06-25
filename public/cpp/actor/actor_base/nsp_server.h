@@ -24,12 +24,12 @@ namespace ngl
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM,
 				TDerived,
-				np_channel_register
-			>([](TDerived* apTDerived, message<np_channel_register>& adata)
+				np_channel_register<TDATA>
+			>([](TDerived* apTDerived, message<np_channel_register<TDATA>>& adata)
 				{
 					auto& recv = *adata.get_data();
 					m_publishlist[recv.m_actorid] = recv.m_dataid;
-					auto pro = std::make_shared<np_channel_register_reply>();
+					auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 					pro->m_actorid = recv.m_actorid;
 					m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
 					m_dbmodule->log_error()->print(
@@ -88,7 +88,6 @@ namespace ngl
 					if (lvec.empty())
 						continue;
 				}
-
 				actor::static_send_actor(lpair.first, nguid::make(), apro);
 			}
 		}

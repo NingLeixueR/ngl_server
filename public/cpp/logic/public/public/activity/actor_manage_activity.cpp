@@ -1,4 +1,5 @@
 #include "actor_manage_activity.h"
+#include "actor_keyvalue.h"
 #include "ttab_calendar.h"
 #include "actor_brief.h"
 #include "activity.h"
@@ -20,7 +21,14 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_manage_activity>::init(actor_brief::actorid(), this, ldataid);
+		tdb_brief::nsp_cli<actor_manage_activity>::init(
+			actor_brief::actorid(), this, ldataid);
+		std::set<i64_actorid> ldatakvid = 
+		{ 
+			pbdb::db_keyvalue_ekv_serveropentime 
+		};
+		tdb_keyvalue::nsp_cli<actor_manage_activity>::init(
+			actor_keyvalue::actorid(), this, ldatakvid);
 	}
 
 	void actor_manage_activity::nregister()

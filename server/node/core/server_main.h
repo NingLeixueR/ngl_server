@@ -152,6 +152,15 @@ void init_DB_NOTICE()
 	}
 }
 
+void init_DB_KEYVAL()
+{
+	pbdb::db_keyvalue ltemp;
+	ltemp.set_m_id(pbdb::db_keyvalue_ekv_serveropentime);
+	std::string ltimestr = ngl::localtime::time2str("%y/%m/%d %H:%M:%S");
+	ltemp.set_m_value(ltimestr.c_str());
+	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
+}
+
 
 bool start_db(int argc, char** argv)
 {
