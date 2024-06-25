@@ -190,6 +190,7 @@ bool start_db(int argc, char** argv)
 		init_DB_BAG();
 		init_DB_NOTICE();
 		init_DB_TASK();
+		init_DB_KEYVAL();
 	}
 
 	return true;

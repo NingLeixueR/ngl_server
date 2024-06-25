@@ -42,7 +42,7 @@ namespace ngl
 	using tdb_task		
 		= typedb<pbdb::ENUM_DB_TASK, pbdb::db_task, actor_role>;
 	using tdb_rolekv		
-		= typedb<pbdb::ENUM_DB_KEYVALUE, pbdb::db_rolekeyvalue, actor_role>;
+		= typedb<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue, actor_role>;
 
 	class actor_mail;
 	using tdb_mail		

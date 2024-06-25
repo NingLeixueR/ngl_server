@@ -21,14 +21,12 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_manage_activity>::init(
-			actor_brief::actorid(), this, ldataid);
+		nclient_brief::init(actor_brief::actorid(), this, ldataid);
 		std::set<i64_actorid> ldatakvid = 
 		{ 
 			pbdb::db_keyvalue_ekv_serveropentime 
 		};
-		tdb_keyvalue::nsp_cli<actor_manage_activity>::init(
-			actor_keyvalue::actorid(), this, ldatakvid);
+		nclient_keyvalue::init(actor_keyvalue::actorid(), this, ldatakvid);
 	}
 
 	void actor_manage_activity::nregister()

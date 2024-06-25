@@ -178,8 +178,6 @@ namespace ngl
 				/*200000030 - 200000032*/, DEF_CHANNEL(pbdb::db_brief)
 				/*200000033 - 200000035*/, DEF_CHANNEL(pbdb::db_keyvalue)
 			> (EPROTOCOL_TYPE_CUSTOM);
-
-
 		}
 		
 		// 新增数据存储需要补全

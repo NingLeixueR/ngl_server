@@ -29,6 +29,9 @@ namespace ngl
 
 		activitydb m_db;
 		std::map<int64_t, std::shared_ptr<activity>> m_allactivity;
+
+		using nclient_brief		= tdb_brief::nsp_cli<actor_manage_activity>;
+		using nclient_keyvalue	= tdb_keyvalue::nsp_cli<actor_manage_activity>;
 	public:
 		friend class actor_instance<actor_manage_activity>;
 		static actor_manage_activity& getInstance()

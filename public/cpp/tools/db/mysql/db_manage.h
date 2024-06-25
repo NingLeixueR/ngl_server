@@ -85,6 +85,11 @@ namespace ngl
 			if (llen <= 0)
 				return;
 			adb->stmt_query(lbuff, llen, lbind);
+			log_error()->print(
+				"INSERT INTO {} (id,data)VALUES({},[bindata])"
+				, protobuf_tabname<T>::tabname().c_str()
+				, adata.m_id()
+			);
 		}
 
 		template <typename T>
