@@ -22,6 +22,7 @@ namespace ngl
 	public:
 		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
+		// 订阅/发布[数据副本]
 		using nsp_ser	 = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cli	 = nsp_client<TDerived, TDBTAB>;

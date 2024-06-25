@@ -23,14 +23,14 @@
 #include "actor_chat.h"
 #include "actor_mail.h"
 #include "actor_role.h"
-#include "actor_kcp.h"
-#include "actor_log.h"
-#include "actor_db.h"
-#include "actor_gm.h"
 #include "nactortype.h"
 #include "enum2name.h"
+#include "actor_kcp.h"
+#include "actor_log.h"
 #include "tprotocol.h"
 #include "nprotocol.h"
+#include "actor_db.h"
+#include "actor_gm.h"
 #include "ntimer.h"
 #include "net.pb.h"
 #include "actor.h"
@@ -97,7 +97,12 @@ namespace ngl
 	}
 
 	template <typename TACTOR, typename ...ARG>
-	void auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg)
+	void auto_actor(
+		const TACTOR* aactor, 
+		ENUM_ACTOR aenum, 
+		const char* aname, 
+		const ARG&... arg
+	)
 	{
 		auto_actor<TACTOR>(aactor, aenum, aname);
 		auto_actor(arg...);
