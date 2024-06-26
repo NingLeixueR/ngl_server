@@ -18,7 +18,7 @@ namespace ngl
 				const pbdb::mailitem&  lmailitem = ltemp->m_items()[i];
 				pro->m_item.insert({ lmailitem.m_itemtid(),lmailitem.m_count() });
 			}
-			actor_base::static_send_actor(aroleid, actor()->id_guid(), pro);
+			actor::static_send_actor(aroleid, actor()->id_guid(), pro);
 		}
 		else
 		{// Ò»¼üÁìÈ¡

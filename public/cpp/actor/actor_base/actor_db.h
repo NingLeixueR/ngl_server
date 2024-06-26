@@ -121,7 +121,6 @@ namespace ngl
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 				log_info()->print("loadall[{}]", TDBTAB().descriptor()->full_name());
 			}Catch;
-			
 		}
 
 		// # 加载表中的指定数据
@@ -130,7 +129,9 @@ namespace ngl
 			if (aid == -1)
 				return;
 			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
+			{
 				db_manage::select<TDBTAB>(actor_dbpool::get(athreadid), aid);
+			}
 		}
 
 		// # 加载数据 ：同步方式
@@ -334,10 +335,10 @@ namespace ngl
 				handle_cmd::push("query", [this](int athread, int id, ngl::json_read& aos)
 					{
 						gcmd<std::string> pro;
-						pro.id = id;
-						pro.m_operator = "query_responce";
-						pro.m_data = "";
-						int64_t lid = 0;
+						pro.id			= id;
+						pro.m_operator	= "query_responce";
+						pro.m_data		= "";
+						int64_t lid		= 0;
 						if (aos.read("data", lid) == false)
 							return;
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
@@ -400,6 +401,6 @@ namespace ngl
 
 		ENUM_ACTOR ltype = nactor_type<actor_db<TDBTAB_TYPE, TDBTAB>>::type();
 		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nguid::none_actordataid());
-		actor_base::static_send_actor(lactorid, nguid::make(), pro);
+		actor::static_send_actor(lactorid, nguid::make(), pro);
 	}
 }//namespace ngl

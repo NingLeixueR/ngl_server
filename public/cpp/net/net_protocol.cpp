@@ -51,7 +51,7 @@ namespace ngl
 			auto pro = std::make_shared<np_actor_session_close>();
 			pro->m_sessionid = asession;
 			i64_actorid lactorid = actor_gateway::actorid(nconfig::m_nodeid);
-			actor_base::static_send_actor(lactorid, nguid::make(), pro);
+			actor::static_send_actor(lactorid, nguid::make(), pro);
 
 			server_session::remove(asession);
 		}

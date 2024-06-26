@@ -47,11 +47,11 @@ namespace ngl
 					tab_self_area, 
 					lp->m_gatewayid
 				);
-				actor_base::static_send_actor(lactorgatewayid, nguid::make(), pro);
+				actor::static_send_actor(lactorgatewayid, nguid::make(), pro);
 			}
 			// # 3 发给去的进程
 			i64_actorid lactortoserverid = actor_create::actorid(pro->m_toserverid);
-			actor_base::static_send_actor(lactortoserverid, nguid::make(), pro);
+			actor::static_send_actor(lactortoserverid, nguid::make(), pro);
 		}
 
 		template <typename T>
@@ -75,7 +75,7 @@ namespace ngl
 			{
 				// # 1 发给actor目前所在的进程
 				i64_actorid lcreateactor = actor_create::actorid(aserverid);
-				actor_base::static_send_actor(lcreateactor, nguid::make(), pro);
+				actor::static_send_actor(lcreateactor, nguid::make(), pro);
 			}
 			else
 			{
