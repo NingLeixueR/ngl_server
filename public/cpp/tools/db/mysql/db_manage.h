@@ -14,24 +14,6 @@
 
 namespace ngl
 {
-	template <typename T>
-	class protobuf_tabname
-	{
-		static std::string m_dbtabname;
-	public:
-		static std::string& tabname()
-		{
-			if (m_dbtabname.empty())
-			{
-				m_dbtabname = T().descriptor()->full_name();
-				ngl::tools::replace("pbdb.", "", m_dbtabname, m_dbtabname);
-			}
-			return m_dbtabname;
-		}
-	};
-
-	template <typename T>
-	std::string protobuf_tabname<T>::m_dbtabname;
 
 	class db_manage
 	{ 
@@ -78,7 +60,7 @@ namespace ngl
 				lbuff
 				, 1024
 				, "INSERT INTO %s (id,data)VALUES(%lld,?)  ON DUPLICATE KEY UPDATE data=values(data);"
-				, protobuf_tabname<T>::tabname().c_str()
+				, tools::protobuf_tabname<T>::tabname().c_str()
 				, adata.m_id()
 			);
 
@@ -87,7 +69,7 @@ namespace ngl
 			adb->stmt_query(lbuff, llen, lbind);
 			log_error()->print(
 				"INSERT INTO {} (id,data)VALUES({},[bindata])"
-				, protobuf_tabname<T>::tabname().c_str()
+				, tools::protobuf_tabname<T>::tabname().c_str()
 				, adata.m_id()
 			);
 		}
@@ -101,7 +83,7 @@ namespace ngl
 				log_error()->print(
 					"save by id[{}] !!![{}]",
 					aid,
-					protobuf_tabname<T>::tabname()
+					tools::protobuf_tabname<T>::tabname()
 				);
 				return;
 			}
@@ -125,7 +107,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"DELETE FROM %s WHERE id='%lld';",
-				protobuf_tabname<T>::tabname().c_str(),
+				tools::protobuf_tabname<T>::tabname().c_str(),
 				aid
 			);
 			if (llen <= 0)
@@ -142,7 +124,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id,data FROM %s WHERE id = '%lld';",
-				protobuf_tabname<T>::tabname().c_str(),
+				tools::protobuf_tabname<T>::tabname().c_str(),
 				aid
 			);
 			if (llen <= 0)
@@ -174,7 +156,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id,data FROM %s;",
-				protobuf_tabname<T>::tabname().c_str()
+				tools::protobuf_tabname<T>::tabname().c_str()
 			);
 			if (llen <= 0)
 				return false;
@@ -206,7 +188,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id FROM %s;",
-				protobuf_tabname<T>::tabname().c_str()
+				tools::protobuf_tabname<T>::tabname().c_str()
 			);
 			if (llen <= 0)
 				return false;

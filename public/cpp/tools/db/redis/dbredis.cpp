@@ -4,9 +4,6 @@
 
 namespace ngl
 {
-	//redis_cmd::redis_cmd(redisContext* arc) :
-	//	m_rc(arc) {}
-
 	redisReply* redis_cmd::cmd(redisContext* arc, const char* format, ...)
 	{
 		redisReply* lreply;
@@ -59,36 +56,34 @@ namespace ngl
 			return;
 		}
 	}
+}
 
+#include "ttab_servers.h"
+
+namespace ngl
+{
 	void test_hiredis()
 	{
-		//ngl::redis_arg larg;
-		//larg.m_ip = "127.0.0.1";
-		//larg.m_port = 6379;
-		//larg.m_passworld = "123456";
-		//ngl::redis lredis(larg);
+		ngl::redis_arg larg;
+		larg.m_ip = "127.0.0.1";
+		larg.m_port = 6379;
+		larg.m_passworld = "123456";
+		ngl::redis lredis(larg);
 
-		//for (int i = 1; i < 10; ++i)
-		//{
-		//	DB_ROLE ltemp;
-
-		//	ltemp.mm_id() = ngl::nguid::make(ngl::ACTOR_ROLE, 1, i);
-		//	ltemp.mm_name() = "libo";
-		//	ltemp.mm_name() += tools::lexical_cast<std::string>(i);
-		//	ltemp.mm_lv() = i;
-		//	ltemp.mm_gold() = i;// 金币
-		//	ltemp.mm_mapid() = i;// 所在地图
-		//	// 当前位置 
-		//	ltemp.mm_pos().x = i;
-		//	ltemp.mm_pos().y = i;
-		//	ltemp.mm_pos().z = i;
-		//	// 方向向量(m_orientation * movespeed * 时间)
-		//	ltemp.mm_orientation().x = i;
-		//	ltemp.mm_orientation().y = i;
-		//	ltemp.mm_orientation().z = i;
-		//	lredis.set(i, ltemp);
-		//}
-		//DB_ROLE ltemp2;
-		//lredis.get(1, ltemp2);
+		for (int i = 1; i < 10; ++i)
+		{
+			pbdb::db_role ltemp;
+			ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
+			ltemp.set_m_id(lid);
+			pbdb::db_brief* lrolebase = ltemp.mutable_m_base();
+			lrolebase->set_m_id(lid);
+			lrolebase->set_m_name(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
+			lrolebase->set_m_lv(i);
+			lrolebase->set_m_moneygold(i + 1000);
+			lrolebase->set_m_moneysilver(i + 2000);
+			lredis.set(i, ltemp);
+		}
+		pbdb::db_role ltemp2;
+		lredis.get(1, ltemp2);
 	}
 }// namespace ngl

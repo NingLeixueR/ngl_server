@@ -18,11 +18,7 @@ namespace ngl
 
 	class redis_cmd
 	{
-		//redisContext* m_rc;
-		//redis_cmd();
 	public:
-		//redis_cmd(redisContext* arc);
-
 		static redisReply* cmd(redisContext* arc, const char* format, ...);
 
 		template <typename T>
@@ -80,7 +76,9 @@ namespace ngl
 			ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
 			if (adata.push(lflow))
 			{
-				redisReply* lreply = cmd(arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte());
+				redisReply* lreply = cmd(
+					arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte()
+				);
 				if (lreply != nullptr)
 				{
 					freeReplyObject(lreply);
@@ -116,7 +114,8 @@ namespace ngl
 		template <typename T>
 		bool set(int akey, T& adata)
 		{
-			return redis_cmd::set(m_rc, T::name(), akey, adata);
+			std::string lname = tools::protobuf_tabname<T>::tabname();
+			return redis_cmd::set(m_rc, lname.c_str(), akey, adata);
 		}
 
 		template <typename T>

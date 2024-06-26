@@ -537,5 +537,24 @@ namespace ngl
 			std::string lname = typeid(T).name();
 			return std::move(lname);
 		}
+
+		template <typename T>
+		class protobuf_tabname
+		{
+			static std::string m_dbtabname;
+		public:
+			static std::string& tabname()
+			{
+				if (m_dbtabname.empty())
+				{
+					m_dbtabname = T().descriptor()->full_name();
+					ngl::tools::replace("pbdb.", "", m_dbtabname, m_dbtabname);
+				}
+				return m_dbtabname;
+			}
+		};
 	};
+
+	template <typename T>
+	std::string tools::protobuf_tabname<T>::m_dbtabname;
 }//namespace ngl
