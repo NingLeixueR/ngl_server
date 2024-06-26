@@ -24,12 +24,6 @@ namespace ngl
 			std::shared_ptr<np_channel_data<TDATA>>& apro
 		)
 		{
-			m_dbmodule->log_error()->print(
-				"nsp_server publish {}:{}:{}",
-				tools::type_name<TDerived>(),
-				tools::type_name<TDATA>(),
-				aactoridset
-			);
 			for (std::pair<const i64_actorid, std::set<i64_actorid>>& lpair :
 				m_publishlist)
 			{
@@ -53,12 +47,6 @@ namespace ngl
 			std::shared_ptr<np_channel_data<TDATA>>& apro
 		)
 		{
-			m_dbmodule->log_error()->print(
-				"nsp_server publish {}:{}:{}",
-				tools::type_name<TDerived>(),
-				tools::type_name<TDATA>(),
-				aactorid
-			);
 			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
 			if (lp == nullptr)
 				return;
@@ -93,13 +81,6 @@ namespace ngl
 					auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 					pro->m_actorid = recv.m_actorid;
 					m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
-					m_dbmodule->log_error()->print(
-						"nsp_server register {}#{} actorid{} dataid{}",
-						tools::type_name<TDerived>(),
-						tools::type_name<TDATA>(),
-						nguid(recv.m_actorid),
-						recv.m_dataid
-					);
 					// # 同步需要的数据
 					sync(recv.m_actorid);
 				});
