@@ -18,7 +18,10 @@ namespace ngl
 		m_thread(&tconsuming_thread::run, this)
 	{}
 
-	int32_t tconsuming_thread::add(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun)
+	int32_t tconsuming_thread::add(
+		const std::string& aname, 
+		const std::function<bool(int64_t, int64_t)>& afun
+	)
 	{
 		monopoly_shared_lock(m_mutex);
 		m_list.emplace_back(new tconsuming(aname, afun));

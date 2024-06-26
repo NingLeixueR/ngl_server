@@ -6,7 +6,7 @@
 namespace ngl
 {
 	bag::bag()
-		: m_autoitem(new autoitem())
+		: m_autoitem(std::make_unique<autoitem>())
 	{}
 
 	pbdb::db_bag& bag::get_bag()

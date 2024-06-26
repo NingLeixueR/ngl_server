@@ -12,10 +12,11 @@ namespace ngl
 				return false;
 			if (ltemp->m_draw() == true)
 				return false;
-			std::shared_ptr<np_actor_senditem> pro(new np_actor_senditem());
+			auto pro = std::make_shared<np_actor_senditem>();
 			for (int i = 0; i < ltemp->m_items_size(); ++i)
 			{
-				pro->m_item.insert({ ltemp->m_items()[i].m_itemtid(), ltemp->m_items()[i].m_count()});
+				const pbdb::mailitem&  lmailitem = ltemp->m_items()[i];
+				pro->m_item.insert({ lmailitem.m_itemtid(),lmailitem.m_count() });
 			}
 			actor_base::static_send_actor(aroleid, actor()->id_guid(), pro);
 		}

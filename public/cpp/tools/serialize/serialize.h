@@ -694,7 +694,7 @@ namespace ngl
 		template <typename T>
 		inline bool pop(std::shared_ptr<T>& adata)
 		{
-			adata = std::shared_ptr<T>(new T());
+			adata = std::make_shared<T>();
 			return pop(*adata);
 		}
 

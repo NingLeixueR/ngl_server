@@ -396,11 +396,14 @@ namespace ngl
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	template <typename TDB>
-	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
+	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(
+		enum_cache_list atype, 
+		std::set<i64_actorid>& aset
+	)
 	{
 		if (aset.empty())
 			return;
-		std::shared_ptr<np_actortime_db_cache<TDB>> pro(new np_actortime_db_cache<TDB>());
+		auto pro = std::make_shared<np_actortime_db_cache<TDB>>();
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
 

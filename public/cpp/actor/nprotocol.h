@@ -222,7 +222,9 @@ namespace ngl
 		T* add_data()
 		{
 			if (m_data == nullptr)
-				m_data = std::shared_ptr<T>(new T());
+			{
+				m_data = std::make_shared<T>();
+			}				
 			return m_data.get();
 		}
 
@@ -263,7 +265,9 @@ namespace ngl
 			if (ser.pop(m_identifier) == false)
 				return false;
 			if (m_data == nullptr)
-				m_data = std::shared_ptr<T>(new T());
+			{
+				m_data = std::make_shared<T>();
+			}				
 			return m_data->ParseFromArray(&ser.buff()[ser.byte()], ser.len() - ser.byte());
 		}
 

@@ -332,8 +332,8 @@ namespace ngl
 
 		inline int32_t set_timer(const timerparm& aparm)
 		{
-			std::shared_ptr<timerparm> lptr(new timerparm(aparm));
-			return ntimer::addtimer(m_actor, lptr);
+			auto lparm = std::make_shared<timerparm>(aparm);
+			return ntimer::addtimer(m_actor, lparm);
 		}
 
 		inline bool isbroadcast()

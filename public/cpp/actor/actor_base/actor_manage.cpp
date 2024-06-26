@@ -71,17 +71,14 @@ namespace ngl
 			if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
 			{
 				// 新增的actor 
-				std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass
-					{
-						.m_mass = np_actornode_update
-						{
-							.m_id = nconfig::m_nodeid,
-							.m_add = {guid},
-							.m_actorservermass = false
-						},
-						.m_fun = afun,
-					});
-
+				auto pro = std::make_shared<np_actornode_update_mass>();
+				pro->m_mass = np_actornode_update
+				{
+					.m_id = nconfig::m_nodeid,
+					.m_add = {guid},
+					.m_actorservermass = false
+				};
+				pro->m_fun = afun;
 				nguid lclientguid = actor_client::actorid();
 				handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);
 				push_task_id(lclientguid, lparm, false);
@@ -96,14 +93,12 @@ namespace ngl
 		inline void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun)
 		{
 			bool isrunfun = false;
-			std::shared_ptr<np_actornode_update_mass> pro(new np_actornode_update_mass
-				{
-					.m_mass = np_actornode_update
-					{
-						.m_id = nconfig::m_nodeid,
-						.m_del = {aguid.id()}
-					},
-				});
+			auto pro = std::make_shared<np_actornode_update_mass>();
+			pro->m_mass = np_actornode_update
+			{
+				.m_id = nconfig::m_nodeid,
+				.m_del = {aguid.id()}
+			};
 			// 删除的actor 
 			nguid lclientguid = actor_client::actorid();
 			handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);

@@ -161,7 +161,7 @@ namespace ngl
 			}
 			if (aconv <= 0)
 				return nullptr;
-			ptr_se ltemp(new session_endpoint());
+			auto ltemp = std::make_shared<session_endpoint>();
 			m_dataofsession[++m_sessionid] = ltemp;
 			ltemp->m_session = m_sessionid;
 			ltemp->m_endpoint = aendpoint;

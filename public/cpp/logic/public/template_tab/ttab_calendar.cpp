@@ -9,10 +9,10 @@ namespace ngl
 
 	void send_calendar(tab_calendar* atab, int64_t autc, bool astart)
 	{
-		std::shared_ptr<np_calendar> pro(new np_calendar());
+		auto pro = std::make_shared<np_calendar>();
 		pro->m_calendarid = atab->m_id;
-		pro->m_start = astart;
-		pro->m_time = autc;
+		pro->m_start	  = astart;
+		pro->m_time		  = autc;
 		actor::static_send_actor(actor_calendar::actorid(), nguid::make(), pro);
 	}
 

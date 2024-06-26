@@ -48,12 +48,8 @@ namespace ngl
 
 		inline void close(i32_sessionid asession)
 		{
-			std::shared_ptr<np_actor_session_close> pro(
-				new np_actor_session_close
-				{ 
-					.m_sessionid = asession 
-				}
-			);
+			auto pro = std::make_shared<np_actor_session_close>();
+			pro->m_sessionid = asession;
 			i64_actorid lactorid = actor_gateway::actorid(nconfig::m_nodeid);
 			actor_base::static_send_actor(lactorid, nguid::make(), pro);
 

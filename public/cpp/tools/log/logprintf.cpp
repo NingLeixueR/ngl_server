@@ -200,11 +200,11 @@ namespace ngl
 		switch (aconfig.m_type)
 		{
 		case ELOG_LOCAL:
-			return std::shared_ptr<logfile>(new logfile_default(aisactor, aconfig));
+			return std::make_shared<logfile_default>(aisactor, aconfig);
 		case ELOG_NETWORK:
-			return std::shared_ptr<logfile>(new logfile_default(aisactor, aconfig));
+			return std::make_shared<logfile_default>(aisactor, aconfig);
 		case ELOG_BI:
-			return std::shared_ptr<logfile>(new logfile_bi(aisactor, aconfig));
+			return std::make_shared<logfile_bi>(aisactor, aconfig);
 		}
 		return nullptr;
 	}

@@ -149,10 +149,18 @@ namespace ngl
 
 		static bool parse_command(std::vector<std::string>& aparm)
 		{
-			std::shared_ptr<np_robot_pram> ldata(new np_robot_pram());
+			auto ldata = std::make_shared<np_robot_pram>();
 			ldata->m_parm.swap(aparm);
-			i64_actorid lid = ngl::nguid::make(ACTOR_MANAGE_ROBOT, tab_self_area, nconfig::m_nodeid);
-			handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
+			i64_actorid lid = ngl::nguid::make(
+				ACTOR_MANAGE_ROBOT, 
+				tab_self_area, 
+				nconfig::m_nodeid
+			);
+			handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(
+				lid, 
+				nguid::moreactor(), 
+				ldata
+			);
 			actor_manage::getInstance().push_task_id(lid, lparm, false);
 			return true;
 		}
@@ -164,14 +172,18 @@ namespace ngl
 			auto lrecv = adata.get_data();
 			if (lrecv->m_parm.size() > 1)
 			{
-				std::transform(lrecv->m_parm[1].begin(), lrecv->m_parm[1].end(), lrecv->m_parm[1].begin(), tolower);
+				std::string& lparm = lrecv->m_parm[1];
+				std::transform(lparm.begin(), lparm.end(), lparm.begin(), tolower);
 			}
 
 			if (handle_cmd::empty())
 			{
 				handle_cmd::push("logins", [this](std::vector<std::string>& avec)
 					{
-						create_robots(avec[1], tools::lexical_cast<int>(avec[2].c_str()), tools::lexical_cast<int>(avec[3]));
+						std::string& lrobotname = avec[1];
+						int lbeg = tools::lexical_cast<int>(avec[2].c_str());
+						int lend = tools::lexical_cast<int>(avec[3].c_str());
+						create_robots(lrobotname, lbeg, lend);
 					});
 				handle_cmd::push("login", [this](std::vector<std::string>& avec)
 					{

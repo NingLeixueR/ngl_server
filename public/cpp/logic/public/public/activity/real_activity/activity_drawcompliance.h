@@ -15,15 +15,10 @@ namespace ngl
 			activitydb& adb
 		)
 		{
-			std::shared_ptr<activity> lret(
-				new activity_drawcompliance(
-					acalendarid, 
-					aactivityid, 
-					atime, 
-					adb
-				)
+			std::shared_ptr<activity> ret = std::make_shared<activity_drawcompliance>(
+				acalendarid, aactivityid, atime, adb
 			);
-			return lret;
+			return ret;
 		}
 	public:
 

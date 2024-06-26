@@ -91,13 +91,15 @@ namespace ngl
 					m_info.remove_actorid(nguid::make(ACTOR_NONE, larea, lroleid));
 				}
 
-				update_gateway_info(new np_actor_gatewayinfo_updata{.m_delactorid = {nguid::make(ACTOR_NONE, larea, lroleid)} });
+				update_gateway_info(new np_actor_gatewayinfo_updata
+					{
+						.m_delactorid = {nguid::make(ACTOR_NONE, larea, lroleid)} 
+					}
+				);
 
 				{
-					std::shared_ptr<np_actor_disconnect_close> pro(new np_actor_disconnect_close
-						{
-							.m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid),
-						});
+					auto pro = std::make_shared<np_actor_disconnect_close>();
+					pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
 					// ##### 通知game服务器 玩家已经断开连接
 					send_actor(pro->m_actorid, pro);
 					// ##### 通知login服务器 玩家已经断开连接
@@ -172,11 +174,14 @@ namespace ngl
 						linfo->m_socket = 0;
 						if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 						{
-							update_gateway_info(new np_actor_gatewayinfo_updata{.m_add = {*linfo} });
+							update_gateway_info(
+								new np_actor_gatewayinfo_updata{.m_add = {*linfo} }
+							);
 						}
 						// 断线重连或者其他设备顶号
 						pbnet::PROBUFF_NET_ROLE_SYNC pro;
-						nets::sendbyserver(linfo->m_gameid, pro, nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid()), id_guid());
+						i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
+						nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
 						return true;
 					}
 				}
@@ -293,7 +298,12 @@ namespace ngl
 				log_info()->print("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 			}
 
-			update_gateway_info(new np_actor_gatewayinfo_updata{.m_delsocket = {lpram->m_sessionid} });
+			update_gateway_info(
+				new np_actor_gatewayinfo_updata
+				{
+					.m_delsocket = {lpram->m_sessionid} 
+				}
+			);
 
 			m_info.remove_socket(lpram->m_sessionid);
 			return true;

@@ -10,6 +10,7 @@ namespace ngl
 
 	sem::~sem()
 	{
+		delete m_sem;
 	}
 
 	void sem::wait()

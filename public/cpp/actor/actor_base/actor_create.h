@@ -65,13 +65,11 @@ namespace ngl
 			if (aserverid == atoserverid)
 				return;
 
-			std::shared_ptr<np_actorswitch_process<T>> pro(new np_actorswitch_process<T>
-				{
-					.m_actor = aactor,
-					.m_serverid = aserverid,
-					.m_toserverid = atoserverid,
-					.m_pram = adata,
-				});
+			auto pro = std::make_shared<np_actorswitch_process<T>>();
+			pro->m_actor		= aactor;
+			pro->m_serverid		= aserverid;
+			pro->m_toserverid	= atoserverid;
+			pro->m_pram			= adata;
 
 			if (aserverid > 0)
 			{

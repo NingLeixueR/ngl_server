@@ -46,13 +46,5 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		/*bool handle(message<mforward<GM::PROBUFF_GM_GET_NOTICE>>& adata)
-		{
-			using type = mforward<GM::PROBUFF_GM_GET_NOTICE_RESPONSE>;
-			std::shared_ptr<type> pro(new type(adata.identifier()));
-			get_notice_list(*pro->add_data());
-			send_actor(nguid::make_self(ACTOR_GM), pro);
-			return true;
-		}*/
 	};
 }// namespace ngl

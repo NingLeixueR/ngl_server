@@ -77,7 +77,7 @@ namespace ngl
 			, int acount
 		)
 		{
-			log_error()->print("connect ip[{}] port[{}]", aip, aport);
+			log_error()->print("connect ip:port {}:{}", aip, aport);
 			service_tcp* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);

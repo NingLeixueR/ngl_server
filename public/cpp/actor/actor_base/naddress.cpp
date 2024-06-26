@@ -173,7 +173,10 @@ namespace ngl
 			m_rolegateway.erase(aguid);
 		}
 
-		static void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
+		static void get_gatewayid(
+			const std::set<nguid>& aactorset, 
+			std::set<i32_serverid>& aserverset
+		)
 		{
 			for (const nguid& iactorid : aactorset)
 			{

@@ -275,13 +275,15 @@ namespace ngl
 		, handle_pram& adata
 	)
 	{
-		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)adata.m_data.get();
+		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)
+			adata.m_data.get();
 		std::vector<i32_actordataid>& luid	= ldata->m_uid;
 		std::vector<i16_area>& larea		= ldata->m_area;
 		std::set<i32_serverid> lgateway;
 		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
 		{
-			i32_serverid lserverid = handle_pram::get_gatewayid(nguid::make(ACTOR_ROLE, larea[i], luid[i]));
+			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, larea[i], luid[i]);
+			i32_serverid lserverid = handle_pram::get_gatewayid(lroleactor);
 			if (lserverid > 0)
 				lgateway.insert(lserverid);
 		}

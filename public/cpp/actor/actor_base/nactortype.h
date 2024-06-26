@@ -117,4 +117,3 @@ namespace ngl
 	// # [aregister == false] 实例化db_actor,db server需要
 	void init_nactor_type(bool aregister);
 }//namespace ngl
-

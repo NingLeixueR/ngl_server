@@ -128,11 +128,9 @@ namespace ngl
 			{
 				tab_servers* tab = ttab_servers::tab();
 				Assert(tab != nullptr);
-				std::shared_ptr<np_actornode_connect_task> pro(new np_actornode_connect_task
-				{
-					.m_serverid = tab->m_db,
-					.m_fun = std::bind(&type_ndbclient::loaddb, this, m_id),
-				});
+				auto pro = std::make_shared<np_actornode_connect_task>();
+				pro->m_serverid = tab->m_db;
+				pro->m_fun = std::bind(&type_ndbclient::loaddb, this, m_id);
 				nguid lclientguid = actor_client::actorid();
 				actor_base::static_send_actor(lclientguid, m_actor->guid(), pro);
 			}Catch;
