@@ -184,7 +184,10 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 			{
-				log_error()->print("serialize::push<{}>(protobuf_data:std::vector)", dtype_name(T));
+				log_error()->print(
+					"serialize::push<{}>(protobuf_data:std::vector)", 
+					tools::type_name<T>()
+				);
 				return false;
 			}
 			if (adata.m_isbinary)
@@ -210,7 +213,10 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 			{
-				log_error()->print("serialize::push<{}>(protobuf_data:std::list)", dtype_name(T));
+				log_error()->print(
+					"serialize::push<{}>(protobuf_data:std::list)", 
+					tools::type_name<T>()
+				);
 				return false;
 			}
 			if (adata.m_isbinary)
@@ -650,7 +656,7 @@ namespace ngl
 					std::string json;
 					if (tools::protojson(ltemp, json) == false)
 					{
-						//log_error()->print("pop [{}] error", dtype_name(T));
+						//log_error()->print("pop [{}] error", tools::type_name<T>());
 						return false;
 					}
 					add_bytes(lbytes);

@@ -145,7 +145,7 @@ namespace ngl
 			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
 			//log_error()->print(
 			// "##tobytes## tprotocol::protocol<{}>() = {}", 
-			// dtype_name(T), 
+			// tools::type_name<T>(), 
 			// tprotocol::protocol<T>()
 			//);
 			// ### sethead finish ###
