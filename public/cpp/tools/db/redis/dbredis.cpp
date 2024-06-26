@@ -72,10 +72,12 @@ namespace ngl
 
 		for (int i = 1; i < 10; ++i)
 		{
-			pbdb::db_role ltemp;
+			protobuf_data<pbdb::db_role> ltemp;
+			ltemp.make();
+			
 			ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
-			ltemp.set_m_id(lid);
-			pbdb::db_brief* lrolebase = ltemp.mutable_m_base();
+			ltemp->set_m_id(lid);
+			pbdb::db_brief* lrolebase = ltemp->mutable_m_base();
 			lrolebase->set_m_id(lid);
 			lrolebase->set_m_name(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
 			lrolebase->set_m_lv(i);
@@ -83,7 +85,7 @@ namespace ngl
 			lrolebase->set_m_moneysilver(i + 2000);
 			lredis.set(i, ltemp);
 		}
-		pbdb::db_role ltemp2;
+		protobuf_data<pbdb::db_role> ltemp2;
 		lredis.get(1, ltemp2);
 	}
 }// namespace ngl

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "malloc_buff.h"
 #include "serialize.h"
 #include "hiredis.h"
 #include "nlog.h"
@@ -28,7 +29,7 @@ namespace ngl
 			if (lreply != nullptr)
 			{
 				ngl::unserialize lunserialize((const char*)lreply->str, lreply->len);
-				if (adata.pop(lunserialize))
+				if (lunserialize.pop(adata))
 				{
 					freeReplyObject(lreply);
 					return true;
@@ -43,7 +44,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool get(redisContext* arc, const char* atab, std::map<int, T>& adata)
+		static bool get(redisContext* arc, const char* atab, std::map<int, protobuf_data<T>>& adata)
 		{
 			redisReply* lreply = cmd(arc, "KEYS %s:*", atab);
 			if (lreply != nullptr)
@@ -70,11 +71,11 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool set(redisContext* arc, const char* atab, int akey, T& adata)
+		static bool set(redisContext* arc, const char* atab, int akey, protobuf_data<T>& adata)
 		{
 			char lbuff[REDIS_DATA_MAX] = { 0x0 };
 			ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
-			if (adata.push(lflow))
+			if (lflow.push(adata))
 			{
 				redisReply* lreply = cmd(
 					arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte()
@@ -93,26 +94,27 @@ namespace ngl
 
 	class redis
 	{
-		redisContext* m_rc;
-		redis_arg m_arg;
+		redisContext*	m_rc;
+		redis_arg		m_arg;
 		redis();
 	public:
 		redis(const redis_arg& arg);
 
 		template <typename T>
-		bool get(int akey, T& adata)
+		bool get(int akey, protobuf_data<T>& adata)
 		{
-			return redis_cmd::get(m_rc, T::name(), akey, adata);
+			std::string lname = tools::protobuf_tabname<T>::tabname();
+			return redis_cmd::get(m_rc, lname.c_str(), akey, adata);
 		}
 
 		template <typename T>
-		bool get(std::map<int, T>& adata)
+		bool get(std::map<int, protobuf_data<T>>& adata)
 		{
 			return redis_cmd::get(m_rc, T::name(), adata);
 		}
 
 		template <typename T>
-		bool set(int akey, T& adata)
+		bool set(int akey, protobuf_data<T>& adata)
 		{
 			std::string lname = tools::protobuf_tabname<T>::tabname();
 			return redis_cmd::set(m_rc, lname.c_str(), akey, adata);

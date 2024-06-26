@@ -48,8 +48,6 @@ int main(int argc, char** argv)
 
 	Dumper::m_excname = lname;
 
-	ngl::test_hiredis();
-
 	switch (nconfig::node_type())
 	{
 	case ngl::DB:

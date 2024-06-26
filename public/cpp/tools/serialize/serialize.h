@@ -53,6 +53,11 @@ namespace ngl
 		{
 			m_data = std::make_shared<T>();
 		}
+
+		std::shared_ptr<T>& operator->()
+		{
+			return m_data;
+		}
 	};
 
 	class serialize
@@ -1641,7 +1646,7 @@ namespace ngl
 	public:
 		static bool fun(ngl::unserialize& ser, E& adata)
 		{
-			return adata.pop(ser);
+			return ser.pop(adata);
 		}
 	};
 
