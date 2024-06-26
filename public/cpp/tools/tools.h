@@ -539,5 +539,3 @@ namespace ngl
 		}
 	};
 }//namespace ngl
-
-#define dtype_name(TYPE_) typeid(TYPE_).name()

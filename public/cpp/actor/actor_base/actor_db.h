@@ -157,7 +157,7 @@ namespace ngl
 				{
 					log_error()->print(
 						"load <<{}>>===<<{}>>", 
-						dtype_name(type_actor_dbtab), 
+						tools::type_name<type_actor_dbtab>(), 
 						lid
 					);
 					return;
@@ -175,8 +175,8 @@ namespace ngl
 				using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
 				log_error()->print(
 					"load finish: [{}][{}]", 
-					lrequestactor, 
-					dtype_name(type_message)
+					lrequestactor,
+					tools::type_name<type_message>()
 				);
 			}
 		}
@@ -282,7 +282,7 @@ namespace ngl
 			using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
 			log_error()->print(
 				"load: [{}] [{}]", 
-				dtype_name(type_message), 
+				tools::type_name<type_message>(),
 				adata.get_data()->m_id
 			);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());

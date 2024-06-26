@@ -69,7 +69,7 @@ namespace ngl
 			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
 			nactor_type<type_actor_db>::inits(lenum);
 			std::string ldbname("actor_");
-			std::string ltemp = dtype_name(TDBTAB);
+			std::string ltemp = tools::type_name<TDBTAB>();
 			auto pos = ltemp.rfind(":");
 			if (pos != std::string_view::npos)
 			{

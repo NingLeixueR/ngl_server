@@ -165,8 +165,8 @@ namespace ngl
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 			log_error()->print(
-				"actor_dbclient loaddb [{}] [{}]", 
-				dtype_name(type_ndbclient), 
+				"actor_dbclient loaddb [{}] [{}]",
+				tools::type_name<type_ndbclient>(),
 				aid
 			);
 		}
@@ -189,7 +189,7 @@ namespace ngl
 			m_actor(nullptr),
 			m_manage_dbclient(nullptr)
 		{
-			m_name = dtype_name(TACTOR);
+			m_name = tools::type_name<TACTOR>();
 		}
 
 		virtual void create(const nguid& aid)
@@ -415,7 +415,7 @@ namespace ngl
 				using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
 				log_error()->print(
 					"db load respones:[{}] recv_over[{}]"
-					, dtype_name(type_message)
+					, tools::type_name<type_message>()
 					, adata.get_data()->m_over ? "finish" : "no finishi"
 				);
 				loadfinish(adata.get_data()->data(), adata.get_data()->m_over);

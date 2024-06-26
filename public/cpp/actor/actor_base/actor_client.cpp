@@ -144,7 +144,10 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this](i32_session asession)
 				{
-					log_warn()->print("connect success[{}]", nconfig::m_nodeid);
+					log_warn()->print(
+						"connect success nodeid:{}", 
+						nconfig::m_nodeid
+					);
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
 					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());
@@ -264,7 +267,14 @@ namespace ngl
 				[&lparm, lactorid](const actor_node_session& anode)->bool
 				{
 					if (anode.m_node.m_serverid != nconfig::m_nodeid)
-						nets::sendbysession(anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid);
+					{
+						nets::sendbysession(
+							anode.m_session, 
+							lparm->m_mass, 
+							nguid::moreactor(), 
+							lactorid
+						);
+					}
 					return true;
 				});
 		}
