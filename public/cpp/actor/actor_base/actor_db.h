@@ -38,9 +38,7 @@ namespace ngl
 		actor_dbtab& operator=(const actor_dbtab&) = delete;
 
 		static tab_dbload*			m_tab;
-		// # 加载出id 防止内存穿透
-		static std::set<int64_t>	m_idset;
-
+		
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 
@@ -77,14 +75,14 @@ namespace ngl
 					db_manage::select<TDBTAB>(actor_dbpool::get(0));
 					ngl::db_data<TDBTAB>::foreach([](TDBTAB& adata)
 						{
-							type_actor_dbtab::m_idset.insert(
-								adata.m_id()
-							);
+							db_data<TDBTAB>::set_index(adata.m_id());
 						});
 				}
 				else
 				{
-					db_manage::select<TDBTAB>(actor_dbpool::get(0), m_idset);
+					std::set<int64_t> lindexset;
+					db_manage::select<TDBTAB>(actor_dbpool::get(0), lindexset);
+					db_data<TDBTAB>::set_index(lindexset);
 				}
 			}Catch;
 		}
@@ -128,7 +126,7 @@ namespace ngl
 		{
 			if (aid == -1)
 				return;
-			if (ngl::db_data<TDBTAB>::isload(aid) == false)
+			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
 				db_manage::select<TDBTAB>(actor_dbpool::get(athreadid), aid);
 		}
 
@@ -153,12 +151,12 @@ namespace ngl
 			}
 			else
 			{
-				if (m_idset.find(lid) == m_idset.end())
+				if(db_data<TDBTAB>::data_stat(lid) == db_data<TDBTAB>::edbdata_notdata)
 				{
 					log_error()->print(
-						"load <<{}>>===<<{}>>", 
+						"load fail notdata {}:{}", 
 						tools::type_name<type_actor_dbtab>(), 
-						lid
+						nguid(lid)
 					);
 					return;
 				}
@@ -174,9 +172,9 @@ namespace ngl
 
 				using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
 				log_error()->print(
-					"load finish: [{}][{}]", 
-					lrequestactor,
-					tools::type_name<type_message>()
+					"load finish {}:{}", 
+					tools::type_name<type_message>(),
+					nguid(lrequestactor)
 				);
 			}
 		}
@@ -185,7 +183,6 @@ namespace ngl
 		static void save(i32_threadid athreadid, const TDBTAB& adata)
 		{
 			int64_t lid = adata.m_id();
-			m_idset.insert(lid);
 			ngl::db_data<TDBTAB>::set(lid, adata);
 			inst<enum_clist_save>().push(lid);
 		}
@@ -193,17 +190,12 @@ namespace ngl
 		// # 异步删除数据  将需要删除的数据添加到缓存保存队列
 		static void del(i32_threadid athreadid, i64_actorid aid)
 		{
-			m_idset.erase(aid);
 			ngl::db_data<TDBTAB>::remove(aid);
 			inst<enum_clist_del>().push(aid);
 		}
 
 		static void del(i32_threadid athreadid, std::vector<i64_actorid>& aid)
 		{
-			for (i64_actorid id: aid)
-			{
-				m_idset.erase(id);
-			}
 			ngl::db_data<TDBTAB>::remove(aid);
 			inst<enum_clist_del>().push(aid);
 		}
@@ -217,7 +209,6 @@ namespace ngl
 			const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;
 			for (const std::pair<const nguid, TDBTAB>& item : lmap)
 			{
-				m_idset.insert(item.first.id());
 				save(athreadid, item.second);
 			}
 		}
@@ -225,9 +216,6 @@ namespace ngl
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	tab_dbload* actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_tab = nullptr;
-
-	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	std::set<int64_t> actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_idset;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db : public actor

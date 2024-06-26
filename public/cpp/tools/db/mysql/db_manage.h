@@ -67,9 +67,9 @@ namespace ngl
 
 			MYSQL_BIND lbind[1];
 			memset(lbind, 0, sizeof(MYSQL_BIND));
-			lbind[0].buffer_type = MYSQL_TYPE_LONG_BLOB;
-			lbind[0].buffer = (void*)lbinptr.m_buff;
-			lbind[0].buffer_length = lbuffpos;
+			lbind[0].buffer_type	= MYSQL_TYPE_LONG_BLOB;
+			lbind[0].buffer			= (void*)lbinptr.m_buff;
+			lbind[0].buffer_length	= lbuffpos;
 
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
 			// # REPLACE INTO 则会先删除数据，然后再插入。

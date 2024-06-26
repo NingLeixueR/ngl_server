@@ -51,6 +51,4 @@ namespace ngl
 		aptr.m_buff = nullptr;
 		aptr.m_bufflen = 0;
 	}
-
-	
 }// namespace ngl

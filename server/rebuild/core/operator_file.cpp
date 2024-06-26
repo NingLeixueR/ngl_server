@@ -57,7 +57,6 @@ namespace ngl
 		}
 	}
 
-
 	writefile::writefile(const std::string& filename)
 	{
 		m_file.open(filename, std::ios::binary);
@@ -78,5 +77,4 @@ namespace ngl
 			m_file.close();
 		}
 	}
-
 }

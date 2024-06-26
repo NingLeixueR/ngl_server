@@ -1,5 +1,9 @@
 #pragma once
 
+#include "nlog.h"
+
+#include <functional>
+#include <cstdint>
 #include <list>
 
 namespace ngl
