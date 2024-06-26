@@ -9,16 +9,16 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 	{
 		pbdb::db_account ltemp;
 		ltemp.set_m_account(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltemp.set_m_passworld("123456");
 		ltemp.set_m_roleid(ltemp.m_id());
-		ltemp.set_m_area(ngl::tab_self_area);
+		ltemp.set_m_area(tab_self_area);
 		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::load(0, ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, 1));
+		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::load(0, ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, 1));
 		pbdb::db_account lDB_ACCOUNT;
 		ngl::db_data<pbdb::db_account>::get(
-			ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, 1), 
+			ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, 1), 
 			lDB_ACCOUNT
 		);
 	}
@@ -37,7 +37,7 @@ void init_DB_ROLE(const char* aname, int beg)
 	{
 		pbdb::db_role ltemp;
 
-		ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i);
+		ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 		ltemp.set_m_id(lid);
 		pbdb::db_brief* lrolebase = ltemp.mutable_m_base();
 		lrolebase->set_m_id(lid);
@@ -63,7 +63,7 @@ void init_DB_BAG(const char* aname, int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_bag ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltemp.set_m_maxid(1);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
@@ -81,7 +81,7 @@ void init_DB_TASK(const char* aname, int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_task ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		auto lrundatas = ltemp.mutable_m_rundatas();
 		std::pair<int32_t, pbdb::db_task::data> lpair;
 		lpair.first = 1;
@@ -110,7 +110,7 @@ void init_DB_MAIL(int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_mail ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, ngl::tab_self_area, i));
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ngl::actor_dbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
 	}
 }
@@ -177,7 +177,7 @@ bool start_db(int argc, char** argv)
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::init_nactor_type(false);
 	
@@ -208,7 +208,7 @@ bool start_world()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_gm::getInstance();
 	ngl::actor_mail::getInstance();
@@ -232,7 +232,7 @@ bool start_login()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_login::getInstance();
 
@@ -250,7 +250,7 @@ bool start_gateway()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_gateway::getInstance();
 	ngl::actor_gatewayg2c::getInstance();
@@ -270,7 +270,7 @@ bool start_log()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -286,7 +286,7 @@ bool start_actor()
 	ngl::actor_server::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 
 	return true;
@@ -302,7 +302,7 @@ bool start_game()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_manage_role::getInstance();
 	ngl::actor_create::getInstance();
@@ -324,7 +324,7 @@ bool start_cross()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_chat::getInstance();
 	//ngl::actor_reloadcsv::getInstance();
@@ -398,7 +398,7 @@ bool start_csvserver()
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_csvserver::getInstance();
 
@@ -416,7 +416,7 @@ bool start_robot(int argc, char** argv)
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
-	ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 
 	ngl::actor_manage_robot::getInstance();

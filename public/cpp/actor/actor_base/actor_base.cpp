@@ -200,9 +200,12 @@ namespace ngl
 
 		//# 间隔一段时间发起的全员(所有actor)广播
 		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
-		static int									m_broadcast;			// 推送全员广播的 单位(毫秒)
-		static int									m_broadcasttimer;		// 推送广播的定时器id
-		bool										m_isbroadcast;			// 是否接收广播消息
+		//# 推送全员广播的 单位(毫秒)
+		static int									m_broadcast;	
+		//# 推送广播的定时器id
+		static int									m_broadcasttimer;
+		//# 是否接收广播消息
+		bool										m_isbroadcast;			
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
 			m_kcpsession(-1),
@@ -365,8 +368,8 @@ namespace ngl
 		}
 	};
 
-	int actor_base::impl_actor_base::m_broadcast			= 10000;		// 推送全员广播的 单位(毫秒)
-	int actor_base::impl_actor_base::m_broadcasttimer		= -1;			// 推送广播的定时器id
+	int actor_base::impl_actor_base::m_broadcast			= 10000;
+	int actor_base::impl_actor_base::m_broadcasttimer		= -1;
 
 	actor_base::actor_base(const actorparmbase& aparm)
 	{

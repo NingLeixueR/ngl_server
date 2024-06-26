@@ -53,12 +53,13 @@ namespace ngl
 		
 			if (isbroadcast())
 			{
+				// # 注册广播处理函数
 				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
 					true, 
 					(Tfun<actor, np_actor_broadcast>) & actor::handle
 				);
 			}
-
+			// # 注册actor close处理函数
 			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
 				true,
 				(Tfun<actor, np_actor_close>) & actor::handle

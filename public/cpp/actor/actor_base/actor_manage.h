@@ -106,7 +106,11 @@ namespace ngl
 							if (lptemp->type() != ngl::ACTOR_LOG)
 							{
 								nlogactor lnlogactor(lptemp->type(), ngl::ELOG_LOCAL);
-								ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+								ngl::actor_base::create(
+									ngl::ACTOR_LOG, 
+									tab_self_area, 
+									lnlogactor.m_value32
+								);
 							}
 						}
 						Catch;

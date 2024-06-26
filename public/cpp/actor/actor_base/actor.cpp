@@ -110,9 +110,15 @@ namespace ngl
 		{
 			tls<handle_pram> llist;
 			swaplist(llist);
-			if(aweight < llist.size())
-				ngl::log_error()->print("actor_handle [{}]", llist.size());
-
+			if (aweight < llist.size())
+			{
+				ngl::log_error()->print(
+					"actor handle weight/count[{}/{}]", 
+					aweight, 
+					llist.size()
+				);
+			}
+				
 			while (--aweight >= 0 && llist.empty() != true)
 			{
 				handle_pram& lparm = llist.front();

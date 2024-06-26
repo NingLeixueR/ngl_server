@@ -28,19 +28,24 @@ namespace ngl
 
 	i64_actorid actor_manage_role::actorid()
 	{
-		return nguid::make(ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		return nguid::make(
+			ACTOR_MANAGE_ROLE, 
+			ttab_servers::tab()->m_area, 
+			nguid::none_actordataid()
+		);
 	}
 
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
-		nguid lguid(adata.get_data()->m_roleid());
-		log_error()->print("actor_manage_role roleid:{}", adata.get_data()->m_roleid());
+		auto recv = adata.get_data();
+		nguid lguid(recv->m_roleid());
+		log_error()->print("actor_manage_role roleid:{}", recv->m_roleid());
 		np_actorswitch_process_role pro
 		{
-			.m_create = adata.get_data()->m_iscreate(),
-			.m_gatewayid = adata.get_data()->m_gatewayid(),
+			.m_create = recv->m_iscreate(),
+			.m_gatewayid = recv->m_gatewayid(),
 		};
-		actor_create::switch_process(adata.get_data()->m_roleid(), 0, nconfig::m_nodeid, pro);
+		actor_create::switch_process(recv->m_roleid(), 0, nconfig::m_nodeid, pro);
 		return true;
 	}
 }//namespace ngl

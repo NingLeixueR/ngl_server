@@ -92,7 +92,12 @@ namespace ngl
 			if (lparm->m_toserverid == nconfig::m_nodeid)
 			{
 				nguid lguid(lparm->m_actor);
-				actor_base::create(lguid.type(), lguid.actordataid(), &lparm->m_pram);
+				actor_base::create(
+					lguid.type(), 
+					lguid.area(), 
+					lguid.actordataid(), 
+					&lparm->m_pram
+				);
 			}
 			else if (lparm->m_serverid == nconfig::m_nodeid)
 			{

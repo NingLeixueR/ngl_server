@@ -91,7 +91,12 @@ namespace ngl
 
 		actor_robot* create(i16_area aarea, i32_actordataid aroleid)
 		{
-			return (actor_robot*)actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aroleid, nullptr);
+			return (actor_robot*)actor_base::create(
+				ENUM_ACTOR::ACTOR_ROBOT, 
+				aarea, 
+				aroleid, 
+				nullptr
+			);
 		}
 
 		static void login(const std::string& aaccount, const std::string& apasswold)

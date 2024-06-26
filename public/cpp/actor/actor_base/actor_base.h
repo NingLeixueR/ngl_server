@@ -577,13 +577,18 @@ namespace ngl
 			if (atype != ngl::ACTOR_LOG)
 			{
 				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
-				ngl::actor_base::create(ngl::ACTOR_LOG, lnlogactor.m_value32);
+				ngl::actor_base::create(
+					ngl::ACTOR_LOG, 
+					tab_self_area, 
+					lnlogactor.m_value32
+				);
 			}
 		}
 
 		//# 用于创建非单例actor
 		static actor_base* create(
 			ENUM_ACTOR atype, 
+			i16_area aarea,
 			i32_actordataid aid, 
 			void* aparm = nullptr
 		);
