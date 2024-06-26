@@ -90,35 +90,38 @@ namespace ngl
 		// # 加载表中的所有数据
 		static void loadall(const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			if (!m_tab->m_network) 
-				return;
-			int lsendmaxcount = m_tab->m_sendmaxcount;
-			if (lsendmaxcount <= 0)
-				lsendmaxcount = 10;
-			//加载全部数据
-			Assert(m_tab->m_isloadall);
-			i64_actorid lrequestactor = apack->m_head.get_request_actor();
-			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
-			pro.m_stat = true;
-			pro.m_over = false;
-			pro.m_data.make();
-			ngl::db_data<TDBTAB>::foreach_index(
-				[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
-				{
-					nguid lguid(atab.m_id());
-					pro.m_data.m_data->insert(std::make_pair(lguid, atab));
-					if (aindex % lsendmaxcount == 0)
+			Try
+			{
+				Assert(m_tab->m_isloadall);
+				if (!m_tab->m_network)
+					return;
+				int lsendmaxcount = m_tab->m_sendmaxcount;
+				if (lsendmaxcount <= 0)
+					lsendmaxcount = 10;
+				i64_actorid lrequestactor = apack->m_head.get_request_actor();
+				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
+				pro.m_stat = true;
+				pro.m_over = false;
+				pro.m_data.make();
+				ngl::db_data<TDBTAB>::foreach_index(
+					[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 					{
-						nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
-						pro.m_stat = true;
-						pro.m_over = false;
-						pro.m_data.make();
-					}
-				});
-			pro.m_over = true;
-			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-			log_info()->print("loadall[{}]", TDBTAB().descriptor()->full_name());
+						nguid lguid(atab.m_id());
+						pro.m_data.m_data->insert(std::make_pair(lguid, atab));
+						if (aindex % lsendmaxcount == 0)
+						{
+							nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+							pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
+							pro.m_stat = true;
+							pro.m_over = false;
+							pro.m_data.make();
+						}
+					});
+				pro.m_over = true;
+				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+				log_info()->print("loadall[{}]", TDBTAB().descriptor()->full_name());
+			}Catch;
+			
 		}
 
 		// # 加载表中的指定数据
