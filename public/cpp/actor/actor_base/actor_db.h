@@ -16,20 +16,6 @@
 
 namespace ngl
 {
-	// db¡¨Ω”≥ÿ
-	/*class actor_dbpool
-	{
-		actor_dbpool() = delete;
-		actor_dbpool(const actor_dbpool&) = delete;
-		actor_dbpool& operator=(const actor_dbpool&) = delete;
-
-		static std::vector<db*> m_data;
-		static bool m_init;
-	public:
-		static void init();
-		static db* get(int apos);
-	};*/
-
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_dbtab
 	{
