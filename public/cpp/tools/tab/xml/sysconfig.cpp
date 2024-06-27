@@ -44,9 +44,9 @@ namespace ngl
 		
 		do
 		{
-			if (!lpublicxml->isxor(m_isxor))
+			if (!lpublicxml->find("isxor", m_isxor))
 				break;
-			if (!lpublicxml->xor_str(m_xorkey))
+			if (!lpublicxml->find("xor_str", m_xorkey))
 				break;
 			int32_t lxorkeylen = m_xorkey.size();
 			for (int i = 1;; ++i)
@@ -63,7 +63,7 @@ namespace ngl
 			}
 		} while (false);
 
-		lpublicxml->varint(m_varint);
+		lpublicxml->find("varint", m_varint);
 
 		lpublicxml->find("robot_test", m_robot_test);
 		lpublicxml->find("kcpping", m_kcpping);

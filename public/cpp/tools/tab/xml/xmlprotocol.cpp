@@ -19,7 +19,7 @@ namespace ngl
 
 				std::string lname;
 				int32_t lnumber = 0;
-				if (ltemp.name(lname) && ltemp.find("number", lnumber))
+				if (ltemp.find("name", lname) && ltemp.find("number", lnumber))
 				{
 					xmlprotocol::m_protocol[lname] = lnumber;
 				}

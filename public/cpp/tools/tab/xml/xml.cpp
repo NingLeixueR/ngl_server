@@ -9,13 +9,13 @@
 
 namespace ngl
 {
-	tinyxml2::XMLDocument xmlnode::m_doc;
-	tinyxml2::XMLElement* xmlnode::m_con;
-	dbserver_info	xmlnode::m_db;
-	xmlinfo			xmlnode::m_publicinfo;
-	std::string		xmlnode::m_nodename;
-	NODE_TYPE		xmlnode::m_nodetype;
-	i32_id			xmlnode::m_nodeid;
+	tinyxml2::XMLDocument	xmlnode::m_doc;
+	tinyxml2::XMLElement*	xmlnode::m_con;
+	dbserver_info			xmlnode::m_db;
+	xmlinfo					xmlnode::m_publicinfo;
+	std::string				xmlnode::m_nodename;
+	NODE_TYPE				xmlnode::m_nodetype;
+	i32_id					xmlnode::m_nodeid;
 
 	void xmlnode::init()
 	{
@@ -67,7 +67,7 @@ namespace ngl
 	{
 		xml::foreach_xmlattr(apt, [&anfo](const char* akey, const char* aval)->void
 			{
-				anfo.m_data.insert(std::make_pair(akey, aval));
+				anfo.data()[akey] = aval;
 			});
 	}
 	void xmlnode::read_config(const char* akey, std::map<i32_serverid, xmlinfo>& anfo)
@@ -78,8 +78,7 @@ namespace ngl
 				xmlnode::read_config(apt, ltemp);
 
 				i32_serverid lid = 0;
-
-				if (ltemp.id(lid))
+				if (ltemp.find("id", lid))
 					anfo[lid] = ltemp;
 
 				ltemp.plog();
@@ -92,7 +91,7 @@ namespace ngl
 	{
 		std::function<void(const char*, const char*)> lfun = [&anfo](const char* akey, const char* aval)
 			{
-				anfo.m_data.insert(std::make_pair(akey, aval));
+				anfo.data()[akey] = aval;
 			};
 		tinyxml2::XMLElement* lchild = xml::get_child(m_con, "public.config");
 		if (lchild == nullptr)
@@ -127,7 +126,6 @@ namespace ngl
 		return true;
 	}
 
-	//static void xmlnode::read_net_tab(const char* akey, const char* akey2, std::set<NODE_TYPE>& anet);
 	void xmlnode::loaddb()
 	{
 		read_db_arg(m_db.m_dbarg);
@@ -142,4 +140,4 @@ namespace ngl
 	{
 		return &m_publicinfo;
 	}
-}
+}// namespace ngl

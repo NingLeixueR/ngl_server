@@ -14,7 +14,11 @@ namespace ngl
 	class xml
 	{
 	public:
-		static bool readxml(const char* aname, tinyxml2::XMLDocument& axml, tinyxml2::XMLElement*& acon)
+		static bool readxml(
+			const char* aname, 
+			tinyxml2::XMLDocument& axml, 
+			tinyxml2::XMLElement*& acon
+		)
 		{
 			if (axml.LoadFile(aname) != tinyxml2::XML_SUCCESS)
 			{
@@ -73,7 +77,11 @@ namespace ngl
 			return true;
 		}
 
-		static void foreach(tinyxml2::XMLElement* aele, const char* akey, const std::function<void(tinyxml2::XMLElement*)> afun)
+		static void foreach(
+			tinyxml2::XMLElement* aele, 
+			const char* akey, 
+			const std::function<void(tinyxml2::XMLElement*)>& afun
+		)
 		{
 			for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
 			{
@@ -85,7 +93,10 @@ namespace ngl
 			}
 		}
 
-		static void foreach(tinyxml2::XMLElement* aele, const std::function<void(tinyxml2::XMLElement*)> afun)
+		static void foreach(
+			tinyxml2::XMLElement* aele, 
+			const std::function<void(tinyxml2::XMLElement*)>& afun
+		)
 		{
 			for (tinyxml2::XMLNode* child = aele->FirstChildElement(); child; child = child->NextSiblingElement())
 			{
@@ -97,7 +108,10 @@ namespace ngl
 			}
 		}
 
-		static void foreach_xmlattr(tinyxml2::XMLElement* aele, const std::function<void(const char*, const char*)> afun)
+		static void foreach_xmlattr(
+			tinyxml2::XMLElement* aele, 
+			const std::function<void(const char*, const char*)>& afun
+		)
 		{
 			for (const tinyxml2::XMLAttribute* attribute = aele->FirstAttribute(); attribute; attribute = attribute->Next())
 			{
@@ -113,11 +127,11 @@ namespace ngl
 	public:
 		static tinyxml2::XMLDocument m_doc;
 		static tinyxml2::XMLElement* m_con;
-		static dbserver_info	m_db;
-		static xmlinfo			m_publicinfo;
-		static std::string		m_nodename;
-		static NODE_TYPE		m_nodetype;
-		static i32_id			m_nodeid;
+		static dbserver_info		 m_db;
+		static xmlinfo				 m_publicinfo;
+		static std::string			 m_nodename;
+		static NODE_TYPE			 m_nodetype;
+		static i32_id				 m_nodeid;
 
 		static void init();
 
