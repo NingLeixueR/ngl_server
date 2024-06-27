@@ -30,7 +30,7 @@ namespace ngl
 		roleinfo	 m_info;
 		bag			 m_bag;
 		task		 m_task;
-		rolekv		 m_rolekv;
+		//rolekv		 m_rolekv;
 		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
 		i64_actorid  m_playactorid;

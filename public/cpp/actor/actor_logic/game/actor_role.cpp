@@ -42,7 +42,7 @@ namespace ngl
 		m_info.set(this);
 		m_bag.set(this);
 		m_task.set(this);
-		m_rolekv.set(this);
+		//m_rolekv.set(this);
 	}
 
 	actor_role::~actor_role() 

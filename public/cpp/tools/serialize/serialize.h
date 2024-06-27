@@ -1646,7 +1646,7 @@ namespace ngl
 	public:
 		static bool fun(ngl::unserialize& ser, E& adata)
 		{
-			return ser.pop(adata);
+			return adata.pop(ser);
 		}
 	};
 
