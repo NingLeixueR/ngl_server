@@ -190,10 +190,6 @@ bool start_db(int argc, char** argv)
 	if (!init_server(nconfig::m_nodeid))
 		return false;
 
-	ngl::tab_servers* tab = ngl::ttab_servers::tab();	
-	if (!ngl::db_pool::init(tab->m_actorthreadnum, nconfig::m_db.m_dbarg))
-		return false;
-
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);

@@ -17,7 +17,7 @@
 namespace ngl
 {
 	// db¡¨Ω”≥ÿ
-	class actor_dbpool
+	/*class actor_dbpool
 	{
 		actor_dbpool() = delete;
 		actor_dbpool(const actor_dbpool&) = delete;
@@ -28,7 +28,7 @@ namespace ngl
 	public:
 		static void init();
 		static db* get(int apos);
-	};
+	};*/
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_dbtab
@@ -55,12 +55,11 @@ namespace ngl
 				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
 				Assert(m_tab != nullptr);
 
-				db_data<TDBTAB>::init();
-
 				m_cache_save.set_cachefun(
 					std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1),
 					m_tab->m_dbcacheintervalms
 				);
+
 				m_cache_del.set_cachefun(
 					std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1),
 					m_tab->m_dbcacheintervalms
@@ -68,12 +67,12 @@ namespace ngl
 
 				if (m_tab->m_isloadall == true)
 				{
-					db_manage::select<TDBTAB>(actor_dbpool::get(0));
+					db_manage::select<TDBTAB>(db_pool::get(0));
 				}
 				else
 				{
 					std::set<int64_t> lindexset;
-					db_manage::select<TDBTAB>(actor_dbpool::get(0), lindexset);
+					db_manage::select<TDBTAB>(db_pool::get(0), lindexset);
 					db_data<TDBTAB>::set_index(lindexset);
 				}
 			}Catch;
@@ -123,7 +122,7 @@ namespace ngl
 				return;
 			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
 			{
-				db_manage::select<TDBTAB>(actor_dbpool::get(athreadid), aid);
+				db_manage::select<TDBTAB>(db_pool::get(athreadid), aid);
 			}
 		}
 
@@ -241,7 +240,7 @@ namespace ngl
 					.m_weight = 0x7fffffff,
 				})
 		{
-			actor_dbpool::init();
+			db_pool::init();
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::init();
 		}
 	public:
@@ -303,13 +302,13 @@ namespace ngl
 				{
 					if (ngl::db_data<TDBTAB>::find(id) == nullptr)
 						continue;
-					db_manage::save<TDBTAB>(actor_dbpool::get(adata.m_thread), id);
+					db_manage::save<TDBTAB>(db_pool::get(adata.m_thread), id);
 				}
 				break;
 				case enum_clist_del:
 				{
 					ngl::db_data<TDBTAB>::remove(id);
-					db_manage::del<TDBTAB>(actor_dbpool::get(adata.m_thread), id);
+					db_manage::del<TDBTAB>(db_pool::get(adata.m_thread), id);
 				}
 				break;
 				}
@@ -340,7 +339,7 @@ namespace ngl
 						if (aos.read("data", lid) == false)
 							return;
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
-							db_manage::select<TDBTAB>(actor_dbpool::get(athread), lid);
+							db_manage::select<TDBTAB>(db_pool::get(athread), lid);
 						protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
 						m_savetemp.m_data = std::make_shared<TDBTAB>();
@@ -371,7 +370,7 @@ namespace ngl
 							return;
 						int64_t lid = ldata.m_data->m_id();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
-						db_manage::save<TDBTAB>(actor_dbpool::get(athread), lid);
+						db_manage::save<TDBTAB>(db_pool::get(athread), lid);
 						pro.m_data = true;
 					});
 			}

@@ -36,7 +36,12 @@ namespace ngl
 		static ukcp* kcp(int16_t anum = isystemindex);
 
 		template <typename T>
-		static bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendbyserver(
+			i32_serverid aserverid, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		)
 		{
 			i32_session lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
@@ -45,7 +50,12 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool sendbyserver(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendbyserver(
+			const std::vector<i32_serverid>& aserverid, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		)
 		{
 			std::vector<i32_session> lsessionvec;
 			for (i32_serverid iserverid : aserverid)
@@ -63,7 +73,12 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool sendbysession(i32_session asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendbysession(
+			i32_session asession, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		)
 		{
 			net_protocol* lpprotocol = net(asession);
 			if (lpprotocol == nullptr)
@@ -74,7 +89,11 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, T& adata, i64_actorid aactorid)
+		static bool sendmore(
+			const std::map<i32_sessionid, i64_actorid>& asession, 
+			T& adata, 
+			i64_actorid aactorid
+		)
 		{
 			std::set<ENET_PROTOCOL> lset;
 			for (auto itor = asession.begin(); itor != asession.end(); ++itor)
@@ -85,7 +104,7 @@ namespace ngl
 					lset.insert(ltype);
 				}
 			}
-			std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> lpair = net_protocol::more_pack(adata, aactorid);
+			auto lpair = net_protocol::more_pack(adata, aactorid);
 			if (lpair.first == nullptr)
 			{
 				return false;
@@ -102,7 +121,12 @@ namespace ngl
 		}
 
 		template <typename T, typename TSTL>
-		static bool sendmore(const TSTL& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendmore(
+			const TSTL& asession, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid
+		)
 		{
 			std::set<ENET_PROTOCOL> lset;
 			for (auto itor = asession.begin(); itor != asession.end(); ++itor)
@@ -113,7 +137,7 @@ namespace ngl
 					lset.insert(ltype);
 				}
 			}
-			std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> lpair = net_protocol::more_pack(adata, aactorid);
+			auto lpair = net_protocol::more_pack(adata, aactorid);
 			if (lpair.first == nullptr)
 			{
 				return false;
@@ -137,7 +161,12 @@ namespace ngl
 
 		static net_works const* ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair);
 
-		static bool connect(i32_serverid aserverid, const std::function<void(i32_session)>& afun, bool await, bool areconnection);
+		static bool connect(
+			i32_serverid aserverid, 
+			const std::function<void(i32_session)>& afun, 
+			bool await, 
+			bool areconnection
+		);
 	};
 }
 

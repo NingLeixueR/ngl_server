@@ -13,8 +13,8 @@ namespace ngl
 		static std::vector<db*> m_vec;
 	public:
 		// # 初始化db连接池
-		static bool init(uint32_t asize, const dbarg& arg);
+		static void init();
 		// # 根据线程id获取池中对应的连接
-		static db* get(uint32_t aindex);
+		static db* get(int32_t aindex);
 	};
 }// namespace ngl

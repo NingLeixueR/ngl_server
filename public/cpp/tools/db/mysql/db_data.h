@@ -14,15 +14,12 @@ namespace ngl
 		db_data() = delete;
 		db_data(const db_data&) = delete;
 		db_data& operator=(const db_data&) = delete;
+
 	private:
 		static std::map<i64_actorid, T>		m_data;
 		// # 加载出id 防止内存穿透
 		static std::set<int64_t>			m_idindex;
 	public:
-		static void init()
-		{
-		}
-
 		// # 数据的所有索引
 		static const std::set<int64_t>& id_index()
 		{

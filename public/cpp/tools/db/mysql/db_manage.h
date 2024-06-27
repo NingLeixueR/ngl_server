@@ -14,7 +14,6 @@
 
 namespace ngl
 {
-
 	class db_manage
 	{ 
 	public:
