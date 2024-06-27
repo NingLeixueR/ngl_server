@@ -39,5 +39,33 @@ namespace ngl
 		{
 			return db()->get();
 		}
+
+		const std::string* get_constkv(const std::string& akey)
+		{
+			const pbdb::db_rolekeyvalue& ltemp = get_constkv();
+			auto itor = ltemp.m_data().find(akey);
+			if (itor == ltemp.m_data().end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
+
+		std::string* get_kv(const std::string& akey)
+		{
+			pbdb::db_rolekeyvalue& ltemp = get_kv();
+			auto itor = ltemp.mutable_m_data()->find(akey);
+			if (itor == ltemp.mutable_m_data()->end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
+
+		std::string& operator[](const char* akey)
+		{
+			pbdb::db_rolekeyvalue& ltemp = get_kv();
+			return (*ltemp.mutable_m_data())[akey];
+		}
 	};
 }
