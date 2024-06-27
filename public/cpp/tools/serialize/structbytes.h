@@ -100,8 +100,11 @@ namespace ngl
 			{
 				if (apack->m_head.getvalue(EPH_BYTES) != apack->m_pos)
 				{
-					log_error()->print("[##structbytes_protobuff::operator()] -> [{}] != [{}]"
-						, apack->m_head.getvalue(EPH_BYTES), apack->m_pos/* - llen*/
+					log_error()->print(
+						"[##structbytes::tostruct()] [T:{}] [{} != {}]"
+						, tools::type_name<T>()
+						, apack->m_head.getvalue(EPH_BYTES)
+						, apack->m_pos
 					);
 					return false;
 				}
@@ -126,7 +129,12 @@ namespace ngl
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
 			if (adata.SerializeToArray(lpair.first, lpair.second) == false)
 			{
-				log_error()->print("[##struct2bytes::operator()] push error");
+				log_error()->print(
+					"[##structbytes::tobytes()] [T:{}] [actorid:{}] [requestactorid:{}] ",
+					tools::type_name<T>(),
+					aactorid,
+					arequestactorid
+				);
 				return false;
 			}
 

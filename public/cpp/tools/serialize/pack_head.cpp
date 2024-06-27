@@ -147,7 +147,14 @@ namespace ngl
 		{
 			return EPH_HEAD_VERSION_FOLLOW;
 		}
-		return get_version() == sysconfig::head_version() ? EPH_HEAD_VERSION_SUCCESS : EPH_HEAD_VERSION_FAIL;
+		if (get_version() == sysconfig::head_version())
+		{
+			return EPH_HEAD_VERSION_SUCCESS;
+		}
+		else
+		{
+			return EPH_HEAD_VERSION_FAIL;
+		}
 	}
 
 	i32_protocolnum pack_head::protocolnum()const

@@ -65,7 +65,7 @@ namespace ngl
 		template <typename T>
 		static bool init_protobufs()
 		{
-			static std::string lname = tools::type_name<T>();
+			static std::string& lname = tools::type_name<T>();
 			int32_t lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{

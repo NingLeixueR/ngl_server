@@ -37,7 +37,7 @@ namespace ngl
 
 	bool pack::isready()
 	{
-		return m_head.isready() == EPH_HEAD_SUCCESS ? m_pos >= m_head.get_bytes() /*+ EPH_SUM * sizeof(uint32_t)*/ : false;
+		return m_head.isready() == EPH_HEAD_SUCCESS ? m_pos >= m_head.get_bytes() : false;
 	}
 
 	bool pack::malloc(int alen)

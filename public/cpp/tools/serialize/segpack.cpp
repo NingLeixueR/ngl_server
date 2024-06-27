@@ -85,11 +85,6 @@ namespace ngl
 					lpack = pack::make_pack(&m_pool, 0);
 					lpack->m_id = aid;
 					lpack->m_segpack = m_segpack;
-					//if (server_session::serverid(aid) == -1 && nconfig::node_type() == GATEWAY)
-					//{
-					//	if (m_rate.add(aid) == false)
-					//		return false;
-					//}
 				}
 				EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen);
 				switch (lval)

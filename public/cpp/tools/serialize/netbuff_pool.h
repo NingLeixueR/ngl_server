@@ -48,7 +48,11 @@ namespace ngl
 			char* lbuff = abuff - (sizeof(int) + sizeof(char));
 			if (*lbuff != 'k')
 			{
-				//log_error()->print("netbuff<%,%>::free != k", InitBytes, Count);
+				log_error()->print(
+					"netbuff<{},{}>::nfree != k", 
+					InitBytes, 
+					Count
+				);
 				return;
 			}
 			int lindex = *(int*)(abuff - sizeof(int));
@@ -60,7 +64,9 @@ namespace ngl
 					m_pool[lindex].push_back(abuff);
 				}
 				else
+				{
 					delete[] lbuff;
+				}
 			}
 			else
 			{

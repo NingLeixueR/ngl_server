@@ -532,10 +532,10 @@ namespace ngl
 	#pragma endregion
 
 		template <typename T>
-		static std::string type_name()
+		static std::string& type_name()
 		{
-			std::string lname = typeid(T).name();
-			return std::move(lname);
+			static std::string lname = typeid(T).name();
+			return lname;
 		}
 
 		template <typename T>
