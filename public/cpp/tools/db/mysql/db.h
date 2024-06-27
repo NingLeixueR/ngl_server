@@ -8,7 +8,7 @@
 #include <map>  
 
 #include "include3part.h"
-#include "malloc_buff.h"
+#include "db_buff.h"
 #include "xmlinfo.h"
 
 #define _SQL_BUFF_SIZE_ (102400)
@@ -50,7 +50,7 @@ namespace ngl
 		// # stmt ฯเนุ
 		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);
 
-		malloc_buff m_malloc;
+		db_buff m_malloc;
 	private:
 	};
 }// namespace ngl

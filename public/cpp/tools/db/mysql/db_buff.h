@@ -8,33 +8,34 @@
 
 namespace ngl
 {
-	class malloc_buff
+	class db_buff
 	{
-		malloc_buff(const malloc_buff&) = delete;
-		malloc_buff& operator=(const malloc_buff&) = delete;
+		db_buff() = delete;
+		db_buff(const db_buff&) = delete;
+		db_buff& operator=(const db_buff&) = delete;
 
 		int m_buffcout;
 		int m_buffsize;
 	public:
-		malloc_buff(int abuffcount, int abuffsize) :
+		db_buff(int abuffcount, int abuffsize) :
 			m_buffcout(abuffcount),
 			m_buffsize(abuffsize)
 		{}
 
 		class ptr
 		{
-			malloc_buff* m_mb;
+			db_buff* m_mb;
 		public:
 			char* m_buff;
 			int32_t m_bufflen;
 
-			ptr(malloc_buff* amb) :
+			ptr(db_buff* amb) :
 				m_buff(nullptr),
 				m_bufflen(0),
 				m_mb(amb)
 			{}
 
-			ptr(malloc_buff* amb, char* abuff, int32_t abufflen) :
+			ptr(db_buff* amb, char* abuff, int32_t abufflen) :
 				m_buff(abuff),
 				m_bufflen(abufflen),
 				m_mb(amb)
@@ -63,7 +64,7 @@ namespace ngl
 		int serialize(ptr& aptr, T& adata)
 		{
 			int lbyte = 0;
-			if (malloc_function(aptr, [&adata,&lbyte](ptr& aptr)->bool
+			std::function<bool(ptr&)> lfun = [&adata, &lbyte](ptr& aptr)->bool
 				{
 					ngl::serialize lserialize(aptr.m_buff, aptr.m_bufflen);
 					if (lserialize.push(adata))
@@ -72,7 +73,8 @@ namespace ngl
 						return true;
 					}
 					return false;
-				}))
+				};
+			if (malloc_function(aptr, lfun))
 			{
 				return lbyte;
 			}

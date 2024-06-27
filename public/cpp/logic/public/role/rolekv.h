@@ -2,7 +2,6 @@
 
 #include "nactor_auto.h"
 #include "manage_csv.h"
-#include "malloc_buff.h"
 #include "net.pb.h"
 #include "db.pb.h"
 
@@ -41,6 +40,4 @@ namespace ngl
 			return db()->get();
 		}
 	};
-
-
 }

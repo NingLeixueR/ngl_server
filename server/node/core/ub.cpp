@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-06-25 09:58:24
+// 创建时间 24-06-27 10:46:05
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -53,6 +53,7 @@
 #include "csv.cpp"
 #include "csvtable.cpp"
 #include "db.cpp"
+#include "db_buff.cpp"
 #include "db_pool.cpp"
 #include "dbredis.cpp"
 #include "drop.cpp"
@@ -68,7 +69,6 @@
 #include "localtime.cpp"
 #include "logprintf.cpp"
 #include "mail.cpp"
-#include "malloc_buff.cpp"
 #include "manage_csv.cpp"
 #include "manage_curl.cpp"
 #include "map.cpp"

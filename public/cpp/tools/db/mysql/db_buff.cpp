@@ -1,8 +1,8 @@
-#include "malloc_buff.h"
+#include "db_buff.h"
 
 namespace ngl
 {
-	bool malloc_buff::malloc_function(ptr& aptr, const std::function<bool(ptr&)>& afun)
+	bool db_buff::malloc_function(ptr& aptr, const std::function<bool(ptr&)>& afun)
 	{
 		int32_t lpos = 0;
 		while (lpos < m_buffcout)
@@ -21,7 +21,7 @@ namespace ngl
 		return false;
 	}
 	
-	bool malloc_buff::malloc(ptr& aptr, int32_t apos)
+	bool db_buff::malloc(ptr& aptr, int32_t apos)
 	{
 		if (m_buffcout <= apos)
 		{
@@ -45,7 +45,7 @@ namespace ngl
 		return true;
 	}
 
-	void malloc_buff::free(ptr& aptr)
+	void db_buff::free(ptr& aptr)
 	{
 		m_bufflist.push_back(std::make_pair(aptr.m_buff, aptr.m_bufflen));
 		aptr.m_buff = nullptr;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "malloc_buff.h"
 #include "serialize.h"
 #include "db_data.h"
+#include "db_buff.h"
 #include "tools.h"
 #include "db.h"
 
@@ -19,7 +19,7 @@ namespace ngl
 	{ 
 	public:
 		template <typename T>
-		static int serialize(db* adb, malloc_buff::ptr& aptr, T& adata)
+		static int serialize(db* adb, db_buff::ptr& aptr, T& adata)
 		{
 			return adb->m_malloc.serialize(aptr, adata);
 		}
@@ -44,7 +44,7 @@ namespace ngl
 			}
 			*m_savetemp.m_data = adata;
 
-			malloc_buff::ptr lbinptr(&adb->m_malloc);
+			db_buff::ptr lbinptr(&adb->m_malloc);
 			int32_t lbuffpos = db_manage::serialize(adb, lbinptr, m_savetemp);
 
 			MYSQL_BIND lbind[1];
