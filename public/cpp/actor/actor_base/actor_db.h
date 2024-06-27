@@ -37,7 +37,7 @@ namespace ngl
 		actor_dbtab(const actor_dbtab&) = delete;
 		actor_dbtab& operator=(const actor_dbtab&) = delete;
 
-		static tab_dbload*			m_tab;
+		static tab_dbload* m_tab;
 		
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
@@ -119,7 +119,8 @@ namespace ngl
 					});
 				pro.m_over = true;
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-				log_info()->print("loadall[{}]", TDBTAB().descriptor()->full_name());
+				
+				log_info()->print("loadall[{}]", tools::protobuf_tabname<TDBTAB>::name());
 			}Catch;
 		}
 
@@ -271,10 +272,9 @@ namespace ngl
 
 		bool handle(message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
 			log_error()->print(
-				"load: [{}] [{}]", 
-				tools::type_name<type_message>(),
+				"load: np_actordb_load<{}> id:{}", 
+				tools::protobuf_tabname<TDBTAB>::name(),
 				adata.get_data()->m_id
 			);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());

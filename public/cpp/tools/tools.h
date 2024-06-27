@@ -541,20 +541,20 @@ namespace ngl
 		template <typename T>
 		class protobuf_tabname
 		{
-			static std::string m_dbtabname;
+			static std::string m_name;
 		public:
-			static std::string& tabname()
+			static std::string& name()
 			{
-				if (m_dbtabname.empty())
+				if (m_name.empty())
 				{
-					m_dbtabname = T().descriptor()->full_name();
-					ngl::tools::replace("pbdb.", "", m_dbtabname, m_dbtabname);
+					m_name = T().descriptor()->full_name();
+					ngl::tools::replace("pbdb.", "", m_name, m_name);
 				}
-				return m_dbtabname;
+				return m_name;
 			}
 		};
 	};
 
 	template <typename T>
-	std::string tools::protobuf_tabname<T>::m_dbtabname;
+	std::string tools::protobuf_tabname<T>::m_name;
 }//namespace ngl

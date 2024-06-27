@@ -60,7 +60,7 @@ namespace ngl
 				lbuff
 				, 1024
 				, "INSERT INTO %s (id,data)VALUES(%lld,?)  ON DUPLICATE KEY UPDATE data=values(data);"
-				, tools::protobuf_tabname<T>::tabname().c_str()
+				, tools::protobuf_tabname<T>::name().c_str()
 				, adata.m_id()
 			);
 
@@ -69,7 +69,7 @@ namespace ngl
 			adb->stmt_query(lbuff, llen, lbind);
 			log_error()->print(
 				"INSERT INTO {} (id,data)VALUES({},[bindata])"
-				, tools::protobuf_tabname<T>::tabname().c_str()
+				, tools::protobuf_tabname<T>::name().c_str()
 				, adata.m_id()
 			);
 		}
@@ -83,7 +83,7 @@ namespace ngl
 				log_error()->print(
 					"save by id[{}] !!![{}]",
 					aid,
-					tools::protobuf_tabname<T>::tabname()
+					tools::protobuf_tabname<T>::name()
 				);
 				return;
 			}
@@ -107,7 +107,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"DELETE FROM %s WHERE id='%lld';",
-				tools::protobuf_tabname<T>::tabname().c_str(),
+				tools::protobuf_tabname<T>::name().c_str(),
 				aid
 			);
 			if (llen <= 0)
@@ -124,7 +124,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id,data FROM %s WHERE id = '%lld';",
-				tools::protobuf_tabname<T>::tabname().c_str(),
+				tools::protobuf_tabname<T>::name().c_str(),
 				aid
 			);
 			if (llen <= 0)
@@ -156,7 +156,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id,data FROM %s;",
-				tools::protobuf_tabname<T>::tabname().c_str()
+				tools::protobuf_tabname<T>::name().c_str()
 			);
 			if (llen <= 0)
 				return false;
@@ -188,7 +188,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id FROM %s;",
-				tools::protobuf_tabname<T>::tabname().c_str()
+				tools::protobuf_tabname<T>::name().c_str()
 			);
 			if (llen <= 0)
 				return false;

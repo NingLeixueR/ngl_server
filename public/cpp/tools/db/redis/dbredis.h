@@ -103,7 +103,7 @@ namespace ngl
 		template <typename T>
 		bool get(int akey, protobuf_data<T>& adata)
 		{
-			std::string lname = tools::protobuf_tabname<T>::tabname();
+			std::string lname = tools::protobuf_tabname<T>::name();
 			return redis_cmd::get(m_rc, lname.c_str(), akey, adata);
 		}
 
@@ -116,7 +116,7 @@ namespace ngl
 		template <typename T>
 		bool set(int akey, protobuf_data<T>& adata)
 		{
-			std::string lname = tools::protobuf_tabname<T>::tabname();
+			std::string lname = tools::protobuf_tabname<T>::name();
 			return redis_cmd::set(m_rc, lname.c_str(), akey, adata);
 		}
 
