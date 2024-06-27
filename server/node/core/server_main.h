@@ -175,7 +175,7 @@ void init_DB_NOTICE()
 void init_DB_KEYVAL()
 {
 	pbdb::db_keyvalue ltemp;
-	ltemp.set_m_id(pbdb::db_keyvalue_ekv_serveropentime);
+	ltemp.set_m_id(pbdb::db_keyvalue_ekv_none);
 	int lnow = ngl::localtime::gettime();
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_m_value(ltempstr);

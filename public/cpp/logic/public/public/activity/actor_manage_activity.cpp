@@ -22,10 +22,7 @@ namespace ngl
 	{
 		std::set<i64_actorid> ldataid;
 		nclient_brief::init(actor_brief::actorid(), this, ldataid);
-		std::set<i64_actorid> ldatakvid = 
-		{ 
-			pbdb::db_keyvalue_ekv_serveropentime 
-		};
+		std::set<i64_actorid> ldatakvid;
 		nclient_keyvalue::init(actor_keyvalue::actorid(), this, ldatakvid);
 	}
 

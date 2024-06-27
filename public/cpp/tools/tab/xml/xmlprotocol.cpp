@@ -42,7 +42,6 @@ namespace ngl
 		return itor->second;
 	}
 
-	// ### makeproto工具调用 所以不需要索引
 	int32_t xmlprotocol::free_protocol()
 	{
 		static std::set<int32_t> lset;
