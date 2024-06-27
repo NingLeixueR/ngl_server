@@ -221,7 +221,6 @@ bool start_world()
 	if (!init_server(nconfig::m_nodeid))
 		return false;
 
-	
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
@@ -305,7 +304,6 @@ bool start_actor()
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
-
 	return true;
 }
 
@@ -325,7 +323,6 @@ bool start_game()
 	ngl::actor_create::getInstance();
 	ngl::actor_kcp::getInstance();
 	ngl::actor_calendar::getInstance();
-	//ngl::actor_reloadcsv::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -344,7 +341,6 @@ bool start_cross()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_chat::getInstance();
-	//ngl::actor_reloadcsv::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

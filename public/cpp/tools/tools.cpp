@@ -542,7 +542,7 @@ namespace ngl
 		}
 		if (ltemp.empty() == false)
 			avec.push_back(ltemp);
-		return true;
+		return !avec.empty();
 	}
 
 	std::string tools::char2hex(char dec)
