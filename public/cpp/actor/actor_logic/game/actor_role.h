@@ -13,6 +13,7 @@
 #include "db_data.h"
 #include "ntimer.h"
 #include "net.pb.h"
+#include "rolekv.h"
 #include "task.h"
 #include "cmd.h"
 #include "bag.h"
@@ -29,6 +30,7 @@ namespace ngl
 		roleinfo	 m_info;
 		bag			 m_bag;
 		task		 m_task;
+		rolekv		 m_rolekv;
 		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
 		i64_actorid  m_playactorid;
