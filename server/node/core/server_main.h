@@ -121,6 +121,26 @@ void init_DB_MAIL()
 	init_DB_MAIL((1 * DEF_COUNT) + 1);
 }
 
+void init_DB_ROLEKEYVALUE(int beg)
+{
+	for (int i = beg; i < beg + DEF_COUNT; ++i)
+	{
+		pbdb::db_rolekeyvalue ltemp;
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		(*ltemp.mutable_m_data())["test1"] = "1";
+		(*ltemp.mutable_m_data())["test2"] = "2";
+		(*ltemp.mutable_m_data())["test3"] = "3";
+
+		ngl::actor_dbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue>::save(0, ltemp);
+	}
+}
+
+void init_DB_ROLEKEYVALUE()
+{
+	init_DB_ROLEKEYVALUE((0 * DEF_COUNT) + 1);
+	init_DB_ROLEKEYVALUE((1 * DEF_COUNT) + 1);
+}
+
 void init_DB_NOTICE()
 {
 	std::vector<std::string> lvec =
@@ -192,6 +212,7 @@ bool start_db(int argc, char** argv)
 		init_DB_NOTICE();
 		init_DB_TASK();
 		init_DB_KEYVAL();
+		init_DB_ROLEKEYVALUE();
 	}
 
 	return true;
