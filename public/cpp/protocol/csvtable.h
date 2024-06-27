@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-06-12 18:39:35
+// 创建时间 // 创建时间 24-06-27 16:53:08
 #pragma once
 
 #include "csv.h"
@@ -211,15 +211,16 @@ struct tab_dbload
 	bool                             m_isloadall                     ; // [index:3][load:y] 是否需要启动加载全部数据
 	bool                             m_network                       ; // [index:4][load:y] 是否允许通过网络分发
 	int32_t                          m_sendmaxcount                  ; // [index:5][load:y] 单次最多发送数量
+	int32_t                          m_dbcacheintervalms             ; // [index:6][load:y] 数据缓存入库间隔
 	/*********************************/
 	tab_dbload();
 	// 序列化反序列化相关
-	def_portocol(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount)
+	def_portocol(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount, m_dbcacheintervalms)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_isloadall,m_network,m_sendmaxcount);
+		def_rcsv2(m_id,m_name,lm_remarks,m_isloadall,m_network,m_sendmaxcount,m_dbcacheintervalms);
 	}
 };
 struct tab_errormessage

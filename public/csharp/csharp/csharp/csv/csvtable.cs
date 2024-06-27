@@ -581,6 +581,7 @@ namespace ngl
 		public bool		m_isloadall;		// [index:3][load:y] 是否需要启动加载全部数据
 		public bool		m_network;		// [index:4][load:y] 是否允许通过网络分发
 		public Int32		m_sendmaxcount;		// [index:5][load:y] 单次最多发送数量
+		public Int32		m_dbcacheintervalms;		// [index:6][load:y] 数据缓存入库间隔
 		/*********************************/
 		public Int32 Id(){return m_id;}
 		public bool Read(CsvPair apair)
@@ -596,6 +597,8 @@ namespace ngl
 			if(RCsv.ReadCsv(apair, ref m_network) == false)
 				return false;
 			if(RCsv.ReadCsv(apair, ref m_sendmaxcount) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_dbcacheintervalms) == false)
 				return false;
 			return true;
 		}

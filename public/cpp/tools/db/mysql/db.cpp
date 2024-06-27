@@ -136,7 +136,11 @@ namespace ngl
 		}
 		else
 		{
-			log_error()->print("db::select[{}][{}]", mysql_error(m_mysql), (const char*)asql);
+			log_error()->print(
+				"db::select fail [{}] [{}]", 
+				mysql_error(m_mysql), 
+				(const char*)asql
+			);
 		}
 		return false;
 	}
@@ -172,5 +176,4 @@ namespace ngl
 		mysql_stmt_close(lstmt);
 		return true;
 	}
-
 }// namespace ngl

@@ -2,11 +2,11 @@
 
 #include "actor_manage.h"
 #include "ttab_dbload.h"
-#include "cache_list.h"
 #include "ndbclient.h"
 #include "nregister.h"
 #include "nprotocol.h"
 #include "db_manage.h"
+#include "db_cache.h"
 #include "db_data.h"
 #include "db_pool.h"
 #include "gcmd.h"
@@ -37,16 +37,13 @@ namespace ngl
 		actor_dbtab(const actor_dbtab&) = delete;
 		actor_dbtab& operator=(const actor_dbtab&) = delete;
 
-		static tab_dbload* m_tab;
-		
+		static tab_dbload*		m_tab;
+		static db_cache<TDBTAB> m_cache_save;
+		static db_cache<TDBTAB> m_cache_del;
+
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 
-		template <enum_cache_list ENUM>
-		static cache_list<TDBTAB, ENUM>& inst()
-		{
-			return cache_list<TDBTAB, ENUM>::getInstance();
-		}
 	public:
 		using type_actor_dbtab = actor_dbtab<TDBTAB_TYPE, TDBTAB>;
 
@@ -60,23 +57,18 @@ namespace ngl
 
 				db_data<TDBTAB>::init();
 
-				inst<enum_clist_save>().
-					set_cachefun(
-						std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1)
-					);
-
-				inst<enum_clist_del>().
-					set_cachefun(
-						std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1)
-					);
+				m_cache_save.set_cachefun(
+					std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1),
+					m_tab->m_dbcacheintervalms
+				);
+				m_cache_del.set_cachefun(
+					std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1),
+					m_tab->m_dbcacheintervalms
+				);
 
 				if (m_tab->m_isloadall == true)
 				{
 					db_manage::select<TDBTAB>(actor_dbpool::get(0));
-					ngl::db_data<TDBTAB>::foreach([](TDBTAB& adata)
-						{
-							db_data<TDBTAB>::set_index(adata.m_id());
-						});
 				}
 				else
 				{
@@ -189,20 +181,20 @@ namespace ngl
 		{
 			int64_t lid = adata.m_id();
 			ngl::db_data<TDBTAB>::set(lid, adata);
-			inst<enum_clist_save>().push(lid);
+			m_cache_save.push(lid);
 		}
 
 		// # 异步删除数据  将需要删除的数据添加到缓存保存队列
 		static void del(i32_threadid athreadid, i64_actorid aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
-			inst<enum_clist_del>().push(aid);
+			m_cache_del.push(aid);
 		}
 
 		static void del(i32_threadid athreadid, std::vector<i64_actorid>& aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
-			inst<enum_clist_del>().push(aid);
+			m_cache_del.push(aid);
 		}
 
 		static void save(
@@ -221,6 +213,12 @@ namespace ngl
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	tab_dbload* actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_tab = nullptr;
+
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	db_cache<TDBTAB> actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_save;
+
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
+	db_cache<TDBTAB> actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_del;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db : public actor

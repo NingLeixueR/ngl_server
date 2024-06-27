@@ -9,34 +9,34 @@
 
 namespace ngl
 {
-	template <typename T, int NUM>
-	class cache_list
+	template <typename T>
+	class db_cache
 	{
-		cache_list(const cache_list&) = delete;
-		cache_list& operator=(const cache_list&) = delete;
+		db_cache(const db_cache&) = delete;
+		db_cache& operator=(const db_cache&) = delete;
 
-		cache_list() {}
 
 		std::set<i64_actorid>						m_ls;
 		std::function<void(std::set<i64_actorid>&)> m_fun;
 		std::shared_mutex							m_mutex;
 	public:
-		static cache_list<T, NUM>& getInstance()
+		db_cache() 
 		{
-			static cache_list<T, NUM> ltemp;
-			return ltemp;
 		}
 
-		void set_cachefun(const std::function<void(std::set<i64_actorid>&)>& afun)
+		void set_cachefun(
+			const std::function<void(std::set<i64_actorid>&)>& afun,
+			int32_t aintervalms
+		)
 		{
 			m_fun = afun;
 			twheel::wheel().addtimer(wheel_parm
 				{
-					.m_ms = 1 * 1000,
-					.m_intervalms = [](int64_t) {return 1 * 1000; } ,
+					.m_ms = aintervalms,
+					.m_intervalms = [aintervalms](int64_t) {return aintervalms; } ,
 					.m_count = 0x7fffffff,
 					.m_pram = nullptr,
-					.m_fun = std::bind(&cache_list<T,NUM>::execute, &getInstance(), std::placeholders::_1),
+					.m_fun = std::bind(&db_cache<T>::execute, this, std::placeholders::_1),
 				});
 		}
 
