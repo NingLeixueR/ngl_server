@@ -3,6 +3,7 @@
 #include "localtime.h"
 #include "logprintf.h"
 #include "sysconfig.h"
+#include "tools.h"
 
 #include <source_location>
 #include <sstream>
@@ -21,14 +22,30 @@ namespace ngl
 		static const char* get(ELOGLEVEL atype);
 	};
 	struct np_actor_logitem;
-	extern std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
-	extern std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
+	extern std::shared_ptr<np_actor_logitem> log_debug(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_debug_net(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_info(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_info_net(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_warn(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_warn_net(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_error(
+		const std::source_location& asource = std::source_location::current()
+	);
+	extern std::shared_ptr<np_actor_logitem> log_error_net(
+		const std::source_location& asource = std::source_location::current()
+	);
 }//namespace ngl
 
 #define Assert(ISOK)	 \

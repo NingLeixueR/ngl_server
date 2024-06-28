@@ -4,7 +4,6 @@
 #include "nsp_client.h"
 #include "nsp_server.h"
 #include "actor_db.h"
-#include "define.h"
 #include "db.pb.h"
 
 namespace ngl

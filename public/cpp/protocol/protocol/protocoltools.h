@@ -1,6 +1,6 @@
 #pragma once
 
-#include "define.h"
+#include "tools.h"
 #include "type.h"
 
 #include <string>

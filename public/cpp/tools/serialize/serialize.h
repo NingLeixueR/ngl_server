@@ -15,7 +15,6 @@
 
 #include <google/protobuf/util/json_util.h>
 
-#include "define.h"
 #include "db.pb.h"
 #include "tools.h"
 #include "nlog.h"

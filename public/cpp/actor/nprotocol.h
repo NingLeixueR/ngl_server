@@ -9,6 +9,7 @@
 #include "ndefine.h"
 #include "nguid.h"
 #include "db.pb.h"
+#include "tools.h"
 #include "pack.h"
 #include "type.h"
 #include "xml.h"
