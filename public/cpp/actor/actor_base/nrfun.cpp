@@ -1,6 +1,6 @@
-﻿#include "nrfun.h"
-#include "time_consuming.h"
+﻿#include "time_consuming.h"
 #include "sysconfig.h"
+#include "nrfun.h"
 
 namespace ngl
 {

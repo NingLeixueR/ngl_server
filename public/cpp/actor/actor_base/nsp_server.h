@@ -7,7 +7,6 @@ namespace ngl
 {
 	//# 订阅/发布[数据副本]
 	//# nsp_server负责分发数据,当数据发生变化
-
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
 	class nsp_server
 	{
@@ -69,7 +68,7 @@ namespace ngl
 		static void init(ndb_modular<ENUMDB, TDATA, TDerived>* adbmodule)
 		{
 			m_dbmodule = adbmodule;
-			// # 订阅
+			// # 订阅注册处理
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM,
 				TDerived,
@@ -85,6 +84,7 @@ namespace ngl
 					sync(recv.m_actorid);
 				});
 
+			// # 订阅数据被修改
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM,
 				TDerived,
