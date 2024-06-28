@@ -3,6 +3,7 @@
 #include <condition_variable>
 #include <shared_mutex>
 #include <functional>
+#include <semaphore>
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -20,12 +21,26 @@ namespace ngl
 		sem(const sem&) = delete;
 		sem& operator=(const sem&) = delete;
 
-		void* m_sem;
+		std::counting_semaphore<1> m_sem;
 	public:
-		sem();
-		~sem();
-		void wait();
-		void post();
+		sem() :
+			m_sem(0)
+		{
+		}
+
+		~sem()
+		{
+		}
+
+		inline void wait()
+		{
+			m_sem.acquire();
+		}
+
+		inline void post()
+		{
+			m_sem.release();
+		}
 	};
 
 	class sleep
@@ -35,12 +50,23 @@ namespace ngl
 		sleep& operator=(const sleep&) = delete;
 
 	public:
-		// ### 线程睡眠[avalue]小时
-		static void hours(int32_t avalue);
-		// ### 线程睡眠[avalue]秒
-		static void seconds(int32_t avalue);
-		// ### 线程睡眠[avalue]毫秒
-		static void milliseconds(int32_t avalue);
+		// # 线程睡眠[avalue]小时
+		static void seconds(int32_t avalue)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(avalue));
+		}
+
+		// # 线程睡眠[avalue]秒
+		static void hours(int32_t avalue)
+		{
+			std::this_thread::sleep_for(std::chrono::hours(avalue));
+		}
+
+		// # 线程睡眠[avalue]毫秒
+		static void milliseconds(int32_t avalue)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(avalue));
+		}
 	};
 }// namespace ngl
 

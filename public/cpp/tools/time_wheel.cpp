@@ -1,5 +1,5 @@
-#include "time_wheel.h"
 #include "threadtools.h"
+#include "time_wheel.h"
 
 #include <iostream>
 
@@ -543,4 +543,4 @@ namespace ngl
 	}
 
 	time_wheel twheel::m_wheel;
-}
+}// namespace ngl

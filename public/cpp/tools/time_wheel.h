@@ -1,13 +1,13 @@
 #pragma once
 
 #include <functional>
+#include <iostream>
 #include <thread>
 #include <vector>
-#include <map>
-#include <iostream>
 #include <array>
 #include <mutex>
 #include <cmath>
+#include <map>
 
 #include "threadtools.h"
 #include "impl.h"
@@ -129,4 +129,4 @@ namespace ngl
 			return m_wheel;
 		}
 	};
-}
+}//namespace ngl
