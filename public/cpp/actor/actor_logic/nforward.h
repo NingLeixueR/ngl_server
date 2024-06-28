@@ -16,15 +16,20 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename ...ARG>
 		static void register_c2g()
 		{
-			if (xmlnode::m_nodetype == ngl::GAME)
+			switch (xmlnode::m_nodetype)
+			{
+			case ngl::GAME:
 			{
 				actor_role::register_recvforward_handle<TYPE, actor_role>:: template func<ARG...>();
-				return;
 			}
-			if (xmlnode::m_nodetype == ngl::GATEWAY)
+			break;
+			case ngl::GATEWAY:
 			{
 				actor_gatewayc2g::register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
-				return;
+			}
+			break;
+			default:
+				break;
 			}
 		}
 		
@@ -34,30 +39,40 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename ...ARG>
 		static void register_c2g_2()
 		{
-			if (xmlnode::m_nodetype == ngl::GAME)
+			switch (xmlnode::m_nodetype)
+			{
+			case ngl::GAME:
 			{
 				actor_role::register_recvforward_handle2<TYPE, ACTOR, actor_role>:: template func<ARG...>();
-				return;
 			}
-			if (xmlnode::m_nodetype == ngl::GATEWAY)
+			break;
+			case ngl::GATEWAY:
 			{
 				actor_gatewayc2g::register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
-				return;
+			}
+			break;
+			default:
+				break;
 			}
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename ...ARG>
 		static void register_g2c()
 		{
-			if (xmlnode::m_nodetype == ngl::ROBOT)
+			switch (xmlnode::m_nodetype)
+			{
+			case ngl::ROBOT:
 			{
 				actor_robot::register_handle<TYPE, actor_robot>::template func<ARG...>(false);
-				return;
 			}
-			if (xmlnode::m_nodetype == ngl::GATEWAY)
+			break;
+			case ngl::GATEWAY:
 			{
 				actor_gatewayg2c::register_forward_handle<TYPE, true, actor_gatewayg2c>:: template func<ARG...>();
-				return;
+			}
+			break;
+			default:
+				break;
 			}
 		}
 

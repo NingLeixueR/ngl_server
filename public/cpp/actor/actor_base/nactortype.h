@@ -70,8 +70,15 @@ namespace ngl
 		nactortype() = delete;
 		nactortype(const nactortype&) = delete;
 		nactortype& operator=(const nactortype&) = delete;
+
 	public:
-		static bool name2enum(const std::string& aenumname, ENUM_ACTOR& avalue);
+		// # 注册关联枚举与名字
+		static void register_enumname(ENUM_ACTOR aenum, const char* aname);
+
+		// # 通过名字获取枚举
+		static bool name2enum(const char* aname, ENUM_ACTOR& avalue);
+
+		// # 通过枚举获取名字
 		static const char* enum2name(ENUM_ACTOR aenum);
 	};
 

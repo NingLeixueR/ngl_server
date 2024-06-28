@@ -8,9 +8,14 @@ namespace ngl
 		return aenum >= ACTOR_SIGNLE_START;
 	}
 
-	bool nactortype::name2enum(const std::string& aenumname, ENUM_ACTOR& avalue)
+	void nactortype::register_enumname(ENUM_ACTOR aenum, const char* aname)
 	{
-		auto lpair = em<ENUM_ACTOR>::get_enum(aenumname.c_str());
+		em<ENUM_ACTOR>::set(aenum, aname);
+	}
+
+	bool nactortype::name2enum(const char* aname, ENUM_ACTOR& avalue)
+	{
+		auto lpair = em<ENUM_ACTOR>::get_enum(aname);
 		if (lpair.second == false)
 			return false;
 		avalue = lpair.first;

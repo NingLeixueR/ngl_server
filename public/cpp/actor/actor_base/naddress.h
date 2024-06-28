@@ -15,6 +15,7 @@ namespace ngl
 		naddress() = delete;
 		naddress(const naddress&) = delete;
 		naddress& operator=(const naddress&) = delete;
+
 	public:
 		//# [ACTOR_ID] -> SERVER_ID
 		//# [ACTOR_TYPE + EARE_ID + DATA_ID] -> SERVER_ID

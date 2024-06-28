@@ -60,7 +60,7 @@ namespace ngl
 							if (aos.read("data", lguid))
 							{
 								ENUM_ACTOR ltype;
-								if (nactortype::name2enum(lguid.m_actor_name, ltype) == false)
+								if (nactortype::name2enum(lguid.m_actor_name.c_str(), ltype) == false)
 									return;
 								ngl::json_write lwritejson;
 								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
@@ -78,7 +78,7 @@ namespace ngl
 							if (aos.read("data", lguid))
 							{
 								ENUM_ACTOR ltype;
-								if (nactortype::name2enum(lguid.m_actor_name, ltype) == false)
+								if (nactortype::name2enum(lguid.m_actor_name.c_str(), ltype) == false)
 									return;
 								nguid::make(ltype, lguid.m_area, lguid.m_dataid);
 								auto pro = std::make_shared<np_actor_close>();
@@ -96,7 +96,7 @@ namespace ngl
 			}
 
 			ENUM_ACTOR ltype;
-			if (nactortype::name2enum(lactorname, ltype) == false)
+			if (nactortype::name2enum(lactorname.c_str(), ltype) == false)
 			{
 				if (lactorname == "ACTOR_DB")
 				{

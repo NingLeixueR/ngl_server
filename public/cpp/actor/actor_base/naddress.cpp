@@ -219,7 +219,6 @@ namespace ngl
 		impl_actor_address::actor_add(aserverid, adataid);
 	}
 
-	// Ìí¼ÓÒ»×éactor
 	void naddress::actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)

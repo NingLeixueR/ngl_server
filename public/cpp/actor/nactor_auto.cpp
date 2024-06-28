@@ -37,12 +37,6 @@
 
 namespace ngl
 {
-	template <typename TK>
-	void em_actor(const TK akey, const char* aval)
-	{
-		em<ENUM_ACTOR>::set(akey, aval);
-	}
-
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
 	{
 		return (ENUM_ACTOR)(EPROTOCOL_TYPE_PROTOCOLBUFF * 1000 + ACTOR_DB + TDBTAB_TYPE);
@@ -79,7 +73,7 @@ namespace ngl
 			{
 				ldbname += ltemp;
 			}
-			em_actor(lenum, ldbname.c_str());
+			nactortype::register_enumname(lenum, ldbname.c_str());
 
 			init_customs_db<TDBTAB_TYPE, TDBTAB>();
 		}
@@ -92,7 +86,7 @@ namespace ngl
 	template <typename TACTOR>
 	void auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
 	{
-		em_actor(aenum, aname);
+		nactortype::register_enumname(aenum, aname);
 		nactor_type<TACTOR>::inits(aenum);
 	}
 

@@ -11,6 +11,7 @@ namespace ngl
 		ndb_component() = delete;
 		ndb_component(const ndb_component&) = delete;
 		ndb_component& operator=(const ndb_component&) = delete;
+
 	protected:
 		actor_base*				m_actor;
 		i64_actorid				m_id;
@@ -37,6 +38,7 @@ namespace ngl
 	{
 		ndb_modular(const ndb_modular&) = delete;
 		ndb_modular& operator=(const ndb_modular&) = delete;
+
 	protected:
 		ndbclient<ENUM, TDATA, TACTOR> m_data;
 
