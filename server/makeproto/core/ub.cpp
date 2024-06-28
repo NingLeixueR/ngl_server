@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-06-27 17:15:27
+// 创建时间 24-06-28 15:23:04
 #include "account.cpp"
 #include "activity.cpp"
 #include "activitydb.cpp"
@@ -92,7 +92,6 @@
 #include "pack.cpp"
 #include "pack_head.cpp"
 #include "protocol.cpp"
-#include "protocoltools.cpp"
 #include "ranklist.cpp"
 #include "remakes.cpp"
 #include "roleinfo.cpp"

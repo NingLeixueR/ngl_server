@@ -5,6 +5,9 @@
 
 namespace ngl
 {
+	enum eprotocol_tar
+	{};
+
 	class impl_protocol
 	{
 		struct pfun
@@ -38,10 +41,25 @@ namespace ngl
 				return nullptr;
 			}
 			
-			/////////
-			//const char* lpprotocolname = protocoltools::name(aprotocolnum, aprotocoltype);
-			//log_error()->print("protocol::push Info [{}]", lpprotocolname);
-			////////
+			/////////////////////////////////////////////
+			//std::pair<const char*, bool> lpair = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum), aprotocoltype);
+			//if (lpair.second)
+			//{
+			//	log_error()->print(
+			//		"protocol::push Info {}:{}", 
+			//		aprotocolnum,
+			//		lpair.first
+			//	);
+			//}
+			//else
+			//{
+			//	log_error()->print(
+			//		"protocol::push Info {}:{}",
+			//		aprotocolnum,
+			//		"not find protocol name"
+			//	);
+			//}
+			/////////////////////////////////////////////
 			return &itor2->second;
 		}
 	public:
@@ -89,12 +107,13 @@ namespace ngl
 			, const char* aname						// ÓÃÓÚµ÷ÊÔ
 		)
 		{
-			protocoltools::push(aprotocolnumber, aname, atype);
+			
 			{
 				lock_write(m_mutex);
-				pfun& lprotocol = m_protocolfun[atype][aprotocolnumber];
-				lprotocol.m_packfun = apackfun;
-				lprotocol.m_runfun[aenumactor] = arunfun;
+				pfun& lprotocol					= m_protocolfun[atype][aprotocolnumber];
+				lprotocol.m_packfun				= apackfun;
+				lprotocol.m_runfun[aenumactor]	= arunfun;
+				em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname, atype);
 			}
 		}
 	};
