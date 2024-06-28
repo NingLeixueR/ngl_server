@@ -1,3 +1,4 @@
+[![Build C++](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-single-platform.yml)
 ## ngl
 * Actor based c++distributed game server framework
 * 基于Actor的c++分布式游戏服务器框架
