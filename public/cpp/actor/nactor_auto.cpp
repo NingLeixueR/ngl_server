@@ -240,6 +240,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_JOIN_FAMIL
 			, pbnet::PROBUFF_NET_LEAVE_FAMIL
 			, pbnet::PROBUFF_NET_FAMIL_LIST
+			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME
 		>();
 	}
 
@@ -263,6 +264,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE
 			, pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE
 			, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE
+			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE
 		>();
 	}
 }//namespace ngl

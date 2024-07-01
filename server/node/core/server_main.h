@@ -531,8 +531,6 @@ bool start_robot(int argc, char** argv)
 						ltest = true;
 						continue;
 					}
-					if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
-						continue;
 					ngl::actor_manage_robot::parse_command(lvec);
 				}
 			});

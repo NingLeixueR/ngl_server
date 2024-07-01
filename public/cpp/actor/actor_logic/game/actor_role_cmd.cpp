@@ -119,6 +119,59 @@ namespace ngl
 					role->handle_forward<ACTOR_MAIL>(lmessage);
 				}
 			);
+
+			handle_cmd::push("/create_family", [](actor_role* role, const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL>();
+					pro->set_m_name(aparm);
+					message<pbnet::PROBUFF_NET_CREATE_FAMIL> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
+			handle_cmd::push("/family", [](actor_role* role, const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST>();
+					if(aparm != std::string(""))
+						pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+					else
+						pro->set_m_familid(-1);
+					message<pbnet::PROBUFF_NET_FAMIL_LIST> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
+			handle_cmd::push("/join_family", [](actor_role* role, const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
+					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+					message<pbnet::PROBUFF_NET_JOIN_FAMIL> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
+			handle_cmd::push("/leave_family", [](actor_role* role, const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_LEAVE_FAMIL>();
+					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+					message<pbnet::PROBUFF_NET_LEAVE_FAMIL> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
+			handle_cmd::push("/change_familyname", [](actor_role* role, const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>();
+					int64_t lfamilylid = 0;
+					std::string lfamilylname;
+					if (tools::splite(aparm, "*", lfamilylid, lfamilylname) == false)
+						return;
+					pro->set_m_familid(lfamilylid);
+					pro->set_m_name(lfamilylname);
+					message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
 		}
 
 		std::string& lkey = lvec[0];

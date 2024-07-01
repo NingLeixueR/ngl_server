@@ -73,7 +73,7 @@ namespace ngl
 			return true;
 		}
 
-		// # 加入军团
+		// # 离开军团
 		bool handle(message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)
 		{
 			i64_actorid lroleid = adata.get_data()->identifier();
@@ -88,6 +88,16 @@ namespace ngl
 		bool handle(message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
 		{
 			m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
+			return true;
+		}
+		// # 修改军团名称
+		bool handle(message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
+		{
+			m_family.change_familyname(
+				adata.get_data()->identifier(), 
+				adata.get_data()->data()->m_familid(),
+				adata.get_data()->data()->m_name()
+				);
 			return true;
 		}
 

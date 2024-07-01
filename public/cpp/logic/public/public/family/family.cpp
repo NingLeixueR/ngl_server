@@ -132,6 +132,11 @@ namespace ngl
 		{
 			return;
 		}
+		if (aroleid != -1)
+		{
+			if (lpconstfamily->m_leader() != aroleid)
+				return;
+		}
 		pbdb::db_family* lpfamily = get_family(afamilyid);
 		if (lpfamily == nullptr)
 		{

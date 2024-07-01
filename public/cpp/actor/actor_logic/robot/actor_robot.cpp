@@ -204,21 +204,82 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata)
 	{
+		auto lstream = log_error();
+		(*lstream) << 
+			std::format(
+				"创建军团{}！err={}", 
+				adata.get_data()->m_stat() == 0 ? "成功" : "失败", 
+				adata.get_data()->m_stat()
+			);
+		lstream->print("");
 		return true;
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
 	{
+		auto lstream = log_error();
+		(*lstream) <<
+			std::format(
+				"加入军团{}！err={}",
+				adata.get_data()->m_stat() == 0 ? "成功" : "失败",
+				adata.get_data()->m_stat()
+			);
+		lstream->print("");
 		return true;
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
 	{
+		auto lstream = log_error();
+		(*lstream) <<
+			std::format(
+				"离开军团{}！err={}",
+				adata.get_data()->m_stat() == 0 ? "成功" : "失败",
+				adata.get_data()->m_stat()
+			);
+		lstream->print("");
 		return true;
 	}
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
 	{
+		pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE* lpdata = adata.get_data();
+		auto lstream = log_error();
+		(*lstream) << "##############famil list start##############" << std::endl;
+		for (const auto& item : lpdata->m_family())
+		{
+			std::strstream lstrstream;
+			for (const auto& [_roleid, _familyer] : item.m_member())
+			{
+				lstrstream << _roleid << "*";
+			}
+			
+			(*lstream) << std::format(
+				"id:{} name:{} lv:{} exp:{} createutc:{} leader:{} m_member:[{}]",
+				item.m_id(),
+				item.m_name(),
+				item.m_lv(),
+				item.m_exp(),
+				item.m_createutc(),
+				item.m_leader(),
+				lstrstream.str()
+			) << std::endl;
+		}
+		(*lstream) << "##############famil list finish##############" << std::endl;
+		lstream->print("");
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata)
+	{
+		auto lstream = log_error();
+		(*lstream) <<
+			std::format(
+				"修改军团名称{}！err={}",
+				adata.get_data()->m_stat() == 0 ? "成功" : "失败",
+				adata.get_data()->m_stat()
+			);
+		lstream->print("");
 		return true;
 	}
 
