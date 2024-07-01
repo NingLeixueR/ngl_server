@@ -1364,4 +1364,29 @@ namespace ngl
 			return true;
 		}
 	}
+	class tab_familylv : ICsvRead, ICsv
+	{
+		/*********************************/
+		public Int32		m_id;		// [index:0][load:y] 军团等级 
+		public string		m_name;		// [index:1][load:y] 名字 
+		public string		m_remarks;		// [index:2][load:n] 备注
+		public Int32		m_exp;		// [index:3][load:y] 升级需要的经验
+		public Int32		m_maxmembers;		// [index:4][load:y] 最多军团人数
+		/*********************************/
+		public Int32 Id(){return m_id;}
+		public bool Read(CsvPair apair)
+		{
+			if(RCsv.ReadCsv(apair, ref m_id) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_name) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_remarks) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_exp) == false)
+				return false;
+			if(RCsv.ReadCsv(apair, ref m_maxmembers) == false)
+				return false;
+			return true;
+		}
+	}
 }

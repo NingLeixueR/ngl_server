@@ -14,6 +14,7 @@ namespace ngl
 
 		static i32_rolelv m_rolemaxlv; // 玩家最大等级
 		static i32_rolevip m_rolemaxvip; // 玩家最大vip等级
+		static int32_t m_createfamilconsume; // 创建军团的消耗
 
 		ttab_specialid()
 		{}
@@ -31,6 +32,11 @@ namespace ngl
 				{
 					m_rolemaxvip = tools::lexical_cast<i32_rolevip>(ltab.m_value.c_str());
 				}
+				else if (ltab.m_name == "createfamilconsume")
+				{
+					m_createfamilconsume = tools::lexical_cast<i32_rolevip>(ltab.m_value.c_str());
+				}
+					 
 			}
 		}
 	};

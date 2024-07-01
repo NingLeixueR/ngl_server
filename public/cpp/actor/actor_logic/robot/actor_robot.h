@@ -48,6 +48,10 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata);
 	};
 
 	class actor_manage_robot : public actor

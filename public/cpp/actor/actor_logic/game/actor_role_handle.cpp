@@ -34,7 +34,7 @@ namespace ngl
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
 			pro->set_m_utc(localtime::gettime());
-			send2client(pro);
+			send_client(id_guid(), pro);
 		}
 		return true;
 	}

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-06-27 18:14:57
+// 创建时间 // 创建时间 24-07-01 14:28:56
 #pragma once
 
 #include "csv.h"
@@ -752,6 +752,24 @@ struct tab_recharge
 	{
 		std::string lm_remarks;
 		def_rcsv2(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid);
+	}
+};
+struct tab_familylv
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] 军团等级 
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+	int32_t                          m_exp                           ; // [index:3][load:y] 升级需要的经验
+	int32_t                          m_maxmembers                    ; // [index:4][load:y] 最多军团人数
+	/*********************************/
+	tab_familylv();
+	// 序列化反序列化相关
+	def_portocol(tab_familylv, m_id, m_name, m_exp, m_maxmembers)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv2(m_id,m_name,lm_remarks,m_exp,m_maxmembers);
 	}
 };
 }//namespace ngl

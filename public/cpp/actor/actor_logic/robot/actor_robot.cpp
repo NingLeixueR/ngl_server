@@ -202,6 +202,26 @@ namespace ngl
 		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
 	}
 
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
+	{
+		return true;
+	}
+
 	void actor_manage_robot::nregister()
 	{
 		register_handle_custom<actor_manage_robot>::func<

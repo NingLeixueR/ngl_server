@@ -102,6 +102,7 @@ INCLUDE_DIRECTORIES(public/cpp/logic/public/public/ranklist)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/brief)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/calendar)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/keyvalue)
+INCLUDE_DIRECTORIES(public/cpp/logic/public/public/family)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
 INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 

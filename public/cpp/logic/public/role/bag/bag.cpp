@@ -208,6 +208,6 @@ namespace ngl
 		{
 			ldelnostackitems->Add(itemid);
 		}
-		actor()->send2client(pro);
+		actor()->send_client(actor()->id_guid(), pro);
 	}
 }// namespace ngl

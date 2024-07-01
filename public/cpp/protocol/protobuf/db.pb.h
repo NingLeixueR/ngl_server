@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[29]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[32]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -86,6 +86,12 @@ extern db_briefDefaultTypeInternal _db_brief_default_instance_;
 class db_calendar;
 class db_calendarDefaultTypeInternal;
 extern db_calendarDefaultTypeInternal _db_calendar_default_instance_;
+class db_family;
+class db_familyDefaultTypeInternal;
+extern db_familyDefaultTypeInternal _db_family_default_instance_;
+class db_family_MMemberEntry_DoNotUse;
+class db_family_MMemberEntry_DoNotUseDefaultTypeInternal;
+extern db_family_MMemberEntry_DoNotUseDefaultTypeInternal _db_family_MMemberEntry_DoNotUse_default_instance_;
 class db_guild;
 class db_guildDefaultTypeInternal;
 extern db_guildDefaultTypeInternal _db_guild_default_instance_;
@@ -134,6 +140,9 @@ extern db_task_dataDefaultTypeInternal _db_task_data_default_instance_;
 class db_task_data_schedule;
 class db_task_data_scheduleDefaultTypeInternal;
 extern db_task_data_scheduleDefaultTypeInternal _db_task_data_schedule_default_instance_;
+class familyer;
+class familyerDefaultTypeInternal;
+extern familyerDefaultTypeInternal _familyer_default_instance_;
 class item;
 class itemDefaultTypeInternal;
 extern itemDefaultTypeInternal _item_default_instance_;
@@ -157,6 +166,8 @@ template<> ::pbdb::db_bag* Arena::CreateMaybeMessage<::pbdb::db_bag>(Arena*);
 template<> ::pbdb::db_bag_MItemsEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_bag_MItemsEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_brief* Arena::CreateMaybeMessage<::pbdb::db_brief>(Arena*);
 template<> ::pbdb::db_calendar* Arena::CreateMaybeMessage<::pbdb::db_calendar>(Arena*);
+template<> ::pbdb::db_family* Arena::CreateMaybeMessage<::pbdb::db_family>(Arena*);
+template<> ::pbdb::db_family_MMemberEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_family_MMemberEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_guild* Arena::CreateMaybeMessage<::pbdb::db_guild>(Arena*);
 template<> ::pbdb::db_keyvalue* Arena::CreateMaybeMessage<::pbdb::db_keyvalue>(Arena*);
 template<> ::pbdb::db_mail* Arena::CreateMaybeMessage<::pbdb::db_mail>(Arena*);
@@ -173,6 +184,7 @@ template<> ::pbdb::db_task_MCompleteddatasEntry_DoNotUse* Arena::CreateMaybeMess
 template<> ::pbdb::db_task_MRundatasEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_task_MRundatasEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_task_data* Arena::CreateMaybeMessage<::pbdb::db_task_data>(Arena*);
 template<> ::pbdb::db_task_data_schedule* Arena::CreateMaybeMessage<::pbdb::db_task_data_schedule>(Arena*);
+template<> ::pbdb::familyer* Arena::CreateMaybeMessage<::pbdb::familyer>(Arena*);
 template<> ::pbdb::item* Arena::CreateMaybeMessage<::pbdb::item>(Arena*);
 template<> ::pbdb::mail* Arena::CreateMaybeMessage<::pbdb::mail>(Arena*);
 template<> ::pbdb::mailitem* Arena::CreateMaybeMessage<::pbdb::mailitem>(Arena*);
@@ -204,6 +216,32 @@ inline bool db_keyvalue_ekv_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<db_keyvalue_ekv>(
     db_keyvalue_ekv_descriptor(), name, value);
 }
+enum familyer_eposition : int {
+  familyer_eposition_leader = 0,
+  familyer_eposition_counsellor = 1,
+  familyer_eposition_ordinary = 2,
+  familyer_eposition_familyer_eposition_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  familyer_eposition_familyer_eposition_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool familyer_eposition_IsValid(int value);
+constexpr familyer_eposition familyer_eposition_eposition_MIN = familyer_eposition_leader;
+constexpr familyer_eposition familyer_eposition_eposition_MAX = familyer_eposition_ordinary;
+constexpr int familyer_eposition_eposition_ARRAYSIZE = familyer_eposition_eposition_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* familyer_eposition_descriptor();
+template<typename T>
+inline const std::string& familyer_eposition_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, familyer_eposition>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function familyer_eposition_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    familyer_eposition_descriptor(), enum_t_value);
+}
+inline bool familyer_eposition_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, familyer_eposition* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<familyer_eposition>(
+    familyer_eposition_descriptor(), name, value);
+}
 enum ENUM_DB : int {
   ENUM_DB_ACCOUNT = 0,
   ENUM_DB_ROLE = 1,
@@ -218,7 +256,8 @@ enum ENUM_DB : int {
   ENUM_DB_TASK = 10,
   ENUM_DB_CALENDAR = 11,
   ENUM_DB_ROLEKEYVALUE = 12,
-  ENUM_DB_COUNT = 13,
+  ENUM_DB_FAMILY = 13,
+  ENUM_DB_COUNT = 14,
   ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
@@ -4527,6 +4566,504 @@ class db_calendar PROTOBUF_FINAL :
   bool m_finish_;
   friend struct ::TableStruct_db_2eproto;
 };
+// -------------------------------------------------------------------
+
+class familyer PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.familyer) */ {
+ public:
+  inline familyer() : familyer(nullptr) {}
+  virtual ~familyer();
+
+  familyer(const familyer& from);
+  familyer(familyer&& from) noexcept
+    : familyer() {
+    *this = ::std::move(from);
+  }
+
+  inline familyer& operator=(const familyer& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline familyer& operator=(familyer&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const familyer& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const familyer* internal_default_instance() {
+    return reinterpret_cast<const familyer*>(
+               &_familyer_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    29;
+
+  friend void swap(familyer& a, familyer& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(familyer* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(familyer* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline familyer* New() const final {
+    return CreateMaybeMessage<familyer>(nullptr);
+  }
+
+  familyer* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<familyer>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const familyer& from);
+  void MergeFrom(const familyer& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(familyer* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.familyer";
+  }
+  protected:
+  explicit familyer(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  typedef familyer_eposition eposition;
+  static constexpr eposition leader =
+    familyer_eposition_leader;
+  static constexpr eposition counsellor =
+    familyer_eposition_counsellor;
+  static constexpr eposition ordinary =
+    familyer_eposition_ordinary;
+  static inline bool eposition_IsValid(int value) {
+    return familyer_eposition_IsValid(value);
+  }
+  static constexpr eposition eposition_MIN =
+    familyer_eposition_eposition_MIN;
+  static constexpr eposition eposition_MAX =
+    familyer_eposition_eposition_MAX;
+  static constexpr int eposition_ARRAYSIZE =
+    familyer_eposition_eposition_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  eposition_descriptor() {
+    return familyer_eposition_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& eposition_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, eposition>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function eposition_Name.");
+    return familyer_eposition_Name(enum_t_value);
+  }
+  static inline bool eposition_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      eposition* value) {
+    return familyer_eposition_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMRoleidFieldNumber = 1,
+    kMJoinutcFieldNumber = 2,
+    kMLastsignutcFieldNumber = 3,
+    kMPositionFieldNumber = 4,
+  };
+  // int64 m_roleid = 1;
+  bool has_m_roleid() const;
+  private:
+  bool _internal_has_m_roleid() const;
+  public:
+  void clear_m_roleid();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_roleid() const;
+  void set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_roleid() const;
+  void _internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int32 m_joinutc = 2;
+  bool has_m_joinutc() const;
+  private:
+  bool _internal_has_m_joinutc() const;
+  public:
+  void clear_m_joinutc();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_joinutc() const;
+  void set_m_joinutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_joinutc() const;
+  void _internal_set_m_joinutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 m_lastsignutc = 3;
+  bool has_m_lastsignutc() const;
+  private:
+  bool _internal_has_m_lastsignutc() const;
+  public:
+  void clear_m_lastsignutc();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_lastsignutc() const;
+  void set_m_lastsignutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_lastsignutc() const;
+  void _internal_set_m_lastsignutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // .pbdb.familyer.eposition m_position = 4;
+  bool has_m_position() const;
+  private:
+  bool _internal_has_m_position() const;
+  public:
+  void clear_m_position();
+  ::pbdb::familyer_eposition m_position() const;
+  void set_m_position(::pbdb::familyer_eposition value);
+  private:
+  ::pbdb::familyer_eposition _internal_m_position() const;
+  void _internal_set_m_position(::pbdb::familyer_eposition value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.familyer)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_roleid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_joinutc_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_lastsignutc_;
+  int m_position_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class db_family_MMemberEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_family_MMemberEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_family_MMemberEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  db_family_MMemberEntry_DoNotUse();
+  explicit db_family_MMemberEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_family_MMemberEntry_DoNotUse& other);
+  static const db_family_MMemberEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_family_MMemberEntry_DoNotUse*>(&_db_family_MMemberEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[30];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class db_family PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_family) */ {
+ public:
+  inline db_family() : db_family(nullptr) {}
+  virtual ~db_family();
+
+  db_family(const db_family& from);
+  db_family(db_family&& from) noexcept
+    : db_family() {
+    *this = ::std::move(from);
+  }
+
+  inline db_family& operator=(const db_family& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline db_family& operator=(db_family&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const db_family& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const db_family* internal_default_instance() {
+    return reinterpret_cast<const db_family*>(
+               &_db_family_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    31;
+
+  friend void swap(db_family& a, db_family& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(db_family* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(db_family* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline db_family* New() const final {
+    return CreateMaybeMessage<db_family>(nullptr);
+  }
+
+  db_family* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<db_family>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const db_family& from);
+  void MergeFrom(const db_family& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(db_family* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.db_family";
+  }
+  protected:
+  explicit db_family(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMMemberFieldNumber = 7,
+    kMNameFieldNumber = 3,
+    kMIdFieldNumber = 1,
+    kMCreateutcFieldNumber = 2,
+    kMLvFieldNumber = 5,
+    kMLeaderFieldNumber = 4,
+    kMExpFieldNumber = 6,
+  };
+  // map<int64, .pbdb.familyer> m_member = 7;
+  int m_member_size() const;
+  private:
+  int _internal_m_member_size() const;
+  public:
+  void clear_m_member();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >&
+      _internal_m_member() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >*
+      _internal_mutable_m_member();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >&
+      m_member() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >*
+      mutable_m_member();
+
+  // string m_name = 3;
+  bool has_m_name() const;
+  private:
+  bool _internal_has_m_name() const;
+  public:
+  void clear_m_name();
+  const std::string& m_name() const;
+  void set_m_name(const std::string& value);
+  void set_m_name(std::string&& value);
+  void set_m_name(const char* value);
+  void set_m_name(const char* value, size_t size);
+  std::string* mutable_m_name();
+  std::string* release_m_name();
+  void set_allocated_m_name(std::string* m_name);
+  private:
+  const std::string& _internal_m_name() const;
+  void _internal_set_m_name(const std::string& value);
+  std::string* _internal_mutable_m_name();
+  public:
+
+  // int64 m_id = 1;
+  bool has_m_id() const;
+  private:
+  bool _internal_has_m_id() const;
+  public:
+  void clear_m_id();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_id() const;
+  void set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_id() const;
+  void _internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int32 m_createutc = 2;
+  bool has_m_createutc() const;
+  private:
+  bool _internal_has_m_createutc() const;
+  public:
+  void clear_m_createutc();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_createutc() const;
+  void set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_createutc() const;
+  void _internal_set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 m_lv = 5;
+  bool has_m_lv() const;
+  private:
+  bool _internal_has_m_lv() const;
+  public:
+  void clear_m_lv();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_lv() const;
+  void set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_lv() const;
+  void _internal_set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int64 m_leader = 4;
+  bool has_m_leader() const;
+  private:
+  bool _internal_has_m_leader() const;
+  public:
+  void clear_m_leader();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_leader() const;
+  void set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_leader() const;
+  void _internal_set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int32 m_exp = 6;
+  bool has_m_exp() const;
+  private:
+  bool _internal_has_m_exp() const;
+  public:
+  void clear_m_exp();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_exp() const;
+  void set_m_exp(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_exp() const;
+  void _internal_set_m_exp(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.db_family)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      db_family_MMemberEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > m_member_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_name_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_createutc_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_lv_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_leader_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_exp_;
+  friend struct ::TableStruct_db_2eproto;
+};
 // ===================================================================
 
 
@@ -7350,9 +7887,380 @@ inline void db_calendar::set_m_finish(bool value) {
   // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_finish)
 }
 
+// -------------------------------------------------------------------
+
+// familyer
+
+// int64 m_roleid = 1;
+inline bool familyer::_internal_has_m_roleid() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool familyer::has_m_roleid() const {
+  return _internal_has_m_roleid();
+}
+inline void familyer::clear_m_roleid() {
+  m_roleid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 familyer::_internal_m_roleid() const {
+  return m_roleid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 familyer::m_roleid() const {
+  // @@protoc_insertion_point(field_get:pbdb.familyer.m_roleid)
+  return _internal_m_roleid();
+}
+inline void familyer::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_roleid_ = value;
+}
+inline void familyer::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_m_roleid(value);
+  // @@protoc_insertion_point(field_set:pbdb.familyer.m_roleid)
+}
+
+// int32 m_joinutc = 2;
+inline bool familyer::_internal_has_m_joinutc() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool familyer::has_m_joinutc() const {
+  return _internal_has_m_joinutc();
+}
+inline void familyer::clear_m_joinutc() {
+  m_joinutc_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 familyer::_internal_m_joinutc() const {
+  return m_joinutc_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 familyer::m_joinutc() const {
+  // @@protoc_insertion_point(field_get:pbdb.familyer.m_joinutc)
+  return _internal_m_joinutc();
+}
+inline void familyer::_internal_set_m_joinutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_joinutc_ = value;
+}
+inline void familyer::set_m_joinutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_joinutc(value);
+  // @@protoc_insertion_point(field_set:pbdb.familyer.m_joinutc)
+}
+
+// int32 m_lastsignutc = 3;
+inline bool familyer::_internal_has_m_lastsignutc() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool familyer::has_m_lastsignutc() const {
+  return _internal_has_m_lastsignutc();
+}
+inline void familyer::clear_m_lastsignutc() {
+  m_lastsignutc_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 familyer::_internal_m_lastsignutc() const {
+  return m_lastsignutc_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 familyer::m_lastsignutc() const {
+  // @@protoc_insertion_point(field_get:pbdb.familyer.m_lastsignutc)
+  return _internal_m_lastsignutc();
+}
+inline void familyer::_internal_set_m_lastsignutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  m_lastsignutc_ = value;
+}
+inline void familyer::set_m_lastsignutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_lastsignutc(value);
+  // @@protoc_insertion_point(field_set:pbdb.familyer.m_lastsignutc)
+}
+
+// .pbdb.familyer.eposition m_position = 4;
+inline bool familyer::_internal_has_m_position() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool familyer::has_m_position() const {
+  return _internal_has_m_position();
+}
+inline void familyer::clear_m_position() {
+  m_position_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::pbdb::familyer_eposition familyer::_internal_m_position() const {
+  return static_cast< ::pbdb::familyer_eposition >(m_position_);
+}
+inline ::pbdb::familyer_eposition familyer::m_position() const {
+  // @@protoc_insertion_point(field_get:pbdb.familyer.m_position)
+  return _internal_m_position();
+}
+inline void familyer::_internal_set_m_position(::pbdb::familyer_eposition value) {
+  _has_bits_[0] |= 0x00000008u;
+  m_position_ = value;
+}
+inline void familyer::set_m_position(::pbdb::familyer_eposition value) {
+  _internal_set_m_position(value);
+  // @@protoc_insertion_point(field_set:pbdb.familyer.m_position)
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// db_family
+
+// int64 m_id = 1;
+inline bool db_family::_internal_has_m_id() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool db_family::has_m_id() const {
+  return _internal_has_m_id();
+}
+inline void db_family::clear_m_id() {
+  m_id_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_family::_internal_m_id() const {
+  return m_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_family::m_id() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_family.m_id)
+  return _internal_m_id();
+}
+inline void db_family::_internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_id_ = value;
+}
+inline void db_family::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_m_id(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_family.m_id)
+}
+
+// int32 m_createutc = 2;
+inline bool db_family::_internal_has_m_createutc() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool db_family::has_m_createutc() const {
+  return _internal_has_m_createutc();
+}
+inline void db_family::clear_m_createutc() {
+  m_createutc_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_family::_internal_m_createutc() const {
+  return m_createutc_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_family::m_createutc() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_family.m_createutc)
+  return _internal_m_createutc();
+}
+inline void db_family::_internal_set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  m_createutc_ = value;
+}
+inline void db_family::set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_createutc(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_family.m_createutc)
+}
+
+// string m_name = 3;
+inline bool db_family::_internal_has_m_name() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool db_family::has_m_name() const {
+  return _internal_has_m_name();
+}
+inline void db_family::clear_m_name() {
+  m_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& db_family::m_name() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_family.m_name)
+  return _internal_m_name();
+}
+inline void db_family::set_m_name(const std::string& value) {
+  _internal_set_m_name(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_family.m_name)
+}
+inline std::string* db_family::mutable_m_name() {
+  // @@protoc_insertion_point(field_mutable:pbdb.db_family.m_name)
+  return _internal_mutable_m_name();
+}
+inline const std::string& db_family::_internal_m_name() const {
+  return m_name_.Get();
+}
+inline void db_family::_internal_set_m_name(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void db_family::set_m_name(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:pbdb.db_family.m_name)
+}
+inline void db_family::set_m_name(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:pbdb.db_family.m_name)
+}
+inline void db_family::set_m_name(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:pbdb.db_family.m_name)
+}
+inline std::string* db_family::_internal_mutable_m_name() {
+  _has_bits_[0] |= 0x00000001u;
+  return m_name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* db_family::release_m_name() {
+  // @@protoc_insertion_point(field_release:pbdb.db_family.m_name)
+  if (!_internal_has_m_name()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return m_name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void db_family::set_allocated_m_name(std::string* m_name) {
+  if (m_name != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  m_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_name,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:pbdb.db_family.m_name)
+}
+
+// int64 m_leader = 4;
+inline bool db_family::_internal_has_m_leader() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
+inline bool db_family::has_m_leader() const {
+  return _internal_has_m_leader();
+}
+inline void db_family::clear_m_leader() {
+  m_leader_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_family::_internal_m_leader() const {
+  return m_leader_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_family::m_leader() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_family.m_leader)
+  return _internal_m_leader();
+}
+inline void db_family::_internal_set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000010u;
+  m_leader_ = value;
+}
+inline void db_family::set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_m_leader(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_family.m_leader)
+}
+
+// int32 m_lv = 5;
+inline bool db_family::_internal_has_m_lv() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool db_family::has_m_lv() const {
+  return _internal_has_m_lv();
+}
+inline void db_family::clear_m_lv() {
+  m_lv_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_family::_internal_m_lv() const {
+  return m_lv_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_family::m_lv() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_family.m_lv)
+  return _internal_m_lv();
+}
+inline void db_family::_internal_set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000008u;
+  m_lv_ = value;
+}
+inline void db_family::set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_lv(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_family.m_lv)
+}
+
+// int32 m_exp = 6;
+inline bool db_family::_internal_has_m_exp() const {
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
+inline bool db_family::has_m_exp() const {
+  return _internal_has_m_exp();
+}
+inline void db_family::clear_m_exp() {
+  m_exp_ = 0;
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_family::_internal_m_exp() const {
+  return m_exp_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_family::m_exp() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_family.m_exp)
+  return _internal_m_exp();
+}
+inline void db_family::_internal_set_m_exp(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000020u;
+  m_exp_ = value;
+}
+inline void db_family::set_m_exp(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_exp(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_family.m_exp)
+}
+
+// map<int64, .pbdb.familyer> m_member = 7;
+inline int db_family::_internal_m_member_size() const {
+  return m_member_.size();
+}
+inline int db_family::m_member_size() const {
+  return _internal_m_member_size();
+}
+inline void db_family::clear_m_member() {
+  m_member_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >&
+db_family::_internal_m_member() const {
+  return m_member_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >&
+db_family::m_member() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_family.m_member)
+  return _internal_m_member();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >*
+db_family::_internal_mutable_m_member() {
+  return m_member_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::familyer >*
+db_family::mutable_m_member() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_family.m_member)
+  return _internal_mutable_m_member();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -7420,6 +8328,11 @@ template <> struct is_proto_enum< ::pbdb::db_keyvalue_ekv> : ::std::true_type {}
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::db_keyvalue_ekv>() {
   return ::pbdb::db_keyvalue_ekv_descriptor();
+}
+template <> struct is_proto_enum< ::pbdb::familyer_eposition> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::familyer_eposition>() {
+  return ::pbdb::familyer_eposition_descriptor();
 }
 template <> struct is_proto_enum< ::pbdb::ENUM_DB> : ::std::true_type {};
 template <>

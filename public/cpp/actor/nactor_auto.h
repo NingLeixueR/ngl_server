@@ -55,6 +55,10 @@ namespace ngl
 	using tdb_mail		
 		= typedb<pbdb::ENUM_DB_MAIL, pbdb::db_mail, actor_mail>;
 
+	class actor_family;
+	using tdb_family
+		= typedb<pbdb::ENUM_DB_FAMILY, pbdb::db_family, actor_family>;
+
 	class actor_guild;
 	using tdb_guild		
 		= typedb<pbdb::ENUM_DB_GUILD, pbdb::db_guild, actor_guild>;

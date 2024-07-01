@@ -102,7 +102,7 @@ namespace ngl
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR_RESPONSE>();
 					pro->set_m_errnum(0);
 					pro->set_m_errmessage(lorderid);
-					role->send2client(pro);
+					role->send_client(role->id_guid(), pro);
 				}
 			);
 			handle_cmd::push("/notices", [](actor_role* role, const char* aparm)

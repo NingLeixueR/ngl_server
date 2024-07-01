@@ -64,11 +64,11 @@ namespace ngl
 			m_attribute.updata(amodule, avalue);
 		}
 
-		template <typename T>
+		/*template <typename T>
 		void send2client(std::shared_ptr<T>& adata)
 		{
 			actor_base::send_client(m_gatewayid, id_guid(), adata);
-		}
+		}*/
 
 		void sync_data_client();
 
@@ -193,6 +193,9 @@ namespace ngl
 
 		//# 领取任务奖励
 		bool handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
+
+		//# 创建军团
+		bool handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL>& adata);
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 

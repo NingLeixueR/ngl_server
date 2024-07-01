@@ -1,4 +1,5 @@
-﻿#include "manage_curl.h"
+﻿#include "ttab_specialid.h"
+#include "manage_curl.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "actor_role.h"
@@ -146,7 +147,7 @@ namespace ngl
 			m_attribute.set_sync(false);
 			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>();
 			m_attribute.topb(*pro);
-			send2client(pro);
+			send_client(id_guid(), pro);
 		}		
 	}
 
@@ -161,7 +162,7 @@ namespace ngl
 		*pro->mutable_m_role() = m_info.get()->getconst();
 		*pro->mutable_m_bag() = m_bag.get()->getconst();
 		*pro->mutable_m_task() = m_task.get()->getconst();
-		send2client(pro);
+		send_client(id_guid(), pro);
 	}
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
@@ -234,7 +235,7 @@ namespace ngl
 			{
 				(*cpro->mutable_m_items())[itor->first] = itor->second;
 			}
-			send2client(cpro);
+			send_client(id_guid(), cpro);
 		}	
 
 		return lstat;
@@ -299,6 +300,18 @@ namespace ngl
 		{
 			log_error()->print("GM actor_role rechange operator[{}] ERROR", loperator);
 		}
+		return true;
+	}
+
+	bool actor_role::handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL>& adata)
+	{
+		if (ttab_specialid::m_createfamilconsume > m_info.gold())
+		{
+			return false;
+		}
+
+		m_info.change_gold(-ttab_specialid::m_createfamilconsume);
+		handle_forward<ACTOR_FAMILY>(adata);
 		return true;
 	}
 
