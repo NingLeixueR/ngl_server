@@ -8,11 +8,7 @@
 
 namespace ngl
 {
-	template <
-		pbdb::ENUM_DB TDBTAB_TYPE, 
-		typename TDBTAB, 
-		typename TACTOR
-	>
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
 	class typedb
 	{
 		typedb() = delete;
