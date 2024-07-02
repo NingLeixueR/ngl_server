@@ -125,28 +125,29 @@ namespace ngl
 		}		
 	}
 
-	void family::change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname)
+	int32_t family::change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname)
 	{
 		const pbdb::db_family* lpconstfamily = get_constfamily(afamilyid);
 		if (lpconstfamily == nullptr)
 		{
-			return;
+			return 1;
 		}
 		if (aroleid != -1)
 		{
 			if (lpconstfamily->m_leader() != aroleid)
-				return;
+				return 2;
 		}
 		pbdb::db_family* lpfamily = get_family(afamilyid);
 		if (lpfamily == nullptr)
 		{
-			return;
+			return 3;
 		}
 		lpfamily->set_m_name(afamilyname.c_str());
 		if (aroleid != -1)
 		{
 			sync_family(aroleid, afamilyid);
 		}
+		return 0;
 	}
 
 }//namespace ngl

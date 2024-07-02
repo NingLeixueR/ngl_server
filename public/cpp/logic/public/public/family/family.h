@@ -94,7 +94,7 @@ namespace ngl
 		int32_t leave_family(i64_actorid aroleid, i64_actorid afamilyid);
 
 		// # 修改军团名称
-		void change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname);
+		int32_t change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname);
 
 		void sync_family(i64_actorid aroleid, i64_actorid afamilyid);
 

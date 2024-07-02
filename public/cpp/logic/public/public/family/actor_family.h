@@ -90,14 +90,16 @@ namespace ngl
 			m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
 			return true;
 		}
+
 		// # 修改军团名称
 		bool handle(message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
 		{
-			m_family.change_familyname(
-				adata.get_data()->identifier(), 
-				adata.get_data()->data()->m_familid(),
-				adata.get_data()->data()->m_name()
-				);
+			i64_actorid lroleid = adata.get_data()->identifier();
+			i64_actorid familid = adata.get_data()->data()->m_familid();
+			int32_t lstat = m_family.change_familyname(lroleid, familid, adata.get_data()->data()->m_name());
+			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>();
+			pro->set_m_stat(lstat);
+			send_client(lroleid, pro);
 			return true;
 		}
 
