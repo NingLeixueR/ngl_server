@@ -245,24 +245,18 @@ namespace ngl
 	{
 		pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE* lpdata = adata.get_data();
 		auto lstream = log_error();
+		(*lstream) << std::endl;
 		(*lstream) << "##############famil list start##############" << std::endl;
 		for (const auto& item : lpdata->m_family())
 		{
-			std::strstream lstrstream;
-			for (const auto& [_roleid, _familyer] : item.m_member())
-			{
-				lstrstream << _roleid << "*";
-			}
-			
 			(*lstream) << std::format(
-				"id:{} name:{} lv:{} exp:{} createutc:{} leader:{} m_member:[{}]",
+				"id:{} name:{} lv:{} exp:{} createutc:{} leader:{}",
 				item.m_id(),
 				item.m_name(),
 				item.m_lv(),
 				item.m_exp(),
 				item.m_createutc(),
-				item.m_leader(),
-				lstrstream.str()
+				item.m_leader()
 			) << std::endl;
 		}
 		(*lstream) << "##############famil list finish##############" << std::endl;

@@ -137,6 +137,7 @@ namespace ngl
 				, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
 				, null<actor_plays>, em_pram(ACTOR_PLAYS)
 				, null<actor_keyvalue>, em_pram(ACTOR_KEYVALUE)
+				, null<actor_family>, em_pram(ACTOR_FAMILY)
 			);
 
 			// 新增内部协议需要补充
@@ -185,6 +186,7 @@ namespace ngl
 		tdb_activity::init(aregister);
 		tdb_keyvalue::init(aregister);
 		tdb_account::init(aregister);
+		tdb_family::init(aregister);
 		tdb_notice::init(aregister);
 		tdb_rolekv::init(aregister);
 		tdb_brief::init(aregister);

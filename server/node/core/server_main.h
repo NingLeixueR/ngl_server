@@ -182,6 +182,28 @@ void init_DB_KEYVAL()
 	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
 }
 
+void init_DB_FAMILY()
+{
+	for (int i = 1; i < 100; ++i)
+	{
+		pbdb::db_family ltemp;
+
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, i));
+		ltemp.set_m_createutc(ngl::localtime::gettime());
+		ltemp.set_m_exp(100);
+		ltemp.set_m_lv(1);
+
+		ltemp.set_m_name(std::format("FLIBO{}", i));
+		ltemp.set_m_leader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		pbdb::familyer& lfamilyer = (*ltemp.mutable_m_member())[ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i)];
+		lfamilyer.set_m_joinutc(ngl::localtime::gettime());
+		lfamilyer.set_m_roleid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		lfamilyer.set_m_position(pbdb::familyer_eposition_leader);
+		lfamilyer.set_m_lastsignutc(ngl::localtime::gettime());
+		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
+	}
+}
+
 
 bool start_db(int argc, char** argv)
 {
@@ -202,12 +224,13 @@ bool start_db(int argc, char** argv)
 	// ----------------test start-------------------- //
 	if (argc >= 5 && ngl::tools::is_equal(argv[4], "init"))
 	{
-		init_DB_ACCOUNT();
-		init_DB_ROLE();
 		init_DB_BAG();
-		init_DB_NOTICE();
 		init_DB_TASK();
+		init_DB_ROLE();
+		init_DB_NOTICE();
+		init_DB_FAMILY();
 		init_DB_KEYVAL();
+		init_DB_ACCOUNT();
 		init_DB_ROLEKEYVALUE();
 	}
 
@@ -233,6 +256,7 @@ bool start_world()
 	ngl::actor_notice::getInstance();
 	ngl::actor_keyvalue::getInstance();
 	ngl::actor_manage_activity::getInstance();
+	ngl::actor_family::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

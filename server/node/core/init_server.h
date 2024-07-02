@@ -12,6 +12,7 @@
 #include "actor_server.h"
 #include "actor_create.h"
 #include "actor_notice.h"
+#include "actor_family.h"
 #include "actor_brief.h"
 #include "actor_login.h"
 #include "actor_robot.h"

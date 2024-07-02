@@ -56,7 +56,7 @@ namespace ngl
 		{
 			i64_actorid lroleid = adata.get_data()->identifier();
 			int32_t lstat = m_family.create_family(lroleid, adata.get_data()->data()->m_name());
-			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>();
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>();
 			pro->set_m_stat(lstat);
 			send_client(lroleid, pro);
 			return true;
