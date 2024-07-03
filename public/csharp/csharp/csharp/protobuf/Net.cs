@@ -205,25 +205,29 @@ namespace Pbnet {
             "TkVUX0NIQU5HRV9GQU1JTE5BTUUSFgoJbV9mYW1pbGlkGAEgASgDSACIAQES",
             "EwoGbV9uYW1lGAIgASgJSAGIAQFCDAoKX21fZmFtaWxpZEIJCgdfbV9uYW1l",
             "IkcKJVBST0JVRkZfTkVUX0NIQU5HRV9GQU1JTE5BTUVfUkVTUE9OU0USEwoG",
-            "bV9zdGF0GAEgASgFSACIAQFCCQoHX21fc3RhdCpGCg9lbnVtX2xvZ2ljX2No",
-            "YXQSEQoNZ2V0X2NoYXRfbGlzdBAAEg4KCmNoYXRfc3BlYWsQARIQCgx1cGRh",
-            "dGFfc3BlY2sQAio8CgVldW5pdBIOCgpldW5pdF9yb2xlEAASEQoNZXVuaXRf",
-            "bW9uc3RlchABEhAKDGV1bml0X3JlZ2lvbhACKnMKCWV1bml0c3RhdBIUChBl",
-            "dW5pdHN0YXRfbm9ybWFsEAASFAoQZXVuaXRzdGF0X25vbW92ZRABEhwKGGV1",
-            "bml0c3RhdF9ub25vcm1hbGF0dGFjaxACEhwKGGV1bml0c3RhdF9ub3JlbGVh",
-            "c2Vza2lsbBAEKjsKBmVwbGF5cxIfChtlcGxheXNfZ29fdW5kZXJncm91bmRw",
-            "YWxhY2UQABIQCgxlcGxheXNfY291bnQQASqbAQoVZW1hdGNoaW5nX2NhbmNl",
-            "bF9zdGF0EhwKGGVtYXRjaGluZ19jYW5jZWxfc3VjY2VzcxAAEhoKFmVtYXRj",
-            "aGluZ19jYW5jZWxfc3RhZ2UQARIgChxlbWF0Y2hpbmdfY2FuY2VsX3Jvb21u",
-            "b3RmaW5kEAISJgoiZW1hdGNoaW5nX2NhbmNlbF9yb29tbWVtYmVybm90Zmlu",
-            "ZBADKqsBChVldHlwZV9tYXRjaGluZ19jYW5jZWwSIAocZXR5cGVfbWF0Y2hp",
-            "bmdfY2FuY2VsX2FjdGl2ZRAAEiEKHWV0eXBlX21hdGNoaW5nX2NhbmNlbF90",
-            "aW1lb3V0EAESJgoiZXR5cGVfbWF0Y2hpbmdfd2FpdGNvbmZpcm1fdGltZW91",
-            "dBACEiUKIWV0eXBlX21hdGNoaW5nX3dhaXRjcmVhdGVfdGltZW91dBADKqAB",
-            "ChZlbWF0Y2hpbmdfY29uZmlybV9zdGF0Eh0KGWVtYXRjaGluZ19jb25maXJt",
-            "X3N1Y2Nlc3MQABIbChdlbWF0Y2hpbmdfY29uZmlybV9zdGFnZRABEiEKHWVt",
-            "YXRjaGluZ19jb25maXJtX3Jvb21ub3RmaW5kEAISJwojZW1hdGNoaW5nX2Nv",
-            "bmZpcm1fcm9vbW1lbWJlcm5vdGZpbmQQA0ICSAFiBnByb3RvMw=="));
+            "bV9zdGF0GAEgASgFSACIAQFCCQoHX21fc3RhdCJHChRQUk9CVUZGX05FVF9S",
+            "QU5LTElTVBIkCgZtX3R5cGUYASABKA4yDy5wYmRiLmVyYW5rbGlzdEgAiAEB",
+            "QgkKB19tX3R5cGUicQodUFJPQlVGRl9ORVRfUkFOS0xJU1RfUkVTUE9OU0US",
+            "JAoGbV90eXBlGAEgASgOMg8ucGJkYi5lcmFua2xpc3RIAIgBARIfCgdtX2l0",
+            "ZW1zGAIgAygLMg4ucGJkYi5kYl9icmllZkIJCgdfbV90eXBlKkYKD2VudW1f",
+            "bG9naWNfY2hhdBIRCg1nZXRfY2hhdF9saXN0EAASDgoKY2hhdF9zcGVhaxAB",
+            "EhAKDHVwZGF0YV9zcGVjaxACKjwKBWV1bml0Eg4KCmV1bml0X3JvbGUQABIR",
+            "Cg1ldW5pdF9tb25zdGVyEAESEAoMZXVuaXRfcmVnaW9uEAIqcwoJZXVuaXRz",
+            "dGF0EhQKEGV1bml0c3RhdF9ub3JtYWwQABIUChBldW5pdHN0YXRfbm9tb3Zl",
+            "EAESHAoYZXVuaXRzdGF0X25vbm9ybWFsYXR0YWNrEAISHAoYZXVuaXRzdGF0",
+            "X25vcmVsZWFzZXNraWxsEAQqOwoGZXBsYXlzEh8KG2VwbGF5c19nb191bmRl",
+            "cmdyb3VuZHBhbGFjZRAAEhAKDGVwbGF5c19jb3VudBABKpsBChVlbWF0Y2hp",
+            "bmdfY2FuY2VsX3N0YXQSHAoYZW1hdGNoaW5nX2NhbmNlbF9zdWNjZXNzEAAS",
+            "GgoWZW1hdGNoaW5nX2NhbmNlbF9zdGFnZRABEiAKHGVtYXRjaGluZ19jYW5j",
+            "ZWxfcm9vbW5vdGZpbmQQAhImCiJlbWF0Y2hpbmdfY2FuY2VsX3Jvb21tZW1i",
+            "ZXJub3RmaW5kEAMqqwEKFWV0eXBlX21hdGNoaW5nX2NhbmNlbBIgChxldHlw",
+            "ZV9tYXRjaGluZ19jYW5jZWxfYWN0aXZlEAASIQodZXR5cGVfbWF0Y2hpbmdf",
+            "Y2FuY2VsX3RpbWVvdXQQARImCiJldHlwZV9tYXRjaGluZ193YWl0Y29uZmly",
+            "bV90aW1lb3V0EAISJQohZXR5cGVfbWF0Y2hpbmdfd2FpdGNyZWF0ZV90aW1l",
+            "b3V0EAMqoAEKFmVtYXRjaGluZ19jb25maXJtX3N0YXQSHQoZZW1hdGNoaW5n",
+            "X2NvbmZpcm1fc3VjY2VzcxAAEhsKF2VtYXRjaGluZ19jb25maXJtX3N0YWdl",
+            "EAESIQodZW1hdGNoaW5nX2NvbmZpcm1fcm9vbW5vdGZpbmQQAhInCiNlbWF0",
+            "Y2hpbmdfY29uZmlybV9yb29tbWVtYmVybm90ZmluZBADQgJIAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Pbdb.DbReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbnet.enum_logic_chat), typeof(global::Pbnet.eunit), typeof(global::Pbnet.eunitstat), typeof(global::Pbnet.eplays), typeof(global::Pbnet.ematching_cancel_stat), typeof(global::Pbnet.etype_matching_cancel), typeof(global::Pbnet.ematching_confirm_stat), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -300,7 +304,9 @@ namespace Pbnet {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_FAMIL_LIST), global::Pbnet.PROBUFF_NET_FAMIL_LIST.Parser, new[]{ "MFamilid" }, new[]{ "MFamilid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_FAMIL_LIST_RESPONSE), global::Pbnet.PROBUFF_NET_FAMIL_LIST_RESPONSE.Parser, new[]{ "MFamilid", "MFamily" }, new[]{ "MFamilid" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_CHANGE_FAMILNAME), global::Pbnet.PROBUFF_NET_CHANGE_FAMILNAME.Parser, new[]{ "MFamilid", "MName" }, new[]{ "MFamilid", "MName" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE), global::Pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE.Parser, new[]{ "MStat" }, new[]{ "MStat" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE), global::Pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE.Parser, new[]{ "MStat" }, new[]{ "MStat" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_RANKLIST), global::Pbnet.PROBUFF_NET_RANKLIST.Parser, new[]{ "MType" }, new[]{ "MType" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbnet.PROBUFF_NET_RANKLIST_RESPONSE), global::Pbnet.PROBUFF_NET_RANKLIST_RESPONSE.Parser, new[]{ "MType", "MItems" }, new[]{ "MType" }, null, null, null)
           }));
     }
     #endregion
@@ -15608,6 +15614,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [请求]创建军团
+  /// </summary>
   public sealed partial class PROBUFF_NET_CREATE_FAMIL : pb::IMessage<PROBUFF_NET_CREATE_FAMIL>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -15793,6 +15802,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [回复]创建军团
+  /// </summary>
   public sealed partial class PROBUFF_NET_CREATE_FAMIL_RESPONSE : pb::IMessage<PROBUFF_NET_CREATE_FAMIL_RESPONSE>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -15981,6 +15993,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [请求]加入军团
+  /// </summary>
   public sealed partial class PROBUFF_NET_JOIN_FAMIL : pb::IMessage<PROBUFF_NET_JOIN_FAMIL>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -16166,6 +16181,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [回复]加入军团
+  /// </summary>
   public sealed partial class PROBUFF_NET_JOIN_FAMIL_RESPONSE : pb::IMessage<PROBUFF_NET_JOIN_FAMIL_RESPONSE>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -16354,6 +16372,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [请求]离开军团
+  /// </summary>
   public sealed partial class PROBUFF_NET_LEAVE_FAMIL : pb::IMessage<PROBUFF_NET_LEAVE_FAMIL>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -16539,6 +16560,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [回复]离开军团
+  /// </summary>
   public sealed partial class PROBUFF_NET_LEAVE_FAMIL_RESPONSE : pb::IMessage<PROBUFF_NET_LEAVE_FAMIL_RESPONSE>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -16728,7 +16752,7 @@ namespace Pbnet {
   }
 
   /// <summary>
-  /// 获取军团列表
+  /// [请求]获取军团列表
   /// </summary>
   public sealed partial class PROBUFF_NET_FAMIL_LIST : pb::IMessage<PROBUFF_NET_FAMIL_LIST>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -16915,6 +16939,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [回复]获取军团列表
+  /// </summary>
   public sealed partial class PROBUFF_NET_FAMIL_LIST_RESPONSE : pb::IMessage<PROBUFF_NET_FAMIL_LIST_RESPONSE>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -17125,6 +17152,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [请求]修改军团名称
+  /// </summary>
   public sealed partial class PROBUFF_NET_CHANGE_FAMILNAME : pb::IMessage<PROBUFF_NET_CHANGE_FAMILNAME>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -17359,6 +17389,9 @@ namespace Pbnet {
 
   }
 
+  /// <summary>
+  /// [回复]修改军团名称
+  /// </summary>
   public sealed partial class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE : pb::IMessage<PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -17538,6 +17571,407 @@ namespace Pbnet {
             break;
           case 8: {
             MStat = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// [请求]获取排行榜
+  /// </summary>
+  public sealed partial class PROBUFF_NET_RANKLIST : pb::IMessage<PROBUFF_NET_RANKLIST>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PROBUFF_NET_RANKLIST> _parser = new pb::MessageParser<PROBUFF_NET_RANKLIST>(() => new PROBUFF_NET_RANKLIST());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PROBUFF_NET_RANKLIST> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[73]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_RANKLIST() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_RANKLIST(PROBUFF_NET_RANKLIST other) : this() {
+      _hasBits0 = other._hasBits0;
+      mType_ = other.mType_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_RANKLIST Clone() {
+      return new PROBUFF_NET_RANKLIST(this);
+    }
+
+    /// <summary>Field number for the "m_type" field.</summary>
+    public const int MTypeFieldNumber = 1;
+    private global::Pbdb.eranklist mType_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Pbdb.eranklist MType {
+      get { if ((_hasBits0 & 1) != 0) { return mType_; } else { return global::Pbdb.eranklist.Lv; } }
+      set {
+        _hasBits0 |= 1;
+        mType_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMType() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PROBUFF_NET_RANKLIST);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PROBUFF_NET_RANKLIST other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MType != other.MType) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMType) hash ^= MType.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMType) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) MType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMType) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) MType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMType) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) MType);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PROBUFF_NET_RANKLIST other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMType) {
+        MType = other.MType;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MType = (global::Pbdb.eranklist) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MType = (global::Pbdb.eranklist) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// [回复]获取排行榜
+  /// </summary>
+  public sealed partial class PROBUFF_NET_RANKLIST_RESPONSE : pb::IMessage<PROBUFF_NET_RANKLIST_RESPONSE>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PROBUFF_NET_RANKLIST_RESPONSE> _parser = new pb::MessageParser<PROBUFF_NET_RANKLIST_RESPONSE>(() => new PROBUFF_NET_RANKLIST_RESPONSE());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PROBUFF_NET_RANKLIST_RESPONSE> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Pbnet.NetReflection.Descriptor.MessageTypes[74]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_RANKLIST_RESPONSE() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_RANKLIST_RESPONSE(PROBUFF_NET_RANKLIST_RESPONSE other) : this() {
+      _hasBits0 = other._hasBits0;
+      mType_ = other.mType_;
+      mItems_ = other.mItems_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PROBUFF_NET_RANKLIST_RESPONSE Clone() {
+      return new PROBUFF_NET_RANKLIST_RESPONSE(this);
+    }
+
+    /// <summary>Field number for the "m_type" field.</summary>
+    public const int MTypeFieldNumber = 1;
+    private global::Pbdb.eranklist mType_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Pbdb.eranklist MType {
+      get { if ((_hasBits0 & 1) != 0) { return mType_; } else { return global::Pbdb.eranklist.Lv; } }
+      set {
+        _hasBits0 |= 1;
+        mType_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "m_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMType() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "m_items" field.</summary>
+    public const int MItemsFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Pbdb.db_brief> _repeated_mItems_codec
+        = pb::FieldCodec.ForMessage(18, global::Pbdb.db_brief.Parser);
+    private readonly pbc::RepeatedField<global::Pbdb.db_brief> mItems_ = new pbc::RepeatedField<global::Pbdb.db_brief>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Pbdb.db_brief> MItems {
+      get { return mItems_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PROBUFF_NET_RANKLIST_RESPONSE);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PROBUFF_NET_RANKLIST_RESPONSE other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MType != other.MType) return false;
+      if(!mItems_.Equals(other.mItems_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasMType) hash ^= MType.GetHashCode();
+      hash ^= mItems_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasMType) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) MType);
+      }
+      mItems_.WriteTo(output, _repeated_mItems_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasMType) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) MType);
+      }
+      mItems_.WriteTo(ref output, _repeated_mItems_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasMType) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) MType);
+      }
+      size += mItems_.CalculateSize(_repeated_mItems_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PROBUFF_NET_RANKLIST_RESPONSE other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasMType) {
+        MType = other.MType;
+      }
+      mItems_.Add(other.mItems_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MType = (global::Pbdb.eranklist) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            mItems_.AddEntriesFrom(input, _repeated_mItems_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MType = (global::Pbdb.eranklist) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            mItems_.AddEntriesFrom(ref input, _repeated_mItems_codec);
             break;
           }
         }

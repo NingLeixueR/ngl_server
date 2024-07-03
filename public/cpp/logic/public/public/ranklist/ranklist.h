@@ -11,64 +11,147 @@ namespace ngl
 {
 	class actor_ranklist;
 
-	using ranklist_db_modular = ndb_modular<
-		pbdb::ENUM_DB_RANKLIST
-		, pbdb::db_ranklist
-		, actor_ranklist
-	>;
+	struct rank_item
+	{
+		i64_actorid m_actorid;
+		int64_t		m_values[pbdb::eranklist::count];
+		int32_t		m_time[pbdb::eranklist::count];
+
+		rank_item() :
+			m_actorid(0),
+			m_values{0},
+			m_time{0}
+		{}
+
+		const pbdb::db_brief* get()const
+		{
+			return tdb_brief::nsp_cli<actor_ranklist>::getconst(m_actorid);
+		}
+
+		void init(const pbdb::db_brief& abrief, const pbdb::db_ranklist& aranklist)
+		{
+			const auto& lmap = aranklist.m_items();
+			auto itor = lmap.find((int32_t)pbdb::eranklist::lv);
+			if (itor == lmap.end())
+			{
+				m_time[pbdb::eranklist::lv] = localtime::gettime();
+			}
+			else
+			{
+				m_time[pbdb::eranklist::lv] = itor->second.m_time();
+			}
+			m_values[pbdb::eranklist::lv] = abrief.m_lv();
+			m_actorid = abrief.m_id();
+		}
+
+		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
+		{
+			pbdb::rankitem& ltemp = (*aranklist.mutable_m_items())[atype];
+			ltemp.set_m_time(m_time[atype]);
+			ltemp.set_m_value(m_values[atype]);
+		}
+		
+		bool less(pbdb::eranklist atype, const rank_item& ar)
+		{
+			if (m_values[atype] < ar.m_values[atype])
+			{
+				return true;
+			}
+			else if (m_values[atype] > ar.m_values[atype])
+			{
+				return false;
+			}
+			else
+			{
+				if (m_time[atype] < ar.m_time[atype])
+				{
+					return true;
+				}
+				else if (m_time[atype] > ar.m_time[atype])
+				{
+					return false;
+				}
+				else
+				{
+					return m_actorid < ar.m_actorid;
+				}
+			}
+		}
+
+		bool equal_value(pbdb::eranklist atype, const rank_item& ar)
+		{
+			return m_values[atype] == ar.m_values[atype];
+		}
+
+	};
+
+	template <pbdb::eranklist RTYPE>
+	class operator_value
+	{
+	public:
+		// <
+		bool operator()(rank_item* al, rank_item* ar)const
+		{
+			return al->less(RTYPE, *ar);
+		}
+	};
 
 	class ranklist : public tdb_ranklist::db_modular
 	{
 		ranklist(const ranklist&) = delete;
 		ranklist& operator=(const ranklist&) = delete;
 
-		template <typename T>
-		class operator_value
+	
+
+		std::map<i64_actorid, rank_item> m_data;
+
+		class rank_set_base
 		{
 		public:
-			// <
-			bool operator()(const pbdb::rankitem* al, const pbdb::rankitem* ar)const
+			virtual const rank_item* find(rank_item* aitem) = 0;
+			virtual void erase(rank_item* aitem) = 0;
+			virtual void insert(rank_item* aitem) = 0;
+			virtual void foreach(const std::function<void(int32_t, const rank_item*)>&) = 0;
+		};
+
+		template <pbdb::eranklist ETYPE>
+		class rank_set :public rank_set_base
+		{
+			std::set<rank_item*, operator_value<ETYPE>> m_rankdata;
+		public:
+			virtual const rank_item* find(rank_item* aitem)
 			{
-				if (T::value(al) > T::value(ar))
+				auto itor = m_rankdata.find(aitem);
+				if (itor == m_rankdata.end())
+					return nullptr;
+				return *itor;
+			}
+
+			virtual void erase(rank_item* aitem)
+			{
+				m_rankdata.erase(aitem);
+			}
+
+			virtual void insert(rank_item* aitem)
+			{
+				m_rankdata.insert(aitem);
+			}
+
+			virtual void foreach(const std::function<void(int32_t, const rank_item*)>& afun)
+			{
+				int32_t lindex = 0;
+				for (const rank_item* item : m_rankdata)
 				{
-					return true;
-				}
-				else if (T::value(al) < T::value(ar))
-				{
-					return false;
-				}
-				else
-				{
-					if (T::time(al) < T::time(ar))
-						return true;
-					else if (T::time(al) > T::time(ar))
-						return false;
-					else
-					{
-						return al->m_roleid() < ar->m_roleid();
-					}
+					afun(lindex++, item);
 				}
 			}
 		};
 
-		class operator_lv
-		{
-			
-		public:
-			static int64_t value(const pbdb::rankitem* av)
-			{
-				return av->m_lv();
-			}
-			static int64_t time(const pbdb::rankitem* av)
-			{
-				return av->m_lvtime();
-			}
-		};
-
-		std::set<pbdb::rankitem*, operator_value<operator_lv>> m_ranklv;
+		std::unique_ptr<rank_set_base> m_ranks[pbdb::eranklist::count];
 	public:
 		ranklist()
 		{
+			m_ranks[pbdb::eranklist::lv] = std::make_unique<rank_set<pbdb::eranklist::lv>>();
 		}
 
 		virtual void set_id()
@@ -81,55 +164,102 @@ namespace ngl
 			return &data();
 		}
 
-		enum type
+		
+		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief)
 		{
-			type_lv = 1,
-		};
+			const pbdb::db_ranklist* lpdata = find(abrief.m_id());
+			litem.init(abrief, *lpdata);
+			auto itor = m_data.find(abrief.m_id());
+			if (itor != m_data.end())
+			{
+				if (litem.equal_value(atype, itor->second) == false)
+				{
+					litem.m_time[atype] = localtime::gettime();
+					pbdb::db_ranklist* lpdata = get(abrief.m_id());
+					litem.change(atype, *lpdata);
+					return true;
+				}
+			}
+			return false;
+		}
 
 		virtual void initdata()
 		{
-			auto lstream = log_error();
-			(*lstream) << "actor_ranklist###loaddb_finish" << std::endl;
+			log_error()->print("actor_ranklist###loaddb_finish");
 
-			for (std::pair<const nguid, data_modified<pbdb::db_ranklist>>& lpair : *get_ranklist())
-			{
-				pbdb::db_ranklist& lranklist = lpair.second.get(false);
-				(*lstream) << "ranklist###id:[" << lranklist.m_id() << "]" << std::endl;
-				auto lmap = lranklist.mutable_m_item();
-				for(auto itor = lmap->begin();itor != lmap->end();++itor)
+			tdb_brief::nsp_cli<actor_ranklist>::set_recv_data_finish([this](const pbdb::db_brief& abrief)
 				{
-					//m_ranklist[lpair.first] = &lpair.second;
-					switch (lpair.first)
+					std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
+					rank_item litem;
+					bool lupdatearr[pbdb::eranklist::count] = { false };
+					bool lupdate = false;
+					for (int i = 0; i < pbdb::eranklist::count; ++i)
 					{
-					case type_lv://lv
-						m_ranklv.insert(&itor->second);
-						break;
+						lupdatearr[i] = update_value(pbdb::eranklist::lv, litem, abrief);
+						lupdate = lupdate || lupdatearr[i];
 					}
-					(*lstream) << "\t[" << itor->first << "]-[" << itor->second.m_name() << "]" << std::endl;
-				}
-			}
-			(*lstream).print("");
+					if (lupdate)
+					{
+						rank_item& ldata = m_data[abrief.m_id()];
+						for (int i = 0; i < pbdb::eranklist::count; ++i)
+						{
+							if (lupdatearr[i])
+							{
+								m_ranks[i]->erase(&ldata);
+							}
+						}
+						ldata = litem;
+						for (int i = 0; i < pbdb::eranklist::count; ++i)
+						{
+							if (lupdatearr[i])
+							{
+								if (i == pbdb::eranklist::lv)
+								{
+									m_ranks[i]->erase(&ldata);
+								}
+							}
+						}
+					}
+				});
 		}
 
-		data_modified<pbdb::db_ranklist>& find(type atype)
+		const pbdb::db_ranklist* find(i64_actorid aactorid)
 		{
-			auto itor = get_ranklist()->find(atype);
+			auto itor = get_ranklist()->find(aactorid);
 			if (itor == get_ranklist()->end())
 			{
-				return (*get_ranklist())[atype];
+				return nullptr;
 			}
-			return itor->second;
+			return &itor->second.getconst();
 		}
 
-		void update_lv(i64_actorid aroleid, int alv)
+		pbdb::db_ranklist* get(i64_actorid aactorid)
 		{
-			data_modified<pbdb::db_ranklist>& llist = find(type_lv);
-			pbdb::db_ranklist& lranklist = llist.get(false);
-			pbdb::rankitem& litem = (*lranklist.mutable_m_item())[aroleid];
-			m_ranklv.erase(&litem);
-			litem.set_m_lv(alv);
-			litem.set_m_lvtime(localtime::gettime());
-			m_ranklv.insert(&litem);
+			if (get_ranklist()->find(aactorid) == get_ranklist()->end())
+			{
+				pbdb::db_ranklist ldbranklist;
+				ldbranklist.set_m_id(aactorid);
+				add(aactorid, ldbranklist);
+			}
+			return &(*get_ranklist())[aactorid].get();
+		}
+		
+		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(pbdb::eranklist atype)
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
+			pro->set_m_type(atype);
+			m_ranks[atype]->foreach([&pro](int32_t aindex, const rank_item* aitem)
+				{
+					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
+					*pro->add_m_items() = *lpbrief;
+				});
+			return pro;
+		}
+
+		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype)
+		{
+			auto pro = get_ranklist(atype);
+			actor::send_client(aroleid, pro);
 		}
 	};
 }// namespace ngl

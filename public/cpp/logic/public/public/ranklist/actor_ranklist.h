@@ -13,6 +13,7 @@
 #include "db_pool.h"
 #include "ntimer.h"
 #include "notice.h"
+#include "net.pb.h"
 #include "net.h"
 #include "db.h"
 
@@ -25,6 +26,8 @@ namespace ngl
 
 		ranklist m_ranklist;
 
+		//tdb_brief::nsp_cli<actor_ranklist>::getconst()
+
 		actor_ranklist();
 	public:
 		friend class actor_instance<actor_ranklist>;
@@ -35,16 +38,19 @@ namespace ngl
 
 		virtual void init()
 		{
-			m_ranklist.set(this);
+			//m_ranklist.set(this);
 		}
 
-		static void nregister()
-		{
-		}
+		static void nregister();
 
 		virtual ~actor_ranklist() {}
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		bool handle(message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
+
+		using handle_cmd = cmd<actor_ranklist, std::string, int, ngl::json_read&>;
+		// # GM²Ù×÷
+		bool handle(message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl

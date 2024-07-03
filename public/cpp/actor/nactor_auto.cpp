@@ -244,6 +244,12 @@ namespace ngl
 			, pbnet::PROBUFF_NET_FAMIL_LIST
 			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME
 		>();
+
+		// ACTOR_RANKLIST 模块二次转发
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_RANKLIST
+			, pbnet::PROBUFF_NET_RANKLIST
+		>();
 	}
 
 	// # 注册game到client的消息
@@ -267,6 +273,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE
 			, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE
 			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE
+			, pbnet::PROBUFF_NET_RANKLIST_RESPONSE
 		>();
 	}
 }//namespace ngl

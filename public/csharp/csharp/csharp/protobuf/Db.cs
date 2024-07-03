@@ -68,66 +68,65 @@ namespace Pbdb {
             "YWRlciKhAQoJZGJfbm90aWNlEhEKBG1faWQYASABKANIAIgBARIVCghtX25v",
             "dGljZRgCIAEoCUgBiAEBEhgKC21fc3RhcnR0aW1lGAMgASgFSAKIAQESGQoM",
             "bV9maW5pc2h0aW1lGAQgASgFSAOIAQFCBwoFX21faWRCCwoJX21fbm90aWNl",
-            "Qg4KDF9tX3N0YXJ0dGltZUIPCg1fbV9maW5pc2h0aW1lIo4BCghyYW5raXRl",
-            "bRIVCghtX3JvbGVpZBgBIAEoA0gAiAEBEhMKBm1fbmFtZRgCIAEoCUgBiAEB",
-            "EhEKBG1fbHYYAyABKAVIAogBARIVCghtX2x2dGltZRgEIAEoBUgDiAEBQgsK",
-            "CV9tX3JvbGVpZEIJCgdfbV9uYW1lQgcKBV9tX2x2QgsKCV9tX2x2dGltZSKV",
-            "AQoLZGJfcmFua2xpc3QSEQoEbV9pZBgBIAEoA0gAiAEBEiwKBm1faXRlbRgC",
-            "IAMoCzIcLnBiZGIuZGJfcmFua2xpc3QuTUl0ZW1FbnRyeRo8CgpNSXRlbUVu",
-            "dHJ5EgsKA2tleRgBIAEoAxIdCgV2YWx1ZRgCIAEoCzIOLnBiZGIucmFua2l0",
-            "ZW06AjgBQgcKBV9tX2lkIpkECgtkYl9hY3Rpdml0eRIRCgRtX2lkGAEgASgD",
-            "SACIAQESEgoFbV9iZWcYAiABKAVIAYgBARISCgVtX2VuZBgDIAEoBUgCiAEB",
-            "EhQKB21fc3RhcnQYBCABKAhIA4gBARIVCghtX2ZpbmlzaBgFIAEoCEgEiAEB",
-            "EhkKDG1fY2FsZW5kYXJpZBgGIAEoBUgFiAEBEkAKEG1fZHJhd2NvbXBsaWFu",
-            "Y2UYByADKAsyJi5wYmRiLmRiX2FjdGl2aXR5Lk1EcmF3Y29tcGxpYW5jZUVu",
-            "dHJ5GqMBCg5kcmF3Y29tcGxpYW5jZRIUCgdtX2NvdW50GAEgASgFSACIAQES",
-            "PwoIbV9yZXdhcmQYAiADKAsyLS5wYmRiLmRiX2FjdGl2aXR5LmRyYXdjb21w",
-            "bGlhbmNlLk1SZXdhcmRFbnRyeRouCgxNUmV3YXJkRW50cnkSCwoDa2V5GAEg",
-            "ASgFEg0KBXZhbHVlGAIgASgIOgI4AUIKCghfbV9jb3VudBpYChRNRHJhd2Nv",
-            "bXBsaWFuY2VFbnRyeRILCgNrZXkYASABKAMSLwoFdmFsdWUYAiABKAsyIC5w",
-            "YmRiLmRiX2FjdGl2aXR5LmRyYXdjb21wbGlhbmNlOgI4AUIHCgVfbV9pZEII",
-            "CgZfbV9iZWdCCAoGX21fZW5kQgoKCF9tX3N0YXJ0QgsKCV9tX2ZpbmlzaEIP",
-            "Cg1fbV9jYWxlbmRhcmlkIvcECgdkYl90YXNrEhEKBG1faWQYASABKANIAIgB",
-            "ARIwCgptX3J1bmRhdGFzGAIgAygLMhwucGJkYi5kYl90YXNrLk1SdW5kYXRh",
-            "c0VudHJ5EjwKEG1fY29tcGxldGVkZGF0YXMYAyADKAsyIi5wYmRiLmRiX3Rh",
-            "c2suTUNvbXBsZXRlZGRhdGFzRW50cnkadQoNZGF0YV9zY2hlZHVsZRITCgZt",
-            "X3R5cGUYASABKAVIAIgBARIUCgdtX3ZhbHVlGAIgASgFSAGIAQESFQoIbV9z",
-            "dW1pbnQYAyABKAVIAogBAUIJCgdfbV90eXBlQgoKCF9tX3ZhbHVlQgsKCV9t",
-            "X3N1bWludBrWAQoEZGF0YRIVCghtX3Rhc2tpZBgBIAEoBUgAiAEBEhkKDG1f",
-            "cmVjZWl2ZXV0YxgCIAEoBUgBiAEBEhcKCm1fZmluc2h1dGMYAyABKAVIAogB",
-            "ARIwCgttX3NjaGVkdWxlcxgEIAMoCzIbLnBiZGIuZGJfdGFzay5kYXRhX3Nj",
-            "aGVkdWxlEhYKCW1fcmVjZWl2ZRgFIAEoCEgDiAEBQgsKCV9tX3Rhc2tpZEIP",
-            "Cg1fbV9yZWNlaXZldXRjQg0KC19tX2ZpbnNodXRjQgwKCl9tX3JlY2VpdmUa",
-            "RAoOTVJ1bmRhdGFzRW50cnkSCwoDa2V5GAEgASgFEiEKBXZhbHVlGAIgASgL",
-            "MhIucGJkYi5kYl90YXNrLmRhdGE6AjgBGkoKFE1Db21wbGV0ZWRkYXRhc0Vu",
-            "dHJ5EgsKA2tleRgBIAEoBRIhCgV2YWx1ZRgCIAEoCzISLnBiZGIuZGJfdGFz",
-            "ay5kYXRhOgI4AUIHCgVfbV9pZCKPAQoLZGJfY2FsZW5kYXISEQoEbV9pZBgB",
-            "IAEoA0gAiAEBEhMKBm1fdGltZRgCIAEoA0gBiAEBEhQKB21fc3RhcnQYAyAB",
-            "KAhIAogBARIVCghtX2ZpbmlzaBgEIAEoCEgDiAEBQgcKBV9tX2lkQgkKB19t",
-            "X3RpbWVCCgoIX21fc3RhcnRCCwoJX21fZmluaXNoIvsBCghmYW1pbHllchIV",
-            "CghtX3JvbGVpZBgBIAEoA0gAiAEBEhYKCW1fam9pbnV0YxgCIAEoBUgBiAEB",
-            "EhoKDW1fbGFzdHNpZ251dGMYAyABKAVIAogBARIxCgptX3Bvc2l0aW9uGAQg",
-            "ASgOMhgucGJkYi5mYW1pbHllci5lcG9zaXRpb25IA4gBASI1CgllcG9zaXRp",
-            "b24SCgoGbGVhZGVyEAASDgoKY291bnNlbGxvchABEgwKCG9yZGluYXJ5EAJC",
-            "CwoJX21fcm9sZWlkQgwKCl9tX2pvaW51dGNCEAoOX21fbGFzdHNpZ251dGNC",
-            "DQoLX21fcG9zaXRpb24ivwIKCWRiX2ZhbWlseRIRCgRtX2lkGAEgASgDSACI",
-            "AQESGAoLbV9jcmVhdGV1dGMYAiABKAVIAYgBARITCgZtX25hbWUYAyABKAlI",
-            "AogBARIVCghtX2xlYWRlchgEIAEoA0gDiAEBEhEKBG1fbHYYBSABKAVIBIgB",
-            "ARISCgVtX2V4cBgGIAEoBUgFiAEBEi4KCG1fbWVtYmVyGAcgAygLMhwucGJk",
-            "Yi5kYl9mYW1pbHkuTU1lbWJlckVudHJ5Gj4KDE1NZW1iZXJFbnRyeRILCgNr",
-            "ZXkYASABKAMSHQoFdmFsdWUYAiABKAsyDi5wYmRiLmZhbWlseWVyOgI4AUIH",
-            "CgVfbV9pZEIOCgxfbV9jcmVhdGV1dGNCCQoHX21fbmFtZUILCglfbV9sZWFk",
-            "ZXJCBwoFX21fbHZCCAoGX21fZXhwKrgCCgdFTlVNX0RCEhMKD0VOVU1fREJf",
-            "QUNDT1VOVBAAEhAKDEVOVU1fREJfUk9MRRABEhEKDUVOVU1fREJfQlJJRUYQ",
-            "AhIPCgtFTlVNX0RCX0JBRxADEhQKEEVOVU1fREJfS0VZVkFMVUUQBBIQCgxF",
-            "TlVNX0RCX01BSUwQBRIRCg1FTlVNX0RCX0dVSUxEEAYSEgoORU5VTV9EQl9O",
-            "T1RJQ0UQBxIUChBFTlVNX0RCX1JBTktMSVNUEAgSFAoQRU5VTV9EQl9BQ1RJ",
-            "VklUWRAJEhAKDEVOVU1fREJfVEFTSxAKEhQKEEVOVU1fREJfQ0FMRU5EQVIQ",
-            "CxIYChRFTlVNX0RCX1JPTEVLRVlWQUxVRRAMEhIKDkVOVU1fREJfRkFNSUxZ",
-            "EA0SEQoNRU5VTV9EQl9DT1VOVBAOYgZwcm90bzM="));
+            "Qg4KDF9tX3N0YXJ0dGltZUIPCg1fbV9maW5pc2h0aW1lIkwKCHJhbmtpdGVt",
+            "EhQKB21fdmFsdWUYASABKANIAIgBARITCgZtX3RpbWUYAiABKAVIAYgBAUIK",
+            "CghfbV92YWx1ZUIJCgdfbV90aW1lIpgBCgtkYl9yYW5rbGlzdBIRCgRtX2lk",
+            "GAEgASgDSACIAQESLgoHbV9pdGVtcxgCIAMoCzIdLnBiZGIuZGJfcmFua2xp",
+            "c3QuTUl0ZW1zRW50cnkaPQoLTUl0ZW1zRW50cnkSCwoDa2V5GAEgASgFEh0K",
+            "BXZhbHVlGAIgASgLMg4ucGJkYi5yYW5raXRlbToCOAFCBwoFX21faWQimQQK",
+            "C2RiX2FjdGl2aXR5EhEKBG1faWQYASABKANIAIgBARISCgVtX2JlZxgCIAEo",
+            "BUgBiAEBEhIKBW1fZW5kGAMgASgFSAKIAQESFAoHbV9zdGFydBgEIAEoCEgD",
+            "iAEBEhUKCG1fZmluaXNoGAUgASgISASIAQESGQoMbV9jYWxlbmRhcmlkGAYg",
+            "ASgFSAWIAQESQAoQbV9kcmF3Y29tcGxpYW5jZRgHIAMoCzImLnBiZGIuZGJf",
+            "YWN0aXZpdHkuTURyYXdjb21wbGlhbmNlRW50cnkaowEKDmRyYXdjb21wbGlh",
+            "bmNlEhQKB21fY291bnQYASABKAVIAIgBARI/CghtX3Jld2FyZBgCIAMoCzIt",
+            "LnBiZGIuZGJfYWN0aXZpdHkuZHJhd2NvbXBsaWFuY2UuTVJld2FyZEVudHJ5",
+            "Gi4KDE1SZXdhcmRFbnRyeRILCgNrZXkYASABKAUSDQoFdmFsdWUYAiABKAg6",
+            "AjgBQgoKCF9tX2NvdW50GlgKFE1EcmF3Y29tcGxpYW5jZUVudHJ5EgsKA2tl",
+            "eRgBIAEoAxIvCgV2YWx1ZRgCIAEoCzIgLnBiZGIuZGJfYWN0aXZpdHkuZHJh",
+            "d2NvbXBsaWFuY2U6AjgBQgcKBV9tX2lkQggKBl9tX2JlZ0IICgZfbV9lbmRC",
+            "CgoIX21fc3RhcnRCCwoJX21fZmluaXNoQg8KDV9tX2NhbGVuZGFyaWQi9wQK",
+            "B2RiX3Rhc2sSEQoEbV9pZBgBIAEoA0gAiAEBEjAKCm1fcnVuZGF0YXMYAiAD",
+            "KAsyHC5wYmRiLmRiX3Rhc2suTVJ1bmRhdGFzRW50cnkSPAoQbV9jb21wbGV0",
+            "ZWRkYXRhcxgDIAMoCzIiLnBiZGIuZGJfdGFzay5NQ29tcGxldGVkZGF0YXNF",
+            "bnRyeRp1Cg1kYXRhX3NjaGVkdWxlEhMKBm1fdHlwZRgBIAEoBUgAiAEBEhQK",
+            "B21fdmFsdWUYAiABKAVIAYgBARIVCghtX3N1bWludBgDIAEoBUgCiAEBQgkK",
+            "B19tX3R5cGVCCgoIX21fdmFsdWVCCwoJX21fc3VtaW50GtYBCgRkYXRhEhUK",
+            "CG1fdGFza2lkGAEgASgFSACIAQESGQoMbV9yZWNlaXZldXRjGAIgASgFSAGI",
+            "AQESFwoKbV9maW5zaHV0YxgDIAEoBUgCiAEBEjAKC21fc2NoZWR1bGVzGAQg",
+            "AygLMhsucGJkYi5kYl90YXNrLmRhdGFfc2NoZWR1bGUSFgoJbV9yZWNlaXZl",
+            "GAUgASgISAOIAQFCCwoJX21fdGFza2lkQg8KDV9tX3JlY2VpdmV1dGNCDQoL",
+            "X21fZmluc2h1dGNCDAoKX21fcmVjZWl2ZRpECg5NUnVuZGF0YXNFbnRyeRIL",
+            "CgNrZXkYASABKAUSIQoFdmFsdWUYAiABKAsyEi5wYmRiLmRiX3Rhc2suZGF0",
+            "YToCOAEaSgoUTUNvbXBsZXRlZGRhdGFzRW50cnkSCwoDa2V5GAEgASgFEiEK",
+            "BXZhbHVlGAIgASgLMhIucGJkYi5kYl90YXNrLmRhdGE6AjgBQgcKBV9tX2lk",
+            "Io8BCgtkYl9jYWxlbmRhchIRCgRtX2lkGAEgASgDSACIAQESEwoGbV90aW1l",
+            "GAIgASgDSAGIAQESFAoHbV9zdGFydBgDIAEoCEgCiAEBEhUKCG1fZmluaXNo",
+            "GAQgASgISAOIAQFCBwoFX21faWRCCQoHX21fdGltZUIKCghfbV9zdGFydEIL",
+            "CglfbV9maW5pc2gi+wEKCGZhbWlseWVyEhUKCG1fcm9sZWlkGAEgASgDSACI",
+            "AQESFgoJbV9qb2ludXRjGAIgASgFSAGIAQESGgoNbV9sYXN0c2lnbnV0YxgD",
+            "IAEoBUgCiAEBEjEKCm1fcG9zaXRpb24YBCABKA4yGC5wYmRiLmZhbWlseWVy",
+            "LmVwb3NpdGlvbkgDiAEBIjUKCWVwb3NpdGlvbhIKCgZsZWFkZXIQABIOCgpj",
+            "b3Vuc2VsbG9yEAESDAoIb3JkaW5hcnkQAkILCglfbV9yb2xlaWRCDAoKX21f",
+            "am9pbnV0Y0IQCg5fbV9sYXN0c2lnbnV0Y0INCgtfbV9wb3NpdGlvbiK/AgoJ",
+            "ZGJfZmFtaWx5EhEKBG1faWQYASABKANIAIgBARIYCgttX2NyZWF0ZXV0YxgC",
+            "IAEoBUgBiAEBEhMKBm1fbmFtZRgDIAEoCUgCiAEBEhUKCG1fbGVhZGVyGAQg",
+            "ASgDSAOIAQESEQoEbV9sdhgFIAEoBUgEiAEBEhIKBW1fZXhwGAYgASgFSAWI",
+            "AQESLgoIbV9tZW1iZXIYByADKAsyHC5wYmRiLmRiX2ZhbWlseS5NTWVtYmVy",
+            "RW50cnkaPgoMTU1lbWJlckVudHJ5EgsKA2tleRgBIAEoAxIdCgV2YWx1ZRgC",
+            "IAEoCzIOLnBiZGIuZmFtaWx5ZXI6AjgBQgcKBV9tX2lkQg4KDF9tX2NyZWF0",
+            "ZXV0Y0IJCgdfbV9uYW1lQgsKCV9tX2xlYWRlckIHCgVfbV9sdkIICgZfbV9l",
+            "eHAquAIKB0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5UEAASEAoMRU5VTV9E",
+            "Ql9ST0xFEAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VOVU1fREJfQkFHEAMS",
+            "FAoQRU5VTV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJfTUFJTBAFEhEKDUVO",
+            "VU1fREJfR1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAHEhQKEEVOVU1fREJf",
+            "UkFOS0xJU1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkSEAoMRU5VTV9EQl9U",
+            "QVNLEAoSFAoQRU5VTV9EQl9DQUxFTkRBUhALEhgKFEVOVU1fREJfUk9MRUtF",
+            "WVZBTFVFEAwSEgoORU5VTV9EQl9GQU1JTFkQDRIRCg1FTlVNX0RCX0NPVU5U",
+            "EA4qHgoJZXJhbmtsaXN0EgYKAmx2EAASCQoFY291bnQQAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), typeof(global::Pbdb.eranklist), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_account), global::Pbdb.db_account.Parser, new[]{ "MId", "MRoleid", "MAccount", "MPassworld", "MArea" }, new[]{ "MId", "MRoleid", "MAccount", "MPassworld", "MArea" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_brief), global::Pbdb.db_brief.Parser, new[]{ "MId", "MName", "MLv", "MMoneygold", "MMoneysilver", "MVip" }, new[]{ "MId", "MName", "MLv", "MMoneygold", "MMoneysilver", "MVip" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_role), global::Pbdb.db_role.Parser, new[]{ "MId", "MBase", "MRecharge" }, new[]{ "MId", "MBase" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_role.Types.recharge), global::Pbdb.db_role.Types.recharge.Parser, new[]{ "MRechargeid", "MUtc" }, new[]{ "MRechargeid", "MUtc" }, null, null, null)}),
@@ -140,8 +139,8 @@ namespace Pbdb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_mail), global::Pbdb.db_mail.Parser, new[]{ "MId", "MMail" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_guild), global::Pbdb.db_guild.Parser, new[]{ "MId", "MGuild", "MLeader", "MMembers" }, new[]{ "MId", "MGuild", "MLeader" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_notice), global::Pbdb.db_notice.Parser, new[]{ "MId", "MNotice", "MStarttime", "MFinishtime" }, new[]{ "MId", "MNotice", "MStarttime", "MFinishtime" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.rankitem), global::Pbdb.rankitem.Parser, new[]{ "MRoleid", "MName", "MLv", "MLvtime" }, new[]{ "MRoleid", "MName", "MLv", "MLvtime" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_ranklist), global::Pbdb.db_ranklist.Parser, new[]{ "MId", "MItem" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.rankitem), global::Pbdb.rankitem.Parser, new[]{ "MValue", "MTime" }, new[]{ "MValue", "MTime" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_ranklist), global::Pbdb.db_ranklist.Parser, new[]{ "MId", "MItems" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity), global::Pbdb.db_activity.Parser, new[]{ "MId", "MBeg", "MEnd", "MStart", "MFinish", "MCalendarid", "MDrawcompliance" }, new[]{ "MId", "MBeg", "MEnd", "MStart", "MFinish", "MCalendarid" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_activity.Types.drawcompliance), global::Pbdb.db_activity.Types.drawcompliance.Parser, new[]{ "MCount", "MReward" }, new[]{ "MCount" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task), global::Pbdb.db_task.Parser, new[]{ "MId", "MRundatas", "MCompleteddatas" }, new[]{ "MId" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data_schedule), global::Pbdb.db_task.Types.data_schedule.Parser, new[]{ "MType", "MValue", "MSumint" }, new[]{ "MType", "MValue", "MSumint" }, null, null, null),
@@ -214,6 +213,14 @@ namespace Pbdb {
     /// </summary>
     [pbr::OriginalName("ENUM_DB_FAMILY")] Family = 13,
     [pbr::OriginalName("ENUM_DB_COUNT")] Count = 14,
+  }
+
+  public enum eranklist {
+    /// <summary>
+    /// 等级排行
+    /// </summary>
+    [pbr::OriginalName("lv")] Lv = 0,
+    [pbr::OriginalName("count")] Count = 1,
   }
 
   #endregion
@@ -4325,10 +4332,8 @@ namespace Pbdb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public rankitem(rankitem other) : this() {
       _hasBits0 = other._hasBits0;
-      mRoleid_ = other.mRoleid_;
-      mName_ = other.mName_;
-      mLv_ = other.mLv_;
-      mLvtime_ = other.mLvtime_;
+      mValue_ = other.mValue_;
+      mTime_ = other.mTime_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4337,97 +4342,48 @@ namespace Pbdb {
       return new rankitem(this);
     }
 
-    /// <summary>Field number for the "m_roleid" field.</summary>
-    public const int MRoleidFieldNumber = 1;
-    private long mRoleid_;
+    /// <summary>Field number for the "m_value" field.</summary>
+    public const int MValueFieldNumber = 1;
+    private long mValue_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public long MRoleid {
-      get { if ((_hasBits0 & 1) != 0) { return mRoleid_; } else { return 0L; } }
+    public long MValue {
+      get { if ((_hasBits0 & 1) != 0) { return mValue_; } else { return 0L; } }
       set {
         _hasBits0 |= 1;
-        mRoleid_ = value;
+        mValue_ = value;
       }
     }
-    /// <summary>Gets whether the "m_roleid" field is set</summary>
+    /// <summary>Gets whether the "m_value" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasMRoleid {
+    public bool HasMValue {
       get { return (_hasBits0 & 1) != 0; }
     }
-    /// <summary>Clears the value of the "m_roleid" field</summary>
+    /// <summary>Clears the value of the "m_value" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMRoleid() {
+    public void ClearMValue() {
       _hasBits0 &= ~1;
     }
 
-    /// <summary>Field number for the "m_name" field.</summary>
-    public const int MNameFieldNumber = 2;
-    private string mName_;
+    /// <summary>Field number for the "m_time" field.</summary>
+    public const int MTimeFieldNumber = 2;
+    private int mTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string MName {
-      get { return mName_ ?? ""; }
-      set {
-        mName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-    /// <summary>Gets whether the "m_name" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasMName {
-      get { return mName_ != null; }
-    }
-    /// <summary>Clears the value of the "m_name" field</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMName() {
-      mName_ = null;
-    }
-
-    /// <summary>Field number for the "m_lv" field.</summary>
-    public const int MLvFieldNumber = 3;
-    private int mLv_;
-    /// <summary>
-    /// 玩家等级
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int MLv {
-      get { if ((_hasBits0 & 2) != 0) { return mLv_; } else { return 0; } }
+    public int MTime {
+      get { if ((_hasBits0 & 2) != 0) { return mTime_; } else { return 0; } }
       set {
         _hasBits0 |= 2;
-        mLv_ = value;
+        mTime_ = value;
       }
     }
-    /// <summary>Gets whether the "m_lv" field is set</summary>
+    /// <summary>Gets whether the "m_time" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasMLv {
+    public bool HasMTime {
       get { return (_hasBits0 & 2) != 0; }
     }
-    /// <summary>Clears the value of the "m_lv" field</summary>
+    /// <summary>Clears the value of the "m_time" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMLv() {
+    public void ClearMTime() {
       _hasBits0 &= ~2;
-    }
-
-    /// <summary>Field number for the "m_lvtime" field.</summary>
-    public const int MLvtimeFieldNumber = 4;
-    private int mLvtime_;
-    /// <summary>
-    /// 玩家等级更新时间
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int MLvtime {
-      get { if ((_hasBits0 & 4) != 0) { return mLvtime_; } else { return 0; } }
-      set {
-        _hasBits0 |= 4;
-        mLvtime_ = value;
-      }
-    }
-    /// <summary>Gets whether the "m_lvtime" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasMLvtime {
-      get { return (_hasBits0 & 4) != 0; }
-    }
-    /// <summary>Clears the value of the "m_lvtime" field</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMLvtime() {
-      _hasBits0 &= ~4;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4443,20 +4399,16 @@ namespace Pbdb {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (MRoleid != other.MRoleid) return false;
-      if (MName != other.MName) return false;
-      if (MLv != other.MLv) return false;
-      if (MLvtime != other.MLvtime) return false;
+      if (MValue != other.MValue) return false;
+      if (MTime != other.MTime) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasMRoleid) hash ^= MRoleid.GetHashCode();
-      if (HasMName) hash ^= MName.GetHashCode();
-      if (HasMLv) hash ^= MLv.GetHashCode();
-      if (HasMLvtime) hash ^= MLvtime.GetHashCode();
+      if (HasMValue) hash ^= MValue.GetHashCode();
+      if (HasMTime) hash ^= MTime.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4473,21 +4425,13 @@ namespace Pbdb {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasMRoleid) {
+      if (HasMValue) {
         output.WriteRawTag(8);
-        output.WriteInt64(MRoleid);
+        output.WriteInt64(MValue);
       }
-      if (HasMName) {
-        output.WriteRawTag(18);
-        output.WriteString(MName);
-      }
-      if (HasMLv) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MLv);
-      }
-      if (HasMLvtime) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MLvtime);
+      if (HasMTime) {
+        output.WriteRawTag(16);
+        output.WriteInt32(MTime);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -4498,21 +4442,13 @@ namespace Pbdb {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasMRoleid) {
+      if (HasMValue) {
         output.WriteRawTag(8);
-        output.WriteInt64(MRoleid);
+        output.WriteInt64(MValue);
       }
-      if (HasMName) {
-        output.WriteRawTag(18);
-        output.WriteString(MName);
-      }
-      if (HasMLv) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MLv);
-      }
-      if (HasMLvtime) {
-        output.WriteRawTag(32);
-        output.WriteInt32(MLvtime);
+      if (HasMTime) {
+        output.WriteRawTag(16);
+        output.WriteInt32(MTime);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -4523,17 +4459,11 @@ namespace Pbdb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (HasMRoleid) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MRoleid);
+      if (HasMValue) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MValue);
       }
-      if (HasMName) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(MName);
-      }
-      if (HasMLv) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MLv);
-      }
-      if (HasMLvtime) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MLvtime);
+      if (HasMTime) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MTime);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4546,17 +4476,11 @@ namespace Pbdb {
       if (other == null) {
         return;
       }
-      if (other.HasMRoleid) {
-        MRoleid = other.MRoleid;
+      if (other.HasMValue) {
+        MValue = other.MValue;
       }
-      if (other.HasMName) {
-        MName = other.MName;
-      }
-      if (other.HasMLv) {
-        MLv = other.MLv;
-      }
-      if (other.HasMLvtime) {
-        MLvtime = other.MLvtime;
+      if (other.HasMTime) {
+        MTime = other.MTime;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4573,19 +4497,11 @@ namespace Pbdb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            MRoleid = input.ReadInt64();
+            MValue = input.ReadInt64();
             break;
           }
-          case 18: {
-            MName = input.ReadString();
-            break;
-          }
-          case 24: {
-            MLv = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            MLvtime = input.ReadInt32();
+          case 16: {
+            MTime = input.ReadInt32();
             break;
           }
         }
@@ -4603,19 +4519,11 @@ namespace Pbdb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            MRoleid = input.ReadInt64();
+            MValue = input.ReadInt64();
             break;
           }
-          case 18: {
-            MName = input.ReadString();
-            break;
-          }
-          case 24: {
-            MLv = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            MLvtime = input.ReadInt32();
+          case 16: {
+            MTime = input.ReadInt32();
             break;
           }
         }
@@ -4660,7 +4568,7 @@ namespace Pbdb {
     public db_ranklist(db_ranklist other) : this() {
       _hasBits0 = other._hasBits0;
       mId_ = other.mId_;
-      mItem_ = other.mItem_.Clone();
+      mItems_ = other.mItems_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4673,7 +4581,7 @@ namespace Pbdb {
     public const int MIdFieldNumber = 1;
     private long mId_;
     /// <summary>
-    /// 排行id
+    /// roleid
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long MId {
@@ -4694,14 +4602,17 @@ namespace Pbdb {
       _hasBits0 &= ~1;
     }
 
-    /// <summary>Field number for the "m_item" field.</summary>
-    public const int MItemFieldNumber = 2;
-    private static readonly pbc::MapField<long, global::Pbdb.rankitem>.Codec _map_mItem_codec
-        = new pbc::MapField<long, global::Pbdb.rankitem>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForMessage(18, global::Pbdb.rankitem.Parser), 18);
-    private readonly pbc::MapField<long, global::Pbdb.rankitem> mItem_ = new pbc::MapField<long, global::Pbdb.rankitem>();
+    /// <summary>Field number for the "m_items" field.</summary>
+    public const int MItemsFieldNumber = 2;
+    private static readonly pbc::MapField<int, global::Pbdb.rankitem>.Codec _map_mItems_codec
+        = new pbc::MapField<int, global::Pbdb.rankitem>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForMessage(18, global::Pbdb.rankitem.Parser), 18);
+    private readonly pbc::MapField<int, global::Pbdb.rankitem> mItems_ = new pbc::MapField<int, global::Pbdb.rankitem>();
+    /// <summary>
+    /// key:排行榜类型eranklist
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::MapField<long, global::Pbdb.rankitem> MItem {
-      get { return mItem_; }
+    public pbc::MapField<int, global::Pbdb.rankitem> MItems {
+      get { return mItems_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4718,7 +4629,7 @@ namespace Pbdb {
         return true;
       }
       if (MId != other.MId) return false;
-      if (!MItem.Equals(other.MItem)) return false;
+      if (!MItems.Equals(other.MItems)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4726,7 +4637,7 @@ namespace Pbdb {
     public override int GetHashCode() {
       int hash = 1;
       if (HasMId) hash ^= MId.GetHashCode();
-      hash ^= MItem.GetHashCode();
+      hash ^= MItems.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4747,7 +4658,7 @@ namespace Pbdb {
         output.WriteRawTag(8);
         output.WriteInt64(MId);
       }
-      mItem_.WriteTo(output, _map_mItem_codec);
+      mItems_.WriteTo(output, _map_mItems_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4761,7 +4672,7 @@ namespace Pbdb {
         output.WriteRawTag(8);
         output.WriteInt64(MId);
       }
-      mItem_.WriteTo(ref output, _map_mItem_codec);
+      mItems_.WriteTo(ref output, _map_mItems_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4774,7 +4685,7 @@ namespace Pbdb {
       if (HasMId) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(MId);
       }
-      size += mItem_.CalculateSize(_map_mItem_codec);
+      size += mItems_.CalculateSize(_map_mItems_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -4789,7 +4700,7 @@ namespace Pbdb {
       if (other.HasMId) {
         MId = other.MId;
       }
-      mItem_.Add(other.mItem_);
+      mItems_.Add(other.mItems_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -4809,7 +4720,7 @@ namespace Pbdb {
             break;
           }
           case 18: {
-            mItem_.AddEntriesFrom(input, _map_mItem_codec);
+            mItems_.AddEntriesFrom(input, _map_mItems_codec);
             break;
           }
         }
@@ -4831,7 +4742,7 @@ namespace Pbdb {
             break;
           }
           case 18: {
-            mItem_.AddEntriesFrom(ref input, _map_mItem_codec);
+            mItems_.AddEntriesFrom(ref input, _map_mItems_codec);
             break;
           }
         }

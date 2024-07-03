@@ -15,6 +15,8 @@ namespace ngl
 		static actor*					m_actor;
 		static bool						m_register;
 		static std::set<i64_actorid>	m_dataid;
+		static bool						m_recvdatafinish;
+		static std::function<void(const T&)>	m_recvdatafinishfun;
 	public:
 		static std::map<i64_actorid, T> m_data;
 
@@ -51,6 +53,14 @@ namespace ngl
 							}
 						}						
 						m_data[lpair.first] = lpair.second;
+					}
+					m_recvdatafinish = true;
+					if (m_recvdatafinishfun != nullptr)
+					{
+						for (std::pair<const int64_t, T>& lpair : lmap)
+						{
+							m_recvdatafinishfun(lpair.second);
+						}
 					}
 				});
 
@@ -111,6 +121,19 @@ namespace ngl
 			actor::static_send_actor(m_nspserver, nguid::make(), pro);
 		}
 
+		// # 如果数据部分复制到位就执行以下操作
+		static void set_recv_data_finish(const std::function<void(const pbdb::db_brief&)>& afun)
+		{
+			m_recvdatafinishfun = afun;
+			if (m_recvdatafinish)
+			{
+				for (const auto& [_id, _data] : m_data)
+				{
+					m_recvdatafinishfun(_data);
+				}				
+			}
+		}
+
 	private:
 		static void register_echannel()
 		{
@@ -139,4 +162,10 @@ namespace ngl
 
 	template <typename TDerived, typename T>
 	std::set<i64_actorid> nsp_client<TDerived, T>::m_dataid;
+
+	template <typename TDerived, typename T>
+	bool nsp_client<TDerived, T>::m_recvdatafinish = false;
+	
+	template <typename TDerived, typename T>
+	std::function<void(const T&)> nsp_client<TDerived, T>::m_recvdatafinishfun = nullptr;
 }

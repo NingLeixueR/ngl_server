@@ -277,6 +277,28 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
+	{
+		auto recv = adata.get_data();
+		auto lstream = log_error();
+		(*lstream) << std::format("#####ranklist type={}#####", (int)(recv->m_type())) << std::endl;
+		for (auto& item : recv->m_items())
+		{
+			if (recv->m_type() == pbdb::lv)
+			{
+				(*lstream) << 
+					std::format(
+						"roleid:{} name:{} lv:{}", 
+						item.m_id(),
+						item.m_name(), 
+						item.m_lv()
+					) << std::endl;
+			}
+		}
+		lstream->print("");
+		return true;
+	}
+
 	void actor_manage_robot::nregister()
 	{
 		register_handle_custom<actor_manage_robot>::func<

@@ -104,7 +104,7 @@ namespace ngl
 		}
 
 		using handle_cmd = cmd<actor_mail, std::string, int, ngl::json_read&>;
-		// ## GM²Ù×÷
+		// # GM²Ù×÷
 		bool handle(message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl

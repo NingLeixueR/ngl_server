@@ -110,9 +110,9 @@ extern db_noticeDefaultTypeInternal _db_notice_default_instance_;
 class db_ranklist;
 class db_ranklistDefaultTypeInternal;
 extern db_ranklistDefaultTypeInternal _db_ranklist_default_instance_;
-class db_ranklist_MItemEntry_DoNotUse;
-class db_ranklist_MItemEntry_DoNotUseDefaultTypeInternal;
-extern db_ranklist_MItemEntry_DoNotUseDefaultTypeInternal _db_ranklist_MItemEntry_DoNotUse_default_instance_;
+class db_ranklist_MItemsEntry_DoNotUse;
+class db_ranklist_MItemsEntry_DoNotUseDefaultTypeInternal;
+extern db_ranklist_MItemsEntry_DoNotUseDefaultTypeInternal _db_ranklist_MItemsEntry_DoNotUse_default_instance_;
 class db_role;
 class db_roleDefaultTypeInternal;
 extern db_roleDefaultTypeInternal _db_role_default_instance_;
@@ -174,7 +174,7 @@ template<> ::pbdb::db_mail* Arena::CreateMaybeMessage<::pbdb::db_mail>(Arena*);
 template<> ::pbdb::db_mail_MMailEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_mail_MMailEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_notice* Arena::CreateMaybeMessage<::pbdb::db_notice>(Arena*);
 template<> ::pbdb::db_ranklist* Arena::CreateMaybeMessage<::pbdb::db_ranklist>(Arena*);
-template<> ::pbdb::db_ranklist_MItemEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_ranklist_MItemEntry_DoNotUse>(Arena*);
+template<> ::pbdb::db_ranklist_MItemsEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_ranklist_MItemsEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_role* Arena::CreateMaybeMessage<::pbdb::db_role>(Arena*);
 template<> ::pbdb::db_role_recharge* Arena::CreateMaybeMessage<::pbdb::db_role_recharge>(Arena*);
 template<> ::pbdb::db_rolekeyvalue* Arena::CreateMaybeMessage<::pbdb::db_rolekeyvalue>(Arena*);
@@ -279,6 +279,31 @@ inline bool ENUM_DB_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ENUM_DB* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ENUM_DB>(
     ENUM_DB_descriptor(), name, value);
+}
+enum eranklist : int {
+  lv = 0,
+  count = 1,
+  eranklist_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eranklist_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eranklist_IsValid(int value);
+constexpr eranklist eranklist_MIN = lv;
+constexpr eranklist eranklist_MAX = count;
+constexpr int eranklist_ARRAYSIZE = eranklist_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eranklist_descriptor();
+template<typename T>
+inline const std::string& eranklist_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eranklist>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eranklist_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eranklist_descriptor(), enum_t_value);
+}
+inline bool eranklist_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eranklist* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eranklist>(
+    eranklist_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -3001,68 +3026,33 @@ class rankitem PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMNameFieldNumber = 2,
-    kMRoleidFieldNumber = 1,
-    kMLvFieldNumber = 3,
-    kMLvtimeFieldNumber = 4,
+    kMValueFieldNumber = 1,
+    kMTimeFieldNumber = 2,
   };
-  // string m_name = 2;
-  bool has_m_name() const;
+  // int64 m_value = 1;
+  bool has_m_value() const;
   private:
-  bool _internal_has_m_name() const;
+  bool _internal_has_m_value() const;
   public:
-  void clear_m_name();
-  const std::string& m_name() const;
-  void set_m_name(const std::string& value);
-  void set_m_name(std::string&& value);
-  void set_m_name(const char* value);
-  void set_m_name(const char* value, size_t size);
-  std::string* mutable_m_name();
-  std::string* release_m_name();
-  void set_allocated_m_name(std::string* m_name);
+  void clear_m_value();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_value() const;
+  void set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value);
   private:
-  const std::string& _internal_m_name() const;
-  void _internal_set_m_name(const std::string& value);
-  std::string* _internal_mutable_m_name();
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_value() const;
+  void _internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // int64 m_roleid = 1;
-  bool has_m_roleid() const;
+  // int32 m_time = 2;
+  bool has_m_time() const;
   private:
-  bool _internal_has_m_roleid() const;
+  bool _internal_has_m_time() const;
   public:
-  void clear_m_roleid();
-  ::PROTOBUF_NAMESPACE_ID::int64 m_roleid() const;
-  void set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  void clear_m_time();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_time() const;
+  void set_m_time(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_roleid() const;
-  void _internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value);
-  public:
-
-  // int32 m_lv = 3;
-  bool has_m_lv() const;
-  private:
-  bool _internal_has_m_lv() const;
-  public:
-  void clear_m_lv();
-  ::PROTOBUF_NAMESPACE_ID::int32 m_lv() const;
-  void set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_lv() const;
-  void _internal_set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // int32 m_lvtime = 4;
-  bool has_m_lvtime() const;
-  private:
-  bool _internal_has_m_lvtime() const;
-  public:
-  void clear_m_lvtime();
-  ::PROTOBUF_NAMESPACE_ID::int32 m_lvtime() const;
-  void set_m_lvtime(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_lvtime() const;
-  void _internal_set_m_lvtime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_time() const;
+  void _internal_set_m_time(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:pbdb.rankitem)
@@ -3074,29 +3064,27 @@ class rankitem PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_name_;
-  ::PROTOBUF_NAMESPACE_ID::int64 m_roleid_;
-  ::PROTOBUF_NAMESPACE_ID::int32 m_lv_;
-  ::PROTOBUF_NAMESPACE_ID::int32 m_lvtime_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_value_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_time_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
 
-class db_ranklist_MItemEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_ranklist_MItemEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+class db_ranklist_MItemsEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_ranklist_MItemsEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_ranklist_MItemEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_ranklist_MItemsEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > SuperType;
-  db_ranklist_MItemEntry_DoNotUse();
-  explicit db_ranklist_MItemEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const db_ranklist_MItemEntry_DoNotUse& other);
-  static const db_ranklist_MItemEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_ranklist_MItemEntry_DoNotUse*>(&_db_ranklist_MItemEntry_DoNotUse_default_instance_); }
+  db_ranklist_MItemsEntry_DoNotUse();
+  explicit db_ranklist_MItemsEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_ranklist_MItemsEntry_DoNotUse& other);
+  static const db_ranklist_MItemsEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_ranklist_MItemsEntry_DoNotUse*>(&_db_ranklist_MItemsEntry_DoNotUse_default_instance_); }
   static bool ValidateKey(void*) { return true; }
   static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
@@ -3226,25 +3214,25 @@ class db_ranklist PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMItemFieldNumber = 2,
+    kMItemsFieldNumber = 2,
     kMIdFieldNumber = 1,
   };
-  // map<int64, .pbdb.rankitem> m_item = 2;
-  int m_item_size() const;
+  // map<int32, .pbdb.rankitem> m_items = 2;
+  int m_items_size() const;
   private:
-  int _internal_m_item_size() const;
+  int _internal_m_items_size() const;
   public:
-  void clear_m_item();
+  void clear_m_items();
   private:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >&
-      _internal_m_item() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >*
-      _internal_mutable_m_item();
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >&
+      _internal_m_items() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >*
+      _internal_mutable_m_items();
   public:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >&
-      m_item() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >*
-      mutable_m_item();
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >&
+      m_items() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >*
+      mutable_m_items();
 
   // int64 m_id = 1;
   bool has_m_id() const;
@@ -3269,11 +3257,11 @@ class db_ranklist PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      db_ranklist_MItemEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+      db_ranklist_MItemsEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > m_item_;
+      0 > m_items_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   friend struct ::TableStruct_db_2eproto;
 };
@@ -6947,162 +6935,60 @@ inline void db_notice::set_m_finishtime(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // rankitem
 
-// int64 m_roleid = 1;
-inline bool rankitem::_internal_has_m_roleid() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool rankitem::has_m_roleid() const {
-  return _internal_has_m_roleid();
-}
-inline void rankitem::clear_m_roleid() {
-  m_roleid_ = PROTOBUF_LONGLONG(0);
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 rankitem::_internal_m_roleid() const {
-  return m_roleid_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 rankitem::m_roleid() const {
-  // @@protoc_insertion_point(field_get:pbdb.rankitem.m_roleid)
-  return _internal_m_roleid();
-}
-inline void rankitem::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000002u;
-  m_roleid_ = value;
-}
-inline void rankitem::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _internal_set_m_roleid(value);
-  // @@protoc_insertion_point(field_set:pbdb.rankitem.m_roleid)
-}
-
-// string m_name = 2;
-inline bool rankitem::_internal_has_m_name() const {
+// int64 m_value = 1;
+inline bool rankitem::_internal_has_m_value() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool rankitem::has_m_name() const {
-  return _internal_has_m_name();
+inline bool rankitem::has_m_value() const {
+  return _internal_has_m_value();
 }
-inline void rankitem::clear_m_name() {
-  m_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline void rankitem::clear_m_value() {
+  m_value_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline const std::string& rankitem::m_name() const {
-  // @@protoc_insertion_point(field_get:pbdb.rankitem.m_name)
-  return _internal_m_name();
+inline ::PROTOBUF_NAMESPACE_ID::int64 rankitem::_internal_m_value() const {
+  return m_value_;
 }
-inline void rankitem::set_m_name(const std::string& value) {
-  _internal_set_m_name(value);
-  // @@protoc_insertion_point(field_set:pbdb.rankitem.m_name)
+inline ::PROTOBUF_NAMESPACE_ID::int64 rankitem::m_value() const {
+  // @@protoc_insertion_point(field_get:pbdb.rankitem.m_value)
+  return _internal_m_value();
 }
-inline std::string* rankitem::mutable_m_name() {
-  // @@protoc_insertion_point(field_mutable:pbdb.rankitem.m_name)
-  return _internal_mutable_m_name();
-}
-inline const std::string& rankitem::_internal_m_name() const {
-  return m_name_.Get();
-}
-inline void rankitem::_internal_set_m_name(const std::string& value) {
+inline void rankitem::_internal_set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
-  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  m_value_ = value;
 }
-inline void rankitem::set_m_name(std::string&& value) {
-  _has_bits_[0] |= 0x00000001u;
-  m_name_.Set(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:pbdb.rankitem.m_name)
-}
-inline void rankitem::set_m_name(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000001u;
-  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-              GetArena());
-  // @@protoc_insertion_point(field_set_char:pbdb.rankitem.m_name)
-}
-inline void rankitem::set_m_name(const char* value,
-    size_t size) {
-  _has_bits_[0] |= 0x00000001u;
-  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:pbdb.rankitem.m_name)
-}
-inline std::string* rankitem::_internal_mutable_m_name() {
-  _has_bits_[0] |= 0x00000001u;
-  return m_name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline std::string* rankitem::release_m_name() {
-  // @@protoc_insertion_point(field_release:pbdb.rankitem.m_name)
-  if (!_internal_has_m_name()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000001u;
-  return m_name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void rankitem::set_allocated_m_name(std::string* m_name) {
-  if (m_name != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  m_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_name,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:pbdb.rankitem.m_name)
+inline void rankitem::set_m_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_m_value(value);
+  // @@protoc_insertion_point(field_set:pbdb.rankitem.m_value)
 }
 
-// int32 m_lv = 3;
-inline bool rankitem::_internal_has_m_lv() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+// int32 m_time = 2;
+inline bool rankitem::_internal_has_m_time() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool rankitem::has_m_lv() const {
-  return _internal_has_m_lv();
+inline bool rankitem::has_m_time() const {
+  return _internal_has_m_time();
 }
-inline void rankitem::clear_m_lv() {
-  m_lv_ = 0;
-  _has_bits_[0] &= ~0x00000004u;
+inline void rankitem::clear_m_time() {
+  m_time_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 rankitem::_internal_m_lv() const {
-  return m_lv_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 rankitem::_internal_m_time() const {
+  return m_time_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 rankitem::m_lv() const {
-  // @@protoc_insertion_point(field_get:pbdb.rankitem.m_lv)
-  return _internal_m_lv();
+inline ::PROTOBUF_NAMESPACE_ID::int32 rankitem::m_time() const {
+  // @@protoc_insertion_point(field_get:pbdb.rankitem.m_time)
+  return _internal_m_time();
 }
-inline void rankitem::_internal_set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000004u;
-  m_lv_ = value;
+inline void rankitem::_internal_set_m_time(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_time_ = value;
 }
-inline void rankitem::set_m_lv(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_m_lv(value);
-  // @@protoc_insertion_point(field_set:pbdb.rankitem.m_lv)
-}
-
-// int32 m_lvtime = 4;
-inline bool rankitem::_internal_has_m_lvtime() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
-  return value;
-}
-inline bool rankitem::has_m_lvtime() const {
-  return _internal_has_m_lvtime();
-}
-inline void rankitem::clear_m_lvtime() {
-  m_lvtime_ = 0;
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 rankitem::_internal_m_lvtime() const {
-  return m_lvtime_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 rankitem::m_lvtime() const {
-  // @@protoc_insertion_point(field_get:pbdb.rankitem.m_lvtime)
-  return _internal_m_lvtime();
-}
-inline void rankitem::_internal_set_m_lvtime(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000008u;
-  m_lvtime_ = value;
-}
-inline void rankitem::set_m_lvtime(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_m_lvtime(value);
-  // @@protoc_insertion_point(field_set:pbdb.rankitem.m_lvtime)
+inline void rankitem::set_m_time(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_time(value);
+  // @@protoc_insertion_point(field_set:pbdb.rankitem.m_time)
 }
 
 // -------------------------------------------------------------------
@@ -7139,33 +7025,33 @@ inline void db_ranklist::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_ranklist.m_id)
 }
 
-// map<int64, .pbdb.rankitem> m_item = 2;
-inline int db_ranklist::_internal_m_item_size() const {
-  return m_item_.size();
+// map<int32, .pbdb.rankitem> m_items = 2;
+inline int db_ranklist::_internal_m_items_size() const {
+  return m_items_.size();
 }
-inline int db_ranklist::m_item_size() const {
-  return _internal_m_item_size();
+inline int db_ranklist::m_items_size() const {
+  return _internal_m_items_size();
 }
-inline void db_ranklist::clear_m_item() {
-  m_item_.Clear();
+inline void db_ranklist::clear_m_items() {
+  m_items_.Clear();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >&
-db_ranklist::_internal_m_item() const {
-  return m_item_.GetMap();
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >&
+db_ranklist::_internal_m_items() const {
+  return m_items_.GetMap();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >&
-db_ranklist::m_item() const {
-  // @@protoc_insertion_point(field_map:pbdb.db_ranklist.m_item)
-  return _internal_m_item();
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >&
+db_ranklist::m_items() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_ranklist.m_items)
+  return _internal_m_items();
 }
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >*
-db_ranklist::_internal_mutable_m_item() {
-  return m_item_.MutableMap();
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >*
+db_ranklist::_internal_mutable_m_items() {
+  return m_items_.MutableMap();
 }
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::rankitem >*
-db_ranklist::mutable_m_item() {
-  // @@protoc_insertion_point(field_mutable_map:pbdb.db_ranklist.m_item)
-  return _internal_mutable_m_item();
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::rankitem >*
+db_ranklist::mutable_m_items() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_ranklist.m_items)
+  return _internal_mutable_m_items();
 }
 
 // -------------------------------------------------------------------
@@ -8338,6 +8224,11 @@ template <> struct is_proto_enum< ::pbdb::ENUM_DB> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::ENUM_DB>() {
   return ::pbdb::ENUM_DB_descriptor();
+}
+template <> struct is_proto_enum< ::pbdb::eranklist> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbdb::eranklist>() {
+  return ::pbdb::eranklist_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
