@@ -155,5 +155,4 @@ namespace ngl
 		}
 		return 0;
 	}
-
 }//namespace ngl

@@ -52,6 +52,7 @@ namespace ngl
 			(*lstream) << "actor_family###loaddb_finish" << std::endl;
 			for (const auto& [_familyid, _family] : data())
 			{
+				const pbdb::db_family& lbdfamily = _family.getconst();
 				if (m_maxid < _familyid)
 				{
 					m_maxid = _familyid;
@@ -60,14 +61,14 @@ namespace ngl
 					std::format(
 						"id:{} name:{} createutc:{} leader:{} lv:{} exp:{}", 
 						_familyid,
-						_family.getconst().m_name(),
-						_family.getconst().m_createutc(),
-						_family.getconst().m_leader(),
-						_family.getconst().m_lv(),
-						_family.getconst().m_exp()
+						lbdfamily.m_name(),
+						lbdfamily.m_createutc(),
+						lbdfamily.m_leader(),
+						lbdfamily.m_lv(),
+						lbdfamily.m_exp()
 					);
 				(*lstream) << " member:[" << std::endl;
-				for (const auto& [_roleid, _familyer] : _family.getconst().m_member())
+				for (const auto& [_roleid, _familyer] : lbdfamily.m_member())
 				{
 					(*lstream) <<
 						std::format(
