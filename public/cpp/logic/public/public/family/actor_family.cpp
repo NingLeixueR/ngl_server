@@ -43,9 +43,8 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("change_famil", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("change_familyname", [this](int id, ngl::json_read& aos)
 				{
-					int64_t familid = 0;
 					struct gm_changename
 					{
 						int64_t m_familid;
@@ -55,11 +54,27 @@ namespace ngl
 					gm_changename recv;
 					if (aos.read("data", recv) == false)
 						return;
+					gcmd<bool> pro;
+					pro.id = id;
+					pro.m_operator = "change_familyname_responce";
+					pro.m_data = true;
+					m_family.change_familyname(-1, recv.m_familid, recv.m_familname);
+				}
+			);
+
+			handle_cmd::push("get_family", [this](int id, ngl::json_read& aos)
+				{
+					int64_t familid = 0;
+					if (aos.read("data", familid) == false)
+						return;
 					gcmd<std::string> pro;
 					pro.id = id;
-					pro.m_operator = "change_famil_responce";
-
-					m_family.change_familyname(-1, recv.m_familid, recv.m_familname);
+					pro.m_operator = "get_family_responce";
+					auto profamilylist = m_family.get_familylist(familid);
+					if (tools::protojson<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>(*profamilylist, pro.m_data) == false)
+					{
+						return;
+					}
 				}
 			);
 		}

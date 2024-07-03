@@ -99,7 +99,7 @@ namespace ngl
 		return 0;
 	}
 
-	void family::sync_family(i64_actorid aroleid, i64_actorid afamilyid)
+	std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE> family::get_familylist(i64_actorid afamilyid)
 	{
 		if (afamilyid == -1)
 		{
@@ -109,20 +109,26 @@ namespace ngl
 			{
 				*pro->add_m_family() = _famil.getconst();
 			}
-			actor::send_client(aroleid, pro);
+			return pro;
 		}
 		else
 		{
 			const pbdb::db_family* lpconstfamily = get_constfamily(afamilyid);
 			if (lpconstfamily == nullptr)
 			{
-				return;
+				return nullptr;
 			}
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>();
 			pro->set_m_familid(afamilyid);
 			*pro->add_m_family() = *lpconstfamily;
-			actor::send_client(aroleid, pro);
-		}		
+			return pro;
+		}
+	}
+
+	void family::sync_family(i64_actorid aroleid, i64_actorid afamilyid)
+	{
+		auto pro = get_familylist(afamilyid);
+		actor::send_client(aroleid, pro);
 	}
 
 	int32_t family::change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname)
