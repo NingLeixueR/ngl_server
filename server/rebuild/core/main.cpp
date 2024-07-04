@@ -35,7 +35,14 @@ bool is_sname(const std::string& astrname, const std::string& akey)
 	return false;
 }
 
-void find(bool awz, const std::string& atxt, const std::string& targetPath, std::set<std::string>& adir, std::set<std::string>& avec1, std::set<std::string>& avec2)
+void find(
+	bool awz, 
+	const std::string& atxt, 
+	const std::string& targetPath, 
+	std::set<std::string>& adir, 
+	std::set<std::string>& avec1, 
+	std::set<std::string>& avec2
+)
 {
 	std::filesystem::path myPath(targetPath);
 	std::filesystem::recursive_directory_iterator endIter;
@@ -105,10 +112,29 @@ int main(int argc, char** argv)
 	ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 	m_stream << ltmbuff << std::endl;
 
-	for (auto item : lvec1)
+	/*for (auto item : lvec1)
 		m_stream << "#include \"" << item << "\"\n";
 	for (auto item : lvec2)
-		m_stream << "#include \"" << item << "\"\n";
+		m_stream << "#include \"" << item << "\"\n";*/
+	std::map<int, std::set<std::string>> lmap;
+	for (auto& item : lvec1)
+	{
+		lmap[item.size()].insert(item);
+	}
+	for (auto& item : lvec2)
+	{
+		lmap[item.size()].insert(item);
+	}
+	for (auto itor1 = lmap.rbegin(); itor1 != lmap.rend(); ++itor1)
+	{
+		for (auto itor2 = itor1->second.rbegin(); itor2!= itor1->second.rend();++itor2)
+		{
+			m_stream << "#include \"" << *itor2 << "\"\n";
+		}	
+	}
+
+		
+
 
 	m_stream << "extern \"C\"{\n";
 	for (auto item : lvec5)
