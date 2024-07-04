@@ -43,7 +43,6 @@ namespace ngl
 				}
 				m_values[pbdb::eranklist::lv] = abrief.m_lv();
 			}
-			
 			m_actorid = abrief.m_id();
 		}
 
