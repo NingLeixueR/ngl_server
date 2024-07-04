@@ -31,16 +31,19 @@ namespace ngl
 		void init(const pbdb::db_brief& abrief, const pbdb::db_ranklist& aranklist)
 		{
 			const auto& lmap = aranklist.m_items();
-			auto itor = lmap.find((int32_t)pbdb::eranklist::lv);
-			if (itor == lmap.end())
-			{
-				m_time[pbdb::eranklist::lv] = localtime::gettime();
+			{//pbdb::eranklist::lv
+				auto itor = lmap.find((int32_t)pbdb::eranklist::lv);
+				if (itor == lmap.end())
+				{
+					m_time[pbdb::eranklist::lv] = localtime::gettime();
+				}
+				else
+				{
+					m_time[pbdb::eranklist::lv] = itor->second.m_time();
+				}
+				m_values[pbdb::eranklist::lv] = abrief.m_lv();
 			}
-			else
-			{
-				m_time[pbdb::eranklist::lv] = itor->second.m_time();
-			}
-			m_values[pbdb::eranklist::lv] = abrief.m_lv();
+			
 			m_actorid = abrief.m_id();
 		}
 
@@ -186,7 +189,6 @@ namespace ngl
 		virtual void initdata()
 		{
 			log_error()->print("actor_ranklist###loaddb_finish");
-
 			tdb_brief::nsp_cli<actor_ranklist>::set_recv_data_finish([this](const pbdb::db_brief& abrief)
 				{
 					std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
