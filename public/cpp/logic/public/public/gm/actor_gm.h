@@ -49,7 +49,6 @@ namespace ngl
 		bool reply_php(const pack* apack, ngl::np_gm_response& adata);
 
 		using handle_cmd = cmd<actor_gm, std::string, ngl::json_read&>;
-
 		bool handle(message<ngl::np_gm>& adata);
 
 		bool handle(message<mforward<ngl::np_gm_response>>& adata);

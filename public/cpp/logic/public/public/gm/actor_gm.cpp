@@ -150,5 +150,4 @@ namespace ngl
 		send(adata.get_data()->identifier(), *adata.get_data()->data(), nguid::make(), nguid::make());
 		return true;
 	}
-
 }// namespace ngl

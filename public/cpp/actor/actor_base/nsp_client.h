@@ -168,4 +168,4 @@ namespace ngl
 	
 	template <typename TDerived, typename T>
 	std::function<void(const T&)> nsp_client<TDerived, T>::m_recvdatafinishfun = nullptr;
-}
+}//namespace ngl
