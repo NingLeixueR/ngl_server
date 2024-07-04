@@ -26,4 +26,4 @@ namespace ngl
 			return lpack;
 		}
 	};
-}
+}//namespace ngl

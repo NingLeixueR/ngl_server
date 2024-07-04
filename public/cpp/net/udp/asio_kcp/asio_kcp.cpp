@@ -802,7 +802,12 @@ namespace ngl
 	}
 
 	// ## 发送原始udp包并等待其返回
-	bool asio_kcp::sendu_waitrecv(const asio_udp_endpoint& aendpoint, const char* buf, int len, const std::function<void(char*, int)>& afun)
+	bool asio_kcp::sendu_waitrecv(
+		const asio_udp_endpoint& aendpoint, 
+		const char* buf, 
+		int len, 
+		const std::function<void(char*, int)>& afun
+	)
 	{
 		return m_impl_asio_kcp()->sendu_waitrecv(aendpoint, buf, len, afun);
 	}

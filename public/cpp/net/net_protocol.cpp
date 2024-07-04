@@ -66,14 +66,15 @@ namespace ngl
 		)
 		{
 			std::shared_ptr<ngl::sem> lsem(await ? new ngl::sem() : nullptr);
-			anetprotocol->connect(aip, aport, [this, anetprotocol, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
+			auto lfun = [this, anetprotocol, afun, aip, aport, areconnection, lsem](i32_sessionid asession)
 				{
 					afun(asession);
 					if (lsem != nullptr)
 						lsem->post();
 					if (areconnection)
 						anetprotocol->set_close(asession, aip, aport, afun);
-				});
+				};
+			anetprotocol->connect(aip, aport, lfun);
 			if (lsem != nullptr)
 				lsem->wait();
 			return true;

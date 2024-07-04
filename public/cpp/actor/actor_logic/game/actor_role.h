@@ -30,7 +30,7 @@ namespace ngl
 		roleinfo	 m_info;
 		bag			 m_bag;
 		task		 m_task;
-		//rolekv		 m_rolekv;
+		rolekv		 m_rolekv;
 		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
 		i64_actorid  m_playactorid;
@@ -63,12 +63,6 @@ namespace ngl
 		{
 			m_attribute.updata(amodule, avalue);
 		}
-
-		/*template <typename T>
-		void send2client(std::shared_ptr<T>& adata)
-		{
-			actor_base::send_client(m_gatewayid, id_guid(), adata);
-		}*/
 
 		void sync_data_client();
 

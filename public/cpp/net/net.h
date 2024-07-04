@@ -173,7 +173,13 @@ namespace ngl
 namespace ngl
 {
 	template <typename TSTL>
-	bool net_protocol::sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+	bool net_protocol::sendmore_stl(
+		const TSTL& asession, 
+		i64_actorid aactorid, 
+		i64_actorid arequestactorid, 
+		std::pair<std::shared_ptr<pack>, 
+		std::shared_ptr<pack>>& apair
+	)
 	{
 		for (i32_sessionid item : asession)
 		{
@@ -211,7 +217,12 @@ namespace ngl
 	}
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
+	bool handle_pram_send<T, IS_SEND>::sendbyserver(
+		i32_serverid aserverid, 
+		const nguid& aactorid, 
+		const nguid& arequestactorid, 
+		handle_pram& adata
+	)
 	{
 		if (IS_SEND == false)
 			return true;
@@ -219,19 +230,34 @@ namespace ngl
 	}
 
 	template <typename T>
-	bool handle_pram::netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
+	bool handle_pram::netsend(
+		i32_sessionid asession, 
+		T& adata, 
+		const nguid& aactorid, 
+		const nguid& arequestactorid
+	)
 	{
 		return nets::sendbysession(asession, adata, aactorid.id(), arequestactorid.id());
 	}
 
 	template <typename T>
-	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	bool actor_base::send_server(
+		i32_serverid aserverid, 
+		T& adata, 
+		i64_actorid aactorid, 
+		i64_actorid arequestactorid
+	)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
-	bool actor_base::send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	bool actor_base::send_server(
+		const std::vector<i32_serverid>& aserverid, 
+		T& adata, 
+		i64_actorid aactorid, 
+		i64_actorid arequestactorid
+	)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
