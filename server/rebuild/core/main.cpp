@@ -133,9 +133,6 @@ int main(int argc, char** argv)
 		}	
 	}
 
-		
-
-
 	m_stream << "extern \"C\"{\n";
 	for (auto item : lvec5)
 		m_stream << "#include \"" << item << "\"\n";

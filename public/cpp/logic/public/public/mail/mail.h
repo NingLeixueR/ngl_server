@@ -33,10 +33,7 @@ namespace ngl
 			return &itor->second.getconst().m_mail();
 		}
 
-		google::protobuf::Map<int32_t, pbdb::mail>* get_mails(
-			i64_actorid aroleid, 
-			bool achange = true
-		)
+		google::protobuf::Map<int32_t, pbdb::mail>* get_mails(i64_actorid aroleid, bool achange = true)
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())

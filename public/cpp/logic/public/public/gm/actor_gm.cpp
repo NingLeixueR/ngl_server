@@ -25,6 +25,24 @@ namespace ngl
 		>(false);
 	}
 
+	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro)
+	{
+		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
+		send_actor(nguid::make_self(atype), pro);
+	}
+
+	void actor_gm::sendbyactorid(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro)
+	{
+		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
+		send_actor(aactorid, pro);
+	}
+
+	bool actor_gm::reply_php(const pack* apack, ngl::np_gm_response& adata)
+	{
+		send(apack->m_id, adata, nguid::make(), nguid::make());
+		return true;
+	}
+
 	bool actor_gm::handle(message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
@@ -66,7 +84,7 @@ namespace ngl
 								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 								ngl::np_gm_response lresponse;
 								lwritejson.get(lresponse.m_json);
-								ret_gm(adata.m_pack, lresponse);
+								reply_php(adata.m_pack, lresponse);
 								return;
 							}
 						}
@@ -108,18 +126,18 @@ namespace ngl
 							ttab_servers::tab()->m_area,
 							nguid::none_actordataid()
 						);
-						sendnosign(lactorid, adata.m_pack, *adata.get_data());
+						sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
 					}
 				}
 				return true;
 			}
 			
-			sendsign(ltype, adata.m_pack, *adata.get_data());
+			sendbytype(ltype, adata.m_pack, *adata.get_data());
 			return true;
 		}
 		else if (lreadjson.read("actor_id", lactorid))
 		{
-			sendnosign(lactorid, adata.m_pack, *adata.get_data());
+			sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
 			return true;
 		}
 

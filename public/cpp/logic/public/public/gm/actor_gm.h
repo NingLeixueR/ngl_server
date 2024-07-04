@@ -39,23 +39,14 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		void sendsign(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro)
-		{
-			auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
-			send_actor(nguid::make_self(atype), pro);
-		}
+		// # 转发给单例
+		void sendbytype(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro);
 
-		void sendnosign(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro)
-		{
-			auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
-			send_actor(aactorid, pro);
-		}
+		// # 转发给特定actor
+		void sendbyactorid(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro);
 
-		bool ret_gm(const pack* apack, ngl::np_gm_response& adata)
-		{
-			send(apack->m_id, adata, nguid::make(), nguid::make());
-			return true;
-		}
+		// # 回复gm.php
+		bool reply_php(const pack* apack, ngl::np_gm_response& adata);
 
 		using handle_cmd = cmd<actor_gm, std::string, ngl::json_read&>;
 
