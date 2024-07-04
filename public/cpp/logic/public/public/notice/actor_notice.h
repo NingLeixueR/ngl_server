@@ -2,20 +2,20 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "db_manage.h"
-#include "db_data.h"
-#include "db_pool.h"
-#include "db.h"
 #include "ndb_modular.h"
 #include "define_json.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
+#include "db_manage.h"
+#include "db_data.h"
+#include "db_pool.h"
 #include "notice.h"
 #include "ntimer.h"
 #include "gcmd.h"
 #include "net.h"
+#include "db.h"
 
 namespace ngl
 {
@@ -72,4 +72,4 @@ namespace ngl
 		//# 客户端拉取公告
 		bool handle(message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);		
 	};
-}
+}//namespace ngl

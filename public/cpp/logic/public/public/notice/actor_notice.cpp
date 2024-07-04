@@ -120,4 +120,4 @@ namespace ngl
 		send_client(adata.get_data()->identifier(), pro);
 		return true;
 	}
-}
+}//namespace ngl
