@@ -1,3 +1,5 @@
-int32_t,string,string,string,
-m_id,m_name,m_remarks,m_value,
-" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 值",
+int32_t,string,string,string
+m_id,m_name,m_remarks,m_value
+ [index:0] id , [index:1] 名字 , [index:2] 备注, [index:3] 值
+1,familmax,军团最大人数,30
+2,rolemaxlv,玩家最大等级,100

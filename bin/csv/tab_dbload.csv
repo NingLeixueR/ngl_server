@@ -1,13 +1,16 @@
-int32_t,string,string,bool,bool,int32_t
-m_id,m_name,m_remarks,m_isloadall,m_network,m_sendmaxcount
- [index:0] id , [index:1] 名字 , [index:2] 备注, [index:3] 是否需要启动加载全部数据, [index:4] 是否允许通过网络分发, [index:5] 单次最多发送数量
-1,DB_ACCOUNT,DB_ACCOUNT,1,1,100
-2,DB_NOTICE,DB_NOTICE,1,1,100
-3,DB_MAIL,DB_MAIL,1,1,1
-4,DB_ROLE,DB_ROLE,0,1,1
-5,DB_KEYVALUE,DB_KEYVALUE,0,1,100
-6,DB_BAG,DB_BAG,0,1,1
-7,DB_COUNTGROUP,DB_COUNTGROUP,0,1,1
-8,DB_ACTIVITY,DB_ACTIVITY,0,1,1
-9,DB_TASK,DB_TASK,0,1,1
-10,DB_CALENDAR,DB_CALENDAR,1,1,100
+int32_t,string,string,bool,bool,int32_t,int32_t
+m_id,m_name,m_remarks,m_isloadall,m_network,m_sendmaxcount,m_dbcacheintervalms
+ [index:0] id , [index:1] 名字 , [index:2] 备注, [index:3] 是否需要启动加载全部数据, [index:4] 是否允许通过网络分发, [index:5] 单次最多发送数量,[index:6][load:y] 数据缓存入库间隔
+1,DB_ACCOUNT,DB_ACCOUNT,1,1,100,5000
+2,DB_NOTICE,DB_NOTICE,1,1,100,5000
+3,DB_MAIL,DB_MAIL,1,1,1,5000
+4,DB_ROLE,DB_ROLE,0,1,1,5000
+5,DB_KEYVALUE,DB_KEYVALUE,0,1,100,5000
+6,DB_BAG,DB_BAG,0,1,1,5000
+7,DB_COUNTGROUP,DB_COUNTGROUP,0,1,1,5000
+8,DB_ACTIVITY,DB_ACTIVITY,0,1,1,5000
+9,DB_TASK,DB_TASK,0,1,1,5000
+10,DB_CALENDAR,DB_CALENDAR,1,1,100,5000
+11,DB_ROLEKEYVALUE,DB_ROLEKEYVALUE,0,1,1,5000
+12,DB_KEYVALUE,DB_KEYVALUE,1,1,100,5000
+13,DB_FAMILY,DB_FAMILY,1,1,100,5000
