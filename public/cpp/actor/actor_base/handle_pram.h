@@ -30,22 +30,15 @@ namespace ngl
 	{
 	public:
 		static bool sendbyserver(
-			i32_serverid aserverid
-			, const nguid& aactorid
-			, const nguid& arequestactorid
-			, handle_pram& adata
+			i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 		);
 
 		static bool send(
-			const nguid& aactorid
-			, const nguid& arequestactorid
-			, handle_pram& adata
+			const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 		);
 
 		static bool sendclient(
-			const nguid& aactorid
-			, const nguid& arequestactorid
-			, handle_pram& adata
+			const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 		);
 	};
 
@@ -92,15 +85,12 @@ namespace ngl
 		
 		template <typename T, bool IS_SEND = true>
 		static void	make_forwardfun(
-			const nguid& aactorid
-			, const nguid& arequestactorid
-			, handle_pram& apram
+			const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram
 		)
 		{
 			apram.m_forwardfun = 
 				[aactorid, arequestactorid](
-					std::map<i32_serverid, actor_node_session> asession,
-					std::map<nguid, i32_serverid>& amap,
+					std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, 
 					handle_pram& adata
 				)
 			{
@@ -110,9 +100,7 @@ namespace ngl
 
 		template <typename T, bool IS_SEND = true>
 		static void	make_client(
-			const nguid& aactorid, 
-			const nguid& arequestactorid, 
-			handle_pram& apram
+			const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram
 		)
 		{
 			apram.m_forwardfun = 
@@ -128,10 +116,7 @@ namespace ngl
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
 		static handle_pram create(
-			const nguid& aid
-			, const nguid& arid
-			, std::shared_ptr<T>& adata
-			, const std::function<void()>& afailfun = nullptr
+			const nguid& aid, const nguid& arid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr
 		)
 		{
 			handle_pram lpram;
@@ -149,8 +134,7 @@ namespace ngl
 
 		template <typename T, bool IS_SEND = true>
 		static handle_pram create(
-			const nguid& aid
-			, const nguid& arid
+			const nguid& aid, const nguid& arid
 			, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata
 			, const std::function<void()>& afailfun = nullptr
 		)
@@ -168,9 +152,7 @@ namespace ngl
 		}
 
 		static handle_pram create_pack(
-			const nguid& aid
-			, const nguid& arid
-			, std::shared_ptr<pack>& apack
+			const nguid& aid, const nguid& arid, std::shared_ptr<pack>& apack
 		)
 		{
 			handle_pram lpram;
@@ -184,9 +166,7 @@ namespace ngl
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::send(
-		const nguid& aactorid
-		, const nguid& arequestactorid
-		, handle_pram& adata
+		const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 	)
 	{
 		i32_serverid lserverid = handle_pram::get_server(aactorid);
@@ -222,19 +202,14 @@ namespace ngl
 	{
 	public:
 		static bool sendbyserver(
-			i32_serverid aserverid
-			, const nguid& aactorid
-			, const nguid& arequestactorid
-			, handle_pram& adata
+			i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 		)
 		{
 			return handle_pram::netsendpack(aserverid, adata.m_data);
 		}
 
 		static bool send(
-			const nguid& aactorid
-			, const nguid& arequestactorid
-			, handle_pram& adata
+			const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 		)
 		{
 			i32_serverid lserverid = handle_pram::get_server(aactorid);
@@ -247,10 +222,7 @@ namespace ngl
 					for (i32_serverid ltempserverid : lset)
 					{
 						handle_pram_send<pack, true>::sendbyserver(
-							ltempserverid
-							, aactorid
-							, arequestactorid
-							, adata
+							ltempserverid, aactorid, arequestactorid, adata
 						);
 					}
 					return true;
@@ -260,19 +232,14 @@ namespace ngl
 				return false;
 			}
 			return handle_pram_send<pack, true>::sendbyserver(
-				lserverid, 
-				aactorid, 
-				arequestactorid, 
-				adata
+				lserverid, aactorid, arequestactorid, adata
 			);
 		}
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendclient(
-		const nguid& aactorid
-		, const nguid& arequestactorid
-		, handle_pram& adata
+		const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 	)
 	{
 		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)

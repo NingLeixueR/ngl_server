@@ -100,9 +100,7 @@ namespace ngl
 					};
 					actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
 					naddress::ergodic(
-						[&lpram](
-							std::map<nguid, i32_serverid>& aactorserver,
-							std::map<i32_serverid, actor_node_session>& _)
+						[&lpram](std::map<nguid, i32_serverid>& aactorserver, std::map<i32_serverid, actor_node_session>& _)
 						{
 							for (const auto& [dataid, serverid] : aactorserver)
 							{
@@ -145,8 +143,7 @@ namespace ngl
 			nets::connect(aserverid, [this](i32_session asession)
 				{
 					log_warn()->print(
-						"connect success nodeid:{}", 
-						nconfig::m_nodeid
+						"connect success nodeid:{}", nconfig::m_nodeid
 					);
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
@@ -238,9 +235,7 @@ namespace ngl
 		{
 			auto lparm = adata.get_data();
 			//log_error()->print(
-			// "##actor_node_update## add:[{}] del[{}]", 
-			// lparm->m_add, 
-			// lparm->m_del
+			// "##actor_node_update## add:[{}] del[{}]", lparm->m_add, lparm->m_del
 			// );
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
@@ -267,10 +262,7 @@ namespace ngl
 					if (anode.m_node.m_serverid != nconfig::m_nodeid)
 					{
 						nets::sendbysession(
-							anode.m_session, 
-							lparm->m_mass, 
-							nguid::moreactor(), 
-							lactorid
+							anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid
 						);
 					}
 					return true;

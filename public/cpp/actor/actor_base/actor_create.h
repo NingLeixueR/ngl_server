@@ -18,7 +18,20 @@ namespace ngl
 		actor_create(const actor_create&) = delete;
 		actor_create& operator=(const actor_create&) = delete;
 
-		actor_create();
+		actor_create() :
+			actor(
+				actorparm
+				{
+					.m_parm
+					{
+						.m_type = ACTOR_CREATE,
+						.m_area = ttab_servers::tab()->m_area,
+						.m_id = nconfig::m_nodeid,
+					},
+					.m_weight = 0x7fffffff,
+				})
+		{
+		}
 	public:
 		friend class actor_instance<actor_create>;
 		static actor_create& getInstance()
@@ -28,9 +41,17 @@ namespace ngl
 
 		virtual ~actor_create() {}
 
-		static void nregister();
+		static void nregister()
+		{
+			register_handle_custom<actor_create>::func<
+				np_actorswitch_process<np_actorswitch_process_role>
+			>(false);
+		}
 
-		static i64_actorid actorid(i32_actordataid adataid);
+		static i64_actorid actorid(i32_actordataid adataid)
+		{
+			return nguid::make(ACTOR_CREATE, ttab_servers::tab()->m_area, adataid);
+		}
 
 		// # 在指定[Server]上创建[Actor]
 		template <typename T>
@@ -42,11 +63,7 @@ namespace ngl
 			{
 				nguid lguid(pro->m_actor);
 				auto lp = (np_actorswitch_process_role*)&(pro.get()->m_pram);
-				i64_actorid lactorgatewayid = nguid::make(
-					ACTOR_GATEWAY, 
-					tab_self_area, 
-					lp->m_gatewayid
-				);
+				i64_actorid lactorgatewayid = nguid::make(ACTOR_GATEWAY, tab_self_area, lp->m_gatewayid);
 				actor::static_send_actor(lactorgatewayid, nguid::make(), pro);
 			}
 			// # 3 发给去的进程
@@ -56,10 +73,7 @@ namespace ngl
 
 		template <typename T>
 		static void switch_process(
-			i64_actorid aactor, 
-			i32_serverid aserverid, 
-			i32_serverid atoserverid, 
-			T& adata
+			i64_actorid aactor, i32_serverid aserverid, i32_serverid atoserverid, T& adata
 		)
 		{
 			if (aserverid == atoserverid)
@@ -90,12 +104,7 @@ namespace ngl
 			if (lparm->m_toserverid == nconfig::m_nodeid)
 			{
 				nguid lguid(lparm->m_actor);
-				actor_base::create(
-					lguid.type(), 
-					lguid.area(), 
-					lguid.actordataid(), 
-					&lparm->m_pram
-				);
+				actor_base::create(lguid.type(), lguid.area(), lguid.actordataid(), &lparm->m_pram);
 			}
 			else if (lparm->m_serverid == nconfig::m_nodeid)
 			{

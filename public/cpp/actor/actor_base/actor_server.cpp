@@ -3,41 +3,6 @@
 
 namespace ngl
 {
-	void actor_server::nregister()
-	{
-		register_handle_custom<actor_server>::func<
-			np_actornode_register
-			, np_actornode_update
-			, np_actor_gatewayid_updata
-		>(true);
-	}
-
-	i64_actorid actor_server::actorid()
-	{
-		return nguid::make(
-			ACTOR_SERVER, 
-			ttab_servers::tab()->m_area, 
-			nguid::none_actordataid()
-		);
-	}
-
-	actor_server::actor_server() :
-		actor(
-			actorparm
-			{
-				.m_parm
-				{
-					.m_type = ACTOR_SERVER,
-					.m_area = ttab_servers::tab()->m_area,
-				},
-				.m_weight = 0x7fffffff,
-			})
-	{
-	}
-
-	actor_server::~actor_server()
-	{}
-
 	bool actor_server::handle(message<np_actornode_register>& adata)
 	{
 		Try

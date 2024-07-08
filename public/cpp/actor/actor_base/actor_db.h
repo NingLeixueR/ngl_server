@@ -42,13 +42,11 @@ namespace ngl
 				Assert(m_tab != nullptr);
 
 				m_cache_save.set_cachefun(
-					std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1),
-					m_tab->m_dbcacheintervalms
+					std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1), m_tab->m_dbcacheintervalms
 				);
 
 				m_cache_del.set_cachefun(
-					std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1),
-					m_tab->m_dbcacheintervalms
+					std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1), m_tab->m_dbcacheintervalms
 				);
 
 				if (m_tab->m_isloadall == true)
@@ -136,9 +134,7 @@ namespace ngl
 				if(db_data<TDBTAB>::data_stat(lid) == db_data<TDBTAB>::edbdata_notdata)
 				{
 					log_error()->print(
-						"load fail notdata {}:{}", 
-						tools::type_name<type_actor_dbtab>(), 
-						nguid(lid)
+						"load fail notdata {}:{}", tools::type_name<type_actor_dbtab>(), nguid(lid)
 					);
 					return;
 				}
@@ -154,9 +150,7 @@ namespace ngl
 
 				using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
 				log_error()->print(
-					"load finish {}:{}", 
-					tools::type_name<type_message>(),
-					nguid(lrequestactor)
+					"load finish {}:{}", tools::type_name<type_message>(), nguid(lrequestactor)
 				);
 			}
 		}
@@ -257,8 +251,7 @@ namespace ngl
 		{
 			log_error()->print(
 				"load: np_actordb_load<{}> id:{}", 
-				tools::protobuf_tabname<TDBTAB>::name(),
-				adata.get_data()->m_id
+				tools::protobuf_tabname<TDBTAB>::name(), adata.get_data()->m_id
 			);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
