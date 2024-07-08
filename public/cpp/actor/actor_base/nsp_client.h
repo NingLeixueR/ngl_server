@@ -11,29 +11,25 @@ namespace ngl
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
-		static i64_actorid				m_nspserver;
-		static actor*					m_actor;
-		static bool						m_register;
-		static std::set<i64_actorid>	m_dataid;
-		static bool						m_recvdatafinish;
+		static i64_actorid						m_nspserver;
+		static actor*							m_actor;
+		static bool								m_register;
+		static std::set<i64_actorid>			m_dataid;
+		static bool								m_recvdatafinish;
 		static std::function<void(const T&)>	m_recvdatafinishfun;
 	public:
 		static std::map<i64_actorid, T> m_data;
 
 		static void init(
-			i64_actorid anspserver,
-			TDerived* aactor,
-			const std::set<i64_actorid>& adataid
+			i64_actorid anspserver, TDerived* aactor, const std::set<i64_actorid>& adataid
 		)
 		{
 			m_nspserver = anspserver;
-			m_actor = aactor;
-			m_dataid = adataid;
+			m_actor		= aactor;
+			m_dataid	= adataid;
 			// 更新数据
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM,
-				TDerived,
-				np_channel_data<T>
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
 			>([](TDerived* apTDerived, message<np_channel_data<T>>& adata)
 				{
 					m_actor->log_error()->print(
@@ -72,9 +68,7 @@ namespace ngl
 			>([](TDerived* apTDerived, message<np_channel_register_reply<T>>& ainfo)
 				{
 					m_actor->log_error()->print(
-						"nsp_client register reply {}:{}",
-						tools::type_name<TDerived>(),
-						tools::type_name<T>()
+						"nsp_client register reply {}:{}", tools::type_name<TDerived>(), tools::type_name<T>()
 					);
 					m_register = true;
 				});
@@ -138,9 +132,7 @@ namespace ngl
 		static void register_echannel()
 		{
 			m_actor->log_error()->print(
-				"nsp_client register {}:{}",
-				tools::type_name<TDerived>(),
-				tools::type_name<T>()
+				"nsp_client register {}:{}", tools::type_name<TDerived>(), tools::type_name<T>()
 			);
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();

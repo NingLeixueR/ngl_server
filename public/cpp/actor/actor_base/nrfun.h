@@ -47,11 +47,7 @@ namespace ngl
 
 		message() = delete;
 
-		message(
-			i32_threadid athread, 
-			const pack* apack, 
-			std::shared_ptr<T>& adata
-		) :
+		message(i32_threadid athread, const pack* apack, std::shared_ptr<T>& adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_shared_data(adata),
@@ -59,11 +55,7 @@ namespace ngl
 		{
 		}
 
-		message(
-			i32_threadid athread,
-			const pack* apack,
-			T* adata
-		) :
+		message(i32_threadid athread, const pack* apack, T* adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_original_data(adata),
@@ -118,10 +110,7 @@ namespace ngl
 
 		template <bool BOOL, typename T>
 		nrfun& rfun_forward(
-			Tfun<TDerived, 
-			np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, 
-			ENUM_ACTOR atype, 
-			bool aisload = false
+			Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false
 		);
 
 		template <typename T>

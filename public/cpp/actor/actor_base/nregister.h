@@ -35,8 +35,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_nonet(
-		Tfun<TTTDerived, T> afun, 
-		bool aisload/* = false*/
+		Tfun<TTTDerived, T> afun, bool aisload/* = false*/
 	)
 	{
 		m_fun[tprotocol::protocol<T>()] = nlogicfun
@@ -55,8 +54,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(
-		Tfun<TTTDerived, T> afun, 
-		bool aisload/* = false*/
+		Tfun<TTTDerived, T> afun, bool aisload/* = false*/
 	)
 	{
 		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
@@ -66,9 +64,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(
-		Tfun<TTTDerived, T> afun, 
-		ENUM_ACTOR atype, 
-		bool aisload/* = false*/
+		Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/
 	)
 	{
 		rfun_nonet<TTTDerived, T>(afun, aisload);
@@ -79,9 +75,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <bool BOOL, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_forward(
-		Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, 
-		ENUM_ACTOR atype, 
-		bool aisload/* = false*/
+		Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload/* = false*/
 	)
 	{
 		using type_forward = np_actor_forward<T, TYPE, BOOL, ngl::forward>;
@@ -96,19 +90,17 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_forward<T, type_forward::isusing, TYPE>(
-			atype, 
-			tprotocol::protocol<type_forward>(), 
-			tprotocol::protocol_name<type_forward>().c_str()
-		);
+
+		int32_t lprotocol		= tprotocol::protocol<type_forward>();
+		const std::string lname = tprotocol::protocol_name<type_forward>();
+		protocol::registry_actor_forward<T, type_forward::isusing, TYPE>(atype, lprotocol, lname.c_str());
 		return *this;
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_recvforward(
-		Tfun<TDerived, T> afun, 
-		bool aisload/* = false*/
+		Tfun<TDerived, T> afun, bool aisload/* = false*/
 	)
 	{
 		using type_forward = np_actor_forward<T, TYPE, false, T>;
@@ -123,11 +115,11 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(
-			nactor_type<TDerived>::type(),
-			tprotocol::protocol<type_forward>(), 
-			tprotocol::protocol_name<type_forward>().c_str()
-		);
+
+		ENUM_ACTOR ltype		= nactor_type<TDerived>::type();
+		int32_t lprotocol		= tprotocol::protocol<type_forward>();
+		const std::string lname = tprotocol::protocol_name<type_forward>();
+		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(ltype, lprotocol, lname.c_str());
 		return *this;
 	}
 }//namespace ngl

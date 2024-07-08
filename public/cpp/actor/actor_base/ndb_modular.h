@@ -42,7 +42,7 @@ namespace ngl
 	protected:
 		ndbclient<ENUM, TDATA, TACTOR> m_data;
 
-		ndb_modular():
+		inline ndb_modular():
 			ndb_component(ENUM)
 		{
 			set_dbclient(&m_data);
@@ -53,12 +53,12 @@ namespace ngl
 		}
 
 	public:
-		ndbclient<ENUM, TDATA, TACTOR>* dbclient()
+		inline ndbclient<ENUM, TDATA, TACTOR>* dbclient()
 		{ 
 			return &m_data;
 		}
 
-		void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
+		inline void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
 		{
 			for (std::pair<const nguid, data_modified<TDATA>>& lpair : data())
 			{
@@ -66,18 +66,18 @@ namespace ngl
 			}
 		}
 
-		std::map<nguid, data_modified<TDATA>>& data()
+		inline std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
 		}
 
-		data_modified<TDATA>* get()
+		inline data_modified<TDATA>* get()
 		{
 			return get(m_id);
 		}
 
 		// # 查找指定数据
-		data_modified<TDATA>* find(nguid aid)
+		inline data_modified<TDATA>* find(nguid aid)
 		{
 			auto itor = data().find(aid);
 			if (itor == data().end())
@@ -86,7 +86,7 @@ namespace ngl
 		}
 
 		// # 与find类似(只是没有就添加)
-		data_modified<TDATA>* get(nguid aid)
+		inline data_modified<TDATA>* get(nguid aid)
 		{
 			data_modified<TDATA>* ret = find(aid);
 			if (ret != nullptr)
@@ -99,72 +99,72 @@ namespace ngl
 		}
 		
 		// # 删除指定数据
-		void erase(nguid aid)
+		inline void erase(nguid aid)
 		{
 			m_data.del(aid);
 		}
 
-		data_modified<TDATA>* db()
+		inline data_modified<TDATA>* db()
 		{ 
 			return m_data.get_dbdata();
 		}
 
-		TACTOR* actor()							
+		inline TACTOR* actor()
 		{ 
 			return (TACTOR*)m_actor; 
 		}
 
 #pragma region log
-		std::shared_ptr<np_actor_logitem> log_debug(
+		inline std::shared_ptr<np_actor_logitem> log_debug(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_debug(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_debug_net(
+		inline std::shared_ptr<np_actor_logitem> log_debug_net(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_debug_net(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_info(
+		inline std::shared_ptr<np_actor_logitem> log_info(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_info(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_info_net(
+		inline std::shared_ptr<np_actor_logitem> log_info_net(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_info_net(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_warn(
+		inline std::shared_ptr<np_actor_logitem> log_warn(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_warn(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_warn_net(
+		inline std::shared_ptr<np_actor_logitem> log_warn_net(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_warn_net(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_error(
+		inline std::shared_ptr<np_actor_logitem> log_error(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
 			return actor()->log_error(asource);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_error_net(
+		inline std::shared_ptr<np_actor_logitem> log_error_net(
 			const std::source_location& asource = std::source_location::current()
 		)
 		{
@@ -172,7 +172,7 @@ namespace ngl
 		}
 #pragma endregion
 
-		void create()
+		inline void create()
 		{
 			m_id = m_actor->id_guid();
 			m_data.set_id(m_id);
@@ -180,7 +180,7 @@ namespace ngl
 			m_data.add(m_id, TDATA());
 		}
 
-		void clear()
+		inline void clear()
 		{
 			m_data.set(m_id, TDATA());
 		}
@@ -190,17 +190,17 @@ namespace ngl
 
 		virtual void initdata() = 0;
 
-		ndbclient<ENUM, TDATA, TACTOR>* get_actor_dbclient()
+		inline ndbclient<ENUM, TDATA, TACTOR>* get_actor_dbclient()
 		{
 			return (ndbclient<ENUM, TDATA, TACTOR>*)m_dbclient;
 		}
 
-		data_modified<TDATA>* add(i64_actorid aid, const TDATA& adbtab)
+		inline data_modified<TDATA>* add(i64_actorid aid, const TDATA& adbtab)
 		{
 			return m_data.add(aid, adbtab);
 		}
 
-		void remove(int64_t aid)
+		inline void remove(int64_t aid)
 		{
 			get_actor_dbclient()->del(aid);
 		}

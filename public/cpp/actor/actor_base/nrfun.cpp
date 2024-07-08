@@ -23,9 +23,7 @@ namespace ngl
 		{
 			if (aactor->type() != ACTOR_CLIENT)
 				log_error()->print(
-					"{}::handle_switch  m_fun.find({}) == end", 
-					aactor->guid(), 
-					apram.m_enum
+					"{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum
 				);
 			return false;
 		}
@@ -33,9 +31,7 @@ namespace ngl
 		if (lisloadfinish == false && itor->second.m_isdbload == false)
 		{
 			log_error()->print(
-				"{}::handle_switch isloadfinish() == {}", 
-				aactor->guid(), 
-				lisloadfinish
+				"{}::handle_switch isloadfinish() == {}", aactor->guid(), lisloadfinish
 			);
 			return false;
 		}

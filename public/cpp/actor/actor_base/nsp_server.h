@@ -19,8 +19,7 @@ namespace ngl
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
 		static void publish(
-			const std::set<i64_actorid>& aactoridset,
-			std::shared_ptr<np_channel_data<TDATA>>& apro
+			const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro
 		)
 		{
 			for (std::pair<const i64_actorid, std::set<i64_actorid>>& lpair :
@@ -42,8 +41,7 @@ namespace ngl
 		}
 
 		static void publish(
-			i64_actorid aactorid,
-			std::shared_ptr<np_channel_data<TDATA>>& apro
+			i64_actorid aactorid, std::shared_ptr<np_channel_data<TDATA>>& apro
 		)
 		{
 			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
@@ -70,9 +68,7 @@ namespace ngl
 			m_dbmodule = adbmodule;
 			// # 订阅注册处理
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM,
-				TDerived,
-				np_channel_register<TDATA>
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>
 			>([](TDerived* apTDerived, message<np_channel_register<TDATA>>& adata)
 				{
 					auto& recv = *adata.get_data();
@@ -86,9 +82,7 @@ namespace ngl
 
 			// # 订阅数据被修改
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM,
-				TDerived,
-				np_channel_data<TDATA>
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>
 			>([](TDerived* apTDerived, message<np_channel_data<TDATA>>& adata)
 				{
 					auto& recv = *adata.get_data();

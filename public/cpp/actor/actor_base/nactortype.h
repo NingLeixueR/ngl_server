@@ -62,7 +62,10 @@ namespace ngl
 	class enum_actor
 	{
 	public:
-		static bool is_signle(ENUM_ACTOR aenum);
+		static bool is_signle(ENUM_ACTOR aenum)
+		{
+			return aenum >= ACTOR_SIGNLE_START;
+		}
 	};
 
 	template <typename T,typename ENUMT>

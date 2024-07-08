@@ -163,9 +163,7 @@ namespace ngl
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
 			log_error()->print(
-				"actor_dbclient loaddb [{}] [{}]",
-				tools::type_name<type_ndbclient>(),
-				aid
+				"actor_dbclient loaddb [{}] [{}]", tools::type_name<type_ndbclient>(), aid
 			);
 		}
 
@@ -413,8 +411,7 @@ namespace ngl
 				using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
 				log_error()->print(
 					"db load respones:[{}] recv_over[{}]"
-					, tools::type_name<type_message>()
-					, adata.get_data()->m_over ? "finish" : "no finishi"
+					, tools::type_name<type_message>(), adata.get_data()->m_over ? "finish" : "no finishi"
 				);
 				loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
 			}Catch;
