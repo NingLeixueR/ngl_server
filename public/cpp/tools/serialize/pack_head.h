@@ -29,17 +29,14 @@ namespace ngl
 		int32_t			get_version()const;
 
 		// # 设置actor 
-		// # aactor:发送给哪个actor 
+		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
 		// # arequestactorid:哪个actor发送的
 		static void head_set_actor(
-			int32_t* abuff
-			, i64_actorid aactor	/* aenum == ACTOR_NONE 此值无效 */
-			, i64_actorid arequestactorid
+			int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid
 		);
 
 		void set_actor(
-			i64_actorid aactor		/* aenum == ACTOR_NONE 此值无效 */
-			, i64_actorid arequestactorid
+			i64_actorid aactor, i64_actorid arequestactorid
 		);
 
 		void set_requestactor(i64_actorid arequestactorid);

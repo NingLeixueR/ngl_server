@@ -49,9 +49,7 @@ namespace ngl
 			if (*lbuff != 'k')
 			{
 				log_error()->print(
-					"netbuff<{},{}>::nfree != k", 
-					InitBytes, 
-					Count
+					"netbuff<{},{}>::nfree != k", InitBytes, Count
 				);
 				return;
 			}
@@ -96,7 +94,10 @@ namespace ngl
 				.m_ms = 10 * 1000,
 				.m_intervalms = [](int64_t) {return 10 * 1000; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [this](wheel_node* anode) {time_free(); },
+				.m_fun = [this](wheel_node* anode) 
+				{
+					time_free(); 
+				},
 			};
 			twheel::wheel().addtimer(lparm);
 		}

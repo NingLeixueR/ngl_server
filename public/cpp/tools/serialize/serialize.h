@@ -158,8 +158,7 @@ namespace ngl
 			{
 				log_error()->print(
 					"serialize::push<{},{}>(protobuf_data:std::map)",
-					tools::type_name<KEY>(),
-					tools::type_name<VALUE>()
+					tools::type_name<KEY>(), tools::type_name<VALUE>()
 				);
 				return false;
 			}
@@ -189,8 +188,7 @@ namespace ngl
 			if (adata.m_data == nullptr)
 			{
 				log_error()->print(
-					"serialize::push<{}>()", 
-					tools::type_name<T>()
+					"serialize::push<{}>()", tools::type_name<T>()
 				);
 				return false;
 			}
@@ -219,8 +217,7 @@ namespace ngl
 			if (adata.m_data == nullptr)
 			{
 				log_error()->print(
-					"serialize::push<{}>()", 
-					tools::type_name<T>()
+					"serialize::push<{}>()", tools::type_name<T>()
 				);
 				return false;
 			}
@@ -663,8 +660,7 @@ namespace ngl
 					if (tools::protojson(ltemp, json) == false)
 					{
 						log_error()->print(
-							"tools::protojson<{}> fail", 
-							tools::type_name<T>()
+							"tools::protojson<{}> fail", tools::type_name<T>()
 						);
 						return false;
 					}
@@ -694,8 +690,7 @@ namespace ngl
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
 					{
 						log_error()->print(
-							"{}.ParseFromArray fail",
-							tools::type_name<T>()
+							"{}.ParseFromArray fail", tools::type_name<T>()
 						);
 						return false;
 					}

@@ -37,14 +37,25 @@ namespace ngl
 
 	bool pack::isready()
 	{
-		return m_head.isready() == EPH_HEAD_SUCCESS ? m_pos >= m_head.get_bytes() : false;
+		if (m_head.isready() == EPH_HEAD_SUCCESS)
+		{
+			return m_pos >= m_head.get_bytes();
+		}
+		return false;
 	}
 
 	bool pack::malloc(int alen)
 	{
 		if (m_buff != nullptr)
 			free();
-		m_buff = (m_bpool == nullptr)? new char[alen]: m_bpool->malloc(alen);
+		if (m_bpool == nullptr)
+		{
+			m_buff = new char[alen];
+		}
+		else
+		{
+			m_buff = m_bpool->malloc(alen);
+		}
 		m_len = alen;
 		m_pos = 0;
 		return true;

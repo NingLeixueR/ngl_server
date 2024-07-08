@@ -137,7 +137,14 @@ namespace ngl
 		EPH_HEAD_VAL lval = isversion();
 		if (lval != EPH_HEAD_VERSION_SUCCESS)
 			return lval;
-		return m_wpos >= size() ? EPH_HEAD_SUCCESS : EPH_HEAD_FOLLOW;
+		if (m_wpos >= size())
+		{
+			return EPH_HEAD_SUCCESS;
+		}
+		else
+		{
+			return EPH_HEAD_FOLLOW;
+		}
 	}
 
 	EPH_HEAD_VAL pack_head::isversion()const

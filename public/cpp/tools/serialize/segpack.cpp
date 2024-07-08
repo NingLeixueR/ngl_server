@@ -111,8 +111,7 @@ namespace ngl
 					{
 						m_data.erase(aid);
 						log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})"
-							, lpack->m_head
-							, (int)net_config_recv_buff_maxbyte
+							, lpack->m_head, (int)net_config_recv_buff_maxbyte
 						);
 						return false;
 					}
@@ -165,9 +164,7 @@ namespace ngl
 					else
 					{
 						log_error()->print("time[{} < {} + {} ]"
-							, localtime::gettime()
-							, lpack->m_head.getvalue(EPH_TIME)
-							, sysconfig::net_timeout()
+							, localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout()
 						);
 					}
 					continue;
