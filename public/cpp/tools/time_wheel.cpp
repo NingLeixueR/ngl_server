@@ -492,28 +492,24 @@ namespace ngl
 	{
 	}
 
-	//##获取现存定时器数量
 	int	time_wheel::count() 
 	{ 
 		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
 		return  m_impl_time_wheel()->m_timer.size();
 	}
 
-	//##是否没有正在执行的定时器
 	bool time_wheel::empty() 
 	{ 
 		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
 		return  m_impl_time_wheel()->m_timer.empty();
 	}
 
-	//##获取服务器启动的毫秒数
 	int64_t time_wheel::server_start_ms() 
 	{ 
 		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
 		return  m_impl_time_wheel()->m_server_start_ms;
 	}
 
-	//##获取服务器当前的毫秒数
 	int64_t time_wheel::server_current_ms() 
 	{ 
 		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
@@ -525,8 +521,6 @@ namespace ngl
 		return m_impl_time_wheel()->addtimer(apram);
 	}
 
-	//##removetimer移除指定定时器
-	//  int atimerid  定时器id
 	void time_wheel::removetimer(int64_t atimerid)
 	{
 		m_impl_time_wheel()->removetimer(atimerid);

@@ -18,6 +18,10 @@
 
 #include <google/protobuf/util/json_util.h>
 
+#ifdef WIN32
+#define snprintf _snprintf
+#endif //WIN32
+
 enum EPROTOCOL_TYPE
 {
 	EPROTOCOL_TYPE_CUSTOM,			// 自定义二进制协议

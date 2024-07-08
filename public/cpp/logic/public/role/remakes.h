@@ -29,7 +29,7 @@ namespace ngl
 		dremakes(const dremakes&) = delete;
 		dremakes& operator=(const dremakes&) = delete;
 
-		actor_role* get_constrole;
+		actor_role* m_role;
 	public:
 		dremakes(actor_role* arole, const char* aremakes);
 		dremakes(actor_role* arole, const std::string& aremakes);
@@ -37,6 +37,7 @@ namespace ngl
 
 		static const char* get_remake(actor_role*);
 	};
+
 }// namespace ngl
 
 #define d_remakes(ROLE, REMAKES)	ngl::dremakes ldremakes(ROLE, REMAKES)

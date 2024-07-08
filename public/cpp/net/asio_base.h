@@ -47,7 +47,6 @@ namespace ngl
 		bool					m_issend;
 		std::list<node_pack>	m_list; // 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
 
-
 		service_io(serviceio_info& amsi, int asessionid);
 		virtual ~service_io();
 	};

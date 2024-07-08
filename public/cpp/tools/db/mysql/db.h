@@ -7,7 +7,8 @@
 #include <string>
 #include <map>  
 
-#include "include3part.h"
+#include <mysql.h>
+
 #include "db_buff.h"
 #include "xmlinfo.h"
 
