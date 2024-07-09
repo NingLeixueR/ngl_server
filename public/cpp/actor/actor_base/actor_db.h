@@ -177,9 +177,7 @@ namespace ngl
 		}
 
 		static void save(
-			i32_threadid athreadid, 
-			const pack* apack, 
-			const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata
+			i32_threadid athreadid, const pack* apack, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata
 		)
 		{
 			const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;
@@ -365,8 +363,7 @@ namespace ngl
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	template <typename TDB>
 	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(
-		enum_cache_list atype, 
-		std::set<i64_actorid>& aset
+		enum_cache_list atype, std::set<i64_actorid>& aset
 	)
 	{
 		if (aset.empty())
