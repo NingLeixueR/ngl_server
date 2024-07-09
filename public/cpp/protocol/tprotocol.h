@@ -6,9 +6,6 @@
 
 #include <map>
 
-// typeid(T).hash_code() #c++标准并没有强制要求只是建议编译器 不同类型生成不同的hash值
-#define HASH_CODE_VALUE(_TYPE)	typeid(T).hash_code()
-
 namespace ngl
 {
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
@@ -34,7 +31,7 @@ namespace ngl
 		template <typename T>
 		static size_t hash_code()
 		{
-			static size_t lcode = HASH_CODE_VALUE(T);
+			static size_t lcode = typeid(T).hash_code();
 			return lcode;
 		}
 
@@ -70,7 +67,7 @@ namespace ngl
 			{
 				return false;
 			}
-			m_keyval.insert(std::make_pair(HASH_CODE_VALUE(T), pinfo
+			m_keyval.insert(std::make_pair(typeid(T).hash_code(), pinfo
 				{
 					.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF,
 					.m_protocol = lprotocol,

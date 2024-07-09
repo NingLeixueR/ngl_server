@@ -67,9 +67,7 @@ namespace ngl
 				nguid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
 				handle_pram lpram = handle_pram::create<T, false, false>(
-					lactorguid
-					, lrequestactorguid
-					, ldatapack
+					lactorguid, lrequestactorguid, ldatapack
 				);
 				lpram.m_pack = apack;
 
@@ -143,9 +141,7 @@ namespace ngl
 		// 接收转发的消息
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
 		static void registry_actor_recvforward(
-			ENUM_ACTOR atype, 
-			int32_t aprotocolnum, 
-			const char* aname
+			ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname
 		)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>

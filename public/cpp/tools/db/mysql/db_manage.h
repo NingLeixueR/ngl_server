@@ -81,8 +81,7 @@ namespace ngl
 			{
 				log_error()->print(
 					"db_manage::save id:{} !!! name:{}",
-					aid,
-					tools::protobuf_tabname<T>::name()
+					aid, tools::protobuf_tabname<T>::name()
 				);
 				return;
 			}
@@ -106,8 +105,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"DELETE FROM %s WHERE id='%lld';",
-				tools::protobuf_tabname<T>::name().c_str(),
-				aid
+				tools::protobuf_tabname<T>::name().c_str(), aid
 			);
 			if (llen <= 0)
 				return;
@@ -123,8 +121,7 @@ namespace ngl
 				lbuff,
 				1024,
 				"SELECT id,data FROM %s WHERE id = '%lld';",
-				tools::protobuf_tabname<T>::name().c_str(),
-				aid
+				tools::protobuf_tabname<T>::name().c_str(), aid
 			);
 			if (llen <= 0)
 				return false;

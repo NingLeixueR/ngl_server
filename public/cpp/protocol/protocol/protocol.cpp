@@ -26,8 +26,7 @@ namespace ngl
 			{
 				char m_hexstr[1024] = { 0 };
 				log_error()->print("protocol::push [{}] Error protocolnum[{}] "
-					, (int)aprotocoltype
-					, aprotocolnum
+					, (int)aprotocoltype, aprotocolnum
 				);
 				return nullptr;
 			}
@@ -46,16 +45,14 @@ namespace ngl
 			//{
 			//	log_error()->print(
 			//		"protocol::push Info {}:{}", 
-			//		aprotocolnum,
-			//		lpair.first
+			//		aprotocolnum, lpair.first
 			//	);
 			//}
 			//else
 			//{
 			//	log_error()->print(
 			//		"protocol::push Info {}:{}",
-			//		aprotocolnum,
-			//		"not find protocol name"
+			//		aprotocolnum, "not find protocol name"
 			//	);
 			//}
 			/////////////////////////////////////////////
@@ -134,12 +131,7 @@ namespace ngl
 		, const char* aname)
 	{
 		impl_protocol::register_protocol(
-			atype, 
-			aprotocolnumber, 
-			aenumactor, 
-			apackfun, 
-			arunfun, 
-			aname
+			atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname
 		);
 	}
 
