@@ -303,18 +303,6 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL>& adata)
-	{
-		if (ttab_specialid::m_createfamilconsume > m_info.gold())
-		{
-			return false;
-		}
-
-		m_info.change_gold(-ttab_specialid::m_createfamilconsume);
-		handle_forward<ACTOR_FAMILY>(adata);
-		return true;
-	}
-
 	bool actor_role::is_first_recharge(int32_t arechargeid)
 	{
 		const pbdb::db_role& lrole = m_info.get_constrole();
@@ -327,8 +315,20 @@ namespace ngl
 		return true;
 	}
 
+	void actor_role::forward_before(pbnet::PROBUFF_NET_CREATE_FAMIL& adata)
+	{
+		if (ttab_specialid::m_createfamilconsume > m_info.gold())
+		{
+			return;
+		}
+		m_info.change_gold(-ttab_specialid::m_createfamilconsume);
+	}
+
 	bool actor_role::timer_handle(message<timerparm>& adata)
 	{
 		return true;
 	}
+
+
+
 }//namespace ngl

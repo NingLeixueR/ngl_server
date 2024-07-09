@@ -70,46 +70,34 @@ namespace ngl
 		{
 			ecross_ordinary,			// 本服转发
 			ecross_cross_ordinary,		// 跨服转发
-			ecross_play,				// 玩法转发(但是转发的actorid已确认)
 		};
 
-		//# 重载(跨服模块转发)
+		//# 重载forward_type来指定转发类型
 		template <typename T>
-		ecross forward_way(T& adata)
+		ecross forward_type(T& adata)
 		{
 			return ecross_ordinary;
 		}
 
-		ecross forward_way(pbnet::PROBUFF_NET_CHAT& adata)
+		ecross forward_type(pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			return adata.m_channelid() == 2 ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
+		//# 重载forward_before来指定转发前事件
 		template <typename T>
-		int32_t dataid(T& adata)
+		void forward_before(T& adata)
 		{
-			return nguid::none_actordataid();
 		}
 
+		//# 转发"创建军团"前
+		void forward_before(pbnet::PROBUFF_NET_CREATE_FAMIL& adata);
+
+		//# 重载dataid来指定转发模块的dataid
 		template <typename T>
-		inline std::shared_ptr<mforward<T>> forward_pro(message<T>& adata)
+		int32_t forward_dataid(T& adata)
 		{
-			std::shared_ptr<mforward<T>> lshared;
-			if (adata.get_shared_data() == nullptr)
-			{
-				lshared = std::make_shared<mforward<T>>(
-					id_guid(),
-					adata.get_data()
-				);
-			}
-			else
-			{
-				lshared = std::make_shared<mforward<T>>(
-					id_guid(),
-					adata.get_shared_data()
-				);
-			}
-			return lshared;
+			return nguid::none_actordataid();
 		}
 
 		template <ENUM_ACTOR ACTOR, typename T>
@@ -118,39 +106,20 @@ namespace ngl
 			std::shared_ptr<mforward<T>> pro(nullptr);
 			if (adata.get_shared_data() == nullptr)
 			{
-				pro = std::make_shared<mforward<T>>(
-					id_guid(),
-					*adata.get_data()
-				);
+				pro = std::make_shared<mforward<T>>(id_guid(), *adata.get_data());
 			}
 			else
 			{
-				pro = std::make_shared<mforward<T>>(
-					id_guid(),
-					adata.get_shared_data()
-				);
+				pro = std::make_shared<mforward<T>>(id_guid(), adata.get_shared_data());
 			}
 			i64_actorid lguid;
-			switch (forward_way(*adata.get_data()))
+			switch (forward_type(*adata.get_data()))
 			{
 			case ecross_ordinary:
-				lguid = nguid::make(
-					ACTOR, 
-					ttab_servers::tab()->m_area, 
-					dataid(*adata.get_data()
-					)
-				);
+				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, forward_dataid(*adata.get_data()));
 				break;
 			case ecross_cross_ordinary:
-				lguid = nguid::make(
-					ACTOR, 
-					ttab_servers::tab()->m_crossarea, 
-					dataid(*adata.get_data()
-					)
-				);
-				break;
-			case ecross_play:
-				lguid = m_playactorid;
+				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_crossarea, forward_dataid(*adata.get_data()));
 				break; 
 			default:
 				return true;
@@ -162,9 +131,8 @@ namespace ngl
 		//# 登录请求未发货充值
 		void loginpay();
 
-		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
-
 		//# CMD 协议
+		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
 		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
 
 		//# 获取role数据
@@ -187,9 +155,6 @@ namespace ngl
 
 		//# 领取任务奖励
 		bool handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
-
-		//# 创建军团
-		bool handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL>& adata);
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 

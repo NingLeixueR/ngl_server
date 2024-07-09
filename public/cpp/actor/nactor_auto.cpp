@@ -212,7 +212,6 @@ namespace ngl
 			, pbnet::PROBUFF_NET_GET_TIME
 			, pbnet::PROBUFF_NET_CMD
 			, pbnet::PROBUFF_NET_SWITCH_LINE
-			, pbnet::PROBUFF_NET_CREATE_FAMIL
 		>();
 
 		//// ACTOR_MAIL 模块二次转发
@@ -243,6 +242,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_LEAVE_FAMIL
 			, pbnet::PROBUFF_NET_FAMIL_LIST
 			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME
+			, pbnet::PROBUFF_NET_CREATE_FAMIL
 		>();
 
 		// ACTOR_RANKLIST 模块二次转发
