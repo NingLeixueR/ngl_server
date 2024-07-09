@@ -34,8 +34,7 @@ namespace ngl
 				{
 					m_actor->log_error()->print(
 						"nsp_client {}:{}",
-						tools::type_name<TDerived>(),
-						tools::type_name<T>()
+						tools::type_name<TDerived>(), tools::type_name<T>()
 					);
 					auto& recv = *adata.get_data();
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
