@@ -128,15 +128,11 @@ namespace ngl
 		, ENUM_ACTOR aenumactor
 		, const protocol::fun_pack& apackfun
 		, const protocol::fun_run& arunfun
-		, const char* aname)
+		, const char* aname
+	)
 	{
 		impl_protocol::register_protocol(
 			atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname
 		);
-	}
-
-	i32_serverid protocol::nodeid()
-	{
-		return nconfig::m_nodeid;
 	}
 }// namespace ngl

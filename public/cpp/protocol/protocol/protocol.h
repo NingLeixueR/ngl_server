@@ -38,8 +38,6 @@ namespace ngl
 			, const char* aname						// debug name
 		);
 
-		static i32_serverid nodeid();
-
 		// ACTOR间通信 
 		template <typename T, EPROTOCOL_TYPE TYPE>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
@@ -58,10 +56,7 @@ namespace ngl
 				return nullptr;
 			};
 			std::string lname = aname;
-			fun_run lrunfun = [atype, lname](
-				std::shared_ptr<pack>& apack, 
-				std::shared_ptr<void>& aptrpram
-				)->bool
+			fun_run lrunfun = [atype, lname](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
 				nguid lactorguid(apack->m_head.get_actor());
 				nguid lrequestactorguid(apack->m_head.get_request_actor());
@@ -101,9 +96,7 @@ namespace ngl
 		// 转发[负责转发的actor必须是单例actor]
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
 		static void registry_actor_forward(
-			ENUM_ACTOR atype, 
-			int32_t aprotocolnum, 
-			const char* aname
+			ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname
 		)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
@@ -170,10 +163,7 @@ namespace ngl
 				}Catch;
 				return nullptr;
 			};
-			fun_run lrunfun = [atype](
-				std::shared_ptr<pack>& apack, 
-				std::shared_ptr<void>& aptrpram
-				)->bool
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
 				using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
 				nguid lrequestguid(apack->m_head.get_request_actor());
