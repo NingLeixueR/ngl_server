@@ -49,31 +49,25 @@ namespace ngl
 			m_datan2e[anum][str] = aenum;
 		}
 
-		static std::pair<ENUMT, bool> get_enum(const char* aname, int anum = 0)
+		static ENUMT enum_null()
+		{
+			return (ENUMT)-1;
+		}
+
+		static ENUMT get_enum(const char* aname, int anum = 0)
 		{
 			std::string str(aname);
 			change_name(str);
 			auto itor1 = m_datan2e.find(anum);
 			if(itor1 == m_datan2e.end())
-				return std::make_pair((ENUMT)-1, false);
+				return enum_null();
 			auto itor2 = itor1->second.find(str);
 			if (itor2 == itor1->second.end())
-				return std::make_pair((ENUMT)-1, false);
-			return std::make_pair(itor2->second, true);
+				return enum_null();
+			return itor2->second;
 		}
 
-		static std::pair<const char*, bool> get_name(const ENUMT& aenum, int anum = 0)
-		{
-			auto itor1 = m_datae2n.find(anum);
-			if (itor1 == m_datae2n.end())
-				return std::make_pair("", false);
-			auto itor2 = itor1->second.find(aenum);
-			if (itor2 == itor1->second.end())
-				return std::make_pair("", false);
-			return std::make_pair(itor2->second.c_str(), true);
-		}
-
-		static const char* name(const ENUMT& aenum, int anum = 0)
+		static const char* get_name(const ENUMT& aenum, int anum = 0)
 		{
 			auto itor1 = m_datae2n.find(anum);
 			if (itor1 == m_datae2n.end())

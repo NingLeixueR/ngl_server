@@ -214,7 +214,7 @@ struct std::formatter<ngl::nguid>
 
 	auto format(const ngl::nguid& aval, std::format_context& ctx)const
 	{
-		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::name(aval.type());
+		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::get_name(aval.type());
 		if (lanme == nullptr)
 		{
 			return std::format_to(ctx.out()

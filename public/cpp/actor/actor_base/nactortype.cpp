@@ -15,18 +15,18 @@ namespace ngl
 
 	bool nactortype::name2enum(const char* aname, ENUM_ACTOR& avalue)
 	{
-		auto lpair = em<ENUM_ACTOR>::get_enum(aname);
-		if (lpair.second == false)
+		ENUM_ACTOR lactortype = em<ENUM_ACTOR>::get_enum(aname);
+		if (lactortype == em<ENUM_ACTOR>::enum_null())
 			return false;
-		avalue = lpair.first;
+		avalue = lactortype;
 		return true;
 	}
 
 	const char* nactortype::enum2name(ENUM_ACTOR aenum)
 	{
-		auto lpair = em<ENUM_ACTOR>::get_name(aenum);
-		if (lpair.second == false)
+		const char* lactorname = em<ENUM_ACTOR>::get_name(aenum);
+		if (lactorname == nullptr)
 			return "nullptr";
-		return lpair.first;
+		return lactorname;
 	}	
 }//namespace ngl

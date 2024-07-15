@@ -39,10 +39,10 @@ namespace ngl
 
 	void xmlnode::set_server(const char* aservertypename, int anodeid)
 	{
-		std::pair<NODE_TYPE, bool> lpair = em<NODE_TYPE>::get_enum(aservertypename);
-		//assert(lpair.second == true);
+		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
+		Assert(lnodetype != em<NODE_TYPE>::enum_null());
 		m_nodename = aservertypename;
-		m_nodetype = lpair.first;
+		m_nodetype = lnodetype;
 		m_nodeid = anodeid;
 	}
 
