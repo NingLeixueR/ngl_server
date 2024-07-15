@@ -61,7 +61,7 @@ namespace ngl
 		{
 			using type_actor_db = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
-			type_enum<type_actor_db, ENUM_ACTOR>::inits(lenum);
+			nactor_type<type_actor_db>::inits(lenum);
 			std::string ldbname("actor_");
 			std::string ltemp = tools::type_name<TDBTAB>();
 			auto pos = ltemp.rfind(":");
@@ -87,7 +87,7 @@ namespace ngl
 	void auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
 	{
 		em<ENUM_ACTOR>::set(aenum, aname);
-		type_enum<TACTOR, ENUM_ACTOR>::inits(aenum);
+		nactor_type<TACTOR>::inits(aenum);
 	}
 
 	template <typename TACTOR, typename ...ARG>

@@ -26,7 +26,7 @@ namespace ngl
 			}
 		};
 		protocol::registry_actor<T, TYPE>(
-			type_enum<TDerived, ENUM_ACTOR>::type(), 
+			nactor_type<TDerived>::type(),
 			tprotocol::protocol_name<T>().c_str()
 		);
 		return *this;
@@ -59,7 +59,7 @@ namespace ngl
 		bool aisload/* = false*/
 	)
 	{
-		rfun<TTTDerived, T>(afun, type_enum<TDerived, ENUM_ACTOR>::type(), aisload);
+		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
 		return *this;
 	}
 
@@ -124,7 +124,7 @@ namespace ngl
 			}
 		};
 		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(
-			type_enum<TDerived, ENUM_ACTOR>::type(), 
+			nactor_type<TDerived>::type(),
 			tprotocol::protocol<type_forward>(), 
 			tprotocol::protocol_name<type_forward>().c_str()
 		);

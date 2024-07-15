@@ -176,7 +176,7 @@ namespace ngl
 				ninst<TDerived, TYPE>().
 					template rfun_forward<IsForward>(
 						(type_np_actor_forward)&TDerived::handle
-						, type_enum<TDerived, ENUM_ACTOR>::type()
+						, nactor_type<TDerived>::type()
 						, false
 					);
 			}

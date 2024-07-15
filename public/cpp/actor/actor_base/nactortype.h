@@ -68,6 +68,10 @@ namespace ngl
 	template <typename T,typename ENUMT>
 	class type_enum
 	{
+		type_enum() = delete;
+		type_enum(const type_enum&) = delete;
+		type_enum& operator=(const type_enum&) = delete;
+
 		static ENUMT m_type;
 	public:
 		static void inits(ENUMT atype)
@@ -102,40 +106,8 @@ namespace ngl
 	template <typename T, typename ENUMT>
 	ENUMT type_enum<T, ENUMT>::m_type = type_enum<T, ENUMT>::enum_null();
 
-	// # 根据actor类型获取其对应的枚举值
-	/*template <typename TACTOR>
-	class nactor_type
-	{
-		nactor_type() = delete;
-		nactor_type(const nactor_type&) = delete;
-		nactor_type& operator=(const nactor_type&) = delete;
-
-		static ENUM_ACTOR m_type;
-	public:
-		static void inits(ENUM_ACTOR atype)
-		{
-			m_type = atype;
-		}
-
-		static ENUM_ACTOR type()
-		{
-			if (m_type == ACTOR_NONE)
-			{
-				log_error()->print(
-					"nactor_type<{}>::type() == ACTOR_NONE", 
-					tools::type_name<TACTOR>()
-				);
-				Throw(
-					"nactor_type<{}>::type() == ACTOR_NONE", 
-					tools::type_name<TACTOR>()
-				);
-			}
-			return m_type;
-		}
-	};
-
 	template <typename TACTOR>
-	ENUM_ACTOR nactor_type<TACTOR>::m_type = ACTOR_NONE;*/
+	using nactor_type = type_enum<TACTOR, ENUM_ACTOR>;
 
 	// # 根据pbdb::ENUM_DB获取ENUM_ACTOR
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);
