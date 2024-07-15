@@ -18,8 +18,6 @@
 
 #include <google/protobuf/util/json_util.h>
 
-#include "md5.h"
-
 enum EPROTOCOL_TYPE
 {
 	EPROTOCOL_TYPE_CUSTOM,			// 自定义二进制协议
