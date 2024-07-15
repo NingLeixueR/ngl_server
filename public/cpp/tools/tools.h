@@ -564,11 +564,7 @@ namespace ngl
 			}
 		};
 
-		static std::string md5(const std::string& text)
-		{
-			ngl::md5 ltemp(text);
-			return ltemp.values();
-		}
+		static std::string md5(const std::string& text);
 	};
 
 	template <typename T>
