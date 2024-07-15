@@ -18,8 +18,7 @@ namespace ngl
 			std::cout << std::format("loadcsv fail #{}", aname) << std::endl;
 			return false;
 		}
-		md5 lmd5(m_data);
-		averify = lmd5.values();
+		averify = tools::md5(m_data);
 		std::cout << std::format("loadcsv#{}#{}", aname, averify) << std::endl;
 		return true;
 	}

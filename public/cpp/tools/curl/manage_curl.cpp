@@ -285,12 +285,11 @@ namespace ngl
 			<< "userID=" << 7709523
 			<< "token=" << "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B"
 			<< "yWpx3hWQHFhSnTCj#311#6KuRKuaAjLJ5sYRy";
-		ngl::md5 varMd5(lstream.str());
 
 		ngl::manage_curl::param(lparm, "appid", 311);
 		ngl::manage_curl::param(lparm, "userID", 7709523);
 		ngl::manage_curl::param(lparm, "token", "pU3T0Cq0mac3yUfLEf0jTFygIN8kGq8B");
-		ngl::manage_curl::param(lparm, "sign", varMd5.values().c_str());
+		ngl::manage_curl::param(lparm, "sign", tools::md5(lstream.str()).c_str());
 		ngl::manage_curl::set_param(lhttp, lparm);
 		bool lbool = true;
 

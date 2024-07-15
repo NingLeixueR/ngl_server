@@ -45,8 +45,7 @@ namespace ngl
 		lkcpsession += '&';
 		lkcpsession += tools::lexical_cast<std::string>(nguid::actordataid(aactorid));
 
-		md5 lmd5(lkcpsession);
-		asession = lmd5.values();
+		asession = tools::md5(lkcpsession);
 		return true;
 	}
 

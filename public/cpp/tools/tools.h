@@ -18,6 +18,8 @@
 
 #include <google/protobuf/util/json_util.h>
 
+#include "md5.h"
+
 enum EPROTOCOL_TYPE
 {
 	EPROTOCOL_TYPE_CUSTOM,			// 自定义二进制协议
@@ -561,6 +563,12 @@ namespace ngl
 				return m_name;
 			}
 		};
+
+		static std::string md5(const std::string& text)
+		{
+			ngl::md5 ltemp(text);
+			return ltemp.values();
+		}
 	};
 
 	template <typename T>
