@@ -80,7 +80,7 @@ namespace ngl
 			if (db_data<T>::get(aid, ldata) == false)
 			{
 				log_error()->print(
-					"save by id[{}] !!![{}]",
+					"db_manage::save id:{} !!! name:{}",
 					aid,
 					tools::protobuf_tabname<T>::name()
 				);

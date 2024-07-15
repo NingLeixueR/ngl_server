@@ -11,7 +11,6 @@
 
 namespace ngl
 {
-
 	struct segpack_rate_interval
 	{
 		int m_resetutc;		// 上次重置的utc

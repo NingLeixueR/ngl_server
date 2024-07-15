@@ -2,8 +2,8 @@
   
 #include <iostream> 
 #include <cstdint>
-#include <sstream> 
-#include <vector> 
+#include <sstream>
+#include <vector>
 #include <string>
 #include <map>  
 
@@ -51,6 +51,5 @@ namespace ngl
 		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);
 
 		db_buff m_malloc;
-	private:
 	};
 }// namespace ngl

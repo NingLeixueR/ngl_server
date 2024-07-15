@@ -15,7 +15,6 @@ namespace ngl
 		db_cache(const db_cache&) = delete;
 		db_cache& operator=(const db_cache&) = delete;
 
-
 		std::set<i64_actorid>						m_ls;
 		std::function<void(std::set<i64_actorid>&)> m_fun;
 		std::shared_mutex							m_mutex;

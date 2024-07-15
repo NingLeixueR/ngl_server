@@ -506,7 +506,6 @@ namespace ngl
 			return true;
 		}
 
-
 		inline bool push(const std::string& astr)
 		{
 			if (!push_stlsize(astr))
@@ -1083,7 +1082,6 @@ namespace ngl
 		{
 			return true;
 		}
-
 
 		template <typename T, typename ...ARG>
 		inline bool pop(T& avalue, ARG&... arg)
