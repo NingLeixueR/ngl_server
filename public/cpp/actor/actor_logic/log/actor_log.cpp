@@ -17,7 +17,7 @@ namespace ngl
 			})
 	{
 		ENUM_ACTOR lactortype = nlogactor::actor_type(aid);
-		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : nactortype::enum2name(lactortype);
+		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : em<ENUM_ACTOR>::get_name(lactortype);
 
 		logfile::config lconfig
 		{

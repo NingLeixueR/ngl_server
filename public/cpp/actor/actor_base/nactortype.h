@@ -65,26 +65,45 @@ namespace ngl
 		static bool is_signle(ENUM_ACTOR aenum);
 	};
 
-	// # 通过名字获取枚举
-	class nactortype
+	template <typename T,typename ENUMT>
+	class type_enum
 	{
-		nactortype() = delete;
-		nactortype(const nactortype&) = delete;
-		nactortype& operator=(const nactortype&) = delete;
-
+		static ENUMT m_type;
 	public:
-		// # 注册关联枚举与名字
-		static void register_enumname(ENUM_ACTOR aenum, const char* aname);
+		static void inits(ENUMT atype)
+		{
+			m_type = atype;
+		}
 
-		// # 通过名字获取枚举
-		static bool name2enum(const char* aname, ENUM_ACTOR& avalue);
+		static ENUMT enum_null()
+		{
+			return (ENUMT)-1;
+		}
 
-		// # 通过枚举获取名字
-		static const char* enum2name(ENUM_ACTOR aenum);
+		static ENUMT type()
+		{
+			if (m_type == enum_null())
+			{
+				log_error()->print(
+					"type_enum<{}, {}>::type() == enum_null()",
+					tools::type_name<T>(),
+					tools::type_name<ENUMT>()
+				);
+				Throw(
+					"type_enum<{}, {}>::type() == enum_null()",
+					tools::type_name<T>(),
+					tools::type_name<ENUMT>()
+				);
+			}
+			return m_type;
+		}
 	};
 
+	template <typename T, typename ENUMT>
+	ENUMT type_enum<T, ENUMT>::m_type = type_enum<T, ENUMT>::enum_null();
+
 	// # 根据actor类型获取其对应的枚举值
-	template <typename TACTOR>
+	/*template <typename TACTOR>
 	class nactor_type
 	{
 		nactor_type() = delete;
@@ -116,7 +135,7 @@ namespace ngl
 	};
 
 	template <typename TACTOR>
-	ENUM_ACTOR nactor_type<TACTOR>::m_type = ACTOR_NONE;
+	ENUM_ACTOR nactor_type<TACTOR>::m_type = ACTOR_NONE;*/
 
 	// # 根据pbdb::ENUM_DB获取ENUM_ACTOR
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);

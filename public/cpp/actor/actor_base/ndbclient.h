@@ -152,7 +152,7 @@ namespace ngl
 		// # »ñÈ¡db actorµÄguid
 		inline i64_actorid dbguid()
 		{
-			ENUM_ACTOR ltype = nactor_type<actor_db<DBTYPE, TDBTAB>>::type();
+			ENUM_ACTOR ltype = type_enum<actor_db<DBTYPE, TDBTAB>, ENUM_ACTOR>::type();
 			return nguid::make(ltype, tab_self_area, nguid::none_actordataid());
 		}
 

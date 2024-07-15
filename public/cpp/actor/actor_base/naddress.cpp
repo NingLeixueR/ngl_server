@@ -49,7 +49,7 @@ namespace ngl
 					ipair.first,
 					ipair.second,
 					nguid::actordataid(ipair.first),
-					nactortype::enum2name((ENUM_ACTOR)nguid::type(ipair.first)),
+					em<ENUM_ACTOR>::get_name((ENUM_ACTOR)nguid::type(ipair.first)),
 					nguid::area(ipair.first)
 				) << std::endl;
 			}
