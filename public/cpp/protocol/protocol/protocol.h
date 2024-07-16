@@ -114,10 +114,7 @@ namespace ngl
 				}Catch;
 				return nullptr;
 			};
-			fun_run lrunfun = [atype](
-				std::shared_ptr<pack>& apack, 
-				std::shared_ptr<void>& aptrpram
-				)->bool
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
 				using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
 				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
