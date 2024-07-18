@@ -232,7 +232,7 @@ namespace ngl
 
 		inline bool is_single()
 		{
-			return nguid::is_single(m_guid.type());
+			return enum_actor::is_signle(m_guid.type());
 		}
 
 		inline nguid& guid()
