@@ -253,35 +253,7 @@ namespace ngl
 		template <typename T>
 		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 	private:
-		template <typename T>
-		static void actor_forward_init(
-			tactor_forward<T>& apro
-			, i64_actorid aid
-		)
-		{
-			nguid lguid(aid);
-			apro.m_uid.push_back(lguid.actordataid());
-			apro.m_area.push_back(lguid.area());
-		}
-
-		template <typename T>
-		static void actor_forward_setdata(
-			tactor_forward<T>& apro
-			, std::shared_ptr<T>& adata
-		)
-		{
-			apro.set_data(adata);
-		}
-
-		static i64_actorid actorclient_guid()
-		{
-			static i64_actorid lid = nguid::make(
-				ACTOR_CLIENT
-				, ttab_servers::tab()->m_area
-				, nguid::none_actordataid()
-			);
-			return lid;
-		}
+		static i64_actorid actorclient_guid();
 	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
@@ -290,8 +262,10 @@ namespace ngl
 			if (aid == nguid::make())
 				return;
 			auto pro = std::make_shared<tactor_forward<T>>();
-			actor_forward_init(*pro, aid);
-			actor_forward_setdata(*pro, adata);
+			nguid lguid(aid);
+			pro->m_uid.push_back(lguid.actordataid());
+			pro->m_area.push_back(lguid.area());
+			pro->set_data(adata);
 			handle_pram lpram = handle_pram::create(aid, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
@@ -310,8 +284,10 @@ namespace ngl
 			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)
 				return;
 			auto pro = std::make_shared<tactor_forward<T>>();
-			actor_forward_init(*pro, aid);
-			actor_forward_setdata(*pro, adata);
+			nguid lguid(aid);
+			pro->m_uid.push_back(lguid.actordataid());
+			pro->m_area.push_back(lguid.area());
+			pro->set_data(adata);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 
@@ -323,8 +299,10 @@ namespace ngl
 		)
 		{
 			auto pro = std::make_shared<tactor_forward<T>>();
-			actor_forward_init(*pro, aid);
-			actor_forward_setdata(*pro, adata);
+			nguid lguid(aid);
+			pro->m_uid.push_back(lguid.actordataid());
+			pro->m_area.push_back(lguid.area());
+			pro->set_data(adata);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 	private:
@@ -336,9 +314,11 @@ namespace ngl
 			auto pro = std::make_shared<tactor_forward<T>>();
 			std::for_each(abeg, aend, [&pro](i64_actorid aactorid)
 				{
-					actor_forward_init(*pro, aactorid);
+					nguid lguid(aactorid);
+					pro->m_uid.push_back(lguid.actordataid());
+					pro->m_area.push_back(lguid.area());
 				});
-			actor_forward_setdata(*pro, adata);
+			pro->set_data(adata);
 			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}

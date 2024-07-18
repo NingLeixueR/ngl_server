@@ -8,6 +8,11 @@
 
 namespace ngl
 {
+	i64_actorid actor_base::actorclient_guid()
+	{
+		return actor_client::actorid();
+	}
+
 	//# 日志相关
 	std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
 
