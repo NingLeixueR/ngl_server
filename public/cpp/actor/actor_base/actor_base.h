@@ -225,21 +225,14 @@ namespace ngl
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
-			i32_sessionid asession
-			, T& adata
-			, i64_actorid aactorid
-			, i64_actorid arequestactorid
-			, int16_t asystemindex = 0
+			i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
 		);
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
-			const std::vector<i32_sessionid>& asession
-			, T& adata
-			, i64_actorid aactorid
-			, i64_actorid arequestactorid
-			, int16_t asystemindex = 0
+			const std::vector<i32_sessionid>& asession,
+			T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
 		);
 
 		virtual const char* kcp_session();
@@ -254,6 +247,23 @@ namespace ngl
 		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 	private:
 		static i64_actorid actorclient_guid();
+
+		template <typename T>
+		static std::shared_ptr<tactor_forward<T>> create_cpro(std::shared_ptr<T>& adata)
+		{
+			auto pro = std::make_shared<tactor_forward<T>>();
+			pro->set_data(adata);
+			return pro;
+		}
+
+		template <typename T>
+		static void cpro_push_actorid(std::shared_ptr<tactor_forward<T>>& apro, i64_actorid aid)
+		{
+			nguid lguid(aid);
+			apro->m_uid.push_back(lguid.actordataid());
+			apro->m_area.push_back(lguid.area());
+		}
+
 	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
@@ -261,11 +271,8 @@ namespace ngl
 		{
 			if (aid == nguid::make())
 				return;
-			auto pro = std::make_shared<tactor_forward<T>>();
-			nguid lguid(aid);
-			pro->m_uid.push_back(lguid.actordataid());
-			pro->m_area.push_back(lguid.area());
-			pro->set_data(adata);
+			auto pro = create_cpro(adata);
+			cpro_push_actorid(pro, aid);
 			handle_pram lpram = handle_pram::create(aid, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
@@ -273,9 +280,7 @@ namespace ngl
 		//# 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
 		static void send_client(
-			i32_gatewayid agatewayid,
-			i64_actorid aid,
-			std::shared_ptr<T>& adata
+			i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata
 		)
 		{
 			tab_servers* tab = ttab_servers::tab(agatewayid);
@@ -283,26 +288,18 @@ namespace ngl
 				return;
 			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)
 				return;
-			auto pro = std::make_shared<tactor_forward<T>>();
-			nguid lguid(aid);
-			pro->m_uid.push_back(lguid.actordataid());
-			pro->m_area.push_back(lguid.area());
-			pro->set_data(adata);
+			auto pro = create_cpro(adata);
+			cpro_push_actorid(pro, aid);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 
 		template <typename T>
 		static void send_client(
-			const std::vector<i32_gatewayid>& agatewayid,
-			i64_actorid aid,
-			std::shared_ptr<T>& adata
+			const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, std::shared_ptr<T>& adata
 		)
 		{
-			auto pro = std::make_shared<tactor_forward<T>>();
-			nguid lguid(aid);
-			pro->m_uid.push_back(lguid.actordataid());
-			pro->m_area.push_back(lguid.area());
-			pro->set_data(adata);
+			auto pro = create_cpro(adata);
+			cpro_push_actorid(pro, aid);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
 		}
 	private:
@@ -311,14 +308,11 @@ namespace ngl
 		{
 			if (abeg == aend)
 				return;
-			auto pro = std::make_shared<tactor_forward<T>>();
+			auto pro = create_cpro(adata);
 			std::for_each(abeg, aend, [&pro](i64_actorid aactorid)
 				{
-					nguid lguid(aactorid);
-					pro->m_uid.push_back(lguid.actordataid());
-					pro->m_area.push_back(lguid.area());
+					cpro_push_actorid(pro, aactorid);
 				});
-			pro->set_data(adata);
 			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
@@ -408,9 +402,7 @@ namespace ngl
 		//# 群发给指定类型的所有actor
 		template <typename T, bool IS_SEND = true>
 		void send_actor(
-			ENUM_ACTOR atype,
-			std::shared_ptr<T>& adata,
-			bool aotherserver = false
+			ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(
@@ -421,9 +413,7 @@ namespace ngl
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(
-			const nguid& aguid,
-			const nguid& arequestguid,
-			std::shared_ptr<T>& adata
+			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(
@@ -434,10 +424,7 @@ namespace ngl
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(
-			const nguid& aguid,
-			const nguid& arequestguid,
-			std::shared_ptr<T>& adata,
-			const std::function<void()>& afailfun
+			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(
@@ -448,9 +435,7 @@ namespace ngl
 		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(
-			const nguid& aguid, 
-			const nguid& arequestguid, 
-			std::shared_ptr<T>&& adata
+			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>&& adata
 		)
 		{
 			handle_pram lpram = handle_pram::create<T>(aguid, arequestguid, adata);
@@ -558,19 +543,14 @@ namespace ngl
 			{
 				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
 				ngl::actor_base::create(
-					ngl::ACTOR_LOG, 
-					tab_self_area, 
-					lnlogactor.m_value32
+					ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32
 				);
 			}
 		}
 
 		//# 用于创建非单例actor
 		static actor_base* create(
-			ENUM_ACTOR atype, 
-			i16_area aarea,
-			i32_actordataid aid, 
-			void* aparm = nullptr
+			ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr
 		);
 	};
 
