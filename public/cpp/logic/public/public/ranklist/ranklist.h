@@ -103,8 +103,6 @@ namespace ngl
 		ranklist(const ranklist&) = delete;
 		ranklist& operator=(const ranklist&) = delete;
 
-	
-
 		std::map<i64_actorid, rank_item> m_data;
 
 		class rank_set_base

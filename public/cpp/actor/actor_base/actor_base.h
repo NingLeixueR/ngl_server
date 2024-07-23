@@ -191,12 +191,14 @@ namespace ngl
 		//# 发送pack到指定服务器
 		template <typename T>
 		static bool sendpack_server(
-			i32_serverid aserverid, std::shared_ptr<pack>& apack);
+			i32_serverid aserverid, std::shared_ptr<pack>& apack
+		);
 
 		//# 给指定连接发送数据
 		template <typename T>
 		static bool sendpack_session(
-			i32_sessionid asession, std::shared_ptr<pack>& apack);
+			i32_sessionid asession, std::shared_ptr<pack>& apack
+		);
 
 		//# 给指定连接发送数据
 		template <typename T>
@@ -225,14 +227,21 @@ namespace ngl
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
-			i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
+			i32_sessionid asession, 
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid, 
+			int16_t asystemindex = 0
 		);
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
 			const std::vector<i32_sessionid>& asession,
-			T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
+			T& adata, 
+			i64_actorid aactorid, 
+			i64_actorid arequestactorid, 
+			int16_t asystemindex = 0
 		);
 
 		virtual const char* kcp_session();
@@ -280,7 +289,9 @@ namespace ngl
 		//# 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
 		static void send_client(
-			i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata
+			i32_gatewayid agatewayid, 
+			i64_actorid aid, 
+			std::shared_ptr<T>& adata
 		)
 		{
 			tab_servers* tab = ttab_servers::tab(agatewayid);
@@ -295,7 +306,9 @@ namespace ngl
 
 		template <typename T>
 		static void send_client(
-			const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, std::shared_ptr<T>& adata
+			const std::vector<i32_gatewayid>& agatewayid, 
+			i64_actorid aid, 
+			std::shared_ptr<T>& adata
 		)
 		{
 			auto pro = create_cpro(adata);
@@ -321,28 +334,32 @@ namespace ngl
 		//# 给一组客户端发送数据
 		template <typename T>
 		static void send_client(
-			std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata)
+			std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata
+		)
 		{
 			client_pro(alist.begin(), alist.end(), adata);
 		}
 
 		template <typename T>
 		static void send_client(
-			const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata)
+			const std::vector<i64_actorid>& avecid, std::shared_ptr<T>& adata
+		)
 		{
 			client_pro(avecid.begin(), avecid.end(), adata);
 		}
 
 		template <typename T>
 		static void send_client(
-			const std::list<i64_actorid>& avecid, std::shared_ptr<T>& adata)
+			const std::list<i64_actorid>& avecid, std::shared_ptr<T>& adata
+		)
 		{
 			client_pro(avecid.begin(), avecid.end(), adata);
 		}
 
 		template <typename T>
 		static void send_client(
-			const std::set<i64_actorid>& asetid, std::shared_ptr<T>& adata)
+			const std::set<i64_actorid>& asetid, std::shared_ptr<T>& adata
+		)
 		{
 			client_pro(asetid.begin(), asetid.end(), adata);
 		}
@@ -424,7 +441,10 @@ namespace ngl
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(
-			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun
+			const nguid& aguid, 
+			const nguid& arequestguid, 
+			std::shared_ptr<T>& adata, 
+			const std::function<void()>& afailfun
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(
@@ -435,7 +455,9 @@ namespace ngl
 		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(
-			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>&& adata
+			const nguid& aguid, 
+			const nguid& arequestguid, 
+			std::shared_ptr<T>&& adata
 		)
 		{
 			handle_pram lpram = handle_pram::create<T>(aguid, arequestguid, adata);

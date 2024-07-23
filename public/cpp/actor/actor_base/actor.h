@@ -106,10 +106,6 @@ namespace ngl
 			ninst<TDerived, TYPE>().template rfun<TDerived, T>(afun);
 		}
 
-		// # 简化[handle]方法注册
-		#define dregister_fun_handle(TDerived,T)		(Tfun<TDerived, T>)&TDerived::handle
-		#define dregister_fun(TDerived, T, Fun)			(Tfun<TDerived, T>)&TDerived::Fun
-
 		// # 注册actor成员函数(可以是非handle)
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor(bool aisload, T afun)
@@ -133,8 +129,7 @@ namespace ngl
 			template <typename T>
 			static void func(bool aisload)
 			{
-				ninst<TDerived, TYPE>().rfun(
-					(Tfun<TDerived, T>) & TDerived::handle, aisload);
+				ninst<TDerived, TYPE>().rfun((Tfun<TDerived, T>) & TDerived::handle, aisload);
 			}
 		};
 	public:
@@ -144,11 +139,14 @@ namespace ngl
 		>;
 
 		template <typename TDerived>
-		using register_handle_custom = register_handle<EPROTOCOL_TYPE_CUSTOM, TDerived>;
+		using register_handle_custom = register_handle<
+			EPROTOCOL_TYPE_CUSTOM, TDerived
+		>;
 
 		template <typename TDerived>
 		using register_handle_proto = register_handle<
-			EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived>;
+			EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived
+		>;
 #pragma endregion 
 
 #pragma region register_actornonet
