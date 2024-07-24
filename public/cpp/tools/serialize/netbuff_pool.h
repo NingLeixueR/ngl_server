@@ -130,7 +130,7 @@ namespace ngl
 			nfree(abuff);
 		}
 
-		// ### 每分钟定时回收 超过初始化两倍的清空
+		// # 每分钟定时回收 超过初始化两倍的清空
 		void time_free()
 		{
 			monopoly_shared_lock(m_mutex);
@@ -153,7 +153,8 @@ namespace ngl
 		enum_pool_buff_bytes	= 64,
 	};
 
-	class netbuff_pool : public netbuff<enum_pool_buff_bytes, enum_pool_count>
+	class netbuff_pool : 
+		public netbuff<enum_pool_buff_bytes, enum_pool_count>
 	{
 		netbuff_pool():
 			netbuff<enum_pool_buff_bytes, enum_pool_count>({50, 50, 40, 30, 20, 20, 20, 10, 10, 10})

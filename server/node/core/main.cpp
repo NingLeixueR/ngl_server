@@ -18,6 +18,9 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	std::vector<std::string> lvec;
+	ngl::filetools::dir("./", lvec);
+
 	if (argc <= 1)
 	{
 		std::cout << "²ÎÊý´íÎó" << std::endl;

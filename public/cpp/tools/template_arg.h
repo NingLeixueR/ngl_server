@@ -6,6 +6,10 @@
 
 namespace ngl
 {
+	/*
+		辅助缺省参数: template_arg<TF,TARG...>
+		TF需要实现static func<T>(TARG...)
+	*/
 	template <typename TF, typename ...TARG>
 	class template_arg
 	{

@@ -11,8 +11,8 @@ namespace ngl
 		std::string		m_name;
 		int64_t			m_beg;
 		int64_t			m_end;
-		std::function<bool(int64_t, int64_t)> m_fun;
-		static std::atomic<int32_t> m_indexid;
+		std::function<bool(int64_t, int64_t)>	m_fun;
+		static std::atomic<int32_t>				m_indexid;
 
 		tconsuming(const std::string& aname, const std::function<bool(int64_t, int64_t)>& afun) :
 			m_id(++m_indexid),
@@ -64,20 +64,24 @@ namespace ngl
 			if (awarn)
 			{
 				log_info()->print(
-					"time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
+					"time consuming [{}:{}] [{}] [{}] ", 
+					aitem->m_name, aitem->m_id, aname, 
+					aitem->m_end - aitem->m_beg
 				);
 			}
 			else
 			{
 				log_error()->print(
-					"time consuming [{}:{}] [{}] [{}] ", aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
+					"time consuming [{}:{}] [{}] [{}] ", 
+					aitem->m_name, aitem->m_id, aname,
+					aitem->m_end - aitem->m_beg
 				);
 			}
 		}
 
 		void run()
 		{
-			std::list<ptr_tconsuming> llist;
+			std::list<ptr_tconsuming>  llist;
 			std::map<int32_t, int64_t> lremove;
 			while (true)
 			{
@@ -137,4 +141,4 @@ namespace ngl
 			tconsuming_thread::getInstance().remove(m_id);
 		}
 	};
-}
+}//namespace ngl

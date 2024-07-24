@@ -42,11 +42,15 @@ namespace ngl
 		filetools() = delete;
 		filetools(const filetools&) = delete;
 		filetools& operator=(const filetools&) = delete;
-
 	public:
+		// # 是否存在某个文件
 		static bool exist(const std::string& afilename);
+
+		// # 移除某个文件
 		static bool remove(const std::string& afilename);
-		// 获取dir下所有目录
-		static void dir(const std::string& apath, std::vector<std::string>& afilevec);
+
+		// # 获取dir下所有文件
+		// # aiteration是否循环迭代dir下的所有目录
+		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 	};
 }//namespace ngl

@@ -16,6 +16,7 @@ namespace ngl
 	//using unique_lock		= std::unique_lock<mutex>; // 写锁
 	using thread			= std::thread;
 
+	// # 信号量
 	class sem
 	{
 		sem(const sem&) = delete;
@@ -43,12 +44,12 @@ namespace ngl
 		}
 	};
 
+	// # 让当前线程睡眠
 	class sleep
 	{
 		sleep() = delete;
 		sleep(const sleep&) = delete;
 		sleep& operator=(const sleep&) = delete;
-
 	public:
 		// # 线程睡眠[avalue]小时
 		static void seconds(int32_t avalue)
@@ -83,7 +84,8 @@ namespace ngl
 		CV.wait(__Lock__, FUN);							\
 	}
 
-#define OPEN_SEM
+// # 使用信号量还是条件变量
+//#define OPEN_SEM
 
 #ifdef OPEN_SEM
 # define ngl_lockinit							\
@@ -116,8 +118,8 @@ namespace ngl
 		work_list(const work_list&) = delete;
 		work_list& operator=(const work_list&) = delete;
 
-		std::shared_mutex			m_mutex;
-		ngl::sem					m_sem;
+		ngl_lockinit
+
 		std::list<NODE>				m_list;
 		std::function<void(NODE&)>	m_fun;
 		std::thread					m_thread;
@@ -131,8 +133,12 @@ namespace ngl
 		void run()
 		{
 			std::list<NODE> llist;
+#ifndef OPEN_SEM
+			auto lfun = [this]() {return !m_list.empty(); };
+#endif//OPEN_SEM
 			while (true)
 			{
+#ifdef OPEN_SEM
 				m_sem.wait();
 				{
 					monopoly_shared_lock(m_mutex);
@@ -140,64 +146,12 @@ namespace ngl
 						continue;
 					llist.swap(m_list);
 				}
-
-				for (auto& item : llist)
-				{
-					m_fun(item);
-				}
-				llist.clear();
-			}
-		}
-
-		inline void push_back(NODE&& anode)
-		{
-			{
-				monopoly_shared_lock(m_mutex);
-				m_list.push_back(anode);
-			}
-			m_sem.post();
-		}
-
-		inline void push_back(NODE& anode)
-		{
-			{
-				monopoly_shared_lock(m_mutex);
-				m_list.push_back(anode);
-			}
-			m_sem.post();
-		}
-	};
-
-	template <typename NODE>
-	class workcv_list
-	{
-		workcv_list() = delete;
-		workcv_list(const workcv_list&) = delete;
-		workcv_list& operator=(const workcv_list&) = delete;
-
-		std::mutex					m_mutex;
-		std::condition_variable		m_cv;
-		std::list<NODE>				m_list;
-		std::function<void(NODE&)>	m_fun;
-		std::thread					m_thread;
-	public:
-		workcv_list(const std::function<void(NODE&)>& afun) :
-			m_fun(afun),
-			m_thread([this] { run(); })
-		{
-		}
-
-		void run()
-		{
-			std::list<NODE> llist;
-			auto lfun = [this]() {return !m_list.empty(); };
-			while (true)
-			{
+#else
 				{
 					cv_lock(m_cv, m_mutex, lfun)
-					llist.swap(m_list);
+						llist.swap(m_list);
 				}
-
+#endif//OPEN_SEM 
 				for (auto& item : llist)
 				{
 					m_fun(item);
@@ -209,19 +163,19 @@ namespace ngl
 		inline void push_back(NODE&& anode)
 		{
 			{
-				monopoly_lock(m_mutex);
+				ngl_lock;
 				m_list.push_back(anode);
-				m_cv.notify_one();
 			}
+			ngl_post;
 		}
 
 		inline void push_back(NODE& anode)
 		{
 			{
-				monopoly_lock(m_mutex);
+				ngl_lock;
 				m_list.push_back(anode);
-				m_cv.notify_one();
 			}
+			ngl_post;
 		}
 	};
 }// namespace ngl

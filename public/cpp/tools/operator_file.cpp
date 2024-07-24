@@ -156,7 +156,7 @@ namespace ngl
 		return f.good();
 	}
 
-	void filetools::dir(const std::string& apath, std::vector<std::string>& afilevec)
+	void filetools::dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration/* = false*/)
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(apath)) 
 		{
@@ -168,6 +168,10 @@ namespace ngl
 			else if (entry.is_directory()) 
 			{
 				std::cout << "Directory: " << entry.path() << std::endl;
+				if (aiteration)
+				{
+					dir(entry.path().string(), afilevec);
+				}
 			}
 			else 
 			{
