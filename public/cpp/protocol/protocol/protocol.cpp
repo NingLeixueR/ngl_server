@@ -135,4 +135,12 @@ namespace ngl
 			atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname
 		);
 	}
+
+	void protocol::cmd(std::shared_ptr<pack>& apack)
+	{
+		log_error()->print("protocol::cmd [{}] "
+			, apack->m_buff
+		);
+	}
+
 }// namespace ngl

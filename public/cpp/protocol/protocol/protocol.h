@@ -181,5 +181,8 @@ namespace ngl
 			};
 			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);			
 		}
+
+
+		static void cmd(std::shared_ptr<pack>& apack);
 	};
 }// namespace ngl

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-07-01 14:28:56
+// 创建时间 // 创建时间 24-07-26 18:13:48
 #pragma once
 
 #include "csv.h"
@@ -21,16 +21,17 @@ enum EUDP_OPERATOR
 };
 enum EPH_HEAD_VAL
 {
-	EPH_HEAD_VERSION_SUCCESS = 1,	// 版本一致
-	EPH_HEAD_VERSION_FAIL = 2,	// 版本不一致
-	EPH_HEAD_VERSION_FOLLOW = 3,	// 无法对比版本,数据没有接收完成
-	EPH_HEAD_FOLLOW = 4,	// 包头数据没有接收完成
-	EPH_HEAD_SUCCESS = 5,	// 包头数据已接收完成
+	EPH_HEAD_MASK_SUCCESS = 1,	// MASK一致
+	EPH_HEAD_MASK_FAIL = 2,	// MASK不一致
+	EPH_HEAD_FOLLOW = 3,	// 包头数据没有接收完成
+	EPH_HEAD_SUCCESS = 4,	// 包头数据已接收完成
 };
 enum EPH
 {
-	EPH_VERSION = 0,	// 协议版本号
-	EPH_BYTES,	// 协议字节数
+	EPH_MASK_VALUE = 0xff,	
+	EPH_MASK_COUNT = 2,	
+	EPH_MASK = 0,	// 用于确认是否使用包
+	EPH_BYTES = EPH_MASK_COUNT,	// 协议字节数
 	EPH_TIME,	// 发送端的时间戳
 	EPH_PROTOCOLNUM,	// 协议号
 	EPH_PROTOCOLTYPE,	// 协议类型 EPROTOCOL_TYPE

@@ -73,7 +73,7 @@ namespace ngl
 				if (alen <= 0)
 					return true;
 				std::shared_ptr<pack> lpack = nullptr;
-				//// --- 查看有没有残包
+				// # 查看有没有残包
 				auto itor = m_data.find(aid);
 				if (itor != m_data.end())
 				{
@@ -87,17 +87,43 @@ namespace ngl
 					lpack->m_segpack = m_segpack;
 				}
 				EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen);
-				switch (lval)
-				{
-				
-				case ngl::EPH_HEAD_VERSION_FAIL:
-					return false;
-				case ngl::EPH_HEAD_VERSION_FOLLOW:
-				case ngl::EPH_HEAD_VERSION_SUCCESS:
-				case ngl::EPH_HEAD_FOLLOW:
-					m_data.insert(std::make_pair(aid, lpack));
-					return true;
+				if (lval == EPH_HEAD_MASK_FAIL)
+				{	
+					if (aislanip == false)
+					{
+						return false;
+					}
+					// 支持telnet命令访问，telnet ip port 后记得['CTRL+]']
+					// 只支持256个字符的进程命令
+					if (lpack->m_buff == nullptr)
+					{
+						lpack->malloc(256);
+						memcpy(lpack->m_buff, lpack->m_head.m_data, lpack->m_head.m_wpos);
+						lpack->m_pos += lpack->m_head.m_wpos;
+					}
+					if (lpack->m_pos + alen >= 256)
+					{
+						return false;
+					}
+					memcpy(&lpack->m_buff[lpack->m_pos], ap, alen);
+					lpack->m_pos += alen;
+					ap += alen;
+					alen -= alen;
+					lpack->m_buff[lpack->m_pos] = '\0';
+					protocol::cmd(lpack);
+					break;
 				}
+				else
+				{
+					switch (lval)
+					{
+					case ngl::EPH_HEAD_MASK_SUCCESS:
+					case ngl::EPH_HEAD_FOLLOW:
+						m_data.insert(std::make_pair(aid, lpack));
+						return true;
+					}
+				}
+				
 				if (alen < 0)
 					return true;
 				int len = lpack->m_head.getvalue(EPH_BYTES);

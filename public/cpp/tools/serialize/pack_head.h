@@ -17,16 +17,18 @@ namespace ngl
 
 		pack_head();
 
+		// # 设置mask
+		static void				head_set_mask(int32_t* abuff);
+		static EPH_HEAD_VAL		head_check_mask(const int32_t* abuff, int awpos);
+		void					set_mask();
+		EPH_HEAD_VAL			check_mask()const;
+
 		// # 给包头设置或者获取时间
 		static void		head_set_time(int32_t* abuff);
 		static i32_time head_get_time(const int32_t* abuff);
 		void			set_time();
 		i32_time		get_time()const;
 
-		static void		head_set_version(int32_t* abuff);
-		static int32_t  head_get_version(const int32_t* abuff);
-		void			set_version();
-		int32_t			get_version()const;
 
 		// # 设置actor 
 		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
@@ -75,9 +77,6 @@ namespace ngl
 
 		// # 包头是否接收完毕
 		EPH_HEAD_VAL	isready()const;
-
-		// # 对比版本号
-		EPH_HEAD_VAL	isversion()const;
 
 		// # 获取协议号
 		i32_protocolnum protocolnum()const;

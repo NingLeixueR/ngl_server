@@ -56,29 +56,51 @@ namespace ngl
 		return abuff[EPH::EPH_TIME];
 	}
 
+	enum
+	{
+		EPH_MASK_COUNT_BYTES = EPH_MASK_COUNT * sizeof(int)
+	};
+
+	void pack_head::head_set_mask(int32_t* abuff)
+	{
+		char* lpbuff = (char*)abuff;
+		for (int i = 0; i < EPH_MASK_COUNT_BYTES; ++i)
+		{
+			lpbuff[i] = EPH::EPH_MASK_VALUE;
+		}
+	}
+
+	EPH_HEAD_VAL pack_head::head_check_mask(const int32_t* abuff, int awpos)
+	{
+		int lnum = awpos / sizeof(char);
+		if (lnum > EPH_MASK_COUNT_BYTES)
+		{
+			lnum = EPH_MASK_COUNT_BYTES;
+		}
+		const uint8_t* lpbuff = (const uint8_t*)abuff;
+		for (int i = 0; i < lnum; ++i)
+		{
+			if (lpbuff[i] != EPH::EPH_MASK_VALUE)
+			{
+				return EPH_HEAD_MASK_FAIL;
+			}
+		}
+		return EPH_HEAD_MASK_SUCCESS;
+	}
+
+	void pack_head::set_mask()
+	{
+		head_set_mask(m_data);
+	}
+
+	EPH_HEAD_VAL pack_head::check_mask()const
+	{
+		return head_check_mask(m_data, m_wpos);
+	}
+
 	i32_time pack_head::get_time()const
 	{
 		return head_get_time(m_data);
-	}
-
-	void pack_head::head_set_version(int32_t* abuff)
-	{
-		abuff[EPH::EPH_VERSION] = sysconfig::head_version();
-	}
-
-	int32_t pack_head::head_get_version(const int32_t* abuff)
-	{
-		return abuff[EPH::EPH_VERSION];
-	}
-
-	void pack_head::set_version()
-	{
-		pack_head::head_set_version(m_data);
-	}
-
-	int32_t pack_head::get_version()const
-	{
-		return pack_head::head_get_version(m_data);
 	}
 
 	i64_actorid pack_head::get_actor()const
@@ -134,34 +156,13 @@ namespace ngl
 
 	EPH_HEAD_VAL pack_head::isready()const
 	{
-		EPH_HEAD_VAL lval = isversion();
-		if (lval != EPH_HEAD_VERSION_SUCCESS)
-			return lval;
+		if (check_mask() == EPH_HEAD_MASK_FAIL)
+			return EPH_HEAD_MASK_FAIL;
 		if (m_wpos >= size())
 		{
 			return EPH_HEAD_SUCCESS;
 		}
-		else
-		{
-			return EPH_HEAD_FOLLOW;
-		}
-	}
-
-	EPH_HEAD_VAL pack_head::isversion()const
-	{
-		static int32_t lversionpos = (EPH::EPH_VERSION + 1) * sizeof(int32_t);
-		if (m_wpos < lversionpos)
-		{
-			return EPH_HEAD_VERSION_FOLLOW;
-		}
-		if (get_version() == sysconfig::head_version())
-		{
-			return EPH_HEAD_VERSION_SUCCESS;
-		}
-		else
-		{
-			return EPH_HEAD_VERSION_FAIL;
-		}
+		return EPH_HEAD_FOLLOW;
 	}
 
 	i32_protocolnum pack_head::protocolnum()const
@@ -192,19 +193,16 @@ namespace ngl
 
 	EPH_HEAD_VAL pack_head::push(const char*& abuff, int& alen)
 	{
-		EPH_HEAD_VAL lval = isready();
-		if (lval == EPH_HEAD_VERSION_FOLLOW || lval == EPH_HEAD_FOLLOW)
-		{
-			int ltemp = size() - m_wpos;
-			ltemp = (alen < ltemp) ? alen : ltemp;
-			char* lp = (char*)m_data;
-			memcpy(&lp[m_wpos], abuff, ltemp);
-			alen -= ltemp;
-			abuff += ltemp;
-			m_wpos += ltemp;
-			return isready();
-		}
-		return lval;		
+		if (check_mask() == EPH_HEAD_MASK_FAIL)
+			return EPH_HEAD_MASK_FAIL;
+		int ltemp = size() - m_wpos;
+		ltemp = (alen < ltemp) ? alen : ltemp;
+		char* lp = (char*)m_data;
+		memcpy(&lp[m_wpos], abuff, ltemp);
+		alen -= ltemp;
+		abuff += ltemp;
+		m_wpos += ltemp;
+		return isready();		
 	}
 
 	bool pack_head::push(ngl::serialize& aflow)
