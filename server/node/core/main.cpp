@@ -24,18 +24,25 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
+	// # 初始化关联枚举NODE_TYPE与字符串
 	nconfig::init();
+
 	// # 加载xml配置
 	nconfig::load("config");
+
 	// # 加载csv配置
 	ngl::allcsv::load();
 
-	// # 用参数 不用配置中的zoneid
+	// # 区服id
 	int32_t larea	= ngl::tools::lexical_cast<int32_t>(argv[2]);
+
+	// # 区服id下功能进程的序号
 	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
+
 	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
 		return 0;
+
 	nconfig::set_server(argv[1], tab->m_id);
 
 	char lname[1024] = { 0x0 };
