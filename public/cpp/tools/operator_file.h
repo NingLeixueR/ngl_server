@@ -17,7 +17,10 @@ namespace ngl
 	public:
 		readfile(const std::string& filename);
 		~readfile();
-		// 跳过前anum行
+
+		// # 获取文件的行数
+		int get_maxline();
+		// # 跳过前anum行
 		void jumpbegin(int anum, bool aiscsv);
 		bool readline(std::string& aline);
 		bool readcurrent(std::string& astr);

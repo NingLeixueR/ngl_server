@@ -25,6 +25,17 @@ namespace ngl
 		catch (...) {}
 	}
 
+	int readfile::get_maxline()
+	{
+		std::string line;
+		int lline = 0;
+		while (std::getline(m_file, line))
+		{
+			++lline;
+		}
+		return lline;
+	}
+
 	//跳过前三行
 	void readfile::jumpbegin(int anum, bool aiscsv)
 	{

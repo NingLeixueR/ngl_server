@@ -40,8 +40,7 @@ void find(
 	const std::string& atxt, 
 	const std::string& targetPath, 
 	std::set<std::string>& adir, 
-	std::set<std::string>& avec1, 
-	std::set<std::string>& avec2
+	std::map<std::string, int>& avec1
 )
 {
 	std::filesystem::path myPath(targetPath);
@@ -59,7 +58,7 @@ void find(
 			std::string lpath2 = &lpath.c_str()[sizeof("../../")-1];
 			std::cout << "dir:[" << lpath2 << "]" << std::endl;
 			adir.insert(lpath2);
-			find(awz, atxt, iter->path().string(), adir, avec1, avec2);
+			find(awz, atxt, lpath, adir, avec1);
 		}
 		else
 		{
@@ -76,10 +75,19 @@ void find(
 			
 			if (is_sname(lname, atxt))
 			{
+				// 文件行数
+				ngl::readfile lrf(lpath);
+				int lmaxline = lrf.get_maxline();
+
+
 				if (awz)
-					avec1.insert(targetPath + lname);
+				{
+					avec1.insert(std::make_pair(targetPath + lname, lmaxline));
+				}
 				else
-					avec1.insert(lname);
+				{
+					avec1.insert(std::make_pair(lname, lmaxline));
+				}
 				continue;
 			}
 		}
@@ -88,62 +96,75 @@ void find(
 
 int main(int argc, char** argv)
 {
-	std::set<std::string> lvec1;
-	std::set<std::string> lvec2;
-	std::set<std::string> lvec3;
-	std::set<std::string> lvec4;
-	std::set<std::string> lvec5;
-	std::set<std::string> lvec6;
+	std::map<std::string, int> lvec1;
+	std::map<std::string, int> lvec3;
+	std::map<std::string, int> lvec5;
+	std::map<std::string, int> lvec6;
 	std::set<std::string> ldic;
 
-	std::stringstream m_stream;
 	std::stringstream m_streamtxt;
 	for (int i = 2; i < argc; ++i)
 	{
 		std::string targetPath = argv[i];
 		ldic.insert(targetPath);
-		find(false, ".cpp", targetPath, ldic, lvec1, lvec2);
-		find(false, ".c", targetPath, ldic, lvec5, lvec6);
-		find(false, ".h", targetPath, ldic, lvec3, lvec4);
+		find(false, ".cpp", targetPath, ldic, lvec1);
+		find(false, ".c", targetPath, ldic, lvec5);
+		//find(false, ".h", targetPath, ldic, lvec3);
 	}
 
-	m_stream << "// 注意【rebuild.bat 工具生成文件，不要手动修改】" << std::endl;
-	char ltmbuff[1024] = { 0 };
-	ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
-	m_stream << ltmbuff << std::endl;
-
-	/*for (auto item : lvec1)
-		m_stream << "#include \"" << item << "\"\n";
-	for (auto item : lvec2)
-		m_stream << "#include \"" << item << "\"\n";*/
-	std::map<int, std::set<std::string>> lmap;
+	std::map<int, std::map<std::string,int>> lmap;
 	for (auto& item : lvec1)
 	{
-		lmap[item.size()].insert(item);
+		lmap[item.first.size()].insert(item);
 	}
-	for (auto& item : lvec2)
+	int llinecount = 0;
+	auto lsavefun = [&argv](int aindex, std::stringstream& astream)
 	{
-		lmap[item.size()].insert(item);
-	}
+			std::string cname = std::format("{}_{}.cpp", argv[1], aindex);
+			ngl::writefile lfile(cname);
+			lfile.write(astream.str());
+	};
+	auto lmalloc = []()->std::stringstream*
+		{
+			std::stringstream* m_stream = new std::stringstream();
+			*m_stream << "// 注意【rebuild.bat 工具生成文件，不要手动修改】" << std::endl;
+			char ltmbuff[1024] = { 0 };
+			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
+			*m_stream << ltmbuff << std::endl;
+			return m_stream;
+		};
+
+	std::stringstream* m_stream = lmalloc();
+	int lindex = 0;
 	for (auto itor1 = lmap.rbegin(); itor1 != lmap.rend(); ++itor1)
 	{
 		for (auto itor2 = itor1->second.rbegin(); itor2!= itor1->second.rend();++itor2)
 		{
-			m_stream << "#include \"" << *itor2 << "\"\n";
+			if (llinecount > 100000)
+			{
+				lsavefun(++lindex, *m_stream);
+				m_stream = lmalloc();
+				llinecount = 0;
+			}
+			
+			*m_stream << "#include \"" << itor2->first << "\"\n";
+			llinecount += itor2->second;
 		}	
 	}
+	lsavefun(++lindex, *m_stream);
 
-	m_stream << "extern \"C\"{\n";
+	m_stream = lmalloc();
+
+	*m_stream << "extern \"C\"{\n";
 	for (auto item : lvec5)
-		m_stream << "#include \"" << item << "\"\n";
-	m_stream << "}//extern \"C\"\n";
+		*m_stream << "#include \"" << item.first << "\"\n";
+	*m_stream << "}//extern \"C\"\n";
+	lsavefun(++lindex, *m_stream);
 
 	for (auto item : ldic)
 		m_streamtxt << "INCLUDE_DIRECTORIES(" << item << ")\n";
 
 	std::string cname = argv[1];
-	ngl::writefile lfile(cname);
-	lfile.write(m_stream.str());
 	cname += ".txt";
 	ngl::writefile lfiletxt(cname);
 	lfiletxt.write(m_streamtxt.str());
