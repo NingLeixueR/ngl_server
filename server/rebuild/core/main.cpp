@@ -140,9 +140,10 @@ int main(int argc, char** argv)
 	{
 		for (auto itor2 = itor1->second.rbegin(); itor2!= itor1->second.rend();++itor2)
 		{
-			if (llinecount > 100000)
+			if (llinecount > 20000)
 			{
 				lsavefun(++lindex, *m_stream);
+				std::cout << std::format("index[{}] line:[{}] ", lindex, llinecount) << std::endl;
 				m_stream = lmalloc();
 				llinecount = 0;
 			}
@@ -152,6 +153,7 @@ int main(int argc, char** argv)
 		}	
 	}
 	lsavefun(++lindex, *m_stream);
+	std::cout << std::format("index[{}] line:[{}] ", lindex, llinecount) << std::endl;
 
 	m_stream = lmalloc();
 
