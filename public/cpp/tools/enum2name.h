@@ -19,7 +19,7 @@ namespace ngl
 		e2n_never,      // 不改变大小写
 	};
 
-	template <typename ENUMT, enum_e2n TOLOWER = e2n_never>
+	template <typename ENUMT, enum_e2n TOLOWER = e2n_toupper>
 	class enum2name
 	{
 		enum2name() = delete;
@@ -79,13 +79,13 @@ namespace ngl
 		}
 	};
 
-	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_never*/>
+	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_toupper*/>
 	std::map<int, std::map<ENUMT, std::string>> enum2name<ENUMT, TOLOWER>::m_datae2n;
 
-	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_never*/>
+	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_toupper*/>
 	std::map<int, std::map<std::string, ENUMT>> enum2name<ENUMT, TOLOWER>::m_datan2e;
 
-	template <typename ENUMT, enum_e2n TOLOWER = e2n_never>
+	template <typename ENUMT, enum_e2n TOLOWER = e2n_toupper>
 	using em = enum2name<ENUMT, TOLOWER>;
 
 	#define em_pram(NAME) NAME,#NAME
