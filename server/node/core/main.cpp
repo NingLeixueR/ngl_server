@@ -18,17 +18,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	char lbuf[1024] = { 0 };
-	sprintf(lbuf, "%06d%s", 123, "libo");
-	sprintf(lbuf, "%06d%s", 123456789, "libo");
-
-	int lnum1 = 111111 << 0;
-	int lnum2 = 111111 << 1;
-	int lnum3 = 111111 << 2;
-
-	std::vector<std::string> lvec;
-	ngl::filetools::dir("./", lvec);
-
 	if (argc <= 1)
 	{
 		std::cout << "²ÎÊý´íÎó" << std::endl;

@@ -50,12 +50,8 @@ namespace ngl
 				{
 					for (const auto& itemfor2 : itemfor1.second)
 					{
-						lmap.insert(
-							std::make_pair(
-								itemfor2.second.m_socket, 
-								nguid::make(ACTOR_ROBOT,itemfor2.second.m_area,itemfor2.second.m_dataid)
-							)
-						);
+						i64_actorid lactorid = nguid::make(ACTOR_ROBOT, itemfor2.second.m_area, itemfor2.second.m_dataid);
+						lmap.insert(std::make_pair(itemfor2.second.m_socket, lactorid));
 					}
 				}
 			}
@@ -67,16 +63,8 @@ namespace ngl
 				{
 					for (const auto& itemfor1 : itemitor->second)
 					{
-						lmap.insert(
-							std::make_pair(
-								itemfor1.second.m_socket,
-								nguid::make(
-									ACTOR_ROBOT,
-									itemfor1.second.m_area,
-									itemfor1.second.m_dataid
-								)
-							)
-						);
+						i64_actorid lactorid = nguid::make(ACTOR_ROBOT, itemfor1.second.m_area, itemfor1.second.m_dataid);
+						lmap.insert(std::make_pair(itemfor1.second.m_socket,lactorid));
 					}
 				}
 			}
@@ -87,12 +75,8 @@ namespace ngl
 					info = m_info.get(lparm->m_area[i], lparm->m_uid[i]);
 					if (info == nullptr)
 						continue;
-					lmap.insert(
-						std::make_pair(
-							info->m_socket, 
-							nguid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i])
-						)
-					);
+					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, lparm->m_area[i], lparm->m_uid[i]);
+					lmap.insert(std::make_pair(info->m_socket, lactorid));
 				}
 			}
 			np_actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);
