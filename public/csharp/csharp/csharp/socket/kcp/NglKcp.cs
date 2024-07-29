@@ -254,7 +254,8 @@ namespace ngl
             PackHead lhead = new PackHead();
             lhead.Bytes = lbuff.Length;
             lhead.Time = utc();
-            lhead.Version = NConfig.m_head_version;
+            lhead.Mask1 = 0xffffff;
+            lhead.Mask2 = 0xffffff;
             lhead.ProtocolNum = xmlprotocol.Protocol(apro.Descriptor.Name);
             lhead.ProtocolType = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
             lhead.ActorId = -1;

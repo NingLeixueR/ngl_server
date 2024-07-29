@@ -222,7 +222,7 @@ namespace ngl
                     m_pack = new Pack();
                     continue;
                 }
-                else if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL)
+                else if (lval == EPH_HEAD_VAL.EPH_HEAD_MASK_FAIL)
                 {
                     Close(aconnect.m_session);
                 }
@@ -287,7 +287,8 @@ namespace ngl
             PackHead lhead = new PackHead();
             lhead.Bytes = lbuff.Length;
             lhead.Time = utc();
-            lhead.Version = NConfig.m_head_version;
+            lhead.Mask1 = 0xffffffff;
+            lhead.Mask2 = 0xffffffff;
             lhead.ProtocolNum = xmlprotocol.Protocol(apro.Descriptor.Name);
             lhead.ProtocolType = (Int32)EPROTOCOL_TYPE.EPROTOCOL_TYPE_PROTOCOLBUFF;
             lhead.ActorId = ActorId;
@@ -299,7 +300,14 @@ namespace ngl
             encryption.bytexor(lbuff, lbuff.Length, 0);
             lbuff.CopyTo(lbuffall.m_buff, PackHead.PackHeadByte);
 
-            ltcp_connect.m_socket.BeginSend(lbuffall.m_buff, 0, PackHead.PackHeadByte + lbuff.Length, SocketFlags.None, (IAsyncResult result) => { OnSend(result, ltcp_connect); }, lbuffall);
+            ltcp_connect.m_socket.BeginSend(
+                lbuffall.m_buff, 0, PackHead.PackHeadByte + lbuff.Length, SocketFlags.None, 
+                (IAsyncResult result) => 
+                { 
+                    OnSend(result, ltcp_connect); 
+                }, 
+                lbuffall
+            );
         }
 
         private void OnSend(IAsyncResult result, TcpConnect atcp_connect)

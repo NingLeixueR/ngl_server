@@ -66,35 +66,34 @@ namespace ngl
         }
         void SetValue(EPH aenum, Int32 avalue)
         {
-            Buffer.BlockCopy(BitConverter.GetBytes(avalue)
-                , 0
-                , m_data
-                , (Int32)aenum * sizeof(Int32)
-                , sizeof(Int32)
-                );
+            Buffer.BlockCopy(
+                BitConverter.GetBytes(avalue), 0, m_data, (Int32)aenum * sizeof(Int32), sizeof(Int32)
+            );
+        }
+        void SetUValue(EPH aenum, UInt32 avalue)
+        {
+            Buffer.BlockCopy(
+                BitConverter.GetBytes(avalue), 0, m_data, (Int32)aenum * sizeof(Int32), sizeof(Int32)
+            );
         }
         Int32 GetValue(EPH aenum)
         {
             return BitConverter.ToInt32(m_data, (Int32)aenum * sizeof(Int32));
         }
+        UInt32 GetUValue(EPH aenum)
+        {
+            return BitConverter.ToUInt32(m_data, (Int32)aenum * sizeof(Int32));
+        }
+
         void SetValue64(EPH aenum, Int64 avalue)
         {
-            Buffer.BlockCopy(BitConverter.GetBytes(avalue)
-                , 0
-                , m_data
-                , (Int32)aenum * sizeof(Int32)
-                , sizeof(Int64)
-                );
+            Buffer.BlockCopy(
+                BitConverter.GetBytes(avalue), 0, m_data, (Int32)aenum * sizeof(Int32), sizeof(Int64)
+            );
         }
         Int64 GetValue64(EPH aenum)
         {
             return BitConverter.ToInt64(m_data, (Int32)aenum * sizeof(Int32));
-        }
-        //    EPH_VERSION = 0,	                // 协议版本号
-        public Int32 Version
-        {
-            get { return GetValue(EPH.EPH_VERSION); }
-            set { SetValue(EPH.EPH_VERSION, value); }
         }
 
         //    EPH.EPH_BYTES,                    // 协议字节数
@@ -109,6 +108,20 @@ namespace ngl
             get { return GetValue(EPH.EPH_TIME); }
             set { SetValue(EPH.EPH_TIME, value); }
         }
+
+        //    EPH_MASK = 0,	                    // 用于确认是否使用包
+        public UInt32 Mask1
+        {
+            get { return GetUValue(EPH.EPH_MASK); }
+            set { SetUValue(EPH.EPH_MASK, value); }
+        }
+
+        public UInt32 Mask2
+        {
+            get { return GetUValue(EPH.EPH_MASK+1); }
+            set { SetUValue(EPH.EPH_MASK+1, value); }
+        }
+
         //    EPH.EPH_PROTOCOLNUM,              // 协议号
         public Int32 ProtocolNum
         {
@@ -138,28 +151,35 @@ namespace ngl
 
         public EPH_HEAD_VAL IsReady()
         {
-            EPH_HEAD_VAL lval = IsVersion();
-            if (lval != EPH_HEAD_VAL.EPH_HEAD_VERSION_SUCCESS)
+            EPH_HEAD_VAL lval = IsMask();
+            if (lval != EPH_HEAD_VAL.EPH_HEAD_MASK_SUCCESS)
                 return lval;
             return m_pos >= PackHeadByte ? EPH_HEAD_VAL.EPH_HEAD_SUCCESS : EPH_HEAD_VAL.EPH_HEAD_FOLLOW;
         }
 
-        static Int32 m_versionpos = ((Int32)EPH.EPH_VERSION + 1) * sizeof(Int32);
-        public EPH_HEAD_VAL IsVersion()
+        static Int32 m_versionpos = ((Int32)EPH.EPH_MASK + 1) * sizeof(Int32);
+        public EPH_HEAD_VAL IsMask()
         {
             if (m_pos < m_versionpos)
             {
-                return EPH_HEAD_VAL.EPH_HEAD_VERSION_FOLLOW;
+                return EPH_HEAD_VAL.EPH_HEAD_MASK_SUCCESS;
             }
-            return Version == NConfig.m_head_version ? EPH_HEAD_VAL.EPH_HEAD_VERSION_SUCCESS : EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL;
+
+            UInt32 lmask1 = GetUValue(EPH.EPH_MASK);
+            UInt32 lmask2 = GetUValue(EPH.EPH_MASK + 1);
+            if (lmask1 == 0xffffffff && lmask2 == 0xffffffff)
+            {
+                return EPH_HEAD_VAL.EPH_HEAD_MASK_SUCCESS;
+            }
+            return EPH_HEAD_VAL.EPH_HEAD_MASK_FAIL;
         }
 
         public EPH_HEAD_VAL PushBuff(tcp_buff abuff)
         {
             if (abuff.m_buff == null)
-                return EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL;
+                return EPH_HEAD_VAL.EPH_HEAD_MASK_FAIL;
             EPH_HEAD_VAL lval = IsReady();
-            if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FOLLOW || lval == EPH_HEAD_VAL.EPH_HEAD_FOLLOW)
+            if (lval == EPH_HEAD_VAL.EPH_HEAD_FOLLOW)
             {
                 int ltemp = PackHeadByte - m_pos;
                 int lpos = abuff.m_len - abuff.m_pos;
@@ -190,10 +210,10 @@ namespace ngl
         public EPH_HEAD_VAL PushBuff(tcp_buff abuff)
         {
             if (abuff.m_buff == null)//不可恢复的错误需要断线
-                return EPH_HEAD_VAL.EPH_HEAD_VERSION_FAIL;
+                return EPH_HEAD_VAL.EPH_HEAD_MASK_FAIL;
 
             EPH_HEAD_VAL lval = m_head.IsReady();
-            if (lval == EPH_HEAD_VAL.EPH_HEAD_VERSION_FOLLOW)
+            if (lval == EPH_HEAD_VAL.EPH_HEAD_FOLLOW)
             {////需要补全包头
                 m_head.PushBuff(abuff);
             }

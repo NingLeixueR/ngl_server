@@ -7,8 +7,7 @@ namespace ngl
         public static bool Load(string aname)
         {
             RCsv lcsv = new RCsv();
-            Int32 lversion = 0;
-            if (lcsv.Read(aname, ref lversion) == false)
+            if (lcsv.Read(aname) == false)
                 return false;
             if (lcsv.ReadCsv(tablecsv) == false)
                 return false;

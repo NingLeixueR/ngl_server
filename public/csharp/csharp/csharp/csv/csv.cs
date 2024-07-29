@@ -41,26 +41,26 @@ namespace ngl
     {
         public string m_data = "";
         public int m_pos = 0;
-        public bool Read(string aname, ref Int32 aversion)
+        public bool Read(string aname)
         {
             ReadFile lrf = new ReadFile(aname);
             lrf.Open();
             //# 跳过前3行表头
             lrf.JumpBegin(3, true);
-            string? lversion = lrf.ReadLine();
-            if (lversion != null)
-            {
-                string[] result1 = Regex.Split(lversion, ",");
-                if (result1.Length == 0)
-                    return false;
-                string[] result2 = Regex.Split(result1[0], ":");
-                if (result2.Length != 2)
-                    return false;
-                if (result2[0] != "version")
-                    return false;
-                if (Int32.TryParse(result2[1], out aversion) == false)
-                    return false;
-            }
+            //string? lversion = lrf.ReadLine();
+            //if (lversion != null)
+            //{
+            //    string[] result1 = Regex.Split(lversion, ",");
+            //    if (result1.Length == 0)
+            //        return false;
+            //    string[] result2 = Regex.Split(result1[0], ":");
+            //    if (result2.Length != 2)
+            //        return false;
+            //    if (result2[0] != "version")
+            //        return false;
+            //    if (Int32.TryParse(result2[1], out aversion) == false)
+            //        return false;
+            //}
             m_data = lrf.ReadCurrent();
             lrf.Close();
             return true;
@@ -117,9 +117,9 @@ namespace ngl
             return ltemp;
         }
 
-        public RCsv(string afilename, ref Int32 aversion)
+        public RCsv(string afilename)
         {
-            Read(afilename, ref aversion);
+            Read(afilename);
         }
 
         public RCsv()

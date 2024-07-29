@@ -58,6 +58,7 @@ namespace ngl
                         return;
                     ltcp.m_connectSuccessful = (Tcp.TcpConnect aconnect) =>
                     {
+
                         // 登陆游戏
                         var pro = new PROBUFF_NET_ROLE_LOGIN();
                         pro.MSession = item.MSession;
@@ -139,6 +140,20 @@ namespace ngl
                }
                );
 
+            pp.Registry<PROBUFF_NET_CHAT_RESPONSE>(
+               item =>
+               {
+                   if (item.MType == (int)enum_logic_chat.UpdataSpeck)
+                   {
+                       foreach (var itemchat in item.MChatlist)
+                       {
+                           DateTime dt = DateTime.SpecifyKind(new DateTime(1970, 1, 1).AddSeconds(itemchat.MUtc), DateTimeKind.Utc);
+                           string str = dt.ToString("yyyy/MM/dd dddd HH:mm:ss");
+                           Console.WriteLine($"{str} {itemchat.MRolename} : {itemchat.MContent}");
+                       }
+                   }
+               }
+               );
 
             ltcp.m_connectSuccessful = (Tcp.TcpConnect aconnect) =>
             {
@@ -182,21 +197,28 @@ namespace ngl
             while (true)
             {
                 // 等待输入命令测试udp消息通信
-                char zx = Console.ReadKey().KeyChar;
-                Console.WriteLine($"##[{zx}]##");
-                if (zx == '1')
+                string? input = Console.ReadLine();
+                if (input == null)
+                    continue;
+                Console.WriteLine($"##[{input}]##");
+                if (input == "startkcp")
                 {
                     NglKcp.getInstance().Close();
                     NglKcp.reconnect();
                 }
-                else
+                else if (input == "kcppro")
                 {
                     var protm = new PROBUFF_NET_GET_TIME();
                     NglKcp.getInstance().Send(protm);
                 }
-              
+                else
+                {// # /chat|1*1*ribenrensb3
 
-
+                    var pro = new PROBUFF_NET_CMD();
+                    pro.MCmd = input;
+                    if (lgatewayconnect != 0)
+                        ltcp.Send(lgatewayconnect, pro, -1, roleid);
+                }
 
                 Thread.Sleep(500);
             }
