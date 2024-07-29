@@ -53,36 +53,42 @@ class SocketByte {
 	
 //enum EPH
 //{
-//	EPH_VERSION = 0,			// 协议版本号
-//	EPH_BYTES,					// 协议字节数
-//	EPH_TIME,					// 发送端的时间戳
-//	EPH_PROTOCOLNUM,			// 协议号
-//	EPH_PROTOCOLTYPE,			// 协议类型 EPROTOCOL_TYPE
-//	EPH_ACTOR_TYPEAREA,			// ACTOR_TYPE_AREA
-//	EPH_ACTOR_ID,				// ACTOR_ID
-//	EPH_REQUEST_ACTOR_TYPEAREA,	// Request REQUEST_ACTOR_TYPE_AREA
-//	EPH_REQUEST_ACTOR_ID,	// Request ACTOR_ID
+//	EPH_MASK_VALUE = 0xff,
+//	EPH_MASK_COUNT = 2,
+//	EPH_MASK = 0,								// 用于确认是否使用包
+//	EPH_BYTES = EPH_MASK_COUNT,					// 协议字节数
+//	EPH_TIME,									// 发送端的时间戳
+//	EPH_PROTOCOLNUM,							// 协议号
+//	EPH_PROTOCOLTYPE,							// 协议类型 EPROTOCOL_TYPE
+//	EPH_ACTOR_TYPEAREA,							// ACTOR_TYPE_AREA
+//	EPH_ACTOR_ID,								// ACTOR_ID
+//	EPH_REQUEST_ACTOR_TYPEAREA,					// Request REQUEST_ACTOR_TYPE_AREA
+//	EPH_REQUEST_ACTOR_ID,						// Request ACTOR_ID
 //	EPH_SUM,	
 //};
-	
-	private $EPH_VERSION = 0;
-	private $EPH_BYTES = 1;
-	private $EPH_TIME = 2;
-	private $EPH_PROTOCOLNUM = 3;
-	private $EPH_PROTOCOLTYPE = 4;
-	private $EPH_ACTOR_TYPEAREA = 5;
-	private $EPH_ACTOR_ID = 6;
-	private $EPH_REQUEST_ACTOR_TYPEAREA = 7;
-	private $EPH_REQUEST_ACTOR_ID = 8;
-	private $EPH_SUM = 9;
+
+	private $EPH_MASK_COUNT 	= 2;
+	private $EPH_MASK 			= 0;
+	private $EPH_BYTES 			= 2;
+	private $EPH_TIME 			= 3;
+	private $EPH_PROTOCOLNUM 	= 4;
+	private $EPH_PROTOCOLTYPE 	= 5;
+	private $EPH_ACTOR_TYPEAREA = 6;
+	private $EPH_ACTOR_ID 		= 7;
+	private $EPH_REQUEST_ACTOR_TYPEAREA = 8;
+	private $EPH_REQUEST_ACTOR_ID = 9;
+	private $EPH_SUM 			= 10;
 	
 	private $head = array();
 	private $recvhead= array();
 	private $datajson = "";
 	
-	public function SetVersion()
+	public function SetMask()
 	{
-		$this->head[$this->EPH_VERSION] = 1;
+		for($i =  $this->EPH_MASK;$i < $this->EPH_MASK + $this->EPH_MASK_COUNT;++$i)
+		{
+			$this->head[$i] = 0xffffffff;
+		}
 	}
 	
 	public function SetTime()
@@ -137,7 +143,7 @@ class SocketByte {
 	{
 		$this->datajson = $jsonstr;
 		
-		$this->SetVersion();
+		$this->SetMask();
 		$this->SetTime();
 		$this->SetProtocolNum();
 		$this->SetProtocolType();
