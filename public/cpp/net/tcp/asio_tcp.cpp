@@ -248,9 +248,7 @@ namespace ngl
 		}
 
 		inline void handle_write(
-			service_tcp* ap, 
-			const std::error_code& error, 
-			std::shared_ptr<pack> apack
+			service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack
 		)
 		{
 			if (error)
@@ -262,9 +260,7 @@ namespace ngl
 		}
 
 		inline void handle_write_void(
-			service_tcp* ap, 
-			const std::error_code& error, 
-			std::shared_ptr<void> apack
+			service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack
 		)
 		{
 			if (error)

@@ -54,6 +54,12 @@ namespace ngl
 				aactortype.push_back(item);
 		}
 
+		inline int32_t actor_count()
+		{
+			ngl_lock;
+			return m_actorbyid.size();
+		}
+
 		inline bool add_actor(ptractor& apactor, const std::function<void()>& afun)
 		{
 			nguid& guid = apactor->guid();
@@ -449,4 +455,10 @@ namespace ngl
 	{
 		m_impl_actor_manage()->finish_suspend_thread();
 	}
+
+	int32_t actor_manage::actor_count()
+	{
+		return m_impl_actor_manage()->actor_count();
+	}
+
 }//namespace ngl

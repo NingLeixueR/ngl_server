@@ -157,6 +157,8 @@ namespace ngl
 
 		static bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
+		static bool sendmsg(i32_sessionid asession, std::string& amsg);
+
 		static const std::string& ip(net_works const* apstruct);
 
 		static net_works const* ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair);

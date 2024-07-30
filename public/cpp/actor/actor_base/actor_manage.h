@@ -64,6 +64,9 @@ namespace ngl
 		//# 暂时挂起所有线程，已执行单步操作(热更数据表)
 		void statrt_suspend_thread();
 		void finish_suspend_thread();
+
+		//# 获取actor数量
+		int32_t actor_count();
 	};
 
 	class actor_suspendthread

@@ -1,6 +1,7 @@
 #include "protocol.h"
 #include "xmlinfo.h"
 #include "xml.h"
+#include "cmd.h"
 
 namespace ngl
 {
@@ -138,9 +139,27 @@ namespace ngl
 
 	void protocol::cmd(std::shared_ptr<pack>& apack)
 	{
-		log_error()->print("protocol::cmd [{}] "
-			, apack->m_buff
-		);
+		std::vector<std::string> lvec;
+		if (tools::splite(apack->m_buff, " ", lvec) == false)
+			return;
+		using handle_cmd = ngl::cmd<protocol, std::string, std::shared_ptr<pack>&, std::vector<std::string>&>;
+		if (handle_cmd::empty())
+		{
+			handle_cmd::push("/actor_count", [](std::shared_ptr<pack>& apack, std::vector<std::string>& aparm)
+				{
+					int32_t lcount = actor_manage::getInstance().actor_count();
+					std::string lstr = std::format("actor count:{}\r\n", lcount);
+					nets::sendmsg(apack->m_id, lstr);
+				}
+			);
+		}
+		std::string& lkey = lvec[0];
+		std::transform(lkey.begin(), lkey.end(), lkey.begin(), tolower);
+		if (handle_cmd::function(lkey, apack, lvec) == false)
+		{
+			log_error()->print("protocol::cmd [{}] ERROR", lkey);
+		}
+		return;
 	}
 
 }// namespace ngl

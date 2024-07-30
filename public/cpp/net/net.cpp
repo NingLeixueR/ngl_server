@@ -130,6 +130,17 @@ namespace ngl
 		return lpprotocol->net_send(asession, apack);
 	}
 
+	bool nets::sendmsg(i32_sessionid asession, std::string& amsg)
+	{
+		int lcount = amsg.size();
+		auto lpack = std::make_shared<pack>();
+		lpack->malloc(lcount);
+		memcpy(lpack->m_buff, amsg.c_str(), lcount);
+		lpack->m_len = lcount;
+		lpack->m_pos = lcount;
+		return nets::sendpack(asession, lpack);
+	}
+
 	const std::string& nets::ip(net_works const* apstruct)
 	{
 		return nconfig::node_type() != ROBOT ? apstruct->m_nip : apstruct->m_ip;
