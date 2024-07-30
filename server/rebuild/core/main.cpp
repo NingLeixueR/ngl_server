@@ -99,7 +99,6 @@ int main(int argc, char** argv)
 	std::map<std::string, int> lvec1;
 	std::map<std::string, int> lvec3;
 	std::map<std::string, int> lvec5;
-	std::map<std::string, int> lvec6;
 	std::set<std::string> ldic;
 
 	std::stringstream m_streamtxt;
@@ -186,5 +185,19 @@ int main(int argc, char** argv)
 	lfiletxt.write(m_streamtxt.str());
 	std::cout << "##############" << cname << std::endl;
 
+	int32_t lsumline = 0;
+	std::for_each(lvec1.begin(), lvec1.end(), [&lsumline](std::pair<const std::string, int>& apair)
+		{
+			lsumline += apair.second;
+		});
+	std::for_each(lvec3.begin(), lvec3.end(), [&lsumline](std::pair<const std::string, int>& apair)
+		{
+			lsumline += apair.second;
+		});
+	std::for_each(lvec5.begin(), lvec5.end(), [&lsumline](std::pair<const std::string, int>& apair)
+		{
+			lsumline += apair.second;
+		});
+	std::cout << "当前源码行数：" << lsumline << std::endl;
 	return 0;
 }

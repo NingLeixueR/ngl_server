@@ -10,14 +10,6 @@ namespace ngl
 	readfile::readfile(const std::string& filename)
 	{
 		m_file.open(filename, std::ios::binary);
-		if (m_file.is_open())
-		{
-			std::cout << "is_open" << std::endl;
-		}
-		else
-		{
-			std::cout << "not is_open" << std::endl;
-		}
 	}
 
 	readfile::~readfile()

@@ -25,6 +25,11 @@ namespace ngl
 		catch (...) {}
 	}
 
+	bool readfile::is_open()
+	{
+		return m_file.is_open();
+	}
+
 	int readfile::get_maxline()
 	{
 		std::string line;

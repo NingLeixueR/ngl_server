@@ -10,7 +10,7 @@ class idlcppprotocol
 	{
 		char ltmbuff[1024] = { 0 };
 		ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
-		m_tit = "// 注意【rebuild.bat 工具生成文件，不要手动修改】\n";
+		m_tit = "// 注意【IDL 工具生成文件，不要手动修改】\n";
 		m_tit += "// 创建时间 ";
 		m_tit += ltmbuff;
 		m_tit += "\n";

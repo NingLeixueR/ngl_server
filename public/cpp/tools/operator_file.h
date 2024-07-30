@@ -17,7 +17,8 @@ namespace ngl
 	public:
 		readfile(const std::string& filename);
 		~readfile();
-
+		// # 是否成功打开文件
+		bool is_open();
 		// # 获取文件的行数
 		int get_maxline();
 		// # 跳过前anum行
