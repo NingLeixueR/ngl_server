@@ -2,7 +2,7 @@
 
 #include "serialize.h"
 
-#define def_portocol_function_pop(...)							\
+#define def_function_pop(...)									\
 	inline bool pop(ngl::unserialize& ser)						\
 	{															\
 		return ser.pop(__VA_ARGS__);							\
@@ -14,7 +14,7 @@
 	}
 
 
-#define def_portocol_function_push(...)							\
+#define def_function_push(...)									\
 	inline bool push(ngl::serialize& ser)const					\
 	{															\
 		return ser.push(__VA_ARGS__);							\
@@ -26,7 +26,7 @@
 	}
 
 
-#define def_portocol_function_bytes(...)					\
+#define def_portocol_bytes(...)								\
 	inline int bytes(ngl::serialize_bytes& abytes)const		\
 	{														\
 		return abytes.bytes(__VA_ARGS__);					\
@@ -37,7 +37,7 @@
 		return bytes(lserialize_bytes);						\
 	}
 
-#define def_portocol_function_name(_Name)					\
+#define def_portocol_name(_Name)							\
 	static const char* name()								\
 	{														\
 		return #_Name;										\
@@ -46,10 +46,10 @@
 ///// 简化定义协议类
 // --- 名称 ....(成员)
 #define def_portocol_function(_Name,...)					\
-	def_portocol_function_pop	(__VA_ARGS__)				\
-	def_portocol_function_push	(__VA_ARGS__)				\
-	def_portocol_function_bytes	(__VA_ARGS__)				\
-	def_portocol_function_name	(_Name)
+	def_function_pop	(__VA_ARGS__)				\
+	def_function_push	(__VA_ARGS__)				\
+	def_portocol_bytes	(__VA_ARGS__)				\
+	def_portocol_name	(_Name)
 
 // --- 协议号  协议类型  名称 ....(成员)
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)

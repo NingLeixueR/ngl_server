@@ -109,7 +109,7 @@ int main(int argc, char** argv)
 		ldic.insert(targetPath);
 		find(false, ".cpp", targetPath, ldic, lvec1);
 		find(false, ".c", targetPath, ldic, lvec5);
-		//find(false, ".h", targetPath, ldic, lvec3);
+		find(false, ".h", targetPath, ldic, lvec3);
 	}
 
 	std::map<int, std::map<std::string,int>> lmap;
@@ -117,6 +117,13 @@ int main(int argc, char** argv)
 	{
 		lmap[item.first.size()].insert(item);
 	}
+
+	/*std::map<int, std::map<std::string, int>> lmapinclude;
+	for (auto& item : lvec3)
+	{
+		lmapinclude[item.first.size()].insert(item);
+	}*/
+
 	int llinecount = 0;
 	auto lsavefun = [&argv](int aindex, std::stringstream& astream)
 	{
@@ -124,13 +131,20 @@ int main(int argc, char** argv)
 			ngl::writefile lfile(cname);
 			lfile.write(astream.str());
 	};
-	auto lmalloc = []()->std::stringstream*
+	auto lmalloc = [/*&lmapinclude*/]()->std::stringstream*
 		{
 			std::stringstream* m_stream = new std::stringstream();
 			*m_stream << "// 注意【rebuild.bat 工具生成文件，不要手动修改】" << std::endl;
 			char ltmbuff[1024] = { 0 };
 			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 			*m_stream << ltmbuff << std::endl;
+			/*for (const auto& item : lmapinclude)
+			{
+				for (const auto& item2 : item.second)
+				{
+					*m_stream << "#include \"" << item2.first << "\"" << std::endl;
+				}
+			}*/
 			return m_stream;
 		};
 
