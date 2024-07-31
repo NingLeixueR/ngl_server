@@ -85,7 +85,6 @@ namespace ngl
 			int lnow = localtime::gettime();
 			if (lnow < m_info.notalkutc())
 			{
-
 				auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR>();
 				pro->set_m_errmessage(std::format("no talk [{}]", tools::time2str(m_info.notalkutc())));
 				send_client(id_guid(), pro);
