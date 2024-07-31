@@ -1,4 +1,5 @@
 #include "sysconfig.h"
+#include "localtime.h"
 #include "tools.h"
 
 #include <cassert>
@@ -1328,4 +1329,12 @@ namespace ngl
 		ngl::md5 ltemp(text);
 		return ltemp.values();
 	}
+
+	std::string tools::time2str(int autc)
+	{
+		char lbuff[1024] = { 0 };
+		ngl::localtime::time2str(lbuff, 1024, autc, "%y/%m/%d %H:%M:%S");
+		return lbuff;
+	}
+
 }// namespace ngl

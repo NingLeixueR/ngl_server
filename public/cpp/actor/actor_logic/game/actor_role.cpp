@@ -250,9 +250,9 @@ namespace ngl
 			return true;
 		}
 
-		if (handle_rechangecmd::empty())
+		if (handle_php::empty())
 		{
-			handle_rechangecmd::push("pay", [this](int id, ngl::json_read& aos)
+			handle_php::push("pay", [this](int id, ngl::json_read& aos)
 				{
 					struct pay
 					{
@@ -271,7 +271,7 @@ namespace ngl
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				}
 			);
-			handle_rechangecmd::push("gmrechange", [this](int id, ngl::json_read& aos)
+			handle_php::push("gmrechange", [this](int id, ngl::json_read& aos)
 				{
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
@@ -286,7 +286,7 @@ namespace ngl
 					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				});
-			handle_rechangecmd::push("rechange", [this](int id, ngl::json_read& aos)
+			handle_php::push("rechange", [this](int id, ngl::json_read& aos)
 				{//actor_role::loginpay() callback
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)
@@ -294,11 +294,26 @@ namespace ngl
 
 					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
+			// 禁言 lduration=0解封
+			handle_php::push("notalk", [this](int id, ngl::json_read& aos)
+				{
+					int32_t lduration;
+					if (aos.read("data", lduration) == false)
+						return;
+
+					int lnow = localtime::gettime();
+					m_info.change_notalkutc(lnow + lduration);
+					gcmd<int32_t> pro;
+					pro.id = id;
+					pro.m_operator = "notalk_responce";
+					pro.m_data = 0;
+					log_error()->print("[{}] notalk [{}]", id_guid(), tools::time2str(lnow + lduration));
+				});
 		}
 
-		if (handle_rechangecmd::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		if (handle_php::function(loperator, adata.get_data()->identifier(), lojson) == false)
 		{
-			log_error()->print("GM actor_role rechange operator[{}] ERROR", loperator);
+			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}
 		return true;
 	}

@@ -180,11 +180,10 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata)
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR>& adata)
 	{
-		log_error()->print("[{}][{}][{}]"
+		log_error()->print("[{}][{}]"
 			, nguid::make_type(id_guid(), ACTOR_ROLE)
-			, adata.get_data()->m_errnum()
 			, adata.get_data()->m_errmessage()
 		);
 		return true;

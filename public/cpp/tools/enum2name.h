@@ -77,6 +77,17 @@ namespace ngl
 				return nullptr;
 			return itor2->second.c_str();
 		}
+
+		static void print()
+		{
+			for(const auto& item1 : m_datae2n)
+			{
+				for (const auto& item2 : item1.second)
+				{//ENUMT, std::string
+					std::cout << std::format("{}:{}", (int)item2.first, item2.secod) << std::endl;
+				}
+			}
+		}
 	};
 
 	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_toupper*/>

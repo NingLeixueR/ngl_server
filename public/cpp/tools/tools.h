@@ -567,6 +567,9 @@ namespace ngl
 		};
 
 		static std::string md5(const std::string& text);
+
+
+		static std::string time2str(int autc);
 	};
 
 	template <typename T>

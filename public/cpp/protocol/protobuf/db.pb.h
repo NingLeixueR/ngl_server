@@ -642,6 +642,7 @@ class db_brief PROTOBUF_FINAL :
     kMMoneygoldFieldNumber = 4,
     kMMoneysilverFieldNumber = 5,
     kMVipFieldNumber = 6,
+    kMNotalkutcFieldNumber = 7,
   };
   // string m_name = 2;
   bool has_m_name() const;
@@ -728,6 +729,19 @@ class db_brief PROTOBUF_FINAL :
   void _internal_set_m_vip(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 m_notalkutc = 7;
+  bool has_m_notalkutc() const;
+  private:
+  bool _internal_has_m_notalkutc() const;
+  public:
+  void clear_m_notalkutc();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_notalkutc() const;
+  void set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_notalkutc() const;
+  void _internal_set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbdb.db_brief)
  private:
   class _Internal;
@@ -743,6 +757,7 @@ class db_brief PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 m_moneygold_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_moneysilver_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_vip_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_notalkutc_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
@@ -5511,6 +5526,34 @@ inline void db_brief::_internal_set_m_vip(::PROTOBUF_NAMESPACE_ID::int32 value) 
 inline void db_brief::set_m_vip(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_vip(value);
   // @@protoc_insertion_point(field_set:pbdb.db_brief.m_vip)
+}
+
+// int32 m_notalkutc = 7;
+inline bool db_brief::_internal_has_m_notalkutc() const {
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
+  return value;
+}
+inline bool db_brief::has_m_notalkutc() const {
+  return _internal_has_m_notalkutc();
+}
+inline void db_brief::clear_m_notalkutc() {
+  m_notalkutc_ = 0;
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_brief::_internal_m_notalkutc() const {
+  return m_notalkutc_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_brief::m_notalkutc() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_brief.m_notalkutc)
+  return _internal_m_notalkutc();
+}
+inline void db_brief::_internal_set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000040u;
+  m_notalkutc_ = value;
+}
+inline void db_brief::set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_notalkutc(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_brief.m_notalkutc)
 }
 
 // -------------------------------------------------------------------

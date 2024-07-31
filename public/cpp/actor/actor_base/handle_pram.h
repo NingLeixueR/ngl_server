@@ -106,8 +106,7 @@ namespace ngl
 			apram.m_forwardfun = 
 				[aactorid, arequestactorid](
 					std::map<i32_serverid, actor_node_session> asession
-					, std::map<nguid, i32_serverid>& amap
-					, handle_pram& adata
+					, std::map<nguid, i32_serverid>& amap, handle_pram& adata
 				)
 				{
 					handle_pram_send<T, IS_SEND>::sendclient(aactorid, arequestactorid, adata);
@@ -179,10 +178,7 @@ namespace ngl
 				for (i32_serverid ltempserverid : lset)
 				{
 					handle_pram_send<T, IS_SEND>::sendbyserver(
-						ltempserverid, 
-						aactorid, 
-						arequestactorid, 
-						adata
+						ltempserverid, aactorid, arequestactorid, adata
 					);
 				}
 				return true;
@@ -190,10 +186,7 @@ namespace ngl
 			return false;
 		}
 		return handle_pram_send<T, IS_SEND>::sendbyserver(
-			lserverid, 
-			aactorid, 
-			arequestactorid, 
-			adata
+			lserverid, aactorid, arequestactorid, adata
 		);
 	}
 

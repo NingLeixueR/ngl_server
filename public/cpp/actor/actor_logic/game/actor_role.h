@@ -51,7 +51,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		using handle_rechangecmd = cmd<actor_role, std::string, int, ngl::json_read&>;
+		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
 
 		//# 执行handle之后调用
 		virtual void handle_after();
@@ -70,6 +70,7 @@ namespace ngl
 		{
 			ecross_ordinary,			// 本服转发
 			ecross_cross_ordinary,		// 跨服转发
+			ecross_none,				// 错误转发
 		};
 
 		//# 重载forward_type来指定转发类型
@@ -81,6 +82,15 @@ namespace ngl
 
 		ecross forward_type(pbnet::PROBUFF_NET_CHAT& adata)
 		{
+			int lnow = localtime::gettime();
+			if (lnow < m_info.notalkutc())
+			{
+
+				auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR>();
+				pro->set_m_errmessage("no talk!!!!");
+				send_client(id_guid(), pro);
+				return ecross_none;
+			}
 			return adata.m_channelid() == 2 ? ecross_cross_ordinary : ecross_ordinary;
 		}
 

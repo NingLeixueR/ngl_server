@@ -18,6 +18,7 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+
 	if (argc <= 1)
 	{
 		std::cout << "²ÎÊý´íÎó" << std::endl;

@@ -41,6 +41,9 @@ namespace ngl
 
 		int32_t silver();
 		void change_silver(int avalues);
+
+		int32_t notalkutc();
+		void change_notalkutc(int avalues);
 	};
 
 	

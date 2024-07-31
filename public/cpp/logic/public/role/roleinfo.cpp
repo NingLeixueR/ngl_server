@@ -109,4 +109,17 @@ namespace ngl
 		lrb->set_m_moneysilver(lrb->m_moneysilver() + avalues);
 		sync_actor_roleinfo();
 	}
+
+	int32_t roleinfo::notalkutc()
+	{
+		pbdb::db_brief* lrb = db()->get(false).mutable_m_base();
+		return lrb->m_notalkutc();
+	}
+
+	void roleinfo::change_notalkutc(int avalues)
+	{
+		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
+		lrb->set_m_notalkutc(avalues);
+		sync_actor_roleinfo();
+	}
 }// namespace ngl

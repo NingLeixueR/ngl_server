@@ -99,10 +99,6 @@ namespace ngl
 				{
 					std::string lorderid;
 					role->createorder(lorderid, 1989);
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR_RESPONSE>();
-					pro->set_m_errnum(0);
-					pro->set_m_errmessage(lorderid);
-					role->send_client(role->id_guid(), pro);
 				}
 			);
 			handle_cmd::push("/notices", [](actor_role* role, const char* aparm)

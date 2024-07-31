@@ -81,6 +81,7 @@ namespace ngl
 			nguid lguid(adataid);
 			m_actorserver[lguid] = aserverid;
 			m_actortypeserver[lguid.type()].insert(adataid);
+			print_address();
 		}
 
 		static void actor_del(i64_actorid adataid)

@@ -46,7 +46,7 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_ERROR_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_ERROR>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata);

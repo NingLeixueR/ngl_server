@@ -69,6 +69,19 @@ namespace ngl
 		>(true);
 	}
 
+	void set_node(int32_t aserverid, int asession)
+	{
+		tab_servers* tab = ttab_servers::tab(aserverid);
+		if (tab == nullptr)
+			return;
+		nactornode lnode;
+		lnode.m_name = tab->m_name;
+		lnode.m_serverid = aserverid;
+		//lnode.m_actortype.push_back(ACTOR_SERVER);
+		naddress::set_node(lnode);
+		naddress::set_session(aserverid, asession);
+	}
+
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
@@ -80,15 +93,9 @@ namespace ngl
 		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
 			{
 				i64_actorid lactorserve = actor_server::actorid();
-				{
-					nactornode lnode;
-					lnode.m_name		= "actorserver";
-					lnode.m_serverid	= tabactor->m_id;
-					lnode.m_actortype.push_back(ACTOR_SERVER);
-					naddress::set_node(lnode);
-					naddress::set_session(tabactor->m_id, asession);
-					naddress::actor_add(tabactor->m_id, lactorserve);
-				}
+				set_node(tabactor->m_id, asession);
+				naddress::actor_add(tabactor->m_id, lactorserve);
+
 				{//注册结点
 					np_actornode_register lpram
 					{
@@ -140,11 +147,14 @@ namespace ngl
 	{
 		if (isactiv_connect(aserverid))
 		{
-			nets::connect(aserverid, [this](i32_session asession)
+			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
 					log_warn()->print(
 						"connect success nodeid:{}", nconfig::m_nodeid
 					);
+
+					set_node(aserverid, asession);
+
 					np_actorclient_node_connect pro;
 					pro.m_id = nconfig::m_nodeid;
 					nets::sendbysession(asession, pro, nguid::moreactor(), id_guid());
@@ -199,8 +209,11 @@ namespace ngl
 
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
-			naddress::set_session(lserverid, lpack->m_id);
+			
 			server_session::add(lserverid, lpack->m_id);
+
+			set_node(lserverid, lpack->m_id);
+			naddress::set_session(lserverid, lpack->m_id);
 
 			// 主动连接
 			if (isactiv_connect(lserverid) == false)
