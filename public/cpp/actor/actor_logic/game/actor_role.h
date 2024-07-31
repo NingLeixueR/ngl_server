@@ -87,7 +87,7 @@ namespace ngl
 			{
 
 				auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR>();
-				pro->set_m_errmessage("no talk!!!!");
+				pro->set_m_errmessage(std::format("no talk [{}]", tools::time2str(m_info.notalkutc())));
 				send_client(id_guid(), pro);
 				return ecross_none;
 			}
