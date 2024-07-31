@@ -17,6 +17,7 @@ namespace ngl
 		static std::set<i64_actorid>			m_dataid;
 		static bool								m_recvdatafinish;
 		static std::function<void(const T&)>	m_recvdatafinishfun;
+		static std::function<void(int64_t, const T&)>	m_changedatafun;
 	public:
 		static std::map<i64_actorid, T> m_data;
 
@@ -48,10 +49,14 @@ namespace ngl
 							}
 						}						
 						m_data[lpair.first] = lpair.second;
+						if (m_changedatafun != nullptr)
+						{
+							m_changedatafun(lpair.first, lpair.second);
+						}
 					}
-					m_recvdatafinish = true;
-					if (m_recvdatafinishfun != nullptr)
+					if (m_recvdatafinish == false && m_recvdatafinishfun != nullptr)
 					{
+						m_recvdatafinish = true;
 						for (std::pair<const int64_t, T>& lpair : lmap)
 						{
 							m_recvdatafinishfun(lpair.second);
@@ -61,9 +66,7 @@ namespace ngl
 
 			// 注册回复
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM,
-				TDerived,
-				np_channel_register_reply<T>
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>
 			>([](TDerived* apTDerived, message<np_channel_register_reply<T>>& ainfo)
 				{
 					m_actor->log_error()->print(
@@ -115,7 +118,7 @@ namespace ngl
 		}
 
 		// # 如果数据部分复制到位就执行以下操作
-		static void set_recv_data_finish(const std::function<void(const pbdb::db_brief&)>& afun)
+		static void set_recv_data_finish(const std::function<void(const T&)>& afun)
 		{
 			m_recvdatafinishfun = afun;
 			if (m_recvdatafinish)
@@ -127,6 +130,11 @@ namespace ngl
 			}
 		}
 
+		// # 如果数据发生变化
+		static void set_changedata_fun(const std::function<void(int64_t, const T&)>& afun)
+		{
+			m_changedatafun = afun;
+		}
 	private:
 		static void register_echannel()
 		{
@@ -159,4 +167,7 @@ namespace ngl
 	
 	template <typename TDerived, typename T>
 	std::function<void(const T&)> nsp_client<TDerived, T>::m_recvdatafinishfun = nullptr;
+
+	template <typename TDerived, typename T>
+	std::function<void(int64_t, const T&)>	nsp_client<TDerived, T>::m_changedatafun;
 }//namespace ngl

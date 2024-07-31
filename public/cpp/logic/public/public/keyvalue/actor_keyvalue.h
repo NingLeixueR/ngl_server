@@ -47,9 +47,7 @@ namespace ngl
 		static i64_actorid actorid()
 		{
 			return nguid::make(
-				ACTOR_KEYVALUE,
-				ttab_servers::tab()->m_area,
-				nguid::none_actordataid()
+				ACTOR_KEYVALUE, ttab_servers::tab()->m_area, nguid::none_actordataid()
 			);
 		}
 	};

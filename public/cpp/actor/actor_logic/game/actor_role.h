@@ -51,8 +51,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
-
 		//# 执行handle之后调用
 		virtual void handle_after();
 
@@ -170,6 +168,7 @@ namespace ngl
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
 
+		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
 		//# gm请求
 		bool handle(message<mforward<np_gm>>& adata);
 

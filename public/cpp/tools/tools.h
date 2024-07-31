@@ -389,6 +389,19 @@ namespace ngl
 			return true;
 		}
 
+		template <typename T>
+		static bool splite(const char* abuff, const char* afg, std::set<T>& aset)
+		{
+			std::vector<std::string> lvec;
+			if (splite(abuff, afg, lvec) == false)
+				return false;
+			for (std::string& item : lvec)
+			{
+				aset.insert(tools::lexical_cast<T>(item.c_str()));
+			}
+			return true;
+		}
+
 		static bool splite(const char* abuff, const char* afg, std::vector<std::string>& avec);
 
 		template <typename ...ARGS>
@@ -456,6 +469,32 @@ namespace ngl
 				if (i != 0)
 					astr += afg;
 				astr += avec[i];
+			}
+			return true;
+		}
+
+		template <typename T>
+		static bool splicing(const std::set<T>& avec, const char* afg, std::string& astr)
+		{
+			int i = 0;
+			for (auto itor = avec.begin(); i < avec.size(); ++i,++itor)
+			{
+				if (i != 0)
+					astr += afg;
+				astr += tools::lexical_cast<std::string>(*itor);
+			}
+			return true;
+		}
+
+		template <typename T>
+		static bool splicing(const std::set<std::string>& avec, const char* afg, std::string& astr)
+		{
+			int i = 0;
+			for (auto itor = avec.begin(); i < avec.size(); ++i, ++itor)
+			{
+				if (i != 0)
+					astr += afg;
+				astr += *itor;
 			}
 			return true;
 		}

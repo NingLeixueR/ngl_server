@@ -511,6 +511,8 @@ namespace ngl
 		return aret != adata;
 	}
 
+	
+
 	bool tools::splite(const char* abuff, const char* afg, std::vector<std::string>& avec)
 	{
 		if (abuff == nullptr || afg == nullptr)

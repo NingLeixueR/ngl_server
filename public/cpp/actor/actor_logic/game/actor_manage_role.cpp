@@ -1,4 +1,5 @@
 #include "actor_manage_role.h"
+#include "actor_keyvalue.h"
 #include "actor_create.h"
 #include "nregister.h"
 #include "ntimer.h"
@@ -17,6 +18,13 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
+		std::set<i64_actorid> ldatakvid{ pbdb::db_keyvalue_ekv_account_ban };
+		nclient_keyvalue::init(actor_keyvalue::actorid(), this, ldatakvid);
+		nclient_keyvalue::set_changedata_fun([this](int64_t aid, const pbdb::db_keyvalue& akeyval)
+			{
+				m_roleban.clear();
+				tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
+			});
 	}
 
 	void actor_manage_role::nregister()
@@ -29,15 +37,19 @@ namespace ngl
 	i64_actorid actor_manage_role::actorid()
 	{
 		return nguid::make(
-			ACTOR_MANAGE_ROLE, 
-			ttab_servers::tab()->m_area, 
-			nguid::none_actordataid()
+			ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, nguid::none_actordataid()
 		);
 	}
 
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		auto recv = adata.get_data();
+
+		if (m_roleban.find(recv->m_roleid()) == m_roleban.end())
+		{
+			return true;
+		}
+
 		nguid lguid(recv->m_roleid());
 		log_error()->print("actor_manage_role roleid:{}", recv->m_roleid());
 		np_actorswitch_process_role pro
@@ -46,6 +58,65 @@ namespace ngl
 			.m_gatewayid = recv->m_gatewayid(),
 		};
 		actor_create::switch_process(recv->m_roleid(), 0, nconfig::m_nodeid, pro);
+		return true;
+	}
+
+	bool actor_manage_role::handle(message<mforward<np_gm>>& adata)
+	{
+		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		std::string loperator;
+		if (lojson.read("operator", loperator) == false)
+		{
+			return true;
+		}
+
+		if (handle_php::empty())
+		{
+			handle_php::push("ban_role", [this](int id, ngl::json_read& aos)
+				{
+					struct banrole
+					{
+						int64_t m_roleid = 0;
+						int32_t m_stat = 0;
+						jsonfunc("roleid", m_roleid, "stat", m_stat)
+					};
+					banrole m_banrole;
+					if (aos.read("data", m_banrole) == false)
+						return;
+
+					if (m_banrole.m_stat == 1)
+					{
+						m_roleban.insert(m_banrole.m_roleid);
+					}
+					else
+					{
+						m_roleban.erase(m_banrole.m_roleid);
+					}
+
+					std::string lbanrole;
+					tools::splicing(m_roleban, "*", lbanrole);
+					
+					pbdb::db_keyvalue* lpdata = nclient_keyvalue::get(pbdb::db_keyvalue_ekv_account_ban);
+					if (lpdata != nullptr)
+					{
+						lpdata->set_m_id(pbdb::db_keyvalue_ekv_account_ban);
+						lpdata->set_m_value(lbanrole);
+						nclient_keyvalue::change(pbdb::db_keyvalue_ekv_account_ban);
+					}
+
+					// ·µ»Ø {"data":int32_t}
+					gcmd<int32_t> pro;
+					pro.id = id;
+					pro.m_operator = "ban_role_responce";
+					pro.m_data = 0;
+				}
+			);
+		}
+
+		if (handle_php::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		{
+			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
+		}
 		return true;
 	}
 }//namespace ngl
