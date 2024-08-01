@@ -274,12 +274,6 @@ namespace ngl
 		inline void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver)
 		{
 			ngl_lock;
-			// 单例不允许群发
-			if (enum_actor::is_signle(atype) && aotherserver)
-			{
-				std::cout << "enum_actor::is_signle("<< atype <<") && "<< aotherserver << std::endl;
-				return;
-			}
 			// 1.先发给本机上的atype
 			for (std::pair<const nguid, ptractor>& lpair : m_actorbytype[atype])
 			{
