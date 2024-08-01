@@ -14,6 +14,7 @@ namespace ngl
 				{
 					.m_type = ACTOR_MANAGE_ROLE,
 					.m_area = ttab_servers::tab()->m_area,
+					.m_id = ttab_servers::tab()->m_tcount
 				},
 				.m_weight = 0x7fffffff,
 			})
@@ -37,7 +38,7 @@ namespace ngl
 	i64_actorid actor_manage_role::actorid()
 	{
 		return nguid::make(
-			ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, nguid::none_actordataid()
+			ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, ttab_servers::tab()->m_tcount
 		);
 	}
 
@@ -45,7 +46,7 @@ namespace ngl
 	{
 		auto recv = adata.get_data();
 
-		if (m_roleban.find(recv->m_roleid()) == m_roleban.end())
+		if (m_roleban.find(recv->m_roleid()) != m_roleban.end())
 		{
 			return true;
 		}
