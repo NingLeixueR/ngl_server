@@ -28,7 +28,7 @@ namespace ngl
 	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro)
 	{
 		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
-		send_actor(nguid::make_self(atype), pro);
+		send_actor(atype, pro, true);
 	}
 
 	void actor_gm::sendbyactorid(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro)
@@ -125,9 +125,7 @@ namespace ngl
 					if (lreadjson.read("db", ltype))
 					{
 						lactorid = nguid::make(
-							db_enum((pbdb::ENUM_DB)(ltype)),
-							ttab_servers::tab()->m_area,
-							nguid::none_actordataid()
+							db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid()
 						);
 						sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
 					}

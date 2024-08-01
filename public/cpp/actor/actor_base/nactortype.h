@@ -20,6 +20,7 @@ namespace ngl
 		ACTOR_ROBOT,										// 机器人
 		ACTOR_GUILD,										// 工会	
 		ACTOR_PLAYS,										// 玩法
+		ACTOR_MANAGE_ROLE,									// 负责创建actor_role
 		ACTOR_PLAYS_GO_UNDERGROUNDPALACE = ACTOR_PLAYS,		// 玩法[勇闯地宫]
 
 		ACTOR_PLAYS_END = ACTOR_PLAYS + pbnet::eplays_count,
@@ -34,7 +35,6 @@ namespace ngl
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_LOG,
 		ACTOR_KCP,
-		ACTOR_MANAGE_ROLE,
 		ACTOR_MANAGE_ROBOT,
 		ACTOR_MANAGE_GUILD,										// 工会管理器
 		ACTOR_CSVCLIENT,										// 热更csv client

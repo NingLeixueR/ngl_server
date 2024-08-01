@@ -158,34 +158,25 @@ namespace ngl
 		void			push_task_id(handle_pram& apram, bool abool);
 
 		//# 给指定类型的actor添加任务
-		void			push_task_type(
-			ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
+		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
 #pragma region net
 		//# 生成包
 		template <typename T>
 		static std::shared_ptr<pack> net_pack(
-			T& adata,
-			i64_actorid aactorid,
-			i64_actorid arequestactorid
+			T& adata, i64_actorid aactorid, i64_actorid arequestactorid
 		);
 
 		//# 发送数据到指定服务器
 		template <typename T>
 		static bool send_server(
-			i32_serverid aserverid,
-			T& adata,
-			i64_actorid aactorid,
-			i64_actorid arequestactorid
+			i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
 		);
 
 		//# 向一组服务器发送数据
 		template <typename T>
 		static bool send_server(
-			const std::vector<i32_serverid>& aserverid,
-			T& adata,
-			i64_actorid aactorid,
-			i64_actorid arequestactorid
+			const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
 		);
 
 		//# 发送pack到指定服务器
@@ -203,10 +194,7 @@ namespace ngl
 		//# 给指定连接发送数据
 		template <typename T>
 		static bool send(
-			i32_sessionid asession,
-			T& adata,
-			i64_actorid aactorid,
-			i64_actorid arequestactorid
+			i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
 		);
 #pragma endregion 
 
@@ -228,20 +216,14 @@ namespace ngl
 		template <typename T>
 		static bool static_sendkcp(
 			i32_sessionid asession, 
-			T& adata, 
-			i64_actorid aactorid, 
-			i64_actorid arequestactorid, 
-			int16_t asystemindex = 0
+			T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
 		);
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
 			const std::vector<i32_sessionid>& asession,
-			T& adata, 
-			i64_actorid aactorid, 
-			i64_actorid arequestactorid, 
-			int16_t asystemindex = 0
+			T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
 		);
 
 		virtual const char* kcp_session();
@@ -388,6 +370,7 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
+
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata)
@@ -398,14 +381,9 @@ namespace ngl
 
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
-		void send_actor(
-			const nguid& aguid,
-			std::shared_ptr<T>& adata,
-			const std::function<void()>& afailfun
-		)
+		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(
-				aguid, guid(), adata, afailfun);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 
@@ -418,20 +396,16 @@ namespace ngl
 
 		//# 群发给指定类型的所有actor
 		template <typename T, bool IS_SEND = true>
-		void send_actor(
-			ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false
-		)
+		void send_actor(ENUM_ACTOR atype, std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(
-				nguid::make_self(atype), guid(), adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), guid(), adata);
+			lpram.m_forwardtype = true;
 			push_task_type(atype, lpram, aotherserver);
 		}
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(
-			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata
-		)
+		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(
 				aguid, arequestguid, adata);
@@ -441,10 +415,7 @@ namespace ngl
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(
-			const nguid& aguid, 
-			const nguid& arequestguid, 
-			std::shared_ptr<T>& adata, 
-			const std::function<void()>& afailfun
+			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(

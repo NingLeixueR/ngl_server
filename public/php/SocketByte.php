@@ -115,7 +115,7 @@ class SocketByte {
 	
 	public function SetActor()
 	{
-		$this->head[$this->EPH_ACTOR_TYPEAREA] = -65515;
+		$this->head[$this->EPH_ACTOR_TYPEAREA] = -65516;
 		$this->head[$this->EPH_ACTOR_ID] = -1;
 	}
 	

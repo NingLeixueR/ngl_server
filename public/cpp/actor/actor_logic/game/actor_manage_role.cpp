@@ -33,6 +33,10 @@ namespace ngl
 		register_handle_proto<actor_manage_role>::func<
 			pbnet::PROBUFF_NET_ROLE_LOGIN
 		>(false);
+
+		register_handle_custom<actor_manage_role>::func<
+			mforward<np_gm>
+		>(false);
 	}
 
 	i64_actorid actor_manage_role::actorid()
@@ -73,7 +77,7 @@ namespace ngl
 
 		if (handle_php::empty())
 		{
-			handle_php::push("ban_role", [this](int id, ngl::json_read& aos)
+			handle_php::push("roleban", [this](int id, ngl::json_read& aos)
 				{
 					struct banrole
 					{

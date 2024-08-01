@@ -52,13 +52,12 @@ namespace ngl
 		nguid					m_requestactor;
 
 		using forwardtype = std::function<
-			void(std::map<i32_serverid, actor_node_session>&
-				, std::map<nguid, i32_serverid>&
-				, handle_pram&)
+			void(std::map<i32_serverid, actor_node_session>&, std::map<nguid, i32_serverid>&, handle_pram&)
 		>;
 
-		forwardtype				m_forwardfun;	// 转发函数
-		std::function<void()>	m_failfun;		// 如何actor_client都找不到目标actor则调用
+		forwardtype				m_forwardfun;			// 转发函数
+		bool					m_forwardtype = false;	// 转发给所有类型
+		std::function<void()>	m_failfun;				// 如何actor_client都找不到目标actor则调用
 
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
@@ -74,10 +73,7 @@ namespace ngl
 
 		template <typename T>
 		static bool	netsend(
-			i32_sessionid asession
-			, T& adata
-			, const nguid& aactorid
-			, const nguid& arequestactorid
+			i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid
 		);
 		
 		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
@@ -90,8 +86,7 @@ namespace ngl
 		{
 			apram.m_forwardfun = 
 				[aactorid, arequestactorid](
-					std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, 
-					handle_pram& adata
+					std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, handle_pram& adata
 				)
 			{
 				handle_pram_send<T, IS_SEND>::send(aactorid, arequestactorid, adata);
@@ -105,8 +100,7 @@ namespace ngl
 		{
 			apram.m_forwardfun = 
 				[aactorid, arequestactorid](
-					std::map<i32_serverid, actor_node_session> asession
-					, std::map<nguid, i32_serverid>& amap, handle_pram& adata
+					std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, handle_pram& adata
 				)
 				{
 					handle_pram_send<T, IS_SEND>::sendclient(aactorid, arequestactorid, adata);
@@ -171,7 +165,7 @@ namespace ngl
 		i32_serverid lserverid = handle_pram::get_server(aactorid);
 		if (lserverid == -1)
 		{
-			if (handle_pram::is_actoridnone(aactorid))
+			if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
 			{
 				std::set<i32_serverid> lset;
 				handle_pram::get_serverlist(aactorid.type(), lset);
