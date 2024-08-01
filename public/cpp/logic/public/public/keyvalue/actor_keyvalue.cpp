@@ -15,6 +15,7 @@ namespace ngl
 						.m_manage_dbclient = true
 					},
 				.m_weight = 0x7fffffff,
+				.m_broadcast = true,
 			})
 	{
 		tdb_keyvalue::nsp_ser::init(&m_keyvaluedb);

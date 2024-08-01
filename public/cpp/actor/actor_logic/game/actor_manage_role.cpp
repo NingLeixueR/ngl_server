@@ -116,8 +116,21 @@ namespace ngl
 					// ·µ»Ø {"data":int32_t}
 					gcmd<int32_t> pro;
 					pro.id = id;
-					pro.m_operator = "ban_role_responce";
+					pro.m_operator = "roleban_responce";
 					pro.m_data = 0;
+				}
+			);
+
+			handle_php::push("get_roleban", [this](int id, ngl::json_read& aos)
+				{
+					std::string lbanrole;
+					tools::splicing(m_roleban, "*", lbanrole);
+
+					// ·µ»Ø {"data":int32_t}
+					gcmd<std::string> pro;
+					pro.id = id;
+					pro.m_operator = "get_roleban_responce";
+					pro.m_data = lbanrole;
 				}
 			);
 		}
