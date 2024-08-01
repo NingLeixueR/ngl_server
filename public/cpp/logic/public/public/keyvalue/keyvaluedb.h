@@ -51,7 +51,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log_debug();
+			auto lstream = log_error();
 			(*lstream) << "actor_keyvalue###loaddb_finish" << std::endl;
 			for (const auto& [_id, _data] : data())
 			{

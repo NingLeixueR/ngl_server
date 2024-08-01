@@ -126,8 +126,9 @@ namespace ngl
 		static void set_recv_data_finish(const std::function<void(const T&)>& afun)
 		{
 			m_recvdatafinishfun = afun;
-			if (m_recvdatafinish)
+			if (m_recvdatafinish == false)
 			{
+				m_recvdatafinish = true;
 				for (const auto& [_id, _data] : m_data)
 				{
 					m_recvdatafinishfun(_data);
