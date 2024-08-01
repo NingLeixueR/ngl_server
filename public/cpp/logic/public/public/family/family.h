@@ -35,10 +35,7 @@ namespace ngl
 			return &itor->second.getconst();
 		}
 
-		pbdb::db_family* get_family(
-			i64_actorid afamilyid,
-			bool achange = true
-		)
+		pbdb::db_family* get_family(i64_actorid afamilyid, bool achange = true)
 		{
 			auto itor = data().find(afamilyid);
 			if (itor == data().end())

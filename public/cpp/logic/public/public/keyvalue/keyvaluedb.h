@@ -53,6 +53,10 @@ namespace ngl
 		{
 			auto lstream = log_debug();
 			(*lstream) << "actor_keyvalue###loaddb_finish" << std::endl;
+			for (const auto& [_id, _data] : data())
+			{
+				(*lstream) << std::format("key/value = {}/{}", _data.getconst().m_id(), _data.getconst().m_value()) << std::endl;
+			}
 			lstream->print("");
 		}
 

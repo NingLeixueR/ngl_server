@@ -21,8 +21,15 @@ namespace ngl
 	{
 		std::set<i64_actorid> ldatakvid{ pbdb::db_keyvalue_ekv_account_ban };
 		nclient_keyvalue::init(actor_keyvalue::actorid(), this, ldatakvid);
+		nclient_keyvalue::set_recv_data_finish([this](const pbdb::db_keyvalue& akeyval)
+			{
+				log_error()->print("actor_manage_role recv_data_finish####### [{}]", akeyval.m_value().c_str());
+				m_roleban.clear();
+				tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
+			});
 		nclient_keyvalue::set_changedata_fun([this](int64_t aid, const pbdb::db_keyvalue& akeyval)
 			{
+				log_error()->print("actor_manage_role changedata_fun####### [{}]", akeyval.m_value().c_str());
 				m_roleban.clear();
 				tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
 			});
