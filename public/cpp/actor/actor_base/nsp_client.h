@@ -105,6 +105,11 @@ namespace ngl
 			return lp;
 		}
 
+		static T* add(i64_actorid aactorid)
+		{
+			return &m_data[aactorid];
+		}
+
 		static void change(i64_actorid aactorid)
 		{
 			auto itor = m_data.find(aactorid);

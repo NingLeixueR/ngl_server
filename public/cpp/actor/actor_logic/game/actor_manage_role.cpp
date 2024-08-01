@@ -101,13 +101,10 @@ namespace ngl
 					std::string lbanrole;
 					tools::splicing(m_roleban, "*", lbanrole);
 					
-					pbdb::db_keyvalue* lpdata = nclient_keyvalue::get(pbdb::db_keyvalue_ekv_account_ban);
-					if (lpdata != nullptr)
-					{
-						lpdata->set_m_id(pbdb::db_keyvalue_ekv_account_ban);
-						lpdata->set_m_value(lbanrole);
-						nclient_keyvalue::change(pbdb::db_keyvalue_ekv_account_ban);
-					}
+					pbdb::db_keyvalue* lpdata = nclient_keyvalue::add(pbdb::db_keyvalue_ekv_account_ban);
+					lpdata->set_m_id(pbdb::db_keyvalue_ekv_account_ban);
+					lpdata->set_m_value(lbanrole);
+					nclient_keyvalue::change(pbdb::db_keyvalue_ekv_account_ban);
 
 					// ·µ»Ø {"data":int32_t}
 					gcmd<int32_t> pro;
