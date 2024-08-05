@@ -33,14 +33,8 @@ namespace ngl
 		}
 
 		if (!mysql_real_connect(
-			m_mysql,
-			m_arg.m_ip.c_str(),
-			m_arg.m_account.c_str(),
-			m_arg.m_passworld.c_str(),
-			nullptr,
-			m_arg.m_port,
-			nullptr,
-			0))
+			m_mysql, m_arg.m_ip.c_str(), m_arg.m_account.c_str(), m_arg.m_passworld.c_str(), nullptr, m_arg.m_port, nullptr, 0)
+			)
 		{
 			log_error()->print("[mysql] err db::query[{}]", mysql_error(m_mysql));
 			closedb();
