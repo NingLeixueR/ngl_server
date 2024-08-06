@@ -607,9 +607,15 @@ namespace ngl
 
 		static std::string md5(const std::string& text);
 
-		static std::string sh1(const std::string& text);
+		static std::string sh1(std::string_view text);
+
+		static std::shared_ptr<std::string> ws_response(std::string_view seckey, std::string_view wsprotocol);
+
+		static std::string hmac_sha1(const std::string& key, const std::string& text);
 
 		static std::string time2str(int autc);
+
+		static std::vector<std::string_view> get_line(const char* apbuff, size_t abuffsize);
 	};
 
 	template <typename T>

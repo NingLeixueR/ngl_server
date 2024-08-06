@@ -515,8 +515,6 @@ namespace ngl
 		return aret != adata;
 	}
 
-	
-
 	bool tools::splite(const char* abuff, const char* afg, std::vector<std::string>& avec)
 	{
 		if (abuff == nullptr || afg == nullptr)
@@ -1331,314 +1329,160 @@ namespace ngl
 namespace ngl
 {
 	// sha-1
-	class SHA1
+	typedef struct {
+		uint32_t state[5];
+		uint32_t count[2];
+		uint8_t  buffer[64];
+	} SHA1_CTX;
+
+#define SHA1_DIGEST_SIZE 20
+
+	static void	SHA1_Transform(uint32_t	state[5], const	uint8_t	buffer[64]);
+
+#define	rol(value, bits) (((value) << (bits)) |	((value) >>	(32	- (bits))))
+
+	/* blk0() and blk()	perform	the	initial	expand.	*/
+	/* I got the idea of expanding during the round	function from SSLeay */
+	/* FIXME: can we do	this in	an endian-proof	way? */
+#ifdef WORDS_BIGENDIAN
+#define	blk0(i)	block.l[i]
+#else
+#define	blk0(i)	(block.l[i]	= (rol(block.l[i],24)&0xFF00FF00) \
+	|(rol(block.l[i],8)&0x00FF00FF))
+#endif
+#define	blk(i) (block.l[i&15] =	rol(block.l[(i+13)&15]^block.l[(i+8)&15] \
+	^block.l[(i+2)&15]^block.l[i&15],1))
+
+/* (R0+R1),	R2,	R3,	R4 are the different operations	used in	SHA1 */
+#define	R0(v,w,x,y,z,i)	z+=((w&(x^y))^y)+blk0(i)+0x5A827999+rol(v,5);w=rol(w,30);
+#define	R1(v,w,x,y,z,i)	z+=((w&(x^y))^y)+blk(i)+0x5A827999+rol(v,5);w=rol(w,30);
+#define	R2(v,w,x,y,z,i)	z+=(w^x^y)+blk(i)+0x6ED9EBA1+rol(v,5);w=rol(w,30);
+#define	R3(v,w,x,y,z,i)	z+=(((w|x)&y)|(w&x))+blk(i)+0x8F1BBCDC+rol(v,5);w=rol(w,30);
+#define	R4(v,w,x,y,z,i)	z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
+
+
+/* Hash	a single 512-bit block.	This is	the	core of	the	algorithm. */
+	static void	SHA1_Transform(uint32_t	state[5], const	uint8_t	buffer[64])
 	{
-	public:
-		SHA1();
-		void update(const std::string& s);
-		void update(std::istream& is);
-		std::string final(bool abool);
-		static std::string from_file(const std::string& filename);
+		uint32_t a, b, c, d, e;
+		typedef	union {
+			uint8_t	c[64];
+			uint32_t l[16];
+		} CHAR64LONG16;
+		CHAR64LONG16 block;
 
-	private:
-		uint32_t digest[5];
-		std::string buffer;
-		uint64_t transforms;
-	};
+		memcpy(&block, buffer, 64);
 
+		/* Copy	context->state[] to	working	vars */
+		a = state[0];
+		b = state[1];
+		c = state[2];
+		d = state[3];
+		e = state[4];
 
-	static const size_t BLOCK_INTS = 16;  /* number of 32bit integers per SHA1 block */
-	static const size_t BLOCK_BYTES = BLOCK_INTS * 4;
+		/* 4 rounds	of 20 operations each. Loop	unrolled. */
+		R0(a, b, c, d, e, 0); R0(e, a, b, c, d, 1);	R0(d, e, a, b, c, 2); R0(c, d, e, a, b, 3);
+		R0(b, c, d, e, a, 4); R0(a, b, c, d, e, 5);	R0(e, a, b, c, d, 6); R0(d, e, a, b, c, 7);
+		R0(c, d, e, a, b, 8); R0(b, c, d, e, a, 9);	R0(a, b, c, d, e, 10); R0(e, a, b, c, d, 11);
+		R0(d, e, a, b, c, 12); R0(c, d, e, a, b, 13);	R0(b, c, d, e, a, 14); R0(a, b, c, d, e, 15);
+		R1(e, a, b, c, d, 16); R1(d, e, a, b, c, 17);	R1(c, d, e, a, b, 18); R1(b, c, d, e, a, 19);
+		R2(a, b, c, d, e, 20); R2(e, a, b, c, d, 21);	R2(d, e, a, b, c, 22); R2(c, d, e, a, b, 23);
+		R2(b, c, d, e, a, 24); R2(a, b, c, d, e, 25);	R2(e, a, b, c, d, 26); R2(d, e, a, b, c, 27);
+		R2(c, d, e, a, b, 28); R2(b, c, d, e, a, 29);	R2(a, b, c, d, e, 30); R2(e, a, b, c, d, 31);
+		R2(d, e, a, b, c, 32); R2(c, d, e, a, b, 33);	R2(b, c, d, e, a, 34); R2(a, b, c, d, e, 35);
+		R2(e, a, b, c, d, 36); R2(d, e, a, b, c, 37);	R2(c, d, e, a, b, 38); R2(b, c, d, e, a, 39);
+		R3(a, b, c, d, e, 40); R3(e, a, b, c, d, 41);	R3(d, e, a, b, c, 42); R3(c, d, e, a, b, 43);
+		R3(b, c, d, e, a, 44); R3(a, b, c, d, e, 45);	R3(e, a, b, c, d, 46); R3(d, e, a, b, c, 47);
+		R3(c, d, e, a, b, 48); R3(b, c, d, e, a, 49);	R3(a, b, c, d, e, 50); R3(e, a, b, c, d, 51);
+		R3(d, e, a, b, c, 52); R3(c, d, e, a, b, 53);	R3(b, c, d, e, a, 54); R3(a, b, c, d, e, 55);
+		R3(e, a, b, c, d, 56); R3(d, e, a, b, c, 57);	R3(c, d, e, a, b, 58); R3(b, c, d, e, a, 59);
+		R4(a, b, c, d, e, 60); R4(e, a, b, c, d, 61);	R4(d, e, a, b, c, 62); R4(c, d, e, a, b, 63);
+		R4(b, c, d, e, a, 64); R4(a, b, c, d, e, 65);	R4(e, a, b, c, d, 66); R4(d, e, a, b, c, 67);
+		R4(c, d, e, a, b, 68); R4(b, c, d, e, a, 69);	R4(a, b, c, d, e, 70); R4(e, a, b, c, d, 71);
+		R4(d, e, a, b, c, 72); R4(c, d, e, a, b, 73);	R4(b, c, d, e, a, 74); R4(a, b, c, d, e, 75);
+		R4(e, a, b, c, d, 76); R4(d, e, a, b, c, 77);	R4(c, d, e, a, b, 78); R4(b, c, d, e, a, 79);
 
+		/* Add the working vars	back into context.state[] */
+		state[0] += a;
+		state[1] += b;
+		state[2] += c;
+		state[3] += d;
+		state[4] += e;
 
-	inline static void reset(uint32_t digest[], std::string& buffer, uint64_t& transforms)
-	{
-		/* SHA1 initialization constants */
-		digest[0] = 0x67452301;
-		digest[1] = 0xefcdab89;
-		digest[2] = 0x98badcfe;
-		digest[3] = 0x10325476;
-		digest[4] = 0xc3d2e1f0;
-
-		/* Reset counters */
-		buffer = "";
-		transforms = 0;
+		/* Wipe	variables */
+		a = b = c = d = e = 0;
 	}
 
 
-	inline static uint32_t rol(const uint32_t value, const size_t bits)
+	/* SHA1Init	- Initialize new context */
+	static void sat_SHA1_Init(SHA1_CTX* context)
 	{
-		return (value << bits) | (value >> (32 - bits));
+		/* SHA1	initialization constants */
+		context->state[0] = 0x67452301;
+		context->state[1] = 0xEFCDAB89;
+		context->state[2] = 0x98BADCFE;
+		context->state[3] = 0x10325476;
+		context->state[4] = 0xC3D2E1F0;
+		context->count[0] = context->count[1] = 0;
 	}
 
 
-	inline static uint32_t blk(const uint32_t block[BLOCK_INTS], const size_t i)
+	/* Run your	data through this. */
+	static void sat_SHA1_Update(SHA1_CTX* context, const uint8_t* data, const size_t len)
 	{
-		return rol(block[(i + 13) & 15] ^ block[(i + 8) & 15] ^ block[(i + 2) & 15] ^ block[i], 1);
-	}
+		size_t i, j;
 
+#ifdef VERBOSE
+		SHAPrintContext(context, "before");
+#endif
 
-	/*
-	 * (R0+R1), R2, R3, R4 are the different operations used in SHA1
-	 */
-
-	inline static void R0(const uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t& w, const uint32_t x, const uint32_t y, uint32_t& z, const size_t i)
-	{
-		z += ((w & (x ^ y)) ^ y) + block[i] + 0x5a827999 + rol(v, 5);
-		w = rol(w, 30);
-	}
-
-
-	inline static void R1(uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t& w, const uint32_t x, const uint32_t y, uint32_t& z, const size_t i)
-	{
-		block[i] = blk(block, i);
-		z += ((w & (x ^ y)) ^ y) + block[i] + 0x5a827999 + rol(v, 5);
-		w = rol(w, 30);
-	}
-
-
-	inline static void R2(uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t& w, const uint32_t x, const uint32_t y, uint32_t& z, const size_t i)
-	{
-		block[i] = blk(block, i);
-		z += (w ^ x ^ y) + block[i] + 0x6ed9eba1 + rol(v, 5);
-		w = rol(w, 30);
-	}
-
-
-	inline static void R3(uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t& w, const uint32_t x, const uint32_t y, uint32_t& z, const size_t i)
-	{
-		block[i] = blk(block, i);
-		z += (((w | x) & y) | (w & x)) + block[i] + 0x8f1bbcdc + rol(v, 5);
-		w = rol(w, 30);
-	}
-
-
-	inline static void R4(uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t& w, const uint32_t x, const uint32_t y, uint32_t& z, const size_t i)
-	{
-		block[i] = blk(block, i);
-		z += (w ^ x ^ y) + block[i] + 0xca62c1d6 + rol(v, 5);
-		w = rol(w, 30);
-	}
-
-
-	/*
-	 * Hash a single 512-bit block. This is the core of the algorithm.
-	 */
-
-	inline static void transform(uint32_t digest[], uint32_t block[BLOCK_INTS], uint64_t& transforms)
-	{
-		/* Copy digest[] to working vars */
-		uint32_t a = digest[0];
-		uint32_t b = digest[1];
-		uint32_t c = digest[2];
-		uint32_t d = digest[3];
-		uint32_t e = digest[4];
-
-		/* 4 rounds of 20 operations each. Loop unrolled. */
-		R0(block, a, b, c, d, e, 0);
-		R0(block, e, a, b, c, d, 1);
-		R0(block, d, e, a, b, c, 2);
-		R0(block, c, d, e, a, b, 3);
-		R0(block, b, c, d, e, a, 4);
-		R0(block, a, b, c, d, e, 5);
-		R0(block, e, a, b, c, d, 6);
-		R0(block, d, e, a, b, c, 7);
-		R0(block, c, d, e, a, b, 8);
-		R0(block, b, c, d, e, a, 9);
-		R0(block, a, b, c, d, e, 10);
-		R0(block, e, a, b, c, d, 11);
-		R0(block, d, e, a, b, c, 12);
-		R0(block, c, d, e, a, b, 13);
-		R0(block, b, c, d, e, a, 14);
-		R0(block, a, b, c, d, e, 15);
-		R1(block, e, a, b, c, d, 0);
-		R1(block, d, e, a, b, c, 1);
-		R1(block, c, d, e, a, b, 2);
-		R1(block, b, c, d, e, a, 3);
-		R2(block, a, b, c, d, e, 4);
-		R2(block, e, a, b, c, d, 5);
-		R2(block, d, e, a, b, c, 6);
-		R2(block, c, d, e, a, b, 7);
-		R2(block, b, c, d, e, a, 8);
-		R2(block, a, b, c, d, e, 9);
-		R2(block, e, a, b, c, d, 10);
-		R2(block, d, e, a, b, c, 11);
-		R2(block, c, d, e, a, b, 12);
-		R2(block, b, c, d, e, a, 13);
-		R2(block, a, b, c, d, e, 14);
-		R2(block, e, a, b, c, d, 15);
-		R2(block, d, e, a, b, c, 0);
-		R2(block, c, d, e, a, b, 1);
-		R2(block, b, c, d, e, a, 2);
-		R2(block, a, b, c, d, e, 3);
-		R2(block, e, a, b, c, d, 4);
-		R2(block, d, e, a, b, c, 5);
-		R2(block, c, d, e, a, b, 6);
-		R2(block, b, c, d, e, a, 7);
-		R3(block, a, b, c, d, e, 8);
-		R3(block, e, a, b, c, d, 9);
-		R3(block, d, e, a, b, c, 10);
-		R3(block, c, d, e, a, b, 11);
-		R3(block, b, c, d, e, a, 12);
-		R3(block, a, b, c, d, e, 13);
-		R3(block, e, a, b, c, d, 14);
-		R3(block, d, e, a, b, c, 15);
-		R3(block, c, d, e, a, b, 0);
-		R3(block, b, c, d, e, a, 1);
-		R3(block, a, b, c, d, e, 2);
-		R3(block, e, a, b, c, d, 3);
-		R3(block, d, e, a, b, c, 4);
-		R3(block, c, d, e, a, b, 5);
-		R3(block, b, c, d, e, a, 6);
-		R3(block, a, b, c, d, e, 7);
-		R3(block, e, a, b, c, d, 8);
-		R3(block, d, e, a, b, c, 9);
-		R3(block, c, d, e, a, b, 10);
-		R3(block, b, c, d, e, a, 11);
-		R4(block, a, b, c, d, e, 12);
-		R4(block, e, a, b, c, d, 13);
-		R4(block, d, e, a, b, c, 14);
-		R4(block, c, d, e, a, b, 15);
-		R4(block, b, c, d, e, a, 0);
-		R4(block, a, b, c, d, e, 1);
-		R4(block, e, a, b, c, d, 2);
-		R4(block, d, e, a, b, c, 3);
-		R4(block, c, d, e, a, b, 4);
-		R4(block, b, c, d, e, a, 5);
-		R4(block, a, b, c, d, e, 6);
-		R4(block, e, a, b, c, d, 7);
-		R4(block, d, e, a, b, c, 8);
-		R4(block, c, d, e, a, b, 9);
-		R4(block, b, c, d, e, a, 10);
-		R4(block, a, b, c, d, e, 11);
-		R4(block, e, a, b, c, d, 12);
-		R4(block, d, e, a, b, c, 13);
-		R4(block, c, d, e, a, b, 14);
-		R4(block, b, c, d, e, a, 15);
-
-		/* Add the working vars back into digest[] */
-		digest[0] += a;
-		digest[1] += b;
-		digest[2] += c;
-		digest[3] += d;
-		digest[4] += e;
-
-		/* Count the number of transformations */
-		transforms++;
-	}
-
-
-	inline static void buffer_to_block(const std::string& buffer, uint32_t block[BLOCK_INTS])
-	{
-		/* Convert the std::string (byte buffer) to a uint32_t array (MSB) */
-		for (size_t i = 0; i < BLOCK_INTS; i++)
-		{
-			block[i] = (buffer[4 * i + 3] & 0xff)
-				| (buffer[4 * i + 2] & 0xff) << 8
-				| (buffer[4 * i + 1] & 0xff) << 16
-				| (buffer[4 * i + 0] & 0xff) << 24;
-		}
-	}
-
-
-	inline SHA1::SHA1()
-	{
-		reset(digest, buffer, transforms);
-	}
-
-
-	inline void SHA1::update(const std::string& s)
-	{
-		std::istringstream is(s);
-		update(is);
-	}
-
-
-	inline void SHA1::update(std::istream& is)
-	{
-		while (true)
-		{
-			char sbuf[BLOCK_BYTES];
-			is.read(sbuf, BLOCK_BYTES - buffer.size());
-			buffer.append(sbuf, (std::size_t)is.gcount());
-			if (buffer.size() != BLOCK_BYTES)
-			{
-				return;
+		j = (context->count[0] >> 3) & 63;
+		if ((context->count[0] += len << 3) < (len << 3)) context->count[1]++;
+		context->count[1] += (len >> 29);
+		if ((j + len) > 63) {
+			memcpy(&context->buffer[j], data, (i = 64 - j));
+			SHA1_Transform(context->state, context->buffer);
+			for (; i + 63 < len; i += 64) {
+				SHA1_Transform(context->state, data + i);
 			}
-			uint32_t block[BLOCK_INTS];
-			buffer_to_block(buffer, block);
-			transform(digest, block, transforms);
-			buffer.clear();
+			j = 0;
 		}
+		else i = 0;
+		memcpy(&context->buffer[j], &data[i], len - i);
+
+#ifdef VERBOSE
+		SHAPrintContext(context, "after	");
+#endif
 	}
 
 
-	/*
-	 * Add padding and return the message digest.
-	 */
-
-	inline std::string SHA1::final(bool abool)
+	/* Add padding and return the message digest. */
+	static void sat_SHA1_Final(SHA1_CTX* context, uint8_t digest[SHA1_DIGEST_SIZE])
 	{
-		/* Total number of hashed bits */
-		uint64_t total_bits = (transforms * BLOCK_BYTES + buffer.size()) * 8;
+		uint32_t i;
+		uint8_t	 finalcount[8];
 
-		/* Padding */
-		buffer += (char)0x80;
-		size_t orig_size = buffer.size();
-		while (buffer.size() < BLOCK_BYTES)
-		{
-			buffer += (char)0x00;
+		for (i = 0; i < 8; i++) {
+			finalcount[i] = (unsigned char)((context->count[(i >= 4 ? 0 : 1)]
+				>> ((3 - (i & 3)) * 8)) & 255);	 /*	Endian independent */
+		}
+		sat_SHA1_Update(context, (uint8_t*)"\200", 1);
+		while ((context->count[0] & 504) != 448) {
+			sat_SHA1_Update(context, (uint8_t*)"\0", 1);
+		}
+		sat_SHA1_Update(context, finalcount, 8);  /* Should	cause a	SHA1_Transform() */
+		for (i = 0; i < SHA1_DIGEST_SIZE; i++) {
+			digest[i] = (uint8_t)
+				((context->state[i >> 2] >> ((3 - (i & 3)) * 8)) & 255);
 		}
 
-		uint32_t block[BLOCK_INTS];
-		buffer_to_block(buffer, block);
-
-		if (orig_size > BLOCK_BYTES - 8)
-		{
-			transform(digest, block, transforms);
-			for (size_t i = 0; i < BLOCK_INTS - 2; i++)
-			{
-				block[i] = 0;
-			}
-		}
-
-		/* Append total_bits, split this uint64_t into two uint32_t */
-		block[BLOCK_INTS - 1] = (uint32_t)total_bits;
-		block[BLOCK_INTS - 2] = (uint32_t)(total_bits >> 32);
-		transform(digest, block, transforms);
-
-		if (abool)
-		{
-			/* Hex std::string */
-			std::ostringstream result;
-			for (size_t i = 0; i < sizeof(digest) / sizeof(digest[0]); i++)
-			{
-				result << std::hex << std::setfill('0') << std::setw(8);
-				result << digest[i];
-			}
-
-			/* Reset for next run */
-			reset(digest, buffer, transforms);
-
-			return result.str();
-		}
-		std::string lstr;
-		lstr.append((const char*)digest, 20);
-
-		/* Reset for next run */
-		reset(digest, buffer, transforms);
-		return lstr;
+		/* Wipe	variables */
+		i = 0;
+		memset(context->buffer, 0, 64);
+		memset(context->state, 0, 20);
+		memset(context->count, 0, 8);
+		memset(finalcount, 0, 8);	/* SWR */
 	}
-
-
-	inline std::string SHA1::from_file(const std::string& filename)
-	{
-		std::ifstream stream(filename.c_str(), std::ios::binary);
-		SHA1 checksum;
-		checksum.update(stream);
-		return checksum.final(false);
-	}
-
 }
 
 namespace ngl
@@ -1649,11 +1493,65 @@ namespace ngl
 		return ltemp.values();
 	}
 
-	std::string tools::sh1(const std::string& text)
+	std::string tools::sh1(std::string_view text)
 	{
-		SHA1 checksum;
-		checksum.update(text);
-		return checksum.final(false);
+		SHA1_CTX ctx;
+		sat_SHA1_Init(&ctx);
+		sat_SHA1_Update(&ctx, (const uint8_t*)text.data(), text.size());
+		uint8_t digest[SHA1_DIGEST_SIZE];
+		sat_SHA1_Final(&ctx, digest);
+		std::string lret;
+		lret.assign((char*)digest, SHA1_DIGEST_SIZE);
+		return lret;
+	}
+
+#define BLOCKSIZE 64
+
+	static inline void xor_key(uint8_t key[BLOCKSIZE], uint32_t xor_) {
+		int i;
+		for (i = 0; i < BLOCKSIZE; i += sizeof(uint32_t)) {
+			uint32_t* k = (uint32_t*)&key[i];
+			*k ^= xor_;
+		}
+	}
+
+	std::string tools::hmac_sha1(const std::string& key, const std::string& text)
+	{
+		SHA1_CTX ctx1, ctx2;
+		uint8_t digest1[SHA1_DIGEST_SIZE];
+		uint8_t digest2[SHA1_DIGEST_SIZE];
+		uint8_t rkey[BLOCKSIZE];
+		memset(rkey, 0, BLOCKSIZE);
+		size_t key_sz = key.size();
+		size_t text_sz = text.size();
+
+		if (key_sz > BLOCKSIZE) {
+			SHA1_CTX ctx;
+			sat_SHA1_Init(&ctx);
+			sat_SHA1_Update(&ctx, (const uint8_t*)key.data(), key_sz);
+			sat_SHA1_Final(&ctx, rkey);
+			key_sz = SHA1_DIGEST_SIZE;
+		}
+		else {
+			memcpy(rkey, key.data(), key_sz);
+		}
+
+		xor_key(rkey, 0x5c5c5c5c);
+		sat_SHA1_Init(&ctx1);
+		sat_SHA1_Update(&ctx1, rkey, BLOCKSIZE);
+
+		xor_key(rkey, 0x5c5c5c5c ^ 0x36363636);
+		sat_SHA1_Init(&ctx2);
+		sat_SHA1_Update(&ctx2, rkey, BLOCKSIZE);
+		sat_SHA1_Update(&ctx2, (const uint8_t*)text.data(), text_sz);
+		sat_SHA1_Final(&ctx2, digest2);
+
+		sat_SHA1_Update(&ctx1, digest2, SHA1_DIGEST_SIZE);
+		sat_SHA1_Final(&ctx1, digest1);
+
+		std::string lret;
+		lret.assign((char*)digest1, SHA1_DIGEST_SIZE);
+		return lret;
 	}
 
 	std::string tools::time2str(int autc)
@@ -1661,6 +1559,28 @@ namespace ngl
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, autc, "%y/%m/%d %H:%M:%S");
 		return lbuff;
+	}
+
+	std::vector<std::string_view> tools::get_line(const char* apbuff, size_t abuffsize)
+	{
+		size_t lreadpos = 0;
+		std::vector<std::string_view> lvec;
+		while (lreadpos < abuffsize)
+		{
+			std::string_view strref(apbuff + lreadpos, abuffsize);
+			size_t pos = strref.find("\r\n");
+			if (pos != std::string_view::npos)
+			{
+				lvec.emplace_back(std::string_view(strref.data(), pos));
+				lreadpos += pos + 2;
+			}
+			else
+			{
+				lvec.emplace_back(strref);
+				break;
+			}
+		}
+		return lvec;		
 	}
 
 }// namespace ngl
