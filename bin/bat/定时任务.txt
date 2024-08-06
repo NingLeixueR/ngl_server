@@ -1,0 +1,2 @@
+定时根据日志文件删除文件
+0 0 * * * find /data/log/ -type d -mtime +15 |xargs rm -rf
