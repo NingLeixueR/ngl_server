@@ -81,9 +81,7 @@ namespace ngl
 
 		template <typename T>
 		static bool sendmore(
-			const std::map<i32_sessionid, i64_actorid>& asession, 
-			T& adata, 
-			i64_actorid aactorid
+			const std::map<i32_sessionid, i64_actorid>& asession, T& adata, i64_actorid aactorid
 		)
 		{
 			std::set<ENET_PROTOCOL> lset;
@@ -161,11 +159,8 @@ namespace ngl
 {
 	template <typename TSTL>
 	bool net_protocol::sendmore_stl(
-		const TSTL& asession, 
-		i64_actorid aactorid, 
-		i64_actorid arequestactorid, 
-		std::pair<std::shared_ptr<pack>, 
-		std::shared_ptr<pack>>& apair
+		const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, 
+		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
 	)
 	{
 		for (i32_sessionid item : asession)
@@ -205,10 +200,7 @@ namespace ngl
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendbyserver(
-		i32_serverid aserverid, 
-		const nguid& aactorid, 
-		const nguid& arequestactorid, 
-		handle_pram& adata
+		i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
 	)
 	{
 		if (IS_SEND == false)
@@ -229,10 +221,7 @@ namespace ngl
 
 	template <typename T>
 	bool actor_base::send_server(
-		i32_serverid aserverid, 
-		T& adata, 
-		i64_actorid aactorid, 
-		i64_actorid arequestactorid
+		i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
 	)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
@@ -240,10 +229,7 @@ namespace ngl
 
 	template <typename T>
 	bool actor_base::send_server(
-		const std::vector<i32_serverid>& aserverid, 
-		T& adata, 
-		i64_actorid aactorid, 
-		i64_actorid arequestactorid
+		const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
 	)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
@@ -295,11 +281,7 @@ namespace ngl
 
 	template <typename T>
 	bool actor_base::static_sendkcp(
-		i32_sessionid asession
-		, T& adata
-		, i64_actorid aactorid
-		, i64_actorid arequestactorid
-		, int16_t asystemindex/* = 0*/
+		i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/
 	)
 	{
 		if (iskcp() == false)
@@ -310,11 +292,7 @@ namespace ngl
 
 	template <typename T>
 	bool actor_base::static_sendkcp(
-		const std::vector<i32_sessionid>& asession
-		, T& adata
-		, i64_actorid aactorid
-		, i64_actorid arequestactorid
-		, int16_t asystemindex/* = 0*/
+		const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/
 	)
 	{
 		if (iskcp() == false)

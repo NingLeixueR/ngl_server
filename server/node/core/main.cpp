@@ -65,12 +65,6 @@ std::string base64_encode(const std::string& data) {
 
 int main(int argc, char** argv)
 {
-	/*std::string lstr = ngl::tools::sh1("w4v7O6xFTi36lq3RNcgctw==258EAFA5-E914-47DA-95CA-C5AB0DC85B11"sv);
-	std::cout << lstr << std::endl;
-	std::string lstr2 = ngl::tools::base64_encode(lstr);
-	std::string lstr4 = base64_encode(lstr);
-	std::string lstr3 = ngl::tools::base64_encode("123");*/
-
 	if (argc <= 1)
 	{
 		std::cout << "²ÎÊý´íÎó" << std::endl;

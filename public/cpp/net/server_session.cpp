@@ -13,9 +13,7 @@ namespace ngl
 	{
 		log_warn()->print(
 			"connect [{}:{}] [{}]", 
-			aserverid, 
-			ttab_servers::tab(aserverid)->m_name, 
-			asession
+			aserverid, ttab_servers::tab(aserverid)->m_name, asession
 		);
 		lock_write(m_mutex);
 		

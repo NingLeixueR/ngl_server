@@ -25,15 +25,11 @@ namespace ngl
 		virtual void close_net(i32_sessionid asession);
 		
 		virtual bool connect(
-			const std::string& aip, 
-			i16_port aport, 
-			const std::function<void(i32_sessionid)>& afun
+			const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun
 		);
 		
 		virtual void set_close(
-			int asession, 
-			const std::string& aip, 
-			i16_port aport, 
+			int asession, const std::string& aip, i16_port aport, 
 			const std::function<void(i32_sessionid)>& afun
 		);
 
