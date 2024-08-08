@@ -181,7 +181,7 @@ namespace ngl
 		inline void push(ptractor& apactor, nthread* atorthread)
 		{
 			std::function<void()> lfun = nullptr;
-			while (true)
+			do
 			{
 				ngl_lock;
 				if (atorthread != nullptr)
@@ -191,8 +191,8 @@ namespace ngl
 					else
 						m_workthread.push_back(atorthread);
 				}
-				auto itor = m_actorbyid.find(apactor->id_guid());
-				if (itor == m_actorbyid.end())
+				auto itor = ;
+				if (m_actorbyid.find(apactor->id_guid()) == m_actorbyid.end())
 				{//erase_actor_byid
 					auto itorfun = m_delactorfun.find(apactor->id_guid());
 					if (itorfun != m_delactorfun.end())
@@ -217,7 +217,7 @@ namespace ngl
 				}
 				ngl_post;
 				break;
-			}
+			} while (false);
 			if (lfun != nullptr)
 			{
 				apactor->release();
