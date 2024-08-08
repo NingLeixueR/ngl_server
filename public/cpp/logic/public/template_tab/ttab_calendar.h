@@ -32,14 +32,14 @@ namespace ngl
 
 			static int32_t beg(int64_t atime)
 			{
-				int32_t lvalue[2];
+				int32_t lvalue[2] = { 0 };
 				*(int64_t*)lvalue = atime;
 				return lvalue[0];
 			}
 
 			static int32_t end(int64_t atime)
 			{
-				int32_t lvalue[2];
+				int32_t lvalue[2] = {0};
 				*(int64_t*)lvalue = atime;
 				return lvalue[1];
 			}
