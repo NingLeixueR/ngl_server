@@ -142,10 +142,10 @@ namespace ngl
 		std::vector<std::string> lvec;
 		if (tools::splite(apack->m_buff, " ", lvec) == false)
 			return;
-		using handle_cmd = ngl::cmd<protocol, std::string, std::shared_ptr<pack>&, std::vector<std::string>&>;
+		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("/actor_count", [](std::shared_ptr<pack>& apack, std::vector<std::string>& aparm)
+			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& apack, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::getInstance().actor_count();
 					std::string lstr = std::format("actor count:{}\r\n", lcount);

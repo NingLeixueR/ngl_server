@@ -132,7 +132,7 @@ namespace ngl
 
 	bool nets::sendmsg(i32_sessionid asession, const std::string& amsg)
 	{
-		int lcount = amsg.size();
+		int lcount = (size_t)amsg.size();
 		auto lpack = std::make_shared<pack>();
 		lpack->malloc(lcount);
 		memcpy(lpack->m_buff, amsg.c_str(), lcount);

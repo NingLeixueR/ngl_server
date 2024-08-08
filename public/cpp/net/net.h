@@ -200,7 +200,7 @@ namespace ngl
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendbyserver(
-		i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
+		i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata
 	)
 	{
 		if (IS_SEND == false)

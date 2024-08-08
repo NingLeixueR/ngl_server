@@ -30,7 +30,7 @@ namespace ngl
 	{
 	public:
 		static bool sendbyserver(
-			i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
+			i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata
 		);
 
 		static bool send(

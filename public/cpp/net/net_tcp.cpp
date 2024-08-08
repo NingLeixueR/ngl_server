@@ -22,18 +22,11 @@ namespace ngl
 		if (lsocketthreadnum > net_config_socket_pthread_max_size || lsocketthreadnum <= 0)
 			lsocketthreadnum = net_config_socket_pthread_max_size;
 
-		std::function<bool(service_io*, const char*, uint32_t)> lfun 
-			= std::bind(
-				&net_tcp::socket_recv, 
-				this, 
-				std::placeholders::_1, 
-				std::placeholders::_2,
-				std::placeholders::_3
-			);
+		std::function<bool(service_io*, const char*, uint32_t)> lfun = std::bind_front(&net_tcp::socket_recv, this);
 
-		std::function<void(int)> lclosefun = std::bind(&net_tcp::close, this, std::placeholders::_1);
+		std::function<void(int)> lclosefun = std::bind_front(&net_tcp::close, this);
 		m_server = new asio_tcp(
-			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, pack* apack) {}
+			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, const pack*) {}
 		);
 		return true;
 	}

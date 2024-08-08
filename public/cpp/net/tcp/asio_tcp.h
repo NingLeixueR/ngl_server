@@ -11,7 +11,7 @@ namespace ngl
 	using tcp_callback				= std::function<bool(service_tcp*, const char*, uint32_t)>;
 	using tcp_closecallback			= std::function<void(i32_sessionid)>;
 	using tcp_connectcallback		= std::function<void(i32_sessionid)>;
-	using tcp_sendfinishcallback	= std::function<void(i32_sessionid, bool, pack*)>;
+	using tcp_sendfinishcallback	= std::function<void(i32_sessionid, bool, const pack*)>;
 
 	class asio_tcp
 	{
