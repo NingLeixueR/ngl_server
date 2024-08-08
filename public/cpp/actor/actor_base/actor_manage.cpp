@@ -191,7 +191,6 @@ namespace ngl
 					else
 						m_workthread.push_back(atorthread);
 				}
-				auto itor = ;
 				if (m_actorbyid.find(apactor->id_guid()) == m_actorbyid.end())
 				{//erase_actor_byid
 					auto itorfun = m_delactorfun.find(apactor->id_guid());

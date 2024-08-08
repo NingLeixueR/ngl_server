@@ -115,7 +115,10 @@ namespace ngl
 	bool actor_manage_activity::timer_handle(message<timerparm>& adata)
 	{
 		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
-			return true;
+		{
+			return false;
+		}
+			
 		return true;
 	}
 }// namespace ngl
