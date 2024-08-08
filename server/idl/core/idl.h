@@ -464,7 +464,7 @@ public:
 		if (lpattern2.empty())
 		{
 			lpattern2 += "[ \n\r\t]*";//空白
-			lpattern2 += "([^ \n\r\t\{\}]*)";//type
+			lpattern2 += "([^ \n\r\t{}]*)";//type
 			lpattern2 += "[ \t]*";//空白
 			lpattern2 += "[=]*";
 			lpattern2 += "[ \t]*";//空白
@@ -546,9 +546,9 @@ public:
 					+= lkb + lhh + lkb
 					+ "(required|optional)*"	//修饰符
 					+ lkb
-					+ "([^ <>\r\n\};()]+)" //类型
+					+ "([^ <>\r\n};()]+)" //类型
 					+ "[ ]"
-					+ "([^ \t<>\r\n\}\;]+)" //类型名
+					+ "([^ \t<>\r\n};]+)" //类型名
 					+ lkb
 					+ "([ ]+[=][ ][^;]*)*"
 					+ "[;]"
