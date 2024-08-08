@@ -316,7 +316,7 @@ namespace ngl
 		//# 给一组客户端发送数据
 		template <typename T>
 		static void send_client(
-			std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata
+			const std::initializer_list<i64_actorid>& alist, std::shared_ptr<T>& adata
 		)
 		{
 			client_pro(alist.begin(), alist.end(), adata);
