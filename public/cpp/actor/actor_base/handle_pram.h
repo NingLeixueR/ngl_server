@@ -102,7 +102,9 @@ namespace ngl
 		{
 			apram.m_forwardfun = 
 				[aactorid, arequestactorid](
-					std::map<i32_serverid, actor_node_session> asession, std::map<nguid, i32_serverid>& amap, handle_pram& adata
+					const std::map<i32_serverid, actor_node_session>&, 
+					const std::map<nguid, i32_serverid>&, 
+					handle_pram& adata
 				)
 				{
 					handle_pram_send<T, IS_SEND>::sendclient(aactorid, arequestactorid, adata);
