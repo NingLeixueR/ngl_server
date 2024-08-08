@@ -20,7 +20,7 @@ namespace ngl
 
 		actor_node_session();
 		actor_node_session(i32_sessionid asession, const nactornode& anode);
-		actor_node_session(const nactornode& anode);
+		explicit actor_node_session(const nactornode& anode);
 	};
 
 	struct handle_pram;

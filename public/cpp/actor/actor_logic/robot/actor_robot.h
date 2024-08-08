@@ -112,7 +112,8 @@ namespace ngl
 			pro.set_m_account(aaccount);
 			pro.set_m_password(apasswold);
 			tab_servers* tab = ttab_servers::tab();
-
+			if (tab == nullptr)
+				return;
 			nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
 		}
 
@@ -152,7 +153,6 @@ namespace ngl
 			return true;
 		}
 	public:
-
 		static bool parse_command(std::vector<std::string>& aparm)
 		{
 			auto ldata = std::make_shared<np_robot_pram>();
@@ -199,32 +199,40 @@ namespace ngl
 				handle_cmd::push("c", [this](std::vector<std::string>& avec)
 					{
 						pbnet::PROBUFF_NET_CMD pro;
-						std::string lstr;
+						std::stringstream lstream;
 						for (int i = 2; i < avec.size(); ++i)
 						{
 							if (i == 3)
-								lstr += '|';
+							{
+								lstream << '|';
+							}
 							else if (i >= 4)
-								lstr += '*';
-							lstr += avec[i];
+							{
+								lstream << '*';
+							}
+							lstream << avec[i];
 						}
-						pro.set_m_cmd(lstr);
+						pro.set_m_cmd(lstream.str());
 						send(get_robot(avec[1]), pro);
 					});
 				// C 1
 				handle_cmd::push("d", [this](std::vector<std::string>& avec)
 					{
 						pbnet::PROBUFF_NET_CMD pro;
-						std::string lstr;
+						std::stringstream lstream;
 						for (int i = 1; i < avec.size(); ++i)
 						{
 							if (i == 2)
-								lstr += '|';
+							{
+								lstream << '|';
+							}
 							else if (i >= 3)
-								lstr += '*';
-							lstr += avec[i];
+							{
+								lstream << '*';
+							}
+							lstream << avec[i];
 						}
-						pro.set_m_cmd(lstr);
+						pro.set_m_cmd(lstream.str());
 						foreach([&pro, this](actor_manage_robot::_robot& arobot)
 							{
 								send(&arobot, pro);
@@ -241,7 +249,9 @@ namespace ngl
 								net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
 								net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
 								// 获取本机uip
-								ngl::asio_udp_endpoint lendpoint(asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port);
+								ngl::asio_udp_endpoint lendpoint(
+									asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port
+								);
 								i32_session lsession = arobot.m_session;
 								//i64_actorid lactorid = id_guid();
 								i64_actorid lactorid = arobot.m_robot->id_guid();
@@ -280,7 +290,6 @@ namespace ngl
 			{
 				log_error()->print("actor_manage_robot cmd notfind {}", lrecv->m_parm);
 			}
-
 			return true;
 		}
 		

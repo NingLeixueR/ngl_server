@@ -609,8 +609,6 @@ namespace ngl
 
 		static std::string sh1(std::string_view text);
 
-		static std::shared_ptr<std::string> ws_response(std::string_view seckey, std::string_view wsprotocol);
-
 		static std::string hmac_sha1(const std::string& key, const std::string& text);
 
 		static std::string time2str(int autc);

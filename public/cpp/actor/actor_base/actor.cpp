@@ -8,16 +8,20 @@
 
 namespace ngl
 {
+#define DEF_ACTOR_USE_DEQUE 
 	struct actor::impl_actor
 	{
 		impl_actor() = delete;
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
 
-		//template <typename T>
-		//using tls = std::list<T>;
+#ifdef DEF_ACTOR_USE_DEQUE
 		template <typename T>
 		using tls = std::deque<T>;
+#else
+		template <typename T>
+		using tls = std::list<T>;
+#endif//DEF_ACTOR_USE_LIST
 
 		tls<handle_pram>				m_list;		// 待处理消息列表
 		actor_stat						m_stat;		// actor状态
@@ -108,6 +112,8 @@ namespace ngl
 	public:
 		inline void actor_handle(actor* aactor, i32_threadid athreadid, int aweight)
 		{
+			if (aactor == nullptr)
+				return;
 			tls<handle_pram> llist;
 			swaplist(llist);
 			if (aweight < llist.size())
@@ -148,6 +154,10 @@ namespace ngl
 		set_broadcast(aparm.m_broadcast);
 	}
 
+	actor::~actor()
+	{
+	}
+
 	void actor::release()
 	{
 		m_impl_actor()->release(this);
@@ -176,10 +186,6 @@ namespace ngl
 	void actor::actor_handle(i32_threadid athreadid)
 	{
 		m_impl_actor()->actor_handle(this, athreadid);
-	}
-
-	actor::~actor() 
-	{
 	}
 
 	bool actor::handle(message<np_actor_broadcast>& adata)

@@ -130,9 +130,7 @@ namespace ngl
 		ngl::tools::to_asscii(lstr, lstrasscii);
 		log_error()->print(
 			"[{}:{}] {}", 
-			area(), 
-			m_data.m_role().m_base().m_name(), 
-			lstrasscii
+			area(), m_data.m_role().m_base().m_name(), lstrasscii
 		);
 		return true;
 	}
