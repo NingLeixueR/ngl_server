@@ -130,7 +130,7 @@ namespace ngl
 		return lpprotocol->net_send(asession, apack);
 	}
 
-	bool nets::sendmsg(i32_sessionid asession, std::string& amsg)
+	bool nets::sendmsg(i32_sessionid asession, const std::string& amsg)
 	{
 		int lcount = amsg.size();
 		auto lpack = std::make_shared<pack>();

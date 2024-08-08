@@ -143,7 +143,7 @@ namespace ngl
 
 		static bool sendpack(i32_sessionid asession, std::shared_ptr<void>& apack);
 
-		static bool sendmsg(i32_sessionid asession, std::string& amsg);
+		static bool sendmsg(i32_sessionid asession, const std::string& amsg);
 
 		static const std::string& ip(net_works const* apstruct);
 

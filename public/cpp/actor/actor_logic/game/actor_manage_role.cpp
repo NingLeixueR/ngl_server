@@ -121,7 +121,7 @@ namespace ngl
 				}
 			);
 
-			handle_php::push("get_roleban", [this](int id, ngl::json_read& aos)
+			handle_php::push("get_roleban", [this](int id, ngl::json_read&)
 				{
 					std::string lbanrole;
 					tools::splicing(m_roleban, "*", lbanrole);
