@@ -137,7 +137,7 @@ namespace ngl
 		);
 	}
 
-	void protocol::cmd(std::shared_ptr<pack>& apack)
+	void protocol::cmd(const std::shared_ptr<pack>& apack)
 	{
 		std::vector<std::string> lvec;
 		if (tools::splite(apack->m_buff, " ", lvec) == false)
