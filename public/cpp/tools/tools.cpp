@@ -68,14 +68,15 @@ namespace ngl
 
 	bool tools::is_equal(const char* astr1, const char* astr2)
 	{
-		int llen1 = strlen(astr1);
-		int llen2 = strlen(astr2);
-		if (llen1 != llen2)
+		if (astr1 == nullptr || astr2 == nullptr)
+			return false;
+		size_t llen1 = strlen(astr1);
+		if (size_t llen2 = strlen(astr2); llen1 != llen2)
 			return false;
 		return is_equal(astr1, astr2, llen1);
 	}
 
-	bool tools::is_equal(const char* astr1, const char* astr2, int32_t abyte)
+	bool tools::is_equal(const char* astr1, const char* astr2, size_t abyte)
 	{
 		return memcmp(astr1, astr2, abyte) == 0;
 	}

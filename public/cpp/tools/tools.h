@@ -255,7 +255,7 @@ namespace ngl
 
 		static bool is_equal(const char* astr1, const char* astr2);
 
-		static bool is_equal(const char* astr1, const char* astr2, int32_t abyte);
+		static bool is_equal(const char* astr1, const char* astr2, size_t abyte);
 
 		template <typename T>
 		static bool protojson(T& adata, std::string& json)
