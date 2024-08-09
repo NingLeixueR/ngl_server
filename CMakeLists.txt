@@ -108,6 +108,7 @@ INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 
 INCLUDE_DIRECTORIES(public/cpp/third_party)
 INCLUDE_DIRECTORIES(public/cpp/third_party/asio)
+INCLUDE_DIRECTORIES(public/cpp/third_party/asio/include)
 INCLUDE_DIRECTORIES(public/cpp/third_party/kcp)
 INCLUDE_DIRECTORIES(public/cpp/third_party/tinyxml2)
 INCLUDE_DIRECTORIES(public/cpp/third_party/base64)
