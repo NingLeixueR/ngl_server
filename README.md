@@ -1,4 +1,5 @@
 [![Build C++](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-unbutu.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-unbutu.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ngl_server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ngl_server)
 ## ngl
 * Actor based c++distributed game server framework
 * 基于Actor的c++分布式游戏服务器框架
