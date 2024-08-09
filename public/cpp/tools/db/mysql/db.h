@@ -48,7 +48,7 @@ namespace ngl
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>;
 		bool select(
 			const char* asql, int asqllen, 
-			const std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>& aback
+			const callback& aback
 		);
 
 		// # stmt ฯเนุ

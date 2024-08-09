@@ -100,7 +100,7 @@ namespace ngl
 
 	bool db::select(
 		const char* asql, int asqllen, 
-		const std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>& aback
+		const callback& aback
 	)
 	{
 		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen)); ret == 0)
@@ -132,9 +132,7 @@ namespace ngl
 		else
 		{
 			log_error()->print(
-				"db::select fail [{}] [{}]", 
-				mysql_error(m_mysql), 
-				(const char*)asql
+				"db::select fail [{}] [{}]", mysql_error(m_mysql), asql
 			);
 		}
 		return false;

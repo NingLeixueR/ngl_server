@@ -26,7 +26,13 @@ namespace ngl
 
 		std::function<void(int)> lclosefun = std::bind_front(&net_tcp::close, this);
 		m_server = new asio_tcp(
-			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid, bool, const pack*) {}
+			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
+			{
+				if (abool)
+				{
+					log_error()->print("send finish fail sessionid:{}", asessionid);
+				}
+			}
 		);
 		return true;
 	}
