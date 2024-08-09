@@ -98,7 +98,10 @@ namespace ngl
 		aoutsql = lbuff;
 	}
 
-	bool db::select(const char* asql, int asqllen, const callback& aback)
+	bool db::select(
+		const char* asql, int asqllen, 
+		const std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>& aback
+	)
 	{
 		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen)); ret == 0)
 		{
@@ -112,11 +115,11 @@ namespace ngl
 			} while (mysql_next_result(m_mysql) == 0);
 			if (pRes)
 			{
-				uint32_t liTableRow = (uint32_t)mysql_num_rows(pRes);
-				uint32_t liTableCol = (uint32_t)mysql_num_fields(pRes);
+				auto liTableRow = mysql_num_rows(pRes);
+				auto liTableCol = mysql_num_fields(pRes);
 				MYSQL_ROW lMYSQL_ROW;
 				unsigned long* lMYSQL_LENS;
-				for (uint32_t i = 0; i < liTableRow; i++)
+				for (my_ulonglong i = 0; i < liTableRow; i++)
 				{
 					lMYSQL_ROW = mysql_fetch_row(pRes);
 					lMYSQL_LENS = mysql_fetch_lengths(pRes);
