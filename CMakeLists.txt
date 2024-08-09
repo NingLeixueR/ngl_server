@@ -110,6 +110,7 @@ INCLUDE_DIRECTORIES(public/cpp/third_party)
 INCLUDE_DIRECTORIES(public/cpp/third_party/asio)
 INCLUDE_DIRECTORIES(public/cpp/third_party/kcp)
 INCLUDE_DIRECTORIES(public/cpp/third_party/tinyxml2)
+INCLUDE_DIRECTORIES(public/cpp/third_party/base64)
 
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 #ADD_DEFINITIONS(-DASIO_NO_DEPRECATED)
