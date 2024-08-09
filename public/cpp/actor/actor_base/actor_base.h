@@ -426,9 +426,7 @@ namespace ngl
 		// 发送数据到指定的actor
 		template <typename T>
 		static void static_send_actor(
-			const nguid& aguid, 
-			const nguid& arequestguid, 
-			std::shared_ptr<T>&& adata
+			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata
 		)
 		{
 			handle_pram lpram = handle_pram::create<T>(aguid, arequestguid, adata);
