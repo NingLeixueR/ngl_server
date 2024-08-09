@@ -42,11 +42,11 @@ namespace ngl
 		bool query(const char* asql, int alen);
 
 		// # 转义 SQL 语句中使用的字符串中的特殊字符
-		void escape(const char* asql, std::string& aoutsql);
+		void escape(const char* asql, int asqllen, std::string& aoutsql);
 
 		// # 在callback中转化数据
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, uint32_t, uint32_t)>;
-		bool select(const char* asql, int asqllen, callback aback);
+		bool select(const char* asql, int asqllen, const callback& aback);
 
 		// # stmt 相关
 		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);

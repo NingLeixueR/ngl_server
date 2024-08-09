@@ -82,27 +82,25 @@ namespace ngl
 
 	bool db::query(const char* asql, int alen)
 	{
-		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1));
-		if (ret != 0)
+		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1)); ret != 0)
 		{
-			log_error()->print("db::query[{}][{}]", mysql_error(m_mysql), (const char*)asql);
+			log_error()->print("db::query[{}][{}]", mysql_error(m_mysql), asql);
 			return false;
 		}
 		log_error()->print("db::query[{}]", asql);
 		return true;
 	}
 
-	void db::escape(const char* asql, std::string& aoutsql)
+	void db::escape(const char* asql, int asqllen, std::string& aoutsql)
 	{
 		char lbuff[10240] = { 0 };
-		mysql_real_escape_string(m_mysql, lbuff, asql, strlen(asql));
+		mysql_real_escape_string(m_mysql, lbuff, asql, asqllen);
 		aoutsql = lbuff;
 	}
 
-	bool db::select(const char* asql, int asqllen, callback aback)
+	bool db::select(const char* asql, int asqllen, const callback& aback)
 	{
-		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen));
-		if (ret == 0)
+		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen)); ret == 0)
 		{
 			MYSQL_RES* pRes = nullptr;
 			do
