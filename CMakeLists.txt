@@ -106,6 +106,11 @@ INCLUDE_DIRECTORIES(public/cpp/logic/public/public/family)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
 INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 
+INCLUDE_DIRECTORIES(public/cpp/third_party)
+INCLUDE_DIRECTORIES(public/cpp/third_party/asio)
+INCLUDE_DIRECTORIES(public/cpp/third_party/kcp)
+INCLUDE_DIRECTORIES(public/cpp/third_party/tinyxml2)
+
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 #ADD_DEFINITIONS(-DASIO_NO_DEPRECATED)
 ADD_DEFINITIONS(-D_WEBSOCKETPP_CPP11_TYPE_TRAITS_)
