@@ -114,6 +114,7 @@ INCLUDE_DIRECTORIES(public/cpp/third_party/tinyxml2)
 INCLUDE_DIRECTORIES(public/cpp/third_party/base64)
 INCLUDE_DIRECTORIES(public/cpp/third_party/varint)
 INCLUDE_DIRECTORIES(public/cpp/third_party/json)
+INCLUDE_DIRECTORIES(public/cpp/third_party/redis)
 
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 #ADD_DEFINITIONS(-DASIO_NO_DEPRECATED)

@@ -168,10 +168,8 @@ namespace ngl
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
 	{
 		static int billnoindex = 0;
-		char lbillno[128];
-		sprintf(lbillno,
-			"%05d%010d%010d%010d%02d",
-			area(), id(), arechargeid, localtime::gettime(), ++billnoindex);
+		char lbillno[128] = {0};
+		snprintf(lbillno, 128, "%05d%010d%010d%010d%02d", area(), id(), arechargeid, localtime::gettime(), ++billnoindex);
 		aorder = lbillno;
 	}
 
