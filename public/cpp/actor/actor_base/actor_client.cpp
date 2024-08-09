@@ -71,13 +71,12 @@ namespace ngl
 
 	void set_node(int32_t aserverid, int asession)
 	{
-		tab_servers* tab = ttab_servers::tab(aserverid);
+		tab_servers const* tab = ttab_servers::tab(aserverid);
 		if (tab == nullptr)
 			return;
 		nactornode lnode;
 		lnode.m_name = tab->m_name;
 		lnode.m_serverid = aserverid;
-		//lnode.m_actortype.push_back(ACTOR_SERVER);
 		naddress::set_node(lnode);
 		naddress::set_session(aserverid, asession);
 	}

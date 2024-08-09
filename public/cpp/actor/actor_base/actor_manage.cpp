@@ -191,7 +191,7 @@ namespace ngl
 					else
 						m_workthread.push_back(atorthread);
 				}
-				if (m_actorbyid.find(apactor->id_guid()) == m_actorbyid.end())
+				if (!m_actorbyid.contains(apactor->id_guid()))
 				{//erase_actor_byid
 					auto itorfun = m_delactorfun.find(apactor->id_guid());
 					if (itorfun != m_delactorfun.end())
