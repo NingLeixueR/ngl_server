@@ -154,10 +154,6 @@ namespace ngl
 		set_broadcast(aparm.m_broadcast);
 	}
 
-	actor::~actor()
-	{
-	}
-
 	void actor::release()
 	{
 		m_impl_actor()->release(this);

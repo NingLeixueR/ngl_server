@@ -228,7 +228,7 @@ namespace ngl
 	public:
 		explicit actor(const actorparm& aparm);
 
-		virtual ~actor();
+		virtual ~actor() = default;
 
 		virtual actor_stat get_activity_stat() final;
 
