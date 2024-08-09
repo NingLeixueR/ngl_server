@@ -1126,9 +1126,9 @@ namespace ngl
 		if (!finalized)
 			return "";
 
-		char buf[33];
+		char buf[33] = {0};
 		for (int i = 0; i < 16; i++)
-			sprintf(buf + i * 2, "%02x", digest[i]);
+			snprintf(buf + (i * 2), 33-(i * 2), "%02x", digest[i]);
 		buf[32] = 0;
 
 		return std::string(buf);
