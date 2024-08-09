@@ -57,14 +57,21 @@ class Inamespace
 {
 	std::string& m_str;
 public:
-	Inamespace(std::string& astr):
+	explicit Inamespace(std::string& astr):
 		m_str(astr)
 	{
 		m_str += "namespace ngl{\n";
 	}
 	~Inamespace()
 	{
-		m_str += "}//namespace ngl\n";
+		try
+		{
+			m_str += "}//namespace ngl\n";
+		}
+		catch (...)
+		{
+			return;
+		}
 	}
 };
 

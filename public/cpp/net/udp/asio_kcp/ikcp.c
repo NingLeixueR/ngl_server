@@ -561,7 +561,7 @@ static void ikcp_shrink_buf(ikcpcb *kcp)
 {
 	struct IQUEUEHEAD *p = kcp->snd_buf.next;
 	if (p != &kcp->snd_buf) {
-		IKCPSEG *seg = iqueue_entry(p, IKCPSEG, node);
+		IKCPSEG const *seg = iqueue_entry(p, IKCPSEG, node);
 		kcp->snd_una = seg->sn;
 	}	else {
 		kcp->snd_una = kcp->snd_nxt;
