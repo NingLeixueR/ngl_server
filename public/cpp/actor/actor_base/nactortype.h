@@ -17,13 +17,13 @@ namespace ngl
 		ACTOR_NONE = -1,
 		//#######################  非单例  #####################
 		ACTOR_ROLE = 1,
-		ACTOR_ROBOT,										// 机器人
-		ACTOR_GUILD,										// 工会	
-		ACTOR_PLAYS,										// 玩法
-		ACTOR_MANAGE_ROLE,									// 负责创建actor_role
-		ACTOR_PLAYS_GO_UNDERGROUNDPALACE = ACTOR_PLAYS,		// 玩法[勇闯地宫]
+		ACTOR_ROBOT,												// 机器人
+		ACTOR_GUILD,												// 工会	
+		ACTOR_PLAYS,												// 玩法
+		ACTOR_MANAGE_ROLE,											// 负责创建actor_role
+		ACTOR_PLAYS_GO_UNDERGROUNDPALACE = ACTOR_MANAGE_ROLE+1,		// 玩法[勇闯地宫]
 
-		ACTOR_PLAYS_END = ACTOR_PLAYS + pbnet::eplays_count,
+		ACTOR_PLAYS_END,
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
 		ACTOR_SERVER = ACTOR_SIGNLE_START,						// 单例 actor address server  管理分发地址的中心
