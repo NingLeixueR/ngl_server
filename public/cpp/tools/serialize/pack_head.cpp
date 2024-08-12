@@ -63,7 +63,7 @@ namespace ngl
 
 	void pack_head::head_set_mask(int32_t* abuff)
 	{
-		char* lpbuff = (char*)abuff;
+		auto lpbuff = (char*)abuff;
 		for (int i = 0; i < EPH_MASK_COUNT_BYTES; ++i)
 		{
 			lpbuff[i] = EPH::EPH_MASK_VALUE;
@@ -77,7 +77,7 @@ namespace ngl
 		{
 			lnum = EPH_MASK_COUNT_BYTES;
 		}
-		const uint8_t* lpbuff = (const uint8_t*)abuff;
+		auto lpbuff = (const uint8_t*)abuff;
 		for (int i = 0; i < lnum; ++i)
 		{
 			if (lpbuff[i] != EPH::EPH_MASK_VALUE)

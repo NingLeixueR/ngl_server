@@ -25,7 +25,7 @@ namespace ngl
 		catch (...) {}
 	}
 
-	bool readfile::is_open()
+	bool readfile::is_open()const
 	{
 		return m_file.is_open();
 	}

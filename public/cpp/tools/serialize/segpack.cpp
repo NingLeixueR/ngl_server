@@ -61,6 +61,137 @@ namespace ngl
 			m_data.erase(aid);
 		}
 
+		enum class edopush
+		{
+			e_continue,		// 继续循环
+			e_break,		// 跳出循环
+			e_error,		// 出错
+		};
+
+		inline edopush do_push(i32_socket aid, const char*& ap, int& alen, bool aislanip)
+		{
+			if (alen <= 0)
+				return edopush::e_break;
+			std::shared_ptr<pack> lpack = nullptr;
+			// # 查看有没有残包
+			if (auto itor = m_data.find(aid); itor != m_data.end())
+			{
+				lpack = itor->second;
+				m_data.erase(itor);
+			}
+			else
+			{
+				lpack = pack::make_pack(&m_pool, 0);
+				lpack->m_id = aid;
+				lpack->m_segpack = m_segpack;
+			}
+			if (EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen); lval == EPH_HEAD_MASK_FAIL)
+			{
+				if (aislanip == false)
+				{
+					return edopush::e_error;
+				}
+				// 支持telnet命令访问，telnet ip port 后记得['CTRL+]']
+				// 只支持256个字符的进程命令
+				if (lpack->m_buff == nullptr)
+				{
+					lpack->malloc(256);
+					memcpy(lpack->m_buff, lpack->m_head.m_data, lpack->m_head.m_wpos);
+					lpack->m_pos += lpack->m_head.m_wpos;
+				}
+				if (lpack->m_pos + alen >= 256)
+				{
+					return edopush::e_error;
+				}
+				memcpy(&lpack->m_buff[lpack->m_pos], ap, alen);
+				lpack->m_pos += alen;
+				ap += alen;
+				alen -= alen;
+				lpack->m_buff[lpack->m_pos] = '\0';
+				protocol::cmd(lpack);
+				return edopush::e_break;
+			}
+			else
+			{
+				switch (lval)
+				{
+				case ngl::EPH_HEAD_MASK_SUCCESS:
+				case ngl::EPH_HEAD_FOLLOW:
+					m_data.try_emplace(aid, lpack);
+					return edopush::e_break;
+				default:
+					break;
+				}
+			}
+
+			if (alen < 0)
+				return edopush::e_break;
+			int len = lpack->m_head.getvalue(EPH_BYTES);
+			if (len < 0)
+			{
+				return edopush::e_error;
+			}
+			if (aislanip == false && nconfig::node_type() != ROBOT && len >= net_config_recv_buff_maxbyte)
+			{
+				m_data.erase(aid);
+				log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})"
+					, lpack->m_head, (int)net_config_recv_buff_maxbyte
+				);
+				return edopush::e_error;
+			}
+
+			if (len == 0)
+			{
+				if (!aislanip && !m_rate.add(aid))
+				{
+					return edopush::e_error;
+				}
+				//只有包头的包
+				//检测是否是心跳包
+				if (segpack_heartbeat::is_heartbeat(lpack->m_head.get_protocolnumber()))
+				{
+					return edopush::e_break;
+				}
+				protocol::push(lpack);
+				return edopush::e_continue;
+			}
+			if (lpack->m_buff == nullptr)
+			{
+				lpack->malloc(len);
+			}
+			if (len != 0 && lpack->m_buff == nullptr)
+				return edopush::e_error;
+			int ltemp = len - lpack->m_pos;
+			if (ltemp < 0)
+				return edopush::e_error;
+			ltemp = ltemp > alen ? alen : ltemp;
+			memcpy(&lpack->m_buff[lpack->m_pos], ap, ltemp);
+			lpack->m_pos += ltemp;
+			alen -= ltemp;
+			ap += ltemp;
+			if (lpack->isready())
+			{
+				if (!aislanip && !m_rate.add(aid))
+				{
+					return edopush::e_error;
+				}
+
+				if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+				{
+					protocol::push(lpack);
+				}
+				else
+				{
+					log_error()->print("time[{} < {} + {} ]"
+						, localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout()
+					);
+				}
+				return edopush::e_continue;
+			}
+			m_data[aid] = lpack;
+			return edopush::e_break;
+		}
+
 		bool push(i32_socket aid, const char* ap, int alen, bool aislanip)
 		{
 			if (ap == nullptr && alen == 0)
@@ -68,135 +199,13 @@ namespace ngl
 				erase(aid);
 			}
 
-			while (true)
+			for (;;)
 			{
-				if (alen <= 0)
-					return true;
-				std::shared_ptr<pack> lpack = nullptr;
-				// # 查看有没有残包
-				auto itor = m_data.find(aid);
-				if (itor != m_data.end())
-				{
-					lpack = itor->second;
-					m_data.erase(itor);
-				}
-				else
-				{
-					lpack = pack::make_pack(&m_pool, 0);
-					lpack->m_id = aid;
-					lpack->m_segpack = m_segpack;
-				}
-				EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen);
-				if (lval == EPH_HEAD_MASK_FAIL)
-				{	
-					if (aislanip == false)
-					{
-						return false;
-					}
-					// 支持telnet命令访问，telnet ip port 后记得['CTRL+]']
-					// 只支持256个字符的进程命令
-					if (lpack->m_buff == nullptr)
-					{
-						lpack->malloc(256);
-						memcpy(lpack->m_buff, lpack->m_head.m_data, lpack->m_head.m_wpos);
-						lpack->m_pos += lpack->m_head.m_wpos;
-					}
-					if (lpack->m_pos + alen >= 256)
-					{
-						return false;
-					}
-					memcpy(&lpack->m_buff[lpack->m_pos], ap, alen);
-					lpack->m_pos += alen;
-					ap += alen;
-					alen -= alen;
-					lpack->m_buff[lpack->m_pos] = '\0';
-					protocol::cmd(lpack);
+				edopush levalue = do_push(aid, ap, alen, aislanip);
+				if (levalue == edopush::e_error)
+					return false;
+				if (levalue == edopush::e_break)
 					break;
-				}
-				else
-				{
-					switch (lval)
-					{
-					case ngl::EPH_HEAD_MASK_SUCCESS:
-					case ngl::EPH_HEAD_FOLLOW:
-						m_data.insert(std::make_pair(aid, lpack));
-						return true;
-					}
-				}
-				
-				if (alen < 0)
-					return true;
-				int len = lpack->m_head.getvalue(EPH_BYTES);
-				if (len < 0)
-				{
-					return false;
-				}
-				if (aislanip == false && nconfig::node_type() != ROBOT)
-				{
-					if (len >= net_config_recv_buff_maxbyte)
-					{
-						m_data.erase(aid);
-						log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})"
-							, lpack->m_head, (int)net_config_recv_buff_maxbyte
-						);
-						return false;
-					}
-				}
-				
-				if (len == 0)
-				{
-					if (!aislanip)
-					{
-						if (!m_rate.add(aid))
-						{
-							return false;
-						}
-					}
-					//只有包头的包
-					//检测是否是心跳包
-					if (segpack_heartbeat::is_heartbeat(lpack->m_head.get_protocolnumber()))
-					{
-						return true;
-					}
-					protocol::push(lpack);
-					continue;
-				}
-				if (lpack->m_buff == nullptr)
-				{
-					lpack->malloc(len);
-				}
-				if (len != 0 && lpack->m_buff == nullptr)
-					return false;
-				int ltemp = len - lpack->m_pos;
-				if (ltemp < 0)
-					return false;
-				ltemp = ltemp > alen ? alen : ltemp;
-				memcpy(&lpack->m_buff[lpack->m_pos], ap, ltemp);
-				lpack->m_pos += ltemp;
-				alen -= ltemp;
-				ap += ltemp;
-				if (lpack->isready())
-				{
-					if (!aislanip)
-					{
-						if (!m_rate.add(aid))
-							return false;
-					}
-
-					if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
-					{
-						protocol::push(lpack);
-					}
-					else
-					{
-						log_error()->print("time[{} < {} + {} ]"
-							, localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout()
-						);
-					}
-					continue;
-				}
-				m_data[aid] = lpack;
-				break;
 			}
 			if (alen > 0)
 				return false;
