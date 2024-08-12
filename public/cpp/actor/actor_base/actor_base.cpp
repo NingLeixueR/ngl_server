@@ -361,7 +361,7 @@ namespace ngl
 					return actor_base::impl_actor_base::m_broadcast; 
 				} ,
 				.m_count = 0x7fffffff,
-				.m_fun = [](wheel_node* anode)
+				.m_fun = [](const wheel_node* anode)
 				{
 					auto pro = std::make_shared<np_actor_broadcast>();
 					handle_pram lpram = handle_pram::create<
@@ -369,7 +369,7 @@ namespace ngl
 					actor_manage::getInstance().broadcast_task(lpram);
 				}
 			};
-			m_broadcasttimer = twheel::wheel().addtimer(lparm);
+			m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
 		}
 	};
 

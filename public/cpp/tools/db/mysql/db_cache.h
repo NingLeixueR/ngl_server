@@ -35,7 +35,7 @@ namespace ngl
 					.m_intervalms = [aintervalms](int64_t) {return aintervalms; } ,
 					.m_count = 0x7fffffff,
 					.m_pram = nullptr,
-					.m_fun = std::bind(&db_cache<T>::execute, this, std::placeholders::_1),
+					.m_fun =  std::bind_front(&db_cache<T>::execute, this),
 				});
 		}
 
@@ -51,7 +51,7 @@ namespace ngl
 			m_ls.insert(aidlist.begin(), aidlist.end());
 		}
 
-		void execute(wheel_node*)
+		void execute(const wheel_node*)
 		{
 			monopoly_shared_lock(m_mutex);
 			if (m_ls.empty() != true)

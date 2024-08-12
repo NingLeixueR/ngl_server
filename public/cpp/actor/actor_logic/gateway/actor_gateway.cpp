@@ -80,7 +80,7 @@ namespace ngl
 			.m_ms = sysconfig::sessionwait() * 1000,
 			.m_intervalms = [](int64_t) {return sysconfig::sessionwait() * 1000; } ,
 			.m_count = 1,
-			.m_fun = [this, lroleid, larea](wheel_node* anode)
+			.m_fun = [this, lroleid, larea](const wheel_node* anode)
 			{
 				gateway_socket* linfo = m_info.get(larea, lroleid);
 				if (linfo == nullptr)

@@ -3,6 +3,8 @@
 #include "protocol.h"
 #include "cmd.h"
 
+#define USE_WHEEL_TIMER
+
 namespace ngl
 {
 	time_wheel m_kcptimer(time_wheel_config
@@ -184,7 +186,7 @@ namespace ngl
 				.m_ms = 10,
 				.m_intervalms = [](int64_t) {return 10; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [ltemp,lcreatems](wheel_node* anode)
+				.m_fun = [ltemp,lcreatems](const wheel_node* anode)
 				{
 					ltemp->update((IUINT32)(time_wheel::getms() - lcreatems));
 				}
@@ -358,7 +360,7 @@ namespace ngl
 		inline bool function_econnect(ptr_se& apstruct, i64_actorid aactorid, bool aconnect)
 		{
 			i32_sessionid session = apstruct->m_session;
-			xmlinfo* linfo = nconfig::get_publicconfig();
+			xmlinfo const* linfo = nconfig::get_publicconfig();
 			if (linfo == nullptr)
 				return false;
 			if (aconnect)
@@ -370,7 +372,7 @@ namespace ngl
 					.m_ms = sysconfig::kcpping() * 1000,
 					.m_intervalms = [](int64_t) {return sysconfig::kcpping() * 1000; } ,
 					.m_count = 0x7fffffff,
-					.m_fun = [session, this](wheel_node* anode)
+					.m_fun = [session, this](const wheel_node* anode)
 					{
 						ptr_se lpstruct = m_session.find(session);
 						if (lpstruct == nullptr)
@@ -378,7 +380,7 @@ namespace ngl
 							m_kcptimer.removetimer(anode->m_timerid);
 							return;
 						}
-						int32_t lnow = localtime::gettime();
+						int32_t lnow = (int32_t)localtime::gettime();
 						if (lnow - lpstruct->m_pingtm > sysconfig::kcppinginterval())
 						{
 							m_kcp->close(lpstruct->m_session);
@@ -397,10 +399,9 @@ namespace ngl
 					.m_ms = sysconfig::kcpping() * 1000,
 					.m_intervalms = [](int64_t) {return sysconfig::kcpping() * 1000; } ,
 					.m_count = 0x7fffffff,
-					.m_fun = [session, this](wheel_node* anode)
+					.m_fun = [session, this](const wheel_node* anode)
 					{
-						ptr_se lpstruct = m_session.find(session);
-						if (lpstruct == nullptr)
+						if (ptr_se lpstruct = m_session.find(session); lpstruct == nullptr)
 						{
 							m_kcptimer.removetimer(anode->m_timerid);
 							return;
@@ -474,7 +475,7 @@ namespace ngl
 						.m_ms = 1000,
 						.m_intervalms = [](int64_t) {return 1000; } ,
 						.m_count = 0x7fffffff,
-						.m_fun = [ap,lession](wheel_node* anode)
+						.m_fun = [ap,lession](const wheel_node* anode)
 						{
 							ap->close(lession);
 						}
@@ -647,7 +648,7 @@ namespace ngl
 							.m_ms = 1000,
 							.m_intervalms = [](int64_t) {return 1000; } ,
 							.m_count = 1,
-							.m_fun = [this, aendpoint, buf, len, afun](wheel_node* anode)
+							.m_fun = [this, aendpoint, buf, len, afun](const wheel_node* anode)
 							{
 								sendu_waitrecv(aendpoint, buf, len, afun);
 							}

@@ -31,7 +31,7 @@ namespace ngl
 			.m_ms = ltime * 1000,
 			.m_intervalms = [ltime](int64_t) {return ltime * 1000; } ,
 			.m_count = 1,
-			.m_fun = [atab, autc, astart](wheel_node* anode)
+			.m_fun = [atab, autc, astart](const wheel_node* anode)
 			{
 				send_calendar(atab, autc, astart);
 			}

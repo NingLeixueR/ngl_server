@@ -193,7 +193,7 @@ namespace ngl
 	{
 	public:
 		static bool sendbyserver(
-			i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
+			i32_serverid aserverid, const nguid&, const nguid&, handle_pram& adata
 		)
 		{
 			return handle_pram::netsendpack(aserverid, adata.m_data);
@@ -230,7 +230,7 @@ namespace ngl
 
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendclient(
-		const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
+		const nguid&, const nguid& arequestactorid, handle_pram& adata
 	)
 	{
 		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)

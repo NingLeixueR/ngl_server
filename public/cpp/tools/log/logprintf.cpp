@@ -92,7 +92,7 @@ namespace ngl
 			.m_ms = m_config.m_flush_time,
 			.m_intervalms = [this](int64_t) {return m_config.m_flush_time; } ,
 			.m_count = 0x7fffffff,
-			.m_fun = [this](wheel_node* anode)
+			.m_fun = [this](const wheel_node* anode)
 			{
 				m_stream.flush();
 			}

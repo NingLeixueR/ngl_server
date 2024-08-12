@@ -94,7 +94,7 @@ namespace ngl
 				.m_ms = 10 * 1000,
 				.m_intervalms = [](int64_t) {return 10 * 1000; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [this](wheel_node* anode) 
+				.m_fun = [this](const wheel_node*)
 				{
 					time_free(); 
 				},
@@ -104,7 +104,6 @@ namespace ngl
 
 		char* malloc_private(int abytes)
 		{
-			char* lpbuff = nullptr;
 			for (int i = 0; i < Count; ++i)
 			{
 				if (abytes <= m_bytes[i])

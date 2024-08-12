@@ -43,7 +43,7 @@ namespace ngl
 				}
 				actor::static_send_actor(nguid::make_self(ACTOR_GM), -1, pro);
 			}
-			Catch;			
+			Catch		
 		}
 	};
 }//namespace ngl

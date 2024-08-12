@@ -41,8 +41,8 @@ namespace ngl
 		auto lparm = adata.get_data();
 		auto lpack = adata.m_pack;
 		np_actor_reloadcsv pro;
-		std::map<std::string, csvbase*>& lversion = allcsv::all();
-		for (const auto [key, value] : lversion)
+		auto& lversion = allcsv::all();
+		for (const auto& [key, value] : lversion)
 		{
 			auto itor = lparm->m_verify.find(key);
 			if (itor != lparm->m_verify.end() && itor->second != value->verify())

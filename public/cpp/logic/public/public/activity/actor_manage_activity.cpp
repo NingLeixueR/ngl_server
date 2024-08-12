@@ -48,16 +48,16 @@ namespace ngl
 		m_db.set(this);
 	}
 
-	int64_t post_timer(int32_t autc, const std::function<void(wheel_node* anode)>& afun)
+	int64_t post_timer(int32_t autc, const std::function<void(const wheel_node* anode)>& afun)
 	{
-		int32_t lms = localtime::gettime()*1000 - (autc * 1000);
+		int32_t lms = (int32_t)(localtime::gettime()*1000 - (autc * 1000));
 
 		wheel_parm lparm
 		{
 			.m_ms = lms,
 			.m_intervalms = nullptr ,
 			.m_count = 1,
-			.m_fun = [afun](wheel_node* anode)
+			.m_fun = [afun](const wheel_node* anode)
 			{
 				afun(anode);
 			}

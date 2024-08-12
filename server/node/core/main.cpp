@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	// # 区服id下功能进程的序号
 	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
-	ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
+	const ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
 		return 0;
 

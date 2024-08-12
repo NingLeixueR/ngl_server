@@ -66,7 +66,7 @@ namespace ngl
 					.m_ms = ltemp * 1000,
 					.m_intervalms = nullptr ,
 					.m_count = 1,
-					.m_fun = [ltime,lactivityid,astart](wheel_node* anode)
+					.m_fun = [ltime,lactivityid,astart](const wheel_node* anode)
 					{
 						auto pro = std::make_shared<np_actor_activity>();
 						pro->m_calendarid = -1;

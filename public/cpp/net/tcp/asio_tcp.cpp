@@ -99,7 +99,7 @@ namespace ngl
 								.m_ms = 1000,
 								.m_intervalms = [](int64_t) {return 1000; } ,
 								.m_count = 1,
-								.m_fun = [this, aip, aport, afun, acount](wheel_node* anode)
+								.m_fun = [this, aip, aport, afun, acount](const wheel_node* anode)
 								{
 									impl_asio_tcp::connect(aip, aport, afun, acount - 1);
 								}
