@@ -22,8 +22,8 @@ namespace ngl
 		void				set_dbclient(ndbclient_base* adbclient);
 	public:
 		void				set(actor_base* aactor);
-		i64_actorid			id();
-		pbdb::ENUM_DB		type();
+		i64_actorid			id()const;
+		pbdb::ENUM_DB		type()const;
 		actor_base*			actorbase();
 		virtual void		set_id();
 		void				init();

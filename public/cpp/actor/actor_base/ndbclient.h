@@ -502,7 +502,7 @@ namespace ngl
 			return true;
 		}
 
-		bool isloadfinish()
+		bool isloadfinish()const
 		{
 			return m_typedbclientmap.empty();
 		}

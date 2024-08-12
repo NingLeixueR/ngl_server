@@ -63,11 +63,11 @@ namespace ngl
 		}
 
 		// # 加载表中的所有数据
-		static void loadall(const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
+		static void loadall(const pack* apack, [[maybe_unused]] const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			Try
 			{
-				Assert(m_tab->m_isloadall);
+				Assert(m_tab->m_isloadall)
 				if (!m_tab->m_network)
 					return;
 				int lsendmaxcount = m_tab->m_sendmaxcount;
@@ -96,7 +96,7 @@ namespace ngl
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 				
 				log_info()->print("loadall[{}]", tools::protobuf_tabname<TDBTAB>::name());
-			}Catch;
+			}Catch
 		}
 
 		// # 加载表中的指定数据
@@ -112,9 +112,7 @@ namespace ngl
 
 		// # 加载数据 ：同步方式
 		static void load(
-			i32_threadid athreadid, 
-			const pack* apack, 
-			const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata
+			i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata
 		)
 		{
 			if (!m_tab->m_network)
@@ -124,10 +122,10 @@ namespace ngl
 			{
 				Try
 				{
-					Assert(m_tab->m_isloadall);
+					Assert(m_tab->m_isloadall)
 					//加载全部数据
 					loadall(apack, adata);
-				}Catch;
+				}Catch
 			}
 			else
 			{
@@ -156,7 +154,7 @@ namespace ngl
 		}
 
 		// # 异步保存数据  将需要保存的数据添加到缓存保存队列
-		static void save(i32_threadid athreadid, const TDBTAB& adata)
+		static void save(i32_threadid, const TDBTAB& adata)
 		{
 			int64_t lid = adata.m_id();
 			ngl::db_data<TDBTAB>::set(lid, adata);
@@ -164,20 +162,20 @@ namespace ngl
 		}
 
 		// # 异步删除数据  将需要删除的数据添加到缓存保存队列
-		static void del(i32_threadid athreadid, i64_actorid aid)
+		static void del(i32_threadid, i64_actorid aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
 			m_cache_del.push(aid);
 		}
 
-		static void del(i32_threadid athreadid, std::vector<i64_actorid>& aid)
+		static void del(i32_threadid, std::vector<i64_actorid>& aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
 			m_cache_del.push(aid);
 		}
 
 		static void save(
-			i32_threadid athreadid, const pack* apack, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata
+			i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata
 		)
 		{
 			const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;

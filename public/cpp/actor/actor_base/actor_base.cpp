@@ -230,12 +230,12 @@ namespace ngl
 			}
 		}
 
-		inline void erase_actor_byid()
+		inline void erase_actor_byid()const
 		{
 			actor_manage::getInstance().erase_actor_byid(m_guid);
 		}
 
-		inline bool is_single()
+		inline bool is_single()const
 		{
 			return enum_actor::is_signle(m_guid.type());
 		}
@@ -245,27 +245,27 @@ namespace ngl
 			return m_guid;
 		}
 
-		inline i64_actorid id_guid()
+		inline i64_actorid id_guid()const
 		{
 			return (i64_actorid)(m_guid);
 		}
 
-		inline i32_actordataid id()
+		inline i32_actordataid id()const
 		{
 			return m_guid.actordataid();
 		}
 
-		inline i16_area area()
+		inline i16_area area()const
 		{
 			return m_guid.area();
 		}
 
-		inline ENUM_ACTOR type()
+		inline ENUM_ACTOR type()const
 		{
 			return m_guid.type();
 		}
 
-		inline bool isloadfinish()
+		inline bool isloadfinish()const
 		{
 			return m_dbclient == nullptr || m_dbclient->isloadfinish();
 		}
@@ -289,7 +289,7 @@ namespace ngl
 			return m_dbclient;
 		}
 
-		inline bool isload()
+		inline bool isload()const
 		{
 			return m_isload;
 		}
@@ -330,7 +330,7 @@ namespace ngl
 			m_kcpsession = asession;
 		}
 
-		inline i32_session get_kcpssion()
+		inline i32_session get_kcpssion()const
 		{
 			return m_kcpsession;
 		}
@@ -341,7 +341,7 @@ namespace ngl
 			return ntimer::addtimer(m_actor, lparm);
 		}
 
-		inline bool isbroadcast()
+		inline bool isbroadcast()const
 		{
 			return m_isbroadcast;
 		}

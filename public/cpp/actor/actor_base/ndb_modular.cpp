@@ -20,12 +20,12 @@ namespace ngl
 		m_actor->set_db_component(this);
 	}
 
-	i64_actorid ndb_component::id()
+	i64_actorid ndb_component::id()const
 	{
 		return m_id;
 	}
 
-	pbdb::ENUM_DB ndb_component::type()
+	pbdb::ENUM_DB ndb_component::type()const
 	{
 		return m_type;
 	}
