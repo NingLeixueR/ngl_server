@@ -106,7 +106,7 @@ namespace ngl
 					};
 					actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
 					naddress::ergodic(
-						[&lpram](std::map<nguid, i32_serverid>& aactorserver, std::map<i32_serverid, actor_node_session>& _)
+						[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
 						{
 							for (const auto& [dataid, serverid] : aactorserver)
 							{
@@ -134,7 +134,7 @@ namespace ngl
 			{
 				actor_server_register(id);
 			}
-		}Catch;
+		}Catch
 	}
 
 	bool isactiv_connect(i32_serverid aserverid)
@@ -169,9 +169,9 @@ namespace ngl
 		{
 			auto lparm			= adata.get_data();
 			const tab_servers* tab	= ttab_servers::tab();
-			for (int i = 0; i < lparm->m_vec.size(); ++i)
+			Assert(tab != nullptr)
+			for(const auto& node :lparm->m_vec)
 			{
-				const nactornode& node = lparm->m_vec[i];
 				if (server_session::sessionid(node.m_serverid) == -1)
 				{
 					// # 比较id(较大的主动连接较小的)
@@ -179,7 +179,7 @@ namespace ngl
 					activ_connect(node.m_serverid);
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 
@@ -237,7 +237,7 @@ namespace ngl
 					actor_manage::getInstance().push_task_id(lguid, lparm, false);
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 	
@@ -251,7 +251,7 @@ namespace ngl
 			// );
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
-		}Catch;
+		}Catch
 		return true;
 	}
 	
@@ -299,7 +299,7 @@ namespace ngl
 			return;
 		for (auto itor = lconnectfun.begin(); itor != lconnectfun.end(); ++itor)
 		{
-			if (lconnectserverid.find(itor->first) == lconnectserverid.end())
+			if(lconnectserverid.contains(itor->first))
 				continue;
 			for (auto& fun : itor->second)
 				fun();
@@ -323,7 +323,7 @@ namespace ngl
 				return true;
 			}
 			m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
-		}Catch;
+		}Catch
 		return true;
 	}
 	
@@ -331,7 +331,7 @@ namespace ngl
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
-		auto lparm = adata.get_data();
+		const auto lparm = adata.get_data();
 		if (lparm->m_isremove)
 		{
 			naddress::remove_gatewayid(lparm->m_actorid);

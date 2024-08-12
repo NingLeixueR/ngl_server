@@ -51,18 +51,17 @@ namespace ngl
 				nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
-				std::map<uint32_t, np_actornode_update> lmapprotocol;
+				std::map<i32_serverid, np_actornode_update> lmapprotocol;
 				naddress::ergodic(
 					[lrecv, &lmapprotocol](
-						std::map<nguid, i32_serverid>& amap, 
-						std::map<i32_serverid, actor_node_session>& asession
+						const std::map<nguid, i32_serverid>& amap, 
+						const std::map<i32_serverid, actor_node_session>& asession
 						)->bool
 					{
 						std::map<i32_serverid, actor_node_session>::iterator itor;
 						for (const auto& [guid, serverid] : amap)
 						{
-							itor = asession.find(serverid);
-							if (itor == asession.end())
+							if(asession.contains(serverid) == false)
 								continue;
 							if (lrecv->m_node.m_serverid == serverid)
 								continue;
@@ -72,12 +71,12 @@ namespace ngl
 						}
 						return true;
 					});
-				for (const auto& item : lmapprotocol)
+				for(auto itor = lmapprotocol.begin();itor != lmapprotocol.end();++itor)
 				{
-					nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
+					nets::sendbysession(lpack->m_id, itor->second, nguid::moreactor(), id_guid());
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 
@@ -87,7 +86,7 @@ namespace ngl
 		{
 			auto lrecv = adata.get_data();
 			auto lpack = adata.m_pack;
-			Assert(lpack != nullptr);
+			Assert(lpack != nullptr)
 			uint16_t lserverid = lpack->m_id;
 			naddress::actor_add(lserverid, lrecv->m_add);
 			naddress::actor_del(lrecv->m_del);
@@ -108,7 +107,7 @@ namespace ngl
 					nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
 				}
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 
@@ -126,7 +125,7 @@ namespace ngl
 		}
 		std::vector<i32_sessionid> lvec;
 		naddress::foreach(
-			[&adata, &lvec, lpack](const actor_node_session& anode)->bool
+			[&lvec, lpack](const actor_node_session& anode)->bool
 			{
 				if (lpack->m_id != anode.m_session)
 					lvec.push_back(anode.m_session);
