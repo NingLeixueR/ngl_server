@@ -30,7 +30,7 @@ namespace ngl
 		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) = 0;
 		virtual void clear_modified() = 0;
 
-		pbdb::ENUM_DB type()
+		pbdb::ENUM_DB type()const
 		{
 			return m_type;
 		}
@@ -70,12 +70,11 @@ namespace ngl
 		TDBTAB m_data;
 		TDBTAB* m_pdata = nullptr;
 	public:
-
-		data_modified(TDBTAB* adata):
+		explicit data_modified(TDBTAB* adata):
 			m_pdata(adata)
 		{}
 
-		data_modified(const TDBTAB& adata) :
+		explicit data_modified(const TDBTAB& adata) :
 			m_data(adata)
 		{}
 
@@ -126,14 +125,14 @@ namespace ngl
 		{
 			Try
 			{
-				tab_servers* tab = ttab_servers::tab();
-				Assert(tab != nullptr);
+				const tab_servers* tab = ttab_servers::tab();
+				Assert(tab != nullptr)
 				auto pro = std::make_shared<np_actornode_connect_task>();
 				pro->m_serverid = tab->m_db;
-				pro->m_fun = std::bind(&type_ndbclient::loaddb, this, m_id);
+				pro->m_fun = std::bind_front(&type_ndbclient::loaddb, this, m_id);
 				nguid lclientguid = actor_client::actorid();
 				actor::static_send_actor(lclientguid, m_actor->guid(), pro);
-			}Catch;
+			}Catch
 		}
 	private:
 		// # 加载数据
@@ -145,7 +144,7 @@ namespace ngl
 		// # db结点的id
 		i32_actordataid dbnodeid()
 		{
-			tab_servers* tab = ttab_servers::tab();
+			const tab_servers* tab = ttab_servers::tab();
 			return tab->m_db;
 		}
 
@@ -188,7 +187,7 @@ namespace ngl
 			m_name = tools::type_name<TACTOR>();
 		}
 
-		virtual void create(const nguid& aid)
+		virtual void create(const nguid& aid) final
 		{
 			m_dbdata = &m_data[aid];
 			m_dbdata->get().set_m_id(aid);
@@ -230,7 +229,7 @@ namespace ngl
 			return m_dbdata;
 		}
 
-		void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid)
+		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) final
 		{
 			Try
 			{
@@ -261,7 +260,7 @@ namespace ngl
 			savedb(-1); 
 		}
 
-		virtual void savedb()			
+		virtual void savedb()final
 		{ 
 			savedb(m_id); 
 		}
@@ -329,7 +328,7 @@ namespace ngl
 			m_data.erase((int64_t)aid);
 		}
 
-		virtual void deldb()
+		virtual void deldb() final
 		{
 			np_actordb_delete<DBTYPE, TDBTAB> pro;
 			if (m_dellist.empty())
@@ -360,7 +359,7 @@ namespace ngl
 
 		data_modified<TDBTAB>* add(const nguid& aid, const TDBTAB& adbtab)
 		{
-			if (m_data.find(aid) != m_data.end())
+			if (m_data.contains(aid))
 				return nullptr;
 			data_modified<TDBTAB>* lpdata = &m_data[aid];
 			lpdata->set(adbtab, true);
@@ -414,11 +413,11 @@ namespace ngl
 					, tools::type_name<type_message>(), adata.get_data()->m_over ? "finish" : "no finishi"
 				);
 				loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
-			}Catch;
+			}Catch
 			return true;
 		}
 
-		virtual void clear_modified()
+		virtual void clear_modified() final
 		{
 			for(std::pair<const nguid, data_modified<TDBTAB>>& lpair : m_data)
 			{
@@ -436,7 +435,7 @@ namespace ngl
 		std::function<void(bool)>		m_fun;					//bool db数据库是否有该数据
 		bool							m_finish;
 	public:
-		actor_manage_dbclient(actor_base* aactor) :
+		explicit actor_manage_dbclient(actor_base* aactor) :
 			m_actor(aactor),
 			m_finish(false)
 		{}
@@ -445,10 +444,10 @@ namespace ngl
 		{
 			Try
 			{
-				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end());
+				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end())
 				m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 				init(adbclient, m_actor,  aid);
-			}Catch;
+			}Catch
 		}
 
 		void set_loadfinish_function(const std::function<void(bool)>& afun)
@@ -461,7 +460,7 @@ namespace ngl
 			Try
 			{
 				adbclient->init(this, aactor, aid);
-			}Catch;
+			}Catch
 		}
 
 		bool on_load_finish(bool adbishave)
@@ -492,7 +491,7 @@ namespace ngl
 			m_actor->db_component_init_data();
 
 			// 1、将数据修改为[裁剪修改]
-			for (std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
+			for (const std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
 			{
 				lpair.second->clear_modified();
 			}
@@ -554,12 +553,12 @@ namespace ngl
 	{
 		Try
 		{
-			std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
-			Assert(mdbclient != nullptr);
+			const std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
+			Assert(mdbclient != nullptr)
 			ndbclient<DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<DBTYPE, TDBTAB, TACTOR>(false);
-			Assert(lp != nullptr);
+			Assert(lp != nullptr)
 			return lp->handle(adata);
-		}Catch;
+		}Catch
 		return true;
 	}
 }//namespace ngl
