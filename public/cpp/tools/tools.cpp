@@ -1156,12 +1156,13 @@ namespace ngl
 		return lret;
 	}
 
-#define BLOCKSIZE 64
+	constexpr auto BLOCKSIZE = 64;
 
-	static inline void xor_key(uint8_t key[BLOCKSIZE], uint32_t xor_) {
-		int i;
-		for (i = 0; i < BLOCKSIZE; i += sizeof(uint32_t)) {
-			uint32_t* k = (uint32_t*)&key[i];
+	static inline void xor_key(uint8_t key[BLOCKSIZE], uint32_t xor_) 
+	{
+		for (int i = 0; i < BLOCKSIZE; i += sizeof(uint32_t)) 
+		{
+			auto k = (uint32_t*)&key[i];
 			*k ^= xor_;
 		}
 	}

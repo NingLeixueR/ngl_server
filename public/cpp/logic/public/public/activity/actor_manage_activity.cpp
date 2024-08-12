@@ -50,7 +50,7 @@ namespace ngl
 
 	int64_t post_timer(int32_t autc, const std::function<void(const wheel_node* anode)>& afun)
 	{
-		int32_t lms = (int32_t)(localtime::gettime()*1000 - (autc * 1000));
+		auto lms = (int32_t)(localtime::gettime()*1000 - (autc * 1000));
 
 		wheel_parm lparm
 		{
@@ -67,13 +67,12 @@ namespace ngl
 
 	void actor_manage_activity::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
-		auto itor = m_allactivity.find(aactivityid);
-		if (itor != m_allactivity.end())
+		if (auto itor = m_allactivity.find(aactivityid); itor != m_allactivity.end())
 		{
 			return;
 		}
-		tab_activity* tab = allcsv::tab<tab_activity>(aactivityid);
-		if (tab == nullptr)
+		
+		if (const auto tab = allcsv::tab<tab_activity>((int32_t)aactivityid); tab == nullptr)
 		{
 			return;
 		}
@@ -93,7 +92,7 @@ namespace ngl
 	
 	bool actor_manage_activity::handle(message<np_actor_activity>& adata)
 	{
-		np_actor_activity& lrecv = *adata.get_data();
+		const np_actor_activity& lrecv = *adata.get_data();
 		for (i64_actorid item : lrecv.m_activityids)
 		{
 			if (lrecv.m_start)

@@ -8,11 +8,12 @@ namespace ngl
 {
 	void drop::init()
 	{
+		std::srand(std::time(nullptr));
 	}
 
 	bool drop::weight(int aid, std::map<int, int>& amap)
 	{
-		tab_random* tab = allcsv::tab<tab_random>(aid);
+		const tab_random* tab = allcsv::tab<tab_random>(aid);
 		if (tab == nullptr)
 			return false;
 		if (tab->m_calendarids > 0)
@@ -72,7 +73,7 @@ namespace ngl
 		return true;
 	}
 
-	void print_weight(std::map<int, int>& amap)
+	void print_weight(const std::map<int, int>& amap)
 	{
 		auto lstream = log_error();
 		(*lstream) << "weight[";
@@ -98,10 +99,9 @@ namespace ngl
 
 	bool drop::droplist(int aid, int acount, google::protobuf::Map<int32_t, int32_t>& amap)
 	{
-		std::map<int, int> lmap;
-		if (droplist(aid, acount, lmap))
+		if (std::map<int, int> lmap; droplist(aid, acount, lmap))
 		{
-			for (std::pair<const int, int>& item : lmap)
+			for (const std::pair<const int, int>& item : lmap)
 			{
 				amap.insert({ item.first, item.second });
 			}

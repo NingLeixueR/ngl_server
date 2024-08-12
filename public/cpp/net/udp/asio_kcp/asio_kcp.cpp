@@ -186,7 +186,7 @@ namespace ngl
 				.m_ms = 10,
 				.m_intervalms = [](int64_t) {return 10; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [ltemp,lcreatems](const wheel_node* anode)
+				.m_fun = [ltemp,lcreatems](const wheel_node*)
 				{
 					ltemp->update((IUINT32)(time_wheel::getms() - lcreatems));
 				}
