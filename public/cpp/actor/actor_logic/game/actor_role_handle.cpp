@@ -42,7 +42,7 @@ namespace ngl
 	// PROBUFF_PROTOCOLNUM_LOGIC_SWITCH_LINE		= 18;			// [ÇëÇó]ÇÐ»»ÏßÂ·
 	bool actor_role::handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.get_data()->m_line());
+		const tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.get_data()->m_line());
 		if (tab == nullptr)
 			return false;
 		i32_sessionid lsession = server_session::sessionid(tab->m_id);

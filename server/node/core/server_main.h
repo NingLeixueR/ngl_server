@@ -222,16 +222,21 @@ bool start_db(int argc, char** argv)
 	ngl::actor_client::getInstance().actor_server_register();
 
 	// ----------------test start-------------------- //
-	if (std::string largv4(argv[4]); argc >= 5 && largv4 == "init")
+	
+	if (argc >= 5)
 	{
-		init_DB_BAG();
-		init_DB_TASK();
-		init_DB_ROLE();
-		init_DB_NOTICE();
-		init_DB_FAMILY();
-		init_DB_KEYVAL();
-		init_DB_ACCOUNT();
-		init_DB_ROLEKEYVALUE();
+		std::string largv4(argv[4]);
+		if (largv4 == "init")
+		{
+			init_DB_BAG();
+			init_DB_TASK();
+			init_DB_ROLE();
+			init_DB_NOTICE();
+			init_DB_FAMILY();
+			init_DB_KEYVAL();
+			init_DB_ACCOUNT();
+			init_DB_ROLEKEYVALUE();
+		}		
 	}
 
 	return true;

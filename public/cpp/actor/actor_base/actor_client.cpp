@@ -86,7 +86,7 @@ namespace ngl
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return;
 
-		tab_servers* tab		= ttab_servers::tab();
+		const tab_servers* tab	= ttab_servers::tab();
 		i64_actorid lactorid	= id_guid();
 		tab_servers* tabactor	= ttab_servers::tab(aactorserver);
 		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
@@ -129,7 +129,7 @@ namespace ngl
 			// # 需要尝试连接ActorServer结点 并向其注册自己
 			Assert(ttab_servers::node_type() != ngl::ACTORSERVER)
 			Assert(ttab_servers::node_type() != ngl::ROBOT)
-			tab_servers* tab = ttab_servers::tab();
+			const tab_servers* tab = ttab_servers::tab();
 			for (int32_t id : tab->m_actorserver)
 			{
 				actor_server_register(id);
@@ -168,7 +168,7 @@ namespace ngl
 		Try
 		{
 			auto lparm			= adata.get_data();
-			tab_servers* tab	= ttab_servers::tab();
+			const tab_servers* tab	= ttab_servers::tab();
 			for (int i = 0; i < lparm->m_vec.size(); ++i)
 			{
 				const nactornode& node = lparm->m_vec[i];

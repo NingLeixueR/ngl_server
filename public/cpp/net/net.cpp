@@ -42,11 +42,11 @@ namespace ngl
 
 	bool nets::check_serverkcp()
 	{
-		tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::tab();
 		if (tab == nullptr)
 			return false;
 		int32_t lnum = 0;
-		for (net_works& item : tab->m_net)
+		for (const net_works& item : tab->m_net)
 		{
 			if (item.m_type == ENET_KCP && item.m_port != -1)
 			{
@@ -78,11 +78,11 @@ namespace ngl
 		if (check_serverkcp() == false)
 			return false;
 
-		tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::tab();
 		if (tab == nullptr)
 			return false;
 		
-		for (net_works& item : tab->m_net)
+		for (const net_works& item : tab->m_net)
 		{
 			if (item.m_type == ENET_TCP || item.m_type == ENET_WS)
 			{
@@ -93,18 +93,11 @@ namespace ngl
 				{
 					lserver = new net_tcp((int8_t)ENET_TCP);
 				}
-				//else if (item.m_type == ENET_WS)
-				//{
-				//	lserver = new net_ws((int8_t)ENET_WS);
-				//}
 				lserver->init(item.m_port, asocketthreadnum, aouternet);
 			}
-			else if (item.m_type == ENET_KCP)
+			else if (item.m_type == ENET_KCP&& item.m_port != -1)
 			{
-				if (item.m_port != -1)
-				{
-					m_kcpnet[isystemindex] = ukcp::create(item.m_port);
-				}
+				m_kcpnet[isystemindex] = ukcp::create(item.m_port);
 			}
 		}
 		return true;

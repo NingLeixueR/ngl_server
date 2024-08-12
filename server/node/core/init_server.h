@@ -55,7 +55,7 @@ bool init_server(int aid)
 
 	ngl::actor_base::start_broadcast();
 
-	ngl::tab_servers* tab = ngl::ttab_servers::tab();
+	const ngl::tab_servers* tab = ngl::ttab_servers::tab();
 
 	ngl::sysconfig::init();
 

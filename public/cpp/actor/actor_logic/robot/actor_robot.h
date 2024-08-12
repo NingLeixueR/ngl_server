@@ -111,22 +111,24 @@ namespace ngl
 			pro.set_m_area(ttab_servers::tab()->m_area);
 			pro.set_m_account(aaccount);
 			pro.set_m_password(apasswold);
-			tab_servers* tab = ttab_servers::tab();
-			if (tab == nullptr)
-				return;
+			const tab_servers* tab = ttab_servers::tab();
+			assert(tab != nullptr);
 			nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
 		}
 
-		virtual ~actor_manage_robot() {}
-
 		static void nregister();
 
-		void connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun)
+		bool check_connect(i32_serverid aserverid)const
 		{
-			tab_servers* tab = ttab_servers::tab(aserverid);
-			net_works const* lnet = ttab_servers::connect(aserverid);
-			assert(lnet != nullptr);
-			nets::connect(aserverid, afun, true, false);
+			return ttab_servers::tab(aserverid) != nullptr && ttab_servers::connect(aserverid) != nullptr;
+		}
+
+		void connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const
+		{
+			if (check_connect(aserverid))
+			{
+				nets::connect(aserverid, afun, true, false);
+			}
 		}
 
 		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
@@ -152,7 +154,7 @@ namespace ngl
 			
 			return true;
 		}
-	public:
+
 		static bool parse_command(std::vector<std::string>& aparm)
 		{
 			auto ldata = std::make_shared<np_robot_pram>();
@@ -244,10 +246,10 @@ namespace ngl
 					{
 						foreach([this](actor_manage_robot::_robot& arobot)
 							{
-								tab_servers* tab = ttab_servers::tab();
-								tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-								net_works const* lpstruct = ttab_servers::get_nworks(ENET_KCP);
-								net_works const* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
+								const tab_servers* tab = ttab_servers::tab();
+								const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+								const net_works* lpstruct = ttab_servers::get_nworks(ENET_KCP);
+								const net_works* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
 								// 获取本机uip
 								ngl::asio_udp_endpoint lendpoint(
 									asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port

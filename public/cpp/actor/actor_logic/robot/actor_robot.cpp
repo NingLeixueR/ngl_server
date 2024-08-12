@@ -189,10 +189,10 @@ namespace ngl
 
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
-		tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::tab();
 		m_kcpsessionmd5 = adata.get_data()->m_kcpsession();
 
-		tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
 		net_works const*  lpworks = ttab_servers::nworks(ENET_KCP, tabgame);
 		if (lpworks == nullptr)
 			return false;

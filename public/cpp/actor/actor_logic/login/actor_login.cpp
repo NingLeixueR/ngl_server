@@ -188,17 +188,14 @@ namespace ngl
 		{
 			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
-			Assert(lpack != nullptr);
-			log_info()->print(
-				"############ Login[{}][{}][{}] ############", 
-				lparm->m_area(), 
-				lparm->m_account(), 
-				lparm->m_password()
+			Assert(lpack != nullptr)
+			log_info()->print("############ Login[{}][{}][{}] ############", 
+				lparm->m_area(), lparm->m_account(), lparm->m_password()
 			);
 			bool iscreate = false;
 
-			data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
-			Assert(lpaccount != nullptr);
+			const data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
+			Assert(lpaccount != nullptr)
 
 			pair_account* lppair_account = nullptr;
 			auto itor = m_actorbyserver.find(lpaccount->getconst().m_id());
@@ -210,8 +207,8 @@ namespace ngl
 
 				std::pair<int32_t, int32_t> lpairgame;
 				std::pair<int32_t, int32_t> lpairgateway;
-				Assert(get_freeserver_game(lpairgame));
-				Assert(get_freeserver_gateway(lpairgateway));
+				Assert(get_freeserver_game(lpairgame))
+				Assert(get_freeserver_gateway(lpairgateway))
 				lppair_account->m_gameserverid = lpairgame.first;
 				lppair_account->m_gatewayserverid = lpairgateway.first;
 			}
@@ -244,7 +241,7 @@ namespace ngl
 			procli.set_m_gatewayid(pro.m_gatewayid);
 			nets::sendbysession(adata.m_pack->m_id, procli, lpack->m_head.get_request_actor(), id_guid());
 
-		}Catch;
+		}Catch
 		return true;
 	}
 

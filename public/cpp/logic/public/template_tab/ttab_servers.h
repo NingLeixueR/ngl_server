@@ -34,16 +34,16 @@ namespace ngl
 			return &itor->second;
 		}
 
-		static tab_servers* tab()
+		static const tab_servers* tab()
 		{
 			return tab(nconfig::m_nodeid);
 		}
 
-		static tab_servers* tab(const std::string& aname,int area, int32_t atcount)
+		static const tab_servers* tab(const std::string& aname,int area, int32_t atcount)
 		{
-			ttab_servers* ttab = allcsv::get<ttab_servers>();
+			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			assert(ttab != nullptr);
-			for (std::pair<const int, tab_servers>& item : ttab->tablecsv)
+			for (const std::pair<const int, tab_servers>& item : ttab->tablecsv)
 			{
 				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
 					return &item.second;
@@ -51,7 +51,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		static net_works const* nworks(ENET_PROTOCOL atype, tab_servers* atab)
+		static const net_works* nworks(ENET_PROTOCOL atype, const tab_servers* atab)
 		{
 			for (auto& item : atab->m_net)
 			{
@@ -61,23 +61,23 @@ namespace ngl
 			return nullptr;
 		}
 
-		static net_works const* nworks(ENET_PROTOCOL atype)
+		static const net_works* nworks(ENET_PROTOCOL atype)
 		{
 			return nworks(atype, tab());
 		}
 
-		static net_works const* get_nworks(ENET_PROTOCOL atype)
+		static const net_works* get_nworks(ENET_PROTOCOL atype)
 		{
 			//nconfig::m_nodeid
-			tab_servers* ltab =  tab();
+			const tab_servers* ltab =  tab();
 			if (ltab == nullptr)
 				return nullptr;
 			return nworks(atype, ltab);
 		}
 
-		static net_works const* get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype)
+		static const net_works* get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype)
 		{
-			tab_servers* ltab = tab(aname, area, atcount);
+			const tab_servers* ltab = tab(aname, area, atcount);
 			if (ltab == nullptr)
 				return nullptr;
 			return nworks(atype, ltab);
@@ -88,7 +88,7 @@ namespace ngl
 			return atype == ENET_TCP || atype == ENET_WS;
 		}
 	private:
-		static net_works const* connect(i32_serverid alocalserver, i32_serverid aotherserver)
+		static const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
 		{
 			assert(alocalserver != aotherserver);
 			tab_servers* ltab1 = tab(alocalserver);
@@ -127,7 +127,7 @@ namespace ngl
 
 		static NODE_TYPE node_type(i32_serverid aserverid)
 		{
-			tab_servers* ltab = tab(aserverid);
+			const tab_servers* ltab = tab(aserverid);
 			assert(ltab != nullptr);
 			return ltab->m_type;
 		}
@@ -137,11 +137,11 @@ namespace ngl
 			return node_type(nconfig::m_nodeid);
 		}
 
-		static tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
+		static  const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
-			ttab_servers* ttab = allcsv::get<ttab_servers>();
+			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			assert(ttab != nullptr);
-			for (std::pair<const int, tab_servers>& pair : ttab->tablecsv)
+			for (const std::pair<const int, tab_servers>& pair : ttab->tablecsv)
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
 					return &pair.second;
