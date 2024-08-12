@@ -59,22 +59,18 @@ namespace ngl
 			m_remove.insert(std::make_pair(aid, time_wheel::getms()));
 		}
 
-		void printf_log(bool awarn, const char* aname, tconsuming* aitem)
+		void printf_log(bool awarn, const char* aname, tconsuming* aitem)const
 		{
 			if (awarn)
 			{
-				log_info()->print(
-					"time consuming [{}:{}] [{}] [{}] ", 
-					aitem->m_name, aitem->m_id, aname, 
-					aitem->m_end - aitem->m_beg
+				log_info()->print("time consuming [{}:{}] [{}] [{}] ", 
+					aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
 				);
 			}
 			else
 			{
-				log_error()->print(
-					"time consuming [{}:{}] [{}] [{}] ", 
-					aitem->m_name, aitem->m_id, aname,
-					aitem->m_end - aitem->m_beg
+				log_error()->print("time consuming [{}:{}] [{}] [{}] ", 
+					aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
 				);
 			}
 		}

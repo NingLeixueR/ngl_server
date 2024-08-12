@@ -117,6 +117,7 @@ INCLUDE_DIRECTORIES(public/cpp/third_party/json)
 INCLUDE_DIRECTORIES(public/cpp/third_party/redis)
 INCLUDE_DIRECTORIES(public/cpp/third_party/sha1)
 INCLUDE_DIRECTORIES(public/cpp/third_party/dmp)
+INCLUDE_DIRECTORIES(public/cpp/third_party/hmac_sha1)
 
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 #ADD_DEFINITIONS(-DASIO_NO_DEPRECATED)

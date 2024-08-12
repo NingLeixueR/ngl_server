@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace ngl
 {
 	// sha-1
@@ -156,5 +158,16 @@ namespace ngl
 		memset(context->state, 0, 20);
 		memset(context->count, 0, 8);
 		memset(finalcount, 0, 8);	/* SWR */
+	}
+
+	static void sh1(std::string_view text, std::string& ash1)
+	{
+		SHA1_CTX ctx;
+		sat_SHA1_Init(&ctx);
+		sat_SHA1_Update(&ctx, (const uint8_t*)text.data(), text.size());
+		uint8_t digest[SHA1_DIGEST_SIZE];
+		sat_SHA1_Final(&ctx, digest);
+		ash1.assign((char*)digest, SHA1_DIGEST_SIZE);
+		return;
 	}
 }
