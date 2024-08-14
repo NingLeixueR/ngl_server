@@ -299,7 +299,7 @@ namespace ngl
 			return;
 		for (auto itor = lconnectfun.begin(); itor != lconnectfun.end(); ++itor)
 		{
-			if(lconnectserverid.contains(itor->first))
+			if(lconnectserverid.contains(itor->first) == false)
 				continue;
 			for (const auto& fun : itor->second)
 				fun();

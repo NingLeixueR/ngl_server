@@ -35,14 +35,15 @@ namespace ngl
 
 		static void nregister();
 
-		virtual void init()
+		void init() final
 		{
 			m_keyvaluedb.set(this);
 		}
 
-		virtual ~actor_keyvalue() {}
-
-		virtual void loaddb_finish(bool adbishave) {}
+		void loaddb_finish(bool adbishave) final 
+		{
+			log_error()->print("actor_keyvalue load finish!!!");
+		}
 
 		static i64_actorid actorid()
 		{

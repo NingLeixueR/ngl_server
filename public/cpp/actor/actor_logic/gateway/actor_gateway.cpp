@@ -161,27 +161,21 @@ namespace ngl
 			Assert(linfo != nullptr)
 			Assert(linfo->m_session == lpram->m_session())
 
-			if (sysconfig::robot_test() == false)
+			if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 			{
-				if (lpack->m_id != linfo->m_socket)
+				nets::net(linfo->m_socket)->close_net(linfo->m_socket);
+				linfo->m_socket = 0;
+				if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 				{
-					if (linfo->m_socket > 0)
-					{
-						nets::net(linfo->m_socket)->close_net(linfo->m_socket);
-						linfo->m_socket = 0;
-						if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
-						{
-							update_gateway_info(
-								new np_actor_gatewayinfo_updata{.m_add = {*linfo} }
-							);
-						}
-						// 断线重连或者其他设备顶号
-						pbnet::PROBUFF_NET_ROLE_SYNC pro;
-						i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
-						nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
-						return true;
-					}
+					update_gateway_info(
+						new np_actor_gatewayinfo_updata{ .m_add = {*linfo} }
+					);
 				}
+				// 断线重连或者其他设备顶号
+				pbnet::PROBUFF_NET_ROLE_SYNC pro;
+				i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
+				nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
+				return true;
 			}
 
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))

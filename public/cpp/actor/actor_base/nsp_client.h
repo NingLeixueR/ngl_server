@@ -31,7 +31,7 @@ namespace ngl
 			// 更新数据
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
-			>([](TDerived* apTDerived, message<np_channel_data<T>>& adata)
+			>([](TDerived*, message<np_channel_data<T>>& adata)
 				{
 					m_actor->log_error()->print(
 						"nsp_client {}:{}",
@@ -41,12 +41,9 @@ namespace ngl
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
 					for (std::pair<const int64_t, T>& lpair : lmap)
 					{
-						if (!m_dataid.empty())
+						if (!m_dataid.empty() && m_dataid.find(lpair.first) == m_dataid.end())
 						{
-							if (m_dataid.find(lpair.first) == m_dataid.end())
-							{
-								continue;
-							}
+							continue;
 						}						
 						m_data[lpair.first] = lpair.second;
 						if (m_changedatafun != nullptr)
@@ -67,7 +64,7 @@ namespace ngl
 			// 注册回复
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>
-			>([](TDerived* apTDerived, message<np_channel_register_reply<T>>& ainfo)
+			>([](TDerived*, message<np_channel_register_reply<T>>&)
 				{
 					m_actor->log_error()->print(
 						"nsp_client register reply {}:{}", tools::type_name<TDerived>(), tools::type_name<T>()
