@@ -45,7 +45,7 @@ namespace ngl
 				,  adata.get_data()->m_role().m_base().m_lv()
 			);
 			m_data = *adata.get_data();
-		}Catch;
+		}Catch
 		return true;
 	}
 

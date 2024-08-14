@@ -39,7 +39,7 @@ namespace ngl
 			Try
 			{
 				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
-				Assert(m_tab != nullptr);
+				Assert(m_tab != nullptr)
 
 				m_cache_save.set_cachefun(
 					std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1), m_tab->m_dbcacheintervalms
@@ -59,7 +59,7 @@ namespace ngl
 					db_manage::select<TDBTAB>(db_pool::get(0), lindexset);
 					db_data<TDBTAB>::set_index(lindexset);
 				}
-			}Catch;
+			}Catch
 		}
 
 		// # 加载表中的所有数据

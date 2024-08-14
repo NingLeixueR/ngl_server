@@ -152,7 +152,7 @@ namespace ngl
 		{
 			auto lpram = adata.get_data();
 			auto lpack = adata.m_pack;
-			Assert(lpack != nullptr);
+			Assert(lpack != nullptr)
 			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
 				, lpack->m_id
 				, lpram->m_roleid()
@@ -161,8 +161,8 @@ namespace ngl
 			nguid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 			
-			Assert(linfo != nullptr);
-			Assert(linfo->m_session == lpram->m_session());
+			Assert(linfo != nullptr)
+			Assert(linfo->m_session == lpram->m_session())
 
 			if (sysconfig::robot_test() == false)
 			{
@@ -197,7 +197,7 @@ namespace ngl
 			lpram->set_m_area(linfo->m_area);
 			nets::sendbyserver(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
 			return true;
-		}Catch;
+		}Catch
 		return false;
 	}
 
@@ -266,7 +266,7 @@ namespace ngl
 				linfo->m_gameid = lpram->m_toserverid;
 				update_gateway_info(new np_actor_gatewayinfo_updata{.m_add = {*linfo} });
 			}
-		}Catch;
+		}Catch
 		return true;
 	}
 
@@ -307,7 +307,7 @@ namespace ngl
 
 			m_info.remove_socket(lpram->m_sessionid);
 			return true;
-		}Catch;
+		}Catch
 		return false;
 	}
 }//namespace ngl

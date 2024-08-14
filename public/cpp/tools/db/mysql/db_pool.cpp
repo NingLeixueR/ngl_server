@@ -17,10 +17,10 @@ namespace ngl
 			for (int i = 0; i < tab->m_threadnum; ++i)
 			{
 				m_vec[i] = new db();
-				Assert(m_vec[i]->connectdb(nconfig::m_db.m_dbarg));
+				Assert(m_vec[i]->connectdb(nconfig::m_db.m_dbarg))
 			}
 			return;
-		}Catch;
+		}Catch
 	}
 
 	db* db_pool::get(int32_t aindex)
@@ -28,7 +28,7 @@ namespace ngl
 		Try
 		{
 			return m_vec.at(aindex);
-		}Catch;
+		}Catch
 		return nullptr;
 	}
 }// namespace ngl

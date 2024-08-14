@@ -90,11 +90,11 @@ namespace ngl
 			{
 				set_kcp(aactor, aparm);
 				nrfunbase* lprfun = aactor->m_actorfun[aparm.m_protocoltype];
-				Assert(lprfun != nullptr);
+				Assert(lprfun != nullptr)
 				if (lprfun->handle_switch(aactor, athreadid, aparm))
 					return true;
 				lprfun->notfindfun(aactor, athreadid, aparm);
-			}Catch;
+			}Catch
 			return false;
 		}
 	private:

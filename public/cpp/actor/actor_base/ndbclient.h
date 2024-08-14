@@ -187,7 +187,7 @@ namespace ngl
 			m_name = tools::type_name<TACTOR>();
 		}
 
-		virtual void create(const nguid& aid) final
+		void create(const nguid& aid) final
 		{
 			m_dbdata = &m_data[aid];
 			m_dbdata->get().set_m_id(aid);

@@ -157,7 +157,7 @@ namespace ngl
 			{
 				m_file.close();
 			}
-		}Catch;
+		}Catch
 		
 	}
 

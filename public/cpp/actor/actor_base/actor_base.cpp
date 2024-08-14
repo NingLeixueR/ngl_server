@@ -276,7 +276,7 @@ namespace ngl
 			{
 				Assert(m_dbclient != nullptr)
 				m_dbclient->add(adbclient, aid);
-			}Catch;
+			}Catch
 		}
 
 		inline void save()

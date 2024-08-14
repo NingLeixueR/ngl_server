@@ -84,7 +84,7 @@ namespace ngl
 			{
 				actor_manage::getInstance().finish_suspend_thread();
 				log_info()->print("finish actor_suspendthread");
-			}Catch;			
+			}Catch;		
 		}
 	};
 
@@ -110,17 +110,15 @@ namespace ngl
 							{
 								nlogactor lnlogactor(lptemp->type(), ngl::ELOG_LOCAL);
 								ngl::actor_base::create(
-									ngl::ACTOR_LOG, 
-									tab_self_area, 
-									lnlogactor.m_value32
+									ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32
 								);
 							}
 						}
-						Catch;
+						Catch
 				});
 				ltemp.template init_rfun<T>();
 				T::nregister();
-			}Catch;
+			}Catch
 		}
 		return ltemp;
 	}
