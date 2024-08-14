@@ -135,7 +135,7 @@ namespace ngl
 			);
 		}
 
-		if (handle_php::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		if (handle_php::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}
