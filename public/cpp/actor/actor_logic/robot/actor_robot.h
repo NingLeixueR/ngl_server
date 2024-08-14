@@ -135,7 +135,7 @@ namespace ngl
 		{
 			auto lrecv = adata.get_data();
 			_robot& lrobot			= m_maprobot[lrecv->m_account()];
-			lrobot.m_robot			= create(lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
+			lrobot.m_robot			= create((i16_area)lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
 			lrobot.m_account		= lrecv->m_account();
 			lrobot.m_actor_roleid	= nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
 

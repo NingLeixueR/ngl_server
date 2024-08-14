@@ -3,10 +3,10 @@
 
 namespace ngl
 {
-	void gateway_info::updata(gateway_socket& ainfo)
+	void gateway_info::updata(const gateway_socket& ainfo)
 	{
 		gateway_socket& linfo = m_info[ainfo.m_area][ainfo.m_dataid];
-		if (linfo.m_socket != 0 && linfo.m_socket != ainfo.m_socket)
+		if (linfo.m_socket != -1 && linfo.m_socket != ainfo.m_socket)
 		{
 			nets::net(linfo.m_socket)->close(linfo.m_socket);
 			remove_socket(linfo.m_socket);

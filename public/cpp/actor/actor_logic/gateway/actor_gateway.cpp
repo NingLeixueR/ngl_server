@@ -122,8 +122,7 @@ namespace ngl
 		auto lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
 
-		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
-		if (linfo != nullptr)
+		if (const auto linfo = m_info.get(lguid.area(), lguid.actordataid()); linfo != nullptr)
 			return true;
 		gateway_socket ltemp
 		{
@@ -154,9 +153,7 @@ namespace ngl
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr)
 			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
-				, lpack->m_id
-				, lpram->m_roleid()
-				, lpram->m_session()
+				, lpack->m_id, lpram->m_roleid(), lpram->m_session()
 			);
 			nguid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());

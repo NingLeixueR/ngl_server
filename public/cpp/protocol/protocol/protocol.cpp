@@ -19,13 +19,29 @@ namespace ngl
 		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, pfun>>	m_protocolfun;
 		static std::shared_mutex											m_mutex;
 
+		static void print(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
+		{
+			const char* lname = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum), aprotocoltype);
+			if (lname != nullptr)
+			{
+				log_error()->print("protocol::push Info {}:{}", 
+					aprotocolnum, lname
+				);
+			}
+			else
+			{
+				log_error()->print("protocol::push Info {}:{}",
+					aprotocolnum, "not find protocol name"
+				);
+			}
+		}
+
 		static pfun* find(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
 		{
 			lock_read(m_mutex);
 			auto itor1 = m_protocolfun.find(aprotocoltype);
 			if (itor1 == m_protocolfun.end())
 			{
-				char m_hexstr[1024] = { 0 };
 				log_error()->print("protocol::push [{}] Error protocolnum[{}] "
 					, (int)aprotocoltype, aprotocolnum
 				);
@@ -40,23 +56,6 @@ namespace ngl
 				return nullptr;
 			}
 			
-			/////////////////////////////////////////////
-			//std::pair<const char*, bool> lpair = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum), aprotocoltype);
-			//if (lpair.second)
-			//{
-			//	log_error()->print(
-			//		"protocol::push Info {}:{}", 
-			//		aprotocolnum, lpair.first
-			//	);
-			//}
-			//else
-			//{
-			//	log_error()->print(
-			//		"protocol::push Info {}:{}",
-			//		aprotocolnum, "not find protocol name"
-			//	);
-			//}
-			/////////////////////////////////////////////
 			return &itor2->second;
 		}
 	public:
@@ -75,13 +74,13 @@ namespace ngl
 			{
 				return;
 			}
-			ENUM_ACTOR lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
-			if (lactortype == nguid::none<ENUM_ACTOR>())
+			
+			if (auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype(); lactortype == nguid::none<ENUM_ACTOR>())
 			{
-				for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
-				{
-					item.second(apack, lptrpram);
-				}
+				std::ranges::for_each(lpfun->m_runfun, [&apack,&lptrpram](const auto& item)
+					{
+						item.second(apack, lptrpram);
+					});
 			}
 			else
 			{
@@ -104,14 +103,11 @@ namespace ngl
 			, const char* aname						// ÓÃÓÚµ÷ÊÔ
 		)
 		{
-			
-			{
-				lock_write(m_mutex);
-				pfun& lprotocol					= m_protocolfun[atype][aprotocolnumber];
-				lprotocol.m_packfun				= apackfun;
-				lprotocol.m_runfun[aenumactor]	= arunfun;
-				em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname, atype);
-			}
+			lock_write(m_mutex);
+			pfun& lprotocol = m_protocolfun[atype][aprotocolnumber];
+			lprotocol.m_packfun = apackfun;
+			lprotocol.m_runfun[aenumactor] = arunfun;
+			em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname, atype);
 		}
 	};
 
@@ -145,7 +141,7 @@ namespace ngl
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>&, const std::vector<std::string>&)
+			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& apack, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::getInstance().actor_count();
 					std::string lstr = std::format("actor count:{}\r\n", lcount);

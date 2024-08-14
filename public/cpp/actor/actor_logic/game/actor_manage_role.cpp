@@ -57,7 +57,7 @@ namespace ngl
 	{
 		auto recv = adata.get_data();
 
-		if (m_roleban.find(recv->m_roleid()) != m_roleban.end())
+		if (m_roleban.contains(recv->m_roleid()))
 		{
 			return true;
 		}

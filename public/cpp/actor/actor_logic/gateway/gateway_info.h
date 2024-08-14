@@ -19,7 +19,7 @@ namespace ngl
 	public:
 		gateway_info() {}
 
-		void updata(gateway_socket& ainfo);
+		void updata(const gateway_socket& ainfo);
 
 		bool updata_socket(i16_area aarea, i32_actordataid aactordataid, i32_socket asocket);
 

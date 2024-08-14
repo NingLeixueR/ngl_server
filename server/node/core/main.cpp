@@ -45,12 +45,11 @@ int main(int argc, char** argv)
 
 	nconfig::set_server(argv[1], tab->m_id);
 
-	char lname[1024] = { 0x0 };
-	snprintf(lname, 1024, "node_%s_%s_%s", argv[1], argv[2], argv[3]);
+	std::string lname = std::format("node_{}_{}_{}", argv[1], argv[2], argv[3]);
 
 #ifdef WIN32
 	// # 设置控制台窗口名称
-	SetConsoleTitle(lname);
+	SetConsoleTitle(lname.c_str());
 #endif
 
 	Dumper::m_excname = lname;

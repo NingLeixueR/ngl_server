@@ -48,7 +48,9 @@ namespace ngl
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
 		ngl::json_read lreadjson(adata.get_data()->m_json.c_str());
 
-		if (std::string lactorname; lreadjson.read("actor_name", lactorname))
+		std::string lactorname;
+		i64_actorid lactorid = -1;
+		if (lreadjson.read("actor_name", lactorname))
 		{// ### µ¥Àý
 			if (lactorname == "ACTOR_GM")
 			{
@@ -133,7 +135,7 @@ namespace ngl
 			sendbytype(ltype, adata.m_pack, *adata.get_data());
 			return true;
 		}
-		else if (i64_actorid lactorid; lreadjson.read("actor_id", lactorid))
+		else if (lreadjson.read("actor_id", lactorid))
 		{// ### ·Çµ¥Àý
 			sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
 			return true;
