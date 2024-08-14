@@ -59,7 +59,7 @@ namespace ngl
 			m_remove.insert(std::make_pair(aid, time_wheel::getms()));
 		}
 
-		void printf_log(bool awarn, const char* aname, tconsuming* aitem)const
+		void printf_log(bool awarn, const char* aname, const tconsuming* aitem)const
 		{
 			if (awarn)
 			{

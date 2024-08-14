@@ -103,9 +103,9 @@ namespace ngl
 		void send_client(std::shared_ptr<T>& apro)
 		{
 			std::list<i64_actorid> lactorset;
-			std::transform(m_memberlist.begin(), m_memberlist.end(), std::inserter(lactorset
+			std::ranges::transform(m_memberlist, std::inserter(lactorset
 				, lactorset.end())
-				, [](std::pair<const i64_actorid, pbnet::MATCHING_MEMBER>& pair)
+				, [](const std::pair<const i64_actorid, pbnet::MATCHING_MEMBER>& pair)
 				{
 					return pair.first;
 				}

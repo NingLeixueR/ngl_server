@@ -380,7 +380,7 @@ namespace ngl
 							m_kcptimer.removetimer(anode->m_timerid);
 							return;
 						}
-						int32_t lnow = (int32_t)localtime::gettime();
+						auto lnow = (int32_t)localtime::gettime();
 						if (lnow - lpstruct->m_pingtm > sysconfig::kcppinginterval())
 						{
 							m_kcp->close(lpstruct->m_session);
@@ -415,12 +415,12 @@ namespace ngl
 			return true;
 		}
 		//## udp_cmd::ecmd_connect
-		inline void function_ecmd_connect()
+		inline void function_ecmd_connect()const
 		{
 			udp_cmd::register_fun(udp_cmd::ecmd_connect, [](asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 				{
 					apstruct->m_isconnect = true;
-					apstruct->m_pingtm = localtime::gettime();
+					apstruct->m_pingtm = (int)localtime::gettime();
 					json_read ltempjson(ajson.c_str());
 
 					i64_actorid lactorid;
@@ -441,7 +441,7 @@ namespace ngl
 				});
 		}
 		//## udp_cmd::ecmd_connect_ret
-		inline void function_ecmd_connect_ret()
+		inline void function_ecmd_connect_ret()const
 		{
 			// 除了robot 其他服务器均不允许定时ping 
 			//if (nconfig::m_nodetype != ngl::ROBOT)
@@ -449,24 +449,24 @@ namespace ngl
 			udp_cmd::register_fun(udp_cmd::ecmd_connect_ret, [](asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
 				{
 					apstruct->m_isconnect = true;
-					apstruct->m_pingtm = localtime::gettime();
+					apstruct->m_pingtm = (int)localtime::gettime();
 					// 定时发送cmd:ping
 					ap->function_econnect(apstruct, -1, false);
 					ap->m_connectfun(apstruct->m_session);
 				});
 		}
 		//## udp_cmd::ecmd_ping
-		inline void function_ecmd_ping()
+		inline void function_ecmd_ping()const
 		{
-			udp_cmd::register_fun(udp_cmd::ecmd_ping, [](asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
+			udp_cmd::register_fun(udp_cmd::ecmd_ping, [](asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const std::string&)
 				{
-					apstruct->m_pingtm = localtime::gettime();
+					apstruct->m_pingtm = (int)localtime::gettime();
 				});
 		}
 		//## udp_cmd::ecmd_close
-		inline void function_ecmd_close()
+		inline void function_ecmd_close()const
 		{
-			udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const std::string& ajson)
+			udp_cmd::register_fun(udp_cmd::ecmd_close, [](asio_kcp::impl_asio_kcp* ap, ptr_se& apstruct, const std::string&)
 				{
 					udp_cmd::sendcmd(ap->m_kcp, apstruct->m_session, udp_cmd::ecmd_close_ret, "");
 					int lession = apstruct->m_session;
@@ -475,7 +475,7 @@ namespace ngl
 						.m_ms = 1000,
 						.m_intervalms = [](int64_t) {return 1000; } ,
 						.m_count = 0x7fffffff,
-						.m_fun = [ap,lession](const wheel_node* anode)
+						.m_fun = [ap,lession](const wheel_node*)
 						{
 							ap->close(lession);
 						}
@@ -503,7 +503,7 @@ namespace ngl
 			start();
 		}
 
-		inline bool sempack(ptr_se& apstruct, const char* abuff, int abufflen)
+		inline bool sempack(const ptr_se& apstruct, const char* abuff, int abufflen)
 		{
 			// 获取包头
 			std::shared_ptr<pack> lpack = pack::make_pack(&m_pool, 0);
@@ -511,8 +511,7 @@ namespace ngl
 			lpack->m_id = apstruct->m_session;
 			lpack->m_head.set_requestactor(apstruct->m_actorid);
 			//lpack->m_segpack = m_segpack;
-			EPH_HEAD_VAL lval = lpack->m_head.push(abuff, abufflen);
-			if (EPH_HEAD_SUCCESS != lval)
+			if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
 				return false;
 			int len = lpack->m_head.getvalue(EPH_BYTES);
 			if (len < 0)
@@ -529,9 +528,7 @@ namespace ngl
 			else
 			{
 				log_error()->print("time[{} < {} + {} ]"
-					, localtime::gettime()
-					, lpack->m_head.getvalue(EPH_TIME)
-					, sysconfig::net_timeout()
+					, localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout()
 				);
 			}
 			return true;
@@ -547,7 +544,7 @@ namespace ngl
 					{
 						if (m_wait != nullptr && m_remoteport == m_waitendpoint)
 						{
-							m_wait(m_buff, bytes_received);
+							m_wait(m_buff, (int)bytes_received);
 							m_waitendpoint = asio_udp_endpoint();
 							m_wait = nullptr;
 						}
@@ -607,7 +604,7 @@ namespace ngl
 								if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
 								{
 									std::string lip = m_remoteport.address().to_string();
-									sendu(m_remoteport, lip.c_str(), lip.size() + 1);
+									sendu(m_remoteport, lip.c_str(), (int)lip.size() + 1);
 								}
 								else
 								{
@@ -648,7 +645,7 @@ namespace ngl
 							.m_ms = 1000,
 							.m_intervalms = [](int64_t) {return 1000; } ,
 							.m_count = 1,
-							.m_fun = [this, aendpoint, buf, len, afun](const wheel_node* anode)
+							.m_fun = [this, aendpoint, buf, len, afun](const wheel_node*)
 							{
 								sendu_waitrecv(aendpoint, buf, len, afun);
 							}
@@ -660,7 +657,7 @@ namespace ngl
 		}
 		
 		// ## 通过kcp发送pack
-		inline bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
+		inline bool sendpack(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 		{
 			ptr_se lpstruct = m_session.find(asessionid);
 			if (lpstruct == nullptr)
@@ -671,7 +668,7 @@ namespace ngl
 		}
 		
 		// ## 通过kcp发送pack
-		inline bool sendpack(const asio_udp_endpoint& aendpoint, std::shared_ptr<pack>& apack)
+		inline bool sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 		{
 			send(aendpoint, apack->m_buff, apack->m_len);
 			return true;
@@ -702,7 +699,7 @@ namespace ngl
 		inline int sendbuff(i32_session asession, const char* buf, int len)
 		{
 			ptr_se lpstruct = m_session.find(asession);
-			m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, [](const std::error_code& ec, std::size_t bytes_received)
+			m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, [](const std::error_code& ec, std::size_t)
 				{
 					if (ec)
 						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
@@ -710,9 +707,9 @@ namespace ngl
 			return 0;
 		}
 
-		inline int sendbuff(asio_udp_endpoint& aendpoint, const char* buf, int len)
+		inline int sendbuff(const asio_udp_endpoint& aendpoint, const char* buf, int len)
 		{
-			m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t bytes_received)
+			m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t)
 				{
 					if (ec)
 						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
@@ -773,7 +770,7 @@ namespace ngl
 
 	int udp_output(const char* buf, int len, ikcpcb* kcp, void* user)
 	{
-		session_endpoint* lpstruct = (session_endpoint*)user;
+		const auto lpstruct = (session_endpoint*)user;
 		lpstruct->m_asiokcp->get_impl()->sendbuff(lpstruct->m_endpoint, buf, len);
 		return len;
 	}
@@ -813,12 +810,12 @@ namespace ngl
 		return m_impl_asio_kcp()->sendu_waitrecv(aendpoint, buf, len, afun);
 	}
 
-	bool asio_kcp::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
+	bool asio_kcp::sendpack(i32_sessionid asessionid, const std::shared_ptr<pack>& apack)
 	{
 		return m_impl_asio_kcp()->sendpack(asessionid, apack);
 	}
 
-	bool asio_kcp::sendpack(const asio_udp_endpoint& aendpoint, std::shared_ptr<pack>& apack)
+	bool asio_kcp::sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack)
 	{
 		return m_impl_asio_kcp()->sendpack(aendpoint, apack);
 	}

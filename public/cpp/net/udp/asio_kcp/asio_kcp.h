@@ -36,7 +36,7 @@ namespace ngl
 	private:		
 		ngl::impl<impl_asio_kcp> m_impl_asio_kcp;
 	public:
-		asio_kcp(i16_port port);
+		explicit asio_kcp(i16_port port);
 
 		~asio_kcp();
 
@@ -52,10 +52,10 @@ namespace ngl
 		);
 
 		// # 通过kcp发送pack
-		bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack);
+		bool sendpack(i32_sessionid asessionid, const std::shared_ptr<pack>& apack);
 
 		// # 通过kcp发送pack
-		bool sendpack(const asio_udp_endpoint& aendpoint, std::shared_ptr<pack>& apack);
+		bool sendpack(const asio_udp_endpoint& aendpoint, const std::shared_ptr<pack>& apack);
 
 		// # 发起连接
 		void connect(int32_t aconv

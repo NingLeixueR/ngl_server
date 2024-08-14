@@ -145,7 +145,7 @@ namespace ngl
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& apack, const std::vector<std::string>&)
+			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>&, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::getInstance().actor_count();
 					std::string lstr = std::format("actor count:{}\r\n", lcount);
@@ -154,7 +154,7 @@ namespace ngl
 			);
 		}
 		std::string& lkey = lvec[0];
-		std::transform(lkey.begin(), lkey.end(), lkey.begin(), tolower);
+		std::ranges::transform(lkey, lkey.begin(), tolower);
 		if (handle_cmd::function(lkey, apack, lvec) == false)
 		{
 			log_error()->print("protocol::cmd [{}] ERROR", lkey);

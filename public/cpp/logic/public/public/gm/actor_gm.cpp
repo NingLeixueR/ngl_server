@@ -37,7 +37,7 @@ namespace ngl
 		send_actor(aactorid, pro);
 	}
 
-	bool actor_gm::reply_php(const pack* apack, ngl::np_gm_response& adata)
+	bool actor_gm::reply_php(const pack* apack, ngl::np_gm_response& adata)const
 	{
 		send(apack->m_id, adata, nguid::make(), nguid::make());
 		return true;
@@ -48,12 +48,8 @@ namespace ngl
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
 		ngl::json_read lreadjson(adata.get_data()->m_json.c_str());
 
-		// ### 单例
-		std::string lactorname;
-		// ### 非单例
-		i64_actorid lactorid;
-		if (lreadjson.read("actor_name", lactorname))
-		{
+		if (std::string lactorname; lreadjson.read("actor_name", lactorname))
+		{// ### 单例
 			if (lactorname == "ACTOR_GM")
 			{
 				std::string loperator;
@@ -122,13 +118,14 @@ namespace ngl
 				if (lactorname == "ACTOR_DB")
 				{
 					int32_t ltype = 0;
-					if (lreadjson.read("db", ltype))
+					if (lreadjson.read("db", ltype) == false)
 					{
-						lactorid = nguid::make(
-							db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid()
-						);
-						sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
+						return true;
 					}
+					i64_actorid lactorid = nguid::make(
+						db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid()
+					);
+					sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
 				}
 				return true;
 			}
@@ -136,8 +133,8 @@ namespace ngl
 			sendbytype(ltype, adata.m_pack, *adata.get_data());
 			return true;
 		}
-		else if (lreadjson.read("actor_id", lactorid))
-		{
+		else if (i64_actorid lactorid; lreadjson.read("actor_id", lactorid))
+		{// ### 非单例
 			sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
 			return true;
 		}
@@ -148,7 +145,7 @@ namespace ngl
 	bool actor_gm::handle(message<mforward<ngl::np_gm_response>>& adata)
 	{
 		log_error()->print("gm2php [{}]", adata.get_data()->data()->m_json);
-		send(adata.get_data()->identifier(), *adata.get_data()->data(), nguid::make(), nguid::make());
+		send((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data(), nguid::make(), nguid::make());
 		return true;
 	}
 }// namespace ngl

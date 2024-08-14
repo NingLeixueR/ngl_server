@@ -171,12 +171,12 @@ int main(int argc, char** argv)
 	m_stream = lmalloc();
 
 	*m_stream << "extern \"C\"{\n";
-	for (auto item : lvec5)
+	for (const auto& item : lvec5)
 		*m_stream << "#include \"" << item.first << "\"\n";
 	*m_stream << "}//extern \"C\"\n";
 	lsavefun(++lindex, *m_stream);
 
-	for (auto item : ldic)
+	for (const auto& item : ldic)
 		m_streamtxt << "INCLUDE_DIRECTORIES(" << item << ")\n";
 
 	std::string cname = argv[1];

@@ -1159,10 +1159,10 @@ namespace ngl
 		return lret;
 	}
 
-	std::string tools::time2str(int autc)
+	std::string tools::time2str(int autc, const char* aformat/* = "%y/%m/%d %H:%M:%S"*/)
 	{
 		char lbuff[1024] = { 0 };
-		ngl::localtime::time2str(lbuff, 1024, autc, "%y/%m/%d %H:%M:%S");
+		ngl::localtime::time2str(lbuff, 1024, autc, aformat);
 		return lbuff;
 	}
 

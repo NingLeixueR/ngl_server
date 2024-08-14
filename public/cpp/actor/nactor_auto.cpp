@@ -64,8 +64,7 @@ namespace ngl
 			nactor_type<type_actor_db>::inits(lenum);
 			std::string ldbname("actor_");
 			std::string ltemp = tools::type_name<TDBTAB>();
-			auto pos = ltemp.rfind(":");
-			if (pos != std::string_view::npos)
+			if (auto pos = ltemp.rfind(":"); pos != std::string_view::npos)
 			{
 				ldbname += ltemp.substr(pos + 1);
 			}

@@ -169,7 +169,6 @@ namespace ngl
 	// 动态属性,可以在战斗中改变的属性
 	class dynamic_attribute
 	{
-	public:
 	private:
 		std::map<EnumAttribute, int64_t> m_dynamic;
 		aoimap* m_map;
@@ -219,19 +218,19 @@ namespace ngl
 		}
 
 		// 是否可以移动
-		bool ismove()
+		bool ismove()const
 		{
 			return (m_stat & (int32_t)pbnet::eunitstat_nomove) == 0;
 		}
 
 		// 是否可以普通攻击
-		bool isnormalattack()
+		bool isnormalattack()const
 		{
 			return (m_stat & (int32_t)pbnet::eunitstat_nonormalattack) == 0;
 		}
 
 		// 是否可以释放技能
-		bool isreleaseskill()
+		bool isreleaseskill()const
 		{
 			return (m_stat & (int32_t)pbnet::eunitstat_noreleaseskill) == 0;
 		}

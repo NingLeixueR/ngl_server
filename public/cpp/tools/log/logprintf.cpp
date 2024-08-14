@@ -80,10 +80,10 @@ namespace ngl
 	}
 
 	logfile::logfile(bool aisactor, const config& aconfig) :
-		m_isactor(aisactor),
 		m_config(aconfig),
 		m_count(0),
-		m_fcount(0)
+		m_fcount(0),
+		m_isactor(aisactor)
 	{
 		create();
 
@@ -92,7 +92,7 @@ namespace ngl
 			.m_ms = m_config.m_flush_time,
 			.m_intervalms = [this](int64_t) {return m_config.m_flush_time; } ,
 			.m_count = 0x7fffffff,
-			.m_fun = [this](const wheel_node* anode)
+			.m_fun = [this](const wheel_node*)
 			{
 				m_stream.flush();
 			}
@@ -100,7 +100,7 @@ namespace ngl
 		m_logwheel.addtimer(lparm);
 	}
 
-	bool file_exists(std::string& apath)
+	bool file_exists(const std::string& apath)
 	{
 		if (!std::filesystem::exists(apath))
 		{
@@ -109,7 +109,7 @@ namespace ngl
 		return true;
 	}
 
-	bool logfile::check_count()
+	bool logfile::check_count()const
 	{
 		return m_count >= sysconfig::logline();
 	}
@@ -139,20 +139,18 @@ namespace ngl
 
 		std::cout << "log dir:[" << lpath << "]" << std::endl;
 
-		char lbufftime[1024] = { 0 };
-		localtime::time2str(lbufftime, 1024, time(nullptr), "%Y%m%d%H%M%S");
-
-		char lbuff[1024];
-		snprintf(lbuff, 1024, "/%s_%d.log", lbufftime, ++m_fcount);
+		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y%m%d%H%M%S");
+		std::string lopfile = std::format("{}/{}_{}.log", lpath, ltimestr, m_fcount);
+		++m_fcount;
 		
-		m_stream.open(lpath + lbuff, std::ios::binary);
+		m_stream.open(lopfile, std::ios::binary);
 		m_count = 0;
 	}
 
 	struct logfile_default : public logfile
 	{
 		logfile_default(bool aisactor, const config& aconfig);
-		virtual void printf(const logitem* alog);
+		void printf(const logitem* alog) final;
 	};
 
 	logfile_default::logfile_default(bool aisactor, const config& aconfig) :
@@ -161,14 +159,10 @@ namespace ngl
 
 	void logfile_default::printf(const logitem* alog)
 	{
-		tab_servers* tab = ttab_servers::tab(alog->m_serverid);
+		const tab_servers* tab = ttab_servers::tab(alog->m_serverid);
 		m_stream 
-			<< std::format(
-				"[{}:{}][{}]", 
-				tab->m_name,
-				alog->m_serverid, 
-				alog->m_src, 
-				alog->m_data
+			<< std::format("[{}:{}][{}:{}]", 
+				tab->m_name,alog->m_serverid, alog->m_src, alog->m_data
 			)
 			<< std::endl;
 		++m_count;
@@ -183,7 +177,7 @@ namespace ngl
 	struct logfile_bi : public logfile
 	{
 		logfile_bi(bool aisactor, const config& aconfig);
-		virtual void printf(const logitem* alog);
+		void printf(const logitem* alog) final;
 	};
 
 	logfile_bi::logfile_bi(bool aisactor, const config& aconfig) :
@@ -204,8 +198,9 @@ namespace ngl
 		case ELOG_NETWORK:
 			return std::make_shared<logfile_default>(aisactor, aconfig);
 		case ELOG_BI:
-			return std::make_shared<logfile_bi>(aisactor, aconfig);
+			return std::make_shared<logfile_bi>(aisactor, aconfig); 
+		default:
+			return nullptr;
 		}
-		return nullptr;
 	}
 }// namespace ngl

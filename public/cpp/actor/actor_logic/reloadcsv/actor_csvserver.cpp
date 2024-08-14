@@ -41,14 +41,17 @@ namespace ngl
 		auto lparm = adata.get_data();
 		auto lpack = adata.m_pack;
 		np_actor_reloadcsv pro;
-		auto& lversion = allcsv::all();
-		for (const auto& [key, value] : lversion)
-		{
-			auto itor = lparm->m_verify.find(key);
-			if (itor != lparm->m_verify.end() && itor->second != value->verify())
-				continue;
-			reload_csv::readcsv(key, pro.m_csvcontent[key]);
-		}
+		const auto& lversion = allcsv::all();
+		std::ranges::for_each(lversion, [&lparm,&pro](const auto& apair)
+			{
+				
+				if (auto itor = lparm->m_verify.find(apair.first);
+					itor != lparm->m_verify.end() && itor->second != apair.second->verify())
+				{
+					return;
+				}
+				reload_csv::readcsv(apair.first, pro.m_csvcontent[apair.first]);
+			});
 		if (pro.m_csvcontent.empty() == false)
 		{
 			send(lpack->m_id, pro, lpack->m_head.get_request_actor(), id_guid());

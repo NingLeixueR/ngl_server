@@ -46,7 +46,7 @@ namespace ngl
 		void sendbyactorid(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro);
 
 		// # »Ø¸´gm.php
-		bool reply_php(const pack* apack, ngl::np_gm_response& adata);
+		bool reply_php(const pack* apack, ngl::np_gm_response& adata)const;
 
 		using handle_cmd = cmd<actor_gm, std::string, ngl::json_read&>;
 		bool handle(message<ngl::np_gm>& adata);

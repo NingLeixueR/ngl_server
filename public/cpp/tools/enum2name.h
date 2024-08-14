@@ -33,11 +33,11 @@ namespace ngl
 		{
 			if constexpr (TOLOWER == e2n_tolower)
 			{
-				std::transform(astr.begin(), astr.end(), astr.begin(), tolower);
+				std::ranges::transform(astr, astr.begin(), tolower);
 			}
 			if constexpr (TOLOWER == e2n_toupper)
 			{
-				std::transform(astr.begin(), astr.end(), astr.begin(), toupper);
+				std::ranges::transform(astr, astr.begin(), toupper);
 			}			
 		}
 	public:

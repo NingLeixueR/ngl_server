@@ -28,7 +28,7 @@ namespace ngl
 		{
 			std::string lname = T().descriptor()->full_name();
 			ngl::tools::replace("pbdb.", "", lname, lname);
-			std::transform(lname.begin(), lname.end(), lname.begin(), toupper);
+			std::ranges::transform(lname, lname.begin(), toupper);
 
 			tab_dbload** tab = tools::findmap(m_name2data, lname);
 			if (tab == nullptr)

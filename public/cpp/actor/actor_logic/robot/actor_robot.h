@@ -181,7 +181,7 @@ namespace ngl
 			if (lrecv->m_parm.size() > 1)
 			{
 				std::string& lparm = lrecv->m_parm[1];
-				std::transform(lparm.begin(), lparm.end(), lparm.begin(), tolower);
+				std::ranges::transform(lparm, lparm.begin(), tolower);
 			}
 
 			if (handle_cmd::empty())

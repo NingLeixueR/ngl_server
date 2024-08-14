@@ -40,7 +40,7 @@ namespace ngl
 
 		logfile(bool aisactor, const config& aconfig);
 
-		bool check_count();
+		bool check_count()const;
 
 		void close_fstream();
 

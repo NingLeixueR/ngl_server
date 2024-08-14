@@ -327,7 +327,7 @@ namespace ngl
 			m_data.erase((int64_t)aid);
 		}
 
-		virtual void deldb() final
+		void deldb() final
 		{
 			np_actordb_delete<DBTYPE, TDBTAB> pro;
 			if (m_dellist.empty())
@@ -416,7 +416,7 @@ namespace ngl
 			return true;
 		}
 
-		virtual void clear_modified() final
+		void clear_modified() final
 		{
 			for(std::pair<const nguid, data_modified<TDBTAB>>& lpair : m_data)
 			{
@@ -490,10 +490,10 @@ namespace ngl
 			m_actor->db_component_init_data();
 
 			// 1、将数据修改为[裁剪修改]
-			for (const std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
-			{
-				lpair.second->clear_modified();
-			}
+			std::ranges::for_each(m_dbclientmap, [](std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair)
+				{
+					lpair.second->clear_modified();
+				});
 
 			// 2、做一些初始化之类的工作,并且需要的话将其发送给客户端
 			m_fun(adbishave);

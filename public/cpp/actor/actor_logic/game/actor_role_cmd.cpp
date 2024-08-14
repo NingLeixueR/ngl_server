@@ -82,7 +82,7 @@ namespace ngl
 			handle_cmd::push("/switch", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
-					tab_servers* tab = ttab_servers::find_first(GAME, [](tab_servers* atab)->bool
+					const tab_servers* tab = ttab_servers::find_first(GAME, [](tab_servers* atab)->bool
 						{
 							return atab->m_id != nconfig::m_nodeid;
 						});
@@ -171,7 +171,7 @@ namespace ngl
 		}
 
 		std::string& lkey = lvec[0];
-		std::transform(lkey.begin(), lkey.end(), lkey.begin(), tolower);
+		std::ranges::transform(lkey, lkey.begin(), tolower);
 		if (handle_cmd::function(lkey, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
 			log_error()->print("actor_role cmd [{}] ERROR", lkey);
