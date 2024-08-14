@@ -229,7 +229,7 @@ namespace ngl
 			return m_dbdata;
 		}
 
-		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) final
+		void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) final
 		{
 			Try
 			{
@@ -238,19 +238,18 @@ namespace ngl
 				m_id				= aid;
 				m_load				= false;
 
-				Assert(m_tab = ttab_dbload::get_tabdb<TDBTAB>(); m_tab != nullptr);
+				Assert(m_tab = ttab_dbload::get_tabdb<TDBTAB>(); m_tab != nullptr)
 
-				static bool m_register = false;
-				if (m_register == false)
+				if (static bool m_register = false; m_register == false)
 				{
 					m_register = true;
 					actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
 				}
 				init_load();
-			}Catch;
+			}Catch
 		}
 
-		virtual bool isload()	
+		bool isload() final	
 		{ 
 			return m_load; 
 		}
@@ -260,7 +259,7 @@ namespace ngl
 			savedb(-1); 
 		}
 
-		virtual void savedb()final
+		void savedb()final
 		{ 
 			savedb(m_id); 
 		}

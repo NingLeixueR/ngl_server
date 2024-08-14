@@ -151,14 +151,13 @@ namespace ngl
 		static void		erase_actor_byid(const nguid& aguid);
 
 		//# 向指定actor添加任务
-		static void		push_task_id(
-			const nguid& aguid, handle_pram& apram, bool abool);
+		static void		push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
 
 		//# 给actor自身添加任务
 		void			push_task_id(handle_pram& apram, bool abool);
 
 		//# 给指定类型的actor添加任务
-		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
+		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false)const;
 
 #pragma region net
 		//# 生成包

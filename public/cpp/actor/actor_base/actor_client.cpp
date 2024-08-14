@@ -294,14 +294,14 @@ namespace ngl
 	void actor_client::connect_fnish()
 	{
 		auto& lconnectfun = m_impl_actor_client()->m_connectfun;
-		std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
+		const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
 		if (lconnectfun.empty())
 			return;
 		for (auto itor = lconnectfun.begin(); itor != lconnectfun.end(); ++itor)
 		{
 			if(lconnectserverid.contains(itor->first))
 				continue;
-			for (auto& fun : itor->second)
+			for (const auto& fun : itor->second)
 				fun();
 			itor = lconnectfun.erase(itor);
 			if (itor == lconnectfun.end())
@@ -316,8 +316,8 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
-			if (lconnectserverid.find(lparm->m_serverid) != lconnectserverid.end())
+			if(const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid; 
+				lconnectserverid.contains(lparm->m_serverid))
 			{
 				lparm->m_fun();
 				return true;
@@ -331,8 +331,7 @@ namespace ngl
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
-		const auto lparm = adata.get_data();
-		if (lparm->m_isremove)
+		if (const auto lparm = adata.get_data(); lparm->m_isremove)
 		{
 			naddress::remove_gatewayid(lparm->m_actorid);
 		}

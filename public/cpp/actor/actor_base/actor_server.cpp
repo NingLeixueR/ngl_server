@@ -71,10 +71,10 @@ namespace ngl
 						}
 						return true;
 					});
-				for(auto itor = lmapprotocol.begin();itor != lmapprotocol.end();++itor)
-				{
-					nets::sendbysession(lpack->m_id, itor->second, nguid::moreactor(), id_guid());
-				}
+				std::for_each(lmapprotocol.begin(), lmapprotocol.end(), [this,&lpack](auto& item)
+					{
+						nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
+					});
 			}
 		}Catch
 		return true;
@@ -87,7 +87,7 @@ namespace ngl
 			auto lrecv = adata.get_data();
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr)
-			uint16_t lserverid = lpack->m_id;
+			const i32_serverid lserverid = lpack->m_id;
 			naddress::actor_add(lserverid, lrecv->m_add);
 			naddress::actor_del(lrecv->m_del);
 			if (lrecv->m_actorservermass)
