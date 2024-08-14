@@ -71,7 +71,7 @@ namespace ngl
 						}
 						return true;
 					});
-				std::for_each(lmapprotocol.begin(), lmapprotocol.end(), [this,&lpack](auto& item)
+				std::ranges::for_each(lmapprotocol, [this, &lpack](auto& item)
 					{
 						nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
 					});

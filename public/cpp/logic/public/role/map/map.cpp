@@ -103,7 +103,7 @@ namespace ngl
 				if (lpgrid != nullptr)
 				{
 					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					std::for_each(lpset->begin(), lpset->end(), [&lview](i64_actorid item)
+					std::ranges::for_each(*lpset, [&lview](i64_actorid item)
 						{
 							lview.insert(item);
 						});
@@ -124,13 +124,13 @@ namespace ngl
 		// enter Ω¯»Î ”“∞
 		for (int32_t id : lgrids2)
 		{
-			if (lgrids1.find(id) == lgrids1.end())
+			if (lgrids1.contains(id) == false)
 			{
 				grid* lpgrid = m_grids.get_grid(id);
 				if (lpgrid != nullptr)
 				{
 					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					std::for_each(lpset->begin(), lpset->end(), [&lview](i64_actorid item)
+					std::ranges::for_each(*lpset, [&lview](i64_actorid item)
 						{
 							lview.insert(item);
 						});

@@ -186,15 +186,15 @@ int main(int argc, char** argv)
 	std::cout << "##############" << cname << std::endl;
 
 	int32_t lsumline = 0;
-	std::for_each(lvec1.begin(), lvec1.end(), [&lsumline](std::pair<const std::string, int>& apair)
+	std::ranges::for_each(lvec1, [&lsumline](const auto& apair)
 		{
 			lsumline += apair.second;
 		});
-	std::for_each(lvec3.begin(), lvec3.end(), [&lsumline](std::pair<const std::string, int>& apair)
+	std::ranges::for_each(lvec3, [&lsumline](const auto& apair)
 		{
 			lsumline += apair.second;
 		});
-	std::for_each(lvec5.begin(), lvec5.end(), [&lsumline](std::pair<const std::string, int>& apair)
+	std::ranges::for_each(lvec5, [&lsumline](const auto& apair)
 		{
 			lsumline += apair.second;
 		});

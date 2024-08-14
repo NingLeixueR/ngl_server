@@ -158,7 +158,6 @@ namespace ngl
 				m_file.close();
 			}
 		}Catch
-		
 	}
 
 	bool filetools::remove(const std::string& afilename)

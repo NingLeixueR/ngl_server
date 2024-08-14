@@ -39,7 +39,7 @@ namespace ngl
 		auto tab = allcsv::tab<tab_plays>(tid);
 		assert(tab != nullptr);
 		np_actorswitch_process_plays pram;
-		std::for_each(lrecv->mutable_m_member()->begin(), lrecv->mutable_m_member()->end(), [&pram](const pbnet::MATCHING_MEMBER& adata)
+		std::ranges::for_each(*lrecv->mutable_m_member(), [&pram](const auto& adata)
 			{
 				pram.m_players.push_back(adata.m_id());
 			});

@@ -45,9 +45,10 @@ namespace ngl
 
 	struct nactornode
 	{
-		std::string		m_name;// 服务器名称
-		i32_serverid	m_serverid;// 服务器id
-		std::vector<i16_actortype>	m_actortype;// ENUM_ACTOR_TYPE
+		std::string		m_name;						// 服务器名称
+		i32_serverid	m_serverid = -1;			// 服务器id
+		std::vector<i16_actortype>	m_actortype;	// ENUM_ACTOR_TYPE
+
 		def_portocol_function(nactornode, m_name, m_serverid, m_actortype)
 	};
 
@@ -57,6 +58,7 @@ namespace ngl
 	{
 		nactornode m_node;
 		std::vector<i64_actorid> m_add;
+
 		def_portocol(np_actornode_register, m_node, m_add)
 	};
 
@@ -65,6 +67,7 @@ namespace ngl
 	struct np_actornode_register_response
 	{
 		std::vector<nactornode> m_vec;
+
 		def_portocol(np_actornode_register_response, m_vec)
 	};
 
@@ -72,7 +75,8 @@ namespace ngl
 	// 客户端间相互连接
 	struct np_actorclient_node_connect
 	{
-		i32_serverid m_id;
+		i32_serverid m_id = -1;
+
 		def_portocol(np_actorclient_node_connect, m_id)
 	};
 
@@ -81,10 +85,11 @@ namespace ngl
 	// 向actor客户端同步结点信息
 	struct np_actornode_update
 	{
-		i32_serverid m_id;// 服务器id
+		i32_serverid m_id = -1;				// 服务器id
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
-		bool m_actorservermass = true; // 是否给actorclient进行广播
+		bool m_actorservermass = true;		// 是否给actorclient进行广播
+
 		def_portocol(np_actornode_update, m_id, m_add, m_del, m_actorservermass)
 	};
 
@@ -93,6 +98,7 @@ namespace ngl
 	{
 		np_actornode_update m_mass;
 		std::function<void()> m_fun;
+
 		def_portocol(np_actornode_update_mass, m_mass)
 	};
 
@@ -103,6 +109,7 @@ namespace ngl
 	{
 		i32_serverid m_serverid;
 		std::function<void()> m_fun;
+
 		def_portocol(np_actornode_connect_task, m_serverid)
 	};
 
@@ -112,7 +119,8 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load
 	{
-		nguid m_id;
+		nguid m_id = -1;
+
 		def_portocol(np_actordb_load, m_id)
 	};
 
@@ -139,8 +147,6 @@ namespace ngl
 	{
 		protobuf_data<std::map<nguid, T>>	m_data;
 
-		np_actordb_save() {}
-
 		void add(const nguid& akey, const T& avalue)
 		{
 			if (m_data.m_data == nullptr)
@@ -163,8 +169,6 @@ namespace ngl
 	struct np_actordb_delete
 	{
 		std::vector<int64_t> m_data;
-
-		np_actordb_delete() {}
 
 		def_portocol(actor_db_delete<T>, m_data)
 	};
@@ -236,7 +240,7 @@ namespace ngl
 			return m_data.get();
 		}
 
-		int64_t identifier()
+		int64_t identifier()const
 		{
 			return m_identifier;
 		}
@@ -310,6 +314,7 @@ namespace ngl
 		bool			m_iscreate = false;
 		i32_socket		m_socketid = 0;
 		i64_actorid		m_request_actor = 0;
+
 		def_portocol(np_actorrole_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
 	};
 
@@ -343,7 +348,7 @@ namespace ngl
 		{
 		}
 
-		np_actor_forward(np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
+		explicit np_actor_forward(np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
 		{
 		}
@@ -371,7 +376,7 @@ namespace ngl
 		np_actor_forward()
 		{}
 
-		np_actor_forward(np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
+		explicit np_actor_forward(np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
 		{}
 
@@ -417,11 +422,8 @@ namespace ngl
 		np_actor_forward()
 		{}
 
-		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
+		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
-		{}
-
-		~np_actor_forward()
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data)
@@ -460,11 +462,8 @@ namespace ngl
 		np_actor_forward()
 		{}
 
-		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
+		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
-		{}
-
-		~np_actor_forward()
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data)
@@ -495,11 +494,8 @@ namespace ngl
 			:m_data(nullptr)
 		{}
 
-		np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING ? false : true, T>& adata)
+		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING ? false : true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
-		{}
-
-		~np_actor_forward()
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
@@ -514,6 +510,7 @@ namespace ngl
 		i32_serverid	m_serverid = 0;
 		i32_serverid	m_toserverid = 0;
 		T				m_pram;
+
 		def_portocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 
@@ -521,12 +518,14 @@ namespace ngl
 	{
 		bool	m_create = false;
 		int		m_gatewayid = 0;
+
 		def_portocol(np_actorswitch_process_role, m_create, m_gatewayid);
 	};
 
 	struct np_actorswitch_process_plays
 	{
 		std::vector<i64_actorid> m_players;
+
 		def_portocol(np_actorswitch_process_plays, m_players);
 	};
 
@@ -534,6 +533,7 @@ namespace ngl
 	struct np_actorserver_connect
 	{
 		i32_serverid m_serverid;
+
 		def_portocol(np_actorserver_connect, m_serverid);
 	};
 
@@ -541,6 +541,7 @@ namespace ngl
 	struct np_actor_session_close
 	{
 		i32_sessionid m_sessionid = 0;
+
 		def_portocol(np_actor_session_close, m_sessionid)
 	};
 
@@ -548,6 +549,7 @@ namespace ngl
 	struct np_actor_disconnect_close
 	{
 		i64_actorid m_actorid;
+
 		def_portocol(np_actor_disconnect_close, m_actorid)
 	};
 
@@ -556,6 +558,7 @@ namespace ngl
 		bool			m_isremove;
 		i64_actorid		m_actorid;
 		i32_serverid	m_gatewayid;
+
 		def_portocol(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
@@ -570,6 +573,7 @@ namespace ngl
 	struct np_actor_reloadcsv
 	{
 		std::map<std::string, std::string> m_csvcontent;
+
 		def_portocol(np_actor_reloadcsv, m_csvcontent)
 	};
 
@@ -577,6 +581,7 @@ namespace ngl
 	struct np_actor_csv_verify_version
 	{
 		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
+
 		def_portocol(np_actor_csv_verify_version, m_verify)
 	};
 
@@ -585,29 +590,32 @@ namespace ngl
 	{
 		std::string					m_src;//物品来源
 		std::map<int32_t, int32_t>	m_item;
+
 		def_portocol(np_actor_senditem, m_src, m_item)
 	};
 
 	struct chat
 	{
-		int			m_id;
-		i64_actorid m_roleid;
+		int			m_id = -1;
+		i64_actorid m_roleid = -1;
 		std::string m_rolename;
 		std::string m_content;
-		int			m_utc;				//发言utc
+		int			m_utc = -1;				//发言utc
+
 		def_portocol_function(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
 	};
 
 	struct gateway_socket
 	{
 		std::string			m_session;
-		i16_area			m_area;
-		i64_accountid		m_accountid;
-		i32_actordataid		m_dataid;
-		i32_serverid		m_gameid;
-		i32_serverid		m_gatewayid;
-		i32_socket			m_socket;
-		bool				m_iscreate;
+		i16_area			m_area = -1;
+		i64_accountid		m_accountid = -1;
+		i32_actordataid		m_dataid = -1;
+		i32_serverid		m_gameid = -1;
+		i32_serverid		m_gatewayid = -1;
+		i32_socket			m_socket = -1;
+		bool				m_iscreate = -1;
+
 		def_portocol_function(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
 	};
 
@@ -617,14 +625,15 @@ namespace ngl
 		std::vector<gateway_socket>	m_add;
 		std::vector<i32_socket>		m_delsocket;
 		std::vector<i64_actorid>	m_delactorid;
+
 		def_portocol(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
 	};
 
 	// ---- 新增邮件
 	struct np_actor_addmail
 	{
-		i64_actorid					m_roleid;
-		int32_t						m_tid;
+		i64_actorid					m_roleid = -1;
+		int32_t						m_tid = -1;
 		std::map<int32_t, int32_t>	m_items;
 		std::string					m_parm;
 
@@ -635,9 +644,10 @@ namespace ngl
 	struct np_actor_activity
 	{
 		std::vector<i64_actorid> m_activityids;
-		int64_t m_time;
-		int32_t m_calendarid;
-		bool m_start;
+		int64_t m_time = -1;
+		int32_t m_calendarid = -1;
+		bool m_start = false;
+
 		def_portocol(np_actor_openactivity, m_activityids, m_time, m_calendarid, m_start)
 	};
 
@@ -645,37 +655,40 @@ namespace ngl
 	struct np_actor_kcp
 	{
 		std::string			m_kcpsession;
-		i32_session			m_sessionid;
-		i16_area			m_area;
-		i32_actordataid		m_dataid;
+		i32_session			m_sessionid = -1;
+		i16_area			m_area = -1;
+		i32_actordataid		m_dataid = -1;
 		std::string			m_uip;
-		i16_port			m_uport;
-		int32_t				m_conv;
+		i16_port			m_uport = -1;
+		int32_t				m_conv = -1;
+
 		def_portocol(np_actor_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
 	};
 
 	struct calendar_utc
 	{
-		int64_t m_time;
-		int32_t m_beg;
-		int32_t m_end;
+		int64_t m_time = -1;
+		int32_t m_beg = -1;
+		int32_t m_end = -1;
+
 		def_portocol_function(calendar_utc, m_time, m_beg, m_end)
 	};
 
 	struct np_calendar
 	{
-		int32_t m_calendarid;
-		int64_t m_time;
-		bool m_start;
+		int32_t m_calendarid = -1;
+		int64_t m_time = -1;
+		bool m_start = false;
+
 		def_portocol(np_calendar, m_calendarid, m_time, m_start)
 	};
 
 	// ---- 新增邮件
 	struct np_actor_addnotice
 	{
-		std::string m_notice;	// 内容
-		int32_t m_starttime;	// 开始时间
-		int32_t m_finishtime;	// 结束时间
+		std::string m_notice;		// 内容
+		int32_t m_starttime = -1;	// 开始时间
+		int32_t m_finishtime = -1;	// 结束时间
 
 		def_portocol(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
@@ -695,11 +708,11 @@ namespace ngl
 	// ---- 日志发送 
 	struct logitem
 	{
-		int				m_serverid = 0;				// 服务器id
+		int				m_serverid = -1;			// 服务器id
 		ELOGLEVEL		m_loglevel;					// 日志类型
 		std::string		m_src;						// 触发日志的文件位置
 		std::string		m_data;						// 日志内容
-		int32_t			m_time;						// 日志发生时间
+		int32_t			m_time = -1;				// 日志发生时间
 
 		def_portocol_function(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
 	};
@@ -740,8 +753,7 @@ namespace ngl
 		void set_source()
 		{
 			std::string_view str = m_source.file_name();
-			auto pos = FindSrcPos(str);
-			if (pos != std::string_view::npos)
+			if (auto pos = FindSrcPos(str); pos != std::string_view::npos)
 			{
 				m_src = str.substr(pos + 1);
 			}
@@ -763,7 +775,7 @@ namespace ngl
 					return;
 				std::string ldata = m_stream.str();
 				ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
-				m_data.m_time = localtime::gettime();
+				m_data.m_time = (int32_t)localtime::gettime();
 				set_source();
 				if (sysconfig::logconsole())
 				{

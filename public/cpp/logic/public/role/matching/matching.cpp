@@ -55,7 +55,7 @@ namespace ngl
 		if (is_roomfull())
 			return false;
 		auto itor = m_memberlist.find(aroleid);
-		if (itor != m_memberlist.end())
+		if (m_memberlist.contains(aroleid))
 			return false;
 		pbnet::MATCHING_MEMBER& ldata = m_memberlist[aroleid];
 		if (initmember(aroleid, ldata) == false)
@@ -66,7 +66,7 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_SYNC>();
 		pro->set_m_type(m_type);
 		pro->set_m_roomid(m_id);
-		std::for_each(m_memberlist.begin(), m_memberlist.end(), [&pro](std::pair<const i64_actorid, pbnet::MATCHING_MEMBER>& pair)
+		std::ranges::for_each(m_memberlist, [&pro](const auto& pair)
 			{
 				*pro->add_m_member() = pair.second;				
 			});
@@ -108,7 +108,7 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>();
 		pro->set_m_type(m_type);
 		pro->set_m_roomid(m_id);
-		std::for_each(m_memberlist.begin(), m_memberlist.end(), [&pro](std::pair<const int64_t, pbnet::MATCHING_MEMBER>& amember)
+		std::ranges::for_each(m_memberlist, [&pro](const auto& amember)
 			{
 				pro->add_m_roleid(amember.first);
 			});
@@ -128,22 +128,25 @@ namespace ngl
 
 		sync_confirm();
 
-		for (std::pair<const int64_t, pbnet::MATCHING_MEMBER>& item : m_memberlist)
-		{
-			if (item.second.m_isconfirm() == false)
+		auto itorfind = std::ranges::find_if(m_memberlist, [](const auto& item)
 			{
-				return pbnet::ematching_confirm_success;
-			}
+				if (item.second.m_isconfirm())
+					return true;
+				return false;
+			});
+		if (itorfind != m_memberlist.end())
+		{
+			return pbnet::ematching_confirm_success;
 		}
 		// 都确认了 准备开始玩法
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_SUCCESS>();
 		pro->set_m_type(m_type);
 		pro->set_m_roomid(m_id);
 		pro->set_m_dataid(0);
-		for (std::pair<const int64_t, pbnet::MATCHING_MEMBER>& item : m_memberlist)
-		{
-			*pro->add_m_member() = item.second;
-		}
+		std::ranges::for_each(m_memberlist, [&pro](const auto& item)
+			{
+				*pro->add_m_member() = item.second;
+			});
 		// 发送给[ACTOR_MANAGE_PLAYS]创建玩法
 		actor::static_send_actor(nguid::make_self(ACTOR_MANAGE_PLAYS), nguid::make(), pro);
 		// 发送给所有玩家
@@ -156,7 +159,7 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>();
 		pro->set_m_type(m_type);
 		pro->set_m_canceltype(pbnet::etype_matching_cancel_timeout);
-		std::for_each(avec.begin(), avec.end(), [&pro](i64_actorid amember)
+		std::ranges::for_each(avec, [&pro](i64_actorid amember)
 			{
 				pro->add_m_cancelmember(amember);
 			});
@@ -165,7 +168,7 @@ namespace ngl
 
 	void room::check_timeout()
 	{
-		int lnow = localtime::gettime();
+		auto lnow = (int32_t)localtime::gettime();
 		if (m_stat == ematching_run)
 		{
 			std::vector<i64_actorid> louttime;
@@ -192,7 +195,7 @@ namespace ngl
 			if (lnow <= m_wbegtm + m_tab->m_waitconfirmtime)
 			{
 				std::vector<i64_actorid> louttime;
-				std::for_each(m_memberlist.begin(), m_memberlist.end(), [&louttime](std::pair<const int64_t, pbnet::MATCHING_MEMBER>& apair)
+				std::ranges::for_each(m_memberlist, [&louttime](const auto& apair)
 					{
 						louttime.push_back(apair.first);
 					});
@@ -205,11 +208,10 @@ namespace ngl
 			if (lnow <= m_wbegtm + m_tab->m_waitconfirmtime)
 			{
 				std::vector<i64_actorid> louttime;
-				std::for_each(m_memberlist.begin(), m_memberlist.end(), [&louttime](std::pair<const int64_t, pbnet::MATCHING_MEMBER>& apair)
+				std::ranges::for_each(m_memberlist, [&louttime](const auto& apair)
 					{
 						louttime.push_back(apair.first);
 					});
-
 				auto_cancel(pbnet::etype_matching_waitcreate_timeout, louttime);
 			}
 		}

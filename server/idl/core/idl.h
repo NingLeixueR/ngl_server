@@ -402,18 +402,18 @@ public:
 		//// ----- 去掉文件后缀
 		bool lbool = true;
 		std::string lname;
-		std::for_each(apth.begin(), apth.end(), [&lbool,&lname](char item)
-		{
-			if (lbool)
+		std::ranges::for_each(apth, [&lbool, &lname](char item)
 			{
-				if (item == '.')
+				if (lbool)
 				{
-					lbool = false;
-					return;
+					if (item == '.')
+					{
+						lbool = false;
+						return;
+					}
+					lname += item;
 				}
-				lname += item;
-			}
-		});
+			});
 		m_data[lname].m_fname = lname;
 
 		//// ---- 读取文件
@@ -658,7 +658,7 @@ public:
 				
 				std::set<int32_t> lset;
 				bool lbool = true;
-				std::for_each(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end(), [&lset,&lbool](Data& adata)
+				std::ranges::for_each(m_data[aname].m_struct[i].dataVec, [&lset,&lbool](const auto& adata)
 					{
 						if (lbool)
 						{
@@ -668,7 +668,7 @@ public:
 
 				assert(lbool);
 
-				std::sort(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end());
+				std:sort(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end());
 
 			}			
 		}
