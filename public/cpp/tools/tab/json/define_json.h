@@ -14,14 +14,14 @@
 	{																\
 		ijsn.write(__VA_ARGS__);									\
 	}																\
-	inline bool read(ngl::json_read& ijsn, const char* akey)		\
+	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
 	{																\
 		ngl::json_read ltemp;										\
 		if (ijsn.read(akey, ltemp) == false)						\
-		return false;												\
+			return false;											\
 		return read(ltemp);											\
 	}																\
-	inline bool read(ngl::json_read& ijsn)							\
+	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
 		return ijsn.read(__VA_ARGS__);								\
 	}

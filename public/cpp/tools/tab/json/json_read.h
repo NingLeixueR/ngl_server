@@ -28,27 +28,25 @@ namespace ngl
 			return m_json != nullptr;
 		}
 
-		bool read(const char* akey, std::string& adata);
-		bool read(const char* akey, int8_t& adata);
-		bool read(const char* akey, int16_t& adata);
-		bool read(const char* akey, int32_t& adata);
-		bool read(const char* akey, int64_t& adata);
-		bool read(const char* akey, uint8_t& adata);
-		bool read(const char* akey, uint16_t& adata);
-		bool read(const char* akey, uint32_t& adata);
-		bool read(const char* akey, uint64_t& adata);
-		bool read(const char* akey, float& adata);
-		bool read(const char* akey, double& adata);
-		bool read(const char* akey, bool& adata);
-		bool read(const char* akey, cJSON*& adata);
-		bool read(const char* akey, json_read& adata);
+		bool read(const char* akey, std::string& adata) const;
+		bool read(const char* akey, int8_t& adata) const;
+		bool read(const char* akey, int16_t& adata) const;
+		bool read(const char* akey, int32_t& adata) const;
+		bool read(const char* akey, int64_t& adata) const;
+		bool read(const char* akey, uint8_t& adata) const;
+		bool read(const char* akey, uint16_t& adata) const;
+		bool read(const char* akey, uint32_t& adata) const;
+		bool read(const char* akey, uint64_t& adata) const;
+		bool read(const char* akey, float& adata) const;
+		bool read(const char* akey, double& adata) const;
+		bool read(const char* akey, bool& adata) const;
+		bool read(const char* akey, cJSON*& adata) const;
+		bool read(const char* akey, json_read& adata) const;
 
 		template <typename T>
 		bool read_number(
-			const char* akey
-			, std::vector<T>& aval
-			, const std::function<bool(cJSON* ajson, T& aval)>& afun
-		)
+			const char* akey, std::vector<T>& aval, const std::function<bool(const cJSON* ajson, T& aval)>& afun
+		)const
 		{
 			cJSON* ltemp = nullptr;
 			if (read(akey, ltemp) == false)
@@ -65,29 +63,29 @@ namespace ngl
 			return true;
 		}
 
-		bool read(const char* akey, std::vector<int8_t>& adata);
-		bool read(const char* akey, std::vector<int16_t>& adata);
-		bool read(const char* akey, std::vector<int32_t>& adata);
-		bool read(const char* akey, std::vector<int64_t>& adata);
-		bool read(const char* akey, std::vector<uint8_t>& adata);
-		bool read(const char* akey, std::vector<uint16_t>& adata);
-		bool read(const char* akey, std::vector<uint32_t>& adata);
-		bool read(const char* akey, std::vector<uint64_t>& adata);
-		bool read(const char* akey, std::vector<float>& adata);
-		bool read(const char* akey, std::vector<double>& adata);
-		bool read(const char* akey, std::vector<bool>& adata);
-		bool read(const char* akey, std::vector<std::string> & adata);
+		bool read(const char* akey, std::vector<int8_t>& adata) const;
+		bool read(const char* akey, std::vector<int16_t>& adata) const;
+		bool read(const char* akey, std::vector<int32_t>& adata) const;
+		bool read(const char* akey, std::vector<int64_t>& adata) const;
+		bool read(const char* akey, std::vector<uint8_t>& adata) const;
+		bool read(const char* akey, std::vector<uint16_t>& adata) const;
+		bool read(const char* akey, std::vector<uint32_t>& adata) const;
+		bool read(const char* akey, std::vector<uint64_t>& adata) const;
+		bool read(const char* akey, std::vector<float>& adata) const;
+		bool read(const char* akey, std::vector<double>& adata) const;
+		bool read(const char* akey, std::vector<bool>& adata) const;
+		bool read(const char* akey, std::vector<std::string> & adata) const;
 
 		template <typename T>
-		bool read(const char* akey, T& adata)
+		bool read(const char* akey, T& adata) const
 		{
 			return adata.read(*this, akey);
 		}
 
 		template <typename T>
-		bool read(const char* akey, std::vector<T>& adata)
+		bool read(const char* akey, std::vector<T>& adata) const
 		{
-			cJSON* ret = cJSON_GetObjectItem(m_json, akey);
+			const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 			if (nullptr == ret || ret->type != cJSON_Array)
 				return false;
 			int lsize = cJSON_GetArraySize(ret);
@@ -105,7 +103,7 @@ namespace ngl
 		}
 
 		template <typename KEY, typename VAL>
-		bool read(const char* akey, std::map<KEY, VAL>& aval)
+		bool read(const char* akey, std::map<KEY, VAL>& aval) const
 		{
 			std::vector<KEY> lkey;
 			std::vector<VAL> lval;
@@ -126,7 +124,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool read(const char* akey, std::list<T>& aval)
+		bool read(const char* akey, std::list<T>& aval) const
 		{
 			std::vector<T> lvec;
 			if (read(akey, lvec) == false)
@@ -136,7 +134,7 @@ namespace ngl
 		}
 
 		template <typename T, typename ...ARG>
-		bool read(const char* akey, T& avalue, ARG&... arg)
+		bool read(const char* akey, T& avalue, ARG&... arg) const
 		{
 			if (read(akey, avalue) == false)
 				return false;
