@@ -126,7 +126,7 @@ namespace ngl
 			if (IS_FORWARDFUN)
 				make_forwardfun<T, IS_SEND>(aid, arid, lpram);
 			lpram.m_failfun			= afailfun;
-			return std::move(lpram);
+			return lpram;
 		}
 
 		template <typename T, bool IS_SEND = true>
@@ -145,7 +145,7 @@ namespace ngl
 			lpram.m_forwardfun		= nullptr;
 			make_client<T, IS_SEND>(aid, arid, lpram);
 			lpram.m_failfun			= afailfun;
-			return std::move(lpram);
+			return lpram;
 		}
 
 		static handle_pram create_pack(
@@ -157,7 +157,7 @@ namespace ngl
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
 			make_forwardfun<pack, true>(aid, arid, lpram);
-			return std::move(lpram);
+			return lpram;
 		}
 	};
 

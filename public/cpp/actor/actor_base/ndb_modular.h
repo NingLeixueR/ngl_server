@@ -88,8 +88,7 @@ namespace ngl
 		// # 与find类似(只是没有就添加)
 		inline data_modified<TDATA>* get(nguid aid)
 		{
-			data_modified<TDATA>* ret = find(aid);
-			if (ret != nullptr)
+			if (data_modified<TDATA>* ret = find(aid); ret != nullptr)
 				return ret;
 			if (m_id != -1 && m_id != aid)
 				return nullptr;
@@ -186,7 +185,7 @@ namespace ngl
 		}
 
 		// 当数据全部加载后调用
-		virtual void init_data() final;
+		void init_data() final;
 
 		virtual void initdata() = 0;
 

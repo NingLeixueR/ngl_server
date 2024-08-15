@@ -84,7 +84,7 @@ namespace ngl
 		//# 则终止遍历
 		static void foreach(const foreach_callbackfun& afun);
 
-		//# [std::function<bool(map_guidserver&, map_servernode&)>]
+		//# [ergodic_callbackfun:std::function<bool(map_guidserver&, map_servernode&)>]
 		static void ergodic(const ergodic_callbackfun& afun);
 
 		//# 获取guid与server id对应关系
@@ -92,7 +92,7 @@ namespace ngl
 
 		//# 根据area与dataid获取session
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid);
-	public:
+
 		//# 转发
 		static bool forward(handle_pram& apram);
 	};

@@ -14,7 +14,7 @@ namespace ngl
 	}
 
 	//# 日志相关
-	std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
+	const std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
 
 	std::shared_ptr<np_actor_logitem> actor_base::log_debug(const std::source_location& asource)
 	{
@@ -126,8 +126,8 @@ namespace ngl
 		std::map<int, ginfo>		m_group;
 		int							m_currentoffset;
 		actor_base*					m_actor;
-	public:
-		inline impl_group(actor_base* aactor):
+
+		explicit inline impl_group(actor_base* aactor):
 			m_currentoffset(0),
 			m_actor(aactor)
 		{}
@@ -157,18 +157,13 @@ namespace ngl
 				return false;
 			}
 			nguid lguid(amember);
-			ENUM_ACTOR ltype = lginfo->m_actortype;
-			if (ltype != ACTOR_NONE)
+			
+			if (ENUM_ACTOR ltype = lginfo->m_actortype; ltype != ACTOR_NONE && lginfo->m_actortype != lguid.type())
 			{
-				if (lginfo->m_actortype != lguid.type())
-				{
-					m_actor->log_error()->print("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
-						, agroupid
-						, (int)ltype
-						, (int)lguid.type()
-					);
-					return false;
-				}
+				m_actor->log_error()->print("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
+					, agroupid, (int)ltype, (int)lguid.type()
+				);
+				return false;
 			}
 			lginfo->m_actorlist.insert(amember);
 			return true;
@@ -213,13 +208,13 @@ namespace ngl
 		bool										m_isbroadcast;			
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
+			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
+			m_dbclient(nullptr),
+			m_isload(aparm.m_manage_dbclient),
+			m_actor(aactor),
 			m_kcpsession(-1),
-			m_isbroadcast(false),
-			m_actor(aactor)
+			m_isbroadcast(false)
 		{
-			m_guid		= nguid(aparm.m_type, aparm.m_area, aparm.m_id);
-			m_dbclient	= nullptr;
-			m_isload	= aparm.m_manage_dbclient;
 			if (aparm.m_manage_dbclient)
 			{
 				m_dbclient = std::make_unique<actor_manage_dbclient>(aactor);
@@ -301,7 +296,7 @@ namespace ngl
 
 		inline void db_component_init_data()
 		{
-			for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
+			for (const std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 			{
 				item.second->init_data();
 			}
@@ -311,14 +306,14 @@ namespace ngl
 		{
 			if (acreate)
 			{
-				for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
+				for (const std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 				{
 					item.second->create();
 				}
 			}
 			else
 			{
-				for (std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
+				for (const std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
 				{
 					item.second->init();
 				}
@@ -361,7 +356,7 @@ namespace ngl
 					return actor_base::impl_actor_base::m_broadcast; 
 				} ,
 				.m_count = 0x7fffffff,
-				.m_fun = [](const wheel_node* anode)
+				.m_fun = [](const wheel_node*)
 				{
 					auto pro = std::make_shared<np_actor_broadcast>();
 					handle_pram lpram = handle_pram::create<

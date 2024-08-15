@@ -26,11 +26,11 @@ namespace ngl
 		std::map<i32_protocolnum, nlogicfun>	m_fun;
 		tnotfindfun								m_notfindfun;
 	public:
-		nrfunbase() {}
+		nrfunbase() = default;
 
 		nrfunbase& set_notfindfun(const tnotfindfun& afun);
 
-		void notfindfun(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
+		void notfindfun(const actor_base* aactor, i32_threadid athreadid, handle_pram& apram)const;
 
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 	};
@@ -85,7 +85,7 @@ namespace ngl
 		nrfun(const nrfun&) = delete;
 		nrfun& operator=(const nrfun&) = delete;
 
-		nrfun() {}
+		nrfun() = default;
 	public:
 		static nrfun<TDerived, TYPE>& instance()
 		{
@@ -100,20 +100,20 @@ namespace ngl
 		//# bool aisload = false 
 		//# 是否允许db数据加载完成之前处理此消息
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(Tfun<TTTDerived, T> afun, bool aisload = false);
+		nrfun& rfun(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		template <typename TTTDerived, typename T>
-		nrfun& rfun(Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
+		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		template <typename TTTDerived, typename T>
-		nrfun& rfun_nonet(Tfun<TTTDerived, T> afun, bool aisload = false);
+		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		template <bool BOOL, typename T>
 		nrfun& rfun_forward(
-			Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false
+			const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false
 		);
 
 		template <typename T>
-		nrfun& rfun_recvforward(Tfun<TDerived, T> afun, bool aisload = false);
+		nrfun& rfun_recvforward(const Tfun<TDerived, T> afun, bool aisload = false);
 	};
 }//namespace ngl

@@ -91,10 +91,7 @@ namespace ngl
 
 	template <typename TACTOR, typename ...ARG>
 	void auto_actor(
-		const TACTOR* aactor, 
-		ENUM_ACTOR aenum, 
-		const char* aname, 
-		const ARG&... arg
+		const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg
 	)
 	{
 		auto_actor<TACTOR>(aactor, aenum, aname);

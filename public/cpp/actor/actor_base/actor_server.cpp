@@ -9,9 +9,9 @@ namespace ngl
 		{
 			auto lrecv = adata.get_data();
 			auto lpack = adata.m_pack;
-			Assert(lpack != nullptr);
+			Assert(lpack != nullptr)
 
-			Assert(naddress::set_node(lrecv->m_node));
+			Assert(naddress::set_node(lrecv->m_node))
 			naddress::set_session(lrecv->m_node.m_serverid, lpack->m_id);
 			naddress::actor_add(lrecv->m_node.m_serverid, lrecv->m_add);
 

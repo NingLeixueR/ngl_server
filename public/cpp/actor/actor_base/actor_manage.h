@@ -84,7 +84,7 @@ namespace ngl
 			{
 				actor_manage::getInstance().finish_suspend_thread();
 				log_info()->print("finish actor_suspendthread");
-			}Catch;		
+			}Catch
 		}
 	};
 
@@ -92,8 +92,7 @@ namespace ngl
 	T& actor_instance<T>::instance()
 	{
 		static T ltemp;
-		static bool first = true;
-		if (first)
+		if (static bool first = true; first)
 		{
 			Try
 			{

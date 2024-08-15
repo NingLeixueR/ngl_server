@@ -42,11 +42,11 @@ namespace ngl
 				Assert(m_tab != nullptr)
 
 				m_cache_save.set_cachefun(
-					std::bind(&cachelist<TDBTAB>, enum_clist_save, std::placeholders::_1), m_tab->m_dbcacheintervalms
+					std::bind_front(&cachelist<TDBTAB>, enum_clist_save), m_tab->m_dbcacheintervalms
 				);
 
 				m_cache_del.set_cachefun(
-					std::bind(&cachelist<TDBTAB>, enum_clist_del, std::placeholders::_1), m_tab->m_dbcacheintervalms
+					std::bind_front(&cachelist<TDBTAB>, enum_clist_del), m_tab->m_dbcacheintervalms
 				);
 
 				if (m_tab->m_isloadall == true)
@@ -226,9 +226,7 @@ namespace ngl
 			return actor_instance<tactor_db>::instance();
 		}
 
-		virtual ~actor_db() 
-		{
-		}
+		~actor_db() final = default;
 
 		static void nregister()
 		{
@@ -268,10 +266,10 @@ namespace ngl
 		// # ACTOR_TIMER_DB_CACHE, db cache list  ±£¥Êª∫¥Ê¡–±Ì
 		bool handle(message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
-			auto lrecv = adata.get_data();
-			for (i64_actorid id : lrecv->m_ls)
+			enum_cache_list ltype = adata.get_data()->m_type;
+			for (i64_actorid id : adata.get_data()->m_ls)
 			{
-				switch (lrecv->m_type)
+				switch (ltype)
 				{
 				case enum_clist_save:
 				{
@@ -286,12 +284,14 @@ namespace ngl
 					db_manage::del<TDBTAB>(db_pool::get(adata.m_thread), id);
 				}
 				break;
+				default:
+					break;
 				}
 			}
 			return true;
 		}
 
-		using handle_cmd = cmd<tactor_db, std::string, int, int, ngl::json_read&>;
+		using handle_cmd = cmd<tactor_db, std::string, int, int, const ngl::json_read&>;
 
 		bool handle(message<mforward<np_gm>>& adata)
 		{
@@ -304,7 +304,7 @@ namespace ngl
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::push("query", [this](int athread, int id, ngl::json_read& aos)
+				handle_cmd::push("query", [this](int athread, int id, const ngl::json_read& aos)
 					{
 						gcmd<std::string> pro;
 						pro.id			= id;
@@ -328,7 +328,7 @@ namespace ngl
 							}
 						}
 					});
-				handle_cmd::push("change", [this](int athread, int id, ngl::json_read& aos)
+				handle_cmd::push("change", [this](int athread, int id, const ngl::json_read& aos)
 					{
 						gcmd<bool> pro;
 						pro.id = id;
@@ -340,8 +340,7 @@ namespace ngl
 							return;
 						protobuf_data<TDBTAB> ldata;
 						ldata.m_isbinary = false;
-						ngl::unserialize lunser(ljson.c_str(), ljson.size() + 1);
-						if (!lunser.pop(ldata))
+						if (ngl::unserialize lunser(ljson.c_str(), (int)ljson.size() + 1); !lunser.pop(ldata))
 							return;
 						int64_t lid = ldata.m_data->m_id();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);

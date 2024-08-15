@@ -39,7 +39,7 @@ namespace ngl
 					);
 					auto& recv = *adata.get_data();
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
-					for (std::pair<const int64_t, T>& lpair : lmap)
+					for (const std::pair<const int64_t, T>& lpair : lmap)
 					{
 						if (!m_dataid.empty() && m_dataid.find(lpair.first) == m_dataid.end())
 						{

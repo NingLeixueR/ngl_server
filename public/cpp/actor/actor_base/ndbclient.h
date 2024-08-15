@@ -78,9 +78,7 @@ namespace ngl
 			m_data(adata)
 		{}
 
-		data_modified():
-			m_pdata(nullptr)
-		{}
+		data_modified() = default;
 
 		void set(const TDBTAB& adata, bool achange = false)
 		{
@@ -121,7 +119,7 @@ namespace ngl
 	public:
 		// # 向actor_client设置连接后事件
 		// # 当与db服务器发生连接时触发加载数据事件
-		virtual void load()
+		void load() final
 		{
 			Try
 			{
@@ -176,15 +174,15 @@ namespace ngl
 		std::string									m_name;					// 主要调试需要知道TACTOR的名字
 	public:
 		ndbclient():
-			m_id(nguid::make()),
-			m_load(false),
-			m_dbdata(nullptr),
-			m_tab(nullptr),
 			ndbclient_base(DBTYPE),
+			m_tab(nullptr),
+			m_id(nguid::make()),
+			m_dbdata(nullptr),
+			m_load(false),
+			m_manage_dbclient(nullptr),
 			m_actor(nullptr),
-			m_manage_dbclient(nullptr)
+			m_name(tools::type_name<TACTOR>())
 		{
-			m_name = tools::type_name<TACTOR>();
 		}
 
 		void create(const nguid& aid) final
@@ -268,7 +266,7 @@ namespace ngl
 		{
 			np_actordb_save<DBTYPE, TDBTAB> pro;
 			std::list<data_modified<TDBTAB>*> lclearlist;
-			if (aid != (int64_t)-1)
+			if (aid != nguid::make())
 			{
 				data_modified<TDBTAB>* lp = nullptr;
 				if (aid == m_id)
@@ -432,11 +430,9 @@ namespace ngl
 		tmap_dbclient					m_typedbclientmap;
 		tmap_dbclient					m_dbclientmap;			//已经加载完的
 		std::function<void(bool)>		m_fun;					//bool db数据库是否有该数据
-		bool							m_finish;
 	public:
 		explicit actor_manage_dbclient(actor_base* aactor) :
-			m_actor(aactor),
-			m_finish(false)
+			m_actor(aactor)
 		{}
 
 		void add(ndbclient_base* adbclient, const nguid& aid)

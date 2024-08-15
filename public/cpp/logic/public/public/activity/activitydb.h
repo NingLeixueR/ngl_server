@@ -14,11 +14,9 @@ namespace ngl
 		activitydb(const activitydb&) = delete;
 		activitydb& operator=(const activitydb&) = delete;
 	public:
-		activitydb()
-		{
-		}
+		activitydb() = default;
 
-		virtual void set_id()
+		void set_id() final
 		{
 			m_id = -1;
 		}
@@ -39,6 +37,6 @@ namespace ngl
 			return &itor->second.get(achange);
 		}
 
-		virtual void initdata();
+		void initdata() final;
 	};
 }// namespace ngl

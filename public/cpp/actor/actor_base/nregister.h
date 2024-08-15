@@ -26,8 +26,7 @@ namespace ngl
 			}
 		};
 		protocol::registry_actor<T, TYPE>(
-			nactor_type<TDerived>::type(),
-			tprotocol::protocol_name<T>().c_str()
+			nactor_type<TDerived>::type(), tprotocol::protocol_name<T>().c_str()
 		);
 		return *this;
 	}
@@ -35,7 +34,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_nonet(
-		Tfun<TTTDerived, T> afun, bool aisload/* = false*/
+		const Tfun<TTTDerived, T> afun, bool aisload/* = false*/
 	)
 	{
 		m_fun[tprotocol::protocol<T>()] = nlogicfun
@@ -54,7 +53,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(
-		Tfun<TTTDerived, T> afun, bool aisload/* = false*/
+		const Tfun<TTTDerived, T> afun, bool aisload/* = false*/
 	)
 	{
 		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
@@ -64,7 +63,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(
-		Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/
+		const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/
 	)
 	{
 		rfun_nonet<TTTDerived, T>(afun, aisload);
@@ -75,7 +74,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <bool BOOL, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_forward(
-		Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload/* = false*/
+		const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload/* = false*/
 	)
 	{
 		using type_forward = np_actor_forward<T, TYPE, BOOL, ngl::forward>;
@@ -100,7 +99,7 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_recvforward(
-		Tfun<TDerived, T> afun, bool aisload/* = false*/
+		const Tfun<TDerived, T> afun, bool aisload/* = false*/
 	)
 	{
 		using type_forward = np_actor_forward<T, TYPE, false, T>;
@@ -109,7 +108,7 @@ namespace ngl
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				type_forward* ltemp = (type_forward*)apram.m_data.get();
+				auto ltemp = (type_forward*)apram.m_data.get();
 				std::shared_ptr<T> pro = ltemp->get_shared();
 				message<T> lmessage(athreadid, apram.m_pack.get(), pro);
 				(((TDerived*)(aactor))->*afun)(lmessage);

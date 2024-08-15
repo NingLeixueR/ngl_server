@@ -275,7 +275,7 @@ namespace ngl
 			std::shared_ptr<T>& adata
 		)
 		{
-			tab_servers* tab = ttab_servers::tab(agatewayid);
+			const tab_servers* tab = ttab_servers::tab(agatewayid);
 			if (tab == nullptr)
 				return;
 			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)

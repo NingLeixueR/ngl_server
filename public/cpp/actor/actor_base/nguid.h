@@ -326,7 +326,7 @@ namespace ngl
 		int32_t m_value32;
 		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 
-		inline nlogactor(int32_t avalue) :
+		explicit inline nlogactor(int32_t avalue) :
 			m_value32(avalue)
 		{}
 
@@ -337,12 +337,12 @@ namespace ngl
 			m_value16[1] = avalue2;
 		}
 
-		inline ENUM_ACTOR actor_type()
+		inline ENUM_ACTOR actor_type()const
 		{
 			return (ENUM_ACTOR)m_value16[0];
 		}
 
-		inline ELOG_TYPE log_type()
+		inline ELOG_TYPE log_type()const
 		{
 			return (ELOG_TYPE)m_value16[1];
 		}
@@ -364,7 +364,7 @@ namespace ngl
 template <>
 struct std::formatter<ngl::nguid>
 {
-	constexpr auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(const std::format_parse_context& ctx)const
 	{
 		return ctx.begin();
 	}
@@ -375,19 +375,13 @@ struct std::formatter<ngl::nguid>
 		if (lanme == nullptr)
 		{
 			return std::format_to(ctx.out()
-				, "guid<{}-{}-{}>"
-				, (int)aval.type()
-				, aval.area()
-				, aval.actordataid()
+				, "guid<{}-{}-{}>", (int)aval.type(), aval.area(), aval.actordataid()
 			);
 		}
 		else
 		{
 			return std::format_to(ctx.out()
-				, "guid<{}-{}-{}>"
-				, lanme
-				, aval.area()
-				, aval.actordataid()
+				, "guid<{}-{}-{}>", lanme, aval.area(), aval.actordataid()
 			);
 		}
 	}

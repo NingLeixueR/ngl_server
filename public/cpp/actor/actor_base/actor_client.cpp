@@ -88,35 +88,34 @@ namespace ngl
 
 		const tab_servers* tab	= ttab_servers::tab();
 		i64_actorid lactorid	= id_guid();
-		tab_servers* tabactor	= ttab_servers::tab(aactorserver);
+		const tab_servers* tabactor	= ttab_servers::tab(aactorserver);
 		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
 			{
 				i64_actorid lactorserve = actor_server::actorid();
 				set_node(tabactor->m_id, asession);
 				naddress::actor_add(tabactor->m_id, lactorserve);
 
-				{//注册结点
-					np_actornode_register lpram
+				//注册结点
+				np_actornode_register lpram
+				{
+					.m_node
 					{
-						.m_node
-						{
-							.m_name		= std::format("actorclient{}", tab->m_id),
-							.m_serverid = tab->m_id,
-						}
-					};
-					actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
-					naddress::ergodic(
-						[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
-						{
-							for (const auto& [dataid, serverid] : aactorserver)
+						.m_name = std::format("actorclient{}", tab->m_id),
+						.m_serverid = tab->m_id,
+					}
+				};
+				actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
+				naddress::ergodic(
+					[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
+					{
+						std::ranges::for_each(aactorserver, [&lpram](const auto& item)
 							{
-								if (lpram.m_node.m_serverid == serverid)
-									lpram.m_add.push_back(dataid);
-							}
-							return true;
-						});
-					nets::sendbysession(asession, lpram, lactorserve, lactorid);
-				}
+								if (lpram.m_node.m_serverid == item.second)
+									lpram.m_add.push_back(item.first);
+							});
+						return true;
+					});
+				nets::sendbysession(asession, lpram, lactorserve, lactorid);
 			}, true, true);
 	}
 
@@ -187,11 +186,11 @@ namespace ngl
 	{
 		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
-		for (const auto& [actorid, serverid] : naddress::get_actorserver_map())
-		{
-			if (alocalserverid == serverid)
-				lpro.m_add.push_back(actorid);
-		}
+		std::ranges::for_each(naddress::get_actorserver_map(), [&lpro, alocalserverid](const auto& item)
+			{
+				if (alocalserverid == item.second)
+					lpro.m_add.push_back(item.first);
+			});
 		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
@@ -204,7 +203,7 @@ namespace ngl
 			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
 			i32_serverid lserverid = lparm->m_id;
-			Assert(lserverid != nconfig::m_nodeid);
+			Assert(lserverid != nconfig::m_nodeid)
 
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
@@ -246,9 +245,6 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			//log_error()->print(
-			// "##actor_node_update## add:[{}] del[{}]", lparm->m_add, lparm->m_del
-			// );
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
 		}Catch

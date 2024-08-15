@@ -230,21 +230,21 @@ namespace ngl
 
 		virtual ~actor();
 
-		virtual actor_stat get_activity_stat() final;
+		actor_stat get_activity_stat() final;
 
-		virtual void set_activity_stat(actor_stat astat) final;
+		void set_activity_stat(actor_stat astat) final;
 	private:
 		// # 释放actor消息列表
-		virtual void release() final;
+		void release() final;
 
 		// # 消息列表是否为空
-		virtual bool list_empty() final;
+		bool list_empty() final;
 
 		// # 向消息列表中添加新的消息
-		virtual void push(handle_pram& apram) final;
+		void push(handle_pram& apram) final;
 
 		// # 由线程主动调用消费消息
-		virtual void actor_handle(i32_threadid athreadid) final;
+		void actor_handle(i32_threadid athreadid) final;
 
 	public:
 #pragma region ActorBroadcast

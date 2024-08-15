@@ -344,9 +344,7 @@ namespace ngl
 		std::vector<i16_area>			m_area;
 		std::shared_ptr<pack>			m_recvpack;
 
-		np_actor_forward()
-		{
-		}
+		np_actor_forward() = default;
 
 		explicit np_actor_forward(np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
@@ -373,8 +371,7 @@ namespace ngl
 		static const bool isusing = false;
 		std::shared_ptr<pack> m_recvpack;
 
-		np_actor_forward()
-		{}
+		np_actor_forward() = default;
 
 		explicit np_actor_forward(np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
@@ -419,8 +416,7 @@ namespace ngl
 			return m_data.m_data;
 		}
 
-		np_actor_forward()
-		{}
+		np_actor_forward() = default;
 
 		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
@@ -459,8 +455,7 @@ namespace ngl
 			m_data.make();
 		}
 
-		np_actor_forward()
-		{}
+		np_actor_forward() = default;
 
 		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)

@@ -15,7 +15,7 @@ namespace ngl
 		std::list<nthread*>	m_workthread;		// 工作线程
 		bool				m_suspend;			// 是否挂起
 		std::list<nthread*>	m_suspendthread;	// 挂起的工作线程
-		std::thread			m_thread;			// 管理线程
+		std::jthread		m_thread;			// 管理线程
 		i32_threadsize		m_threadnum;		// 工作线程数量
 
 		ngl_lockinit;
@@ -34,9 +34,9 @@ namespace ngl
 		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
+			m_suspend(false),
 			m_thread(&impl_actor_manage::run, this),
-			m_threadnum(0),
-			m_suspend(false)
+			m_threadnum(0)
 		{}
 
 		inline void init(i32_threadsize apthreadnum)
@@ -57,15 +57,15 @@ namespace ngl
 		inline int32_t actor_count()
 		{
 			ngl_lock;
-			return m_actorbyid.size();
+			return (int32_t)m_actorbyid.size();
 		}
 
 		inline bool add_actor(ptractor& apactor, const std::function<void()>& afun)
 		{
-			nguid& guid = apactor->guid();
+			const nguid& guid = apactor->guid();
 			{
 				ngl_lock;
-				if (m_actorbyid.find(guid) != m_actorbyid.end())
+				if (m_actorbyid.contains(guid))
 					return false;
 				m_actorbyid[guid] = apactor;
 				if(apactor->isbroadcast())
@@ -127,7 +127,7 @@ namespace ngl
 					auto litorfind = std::find_if(
 						m_actorlist.begin(), 
 						m_actorlist.end(), 
-						[&aguid](ptractor& ap)->bool
+						[&aguid](const ptractor& ap)->bool
 						{
 							return aguid == ap->id_guid();
 						}
@@ -146,7 +146,9 @@ namespace ngl
 				else
 				{
 					if (afun != nullptr)
-						m_delactorfun.insert(std::make_pair(lpactor->id_guid(), afun));
+					{
+						m_delactorfun.try_emplace(lpactor->id_guid(), afun);
+					}						
 				}
 				lpactor->set_activity_stat(actor_stat_close);
 			}
@@ -224,7 +226,7 @@ namespace ngl
 			}
 		}
 
-		inline void nosafe_push_task_id(ptractor& lpactor, handle_pram& apram)
+		inline void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 		{
 			if (lpactor->get_activity_stat() == actor_stat_close 
 				|| lpactor->get_activity_stat() == actor_stat_init)
@@ -274,7 +276,7 @@ namespace ngl
 		{
 			ngl_lock;
 			// 1.先发给本机上的atype
-			for (std::pair<const nguid, ptractor>& lpair : m_actorbytype[atype])
+			for (const std::pair<const nguid, ptractor>& lpair : m_actorbytype[atype])
 			{
 				if (lpair.second->get_activity_stat() != actor_stat_close)
 					nosafe_push_task_id(lpair.second, apram);
@@ -294,7 +296,7 @@ namespace ngl
 		inline void broadcast_task(handle_pram& apram)
 		{
 			ngl_lock;
-			for (std::pair<const nguid, ptractor>& lpair : m_actorbroadcast)
+			for (const std::pair<const nguid, ptractor>& lpair : m_actorbroadcast)
 			{
 				if (lpair.second->isbroadcast())
 					nosafe_push_task_id(lpair.second, apram);
@@ -314,7 +316,7 @@ namespace ngl
 					m_suspendthread.insert(m_suspendthread.end(), m_workthread.begin(), m_workthread.end());
 					m_workthread.clear();
 				}
-				lthreadnum = m_suspendthread.size();
+				lthreadnum = (int)m_suspendthread.size();
 			}
 		}
 
@@ -362,18 +364,16 @@ namespace ngl
 
 			while (true)
 			{
+				cv_lock(m_cv, m_mutex, lfun)
+				do
 				{
-					cv_lock(m_cv, m_mutex, lfun)
-						do
-						{
-							lpthread = *m_workthread.begin();
-							lpactor = *m_actorlist.begin();
-							m_actorlist.pop_front();
-							m_workthread.pop_front();
-							lpactor->set_activity_stat(actor_stat_run);
-							lpthread->push(lpactor);
-						} while (lfun());
-				}
+					lpthread = *m_workthread.begin();
+					lpactor = *m_actorlist.begin();
+					m_actorlist.pop_front();
+					m_workthread.pop_front();
+					lpactor->set_activity_stat(actor_stat_run);
+					lpthread->push(lpactor);
+				} while (lfun());
 			}
 #endif//OPEN_SEM				
 		}

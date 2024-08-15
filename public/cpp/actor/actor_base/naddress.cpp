@@ -21,8 +21,7 @@ namespace ngl
 		{
 			Try
 			{
-				int16_t lserverid = anode.m_serverid;
-				auto itor = m_session.find(lserverid);
+				auto itor = m_session.find(anode.m_serverid);
 				if (itor != m_session.end())
 				{
 					itor->second.m_node = anode;
@@ -30,11 +29,11 @@ namespace ngl
 				}
 				else
 				{
-					m_session.insert(std::make_pair(lserverid, anode));
+					m_session.try_emplace(anode.m_serverid, anode);
 					return true;
 				}
 			}
-			Catch;
+			Catch
 			return false;
 		}
 
@@ -42,7 +41,7 @@ namespace ngl
 		{
 			auto lstream = log_error();
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
-			for (const std::pair<nguid, i32_serverid>& ipair : m_actorserver)
+			for (const std::pair<const nguid, i32_serverid>& ipair : m_actorserver)
 			{
 				(*lstream) << std::format(
 					"[{}:{}][{}-{}-{}]", 
@@ -157,7 +156,7 @@ namespace ngl
 
 		static i32_serverid get_gatewayid(const nguid& aguid)
 		{
-			i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
+			const i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 			if (lpserverid == nullptr)
 				return -1;
 			return *lpserverid;
@@ -181,7 +180,7 @@ namespace ngl
 			for (const nguid& iactorid : aactorset)
 			{
 				nguid lguid(iactorid);
-				i32_serverid* lserverid = tools::findmap(m_rolegateway, lguid);
+				const i32_serverid* lserverid = tools::findmap(m_rolegateway, lguid);
 				if (lserverid == nullptr)
 					continue;
 				aserverset.insert(*lserverid);
