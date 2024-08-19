@@ -60,7 +60,7 @@ namespace ngl
 		{
 			adata.clear();
 			bool lbool = false;
-			int lsize = m_data.size();
+			int lsize = (int)m_data.size();
 			for (; m_pos < lsize; ++m_pos)
 			{
 				if (!lbool)
@@ -84,7 +84,7 @@ namespace ngl
 		{
 			std::string& lret = apair.m_data;
 			int& lpos = apair.m_pos;
-			int lsize = lret.size();
+			int lsize = (int)lret.size();
 			for (; lpos < lsize; ++lpos)
 			{
 				if (!apair.m_doublequotationmarks)

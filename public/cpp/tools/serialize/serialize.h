@@ -505,7 +505,7 @@ namespace ngl
 		{
 			if (!push_stlsize(astr))
 				return false;
-			return basetype((void*)astr.c_str(), sizeof(char) * astr.size());
+			return basetype((void*)astr.c_str(), (int)(sizeof(char) * astr.size()));
 		}
 
 		// # 支持没有参数
@@ -933,7 +933,7 @@ namespace ngl
 		}
 #pragma endregion 
 
-		inline bool pop(std::pair<uint32_t, const char*>& adata)
+		inline bool pop(std::pair<int32_t, const char*>& adata)
 		{
 			if (!pop(adata.first))
 				return false;

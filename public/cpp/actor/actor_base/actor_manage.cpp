@@ -34,6 +34,8 @@ namespace ngl
 		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
+			m_suspend(false),
+			m_threadnum(-1),
 			m_thread(&impl_actor_manage::run, this)
 		{}
 

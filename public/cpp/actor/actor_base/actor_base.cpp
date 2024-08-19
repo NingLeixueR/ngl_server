@@ -122,7 +122,11 @@ namespace ngl
 		{
 			ENUM_ACTOR				m_actortype;
 			std::set<i64_actorid>	m_actorlist;
+			ginfo() :
+				m_actortype(ACTOR_NONE)
+			{}
 		};
+
 		std::map<int, ginfo>		m_group;
 		int							m_currentoffset;
 		actor_base*					m_actor;
@@ -208,9 +212,11 @@ namespace ngl
 		bool										m_isbroadcast;			
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
+			m_kcpsession(-1),
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
 			m_isload(aparm.m_manage_dbclient),
-			m_actor(aactor)
+			m_actor(aactor),
+			m_isbroadcast(false)
 		{
 			if (aparm.m_manage_dbclient)
 			{
