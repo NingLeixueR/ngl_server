@@ -14,6 +14,7 @@ namespace ngl
 	public:
 		// # 初始化db连接池
 		static void init();
+
 		// # 根据线程id获取池中对应的连接
 		static db* get(int32_t aindex);
 	};

@@ -17,6 +17,7 @@ namespace ngl
 
 	private:
 		static std::map<i64_actorid, T>		m_data;
+
 		// # ¼ÓÔØ³öid ·ÀÖ¹ÄÚ´æ´©Í¸
 		static std::set<int64_t>			m_idindex;
 	public:
@@ -115,14 +116,18 @@ namespace ngl
 		static void foreach(const std::function<void(T&)>& afun)
 		{
 			for (std::pair<const i64_actorid, T>& item : m_data)
+			{
 				afun(item.second);
+			}
 		}
 
 		static void foreach_index(const std::function<void(int, T&)>& afun)
 		{
 			int lindex = 0;
 			for (std::pair<const i64_actorid, T>& lpair : m_data)
+			{
 				afun(++lindex, lpair.second);
+			}				
 		}
 	};
 

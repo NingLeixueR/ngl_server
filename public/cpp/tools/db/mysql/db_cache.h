@@ -31,11 +31,11 @@ namespace ngl
 			m_fun = afun;
 			twheel::wheel().addtimer(wheel_parm
 				{
-					.m_ms = aintervalms,
-					.m_intervalms = [aintervalms](int64_t) {return aintervalms; } ,
-					.m_count = 0x7fffffff,
-					.m_pram = nullptr,
-					.m_fun =  std::bind_front(&db_cache<T>::execute, this),
+					.m_ms			= aintervalms,
+					.m_intervalms	= [aintervalms](int64_t) {return aintervalms; } ,
+					.m_count		= 0x7fffffff,
+					.m_pram			= nullptr,
+					.m_fun			= std::bind_front(&db_cache<T>::execute, this),
 				});
 		}
 

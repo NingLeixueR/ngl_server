@@ -82,7 +82,7 @@ namespace ngl
 		// # 设置回调
 		static void set_callback(std::shared_ptr<_http>& ahttp, std::function<void(int, _http&)> aback);
 
-		// # 辅助设置http头 
+		// # 辅助设置http访问参数
 		static void param(std::string& astrparam, const char* akey, const char* aval);
 		static void param(std::string& astrparam, const char* akey, int aval);
 		

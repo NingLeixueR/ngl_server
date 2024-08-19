@@ -23,15 +23,23 @@ namespace ngl
 		int32_t			m_current_pos;		 // 当前指针
 	public:
 		wheel();
-		inline void set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
+		inline void set(
+			int64_t aslotms, int32_t aslotbit, wheel* anextround, 
+			wheel* alastround, time_wheel* atime_wheel
+		);
+
 		inline int slot_count();
+
 		inline int slot_less();
+
 		inline int64_t all_slot_ms();
 
 		inline bool push_slots(wheel_node* anode);
+
 		inline bool push(wheel_node* anode);
 
 		inline wheel_node* shift_current_pos(int apos, wheel* awheel);
+
 		// 返回需要插入的节点
 		inline wheel_node* shift_current_pos(wheel* awheel);
 	};
@@ -76,6 +84,10 @@ namespace ngl
 			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
 				m_wheel[i] = new wheel();
+			}
+
+			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
+			{
 				m_wheel[i]->set(
 					lms, m_config.m_time_wheel_bit, 
 					(i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1] : nullptr,

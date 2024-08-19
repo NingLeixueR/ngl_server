@@ -220,18 +220,22 @@ namespace ngl
 	{
 		if (astrparam.empty() == false)
 		{
-			astrparam = astrparam + '&';
+			astrparam += '&';
 		}
-		astrparam = astrparam + akey + "=" + aval;
+		astrparam += akey;
+		astrparam += '=';
+		astrparam += aval;
 	}
 
 	void manage_curl::param(std::string& astrparam, const char* akey, int aval)
 	{
 		if (astrparam.empty() == false)
 		{
-			astrparam = astrparam + '&';
+			astrparam += '&';
 		}
-		astrparam = astrparam + akey + "=" + tools::lexical_cast<std::string>(aval);
+		astrparam += akey;
+		astrparam += '=';
+		astrparam += tools::lexical_cast<std::string>(aval);
 	}
 
 	void manage_curl::send(std::shared_ptr<_http>& adata)
@@ -252,31 +256,6 @@ namespace ngl
 		ngl::manage_curl::set_url(lhttp, "xxx");
 
 		std::string lparm;
-		//ngl::manage_curl::param(lparm, "game_id", 45);
-		//ngl::manage_curl::param(lparm, "sign", "13d89fa2af33de479deaf48da67ba01f");
-		//ngl::manage_curl::param(lparm, "timestamp", "1693920175");
-		//ngl::manage_curl::param(lparm, "token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmaWZ1bi5nYW1lcyIsImF1ZCI6ImZpZnVuLmdhbWVzIiwiaWF0IjoxNjkzOTIwMTQ0LCJleHAiOjE2OTY1MTIxNDQsIm5iZiI6MTY5MzkyMDE0NCwicGxhdGZvcm1fdWlkIjoyOTY5NDQ4LCJwbGF0Zm9ybV9hY2NvdW50Ijoiemh1Z29uZzMiLCJnYW1lX2lkIjo0NSwiZ2FtZV91aWQiOjQzNjg1MDYsInV1aWQiOiJlZjA5Yzg1MmQ4ZjRkYWE5Y2JiNGY2MjM1MjBlNjQ1OSJ9.nXnFg3gu1DdPVWtvcq4u6SmXNse0fUQ3OyMr3QvN0JE");
-		//ngl::manage_curl::param(lparm, "uid", "2969448");
-
-		/*json_write ltemp;
-		ltemp.add("appid", 44);
-		ltemp.add("uid", 1406739);
-		ltemp.add("sessionid", "i461qbg8pia3pe04fdenue1hu4");
-		ltemp.free_nonformatstr();
-		std::string ljsonstr;
-		ltemp.get(ljsonstr);*/
-
-		//std::string ltemp;
-		//md5(appid.uid.sessionid.login_key);
-		//ltemp = tools::lexical_cast<std::string>(44) + "1406739" + "i461qbg8pia3pe04fdenue1hu4" + "2475836ac498942dbd06bc93f143adea";
-		//ngl::md5 varMd5(ltemp);
-		//ltempjson << std::make_pair("token", varMd5.values());
-
-		//ltempjson.set_nonformatstr(true);
-		//std::string lparmkkk;
-		//ltempjson >> lparmkkk;
-		//ngl::manage_curl::set_param(*lhttp, R"({ "appid":44, "uid" : 1406739, "sessionid" : "i461qbg8pia3pe04fdenue1hu4", "token" : "677d6d7bb4edd5cc4aa80079d5c63982" })");
-		//ngl::manage_curl::set_param(*lhttp, lparmkkk);
 		std::stringstream lstream;
 		lstream
 			<< "userID=" << 7709523

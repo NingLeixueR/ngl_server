@@ -59,8 +59,7 @@ namespace ngl
 				lbuff
 				, 1024
 				, "INSERT INTO %s (id,data)VALUES(%lld,?)  ON DUPLICATE KEY UPDATE data=values(data);"
-				, tools::protobuf_tabname<T>::name().c_str()
-				, adata.m_id()
+				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id()
 			);
 
 			if (llen <= 0)
@@ -68,8 +67,7 @@ namespace ngl
 			adb->stmt_query(lbuff, llen, lbind);
 			log_error()->print(
 				"INSERT INTO {} (id,data)VALUES({},[bindata])"
-				, tools::protobuf_tabname<T>::name().c_str()
-				, adata.m_id()
+				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id()
 			);
 		}
 
@@ -149,9 +147,7 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff,
-				1024,
-				"SELECT id,data FROM %s;",
+				lbuff, 1024, "SELECT id,data FROM %s;",
 				tools::protobuf_tabname<T>::name().c_str()
 			);
 			if (llen <= 0)
@@ -181,9 +177,7 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff,
-				1024,
-				"SELECT id FROM %s;",
+				lbuff, 1024, "SELECT id FROM %s;",
 				tools::protobuf_tabname<T>::name().c_str()
 			);
 			if (llen <= 0)
