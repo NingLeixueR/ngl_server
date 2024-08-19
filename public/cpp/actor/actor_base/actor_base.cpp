@@ -209,11 +209,8 @@ namespace ngl
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
-			m_dbclient(nullptr),
 			m_isload(aparm.m_manage_dbclient),
-			m_actor(aactor),
-			m_kcpsession(-1),
-			m_isbroadcast(false)
+			m_actor(aactor)
 		{
 			if (aparm.m_manage_dbclient)
 			{
@@ -302,20 +299,20 @@ namespace ngl
 			}
 		}
 
-		inline void init_db_component(bool acreate)
+		inline void init_db_component(bool acreate)const
 		{
 			if (acreate)
 			{
-				for (const std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
+				for (const auto [key, value] : m_dbcomponent)
 				{
-					item.second->create();
+					value->create();
 				}
 			}
 			else
 			{
-				for (const std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
+				for (const auto [key, value] : m_dbcomponent)
 				{
-					item.second->init();
+					value->init();
 				}
 			}
 		}

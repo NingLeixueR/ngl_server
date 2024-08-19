@@ -125,7 +125,7 @@ namespace ngl
 		}
 		std::vector<i32_sessionid> lvec;
 		naddress::foreach(
-			[&lvec, lpack](const actor_node_session& anode)->bool
+			[&lvec, lpack](const actor_node_session& anode)
 			{
 				if (lpack->m_id != anode.m_session)
 					lvec.push_back(anode.m_session);

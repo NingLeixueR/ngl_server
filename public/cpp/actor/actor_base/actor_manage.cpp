@@ -34,9 +34,7 @@ namespace ngl
 		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
-			m_suspend(false),
-			m_thread(&impl_actor_manage::run, this),
-			m_threadnum(0)
+			m_thread(&impl_actor_manage::run, this)
 		{}
 
 		inline void init(i32_threadsize apthreadnum)
@@ -48,7 +46,7 @@ namespace ngl
 				m_workthread.push_back(new nthread(i));
 		}
 
-		inline void get_type(std::vector<i16_actortype>& aactortype)
+		inline void get_type(std::vector<i16_actortype>& aactortype) const
 		{
 			for (i16_actortype item : m_actortype)
 				aactortype.push_back(item);
@@ -60,7 +58,7 @@ namespace ngl
 			return (int32_t)m_actorbyid.size();
 		}
 
-		inline bool add_actor(ptractor& apactor, const std::function<void()>& afun)
+		inline bool add_actor(const ptractor& apactor, const std::function<void()>& afun)
 		{
 			const nguid& guid = apactor->guid();
 			{
@@ -276,10 +274,10 @@ namespace ngl
 		{
 			ngl_lock;
 			// 1.先发给本机上的atype
-			for (const std::pair<const nguid, ptractor>& lpair : m_actorbytype[atype])
+			for (const auto& [key, value] : m_actorbytype[atype])
 			{
-				if (lpair.second->get_activity_stat() != actor_stat_close)
-					nosafe_push_task_id(lpair.second, apram);
+				if (value->get_activity_stat() != actor_stat_close)
+					nosafe_push_task_id(value, apram);
 			}
 			ngl_post;
 			// 2.然后发给actor_client，发给其他服务器
@@ -296,10 +294,10 @@ namespace ngl
 		inline void broadcast_task(handle_pram& apram)
 		{
 			ngl_lock;
-			for (const std::pair<const nguid, ptractor>& lpair : m_actorbroadcast)
+			for (const auto& [key, value] : m_actorbroadcast)
 			{
-				if (lpair.second->isbroadcast())
-					nosafe_push_task_id(lpair.second, apram);
+				if (value->isbroadcast())
+					nosafe_push_task_id(value, apram);
 			}
 			ngl_post;
 		}
