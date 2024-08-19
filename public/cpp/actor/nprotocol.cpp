@@ -10,4 +10,4 @@ namespace ngl
 		// # ACTOR_TYPE # ELOG_TYPE
 		actor::static_send_actor(actor_log::actorid(m_actortype, m_logtype), nguid::make(), pro);
 	}
-}
+}//namespace ngl

@@ -1,0 +1,30 @@
+#include "nforward.h"
+#include "net.pb.h"
+
+namespace ngl
+{
+	// # 注册game到client的消息
+	// # 会注册gateway的转发与client的处理
+	void nforward::g2c()
+	{
+		register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, pbnet::PROBUFF_NET_GET_TIME_RESPONSE
+			, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE
+			, pbnet::PROBUFF_NET_CHAT_RESPONSE
+			, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE
+			, pbnet::PROBUFF_NET_NOTICE_RESPONSE
+			, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE
+			, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE
+			, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE
+			, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE
+			, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE
+			, pbnet::PROBUFF_NET_ERROR
+			, pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE
+			, pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE
+			, pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE
+			, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE
+			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE
+			, pbnet::PROBUFF_NET_RANKLIST_RESPONSE
+		>();
+	}
+}//namespace ngl
