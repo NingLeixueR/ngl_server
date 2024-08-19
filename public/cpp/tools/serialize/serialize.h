@@ -44,10 +44,6 @@ namespace ngl
 		{
 		}
 
-		~protobuf_data()
-		{
-		}
-
 		void make()
 		{
 			m_data = std::make_shared<T>();
@@ -65,8 +61,10 @@ namespace ngl
 		int32_t m_len;
 		int32_t m_pos;
 	public:
-		inline serialize(char* abuff, int32_t alen)
-			:m_buff(abuff), m_len(alen), m_pos(0)
+		inline serialize(char* abuff, int32_t alen) :
+			m_buff(abuff),
+			m_len(alen),
+			m_pos(0)
 		{}
 
 		inline char* buff()

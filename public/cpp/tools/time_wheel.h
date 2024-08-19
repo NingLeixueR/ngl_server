@@ -20,13 +20,12 @@ namespace ngl
 
 	struct wheel_parm
 	{
-		int64_t					m_timerstart				= 0;					// 定时器开启的时间
-		int						m_ms						= 0;					// 首次触发的毫秒
-		//int					m_intervalms				= 0;					// 间隔触发的毫秒
-		std::function<int(int64_t)>	m_intervalms			= nullptr;				// 间隔触发的毫秒(根据传递进去的触发时间返回下次触发的间隔)
-		int						m_count						= 0;					// 触发次数
-		void*					m_pram						= nullptr;				// 透传参数
-		std::function<void(const wheel_node*)> m_fun		= nullptr;				// 定时回调函数
+		int64_t									m_timerstart		= 0;		// 定时器开启的时间
+		int32_t									m_ms				= 0;		// 首次触发的毫秒
+		std::function<int(int64_t)>				m_intervalms		= nullptr;	// 间隔触发的毫秒(根据传递进去的触发时间返回下次触发的间隔)
+		int										m_count				= 0;		// 触发次数
+		void*									m_pram				= nullptr;	// 透传参数
+		std::function<void(const wheel_node*)>	m_fun				= nullptr;	// 定时回调函数
 	};
 
 	struct wheel_node

@@ -66,6 +66,7 @@ bool init_server(int aid)
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 
 	ngl::np_actor_logitem::m_init = true;
+
 	ngl::log_error()->print("ngl::actor_manage::getInstance().init({})", tab->m_actorthreadnum);
 
 	return true;

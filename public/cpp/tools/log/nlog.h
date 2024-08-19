@@ -89,7 +89,7 @@ namespace ngl
 template <typename T>
 struct std::formatter<std::vector<T>>
 {
-	constexpr auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(const std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
@@ -110,7 +110,7 @@ struct std::formatter<std::vector<T>>
 template <typename T>
 struct std::formatter<std::list<T>>
 {
-	constexpr auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(const std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
@@ -131,7 +131,7 @@ struct std::formatter<std::list<T>>
 template <typename T>
 struct std::formatter<std::set<T>>
 {
-	constexpr auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(const std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
@@ -152,7 +152,7 @@ struct std::formatter<std::set<T>>
 template <typename TKEY, typename TVAL>
 struct std::formatter<std::map<TKEY, TVAL>>
 {
-	constexpr auto parse(std::format_parse_context& ctx)
+	constexpr auto parse(const std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}

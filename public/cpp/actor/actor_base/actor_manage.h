@@ -41,7 +41,7 @@ namespace ngl
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 
 		//# 添加actor
-		bool add_actor(ptractor& apactor, const std::function<void()>& afun);
+		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
 		//# 移除actor
 		void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun = nullptr);
@@ -50,7 +50,7 @@ namespace ngl
 		bool is_have_actor(const nguid& aguid);
 
 		//# 工作线程将actor添加到m_actorlist
-		void push(ptractor& apactor, nthread* atorthread = nullptr);
+		void push(const ptractor& apactor, nthread* atorthread = nullptr);
 
 		//# 向actor中添加任务
 		void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);

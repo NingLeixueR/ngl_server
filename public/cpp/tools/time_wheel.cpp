@@ -17,13 +17,13 @@ namespace ngl
 		time_wheel*					m_time_wheel;
 
 		int64_t			m_slot_ms;			 // 每个槽位的毫秒数
-		int				m_slot_count;		 // 槽位的数量
-		int				m_slot_less;		 // 取余用
+		int32_t			m_slot_count;		 // 槽位的数量
+		int32_t			m_slot_less;		 // 取余用
 		int64_t			m_slot_sum_ms;		 // m_slot_ms * m_slot_count
-		int				m_current_pos;		 // 当前指针
+		int32_t			m_current_pos;		 // 当前指针
 	public:
 		wheel();
-		inline void set(int64_t aslotms, int aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
+		inline void set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
 		inline int slot_count();
 		inline int slot_less();
 		inline int64_t all_slot_ms();
@@ -72,11 +72,15 @@ namespace ngl
 			m_current_ms = m_server_start_ms;
 			int64_t lms = m_config.m_time_wheel_precision;
 			m_wheel.resize(m_config.m_time_wheel_count);
-			for (int i = 0; i < m_config.m_time_wheel_count; ++i)
-				m_wheel[i] = new wheel();
-			for (int i = 0; i < m_config.m_time_wheel_count; ++i)
+				
+			for (int32_t i = 0; i < m_config.m_time_wheel_count; ++i)
 			{
-				m_wheel[i]->set(lms, m_config.m_time_wheel_bit, (i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1] : nullptr, (i == 0) ? nullptr : m_wheel[i - 1], atwheel);
+				m_wheel[i] = new wheel();
+				m_wheel[i]->set(
+					lms, m_config.m_time_wheel_bit, 
+					(i + 1 < m_config.m_time_wheel_count) ? m_wheel[i + 1] : nullptr,
+					(i == 0) ? nullptr : m_wheel[i - 1], atwheel
+				);
 				lms = m_wheel[i]->all_slot_ms();
 			}
 
@@ -135,8 +139,12 @@ namespace ngl
 				lbool = false;
 				lpnextnode = lpnode->m_next;
 				lpnode->m_next = nullptr;
+
 				if (lpnode->m_parm.m_ms > lallslot)
-					continue;//定时时间超过定时器所能达到的最大时间
+				{//定时时间超过定时器所能达到的最大时间
+					continue;
+				}
+				
 				if (lpnode->m_parm.m_ms < lduration)
 				{// 如果定时时间在以前 那么直接执行定时任务
 					int lintervalms = lpnode->m_parm.m_intervalms(m_current_ms);
@@ -235,8 +243,8 @@ namespace ngl
 
 		void run()
 		{
-			int ltemp = 0;
-			int ltempsleep = 0;
+			int32_t ltemp = 0;
+			int32_t ltempsleep = 0;
 			while (m_stop == false)
 			{
 				ltemp = getms() - m_current_ms;
@@ -356,7 +364,7 @@ namespace ngl
 		m_current_pos(0)
 	{}
 
-	void wheel::set(int64_t aslotms, int aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel)
+	void wheel::set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel)
 	{
 		m_nextround = anextround;
 		m_slot_ms = aslotms;

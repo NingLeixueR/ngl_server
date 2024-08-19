@@ -178,7 +178,7 @@ namespace ngl
 			return m_actorbyid.find(aguid) != m_actorbyid.end();
 		}
 
-		inline void push(ptractor& apactor, nthread* atorthread)
+		inline void push(const ptractor& apactor, nthread* atorthread)
 		{
 			std::function<void()> lfun = nullptr;
 			do
@@ -396,7 +396,7 @@ namespace ngl
 		m_impl_actor_manage()->get_type(aactortype);
 	}
 
-	bool actor_manage::add_actor(ptractor& apactor, const std::function<void()>& afun)
+	bool actor_manage::add_actor(const ptractor& apactor, const std::function<void()>& afun)
 	{
 		return m_impl_actor_manage()->add_actor(apactor, afun);
 	}
@@ -417,7 +417,7 @@ namespace ngl
 		return m_impl_actor_manage()->is_have_actor(aguid);
 	}
 
-	void actor_manage::push(ptractor& apactor, nthread* atorthread/* = nullptr*/)
+	void actor_manage::push(const ptractor& apactor, nthread* atorthread/* = nullptr*/)
 	{
 		m_impl_actor_manage()->push(apactor, atorthread);
 	}

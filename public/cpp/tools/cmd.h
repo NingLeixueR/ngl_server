@@ -46,4 +46,4 @@ namespace ngl
 
 	template <typename TAG, typename TKEY, typename ...ARG>
 	std::map<TKEY, std::function<void(ARG...)>> cmd<TAG, TKEY, ARG...>::m_fun;
-}
+}//namespace ngl

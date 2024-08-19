@@ -11,8 +11,7 @@ namespace ngl
 
 		std::unique_ptr<T> m_impl;
 	public:
-		impl()
-		{}
+		impl(){}
 
 		template <typename ...ARG>
 		inline void make_unique(const ARG&... args)
