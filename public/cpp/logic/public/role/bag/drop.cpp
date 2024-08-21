@@ -110,9 +110,37 @@ namespace ngl
 		return false;		
 	}
 
+	bool drop::droplist(int aid, int acount, std::map<int, int>& amap1, google::protobuf::Map<int32_t, int32_t>& amap2)
+	{
+		if (droplist(aid, acount, amap1))
+		{
+			for (const std::pair<const int, int>& item : amap1)
+			{
+				amap2.insert({ item.first, item.second });
+			}
+			return true;
+		}
+		return false;
+	}
+
 	bool drop::use(actor_role* arole, int aid, int acount)
 	{
 		std::map<int, int> lmap;
 		return droplist(aid, acount, lmap) && arole->m_bag.add_item(lmap)? true : false;
 	}
+
+	bool drop::use(i64_actorid aactorid, int aid, int acount, i64_actorid aactorid2 /*= nguid::make()*/)
+	{
+		auto psenditem = std::make_shared<np_actor_senditem>();
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>();
+		
+		if (drop::droplist(aid, acount, psenditem->m_item, *pro->mutable_m_items()))
+		{
+			actor::static_send_actor(aactorid, aactorid2, psenditem);
+			actor::send_client(aactorid, pro);
+			return true;
+		}
+		return false;
+	}
+
 }// namespace ngl

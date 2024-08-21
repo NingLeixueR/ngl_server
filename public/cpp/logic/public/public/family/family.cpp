@@ -1,3 +1,5 @@
+#include "ttab_specialid.h"
+#include "ttab_familylv.h"
 #include "actor_family.h"
 #include "csvtable.h"
 #include "family.h"
@@ -33,8 +35,12 @@ namespace ngl
 
 	int32_t family::join_family(i64_actorid aroleid, i64_actorid afamilyid)
 	{
-		if (m_rolefamily.find(aroleid) != m_rolefamily.end())
+		int64_t* lpfamilyid = tools::findmap(m_rolefamily, aroleid);
+		if (lpfamilyid != nullptr)
+		{
 			return 1;
+		}
+
 		const pbdb::db_family* lpconstfamily = get_constfamily(afamilyid);
 		if (lpconstfamily == nullptr)
 		{
@@ -72,9 +78,13 @@ namespace ngl
 	{
 		auto itorrolefamily = m_rolefamily.find(aroleid);
 		if (itorrolefamily == m_rolefamily.end())
+		{
 			return 1;
+		}
 		if (itorrolefamily->second != afamilyid)
+		{
 			return 2;
+		}
 		const pbdb::db_family* lpconstfamily = get_constfamily(afamilyid);
 		if (lpconstfamily == nullptr)
 		{
@@ -152,6 +162,55 @@ namespace ngl
 		if (aroleid != -1)
 		{
 			sync_family(aroleid, afamilyid);
+		}
+		return 0;
+	}
+
+	int32_t family::sign_family(i64_actorid aroleid, i64_actorid afamilyid)
+	{
+		int64_t* lpfamilyid = tools::findmap(m_rolefamily, aroleid);
+		if (lpfamilyid == nullptr)
+		{
+			return 1;
+		}
+
+		if (*lpfamilyid != afamilyid)
+		{
+			return 2;
+		}
+
+		pbdb::db_family* lpfamily = get_family(afamilyid);
+		if (lpfamily == nullptr)
+		{
+			return 3;
+		}
+
+		pbdb::familyer& lfamilyer = (*lpfamily->mutable_m_member())[aroleid];
+		auto lnow = (int32_t)localtime::gettime();
+		if (localtime::getspandays(lnow, lfamilyer.m_lastsignutc()) == 0)
+		{
+			return 4;
+		}
+
+		lfamilyer.set_m_lastsignutc(localtime::gettime());
+		// 给军团增加经验
+		int32_t* lpexp = ttab_familylv::failylvexp(lpfamily->m_lv());
+		if (lpexp == nullptr)
+		{
+			return 5;
+		}
+		int32_t lexp = lpfamily->m_exp() + ttab_specialid::m_familsignexp;
+		if (*lpexp <= lexp)
+		{
+			lexp -= *lpexp;
+			lpfamily->set_m_lv(lpfamily->m_lv()+1);
+		}
+		lpfamily->set_m_exp(lexp);
+
+		// 发送奖励
+		if (drop::use(aroleid, ttab_specialid::m_familsigndrop, 1, afamilyid) == false)
+		{
+			return 6;
 		}
 		return 0;
 	}

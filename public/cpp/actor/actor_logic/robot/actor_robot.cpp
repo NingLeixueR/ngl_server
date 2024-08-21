@@ -274,6 +274,16 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
+	{
+		return true;
+	}
+
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
 	{
 		auto recv = adata.get_data();

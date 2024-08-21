@@ -168,6 +168,18 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
+
+			handle_cmd::push("/sign_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMILSIGN>();
+					int64_t lfamilylid = 0;
+					if (tools::splite(aparm, "*", lfamilylid) == false)
+						return;
+					pro->set_m_familid(lfamilylid);
+					message<pbnet::PROBUFF_NET_FAMILSIGN> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
 		}
 
 		std::string& lkey = lvec[0];

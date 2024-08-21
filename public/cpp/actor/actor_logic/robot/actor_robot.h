@@ -53,6 +53,8 @@ namespace ngl
 		bool handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata);
+		bool handle(message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata);
 		bool handle(message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata);
 	};
 

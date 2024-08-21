@@ -94,6 +94,9 @@ namespace ngl
 		// # 修改军团名称
 		int32_t change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname);
 
+		// # 军团签到
+		int32_t sign_family(i64_actorid aroleid, i64_actorid afamilyid);
+
 		std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE> get_familylist(i64_actorid afamilyid);
 
 		void sync_family(i64_actorid aroleid, i64_actorid afamilyid);

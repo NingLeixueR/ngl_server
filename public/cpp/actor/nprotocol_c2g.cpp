@@ -7,13 +7,14 @@ namespace ngl
 	// # 会注册gateway的转发与game的处理
 	void nforward::c2g()
 	{
+		// actor_role处理的消息
 		register_c2g<EPROTOCOL_TYPE_PROTOCOLBUFF
 			, pbnet::PROBUFF_NET_GET_TIME
 			, pbnet::PROBUFF_NET_CMD
 			, pbnet::PROBUFF_NET_SWITCH_LINE
 		>();
 
-		//// ACTOR_MAIL 模块二次转发
+		// ACTOR_MAIL 模块二次转发
 		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
 			, ACTOR_MAIL
 			, pbnet::PROBUFF_NET_MAIL_LIST
@@ -42,6 +43,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_FAMIL_LIST
 			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME
 			, pbnet::PROBUFF_NET_CREATE_FAMIL
+			, pbnet::PROBUFF_NET_FAMILSIGN
 		>();
 
 		// ACTOR_RANKLIST 模块二次转发

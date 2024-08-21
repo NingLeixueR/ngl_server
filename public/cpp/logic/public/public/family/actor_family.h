@@ -52,56 +52,22 @@ namespace ngl
 		}
 
 		// # 创建军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata)
-		{
-			i64_actorid lroleid = adata.get_data()->identifier();
-			int32_t lstat = m_family.create_family(lroleid, adata.get_data()->data()->m_name());
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>();
-			pro->set_m_stat(lstat);
-			send_client(lroleid, pro);
-			return true;
-		}
+		bool handle(message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata);
 
 		// # 加入军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
-		{
-			i64_actorid lroleid = adata.get_data()->identifier();
-			int32_t lstat = m_family.join_family(lroleid, adata.get_data()->data()->m_familid());
-			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>();
-			pro->set_m_stat(lstat);
-			send_client(lroleid, pro);
-			return true;
-		}
+		bool handle(message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata);
 
 		// # 离开军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)
-		{
-			i64_actorid lroleid = adata.get_data()->identifier();
-			int32_t lstat = m_family.leave_family(lroleid, adata.get_data()->data()->m_familid());
-			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>();
-			pro->set_m_stat(lstat);
-			send_client(lroleid, pro);
-			return true;
-		}
+		bool handle(message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata);
 
 		// # 获取军团列表
-		bool handle(message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
-		{
-			m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
-			return true;
-		}
+		bool handle(message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata);
 
 		// # 修改军团名称
-		bool handle(message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
-		{
-			i64_actorid lroleid = adata.get_data()->identifier();
-			i64_actorid familid = adata.get_data()->data()->m_familid();
-			int32_t lstat = m_family.change_familyname(lroleid, familid, adata.get_data()->data()->m_name());
-			auto pro = std::shared_ptr<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>();
-			pro->set_m_stat(lstat);
-			send_client(lroleid, pro);
-			return true;
-		}
+		bool handle(message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata);
+
+		// # 军团签到
+		bool handle(message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata);
 
 		using handle_cmd = cmd<actor_mail, std::string, int, ngl::json_read&>;
 		// # GM操作
