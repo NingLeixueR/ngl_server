@@ -2,9 +2,11 @@
 
 namespace ngl
 {
-	i32_rolelv	ttab_specialid::m_rolemaxlv;
-	i32_rolevip	ttab_specialid::m_rolemaxvip;
-	int32_t		ttab_specialid::m_createfamilconsume;
-	int32_t		ttab_specialid::m_familsignexp;
-	int32_t		ttab_specialid::m_familsigndrop;
+	i32_rolelv	ttab_specialid::m_rolemaxlv = 0;
+	i32_rolevip	ttab_specialid::m_rolemaxvip = 0;
+	int32_t		ttab_specialid::m_createfamilconsume = 0;
+	int32_t		ttab_specialid::m_familsignexp = 0;
+	int32_t		ttab_specialid::m_familsigndrop = 0;
+	int32_t		ttab_specialid::m_familapplylistcount = 0;
+	int32_t		ttab_specialid::m_familjoininterval = 0;
 }

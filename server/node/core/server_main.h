@@ -195,12 +195,15 @@ void init_DB_FAMILY()
 
 		ltemp.set_m_name(std::format("FLIBO{}", i));
 		ltemp.set_m_leader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		pbdb::familyer& lfamilyer = (*ltemp.mutable_m_member())[ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i)];
-		lfamilyer.set_m_joinutc(ngl::localtime::gettime());
-		lfamilyer.set_m_roleid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		lfamilyer.set_m_position(pbdb::familyer_eposition_leader);
-		lfamilyer.set_m_lastsignutc(ngl::localtime::gettime());
+		*ltemp.mutable_m_member()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
+
+		pbdb::db_familyer ltempfamilyer;
+		ltempfamilyer.set_m_joinutc(ngl::localtime::gettime());
+		ltempfamilyer.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltempfamilyer.set_m_position(pbdb::db_familyer_eposition_leader);
+		ltempfamilyer.set_m_lastsignutc(ngl::localtime::gettime());
+		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
 	}
 }
 

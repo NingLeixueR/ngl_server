@@ -104,28 +104,28 @@ namespace Pbdb {
             "YToCOAFCBwoFX21faWQijwEKC2RiX2NhbGVuZGFyEhEKBG1faWQYASABKANI",
             "AIgBARITCgZtX3RpbWUYAiABKANIAYgBARIUCgdtX3N0YXJ0GAMgASgISAKI",
             "AQESFQoIbV9maW5pc2gYBCABKAhIA4gBAUIHCgVfbV9pZEIJCgdfbV90aW1l",
-            "QgoKCF9tX3N0YXJ0QgsKCV9tX2ZpbmlzaCL7AQoIZmFtaWx5ZXISFQoIbV9y",
-            "b2xlaWQYASABKANIAIgBARIWCgltX2pvaW51dGMYAiABKAVIAYgBARIaCg1t",
-            "X2xhc3RzaWdudXRjGAMgASgFSAKIAQESMQoKbV9wb3NpdGlvbhgEIAEoDjIY",
-            "LnBiZGIuZmFtaWx5ZXIuZXBvc2l0aW9uSAOIAQEiNQoJZXBvc2l0aW9uEgoK",
-            "BmxlYWRlchAAEg4KCmNvdW5zZWxsb3IQARIMCghvcmRpbmFyeRACQgsKCV9t",
-            "X3JvbGVpZEIMCgpfbV9qb2ludXRjQhAKDl9tX2xhc3RzaWdudXRjQg0KC19t",
-            "X3Bvc2l0aW9uIr8CCglkYl9mYW1pbHkSEQoEbV9pZBgBIAEoA0gAiAEBEhgK",
-            "C21fY3JlYXRldXRjGAIgASgFSAGIAQESEwoGbV9uYW1lGAMgASgJSAKIAQES",
-            "FQoIbV9sZWFkZXIYBCABKANIA4gBARIRCgRtX2x2GAUgASgFSASIAQESEgoF",
-            "bV9leHAYBiABKAVIBYgBARIuCghtX21lbWJlchgHIAMoCzIcLnBiZGIuZGJf",
-            "ZmFtaWx5Lk1NZW1iZXJFbnRyeRo+CgxNTWVtYmVyRW50cnkSCwoDa2V5GAEg",
-            "ASgDEh0KBXZhbHVlGAIgASgLMg4ucGJkYi5mYW1pbHllcjoCOAFCBwoFX21f",
-            "aWRCDgoMX21fY3JlYXRldXRjQgkKB19tX25hbWVCCwoJX21fbGVhZGVyQgcK",
-            "BV9tX2x2QggKBl9tX2V4cCq4AgoHRU5VTV9EQhITCg9FTlVNX0RCX0FDQ09V",
-            "TlQQABIQCgxFTlVNX0RCX1JPTEUQARIRCg1FTlVNX0RCX0JSSUVGEAISDwoL",
-            "RU5VTV9EQl9CQUcQAxIUChBFTlVNX0RCX0tFWVZBTFVFEAQSEAoMRU5VTV9E",
-            "Ql9NQUlMEAUSEQoNRU5VTV9EQl9HVUlMRBAGEhIKDkVOVU1fREJfTk9USUNF",
-            "EAcSFAoQRU5VTV9EQl9SQU5LTElTVBAIEhQKEEVOVU1fREJfQUNUSVZJVFkQ",
-            "CRIQCgxFTlVNX0RCX1RBU0sQChIUChBFTlVNX0RCX0NBTEVOREFSEAsSGAoU",
-            "RU5VTV9EQl9ST0xFS0VZVkFMVUUQDBISCg5FTlVNX0RCX0ZBTUlMWRANEhEK",
-            "DUVOVU1fREJfQ09VTlQQDioeCgllcmFua2xpc3QSBgoCbHYQABIJCgVjb3Vu",
-            "dBABYgZwcm90bzM="));
+            "QgoKCF9tX3N0YXJ0QgsKCV9tX2ZpbmlzaCKzAgoLZGJfZmFtaWx5ZXISEQoE",
+            "bV9pZBgBIAEoA0gAiAEBEhYKCW1fam9pbnV0YxgCIAEoBUgBiAEBEhoKDW1f",
+            "bGFzdHNpZ251dGMYAyABKAVIAogBARIbCg5tX2xhc3RsZWF2ZXV0YxgEIAEo",
+            "BUgDiAEBEjQKCm1fcG9zaXRpb24YBSABKA4yGy5wYmRiLmRiX2ZhbWlseWVy",
+            "LmVwb3NpdGlvbkgEiAEBIj8KCWVwb3NpdGlvbhIICgRub25lEAASCgoGbGVh",
+            "ZGVyEAESDgoKY291bnNlbGxvchACEgwKCG9yZGluYXJ5EANCBwoFX21faWRC",
+            "DAoKX21fam9pbnV0Y0IQCg5fbV9sYXN0c2lnbnV0Y0IRCg9fbV9sYXN0bGVh",
+            "dmV1dGNCDQoLX21fcG9zaXRpb24i9gEKCWRiX2ZhbWlseRIRCgRtX2lkGAEg",
+            "ASgDSACIAQESGAoLbV9jcmVhdGV1dGMYAiABKAVIAYgBARITCgZtX25hbWUY",
+            "AyABKAlIAogBARIVCghtX2xlYWRlchgEIAEoA0gDiAEBEhEKBG1fbHYYBSAB",
+            "KAVIBIgBARISCgVtX2V4cBgGIAEoBUgFiAEBEhAKCG1fbWVtYmVyGAcgAygD",
+            "EhMKC21fYXBwbHlsaXN0GAggAygDQgcKBV9tX2lkQg4KDF9tX2NyZWF0ZXV0",
+            "Y0IJCgdfbV9uYW1lQgsKCV9tX2xlYWRlckIHCgVfbV9sdkIICgZfbV9leHAq",
+            "zgIKB0VOVU1fREISEwoPRU5VTV9EQl9BQ0NPVU5UEAASEAoMRU5VTV9EQl9S",
+            "T0xFEAESEQoNRU5VTV9EQl9CUklFRhACEg8KC0VOVU1fREJfQkFHEAMSFAoQ",
+            "RU5VTV9EQl9LRVlWQUxVRRAEEhAKDEVOVU1fREJfTUFJTBAFEhEKDUVOVU1f",
+            "REJfR1VJTEQQBhISCg5FTlVNX0RCX05PVElDRRAHEhQKEEVOVU1fREJfUkFO",
+            "S0xJU1QQCBIUChBFTlVNX0RCX0FDVElWSVRZEAkSEAoMRU5VTV9EQl9UQVNL",
+            "EAoSFAoQRU5VTV9EQl9DQUxFTkRBUhALEhgKFEVOVU1fREJfUk9MRUtFWVZB",
+            "TFVFEAwSEgoORU5VTV9EQl9GQU1JTFkQDRIUChBFTlVNX0RCX0ZBTUlMWUVS",
+            "EA4SEQoNRU5VTV9EQl9DT1VOVBAPKh4KCWVyYW5rbGlzdBIGCgJsdhAAEgkK",
+            "BWNvdW50EAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Pbdb.ENUM_DB), typeof(global::Pbdb.eranklist), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -149,8 +149,8 @@ namespace Pbdb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_task.Types.data), global::Pbdb.db_task.Types.data.Parser, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MSchedules", "MReceive" }, new[]{ "MTaskid", "MReceiveutc", "MFinshutc", "MReceive" }, null, null, null),
             null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_calendar), global::Pbdb.db_calendar.Parser, new[]{ "MId", "MTime", "MStart", "MFinish" }, new[]{ "MId", "MTime", "MStart", "MFinish" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.familyer), global::Pbdb.familyer.Parser, new[]{ "MRoleid", "MJoinutc", "MLastsignutc", "MPosition" }, new[]{ "MRoleid", "MJoinutc", "MLastsignutc", "MPosition" }, new[]{ typeof(global::Pbdb.familyer.Types.eposition) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_family), global::Pbdb.db_family.Parser, new[]{ "MId", "MCreateutc", "MName", "MLeader", "MLv", "MExp", "MMember" }, new[]{ "MId", "MCreateutc", "MName", "MLeader", "MLv", "MExp" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_familyer), global::Pbdb.db_familyer.Parser, new[]{ "MId", "MJoinutc", "MLastsignutc", "MLastleaveutc", "MPosition" }, new[]{ "MId", "MJoinutc", "MLastsignutc", "MLastleaveutc", "MPosition" }, new[]{ typeof(global::Pbdb.db_familyer.Types.eposition) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Pbdb.db_family), global::Pbdb.db_family.Parser, new[]{ "MId", "MCreateutc", "MName", "MLeader", "MLv", "MExp", "MMember", "MApplylist" }, new[]{ "MId", "MCreateutc", "MName", "MLeader", "MLv", "MExp" }, null, null, null)
           }));
     }
     #endregion
@@ -214,7 +214,11 @@ namespace Pbdb {
     /// 军团
     /// </summary>
     [pbr::OriginalName("ENUM_DB_FAMILY")] Family = 13,
-    [pbr::OriginalName("ENUM_DB_COUNT")] Count = 14,
+    /// <summary>
+    /// 军团成员
+    /// </summary>
+    [pbr::OriginalName("ENUM_DB_FAMILYER")] Familyer = 14,
+    [pbr::OriginalName("ENUM_DB_COUNT")] Count = 15,
   }
 
   public enum eranklist {
@@ -6740,16 +6744,16 @@ namespace Pbdb {
 
   }
 
-  public sealed partial class familyer : pb::IMessage<familyer>
+  public sealed partial class db_familyer : pb::IMessage<db_familyer>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<familyer> _parser = new pb::MessageParser<familyer>(() => new familyer());
+    private static readonly pb::MessageParser<db_familyer> _parser = new pb::MessageParser<db_familyer>(() => new db_familyer());
     private pb::UnknownFieldSet _unknownFields;
     private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<familyer> Parser { get { return _parser; } }
+    public static pb::MessageParser<db_familyer> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -6762,49 +6766,50 @@ namespace Pbdb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public familyer() {
+    public db_familyer() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public familyer(familyer other) : this() {
+    public db_familyer(db_familyer other) : this() {
       _hasBits0 = other._hasBits0;
-      mRoleid_ = other.mRoleid_;
+      mId_ = other.mId_;
       mJoinutc_ = other.mJoinutc_;
       mLastsignutc_ = other.mLastsignutc_;
+      mLastleaveutc_ = other.mLastleaveutc_;
       mPosition_ = other.mPosition_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public familyer Clone() {
-      return new familyer(this);
+    public db_familyer Clone() {
+      return new db_familyer(this);
     }
 
-    /// <summary>Field number for the "m_roleid" field.</summary>
-    public const int MRoleidFieldNumber = 1;
-    private long mRoleid_;
+    /// <summary>Field number for the "m_id" field.</summary>
+    public const int MIdFieldNumber = 1;
+    private long mId_;
     /// <summary>
     /// 军团成员id
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public long MRoleid {
-      get { if ((_hasBits0 & 1) != 0) { return mRoleid_; } else { return 0L; } }
+    public long MId {
+      get { if ((_hasBits0 & 1) != 0) { return mId_; } else { return 0L; } }
       set {
         _hasBits0 |= 1;
-        mRoleid_ = value;
+        mId_ = value;
       }
     }
-    /// <summary>Gets whether the "m_roleid" field is set</summary>
+    /// <summary>Gets whether the "m_id" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasMRoleid {
+    public bool HasMId {
       get { return (_hasBits0 & 1) != 0; }
     }
-    /// <summary>Clears the value of the "m_roleid" field</summary>
+    /// <summary>Clears the value of the "m_id" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMRoleid() {
+    public void ClearMId() {
       _hasBits0 &= ~1;
     }
 
@@ -6858,47 +6863,73 @@ namespace Pbdb {
       _hasBits0 &= ~4;
     }
 
+    /// <summary>Field number for the "m_lastleaveutc" field.</summary>
+    public const int MLastleaveutcFieldNumber = 4;
+    private int mLastleaveutc_;
+    /// <summary>
+    /// 上次离开军团时间
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MLastleaveutc {
+      get { if ((_hasBits0 & 8) != 0) { return mLastleaveutc_; } else { return 0; } }
+      set {
+        _hasBits0 |= 8;
+        mLastleaveutc_ = value;
+      }
+    }
+    /// <summary>Gets whether the "m_lastleaveutc" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMLastleaveutc {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "m_lastleaveutc" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMLastleaveutc() {
+      _hasBits0 &= ~8;
+    }
+
     /// <summary>Field number for the "m_position" field.</summary>
-    public const int MPositionFieldNumber = 4;
-    private global::Pbdb.familyer.Types.eposition mPosition_;
+    public const int MPositionFieldNumber = 5;
+    private global::Pbdb.db_familyer.Types.eposition mPosition_;
     /// <summary>
     /// 职位
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Pbdb.familyer.Types.eposition MPosition {
-      get { if ((_hasBits0 & 8) != 0) { return mPosition_; } else { return global::Pbdb.familyer.Types.eposition.Leader; } }
+    public global::Pbdb.db_familyer.Types.eposition MPosition {
+      get { if ((_hasBits0 & 16) != 0) { return mPosition_; } else { return global::Pbdb.db_familyer.Types.eposition.None; } }
       set {
-        _hasBits0 |= 8;
+        _hasBits0 |= 16;
         mPosition_ = value;
       }
     }
     /// <summary>Gets whether the "m_position" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool HasMPosition {
-      get { return (_hasBits0 & 8) != 0; }
+      get { return (_hasBits0 & 16) != 0; }
     }
     /// <summary>Clears the value of the "m_position" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void ClearMPosition() {
-      _hasBits0 &= ~8;
+      _hasBits0 &= ~16;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as familyer);
+      return Equals(other as db_familyer);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(familyer other) {
+    public bool Equals(db_familyer other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (MRoleid != other.MRoleid) return false;
+      if (MId != other.MId) return false;
       if (MJoinutc != other.MJoinutc) return false;
       if (MLastsignutc != other.MLastsignutc) return false;
+      if (MLastleaveutc != other.MLastleaveutc) return false;
       if (MPosition != other.MPosition) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -6906,9 +6937,10 @@ namespace Pbdb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasMRoleid) hash ^= MRoleid.GetHashCode();
+      if (HasMId) hash ^= MId.GetHashCode();
       if (HasMJoinutc) hash ^= MJoinutc.GetHashCode();
       if (HasMLastsignutc) hash ^= MLastsignutc.GetHashCode();
+      if (HasMLastleaveutc) hash ^= MLastleaveutc.GetHashCode();
       if (HasMPosition) hash ^= MPosition.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -6926,9 +6958,9 @@ namespace Pbdb {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasMRoleid) {
+      if (HasMId) {
         output.WriteRawTag(8);
-        output.WriteInt64(MRoleid);
+        output.WriteInt64(MId);
       }
       if (HasMJoinutc) {
         output.WriteRawTag(16);
@@ -6938,8 +6970,12 @@ namespace Pbdb {
         output.WriteRawTag(24);
         output.WriteInt32(MLastsignutc);
       }
-      if (HasMPosition) {
+      if (HasMLastleaveutc) {
         output.WriteRawTag(32);
+        output.WriteInt32(MLastleaveutc);
+      }
+      if (HasMPosition) {
+        output.WriteRawTag(40);
         output.WriteEnum((int) MPosition);
       }
       if (_unknownFields != null) {
@@ -6951,9 +6987,9 @@ namespace Pbdb {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasMRoleid) {
+      if (HasMId) {
         output.WriteRawTag(8);
-        output.WriteInt64(MRoleid);
+        output.WriteInt64(MId);
       }
       if (HasMJoinutc) {
         output.WriteRawTag(16);
@@ -6963,8 +6999,12 @@ namespace Pbdb {
         output.WriteRawTag(24);
         output.WriteInt32(MLastsignutc);
       }
-      if (HasMPosition) {
+      if (HasMLastleaveutc) {
         output.WriteRawTag(32);
+        output.WriteInt32(MLastleaveutc);
+      }
+      if (HasMPosition) {
+        output.WriteRawTag(40);
         output.WriteEnum((int) MPosition);
       }
       if (_unknownFields != null) {
@@ -6976,14 +7016,17 @@ namespace Pbdb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (HasMRoleid) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MRoleid);
+      if (HasMId) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(MId);
       }
       if (HasMJoinutc) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MJoinutc);
       }
       if (HasMLastsignutc) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MLastsignutc);
+      }
+      if (HasMLastleaveutc) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MLastleaveutc);
       }
       if (HasMPosition) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) MPosition);
@@ -6995,18 +7038,21 @@ namespace Pbdb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(familyer other) {
+    public void MergeFrom(db_familyer other) {
       if (other == null) {
         return;
       }
-      if (other.HasMRoleid) {
-        MRoleid = other.MRoleid;
+      if (other.HasMId) {
+        MId = other.MId;
       }
       if (other.HasMJoinutc) {
         MJoinutc = other.MJoinutc;
       }
       if (other.HasMLastsignutc) {
         MLastsignutc = other.MLastsignutc;
+      }
+      if (other.HasMLastleaveutc) {
+        MLastleaveutc = other.MLastleaveutc;
       }
       if (other.HasMPosition) {
         MPosition = other.MPosition;
@@ -7026,7 +7072,7 @@ namespace Pbdb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            MRoleid = input.ReadInt64();
+            MId = input.ReadInt64();
             break;
           }
           case 16: {
@@ -7038,7 +7084,11 @@ namespace Pbdb {
             break;
           }
           case 32: {
-            MPosition = (global::Pbdb.familyer.Types.eposition) input.ReadEnum();
+            MLastleaveutc = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            MPosition = (global::Pbdb.db_familyer.Types.eposition) input.ReadEnum();
             break;
           }
         }
@@ -7056,7 +7106,7 @@ namespace Pbdb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            MRoleid = input.ReadInt64();
+            MId = input.ReadInt64();
             break;
           }
           case 16: {
@@ -7068,7 +7118,11 @@ namespace Pbdb {
             break;
           }
           case 32: {
-            MPosition = (global::Pbdb.familyer.Types.eposition) input.ReadEnum();
+            MLastleaveutc = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            MPosition = (global::Pbdb.db_familyer.Types.eposition) input.ReadEnum();
             break;
           }
         }
@@ -7077,7 +7131,7 @@ namespace Pbdb {
     #endif
 
     #region Nested types
-    /// <summary>Container for nested types declared in the familyer message type.</summary>
+    /// <summary>Container for nested types declared in the db_familyer message type.</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       /// <summary>
@@ -7085,17 +7139,21 @@ namespace Pbdb {
       /// </summary>
       public enum eposition {
         /// <summary>
+        /// 未加入军团
+        /// </summary>
+        [pbr::OriginalName("none")] None = 0,
+        /// <summary>
         /// 军团长
         /// </summary>
-        [pbr::OriginalName("leader")] Leader = 0,
+        [pbr::OriginalName("leader")] Leader = 1,
         /// <summary>
         /// 军师
         /// </summary>
-        [pbr::OriginalName("counsellor")] Counsellor = 1,
+        [pbr::OriginalName("counsellor")] Counsellor = 2,
         /// <summary>
         /// 普通成员
         /// </summary>
-        [pbr::OriginalName("ordinary")] Ordinary = 2,
+        [pbr::OriginalName("ordinary")] Ordinary = 3,
       }
 
     }
@@ -7141,6 +7199,7 @@ namespace Pbdb {
       mLv_ = other.mLv_;
       mExp_ = other.mExp_;
       mMember_ = other.mMember_.Clone();
+      mApplylist_ = other.mApplylist_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7300,15 +7359,28 @@ namespace Pbdb {
 
     /// <summary>Field number for the "m_member" field.</summary>
     public const int MMemberFieldNumber = 7;
-    private static readonly pbc::MapField<long, global::Pbdb.familyer>.Codec _map_mMember_codec
-        = new pbc::MapField<long, global::Pbdb.familyer>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForMessage(18, global::Pbdb.familyer.Parser), 58);
-    private readonly pbc::MapField<long, global::Pbdb.familyer> mMember_ = new pbc::MapField<long, global::Pbdb.familyer>();
+    private static readonly pb::FieldCodec<long> _repeated_mMember_codec
+        = pb::FieldCodec.ForInt64(58);
+    private readonly pbc::RepeatedField<long> mMember_ = new pbc::RepeatedField<long>();
     /// <summary>
     /// 成员
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::MapField<long, global::Pbdb.familyer> MMember {
+    public pbc::RepeatedField<long> MMember {
       get { return mMember_; }
+    }
+
+    /// <summary>Field number for the "m_applylist" field.</summary>
+    public const int MApplylistFieldNumber = 8;
+    private static readonly pb::FieldCodec<long> _repeated_mApplylist_codec
+        = pb::FieldCodec.ForInt64(66);
+    private readonly pbc::RepeatedField<long> mApplylist_ = new pbc::RepeatedField<long>();
+    /// <summary>
+    /// 申请列表
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<long> MApplylist {
+      get { return mApplylist_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -7330,7 +7402,8 @@ namespace Pbdb {
       if (MLeader != other.MLeader) return false;
       if (MLv != other.MLv) return false;
       if (MExp != other.MExp) return false;
-      if (!MMember.Equals(other.MMember)) return false;
+      if(!mMember_.Equals(other.mMember_)) return false;
+      if(!mApplylist_.Equals(other.mApplylist_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7343,7 +7416,8 @@ namespace Pbdb {
       if (HasMLeader) hash ^= MLeader.GetHashCode();
       if (HasMLv) hash ^= MLv.GetHashCode();
       if (HasMExp) hash ^= MExp.GetHashCode();
-      hash ^= MMember.GetHashCode();
+      hash ^= mMember_.GetHashCode();
+      hash ^= mApplylist_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7384,7 +7458,8 @@ namespace Pbdb {
         output.WriteRawTag(48);
         output.WriteInt32(MExp);
       }
-      mMember_.WriteTo(output, _map_mMember_codec);
+      mMember_.WriteTo(output, _repeated_mMember_codec);
+      mApplylist_.WriteTo(output, _repeated_mApplylist_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7418,7 +7493,8 @@ namespace Pbdb {
         output.WriteRawTag(48);
         output.WriteInt32(MExp);
       }
-      mMember_.WriteTo(ref output, _map_mMember_codec);
+      mMember_.WriteTo(ref output, _repeated_mMember_codec);
+      mApplylist_.WriteTo(ref output, _repeated_mApplylist_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -7446,7 +7522,8 @@ namespace Pbdb {
       if (HasMExp) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MExp);
       }
-      size += mMember_.CalculateSize(_map_mMember_codec);
+      size += mMember_.CalculateSize(_repeated_mMember_codec);
+      size += mApplylist_.CalculateSize(_repeated_mApplylist_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -7477,6 +7554,7 @@ namespace Pbdb {
         MExp = other.MExp;
       }
       mMember_.Add(other.mMember_);
+      mApplylist_.Add(other.mApplylist_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -7515,8 +7593,14 @@ namespace Pbdb {
             MExp = input.ReadInt32();
             break;
           }
-          case 58: {
-            mMember_.AddEntriesFrom(input, _map_mMember_codec);
+          case 58:
+          case 56: {
+            mMember_.AddEntriesFrom(input, _repeated_mMember_codec);
+            break;
+          }
+          case 66:
+          case 64: {
+            mApplylist_.AddEntriesFrom(input, _repeated_mApplylist_codec);
             break;
           }
         }
@@ -7557,8 +7641,14 @@ namespace Pbdb {
             MExp = input.ReadInt32();
             break;
           }
-          case 58: {
-            mMember_.AddEntriesFrom(ref input, _map_mMember_codec);
+          case 58:
+          case 56: {
+            mMember_.AddEntriesFrom(ref input, _repeated_mMember_codec);
+            break;
+          }
+          case 66:
+          case 64: {
+            mApplylist_.AddEntriesFrom(ref input, _repeated_mApplylist_codec);
             break;
           }
         }

@@ -17,6 +17,8 @@ namespace ngl
 		static int32_t		m_createfamilconsume;	// 创建军团的消耗
 		static int32_t		m_familsignexp;			// 军团签到给军团增加的经验值
 		static int32_t		m_familsigndrop;		// 军团签到的奖励
+		static int32_t		m_familapplylistcount;	// 玩家请求加入军团的最大数量
+		static int32_t		m_familjoininterval;	// 玩家请求加入/创建军团的冷却时间
 
 		ttab_specialid()
 		{}
@@ -48,6 +50,8 @@ namespace ngl
 				IF_NAME_VAL(createfamilconsume)
 				IF_NAME_VAL(familsignexp)
 				IF_NAME_VAL(familsigndrop)
+				IF_NAME_VAL(familapplylistcount)
+					
 			}
 		}
 	};

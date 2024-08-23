@@ -141,6 +141,17 @@ namespace ngl
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+					pro->set_m_apply(true);
+					message<pbnet::PROBUFF_NET_JOIN_FAMIL> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
+			handle_cmd::push("/cancel_join_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
+					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+					pro->set_m_apply(false);
 					message<pbnet::PROBUFF_NET_JOIN_FAMIL> lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}

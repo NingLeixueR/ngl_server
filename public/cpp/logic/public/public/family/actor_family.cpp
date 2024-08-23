@@ -51,9 +51,38 @@ namespace ngl
 		i64_actorid familid = adata.get_data()->data()->m_familid();
 
 		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>();
-		int32_t lstat = m_family.join_family(lroleid, familid);
+		int32_t lstat = 0;
+		if (adata.get_data()->data()->m_apply())
+		{
+			lstat = m_family.join_family(lroleid, familid);
+		}
+		else
+		{
+			lstat = m_family.cancel_join_family(lroleid, familid);
+		}
+		
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
+		return true;
+	}
+
+	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata)
+	{
+		i64_actorid lroleid = adata.get_data()->identifier();
+		i64_actorid ljoinroleid = adata.get_data()->data()->m_roleid();
+
+		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>();
+		int32_t lstat = m_family.ratify_join_family(lroleid, ljoinroleid, adata.get_data()->data()->m_ratify());
+		pro->set_m_stat(lstat);
+		send_client(lroleid, pro);
+		return true;
+	}
+
+	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata)
+	{
+		i64_actorid lroleid = adata.get_data()->identifier();
+		i64_actorid lcederoleid = adata.get_data()->data()->m_roleid();
+
 		return true;
 	}
 

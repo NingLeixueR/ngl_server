@@ -58,6 +58,8 @@ namespace ngl
 	class actor_family;
 	using tdb_family
 		= typedb<pbdb::ENUM_DB_FAMILY, pbdb::db_family, actor_family>;
+	using tdb_familyer
+		= typedb<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer, actor_family>;
 
 	class actor_guild;
 	using tdb_guild		

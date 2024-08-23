@@ -25,6 +25,9 @@ namespace ngl
 		actor_family(const actor_family&) = delete;
 		actor_family& operator=(const actor_family&) = delete;
 
+		friend class familyer;
+		friend class family;
+		familyer m_familyer;
 		family m_family;
 
 		actor_family();
@@ -37,6 +40,7 @@ namespace ngl
 
 		virtual void init()
 		{
+			m_familyer.set(this);
 			m_family.set(this);
 		}
 
@@ -54,8 +58,14 @@ namespace ngl
 		// # 创建军团
 		bool handle(message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata);
 
-		// # 加入军团
+		// # 申请/取消加入军团
 		bool handle(message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata);
+
+		// # 军团长同意/不同意玩家加入军团
+		bool handle(message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata);
+
+		// # 军团长转让军团
+		bool handle(message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata);
 
 		// # 离开军团
 		bool handle(message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata);
