@@ -225,6 +225,33 @@ namespace ngl
 		return true;
 	}
 
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata)
+	{
+		auto lstream = log_error();
+		(*lstream) <<
+			std::format(
+				"审核玩家加入军团{}！err = {}",
+				adata.get_data()->m_stat() == 0 ? "成功" : "失败",
+				adata.get_data()->m_stat()
+			);
+		lstream->print("");
+		return true;
+	}
+
+	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata)
+	{
+		auto lstream = log_error();
+		(*lstream) <<
+			std::format(
+				"转让军团长{}！err = {}",
+				adata.get_data()->m_stat() == 0 ? "成功" : "失败",
+				adata.get_data()->m_stat()
+			);
+		lstream->print("");
+		return true;
+	}
+
 	bool actor_robot::handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
 	{
 		auto lstream = log_error();

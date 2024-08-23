@@ -157,6 +157,32 @@ namespace ngl
 				}
 			);
 
+			handle_cmd::push("/ratify_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>();
+					int64_t lroleid = 0;
+					int32_t lratify = 0;
+					if (tools::splite(aparm, "*", lroleid, lratify) == false)
+						return;
+					pro->set_m_roleid(lroleid);
+					pro->set_m_ratify(lratify);
+					message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
+			handle_cmd::push("/cede_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_CEDE_FAMIL>();
+					int64_t lroleid = 0;
+					if (tools::splite(aparm, "*", lroleid) == false)
+						return;
+					pro->set_m_roleid(lroleid);
+					message<pbnet::PROBUFF_NET_CEDE_FAMIL> lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_FAMILY>(lmessage);
+				}
+			);
+
 			handle_cmd::push("/leave_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_LEAVE_FAMIL>();

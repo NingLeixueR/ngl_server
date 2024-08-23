@@ -28,8 +28,11 @@ namespace ngl
 		register_handle_proto<actor_family>::func<
 			mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>
 			, mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>
+			, mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>
+			, mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>
 			, mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_LIST>
+			, mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>
 			, mforward<pbnet::PROBUFF_NET_FAMILSIGN>
 		>(true);
 	}
