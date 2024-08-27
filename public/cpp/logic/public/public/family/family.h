@@ -94,6 +94,7 @@ namespace ngl
 		int32_t m_maxid;
 		std::map<int64_t, int64_t>				m_rolefamily;	// key:roleid value:familyid
 		std::map<int64_t, std::set<int64_t>>	m_applylist;	// key:roleid value:std::set<familyid>
+		std::set<std::string>					m_familyname;	// 用来检查军团名称是否重复
 	public:
 		family():
 			m_maxid(0)
@@ -133,26 +134,24 @@ namespace ngl
 					m_maxid = _familyid;
 				}
 				(*lstream) <<
-					std::format(
-						"id:{} name:{} createutc:{} leader:{} lv:{} exp:{}", 
-						_familyid,
-						lbdfamily.m_name(),
-						lbdfamily.m_createutc(),
-						lbdfamily.m_leader(),
-						lbdfamily.m_lv(),
-						lbdfamily.m_exp()
+					std::format("id:{} name:{} createutc:{} leader:{} lv:{} exp:{}", 
+						_familyid,lbdfamily.m_name(),lbdfamily.m_createutc(),
+						lbdfamily.m_leader(),lbdfamily.m_lv(),lbdfamily.m_exp()
 					);
 				(*lstream) << " member:[" << std::endl;
 				for (i64_actorid roleid : lbdfamily.m_member())
 				{
-					(*lstream) <<
-						std::format(
-							"roleid:{}",
-							roleid
-							) << std::endl;
+					(*lstream) <<std::format("roleid:{}",roleid) << std::endl;
 					m_rolefamily[roleid] = _familyid;
 				}
-				(*lstream) << " ]member" << std::endl;				
+				(*lstream) << " ]member" << std::endl;
+
+				m_familyname.insert(lbdfamily.m_name());
+
+				for (i64_actorid roleid : lbdfamily.m_applylist())
+				{
+					m_applylist[roleid].insert(_familyid);
+				}
 			}
 			(*lstream).print("");
 		}

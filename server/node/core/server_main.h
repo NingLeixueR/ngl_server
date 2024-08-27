@@ -45,6 +45,7 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase->set_m_lv(i);
 		lrolebase->set_m_moneygold(i + 1000);
 		lrolebase->set_m_moneysilver(i + 2000);
+		lrolebase->set_m_createutc(ngl::localtime::gettime());
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
 	}

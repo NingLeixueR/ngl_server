@@ -12,6 +12,8 @@ namespace ngl
 			return 1;
 		if (actor()->m_familyer.check_createfamily(aroleid) == false)
 			return 2;
+		if (m_familyname.contains(aname))
+			return 3;
 		pbdb::db_family ldbfamily;
 		++m_maxid;
 

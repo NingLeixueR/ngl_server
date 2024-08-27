@@ -642,6 +642,7 @@ class db_brief PROTOBUF_FINAL :
     kMMoneysilverFieldNumber = 5,
     kMVipFieldNumber = 6,
     kMNotalkutcFieldNumber = 7,
+    kMCreateutcFieldNumber = 8,
   };
   // string m_name = 2;
   bool has_m_name() const;
@@ -741,6 +742,19 @@ class db_brief PROTOBUF_FINAL :
   void _internal_set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 m_createutc = 8;
+  bool has_m_createutc() const;
+  private:
+  bool _internal_has_m_createutc() const;
+  public:
+  void clear_m_createutc();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_createutc() const;
+  void set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_createutc() const;
+  void _internal_set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbdb.db_brief)
  private:
   class _Internal;
@@ -757,6 +771,7 @@ class db_brief PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 m_moneysilver_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_vip_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_notalkutc_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_createutc_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
@@ -5567,6 +5582,34 @@ inline void db_brief::_internal_set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 v
 inline void db_brief::set_m_notalkutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_notalkutc(value);
   // @@protoc_insertion_point(field_set:pbdb.db_brief.m_notalkutc)
+}
+
+// int32 m_createutc = 8;
+inline bool db_brief::_internal_has_m_createutc() const {
+  bool value = (_has_bits_[0] & 0x00000080u) != 0;
+  return value;
+}
+inline bool db_brief::has_m_createutc() const {
+  return _internal_has_m_createutc();
+}
+inline void db_brief::clear_m_createutc() {
+  m_createutc_ = 0;
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_brief::_internal_m_createutc() const {
+  return m_createutc_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_brief::m_createutc() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_brief.m_createutc)
+  return _internal_m_createutc();
+}
+inline void db_brief::_internal_set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000080u;
+  m_createutc_ = value;
+}
+inline void db_brief::set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_createutc(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_brief.m_createutc)
 }
 
 // -------------------------------------------------------------------
