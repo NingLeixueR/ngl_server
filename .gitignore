@@ -16,6 +16,7 @@ obj
 lib
 doc
 123-cppcheck-build-dir
+public/csharp/
 public/csharp/csharp/.vs
 public/csharp/csharp/csharp/bin
 public/csharp/NodeConsoleApp1
