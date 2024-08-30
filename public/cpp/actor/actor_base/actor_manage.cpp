@@ -13,10 +13,10 @@ namespace ngl
 
 		//// ---- 线程相关
 		std::list<nthread*>	m_workthread;		// 工作线程
-		bool				m_suspend;			// 是否挂起
+		bool				m_suspend = false;	// 是否挂起
 		std::list<nthread*>	m_suspendthread;	// 挂起的工作线程
 		std::jthread		m_thread;			// 管理线程
-		i32_threadsize		m_threadnum;		// 工作线程数量
+		i32_threadsize		m_threadnum = -1;	// 工作线程数量
 
 		ngl_lockinit;
 
@@ -34,8 +34,6 @@ namespace ngl
 		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
-			m_suspend(false),
-			m_threadnum(-1),
 			m_thread(&impl_actor_manage::run, this)
 		{}
 

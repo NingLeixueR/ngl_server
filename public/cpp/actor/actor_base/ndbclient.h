@@ -115,7 +115,7 @@ namespace ngl
 		ndbclient& operator=(const ndbclient&) = delete;
 
 		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
-		tab_dbload* m_tab;
+		tab_dbload* m_tab = nullptr;
 	public:
 		// # 向actor_client设置连接后事件
 		// # 当与db服务器发生连接时触发加载数据事件
@@ -164,24 +164,17 @@ namespace ngl
 			);
 		}
 
-		nguid										m_id;
+		nguid										m_id = nguid::make();
 		std::map<nguid, data_modified<TDBTAB>>		m_data;
-		data_modified<TDBTAB>*						m_dbdata;
-		bool										m_load;
-		actor_manage_dbclient*						m_manage_dbclient;
-		actor_base*									m_actor;
+		data_modified<TDBTAB>*						m_dbdata = nullptr;
+		bool										m_load = false;
+		actor_manage_dbclient*						m_manage_dbclient = nullptr;
+		actor_base*									m_actor = nullptr;
 		std::vector<int64_t>						m_dellist;
-		std::string									m_name;					// 主要调试需要知道TACTOR的名字
+		std::string									m_name = tools::type_name<TACTOR>();// 主要调试需要知道TACTOR的名字
 	public:
 		ndbclient():
-			ndbclient_base(DBTYPE),
-			m_tab(nullptr),
-			m_id(nguid::make()),
-			m_dbdata(nullptr),
-			m_load(false),
-			m_manage_dbclient(nullptr),
-			m_actor(nullptr),
-			m_name(tools::type_name<TACTOR>())
+			ndbclient_base(DBTYPE)
 		{
 		}
 

@@ -16,8 +16,7 @@ namespace ngl
 		static std::map<int32_t, int32_t> m_failyrolecount;	// key:lv value:rolecount
 	public:
 
-		ttab_familylv()
-		{}
+		ttab_familylv() = default;
 
 		virtual void reload()
 		{

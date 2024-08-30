@@ -120,10 +120,9 @@ namespace ngl
 
 		struct ginfo
 		{
-			ENUM_ACTOR				m_actortype;
+			ENUM_ACTOR				m_actortype = ACTOR_NONE;
 			std::set<i64_actorid>	m_actorlist;
-			ginfo() :
-				m_actortype(ACTOR_NONE)
+			ginfo()
 			{}
 		};
 
@@ -209,14 +208,13 @@ namespace ngl
 		//# 推送广播的定时器id
 		static int									m_broadcasttimer;
 		//# 是否接收广播消息
-		bool										m_isbroadcast;			
+		bool										m_isbroadcast = false;			
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
 			m_kcpsession(-1),
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
 			m_isload(aparm.m_manage_dbclient),
-			m_actor(aactor),
-			m_isbroadcast(false)
+			m_actor(aactor)
 		{
 			if (aparm.m_manage_dbclient)
 			{
@@ -299,9 +297,9 @@ namespace ngl
 
 		inline void db_component_init_data()
 		{
-			for (const std::pair<const pbdb::ENUM_DB, ndb_component*>& item : m_dbcomponent)
+			for (const auto [_, ldbcomponent] : m_dbcomponent)
 			{
-				item.second->init_data();
+				ldbcomponent->init_data();
 			}
 		}
 

@@ -16,8 +16,7 @@ namespace ngl
 		familyer& operator=(const familyer&) = delete;
 
 	public:
-		familyer()
-		{}
+		familyer() = default;
 
 		virtual void set_id()
 		{
