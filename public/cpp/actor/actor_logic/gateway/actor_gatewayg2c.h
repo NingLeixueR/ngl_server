@@ -31,7 +31,15 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid(i32_actordataid aactordataid);
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_GATEWAY_G2C;
+		}
+
+		static i64_actorid actorid(i32_actordataid aactordataid)
+		{
+			return nguid::make(ACTOR_GATEWAY_G2C, ttab_servers::tab()->m_area, aactordataid);
+		}
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)

@@ -45,11 +45,14 @@ namespace ngl
 			log_error()->print("actor_keyvalue load finish!!!");
 		}
 
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_KEYVALUE;
+		}
+
 		static i64_actorid actorid()
 		{
-			return nguid::make(
-				ACTOR_KEYVALUE, ttab_servers::tab()->m_area, nguid::none_actordataid()
-			);
+			return nguid::make(ACTOR_KEYVALUE, ttab_servers::tab()->m_area, nguid::none_actordataid());
 		}
 	};
 }//namespace ngl

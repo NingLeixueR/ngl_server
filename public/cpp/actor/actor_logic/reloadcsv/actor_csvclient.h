@@ -24,6 +24,16 @@ namespace ngl
 
 		virtual ~actor_csvclient();
 
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_CSVCLIENT;
+		}
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CSVCLIENT, ttab_servers::tab()->m_area, nconfig::m_nodeid);
+		}
+
 		bool handle(message<np_actor_reloadcsv>& adata);
 
 		// # ¶¨Ê±Æ÷

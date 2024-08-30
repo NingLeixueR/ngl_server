@@ -80,34 +80,29 @@ namespace ngl
 		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
 		template <typename T, bool IS_SEND = true>
-		static void	make_forwardfun(
-			const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram
-		)
+		static void	make_forwardfun(handle_pram& apram)
 		{
-			apram.m_forwardfun = 
-				[aactorid, arequestactorid](
+			apram.m_forwardfun =[](
 					const std::map<i32_serverid, actor_node_session>&, 
 					const std::map<nguid, i32_serverid>&,
 					handle_pram& adata
 				)
 			{
-				handle_pram_send<T, IS_SEND>::send(aactorid, arequestactorid, adata);
+				handle_pram_send<T, IS_SEND>::send(adata.m_actor, adata.m_requestactor, adata);
 			};
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void	make_client(
-			const nguid& aactorid, const nguid& arequestactorid, handle_pram& apram
-		)
+		static void	make_client(handle_pram& apram)
 		{
 			apram.m_forwardfun = 
-				[aactorid, arequestactorid](
+				[](
 					const std::map<i32_serverid, actor_node_session>&, 
 					const std::map<nguid, i32_serverid>&, 
 					handle_pram& adata
 				)
 				{
-					handle_pram_send<T, IS_SEND>::sendclient(aactorid, arequestactorid, adata);
+					handle_pram_send<T, IS_SEND>::sendclient(adata.m_actor, adata.m_requestactor, adata);
 				};
 		}
 
@@ -124,7 +119,7 @@ namespace ngl
 			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
 			if (IS_FORWARDFUN)
-				make_forwardfun<T, IS_SEND>(aid, arid, lpram);
+				make_forwardfun<T, IS_SEND>(lpram);
 			lpram.m_failfun			= afailfun;
 			return lpram;
 		}
@@ -143,7 +138,7 @@ namespace ngl
 			lpram.m_requestactor	= arid;
 			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
-			make_client<T, IS_SEND>(aid, arid, lpram);
+			make_client<T, IS_SEND>(lpram);
 			lpram.m_failfun			= afailfun;
 			return lpram;
 		}
@@ -156,7 +151,7 @@ namespace ngl
 			lpram.m_data			= apack;
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
-			make_forwardfun<pack, true>(aid, arid, lpram);
+			make_forwardfun<pack, true>(lpram);
 			return lpram;
 		}
 	};

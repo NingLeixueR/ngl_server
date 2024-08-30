@@ -35,6 +35,16 @@ namespace ngl
 			return actor_instance<actor_chat>::instance();
 		}
 
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_CHAT;
+		}
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CHAT, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
 		virtual ~actor_chat() {}
 
 		static void nregister();

@@ -20,7 +20,7 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldatakvid{ pbdb::db_keyvalue_ekv_account_ban };
-		nclient_keyvalue::init(actor_keyvalue::actorid(), this, ldatakvid);
+		nclient_keyvalue::init(actor_keyvalue::actor_type(), this, ldatakvid);
 		nclient_keyvalue::set_recv_data_finish([this](const pbdb::db_keyvalue& akeyval)
 			{
 				log_error()->print("actor_manage_role recv_data_finish####### [{}]", akeyval.m_value().c_str());
@@ -44,13 +44,6 @@ namespace ngl
 		register_handle_custom<actor_manage_role>::func<
 			mforward<np_gm>
 		>(false);
-	}
-
-	i64_actorid actor_manage_role::actorid()
-	{
-		return nguid::make(
-			ACTOR_MANAGE_ROLE, ttab_servers::tab()->m_area, ttab_servers::tab()->m_tcount
-		);
 	}
 
 	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)

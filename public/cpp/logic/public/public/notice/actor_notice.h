@@ -45,13 +45,14 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		enum
+		{
+			actor_type = ACTOR_NOTICE
+		};
+
 		static i64_actorid actorid()
 		{
-			return nguid::make(
-				ACTOR_NOTICE, 
-				ttab_servers::tab()->m_area, 
-				nguid::none_actordataid()
-			);
+			return nguid::make(ACTOR_NOTICE, ttab_servers::tab()->m_area, nguid::none_actordataid());
 		}
 
 		static bool sendnotice(const std::string& anotice, int32_t astarttime, int32_t afinishtime)

@@ -39,6 +39,16 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		enum
+		{
+			actor_type = ACTOR_GM
+		};
+
+		static i64_actorid actorid(i16_area area)
+		{
+			return nguid::make(ACTOR_GM, area, nguid::none_actordataid());
+		}
+
 		// # 转发给单例
 		void sendbytype(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro);
 

@@ -21,9 +21,10 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldataid;
-		nclient_brief::init(actor_brief::actorid(), this, ldataid);
+		
+		nclient_brief::init((ENUM_ACTOR)nguid::type(actor_brief::actorid()), this, ldataid);
 		std::set<i64_actorid> ldatakvid;
-		nclient_keyvalue::init(actor_keyvalue::actorid(), this, ldatakvid);
+		nclient_keyvalue::init((ENUM_ACTOR)nguid::type(actor_keyvalue::actorid()), this, ldatakvid);
 	}
 
 	void actor_manage_activity::nregister()

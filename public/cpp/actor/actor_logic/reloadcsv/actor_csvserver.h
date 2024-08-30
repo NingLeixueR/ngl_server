@@ -22,7 +22,16 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid();
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_CSVSERVER;
+		}
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CSVSERVER, nguid::none_area(), nguid::none_actordataid());
+		}
+
 
 		virtual ~actor_csvserver();
 

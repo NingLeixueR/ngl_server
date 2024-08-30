@@ -22,11 +22,6 @@ namespace ngl
 
 	actor_gatewayc2g::~actor_gatewayc2g() {}
 
-	i64_actorid actor_gatewayc2g::actorid(i32_actordataid aactordataid)
-	{
-		return nguid::make(ACTOR_GATEWAY_C2G, ttab_servers::tab()->m_area, aactordataid);
-	}
-
 	void actor_gatewayc2g::nregister()
 	{
 		register_handle_custom<actor_gatewayc2g>::func<

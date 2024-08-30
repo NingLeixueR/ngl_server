@@ -406,19 +406,26 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(
-				aguid, arequestguid, adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
 			push_task_id(aguid, lpram, true);
+		}
+
+		template <typename T, bool IS_SEND = true>
+		static void static_send_actor(std::vector<i64_actorid>& avecguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
+		{
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
+			for (i64_actorid actorid: avecguid)
+			{
+				lpram.m_actor = actorid;
+				push_task_id(actorid, lpram, true);
+			}
 		}
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(
-			const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun
-		)
+		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(
-				aguid, arequestguid, adata, afailfun);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 #pragma endregion

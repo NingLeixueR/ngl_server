@@ -18,7 +18,7 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_ranklist>::init(actor_brief::actorid(), this, ldataid);
+		tdb_brief::nsp_cli<actor_ranklist>::init(actor_brief::actor_type(), this, ldataid);
 	}
 
 	void actor_ranklist::nregister()

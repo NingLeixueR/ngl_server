@@ -734,9 +734,7 @@ namespace ngl
 		}
 
 		np_actor_logitem(
-			ELOGLEVEL alevel
-			, ENUM_ACTOR aactortype
-			, ELOG_TYPE alogtype
+			ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 			, const std::source_location& asource = std::source_location::current()
 		):
 			m_actortype(aactortype),

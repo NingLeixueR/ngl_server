@@ -25,9 +25,9 @@ namespace ngl
 			}
 		}
 
-		static tab_servers* tab(i32_serverid aserverid)
+		static const tab_servers* tab(i32_serverid aserverid)
 		{
-			ttab_servers* ttab = allcsv::get<ttab_servers>();
+			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			if (ttab == nullptr)
 				return nullptr;
 			auto itor = ttab->tablecsv.find(aserverid);
@@ -91,29 +91,22 @@ namespace ngl
 		static const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
 		{
 			assert(alocalserver != aotherserver);
-			tab_servers* ltab1 = tab(alocalserver);
-			tab_servers* ltab2 = tab(aotherserver);
+			const tab_servers* ltab1 = tab(alocalserver);
+			const tab_servers* ltab2 = tab(aotherserver);
 			if (alocalserver > aotherserver)
 			{
 				std::swap(ltab1, ltab2);
 			}
-			for (net_works& item1 : ltab1->m_net)
+			for (const net_works& item1 : ltab1->m_net)
 			{
 				if (isefficient(item1.m_type) == false)
 					continue;
-				for (net_works& item2 : ltab2->m_net)
+				for (const net_works& item2 : ltab2->m_net)
 				{
 					if (item1.m_type == item2.m_type)
 					{
 						// 返回other的结构
-						if (alocalserver > aotherserver)
-						{
-							return &item1;
-						}
-						else
-						{
-							return &item2;
-						}
+						return alocalserver > aotherserver ? &item1 : &item2;
 					}
 				}
 			}
@@ -239,6 +232,27 @@ namespace ngl
 				}
 			}
 			return nullptr;
+		}
+
+		// 获取服务器所在区服
+		static std::vector<i16_area> get_arealist(i32_serverid aserverid)
+		{
+			const tab_servers* ltab = tab(aserverid);
+			if (ltab == nullptr)
+			{
+				return {};
+			}
+			std::vector<i16_area> lvec;
+			for (i32_serverid lserverid : ltab->m_actorserver)
+			{
+				const tab_servers* ltemptab = tab(lserverid);
+				if (ltemptab == nullptr)
+				{
+					continue;
+				}
+				lvec.push_back(ltemptab->m_area);
+			}
+			return lvec;
 		}
 	};
 }//namespace ngl

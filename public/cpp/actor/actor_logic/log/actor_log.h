@@ -31,7 +31,16 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype);
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_LOG;
+		}
+
+		static i64_actorid actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype)
+		{
+			nlogactor ltemp(aactortype, alogtype);
+			return nguid::make(ACTOR_LOG, ttab_servers::tab()->m_area, ltemp.m_value32);
+		}
 
 		virtual ~actor_log();
 

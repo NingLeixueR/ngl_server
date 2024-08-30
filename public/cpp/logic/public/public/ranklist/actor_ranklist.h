@@ -47,6 +47,16 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		enum
+		{
+			actor_type = ACTOR_RANKLIST
+		};
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_RANKLIST, ttab_servers::tab()->m_area, nguid::none_actordataid());
+		}
+
 		bool handle(message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
 
 		using handle_cmd = cmd<actor_ranklist, std::string, int, ngl::json_read&>;

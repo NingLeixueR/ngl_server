@@ -5,15 +5,23 @@ namespace ngl
 {
 	void gateway_info::updata(const gateway_socket& ainfo)
 	{
-		gateway_socket& linfo = m_info[ainfo.m_area][ainfo.m_dataid];
-		if (linfo.m_socket != -1 && linfo.m_socket != ainfo.m_socket)
+		gateway_socket* lpgsocket = tools::findmap(m_info[ainfo.m_area], ainfo.m_dataid);
+		if (lpgsocket != nullptr)
 		{
-			nets::net(linfo.m_socket)->close(linfo.m_socket);
-			remove_socket(linfo.m_socket);
+			if (lpgsocket->m_socket > 0 && lpgsocket->m_socket != ainfo.m_socket)
+			{
+				nets::net(lpgsocket->m_socket)->close(lpgsocket->m_socket);
+				remove_socket(lpgsocket->m_socket);
+			}
 		}
-		linfo = ainfo;
+		else
+		{
+			lpgsocket = &m_info[ainfo.m_area][ainfo.m_dataid];
+		}
+
+		*lpgsocket = ainfo;
 		if (ainfo.m_socket != 0)
-			m_sockinfo[ainfo.m_socket] = &linfo;
+			m_sockinfo[ainfo.m_socket] = lpgsocket;
 	}
 
 	bool gateway_info::updata_socket(i16_area aarea, i32_actordataid aactordataid, i32_socket asocket)

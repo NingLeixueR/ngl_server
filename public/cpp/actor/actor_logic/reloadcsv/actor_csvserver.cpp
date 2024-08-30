@@ -19,11 +19,6 @@ namespace ngl
 	{
 	}
 
-	i64_actorid actor_csvserver::actorid()
-	{
-		return nguid::make(ACTOR_CSVSERVER, nguid::none_area(), nguid::none_actordataid());
-	}
-
 	void actor_csvserver::nregister()
 	{
 		register_handle_custom<actor_csvserver>::func<

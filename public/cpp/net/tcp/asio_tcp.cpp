@@ -43,8 +43,7 @@ namespace ngl
 		{
 			asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
 			m_acceptor = new asio::ip::tcp::acceptor(
-				lioservice, 
-				asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port)
+				lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port)
 			);
 			// m_acceptor = new boost::asio::ip::tcp::acceptor(
 			//  lioservice, 

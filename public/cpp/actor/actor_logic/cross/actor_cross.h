@@ -23,7 +23,15 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid();
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_CROSS;
+		}
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_CROSS, nguid::none_area(), nguid::none_actordataid());
+		}
 
 		virtual void loaddb_finish(bool adbishave);
 

@@ -44,13 +44,14 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_BRIEF;
+		}
+
 		static i64_actorid actorid()
 		{
-			return nguid::make(
-				ACTOR_BRIEF, 
-				ttab_servers::tab()->m_area, 
-				nguid::none_actordataid()
-			);
+			return nguid::make(ACTOR_BRIEF, ttab_servers::tab()->m_area, nguid::none_actordataid());
 		}
 	};
 }//namespace ngl

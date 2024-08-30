@@ -30,11 +30,6 @@ namespace ngl
 		actor_cross::register_timer<actor_cross>(&actor_cross::timer_handle);
 	}
 
-	i64_actorid actor_cross::actorid()
-	{
-		return nguid::make(ACTOR_CROSS, nguid::none_area(), nguid::none_actordataid());
-	}
-
 	void actor_cross::loaddb_finish(bool adbishave)
 	{
 		log_error()->print("actor_cross###loaddb_finish#[{}]", nguid(id_guid()));

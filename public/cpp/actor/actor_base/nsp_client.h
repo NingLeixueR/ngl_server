@@ -11,21 +11,24 @@ namespace ngl
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
-		static i64_actorid						m_nspserver;
-		static actor*							m_actor;
-		static bool								m_register;
-		static std::set<i64_actorid>			m_dataid;
-		static bool								m_recvdatafinish;
-		static std::function<void(const T&)>	m_recvdatafinishfun;
+		static std::vector<i64_actorid>					m_nspserver;
+		static actor*									m_actor;
+		static bool										m_register;
+		static std::set<i64_actorid>					m_dataid;
+		static bool										m_recvdatafinish;
+		static std::function<void(const T&)>			m_recvdatafinishfun;
 		static std::function<void(int64_t, const T&)>	m_changedatafun;
 	public:
 		static std::map<i64_actorid, T> m_data;
 
-		static void init(
-			i64_actorid anspserver, TDerived* aactor, const std::set<i64_actorid>& adataid
-		)
+		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
-			m_nspserver = anspserver;
+			std::vector<i16_area> lvecarea = ttab_servers::get_arealist(nconfig::m_nodeid);
+			Assert(lvecarea.empty() == false)
+			for (i16_area area : lvecarea)
+			{
+				m_nspserver.push_back(nguid::make(atype, area, nguid::none_actordataid()));
+			}
 			m_actor		= aactor;
 			m_dataid	= adataid;
 			// 更新数据
@@ -154,7 +157,7 @@ namespace ngl
 	std::map<i64_actorid, T> nsp_client<TDerived, T>::m_data;
 
 	template <typename TDerived, typename T>
-	i64_actorid nsp_client<TDerived, T>::m_nspserver = -1;
+	std::vector<i64_actorid> nsp_client<TDerived, T>::m_nspserver = {};
 
 	template <typename TDerived, typename T>
 	actor* nsp_client<TDerived, T>::m_actor = nullptr;

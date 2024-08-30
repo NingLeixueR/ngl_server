@@ -50,6 +50,11 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
+		enum
+		{
+			actor_type = ACTOR_FAMILY
+		};
+
 		static i64_actorid actorid(i16_area area)
 		{
 			return nguid::make(ACTOR_FAMILY, area, nguid::none_actordataid());

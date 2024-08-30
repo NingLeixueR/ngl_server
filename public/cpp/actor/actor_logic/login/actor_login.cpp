@@ -29,11 +29,6 @@ namespace ngl
 	{
 	}
 
-	i64_actorid actor_login::actorid()
-	{
-		return nguid::make(ACTOR_LOGIN, ttab_servers::tab()->m_area, nguid::none_actordataid());
-	}
-
 	void actor_login::nregister()
 	{
 		register_handle_proto<actor_login>::func<

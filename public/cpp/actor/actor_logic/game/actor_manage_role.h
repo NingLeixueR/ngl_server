@@ -33,7 +33,15 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid();
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_MANAGE_ROLE;
+		}
+
+		static i64_actorid actorid()
+		{
+			return nguid::make(ACTOR_MANAGE_ROLE, nguid::none_area(), ttab_servers::tab()->m_tcount);
+		}
 				
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 

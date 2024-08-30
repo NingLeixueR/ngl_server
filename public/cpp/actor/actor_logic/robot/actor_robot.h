@@ -34,6 +34,11 @@ namespace ngl
 
 		static void nregister();
 
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_ROBOT;
+		}
+
 		virtual const char* kcp_session();
 
 		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
@@ -101,12 +106,7 @@ namespace ngl
 
 		actor_robot* create(i16_area aarea, i32_actordataid aroleid)
 		{
-			return (actor_robot*)actor_base::create(
-				ENUM_ACTOR::ACTOR_ROBOT, 
-				aarea, 
-				aroleid, 
-				nullptr
-			);
+			return (actor_robot*)actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aarea, aroleid, nullptr);
 		}
 
 		static void login(const std::string& aaccount, const std::string& apasswold)

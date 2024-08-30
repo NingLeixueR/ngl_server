@@ -32,12 +32,6 @@ namespace ngl
 	void actor_log::init()
 	{}
 
-	i64_actorid actor_log::actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype)
-	{
-		nlogactor ltemp(aactortype, alogtype);
-		return nguid::make(ACTOR_LOG, ttab_servers::tab()->m_area, ltemp.m_value32);
-	}
-
 	void actor_log::nregister()
 	{
 		register_handle_custom<actor_log>::func<

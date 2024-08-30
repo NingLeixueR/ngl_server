@@ -29,7 +29,15 @@ namespace ngl
 
 		static void nregister();
 
-		static i64_actorid actorid(i32_actordataid aactordataid);
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_GATEWAY;
+		}
+
+		static i64_actorid actorid(i32_actordataid aactordataid)
+		{
+			return nguid::make(ACTOR_GATEWAY, ttab_servers::tab()->m_area, aactordataid);
+		}
 
 		gateway_info m_info;
 
