@@ -84,7 +84,7 @@ namespace ngl
 		// # 军团签到
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata);
 
-		using handle_cmd = cmd<actor_mail, std::string, int, ngl::json_read&>;
+		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
 		// # GM操作
 		bool handle(const message<mforward<np_gm>>& adata);
 	};

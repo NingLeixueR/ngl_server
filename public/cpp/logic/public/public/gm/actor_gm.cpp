@@ -70,7 +70,7 @@ namespace ngl
 						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 					};
 
-					handle_cmd::push("guid", [this,&adata](ngl::json_read& aos)
+					handle_cmd::push("guid", [this,&adata](const json_read& aos)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))
@@ -89,7 +89,7 @@ namespace ngl
 						}
 					);
 
-					handle_cmd::push("close_actor", [this, &adata](ngl::json_read& aos)
+					handle_cmd::push("close_actor", [this, &adata](const json_read& aos)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))

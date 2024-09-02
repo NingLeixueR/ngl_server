@@ -185,7 +185,7 @@ namespace ngl
 			psenditem->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", aorderid, arechargeid, id_guid());
 			if (drop::droplist(tab->m_dropid, 1, psenditem->m_item))
 			{
-				message<np_actor_senditem> ltemp(0, nullptr, psenditem.get());
+				message ltemp(0, nullptr, psenditem.get());
 				handle(ltemp);
 				lgold += tab->m_gold;
 				lgold += tab->m_bonus;
@@ -251,7 +251,7 @@ namespace ngl
 
 		if (handle_php::empty())
 		{
-			handle_php::push("pay", [this](int id, ngl::json_read& aos)
+			handle_php::push("pay", [this](int id, const ngl::json_read& aos)
 				{
 					struct pay
 					{
@@ -270,7 +270,7 @@ namespace ngl
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				}
 			);
-			handle_php::push("gmrechange", [this](int id, ngl::json_read& aos)
+			handle_php::push("gmrechange", [this](int id, const ngl::json_read& aos)
 				{
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
@@ -285,7 +285,7 @@ namespace ngl
 					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				});
-			handle_php::push("rechange", [this](int id, ngl::json_read& aos)
+			handle_php::push("rechange", [this](int id, const ngl::json_read& aos)
 				{//actor_role::loginpay() callback
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)
@@ -294,7 +294,7 @@ namespace ngl
 					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
 			// 禁言 lduration=0解封
-			handle_php::push("notalk", [this](int id, ngl::json_read& aos)
+			handle_php::push("notalk", [this](int id, const ngl::json_read& aos)
 				{
 					int32_t lduration;
 					if (aos.read("data", lduration) == false)

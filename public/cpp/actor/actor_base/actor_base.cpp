@@ -197,7 +197,7 @@ namespace ngl
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
 		actor_base*									m_actor;
 
-		i32_session									m_kcpsession;
+		i32_session									m_kcpsession = -1;
 
 		//# 间隔一段时间发起的全员(所有actor)广播
 		//# 可以在这个广播里推送一些需要处理的任务,例如 保存数据
@@ -209,7 +209,6 @@ namespace ngl
 		bool										m_isbroadcast = false;			
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
-			m_kcpsession(-1),
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
 			m_isload(aparm.m_manage_dbclient),
 			m_actor(aactor)

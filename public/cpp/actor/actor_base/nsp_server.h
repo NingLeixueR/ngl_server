@@ -45,18 +45,19 @@ namespace ngl
 		{
 			if (data_modified<TDATA>* lp = m_dbmodule->find(aactorid); lp == nullptr)
 				return;
-			for (const std::pair<const i64_actorid, std::set<i64_actorid>>& lpair :m_publishlist)
-			{
-				if (!lpair.second.empty())
+
+			std::ranges::for_each(m_publishlist, [](const auto& lpair)
 				{
-					continue;
-				}
-				if(lpair.second.contains(aactorid) == false)
-				{
-					continue;
-				}
-				actor::static_send_actor(lpair.first, nguid::make(), apro);
-			}
+					if (!lpair.second.empty())
+					{
+						continue;
+					}
+					if (lpair.second.contains(aactorid) == false)
+					{
+						continue;
+					}
+					actor::static_send_actor(lpair.first, nguid::make(), apro);
+				});
 		}
 
 	public:

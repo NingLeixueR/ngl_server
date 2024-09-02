@@ -141,7 +141,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("change_familyname", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("change_familyname", [this](int id, const ngl::json_read& aos)
 				{
 					struct gm_changename
 					{
@@ -160,7 +160,7 @@ namespace ngl
 				}
 			);
 
-			handle_cmd::push("get_family", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("get_family", [this](int id, const ngl::json_read& aos)
 				{
 					int64_t familid = 0;
 					if (aos.read("data", familid) == false)

@@ -259,7 +259,7 @@ namespace ngl
 #pragma endregion
 		
 		// # ¹Ø±Õ´Ëactor
-		bool handle(const message<np_actor_close>& adata)
+		bool handle(const message<np_actor_close>&)
 		{
 			erase_actor_byid();
 			return true;

@@ -168,7 +168,7 @@ namespace ngl
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);
 
-		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
+		using handle_php = cmd<actor_role, std::string, int, const ngl::json_read&>;
 		//# gm请求
 		bool handle(const message<mforward<np_gm>>& adata);
 

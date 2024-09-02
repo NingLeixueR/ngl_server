@@ -45,7 +45,7 @@ namespace ngl
 				
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
-		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
+		using handle_php = cmd<actor_role, std::string, int, const ngl::json_read&>;
 		//# gm«Î«Û
 		bool handle(const message<mforward<np_gm>>& adata);
 	};

@@ -96,7 +96,7 @@ namespace ngl
 			return 1;
 		}
 		auto& applylist = *lpfamily->mutable_m_applylist();
-		auto it = std::find(applylist.begin(), applylist.end(), aroleid);
+		auto it = std::ranges::find(applylist, aroleid);
 		if (it == applylist.end())
 		{
 			return 2;

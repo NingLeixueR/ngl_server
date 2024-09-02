@@ -16,7 +16,7 @@ namespace ngl
 			handle_cmd::push("/time", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
-					message<pbnet::PROBUFF_NET_GET_TIME> lmessage(0, nullptr, &pro);
+					message lmessage(0, nullptr, &pro);
 					role->handle(lmessage);
 				}
 			);
@@ -60,7 +60,7 @@ namespace ngl
 							}
 							pro->set_m_content(lvec[2]);
 						}
-						message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, pro);
+						message lmessage(0, nullptr, pro);
 						role->handle_forward<ACTOR_CHAT>(lmessage);
 					}
 				}
@@ -74,7 +74,7 @@ namespace ngl
 					if (tools::splite(aparm, "*", lchannelid) == false)
 						return;
 					pro->set_m_channelid(lchannelid);
-					message<pbnet::PROBUFF_NET_CHAT> lmessage(0, nullptr, pro);
+					message lmessage(0, nullptr, pro);
 					role->handle_forward<ACTOR_CHAT>(lmessage);
 				}
 			);
@@ -91,7 +91,7 @@ namespace ngl
 						return;
 
 					pro->set_m_line(tab->m_tcount);
-					message<pbnet::PROBUFF_NET_SWITCH_LINE> lmessage(0, nullptr, pro);
+					message lmessage(0, nullptr, pro);
 					role->handle(lmessage);
 				}
 			);
@@ -104,14 +104,14 @@ namespace ngl
 			handle_cmd::push("/notices", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE>();
-					message<pbnet::PROBUFF_NET_NOTICE> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_NOTICE>(lmessage);
 				}
 			);
 			handle_cmd::push("/mails", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST>();
-					message<pbnet::PROBUFF_NET_MAIL_LIST> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_MAIL>(lmessage);
 				}
 			);
@@ -120,7 +120,7 @@ namespace ngl
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL>();
 					pro->set_m_name(aparm);
-					message<pbnet::PROBUFF_NET_CREATE_FAMIL> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -132,7 +132,7 @@ namespace ngl
 						pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
 					else
 						pro->set_m_familid(-1);
-					message<pbnet::PROBUFF_NET_FAMIL_LIST> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -142,7 +142,7 @@ namespace ngl
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
 					pro->set_m_apply(true);
-					message<pbnet::PROBUFF_NET_JOIN_FAMIL> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -152,7 +152,7 @@ namespace ngl
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
 					pro->set_m_apply(false);
-					message<pbnet::PROBUFF_NET_JOIN_FAMIL> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -166,7 +166,7 @@ namespace ngl
 						return;
 					pro->set_m_roleid(lroleid);
 					pro->set_m_ratify(lratify);
-					message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -178,7 +178,7 @@ namespace ngl
 					if (tools::splite(aparm, "*", lroleid) == false)
 						return;
 					pro->set_m_roleid(lroleid);
-					message<pbnet::PROBUFF_NET_CEDE_FAMIL> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -187,7 +187,7 @@ namespace ngl
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_LEAVE_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
-					message<pbnet::PROBUFF_NET_LEAVE_FAMIL> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -201,7 +201,7 @@ namespace ngl
 						return;
 					pro->set_m_familid(lfamilylid);
 					pro->set_m_name(lfamilylname);
-					message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
@@ -213,7 +213,7 @@ namespace ngl
 					if (tools::splite(aparm, "*", lfamilylid) == false)
 						return;
 					pro->set_m_familid(lfamilylid);
-					message<pbnet::PROBUFF_NET_FAMILSIGN> lmessage(1, nullptr, pro);
+					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
