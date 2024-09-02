@@ -29,13 +29,13 @@ namespace ngl
 
 	}
 
-	bool actor_ranklist::handle(message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
+	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
 		m_ranklist.sync_ranklist(adata.get_data()->identifier(), adata.get_data()->data()->m_type());
 		return true;
 	}
 
-	bool actor_ranklist::handle(message<mforward<np_gm>>& adata)
+	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
@@ -45,7 +45,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("ranklist", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("ranklist", [this](int id, const ngl::json_read& aos)
 				{
 					int32_t lenum;
 					if (aos.read("data", lenum) == false)

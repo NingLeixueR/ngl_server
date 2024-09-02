@@ -35,7 +35,7 @@ namespace ngl
 		return m_kcpsessionmd5.c_str();
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
 	{
 		Try
 		{
@@ -49,7 +49,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->m_utc(), "%y/%m/%d %H:%M:%S");
@@ -57,7 +57,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();
 		if (lrecv->m_type() == pbnet::get_chat_list)
@@ -85,12 +85,12 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
 	{
 		struct noticeitem
 		{
@@ -135,9 +135,9 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
 	{
-		pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.get_data();
+		const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.get_data();
 		char lbuff[1024] = { 0 };
 		auto lstream = log_error();
 		for (const auto& [_id, _mail] : pro.m_mail())
@@ -157,28 +157,28 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
 	{
 		log_error()->print("发货成功！！！");
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_ERROR>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERROR>& adata)
 	{
 		log_error()->print("[{}][{}]"
 			, nguid::make_type(id_guid(), ACTOR_ROLE)
@@ -187,7 +187,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
 		const tab_servers* tab = ttab_servers::tab();
 		m_kcpsessionmd5 = adata.get_data()->m_kcpsession();
@@ -199,7 +199,7 @@ namespace ngl
 		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata)
 	{
 		auto lstream = log_error();
 		(*lstream) << 
@@ -212,7 +212,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
 	{
 		auto lstream = log_error();
 		(*lstream) <<
@@ -226,7 +226,7 @@ namespace ngl
 	}
 
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata)
 	{
 		auto lstream = log_error();
 		(*lstream) <<
@@ -239,7 +239,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata)
 	{
 		auto lstream = log_error();
 		(*lstream) <<
@@ -252,7 +252,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
 	{
 		auto lstream = log_error();
 		(*lstream) <<
@@ -265,9 +265,9 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
 	{
-		pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE* lpdata = adata.get_data();
+		const pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE* lpdata = adata.get_data();
 		auto lstream = log_error();
 		(*lstream) << std::endl;
 		(*lstream) << "##############famil list start##############" << std::endl;
@@ -288,7 +288,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata)
 	{
 		auto lstream = log_error();
 		(*lstream) <<
@@ -301,17 +301,17 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
 	{
 		auto recv = adata.get_data();
 		auto lstream = log_error();
@@ -322,10 +322,7 @@ namespace ngl
 			{
 				(*lstream) << 
 					std::format(
-						"roleid:{} name:{} lv:{}", 
-						item.m_id(),
-						item.m_name(), 
-						item.m_lv()
+						"roleid:{} name:{} lv:{}", item.m_id(), item.m_name(), item.m_lv()
 					) << std::endl;
 			}
 		}

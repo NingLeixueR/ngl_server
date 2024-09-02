@@ -57,10 +57,10 @@ namespace ngl
 			return nguid::make(ACTOR_RANKLIST, ttab_servers::tab()->m_area, nguid::none_actordataid());
 		}
 
-		bool handle(message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
 
-		using handle_cmd = cmd<actor_ranklist, std::string, int, ngl::json_read&>;
+		using handle_cmd = cmd<actor_ranklist, std::string, int, const ngl::json_read&>;
 		// # GM²Ù×÷
-		bool handle(message<mforward<np_gm>>& adata);
+		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl

@@ -83,7 +83,7 @@ namespace ngl
 
 		bool addmail(
 			i64_actorid aroleid, 
-			int atid, std::map<int32_t, int32_t>& aitem, 
+			int atid, const std::map<int32_t, int32_t>& aitem, 
 			const std::string& acontent, 
 			const std::string& aparm
 		)
@@ -127,10 +127,7 @@ namespace ngl
 		}
 
 		bool addmail(
-			i64_actorid aroleid, 
-			int atid, 
-			std::map<int32_t, int32_t>& aitem, 
-			const std::string& aparm = ""
+			i64_actorid aroleid, int atid,const std::map<int32_t, int32_t>& aitem, const std::string& aparm = ""
 		)
 		{
 			return addmail(aroleid, atid, aitem, "", aparm);
@@ -138,9 +135,7 @@ namespace ngl
 
 
 		bool addmail(
-			i64_actorid aroleid, 
-			std::map<int32_t, int32_t>& aitem, 
-			const std::string& acontent
+			i64_actorid aroleid, const std::map<int32_t, int32_t>& aitem, const std::string& acontent
 		)
 		{
 			return addmail(aroleid, -1, aitem, acontent, "");

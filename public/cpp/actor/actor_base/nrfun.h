@@ -63,21 +63,21 @@ namespace ngl
 		{
 		}
 
-		T* get_data()
+		const T* get_data()const
 		{
 			if (m_shared_data != nullptr)
 				return m_shared_data.get();
 			return m_original_data;
 		}
 
-		std::shared_ptr<T>& get_shared_data()
+		const std::shared_ptr<T>& get_shared_data()const
 		{
 			return m_shared_data;
 		}
 	};
 
 	template <typename TDerived, typename TPRAM>
-	using Tfun = bool (TDerived::*)(message<TPRAM>&);
+	using Tfun = bool (TDerived::*)(const message<TPRAM>&);
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	class nrfun : public nrfunbase

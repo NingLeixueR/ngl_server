@@ -102,9 +102,7 @@ namespace ngl
 				{
 					log_error()->print(
 						"[##structbytes::tostruct()] [T:{}] [{} != {}]"
-						, tools::type_name<T>()
-						, apack->m_head.getvalue(EPH_BYTES)
-						, apack->m_pos
+						, tools::type_name<T>(), apack->m_head.getvalue(EPH_BYTES), apack->m_pos
 					);
 					return false;
 				}

@@ -50,17 +50,17 @@ namespace ngl
 		}
 
 		// # 转发给单例
-		void sendbytype(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro);
+		void sendbytype(ENUM_ACTOR atype, const pack* apack, const ngl::np_gm& apro);
 
 		// # 转发给特定actor
-		void sendbyactorid(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro);
+		void sendbyactorid(i64_actorid aactorid, const pack* apack, const ngl::np_gm& apro);
 
 		// # 回复gm.php
 		bool reply_php(const pack* apack, ngl::np_gm_response& adata)const;
 
 		using handle_cmd = cmd<actor_gm, std::string, ngl::json_read&>;
-		bool handle(message<ngl::np_gm>& adata);
+		bool handle(const message<ngl::np_gm>& adata);
 
-		bool handle(message<mforward<ngl::np_gm_response>>& adata);
+		bool handle(const message<mforward<ngl::np_gm_response>>& adata);
 	};
 }// namespace ngl

@@ -65,12 +65,12 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<np_actor_addnotice>& adata);
+		bool handle(const message<np_actor_addnotice>& adata);
 
-		using handle_cmd = cmd<actor_notice, std::string, int, ngl::json_read&>;
-		bool handle(message<mforward<np_gm>>& adata);
+		using handle_cmd = cmd<actor_notice, std::string, int, const ngl::json_read&>;
+		bool handle(const message<mforward<np_gm>>& adata);
 
 		//# 客户端拉取公告
-		bool handle(message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);		
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);
 	};
 }//namespace ngl

@@ -240,7 +240,7 @@ namespace ngl
 		return lstat;
 	}
 
-	bool actor_role::handle(message<mforward<np_gm>>& adata)
+	bool actor_role::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
@@ -329,7 +329,7 @@ namespace ngl
 		return true;
 	}
 
-	void actor_role::forward_before(pbnet::PROBUFF_NET_CREATE_FAMIL& adata)
+	void actor_role::forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata)
 	{
 		if (ttab_specialid::m_createfamilconsume > m_info.gold())
 		{
@@ -338,7 +338,7 @@ namespace ngl
 		m_info.change_gold(-ttab_specialid::m_createfamilconsume);
 	}
 
-	bool actor_role::timer_handle(message<timerparm>& adata)
+	bool actor_role::timer_handle(const message<timerparm>& adata)
 	{
 		return true;
 	}

@@ -87,7 +87,7 @@ namespace ngl
 		//# TDBTAB 数据表
 		//# TACTOR 持有该数据表的actor
 		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-		bool handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
+		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata);
 #pragma endregion 
 
 #pragma region virtual_function
@@ -411,7 +411,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(std::vector<i64_actorid>& avecguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
+		static void static_send_actor(const std::vector<i64_actorid>& avecguid, const nguid& arequestguid, std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
 			for (i64_actorid actorid: avecguid)

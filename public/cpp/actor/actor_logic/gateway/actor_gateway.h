@@ -49,21 +49,21 @@ namespace ngl
 		void session_close(gateway_socket* ainfo);
 
 		// # actor_login通知gateway玩家已经登录(并纪录session及对应的game服务器)
-		bool handle(message<np_actorrole_login>& adata);
+		bool handle(const message<np_actorrole_login>& adata);
 
 		// # 玩家登陆
-		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
 		// # 获取kcp-session
-		bool handle(message<np_actor_kcp>& adata);
+		bool handle(const message<np_actor_kcp>& adata);
 
-		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION>& adata);	
+		bool handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata);
 
 		// # 玩家切换game进程
-		bool handle(message<np_actorswitch_process<np_actorswitch_process_role>>& adata);
+		bool handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata);
 
 		// # 断开连接
-		bool handle(message<np_actor_session_close>& adata);
+		bool handle(const message<np_actor_session_close>& adata);
 	};
 }//namespace ngl
 

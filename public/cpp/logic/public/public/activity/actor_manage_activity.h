@@ -71,11 +71,11 @@ namespace ngl
 			}
 		}
 		
-		bool handle(message<np_actor_activity>& adata);
+		bool handle(const message<np_actor_activity>& adata);
 
 		virtual void init();
 
-		bool timer_handle(message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>& adata);
 	private:
 	};
 }//namespace ngl

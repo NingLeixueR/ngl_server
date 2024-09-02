@@ -168,7 +168,7 @@ namespace ngl
 			m_cache_del.push(aid);
 		}
 
-		static void del(i32_threadid, std::vector<i64_actorid>& aid)
+		static void del(i32_threadid, const std::vector<i64_actorid>& aid)
 		{
 			ngl::db_data<TDBTAB>::remove(aid);
 			m_cache_del.push(aid);
@@ -241,7 +241,7 @@ namespace ngl
 			>(true);
 		}
 
-		bool handle(message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
+		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print(
 				"load: np_actordb_load<{}> id:{}", 
@@ -251,20 +251,20 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
+		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::save(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
 		}
 
-		bool handle(message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
+		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::del(adata.m_thread, adata.get_data()->m_data);
 			return true;
 		}
 
 		// # ACTOR_TIMER_DB_CACHE, db cache list  ±£¥Êª∫¥Ê¡–±Ì
-		bool handle(message<np_actortime_db_cache<TDBTAB>>& adata)
+		bool handle(const message<np_actortime_db_cache<TDBTAB>>& adata)
 		{
 			enum_cache_list ltype = adata.get_data()->m_type;
 			for (i64_actorid id : adata.get_data()->m_ls)
@@ -293,9 +293,9 @@ namespace ngl
 
 		using handle_cmd = cmd<tactor_db, std::string, int, int, const ngl::json_read&>;
 
-		bool handle(message<mforward<np_gm>>& adata)
+		bool handle(const message<mforward<np_gm>>& adata)
 		{
-			mforward<np_gm>& parm = *adata.get_data();
+			const mforward<np_gm>& parm = *adata.get_data();
 			ngl::json_read lojson(parm.data()->m_json.c_str());
 
 			std::string loperator;

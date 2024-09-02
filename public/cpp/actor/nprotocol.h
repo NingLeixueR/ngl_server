@@ -131,7 +131,7 @@ namespace ngl
 		bool		m_stat = true;
 		bool		m_over = true;
 
-		std::map<nguid, T>& data()
+		const std::map<nguid, T>& data()const
 		{
 			return *m_data.m_data;
 		}
@@ -196,13 +196,13 @@ namespace ngl
 		int64_t				m_identifier = 0;
 		std::shared_ptr<T>	m_data;
 	public:
-		np_actormodule_forward(int64_t aidentifier, std::shared_ptr<T>& adata) :
+		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
 			m_data(adata)
 		{
 		}
 
-		np_actormodule_forward(int64_t aidentifier, T& adata) :
+		np_actormodule_forward(int64_t aidentifier, const T& adata) :
 			m_identifier(aidentifier),
 			m_data(new T(adata))
 		{
@@ -233,7 +233,7 @@ namespace ngl
 			return m_data.get();
 		}
 
-		T* data()
+		const T* data()const
 		{
 			if (m_data == nullptr)
 				return nullptr;
@@ -324,12 +324,12 @@ namespace ngl
 		using BASE_TYPE = T;
 		static const bool isusing = ISUSING;
 
-		T* get_data()
+		const T* get_data()const
 		{
 			return nullptr;
 		}
 
-		std::shared_ptr<T> get_shared()
+		const std::shared_ptr<T> get_shared()const
 		{
 			return nullptr;
 		}
@@ -346,17 +346,17 @@ namespace ngl
 
 		np_actor_forward() = default;
 
-		explicit np_actor_forward(np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
+		explicit np_actor_forward(const np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
 		{
 		}
 
-		T* get_data()
+		const T* get_data()const
 		{
 			return nullptr;
 		}
 
-		std::shared_ptr<T> get_shared()
+		const std::shared_ptr<T> get_shared()const
 		{
 			return nullptr;
 		}
@@ -373,16 +373,16 @@ namespace ngl
 
 		np_actor_forward() = default;
 
-		explicit np_actor_forward(np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
+		explicit np_actor_forward(const np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
 			m_recvpack(adata.m_recvpack)
 		{}
 
-		T* get_data()
+		const T* get_data()const
 		{
 			return nullptr;
 		}
 
-		std::shared_ptr<T> get_shared()
+		const std::shared_ptr<T> get_shared()const
 		{
 			return nullptr;
 		}
@@ -406,19 +406,19 @@ namespace ngl
 			m_data.m_data = adata;
 		}
 
-		T* get_data()
+		const T* get_data()const
 		{
 			return m_data.m_data.get();
 		}
 
-		std::shared_ptr<T> get_shared()
+		const std::shared_ptr<T> get_shared()const
 		{
 			return m_data.m_data;
 		}
 
 		np_actor_forward() = default;
 
-		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
+		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
@@ -440,12 +440,12 @@ namespace ngl
 			m_data.m_data = adata;
 		}
 
-		T* get_data()
+		const T* get_data()const
 		{
 			return m_data.m_data.get();
 		}
 
-		std::shared_ptr<T> get_shared()
+		const std::shared_ptr<T> get_shared()const
 		{
 			return m_data.m_data;
 		}
@@ -457,7 +457,7 @@ namespace ngl
 
 		np_actor_forward() = default;
 
-		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
+		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
@@ -480,7 +480,7 @@ namespace ngl
 			m_data = &adata;
 		}
 
-		T* get_data()
+		const T* get_data()const
 		{
 			return m_data != nullptr ? m_data : &m_data_;
 		}
@@ -489,7 +489,7 @@ namespace ngl
 			:m_data(nullptr)
 		{}
 
-		explicit np_actor_forward(np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING ? false : true, T>& adata)
+		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING ? false : true, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 

@@ -40,7 +40,7 @@ namespace ngl
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(message<np_actor_forward<T, TYPE, false, ngl::forward>>& adata)
+		bool handle(const message<np_actor_forward<T, TYPE, false, ngl::forward>>& adata)
 		{
 			//Client->Gate  需要把这个消息传递给Game服务器
 			//adata.m_uid == socket id
@@ -67,7 +67,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<np_actor_gatewayinfo_updata>& adata);
+		bool handle(const message<np_actor_gatewayinfo_updata>& adata);
 	};
 }//namespace ngl
 

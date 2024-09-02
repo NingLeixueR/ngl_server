@@ -45,7 +45,7 @@ namespace ngl
 			m_ls.insert(aid);
 		}
 
-		void push(std::vector<i64_actorid>& aidlist)
+		void push(const std::vector<i64_actorid>& aidlist)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_ls.insert(aidlist.begin(), aidlist.end());

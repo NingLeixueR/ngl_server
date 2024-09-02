@@ -160,7 +160,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_client::handle(message<np_actornode_register_response>& adata)
+	bool actor_client::handle(const message<np_actornode_register_response>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
@@ -194,7 +194,7 @@ namespace ngl
 		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
-	bool actor_client::handle(message<np_actorclient_node_connect>& adata)
+	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
@@ -240,7 +240,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(message<np_actornode_update>& adata)
+	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
 		Try
 		{
@@ -251,13 +251,13 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(message<np_actornode_update_mass>& adata)
+	bool actor_client::handle(const message<np_actornode_update_mass>& adata)
 	{
 		auto lparm = adata.get_data();
 		auto lpack = adata.m_pack;
 		int32_t lthreadid = adata.m_thread;
 
-		message<np_actornode_update> lmessage(lthreadid, lpack, &lparm->m_mass);
+		message<np_actornode_update> lmessage(lthreadid, lpack, (np_actornode_update*)&lparm->m_mass);
 
 		handle(lmessage);
 
@@ -305,7 +305,7 @@ namespace ngl
 		}
 	}
 	
-	bool actor_client::handle(message<np_actornode_connect_task>& adata)
+	bool actor_client::handle(const message<np_actornode_connect_task>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
@@ -323,7 +323,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_client::handle(message<np_actor_gatewayid_updata>& adata)
+	bool actor_client::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;

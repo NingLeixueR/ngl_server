@@ -43,11 +43,11 @@ namespace ngl
 			return nguid::make(ACTOR_MANAGE_ROLE, nguid::none_area(), ttab_servers::tab()->m_tcount);
 		}
 				
-		bool handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
 		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
 		//# gmÇëÇó
-		bool handle(message<mforward<np_gm>>& adata);
+		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }//namespace ngl
 

@@ -35,10 +35,7 @@ namespace ngl
 	}
 
 	bool actor_mail::sendmail(
-		i64_actorid aactorid,
-		int32_t amailid,
-		int32_t adropid,
-		const std::string& aparm
+		i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm
 	)
 	{
 		auto pro = std::make_shared<np_actor_addmail>();
@@ -54,14 +51,14 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_mail::handle(message<np_actor_addmail>& adata)
+	bool actor_mail::handle(const message<np_actor_addmail>& adata)
 	{
 		auto lparm = adata.get_data();
 		m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);
 		return true;
 	}
 
-	bool actor_mail::handle(message<mforward<np_gm>>& adata)
+	bool actor_mail::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
@@ -71,7 +68,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("get_mails", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("get_mails", [this](int id, const ngl::json_read& aos)
 				{
 					int64_t roleid = 0;
 					if (aos.read("data", roleid) == false)
@@ -86,7 +83,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				}
 			);
-			handle_cmd::push("add_mail", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("add_mail", [this](int id, const ngl::json_read& aos)
 				{
 					struct gm_mailitem
 					{
@@ -123,7 +120,7 @@ namespace ngl
 					pro.m_data = true;
 				}
 			);
-			handle_cmd::push("del_mail", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("del_mail", [this](int id, const ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
 					struct gm_deletemail
@@ -151,10 +148,10 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_mail::handle(message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
+	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MAIL_LIST* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MAIL_LIST* lpdata = lparm->data();
 		if (lpdata == nullptr)
 			return true;
 		i64_actorid roleid = lparm->identifier();
@@ -165,10 +162,10 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_mail::handle(message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
+	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MAIL_READ* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MAIL_READ* lpdata = lparm->data();
 		if (lpdata == nullptr)
 			return true;
 		pbnet::PROBUFF_NET_MAIL_READ_RESPONSE pro;
@@ -177,10 +174,10 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_mail::handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
+	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = lparm->data();
 		if (lpdata == nullptr)
 			return true;
 		pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE pro;
@@ -189,10 +186,10 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_mail::handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
+	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MAIL_DEL* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MAIL_DEL* lpdata = lparm->data();
 		if (lpdata == nullptr)
 			return true;
 		pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE pro;

@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_CMD>& adata)
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		const pbnet::PROBUFF_NET_CMD& lparm = *adata.get_data();
 		log_info()->print("cmd[{}]", lparm.m_cmd());

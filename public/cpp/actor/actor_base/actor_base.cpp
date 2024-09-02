@@ -122,8 +122,6 @@ namespace ngl
 		{
 			ENUM_ACTOR				m_actortype = ACTOR_NONE;
 			std::set<i64_actorid>	m_actorlist;
-			ginfo()
-			{}
 		};
 
 		std::map<int, ginfo>		m_group;

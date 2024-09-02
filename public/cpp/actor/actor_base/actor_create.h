@@ -97,13 +97,13 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool handle(message<np_actorswitch_process<T>>& adata)
+		bool handle(const message<np_actorswitch_process<T>>& adata)
 		{
 			auto lparm = adata.get_data();
 			if (lparm->m_toserverid == nconfig::m_nodeid)
 			{
 				nguid lguid(lparm->m_actor);
-				actor_base::create(lguid.type(), lguid.area(), lguid.actordataid(), &lparm->m_pram);
+				actor_base::create(lguid.type(), lguid.area(), lguid.actordataid(), (void*)&lparm->m_pram);
 			}
 			else if (lparm->m_serverid == nconfig::m_nodeid)
 			{

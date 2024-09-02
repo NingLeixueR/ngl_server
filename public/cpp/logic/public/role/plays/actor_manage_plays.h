@@ -25,10 +25,10 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave);
 
 		// 创建玩法
-		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata);
 
 		// 定时器
-		bool timer_handle(message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>& adata);
 	};
 }
 

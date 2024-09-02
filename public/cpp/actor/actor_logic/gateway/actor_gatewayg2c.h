@@ -42,7 +42,7 @@ namespace ngl
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)
+		bool handle(const message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)
 		{
 			auto lparm = adata.get_data();
 			auto lpack = adata.m_pack;
@@ -92,7 +92,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<np_actor_gatewayinfo_updata>& adata);
+		bool handle(const message<np_actor_gatewayinfo_updata>& adata);
 	};
 
 }//namespace ngl

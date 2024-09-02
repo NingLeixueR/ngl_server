@@ -64,10 +64,7 @@ namespace ngl
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(
-		int area, 
-		const std::string& account, 
-		const std::string& apassworld, 
-		bool& aiscreate
+		int area, const std::string& account, const std::string& apassworld, bool& aiscreate
 	)
 	{
 		aiscreate = false;
@@ -96,8 +93,7 @@ namespace ngl
 	}
 
 	bool actor_login::get_freeserver(
-		std::map<i32_serverid, server_info>& amap, 
-		std::pair<i32_serverid, int32_t>& apair
+		std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair
 	)
 	{
 		apair.first = -1;
@@ -156,7 +152,7 @@ namespace ngl
 		log_error()->print("game[{}] \ngateway[{}]", m_game, m_gateway);
 	}
 	
-	bool actor_login::handle(message<np_actorserver_connect>& adata)
+	bool actor_login::handle(const message<np_actorserver_connect>& adata)
 	{
 		auto lparm = adata.get_data();
 		server_info ltemp
@@ -177,7 +173,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_login::handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
+	bool actor_login::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
 	{
 		Try
 		{
@@ -240,7 +236,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_login::handle(message<np_actor_disconnect_close>& adata)
+	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)
 	{
 		auto itor = m_actorbyserver.find(adata.get_data()->m_actorid);
 		if (itor == m_actorbyserver.end())

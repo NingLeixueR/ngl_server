@@ -9,10 +9,7 @@ namespace ngl
 {
 	// 用于创建非单例actor
 	actor_base* actor_base::create(
-		ENUM_ACTOR atype, 
-		i16_area aarea, 
-		i32_actordataid aid, 
-		void* aparm/* = nullptr*/
+		ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/
 	)
 	{
 		i64_actorid lactorid = nguid::make(atype, aarea, aid);

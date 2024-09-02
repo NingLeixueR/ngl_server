@@ -43,7 +43,7 @@ namespace ngl
 		set_timer(tparm);			
 	}
 	
-	bool actor_chat::timer_handle(message<timerparm>& adata)
+	bool actor_chat::timer_handle(const message<timerparm>& adata)
 	{
 		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
 			return true;
@@ -65,9 +65,9 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_chat::handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
+	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 	{
-		pbnet::PROBUFF_NET_CHAT& recv = *adata.get_data()->data();
+		const pbnet::PROBUFF_NET_CHAT& recv = *adata.get_data()->data();
 		if (recv.m_type() == pbnet::chat_speak)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();

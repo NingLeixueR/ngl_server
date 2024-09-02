@@ -73,12 +73,12 @@ namespace ngl
 
 		//# 重载forward_type来指定转发类型
 		template <typename T>
-		ecross forward_type(T& adata)
+		ecross forward_type(const T& adata)
 		{
 			return ecross_ordinary;
 		}
 
-		ecross forward_type(pbnet::PROBUFF_NET_CHAT& adata)
+		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			int lnow = localtime::gettime();
 			if (lnow < m_info.notalkutc())
@@ -93,22 +93,22 @@ namespace ngl
 
 		//# 重载forward_before来指定转发前事件
 		template <typename T>
-		void forward_before(T& adata)
+		void forward_before(const T& adata)
 		{
 		}
 
 		//# 转发"创建军团"前
-		void forward_before(pbnet::PROBUFF_NET_CREATE_FAMIL& adata);
+		void forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata);
 
 		//# 重载dataid来指定转发模块的dataid
 		template <typename T>
-		int32_t forward_dataid(T& adata)
+		int32_t forward_dataid(const T& adata)
 		{
 			return nguid::none_actordataid();
 		}
 
 		template <ENUM_ACTOR ACTOR, typename T>
-		bool handle_forward(message<T>& adata)
+		bool handle_forward(const message<T>& adata)
 		{
 			std::shared_ptr<mforward<T>> pro(nullptr);
 			if (adata.get_shared_data() == nullptr)
@@ -140,28 +140,28 @@ namespace ngl
 
 		//# CMD 协议
 		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
-		bool handle(message<pbnet::PROBUFF_NET_CMD>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
 
 		//# 获取role数据
-		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
 
 		//# 获取服务器时间
-		bool handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
 
 		//# 切换线路服务器
-		bool handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
 
 		//# 发送物品
-		bool handle(message<np_actor_senditem>& adata);
+		bool handle(const message<np_actor_senditem>& adata);
 
 		//# 断开连接
-		bool handle(message<np_actor_disconnect_close>& adata);
+		bool handle(const message<np_actor_disconnect_close>& adata);
 
 		//# 玩法创建成功  记录玩法actorid
-		bool handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
 
 		//# 领取任务奖励
-		bool handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
@@ -170,13 +170,13 @@ namespace ngl
 
 		using handle_php = cmd<actor_role, std::string, int, ngl::json_read&>;
 		//# gm请求
-		bool handle(message<mforward<np_gm>>& adata);
+		bool handle(const message<mforward<np_gm>>& adata);
 
 		//# 是否首次充值
 		bool is_first_recharge(int32_t arechargeid);
 
 		//# 定时器
-		bool timer_handle(message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>& adata);
 	};
 }//namespace ngl
 

@@ -30,7 +30,7 @@ namespace ngl
 	{
 	}
 
-	bool actor_csvserver::handle(message<np_actor_csv_verify_version>& adata)
+	bool actor_csvserver::handle(const message<np_actor_csv_verify_version>& adata)
 	{
 		log_error()->print("############actor_reloadcsv_distribute::handle###########");
 		auto lparm = adata.get_data();

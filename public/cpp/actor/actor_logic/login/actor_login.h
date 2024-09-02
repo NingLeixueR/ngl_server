@@ -102,11 +102,11 @@ namespace ngl
 		// # 打印空闲服务器数据
 		void printf_freeserver();
 
-		bool handle(message<np_actorserver_connect>& adata);
+		bool handle(const message<np_actorserver_connect>& adata);
 
-		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
 
-		bool handle(message<np_actor_disconnect_close>& adata);
+		bool handle(const message<np_actor_disconnect_close>& adata);
 	};
 }//namespace ngl
 

@@ -55,21 +55,21 @@ namespace ngl
 		static i64_actorid actorid();
 
 		//# 注册结点
-		bool handle(message<np_actornode_register_response>& adata);
+		bool handle(const message<np_actornode_register_response>& adata);
 
 		//# actor客户端间相互连接
-		bool handle(message<np_actorclient_node_connect>& adata);
+		bool handle(const message<np_actorclient_node_connect>& adata);
 
 		//# 服务器向actor客户端同步结点信息
-		bool handle(message<np_actornode_update>& adata);
+		bool handle(const message<np_actornode_update>& adata);
 
 		//# 向actor客户端同步结点信息(群发)
-		bool handle(message<np_actornode_update_mass>& adata);
+		bool handle(const message<np_actornode_update_mass>& adata);
 
 		//# 连接成功后执行任务
-		bool handle(message<np_actornode_connect_task>& adata);
+		bool handle(const message<np_actornode_connect_task>& adata);
 
 		//# 同步actor_role对应的gateway
-		bool handle(message<np_actor_gatewayid_updata>& adata);
+		bool handle(const message<np_actor_gatewayid_updata>& adata);
 	};
 }//namespace ngl

@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	bool actor_server::handle(message<np_actornode_register>& adata)
+	bool actor_server::handle(const message<np_actornode_register>& adata)
 	{
 		Try
 		{
@@ -80,7 +80,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(message<np_actornode_update>& adata)
+	bool actor_server::handle(const message<np_actornode_update>& adata)
 	{
 		Try
 		{
@@ -111,7 +111,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(message<np_actor_gatewayid_updata>& adata)
+	bool actor_server::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
 		auto lrecv = adata.get_data();
 		auto lpack = adata.m_pack;

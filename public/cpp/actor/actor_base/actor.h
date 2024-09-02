@@ -55,14 +55,12 @@ namespace ngl
 			{
 				// # 注册广播处理函数
 				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
-					true, 
-					(Tfun<actor, np_actor_broadcast>) & actor::handle
+					true, (Tfun<actor, np_actor_broadcast>) & actor::handle
 				);
 			}
 			// # 注册actor close处理函数
 			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived>(
-				true,
-				(Tfun<actor, np_actor_close>) & actor::handle
+				true, (Tfun<actor, np_actor_close>) & actor::handle
 			);
 		}
 
@@ -256,12 +254,12 @@ namespace ngl
 		// # 重载此方法实现actor_base::m_broadcast毫秒触发事件
 		virtual void broadcast() {}
 		// # 广播处理函数
-		bool handle(message<np_actor_broadcast>& adata);
+		bool handle(const message<np_actor_broadcast>& adata);
 		// ############# [广播] ############# 
 #pragma endregion
 		
 		// # 关闭此actor
-		bool handle(message<np_actor_close>& adata)
+		bool handle(const message<np_actor_close>& adata)
 		{
 			erase_actor_byid();
 			return true;

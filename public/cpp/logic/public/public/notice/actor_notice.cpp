@@ -30,7 +30,7 @@ namespace ngl
 		>(true);
 	}
 
-	bool actor_notice::handle(message<np_actor_addnotice>& adata)
+	bool actor_notice::handle(const message<np_actor_addnotice>& adata)
 	{
 		auto& recv = *adata.get_data();
 		m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
@@ -52,7 +52,7 @@ namespace ngl
 		)
 	};
 
-	bool actor_notice::handle(message<mforward<np_gm>>& adata)
+	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{
 		//using type = mforward<np_gm_response>;
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
@@ -65,7 +65,7 @@ namespace ngl
 
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("get_notice", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("get_notice", [this](int id, const ngl::json_read& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro;
 					pro.id = id;
@@ -80,7 +80,7 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				}
 			);
-			handle_cmd::push("add_notice", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("add_notice", [this](int id, const ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
 					gm_notice recv;
@@ -93,7 +93,7 @@ namespace ngl
 					m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
 				}
 			);
-			handle_cmd::push("del_notice", [this](int id, ngl::json_read& aos)
+			handle_cmd::push("del_notice", [this](int id, const ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
 					int64_t lid = 0;
@@ -114,7 +114,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_notice::handle(message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
+	bool actor_notice::handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
 	{
 		auto pro = m_notice.sync_notice(-1);
 		send_client(adata.get_data()->identifier(), pro);

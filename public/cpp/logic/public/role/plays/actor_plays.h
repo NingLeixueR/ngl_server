@@ -122,7 +122,7 @@ namespace ngl
 		// Àë¿ªÊÓÒ°
 		virtual void player_leaveview(i64_actorid aroleid1, std::set<i64_actorid>& aother) {}
 
-		bool handle(message<mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>>& adata)
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_ENTER_PLAYS>>& adata)
 		{
 			auto lparm = adata.get_data();
 			if (get_constrole.find(lparm->identifier()) != get_constrole.end())
@@ -140,7 +140,7 @@ namespace ngl
 			return true;
 		}
 		
-		bool timer_handle(message<timerparm>& adata)
+		bool timer_handle(const message<timerparm>& adata)
 		{
 			update_stage();
 			if (check_stage(estage_over) == true)

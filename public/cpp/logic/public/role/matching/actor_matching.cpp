@@ -40,18 +40,18 @@ namespace ngl
 		>(true);
 	}
 
-	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING>>& adata)
+	bool actor_matching::handle(const message<mforward<pbnet::PROBUFF_NET_MATCHING>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MATCHING* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MATCHING* lpdata = lparm->data();
 		m_matching.add_member(lpdata->m_type(), lpdata->m_tid(), lparm->identifier());
 		return true;
 	}
 	
-	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>>& adata)
+	bool actor_matching::handle(const message<mforward<pbnet::PROBUFF_NET_MATCHING_CANCEL>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MATCHING_CANCEL* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MATCHING_CANCEL* lpdata = lparm->data();
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>();
 		pro->set_m_type(lpdata->m_type());
@@ -62,10 +62,10 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_matching::handle(message<mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>>& adata)
+	bool actor_matching::handle(const message<mforward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>>& adata)
 	{
 		auto lparm = adata.get_data();
-		pbnet::PROBUFF_NET_MATCHING_CONFIRM* lpdata = lparm->data();
+		const pbnet::PROBUFF_NET_MATCHING_CONFIRM* lpdata = lparm->data();
 		pbnet::ematching_confirm_stat lstat = m_matching.confirm(lpdata->m_roomid(), lparm->identifier());
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>();
@@ -75,7 +75,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_matching::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
+	bool actor_matching::handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
 	{
 		auto lparm = adata.get_data();
 		// É¾³ý·¿¼ä
@@ -83,7 +83,7 @@ namespace ngl
 		return true;
 	}
 	
-	bool actor_matching::timer_handle(message<timerparm>& adata)
+	bool actor_matching::timer_handle(const message<timerparm>& adata)
 	{
 		m_matching.do_match();
 		return true;

@@ -37,7 +37,7 @@ namespace ngl
 		>(true);
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 
@@ -48,7 +48,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
@@ -69,7 +69,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid ljoinroleid = adata.get_data()->data()->m_roleid();
@@ -81,7 +81,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid lcederoleid = adata.get_data()->data()->m_roleid();
@@ -89,7 +89,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
@@ -101,13 +101,13 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
 	{
 		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
@@ -119,7 +119,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
@@ -131,7 +131,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_family::handle(message<mforward<np_gm>>& adata)
+	bool actor_family::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;

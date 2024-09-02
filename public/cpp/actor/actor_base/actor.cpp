@@ -187,7 +187,7 @@ namespace ngl
 		m_impl_actor()->actor_handle(this, athreadid);
 	}
 
-	bool actor::handle(message<np_actor_broadcast>& adata)
+	bool actor::handle(const message<np_actor_broadcast>& adata)
 	{
 		// # ±£´æÊý¾Ý
 		if (get_actor_manage_dbclient() != nullptr)

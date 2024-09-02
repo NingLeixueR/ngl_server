@@ -57,29 +57,26 @@ namespace ngl
 
 		// # 发送邮件,允许任意位置调用
 		static bool sendmail(
-			i64_actorid aactorid,
-			int32_t amailid,
-			int32_t adropid,
-			const std::string& aparm
+			i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm
 		);
 
 		// # ACTOR_PROTOCOL_ADD_MAIL,新增邮件
-		bool handle(message<np_actor_addmail>& adata);
+		bool handle(const message<np_actor_addmail>& adata);
 
-		using handle_cmd = cmd<actor_mail, std::string, int, ngl::json_read&>;
+		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
 		// # GM操作mail
-		bool handle(message<mforward<np_gm>>& adata);
+		bool handle(const message<mforward<np_gm>>& adata);
 
 		// # 获取邮件列表
-		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata);
 		
 		// # 读取邮件
-		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata);
 
 		// # 领取邮件附件
-		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata);
 		
 		// # 删除邮件
-		bool handle(message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata);
 	};
 }// namespace ngl

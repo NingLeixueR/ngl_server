@@ -31,7 +31,7 @@ namespace ngl
 		nforward::g2c();
 	}
 
-	bool actor_gatewayg2c::handle(message<np_actor_gatewayinfo_updata>& adata)
+	bool actor_gatewayg2c::handle(const message<np_actor_gatewayinfo_updata>& adata)
 	{
 		auto lpram = adata.get_data();
 		for (auto& item : lpram->m_delsocket)

@@ -34,9 +34,9 @@ namespace ngl
 			return nguid::make(ACTOR_CSVCLIENT, ttab_servers::tab()->m_area, nconfig::m_nodeid);
 		}
 
-		bool handle(message<np_actor_reloadcsv>& adata);
+		bool handle(const message<np_actor_reloadcsv>& adata);
 
 		// # ¶¨Ê±Æ÷
-		bool timer_handle(message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>& adata);
 	};
 }//namespace ngl

@@ -61,31 +61,31 @@ namespace ngl
 		}
 
 		// # 创建军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata);
 
 		// # 申请/取消加入军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata);
 
 		// # 军团长同意/不同意玩家加入军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata);
 
 		// # 军团长转让军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata);
 
 		// # 离开军团
-		bool handle(message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata);
 
 		// # 获取军团列表
-		bool handle(message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata);
 
 		// # 修改军团名称
-		bool handle(message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata);
 
 		// # 军团签到
-		bool handle(message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata);
 
 		using handle_cmd = cmd<actor_mail, std::string, int, ngl::json_read&>;
 		// # GM操作
-		bool handle(message<mforward<np_gm>>& adata);
+		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl

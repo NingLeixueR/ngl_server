@@ -144,7 +144,7 @@ namespace ngl
 					if (apack->m_protocol == ENET_KCP)
 					{
 						lp->make_data();
-						if (structbytes<T>::tostruct(apack, *lp->get_data()))
+						if (structbytes<T>::tostruct(apack, *(T*)lp->get_data()))
 						{
 							i64_actorid lactorid = nets::kcp()->find_actorid(apack->m_id);
 							lp->m_uid.push_back(nguid::actordataid(lactorid));

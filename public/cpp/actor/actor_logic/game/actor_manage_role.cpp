@@ -46,7 +46,7 @@ namespace ngl
 		>(false);
 	}
 
-	bool actor_manage_role::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
+	bool actor_manage_role::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		auto recv = adata.get_data();
 
@@ -66,7 +66,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_manage_role::handle(message<mforward<np_gm>>& adata)
+	bool actor_manage_role::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;

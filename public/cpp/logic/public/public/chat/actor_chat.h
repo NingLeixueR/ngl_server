@@ -51,10 +51,10 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		bool handle(message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata);
 
 		virtual void init();
 
-		bool timer_handle(message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>& adata);
 	};
 }//namespace ngl

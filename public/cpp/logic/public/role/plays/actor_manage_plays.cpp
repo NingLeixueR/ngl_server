@@ -32,14 +32,15 @@ namespace ngl
 	{
 	}
 
-	bool actor_manage_plays::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata)
+	bool actor_manage_plays::handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata)
 	{
 		auto lrecv = adata.get_data();
 		int32_t tid = roomid::tid(lrecv->m_roomid());
 		auto tab = allcsv::tab<tab_plays>(tid);
 		assert(tab != nullptr);
 		np_actorswitch_process_plays pram;
-		std::ranges::for_each(*lrecv->mutable_m_member(), [&pram](const auto& adata)
+		
+		std::ranges::for_each(lrecv->m_member(), [&pram](const auto& adata)
 			{
 				pram.m_players.push_back(adata.m_id());
 			});
@@ -48,7 +49,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_manage_plays::timer_handle(message<timerparm>& adata)
+	bool actor_manage_plays::timer_handle(const message<timerparm>& adata)
 	{
 		return true;
 	}

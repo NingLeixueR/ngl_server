@@ -25,13 +25,13 @@ namespace ngl
 		>(false);
 	}
 
-	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, ngl::np_gm& apro)
+	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, const ngl::np_gm& apro)
 	{
 		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
 		send_actor(atype, pro, true);
 	}
 
-	void actor_gm::sendbyactorid(i64_actorid aactorid, const pack* apack, ngl::np_gm& apro)
+	void actor_gm::sendbyactorid(i64_actorid aactorid, const pack* apack, const ngl::np_gm& apro)
 	{
 		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
 		send_actor(aactorid, pro);
@@ -43,7 +43,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gm::handle(message<ngl::np_gm>& adata)
+	bool actor_gm::handle(const message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
 		ngl::json_read lreadjson(adata.get_data()->m_json.c_str());
@@ -144,7 +144,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gm::handle(message<mforward<ngl::np_gm_response>>& adata)
+	bool actor_gm::handle(const message<mforward<ngl::np_gm_response>>& adata)
 	{
 		log_error()->print("gm2php [{}]", adata.get_data()->data()->m_json);
 		send((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data(), nguid::make(), nguid::make());

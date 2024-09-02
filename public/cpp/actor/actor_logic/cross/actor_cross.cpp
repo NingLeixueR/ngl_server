@@ -35,7 +35,7 @@ namespace ngl
 		log_error()->print("actor_cross###loaddb_finish#[{}]", nguid(id_guid()));
 	}
 	
-	bool actor_cross::timer_handle(message<timerparm>& adata)
+	bool actor_cross::timer_handle(const message<timerparm>& adata)
 	{
 		return true;
 	}

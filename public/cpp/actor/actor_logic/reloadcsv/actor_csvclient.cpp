@@ -42,7 +42,7 @@ namespace ngl
 	{
 	}
 
-	bool actor_csvclient::handle(message<np_actor_reloadcsv>& adata)
+	bool actor_csvclient::handle(const message<np_actor_reloadcsv>& adata)
 	{
 		for (const auto& [key, value] : adata.get_data()->m_csvcontent)
 		{
@@ -56,7 +56,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_csvclient::timer_handle(message<timerparm>&)
+	bool actor_csvclient::timer_handle(const message<timerparm>&)
 	{
 		log_error()->print("############actor_csvclient::timer_handle###########");
 		auto pro = std::make_shared<np_actor_csv_verify_version>();

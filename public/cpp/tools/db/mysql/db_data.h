@@ -58,7 +58,7 @@ namespace ngl
 		}
 
 		// # 移除一组数据
-		static void remove(std::set<i64_actorid>& aid)
+		static void remove(const std::set<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
 			{
@@ -68,7 +68,7 @@ namespace ngl
 		}
 
 		// # 移除一组数据
-		static void remove(std::vector<i64_actorid>& aid)
+		static void remove(const std::vector<i64_actorid>& aid)
 		{
 			for (i64_actorid id : aid)
 			{

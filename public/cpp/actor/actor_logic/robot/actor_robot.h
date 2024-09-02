@@ -41,28 +41,28 @@ namespace ngl
 
 		virtual const char* kcp_session();
 
-		bool handle(message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_ERROR>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata);
-		bool handle(message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ERROR>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata);
 	};
 
 	class actor_manage_robot : public actor
@@ -135,7 +135,7 @@ namespace ngl
 			}
 		}
 
-		bool handle(message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
+		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 		{
 			auto lrecv = adata.get_data();
 			_robot& lrobot			= m_maprobot[lrecv->m_account()];
@@ -177,32 +177,33 @@ namespace ngl
 			return true;
 		}
 
-		using handle_cmd = cmd<actor_manage_robot, std::string, std::vector<std::string>&>;
+		using handle_cmd = cmd<actor_manage_robot, std::string, const std::vector<std::string>&>;
 
-		bool handle(message<np_robot_pram>& adata)
+		bool handle(const message<np_robot_pram>& adata)
 		{
 			auto lrecv = adata.get_data();
+			std::string lparm1;
 			if (lrecv->m_parm.size() > 1)
 			{
-				std::string& lparm = lrecv->m_parm[1];
-				std::ranges::transform(lparm, lparm.begin(), tolower);
+				lparm1 = lrecv->m_parm[0];
+				std::ranges::transform(lparm1, lparm1.begin(), tolower);
 			}
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::push("logins", [this](std::vector<std::string>& avec)
+				handle_cmd::push("logins", [this](const std::vector<std::string>& avec)
 					{
-						std::string& lrobotname = avec[1];
+						const std::string& lrobotname = avec[1];
 						int lbeg = tools::lexical_cast<int>(avec[2].c_str());
 						int lend = tools::lexical_cast<int>(avec[3].c_str());
 						create_robots(lrobotname, lbeg, lend);
 					});
-				handle_cmd::push("login", [this](std::vector<std::string>& avec)
+				handle_cmd::push("login", [this](const std::vector<std::string>& avec)
 					{
 						create_robot(avec[1]);
 					});
 				// c libo1 1
-				handle_cmd::push("c", [this](std::vector<std::string>& avec)
+				handle_cmd::push("c", [this](const std::vector<std::string>& avec)
 					{
 						pbnet::PROBUFF_NET_CMD pro;
 						std::stringstream lstream;
@@ -222,7 +223,7 @@ namespace ngl
 						send(get_robot(avec[1]), pro);
 					});
 				// C 1
-				handle_cmd::push("d", [this](std::vector<std::string>& avec)
+				handle_cmd::push("d", [this](const std::vector<std::string>& avec)
 					{
 						pbnet::PROBUFF_NET_CMD pro;
 						std::stringstream lstream;
@@ -246,7 +247,7 @@ namespace ngl
 							});
 					});
 				// 进行kcp连接
-				handle_cmd::push("x1", [this](std::vector<std::string>& avec)
+				handle_cmd::push("x1", [this](const std::vector<std::string>& avec)
 					{
 						foreach([this](actor_manage_robot::_robot& arobot)
 							{
@@ -281,7 +282,7 @@ namespace ngl
 							});
 					});
 				// 使用kcp连接发送GET_TIME协议
-				handle_cmd::push("x2", [this](std::vector<std::string>& avec)
+				handle_cmd::push("x2", [this](const std::vector<std::string>& avec)
 					{
 						pbnet::PROBUFF_NET_GET_TIME pro;
 						foreach([&pro, this](actor_manage_robot::_robot& arobot)
@@ -292,14 +293,14 @@ namespace ngl
 					});
 			}
 
-			if (handle_cmd::function(lrecv->m_parm[0], lrecv->m_parm) == false)
+			if (handle_cmd::function(lparm1, lrecv->m_parm) == false)
 			{
 				log_error()->print("actor_manage_robot cmd notfind {}", lrecv->m_parm);
 			}
 			return true;
 		}
 		
-		void create_robots(std::string& arobotname, int abeg, int aend)
+		void create_robots(const std::string& arobotname, int abeg, int aend)
 		{
 			for (int i = abeg; i <= aend; ++i)
 			{
@@ -310,7 +311,7 @@ namespace ngl
 			}
 		}
 
-		void create_robot(std::string& arobotname)
+		void create_robot(const std::string& arobotname)
 		{
 			ngl::actor_manage_robot::login(arobotname, "123456");
 		}

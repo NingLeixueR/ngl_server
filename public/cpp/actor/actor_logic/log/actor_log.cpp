@@ -43,9 +43,9 @@ namespace ngl
 	{
 	}
 
-	bool actor_log::handle(message<np_actor_logitem>& adata)
+	bool actor_log::handle(const message<np_actor_logitem>& adata)
 	{
-		logitem& ldata = adata.get_data()->m_data;
+		const logitem& ldata = adata.get_data()->m_data;
 		m_log->printf(&ldata);
 		return true;
 	}

@@ -112,7 +112,7 @@ namespace ngl
 		sync_actorserver_gatewayid(nguid::make(ACTOR_ROLE, larea, lroleid), true);
 	}
 
-	bool actor_gateway::handle(message<np_actorrole_login>& adata)
+	bool actor_gateway::handle(const message<np_actorrole_login>& adata)
 	{// login服务器通知GateWay服务器 玩家账号验证成功
 		auto lparm = adata.get_data();
 		nguid lguid(lparm->m_roleid);
@@ -140,7 +140,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
+	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		Try
 		{
@@ -177,17 +177,19 @@ namespace ngl
 			{
 				update_gateway_info(new np_actor_gatewayinfo_updata{.m_add = {*linfo} });
 			}
-			lpram->set_m_iscreate(linfo->m_iscreate);
+
+			pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
+			lprampro.set_m_iscreate(linfo->m_iscreate);
 			linfo->m_iscreate = false;
-			lpram->set_m_gatewayid(nconfig::m_nodeid);
-			lpram->set_m_area(linfo->m_area);
+			lprampro.set_m_gatewayid(nconfig::m_nodeid);
+			lprampro.set_m_area(linfo->m_area);
 			nets::sendbyserver(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
 			return true;
 		}Catch
 		return false;
 	}
 
-	bool actor_gateway::handle(message<np_actor_kcp>& adata)
+	bool actor_gateway::handle(const message<np_actor_kcp>& adata)
 	{
 		auto lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
@@ -201,7 +203,7 @@ namespace ngl
 	}
 
 	// 获取kcp-session
-	bool actor_gateway::handle(message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
+	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
 	{
 		auto lpram = adata.get_data();
 		auto lpack = adata.m_pack;
@@ -237,7 +239,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(message<np_actorswitch_process<np_actorswitch_process_role>>& adata)
+	bool actor_gateway::handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata)
 	{
 		Try
 		{
@@ -256,7 +258,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_gateway::handle(message<np_actor_session_close>& adata)
+	bool actor_gateway::handle(const message<np_actor_session_close>& adata)
 	{
 		Try
 		{

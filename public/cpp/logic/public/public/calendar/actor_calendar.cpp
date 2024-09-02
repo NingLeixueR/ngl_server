@@ -28,9 +28,9 @@ namespace ngl
 		>(true);
 	}
 
-	bool actor_calendar::handle(message<np_calendar>& adata)
+	bool actor_calendar::handle(const message<np_calendar>& adata)
 	{
-		np_calendar& recv = *adata.get_data();
+		const np_calendar& recv = *adata.get_data();
 		tab_calendar* tab = ttab_calendar::tab(recv.m_calendarid);
 		if (tab == nullptr)
 		{

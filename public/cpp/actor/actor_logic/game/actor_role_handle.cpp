@@ -4,7 +4,7 @@
 
 namespace ngl
 {
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();
 		log_error()->print(
@@ -14,7 +14,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_GET_TIME>& adata)
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
 		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
 		log_error()->print(
@@ -40,7 +40,7 @@ namespace ngl
 	}
 
 	// PROBUFF_PROTOCOLNUM_LOGIC_SWITCH_LINE		= 18;			// [ÇëÇó]ÇÐ»»ÏßÂ·
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
 		const tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.get_data()->m_line());
 		if (tab == nullptr)
@@ -62,7 +62,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::handle(message<np_actor_senditem>& adata)
+	bool actor_role::handle(const message<np_actor_senditem>& adata)
 	{
 		auto lparm = adata.get_data();
 		d_remakes(this, lparm->m_src);
@@ -70,19 +70,19 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::handle(message<np_actor_disconnect_close>& adata)
+	bool actor_role::handle(const message<np_actor_disconnect_close>& adata)
 	{
 		erase_actor_byid();
 		return true;
 	}
 
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
 	{
 		m_playactorid = adata.get_data()->m_playsactorid();
 		return true;
 	}
 
-	bool actor_role::handle(message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
+	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
 		tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());
 		if (tab == nullptr)

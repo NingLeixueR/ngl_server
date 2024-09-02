@@ -35,6 +35,6 @@ namespace ngl
 
 		virtual ~actor_csvserver();
 
-		bool handle(message<np_actor_csv_verify_version>& adata);
+		bool handle(const message<np_actor_csv_verify_version>& adata);
 	};
 }//namespace ngl

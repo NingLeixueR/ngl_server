@@ -54,6 +54,6 @@ namespace ngl
 			return nguid::make(ACTOR_CALENDAR, ttab_servers::tab()->m_area, nguid::none_actordataid());
 		}
 
-		bool handle(message<np_calendar>& adata);
+		bool handle(const message<np_calendar>& adata);
 	};
 }//namespace ngl

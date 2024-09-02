@@ -371,9 +371,9 @@ namespace ngl
 			return false;
 		}
 
-		bool loadfinish(std::map<nguid, TDBTAB>& adata, bool aisover)
+		bool loadfinish(const std::map<nguid, TDBTAB>& adata, bool aisover)
 		{
-			for (std::pair<const nguid, TDBTAB>& lpair : adata)
+			for (const std::pair<const nguid, TDBTAB>& lpair : adata)
 			{
 				m_data[lpair.first].set(lpair.second);
 			}
@@ -389,7 +389,7 @@ namespace ngl
 			return true;
 		}
 
-		bool handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
+		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 		{
 			Try
 			{
@@ -537,7 +537,7 @@ namespace ngl
 namespace ngl
 {
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	bool actor_base::handle(message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
+	bool actor_base::handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 	{
 		Try
 		{

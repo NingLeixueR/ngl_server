@@ -35,7 +35,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		bool timer_handle(message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>& adata);
 	};
 }//namespace ngl
 
