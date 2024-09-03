@@ -329,7 +329,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		const std::shared_ptr<T> get_shared()const
+		std::shared_ptr<T> get_shared()const
 		{
 			return nullptr;
 		}
@@ -356,7 +356,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		const std::shared_ptr<T> get_shared()const
+		std::shared_ptr<T> get_shared()const
 		{
 			return nullptr;
 		}
@@ -382,7 +382,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		const std::shared_ptr<T> get_shared()const
+		std::shared_ptr<T> get_shared()const
 		{
 			return nullptr;
 		}
@@ -411,7 +411,7 @@ namespace ngl
 			return m_data.m_data.get();
 		}
 
-		const std::shared_ptr<T> get_shared()const
+		std::shared_ptr<T> get_shared()const
 		{
 			return m_data.m_data;
 		}
@@ -445,7 +445,7 @@ namespace ngl
 			return m_data.m_data.get();
 		}
 
-		const std::shared_ptr<T> get_shared()const
+		std::shared_ptr<T> get_shared()const
 		{
 			return m_data.m_data;
 		}

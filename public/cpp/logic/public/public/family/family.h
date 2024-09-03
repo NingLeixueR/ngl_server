@@ -18,7 +18,7 @@ namespace ngl
 	public:
 		familyer() = default;
 
-		virtual void set_id()
+		virtual void set_id()final
 		{
 			m_id = -1;
 		}
@@ -57,14 +57,15 @@ namespace ngl
 			return &lptemp->get();
 		}
 
-		virtual void initdata()
+		virtual void initdata()final
 		{
 			auto lstream = log_error();
 			(*lstream) << "familyer###loaddb_finish" << std::endl;
 			for (const auto& [_roleid, _data] : data())
 			{
-
+				(*lstream) << "roleid="<< _roleid << " m_joinutc = " << _data.getconst().m_joinutc();
 			}
+			lstream->print("");
 		}
 
 		// 检查是否可以创建军团
@@ -100,7 +101,7 @@ namespace ngl
 		{
 		}
 
-		virtual void set_id()
+		virtual void set_id()final
 		{
 			m_id = -1;
 		}
@@ -121,7 +122,7 @@ namespace ngl
 			return &itor->second.get(achange);
 		}
 
-		virtual void initdata()
+		virtual void initdata()final
 		{
 			auto lstream = log_error();
 			(*lstream) << "family###loaddb_finish" << std::endl;

@@ -124,10 +124,10 @@ namespace ngl
 					{
 						return true;
 					}
-					i64_actorid lactorid = nguid::make(
+					i64_actorid ldbactorid = nguid::make(
 						db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid()
 					);
-					sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
+					sendbyactorid(ldbactorid, adata.m_pack, *adata.get_data());
 				}
 				return true;
 			}

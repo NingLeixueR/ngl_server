@@ -28,7 +28,7 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS>& adata);
 
 		// ¶¨Ê±Æ÷
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<timerparm>&);
 	};
 }
 

@@ -50,11 +50,11 @@ namespace ngl
 				{
 					if (!lpair.second.empty())
 					{
-						continue;
+						return;
 					}
 					if (lpair.second.contains(aactorid) == false)
 					{
-						continue;
+						return;
 					}
 					actor::static_send_actor(lpair.first, nguid::make(), apro);
 				});

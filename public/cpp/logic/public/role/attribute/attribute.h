@@ -173,12 +173,11 @@ namespace ngl
 		std::map<EnumAttribute, int64_t> m_dynamic;
 		aoimap* m_map;
 		int64_t m_unitid;
-		int32_t m_stat;	// 状态	 
+		int32_t m_stat = eunitstat_normal;	// 状态	 
 	public:
 		dynamic_attribute(aoimap* amap, int64_t aunitid) :
 			m_map(amap),
-			m_unitid(aunitid),
-			m_stat(pbnet::eunitstat_normal)
+			m_unitid(aunitid)
 		{}
 
 		// 根据[模块属性]生成动态属性

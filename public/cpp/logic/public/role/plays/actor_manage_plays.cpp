@@ -49,7 +49,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_manage_plays::timer_handle(const message<timerparm>& adata)
+	bool actor_manage_plays::timer_handle(const message<timerparm>&)
 	{
 		return true;
 	}
