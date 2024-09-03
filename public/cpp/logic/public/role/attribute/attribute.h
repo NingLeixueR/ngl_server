@@ -173,7 +173,7 @@ namespace ngl
 		std::map<EnumAttribute, int64_t> m_dynamic;
 		aoimap* m_map;
 		int64_t m_unitid;
-		int32_t m_stat = eunitstat_normal;	// ״̬	 
+		int32_t m_stat = pbnet::eunitstat_normal;	// ״̬	 
 	public:
 		dynamic_attribute(aoimap* amap, int64_t aunitid) :
 			m_map(amap),
