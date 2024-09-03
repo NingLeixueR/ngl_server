@@ -46,7 +46,7 @@ namespace ngl
 			if (data_modified<TDATA>* lp = m_dbmodule->find(aactorid); lp == nullptr)
 				return;
 
-			std::ranges::for_each(m_publishlist, [](const auto& lpair)
+			std::ranges::for_each(m_publishlist, [aactorid](const auto& lpair)
 				{
 					if (!lpair.second.empty())
 					{
