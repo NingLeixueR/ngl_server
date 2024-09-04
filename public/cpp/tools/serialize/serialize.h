@@ -59,12 +59,11 @@ namespace ngl
 	{
 		char*	m_buff;
 		int32_t m_len;
-		int32_t m_pos;
+		int32_t m_pos = 0;
 	public:
 		inline serialize(char* abuff, int32_t alen) :
 			m_buff(abuff),
-			m_len(alen),
-			m_pos(0)
+			m_len(alen)
 		{}
 
 		inline char* buff()
