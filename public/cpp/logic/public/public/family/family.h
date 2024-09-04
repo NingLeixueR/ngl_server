@@ -57,7 +57,7 @@ namespace ngl
 			return &lptemp->get();
 		}
 
-		virtual void initdata()final
+		void initdata()final
 		{
 			auto lstream = log_error();
 			(*lstream) << "familyer###loaddb_finish" << std::endl;

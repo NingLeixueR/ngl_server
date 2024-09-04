@@ -29,7 +29,7 @@ namespace ngl
 						std::vector<i64_actorid> lvec;
 						std::set_intersection(
 							aactoridset.begin(), aactoridset.end(),
-							aactoridset.begin(), aactoridset.end(),
+							apair.second.begin(), apair.second.end(),
 							lvec.begin()
 						);
 						if (lvec.empty())
@@ -138,7 +138,7 @@ namespace ngl
 		{
 			if (m_publishlist.empty())
 				return;
-			std::ranges::for_each(m_publishlist, [](const std::pair<const i64_actorid, std::set<i64_actorid>>& apair)
+			std::ranges::for_each(m_publishlist, [](const auto& apair)
 				{
 					sync(apair.first);
 				});
