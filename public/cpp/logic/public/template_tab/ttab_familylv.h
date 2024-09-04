@@ -22,11 +22,11 @@ namespace ngl
 		{
 			m_failylvexp.clear();
 			m_failyrolecount.clear();
-			for (const std::pair<const int, tab_familylv>& pair : tablecsv)
-			{
-				m_failylvexp[pair.first] = pair.second.m_exp;
-				m_failyrolecount[pair.first] = pair.second.m_maxmembers;
-			}
+			std::ranges::for_each(tablecsv, [this](const auto& apair)
+				{
+					m_failylvexp[apair.first] = apair.second.m_exp;
+					m_failyrolecount[apair.first] = apair.second.m_maxmembers;
+				});
 		}
 
 		// 根据lv获取其需要的经验

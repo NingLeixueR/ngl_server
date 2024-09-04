@@ -21,6 +21,12 @@ namespace ngl
 	public:
 		static std::map<i64_actorid, T> m_data;
 
+		template <typename T>
+		static std::string& type_name()
+		{
+			return tools::type_name<TDerived>();
+		}
+
 		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
 			std::vector<i16_area> lvecarea = ttab_servers::get_arealist(nconfig::m_nodeid);
@@ -36,31 +42,28 @@ namespace ngl
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
 			>([](TDerived*, message<np_channel_data<T>>& adata)
 				{
-					m_actor->log_error()->print(
-						"nsp_client {}:{}",
-						tools::type_name<TDerived>(), tools::type_name<T>()
-					);
+					m_actor->log_error()->print("nsp_client {}:{}", type_name<TDerived>(), type_name<T>());
 					auto& recv = *adata.get_data();
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
-					for (const std::pair<const int64_t, T>& lpair : lmap)
-					{
-						if (!m_dataid.empty() && m_dataid.find(lpair.first) == m_dataid.end())
+					std::ranges::for_each(lmap, [](const auto& apair)
 						{
-							continue;
-						}						
-						m_data[lpair.first] = lpair.second;
-						if (m_changedatafun != nullptr)
-						{
-							m_changedatafun(lpair.first, lpair.second);
-						}
-					}
+							if (!m_dataid.empty() && m_dataid.find(apair.first) == m_dataid.end())
+							{
+								return;
+							}
+							m_data[apair.first] = apair.second;
+							if (m_changedatafun != nullptr)
+							{
+								m_changedatafun(apair.first, apair.second);
+							}
+						});
 					if (m_recvdatafinish == false && m_recvdatafinishfun != nullptr)
 					{
 						m_recvdatafinish = true;
-						for (std::pair<const int64_t, T>& lpair : lmap)
-						{
-							m_recvdatafinishfun(lpair.second);
-						}
+						std::ranges::for_each(lmap, [](const auto& apair)
+							{
+								m_recvdatafinishfun(apair.second);
+							});
 					}
 				});
 
@@ -69,9 +72,7 @@ namespace ngl
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>
 			>([](TDerived*, message<np_channel_register_reply<T>>&)
 				{
-					m_actor->log_error()->print(
-						"nsp_client register reply {}:{}", tools::type_name<TDerived>(), tools::type_name<T>()
-					);
+					m_actor->log_error()->print("nsp_client register reply {}:{}", type_name<TDerived>(), type_name<T>());
 					m_register = true;
 				});
 
@@ -129,10 +130,10 @@ namespace ngl
 			if (m_recvdatafinish == false)
 			{
 				m_recvdatafinish = true;
-				for (const auto& [_id, _data] : m_data)
-				{
-					m_recvdatafinishfun(_data);
-				}				
+				std::ranges::for_each(m_data, [](const auto& apair)
+					{
+						m_recvdatafinishfun(apair.second);
+					});			
 			}
 		}
 
@@ -144,9 +145,7 @@ namespace ngl
 	private:
 		static void register_echannel()
 		{
-			m_actor->log_error()->print(
-				"nsp_client register {}:{}", tools::type_name<TDerived>(), tools::type_name<T>()
-			);
+			m_actor->log_error()->print("nsp_client register {}:{}", type_name<TDerived>(), type_name<T>());
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
 			actor::static_send_actor(m_nspserver, nguid::make(), pro);

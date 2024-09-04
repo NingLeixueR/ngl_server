@@ -141,11 +141,11 @@ namespace ngl
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& apack, const std::vector<std::string>&)
+			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::getInstance().actor_count();
 					std::string lstr = std::format("actor count:{}\r\n", lcount);
-					nets::sendmsg(apack->m_id, lstr);
+					nets::sendmsg(pack->m_id, lstr);
 				}
 			);
 		}
