@@ -22,21 +22,21 @@ namespace ngl
 			const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro
 		)
 		{
-			for (const std::pair<const i64_actorid, std::set<i64_actorid>>& lpair : m_publishlist)
-			{
-				if (!lpair.second.empty())
+			std::ranges::for_each(m_publishlist, [&aactoridset,&apro](const auto& apair)
 				{
-					std::vector<i64_actorid> lvec;
-					std::set_intersection(
-						aactoridset.begin(), aactoridset.end(),
-						aactoridset.begin(), aactoridset.end(),
-						lvec.begin()
-					);
-					if (lvec.empty())
-						continue;
-				}
-				actor::static_send_actor(lpair.first, nguid::make(), apro);
-			}
+					if (!apair.second.empty())
+					{
+						std::vector<i64_actorid> lvec;
+						std::set_intersection(
+							aactoridset.begin(), aactoridset.end(),
+							aactoridset.begin(), aactoridset.end(),
+							lvec.begin()
+						);
+						if (lvec.empty())
+							return;
+					}
+					actor::static_send_actor(apair.first, nguid::make(), apro);
+				});
 		}
 
 		static void publish(
@@ -96,7 +96,6 @@ namespace ngl
 					std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
 					publish(lactorset, pro);
 				});
-				
 		}
 
 		static void sync(i64_actorid aactor)
@@ -139,10 +138,10 @@ namespace ngl
 		{
 			if (m_publishlist.empty())
 				return;
-			for (const std::pair<const i64_actorid, std::set<i64_actorid>>& lpair : m_publishlist)
-			{
-				sync(lpair.first);
-			}
+			std::ranges::for_each(m_publishlist, [](const std::pair<const i64_actorid, std::set<i64_actorid>>& apair)
+				{
+					sync(apair.first);
+				});
 		}
 
 		// # 数据变更

@@ -23,36 +23,34 @@ namespace ngl
 		ttab_specialid()
 		{}
 
-		void tovalue(int32_t& apvalue, const char* astr)
+		static void tovalue(int32_t& apvalue, const char* astr)
 		{
 			apvalue = tools::lexical_cast<int32_t>(astr);
 		}
 
-		void tovalue(std::string& apvalue, const char* astr)
+		static void tovalue(std::string& apvalue, const char* astr)
 		{
 			apvalue = astr;
 		}
 
-		virtual void reload()
+		void reload()final
 		{
-			for (const std::pair<const int, tab_specialid>& pair : tablecsv)
-			{
-				const tab_specialid& ltab = pair.second;
 #define IF_NAME_VAL(NAME)							\
 	if(ltab.m_name == #NAME)						\
 	{												\
 		tovalue(m_##NAME, ltab.m_value.c_str());	\
-		continue;									\
+		return;										\
 	}
-
-				IF_NAME_VAL(rolemaxlv)
-				IF_NAME_VAL(rolemaxvip)
-				IF_NAME_VAL(createfamilconsume)
-				IF_NAME_VAL(familsignexp)
-				IF_NAME_VAL(familsigndrop)
-				IF_NAME_VAL(familapplylistcount)
-					
-			}
+			std::ranges::for_each(tablecsv, [this](const auto& pair)
+				{
+					const tab_specialid& ltab = pair.second;
+					IF_NAME_VAL(rolemaxlv)
+					IF_NAME_VAL(rolemaxvip)
+					IF_NAME_VAL(createfamilconsume)
+					IF_NAME_VAL(familsignexp)
+					IF_NAME_VAL(familsigndrop)
+					IF_NAME_VAL(familapplylistcount)
+				});
 		}
 	};
 }//namespace ngl

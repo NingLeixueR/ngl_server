@@ -20,7 +20,7 @@ namespace ngl
 		ttab_attribute()
 		{}
 
-		virtual void reload()
+		void reload()final
 		{
 			init_uplowlimit();
 		}

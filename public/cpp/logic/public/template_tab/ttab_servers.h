@@ -16,7 +16,7 @@ namespace ngl
 		ttab_servers()
 		{}
 
-		virtual void reload()
+		void reload()final
 		{
 			m_areaofserver.clear();
 			for (std::pair<const int, tab_servers>& pair : tablecsv)

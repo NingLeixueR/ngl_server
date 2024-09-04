@@ -301,12 +301,12 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>&)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>&)
 	{
 		return true;
 	}
@@ -316,16 +316,13 @@ namespace ngl
 		auto recv = adata.get_data();
 		auto lstream = log_error();
 		(*lstream) << std::format("#####ranklist type={}#####", (int)(recv->m_type())) << std::endl;
-		for (auto& item : recv->m_items())
-		{
-			if (recv->m_type() == pbdb::lv)
+		std::ranges::for_each(recv->m_items(), [&recv,&lstream](const auto& item)
 			{
-				(*lstream) << 
-					std::format(
-						"roleid:{} name:{} lv:{}", item.m_id(), item.m_name(), item.m_lv()
-					) << std::endl;
-			}
-		}
+				if (recv->m_type() == pbdb::lv)
+				{
+					(*lstream) << std::format("roleid:{} name:{} lv:{}", item.m_id(), item.m_name(), item.m_lv()) << std::endl;
+				}
+			});
 		lstream->print("");
 		return true;
 	}

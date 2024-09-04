@@ -48,10 +48,10 @@ namespace ngl
 		void activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 		void activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 	public:
-		enum
+		static ENUM_ACTOR actor_type()
 		{
-			actor_type = ACTOR_ACTIVITY_MANAGE
-		};
+			return ACTOR_ACTIVITY_MANAGE;
+		}
 
 		static i64_actorid actorid()
 		{

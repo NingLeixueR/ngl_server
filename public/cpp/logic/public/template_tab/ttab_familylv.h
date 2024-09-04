@@ -18,7 +18,7 @@ namespace ngl
 
 		ttab_familylv() = default;
 
-		virtual void reload()
+		void reload()final
 		{
 			m_failylvexp.clear();
 			m_failyrolecount.clear();

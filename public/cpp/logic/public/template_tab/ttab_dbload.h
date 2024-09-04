@@ -14,7 +14,7 @@ namespace ngl
 		ttab_dbload()
 		{}
 
-		virtual void reload()
+		void reload()final
 		{
 			for (std::pair<const int, tab_dbload>& ipair : tablecsv)
 			{

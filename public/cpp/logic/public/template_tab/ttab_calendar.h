@@ -220,7 +220,7 @@ namespace ngl
 			printf_time(aid);
 		}
 
-		virtual void reload()
+		void reload()final
 		{
 			//for (std::pair<const int, tab_calendar>& ipair : tablecsv)
 			//{

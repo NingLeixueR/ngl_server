@@ -50,10 +50,10 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum
+		static ENUM_ACTOR actor_type()
 		{
-			actor_type = ACTOR_FAMILY
-		};
+			return ACTOR_FAMILY;
+		}
 
 		static i64_actorid actorid(i16_area area)
 		{

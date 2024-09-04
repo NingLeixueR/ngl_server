@@ -26,8 +26,6 @@ namespace ngl
 
 		ranklist m_ranklist;
 
-		//tdb_brief::nsp_cli<actor_ranklist>::getconst()
-
 		actor_ranklist();
 	public:
 		friend class actor_instance<actor_ranklist>;
@@ -38,7 +36,7 @@ namespace ngl
 
 		virtual void init()
 		{
-			//m_ranklist.set(this);
+			m_ranklist.set(this);
 		}
 
 		static void nregister();
@@ -47,10 +45,10 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum
+		static ENUM_ACTOR actor_type()
 		{
-			actor_type = ACTOR_RANKLIST
-		};
+			return ACTOR_RANKLIST;
+		}
 
 		static i64_actorid actorid()
 		{

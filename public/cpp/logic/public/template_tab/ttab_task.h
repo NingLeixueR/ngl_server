@@ -60,7 +60,7 @@ namespace ngl
 		static std::map<ETask, int32_t> m_maxval;
 		static std::map<ETask, std::map<int32_t, receive_complete>> m_map;
 
-		virtual void reload()
+		void reload()final
 		{
 
 			m_maxval.clear();

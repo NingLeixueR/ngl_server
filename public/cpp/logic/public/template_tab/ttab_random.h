@@ -28,6 +28,6 @@ namespace ngl
 			return true;
 		}
 
-		virtual void reload();
+		void reload()final;
 	};
 }//namespace ngl

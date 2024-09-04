@@ -18,7 +18,7 @@ namespace ngl
 	public:
 		familyer() = default;
 
-		virtual void set_id()final
+		void set_id()final
 		{
 			m_id = -1;
 		}
@@ -101,7 +101,7 @@ namespace ngl
 		{
 		}
 
-		virtual void set_id()final
+		void set_id()final
 		{
 			m_id = -1;
 		}
@@ -122,7 +122,7 @@ namespace ngl
 			return &itor->second.get(achange);
 		}
 
-		virtual void initdata()final
+		void initdata()final
 		{
 			auto lstream = log_error();
 			(*lstream) << "family###loaddb_finish" << std::endl;

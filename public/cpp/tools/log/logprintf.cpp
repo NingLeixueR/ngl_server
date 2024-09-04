@@ -81,8 +81,6 @@ namespace ngl
 
 	logfile::logfile(bool aisactor, const config& aconfig) :
 		m_config(aconfig),
-		m_count(0),
-		m_fcount(0),
 		m_isactor(aisactor)
 	{
 		create();

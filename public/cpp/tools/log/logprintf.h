@@ -34,8 +34,8 @@ namespace ngl
 		};
 		std::ofstream	m_stream;
 		config			m_config;
-		int				m_count;
-		int				m_fcount;
+		int				m_count = 0;
+		int				m_fcount = 0;
 		bool			m_isactor;
 
 		logfile(bool aisactor, const config& aconfig);

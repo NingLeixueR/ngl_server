@@ -44,10 +44,10 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) {}
 
-		enum
+		static ENUM_ACTOR actor_type()
 		{
-			actor_type = ACTOR_CALENDAR
-		};
+			return ACTOR_CALENDAR;
+		}
 
 		static i64_actorid actorid()
 		{

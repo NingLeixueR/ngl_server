@@ -222,7 +222,7 @@ namespace ngl
 			return 5;
 		}
 		auto& lmember = *lpfamily->mutable_m_member();
-		auto itor = std::find(lmember.begin(), lmember.end(), aroleid);
+		auto itor = std::ranges::find(lmember, aroleid);
 		if (itor == lmember.end())
 		{
 			return 6;

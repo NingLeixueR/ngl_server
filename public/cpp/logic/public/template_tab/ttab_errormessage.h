@@ -12,7 +12,7 @@ namespace ngl
 		ttab_errormessage()
 		{}
 
-		virtual void reload()
+		void reload()final
 		{}
 	};
 }// namespace ngl
