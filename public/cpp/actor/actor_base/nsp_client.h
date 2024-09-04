@@ -21,10 +21,10 @@ namespace ngl
 	public:
 		static std::map<i64_actorid, T> m_data;
 
-		template <typename T>
+		template <typename TX>
 		static std::string& type_name()
 		{
-			return tools::type_name<TDerived>();
+			return tools::type_name<TX>();
 		}
 
 		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
