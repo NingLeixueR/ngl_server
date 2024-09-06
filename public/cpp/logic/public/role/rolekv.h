@@ -96,6 +96,17 @@ namespace ngl
 			return number_value(akey, adata);
 		}
 
+		template <typename ...ARG>
+		bool value(const char* akey, ARG&... arg)
+		{
+			std::string ltemp;
+			if (value(akey, ltemp) == false)
+				return false;
+			json_read ljread(ltemp.c_str());
+			return ljread.read(arg...);
+		}
+
+
 		template <typename T>
 		void set_value(const char* akey, T& adata)
 		{
