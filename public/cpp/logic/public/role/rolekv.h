@@ -13,20 +13,14 @@ namespace ngl
 		rolekv& operator=(const rolekv&) = delete;
 
 	public:
-		rolekv()
-		{}
-
-		~rolekv() {}
+		rolekv() = default;
+		~rolekv() = default;
 
 		//## 可以缓存，防止多次解析vales
 		virtual void initdata()
 		{
 			auto lstream = log_error();
-			(*lstream) 
-				<< std::format(
-					"[db_rolekeyvalue load finish] id{}", 
-					actorbase()->id_guid())
-				<< std::endl;
+			(*lstream) << std::format("[db_rolekeyvalue load finish] id{}", actorbase()->id_guid()) << std::endl;
 			(*lstream).print("");
 		}
 
@@ -40,32 +34,73 @@ namespace ngl
 			return db()->get();
 		}
 
-		const std::string* get_constkv(const std::string& akey)
+		bool value(const char* akey, std::string& adata)
 		{
 			const pbdb::db_rolekeyvalue& ltemp = get_constkv();
 			auto itor = ltemp.m_data().find(akey);
 			if (itor == ltemp.m_data().end())
 			{
-				return nullptr;
+				return false;
 			}
-			return &itor->second;
+			adata = itor->second;
+			return true;
 		}
 
-		std::string* get_kv(const std::string& akey)
+		template <typename T>
+		bool number_value(const char* akey, T& adata)
 		{
-			pbdb::db_rolekeyvalue& ltemp = get_kv();
-			auto itor = ltemp.mutable_m_data()->find(akey);
-			if (itor == ltemp.mutable_m_data()->end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
+			std::string ltemp;
+			if (value(akey, ltemp) == false)
+				return false;
+			adata = tools::lexical_cast<T>(ltemp);
+			return true;
 		}
 
-		std::string& operator[](const char* akey)
+		bool value(const char* akey, int8_t& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, uint8_t& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, int32_t& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, uint32_t& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, int64_t& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, uint64_t& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, float& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		bool value(const char* akey, double& adata)
+		{
+			return number_value(akey, adata);
+		}
+
+		template <typename T>
+		void set_value(const char* akey, T& adata)
 		{
 			pbdb::db_rolekeyvalue& ltemp = get_kv();
-			return (*ltemp.mutable_m_data())[akey];
+			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
 		}
 	};
 }
