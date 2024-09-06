@@ -106,7 +106,6 @@ namespace ngl
 			return ljread.read(arg...);
 		}
 
-
 		template <typename T>
 		void set_value(const char* akey, T& adata)
 		{
