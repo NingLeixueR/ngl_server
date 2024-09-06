@@ -81,7 +81,7 @@ namespace ngl
 				.m_ms = 1000,
 				.m_intervalms = [](int64_t) {return 1000; } ,
 				.m_count = 0x7fffffff,
-				.m_fun = [aactor](const wheel_node* anode)
+				.m_fun = [](const wheel_node* anode)
 				{
 					if (m_register)
 					{
