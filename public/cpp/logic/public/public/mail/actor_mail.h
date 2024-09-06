@@ -55,9 +55,13 @@ namespace ngl
 			return nguid::make(ACTOR_MAIL, area, nguid::none_actordataid());
 		}
 
-		// # 发送邮件,允许任意位置调用
+		// # 发送邮件,根据掉落id，允许任意位置调用
 		static bool sendmail(
 			i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm
+		);
+
+		static bool sendmail(
+			i64_actorid aactorid, int32_t amailid, const std::map<int32_t, int32_t>& aitems, const std::string& aparm
 		);
 
 		// # ACTOR_PROTOCOL_ADD_MAIL,新增邮件

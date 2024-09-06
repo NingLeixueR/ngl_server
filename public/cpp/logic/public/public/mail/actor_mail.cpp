@@ -34,18 +34,23 @@ namespace ngl
 		>(true);
 	}
 
-	bool actor_mail::sendmail(
-		i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm
-	)
+	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)
 	{
-		auto pro = std::make_shared<np_actor_addmail>();
-		pro->m_roleid = aactorid;
-		pro->m_tid = amailid;
-		if (drop::droplist(adropid, 1, pro->m_items) == false)
+		std::map<int32_t, int32_t> lmap;
+		if (drop::droplist(adropid, 1, lmap) == false)
 		{
 			ngl::log_error()->print("drop[{}] not find!!!", adropid);
 			return false;
 		}
+		return sendmail(aactorid, amailid, lmap, aparm);
+	}
+
+	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, const std::map<int32_t, int32_t>& aitems, const std::string& aparm)
+	{
+		auto pro = std::make_shared<np_actor_addmail>();
+		pro->m_roleid = aactorid;
+		pro->m_tid = amailid;
+		pro->m_items = aitems;
 		pro->m_parm = aparm;
 		actor::static_send_actor(actorid(nguid::area(aactorid)), nguid::make(), pro);
 		return true;
