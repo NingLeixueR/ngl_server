@@ -19,6 +19,8 @@ namespace ngl
 		static int32_t		m_familsigndrop;		// 军团签到的奖励
 		static int32_t		m_familapplylistcount;	// 玩家请求加入军团的最大数量
 		static int32_t		m_familjoininterval;	// 玩家请求加入/创建军团的冷却时间
+		static int32_t		m_friendsapplylistcount;// 玩家好友请求列表数量
+		static int32_t		m_friendscount;			// 玩家好友数量
 
 		ttab_specialid()
 		{}
@@ -50,6 +52,8 @@ namespace ngl
 					IF_NAME_VAL(familsignexp)
 					IF_NAME_VAL(familsigndrop)
 					IF_NAME_VAL(familapplylistcount)
+					IF_NAME_VAL(friendsapplylistcount)
+					IF_NAME_VAL(friendscount)
 				});
 		}
 	};

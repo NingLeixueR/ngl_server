@@ -63,6 +63,10 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata);
 	};
 
 	class actor_manage_robot : public actor

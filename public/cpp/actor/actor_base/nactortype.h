@@ -53,6 +53,7 @@ namespace ngl
 		ACTOR_CHANNEL,											// 订阅/发布 
 		ACTOR_KEYVALUE,											// 公共key/value
 		ACTOR_FAMILY,											// 军团家族
+		ACTOR_FRIENDS,											// 好友
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,

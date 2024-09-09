@@ -68,6 +68,7 @@ namespace ngl
 		bool handle(const message<np_actor_addmail>& adata);
 
 		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
+
 		// # GM²Ù×÷mail
 		bool handle(const message<mforward<np_gm>>& adata);
 

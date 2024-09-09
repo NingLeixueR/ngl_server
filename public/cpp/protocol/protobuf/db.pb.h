@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[31]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[32]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -92,6 +92,9 @@ extern db_familyDefaultTypeInternal _db_family_default_instance_;
 class db_familyer;
 class db_familyerDefaultTypeInternal;
 extern db_familyerDefaultTypeInternal _db_familyer_default_instance_;
+class db_friends;
+class db_friendsDefaultTypeInternal;
+extern db_friendsDefaultTypeInternal _db_friends_default_instance_;
 class db_guild;
 class db_guildDefaultTypeInternal;
 extern db_guildDefaultTypeInternal _db_guild_default_instance_;
@@ -165,6 +168,7 @@ template<> ::pbdb::db_brief* Arena::CreateMaybeMessage<::pbdb::db_brief>(Arena*)
 template<> ::pbdb::db_calendar* Arena::CreateMaybeMessage<::pbdb::db_calendar>(Arena*);
 template<> ::pbdb::db_family* Arena::CreateMaybeMessage<::pbdb::db_family>(Arena*);
 template<> ::pbdb::db_familyer* Arena::CreateMaybeMessage<::pbdb::db_familyer>(Arena*);
+template<> ::pbdb::db_friends* Arena::CreateMaybeMessage<::pbdb::db_friends>(Arena*);
 template<> ::pbdb::db_guild* Arena::CreateMaybeMessage<::pbdb::db_guild>(Arena*);
 template<> ::pbdb::db_keyvalue* Arena::CreateMaybeMessage<::pbdb::db_keyvalue>(Arena*);
 template<> ::pbdb::db_mail* Arena::CreateMaybeMessage<::pbdb::db_mail>(Arena*);
@@ -256,7 +260,8 @@ enum ENUM_DB : int {
   ENUM_DB_ROLEKEYVALUE = 12,
   ENUM_DB_FAMILY = 13,
   ENUM_DB_FAMILYER = 14,
-  ENUM_DB_COUNT = 15,
+  ENUM_DB_FRIENDS = 15,
+  ENUM_DB_COUNT = 16,
   ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
@@ -5095,6 +5100,198 @@ class db_family PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 m_exp_;
   friend struct ::TableStruct_db_2eproto;
 };
+// -------------------------------------------------------------------
+
+class db_friends PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_friends) */ {
+ public:
+  inline db_friends() : db_friends(nullptr) {}
+  virtual ~db_friends();
+
+  db_friends(const db_friends& from);
+  db_friends(db_friends&& from) noexcept
+    : db_friends() {
+    *this = ::std::move(from);
+  }
+
+  inline db_friends& operator=(const db_friends& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline db_friends& operator=(db_friends&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const db_friends& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const db_friends* internal_default_instance() {
+    return reinterpret_cast<const db_friends*>(
+               &_db_friends_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    31;
+
+  friend void swap(db_friends& a, db_friends& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(db_friends* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(db_friends* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline db_friends* New() const final {
+    return CreateMaybeMessage<db_friends>(nullptr);
+  }
+
+  db_friends* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<db_friends>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const db_friends& from);
+  void MergeFrom(const db_friends& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(db_friends* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.db_friends";
+  }
+  protected:
+  explicit db_friends(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMFriendsFieldNumber = 2,
+    kMApplyfriendsFieldNumber = 3,
+    kMIdFieldNumber = 1,
+  };
+  // repeated int64 m_friends = 2;
+  int m_friends_size() const;
+  private:
+  int _internal_m_friends_size() const;
+  public:
+  void clear_m_friends();
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_friends(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+      _internal_m_friends() const;
+  void _internal_add_m_friends(::PROTOBUF_NAMESPACE_ID::int64 value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+      _internal_mutable_m_friends();
+  public:
+  ::PROTOBUF_NAMESPACE_ID::int64 m_friends(int index) const;
+  void set_m_friends(int index, ::PROTOBUF_NAMESPACE_ID::int64 value);
+  void add_m_friends(::PROTOBUF_NAMESPACE_ID::int64 value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+      m_friends() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+      mutable_m_friends();
+
+  // repeated int64 m_applyfriends = 3;
+  int m_applyfriends_size() const;
+  private:
+  int _internal_m_applyfriends_size() const;
+  public:
+  void clear_m_applyfriends();
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_applyfriends(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+      _internal_m_applyfriends() const;
+  void _internal_add_m_applyfriends(::PROTOBUF_NAMESPACE_ID::int64 value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+      _internal_mutable_m_applyfriends();
+  public:
+  ::PROTOBUF_NAMESPACE_ID::int64 m_applyfriends(int index) const;
+  void set_m_applyfriends(int index, ::PROTOBUF_NAMESPACE_ID::int64 value);
+  void add_m_applyfriends(::PROTOBUF_NAMESPACE_ID::int64 value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+      m_applyfriends() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+      mutable_m_applyfriends();
+
+  // int64 m_id = 1;
+  bool has_m_id() const;
+  private:
+  bool _internal_has_m_id() const;
+  public:
+  void clear_m_id();
+  ::PROTOBUF_NAMESPACE_ID::int64 m_id() const;
+  void set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_id() const;
+  void _internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.db_friends)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 > m_friends_;
+  mutable std::atomic<int> _m_friends_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 > m_applyfriends_;
+  mutable std::atomic<int> _m_applyfriends_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
+  friend struct ::TableStruct_db_2eproto;
+};
 // ===================================================================
 
 
@@ -8328,9 +8525,137 @@ db_family::mutable_m_applylist() {
   return _internal_mutable_m_applylist();
 }
 
+// -------------------------------------------------------------------
+
+// db_friends
+
+// int64 m_id = 1;
+inline bool db_friends::_internal_has_m_id() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool db_friends::has_m_id() const {
+  return _internal_has_m_id();
+}
+inline void db_friends::clear_m_id() {
+  m_id_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_friends::_internal_m_id() const {
+  return m_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_friends::m_id() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_friends.m_id)
+  return _internal_m_id();
+}
+inline void db_friends::_internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_id_ = value;
+}
+inline void db_friends::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_m_id(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_friends.m_id)
+}
+
+// repeated int64 m_friends = 2;
+inline int db_friends::_internal_m_friends_size() const {
+  return m_friends_.size();
+}
+inline int db_friends::m_friends_size() const {
+  return _internal_m_friends_size();
+}
+inline void db_friends::clear_m_friends() {
+  m_friends_.Clear();
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_friends::_internal_m_friends(int index) const {
+  return m_friends_.Get(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_friends::m_friends(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_friends.m_friends)
+  return _internal_m_friends(index);
+}
+inline void db_friends::set_m_friends(int index, ::PROTOBUF_NAMESPACE_ID::int64 value) {
+  m_friends_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pbdb.db_friends.m_friends)
+}
+inline void db_friends::_internal_add_m_friends(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  m_friends_.Add(value);
+}
+inline void db_friends::add_m_friends(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_add_m_friends(value);
+  // @@protoc_insertion_point(field_add:pbdb.db_friends.m_friends)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+db_friends::_internal_m_friends() const {
+  return m_friends_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+db_friends::m_friends() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_friends.m_friends)
+  return _internal_m_friends();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+db_friends::_internal_mutable_m_friends() {
+  return &m_friends_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+db_friends::mutable_m_friends() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_friends.m_friends)
+  return _internal_mutable_m_friends();
+}
+
+// repeated int64 m_applyfriends = 3;
+inline int db_friends::_internal_m_applyfriends_size() const {
+  return m_applyfriends_.size();
+}
+inline int db_friends::m_applyfriends_size() const {
+  return _internal_m_applyfriends_size();
+}
+inline void db_friends::clear_m_applyfriends() {
+  m_applyfriends_.Clear();
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_friends::_internal_m_applyfriends(int index) const {
+  return m_applyfriends_.Get(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 db_friends::m_applyfriends(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_friends.m_applyfriends)
+  return _internal_m_applyfriends(index);
+}
+inline void db_friends::set_m_applyfriends(int index, ::PROTOBUF_NAMESPACE_ID::int64 value) {
+  m_applyfriends_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pbdb.db_friends.m_applyfriends)
+}
+inline void db_friends::_internal_add_m_applyfriends(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  m_applyfriends_.Add(value);
+}
+inline void db_friends::add_m_applyfriends(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_add_m_applyfriends(value);
+  // @@protoc_insertion_point(field_add:pbdb.db_friends.m_applyfriends)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+db_friends::_internal_m_applyfriends() const {
+  return m_applyfriends_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+db_friends::m_applyfriends() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_friends.m_applyfriends)
+  return _internal_m_applyfriends();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+db_friends::_internal_mutable_m_applyfriends() {
+  return &m_applyfriends_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+db_friends::mutable_m_applyfriends() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_friends.m_applyfriends)
+  return _internal_mutable_m_applyfriends();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

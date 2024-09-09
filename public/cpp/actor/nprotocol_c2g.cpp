@@ -53,5 +53,14 @@ namespace ngl
 			, ACTOR_RANKLIST
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
+
+		// ACTOR_RANKLIST 模块二次转发
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_FRIENDS
+			, pbnet::PROBUFF_NET_FRIEND
+			, pbnet::PROBUFF_NET_ADDFRIEND
+			, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND
+			, pbnet::PROBUFF_NET_ERASEFRIEND
+		>();
 	}
 }// namespace ngl

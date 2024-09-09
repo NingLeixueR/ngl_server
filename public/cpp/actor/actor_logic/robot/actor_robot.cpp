@@ -327,6 +327,26 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata)
+	{
+		return true;
+	}
+
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata)
+	{
+		return true;
+	}
+
 	void actor_manage_robot::nregister()
 	{
 		register_handle_custom<actor_manage_robot>::func<

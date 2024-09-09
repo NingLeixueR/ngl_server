@@ -1,0 +1,67 @@
+#pragma once
+
+#include "actor_manage.h"
+#include "actor_create.h"
+#include "ndb_modular.h"
+#include "nsp_server.h"
+#include "nsp_client.h"
+#include "ndbclient.h"
+#include "nprotocol.h"
+#include "db_manage.h"
+#include "db_pool.h"
+#include "db_data.h"
+#include "ntimer.h"
+#include "drop.h"
+#include "nlog.h"
+#include "friends.h"
+#include "net.h"
+#include "db.h"
+
+namespace ngl
+{
+	class actor_friends : public actor
+	{
+		actor_friends(const actor_friends&) = delete;
+		actor_friends& operator=(const actor_friends&) = delete;
+
+		friends m_friends;
+
+		actor_friends();
+	public:
+		friend class actor_instance<actor_friends>;
+		static actor_friends& getInstance()
+		{
+			return actor_instance<actor_friends>::instance();
+		}
+
+		virtual void init()
+		{
+			m_friends.set(this);
+		}
+
+		static void nregister();
+
+		virtual ~actor_friends() {}
+
+		virtual void loaddb_finish(bool adbishave) {}
+
+		static ENUM_ACTOR actor_type()
+		{
+			return ACTOR_FRIENDS;
+		}
+
+		static i64_actorid actorid(i16_area area)
+		{
+			return nguid::make(ACTOR_FRIENDS, area, nguid::none_actordataid());
+		}
+
+		// # ÃÌº”∫√”—
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_ADDFRIEND>>& adata);
+
+		// # Õ¨“‚/æ‹æ¯∫√”—…Í«Î
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>>& adata);
+
+		// # …æ≥˝∫√”—
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_ERASEFRIEND>>& adata);
+	};
+}// namespace ngl
