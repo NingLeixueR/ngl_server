@@ -327,22 +327,22 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>&)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>&)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>&)
 	{
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>&)
 	{
 		return true;
 	}
