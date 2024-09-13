@@ -266,6 +266,8 @@ bool start_world()
 	ngl::actor_keyvalue::getInstance();
 	ngl::actor_manage_activity::getInstance();
 	ngl::actor_family::getInstance();
+	ngl::actor_ranklist::getInstance();
+	ngl::actor_friends::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

@@ -55,6 +55,8 @@ namespace ngl
 			return nguid::make(ACTOR_FRIENDS, area, nguid::none_actordataid());
 		}
 
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
+
 		// # Ìí¼ÓºÃÓÑ
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_ADDFRIEND>>& adata);
 

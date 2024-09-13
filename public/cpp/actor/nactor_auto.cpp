@@ -134,6 +134,7 @@ namespace ngl
 				, null<actor_plays>, em_pram(ACTOR_PLAYS)
 				, null<actor_keyvalue>, em_pram(ACTOR_KEYVALUE)
 				, null<actor_family>, em_pram(ACTOR_FAMILY)
+				, null<actor_friends>, em_pram(ACTOR_FRIENDS)
 			);
 
 			// 新增内部协议需要补充
@@ -192,5 +193,6 @@ namespace ngl
 		tdb_task::init(aregister);
 		tdb_role::init(aregister);
 		tdb_bag::init(aregister);
+		tdb_friends::init(aregister);
 	}
 }//namespace ngl

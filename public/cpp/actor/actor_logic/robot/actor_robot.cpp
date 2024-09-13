@@ -329,6 +329,7 @@ namespace ngl
 
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>&)
 	{
+		log_error()->print("pbnet::PROBUFF_NET_FRIEND_RESPONSE");
 		return true;
 	}
 

@@ -16,6 +16,8 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
+		std::set<i64_actorid> ldataid;
+		tdb_brief::nsp_cli<actor_friends>::init(actor_friends::actor_type(), this, ldataid);
 	}
 
 	void actor_friends::nregister()
@@ -24,7 +26,16 @@ namespace ngl
 		register_handle_proto<actor_friends>::func<
 			mforward<pbnet::PROBUFF_NET_ADDFRIEND>
 			, mforward<pbnet::PROBUFF_NET_ERASEFRIEND>
+			, mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>
+			, mforward<pbnet::PROBUFF_NET_FRIEND>
 		>(true);
+	}
+
+	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata)
+	{
+		i64_actorid lroleid = adata.get_data()->identifier();
+		m_friends.syncfriends(lroleid);
+		return true;
 	}
 
 	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_ADDFRIEND>>& adata)

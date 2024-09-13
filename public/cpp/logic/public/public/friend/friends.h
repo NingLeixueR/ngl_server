@@ -136,5 +136,27 @@ namespace ngl
 			lrolefriend->mutable_m_friends()->erase(itor);
 			return 0;
 		}
+
+		// 同步好友信息
+		void syncfriends(i64_actorid aroleid)
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_RESPONSE>();
+			const pbdb::db_friends* lfriendconst = get_constfriends(aroleid);
+			if (lfriendconst != nullptr)
+			{
+				std::ranges::for_each(lfriendconst->m_friends(), [&pro, lfriendconst](i64_actorid afriends)
+					{
+						const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(afriends);
+						*pro->add_m_friends() = *lpbrief;
+					});
+
+				std::ranges::for_each(lfriendconst->m_applyfriends(), [&pro, lfriendconst](i64_actorid afriends)
+					{
+						const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(afriends);
+						*pro->add_m_applyfriends() = *lpbrief;
+					});
+			}
+			actor::send_client(aroleid, pro);
+		}
 	};
 }// namespace ngl

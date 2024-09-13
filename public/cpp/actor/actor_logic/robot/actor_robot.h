@@ -295,6 +295,16 @@ namespace ngl
 								return true;
 							});
 					});
+
+				handle_cmd::push("x3", [this](const std::vector<std::string>& avec)
+					{
+						pbnet::PROBUFF_NET_FRIEND pro;
+						foreach([&pro, this](actor_manage_robot::_robot& arobot)
+							{
+								send(&arobot, pro);
+								return true;
+							});
+					});
 			}
 
 			if (handle_cmd::function(lparm1, lrecv->m_parm) == false)
