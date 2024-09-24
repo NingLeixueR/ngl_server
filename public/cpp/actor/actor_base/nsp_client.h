@@ -11,9 +11,9 @@ namespace ngl
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
-		static std::vector<i64_actorid>					m_nspserver;
 		static actor*									m_actor;
-		static bool										m_register;
+		static std::map<i16_area, i64_actorid>			m_nspserver;
+		static std::map<i16_area,bool>					m_register;
 		static std::set<i64_actorid>					m_dataid;
 		static bool										m_recvdatafinish;
 		static std::function<void(const T&)>			m_recvdatafinishfun;
@@ -33,7 +33,8 @@ namespace ngl
 			Assert(lvecarea.empty() == false)
 			for (i16_area area : lvecarea)
 			{
-				m_nspserver.push_back(nguid::make(atype, area, nguid::none_actordataid()));
+				m_nspserver[area] = nguid::make(atype, area, nguid::none_actordataid());
+				m_register[area] = false;
 			}
 			m_actor		= aactor;
 			m_dataid	= adataid;
@@ -70,28 +71,36 @@ namespace ngl
 			// 注册回复
 			actor::register_actor_s<
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>
-			>([](TDerived*, message<np_channel_register_reply<T>>&)
+			>([](TDerived*, message<np_channel_register_reply<T>>& adata)
 				{
-					m_actor->log_error()->print("nsp_client register reply {}:{}", type_name<TDerived>(), type_name<T>());
-					m_register = true;
+					m_actor->log_error()->print(
+						"nsp_client register reply {}:{}", 
+						type_name<TDerived>(), type_name<T>()
+					);
+					auto& recv = *adata.get_data();
+					m_register[nguid::area(recv.m_actorid)] = true;
 				});
 
-			wheel_parm lparm
-			{
-				.m_ms = 1000,
-				.m_intervalms = [](int64_t) {return 1000; } ,
-				.m_count = 0x7fffffff,
-				.m_fun = [](const wheel_node* anode)
+			std::ranges::for_each(m_register, [](const auto& apair)
 				{
-					if (m_register)
+					i16_area larea = apair.first;
+					wheel_parm lparm
 					{
-						twheel::wheel().removetimer(anode->m_timerid);
-						return;
-					}
-					register_echannel();
-				}
-			};
-			twheel::wheel().addtimer(lparm);
+						.m_ms = 1000,
+						.m_intervalms = [](int64_t) {return 1000; } ,
+						.m_count = 0x7fffffff,
+						.m_fun = [larea](const wheel_node* anode)
+						{
+							if (m_register[larea])
+							{
+								twheel::wheel().removetimer(anode->m_timerid);
+								return;
+							}
+							register_echannel(larea);
+						}
+					};
+					twheel::wheel().addtimer(lparm);
+				});			
 		}
 
 		static const T* getconst(i64_actorid aactorid)
@@ -120,7 +129,7 @@ namespace ngl
 			auto pro = std::make_shared<np_channel_data<T>>();
 			pro->m_data.make();
 			(*pro->m_data.m_data)[aactorid] = itor->second;
-			actor::static_send_actor(m_nspserver, nguid::make(), pro);
+			actor::static_send_actor(m_nspserver[nguid::area(aactorid)], nguid::make(), pro);
 		}
 
 		// # 如果数据部分复制到位就执行以下操作
@@ -143,12 +152,12 @@ namespace ngl
 			m_changedatafun = afun;
 		}
 	private:
-		static void register_echannel()
+		static void register_echannel(i16_area aarea)
 		{
 			m_actor->log_error()->print("nsp_client register {}:{}", type_name<TDerived>(), type_name<T>());
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
-			actor::static_send_actor(m_nspserver, nguid::make(), pro);
+			actor::static_send_actor(m_nspserver[aarea], nguid::make(), pro);
 		}
 	};
 
@@ -156,13 +165,13 @@ namespace ngl
 	std::map<i64_actorid, T> nsp_client<TDerived, T>::m_data;
 
 	template <typename TDerived, typename T>
-	std::vector<i64_actorid> nsp_client<TDerived, T>::m_nspserver = {};
+	std::map<i16_area, i64_actorid> nsp_client<TDerived, T>::m_nspserver = {};
 
 	template <typename TDerived, typename T>
 	actor* nsp_client<TDerived, T>::m_actor = nullptr;
 
 	template <typename TDerived, typename T>
-	bool nsp_client<TDerived, T>::m_register = false;
+	std::map<i16_area, bool> nsp_client<TDerived, T>::m_register = {};
 
 	template <typename TDerived, typename T>
 	std::set<i64_actorid> nsp_client<TDerived, T>::m_dataid;
