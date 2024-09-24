@@ -29,7 +29,6 @@ namespace ngl
 		void			set_time();
 		i32_time		get_time()const;
 
-
 		// # 设置actor 
 		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
 		// # arequestactorid:哪个actor发送的
