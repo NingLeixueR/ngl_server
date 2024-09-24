@@ -99,9 +99,7 @@ namespace ngl
 		static void del(db* adb, i64_actorid aid)
 		{
 			char lbuff[1024] = { 0 };
-			int llen = snprintf(
-				lbuff,
-				1024,
+			int llen = snprintf(lbuff,1024,
 				"DELETE FROM %s WHERE id='%lld';",
 				tools::protobuf_tabname<T>::name().c_str(), aid
 			);
@@ -115,16 +113,13 @@ namespace ngl
 		{
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
-			int llen = snprintf(
-				lbuff,
-				1024,
+			int llen = snprintf(lbuff,1024,
 				"SELECT id,data FROM %s WHERE id = '%lld';",
 				tools::protobuf_tabname<T>::name().c_str(), aid
 			);
 			if (llen <= 0)
 				return false;
-			return adb->select(
-				lbuff, llen,
+			return adb->select(lbuff, llen,
 				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					protobuf_data<T> ldata;
@@ -138,7 +133,8 @@ namespace ngl
 					}
 					ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 					return true;
-				});
+				}
+			);
 		}
 
 		template <typename T>
@@ -152,8 +148,7 @@ namespace ngl
 			);
 			if (llen <= 0)
 				return false;
-			return adb->select(
-				lbuff, llen,
+			return adb->select(lbuff, llen,
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					protobuf_data<T> ldata;
@@ -167,7 +162,8 @@ namespace ngl
 					}
 					ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
 					return true;
-				});
+				}
+			);
 		}
 
 		// # 加载出id 防止内存穿透
@@ -182,13 +178,13 @@ namespace ngl
 			);
 			if (llen <= 0)
 				return false;
-			return adb->select(
-				lbuff, llen,
+			return adb->select(lbuff, llen,
 				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					aidset.insert(tools::lexical_cast<int64_t>(amysqlrow[0]));
 					return true;
-				});
+				}
+			);
 		}
 	};
 }// namespace ngl
