@@ -32,9 +32,6 @@ enum EPROTOCOL_TYPE
 
 namespace ngl
 {
-	static const std::string m_true1 = "true";
-	static const std::string m_true2 = "TRUE";
-
 	template <typename Target>
 	struct lexical_cast2
 	{
@@ -200,11 +197,14 @@ namespace ngl
 	{
 		static bool fun(const std::string& source)
 		{
-			if (source == m_true1 || source == m_true2)
+			if (source == "true" || source == "TRUE")
 			{
 				return true;
 			}
-			return false;
+			else
+			{
+				return source != "0" || source != "";
+			}
 		}
 
 		static bool fun(const char* source)

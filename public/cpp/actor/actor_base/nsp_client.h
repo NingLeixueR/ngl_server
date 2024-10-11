@@ -27,7 +27,7 @@ namespace ngl
 			return tools::type_name<TX>();
 		}
 
-		void log(const char* amessage)
+		static void log(const char* amessage)
 		{
 			m_actor->log_error()->print("{} {}:{}", amessage, type_name<TDerived>(), type_name<T>());
 		}

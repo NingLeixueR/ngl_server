@@ -3,6 +3,7 @@
 #include "init_server.h"
 
 #define DEF_COUNT (2000)
+
 void init_DB_ACCOUNT(const char* aname, int beg)
 {
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
@@ -208,6 +209,51 @@ void init_DB_FAMILY()
 	}
 }
 
+void init_DB_RANKLIST()
+{
+	for (int i = 1; i < 100; ++i)
+	{
+		pbdb::db_ranklist ltemp;
+		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		pbdb::rankitem lrankitem;
+		lrankitem.set_m_time(ngl::localtime::gettime());
+		lrankitem.set_m_value(i);
+		(*ltemp.mutable_m_items())[(int)pbdb::eranklist::lv] = lrankitem;
+		ngl::actor_dbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
+	}
+}
+
+void init_DB_FRIENDS()
+{
+	std::map<ngl::i64_actorid, pbdb::db_friends> lmap;
+	for (int i = 1; i < 10; ++i)
+	{
+		int lbeg = i * 10;
+		int lend = lbeg + 10;
+		for (int j1 = lbeg; j1 < lend; ++j1)
+		{
+			ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j1);
+			pbdb::db_friends& lfriends = lmap[lactor1];
+			lfriends.set_m_id(lactor1);
+			for (int j2 = lbeg; j2 < lend; ++j2)
+			{
+				if (j1 != j2)
+				{
+					ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2);
+					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2+10);
+					lfriends.add_m_friends(lactor2);
+					lfriends.add_m_applyfriends(lactor3);
+				}
+			}
+		}
+	}
+
+	std::ranges::for_each(lmap, [](const auto& apair)
+		{
+			ngl::actor_dbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
+		});
+}
+
 
 bool start_db(int argc, char** argv)
 {
@@ -240,6 +286,8 @@ bool start_db(int argc, char** argv)
 			init_DB_KEYVAL();
 			init_DB_ACCOUNT();
 			init_DB_ROLEKEYVALUE();
+			init_DB_RANKLIST();
+			init_DB_FRIENDS();
 		}		
 	}
 

@@ -61,18 +61,9 @@ namespace ngl
 
 		void printf_log(bool awarn, const char* aname, const tconsuming* aitem)const
 		{
-			if (awarn)
-			{
-				log_info()->print("time consuming [{}:{}] [{}] [{}] ", 
-					aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
-				);
-			}
-			else
-			{
-				log_error()->print("time consuming [{}:{}] [{}] [{}] ", 
-					aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
-				);
-			}
+			(awarn? log_info(): log_error())->print("time consuming [{}:{}] [{}] [{}] ",
+				aitem->m_name, aitem->m_id, aname, aitem->m_end - aitem->m_beg
+			);
 		}
 
 		void run()
