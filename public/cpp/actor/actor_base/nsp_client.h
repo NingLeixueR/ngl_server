@@ -79,7 +79,6 @@ namespace ngl
 			>([](TDerived*, message<np_channel_register_reply<T>>& adata)
 				{
 					log("nsp_client np_channel_register_reply");
-					m_actor->log_error()->print("nsp_client register reply {}:{}", type_name<TDerived>(), type_name<T>());
 					auto& recv = *adata.get_data();
 					m_register[nguid::area(recv.m_actorid)] = true;
 				});
