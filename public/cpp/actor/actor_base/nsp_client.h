@@ -27,6 +27,11 @@ namespace ngl
 			return tools::type_name<TX>();
 		}
 
+		void log(const char* amessage)
+		{
+			m_actor->log_error()->print("{} {}:{}", amessage, type_name<TDerived>(), type_name<T>());
+		}
+
 		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
 			std::vector<i16_area> lvecarea = ttab_servers::get_arealist(nconfig::m_nodeid);
@@ -43,7 +48,7 @@ namespace ngl
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
 			>([](TDerived*, message<np_channel_data<T>>& adata)
 				{
-					m_actor->log_error()->print("nsp_client {}:{}", type_name<TDerived>(), type_name<T>());
+					log("nsp_client np_channel_data");
 					auto& recv = *adata.get_data();
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
 					std::ranges::for_each(lmap, [](const auto& apair)
@@ -73,10 +78,8 @@ namespace ngl
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>
 			>([](TDerived*, message<np_channel_register_reply<T>>& adata)
 				{
-					m_actor->log_error()->print(
-						"nsp_client register reply {}:{}", 
-						type_name<TDerived>(), type_name<T>()
-					);
+					log("nsp_client np_channel_register_reply");
+					m_actor->log_error()->print("nsp_client register reply {}:{}", type_name<TDerived>(), type_name<T>());
 					auto& recv = *adata.get_data();
 					m_register[nguid::area(recv.m_actorid)] = true;
 				});
@@ -154,7 +157,7 @@ namespace ngl
 	private:
 		static void register_echannel(i16_area aarea)
 		{
-			m_actor->log_error()->print("nsp_client register {}:{}", type_name<TDerived>(), type_name<T>());
+			log("nsp_client register");
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
 			actor::static_send_actor(m_nspserver[aarea], nguid::make(), pro);
