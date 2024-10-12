@@ -22,7 +22,7 @@ namespace ngl
 		std::string m_data;
 		int m_pos;
 		bool m_doublequotationmarks; // Ë«ÒýºÅ
-		char m_fg;//Ä¬ÈÏ,
+		char m_fg;//Ä¬ÈÏ','
 
 		csvpair() :
 			m_pos(0),

@@ -80,13 +80,13 @@ namespace ngl
 
 		static void print()
 		{
-			for(const auto& item1 : m_datae2n)
-			{
-				for (const auto& item2 : item1.second)
-				{//ENUMT, std::string
-					std::cout << std::format("{}:{}", (int)item2.first, item2.secod) << std::endl;
-				}
-			}
+			std::ranges::for_each(m_datae2n, [](const auto& apair)
+				{
+					std::ranges::for_each(apair.second, [](const auto& akv)
+						{
+							std::cout << std::format("{}:{}", (int)akv.first, akv.secod) << std::endl;
+						});
+				});
 		}
 	};
 
