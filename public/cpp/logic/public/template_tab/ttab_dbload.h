@@ -10,6 +10,7 @@ namespace ngl
 		ttab_dbload& operator=(const ttab_dbload&) = delete;
 
 		static std::map<std::string, tab_dbload*> m_name2data;
+		static tab_dbload m_universalize;
 
 		ttab_dbload()
 		{}
@@ -21,6 +22,13 @@ namespace ngl
 				tab_dbload& tab = ipair.second;
 				m_name2data[tab.m_name] = &tab;
 			}
+
+			m_universalize.m_id = 0x7fffffff;
+			m_universalize.m_name = "db_universalize";
+			m_universalize.m_isloadall = true;
+			m_universalize.m_network = true;
+			m_universalize.m_sendmaxcount = 100;
+			m_universalize.m_dbcacheintervalms = 5000;
 		}
 
 		template <typename T>
@@ -32,7 +40,9 @@ namespace ngl
 
 			tab_dbload** tab = tools::findmap(m_name2data, lname);
 			if (tab == nullptr)
-				return nullptr;
+			{
+				return &m_universalize;
+			}
 			return *tab;
 		}
 	};

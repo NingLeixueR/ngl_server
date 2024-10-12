@@ -109,13 +109,13 @@ namespace ngl
 
 		static i32_serverid get_server(const nguid& aguid)
 		{
-			Try
+			auto itor = m_actorserver.find(aguid);
+			if (itor == m_actorserver.end())
 			{
-				auto itor = m_actorserver.find(aguid);
-				Assert(itor != m_actorserver.end())
-				return itor->second;
-			}Catch
-			return -1;
+				log_error()->print("impl_actor_address.get_server({})", aguid);
+				return -1;
+			}
+			return itor->second;
 		}
 
 		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)

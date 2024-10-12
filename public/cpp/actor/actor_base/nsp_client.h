@@ -13,7 +13,7 @@ namespace ngl
 
 		static actor*									m_actor;
 		static std::map<i16_area, i64_actorid>			m_nspserver;
-		static std::map<i16_area,bool>					m_register;
+		static std::map<i16_area, bool>					m_register;
 		static std::set<i64_actorid>					m_dataid;
 		static bool										m_recvdatafinish;
 		static std::function<void(const T&)>			m_recvdatafinishfun;
@@ -159,6 +159,8 @@ namespace ngl
 			log("nsp_client register");
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
+
+			log_error()->print("nsp_client register: {} -> {}", nguid(pro->m_actorid), nguid(m_nspserver[aarea]));
 			actor::static_send_actor(m_nspserver[aarea], nguid::make(), pro);
 		}
 	};
