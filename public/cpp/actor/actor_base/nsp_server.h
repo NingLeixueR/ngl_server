@@ -72,7 +72,8 @@ namespace ngl
 					auto& recv = *adata.get_data();
 					m_publishlist[recv.m_actorid] = recv.m_dataid;
 					auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
-					pro->m_actorid = recv.m_actorid;
+					pro->m_actorid = m_dbmodule->actorbase()->id_guid();
+					log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
 					m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
 					// # 同步需要的数据
 					sync(recv.m_actorid);
