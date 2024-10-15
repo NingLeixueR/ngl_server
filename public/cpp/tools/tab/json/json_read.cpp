@@ -27,30 +27,40 @@ namespace ngl
 		adata = ret->valuestring;
 		return true;
 	}
+
+	class json_read_number
+	{
+	public:
+		template <typename TNUMBER>
+		static bool fun(const cJSON* ret, TNUMBER& adata)
+		{
+			if (ret->type == cJSON_Number)
+			{
+				adata = (TNUMBER)ret->valueint;
+				return true;
+			}
+			if (ret->type == cJSON_String)
+			{
+				try
+				{
+					adata = tools::lexical_cast<TNUMBER>(ret->valuestring);
+					return true;
+				}
+				catch (...)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+	};
 	
 	bool json_read::read(const char* akey, int8_t& adata) const
 	{
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type == cJSON_Number)
-		{
-			adata = (int8_t)ret->valueint;
-			return true;
-		}
-		if (ret->type == cJSON_String)
-		{
-			try
-			{
-				adata = tools::lexical_cast<int8_t>(ret->valuestring);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
-		}
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, int16_t& adata) const
@@ -58,24 +68,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type == cJSON_Number)
-		{
-			adata = (int16_t)ret->valueint;
-			return true;
-		}
-		if (ret->type == cJSON_String)
-		{
-			try
-			{
-				adata = tools::lexical_cast<int16_t>(ret->valuestring);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
-		}
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, int32_t& adata) const
@@ -83,24 +76,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type == cJSON_Number)
-		{
-			adata = ret->valueint;
-			return true;
-		}
-		if (ret->type == cJSON_String)
-		{
-			try
-			{
-				adata = tools::lexical_cast<int32_t>(ret->valuestring);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
-		}
-		return false;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, int64_t& adata) const
@@ -127,24 +103,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type == cJSON_Number)
-		{
-			adata = (uint8_t)ret->valueint;
-			return true;
-		}
-		if (ret->type == cJSON_String)
-		{
-			try
-			{
-				adata = tools::lexical_cast<uint8_t>(ret->valuestring);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
-		}
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, uint16_t& adata) const
@@ -152,24 +111,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type == cJSON_Number)
-		{
-			adata = (uint16_t)ret->valueint;
-			return true;
-		}
-		if (ret->type == cJSON_String)
-		{
-			try
-			{
-				adata = tools::lexical_cast<uint16_t>(ret->valuestring);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
-		}
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, uint32_t& adata) const
@@ -177,24 +119,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		if (ret->type == cJSON_Number)
-		{
-			adata = (uint32_t)ret->valueint;
-			return true;
-		}
-		if (ret->type == cJSON_String)
-		{
-			try
-			{
-				adata = tools::lexical_cast<uint32_t>(ret->valuestring);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
-		}
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, uint64_t& adata) const
@@ -219,10 +144,9 @@ namespace ngl
 	bool json_read::read(const char* akey, float& adata) const
 	{
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-		if (nullptr == ret || ret->type != cJSON_Number)
+		if (nullptr == ret)
 			return false;
-		adata = (float)ret->valuedouble;
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, double& adata) const
@@ -230,8 +154,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret || ret->type != cJSON_Number)
 			return false;
-		adata = ret->valuedouble;
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, bool& adata) const
@@ -239,8 +162,7 @@ namespace ngl
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
 			return false;
-		adata = ret->type != cJSON_False;
-		return true;
+		return json_read_number::fun(ret, adata);
 	}
 
 	bool json_read::read(const char* akey, cJSON*& adata) const
