@@ -89,12 +89,7 @@ namespace ngl
 			{
 				if (!apair.m_doublequotationmarks)
 				{
-					if (lret[lpos] == apair.m_fg)
-					{
-						++lpos;
-						break;
-					}
-					if (lret[lpos] == '\n')
+					if (lret[lpos] == apair.m_fg || lret[lpos] == '\n')
 					{
 						++lpos;
 						break;
@@ -117,6 +112,7 @@ namespace ngl
 		}
 
 		// 基本类型
+	private:
 		template <typename TNUMBER>
 		static bool number_csv(csvpair& apair, TNUMBER& adata)
 		{
@@ -128,68 +124,20 @@ namespace ngl
 				adata = TNUMBER();
 			return true;
 		}
+	public:
+		static bool readcsv(csvpair& apair, int8_t& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, int16_t& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, int32_t& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, int64_t& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, uint8_t& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, uint16_t& adata)	{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, uint32_t& adata)	{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, uint64_t& adata)	{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, float& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, double& adata)		{ return number_csv(apair, adata); }
+		static bool readcsv(csvpair& apair, bool& adata)		{ return number_csv(apair, adata); }
 
-		static bool readcsv(csvpair& apair, int8_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, int16_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, int32_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, int64_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, uint8_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, uint16_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, uint32_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, uint64_t& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, float& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, double& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, bool& adata)
-		{
-			return number_csv(apair, adata);
-		}
-
-		static bool readcsv(csvpair& apair, std::string& adata)
-		{
-			read(apair, adata);
-			return true;
-		}
-
+		// stl
 		template <typename T, bool BASE_TYPE>
 		class readcsv_stl
 		{
@@ -236,7 +184,13 @@ namespace ngl
 				return true;
 			}
 		};
-		
+
+		static bool readcsv(csvpair& apair, std::string& adata)
+		{
+			read(apair, adata);
+			return true;
+		}
+
 		template <typename T>
 		static bool readcsv(csvpair& apair, std::vector<T>& avec)
 		{
@@ -292,60 +246,17 @@ namespace ngl
 			return 0;
 		}
 		
-		static bool readveccsv(csvpair& apair, int8_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, int16_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, int32_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, int64_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, uint8_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, uint16_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, uint32_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, uint64_t& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, float& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, double& adata)
-		{
-			return readcsv(apair, adata);
-		}
-
-		static bool readveccsv(csvpair& apair, std::string& adata)
-		{
-			return readcsv(apair, adata);
-		}
+		static bool readveccsv(csvpair& apair, int8_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, int16_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, int32_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, int64_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, uint8_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, uint16_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, uint32_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, uint64_t& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, float& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, double& adata)		{ return readcsv(apair, adata); }
+		static bool readveccsv(csvpair& apair, std::string& adata)	{ return readcsv(apair, adata); }
 
 		template <typename TKEY, typename TVALUE>
 		static bool readcsv(csvpair& apair, std::map<TKEY, TVALUE>& amap)
