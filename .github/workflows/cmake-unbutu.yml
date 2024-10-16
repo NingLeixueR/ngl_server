@@ -36,6 +36,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libcurl4-openssl-dev libprotobuf-dev protobuf-compiler libmysqlclient-dev  # 安装依赖
+        sudo apt-get install uuid-dev
         
     - name: Install GCC 13
       run: |
