@@ -36,21 +36,26 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libcurl4-openssl-dev libprotobuf-dev protobuf-compiler libmysqlclient-dev  # 安装依赖
+        sudo apt-get install uuid-dev
         
     - name: Install GCC 13
       run: |
-       sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
        sudo apt-get update
-       sudo apt-get install g++-13 -y
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+        sudo apt-get update
+        sudo apt-get install -y gcc-13 g++-13
 
     - name: Set GCC 13 as default compiler
       run: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+         echo "CC=gcc-13" >> $GITHUB_ENV
+         echo "CXX=g++-13" >> $GITHUB_ENV
         
     - name: Verify GCC version
       run: |
        gcc --version
+       $CC --version
+       $CXX --version
 
     - name: Install Boost.Interprocess
       run: |
