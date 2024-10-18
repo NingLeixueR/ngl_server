@@ -62,7 +62,6 @@ namespace ngl
 			return temp;
 		}
 	public:
-
 		// # …Ë÷√http¿‡–Õ
 		static void set_mode(std::shared_ptr<_http>& ahttp, ENUM_MODE aval);
 

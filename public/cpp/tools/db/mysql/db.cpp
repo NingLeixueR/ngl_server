@@ -20,10 +20,7 @@ namespace ngl
 		}
 		m_arg = arg;
 		log_error()->print("[mysql] {}@{}:{} [password={}][dbname={}]"
-			, m_arg.m_account
-			, m_arg.m_ip, m_arg.m_port
-			, m_arg.m_passworld
-			, m_arg.m_dbname
+			, m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_passworld, m_arg.m_dbname
 		);
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)

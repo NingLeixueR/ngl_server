@@ -56,8 +56,7 @@ namespace ngl
 			// # REPLACE INTO 则会先删除数据，然后再插入。
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff
-				, 1024
+				lbuff, 1024
 				, "INSERT INTO %s (id,data)VALUES(%lld,?)  ON DUPLICATE KEY UPDATE data=values(data);"
 				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id()
 			);
