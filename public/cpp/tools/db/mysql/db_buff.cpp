@@ -5,7 +5,7 @@ namespace ngl
 	bool db_buff::malloc_function(ptr& aptr, const std::function<bool(ptr&)>& afun)
 	{
 		int32_t lpos = 0;
-		while (lpos < m_buffcout)
+		while (lpos < m_buffcount)
 		{
 			malloc(aptr, lpos);
 			if (afun(aptr) == false)
@@ -23,7 +23,7 @@ namespace ngl
 	
 	bool db_buff::malloc(ptr& aptr, int32_t apos)
 	{
-		if (m_buffcout <= apos)
+		if (m_buffcount <= apos)
 		{
 			return false;
 		}

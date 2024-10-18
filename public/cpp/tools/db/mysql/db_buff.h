@@ -14,11 +14,11 @@ namespace ngl
 		db_buff(const db_buff&) = delete;
 		db_buff& operator=(const db_buff&) = delete;
 
-		int m_buffcout;
+		int m_buffcount;
 		int m_buffsize;
 	public:
 		db_buff(int abuffcount, int abuffsize) :
-			m_buffcout(abuffcount),
+			m_buffcount(abuffcount),
 			m_buffsize(abuffsize)
 		{}
 
