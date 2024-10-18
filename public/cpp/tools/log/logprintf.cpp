@@ -158,11 +158,9 @@ namespace ngl
 	void logfile_default::printf(const logitem* alog)
 	{
 		const tab_servers* tab = ttab_servers::tab(alog->m_serverid);
-		m_stream 
-			<< std::format("[{}:{}][{}:{}]", 
+		m_stream << std::format("[{}:{}][{}:{}]", 
 				tab->m_name,alog->m_serverid, alog->m_src, alog->m_data
-			)
-			<< std::endl;
+			)<< std::endl;
 		++m_count;
 		if (check_count())
 		{
