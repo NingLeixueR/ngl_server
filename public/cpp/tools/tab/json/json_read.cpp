@@ -83,7 +83,7 @@ namespace ngl
 		template <typename TNUMBER>
 		static bool fun_value(const cJSON* ajson, TNUMBER& adata)
 		{
-			if (nullptr == ajson || ajson->type != cJSON_Number)
+			if (nullptr == ajson || (ajson->type != cJSON_Number && ajson->type != cJSON_String))
 				return false;
 			adata = (TNUMBER)ajson->valueint;
 			if (ajson->type == cJSON_String)
