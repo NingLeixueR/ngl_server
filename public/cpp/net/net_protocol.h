@@ -158,6 +158,17 @@ namespace ngl
 		}
 
 		template <typename T>
+		bool sendbyserver(
+			i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
+		)
+		{
+			i32_sessionid lsession = server_session::sessionid(aserverid);
+			if (lsession == -1)
+				return false;
+			return send(lsession, adata, aactorid, arequestactorid);
+		}
+
+		template <typename T>
 		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
 
 		// # 给一组sesion发送消息

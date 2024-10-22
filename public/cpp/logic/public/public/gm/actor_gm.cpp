@@ -88,7 +88,6 @@ namespace ngl
 							}
 						}
 					);
-
 					handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 						{
 							ngl::json_write lwritejson;
@@ -106,11 +105,9 @@ namespace ngl
 							ngl::np_gm_response lresponse;
 							ljson.get(lresponse.m_json);
 							reply_php(adata->m_pack, lresponse);
-
 							return;
 						}
 					);
-
 
 					handle_cmd::push("close_actor", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 						{

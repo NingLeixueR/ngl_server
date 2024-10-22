@@ -103,7 +103,6 @@ namespace ngl
 			write(akey, larray);
 		}
 
-
 		// 支持没有参数
 		void write();
 
