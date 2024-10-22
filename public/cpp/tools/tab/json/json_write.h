@@ -56,10 +56,10 @@ namespace ngl
 		template <typename KEY, typename VAL>
 		void write(const char* akey, const std::map<KEY, VAL>& aval)
 		{
-			std::vector<std::pair<KEY, VAL>> lvec;
+			std::vector<std::pair<std::string, VAL>> lvec;
 			for (auto itor = aval.begin(); itor != aval.end(); ++itor)
 			{
-				lvec.push_back(std::make_pair(itor->first, itor->second));
+				lvec.push_back(std::make_pair(tools::lexical_cast<std::string>(itor->first), itor->second));
 			}
 			write(akey, lvec);
 		}
@@ -90,15 +90,14 @@ namespace ngl
 			write(akey, larray);
 		}
 
-		template <typename TKEY, typename TVAL>
-		void write(const char* akey, const std::vector<std::pair<TKEY, TVAL>>& aval)
+		template <typename TVAL>
+		void write(const char* akey, const std::vector<std::pair<std::string, TVAL>>& aval)
 		{
 			cJSON* larray = cJSON_CreateArray();
-			for (const std::pair<TKEY, TVAL>& apair : aval)
+			for (const std::pair<std::string, TVAL>& apair : aval)
 			{
 				ngl::json_write ltemp;
-				ltemp.write("k", apair.first);
-				ltemp.write("v", apair.second);
+				ltemp.write(apair.first.c_str(), apair.second);
 				cJSON_AddItemToArray(larray, ltemp.nofree());
 			}
 			write(akey, larray);
