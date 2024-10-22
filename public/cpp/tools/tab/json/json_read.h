@@ -103,22 +103,36 @@ namespace ngl
 		}
 
 		template <typename KEY, typename VAL>
+		bool read(const char* akey, std::vector<std::pair<KEY, VAL>>& adata) const
+		{
+			const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
+			if (nullptr == ret || ret->type != cJSON_Array)
+				return false;
+			int lsize = cJSON_GetArraySize(ret);
+			for (int i = 0; i < lsize; ++i)
+			{
+				cJSON* tempret = cJSON_GetArrayItem(ret, i);
+				KEY lkey;
+				VAL lval;
+				json_read lretobj;
+				lretobj.m_free = false;
+				lretobj.m_json = tempret;
+				lretobj.read("k", lkey);
+				lretobj.read("v", lval);
+				adata.push_back(std::make_pair(lkey, lval));
+			}
+			return true;
+		}
+
+		template <typename KEY, typename VAL>
 		bool read(const char* akey, std::map<KEY, VAL>& aval) const
 		{
-			std::vector<KEY> lkey;
-			std::vector<VAL> lval;
-			
-			std::string lkeystr = akey;
-			lkeystr += "_key";
-			if (read(lkeystr.c_str(), lkey) == false)
+			std::vector<std::pair<KEY, VAL>> lvec;
+			if (read(akey, lvec) == false)
 				return false;
-			std::string lvalstr = akey;
-			lvalstr += "_val";
-			if (read(lvalstr.c_str(), lval) == false)
-				return false;
-			for (int i = 0; i < lkey.size() && i < lval.size(); ++i)
+			for (int i = 0; i < lvec.size(); ++i)
 			{
-				aval.insert({ lkey[i], lval[i] });
+				aval.insert(lvec[i]);
 			}
 			return true;
 		}

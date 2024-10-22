@@ -70,7 +70,7 @@ namespace ngl
 						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 					};
 
-					handle_cmd::push("guid", [this,&adata](const json_read& aos)
+					handle_cmd::push("guid", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))
@@ -83,13 +83,35 @@ namespace ngl
 								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 								ngl::np_gm_response lresponse;
 								lwritejson.get(lresponse.m_json);
-								reply_php(adata.m_pack, lresponse);
+								reply_php(adata->m_pack, lresponse);
 								return;
 							}
 						}
 					);
 
-					handle_cmd::push("close_actor", [this, &adata](const json_read& aos)
+					handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
+						{
+							ngl::json_write lwritejson;
+							struct aprotocols
+							{
+								std::map<int, std::string> m_promap;
+								std::map<int, std::string> m_custommap;
+
+								jsonfunc("proto", m_promap, "custom", m_custommap)
+							};
+							aprotocols pro;
+							tprotocol::get_allprotocol(pro.m_promap, pro.m_custommap);
+							json_write ljson;
+							ljson.write("all_protocol", pro);
+							ngl::np_gm_response lresponse;
+							ljson.get(lresponse.m_json);
+							reply_php(adata->m_pack, lresponse);
+							return;
+						}
+					);
+
+
+					handle_cmd::push("close_actor", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 						{
 							gm_guid lguid;
 							if (aos.read("data", lguid))
@@ -106,7 +128,7 @@ namespace ngl
 						});
 				}
 
-				if (handle_cmd::function(loperator, lreadjson) == false)
+				if (handle_cmd::function(loperator, lreadjson, &adata) == false)
 				{
 					log_error()->print("GM actor_gm operator[{}] ERROR", loperator);
 				}

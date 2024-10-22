@@ -113,5 +113,22 @@ namespace ngl
 			pinfo& linfo = get<T>();
 			return linfo.m_name;
 		}
+
+		static void get_allprotocol(std::map<int, std::string>& apromap, std::map<int, std::string>& acustommap)
+		{
+			std::ranges::for_each(m_keyval, [&apromap, &acustommap](const auto& apair)
+				{
+					const pinfo& litem = apair.second;
+					if (litem.m_type == EPROTOCOL_TYPE_CUSTOM)
+					{
+						acustommap[litem.m_protocol] = litem.m_name;
+					}
+					else
+					{
+						apromap[litem.m_protocol] = litem.m_name;
+					}
+				});
+		}
+		
 	};
 }// namespace ngl
