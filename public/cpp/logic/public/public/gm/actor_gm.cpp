@@ -106,6 +106,7 @@ namespace ngl
 							ngl::np_gm_response lresponse;
 							ljson.get(lresponse.m_json);
 							reply_php(adata->m_pack, lresponse);
+
 							return;
 						}
 					);
