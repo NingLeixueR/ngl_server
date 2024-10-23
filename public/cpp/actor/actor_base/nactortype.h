@@ -40,7 +40,8 @@ namespace ngl
 		ACTOR_CSVCLIENT,										// 热更csv client
 		ACTOR_CSVSERVER,										// 热更csv server
 		ACTOR_NOTICE,											// 公告
-		ACTOR_GM,												// GM
+		ACTOR_GM,												// GM			(world 进程 )
+		ACTOR_GMCLIENT,											// GM CLIENT	(除了world进程每个进程都应该有此进程)
 		ACTOR_MAIL,												// 邮件
 		ACTOR_CHAT,												// 聊天
 		ACTOR_RANKLIST,											// 排行榜

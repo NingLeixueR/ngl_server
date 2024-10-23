@@ -268,6 +268,7 @@ bool start_db(int argc, char** argv)
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::init_nactor_type(false);
+	ngl::actor_gmclient::getInstance();
 	
 	ngl::actor_client::getInstance().actor_server_register();
 
@@ -316,6 +317,7 @@ bool start_world()
 	ngl::actor_family::getInstance();
 	ngl::actor_ranklist::getInstance();
 	ngl::actor_friends::getInstance();
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -334,6 +336,7 @@ bool start_login()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_login::getInstance();
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -354,6 +357,7 @@ bool start_gateway()
 	ngl::actor_gateway::getInstance();
 	ngl::actor_gatewayg2c::getInstance();
 	ngl::actor_gatewayc2g::getInstance();
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -370,6 +374,7 @@ bool start_log()
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -386,6 +391,7 @@ bool start_actor()
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+	ngl::actor_gmclient::getInstance();
 
 	return true;
 }
@@ -406,6 +412,7 @@ bool start_game()
 	ngl::actor_create::getInstance();
 	ngl::actor_kcp::getInstance();
 	ngl::actor_calendar::getInstance();
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -424,6 +431,7 @@ bool start_cross()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_chat::getInstance();
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -497,6 +505,7 @@ bool start_csvserver()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_csvserver::getInstance();
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -514,6 +523,7 @@ bool start_robot(int argc, char** argv)
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
+	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_manage_robot::getInstance();
 
