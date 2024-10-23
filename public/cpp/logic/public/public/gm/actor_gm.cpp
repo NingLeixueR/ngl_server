@@ -1,4 +1,5 @@
 #include "actor_gm.h"
+#include "actor_gmclient.h"
 
 namespace ngl
 {
@@ -90,21 +91,31 @@ namespace ngl
 					);
 					handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 						{
-							ngl::json_write lwritejson;
-							struct aprotocols
+							int lservertype = 0;
+							if (aos.read("data", lservertype))
 							{
-								std::map<int, std::string> m_promap;
-								std::map<int, std::string> m_custommap;
+								const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
+								if (tab == nullptr)
+									return;
+								if (ttab_servers::tab()->m_id != tab->m_id)
+								{
+									i64_actorid lactorid = nguid::make(
+										ACTOR_GMCLIENT, ttab_servers::tab()->m_area, tab->m_id
+									);
+									sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
+								}
+								else
+								{
+									actor_gmclient::protocols pro;
+									actor_gmclient::get_allprotocol(pro);
 
-								jsonfunc("proto", m_promap, "custom", m_custommap)
-							};
-							aprotocols pro;
-							tprotocol::get_allprotocol(pro.m_promap, pro.m_custommap);
-							json_write ljson;
-							ljson.write("all_protocol", pro);
-							ngl::np_gm_response lresponse;
-							ljson.get(lresponse.m_json);
-							reply_php(adata->m_pack, lresponse);
+									json_write ljson;
+									ljson.write("all_protocol", pro);
+									ngl::np_gm_response lresponse;
+									ljson.get(lresponse.m_json);
+									reply_php(adata->m_pack, lresponse);
+								}
+							}
 							return;
 						}
 					);

@@ -130,7 +130,7 @@ namespace ngl
 			return node_type(nconfig::m_nodeid);
 		}
 
-		static  const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
+		static const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			assert(ttab != nullptr);

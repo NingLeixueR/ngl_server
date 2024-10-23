@@ -9,6 +9,7 @@
 #include "actor_matching.h"
 #include "actor_ugpalace.h"
 #include "actor_calendar.h"
+#include "actor_gmclient.h"
 #include "actor_gateway.h"
 #include "actor_notice.h"
 #include "actor_server.h"
@@ -123,6 +124,7 @@ namespace ngl
 				, null<actor_brief>, em_pram(ACTOR_BRIEF)
 				, null<actor_chat>, em_pram(ACTOR_CHAT)
 				, null<actor_gm>, em_pram(ACTOR_GM)
+				, null<actor_gmclient>, em_pram(ACTOR_GMCLIENT)
 				, null<actor_mail>, em_pram(ACTOR_MAIL)
 				, null<actor_notice>, em_pram(ACTOR_NOTICE)
 				, null<actor_ranklist>, em_pram(ACTOR_RANKLIST)
