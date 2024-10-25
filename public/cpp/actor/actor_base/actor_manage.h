@@ -84,23 +84,12 @@ namespace ngl
 		void actor_stat(msg_actor_stat& adata);
 	};
 
+	// ÔÝÊ±¹ÒÆð actor_manage
 	class actor_suspendthread
 	{
 	public:
-		actor_suspendthread()
-		{
-			log_info()->print("start actor_suspendthread");
-			actor_manage::getInstance().statrt_suspend_thread();
-		}
-
-		~actor_suspendthread()
-		{
-			Try
-			{
-				actor_manage::getInstance().finish_suspend_thread();
-				log_info()->print("finish actor_suspendthread");
-			}Catch
-		}
+		actor_suspendthread();
+		~actor_suspendthread();
 	};
 
 	template <typename T>
