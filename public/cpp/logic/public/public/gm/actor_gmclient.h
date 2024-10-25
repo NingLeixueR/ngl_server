@@ -49,8 +49,6 @@ namespace ngl
 			return nguid::make(ACTOR_GMCLIENT, area, ttab_servers::tab()->m_id);
 		}
 
-		using handle_cmd = cmd<actor_gmclient, std::string, int, const ngl::json_read&>;
-
 		struct protocols
 		{
 			std::map<int, std::string> m_promap;
