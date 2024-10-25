@@ -117,6 +117,7 @@ namespace ngl
 
 		void remove(wheel_node* anode)
 		{
+			std::cout << "#########################################################################################################" << std::endl;
 			wheel_node* lpnextnode = nullptr;
 			for (wheel_node* lpnode = anode; lpnode != nullptr; lpnode = lpnextnode)
 			{
@@ -126,7 +127,6 @@ namespace ngl
 				if (itor == m_timer.end())
 					continue;
 				m_timer.erase(itor);
-				delete lpnode;
 			}
 		}
 
