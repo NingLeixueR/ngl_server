@@ -2,6 +2,7 @@
 
 #include "actor_client.h"
 #include "threadtools.h"
+#include "define_json.h"
 #include "actor_base.h"
 #include "naddress.h"
 #include "nthread.h"
@@ -67,6 +68,20 @@ namespace ngl
 
 		//# 获取actor数量
 		int32_t actor_count();
+
+		//# 获取actor stat 数据
+		struct msg_actor
+		{
+			std::string m_actor_name;
+			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
+			jsonfunc("actor_name", m_actor_name, "actor", m_actor)
+		};
+		struct msg_actor_stat
+		{
+			std::vector<msg_actor> m_vec;
+			jsonfunc("vec", m_vec)
+		};
+		void actor_stat(msg_actor_stat& adata);
 	};
 
 	class actor_suspendthread

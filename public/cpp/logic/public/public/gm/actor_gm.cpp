@@ -89,6 +89,7 @@ namespace ngl
 							}
 						}
 					);
+
 					handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 						{
 							int lservertype = 0;
@@ -97,14 +98,7 @@ namespace ngl
 								const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
 								if (tab == nullptr)
 									return;
-								if (ttab_servers::tab()->m_id != tab->m_id)
-								{
-									i64_actorid lactorid = nguid::make(
-										ACTOR_GMCLIENT, ttab_servers::tab()->m_area, tab->m_id
-									);
-									sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
-								}
-								else
+								if (ttab_servers::tab()->m_id == tab->m_id)
 								{
 									actor_gmclient::protocols pro;
 									actor_gmclient::get_allprotocol(pro);
@@ -137,6 +131,54 @@ namespace ngl
 						});
 				}
 
+				// 分发给独立进程的请求
+				class distribute_gmclient
+				{
+					std::set<std::string> m_distribute;
+
+					distribute_gmclient()
+					{
+						m_distribute.insert("all_protocol");
+						m_distribute.insert("server_stat");
+					}
+				public:
+					static distribute_gmclient& getInstance()
+					{
+						static distribute_gmclient ltemp;
+						return ltemp;
+					}
+
+					bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
+					{
+						if (m_distribute.find(akey) == m_distribute.end())
+							return false;
+						int lservertype = 0;
+						if (aos.read("data", lservertype))
+						{
+							const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
+							if (tab == nullptr)
+								return false;
+							if (ttab_servers::tab()->m_id != tab->m_id)
+							{
+								i64_actorid lactorid = nguid::make(
+									ACTOR_GMCLIENT, ttab_servers::tab()->m_area, tab->m_id
+								);
+								agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
+								return true;
+							}
+							else
+							{
+								return false;
+							}
+						}
+						return false;
+					}
+				};
+
+				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this))
+				{
+					return true;
+				}
 				if (handle_cmd::function(loperator, lreadjson, &adata) == false)
 				{
 					log_error()->print("GM actor_gm operator[{}] ERROR", loperator);

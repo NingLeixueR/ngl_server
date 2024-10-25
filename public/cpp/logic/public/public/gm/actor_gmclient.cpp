@@ -33,10 +33,36 @@ namespace ngl
 
 	bool actor_gmclient::handle(const message<mforward<np_gm>>& adata)
 	{
-		gcmd<protocols> lpro;
-		get_allprotocol(lpro.m_data);
-		lpro.id = adata.get_data()->identifier();
-		lpro.m_operator = "all_protocol";
+		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		std::string loperator;
+		if (lojson.read("operator", loperator) == false)
+		{
+			return true;
+		}
+		if (handle_cmd::empty())
+		{
+			handle_cmd::push("all_protocol", [this](int id, const ngl::json_read& aos)
+				{
+					gcmd<protocols> lpro; 
+					lpro.id = id;
+					lpro.m_operator = "all_protocol";
+					get_allprotocol(lpro.m_data);					
+				}
+			);
+			handle_cmd::push("server_stat", [this](int id, const ngl::json_read& aos)
+				{
+					gcmd<actor_manage::msg_actor_stat> lpro;
+					lpro.id = id;
+					lpro.m_operator = "server_stat";
+					actor_manage::getInstance().actor_stat(lpro.m_data);
+				}
+			);
+		}
+
+		if (handle_cmd::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		{
+			log_error()->print("GM actor_gmclient operator[{}] ERROR", loperator);
+		}
 		return true;
 	}
 }
