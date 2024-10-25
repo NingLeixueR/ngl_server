@@ -37,13 +37,7 @@ namespace ngl
 		}
 		if (aactor->type() != ACTOR_LOG)
 		{
-			time_consuming lconsuming(
-				std::format("{}-{}", aactor->guid(), apram.m_enum),
-				[](int64_t abeg, int64_t aend)->bool
-				{
-					return (aend - abeg) > sysconfig::consumings();
-				}
-			);
+			time_consuming lconsuming(std::format("{}-{}", aactor->guid(), apram.m_enum));
 			itor->second.m_fun(aactor, athreadid, apram);
 		}
 		else
