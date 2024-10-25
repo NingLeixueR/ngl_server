@@ -120,10 +120,11 @@ namespace ngl
 			wheel_node* lpnextnode = nullptr;
 			for (wheel_node* lpnode = anode; lpnode != nullptr; lpnode = lpnextnode)
 			{
+				std::unique_ptr<wheel_node> ltemp(lpnode);
 				lpnextnode = lpnode->m_next;
 				auto itor = m_timer.find(lpnode->m_timerid);
 				if (itor == m_timer.end())
-					return;
+					continue;
 				m_timer.erase(itor);
 				delete lpnode;
 			}
