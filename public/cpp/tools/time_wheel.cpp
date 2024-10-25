@@ -117,7 +117,6 @@ namespace ngl
 
 		void remove(wheel_node* anode)
 		{
-			std::cout << "#########################################################################################################" << std::endl;
 			wheel_node* lpnextnode = nullptr;
 			for (wheel_node* lpnode = anode; lpnode != nullptr; lpnode = lpnextnode)
 			{
