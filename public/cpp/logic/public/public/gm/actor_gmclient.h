@@ -62,6 +62,7 @@ namespace ngl
 		static void get_allprotocol(protocols& apro);
 
 		// # GM²Ù×÷
+		using handle_cmd = cmd<actor_gmclient, std::string, int, const ngl::json_read&>;
 		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl

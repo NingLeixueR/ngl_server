@@ -58,6 +58,22 @@ namespace ngl
 			return (int32_t)m_actorbyid.size();
 		}
 
+		inline void actor_stat(msg_actor_stat& adata)
+		{
+			ngl_lock;
+			std::ranges::for_each(m_actorbytype, [&adata](const auto& apair)
+				{
+					msg_actor ltemp;
+					ltemp.m_actor_name = em<ENUM_ACTOR>::get_name(apair.first);
+					std::ranges::for_each(apair.second, [&ltemp](const auto& aguidprt)
+						{
+							ltemp.m_actor[nguid::area(aguidprt.first)].push_back(nguid::actordataid(aguidprt.first));
+						});
+					adata.m_vec.push_back(ltemp);
+				});
+
+		}
+
 		inline bool add_actor(const ptractor& apactor, const std::function<void()>& afun)
 		{
 			const nguid& guid = apactor->guid();
@@ -450,6 +466,11 @@ namespace ngl
 	int32_t actor_manage::actor_count()
 	{
 		return m_impl_actor_manage()->actor_count();
+	}
+
+	void actor_manage::actor_stat(msg_actor_stat& adata)
+	{
+		m_impl_actor_manage()->actor_stat(adata);
 	}
 
 }//namespace ngl
