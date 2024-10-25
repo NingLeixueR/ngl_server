@@ -120,8 +120,7 @@ namespace ngl
 			{
 				ngl::log_error()->print(
 					"actor handle weight/count[{}/{}]", 
-					aweight, 
-					llist.size()
+					aweight, llist.size()
 				);
 			}
 				

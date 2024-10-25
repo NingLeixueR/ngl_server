@@ -93,6 +93,7 @@ namespace ngl
 			return itor->second;
 		}
 
+		// # 根据协议获取协议号
 		template <typename T>
 		static int32_t protocol()
 		{
@@ -100,6 +101,7 @@ namespace ngl
 			return linfo.m_protocol;
 		}
 
+		// # 根据协议获取协议类型
 		template <typename T>
 		static EPROTOCOL_TYPE protocol_type()
 		{
@@ -107,6 +109,7 @@ namespace ngl
 			return linfo.m_type;
 		}
 
+		// # 根据协议获取协议名称
 		template <typename T>
 		static const std::string& protocol_name()
 		{
@@ -114,6 +117,7 @@ namespace ngl
 			return linfo.m_name;
 		}
 
+		// # 获取当前进程已注册的所有协议
 		static void get_allprotocol(std::map<int, std::string>& apromap, std::map<int, std::string>& acustommap)
 		{
 			std::ranges::for_each(m_keyval, [&apromap, &acustommap](const auto& apair)
@@ -129,6 +133,5 @@ namespace ngl
 					}
 				});
 		}
-		
 	};
 }// namespace ngl

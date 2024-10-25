@@ -33,10 +33,10 @@ namespace ngl
 		using timecallback = std::function<void(wheel_node*)>;
 
 		time_wheel*		m_tw;
-		int64_t			m_timerid;
+		int64_t			m_timerid;				// 定时器id
 		bool&			m_remove;				// 定时器是否被移除
-		wheel_node*		m_next;
-		wheel_parm		m_parm;
+		wheel_node*		m_next;					// 下一个结点
+		wheel_parm		m_parm;					// 定时器回调参数
 
 		wheel_node(time_wheel* atw, int64_t atimerid, const wheel_parm& aparm);
 
@@ -52,24 +52,26 @@ namespace ngl
 		int32_t m_time_wheel_bit		= 8;		// 时间轮的槽数  2^etime_wheel_bit
 		int32_t m_time_wheel_count		= 4;
 
-		// 定时器从头建立开始支持的最大时间
+		// # 定时器从头建立开始支持的最大时间
 		int64_t max_time()
 		{
 			int64_t lsum = 0;
 			int64_t lprecision = m_time_wheel_precision;
 			for (int i = 0; i < m_time_wheel_count; ++i)
 			{
-				lprecision *= std::pow(2, 8);
+				lprecision *= std::pow(2, m_time_wheel_bit);
 				lsum += lprecision;
 			}
 			return lsum;
 		}
 
+		// # 定时器从头建立开始支持的最大时间(年)
 		double year()
 		{
 			return day() / 365.0;
 		}
 
+		// # 定时器从头建立开始支持的最大时间(日)
 		double day()
 		{
 			double lnum = 24 * 60 * 60 * 1000;
