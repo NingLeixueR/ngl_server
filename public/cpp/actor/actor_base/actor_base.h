@@ -5,6 +5,7 @@
 #include "nactortype.h"
 #include "localtime.h"
 #include "ntimer.h"
+#include "ngroup.h"
 #include "nguid.h"
 #include "type.h"
 #include "impl.h"
@@ -50,12 +51,12 @@ namespace ngl
 		actor_base() = delete;
 		actor_base(const actor_base&) = delete;
 		actor_base& operator=(const actor_base&) = delete;
-
 	protected:
 		struct impl_actor_base;
 		struct impl_group;
-		ngl::impl<impl_actor_base>	m_impl_actor_base;
-		ngl::impl<impl_group>		m_impl_group;
+		impl<impl_actor_base>	m_impl_actor_base;
+
+		ngroup<i64_actorid>		m_group;
 
 		actor_base(const actorparmbase& aparm);
 	public:
@@ -214,15 +215,13 @@ namespace ngl
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
-			i32_sessionid asession, 
-			T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
+			i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
 		);
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
 		static bool static_sendkcp(
-			const std::vector<i32_sessionid>& asession,
-			T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
+			const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
 		);
 
 		virtual const char* kcp_session();
@@ -270,9 +269,7 @@ namespace ngl
 		//# 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
 		template <typename T>
 		static void send_client(
-			i32_gatewayid agatewayid, 
-			i64_actorid aid, 
-			std::shared_ptr<T>& adata
+			i32_gatewayid agatewayid, i64_actorid aid, std::shared_ptr<T>& adata
 		)
 		{
 			const tab_servers* tab = ttab_servers::tab(agatewayid);
@@ -287,9 +284,7 @@ namespace ngl
 
 		template <typename T>
 		static void send_client(
-			const std::vector<i32_gatewayid>& agatewayid, 
-			i64_actorid aid, 
-			std::shared_ptr<T>& adata
+			const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, std::shared_ptr<T>& adata
 		)
 		{
 			auto pro = create_cpro(adata);
@@ -369,7 +364,6 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
-
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, std::shared_ptr<T>& adata)
@@ -432,7 +426,7 @@ namespace ngl
 
 #pragma region group
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
-		int create_group(ENUM_ACTOR aactortype);
+		int create_group();
 		
 		//# 移除一个分组
 		void remove_group(int agroupid);
@@ -444,32 +438,34 @@ namespace ngl
 		void remove_group_member(int agroupid, i64_actorid amember);
 		
 		//#  获取group id中的actor列表与类型
-		bool get_group(
-			int agroupid, 
-			std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair
-		);
+		const std::set<i64_actorid>* get_group(int agroupid);
 
 		//# 给一组成员发送消息
 		template <typename T>
 		bool send_group(int agroupid, std::shared_ptr<T>& adata)
 		{
-			std::pair<std::set<i64_actorid>*, ENUM_ACTOR> lpair;
-			if(get_group(agroupid, lpair) == false || lpair.first == nullptr)
+			std::set<i64_actorid>* lset = get_group(agroupid);
+			if(lset == nullptr)
 			{
 				return false;
 			}
-			if (lpair.second != ACTOR_ROBOT)
-			{
-				handle_pram lpram = handle_pram::create<T>(nguid::make(), guid(), adata);
-				for (i64_actorid actorid : *lpair.first)
+			std::set<i64_actorid> lclient;
+			handle_pram lpram = handle_pram::create<T>(nguid::make(), guid(), adata);
+			std::ranges::for_each(*lset, [&lpram, adata, &lclient](i64_actorid aactor)
 				{
-					lpram.m_actor = actorid;
-					push_task_id(actorid, lpram, true);
-				}
-			}
-			else
+					if (nguid::type() != ACTOR_ROBOT)
+					{
+						lpram.m_actor = aactor;
+						push_task_id(aactor, lpram, true);
+					}
+					else
+					{
+						lclient.insert(aactor);
+					}
+				});
+			if (!lclient.empty())
 			{
-				send_client(*lpair.first, adata);
+				send_client(lclient, adata);
 			}
 			return true;
 		}
