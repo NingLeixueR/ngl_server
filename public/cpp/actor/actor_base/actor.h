@@ -172,9 +172,7 @@ namespace ngl
 				>;
 				ninst<TDerived, TYPE>().
 					template rfun_forward<IsForward>(
-						(type_np_actor_forward)&TDerived::handle
-						, nactor_type<TDerived>::type()
-						, false
+						(type_np_actor_forward)&TDerived::handle, nactor_type<TDerived>::type(), false
 					);
 			}
 		};
@@ -192,8 +190,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived, TYPE>().
-					rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
+				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
 			}
 		};
 
@@ -211,10 +208,7 @@ namespace ngl
 			static void func()
 			{
 				ninst<TDerived, TYPE>()
-					.rfun_recvforward(
-						(Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>
-						, false
-					);
+					.rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
 			}
 		};
 

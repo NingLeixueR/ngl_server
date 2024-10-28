@@ -9,6 +9,7 @@
 namespace ngl
 {
 #define DEF_ACTOR_USE_DEQUE 
+
 	struct actor::impl_actor
 	{
 		impl_actor() = delete;
@@ -119,11 +120,9 @@ namespace ngl
 			if (aweight < llist.size())
 			{
 				ngl::log_error()->print(
-					"actor handle weight/count[{}/{}]", 
-					aweight, llist.size()
+					"actor handle weight/count[{}/{}]", aweight, llist.size()
 				);
 			}
-				
 			while (--aweight >= 0 && llist.empty() != true)
 			{
 				handle_pram& lparm = llist.front();
