@@ -281,8 +281,7 @@ namespace ngl
 				.m_fun = [](const wheel_node*)
 				{
 					auto pro = std::make_shared<np_actor_broadcast>();
-					handle_pram lpram = handle_pram::create<
-						np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
+					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
 					actor_manage::getInstance().broadcast_task(lpram);
 				}
 			};
