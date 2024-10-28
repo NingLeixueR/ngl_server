@@ -766,24 +766,30 @@ namespace ngl
 			{
 				if (sysconfig::logconsole() == false && sysconfig::logiswrite() == false)
 					return;
-				std::string ldata = m_stream.str();
-				ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
-				m_data.m_time = (int32_t)localtime::gettime();
-				set_source();
-				if (sysconfig::logconsole())
+				try
 				{
-					char ltimebuff[1024];
-					ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
-					logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
+					std::string ldata = m_stream.str();
+					ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
+					m_data.m_time = (int32_t)localtime::gettime();
+					set_source();
+					if (sysconfig::logconsole())
+					{
+						char ltimebuff[1024];
+						ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
+						logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
+					}
+					if (m_init == false || sysconfig::logiswrite() == false)
+						return;
+					m_data.m_loglevel = m_level;
+					m_data.m_serverid = nconfig::m_nodeid;
+					m_data.m_src.swap(m_src);
+					m_data.m_data.swap(ldata);
+					send(shared_from_this());
 				}
-				if (m_init == false || sysconfig::logiswrite() == false)
-					return;
-
-				m_data.m_loglevel = m_level;
-				m_data.m_serverid = nconfig::m_nodeid;
-				m_data.m_src.swap(m_src);
-				m_data.m_data.swap(ldata);
-				send(shared_from_this());
+				catch (...)
+				{
+					print("log error!");
+				}
 			}
 		}
 
@@ -831,8 +837,6 @@ namespace ngl
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
 		def_portocol(np_channel_data<TDATA>, m_data)
 	};
-
-
 }//namespace ngl
 
 

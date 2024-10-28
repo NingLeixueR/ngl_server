@@ -3,6 +3,7 @@
 #include "actor_base.h"
 #include "actor_log.h"
 #include "ndbclient.h"
+#include "ngroup.h"
 #include "xml.h"
 #include "net.h"
 
@@ -111,83 +112,6 @@ namespace ngl
 			return g_actor_nonelog;
 		}
 	}
-
-	struct actor_base::impl_group
-	{
-		impl_group() = delete;
-		impl_group(const impl_group&) = delete;
-		impl_group& operator=(const impl_group&) = delete;
-
-		struct ginfo
-		{
-			ENUM_ACTOR				m_actortype = ACTOR_NONE;
-			std::set<i64_actorid>	m_actorlist;
-		};
-
-		std::map<int, ginfo>		m_group;
-		int							m_currentoffset;
-		actor_base*					m_actor;
-
-		explicit inline impl_group(actor_base* aactor):
-			m_currentoffset(0),
-			m_actor(aactor)
-		{}
-
-		inline int create_group(ENUM_ACTOR aactortype)
-		{
-			ginfo& linfo = m_group[++m_currentoffset];
-			linfo.m_actortype = aactortype;
-			linfo.m_actorlist.clear();
-			return m_currentoffset;
-		}
-
-		inline void remove_group(int agroupid)
-		{
-			m_group.erase(agroupid);
-		}
-
-		inline bool add_group_member(int agroupid, i64_actorid amember)
-		{
-			ginfo* lginfo = tools::findmap(m_group, agroupid);
-			if (lginfo == nullptr)
-			{
-				m_actor->log_error()->print(
-					"add_group_member not find groupid[{}]",
-					agroupid
-				);
-				return false;
-			}
-			nguid lguid(amember);
-			
-			if (ENUM_ACTOR ltype = lginfo->m_actortype; ltype != ACTOR_NONE && lginfo->m_actortype != lguid.type())
-			{
-				m_actor->log_error()->print("m_actortype != lguid.type()==[{}]([{}]!=[{}])"
-					, agroupid, (int)ltype, (int)lguid.type()
-				);
-				return false;
-			}
-			lginfo->m_actorlist.insert(amember);
-			return true;
-		}
-
-		inline void remove_group_member(int agroupid, i64_actorid amember)
-		{
-			ginfo* lginfo = tools::findmap(m_group, agroupid);
-			if (lginfo == nullptr)
-				return;
-			lginfo->m_actorlist.erase(amember);
-		}
-
-		inline bool get_group(int agroupid, std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair)
-		{
-			ginfo* lginfo = tools::findmap(m_group, agroupid);
-			if (lginfo == nullptr)
-				return false;
-			apair.first = &lginfo->m_actorlist;
-			apair.second = lginfo->m_actortype;
-			return true;
-		}
-	};
 
 	struct actor_base::impl_actor_base
 	{
@@ -372,7 +296,6 @@ namespace ngl
 	actor_base::actor_base(const actorparmbase& aparm)
 	{
 		m_impl_actor_base.make_unique(this, aparm);
-		m_impl_group.make_unique(this);
 	}
 
 	void actor_base::erase_actor_byid()
@@ -494,29 +417,29 @@ namespace ngl
 		m_impl_actor_base()->set_broadcast(aisbroadcast);
 	}
 
-	int actor_base::create_group(ENUM_ACTOR aactortype)
+	int actor_base::create_group()
 	{
-		return m_impl_group()->create_group(aactortype);
+		return m_group.create_group();
 	}
 
 	void actor_base::remove_group(int agroupid)
 	{
-		m_impl_group()->remove_group(agroupid);
+		m_group.remove_group(agroupid);
 	}
 
 	bool actor_base::add_group_member(int agroupid, i64_actorid amember)
 	{
-		return m_impl_group()->add_group_member(agroupid, amember);
+		return m_group.add_group_member(agroupid, amember);
 	}
 
 	void actor_base::remove_group_member(int agroupid, i64_actorid amember)
 	{
-		m_impl_group()->remove_group_member(agroupid, amember);
+		m_group.remove_group_member(agroupid, amember);
 	}
 
-	bool actor_base::get_group(int agroupid, std::pair<std::set<i64_actorid>*, ENUM_ACTOR>& apair)
+	const std::set<i64_actorid>* actor_base::get_group(int agroupid)
 	{
-		return m_impl_group()->get_group(agroupid, apair);
+		return m_group.get_group(agroupid);
 	}
 
 	void actor_base::set_kcpssion(i32_session asession)

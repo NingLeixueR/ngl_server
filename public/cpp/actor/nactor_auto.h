@@ -85,7 +85,6 @@ namespace ngl
 	using tdb_keyvalue
 		= typedb<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue, actor_keyvalue>;
 
-	//friends
 	class actor_friends;
 	using tdb_friends
 		= typedb<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends, actor_friends>;
