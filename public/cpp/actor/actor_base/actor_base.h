@@ -453,7 +453,7 @@ namespace ngl
 			handle_pram lpram = handle_pram::create<T>(nguid::make(), guid(), adata);
 			std::ranges::for_each(*lset, [&lpram, adata, &lclient](i64_actorid aactor)
 				{
-					if (nguid::type(aactor) != ACTOR_ROBOT)
+					if ((ENUM_ACTOR)nguid::type(aactor) != ACTOR_ROBOT)
 					{
 						lpram.m_actor = aactor;
 						push_task_id(aactor, lpram, true);
