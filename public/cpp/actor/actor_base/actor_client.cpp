@@ -85,7 +85,6 @@ namespace ngl
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return;
-
 		const tab_servers* tab	= ttab_servers::tab();
 		i64_actorid lactorid	= id_guid();
 		const tab_servers* tabactor	= ttab_servers::tab(aactorserver);
@@ -100,7 +99,7 @@ namespace ngl
 				{
 					.m_node
 					{
-						.m_name = std::format("actorclient{}", tab->m_id),
+						.m_name = std::format("actor_client:{}", tab->m_id),
 						.m_serverid = tab->m_id,
 					}
 				};
@@ -166,7 +165,7 @@ namespace ngl
 			return true;
 		Try
 		{
-			auto lparm			= adata.get_data();
+			auto lparm				= adata.get_data();
 			const tab_servers* tab	= ttab_servers::tab();
 			Assert(tab != nullptr)
 			for(const auto& node :lparm->m_vec)
@@ -207,7 +206,6 @@ namespace ngl
 
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
-			
 			server_session::add(lserverid, lpack->m_id);
 
 			set_node(lserverid, lpack->m_id);
@@ -229,7 +227,7 @@ namespace ngl
 				NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
 				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
 				{
-					auto pro =std::make_shared<np_actorserver_connect>();
+					auto pro = std::make_shared<np_actorserver_connect>();
 					pro->m_serverid = lserverid;
 					nguid lguid = nguid::make_self(ACTOR_LOGIN);
 					handle_pram lparm = handle_pram::create(lguid, guid(), pro);
@@ -312,8 +310,8 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			if(const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid; 
-				lconnectserverid.contains(lparm->m_serverid))
+			const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
+			if(lconnectserverid.contains(lparm->m_serverid))
 			{
 				lparm->m_fun();
 				return true;
@@ -327,7 +325,8 @@ namespace ngl
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return true;
-		if (const auto lparm = adata.get_data(); lparm->m_isremove)
+		const auto lparm = adata.get_data();
+		if (lparm->m_isremove)
 		{
 			naddress::remove_gatewayid(lparm->m_actorid);
 		}
