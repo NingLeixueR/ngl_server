@@ -244,8 +244,7 @@ namespace ngl
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			log_error()->print(
-				"load: np_actordb_load<{}> id:{}", 
-				tools::protobuf_tabname<TDBTAB>::name(), adata.get_data()->m_id
+				"load: np_actordb_load<{}> id:{}", tools::protobuf_tabname<TDBTAB>::name(), adata.get_data()->m_id
 			);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
