@@ -84,7 +84,10 @@ namespace ngl
 		void actor_stat(msg_actor_stat& adata);
 	};
 
-	// 暂时挂起 actor_manage
+	//# 暂时挂起 actor_manage
+	//# 自动调用
+	//# 构造调用actor_manage.statrt_suspend_thread
+	//# 析构调用actor_manage.finish_suspend_thread
 	class actor_suspendthread
 	{
 	public:
@@ -92,11 +95,13 @@ namespace ngl
 		~actor_suspendthread();
 	};
 
+	// 进程单利actor 自动注册协议与自动添加actor_manage
 	template <typename T>
 	T& actor_instance<T>::instance()
 	{
 		static T ltemp;
-		if (static bool first = true; first)
+		static bool first = true;
+		if (first)
 		{
 			Try
 			{
@@ -112,9 +117,7 @@ namespace ngl
 							if (lptemp->type() != ngl::ACTOR_LOG)
 							{
 								nlogactor lnlogactor(lptemp->type(), ngl::ELOG_LOCAL);
-								ngl::actor_base::create(
-									ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32
-								);
+								ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 							}
 						}
 						Catch
