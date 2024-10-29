@@ -43,12 +43,10 @@ namespace ngl
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			for (const auto [key, value] : m_actorserver)
 			{
-				(*lstream) << std::format(
-					"[{}:{}][{}-{}-{}]", 
-					key, value, nguid::actordataid(key),
-					em<ENUM_ACTOR>::get_name((ENUM_ACTOR)nguid::type(key)),
-					nguid::area(key)
-				) << std::endl;
+				i32_actordataid lactordataid = nguid::actordataid(key);
+				const char* lname = em<ENUM_ACTOR>::get_name((ENUM_ACTOR)nguid::type(key));
+				i16_area larea = nguid::area(key);
+				(*lstream) << std::format("[{}:{}][{}-{}-{}]", key, value, lactordataid, lname, larea) << std::endl;
 			}
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			(*lstream).print("");
@@ -122,24 +120,23 @@ namespace ngl
 		{
 			Try
 			{
-				auto itor = m_actortypeserver.find(atype);
-				if (itor != m_actortypeserver.end())
+				std::set<nguid>* lset = tools::findmap(m_actortypeserver, (i16_actortype)atype);
+				if (lset != nullptr)
 				{
-					for (i64_actorid lid : itor->second)
-					{
-						avec.insert(get_server(lid));
-					}
+					std::ranges::for_each(*lset, [&avec](const nguid& aguid)
+						{
+							avec.insert(get_server(aguid));
+						});
 				}
 			}Catch
 		}
 
 		static void foreach(const naddress::foreach_callbackfun& afun)
 		{
-			for (const auto& [_, nsession] : m_session)
-			{
-				if (afun(nsession) == false)
-					return;
-			}
+			std::ranges::find_if(m_session, [&afun](const auto& apair)
+				{
+					return afun(apair.second) == false;
+				});
 		}
 
 		static void ergodic(const naddress::ergodic_callbackfun& afun)

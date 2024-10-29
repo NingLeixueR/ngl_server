@@ -120,8 +120,7 @@ namespace ngl
 			{
 				// # 分发给其他结点
 				std::vector<i32_sessionid> lvec;
-				naddress::foreach(
-					[lserverid, &lvec](const actor_node_session& anode)->bool
+				naddress::foreach([lserverid, &lvec](const actor_node_session& anode)->bool
 					{
 						if (anode.m_node.m_serverid != lserverid)
 							lvec.push_back(anode.m_session);
