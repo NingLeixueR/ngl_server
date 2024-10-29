@@ -28,10 +28,13 @@ namespace ngl
 	public:
 		nrfunbase() = default;
 
+		//# 设置协议处理没有匹配的调用
 		nrfunbase& set_notfindfun(const tnotfindfun& afun);
 
+		//# 未匹配的协议调用
 		void notfindfun(const actor_base* aactor, i32_threadid athreadid, handle_pram& apram)const;
 
+		//# 协议处理
 		bool handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram);
 	};
 
@@ -42,8 +45,8 @@ namespace ngl
 		std::shared_ptr<T>	m_shared_data;
 		T*					m_original_data;
 	public:
-		i32_threadid		m_thread;
-		const pack*			m_pack;
+		i32_threadid		m_thread;			// 线程id
+		const pack*			m_pack;				// 如果消息来自网络，这个值不为空即为网络数据包
 
 		message() = delete;
 
