@@ -104,11 +104,7 @@ namespace ngl
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db;
 
-	template <
-		pbdb::ENUM_DB DBTYPE, 
-		typename TDBTAB, 
-		typename TACTOR
-	>
+	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
 	class ndbclient : public ndbclient_base
 	{
 		ndbclient(const ndbclient&) = delete;
@@ -159,9 +155,7 @@ namespace ngl
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-			log_error()->print(
-				"actor_dbclient loaddb [{}] [{}]", tools::type_name<type_ndbclient>(), aid
-			);
+			log_error()->print("actor_dbclient loaddb [{}] [{}]", tools::type_name<type_ndbclient>(), aid);
 		}
 
 		nguid										m_id = nguid::make();
@@ -208,10 +202,7 @@ namespace ngl
 		{
 			if (aid == m_id && m_id != -1)
 				return m_dbdata;
-			auto itor = m_data.find(aid);
-			if (itor == m_data.end())
-				return nullptr;
-			return &itor->second;
+			return tools::findmap(m_data, aid);
 		}
 
 		// # 获取数据
@@ -230,8 +221,9 @@ namespace ngl
 				m_load				= false;
 
 				Assert(m_tab = ttab_dbload::get_tabdb<TDBTAB>(); m_tab != nullptr)
-
-				if (static bool m_register = false; m_register == false)
+				
+				static bool m_register = false;
+				if ( m_register == false)
 				{
 					m_register = true;
 					actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
@@ -268,12 +260,9 @@ namespace ngl
 				}
 				else
 				{
-					auto itor = m_data.find(aid);
-					if (itor == m_data.end())
-						return;
-					lp = &itor->second;
+					lp = tools::findmap(m_data, aid);
 				}
-				if (lp->is_modified())
+				if (lp == nullptr && lp->is_modified())
 				{
 					lclearlist.push_back(lp);
 					pro.add(lp->getconst().m_id(), lp->getconst());
@@ -281,15 +270,15 @@ namespace ngl
 			}
 			else
 			{
-				for (std::pair<const nguid, data_modified<TDBTAB>>& lpair : m_data)
-				{
-					data_modified<TDBTAB>& ldata = lpair.second;
-					if (ldata.is_modified())
+				std::ranges::for_each(m_data, [&pro, &lclearlist](std::pair<const nguid, data_modified<TDBTAB>>& apair)
 					{
-						lclearlist.push_back(&ldata);
-						pro.add(ldata.getconst().m_id(), ldata.getconst());
-					}
-				}
+						data_modified<TDBTAB>& ldata = apair.second;
+						if (ldata.is_modified())
+						{
+							lclearlist.push_back(&ldata);
+							pro.add(ldata.getconst().m_id(), ldata.getconst());
+						}
+					});
 			}
 			if (pro.empty() == false)
 			{

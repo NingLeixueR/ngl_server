@@ -13,17 +13,23 @@ namespace ngl
 		ndb_component& operator=(const ndb_component&) = delete;
 
 	protected:
-		actor_base*				m_actor;
-		i64_actorid				m_id;
-		ndbclient_base*			m_dbclient;
-		pbdb::ENUM_DB			m_type;
+		actor_base*				m_actor;		// 宿主actor
+		i64_actorid				m_id;			// 宿主actor id
+		ndbclient_base*			m_dbclient;		// ndbclient基类
+		pbdb::ENUM_DB			m_type;			// 数据类型
 
 		ndb_component(pbdb::ENUM_DB aenum);
+
+		//# 设置ndbclient基类
 		void				set_dbclient(ndbclient_base* adbclient);
 	public:
+		//# 设置宿主actor
 		void				set(actor_base* aactor);
+		//# 获取宿主actor id
 		i64_actorid			id()const;
+		//# 获取数据类型
 		pbdb::ENUM_DB		type()const;
+		//# 获取宿主actor
 		actor_base*			actorbase();
 		virtual void		set_id();
 		void				init();
@@ -48,22 +54,29 @@ namespace ngl
 			set_dbclient(&m_data);
 		}
 
-		virtual ~ndb_modular()
-		{
-		}
-
+		virtual ~ndb_modular(){}
 	public:
 		inline ndbclient<ENUM, TDATA, TACTOR>* dbclient()
 		{ 
 			return &m_data;
 		}
 
+		//# 遍历data
 		inline void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
 		{
-			for (std::pair<const nguid, data_modified<TDATA>>& lpair : data())
-			{
-				afun(lpair.second);
-			}
+			std::ranges::for_each(data(), [&afun](std::pair<const nguid, data_modified<TDATA>>& apair)
+				{
+					afun(apair.second);
+				});
+		}
+
+		//# 遍历data(如果匿名函数返回true则退出遍历)
+		inline void foreach(const std::function<bool(data_modified<TDATA>&)>& afun)
+		{
+			std::ranges::find_if(data(), [&afun](std::pair<const nguid, data_modified<TDATA>>& apair)
+				{
+					return afun(apair.second);
+				});
 		}
 
 		inline std::map<nguid, data_modified<TDATA>>& data()
@@ -79,16 +92,14 @@ namespace ngl
 		// # 查找指定数据
 		inline data_modified<TDATA>* find(nguid aid)
 		{
-			auto itor = data().find(aid);
-			if (itor == data().end())
-				return nullptr;
-			return &itor->second;
+			return tools::findmap(data(), aid);
 		}
 
 		// # 与find类似(只是没有就添加)
 		inline data_modified<TDATA>* get(nguid aid)
 		{
-			if (data_modified<TDATA>* ret = find(aid); ret != nullptr)
+			data_modified<TDATA>* ret = tools::findmap(data(), aid);
+			if (ret != nullptr)
 				return ret;
 			if (m_id != -1 && m_id != aid)
 				return nullptr;
@@ -114,58 +125,42 @@ namespace ngl
 		}
 
 #pragma region log
-		inline std::shared_ptr<np_actor_logitem> log_debug(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_debug(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_debug_net(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_debug_net(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_info(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_info(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_info_net(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_info_net(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_warn(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_warn(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_warn_net(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_warn_net(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_error(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_error(asource);
 		}
 
-		inline std::shared_ptr<np_actor_logitem> log_error_net(
-			const std::source_location& asource = std::source_location::current()
-		)
+		inline std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())
 		{
 			return actor()->log_error_net(asource);
 		}
