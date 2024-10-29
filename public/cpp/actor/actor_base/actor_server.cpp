@@ -3,6 +3,32 @@
 
 namespace ngl
 {
+	actor_server::actor_server() :
+		actor(
+			actorparm
+			{
+				.m_parm
+				{
+					.m_type = ACTOR_SERVER,
+					.m_area = ttab_servers::tab()->m_area,
+				},
+				.m_weight = 0x7fffffff,
+			})
+	{
+	}
+
+	actor_server::~actor_server()
+	{}
+
+	void actor_server::nregister()
+	{
+		register_handle_custom<actor_server>::func<
+			np_actornode_register
+			, np_actornode_update
+			, np_actor_gatewayid_updata
+		>(true);
+	}
+
 	bool actor_server::handle(const message<np_actornode_register>& adata)
 	{
 		Try
@@ -10,7 +36,6 @@ namespace ngl
 			auto lrecv = adata.get_data();
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr)
-
 			Assert(naddress::set_node(lrecv->m_node))
 			naddress::set_session(lrecv->m_node.m_serverid, lpack->m_id);
 			naddress::actor_add(lrecv->m_node.m_serverid, lrecv->m_add);
@@ -53,22 +78,23 @@ namespace ngl
 			{
 				std::map<i32_serverid, np_actornode_update> lmapprotocol;
 				naddress::ergodic(
-					[lrecv, &lmapprotocol](
+					[&lrecv, &lmapprotocol](
 						const std::map<nguid, i32_serverid>& amap, 
 						const std::map<i32_serverid, actor_node_session>& asession
 						)->bool
 					{
-						std::map<i32_serverid, actor_node_session>::iterator itor;
-						for (const auto& [guid, serverid] : amap)
-						{
-							if(asession.contains(serverid) == false)
-								continue;
-							if (lrecv->m_node.m_serverid == serverid)
-								continue;
-							np_actornode_update& pro = lmapprotocol[serverid];
-							pro.m_id = serverid;
-							pro.m_add.push_back(guid.id());
-						}
+						std::ranges::for_each(amap, [&lrecv, &lmapprotocol, &asession](const auto& apair)
+							{
+								const nguid& lguid = apair.first;
+								i32_serverid lserverid = apair.second;
+								if (asession.contains(lserverid) == false)
+									return;
+								if (lrecv->m_node.m_serverid == lserverid)
+									return;
+								np_actornode_update& pro = lmapprotocol[lserverid];
+								pro.m_id = lserverid;
+								pro.m_add.push_back(lguid.id());
+							});
 						return true;
 					});
 				std::ranges::for_each(lmapprotocol, [this, &lpack](auto& item)
