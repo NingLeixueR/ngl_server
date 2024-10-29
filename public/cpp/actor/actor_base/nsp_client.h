@@ -4,6 +4,8 @@
 
 namespace ngl
 {
+	//# 订阅/发布[数据副本]
+	//# nsp_client接收nsp_server分发的数据与修改数据后向nsp_server同步
 	template <typename TDerived, typename T>
 	class nsp_client
 	{
@@ -124,13 +126,13 @@ namespace ngl
 
 		static void change(i64_actorid aactorid)
 		{
-			auto itor = m_data.find(aactorid);
-			if (itor == m_data.end())
+			T* lpdata = tools::findmap(m_data, aactorid);
+			if (lpdata == nullptr)
 				return;
 
 			auto pro = std::make_shared<np_channel_data<T>>();
 			pro->m_data.make();
-			(*pro->m_data.m_data)[aactorid] = itor->second;
+			(*pro->m_data.m_data)[aactorid] = *lpdata;
 			actor::static_send_actor(m_nspserver[nguid::area(aactorid)], nguid::make(), pro);
 		}
 
