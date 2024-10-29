@@ -15,6 +15,7 @@ namespace ngl
 		int64_t			m_beg;
 	public:
 		time_consuming(const std::string& aname);
-		~time_consuming();
+		void consuming_start();
+		void consuming_finish();
 	};
 }//namespace ngl

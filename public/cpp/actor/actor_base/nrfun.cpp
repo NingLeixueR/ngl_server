@@ -22,27 +22,23 @@ namespace ngl
 		if (itor == m_fun.end())
 		{
 			if (aactor->type() != ACTOR_CLIENT)
-				log_error()->print(
-					"{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum
-				);
+			{
+				log_error()->print("{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum);
+			}
 			return false;
 		}
 		bool lisloadfinish = aactor->isloadfinish();
 		if (lisloadfinish == false && itor->second.m_isdbload == false)
 		{
-			log_error()->print(
-				"{}::handle_switch isloadfinish() == {}", aactor->guid(), lisloadfinish
-			);
+			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lisloadfinish);
 			return false;
 		}
+		time_consuming lconsuming(std::format("{}-{}", aactor->guid(), apram.m_enum));
+		lconsuming.consuming_start();
+		itor->second.m_fun(aactor, athreadid, apram);
 		if (aactor->type() != ACTOR_LOG)
 		{
-			time_consuming lconsuming(std::format("{}-{}", aactor->guid(), apram.m_enum));
-			itor->second.m_fun(aactor, athreadid, apram);
-		}
-		else
-		{
-			itor->second.m_fun(aactor, athreadid, apram);
+			lconsuming.consuming_finish();
 		}
 		return true;
 	}
