@@ -194,11 +194,7 @@ namespace ngl
 		auto lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
 		pro.set_m_kcpsession(lpram->m_kcpsession);
-		nets::sendbysession(lpram->m_sessionid
-			, pro
-			, nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid)
-			, nguid::make()
-		);
+		nets::sendbysession(lpram->m_sessionid, pro, nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid), nguid::make());
 		return true;
 	}
 
@@ -226,13 +222,13 @@ namespace ngl
 
 		// ### 通知kcp服务器创建连接
 		np_actor_kcp pro;
-		pro.m_kcpsession = lkcpsession;
-		pro.m_sessionid = lpack->m_id;
-		pro.m_area = nguid::area(request_actor);
-		pro.m_dataid = nguid::actordataid(request_actor);
-		pro.m_uip = lpram->m_uip();
-		pro.m_uport = lpram->m_uport();
-		pro.m_conv = lpram->m_conv();
+		pro.m_kcpsession	= lkcpsession;
+		pro.m_sessionid		= lpack->m_id;
+		pro.m_area			= nguid::area(request_actor);
+		pro.m_dataid		= nguid::actordataid(request_actor);
+		pro.m_uip			= lpram->m_uip();
+		pro.m_uport			= lpram->m_uport();
+		pro.m_conv			= lpram->m_conv();
 
 		nets::sendbyserver(lpram->m_serverid(), pro, nguid::make(), nguid::make());
 
@@ -244,7 +240,6 @@ namespace ngl
 		Try
 		{
 			auto lpram = adata.get_data();
-			log_info()->print("############ GateWay Transmit ############");
 			nguid lguid(lpram->m_actor);
 
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
@@ -271,19 +266,17 @@ namespace ngl
 						if (lpram->m_sessionid == agetway->m_socket)
 							lvec.push_back(agetway);
 					});
-				for (gateway_socket* item : lvec)
-				{
-					gateway_socket* linfo = m_info.get(item->m_area, item->m_dataid);
-					session_close(linfo);
-					log_info()->print("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
-				}
+				std::ranges::for_each(lvec, [this](gateway_socket* asocket)
+					{
+						gateway_socket* linfo = m_info.get(asocket->m_area, asocket->m_dataid);
+						session_close(linfo);
+					});
 			}
 			else
 			{
 				gateway_socket* linfo = m_info.get(lpram->m_sessionid);
 				Assert(linfo != nullptr);
 				session_close(linfo);
-				log_info()->print("############ earse_roleinfobysocket[{}]:[{}] ############", nguid::make(ACTOR_ROLE, linfo->m_area, linfo->m_dataid), lpram->m_sessionid);
 			}
 
 			update_gateway_info(

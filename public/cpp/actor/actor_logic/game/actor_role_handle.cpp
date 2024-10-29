@@ -94,11 +94,7 @@ namespace ngl
 		std::map<int, int> ldrop;
 		if (drop::droplist(tab->m_dropid, 1, ldrop) == false)
 		{
-			log_error()->print(
-				"task[{}] drop[{}] not find!!!", 
-				adata.get_data()->m_taskid(), 
-				tab->m_dropid
-			);
+			log_error()->print("task[{}] drop[{}] not find!!!", adata.get_data()->m_taskid(), tab->m_dropid);
 			return true;
 		}
 		tools::copy(ldrop, *pro->mutable_m_drop());
