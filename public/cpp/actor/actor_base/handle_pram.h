@@ -15,8 +15,8 @@ namespace ngl
 
 	struct actor_node_session
 	{
-		i32_sessionid	m_session;
-		nactornode		m_node;
+		i32_sessionid	m_session;	// 服务器session
+		nactornode		m_node;		// 服务器基本信息
 
 		actor_node_session();
 		actor_node_session(i32_sessionid asession, const nactornode& anode);
@@ -44,12 +44,12 @@ namespace ngl
 
 	struct handle_pram
 	{
-		i32_protocolnum			m_enum			= -1;
-		std::shared_ptr<void>	m_data			= nullptr;
-		std::shared_ptr<pack>	m_pack			= nullptr;
-		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;
-		nguid					m_actor;
-		nguid					m_requestactor;
+		i32_protocolnum			m_enum			= -1;						// 协议号
+		std::shared_ptr<void>	m_data			= nullptr;					// 协议结构
+		std::shared_ptr<pack>	m_pack			= nullptr;					// 如果是网络消息会携带pack信息
+		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;	// 协议类型
+		nguid					m_actor;									// 发送给哪个actor
+		nguid					m_requestactor;								// 哪个actor发送的
 
 		using forwardtype = std::function<
 			void(const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram&)
@@ -71,35 +71,33 @@ namespace ngl
 		//# 是否是无效的actor guid
 		static bool				is_actoridnone(const nguid& aguid);
 
+		//# 通过session发送消息T
 		template <typename T>
-		static bool	netsend(
-			i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid
-		);
+		static bool	netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid);
 		
+		//# 向服务器发送pack
 		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 		static bool	netsendpack(i32_serverid aserverid, std::shared_ptr<void>& apack);
 		
 		template <typename T, bool IS_SEND = true>
 		static void	make_forwardfun(handle_pram& apram)
 		{
-			apram.m_forwardfun =[](
-					const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata
-				)
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
 			{
 				handle_pram_send<T, IS_SEND>::send(adata.m_actor, adata.m_requestactor, adata);
 			};
+			apram.m_forwardfun = lfun;
 		}
 
 		template <typename T, bool IS_SEND = true>
 		static void	make_client(handle_pram& apram)
 		{
-			apram.m_forwardfun = 
-				[](
-					const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata
-				)
-				{
-					handle_pram_send<T, IS_SEND>::sendclient(adata.m_actor, adata.m_requestactor, adata);
-				};
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
+			{
+				handle_pram_send<T, IS_SEND>::sendclient(adata.m_actor, adata.m_requestactor, adata);
+			};
+			apram.m_forwardfun = lfun;
+				
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
@@ -122,9 +120,9 @@ namespace ngl
 
 		template <typename T, bool IS_SEND = true>
 		static handle_pram create(
-			const nguid& aid, const nguid& arid
-			, std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata
-			, const std::function<void()>& afailfun = nullptr
+			const nguid& aid, const nguid& arid, 
+			std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, 
+			const std::function<void()>& afailfun = nullptr
 		)
 		{
 			handle_pram lpram;
@@ -153,59 +151,47 @@ namespace ngl
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::send(
-		const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
-	)
+	bool handle_pram_send<T, IS_SEND>::send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 	{
 		i32_serverid lserverid = handle_pram::get_server(aactorid);
 		if (lserverid == -1)
 		{
 			if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
-			{
+			{//# 转发给所有类型为nguid::type(aactorid)的actor
 				std::set<i32_serverid> lset;
 				handle_pram::get_serverlist(aactorid.type(), lset);
 				for (i32_serverid ltempserverid : lset)
 				{
-					handle_pram_send<T, IS_SEND>::sendbyserver(
-						ltempserverid, aactorid, arequestactorid, adata
-					);
+					handle_pram_send<T, IS_SEND>::sendbyserver(ltempserverid, aactorid, arequestactorid, adata);
 				}
 				return true;
 			}
 			return false;
 		}
-		return handle_pram_send<T, IS_SEND>::sendbyserver(
-			lserverid, aactorid, arequestactorid, adata
-		);
+		return handle_pram_send<T, IS_SEND>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
 	}
 
 	template <>
 	class handle_pram_send<pack, true>
 	{
 	public:
-		static bool sendbyserver(
-			i32_serverid aserverid, const nguid&, const nguid&, handle_pram& adata
-		)
+		static bool sendbyserver(i32_serverid aserverid, const nguid&, const nguid&, handle_pram& adata)
 		{
 			return handle_pram::netsendpack(aserverid, adata.m_data);
 		}
 
-		static bool send(
-			const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
-		)
+		static bool send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata)
 		{
 			i32_serverid lserverid = handle_pram::get_server(aactorid);
 			if (lserverid == -1)
 			{
-				if (handle_pram::is_actoridnone(aactorid))
-				{
+				if (adata.m_forwardtype && handle_pram::is_actoridnone(aactorid))
+				{//# 转发给所有类型为nguid::type(aactorid)的actor
 					std::set<i32_serverid> lset;
 					handle_pram::get_serverlist(aactorid.type(), lset);
 					for (i32_serverid ltempserverid : lset)
 					{
-						handle_pram_send<pack, true>::sendbyserver(
-							ltempserverid, aactorid, arequestactorid, adata
-						);
+						handle_pram_send<pack, true>::sendbyserver(ltempserverid, aactorid, arequestactorid, adata);
 					}
 					return true;
 				}
@@ -213,16 +199,12 @@ namespace ngl
 					adata.m_failfun();
 				return false;
 			}
-			return handle_pram_send<pack, true>::sendbyserver(
-				lserverid, aactorid, arequestactorid, adata
-			);
+			return handle_pram_send<pack, true>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
 		}
 	};
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendclient(
-		const nguid&, const nguid& arequestactorid, handle_pram& adata
-	)
+	bool handle_pram_send<T, IS_SEND>::sendclient(const nguid&, const nguid& arequestactorid, handle_pram& adata)
 	{
 		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)
 			adata.m_data.get();
