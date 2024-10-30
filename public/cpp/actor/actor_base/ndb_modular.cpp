@@ -18,6 +18,7 @@ namespace ngl
 	{
 		m_actor = aactor;
 		m_actor->set_db_component(this);
+		set_logactor(aactor);
 	}
 
 	i64_actorid ndb_component::id()const

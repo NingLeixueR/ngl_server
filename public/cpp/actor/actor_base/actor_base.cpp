@@ -17,100 +17,13 @@ namespace ngl
 	//# 日志相关
 	const std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
 
-	std::shared_ptr<np_actor_logitem> actor_base::log_debug(const std::source_location& asource)
+	std::shared_ptr<np_actor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)
 	{
-		if (ELOG_DEBUG >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_DEBUG, type(), ELOG_LOCAL, asource);
-		}
-		else
+		if(m_actor == nullptr || aloglevel < ngl::sysconfig::loglevel())
 		{
 			return g_actor_nonelog;
 		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_debug_net(const std::source_location& asource)
-	{
-		if (ELOG_DEBUG >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_DEBUG, type(), ELOG_NETWORK, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_info(const std::source_location& asource)
-	{
-		if (ELOG_INFO >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_INFO, type(), ELOG_LOCAL, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_info_net(const std::source_location& asource)
-	{
-		if (ELOG_INFO >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_INFO, type(), ELOG_NETWORK, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_warn(const std::source_location& asource)
-	{
-		if (ELOG_WARN >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_WARN, type(), ELOG_LOCAL, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_warn_net(const std::source_location& asource)
-	{
-		if (ELOG_WARN >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_WARN, type(), ELOG_NETWORK, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_error(const std::source_location& asource)
-	{
-		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_ERROR, type(), ELOG_LOCAL, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
-	}
-
-	std::shared_ptr<np_actor_logitem> actor_base::log_error_net(const std::source_location& asource)
-	{
-		if (ELOG_ERROR >= ngl::sysconfig::loglevel())
-		{
-			return std::make_shared<np_actor_logitem>(ELOG_ERROR, type(), ELOG_NETWORK, asource);
-		}
-		else
-		{
-			return g_actor_nonelog;
-		}
+		return std::make_shared<np_actor_logitem>(aloglevel, m_actor->type(), anet ? ELOG_NETWORK : ELOG_LOCAL, asource);
 	}
 
 	struct actor_base::impl_actor_base
@@ -292,7 +205,8 @@ namespace ngl
 	int actor_base::impl_actor_base::m_broadcast			= 10000;
 	int actor_base::impl_actor_base::m_broadcasttimer		= -1;
 
-	actor_base::actor_base(const actorparmbase& aparm)
+	actor_base::actor_base(const actorparmbase& aparm):
+		tools_log(this)
 	{
 		m_impl_actor_base.make_unique(this, aparm);
 	}
