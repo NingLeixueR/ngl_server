@@ -6,7 +6,7 @@
 
 namespace ngl
 {
-	class ndb_component
+	class ndb_component: public tools_log
 	{
 		ndb_component() = delete;
 		ndb_component(const ndb_component&) = delete;
@@ -123,48 +123,6 @@ namespace ngl
 		{ 
 			return (TACTOR*)m_actor; 
 		}
-
-#pragma region log
-		inline std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_debug(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_debug_net(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_info(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_info_net(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_warn(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_warn_net(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_error(asource);
-		}
-
-		inline std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())
-		{
-			return actor()->log_error_net(asource);
-		}
-#pragma endregion
 
 		inline void create()
 		{

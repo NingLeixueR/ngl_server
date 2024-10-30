@@ -105,7 +105,7 @@ namespace ngl
 	class actor_db;
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	class ndbclient : public ndbclient_base
+	class ndbclient : public ndbclient_base, tools_log
 	{
 		ndbclient(const ndbclient&) = delete;
 		ndbclient& operator=(const ndbclient&) = delete;
@@ -189,6 +189,7 @@ namespace ngl
 		{
 			m_manage_dbclient = aactor->get_actor_manage_dbclient();
 			m_actor = aactor;
+			set_logactor(aactor);
 		}
 
 		// # 获取数据

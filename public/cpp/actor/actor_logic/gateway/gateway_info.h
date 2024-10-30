@@ -43,5 +43,7 @@ namespace ngl
 		int64_t get_gatewayid(i64_actorid aid);
 
 		void foreach(const std::function<void(gateway_socket*)>& afun);
+
+		void gatewayinfo_updata(const np_actor_gatewayinfo_updata& adata);
 	};
 }//namespace ngl

@@ -33,19 +33,7 @@ namespace ngl
 
 	bool actor_gatewayg2c::handle(const message<np_actor_gatewayinfo_updata>& adata)
 	{
-		auto lpram = adata.get_data();
-		std::ranges::for_each(lpram->m_delsocket, [this](i32_socket asocket)
-			{
-				m_info.remove_socket(asocket);
-			});
-		std::ranges::for_each(lpram->m_delactorid, [this](i64_actorid aactorid)
-			{
-				m_info.remove_actorid(aactorid);
-			});
-		std::ranges::for_each(lpram->m_add, [this](const gateway_socket& agetway)
-			{
-				m_info.updata(agetway);
-			});
+		m_info.gatewayinfo_updata(*adata.get_data());
 		return true;
 	}
 }//namespace ngl
