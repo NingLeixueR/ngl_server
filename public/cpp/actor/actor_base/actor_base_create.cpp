@@ -8,9 +8,7 @@
 namespace ngl
 {
 	// 用于创建非单例actor
-	actor_base* actor_base::create(
-		ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/
-	)
+	actor_base* actor_base::create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/)
 	{
 		i64_actorid lactorid = nguid::make(atype, aarea, aid);
 		if (actor_manage::getInstance().is_have_actor(lactorid))
@@ -43,7 +41,7 @@ namespace ngl
 		}
 		if (lpactor_base == nullptr)
 		{
-			ngl::log_error()->print("actor_base::create({},{})", (int)atype, aid);
+			ngl::log_error()->print("actor_base::create({},{})", em<ENUM_ACTOR>::get_name(atype), aid);
 			return nullptr;
 		}
 		actor_manage::getInstance().add_actor(lpactor_base, [lpactor_base]() 

@@ -54,10 +54,7 @@ namespace ngl
 			(*lstream)
 				<< std::format(
 					"[{}][{}] area={} id={}",
-					laccount.m_account(),
-					laccount.m_passworld(),
-					laccount.m_area(),
-					nguid(laccount.m_roleid()).actordataid()
+					laccount.m_account(),laccount.m_passworld(),laccount.m_area(),nguid(laccount.m_roleid()).actordataid()
 				) << std::endl;
 		}
 		(*lstream).print("");

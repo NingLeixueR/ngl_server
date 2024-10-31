@@ -18,9 +18,7 @@ namespace ngl
 		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist; 
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
-		static void publish(
-			const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro
-		)
+		static void publish(const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
 			std::ranges::for_each(m_publishlist, [&aactoridset,&apro](const auto& apair)
 				{
@@ -39,9 +37,7 @@ namespace ngl
 				});
 		}
 
-		static void publish(
-			i64_actorid aactorid, std::shared_ptr<np_channel_data<TDATA>>& apro
-		)
+		static void publish(i64_actorid aactorid, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
 			if (data_modified<TDATA>* lp = m_dbmodule->find(aactorid); lp == nullptr)
 				return;

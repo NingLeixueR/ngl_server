@@ -26,6 +26,7 @@ namespace ngl
 			np_actornode_register
 			, np_actornode_update
 			, np_actor_gatewayid_updata
+			, np_actornode_update_mass
 		>(true);
 	}
 
@@ -161,6 +162,21 @@ namespace ngl
 		{
 			nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
 		}
+		return true;
+	}
+
+	bool actor_server::handle(const message<np_actornode_update_mass>& adata)
+	{
+		auto lparm = adata.get_data();
+		auto lpack = adata.m_pack;
+		int32_t lthreadid = adata.m_thread;
+
+		message<np_actornode_update> lmessage(lthreadid, lpack, (np_actornode_update*)&lparm->m_mass);
+
+		handle(lmessage);
+
+		if (lparm->m_fun != nullptr)
+			lparm->m_fun();
 		return true;
 	}
 }//namespace ngl
