@@ -256,9 +256,11 @@ namespace ngl
 						foreach([this](actor_manage_robot::_robot& arobot)
 							{
 								const tab_servers* tab = ttab_servers::tab();
-								const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+								const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 0);
+								if (tabgame == nullptr)
+									return true;
 								const net_works* lpstruct = ttab_servers::get_nworks(ENET_KCP);
-								const net_works* lpstructgame = ttab_servers::get_nworks("game", tab->m_area, 1, ENET_KCP);
+								const net_works* lpstructgame = ttab_servers::nworks(ENET_KCP);
 								// 获取本机uip
 								ngl::asio_udp_endpoint lendpoint(
 									asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port

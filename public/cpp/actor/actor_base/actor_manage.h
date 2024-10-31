@@ -81,7 +81,7 @@ namespace ngl
 			std::vector<msg_actor> m_vec;
 			jsonfunc("vec", m_vec)
 		};
-		void actor_stat(msg_actor_stat& adata);
+		void get_actor_stat(msg_actor_stat& adata);
 	};
 
 	//# ÔÝÊ±¹ÒÆð actor_manage

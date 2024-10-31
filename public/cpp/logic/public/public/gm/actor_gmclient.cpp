@@ -54,7 +54,7 @@ namespace ngl
 					gcmd<actor_manage::msg_actor_stat> lpro;
 					lpro.id = id;
 					lpro.m_operator = "server_stat";
-					actor_manage::getInstance().actor_stat(lpro.m_data);
+					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				}
 			);
 		}

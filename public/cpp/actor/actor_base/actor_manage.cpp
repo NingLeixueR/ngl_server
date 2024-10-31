@@ -58,7 +58,7 @@ namespace ngl
 			return (int32_t)m_actorbyid.size();
 		}
 
-		inline void actor_stat(msg_actor_stat& adata)
+		inline void get_actor_stat(msg_actor_stat& adata)
 		{
 			ngl_lock;
 			std::ranges::for_each(m_actorbytype, [&adata](const auto& apair)
@@ -99,9 +99,17 @@ namespace ngl
 					.m_actorservermass = false
 				};
 				pro->m_fun = afun;
-				nguid lclientguid = actor_client::actorid();
-				handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);
-				push_task_id(lclientguid, lparm, false);
+				nguid lguid;
+				if (xmlnode::m_nodetype == ACTORSERVER)
+				{
+					lguid = actor_server::actorid();
+				}
+				else
+				{
+					lguid = actor_client::actorid();
+				}
+				handle_pram lparm = handle_pram::create(lguid, nguid::make(), pro);
+				push_task_id(lguid, lparm, false);
 			}
 			else
 			{
@@ -242,10 +250,14 @@ namespace ngl
 
 		inline void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 		{
-			if (lpactor->get_activity_stat() == actor_stat_close 
-				|| lpactor->get_activity_stat() == actor_stat_init)
+			actor_stat lstat = lpactor->get_activity_stat();
+			if (lstat == actor_stat_close || lstat == actor_stat_init)
 			{
-				std::cout << "activity_stat =  " << (int)lpactor->get_activity_stat() <<" !!!" << std::endl;
+				std::string lstr = std::format("actor_mange push task actor:{} stat:{}", 
+					em<ENUM_ACTOR>::get_name(lpactor->type()), 
+					lstat == actor_stat_close?"actor_stat_close":"actor_stat_init"
+				);
+				std::cout << lstr << std::endl;
 				return;
 			}
 			lpactor->push(apram);
@@ -468,9 +480,9 @@ namespace ngl
 		return m_impl_actor_manage()->actor_count();
 	}
 
-	void actor_manage::actor_stat(msg_actor_stat& adata)
+	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
-		m_impl_actor_manage()->actor_stat(adata);
+		m_impl_actor_manage()->get_actor_stat(adata);
 	}
 
 	actor_suspendthread::actor_suspendthread()

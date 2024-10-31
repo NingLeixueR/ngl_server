@@ -146,9 +146,7 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
-					log_warn()->print(
-						"connect success nodeid:{}", nconfig::m_nodeid
-					);
+					log_warn()->print("connect success nodeid:{}", nconfig::m_nodeid);
 
 					set_node(aserverid, asession);
 
