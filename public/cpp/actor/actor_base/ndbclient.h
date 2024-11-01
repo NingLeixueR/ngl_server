@@ -155,7 +155,7 @@ namespace ngl
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-			log_error()->print("actor_dbclient loaddb [{}] [{}]", tools::type_name<type_ndbclient>(), aid);
+			log_error()->print("ndbclient loaddb [{}] [{}]", tools::type_name<type_ndbclient>(), aid);
 		}
 
 		nguid										m_id = nguid::make();
@@ -165,7 +165,7 @@ namespace ngl
 		actor_manage_dbclient*						m_manage_dbclient = nullptr;
 		actor_base*									m_actor = nullptr;
 		std::vector<int64_t>						m_dellist;
-		std::string									m_name = tools::type_name<TACTOR>();// 主要调试需要知道TACTOR的名字
+		std::string									m_name = tools::type_name<type_ndbclient>();// 主要调试需要知道TACTOR的名字
 	public:
 		ndbclient():
 			ndbclient_base(DBTYPE)
@@ -263,7 +263,7 @@ namespace ngl
 				{
 					lp = tools::findmap(m_data, aid);
 				}
-				if (lp == nullptr && lp->is_modified())
+				if (lp != nullptr && lp->is_modified())
 				{
 					lclearlist.push_back(lp);
 					pro.add(lp->getconst().m_id(), lp->getconst());
@@ -283,13 +283,13 @@ namespace ngl
 			}
 			if (pro.empty() == false)
 			{
-				log_error()->print("actor_dbclient<{}> save {}", m_name, aid);
+				log_error()->print("ndbclient<{}> save {}", m_name, aid);
 				// # 先序列化 再让actor_client确认位置
 				i64_actorid lactorid = dbguid();
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
-					log_error()->print("actor_dbclient<{}> actor_base::net_pack fail", m_name);
+					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
 				// # 异步发送pack
@@ -321,7 +321,7 @@ namespace ngl
 				std::shared_ptr<pack> lpack = actor_base::net_pack(pro, lactorid, m_actor->guid());
 				if (lpack == nullptr)
 				{
-					log_error()->print("actor_dbclient<{}> actor_base::net_pack fail", m_name);
+					log_error()->print("ndbclient<{}> actor_base::net_pack fail", m_name);
 					return;
 				}
 				// # 异步发送pack

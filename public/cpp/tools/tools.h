@@ -586,6 +586,21 @@ namespace ngl
 		}
 
 		template <typename T>
+		static std::string& type_more_name()
+		{
+			return type_name<T>();
+		}
+
+		template <typename T, typename ...TARG>
+		static std::string& type_more_name()
+		{
+			static std::string lname = type_name<T>();
+			lname += ":";
+			lname += type_more_name<TARG...>();
+			return lname;
+		}
+
+		template <typename T>
 		class protobuf_tabname
 		{
 			static std::string m_name;

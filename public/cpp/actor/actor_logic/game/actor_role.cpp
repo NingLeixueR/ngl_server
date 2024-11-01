@@ -132,7 +132,7 @@ namespace ngl
 
 	void actor_role::loaddb_finish(bool adbishave)
 	{
-		log_error()->print("actor_role###loaddb_finish#[{}]", nguid(id_guid()));
+		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
