@@ -31,9 +31,13 @@ namespace ngl
 		pbdb::ENUM_DB		type()const;
 		//# 获取宿主actor
 		actor_base*			actorbase();
+		//# 设置m_id关联m_actor
 		virtual void		set_id();
+		//# 设置m_actor关联m_dbclient
 		void				init();
+		//# m_dbclient.create()
 		void				create();
+		//# 获取m_dbclient
 		ndbclient_base*		dbclientbase();
 		// # 当数据全部加载后调用
 		virtual void		init_data();
@@ -79,11 +83,13 @@ namespace ngl
 				});
 		}
 
+		//# 获取所有数据
 		inline std::map<nguid, data_modified<TDATA>>& data()
 		{
 			return m_data.get_data();
 		}
 
+		//# 获取m_id对应的数据
 		inline data_modified<TDATA>* get()
 		{
 			return get(m_id);
@@ -119,6 +125,7 @@ namespace ngl
 			return m_data.get_dbdata();
 		}
 
+		// # 获取宿主actor
 		inline TACTOR* actor()
 		{ 
 			return (TACTOR*)m_actor; 
@@ -137,7 +144,7 @@ namespace ngl
 			m_data.set(m_id, TDATA());
 		}
 
-		// 当数据全部加载后调用
+		// # 当数据全部加载后调用
 		void init_data() final;
 
 		virtual void initdata() = 0;
