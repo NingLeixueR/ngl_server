@@ -21,7 +21,7 @@ namespace ngl
 		auto itor = m_fun.find(apram.m_enum);
 		if (itor == m_fun.end())
 		{
-			if (aactor->type() != ACTOR_CLIENT)
+			if (aactor->type() != ACTOR_CLIENT && aactor->type() != ACTOR_SERVER)
 			{
 				log_error()->print("{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum);
 			}

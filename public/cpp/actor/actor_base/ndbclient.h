@@ -221,6 +221,8 @@ namespace ngl
 				m_id				= aid;
 				m_load				= false;
 
+				set_logactor(aactor);
+
 				Assert(m_tab = ttab_dbload::get_tabdb<TDBTAB>(); m_tab != nullptr)
 				
 				static bool m_register = false;

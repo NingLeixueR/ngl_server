@@ -22,6 +22,18 @@ namespace ngl
 
 	void actor_server::nregister()
 	{
+		//# 设置未找到协议处理函数
+		nrfun<actor_server, EPROTOCOL_TYPE_CUSTOM>::instance().set_notfindfun(
+			[](int, handle_pram& apram)
+			{
+				naddress::forward(apram);
+			});
+		nrfun<actor_server, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance().set_notfindfun(
+			[](int, handle_pram& apram)
+			{
+				naddress::forward(apram);
+			});
+
 		register_handle_custom<actor_server>::func<
 			np_actornode_register
 			, np_actornode_update

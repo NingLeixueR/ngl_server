@@ -277,8 +277,9 @@ namespace ngl
 			{
 				if (!abool)
 					return lnull;
-				//发给actor_client
-				nguid lguid = actor_client::actorid();
+				// 发给actor_client/actor_server
+				// 如果是actor_server结点需要发送给actor_server
+				nguid lguid = nconfig::m_nodetype == ACTORSERVER? actor_server::actorid() :actor_client::actorid();				
 				itor = m_actorbyid.find(lguid);
 				if (itor == m_actorbyid.end())
 					return lnull;
