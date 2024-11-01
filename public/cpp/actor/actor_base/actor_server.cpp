@@ -82,7 +82,7 @@ namespace ngl
 					[&lrecv, &lmapprotocol](
 						const std::map<nguid, i32_serverid>& amap, 
 						const std::map<i32_serverid, actor_node_session>& asession
-						)->bool
+					)->bool
 					{
 						std::ranges::for_each(amap, [&lrecv, &lmapprotocol, &asession](const auto& apair)
 							{
