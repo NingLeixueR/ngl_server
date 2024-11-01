@@ -43,10 +43,7 @@ namespace ngl
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			for (const auto [key, value] : m_actorserver)
 			{
-				i32_actordataid lactordataid = nguid::actordataid(key);
-				const char* lname = em<ENUM_ACTOR>::get_name((ENUM_ACTOR)nguid::type(key));
-				i16_area larea = nguid::area(key);
-				(*lstream) << std::format("[{}:{}][{}-{}-{}]", key, value, lactordataid, lname, larea) << std::endl;
+				(*lstream) << std::format("[{}]", key) << std::endl;
 			}
 			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
 			(*lstream).print("");
