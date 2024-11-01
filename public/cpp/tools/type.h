@@ -26,6 +26,7 @@ namespace ngl
 	using i32_threadnumber	= int32_t;
 	using i32_session		= int32_t;
 	using i8_sesindex		= int8_t;
+	using i32_protocol		= int32_t;
 	using str_ip			= std::string;
 	using str_host			= std::string;
 	using str_hostport		= std::string;

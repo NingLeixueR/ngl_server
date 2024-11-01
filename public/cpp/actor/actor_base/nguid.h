@@ -375,13 +375,13 @@ struct std::formatter<ngl::nguid>
 		if (lanme == nullptr)
 		{
 			return std::format_to(ctx.out()
-				, "guid<{}-{}-{}>", (int)aval.type(), aval.area(), aval.actordataid()
+				, "guid<type:{} area:{} id:{}>", (int)aval.type(), aval.area(), aval.actordataid()
 			);
 		}
 		else
 		{
 			return std::format_to(ctx.out()
-				, "guid<{}-{}-{}>", lanme, aval.area(), aval.actordataid()
+				, "guid<type:{} area:{} id:{}>", lanme, aval.area(), aval.actordataid()
 			);
 		}
 	}
