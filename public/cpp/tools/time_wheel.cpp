@@ -170,7 +170,7 @@ namespace ngl
 						addtimer(lpnode);
 					}
 					else
-						push(apnode);
+						push(lpnode);
 					continue;
 				}
 				auto& ltimer = m_timer;
