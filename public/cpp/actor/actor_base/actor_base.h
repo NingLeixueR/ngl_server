@@ -26,16 +26,15 @@ namespace ngl
 
 	class tools_log
 	{
+		tools_log(const tools_log&) = delete;
+		tools_log& operator=(const tools_log&) = delete;
+
 		actor_base* m_actor;
 
 		std::shared_ptr<np_actor_logitem> get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet);
 	public:
-		tools_log(actor_base* aactor) :
+		tools_log(actor_base* aactor = nullptr) :
 			m_actor(aactor)
-		{}
-
-		tools_log() :
-			m_actor(nullptr)
 		{}
 
 		void set_logactor(actor_base* aactor)
