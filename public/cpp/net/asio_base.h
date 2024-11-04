@@ -23,19 +23,22 @@ namespace ngl
 
 	struct serviceio_info
 	{
-		std::vector<tuple_ioservice>	m_ioservices;
-		uint32_t						m_next_index;
-		uint32_t						m_recvthreadsize;
-		uint32_t						m_buffmaxsize;
+		serviceio_info() = delete;
 
-		basio_ioservice* get_ioservice(int athreadid);
-		basio_ioservicework* get_ioservice_work(int athreadid);
-		serviceio_info(uint32_t athread, uint32_t abuffmaxsize);
+		std::vector<tuple_ioservice>	m_ioservices;
+		int32_t							m_next_index;
+		int32_t							m_recvthreadsize;
+		int32_t							m_buffmaxsize;
+
+		basio_ioservice* get_ioservice(i32_threadid athreadid);
+		basio_ioservicework* get_ioservice_work(i32_threadid athreadid);
+		serviceio_info(i32_threadid athread, int32_t abuffmaxsize);
 		~serviceio_info();
 	};
 
 	class service_io
 	{
+		service_io() = delete;
 	public:
 		i32_threadid			m_threadid;
 		i32_sessionid			m_sessionid;
@@ -47,16 +50,17 @@ namespace ngl
 		bool					m_issend;
 		std::list<node_pack>	m_list; // 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
 
-		service_io(serviceio_info& amsi, int asessionid);
+		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io();
 	};
 
 	class service_tcp : public service_io
 	{
+		service_tcp() = delete;
 	public:
 		basio_iptcpsocket m_socket;
 
-		service_tcp(serviceio_info& amsi, int asessionid);
+		service_tcp(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_tcp();
 	};
 }// namespace ngl

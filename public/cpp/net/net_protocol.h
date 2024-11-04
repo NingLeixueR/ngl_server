@@ -138,10 +138,7 @@ namespace ngl
 		)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(
-				&get_pool(), 
-				adata, 
-				aactorid, 
-				arequestactorid
+				&get_pool(), adata, aactorid, arequestactorid
 			);
 			if (lpack == nullptr)
 				return false;
