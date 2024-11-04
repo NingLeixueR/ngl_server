@@ -95,16 +95,16 @@ namespace ngl
 		~time_wheel();
 
 		// # 获取现存定时器数量
-		inline int	count();
+		int	count();
 
 		// # 是否没有正在执行的定时器
-		inline bool	empty();
+		bool	empty();
 
 		// # 获取服务器启动的毫秒数
-		inline int64_t server_start_ms();
+		int64_t server_start_ms();
 
 		// # 获取服务器当前的毫秒数
-		inline int64_t server_current_ms();
+		int64_t server_current_ms();
 
 		// # addtimer添加定时器
 		// # 返回值定时器id   定时器id大于0有效
@@ -112,7 +112,7 @@ namespace ngl
 
 		// # removetimer移除指定定时器
 		// # int atimerid  定时器id
-		inline void removetimer(int64_t atimerid);
+		void removetimer(int64_t atimerid);
 
 		// # m_isthreadcallback == false
 		std::shared_ptr<wheel_node> pop_node();
