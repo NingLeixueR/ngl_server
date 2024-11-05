@@ -421,9 +421,7 @@ namespace ngl
 	};
 
 	asio_tcp::asio_tcp(
-		i8_sesindex aindex, 
-		i16_port aport, 
-		i32_threadsize athread, 
+		i8_sesindex aindex, i16_port aport, i32_threadsize athread, 
 		const tcp_callback& acallfun, 
 		const tcp_closecallback& aclosefun, 
 		const tcp_sendfinishcallback& asendfinishfun

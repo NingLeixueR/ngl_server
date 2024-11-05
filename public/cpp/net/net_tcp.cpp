@@ -4,7 +4,7 @@
 
 namespace ngl
 {
-	bool net_tcp::socket_recv(service_io* ap, const char* abuff, uint32_t abufflen)
+	bool net_tcp::socket_recv(service_io* ap, const char* abuff, int32_t abufflen)
 	{
 		if (net_protocol::socket_recv(ap->m_sessionid, ap->m_is_lanip, abuff, abufflen) == false)
 			return false;
@@ -15,7 +15,7 @@ namespace ngl
 	{
 		net_protocol::init(aport, asocketthreadnum, aouternet);
 
-		int lsocketthreadnum = socketthreadnum();
+		i32_threadsize lsocketthreadnum = socketthreadnum();
 		for (int i = 0; i < lsocketthreadnum; ++i)
 			m_segpackvec.push_back(new segpack());
 
@@ -24,13 +24,15 @@ namespace ngl
 
 		std::function<bool(service_io*, const char*, uint32_t)> lfun = std::bind_front(&net_tcp::socket_recv, this);
 
-		std::function<void(int)> lclosefun = std::bind_front(&net_tcp::close, this);
+		std::function<void(i32_sessionid)> lclosefun = std::bind_front(&net_tcp::close, this);
 		m_server = new asio_tcp(
 			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
 			{
 				if (abool)
 				{
-					log_error()->print("send finish fail sessionid:{}", asessionid);
+					std::pair<str_servername, i32_serverid> lpair("none", -1);
+					server_session::serverinfobysession(asessionid, lpair);
+					log_error()->print("send finish fail sessionid:{} server[{}:{}]", asessionid, lpair.second, lpair.first);
 				}
 			}
 		);
@@ -38,9 +40,7 @@ namespace ngl
 	}
 
 	bool net_tcp::connect(
-		const std::string& aip, 
-		i16_port aport, 
-		const std::function<void(i32_sessionid)>& afun
+		const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun
 	)
 	{
 		m_server->connect(aip, aport, afun);

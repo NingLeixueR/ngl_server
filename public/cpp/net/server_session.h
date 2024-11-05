@@ -21,5 +21,7 @@ namespace ngl
 		static void				remove(i32_sessionid asession);
 		static i32_sessionid	sessionid(i32_serverid aserverid);
 		static i32_serverid		serverid(i32_sessionid asessionid);
+		static bool				serverinfo(i32_serverid aserverid, str_servername& asername);
+		static bool				serverinfobysession(i32_sessionid asessionid, std::pair<str_servername, i32_serverid>& apair);
 	};
 }//namespace ngl

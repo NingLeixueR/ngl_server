@@ -62,4 +62,27 @@ namespace ngl
 			return -1;
 		return itor->second;
 	}
+
+	bool server_session::serverinfo(i32_serverid aserverid, str_servername& asername)
+	{
+		if (aserverid != -1)
+		{
+			const tab_servers* tab = ttab_servers::tab(aserverid);
+			if (tab != nullptr)
+			{
+				asername = tab->m_name;
+				return true;
+			}
+		}
+		return false;
+	}
+	bool server_session::serverinfobysession(i32_sessionid asessionid, std::pair<str_servername, i32_serverid>& apair)
+	{
+		apair.second = serverid(asessionid);
+		if (apair.second == -1)
+			return false;
+		if (serverinfo(apair.second, apair.first) == false)
+			return false;
+		return true;
+	}
 }//namespace ngl

@@ -48,6 +48,12 @@ namespace ngl
 
 		inline void close(i32_sessionid asession)
 		{
+			std::pair<str_servername, i32_serverid> lpair("none", -1);
+			if (server_session::serverinfobysession(asession, lpair))
+			{
+				log_error()->print("close sessionid:{} server[{}:{}]", asession, lpair.second, lpair.first);
+			}
+
 			auto pro = std::make_shared<np_actor_session_close>();
 			pro->m_sessionid = asession;
 			i64_actorid lactorid = actor_gateway::actorid(nconfig::m_nodeid);
@@ -57,9 +63,7 @@ namespace ngl
 		}
 
 		inline bool connect(
-			net_protocol* anetprotocol
-			, const std::string& aip
-			, i16_port aport
+			net_protocol* anetprotocol, const std::string& aip, i16_port aport
 			, const std::function<void(i32_sessionid)>& afun
 			, bool await
 			, bool areconnection					// 断线是否重连
@@ -96,10 +100,7 @@ namespace ngl
 	}
 
 	bool net_protocol::socket_recv(
-		int asessionid, 
-		int aislanip, 
-		const char* abuff,
-		uint32_t abufflen
+		int asessionid, int aislanip, const char* abuff, int32_t abufflen
 	)
 	{
 		return m_impl_net_protocol()->socket_recv(asessionid, aislanip, abuff, abufflen);
@@ -125,12 +126,12 @@ namespace ngl
 		return m_impl_net_protocol()->connect(this, aip, aport, afun, await, areconnection);
 	}
 
-	int net_protocol::socketthreadnum()
+	i32_threadsize net_protocol::socketthreadnum()
 	{
 		return m_impl_net_protocol()->m_socketthreadnum;
 	}
 
-	int net_protocol::port()
+	i16_port net_protocol::port()
 	{
 		return m_impl_net_protocol()->m_port;
 	}
