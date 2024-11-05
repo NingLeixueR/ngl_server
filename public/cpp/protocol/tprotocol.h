@@ -23,7 +23,8 @@ namespace ngl
 			int				m_protocol;
 			std::string		m_name;
 		};
-		static std::multimap<size_t, pinfo>		m_keyval;
+		static std::map<size_t, pinfo>						m_keyval;
+		static std::map<i32_protocolnum, pinfo*>			m_protocol;
 		// net/gm		[1			-  100000000];
 		// custom		[200000001	-  300000000];
 		static int32_t							lcustoms/* = 200000000*/;
@@ -47,12 +48,12 @@ namespace ngl
 				{
 					return;
 				}
-				m_keyval.insert(std::make_pair(lcode, pinfo
-					{
-						.m_type = atype,
-						.m_protocol = ++lcustoms,
-						.m_name = tools::type_name<T>()
-					}));
+
+				pinfo& linfo = m_keyval[lcode];
+				linfo.m_name = tools::type_name<T>();
+				linfo.m_type = atype;
+				linfo.m_protocol = ++lcustoms;
+				m_protocol[linfo.m_protocol] = &linfo;
 			}
 		};
 	public:
@@ -67,12 +68,12 @@ namespace ngl
 			{
 				return false;
 			}
-			m_keyval.insert(std::make_pair(typeid(T).hash_code(), pinfo
-				{
-					.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF,
-					.m_protocol = lprotocol,
-					.m_name = lname
-				}));
+			pinfo& linfo = m_keyval[typeid(T).hash_code()];
+			linfo.m_name = lname;
+			linfo.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF;
+			linfo.m_protocol = lprotocol;
+			m_protocol[linfo.m_protocol] = &linfo;
+
 			return true;
 		}
 
@@ -115,6 +116,30 @@ namespace ngl
 		{
 			pinfo& linfo = get<T>();
 			return linfo.m_name;
+		}
+
+		static pinfo* get(i32_protocolnum aprotocolnum)
+		{
+			pinfo** linfo = tools::findmap(m_protocol, aprotocolnum);
+			return *linfo;
+		}
+
+		// # 根据协议号获取协议名称
+		static std::string protocol_name(i32_protocolnum aprotocolnum)
+		{
+			pinfo* linfo = get(aprotocolnum);
+			if (linfo == nullptr)
+				return "none";
+			return linfo->m_name;
+		}
+
+		// # 根据协议号获取协议类型
+		static EPROTOCOL_TYPE protocol(i32_protocolnum aprotocolnum)
+		{
+			pinfo* linfo = get(aprotocolnum);
+			if (linfo == nullptr)
+				return EPROTOCOL_TYPE_ERROR;
+			return linfo->m_type;
 		}
 
 		// # 获取当前进程已注册的所有协议

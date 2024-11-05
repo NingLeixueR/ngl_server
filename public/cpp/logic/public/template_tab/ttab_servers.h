@@ -241,24 +241,12 @@ namespace ngl
 		}
 
 		// 获取服务器所在区服
-		static std::vector<i16_area> get_arealist(i32_serverid aserverid)
+		static const std::set<i16_area>* get_arealist(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
 			if (ltab == nullptr)
-			{
-				return {};
-			}
-			std::vector<i16_area> lvec;
-			for (i32_serverid lserverid : ltab->m_actorserver)
-			{
-				const tab_servers* ltemptab = tab(lserverid);
-				if (ltemptab == nullptr)
-				{
-					continue;
-				}
-				lvec.push_back(ltemptab->m_area);
-			}
-			return lvec;
+				return nullptr;
+			return get_area(ltab->m_area);
 		}
 	};
 }//namespace ngl
