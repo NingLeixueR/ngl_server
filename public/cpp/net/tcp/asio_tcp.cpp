@@ -76,7 +76,7 @@ namespace ngl
 			, int acount
 		)
 		{
-			log_error()->print("connect ip:port {}:{}", aip, aport);
+			log_error()->print("connect {}:{}", aip, aport);
 			service_tcp* lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
@@ -91,7 +91,7 @@ namespace ngl
 					{
 						if (acount > 0)
 						{
-							log_error()->print("连接[{}:{}]失败[{}] 加入定时队列 ", aip, aport, ec.message());
+							log_error()->print("connect [{}:{}] fail [{}] add timer list! ", aip, aport, ec.message());
 							// 加入定时队列
 							wheel_parm lparm
 							{
@@ -246,9 +246,7 @@ namespace ngl
 			}
 		}
 
-		inline void handle_write(
-			service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack
-		)
+		inline void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack)
 		{
 			if (error)
 			{
@@ -258,9 +256,7 @@ namespace ngl
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
 		}
 
-		inline void handle_write_void(
-			service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack
-		)
+		inline void handle_write_void(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack)
 		{
 			if (error)
 			{
@@ -287,7 +283,7 @@ namespace ngl
 					lpservice = itor->second;
 					m_data.erase(itor);
 				}
-				log_error()->print("close sessionid[{}]", sessionid);
+				log_error()->print("asio_tcp close sessionid [{}]", sessionid);
 
 				auto lclosefunitor = m_sessionclose.find(sessionid);
 				if (lclosefunitor != m_sessionclose.end())
@@ -312,7 +308,6 @@ namespace ngl
 
 		inline void close(service_tcp* ap)
 		{
-			log_error()->print("asio_tcp::close[{}]", ap->m_sessionid);
 			close(ap->m_sessionid);
 		}
 
@@ -340,12 +335,10 @@ namespace ngl
 		inline bool get_ipport(i32_sessionid assionid, std::pair<str_ip, i16_port>& apair)
 		{
 			monopoly_shared_lock(m_ipportlock);
-			auto itor = m_ipport.find(assionid);
-			if (itor == m_ipport.end())
-			{
+			auto lpair = tools::findmap(m_ipport, assionid);
+			if (lpair == nullptr)
 				return false;
-			}
-			apair = itor->second;
+			apair = *lpair;
 			return true;
 		}
 
@@ -370,7 +363,7 @@ namespace ngl
 					if (error)
 					{
 						close(lservice);
-						log_error()->print("asio_tcp::handle_accept[{}]", error.message().c_str());
+						log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
 					}
 					else
 					{
@@ -431,8 +424,7 @@ namespace ngl
 	}
 
 	asio_tcp::asio_tcp(
-		i8_sesindex aindex, 
-		i32_threadsize athread, 
+		i8_sesindex aindex, i32_threadsize athread, 
 		const tcp_callback& acallfun, 
 		const tcp_closecallback& aclosefun, 
 		const tcp_sendfinishcallback& asendfinishfun
@@ -442,10 +434,7 @@ namespace ngl
 	}
 
 	service_tcp* asio_tcp::connect(
-		const str_ip& aip, 
-		i16_port aport, 
-		const tcp_connectcallback& afun, 
-		int acount/* = 5*/
+		const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount/* = 5*/
 	)
 	{
 		return m_impl_asio_tcp()->connect(aip, aport, afun, acount);

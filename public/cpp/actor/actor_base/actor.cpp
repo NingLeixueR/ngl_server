@@ -119,9 +119,7 @@ namespace ngl
 			swaplist(llist);
 			if (aweight < llist.size())
 			{
-				ngl::log_error()->print(
-					"actor handle weight/count[{}/{}]", aweight, llist.size()
-				);
+				ngl::log_error()->print("actor handle weight/count[{}/{}]", aweight, llist.size());
 			}
 			while (--aweight >= 0 && llist.empty() != true)
 			{
