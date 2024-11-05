@@ -30,6 +30,7 @@ namespace ngl
 	using str_ip			= std::string;
 	using str_host			= std::string;
 	using str_hostport		= std::string;
+	using str_servername	= std::string;
 
 	using i32_taskid		= int32_t;
 	using i32_rolelv		= int32_t;

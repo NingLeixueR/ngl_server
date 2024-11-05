@@ -76,7 +76,7 @@ namespace ngl
 
 		net_protocol(int8_t aindex);
 
-		bool socket_recv(int asessionid, int aislanip, const char* abuff, uint32_t abufflen);
+		bool socket_recv(int asessionid, int aislanip, const char* abuff, int32_t abufflen);
 	public:
 		~net_protocol();
 
@@ -103,10 +103,10 @@ namespace ngl
 		virtual bool exist_session(i32_sessionid asession) = 0;
 
 		// # 获取线程数量
-		int socketthreadnum();
+		i32_threadsize socketthreadnum();
 
 		// # 获取监听端口号
-		int port();
+		i16_port port();
 
 		// # 发送pack
 		bool sendpack(i32_sessionid asession, std::shared_ptr<pack>& apack);

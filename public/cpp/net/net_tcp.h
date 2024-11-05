@@ -13,7 +13,7 @@ namespace ngl
 		asio_tcp*				m_server;
 		std::vector<segpack*>	m_segpackvec;
 	private:
-		bool socket_recv(service_io* ap, const char* abuff, uint32_t abufflen);
+		bool socket_recv(service_io* ap, const char* abuff, int32_t abufflen);
 	public:
 		net_tcp(int8_t aindex):
 			net_protocol(aindex),

@@ -155,46 +155,52 @@ namespace ngl
 		}
 
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
-		static bool get_area(i16_area aarea, std::set<i16_area>& asetarea)
+		static const std::set<i16_area>* get_area(i16_area aarea)
 		{
+			static std::map<i16_area, std::set<i16_area>> lmap;
 			if (aarea < 0)
 			{
+				const std::set<i16_area>* lset = tools::findmap(lmap, aarea);
+				if (lset != nullptr)
+					return lset;
+				std::set<i16_area>& ltempset = lmap[aarea];
 				auto itor = m_areaofserver.find(aarea);
 				if (itor == m_areaofserver.end())
-					return false;
+					return nullptr;
 				if (itor->second.empty())
-					return false;
+					return nullptr;
 				const tab_servers* ltab = *itor->second.begin();
 				if (ltab == nullptr)
-					return false;
+					return nullptr;
 				for (i32_serverid itemid : ltab->m_actorserver)
 				{
 					const tab_servers* tabactor = tab(itemid);
 					if (ltab == nullptr)
 						continue;
-					asetarea.insert(tabactor->m_area);
+					ltempset.insert(tabactor->m_area);
 				}
+				return &ltempset;
 			}
 			else
 			{
-				asetarea.insert(aarea);
+				lmap[aarea].insert(aarea);
+				return &lmap[aarea];
 			}
-			return true;
 		}
 
 		// 服务器类型	atype
 		// 区服			aarea（负数代表跨服,需要提供跨服内所有atype服务器）
 		static bool foreach_server(NODE_TYPE atype, i16_area aarea, const std::function<void(const tab_servers*)>& afun)
 		{
-			std::set<i16_area> larea;
-			if (get_area(aarea, larea) == false)
+			const std::set<i16_area>* larea = get_area(aarea);
+			if (larea == nullptr)
 			{
 				return false;
 			}			
 
 			for (const auto& [_area, _vec] : m_areaofserver)
 			{
-				if (larea.find(_area) == larea.end())
+				if (larea->find(_area) == larea->end())
 					continue;
 				for (const tab_servers* iserver : _vec)
 				{
