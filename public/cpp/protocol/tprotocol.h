@@ -68,7 +68,7 @@ namespace ngl
 			{
 				return false;
 			}
-			pinfo& linfo = m_keyval[typeid(T).hash_code()];
+			pinfo& linfo = m_keyval[hash_code<T>()];
 			linfo.m_name = lname;
 			linfo.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF;
 			linfo.m_protocol = lprotocol;
