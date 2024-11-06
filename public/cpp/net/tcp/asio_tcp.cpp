@@ -160,6 +160,25 @@ namespace ngl
 			return spack(asessionid, apack);
 		}
 
+		template <typename TPACK>
+		void async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
+		{
+			tcp->m_socket.async_send(
+				asio::buffer(abuff, abufflen),
+				[this, alist, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
+				{
+					alist->pop_front();
+					handle_write(tcp, ec, apack);
+					if (ec)
+					{
+						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
+						return;
+					}
+					do_send(tcp, alist);
+				}
+			);
+		}
+
 		inline void do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist)
 		{
 			if (alist->empty())
@@ -184,62 +203,27 @@ namespace ngl
 				if (item.ispack())
 				{//pack
 					std::shared_ptr<pack>& lpack = item.get_pack();
-					if (lpack->m_pos == lpack->m_len)
+					int32_t lsize = 0;
+					int32_t lpos = 0;
+					if (lpack->m_pos != lpack->m_len)
 					{
-						tcp->m_socket.async_send(
-							asio::buffer(lpack->m_buff, lpack->m_pos),
-							[this, alist, tcp, lpack](const std::error_code& ec, std::size_t /*length*/)
-							{
-								alist->pop_front();
-								handle_write(tcp, ec, lpack);
-								if (ec)
-								{
-									log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
-									return;
-								}
-								do_send(tcp, alist);
-							});
+						lsize = lpack->m_len - lpack->m_pos;
+						lpos = lpack->m_pos;
 					}
 					else
-					{//gateway转发专用
-						int lsize = lpack->m_len - lpack->m_pos;
-						if (lsize < 0)
-							return;
-						tcp->m_socket.async_send(
-							asio::buffer(&lpack->m_buff[lpack->m_pos], lsize),
-							[this, alist, tcp, lpack](const std::error_code& ec, std::size_t /*length*/)
-							{
-								alist->pop_front();
-								handle_write(tcp, ec, lpack);
-								if (ec)
-								{
-									log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
-									return;
-								}
-								do_send(tcp, alist);
-							}
-						);
+					{
+						lsize = lpack->m_pos;
+						lpos = 0;
 					}
+					if (lsize < 0)
+						return;
+					async_send(tcp, alist, lpack, &lpack->m_buff[lpos], lsize);
 				}
 				else
 				{
 					std::shared_ptr<void>& lpack = item.get_voidpack();
 					pack* lpackptr = (pack*)lpack.get();
-
-					tcp->m_socket.async_send(
-						asio::buffer(lpackptr->m_buff, lpackptr->m_pos),
-						[this, alist, tcp, lpack](const std::error_code& ec, std::size_t /*length*/)
-						{
-							alist->pop_front();
-							handle_write_void(tcp, ec, lpack);
-							if (ec)
-							{
-								log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
-								return;
-							}
-							do_send(tcp, alist);
-						}
-					);
+					async_send(tcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
 				}
 			}
 		}
@@ -254,7 +238,7 @@ namespace ngl
 			m_sendfinishfun(ap->m_sessionid, error ? true : false, apack.get());
 		}
 
-		inline void handle_write_void(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack)
+		inline void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<void> apack)
 		{
 			if (error)
 			{
