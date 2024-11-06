@@ -40,7 +40,7 @@ namespace ngl
 		return true;
 	}
 
-	bool segpack_heartbeat::is_heartbeat(int aprotocolnum)
+	bool segpack_heartbeat::is_heartbeat(i32_protocolnum aprotocolnum)
 	{		
 		return tprotocol::protocol<pbnet::PROBUFF_NET_HEARTBEAT>() == aprotocolnum;
 	}

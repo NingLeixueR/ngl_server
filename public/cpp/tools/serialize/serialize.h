@@ -547,12 +547,12 @@ namespace ngl
 			return m_len;
 		}
 
-		inline void add_bytes(int abytes)
+		inline void add_bytes(int32_t abytes)
 		{
 			m_pos += abytes;
 		}
 
-		inline void dec_bytes(int abytes)
+		inline void dec_bytes(int32_t abytes)
 		{
 			m_pos -= abytes;
 		}

@@ -13,8 +13,8 @@ namespace ngl
 	{
 	public:
 		bpool();
-		char* malloc(int alen);
-		void free(char* ap, int alen);
+		char* malloc(int32_t alen);
+		void free(char* ap, int32_t alen);
 	};
 
 	class segpack;
@@ -33,8 +33,8 @@ namespace ngl
 		bpool*			m_bpool			= nullptr;
 		/*[如果包来自网络 Start]*/
 		char*			m_buff			= nullptr;
-		int				m_len			= 0;
-		int				m_pos			= 0;
+		int32_t			m_len			= 0;
+		int32_t			m_pos			= 0;
 		/*[如果包来自网络 Finish]*/
 
 		~pack();
@@ -49,12 +49,12 @@ namespace ngl
 		bool isready();
 
 		// # 为数据包分配
-		bool malloc(int alen);
+		bool malloc(int32_t alen);
 
 		// # 在数据包中设置actor
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 
 		// # 分配包
-		static std::shared_ptr<pack> make_pack(bpool* apool, int alen);
+		static std::shared_ptr<pack> make_pack(bpool* apool, int32_t alen);
 	};
 }// namespace ngl

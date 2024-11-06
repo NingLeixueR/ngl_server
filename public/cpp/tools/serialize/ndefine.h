@@ -7,7 +7,7 @@
 	{															\
 		return ser.pop(__VA_ARGS__);							\
 	}															\
-	inline bool ParseFromArray(const void* data, int size)		\
+	inline bool ParseFromArray(const void* data, int32_t size)	\
 	{															\
 		ngl::unserialize lunserialize((const char*)data, size);	\
 		return pop(lunserialize);								\
@@ -19,7 +19,7 @@
 	{															\
 		return ser.push(__VA_ARGS__);							\
 	}															\
-	inline bool SerializeToArray(void* data, int size) const	\
+	inline bool SerializeToArray(void* data, int32_t size) const \
 	{															\
 		ngl::serialize lserialize((char*)data, size);			\
 		return push(lserialize);								\

@@ -51,8 +51,8 @@ namespace ngl
 
 		struct protocols
 		{
-			std::map<int, std::string> m_promap;
-			std::map<int, std::string> m_custommap;
+			std::map<i32_protocolnum, std::string> m_promap;
+			std::map<i32_protocolnum, std::string> m_custommap;
 
 			jsonfunc("proto", m_promap, "custom", m_custommap)
 		};
