@@ -12,25 +12,12 @@ namespace ngl
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
 		log_warn()->print(
-			"connect [{}:{}] [{}]", 
-			aserverid, ttab_servers::tab(aserverid)->m_name, asession
+			"connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession
 		);
 		lock_write(m_mutex);
 		
-		{
-			auto itor = m_server.find(aserverid);
-			if (itor != m_server.end())
-			{
-				m_server.erase(itor);
-			}
-		}
-		{
-			auto itor = m_session.find(asession);
-			if (itor != m_session.end())
-			{
-				m_session.erase(itor);
-			}
-		}
+		m_server.erase(aserverid);
+		m_session.erase(asession);
 		m_server.insert(std::make_pair(aserverid, asession));
 		m_session.insert(std::make_pair(asession, aserverid));
 	}
