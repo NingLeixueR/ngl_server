@@ -19,16 +19,21 @@ namespace ngl
 		const std::array<int32_t, Count>	m_counts;
 		std::shared_mutex					m_mutex;
 
-		char* nmalloc(int aindex, int abytes = 0)
+		enum
 		{
-			int lbytes = 0;
+			enum_int32char = sizeof(int32_t) + sizeof(char),
+		};
+
+		char* nmalloc(int32_t aindex, int32_t abytes = 0)
+		{
+			int32_t lbytes = 0;
 			if (aindex >= Count || aindex < 0)
 			{
-				lbytes = abytes + sizeof(int) + sizeof(char);
+				lbytes = abytes + enum_int32char;
 			}
 			else
 			{
-				lbytes = m_bytes[aindex] + sizeof(int) + sizeof(char);
+				lbytes = m_bytes[aindex] + enum_int32char;
 			}
 			if (lbytes <= 0)
 				return nullptr;
@@ -37,20 +42,18 @@ namespace ngl
 			if (lpbuff == nullptr)
 				return nullptr;
 			lpbuff[0] = 'k';
-			*(int*)(&lpbuff[1]) = aindex;
-			return &lpbuff[sizeof(int) + sizeof(char)];
+			*(int32_t*)(&lpbuff[1]) = aindex;
+			return &lpbuff[enum_int32char];
 		}
 
 		void nfree(char* abuff, bool abool = true)
 		{
 			if (abuff == nullptr)
 				return;
-			char* lbuff = abuff - (sizeof(int) + sizeof(char));
+			char* lbuff = abuff - enum_int32char;
 			if (*lbuff != 'k')
 			{
-				log_error()->print(
-					"netbuff<{},{}>::nfree != k", InitBytes, Count
-				);
+				log_error()->print("netbuff<{},{}>::nfree != k", InitBytes, Count);
 				return;
 			}
 			int lindex = *(int*)(abuff - sizeof(int));
@@ -76,7 +79,7 @@ namespace ngl
 			m_counts(acounts)
 		{
 			m_bytes[0] = InitBytes;
-			for (int i = 0; i < Count; ++i)
+			for (int32_t i = 0; i < Count; ++i)
 			{
 				if (i != 0)
 				{
@@ -102,9 +105,9 @@ namespace ngl
 			twheel::wheel().addtimer(lparm);
 		}
 
-		char* malloc_private(int abytes)
+		char* malloc_private(int32_t abytes)
 		{
-			for (int i = 0; i < Count; ++i)
+			for (int32_t i = 0; i < Count; ++i)
 			{
 				if (abytes <= m_bytes[i])
 				{
@@ -133,9 +136,9 @@ namespace ngl
 		void time_free()
 		{
 			monopoly_shared_lock(m_mutex);
-			for (int i = 0; i < Count; ++i)
+			for (int32_t i = 0; i < Count; ++i)
 			{
-				int lcount = m_counts[i] * 2;
+				int32_t lcount = m_counts[i] * 2;
 				std::list<char*>& ls = m_pool[i];
 				for (; ls.size() > lcount;)
 				{

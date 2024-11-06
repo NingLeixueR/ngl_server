@@ -32,17 +32,13 @@ namespace ngl
 		// # 设置actor 
 		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
 		// # arequestactorid:哪个actor发送的
-		static void head_set_actor(
-			int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid
-		);
+		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
 
-		void set_actor(
-			i64_actorid aactor, i64_actorid arequestactorid
-		);
+		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 
 		void set_requestactor(i64_actorid arequestactorid);
 
-		static void set_actor(uint32_t* abuff, i64_actorid aactor);
+		static void set_actor(int32_t* abuff, i64_actorid aactor);
 
 		// # 获取要发送给哪个actor
 		i64_actorid		get_actor()const;
@@ -66,13 +62,13 @@ namespace ngl
 		void			reset();
 
 		// # 获取EPH对应的值
-		int				getvalue(EPH aeph)const;
+		int32_t			getvalue(EPH aeph)const;
 
 		// # 获取协议字节数
-		int				get_bytes()const;
+		int32_t			get_bytes()const;
 
 		// # 获取包头长度
-		static int		size();
+		static int32_t	size();
 
 		// # 包头是否接收完毕
 		EPH_HEAD_VAL	isready()const;
@@ -88,9 +84,9 @@ namespace ngl
 		EPROTOCOL_TYPE	get_protocoltype()const;
 		void			set_protocoltype(EPROTOCOL_TYPE atype);
 		
-		EPH_HEAD_VAL push(const char*& abuff, int& alen);
+		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);
 		bool push(ngl::serialize& aflow);
-		void reservebuff(char* abuff, int abufflen, std::pair<char*, int>& apair);
+		void reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair);
 	};
 }// namespace ngl
 
@@ -107,7 +103,7 @@ struct std::formatter<ngl::pack_head>
 	{
 		auto out = ctx.out();
 		std::format_to(out, "HEAD[");
-		for (int i = 0; i < ngl::EPH_BYTES; ++i)
+		for (int32_t i = 0; i < ngl::EPH_BYTES; ++i)
 		{
 			std::format_to(out, "{}#,", val.m_data[i]);
 		}

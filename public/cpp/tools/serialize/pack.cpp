@@ -7,12 +7,12 @@ namespace ngl
 	bpool::bpool()
 	{}
 
-	char* bpool::malloc(int alen)
+	char* bpool::malloc(int32_t alen)
 	{
 		return netbuff_pool::malloc(alen);
 	}
 
-	void bpool::free(char* ap, int alen)
+	void bpool::free(char* ap, int32_t alen)
 	{
 		netbuff_pool::free(ap);
 		return;
@@ -44,7 +44,7 @@ namespace ngl
 		return false;
 	}
 
-	bool pack::malloc(int alen)
+	bool pack::malloc(int32_t alen)
 	{
 		if (m_buff != nullptr)
 			free();
@@ -81,7 +81,7 @@ namespace ngl
 		pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
 	}
 
-	std::shared_ptr<pack> pack::make_pack(bpool* apool, int alen)
+	std::shared_ptr<pack> pack::make_pack(bpool* apool, int32_t alen)
 	{
 		std::shared_ptr<pack> lpack(new pack(), [](pack* apack)
 			{

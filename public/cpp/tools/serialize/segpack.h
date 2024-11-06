@@ -30,7 +30,7 @@ namespace ngl
 	class segpack_heartbeat
 	{
 	public:
-		static bool is_heartbeat(int aprotocolnum);
+		static bool is_heartbeat(i32_protocolnum aprotocolnum);
 	};
 
 	class segpack

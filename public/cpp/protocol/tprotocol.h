@@ -20,7 +20,7 @@ namespace ngl
 		struct pinfo
 		{
 			EPROTOCOL_TYPE	m_type;
-			int				m_protocol;
+			i32_protocolnum	m_protocol;
 			std::string		m_name;
 		};
 		static std::map<size_t, pinfo>						m_keyval;
@@ -63,7 +63,7 @@ namespace ngl
 		static bool init_protobufs()
 		{
 			static std::string& lname = tools::type_name<T>();
-			int32_t lprotocol = xmlprotocol::protocol(lname);
+			i32_protocolnum lprotocol = xmlprotocol::protocol(lname);
 			if (lprotocol == -1)
 			{
 				return false;
@@ -96,7 +96,7 @@ namespace ngl
 
 		// # 根据协议获取协议号
 		template <typename T>
-		static int32_t protocol()
+		static i32_protocolnum protocol()
 		{
 			pinfo& linfo = get<T>();
 			return linfo.m_protocol;
@@ -143,7 +143,7 @@ namespace ngl
 		}
 
 		// # 获取当前进程已注册的所有协议
-		static void get_allprotocol(std::map<int, std::string>& apromap, std::map<int, std::string>& acustommap)
+		static void get_allprotocol(std::map<i32_protocolnum, std::string>& apromap, std::map<i32_protocolnum, std::string>& acustommap)
 		{
 			std::ranges::for_each(m_keyval, [&apromap, &acustommap](const auto& apair)
 				{
