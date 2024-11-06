@@ -20,8 +20,8 @@ namespace ngl
 		std::shared_mutex												m_maplock;
 		serviceio_info													m_service_io_;
 		std::shared_mutex												m_ipportlock;
-		int32_t															m_sessionid;
-		std::unordered_map<i32_sessionid, service_tcp*>					m_data;
+		i32_sessionid													m_sessionid;
+		std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>> m_data;
 		std::unordered_map<i32_sessionid, std::pair<str_ip, i16_port>>	m_ipport;
 		std::unordered_map<i32_sessionid, std::function<void()>>		m_sessionclose;
 
@@ -69,7 +69,7 @@ namespace ngl
 		{
 		}
 
-		inline service_tcp* connect(
+		inline std::shared_ptr<service_tcp> connect(
 			const str_ip& aip
 			, i16_port aport
 			, const tcp_connectcallback& afun
@@ -77,10 +77,10 @@ namespace ngl
 		)
 		{
 			log_error()->print("connect {}:{}", aip, aport);
-			service_tcp* lservice = nullptr;
+			std::shared_ptr<service_tcp> lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				lservice = new service_tcp(m_service_io_, ++m_sessionid);
+				lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			lservice->m_socket.async_connect(
@@ -124,8 +124,8 @@ namespace ngl
 		inline service_tcp* get_tcp(i32_sessionid asessionid)
 		{
 			monopoly_shared_lock(m_maplock);
-			service_tcp** lp = tools::findmap(m_data, asessionid);
-			return lp == nullptr ? nullptr : *lp;
+			std::shared_ptr<service_tcp>* lp = tools::findmap(m_data, asessionid);
+			return lp == nullptr ? nullptr : lp->get();
 		}
 
 		template <typename T>
@@ -134,14 +134,13 @@ namespace ngl
 			service_tcp* tcp = get_tcp(asessionid);
 			if (tcp == nullptr)
 				return false;
-
-			std::list<node_pack>* llist = nullptr;
+			std::shared_ptr<std::list<node_pack>> llist = nullptr;
 			{
 				monopoly_shared_lock(tcp->m_mutex);
 				tcp->m_list.push_back({ asessionid, apack });
 				if (tcp->m_issend == false)
 				{
-					llist = new std::list<node_pack>();
+					llist = std::make_shared<std::list<node_pack>>();
 					tcp->m_list.swap(*llist);
 					tcp->m_issend = true;
 				}
@@ -161,7 +160,7 @@ namespace ngl
 			return spack(asessionid, apack);
 		}
 
-		inline void do_send(service_tcp* tcp, std::list<node_pack>* alist)
+		inline void do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist)
 		{
 			if (alist->empty())
 			{
@@ -173,7 +172,6 @@ namespace ngl
 					}
 					else
 					{
-						delete alist;
 						tcp->m_issend = false;
 						return;
 					}
@@ -196,7 +194,7 @@ namespace ngl
 								handle_write(tcp, ec, lpack);
 								if (ec)
 								{
-									delete alist;
+									log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
 									return;
 								}
 								do_send(tcp, alist);
@@ -215,7 +213,7 @@ namespace ngl
 								handle_write(tcp, ec, lpack);
 								if (ec)
 								{
-									delete alist;
+									log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
 									return;
 								}
 								do_send(tcp, alist);
@@ -236,7 +234,7 @@ namespace ngl
 							handle_write_void(tcp, ec, lpack);
 							if (ec)
 							{
-								delete alist;
+								log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
 								return;
 							}
 							do_send(tcp, alist);
@@ -272,7 +270,7 @@ namespace ngl
 				return;
 			
 			// 通知逻辑层session断开连接
-			service_tcp* lpservice = nullptr;
+			std::shared_ptr<service_tcp> lpservice = nullptr;
 			std::function<void()> lclosefun = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
@@ -301,22 +299,21 @@ namespace ngl
 
 			if (lpservice != nullptr)
 			{
-				m_fun(lpservice, nullptr, 0);
-				delete lpservice;
+				m_fun(lpservice.get(), nullptr, 0);
 			}
 		}
 
-		inline void close(service_tcp* ap)
+		inline void close(const service_tcp* ap)
 		{
 			close(ap->m_sessionid);
 		}
 
 		inline void close_net(i32_sessionid sessionid)
 		{
-			service_tcp* lpservice = nullptr;
+			std::shared_ptr<service_tcp> lpservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				std::unordered_map<i32_sessionid, service_tcp*>::iterator itor = m_data.find(sessionid);
+				std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>>::iterator itor = m_data.find(sessionid);
 				if (itor != m_data.end())
 				{
 					//delete itor->second;
@@ -324,11 +321,6 @@ namespace ngl
 					m_data.erase(itor);
 				}
 				m_sessionclose.erase(sessionid);
-			}
-
-			if (lpservice != nullptr)
-			{
-				delete lpservice;
 			}
 		}
 
@@ -350,10 +342,10 @@ namespace ngl
 
 		inline void accept()
 		{
-			service_tcp* lservice = nullptr;
+			std::shared_ptr<service_tcp> lservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				lservice = new service_tcp(m_service_io_, ++m_sessionid);
+				lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
 			m_acceptor->async_accept(
@@ -362,7 +354,7 @@ namespace ngl
 				{
 					if (error)
 					{
-						close(lservice);
+						close(lservice.get());
 						log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
 					}
 					else
@@ -381,7 +373,7 @@ namespace ngl
 			);
 		}
 
-		inline void start(service_tcp* aservice)
+		inline void start(const std::shared_ptr<service_tcp>& aservice)
 		{
 			std::swap(aservice->m_buff1, aservice->m_buff2);
 			char* lbuff = aservice->m_buff1;
@@ -391,15 +383,15 @@ namespace ngl
 				{
 					if (!error)
 					{
-						if (!m_fun(aservice, lbuff, (uint32_t)bytes_transferred))
-							close(aservice);
+						if (!m_fun(aservice.get(), lbuff, (uint32_t)bytes_transferred))
+							close(aservice.get());
 						else
 							start(aservice);
 					}
 					else
 					{
 						//关闭连接
-						close(aservice);
+						close(aservice.get());
 						log_error()->print("asio_tcp::handle_read[{}]", error.message().c_str());
 					}
 				}
@@ -437,7 +429,7 @@ namespace ngl
 		const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount/* = 5*/
 	)
 	{
-		return m_impl_asio_tcp()->connect(aip, aport, afun, acount);
+		return m_impl_asio_tcp()->connect(aip, aport, afun, acount).get();
 	}
 
 	bool asio_tcp::sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
