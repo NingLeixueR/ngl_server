@@ -22,7 +22,7 @@ namespace ngl
 			);
 			handle_cmd::push("/name", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
-					role->m_info.change_name(aparm);
+					role->m_info.rename(aparm);
 				}
 			);
 			handle_cmd::push("/lv", [](actor_role* role, [[maybe_unused]] const char* aparm)

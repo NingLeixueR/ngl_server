@@ -77,7 +77,7 @@ namespace ngl
 		return lrb->m_name().c_str();
 	}
 
-	void roleinfo::change_name(const char* aname)
+	void roleinfo::rename(const char* aname)
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_name(aname);

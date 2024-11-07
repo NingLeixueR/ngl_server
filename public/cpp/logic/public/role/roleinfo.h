@@ -34,7 +34,7 @@ namespace ngl
 		void change_vip(int avalues);
 
 		const char* name();
-		void change_name(const char* aname);
+		void rename(const char* aname);
 
 		int32_t gold();
 		void change_gold(int avalues);

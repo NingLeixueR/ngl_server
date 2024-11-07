@@ -29,7 +29,7 @@ namespace ngl
 		static std::map<int, std::map<ENUMT, std::string>> m_datae2n;
 		static std::map<int, std::map<std::string, ENUMT>> m_datan2e;
 
-		static void change_name(std::string& astr)
+		static void rename(std::string& astr)
 		{
 			if constexpr (TOLOWER == e2n_tolower)
 			{
@@ -44,7 +44,7 @@ namespace ngl
 		static void set(ENUMT aenum, const char* aname, int anum = 0)
 		{
 			std::string str(aname);
-			change_name(str);
+			rename(str);
 			m_datae2n[anum][aenum] = str;
 			m_datan2e[anum][str] = aenum;
 		}
@@ -57,7 +57,7 @@ namespace ngl
 		static ENUMT get_enum(const char* aname, int anum = 0)
 		{
 			std::string str(aname);
-			change_name(str);
+			rename(str);
 			auto itor1 = m_datan2e.find(anum);
 			if(itor1 == m_datan2e.end())
 				return enum_null();
