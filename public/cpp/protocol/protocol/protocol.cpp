@@ -19,21 +19,15 @@ namespace ngl
 		static std::map<EPROTOCOL_TYPE, std::map<i32_protocolnum, pfun>>	m_protocolfun;
 		static std::shared_mutex											m_mutex;
 
-		static void print(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
+		static const char* name(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
 		{
 			const char* lname = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum), aprotocoltype);
-			if (lname != nullptr)
-			{
-				log_error()->print("protocol::push Info {}:{}", 
-					aprotocolnum, lname
-				);
-			}
-			else
-			{
-				log_error()->print("protocol::push Info {}:{}",
-					aprotocolnum, "not find protocol name"
-				);
-			}
+			return lname != nullptr ? lname : "none";
+		}
+
+		static void print(const char* amsg, EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
+		{
+			log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocoltype, aprotocolnum));
 		}
 
 		static pfun* find(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
@@ -42,20 +36,15 @@ namespace ngl
 			auto itor1 = m_protocolfun.find(aprotocoltype);
 			if (itor1 == m_protocolfun.end())
 			{
-				log_error()->print("protocol::push [{}] Error protocolnum[{}] "
-					, (int)aprotocoltype, aprotocolnum
-				);
+				print("protocol type none", aprotocoltype, aprotocolnum);
 				return nullptr;
 			}
 			auto itor2 = itor1->second.find(aprotocolnum);
 			if (itor2 == itor1->second.end())
 			{
-				log_error()->print("protocol::push Error protocolnum[{}] "
-					, aprotocolnum
-				);
+				print("protocol num none", aprotocoltype, aprotocolnum);
 				return nullptr;
 			}
-			
 			return &itor2->second;
 		}
 	public:
@@ -75,7 +64,8 @@ namespace ngl
 				return;
 			}
 			
-			if (auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype(); lactortype == nguid::none<ENUM_ACTOR>())
+			auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
+			if (lactortype == nguid::none<ENUM_ACTOR>())
 			{
 				std::ranges::for_each(lpfun->m_runfun, [&apack,&lptrpram](const auto& item)
 					{
@@ -105,8 +95,8 @@ namespace ngl
 		{
 			lock_write(m_mutex);
 			pfun& lprotocol = m_protocolfun[atype][aprotocolnumber];
-			lprotocol.m_packfun = apackfun;
-			lprotocol.m_runfun[aenumactor] = arunfun;
+			lprotocol.m_packfun				= apackfun;
+			lprotocol.m_runfun[aenumactor]	= arunfun;
 			em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname, atype);
 		}
 	};
@@ -128,9 +118,7 @@ namespace ngl
 		, const char* aname
 	)
 	{
-		impl_protocol::register_protocol(
-			atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname
-		);
+		impl_protocol::register_protocol(atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname);
 	}
 
 	void protocol::cmd(const std::shared_ptr<pack>& apack)
@@ -157,5 +145,4 @@ namespace ngl
 		}
 		return;
 	}
-
 }// namespace ngl
