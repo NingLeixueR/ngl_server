@@ -261,7 +261,6 @@ namespace ngl
 				auto itor = m_data.find(sessionid);
 				if (itor != m_data.end())
 				{
-					//delete itor->second;
 					lpservice = itor->second;
 					m_data.erase(itor);
 				}
@@ -297,10 +296,9 @@ namespace ngl
 			std::shared_ptr<service_tcp> lpservice = nullptr;
 			{
 				monopoly_shared_lock(m_maplock);
-				std::unordered_map<i32_sessionid, std::shared_ptr<service_tcp>>::iterator itor = m_data.find(sessionid);
+				auto itor = m_data.find(sessionid);
 				if (itor != m_data.end())
 				{
-					//delete itor->second;
 					lpservice = itor->second;
 					m_data.erase(itor);
 				}

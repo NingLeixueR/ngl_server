@@ -11,15 +11,14 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		log_warn()->print(
-			"connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession
-		);
-		lock_write(m_mutex);
-		
-		m_server.erase(aserverid);
-		m_session.erase(asession);
-		m_server.insert(std::make_pair(aserverid, asession));
-		m_session.insert(std::make_pair(asession, aserverid));
+		log_warn()->print("connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
+		{
+			lock_write(m_mutex);
+			m_server.erase(aserverid);
+			m_session.erase(asession);
+			m_server.insert(std::make_pair(aserverid, asession));
+			m_session.insert(std::make_pair(asession, aserverid));
+		}
 	}
 
 	void server_session::remove(i32_sessionid asession)
@@ -63,6 +62,7 @@ namespace ngl
 		}
 		return false;
 	}
+
 	bool server_session::serverinfobysession(i32_sessionid asessionid, std::pair<str_servername, i32_serverid>& apair)
 	{
 		apair.second = serverid(asessionid);
