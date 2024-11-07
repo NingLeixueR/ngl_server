@@ -40,9 +40,7 @@ namespace ngl
 			ginfo* lginfo = tools::findmap(m_group, agroupid);
 			if (lginfo == nullptr)
 			{
-				log_error()->print(
-					"add_group_member not find groupid[{}]", agroupid
-				);
+				log_error()->print("add_group_member not find groupid[{}]", agroupid);
 				return false;
 			}
 			lginfo->m_actorlist.insert(amember);
