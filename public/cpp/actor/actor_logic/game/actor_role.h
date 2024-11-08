@@ -140,9 +140,6 @@ namespace ngl
 		}
 #pragma endregion
 
-		//# 登录请求未发货充值
-		void loginpay();
-
 		//# CMD 协议
 		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
 		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
@@ -170,12 +167,15 @@ namespace ngl
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
-		//# 请求创建订单
-		void createorder(std::string& aorder, int32_t arechargeid);
-
 		using handle_php = cmd<actor_role, std::string, int, const ngl::json_read&>;
 		//# gm请求
 		bool handle(const message<mforward<np_gm>>& adata);
+
+		//# 登录请求未发货充值
+		void loginpay();
+
+		//# 请求创建订单
+		void createorder(std::string& aorder, int32_t arechargeid);
 
 		//# 是否首次充值
 		bool is_first_recharge(int32_t arechargeid);

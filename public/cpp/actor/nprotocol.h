@@ -401,7 +401,7 @@ namespace ngl
 	private:
 		protobuf_data<T, true> m_data;
 	public:
-		void set_data(std::shared_ptr<T>& adata)
+		void set_data(const std::shared_ptr<T>& adata)
 		{
 			m_data.m_data = adata;
 		}
