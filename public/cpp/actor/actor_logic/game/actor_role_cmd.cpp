@@ -6,7 +6,7 @@ namespace ngl
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		const pbnet::PROBUFF_NET_CMD& lparm = *adata.get_data();
-		log_info()->print("cmd[{}]", lparm.m_cmd());
+		log_info()->print("cmd [{}]", lparm.m_cmd());
 
 		std::vector<std::string> lvec;
 		if (tools::splite(lparm.m_cmd().c_str(), "|", lvec) == false)
@@ -65,7 +65,6 @@ namespace ngl
 					}
 				}
 			);
-
 			handle_cmd::push("/chatlist", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT>();
@@ -78,7 +77,6 @@ namespace ngl
 					role->handle_forward<ACTOR_CHAT>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/switch", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
@@ -115,7 +113,6 @@ namespace ngl
 					role->handle_forward<ACTOR_MAIL>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/create_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL>();
@@ -124,7 +121,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST>();
@@ -136,7 +132,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/join_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
@@ -146,7 +141,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/cancel_join_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
@@ -156,7 +150,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/ratify_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>();
@@ -170,7 +163,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/cede_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CEDE_FAMIL>();
@@ -182,7 +174,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/leave_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_LEAVE_FAMIL>();
@@ -191,7 +182,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/change_familyname", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>();
@@ -205,7 +195,6 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-
 			handle_cmd::push("/sign_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMILSIGN>();
@@ -219,11 +208,11 @@ namespace ngl
 			);
 		}
 
-		std::string& lkey = lvec[0];
-		std::ranges::transform(lkey, lkey.begin(), tolower);
-		if (handle_cmd::function(lkey, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
+		std::string& lcmd = lvec[0];
+		std::ranges::transform(lcmd, lcmd.begin(), tolower);
+		if (handle_cmd::function(lcmd, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
-			log_error()->print("actor_role cmd [{}] ERROR", lkey);
+			log_error()->print("actor_role cmd [{}] ERROR", lcmd);
 		}
 		return true;
 	}

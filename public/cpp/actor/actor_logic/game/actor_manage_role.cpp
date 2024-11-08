@@ -75,9 +75,9 @@ namespace ngl
 			return true;
 		}
 
-		if (handle_php::empty())
+		if (handle_gm::empty())
 		{
-			handle_php::push("roleban", [this](int id, const ngl::json_read& aos)
+			handle_gm::push("roleban", [this](int id, const ngl::json_read& aos)
 				{
 					struct banrole
 					{
@@ -114,7 +114,7 @@ namespace ngl
 				}
 			);
 
-			handle_php::push("get_roleban", [this](int id, const ngl::json_read&)
+			handle_gm::push("get_roleban", [this](int id, const ngl::json_read&)
 				{
 					std::string lbanrole;
 					tools::splicing(m_roleban, "*", lbanrole);
@@ -127,7 +127,7 @@ namespace ngl
 				}
 			);
 		}
-		if (handle_php::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
+		if (handle_gm::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}

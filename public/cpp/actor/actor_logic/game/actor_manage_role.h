@@ -40,13 +40,13 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_MANAGE_ROLE, nguid::none_area(), ttab_servers::tab()->m_tcount);
+			return nguid::make(actor_type(), nguid::none_area(), ttab_servers::tab()->m_tcount);
 		}
 				
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
 		//# gmÇëÇó
-		using handle_php = cmd<actor_role, std::string, int, const ngl::json_read&>;
+		using handle_gm = cmd<actor_role, std::string, int, const ngl::json_read&>;
 		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }//namespace ngl

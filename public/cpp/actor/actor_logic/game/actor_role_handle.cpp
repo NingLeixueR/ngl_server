@@ -7,23 +7,14 @@ namespace ngl
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata)
 	{
 		sync_data_client();
-		log_error()->print(
-			"[sync]###[{}]", 
-			m_info.name()
-		);
+		log_error()->print("[sync]###[{}]", m_info.name());
 		return true;
 	}
 
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
 		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
-		log_error()->print(
-			"type={},actordataid={},area={},NAME={}", 
-			nguid::type(lrequest), 
-			nguid::actordataid(lrequest), 
-			nguid::area(lrequest), 
-			m_info.get_constrole().m_base().m_name()
-		);
+		log_error()->print("{},NAME={}", guid(),m_info.get_constrole().m_base().m_name());
 		if (adata.m_pack->m_protocol == ENET_KCP)
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
@@ -48,11 +39,7 @@ namespace ngl
 		i32_sessionid lsession = server_session::sessionid(tab->m_id);
 		if (lsession == -1)
 		{
-			log_error()->print(
-				"LOGIC_SWITCH_LINE Error line[{}] severid[{}]", 
-				adata.get_data()->m_line(), 
-				tab->m_id
-			);
+			log_error()->print("PROBUFF_NET_SWITCH_LINE ERROR line[{}] severid[{}]", adata.get_data()->m_line(), tab->m_id);
 			return false;
 		}
 		np_actorswitch_process_role pro;
@@ -94,7 +81,7 @@ namespace ngl
 		std::map<int, int> ldrop;
 		if (drop::droplist(tab->m_dropid, 1, ldrop) == false)
 		{
-			log_error()->print("task[{}] drop[{}] not find!!!", adata.get_data()->m_taskid(), tab->m_dropid);
+			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->m_taskid(), tab->m_dropid);
 			return true;
 		}
 		tools::copy(ldrop, *pro->mutable_m_drop());

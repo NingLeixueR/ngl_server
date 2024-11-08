@@ -55,11 +55,10 @@ namespace ngl
 		}
 	}
 
-	void actor_gateway::update_gateway_info(np_actor_gatewayinfo_updata* ap)
-	{
-		std::shared_ptr<np_actor_gatewayinfo_updata> pro(ap);		
-		send_actor(actor_gatewayc2g::actorid(id()), pro);
-		send_actor(actor_gatewayg2c::actorid(id()), pro);
+	void actor_gateway::update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& apro)
+	{	
+		send_actor(actor_gatewayc2g::actorid(id()), apro);
+		send_actor(actor_gatewayg2c::actorid(id()), apro);
 	}
 
 	void actor_gateway::session_close(gateway_socket* ainfo)
@@ -86,11 +85,9 @@ namespace ngl
 					m_info.remove_actorid(nguid::make(ACTOR_NONE, larea, lroleid));
 				}
 
-				update_gateway_info(new np_actor_gatewayinfo_updata
-					{
-						.m_delactorid = {nguid::make(ACTOR_NONE, larea, lroleid)} 
-					}
-				);
+				auto pro = std::make_shared<np_actor_gatewayinfo_updata>();
+				pro->m_delactorid.push_back(nguid::make(ACTOR_NONE, larea, lroleid));
+				update_gateway_info(pro);
 
 				{
 					auto pro = std::make_shared<np_actor_disconnect_close>();
@@ -104,7 +101,6 @@ namespace ngl
 							send_actor(lguid, pro);
 						});
 				}
-
 			}
 		};
 		twheel::wheel().addtimer(lparm);
@@ -132,7 +128,7 @@ namespace ngl
 		};
 		m_info.updata(ltemp);
 
-		update_gateway_info(new np_actor_gatewayinfo_updata{ .m_add = {ltemp} });
+		update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {ltemp} }));
 
 		// ## 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
@@ -162,9 +158,7 @@ namespace ngl
 				linfo->m_socket = 0;
 				if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 				{
-					update_gateway_info(
-						new np_actor_gatewayinfo_updata{ .m_add = {*linfo} }
-					);
+					update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
 				}
 				// 断线重连或者其他设备顶号
 				pbnet::PROBUFF_NET_ROLE_SYNC pro;
@@ -175,7 +169,7 @@ namespace ngl
 
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 			{
-				update_gateway_info(new np_actor_gatewayinfo_updata{.m_add = {*linfo} });
+				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_add = {*linfo} }));
 			}
 
 			pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
@@ -247,7 +241,7 @@ namespace ngl
 			if (lpram->m_toserverid != 0)
 			{
 				linfo->m_gameid = lpram->m_toserverid;
-				update_gateway_info(new np_actor_gatewayinfo_updata{.m_add = {*linfo} });
+				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_add = {*linfo} }));
 			}
 		}Catch
 		return true;
@@ -279,12 +273,7 @@ namespace ngl
 				session_close(linfo);
 			}
 
-			update_gateway_info(
-				new np_actor_gatewayinfo_updata
-				{
-					.m_delsocket = {lpram->m_sessionid} 
-				}
-			);
+			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_delsocket = {lpram->m_sessionid}}));
 
 			m_info.remove_socket(lpram->m_sessionid);
 			return true;

@@ -7,26 +7,27 @@ namespace ngl
 {
 
 	ELOGLEVEL	sysconfig::m_loglevel		= ELOG_ERROR;
-	int32_t	sysconfig::m_logline		= 10000;
-	int32_t	sysconfig::m_logflushtime	= 10;
-	bool	sysconfig::m_logiswrite		= true;
-	bool	sysconfig::m_logconsole		= false;
-	int32_t	sysconfig::m_consumings		= 100;
+	int32_t		sysconfig::m_logline		= 10000;
+	int32_t		sysconfig::m_logflushtime	= 10;
+	bool		sysconfig::m_logiswrite		= true;
+	bool		sysconfig::m_logconsole		= false;
+	int32_t		sysconfig::m_consumings		= 100;
 	std::string	sysconfig::m_xorkey;
-	int32_t	sysconfig::m_xorkeynum		= 0;
-	bool	sysconfig::m_isxor			= false;
-	bool	sysconfig::m_varint			= false;
-	bool	sysconfig::m_robot_test		= false;
-	int32_t	sysconfig::m_kcpping		= 10;
-	int32_t	sysconfig::m_kcppinginterval= 20;
-	int32_t sysconfig::m_sessionewait	= 1;
+	int32_t		sysconfig::m_xorkeynum		= 0;
+	bool		sysconfig::m_isxor			= false;
+	bool		sysconfig::m_varint			= false;
+	bool		sysconfig::m_robot_test		= false;
+	int32_t		sysconfig::m_kcpping		= 10;
+	int32_t		sysconfig::m_kcppinginterval= 20;
+	int32_t		sysconfig::m_sessionewait	= 1;
 	std::string	sysconfig::m_kcpsession;
-	int32_t sysconfig::m_open_servertime = 0;
-	int32_t sysconfig::m_head_version	= 1;
-	int32_t sysconfig::m_rate_interval	= 1;
-	int32_t sysconfig::m_rate_count		= 20;
-	int32_t sysconfig::m_heart_beat_interval = 10;
-	int32_t sysconfig::m_net_timeout	= 600000;
+	int32_t		sysconfig::m_open_servertime = 0;
+	int32_t		sysconfig::m_head_version	= 1;
+	int32_t		sysconfig::m_rate_interval	= 1;
+	int32_t		sysconfig::m_rate_count		= 20;
+	int32_t		sysconfig::m_heart_beat_interval = 10;
+	int32_t		sysconfig::m_net_timeout	= 600000;
+	std::string	sysconfig::m_gmurl;
 	std::vector<i32_serverid> sysconfig::m_gatewayids;
 
 	void sysconfig::init()

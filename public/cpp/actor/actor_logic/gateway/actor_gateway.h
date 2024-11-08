@@ -36,7 +36,7 @@ namespace ngl
 
 		static i64_actorid actorid(i32_actordataid aactordataid)
 		{
-			return nguid::make(ACTOR_GATEWAY, ttab_servers::tab()->m_area, aactordataid);
+			return nguid::make(actor_type(), ttab_servers::tab()->m_area, aactordataid);
 		}
 
 		gateway_info m_info;
@@ -44,7 +44,7 @@ namespace ngl
 		// # ֪ͨactor_server [actorid]->[gateway server id]
 		void sync_actorserver_gatewayid(const nguid& aguid, bool aisremove);
 
-		void update_gateway_info(np_actor_gatewayinfo_updata* ap);
+		void update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& ap);
 
 		void session_close(gateway_socket* ainfo);
 
