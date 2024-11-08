@@ -48,6 +48,9 @@ namespace ngl
 		static int32_t		m_rate_count;			// 速率 每秒多少条
 		static int32_t		m_heart_beat_interval;	// 心跳间隔(单位秒)
 		static int32_t		m_net_timeout;			// 用来检查包头中的时间与服务器时间
+
+		static std::string	m_gmurl;				// gm url
+
 		// # 网关列表
 		static std::vector<i32_serverid> m_gatewayids;
 	public:
@@ -74,6 +77,7 @@ namespace ngl
 		static int32_t rate_count()		{ return m_rate_count; }
 		static int32_t heart_beat_interval() { return m_heart_beat_interval; }
 		static int32_t net_timeout()	{ return m_net_timeout; }
+		static std::string& gmurl()		{ return m_gmurl; }
 		
 		static void init_gatewayids();
 		static std::vector<i32_serverid>& gatewayids();

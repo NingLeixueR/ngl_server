@@ -77,6 +77,8 @@ namespace ngl
 		
 		lpublicxml->find("head_version", m_head_version);
 
+		lpublicxml->find("gmurl", m_gmurl);
+
 		init_gatewayids();
 	}
 
