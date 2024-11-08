@@ -72,8 +72,8 @@ namespace ngl
 	struct prorechange
 	{
 		std::string m_orderid;
-		int32_t m_rechargeid;
-		int64_t m_roleid;
+		int32_t m_rechargeid	= 0;
+		int64_t m_roleid		= 0;
 
 		jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
 	};
@@ -167,10 +167,9 @@ namespace ngl
 
 	void actor_role::createorder(std::string& aorder, int32_t arechargeid)
 	{
-		static int billnoindex = 0;
-		++billnoindex;
+		static std::atomic<int32_t> billnoindex = 0;
 		aorder = std::format("{:05d}{:010d}{:010d}{:010d}{:02d}",
-			area(), id(), arechargeid, localtime::gettime(), billnoindex
+			area(), id(), arechargeid, localtime::gettime(), billnoindex.fetch_add(1)
 		);
 	}
 
@@ -211,16 +210,15 @@ namespace ngl
 			auto lhttp = ngl::manage_curl::make_http();
 			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 			ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-			ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/pay/pay_update.php");
+			std::string lurl = std::format("{}/pay/pay_update.php", sysconfig::gmurl());
+			ngl::manage_curl::set_url(lhttp, lurl);
 
-			std::stringstream lstream;
-			lstream
-				<< "orderid=" << aorderid
-				<< "&gm=" << (agm ? 1 : 0)
-				<< "&roleid=" << id_guid()
-				<< "&stat=" << lstat;
+			std::string lparm = std::format(
+				"orderid={}&gm={}&roleid={}&stat={}",
+				aorderid, (agm ? 1 : 0), id_guid(), lstat
+			);
 
-			ngl::manage_curl::set_param(lhttp, lstream.str());
+			ngl::manage_curl::set_param(lhttp, lparm.c_str());
 			ngl::manage_curl::send(lhttp);
 		}
 
@@ -294,7 +292,7 @@ namespace ngl
 					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
 			// 禁言 lduration=0解封
-			handle_php::push("notalk", [this](int id, const ngl::json_read& aos)
+			handle_php::push("bantalk", [this](int id, const ngl::json_read& aos)
 				{
 					int32_t lduration;
 					if (aos.read("data", lduration) == false)
@@ -304,9 +302,9 @@ namespace ngl
 					m_info.change_notalkutc(lnow + lduration);
 					gcmd<int32_t> pro;
 					pro.id = id;
-					pro.m_operator = "notalk_responce";
+					pro.m_operator = "bantalk_responce";
 					pro.m_data = 0;
-					log_error()->print("[{}] notalk [{}]", id_guid(), tools::time2str(lnow + lduration));
+					log_error()->print("[{}] bantalk [{}]", id_guid(), tools::time2str(lnow + lduration));
 				});
 		}
 
