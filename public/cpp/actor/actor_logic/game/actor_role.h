@@ -44,7 +44,6 @@ namespace ngl
 
 		virtual void init();
 
-		//# 注册需要处理的协议
 		static void nregister();
 
 		virtual ~actor_role();
@@ -57,18 +56,16 @@ namespace ngl
 		i64_actorid roleid();
 
 		//# 设置更新角色属性
-		void update_attribute(EnumModule amodule, attribute_value& avalue)
-		{
-			m_attribute.updata(amodule, avalue);
-		}
+		void update_attribute(EnumModule amodule, attribute_value& avalue);
 
 		void sync_data_client();
 
+#pragma region forward //转发相关
 		enum ecross
 		{
-			ecross_ordinary,			// 本服转发
-			ecross_cross_ordinary,		// 跨服转发
-			ecross_none,				// 错误转发
+			ecross_ordinary			= 1,			// 本服转发
+			ecross_cross_ordinary	= 2,			// 跨服转发
+			ecross_none				= 3,			// 错误转发
 		};
 
 		//# 重载forward_type来指定转发类型
@@ -78,27 +75,38 @@ namespace ngl
 			return ecross_ordinary;
 		}
 
+		//# 聊天的转发类型
 		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
 			int lnow = localtime::gettime();
 			if (lnow < m_info.notalkutc())
 			{
 				auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR>();
-				pro->set_m_errmessage(std::format("no talk [{}]", tools::time2str(m_info.notalkutc())));
+				pro->set_m_errmessage(std::format("ban talk [{}]", tools::time2str(m_info.notalkutc())));
 				send_client(id_guid(), pro);
 				return ecross_none;
 			}
-			return adata.m_channelid() == 2 ? ecross_cross_ordinary : ecross_ordinary;
+			switch (adata.m_channelid())
+			{
+			case pbnet::enum_chat_channel::enum_chat_ordinary:
+				return ecross_ordinary;
+			case pbnet::enum_chat_channel::enum_chat_cross_ordinary:
+				return ecross_cross_ordinary;
+			case pbnet::enum_chat_channel::enum_chat_none:
+				return ecross_none;
+			}
+			return ecross_none;
 		}
 
 		//# 重载forward_before来指定转发前事件
 		template <typename T>
-		void forward_before(const T& adata)
+		bool forward_before(const T& adata)
 		{
+			return true;
 		}
 
 		//# 转发"创建军团"前
-		void forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata);
+		bool forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata);
 
 		//# 重载dataid来指定转发模块的dataid
 		template <typename T>
@@ -110,23 +118,19 @@ namespace ngl
 		template <ENUM_ACTOR ACTOR, typename T>
 		bool handle_forward(const message<T>& adata)
 		{
+			const T& lparm = adata.get_shared_data() == nullptr ? *adata.get_data() : *adata.get_shared_data();
+			if (forward_before(lparm) == false)
+				return false;
 			std::shared_ptr<mforward<T>> pro(nullptr);
-			if (adata.get_shared_data() == nullptr)
-			{
-				pro = std::make_shared<mforward<T>>(id_guid(), *adata.get_data());
-			}
-			else
-			{
-				pro = std::make_shared<mforward<T>>(id_guid(), adata.get_shared_data());
-			}
+			pro = std::make_shared<mforward<T>>(id_guid(), lparm);
 			i64_actorid lguid;
-			switch (forward_type(*adata.get_data()))
+			switch (forward_type(lparm))
 			{
 			case ecross_ordinary:
-				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, forward_dataid(*adata.get_data()));
+				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, forward_dataid(lparm));
 				break;
 			case ecross_cross_ordinary:
-				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_crossarea, forward_dataid(*adata.get_data()));
+				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_crossarea, forward_dataid(lparm));
 				break; 
 			default:
 				return true;
@@ -134,6 +138,7 @@ namespace ngl
 			send_actor(lguid, pro);
 			return true;
 		}
+#pragma endregion
 
 		//# 登录请求未发货充值
 		void loginpay();

@@ -172,11 +172,19 @@ enum enum_logic_chat
 	updata_speck		= 2;
 };
 
+enum enum_chat_channel
+{
+	enum_chat_zero			= 0;
+	enum_chat_ordinary		= 1;	// 本服
+	enum_chat_cross_ordinary= 2;	// 跨服
+	enum_chat_none			= 3;	// 错误
+};
+
 message PROBUFF_NET_CHAT
 {
-	optional int32 m_type				= 1; //enum_logic_chat
-	optional int32 m_channelid			= 2;
-	optional string m_content			= 3; //m_type == chat_speak
+	optional int32 m_type				= 1; // enum_logic_chat
+	optional int32 m_channelid			= 2; // enum_chat_channel
+	optional string m_content			= 3; // m_type == chat_speak
 };
 
 // [回复]聊天

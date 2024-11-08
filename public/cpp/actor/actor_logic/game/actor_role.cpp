@@ -86,21 +86,19 @@ namespace ngl
 		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
 		ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/pay/pay_login.php");
 
-		std::stringstream lstream;
-		lstream << "roleid=" << id_guid();
-		ngl::manage_curl::set_param(lhttp, lstream.str());
+		ngl::manage_curl::set_param(lhttp, std::format("roleid={}", id_guid()).c_str());
 
-		ngl::manage_curl::set_param(lhttp, lstream.str());
 		ngl::manage_curl::set_callback(lhttp, [this](int, _http& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 					return;
+				log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
 				try
 				{
 					json_read ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
-						log_error()->print("ngl::manage_curl::callback fail [{}]", ahttp.m_recvdata);
+						log_error()->print("actor_role::loginpay curl callback fail");
 						return;
 					}
 					std::string lorderid;
@@ -122,10 +120,7 @@ namespace ngl
 					lwrite.get(lp->m_json);
 					actor::static_send_actor(lroleid, nguid::make(), pro);
 				}
-				catch (...)
-				{
-
-				}				
+				catch (...){}				
 			});
 		ngl::manage_curl::send(lhttp);
 	}
@@ -153,15 +148,20 @@ namespace ngl
 
 	i64_actorid actor_role::roleid()
 	{
-		return m_info.get()->getconst().m_id();
+		return guid();
+	}
+
+	void actor_role::update_attribute(EnumModule amodule, attribute_value& avalue)
+	{
+		m_attribute.updata(amodule, avalue);
 	}
 
 	void actor_role::sync_data_client()
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>();
-		*pro->mutable_m_role() = m_info.get()->getconst();
-		*pro->mutable_m_bag() = m_bag.get()->getconst();
-		*pro->mutable_m_task() = m_task.get()->getconst();
+		*pro->mutable_m_role()	= m_info.get()->getconst();
+		*pro->mutable_m_bag()	= m_bag.get()->getconst();
+		*pro->mutable_m_task()	= m_task.get()->getconst();
 		send_client(id_guid(), pro);
 	}
 
@@ -329,20 +329,18 @@ namespace ngl
 		return true;
 	}
 
-	void actor_role::forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata)
+	bool actor_role::forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata)
 	{
 		if (ttab_specialid::m_createfamilconsume > m_info.gold())
 		{
-			return;
+			return false;
 		}
 		m_info.change_gold(-ttab_specialid::m_createfamilconsume);
+		return true;
 	}
 
 	bool actor_role::timer_handle(const message<timerparm>& adata)
 	{
 		return true;
 	}
-
-
-
 }//namespace ngl
