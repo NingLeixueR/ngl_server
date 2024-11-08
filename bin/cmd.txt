@@ -1,14 +1,17 @@
 TESTS 1000 d /time
-TESTS 1000 d /chat 1 1 ribenrensb3
+TESTS 1000 d /chat 1 2 ribenrensb3
 TESTS 1000 d /time
-TESTS 2000 d /chat 1 2 china
+TESTS 2000 d /chat 1 1 china
 START
 
 TESTS 1000 d /chat 1 1 ribenrensb3
 TESTS 1000 d /chat 1 2 china
 START
 
-TESTS 1000 d /chat 1 2 china
-TESTS 1000 d /chat 1 1 ribenrensb3
+TESTS 1000 d /chat 1 1 china
+TESTS 1000 d /chat 1 2 ribenrensb3
 TESTS 1000 d /lv 100
+START
+
+TESTS 1000 d /chat 1 2 china
 START

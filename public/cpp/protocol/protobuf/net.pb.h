@@ -501,6 +501,33 @@ inline bool enum_logic_chat_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<enum_logic_chat>(
     enum_logic_chat_descriptor(), name, value);
 }
+enum enum_chat_channel : int {
+  enum_chat_zero = 0,
+  enum_chat_ordinary = 1,
+  enum_chat_cross_ordinary = 2,
+  enum_chat_none = 3,
+  enum_chat_channel_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  enum_chat_channel_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool enum_chat_channel_IsValid(int value);
+constexpr enum_chat_channel enum_chat_channel_MIN = enum_chat_zero;
+constexpr enum_chat_channel enum_chat_channel_MAX = enum_chat_none;
+constexpr int enum_chat_channel_ARRAYSIZE = enum_chat_channel_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* enum_chat_channel_descriptor();
+template<typename T>
+inline const std::string& enum_chat_channel_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, enum_chat_channel>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function enum_chat_channel_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    enum_chat_channel_descriptor(), enum_t_value);
+}
+inline bool enum_chat_channel_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, enum_chat_channel* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<enum_chat_channel>(
+    enum_chat_channel_descriptor(), name, value);
+}
 enum eunit : int {
   eunit_role = 0,
   eunit_monster = 1,
@@ -21990,6 +22017,11 @@ template <> struct is_proto_enum< ::pbnet::enum_logic_chat> : ::std::true_type {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::enum_logic_chat>() {
   return ::pbnet::enum_logic_chat_descriptor();
+}
+template <> struct is_proto_enum< ::pbnet::enum_chat_channel> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::enum_chat_channel>() {
+  return ::pbnet::enum_chat_channel_descriptor();
 }
 template <> struct is_proto_enum< ::pbnet::eunit> : ::std::true_type {};
 template <>

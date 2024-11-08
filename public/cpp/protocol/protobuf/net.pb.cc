@@ -1788,7 +1788,7 @@ static void InitDefaultsscc_info_drop_item_net_2eproto() {
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_drop_item_net_2eproto}, {}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_net_2eproto[96];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_net_2eproto[8];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_net_2eproto[9];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_net_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -3061,26 +3061,29 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "RIEND_RESPONSE\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\023"
   "\n\006m_stat\030\002 \001(\005H\001\210\001\001B\014\n\n_m_friedidB\t\n\007_m_"
   "stat*F\n\017enum_logic_chat\022\021\n\rget_chat_list"
-  "\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*<\n\005"
-  "eunit\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001"
-  "\022\020\n\014eunit_region\020\002*s\n\teunitstat\022\024\n\020eunit"
-  "stat_normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030e"
-  "unitstat_nonormalattack\020\002\022\034\n\030eunitstat_n"
-  "oreleaseskill\020\004*;\n\006eplays\022\037\n\033eplays_go_u"
-  "ndergroundpalace\020\000\022\020\n\014eplays_count\020\001*\233\001\n"
-  "\025ematching_cancel_stat\022\034\n\030ematching_canc"
-  "el_success\020\000\022\032\n\026ematching_cancel_stage\020\001"
-  "\022 \n\034ematching_cancel_roomnotfind\020\002\022&\n\"em"
-  "atching_cancel_roommembernotfind\020\003*\253\001\n\025e"
-  "type_matching_cancel\022 \n\034etype_matching_c"
-  "ancel_active\020\000\022!\n\035etype_matching_cancel_"
-  "timeout\020\001\022&\n\"etype_matching_waitconfirm_"
-  "timeout\020\002\022%\n!etype_matching_waitcreate_t"
-  "imeout\020\003*\240\001\n\026ematching_confirm_stat\022\035\n\031e"
-  "matching_confirm_success\020\000\022\033\n\027ematching_"
-  "confirm_stage\020\001\022!\n\035ematching_confirm_roo"
-  "mnotfind\020\002\022\'\n#ematching_confirm_roommemb"
-  "ernotfind\020\003B\002H\001b\006proto3"
+  "\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*q\n\021"
+  "enum_chat_channel\022\022\n\016enum_chat_zero\020\000\022\026\n"
+  "\022enum_chat_ordinary\020\001\022\034\n\030enum_chat_cross"
+  "_ordinary\020\002\022\022\n\016enum_chat_none\020\003*<\n\005eunit"
+  "\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001\022\020\n\014e"
+  "unit_region\020\002*s\n\teunitstat\022\024\n\020eunitstat_"
+  "normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030eunits"
+  "tat_nonormalattack\020\002\022\034\n\030eunitstat_norele"
+  "aseskill\020\004*;\n\006eplays\022\037\n\033eplays_go_underg"
+  "roundpalace\020\000\022\020\n\014eplays_count\020\001*\233\001\n\025emat"
+  "ching_cancel_stat\022\034\n\030ematching_cancel_su"
+  "ccess\020\000\022\032\n\026ematching_cancel_stage\020\001\022 \n\034e"
+  "matching_cancel_roomnotfind\020\002\022&\n\"ematchi"
+  "ng_cancel_roommembernotfind\020\003*\253\001\n\025etype_"
+  "matching_cancel\022 \n\034etype_matching_cancel"
+  "_active\020\000\022!\n\035etype_matching_cancel_timeo"
+  "ut\020\001\022&\n\"etype_matching_waitconfirm_timeo"
+  "ut\020\002\022%\n!etype_matching_waitcreate_timeou"
+  "t\020\003*\240\001\n\026ematching_confirm_stat\022\035\n\031ematch"
+  "ing_confirm_success\020\000\022\033\n\027ematching_confi"
+  "rm_stage\020\001\022!\n\035ematching_confirm_roomnotf"
+  "ind\020\002\022\'\n#ematching_confirm_roommembernot"
+  "find\020\003B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_net_2eproto_deps[1] = {
   &::descriptor_table_db_2eproto,
@@ -3185,7 +3188,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 10423,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 10538,
   &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 96, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
   file_level_metadata_net_2eproto, 96, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
@@ -3232,9 +3235,25 @@ bool enum_logic_chat_IsValid(int value) {
   }
 }
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eunit_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* enum_chat_channel_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
   return file_level_enum_descriptors_net_2eproto[2];
+}
+bool enum_chat_channel_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eunit_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
+  return file_level_enum_descriptors_net_2eproto[3];
 }
 bool eunit_IsValid(int value) {
   switch (value) {
@@ -3249,7 +3268,7 @@ bool eunit_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eunitstat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[3];
+  return file_level_enum_descriptors_net_2eproto[4];
 }
 bool eunitstat_IsValid(int value) {
   switch (value) {
@@ -3265,7 +3284,7 @@ bool eunitstat_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eplays_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[4];
+  return file_level_enum_descriptors_net_2eproto[5];
 }
 bool eplays_IsValid(int value) {
   switch (value) {
@@ -3279,7 +3298,7 @@ bool eplays_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ematching_cancel_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[5];
+  return file_level_enum_descriptors_net_2eproto[6];
 }
 bool ematching_cancel_stat_IsValid(int value) {
   switch (value) {
@@ -3295,7 +3314,7 @@ bool ematching_cancel_stat_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* etype_matching_cancel_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[6];
+  return file_level_enum_descriptors_net_2eproto[7];
 }
 bool etype_matching_cancel_IsValid(int value) {
   switch (value) {
@@ -3311,7 +3330,7 @@ bool etype_matching_cancel_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ematching_confirm_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[7];
+  return file_level_enum_descriptors_net_2eproto[8];
 }
 bool ematching_confirm_stat_IsValid(int value) {
   switch (value) {
