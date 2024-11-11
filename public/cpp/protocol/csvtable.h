@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-10-31 11:09:36
+// 创建时间 // 创建时间 24-11-11 16:20:41
 #pragma once
 
 #include "csv.h"
@@ -182,7 +182,7 @@ struct tab_servers
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 	int16_t                          m_area                          ; // [index:3][load:y] 区服
-	NODE_TYPE                        m_type                          ; // [index:4][load:y] 服务器类型(1db2actorserver3game4gateway5login6robot7world8log9reloadcsv10reloadcsv_tools)
+	NODE_TYPE                        m_type                          ; // [index:4][load:y] 服务器类型(1、DB(数据库服务器)2、ACTORSERVER(actor 服务器))3、GAME(逻辑服务器)4、GATEWAY(网关服务器)5、LOGIN(登录服务器)6、ROBOT(测试机器人服务器)7、WORLD(世界服务器)8、LOG(日志服务器)9、RELOADCSV(重载分发csv服务器)10、CROSS(跨服服务器)11、CROSSDB(跨服数据库服务器)12、PUSHSERVERCONFIG(将服务器配置上传lbgmsys))
 	int32_t                          m_tcount                        ; // [index:5][load:y] 同类型服务器的序号
 	int32_t                          m_threadnum                     ; // [index:6][load:y] socket线程数
 	int32_t                          m_actorthreadnum                ; // [index:7][load:y] actor线程池线程数

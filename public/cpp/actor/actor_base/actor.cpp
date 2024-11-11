@@ -98,7 +98,7 @@ namespace ngl
 			}Catch
 			return false;
 		}
-	private:
+
 		inline void swaplist(tls<handle_pram>& als)
 		{
 			monopoly_shared_lock(m_mutex);

@@ -121,7 +121,7 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static handle_pram create(
 			const nguid& aid, const nguid& arid, 
-			const std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata,
+			 const std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, 
 			const std::function<void()>& afailfun = nullptr
 		)
 		{
@@ -206,8 +206,7 @@ namespace ngl
 	template <typename T, bool IS_SEND /*= true*/>
 	bool handle_pram_send<T, IS_SEND>::sendclient(const nguid&, const nguid& arequestactorid, handle_pram& adata)
 	{
-		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)
-			adata.m_data.get();
+		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)adata.m_data.get();
 		std::vector<i32_actordataid>& luid	= ldata->m_uid;
 		std::vector<i16_area>& larea		= ldata->m_area;
 		std::set<i32_serverid> lgateway;

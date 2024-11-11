@@ -77,7 +77,7 @@ namespace ngl
 
 		inline i64_actorid id_guid()const
 		{
-			return (i64_actorid)(m_guid);
+			return m_guid;
 		}
 
 		inline i32_actordataid id()const

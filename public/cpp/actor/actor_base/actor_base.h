@@ -33,7 +33,7 @@ namespace ngl
 
 		std::shared_ptr<np_actor_logitem> get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet);
 	public:
-		tools_log(actor_base* aactor = nullptr) :
+		explicit tools_log(actor_base* aactor = nullptr) :
 			m_actor(aactor)
 		{}
 
@@ -117,7 +117,7 @@ namespace ngl
 
 		ngroup<i64_actorid>		m_group;
 
-		actor_base(const actorparmbase& aparm);
+		explicit actor_base(const actorparmbase& aparm);
 	public:
 #pragma region db
 		//# 获取actor_manage_dbclient实例
@@ -557,16 +557,12 @@ namespace ngl
 			if (atype != ngl::ACTOR_LOG)
 			{
 				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
-				ngl::actor_base::create(
-					ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32
-				);
+				ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 			}
 		}
 
 		//# 用于创建非单例actor
-		static actor_base* create(
-			ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr
-		);
+		static actor_base* create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr);
 	};
 
 	template <typename T>

@@ -203,7 +203,7 @@ namespace ngl
 
 	void manage_curl::set_param(std::shared_ptr<_http>& ahttp, const std::string& astrparam)
 	{ 
-		ahttp->m_impl_http()->m_param = astrparam; 
+		ahttp->m_impl_http()->m_param = astrparam;
 	}
 
 	void manage_curl::set_headers(std::shared_ptr<_http>& ahttp, std::vector<std::string>& aheaders)

@@ -58,7 +58,7 @@ namespace ngl
 			set_dbclient(&m_data);
 		}
 
-		virtual ~ndb_modular(){}
+		virtual ~ndb_modular() = default;
 	public:
 		inline ndbclient<ENUM, TDATA, TACTOR>* dbclient()
 		{ 
