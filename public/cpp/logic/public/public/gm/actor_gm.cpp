@@ -44,6 +44,122 @@ namespace ngl
 		return true;
 	}
 
+	// 分发给独立进程的请求
+	class distribute_gmclient
+	{
+		std::set<std::string> m_distribute;
+
+		distribute_gmclient()
+		{
+			m_distribute.insert("all_protocol");
+			m_distribute.insert("server_stat");
+		}
+	public:
+		static distribute_gmclient& getInstance()
+		{
+			static distribute_gmclient ltemp;
+			return ltemp;
+		}
+
+		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
+		{
+			if (m_distribute.find(akey) == m_distribute.end())
+				return false;
+			int lservertype = 0;
+			if (aos.read("data", lservertype))
+			{
+				const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
+				if (tab == nullptr)
+					return false;
+				if (ttab_servers::tab()->m_id != tab->m_id)
+				{
+					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, ttab_servers::tab()->m_area, tab->m_id);
+					agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return false;
+		}
+	};
+
+	void init_handle_cmd(actor_gm* agm)
+	{
+		if (actor_gm::handle_cmd::empty())
+		{
+			struct gm_guid
+			{
+				std::string m_actor_name;
+				int16_t m_area;
+				int32_t m_dataid;
+
+				jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
+			};
+
+			actor_gm::handle_cmd::push("guid", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+				{
+					gm_guid lguid;
+					if (aos.read("data", lguid))
+					{
+						ENUM_ACTOR ltype;
+						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
+						if (ltype == em<ENUM_ACTOR>::enum_null())
+							return;
+						ngl::json_write lwritejson;
+						lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
+						ngl::np_gm_response lresponse;
+						lwritejson.get(lresponse.m_json);
+						agm->reply_php(adata->m_pack, lresponse);
+						return;
+					}
+				}
+			);
+
+			actor_gm::handle_cmd::push("all_protocol", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+				{
+					int lservertype = 0;
+					if (aos.read("data", lservertype))
+					{
+						const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
+						if (tab == nullptr)
+							return;
+						if (ttab_servers::tab()->m_id == tab->m_id)
+						{
+							actor_gmclient::protocols pro;
+							actor_gmclient::get_allprotocol(pro);
+
+							json_write ljson;
+							ljson.write("all_protocol", pro);
+							ngl::np_gm_response lresponse;
+							ljson.get(lresponse.m_json);
+							agm->reply_php(adata->m_pack, lresponse);
+						}
+					}
+					return;
+				}
+			);
+
+			actor_gm::handle_cmd::push("close_actor", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+				{
+					gm_guid lguid;
+					if (aos.read("data", lguid))
+					{
+						ENUM_ACTOR ltype;
+						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
+						if (ltype == em<ENUM_ACTOR>::enum_null())
+							return;
+						nguid::make(ltype, lguid.m_area, lguid.m_dataid);
+						auto pro = std::make_shared<np_actor_close>();
+						agm->send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
+						return;
+					}
+				});
+		}
+	}
+
 	bool actor_gm::handle(const message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
@@ -52,7 +168,8 @@ namespace ngl
 		std::string lactorname;
 		i64_actorid lactorid = -1;
 		if (lreadjson.read("actor_name", lactorname))
-		{// ### 单例
+		{
+			// ### 单例
 			if (lactorname == "ACTOR_GM")
 			{
 				std::string loperator;
@@ -60,120 +177,8 @@ namespace ngl
 				{
 					return true;
 				}
-				if (handle_cmd::empty())
-				{
-					struct gm_guid
-					{
-						std::string m_actor_name;
-						int16_t m_area;
-						int32_t m_dataid;
 
-						jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
-					};
-
-					handle_cmd::push("guid", [this](const json_read& aos, const message<ngl::np_gm>* adata)
-						{
-							gm_guid lguid;
-							if (aos.read("data", lguid))
-							{
-								ENUM_ACTOR ltype;
-								ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
-								if (ltype == em<ENUM_ACTOR>::enum_null())
-									return;
-								ngl::json_write lwritejson;
-								lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
-								ngl::np_gm_response lresponse;
-								lwritejson.get(lresponse.m_json);
-								reply_php(adata->m_pack, lresponse);
-								return;
-							}
-						}
-					);
-
-					handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
-						{
-							int lservertype = 0;
-							if (aos.read("data", lservertype))
-							{
-								const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
-								if (tab == nullptr)
-									return;
-								if (ttab_servers::tab()->m_id == tab->m_id)
-								{
-									actor_gmclient::protocols pro;
-									actor_gmclient::get_allprotocol(pro);
-
-									json_write ljson;
-									ljson.write("all_protocol", pro);
-									ngl::np_gm_response lresponse;
-									ljson.get(lresponse.m_json);
-									reply_php(adata->m_pack, lresponse);
-								}
-							}
-							return;
-						}
-					);
-
-					handle_cmd::push("close_actor", [this](const json_read& aos, const message<ngl::np_gm>* adata)
-						{
-							gm_guid lguid;
-							if (aos.read("data", lguid))
-							{
-								ENUM_ACTOR ltype;
-								ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
-								if (ltype == em<ENUM_ACTOR>::enum_null())
-									return;
-								nguid::make(ltype, lguid.m_area, lguid.m_dataid);
-								auto pro = std::make_shared<np_actor_close>();
-								send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
-								return;
-							}
-						});
-				}
-
-				// 分发给独立进程的请求
-				class distribute_gmclient
-				{
-					std::set<std::string> m_distribute;
-
-					distribute_gmclient()
-					{
-						m_distribute.insert("all_protocol");
-						m_distribute.insert("server_stat");
-					}
-				public:
-					static distribute_gmclient& getInstance()
-					{
-						static distribute_gmclient ltemp;
-						return ltemp;
-					}
-
-					bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
-					{
-						if (m_distribute.find(akey) == m_distribute.end())
-							return false;
-						int lservertype = 0;
-						if (aos.read("data", lservertype))
-						{
-							const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
-							if (tab == nullptr)
-								return false;
-							if (ttab_servers::tab()->m_id != tab->m_id)
-							{
-								i64_actorid lactorid = nguid::make(
-									ACTOR_GMCLIENT, ttab_servers::tab()->m_area, tab->m_id
-								);
-								agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
-								return true;
-							}
-							else
-							{
-								return false;
-							}
-						}
-						return false;
-					}
-				};
+				init_handle_cmd(this);
 
 				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this))
 				{
@@ -197,14 +202,12 @@ namespace ngl
 					{
 						return true;
 					}
-					i64_actorid ldbactorid = nguid::make(
-						db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid()
-					);
+					i64_actorid ldbactorid = nguid::make(db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid());
 					sendbyactorid(ldbactorid, adata.m_pack, *adata.get_data());
 				}
 				return true;
 			}
-			
+
 			sendbytype(ltype, adata.m_pack, *adata.get_data());
 			return true;
 		}

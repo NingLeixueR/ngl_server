@@ -17,7 +17,7 @@ namespace ngl
 	};
 
 	template <typename T>
-	constexpr T* null = (T*)nullptr;
+	const T* null = (T*)nullptr;
 
 	class actor : 
 		public actor_base
@@ -66,9 +66,7 @@ namespace ngl
 
 		// # 注册定时器
 		template <typename TDerived>
-		static void register_timer(
-			Tfun<TDerived, timerparm> afun = &TDerived::timer_handle
-		)
+		static void register_timer(Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
 		{
 			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().
 				template rfun_nonet<TDerived, timerparm>(afun, false);
@@ -237,7 +235,6 @@ namespace ngl
 
 		// # 由线程主动调用消费消息
 		void actor_handle(i32_threadid athreadid) final;
-
 	public:
 #pragma region ActorBroadcast
 		// ############# [广播] ############# 
