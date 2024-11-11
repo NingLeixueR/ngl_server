@@ -471,9 +471,11 @@ bool start_pushserverconfig()
 			for (const ngl::net_works& item : aserver->m_net)
 			{
 				ngl::json_write lwritetemp;
-				lwritetemp.write("ip", item.m_ip);
-				lwritetemp.write("nip", item.m_nip);
-				lwritetemp.write("port", item.m_port);
+				lwritetemp.write(
+					"ip", item.m_ip,
+					"nip", item.m_nip,
+					"port", item.m_port
+				);
 				lwrite.write(lparm[item.m_type].c_str(), lwritetemp);
 			}
 
