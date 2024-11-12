@@ -472,7 +472,7 @@ bool start_pushserverconfig()
 			{
 				ngl::json_write lwritetemp;
 				lwritetemp.write(
-					"ip", item.m_ip,
+					"ip", item.m_ip, 
 					"nip", item.m_nip,
 					"port", item.m_port
 				);

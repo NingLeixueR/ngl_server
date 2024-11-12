@@ -9,13 +9,13 @@ namespace ngl
 		account(const account&) = delete;
 		account& operator=(const account&) = delete;
 
-		struct accountname2db
+		struct accountbyname
 		{
-			std::map<std::string, data_modified<pbdb::db_account>*> m_accountbyaccount;
+			std::map<std::string, data_modified<pbdb::db_account>*> m_data;
 		};
-		std::map<int/*area*/, accountname2db> m_data;
+		std::map<i16_area, accountbyname> m_data;
 		
-		i64_accountid m_keyvalue_accountid;
+		i64_accountid m_max_accountid;
 	public:
 		account();
 
@@ -23,7 +23,7 @@ namespace ngl
 
 		virtual void initdata();
 
-		i64_accountid& keyvalue_accountid();
+		i64_accountid& max_accountid();
 
 		std::map<std::string, data_modified<pbdb::db_account>*>& accountbyaccount(int area);
 	};

@@ -78,7 +78,7 @@ namespace ngl
 			pbdb::db_account laccount;
 			laccount.set_m_account(account);
 			laccount.set_m_passworld(apassworld);
-			int64_t lid = nguid::make(ACTOR_ROLE, m_config_area, ++m_account.keyvalue_accountid());
+			int64_t lid = nguid::make(ACTOR_ROLE, m_config_area, ++m_account.max_accountid());
 			laccount.set_m_id(lid);
 			laccount.set_m_roleid(lid);
 

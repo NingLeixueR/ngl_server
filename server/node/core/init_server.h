@@ -56,18 +56,23 @@ bool init_server(int aid)
 	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
 
+	// # 启动actor广播
 	ngl::actor_base::start_broadcast();
 
-	const ngl::tab_servers* tab = ngl::ttab_servers::tab();
-
+	// # sysconfig关联xml配置
 	ngl::sysconfig::init();
 
+	// # 启动网络监听
+	const ngl::tab_servers* tab = ngl::ttab_servers::tab();
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
+	// # 启动事件监听
 	ngl::events::init();
 
+	// # 初始化actor管理模块
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 
+	// # actor管理模块已初始化完毕，可以将日志发送给actor_log
 	ngl::np_actor_logitem::m_init = true;
 
 	ngl::log_error()->print("ngl::actor_manage::getInstance().init({})", tab->m_actorthreadnum);
