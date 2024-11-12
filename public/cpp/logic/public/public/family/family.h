@@ -141,7 +141,7 @@ namespace ngl
 						_familyid, lbdfamily.m_name(), lbdfamily.m_createutc(),
 						lbdfamily.m_leader(), lbdfamily.m_lv(), lbdfamily.m_exp(),
 						lmember
-					);
+					) << std::endl;
 
 				m_familyname.insert(lbdfamily.m_name());
 
