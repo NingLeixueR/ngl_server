@@ -46,7 +46,7 @@ namespace ngl
 
 		static i64_actorid actorid(i16_area area)
 		{
-			return nguid::make(ACTOR_GMCLIENT, area, ttab_servers::tab()->m_id);
+			return nguid::make(actor_type(), area, ttab_servers::tab()->m_id);
 		}
 
 		struct protocols

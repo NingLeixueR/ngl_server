@@ -35,15 +35,13 @@ namespace ngl
 			for (const auto& [id, dbnotice] : *get_notice())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
+				std::string lstart = localtime::time2str(lnotice.m_starttime(), "%y/%m/%d %H:%M:%S");
+				std::string lfinish = localtime::time2str(lnotice.m_finishtime(), "%y/%m/%d %H:%M:%S");
 				(*lstream)<< std::format(
-					"notice###id:[{}] notice:[{}] time:[{}]",
-					lnotice.m_id(),
-					lnotice.m_notice(),
-					localtime::time2str(lnotice.m_starttime(), "%y-%m-%d %H:%M:%S"),
-					localtime::time2str(lnotice.m_finishtime(), "%y-%m-%d %H:%M:%S")
+					"notice###id:{} notice:{} start:{} finish:{}",
+					lnotice.m_id(), lnotice.m_notice(), lstart, lfinish
 				) << std::endl;
-				if (m_maxid <= lnotice.m_id())
-					m_maxid = lnotice.m_id();
+				m_maxid = std::max(m_maxid, lnotice.m_id());
 			}
 			(*lstream).print("");
 		}
