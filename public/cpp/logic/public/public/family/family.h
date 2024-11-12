@@ -63,7 +63,7 @@ namespace ngl
 			(*lstream) << "familyer###loaddb_finish" << std::endl;
 			for (const auto& [_roleid, _data] : data())
 			{
-				(*lstream) << "roleid="<< _roleid << " m_joinutc = " << _data.getconst().m_joinutc();
+				(*lstream) << std::format("roleid={} m_joinutc={}", _roleid, _data.getconst().m_joinutc()) << std::endl;
 			}
 			lstream->print("");
 		}
@@ -85,13 +85,12 @@ namespace ngl
 		}
 	};
 
-
 	class family : public tdb_family::db_modular
 	{
 		family(const family&) = delete;
 		family& operator=(const family&) = delete;
 
-		int32_t m_maxid;
+		int64_t m_maxid;
 		std::map<int64_t, int64_t>				m_rolefamily;	// key:roleid value:familyid
 		std::map<int64_t, std::set<int64_t>>	m_applylist;	// key:roleid value:std::set<familyid>
 		std::set<std::string>					m_familyname;	// 用来检查军团名称是否重复
@@ -129,22 +128,20 @@ namespace ngl
 			for (const auto& [_familyid, _family] : data())
 			{
 				const pbdb::db_family& lbdfamily = _family.getconst();
-				if (m_maxid < _familyid)
-				{
-					m_maxid = _familyid;
-				}
-				(*lstream) <<
-					std::format("id:{} name:{} createutc:{} leader:{} lv:{} exp:{}", 
-						_familyid,lbdfamily.m_name(),lbdfamily.m_createutc(),
-						lbdfamily.m_leader(),lbdfamily.m_lv(),lbdfamily.m_exp()
-					);
-				(*lstream) << " member:[" << std::endl;
+				m_maxid = std::max(m_maxid, _familyid.id());
+				
+				std::string lmember;
 				for (i64_actorid roleid : lbdfamily.m_member())
 				{
-					(*lstream) <<std::format("roleid:{}",roleid) << std::endl;
+					lmember += std::format("{},", roleid);
 					m_rolefamily[roleid] = _familyid;
 				}
-				(*lstream) << " ]member" << std::endl;
+				(*lstream) <<
+					std::format("id:{} name:{} createutc:{} leader:{} lv:{} exp:{} member:[{}]",
+						_familyid, lbdfamily.m_name(), lbdfamily.m_createutc(),
+						lbdfamily.m_leader(), lbdfamily.m_lv(), lbdfamily.m_exp(),
+						lmember
+					);
 
 				m_familyname.insert(lbdfamily.m_name());
 
@@ -186,10 +183,5 @@ namespace ngl
 		std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE> get_familylist(i64_actorid afamilyid);
 
 		void sync_family(i64_actorid aroleid, i64_actorid afamilyid);
-
 	};
-
-
-
-
 }// namespace ngl
