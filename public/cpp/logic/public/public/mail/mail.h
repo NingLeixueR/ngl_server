@@ -16,9 +16,7 @@ namespace ngl
 
 		std::map<i64_actorid, int32_t> m_maxid;
 	public:
-		mails()
-		{
-		}
+		mails() = default;
 
 		virtual void set_id()
 		{
@@ -56,15 +54,21 @@ namespace ngl
 			for (const auto& [_roleid, _mails] : data())
 			{
 				int32_t& lid = m_maxid[_roleid];
+				(*lstream) << "+++++++++++++++[role:{}]+++++++++++++" << std::endl;
 				for (const auto& [_id, _mail] : _mails.getconst().m_mail())
 				{
 					if (lid < _id)
 						lid = _id;
-					(*lstream) << std::format("+++++++++++++roleid[{}]", _roleid) << std::endl;
-					(*lstream) << std::format("id:{}", _mail.m_id()) << std::endl;
-					(*lstream) << std::format("tid:{}", _mail.m_tid()) << std::endl;
-					(*lstream) << std::format("draw:{}", (_mail.m_draw() ? "yes" : "no")) << std::endl;
-					(*lstream) << std::format("read:{}", (_mail.m_read() ? "yes" : "no")) << std::endl;
+					(*lstream) << std::format(
+						"+mailid:{}\n"
+						"+tid:{}\n"
+						"+draw:{}\n"
+						"+read:{}\n"
+						"-----------------------------------------",
+						_mail.m_id(),
+						(_mail.m_draw() ? "yes" : "no"),
+						(_mail.m_read() ? "yes" : "no")
+					) << std::endl;
 				}				
 			}
 			(*lstream).print("");
@@ -232,8 +236,7 @@ namespace ngl
 		}
 
 		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(
-			i64_actorid aroleid, 
-			i64_actorid amailid = -1
+			i64_actorid aroleid, i64_actorid amailid = -1
 		)
 		{
 			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid); 

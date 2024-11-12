@@ -39,7 +39,7 @@ namespace ngl
 		std::map<int32_t, int32_t> lmap;
 		if (drop::droplist(adropid, 1, lmap) == false)
 		{
-			ngl::log_error()->print("drop[{}] not find!!!", adropid);
+			ngl::log_error()->print("role:{} mailid:{} drop:{} parm:{} fail!!!", nguid(aactorid), amailid, adropid, aparm);
 			return false;
 		}
 		return sendmail(aactorid, amailid, lmap, aparm);
@@ -92,16 +92,15 @@ namespace ngl
 				{
 					struct gm_mailitem
 					{
-						int32_t m_itemtid;
+						int32_t m_itemtid = -1;
 						int32_t m_count;
 						jsonfunc("itemtid", m_itemtid, "itemtcount", m_count)
 					};
 					struct gm_mail
 					{
-						int64_t m_roleid;
+						int64_t m_roleid = nguid::make();
 						std::string m_content;				// 邮件内容
 						std::vector<gm_mailitem>  m_items;	// 邮件附件
-
 						jsonfunc("roleid", m_roleid, "content", m_content, "items", m_items)
 					};
 					// 返回 bool
@@ -130,8 +129,8 @@ namespace ngl
 					// 返回 bool
 					struct gm_deletemail
 					{
-						int64_t m_roleid;
-						int32_t m_mailid;
+						int64_t m_roleid = nguid::make();
+						int32_t m_mailid = -1;
 						jsonfunc("roleid", m_roleid, "mailid", m_mailid)
 					};
 					gm_deletemail ldelmail;

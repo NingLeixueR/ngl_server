@@ -52,7 +52,7 @@ namespace ngl
 
 		static i64_actorid actorid(i16_area area)
 		{
-			return nguid::make(ACTOR_MAIL, area, nguid::none_actordataid());
+			return nguid::make(actor_type(), area, nguid::none_actordataid());
 		}
 
 		// # 发送邮件,根据掉落id，允许任意位置调用

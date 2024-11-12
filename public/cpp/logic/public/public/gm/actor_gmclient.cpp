@@ -1,6 +1,5 @@
 #include "actor_gmclient.h"
 
-
 namespace ngl
 {
 	actor_gmclient::actor_gmclient() :
@@ -65,4 +64,4 @@ namespace ngl
 		}
 		return true;
 	}
-}
+}//namespace ngl
