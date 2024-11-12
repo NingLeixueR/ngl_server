@@ -273,7 +273,6 @@ bool start_db(int argc, char** argv)
 	ngl::actor_client::getInstance().actor_server_register();
 
 	// ----------------test start-------------------- //
-	
 	if (argc >= 5)
 	{
 		std::string largv4(argv[4]);

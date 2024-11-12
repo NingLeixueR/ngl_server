@@ -186,6 +186,7 @@ namespace ngl
 		tdb_keyvalue::init(aregister);
 		tdb_account::init(aregister);
 		tdb_family::init(aregister);
+		tdb_familyer::init(aregister);
 		tdb_notice::init(aregister);
 		tdb_rolekv::init(aregister);
 		tdb_brief::init(aregister);

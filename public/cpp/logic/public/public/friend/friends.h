@@ -45,12 +45,12 @@ namespace ngl
 			(*lstream) << "friends###loaddb_finish" << std::endl;
 			for (const auto& [_roleid, _data] : data())
 			{
-				(*lstream) << _roleid << "[";
+				std::string lfriends;
 				for (const auto& lfriend : _data.getconst().m_friends())
 				{
-					(*lstream) << lfriend << ",";
+					lfriends += std::format("{},", lfriend);
 				}
-				(*lstream) << "]" << std::endl;
+				(*lstream) << std::format("[role:{} friends:{}]", _roleid, lfriends) << std::endl;
 			}
 			lstream->print("");
 		}

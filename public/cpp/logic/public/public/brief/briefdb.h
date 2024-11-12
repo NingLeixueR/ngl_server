@@ -56,23 +56,22 @@ namespace ngl
 			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
 			{
 				const pbdb::db_brief& lbrief = pair.second.getconst();
-				std::format(R"(
-++++++++++++++++++++++
-+m_id={}
-+m_lv={}
-+m_moneygold={}
-+m_moneysilver={}
-+m_name={}
-+m_vip={}
-++++++++++++++++++++++
-)", 
+				std::format(
+					"++++++++++++++++++++++\n"
+					"+m_id={}\n"
+					"+m_lv={}\n"
+					"+m_moneygold={}\n"
+					"+m_moneysilver={}\n"
+					"+m_name={}\n"
+					"+m_vip={}\n"
+					"++++++++++++++++++++++\n",
 					lbrief.m_id(),
 					lbrief.m_lv(),
 					lbrief.m_moneygold(),
 					lbrief.m_moneysilver(),
 					lbrief.m_name(),
 					lbrief.m_vip()
-					);
+				);
 			}
 			(*lstream).print("");
 		}
