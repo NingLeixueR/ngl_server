@@ -28,7 +28,7 @@ namespace ngl
 		return m_max_accountid;
 	}
 
-	std::map<std::string, data_modified<pbdb::db_account>*>& account::accountbyaccount(int area)
+	std::map<std::string, data_modified<pbdb::db_account>*>& account::accountbyarea(int area)
 	{
 		return m_data[area].m_data;
 	}
