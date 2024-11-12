@@ -25,6 +25,6 @@ namespace ngl
 
 		i64_accountid& max_accountid();
 
-		std::map<std::string, data_modified<pbdb::db_account>*>& accountbyaccount(int area);
+		std::map<std::string, data_modified<pbdb::db_account>*>& accountbyarea(int area);
 	};
 }//namespace ngl

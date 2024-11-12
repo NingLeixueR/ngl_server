@@ -51,11 +51,7 @@ namespace ngl
 		for (const auto& item : m_account.data())
 		{
 			const pbdb::db_account& laccount = item.second.getconst();
-			(*lstream)
-				<< std::format(
-					"[{}][{}] area={} id={}",
-					laccount.m_account(),laccount.m_passworld(),laccount.m_area(),nguid(laccount.m_roleid()).actordataid()
-				) << std::endl;
+			(*lstream) << std::format("[{}][{}] {}",laccount.m_account(),laccount.m_passworld(), nguid(laccount.m_roleid())) << std::endl;
 		}
 		(*lstream).print("");
 	}
@@ -65,7 +61,7 @@ namespace ngl
 	)
 	{
 		aiscreate = false;
-		auto& lmap = m_account.accountbyaccount(area);
+		auto& lmap = m_account.accountbyarea(area);
 		auto itor = lmap.find(account);
 		if (itor != lmap.end())
 		{
