@@ -27,7 +27,7 @@ namespace ngl
 
 	time_t localtime::getms()
 	{
-		return gettimems() % 1000;
+		return gettimems() % MILLISECOND;
 	}
 
 	time_t localtime::gettimems()
@@ -101,7 +101,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (24 * 60 * 60);
+			return lret + DAY_SECOND;
 		}
 	}
 
@@ -118,7 +118,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (1 * 60 * 60);
+			return lret + HOUR_SECOND;
 		}
 	}
 
@@ -135,7 +135,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (1 * 60);
+			return lret + MINUTES_SECOND;
 		}
 	}
 

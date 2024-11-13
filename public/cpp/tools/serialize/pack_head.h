@@ -99,6 +99,8 @@ struct std::formatter<ngl::pack_head>
 	auto format(const ngl::pack_head& val, FormatContext& ctx)const
 	{
 		auto out = ctx.out();
+		int64_t lvaluemask = *(int64_t*)&val.m_data[EPH_MASK];
+		std::format_to(out, "HEAD[MASK:{},]", val.m_data[i]);
 		std::format_to(out, "HEAD[");
 		for (int32_t i = 0; i < ngl::EPH_BYTES; ++i)
 		{
