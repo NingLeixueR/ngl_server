@@ -71,7 +71,7 @@ namespace ngl
 			static int32_t lasttime = 0;
 			// 十分钟刷新一次
 			int32_t lnow = localtime::gettime();
-			if (lasttime == 0 || lnow > (lasttime + (10 * 60)))
+			if (lasttime == 0 || lnow > (lasttime + (10 * localtime::MINUTES_SECOND)))
 			{
 				lasttime = lnow;
 				std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();

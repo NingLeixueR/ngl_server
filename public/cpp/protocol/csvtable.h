@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-11-11 16:20:41
+// 创建时间 // 创建时间 24-11-13 10:24:27
 #pragma once
 
 #include "csv.h"
@@ -28,7 +28,7 @@ enum EPH_HEAD_VAL
 };
 enum EPH
 {
-	EPH_MASK_VALUE = 0xff,	
+	EPH_MASK_VALUE = 0x0f,	
 	EPH_MASK_COUNT = 2,	
 	EPH_MASK = 0,	// 用于确认是否使用包
 	EPH_BYTES = EPH_MASK_COUNT,	// 协议字节数
@@ -37,7 +37,7 @@ enum EPH
 	EPH_PROTOCOLTYPE,	// 协议类型 EPROTOCOL_TYPE
 	EPH_ACTOR_TYPEAREA,	// ACTOR_TYPE_AREA
 	EPH_ACTOR_ID,	// ACTOR_ID
-	EPH_REQUEST_ACTOR_TYPEAREA,	// Request REQUEST_ACTOR_TYPE_AREA
+	EPH_REQUEST_ACTOR_TYPEAREA,	// Request ACTOR_TYPE_AREA
 	EPH_REQUEST_ACTOR_ID,	// Request ACTOR_ID
 	EPH_SUM,	
 };
