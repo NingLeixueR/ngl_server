@@ -24,12 +24,12 @@ namespace ngl
 
 		std::counting_semaphore<1> m_sem;
 	public:
-		sem() :
+		inline sem() :
 			m_sem(0)
 		{
 		}
 
-		~sem()
+		virtual ~sem()
 		{
 		}
 

@@ -95,14 +95,8 @@ namespace ngl
 		tmTime.tm_min = minute;
 		tmTime.tm_sec = sec;
 		time_t lret = mktime(&tmTime);
-		if (lret > lnow)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + DAY_SECOND;
-		}
+		
+		return lret > lnow ? lret : (lret + DAY_SECOND);
 	}
 
 	time_t localtime::getsecond2time(int minute/*0-59*/, int sec/*0-59*/)
@@ -112,14 +106,7 @@ namespace ngl
 		tmTime.tm_min = minute;
 		tmTime.tm_sec = sec;
 		time_t lret = mktime(&tmTime);
-		if (lret > lnow)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + HOUR_SECOND;
-		}
+		return lret > lnow ? lret : (lret + HOUR_SECOND);
 	}
 
 	time_t localtime::getsecond2time(int sec/*0-59*/)
@@ -129,14 +116,7 @@ namespace ngl
 
 		tmTime.tm_sec = sec;
 		time_t lret = mktime(&tmTime);
-		if (lret > lnow)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + MINUTES_SECOND;
-		}
+		return lret > lnow ? lret : (lret + MINUTES_SECOND);
 	}
 
 	int localtime::getutcbyhour(time_t utc, int hour)
@@ -165,14 +145,7 @@ namespace ngl
 		ltime.tm_sec = sec;
 		time_t lret = mktime(&ltime);
 		int lweek = aweek - ltime.tm_wday;
-		if (lweek == 0)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + (lweek * DAY_SECOND);
-		}
+		return lweek == 0 ? lret : (lret + (lweek * DAY_SECOND));
 	}
 
 	time_t localtime::getweekday(int aweek, int hour, int minute, int sec/*0-59*/)

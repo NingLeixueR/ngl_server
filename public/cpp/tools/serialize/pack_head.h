@@ -114,12 +114,6 @@ struct std::formatter<ngl::pack_head>
 			lactor,
 			lrequestactor
 		);
-		//std::format_to(out, "HEAD[");
-		//for (int32_t i = 0; i < ngl::EPH_BYTES; ++i)
-		//{
-		//	std::format_to(out, "{}#,", val.m_data[i]);
-		//}
-		std::format_to(out, "]");
 		return out;
 	}
 };

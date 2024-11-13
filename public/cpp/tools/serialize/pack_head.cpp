@@ -170,7 +170,7 @@ namespace ngl
 		return m_data[EPH::EPH_PROTOCOLNUM];
 	}
 
-	///// 获取协议号
+	// # 获取协议号
 	i32_protocolnum pack_head::get_protocolnumber()const
 	{
 		return protocolnum();

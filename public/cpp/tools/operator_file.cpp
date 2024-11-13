@@ -33,7 +33,7 @@ namespace ngl
 	int readfile::get_maxline()
 	{
 		std::string line;
-		int lline = 0;
+		int32_t lline = 0;
 		while (std::getline(m_file, line))
 		{
 			++lline;
