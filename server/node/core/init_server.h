@@ -34,6 +34,7 @@
 #include "actor_gm.h"
 #include "dbredis.h"
 #include "ntimer.h"
+#include "events.h"
 #include "net.pb.h"
 #include "dumper.h"
 #include "db.pb.h"
@@ -67,7 +68,7 @@ bool init_server(int aid)
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
 	// # 启动事件监听
-	ngl::events::init();
+	//ngl::events::init();
 
 	// # 初始化actor管理模块
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);

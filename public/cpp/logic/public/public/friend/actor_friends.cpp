@@ -30,6 +30,11 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>
 			, mforward<pbnet::PROBUFF_NET_FRIEND>
 		>(true);
+
+		register_handle_custom<actor_friends>::func<
+			np_event_parm_rolelogin
+		>(true);
+		
 	}
 
 	bool actor_friends::handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata)
@@ -76,6 +81,18 @@ namespace ngl
 		pro->set_m_friedid(lfriedid);
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
+		return true;
+	}
+
+	bool actor_friends::handle(const message<np_event_parm_rolelogin>& adata)
+	{
+		std::vector<i64_actorid> lfriends;
+		if (m_friends.get_friends(adata.get_data()->m_actorid, lfriends))
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_ROLELOGIN>();
+			pro->set_m_friedid(adata.get_data()->m_actorid);
+			send_client(lfriends, pro);
+		}
 		return true;
 	}
 }// namespace ngl

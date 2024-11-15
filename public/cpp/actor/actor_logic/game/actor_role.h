@@ -167,8 +167,8 @@ namespace ngl
 
 		int32_t rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting);
 
-		using handle_php = cmd<actor_role, std::string, int, const ngl::json_read&>;
 		//# gm请求
+		using handle_gm = cmd<actor_role, std::string, int, const ngl::json_read&>;
 		bool handle(const message<mforward<np_gm>>& adata);
 
 		//# 登录请求未发货充值

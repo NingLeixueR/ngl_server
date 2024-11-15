@@ -48,7 +48,10 @@ namespace ngl
 
 		virtual ~actor_family() {}
 
-		virtual void loaddb_finish(bool adbishave) {}
+		virtual void loaddb_finish(bool adbishave) 
+		{
+			
+		}
 
 		static ENUM_ACTOR actor_type()
 		{

@@ -348,6 +348,12 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ROLELOGIN>& adata)
+	{
+		log_error()->print("pbnet::PROBUFF_NET_FRIEND_ROLELOGIN ####### {}", nguid(adata.get_data()->m_friedid()));
+		return true;
+	}
+
 	void actor_manage_robot::nregister()
 	{
 		register_handle_custom<actor_manage_robot>::func<

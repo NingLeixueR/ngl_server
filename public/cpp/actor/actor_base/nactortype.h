@@ -55,6 +55,8 @@ namespace ngl
 		ACTOR_KEYVALUE,											// 公共key/value
 		ACTOR_FAMILY,											// 军团家族
 		ACTOR_FRIENDS,											// 好友
+		ACTOR_EVENTS,											// 事件
+		ACTOR_EVENTS_MAX_COUNT = ACTOR_EVENTS+10,				// 事件预留10个
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,

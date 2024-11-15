@@ -35,7 +35,6 @@ namespace ngl
 	template <typename Target>
 	struct lexical_cast2
 	{
-
 	};
 
 	template <>
