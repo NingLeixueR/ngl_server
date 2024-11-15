@@ -89,8 +89,9 @@ namespace ngl
 		std::vector<i64_actorid> lfriends;
 		if (m_friends.get_friends(adata.get_data()->m_actorid, lfriends))
 		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_ROLELOGIN>();
-			pro->set_m_friedid(adata.get_data()->m_actorid);
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLELOGIN>();
+			pro->set_m_stat(pbnet::PROBUFF_NET_ROLELOGIN::friends);
+			pro->set_m_roleid(adata.get_data()->m_actorid);
 			send_client(lfriends, pro);
 		}
 		return true;

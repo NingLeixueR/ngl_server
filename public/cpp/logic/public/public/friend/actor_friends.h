@@ -56,7 +56,7 @@ namespace ngl
 
 		static i64_actorid actorid(i16_area area)
 		{
-			return nguid::make(ACTOR_FRIENDS, area, nguid::none_actordataid());
+			return nguid::make(actor_type(), area, nguid::none_actordataid());
 		}
 
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);

@@ -46,7 +46,7 @@ namespace ngl
 
 		static i64_actorid actorid(i16_area area)
 		{
-			return nguid::make(ACTOR_GM, area, nguid::none_actordataid());
+			return nguid::make(actor_type(), area, nguid::none_actordataid());
 		}
 
 		// # 转发给单例
