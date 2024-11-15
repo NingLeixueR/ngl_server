@@ -27,7 +27,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = ACTOR_CLIENT,
-					.m_area = ttab_servers::tab()->m_area,
+					.m_area = tab_self_area,
 					.m_id	= nconfig::m_nodeid
 				},
 				.m_weight	= 0x7fffffff
@@ -41,7 +41,7 @@ namespace ngl
 
 	i64_actorid actor_client::actorid()
 	{
-		return nguid::make(ACTOR_CLIENT, ttab_servers::tab()->m_area, nconfig::m_nodeid);
+		return nguid::make(ACTOR_CLIENT, tab_self_area, nconfig::m_nodeid);
 	}
 
 	void actor_client::nregister()

@@ -39,7 +39,7 @@ namespace ngl
 		static i64_actorid actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype)
 		{
 			nlogactor ltemp(aactortype, alogtype);
-			return nguid::make(ACTOR_LOG, ttab_servers::tab()->m_area, ltemp.m_value32);
+			return nguid::make(ACTOR_LOG, tab_self_area, ltemp.m_value32);
 		}
 
 		virtual ~actor_log();

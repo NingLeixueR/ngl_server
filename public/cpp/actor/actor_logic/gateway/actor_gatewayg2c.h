@@ -38,7 +38,7 @@ namespace ngl
 
 		static i64_actorid actorid(i32_actordataid aactordataid)
 		{
-			return nguid::make(ACTOR_GATEWAY_G2C, ttab_servers::tab()->m_area, aactordataid);
+			return nguid::make(ACTOR_GATEWAY_G2C, tab_self_area, aactordataid);
 		}
 
 		void get_allclient(std::map<i32_sessionid, i64_actorid>& amap)

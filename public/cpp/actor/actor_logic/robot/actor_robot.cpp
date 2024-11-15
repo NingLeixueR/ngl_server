@@ -18,7 +18,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		assert(aarea == ttab_servers::tab()->m_area);
+		assert(aarea == tab_self_area);
 	}
 
 	void actor_robot::nregister()

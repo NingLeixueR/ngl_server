@@ -11,6 +11,7 @@
 #include "actor_calendar.h"
 #include "actor_gmclient.h"
 #include "actor_gateway.h"
+#include "actor_events.h"
 #include "actor_notice.h"
 #include "actor_server.h"
 #include "actor_client.h"
@@ -34,7 +35,6 @@
 #include "actor_gm.h"
 #include "ntimer.h"
 #include "net.pb.h"
-#include "events.h"
 #include "actor.h"
 
 namespace ngl
@@ -139,7 +139,7 @@ namespace ngl
 				, null<actor_keyvalue>, em_pram(ACTOR_KEYVALUE)
 				, null<actor_family>, em_pram(ACTOR_FAMILY)
 				, null<actor_friends>, em_pram(ACTOR_FRIENDS)
-				, em_events_null(actor_events<E_EVENTS_LOGIC>)
+				, em_events_null(actor_events<eevents_logic>)
 			);
 
 			// 新增内部协议需要补充
@@ -180,15 +180,15 @@ namespace ngl
 				/*200000034*/, np_channel_register_reply<pbdb::db_keyvalue>
 				/*200000035*/, np_channel_data<pbdb::db_keyvalue>
 				// ### 事件相关协议 start ### //
-				/*200000036*/, np_event_parm_rolelogin
-				/*200000037*/, actor_events<E_EVENTS_LOGIC>::np_event_register
+				/*200000036*/, np_eevents_logic_rolelogin
+				/*200000037*/, actor_events<eevents_logic>::np_event_register
 				// ### 事件相关协议 finish ### //
 				
 			> (EPROTOCOL_TYPE_CUSTOM);
 		}
 
 		// ### 事件相关协议 start ### //
-		actor_events<E_EVENTS_LOGIC>::register_parm<np_event_parm_rolelogin>(E_EVENTS_ROLELOGIN);
+		actor_events<eevents_logic>::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
 		// ### 事件相关协议 finish ### //
 		// 
 		// 新增数据存储需要补全

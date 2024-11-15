@@ -104,6 +104,7 @@ INCLUDE_DIRECTORIES(public/cpp/logic/public/public/calendar)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/keyvalue)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/family)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/friend)
+INCLUDE_DIRECTORIES(public/cpp/logic/public/public/events)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
 INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 

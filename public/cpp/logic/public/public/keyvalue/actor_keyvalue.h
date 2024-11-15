@@ -52,7 +52,7 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(actor_type(), ttab_servers::tab()->m_area, nguid::none_actordataid());
+			return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 		}
 	};
 }//namespace ngl

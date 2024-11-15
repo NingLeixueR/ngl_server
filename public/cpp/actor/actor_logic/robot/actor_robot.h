@@ -79,7 +79,7 @@ namespace ngl
 					.m_parm
 					{
 						.m_type = ACTOR_MANAGE_ROBOT, 
-						.m_area = ttab_servers::tab()->m_area,
+						.m_area = tab_self_area,
 						.m_id	= nconfig::m_nodeid, 
 						.m_manage_dbclient = false
 					},
@@ -117,7 +117,7 @@ namespace ngl
 		static void login(const std::string& aaccount, const std::string& apasswold)
 		{
 			pbnet::PROBUFF_NET_ACOUNT_LOGIN pro;
-			pro.set_m_area(ttab_servers::tab()->m_area);
+			pro.set_m_area(tab_self_area);
 			pro.set_m_account(aaccount);
 			pro.set_m_password(apasswold);
 			const tab_servers* tab = ttab_servers::tab();

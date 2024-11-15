@@ -51,7 +51,7 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_CALENDAR, ttab_servers::tab()->m_area, nguid::none_actordataid());
+			return nguid::make(ACTOR_CALENDAR, tab_self_area, nguid::none_actordataid());
 		}
 
 		bool handle(const message<np_calendar>& adata);

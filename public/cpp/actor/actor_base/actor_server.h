@@ -25,7 +25,7 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_SERVER,ttab_servers::tab()->m_area,nguid::none_actordataid());
+			return nguid::make(ACTOR_SERVER, tab_self_area, nguid::none_actordataid());
 		}
 
 		// # [actor client -> actor server] register

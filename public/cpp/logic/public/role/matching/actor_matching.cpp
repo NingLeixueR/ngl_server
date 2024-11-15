@@ -18,7 +18,7 @@ namespace ngl
 				.m_parm
 					{
 						.m_type = ACTOR_MATCHING,
-						.m_area = ttab_servers::tab()->m_area
+						.m_area = tab_self_area
 					},
 				.m_weight = 0x7fffffff,
 			})

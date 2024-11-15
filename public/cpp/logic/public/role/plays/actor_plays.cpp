@@ -10,7 +10,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = atype,
-					.m_area = ttab_servers::tab()->m_area,
+					.m_area = tab_self_area,
 					.m_id = adataid
 				},
 				.m_weight = 10,

@@ -127,7 +127,7 @@ namespace ngl
 			switch (forward_type(lparm))
 			{
 			case ecross_ordinary:
-				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_area, forward_dataid(lparm));
+				lguid = nguid::make(ACTOR, tab_self_area, forward_dataid(lparm));
 				break;
 			case ecross_cross_ordinary:
 				lguid = nguid::make(ACTOR, ttab_servers::tab()->m_crossarea, forward_dataid(lparm));

@@ -31,7 +31,7 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_CSVCLIENT, ttab_servers::tab()->m_area, nconfig::m_nodeid);
+			return nguid::make(ACTOR_CSVCLIENT, tab_self_area, nconfig::m_nodeid);
 		}
 
 		bool handle(const message<np_actor_reloadcsv>& adata);

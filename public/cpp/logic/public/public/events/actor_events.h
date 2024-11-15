@@ -6,30 +6,9 @@
 
 namespace ngl
 {
-	class event_tar {};
-
-	
-
-	enum E_EVENTS_LOGIC
-	{
-		E_EVENTS_ROLELOGIN,		//玩家登陆
-		count,
-	};
-
-	class np_event_parm_rolelogin
-	{
-	public:
-		np_event_parm_rolelogin() :
-			m_type(E_EVENTS_ROLELOGIN),
-			m_actorid(0)
-		{}
-
-		E_EVENTS_LOGIC m_type;
-		i64_actorid m_actorid;
-		def_portocol(np_event_parm_rolelogin, m_type, m_actorid)
-	};
-
-	template <typename E_EVENTS>
+	template <
+		typename E_EVENTS/* 事件枚举类型*/
+	>
 	class actor_events : public actor
 	{
 		actor_events(const actor_events&) = delete;
@@ -133,7 +112,10 @@ namespace ngl
 		bool handle(const message<np_event_register>& adata)
 		{
 			const np_event_register& pro = *adata.get_data();
-			ngl::log_error()->print("np_event_register {}:E_EVENTS:{} actor:{}", typeid(E_EVENTS).name(), (int32_t)(pro.m_type), nguid(pro.m_actorid));
+			ngl::log_error()->print(
+				"np_event_register {}:E_EVENTS:{} actor:{}", 
+				typeid(E_EVENTS).name(), (int32_t)(pro.m_type), nguid(pro.m_actorid)
+			);
 			m_eventmember[pro.m_type].insert(pro.m_actorid);
 			return true;
 		}
@@ -147,4 +129,25 @@ namespace ngl
 
 	template <typename E_EVENTS>
 	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<E_EVENTS>::m_eventmember;
+
+	// 事件枚举类型
+	enum eevents_logic
+	{
+		eevents_logic_rolelogin,		//玩家登陆
+		count,
+	};
+
+	// 事件类型
+	class np_eevents_logic_rolelogin
+	{
+	public:
+		np_eevents_logic_rolelogin() :
+			m_type(eevents_logic_rolelogin),
+			m_actorid(0)
+		{}
+
+		eevents_logic m_type;
+		i64_actorid m_actorid;
+		def_portocol(np_eevents_logic_rolelogin, m_type, m_actorid)
+	};
 }//namespace ngl
