@@ -5,7 +5,7 @@ namespace ngl
 {
 	i64_actorid nguid::make_self(ENUM_ACTOR atype)
 	{
-		nguid lguid(atype, ttab_servers::tab()->m_area, none_actordataid());
+		nguid lguid(atype, tab_self_area, none_actordataid());
 		return (i64_actorid)lguid;
 	}
 }//namespace ngl

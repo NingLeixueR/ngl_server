@@ -110,7 +110,7 @@ namespace ngl
 			return (i64_actorid)lguid;
 		}
 
-		//# 根据类型、区服为ttab_servers::tab()->m_area none_actordataid()、数据id为none_actordataid创建一个i64_actorid
+		//# 根据类型、区服为tab_self_area none_actordataid()、数据id为none_actordataid创建一个i64_actorid
 		static i64_actorid make_self(ENUM_ACTOR atype);
 
 		//# 替换type

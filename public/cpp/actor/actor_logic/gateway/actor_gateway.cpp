@@ -13,7 +13,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = ACTOR_GATEWAY,
-					.m_area = ttab_servers::tab()->m_area,
+					.m_area = tab_self_area,
 					.m_id	= nconfig::m_nodeid, 
 					.m_manage_dbclient = false
 				},
@@ -95,7 +95,7 @@ namespace ngl
 					// ##### 通知game服务器 玩家已经断开连接
 					send_actor(pro->m_actorid, pro);
 					// ##### 通知login服务器 玩家已经断开连接
-					ttab_servers::foreach_server(LOGIN, ttab_servers::tab()->m_area, [&pro, this](const tab_servers* atab)
+					ttab_servers::foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
 						{
 							nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
 							send_actor(lguid, pro);

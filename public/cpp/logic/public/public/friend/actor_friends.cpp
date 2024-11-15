@@ -10,7 +10,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = ACTOR_FRIENDS,
-					.m_area = ttab_servers::tab()->m_area,
+					.m_area = tab_self_area,
 					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,
@@ -32,7 +32,7 @@ namespace ngl
 		>(true);
 
 		register_handle_custom<actor_friends>::func<
-			np_event_parm_rolelogin
+			np_eevents_logic_rolelogin
 		>(true);
 		
 	}
@@ -84,7 +84,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_friends::handle(const message<np_event_parm_rolelogin>& adata)
+	bool actor_friends::handle(const message<np_eevents_logic_rolelogin>& adata)
 	{
 		std::vector<i64_actorid> lfriends;
 		if (m_friends.get_friends(adata.get_data()->m_actorid, lfriends))

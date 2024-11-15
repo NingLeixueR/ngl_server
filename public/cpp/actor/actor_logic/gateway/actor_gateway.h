@@ -36,7 +36,7 @@ namespace ngl
 
 		static i64_actorid actorid(i32_actordataid aactordataid)
 		{
-			return nguid::make(actor_type(), ttab_servers::tab()->m_area, aactordataid);
+			return nguid::make(actor_type(), tab_self_area, aactordataid);
 		}
 
 		gateway_info m_info;

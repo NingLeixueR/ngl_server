@@ -10,7 +10,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = ACTOR_GM,
-					.m_area = ttab_servers::tab()->m_area,
+					.m_area = tab_self_area,
 				},
 				.m_weight = 0x7fffffff,
 			})
@@ -73,7 +73,7 @@ namespace ngl
 					return false;
 				if (ttab_servers::tab()->m_id != tab->m_id)
 				{
-					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, ttab_servers::tab()->m_area, tab->m_id);
+					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
 					agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
 					return true;
 				}
@@ -202,7 +202,7 @@ namespace ngl
 					{
 						return true;
 					}
-					i64_actorid ldbactorid = nguid::make(db_enum((pbdb::ENUM_DB)(ltype)), ttab_servers::tab()->m_area, nguid::none_actordataid());
+					i64_actorid ldbactorid = nguid::make(db_enum((pbdb::ENUM_DB)(ltype)), tab_self_area, nguid::none_actordataid());
 					sendbyactorid(ldbactorid, adata.m_pack, *adata.get_data());
 				}
 				return true;

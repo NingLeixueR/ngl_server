@@ -42,7 +42,7 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_CHAT, ttab_servers::tab()->m_area, nguid::none_actordataid());
+			return nguid::make(ACTOR_CHAT, tab_self_area, nguid::none_actordataid());
 		}
 
 		virtual ~actor_chat() {}

@@ -11,7 +11,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = ACTOR_MANAGE_PLAYS,
-					.m_area = ttab_servers::tab()->m_area
+					.m_area = tab_self_area
 				},
 				.m_weight = 0x7fffffff,
 			})
@@ -44,7 +44,7 @@ namespace ngl
 			{
 				pram.m_players.push_back(adata.m_id());
 			});
-		i64_actorid lactorid = nguid::make((ENUM_ACTOR)((int)ACTOR_PLAYS + (int)tab->m_type), ttab_servers::tab()->m_area, lrecv->m_roomid());
+		i64_actorid lactorid = nguid::make((ENUM_ACTOR)((int)ACTOR_PLAYS + (int)tab->m_type), tab_self_area, lrecv->m_roomid());
 		actor_create::switch_process(lactorid, -1, xmlnode::m_nodeid, pram);
 		return true;
 	}

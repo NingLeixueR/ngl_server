@@ -36,7 +36,7 @@ namespace ngl
 
 		static i64_actorid actorid(i32_actordataid aactordataid)
 		{
-			return nguid::make(ACTOR_GATEWAY_C2G, ttab_servers::tab()->m_area, aactordataid);
+			return nguid::make(ACTOR_GATEWAY_C2G, tab_self_area, aactordataid);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename T>

@@ -1,4 +1,5 @@
 ﻿#include "ttab_specialid.h"
+#include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
@@ -8,7 +9,6 @@
 #include "nregister.h"
 #include "nforward.h"
 #include "net.pb.h"
-#include "events.h"
 #include "drop.h"
 #include "gcmd.h"
 
@@ -32,7 +32,7 @@ namespace ngl
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
 		, m_playactorid(0)
 	{
-		assert(aarea == ttab_servers::tab()->m_area);
+		assert(aarea == tab_self_area);
 	}
 
 	i32_serverid actor_role::get_getwayserverid()
@@ -134,10 +134,10 @@ namespace ngl
 		m_info.sync_actor_roleinfo();
 		loginpay();
 
-		np_event_parm_rolelogin lparm;
-		lparm.m_type = E_EVENTS_ROLELOGIN;
+		np_eevents_logic_rolelogin lparm;
+		lparm.m_type = eevents_logic_rolelogin;
 		lparm.m_actorid = id_guid();
-		actor_events<E_EVENTS_LOGIC>::trigger_event(E_EVENTS_ROLELOGIN,lparm);
+		actor_events<eevents_logic>::trigger_event(eevents_logic_rolelogin, lparm);
 	}
 
 	void actor_role::handle_after()

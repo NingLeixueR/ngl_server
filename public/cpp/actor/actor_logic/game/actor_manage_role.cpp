@@ -13,7 +13,7 @@ namespace ngl
 				.m_parm
 				{
 					.m_type = ACTOR_MANAGE_ROLE,
-					.m_area = ttab_servers::tab()->m_area,
+					.m_area = tab_self_area,
 					.m_id = ttab_servers::tab()->m_tcount
 				},
 				.m_weight = 0x7fffffff,

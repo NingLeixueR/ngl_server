@@ -52,7 +52,7 @@ namespace ngl
 
 		static i64_actorid actorid()
 		{
-			return nguid::make(ACTOR_RANKLIST, ttab_servers::tab()->m_area, nguid::none_actordataid());
+			return nguid::make(ACTOR_RANKLIST, tab_self_area, nguid::none_actordataid());
 		}
 
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);

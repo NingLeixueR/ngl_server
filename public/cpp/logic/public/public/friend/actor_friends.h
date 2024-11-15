@@ -1,5 +1,6 @@
 #pragma once
 
+#include "actor_events.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
@@ -11,7 +12,6 @@
 #include "db_pool.h"
 #include "db_data.h"
 #include "friends.h"
-#include "events.h"
 #include "ntimer.h"
 #include "drop.h"
 #include "nlog.h"
@@ -46,7 +46,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) 
 		{
-			actor_events<E_EVENTS_LOGIC>::register_actor_event(E_EVENTS_ROLELOGIN, actorid(ttab_servers::tab()->m_area));
+			actor_events<eevents_logic>::register_actor_event(eevents_logic_rolelogin, actorid(tab_self_area));
 		}
 
 		static ENUM_ACTOR actor_type()
@@ -71,6 +71,6 @@ namespace ngl
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_ERASEFRIEND>>& adata);
 
 		// # ∫√”—…œœﬂ
-		bool handle(const message<np_event_parm_rolelogin>& adata);
+		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 	};
 }// namespace ngl

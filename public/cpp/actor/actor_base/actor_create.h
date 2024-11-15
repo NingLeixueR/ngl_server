@@ -25,7 +25,7 @@ namespace ngl
 					.m_parm
 					{
 						.m_type = ACTOR_CREATE,
-						.m_area = ttab_servers::tab()->m_area,
+						.m_area = tab_self_area,
 						.m_id = nconfig::m_nodeid,
 					},
 					.m_weight = 0x7fffffff,
@@ -50,7 +50,7 @@ namespace ngl
 
 		static i64_actorid actorid(i32_actordataid adataid)
 		{
-			return nguid::make(ACTOR_CREATE, ttab_servers::tab()->m_area, adataid);
+			return nguid::make(ACTOR_CREATE, tab_self_area, adataid);
 		}
 
 		// # 在指定[Server]上创建[Actor]
