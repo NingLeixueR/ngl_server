@@ -344,4 +344,21 @@ namespace ngl
 		}
 		return 0;
 	}
+
+	bool family::get_familyers(i64_actorid aroleid, std::vector<i64_actorid>& afamilyers)
+	{
+		int64_t* lfamilyid = tools::findmap(m_rolefamily, aroleid);
+		if (lfamilyid == nullptr)
+			return false;
+		pbdb::db_family* lpfamily = get_family(*lfamilyid);
+		if (lpfamily == nullptr)
+			return false;
+		std::ranges::for_each(lpfamily->m_member(), [&afamilyers, aroleid](const int64_t afamilyer)
+			{
+				if (afamilyer == aroleid)
+					return;
+				afamilyers.push_back(afamilyer);
+			});
+		return true;
+	}
 }//namespace ngl

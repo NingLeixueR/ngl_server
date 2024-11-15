@@ -22,7 +22,8 @@ namespace ngl
 	{
 		// Ð­Òé×¢²á
 		register_handle_custom<actor_family>::func<
-			mforward<np_gm>
+			mforward<np_gm>,
+			np_eevents_logic_rolelogin
 		>(true);
 
 		register_handle_proto<actor_family>::func<
@@ -180,6 +181,19 @@ namespace ngl
 		if (handle_cmd::function(loperator, adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_mail operator[{}] ERROR", loperator);
+		}
+		return true;
+	}
+
+	bool actor_family::handle(const message<np_eevents_logic_rolelogin>& adata)
+	{
+		std::vector<i64_actorid> lfamilyers;
+		if (m_family.get_familyers(adata.get_data()->m_actorid, lfamilyers))
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLELOGIN>();
+			pro->set_m_stat(pbnet::PROBUFF_NET_ROLELOGIN::familyer);
+			pro->set_m_roleid(adata.get_data()->m_actorid);
+			send_client(lfamilyers, pro);
 		}
 		return true;
 	}

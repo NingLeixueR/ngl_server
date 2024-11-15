@@ -2,6 +2,7 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
+#include "actor_events.h"
 #include "ndb_modular.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
@@ -50,7 +51,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) 
 		{
-			
+			actor_events<eevents_logic>::register_actor_event(eevents_logic_rolelogin, actorid(tab_self_area));
 		}
 
 		static ENUM_ACTOR actor_type()
@@ -60,7 +61,7 @@ namespace ngl
 
 		static i64_actorid actorid(i16_area area)
 		{
-			return nguid::make(ACTOR_FAMILY, area, nguid::none_actordataid());
+			return nguid::make(actor_type(), area, nguid::none_actordataid());
 		}
 
 		// # 创建军团
@@ -87,8 +88,11 @@ namespace ngl
 		// # 军团签到
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata);
 
-		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
 		// # GM操作
+		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
 		bool handle(const message<mforward<np_gm>>& adata);
+
+		// # 军团成员上线
+		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 	};
 }// namespace ngl

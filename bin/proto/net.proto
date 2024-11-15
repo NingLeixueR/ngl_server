@@ -714,8 +714,14 @@ message PROBUFF_NET_ERASEFRIEND_RESPONSE
 	optional int32  m_stat  = 2;		// 状态
 };
 
-// [回复]好友上线
-message PROBUFF_NET_FRIEND_ROLELOGIN
+// [回复]玩家上线
+message PROBUFF_NET_ROLELOGIN
 {
-	optional int64 m_friedid = 1;
+	enum rolelogin_stat
+	{
+		friends = 0;
+		familyer = 1;
+	}
+	optional rolelogin_stat m_stat = 1;
+	optional int64 m_roleid = 2;
 };
