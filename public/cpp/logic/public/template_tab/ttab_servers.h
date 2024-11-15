@@ -252,3 +252,4 @@ namespace ngl
 }//namespace ngl
 
 #define tab_self_area  ngl::ttab_servers::tab()->m_area
+#define tab_self_cros_area  ngl::ttab_servers::tab()->m_crossarea
