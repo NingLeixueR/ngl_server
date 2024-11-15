@@ -10,7 +10,6 @@
 #include "ttab_attribute.h"
 #include "manage_csv.h"
 #include "net.pb.h"
-#include "event.h"
 #include "nlog.h"
 #include "net.h"
 
@@ -198,10 +197,10 @@ namespace ngl
 			m_dynamic[aattribute] += avalue;
 			if (is_death())
 			{
-				event_parm_death pram;
-				pram.m_unitid = -1;
-				pram.m_deathunitid = m_unitid;
-				events::execute(&pram);
+				//event_parm_death pram;
+				//pram.m_unitid = -1;
+				//pram.m_deathunitid = m_unitid;
+				//events::execute(&pram);
 			}
 		}
 

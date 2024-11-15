@@ -34,6 +34,7 @@
 #include "actor_gm.h"
 #include "ntimer.h"
 #include "net.pb.h"
+#include "events.h"
 #include "actor.h"
 
 namespace ngl
@@ -103,6 +104,7 @@ namespace ngl
 	{
 		if (aregister == true)
 		{
+#define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
 			// ### 新增actor需要补全
 			auto_actor(
 				null<actor_client>, em_pram(ACTOR_CLIENT)
@@ -137,6 +139,7 @@ namespace ngl
 				, null<actor_keyvalue>, em_pram(ACTOR_KEYVALUE)
 				, null<actor_family>, em_pram(ACTOR_FAMILY)
 				, null<actor_friends>, em_pram(ACTOR_FRIENDS)
+				, em_events_null(actor_events<E_EVENTS_LOGIC>)
 			);
 
 			// 新增内部协议需要补充
@@ -176,9 +179,18 @@ namespace ngl
 				/*200000033*/, np_channel_register<pbdb::db_keyvalue>
 				/*200000034*/, np_channel_register_reply<pbdb::db_keyvalue>
 				/*200000035*/, np_channel_data<pbdb::db_keyvalue>
+				// ### 事件相关协议 start ### //
+				/*200000036*/, np_event_parm_rolelogin
+				/*200000037*/, actor_events<E_EVENTS_LOGIC>::np_event_register
+				// ### 事件相关协议 finish ### //
+				
 			> (EPROTOCOL_TYPE_CUSTOM);
 		}
-		
+
+		// ### 事件相关协议 start ### //
+		actor_events<E_EVENTS_LOGIC>::register_parm<np_event_parm_rolelogin>(E_EVENTS_ROLELOGIN);
+		// ### 事件相关协议 finish ### //
+		// 
 		// 新增数据存储需要补全
 		tdb_ranklist::init(aregister);
 		tdb_calendar::init(aregister);

@@ -837,6 +837,7 @@ namespace ngl
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
 		def_portocol(np_channel_data<TDATA>, m_data)
 	};
+
 }//namespace ngl
 
 

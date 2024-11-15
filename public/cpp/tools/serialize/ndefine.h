@@ -3,11 +3,11 @@
 #include "serialize.h"
 
 #define def_function_pop(...)									\
-	inline bool pop(ngl::unserialize& ser)						\
+	bool pop(ngl::unserialize& ser)								\
 	{															\
 		return ser.pop(__VA_ARGS__);							\
 	}															\
-	inline bool ParseFromArray(const void* data, int32_t size)	\
+	bool ParseFromArray(const void* data, int32_t size)			\
 	{															\
 		ngl::unserialize lunserialize((const char*)data, size);	\
 		return pop(lunserialize);								\
@@ -15,11 +15,11 @@
 
 
 #define def_function_push(...)									\
-	inline bool push(ngl::serialize& ser)const					\
+	bool push(ngl::serialize& ser)const							\
 	{															\
 		return ser.push(__VA_ARGS__);							\
 	}															\
-	inline bool SerializeToArray(void* data, int32_t size) const \
+	bool SerializeToArray(void* data, int32_t size) const		\
 	{															\
 		ngl::serialize lserialize((char*)data, size);			\
 		return push(lserialize);								\
@@ -27,11 +27,11 @@
 
 
 #define def_portocol_bytes(...)								\
-	inline int bytes(ngl::serialize_bytes& abytes)const		\
+	int bytes(ngl::serialize_bytes& abytes)const			\
 	{														\
 		return abytes.bytes(__VA_ARGS__);					\
 	}														\
-	inline int ByteSize()const								\
+	int ByteSize()const										\
 	{														\
 		ngl::serialize_bytes lserialize_bytes;				\
 		return bytes(lserialize_bytes);						\

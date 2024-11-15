@@ -114,10 +114,10 @@ namespace ngl
 		{
 			pro->set_m_isenter(false);
 			actor::send_client(lview, pro);
-			event_parm_leaveview lparm;
-			lparm.m_leaveunitid = aunit->id();
-			lparm.m_unitids.swap(lview);
-			events::execute(&lparm);
+			//event_parm_leaveview lparm;
+			//lparm.m_leaveunitid = aunit->id();
+			//lparm.m_unitids.swap(lview);
+			//events::execute(&lparm);
 		}
 
 		lview.clear();
@@ -141,10 +141,10 @@ namespace ngl
 		{
 			pro->set_m_isenter(true);
 			actor::send_client(lview, pro);
-			event_parm_enterview lparm;
-			lparm.m_enterunitid = aunit->id();
-			lparm.m_unitids.swap(lview);
-			events::execute(&lparm);
+			//event_parm_enterview lparm;
+			//lparm.m_enterunitid = aunit->id();
+			//lparm.m_unitids.swap(lview);
+			//events::execute(&lparm);
 		}
 
 		aunit->set_x(ax);

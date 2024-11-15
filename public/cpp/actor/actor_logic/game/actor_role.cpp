@@ -8,8 +8,10 @@
 #include "nregister.h"
 #include "nforward.h"
 #include "net.pb.h"
+#include "events.h"
 #include "drop.h"
 #include "gcmd.h"
+
 
 namespace ngl
 {
@@ -131,6 +133,11 @@ namespace ngl
 		sync_data_client();
 		m_info.sync_actor_roleinfo();
 		loginpay();
+
+		np_event_parm_rolelogin lparm;
+		lparm.m_type = E_EVENTS_ROLELOGIN;
+		lparm.m_actorid = id_guid();
+		actor_events<E_EVENTS_LOGIC>::trigger_event(E_EVENTS_ROLELOGIN,lparm);
 	}
 
 	void actor_role::handle_after()
@@ -247,9 +254,9 @@ namespace ngl
 			return true;
 		}
 
-		if (handle_php::empty())
+		if (handle_gm::empty())
 		{
-			handle_php::push("pay", [this](int id, const ngl::json_read& aos)
+			handle_gm::push("pay", [this](int id, const ngl::json_read& aos)
 				{
 					struct pay
 					{
@@ -268,7 +275,7 @@ namespace ngl
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				}
 			);
-			handle_php::push("gmrechange", [this](int id, const ngl::json_read& aos)
+			handle_gm::push("gmrechange", [this](int id, const ngl::json_read& aos)
 				{
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
@@ -283,7 +290,7 @@ namespace ngl
 					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				});
-			handle_php::push("rechange", [this](int id, const ngl::json_read& aos)
+			handle_gm::push("rechange", [this](int id, const ngl::json_read& aos)
 				{//actor_role::loginpay() callback
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)
@@ -292,7 +299,7 @@ namespace ngl
 					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
 			// 禁言 lduration=0解封
-			handle_php::push("bantalk", [this](int id, const ngl::json_read& aos)
+			handle_gm::push("bantalk", [this](int id, const ngl::json_read& aos)
 				{
 					int32_t lduration;
 					if (aos.read("data", lduration) == false)
@@ -308,7 +315,7 @@ namespace ngl
 				});
 		}
 
-		if (handle_php::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		if (handle_gm::function(loperator, adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}

@@ -10,10 +10,11 @@
 #include "db_manage.h"
 #include "db_pool.h"
 #include "db_data.h"
+#include "friends.h"
+#include "events.h"
 #include "ntimer.h"
 #include "drop.h"
 #include "nlog.h"
-#include "friends.h"
 #include "net.h"
 #include "db.h"
 
@@ -43,7 +44,10 @@ namespace ngl
 
 		virtual ~actor_friends() {}
 
-		virtual void loaddb_finish(bool adbishave) {}
+		virtual void loaddb_finish(bool adbishave) 
+		{
+			actor_events<E_EVENTS_LOGIC>::register_actor_event(E_EVENTS_ROLELOGIN, actorid(ttab_servers::tab()->m_area));
+		}
 
 		static ENUM_ACTOR actor_type()
 		{
@@ -65,5 +69,8 @@ namespace ngl
 
 		// # 删除好友
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_ERASEFRIEND>>& adata);
+
+		// # 好友上线
+		bool handle(const message<np_event_parm_rolelogin>& adata);
 	};
 }// namespace ngl

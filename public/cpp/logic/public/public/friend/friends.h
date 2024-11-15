@@ -158,5 +158,18 @@ namespace ngl
 			}
 			actor::send_client(aroleid, pro);
 		}
+
+		// ªÒ»°∫√”—
+		bool get_friends(i64_actorid aroleid, std::vector<i64_actorid>& afriends)
+		{
+			const pbdb::db_friends* ldbfriends = get_constfriends(aroleid);
+			if (ldbfriends == nullptr)
+				return false;
+			std::ranges::for_each(ldbfriends->m_friends(), [&afriends](i64_actorid aactorid)
+				{
+					afriends.push_back(aactorid);
+				});
+			return true;
+		}
 	};
 }// namespace ngl

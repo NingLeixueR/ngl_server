@@ -226,7 +226,7 @@ void init_DB_RANKLIST()
 void init_DB_FRIENDS()
 {
 	std::map<ngl::i64_actorid, pbdb::db_friends> lmap;
-	for (int i = 1; i < 10; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		int lbeg = i * 10;
 		int lend = lbeg + 10;
@@ -306,6 +306,7 @@ bool start_world()
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
+	ngl::actor_events<ngl::E_EVENTS_LOGIC>::getInstance();
 	ngl::actor_gm::getInstance();
 	ngl::actor_mail::getInstance();
 	ngl::actor_chat::getInstance();
@@ -317,6 +318,7 @@ bool start_world()
 	ngl::actor_ranklist::getInstance();
 	ngl::actor_friends::getInstance();
 	ngl::actor_gmclient::getInstance();
+
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

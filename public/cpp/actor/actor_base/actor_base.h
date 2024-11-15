@@ -474,6 +474,17 @@ namespace ngl
 			}
 		}
 
+		template <typename T, bool IS_SEND = true>
+		static void static_send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
+		{
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
+			for (i64_actorid actorid : asetguid)
+			{
+				lpram.m_actor = actorid;
+				push_task_id(actorid, lpram, true);
+			}
+		}
+
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
