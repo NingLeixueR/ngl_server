@@ -137,7 +137,7 @@ namespace ngl
 		np_eevents_logic_rolelogin lparm;
 		lparm.m_type = eevents_logic_rolelogin;
 		lparm.m_actorid = id_guid();
-		actor_events<eevents_logic>::trigger_event(eevents_logic_rolelogin, lparm);
+		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::trigger_event(eevents_logic_rolelogin, lparm);
 	}
 
 	void actor_role::handle_after()
