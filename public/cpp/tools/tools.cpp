@@ -409,7 +409,6 @@ namespace ngl
 
 	std::string tools::url_encode(const std::string& c)
 	{
-
 		std::string escaped;
 		int max = (int)c.length();
 		for (int i = 0; i < max; i++)
@@ -428,7 +427,7 @@ namespace ngl
 				escaped.append(char2hex(c[i]));//converts char 255 to string "FF"
 			}
 		}
-		return std::move(escaped);
+		return escaped;
 	}
 
 	std::string tools::url_decode(const std::string& szToDecode)
@@ -472,7 +471,7 @@ namespace ngl
 				break;
 			}
 		}
-		return std::move(result);
+		return result;
 	}
 
 	int tools::varint_length(tools::parm<int64_t>& avalue)

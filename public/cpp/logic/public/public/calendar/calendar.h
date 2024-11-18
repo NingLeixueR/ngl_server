@@ -17,9 +17,7 @@ namespace ngl
 		calendar& operator=(const calendar&) = delete;
 	public:
 		calendar()
-		{
-			
-		}
+		{}
 
 		virtual void set_id()
 		{

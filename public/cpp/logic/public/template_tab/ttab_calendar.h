@@ -106,7 +106,7 @@ namespace ngl
 		{
 			ttab_calendar* ttab = allcsv::get<ttab_calendar>();
 			assert(ttab != nullptr);
-			auto itor = ttab->tablecsv.find(aid);
+			auto itor = ttab->m_tablecsv.find(aid);
 			return &itor->second;
 		}
 
@@ -123,30 +123,21 @@ namespace ngl
 				return std::make_pair(false, -1);
 			if (hour == -1 || minute == -1 || second == -1)
 				return std::make_pair(false,-1);
-			return std::make_pair(true, hour * 60 * 60 + minute * 60 + second);
+			return std::make_pair(true, hour * localtime::HOUR_SECOND + minute * localtime::MINUTES_SECOND + second);
 		}
-
-		enum em
-		{
-			day_utc = 24 * 60 * 60,
-			week_utc = 7 * day_utc,
-		};
 
 		static void printf_time(int aid)
 		{
 			auto lstream = log_error();
 			(*lstream) << std::endl;
-			(*lstream) << aid <<":{";
+			std::string lstr = "";
 			for (int64_t ltime : m_data[aid].m_utc)
 			{
-				(*lstream)
-					<< "	[" 
-					<< localtime::time2str(data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S")
-					<< "]->[" 
-					<< localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S")
-					<< "]\n";
+				std::string lbegstr = localtime::time2str(data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S");
+				std::string lendstr = localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S");				
+				lstr += std::format("[{}]->[{}]\n", lbegstr, lendstr);
 			}
-			(*lstream) << "}\n";
+			(*lstream) << std::format("{}", lstr);
 			(*lstream).print("");
 		}
 
@@ -157,8 +148,8 @@ namespace ngl
 			int32_t lid = 0;
 			for (auto& item : aweek)
 			{
-				int lweekdaystart = localtime::getweekday(item.m_weekstart == 7?0: item.m_weekstart, 0, 0, 0);
-				int lweekdayfinish = localtime::getweekday(item.m_weekfinish == 7 ? 0 : item.m_weekfinish, 0, 0, 0);
+				int lweekdaystart = localtime::getweekday(item.m_weekstart == localtime::WEEK_DAY ? 0: item.m_weekstart, 0, 0, 0);
+				int lweekdayfinish = localtime::getweekday(item.m_weekfinish == localtime::WEEK_DAY ? 0 : item.m_weekfinish, 0, 0, 0);
 
 				std::pair<bool, int32_t> lpairopen = daysecond(item.m_opentime.c_str());
 				std::pair<bool, int32_t> lpairclose = daysecond(item.m_closetime.c_str());
@@ -170,8 +161,8 @@ namespace ngl
 					assert(lend > lbeg);
 					if (lnow > lend)
 					{
-						lbeg += week_utc;
-						lend += week_utc;
+						lbeg += localtime::WEEK_SECOND;
+						lend += localtime::WEEK_SECOND;
 					}
 					m_data[aid].add(lbeg, lend);
 				}
@@ -187,12 +178,12 @@ namespace ngl
 			for (auto& item : atserveropen)
 			{
 				// 开启时间
-				int32_t lbeg = lopentime + ((item.m_beg - 1) * day_utc);
+				int32_t lbeg = lopentime + ((item.m_beg - 1) * localtime::DAY_SECOND);
 				std::pair<bool, int32_t> lpairopen = daysecond(item.m_opentime.c_str());
 				assert(lpairopen.first);
 				lbeg += lpairopen.second;
 				// 关闭时间
-				int32_t lend = lopentime + ((item.m_end - 1) * day_utc);
+				int32_t lend = lopentime + ((item.m_end - 1) * localtime::DAY_SECOND);
 				std::pair<bool, int32_t> lpairclose = daysecond(item.m_closetime.c_str());
 				assert(lpairclose.first);
 				lend += lpairclose.second;
@@ -202,7 +193,6 @@ namespace ngl
 				}
 				m_data[aid].add(lbeg, lend);
 			}
-
 			printf_time(aid);
 		}
 
@@ -222,7 +212,7 @@ namespace ngl
 
 		void reload()final
 		{
-			//for (std::pair<const int, tab_calendar>& ipair : tablecsv)
+			//for (std::pair<const int, tab_calendar>& ipair : m_tablecsv)
 			//{
 			//	reload_calendar(ipair.first);
 			//}

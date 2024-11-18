@@ -60,7 +60,7 @@ namespace ngl
 
 			manage_csv<tab_activity_drawcompliance>* lpmanagecsv =
 				allcsv::get<manage_csv<tab_activity_drawcompliance>>();
-			for (const auto& [_id, _data] : lpmanagecsv->tablecsv)
+			for (const auto& [_id, _data] : lpmanagecsv->m_tablecsv)
 			{
 				if (itor->second.m_count() > _id)
 				{

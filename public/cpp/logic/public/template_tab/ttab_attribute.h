@@ -43,7 +43,7 @@ namespace ngl
 		{
 			m_uplowlimit.resize(EnumAttribute::E_Count);
 			auto tabcsv = allcsv::get<manage_csv<tab_attribute>>();
-			for (const auto& [key, value] : tabcsv->tablecsv)
+			for (const auto& [key, value] : tabcsv->m_tablecsv)
 			{
 				if (key < EnumAttribute::E_Count)
 				{

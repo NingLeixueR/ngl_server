@@ -319,7 +319,6 @@ bool start_world()
 	ngl::actor_friends::getInstance();
 	ngl::actor_gmclient::getInstance();
 
-
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
 }

@@ -6,11 +6,13 @@
 
 namespace ngl
 {
+	// ENUM_EVENTS主要是为了多进程间actor.m_type值不同
+	// 可以抽离actor_events到不同进程
+	// ENUM_EVENTS与E_EVENTS配对使用
 	enum ENUM_EVENTS
 	{
 		ENUM_EVENTS_LOGIC,		// 对应eevents_logic
 	};
-
 
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/>
 	class actor_events : public actor
@@ -31,15 +33,15 @@ namespace ngl
 					.m_weight = 0x7fffffff,
 				})
 		{}
+
+		static std::array<i64_hashcode, E_EVENTS::count> m_parmtype;
+		static std::map<E_EVENTS, std::set<i64_actorid>> m_eventmember;
 	public:
 		static int32_t id_index()
 		{
 			assert((int32_t)ETYPE <= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS));
 			return (int32_t)ETYPE;
 		}
-
-		static std::array<i64_hashcode, E_EVENTS::count> m_parmtype;
-		static std::map<E_EVENTS, std::set<i64_actorid>> m_eventmember;
 
 		friend class actor_instance<actor_events<ETYPE, E_EVENTS>>;
 		static actor_events<ETYPE, E_EVENTS>& getInstance()
@@ -99,7 +101,10 @@ namespace ngl
 		template <typename TPARM>
 		static bool trigger_event(E_EVENTS atype, const TPARM& apram)
 		{
-			ngl::log_error()->print("trigger_event {}:E_EVENTS:{}", typeid(TPARM).name(), (int32_t)(atype));
+			ngl::log_error()->print(
+				"trigger_event {}:E_EVENTS:{}", 
+				typeid(TPARM).name(), (int32_t)(atype)
+			);
 			if (check_parm<TPARM>(atype) == false)
 			{
 				ngl::log_error()->print("trigger_event fail!!!");

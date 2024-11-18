@@ -43,7 +43,7 @@ namespace ngl
 		tovalue(m_##NAME, ltab.m_value.c_str());	\
 		return;										\
 	}
-			std::ranges::for_each(tablecsv, [this](const auto& pair)
+			std::ranges::for_each(m_tablecsv, [this](const auto& pair)
 				{
 					const tab_specialid& ltab = pair.second;
 					IF_NAME_VAL(rolemaxlv)

@@ -68,7 +68,7 @@ namespace ngl
 			m_maxval.insert({ ETaskRoleVip, ttab_specialid::m_rolemaxvip });
 			m_maxval.insert({ ETaskTaskId, -1 });
 
-			for (std::pair<const int, tab_task>& pair : tablecsv)
+			for (std::pair<const int, tab_task>& pair : m_tablecsv)
 			{
 				tab_task& ltask = pair.second;
 				for (task_condition& item : ltask.m_taskreceive)
@@ -106,7 +106,7 @@ namespace ngl
 		{
 			ttab_task* ttab = allcsv::get<ttab_task>();
 			assert(ttab != nullptr);
-			auto itor = ttab->tablecsv.find(ataskid);
+			auto itor = ttab->m_tablecsv.find(ataskid);
 			return &itor->second;
 		}
 

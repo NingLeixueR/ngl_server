@@ -17,7 +17,7 @@ namespace ngl
 
 		void reload()final
 		{
-			for (std::pair<const int, tab_dbload>& ipair : tablecsv)
+			for (std::pair<const int, tab_dbload>& ipair : m_tablecsv)
 			{
 				tab_dbload& tab = ipair.second;
 				m_name2data[tab.m_name] = &tab;

@@ -35,7 +35,7 @@ namespace ngl
 
 		using TAB = T;
 
-		std::map<int, T>	tablecsv;
+		std::map<int, T>	m_tablecsv;
 		std::string			m_verify;		// 内容的md5值
 
 		manage_csv()
@@ -57,21 +57,21 @@ namespace ngl
 			std::string lcsvname(dir);
 			lcsvname += T::name();
 			lcsvname += ".csv";
-			return std::move(lcsvname);
+			return lcsvname;
 		}
 
 		virtual void load();
 
 		virtual void* get(int aid)
 		{
-			auto itor = tablecsv.find(aid);
-			return itor == tablecsv.end()? nullptr: &itor->second;
+			auto itor = m_tablecsv.find(aid);
+			return itor == m_tablecsv.end()? nullptr: &itor->second;
 		}
 
 		T* find(int aid)
 		{
-			auto itor = tablecsv.find(aid);
-			return itor == tablecsv.end()? nullptr: &itor->second;
+			auto itor = m_tablecsv.find(aid);
+			return itor == m_tablecsv.end()? nullptr: &itor->second;
 		}
 
 		virtual void reload()
@@ -79,7 +79,7 @@ namespace ngl
 
 		void foreach(const std::function<void(T&)>& afun)
 		{
-			for (std::pair<const int, T>& item : tablecsv)
+			for (std::pair<const int, T>& item : m_tablecsv)
 				afun(item.second);
 		}
 
@@ -177,13 +177,13 @@ namespace ngl
 	void manage_csv<T>::load()
 	{
 		reload_csv::register_csv<T>();
-		tablecsv.clear();
+		m_tablecsv.clear();
 		{//加载xxx.csv
 			std::string lcsvname = path();
 			ngl::rcsv lrcsv;
 			if (lrcsv.read(lcsvname, m_verify) == true)
 			{
-				lrcsv.readcsv(tablecsv);
+				lrcsv.readcsv(m_tablecsv);
 			}			
 		}
 	}
