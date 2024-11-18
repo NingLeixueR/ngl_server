@@ -19,7 +19,7 @@ namespace ngl
 		void reload()final
 		{
 			m_areaofserver.clear();
-			for (std::pair<const int, tab_servers>& pair : tablecsv)
+			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
 			{
 				m_areaofserver[pair.second.m_area].push_back(&pair.second);
 			}
@@ -30,7 +30,7 @@ namespace ngl
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			if (ttab == nullptr)
 				return nullptr;
-			auto itor = ttab->tablecsv.find(aserverid);
+			auto itor = ttab->m_tablecsv.find(aserverid);
 			return &itor->second;
 		}
 
@@ -43,7 +43,7 @@ namespace ngl
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			assert(ttab != nullptr);
-			for (const std::pair<const int, tab_servers>& item : ttab->tablecsv)
+			for (const std::pair<const int, tab_servers>& item : ttab->m_tablecsv)
 			{
 				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
 					return &item.second;
@@ -134,7 +134,7 @@ namespace ngl
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			assert(ttab != nullptr);
-			for (const std::pair<const int, tab_servers>& pair : ttab->tablecsv)
+			for (const std::pair<const int, tab_servers>& pair : ttab->m_tablecsv)
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
 					return &pair.second;

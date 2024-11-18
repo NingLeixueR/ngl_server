@@ -13,23 +13,23 @@ namespace ngl
 		{
 			MILLISECOND = 1000,
 
-			DAY_HOUR = 24,								// 一天多少小时
-			DAY_MINUTES = DAY_HOUR * 60,				// 一天多少分钟
-			DAY_SECOND = DAY_MINUTES * 60,				// 一天多少秒
-			DAY_MILLISECOND = DAY_SECOND * MILLISECOND,	// 一天多少毫秒
+			MINUTES_SECOND		= 1 * 60,							// 一分钟多少秒
+			MINUTES_MILLISECOND = MINUTES_SECOND * MILLISECOND,		// 一分钟多少毫秒
 
-			WEEK_DAY = 7,								// 一周多少天
-			WEEK_HOUR = WEEK_DAY * DAY_HOUR,			// 一周多少小时
-			WEEK_MINUTES = WEEK_DAY * DAY_MINUTES,		// 一周多少分钟
-			WEEK_SECOND = WEEK_DAY * DAY_SECOND,		// 一周多少秒
-			WEEK_MILLISECOND = WEEK_SECOND * MILLISECOND,	// 一周多少毫秒
+			HOUR_MINUTES		= 1 * 60,							// 一小时多少分钟
+			HOUR_SECOND			= MINUTES_SECOND * HOUR_MINUTES,	// 一小时多少秒
+			HOUR_MILLISECOND	= HOUR_SECOND * MILLISECOND,		// 一小时多少毫秒
 
-			HOUR_MINUTES = 1 * 60,							// 一小时多少分钟
-			HOUR_SECOND = HOUR_MINUTES * 60,				// 一小时多少秒
-			HOUR_MILLISECOND = HOUR_SECOND * MILLISECOND,	// 一小时多少毫秒
+			DAY_HOUR			= 24,								// 一天多少小时
+			DAY_MINUTES			= DAY_HOUR * HOUR_MINUTES,			// 一天多少分钟
+			DAY_SECOND			= DAY_HOUR * HOUR_SECOND,			// 一天多少秒
+			DAY_MILLISECOND		= DAY_SECOND * MILLISECOND,			// 一天多少毫秒
 
-			MINUTES_SECOND = 1 * 60,							// 一分钟多少秒
-			MINUTES_MILLISECOND = MINUTES_SECOND * MILLISECOND,	// 一分钟多少毫秒
+			WEEK_DAY			= 7,								// 一周多少天
+			WEEK_HOUR			= WEEK_DAY * DAY_HOUR,				// 一周多少小时
+			WEEK_MINUTES		= WEEK_DAY * DAY_MINUTES,			// 一周多少分钟
+			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// 一周多少秒
+			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// 一周多少毫秒
 		};
 
 		/** 设置时间 */

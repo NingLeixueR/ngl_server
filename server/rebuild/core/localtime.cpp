@@ -57,7 +57,7 @@ namespace ngl
 		size_t lindex = time2str(lbuff, 1024, anow, format);
 		if (lindex < 0)
 			return "";
-		return std::move(std::string(lbuff));
+		return lbuff;
 	}
 
 	std::string localtime::time2str(const char* format)
@@ -104,7 +104,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (24 * 60 * 60);
+			return lret + DAY_SECOND;
 		}
 	}
 
@@ -121,7 +121,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (1 * 60 * 60);
+			return lret + HOUR_SECOND;
 		}
 	}
 
@@ -138,7 +138,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (1 * 60);
+			return lret + MINUTES_SECOND;
 		}
 	}
 
@@ -174,7 +174,7 @@ namespace ngl
 		}
 		else
 		{
-			return lret + (lweek * 24 * 60 * 60);
+			return lret + (lweek * DAY_SECOND);
 		}
 	}
 
@@ -234,7 +234,7 @@ namespace ngl
 		ltime.tm_sec = 0;
 		time_t newLast = mktime(&ltime);
 
-		return (newCurr - newLast) / (24 * 60 * 60);
+		return (newCurr - newLast) / DAY_SECOND;
 	}
 
 	time_t localtime::getnextweekdaytime(time_t curr, time_t weekday)
@@ -245,10 +245,10 @@ namespace ngl
 		time_t weekdayInterval = weekday - currWeekday;
 		if (weekdayInterval <= 0)
 		{
-			weekdayInterval += 7;
+			weekdayInterval += WEEK_DAY;
 		}
 
-		return curr + weekdayInterval * 24 * 60 * 60 - ltime.tm_hour * 60 * 60 - ltime.tm_min * 60 - ltime.tm_sec;
+		return curr + weekdayInterval * DAY_SECOND - ltime.tm_hour * HOUR_SECOND - ltime.tm_min * MINUTES_SECOND - ltime.tm_sec;
 	}
 
 	time_t localtime::getnextweekdaytime(time_t curr, int weekday, int hour, int minute)
@@ -259,7 +259,7 @@ namespace ngl
 		int weekdayInterval = weekday - currWeekday;
 		if (weekdayInterval < 0)
 		{
-			weekdayInterval += 7;
+			weekdayInterval += WEEK_DAY;
 		}
 		else if (weekdayInterval == 0)
 		{
@@ -270,11 +270,11 @@ namespace ngl
 			}
 			else
 			{
-				weekdayInterval += 7;
-				return getsecond2time(curr + 7 * 24 * 60 * 60, hour, minute);
+				weekdayInterval += WEEK_DAY;
+				return getsecond2time(curr + WEEK_SECOND, hour, minute);
 			}
 		}
-		return getsecond2time(curr + weekdayInterval * 24 * 60 * 60, hour, minute);
+		return getsecond2time(curr + weekdayInterval * DAY_SECOND, hour, minute);
 	}
 
 	bool localtime::isspanweekday(time_t curr, time_t last, int weekday)
@@ -290,7 +290,7 @@ namespace ngl
 	//获得两个时间之间相差多少周
 	time_t localtime::getspanweeks(time_t curr, time_t last, int weekday)
 	{
-		return (getnextweekdaytime(curr, weekday) - getnextweekdaytime(last, weekday)) / (24 * 60 * 60 * 7);
+		return (getnextweekdaytime(curr, weekday) - getnextweekdaytime(last, weekday)) / WEEK_SECOND;
 	}
 
 	/**
@@ -314,7 +314,7 @@ namespace ngl
 	time_t localtime::getutcbyday(time_t utc, int dayNum)
 	{
 		time_t utcDayUTC = getsecond2time(utc, 0, 0);
-		return utcDayUTC + dayNum * 86400;
+		return utcDayUTC + dayNum * DAY_SECOND;
 
 	}
 
@@ -339,10 +339,7 @@ namespace ngl
 		atm = *std::localtime(&curr);
 	}
 
-	void localtime::getweekday(
-		time_t curr,
-		int& weekday,
-		int& hour, int& minute)
+	void localtime::getweekday(time_t curr, int& weekday, int& hour, int& minute)
 	{
 		std::tm ltime = *std::localtime(&curr);
 		weekday = ltime.tm_wday;

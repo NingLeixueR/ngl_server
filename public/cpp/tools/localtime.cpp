@@ -55,7 +55,7 @@ namespace ngl
 		size_t lindex = time2str(lbuff, 1024, anow, format);
 		if (lindex < 0)
 			return "";
-		return std::move(std::string(lbuff));
+		return lbuff;
 	}
 
 	std::string localtime::time2str(const char* format)
