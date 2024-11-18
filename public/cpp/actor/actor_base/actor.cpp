@@ -68,7 +68,7 @@ namespace ngl
 		inline void push(handle_pram& apram)
 		{
 			monopoly_shared_lock(m_mutex);
-			m_list.push_back(std::move(apram));
+			m_list.push_back(apram);
 		}
 	private:
 		// # …Ë÷√kcp
