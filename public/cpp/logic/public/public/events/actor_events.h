@@ -6,15 +6,18 @@
 
 namespace ngl
 {
-	template <
-		typename E_EVENTS/* 事件枚举类型*/
-	>
+	enum ENUM_EVENTS
+	{
+		ENUM_EVENTS_LOGIC,		// 对应eevents_logic
+	};
+
+
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/>
 	class actor_events : public actor
 	{
 		actor_events(const actor_events&) = delete;
 		actor_events& operator=(const actor_events&) = delete;
 
-		static int32_t m_index;
 		actor_events():
 			actor(
 				actorparm
@@ -31,18 +34,17 @@ namespace ngl
 	public:
 		static int32_t id_index()
 		{
-			static int32_t lindex = ++m_index;
-			assert(lindex <= (ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS));
-			return lindex;
+			assert((int32_t)ETYPE <= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS));
+			return (int32_t)ETYPE;
 		}
 
 		static std::array<i64_hashcode, E_EVENTS::count> m_parmtype;
 		static std::map<E_EVENTS, std::set<i64_actorid>> m_eventmember;
 
-		friend class actor_instance<actor_events<E_EVENTS>>;
-		static actor_events<E_EVENTS>& getInstance()
+		friend class actor_instance<actor_events<ETYPE, E_EVENTS>>;
+		static actor_events<ETYPE, E_EVENTS>& getInstance()
 		{
-			return actor_instance<actor_events<E_EVENTS>>::instance();
+			return actor_instance<actor_events<ETYPE, E_EVENTS>>::instance();
 		}
 
 		struct np_event_register
@@ -54,7 +56,7 @@ namespace ngl
 
 		static void nregister()
 		{
-			register_handle_custom<actor_events<E_EVENTS>>::func<
+			register_handle_custom<actor_events<ETYPE, E_EVENTS>>::func<
 				np_event_register
 			>(true);
 		}
@@ -63,8 +65,8 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype] = typeid(TPARM).hash_code();
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, actor_events<E_EVENTS>, TPARM>
-				([atype](actor_events<E_EVENTS>*, message<TPARM>& adata)
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, actor_events<ETYPE, E_EVENTS>, TPARM>
+				([atype](actor_events<ETYPE, E_EVENTS>*, message<TPARM>& adata)
 				{
 					std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
 					if (lmember == nullptr)
@@ -120,14 +122,11 @@ namespace ngl
 		}
 	};
 
-	template <typename E_EVENTS>
-	int32_t actor_events<E_EVENTS>::m_index = 0;
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS>
+	std::array<i64_hashcode, E_EVENTS::count> actor_events<ETYPE, E_EVENTS>::m_parmtype;
 
-	template <typename E_EVENTS>
-	std::array<i64_hashcode, E_EVENTS::count> actor_events<E_EVENTS>::m_parmtype;
-
-	template <typename E_EVENTS>
-	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<E_EVENTS>::m_eventmember;
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS>
+	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<ETYPE, E_EVENTS>::m_eventmember;
 
 	// 事件枚举类型
 	enum eevents_logic
