@@ -28,7 +28,6 @@ namespace ngl
 					.m_weight = 0x7fffffff,
 				})
 		{}
-
 	public:
 		static int32_t id_index()
 		{

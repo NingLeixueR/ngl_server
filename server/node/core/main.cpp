@@ -74,7 +74,6 @@ int main(int argc, char** argv)
 #endif
 
 	Dumper::m_excname = lname;
-
 	switch (nconfig::node_type())
 	{
 	case ngl::DB:

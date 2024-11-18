@@ -350,7 +350,7 @@ namespace ngl
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLELOGIN>& adata)
 	{
 		log_error()->print(
-			"pbnet::PROBUFF_NET_FRIEND_ROLELOGIN ####### {}:{},", 
+			"pbnet::PROBUFF_NET_ROLELOGIN ####### {}:{},", 
 			pbnet::PROBUFF_NET_ROLELOGIN::rolelogin_stat_Name(adata.get_data()->m_stat()), 
 			nguid(adata.get_data()->m_roleid())
 		);
