@@ -59,7 +59,7 @@ namespace ngl
 		static void nregister()
 		{
 			using type_actor_events = actor_events<ETYPE, E_EVENTS>;
-			register_handle_custom<type_actor_events>::func<
+			register_handle_custom<type_actor_events>::template func<
 				type_actor_events::np_event_register
 			>(true);
 		}
