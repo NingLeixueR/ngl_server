@@ -66,6 +66,7 @@ namespace ngl
 						"+read:{}\n"
 						"-----------------------------------------",
 						_mail.m_id(),
+						_mail.m_tid(),
 						(_mail.m_draw() ? "yes" : "no"),
 						(_mail.m_read() ? "yes" : "no")
 					) << std::endl;
