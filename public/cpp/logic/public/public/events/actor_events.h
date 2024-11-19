@@ -59,7 +59,7 @@ namespace ngl
 		static void nregister()
 		{
 			register_handle_custom<actor_events<ETYPE, E_EVENTS>>::func<
-				np_event_register
+				actor_events<ETYPE, E_EVENTS>::np_event_register
 			>(true);
 		}
 
