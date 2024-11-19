@@ -15,28 +15,6 @@
 
 Dumper lDumper;
 
-class type_ss
-{
-public:
-	template <int AAA>
-	static int32_t eeee()
-	{
-		return -1;
-	}
-
-	template <>
-	static int32_t eeee<1>()
-	{
-		return 1;
-	}
-
-	template <>
-	static int32_t eeee<2>()
-	{
-		return 2;
-	}
-};
-
 int main(int argc, char** argv)
 {
 	if (argc <= 1)
