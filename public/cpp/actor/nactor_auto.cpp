@@ -182,8 +182,9 @@ namespace ngl
 				/*200000034*/, np_channel_register_reply<pbdb::db_keyvalue>
 				/*200000035*/, np_channel_data<pbdb::db_keyvalue>
 				// ### 事件相关协议 start ### //
-				/*200000036*/, np_eevents_logic_rolelogin
-				/*200000037*/, actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::np_event_register
+				/*200000036*/, actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::np_event_register
+				/*200000037*/, np_eevents_logic_rolelogin
+				/*200000038*/, np_eevents_logic_roleoffline
 				// ### 事件相关协议 finish ### //
 				
 			> (EPROTOCOL_TYPE_CUSTOM);
@@ -191,8 +192,9 @@ namespace ngl
 
 		// ### 事件相关协议 start ### //
 		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
+		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_parm<np_eevents_logic_roleoffline>(eevents_logic_roleoffline);
 		// ### 事件相关协议 finish ### //
-		// 
+		
 		// 新增数据存储需要补全
 		tdb_ranklist::init(aregister);
 		tdb_calendar::init(aregister);

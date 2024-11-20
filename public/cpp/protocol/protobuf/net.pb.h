@@ -285,9 +285,9 @@ extern PROBUFF_NET_REWARD_ITEM_RESPONSEDefaultTypeInternal _PROBUFF_NET_REWARD_I
 class PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse;
 class PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUseDefaultTypeInternal;
 extern PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUseDefaultTypeInternal _PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse_default_instance_;
-class PROBUFF_NET_ROLELOGIN;
-class PROBUFF_NET_ROLELOGINDefaultTypeInternal;
-extern PROBUFF_NET_ROLELOGINDefaultTypeInternal _PROBUFF_NET_ROLELOGIN_default_instance_;
+class PROBUFF_NET_ROLESTAT;
+class PROBUFF_NET_ROLESTATDefaultTypeInternal;
+extern PROBUFF_NET_ROLESTATDefaultTypeInternal _PROBUFF_NET_ROLESTAT_default_instance_;
 class PROBUFF_NET_ROLE_LOGIN;
 class PROBUFF_NET_ROLE_LOGINDefaultTypeInternal;
 extern PROBUFF_NET_ROLE_LOGINDefaultTypeInternal _PROBUFF_NET_ROLE_LOGIN_default_instance_;
@@ -428,7 +428,7 @@ template<> ::pbnet::PROBUFF_NET_RECHARGE* Arena::CreateMaybeMessage<::pbnet::PRO
 template<> ::pbnet::PROBUFF_NET_RECHARGE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RECHARGE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse>(Arena*);
-template<> ::pbnet::PROBUFF_NET_ROLELOGIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLELOGIN>(Arena*);
+template<> ::pbnet::PROBUFF_NET_ROLESTAT* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLESTAT>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ROLE_LOGIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLE_LOGIN>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ROLE_SYNC* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLE_SYNC>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>(Arena*);
@@ -479,30 +479,55 @@ inline bool PROBUFF_NET_RECHARGE_RESPONSE_Estat_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_NET_RECHARGE_RESPONSE_Estat>(
     PROBUFF_NET_RECHARGE_RESPONSE_Estat_descriptor(), name, value);
 }
-enum PROBUFF_NET_ROLELOGIN_rolelogin_stat : int {
-  PROBUFF_NET_ROLELOGIN_rolelogin_stat_friends = 0,
-  PROBUFF_NET_ROLELOGIN_rolelogin_stat_familyer = 1,
-  PROBUFF_NET_ROLELOGIN_rolelogin_stat_PROBUFF_NET_ROLELOGIN_rolelogin_stat_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  PROBUFF_NET_ROLELOGIN_rolelogin_stat_PROBUFF_NET_ROLELOGIN_rolelogin_stat_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum PROBUFF_NET_ROLESTAT_stat : int {
+  PROBUFF_NET_ROLESTAT_stat_online = 0,
+  PROBUFF_NET_ROLESTAT_stat_offline = 1,
+  PROBUFF_NET_ROLESTAT_stat_PROBUFF_NET_ROLESTAT_stat_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  PROBUFF_NET_ROLESTAT_stat_PROBUFF_NET_ROLESTAT_stat_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool PROBUFF_NET_ROLELOGIN_rolelogin_stat_IsValid(int value);
-constexpr PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_MIN = PROBUFF_NET_ROLELOGIN_rolelogin_stat_friends;
-constexpr PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_MAX = PROBUFF_NET_ROLELOGIN_rolelogin_stat_familyer;
-constexpr int PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_ARRAYSIZE = PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_MAX + 1;
+bool PROBUFF_NET_ROLESTAT_stat_IsValid(int value);
+constexpr PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT_stat_stat_MIN = PROBUFF_NET_ROLESTAT_stat_online;
+constexpr PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT_stat_stat_MAX = PROBUFF_NET_ROLESTAT_stat_offline;
+constexpr int PROBUFF_NET_ROLESTAT_stat_stat_ARRAYSIZE = PROBUFF_NET_ROLESTAT_stat_stat_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_ROLELOGIN_rolelogin_stat_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_ROLESTAT_stat_descriptor();
 template<typename T>
-inline const std::string& PROBUFF_NET_ROLELOGIN_rolelogin_stat_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, PROBUFF_NET_ROLELOGIN_rolelogin_stat>::value ||
+inline const std::string& PROBUFF_NET_ROLESTAT_stat_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PROBUFF_NET_ROLESTAT_stat>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function PROBUFF_NET_ROLELOGIN_rolelogin_stat_Name.");
+    "Incorrect type passed to function PROBUFF_NET_ROLESTAT_stat_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_descriptor(), enum_t_value);
+    PROBUFF_NET_ROLESTAT_stat_descriptor(), enum_t_value);
 }
-inline bool PROBUFF_NET_ROLELOGIN_rolelogin_stat_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PROBUFF_NET_ROLELOGIN_rolelogin_stat* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_NET_ROLELOGIN_rolelogin_stat>(
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_descriptor(), name, value);
+inline bool PROBUFF_NET_ROLESTAT_stat_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PROBUFF_NET_ROLESTAT_stat* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_NET_ROLESTAT_stat>(
+    PROBUFF_NET_ROLESTAT_stat_descriptor(), name, value);
+}
+enum PROBUFF_NET_ROLESTAT_logic_stat : int {
+  PROBUFF_NET_ROLESTAT_logic_stat_friends = 0,
+  PROBUFF_NET_ROLESTAT_logic_stat_familyer = 1,
+  PROBUFF_NET_ROLESTAT_logic_stat_PROBUFF_NET_ROLESTAT_logic_stat_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  PROBUFF_NET_ROLESTAT_logic_stat_PROBUFF_NET_ROLESTAT_logic_stat_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool PROBUFF_NET_ROLESTAT_logic_stat_IsValid(int value);
+constexpr PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_MIN = PROBUFF_NET_ROLESTAT_logic_stat_friends;
+constexpr PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_MAX = PROBUFF_NET_ROLESTAT_logic_stat_familyer;
+constexpr int PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_ARRAYSIZE = PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_ROLESTAT_logic_stat_descriptor();
+template<typename T>
+inline const std::string& PROBUFF_NET_ROLESTAT_logic_stat_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PROBUFF_NET_ROLESTAT_logic_stat>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function PROBUFF_NET_ROLESTAT_logic_stat_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    PROBUFF_NET_ROLESTAT_logic_stat_descriptor(), enum_t_value);
+}
+inline bool PROBUFF_NET_ROLESTAT_logic_stat_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PROBUFF_NET_ROLESTAT_logic_stat* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_NET_ROLESTAT_logic_stat>(
+    PROBUFF_NET_ROLESTAT_logic_stat_descriptor(), name, value);
 }
 enum enum_logic_chat : int {
   get_chat_list = 0,
@@ -15302,23 +15327,23 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_ROLELOGIN) */ {
+class PROBUFF_NET_ROLESTAT PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_ROLESTAT) */ {
  public:
-  inline PROBUFF_NET_ROLELOGIN() : PROBUFF_NET_ROLELOGIN(nullptr) {}
-  virtual ~PROBUFF_NET_ROLELOGIN();
+  inline PROBUFF_NET_ROLESTAT() : PROBUFF_NET_ROLESTAT(nullptr) {}
+  virtual ~PROBUFF_NET_ROLESTAT();
 
-  PROBUFF_NET_ROLELOGIN(const PROBUFF_NET_ROLELOGIN& from);
-  PROBUFF_NET_ROLELOGIN(PROBUFF_NET_ROLELOGIN&& from) noexcept
-    : PROBUFF_NET_ROLELOGIN() {
+  PROBUFF_NET_ROLESTAT(const PROBUFF_NET_ROLESTAT& from);
+  PROBUFF_NET_ROLESTAT(PROBUFF_NET_ROLESTAT&& from) noexcept
+    : PROBUFF_NET_ROLESTAT() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_ROLELOGIN& operator=(const PROBUFF_NET_ROLELOGIN& from) {
+  inline PROBUFF_NET_ROLESTAT& operator=(const PROBUFF_NET_ROLESTAT& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_ROLELOGIN& operator=(PROBUFF_NET_ROLELOGIN&& from) noexcept {
+  inline PROBUFF_NET_ROLESTAT& operator=(PROBUFF_NET_ROLESTAT&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -15336,20 +15361,20 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_ROLELOGIN& default_instance();
+  static const PROBUFF_NET_ROLESTAT& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_ROLELOGIN* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_ROLELOGIN*>(
-               &_PROBUFF_NET_ROLELOGIN_default_instance_);
+  static inline const PROBUFF_NET_ROLESTAT* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_ROLESTAT*>(
+               &_PROBUFF_NET_ROLESTAT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     96;
 
-  friend void swap(PROBUFF_NET_ROLELOGIN& a, PROBUFF_NET_ROLELOGIN& b) {
+  friend void swap(PROBUFF_NET_ROLESTAT& a, PROBUFF_NET_ROLESTAT& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_ROLELOGIN* other) {
+  inline void Swap(PROBUFF_NET_ROLESTAT* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -15357,7 +15382,7 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_ROLELOGIN* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_ROLESTAT* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -15365,17 +15390,17 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_ROLELOGIN* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_ROLELOGIN>(nullptr);
+  inline PROBUFF_NET_ROLESTAT* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_ROLESTAT>(nullptr);
   }
 
-  PROBUFF_NET_ROLELOGIN* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_ROLELOGIN>(arena);
+  PROBUFF_NET_ROLESTAT* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_ROLESTAT>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_ROLELOGIN& from);
-  void MergeFrom(const PROBUFF_NET_ROLELOGIN& from);
+  void CopyFrom(const PROBUFF_NET_ROLESTAT& from);
+  void MergeFrom(const PROBUFF_NET_ROLESTAT& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -15389,13 +15414,13 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_ROLELOGIN* other);
+  void InternalSwap(PROBUFF_NET_ROLESTAT* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_ROLELOGIN";
+    return "pbnet.PROBUFF_NET_ROLESTAT";
   }
   protected:
-  explicit PROBUFF_NET_ROLELOGIN(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_ROLESTAT(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -15412,43 +15437,100 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
 
   // nested types ----------------------------------------------------
 
-  typedef PROBUFF_NET_ROLELOGIN_rolelogin_stat rolelogin_stat;
-  static constexpr rolelogin_stat friends =
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_friends;
-  static constexpr rolelogin_stat familyer =
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_familyer;
-  static inline bool rolelogin_stat_IsValid(int value) {
-    return PROBUFF_NET_ROLELOGIN_rolelogin_stat_IsValid(value);
+  typedef PROBUFF_NET_ROLESTAT_stat stat;
+  static constexpr stat online =
+    PROBUFF_NET_ROLESTAT_stat_online;
+  static constexpr stat offline =
+    PROBUFF_NET_ROLESTAT_stat_offline;
+  static inline bool stat_IsValid(int value) {
+    return PROBUFF_NET_ROLESTAT_stat_IsValid(value);
   }
-  static constexpr rolelogin_stat rolelogin_stat_MIN =
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_MIN;
-  static constexpr rolelogin_stat rolelogin_stat_MAX =
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_MAX;
-  static constexpr int rolelogin_stat_ARRAYSIZE =
-    PROBUFF_NET_ROLELOGIN_rolelogin_stat_rolelogin_stat_ARRAYSIZE;
+  static constexpr stat stat_MIN =
+    PROBUFF_NET_ROLESTAT_stat_stat_MIN;
+  static constexpr stat stat_MAX =
+    PROBUFF_NET_ROLESTAT_stat_stat_MAX;
+  static constexpr int stat_ARRAYSIZE =
+    PROBUFF_NET_ROLESTAT_stat_stat_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  rolelogin_stat_descriptor() {
-    return PROBUFF_NET_ROLELOGIN_rolelogin_stat_descriptor();
+  stat_descriptor() {
+    return PROBUFF_NET_ROLESTAT_stat_descriptor();
   }
   template<typename T>
-  static inline const std::string& rolelogin_stat_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, rolelogin_stat>::value ||
+  static inline const std::string& stat_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, stat>::value ||
       ::std::is_integral<T>::value,
-      "Incorrect type passed to function rolelogin_stat_Name.");
-    return PROBUFF_NET_ROLELOGIN_rolelogin_stat_Name(enum_t_value);
+      "Incorrect type passed to function stat_Name.");
+    return PROBUFF_NET_ROLESTAT_stat_Name(enum_t_value);
   }
-  static inline bool rolelogin_stat_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      rolelogin_stat* value) {
-    return PROBUFF_NET_ROLELOGIN_rolelogin_stat_Parse(name, value);
+  static inline bool stat_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      stat* value) {
+    return PROBUFF_NET_ROLESTAT_stat_Parse(name, value);
+  }
+
+  typedef PROBUFF_NET_ROLESTAT_logic_stat logic_stat;
+  static constexpr logic_stat friends =
+    PROBUFF_NET_ROLESTAT_logic_stat_friends;
+  static constexpr logic_stat familyer =
+    PROBUFF_NET_ROLESTAT_logic_stat_familyer;
+  static inline bool logic_stat_IsValid(int value) {
+    return PROBUFF_NET_ROLESTAT_logic_stat_IsValid(value);
+  }
+  static constexpr logic_stat logic_stat_MIN =
+    PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_MIN;
+  static constexpr logic_stat logic_stat_MAX =
+    PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_MAX;
+  static constexpr int logic_stat_ARRAYSIZE =
+    PROBUFF_NET_ROLESTAT_logic_stat_logic_stat_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  logic_stat_descriptor() {
+    return PROBUFF_NET_ROLESTAT_logic_stat_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& logic_stat_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, logic_stat>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function logic_stat_Name.");
+    return PROBUFF_NET_ROLESTAT_logic_stat_Name(enum_t_value);
+  }
+  static inline bool logic_stat_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      logic_stat* value) {
+    return PROBUFF_NET_ROLESTAT_logic_stat_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRoleidFieldNumber = 2,
     kMStatFieldNumber = 1,
+    kMLogicstatFieldNumber = 2,
+    kMRoleidFieldNumber = 3,
   };
-  // int64 m_roleid = 2;
+  // .pbnet.PROBUFF_NET_ROLESTAT.stat m_stat = 1;
+  bool has_m_stat() const;
+  private:
+  bool _internal_has_m_stat() const;
+  public:
+  void clear_m_stat();
+  ::pbnet::PROBUFF_NET_ROLESTAT_stat m_stat() const;
+  void set_m_stat(::pbnet::PROBUFF_NET_ROLESTAT_stat value);
+  private:
+  ::pbnet::PROBUFF_NET_ROLESTAT_stat _internal_m_stat() const;
+  void _internal_set_m_stat(::pbnet::PROBUFF_NET_ROLESTAT_stat value);
+  public:
+
+  // .pbnet.PROBUFF_NET_ROLESTAT.logic_stat m_logicstat = 2;
+  bool has_m_logicstat() const;
+  private:
+  bool _internal_has_m_logicstat() const;
+  public:
+  void clear_m_logicstat();
+  ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat m_logicstat() const;
+  void set_m_logicstat(::pbnet::PROBUFF_NET_ROLESTAT_logic_stat value);
+  private:
+  ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat _internal_m_logicstat() const;
+  void _internal_set_m_logicstat(::pbnet::PROBUFF_NET_ROLESTAT_logic_stat value);
+  public:
+
+  // int64 m_roleid = 3;
   bool has_m_roleid() const;
   private:
   bool _internal_has_m_roleid() const;
@@ -15461,20 +15543,7 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
   void _internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // .pbnet.PROBUFF_NET_ROLELOGIN.rolelogin_stat m_stat = 1;
-  bool has_m_stat() const;
-  private:
-  bool _internal_has_m_stat() const;
-  public:
-  void clear_m_stat();
-  ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat m_stat() const;
-  void set_m_stat(::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat value);
-  private:
-  ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat _internal_m_stat() const;
-  void _internal_set_m_stat(::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ROLELOGIN)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ROLESTAT)
  private:
   class _Internal;
 
@@ -15483,8 +15552,9 @@ class PROBUFF_NET_ROLELOGIN PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::int64 m_roleid_;
   int m_stat_;
+  int m_logicstat_;
+  ::PROTOBUF_NAMESPACE_ID::int64 m_roleid_;
   friend struct ::TableStruct_net_2eproto;
 };
 // ===================================================================
@@ -22026,62 +22096,90 @@ inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_ROLELOGIN
+// PROBUFF_NET_ROLESTAT
 
-// .pbnet.PROBUFF_NET_ROLELOGIN.rolelogin_stat m_stat = 1;
-inline bool PROBUFF_NET_ROLELOGIN::_internal_has_m_stat() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool PROBUFF_NET_ROLELOGIN::has_m_stat() const {
-  return _internal_has_m_stat();
-}
-inline void PROBUFF_NET_ROLELOGIN::clear_m_stat() {
-  m_stat_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN::_internal_m_stat() const {
-  return static_cast< ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat >(m_stat_);
-}
-inline ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ROLELOGIN.m_stat)
-  return _internal_m_stat();
-}
-inline void PROBUFF_NET_ROLELOGIN::_internal_set_m_stat(::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat value) {
-  _has_bits_[0] |= 0x00000002u;
-  m_stat_ = value;
-}
-inline void PROBUFF_NET_ROLELOGIN::set_m_stat(::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat value) {
-  _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ROLELOGIN.m_stat)
-}
-
-// int64 m_roleid = 2;
-inline bool PROBUFF_NET_ROLELOGIN::_internal_has_m_roleid() const {
+// .pbnet.PROBUFF_NET_ROLESTAT.stat m_stat = 1;
+inline bool PROBUFF_NET_ROLESTAT::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ROLELOGIN::has_m_roleid() const {
-  return _internal_has_m_roleid();
+inline bool PROBUFF_NET_ROLESTAT::has_m_stat() const {
+  return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_ROLELOGIN::clear_m_roleid() {
-  m_roleid_ = PROTOBUF_LONGLONG(0);
+inline void PROBUFF_NET_ROLESTAT::clear_m_stat() {
+  m_stat_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ROLELOGIN::_internal_m_roleid() const {
+inline ::pbnet::PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT::_internal_m_stat() const {
+  return static_cast< ::pbnet::PROBUFF_NET_ROLESTAT_stat >(m_stat_);
+}
+inline ::pbnet::PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ROLESTAT.m_stat)
+  return _internal_m_stat();
+}
+inline void PROBUFF_NET_ROLESTAT::_internal_set_m_stat(::pbnet::PROBUFF_NET_ROLESTAT_stat value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_stat_ = value;
+}
+inline void PROBUFF_NET_ROLESTAT::set_m_stat(::pbnet::PROBUFF_NET_ROLESTAT_stat value) {
+  _internal_set_m_stat(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ROLESTAT.m_stat)
+}
+
+// .pbnet.PROBUFF_NET_ROLESTAT.logic_stat m_logicstat = 2;
+inline bool PROBUFF_NET_ROLESTAT::_internal_has_m_logicstat() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_ROLESTAT::has_m_logicstat() const {
+  return _internal_has_m_logicstat();
+}
+inline void PROBUFF_NET_ROLESTAT::clear_m_logicstat() {
+  m_logicstat_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT::_internal_m_logicstat() const {
+  return static_cast< ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat >(m_logicstat_);
+}
+inline ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT::m_logicstat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ROLESTAT.m_logicstat)
+  return _internal_m_logicstat();
+}
+inline void PROBUFF_NET_ROLESTAT::_internal_set_m_logicstat(::pbnet::PROBUFF_NET_ROLESTAT_logic_stat value) {
+  _has_bits_[0] |= 0x00000002u;
+  m_logicstat_ = value;
+}
+inline void PROBUFF_NET_ROLESTAT::set_m_logicstat(::pbnet::PROBUFF_NET_ROLESTAT_logic_stat value) {
+  _internal_set_m_logicstat(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ROLESTAT.m_logicstat)
+}
+
+// int64 m_roleid = 3;
+inline bool PROBUFF_NET_ROLESTAT::_internal_has_m_roleid() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_ROLESTAT::has_m_roleid() const {
+  return _internal_has_m_roleid();
+}
+inline void PROBUFF_NET_ROLESTAT::clear_m_roleid() {
+  m_roleid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ROLESTAT::_internal_m_roleid() const {
   return m_roleid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ROLELOGIN::m_roleid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ROLELOGIN.m_roleid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ROLESTAT::m_roleid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ROLESTAT.m_roleid)
   return _internal_m_roleid();
 }
-inline void PROBUFF_NET_ROLELOGIN::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000001u;
+inline void PROBUFF_NET_ROLESTAT::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000004u;
   m_roleid_ = value;
 }
-inline void PROBUFF_NET_ROLELOGIN::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_ROLESTAT::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_roleid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ROLELOGIN.m_roleid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ROLESTAT.m_roleid)
 }
 
 #ifdef __GNUC__
@@ -22291,10 +22389,15 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::PROBUFF_NET_RECHARGE_RESPONSE_Estat>() {
   return ::pbnet::PROBUFF_NET_RECHARGE_RESPONSE_Estat_descriptor();
 }
-template <> struct is_proto_enum< ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat> : ::std::true_type {};
+template <> struct is_proto_enum< ::pbnet::PROBUFF_NET_ROLESTAT_stat> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat>() {
-  return ::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::PROBUFF_NET_ROLESTAT_stat>() {
+  return ::pbnet::PROBUFF_NET_ROLESTAT_stat_descriptor();
+}
+template <> struct is_proto_enum< ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat>() {
+  return ::pbnet::PROBUFF_NET_ROLESTAT_logic_stat_descriptor();
 }
 template <> struct is_proto_enum< ::pbnet::enum_logic_chat> : ::std::true_type {};
 template <>

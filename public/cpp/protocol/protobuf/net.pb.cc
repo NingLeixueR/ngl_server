@@ -420,10 +420,10 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSEDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_ERASEFRIEND_RESPONSE> _instance;
 } _PROBUFF_NET_ERASEFRIEND_RESPONSE_default_instance_;
-class PROBUFF_NET_ROLELOGINDefaultTypeInternal {
+class PROBUFF_NET_ROLESTATDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_ROLELOGIN> _instance;
-} _PROBUFF_NET_ROLELOGIN_default_instance_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PROBUFF_NET_ROLESTAT> _instance;
+} _PROBUFF_NET_ROLESTAT_default_instance_;
 }  // namespace pbnet
 static void InitDefaultsscc_info_MATCHING_MEMBER_net_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -1487,19 +1487,19 @@ static void InitDefaultsscc_info_PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_Do
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse_net_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse_net_2eproto}, {}};
 
-static void InitDefaultsscc_info_PROBUFF_NET_ROLELOGIN_net_2eproto() {
+static void InitDefaultsscc_info_PROBUFF_NET_ROLESTAT_net_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::pbnet::_PROBUFF_NET_ROLELOGIN_default_instance_;
-    new (ptr) ::pbnet::PROBUFF_NET_ROLELOGIN();
+    void* ptr = &::pbnet::_PROBUFF_NET_ROLESTAT_default_instance_;
+    new (ptr) ::pbnet::PROBUFF_NET_ROLESTAT();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::pbnet::PROBUFF_NET_ROLELOGIN::InitAsDefaultInstance();
+  ::pbnet::PROBUFF_NET_ROLESTAT::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_ROLELOGIN_net_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PROBUFF_NET_ROLELOGIN_net_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PROBUFF_NET_ROLESTAT_net_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PROBUFF_NET_ROLESTAT_net_2eproto}, {}};
 
 static void InitDefaultsscc_info_PROBUFF_NET_ROLE_LOGIN_net_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -1806,7 +1806,7 @@ static void InitDefaultsscc_info_drop_item_net_2eproto() {
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_drop_item_net_2eproto}, {}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_net_2eproto[97];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_net_2eproto[10];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_net_2eproto[11];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_net_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -2638,15 +2638,17 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBU
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE, m_stat_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLELOGIN, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLELOGIN, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLESTAT, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLESTAT, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLELOGIN, m_stat_),
-  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLELOGIN, m_roleid_),
-  1,
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLESTAT, m_stat_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLESTAT, m_logicstat_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_ROLESTAT, m_roleid_),
   0,
+  1,
+  2,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::pbnet::PROBUFF_NET_HEARTBEAT)},
@@ -2745,7 +2747,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 801, 809, sizeof(::pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE)},
   { 812, 818, sizeof(::pbnet::PROBUFF_NET_ERASEFRIEND)},
   { 819, 826, sizeof(::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE)},
-  { 828, 835, sizeof(::pbnet::PROBUFF_NET_ROLELOGIN)},
+  { 828, 836, sizeof(::pbnet::PROBUFF_NET_ROLESTAT)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -2845,7 +2847,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_ERASEFRIEND_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_ERASEFRIEND_RESPONSE_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_ROLELOGIN_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbnet::_PROBUFF_NET_ROLESTAT_default_instance_),
 };
 
 const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -3089,35 +3091,37 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "\000\210\001\001B\014\n\n_m_friedid\"h\n PROBUFF_NET_ERASEF"
   "RIEND_RESPONSE\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\023"
   "\n\006m_stat\030\002 \001(\005H\001\210\001\001B\014\n\n_m_friedidB\t\n\007_m_"
-  "stat\"\265\001\n\025PROBUFF_NET_ROLELOGIN\022@\n\006m_stat"
-  "\030\001 \001(\0162+.pbnet.PROBUFF_NET_ROLELOGIN.rol"
-  "elogin_statH\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001\""
-  "+\n\016rolelogin_stat\022\013\n\007friends\020\000\022\014\n\010family"
-  "er\020\001B\t\n\007_m_statB\013\n\t_m_roleid*F\n\017enum_log"
-  "ic_chat\022\021\n\rget_chat_list\020\000\022\016\n\nchat_speak"
-  "\020\001\022\020\n\014updata_speck\020\002*q\n\021enum_chat_channe"
-  "l\022\022\n\016enum_chat_zero\020\000\022\026\n\022enum_chat_ordin"
-  "ary\020\001\022\034\n\030enum_chat_cross_ordinary\020\002\022\022\n\016e"
-  "num_chat_none\020\003*<\n\005eunit\022\016\n\neunit_role\020\000"
-  "\022\021\n\reunit_monster\020\001\022\020\n\014eunit_region\020\002*s\n"
-  "\teunitstat\022\024\n\020eunitstat_normal\020\000\022\024\n\020euni"
-  "tstat_nomove\020\001\022\034\n\030eunitstat_nonormalatta"
-  "ck\020\002\022\034\n\030eunitstat_noreleaseskill\020\004*;\n\006ep"
-  "lays\022\037\n\033eplays_go_undergroundpalace\020\000\022\020\n"
-  "\014eplays_count\020\001*\233\001\n\025ematching_cancel_sta"
-  "t\022\034\n\030ematching_cancel_success\020\000\022\032\n\026ematc"
-  "hing_cancel_stage\020\001\022 \n\034ematching_cancel_"
-  "roomnotfind\020\002\022&\n\"ematching_cancel_roomme"
-  "mbernotfind\020\003*\253\001\n\025etype_matching_cancel\022"
-  " \n\034etype_matching_cancel_active\020\000\022!\n\035ety"
-  "pe_matching_cancel_timeout\020\001\022&\n\"etype_ma"
-  "tching_waitconfirm_timeout\020\002\022%\n!etype_ma"
-  "tching_waitcreate_timeout\020\003*\240\001\n\026ematchin"
-  "g_confirm_stat\022\035\n\031ematching_confirm_succ"
-  "ess\020\000\022\033\n\027ematching_confirm_stage\020\001\022!\n\035em"
-  "atching_confirm_roomnotfind\020\002\022\'\n#ematchi"
-  "ng_confirm_roommembernotfind\020\003B\002H\001b\006prot"
-  "o3"
+  "stat\"\230\002\n\024PROBUFF_NET_ROLESTAT\0225\n\006m_stat\030"
+  "\001 \001(\0162 .pbnet.PROBUFF_NET_ROLESTAT.statH"
+  "\000\210\001\001\022@\n\013m_logicstat\030\002 \001(\0162&.pbnet.PROBUF"
+  "F_NET_ROLESTAT.logic_statH\001\210\001\001\022\025\n\010m_role"
+  "id\030\003 \001(\003H\002\210\001\001\"\037\n\004stat\022\n\n\006online\020\000\022\013\n\007off"
+  "line\020\001\"\'\n\nlogic_stat\022\013\n\007friends\020\000\022\014\n\010fam"
+  "ilyer\020\001B\t\n\007_m_statB\016\n\014_m_logicstatB\013\n\t_m"
+  "_roleid*F\n\017enum_logic_chat\022\021\n\rget_chat_l"
+  "ist\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*"
+  "q\n\021enum_chat_channel\022\022\n\016enum_chat_zero\020\000"
+  "\022\026\n\022enum_chat_ordinary\020\001\022\034\n\030enum_chat_cr"
+  "oss_ordinary\020\002\022\022\n\016enum_chat_none\020\003*<\n\005eu"
+  "nit\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001\022\020"
+  "\n\014eunit_region\020\002*s\n\teunitstat\022\024\n\020eunitst"
+  "at_normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030eun"
+  "itstat_nonormalattack\020\002\022\034\n\030eunitstat_nor"
+  "eleaseskill\020\004*;\n\006eplays\022\037\n\033eplays_go_und"
+  "ergroundpalace\020\000\022\020\n\014eplays_count\020\001*\233\001\n\025e"
+  "matching_cancel_stat\022\034\n\030ematching_cancel"
+  "_success\020\000\022\032\n\026ematching_cancel_stage\020\001\022 "
+  "\n\034ematching_cancel_roomnotfind\020\002\022&\n\"emat"
+  "ching_cancel_roommembernotfind\020\003*\253\001\n\025ety"
+  "pe_matching_cancel\022 \n\034etype_matching_can"
+  "cel_active\020\000\022!\n\035etype_matching_cancel_ti"
+  "meout\020\001\022&\n\"etype_matching_waitconfirm_ti"
+  "meout\020\002\022%\n!etype_matching_waitcreate_tim"
+  "eout\020\003*\240\001\n\026ematching_confirm_stat\022\035\n\031ema"
+  "tching_confirm_success\020\000\022\033\n\027ematching_co"
+  "nfirm_stage\020\001\022!\n\035ematching_confirm_roomn"
+  "otfind\020\002\022\'\n#ematching_confirm_roommember"
+  "notfind\020\003B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_net_2eproto_deps[1] = {
   &::descriptor_table_db_2eproto,
@@ -3198,7 +3202,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
   &scc_info_PROBUFF_NET_RECHARGE_RESPONSE_net_2eproto.base,
   &scc_info_PROBUFF_NET_REWARD_ITEM_RESPONSE_net_2eproto.base,
   &scc_info_PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse_net_2eproto.base,
-  &scc_info_PROBUFF_NET_ROLELOGIN_net_2eproto.base,
+  &scc_info_PROBUFF_NET_ROLESTAT_net_2eproto.base,
   &scc_info_PROBUFF_NET_ROLE_LOGIN_net_2eproto.base,
   &scc_info_PROBUFF_NET_ROLE_SYNC_net_2eproto.base,
   &scc_info_PROBUFF_NET_ROLE_SYNC_RESPONSE_net_2eproto.base,
@@ -3223,7 +3227,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 10722,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 10821,
   &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 97, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
   file_level_metadata_net_2eproto, 97, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
@@ -3255,11 +3259,11 @@ constexpr PROBUFF_NET_RECHARGE_RESPONSE_Estat PROBUFF_NET_RECHARGE_RESPONSE::Est
 constexpr PROBUFF_NET_RECHARGE_RESPONSE_Estat PROBUFF_NET_RECHARGE_RESPONSE::Estat_MAX;
 constexpr int PROBUFF_NET_RECHARGE_RESPONSE::Estat_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_ROLELOGIN_rolelogin_stat_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_ROLESTAT_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
   return file_level_enum_descriptors_net_2eproto[1];
 }
-bool PROBUFF_NET_ROLELOGIN_rolelogin_stat_IsValid(int value) {
+bool PROBUFF_NET_ROLESTAT_stat_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -3270,15 +3274,36 @@ bool PROBUFF_NET_ROLELOGIN_rolelogin_stat_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN::friends;
-constexpr PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN::familyer;
-constexpr PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN::rolelogin_stat_MIN;
-constexpr PROBUFF_NET_ROLELOGIN_rolelogin_stat PROBUFF_NET_ROLELOGIN::rolelogin_stat_MAX;
-constexpr int PROBUFF_NET_ROLELOGIN::rolelogin_stat_ARRAYSIZE;
+constexpr PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT::online;
+constexpr PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT::offline;
+constexpr PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT::stat_MIN;
+constexpr PROBUFF_NET_ROLESTAT_stat PROBUFF_NET_ROLESTAT::stat_MAX;
+constexpr int PROBUFF_NET_ROLESTAT::stat_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_ROLESTAT_logic_stat_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
+  return file_level_enum_descriptors_net_2eproto[2];
+}
+bool PROBUFF_NET_ROLESTAT_logic_stat_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT::friends;
+constexpr PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT::familyer;
+constexpr PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT::logic_stat_MIN;
+constexpr PROBUFF_NET_ROLESTAT_logic_stat PROBUFF_NET_ROLESTAT::logic_stat_MAX;
+constexpr int PROBUFF_NET_ROLESTAT::logic_stat_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* enum_logic_chat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[2];
+  return file_level_enum_descriptors_net_2eproto[3];
 }
 bool enum_logic_chat_IsValid(int value) {
   switch (value) {
@@ -3293,7 +3318,7 @@ bool enum_logic_chat_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* enum_chat_channel_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[3];
+  return file_level_enum_descriptors_net_2eproto[4];
 }
 bool enum_chat_channel_IsValid(int value) {
   switch (value) {
@@ -3309,7 +3334,7 @@ bool enum_chat_channel_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eunit_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[4];
+  return file_level_enum_descriptors_net_2eproto[5];
 }
 bool eunit_IsValid(int value) {
   switch (value) {
@@ -3324,7 +3349,7 @@ bool eunit_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eunitstat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[5];
+  return file_level_enum_descriptors_net_2eproto[6];
 }
 bool eunitstat_IsValid(int value) {
   switch (value) {
@@ -3340,7 +3365,7 @@ bool eunitstat_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eplays_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[6];
+  return file_level_enum_descriptors_net_2eproto[7];
 }
 bool eplays_IsValid(int value) {
   switch (value) {
@@ -3354,7 +3379,7 @@ bool eplays_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ematching_cancel_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[7];
+  return file_level_enum_descriptors_net_2eproto[8];
 }
 bool ematching_cancel_stat_IsValid(int value) {
   switch (value) {
@@ -3370,7 +3395,7 @@ bool ematching_cancel_stat_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* etype_matching_cancel_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[8];
+  return file_level_enum_descriptors_net_2eproto[9];
 }
 bool etype_matching_cancel_IsValid(int value) {
   switch (value) {
@@ -3386,7 +3411,7 @@ bool etype_matching_cancel_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ematching_confirm_stat_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_net_2eproto);
-  return file_level_enum_descriptors_net_2eproto[9];
+  return file_level_enum_descriptors_net_2eproto[10];
 }
 bool ematching_confirm_stat_IsValid(int value) {
   switch (value) {
@@ -25898,83 +25923,86 @@ void PROBUFF_NET_ERASEFRIEND_RESPONSE::InternalSwap(PROBUFF_NET_ERASEFRIEND_RESP
 
 // ===================================================================
 
-void PROBUFF_NET_ROLELOGIN::InitAsDefaultInstance() {
+void PROBUFF_NET_ROLESTAT::InitAsDefaultInstance() {
 }
-class PROBUFF_NET_ROLELOGIN::_Internal {
+class PROBUFF_NET_ROLESTAT::_Internal {
  public:
-  using HasBits = decltype(std::declval<PROBUFF_NET_ROLELOGIN>()._has_bits_);
+  using HasBits = decltype(std::declval<PROBUFF_NET_ROLESTAT>()._has_bits_);
   static void set_has_m_stat(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_m_logicstat(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
   static void set_has_m_roleid(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
+    (*has_bits)[0] |= 4u;
   }
 };
 
-PROBUFF_NET_ROLELOGIN::PROBUFF_NET_ROLELOGIN(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+PROBUFF_NET_ROLESTAT::PROBUFF_NET_ROLESTAT(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:pbnet.PROBUFF_NET_ROLELOGIN)
+  // @@protoc_insertion_point(arena_constructor:pbnet.PROBUFF_NET_ROLESTAT)
 }
-PROBUFF_NET_ROLELOGIN::PROBUFF_NET_ROLELOGIN(const PROBUFF_NET_ROLELOGIN& from)
+PROBUFF_NET_ROLESTAT::PROBUFF_NET_ROLESTAT(const PROBUFF_NET_ROLESTAT& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_roleid_, &from.m_roleid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_stat_) -
-    reinterpret_cast<char*>(&m_roleid_)) + sizeof(m_stat_));
-  // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_ROLELOGIN)
+  ::memcpy(&m_stat_, &from.m_stat_,
+    static_cast<size_t>(reinterpret_cast<char*>(&m_roleid_) -
+    reinterpret_cast<char*>(&m_stat_)) + sizeof(m_roleid_));
+  // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_ROLESTAT)
 }
 
-void PROBUFF_NET_ROLELOGIN::SharedCtor() {
-  ::memset(&m_roleid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_stat_) -
-      reinterpret_cast<char*>(&m_roleid_)) + sizeof(m_stat_));
+void PROBUFF_NET_ROLESTAT::SharedCtor() {
+  ::memset(&m_stat_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&m_roleid_) -
+      reinterpret_cast<char*>(&m_stat_)) + sizeof(m_roleid_));
 }
 
-PROBUFF_NET_ROLELOGIN::~PROBUFF_NET_ROLELOGIN() {
-  // @@protoc_insertion_point(destructor:pbnet.PROBUFF_NET_ROLELOGIN)
+PROBUFF_NET_ROLESTAT::~PROBUFF_NET_ROLESTAT() {
+  // @@protoc_insertion_point(destructor:pbnet.PROBUFF_NET_ROLESTAT)
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void PROBUFF_NET_ROLELOGIN::SharedDtor() {
+void PROBUFF_NET_ROLESTAT::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
-void PROBUFF_NET_ROLELOGIN::ArenaDtor(void* object) {
-  PROBUFF_NET_ROLELOGIN* _this = reinterpret_cast< PROBUFF_NET_ROLELOGIN* >(object);
+void PROBUFF_NET_ROLESTAT::ArenaDtor(void* object) {
+  PROBUFF_NET_ROLESTAT* _this = reinterpret_cast< PROBUFF_NET_ROLESTAT* >(object);
   (void)_this;
 }
-void PROBUFF_NET_ROLELOGIN::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void PROBUFF_NET_ROLESTAT::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void PROBUFF_NET_ROLELOGIN::SetCachedSize(int size) const {
+void PROBUFF_NET_ROLESTAT::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const PROBUFF_NET_ROLELOGIN& PROBUFF_NET_ROLELOGIN::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PROBUFF_NET_ROLELOGIN_net_2eproto.base);
+const PROBUFF_NET_ROLESTAT& PROBUFF_NET_ROLESTAT::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PROBUFF_NET_ROLESTAT_net_2eproto.base);
   return *internal_default_instance();
 }
 
 
-void PROBUFF_NET_ROLELOGIN::Clear() {
-// @@protoc_insertion_point(message_clear_start:pbnet.PROBUFF_NET_ROLELOGIN)
+void PROBUFF_NET_ROLESTAT::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbnet.PROBUFF_NET_ROLESTAT)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_roleid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_stat_) -
-        reinterpret_cast<char*>(&m_roleid_)) + sizeof(m_stat_));
+  if (cached_has_bits & 0x00000007u) {
+    ::memset(&m_stat_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&m_roleid_) -
+        reinterpret_cast<char*>(&m_stat_)) + sizeof(m_roleid_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* PROBUFF_NET_ROLELOGIN::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* PROBUFF_NET_ROLESTAT::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
@@ -25983,17 +26011,25 @@ const char* PROBUFF_NET_ROLELOGIN::_InternalParse(const char* ptr, ::PROTOBUF_NA
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbnet.PROBUFF_NET_ROLELOGIN.rolelogin_stat m_stat = 1;
+      // .pbnet.PROBUFF_NET_ROLESTAT.stat m_stat = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_stat(static_cast<::pbnet::PROBUFF_NET_ROLELOGIN_rolelogin_stat>(val));
+          _internal_set_m_stat(static_cast<::pbnet::PROBUFF_NET_ROLESTAT_stat>(val));
         } else goto handle_unusual;
         continue;
-      // int64 m_roleid = 2;
+      // .pbnet.PROBUFF_NET_ROLESTAT.logic_stat m_logicstat = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_m_logicstat(static_cast<::pbnet::PROBUFF_NET_ROLESTAT_logic_stat>(val));
+        } else goto handle_unusual;
+        continue;
+      // int64 m_roleid = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           _Internal::set_has_m_roleid(&has_bits);
           m_roleid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -26022,35 +26058,42 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* PROBUFF_NET_ROLELOGIN::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* PROBUFF_NET_ROLESTAT::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:pbnet.PROBUFF_NET_ROLELOGIN)
+  // @@protoc_insertion_point(serialize_to_array_start:pbnet.PROBUFF_NET_ROLESTAT)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbnet.PROBUFF_NET_ROLELOGIN.rolelogin_stat m_stat = 1;
+  // .pbnet.PROBUFF_NET_ROLESTAT.stat m_stat = 1;
   if (_internal_has_m_stat()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->_internal_m_stat(), target);
   }
 
-  // int64 m_roleid = 2;
+  // .pbnet.PROBUFF_NET_ROLESTAT.logic_stat m_logicstat = 2;
+  if (_internal_has_m_logicstat()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_m_logicstat(), target);
+  }
+
+  // int64 m_roleid = 3;
   if (_internal_has_m_roleid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_m_roleid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_roleid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:pbnet.PROBUFF_NET_ROLELOGIN)
+  // @@protoc_insertion_point(serialize_to_array_end:pbnet.PROBUFF_NET_ROLESTAT)
   return target;
 }
 
-size_t PROBUFF_NET_ROLELOGIN::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pbnet.PROBUFF_NET_ROLELOGIN)
+size_t PROBUFF_NET_ROLESTAT::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbnet.PROBUFF_NET_ROLESTAT)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -26058,18 +26101,24 @@ size_t PROBUFF_NET_ROLELOGIN::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    // int64 m_roleid = 2;
+  if (cached_has_bits & 0x00000007u) {
+    // .pbnet.PROBUFF_NET_ROLESTAT.stat m_stat = 1;
     if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_stat());
+    }
+
+    // .pbnet.PROBUFF_NET_ROLESTAT.logic_stat m_logicstat = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_logicstat());
+    }
+
+    // int64 m_roleid = 3;
+    if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
           this->_internal_m_roleid());
-    }
-
-    // .pbnet.PROBUFF_NET_ROLELOGIN.rolelogin_stat m_stat = 1;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_stat());
     }
 
   }
@@ -26082,71 +26131,74 @@ size_t PROBUFF_NET_ROLELOGIN::ByteSizeLong() const {
   return total_size;
 }
 
-void PROBUFF_NET_ROLELOGIN::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pbnet.PROBUFF_NET_ROLELOGIN)
+void PROBUFF_NET_ROLESTAT::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbnet.PROBUFF_NET_ROLESTAT)
   GOOGLE_DCHECK_NE(&from, this);
-  const PROBUFF_NET_ROLELOGIN* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PROBUFF_NET_ROLELOGIN>(
+  const PROBUFF_NET_ROLESTAT* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PROBUFF_NET_ROLESTAT>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbnet.PROBUFF_NET_ROLELOGIN)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbnet.PROBUFF_NET_ROLESTAT)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbnet.PROBUFF_NET_ROLELOGIN)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbnet.PROBUFF_NET_ROLESTAT)
     MergeFrom(*source);
   }
 }
 
-void PROBUFF_NET_ROLELOGIN::MergeFrom(const PROBUFF_NET_ROLELOGIN& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pbnet.PROBUFF_NET_ROLELOGIN)
+void PROBUFF_NET_ROLESTAT::MergeFrom(const PROBUFF_NET_ROLESTAT& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbnet.PROBUFF_NET_ROLESTAT)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      m_roleid_ = from.m_roleid_;
+      m_stat_ = from.m_stat_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_stat_ = from.m_stat_;
+      m_logicstat_ = from.m_logicstat_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      m_roleid_ = from.m_roleid_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
 }
 
-void PROBUFF_NET_ROLELOGIN::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pbnet.PROBUFF_NET_ROLELOGIN)
+void PROBUFF_NET_ROLESTAT::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbnet.PROBUFF_NET_ROLESTAT)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void PROBUFF_NET_ROLELOGIN::CopyFrom(const PROBUFF_NET_ROLELOGIN& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pbnet.PROBUFF_NET_ROLELOGIN)
+void PROBUFF_NET_ROLESTAT::CopyFrom(const PROBUFF_NET_ROLESTAT& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbnet.PROBUFF_NET_ROLESTAT)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PROBUFF_NET_ROLELOGIN::IsInitialized() const {
+bool PROBUFF_NET_ROLESTAT::IsInitialized() const {
   return true;
 }
 
-void PROBUFF_NET_ROLELOGIN::InternalSwap(PROBUFF_NET_ROLELOGIN* other) {
+void PROBUFF_NET_ROLESTAT::InternalSwap(PROBUFF_NET_ROLESTAT* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLELOGIN, m_stat_)
-      + sizeof(PROBUFF_NET_ROLELOGIN::m_stat_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLELOGIN, m_roleid_)>(
-          reinterpret_cast<char*>(&m_roleid_),
-          reinterpret_cast<char*>(&other->m_roleid_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLESTAT, m_roleid_)
+      + sizeof(PROBUFF_NET_ROLESTAT::m_roleid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_ROLESTAT, m_stat_)>(
+          reinterpret_cast<char*>(&m_stat_),
+          reinterpret_cast<char*>(&other->m_stat_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_ROLELOGIN::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_ROLESTAT::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -26442,8 +26494,8 @@ template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_ERASEFRIEND* Arena::CreateMayb
 template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE >(arena);
 }
-template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_ROLELOGIN* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_ROLELOGIN >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_ROLELOGIN >(arena);
+template<> PROTOBUF_NOINLINE ::pbnet::PROBUFF_NET_ROLESTAT* Arena::CreateMaybeMessage< ::pbnet::PROBUFF_NET_ROLESTAT >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbnet::PROBUFF_NET_ROLESTAT >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

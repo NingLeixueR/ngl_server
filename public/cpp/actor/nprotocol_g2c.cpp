@@ -33,7 +33,7 @@ namespace ngl
 			, pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE
 			, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE
 			, pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE
-			, pbnet::PROBUFF_NET_ROLELOGIN
+			, pbnet::PROBUFF_NET_ROLESTAT
 		>();
 	}
 }//namespace ngl

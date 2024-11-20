@@ -140,6 +140,14 @@ namespace ngl
 		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::trigger_event(eevents_logic_rolelogin, lparm);
 	}
 
+	void actor_role::erase_actor_before()
+	{
+		np_eevents_logic_roleoffline lparm;
+		lparm.m_type = eevents_logic_roleoffline;
+		lparm.m_actorid = id_guid();
+		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::trigger_event(eevents_logic_roleoffline, lparm);
+	}
+
 	void actor_role::handle_after()
 	{
 		// ### 同步这次消息的背包变动

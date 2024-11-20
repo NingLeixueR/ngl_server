@@ -715,13 +715,19 @@ message PROBUFF_NET_ERASEFRIEND_RESPONSE
 };
 
 // [回复]玩家上线
-message PROBUFF_NET_ROLELOGIN
+message PROBUFF_NET_ROLESTAT
 {
-	enum rolelogin_stat
+	enum stat
+	{
+		online	= 0;	// 上线
+		offline = 1;	// 下线
+	}
+	optional stat m_stat = 1;
+	enum logic_stat
 	{
 		friends = 0;
 		familyer = 1;
 	}
-	optional rolelogin_stat m_stat = 1;
-	optional int64 m_roleid = 2;
+	optional logic_stat m_logicstat = 2;
+	optional int64 m_roleid = 3;
 };

@@ -52,6 +52,7 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave) 
 		{
 			actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_actor_event(eevents_logic_rolelogin, actorid(tab_self_area));
+			actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_actor_event(eevents_logic_roleoffline, actorid(tab_self_area));
 		}
 
 		static ENUM_ACTOR actor_type()
@@ -94,5 +95,8 @@ namespace ngl
 
 		// # 军团成员上线
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
+
+		// # 军团成员下线
+		bool handle(const message<np_eevents_logic_roleoffline>& adata);
 	};
 }// namespace ngl

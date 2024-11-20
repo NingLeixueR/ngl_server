@@ -359,6 +359,6 @@ namespace ngl
 					return;
 				afamilyers.push_back(afamilyer);
 			});
-		return true;
+		return !afamilyers.empty();
 	}
 }//namespace ngl

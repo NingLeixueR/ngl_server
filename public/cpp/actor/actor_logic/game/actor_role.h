@@ -53,6 +53,8 @@ namespace ngl
 		//# 执行handle之后调用
 		virtual void handle_after();
 
+		virtual void erase_actor_before();
+
 		i64_actorid roleid();
 
 		//# 设置更新角色属性
