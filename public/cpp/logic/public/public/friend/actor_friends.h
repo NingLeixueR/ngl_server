@@ -46,7 +46,7 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave) 
 		{
-			actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_actor_event(
+			actor_events_logic::register_actor_event(
 				{
 					{eevents_logic_rolelogin, actorid(tab_self_area)},
 					{eevents_logic_roleoffline, actorid(tab_self_area)}

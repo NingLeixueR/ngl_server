@@ -106,7 +106,6 @@ namespace ngl
 		{
 #define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
 
-			using actor_events_logic = actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>;
 			// ### 新增actor需要补全
 			auto_actor(
 				null<actor_client>, em_pram(ACTOR_CLIENT)
@@ -182,7 +181,7 @@ namespace ngl
 				/*200000034*/, np_channel_register_reply<pbdb::db_keyvalue>
 				/*200000035*/, np_channel_data<pbdb::db_keyvalue>
 				// ### 事件相关协议 start ### //
-				/*200000036*/, actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::np_event_register
+				/*200000036*/, actor_events_logic::np_event_register
 				/*200000037*/, np_eevents_logic_rolelogin
 				/*200000038*/, np_eevents_logic_roleoffline
 				// ### 事件相关协议 finish ### //
@@ -191,8 +190,8 @@ namespace ngl
 		}
 
 		// ### 事件相关协议 start ### //
-		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
-		actor_events<ngl::ENUM_EVENTS_LOGIC, eevents_logic>::register_parm<np_eevents_logic_roleoffline>(eevents_logic_roleoffline);
+		actor_events_logic::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
+		actor_events_logic::register_parm<np_eevents_logic_roleoffline>(eevents_logic_roleoffline);
 		// ### 事件相关协议 finish ### //
 		
 		// 新增数据存储需要补全

@@ -169,7 +169,7 @@ namespace ngl
 				{
 					afriends.push_back(aactorid);
 				});
-			return true;
+			return !afriends.empty();
 		}
 	};
 }// namespace ngl
