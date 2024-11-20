@@ -1639,8 +1639,7 @@ namespace ngl
 		}
 	};
 
-	//### 用于序列化枚举类型
-
+	// # 用于序列化枚举类型
 	template <typename E, bool IS_ENUM>
 	class enum_operator_push
 	{
