@@ -507,6 +507,12 @@ namespace ngl
 			return basetype((void*)astr.c_str(), (int)(sizeof(char) * astr.size()));
 		}
 
+		template <typename TKEY, typename TVAL>
+		inline bool push(const std::pair<TKEY, TVAL>& apair)
+		{
+			return push(apair.first) && push(apair.second);
+		}
+
 		// # 支持没有参数
 		inline bool push()
 		{
@@ -1069,6 +1075,12 @@ namespace ngl
 			return true;
 		}
 
+		template <typename TKEY, typename TVAL>
+		inline bool pop(std::pair<TKEY, TVAL>& apair)
+		{
+			return pop(apair.first) && pop(apair.second);
+		}
+
 		// # 支持没有参数
 		inline bool pop()
 		{
@@ -1608,6 +1620,14 @@ namespace ngl
 				bytes(item.first);
 				bytes(item.second);
 			}
+			return m_size;
+		}
+
+		template <typename TKEY, typename TVAL>
+		inline int bytes(const std::pair<TKEY, TVAL>& apair)
+		{
+			bytes(apair.first);
+			bytes(apair.second);
 			return m_size;
 		}
 

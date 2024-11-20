@@ -51,9 +51,8 @@ namespace ngl
 
 		struct np_event_register
 		{
-			E_EVENTS m_type;
-			i64_actorid m_actorid;
-			def_portocol(np_event_register, m_type, m_actorid)
+			std::vector<std::pair<E_EVENTS, i64_actorid>> m_vecpair;
+			def_portocol(np_event_register, m_vecpair)
 		};
 
 		static void nregister()
@@ -93,10 +92,17 @@ namespace ngl
 		static void register_actor_event(E_EVENTS atype, i64_actorid aactorid)
 		{
 			auto pro = std::make_shared<np_event_register>();
-			pro->m_type		= atype;
-			pro->m_actorid	= aactorid;
+			pro->m_vecpair.push_back({ atype, aactorid });
 			actor::static_send_actor(actorid(), aactorid, pro);
 		}
+
+		static void register_actor_event(const std::vector<std::pair<E_EVENTS, i64_actorid>>& avecpair)
+		{
+			auto pro = std::make_shared<np_event_register>();
+			pro->m_vecpair = avecpair;
+			actor::static_send_actor(actorid(), nguid::make(), pro);
+		}
+
 
 		// # ´¥·¢ÊÂ¼þ
 		template <typename TPARM>
@@ -119,11 +125,14 @@ namespace ngl
 		bool handle(const message<np_event_register>& adata)
 		{
 			const np_event_register& pro = *adata.get_data();
-			ngl::log_error()->print(
-				"np_event_register {}:E_EVENTS:{} actor:{}", 
-				typeid(E_EVENTS).name(), (int32_t)(pro.m_type), nguid(pro.m_actorid)
-			);
-			m_eventmember[pro.m_type].insert(pro.m_actorid);
+			for (const auto& item : pro.m_vecpair)
+			{
+				ngl::log_error()->print(
+					"np_event_register {}:E_EVENTS:{} actor:{}",
+					typeid(E_EVENTS).name(), (int32_t)(item.first), nguid(item.second)
+				);
+				m_eventmember[item.first].insert(item.second);
+			}
 			return true;
 		}
 	};
