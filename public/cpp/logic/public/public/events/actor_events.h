@@ -103,7 +103,6 @@ namespace ngl
 			actor::static_send_actor(actorid(), nguid::make(), pro);
 		}
 
-
 		// # 触发事件
 		template <typename TPARM>
 		static bool trigger_event(E_EVENTS atype, const TPARM& apram)
@@ -148,8 +147,6 @@ namespace ngl
 		count,
 	};
 
-	using actor_events_logic = actor_events<ENUM_EVENTS_LOGIC, eevents_logic>;
-
 	// 事件类型
 	class np_eevents_logic
 	{
@@ -184,4 +181,6 @@ namespace ngl
 		i64_actorid m_actorid;
 		def_portocol(np_eevents_logic_roleoffline, m_type, m_actorid)
 	};
+
+	using actor_events_logic = actor_events<ENUM_EVENTS_LOGIC, eevents_logic>;
 }//namespace ngl
