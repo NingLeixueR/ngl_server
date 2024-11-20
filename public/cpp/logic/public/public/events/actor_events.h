@@ -108,10 +108,7 @@ namespace ngl
 		template <typename TPARM>
 		static bool trigger_event(E_EVENTS atype, const TPARM& apram)
 		{
-			ngl::log_error()->print(
-				"trigger_event {}:E_EVENTS:{}", 
-				typeid(TPARM).name(), (int32_t)(atype)
-			);
+			ngl::log_error()->print("trigger_event {}:E_EVENTS:{}", typeid(TPARM).name(), (int32_t)(atype));
 			if (check_parm<TPARM>(atype) == false)
 			{
 				ngl::log_error()->print("trigger_event fail!!!");
@@ -151,6 +148,8 @@ namespace ngl
 		count,
 	};
 
+	using actor_events_logic = actor_events<ENUM_EVENTS_LOGIC, eevents_logic>;
+
 	// 事件类型
 	class np_eevents_logic
 	{
@@ -161,6 +160,7 @@ namespace ngl
 
 		eevents_logic m_type;
 	};
+
 	class np_eevents_logic_rolelogin :public np_eevents_logic
 	{
 	public:

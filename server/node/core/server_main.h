@@ -306,7 +306,7 @@ bool start_world()
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
-	ngl::actor_events<ngl::ENUM_EVENTS_LOGIC, ngl::eevents_logic>::getInstance();
+	ngl::actor_events_logic::getInstance();
 	ngl::actor_gm::getInstance();
 	ngl::actor_mail::getInstance();
 	ngl::actor_chat::getInstance();
