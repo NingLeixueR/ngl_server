@@ -347,11 +347,12 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLELOGIN>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata)
 	{
 		log_error()->print(
-			"pbnet::PROBUFF_NET_ROLELOGIN ####### {}:{},", 
-			pbnet::PROBUFF_NET_ROLELOGIN::rolelogin_stat_Name(adata.get_data()->m_stat()), 
+			"pbnet::PROBUFF_NET_ROLESTAT ####### {}:{}:{},", 
+			pbnet::PROBUFF_NET_ROLESTAT::stat_Name(adata.get_data()->m_stat()),
+			pbnet::PROBUFF_NET_ROLESTAT::logic_stat_Name(adata.get_data()->m_logicstat()),
 			nguid(adata.get_data()->m_roleid())
 		);
 		return true;

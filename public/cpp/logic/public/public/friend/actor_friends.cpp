@@ -33,6 +33,7 @@ namespace ngl
 
 		register_handle_custom<actor_friends>::func<
 			np_eevents_logic_rolelogin
+			, np_eevents_logic_roleoffline
 		>(true);
 		
 	}
@@ -89,8 +90,23 @@ namespace ngl
 		std::vector<i64_actorid> lfriends;
 		if (m_friends.get_friends(adata.get_data()->m_actorid, lfriends))
 		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLELOGIN>();
-			pro->set_m_stat(pbnet::PROBUFF_NET_ROLELOGIN::friends);
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLESTAT>();
+			pro->set_m_stat(pbnet::PROBUFF_NET_ROLESTAT::online);
+			pro->set_m_logicstat(pbnet::PROBUFF_NET_ROLESTAT::friends);
+			pro->set_m_roleid(adata.get_data()->m_actorid);
+			send_client(lfriends, pro);
+		}
+		return true;
+	}
+
+	bool actor_friends::handle(const message<np_eevents_logic_roleoffline>& adata)
+	{
+		std::vector<i64_actorid> lfriends;
+		if (m_friends.get_friends(adata.get_data()->m_actorid, lfriends))
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLESTAT>();
+			pro->set_m_stat(pbnet::PROBUFF_NET_ROLESTAT::offline);
+			pro->set_m_logicstat(pbnet::PROBUFF_NET_ROLESTAT::friends);
 			pro->set_m_roleid(adata.get_data()->m_actorid);
 			send_client(lfriends, pro);
 		}

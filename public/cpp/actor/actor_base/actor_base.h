@@ -180,7 +180,10 @@ namespace ngl
 		virtual void		loaddb_finish(bool adbishave) {}
 
 		//# 删除actor时候会被调用
-		virtual void	release() = 0;
+		virtual void		release() = 0;
+
+		//# 移除actor前一刻调用
+		virtual void		erase_actor_before() {}
 #pragma endregion 
 
 		//# 保存dbclient

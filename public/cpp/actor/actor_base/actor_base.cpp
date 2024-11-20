@@ -62,6 +62,7 @@ namespace ngl
 
 		inline void erase_actor_byid()const
 		{
+			m_actor->erase_actor_before();
 			actor_manage::getInstance().erase_actor_byid(m_guid);
 		}
 

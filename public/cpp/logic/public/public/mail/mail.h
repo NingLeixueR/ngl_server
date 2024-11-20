@@ -161,7 +161,7 @@ namespace ngl
 			return &itor->second;
 		}
 
-		// ## 一键操作
+		// # 一键操作
 		void one_touch(i64_actorid aroleid, const std::function<void(int32_t)>& afun)
 		{
 			google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
