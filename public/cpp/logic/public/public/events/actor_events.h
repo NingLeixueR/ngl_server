@@ -89,7 +89,19 @@ namespace ngl
 		}
 
 		// # actor注册关注的event
-		static void register_actor_event(E_EVENTS atype, i64_actorid aactorid)
+		class register_actor_event
+		{
+		public:
+			static void func(E_EVENTS atype, i64_actorid aactorid)
+			{
+				auto pro = std::make_shared<np_event_register>();
+				pro->m_vecpair.push_back({ atype, aactorid });
+				actor::static_send_actor(actorid(), aactorid, pro);
+			}
+		};
+		using tfun = ngl::template_arg_s<register_actor_event, E_EVENTS, i64_actorid>;
+
+		/*static void register_actor_event(E_EVENTS atype, i64_actorid aactorid)
 		{
 			auto pro = std::make_shared<np_event_register>();
 			pro->m_vecpair.push_back({ atype, aactorid });
@@ -101,7 +113,7 @@ namespace ngl
 			auto pro = std::make_shared<np_event_register>();
 			pro->m_vecpair = avecpair;
 			actor::static_send_actor(actorid(), nguid::make(), pro);
-		}
+		}*/
 
 		// # 触发事件
 		template <typename TPARM>
