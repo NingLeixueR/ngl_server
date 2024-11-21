@@ -37,4 +37,32 @@ namespace ngl
 			}
 		}
 	};
+
+
+	template <typename TF, typename ...TARG>
+	class template_arg_s
+	{
+		template_arg_s() = delete;
+		template_arg_s(const template_arg_s&) = delete;
+		template_arg_s& operator=(const template_arg_s&) = delete;
+
+		static void func2(TARG... args)
+		{
+			TF::template func(args...);
+		}
+	public:
+		template <typename ...ARG>
+		static void func(TARG... args, ARG... args2)
+		{
+			func2(args...);
+			if constexpr (sizeof...(ARG) <= sizeof...(TARG))
+			{
+				func2(args2...);
+			}
+			else
+			{
+				func(args2...);
+			}
+		}
+	};
 }//namespace ngl
