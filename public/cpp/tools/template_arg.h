@@ -48,7 +48,7 @@ namespace ngl
 
 		static void func2(TARG... args)
 		{
-			TF::template func(args...);
+			TF::func(args...);
 		}
 	public:
 		template <typename ...ARG>
