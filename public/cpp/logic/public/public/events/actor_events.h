@@ -101,20 +101,6 @@ namespace ngl
 		};
 		using tfun = ngl::template_arg_s<register_actor_event, E_EVENTS, i64_actorid>;
 
-		/*static void register_actor_event(E_EVENTS atype, i64_actorid aactorid)
-		{
-			auto pro = std::make_shared<np_event_register>();
-			pro->m_vecpair.push_back({ atype, aactorid });
-			actor::static_send_actor(actorid(), aactorid, pro);
-		}
-
-		static void register_actor_event(const std::vector<std::pair<E_EVENTS, i64_actorid>>& avecpair)
-		{
-			auto pro = std::make_shared<np_event_register>();
-			pro->m_vecpair = avecpair;
-			actor::static_send_actor(actorid(), nguid::make(), pro);
-		}*/
-
 		// # ´¥·¢ÊÂ¼þ
 		template <typename TPARM>
 		static bool trigger_event(E_EVENTS atype, const TPARM& apram)
