@@ -12,7 +12,8 @@ namespace ngl
 	struct actorparm
 	{
 		actorparmbase	m_parm;
-		int				m_weight	= 10;			// 权重:单次获取线程后处理消息的数量		
+		int32_t			m_weight	= 10;			// 权重:单次获取线程后处理消息的数量
+		int32_t			m_timeout	= 0x7fffffff;	// 超时:(当actor处理消息超过此时间)
 		bool			m_broadcast	= false;		// 是否支持广播(如果需要加载dbclient，需要支持广播)
 	};
 

@@ -26,7 +26,8 @@ namespace ngl
 					.m_id		= aroleid,
 					.m_manage_dbclient = true
 				},
-				.m_weight = 0x7fffffff,
+				.m_weight = 10,
+				.m_timeout = 1000,
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
