@@ -27,17 +27,22 @@ namespace ngl
 		tls<handle_pram>				m_list;		// 待处理消息列表
 		actor_stat						m_stat;		// actor状态
 		std::shared_mutex				m_mutex;	// 锁:[m_list:待处理消息列表]
-		int								m_weight;	// 权重
+		int32_t							m_weight;	// 权重
+		int32_t							m_timeout;	// 超时:(当actor处理消息超过此时间)
+		bool							m_release;  // 释放将忽略权重和超时
 
 		explicit impl_actor(const actorparm& aparm)
 			: m_stat(actor_stat_init)
 			, m_weight(aparm.m_weight)
+			, m_timeout(aparm.m_timeout)
+			, m_release(false)
 		{
 		}
 
 		// # 释放actor所持有的资源
 		inline void release(actor* aactor)
 		{
+			m_release = true;
 			actor_handle(nullptr, 0x7fffffff);
 			aactor->save();
 			m_list.clear();
@@ -121,14 +126,21 @@ namespace ngl
 			{
 				ngl::log_error()->print("actor handle weight/count[{}/{}]", aweight, llist.size());
 			}
+			time_t lbeg = localtime::gettimems();
+			int32_t lcount = 0;
 			while (--aweight >= 0 && llist.empty() != true)
 			{
+				if (m_release == false && localtime::gettimems()- lbeg> m_timeout)
+				{
+					break;
+				}
 				handle_pram& lparm = llist.front();
 				if (ahandle(aactor, athreadid, lparm) == true)
 				{
 					aactor->handle_after(lparm);
 				}
 				llist.pop_front();
+				++lcount;
 			}
 			if (llist.empty() == false)
 			{
