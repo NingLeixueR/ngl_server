@@ -30,7 +30,7 @@ namespace ngl
 		std::list<ptractor>									m_actorlist;
 		// # 包含哪些actortype
 		std::set<i16_actortype>								m_actortype;
-		// # 删除actor后需要执行的操作
+		// # 删除actor后需要执行的操作(延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
 		std::map<nguid, std::function<void()>>				m_delactorfun;
 
 		impl_actor_manage() :
@@ -42,8 +42,10 @@ namespace ngl
 			if (m_workthread.empty() == false)
 				return;
 			m_threadnum = apthreadnum;
-			for (int i = 0; i < m_threadnum; ++i)
+			for (int32_t i = 0; i < m_threadnum; ++i)
+			{
 				m_workthread.push_back(new nthread(i));
+			}
 		}
 
 		inline void get_type(std::vector<i16_actortype>& aactortype) const
@@ -74,18 +76,29 @@ namespace ngl
 
 		}
 
+		// 当前进程是ACTORSERVER返回"actor_server::actorid()"否则返回"actor_client::actorid()"
+		inline nguid nodetypebyguid()
+		{
+			return xmlnode::m_nodetype == ACTORSERVER ? actor_server::actorid() : actor_client::actorid();
+		}
+
 		inline bool add_actor(const ptractor& apactor, const std::function<void()>& afun)
 		{
 			const nguid& guid = apactor->guid();
 			{
 				ngl_lock;
 				if (m_actorbyid.contains(guid))
+				{
+					std::cout << std::format("impl_actor_manage add_actor m_actorbyid.contains(guid:{}) fail", guid) << std::endl;
 					return false;
+				}
 				m_actorbyid[guid] = apactor;
-				if(apactor->isbroadcast())
-					m_actorbroadcast[guid] = apactor;
 				m_actortype.insert(apactor->type());
 				m_actorbytype[apactor->type()][guid] = apactor;
+				if (apactor->isbroadcast())
+				{
+					m_actorbroadcast[guid] = apactor;
+				}
 			}
 
 			if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
@@ -99,15 +112,7 @@ namespace ngl
 					.m_actorservermass = false
 				};
 				pro->m_fun = afun;
-				nguid lguid;
-				if (xmlnode::m_nodetype == ACTORSERVER)
-				{
-					lguid = actor_server::actorid();
-				}
-				else
-				{
-					lguid = actor_client::actorid();
-				}
+				nguid lguid = nodetypebyguid();
 				handle_pram lparm = handle_pram::create(lguid, nguid::make(), pro);
 				push_task_id(lguid, lparm, false);
 			}
@@ -120,36 +125,37 @@ namespace ngl
 
 		inline void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun)
 		{
-			bool isrunfun = false;
+			// 通知actor_client已经删除actor 
 			auto pro = std::make_shared<np_actornode_update_mass>();
 			pro->m_mass = np_actornode_update
 			{
 				.m_id = nconfig::m_nodeid,
 				.m_del = {aguid.id()}
 			};
-			// 删除的actor 
-			nguid lclientguid = actor_client::actorid();
-			handle_pram lparm = handle_pram::create(lclientguid, nguid::make(), pro);
-			push_task_id(lclientguid, lparm, false);
+			nguid lcguid = nodetypebyguid();
+			handle_pram lparm = handle_pram::create(lcguid, nguid::make(), pro);
+			push_task_id(lcguid, lparm, false);
 
+			bool isrunfun = false;
 			ptractor lpactor = nullptr;
 			{
 				ngl_lock;
-				auto itor = m_actorbyid.find(aguid);
-				if (itor == m_actorbyid.end())
+				ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
+				if (lpactorptr == nullptr)
+				{
+					std::cout << std::format("impl_actor_manage erase_actor_byid m_actorbyid.find(guid:{}) fail", aguid) << std::endl;
 					return;
-				lpactor = itor->second;
+				}
+				lpactor = *lpactorptr;
 
-				m_actorbyid.erase(itor);
+				// # 从actor_manage中移除
+				m_actorbyid.erase(aguid);
 				m_actorbytype[aguid.type()].erase(aguid);
 				m_actorbroadcast.erase(aguid);
 
 				if (lpactor->get_activity_stat() == actor_stat_list)
 				{
-					auto litorfind = std::find_if(
-						m_actorlist.begin(), 
-						m_actorlist.end(), 
-						[&aguid](const ptractor& ap)->bool
+					auto litorfind = std::find_if(m_actorlist.begin(), m_actorlist.end(), [&aguid](const ptractor& ap)->bool
 						{
 							return aguid == ap->id_guid();
 						}
@@ -201,7 +207,8 @@ namespace ngl
 			ngl_lock;
 			return m_actorbyid.find(aguid) != m_actorbyid.end();
 		}
-
+		
+		// # 将thread与actor一起交给impl_actor_manage
 		inline void push(const ptractor& apactor, nthread* atorthread)
 		{
 			std::function<void()> lfun = nullptr;
@@ -217,15 +224,14 @@ namespace ngl
 				}
 				if (!m_actorbyid.contains(apactor->id_guid()))
 				{//erase_actor_byid
-					auto itorfun = m_delactorfun.find(apactor->id_guid());
-					if (itorfun != m_delactorfun.end())
+					nguid leraseguid = apactor->id_guid();
+					std::function<void()>* lpfun = tools::findmap(m_delactorfun, leraseguid);
+					if (lpfun != nullptr)
 					{
-						lfun.swap(itorfun->second);
-						m_delactorfun.erase(itorfun);
+						lfun.swap(*lpfun);
+						m_delactorfun.erase(leraseguid);
 						apactor->set_activity_stat(actor_stat_close);
-
 						ngl_post;
-						
 						break;
 					}
 				}
@@ -248,16 +254,13 @@ namespace ngl
 			}
 		}
 
+		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
 		inline void nosafe_push_task_id(const ptractor& lpactor, handle_pram& apram)
 		{
 			actor_stat lstat = lpactor->get_activity_stat();
 			if (lstat == actor_stat_close || lstat == actor_stat_init)
 			{
-				std::string lstr = std::format("actor_mange push task actor:{} stat:{}", 
-					em<ENUM_ACTOR>::get_name(lpactor->type()), 
-					lstat == actor_stat_close?"actor_stat_close":"actor_stat_init"
-				);
-				std::cout << lstr << std::endl;
+				std::cout << std::format("actor_mange push task actor:{} stat:{} fail", lpactor->guid(), (int32_t)lstat) << std::endl;
 				return;
 			}
 			lpactor->push(apram);
@@ -272,19 +275,19 @@ namespace ngl
 		inline ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram, bool abool)
 		{
 			static ptractor lnull(nullptr);
-			auto itor = m_actorbyid.find(aguid);
-			if (itor == m_actorbyid.end())
+			ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid); 
+			if (lpactorptr == nullptr)
 			{
 				if (!abool)
 					return lnull;
 				// 发给actor_client/actor_server
 				// 如果是actor_server结点需要发送给actor_server
-				nguid lguid = nconfig::m_nodetype == ACTORSERVER? actor_server::actorid() :actor_client::actorid();				
-				itor = m_actorbyid.find(lguid);
-				if (itor == m_actorbyid.end())
+				nguid lguid = nodetypebyguid();
+				lpactorptr = tools::findmap(m_actorbyid, lguid);
+				if (lpactorptr == nullptr)
 					return lnull;
 			}
-			return itor->second;
+			return *lpactorptr;
 		}
 
 		inline void push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
@@ -312,11 +315,11 @@ namespace ngl
 			// 2.然后发给actor_client，发给其他服务器
 			if (aotherserver == true)
 			{
-				nguid lguid = actor_client::actorid();
-				auto itor = m_actorbyid.find(lguid);
-				if (itor == m_actorbyid.end())
+				nguid lguid = nodetypebyguid();
+				ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
+				if (lpptractor == nullptr)
 					return;
-				nosafe_push_task_id(itor->second, apram);
+				nosafe_push_task_id(*lpptractor, apram);
 			}
 		}
 

@@ -225,7 +225,7 @@ namespace ngl
 		tools& operator=(const tools&) = delete;
 
 	public:
-#pragma region findmap
+#pragma region map
 		// map²Ù×÷·â×°
 		template <typename TE, typename T>
 		static const T* findmap(const std::map<TE, T>& amap, const TE& aid)
@@ -246,6 +246,20 @@ namespace ngl
 		{
 			auto itor = amap.find(aid);
 			return itor == amap.end() ? nullptr : &itor->second;
+		}
+
+		template <typename TE, typename T>
+		static T* insertmap(std::map<TE, T>& amap, const TE& akey, const T& avalue)
+		{
+			auto lpair = amap.try_emplace(akey, avalue);
+			return lpair.second ? &(lpair.first->second) : nullptr;
+		}
+
+		template <typename TE, typename T>
+		static T* insertmap(std::unordered_map<TE, T>& amap, const TE& akey, const T& avalue)
+		{
+			auto lpair = amap.try_emplace(akey, avalue);
+			return lpair.second ? &(lpair.first->second) : nullptr;
 		}
 #pragma endregion 
 
