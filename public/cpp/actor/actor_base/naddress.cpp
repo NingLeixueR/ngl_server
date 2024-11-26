@@ -19,33 +19,25 @@ namespace ngl
 	public:
 		static bool set_node(const nactornode& anode)
 		{
-			Try
+			actor_node_session* lpsession = tools::findmap(m_session, anode.m_serverid);
+			if (lpsession != nullptr)
 			{
-				auto itor = m_session.find(anode.m_serverid);
-				if (itor != m_session.end())
-				{
-					itor->second.m_node = anode;
-					return false;
-				}
-				else
-				{
-					m_session.try_emplace(anode.m_serverid, anode);
-					return true;
-				}
+				lpsession->m_node = anode;
+				return false;
 			}
-			Catch
-			return false;
+			m_session.try_emplace(anode.m_serverid, anode);
+			return true;
 		}
 
 		static void print_address()
 		{
 			auto lstream = log_error();
-			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
-			for (const auto [key, value] : m_actorserver)
+			(*lstream) << "+-+-+-+-+-+-+-+-+-[actor address]+-+-+-+-+-+-+-+-+-+" << std::endl;
+			for (const auto& [key, value] : m_actorserver)
 			{
 				(*lstream) << std::format("[{}]", key) << std::endl;
 			}
-			(*lstream) << "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+" << std::endl;
+			(*lstream) << "+-+-+-+-+-+-+-+-+-[actor address]+-+-+-+-+-+-+-+-+-+" << std::endl;
 			(*lstream).print("");
 		}
 
@@ -83,49 +75,47 @@ namespace ngl
 
 		static void set_session(i32_serverid aserverid, i32_sessionid asession)
 		{
-			Try
+			actor_node_session* lpsession = tools::findmap(m_session, aserverid);
+			if (lpsession == nullptr)
 			{
-				auto itor = m_session.find(aserverid);
-				Assert(itor != m_session.end())
-				itor->second.m_session = asession;
-			}Catch
+				log_error()->print("set_session(serverid:{},sessionid:{}) fail", aserverid, asession);
+				return;
+			}
+			lpsession->m_session = asession;
 		}
 
 		static i32_sessionid get_session(i32_serverid aserverid)
 		{
-			Try
+			actor_node_session* lpsession = tools::findmap(m_session, aserverid);
+			if (lpsession == nullptr)
 			{
-				auto itor = m_session.find(aserverid);
-				Assert(itor != m_session.end())
-				return itor->second.m_session;
-			}Catch
-			return -1;
+				log_error()->print("get_session(serverid:{}) fail", aserverid);
+				return -1;
+			}
+			return lpsession->m_session;
 		}
 
 		static i32_serverid get_server(const nguid& aguid)
 		{
-			auto itor = m_actorserver.find(aguid);
-			if (itor == m_actorserver.end())
+			i32_serverid* lpserverid = tools::findmap(m_actorserver, aguid);
+			if (lpserverid == nullptr)
 			{
-				log_error()->print("impl_actor_address.get_server({})", aguid);
+				log_error()->print("get_session(nguid:{}) fail", aguid);
 				return -1;
 			}
-			return itor->second;
+			return *lpserverid;
 		}
 
 		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
 		{
-			Try
+			std::set<nguid>* lset = tools::findmap(m_actortypeserver, (i16_actortype)atype);
+			if (lset != nullptr)
 			{
-				std::set<nguid>* lset = tools::findmap(m_actortypeserver, (i16_actortype)atype);
-				if (lset != nullptr)
-				{
-					std::ranges::for_each(*lset, [&avec](const nguid& aguid)
-						{
-							avec.insert(get_server(aguid));
-						});
-				}
-			}Catch
+				std::ranges::for_each(*lset, [&avec](const nguid& aguid)
+					{
+						avec.insert(get_server(aguid));
+					});
+			}
 		}
 
 		static void foreach(const naddress::foreach_callbackfun& afun)
