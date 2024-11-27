@@ -77,6 +77,7 @@ namespace ngl
 		nactornode lnode;
 		lnode.m_name = tab->m_name;
 		lnode.m_serverid = aserverid;
+		lnode.m_nodetype = tab->m_type;
 		naddress::set_node(lnode);
 		naddress::set_session(aserverid, asession);
 	}
@@ -85,10 +86,10 @@ namespace ngl
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return;
-		const tab_servers* tab	= ttab_servers::tab();
-		i64_actorid lactorid	= id_guid();
-		const tab_servers* tabactor	= ttab_servers::tab(aactorserver);
-		nets::connect(aactorserver, [lactorid, tab, tabactor](int asession)
+		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tabactor = ttab_servers::tab(aactorserver);
+		i64_actorid	lactorid = id_guid();
+		nets::connect(aactorserver, [tab, tabactor, lactorid](int asession)
 			{
 				i64_actorid lactorserve = actor_server::actorid();
 				set_node(tabactor->m_id, asession);
@@ -99,7 +100,11 @@ namespace ngl
 				{
 					.m_node
 					{
-						.m_name = std::format("actor_client:{}", tab->m_id),
+						.m_name = std::format(
+							"node<id:{},type:{},name:{},tcount:{},area:{}>", 
+							tab->m_id, em<NODE_TYPE>::get_name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area
+						),
+						.m_nodetype = tab->m_type,
 						.m_serverid = tab->m_id,
 					}
 				};
@@ -107,11 +112,11 @@ namespace ngl
 				naddress::ergodic(
 					[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
 					{
-						std::ranges::for_each(aactorserver, [&lpram](const auto& item)
-							{
-								if (lpram.m_node.m_serverid == item.second)
-									lpram.m_add.push_back(item.first);
-							});
+						for (const std::pair<const nguid, i32_serverid>& item : aactorserver)
+						{
+							if (lpram.m_node.m_serverid == item.second)
+								lpram.m_add.push_back(item.first);
+						}
 						return true;
 					});
 				nets::sendbysession(asession, lpram, lactorserve, lactorid);
@@ -146,7 +151,7 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
-					log_warn()->print("connect success nodeid:{}", nconfig::m_nodeid);
+					log_error()->print("activ_connect connect node:{} success", aserverid);
 
 					set_node(aserverid, asession);
 
@@ -166,7 +171,7 @@ namespace ngl
 			auto lparm				= adata.get_data();
 			const tab_servers* tab	= ttab_servers::tab();
 			Assert(tab != nullptr)
-			for(const auto& node :lparm->m_vec)
+			for(const nactornode& node :lparm->m_vec)
 			{
 				if (server_session::sessionid(node.m_serverid) == -1)
 				{
@@ -183,11 +188,11 @@ namespace ngl
 	{
 		np_actornode_update lpro;
 		lpro.m_id = alocalserverid;
-		std::ranges::for_each(naddress::get_actorserver_map(), [&lpro, alocalserverid](const auto& item)
-			{
-				if (alocalserverid == item.second)
-					lpro.m_add.push_back(item.first);
-			});
+		for (const std::pair<const nguid, i32_serverid>& item : naddress::get_actorserver_map())
+		{
+			if (alocalserverid == item.second)
+				lpro.m_add.push_back(item.first);
+		}
 		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
 
@@ -220,17 +225,15 @@ namespace ngl
 			set_connect_fnish(lparm->m_id);
 			connect_fnish();
 
-			if (xmlnode::node_type() == ngl::LOGIN)
+			// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
+			NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
+			if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
 			{
-				NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
-				if (lservertype == ngl::GAME || lservertype == ngl::GATEWAY)
-				{
-					auto pro = std::make_shared<np_actorserver_connect>();
-					pro->m_serverid = lserverid;
-					nguid lguid = nguid::make_self(ACTOR_LOGIN);
-					handle_pram lparm = handle_pram::create(lguid, guid(), pro);
-					actor_manage::getInstance().push_task_id(lguid, lparm, false);
-				}
+				auto pro = std::make_shared<np_actorserver_connect>();
+				pro->m_serverid = lserverid;
+				nguid lguid = nguid::make_self(ACTOR_LOGIN);
+				handle_pram lparm = handle_pram::create(lguid, guid(), pro);
+				actor_manage::getInstance().push_task_id(lguid, lparm, false);
 			}
 		}Catch
 		return true;
@@ -259,18 +262,9 @@ namespace ngl
 
 		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)
 		{
-			i64_actorid lactorid = id_guid();
-			naddress::foreach(
-				[&lparm, lactorid](const actor_node_session& anode)->bool
-				{
-					if (anode.m_node.m_serverid != nconfig::m_nodeid)
-					{
-						nets::sendbysession(
-							anode.m_session, lparm->m_mass, nguid::moreactor(), lactorid
-						);
-					}
-					return true;
-				});
+			auto pro = std::make_shared<np_actornode_update>();
+			*pro = lparm->m_mass;
+			send_actor(actor_server::actorid(), pro);
 		}
 		
 		if (lparm->m_fun != nullptr)

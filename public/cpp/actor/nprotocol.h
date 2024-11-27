@@ -46,6 +46,7 @@ namespace ngl
 	struct nactornode
 	{
 		std::string		m_name;						// 服务器名称
+		NODE_TYPE		m_nodetype;					// 服务器类型
 		i32_serverid	m_serverid = -1;			// 服务器id
 		std::vector<i16_actortype>	m_actortype;	// ENUM_ACTOR_TYPE
 

@@ -124,7 +124,7 @@ namespace ngl
 			swaplist(llist);
 			if (aweight < llist.size())
 			{
-				ngl::log_error()->print("actor handle weight/count[{}/{}]", aweight, llist.size());
+				ngl::log_error()->print("actor handle [weight:{}/count:{}]", aweight, llist.size());
 			}
 			time_t lbeg = localtime::gettimems();
 			int32_t lcount = 0;
