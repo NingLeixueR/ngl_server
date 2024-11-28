@@ -92,28 +92,27 @@ namespace ngl
 				std::map<i32_serverid, np_actornode_update> lmapprotocol;
 				naddress::ergodic(
 					[&lrecv, &lmapprotocol](
-						const std::map<nguid, i32_serverid>& amap, 
-						const std::map<i32_serverid, actor_node_session>& asession
+						const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>& asession
 					)->bool
 					{
-						std::ranges::for_each(amap, [&lrecv, &lmapprotocol, &asession](const auto& apair)
-							{
-								const nguid& lguid = apair.first;
-								i32_serverid lserverid = apair.second;
-								if (asession.contains(lserverid) == false)
-									return;
-								if (lrecv->m_node.m_serverid == lserverid)
-									return;
-								np_actornode_update& pro = lmapprotocol[lserverid];
-								pro.m_id = lserverid;
-								pro.m_add.push_back(lguid.id());
-							});
+						for (const std::pair<const nguid, i32_serverid>& ipair : amap)
+						{
+							const nguid& lguid = ipair.first;
+							i32_serverid lserverid = ipair.second;
+							if (asession.contains(lserverid) == false)
+								continue;
+							if (lrecv->m_node.m_serverid == lserverid)
+								continue;
+							np_actornode_update& pro = lmapprotocol[lserverid];
+							pro.m_id = lserverid;
+							pro.m_add.push_back(lguid.id());
+						}
 						return true;
 					});
-				std::ranges::for_each(lmapprotocol, [this, &lpack](auto& item)
-					{
-						nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
-					});
+				for (const std::pair<const i32_serverid, np_actornode_update>& item : lmapprotocol)
+				{
+					nets::sendbysession(lpack->m_id, item.second, nguid::moreactor(), id_guid());
+				}
 			}
 		}Catch
 		return true;
