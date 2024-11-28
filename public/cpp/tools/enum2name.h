@@ -19,34 +19,38 @@ namespace ngl
 		e2n_never,      // 不改变大小写
 	};
 
-	template <typename ENUMT, enum_e2n TOLOWER = e2n_toupper>
+	template <typename ENUMT>
 	class enum2name
 	{
 		enum2name() = delete;
 		enum2name(const enum2name&) = delete;
 		enum2name& operator=(const enum2name&) = delete;
 
-		static std::map<int, std::map<ENUMT, std::string>> m_datae2n;
+		struct data
+		{
+			std::string m_tolower;		// 转换为小写
+			std::string m_toupper;		// 转换为大写
+			std::string m_never;		// 不改变大小写
+		};
+
+		static std::map<int, std::map<ENUMT, data>> m_datae2n;
 		static std::map<int, std::map<std::string, ENUMT>> m_datan2e;
 
 		static void rename(std::string& astr)
 		{
-			if constexpr (TOLOWER == e2n_tolower)
-			{
-				std::ranges::transform(astr, astr.begin(), tolower);
-			}
-			if constexpr (TOLOWER == e2n_toupper)
-			{
-				std::ranges::transform(astr, astr.begin(), toupper);
-			}			
+			std::ranges::transform(astr, astr.begin(), tolower);
 		}
 	public:
 		static void set(ENUMT aenum, const char* aname, int anum = 0)
 		{
-			std::string str(aname);
-			rename(str);
-			m_datae2n[anum][aenum] = str;
-			m_datan2e[anum][str] = aenum;
+			data& ltemp = m_datae2n[anum][aenum];
+			ltemp.m_never = aname;
+			std::ranges::transform(ltemp.m_tolower, ltemp.m_never.begin(), tolower);
+			std::ranges::transform(ltemp.m_toupper, ltemp.m_never.begin(), toupper);
+
+			m_datan2e[anum][ltemp.m_never] = aenum;
+			m_datan2e[anum][ltemp.m_tolower] = aenum;
+			m_datan2e[anum][ltemp.m_toupper] = aenum;
 		}
 
 		static ENUMT enum_null()
@@ -67,7 +71,7 @@ namespace ngl
 			return itor2->second;
 		}
 
-		static const char* get_name(const ENUMT& aenum, int anum = 0)
+		static const data* get_data(const ENUMT& aenum, int anum = 0)
 		{
 			auto itor1 = m_datae2n.find(anum);
 			if (itor1 == m_datae2n.end())
@@ -75,29 +79,53 @@ namespace ngl
 			auto itor2 = itor1->second.find(aenum);
 			if (itor2 == itor1->second.end())
 				return nullptr;
-			return itor2->second.c_str();
+			return &itor2->second;
+		}
+		static const char* get_name(const ENUMT& aenum, int anum = 0)
+		{
+			const data* ltempdata = get_data(aenum, anum);
+			if (ltempdata == nullptr)
+				return nullptr;
+			return ltempdata->m_never.c_str();
 		}
 
+		static const char* get_tolower_name(const ENUMT& aenum, int anum = 0)
+		{
+			const data* ltempdata = get_data(aenum, anum);
+			if (ltempdata == nullptr)
+				return nullptr;
+			return ltempdata->m_tolower.c_str();
+		}
+
+		static const char* get_toupper_name(const ENUMT& aenum, int anum = 0)
+		{
+			const data* ltempdata = get_data(aenum, anum);
+			if (ltempdata == nullptr)
+				return nullptr;
+			return ltempdata->m_toupper.c_str();
+		}
+		
 		static void print()
 		{
-			std::ranges::for_each(m_datae2n, [](const auto& apair)
+			//static std::map<int, std::map<ENUMT, data>> m_datae2n;
+			for (const std::pair<const int, std::map<ENUMT, data>>& item : m_datae2n)
+			{
+				for (const std::pair<const ENUMT, data>& ipair : item.second)
 				{
-					std::ranges::for_each(apair.second, [](const auto& akv)
-						{
-							std::cout << std::format("{}:{}", (int)akv.first, akv.secod) << std::endl;
-						});
-				});
+					std::cout << std::format("{}:{}", (int)ipair.first, ipair.secod.m_never) << std::endl;
+				}
+			}
 		}
 	};
 
-	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_toupper*/>
-	std::map<int, std::map<ENUMT, std::string>> enum2name<ENUMT, TOLOWER>::m_datae2n;
+	template <typename ENUMT>
+	std::map<int, std::map<ENUMT, typename enum2name<ENUMT>::data>> enum2name<ENUMT>::m_datae2n;
 
-	template <typename ENUMT, enum_e2n TOLOWER/* = e2n_toupper*/>
-	std::map<int, std::map<std::string, ENUMT>> enum2name<ENUMT, TOLOWER>::m_datan2e;
+	template <typename ENUMT>
+	std::map<int, std::map<std::string, ENUMT>> enum2name<ENUMT>::m_datan2e;
 
-	template <typename ENUMT, enum_e2n TOLOWER = e2n_toupper>
-	using em = enum2name<ENUMT, TOLOWER>;
+	template <typename ENUMT>
+	using em = enum2name<ENUMT>;
 
 	#define em_pram(NAME) NAME,#NAME
 }// namespace ngl

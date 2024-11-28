@@ -428,6 +428,15 @@ namespace ngl
 #pragma region send_actor
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
+		void send_actor(const nguid& aguid, const T& adata)
+		{
+			auto pro = std::make_shared<T>(adata);
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), pro);
+			push_task_id(aguid, lpram, true);
+		}
+
+		//# 向指定actor发送数据
+		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata);

@@ -43,7 +43,7 @@ namespace ngl
 		template <typename Source>
 		static std::string fun(const Source& source)
 		{
-			return std::move(std::format("{}", source));
+			return std::format("{}", source);
 		}
 
 		static std::string fun(const std::string& source)
