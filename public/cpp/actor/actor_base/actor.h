@@ -33,7 +33,6 @@ namespace ngl
 		std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
 
 #pragma region register // 消息注册接口
-
 		template <typename TDerived, EPROTOCOL_TYPE TYPE>
 		static nrfun<TDerived, TYPE>& ninst()
 		{
