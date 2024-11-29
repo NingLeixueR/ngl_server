@@ -137,7 +137,7 @@ namespace ngl
 
 		std::cout << "log dir:[" << lpath << "]" << std::endl;
 
-		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y%m%d_%H%M%S");
+		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%H%M%S");
 		std::string lopfile = std::format("{}/{}_{}.log", lpath, ltimestr, m_fcount);
 		++m_fcount;
 		
@@ -159,7 +159,7 @@ namespace ngl
 	{
 		const tab_servers* tab = ttab_servers::tab(alog->m_serverid);
 		m_stream << 
-			std::format("[{}][name:{},serverid:{},tcount:{}][{}:{}]", ngl::localtime::time2str(alog->m_time, "%Y/%m/%d %H:%M:%S"), 
+			std::format("[{}][name:{},serverid:{},tcount:{}]{}\n#\n{}\n#", ngl::localtime::time2str(alog->m_time, "%H:%M:%S"), 
 				tab->m_name, tab->m_id, tab->m_tcount, alog->m_src, alog->m_data
 			)<< std::endl;
 		++m_count;

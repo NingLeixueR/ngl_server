@@ -8,16 +8,7 @@
 
 namespace ngl
 {
-	/////////////////////////////////////////
-	// 用于关联枚举和字符串名字
-	// ENUMT需要关联的枚举
-	// TOLOWER是否统一将字符串进行小写处理
-	enum enum_e2n
-	{
-		e2n_tolower,	// 转换为小写
-		e2n_toupper,	// 转换为大写
-		e2n_never,      // 不改变大小写
-	};
+	// # 用于关联枚举和字符串名字
 
 	template <typename ENUMT>
 	class enum2name
@@ -107,7 +98,6 @@ namespace ngl
 		
 		static void print()
 		{
-			//static std::map<int, std::map<ENUMT, data>> m_datae2n;
 			for (const std::pair<const int, std::map<ENUMT, data>>& item : m_datae2n)
 			{
 				for (const std::pair<const ENUMT, data>& ipair : item.second)
