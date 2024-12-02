@@ -789,7 +789,7 @@ namespace ngl
 				}
 				catch (...)
 				{
-					print("log error!");
+					std::cout << "log error!" << std::endl;
 				}
 			}
 		}
