@@ -779,6 +779,8 @@ namespace ngl
 						ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
 						logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
 					}
+					if (m_actortype == ENUM_ACTOR::ACTOR_LOG)
+						return;
 					if (m_init == false || sysconfig::logiswrite() == false)
 						return;
 					m_data.m_loglevel = m_level;
