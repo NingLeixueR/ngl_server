@@ -28,21 +28,23 @@ namespace ngl
 		int32_t							m_weight;	// 权重
 		int32_t							m_timeout;	// 超时:(当actor处理消息超过此时间)
 		bool							m_release;  // 释放将忽略权重和超时
+		actor*							m_actor;
 
-		explicit impl_actor(const actorparm& aparm)
+		explicit impl_actor(const actorparm& aparm, actor* aactor)
 			: m_stat(actor_stat_init)
 			, m_weight(aparm.m_weight)
 			, m_timeout(aparm.m_timeout)
 			, m_release(false)
+			, m_actor(aactor)
 		{
 		}
 
 		// # 释放actor所持有的资源
-		inline void release(actor* aactor)
+		inline void release()
 		{
 			m_release = true;
-			actor_handle(nullptr, 0x7fffffff);
-			aactor->save();
+			actor_handle(0x7fffffff);
+			m_actor->save();
 			m_list.clear();
 		}
 
@@ -75,29 +77,29 @@ namespace ngl
 		}
 	private:
 		// # 设置kcp
-		inline void set_kcp(actor* aactor, handle_pram& aparm)const
+		inline void set_kcp(handle_pram& aparm)
 		{
 			if (aparm.m_pack != nullptr
 				&& aparm.m_pack->m_protocol == ENET_KCP
-				&& aactor->is_single() == false
+				&& m_actor->is_single() == false
 				)
 			{
-				aactor->set_kcpssion(aparm.m_pack->m_id);
+				m_actor->set_kcpssion(aparm.m_pack->m_id);
 			}
 		}
 
-		inline bool ahandle(actor* aactor, i32_threadid athreadid, handle_pram& aparm)const
+		inline bool ahandle(i32_threadid athreadid, handle_pram& aparm)
 		{
-			if (aactor == nullptr)
+			if (m_actor == nullptr)
 				return false;
 			Try
 			{
-				set_kcp(aactor, aparm);
-				nrfunbase* lprfun = aactor->m_actorfun[aparm.m_protocoltype];
+				set_kcp(aparm);
+				nrfunbase* lprfun = m_actor->m_actorfun[aparm.m_protocoltype];
 				Assert(lprfun != nullptr)
-				if (lprfun->handle_switch(aactor, athreadid, aparm))
+				if (lprfun->handle_switch(m_actor, athreadid, aparm))
 					return true;
-				lprfun->notfindfun(aactor, athreadid, aparm);
+				lprfun->notfindfun(m_actor, athreadid, aparm);
 			}Catch
 			return false;
 		}
@@ -114,15 +116,15 @@ namespace ngl
 			m_list.insert(m_list.begin(), als.begin(), als.end());
 		}
 	public:
-		inline void actor_handle(actor* aactor, i32_threadid athreadid, int aweight)
+		inline void actor_handle(i32_threadid athreadid, int aweight)
 		{
-			if (aactor == nullptr)
+			if (m_actor == nullptr)
 				return;
 			tls<handle_pram> llist;
 			swaplist(llist);
 			if (aweight < llist.size())
 			{
-				ngl::log_error()->print("actor handle [weight:{}/count:{}]", aweight, llist.size());
+				m_actor->log_error()->print("actor handle [weight:{}/count:{}]", aweight, llist.size());
 			}
 			time_t lbeg = localtime::gettimems();
 			int32_t lcount = 0;
@@ -133,9 +135,9 @@ namespace ngl
 					break;
 				}
 				handle_pram& lparm = llist.front();
-				if (ahandle(aactor, athreadid, lparm) == true)
+				if (ahandle(athreadid, lparm) == true)
 				{
-					aactor->handle_after(lparm);
+					m_actor->handle_after(lparm);
 				}
 				llist.pop_front();
 				++lcount;
@@ -146,9 +148,9 @@ namespace ngl
 			}
 		}
 
-		inline void actor_handle(actor* aactor, i32_threadid athreadid)
+		inline void actor_handle(i32_threadid athreadid)
 		{
-			actor_handle(aactor, athreadid, m_weight);
+			actor_handle(athreadid, m_weight);
 		}
 	};
 
@@ -156,7 +158,7 @@ namespace ngl
 		actor_base(aparm.m_parm),
 		m_actorfun({nullptr})
 	{
-		m_impl_actor.make_unique(aparm);
+		m_impl_actor.make_unique(aparm, this);
 		set_broadcast(aparm.m_broadcast);
 	}
 
@@ -165,7 +167,7 @@ namespace ngl
 
 	void actor::release()
 	{
-		m_impl_actor()->release(this);
+		m_impl_actor()->release();
 	}
 
 	bool actor::list_empty()
@@ -190,7 +192,7 @@ namespace ngl
 
 	void actor::actor_handle(i32_threadid athreadid)
 	{
-		m_impl_actor()->actor_handle(this, athreadid);
+		m_impl_actor()->actor_handle(athreadid);
 	}
 
 	bool actor::handle(const message<np_actor_broadcast>& adata)
