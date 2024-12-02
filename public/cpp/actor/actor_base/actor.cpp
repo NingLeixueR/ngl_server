@@ -8,8 +8,6 @@
 
 namespace ngl
 {
-#define DEF_ACTOR_USE_DEQUE 
-
 	struct actor::impl_actor
 	{
 		impl_actor() = delete;
