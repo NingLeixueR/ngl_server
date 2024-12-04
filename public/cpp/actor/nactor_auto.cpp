@@ -161,7 +161,7 @@ namespace ngl
 				/*200000014*/, np_actorserver_connect
 				/*200000015*/, np_actor_session_close
 				/*200000016*/, np_actor_disconnect_close
-				/*200000017*/, np_actor_logitem
+				/*200000017*/, np_logitem
 				/*200000018*/, np_actor_broadcast
 				/*200000019*/, np_actor_reloadcsv
 				/*200000020*/, np_actor_csv_verify_version

@@ -37,7 +37,7 @@ namespace ngl
 	void actor_log::nregister()
 	{
 		register_handle_custom<actor_log>::func<
-			np_actor_logitem
+			np_logitem
 		>(false);
 	}
 
@@ -45,10 +45,11 @@ namespace ngl
 	{
 	}
 
-	bool actor_log::handle(const message<np_actor_logitem>& adata)
+	bool actor_log::handle(const message<np_logitem>& adata)
 	{
-		const logitem& ldata = adata.get_data()->m_data;
-		m_log->printf(&ldata);
+		return true;
+		const np_logitem* ldata = adata.get_data();
+		m_log->printf(ldata);
 		return true;
 	}
 }//namespace ngl
