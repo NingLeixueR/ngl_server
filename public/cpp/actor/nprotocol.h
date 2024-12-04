@@ -13,6 +13,7 @@
 #include "pack.h"
 #include "type.h"
 #include "xml.h"
+#include "threadtools.h"
 
 #include <source_location>
 #include <iostream>
@@ -702,7 +703,7 @@ namespace ngl
 #endif
 
 	// ---- 日志发送 
-	struct logitem
+	struct np_logitem
 	{
 		int				m_serverid = -1;			// 服务器id
 		ELOGLEVEL		m_loglevel;					// 日志类型
@@ -712,9 +713,8 @@ namespace ngl
 
 		def_portocol_function(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
 	};
-	struct np_actor_logitem :public std::enable_shared_from_this<np_actor_logitem>
+	struct np_actor_logitem
 	{
-		logitem m_data;
 	private:		
 		/** 临时数据 **/
 		std::string				m_src;						// 触发日志的文件位置
@@ -725,7 +725,7 @@ namespace ngl
 		std::stringstream		m_stream;
 		ELOGLEVEL				m_level;
 		/** 临时数据 **/
-		static bool m_init;
+		static bool				m_init;
 	public:
 		np_actor_logitem(ELOGLEVEL alevel = ELOG_NONE):
 			m_actortype(ACTOR_NONE),
@@ -742,12 +742,18 @@ namespace ngl
 			m_logtype(alogtype),
 			m_source(asource),
 			m_level(alevel)
-		{}
+		{
+		}
+
+		~np_actor_logitem()
+		{
+		}
 	private:
 		void set_source()
 		{
 			std::string_view str = m_source.file_name();
-			if (auto pos = FindSrcPos(str); pos != std::string_view::npos)
+			auto pos = FindSrcPos(str);
+			if (pos != std::string_view::npos)
 			{
 				m_src = str.substr(pos + 1);
 			}
@@ -758,7 +764,7 @@ namespace ngl
 			m_src = std::format("{:^20}:{:^5}", m_src, m_source.line());
 		}
 
-		void send(std::shared_ptr<np_actor_logitem> pro);
+		void send(std::shared_ptr<np_logitem> pro);
 	public:
 		template <typename ...ARGS>
 		void print(const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
@@ -771,23 +777,26 @@ namespace ngl
 				{
 					std::string ldata = m_stream.str();
 					ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
-					m_data.m_time = (int32_t)localtime::gettime();
+					int32_t ltime = (int32_t)localtime::gettime();
 					set_source();
 					if (sysconfig::logconsole())
 					{
 						char ltimebuff[1024];
-						ngl::localtime::time2str(ltimebuff, 1024, m_data.m_time, "%Y/%m/%d %H:%M:%S");
+						ngl::localtime::time2str(ltimebuff, 1024, ltime, "%Y/%m/%d %H:%M:%S");
 						logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
 					}
 					if (m_actortype == ENUM_ACTOR::ACTOR_LOG)
 						return;
 					if (m_init == false || sysconfig::logiswrite() == false)
 						return;
-					m_data.m_loglevel = m_level;
-					m_data.m_serverid = nconfig::m_nodeid;
-					m_data.m_src.swap(m_src);
-					m_data.m_data.swap(ldata);
-					send(shared_from_this());
+
+					auto pro = std::make_shared<np_logitem>();
+					pro->m_loglevel = m_level;
+					pro->m_serverid = nconfig::m_nodeid;
+					pro->m_time = ltime;
+					pro->m_src.swap(m_src);
+					pro->m_data.swap(ldata);
+					send(pro);
 				}
 				catch (...)
 				{
@@ -815,8 +824,6 @@ namespace ngl
 			}
 			return *this;
 		}
-
-		def_portocol(np_actor_logitem, m_data)
 	};
 
 	template <typename TDATA>

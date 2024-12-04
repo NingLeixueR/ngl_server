@@ -141,6 +141,7 @@ namespace ngl
 		std::string lopfile = std::format("{}/{}_{}.log", lpath, ltimestr, m_fcount);
 		++m_fcount;
 		
+		m_stream = std::ofstream();
 		m_stream.open(lopfile, std::ios::binary);
 		m_count = 0;
 	}
@@ -148,20 +149,20 @@ namespace ngl
 	struct logfile_default : public logfile
 	{
 		logfile_default(bool aisactor, const config& aconfig);
-		void printf(const logitem* alog) final;
+		void printf(const np_logitem* alog) final;
 	};
 
 	logfile_default::logfile_default(bool aisactor, const config& aconfig) :
 		logfile(aisactor, aconfig)
 	{}
 
-	void logfile_default::printf(const logitem* alog)
+	void logfile_default::printf(const np_logitem* alog)
 	{
 		const tab_servers* tab = ttab_servers::tab(alog->m_serverid);
 		m_stream << 
-			std::format("[{}][name:{},serverid:{},tcount:{}]{}\n#\n{}\n#", ngl::localtime::time2str(alog->m_time, "%H:%M:%S"), 
+			std::format("[{}][name:{},serverid:{},tcount:{}]{}\n#\n{}\n#\n", ngl::localtime::time2str(alog->m_time, "%H:%M:%S"), 
 				tab->m_name, tab->m_id, tab->m_tcount, alog->m_src, alog->m_data
-			)<< std::endl;
+			);
 		++m_count;
 		if (check_count())
 		{
@@ -174,14 +175,14 @@ namespace ngl
 	struct logfile_bi : public logfile
 	{
 		logfile_bi(bool aisactor, const config& aconfig);
-		void printf(const logitem* alog) final;
+		void printf(const np_logitem* alog) final;
 	};
 
 	logfile_bi::logfile_bi(bool aisactor, const config& aconfig) :
 		logfile(aisactor, aconfig)
 	{}
 
-	void logfile_bi::printf(const logitem* alog)
+	void logfile_bi::printf(const np_logitem* alog)
 	{
 		m_stream << alog->m_data << std::endl;
 	}

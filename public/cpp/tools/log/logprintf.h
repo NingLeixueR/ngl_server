@@ -22,7 +22,7 @@ namespace ngl
 		static void printf(ELOGLEVEL acolor, const char* apos, const char* atimestr, const char* amsg);
 	};
 
-	struct logitem;
+	struct np_logitem;
 
 	struct logfile
 	{
@@ -46,7 +46,7 @@ namespace ngl
 
 		void create();
 
-		virtual void printf(const logitem* alog) = 0;
+		virtual void printf(const np_logitem* alog) = 0;
 
 		static std::shared_ptr<logfile> create_make(bool aisactor, const config& aconfig);
 	};
