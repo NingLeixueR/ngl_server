@@ -28,9 +28,17 @@ namespace ngl
 	{
 		struct config
 		{
-			ELOG_TYPE	m_type;			// 日志类型 ELOG_TYPE
-			std::string m_dir;			// 文件夹
-			int			m_flush_time;	// 写入文件的间隔
+			i32_actordataid m_id;			// nlogactor
+			std::string		m_dir;			// 文件夹
+			enum
+			{
+				min_flush_time = 1000,
+			};
+			int32_t			m_flush_time;	// 写入文件的间隔
+			int32_t flush_time()
+			{
+				return std::min(m_flush_time, (int32_t)min_flush_time);
+			}
 		};
 		std::ofstream	m_stream;
 		config			m_config;
@@ -47,6 +55,8 @@ namespace ngl
 		void create();
 
 		virtual void printf(const np_logitem* alog) = 0;
+
+		void flush();
 
 		static std::shared_ptr<logfile> create_make(bool aisactor, const config& aconfig);
 	};

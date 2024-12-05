@@ -7,11 +7,13 @@
 
 #include "ttab_servers.h"
 #include "time_wheel.h"
+#include "actor_log.h"
 #include "logprintf.h"
 #include "localtime.h"
 #include "enum2name.h"
 #include "nprotocol.h"
 #include "xmlinfo.h"
+#include "actor.h"
 #include "nlog.h"
 #include "xml.h"
 
@@ -85,17 +87,24 @@ namespace ngl
 	{
 		create();
 
+		int32_t lflushtime = m_config.flush_time();
 		wheel_parm lparm
 		{
-			.m_ms = m_config.m_flush_time,
-			.m_intervalms = [this](int64_t) {return m_config.m_flush_time; } ,
+			.m_ms = lflushtime,
+			.m_intervalms = [lflushtime](int64_t) {return lflushtime; } ,
 			.m_count = 0x7fffffff,
 			.m_fun = [this](const wheel_node*)
 			{
-				m_stream.flush();
+				auto pro = std::make_shared<np_logflush>();
+				actor::static_send_actor(actor_log::actorid(nlogactor::actor_type(m_config.m_id), nlogactor::log_type(m_config.m_id)), nguid::make(), pro);
 			}
 		};
 		m_logwheel.addtimer(lparm);
+	}
+
+	void logfile::flush()
+	{
+		m_stream.flush();
 	}
 
 	bool file_exists(const std::string& apath)
@@ -189,7 +198,7 @@ namespace ngl
 
 	std::shared_ptr<logfile> logfile::create_make(bool aisactor, const config& aconfig)
 	{
-		switch (aconfig.m_type)
+		switch (nlogactor::log_type(aconfig.m_id))
 		{
 		case ELOG_LOCAL:
 			return std::make_shared<logfile_default>(aisactor, aconfig);

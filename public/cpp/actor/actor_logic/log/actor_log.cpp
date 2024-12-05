@@ -23,7 +23,7 @@ namespace ngl
 
 		logfile::config lconfig
 		{
-			.m_type = nlogactor::log_type(aid),
+			.m_id = aid,
 			.m_dir = std::format("log/{}/{}/{}", ttab_servers::tab()->m_name, ltimestr, lname),
 			.m_flush_time = 10,
 		};
@@ -37,7 +37,8 @@ namespace ngl
 	void actor_log::nregister()
 	{
 		register_handle_custom<actor_log>::func<
-			np_logitem
+			np_logitem,
+			np_logflush
 		>(false);
 	}
 
@@ -47,9 +48,14 @@ namespace ngl
 
 	bool actor_log::handle(const message<np_logitem>& adata)
 	{
-		return true;
 		const np_logitem* ldata = adata.get_data();
 		m_log->printf(ldata);
+		return true;
+	}
+
+	bool actor_log::handle(const message<np_logflush>& adata)
+	{
+		m_log->flush();
 		return true;
 	}
 }//namespace ngl
