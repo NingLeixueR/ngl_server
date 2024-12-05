@@ -162,28 +162,29 @@ namespace ngl
 				/*200000015*/, np_actor_session_close
 				/*200000016*/, np_actor_disconnect_close
 				/*200000017*/, np_logitem
-				/*200000018*/, np_actor_broadcast
-				/*200000019*/, np_actor_reloadcsv
-				/*200000020*/, np_actor_csv_verify_version
-				/*200000021*/, np_actor_senditem
-				/*200000022*/, np_actor_gatewayinfo_updata
-				/*200000023*/, np_actor_addmail
-				/*200000024*/, np_actor_activity
-				/*200000025*/, np_actor_gatewayid_updata
-				/*200000026*/, np_actorswitch_process<np_actorswitch_process_role>
-				/*200000027*/, np_actor_kcp
-				/*200000028*/, np_calendar
-				/*200000029*/, np_actor_close
-				/*200000030*/, np_channel_register<pbdb::db_brief>
-				/*200000031*/, np_channel_register_reply<pbdb::db_brief>
-				/*200000032*/, np_channel_data<pbdb::db_brief>
-				/*200000033*/, np_channel_register<pbdb::db_keyvalue>
-				/*200000034*/, np_channel_register_reply<pbdb::db_keyvalue>
-				/*200000035*/, np_channel_data<pbdb::db_keyvalue>
+				/*200000018*/, np_logflush
+				/*200000019*/, np_actor_broadcast
+				/*200000020*/, np_actor_reloadcsv
+				/*200000021*/, np_actor_csv_verify_version
+				/*200000022*/, np_actor_senditem
+				/*200000023*/, np_actor_gatewayinfo_updata
+				/*200000024*/, np_actor_addmail
+				/*200000025*/, np_actor_activity
+				/*200000026*/, np_actor_gatewayid_updata
+				/*200000027*/, np_actorswitch_process<np_actorswitch_process_role>
+				/*200000028*/, np_actor_kcp
+				/*200000029*/, np_calendar
+				/*200000030*/, np_actor_close
+				/*200000031*/, np_channel_register<pbdb::db_brief>
+				/*200000032*/, np_channel_register_reply<pbdb::db_brief>
+				/*200000033*/, np_channel_data<pbdb::db_brief>
+				/*200000034*/, np_channel_register<pbdb::db_keyvalue>
+				/*200000035*/, np_channel_register_reply<pbdb::db_keyvalue>
+				/*200000036*/, np_channel_data<pbdb::db_keyvalue>
 				// ### 事件相关协议 start ### //
-				/*200000036*/, actor_events_logic::np_event_register
-				/*200000037*/, np_eevents_logic_rolelogin
-				/*200000038*/, np_eevents_logic_roleoffline
+				/*200000037*/, actor_events_logic::np_event_register
+				/*200000038*/, np_eevents_logic_rolelogin
+				/*200000039*/, np_eevents_logic_roleoffline
 				// ### 事件相关协议 finish ### //
 				
 			> (EPROTOCOL_TYPE_CUSTOM);

@@ -45,5 +45,6 @@ namespace ngl
 		virtual ~actor_log();
 
 		bool handle(const message<np_logitem>& adata);
+		bool handle(const message<np_logflush>& adata);
 	};
 }//namespace ngl
