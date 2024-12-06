@@ -153,6 +153,10 @@ namespace ngl
 
 		ENUM_ACTOR lactortype = nlogactor::actor_type(m_config.m_id);
 		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : em<ENUM_ACTOR>::get_tolower_name(lactortype);
+		if (lname == "")
+		{
+			Throw("not create path {}", lpath);
+		}
 		lpath = std::format("{}/{}", lpath, lname);
 		if (file_exists(lpath) == false)
 		{
