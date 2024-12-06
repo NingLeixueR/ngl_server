@@ -142,7 +142,7 @@ namespace ngl
 				, null<actor_friends>, em_pram(ACTOR_FRIENDS)
 				, em_events_null(actor_events_logic)
 			);
-			em<ENUM_ACTOR>::set(ACTOR_EVENTS, "ACTOR_EVENTS");
+			//em<ENUM_ACTOR>::set(ACTOR_EVENTS, "ACTOR_EVENTS");
 
 			// 新增内部协议需要补充
 			tprotocol::customs::template func <
