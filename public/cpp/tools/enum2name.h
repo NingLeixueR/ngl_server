@@ -9,7 +9,6 @@
 namespace ngl
 {
 	// # 用于关联枚举和字符串名字
-
 	template <typename ENUMT>
 	class enum2name
 	{

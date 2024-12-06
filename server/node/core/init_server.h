@@ -67,9 +67,6 @@ bool init_server(int aid)
 	const ngl::tab_servers* tab = ngl::ttab_servers::tab();
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
-	// # 启动事件监听
-	//ngl::events::init();
-
 	// # 初始化actor管理模块
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 
