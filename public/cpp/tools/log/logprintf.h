@@ -44,9 +44,8 @@ namespace ngl
 		config			m_config;
 		int				m_count = 0;
 		int				m_fcount = 0;
-		bool			m_isactor;
 
-		logfile(bool aisactor, const config& aconfig);
+		logfile(const config& aconfig);
 
 		bool check_count()const;
 
@@ -58,6 +57,6 @@ namespace ngl
 
 		void flush();
 
-		static std::shared_ptr<logfile> create_make(bool aisactor, const config& aconfig);
+		static std::shared_ptr<logfile> create_make(const config& aconfig);
 	};
 }// namespace ngl

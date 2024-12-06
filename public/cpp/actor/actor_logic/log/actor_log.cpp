@@ -16,19 +16,14 @@ namespace ngl
 				.m_weight = 0x7fffffff
 			})
 	{
-		ENUM_ACTOR lactortype = nlogactor::actor_type(aid);
-		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : em<ENUM_ACTOR>::get_tolower_name(lactortype);
-
-		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y%m%d");
-
 		logfile::config lconfig
 		{
 			.m_id = aid,
-			.m_dir = std::format("log/{}/{}/{}", ttab_servers::tab()->m_name, ltimestr, lname),
+			.m_dir = std::format("log/{}", ttab_servers::tab()->m_name),
 			.m_flush_time = 10,
 		};
 		nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);
-		m_log = logfile::create_make(nlogactor::log_type(aid) != ELOG_LOCAL, lconfig);
+		m_log = logfile::create_make(lconfig);
 	}
 
 	void actor_log::init()
