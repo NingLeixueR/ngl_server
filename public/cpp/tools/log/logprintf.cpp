@@ -81,9 +81,8 @@ namespace ngl
 		::printf("\n");
 	}
 
-	logfile::logfile(bool aisactor, const config& aconfig) :
-		m_config(aconfig),
-		m_isactor(aisactor)
+	logfile::logfile(const config& aconfig) :
+		m_config(aconfig)
 	{
 		create();
 
@@ -126,28 +125,58 @@ namespace ngl
 		m_stream.close();
 	}
 
+	std::string& elog_name(ELOG_TYPE aactortype)
+	{
+		static std::string llocal = "local";
+		static std::string lnetwork = "network";
+		static std::string lbi = "bi";
+		static std::string lnone = "none";
+		switch (aactortype)
+		{
+		case ELOG_LOCAL:
+			return llocal;
+		case ELOG_NETWORK:
+			return lnetwork;
+		case ELOG_BI:
+			return lbi;
+		}
+		return lnone;
+	}
+
 	void logfile::create()
 	{	
-		std::string lpath("./");
-		lpath += m_config.m_dir;
+		std::string lpath = std::format("./{}", m_config.m_dir);
 		if (file_exists(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}
-		
-		lpath += '/';
-		lpath += m_isactor ? "net" : "local";
 
+		ENUM_ACTOR lactortype = nlogactor::actor_type(m_config.m_id);
+		const char* lname = (lactortype == ACTOR_NONE) ? "sys_global" : em<ENUM_ACTOR>::get_tolower_name(lactortype);
+		lpath = std::format("{}/{}", lpath, lname);
 		if (file_exists(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}
-		lpath += '/';
+
+		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y%m%d");
+		lpath = std::format("{}/{}", lpath, ltimestr);
+		if (file_exists(lpath) == false)
+		{
+			Throw("not create path {}", lpath);
+		}
+
+		std::string lelogname = elog_name(nlogactor::log_type(m_config.m_id));
+		lpath = std::format("{}/{}", lpath, lelogname);
+		if (file_exists(lpath) == false)
+		{
+			Throw("not create path {}", lpath);
+		}
 
 		std::cout << "log dir:[" << lpath << "]" << std::endl;
 
-		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%H%M%S");
-		std::string lopfile = std::format("{}/{}_{}.log", lpath, ltimestr, m_fcount);
+		std::string ldaytimestr = tools::time2str((int)localtime::gettime(), "%H%M%S");
+		std::string lopfile = std::format("{}/{}_{}.log", lpath, ldaytimestr, m_fcount);
 		++m_fcount;
 		
 		m_stream = std::ofstream();
@@ -157,12 +186,12 @@ namespace ngl
 
 	struct logfile_default : public logfile
 	{
-		logfile_default(bool aisactor, const config& aconfig);
+		logfile_default(const config& aconfig);
 		void printf(const np_logitem* alog) final;
 	};
 
-	logfile_default::logfile_default(bool aisactor, const config& aconfig) :
-		logfile(aisactor, aconfig)
+	logfile_default::logfile_default(const config& aconfig) :
+		logfile(aconfig)
 	{}
 
 	void logfile_default::printf(const np_logitem* alog)
@@ -183,12 +212,12 @@ namespace ngl
 	// ### BI
 	struct logfile_bi : public logfile
 	{
-		logfile_bi(bool aisactor, const config& aconfig);
+		logfile_bi(const config& aconfig);
 		void printf(const np_logitem* alog) final;
 	};
 
-	logfile_bi::logfile_bi(bool aisactor, const config& aconfig) :
-		logfile(aisactor, aconfig)
+	logfile_bi::logfile_bi(const config& aconfig) :
+		logfile(aconfig)
 	{}
 
 	void logfile_bi::printf(const np_logitem* alog)
@@ -196,16 +225,16 @@ namespace ngl
 		m_stream << alog->m_data << std::endl;
 	}
 
-	std::shared_ptr<logfile> logfile::create_make(bool aisactor, const config& aconfig)
+	std::shared_ptr<logfile> logfile::create_make(const config& aconfig)
 	{
 		switch (nlogactor::log_type(aconfig.m_id))
 		{
 		case ELOG_LOCAL:
-			return std::make_shared<logfile_default>(aisactor, aconfig);
+			return std::make_shared<logfile_default>(aconfig);
 		case ELOG_NETWORK:
-			return std::make_shared<logfile_default>(aisactor, aconfig);
+			return std::make_shared<logfile_default>(aconfig);
 		case ELOG_BI:
-			return std::make_shared<logfile_bi>(aisactor, aconfig); 
+			return std::make_shared<logfile_bi>(aconfig);
 		default:
 			return nullptr;
 		}
