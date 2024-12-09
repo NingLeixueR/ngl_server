@@ -88,8 +88,7 @@ namespace ngl
 		// ## 发送原始udp包并等待其返回
 		bool sendu_waitrecv(
 			const asio_udp_endpoint& aendpoint, 
-			const char* buf, 
-			int len, 
+			const char* buf, int len, 
 			const std::function<void(char*, int)>& afun
 		)
 		{
@@ -107,8 +106,7 @@ namespace ngl
 		// ## 发起连接
 		void connect(const std::string& akcpsess
 			, i64_actorid aactorid
-			, const std::string& aip
-			, i16_port aport
+			, const std::string& aip, i16_port aport
 			, const std::function<void(i32_session)>& afun
 		);
 		void connect(const std::string& akcpsess
