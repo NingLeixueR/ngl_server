@@ -73,14 +73,22 @@ jobs:
           make
           sudo make install
     
-    - name: Download and install Protobuf
+      # 下载并安装 Protobuf 3.13
+    - name: Install Protobuf 3.13
       run: |
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz
-        tar -xzvf protobuf-all-3.13.0.tar.gz
-        cd protobuf-3.13.0
+        PROTOBUF_VERSION="3.13.0"
+        curl -OL "https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protobuf-all-$PROTOBUF_VERSION.tar.gz"
+        tar -xzvf protobuf-all-$PROTOBUF_VERSION.tar.gz
+        cd protobuf-$PROTOBUF_VERSION
         ./configure
-        make
+        make -j$(nproc)
         sudo make install
+        sudo ldconfig
+
+    # 验证 Protobuf 安装
+    - name: Verify Protobuf installation
+      run: |
+        protoc --version
         
     - name: Download and build curl
       run: |
