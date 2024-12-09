@@ -151,12 +151,61 @@ namespace ngl
 
 		inline bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 		{
-			return spack(asessionid, apack);
+			service_tcp* tcp = get_tcp(asessionid);
+			if (tcp == nullptr)
+				return false;
+			int32_t lsize = 0;
+			int32_t lpos = 0;
+			if (apack->m_pos != apack->m_len)
+			{
+				lsize = apack->m_len - apack->m_pos;
+				lpos = apack->m_pos;
+			}
+			else
+			{
+				lsize = apack->m_pos;
+				lpos = 0;
+			}
+			if (lsize < 0)
+				return false;
+
+			tcp->m_socket.async_send(
+				asio::buffer(&apack->m_buff[lpos], lsize),
+				[this, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
+				{
+					handle_write(tcp, ec, apack);
+					if (ec)
+					{
+						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
+						return;
+					}
+				}
+			);
+			return true;
+			//return spack(asessionid, apack);
 		}
 
 		inline bool sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 		{
-			return spack(asessionid, apack);
+			service_tcp* tcp = get_tcp(asessionid);
+			if (tcp == nullptr)
+				return false;
+			pack* lpackptr = (pack*)apack.get();
+
+			tcp->m_socket.async_send(
+				asio::buffer(lpackptr->m_buff, lpackptr->m_pos),
+				[this, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
+				{
+					handle_write(tcp, ec, apack);
+					if (ec)
+					{
+						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
+						return;
+					}
+				}
+			);
+			return true;
+			//return spack(asessionid, apack);
 		}
 
 		template <typename TPACK>
