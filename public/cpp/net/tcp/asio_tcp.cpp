@@ -70,8 +70,7 @@ namespace ngl
 		}
 
 		inline std::shared_ptr<service_tcp> connect(
-			const str_ip& aip
-			, i16_port aport
+			const str_ip& aip, i16_port aport
 			, const tcp_connectcallback& afun
 			, int acount
 		)
