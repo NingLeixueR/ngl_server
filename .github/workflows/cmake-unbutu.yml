@@ -87,6 +87,7 @@ jobs:
     - name: Verify Protobuf Installation
       run: |
         protoc --version
+        ldconfig -p | grep protobuf
         
     - name: Download and build curl
       run: |
