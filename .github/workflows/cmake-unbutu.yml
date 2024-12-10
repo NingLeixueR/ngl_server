@@ -72,22 +72,6 @@ jobs:
           cd hiredis
           make
           sudo make install
-          
-    - name: Remove old protobuf libraries
-      run: |
-        sudo apt-get remove --purge -y protobuf-compiler
-        sudo apt-get autoremove -y
-
-      # 下载并安装 Protobuf 3.13
-    - name: Download protobuf 3.13
-      run: |
-        curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protobuf-all-3.13.0.tar.gz
-        tar -xvzf protobuf-all-3.13.0.tar.gz
-        cd protobuf-3.13.0
-        ./configure
-        make
-        sudo make install
-        sudo ldconfig
 
     - name: Verify Protobuf Installation
       run: |
