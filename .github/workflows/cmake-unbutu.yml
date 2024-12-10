@@ -73,10 +73,9 @@ jobs:
           make
           sudo make install
           
-    - name: Remove old protobuf libraries
+    - name: Remove existing protobuf (if any)
       run: |
-        sudo apt-get remove --purge -y protobuf-compiler
-        sudo apt-get autoremove -y
+       sudo apt-get remove --purge -y protobuf-compiler libprotobuf-dev libprotobuf-lite-dev
 
       # 下载并安装 Protobuf 3.13
     - name: Download protobuf 3.13
