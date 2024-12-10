@@ -73,20 +73,10 @@ jobs:
           make
           sudo make install
           
-    - name: Verify Protobuf Installation22222222
-      run: |
-        protoc --version
-        ldconfig -p | grep protobuf
-
     - name: Remove any existing protobuf installation
       run: |
           sudo apt-get remove -y protobuf-compiler
 
-    - name: Verify Protobuf Installation3333333
-      run: |
-        protoc --version
-        ldconfig -p | grep protobuf
-     
       # 下载并安装 Protobuf 3.13
     - name: Download protobuf 3.13
       run: |
