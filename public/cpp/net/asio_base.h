@@ -47,8 +47,8 @@ namespace ngl
 		char*					m_buff2;
 		bool					m_is_lanip;
 		std::shared_mutex		m_mutex;
-		bool					m_issend;
-		std::list<node_pack>	m_list; // 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
+		bool					m_issend;	// 是否发送状态
+		std::list<node_pack>	m_list;		// 发送队列(因为asio异步操作,不能在没有执行完成再次调用)
 
 		service_io(serviceio_info& amsi, i32_session asessionid);
 		virtual ~service_io();

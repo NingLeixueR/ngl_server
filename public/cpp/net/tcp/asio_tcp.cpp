@@ -127,7 +127,7 @@ namespace ngl
 			return lp == nullptr ? nullptr : lp->get();
 		}
 
-		/*template <typename T>
+		template <typename T>
 		inline bool spack(i32_sessionid asessionid, std::shared_ptr<T>& apack)
 		{
 			service_tcp* tcp = get_tcp(asessionid);
@@ -147,134 +147,85 @@ namespace ngl
 			if (llist != nullptr && llist->empty() == false)
 				do_send(tcp, llist);
 			return true;
-		}*/
+		}
 
 		inline bool sendpack(i32_sessionid asessionid, std::shared_ptr<pack>& apack)
 		{
-			service_tcp* tcp = get_tcp(asessionid);
-			if (tcp == nullptr)
-				return false;
-			int32_t lsize = 0;
-			int32_t lpos = 0;
-			if (apack->m_pos != apack->m_len)
-			{
-				lsize = apack->m_len - apack->m_pos;
-				lpos = apack->m_pos;
-			}
-			else
-			{
-				lsize = apack->m_pos;
-				lpos = 0;
-			}
-			if (lsize < 0)
-				return false;
-
-			tcp->m_socket.async_send(
-				asio::buffer(&apack->m_buff[lpos], lsize),
-				[this, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
-				{
-					handle_write(tcp, ec, apack);
-					if (ec)
-					{
-						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
-						return;
-					}
-				}
-			);
-			return true;
-			//return spack(asessionid, apack);
+			return spack(asessionid, apack);
 		}
 
 		inline bool sendpack(i32_sessionid asessionid, std::shared_ptr<void>& apack)
 		{
-			service_tcp* tcp = get_tcp(asessionid);
-			if (tcp == nullptr)
-				return false;
-			pack* lpackptr = (pack*)apack.get();
+			return spack(asessionid, apack);
+		}
 
+		template <typename TPACK>
+		void async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
+		{
 			tcp->m_socket.async_send(
-				asio::buffer(lpackptr->m_buff, lpackptr->m_pos),
-				[this, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
+				asio::buffer(abuff, abufflen),
+				[this, alist, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
 				{
+					alist->pop_front();
 					handle_write(tcp, ec, apack);
 					if (ec)
 					{
 						log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
 						return;
 					}
+					do_send(tcp, alist);
 				}
 			);
-			return true;
-			//return spack(asessionid, apack);
 		}
 
-		//template <typename TPACK>
-		//void async_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist, std::shared_ptr<TPACK>& apack, char* abuff, int32_t abufflen)
-		//{
-		//	tcp->m_socket.async_send(
-		//		asio::buffer(abuff, abufflen),
-		//		[this, alist, tcp, apack](const std::error_code& ec, std::size_t /*length*/)
-		//		{
-		//			alist->pop_front();
-		//			handle_write(tcp, ec, apack);
-		//			if (ec)
-		//			{
-		//				log_error()->print("asio_tcp::do_send fail [{}]", ec.message().c_str());
-		//				return;
-		//			}
-		//			do_send(tcp, alist);
-		//		}
-		//	);
-		//}
+		inline void do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist)
+		{
+			if (alist->empty())
+			{
+				{
+					monopoly_shared_lock(tcp->m_mutex);
+					if (tcp->m_list.empty() == false)
+					{
+						tcp->m_list.swap(*alist);
+					}
+					else
+					{
+						tcp->m_issend = false;
+						return;
+					}
+				}
+			}
 
-		//inline void do_send(service_tcp* tcp, const std::shared_ptr<std::list<node_pack>>& alist)
-		//{
-		//	if (alist->empty())
-		//	{
-		//		{
-		//			monopoly_shared_lock(tcp->m_mutex);
-		//			if (tcp->m_list.empty() == false)
-		//			{
-		//				tcp->m_list.swap(*alist);
-		//			}
-		//			else
-		//			{
-		//				tcp->m_issend = false;
-		//				return;
-		//			}
-		//		}
-		//	}
-
-		//	node_pack& item = *alist->begin();
-		//	if (tcp != nullptr)
-		//	{
-		//		if (item.ispack())
-		//		{//pack
-		//			std::shared_ptr<pack>& lpack = item.get_pack();
-		//			int32_t lsize = 0;
-		//			int32_t lpos = 0;
-		//			if (lpack->m_pos != lpack->m_len)
-		//			{
-		//				lsize = lpack->m_len - lpack->m_pos;
-		//				lpos = lpack->m_pos;
-		//			}
-		//			else
-		//			{
-		//				lsize = lpack->m_pos;
-		//				lpos = 0;
-		//			}
-		//			if (lsize < 0)
-		//				return;
-		//			async_send(tcp, alist, lpack, &lpack->m_buff[lpos], lsize);
-		//		}
-		//		else
-		//		{
-		//			std::shared_ptr<void>& lpack = item.get_voidpack();
-		//			pack* lpackptr = (pack*)lpack.get();
-		//			async_send(tcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
-		//		}
-		//	}
-		//}
+			node_pack& item = *alist->begin();
+			if (tcp != nullptr)
+			{
+				if (item.ispack())
+				{//pack
+					std::shared_ptr<pack>& lpack = item.get_pack();
+					int32_t lsize = 0;
+					int32_t lpos = 0;
+					if (lpack->m_pos != lpack->m_len)
+					{
+						lsize = lpack->m_len - lpack->m_pos;
+						lpos = lpack->m_pos;
+					}
+					else
+					{
+						lsize = lpack->m_pos;
+						lpos = 0;
+					}
+					if (lsize < 0)
+						return;
+					async_send(tcp, alist, lpack, &lpack->m_buff[lpos], lsize);
+				}
+				else
+				{
+					std::shared_ptr<void>& lpack = item.get_voidpack();
+					pack* lpackptr = (pack*)lpack.get();
+					async_send(tcp, alist, lpack, lpackptr->m_buff, lpackptr->m_pos);
+				}
+			}
+		}
 
 		inline void handle_write(service_tcp* ap, const std::error_code& error, std::shared_ptr<pack> apack)
 		{
