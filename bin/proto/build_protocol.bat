@@ -1,3 +1,4 @@
+protoc.exe --version
 protoc.exe --experimental_allow_proto3_optional  --cpp_out=./pro net.proto
 protoc.exe --experimental_allow_proto3_optional  --cpp_out=./pro db.proto
 #protoc.exe --experimental_allow_proto3_optional --php_out=./pro/phpcode/db db.proto
