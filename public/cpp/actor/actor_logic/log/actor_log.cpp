@@ -26,19 +26,48 @@ namespace ngl
 		m_log = logfile::create_make(lconfig);
 	}
 
-	void actor_log::init()
-	{}
-
 	void actor_log::nregister()
 	{
+		// ¶¨Ê±Æ÷
+		actor::register_timer<actor_log>(&actor_log::timer_handle);
+
 		register_handle_custom<actor_log>::func<
-			np_logitem,
-			np_logflush
+			np_logitem
 		>(false);
 	}
 
 	actor_log::~actor_log()
 	{
+	}
+
+	void actor_log::init()
+	{
+		// flush
+		int32_t lflushtime = m_log->m_config.flush_time()/1000;
+		timerparm tparm;
+		if (make_timerparm::make_interval(tparm, lflushtime) == false)
+		{
+			log_error()->print(
+				"actor_log::init() make_timerparm::make_interval(tparm, 2) == false!!!"
+			);
+			return;
+		}
+		auto lparmflush = std::make_shared<log_timerparm>(log_timerparm::e_logflush);
+		tparm.set_parm(lparmflush);
+		set_timer(tparm);
+
+		// create
+		timerparm tparmcreate;
+		if (make_timerparm::day(tparmcreate, 0, 0, 0) == false)
+		{
+			log_error()->print(
+				"actor_log::init() make_timerparm::make_timerparm::day(tparmcreate, 0, 0, 0) == false!!!"
+			);
+			return;
+		}
+		auto lparmcreate = std::make_shared<log_timerparm>(log_timerparm::e_create);
+		tparmcreate.set_parm(lparmcreate);
+		set_timer(tparmcreate);
 	}
 
 	bool actor_log::handle(const message<np_logitem>& adata)
@@ -48,9 +77,22 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_log::handle(const message<np_logflush>& adata)
+	bool actor_log::timer_handle(const message<timerparm>& adata)
 	{
-		m_log->flush();
+		std::shared_ptr<log_timerparm> lparm = std::static_pointer_cast<log_timerparm>(adata.get_data()->m_parm);
+		
+		if (lparm->m_type == log_timerparm::e_logflush)
+		{
+			m_log->flush();
+			return true;
+		}
+		if (lparm->m_type == log_timerparm::e_create)
+		{
+			m_log->close_fstream();
+			m_log->create();
+			return true;
+		}
+
 		return true;
 	}
 }//namespace ngl

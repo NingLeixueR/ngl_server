@@ -31,9 +31,9 @@ namespace ngl
 		int64_t						m_triggerms = 0;			// ´¥·¢Ê±µÄºÁÃë
 
 		template <typename T>
-		void set_parm(T* aparm)
+		void set_parm(std::shared_ptr<T>& aparm)
 		{
-			m_parm = std::shared_ptr<void>(aparm);
+			m_parm = std::static_pointer_cast<void>(aparm);
 		}
 
 		def_portocol(timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
