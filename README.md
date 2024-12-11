@@ -26,7 +26,7 @@
 
 ## Linux CentOs编译
   * 编译安装gcc (GCC) 13.1.0
-  * 编译安装protobuf 3.13.0
+  * 编译安装protobuf 3.21.12
   * 下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
   * 其他第三方库自行  yum install 进行安装
   * 创建build目录，在build目录下cmake .., 然后make
@@ -40,7 +40,7 @@
   * 在win编译运行(vs2022)
 
 ## 更多介绍
-  * [wiki](https://github.com/NingLeixueR/ngl/wiki)
+  * [wiki](https://github.com/NingLeixueR/ngl_server/wiki)
 
 ## QQ群
   * 56257994
