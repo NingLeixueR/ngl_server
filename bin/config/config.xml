@@ -1,4 +1,4 @@
-<?xml version = "1.0" encoding = "utf-8"?>
+﻿<?xml version = "1.0" encoding = "utf-8"?>
 <con>
 		<public>
 			<!-- 
@@ -27,12 +27,10 @@
 					kcpping = "10"
 					kcppinginterval = "20"
 					kcpsession = "abcdefghigklmn"
-					open_servertime = "2023/10/11 10:00:00"
-					logiswrite = "false"
-					logflushtime = "10"
-					logline = "50000"
-					loglevel = "3"
-					logconsole = "true"
+					logflushtime = "10000"
+					logline = "10000"
+					logwritelevel = "1"
+					logconsolelevel = "1"
 					consumings = "100"
 				></config>
 		</public>
