@@ -147,8 +147,8 @@ message db_notice
 
 enum eranklist
 {
-	lv = 0;		// 等级排行
-	count = 1;
+	lv			= 0;		// 等级排行
+	count		= 1;
 }
 
 message rankitem

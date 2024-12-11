@@ -68,6 +68,7 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata);
+		bool handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata);
 	};
 
 	class actor_manage_robot : public actor

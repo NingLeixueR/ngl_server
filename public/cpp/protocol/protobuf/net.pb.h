@@ -240,6 +240,9 @@ extern PROBUFF_NET_MATCHING_WAITCONFIRMDefaultTypeInternal _PROBUFF_NET_MATCHING
 class PROBUFF_NET_MEMBER_MATCHING_CANCEL;
 struct PROBUFF_NET_MEMBER_MATCHING_CANCELDefaultTypeInternal;
 extern PROBUFF_NET_MEMBER_MATCHING_CANCELDefaultTypeInternal _PROBUFF_NET_MEMBER_MATCHING_CANCEL_default_instance_;
+class PROBUFF_NET_MSG_RESPONSE;
+struct PROBUFF_NET_MSG_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_MSG_RESPONSEDefaultTypeInternal _PROBUFF_NET_MSG_RESPONSE_default_instance_;
 class PROBUFF_NET_NOTICE;
 struct PROBUFF_NET_NOTICEDefaultTypeInternal;
 extern PROBUFF_NET_NOTICEDefaultTypeInternal _PROBUFF_NET_NOTICE_default_instance_;
@@ -407,6 +410,7 @@ template<> ::pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE* Arena::CreateMaybeMes
 template<> ::pbnet::PROBUFF_NET_MATCHING_SYNC* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_SYNC>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>(Arena*);
+template<> ::pbnet::PROBUFF_NET_MSG_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MSG_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_NOTICE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_NOTICE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_NOTICE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_NOTICE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RANKLIST* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RANKLIST>(Arena*);
@@ -734,6 +738,164 @@ inline bool ematching_confirm_stat_Parse(
 }
 // ===================================================================
 
+class PROBUFF_NET_MSG_RESPONSE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_MSG_RESPONSE) */ {
+ public:
+  inline PROBUFF_NET_MSG_RESPONSE() : PROBUFF_NET_MSG_RESPONSE(nullptr) {}
+  ~PROBUFF_NET_MSG_RESPONSE() override;
+  explicit PROTOBUF_CONSTEXPR PROBUFF_NET_MSG_RESPONSE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_NET_MSG_RESPONSE(const PROBUFF_NET_MSG_RESPONSE& from);
+  PROBUFF_NET_MSG_RESPONSE(PROBUFF_NET_MSG_RESPONSE&& from) noexcept
+    : PROBUFF_NET_MSG_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_MSG_RESPONSE& operator=(const PROBUFF_NET_MSG_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_MSG_RESPONSE& operator=(PROBUFF_NET_MSG_RESPONSE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_NET_MSG_RESPONSE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_NET_MSG_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_MSG_RESPONSE*>(
+               &_PROBUFF_NET_MSG_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(PROBUFF_NET_MSG_RESPONSE& a, PROBUFF_NET_MSG_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_MSG_RESPONSE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_MSG_RESPONSE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_NET_MSG_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_NET_MSG_RESPONSE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_NET_MSG_RESPONSE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_NET_MSG_RESPONSE& from) {
+    PROBUFF_NET_MSG_RESPONSE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_MSG_RESPONSE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbnet.PROBUFF_NET_MSG_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_NET_MSG_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMMsgFieldNumber = 1,
+  };
+  // optional string m_msg = 1;
+  bool has_m_msg() const;
+  private:
+  bool _internal_has_m_msg() const;
+  public:
+  void clear_m_msg();
+  const std::string& m_msg() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_m_msg(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_m_msg();
+  PROTOBUF_NODISCARD std::string* release_m_msg();
+  void set_allocated_m_msg(std::string* m_msg);
+  private:
+  const std::string& _internal_m_msg() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_m_msg(const std::string& value);
+  std::string* _internal_mutable_m_msg();
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_MSG_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_msg_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_net_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PROBUFF_NET_HEARTBEAT final :
     public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_HEARTBEAT) */ {
  public:
@@ -781,7 +943,7 @@ class PROBUFF_NET_HEARTBEAT final :
                &_PROBUFF_NET_HEARTBEAT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(PROBUFF_NET_HEARTBEAT& a, PROBUFF_NET_HEARTBEAT& b) {
     a.Swap(&b);
@@ -900,7 +1062,7 @@ class PROBUFF_NET_RECHARGE final :
                &_PROBUFF_NET_RECHARGE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(PROBUFF_NET_RECHARGE& a, PROBUFF_NET_RECHARGE& b) {
     a.Swap(&b);
@@ -1053,7 +1215,7 @@ class PROBUFF_NET_RECHARGE_RESPONSE final :
                &_PROBUFF_NET_RECHARGE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(PROBUFF_NET_RECHARGE_RESPONSE& a, PROBUFF_NET_RECHARGE_RESPONSE& b) {
     a.Swap(&b);
@@ -1297,7 +1459,7 @@ class PROBUFF_NET_DELIVER_GOODS_RECHARGE final :
                &_PROBUFF_NET_DELIVER_GOODS_RECHARGE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(PROBUFF_NET_DELIVER_GOODS_RECHARGE& a, PROBUFF_NET_DELIVER_GOODS_RECHARGE& b) {
     a.Swap(&b);
@@ -1511,7 +1673,7 @@ class PROBUFF_NET_ERROR final :
                &_PROBUFF_NET_ERROR_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(PROBUFF_NET_ERROR& a, PROBUFF_NET_ERROR& b) {
     a.Swap(&b);
@@ -1668,7 +1830,7 @@ class PROBUFF_NET_GET_TIME final :
                &_PROBUFF_NET_GET_TIME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(PROBUFF_NET_GET_TIME& a, PROBUFF_NET_GET_TIME& b) {
     a.Swap(&b);
@@ -1787,7 +1949,7 @@ class PROBUFF_NET_GET_TIME_RESPONSE final :
                &_PROBUFF_NET_GET_TIME_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(PROBUFF_NET_GET_TIME_RESPONSE& a, PROBUFF_NET_GET_TIME_RESPONSE& b) {
     a.Swap(&b);
@@ -1939,7 +2101,7 @@ class PROBUFF_NET_NOTICE final :
                &_PROBUFF_NET_NOTICE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(PROBUFF_NET_NOTICE& a, PROBUFF_NET_NOTICE& b) {
     a.Swap(&b);
@@ -2058,7 +2220,7 @@ class PROBUFF_NET_NOTICE_RESPONSE final :
                &_PROBUFF_NET_NOTICE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(PROBUFF_NET_NOTICE_RESPONSE& a, PROBUFF_NET_NOTICE_RESPONSE& b) {
     a.Swap(&b);
@@ -2215,7 +2377,7 @@ class PROBUFF_NET_ACOUNT_LOGIN final :
                &_PROBUFF_NET_ACOUNT_LOGIN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(PROBUFF_NET_ACOUNT_LOGIN& a, PROBUFF_NET_ACOUNT_LOGIN& b) {
     a.Swap(&b);
@@ -2408,7 +2570,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE final :
                &_PROBUFF_NET_ACOUNT_LOGIN_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& a, PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& b) {
     a.Swap(&b);
@@ -2631,7 +2793,7 @@ class PROBUFF_NET_ROLE_LOGIN final :
                &_PROBUFF_NET_ROLE_LOGIN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(PROBUFF_NET_ROLE_LOGIN& a, PROBUFF_NET_ROLE_LOGIN& b) {
     a.Swap(&b);
@@ -2848,7 +3010,7 @@ class PROBUFF_NET_ROLE_SYNC final :
                &_PROBUFF_NET_ROLE_SYNC_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(PROBUFF_NET_ROLE_SYNC& a, PROBUFF_NET_ROLE_SYNC& b) {
     a.Swap(&b);
@@ -2967,7 +3129,7 @@ class PROBUFF_NET_ROLE_SYNC_RESPONSE final :
                &_PROBUFF_NET_ROLE_SYNC_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(PROBUFF_NET_ROLE_SYNC_RESPONSE& a, PROBUFF_NET_ROLE_SYNC_RESPONSE& b) {
     a.Swap(&b);
@@ -3164,7 +3326,7 @@ class PROBUFF_NET_BAG_SYNC final :
                &_PROBUFF_NET_BAG_SYNC_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(PROBUFF_NET_BAG_SYNC& a, PROBUFF_NET_BAG_SYNC& b) {
     a.Swap(&b);
@@ -3283,7 +3445,7 @@ class PROBUFF_NET_BAG_SYNC_RESPONSE final :
                &_PROBUFF_NET_BAG_SYNC_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(PROBUFF_NET_BAG_SYNC_RESPONSE& a, PROBUFF_NET_BAG_SYNC_RESPONSE& b) {
     a.Swap(&b);
@@ -3440,7 +3602,7 @@ class PROBUFF_NET_BAG_UPDATE final :
                &_PROBUFF_NET_BAG_UPDATE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(PROBUFF_NET_BAG_UPDATE& a, PROBUFF_NET_BAG_UPDATE& b) {
     a.Swap(&b);
@@ -3559,7 +3721,7 @@ class PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem final :
                &_PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem& a, PROBUFF_NET_BAG_UPDATE_RESPONSE_delitem& b) {
     a.Swap(&b);
@@ -3727,7 +3889,7 @@ class PROBUFF_NET_BAG_UPDATE_RESPONSE_additem final :
                &_PROBUFF_NET_BAG_UPDATE_RESPONSE_additem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(PROBUFF_NET_BAG_UPDATE_RESPONSE_additem& a, PROBUFF_NET_BAG_UPDATE_RESPONSE_additem& b) {
     a.Swap(&b);
@@ -3895,7 +4057,7 @@ class PROBUFF_NET_BAG_UPDATE_RESPONSE final :
                &_PROBUFF_NET_BAG_UPDATE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(PROBUFF_NET_BAG_UPDATE_RESPONSE& a, PROBUFF_NET_BAG_UPDATE_RESPONSE& b) {
     a.Swap(&b);
@@ -4125,7 +4287,7 @@ class PROBUFF_NET_CMD final :
                &_PROBUFF_NET_CMD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    22;
 
   friend void swap(PROBUFF_NET_CMD& a, PROBUFF_NET_CMD& b) {
     a.Swap(&b);
@@ -4283,7 +4445,7 @@ class PROBUFF_NET_CHAT final :
                &_PROBUFF_NET_CHAT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    23;
 
   friend void swap(PROBUFF_NET_CHAT& a, PROBUFF_NET_CHAT& b) {
     a.Swap(&b);
@@ -4471,7 +4633,7 @@ class chatitem final :
                &_chatitem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    24;
 
   friend void swap(chatitem& a, chatitem& b) {
     a.Swap(&b);
@@ -4679,7 +4841,7 @@ class PROBUFF_NET_CHAT_RESPONSE final :
                &_PROBUFF_NET_CHAT_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    25;
 
   friend void swap(PROBUFF_NET_CHAT_RESPONSE& a, PROBUFF_NET_CHAT_RESPONSE& b) {
     a.Swap(&b);
@@ -4882,7 +5044,7 @@ class PROBUFF_NET_SWITCH_LINE final :
                &_PROBUFF_NET_SWITCH_LINE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    26;
 
   friend void swap(PROBUFF_NET_SWITCH_LINE& a, PROBUFF_NET_SWITCH_LINE& b) {
     a.Swap(&b);
@@ -5035,7 +5197,7 @@ class PROBUFF_NET_SWITCH_LINE_RESPONSE final :
                &_PROBUFF_NET_SWITCH_LINE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    27;
 
   friend void swap(PROBUFF_NET_SWITCH_LINE_RESPONSE& a, PROBUFF_NET_SWITCH_LINE_RESPONSE& b) {
     a.Swap(&b);
@@ -5202,7 +5364,7 @@ class PROBUFF_NET_MAIL_LIST final :
                &_PROBUFF_NET_MAIL_LIST_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    28;
 
   friend void swap(PROBUFF_NET_MAIL_LIST& a, PROBUFF_NET_MAIL_LIST& b) {
     a.Swap(&b);
@@ -5345,7 +5507,7 @@ class PROBUFF_NET_MAIL_LIST_RESPONSE final :
                &_PROBUFF_NET_MAIL_LIST_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    30;
 
   friend void swap(PROBUFF_NET_MAIL_LIST_RESPONSE& a, PROBUFF_NET_MAIL_LIST_RESPONSE& b) {
     a.Swap(&b);
@@ -5508,7 +5670,7 @@ class PROBUFF_NET_MAIL_READ final :
                &_PROBUFF_NET_MAIL_READ_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    31;
 
   friend void swap(PROBUFF_NET_MAIL_READ& a, PROBUFF_NET_MAIL_READ& b) {
     a.Swap(&b);
@@ -5661,7 +5823,7 @@ class PROBUFF_NET_MAIL_READ_RESPONSE final :
                &_PROBUFF_NET_MAIL_READ_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    32;
 
   friend void swap(PROBUFF_NET_MAIL_READ_RESPONSE& a, PROBUFF_NET_MAIL_READ_RESPONSE& b) {
     a.Swap(&b);
@@ -5829,7 +5991,7 @@ class PROBUFF_NET_MAIL_DRAW final :
                &_PROBUFF_NET_MAIL_DRAW_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    33;
 
   friend void swap(PROBUFF_NET_MAIL_DRAW& a, PROBUFF_NET_MAIL_DRAW& b) {
     a.Swap(&b);
@@ -5982,7 +6144,7 @@ class PROBUFF_NET_MAIL_DRAW_RESPONSE final :
                &_PROBUFF_NET_MAIL_DRAW_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    34;
 
   friend void swap(PROBUFF_NET_MAIL_DRAW_RESPONSE& a, PROBUFF_NET_MAIL_DRAW_RESPONSE& b) {
     a.Swap(&b);
@@ -6150,7 +6312,7 @@ class PROBUFF_NET_MAIL_DEL final :
                &_PROBUFF_NET_MAIL_DEL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    35;
 
   friend void swap(PROBUFF_NET_MAIL_DEL& a, PROBUFF_NET_MAIL_DEL& b) {
     a.Swap(&b);
@@ -6303,7 +6465,7 @@ class PROBUFF_NET_MAIL_DEL_RESPONSE final :
                &_PROBUFF_NET_MAIL_DEL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    36;
 
   friend void swap(PROBUFF_NET_MAIL_DEL_RESPONSE& a, PROBUFF_NET_MAIL_DEL_RESPONSE& b) {
     a.Swap(&b);
@@ -6471,7 +6633,7 @@ class VECTOR2 final :
                &_VECTOR2_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    37;
 
   friend void swap(VECTOR2& a, VECTOR2& b) {
     a.Swap(&b);
@@ -6639,7 +6801,7 @@ class VECTOR3 final :
                &_VECTOR3_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    38;
 
   friend void swap(VECTOR3& a, VECTOR3& b) {
     a.Swap(&b);
@@ -6822,7 +6984,7 @@ class UNIT_POSITION final :
                &_UNIT_POSITION_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    39;
 
   friend void swap(UNIT_POSITION& a, UNIT_POSITION& b) {
     a.Swap(&b);
@@ -7025,7 +7187,7 @@ class UnitAttribute final :
                &_UnitAttribute_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    40;
 
   friend void swap(UnitAttribute& a, UnitAttribute& b) {
     a.Swap(&b);
@@ -7193,7 +7355,7 @@ class UnitModule final :
                &_UnitModule_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    41;
 
   friend void swap(UnitModule& a, UnitModule& b) {
     a.Swap(&b);
@@ -7366,7 +7528,7 @@ class UNIT final :
                &_UNIT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    42;
 
   friend void swap(UNIT& a, UNIT& b) {
     a.Swap(&b);
@@ -7589,7 +7751,7 @@ class PROBUFF_NET_SYNC_ATTRIBUTE final :
                &_PROBUFF_NET_SYNC_ATTRIBUTE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    43;
 
   friend void swap(PROBUFF_NET_SYNC_ATTRIBUTE& a, PROBUFF_NET_SYNC_ATTRIBUTE& b) {
     a.Swap(&b);
@@ -7746,7 +7908,7 @@ class PROBUFF_NET_SYNC_UNIT final :
                &_PROBUFF_NET_SYNC_UNIT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    44;
 
   friend void swap(PROBUFF_NET_SYNC_UNIT& a, PROBUFF_NET_SYNC_UNIT& b) {
     a.Swap(&b);
@@ -7903,7 +8065,7 @@ class PROBUFF_NET_ENTER_LEAVE_VIEW final :
                &_PROBUFF_NET_ENTER_LEAVE_VIEW_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    45;
 
   friend void swap(PROBUFF_NET_ENTER_LEAVE_VIEW& a, PROBUFF_NET_ENTER_LEAVE_VIEW& b) {
     a.Swap(&b);
@@ -8105,7 +8267,7 @@ class PROBUFF_NET_SYNC_POSITION final :
                &_PROBUFF_NET_SYNC_POSITION_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    47;
 
   friend void swap(PROBUFF_NET_SYNC_POSITION& a, PROBUFF_NET_SYNC_POSITION& b) {
     a.Swap(&b);
@@ -8268,7 +8430,7 @@ class PROBUFF_NET_CHANGE_ANGLE final :
                &_PROBUFF_NET_CHANGE_ANGLE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    48;
 
   friend void swap(PROBUFF_NET_CHANGE_ANGLE& a, PROBUFF_NET_CHANGE_ANGLE& b) {
     a.Swap(&b);
@@ -8426,7 +8588,7 @@ class PROBUFF_NET_MATCHING final :
                &_PROBUFF_NET_MATCHING_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    49;
 
   friend void swap(PROBUFF_NET_MATCHING& a, PROBUFF_NET_MATCHING& b) {
     a.Swap(&b);
@@ -8594,7 +8756,7 @@ class MATCHING_MEMBER final :
                &_MATCHING_MEMBER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    50;
 
   friend void swap(MATCHING_MEMBER& a, MATCHING_MEMBER& b) {
     a.Swap(&b);
@@ -8812,7 +8974,7 @@ class PROBUFF_NET_MATCHING_RESPONSE final :
                &_PROBUFF_NET_MATCHING_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    51;
 
   friend void swap(PROBUFF_NET_MATCHING_RESPONSE& a, PROBUFF_NET_MATCHING_RESPONSE& b) {
     a.Swap(&b);
@@ -8965,7 +9127,7 @@ class PROBUFF_NET_MATCHING_CANCEL final :
                &_PROBUFF_NET_MATCHING_CANCEL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    52;
 
   friend void swap(PROBUFF_NET_MATCHING_CANCEL& a, PROBUFF_NET_MATCHING_CANCEL& b) {
     a.Swap(&b);
@@ -9133,7 +9295,7 @@ class PROBUFF_NET_MATCHING_CANCEL_RESPONSE final :
                &_PROBUFF_NET_MATCHING_CANCEL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    53;
 
   friend void swap(PROBUFF_NET_MATCHING_CANCEL_RESPONSE& a, PROBUFF_NET_MATCHING_CANCEL_RESPONSE& b) {
     a.Swap(&b);
@@ -9301,7 +9463,7 @@ class PROBUFF_NET_MEMBER_MATCHING_CANCEL final :
                &_PROBUFF_NET_MEMBER_MATCHING_CANCEL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    54;
 
   friend void swap(PROBUFF_NET_MEMBER_MATCHING_CANCEL& a, PROBUFF_NET_MEMBER_MATCHING_CANCEL& b) {
     a.Swap(&b);
@@ -9494,7 +9656,7 @@ class PROBUFF_NET_MATCHING_WAITCONFIRM final :
                &_PROBUFF_NET_MATCHING_WAITCONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    55;
 
   friend void swap(PROBUFF_NET_MATCHING_WAITCONFIRM& a, PROBUFF_NET_MATCHING_WAITCONFIRM& b) {
     a.Swap(&b);
@@ -9662,7 +9824,7 @@ class PROBUFF_NET_MATCHING_CONFIRM final :
                &_PROBUFF_NET_MATCHING_CONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    56;
 
   friend void swap(PROBUFF_NET_MATCHING_CONFIRM& a, PROBUFF_NET_MATCHING_CONFIRM& b) {
     a.Swap(&b);
@@ -9830,7 +9992,7 @@ class PROBUFF_NET_MATCHING_CONFIRM_RESPONSE final :
                &_PROBUFF_NET_MATCHING_CONFIRM_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    57;
 
   friend void swap(PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& a, PROBUFF_NET_MATCHING_CONFIRM_RESPONSE& b) {
     a.Swap(&b);
@@ -10013,7 +10175,7 @@ class PROBUFF_NET_SYNC_MATCHING_CONFIRM final :
                &_PROBUFF_NET_SYNC_MATCHING_CONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    58;
 
   friend void swap(PROBUFF_NET_SYNC_MATCHING_CONFIRM& a, PROBUFF_NET_SYNC_MATCHING_CONFIRM& b) {
     a.Swap(&b);
@@ -10206,7 +10368,7 @@ class PROBUFF_NET_MATCHING_SYNC final :
                &_PROBUFF_NET_MATCHING_SYNC_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    59;
 
   friend void swap(PROBUFF_NET_MATCHING_SYNC& a, PROBUFF_NET_MATCHING_SYNC& b) {
     a.Swap(&b);
@@ -10394,7 +10556,7 @@ class PROBUFF_NET_MATCHING_SUCCESS_RESPONSE final :
                &_PROBUFF_NET_MATCHING_SUCCESS_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    59;
+    60;
 
   friend void swap(PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& a, PROBUFF_NET_MATCHING_SUCCESS_RESPONSE& b) {
     a.Swap(&b);
@@ -10577,7 +10739,7 @@ class PROBUFF_NET_MATCHING_SUCCESS final :
                &_PROBUFF_NET_MATCHING_SUCCESS_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    60;
+    61;
 
   friend void swap(PROBUFF_NET_MATCHING_SUCCESS& a, PROBUFF_NET_MATCHING_SUCCESS& b) {
     a.Swap(&b);
@@ -10780,7 +10942,7 @@ class PROBUFF_NET_ENTER_PLAYS final :
                &_PROBUFF_NET_ENTER_PLAYS_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    61;
+    62;
 
   friend void swap(PROBUFF_NET_ENTER_PLAYS& a, PROBUFF_NET_ENTER_PLAYS& b) {
     a.Swap(&b);
@@ -10948,7 +11110,7 @@ class PROBUFF_NET_KCPSESSION final :
                &_PROBUFF_NET_KCPSESSION_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    62;
+    63;
 
   friend void swap(PROBUFF_NET_KCPSESSION& a, PROBUFF_NET_KCPSESSION& b) {
     a.Swap(&b);
@@ -11151,7 +11313,7 @@ class PROBUFF_NET_KCPSESSION_RESPONSE final :
                &_PROBUFF_NET_KCPSESSION_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    63;
+    64;
 
   friend void swap(PROBUFF_NET_KCPSESSION_RESPONSE& a, PROBUFF_NET_KCPSESSION_RESPONSE& b) {
     a.Swap(&b);
@@ -11309,7 +11471,7 @@ class PROBUFF_NET_TASK_RECEIVE_AWARD final :
                &_PROBUFF_NET_TASK_RECEIVE_AWARD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    64;
+    65;
 
   friend void swap(PROBUFF_NET_TASK_RECEIVE_AWARD& a, PROBUFF_NET_TASK_RECEIVE_AWARD& b) {
     a.Swap(&b);
@@ -11462,7 +11624,7 @@ class drop_item final :
                &_drop_item_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    65;
+    66;
 
   friend void swap(drop_item& a, drop_item& b) {
     a.Swap(&b);
@@ -11654,7 +11816,7 @@ class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE final :
                &_PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    67;
+    68;
 
   friend void swap(PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& a, PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& b) {
     a.Swap(&b);
@@ -11848,7 +12010,7 @@ class PROBUFF_NET_CREATE_FAMIL final :
                &_PROBUFF_NET_CREATE_FAMIL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    68;
+    69;
 
   friend void swap(PROBUFF_NET_CREATE_FAMIL& a, PROBUFF_NET_CREATE_FAMIL& b) {
     a.Swap(&b);
@@ -12006,7 +12168,7 @@ class PROBUFF_NET_CREATE_FAMIL_RESPONSE final :
                &_PROBUFF_NET_CREATE_FAMIL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    69;
+    70;
 
   friend void swap(PROBUFF_NET_CREATE_FAMIL_RESPONSE& a, PROBUFF_NET_CREATE_FAMIL_RESPONSE& b) {
     a.Swap(&b);
@@ -12159,7 +12321,7 @@ class PROBUFF_NET_JOIN_FAMIL final :
                &_PROBUFF_NET_JOIN_FAMIL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    70;
+    71;
 
   friend void swap(PROBUFF_NET_JOIN_FAMIL& a, PROBUFF_NET_JOIN_FAMIL& b) {
     a.Swap(&b);
@@ -12327,7 +12489,7 @@ class PROBUFF_NET_JOIN_FAMIL_RESPONSE final :
                &_PROBUFF_NET_JOIN_FAMIL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    71;
+    72;
 
   friend void swap(PROBUFF_NET_JOIN_FAMIL_RESPONSE& a, PROBUFF_NET_JOIN_FAMIL_RESPONSE& b) {
     a.Swap(&b);
@@ -12480,7 +12642,7 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL final :
                &_PROBUFF_NET_RATIFY_JOIN_FAMIL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    72;
+    73;
 
   friend void swap(PROBUFF_NET_RATIFY_JOIN_FAMIL& a, PROBUFF_NET_RATIFY_JOIN_FAMIL& b) {
     a.Swap(&b);
@@ -12648,7 +12810,7 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE final :
                &_PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    73;
+    74;
 
   friend void swap(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& a, PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& b) {
     a.Swap(&b);
@@ -12801,7 +12963,7 @@ class PROBUFF_NET_CEDE_FAMIL final :
                &_PROBUFF_NET_CEDE_FAMIL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    74;
+    75;
 
   friend void swap(PROBUFF_NET_CEDE_FAMIL& a, PROBUFF_NET_CEDE_FAMIL& b) {
     a.Swap(&b);
@@ -12954,7 +13116,7 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE final :
                &_PROBUFF_NET_CEDE_FAMIL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    75;
+    76;
 
   friend void swap(PROBUFF_NET_CEDE_FAMIL_RESPONSE& a, PROBUFF_NET_CEDE_FAMIL_RESPONSE& b) {
     a.Swap(&b);
@@ -13107,7 +13269,7 @@ class PROBUFF_NET_LEAVE_FAMIL final :
                &_PROBUFF_NET_LEAVE_FAMIL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    76;
+    77;
 
   friend void swap(PROBUFF_NET_LEAVE_FAMIL& a, PROBUFF_NET_LEAVE_FAMIL& b) {
     a.Swap(&b);
@@ -13260,7 +13422,7 @@ class PROBUFF_NET_LEAVE_FAMIL_RESPONSE final :
                &_PROBUFF_NET_LEAVE_FAMIL_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    77;
+    78;
 
   friend void swap(PROBUFF_NET_LEAVE_FAMIL_RESPONSE& a, PROBUFF_NET_LEAVE_FAMIL_RESPONSE& b) {
     a.Swap(&b);
@@ -13413,7 +13575,7 @@ class PROBUFF_NET_FAMIL_LIST final :
                &_PROBUFF_NET_FAMIL_LIST_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    78;
+    79;
 
   friend void swap(PROBUFF_NET_FAMIL_LIST& a, PROBUFF_NET_FAMIL_LIST& b) {
     a.Swap(&b);
@@ -13566,7 +13728,7 @@ class PROBUFF_NET_FAMIL_LIST_RESPONSE final :
                &_PROBUFF_NET_FAMIL_LIST_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    79;
+    80;
 
   friend void swap(PROBUFF_NET_FAMIL_LIST_RESPONSE& a, PROBUFF_NET_FAMIL_LIST_RESPONSE& b) {
     a.Swap(&b);
@@ -13739,7 +13901,7 @@ class PROBUFF_NET_CHANGE_FAMILNAME final :
                &_PROBUFF_NET_CHANGE_FAMILNAME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    80;
+    81;
 
   friend void swap(PROBUFF_NET_CHANGE_FAMILNAME& a, PROBUFF_NET_CHANGE_FAMILNAME& b) {
     a.Swap(&b);
@@ -13912,7 +14074,7 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE final :
                &_PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    81;
+    82;
 
   friend void swap(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& a, PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& b) {
     a.Swap(&b);
@@ -14065,7 +14227,7 @@ class PROBUFF_NET_FAMILSIGN final :
                &_PROBUFF_NET_FAMILSIGN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    82;
+    83;
 
   friend void swap(PROBUFF_NET_FAMILSIGN& a, PROBUFF_NET_FAMILSIGN& b) {
     a.Swap(&b);
@@ -14218,7 +14380,7 @@ class PROBUFF_NET_FAMILSIGN_RESPONSE final :
                &_PROBUFF_NET_FAMILSIGN_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    83;
+    84;
 
   friend void swap(PROBUFF_NET_FAMILSIGN_RESPONSE& a, PROBUFF_NET_FAMILSIGN_RESPONSE& b) {
     a.Swap(&b);
@@ -14395,7 +14557,7 @@ class PROBUFF_NET_REWARD_ITEM_RESPONSE final :
                &_PROBUFF_NET_REWARD_ITEM_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    85;
+    86;
 
   friend void swap(PROBUFF_NET_REWARD_ITEM_RESPONSE& a, PROBUFF_NET_REWARD_ITEM_RESPONSE& b) {
     a.Swap(&b);
@@ -14558,7 +14720,7 @@ class PROBUFF_NET_RANKLIST final :
                &_PROBUFF_NET_RANKLIST_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    86;
+    87;
 
   friend void swap(PROBUFF_NET_RANKLIST& a, PROBUFF_NET_RANKLIST& b) {
     a.Swap(&b);
@@ -14631,9 +14793,23 @@ class PROBUFF_NET_RANKLIST final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMTypeFieldNumber = 1,
+    kMIscrossFieldNumber = 1,
+    kMTypeFieldNumber = 2,
   };
-  // optional .pbdb.eranklist m_type = 1;
+  // optional bool m_iscross = 1;
+  bool has_m_iscross() const;
+  private:
+  bool _internal_has_m_iscross() const;
+  public:
+  void clear_m_iscross();
+  bool m_iscross() const;
+  void set_m_iscross(bool value);
+  private:
+  bool _internal_m_iscross() const;
+  void _internal_set_m_iscross(bool value);
+  public:
+
+  // optional .pbdb.eranklist m_type = 2;
   bool has_m_type() const;
   private:
   bool _internal_has_m_type() const;
@@ -14656,6 +14832,7 @@ class PROBUFF_NET_RANKLIST final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    bool m_iscross_;
     int m_type_;
   };
   union { Impl_ _impl_; };
@@ -14711,7 +14888,7 @@ class PROBUFF_NET_RANKLIST_RESPONSE final :
                &_PROBUFF_NET_RANKLIST_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    87;
+    88;
 
   friend void swap(PROBUFF_NET_RANKLIST_RESPONSE& a, PROBUFF_NET_RANKLIST_RESPONSE& b) {
     a.Swap(&b);
@@ -14883,7 +15060,7 @@ class PROBUFF_NET_FRIEND final :
                &_PROBUFF_NET_FRIEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    88;
+    89;
 
   friend void swap(PROBUFF_NET_FRIEND& a, PROBUFF_NET_FRIEND& b) {
     a.Swap(&b);
@@ -15002,7 +15179,7 @@ class PROBUFF_NET_FRIEND_RESPONSE final :
                &_PROBUFF_NET_FRIEND_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    89;
+    90;
 
   friend void swap(PROBUFF_NET_FRIEND_RESPONSE& a, PROBUFF_NET_FRIEND_RESPONSE& b) {
     a.Swap(&b);
@@ -15179,7 +15356,7 @@ class PROBUFF_NET_ADDFRIEND final :
                &_PROBUFF_NET_ADDFRIEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    90;
+    91;
 
   friend void swap(PROBUFF_NET_ADDFRIEND& a, PROBUFF_NET_ADDFRIEND& b) {
     a.Swap(&b);
@@ -15332,7 +15509,7 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE final :
                &_PROBUFF_NET_ADDFRIEND_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    91;
+    92;
 
   friend void swap(PROBUFF_NET_ADDFRIEND_RESPONSE& a, PROBUFF_NET_ADDFRIEND_RESPONSE& b) {
     a.Swap(&b);
@@ -15500,7 +15677,7 @@ class PROBUFF_NET_RATIFY_ADDFRIEND final :
                &_PROBUFF_NET_RATIFY_ADDFRIEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    92;
+    93;
 
   friend void swap(PROBUFF_NET_RATIFY_ADDFRIEND& a, PROBUFF_NET_RATIFY_ADDFRIEND& b) {
     a.Swap(&b);
@@ -15668,7 +15845,7 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE final :
                &_PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    93;
+    94;
 
   friend void swap(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& a, PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& b) {
     a.Swap(&b);
@@ -15851,7 +16028,7 @@ class PROBUFF_NET_ERASEFRIEND final :
                &_PROBUFF_NET_ERASEFRIEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    94;
+    95;
 
   friend void swap(PROBUFF_NET_ERASEFRIEND& a, PROBUFF_NET_ERASEFRIEND& b) {
     a.Swap(&b);
@@ -16004,7 +16181,7 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE final :
                &_PROBUFF_NET_ERASEFRIEND_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    95;
+    96;
 
   friend void swap(PROBUFF_NET_ERASEFRIEND_RESPONSE& a, PROBUFF_NET_ERASEFRIEND_RESPONSE& b) {
     a.Swap(&b);
@@ -16172,7 +16349,7 @@ class PROBUFF_NET_ROLESTAT final :
                &_PROBUFF_NET_ROLESTAT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    96;
+    97;
 
   friend void swap(PROBUFF_NET_ROLESTAT& a, PROBUFF_NET_ROLESTAT& b) {
     a.Swap(&b);
@@ -16374,6 +16551,78 @@ class PROBUFF_NET_ROLESTAT final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// PROBUFF_NET_MSG_RESPONSE
+
+// optional string m_msg = 1;
+inline bool PROBUFF_NET_MSG_RESPONSE::_internal_has_m_msg() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_MSG_RESPONSE::has_m_msg() const {
+  return _internal_has_m_msg();
+}
+inline void PROBUFF_NET_MSG_RESPONSE::clear_m_msg() {
+  _impl_.m_msg_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& PROBUFF_NET_MSG_RESPONSE::m_msg() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg)
+  return _internal_m_msg();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void PROBUFF_NET_MSG_RESPONSE::set_m_msg(ArgT0&& arg0, ArgT... args) {
+ _impl_._has_bits_[0] |= 0x00000001u;
+ _impl_.m_msg_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg)
+}
+inline std::string* PROBUFF_NET_MSG_RESPONSE::mutable_m_msg() {
+  std::string* _s = _internal_mutable_m_msg();
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg)
+  return _s;
+}
+inline const std::string& PROBUFF_NET_MSG_RESPONSE::_internal_m_msg() const {
+  return _impl_.m_msg_.Get();
+}
+inline void PROBUFF_NET_MSG_RESPONSE::_internal_set_m_msg(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_msg_.Set(value, GetArenaForAllocation());
+}
+inline std::string* PROBUFF_NET_MSG_RESPONSE::_internal_mutable_m_msg() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.m_msg_.Mutable(GetArenaForAllocation());
+}
+inline std::string* PROBUFF_NET_MSG_RESPONSE::release_m_msg() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg)
+  if (!_internal_has_m_msg()) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* p = _impl_.m_msg_.Release();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.m_msg_.IsDefault()) {
+    _impl_.m_msg_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return p;
+}
+inline void PROBUFF_NET_MSG_RESPONSE::set_allocated_m_msg(std::string* m_msg) {
+  if (m_msg != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.m_msg_.SetAllocated(m_msg, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.m_msg_.IsDefault()) {
+    _impl_.m_msg_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg)
+}
+
+// -------------------------------------------------------------------
+
 // PROBUFF_NET_HEARTBEAT
 
 // -------------------------------------------------------------------
@@ -22347,9 +22596,37 @@ PROBUFF_NET_REWARD_ITEM_RESPONSE::mutable_m_items() {
 
 // PROBUFF_NET_RANKLIST
 
-// optional .pbdb.eranklist m_type = 1;
-inline bool PROBUFF_NET_RANKLIST::_internal_has_m_type() const {
+// optional bool m_iscross = 1;
+inline bool PROBUFF_NET_RANKLIST::_internal_has_m_iscross() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_RANKLIST::has_m_iscross() const {
+  return _internal_has_m_iscross();
+}
+inline void PROBUFF_NET_RANKLIST::clear_m_iscross() {
+  _impl_.m_iscross_ = false;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline bool PROBUFF_NET_RANKLIST::_internal_m_iscross() const {
+  return _impl_.m_iscross_;
+}
+inline bool PROBUFF_NET_RANKLIST::m_iscross() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RANKLIST.m_iscross)
+  return _internal_m_iscross();
+}
+inline void PROBUFF_NET_RANKLIST::_internal_set_m_iscross(bool value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_iscross_ = value;
+}
+inline void PROBUFF_NET_RANKLIST::set_m_iscross(bool value) {
+  _internal_set_m_iscross(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST.m_iscross)
+}
+
+// optional .pbdb.eranklist m_type = 2;
+inline bool PROBUFF_NET_RANKLIST::_internal_has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool PROBUFF_NET_RANKLIST::has_m_type() const {
@@ -22357,7 +22634,7 @@ inline bool PROBUFF_NET_RANKLIST::has_m_type() const {
 }
 inline void PROBUFF_NET_RANKLIST::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::pbdb::eranklist PROBUFF_NET_RANKLIST::_internal_m_type() const {
   return static_cast< ::pbdb::eranklist >(_impl_.m_type_);
@@ -22367,7 +22644,7 @@ inline ::pbdb::eranklist PROBUFF_NET_RANKLIST::m_type() const {
   return _internal_m_type();
 }
 inline void PROBUFF_NET_RANKLIST::_internal_set_m_type(::pbdb::eranklist value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_type_ = value;
 }
 inline void PROBUFF_NET_RANKLIST::set_m_type(::pbdb::eranklist value) {
@@ -22949,6 +23226,8 @@ inline void PROBUFF_NET_ROLESTAT::set_m_roleid(int64_t value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

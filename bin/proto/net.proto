@@ -9,6 +9,12 @@ package pbnet;
 //option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
 option optimize_for = SPEED;
 
+// [回复] 服务器用来回复端，一般用于cmd协议，用来返回一个字符串回显
+message PROBUFF_NET_MSG_RESPONSE
+{
+	optional string m_msg		= 1;
+};
+
 // [请求]心跳协议
 message PROBUFF_NET_HEARTBEAT
 {
@@ -167,9 +173,9 @@ message PROBUFF_NET_CMD
 // [请求]聊天
 enum enum_logic_chat 
 {
-	get_chat_list		= 0;
-	chat_speak			= 1;
-	updata_speck		= 2;
+	get_chat_list		= 0;	// 获取聊天列表
+	chat_speak			= 1;	// 发言
+	updata_speck		= 2;	// 更新聊天
 };
 
 enum enum_chat_channel
@@ -651,7 +657,8 @@ message PROBUFF_NET_REWARD_ITEM_RESPONSE
 // [请求]获取排行榜
 message PROBUFF_NET_RANKLIST
 {
-	optional pbdb.eranklist m_type				= 1;
+	optional bool m_iscross						= 1;
+	optional pbdb.eranklist m_type				= 2;
 };
 
 // [回复]获取排行榜
