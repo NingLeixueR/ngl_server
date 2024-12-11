@@ -18,11 +18,10 @@ namespace ngl
 	{
 	private:
 		//##### 日志相关
-		static ELOGLEVEL	m_loglevel;				// 日志等级
+		static ELOGLEVEL	m_logwritelevel;		// 日志等级(写入文件)
+		static ELOGLEVEL	m_logconsolelevel;		// 日志等级(控制台显示)
 		static int32_t		m_logline;				// 单个日志文件的行数
-		static int32_t		m_logflushtime;			// 日志flush时间
-		static bool			m_logiswrite;			// 日志是否写入文件
-		static bool			m_logconsole;			// 是否打印到控制台
+		static int32_t		m_logflushtime;			// 日志写入文件的间隔时间
 
 		static int32_t		m_consumings;			// 检测actor消息耗时
 
@@ -56,15 +55,14 @@ namespace ngl
 	public:
 		static void init();
 
-		static ELOGLEVEL loglevel()		{ return m_loglevel; }
-		static int32_t logline()		{ return m_logline; }
-		static int32_t logflushtime()	{ return m_logflushtime; }
-		static bool logiswrite()		{ return m_logiswrite; }
-		static bool logconsole()		{ return m_logconsole; }
-		static int32_t consumings()		{ return m_consumings; }
-		static std::string& xorkey()	{ return m_xorkey; }
-		static int32_t xorkeynum()		{ return m_xorkeynum; }
-		static bool isxor()				{ return m_isxor; }
+		static int32_t	logline()			{ return m_logline; }
+		static int32_t	logflushtime()		{ return m_logflushtime; }
+		static int32_t	logwritelevel()		{ return m_logwritelevel; }
+		static int32_t	logconsolelevel()	{ return m_logconsolelevel; }
+		static int32_t	consumings()		{ return m_consumings; }
+		static std::string&	xorkey()		{ return m_xorkey; }
+		static int32_t	xorkeynum()			{ return m_xorkeynum; }
+		static bool	isxor()					{ return m_isxor; }
 		static bool varint()			{ return m_varint; }
 		static bool robot_test()		{ return m_robot_test; }
 		static int32_t kcpping()		{ return m_kcpping; }

@@ -19,7 +19,7 @@ namespace ngl
 
 	std::shared_ptr<np_actor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)
 	{
-		if(m_actor == nullptr || aloglevel < ngl::sysconfig::loglevel())
+		if(m_actor == nullptr || !np_actor_logitem::check_level(aloglevel))
 		{
 			return g_actor_nonelog;
 		}

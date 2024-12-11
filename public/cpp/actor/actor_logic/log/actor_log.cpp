@@ -80,7 +80,6 @@ namespace ngl
 	bool actor_log::timer_handle(const message<timerparm>& adata)
 	{
 		std::shared_ptr<log_timerparm> lparm = std::static_pointer_cast<log_timerparm>(adata.get_data()->m_parm);
-		
 		if (lparm->m_type == log_timerparm::e_logflush)
 		{
 			m_log->flush();
@@ -92,7 +91,6 @@ namespace ngl
 			m_log->create();
 			return true;
 		}
-
 		return true;
 	}
 }//namespace ngl
