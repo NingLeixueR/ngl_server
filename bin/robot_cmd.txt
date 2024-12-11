@@ -1,0 +1,81 @@
+
+获取当前服务器时间 
+/time
+
+重命名
+/name 新名字
+
+修改玩家等级
+/lv 等级增量(可以为负数)
+
+修改玩家金币数量
+/gold 金币数量(可以为负数)
+
+修改玩家银币数量
+/silver 银币数量(可以为负数)
+
+发送聊天信息
+	操作：
+		enum enum_logic_chat 
+		{
+			get_chat_list		= 0;	// 获取聊天列表
+			chat_speak			= 1;	// 发言
+			updata_speck		= 2;	// 更新聊天
+		};
+	聊天渠道:
+		enum enum_chat_channel
+		{
+			enum_chat_zero			= 0;
+			enum_chat_ordinary		= 1;	// 本服
+			enum_chat_cross_ordinary= 2;	// 跨服
+			enum_chat_none			= 3;	// 错误
+		};
+/chat 操作 聊天渠道 (操作为1则需要这个参数：聊天内容)
+
+actor切换game进程
+/switch 线路id
+
+创建一定订单号
+/createorder 充值id
+
+获取公告
+/notices
+
+获取邮件列表
+/mails
+
+创建军团
+/create_family 军团名称
+
+获取军团列表
+/family
+
+加入军团
+/join_family 军团id
+
+取消加入军团
+/cancel_join_family 军团id
+
+批准加入军团
+/ratify_family
+
+拒绝玩家加入军团
+/cede_family 玩家id
+
+离开军团
+/leave_family 军团id
+
+修改军团名称
+/change_familyname 军团id 新名称
+
+军团签到
+/sign_family 军团id
+
+获取排行榜列表
+  排行榜类型
+	enum eranklist
+	{
+		lv = 0;		// 等级排行
+		count = 1;
+	}
+/ranklist 本服/跨服(0/1) 排行榜类型

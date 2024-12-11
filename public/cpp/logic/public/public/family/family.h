@@ -41,7 +41,8 @@ namespace ngl
 
 		pbdb::db_familyer* add_familyer(i64_actorid aroleid)
 		{
-			if (pbdb::db_familyer* lpfamilyer = get_familyer(aroleid); lpfamilyer == nullptr)
+			pbdb::db_familyer* lpfamilyer = get_familyer(aroleid);
+			if (lpfamilyer == nullptr)
 			{
 				return lpfamilyer;
 			}

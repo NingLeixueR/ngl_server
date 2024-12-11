@@ -100,6 +100,12 @@ namespace ngl
 			return ecross_none;
 		}
 
+		// ranklist的转发类型
+		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
+		{
+			return adata.m_iscross() ? ecross_cross_ordinary : ecross_ordinary;
+		}
+
 		//# 重载forward_before来指定转发前事件
 		template <typename T>
 		bool forward_before(const T& adata)
@@ -184,6 +190,9 @@ namespace ngl
 
 		//# 定时器
 		bool timer_handle(const message<timerparm>& adata);
+
+		//# 回显给客户端一个字符串
+		void echo_msg(const char* amsg);
 	};
 }//namespace ngl
 

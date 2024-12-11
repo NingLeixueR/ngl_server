@@ -164,7 +164,22 @@ namespace ngl
 			return &data();
 		}
 
-		
+		const pbdb::db_ranklist* get_constrank(i64_actorid aroleid)
+		{
+			auto itor = data().find(aroleid);
+			if (itor == data().end())
+				return nullptr;
+			return &itor->second.getconst();
+		}
+
+		pbdb::db_ranklist* get_rank(i64_actorid aroleid, bool achange = true)
+		{
+			auto itor = data().find(aroleid);
+			if (itor == data().end())
+				return nullptr;
+			return &itor->second.get(achange);
+		}
+
 		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief)
 		{
 			const pbdb::db_ranklist* lpdata = find(abrief.m_id());
@@ -186,6 +201,30 @@ namespace ngl
 		virtual void initdata()
 		{
 			log_error()->print("actor_ranklist###loaddb_finish");
+			rank_set_base& lrank = *m_ranks[pbdb::eranklist::lv].get();
+
+			for (const std::pair<const nguid, data_modified<pbdb::db_ranklist>>& item : data())
+			{
+				const pbdb::db_ranklist& ltemp = item.second.getconst();
+				rank_item& ltempitem = m_data[item.first];
+				ltempitem.m_actorid = item.first;
+
+				for (const std::pair<const int32_t, pbdb::rankitem>& ritem :ltemp.m_items())
+				{
+					
+					ltempitem.m_time[(pbdb::eranklist)ritem.first] = ritem.second.m_time();
+					ltempitem.m_values[(pbdb::eranklist)ritem.first] = ritem.second.m_value();
+				}
+
+				for (int32_t i = 0; i < pbdb::eranklist::count; ++i)
+				{
+					rank_set_base& lrank = *m_ranks[i].get();
+					lrank.insert(&ltempitem);
+				}
+			}
+
+
+
 			tdb_brief::nsp_cli<actor_ranklist>::set_recv_data_finish([this](const pbdb::db_brief& abrief)
 				{
 					std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
@@ -249,6 +288,7 @@ namespace ngl
 			pro->set_m_type(atype);
 			m_ranks[atype]->foreach([&pro](int32_t aindex, const rank_item* aitem)
 				{
+					// tdb_brief 离线简要数据，需要一开始就汇入到服务器内存 (去实现)
 					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
 					*pro->add_m_items() = *lpbrief;
 				});

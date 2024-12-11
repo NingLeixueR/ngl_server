@@ -27,6 +27,10 @@ namespace ngl
 			mforward<np_gm>
 		>(true);
 
+		register_handle_proto<actor_ranklist>::func<
+			mforward<pbnet::PROBUFF_NET_RANKLIST>
+		>(true);
+
 	}
 
 	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)

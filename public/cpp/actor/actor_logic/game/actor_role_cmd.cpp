@@ -3,6 +3,12 @@
 
 namespace ngl
 {
+	void actor_role::echo_msg(const char* amsg)
+	{
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_MSG_RESPONSE>();
+		pro->set_m_msg(amsg);
+		send_client(id_guid(), pro);
+	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		const pbnet::PROBUFF_NET_CMD& lparm = *adata.get_data();
@@ -65,18 +71,6 @@ namespace ngl
 					}
 				}
 			);
-			handle_cmd::push("/chatlist", [](actor_role* role, [[maybe_unused]] const char* aparm)
-				{
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT>();
-					pro->set_m_type(pbnet::enum_logic_chat::get_chat_list);
-					int lchannelid = 0;
-					if (tools::splite(aparm, "*", lchannelid) == false)
-						return;
-					pro->set_m_channelid(lchannelid);
-					message lmessage(0, nullptr, pro);
-					role->handle_forward<ACTOR_CHAT>(lmessage);
-				}
-			);
 			handle_cmd::push("/switch", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
@@ -95,8 +89,12 @@ namespace ngl
 			);
 			handle_cmd::push("/createorder", [](actor_role* role, [[maybe_unused]] const char* aparm)
 				{
+					int32_t lrechargeid = 0;
+					if (tools::splite(aparm, "*", lrechargeid) == false)
+						return;
 					std::string lorderid;
-					role->createorder(lorderid, 1989);
+					role->createorder(lorderid, lrechargeid);
+					role->echo_msg(lorderid.c_str());
 				}
 			);
 			handle_cmd::push("/notices", [](actor_role* role, [[maybe_unused]] const char* aparm)
@@ -206,6 +204,20 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
+			handle_cmd::push("/ranklist", [](actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST>();
+					bool liscross = true;
+					int32_t ltype = 0;
+					if (tools::splite(aparm, "*", liscross, ltype) == false)
+						return;
+					pro->set_m_iscross(liscross);
+					pro->set_m_type((pbdb::eranklist)ltype);
+					message lmessage(1, nullptr, pro);
+					role->handle_forward<ACTOR_RANKLIST>(lmessage);
+				}
+			);
+
 		}
 
 		std::string& lcmd = lvec[0];
