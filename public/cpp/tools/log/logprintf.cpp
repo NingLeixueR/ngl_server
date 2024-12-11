@@ -19,8 +19,6 @@
 
 namespace ngl
 {
-	time_wheel m_logwheel;
-
 	void logprintf::printf(ELOGLEVEL acolor, const char* apos, const char* atimestr, const char* amsg)
 	{
 		switch (acolor)
@@ -85,20 +83,6 @@ namespace ngl
 		m_config(aconfig)
 	{
 		create();
-
-		int32_t lflushtime = m_config.flush_time();
-		wheel_parm lparm
-		{
-			.m_ms = lflushtime,
-			.m_intervalms = [lflushtime](int64_t) {return lflushtime; } ,
-			.m_count = 0x7fffffff,
-			.m_fun = [this](const wheel_node*)
-			{
-				auto pro = std::make_shared<np_logflush>();
-				actor::static_send_actor(actor_log::actorid(nlogactor::actor_type(m_config.m_id), nlogactor::log_type(m_config.m_id)), nguid::make(), pro);
-			}
-		};
-		m_logwheel.addtimer(lparm);
 	}
 
 	void logfile::flush()

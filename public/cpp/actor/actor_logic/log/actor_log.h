@@ -45,6 +45,20 @@ namespace ngl
 		virtual ~actor_log();
 
 		bool handle(const message<np_logitem>& adata);
-		bool handle(const message<np_logflush>& adata);
+
+		struct log_timerparm
+		{
+			enum etype
+			{
+				e_logflush,
+				e_create,
+			};
+			etype m_type;
+			log_timerparm(etype atype) :
+				m_type(atype)
+			{}
+		};
+
+		bool timer_handle(const message<timerparm>& adata);
 	};
 }//namespace ngl

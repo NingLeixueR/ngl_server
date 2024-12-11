@@ -826,11 +826,6 @@ namespace ngl
 		}
 	};
 
-	struct np_logflush
-	{
-		def_portocol_function(np_logflush)
-	};
-
 	template <typename TDATA>
 	struct np_channel_register
 	{
