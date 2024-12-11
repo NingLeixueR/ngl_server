@@ -16,6 +16,13 @@
 
 namespace ngl
 {
+	/**
+		此文件内定义的extern全局命名ngl的log_方法
+		其在actor类内部会调用actor_base中的log_方法
+		log_方法如果在全局调用会写入对应sys_global目录下的日志文件
+		log_方法如果actor类内调用则会写入对应actor_xxx目录下
+	*/
+
 	class elog_name
 	{
 	public:
