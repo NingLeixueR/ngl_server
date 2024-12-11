@@ -765,50 +765,53 @@ namespace ngl
 		}
 
 		void send(std::shared_ptr<np_logitem> pro);
+
+		
 	public:
+		static bool check_level(ELOGLEVEL alevel)
+		{
+			return !(alevel < ngl::sysconfig::logconsolelevel() && alevel < ngl::sysconfig::logwritelevel());
+		}
+
 		template <typename ...ARGS>
 		void print(const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
 		{
-			if (m_level >= ngl::sysconfig::loglevel())
-			{
-				if (sysconfig::logconsole() == false && sysconfig::logiswrite() == false)
-					return;
-				try
-				{
-					std::string ldata = m_stream.str();
-					ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
-					int32_t ltime = (int32_t)localtime::gettime();
-					set_source();
-					if (sysconfig::logconsole())
-					{
-						char ltimebuff[1024];
-						ngl::localtime::time2str(ltimebuff, 1024, ltime, "%Y/%m/%d %H:%M:%S");
-						logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
-					}
-					if (m_actortype == ENUM_ACTOR::ACTOR_LOG)
-						return;
-					if (m_init == false || sysconfig::logiswrite() == false)
-						return;
+			if (m_actortype == ENUM_ACTOR::ACTOR_LOG)
+				return;
+			if (m_init == false)
+				return;
+			if (!check_level(m_level))
+				return;
 
-					auto pro = std::make_shared<np_logitem>();
-					pro->m_loglevel = m_level;
-					pro->m_serverid = nconfig::m_nodeid;
-					pro->m_time = ltime;
-					pro->m_src.swap(m_src);
-					pro->m_data.swap(ldata);
-					send(pro);
-				}
-				catch (...)
-				{
-					std::cout << "log error!" << std::endl;
-				}
+			std::string ldata = m_stream.str();
+			ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));
+
+			int32_t ltime = (int32_t)localtime::gettime();
+			set_source();
+
+			if (m_level >= ngl::sysconfig::logconsolelevel())
+			{
+				char ltimebuff[1024];
+				ngl::localtime::time2str(ltimebuff, 1024, ltime, "%Y/%m/%d %H:%M:%S");
+				logprintf::printf(m_level, m_src.c_str(), ltimebuff, ldata.c_str());
+			}
+
+			if (m_level >= ngl::sysconfig::logwritelevel())
+			{
+				auto pro = std::make_shared<np_logitem>();
+				pro->m_loglevel = m_level;
+				pro->m_serverid = nconfig::m_nodeid;
+				pro->m_time = ltime;
+				pro->m_src.swap(m_src);
+				pro->m_data.swap(ldata);
+				send(pro);
 			}
 		}
 
 		template <typename T>
 		np_actor_logitem& operator<<(const T& adata)
 		{
-			if (m_init && m_level >= ngl::sysconfig::loglevel())
+			if (m_init && check_level(m_level))
 			{
 				m_stream << adata;
 			}
@@ -818,7 +821,7 @@ namespace ngl
 		// 重载 << 操作符以输出 std::endl
 		np_actor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
 		{
-			if (m_init && m_level >= ngl::sysconfig::loglevel())
+			if (m_init && check_level(m_level))
 			{
 				m_stream << manipulator;
 			}

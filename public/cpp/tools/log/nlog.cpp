@@ -29,7 +29,7 @@ namespace ngl
 
 	std::shared_ptr<np_actor_logitem> get_log(const std::source_location& asource, ELOGLEVEL alevel, bool anet)
 	{
-		if (alevel >= ngl::sysconfig::loglevel())
+		if (np_actor_logitem::check_level(alevel))
 		{
 			return std::make_shared<np_actor_logitem>(alevel, ACTOR_NONE, anet? ELOG_NETWORK:ELOG_LOCAL, asource);
 		}
