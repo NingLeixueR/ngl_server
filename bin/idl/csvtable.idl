@@ -29,7 +29,7 @@ enum EPH_HEAD_VAL
 
 enum EPH
 {
-	EPH_MASK_VALUE = 0x0f,
+	EPH_MASK_VALUE = 0xff,
 	EPH_MASK_COUNT = 2,
 	EPH_MASK = 0,								// 用于确认是否使用包
 	EPH_BYTES = EPH_MASK_COUNT,					// 协议字节数
@@ -530,4 +530,14 @@ struct tab_familylv
 
 	int32_t m_exp;  							// [index:3][load:y] 升级需要的经验
 	int32_t m_maxmembers; 						// [index:4][load:y] 最多军团人数
+};
+
+// 合服表
+struct tab_mergearea
+{
+	int32_t m_id;								// [index:0][load:y] 区服id
+	string m_name;								// [index:1][load:y] 名字 
+	string m_remarks;							// [index:2][load:n] 备注
+
+	int32_t m_mergeid;							// [index:3][load:y] 合并到的区服id
 };
