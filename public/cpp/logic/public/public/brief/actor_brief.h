@@ -42,7 +42,10 @@ namespace ngl
 
 		virtual ~actor_brief() {}
 
-		virtual void loaddb_finish(bool adbishave) {}
+		virtual void loaddb_finish(bool adbishave) 
+		{
+			log_error()->print("actor_brief::loaddb_finish({})", adbishave?"true":"false");
+		}
 
 		static ENUM_ACTOR actor_type()
 		{

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-12-10 17:35:32
+// 创建时间 24-12-12 15:31:19
 #include "actor_manage_activity.cpp"
 #include "actor_manage_plays.cpp"
 #include "calendar_function.cpp"
@@ -12,6 +12,7 @@
 #include "actor_csvserver.cpp"
 #include "actor_csvclient.cpp"
 #include "ttab_specialid.cpp"
+#include "ttab_mergearea.cpp"
 #include "ttab_attribute.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"

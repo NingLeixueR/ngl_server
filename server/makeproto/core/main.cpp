@@ -254,6 +254,7 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
               << "DROP TABLE IF EXISTS `" << lmessage << "`;\r\n"
               << "CREATE TABLE `" << lmessage << "` (\r\n"
               << "    `id` bigint(63) NOT NULL,\r\n"
+              << "    `area` int(11) NOT NULL,\r\n"
               << "    `data` LongBlob,\r\n"
               << "    PRIMARY KEY(`id`)\r\n"
               << ")ENGINE = InnoDB DEFAULT CHARSET = utf8; \r\n";

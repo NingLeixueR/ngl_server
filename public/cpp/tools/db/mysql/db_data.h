@@ -129,6 +129,21 @@ namespace ngl
 				afun(++lindex, lpair.second);
 			}				
 		}
+
+		static void foreach_index(int32_t aindexbeg, int32_t aindexend, const std::function<void(int32_t, T&)>& afun)
+		{
+			int lindex = 0;
+			for (std::pair<const i64_actorid, T>& lpair : m_data)
+			{
+				++lindex;
+				if (lindex >= aindexbeg && lindex < aindexend)
+				{
+					afun(lindex, lpair.second);
+				}
+				if (lindex > aindexend)
+					return;
+			}
+		}
 	};
 
 	template <typename T>

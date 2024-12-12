@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ttab_mergearea.h"
 #include "serialize.h"
 #include "db_data.h"
 #include "db_buff.h"
@@ -57,16 +58,17 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024
-				, "INSERT INTO %s (id,data)VALUES(%lld,?)  ON DUPLICATE KEY UPDATE data=values(data);"
-				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id()
+				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data);"
+				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), nguid::area(adata.m_id())
 			);
 
 			if (llen <= 0)
 				return;
 			adb->stmt_query(lbuff, llen, lbind);
+			
 			log_error()->print(
-				"INSERT INTO {} (id,data)VALUES({},[bindata])"
-				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id()
+				"INSERT INTO {} (id, area, data)VALUES({},{},[bindata])"
+				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), nguid::area(adata.m_id())
 			);
 		}
 
@@ -107,14 +109,31 @@ namespace ngl
 			adb->query(lbuff, llen);
 		}
 
+		// # 加载本地配置区服关联的所有合服数据
+		static std::string& where_area()
+		{
+			static std::string lareastr;
+			if (lareastr.empty())
+			{
+				std::set<i16_area>* lareaset = ttab_mergearea::mergelist(ttab_servers::tab()->m_area);
+				assert(lareaset != nullptr);
+				tools::splicing(*lareaset, " AND area = ", lareastr);
+				if (!lareastr.empty())
+				{
+					lareastr = " area = " + lareastr;
+				}
+			}
+			return lareastr;
+		}
+
 		template <typename T>
 		static bool select(db* adb, i64_actorid aid)
 		{
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
-				"SELECT id,data FROM %s WHERE id = '%lld';",
-				tools::protobuf_tabname<T>::name().c_str(), aid
+				"SELECT id,data FROM %s WHERE id = '%lld' AND %s;",
+				tools::protobuf_tabname<T>::name().c_str(), aid, where_area()
 			);
 			if (llen <= 0)
 				return false;
@@ -142,8 +161,8 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff, 1024, "SELECT id,data FROM %s;",
-				tools::protobuf_tabname<T>::name().c_str()
+				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;",
+				tools::protobuf_tabname<T>::name().c_str(), where_area()
 			);
 			if (llen <= 0)
 				return false;
@@ -172,8 +191,8 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
-				lbuff, 1024, "SELECT id FROM %s;",
-				tools::protobuf_tabname<T>::name().c_str()
+				lbuff, 1024, "SELECT id FROM %s WHERE %s;",
+				tools::protobuf_tabname<T>::name().c_str(), where_area()
 			);
 			if (llen <= 0)
 				return false;
