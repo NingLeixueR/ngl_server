@@ -243,8 +243,9 @@ namespace ngl
 
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
+			std::string lname = tools::protobuf_tabname<TDBTAB>::name();
 			log_error()->print(
-				"load: np_actordb_load<{}> id:{}", tools::protobuf_tabname<TDBTAB>::name(), adata.get_data()->m_id
+				"load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id
 			);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
@@ -326,6 +327,38 @@ namespace ngl
 								pro.m_data = lbuff;
 							}
 						}
+					});
+				handle_cmd::push("queryall", [this](int athread, int id, const ngl::json_read& aos)
+					{
+						gcmd<std::vector<std::string>> pro;
+						pro.id = id;
+						pro.m_operator = "query_responce";
+
+						struct query_page
+						{
+							int32_t m_everypagecount;
+							int32_t m_page;
+
+							jsonfunc("everypagecount", m_everypagecount, "page", m_page)
+						};
+						query_page lpage;
+						if (aos.read("data", lpage) == false)
+							return;
+						int32_t lbegindex = lpage.m_everypagecount* (lpage.m_page - 1);
+						int32_t lendindex = lbegindex + lpage.m_everypagecount;
+
+						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro](int32_t aindex, TDBTAB& aitem)
+							{
+								protobuf_data<TDBTAB> m_savetemp;
+								m_savetemp.m_isbinary = false;
+								m_savetemp.m_data = std::make_shared<TDBTAB>(aitem);
+								char lbuff[10240] = { 0 };
+								ngl::serialize lserialize(lbuff, 10240);
+								if (lserialize.push(m_savetemp))
+								{
+									pro.m_data.push_back(lbuff);
+								}
+							});
 					});
 				handle_cmd::push("change", [this](int athread, int id, const ngl::json_read& aos)
 					{
