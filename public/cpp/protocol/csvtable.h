@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-11-13 10:24:27
+// 创建时间 // 创建时间 24-12-12 14:52:35
 #pragma once
 
 #include "csv.h"
@@ -28,7 +28,7 @@ enum EPH_HEAD_VAL
 };
 enum EPH
 {
-	EPH_MASK_VALUE = 0x0f,	
+	EPH_MASK_VALUE = 0xff,	
 	EPH_MASK_COUNT = 2,	
 	EPH_MASK = 0,	// 用于确认是否使用包
 	EPH_BYTES = EPH_MASK_COUNT,	// 协议字节数
@@ -771,6 +771,23 @@ struct tab_familylv
 	{
 		std::string lm_remarks;
 		def_rcsv2(m_id,m_name,lm_remarks,m_exp,m_maxmembers);
+	}
+};
+struct tab_mergearea
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] 区服id
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+	int32_t                          m_mergeid                       ; // [index:3][load:y] 合并到的区服id
+	/*********************************/
+	tab_mergearea();
+	// 序列化反序列化相关
+	def_portocol(tab_mergearea, m_id, m_name, m_mergeid)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv2(m_id,m_name,lm_remarks,m_mergeid);
 	}
 };
 }//namespace ngl
