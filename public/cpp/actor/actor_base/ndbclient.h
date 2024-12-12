@@ -132,6 +132,8 @@ namespace ngl
 		// # МгдиЪ§Он
 		void init_load()
 		{
+			std::string& lname = tools::type_name<type_ndbclient>();
+			log_error()->print("ndbclient init_load [{}]", lname);
 			load();
 		}
 
@@ -155,7 +157,8 @@ namespace ngl
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-			log_error()->print("ndbclient loaddb [{}] [{}]", tools::type_name<type_ndbclient>(), aid);
+			std::string& lname = tools::type_name<type_ndbclient>();
+			log_error()->print("ndbclient loaddb [{}] [{}]", lname, aid);
 		}
 
 		nguid										m_id = nguid::make();

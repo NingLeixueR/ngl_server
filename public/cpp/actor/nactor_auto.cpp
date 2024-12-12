@@ -203,7 +203,6 @@ namespace ngl
 		tdb_familyer::init(aregister);
 		tdb_notice::init(aregister);
 		tdb_rolekv::init(aregister);
-		tdb_brief::init(aregister);
 		tdb_guild::init(aregister);
 		tdb_brief::init(aregister);
 		tdb_mail::init(aregister);

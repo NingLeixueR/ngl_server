@@ -1,5 +1,6 @@
 #include "ttab_errormessage.h"
 #include "ttab_attribute.h"
+#include "ttab_mergearea.h"
 #include "ttab_calendar.h"
 #include "ttab_servers.h"
 #include "ttab_random.h"
@@ -84,6 +85,8 @@ namespace ngl
 		loadcsv<tab_servers, ttab_servers>();
 		loadcsv<tab_dbload, ttab_dbload>();
 		loadcsv<tab_recharge, manage_csv<tab_recharge>>();
+		loadcsv<tab_mergearea, ttab_mergearea>();
+		
 	}
 
 	void allcsv::add(const char* akey, csvbase* ap)
