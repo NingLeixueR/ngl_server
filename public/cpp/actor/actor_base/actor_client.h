@@ -47,12 +47,17 @@ namespace ngl
 
 		//# 主动连接
 		void activ_connect(i32_serverid aserverid);
+
+		
 	public:
 		//# 向actor_server注册结点
 		void actor_server_register();
 
 		//# actor_client的actorid
 		static i64_actorid actorid();
+
+		//np_actor_server_register
+		bool handle(const message<np_actor_server_register>& adata);
 
 		//# 注册结点
 		bool handle(const message<np_actornode_register_response>& adata);
@@ -71,5 +76,6 @@ namespace ngl
 
 		//# 同步actor_role对应的gateway
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
+
 	};
 }//namespace ngl

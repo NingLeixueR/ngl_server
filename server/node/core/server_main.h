@@ -268,7 +268,7 @@ bool start_db(int argc, char** argv)
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
-	ngl::init_nactor_type(false);
+	ngl::init_db_actor(false);
 	ngl::actor_gmclient::getInstance();
 	
 	ngl::actor_client::getInstance().actor_server_register();
@@ -292,6 +292,23 @@ bool start_db(int argc, char** argv)
 		}		
 	}
 
+	return true;
+}
+
+bool start_crossdb()
+{
+	ngl::log_error()->print("[{}] start", "CROSSDB");
+	if (!init_server(nconfig::m_nodeid))
+		return false;
+	ngl::actor_client::getInstance();
+
+	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
+	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+
+	ngl::init_db_actor(false);
+	ngl::actor_gmclient::getInstance();
+
+	ngl::actor_client::getInstance().actor_server_register();
 	return true;
 }
 
@@ -432,6 +449,7 @@ bool start_cross()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_chat::getInstance();
+	ngl::actor_ranklist::getInstance();
 	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();

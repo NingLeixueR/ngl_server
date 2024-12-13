@@ -84,6 +84,9 @@ int main(int argc, char** argv)
 	case ngl::CROSS:
 		start_cross();
 		break;
+	case ngl::CROSSDB:
+		start_crossdb();
+		break;
 	case ngl::PUSHSERVERCONFIG:
 		start_pushserverconfig();
 		break;
