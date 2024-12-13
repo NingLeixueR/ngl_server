@@ -53,13 +53,19 @@ namespace ngl
 			lbind[0].buffer			= (void*)lbinptr.m_buff;
 			lbind[0].buffer_length	= lbuffpos;
 
+			i16_area larea = nguid::area(adata.m_id());
+			if (larea == 0)
+			{
+				larea = ttab_servers::tab()->m_area;
+			}
+
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
 			// # REPLACE INTO 则会先删除数据，然后再插入。
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024
-				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data);"
-				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), nguid::area(adata.m_id())
+				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
+				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), larea
 			);
 
 			if (llen <= 0)

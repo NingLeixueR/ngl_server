@@ -60,7 +60,8 @@ namespace ngl
 
 		//# 注册协议
 		register_handle_custom<actor_client>::func<
-			np_actornode_register_response
+			np_actor_server_register
+			, np_actornode_register_response
 			, np_actorclient_node_connect
 			, np_actornode_update
 			, np_actornode_connect_task
@@ -125,19 +126,26 @@ namespace ngl
 
 	void actor_client::actor_server_register()
 	{
+		auto pro = std::make_shared<np_actor_server_register>();
+		send_actor(id_guid(), pro);
+	}
+
+	bool actor_client::handle(const message<np_actor_server_register>& adata)
+	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
-			return;
+			return true;
 		Try
 		{
 			// # 需要尝试连接ActorServer结点 并向其注册自己
 			Assert(ttab_servers::node_type() != ngl::ACTORSERVER)
 			Assert(ttab_servers::node_type() != ngl::ROBOT)
-			const tab_servers* tab = ttab_servers::tab();
+			const tab_servers * tab = ttab_servers::tab();
 			for (int32_t id : tab->m_actorserver)
 			{
 				actor_server_register(id);
 			}
 		}Catch
+		return true;
 	}
 
 	bool isactiv_connect(i32_serverid aserverid)
@@ -238,12 +246,19 @@ namespace ngl
 		}Catch
 		return true;
 	}
-	
+
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
 		Try
 		{
 			auto lparm = adata.get_data();
+			
+			std::string lname;
+			for (nguid item : lparm->m_add)
+			{
+				lname += std::format("{}|", item);
+			}
+			
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
 		}Catch

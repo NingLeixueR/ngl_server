@@ -54,6 +54,11 @@ namespace ngl
 		def_portocol_function(nactornode, m_name, m_serverid, m_actortype)
 	};
 
+	struct np_actor_server_register
+	{
+		def_portocol(np_actor_server_register)
+	};
+
 	// ---- [actor client -> actor server] register
 	// ×¢²á½áµã
 	struct np_actornode_register
