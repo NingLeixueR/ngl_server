@@ -52,7 +52,7 @@
 
 bool init_server(int aid)
 {
-	ngl::init_nactor_type();
+	ngl::init_nactor_type(true);
 
 	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
