@@ -30,7 +30,7 @@
 					logflushtime = "10000"
 					logline = "10000"
 					logwritelevel = "1"
-					logconsolelevel = "1"
+					logconsolelevel = "3"
 					consumings = "100"
 				></config>
 		</public>

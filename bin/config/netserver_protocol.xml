@@ -1,543 +1,823 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <con>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,1,struct ngl::forward>" number="55"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="55"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,0,struct ngl::forward>" number="55"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="55"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,1,class pbnet::PROBUFF_NET_HEARTBEAT>" number="55"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_HEARTBEAT>" number="55"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,0,class pbnet::PROBUFF_NET_HEARTBEAT>" number="55"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_HEARTBEAT>" number="55"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_HEARTBEAT>" number="55"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_HEARTBEAT>" number="55"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,1,struct ngl::forward>" number="56"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="56"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,0,struct ngl::forward>" number="56"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="56"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,1,class pbnet::PROBUFF_NET_RECHARGE>" number="56"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RECHARGE>" number="56"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,0,class pbnet::PROBUFF_NET_RECHARGE>" number="56"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RECHARGE>" number="56"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RECHARGE>" number="56"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RECHARGE>" number="56"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,1,struct ngl::forward>" number="57"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="57"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,0,struct ngl::forward>" number="57"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="57"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,1,class pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="57"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="57"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,0,class pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="57"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="57"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="57"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="57"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,1,struct ngl::forward>" number="58"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="58"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,0,struct ngl::forward>" number="58"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="58"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,1,class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="58"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="58"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,0,class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="58"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="58"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="58"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="58"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,1,struct ngl::forward>" number="59"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="59"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,0,struct ngl::forward>" number="59"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="59"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,1,class pbnet::PROBUFF_NET_ERROR>" number="59"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ERROR>" number="59"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,0,class pbnet::PROBUFF_NET_ERROR>" number="59"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ERROR>" number="59"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ERROR>" number="59"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ERROR>" number="59"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR_RESPONSE,1,1,struct ngl::forward>" number="60"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="60"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR_RESPONSE,1,0,struct ngl::forward>" number="60"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="60"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR_RESPONSE,1,1,class pbnet::PROBUFF_NET_ERROR_RESPONSE>" number="60"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ERROR_RESPONSE>" number="60"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR_RESPONSE,1,0,class pbnet::PROBUFF_NET_ERROR_RESPONSE>" number="60"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ERROR_RESPONSE>" number="60"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ERROR_RESPONSE>" number="60"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ERROR_RESPONSE>" number="60"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,1,struct ngl::forward>" number="61"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="61"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,0,struct ngl::forward>" number="61"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="61"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,1,class pbnet::PROBUFF_NET_GET_TIME>" number="61"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_GET_TIME>" number="61"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,0,class pbnet::PROBUFF_NET_GET_TIME>" number="61"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_GET_TIME>" number="61"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_GET_TIME>" number="61"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_GET_TIME>" number="61"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,1,struct ngl::forward>" number="62"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="62"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,0,struct ngl::forward>" number="62"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="62"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,1,class pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="62"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="62"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,0,class pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="62"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="62"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="62"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="62"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,1,struct ngl::forward>" number="63"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="63"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,0,struct ngl::forward>" number="63"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="63"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,1,class pbnet::PROBUFF_NET_NOTICE>" number="63"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_NOTICE>" number="63"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,0,class pbnet::PROBUFF_NET_NOTICE>" number="63"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_NOTICE>" number="63"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_NOTICE>" number="63"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_NOTICE>" number="63"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,1,struct ngl::forward>" number="64"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="64"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,0,struct ngl::forward>" number="64"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="64"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,1,class pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="64"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="64"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,0,class pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="64"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="64"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="64"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="64"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,1,struct ngl::forward>" number="65"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="65"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,0,struct ngl::forward>" number="65"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="65"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,1,class pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="65"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="65"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,0,class pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="65"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="65"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="65"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="65"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,1,struct ngl::forward>" number="66"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="66"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,0,struct ngl::forward>" number="66"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="66"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,1,class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="66"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="66"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,0,class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="66"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="66"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="66"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="66"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,1,struct ngl::forward>" number="67"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="67"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,0,struct ngl::forward>" number="67"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="67"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,1,class pbnet::PROBUFF_NET_ROLE_LOGIN>" number="67"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLE_LOGIN>" number="67"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,0,class pbnet::PROBUFF_NET_ROLE_LOGIN>" number="67"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLE_LOGIN>" number="67"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN>" number="67"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLE_LOGIN>" number="67"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,1,struct ngl::forward>" number="68"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="68"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,0,struct ngl::forward>" number="68"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="68"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,1,class pbnet::PROBUFF_NET_ROLE_SYNC>" number="68"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLE_SYNC>" number="68"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,0,class pbnet::PROBUFF_NET_ROLE_SYNC>" number="68"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLE_SYNC>" number="68"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLE_SYNC>" number="68"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLE_SYNC>" number="68"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,1,struct ngl::forward>" number="69"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="69"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,0,struct ngl::forward>" number="69"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="69"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,1,class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="69"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="69"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,0,class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="69"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="69"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="69"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="69"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,1,struct ngl::forward>" number="70"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="70"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,0,struct ngl::forward>" number="70"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="70"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,1,class pbnet::PROBUFF_NET_BAG_SYNC>" number="70"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_SYNC>" number="70"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,0,class pbnet::PROBUFF_NET_BAG_SYNC>" number="70"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_SYNC>" number="70"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_SYNC>" number="70"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_SYNC>" number="70"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,1,struct ngl::forward>" number="71"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="71"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,0,struct ngl::forward>" number="71"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="71"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,1,class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="71"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="71"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,0,class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="71"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="71"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="71"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="71"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,1,struct ngl::forward>" number="72"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="72"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,0,struct ngl::forward>" number="72"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="72"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,1,class pbnet::PROBUFF_NET_BAG_UPDATE>" number="72"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_UPDATE>" number="72"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,0,class pbnet::PROBUFF_NET_BAG_UPDATE>" number="72"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_UPDATE>" number="72"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_UPDATE>" number="72"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_UPDATE>" number="72"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,1,struct ngl::forward>" number="73"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="73"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,0,struct ngl::forward>" number="73"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="73"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,1,class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="73"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="73"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,0,class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="73"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="73"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="73"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="73"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,1,struct ngl::forward>" number="74"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="74"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,0,struct ngl::forward>" number="74"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="74"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,1,class pbnet::PROBUFF_NET_CMD>" number="74"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CMD>" number="74"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,0,class pbnet::PROBUFF_NET_CMD>" number="74"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CMD>" number="74"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CMD>" number="74"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CMD>" number="74"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,1,struct ngl::forward>" number="75"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="75"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,0,struct ngl::forward>" number="75"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="75"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,1,class pbnet::PROBUFF_NET_CHAT>" number="75"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHAT>" number="75"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,0,class pbnet::PROBUFF_NET_CHAT>" number="75"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHAT>" number="75"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHAT>" number="75"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHAT>" number="75"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,1,struct ngl::forward>" number="76"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="76"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,0,struct ngl::forward>" number="76"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="76"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,1,class pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="76"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="76"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,0,class pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="76"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="76"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="76"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="76"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,1,struct ngl::forward>" number="77"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="77"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,0,struct ngl::forward>" number="77"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="77"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,1,class pbnet::PROBUFF_NET_SWITCH_LINE>" number="77"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SWITCH_LINE>" number="77"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,0,class pbnet::PROBUFF_NET_SWITCH_LINE>" number="77"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SWITCH_LINE>" number="77"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SWITCH_LINE>" number="77"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SWITCH_LINE>" number="77"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,1,struct ngl::forward>" number="78"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="78"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,0,struct ngl::forward>" number="78"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="78"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,1,class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="78"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="78"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,0,class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="78"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="78"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="78"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="78"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,1,struct ngl::forward>" number="79"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="79"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,0,struct ngl::forward>" number="79"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="79"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,1,class pbnet::PROBUFF_NET_MAIL_LIST>" number="79"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_LIST>" number="79"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,0,class pbnet::PROBUFF_NET_MAIL_LIST>" number="79"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_LIST>" number="79"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_LIST>" number="79"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_LIST>" number="79"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,1,struct ngl::forward>" number="80"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="80"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,0,struct ngl::forward>" number="80"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="80"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="80"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="80"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="80"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="80"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="80"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="80"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,1,struct ngl::forward>" number="81"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="81"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,0,struct ngl::forward>" number="81"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="81"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,1,class pbnet::PROBUFF_NET_MAIL_READ>" number="81"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_READ>" number="81"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,0,class pbnet::PROBUFF_NET_MAIL_READ>" number="81"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_READ>" number="81"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_READ>" number="81"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_READ>" number="81"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,1,struct ngl::forward>" number="82"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="82"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,0,struct ngl::forward>" number="82"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="82"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="82"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="82"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="82"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="82"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="82"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="82"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,1,struct ngl::forward>" number="83"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="83"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,0,struct ngl::forward>" number="83"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="83"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,1,class pbnet::PROBUFF_NET_MAIL_DRAW>" number="83"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DRAW>" number="83"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,0,class pbnet::PROBUFF_NET_MAIL_DRAW>" number="83"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DRAW>" number="83"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DRAW>" number="83"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DRAW>" number="83"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,1,struct ngl::forward>" number="84"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="84"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,0,struct ngl::forward>" number="84"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="84"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="84"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="84"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="84"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="84"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="84"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="84"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,1,struct ngl::forward>" number="85"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="85"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,0,struct ngl::forward>" number="85"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="85"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,1,class pbnet::PROBUFF_NET_MAIL_DEL>" number="85"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DEL>" number="85"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,0,class pbnet::PROBUFF_NET_MAIL_DEL>" number="85"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DEL>" number="85"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DEL>" number="85"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DEL>" number="85"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,1,struct ngl::forward>" number="86"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="86"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,0,struct ngl::forward>" number="86"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="86"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="86"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="86"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="86"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="86"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="86"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="86"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,1,struct ngl::forward>" number="87"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="87"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,0,struct ngl::forward>" number="87"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="87"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,1,class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="87"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="87"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,0,class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="87"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="87"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="87"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="87"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,1,struct ngl::forward>" number="88"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="88"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,0,struct ngl::forward>" number="88"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="88"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,1,class pbnet::PROBUFF_NET_SYNC_UNIT>" number="88"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_UNIT>" number="88"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,0,class pbnet::PROBUFF_NET_SYNC_UNIT>" number="88"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_UNIT>" number="88"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_UNIT>" number="88"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_UNIT>" number="88"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,1,struct ngl::forward>" number="89"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="89"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,0,struct ngl::forward>" number="89"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="89"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,1,class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="89"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="89"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,0,class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="89"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="89"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="89"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="89"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,1,struct ngl::forward>" number="90"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="90"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,0,struct ngl::forward>" number="90"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="90"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,1,class pbnet::PROBUFF_NET_SYNC_POSITION>" number="90"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_POSITION>" number="90"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,0,class pbnet::PROBUFF_NET_SYNC_POSITION>" number="90"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_POSITION>" number="90"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_POSITION>" number="90"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_POSITION>" number="90"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,1,struct ngl::forward>" number="91"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="91"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,0,struct ngl::forward>" number="91"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="91"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,1,class pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="91"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="91"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,0,class pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="91"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="91"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="91"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="91"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,1,struct ngl::forward>" number="92"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="92"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,0,struct ngl::forward>" number="92"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="92"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,1,class pbnet::PROBUFF_NET_MATCHING>" number="92"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING>" number="92"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,0,class pbnet::PROBUFF_NET_MATCHING>" number="92"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING>" number="92"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING>" number="92"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING>" number="92"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,1,struct ngl::forward>" number="93"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="93"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,0,struct ngl::forward>" number="93"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="93"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="93"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="93"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="93"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="93"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="93"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="93"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,1,struct ngl::forward>" number="94"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="94"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,0,struct ngl::forward>" number="94"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="94"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,1,class pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="94"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="94"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,0,class pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="94"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="94"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="94"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="94"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,1,struct ngl::forward>" number="95"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="95"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,0,struct ngl::forward>" number="95"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="95"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="95"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="95"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="95"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="95"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="95"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="95"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,1,struct ngl::forward>" number="96"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="96"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,0,struct ngl::forward>" number="96"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="96"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,1,class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="96"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="96"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,0,class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="96"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="96"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="96"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="96"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,1,struct ngl::forward>" number="97"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="97"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,0,struct ngl::forward>" number="97"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="97"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,1,class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="97"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="97"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,0,class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="97"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="97"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="97"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="97"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,1,struct ngl::forward>" number="98"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="98"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,0,struct ngl::forward>" number="98"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="98"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,1,class pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="98"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="98"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,0,class pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="98"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="98"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="98"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="98"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,1,struct ngl::forward>" number="99"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="99"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,0,struct ngl::forward>" number="99"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="99"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="99"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="99"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="99"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="99"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="99"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="99"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,1,struct ngl::forward>" number="100"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="100"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,0,struct ngl::forward>" number="100"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="100"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,1,class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="100"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="100"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,0,class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="100"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="100"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="100"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="100"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,1,struct ngl::forward>" number="101"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="101"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,0,struct ngl::forward>" number="101"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="101"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,1,class pbnet::PROBUFF_NET_MATCHING_SYNC>" number="101"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_SYNC>" number="101"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,0,class pbnet::PROBUFF_NET_MATCHING_SYNC>" number="101"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_SYNC>" number="101"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC>" number="101"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_SYNC>" number="101"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,1,struct ngl::forward>" number="102"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="102"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,0,struct ngl::forward>" number="102"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="102"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="102"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="102"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="102"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="102"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="102"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="102"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,1,struct ngl::forward>" number="103"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="103"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,0,struct ngl::forward>" number="103"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="103"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,1,class pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="103"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="103"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,0,class pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="103"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="103"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="103"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="103"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,1,struct ngl::forward>" number="104"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="104"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,0,struct ngl::forward>" number="104"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="104"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,1,class pbnet::PROBUFF_NET_ENTER_PLAYS>" number="104"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ENTER_PLAYS>" number="104"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,0,class pbnet::PROBUFF_NET_ENTER_PLAYS>" number="104"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ENTER_PLAYS>" number="104"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS>" number="104"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ENTER_PLAYS>" number="104"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,1,struct ngl::forward>" number="105"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="105"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,0,struct ngl::forward>" number="105"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="105"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,1,class pbnet::PROBUFF_NET_KCPSESSION>" number="105"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_KCPSESSION>" number="105"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,0,class pbnet::PROBUFF_NET_KCPSESSION>" number="105"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_KCPSESSION>" number="105"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_KCPSESSION>" number="105"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_KCPSESSION>" number="105"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,1,struct ngl::forward>" number="106"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="106"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,0,struct ngl::forward>" number="106"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="106"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,1,class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="106"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="106"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,0,class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="106"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="106"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="106"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="106"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,1,struct ngl::forward>" number="107"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="107"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,0,struct ngl::forward>" number="107"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="107"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,1,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="107"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="107"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,0,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="107"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="107"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="107"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="107"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,1,struct ngl::forward>" number="108"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="108"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,0,struct ngl::forward>" number="108"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="108"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,1,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="108"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="108"/>
-	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,0,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="108"/>
-	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="108"/>
-	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="108"/>
-	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="108"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MSG_RESPONSE,1,1,struct ngl::forward>" number="83"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MSG_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="83"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MSG_RESPONSE,1,0,struct ngl::forward>" number="83"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MSG_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="83"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MSG_RESPONSE,1,1,class pbnet::PROBUFF_NET_MSG_RESPONSE>" number="83"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MSG_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MSG_RESPONSE>" number="83"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MSG_RESPONSE,1,0,class pbnet::PROBUFF_NET_MSG_RESPONSE>" number="83"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MSG_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MSG_RESPONSE>" number="83"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MSG_RESPONSE>" number="83"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MSG_RESPONSE>" number="83"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,1,struct ngl::forward>" number="84"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="84"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,0,struct ngl::forward>" number="84"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="84"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,1,class pbnet::PROBUFF_NET_HEARTBEAT>" number="84"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_HEARTBEAT>" number="84"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_HEARTBEAT,1,0,class pbnet::PROBUFF_NET_HEARTBEAT>" number="84"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_HEARTBEAT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_HEARTBEAT>" number="84"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_HEARTBEAT>" number="84"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_HEARTBEAT>" number="84"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,1,struct ngl::forward>" number="85"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="85"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,0,struct ngl::forward>" number="85"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="85"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,1,class pbnet::PROBUFF_NET_RECHARGE>" number="85"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RECHARGE>" number="85"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE,1,0,class pbnet::PROBUFF_NET_RECHARGE>" number="85"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RECHARGE>" number="85"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RECHARGE>" number="85"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RECHARGE>" number="85"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,1,struct ngl::forward>" number="86"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="86"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,0,struct ngl::forward>" number="86"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="86"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,1,class pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="86"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="86"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE,1,0,class pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="86"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="86"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="86"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>" number="86"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,1,struct ngl::forward>" number="87"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="87"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,0,struct ngl::forward>" number="87"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="87"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,1,class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="87"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="87"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE,1,0,class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="87"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="87"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="87"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>" number="87"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,1,struct ngl::forward>" number="88"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="88"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,0,struct ngl::forward>" number="88"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="88"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,1,class pbnet::PROBUFF_NET_ERROR>" number="88"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ERROR>" number="88"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERROR,1,0,class pbnet::PROBUFF_NET_ERROR>" number="88"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERROR, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ERROR>" number="88"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ERROR>" number="88"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ERROR>" number="88"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,1,struct ngl::forward>" number="89"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="89"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,0,struct ngl::forward>" number="89"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="89"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,1,class pbnet::PROBUFF_NET_GET_TIME>" number="89"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_GET_TIME>" number="89"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME,1,0,class pbnet::PROBUFF_NET_GET_TIME>" number="89"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_GET_TIME>" number="89"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_GET_TIME>" number="89"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_GET_TIME>" number="89"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,1,struct ngl::forward>" number="90"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="90"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,0,struct ngl::forward>" number="90"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="90"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,1,class pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="90"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="90"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE,1,0,class pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="90"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="90"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="90"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>" number="90"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,1,struct ngl::forward>" number="91"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="91"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,0,struct ngl::forward>" number="91"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="91"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,1,class pbnet::PROBUFF_NET_NOTICE>" number="91"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_NOTICE>" number="91"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE,1,0,class pbnet::PROBUFF_NET_NOTICE>" number="91"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_NOTICE>" number="91"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_NOTICE>" number="91"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_NOTICE>" number="91"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,1,struct ngl::forward>" number="92"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="92"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,0,struct ngl::forward>" number="92"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="92"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,1,class pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="92"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="92"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE,1,0,class pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="92"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="92"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="92"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_NOTICE_RESPONSE>" number="92"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,1,struct ngl::forward>" number="93"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="93"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,0,struct ngl::forward>" number="93"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="93"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,1,class pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="93"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="93"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN,1,0,class pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="93"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="93"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="93"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN>" number="93"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,1,struct ngl::forward>" number="94"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="94"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,0,struct ngl::forward>" number="94"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="94"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,1,class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="94"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="94"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE,1,0,class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="94"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="94"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="94"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>" number="94"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,1,struct ngl::forward>" number="95"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="95"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,0,struct ngl::forward>" number="95"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="95"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,1,class pbnet::PROBUFF_NET_ROLE_LOGIN>" number="95"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLE_LOGIN>" number="95"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN,1,0,class pbnet::PROBUFF_NET_ROLE_LOGIN>" number="95"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_LOGIN, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLE_LOGIN>" number="95"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLE_LOGIN>" number="95"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLE_LOGIN>" number="95"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,1,struct ngl::forward>" number="96"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="96"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,0,struct ngl::forward>" number="96"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="96"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,1,class pbnet::PROBUFF_NET_ROLE_SYNC>" number="96"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLE_SYNC>" number="96"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC,1,0,class pbnet::PROBUFF_NET_ROLE_SYNC>" number="96"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLE_SYNC>" number="96"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLE_SYNC>" number="96"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLE_SYNC>" number="96"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,1,struct ngl::forward>" number="97"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="97"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,0,struct ngl::forward>" number="97"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="97"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,1,class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="97"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="97"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE,1,0,class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="97"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="97"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="97"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>" number="97"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,1,struct ngl::forward>" number="98"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="98"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,0,struct ngl::forward>" number="98"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="98"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,1,class pbnet::PROBUFF_NET_BAG_SYNC>" number="98"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_SYNC>" number="98"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC,1,0,class pbnet::PROBUFF_NET_BAG_SYNC>" number="98"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_SYNC>" number="98"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_SYNC>" number="98"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_SYNC>" number="98"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,1,struct ngl::forward>" number="99"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="99"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,0,struct ngl::forward>" number="99"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="99"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,1,class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="99"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="99"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE,1,0,class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="99"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="99"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="99"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>" number="99"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,1,struct ngl::forward>" number="100"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="100"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,0,struct ngl::forward>" number="100"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="100"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,1,class pbnet::PROBUFF_NET_BAG_UPDATE>" number="100"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_UPDATE>" number="100"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE,1,0,class pbnet::PROBUFF_NET_BAG_UPDATE>" number="100"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_UPDATE>" number="100"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_UPDATE>" number="100"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_UPDATE>" number="100"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,1,struct ngl::forward>" number="101"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="101"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,0,struct ngl::forward>" number="101"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="101"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,1,class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="101"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="101"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE,1,0,class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="101"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="101"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="101"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>" number="101"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,1,struct ngl::forward>" number="102"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="102"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,0,struct ngl::forward>" number="102"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="102"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,1,class pbnet::PROBUFF_NET_CMD>" number="102"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CMD>" number="102"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CMD,1,0,class pbnet::PROBUFF_NET_CMD>" number="102"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CMD, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CMD>" number="102"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CMD>" number="102"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CMD>" number="102"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,1,struct ngl::forward>" number="103"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="103"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,0,struct ngl::forward>" number="103"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="103"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,1,class pbnet::PROBUFF_NET_CHAT>" number="103"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHAT>" number="103"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT,1,0,class pbnet::PROBUFF_NET_CHAT>" number="103"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHAT>" number="103"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHAT>" number="103"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHAT>" number="103"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,1,struct ngl::forward>" number="104"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="104"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,0,struct ngl::forward>" number="104"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="104"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,1,class pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="104"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="104"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE,1,0,class pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="104"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="104"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="104"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHAT_RESPONSE>" number="104"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,1,struct ngl::forward>" number="105"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="105"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,0,struct ngl::forward>" number="105"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="105"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,1,class pbnet::PROBUFF_NET_SWITCH_LINE>" number="105"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SWITCH_LINE>" number="105"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE,1,0,class pbnet::PROBUFF_NET_SWITCH_LINE>" number="105"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SWITCH_LINE>" number="105"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SWITCH_LINE>" number="105"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SWITCH_LINE>" number="105"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,1,struct ngl::forward>" number="106"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="106"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,0,struct ngl::forward>" number="106"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="106"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,1,class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="106"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="106"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE,1,0,class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="106"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="106"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="106"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>" number="106"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,1,struct ngl::forward>" number="107"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="107"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,0,struct ngl::forward>" number="107"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="107"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,1,class pbnet::PROBUFF_NET_MAIL_LIST>" number="107"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_LIST>" number="107"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST,1,0,class pbnet::PROBUFF_NET_MAIL_LIST>" number="107"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_LIST>" number="107"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_LIST>" number="107"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_LIST>" number="107"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,1,struct ngl::forward>" number="108"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="108"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,0,struct ngl::forward>" number="108"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="108"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="108"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="108"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="108"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="108"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="108"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>" number="108"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,1,struct ngl::forward>" number="109"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="109"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,0,struct ngl::forward>" number="109"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="109"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,1,class pbnet::PROBUFF_NET_MAIL_READ>" number="109"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_READ>" number="109"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ,1,0,class pbnet::PROBUFF_NET_MAIL_READ>" number="109"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_READ>" number="109"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_READ>" number="109"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_READ>" number="109"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,1,struct ngl::forward>" number="110"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="110"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,0,struct ngl::forward>" number="110"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="110"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="110"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="110"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="110"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="110"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="110"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>" number="110"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,1,struct ngl::forward>" number="111"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="111"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,0,struct ngl::forward>" number="111"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="111"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,1,class pbnet::PROBUFF_NET_MAIL_DRAW>" number="111"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DRAW>" number="111"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW,1,0,class pbnet::PROBUFF_NET_MAIL_DRAW>" number="111"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DRAW>" number="111"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DRAW>" number="111"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DRAW>" number="111"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,1,struct ngl::forward>" number="112"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="112"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,0,struct ngl::forward>" number="112"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="112"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="112"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="112"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="112"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="112"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="112"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>" number="112"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,1,struct ngl::forward>" number="113"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="113"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,0,struct ngl::forward>" number="113"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="113"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,1,class pbnet::PROBUFF_NET_MAIL_DEL>" number="113"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DEL>" number="113"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL,1,0,class pbnet::PROBUFF_NET_MAIL_DEL>" number="113"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DEL>" number="113"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DEL>" number="113"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DEL>" number="113"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,1,struct ngl::forward>" number="114"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="114"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,0,struct ngl::forward>" number="114"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="114"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,1,class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="114"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="114"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE,1,0,class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="114"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="114"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="114"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>" number="114"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,1,struct ngl::forward>" number="115"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="115"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,0,struct ngl::forward>" number="115"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="115"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,1,class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="115"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="115"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE,1,0,class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="115"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="115"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="115"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>" number="115"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,1,struct ngl::forward>" number="116"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="116"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,0,struct ngl::forward>" number="116"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="116"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,1,class pbnet::PROBUFF_NET_SYNC_UNIT>" number="116"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_UNIT>" number="116"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_UNIT,1,0,class pbnet::PROBUFF_NET_SYNC_UNIT>" number="116"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_UNIT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_UNIT>" number="116"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_UNIT>" number="116"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_UNIT>" number="116"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,1,struct ngl::forward>" number="117"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="117"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,0,struct ngl::forward>" number="117"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="117"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,1,class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="117"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="117"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW,1,0,class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="117"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="117"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="117"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>" number="117"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,1,struct ngl::forward>" number="118"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="118"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,0,struct ngl::forward>" number="118"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="118"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,1,class pbnet::PROBUFF_NET_SYNC_POSITION>" number="118"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_POSITION>" number="118"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_POSITION,1,0,class pbnet::PROBUFF_NET_SYNC_POSITION>" number="118"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_POSITION, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_POSITION>" number="118"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_POSITION>" number="118"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_POSITION>" number="118"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,1,struct ngl::forward>" number="119"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="119"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,0,struct ngl::forward>" number="119"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="119"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,1,class pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="119"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="119"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE,1,0,class pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="119"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="119"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="119"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHANGE_ANGLE>" number="119"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,1,struct ngl::forward>" number="120"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="120"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,0,struct ngl::forward>" number="120"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="120"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,1,class pbnet::PROBUFF_NET_MATCHING>" number="120"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING>" number="120"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING,1,0,class pbnet::PROBUFF_NET_MATCHING>" number="120"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING>" number="120"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING>" number="120"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING>" number="120"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,1,struct ngl::forward>" number="121"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="121"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,0,struct ngl::forward>" number="121"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="121"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="121"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="121"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="121"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="121"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="121"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_RESPONSE>" number="121"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,1,struct ngl::forward>" number="122"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="122"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,0,struct ngl::forward>" number="122"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="122"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,1,class pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="122"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="122"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL,1,0,class pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="122"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="122"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="122"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL>" number="122"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,1,struct ngl::forward>" number="123"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="123"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,0,struct ngl::forward>" number="123"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="123"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="123"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="123"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="123"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="123"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="123"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>" number="123"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,1,struct ngl::forward>" number="124"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="124"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,0,struct ngl::forward>" number="124"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="124"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,1,class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="124"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="124"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL,1,0,class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="124"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="124"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="124"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>" number="124"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,1,struct ngl::forward>" number="125"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="125"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,0,struct ngl::forward>" number="125"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="125"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,1,class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="125"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="125"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM,1,0,class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="125"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="125"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="125"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>" number="125"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,1,struct ngl::forward>" number="126"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="126"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,0,struct ngl::forward>" number="126"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="126"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,1,class pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="126"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="126"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM,1,0,class pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="126"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="126"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="126"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM>" number="126"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,1,struct ngl::forward>" number="127"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="127"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,0,struct ngl::forward>" number="127"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="127"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="127"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="127"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="127"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="127"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="127"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>" number="127"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,1,struct ngl::forward>" number="128"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="128"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,0,struct ngl::forward>" number="128"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="128"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,1,class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="128"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="128"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM,1,0,class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="128"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="128"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="128"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>" number="128"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,1,struct ngl::forward>" number="129"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="129"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,0,struct ngl::forward>" number="129"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="129"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,1,class pbnet::PROBUFF_NET_MATCHING_SYNC>" number="129"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_SYNC>" number="129"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC,1,0,class pbnet::PROBUFF_NET_MATCHING_SYNC>" number="129"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SYNC, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_SYNC>" number="129"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_SYNC>" number="129"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_SYNC>" number="129"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,1,struct ngl::forward>" number="130"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="130"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,0,struct ngl::forward>" number="130"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="130"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,1,class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="130"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="130"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE,1,0,class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="130"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="130"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="130"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>" number="130"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,1,struct ngl::forward>" number="131"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="131"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,0,struct ngl::forward>" number="131"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="131"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,1,class pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="131"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="131"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS,1,0,class pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="131"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="131"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="131"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_MATCHING_SUCCESS>" number="131"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,1,struct ngl::forward>" number="132"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="132"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,0,struct ngl::forward>" number="132"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="132"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,1,class pbnet::PROBUFF_NET_ENTER_PLAYS>" number="132"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ENTER_PLAYS>" number="132"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS,1,0,class pbnet::PROBUFF_NET_ENTER_PLAYS>" number="132"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ENTER_PLAYS, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ENTER_PLAYS>" number="132"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ENTER_PLAYS>" number="132"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ENTER_PLAYS>" number="132"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,1,struct ngl::forward>" number="133"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="133"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,0,struct ngl::forward>" number="133"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="133"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,1,class pbnet::PROBUFF_NET_KCPSESSION>" number="133"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_KCPSESSION>" number="133"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION,1,0,class pbnet::PROBUFF_NET_KCPSESSION>" number="133"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_KCPSESSION>" number="133"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_KCPSESSION>" number="133"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_KCPSESSION>" number="133"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,1,struct ngl::forward>" number="134"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="134"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,0,struct ngl::forward>" number="134"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="134"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,1,class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="134"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="134"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE,1,0,class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="134"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="134"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="134"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>" number="134"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,1,struct ngl::forward>" number="135"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="135"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,0,struct ngl::forward>" number="135"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="135"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,1,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="135"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="135"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD,1,0,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="135"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="135"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="135"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>" number="135"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,1,struct ngl::forward>" number="136"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="136"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,0,struct ngl::forward>" number="136"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="136"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,1,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="136"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="136"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE,1,0,class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="136"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="136"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="136"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>" number="136"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL,1,1,struct ngl::forward>" number="137"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="137"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL,1,0,struct ngl::forward>" number="137"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="137"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL,1,1,class pbnet::PROBUFF_NET_CREATE_FAMIL>" number="137"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CREATE_FAMIL>" number="137"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL,1,0,class pbnet::PROBUFF_NET_CREATE_FAMIL>" number="137"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CREATE_FAMIL>" number="137"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL>" number="137"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CREATE_FAMIL>" number="137"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE,1,1,struct ngl::forward>" number="138"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="138"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE,1,0,struct ngl::forward>" number="138"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="138"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE,1,1,class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>" number="138"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>" number="138"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE,1,0,class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>" number="138"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>" number="138"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>" number="138"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>" number="138"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL,1,1,struct ngl::forward>" number="139"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="139"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL,1,0,struct ngl::forward>" number="139"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="139"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL,1,1,class pbnet::PROBUFF_NET_JOIN_FAMIL>" number="139"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_JOIN_FAMIL>" number="139"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL,1,0,class pbnet::PROBUFF_NET_JOIN_FAMIL>" number="139"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_JOIN_FAMIL>" number="139"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL>" number="139"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_JOIN_FAMIL>" number="139"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE,1,1,struct ngl::forward>" number="140"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="140"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE,1,0,struct ngl::forward>" number="140"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="140"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE,1,1,class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>" number="140"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>" number="140"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE,1,0,class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>" number="140"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>" number="140"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>" number="140"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>" number="140"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL,1,1,struct ngl::forward>" number="141"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="141"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL,1,0,struct ngl::forward>" number="141"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="141"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL,1,1,class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>" number="141"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>" number="141"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL,1,0,class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>" number="141"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>" number="141"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>" number="141"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>" number="141"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE,1,1,struct ngl::forward>" number="142"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="142"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE,1,0,struct ngl::forward>" number="142"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="142"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE,1,1,class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>" number="142"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>" number="142"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE,1,0,class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>" number="142"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>" number="142"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>" number="142"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>" number="142"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL,1,1,struct ngl::forward>" number="143"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="143"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL,1,0,struct ngl::forward>" number="143"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="143"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL,1,1,class pbnet::PROBUFF_NET_CEDE_FAMIL>" number="143"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CEDE_FAMIL>" number="143"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL,1,0,class pbnet::PROBUFF_NET_CEDE_FAMIL>" number="143"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CEDE_FAMIL>" number="143"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL>" number="143"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CEDE_FAMIL>" number="143"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE,1,1,struct ngl::forward>" number="144"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="144"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE,1,0,struct ngl::forward>" number="144"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="144"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE,1,1,class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>" number="144"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>" number="144"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE,1,0,class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>" number="144"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>" number="144"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>" number="144"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>" number="144"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL,1,1,struct ngl::forward>" number="145"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="145"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL,1,0,struct ngl::forward>" number="145"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="145"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL,1,1,class pbnet::PROBUFF_NET_LEAVE_FAMIL>" number="145"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_LEAVE_FAMIL>" number="145"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL,1,0,class pbnet::PROBUFF_NET_LEAVE_FAMIL>" number="145"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_LEAVE_FAMIL>" number="145"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL>" number="145"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL>" number="145"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE,1,1,struct ngl::forward>" number="146"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="146"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE,1,0,struct ngl::forward>" number="146"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="146"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE,1,1,class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>" number="146"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>" number="146"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE,1,0,class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>" number="146"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>" number="146"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>" number="146"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>" number="146"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST,1,1,struct ngl::forward>" number="147"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="147"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST,1,0,struct ngl::forward>" number="147"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="147"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST,1,1,class pbnet::PROBUFF_NET_FAMIL_LIST>" number="147"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_FAMIL_LIST>" number="147"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST,1,0,class pbnet::PROBUFF_NET_FAMIL_LIST>" number="147"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_FAMIL_LIST>" number="147"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_FAMIL_LIST>" number="147"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_FAMIL_LIST>" number="147"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE,1,1,struct ngl::forward>" number="148"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="148"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE,1,0,struct ngl::forward>" number="148"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="148"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE,1,1,class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>" number="148"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>" number="148"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE,1,0,class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>" number="148"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>" number="148"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>" number="148"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>" number="148"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME,1,1,struct ngl::forward>" number="149"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="149"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME,1,0,struct ngl::forward>" number="149"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="149"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME,1,1,class pbnet::PROBUFF_NET_CHANGE_FAMILNAME>" number="149"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHANGE_FAMILNAME>" number="149"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME,1,0,class pbnet::PROBUFF_NET_CHANGE_FAMILNAME>" number="149"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHANGE_FAMILNAME>" number="149"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME>" number="149"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>" number="149"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE,1,1,struct ngl::forward>" number="150"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="150"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE,1,0,struct ngl::forward>" number="150"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="150"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE,1,1,class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>" number="150"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>" number="150"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE,1,0,class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>" number="150"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>" number="150"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>" number="150"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>" number="150"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN,1,1,struct ngl::forward>" number="151"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="151"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN,1,0,struct ngl::forward>" number="151"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="151"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN,1,1,class pbnet::PROBUFF_NET_FAMILSIGN>" number="151"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_FAMILSIGN>" number="151"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN,1,0,class pbnet::PROBUFF_NET_FAMILSIGN>" number="151"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_FAMILSIGN>" number="151"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_FAMILSIGN>" number="151"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_FAMILSIGN>" number="151"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE,1,1,struct ngl::forward>" number="152"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="152"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE,1,0,struct ngl::forward>" number="152"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="152"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE,1,1,class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>" number="152"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>" number="152"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE,1,0,class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>" number="152"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>" number="152"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>" number="152"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>" number="152"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE,1,1,struct ngl::forward>" number="153"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="153"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE,1,0,struct ngl::forward>" number="153"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="153"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE,1,1,class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>" number="153"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>" number="153"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE,1,0,class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>" number="153"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>" number="153"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>" number="153"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>" number="153"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST,1,1,struct ngl::forward>" number="154"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="154"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST,1,0,struct ngl::forward>" number="154"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="154"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST,1,1,class pbnet::PROBUFF_NET_RANKLIST>" number="154"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RANKLIST>" number="154"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST,1,0,class pbnet::PROBUFF_NET_RANKLIST>" number="154"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RANKLIST>" number="154"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RANKLIST>" number="154"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RANKLIST>" number="154"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST_RESPONSE,1,1,struct ngl::forward>" number="155"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="155"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST_RESPONSE,1,0,struct ngl::forward>" number="155"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="155"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST_RESPONSE,1,1,class pbnet::PROBUFF_NET_RANKLIST_RESPONSE>" number="155"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RANKLIST_RESPONSE>" number="155"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RANKLIST_RESPONSE,1,0,class pbnet::PROBUFF_NET_RANKLIST_RESPONSE>" number="155"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RANKLIST_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RANKLIST_RESPONSE>" number="155"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RANKLIST_RESPONSE>" number="155"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>" number="155"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND,1,1,struct ngl::forward>" number="156"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="156"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND,1,0,struct ngl::forward>" number="156"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="156"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND,1,1,class pbnet::PROBUFF_NET_FRIEND>" number="156"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_FRIEND>" number="156"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND,1,0,class pbnet::PROBUFF_NET_FRIEND>" number="156"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_FRIEND>" number="156"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_FRIEND>" number="156"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_FRIEND>" number="156"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND_RESPONSE,1,1,struct ngl::forward>" number="157"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="157"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND_RESPONSE,1,0,struct ngl::forward>" number="157"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="157"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND_RESPONSE,1,1,class pbnet::PROBUFF_NET_FRIEND_RESPONSE>" number="157"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_FRIEND_RESPONSE>" number="157"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_FRIEND_RESPONSE,1,0,class pbnet::PROBUFF_NET_FRIEND_RESPONSE>" number="157"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_FRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_FRIEND_RESPONSE>" number="157"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_FRIEND_RESPONSE>" number="157"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_FRIEND_RESPONSE>" number="157"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND,1,1,struct ngl::forward>" number="158"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="158"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND,1,0,struct ngl::forward>" number="158"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="158"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND,1,1,class pbnet::PROBUFF_NET_ADDFRIEND>" number="158"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ADDFRIEND>" number="158"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND,1,0,class pbnet::PROBUFF_NET_ADDFRIEND>" number="158"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ADDFRIEND>" number="158"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ADDFRIEND>" number="158"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ADDFRIEND>" number="158"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE,1,1,struct ngl::forward>" number="159"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="159"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE,1,0,struct ngl::forward>" number="159"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="159"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE,1,1,class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>" number="159"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>" number="159"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE,1,0,class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>" number="159"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>" number="159"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>" number="159"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>" number="159"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND,1,1,struct ngl::forward>" number="160"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="160"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND,1,0,struct ngl::forward>" number="160"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="160"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND,1,1,class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>" number="160"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>" number="160"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND,1,0,class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>" number="160"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>" number="160"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>" number="160"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>" number="160"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE,1,1,struct ngl::forward>" number="161"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="161"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE,1,0,struct ngl::forward>" number="161"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="161"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE,1,1,class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>" number="161"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>" number="161"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE,1,0,class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>" number="161"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>" number="161"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>" number="161"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>" number="161"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND,1,1,struct ngl::forward>" number="162"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="162"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND,1,0,struct ngl::forward>" number="162"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="162"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND,1,1,class pbnet::PROBUFF_NET_ERASEFRIEND>" number="162"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ERASEFRIEND>" number="162"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND,1,0,class pbnet::PROBUFF_NET_ERASEFRIEND>" number="162"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ERASEFRIEND>" number="162"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ERASEFRIEND>" number="162"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ERASEFRIEND>" number="162"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE,1,1,struct ngl::forward>" number="163"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="163"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE,1,0,struct ngl::forward>" number="163"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="163"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE,1,1,class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>" number="163"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>" number="163"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE,1,0,class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>" number="163"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>" number="163"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>" number="163"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>" number="163"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLESTAT,1,1,struct ngl::forward>" number="164"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLESTAT, (EPROTOCOL_TYPE)1, true, ngl::forward>" number="164"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLESTAT,1,0,struct ngl::forward>" number="164"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLESTAT, (EPROTOCOL_TYPE)1, false, ngl::forward>" number="164"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLESTAT,1,1,class pbnet::PROBUFF_NET_ROLESTAT>" number="164"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLESTAT, (EPROTOCOL_TYPE)1, true, pbnet::PROBUFF_NET_ROLESTAT>" number="164"/>
+	<config client = "0" name="struct ngl::np_actor_forward<class pbnet::PROBUFF_NET_ROLESTAT,1,0,class pbnet::PROBUFF_NET_ROLESTAT>" number="164"/>
+	<config client = "0" name="ngl::np_actor_forward<pbnet::PROBUFF_NET_ROLESTAT, (EPROTOCOL_TYPE)1, false, pbnet::PROBUFF_NET_ROLESTAT>" number="164"/>
+	<config client = "0" name="struct ngl::np_actormodule_forward<class pbnet::PROBUFF_NET_ROLESTAT>" number="164"/>
+	<config client = "0" name="ngl::np_actormodule_forward<pbnet::PROBUFF_NET_ROLESTAT>" number="164"/>
 </con>
