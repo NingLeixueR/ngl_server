@@ -48,7 +48,6 @@ namespace ngl
 		//# 主动连接
 		void activ_connect(i32_serverid aserverid);
 
-		
 	public:
 		//# 向actor_server注册结点
 		void actor_server_register();
@@ -56,13 +55,13 @@ namespace ngl
 		//# actor_client的actorid
 		static i64_actorid actorid();
 
-		//# np_connect_actor_server
+		//# net连接actor server成功
 		bool handle(const message<np_connect_actor_server>& adata);
 
-		//np_actor_server_register
+		//# 注册结点
 		bool handle(const message<np_actor_server_register>& adata);
 
-		//# 注册结点
+		//# actor_server回复注册结点
 		bool handle(const message<np_actornode_register_response>& adata);
 
 		//# actor客户端间相互连接
