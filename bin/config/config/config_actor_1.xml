@@ -1,0 +1,40 @@
+﻿<?xml version = "1.0" encoding = "utf-8"?>
+<con>
+		<public>
+			<!-- 
+			为了php可以使用自定义协议，需要将varint禁用 
+			[log_iswrite] 日志是否写入文件
+			[log_flushtime] 日志flush时间
+			[log_fileline] 单个日志文件的行数
+			[log_level] 日志等级(
+				ELOG_DEBUG,   // 0:测试信息 
+				ELOG_INFO,    // 1:打印
+				ELOG_WARN,    // 2:警告
+				ELOG_ERROR,   // 3:错误
+			)
+			[log_console] 是否打印到控制台
+			-->
+				<config
+					actor_delayed ="1000" 
+					varint = "false"
+					isxor = "true"
+					sessionewait = "1"
+					robot_test = "true"
+					xor_str="国际巅峰调酒大师、品酒大师，有酒神之称的李解冻，为了品尝出土的汉代美酒而醉死于而立之年。当他一觉醒来时，却发现自己来到了一个名叫五行大陆的世界，变成了一个叫做姬动的小乞丐。在这里，有一种极其特殊的职业，名叫阴阳魔师，奇异的十系魔技令人叹为观止。每一名阴阳魔师都有一顶属于自己的由本属性凝聚而成的阴阳冕。一次偶然的机遇，让他认识了地底世界的火焰女王烈焰，作为阴阳平衡体质的他，接受了阴阳极焰的传承，他的命运也从此走向了强者的道路。" 
+					gmurl = "http://127.0.0.1:800"
+					push_server_config = "push_server_config.php"
+					head_version = "1"
+					kcpping = "10"
+					kcppinginterval = "20"
+					kcpsession = "abcdefghigklmn"
+					logflushtime = "10000"
+					logline = "10000"
+					logwritelevel = "1"
+					logconsolelevel = "3"
+					consumings = "100"
+				></config>
+		</public>
+		<db>
+				<db_connect account="root" passworld="123456" dbname="lbtest" ip="127.0.0.1" port="3306"/>
+		</db>
+</con>

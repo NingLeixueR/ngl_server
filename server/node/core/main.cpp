@@ -13,30 +13,39 @@
 
 #include <queue>
 
+const std::string lerrpath = R"(参数错误:
+	进程	名称	区服id		tab_servers::tcount
+	EXE		name	areaid		tcount
+)";
+
 Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	if (argc <= 1)
+	if (argc <= 3)
 	{
-		std::cout << "参数错误" << std::endl;
+		std::cout << lerrpath << std::endl;
 		return 0;
 	}
+
+	// # 名称
+	std::string lname = argv[1];
+
+	// # 区服id
+	int32_t larea = ngl::tools::lexical_cast<int32_t>(argv[2]);
+
+	// # 区服id下功能进程的序号
+	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
 	// # 初始化关联枚举NODE_TYPE与字符串
 	nconfig::init();
 
 	// # 加载xml配置
-	nconfig::load("config");
+	nconfig::load("./config", std::format("{}_{}", lname, ltcount));
 
 	// # 加载csv配置
+	ngl::csvbase::set_path("./csv", lname);
 	ngl::allcsv::load();
-
-	// # 区服id
-	int32_t larea	= ngl::tools::lexical_cast<int32_t>(argv[2]);
-
-	// # 区服id下功能进程的序号
-	int32_t ltcount = ngl::tools::lexical_cast<int32_t>(argv[3]);
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
@@ -44,14 +53,14 @@ int main(int argc, char** argv)
 
 	nconfig::set_server(argv[1], tab->m_id);
 
-	std::string lname = std::format("node_{}_{}_{}", argv[1], argv[2], argv[3]);
+	std::string lnodename = std::format("node_{}_{}_{}", argv[1], argv[2], argv[3]);
 
 #ifdef WIN32
 	// # 设置控制台窗口名称
-	SetConsoleTitle(lname.c_str());
+	SetConsoleTitle(lnodename.c_str());
 #endif
 
-	Dumper::m_excname = lname;
+	Dumper::m_excname = lnodename;
 	switch (nconfig::node_type())
 	{
 	case ngl::DB:

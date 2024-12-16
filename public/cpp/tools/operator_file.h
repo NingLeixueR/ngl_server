@@ -50,6 +50,9 @@ namespace ngl
 		// # 是否存在某个文件
 		static bool exist(const std::string& afilename);
 
+		// # 是否存在某个路径
+		static bool path_exist(const std::string& apath);
+
 		// # 移除某个文件
 		static bool remove(const std::string& afilename);
 

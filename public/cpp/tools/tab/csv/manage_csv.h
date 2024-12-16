@@ -25,6 +25,22 @@ namespace ngl
 		virtual void				load()			= 0;
 		virtual void*				get(int aid)	= 0;
 		virtual void				reload()		= 0;
+
+		static std::string m_path;
+
+		static void set_path(const std::string& apath, const std::string& aname)
+		{
+			m_path = std::format("{}/{}", apath, aname);
+			if (filetools::path_exist(m_path) == false)
+			{
+				m_path = std::format("{}/csv", apath);
+			}
+		}
+
+		static std::string& get_path()
+		{
+			return m_path;
+		}
 	};
 
 	template <typename T>
@@ -53,10 +69,7 @@ namespace ngl
 
 		static std::string path()
 		{
-			const char* dir = "./csv/";
-			std::string lcsvname(dir);
-			lcsvname += T::name();
-			lcsvname += ".csv";
+			std::string lcsvname = std::format("./{}/{}.csv", csvbase::get_path(), T::name());
 			return lcsvname;
 		}
 

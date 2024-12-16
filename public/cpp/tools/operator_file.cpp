@@ -171,6 +171,11 @@ namespace ngl
 		return f.good();
 	}
 
+	bool filetools::path_exist(const std::string& apath)
+	{
+		return std::filesystem::exists(apath);
+	}
+
 	void filetools::dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration/* = false*/)
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(apath)) 

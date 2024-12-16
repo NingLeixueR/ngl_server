@@ -30,6 +30,7 @@ namespace ngl
 		em<NODE_TYPE>::set(RELOADCSV, "reloadcsv");
 		em<NODE_TYPE>::set(CROSS, "cross");
 		em<NODE_TYPE>::set(PUSHSERVERCONFIG, "pushserverconfig");
+		em<NODE_TYPE>::set(CROSSDB, "crossdb");
 	}
 
 	NODE_TYPE xmlnode::node_type()
@@ -46,12 +47,14 @@ namespace ngl
 		m_nodeid = anodeid;
 	}
 
-	void xmlnode::load(const std::string& axml)
+	void xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
-		const char* dir = "./config/";
-		std::string lxmlname(dir);
-		lxmlname += axml;
-		lxmlname += ".xml";
+		std::string lxmlname = std::format("{}/config/config_{}.xml", axmlpath, aname);
+		if (filetools::exist(lxmlname) == false)
+		{
+			lxmlname = std::format("{}/config/config.xml", axmlpath);
+		}
+
 		log_error()->print("begin xmlnode read [{}]", lxmlname);
 
 		if (!xml::readxml(lxmlname.c_str(), m_doc, m_con))
