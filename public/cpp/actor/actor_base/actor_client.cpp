@@ -60,7 +60,8 @@ namespace ngl
 
 		//# зЂВса­вщ
 		register_handle_custom<actor_client>::func<
-			np_actor_server_register
+			np_connect_actor_server
+			, np_actor_server_register
 			, np_actornode_register_response
 			, np_actorclient_node_connect
 			, np_actornode_update
