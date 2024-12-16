@@ -139,7 +139,7 @@ namespace ngl
 
 		static void set_server(const char* aservertypename, int anodeid);
 
-		static void load(const std::string& axml);
+		static void load(const std::string& axmlpath, const std::string& aname);
 
 		static void read_config(tinyxml2::XMLElement* apt, xmlinfo& anfo);
 

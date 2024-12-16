@@ -11,6 +11,8 @@
 
 namespace ngl
 {
+	std::string csvbase::m_path;
+
 	std::map<std::string, reload_csv::trefun> reload_csv::m_fun;
 
 	bool reload_csv::save(const std::string& atabhash, const std::string& acsvcontent)
