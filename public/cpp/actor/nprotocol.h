@@ -59,6 +59,13 @@ namespace ngl
 		def_portocol(np_actor_server_register)
 	};
 
+	struct np_connect_actor_server
+	{
+		int32_t m_serverid;
+		int32_t m_session;
+		def_portocol(np_connect_actor_server, m_serverid, m_session)
+	};
+
 	// ---- [actor client -> actor server] register
 	// ×¢²á½áµã
 	struct np_actornode_register

@@ -56,6 +56,9 @@ namespace ngl
 		//# actor_clientµÄactorid
 		static i64_actorid actorid();
 
+		//# np_connect_actor_server
+		bool handle(const message<np_connect_actor_server>& adata);
+
 		//np_actor_server_register
 		bool handle(const message<np_actor_server_register>& adata);
 
