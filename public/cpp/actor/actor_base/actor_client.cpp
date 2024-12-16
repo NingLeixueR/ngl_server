@@ -83,45 +83,55 @@ namespace ngl
 		naddress::set_session(aserverid, asession);
 	}
 
+	bool actor_client::handle(const message<np_connect_actor_server>& adata)
+	{
+		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tabactor = ttab_servers::tab(adata.get_data()->m_serverid);
+		i64_actorid	lactorid = id_guid();
+
+		i64_actorid lactorserve = actor_server::actorid();
+		set_node(tabactor->m_id, adata.get_data()->m_session);
+		naddress::actor_add(tabactor->m_id, lactorserve);
+
+		//注册结点
+		np_actornode_register lpram
+		{
+			.m_node
+			{
+				.m_name = std::format(
+					"node<id:{},type:{},name:{},tcount:{},area:{}>",
+					tab->m_id, em<NODE_TYPE>::get_name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area
+				),
+				.m_nodetype = tab->m_type,
+				.m_serverid = tab->m_id,
+			}
+		};
+		actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
+		naddress::ergodic(
+			[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
+			{
+				for (const std::pair<const nguid, i32_serverid>& item : aactorserver)
+				{
+					if (lpram.m_node.m_serverid == item.second)
+						lpram.m_add.push_back(item.first);
+				}
+				return true;
+			});
+		nets::sendbysession(adata.get_data()->m_session, lpram, lactorserve, lactorid);
+		return true;
+	}
+
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
 			return;
-		const tab_servers* tab = ttab_servers::tab();
-		const tab_servers* tabactor = ttab_servers::tab(aactorserver);
-		i64_actorid	lactorid = id_guid();
-		nets::connect(aactorserver, [tab, tabactor, lactorid](int asession)
+		nets::connect(aactorserver, [this, aactorserver](int asession)
 			{
-				i64_actorid lactorserve = actor_server::actorid();
-				set_node(tabactor->m_id, asession);
-				naddress::actor_add(tabactor->m_id, lactorserve);
-
-				//注册结点
-				np_actornode_register lpram
-				{
-					.m_node
-					{
-						.m_name = std::format(
-							"node<id:{},type:{},name:{},tcount:{},area:{}>", 
-							tab->m_id, em<NODE_TYPE>::get_name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area
-						),
-						.m_nodetype = tab->m_type,
-						.m_serverid = tab->m_id,
-					}
-				};
-				actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
-				naddress::ergodic(
-					[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
-					{
-						for (const std::pair<const nguid, i32_serverid>& item : aactorserver)
-						{
-							if (lpram.m_node.m_serverid == item.second)
-								lpram.m_add.push_back(item.first);
-						}
-						return true;
-					});
-				nets::sendbysession(asession, lpram, lactorserve, lactorid);
-			}, true, true);
+				auto pro = std::make_shared<np_connect_actor_server>();
+				pro->m_serverid = aactorserver;
+				pro->m_session = asession;
+				actor::send_actor(id_guid(), pro);
+			}, false, true);
 	}
 
 	void actor_client::actor_server_register()
