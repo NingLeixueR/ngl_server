@@ -111,7 +111,19 @@ namespace ngl
 	// # 根据pbdb::ENUM_DB获取ENUM_ACTOR
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE);
 
+	// 宏与类型的绑定
+	void auto_actor();
+
+	// # 注册自定义协议
+	void tprotocol_customs();
+
+	// # actor event注册
+	void event_register();
+
+	// # db初始化
+	void tdb_init(bool ainstance);
+
 	// # [aregister == true] 主要是注册协议,宏与类型的绑定
 	// # [aregister == false] 实例化db_actor,db server需要
-	void init_nactor_type(bool aregister);
+	//void init_nactor_type(bool aregister);
 }//namespace ngl
