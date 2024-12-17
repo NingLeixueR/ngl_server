@@ -53,7 +53,15 @@ int main(int argc, char** argv)
 
 	nconfig::set_server(argv[1], tab->m_id);
 
-	std::string lnodename = std::format("node_{}_{}_{}", argv[1], argv[2], argv[3]);
+	std::string lnodename;
+	if (larea < 0)
+	{
+		lnodename = std::format("node_{}__{}_{}", lname, -larea, ltcount);
+	}
+	else
+	{
+		lnodename = std::format("node_{}_{}_{}", lname, larea, ltcount);
+	}
 
 #ifdef WIN32
 	// # 设置控制台窗口名称

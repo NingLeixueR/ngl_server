@@ -52,7 +52,10 @@
 
 bool init_server(int aid)
 {
-	ngl::init_nactor_type(true);
+	ngl::auto_actor();
+	ngl::tprotocol_customs();
+	ngl::event_register();
+	ngl::tdb_init(true);
 
 	// # 加载并关联协议号
 	ngl::xmlprotocol::load();
