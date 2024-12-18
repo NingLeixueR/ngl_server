@@ -12,6 +12,7 @@ namespace ngl
 	tinyxml2::XMLDocument	xmlnode::m_doc;
 	tinyxml2::XMLElement*	xmlnode::m_con;
 	dbserver_info			xmlnode::m_db;
+	dbserver_info			xmlnode::m_crossdb;
 	xmlinfo					xmlnode::m_publicinfo;
 	std::string				xmlnode::m_nodename;
 	NODE_TYPE				xmlnode::m_nodetype;
@@ -62,6 +63,7 @@ namespace ngl
 
 		loadpublic();
 		loaddb();
+		loadcrossdb();
 
 		log_error()->print("finish xmlnode read [{}]", lxmlname);
 	}
@@ -103,9 +105,10 @@ namespace ngl
 		return true;
 	}
 
-	bool xmlnode::read_db_arg(dbarg& m_dbarg)
+	bool xmlnode::read_db_arg(const char* aname, dbarg& m_dbarg)
 	{
-		tinyxml2::XMLElement* lnode = xml::get_child(m_con, "db.db_connect");
+		std::string lchild = std::format("{}.db_connect", aname);
+		tinyxml2::XMLElement* lnode = xml::get_child(m_con, lchild.c_str());
 		if (xml::get_xmlattr(lnode, "port", m_dbarg.m_port) == false)
 		{
 			return false;
@@ -131,7 +134,12 @@ namespace ngl
 
 	void xmlnode::loaddb()
 	{
-		read_db_arg(m_db.m_dbarg);
+		read_db_arg("db", m_db.m_dbarg);
+	}
+
+	void xmlnode::loadcrossdb()
+	{
+		read_db_arg("crossdb", m_crossdb.m_dbarg);
 	}
 
 	void xmlnode::loadpublic()

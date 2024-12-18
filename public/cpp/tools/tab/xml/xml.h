@@ -128,6 +128,7 @@ namespace ngl
 		static tinyxml2::XMLDocument m_doc;
 		static tinyxml2::XMLElement* m_con;
 		static dbserver_info		 m_db;
+		static dbserver_info		 m_crossdb;
 		static xmlinfo				 m_publicinfo;
 		static std::string			 m_nodename;
 		static NODE_TYPE			 m_nodetype;
@@ -147,9 +148,11 @@ namespace ngl
 
 		static bool read_public_config(xmlinfo& anfo);
 
-		static bool read_db_arg(dbarg& m_dbarg);
+		static bool read_db_arg(const char* aname, dbarg& m_dbarg);
 
 		static void loaddb();
+
+		static void loadcrossdb();
 
 		static void loadpublic();
 
