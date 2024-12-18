@@ -73,8 +73,8 @@ namespace ngl
 			adb->stmt_query(lbuff, llen, lbind);
 			
 			log_error()->print(
-				"INSERT INTO {} (id, area, data)VALUES({},{},[bindata])"
-				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), nguid::area(adata.m_id())
+				"INSERT INTO {} (id, area, data)VALUES({},{},[bindata])", 
+				tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), nguid::area(adata.m_id())
 			);
 		}
 
@@ -84,10 +84,7 @@ namespace ngl
 			T ldata;
 			if (db_data<T>::get(aid, ldata) == false)
 			{
-				log_error()->print(
-					"db_manage::save id:{} !!! name:{}",
-					aid, tools::protobuf_tabname<T>::name()
-				);
+				log_error()->print("db_manage::save id:{} !!! name:{}", aid, tools::protobuf_tabname<T>::name());
 				return;
 			}
 			save(adb, ldata);
