@@ -53,13 +53,13 @@ namespace ngl
 			ltemp.set_m_value(m_values[atype]);
 		}
 		
-		bool less(pbdb::eranklist atype, const rank_item& ar)
+		bool bigger(pbdb::eranklist atype, const rank_item& ar)
 		{
-			if (m_values[atype] < ar.m_values[atype])
+			if (m_values[atype] > ar.m_values[atype])
 			{
 				return true;
 			}
-			else if (m_values[atype] > ar.m_values[atype])
+			else if (m_values[atype] < ar.m_values[atype])
 			{
 				return false;
 			}
@@ -91,10 +91,10 @@ namespace ngl
 	class operator_value
 	{
 	public:
-		// <
+		// >
 		bool operator()(rank_item* al, rank_item* ar)const
 		{
-			return al->less(RTYPE, *ar);
+			return al->bigger(RTYPE, *ar);
 		}
 	};
 
@@ -198,6 +198,43 @@ namespace ngl
 			return false;
 		}
 
+		bool update_value(const pbdb::db_brief& abrief)
+		{
+			std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
+			rank_item litem;
+			bool lupdatearr[pbdb::eranklist::count] = { false };
+			bool lupdate = false;
+			for (int i = 0; i < pbdb::eranklist::count; ++i)
+			{
+				lupdatearr[i] = update_value(pbdb::eranklist::lv, litem, abrief);
+				lupdate = lupdate || lupdatearr[i];
+			}
+			if (lupdate)
+			{
+				rank_item& ldata = m_data[abrief.m_id()];
+				for (int i = 0; i < pbdb::eranklist::count; ++i)
+				{
+					if (lupdatearr[i])
+					{
+						m_ranks[i]->erase(&ldata);
+					}
+				}
+				ldata = litem;
+				for (int i = 0; i < pbdb::eranklist::count; ++i)
+				{
+					if (lupdatearr[i])
+					{
+						if (i == pbdb::eranklist::lv)
+						{
+							m_ranks[i]->insert(&ldata);
+						}
+					}
+				}
+			}
+			return true;
+		}
+
+
 		virtual void initdata()
 		{
 			log_error()->print("actor_ranklist###loaddb_finish");
@@ -223,41 +260,14 @@ namespace ngl
 				}
 			}
 
-
+			tdb_brief::nsp_cli<actor_ranklist>::set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief)
+				{
+					update_value(abrief);
+				});
 
 			tdb_brief::nsp_cli<actor_ranklist>::set_recv_data_finish([this](const pbdb::db_brief& abrief)
 				{
-					std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
-					rank_item litem;
-					bool lupdatearr[pbdb::eranklist::count] = { false };
-					bool lupdate = false;
-					for (int i = 0; i < pbdb::eranklist::count; ++i)
-					{
-						lupdatearr[i] = update_value(pbdb::eranklist::lv, litem, abrief);
-						lupdate = lupdate || lupdatearr[i];
-					}
-					if (lupdate)
-					{
-						rank_item& ldata = m_data[abrief.m_id()];
-						for (int i = 0; i < pbdb::eranklist::count; ++i)
-						{
-							if (lupdatearr[i])
-							{
-								m_ranks[i]->erase(&ldata);
-							}
-						}
-						ldata = litem;
-						for (int i = 0; i < pbdb::eranklist::count; ++i)
-						{
-							if (lupdatearr[i])
-							{
-								if (i == pbdb::eranklist::lv)
-								{
-									m_ranks[i]->erase(&ldata);
-								}
-							}
-						}
-					}
+					update_value(abrief);
 				});
 		}
 
@@ -288,7 +298,6 @@ namespace ngl
 			pro->set_m_type(atype);
 			m_ranks[atype]->foreach([&pro](int32_t aindex, const rank_item* aitem)
 				{
-					// tdb_brief 离线简要数据，需要一开始就汇入到服务器内存 (去实现)
 					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
 					*pro->add_m_items() = *lpbrief;
 				});
