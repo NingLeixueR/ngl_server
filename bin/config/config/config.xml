@@ -37,4 +37,7 @@
 		<db>
 				<db_connect account="root" passworld="123456" dbname="lbtest" ip="127.0.0.1" port="3306"/>
 		</db>
+		<crossdb>
+				<db_connect account="root" passworld="123456" dbname="lbtestcross" ip="127.0.0.1" port="3306"/>
+		</crossdb>
 </con>
