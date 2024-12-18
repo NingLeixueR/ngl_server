@@ -6,7 +6,7 @@ namespace ngl
 {
 	std::vector<db*> db_pool::m_vec;
 
-	void db_pool::init()
+	void db_pool::init(const dbarg& adbarg)
 	{
 		Try
 		{
@@ -17,7 +17,7 @@ namespace ngl
 			for (int i = 0; i < tab->m_threadnum; ++i)
 			{
 				m_vec[i] = new db();
-				Assert(m_vec[i]->connectdb(nconfig::m_db.m_dbarg))
+				Assert(m_vec[i]->connectdb(adbarg))
 			}
 			return;
 		}Catch

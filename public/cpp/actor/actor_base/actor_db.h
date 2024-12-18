@@ -216,7 +216,6 @@ namespace ngl
 					.m_weight = 0x7fffffff,
 				})
 		{
-			db_pool::init();
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::init();
 		}
 	public:

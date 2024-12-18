@@ -123,7 +123,6 @@ namespace ngl
 	// # db初始化
 	void tdb_init(bool ainstance);
 
-	// # [aregister == true] 主要是注册协议,宏与类型的绑定
-	// # [aregister == false] 实例化db_actor,db server需要
-	//void init_nactor_type(bool aregister);
+	// # cross db初始化
+	void tcrossdb_init(bool ainstance);
 }//namespace ngl
