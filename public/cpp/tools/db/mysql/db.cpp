@@ -126,9 +126,7 @@ namespace ngl
 		}
 		else
 		{
-			log_error()->print(
-				"db::select fail [{}] [{}]", mysql_error(m_mysql), asql
-			);
+			log_error()->print("db::select fail [{}] [{}]", mysql_error(m_mysql), asql);
 		}
 		return false;
 	}
