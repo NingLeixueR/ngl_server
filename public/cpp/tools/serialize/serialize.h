@@ -355,7 +355,7 @@ namespace ngl
 				return false;
 			if (avec.empty())
 				return true;
-			return basetype((void*)&avec[0], avec.size() * sizeof(T));
+			return basetype((void*)&avec[0], (int)avec.size() * sizeof(T));
 		}
 
 		inline bool push(const std::vector<bool>& avec)
@@ -1266,31 +1266,31 @@ namespace ngl
 		inline int bytes(const std::vector<bool>& avec)
 		{
 			bytes(uint16_t(avec.size()));
-			return m_size += avec.size() * sizeof(bool);
+			return m_size += (int)avec.size() * sizeof(bool);
 		}
 
 		inline int bytes(const std::vector<int8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int8_t) * avec.size();
+			return m_size += sizeof(int8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::vector<uint8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint8_t) * avec.size();
+			return m_size += sizeof(uint8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::vector<int16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int16_t) * avec.size();
+			return m_size += sizeof(int16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::vector<uint16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint16_t) * avec.size();
+			return m_size += sizeof(uint16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::vector<int32_t>& avec)
@@ -1336,13 +1336,13 @@ namespace ngl
 		inline int bytes(const std::vector<float>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(float) * avec.size();
+			return m_size += sizeof(float) * (int)avec.size();
 		}
 
 		inline int bytes(const std::vector<double>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(double) * avec.size();
+			return m_size += sizeof(double) * (int)avec.size();
 		}
 #pragma endregion 
 
@@ -1350,25 +1350,25 @@ namespace ngl
 		inline int bytes(const std::list<int8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int8_t) * avec.size();
+			return m_size += sizeof(int8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::list<uint8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint8_t) * avec.size();
+			return m_size += sizeof(uint8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::list<int16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int16_t) * avec.size();
+			return m_size += sizeof(int16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::list<uint16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint16_t) * avec.size();
+			return m_size += sizeof(uint16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::list<int32_t>& avec)
@@ -1406,13 +1406,13 @@ namespace ngl
 		inline int bytes(const std::list<float>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(float) * avec.size();
+			return m_size += sizeof(float) * (int)avec.size();
 		}
 
 		inline int bytes(const std::list<double>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(double) * avec.size();
+			return m_size += sizeof(double) * (int)avec.size();
 		}
 
 #pragma endregion 
@@ -1421,25 +1421,25 @@ namespace ngl
 		inline int bytes(const std::set<int8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int8_t) * avec.size();
+			return m_size += sizeof(int8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::set<uint8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint8_t) * avec.size();
+			return m_size += sizeof(uint8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::set<int16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int16_t) * avec.size();
+			return m_size += sizeof(int16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::set<uint16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint16_t) * avec.size();
+			return m_size += sizeof(uint16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::set<int32_t>& avec)
@@ -1477,13 +1477,13 @@ namespace ngl
 		inline int bytes(const std::set<float>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(float) * avec.size();
+			return m_size += sizeof(float) * (int)avec.size();
 		}
 
 		inline int bytes(const std::set<double>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(double) * avec.size();
+			return m_size += sizeof(double) * (int)avec.size();
 		}
 #pragma endregion 
 
@@ -1491,25 +1491,25 @@ namespace ngl
 		inline int bytes(const std::unordered_set<int8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int8_t) * avec.size();
+			return m_size += sizeof(int8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::unordered_set<uint8_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint8_t) * avec.size();
+			return m_size += sizeof(uint8_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::unordered_set<int16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(int16_t) * avec.size();
+			return m_size += sizeof(int16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::unordered_set<uint16_t>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(uint16_t) * avec.size();
+			return m_size += sizeof(uint16_t) * (int)avec.size();
 		}
 
 		inline int bytes(const std::unordered_set<int32_t>& avec)
@@ -1547,20 +1547,20 @@ namespace ngl
 		inline int bytes(const std::unordered_set<float>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(float) * avec.size();
+			return m_size += sizeof(float) * (int)avec.size();
 		}
 
 		inline int bytes(const std::unordered_set<double>& avec)
 		{
 			bytes(int16_t(avec.size()));
-			return m_size += sizeof(double) * avec.size();
+			return m_size += sizeof(double) * (int)avec.size();
 		}
 #pragma endregion 
 
 		inline int bytes(const std::string& astr)
 		{
 			bytes(int16_t(astr.size()));
-			return m_size += astr.size() * sizeof(char);
+			return m_size += (int)astr.size() * sizeof(char);
 		}
 
 		template <typename T>

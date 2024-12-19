@@ -113,7 +113,7 @@ namespace ngl
 		}
 
 		// # 加载本地配置区服关联的所有合服数据
-		static std::string& where_area()
+		static const char* where_area()
 		{
 			static std::string lareastr;
 			if (lareastr.empty())
@@ -126,7 +126,7 @@ namespace ngl
 					lareastr = " area = " + lareastr;
 				}
 			}
-			return lareastr;
+			return lareastr.c_str();
 		}
 
 		template <typename T>

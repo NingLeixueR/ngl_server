@@ -109,9 +109,11 @@ namespace ngl
 						.m_count = 0x7fffffff,
 						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
-							auto pro = std::make_shared<np_channel_check>();
-							pro->m_area = larea;
-							pro->m_timer = anode->m_timerid;
+							auto pro = std::make_shared<np_channel_check>(
+								np_channel_check{
+									.m_timer = anode->m_timerid,
+									.m_area = larea,
+								});
 							actor::static_send_actor(lactorid, nguid::make(), pro);
 						}
 					};
