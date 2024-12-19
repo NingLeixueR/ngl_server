@@ -68,10 +68,12 @@ namespace ngl
 					.m_count = 1,
 					.m_fun = [ltime,lactivityid,astart](const wheel_node* anode)
 					{
-						auto pro = std::make_shared<np_actor_activity>();
-						pro->m_calendarid = -1;
-						pro->m_start = astart;
-						pro->m_time = ltime;
+						auto pro = std::make_shared<np_actor_activity>(np_actor_activity
+							{
+								.m_time = ltime,
+								.m_calendarid = -1,
+								.m_start = astart,
+							});
 						pro->m_activityids.push_back(lactivityid);
 						actor::static_send_actor(actor_manage_activity::actorid(), nguid::make(), pro);
 					}
