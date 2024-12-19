@@ -15,7 +15,7 @@ namespace ngl
 		};
 		std::map<i16_area, accountbyname> m_data;
 		
-		i64_accountid m_max_accountid;
+		int32_t m_max_accountid;
 	public:
 		account();
 
@@ -23,7 +23,7 @@ namespace ngl
 
 		virtual void initdata();
 
-		i64_accountid& max_accountid();
+		int32_t& max_accountid();
 
 		std::map<std::string, data_modified<pbdb::db_account>*>& accountbyarea(int area);
 	};

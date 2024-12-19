@@ -59,7 +59,7 @@ namespace ngl
 			int64_t lprecision = m_time_wheel_precision;
 			for (int i = 0; i < m_time_wheel_count; ++i)
 			{
-				lprecision *= std::pow(2, m_time_wheel_bit);
+				lprecision *= (int64_t)std::pow(2, m_time_wheel_bit);
 				lsum += lprecision;
 			}
 			return lsum;

@@ -623,7 +623,7 @@ namespace ngl
 		i32_serverid		m_gameid = -1;
 		i32_serverid		m_gatewayid = -1;
 		i32_socket			m_socket = -1;
-		bool				m_iscreate = -1;
+		bool				m_iscreate = false;
 
 		def_portocol_function(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
 	};
