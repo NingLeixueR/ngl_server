@@ -13,10 +13,7 @@
 
 #include <queue>
 
-const std::string lerrpath = R"(参数错误:
-	进程	名称	区服id		tab_servers::tcount
-	EXE		name	areaid		tcount
-)";
+const std::string lerrpath = "参数错误:EXE name areaid tab_servers::tcount";
 
 Dumper lDumper;
 
