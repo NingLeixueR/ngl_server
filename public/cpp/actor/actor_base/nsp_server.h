@@ -39,9 +39,9 @@ namespace ngl
 
 		static void publish(i64_actorid aactorid, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
-			if (data_modified<TDATA>* lp = m_dbmodule->find(aactorid); lp == nullptr)
+			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
+			if (lp == nullptr)
 				return;
-
 			std::ranges::for_each(m_publishlist, [aactorid, &apro](const auto& lpair)
 				{
 					if (!lpair.second.empty())
