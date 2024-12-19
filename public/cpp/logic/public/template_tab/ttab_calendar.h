@@ -143,21 +143,21 @@ namespace ngl
 
 		static void init_week(int aid, std::vector<tweek>& aweek)
 		{
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			std::vector<int32_t> lvec;
 			int32_t lid = 0;
 			for (auto& item : aweek)
 			{
-				int lweekdaystart = localtime::getweekday(item.m_weekstart == localtime::WEEK_DAY ? 0: item.m_weekstart, 0, 0, 0);
-				int lweekdayfinish = localtime::getweekday(item.m_weekfinish == localtime::WEEK_DAY ? 0 : item.m_weekfinish, 0, 0, 0);
+				int32_t lweekdaystart = (int32_t)localtime::getweekday(item.m_weekstart == localtime::WEEK_DAY ? 0: item.m_weekstart, 0, 0, 0);
+				int32_t lweekdayfinish = (int32_t)localtime::getweekday(item.m_weekfinish == localtime::WEEK_DAY ? 0 : item.m_weekfinish, 0, 0, 0);
 
 				std::pair<bool, int32_t> lpairopen = daysecond(item.m_opentime.c_str());
 				std::pair<bool, int32_t> lpairclose = daysecond(item.m_closetime.c_str());
 				if (lpairclose.first && lpairopen.first)
 				{
 					assert(lpairclose.second > lpairopen.second);
-					int lbeg = lweekdaystart + lpairopen.second;
-					int lend = lweekdayfinish + lpairclose.second;
+					int32_t lbeg = lweekdaystart + lpairopen.second;
+					int32_t lend = lweekdayfinish + lpairclose.second;
 					assert(lend > lbeg);
 					if (lnow > lend)
 					{
@@ -172,7 +172,7 @@ namespace ngl
 
 		static void init_serveropen(int aid, std::vector<tserveropen>& atserveropen)
 		{
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			int32_t lopentime = sysconfig::open_servertime();
 			int32_t lid = 0;
 			for (auto& item : atserveropen)
@@ -198,11 +198,11 @@ namespace ngl
 
 		static void init_tregularslot(int aid, std::vector<tregularslot>& atregularslot)
 		{
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			for (auto& item : atregularslot)
 			{
-				int32_t lbeg = localtime::str2time(item.m_opentime.c_str(), "%Y-%m-%d %H:%M:%S");
-				int32_t lclose = localtime::str2time(item.m_closetime.c_str(), "%Y-%m-%d %H:%M:%S");
+				int32_t lbeg = (int32_t)localtime::str2time(item.m_opentime.c_str(), "%Y-%m-%d %H:%M:%S");
+				int32_t lclose = (int32_t)localtime::str2time(item.m_closetime.c_str(), "%Y-%m-%d %H:%M:%S");
 				if (lnow > lclose)
 					continue;
 				m_data[aid].add(lbeg, lclose);
@@ -223,7 +223,7 @@ namespace ngl
 			data* lpdata = tools::findmap(m_data, aid);
 			if (lpdata == nullptr)
 				return false;
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			for (int64_t item : lpdata->m_utc)
 			{
 				if (lnow >= data::beg(item) && lnow <= data::end(item))

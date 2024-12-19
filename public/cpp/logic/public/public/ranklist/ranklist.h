@@ -40,7 +40,7 @@ namespace ngl
 			}
 			else
 			{
-				m_time[atype] = localtime::gettime();
+				m_time[atype] = (int32_t)localtime::gettime();
 			}
 		}
 
@@ -204,7 +204,7 @@ namespace ngl
 			{
 				if (litem.equal_value(atype, itor->second) == false)
 				{
-					litem.m_time[atype] = localtime::gettime();
+					litem.m_time[atype] = (int32_t)localtime::gettime();
 					pbdb::db_ranklist* lpdata = get(abrief.m_id());
 					litem.change(atype, *lpdata);
 					return true;

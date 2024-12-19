@@ -80,7 +80,7 @@ namespace ngl
 		//# 聊天的转发类型
 		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
-			int lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			if (lnow < m_info.notalkutc())
 			{
 				auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR>();

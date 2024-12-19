@@ -71,7 +71,7 @@ namespace ngl
 
 			auto lstream = log_error();
 			(*lstream) << "actor_calendar###loaddb_finish" << std::endl;
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			for (std::pair<const nguid, data_modified<pbdb::db_calendar> >& item : *lmap)
 			{
 				(*lstream) << std::format("calendar[{}]", item.first.id()) << std::endl;

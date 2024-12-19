@@ -429,7 +429,7 @@ namespace ngl
 		template <typename T>
 		inline bool push_stlsize(const T& astl)
 		{
-			int16_t lsize = astl.size();
+			int16_t lsize = (int16_t)astl.size();
 			return push(lsize);
 		}
 

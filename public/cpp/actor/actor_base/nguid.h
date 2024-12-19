@@ -326,6 +326,8 @@ namespace ngl
 		int32_t m_value32;
 		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 
+		static int16_t m_localnum;
+
 		explicit nlogactor(int32_t avalue) :
 			m_value32(avalue)
 		{}
