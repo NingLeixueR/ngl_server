@@ -35,7 +35,8 @@ namespace ngl
 
 	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
-		m_ranklist.sync_ranklist(adata.get_data()->identifier(), adata.get_data()->data()->m_type());
+		auto lrecv = adata.get_data()->data();
+		m_ranklist.sync_ranklist(adata.get_data()->identifier(), lrecv->m_type(), lrecv->m_page(), lrecv->m_everynum());
 		return true;
 	}
 
@@ -51,11 +52,19 @@ namespace ngl
 		{
 			handle_cmd::push("ranklist", [this](int id, const ngl::json_read& aos)
 				{
-					int32_t lenum;
-					if (aos.read("data", lenum) == false)
+					struct json_rank
+					{
+						int32_t m_type;
+						int32_t m_page;
+						int32_t m_everynum;
+
+						jsonfunc("type", m_type, "page", m_page, "everynum", m_everynum)
+					};
+					json_rank lrank;
+					if (aos.read("data", lrank) == false)
 						return;
 					gcmd<std::string> pro;
-					auto prorank = m_ranklist.get_ranklist((pbdb::eranklist)lenum);
+					auto prorank = m_ranklist.get_ranklist((pbdb::eranklist)lrank.m_type, lrank.m_page, lrank.m_everynum);
 					if (tools::protojson<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>(*prorank, pro.m_data) == false)
 					{
 						return;

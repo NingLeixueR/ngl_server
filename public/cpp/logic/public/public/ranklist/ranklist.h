@@ -126,6 +126,7 @@ namespace ngl
 			virtual void erase(rank_item* aitem) = 0;
 			virtual void insert(rank_item* aitem) = 0;
 			virtual void foreach(const std::function<void(int32_t, const rank_item*)>&) = 0;
+			virtual int32_t getpage(int32_t apage, int32_t aevernmu, const std::function<void(int32_t, const rank_item*)>& afun) = 0;
 		};
 
 		template <pbdb::eranklist ETYPE>
@@ -158,6 +159,23 @@ namespace ngl
 				{
 					afun(lindex++, item);
 				}
+			}
+
+			virtual int32_t getpage(int32_t apage, int32_t aevernmu, const std::function<void(int32_t, const rank_item*)>& afun)
+			{
+				int32_t lbegindex = (apage-1)* aevernmu;
+				int32_t lendindex = lbegindex + aevernmu;
+				if (lbegindex < 0 || lbegindex > m_rankdata.size())
+				{
+					return m_rankdata.size();
+				}
+				auto itor = m_rankdata.begin();
+				std::advance(itor, lbegindex);
+				for (int lindex = 1; itor != m_rankdata.end() && lindex<= aevernmu;++lindex,++itor)
+				{
+					afun(lindex, *itor);
+				}
+				return m_rankdata.size();
 			}
 		};
 
@@ -315,21 +333,25 @@ namespace ngl
 			return &(*get_ranklist())[aactorid].get();
 		}
 		
-		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(pbdb::eranklist atype)
+		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(pbdb::eranklist atype, int32_t apage, int32_t aeverynum)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
 			pro->set_m_type(atype);
-			m_ranks[atype]->foreach([&pro](int32_t aindex, const rank_item* aitem)
+			pro->set_m_page(apage);
+			pro->set_m_everynum(aeverynum);
+			int32_t lcount = m_ranks[atype]->getpage(apage, aeverynum, [&pro](int32_t aindex, const rank_item* aitem)
 				{
 					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
-					*pro->add_m_items() = *lpbrief;
+					if(lpbrief != nullptr)
+						*pro->add_m_items() = *lpbrief;
 				});
+			pro->set_m_count(lcount);
 			return pro;
 		}
 
-		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype)
+		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, int32_t aeverynum)
 		{
-			auto pro = get_ranklist(atype);
+			auto pro = get_ranklist(atype, apage, aeverynum);
 			actor::send_client(aroleid, pro);
 		}
 	};
