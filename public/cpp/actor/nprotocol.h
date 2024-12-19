@@ -863,6 +863,13 @@ namespace ngl
 		def_portocol(np_channel_data<TDATA>, m_data)
 	};
 
+	struct np_channel_check
+	{
+		int64_t m_timer;
+		i16_area m_area;
+		def_portocol(np_channel_check, m_timer, m_area)
+	};
+
 }//namespace ngl
 
 

@@ -50,7 +50,6 @@ namespace ngl
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
 			>([](TDerived*, message<np_channel_data<T>>& adata)
 				{
-					log("nsp_client np_channel_data");
 					auto& recv = *adata.get_data();
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
 					std::ranges::for_each(lmap, [](const auto& apair)
@@ -85,7 +84,22 @@ namespace ngl
 					m_register[nguid::area(recv.m_actorid)] = true;
 				});
 
-			std::ranges::for_each(m_register, [](const auto& apair)
+			// ¼ì²é
+			actor::register_actor_s<
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check
+			>([](TDerived*, message<np_channel_check>& adata)
+				{
+					auto lprecv = adata.get_data();
+					if (m_register[lprecv->m_area])
+					{
+						twheel::wheel().removetimer(lprecv->m_timer);
+						return;
+					}
+					register_echannel(lprecv->m_area);
+				});
+
+			i64_actorid lactorid = m_actor->id_guid();
+			std::ranges::for_each(m_register, [lactorid](const auto& apair)
 				{
 					i16_area larea = apair.first;
 					wheel_parm lparm
@@ -93,14 +107,12 @@ namespace ngl
 						.m_ms = 1000,
 						.m_intervalms = [](int64_t) {return 1000; } ,
 						.m_count = 0x7fffffff,
-						.m_fun = [larea](const wheel_node* anode)
+						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
-							if (m_register[larea])
-							{
-								twheel::wheel().removetimer(anode->m_timerid);
-								return;
-							}
-							register_echannel(larea);
+							auto pro = std::make_shared<np_channel_check>();
+							pro->m_area = larea;
+							pro->m_timer = anode->m_timerid;
+							actor::static_send_actor(lactorid, nguid::make(), pro);
 						}
 					};
 					twheel::wheel().addtimer(lparm);
