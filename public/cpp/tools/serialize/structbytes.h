@@ -127,12 +127,7 @@ namespace ngl
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
 			if (adata.SerializeToArray(lpair.first, lpair.second) == false)
 			{
-				log_error()->print(
-					"[##structbytes::tobytes()] [T:{}] [actorid:{}] [requestactorid:{}] ",
-					tools::type_name<T>(),
-					aactorid,
-					arequestactorid
-				);
+				log_error()->print("[##structbytes::tobytes()] [T:{}] [actorid:{}] [requestactorid:{}] ", tools::type_name<T>(), aactorid, arequestactorid);
 				return false;
 			}
 

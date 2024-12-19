@@ -116,7 +116,7 @@ namespace ngl
 
 	void json_write::writenumber(const char* akey, const std::vector<int32_t>& aval)
 	{
-		cJSON* ljson = cJSON_CreateIntArray(aval.data(), aval.size());
+		cJSON* ljson = cJSON_CreateIntArray(aval.data(), (int32_t)aval.size());
 		write(akey, ljson);
 	}
 

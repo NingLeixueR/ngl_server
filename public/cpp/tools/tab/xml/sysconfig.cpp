@@ -49,7 +49,7 @@ namespace ngl
 				break;
 			if (!lpublicxml->find("xor_str", m_xorkey))
 				break;
-			int32_t lxorkeylen = m_xorkey.size();
+			int32_t lxorkeylen = (int32_t)m_xorkey.size();
 			for (int i = 1;; ++i)
 			{
 				if (lxorkeylen < ((1 << i) - 1))
