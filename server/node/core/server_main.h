@@ -46,7 +46,7 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase->set_m_lv(i);
 		lrolebase->set_m_moneygold(i + 1000);
 		lrolebase->set_m_moneysilver(i + 2000);
-		lrolebase->set_m_createutc(ngl::localtime::gettime());
+		lrolebase->set_m_createutc((int32_t)ngl::localtime::gettime());
 		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, *lrolebase);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
@@ -169,8 +169,8 @@ void init_DB_NOTICE()
 			continue;
 
 		ltemp.set_m_notice(lvec[i]);
-		ltemp.set_m_starttime(time(NULL));
-		ltemp.set_m_finishtime(time(NULL) + 36000);
+		ltemp.set_m_starttime((int32_t)time(NULL));
+		ltemp.set_m_finishtime((int32_t)time(NULL) + 36000);
 		ngl::actor_dbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
 	}
 }
@@ -179,7 +179,7 @@ void init_DB_KEYVAL()
 {
 	pbdb::db_keyvalue ltemp;
 	ltemp.set_m_id(pbdb::db_keyvalue_ekv_none);
-	int lnow = ngl::localtime::gettime();
+	int32_t lnow = (int32_t)ngl::localtime::gettime();
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_m_value(ltempstr);
 	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
@@ -192,7 +192,7 @@ void init_DB_FAMILY()
 		pbdb::db_family ltemp;
 
 		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, i));
-		ltemp.set_m_createutc(ngl::localtime::gettime());
+		ltemp.set_m_createutc((int32_t)ngl::localtime::gettime());
 		ltemp.set_m_exp(100);
 		ltemp.set_m_lv(1);
 
@@ -202,10 +202,10 @@ void init_DB_FAMILY()
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
 
 		pbdb::db_familyer ltempfamilyer;
-		ltempfamilyer.set_m_joinutc(ngl::localtime::gettime());
+		ltempfamilyer.set_m_joinutc((int32_t)ngl::localtime::gettime());
 		ltempfamilyer.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltempfamilyer.set_m_position(pbdb::db_familyer_eposition_leader);
-		ltempfamilyer.set_m_lastsignutc(ngl::localtime::gettime());
+		ltempfamilyer.set_m_lastsignutc((int32_t)ngl::localtime::gettime());
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
 	}
 }
@@ -217,7 +217,7 @@ void init_DB_RANKLIST()
 		pbdb::db_ranklist ltemp;
 		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		pbdb::rankitem lrankitem;
-		lrankitem.set_m_time(ngl::localtime::gettime());
+		lrankitem.set_m_time((int32_t)ngl::localtime::gettime());
 		lrankitem.set_m_value(i);
 		(*ltemp.mutable_m_items())[(int)pbdb::eranklist::lv] = lrankitem;
 		ngl::actor_dbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);

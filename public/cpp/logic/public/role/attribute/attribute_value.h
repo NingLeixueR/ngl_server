@@ -84,7 +84,7 @@ namespace ngl
 			m_fightscore = 0;
 			for (const auto& [key, value] : m_fight)
 			{
-				m_fightscore += fight(key, value);
+				m_fightscore += fight(key, (double)value);
 			}
 			return m_fightscore;
 		}
@@ -130,25 +130,25 @@ namespace ngl
 		// 添加属性
 		void set_attr(EnumAttribute atype, double avalues)
 		{
-			m_attr[atype] = avalues;
+			m_attr[atype] = (int64_t)avalues;
 		}
 
 		// 添加比例属性属性
 		void set_rattr(EnumAttribute atype, double avalues)
 		{
-			m_rattr[atype] = avalues;
+			m_rattr[atype] = (float)avalues;
 		}
 
 		// 给父结点添加属性
 		void set_father_rattr(EnumModule amodule, EnumAttribute atype, double avalues)
 		{
-			m_crattr[amodule][atype] = avalues;
+			m_crattr[amodule][atype] = (float)avalues;
 		}
 
 		// 获取属性
 		double get_attr(EnumAttribute atype)
 		{
-			return m_attr[atype];
+			return (double)m_attr[atype];
 		}
 
 		// 获取比例属性属性

@@ -56,7 +56,7 @@ namespace ngl
 			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
 			{
 				const pbdb::db_brief& lbrief = pair.second.getconst();
-				std::format(
+				(*lstream) << std::format(
 					"++++++++++++++++++++++\n"
 					"+m_id={}\n"
 					"+m_lv={}\n"

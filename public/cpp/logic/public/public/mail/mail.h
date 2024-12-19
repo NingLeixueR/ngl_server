@@ -107,7 +107,7 @@ namespace ngl
 			int32_t& lid = maxid(aroleid);
 			lmail.set_m_id(++lid);
 			lmail.set_m_tid(atid);
-			lmail.set_m_createutc(localtime::gettime());
+			lmail.set_m_createutc((int32_t)localtime::gettime());
 			lmail.set_m_draw(false);
 			lmail.set_m_read(false);
 			lmail.set_m_prams(aparm);

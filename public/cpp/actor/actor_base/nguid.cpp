@@ -9,14 +9,19 @@ namespace ngl
 		return (i64_actorid)lguid;
 	}
 
+	int16_t nlogactor::m_localnum = 0;
+
 	nlogactor::nlogactor(ENUM_ACTOR avalue1, ELOG_TYPE avalue2) :
 		m_value32(0)
 	{
 		m_value16[0] = avalue1;
 		if (avalue2 == ELOG_TYPE::ELOG_LOCAL)
 		{
-			static int16_t lnum = (ttab_servers::tab()->m_type * 100 + ttab_servers::tab()->m_tcount);
-			m_value16[1] = 0x8000 | lnum;
+			if (m_localnum == 0)
+			{
+				m_localnum = (ttab_servers::tab()->m_type * 100 + ttab_servers::tab()->m_tcount);
+			}
+			m_value16[1] = 0x8000 | m_localnum;
 		}
 		else
 		{

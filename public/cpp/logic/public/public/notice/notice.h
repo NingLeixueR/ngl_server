@@ -70,7 +70,7 @@ namespace ngl
 		{
 			static int32_t lasttime = 0;
 			// 十分钟刷新一次
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			if (lasttime == 0 || lnow > (lasttime + (10 * localtime::MINUTES_SECOND)))
 			{
 				lasttime = lnow;
