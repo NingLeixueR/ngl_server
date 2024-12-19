@@ -326,16 +326,11 @@ namespace ngl
 		int32_t m_value32;
 		int16_t m_value16[2];	//ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 
-		explicit inline nlogactor(int32_t avalue) :
+		explicit nlogactor(int32_t avalue) :
 			m_value32(avalue)
 		{}
 
-		inline nlogactor(ENUM_ACTOR avalue1, ELOG_TYPE avalue2) :
-			m_value32(0)
-		{
-			m_value16[0] = avalue1;
-			m_value16[1] = avalue2;
-		}
+		nlogactor(ENUM_ACTOR avalue1, ELOG_TYPE avalue2);
 
 		inline ENUM_ACTOR actor_type()const
 		{
@@ -344,6 +339,10 @@ namespace ngl
 
 		inline ELOG_TYPE log_type()const
 		{
+			if ((0x8000 & m_value16[1]) != 0)
+			{
+				return ELOG_TYPE::ELOG_LOCAL;
+			}
 			return (ELOG_TYPE)m_value16[1];
 		}
 

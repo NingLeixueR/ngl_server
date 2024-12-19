@@ -34,10 +34,10 @@ namespace ngl
 			{
 				min_flush_time = 1000,
 			};
-			int32_t			m_flush_time;	// 写入文件的间隔
+			int32_t			m_flush_time = 0;	// 写入文件的间隔
 			int32_t flush_time()
 			{
-				return std::min(m_flush_time, (int32_t)min_flush_time);
+				return std::max(m_flush_time, (int32_t)min_flush_time);
 			}
 		};
 		std::ofstream	m_stream;
