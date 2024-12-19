@@ -14,14 +14,8 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 		ltemp.set_m_passworld("123456");
 		ltemp.set_m_roleid(ltemp.m_id());
 		ltemp.set_m_area(tab_self_area);
-		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::load(0, ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, 1));
-		pbdb::db_account lDB_ACCOUNT;
-		ngl::db_data<pbdb::db_account>::get(
-			ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, 1), 
-			lDB_ACCOUNT
-		);
+		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
 	}
 }
 
@@ -47,8 +41,8 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase->set_m_moneygold(i + 1000);
 		lrolebase->set_m_moneysilver(i + 2000);
 		lrolebase->set_m_createutc((int32_t)ngl::localtime::gettime());
-		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, *lrolebase);
 
+		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, *lrolebase);
 		ngl::actor_dbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
 	}
 }
@@ -114,6 +108,7 @@ void init_DB_MAIL(int beg)
 	{
 		pbdb::db_mail ltemp;
 		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+
 		ngl::actor_dbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
 	}
 }
@@ -163,14 +158,12 @@ void init_DB_NOTICE()
 	{
 		pbdb::db_notice ltemp;
 		ltemp.set_m_id(i);
-
-
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
-
 		ltemp.set_m_notice(lvec[i]);
 		ltemp.set_m_starttime((int32_t)time(NULL));
 		ltemp.set_m_finishtime((int32_t)time(NULL) + 36000);
+
 		ngl::actor_dbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
 	}
 }
@@ -182,6 +175,7 @@ void init_DB_KEYVAL()
 	int32_t lnow = (int32_t)ngl::localtime::gettime();
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_m_value(ltempstr);
+
 	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
 }
 
@@ -190,15 +184,14 @@ void init_DB_FAMILY()
 	for (int i = 1; i < 100; ++i)
 	{
 		pbdb::db_family ltemp;
-
 		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, i));
 		ltemp.set_m_createutc((int32_t)ngl::localtime::gettime());
 		ltemp.set_m_exp(100);
 		ltemp.set_m_lv(1);
-
 		ltemp.set_m_name(std::format("FLIBO{}", i));
 		ltemp.set_m_leader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		*ltemp.mutable_m_member()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
+
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
 
 		pbdb::db_familyer ltempfamilyer;
@@ -206,6 +199,7 @@ void init_DB_FAMILY()
 		ltempfamilyer.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltempfamilyer.set_m_position(pbdb::db_familyer_eposition_leader);
 		ltempfamilyer.set_m_lastsignutc((int32_t)ngl::localtime::gettime());
+
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
 	}
 }
@@ -220,6 +214,7 @@ void init_DB_RANKLIST()
 		lrankitem.set_m_time((int32_t)ngl::localtime::gettime());
 		lrankitem.set_m_value(i);
 		(*ltemp.mutable_m_items())[(int)pbdb::eranklist::lv] = lrankitem;
+
 		ngl::actor_dbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
 	}
 }
@@ -293,7 +288,6 @@ bool start_db(int argc, char** argv)
 			init_DB_FRIENDS();
 		}		
 	}
-
 	return true;
 }
 
@@ -582,25 +576,17 @@ bool start_robot(int argc, char** argv)
 		std::string lcmd;
 		if (argc < 6)
 		{
-			lcmd = "login ";
-			lcmd += argv[4];
+			lcmd = std::format("login {}", argv[4]);
 		}
 		else
 		{
-			lcmd = "logins ";
-			lcmd += argv[4];
-			lcmd += " ";
-			lcmd += argv[5];
-			lcmd += " ";
-			lcmd += argv[6];
+			lcmd = std::format("logins {} {} {}", argv[4], argv[5], argv[6]);
 		}
 		std::vector<std::string> lvec;
 		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
 			return false;
 		ngl::actor_manage_robot::parse_command(lvec);
 		int lnum = 10000;
-		//boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
-		//while (lnum-- > 0)
 
 		bool ltest = false;
 		std::vector<int> lms;
@@ -631,14 +617,14 @@ bool start_robot(int argc, char** argv)
 						ltest = true;
 						continue;
 					}
-					else if (lvec[0] == "notest" || lvec[0] == "NOTEST")
+					if (lvec[0] == "notest" || lvec[0] == "NOTEST")
 					{
 						lms.clear();
 						lcmdvec.clear();
 						ltest = false;
 						continue;
 					}
-					else if (lvec[0] == "tests" || lvec[0] == "TESTS")
+					if (lvec[0] == "tests" || lvec[0] == "TESTS")
 					{
 						lms.push_back(ngl::tools::lexical_cast<int>(lvec[1].c_str()));
 						lcmdvec.push_back(std::vector<std::string>());
@@ -648,7 +634,7 @@ bool start_robot(int argc, char** argv)
 						}
 						continue;
 					}
-					else if (lvec[0] == "start" || lvec[0] == "START")
+					if (lvec[0] == "start" || lvec[0] == "START")
 					{
 						ltest = true;
 						continue;
