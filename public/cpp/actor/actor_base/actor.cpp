@@ -79,13 +79,13 @@ namespace ngl
 		// # ÉèÖÃkcp
 		inline void set_kcp(handle_pram& aparm)
 		{
-			if (aparm.m_pack != nullptr
-				&& aparm.m_pack->m_protocol == ENET_KCP
-				&& m_actor->is_single() == false
-				)
-			{
-				m_actor->set_kcpssion(aparm.m_pack->m_id);
-			}
+			if (aparm.m_pack == nullptr)
+				return;
+			if (aparm.m_pack->m_protocol != ENET_KCP)
+				return;
+			if (m_actor->is_single())
+				return;
+			m_actor->set_kcpssion(aparm.m_pack->m_id);
 		}
 
 		inline bool ahandle(i32_threadid athreadid, handle_pram& aparm)
