@@ -35,7 +35,9 @@ namespace ngl
 	bool is_a_address(const std::vector<std::string>& lvec)
 	{
 		if (lvec.empty())
+		{
 			return false;
+		}
 		return lvec[0] == "10";
 	}
 
@@ -43,9 +45,13 @@ namespace ngl
 	bool is_b_address(const std::vector<std::string>& lvec)
 	{
 		if (lvec.size() < 2)
+		{
 			return false;
+		}
 		if (lvec[0] != "172")
+		{
 			return false;
+		}
 		int lnum = tools::lexical_cast<int>(lvec[1]);
 		return lnum >= 16 && lnum <= 31;
 	}
@@ -54,17 +60,23 @@ namespace ngl
 	bool is_c_address(const std::vector<std::string>& lvec)
 	{
 		if (lvec.size() < 2)
+		{
 			return false;
+		}
 		return lvec[0] == "192" && lvec[1] == "168";
 	}
 
 	bool tools::is_lanip(const std::string& aip)
 	{
 		if (aip == "127.0.0.1")
+		{
 			return true;
+		}
 		std::vector<std::string> lvec;
 		if (splite(aip.c_str(), ".", lvec) == false)
+		{
 			return false;
+		}
 		return is_a_address(lvec) || is_b_address(lvec) || is_c_address(lvec);
 	}
 
@@ -82,7 +94,9 @@ namespace ngl
 	uint16_t tools::transformlittle(parm<uint16_t>& avalues)
 	{
 		if constexpr (islittle())
+		{
 			return avalues.m_value;
+		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
 		avalues.m_value =
 			(static_cast<uint16_t>(value_p[0]) << 8)
@@ -93,7 +107,9 @@ namespace ngl
 	int32_t tools::transformlittle(parm<int32_t>& avalues)
 	{
 		if constexpr (islittle())
+		{
 			return avalues.m_value;
+		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
 		avalues.m_value = (static_cast<int32_t>(value_p[0]) << 24)
 			| (static_cast<int32_t>(value_p[1]) << 16)
@@ -105,7 +121,9 @@ namespace ngl
 	uint32_t tools::transformlittle(parm<uint32_t>& avalues)
 	{
 		if constexpr (islittle())
+		{
 			return avalues.m_value;
+		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
 		avalues.m_value = (static_cast<uint32_t>(value_p[0]) << 24)
 			| (static_cast<uint32_t>(value_p[1]) << 16)
@@ -117,7 +135,9 @@ namespace ngl
 	int64_t tools::transformlittle(parm<int64_t>& avalues)
 	{
 		if constexpr (islittle())
+		{
 			return avalues.m_value;
+		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues);
 		avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
 			| (static_cast<int64_t>(value_p[1]) << 48)
@@ -133,7 +153,9 @@ namespace ngl
 	uint64_t tools::transformlittle(parm<uint64_t>& avalues)
 	{
 		if constexpr (islittle())
+		{
 			return avalues.m_value;
+		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues);
 		avalues.m_value = (static_cast<uint64_t>(value_p[0]) << 56)
 			| (static_cast<uint64_t>(value_p[1]) << 48)
@@ -165,8 +187,7 @@ namespace ngl
     {
         std::string dest;
         dest.resize(base64_impl::decoded_size(len));
-        auto const result = base64_impl::decode(
-            &dest[0], data, len);
+        auto const result = base64_impl::decode(&dest[0], data, len);
         dest.resize(result.first);
         return dest;
     }
@@ -248,7 +269,9 @@ namespace ngl
 	bool tools::asscii2wasscii(const std::string& astr, std::wstring& awstr)
 	{
 		if (astr.empty())
+		{
 			return true;
+		}
 
 		std::locale sys_locale("");
 
@@ -284,7 +307,9 @@ namespace ngl
 	bool tools::wasscii2utf8(const std::wstring& awstr, std::string& astr)
 	{
 		if (awstr.empty())
+		{
 			return true;
+		}
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 		astr = conv.to_bytes(awstr);
 		return true;
@@ -293,7 +318,9 @@ namespace ngl
 	bool tools::utf82wasscii(const std::string& astr, std::wstring& awstr)
 	{
 		if (astr.empty())
+		{
 			return false;
+		}
 		std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
 		awstr = conv.from_bytes(astr);
 		return true;
@@ -303,9 +330,13 @@ namespace ngl
 	{
 		std::wstring lwsql;
 		if (ngl::tools::asscii2wasscii(astr1, lwsql) == false)
+		{
 			return false;
+		}
 		if (ngl::tools::wasscii2utf8(lwsql, astr2) == false)
+		{
 			return false;
+		}
 		return true;
 	}
 
@@ -313,9 +344,13 @@ namespace ngl
 	{
 		std::wstring lwsql;
 		if (ngl::tools::utf82wasscii(astr1, lwsql) == false)
+		{
 			return false;
+		}
 		if (ngl::tools::wasscii2asscii(lwsql, astr2) == false)
+		{
 			return false;
+		}
 		return true;
 	}
 
@@ -360,7 +395,9 @@ namespace ngl
 	bool tools::splite(const char* abuff, const char* afg, std::vector<std::string>& avec)
 	{
 		if (abuff == nullptr || afg == nullptr)
+		{
 			return false;
+		}
 		std::string ltemp;
 		for (const char* lp1 = abuff; *lp1 != '\0';)
 		{
@@ -388,7 +425,9 @@ namespace ngl
 			}
 		}
 		if (ltemp.empty() == false)
+		{
 			avec.push_back(ltemp);
+		}
 		return !avec.empty();
 	}
 
@@ -528,7 +567,9 @@ namespace ngl
 	bool encodebasetype(char* buf, int len, const T* adata, int32_t adatalen, int32_t* bytes)
 	{
 		if (sizeof(T) > len)
+		{
 			return false;
+		}
 		memcpy(buf, adata, sizeof(T) * adatalen);
 		*bytes += sizeof(T) * adatalen;
 		return true;
@@ -539,7 +580,9 @@ namespace ngl
 		if (sysconfig::varint() == false)
 		{
 			if (encodebasetype(aparm.m_buf, aparm.m_len, &aparm.m_value, 1, aparm.m_bytes) == false)
+			{
 				return false;
+			}
 			return true;
 		}
 		else
@@ -549,7 +592,9 @@ namespace ngl
 			while (true)
 			{
 				if (index > aparm.m_len || index > varint_impl::m_64maxpos)
+				{
 					return false;
+				}
 				//0x7F 即　0111 1111
 				//~ 表示取反  
 				if ((ln & ~0x7F) == 0)
@@ -576,7 +621,9 @@ namespace ngl
 		if (sysconfig::varint() == false)
 		{
 			if (encodebasetype(aparm.m_buf, aparm.m_len, &aparm.m_value, 1, aparm.m_bytes) == false)
+			{
 				return false;
+			}
 			return true;
 		}
 		else
@@ -586,7 +633,9 @@ namespace ngl
 			while (true)
 			{
 				if (index > aparm.m_len || index > varint_impl::m_32maxpos)
+				{
 					return false;
+				}
 				//0x7F 即　0111 1111
 				//~ 表示取反  
 				if ((ln & ~0x7F) == 0)
@@ -613,7 +662,9 @@ namespace ngl
 	{
 		int llen = sizeof(T) * adatalen;
 		if (llen > len)
+		{
 			return false;
+		}
 		memcpy(adata, buf, llen);
 		*bytes += llen;
 		return true;
@@ -624,7 +675,9 @@ namespace ngl
 		if (sysconfig::varint() == false)
 		{
 			if (decodebasetype(aparm.m_buf, aparm.m_len, aparm.m_bytes, &aparm.m_value, 1) == false)
+			{
 				return false;
+			}
 			return true;
 		}
 		else
@@ -645,7 +698,9 @@ namespace ngl
 					break;
 				}
 				if (i > varint_impl::m_64maxpos)
+				{
 					break;
+				}
 			}
 			*aparm.m_bytes += i + 1;
 			aparm.m_value = varint_impl::zigzag64decode(aparm.m_value);
@@ -659,7 +714,9 @@ namespace ngl
 		{
 			int32_t lbytes = 0;
 			if (decodebasetype(aparm.m_buf, aparm.m_len, &lbytes, &aparm.m_value, 1) == false)
+			{
 				return false;
+			}
 			*aparm.m_bytes += lbytes;
 			return true;
 		}
@@ -680,7 +737,9 @@ namespace ngl
 					break;
 				}
 				if (i > varint_impl::m_32maxpos)
+				{
 					break;
+				}
 			}
 			*aparm.m_bytes += i + 1;
 			aparm.m_value = varint_impl::zigzag32decode(aparm.m_value);
@@ -716,10 +775,14 @@ namespace ngl
 		(*apto) = 0;
 		unsigned char ltarget = 0;
 		if (_hexget(*apso, ltarget) == false)
+		{
 			return false;
+		}
 		(*apto) |= ltarget << 4;
 		if (_hexget(*&apso[1], ltarget) == false)
+		{
 			return false;
+		}
 		(*apto) |= ltarget;
 		return true;
 	}
@@ -745,7 +808,9 @@ namespace ngl
 		for (int i = 0; i < alen / 2; ++i)
 		{
 			if (_hb(&((unsigned char*)apso)[i * 2], &((unsigned char*)apto)[i]) == false)
+			{
 				return false;
+			}
 			llen += 2;
 		}
 		apotlen = alen / 2;
@@ -755,9 +820,13 @@ namespace ngl
 	void tools::bytexor(char* ap, int32_t aplen, int apos)
 	{
 		if (sysconfig::isxor() == false)
+		{
 			return;
+		}
 		if (sysconfig::xorkeynum() < 1 || sysconfig::xorkey().empty())
+		{
 			return;
+		}
 		for (int i = 0, j = apos; i < aplen; ++i, ++j)
 		{
 			ap[i] = ap[i] ^ sysconfig::xorkey()[j & sysconfig::xorkeynum()];

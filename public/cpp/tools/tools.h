@@ -390,7 +390,9 @@ namespace ngl
 		{
 			std::vector<std::string> lvec;
 			if (splite(abuff, afg, lvec) == false)
+			{
 				return false;
+			}
 			for (std::string& item : lvec)
 			{
 				avec.push_back(tools::lexical_cast<T>(item.c_str()));
@@ -403,7 +405,9 @@ namespace ngl
 		{
 			std::vector<std::string> lvec;
 			if (splite(abuff, afg, lvec) == false)
+			{
 				return false;
+			}
 			for (std::string& item : lvec)
 			{
 				aset.insert(tools::lexical_cast<T>(item.c_str()));
@@ -427,7 +431,9 @@ namespace ngl
 		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata)
 		{
 			if (aindex > avec.size())
+			{
 				return false;
+			}
 			try
 			{
 				adata = tools::lexical_cast<T>(avec[aindex].c_str());
@@ -443,8 +449,9 @@ namespace ngl
 		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata, ARGS&... args)
 		{
 			if (aindex > avec.size())
+			{
 				return false;
-
+			}
 			try
 			{
 				adata = tools::lexical_cast<T>(avec[aindex].c_str());
@@ -465,7 +472,9 @@ namespace ngl
 			for (int i = 0; i < avec.size(); ++i)
 			{
 				if (i != 0)
+				{
 					astr += afg;
+				}
 				astr += tools::lexical_cast<std::string>(avec[i]);
 			}
 			return true;
@@ -476,7 +485,9 @@ namespace ngl
 			for (int i = 0; i < avec.size(); ++i)
 			{
 				if (i != 0)
+				{
 					astr += afg;
+				}
 				astr += avec[i];
 			}
 			return true;
@@ -489,7 +500,9 @@ namespace ngl
 			for (auto itor = avec.begin(); i < avec.size(); ++i,++itor)
 			{
 				if (i != 0)
+				{
 					astr += afg;
+				}
 				astr += tools::lexical_cast<std::string>(*itor);
 			}
 			return true;
@@ -502,7 +515,9 @@ namespace ngl
 			for (auto itor = avec.begin(); i < avec.size(); ++i, ++itor)
 			{
 				if (i != 0)
+				{
 					astr += afg;
+				}
 				astr += *itor;
 			}
 			return true;
@@ -521,7 +536,9 @@ namespace ngl
 			try
 			{
 				if (aindex != 0)
+				{
 					astr += afg;
+				}
 				astr += tools::lexical_cast<std::string>(adata);
 			}
 			catch (...)
@@ -537,7 +554,9 @@ namespace ngl
 			try
 			{
 				if (aindex != 0)
+				{
 					astr += afg;
+				}
 				astr += tools::lexical_cast<std::string>(adata);
 			}
 			catch (...)

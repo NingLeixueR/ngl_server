@@ -300,10 +300,7 @@ namespace ngl
 		atm = *std::localtime(&curr);
 	}
 
-	void localtime::getweekday(
-		time_t curr,
-		int& weekday,
-		int& hour, int& minute)
+	void localtime::getweekday(time_t curr, int& weekday, int& hour, int& minute)
 	{
 		std::tm ltime = *std::localtime(&curr);
 		weekday = ltime.tm_wday;

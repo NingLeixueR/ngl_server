@@ -67,10 +67,14 @@ namespace ngl
 					for (int i = 0; i < lsize; ++i)
 					{
 						if (line[i] == '\"')
+						{
 							++lisshuyin;
+						}
 					}
 					if (lisshuyin % 2 == 0)
+					{
 						--anum;
+					}
 				}
 				else
 				{
@@ -83,7 +87,9 @@ namespace ngl
 	bool readfile::readline(std::string& aline)
 	{
 		if (m_file.eof())
+		{
 			return false;
+		}
 		if (!std::getline(m_file, aline))
 		{
 			return false;
@@ -104,7 +110,9 @@ namespace ngl
 		{
 			int lsizecurrent = m_file.tellg();
 			if (lsizecurrent == -1)
+			{
 				return false;
+			}
 			m_file.seekg(0, std::ios::end);
 			int lsize = m_file.tellg();
 			m_file.seekg(lsizecurrent, std::ios::beg);

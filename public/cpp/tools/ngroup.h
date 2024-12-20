@@ -51,7 +51,9 @@ namespace ngl
 		{
 			ginfo* lginfo = tools::findmap(m_group, agroupid);
 			if (lginfo == nullptr)
+			{
 				return;
+			}
 			lginfo->m_actorlist.erase(amember);
 		}
 
@@ -59,7 +61,9 @@ namespace ngl
 		{
 			ginfo* lginfo = tools::findmap(m_group, agroupid);
 			if (lginfo == nullptr)
+			{
 				return nullptr;
+			}
 			return &lginfo->m_actorlist;
 		}
 	};

@@ -149,7 +149,7 @@ namespace ngl
 #else
 				{
 					cv_lock(m_cv, m_mutex, lfun)
-						llist.swap(m_list);
+					llist.swap(m_list);
 				}
 #endif//OPEN_SEM 
 				for (auto& item : llist)
