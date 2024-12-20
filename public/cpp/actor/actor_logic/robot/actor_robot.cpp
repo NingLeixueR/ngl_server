@@ -314,12 +314,12 @@ namespace ngl
 	{
 		auto recv = adata.get_data();
 		auto lstream = log_error();
-		(*lstream) << std::format("#####ranklist type={}#####", (int)(recv->m_type())) << std::endl;
+		(*lstream) << std::format("#####ranklist type={} page={} m_everynum={} m_count={}#####", (int)(recv->m_type()), recv->m_page(), recv->m_everynum(), recv->m_count()) << std::endl;
 		std::ranges::for_each(recv->m_items(), [&recv,&lstream](const auto& item)
 			{
 				if (recv->m_type() == pbdb::lv)
 				{
-					(*lstream) << std::format("roleid:{} name:{} lv:{}", item.m_id(), item.m_name(), item.m_lv()) << std::endl;
+					(*lstream) << std::format("roleid:{} area:{} name:{} lv:{}", item.m_id(), nguid::area(item.m_id()), item.m_name(), item.m_lv()) << std::endl;
 				}
 			});
 		lstream->print("");
