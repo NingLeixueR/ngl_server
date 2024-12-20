@@ -127,10 +127,7 @@ namespace ngl
 				if (!lareaset->empty())
 				{
 					tools::splicing(*lareaset, " AND area = ", lareastr);
-					if (!lareastr.empty())
-					{
-						lareastr = " area = " + lareastr;
-					}
+					lareastr = " area = " + lareastr;
 				}
 				else
 				{
