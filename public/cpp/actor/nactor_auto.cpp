@@ -184,10 +184,11 @@ namespace ngl
 			/*200000036*/, np_channel_register_reply<pbdb::db_keyvalue>
 			/*200000037*/, np_channel_data<pbdb::db_keyvalue>
 			/*200000038*/, np_channel_check
+			/*200000039*/, np_roleban
 			// ### 事件相关协议 start ### //
-			/*200000038*/, actor_events_logic::np_event_register
-			/*200000039*/, np_eevents_logic_rolelogin
-			/*200000040*/, np_eevents_logic_roleoffline
+			/*200000040*/, actor_events_logic::np_event_register
+			/*200000041*/, np_eevents_logic_rolelogin
+			/*200000042*/, np_eevents_logic_roleoffline
 			// ### 事件相关协议 finish ### //
 		> (EPROTOCOL_TYPE_CUSTOM);
 	}

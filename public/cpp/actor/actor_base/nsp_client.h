@@ -17,9 +17,7 @@ namespace ngl
 		static std::map<i16_area, i64_actorid>			m_nspserver;
 		static std::map<i16_area, bool>					m_register;
 		static std::set<i64_actorid>					m_dataid;
-		static bool										m_recvdatafinish;
-		static std::function<void(const T&)>			m_recvdatafinishfun;
-		static std::function<void(int64_t, const T&)>	m_changedatafun;
+		static std::function<void(int64_t, const T&, bool)>	m_changedatafun;
 	public:
 		static std::map<i64_actorid, T> m_data;
 
@@ -50,9 +48,10 @@ namespace ngl
 				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
 			>([](TDerived*, message<np_channel_data<T>>& adata)
 				{
-					auto& recv = *adata.get_data();
+					const np_channel_data<T>& recv = *adata.get_data();
 					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
-					std::ranges::for_each(lmap, [](const auto& apair)
+					bool lfirstsynchronize = recv.m_firstsynchronize;
+					std::ranges::for_each(lmap, [lfirstsynchronize](const auto& apair)
 						{
 							if (!m_dataid.empty() && m_dataid.find(apair.first) == m_dataid.end())
 							{
@@ -61,17 +60,9 @@ namespace ngl
 							m_data[apair.first] = apair.second;
 							if (m_changedatafun != nullptr)
 							{
-								m_changedatafun(apair.first, apair.second);
+								m_changedatafun(apair.first, apair.second, lfirstsynchronize);
 							}
 						});
-					if (m_recvdatafinish == false && m_recvdatafinishfun != nullptr)
-					{
-						m_recvdatafinish = true;
-						std::ranges::for_each(lmap, [](const auto& apair)
-							{
-								m_recvdatafinishfun(apair.second);
-							});
-					}
 				});
 
 			// 注册回复
@@ -150,22 +141,8 @@ namespace ngl
 			actor::static_send_actor(m_nspserver[nguid::area(aactorid)], nguid::make(), pro);
 		}
 
-		// # 如果数据部分复制到位就执行以下操作
-		static void set_recv_data_finish(const std::function<void(const T&)>& afun)
-		{
-			m_recvdatafinishfun = afun;
-			if (m_recvdatafinish == false)
-			{
-				m_recvdatafinish = true;
-				std::ranges::for_each(m_data, [](const auto& apair)
-					{
-						m_recvdatafinishfun(apair.second);
-					});			
-			}
-		}
-
 		// # 如果数据发生变化
-		static void set_changedata_fun(const std::function<void(int64_t, const T&)>& afun)
+		static void set_changedata_fun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_changedatafun = afun;
 		}
@@ -197,11 +174,5 @@ namespace ngl
 	std::set<i64_actorid> nsp_client<TDerived, T>::m_dataid;
 
 	template <typename TDerived, typename T>
-	bool nsp_client<TDerived, T>::m_recvdatafinish = false;
-	
-	template <typename TDerived, typename T>
-	std::function<void(const T&)> nsp_client<TDerived, T>::m_recvdatafinishfun = nullptr;
-
-	template <typename TDerived, typename T>
-	std::function<void(int64_t, const T&)>	nsp_client<TDerived, T>::m_changedatafun;
+	std::function<void(int64_t, const T&, bool)>	nsp_client<TDerived, T>::m_changedatafun;
 }//namespace ngl

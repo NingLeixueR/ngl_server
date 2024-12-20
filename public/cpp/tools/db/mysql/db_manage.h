@@ -120,10 +120,21 @@ namespace ngl
 			{
 				std::set<i16_area>* lareaset = ttab_mergearea::mergelist(ttab_servers::tab()->m_area);
 				assert(lareaset != nullptr);
-				tools::splicing(*lareaset, " AND area = ", lareastr);
-				if (!lareastr.empty())
+
+				// # 删除小于0的元素
+				auto it = lareaset->lower_bound(0);
+				lareaset->erase(lareaset->begin(), it);
+				if (!lareaset->empty())
 				{
-					lareastr = " area = " + lareastr;
+					tools::splicing(*lareaset, " AND area = ", lareastr);
+					if (!lareastr.empty())
+					{
+						lareastr = " area = " + lareastr;
+					}
+				}
+				else
+				{
+					lareastr = " 1 = 1 ";
 				}
 			}
 			return lareastr.c_str();

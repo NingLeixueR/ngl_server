@@ -21,17 +21,16 @@ namespace ngl
 	{
 		std::set<i64_actorid> ldatakvid{ pbdb::db_keyvalue_ekv_account_ban };
 		nclient_keyvalue::init(actor_keyvalue::actor_type(), this, ldatakvid);
-		nclient_keyvalue::set_recv_data_finish([this](const pbdb::db_keyvalue& akeyval)
+		nclient_keyvalue::set_changedata_fun([this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
 			{
-				log_error()->print("actor_manage_role recv_data_finish####### [{}]", akeyval.m_value().c_str());
-				m_roleban.clear();
-				tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
-			});
-		nclient_keyvalue::set_changedata_fun([this](int64_t aid, const pbdb::db_keyvalue& akeyval)
-			{
-				log_error()->print("actor_manage_role changedata_fun####### [{}]", akeyval.m_value().c_str());
-				m_roleban.clear();
-				tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
+				log_error()->print(
+					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]", 
+					aid, akeyval.m_value().c_str(), afirstsynchronize?"first":"change"
+				);
+
+				auto pro = std::make_shared<np_roleban>();
+				tools::splite(akeyval.m_value().c_str(), "*", pro->m_roleban);
+				actor::static_send_actor(actor_manage_role::actorid(), nguid::make(), pro);
 			});
 	}
 
@@ -42,8 +41,15 @@ namespace ngl
 		>(false);
 
 		register_handle_custom<actor_manage_role>::func<
-			mforward<np_gm>
+			mforward<np_gm>,
+			np_roleban
 		>(false);
+	}
+
+	bool actor_manage_role::handle(const message<np_roleban>& adata)
+	{
+		m_roleban = adata.get_data()->m_roleban;
+		return true;
 	}
 
 	bool actor_manage_role::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
