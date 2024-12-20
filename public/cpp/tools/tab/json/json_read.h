@@ -50,14 +50,18 @@ namespace ngl
 		{
 			cJSON* ltemp = nullptr;
 			if (read(akey, ltemp) == false)
+			{
 				return false;
+			}
 			int lsize = cJSON_GetArraySize(ltemp);
 			for (int i = 0; i < lsize; ++i)
 			{
 				cJSON* ret = cJSON_GetArrayItem(ltemp, i);
 				T lval;
 				if (afun(ret, lval) == false)
+				{
 					continue;
+				}
 				aval.push_back(lval);
 			}
 			return true;
@@ -87,7 +91,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 			if (nullptr == ret || ret->type != cJSON_Array)
+			{
 				return false;
+			}
 			int lsize = cJSON_GetArraySize(ret);
 			for (int i = 0; i < lsize; ++i)
 			{
@@ -107,7 +113,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 			if (nullptr == ret || ret->type != cJSON_Array)
+			{
 				return false;
+			}
 			int lsize = cJSON_GetArraySize(ret);
 			for (int i = 0; i < lsize; ++i)
 			{
@@ -118,7 +126,9 @@ namespace ngl
 				lretobj.m_free = false;
 				lretobj.m_json = tempret;
 				if (lretobj.read(lkey.c_str(), lval) == false)
+				{
 					continue;
+				}
 				adata.push_back(std::make_pair(lkey, lval));
 			}
 			return true;
@@ -129,7 +139,9 @@ namespace ngl
 		{
 			std::vector<std::pair<std::string, VAL>> lvec;
 			if (read(akey, lvec) == false)
+			{
 				return false;
+			}
 			for (int i = 0; i < lvec.size(); ++i)
 			{
 				aval.insert(std::make_pair(tools::lexical_cast<KEY>(lvec[i].first), lvec[i].second));
@@ -142,7 +154,9 @@ namespace ngl
 		{
 			std::vector<T> lvec;
 			if (read(akey, lvec) == false)
+			{
 				return false;
+			}
 			aval.assign(lvec);
 			return true;
 		}
@@ -151,7 +165,9 @@ namespace ngl
 		bool read(const char* akey, T& avalue, ARG&... arg) const
 		{
 			if (read(akey, avalue) == false)
+			{
 				return false;
+			}
 			return read(arg...);
 		}
 	};

@@ -36,11 +36,15 @@ namespace ngl
 				lbytes = m_bytes[aindex] + enum_int32char;
 			}
 			if (lbytes <= 0)
+			{
 				return nullptr;
+			}
 			
 			char* lpbuff = new(std::nothrow) char[lbytes];
 			if (lpbuff == nullptr)
+			{
 				return nullptr;
+			}
 			lpbuff[0] = 'k';
 			*(int32_t*)(&lpbuff[1]) = aindex;
 			return &lpbuff[enum_int32char];
@@ -49,7 +53,9 @@ namespace ngl
 		void nfree(char* abuff, bool abool = true)
 		{
 			if (abuff == nullptr)
+			{
 				return;
+			}
 			char* lbuff = abuff - enum_int32char;
 			if (*lbuff != 'k')
 			{

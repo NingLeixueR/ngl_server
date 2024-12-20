@@ -46,9 +46,13 @@ namespace ngl
 		do
 		{
 			if (!lpublicxml->find("isxor", m_isxor))
+			{
 				break;
+			}
 			if (!lpublicxml->find("xor_str", m_xorkey))
+			{
 				break;
+			}
 			int32_t lxorkeylen = (int32_t)m_xorkey.size();
 			for (int i = 1;; ++i)
 			{

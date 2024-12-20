@@ -19,9 +19,13 @@ namespace ngl
 	{
 		trefun* lfun = tools::findmap(m_fun, atabhash);
 		if (lfun == nullptr)
+		{
 			return false;
+		}
 		if (lfun->m_save == nullptr)
+		{
 			return false;
+		}
 		lfun->m_save(acsvcontent);
 		return true;
 	}
@@ -30,9 +34,13 @@ namespace ngl
 	{
 		trefun* lfun = tools::findmap(m_fun, atabhash);
 		if (lfun == nullptr)
+		{
 			return false;
+		}
 		if (lfun->m_reload == nullptr)
+		{
 			return false;
+		}
 		lfun->m_reload();
 		return true;
 	}
@@ -41,9 +49,13 @@ namespace ngl
 	{
 		trefun* lfun = tools::findmap(m_fun, atabhash);
 		if (lfun == nullptr)
+		{
 			return false;
+		}
 		if (lfun->m_readfile == nullptr)
+		{
 			return false;
+		}
 		lfun->m_readfile(acsvcontent);
 		return true;
 	}

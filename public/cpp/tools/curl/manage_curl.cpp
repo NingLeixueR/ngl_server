@@ -152,7 +152,9 @@ namespace ngl
 				curl_easy_setopt(lhttp->m_curl, CURLOPT_TIMEOUT, lhttp->m_timeout);
 			}
 			else
+			{
 				curl_easy_setopt(lhttp->m_curl, CURLOPT_TIMEOUT, 10);
+			}
 
 			curl_easy_setopt(lhttp->m_curl, CURLOPT_NOSIGNAL, 1L);
 			curl_easy_setopt(lhttp->m_curl, CURLOPT_FORBID_REUSE, 1L); //禁掉alarm后会有大量CLOSE_WAIT 
@@ -222,9 +224,7 @@ namespace ngl
 		{
 			astrparam += '&';
 		}
-		astrparam += akey;
-		astrparam += '=';
-		astrparam += aval;
+		astrparam += std::format("{}={}", akey, aval);
 	}
 
 	void manage_curl::param(std::string& astrparam, const char* akey, int aval)
@@ -233,9 +233,7 @@ namespace ngl
 		{
 			astrparam += '&';
 		}
-		astrparam += akey;
-		astrparam += '=';
-		astrparam += tools::lexical_cast<std::string>(aval);
+		astrparam += std::format("{}={}", akey, aval);
 	}
 
 	void manage_curl::send(std::shared_ptr<_http>& adata)

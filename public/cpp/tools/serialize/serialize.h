@@ -94,7 +94,9 @@ namespace ngl
 		inline bool basetype(void* adata, int32_t alen)
 		{
 			if (m_pos + alen > m_len)
+			{
 				return false;
+			}
 			memcpy(&m_buff[m_pos], adata, alen);
 			m_pos += alen;
 			return true;
@@ -120,17 +122,23 @@ namespace ngl
 		inline bool push(const protobuf_data<T, IS_FORWARD>& adata)
 		{
 			if (adata.m_data == nullptr)
+			{
 				return false;
+			}
 			if (adata.m_isbinary)
 			{
 				int32_t lbytes = adata.m_data->ByteSize();
 				if constexpr (IS_FORWARD == false)
 				{
 					if (push(lbytes) == false)
+					{
 						return false;
+					}
 				}
 				if (adata.m_data->SerializeToArray(&buff()[byte()], lbytes) == false)
+				{
 					return false;
+				}
 				add_bytes(lbytes);
 				return true;
 			}
@@ -163,16 +171,24 @@ namespace ngl
 			{
 				int16_t lsize = adata.m_data->size();
 				if (push(lsize) == false)
+				{
 					return false;
+				}
 				for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
 				{
 					if (push(itor->first) == false)
+					{
 						return false;
+					}
 					int32_t lbytes = itor->second.ByteSize();
 					if (push(lbytes) == false)
+					{
 						return false;
+					}
 					if (itor->second.SerializeToArray(&buff()[byte()], lbytes) == false)
+					{
 						return false;
+					}
 					add_bytes(lbytes);
 				}
 			}			
@@ -184,24 +200,28 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 			{
-				log_error()->print(
-					"serialize::push<{}>()", tools::type_name<T>()
-				);
+				log_error()->print("serialize::push<{}>()", tools::type_name<T>());
 				return false;
 			}
 			if (adata.m_isbinary)
 			{
 				int16_t lsize = adata.m_data->size();
 				if (push(lsize) == false)
+				{
 					return false;
+				}
 				for (auto itor = adata.m_data->begin(); 
 					itor != adata.m_data->end(); ++itor)
 				{
 					int32_t lbytes = itor->ByteSize();
 					if (push(lbytes) == false)
+					{
 						return false;
+					}
 					if (itor->SerializeToArray(&buff()[byte()], lbytes) == false)
+					{
 						return false;
+					}
 					add_bytes(lbytes);
 				}
 			}			
@@ -213,24 +233,28 @@ namespace ngl
 		{
 			if (adata.m_data == nullptr)
 			{
-				log_error()->print(
-					"serialize::push<{}>()", tools::type_name<T>()
-				);
+				log_error()->print("serialize::push<{}>()", tools::type_name<T>());
 				return false;
 			}
 			if (adata.m_isbinary)
 			{
 				int16_t lsize = adata.m_data->size();
 				if (push(lsize) == false)
+				{
 					return false;
+				}
 				for (auto itor = adata.m_data->begin(); 
 					itor != adata.m_data->end(); ++itor)
 				{
 					int32_t lbytes = itor->ByteSize();
 					if (push(lbytes) == false)
+					{
 						return false;
+					}
 					if (itor->SerializeToArray(&buff()[byte()], lbytes) == false)
+					{
 						return false;
+					}
 					add_bytes(lbytes);
 				}
 			}
@@ -246,7 +270,9 @@ namespace ngl
 				return push(false);
 			}
 			if (push(true) == false)
+			{
 				return false;
+			}
 			return push(*adata);
 		}
 
@@ -352,20 +378,28 @@ namespace ngl
 		inline bool push_vector_number(const std::vector<T>& avec)
 		{
 			if (push_stlsize(avec) == false)
+			{
 				return false;
+			}
 			if (avec.empty())
+			{
 				return true;
+			}
 			return basetype((void*)&avec[0], (int)avec.size() * sizeof(T));
 		}
 
 		inline bool push(const std::vector<bool>& avec)
 		{
 			if (push_stlsize(avec) == false)
+			{
 				return false;
+			}
 			for (bool lbool : avec)
 			{
 				if (push(lbool) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -395,13 +429,19 @@ namespace ngl
 		inline bool push_vector_number_compile(const TSTL& avec)
 		{
 			if (push_stlsize(avec) == false)
+			{
 				return false;
+			}
 			if (avec.empty())
+			{
 				return true;
+			}
 			for (auto& item : avec)
 			{
 				if (push(item) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -437,11 +477,15 @@ namespace ngl
 		inline bool push(const std::vector<T>& avec)
 		{
 			if (!push_stlsize(avec))
+			{
 				return false;
+			}
 			for (int i = 0; i < avec.size(); ++i) 
 			{
-				if (!push(avec[i])) 
+				if (!push(avec[i]))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -449,7 +493,9 @@ namespace ngl
 		inline bool push(std::pair<uint32_t, const char*>& adata)
 		{
 			if (!push(adata.first))
+			{
 				return false;
+			}
 			return basetype((void*)adata.second, adata.first);
 		}
 
@@ -475,13 +521,19 @@ namespace ngl
 		inline bool push(const std::map<TKEY, TVALUE>& amap)
 		{
 			if (!push_stlsize(amap))
+			{
 				return false;
+			}
 			for (const std::pair<const TKEY, TVALUE>& item : amap) 
 			{
 				if (!push(item.first))
+				{
 					return false;
+				}
 				if (!push(item.second))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -490,12 +542,19 @@ namespace ngl
 		inline bool push(const std::unordered_map<TKEY, TVALUE>& amap)
 		{
 			if (!push_stlsize(amap))
+			{
 				return false;
-			for (std::pair<const TKEY, TVALUE>& item : amap) {
+			}
+			for (std::pair<const TKEY, TVALUE>& item : amap) 
+			{
 				if (!push(item.first))
+				{
 					return false;
+				}
 				if (!push(item.second))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -503,7 +562,9 @@ namespace ngl
 		inline bool push(const std::string& astr)
 		{
 			if (!push_stlsize(astr))
+			{
 				return false;
+			}
 			return basetype((void*)astr.c_str(), (int)(sizeof(char) * astr.size()));
 		}
 
@@ -567,7 +628,9 @@ namespace ngl
 		inline bool basetype(T& adata)
 		{
 			if (m_pos + sizeof(T) > m_len)
+			{
 				return false;
+			}
 			memcpy(&adata, &m_buff[m_pos], sizeof(T));
 			m_pos += sizeof(T);
 			return true;
@@ -576,7 +639,9 @@ namespace ngl
 		inline bool basetype(void* adata, int32_t alen)
 		{
 			if (m_pos + alen > m_len)
+			{
 				return false;
+			}
 			memcpy(adata, &m_buff[m_pos], alen);
 			m_pos += alen;
 			return true;
@@ -586,7 +651,9 @@ namespace ngl
 		inline bool pop(protobuf_data<T, IS_FORWARD>& adata)
 		{
 			if (adata.m_data == nullptr)
+			{
 				adata.make();
+			}
 			if (adata.m_isbinary)
 			{
 				int32_t lbytes = len() - byte();
@@ -594,10 +661,14 @@ namespace ngl
 				if constexpr (IS_FORWARD == false)
 				{
 					if (pop(lbytes) == false)
+					{
 						return false;
+					}
 				}
 				if (ldata.ParseFromArray(&buff()[byte()], lbytes) == false)
+				{
 					return false;
+				}
 				add_bytes(lbytes);
 			}
 			else
@@ -618,24 +689,34 @@ namespace ngl
 		inline bool pop(protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
 			if (adata.m_data == nullptr)
+			{
 				adata.make();
+			}
 			if (adata.m_isbinary)
 			{
 				std::map<KEY, VALUE>& lstl = *adata.m_data;
 				int16_t lsize = 0;
 				if (pop(lsize) == false)
+				{
 					return false;
+				}
 				for (int i = 0; i < lsize; ++i)
 				{
 					KEY lkey;
 					if (pop(lkey) == false)
+					{
 						return false;
+					}
 					int32_t lbytes = 0;
 					if (pop(lbytes) == false)
+					{
 						return false;
+					}
 					VALUE& lvalues = lstl[lkey];
 					if (lvalues.ParseFromArray(&buff()[byte()], lbytes) == false)
+					{
 						return false;
+					}
 					add_bytes(lbytes);
 				}
 			}			
@@ -650,15 +731,21 @@ namespace ngl
 			{
 				int16_t lsize = 0;
 				if (pop(lsize) == false)
+				{
 					return false;
+				}
 				for (int i = 0; i < lsize; ++i)
 				{
 					int32_t lbytes = 0;
 					if (pop(lbytes) == false)
+					{
 						return false;
+					}
 					T ltemp;
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
+					{
 						return false;
+					}
 					std::string json;
 					if (tools::protojson(ltemp, json) == false)
 					{
@@ -683,12 +770,16 @@ namespace ngl
 				std::list<T>& lstl = adata.m_data;
 				int16_t lsize = 0;
 				if (pop(lsize) == false)
+				{
 					return false;
+				}
 				for (int i = 0; i < lsize; ++i)
 				{
 					int32_t lbytes = 0;
 					if (pop(lbytes) == false)
+					{
 						return false;
+					}
 					T ltemp;
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
 					{
@@ -719,7 +810,9 @@ namespace ngl
 		{
 			bool lbool = false;
 			if (pop(lbool) == false)
+			{
 				return false;
+			}
 			adata = new T();
 			return pop(*adata);
 		}
@@ -739,7 +832,9 @@ namespace ngl
 		inline bool pop(int16_t& adata)
 		{
 			if (basetype(adata) == false)
+			{
 				return false;
+			}
 			tools::parm<int16_t> lparm(adata);
 			adata = tools::transformlittle(lparm);
 			return true;
@@ -749,7 +844,9 @@ namespace ngl
 		{
 			int16_t ltemp = adata;
 			if (pop(ltemp) == false)
+			{
 				return false;
+			}
 			adata = ltemp;
 			return true;
 		}
@@ -764,7 +861,9 @@ namespace ngl
 				.m_bytes = &m_pos,
 			};
 			if (tools::varint_decode(lparm) == false)
+			{
 				return false;
+			}
 			tools::parm lparmtrans(lparm.m_value);
 			adata = tools::transformlittle(lparmtrans);
 			return true;
@@ -774,7 +873,9 @@ namespace ngl
 		{
 			int32_t ldata = 0;
 			if (pop(ldata) == false)
+			{
 				return false;
+			}
 			adata = ldata;
 			return true;
 		}
@@ -789,7 +890,9 @@ namespace ngl
 				.m_bytes = &m_pos,
 			};
 			if (tools::varint_decode(lparm) == false)
+			{
 				return false;
+			}
 			tools::parm lparmtrans(lparm.m_value);
 			adata = tools::transformlittle(lparmtrans);
 			return true;
@@ -799,7 +902,9 @@ namespace ngl
 		{
 			int64_t ldata = 0;
 			if (pop(ldata) == false)
+			{
 				return false;
+			}
 			adata = ldata;
 			return true;
 		}
@@ -817,7 +922,9 @@ namespace ngl
 		inline bool pop(bool& adata)
 		{
 			if (basetype(adata))
+			{
 				return true;
+			}
 			return false;
 		}
 #pragma endregion 
@@ -827,15 +934,21 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
 			for (int i = 0; i < lsize; ++i)
 			{
 				bool lbool = false;
 				if (pop(lbool) == false)
+				{
 					return false;
+				}
 				adata[i] = lbool;
 			}
 			return true;
@@ -846,9 +959,13 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
 			return basetype(&adata[0], sizeof(T) * lsize);
 		}
@@ -867,14 +984,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
 			for (auto& item : adata)
 			{
 				if (pop(item) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -883,14 +1006,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
 			for (auto& item : adata)
 			{
 				if (pop(item) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -899,14 +1028,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
 			for (auto& item : adata)
 			{
 				if (pop(item) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -915,14 +1050,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
 			for (auto& item : adata)
 			{
 				if (pop(item) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -941,9 +1082,13 @@ namespace ngl
 		inline bool pop(std::pair<int32_t, const char*>& adata)
 		{
 			if (!pop(adata.first))
+			{
 				return false;
+			}
 			if (m_pos + adata.first > m_len)
+			{
 				return false;
+			}
 			adata.second = &m_buff[m_pos];
 			m_pos += adata.first;
 			return true;
@@ -955,12 +1100,16 @@ namespace ngl
 		{
 			uint16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize > 0)
 			{
 				adata.resize(lsize);
 				if (!basetype((void*)&adata[0], lsize))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -970,13 +1119,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			adata.resize(lsize);
-			for (int i = 0; i < lsize; ++i) {
+			for (int i = 0; i < lsize; ++i) 
+			{
 				if (!pop(adata[i]))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -986,14 +1142,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			for (int i = 0; i < lsize; ++i)
 			{
 				T ltemp;
 				if (!pop(ltemp))
+				{
 					return false;
+				}
 				adata.push_back(ltemp);
 			}
 			return true;
@@ -1004,14 +1166,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			for (int i = 0; i < lsize; ++i)
 			{
 				T ltemp;
 				if (!pop(ltemp))
+				{
 					return false;
+				}
 				adata.insert(ltemp);
 			}
 			return true;
@@ -1022,14 +1190,20 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			for (int i = 0; i < lsize; ++i)
 			{
 				T ltemp;
 				if (!pop(ltemp))
+				{
 					return false;
+				}
 				adata.insert(ltemp);
 			}
 			return true;
@@ -1040,17 +1214,25 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			for (int i = 0; i < lsize; ++i)
 			{
 				TKEY lkey;
 				if (!pop(lkey))
+				{
 					return false;
+				}
 				TVALUE& lvalue = adata[lkey];
 				if (!pop(lvalue))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -1060,17 +1242,25 @@ namespace ngl
 		{
 			int16_t lsize = 0;
 			if (!pop(lsize))
+			{
 				return false;
+			}
 			if (lsize < 0)
+			{
 				return false;
+			}
 			for (int i = 0; i < lsize; ++i)
 			{
 				TKEY lkey;
 				if (!pop(lkey))
+				{
 					return false;
+				}
 				TVALUE& lvalue = adata[lkey];
 				if (!pop(lvalue))
+				{
 					return false;
+				}
 			}
 			return true;
 		}
@@ -1123,7 +1313,9 @@ namespace ngl
 				if constexpr (IS_FORWARD == false)
 				{
 					if (bytes(lbytes) == false)
+					{
 						return false;
+					}
 				}
 				add_bytes(lbytes);
 			}
@@ -1140,7 +1332,9 @@ namespace ngl
 				bytes(pair.first);
 				int32_t lbytes = pair.second.ByteSize();
 				if (bytes(lbytes) == false)
+				{
 					return false;
+				}
 				add_bytes(lbytes);
 			}
 			return bytes();
@@ -1155,7 +1349,9 @@ namespace ngl
 			{
 				int32_t lbytes = item.ByteSize();
 				if (bytes(lbytes) == false)
+				{
 					return false;
+				}
 				add_bytes(lbytes);
 			}
 			return bytes();
@@ -1170,7 +1366,9 @@ namespace ngl
 			{
 				int32_t lbytes = item.ByteSize();
 				if (bytes(lbytes) == false)
+				{
 					return false;
+				}
 				add_bytes(lbytes);
 			}
 			return bytes();
@@ -1375,7 +1573,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int32_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1383,7 +1583,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (uint32_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1391,7 +1593,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int64_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1399,7 +1603,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (uint64_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1446,7 +1652,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int32_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1454,7 +1662,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (uint32_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1462,7 +1672,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int64_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1470,7 +1682,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (uint64_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1516,7 +1730,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int32_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1524,7 +1740,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (uint32_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1532,7 +1750,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int64_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1540,7 +1760,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (uint64_t item : avec)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1568,7 +1790,9 @@ namespace ngl
 		{
 			bytes(int16_t(avec.size()));
 			for (int i = 0; i < avec.size(); ++i)
+			{
 				bytes(avec[i]);
+			}
 			return m_size;
 		}
 
@@ -1577,7 +1801,9 @@ namespace ngl
 		{
 			bytes(int16_t(alist.size()));
 			for (const T& item : alist)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1586,7 +1812,9 @@ namespace ngl
 		{
 			bytes(int16_t(aset.size()));
 			for (const T& item : aset)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 
@@ -1595,7 +1823,9 @@ namespace ngl
 		{
 			bytes(int16_t(aset.size()));
 			for (const T& item : aset)
+			{
 				bytes(item);
+			}
 			return m_size;
 		}
 

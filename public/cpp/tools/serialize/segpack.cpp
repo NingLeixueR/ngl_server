@@ -36,7 +36,9 @@ namespace ngl
 		}
 		++itor->second.m_ratecount;
 		if (sysconfig::rate_count() < itor->second.m_ratecount)
+		{
 			return false;
+		}
 		return true;
 	}
 
@@ -153,10 +155,14 @@ namespace ngl
 				apack->malloc(len);
 			}
 			if (len != 0 && apack->m_buff == nullptr)
+			{
 				return false;
+			}
 			int ltemp = len - apack->m_pos;
 			if (ltemp < 0)
+			{
 				return false;
+			}
 			ltemp = ltemp > alen ? alen : ltemp;
 			memcpy(&apack->m_buff[apack->m_pos], ap, ltemp);
 			apack->m_pos += ltemp;
@@ -168,7 +174,9 @@ namespace ngl
 		inline edopush do_push(i32_socket aid, const char*& ap, int& alen, bool aislanip)
 		{
 			if (alen <= 0)
+			{
 				return edopush::e_break;
+			}
 			std::shared_ptr<pack> lpack = remnant_package(aid);
 			if (EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen); lval == EPH_HEAD_MASK_FAIL)
 			{
@@ -184,7 +192,9 @@ namespace ngl
 			}
 
 			if (alen < 0)
+			{
 				return edopush::e_break;
+			}
 
 			int len = lpack->m_head.getvalue(EPH_BYTES);
 			if (check_recv(lpack, aid, len, aislanip) == false)
@@ -241,12 +251,18 @@ namespace ngl
 			{
 				edopush levalue = do_push(aid, ap, alen, aislanip);
 				if (levalue == edopush::e_error)
+				{
 					return false;
+				}
 				if (levalue == edopush::e_break)
+				{
 					break;
+				}
 			}
 			if (alen > 0)
+			{
 				return false;
+			}
 			return true;
 		}
 	};

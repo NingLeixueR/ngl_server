@@ -157,7 +157,9 @@ namespace ngl
 	EPH_HEAD_VAL pack_head::isready()const
 	{
 		if (check_mask() == EPH_HEAD_MASK_FAIL)
+		{
 			return EPH_HEAD_MASK_FAIL;
+		}
 		if (m_wpos >= size())
 		{
 			return EPH_HEAD_SUCCESS;
@@ -194,7 +196,9 @@ namespace ngl
 	EPH_HEAD_VAL pack_head::push(const char*& abuff, int32_t& alen)
 	{
 		if (check_mask() == EPH_HEAD_MASK_FAIL)
+		{
 			return EPH_HEAD_MASK_FAIL;
+		}
 		int ltemp = size() - m_wpos;
 		ltemp = (alen < ltemp) ? alen : ltemp;
 		char* lp = (char*)m_data;

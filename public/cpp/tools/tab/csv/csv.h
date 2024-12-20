@@ -65,16 +65,20 @@ namespace ngl
 			{
 				if (!lbool)
 				{
-					if (m_data[m_pos] == '\r')	
+					if (m_data[m_pos] == '\r')
+					{
 						continue;
+					}
 					if (m_data[m_pos] == '\n')
 					{
 						++m_pos;
 						return true;
 					}
 				}
-				if (m_data[m_pos] == '\"')	
+				if (m_data[m_pos] == '\"')
+				{
 					lbool = lbool ? false : true;
+				}
 				adata += m_data[m_pos];
 			}
 			return !adata.empty();
@@ -95,7 +99,9 @@ namespace ngl
 						break;
 					}
 					if (lret[lpos] == '\r')
+					{
 						continue;
+					}
 				}
 				if (lret[lpos] == '\"')
 				{
@@ -119,9 +125,13 @@ namespace ngl
 			std::string ltemp;
 			rcsv::read(apair, ltemp);
 			if (ltemp != "")
+			{
 				adata = tools::lexical_cast<TNUMBER>(ltemp.c_str());
+			}
 			else
+			{
 				adata = TNUMBER();
+			}
 			return true;
 		}
 	public:
@@ -153,13 +163,21 @@ namespace ngl
 					T ltemp;
 					int32_t lret = readveccsv(lpair, ltemp);
 					if (lret == -1)
+					{
 						return false;
+					}
 					if (lret == 0)
+					{
 						afun(ltemp);
+					}
 					else if (lret == 1)
+					{
 						break;
+					}
 					else
+					{
 						return false;
+					}
 				}
 				return true;
 			}
@@ -179,7 +197,9 @@ namespace ngl
 				{
 					T ltemp;
 					if (readcsv(lpair, ltemp))
+					{
 						afun(ltemp);
+					}
 				}
 				return true;
 			}
@@ -225,9 +245,13 @@ namespace ngl
 			ngl::csvpair lcpair;
 			lcpair.m_fg = '*';
 			if (readcsv(apair, lcpair.m_data) == false)
+			{
 				return false;
+			}
 			if (lcpair.m_data == "")
+			{
 				return true;
+			}
 			return enum_operator_readcsv<T, std::is_enum<T>::value>::operator_readcsv(lcpair, adata);
 		}
 
@@ -237,11 +261,17 @@ namespace ngl
 			ngl::csvpair lcpair;
 			lcpair.m_fg = '*';
 			if (readcsv(apair, lcpair.m_data) == false)
+			{
 				return -1;
+			}
 			if (lcpair.m_data == "")
+			{
 				return 1;
+			}
 			if (enum_operator_readcsv<T, std::is_enum<T>::value>::operator_readcsv(lcpair, adata) == false)
+			{
 				return -1;
+			}
 			//adata.rcsv(lcpair);
 			return 0;
 		}
@@ -271,9 +301,13 @@ namespace ngl
 				TKEY lkey;
 				TVALUE lvalue;
 				if (readcsv(lpair, lkey) == false)
+				{
 					return false;
+				}
 				if (readcsv(lpair, lvalue) == false)
+				{
 					return false;
+				}
 				amap.insert(std::make_pair(lkey, lvalue));
 			}
 			return true;
@@ -283,7 +317,9 @@ namespace ngl
 		static bool readcsv(csvpair& apair, T& adata, ARG& ...arg)
 		{
 			if (apair.m_data.empty())
+			{
 				return false;
+			}
 			return readcsv(apair, adata) && readcsv(apair, arg...);
 		}
 
@@ -296,7 +332,9 @@ namespace ngl
 				if (lpair.m_data.empty() != true)
 				{
 					if (lpair.m_data[0] == '#')
+					{
 						continue;
+					}
 					T ltemp;
 					if (ltemp.rcsv(lpair))
 					{

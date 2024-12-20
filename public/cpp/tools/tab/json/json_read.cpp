@@ -23,7 +23,9 @@ namespace ngl
 	{
 		const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret || ret->type != cJSON_String)
+		{
 			return false;
+		}
 		adata = ret->valuestring;
 		return true;
 	}
@@ -36,7 +38,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
 			if (nullptr == ret)
+			{
 				return false;
+			}
 			return fun_value(ret, adata);
 		}
 
@@ -44,7 +48,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
 			if (nullptr == ret)
+			{
 				return false;
+			}
 			return fun_value(ret, adata);
 		}
 
@@ -52,7 +58,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
 			if (nullptr == ret)
+			{
 				return false;
+			}
 			return fun_value(ret, adata);
 		}
 
@@ -60,7 +68,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
 			if (nullptr == ret)
+			{
 				return false;
+			}
 			return fun_value(ret, adata);
 		}
 
@@ -68,7 +78,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
 			if (nullptr == ret)
+			{
 				return false;
+			}
 			return fun_value(ret, adata);
 		}
 
@@ -76,7 +88,9 @@ namespace ngl
 		{
 			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
 			if (nullptr == ret)
+			{
 				return false;
+			}
 			return fun_value(ret, adata);
 		}
 
@@ -84,7 +98,9 @@ namespace ngl
 		static bool fun_value(const cJSON* ajson, TNUMBER& adata)
 		{
 			if (nullptr == ajson || (ajson->type != cJSON_Number && ajson->type != cJSON_String))
+			{
 				return false;
+			}
 			adata = (TNUMBER)ajson->valueint;
 			if (ajson->type == cJSON_String)
 			{
@@ -269,16 +285,22 @@ namespace ngl
 	{
 		cJSON* ret = cJSON_GetObjectItem(m_json, akey);
 		if (nullptr == ret)
+		{
 			return false;
+		}
 		if (ret->type == cJSON_Object || ret->type == cJSON_Array)
+		{
 			adata = ret;
+		}
 		return true;
 	}
 
 	bool json_read::read(const char* akey, json_read& adata) const
 	{
 		if (read(akey, adata.m_json) == false)
+		{
 			return false;
+		}
 		adata.m_free = false;
 		return true;
 	}
@@ -371,13 +393,17 @@ namespace ngl
 	{
 		cJSON* ltemp = nullptr;
 		if (read(akey, ltemp) == false)
+		{
 			return false;
+		}
 		int lsize = cJSON_GetArraySize(ltemp);
 		for (int i = 0; i < lsize; ++i)
 		{
 			const cJSON* ret = cJSON_GetArrayItem(ltemp, i);
 			if (nullptr == ret || ret->type != cJSON_String)
+			{
 				continue;
+			}
 			std::string lval;
 			adata.emplace_back(ret->valuestring);
 		}

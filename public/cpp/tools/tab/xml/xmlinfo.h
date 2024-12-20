@@ -38,7 +38,9 @@ namespace ngl
 		{
 			std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
 			if (lp == nullptr)
+			{
 				return false;
+			}
 			adata = tools::lexical_cast<TVALUE>(*lp);
 			return true;
 		}

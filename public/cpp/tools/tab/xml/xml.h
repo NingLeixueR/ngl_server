@@ -33,13 +33,17 @@ namespace ngl
 		{
 			std::vector<std::string> lvec;
 			if (tools::splite(astr, ".", lvec) == false)
+			{
 				return nullptr;
+			}
 			tinyxml2::XMLElement* valElement = aele;
 			for (std::string& item : lvec)
 			{
 				valElement = valElement->FirstChildElement(item.c_str());
 				if (valElement == nullptr)
+				{
 					return nullptr;
+				}
 			}
 			return valElement;
 		}
