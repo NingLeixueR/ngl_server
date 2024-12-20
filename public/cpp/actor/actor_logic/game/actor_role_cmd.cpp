@@ -221,7 +221,6 @@ namespace ngl
 					role->handle_forward<ACTOR_RANKLIST>(lmessage);
 				}
 			);
-
 		}
 
 		std::string& lcmd = lvec[0];

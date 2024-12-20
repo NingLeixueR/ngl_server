@@ -18,8 +18,9 @@ namespace ngl
 		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist; 
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
-		static void publish(const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro)
+		static void publish(const std::set<i64_actorid>& aactoridset, bool afirstsynchronize, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
+			apro->m_firstsynchronize = afirstsynchronize;
 			std::ranges::for_each(m_publishlist, [&aactoridset,&apro](const auto& apair)
 				{
 					if (!apair.second.empty())
@@ -37,11 +38,12 @@ namespace ngl
 				});
 		}
 
-		static void publish(i64_actorid aactorid, std::shared_ptr<np_channel_data<TDATA>>& apro)
+		static void publish(i64_actorid aactorid, bool afirstsynchronize, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
 			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
 			if (lp == nullptr)
 				return;
+			apro->m_firstsynchronize = afirstsynchronize;
 			std::ranges::for_each(m_publishlist, [aactorid, &apro](const auto& lpair)
 				{
 					if (!lpair.second.empty())
@@ -91,7 +93,7 @@ namespace ngl
 						lactorset.insert(lpair.first);
 					}
 					std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
-					publish(lactorset, pro);
+					publish(lactorset, false, pro);
 				});
 		}
 
@@ -106,6 +108,7 @@ namespace ngl
 			}
 
 			auto pro = std::make_shared<np_channel_data<TDATA>>();
+			pro->m_firstsynchronize = true;
 			pro->m_data.make();
 			std::map<int64_t, TDATA>& lmap = *pro->m_data.m_data;
 			if (lpset->empty())
@@ -153,7 +156,7 @@ namespace ngl
 			auto pro = std::make_shared<np_channel_data<TDATA>>();
 			pro->m_data.make();
 			(*pro->m_data.m_data)[aactorid] = lp->getconst();
-			publish(aactorid, pro);
+			publish(aactorid, false, pro);
 		}
 
 		static void publish(const std::set<i64_actorid>& aactoridset)
@@ -168,7 +171,7 @@ namespace ngl
 					continue;
 				lmap[iactorid] = lp->getconst();
 			}
-			publish(aactoridset, pro);
+			publish(aactoridset, false, pro);
 		}
 	};
 

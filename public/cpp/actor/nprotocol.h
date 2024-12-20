@@ -859,8 +859,9 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_data
 	{
+		bool m_firstsynchronize = false;					// 首次同步
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
-		def_portocol(np_channel_data<TDATA>, m_data)
+		def_portocol(np_channel_data<TDATA>, m_firstsynchronize, m_data)
 	};
 
 	struct np_channel_check
@@ -868,6 +869,12 @@ namespace ngl
 		int64_t m_timer;
 		i16_area m_area;
 		def_portocol(np_channel_check, m_timer, m_area)
+	};
+
+	struct np_roleban
+	{
+		std::set<int64_t> m_roleban;
+		def_portocol(np_roleban, m_roleban)
 	};
 
 }//namespace ngl

@@ -28,36 +28,30 @@ namespace ngl
 			return tdb_brief::nsp_cli<actor_ranklist>::getconst(m_actorid);
 		}
 
-		void init(const pbdb::db_brief& abrief, pbdb::db_ranklist& aranklist, pbdb::eranklist atype, const std::function<int64_t(const pbdb::db_brief&)>& avalfun)
+		void init(const pbdb::db_brief& abrief, const pbdb::db_ranklist* aranklist, pbdb::eranklist atype, const std::function<int64_t(const pbdb::db_brief&)>& avalfun)
 		{
 			m_values[atype] = avalfun(abrief);
 
-			auto& lmap = *aranklist.mutable_m_items();
-			auto itor = lmap.find((int32_t)atype);
-			if (itor != lmap.end())
+			if (aranklist != nullptr)
 			{
-				m_time[atype] = itor->second.m_time();
+				auto& lmap = aranklist->m_items();
+				auto itor = lmap.find((int32_t)atype);
+				if (itor != lmap.end())
+				{
+					m_time[atype] = itor->second.m_time();
+					return;
+				}
 			}
-			else
-			{
-				m_time[atype] = (int32_t)localtime::gettime();
-			}
+			m_time[atype] = (int32_t)localtime::gettime();
 		}
 
-		void init(const pbdb::db_brief& abrief, pbdb::db_ranklist& aranklist)
+		void init(const pbdb::db_brief& abrief, const pbdb::db_ranklist* aranklist)
 		{
 			m_actorid = abrief.m_id();
 			init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 				{
 					return  abrief.m_lv();
 				});
-			aranklist.set_m_id(m_actorid);
-			auto& lmap = *aranklist.mutable_m_items();
-			for (int i = 0; i < pbdb::eranklist::count; ++i)
-			{
-				lmap[i].set_m_time(m_time[i]);
-				lmap[i].set_m_value(m_values[i]);
-			}
 		}
 
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
@@ -212,11 +206,23 @@ namespace ngl
 			return &itor->second.get(achange);
 		}
 
-		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief)
+		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize)
 		{
-			pbdb::db_ranklist* lpconstdata = get(abrief.m_id());
-			assert(lpconstdata != nullptr);
-			litem.init(abrief, *lpconstdata);
+			const pbdb::db_ranklist* lpconstdata = find(abrief.m_id());
+			litem.init(abrief, lpconstdata);
+
+			if (lpconstdata == nullptr)
+			{
+				pbdb::db_ranklist* lpdata = get(abrief.m_id());
+				lpdata->set_m_id(abrief.m_id());
+				auto& lmap = *lpdata->mutable_m_items();
+				for (int i = 0; i < pbdb::eranklist::count; ++i)
+				{
+					lmap[i].set_m_time(litem.m_time[i]);
+					lmap[i].set_m_value(litem.m_values[i]);
+				}
+			}
+			
 			auto itor = m_data.find(abrief.m_id());
 			if (itor != m_data.end())
 			{
@@ -236,7 +242,7 @@ namespace ngl
 			return false;
 		}
 
-		bool update_value(const pbdb::db_brief& abrief)
+		bool update_value(const pbdb::db_brief& abrief, bool afirstsynchronize)
 		{
 			std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
 			rank_item litem;
@@ -244,7 +250,7 @@ namespace ngl
 			bool lupdate = false;
 			for (int i = 0; i < pbdb::eranklist::count; ++i)
 			{
-				lupdatearr[i] = update_value(pbdb::eranklist::lv, litem, abrief);
+				lupdatearr[i] = update_value(pbdb::eranklist::lv, litem, abrief, afirstsynchronize);
 				lupdate = lupdate || lupdatearr[i];
 			}
 			if (lupdate)
@@ -301,14 +307,9 @@ namespace ngl
 				add_data(ltemp);
 			}
 
-			tdb_brief::nsp_cli<actor_ranklist>::set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief)
+			tdb_brief::nsp_cli<actor_ranklist>::set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 				{
-					update_value(abrief);
-				});
-
-			tdb_brief::nsp_cli<actor_ranklist>::set_recv_data_finish([this](const pbdb::db_brief& abrief)
-				{
-					update_value(abrief);
+					update_value(abrief, afirstsynchronize);
 				});
 		}
 

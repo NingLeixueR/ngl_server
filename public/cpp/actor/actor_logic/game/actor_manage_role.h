@@ -42,7 +42,8 @@ namespace ngl
 		{
 			return nguid::make(actor_type(), nguid::none_area(), ttab_servers::tab()->m_tcount);
 		}
-				
+			
+		bool handle(const message<np_roleban>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 
 		//# gmÇëÇó
