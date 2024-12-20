@@ -264,15 +264,11 @@ namespace ngl
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
-		static bool static_sendkcp(
-			i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
-		);
+		static bool static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
 
 		//# 通过udp.kcp发送数据
 		template <typename T>
-		static bool static_sendkcp(
-			const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0
-		);
+		static bool static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex = 0);
 
 		virtual const char* kcp_session();
 
@@ -331,9 +327,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static void send_client(
-			const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, const std::shared_ptr<T>& adata
-		)
+		static void send_client(const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, const std::shared_ptr<T>& adata)
 		{
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, aid);
@@ -497,7 +491,7 @@ namespace ngl
 		//# 将成员从某个群发分组中移除
 		void remove_group_member(int agroupid, i64_actorid amember);
 		
-		//#  获取group id中的actor列表与类型
+		//# 获取group id中的actor列表与类型
 		const std::set<i64_actorid>* get_group(int agroupid);
 
 		//# 给一组成员发送消息
