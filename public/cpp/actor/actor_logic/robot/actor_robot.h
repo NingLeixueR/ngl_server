@@ -252,7 +252,9 @@ namespace ngl
 								const tab_servers* tab = ttab_servers::tab();
 								const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 0);
 								if (tabgame == nullptr)
+								{
 									return true;
+								}
 								const net_works* lpstruct = ttab_servers::get_nworks(ENET_KCP);
 								const net_works* lpstructgame = ttab_servers::nworks(ENET_KCP);
 								// 获取本机uip
@@ -329,14 +331,18 @@ namespace ngl
 		void foreach(const std::function<bool(_robot&)>& afun)
 		{
 			for (std::pair<const std::string, _robot>& item : m_maprobot)
+			{
 				afun(item.second);
+			}
 		}
 
 		_robot* get_robot(std::string aacount)
 		{
 			auto itor = m_maprobot.find(aacount);
 			if (itor == m_maprobot.end())
+			{
 				return nullptr;
+			}
 			return &itor->second;
 		}
 
@@ -355,7 +361,9 @@ namespace ngl
 		bool getdata(_robot* arobot)
 		{
 			if (arobot == nullptr)
+			{
 				return false;
+			}
 			return true;
 		}
 	};

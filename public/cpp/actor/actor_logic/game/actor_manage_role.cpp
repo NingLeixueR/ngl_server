@@ -93,7 +93,9 @@ namespace ngl
 					};
 					banrole m_banrole;
 					if (aos.read("data", m_banrole) == false)
+					{
 						return;
+					}
 
 					if (m_banrole.m_stat == 1)
 					{

@@ -75,7 +75,9 @@ namespace ngl
 	{
 		tab_servers const* tab = ttab_servers::tab(aserverid);
 		if (tab == nullptr)
+		{
 			return;
+		}
 		nactornode lnode;
 		lnode.m_name = tab->m_name;
 		lnode.m_serverid = aserverid;
@@ -114,7 +116,9 @@ namespace ngl
 				for (const std::pair<const nguid, i32_serverid>& item : aactorserver)
 				{
 					if (lpram.m_node.m_serverid == item.second)
+					{
 						lpram.m_add.push_back(item.first);
+					}
 				}
 				return true;
 			});
@@ -144,7 +148,9 @@ namespace ngl
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		{
 			return true;
+		}
 		Try
 		{
 			// # 需要尝试连接ActorServer结点 并向其注册自己
@@ -184,7 +190,9 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_register_response>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		{
 			return true;
+		}
 		Try
 		{
 			auto lparm				= adata.get_data();
@@ -210,7 +218,9 @@ namespace ngl
 		for (const std::pair<const nguid, i32_serverid>& item : naddress::get_actorserver_map())
 		{
 			if (alocalserverid == item.second)
+			{
 				lpro.m_add.push_back(item.first);
+			}
 		}
 		nets::sendbysession(asession, lpro, nguid::moreactor(), aclient->id_guid());
 	}
@@ -218,7 +228,9 @@ namespace ngl
 	bool actor_client::handle(const message<np_actorclient_node_connect>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		{
 			return true;
+		}
 		Try
 		{
 			auto lparm = adata.get_data();
@@ -263,13 +275,6 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			
-			std::string lname;
-			for (nguid item : lparm->m_add)
-			{
-				lname += std::format("{}|", item);
-			}
-			
 			naddress::actor_add(lparm->m_id, lparm->m_add);
 			naddress::actor_del(lparm->m_del);
 		}Catch
@@ -294,7 +299,9 @@ namespace ngl
 		}
 		
 		if (lparm->m_fun != nullptr)
+		{
 			lparm->m_fun();
+		}
 		return true;
 	}
 
@@ -308,23 +315,33 @@ namespace ngl
 		auto& lconnectfun = m_impl_actor_client()->m_connectfun;
 		const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
 		if (lconnectfun.empty())
+		{
 			return;
+		}
 		for (auto itor = lconnectfun.begin(); itor != lconnectfun.end(); ++itor)
 		{
-			if(lconnectserverid.contains(itor->first) == false)
+			if (lconnectserverid.contains(itor->first) == false)
+			{
 				continue;
+			}
 			for (const auto& fun : itor->second)
+			{
 				fun();
+			}
 			itor = lconnectfun.erase(itor);
 			if (itor == lconnectfun.end())
+			{
 				return;
+			}
 		}
 	}
 	
 	bool actor_client::handle(const message<np_actornode_connect_task>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		{
 			return true;
+		}
 		Try
 		{
 			auto lparm = adata.get_data();
@@ -342,7 +359,9 @@ namespace ngl
 	bool actor_client::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		{
 			return true;
+		}
 		const auto lparm = adata.get_data();
 		if (lparm->m_isremove)
 		{

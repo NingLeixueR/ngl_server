@@ -94,7 +94,9 @@ namespace ngl
 		ngl::manage_curl::set_callback(lhttp, [this](int, _http& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
+				{
 					return;
+				}
 				log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
 				try
 				{
@@ -106,13 +108,19 @@ namespace ngl
 					}
 					std::string lorderid;
 					if (ltempjson.read("orderid", lorderid) == false)
+					{
 						return;
+					}
 					int32_t lrechargeid = -1;
 					if (ltempjson.read("rechargeid", lrechargeid) == false)
+					{
 						return;
+					}						
 					int64_t lroleid = -1;
 					if (ltempjson.read("roleid", lroleid) == false)
+					{
 						return;
+					}
 					
 					auto pro = std::make_shared<mforward<np_gm_response>>();
 					np_gm_response* lp = pro->add_data();
@@ -230,8 +238,7 @@ namespace ngl
 			ngl::manage_curl::set_url(lhttp, lurl);
 
 			std::string lparm = std::format(
-				"orderid={}&gm={}&roleid={}&stat={}",
-				aorderid, (agm ? 1 : 0), id_guid(), lstat
+				"orderid={}&gm={}&roleid={}&stat={}",aorderid, (agm ? 1 : 0), id_guid(), lstat
 			);
 
 			ngl::manage_curl::set_param(lhttp, lparm.c_str());
@@ -275,7 +282,9 @@ namespace ngl
 					};
 					pay lpay;
 					if (aos.read("data", lpay) == false)
+					{
 						return;
+					}
 
 					// 返回 {"data":int32_t}
 					gcmd<int32_t> pro;
@@ -288,7 +297,9 @@ namespace ngl
 				{
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
+					{
 						return;
+					}
 
 					std::string lorder;
 					createorder(lorder, lrechargeid);
@@ -303,7 +314,9 @@ namespace ngl
 				{//actor_role::loginpay() callback
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)
+					{
 						return;
+					}
 
 					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
@@ -312,7 +325,9 @@ namespace ngl
 				{
 					int32_t lduration;
 					if (aos.read("data", lduration) == false)
+					{
 						return;
+					}
 
 					int lnow = localtime::gettime();
 					m_info.change_notalkutc(lnow + lduration);
@@ -338,7 +353,9 @@ namespace ngl
 		for (const auto& item : lrole.m_recharge())
 		{
 			if (item.m_rechargeid() == arechargeid)
+			{
 				return false;
+			}
 		}
 		return true;
 	}

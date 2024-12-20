@@ -56,7 +56,9 @@ namespace ngl
 		static bool forward(handle_pram& apram)
 		{
 			if (apram.m_forwardfun != nullptr)
+			{
 				apram.m_forwardfun(m_session, m_actorserver, apram);
+			}
 			return true;
 		}
 
@@ -140,7 +142,9 @@ namespace ngl
 		{
 			const i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 			if (lpserverid == nullptr)
+			{
 				return -1;
+			}
 			return *lpserverid;
 		}
 
@@ -160,7 +164,9 @@ namespace ngl
 				{
 					const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
 					if (lserverid == nullptr)
+					{
 						return;
+					}
 					aserverset.insert(*lserverid);
 				});
 		}
@@ -199,7 +205,9 @@ namespace ngl
 	void naddress::actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
+		{
 			actor_add(aserverid, item);
+		}
 		//#ifdef _DEBUG
 		//		print_address();
 		//#endif

@@ -128,7 +128,9 @@ namespace ngl
 		{
 			const T& lparm = adata.get_shared_data() == nullptr ? *adata.get_data() : *adata.get_shared_data();
 			if (forward_before(lparm) == false)
+			{
 				return false;
+			}
 			std::shared_ptr<mforward<T>> pro(nullptr);
 			pro = std::make_shared<mforward<T>>(id_guid(), lparm);
 			i64_actorid lguid;

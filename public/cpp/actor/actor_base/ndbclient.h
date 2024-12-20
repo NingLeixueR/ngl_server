@@ -85,13 +85,17 @@ namespace ngl
 			m_data = adata;
 			m_pdata = nullptr;
 			if (achange)
+			{
 				modified();
+			}
 		}
 
 		TDBTAB& get(bool achange = true)
 		{
 			if (achange)
+			{
 				modified();
+			}
 			return m_pdata == nullptr ? m_data : *m_pdata;
 		}
 
@@ -205,7 +209,9 @@ namespace ngl
 		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
 			if (aid == m_id && m_id != -1)
+			{
 				return m_dbdata;
+			}
 			return tools::findmap(m_data, aid);
 		}
 
@@ -317,7 +323,9 @@ namespace ngl
 		{
 			np_actordb_delete<DBTYPE, TDBTAB> pro;
 			if (m_dellist.empty())
+			{
 				return;
+			}
 			pro.m_data.swap(m_dellist);
 			if (pro.m_data.empty() == false)
 			{
@@ -338,19 +346,25 @@ namespace ngl
 		{
 			m_data[aid] = adbtab;
 			if (aid == m_id)
+			{
 				m_dbdata = &m_data[aid];
+			}
 			return &m_data[aid];
 		}
 
 		data_modified<TDBTAB>* add(const nguid& aid, const TDBTAB& adbtab)
 		{
 			if (m_data.contains(aid))
+			{
 				return nullptr;
+			}
 			data_modified<TDBTAB>* lpdata = &m_data[aid];
 			lpdata->set(adbtab, true);
 			savedb(aid);
-			if(aid == m_id)
+			if (aid == m_id)
+			{
 				m_dbdata = lpdata;
+			}
 			return lpdata;
 		}
 
@@ -375,7 +389,9 @@ namespace ngl
 
 			auto itor = m_data.find(m_id);
 			if (itor != m_data.end())
+			{
 				m_dbdata = &itor->second;
+			}
 			if (aisover)
 			{
 				m_load = true;
@@ -493,8 +509,7 @@ namespace ngl
 		ndbclient<ENUM, TDATA, TACTOR>* data(bool aloadfinish)
 		{
 			ndbclient_base** lp = ngl::tools::findmap<pbdb::ENUM_DB, ndbclient_base*>(
-				aloadfinish? m_dbclientmap : m_typedbclientmap
-				, ENUM
+				aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM
 			);
 			if (lp == nullptr)
 				return nullptr;
@@ -504,8 +519,7 @@ namespace ngl
 	private:
 		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
 		{
-			for (auto itor = m_dbclientmap.begin();
-				itor != m_dbclientmap.end(); ++itor)
+			for (auto itor = m_dbclientmap.begin();itor != m_dbclientmap.end(); ++itor)
 			{
 				afun(itor->second);
 			}

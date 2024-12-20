@@ -76,7 +76,9 @@ namespace ngl
 		)
 		{
 			if (aserverid == atoserverid)
+			{
 				return;
+			}
 
 			auto pro = std::make_shared<np_actorswitch_process<T>>();
 			pro->m_actor		= aactor;

@@ -13,7 +13,9 @@ namespace ngl
 	void nrfunbase::notfindfun(const actor_base*, i32_threadid athreadid, handle_pram& apram)const
 	{
 		if (m_notfindfun != nullptr)
+		{
 			m_notfindfun(athreadid, apram);
+		}
 	}
 
 	bool nrfunbase::handle_switch(actor_base* aactor, i32_threadid athreadid, handle_pram& apram)

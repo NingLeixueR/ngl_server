@@ -29,17 +29,11 @@ namespace ngl
 	class handle_pram_send
 	{
 	public:
-		static bool sendbyserver(
-			i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata
-		);
+		static bool sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata);
 
-		static bool send(
-			const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
-		);
+		static bool send(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata);
 
-		static bool sendclient(
-			const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata
-		);
+		static bool sendclient(const nguid& aactorid, const nguid& arequestactorid, handle_pram& adata);
 	};
 
 	struct handle_pram
@@ -101,9 +95,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static handle_pram create(
-			const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr
-		)
+		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
 		{
 			handle_pram lpram;
 			lpram.m_enum			= tprotocol::protocol<T>();
@@ -113,7 +105,9 @@ namespace ngl
 			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
 			if (IS_FORWARDFUN)
+			{
 				make_forwardfun<T, IS_SEND>(lpram);
+			}
 			lpram.m_failfun			= afailfun;
 			return lpram;
 		}
@@ -196,7 +190,9 @@ namespace ngl
 					return true;
 				}
 				if (adata.m_failfun != nullptr)
+				{
 					adata.m_failfun();
+				}
 				return false;
 			}
 			return handle_pram_send<pack, true>::sendbyserver(lserverid, aactorid, arequestactorid, adata);
@@ -215,13 +211,13 @@ namespace ngl
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, larea[i], luid[i]);
 			i32_serverid lserverid = handle_pram::get_gatewayid(lroleactor);
 			if (lserverid > 0)
+			{
 				lgateway.insert(lserverid);
+			}
 		}
 		for (i32_serverid lserverid : lgateway)
 		{
-			handle_pram_send<
-				np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>, true
-			>::sendbyserver(lserverid, nguid::make(), arequestactorid, adata);
+			handle_pram_send<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>, true>::sendbyserver(lserverid, nguid::make(), arequestactorid, adata);
 		}
 		return true;
 	}

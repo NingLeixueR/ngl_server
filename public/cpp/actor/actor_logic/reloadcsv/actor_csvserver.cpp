@@ -39,9 +39,8 @@ namespace ngl
 		const auto& lversion = allcsv::all();
 		std::ranges::for_each(lversion, [&lparm,&pro](const auto& apair)
 			{
-				
-				if (auto itor = lparm->m_verify.find(apair.first);
-					itor != lparm->m_verify.end() && itor->second != apair.second->verify())
+				auto itor = lparm->m_verify.find(apair.first);
+				if (itor != lparm->m_verify.end() && itor->second != apair.second->verify())
 				{
 					return;
 				}

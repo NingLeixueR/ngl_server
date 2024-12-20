@@ -71,8 +71,7 @@ namespace ngl
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				std::shared_ptr<type_forward> lptr = 
-					std::static_pointer_cast<type_forward>(apram.m_data);
+				std::shared_ptr<type_forward> lptr = std::static_pointer_cast<type_forward>(apram.m_data);
 				message<type_forward> lmessage(athreadid, apram.m_pack.get(), lptr);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}

@@ -66,7 +66,9 @@ namespace ngl
 		if (itor != lmap.end())
 		{
 			if (itor->second->getconst().m_passworld() != apassworld)
+			{
 				return nullptr;
+			}
 			return itor->second;
 		}
 		else
@@ -125,7 +127,9 @@ namespace ngl
 	{
 		auto itor = amap.find(aserverid);
 		if (itor == amap.end())
+		{
 			return false;
+		}
 		--itor->second.m_rolesize;
 		return true;
 	}
@@ -233,13 +237,14 @@ namespace ngl
 	{
 		auto itor = m_actorbyserver.find(adata.get_data()->m_actorid);
 		if (itor == m_actorbyserver.end())
+		{
 			return true;
+		}
 		dec_freeserver_game(itor->second.m_gameserverid);
 		dec_freeserver_gateway(itor->second.m_gatewayserverid);
 		m_actorbyserver.erase(itor);
 
 		printf_freeserver();
-
 		return true;
 	}
 }//namespace ngl

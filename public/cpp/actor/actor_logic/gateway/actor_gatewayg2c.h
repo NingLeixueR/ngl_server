@@ -75,7 +75,9 @@ namespace ngl
 			gateway_socket* info = nullptr;
 			std::map<i32_sessionid, i64_actorid> lmap;
 			if (lparm->m_uid.empty())
+			{
 				return true;
+			}
 			if (lparm->m_area[0] == -1 && lparm->m_uid[0] == -1)
 			{
 				// 获取所有客户端
@@ -101,7 +103,9 @@ namespace ngl
 					i32_actordataid ldataid = lparm->m_uid[i];
 					info = m_info.get(larea, ldataid);
 					if (info == nullptr)
+					{
 						continue;
+					}
 					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, larea, ldataid);
 					lmap.insert(std::make_pair(info->m_socket, lactorid));
 				}

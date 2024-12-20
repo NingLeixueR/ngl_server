@@ -100,9 +100,13 @@ namespace ngl
 							const nguid& lguid = ipair.first;
 							i32_serverid lserverid = ipair.second;
 							if (asession.contains(lserverid) == false)
+							{
 								continue;
+							}
 							if (lrecv->m_node.m_serverid == lserverid)
+							{
 								continue;
+							}
 							np_actornode_update& pro = lmapprotocol[lserverid];
 							pro.m_id = lserverid;
 							pro.m_add.push_back(lguid.id());
@@ -135,7 +139,9 @@ namespace ngl
 				naddress::foreach([lserverid, &lvec](const actor_node_session& anode)->bool
 					{
 						if (anode.m_node.m_serverid != lserverid)
+						{
 							lvec.push_back(anode.m_session);
+						}
 						return true;
 					}
 				);
@@ -165,7 +171,9 @@ namespace ngl
 			[&lvec, lpack](const actor_node_session& anode)
 			{
 				if (lpack->m_id != anode.m_session)
+				{
 					lvec.push_back(anode.m_session);
+				}
 				return true;
 			}
 		);
@@ -187,7 +195,9 @@ namespace ngl
 		handle(lmessage);
 
 		if (lparm->m_fun != nullptr)
+		{
 			lparm->m_fun();
+		}
 		return true;
 	}
 }//namespace ngl

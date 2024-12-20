@@ -58,7 +58,9 @@ namespace ngl
 				info = m_info.get(lpack->m_id);//m_info.get(adata.m_uid[0]);
 			}
 			if (info == nullptr)
+			{
 				return false;
+			}
 			np_actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
 			ltemp.m_uid.push_back(info->m_dataid);
 			ltemp.m_area.push_back(info->m_area);

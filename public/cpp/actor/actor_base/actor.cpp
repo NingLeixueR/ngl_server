@@ -80,25 +80,35 @@ namespace ngl
 		inline void set_kcp(handle_pram& aparm)
 		{
 			if (aparm.m_pack == nullptr)
+			{
 				return;
+			}
 			if (aparm.m_pack->m_protocol != ENET_KCP)
+			{
 				return;
+			}
 			if (m_actor->is_single())
+			{
 				return;
+			}
 			m_actor->set_kcpssion(aparm.m_pack->m_id);
 		}
 
 		inline bool ahandle(i32_threadid athreadid, handle_pram& aparm)
 		{
 			if (m_actor == nullptr)
+			{
 				return false;
+			}
 			Try
 			{
 				set_kcp(aparm);
 				nrfunbase* lprfun = m_actor->m_actorfun[aparm.m_protocoltype];
 				Assert(lprfun != nullptr)
 				if (lprfun->handle_switch(m_actor, athreadid, aparm))
+				{
 					return true;
+				}
 				lprfun->notfindfun(m_actor, athreadid, aparm);
 			}Catch
 			return false;
@@ -119,7 +129,9 @@ namespace ngl
 		inline void actor_handle(i32_threadid athreadid, int aweight)
 		{
 			if (m_actor == nullptr)
+			{
 				return;
+			}
 			tls<handle_pram> llist;
 			swaplist(llist);
 			if (aweight < llist.size())
