@@ -111,7 +111,9 @@ namespace ngl
 		{
 			stop();
 			for (auto item : m_wheel)
+			{
 				delete item;
+			}
 			m_wheel.clear();
 		}
 
@@ -124,7 +126,9 @@ namespace ngl
 				lpnextnode = lpnode->m_next;
 				auto itor = m_timer.find(lpnode->m_timerid);
 				if (itor == m_timer.end())
+				{
 					continue;
+				}
 				m_timer.erase(itor);
 			}
 		}
@@ -170,7 +174,9 @@ namespace ngl
 						addtimer(lpnode);
 					}
 					else
+					{
 						push(lpnode);
+					}
 					continue;
 				}
 				auto& ltimer = m_timer;
@@ -191,7 +197,9 @@ namespace ngl
 				}
 			}
 			if (removenode != nullptr)
+			{
 				remove(removenode);
+			}
 			return true;
 		}
 
@@ -200,7 +208,9 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			auto itor = m_timer.find(atimerid);
 			if (itor == m_timer.end())
+			{
 				return;
+			}
 			itor->second = true;
 		}
 
@@ -262,11 +272,15 @@ namespace ngl
 				ltemp = getms() - m_current_ms;
 				ltempsleep = m_config.m_time_wheel_precision - ltemp;
 				if (ltempsleep > 0)
+				{
 					std::this_thread::sleep_for(std::chrono::milliseconds(ltempsleep));
+				}
 				monopoly_shared_lock(m_mutex);
 				wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
 				if (lpbnode != nullptr)
+				{
 					addtimer(lpbnode);
+				}
 				m_current_ms += m_config.m_time_wheel_precision;
 			}
 		}
@@ -287,7 +301,9 @@ namespace ngl
 				{
 					lnextnode = pnode->m_next;
 					if (pnode->m_remove != true)
+					{
 						pnode->m_parm.m_fun(pnode);
+					}
 					delete pnode;
 				}
 				lpnode = nullptr;
@@ -300,7 +316,9 @@ namespace ngl
 			if (m_worldnodehead == m_worldnodetail)
 			{
 				if (m_worldnodehead == nullptr)
+				{
 					return nullptr;
+				}
 				ret = m_worldnodehead;
 				m_worldnodetail = nullptr;
 				m_worldnodehead = nullptr;
@@ -322,16 +340,24 @@ namespace ngl
 				[&lbool](wheel_node* ap) 
 				{
 					if (lbool)
-						delete ap; 
+					{
+						delete ap;
+					}
 				});
 			lpnode->m_parm.m_timerstart = getms();
 			lpnode->m_parm.m_ms += getms() - m_server_start_ms;
 			if (lpnode->m_parm.m_ms < 0)
+			{
 				return -1;
+			}
 			if (lpnode->m_parm.m_count == -1)
+			{
 				lpnode->m_parm.m_count = 0x7fffffff;
+			}
 			if (addtimer(lpnode.get()) == false)
+			{
 				return -1;
+			}
 			lbool = false;
 			return m_timerid;
 		}
@@ -430,7 +456,9 @@ namespace ngl
 	bool wheel::push(wheel_node* anode)
 	{
 		if (anode->m_parm.m_ms >= m_slot_sum_ms)
+		{
 			return false;
+		}
 		return push_slots(anode);
 	}
 
@@ -441,7 +469,9 @@ namespace ngl
 			ltempnode = lpnode->m_next;
 			lpnode->m_next = nullptr;
 			if (awheel->push_slots(lpnode))
+			{
 				continue;
+			}
 			m_time_wheel->m_impl_time_wheel()->remove(lpnode);
 		}
 		m_slots[apos] = nullptr;
@@ -455,15 +485,21 @@ namespace ngl
 		if (lpos == 0 && m_current_pos != 0)//if (m_current_pos % m_slot_count == 0 && m_current_pos != 0)
 		{
 			if (m_nextround == nullptr)
+			{
 				return nullptr;
+			}
 			m_nextround->shift_current_pos(this);
 			if (awheel != nullptr)
+			{
 				return shift_current_pos(lpos, awheel);
+			}
 		}
 		else
 		{
 			if (awheel != nullptr)
+			{
 				return shift_current_pos(lpos, awheel);
+			}
 		}
 		wheel_node* lpushnode = nullptr;
 		for (wheel_node* lpnode = m_slots[lpos], *ltempnode = nullptr; lpnode != nullptr; lpnode = ltempnode)
@@ -475,8 +511,7 @@ namespace ngl
 				//lpnode->m_fun(m_current_ms);
 				if (lpnode->m_parm.m_intervalms != nullptr)
 				{
-					int lintervalms = lpnode->m_parm.m_intervalms(
-						m_time_wheel->m_impl_time_wheel()->m_current_ms);
+					int lintervalms = lpnode->m_parm.m_intervalms(m_time_wheel->m_impl_time_wheel()->m_current_ms);
 					if (lintervalms > 0 && --lpnode->m_parm.m_count > 0)//¿½±´
 					{
 						wheel_node* lpnewnode = new wheel_node(*lpnode);

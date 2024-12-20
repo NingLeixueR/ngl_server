@@ -55,11 +55,15 @@ namespace ngl
 			std::string str(aname);
 			rename(str);
 			auto itor1 = m_datan2e.find(anum);
-			if(itor1 == m_datan2e.end())
+			if (itor1 == m_datan2e.end())
+			{
 				return enum_null();
+			}
 			auto itor2 = itor1->second.find(str);
 			if (itor2 == itor1->second.end())
+			{
 				return enum_null();
+			}
 			return itor2->second;
 		}
 
@@ -67,17 +71,23 @@ namespace ngl
 		{
 			auto itor1 = m_datae2n.find(anum);
 			if (itor1 == m_datae2n.end())
+			{
 				return nullptr;
+			}
 			auto itor2 = itor1->second.find(aenum);
 			if (itor2 == itor1->second.end())
+			{
 				return nullptr;
+			}
 			return &itor2->second;
 		}
 		static const char* get_name(const ENUMT& aenum, int anum = 0)
 		{
 			const data* ltempdata = get_data(aenum, anum);
 			if (ltempdata == nullptr)
+			{
 				return nullptr;
+			}
 			return ltempdata->m_never.c_str();
 		}
 
@@ -85,7 +95,9 @@ namespace ngl
 		{
 			const data* ltempdata = get_data(aenum, anum);
 			if (ltempdata == nullptr)
+			{
 				return nullptr;
+			}
 			return ltempdata->m_tolower.c_str();
 		}
 
@@ -93,7 +105,9 @@ namespace ngl
 		{
 			const data* ltempdata = get_data(aenum, anum);
 			if (ltempdata == nullptr)
+			{
 				return nullptr;
+			}
 			return ltempdata->m_toupper.c_str();
 		}
 		
