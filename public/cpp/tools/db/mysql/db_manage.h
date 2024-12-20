@@ -69,7 +69,9 @@ namespace ngl
 			);
 
 			if (llen <= 0)
+			{
 				return;
+			}
 			adb->stmt_query(lbuff, llen, lbind);
 			
 			log_error()->print(
@@ -108,7 +110,9 @@ namespace ngl
 				tools::protobuf_tabname<T>::name().c_str(), aid
 			);
 			if (llen <= 0)
+			{
 				return;
+			}
 			adb->query(lbuff, llen);
 		}
 
@@ -147,7 +151,9 @@ namespace ngl
 				tools::protobuf_tabname<T>::name().c_str(), aid, where_area()
 			);
 			if (llen <= 0)
+			{
 				return false;
+			}
 			return adb->select(lbuff, llen,
 				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
@@ -176,7 +182,9 @@ namespace ngl
 				tools::protobuf_tabname<T>::name().c_str(), where_area()
 			);
 			if (llen <= 0)
+			{
 				return false;
+			}
 			return adb->select(lbuff, llen,
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
@@ -206,7 +214,9 @@ namespace ngl
 				tools::protobuf_tabname<T>::name().c_str(), where_area()
 			);
 			if (llen <= 0)
+			{
 				return false;
+			}
 			return adb->select(lbuff, llen,
 				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{

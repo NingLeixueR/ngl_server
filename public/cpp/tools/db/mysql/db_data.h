@@ -92,7 +92,9 @@ namespace ngl
 				return edbdata_notdata;
 			}
 			if (m_data.find(aid) == m_data.end())
+			{
 				return edbdata_notload;
+			}
 			return edbdata_load;
 		}
 
@@ -100,7 +102,9 @@ namespace ngl
 		{
 			auto itor = m_data.find(aid);
 			if (itor == m_data.end())
+			{
 				return nullptr;
+			}
 			return &itor->second;
 		}
 
@@ -108,7 +112,9 @@ namespace ngl
 		{
 			auto itor = m_data.find(aid);
 			if (itor == m_data.end())
+			{
 				return false;
+			}
 			adata = itor->second;
 			return true;
 		}
@@ -141,7 +147,9 @@ namespace ngl
 					afun(lindex, lpair.second);
 				}
 				if (lindex > aindexend)
+				{
 					return;
+				}
 			}
 		}
 	};

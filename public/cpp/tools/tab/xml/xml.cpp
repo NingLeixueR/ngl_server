@@ -59,7 +59,9 @@ namespace ngl
 		log_error()->print("begin xmlnode read [{}]", lxmlname);
 
 		if (!xml::readxml(lxmlname.c_str(), m_doc, m_con))
+		{
 			return;
+		}
 
 		loadpublic();
 		loaddb();
@@ -84,7 +86,9 @@ namespace ngl
 
 				i32_serverid lid = 0;
 				if (ltemp.find("id", lid))
+				{
 					anfo[lid] = ltemp;
+				}
 
 				ltemp.plog();
 			};
@@ -100,7 +104,9 @@ namespace ngl
 			};
 		tinyxml2::XMLElement* lchild = xml::get_child(m_con, "public.config");
 		if (lchild == nullptr)
+		{
 			return false;
+		}
 		xml::foreach_xmlattr(lchild, lfun);
 		return true;
 	}

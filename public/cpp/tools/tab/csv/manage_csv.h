@@ -93,7 +93,9 @@ namespace ngl
 		void foreach(const std::function<void(T&)>& afun)
 		{
 			for (std::pair<const int, T>& item : m_tablecsv)
+			{
 				afun(item.second);
+			}
 		}
 
 		static int32_t hash_code()
@@ -130,10 +132,14 @@ namespace ngl
 		{
 			csvbase* lp = get<manage_csv<TAB>>();
 			if (lp == nullptr)
+			{
 				return nullptr;
+			}
 			void* lptab = lp->get(aid);
 			if (lptab == nullptr)
+			{
 				return nullptr;
+			}
 			return (TAB*)(lptab);
 		}
 
@@ -168,7 +174,9 @@ namespace ngl
 			{
 				csvbase* lpcsv = allcsv::get_csvbase(T::name());
 				if (lpcsv == nullptr)
+				{
 					return;
+				}
 				lpcsv->load();
 				lpcsv->reload();
 			};

@@ -74,7 +74,9 @@ namespace ngl
 		{
 			if (tprotocol::protocol<np_gm>() == aprotocolnum
 				|| tprotocol::protocol<np_gm_response>() == aprotocolnum)
+			{
 				return false;
+			}
 			return sysconfig::isxor();
 		}
 
@@ -114,9 +116,13 @@ namespace ngl
 				}
 				
 				if (adata.ParseFromArray(apack->m_buff, apack->m_head.getvalue(EPH_BYTES)) == false)
+				{
 					return false;
-				if(aissetpos == true)
+				}
+				if (aissetpos == true)
+				{
 					apack->m_pos = adata.ByteSize();
+				}
 			}
 			return true;
 		}
@@ -152,7 +158,9 @@ namespace ngl
 
 			ngl::serialize lser2(apack->m_buff, apack->m_len);
 			if (!apack->m_head.push(lser2))
+			{
 				return false;
+			}
 			apack->m_pos = apack->m_len;
 			return true;
 		}

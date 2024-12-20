@@ -10,7 +10,9 @@ namespace ngl
 		tinyxml2::XMLDocument ldoc;
 		tinyxml2::XMLElement* lcon;
 		if (!xml::readxml(axmlname.c_str(), ldoc, lcon))
+		{
 			return;
+		}
 
 		std::function<void(tinyxml2::XMLElement*)> lfun = [](tinyxml2::XMLElement* apt)
 			{
@@ -38,7 +40,9 @@ namespace ngl
 	{
 		auto itor = m_protocol.find(aname);
 		if (itor == m_protocol.end())
+		{
 			return -1;
+		}
 		return itor->second;
 	}
 

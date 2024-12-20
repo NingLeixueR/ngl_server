@@ -24,7 +24,9 @@ namespace ngl
 	{
 		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
 		if (lp == nullptr)
+		{
 			return false;
+		}
 		adata = *lp == "true" || *lp == "TRUE";
 		return true;
 	}
@@ -33,7 +35,9 @@ namespace ngl
 	{
 		std::string* lp = tools::findmap<std::string, std::string>(m_data, akey);
 		if (lp == nullptr)
+		{
 			return false;
+		}
 		adata = *lp;
 		return true;
 	}

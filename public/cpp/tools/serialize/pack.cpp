@@ -66,9 +66,13 @@ namespace ngl
 		if (m_buff != nullptr)
 		{
 			if (m_bpool != nullptr)
+			{
 				m_bpool->free(m_buff, m_len);
+			}
 			else
+			{
 				delete[] m_buff;
+			}
 			m_buff = nullptr;
 			m_len = 0;
 		}
@@ -77,7 +81,9 @@ namespace ngl
 	void pack::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
 	{
 		if (m_buff == nullptr)
+		{
 			return;
+		}
 		pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
 	}
 
@@ -90,7 +96,9 @@ namespace ngl
 			});
 		lpack->set(*apool);
 		if (alen > 0)
+		{
 			lpack->malloc(alen);
+		}
 		return lpack;
 	}
 }// namespace ngl
