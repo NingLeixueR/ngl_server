@@ -133,7 +133,9 @@ namespace ngl
 		{
 			T* lpdata = tools::findmap(m_data, aactorid);
 			if (lpdata == nullptr)
+			{
 				return;
+			}
 
 			auto pro = std::make_shared<np_channel_data<T>>();
 			pro->m_data.make();

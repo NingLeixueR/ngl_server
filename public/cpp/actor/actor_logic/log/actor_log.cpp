@@ -47,9 +47,7 @@ namespace ngl
 		timerparm tparm;
 		if (make_timerparm::make_interval(tparm, lflushtime) == false)
 		{
-			log_error()->print(
-				"actor_log::init() make_timerparm::make_interval(tparm, 2) == false!!!"
-			);
+			log_error()->print("actor_log::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		auto lparmflush = std::make_shared<log_timerparm>(log_timerparm::e_logflush);
@@ -60,9 +58,7 @@ namespace ngl
 		timerparm tparmcreate;
 		if (make_timerparm::day(tparmcreate, 0, 0, 0) == false)
 		{
-			log_error()->print(
-				"actor_log::init() make_timerparm::make_timerparm::day(tparmcreate, 0, 0, 0) == false!!!"
-			);
+			log_error()->print("actor_log::init() make_timerparm::make_timerparm::day(tparmcreate, 0, 0, 0) == false!!!");
 			return;
 		}
 		auto lparmcreate = std::make_shared<log_timerparm>(log_timerparm::e_create);

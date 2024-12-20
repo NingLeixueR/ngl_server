@@ -380,11 +380,14 @@ namespace ngl
 	bool actor_base::connect_kcp(int16_t anum, const std::string& aip, i16_port aprot)
 	{
 		if (iskcp() == false)
+		{
 			return false;
+		}
 		std::string lkcpsession = kcp_session();
 		if (lkcpsession == "")
+		{
 			return false;
-		
+		}
 		nets::kcp(anum)->connect(lkcpsession, id_guid(), aip, aprot, [this](i32_session asession)
 			{
 				set_kcpssion(asession);

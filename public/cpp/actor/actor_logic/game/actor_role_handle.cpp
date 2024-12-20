@@ -35,7 +35,9 @@ namespace ngl
 	{
 		const tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.get_data()->m_line());
 		if (tab == nullptr)
+		{
 			return false;
+		}
 		i32_sessionid lsession = server_session::sessionid(tab->m_id);
 		if (lsession == -1)
 		{
@@ -73,7 +75,9 @@ namespace ngl
 	{
 		tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());
 		if (tab == nullptr)
+		{
 			return true;
+		}
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>();
 		pro->set_m_taskid(adata.get_data()->m_taskid());

@@ -69,7 +69,9 @@ namespace ngl
 		const T* get_data()const
 		{
 			if (m_shared_data != nullptr)
+			{
 				return m_shared_data.get();
+			}
 			return m_original_data;
 		}
 
@@ -112,9 +114,7 @@ namespace ngl
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		template <bool BOOL, typename T>
-		nrfun& rfun_forward(
-			const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false
-		);
+		nrfun& rfun_forward(const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		template <typename T>
 		nrfun& rfun_recvforward(const Tfun<TDerived, T> afun, bool aisload = false);

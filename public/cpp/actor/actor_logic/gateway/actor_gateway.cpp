@@ -78,7 +78,9 @@ namespace ngl
 			{
 				gateway_socket* linfo = m_info.get(larea, lroleid);
 				if (linfo == nullptr)
+				{
 					return;
+				}
 
 				if (linfo->m_socket == 0)
 				{
@@ -114,7 +116,9 @@ namespace ngl
 		nguid lguid(lparm->m_roleid);
 
 		if (const auto linfo = m_info.get(lguid.area(), lguid.actordataid()); linfo != nullptr)
+		{
 			return true;
+		}
 		gateway_socket ltemp
 		{
 				.m_session = lparm->m_session,
@@ -212,7 +216,9 @@ namespace ngl
 
 		std::string lkcpsession;
 		if (ukcp::create_session(nguid::make(nguid::none_type(), larea, lactordataid), lkcpsession) == false)
+		{
 			return true;
+		}
 
 		// ### 通知kcp服务器创建连接
 		np_actor_kcp pro;
@@ -258,7 +264,9 @@ namespace ngl
 				m_info.foreach([&lvec, lpram](gateway_socket* agetway)
 					{
 						if (lpram->m_sessionid == agetway->m_socket)
+						{
 							lvec.push_back(agetway);
+						}
 					});
 				std::ranges::for_each(lvec, [this](gateway_socket* asocket)
 					{

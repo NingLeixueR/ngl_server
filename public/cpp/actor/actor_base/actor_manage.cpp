@@ -40,7 +40,9 @@ namespace ngl
 		inline void init(i32_threadsize apthreadnum)
 		{
 			if (m_workthread.empty() == false)
+			{
 				return;
+			}
 			m_threadnum = apthreadnum;
 			for (int32_t i = 0; i < m_threadnum; ++i)
 			{
@@ -51,7 +53,9 @@ namespace ngl
 		inline void get_type(std::vector<i16_actortype>& aactortype) const
 		{
 			for (i16_actortype item : m_actortype)
+			{
 				aactortype.push_back(item);
+			}
 		}
 
 		inline int32_t actor_count()
@@ -192,7 +196,9 @@ namespace ngl
 			static ptractor lnullptr(nullptr);
 			auto itor = m_actorbyid.find(aguid);
 			if (itor == m_actorbyid.end())
+			{
 				return lnullptr;
+			}
 			return itor->second;
 		}
 
@@ -218,9 +224,13 @@ namespace ngl
 				if (atorthread != nullptr)
 				{
 					if (m_suspend)
+					{
 						m_suspendthread.push_back(atorthread);
+					}
 					else
+					{
 						m_workthread.push_back(atorthread);
+					}
 				}
 				if (!m_actorbyid.contains(apactor->id_guid()))
 				{//erase_actor_byid
@@ -279,13 +289,17 @@ namespace ngl
 			if (lpactorptr == nullptr)
 			{
 				if (!abool)
+				{
 					return lnull;
+				}
 				// 发给actor_client/actor_server
 				// 如果是actor_server结点需要发送给actor_server
 				nguid lguid = nodetypebyguid();
 				lpactorptr = tools::findmap(m_actorbyid, lguid);
 				if (lpactorptr == nullptr)
+				{
 					return lnull;
+				}
 			}
 			return *lpactorptr;
 		}
@@ -309,7 +323,9 @@ namespace ngl
 			for (const auto& [key, value] : m_actorbytype[atype])
 			{
 				if (value->get_activity_stat() != actor_stat_close)
+				{
 					nosafe_push_task_id(value, apram);
+				}
 			}
 			ngl_post;
 			// 2.然后发给actor_client，发给其他服务器
@@ -318,7 +334,9 @@ namespace ngl
 				nguid lguid = nodetypebyguid();
 				ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
 				if (lpptractor == nullptr)
+				{
 					return;
+				}
 				nosafe_push_task_id(*lpptractor, apram);
 			}
 		}
@@ -329,7 +347,9 @@ namespace ngl
 			for (const auto& [key, value] : m_actorbroadcast)
 			{
 				if (value->isbroadcast())
+				{
 					nosafe_push_task_id(value, apram);
+				}
 			}
 			ngl_post;
 		}
@@ -374,7 +394,9 @@ namespace ngl
 						{
 							monopoly_shared_lock(m_mutex);
 							if (m_actorlist.empty() || m_workthread.empty() || m_suspend)
+							{
 								break;
+							}
 							lpthread = *m_workthread.begin();
 							lpactor = *m_actorlist.begin();
 							m_actorlist.pop_front();

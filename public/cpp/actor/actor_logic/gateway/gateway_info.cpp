@@ -21,7 +21,9 @@ namespace ngl
 
 		*lpgsocket = ainfo;
 		if (ainfo.m_socket != 0)
+		{
 			m_sockinfo[ainfo.m_socket] = lpgsocket;
+		}
 	}
 
 	bool gateway_info::updata_socket(i16_area aarea, i32_actordataid aactordataid, i32_socket asocket)
@@ -33,7 +35,9 @@ namespace ngl
 		}
 		ltemp->m_socket = asocket;
 		if (asocket != 0)
+		{
 			m_sockinfo[asocket] = ltemp;
+		}
 		return true;
 	}
 
@@ -62,7 +66,9 @@ namespace ngl
 		{
 			auto itor = m_sockinfo.find(asocket);
 			if (itor == m_sockinfo.end())
+			{
 				return;
+			}
 			itor->second->m_socket = 0;
 			m_sockinfo.erase(itor);
 		}
@@ -74,10 +80,14 @@ namespace ngl
 		i32_actordataid larea = nguid::area(aactorid);
 		auto itor_area = m_info.find(larea);
 		if (itor_area == m_info.end())
+		{
 			return;
+		}
 		auto itor_actordataid = itor_area->second.find(lactordataid);
 		if (itor_actordataid == itor_area->second.end())
+		{
 			return;
+		}
 		i32_socket lsocket = itor_actordataid->second.m_socket;
 		if (lsocket != 0)
 		{
@@ -90,10 +100,14 @@ namespace ngl
 	{
 		auto itor = m_info.find(aarea);
 		if (itor == m_info.end())
+		{
 			return nullptr;
+		}
 		auto itor2 = itor->second.find(aroleid);
 		if (itor2 == itor->second.end())
+		{
 			return nullptr;
+		}
 		return &itor2->second;
 	}
 
@@ -101,7 +115,9 @@ namespace ngl
 	{
 		auto itor = m_sockinfo.find(asocket);
 		if (itor == m_sockinfo.end())
+		{
 			return nullptr;
+		}
 		return itor->second;
 	}
 

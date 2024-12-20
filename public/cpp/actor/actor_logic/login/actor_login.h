@@ -68,14 +68,10 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave);
 
 		// # 根据账号密码获取pbdb::db_account
-		data_modified<pbdb::db_account>* get_account(
-			int area, const std::string& account, const std::string& apassworld, bool& aiscreate
-		);
+		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);
 
 		// # 获取amap中相对空闲的服务器
-		bool get_freeserver(
-			std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair
-		);
+		bool get_freeserver(std::map<i32_serverid, server_info>& amap, std::pair<i32_serverid, int32_t>& apair);
 
 		// # 获取game服务器中相对空闲的服务器
 		bool get_freeserver_game(std::pair<i32_serverid, int32_t>& apair);
@@ -115,9 +111,7 @@ struct std::formatter<ngl::actor_login::server_info>
 
 	auto format(const ngl::actor_login::server_info& aval, std::format_context& ctx)const
 	{
-		return std::format_to(
-			ctx.out(), "[server_info:id{}-rolesize{}]", aval.m_id, aval.m_rolesize
-		);
+		return std::format_to(ctx.out(), "[server_info:id{}-rolesize{}]", aval.m_id, aval.m_rolesize);
 	}
 };
 

@@ -32,7 +32,9 @@ namespace ngl
 							lvec.begin()
 						);
 						if (lvec.empty())
+						{
 							return;
+						}
 					}
 					actor::static_send_actor(apair.first, nguid::make(), apro);
 				});
@@ -42,7 +44,9 @@ namespace ngl
 		{
 			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
 			if (lp == nullptr)
+			{
 				return;
+			}
 			apro->m_firstsynchronize = afirstsynchronize;
 			std::ranges::for_each(m_publishlist, [aactorid, &apro](const auto& lpair)
 				{
@@ -100,7 +104,9 @@ namespace ngl
 		static void sync(i64_actorid aactor)
 		{
 			if (m_publishlist.empty())
+			{
 				return;
+			}
 			std::set<i64_actorid>* lpset = tools::findmap(m_publishlist, aactor);
 			if (lpset == nullptr)
 			{
@@ -137,7 +143,9 @@ namespace ngl
 		static void loadfish_sync()
 		{
 			if (m_publishlist.empty())
+			{
 				return;
+			}
 			std::ranges::for_each(m_publishlist, [](const auto& apair)
 				{
 					sync(apair.first);
@@ -152,7 +160,9 @@ namespace ngl
 		{
 			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
 			if (lp == nullptr)
+			{
 				return;
+			}
 			auto pro = std::make_shared<np_channel_data<TDATA>>();
 			pro->m_data.make();
 			(*pro->m_data.m_data)[aactorid] = lp->getconst();
@@ -168,7 +178,9 @@ namespace ngl
 			{
 				data_modified<TDATA>* lp = m_dbmodule->find(iactorid);
 				if (lp == nullptr)
+				{
 					continue;
+				}
 				lmap[iactorid] = lp->getconst();
 			}
 			publish(aactoridset, false, pro);

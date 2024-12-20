@@ -78,6 +78,5 @@ namespace ngl
 
 		//# 同步actor_role对应的gateway
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
-
 	};
 }//namespace ngl

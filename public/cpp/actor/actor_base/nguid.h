@@ -375,15 +375,11 @@ struct std::formatter<ngl::nguid>
 		const char* lanme = ngl::em<ngl::ENUM_ACTOR>::get_name(aval.type());
 		if (lanme == nullptr)
 		{
-			return std::format_to(ctx.out()
-				, "guid<type:{} area:{} id:{}>", (int)aval.type(), aval.area(), aval.actordataid()
-			);
+			return std::format_to(ctx.out(), "guid<type:{} area:{} id:{}>", (int)aval.type(), aval.area(), aval.actordataid());
 		}
 		else
 		{
-			return std::format_to(ctx.out()
-				, "guid<type:{} area:{} id:{}>", lanme, aval.area(), aval.actordataid()
-			);
+			return std::format_to(ctx.out(), "guid<type:{} area:{} id:{}>", lanme, aval.area(), aval.actordataid());
 		}
 	}
 };

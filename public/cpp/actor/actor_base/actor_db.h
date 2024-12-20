@@ -69,10 +69,14 @@ namespace ngl
 			{
 				Assert(m_tab->m_isloadall)
 				if (!m_tab->m_network)
+				{
 					return;
+				}
 				int lsendmaxcount = m_tab->m_sendmaxcount;
 				if (lsendmaxcount <= 0)
+				{
 					lsendmaxcount = 10;
+				}
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
 				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
 				pro.m_stat = true;
@@ -116,7 +120,9 @@ namespace ngl
 		)
 		{
 			if (!m_tab->m_network)
+			{
 				return;
+			}
 			i64_actorid lid = adata.m_id.id();
 			if (lid == -1)
 			{
@@ -131,9 +137,7 @@ namespace ngl
 			{
 				if(db_data<TDBTAB>::data_stat(lid) == db_data<TDBTAB>::edbdata_notdata)
 				{
-					log_error()->print(
-						"load fail notdata {}:{}", tools::type_name<type_actor_dbtab>(), nguid(lid)
-					);
+					log_error()->print("load fail notdata {}:{}", tools::type_name<type_actor_dbtab>(), nguid(lid));
 					return;
 				}
 					
@@ -147,9 +151,7 @@ namespace ngl
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 
 				using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
-				log_error()->print(
-					"load finish {}:{}", tools::type_name<type_message>(), nguid(lrequestactor)
-				);
+				log_error()->print("load finish {}:{}", tools::type_name<type_message>(), nguid(lrequestactor));
 			}
 		}
 
@@ -174,9 +176,7 @@ namespace ngl
 			m_cache_del.push(aid);
 		}
 
-		static void save(
-			i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata
-		)
+		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;
 			for (const std::pair<const nguid, TDBTAB>& item : lmap)
@@ -243,9 +243,7 @@ namespace ngl
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
 			std::string lname = tools::protobuf_tabname<TDBTAB>::name();
-			log_error()->print(
-				"load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id
-			);
+			log_error()->print("load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());
 			return true;
 		}
@@ -311,9 +309,13 @@ namespace ngl
 						pro.m_data		= "";
 						int64_t lid		= 0;
 						if (aos.read("data", lid) == false)
+						{
 							return;
+						}
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
+						{
 							db_manage::select<TDBTAB>(db_pool::get(athread), lid);
+						}
 						protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
 						m_savetemp.m_data = std::make_shared<TDBTAB>();
@@ -342,7 +344,9 @@ namespace ngl
 						};
 						query_page lpage;
 						if (aos.read("data", lpage) == false)
+						{
 							return;
+						}
 						int32_t lbegindex = lpage.m_everypagecount* (lpage.m_page - 1);
 						int32_t lendindex = lbegindex + lpage.m_everypagecount;
 
@@ -368,11 +372,15 @@ namespace ngl
 
 						std::string ljson;
 						if (aos.read("data", ljson) == false)
+						{
 							return;
+						}
 						protobuf_data<TDBTAB> ldata;
 						ldata.m_isbinary = false;
 						if (ngl::unserialize lunser(ljson.c_str(), (int)ljson.size() + 1); !lunser.pop(ldata))
+						{
 							return;
+						}
 						int64_t lid = ldata.m_data->m_id();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
 						db_manage::save<TDBTAB>(db_pool::get(athread), lid);
@@ -395,7 +403,9 @@ namespace ngl
 	)
 	{
 		if (aset.empty())
+		{
 			return;
+		}
 		auto pro = std::make_shared<np_actortime_db_cache<TDB>>();
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);

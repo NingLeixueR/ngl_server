@@ -16,7 +16,9 @@ namespace ngl
 
 		std::vector<std::string> lvec;
 		if (tools::splite(lparm.m_cmd().c_str(), "|", lvec) == false)
+		{
 			return true;
+		}
 		if (handle_cmd::empty())
 		{
 			handle_cmd::push("/time", [](actor_role* role, [[maybe_unused]] const char* aparm)
@@ -154,7 +156,9 @@ namespace ngl
 					int64_t lroleid = 0;
 					int32_t lratify = 0;
 					if (tools::splite(aparm, "*", lroleid, lratify) == false)
+					{
 						return;
+					}
 					pro->set_m_roleid(lroleid);
 					pro->set_m_ratify(lratify);
 					message lmessage(1, nullptr, pro);
@@ -166,7 +170,9 @@ namespace ngl
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CEDE_FAMIL>();
 					int64_t lroleid = 0;
 					if (tools::splite(aparm, "*", lroleid) == false)
+					{
 						return;
+					}
 					pro->set_m_roleid(lroleid);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
@@ -186,7 +192,9 @@ namespace ngl
 					int64_t lfamilylid = 0;
 					std::string lfamilylname;
 					if (tools::splite(aparm, "*", lfamilylid, lfamilylname) == false)
+					{
 						return;
+					}
 					pro->set_m_familid(lfamilylid);
 					pro->set_m_name(lfamilylname);
 					message lmessage(1, nullptr, pro);
@@ -198,7 +206,9 @@ namespace ngl
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMILSIGN>();
 					int64_t lfamilylid = 0;
 					if (tools::splite(aparm, "*", lfamilylid) == false)
+					{
 						return;
+					}
 					pro->set_m_familid(lfamilylid);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
@@ -212,7 +222,9 @@ namespace ngl
 					int32_t lpage = 0;
 					int32_t leverynum = 0;
 					if (tools::splite(aparm, "*", liscross, ltype, lpage, leverynum) == false)
+					{
 						return;
+					}
 					pro->set_m_iscross(liscross);
 					pro->set_m_type((pbdb::eranklist)ltype);
 					pro->set_m_page(lpage);
