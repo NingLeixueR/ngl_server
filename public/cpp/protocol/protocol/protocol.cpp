@@ -125,7 +125,9 @@ namespace ngl
 	{
 		std::vector<std::string> lvec;
 		if (tools::splite(apack->m_buff, " ", lvec) == false)
+		{
 			return;
+		}
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{

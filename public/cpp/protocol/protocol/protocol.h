@@ -130,9 +130,7 @@ namespace ngl
 
 		// 接收转发的消息
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
-		static void registry_actor_recvforward(
-			ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname
-		)
+		static void registry_actor_recvforward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
@@ -155,7 +153,9 @@ namespace ngl
 					else
 					{
 						if (structbytes<typeforward>::tostruct(apack, *lp))
+						{
 							return ltemp;
+						}
 					}
 				}Catch
 				return nullptr;
@@ -169,12 +169,11 @@ namespace ngl
 				for (int i = 0; i < lp->m_uid.size() && i < lp->m_area.size(); ++i)
 				{
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
-					handle_pram lpram = handle_pram::create<T, false, false>(
-						lguid, lrequestguid, 
-						ldatapack
-					);
+					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
 					if (apack->m_protocol == ENET_KCP)
+					{
 						lpram.m_pack = apack;
+					}
 					actor_manage::getInstance().push_task_id(lguid, lpram, false);
 				}
 				return true;
