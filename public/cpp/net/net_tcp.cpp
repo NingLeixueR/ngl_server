@@ -7,7 +7,9 @@ namespace ngl
 	bool net_tcp::socket_recv(service_io* ap, const char* abuff, int32_t abufflen)
 	{
 		if (net_protocol::socket_recv(ap->m_sessionid, ap->m_is_lanip, abuff, abufflen) == false)
+		{
 			return false;
+		}
 		return m_segpackvec[ap->m_threadid]->push(ap->m_sessionid, abuff, abufflen, ap->m_is_lanip);
 	}
 
@@ -17,10 +19,14 @@ namespace ngl
 
 		i32_threadsize lsocketthreadnum = socketthreadnum();
 		for (int i = 0; i < lsocketthreadnum; ++i)
+		{
 			m_segpackvec.push_back(new segpack());
+		}
 
 		if (lsocketthreadnum > net_config_socket_pthread_max_size || lsocketthreadnum <= 0)
+		{
 			lsocketthreadnum = net_config_socket_pthread_max_size;
+		}
 
 		std::function<bool(service_io*, const char*, uint32_t)> lfun = std::bind_front(&net_tcp::socket_recv, this);
 
@@ -39,9 +45,7 @@ namespace ngl
 		return true;
 	}
 
-	bool net_tcp::connect(
-		const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun
-	)
+	bool net_tcp::connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
 	{
 		m_server->connect(aip, aport, afun);
 		return true;
@@ -52,9 +56,7 @@ namespace ngl
 		m_server->close_net(asession);
 	}
 
-	void net_tcp::set_close(
-		int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun
-	)
+	void net_tcp::set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
 	{
 		m_server->set_close(asession, [this, aip, aport, afun]()
 			{

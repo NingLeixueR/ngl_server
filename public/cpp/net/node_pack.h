@@ -53,9 +53,13 @@ namespace ngl
 		inline pack* get()
 		{
 			if (m_ispack)
+			{
 				return m_pack.get();
+			}
 			else
+			{
 				return (pack*)m_packvoid.get();
+			}
 		}
 	};
 }// namespace ngl

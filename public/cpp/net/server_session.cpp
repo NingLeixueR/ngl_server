@@ -26,7 +26,9 @@ namespace ngl
 		lock_write(m_mutex);
 		auto itor = m_session.find(asession);
 		if (itor == m_session.end())
+		{
 			return;
+		}
 		m_server.erase(itor->second);
 		m_session.erase(itor);
 	}
@@ -36,7 +38,9 @@ namespace ngl
 		lock_read(m_mutex);
 		auto itor = m_server.find(aserverid);
 		if (itor == m_server.end())
+		{
 			return -1;
+		}
 		return itor->second;
 	}
 
@@ -45,7 +49,9 @@ namespace ngl
 		lock_read(m_mutex);
 		auto itor = m_session.find(asessionid);
 		if (itor == m_session.end())
+		{
 			return -1;
+		}
 		return itor->second;
 	}
 
@@ -67,9 +73,13 @@ namespace ngl
 	{
 		apair.second = serverid(asessionid);
 		if (apair.second == -1)
+		{
 			return false;
+		}
 		if (serverinfo(apair.second, apair.first) == false)
+		{
 			return false;
+		}
 		return true;
 	}
 }//namespace ngl

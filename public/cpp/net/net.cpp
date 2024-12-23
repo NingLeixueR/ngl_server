@@ -15,7 +15,9 @@ namespace ngl
 		for (int i = 0; i < ENET_COUNT; ++i)
 		{
 			if (m_net[i] != nullptr)
+			{
 				return m_net[i];
+			}
 		}
 		return nullptr;
 	}
@@ -44,7 +46,9 @@ namespace ngl
 	{
 		const tab_servers* tab = ttab_servers::tab();
 		if (tab == nullptr)
+		{
 			return false;
+		}
 		int32_t lnum = 0;
 		for (const net_works& item : tab->m_net)
 		{
@@ -52,7 +56,9 @@ namespace ngl
 			{
 				++lnum;
 				if (lnum > 1)
+				{
 					return false;
+				}
 			}
 		}
 		return true;
@@ -62,7 +68,9 @@ namespace ngl
 	{
 		auto itor = m_kcpnet.find(anum);
 		if (itor == m_kcpnet.end())
+		{
 			return nullptr;
+		}
 		return itor->second;
 	}
 
@@ -76,18 +84,24 @@ namespace ngl
 	bool nets::init(i32_threadsize asocketthreadnum, bool aouternet)
 	{
 		if (check_serverkcp() == false)
+		{
 			return false;
+		}
 
 		const tab_servers* tab = ttab_servers::tab();
 		if (tab == nullptr)
+		{
 			return false;
+		}
 		
 		for (const net_works& item : tab->m_net)
 		{
 			if (item.m_type == ENET_TCP || item.m_type == ENET_WS)
 			{
 				if (m_net[item.m_type] != nullptr)
+				{
 					continue;
+				}
 				auto& lserver = m_net[item.m_type];
 				if (item.m_type == ENET_TCP)
 				{
@@ -175,7 +189,9 @@ namespace ngl
 			{
 				server_session::add(aserverid, asession);
 				if (afun != nullptr)
+				{
 					afun(asession);
+				}
 			}, await, areconnection);
 	}
 
@@ -183,7 +199,9 @@ namespace ngl
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
+		{
 			return false;
+		}
 		return nets::net(lsession)->sendpack(lsession, apack);
 	}
 
@@ -191,7 +209,9 @@ namespace ngl
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
+		{
 			return false;
+		}
 		return nets::net(lsession)->sendpack(lsession, apack);
 	}
 }//namespace ngl

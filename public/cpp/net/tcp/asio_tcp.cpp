@@ -145,7 +145,9 @@ namespace ngl
 				}
 			}
 			if (llist != nullptr && llist->empty() == false)
+			{
 				do_send(tcp, llist);
+			}
 			return true;
 		}
 
@@ -215,7 +217,9 @@ namespace ngl
 						lpos = 0;
 					}
 					if (lsize < 0)
+					{
 						return;
+					}
 					async_send(tcp, alist, lpack, &lpack->m_buff[lpos], lsize);
 				}
 				else
@@ -274,10 +278,14 @@ namespace ngl
 			}
 
 			if (lpservice != nullptr)
+			{
 				m_closefun(sessionid);
+			}
 
 			if (lclosefun != nullptr)
+			{
 				lclosefun();
+			}
 
 			if (lpservice != nullptr)
 			{
@@ -310,7 +318,9 @@ namespace ngl
 			monopoly_shared_lock(m_ipportlock);
 			auto lpair = tools::findmap(m_ipport, assionid);
 			if (lpair == nullptr)
+			{
 				return false;
+			}
 			apair = *lpair;
 			return true;
 		}
@@ -365,9 +375,13 @@ namespace ngl
 					if (!error)
 					{
 						if (!m_fun(aservice.get(), lbuff, (uint32_t)bytes_transferred))
+						{
 							close(aservice.get());
+						}
 						else
+						{
 							start(aservice);
+						}
 					}
 					else
 					{
@@ -406,9 +420,7 @@ namespace ngl
 		m_impl_asio_tcp.make_unique(aindex, athread, acallfun, aclosefun, asendfinishfun);
 	}
 
-	service_tcp* asio_tcp::connect(
-		const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount/* = 5*/
-	)
+	service_tcp* asio_tcp::connect(const str_ip& aip, i16_port aport, const tcp_connectcallback& afun, int acount/* = 5*/)
 	{
 		return m_impl_asio_tcp()->connect(aip, aport, afun, acount).get();
 	}

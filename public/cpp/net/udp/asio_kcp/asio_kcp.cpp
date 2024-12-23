@@ -162,7 +162,9 @@ namespace ngl
 				}
 			}
 			if (aconv <= 0)
+			{
 				return nullptr;
+			}
 			auto ltemp = std::make_shared<session_endpoint>();
 			m_dataofsession[++m_sessionid] = ltemp;
 			ltemp->m_session = m_sessionid;
@@ -208,7 +210,9 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			ptr_se lpstruct = _find(aendpoint);
 			if (lpstruct == nullptr)
+			{
 				return;
+			}
 			auto& lmap = m_dataofendpoint[lpstruct->m_ip];
 			lmap.erase(lpstruct->m_port);
 			if (lmap.empty())
@@ -223,7 +227,9 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			ptr_se lpstruct = _find(asession);
 			if (lpstruct == nullptr)
+			{
 				return;
+			}
 			auto& lmap = m_dataofendpoint[lpstruct->m_ip];
 			lmap.erase(lpstruct->m_port);
 			if (lmap.empty())
@@ -262,7 +268,9 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			auto itor = m_dataofsession.find(asession);
 			if (itor == m_dataofsession.end())
+			{
 				return nullptr;
+			}
 			return itor->second;
 		}
 
@@ -277,7 +285,9 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			ptr_se lpstruct = _find(asession);
 			if (lpstruct == nullptr)
+			{
 				return nullptr;
+			}
 			return &lpstruct->m_endpoint;
 		}
 	};
@@ -306,16 +316,22 @@ namespace ngl
 		)
 		{
 			if (alen < ecmd_minlen)
+			{
 				return false;
+			}
 			if (memcmp(abuf, "ecmd*", ecmd_minlen) != 0)
+			{
 				return false;
+			}
 			try
 			{
 				std::string lecmd;
 				int32_t lnum = 0;
 				std::string ljson;
 				if (tools::splite(abuf, "*", lecmd, lnum, ljson) == false)
+				{
 					return false;
+				}
 				handle_cmd::function((ecmd)lnum, ap, apstruct, ljson);
 				return true;
 			}
@@ -425,19 +441,27 @@ namespace ngl
 
 					i64_actorid lactorid;
 					if (ltempjson.read("actorid", lactorid) == false)
+					{
 						return;
+					}
 					std::string lsession;
 					if (ltempjson.read("session", lsession) == false)
+					{
 						return;
+					}
 					if (ukcp::check_session(lactorid, lsession) == false)
+					{
 						return;
+					}
 
 					apstruct->m_actorid = lactorid;
 
 					log_error()->print("kcp connect : {}@{}", session_endpoint::ip(apstruct.get()), session_endpoint::port(apstruct.get()));
 					
 					if (ap->function_econnect(apstruct, lactorid, true))
+					{
 						udp_cmd::sendcmd(ap->m_kcp, apstruct->m_session, udp_cmd::ecmd_connect_ret, "");
+					}
 				});
 		}
 		//## udp_cmd::ecmd_connect_ret
@@ -512,12 +536,18 @@ namespace ngl
 			lpack->m_head.set_requestactor(apstruct->m_actorid);
 			//lpack->m_segpack = m_segpack;
 			if (EPH_HEAD_SUCCESS != lpack->m_head.push(abuff, abufflen))
+			{
 				return false;
+			}
 			int len = lpack->m_head.getvalue(EPH_BYTES);
 			if (len < 0)
+			{
 				return false;
+			}
 			if (len != abufflen)
+			{
 				return false;
+			}
 			lpack->malloc(len);
 			memcpy(lpack->m_buff, abuff, len);
 			lpack->m_pos = len;
@@ -661,7 +691,9 @@ namespace ngl
 		{
 			ptr_se lpstruct = m_session.find(asessionid);
 			if (lpstruct == nullptr)
+			{
 				return false;
+			}
 
 			send(lpstruct->m_endpoint, apack->m_buff, apack->m_len);
 			return true;
@@ -678,7 +710,9 @@ namespace ngl
 		{
 			ptr_se lpstruct = m_session.find(asessionid);
 			if (lpstruct == nullptr)
+			{
 				return false;
+			}
 
 			send(lpstruct->m_endpoint, buf, len);
 			return true;
@@ -688,7 +722,9 @@ namespace ngl
 		{
 			ptr_se lpstruct = m_session.find(aendpoint);
 			if (lpstruct == nullptr)
+			{
 				return -1;
+			}
 			int ret = lpstruct->send(buf, len);
 			// 快速flush一次 以更快让客户端收到数据
 			lpstruct->flush();
@@ -702,7 +738,9 @@ namespace ngl
 			m_socket.async_send_to(asio::buffer(buf, len), lpstruct->m_endpoint, [](const std::error_code& ec, std::size_t)
 				{
 					if (ec)
+					{
 						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
+					}
 				});
 			return 0;
 		}
@@ -712,7 +750,9 @@ namespace ngl
 			m_socket.async_send_to(asio::buffer(buf, len), aendpoint, [](const std::error_code& ec, std::size_t)
 				{
 					if (ec)
+					{
 						log_error()->print("impl_asio_kcp::sendbuff error [{}]", ec.message());
+					}
 				});
 			return 0;
 		}
@@ -752,7 +792,9 @@ namespace ngl
 		{
 			ptr_se lpstruct = m_session.find(asession);
 			if (lpstruct == nullptr)
+			{
 				return -1;
+			}
 			return lpstruct->m_actorid;
 		}
 
