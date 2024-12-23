@@ -86,10 +86,14 @@ namespace ngl
 			if (itor == m_keyval.end())
 			{
 				if (init_protobufs<TRC>() == false)
+				{
 					Throw("init_protobufs<TRC>() == false");
+				}
 				itor = m_keyval.find(lcode);
 				if (itor == m_keyval.end())
+				{
 					Throw("itor == m_keyval.end()");
+				}
 			}
 			return itor->second;
 		}
@@ -129,7 +133,9 @@ namespace ngl
 		{
 			pinfo* linfo = get(aprotocolnum);
 			if (linfo == nullptr)
+			{
 				return "none";
+			}
 			return linfo->m_name;
 		}
 
@@ -138,7 +144,9 @@ namespace ngl
 		{
 			pinfo* linfo = get(aprotocolnum);
 			if (linfo == nullptr)
+			{
 				return EPROTOCOL_TYPE_ERROR;
+			}
 			return linfo->m_type;
 		}
 
