@@ -37,14 +37,7 @@ namespace ngl
 	// 生成kcp-session以验证连接
 	bool ukcp::create_session(i64_actorid aactorid, std::string& asession)
 	{
-		std::string lkcpsession = sysconfig::kcpsession();
-
-		lkcpsession += '&';
-		lkcpsession += tools::lexical_cast<std::string>(nguid::area(aactorid));
-
-		lkcpsession += '&';
-		lkcpsession += tools::lexical_cast<std::string>(nguid::actordataid(aactorid));
-
+		std::string lkcpsession = std::format("{}&{}&{}", sysconfig::kcpsession(), nguid::area(aactorid), nguid::actordataid(aactorid));
 		asession = tools::md5(lkcpsession);
 		return true;
 	}
@@ -53,7 +46,9 @@ namespace ngl
 	{
 		std::string lsession;
 		if (create_session(aactorid, lsession) == false)
+		{
 			return false;
+		}
 		return asession == lsession;
 	}
 

@@ -33,7 +33,9 @@ namespace ngl
 			if (m_outernet == false)
 			{// # 不允许外网访问
 				if (aislanip == false)
+				{
 					return false;//连接不是内网
+				}
 			}
 			return true;
 		}
@@ -74,13 +76,19 @@ namespace ngl
 				{
 					afun(asession);
 					if (lsem != nullptr)
+					{
 						lsem->post();
+					}
 					if (areconnection)
+					{
 						anetprotocol->set_close(asession, aip, aport, afun);
+					}
 				};
 			anetprotocol->connect(aip, aport, lfun);
 			if (lsem != nullptr)
+			{
 				lsem->wait();
+			}
 			return true;
 		}
 	};
@@ -99,9 +107,7 @@ namespace ngl
 		return m_impl_net_protocol()->m_pool;
 	}
 
-	bool net_protocol::socket_recv(
-		int asessionid, int aislanip, const char* abuff, int32_t abufflen
-	)
+	bool net_protocol::socket_recv(int asessionid, int aislanip, const char* abuff, int32_t abufflen)
 	{
 		return m_impl_net_protocol()->socket_recv(asessionid, aislanip, abuff, abufflen);
 	}
@@ -150,7 +156,9 @@ namespace ngl
 	{
 		i32_sessionid lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
+		{
 			return false;
+		}
 		return net_send(lsession, apack);
 	}
 
@@ -162,11 +170,15 @@ namespace ngl
 		for (auto& item : asession)
 		{
 			if (nets::session2type(item.first) != (ENET_PROTOCOL)m_index)
+			{
 				continue;
+			}
 			apair.first->set_actor(item.second, aactorid);
 			net_send(item.first, apair.first);
 			if (apair.second != nullptr)
+			{
 				net_send(item.first, apair.second);
+			}
 		}
 		return  true;
 	}

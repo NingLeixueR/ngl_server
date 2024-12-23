@@ -27,7 +27,9 @@ namespace ngl
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
+			{
 				return false;
+			}
 			return m_kcp.sendpack(asession, lpack);
 		}
 
@@ -36,7 +38,9 @@ namespace ngl
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
+			{
 				return false;
+			}
 			return m_kcp.sendpack(aendpoint, lpack);
 		}
 	private:
@@ -45,9 +49,13 @@ namespace ngl
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
+			{
 				return false;
+			}
 			for (; abeg != aend; ++abeg)
+			{
 				m_kcp.sendpack(*abeg, lpack);
+			}
 			return true;
 		}
 	public:
@@ -76,7 +84,9 @@ namespace ngl
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&m_pool, adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
+			{
 				return false;
+			}
 			return m_kcp.sendu(aendpoint, lpack->m_buff, lpack->m_len);
 		}
 

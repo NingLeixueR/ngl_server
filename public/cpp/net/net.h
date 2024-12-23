@@ -40,7 +40,9 @@ namespace ngl
 		{
 			i32_session lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
+			{
 				return false;
+			}
 			return sendbysession(lsession, adata, aactorid, arequestactorid);
 		}
 
@@ -52,7 +54,9 @@ namespace ngl
 			{
 				i32_session lsession = server_session::sessionid(iserverid);
 				if (lsession == -1)
+				{
 					continue;
+				}
 				lsessionvec.push_back(lsession);
 			}
 			if (lsessionvec.empty() != true)
@@ -154,11 +158,15 @@ namespace ngl
 		for (i32_sessionid item : asession)
 		{
 			if (nets::session2type(item) != (ENET_PROTOCOL)m_index)
+			{
 				continue;
+			}
 			apair.first->set_actor(aactorid, arequestactorid);
 			net_send(item, apair.first);
 			if (apair.second != nullptr)
+			{
 				net_send(item, apair.second);
+			}
 		}
 		return  true;
 	}
@@ -169,7 +177,9 @@ namespace ngl
 		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> lpair;
 		lpair.first = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
 		if (lpair.first == nullptr)
+		{
 			return std::make_pair<std::shared_ptr<pack>, std::shared_ptr<pack>>(nullptr, nullptr);
+		}
 
 		std::shared_ptr<pack>& lpack_ = forward_pack::get_pack(adata);
 		if (lpack_ != nullptr)
@@ -187,35 +197,29 @@ namespace ngl
 	}
 
 	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendbyserver(
-		i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata
-	)
+	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata)
 	{
 		if (IS_SEND == false)
+		{
 			return true;
+		}
 		return nets::sendbyserver(aserverid, *(T*)adata.m_data.get(), aactorid, arequestactorid);
 	}
 
 	template <typename T>
-	bool handle_pram::netsend(
-		i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid
-	)
+	bool handle_pram::netsend(i32_sessionid asession, T& adata, const nguid& aactorid, const nguid& arequestactorid)
 	{
 		return nets::sendbysession(asession, adata, aactorid.id(), arequestactorid.id());
 	}
 
 	template <typename T>
-	bool actor_base::send_server(
-		i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
-	)
+	bool actor_base::send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>
-	bool actor_base::send_server(
-		const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
-	)
+	bool actor_base::send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
@@ -226,7 +230,9 @@ namespace ngl
 	{
 		i32_session lsession = server_session::sessionid(aserverid);
 		if (lsession == -1)
+		{
 			return false;
+		}
 		return nets::sendpack(lsession, apack);
 	}
 
@@ -258,30 +264,32 @@ namespace ngl
 			return false;
 		}
 		if (iskcp() == false)
+		{
 			return false;
+		}
 
 		nets::kcp(asystemindex)->send(lkcpsession, adata, aactorid, id_guid());
 		return true;
 	}
 
 	template <typename T>
-	bool actor_base::static_sendkcp(
-		i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/
-	)
+	bool actor_base::static_sendkcp(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/)
 	{
 		if (iskcp() == false)
+		{
 			return false;
+		}
 		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
 		return true;
 	}
 
 	template <typename T>
-	bool actor_base::static_sendkcp(
-		const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/
-	)
+	bool actor_base::static_sendkcp(const std::vector<i32_sessionid>& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid, int16_t asystemindex/* = 0*/)
 	{
 		if (iskcp() == false)
+		{
 			return false;
+		}
 		nets::kcp(asystemindex)->send(asession, adata, aactorid, arequestactorid);
 		return true;
 	}
