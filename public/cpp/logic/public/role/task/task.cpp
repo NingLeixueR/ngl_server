@@ -79,7 +79,9 @@ namespace ngl
 		for (task_condition& item : acondition)
 		{
 			if (task_check::check(arole, item) == false)
+			{
 				return false;
+			}
 		}
 		return true;
 	}
@@ -120,17 +122,25 @@ namespace ngl
 	{
 		//## 接收任务前先查看是否已经完成了
 		if (isfinish_task(arole, ataskid))
+		{
 			return;
+		}
 		//## 此任务是否已经被接收
 		if (isreceive_task(arole, ataskid))
+		{
 			return;
+		}
 
 		std::vector<task_condition>* lvec = ttab_task::condition_receive(ataskid);
 		if (lvec == nullptr)
+		{
 			return;
+		}
 
 		if (check_condition(arole, *lvec) == false)
+		{
 			return;
+		}
 
 		arole->m_task.get_consttask();
 		pbdb::db_task::data ltemp;
@@ -148,37 +158,38 @@ namespace ngl
 	{
 		// # 接收任务前先查看是否已经完成了
 		if (isfinish_task(arole, ataskid))
+		{
 			return false;
+		}
 		// # 此任务是否已经接收
 		if (isreceive_task(arole, ataskid) == false)
+		{
 			return false;
+		}
 		std::vector<task_condition>* lvecfinish = ttab_task::condition_complete(ataskid);
 		if (lvecfinish != nullptr && check_condition(arole, *lvecfinish))
 		{
 			auto& lruntask = run(arole);
 			auto itor = lruntask.find(ataskid);
 			if (itor == lruntask.end())
+			{
 				return false;
+			}
 			// # 发送奖励
 			tab_task* tab = ttab_task::tab(ataskid);
 			if (tab == nullptr)
+			{
 				return false;
+			}
 			if (tab->m_autoreceive)
 			{
 				if (tab->m_mailid > 0)
 				{
 					// 发送邮件
-					if (actor_mail::sendmail(arole->id_guid()
-						, tab->m_mailid
-						, tab->m_dropid
-						, ""
-					) == false)
+					if (actor_mail::sendmail(arole->id_guid(), tab->m_mailid, tab->m_dropid, "") == false)
 					{
 						log_error()->print("task[{}] actor_mail::sendmail({},{},{})"
-							, ataskid
-							, arole->id_guid()
-							, tab->m_mailid
-							, tab->m_dropid
+							, ataskid, arole->id_guid(), tab->m_mailid, tab->m_dropid
 						);
 						return false;
 					}
@@ -238,13 +249,17 @@ namespace ngl
 		{
 			std::set<i32_taskid>* ltaskset = ttab_task::check(atype, avalues, true);
 			if (ltaskset == nullptr)
+			{
 				return false;
+			}
 			update_change(arole, atype, ltaskset);
 		}
 		{
 			std::set<i32_taskid>* ltaskset = ttab_task::check(atype, avalues, false);
 			if (ltaskset == nullptr)
+			{
 				return false;
+			}
 			update_change(arole, atype, ltaskset);
 		}
 		return true;
@@ -279,20 +294,28 @@ namespace ngl
 		tabs->foreach([this, lrole](tab_task& atask)
 			{
 				if (static_task::isfinish_task(lrole, atask.m_id))
+				{
 					return;
+				}
 				if (static_task::isreceive_task(lrole, atask.m_id))
 				{
 					// 是否可完成
 					std::vector<task_condition>* lvec = ttab_task::condition_complete(atask.m_id);
 					if (lvec == nullptr)
+					{
 						return;
+					}
 					if (static_task::check_condition(lrole, *lvec) == false)
+					{
 						return;
+					}
 					pbdb::db_task& ldb = lrole->m_task.get_task();
 					
 					auto itor = ldb.mutable_m_rundatas()->find(atask.m_id);
 					if (itor == ldb.mutable_m_rundatas()->end())
+					{
 						return;
+					}
 
 					itor->second.clear_m_schedules();
 					for (auto& item : *lvec)

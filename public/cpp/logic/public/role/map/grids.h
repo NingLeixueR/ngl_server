@@ -138,9 +138,13 @@ namespace ngl
 				idaround_foreach(lcurrent, [&vis, &lset, lcurrent, lfinish, this](int aid)->void
 					{
 						if (vis[aid] == true)
+						{
 							return;
+						}
 						if (is_pass(aid) == false)
+						{
 							return;
+						}
 						m_grid[aid].m_value = distance(this, aid, lfinish);
 						m_grid[aid].m_parent = lcurrent;
 						lset.insert(lessfun::make(aid, m_grid[aid].m_value));

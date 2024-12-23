@@ -64,7 +64,9 @@ namespace ngl
 		bool change_stage(estage astage)
 		{
 			if (m_stage <= astage)
+			{
 				return false;
+			}
 			stage(m_stage, false);
 			m_stage = astage;
 			m_begtm = localtime::gettime();
@@ -126,7 +128,9 @@ namespace ngl
 		{
 			auto lparm = adata.get_data();
 			if (get_constrole.find(lparm->identifier()) != get_constrole.end())
+			{
 				return true;
+			}
 			if (m_tab->m_birthpoint.empty())
 			{
 				log_error()->print("actor_plays::handle(pbnet::PROBUFF_NET_ENTER_PLAYS) m_birthpoint.empty()");

@@ -66,7 +66,9 @@ namespace ngl
 				{
 					itor->second += itor->second * value;
 					if (m_module == EnumModule::E_ModuleRoot)
+					{
 						itor->second = ttab_attribute::uplowlimit(key, itor->second);
+					}
 				}
 			}
 		}
@@ -75,7 +77,9 @@ namespace ngl
 		{
 			tab_attribute* tab = ttab_attribute::attr(atype);
 			if (tab == nullptr)
+			{
 				return 0;
+			}
 			return tab->m_fightcoefficient * avalues;
 		}
 

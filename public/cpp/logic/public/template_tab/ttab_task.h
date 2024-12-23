@@ -78,12 +78,7 @@ namespace ngl
 						log_error()->print("ttab_task m_maxval.find({}) == m_maxval.end()", (int32_t)item.m_type);
 						continue;
 					}
-					set_data(ltask.m_id
-						, item
-						, m_map[item.m_type]
-						, true
-						, m_maxval[item.m_type]
-					);
+					set_data(ltask.m_id, item, m_map[item.m_type], true, m_maxval[item.m_type]);
 				}
 				for (task_condition& item : ltask.m_taskcomplete)
 				{
@@ -92,12 +87,7 @@ namespace ngl
 						log_error()->print("ttab_task taskid[{}] m_maxval.find({}) == m_maxval.end()", ltask.m_id, (int32_t)item.m_type);
 						continue;
 					}
-					set_data(ltask.m_id
-						, item
-						, m_map[item.m_type]
-						, false
-						, m_maxval[item.m_type]
-					);
+					set_data(ltask.m_id, item, m_map[item.m_type], false, m_maxval[item.m_type]);
 				}
 			}
 		}
@@ -115,10 +105,14 @@ namespace ngl
 		{
 			auto itor = m_map.find(atype);
 			if (itor == m_map.end())
+			{
 				return nullptr;
+			}
 			auto itor_set = itor->second.find(avalues);
 			if (itor_set == itor->second.end())
+			{
 				return nullptr;
+			}
 			receive_complete& lpaor = itor_set->second;
 			return aisreceive ? &lpaor.first : &lpaor.second;
 		}
@@ -127,11 +121,15 @@ namespace ngl
 		{
 			std::vector<task_condition>* lvec = condition_receive(ataskid);
 			if (lvec == nullptr)
+			{
 				return nullptr;
+			}
 			for (task_condition& item : *lvec)
 			{
 				if (item.m_type == atype)
+				{
 					return &item;
+				}
 			}
 			return nullptr;
 		}
@@ -141,7 +139,9 @@ namespace ngl
 		{
 			tab_task* table = tab(ataskid);
 			if (table == nullptr)
+			{
 				return nullptr;
+			}
 			return &table->m_taskreceive;
 		}
 
@@ -149,11 +149,15 @@ namespace ngl
 		{
 			std::vector<task_condition>* lvec = condition_complete(ataskid);
 			if (lvec == nullptr)
+			{
 				return nullptr;
+			}
 			for (task_condition& item : *lvec)
 			{
 				if (item.m_type == atype)
+				{
 					return &item;
+				}
 			}
 			return nullptr;
 		}
@@ -163,7 +167,9 @@ namespace ngl
 		{
 			tab_task* table = tab(ataskid);
 			if (table == nullptr)
+			{
 				return nullptr;
+			}
 			return &table->m_taskcomplete;
 		}
 	};

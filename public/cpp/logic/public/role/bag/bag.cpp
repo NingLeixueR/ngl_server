@@ -29,11 +29,17 @@ namespace ngl
 			int32_t tid = itor->second.m_tid();
 			tab_item* tab = ngl::allcsv::tab<tab_item>(tid);
 			if (tab == nullptr)
+			{
 				continue;
+			}
 			if (tab->m_isstack)
+			{
 				m_stackitems.insert(std::make_pair(tid, &itor->second));
+			}
 			else
+			{
 				m_nostackitems.insert(std::make_pair(tid, &itor->second));
+			}
 		}
 	}
 
@@ -48,9 +54,7 @@ namespace ngl
 		{
 			log_error()->print(
 				"add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false", 
-				actor()->id_guid(), 
-				aitem.m_tid(), 
-				aitem.m_id()
+				actor()->id_guid(), aitem.m_tid(), aitem.m_id()
 			);
 			return nullptr;
 		}
@@ -62,11 +66,15 @@ namespace ngl
 	{
 		std::vector<pbdb::item> lvec;
 		if (item_create::create(actor(), atid, acount, lvec) == false)
+		{
 			return false;
+		}
 		int lid = get_constbag().m_maxid();
 		tab_item* tab = ngl::allcsv::tab<tab_item>(atid);
 		if (tab == nullptr)
+		{
 			return false;
+		}
 		for (auto& item : lvec)
 		{
 			if (tab->m_isstack)
@@ -107,7 +115,9 @@ namespace ngl
 	bool bag::add_item(const std::map<int32_t, int32_t>& amap)
 	{
 		for (const auto& [_tid, _count] : amap)
+		{
 			add_item(_tid, _count);
+		}
 		return true;
 	}
 
@@ -127,11 +137,15 @@ namespace ngl
 	{
 		auto itor = m_stackitems.find(atid);
 		if (itor == m_stackitems.end())
+		{
 			return false;
+		}
 		int lcount = itor->second->m_count();
 		lcount -= acount;
 		if (acount < 0)
+		{
 			return false;
+		}
 		m_autoitem->del(atid, acount);
 		if (acount == 0)
 		{
@@ -148,12 +162,18 @@ namespace ngl
 	{
 		auto itor = m_nostackitems.find(aid);
 		if (itor == m_nostackitems.end())
+		{
 			return false;
+		}
 		tab_item* tab = ngl::allcsv::tab<tab_item>(itor->second->m_tid());
 		if (tab == nullptr)
+		{
 			return false;
+		}
 		if (tab->m_isstack)
+		{
 			return false;
+		}
 		m_nostackitems.erase(itor);
 		m_autoitem->del(aid);
 		return true;
@@ -163,7 +183,9 @@ namespace ngl
 	{
 		auto itor = m_stackitems.find(atid);
 		if (itor == m_stackitems.end())
+		{
 			return false;
+		}
 		return acount >= itor->second->m_count();
 	}
 

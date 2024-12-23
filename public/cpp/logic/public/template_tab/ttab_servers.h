@@ -29,7 +29,9 @@ namespace ngl
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			if (ttab == nullptr)
+			{
 				return nullptr;
+			}
 			auto itor = ttab->m_tablecsv.find(aserverid);
 			return &itor->second;
 		}
@@ -46,7 +48,9 @@ namespace ngl
 			for (const std::pair<const int, tab_servers>& item : ttab->m_tablecsv)
 			{
 				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
+				{
 					return &item.second;
+				}
 			}
 			return nullptr;
 		}
@@ -56,7 +60,9 @@ namespace ngl
 			for (auto& item : atab->m_net)
 			{
 				if (item.m_type == atype)
+				{
 					return &item;
+				}
 			}
 			return nullptr;
 		}
@@ -71,7 +77,9 @@ namespace ngl
 			//nconfig::m_nodeid
 			const tab_servers* ltab =  tab();
 			if (ltab == nullptr)
+			{
 				return nullptr;
+			}
 			return nworks(atype, ltab);
 		}
 
@@ -79,7 +87,9 @@ namespace ngl
 		{
 			const tab_servers* ltab = tab(aname, area, atcount);
 			if (ltab == nullptr)
+			{
 				return nullptr;
+			}
 			return nworks(atype, ltab);
 		}
 
@@ -100,7 +110,9 @@ namespace ngl
 			for (const net_works& item1 : ltab1->m_net)
 			{
 				if (isefficient(item1.m_type) == false)
+				{
 					continue;
+				}
 				for (const net_works& item2 : ltab2->m_net)
 				{
 					if (item1.m_type == item2.m_type)
@@ -137,7 +149,9 @@ namespace ngl
 			for (const std::pair<const int, tab_servers>& pair : ttab->m_tablecsv)
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
+				{
 					return &pair.second;
+				}
 			}
 			return nullptr;
 		}
@@ -162,21 +176,31 @@ namespace ngl
 			{
 				const std::set<i16_area>* lset = tools::findmap(lmap, aarea);
 				if (lset != nullptr)
+				{
 					return lset;
+				}
 				std::set<i16_area>& ltempset = lmap[aarea];
 				auto itor = m_areaofserver.find(aarea);
 				if (itor == m_areaofserver.end())
+				{
 					return nullptr;
+				}
 				if (itor->second.empty())
+				{
 					return nullptr;
+				}
 				const tab_servers* ltab = *itor->second.begin();
 				if (ltab == nullptr)
+				{
 					return nullptr;
+				}
 				for (i32_serverid itemid : ltab->m_actorserver)
 				{
 					const tab_servers* tabactor = tab(itemid);
 					if (ltab == nullptr)
+					{
 						continue;
+					}
 					ltempset.insert(tabactor->m_area);
 				}
 				return &ltempset;
@@ -201,7 +225,9 @@ namespace ngl
 			for (const auto& [_area, _vec] : m_areaofserver)
 			{
 				if (larea->find(_area) == larea->end())
+				{
 					continue;
+				}
 				for (const tab_servers* iserver : _vec)
 				{
 					if (atype == FAIL)
@@ -229,7 +255,9 @@ namespace ngl
 		{
 			std::vector<tab_servers*>* litem = tools::findmap(m_areaofserver, tab()->m_area);
 			if (litem == nullptr)
+			{
 				return nullptr;
+			}
 			for (tab_servers* iserver : *litem)
 			{
 				if (iserver->m_type == atype && afun(iserver))
@@ -245,7 +273,9 @@ namespace ngl
 		{
 			const tab_servers* ltab = tab(aserverid);
 			if (ltab == nullptr)
+			{
 				return nullptr;
+			}
 			return get_area(ltab->m_area);
 		}
 	};

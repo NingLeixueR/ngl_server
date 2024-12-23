@@ -74,11 +74,15 @@ namespace ngl
 		{
 			auto itor = m_data.find(acalendar);
 			if (itor == m_data.end())
+			{
 				return -1;
+			}
 			if (atime == -1)
 			{
 				if (itor->second.m_utc.empty())
+				{
 					return -1;
+				}
 				else
 				{
 					return *itor->second.m_utc.begin();
@@ -119,10 +123,14 @@ namespace ngl
 			int hour = 0;
 			int minute = 0;
 			int second = 0;
-			if(tools::splite(astr, ":", hour, minute, second) == false)
+			if (tools::splite(astr, ":", hour, minute, second) == false)
+			{
 				return std::make_pair(false, -1);
+			}
 			if (hour == -1 || minute == -1 || second == -1)
-				return std::make_pair(false,-1);
+			{
+				return std::make_pair(false, -1);
+			}
 			return std::make_pair(true, hour * localtime::HOUR_SECOND + minute * localtime::MINUTES_SECOND + second);
 		}
 
@@ -204,7 +212,9 @@ namespace ngl
 				int32_t lbeg = (int32_t)localtime::str2time(item.m_opentime.c_str(), "%Y-%m-%d %H:%M:%S");
 				int32_t lclose = (int32_t)localtime::str2time(item.m_closetime.c_str(), "%Y-%m-%d %H:%M:%S");
 				if (lnow > lclose)
+				{
 					continue;
+				}
 				m_data[aid].add(lbeg, lclose);
 			}
 			printf_time(aid);
@@ -222,12 +232,16 @@ namespace ngl
 		{
 			data* lpdata = tools::findmap(m_data, aid);
 			if (lpdata == nullptr)
+			{
 				return false;
+			}
 			int32_t lnow = (int32_t)localtime::gettime();
 			for (int64_t item : lpdata->m_utc)
 			{
 				if (lnow >= data::beg(item) && lnow <= data::end(item))
+				{
 					return true;
+				}
 			}
 			return false;
 		}

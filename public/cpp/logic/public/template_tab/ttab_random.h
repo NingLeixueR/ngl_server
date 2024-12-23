@@ -17,13 +17,19 @@ namespace ngl
 		{
 			tab_random* tab = find(aid);
 			if (tab == nullptr)
+			{
 				return false;
+			}
 			if (aset.insert(tab->m_id).second == false)
+			{
 				return false;
+			}
 			for (int32_t id : tab->m_childrandomids)
 			{
 				if (is_loop(id, aset) == false)
+				{
 					return false;
+				}
 			}
 			return true;
 		}
