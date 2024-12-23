@@ -9,9 +9,13 @@ namespace ngl
 		{
 			pbdb::mail* ltemp = get_mail(aroleid, aid);
 			if (ltemp == nullptr)
+			{
 				return false;
+			}
 			if (ltemp->m_draw() == true)
+			{
 				return false;
+			}
 			auto pro = std::make_shared<np_actor_senditem>();
 			for (int i = 0; i < ltemp->m_items_size(); ++i)
 			{

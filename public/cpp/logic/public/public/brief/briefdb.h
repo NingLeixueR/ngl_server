@@ -31,7 +31,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -39,7 +41,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 

@@ -27,7 +27,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst().m_mail();
 		}
 
@@ -35,7 +37,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return itor->second.get(achange).mutable_m_mail();
 		}
 
@@ -43,7 +47,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -58,7 +64,9 @@ namespace ngl
 				for (const auto& [_id, _mail] : _mails.getconst().m_mail())
 				{
 					if (lid < _id)
+					{
 						lid = _id;
+					}
 					(*lstream) << std::format(
 						"+mailid:{}\n"
 						"+tid:{}\n"
@@ -131,17 +139,13 @@ namespace ngl
 			return true;
 		}
 
-		bool addmail(
-			i64_actorid aroleid, int atid,const std::map<int32_t, int32_t>& aitem, const std::string& aparm = ""
-		)
+		bool addmail(i64_actorid aroleid, int atid,const std::map<int32_t, int32_t>& aitem, const std::string& aparm = "")
 		{
 			return addmail(aroleid, atid, aitem, "", aparm);
 		}
 
 
-		bool addmail(
-			i64_actorid aroleid, const std::map<int32_t, int32_t>& aitem, const std::string& acontent
-		)
+		bool addmail(i64_actorid aroleid, const std::map<int32_t, int32_t>& aitem, const std::string& acontent)
 		{
 			return addmail(aroleid, -1, aitem, acontent, "");
 		}
@@ -166,7 +170,9 @@ namespace ngl
 		{
 			google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
 			if (lmap == nullptr)
+			{
 				return;
+			}
 
 			std::vector<int32_t> ldellist;
 			for (const auto& [_id, _mail] : *lmap)
@@ -180,7 +186,9 @@ namespace ngl
 			for (int32_t _id : ldellist)
 			{
 				if (_id != -1)
+				{
 					afun(_id);
+				}
 			}
 		}
 
@@ -190,7 +198,9 @@ namespace ngl
 			{
 				pbdb::mail* ltemp = get_mail(aroleid, aid);
 				if (ltemp == nullptr)
+				{
 					return false;
+				}
 				ltemp->set_m_read(true);
 			}
 			else
@@ -211,7 +221,9 @@ namespace ngl
 			{
 				pbdb::mail* ltemp = get_mail(aroleid, aid);
 				if (ltemp == nullptr)
+				{
 					return false;
+				}
 				if (acheckdrawread)
 				{
 					if (ltemp->m_draw() == false || ltemp->m_read() == false)
@@ -222,7 +234,9 @@ namespace ngl
 				
 				google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
 				if (lmap == nullptr)
+				{
 					return false;
+				}
 
 				lmap->erase(aid);
 			}
@@ -236,9 +250,7 @@ namespace ngl
 			return true;
 		}
 
-		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(
-			i64_actorid aroleid, i64_actorid amailid = -1
-		)
+		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
 		{
 			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid); 
 			if (lpmap == nullptr)

@@ -77,13 +77,17 @@ namespace ngl
 				{
 					int64_t roleid = 0;
 					if (aos.read("data", roleid) == false)
+					{
 						return;
+					}
 					gcmd<std::string> pro;
 					pro.id = id;
 					pro.m_operator = "get_mails_responce";
 					const pbdb::db_mail* ldb = m_mails.get_db_mail(roleid);
 					if (ldb == nullptr)
+					{
 						return;
+					}
 					serialize::proto_json(*ldb, pro.m_data);
 					pro.m_istoutf8 = false;
 				}
@@ -106,7 +110,9 @@ namespace ngl
 					// ·µ»Ø bool
 					gm_mail recv;
 					if (aos.read("data", recv) == false)
+					{
 						return;
+					}
 					std::map<int32_t, int32_t> litem;
 					for (gm_mailitem& gmailitem : recv.m_items)
 					{
@@ -135,7 +141,9 @@ namespace ngl
 					};
 					gm_deletemail ldelmail;
 					if (aos.read("data", ldelmail) == false)
+					{
 						return;
+					}
 					gcmd<bool> pro;
 					pro.id = id;
 					pro.m_operator = "del_mail_responce";
@@ -157,11 +165,15 @@ namespace ngl
 		auto lparm = adata.get_data();
 		const pbnet::PROBUFF_NET_MAIL_LIST* lpdata = lparm->data();
 		if (lpdata == nullptr)
+		{
 			return true;
+		}
 		i64_actorid roleid = lparm->identifier();
 		auto pro = m_mails.sync_mail(roleid);
 		if (pro == nullptr)
+		{
 			return true;
+		}
 		send_client(roleid, pro);
 		return true;
 	}
@@ -171,7 +183,9 @@ namespace ngl
 		auto lparm = adata.get_data();
 		const pbnet::PROBUFF_NET_MAIL_READ* lpdata = lparm->data();
 		if (lpdata == nullptr)
+		{
 			return true;
+		}
 		pbnet::PROBUFF_NET_MAIL_READ_RESPONSE pro;
 		pro.set_m_mailid(lpdata->m_mailid());
 		pro.set_m_stat(m_mails.readmail(lparm->identifier(), lpdata->m_mailid()));
@@ -183,7 +197,9 @@ namespace ngl
 		auto lparm = adata.get_data();
 		const pbnet::PROBUFF_NET_MAIL_DRAW* lpdata = lparm->data();
 		if (lpdata == nullptr)
+		{
 			return true;
+		}
 		pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE pro;
 		pro.set_m_mailid(lpdata->m_mailid());
 		pro.set_m_stat(m_mails.drawmail(lparm->identifier(), lpdata->m_mailid()));
@@ -195,7 +211,9 @@ namespace ngl
 		auto lparm = adata.get_data();
 		const pbnet::PROBUFF_NET_MAIL_DEL* lpdata = lparm->data();
 		if (lpdata == nullptr)
+		{
 			return true;
+		}
 		pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE pro;
 		pro.set_m_mailid(lpdata->m_mailid());
 		pro.set_m_stat(m_mails.delmail(lparm->identifier(), lpdata->m_mailid()));

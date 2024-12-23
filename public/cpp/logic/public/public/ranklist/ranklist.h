@@ -132,7 +132,9 @@ namespace ngl
 			{
 				auto itor = m_rankdata.find(aitem);
 				if (itor == m_rankdata.end())
+				{
 					return nullptr;
+				}
 				return *itor;
 			}
 
@@ -194,7 +196,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -202,7 +206,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 
@@ -343,8 +349,10 @@ namespace ngl
 			int32_t lcount = m_ranks[atype]->getpage(apage, aeverynum, [&pro](int32_t aindex, const rank_item* aitem)
 				{
 					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
-					if(lpbrief != nullptr)
+					if (lpbrief != nullptr)
+					{
 						*pro->add_m_items() = *lpbrief;
+					}
 				});
 			pro->set_m_count(lcount);
 			return pro;

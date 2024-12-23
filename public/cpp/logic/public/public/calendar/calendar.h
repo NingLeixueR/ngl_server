@@ -34,11 +34,15 @@ namespace ngl
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 			auto itor = lmap->find(acalendarid);
 			if (itor == lmap->end())
+			{
 				return;
+			}
 			pbdb::db_calendar& lcalendar = itor->second.get();
 			int64_t ltime = ttab_calendar::net_calendar(acalendarid, atime);
 			if (ltime <= 0)
+			{
 				return;
+			}
 			lcalendar.set_m_id(acalendarid);
 			lcalendar.set_m_time(ltime);
 			lcalendar.set_m_finish(false);
@@ -51,7 +55,9 @@ namespace ngl
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 			auto itor = lmap->find(acalendarid);
 			if (itor == lmap->end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 
@@ -61,7 +67,9 @@ namespace ngl
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 			auto itor = lmap->find(acalendarid);
 			if (itor == lmap->end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -96,10 +104,14 @@ namespace ngl
 
 				pbdb::db_calendar* itemcalendar = get_calendar(item.first.id());
 				if (itemcalendar == nullptr)
+				{
 					continue;
+				}
 				tab_calendar* tab = ttab_calendar::tab(item.first);
 				if (tab == nullptr)
+				{
 					continue;
+				}
 
 				if (lcalendar.m_start() == false && lnow >= lbeg)
 				{
@@ -129,17 +141,15 @@ namespace ngl
 					pbdb::db_calendar lcalendar;
 					int64_t ltime = ttab_calendar::net_calendar(item.first, -1);
 					if (ltime <= 0)
+					{
 						continue;
+					}
 					lcalendar.set_m_id(item.first);
 					lcalendar.set_m_time(ltime);
 					lcalendar.set_m_finish(false);
 					lcalendar.set_m_start(false);
 					add(item.first, lcalendar);
-					ttab_calendar::post(
-						ttab_calendar::tab(item.first), 
-						ltime, 
-						*get_calendar(item.first)
-					);
+					ttab_calendar::post(ttab_calendar::tab(item.first), ltime, *get_calendar(item.first));
 				}
 			}
 		}

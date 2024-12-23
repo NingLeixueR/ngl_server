@@ -72,7 +72,9 @@ namespace ngl
 				{
 					std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
 					if (lmember == nullptr)
+					{
 						return;
+					}
 					actor::static_send_actor(*lmember, actorid(), adata.get_shared_data());
 				});
 		}

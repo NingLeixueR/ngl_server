@@ -9,11 +9,17 @@ namespace ngl
 	int32_t family::create_family(i64_actorid aroleid, const std::string& aname)
 	{
 		if (m_rolefamily.find(aroleid) != m_rolefamily.end())
+		{
 			return 1;
+		}
 		if (actor()->m_familyer.check_createfamily(aroleid) == false)
+		{
 			return 2;
+		}
 		if (m_familyname.contains(aname))
+		{
 			return 3;
+		}
 		pbdb::db_family ldbfamily;
 		++m_maxid;
 
@@ -275,7 +281,9 @@ namespace ngl
 		if (aroleid != -1)
 		{
 			if (lpconstfamily->m_leader() != aroleid)
+			{
 				return 2;
+			}
 		}
 		pbdb::db_family* lpfamily = get_family(afamilyid);
 		if (lpfamily == nullptr)
@@ -349,14 +357,20 @@ namespace ngl
 	{
 		int64_t* lfamilyid = tools::findmap(m_rolefamily, aroleid);
 		if (lfamilyid == nullptr)
+		{
 			return false;
+		}
 		pbdb::db_family* lpfamily = get_family(*lfamilyid);
 		if (lpfamily == nullptr)
+		{
 			return false;
+		}
 		std::ranges::for_each(lpfamily->m_member(), [&afamilyers, aroleid](const int64_t afamilyer)
 			{
 				if (afamilyer == aroleid)
+				{
 					return;
+				}
 				afamilyers.push_back(afamilyer);
 			});
 		return !afamilyers.empty();

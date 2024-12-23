@@ -28,7 +28,9 @@ namespace ngl
 			acalendar->set_m_time(atime);
 			auto itor = m_fun.find(tab->m_carendar);
 			if (itor == m_fun.end())
+			{
 				return;
+			}
 			itor->second.m_start(tab, atime);
 			acalendar->set_m_start(true);
 		}
@@ -37,7 +39,9 @@ namespace ngl
 		{
 			auto itor = m_fun.find(tab->m_carendar);
 			if (itor == m_fun.end())
+			{
 				return;
+			}
 			itor->second.m_finish(tab, atime);
 			acalendar->set_m_finish(true);
 		}

@@ -72,7 +72,9 @@ namespace ngl
 						pro->m_roleid = aroleid;
 						pro->m_tid = _data.m_mailid;
 						if (drop::droplist(_data.m_dropid, 1, pro->m_items) == false)
+						{
 							continue;
+						}
 						actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
 
 						// 记录已领取

@@ -153,7 +153,9 @@ namespace ngl
 					};
 					gm_changename recv;
 					if (aos.read("data", recv) == false)
+					{
 						return;
+					}
 					gcmd<bool> pro;
 					pro.id = id;
 					pro.m_operator = "change_familyname_responce";
@@ -166,7 +168,9 @@ namespace ngl
 				{
 					int64_t familid = 0;
 					if (aos.read("data", familid) == false)
+					{
 						return;
+					}
 					gcmd<std::string> pro;
 					pro.id = id;
 					pro.m_operator = "get_family_responce";
