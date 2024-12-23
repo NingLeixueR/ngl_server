@@ -53,9 +53,13 @@ namespace ngl
 			if (ltemp < 0)
 			{
 				if (astart)
+				{
 					start();
+				}
 				else
+				{
 					finish();
+				}
 			}
 			else
 			{

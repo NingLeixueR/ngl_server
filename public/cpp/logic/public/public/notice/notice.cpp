@@ -17,7 +17,9 @@ namespace ngl
 		}
 		auto itor = get_notice()->find(aactorid);
 		if (itor == get_notice()->end())
+		{
 			return nullptr;
+		}
 		
 		*pro->add_m_notices() = itor->second.getconst();
 		return pro;

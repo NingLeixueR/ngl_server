@@ -64,13 +64,17 @@ namespace ngl
 		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			if (m_distribute.find(akey) == m_distribute.end())
+			{
 				return false;
+			}
 			int lservertype = 0;
 			if (aos.read("data", lservertype))
 			{
 				const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
 				if (tab == nullptr)
+				{
 					return false;
+				}
 				if (ttab_servers::tab()->m_id != tab->m_id)
 				{
 					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
@@ -107,7 +111,9 @@ namespace ngl
 						ENUM_ACTOR ltype;
 						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
 						if (ltype == em<ENUM_ACTOR>::enum_null())
+						{
 							return;
+						}
 						ngl::json_write lwritejson;
 						lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 						ngl::np_gm_response lresponse;
@@ -125,7 +131,9 @@ namespace ngl
 					{
 						const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
 						if (tab == nullptr)
+						{
 							return;
+						}
 						if (ttab_servers::tab()->m_id == tab->m_id)
 						{
 							actor_gmclient::protocols pro;
@@ -150,7 +158,9 @@ namespace ngl
 						ENUM_ACTOR ltype;
 						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
 						if (ltype == em<ENUM_ACTOR>::enum_null())
+						{
 							return;
+						}
 						nguid::make(ltype, lguid.m_area, lguid.m_dataid);
 						auto pro = std::make_shared<np_actor_close>();
 						agm->send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);

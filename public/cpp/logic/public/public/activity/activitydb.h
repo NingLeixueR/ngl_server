@@ -25,7 +25,9 @@ namespace ngl
 		{
 			auto itor = data().find(aactivity);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -33,7 +35,9 @@ namespace ngl
 		{
 			auto itor = data().find(aactivity);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 

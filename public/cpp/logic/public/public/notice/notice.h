@@ -57,7 +57,9 @@ namespace ngl
 
 			auto pro = sync_notice(m_maxid);
 			if (pro == nullptr)
+			{
 				return;
+			}
 			actor::send_allclient(pro);
 		}
 

@@ -27,7 +27,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -35,7 +37,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 
@@ -54,7 +58,9 @@ namespace ngl
 			lfamilyer.set_m_position(pbdb::db_familyer_eposition_none);
 			auto lptemp = add(aroleid, lfamilyer);
 			if (lptemp == nullptr)
+			{
 				return nullptr;
+			}
 			return &lptemp->get();
 		}
 
@@ -110,7 +116,9 @@ namespace ngl
 		{
 			auto itor = data().find(afamilyid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -118,7 +126,9 @@ namespace ngl
 		{
 			auto itor = data().find(afamilyid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 

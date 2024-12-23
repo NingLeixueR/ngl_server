@@ -35,9 +35,7 @@ namespace ngl
 		timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
-			log_error()->print(
-				"actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!"
-			);
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		set_timer(tparm);			
@@ -46,7 +44,9 @@ namespace ngl
 	bool actor_chat::timer_handle(const message<timerparm>& adata)
 	{
 		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
+		{
 			return true;
+		}
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
 		pro->set_m_stat(true);
 		pro->set_m_type(pbnet::updata_speck);
@@ -93,7 +93,9 @@ namespace ngl
 			
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_chat>::get(adata.get_data()->identifier());
 			if (lpbrief == nullptr)
+			{
 				return true;
+			}
 
 			std::list<pbnet::chatitem>& lvec = m_update_chatitem[recv.m_channelid()];
 			lvec.push_back(pbnet::chatitem());

@@ -44,12 +44,7 @@ namespace ngl
 		int32_t		m_starttime;// 开始时间
 		int32_t		m_finishtime;// 结束时间
 
-		jsonfunc(
-			"id", m_id, 
-			"notice", m_notice, 
-			"starttime", m_starttime, 
-			"finishtime", m_finishtime
-		)
+		jsonfunc("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
 	};
 
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
@@ -85,7 +80,9 @@ namespace ngl
 					// 返回 bool
 					gm_notice recv;
 					if (aos.read("data", recv) == false)
+					{
 						return;
+					}
 					gcmd<bool> pro;
 					pro.id = id;
 					pro.m_operator = "add_notice_responce";
@@ -98,7 +95,9 @@ namespace ngl
 					// 返回 bool
 					int64_t lid = 0;
 					if (aos.read("data", lid) == false)
+					{
 						return;
+					}
 					gcmd<bool> pro;
 					pro.id = id;
 					pro.m_operator = "del_notice_responce";

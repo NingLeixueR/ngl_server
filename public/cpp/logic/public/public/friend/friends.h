@@ -27,7 +27,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.getconst();
 		}
 
@@ -35,7 +37,9 @@ namespace ngl
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
+			{
 				return nullptr;
+			}
 			return &itor->second.get(achange);
 		}
 
@@ -60,29 +64,47 @@ namespace ngl
 		{
 			const pbdb::db_friends* lrolefriendconst = get_constfriends(aroleid);
 			if (lrolefriendconst == nullptr)
+			{
 				return 1;
+			}
 			const pbdb::db_friends* lfriendconst = get_constfriends(afriends);
 			if (lfriendconst == nullptr)
+			{
 				return 2;
+			}
 			if (lrolefriendconst->m_friends_size() >= ttab_specialid::m_friendscount)
+			{
 				return 3;
+			}
 			if (lfriendconst->m_applyfriends_size() >= ttab_specialid::m_friendsapplylistcount)
+			{
 				return 4;
+			}
 			auto itorrole = std::find(lrolefriendconst->m_friends().begin(), lrolefriendconst->m_friends().end(), afriends);
 			if (itorrole != lrolefriendconst->m_friends().end())
+			{
 				return 5;
+			}
 			auto itorrole2 = std::find(lrolefriendconst->m_applyfriends().begin(), lrolefriendconst->m_applyfriends().end(), afriends);
 			if (itorrole2 != lrolefriendconst->m_applyfriends().end())
+			{
 				return 6;
+			}
 			auto itorfriend = std::find(lfriendconst->m_friends().begin(), lfriendconst->m_friends().end(), aroleid);
 			if (itorrole != lfriendconst->m_friends().end())
+			{
 				return 7;
+			}
 			auto itorfriend2 = std::find(lfriendconst->m_applyfriends().begin(), lfriendconst->m_applyfriends().end(), aroleid);
 			if (itorfriend2 != lfriendconst->m_applyfriends().end())
+			{
 				return 8;
+			}
 			pbdb::db_friends* lfriend = get_friends(afriends);
 			if (lfriend == nullptr)
+			{
 				return 9;
+			}
 			lfriend->add_m_applyfriends(aroleid);
 			return 0;
 		}
@@ -92,23 +114,37 @@ namespace ngl
 		{
 			const pbdb::db_friends* lrolefriendconst = get_constfriends(aroleid);
 			if (lrolefriendconst == nullptr)
+			{
 				return 1;
+			}
 			const pbdb::db_friends* lfriendconst = get_constfriends(afriends);
 			if (lfriendconst == nullptr)
+			{
 				return 2;
+			}
 			if (lrolefriendconst->m_friends_size() >= ttab_specialid::m_friendscount)
+			{
 				return 3;
+			}
 			if (lfriendconst->m_friends_size() >= ttab_specialid::m_friendscount)
+			{
 				return 4;
+			}
 			pbdb::db_friends* lrolefriend = get_friends(aroleid);
 			if (lrolefriend == nullptr)
+			{
 				return 5;
+			}
 			pbdb::db_friends* lfriend = get_friends(afriends);
 			if (lfriend == nullptr)
+			{
 				return 6;
+			}
 			auto itor = std::find(lrolefriend->mutable_m_applyfriends()->begin(), lrolefriend->mutable_m_applyfriends()->end(), afriends);
 			if (itor == lrolefriend->mutable_m_applyfriends()->end())
+			{
 				return 7;
+			}
 			lrolefriend->mutable_m_applyfriends()->erase(itor);
 			lrolefriend->add_m_friends(afriends);
 			lfriend->add_m_friends(afriends);
@@ -121,18 +157,26 @@ namespace ngl
 		{
 			pbdb::db_friends* lrolefriend = get_friends(aroleid);
 			if (lrolefriend == nullptr)
+			{
 				return 1;
+			}
 			pbdb::db_friends* lfriend = get_friends(afriends);
 			if (lfriend == nullptr)
+			{
 				return 2;
+			}
 			auto itor = std::find(lrolefriend->mutable_m_friends()->begin(), lrolefriend->mutable_m_friends()->end(), afriends);
 			if (itor == lrolefriend->mutable_m_friends()->end())
+			{
 				return 3;
+			}
 			lrolefriend->mutable_m_friends()->erase(itor);
 
 			auto itor2 = std::find(lfriend->mutable_m_friends()->begin(), lfriend->mutable_m_friends()->end(), afriends);
 			if (itor == lrolefriend->mutable_m_friends()->end())
+			{
 				return 4;
+			}
 			lrolefriend->mutable_m_friends()->erase(itor);
 			return 0;
 		}
@@ -164,7 +208,9 @@ namespace ngl
 		{
 			const pbdb::db_friends* ldbfriends = get_constfriends(aroleid);
 			if (ldbfriends == nullptr)
+			{
 				return false;
+			}
 			std::ranges::for_each(ldbfriends->m_friends(), [&afriends](i64_actorid aactorid)
 				{
 					afriends.push_back(aactorid);
