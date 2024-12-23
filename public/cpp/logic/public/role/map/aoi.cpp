@@ -67,14 +67,20 @@ namespace ngl
 		{
 			int ltempx = ltx + i;
 			if (ltempx < 0 || ltempx >= m_nx)
+			{
 				continue;
+			}
 			for (int j = 0; j < 3; ++j)
 			{
 				int ltempy = lty + j;
 				if (ltempy < 0 || ltempy >= m_ny)
+				{
 					continue;
+				}
 				if (ltempx != lx && ltempy != ly)
+				{
 					avec.insert(id(ltempx, ltempy));
+				}
 			}
 		}
 	}
@@ -96,7 +102,9 @@ namespace ngl
 		for (int32_t lid : lvec)
 		{
 			if (afun(lid) == true)
+			{
 				return;
+			}
 		}
 	}
 

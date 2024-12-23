@@ -30,7 +30,9 @@ namespace ngl
 		{
 			auto itor = m_moduledata.find(aenum);
 			if (itor == m_moduledata.end())
+			{
 				return;
+			}
 			for (const auto& [key, value] : itor->second.m_crattr)
 			{
 				ttab_attribute::add(m_moduledata[key].m_orattr, value);
@@ -41,13 +43,17 @@ namespace ngl
 		{
 			auto itor = m_moduledata.find(aenum);
 			if (itor == m_moduledata.end())
+			{
 				return;
+			}
 			ttab_attribute::dec(root().m_attr, itor->second.m_fight);
 			for (const auto& [key, value] : itor->second.m_crattr)
 			{
 				ttab_attribute::dec(m_moduledata[key].m_orattr, value);
 				if (key != EnumModule::E_ModuleRoot)
+				{
 					ttab_attribute::dec(root().m_attr, m_moduledata[key].m_fight);
+				}
 			}
 		}
 
@@ -65,7 +71,9 @@ namespace ngl
 		{
 			auto itor = m_moduledata.find(aenum);
 			if (itor == m_moduledata.end())
+			{
 				return;
+			}
 			itor->second.update();
 			ttab_attribute::add(root().m_attr, itor->second.m_fight);
 			for (const auto& [key, value] : itor->second.m_crattr)

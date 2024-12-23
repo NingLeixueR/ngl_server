@@ -16,7 +16,9 @@ namespace ngl
 	bool grids::enter(unit* aunit, int32_t agid)
 	{
 		if (agid >= m_grid.size())
+		{
 			return false;
+		}
 		return m_grid[agid].enter(aunit);
 	}
 
@@ -28,14 +30,18 @@ namespace ngl
 	void grids::leave(unit* aunit, int32_t agid)
 	{
 		if (agid >= m_grid.size())
+		{
 			return;
+		}
 		return m_grid[agid].leave(aunit);
 	}
 
 	grid* grids::get_grid(int32_t agid)
 	{
 		if (agid >= m_grid.size())
+		{
 			return nullptr;
+		}
 		return &m_grid[agid];
 	}
 
@@ -43,7 +49,9 @@ namespace ngl
 	{
 		uint32_t agid = id(ax, ay);
 		if (agid >= m_grid.size())
+		{
 			return nullptr;
+		}
 		return &m_grid[agid];
 	}
 }

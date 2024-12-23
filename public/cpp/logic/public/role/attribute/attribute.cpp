@@ -22,7 +22,9 @@ namespace ngl
 			j = (EnumModule)(j+1))
 		{
 			if (j == EnumModule::E_ModuleNull)
+			{
 				continue;
+			}
 			lvalue.set_father_rattr(j, EnumAttribute::E_Attack, avalues / 100);
 			lvalue.set_father_rattr(j, EnumAttribute::E_Anger, avalues / 100);
 			lvalue.set_father_rattr(j, EnumAttribute::E_Defense, avalues / 100);

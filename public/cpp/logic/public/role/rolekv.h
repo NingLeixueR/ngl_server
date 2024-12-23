@@ -51,7 +51,9 @@ namespace ngl
 		{
 			std::string ltemp;
 			if (value(akey, ltemp) == false)
+			{
 				return false;
+			}
 			adata = tools::lexical_cast<T>(ltemp);
 			return true;
 		}
@@ -101,7 +103,9 @@ namespace ngl
 		{
 			std::string ltemp;
 			if (value(akey, ltemp) == false)
+			{
 				return false;
+			}
 			json_read ljread(ltemp.c_str());
 			return ljread.read(arg...);
 		}

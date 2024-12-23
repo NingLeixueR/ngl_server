@@ -33,7 +33,9 @@ namespace ngl
 	{
 		auto itor = m_memberlist.find(aroleid);
 		if (itor == m_memberlist.end())
+		{
 			return nullptr;
+		}
 		return &itor->second;
 	}
 
@@ -41,7 +43,9 @@ namespace ngl
 	{
 		const pbdb::db_brief* lpbrief = actor_matching::nclient::get(aroleid);
 		if (lpbrief == nullptr)
+		{
 			return false;
+		}
 		amember.set_m_id(aroleid);
 		amember.set_m_begmatch(localtime::gettime());
 		amember.set_m_name(lpbrief->m_name());
@@ -53,10 +57,14 @@ namespace ngl
 	bool room::try_addroom(i64_actorid aroleid)
 	{
 		if (is_roomfull())
+		{
 			return false;
+		}
 		auto itor = m_memberlist.find(aroleid);
 		if (m_memberlist.contains(aroleid))
+		{
 			return false;
+		}
 		pbnet::MATCHING_MEMBER& ldata = m_memberlist[aroleid];
 		if (initmember(aroleid, ldata) == false)
 		{
@@ -131,7 +139,9 @@ namespace ngl
 		auto itorfind = std::ranges::find_if(m_memberlist, [](const auto& item)
 			{
 				if (item.second.m_isconfirm())
+				{
 					return true;
+				}
 				return false;
 			});
 		if (itorfind != m_memberlist.end())
@@ -220,9 +230,13 @@ namespace ngl
 	bool room::check_playscount()
 	{
 		if (m_stat != ematching_run)
+		{
 			return false;
+		}
 		if (is_roomfull() == true)
+		{
 			return false;
+		}
 		if (m_tab->m_iswaitconfirm)
 		{
 			change_stat(ematching_waitconfirm);

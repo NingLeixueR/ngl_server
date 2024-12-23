@@ -15,11 +15,15 @@ namespace ngl
 	{
 		const tab_random* tab = allcsv::tab<tab_random>(aid);
 		if (tab == nullptr)
+		{
 			return false;
+		}
 		if (tab->m_calendarids > 0)
 		{
 			if (ttab_calendar::is_period(tab->m_calendarids) == false)
+			{
 				return true;
+			}
 		}
 
 		int lweight = 0;
@@ -29,7 +33,9 @@ namespace ngl
 		}
 
 		if (lweight <= 0)
+		{
 			return false;
+		}
 
 		int lcount = tab->m_count;
 		bool lexclusive = tab->m_exclusive;
@@ -43,7 +49,9 @@ namespace ngl
 				if (lexclusive)
 				{
 					if (lset.find(j) != lset.end())
+					{
 						continue;
+					}
 				}
 				ltempweight += tab->m_randomdatas[j].m_weight;
 				if (lweightval <= ltempweight)
@@ -53,13 +61,17 @@ namespace ngl
 						lset.insert(j);
 						lweight -= tab->m_randomdatas[j].m_weight;
 						if (lweight <= 0)
+						{
 							return true;
+						}
 					}
 					int lmin = tab->m_randomdatas[j].m_min;
 					int lmax = tab->m_randomdatas[j].m_max;
 					int ltemp = lmax - lmin;
 					if (ltemp <= 0)
+					{
 						return false;
+					}
 					amap[tab->m_randomdatas[j].m_id] += lmin + std::rand() % ltemp;
 					break;
 				}
@@ -68,7 +80,9 @@ namespace ngl
 		for (int32_t childid : tab->m_childrandomids)
 		{
 			if (weight(childid, amap) == false)
+			{
 				return false;
+			}
 		}
 		return true;
 	}
@@ -91,7 +105,9 @@ namespace ngl
 		{
 			std::map<int, int> lmap;
 			if (weight(aid, lmap) == false)
+			{
 				return false;
+			}
 			print_weight(lmap);
 		}			
 		return true;

@@ -54,7 +54,9 @@ namespace ngl
 		{
 			room* lpdata = m_typeroom[m_type];
 			if (lpdata == nullptr)
+			{
 				return nullptr;
+			}
 			return lpdata->make_create(aid, atid);
 		}
 
@@ -103,9 +105,7 @@ namespace ngl
 		void send_client(std::shared_ptr<T>& apro)
 		{
 			std::list<i64_actorid> lactorset;
-			std::ranges::transform(m_memberlist, std::inserter(lactorset
-				, lactorset.end())
-				, [](const std::pair<const i64_actorid, pbnet::MATCHING_MEMBER>& pair)
+			std::ranges::transform(m_memberlist, std::inserter(lactorset, lactorset.end()), [](const std::pair<const i64_actorid, pbnet::MATCHING_MEMBER>& pair)
 				{
 					return pair.first;
 				}
@@ -196,10 +196,14 @@ namespace ngl
 			pbnet::MATCHING_MEMBER* lp = nullptr;
 			auto itor = m_roombyroleid.find(aid);
 			if (itor == m_roombyroleid.end())
+			{
 				return nullptr;
+			}
 			auto itor_room = m_roombyid.find(itor->second);
 			if (itor_room == m_roombyid.end())
+			{
 				return nullptr;
+			}
 			return itor_room->second->find(aid);
 		}
 
@@ -207,17 +211,23 @@ namespace ngl
 		{
 			auto itor = m_roombyroleid.find(aroleid);
 			if (itor == m_roombyroleid.end())
+			{
 				return nullptr;
+			}
 			auto itorroom = m_roombyid.find(itor->second);
 			if (itorroom == m_roombyid.end())
+			{
 				return nullptr;
+			}
 			return itorroom->second;
 		}
 
 		bool add_member(pbnet::eplays atype, int8_t atid, i64_actorid aroleid)
 		{
 			if (find(aroleid) != nullptr)
+			{
 				return false;
+			}
 
 			room* lproom = nullptr;
 			for (auto itor = m_room[atype].begin();itor != m_room[atype].end();++itor)
@@ -238,7 +248,9 @@ namespace ngl
 				m_room[atype].push_back(lroomptr);
 				m_roombyid.insert(std::make_pair(lroomid, lroomptr.get()));
 				if (lproom->try_addroom(aroleid))
+				{
 					return false;
+				}
 				m_roombyroleid.insert(std::make_pair(aroleid, lroomid));
 			}
 			

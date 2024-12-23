@@ -35,7 +35,9 @@ namespace ngl
 		{
 			tab_attribute* tab = allcsv::tab<tab_attribute>(atype);
 			if (tab == nullptr)
+			{
 				return 0.0f;
+			}
 			return tab->m_fightcoefficient;
 		}
 
@@ -56,40 +58,58 @@ namespace ngl
 		static int32_t uplowlimit(EnumAttribute atype, int32_t avalues)
 		{
 			if (m_uplowlimit.empty())
+			{
 				init_uplowlimit();
+			}
 			if (atype >= EnumAttribute::E_Count)
+			{
 				return avalues;
+			}
 			std::pair<int32_t, int32_t>& lpair = m_uplowlimit[atype];
 			if (avalues > lpair.first)
+			{
 				return lpair.first;
+			}
 			else if (avalues < lpair.second)
+			{
 				return lpair.second;
+			}
 			else
+			{
 				return avalues;
+			}
 		}
 
 		static void add(map_attribute& al, const map_attribute& ar)
 		{
 			for (const auto& [key, value] : ar)
+			{
 				al[key] += value;
+			}
 		}
 
 		static void add(map_ratio& al, const map_ratio& ar)
 		{
 			for (const auto& [key, value] : ar)
+			{
 				al[key] += value;
+			}
 		}
 
 		static void dec(map_attribute& al, const map_attribute& ar)
 		{
 			for (const auto& [key, value] : ar)
+			{
 				al[key] -= value;
+			}
 		}
 
 		static void dec(map_ratio& al, const map_ratio& ar)
 		{
 			for (const auto& [key, value] : ar)
+			{
 				al[key] -= value;
+			}
 		}
 	};
 }// namespace ngl

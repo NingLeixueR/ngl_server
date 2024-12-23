@@ -28,13 +28,19 @@ namespace ngl
 	{
 		unit* lpunit = find_role(aid);
 		if (lpunit != nullptr)
+		{
 			return lpunit;
+		}
 		lpunit = find_monster(aid);
 		if (lpunit != nullptr)
+		{
 			return lpunit;
+		}
 		lpunit = find_region(aid);
 		if (lpunit != nullptr)
+		{
 			return lpunit;
+		}
 		return nullptr;
 	}
 
@@ -56,7 +62,9 @@ namespace ngl
 	bool aoimap::copy_unit(unit* aunit, pbnet::UNIT* aUNIT)
 	{
 		if (aunit == nullptr)
+		{
 			return false;
+		}
 		aUNIT->set_m_id(aunit->id());
 		aUNIT->set_m_type(aunit->type());
 		//pbnet::VECTOR2*;
@@ -77,8 +85,7 @@ namespace ngl
 		if (find_unit(aunit->id()) != nullptr)
 		{
 			log_error()->print("aoi_map::enter(tid={},id={}) enter find_unit() != nullptr"
-				, m_tabid
-				, aunit->id()
+				, m_tabid, aunit->id()
 			);
 			return false;
 		}
@@ -218,7 +225,9 @@ namespace ngl
 	{
 		unit* lpunit = find_unit(aroleid);
 		if (lpunit == nullptr)
+		{
 			return;
+		}
 		lpunit->set_angle(aangle);
 	}
 	// 改变速度
@@ -226,7 +235,9 @@ namespace ngl
 	{
 		unit* lpunit = find_unit(aroleid);
 		if (lpunit == nullptr)
+		{
 			return;
+		}
 		lpunit->set_speed(aspeed);
 	}
 
