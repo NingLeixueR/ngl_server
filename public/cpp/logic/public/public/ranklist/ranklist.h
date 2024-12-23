@@ -115,12 +115,26 @@ namespace ngl
 
 		class rank_set_base
 		{
+			int32_t m_count;
 		public:
+			rank_set_base() :
+				m_count(-1)
+			{}
+
 			virtual const rank_item* find(rank_item* aitem) = 0;
 			virtual void erase(rank_item* aitem) = 0;
 			virtual void insert(rank_item* aitem) = 0;
 			virtual void foreach(const std::function<void(int32_t, const rank_item*)>&) = 0;
 			virtual int32_t getpage(int32_t apage, int32_t aevernmu, const std::function<void(int32_t, const rank_item*)>& afun) = 0;
+			virtual void set_count(int32_t acount)
+			{
+				m_count = acount;
+			}
+			virtual int32_t count()
+			{
+				return m_count;
+			}
+			virtual void check() = 0;
 		};
 
 		template <pbdb::eranklist ETYPE>
@@ -173,6 +187,19 @@ namespace ngl
 				}
 				return m_rankdata.size();
 			}
+
+			void check()
+			{
+				int32_t lcount = count();
+				if (lcount < 0)
+				{
+					return;
+				}
+				while (lcount < m_rankdata.size())
+				{
+					m_rankdata.erase(std::prev(m_rankdata.end()));
+				}
+			}
 		};
 
 		std::unique_ptr<rank_set_base> m_ranks[pbdb::eranklist::count];
@@ -180,6 +207,7 @@ namespace ngl
 		ranklist()
 		{
 			m_ranks[pbdb::eranklist::lv] = std::make_unique<rank_set<pbdb::eranklist::lv>>();
+			m_ranks[pbdb::eranklist::lv]->set_count(10);
 		}
 
 		virtual void set_id()
@@ -277,9 +305,11 @@ namespace ngl
 						if (i == pbdb::eranklist::lv)
 						{
 							m_ranks[i]->insert(&ldata);
+							m_ranks[i]->check();
 						}
 					}
 				}
+				
 			}
 			return true;
 		}
@@ -299,6 +329,7 @@ namespace ngl
 			{
 				rank_set_base& lrank = *m_ranks[i].get();
 				lrank.insert(&ltempitem);
+				m_ranks[i]->check();
 			}
 		}
 
