@@ -140,6 +140,10 @@ namespace ngl
 		static int getutcbyhour(time_t utc, int hour);
 
 		static int getutcbymin(time_t utc, int min);
+		// # autc1 > autc2
+		static bool checkutc(time_t autc1, time_t autc2);
+		// # autc是否大于当前时间
+		static bool checkutc(time_t autc);
 	private:
 		static time_t m_offset;		//时间偏移量
 	};

@@ -44,6 +44,22 @@ namespace ngl
 				m_maxid = std::max(m_maxid, lnotice.m_id());
 			}
 			(*lstream).print("");
+
+			remove_notice();
+
+			wheel_parm lparm
+			{
+				.m_ms = 10* localtime::MINUTES_SECOND,
+				.m_intervalms = [](int64_t)
+				{
+					return 10 * localtime::MINUTES_SECOND;
+				} ,
+				.m_count = 0x7fffffff,
+				.m_fun = [this](const wheel_node*)
+				{
+					remove_notice();
+				}
+			};
 		}
 
 		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)
@@ -68,25 +84,7 @@ namespace ngl
 			erase(aid);
 		}
 
-		void remove_notice()
-		{
-			static int32_t lasttime = 0;
-			// 十分钟刷新一次
-			int32_t lnow = (int32_t)localtime::gettime();
-			if (lasttime == 0 || lnow > (lasttime + (10 * localtime::MINUTES_SECOND)))
-			{
-				lasttime = lnow;
-				std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
-				for (const auto& [id, dbnotice] : lnotice)
-				{
-					const pbdb::db_notice& lnotice = dbnotice.getconst();
-					if (lnotice.m_finishtime() < lnow && lnotice.m_finishtime() != -1)
-					{
-						remove(lnotice.m_id());
-					}
-				}
-			}
-		}
+		void remove_notice();
 
 		std::shared_ptr<pbnet::PROBUFF_NET_NOTICE_RESPONSE> sync_notice(i64_actorid aactorid = -1);
 	};

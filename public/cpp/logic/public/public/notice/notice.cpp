@@ -24,4 +24,27 @@ namespace ngl
 		*pro->add_m_notices() = itor->second.getconst();
 		return pro;
 	}
+
+	void notice::remove_notice()
+	{
+		int32_t lnow = (int32_t)localtime::gettime();
+		std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
+		for (const auto& [id, dbnotice] : lnotice)
+		{
+			const pbdb::db_notice& lnotice = dbnotice.getconst();
+			if (lnotice.m_finishtime() != -1)
+				continue;
+			if (localtime::checkutc(lnotice.m_finishtime()) == false)
+			{
+				actor()->log_error()->print(
+					"remove_notice {}:{}-{}:{}",
+					lnotice.m_id(),
+					localtime::time2str(lnotice.m_starttime(), "%Y-%m-%d %H:%M:%S"),
+					localtime::time2str(lnotice.m_finishtime(), "%Y-%m-%d %H:%M:%S"),
+					lnotice.m_notice()
+				);
+				remove(lnotice.m_id());
+			}
+		}
+	}
 }//namespace ngl

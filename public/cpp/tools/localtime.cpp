@@ -54,7 +54,9 @@ namespace ngl
 		char lbuff[1024] = { 0 };
 		size_t lindex = time2str(lbuff, 1024, anow, format);
 		if (lindex < 0)
+		{
 			return "";
+		}
 		return lbuff;
 	}
 
@@ -418,5 +420,15 @@ namespace ngl
 	int localtime::getmoonday()
 	{
 		return getmoonday(gettime());
+	}
+
+	bool localtime::checkutc(time_t autc1, time_t autc2)
+	{
+		return autc1 > autc2;
+	}
+
+	bool localtime::checkutc(time_t autc)
+	{
+		return checkutc(autc, gettime());
 	}
 }// namespace ngl

@@ -124,8 +124,7 @@ namespace ngl
 			for (const auto& item : pro.m_vecpair)
 			{
 				ngl::log_error()->print(
-					"np_event_register {}:E_EVENTS:{} actor:{}",
-					typeid(E_EVENTS).name(), (int32_t)(item.first), nguid(item.second)
+					"np_event_register {}:E_EVENTS:{} actor:{}", typeid(E_EVENTS).name(), (int32_t)(item.first), nguid(item.second)
 				);
 				m_eventmember[item.first].insert(item.second);
 			}
