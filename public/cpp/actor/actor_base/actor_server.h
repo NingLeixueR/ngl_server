@@ -33,11 +33,9 @@ namespace ngl
 		bool handle(const message<np_actornode_register>& adata);
 
 		// # 更新结点中的actor
-		bool handle(const message<np_actornode_update>& adata);
+		bool handle(const message<np_actornode_update_server>& adata);
 
 		// # 更新gateway表 actor_role.guidid与gateway server id对应关系
 		bool handle(const message<np_actor_gatewayid_updata>& adata);
-
-		bool handle(const message<np_actornode_update_mass>& adata);
 	};
 }//namespace ngl

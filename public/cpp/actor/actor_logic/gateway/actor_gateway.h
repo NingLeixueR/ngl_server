@@ -46,6 +46,7 @@ namespace ngl
 
 		void update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& ap);
 
+		bool handle(const message<np_gateway_close_session>& adata);
 		void session_close(gateway_socket* ainfo);
 
 		// # actor_login通知gateway玩家已经登录(并纪录session及对应的game服务器)

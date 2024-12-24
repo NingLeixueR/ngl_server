@@ -28,6 +28,7 @@ namespace ngl
 	{
 		register_handle_custom<actor_gateway>::func<
 			np_actorrole_login
+			, np_gateway_close_session
 			, np_actorswitch_process<np_actorswitch_process_role>
 			, np_actor_session_close
 			, np_actor_kcp
@@ -61,6 +62,40 @@ namespace ngl
 		send_actor(actor_gatewayg2c::actorid(id()), apro);
 	}
 
+	bool actor_gateway::handle(const message<np_gateway_close_session>& adata)
+	{
+		i32_actordataid lroleid = adata.get_data()->m_roleid;
+		i16_area larea = adata.get_data()->m_area;
+		gateway_socket* linfo = m_info.get(larea, lroleid);
+		if (linfo == nullptr)
+		{
+			return true;
+		}
+
+		if (linfo->m_socket == 0)
+		{
+			m_info.remove_actorid(nguid::make(ACTOR_NONE, larea, lroleid));
+		}
+
+		auto pro = std::make_shared<np_actor_gatewayinfo_updata>();
+		pro->m_delactorid.push_back(nguid::make(ACTOR_NONE, larea, lroleid));
+		update_gateway_info(pro);
+
+		{
+			auto pro = std::make_shared<np_actor_disconnect_close>();
+			pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
+			// ##### 通知game服务器 玩家已经断开连接
+			send_actor(pro->m_actorid, pro);
+			// ##### 通知login服务器 玩家已经断开连接
+			ttab_servers::foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
+				{
+					nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
+					send_actor(lguid, pro);
+				});
+		}
+		return true;
+	}
+
 	void actor_gateway::session_close(gateway_socket* ainfo)
 	{
 		Assert(ainfo != nullptr);
@@ -76,33 +111,12 @@ namespace ngl
 			.m_count = 1,
 			.m_fun = [this, lroleid, larea](const wheel_node* anode)
 			{
-				gateway_socket* linfo = m_info.get(larea, lroleid);
-				if (linfo == nullptr)
-				{
-					return;
-				}
-
-				if (linfo->m_socket == 0)
-				{
-					m_info.remove_actorid(nguid::make(ACTOR_NONE, larea, lroleid));
-				}
-
-				auto pro = std::make_shared<np_actor_gatewayinfo_updata>();
-				pro->m_delactorid.push_back(nguid::make(ACTOR_NONE, larea, lroleid));
-				update_gateway_info(pro);
-
-				{
-					auto pro = std::make_shared<np_actor_disconnect_close>();
-					pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
-					// ##### 通知game服务器 玩家已经断开连接
-					send_actor(pro->m_actorid, pro);
-					// ##### 通知login服务器 玩家已经断开连接
-					ttab_servers::foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
-						{
-							nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
-							send_actor(lguid, pro);
-						});
-				}
+				auto pro = std::make_shared<np_gateway_close_session>(np_gateway_close_session
+					{
+						.m_roleid = lroleid,
+						.m_area = larea,
+					});
+				send_actor(id_guid(), pro);
 			}
 		};
 		twheel::wheel().addtimer(lparm);

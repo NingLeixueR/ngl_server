@@ -36,9 +36,8 @@ namespace ngl
 
 		register_handle_custom<actor_server>::func<
 			np_actornode_register
-			, np_actornode_update
+			, np_actornode_update_server
 			, np_actor_gatewayid_updata
-			, np_actornode_update_mass
 		>(true);
 	}
 
@@ -122,7 +121,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_server::handle(const message<np_actornode_update>& adata)
+	bool actor_server::handle(const message<np_actornode_update_server>& adata)
 	{
 		Try
 		{
@@ -130,9 +129,9 @@ namespace ngl
 			auto lpack = adata.m_pack;
 			Assert(lpack != nullptr)
 			const i32_serverid lserverid = lpack->m_id;
-			naddress::actor_add(lserverid, lrecv->m_add);
-			naddress::actor_del(lrecv->m_del);
-			if (lrecv->m_actorservermass)
+			naddress::actor_add(lserverid, lrecv->m_data.m_add);
+			naddress::actor_del(lrecv->m_data.m_del);
+			if (lrecv->m_data.m_actorservermass)
 			{
 				// # 分发给其他结点
 				std::vector<i32_sessionid> lvec;
@@ -147,7 +146,7 @@ namespace ngl
 				);
 				if (!lvec.empty())
 				{
-					nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
+					nets::sendmore(lvec, lrecv->m_data, nguid::moreactor(), id_guid());
 				}
 			}
 		}Catch
@@ -180,23 +179,6 @@ namespace ngl
 		if (lvec.empty() == false)
 		{
 			nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
-		}
-		return true;
-	}
-
-	bool actor_server::handle(const message<np_actornode_update_mass>& adata)
-	{
-		auto lparm = adata.get_data();
-		auto lpack = adata.m_pack;
-		int32_t lthreadid = adata.m_thread;
-
-		message<np_actornode_update> lmessage(lthreadid, lpack, (np_actornode_update*)&lparm->m_mass);
-
-		handle(lmessage);
-
-		if (lparm->m_fun != nullptr)
-		{
-			lparm->m_fun();
 		}
 		return true;
 	}

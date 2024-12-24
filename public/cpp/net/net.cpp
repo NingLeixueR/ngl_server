@@ -141,10 +141,11 @@ namespace ngl
 	{
 		auto lcount = (int)amsg.size();
 		auto lpack = std::make_shared<pack>();
-		lpack->malloc(lcount);
+		lpack->malloc(lcount+1);
 		memcpy(lpack->m_buff, amsg.c_str(), lcount);
-		lpack->m_len = lcount;
-		lpack->m_pos = lcount;
+		lpack->m_buff[lcount] = '\0';
+		lpack->m_len = lcount+1;
+		lpack->m_pos = lcount+1;
 		return nets::sendpack(asession, lpack);
 	}
 

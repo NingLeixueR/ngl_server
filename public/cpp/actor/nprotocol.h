@@ -107,13 +107,20 @@ namespace ngl
 		def_portocol(np_actornode_update, m_id, m_add, m_del, m_actorservermass)
 	};
 
+	struct np_actornode_update_server
+	{
+		np_actornode_update m_data;
+
+		def_portocol(np_actornode_update_server, m_data)
+	};
+
 	// 向actor客户端同步结点信息(群发)
 	struct np_actornode_update_mass
 	{
 		np_actornode_update m_mass;
 		std::function<void()> m_fun;
 
-		def_portocol(np_actornode_update_mass, m_mass)
+		def_portocol(np_actornode_update_mass_client, m_mass)
 	};
 
 	// ---- [local actor client]
@@ -330,6 +337,14 @@ namespace ngl
 		i64_actorid		m_request_actor = 0;
 
 		def_portocol(np_actorrole_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
+	};
+
+	struct np_gateway_close_session
+	{
+		i32_actordataid m_roleid;
+		i16_area m_area;
+
+		def_portocol(np_gateway_close_session, m_roleid, m_area)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>

@@ -158,37 +158,39 @@ namespace ngl
 			/*200000010*/, np_actornode_register_response
 			/*200000011*/, np_actorclient_node_connect
 			/*200000012*/, np_actornode_update
-			/*200000013*/, np_actornode_update_mass
-			/*200000014*/, np_actornode_connect_task
-			/*200000015*/, np_actorrole_login
-			/*200000016*/, np_actorserver_connect
-			/*200000017*/, np_actor_session_close
-			/*200000018*/, np_actor_disconnect_close
-			/*200000019*/, np_logitem
-			/*200000020*/, np_actor_broadcast
-			/*200000021*/, np_actor_reloadcsv
-			/*200000022*/, np_actor_csv_verify_version
-			/*200000023*/, np_actor_senditem
-			/*200000024*/, np_actor_gatewayinfo_updata
-			/*200000025*/, np_actor_addmail
-			/*200000026*/, np_actor_activity
-			/*200000027*/, np_actor_gatewayid_updata
-			/*200000028*/, np_actorswitch_process<np_actorswitch_process_role>
-			/*200000029*/, np_actor_kcp
-			/*200000030*/, np_calendar
-			/*200000031*/, np_actor_close
-			/*200000032*/, np_channel_register<pbdb::db_brief>
-			/*200000033*/, np_channel_register_reply<pbdb::db_brief>
-			/*200000034*/, np_channel_data<pbdb::db_brief>
-			/*200000035*/, np_channel_register<pbdb::db_keyvalue>
-			/*200000036*/, np_channel_register_reply<pbdb::db_keyvalue>
-			/*200000037*/, np_channel_data<pbdb::db_keyvalue>
-			/*200000038*/, np_channel_check
-			/*200000039*/, np_roleban
+			/*200000013*/, np_actornode_update_server
+			/*200000014*/, np_actornode_update_mass
+			/*200000015*/, np_actornode_connect_task
+			/*200000016*/, np_actorrole_login
+			/*200000017*/, np_actorserver_connect
+			/*200000018*/, np_actor_session_close
+			/*200000019*/, np_actor_disconnect_close
+			/*200000020*/, np_logitem
+			/*200000021*/, np_actor_broadcast
+			/*200000022*/, np_actor_reloadcsv
+			/*200000023*/, np_actor_csv_verify_version
+			/*200000024*/, np_actor_senditem
+			/*200000025*/, np_actor_gatewayinfo_updata
+			/*200000026*/, np_actor_addmail
+			/*200000027*/, np_actor_activity
+			/*200000028*/, np_actor_gatewayid_updata
+			/*200000029*/, np_actorswitch_process<np_actorswitch_process_role>
+			/*200000030*/, np_actor_kcp
+			/*200000031*/, np_calendar
+			/*200000032*/, np_actor_close
+			/*200000033*/, np_channel_register<pbdb::db_brief>
+			/*200000034*/, np_channel_register_reply<pbdb::db_brief>
+			/*200000035*/, np_channel_data<pbdb::db_brief>
+			/*200000036*/, np_channel_register<pbdb::db_keyvalue>
+			/*200000037*/, np_channel_register_reply<pbdb::db_keyvalue>
+			/*200000038*/, np_channel_data<pbdb::db_keyvalue>
+			/*200000039*/, np_channel_check
+			/*200000040*/, np_roleban
+			/*200000041*/, np_gateway_close_session
 			// ### 事件相关协议 start ### //
-			/*200000040*/, actor_events_logic::np_event_register
-			/*200000041*/, np_eevents_logic_rolelogin
-			/*200000042*/, np_eevents_logic_roleoffline
+			/*200000042*/, actor_events_logic::np_event_register
+			/*200000043*/, np_eevents_logic_rolelogin
+			/*200000044*/, np_eevents_logic_roleoffline
 			// ### 事件相关协议 finish ### //
 		> (EPROTOCOL_TYPE_CUSTOM);
 	}
