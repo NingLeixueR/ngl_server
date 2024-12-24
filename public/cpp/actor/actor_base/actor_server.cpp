@@ -131,23 +131,20 @@ namespace ngl
 			const i32_serverid lserverid = lpack->m_id;
 			naddress::actor_add(lserverid, lrecv->m_data.m_add);
 			naddress::actor_del(lrecv->m_data.m_del);
-			if (lrecv->m_data.m_actorservermass)
-			{
-				// # 分发给其他结点
-				std::vector<i32_sessionid> lvec;
-				naddress::foreach([lserverid, &lvec](const actor_node_session& anode)->bool
-					{
-						if (anode.m_node.m_serverid != lserverid)
-						{
-							lvec.push_back(anode.m_session);
-						}
-						return true;
-					}
-				);
-				if (!lvec.empty())
+			// # 分发给其他结点
+			std::vector<i32_sessionid> lvec;
+			naddress::foreach([lserverid, &lvec](const actor_node_session& anode)->bool
 				{
-					nets::sendmore(lvec, lrecv->m_data, nguid::moreactor(), id_guid());
+					if (anode.m_node.m_serverid != lserverid)
+					{
+						lvec.push_back(anode.m_session);
+					}
+					return true;
 				}
+			);
+			if (!lvec.empty())
+			{
+				nets::sendmore(lvec, lrecv->m_data, nguid::moreactor(), id_guid());
 			}
 		}Catch
 		return true;

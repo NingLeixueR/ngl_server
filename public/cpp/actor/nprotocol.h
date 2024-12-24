@@ -96,15 +96,13 @@ namespace ngl
 
 	// ---- [actor server -> actor client]	[actor client -> actor server] 
 	// ---- 服务器向客户端同步结点信息		客户端向服务器同步结点信息
-	// 向actor客户端同步结点信息
 	struct np_actornode_update
 	{
 		i32_serverid m_id = -1;				// 服务器id
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
-		bool m_actorservermass = true;		// 是否给actorclient进行广播
 
-		def_portocol(np_actornode_update, m_id, m_add, m_del, m_actorservermass)
+		def_portocol(np_actornode_update, m_id, m_add, m_del)
 	};
 
 	struct np_actornode_update_server
