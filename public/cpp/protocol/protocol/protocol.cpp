@@ -148,8 +148,7 @@ namespace ngl
 					}
 
 					auto lmap = naddress::get_actorserver_map();
-					//nguid, i32_serverid
-					std::string lstr = "#print_guid";
+					std::string lstr;
 					for (const auto& [lguid, serverid] : lmap)
 					{
 						if (lguid.type() == ltype)
