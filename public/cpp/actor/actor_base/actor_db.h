@@ -39,15 +39,11 @@ namespace ngl
 			Try
 			{
 				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
+
 				Assert(m_tab != nullptr)
 
-				m_cache_save.set_cachefun(
-					std::bind_front(&cachelist<TDBTAB>, enum_clist_save), m_tab->m_dbcacheintervalms
-				);
-
-				m_cache_del.set_cachefun(
-					std::bind_front(&cachelist<TDBTAB>, enum_clist_del), m_tab->m_dbcacheintervalms
-				);
+				m_cache_save.set_cachefun(std::bind_front(&cachelist<TDBTAB>, enum_clist_save), m_tab->m_dbcacheintervalms);
+				m_cache_del.set_cachefun(std::bind_front(&cachelist<TDBTAB>, enum_clist_del), m_tab->m_dbcacheintervalms);
 
 				if (m_tab->m_isloadall == true)
 				{
@@ -107,7 +103,9 @@ namespace ngl
 		static void load(i32_threadid athreadid, int64_t aid)
 		{
 			if (aid == -1)
+			{
 				return;
+			}
 			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
 			{
 				db_manage::select<TDBTAB>(db_pool::get(athreadid), aid);
@@ -115,9 +113,7 @@ namespace ngl
 		}
 
 		// # 加载数据 ：同步方式
-		static void load(
-			i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata
-		)
+		static void load(i32_threadid athreadid, const pack* apack, const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
 			if (!m_tab->m_network)
 			{
@@ -271,7 +267,9 @@ namespace ngl
 				case enum_clist_save:
 				{
 					if (ngl::db_data<TDBTAB>::find(id) == nullptr)
+					{
 						continue;
+					}
 					db_manage::save<TDBTAB>(db_pool::get(adata.m_thread), id);
 				}
 				break;
@@ -297,7 +295,9 @@ namespace ngl
 
 			std::string loperator;
 			if (lojson.read("operator", loperator) == false)
+			{
 				return true;
+			}
 
 			if (handle_cmd::empty())
 			{
@@ -398,9 +398,7 @@ namespace ngl
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	template <typename TDB>
-	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(
-		enum_cache_list atype, std::set<i64_actorid>& aset
-	)
+	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
 	{
 		if (aset.empty())
 		{
