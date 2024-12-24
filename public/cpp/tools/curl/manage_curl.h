@@ -32,15 +32,15 @@ namespace ngl
 		ENUM_TYPE_GET,		// GET方式
 	};
 
-	struct _http
+	struct http_parm
 	{
 		struct impl_http;
 		impl<impl_http> m_impl_http;
 
 		std::string m_recvdata;
 
-		_http();
-		~_http();
+		http_parm();
+		~http_parm();
 		void headers(std::vector<std::string>& m_headers);
 		void log(int aerror);		
 	};
@@ -63,32 +63,32 @@ namespace ngl
 		}
 	public:
 		// # 设置http类型
-		static void set_mode(std::shared_ptr<_http>& ahttp, ENUM_MODE aval);
+		static void set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval);
 
 		// # 设置post/get类型
-		static void set_type(std::shared_ptr<_http>& ahttp, ENUM_TYPE aval);
+		static void set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval);
 
 		// # 设置url
-		static void set_url(std::shared_ptr<_http>& ahttp, const std::string& aurl);
-		static void set_url(std::shared_ptr<_http>& ahttp, const char* aurl);
+		static void set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl);
+		static void set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl);
 
 		// # 设置访问参数(parm xx=xx&xx=xx&xx=xx)
-		static void set_param(std::shared_ptr<_http>& ahttp, const std::string& astrparam);
+		static void set_param(std::shared_ptr<http_parm>& ahttp, const std::string& astrparam);
 
 		// # 设置http头 
-		static void set_headers(std::shared_ptr<_http>& ahttp, std::vector<std::string>& aheaders);
+		static void set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders);
 
 		// # 设置回调
-		static void set_callback(std::shared_ptr<_http>& ahttp, std::function<void(int, _http&)> aback);
+		static void set_callback(std::shared_ptr<http_parm>& ahttp, std::function<void(int, http_parm&)> aback);
 
 		// # 辅助设置http访问参数
 		static void param(std::string& astrparam, const char* akey, const char* aval);
 		static void param(std::string& astrparam, const char* akey, int aval);
 		
 		// # 发送
-		static void send(std::shared_ptr<_http>& adata);
+		static void send(std::shared_ptr<http_parm>& adata);
 
-		static std::shared_ptr<_http> make_http();
+		static std::shared_ptr<http_parm> make_http();
 	};
 
 	void test_manage_curl();

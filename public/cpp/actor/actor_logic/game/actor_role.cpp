@@ -91,7 +91,7 @@ namespace ngl
 
 		ngl::manage_curl::set_param(lhttp, std::format("roleid={}", id_guid()).c_str());
 
-		ngl::manage_curl::set_callback(lhttp, [this](int, _http& ahttp)
+		ngl::manage_curl::set_callback(lhttp, [this](int, http_parm& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 				{

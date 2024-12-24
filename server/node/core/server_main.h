@@ -506,7 +506,7 @@ bool start_pushserverconfig()
 			std::string lstr = lstream.str();
 			ngl::manage_curl::set_param(lhttp, lstr);
 
-			ngl::manage_curl::set_callback(lhttp, [lstr](int, ngl::_http& ahttp)
+			ngl::manage_curl::set_callback(lhttp, [lstr](int, ngl::http_parm& ahttp)
 				{
 					ngl::log_error()->print("[{}]->[{}]", lstr, ahttp.m_recvdata);
 				});

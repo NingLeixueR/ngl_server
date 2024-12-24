@@ -46,9 +46,7 @@ namespace ngl
 
 		// # 在callback中转化数据
 		using callback = std::function<bool(MYSQL_ROW, unsigned long*, my_ulonglong, my_ulonglong)>;
-		bool select(
-			const char* asql, int asqllen, const callback& aback
-		);
+		bool select(const char* asql, int asqllen, const callback& aback);
 
 		// # stmt 相关
 		bool stmt_query(const char* asql, int alen, MYSQL_BIND* abind);

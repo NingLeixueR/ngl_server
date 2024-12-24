@@ -93,10 +93,7 @@ namespace ngl
 		aoutsql = lbuff;
 	}
 
-	bool db::select(
-		const char* asql, int asqllen, 
-		const callback& aback
-	)
+	bool db::select(const char* asql, int asqllen, const callback& aback)
 	{
 		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(asqllen)); ret == 0)
 		{
@@ -136,29 +133,27 @@ namespace ngl
 	{
 		MYSQL_STMT* lstmt = mysql_stmt_init(m_mysql);
 		if (lstmt == nullptr)
+		{
 			return false;
-		int err = 0;
-		err = mysql_stmt_prepare(lstmt, asql, alen);
+		}
+		int err = mysql_stmt_prepare(lstmt, asql, alen);
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_prepare fail [{}]", err);
 			return false;
 		}
-
 		err = mysql_stmt_bind_param(lstmt, abind);
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_bind_param fail [{}]", err);
 			return false;
 		}
-
 		err = mysql_stmt_execute(lstmt);
 		if (err != 0)
 		{
 			log_error()->print("mysql_stmt_execute fail [{}]", err);
 			return false;
 		}
-
 		mysql_stmt_close(lstmt);
 		return true;
 	}

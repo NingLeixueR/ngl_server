@@ -29,7 +29,9 @@ namespace ngl
 		{
 			ngl::unserialize lunser(abuff, alen);
 			if (!lunser.pop(adata))
+			{
 				return false;
+			}
 			return true;
 		}
 		
