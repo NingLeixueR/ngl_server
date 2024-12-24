@@ -157,7 +157,7 @@ void init_DB_NOTICE()
 	for (int i = 1; i < 10; ++i)
 	{
 		pbdb::db_notice ltemp;
-		ltemp.set_m_id(i);
+		ltemp.set_m_id((ngl::ttab_servers::tab()->m_area*100)+i);
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
 		ltemp.set_m_notice(lvec[i]);

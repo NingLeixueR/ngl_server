@@ -256,7 +256,7 @@ void traverseProtobufMessages(const char* apackname, const char* aname, const go
               << "    `id` bigint(63) NOT NULL,\r\n"
               << "    `area` int(11) NOT NULL,\r\n"
               << "    `data` LongBlob,\r\n"
-              << "    PRIMARY KEY(`id`)\r\n"
+              << "    PRIMARY KEY (`id`)\r\n"
               << ")ENGINE = InnoDB DEFAULT CHARSET = utf8; \r\n";
               
       }
