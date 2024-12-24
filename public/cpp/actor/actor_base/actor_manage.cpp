@@ -113,7 +113,6 @@ namespace ngl
 				{
 					.m_id = nconfig::m_nodeid,
 					.m_add = {guid},
-					.m_actorservermass = false
 				};
 				pro->m_fun = afun;
 				nguid lguid = nodetypebyguid();
