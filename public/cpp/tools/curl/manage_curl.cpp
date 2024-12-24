@@ -8,7 +8,7 @@
 
 namespace ngl
 {
-	struct _http::impl_http
+	struct http_parm::impl_http
 	{
 		ENUM_MODE		m_mode;
 		ENUM_TYPE		m_type;
@@ -18,7 +18,7 @@ namespace ngl
 		int				m_timeout;
 		std::string		m_cookies;
 		curl_slist*		m_http_headers;
-		std::function<void(int, _http&)> m_callback;
+		std::function<void(int, http_parm&)> m_callback;
 
 		impl_http() :
 			m_curl(curl_easy_init()),
@@ -63,20 +63,20 @@ namespace ngl
 		}
 	};
 
-	_http::_http()
+	http_parm::http_parm()
 	{
 		m_impl_http.make_unique();
 	}
 
-	_http::~_http()
+	http_parm::~http_parm()
 	{}
 
-	void _http::headers(std::vector<std::string>& m_headers)
+	void http_parm::headers(std::vector<std::string>& m_headers)
 	{
 		m_impl_http()->headers(m_headers);
 	}
 
-	void _http::log(int aerror)
+	void http_parm::log(int aerror)
 	{
 		m_impl_http()->plog(aerror, m_recvdata);
 	}
@@ -84,23 +84,23 @@ namespace ngl
 	struct manage_curl::impl_manage_curl
 	{
 		std::unique_ptr<std::thread>			m_thread;
-		work_list<std::shared_ptr<_http>>		m_list;
+		work_list<std::shared_ptr<http_parm>>		m_list;
 
 		impl_manage_curl() :
 			m_thread(nullptr),
-			m_list([this](std::shared_ptr<_http>& item)
+			m_list([this](std::shared_ptr<http_parm>& item)
 				{
 					work(*item);
 				})
 		{
 		}
 
-		void send(std::shared_ptr<_http>& adata)
+		void send(std::shared_ptr<http_parm>& adata)
 		{
 			m_list.push_back(adata);
 		}
 
-		void work(_http& ahttp)
+		void work(http_parm& ahttp)
 		{
 			CURLcode lretvalue = visit(ahttp);
 			if (CURLE_OK != lretvalue)
@@ -108,27 +108,30 @@ namespace ngl
 				ahttp.log(lretvalue);
 				return;
 			}
-			if(ahttp.m_impl_http()->m_callback != nullptr)
+			if (ahttp.m_impl_http()->m_callback != nullptr)
+			{
 				ahttp.m_impl_http()->m_callback(lretvalue, ahttp);
+			}
 		}
 
-		CURLcode visit(_http& ahttp)
+		CURLcode visit(http_parm& ahttp)
 		{
-			std::unique_ptr<_http::impl_http>& lhttp = ahttp.m_impl_http();
+			std::unique_ptr<http_parm::impl_http>& lhttp = ahttp.m_impl_http();
 			if (lhttp->m_type == ENUM_TYPE_POST)
 			{
 				//curl_easy_setopt(lhttp->m_curl, CURLOPT_SSL_VERIFYPEER, 0L);
 				curl_easy_setopt(lhttp->m_curl, CURLOPT_POST, 1);
 				if (lhttp->m_param != "")
+				{
 					curl_easy_setopt(lhttp->m_curl, CURLOPT_POSTFIELDS, lhttp->m_param.c_str());
+				}
 				curl_easy_setopt(lhttp->m_curl, CURLOPT_URL, lhttp->m_url.c_str());
 			}
 			else//get
 			{
 				if (!lhttp->m_param.empty())
 				{
-					lhttp->m_url += '?';
-					lhttp->m_url += lhttp->m_param;
+					lhttp->m_url += std::format("?{}", lhttp->m_param);
 				}
 				curl_easy_setopt(lhttp->m_curl, CURLOPT_URL, lhttp->m_url.c_str());
 			}
@@ -183,37 +186,37 @@ namespace ngl
 	{
 	}
 
-	void manage_curl::set_mode(std::shared_ptr<_http>& ahttp, ENUM_MODE aval)
+	void manage_curl::set_mode(std::shared_ptr<http_parm>& ahttp, ENUM_MODE aval)
 	{ 
 		ahttp->m_impl_http()->m_mode = aval; 
 	}
 
-	void manage_curl::set_type(std::shared_ptr<_http>& ahttp, ENUM_TYPE aval)
+	void manage_curl::set_type(std::shared_ptr<http_parm>& ahttp, ENUM_TYPE aval)
 	{ 
 		ahttp->m_impl_http()->m_type = aval; 
 	}
 
-	void manage_curl::set_url(std::shared_ptr<_http>& ahttp, const std::string& aurl)
+	void manage_curl::set_url(std::shared_ptr<http_parm>& ahttp, const std::string& aurl)
 	{ 
 		ahttp->m_impl_http()->m_url = aurl; 
 	}
 
-	void manage_curl::set_url(std::shared_ptr<_http>& ahttp, const char* aurl)
+	void manage_curl::set_url(std::shared_ptr<http_parm>& ahttp, const char* aurl)
 	{ 
 		ahttp->m_impl_http()->m_url = aurl; 
 	}
 
-	void manage_curl::set_param(std::shared_ptr<_http>& ahttp, const std::string& astrparam)
+	void manage_curl::set_param(std::shared_ptr<http_parm>& ahttp, const std::string& astrparam)
 	{ 
 		ahttp->m_impl_http()->m_param = astrparam;
 	}
 
-	void manage_curl::set_headers(std::shared_ptr<_http>& ahttp, std::vector<std::string>& aheaders)
+	void manage_curl::set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders)
 	{ 
 		ahttp->headers(aheaders); 
 	}
 
-	void manage_curl::set_callback(std::shared_ptr<_http>& ahttp, std::function<void(int, _http&)> aback)
+	void manage_curl::set_callback(std::shared_ptr<http_parm>& ahttp, std::function<void(int, http_parm&)> aback)
 	{ 
 		ahttp->m_impl_http()->m_callback = aback; 
 	}
@@ -236,14 +239,14 @@ namespace ngl
 		astrparam += std::format("{}={}", akey, aval);
 	}
 
-	void manage_curl::send(std::shared_ptr<_http>& adata)
+	void manage_curl::send(std::shared_ptr<http_parm>& adata)
 	{
 		getInstance().m_impl_manage_curl()->send(adata);
 	}
 
-	std::shared_ptr<_http> manage_curl::make_http()
+	std::shared_ptr<http_parm> manage_curl::make_http()
 	{
-		return std::make_shared<_http>();
+		return std::make_shared<http_parm>();
 	}
 	
 	void test_manage_curl()
@@ -267,7 +270,7 @@ namespace ngl
 		ngl::manage_curl::set_param(lhttp, lparm);
 		bool lbool = true;
 
-		ngl::manage_curl::set_callback(lhttp, [&lbool](int anum, ngl::_http& aparm)
+		ngl::manage_curl::set_callback(lhttp, [&lbool](int anum, ngl::http_parm& aparm)
 			{
 				log_error()->print("curl callback [{}]", aparm.m_recvdata);
 				lbool = false;

@@ -23,10 +23,7 @@ namespace ngl
 		{
 		}
 
-		void set_cachefun(
-			const std::function<void(std::set<i64_actorid>&)>& afun,
-			int32_t aintervalms
-		)
+		void set_cachefun(const std::function<void(std::set<i64_actorid>&)>& afun, int32_t aintervalms)
 		{
 			m_fun = afun;
 			twheel::wheel().addtimer(wheel_parm
