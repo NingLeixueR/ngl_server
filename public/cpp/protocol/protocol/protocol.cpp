@@ -134,7 +134,29 @@ namespace ngl
 			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::getInstance().actor_count();
-					std::string lstr = std::format("actor count:{}\r\n", lcount);
+					std::string lstr = std::format("actor count:{}\n", lcount);
+					nets::sendmsg(pack->m_id, lstr);
+				}
+			);
+			handle_cmd::push("/print_guid", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				{
+					ENUM_ACTOR ltype;
+					ltype = em<ENUM_ACTOR>::get_enum(avec[1].c_str());
+					if (ltype == em<ENUM_ACTOR>::enum_null())
+					{
+						return;
+					}
+
+					auto lmap = naddress::get_actorserver_map();
+					//nguid, i32_serverid
+					std::string lstr = "#print_guid";
+					for (const auto& [lguid, serverid] : lmap)
+					{
+						if (lguid.type() == ltype)
+						{
+							lstr += std::format("\r\n{}==={}", lguid, serverid);
+						}
+					}
 					nets::sendmsg(pack->m_id, lstr);
 				}
 			);

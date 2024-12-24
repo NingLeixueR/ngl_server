@@ -293,8 +293,9 @@ namespace ngl
 
 		if (nconfig::m_nodetype != NODE_TYPE::ROBOT)
 		{
-			auto pro = std::make_shared<np_actornode_update>();
-			*pro = lparm->m_mass;
+			auto pro = std::make_shared<np_actornode_update_server>();
+			pro->m_data = lparm->m_mass;
+			pro->m_data.m_actorservermass = true;
 			send_actor(actor_server::actorid(), pro);
 		}
 		

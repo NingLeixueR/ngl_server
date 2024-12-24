@@ -305,7 +305,9 @@ namespace ngl
 		static void send_client(i64_actorid aid, const std::shared_ptr<T>& adata)
 		{
 			if (aid == nguid::make())
+			{
 				return;
+			}
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, aid);
 			handle_pram lpram = handle_pram::create(aid, nguid::make(), pro);
@@ -318,9 +320,13 @@ namespace ngl
 		{
 			const tab_servers* tab = ttab_servers::tab(agatewayid);
 			if (tab == nullptr)
+			{
 				return;
+			}
 			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)
+			{
 				return;
+			}
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, aid);
 			send_server(agatewayid, *pro.get(), nguid::make(), aid);
@@ -338,7 +344,9 @@ namespace ngl
 		static void client_pro(ITOR abeg, ITOR aend, const std::shared_ptr<T>& adata)
 		{
 			if (abeg == aend)
+			{
 				return;
+			}
 			auto pro = create_cpro(adata);
 			std::for_each(abeg, aend, [&pro](i64_actorid aactorid)
 				{
@@ -546,7 +554,9 @@ namespace ngl
 		{
 			static bool lfirst = true;
 			if (lfirst == false)
+			{
 				return;
+			}
 			lfirst = false;
 			TDerived::nregister();	
 			if (atype != ngl::ACTOR_LOG)
