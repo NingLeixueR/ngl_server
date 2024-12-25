@@ -26,7 +26,10 @@ namespace ngl
 		}
 		else
 		{// Ò»¼üÁìÈ¡
-			one_touch(aroleid, [aroleid, this](int32_t aid)
+			one_touch(aroleid, [](const pbdb::mail& amail)
+				{
+					return amail.m_draw() == false;
+				}, [aroleid, this](int32_t aid)
 				{
 					drawmail(aroleid, aid);
 				});

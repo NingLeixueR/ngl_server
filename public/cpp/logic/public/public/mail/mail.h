@@ -94,12 +94,7 @@ namespace ngl
 			return itor->second;
 		}
 
-		bool addmail(
-			i64_actorid aroleid, 
-			int atid, const std::map<int32_t, int32_t>& aitem, 
-			const std::string& acontent, 
-			const std::string& aparm
-		)
+		bool addmail(i64_actorid aroleid, int atid, const std::map<int32_t, int32_t>& aitem, const std::string& acontent, const std::string& aparm)
 		{
 			if (atid != -1)
 			{
@@ -166,7 +161,7 @@ namespace ngl
 		}
 
 		// # Ò»¼ü²Ù×÷
-		void one_touch(i64_actorid aroleid, const std::function<void(int32_t)>& afun)
+		void one_touch(i64_actorid aroleid, std::function<bool(const pbdb::mail&)> acheck, const std::function<void(int32_t)>& afun)
 		{
 			google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
 			if (lmap == nullptr)
@@ -177,7 +172,7 @@ namespace ngl
 			std::vector<int32_t> ldellist;
 			for (const auto& [_id, _mail] : *lmap)
 			{
-				if (_mail.m_draw() && _mail.m_read())
+				if (_id != -1 && acheck(_mail))
 				{
 					ldellist.push_back(_mail.m_id());
 				}
@@ -185,10 +180,7 @@ namespace ngl
 
 			for (int32_t _id : ldellist)
 			{
-				if (_id != -1)
-				{
-					afun(_id);
-				}
+				afun(_id);
 			}
 		}
 
@@ -205,7 +197,11 @@ namespace ngl
 			}
 			else
 			{
-				one_touch(aroleid, [aroleid, this](int32_t aid)
+				one_touch(aroleid, [](const pbdb::mail& amail)
+					{
+						return amail.m_read() == false;
+					}, 
+					[aroleid, this](int32_t aid)
 					{
 						readmail(aroleid, aid);
 					});
@@ -242,7 +238,11 @@ namespace ngl
 			}
 			else
 			{
-				one_touch(aroleid, [aroleid, this](int32_t aid)
+				one_touch(aroleid, [](const pbdb::mail& amail)
+					{
+						return amail.m_read() && amail.m_draw();
+					}, 
+					[aroleid, this](int32_t aid)
 					{
 						delmail(aroleid, aid);
 					});
