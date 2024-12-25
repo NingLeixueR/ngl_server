@@ -657,6 +657,8 @@ namespace ngl
 		static std::string time2str(int autc, const char* aformat = "%y/%m/%d %H:%M:%S");
 
 		static std::vector<std::string_view> get_line(const char* apbuff, size_t abuffsize);
+
+		static bool isnumber(const std::string& anumber);
 	};
 
 	template <typename T>
