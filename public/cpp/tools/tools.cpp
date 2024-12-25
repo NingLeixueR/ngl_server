@@ -1256,4 +1256,9 @@ namespace ngl
 		return lvec;		
 	}
 
+	bool tools::isnumber(const std::string& anumber)
+	{
+		return !anumber.empty() && std::all_of(anumber.begin(), anumber.end(), ::isdigit);
+	}
+
 }// namespace ngl
