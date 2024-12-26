@@ -1,3 +1,4 @@
+#include "actor_brief.h"
 #include "actor_role.h"
 #include "roleinfo.h"
 
@@ -9,13 +10,15 @@ namespace ngl
 		pro->m_data.make();
 		pro->m_data.m_data->insert(std::make_pair(actor()->id_guid(), get_constbrief()));
 	
-		std::string ljson;
-		if (tools::protojson(get_constbrief(), ljson))
-		{
-			log_error()->print("roleinfo::sync_actor_roleinfo [{}]", ljson);
-		}
+		// ²âÊÔ´úÂë
+		tools::print_protojson(get_constbrief());
+		//std::string ljson;
+		//if (tools::protojson(get_constbrief(), ljson))
+		//{
+		//	log_error()->print("roleinfo::sync_actor_roleinfo [{}]", ljson);
+		//}
 
-		actor::static_send_actor(nguid::make_self(ACTOR_BRIEF), nguid::make(), pro);
+		actor::static_send_actor(actor_brief::actorid(), nguid::make(), pro);
 	}
 
 	void roleinfo::initdata()

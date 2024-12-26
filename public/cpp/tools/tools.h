@@ -276,6 +276,25 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
+		// 以json格式打印pb数据
+		template <typename T>
+		static void print_protojson(T& adata)
+		{
+			std::string json;
+			if (tools::protojson(adata, json))
+			{
+				const google::protobuf::Descriptor* descriptor = adata.GetDescriptor();
+				if (descriptor != nullptr)
+				{
+					std::cout << std::format("{}:{}", descriptor->full_name(), json) << std::endl;
+				}
+				else
+				{
+					std::cout << std::format("{}", json) << std::endl;
+				}
+			}
+		}
+
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
 		{
