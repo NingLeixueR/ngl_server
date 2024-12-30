@@ -12,11 +12,6 @@ namespace ngl
 	
 		// ²âÊÔ´úÂë
 		tools::print_protojson(get_constbrief());
-		//std::string ljson;
-		//if (tools::protojson(get_constbrief(), ljson))
-		//{
-		//	log_error()->print("roleinfo::sync_actor_roleinfo [{}]", ljson);
-		//}
 
 		actor::static_send_actor(actor_brief::actorid(), nguid::make(), pro);
 	}
