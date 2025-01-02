@@ -25,7 +25,7 @@ namespace ngl
 
 		const pbdb::db_brief& get_constbrief();
 
-		void sync_actor_roleinfo();
+		void sync_actor_brief();
 
 		int32_t lv();
 		void change_lv(int avalues);
