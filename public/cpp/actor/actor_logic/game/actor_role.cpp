@@ -140,7 +140,7 @@ namespace ngl
 	{
 		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
 		sync_data_client();
-		m_info.sync_actor_roleinfo();
+		m_info.sync_actor_brief();
 		loginpay();
 
 		np_eevents_logic_rolelogin lparm;

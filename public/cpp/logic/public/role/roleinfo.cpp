@@ -4,7 +4,7 @@
 
 namespace ngl
 {
-	void roleinfo::sync_actor_roleinfo()
+	void roleinfo::sync_actor_brief()
 	{
 		auto pro = std::make_shared<np_channel_data<pbdb::db_brief>>();
 		pro->m_data.make();
@@ -51,7 +51,7 @@ namespace ngl
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_lv(lrb->m_lv() + avalues);
-		sync_actor_roleinfo();
+		sync_actor_brief();
 		static_task::update_change(actor(), ETaskRoleLv, lrb->m_lv());
 	}
 
@@ -65,7 +65,7 @@ namespace ngl
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_vip(lrb->m_vip() + avalues);
-		sync_actor_roleinfo();
+		sync_actor_brief();
 		static_task::update_change(actor(), ETaskRoleVip, lrb->m_vip());
 	}
 
@@ -79,7 +79,7 @@ namespace ngl
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_name(aname);
-		sync_actor_roleinfo();
+		sync_actor_brief();
 	}
 
 	int32_t roleinfo::gold()
@@ -92,7 +92,7 @@ namespace ngl
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_moneygold(lrb->m_moneygold() + avalues);
-		sync_actor_roleinfo();
+		sync_actor_brief();
 	}
 
 	int32_t roleinfo::silver()
@@ -105,7 +105,7 @@ namespace ngl
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_moneysilver(lrb->m_moneysilver() + avalues);
-		sync_actor_roleinfo();
+		sync_actor_brief();
 	}
 
 	int32_t roleinfo::notalkutc()
@@ -118,6 +118,6 @@ namespace ngl
 	{
 		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
 		lrb->set_m_notalkutc(avalues);
-		sync_actor_roleinfo();
+		sync_actor_brief();
 	}
 }// namespace ngl
