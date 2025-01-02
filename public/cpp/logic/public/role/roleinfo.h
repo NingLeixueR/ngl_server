@@ -45,6 +45,4 @@ namespace ngl
 		int32_t notalkutc();
 		void change_notalkutc(int avalues);
 	};
-
-	
 }

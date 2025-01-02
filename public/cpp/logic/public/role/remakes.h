@@ -6,6 +6,19 @@
 
 namespace ngl
 {
+	// # remakes
+	//  在代码段中注入"remakes"字符串
+	//  例如：
+	//  local_remakes(role, "test_1");
+	//  std::string lremakes = local_get_remakes(role); //lremakes == "test_1"
+	// {
+	//		lremakes = local_get_remakes(role); //lremakes == "test_1"
+	//		add_remakes(lremakes, "test_2");
+	//		role->addite();
+	//		lremakes = local_get_remakes(role); //lremakes == "test_2"
+	// }
+	//  lremakes = local_get_remakes(role); //lremakes == "test_1"
+
 	class dremakes;
 	class remakes
 	{
@@ -37,8 +50,7 @@ namespace ngl
 
 		static const char* get_remake(actor_role*);
 	};
-
 }// namespace ngl
 
-#define d_remakes(ROLE, REMAKES)	ngl::dremakes ldremakes(ROLE, REMAKES)
-#define g_remakes(ROLE)				ngl::dremakes::get_remake(ROLE)
+#define local_remakes(ROLE, REMAKES)	ngl::dremakes ldremakes(ROLE, REMAKES)
+#define local_get_remakes(ROLE)			ngl::dremakes::get_remake(ROLE)

@@ -833,6 +833,16 @@ namespace ngl
 			}
 		}
 
+		void print(const char* astr)
+		{
+			print("{}", astr);
+		}
+
+		void print(const std::string& astr)
+		{
+			print("{}", astr);
+		}
+
 		template <typename T>
 		np_actor_logitem& operator<<(const T& adata)
 		{

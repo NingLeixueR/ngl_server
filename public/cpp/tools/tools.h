@@ -485,8 +485,17 @@ namespace ngl
 #pragma endregion
 
 #pragma region splicing
+
 		template <typename T>
-		static bool splicing(const std::vector<T>& avec, const char* afg, std::string& astr)
+		static std::function<std::string(const T&)> m_splicing;
+		template <typename TKEY,typename TVALUE>
+		static std::function<std::string(const TKEY&, const TVALUE&)> m_splicingmap;
+
+		template <typename T>
+		static bool splicing(
+			const std::vector<T>& avec, const char* afg, std::string& astr, 
+			const std::function<std::string(const T&)> afunction = m_splicing<T>
+		)
 		{
 			for (int i = 0; i < avec.size(); ++i)
 			{
@@ -494,7 +503,7 @@ namespace ngl
 				{
 					astr += afg;
 				}
-				astr += tools::lexical_cast<std::string>(avec[i]);
+				astr += afunction(avec[i]);
 			}
 			return true;
 		}
@@ -513,7 +522,10 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool splicing(const std::set<T>& avec, const char* afg, std::string& astr)
+		static bool splicing(
+			const std::set<T>& avec, const char* afg, std::string& astr,
+			const std::function<std::string(const T&)> afunction = m_splicing<T>
+		)
 		{
 			int i = 0;
 			for (auto itor = avec.begin(); i < avec.size(); ++i,++itor)
@@ -522,7 +534,45 @@ namespace ngl
 				{
 					astr += afg;
 				}
-				astr += tools::lexical_cast<std::string>(*itor);
+				astr += afunction(*itor);
+			}
+			return true;
+		}
+
+		template <typename TKEY, typename TVALUE>
+		static bool splicing(
+			const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,
+			const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>
+		)
+		{
+			bool lbool = false;
+			for (const auto& item : avec)
+			{
+				if (lbool)
+				{
+					astr += afg;
+				}
+				afunction(item.first, item.second);
+				lbool = true;
+			}
+			return true;
+		}
+
+		template <typename TKEY, typename TVALUE>
+		static bool splicing(
+			const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,
+			const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>
+		)
+		{
+			bool lbool = false;
+			for (const auto& item : avec)
+			{
+				if (lbool)
+				{
+					astr += afg;
+				}
+				afunction(item.first, item.second);
+				lbool = true;
 			}
 			return true;
 		}
@@ -682,4 +732,10 @@ namespace ngl
 
 	template <typename T>
 	std::string tools::protobuf_tabname<T>::m_name;
+
+	template <typename T>
+	std::function<std::string(const T&)> tools::m_splicing = [](const T& adata)
+		{
+			return tools::lexical_cast<std::string>(adata);
+		};
 }//namespace ngl

@@ -45,6 +45,17 @@ namespace ngl
 		preparation(true);
 	}
 
+	void actor_plays::init()
+	{
+		timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 1) == false)
+		{
+			log_error()->print("actor_plays::init() make_timerparm::make_interval(tparm, 1) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+	}
+
 	void actor_plays::nregister()
 	{
 		// ¶¨Ê±Æ÷

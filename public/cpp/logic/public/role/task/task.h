@@ -6,8 +6,7 @@
 
 namespace ngl
 {
-	class task
-		: public tdb_task::db_modular
+	class task: public tdb_task::db_modular
 	{
 	public:
 		task() 

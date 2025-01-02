@@ -25,15 +25,15 @@ namespace ngl
 		return "";
 	}
 
-	dremakes::dremakes(actor_role* arole, const char* aremakes):
-		m_role(arole)
+	dremakes::dremakes(actor_role* arole, const char* aremakes)
 	{
 		m_role->m_remakes.add_remakes(aremakes);
 	}
 
-	dremakes::dremakes(actor_role* arole, const std::string& aremakes) :
-		dremakes(arole, aremakes.c_str())
-	{}
+	dremakes::dremakes(actor_role* arole, const std::string& aremakes)
+	{
+		m_role->m_remakes.add_remakes(aremakes.c_str());
+	}
 
 	dremakes::~dremakes()
 	{
