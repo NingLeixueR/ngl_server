@@ -10,7 +10,6 @@ namespace ngl
 	{
 	protected:
 		aoimap m_map;
-		//std::shared_ptr<plays> m_plays;
 		enum estage
 		{
 			estage_preparation,		// ×¼±¸½×¶Î
@@ -26,16 +25,7 @@ namespace ngl
 	public:
 		actor_plays(ENUM_ACTOR atype, int32_t adataid, void* data);
 
-		virtual void init()
-		{
-			timerparm tparm;
-			if (make_timerparm::make_interval(tparm, 1) == false)
-			{
-				log_error()->print("actor_plays::init() make_timerparm::make_interval(tparm, 1) == false!!!");
-				return;
-			}
-			set_timer(tparm);
-		}
+		virtual void init();
 
 		static void nregister();
 

@@ -46,6 +46,7 @@ namespace ngl
 			return true;
 		}
 
+	private:
 		template <typename T>
 		bool number_value(const char* akey, T& adata)
 		{
@@ -57,49 +58,25 @@ namespace ngl
 			adata = tools::lexical_cast<T>(ltemp);
 			return true;
 		}
+	public:
+		bool value(const char* akey, int8_t& adata);
 
-		bool value(const char* akey, int8_t& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, uint8_t& adata);
 
-		bool value(const char* akey, uint8_t& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, int32_t& adata);
 
-		bool value(const char* akey, int32_t& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, uint32_t& adata);
 
-		bool value(const char* akey, uint32_t& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, int64_t& adata);
 
-		bool value(const char* akey, int64_t& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, uint64_t& adata);
 
-		bool value(const char* akey, uint64_t& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, float& adata);
 
-		bool value(const char* akey, float& adata)
-		{
-			return number_value(akey, adata);
-		}
-
-		bool value(const char* akey, double& adata)
-		{
-			return number_value(akey, adata);
-		}
+		bool value(const char* akey, double& adata);
 
 		template <typename ...ARG>
-		bool value(const char* akey, ARG&... arg)
+		bool json_value(const char* akey, ARG&... arg)
 		{
 			std::string ltemp;
 			if (value(akey, ltemp) == false)
@@ -115,6 +92,16 @@ namespace ngl
 		{
 			pbdb::db_rolekeyvalue& ltemp = get_kv();
 			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
+		}
+
+		template <typename ...ARG>
+		bool set_json_value(const char* akey, ARG&... arg)
+		{
+			json_write lwrite;
+			lwrite.write(arg...);
+			std::string lstr;
+			lwrite.get(lstr);
+			set_value(akey, lstr);
 		}
 	};
 }

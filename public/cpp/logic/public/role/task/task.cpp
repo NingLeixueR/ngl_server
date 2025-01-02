@@ -271,22 +271,20 @@ namespace ngl
 		auto lcompleteddatas = ltask.mutable_m_completeddatas();
 		auto lrundatas = ltask.mutable_m_rundatas();
 
+		std::string lfinishtask;
+		tools::splicing<int32_t, pbdb::db_task_data>(*lcompleteddatas, "|", lfinishtask, [](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
+			{
+				return tools::lexical_cast<std::string>(_id);
+			});
+		std::string lruntask;
+		tools::splicing<int32_t, pbdb::db_task_data>(*lrundatas, "|", lruntask, [](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
+			{
+				return tools::lexical_cast<std::string>(_id);
+			});
+
 		auto lstream = log_error();
-		(*lstream) << "###已完成的任务[===" << std::endl;
-		(*lstream) << "[===" << std::endl;
-		for (const auto& [_id, _data] : *lcompleteddatas)
-		{
-			(*lstream) << _id << std::endl;
-		}
-		(*lstream) << "===]" << std::endl;
-		(*lstream) << "###正在进行的任务[===" << std::endl;
-		(*lstream) << "[===" << std::endl;
-		for (const auto& [_id, _data] : *lrundatas)
-		{
-			(*lstream) << _id << std::endl;
-		}
-		(*lstream) << "===]" << std::endl;
-		lstream->print("");
+		std::string lparmstr = std::format("#已完成的任务[{}]##正在进行的任务[{}]#", lfinishtask, lruntask);
+		lstream->print(lparmstr);
 
 		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务

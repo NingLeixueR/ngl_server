@@ -54,7 +54,7 @@ namespace ngl
 	bool actor_role::handle(const message<np_actor_senditem>& adata)
 	{
 		auto lparm = adata.get_data();
-		d_remakes(this, lparm->m_src);
+		local_remakes(this, lparm->m_src);
 		m_bag.add_item(lparm->m_item);
 		return true;
 	}
