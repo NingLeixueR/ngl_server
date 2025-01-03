@@ -1,7 +1,7 @@
 #pragma once
 
-#include "type.h"
 #include "actor.h"
+#include "type.h"
 #include "cmd.h"
 
 namespace ngl
@@ -12,9 +12,10 @@ namespace ngl
 	enum ENUM_EVENTS
 	{
 		ENUM_EVENTS_LOGIC,		// 对应eevents_logic
+		ENUM_EVENTS_MAP,		// 对应eevents_map
 	};
 
-	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/>
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/, int E_EVENTS_COUNT>
 	class actor_events : public actor
 	{
 		actor_events(const actor_events&) = delete;
@@ -34,7 +35,7 @@ namespace ngl
 				})
 		{}
 
-		static std::array<i64_hashcode, E_EVENTS::count> m_parmtype;
+		static std::array<i64_hashcode, E_EVENTS_COUNT> m_parmtype;
 		static std::map<E_EVENTS, std::set<i64_actorid>> m_eventmember;
 	public:
 		static int32_t id_index()
@@ -43,10 +44,12 @@ namespace ngl
 			return (int32_t)ETYPE;
 		}
 
-		friend class actor_instance<actor_events<ETYPE, E_EVENTS>>;
-		static actor_events<ETYPE, E_EVENTS>& getInstance()
+		using type_actor_events = actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>;
+
+		friend class actor_instance<type_actor_events>;
+		static type_actor_events& getInstance()
 		{
-			return actor_instance<actor_events<ETYPE, E_EVENTS>>::instance();
+			return actor_instance<type_actor_events>::instance();
 		}
 
 		struct np_event_register
@@ -57,7 +60,6 @@ namespace ngl
 
 		static void nregister()
 		{
-			using type_actor_events = actor_events<ETYPE, E_EVENTS>;
 			register_handle_custom<type_actor_events>::template func<
 				type_actor_events::np_event_register
 			>(true);
@@ -67,8 +69,8 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype] = typeid(TPARM).hash_code();
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, actor_events<ETYPE, E_EVENTS>, TPARM>
-				([atype](actor_events<ETYPE, E_EVENTS>*, message<TPARM>& adata)
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, type_actor_events, TPARM>
+				([atype](type_actor_events*, message<TPARM>& adata)
 				{
 					std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
 					if (lmember == nullptr)
@@ -132,54 +134,10 @@ namespace ngl
 		}
 	};
 
-	template <ENUM_EVENTS ETYPE, typename E_EVENTS>
-	std::array<i64_hashcode, E_EVENTS::count> actor_events<ETYPE, E_EVENTS>::m_parmtype;
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
+	std::array<i64_hashcode, E_EVENTS_COUNT> actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_parmtype;
 
-	template <ENUM_EVENTS ETYPE, typename E_EVENTS>
-	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<ETYPE, E_EVENTS>::m_eventmember;
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
+	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_eventmember;
 
-	// 事件枚举类型
-	enum eevents_logic
-	{
-		eevents_logic_rolelogin,		//玩家登陆
-		eevents_logic_roleoffline,		//玩家下线
-		count,
-	};
-
-	// 事件类型
-	class np_eevents_logic
-	{
-	public:
-		np_eevents_logic(eevents_logic atype) :
-			m_type(atype)
-		{}
-
-		eevents_logic m_type;
-	};
-
-	class np_eevents_logic_rolelogin :public np_eevents_logic
-	{
-	public:
-		np_eevents_logic_rolelogin() :
-			np_eevents_logic(eevents_logic_rolelogin),
-			m_actorid(0)
-		{}
-
-		i64_actorid m_actorid;
-		def_portocol(np_eevents_logic_rolelogin, m_type, m_actorid)
-	};
-
-	class np_eevents_logic_roleoffline :public np_eevents_logic
-	{
-	public:
-		np_eevents_logic_roleoffline() :
-			np_eevents_logic(eevents_logic_roleoffline),
-			m_actorid(0)
-		{}
-
-		i64_actorid m_actorid;
-		def_portocol(np_eevents_logic_roleoffline, m_type, m_actorid)
-	};
-
-	using actor_events_logic = actor_events<ENUM_EVENTS_LOGIC, eevents_logic>;
 }//namespace ngl

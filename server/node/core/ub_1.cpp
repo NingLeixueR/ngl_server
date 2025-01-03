@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 24-12-12 15:30:46
+// 创建时间 25-01-02 21:01:54
 #include "actor_manage_activity.cpp"
 #include "actor_manage_plays.cpp"
 #include "calendar_function.cpp"
@@ -33,6 +33,7 @@
 #include "ttab_servers.cpp"
 #include "net_protocol.cpp"
 #include "gateway_info.cpp"
+#include "events_logic.cpp"
 #include "actor_server.cpp"
 #include "actor_notice.cpp"
 #include "actor_manage.cpp"

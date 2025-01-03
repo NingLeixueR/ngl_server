@@ -47,6 +47,7 @@ namespace ngl
 
 		// 改变方向
 		void change_angle(i64_actorid aroleid, int32_t aangle);
+
 		// 改变速度
 		void change_speed(i64_actorid aroleid, int32_t aspeed);
 		

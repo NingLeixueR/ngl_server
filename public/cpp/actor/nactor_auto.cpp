@@ -17,11 +17,13 @@
 #include "actor_client.h"
 #include "actor_manage.h"
 #include "actor_create.h"
+#include "events_logic.h"
 #include "nactor_auto.h"
 #include "actor_login.h"
 #include "actor_robot.h"
 #include "actor_brief.h"
 #include "actor_cross.h"
+#include "events_map.h"
 #include "actor_chat.h"
 #include "actor_mail.h"
 #include "actor_role.h"
@@ -139,6 +141,7 @@ namespace ngl
 			, null<actor_family>, em_pram(ACTOR_FAMILY)
 			, null<actor_friends>, em_pram(ACTOR_FRIENDS)
 			, em_events_null(actor_events_logic)
+			, em_events_null(actor_events_map)
 		);
 	}
 
@@ -189,8 +192,12 @@ namespace ngl
 			/*200000041*/, np_gateway_close_session
 			// ### 事件相关协议 start ### //
 			/*200000042*/, actor_events_logic::np_event_register
+			//# actor_events_logic
 			/*200000043*/, np_eevents_logic_rolelogin
 			/*200000044*/, np_eevents_logic_roleoffline
+			//# actor_events_map
+			/*200000045*/, np_eevents_map_leaveview
+			/*200000046*/, np_eevents_map_enterview
 			// ### 事件相关协议 finish ### //
 		> (EPROTOCOL_TYPE_CUSTOM);
 	}
