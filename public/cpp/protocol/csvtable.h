@@ -1,5 +1,5 @@
-// 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-12-12 14:52:35
+// 注意【IDL 工具生成文件，不要手动修改】
+// 创建时间 // 创建时间 25-01-07 21:39:08
 #pragma once
 
 #include "csv.h"
@@ -181,6 +181,7 @@ struct tab_servers
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int16_t                          m_area                          ; // [index:3][load:y] 区服
 	NODE_TYPE                        m_type                          ; // [index:4][load:y] 服务器类型(1、DB(数据库服务器)2、ACTORSERVER(actor 服务器))3、GAME(逻辑服务器)4、GATEWAY(网关服务器)5、LOGIN(登录服务器)6、ROBOT(测试机器人服务器)7、WORLD(世界服务器)8、LOG(日志服务器)9、RELOADCSV(重载分发csv服务器)10、CROSS(跨服服务器)11、CROSSDB(跨服数据库服务器)12、PUSHSERVERCONFIG(将服务器配置上传lbgmsys))
 	int32_t                          m_tcount                        ; // [index:5][load:y] 同类型服务器的序号
@@ -209,6 +210,7 @@ struct tab_dbload
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	bool                             m_isloadall                     ; // [index:3][load:y] 是否需要启动加载全部数据
 	bool                             m_network                       ; // [index:4][load:y] 是否允许通过网络分发
 	int32_t                          m_sendmaxcount                  ; // [index:5][load:y] 单次最多发送数量
@@ -229,6 +231,7 @@ struct tab_errormessage
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	std::string                      m_message                       ; // [index:3][load:y] 错误描述
 	/*********************************/
 	tab_errormessage();
@@ -246,6 +249,7 @@ struct tab_specialid
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1[load:y]] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	std::string                      m_value                         ; // [index:3][load:y] 值
 	/*********************************/
 	tab_specialid();
@@ -263,6 +267,7 @@ struct tab_attribute
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	float                            m_fightcoefficient              ; // [index:3][load:y] 属性提供的战力系数
 	int32_t                          m_initvalue                     ; // [index:4][load:y] 属性初始值
 	int32_t                          m_uplimit                       ; // [index:5][load:y] 上限
@@ -283,6 +288,7 @@ struct tab_item
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_ranks                         ; // [index:3][load:y] 排序值
 	EItemType                        m_type                          ; // [index:4][load:y] 物品类型EItemType(1装备,2材料,3金币,4银币)
 	int32_t                          m_quality                       ; // [index:5][load:y] 物品品质(EQuality)
@@ -319,6 +325,7 @@ struct tab_equip
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	EEquip                           m_position                      ; // [index:3][load:y] 部位EEquip(1武器2头盔3衣服4护腿)
 	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] 装备属性
 	/*********************************/
@@ -337,6 +344,7 @@ struct tab_equiplv
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_consume                       ; // [index:3][load:y] 升级消耗id
 	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] 装备属性
 	/*********************************/
@@ -355,6 +363,7 @@ struct tab_card
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	EQuality                         m_quality                       ; // [index:3][load:y] 品质EQuality(0灰色1绿色2黄色3橙色4红色)
 	std::vector<attributevalue>      m_attributevalues               ; // [index:4][load:y] 属性
 	/*********************************/
@@ -390,6 +399,7 @@ struct tab_random
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	std::vector<trandom>             m_randomdatas                   ; // [index:3][load:y] trandom(id*min*max*weight)
 	bool                             m_exclusive                     ; // [index:4][load:y] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
 	int32_t                          m_count                         ; // [index:5][load:y] 随机数量
@@ -426,6 +436,7 @@ struct tab_consume
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	std::vector<tconsume>            m_consumeitems                  ; // [index:3][load:y] tid*count
 	/*********************************/
 	tab_consume();
@@ -443,6 +454,7 @@ struct tab_synthesis
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_consume                       ; // [index:3][load:y] 消耗列表
 	int32_t                          m_generate                      ; // [index:4][load:y] 随机表(tab_rando)id 随机成功物品列表
 	/*********************************/
@@ -510,6 +522,7 @@ struct tab_calendar
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	ECalendar                        m_type                          ; // [index:3][load:y] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
 	std::vector<tweek>               m_week                          ; // [index:4][load:y] m_type=0,tweek(周几开始(1-7)*开启时间HH:mm:ss*周几结束(1-7)*结束时间HH:mm:ss)
 	std::vector<tserveropen>         m_serveropen                    ; // [index:5][load:y] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
@@ -532,6 +545,7 @@ struct tab_mail
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	std::string                      m_title                         ; // [index:3][load:y] 邮件标题
 	std::string                      m_author                        ; // [index:4][load:y] 邮件作者
 	std::string                      m_content                       ; // [index:5][load:y] 邮件内容
@@ -551,6 +565,7 @@ struct tab_chat
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_time                          ; // [index:3][load:y] 聊天发言间隔
 	int32_t                          m_count                         ; // [index:4][load:y] 聊天发言最大数量
 	/*********************************/
@@ -569,6 +584,7 @@ struct tab_activity
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>)
 	/*********************************/
 	tab_activity();
@@ -586,6 +602,7 @@ struct tab_activity_drawcompliance
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_dropid                        ; // [index:3][load:y] 掉落id
 	int32_t                          m_mailid                        ; // [index:4][load:y] 邮件id
 	/*********************************/
@@ -620,6 +637,7 @@ struct tab_task
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	ETaskType                        m_type                          ; // [index:3][load:y] 
 	std::vector<task_condition>      m_taskreceive                   ; // [index:4][load:y] 接收此任务的前提(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
 	std::vector<task_condition>      m_taskcomplete                  ; // [index:5][load:y] 完成此任务的条件(ETask(0.玩家等级达到X 1.主公vip等级达到x 2.完成某ID任务)*ETaskCondition(0.大于等于1.小于等于2.等于)*int32_t(值))
@@ -656,6 +674,7 @@ struct tab_map
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_w                             ; // [index:3][load:y] x轴宽度
 	int32_t                          m_l                             ; // [index:4][load:y] y轴长度
 	int32_t                          m_nx                            ; // [index:5][load:y] [视野]x轴格子数量
@@ -679,6 +698,7 @@ struct tab_matching
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_count                         ; // [index:3][load:y] 玩法达到此人数可以开启玩法
 	int32_t                          m_time                          ; // [index:4][load:y] 匹配最长时间
 	bool                             m_iswaitconfirm                 ; // [index:5][load:y] 是否需要等待确认
@@ -714,6 +734,7 @@ struct tab_plays
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_type                          ; // [index:3][load:y] 玩法类型 pbnet::eplays
 	int32_t                          m_mapid                         ; // [index:4][load:y] 在哪个地图应用该玩法
 	int32_t                          m_preparation_tm                ; // [index:5][load:y] 准备阶段时间
@@ -736,6 +757,7 @@ struct tab_recharge
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_price                         ; // [index:3][load:y] 价格
 	int32_t                          m_gold                          ; // [index:4][load:y] 获得的金币数量
 	int32_t                          m_bonus                         ; // [index:5][load:y] 奖励的金币数量
@@ -760,6 +782,7 @@ struct tab_familylv
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] 军团等级 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_exp                           ; // [index:3][load:y] 升级需要的经验
 	int32_t                          m_maxmembers                    ; // [index:4][load:y] 最多军团人数
 	/*********************************/
@@ -778,6 +801,7 @@ struct tab_mergearea
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] 区服id
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_mergeid                       ; // [index:3][load:y] 合并到的区服id
 	/*********************************/
 	tab_mergearea();

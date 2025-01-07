@@ -19,6 +19,18 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	for (int i = 0;i<20;++i)
+	{
+		switch (123)
+		{
+		case 123:
+			if (i == 10)
+				continue;
+			break;
+		}
+		std::cout << i << std::endl;
+	}
+
 	if (argc <= 3)
 	{
 		std::cout << lerrpath << std::endl;

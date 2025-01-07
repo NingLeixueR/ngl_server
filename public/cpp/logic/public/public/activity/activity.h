@@ -82,9 +82,11 @@ namespace ngl
 		}
 
 		// 活动开启
-		virtual void start() = 0;
+		virtual void start() {}
+
+		virtual void rolelogin(i64_actorid aroleid){}
 
 		// 活动关闭
-		virtual void finish() = 0;
+		virtual void finish() {}
 	};
 }// namespace ngl

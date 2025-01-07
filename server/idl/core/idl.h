@@ -255,16 +255,15 @@ public:
 			item_.m_type = get_type(item_);
 			if (item_.m_load == "n")
 			{
-				continue;
+				astream<< "//";
 			}
 			astream
 				<< std::format(
 					"\t{:32} {:32}; {}"
-					,item_.m_type
-					, item_.m_values_name
-					, item_.zhushi
-				) 
+					, item_.m_type, item_.m_values_name, item_.zhushi
+				)
 				<< std::endl;
+			
 		}
 		astream << "\t/*********************************/" << std::endl;
 
@@ -652,7 +651,7 @@ public:
 		});
 		for (int i = 0; i < m_data[aname].m_struct.size(); ++i)
 		{
-			int lpos = m_data[aname].m_struct[i].name.find("tab_");
+			size_t lpos = m_data[aname].m_struct[i].name.find("tab_");
 			if (lpos >= 0)
 			{
 				
@@ -666,9 +665,9 @@ public:
 						}				
 					});
 
-				assert(lbool);
+				//assert(lbool);
 
-				std:sort(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end());
+				std::sort(m_data[aname].m_struct[i].dataVec.begin(), m_data[aname].m_struct[i].dataVec.end());
 
 			}			
 		}
