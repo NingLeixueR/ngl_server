@@ -1,5 +1,5 @@
-// 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 24-12-12 14:52:35
+// 注意【IDL 工具生成文件，不要手动修改】
+// 创建时间 // 创建时间 25-01-07 21:39:08
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()

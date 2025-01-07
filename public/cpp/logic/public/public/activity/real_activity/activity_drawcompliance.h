@@ -8,12 +8,7 @@ namespace ngl
 		activity_drawcompliance(const activity_drawcompliance&) = delete;
 		activity_drawcompliance& operator=(const activity_drawcompliance&) = delete;
 
-		virtual std::shared_ptr<activity> create(
-			int32_t acalendarid, 
-			int32_t aactivityid, 
-			int64_t atime, 
-			activitydb& adb
-		)
+		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb)
 		{
 			std::shared_ptr<activity> ret = std::make_shared<activity_drawcompliance>(
 				acalendarid, aactivityid, atime, adb
@@ -22,12 +17,7 @@ namespace ngl
 		}
 	public:
 
-		activity_drawcompliance(
-			int32_t acalendarid, 
-			int32_t aactivityid, 
-			int64_t atime, 
-			activitydb& adb
-		) :
+		activity_drawcompliance(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) :
 			activity(acalendarid, aactivityid, atime, adb)
 		{}
 
