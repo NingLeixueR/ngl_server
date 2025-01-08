@@ -14,6 +14,8 @@ namespace ngl
 			, pbnet::PROBUFF_NET_SWITCH_LINE
 		>();
 
+		// 二次转发需要[tprotocol_forward_pb]中自动注册协议号
+		// 
 		// ACTOR_MAIL 模块二次转发
 		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
 			, ACTOR_MAIL

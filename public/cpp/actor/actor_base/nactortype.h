@@ -117,6 +117,9 @@ namespace ngl
 	// # 注册自定义协议
 	void tprotocol_customs();
 
+	// # 注册转发协议
+	void tprotocol_forward_pb();
+
 	// # actor event注册
 	void event_register();
 

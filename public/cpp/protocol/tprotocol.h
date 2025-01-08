@@ -22,6 +22,7 @@ namespace ngl
 			EPROTOCOL_TYPE	m_type;
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
+			bool m_forward = false;
 		};
 		static std::map<size_t, pinfo>						m_keyval;
 		static std::map<i32_protocolnum, pinfo*>			m_protocol;
@@ -41,23 +42,38 @@ namespace ngl
 		{
 		public:
 			template <typename T>
-			static void func(EPROTOCOL_TYPE atype)
+			static pinfo* func(EPROTOCOL_TYPE atype)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.find(lcode) != m_keyval.end())
 				{
-					return;
+					return nullptr;
 				}
-
 				pinfo& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
 				linfo.m_type = atype;
 				linfo.m_protocol = ++lcustoms;
 				m_protocol[linfo.m_protocol] = &linfo;
+				return &linfo;
+			}
+		};
+		class tforward
+		{
+		public:
+			template <typename T>
+			static pinfo* func(EPROTOCOL_TYPE atype)
+			{
+				pinfo* lptemp = tcustoms::func<T>(atype);
+				if (lptemp == nullptr)
+				{
+					return nullptr;
+				}
+				lptemp->m_forward = true;
 			}
 		};
 	public:
-		using customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
+		using tp_customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
+		using tp_forward = template_arg<tforward, EPROTOCOL_TYPE>;
 
 		template <typename T>
 		static bool init_protobufs()
@@ -120,6 +136,13 @@ namespace ngl
 		{
 			pinfo& linfo = get<T>();
 			return linfo.m_name;
+		}
+
+		template <typename T>
+		static bool isforward()
+		{
+			pinfo& linfo = get<T>();
+			return linfo.m_forward;
 		}
 
 		static pinfo* get(i32_protocolnum aprotocolnum)

@@ -54,6 +54,7 @@ bool init_server(int aid)
 {
 	ngl::auto_actor();
 	ngl::tprotocol_customs();
+	ngl::tprotocol_forward_pb();
 	ngl::event_register();
 	ngl::tdb_init(true);
 

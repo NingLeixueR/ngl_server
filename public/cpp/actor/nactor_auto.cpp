@@ -49,7 +49,7 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
 	void init_customs_db()
 	{
-		tprotocol::customs::template func<
+		tprotocol::tp_customs::template func<
 			np_actordb_load<DBTYPE, TDB>
 			, np_actordb_load_response<DBTYPE, TDB>
 			, np_actordb_save<DBTYPE, TDB>
@@ -148,7 +148,7 @@ namespace ngl
 	void tprotocol_customs()
 	{
 		// 新增内部协议需要补充
-		tprotocol::customs::template func <
+		tprotocol::tp_customs::template func <
 			/*200000001*/np_gm
 			/*200000002*/, np_gm_response
 			/*200000003*/, mforward<np_gm>
@@ -200,6 +200,52 @@ namespace ngl
 			/*200000046*/, np_eevents_map_enterview
 			// ### 事件相关协议 finish ### //
 		> (EPROTOCOL_TYPE_CUSTOM);
+	}
+
+	template <typename PB>
+	using type_forward_pb = ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>;
+
+	template <typename PB>
+	void help_tprotocol_forward_pb(const PB* apb)
+	{
+		tprotocol::tp_customs::template func<
+			ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
+			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>
+			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
+			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
+		>(EPROTOCOL_TYPE_PROTOCOLBUFF);
+	}
+
+	template <typename PB, typename ...ARG>
+	void help_tprotocol_forward_pb(const PB* apb, const ARG*... arg)
+	{
+		help_tprotocol_forward_pb<PB>(apb);
+		help_tprotocol_forward_pb<ARG...>(arg...);
+	}
+
+	void tprotocol_forward_pb()
+	{
+		help_tprotocol_forward_pb(
+			null<pbnet::PROBUFF_NET_MAIL_LIST>
+			, null<pbnet::PROBUFF_NET_MAIL_READ>
+			, null<pbnet::PROBUFF_NET_MAIL_DRAW>
+			, null<pbnet::PROBUFF_NET_MAIL_DEL>
+			, null<pbnet::PROBUFF_NET_NOTICE>
+			, null<pbnet::PROBUFF_NET_CHAT>
+			, null<pbnet::PROBUFF_NET_CREATE_FAMIL>
+			, null<pbnet::PROBUFF_NET_JOIN_FAMIL>
+			, null<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>
+			, null<pbnet::PROBUFF_NET_CEDE_FAMIL>
+			, null<pbnet::PROBUFF_NET_LEAVE_FAMIL>
+			, null<pbnet::PROBUFF_NET_FAMIL_LIST>
+			, null<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>
+			, null<pbnet::PROBUFF_NET_FAMILSIGN>
+			, null<pbnet::PROBUFF_NET_RANKLIST>
+			, null<pbnet::PROBUFF_NET_FRIEND>
+			, null<pbnet::PROBUFF_NET_ADDFRIEND>
+			, null<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>
+			, null<pbnet::PROBUFF_NET_ERASEFRIEND>
+		);
 	}
 
 	void event_register()
