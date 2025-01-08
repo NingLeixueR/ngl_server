@@ -56,7 +56,6 @@ static std::stringstream g_stream_xml;
 void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
 {
     ngl::writefile lfile("./config/" + axml + "_protocol.xml");
-    ngl::writefile lfileserver("./config/" + axml + "server_protocol.xml");
 
     std::string lnamespace;
     if (axml == "net")
@@ -68,11 +67,8 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     }
 
     std::stringstream m_stream;
-    std::stringstream m_streamserver;
     m_stream << "<?xml version = \"1.0\" encoding = \"utf-8\"?>" << std::endl;
     m_stream << "<con>" << std::endl;
-    m_streamserver << "<?xml version = \"1.0\" encoding = \"utf-8\"?>" << std::endl;
-    m_streamserver << "<con>" << std::endl;
     int messageCount = fileDescriptor->message_type_count();
     for (int i = 0; i < messageCount; ++i)
     {
@@ -88,55 +84,11 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
             m_stream << "\t<config client = \"1\" name=\""
                 << lnamespace << "::" << messageDescriptor->name()
                 << "\" number=\"" << lnumber << "\"/>" << std::endl;
-            //actor_forward<TYPE, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
-            m_streamserver << "\t<config client = \"0\" name=\"struct "
-                << "ngl::np_actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,1,struct ngl::forward>"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-           // linux
-            m_streamserver << "\t<config client = \"0\" name=\""
-                << "ngl::np_actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, true, ngl::forward>"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-
-            m_streamserver << "\t<config client = \"0\" name=\"struct "
-                << "ngl::np_actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,0,struct ngl::forward>"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-            // linux
-            m_streamserver << "\t<config client = \"0\" name=\""
-                << "ngl::np_actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, false, ngl::forward>"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-
-            m_streamserver << "\t<config client = \"0\" name=\"struct "
-                << "ngl::np_actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,1,class " << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-            // linux
-            m_streamserver << "\t<config client = \"0\" name=\""
-                << "ngl::np_actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, true, " << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-
-            m_streamserver << "\t<config client = \"0\" name=\"struct "
-                << "ngl::np_actor_forward<class " << lnamespace << "::" << messageDescriptor->name() << ",1,0,class " << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-            // linux
-            m_streamserver << "\t<config client = \"0\" name=\""
-                << "ngl::np_actor_forward<" << lnamespace << "::" << messageDescriptor->name() << ", (EPROTOCOL_TYPE)1, false, " << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-
-            m_streamserver << "\t<config client = \"0\" name=\"struct "
-                << "ngl::np_actormodule_forward<class " << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
-            // linux
-            m_streamserver << "\t<config client = \"0\" name=\""
-                << "ngl::np_actormodule_forward<" << lnamespace << "::" << messageDescriptor->name() << ">"
-                << "\" number=\"" << lnumber << "\"/>" << std::endl;
         }
        
     }
-    m_stream << "</con>" << std::endl;
-    m_streamserver << "</con>" << std::endl;
-    
-
+    m_stream << "</con>" << std::endl;    
     lfile.write(m_stream.str());
-    lfileserver.write(m_streamserver.str());
 
 }
 

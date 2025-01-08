@@ -3,6 +3,7 @@
 #include "template_arg.h"
 #include "nactortype.h"
 #include "actor_base.h"
+#include "tprotocol.h"
 #include "nrfun.h"
 #include "impl.h"
 #include "nlog.h"
@@ -179,10 +180,19 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
 		class cregister_recvforward_handle2
 		{
+			template <typename T1, typename T2>
+			static bool isforward()
+			{
+				return tprotocol::isforward<ngl::np_actor_forward<T1, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T2>>()
+					&& tprotocol::isforward<ngl::np_actor_forward<T1, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T2>>();
+			}
 		public:
 			template <typename T>
 			static void func()
 			{
+				bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
+				// 如果异常 说明需要在[tprotocol_forward_pb]中注册
+				assert(lisforward);
 				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
 			}
 		};

@@ -18,7 +18,6 @@ namespace ngl
 	//		lremakes = local_get_remakes(role); //lremakes == "test_2"
 	// }
 	//  lremakes = local_get_remakes(role); //lremakes == "test_1"
-
 	class dremakes;
 	class remakes
 	{
