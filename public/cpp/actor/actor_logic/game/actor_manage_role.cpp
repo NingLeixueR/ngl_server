@@ -115,8 +115,7 @@ namespace ngl
 					nclient_keyvalue::change(pbdb::db_keyvalue_ekv_account_ban);
 
 					// ·µ»Ø {"data":int32_t}
-					gcmd<int32_t> pro;
-					pro.id = id;
+					gcmd<int32_t> pro(id);
 					pro.m_operator = "roleban_responce";
 					pro.m_data = 0;
 				}
@@ -128,8 +127,7 @@ namespace ngl
 					tools::splicing(m_roleban, "*", lbanrole);
 
 					// ·µ»Ø {"data":int32_t}
-					gcmd<std::string> pro;
-					pro.id = id;
+					gcmd<std::string> pro(id);
 					pro.m_operator = "get_roleban_responce";
 					pro.m_data = lbanrole;
 				}

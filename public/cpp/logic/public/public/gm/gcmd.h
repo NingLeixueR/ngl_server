@@ -11,14 +11,14 @@ namespace ngl
 	private:
 		gcmd(const gcmd&) = delete;
 		gcmd& operator=(const gcmd&) = delete;
+		int			id;
 	public:
 		std::string m_operator;
 		T			m_data;
-		int			id;
 		bool		m_istoutf8;
 
-		gcmd() :
-			id(-1),
+		gcmd(int aid) :
+			id(aid),
 			m_istoutf8(true)
 		{}
 
@@ -45,5 +45,6 @@ namespace ngl
 			}
 			Catch		
 		}
+
 	};
 }//namespace ngl

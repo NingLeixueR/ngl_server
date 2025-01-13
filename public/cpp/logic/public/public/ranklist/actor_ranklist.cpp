@@ -65,7 +65,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<std::string> pro;
+					gcmd<std::string> pro(id);
 					auto prorank = m_ranklist.get_ranklist((pbdb::eranklist)lrank.m_type, lrank.m_page, lrank.m_everynum);
 					if (tools::protojson<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>(*prorank, pro.m_data) == false)
 					{

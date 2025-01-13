@@ -156,8 +156,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<bool> pro;
-					pro.id = id;
+					gcmd<bool> pro(id);
 					pro.m_operator = "change_familyname_responce";
 					pro.m_data = true;
 					m_family.change_familyname(-1, recv.m_familid, recv.m_familname);
@@ -171,8 +170,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<std::string> pro;
-					pro.id = id;
+					gcmd<std::string> pro(id);
 					pro.m_operator = "get_family_responce";
 					auto profamilylist = m_family.get_familylist(familid);
 					if (tools::protojson<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>(*profamilylist, pro.m_data) == false)
