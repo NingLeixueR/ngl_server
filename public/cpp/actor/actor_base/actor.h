@@ -180,6 +180,7 @@ namespace ngl
 				if (lisforward == false)
 				{
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
+					assert(false);
 				}
 				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
 			}
@@ -200,6 +201,7 @@ namespace ngl
 				if (lisforward == false)
 				{
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
+					assert(false);
 				}
 				// 如果异常 说明需要在[tprotocol_forward_pb]中注册
 				assert(lisforward);
