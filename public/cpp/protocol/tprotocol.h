@@ -16,7 +16,7 @@ namespace ngl
 		tprotocol() = delete;
 		tprotocol(const tprotocol&) = delete;
 		tprotocol& operator=(const tprotocol&) = delete;
-
+	public:
 		struct pinfo
 		{
 			EPROTOCOL_TYPE	m_type;
@@ -24,6 +24,7 @@ namespace ngl
 			std::string		m_name;
 			bool m_forward = false;
 		};
+	private:
 		static std::map<size_t, pinfo>						m_keyval;
 		static std::map<i32_protocolnum, pinfo*>			m_protocol;
 		// net/gm		[1			-  100000000];
@@ -42,7 +43,7 @@ namespace ngl
 		{
 		public:
 			template <typename T>
-			static pinfo* func(EPROTOCOL_TYPE atype)
+			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.find(lcode) != m_keyval.end())
@@ -52,7 +53,14 @@ namespace ngl
 				pinfo& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
 				linfo.m_type = atype;
-				linfo.m_protocol = ++lcustoms;
+				if (aprotocolnum == -1)
+				{
+					linfo.m_protocol = ++lcustoms;
+				}
+				else
+				{
+					linfo.m_protocol = aprotocolnum;
+				}
 				m_protocol[linfo.m_protocol] = &linfo;
 				return &linfo;
 			}
@@ -61,19 +69,20 @@ namespace ngl
 		{
 		public:
 			template <typename T>
-			static pinfo* func(EPROTOCOL_TYPE atype)
+			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum)
 			{
-				pinfo* lptemp = tcustoms::func<T>(atype);
+				pinfo* lptemp = tcustoms::func<T>(atype, aprotocolnum);
 				if (lptemp == nullptr)
 				{
 					return nullptr;
 				}
 				lptemp->m_forward = true;
+				return lptemp;
 			}
 		};
 	public:
 		using tp_customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
-		using tp_forward = template_arg<tforward, EPROTOCOL_TYPE>;
+		using tp_forward = template_arg<tforward, EPROTOCOL_TYPE, int32_t>;
 
 		template <typename T>
 		static bool init_protobufs()
@@ -103,6 +112,7 @@ namespace ngl
 			{
 				if (init_protobufs<TRC>() == false)
 				{
+					std::cout << tools::type_name<T>() << std::endl;
 					Throw("init_protobufs<TRC>() == false");
 				}
 				itor = m_keyval.find(lcode);

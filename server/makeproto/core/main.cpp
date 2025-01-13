@@ -89,6 +89,90 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     }
     m_stream << "</con>" << std::endl;    
     lfile.write(m_stream.str());
+}
+
+void foreachProtobufMessages2(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
+{
+    ngl::writefile lfile("./pb_protocol.cpp");
+
+    std::string lnamespace;
+    if (axml == "net")
+    {
+        lnamespace = "pbnet";
+    }
+    else if (axml == "gm")
+    {
+        lnamespace = "GM";
+    }
+
+    std::stringstream m_stream;
+    m_stream << "#include \"nprotocol.h\"" << std::endl;
+    m_stream << "#include \"tprotocol.h\"" << std::endl;
+    m_stream << "#include \"net.pb.h\"" << std::endl;
+    m_stream << "#include <map>" << std::endl;
+    m_stream << "namespace ngl" << std::endl;
+    m_stream << "{" << std::endl;
+    m_stream << "   template <typename PB>" << std::endl;
+    m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb)" << std::endl;
+    m_stream << "   {" << std::endl;
+    m_stream << "       tprotocol::tp_forward::template func<" << std::endl;
+    m_stream << "           ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>" << std::endl;
+    m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>" << std::endl;
+    m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>" << std::endl;
+    m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>" << std::endl;
+    m_stream << "       >(EPROTOCOL_TYPE_PROTOCOLBUFF);" << std::endl;
+    m_stream << "   }" << std::endl;
+    m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
+    m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;
+    m_stream << "   {" << std::endl;
+    m_stream << "       help_role_tprotocol_forward_pb<PB>(apb);" << std::endl;
+    m_stream << "       help_role_tprotocol_forward_pb<ARG...>(arg...);" << std::endl;
+    m_stream << "   }" << std::endl;
+    m_stream << "   void tprotocol_forward_pb()" << std::endl;
+    m_stream << "   {" << std::endl;
+    m_stream << "        help_role_tprotocol_forward_pb(" << std::endl;
+   
+    std::stringstream m_stream_pb;
+    int messageCount = fileDescriptor->message_type_count();
+    bool lfirst = true;
+    for (int i = 0; i < messageCount; ++i)
+    {
+        const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
+        std::cout << "name: " << messageDescriptor->name() << std::endl;
+        int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
+        if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos)
+        {
+            if (lfirst)
+            {
+                m_stream_pb << std::format("            null<{}::{}>,", lnamespace, messageDescriptor->name()) << std::endl;
+            }
+            else
+            {
+                m_stream_pb << std::format("            ,null<{}::{}>,", lnamespace, messageDescriptor->name()) << std::endl;
+            }
+        }
+    }
+
+    std::string ltemp = m_stream_pb.str();
+    if (!ltemp.empty())
+    {
+        if (ltemp[ltemp.size() - 2] == ',')
+        {
+            char* lbuff = new char[ltemp.size()];
+            memset(lbuff, 0x0, ltemp.size());
+            memcpy(lbuff, &ltemp[0], ltemp.size() - 2);
+            ltemp = lbuff;
+            delete[]lbuff;
+        }
+    }
+
+    m_stream << ltemp << std::endl;
+
+    m_stream << "        );" << std::endl;
+    m_stream << "   }" << std::endl;
+    m_stream << "}" << std::endl;
+
+    lfile.write(m_stream.str());
 
 }
 
@@ -101,6 +185,7 @@ void foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int
         return;
     }
     foreachProtobufMessages(fileDescriptor, aprotocol, aname);
+    foreachProtobufMessages2(fileDescriptor, aprotocol, aname);
 }
 
 void traverseProtobufMessages(const char* apackname, const char* aname, const google::protobuf::FileDescriptor* fileDescriptor) {

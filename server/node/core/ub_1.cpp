@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-01-02 21:01:54
+// 创建时间 25-01-13 17:19:09
 #include "actor_manage_activity.cpp"
 #include "actor_manage_plays.cpp"
 #include "calendar_function.cpp"
@@ -54,6 +54,7 @@
 #include "time_wheel.cpp"
 #include "manage_csv.cpp"
 #include "json_write.cpp"
+#include "events_map.cpp"
 #include "asio_timer.cpp"
 #include "actor_role.cpp"
 #include "actor_mail.cpp"
@@ -107,3 +108,5 @@
 #include "mdump.cpp"
 #include "grids.cpp"
 #include "cJSON.cpp"
+
+#include "pb_protocol.cpp"

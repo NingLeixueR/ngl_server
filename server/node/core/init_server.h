@@ -52,14 +52,14 @@
 
 bool init_server(int aid)
 {
+	// # 加载并关联协议号
+	ngl::xmlprotocol::load();
+
 	ngl::auto_actor();
 	ngl::tprotocol_customs();
 	ngl::tprotocol_forward_pb();
 	ngl::event_register();
 	ngl::tdb_init(true);
-
-	// # 加载并关联协议号
-	ngl::xmlprotocol::load();
 
 	// # 启动actor广播
 	ngl::actor_base::start_broadcast();

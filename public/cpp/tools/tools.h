@@ -467,7 +467,7 @@ namespace ngl
 		template <typename T, typename ...ARGS>
 		static bool splite(int32_t aindex, std::vector<std::string>& avec, T& adata, ARGS&... args)
 		{
-			if (aindex > avec.size())
+			if (aindex >= avec.size())
 			{
 				return false;
 			}
