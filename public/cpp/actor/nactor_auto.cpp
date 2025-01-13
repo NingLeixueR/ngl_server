@@ -223,31 +223,6 @@ namespace ngl
 		help_tprotocol_forward_pb<ARG...>(arg...);
 	}
 
-	void tprotocol_forward_pb()
-	{
-		help_tprotocol_forward_pb(
-			null<pbnet::PROBUFF_NET_MAIL_LIST>
-			, null<pbnet::PROBUFF_NET_MAIL_READ>
-			, null<pbnet::PROBUFF_NET_MAIL_DRAW>
-			, null<pbnet::PROBUFF_NET_MAIL_DEL>
-			, null<pbnet::PROBUFF_NET_NOTICE>
-			, null<pbnet::PROBUFF_NET_CHAT>
-			, null<pbnet::PROBUFF_NET_CREATE_FAMIL>
-			, null<pbnet::PROBUFF_NET_JOIN_FAMIL>
-			, null<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>
-			, null<pbnet::PROBUFF_NET_CEDE_FAMIL>
-			, null<pbnet::PROBUFF_NET_LEAVE_FAMIL>
-			, null<pbnet::PROBUFF_NET_FAMIL_LIST>
-			, null<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>
-			, null<pbnet::PROBUFF_NET_FAMILSIGN>
-			, null<pbnet::PROBUFF_NET_RANKLIST>
-			, null<pbnet::PROBUFF_NET_FRIEND>
-			, null<pbnet::PROBUFF_NET_ADDFRIEND>
-			, null<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>
-			, null<pbnet::PROBUFF_NET_ERASEFRIEND>
-		);
-	}
-
 	void event_register()
 	{
 		actor_events_logic::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
@@ -278,5 +253,10 @@ namespace ngl
 	void tcrossdb_init(bool ainstance)
 	{
 		tdb_ranklist::init(ainstance);
+	}
+
+	void init_all_pb()
+	{
+
 	}
 }//namespace ngl

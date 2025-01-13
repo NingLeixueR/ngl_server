@@ -88,6 +88,7 @@ namespace ngl
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_recvforward(const Tfun<TDerived, T> afun, bool aisload/* = false*/)
 	{
 		using type_forward = np_actor_forward<T, TYPE, false, T>;
+		static const std::string& ltypename = tools::type_name<T>();
 		m_fun[tprotocol::protocol<type_forward>()] = nlogicfun
 		{
 			.m_isdbload = aisload,

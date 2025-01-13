@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-01-02 21:02:13
+// 创建时间 25-01-13 17:19:41
 #include "actor_manage_activity.cpp"
 #include "actor_manage_plays.cpp"
 #include "calendar_function.cpp"
@@ -42,6 +42,7 @@
 #include "xmlprotocol.cpp"
 #include "ttab_random.cpp"
 #include "ttab_dbload.cpp"
+#include "pb_protocol.cpp"
 #include "ndb_modular.cpp"
 #include "nactor_auto.cpp"
 #include "manage_curl.cpp"
@@ -54,6 +55,7 @@
 #include "time_wheel.cpp"
 #include "manage_csv.cpp"
 #include "json_write.cpp"
+#include "events_map.cpp"
 #include "asio_timer.cpp"
 #include "actor_role.cpp"
 #include "actor_mail.cpp"

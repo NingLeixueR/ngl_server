@@ -161,6 +161,13 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
 		using register_forward_handle = template_arg<actor::cregister_forward_handle<TYPE, IsForward, TDerived>>;
 
+		template <typename T1, typename T2>
+		static bool isforward()
+		{
+			return tprotocol::isforward<ngl::np_actor_forward<T1, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T2>>()
+				&& tprotocol::isforward<ngl::np_actor_forward<T1, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T2>>();
+		}
+
 		//# 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		class cregister_recvforward_handle
@@ -169,6 +176,11 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
+				bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
+				if (lisforward == false)
+				{
+					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
+				}
 				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
 			}
 		};
@@ -180,17 +192,15 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
 		class cregister_recvforward_handle2
 		{
-			template <typename T1, typename T2>
-			static bool isforward()
-			{
-				return tprotocol::isforward<ngl::np_actor_forward<T1, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T2>>()
-					&& tprotocol::isforward<ngl::np_actor_forward<T1, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T2>>();
-			}
 		public:
 			template <typename T>
 			static void func()
 			{
 				bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
+				if (lisforward == false)
+				{
+					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
+				}
 				// 如果异常 说明需要在[tprotocol_forward_pb]中注册
 				assert(lisforward);
 				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
