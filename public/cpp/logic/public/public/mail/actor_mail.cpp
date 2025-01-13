@@ -80,8 +80,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<std::string> pro;
-					pro.id = id;
+					gcmd<std::string> pro(id);
 					pro.m_operator = "get_mails_responce";
 					const pbdb::db_mail* ldb = m_mails.get_db_mail(roleid);
 					if (ldb == nullptr)
@@ -119,8 +118,7 @@ namespace ngl
 						litem[gmailitem.m_itemtid] += gmailitem.m_count;
 					}
 
-					gcmd<bool> pro;
-					pro.id = id;
+					gcmd<bool> pro(id);
 					pro.m_operator = "add_mail_responce";
 					pro.m_data = false;
 					if (m_mails.addmail(recv.m_roleid, litem, recv.m_content) == false)
@@ -144,8 +142,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<bool> pro;
-					pro.id = id;
+					gcmd<bool> pro(id);
 					pro.m_operator = "del_mail_responce";
 					pro.m_data = true;
 					m_mails.delmail(ldelmail.m_roleid, ldelmail.m_mailid, false);

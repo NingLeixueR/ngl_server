@@ -62,8 +62,7 @@ namespace ngl
 		{
 			handle_cmd::push("get_notice", [this](int id, const ngl::json_read& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
-					gcmd<std::vector<std::string>> pro;
-					pro.id = id;
+					gcmd<std::vector<std::string>> pro(id);
 					pro.m_operator = "get_notice_responce";
 					
 					std::map<nguid, data_modified<pbdb::db_notice>>& lmapdb = m_notice.data();
@@ -83,8 +82,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<bool> pro;
-					pro.id = id;
+					gcmd<bool> pro(id);
 					pro.m_operator = "add_notice_responce";
 					pro.m_data = localtime::checkutc(recv.m_finishtime);
 					if (pro.m_data)
@@ -101,8 +99,7 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<bool> pro;
-					pro.id = id;
+					gcmd<bool> pro(id);
 					pro.m_operator = "del_notice_responce";
 					pro.m_data = true;
 					m_notice.del_notice(lid);

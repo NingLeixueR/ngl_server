@@ -287,8 +287,7 @@ namespace ngl
 					}
 
 					// 返回 {"data":int32_t}
-					gcmd<int32_t> pro;
-					pro.id = id;
+					gcmd<int32_t> pro(id);
 					pro.m_operator = "pay_responce";
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				}
@@ -305,8 +304,7 @@ namespace ngl
 					createorder(lorder, lrechargeid);
 
 					// 返回 {"data":int32_t}
-					gcmd<int32_t> pro;
-					pro.id = id;
+					gcmd<int32_t> pro(id);
 					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				});
@@ -331,8 +329,7 @@ namespace ngl
 
 					int lnow = localtime::gettime();
 					m_info.change_notalkutc(lnow + lduration);
-					gcmd<int32_t> pro;
-					pro.id = id;
+					gcmd<int32_t> pro(id);
 					pro.m_operator = "bantalk_responce";
 					pro.m_data = 0;
 					log_error()->print("[{}] bantalk [{}]", id_guid(), tools::time2str(lnow + lduration));

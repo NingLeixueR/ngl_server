@@ -42,16 +42,14 @@ namespace ngl
 		{
 			handle_cmd::push("all_protocol", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<protocols> lpro; 
-					lpro.id = id;
+					gcmd<protocols> lpro(id);
 					lpro.m_operator = "all_protocol";
 					get_allprotocol(lpro.m_data);					
 				}
 			);
 			handle_cmd::push("server_stat", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<actor_manage::msg_actor_stat> lpro;
-					lpro.id = id;
+					gcmd<actor_manage::msg_actor_stat> lpro(id);
 					lpro.m_operator = "server_stat";
 					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				}
