@@ -9,17 +9,17 @@ namespace ngl
 	struct gcmd
 	{
 	private:
+		gcmd() = delete;
 		gcmd(const gcmd&) = delete;
 		gcmd& operator=(const gcmd&) = delete;
 		int			id;
 	public:
 		std::string m_operator;
 		T			m_data;
-		bool		m_istoutf8;
+		bool		m_istoutf8 = true;
 
 		gcmd(int aid) :
-			id(aid),
-			m_istoutf8(true)
+			id(aid)
 		{}
 
 		~gcmd()
