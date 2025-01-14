@@ -1,5 +1,6 @@
 #pragma once
 
+#include "threadtools.h"
 #include "nactortype.h"
 #include "serialize.h"
 #include "localtime.h"
@@ -13,7 +14,6 @@
 #include "pack.h"
 #include "type.h"
 #include "xml.h"
-#include "threadtools.h"
 
 #include <source_location>
 #include <iostream>
@@ -272,9 +272,13 @@ namespace ngl
 		inline bool push(ngl::serialize& ser)const
 		{
 			if (ser.push(m_identifier) == false)
+			{
 				return false;
+			}
 			if (m_data->SerializeToArray(&ser.buff()[ser.byte()], ser.len() - ser.byte()) == false)
+			{
 				return false;
+			}				
 			return true;
 		}
 
@@ -287,7 +291,9 @@ namespace ngl
 		inline bool pop(ngl::unserialize& ser)
 		{
 			if (ser.pop(m_identifier) == false)
+			{
 				return false;
+			}
 			if (m_data == nullptr)
 			{
 				m_data = std::make_shared<T>();

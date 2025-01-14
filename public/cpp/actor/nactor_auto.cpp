@@ -77,7 +77,6 @@ namespace ngl
 				ldbname += ltemp;
 			}
 			em<ENUM_ACTOR>::set(lenum, ldbname.c_str());
-
 			init_customs_db<TDBTAB_TYPE, TDBTAB>();
 		}
 		else
@@ -94,9 +93,7 @@ namespace ngl
 	}
 
 	template <typename TACTOR, typename ...ARG>
-	void _auto_actor(
-		const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg
-	)
+	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg)
 	{
 		_auto_actor<TACTOR>(aactor, aenum, aname);
 		_auto_actor(arg...);
@@ -105,7 +102,6 @@ namespace ngl
 	void auto_actor()
 	{
 #define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
-
 		// ### 新增actor需要补全
 		_auto_actor(
 			null<actor_client>, em_pram(ACTOR_CLIENT)
@@ -236,9 +232,10 @@ namespace ngl
 		tdb_calendar::init(ainstance);
 		tdb_activity::init(ainstance);
 		tdb_keyvalue::init(ainstance);
+		tdb_familyer::init(ainstance);
+		tdb_friends::init(ainstance);
 		tdb_account::init(ainstance);
 		tdb_family::init(ainstance);
-		tdb_familyer::init(ainstance);
 		tdb_notice::init(ainstance);
 		tdb_rolekv::init(ainstance);
 		tdb_guild::init(ainstance);
@@ -247,7 +244,6 @@ namespace ngl
 		tdb_task::init(ainstance);
 		tdb_role::init(ainstance);
 		tdb_bag::init(ainstance);
-		tdb_friends::init(ainstance);
 	}
 
 	void tcrossdb_init(bool ainstance)
