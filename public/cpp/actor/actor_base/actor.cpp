@@ -42,6 +42,7 @@ namespace ngl
 		// # 释放actor所持有的资源
 		inline void release()
 		{
+			monopoly_shared_lock(m_mutex);
 			m_release = true;
 			actor_handle(0x7fffffff);
 			m_actor->save();

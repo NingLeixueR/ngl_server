@@ -744,6 +744,7 @@ namespace ngl
 
 		def_portocol_function(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
 	};
+
 	struct np_actor_logitem
 	{
 	private:		
@@ -808,11 +809,17 @@ namespace ngl
 		void print(const std::format_string<ARGS...>& aformat, const ARGS&... aargs)
 		{
 			if (m_actortype == ENUM_ACTOR::ACTOR_LOG)
+			{
 				return;
+			}
 			if (m_init == false)
+			{
 				return;
+			}
 			if (!check_level(m_level))
+			{
 				return;
+			}
 
 			std::string ldata = m_stream.str();
 			ldata += std::vformat(aformat.get(), std::make_format_args(aargs...));

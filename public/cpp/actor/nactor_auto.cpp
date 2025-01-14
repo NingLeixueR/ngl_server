@@ -253,6 +253,5 @@ namespace ngl
 
 	void init_all_pb()
 	{
-
 	}
 }//namespace ngl
