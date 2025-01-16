@@ -336,6 +336,27 @@ namespace ngl
 			return m_ipport.find(asession) != m_ipport.end();
 		}
 
+		void accept_handle(bool aisv4, const std::shared_ptr<service_tcp>& aservice,const std::error_code& error)
+		{
+			if (error)
+			{
+				close(aservice.get());
+				log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
+			}
+			else
+			{
+				{
+					monopoly_shared_lock(m_ipportlock);
+					std::pair<str_ip, i16_port>& lipport = m_ipport[aservice->m_sessionid];
+					lipport.first = aservice->m_socket.remote_endpoint().address().to_string();
+					lipport.second = aservice->m_socket.remote_endpoint().port();
+					aservice->m_is_lanip = tools::is_lanip(lipport.first);
+				}
+				start(aservice);
+			}
+			accept(true);
+		}
+
 		inline void accept(bool aisv4)
 		{
 			std::shared_ptr<service_tcp> lservice = nullptr;
@@ -350,23 +371,7 @@ namespace ngl
 					lservice->m_socket,
 					[this, lservice](const std::error_code& error)
 					{
-						if (error)
-						{
-							close(lservice.get());
-							log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
-						}
-						else
-						{
-							{
-								monopoly_shared_lock(m_ipportlock);
-								std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
-								lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
-								lipport.second = lservice->m_socket.remote_endpoint().port();
-								lservice->m_is_lanip = tools::is_lanip(lipport.first);
-							}
-							start(lservice);
-						}
-						accept(true);
+						accept_handle(true, lservice, error);
 					}
 				);
 			}
@@ -376,23 +381,7 @@ namespace ngl
 					lservice->m_socket,
 					[this, lservice](const std::error_code& error)
 					{
-						if (error)
-						{
-							close(lservice.get());
-							log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
-						}
-						else
-						{
-							{
-								monopoly_shared_lock(m_ipportlock);
-								std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
-								lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
-								lipport.second = lservice->m_socket.remote_endpoint().port();
-								lservice->m_is_lanip = tools::is_lanip(lipport.first);
-							}
-							start(lservice);
-						}
-						accept(false);
+						accept_handle(false, lservice, error);
 					}
 				);
 			}			
