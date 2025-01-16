@@ -11,4 +11,5 @@ namespace ngl
 	int32_t		ttab_specialid::m_familjoininterval = 0;
 	int32_t		ttab_specialid::m_friendsapplylistcount = 0;
 	int32_t		ttab_specialid::m_friendscount = 0;
+	int32_t		ttab_specialid::m_ranklistmaxcount = 0;
 }

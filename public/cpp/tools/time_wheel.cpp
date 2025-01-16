@@ -269,7 +269,7 @@ namespace ngl
 			int32_t ltempsleep = 0;
 			while (m_stop == false)
 			{
-				ltemp = getms() - m_current_ms;
+				ltemp = (int32_t)(getms() - m_current_ms);
 				ltempsleep = m_config.m_time_wheel_precision - ltemp;
 				if (ltempsleep > 0)
 				{
@@ -345,7 +345,7 @@ namespace ngl
 					}
 				});
 			lpnode->m_parm.m_timerstart = getms();
-			lpnode->m_parm.m_ms += getms() - m_server_start_ms;
+			lpnode->m_parm.m_ms += (int32_t)(getms() - m_server_start_ms);
 			if (lpnode->m_parm.m_ms < 0)
 			{
 				return -1;
@@ -432,7 +432,7 @@ namespace ngl
 
 	bool wheel::push_slots(wheel_node* anode)
 	{
-		int lcallcount = anode->m_parm.m_ms / m_slot_ms;
+		int lcallcount = (int32_t)(anode->m_parm.m_ms / m_slot_ms);
 		lcallcount &= m_slot_less;//lcallcount %= m_slot_count;
 		int lcount = m_current_pos & m_slot_less;
 		if (lcallcount <= lcount && m_current_pos != -1)//if (lcallcount <= m_current_pos% m_slot_count)
@@ -550,7 +550,7 @@ namespace ngl
 	int	time_wheel::count() 
 	{ 
 		monopoly_shared_lock(m_impl_time_wheel()->m_mutex);
-		return  m_impl_time_wheel()->m_timer.size();
+		return  (int)m_impl_time_wheel()->m_timer.size();
 	}
 
 	bool time_wheel::empty() 

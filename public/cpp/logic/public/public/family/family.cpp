@@ -23,8 +23,8 @@ namespace ngl
 		pbdb::db_family ldbfamily;
 		++m_maxid;
 
-		int32_t lnow = localtime::gettime();
-		i64_actorid lfamilyid = nguid::make(ACTOR_FAMILY, tab_self_area, m_maxid);
+		int32_t lnow = (int32_t)localtime::gettime();
+		i64_actorid lfamilyid = nguid::make(ACTOR_FAMILY, tab_self_area, (i32_actordataid)m_maxid);
 		ldbfamily.set_m_id(lfamilyid);
 		ldbfamily.set_m_createutc(lnow);
 		ldbfamily.set_m_name(aname);
@@ -234,7 +234,7 @@ namespace ngl
 			return 6;
 		}
 		lpfamilyer->set_m_position(pbdb::db_familyer_eposition_none);
-		lpfamilyer->set_m_lastleaveutc(localtime::gettime());
+		lpfamilyer->set_m_lastleaveutc((int32_t)localtime::gettime());
 		lmember.erase(itor);
 		return 0;
 	}
@@ -329,7 +329,7 @@ namespace ngl
 			return 5;
 		}
 
-		lpfamilyer->set_m_lastsignutc(localtime::gettime());
+		lpfamilyer->set_m_lastsignutc((int32_t)localtime::gettime());
 
 		// 给军团增加经验
 		int32_t* lpexp = ttab_familylv::failylvexp(lpfamily->m_lv());

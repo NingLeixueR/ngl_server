@@ -244,7 +244,7 @@ namespace ngl
 		pro.m_uport			= lpram->m_uport();
 		pro.m_conv			= lpram->m_conv();
 
-		nets::sendbyserver(lpram->m_serverid(), pro, nguid::make(), nguid::make());
+		nets::sendbyserver((i32_serverid)lpram->m_serverid(), pro, nguid::make(), nguid::make());
 
 		return true;
 	}

@@ -77,7 +77,7 @@ namespace ngl
 		{
 			return;
 		}
-		std::shared_ptr<activity> lactivity = activity::make(acalendarid, aactivityid, atime, m_db);
+		std::shared_ptr<activity> lactivity = activity::make(acalendarid, (int32_t)aactivityid, atime, m_db);
 		add_activity(aactivityid, lactivity);
 	}
 

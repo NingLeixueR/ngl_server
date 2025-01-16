@@ -19,7 +19,7 @@ namespace ngl
 
 		virtual void initdata();
 
-		const int32_t m_id();
+		const i64_actorid m_id();
 
 		const pbdb::db_role& get_constrole();
 

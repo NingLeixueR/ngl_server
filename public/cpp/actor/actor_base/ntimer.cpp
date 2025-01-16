@@ -22,7 +22,7 @@ namespace ngl
 				actor::static_send_actor<timerparm, false>(lidguid, nguid::make(), aparm);
 			}
 		};
-		aparm->m_timerid = twheel::wheel().addtimer(lparm);
+		aparm->m_timerid = (int)twheel::wheel().addtimer(lparm);
 		return aparm->m_timerid;
 	}
 }//namespace ngl

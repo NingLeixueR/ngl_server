@@ -152,7 +152,7 @@ namespace ngl
 			{
 				return nullptr;
 			}
-			auto itor = lpmap->find(aid);
+			auto itor = lpmap->find((int32_t)aid);
 			if (itor == lpmap->end())
 			{
 				return nullptr;
@@ -234,7 +234,7 @@ namespace ngl
 					return false;
 				}
 
-				lmap->erase(aid);
+				lmap->erase((int32_t)aid);
 			}
 			else
 			{

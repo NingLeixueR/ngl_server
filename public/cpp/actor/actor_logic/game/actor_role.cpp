@@ -327,7 +327,7 @@ namespace ngl
 						return;
 					}
 
-					int lnow = localtime::gettime();
+					int lnow = (int)localtime::gettime();
 					m_info.change_notalkutc(lnow + lduration);
 					gcmd<int32_t> pro(id);
 					pro.m_operator = "bantalk_responce";
@@ -336,7 +336,7 @@ namespace ngl
 				});
 		}
 
-		if (handle_gm::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		if (handle_gm::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_role php operator[{}] ERROR", loperator);
 		}

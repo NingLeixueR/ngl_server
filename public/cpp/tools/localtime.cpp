@@ -127,7 +127,7 @@ namespace ngl
 		std::tm tmTime = *std::localtime(&ltemp);
 		tmTime.tm_min = 0;
 		tmTime.tm_sec = 0;
-		return mktime(&tmTime);
+		return (int)mktime(&tmTime);
 	}
 
 	int localtime::getutcbymin(time_t utc, int min)
@@ -135,7 +135,7 @@ namespace ngl
 		time_t ltemp = utc + ((int)MINUTES_SECOND * min);
 		std::tm ltime = *std::localtime(&ltemp);
 		ltime.tm_sec = 0;
-		return mktime(&ltime);
+		return (int)mktime(&ltime);
 	}
 
 	time_t localtime::getweekday(time_t utc, int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
@@ -234,7 +234,7 @@ namespace ngl
 		}
 		else if (weekdayInterval == 0)
 		{
-			time_t ltemp = getsecond2time(curr, hour, minute);
+			time_t ltemp = getsecond2time((int)curr, hour, minute);
 			if (ltemp > curr)
 			{
 				return ltemp;
@@ -242,10 +242,10 @@ namespace ngl
 			else
 			{
 				weekdayInterval += WEEK_DAY;
-				return getsecond2time(curr + WEEK_SECOND, hour, minute);
+				return getsecond2time((int)curr + WEEK_SECOND, hour, minute);
 			}
 		}
-		return getsecond2time(curr + weekdayInterval * DAY_SECOND, hour, minute);
+		return getsecond2time((int)curr + weekdayInterval * DAY_SECOND, hour, minute);
 	}
 
 	bool localtime::isspanweekday(time_t curr, time_t last, int weekday)
@@ -278,7 +278,7 @@ namespace ngl
 
 	time_t localtime::getutcbyday(time_t utc, int dayNum)
 	{
-		time_t utcDayUTC = getsecond2time(utc, 0, 0);
+		time_t utcDayUTC = getsecond2time((int)utc, 0, 0);
 		return utcDayUTC + dayNum * 86400;
 
 	}

@@ -14,8 +14,9 @@ namespace ngl
 			(*lstream) << std::format("activityid:{}", item.first) << std::endl;
 			actor_manage_activity* lactor = actor();
 			const pbdb::db_activity& ldbactivity = item.second.getconst();
+			int32_t lactivityid = (int32_t)item.first.id();
 			std::shared_ptr<activity> lactivity = activity::make(ldbactivity.m_calendarid(), 
-				item.first, ttab_calendar::data::time(ldbactivity.m_beg(), ldbactivity.m_end()), *this
+				lactivityid, ttab_calendar::data::time(ldbactivity.m_beg(), ldbactivity.m_end()), *this
 			);
 			lactor->add_activity(item.first, lactivity);
 		}

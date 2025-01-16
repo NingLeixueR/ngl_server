@@ -59,7 +59,7 @@ namespace ngl
 			}
 			stage(m_stage, false);
 			m_stage = astage;
-			m_begtm = localtime::gettime();
+			m_begtm = (int32_t)localtime::gettime();
 			stage(m_stage, true);
 			return true;
 		}
@@ -71,7 +71,7 @@ namespace ngl
 
 		void update_stage()
 		{
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			if (m_stage == estage_preparation)
 			{
 				if (lnow <= m_begtm + m_tab->m_preparation_tm)

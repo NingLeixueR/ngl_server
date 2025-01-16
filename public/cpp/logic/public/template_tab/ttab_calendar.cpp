@@ -18,7 +18,7 @@ namespace ngl
 
 	void ttab_calendar_post(tab_calendar* atab, int64_t autc, bool astart)
 	{
-		int lnow = localtime::gettime();
+		int lnow = (int)localtime::gettime();
 		
 		int ltime = (astart ? ttab_calendar::data::beg(autc) : ttab_calendar::data::end(autc)) - lnow;
 		if (ltime < 0)

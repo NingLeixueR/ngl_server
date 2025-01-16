@@ -92,7 +92,7 @@ namespace ngl
 		loadcsv<tab_equiplv, manage_csv<tab_equiplv>>();
 		loadcsv<tab_errormessage, manage_csv<tab_errormessage>>();
 		loadcsv<tab_item, manage_csv<tab_item>>();
-		loadcsv<tab_specialid, manage_csv<tab_specialid>>();
+		loadcsv<tab_specialid, ttab_specialid>();
 		loadcsv<tab_synthesis, manage_csv<tab_synthesis>>();
 		loadcsv<tab_task, manage_csv<tab_task>>();
 		loadcsv<tab_card, manage_csv<tab_card>>();

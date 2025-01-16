@@ -80,7 +80,7 @@ namespace ngl
 			{
 				return;
 			}
-			m_wbegtm = localtime::gettime();
+			m_wbegtm = (int32_t)localtime::gettime();
 			m_stat = atype;
 		}
 

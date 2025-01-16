@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-01-07 21:39:08
+// 创建时间 // 创建时间 25-01-16 11:08:23
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()
@@ -25,9 +25,9 @@ tab_item::tab_item()
 }
 attributevalue::attributevalue()
 {
-	m_id = 1;
-	m_isratio = 3;
-	m_value = 2;
+	m_id = 0;
+	m_isratio = false;
+	m_value = 0;
 }
 tab_equip::tab_equip()
 {

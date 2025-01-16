@@ -6,18 +6,18 @@
 namespace ngl
 {
 	segpack_rate_interval::segpack_rate_interval()
-		:m_resetutc(localtime::gettime()), m_ratecount(0)
+		:m_resetutc((int)localtime::gettime()), m_ratecount(0)
 	{}
 
 	void segpack_rate_interval::reset()
 	{
-		m_resetutc = localtime::gettime();
+		m_resetutc = (int)localtime::gettime();
 		m_ratecount = 0;
 	}
 
 	bool segpack_rate::add(i32_socket aid)
 	{
-		int lnow = localtime::gettime();
+		int lnow = (int)localtime::gettime();
 		auto itor = m_data.find(aid);
 		if (itor == m_data.end())
 		{

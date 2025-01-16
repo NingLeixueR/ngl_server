@@ -19,7 +19,7 @@ namespace ngl
 		m_activityid(activityid)
 		, m_activity(nullptr)
 	{
-		tab_activity* tab = allcsv::tab<tab_activity>(activityid);
+		tab_activity* tab = allcsv::tab<tab_activity>((int32_t)activityid);
 		if (tab == nullptr)
 		{
 			log_error()->print("tab_activity id[{}] not find!!!", activityid);
@@ -47,7 +47,7 @@ namespace ngl
 	{
 		if ((astart ? is_start() : is_finish()) == false && calendarid() < 0)
 		{
-			int32_t lnow = localtime::gettime();
+			int32_t lnow = (int32_t)localtime::gettime();
 			int32_t ltime = astart ? start_utc() : finish_utc();
 			int32_t ltemp = ltime - lnow;
 			if (ltemp < 0)
