@@ -18,13 +18,13 @@ namespace ngl
 		if (adata.m_pack->m_protocol == ENET_KCP)
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-			pro.set_m_utc(localtime::gettime());
+			pro.set_m_utc((int32_t)localtime::gettime());
 			sendkcp(pro, lrequest);
 		}
 		else
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
-			pro->set_m_utc(localtime::gettime());
+			pro->set_m_utc((int32_t)localtime::gettime());
 			send_client(id_guid(), pro);
 		}
 		return true;

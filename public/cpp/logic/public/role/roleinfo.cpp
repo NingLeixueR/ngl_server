@@ -26,9 +26,9 @@ namespace ngl
 		(*lstream).print("");
 	}
 
-	const int32_t roleinfo::m_id()
+	const i64_actorid roleinfo::m_id()
 	{
-		return db()->getconst().m_id();
+		return (int)db()->getconst().m_id();
 	}
 
 	const pbdb::db_role& roleinfo::get_constrole()

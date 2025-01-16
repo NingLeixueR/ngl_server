@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-01-07 21:39:08
+// 创建时间 // 创建时间 25-01-16 11:08:23
 #pragma once
 
 #include "csv.h"
@@ -28,7 +28,7 @@ enum EPH_HEAD_VAL
 };
 enum EPH
 {
-	EPH_MASK_VALUE = 0xff,	
+	EPH_MASK_VALUE = 0xf,	
 	EPH_MASK_COUNT = 2,	
 	EPH_MASK = 0,	// 用于确认是否使用包
 	EPH_BYTES = EPH_MASK_COUNT,	// 协议字节数

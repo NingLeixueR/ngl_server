@@ -122,7 +122,7 @@ namespace ngl
 
 		static void foreach(const naddress::foreach_callbackfun& afun)
 		{
-			std::ranges::find_if(m_session, [&afun](const auto& apair)
+			std::ranges::find_if(m_session, [&afun](const auto& apair)->bool
 				{
 					return afun(apair.second) == false;
 				});

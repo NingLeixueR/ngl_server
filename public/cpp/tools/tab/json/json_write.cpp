@@ -122,7 +122,7 @@ namespace ngl
 
 	void json_write::writenumber(const char* akey, const std::vector<uint32_t>& aval)
 	{
-		cJSON* ljson = cJSON_CreateIntArray((int32_t*)aval.data(), aval.size());
+		cJSON* ljson = cJSON_CreateIntArray((int32_t*)aval.data(), (int)aval.size());
 		write(akey, ljson);
 	}
 
@@ -162,13 +162,13 @@ namespace ngl
 
 	void json_write::write(const char* akey, const std::vector<float>& aval)
 	{
-		cJSON* ljson = cJSON_CreateFloatArray(aval.data(), aval.size());
+		cJSON* ljson = cJSON_CreateFloatArray(aval.data(), (int)aval.size());
 		write(akey, ljson);
 	}
 
 	void json_write::write(const char* akey, const std::vector<double>& aval)
 	{
-		cJSON* ljson = cJSON_CreateDoubleArray(aval.data(), aval.size());
+		cJSON* ljson = cJSON_CreateDoubleArray(aval.data(), (int)aval.size());
 		write(akey, ljson);
 	}
 

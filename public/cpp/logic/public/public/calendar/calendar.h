@@ -38,7 +38,7 @@ namespace ngl
 				return;
 			}
 			pbdb::db_calendar& lcalendar = itor->second.get();
-			int64_t ltime = ttab_calendar::net_calendar(acalendarid, atime);
+			int64_t ltime = ttab_calendar::net_calendar((int32_t)acalendarid, atime);
 			if (ltime <= 0)
 			{
 				return;
@@ -47,7 +47,7 @@ namespace ngl
 			lcalendar.set_m_time(ltime);
 			lcalendar.set_m_finish(false);
 			lcalendar.set_m_start(false);
-			ttab_calendar::post(ttab_calendar::tab(acalendarid), ltime, lcalendar);
+			ttab_calendar::post(ttab_calendar::tab((int32_t)acalendarid), ltime, lcalendar);
 		}
 
 		pbdb::db_calendar* get_calendar(int64_t acalendarid, bool achange = true)
@@ -107,7 +107,7 @@ namespace ngl
 				{
 					continue;
 				}
-				tab_calendar* tab = ttab_calendar::tab(item.first);
+				tab_calendar* tab = ttab_calendar::tab((int32_t)item.first);
 				if (tab == nullptr)
 				{
 					continue;

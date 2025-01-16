@@ -145,7 +145,7 @@ namespace ngl
 						{
 							return;
 						}
-						m_grid[aid].m_value = distance(this, aid, lfinish);
+						m_grid[aid].m_value = (int)distance(this, aid, lfinish);
 						m_grid[aid].m_parent = lcurrent;
 						lset.insert(lessfun::make(aid, m_grid[aid].m_value));
 						vis[aid] = true;
@@ -157,7 +157,7 @@ namespace ngl
 					return false;
 				}
 				auto itor = lset.begin();
-				lcurrent = *itor;
+				lcurrent = (int)*itor;
 				lset.erase(itor);
 
 				if (lcurrent == lfinish)

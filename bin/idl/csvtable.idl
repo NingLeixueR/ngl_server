@@ -29,7 +29,7 @@ enum EPH_HEAD_VAL
 
 enum EPH
 {
-	EPH_MASK_VALUE = 0xff,
+	EPH_MASK_VALUE = 0xf,
 	EPH_MASK_COUNT = 2,
 	EPH_MASK = 0,								// 用于确认是否使用包
 	EPH_BYTES = EPH_MASK_COUNT,					// 协议字节数
@@ -212,9 +212,9 @@ struct tab_item
 
 struct attributevalue
 {
-	int32_t m_id = 1;			// 属性id(EnumAttribute)
-	bool m_isratio = 3;			// 是否万分比属性
-	int32_t m_value = 2;		// 属性值
+	int32_t m_id = 0;			// 属性id(EnumAttribute)
+	bool m_isratio = false;		// 是否万分比属性
+	int32_t m_value = 0;		// 属性值
 }
 
 enum EEquip

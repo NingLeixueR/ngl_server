@@ -583,7 +583,7 @@ namespace ngl
 							ptr_se lpstruct = m_session.find(m_remoteport);
 							if (lpstruct != nullptr)
 							{
-								int linput = lpstruct->input(m_buff, bytes_received);
+								int linput = lpstruct->input(m_buff, (long)bytes_received);
 								if (linput >= 0)
 								{
 									while (true)
@@ -625,7 +625,7 @@ namespace ngl
 									if (memcmp(m_buff, "GetIp", sizeof("GetIp") - 1) == 0)
 									{
 										std::string lip = m_remoteport.address().to_string();
-										sendu(m_remoteport, lip.c_str(), lip.size() + 1);
+										sendu(m_remoteport, lip.c_str(), (int)lip.size() + 1);
 									}
 								}
 							}
@@ -825,7 +825,7 @@ namespace ngl
 			log_error()->print("udp_cmd::sendcmd fail [{}][{}]", (int)acmd, ajson);
 			return false;
 		}
-		akcp->get_impl()->send(asession, lbuff.c_str(), lbuff.size());
+		akcp->get_impl()->send(asession, lbuff.c_str(), (int)lbuff.size());
 		return true;
 	}
 

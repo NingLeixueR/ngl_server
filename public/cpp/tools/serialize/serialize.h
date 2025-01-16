@@ -147,7 +147,7 @@ namespace ngl
 				std::string json;
 				if (proto_json(*adata.m_data, json))
 				{
-					int32_t len = json.size() + 1;
+					int32_t len = (int32_t)json.size() + 1;
 					memcpy(&buff()[byte()], json.c_str(), len);
 					add_bytes(len);
 					return true;
@@ -169,7 +169,7 @@ namespace ngl
 			}
 			if (adata.m_isbinary)
 			{
-				int16_t lsize = adata.m_data->size();
+				int16_t lsize = (int16_t)adata.m_data->size();
 				if (push(lsize) == false)
 				{
 					return false;

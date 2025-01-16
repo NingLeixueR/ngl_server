@@ -106,7 +106,7 @@ namespace ngl
 				}
 			);
 		}
-		if (handle_cmd::function(loperator, adata.get_data()->identifier(), lojson) == false)
+		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_notice operator[{}] ERROR", loperator);
 		}

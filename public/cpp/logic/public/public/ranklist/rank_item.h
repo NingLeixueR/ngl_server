@@ -87,6 +87,5 @@ namespace ngl
 		{
 			return m_values[atype] == ar.m_values[atype];
 		}
-
 	};
 }//namespace ngl

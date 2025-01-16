@@ -89,7 +89,7 @@ namespace ngl
 			//	send_client(adata.m_data->identifier(), pro);
 			//	return true;
 			//}
-			llastspeakutc = localtime::gettime();
+			llastspeakutc = (int)localtime::gettime();
 			
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_chat>::get(adata.get_data()->identifier());
 			if (lpbrief == nullptr)
@@ -102,7 +102,7 @@ namespace ngl
 			pbnet::chatitem& lchatitem = *lvec.rbegin();
 
 			lchatitem.set_m_rolename(lpbrief->m_name());
-			lchatitem.set_m_utc(localtime::gettime());
+			lchatitem.set_m_utc((int)localtime::gettime());
 			lchatitem.set_m_content(recv.m_content());
 			lchatitem.set_m_roleid(lpbrief->m_id());
 

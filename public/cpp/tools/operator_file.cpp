@@ -63,7 +63,7 @@ namespace ngl
 				std::string line;
 				if (std::getline(m_file, line))
 				{
-					int lsize = line.size();
+					int lsize = (int)line.size();
 					for (int i = 0; i < lsize; ++i)
 					{
 						if (line[i] == '\"')
@@ -108,20 +108,20 @@ namespace ngl
 	{
 		if (m_file.is_open())
 		{
-			int lsizecurrent = m_file.tellg();
+			int lsizecurrent = (int)m_file.tellg();
 			if (lsizecurrent == -1)
 			{
 				return false;
 			}
 			m_file.seekg(0, std::ios::end);
-			int lsize = m_file.tellg();
+			int lsize = (int)m_file.tellg();
 			m_file.seekg(lsizecurrent, std::ios::beg);
 
 			if (lsize == lsizecurrent)
 			{
 				return false;
 			}	
-			int lstrlen = astr.size();
+			int lstrlen = (int)astr.size();
 			astr.resize(lstrlen + (lsize - lsizecurrent));
 			m_file.read(&astr.data()[lstrlen], lsize - lsizecurrent);
 			return true;

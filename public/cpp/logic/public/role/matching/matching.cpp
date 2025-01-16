@@ -47,7 +47,7 @@ namespace ngl
 			return false;
 		}
 		amember.set_m_id(aroleid);
-		amember.set_m_begmatch(localtime::gettime());
+		amember.set_m_begmatch((int32_t)localtime::gettime());
 		amember.set_m_name(lpbrief->m_name());
 		amember.set_m_lv(lpbrief->m_lv());
 		amember.set_m_isconfirm(false);

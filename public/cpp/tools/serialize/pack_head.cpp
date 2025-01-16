@@ -48,7 +48,7 @@ namespace ngl
 
 	void pack_head::head_set_time(int32_t* abuff)
 	{
-		abuff[EPH::EPH_TIME] = localtime::gettime();
+		abuff[EPH::EPH_TIME] = (int32_t)localtime::gettime();
 	}
 
 	i32_time pack_head::head_get_time(const int32_t* abuff)
@@ -66,7 +66,7 @@ namespace ngl
 		auto lpbuff = (char*)abuff;
 		for (int i = 0; i < EPH_MASK_COUNT_BYTES; ++i)
 		{
-			lpbuff[i] = EPH::EPH_MASK_VALUE;
+			lpbuff[i] = (char)EPH::EPH_MASK_VALUE;
 		}
 	}
 

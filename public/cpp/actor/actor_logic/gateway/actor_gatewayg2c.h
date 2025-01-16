@@ -90,8 +90,8 @@ namespace ngl
 			}
 			else
 			{
-				int32_t luidsize = lparm->m_uid.size();
-				int32_t lareasize = lparm->m_area.size();
+				int32_t luidsize = (int32_t)lparm->m_uid.size();
+				int32_t lareasize = (int32_t)lparm->m_area.size();
 				if (luidsize != lareasize)
 				{
 					log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);

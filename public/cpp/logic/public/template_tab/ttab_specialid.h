@@ -21,7 +21,8 @@ namespace ngl
 		static int32_t		m_familjoininterval;	// 玩家请求加入/创建军团的冷却时间
 		static int32_t		m_friendsapplylistcount;// 玩家好友请求列表数量
 		static int32_t		m_friendscount;			// 玩家好友数量
-
+		static int32_t		m_ranklistmaxcount;		// 排行榜最大条目数
+		
 		ttab_specialid()
 		{}
 
@@ -35,25 +36,42 @@ namespace ngl
 			apvalue = astr;
 		}
 
+		template <typename T>
+		inline bool read_value(const tab_specialid& atab, const char* akey, T& adata)
+		{
+			if (atab.m_name == akey)
+			{
+				tovalue(adata, atab.m_value.c_str());
+				return false;	
+			}
+			return true;
+		}
+
+		template <typename T, typename ...ARG>
+		inline bool read_value(const tab_specialid& atab, const char* akey, T& adata, ARG&... adatas)
+		{
+			return read_value(atab, akey, adata) && read_value(atab, adatas...);
+		}
+
 		void reload()final
 		{
-#define IF_NAME_VAL(NAME)							\
-	if(ltab.m_name == #NAME)						\
-	{												\
-		tovalue(m_##NAME, ltab.m_value.c_str());	\
-		return;										\
-	}
+#define de_pram(NAME) #NAME,m_##NAME
+
 			std::ranges::for_each(m_tablecsv, [this](const auto& pair)
 				{
-					const tab_specialid& ltab = pair.second;
-					IF_NAME_VAL(rolemaxlv)
-					IF_NAME_VAL(rolemaxvip)
-					IF_NAME_VAL(createfamilconsume)
-					IF_NAME_VAL(familsignexp)
-					IF_NAME_VAL(familsigndrop)
-					IF_NAME_VAL(familapplylistcount)
-					IF_NAME_VAL(friendsapplylistcount)
-					IF_NAME_VAL(friendscount)
+					read_value(
+						pair.second
+						, de_pram(rolemaxlv)
+						, de_pram(rolemaxvip)
+						, de_pram(createfamilconsume)
+						, de_pram(familsignexp)
+						, de_pram(familsigndrop)
+						, de_pram(familapplylistcount)
+						, de_pram(friendsapplylistcount)
+						, de_pram(familjoininterval)
+						, de_pram(friendscount)
+						, de_pram(ranklistmaxcount)						
+					);					
 				});
 		}
 	};
