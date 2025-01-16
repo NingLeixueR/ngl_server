@@ -31,33 +31,25 @@ namespace ngl
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(
-			np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata
-		)
+		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata)
 		{
 			return adata.m_recvpack;
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(
-			np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata
-		)
+		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata)
 		{
 			return adata.m_recvpack;
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(
-			np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata
-		)
+		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata)
 		{
 			return adata.m_recvpack;
 		}
 
 		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(
-			np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata
-		)
+		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata)
 		{
 			return adata.m_recvpack;
 		}
@@ -129,9 +121,7 @@ namespace ngl
 		template <typename T>
 		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::shared_ptr<pack> lpack = net_pack<T>::npack(
-				&get_pool(), adata, aactorid, arequestactorid
-			);
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
 			{
 				return false;
@@ -157,9 +147,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool sendbyserver(
-			i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid
-		)
+		bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_sessionid lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
