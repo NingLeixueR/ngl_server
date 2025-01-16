@@ -12,7 +12,8 @@ namespace ngl
 		impl_asio_tcp(const impl_asio_tcp&) = delete;
 		impl_asio_tcp& operator=(const impl_asio_tcp&) = delete;
 
-		asio::ip::tcp::acceptor*										m_acceptor;
+		asio::ip::tcp::acceptor*										m_acceptor_v4;
+		asio::ip::tcp::acceptor*										m_acceptor_v6;
 		i16_port														m_port;
 		tcp_callback													m_fun;
 		tcp_closecallback												m_closefun;
@@ -39,17 +40,20 @@ namespace ngl
 			m_port(aport),
 			m_service_io_(athread, 10240),
 			m_sessionid(aindex << 24),
-			m_acceptor(nullptr)
+			m_acceptor_v4(nullptr),
+			m_acceptor_v6(nullptr)
 		{
 			asio::io_service& lioservice = *m_service_io_.get_ioservice(m_service_io_.m_recvthreadsize);
-			m_acceptor = new asio::ip::tcp::acceptor(
+			m_acceptor_v4 = new asio::ip::tcp::acceptor(
 				lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), m_port)
 			);
-			// m_acceptor = new boost::asio::ip::tcp::acceptor(
-			//  lioservice, 
-			//  boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), m_port)
-			// );
-			accept();
+			m_acceptor_v6 = new asio::ip::tcp::acceptor(
+				lioservice, asio::ip::tcp::endpoint(asio::ip::tcp::v6(), m_port)
+			);
+			m_acceptor_v4->set_option(asio::socket_base::reuse_address(true));
+			m_acceptor_v6->set_option(asio::socket_base::reuse_address(true));
+			accept(true);
+			accept(false);
 		}
 
 		impl_asio_tcp(
@@ -65,7 +69,8 @@ namespace ngl
 			m_port(-1),
 			m_service_io_(athread + 1, 10240),
 			m_sessionid(aindex << 24),
-			m_acceptor(nullptr)
+			m_acceptor_v4(nullptr),
+			m_acceptor_v6(nullptr)
 		{
 		}
 
@@ -331,7 +336,7 @@ namespace ngl
 			return m_ipport.find(asession) != m_ipport.end();
 		}
 
-		inline void accept()
+		inline void accept(bool aisv4)
 		{
 			std::shared_ptr<service_tcp> lservice = nullptr;
 			{
@@ -339,29 +344,58 @@ namespace ngl
 				lservice = std::make_shared<service_tcp>(m_service_io_, ++m_sessionid);
 				m_data[lservice->m_sessionid] = lservice;
 			}
-			m_acceptor->async_accept(
-				lservice->m_socket,
-				[this,lservice](const std::error_code& error)
-				{
-					if (error)
+			if (aisv4)
+			{
+				m_acceptor_v4->async_accept(
+					lservice->m_socket,
+					[this, lservice](const std::error_code& error)
 					{
-						close(lservice.get());
-						log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
-					}
-					else
-					{
+						if (error)
 						{
-							monopoly_shared_lock(m_ipportlock);
-							std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
-							lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
-							lipport.second = lservice->m_socket.remote_endpoint().port();
-							lservice->m_is_lanip = tools::is_lanip(lipport.first);
+							close(lservice.get());
+							log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
 						}
-						start(lservice);
+						else
+						{
+							{
+								monopoly_shared_lock(m_ipportlock);
+								std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
+								lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
+								lipport.second = lservice->m_socket.remote_endpoint().port();
+								lservice->m_is_lanip = tools::is_lanip(lipport.first);
+							}
+							start(lservice);
+						}
+						accept(true);
 					}
-					accept();
-				}
-			);
+				);
+			}
+			else
+			{
+				m_acceptor_v6->async_accept(
+					lservice->m_socket,
+					[this, lservice](const std::error_code& error)
+					{
+						if (error)
+						{
+							close(lservice.get());
+							log_error()->print("asio_tcp::accept[{}]", error.message().c_str());
+						}
+						else
+						{
+							{
+								monopoly_shared_lock(m_ipportlock);
+								std::pair<str_ip, i16_port>& lipport = m_ipport[lservice->m_sessionid];
+								lipport.first = lservice->m_socket.remote_endpoint().address().to_string();
+								lipport.second = lservice->m_socket.remote_endpoint().port();
+								lservice->m_is_lanip = tools::is_lanip(lipport.first);
+							}
+							start(lservice);
+						}
+						accept(false);
+					}
+				);
+			}			
 		}
 
 		inline void start(const std::shared_ptr<service_tcp>& aservice)
