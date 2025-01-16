@@ -547,6 +547,15 @@ namespace ngl
 		static void start_broadcast();
 #pragma endregion 
 
+		static void create_log(ENUM_ACTOR atype)
+		{
+			if (atype != ngl::ACTOR_LOG)
+			{
+				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
+				ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
+			}
+		}
+
 		//# actor_base::create 
 		//# 构造actor对象会自动被调用
 		template <typename TDerived>
@@ -558,12 +567,8 @@ namespace ngl
 				return;
 			}
 			lfirst = false;
-			TDerived::nregister();	
-			if (atype != ngl::ACTOR_LOG)
-			{
-				nlogactor lnlogactor(atype, ngl::ELOG_LOCAL);
-				ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
-			}
+			TDerived::nregister();
+			create_log(atype);
 		}
 
 		//# 用于创建非单例actor
