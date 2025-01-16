@@ -26,7 +26,7 @@ namespace ngl
 		int							m_timerid = 0;
 		int64_t						m_ms = 0;					// 相对于当前时间 ms
 		int							m_count = 1;				// 触发次数
-		std::function<int(int64_t)> m_intervalms = nullptr;		// 触发间隔
+		std::function<int32_t(int64_t)> m_intervalms = nullptr;	// 触发间隔
 		std::shared_ptr<void>		m_parm = nullptr;			// 自定义参数
 		int64_t						m_triggerms = 0;			// 触发时的毫秒
 
@@ -85,7 +85,7 @@ namespace ngl
 				aparm.m_ms = month_ms(localtime::gettime(), amonthday, ahour, amin, asec);
 				aparm.m_intervalms = [amonthday, ahour, amin, asec](int64_t ams)
 					{
-						return make_timerparm::month_ms(ams / 1000 + 1, amonthday, ahour, amin, asec);
+						return (int32_t)make_timerparm::month_ms(ams / 1000 + 1, amonthday, ahour, amin, asec);
 					};
 				aparm.m_count = acount;
 				return true;

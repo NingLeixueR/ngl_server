@@ -114,11 +114,7 @@ namespace ngl
 							lptemp->set_activity_stat(actor_stat_free);
 							lptemp->init();
 							lptemp->init_db_component(false);
-							if (lptemp->type() != ngl::ACTOR_LOG)
-							{
-								nlogactor lnlogactor(lptemp->type(), ngl::ELOG_LOCAL);
-								ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
-							}
+							actor::create_log(lptemp->type());
 						}
 						Catch
 				});
