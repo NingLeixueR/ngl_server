@@ -118,28 +118,28 @@ namespace ngl
 		return lrun.find(ataskid) != lrun.end();
 	}
 
-	void static_task::receive_task(actor_role* arole, i32_taskid ataskid)
+	bool static_task::receive_task(actor_role* arole, i32_taskid ataskid)
 	{
 		//## 接收任务前先查看是否已经完成了
 		if (isfinish_task(arole, ataskid))
 		{
-			return;
+			return false;
 		}
 		//## 此任务是否已经被接收
 		if (isreceive_task(arole, ataskid))
 		{
-			return;
+			return true;
 		}
 
 		std::vector<task_condition>* lvec = ttab_task::condition_receive(ataskid);
 		if (lvec == nullptr)
 		{
-			return;
+			return false;
 		}
 
 		if (check_condition(arole, *lvec) == false)
 		{
-			return;
+			return false;
 		}
 
 		arole->m_task.get_consttask();
@@ -152,6 +152,7 @@ namespace ngl
 			task_check::schedules(arole, *ltemp.mutable_m_schedules()->Add(), item);
 		}
 		arole->m_task.get()->get().mutable_m_rundatas()->insert({ ataskid, ltemp });
+		return true;
 	}
 
 	bool static_task::finish_task(actor_role* arole, i32_taskid ataskid)
@@ -272,12 +273,14 @@ namespace ngl
 		auto lrundatas = ltask.mutable_m_rundatas();
 
 		std::string lfinishtask;
-		tools::splicing<int32_t, pbdb::db_task_data>(*lcompleteddatas, "|", lfinishtask, [](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
+		tools::splicing<int32_t, pbdb::db_task_data>(*lcompleteddatas, "|", lfinishtask, 
+			[](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
 			{
 				return tools::lexical_cast<std::string>(_id);
 			});
 		std::string lruntask;
-		tools::splicing<int32_t, pbdb::db_task_data>(*lrundatas, "|", lruntask, [](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
+		tools::splicing<int32_t, pbdb::db_task_data>(*lrundatas, "|", lruntask, 
+			[](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
 			{
 				return tools::lexical_cast<std::string>(_id);
 			});
@@ -291,42 +294,15 @@ namespace ngl
 		auto tabs = allcsv::get<manage_csv<tab_task>>();
 		tabs->foreach([this, lrole](tab_task& atask)
 			{
-				if (static_task::isfinish_task(lrole, atask.m_id))
-				{
-					return;
+				// # 检查任务是否可接收
+				if (static_task::receive_task(lrole, atask.m_id) == true)
+				{// 可接受或者已接受
+					// # 检查任务是否可完成
+					if (static_task::finish_task(lrole, atask.m_id))
+					{
+						return;
+					}
 				}
-				if (static_task::isreceive_task(lrole, atask.m_id))
-				{
-					// 是否可完成
-					std::vector<task_condition>* lvec = ttab_task::condition_complete(atask.m_id);
-					if (lvec == nullptr)
-					{
-						return;
-					}
-					if (static_task::check_condition(lrole, *lvec) == false)
-					{
-						return;
-					}
-					pbdb::db_task& ldb = lrole->m_task.get_task();
-					
-					auto itor = ldb.mutable_m_rundatas()->find(atask.m_id);
-					if (itor == ldb.mutable_m_rundatas()->end())
-					{
-						return;
-					}
-
-					itor->second.clear_m_schedules();
-					for (auto& item : *lvec)
-					{
-						task_check::schedules(lrole, *itor->second.add_m_schedules(), item);
-					}
-
-					ldb.mutable_m_completeddatas()->insert({ atask.m_id, itor->second });
-					ldb.mutable_m_rundatas()->erase(itor);
-					return;
-				}
-
-				static_task::receive_task(lrole, atask.m_id);
 			});
 	}
 }// namespace ngl

@@ -24,8 +24,7 @@ namespace ngl
 		ttab_task()
 		{}
 
-		
-		void set_data(int ataskid, task_condition& aitem, std::map<int32_t, receive_complete>& arc, bool areceive, int amaxvalue)
+		void set_data(int ataskid, task_condition& aitem, std::map<int32_t, receive_complete>& arc, bool areceive)
 		{
 			if (aitem.m_condition == ETaskConditionEqual)
 			{
@@ -33,26 +32,32 @@ namespace ngl
 			}
 			else if (aitem.m_condition == ETaskConditionMore)
 			{//>=
-				if (amaxvalue == -1)
+				auto itor = m_maxval.find(aitem.m_type);
+				assert(itor != m_maxval.end());
+				for (int i = aitem.m_parmint; i <= itor->second; ++i)
 				{
-					log_error()->print("task[{}] [ETaskConditionMore] maxvalue == -1", ataskid);
-					return;
-				}
-				for (int i = aitem.m_parmint; i > amaxvalue; ++i)
-				{
-					arc[i].first.insert(ataskid);
+					if (areceive)
+					{
+						arc[i].first.insert(ataskid);
+					}
+					else
+					{
+						arc[i].second.insert(ataskid);
+					}
 				}
 			}
 			else if (aitem.m_condition == ETaskConditionLess)
 			{//<=
 				for (int i = aitem.m_parmint; i > 0; --i)
 				{
-					if (amaxvalue == -1)
+					if (areceive)
 					{
-						log_error()->print("task[{}] [ETaskConditionMore] maxvalue == -1", ataskid);
-						return;
+						arc[i].first.insert(ataskid);
 					}
-					arc[i].first.insert(ataskid);
+					else
+					{
+						arc[i].second.insert(ataskid);
+					}
 				}
 			}
 		}
@@ -73,21 +78,11 @@ namespace ngl
 				tab_task& ltask = pair.second;
 				for (task_condition& item : ltask.m_taskreceive)
 				{
-					if (m_maxval.find(item.m_type) == m_maxval.end())
-					{
-						log_error()->print("ttab_task m_maxval.find({}) == m_maxval.end()", (int32_t)item.m_type);
-						continue;
-					}
-					set_data(ltask.m_id, item, m_map[item.m_type], true, m_maxval[item.m_type]);
+					set_data(ltask.m_id, item, m_map[item.m_type], true);
 				}
 				for (task_condition& item : ltask.m_taskcomplete)
 				{
-					if (m_maxval.find(item.m_type) == m_maxval.end())
-					{
-						log_error()->print("ttab_task taskid[{}] m_maxval.find({}) == m_maxval.end()", ltask.m_id, (int32_t)item.m_type);
-						continue;
-					}
-					set_data(ltask.m_id, item, m_map[item.m_type], false, m_maxval[item.m_type]);
+					set_data(ltask.m_id, item, m_map[item.m_type], false);
 				}
 			}
 		}
