@@ -42,7 +42,7 @@ namespace ngl
 
 		static bool finish_task(actor_role* arole, i32_taskid ataskid);
 		// # 检查任务是否可以被接取
-		static void receive_task(actor_role* arole, i32_taskid ataskid);
+		static bool receive_task(actor_role* arole, i32_taskid ataskid);
 
 		// # 是否有可以接受任务
 		// #  因为某个条件完成
