@@ -291,7 +291,7 @@ namespace ngl
 
 		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务
-		auto tabs = allcsv::get<manage_csv<tab_task>>();
+		auto tabs = allcsv::get<ttab_task>();
 		tabs->foreach([this, lrole](tab_task& atask)
 			{
 				// # 检查任务是否可接收

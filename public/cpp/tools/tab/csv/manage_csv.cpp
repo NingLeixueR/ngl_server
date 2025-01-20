@@ -94,7 +94,7 @@ namespace ngl
 		loadcsv<tab_item, manage_csv<tab_item>>();
 		loadcsv<tab_specialid, ttab_specialid>();
 		loadcsv<tab_synthesis, manage_csv<tab_synthesis>>();
-		loadcsv<tab_task, manage_csv<tab_task>>();
+		loadcsv<tab_task, ttab_task>();
 		loadcsv<tab_card, manage_csv<tab_card>>();
 		loadcsv<tab_servers, ttab_servers>();
 		loadcsv<tab_dbload, ttab_dbload>();
