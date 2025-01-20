@@ -9,6 +9,7 @@ namespace ngl
 	{
 		eevents_map_leaveview,		// 离开视野
 		eevents_map_enterview,		// 进入视野
+		eevents_map_death,			// 单位死亡
 		eevents_map_count,
 	};
 
@@ -47,6 +48,18 @@ namespace ngl
 		i64_actorid m_enterunitid;
 		std::set<i64_actorid> m_unitids;
 		def_portocol(np_eevents_map_enterview, m_enterunitid, m_unitids)
+	};
+
+	class np_eevents_map_death :public np_eevents_map
+	{
+	public:
+		np_eevents_map_death() :
+			np_eevents_map(eevents_map_death),
+			m_deathunitid(0)
+		{}
+
+		i64_actorid m_deathunitid;
+		def_portocol(np_eevents_map_death, m_deathunitid)
 	};
 
 	using actor_events_map = actor_events<ENUM_EVENTS_LOGIC, eevents_map, eevents_map_count>;
