@@ -38,6 +38,7 @@ namespace ngl
 
 		// # 任务是否完成
 		static bool isfinish_task(actor_role* arole, i32_taskid ataskid);
+		// # 任务是否接收
 		static bool isreceive_task(actor_role* arole, i32_taskid ataskid);
 
 		static bool finish_task(actor_role* arole, i32_taskid ataskid);
