@@ -9,6 +9,7 @@
 #include "attribute_value.h"
 #include "ttab_attribute.h"
 #include "manage_csv.h"
+#include "events_map.h"
 #include "net.pb.h"
 #include "nlog.h"
 #include "net.h"
@@ -85,7 +86,6 @@ namespace ngl
 					ttab_attribute::add(root().m_attr, m_moduledata[key].m_fight);
 				}
 			}
-
 			root().update();
 		}
 	public:
@@ -146,13 +146,13 @@ namespace ngl
 			return root().m_fightscore;
 		}
 
-		const map_attr& get_attribute()
+		const map_attrvalue& get_attribute()
 		{
 			return root().m_fight;
 		}
 
 		//EnumModule aenum
-		const map_attr& get_attribute(EnumModule aenum)
+		const map_attrvalue& get_attribute(EnumModule aenum)
 		{
 			return m_moduledata[aenum].m_fight;
 		}
@@ -205,10 +205,9 @@ namespace ngl
 			m_dynamic[aattribute] += avalue;
 			if (is_death())
 			{
-				//event_parm_death pram;
-				//pram.m_unitid = -1;
-				//pram.m_deathunitid = m_unitid;
-				//events::execute(&pram);
+				np_eevents_map_death lparm;
+				lparm.m_deathunitid = m_unitid;
+				actor_events_map::trigger_event(eevents_map_death, lparm);
 			}
 		}
 
