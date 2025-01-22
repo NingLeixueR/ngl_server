@@ -147,6 +147,7 @@ namespace ngl
 		lparm.m_type = eevents_logic_rolelogin;
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm);
+		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm, this);
 	}
 
 	void actor_role::erase_actor_before()
@@ -369,6 +370,22 @@ namespace ngl
 
 	bool actor_role::timer_handle(const message<timerparm>& adata)
 	{
+		return true;
+	}
+
+	bool actor_role::handle(const message<np_eevents_logic_rolelogin>& adata)
+	{
+		time_t llastloginutc = 0;
+		time_t lnow = localtime::gettime();
+		if (m_rolekv.value("lastloginutc", llastloginutc))
+		{
+			if (localtime::issameday(lnow, llastloginutc))
+			{
+				return true;
+			}
+		}
+		m_rolekv.set_value("lastloginutc", lnow);
+		static_task::update_change(this, ETaskRoleLogin, 1);
 		return true;
 	}
 }//namespace ngl

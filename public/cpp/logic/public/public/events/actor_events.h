@@ -15,6 +15,8 @@ namespace ngl
 		ENUM_EVENTS_MAP,		// 对应eevents_map
 	};
 
+
+
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/, int E_EVENTS_COUNT>
 	class actor_events : public actor
 	{
@@ -65,20 +67,23 @@ namespace ngl
 			>(true);
 		}
 
+		// # 按照类型触发
 		template <typename TPARM>
 		static void register_parm(E_EVENTS atype)
 		{
-			m_parmtype[atype] = typeid(TPARM).hash_code();
+			m_parmtype[atype]= typeid(TPARM).hash_code();
 			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, type_actor_events, TPARM>
-				([atype](type_actor_events*, message<TPARM>& adata)
-				{
-					std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
-					if (lmember == nullptr)
+				(
+					[atype](type_actor_events*, message<TPARM>& adata)
 					{
-						return;
+						std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
+						if (lmember == nullptr)
+						{
+							return;
+						}
+						actor::static_send_actor(*lmember, actorid(), adata.get_shared_data());
 					}
-					actor::static_send_actor(*lmember, actorid(), adata.get_shared_data());
-				});
+				);
 		}
 
 		template <typename TPARM>
@@ -105,9 +110,21 @@ namespace ngl
 		};
 		using tfun = ngl::template_arg_s<register_actor_event, E_EVENTS, i64_actorid>;
 
+		class nullacctor
+		{
+		public:
+			template <typename TPARM>
+			bool handle(const message<TPARM>& adata)
+			{
+				actor::static_send_actor(actorid(), nguid::make(), adata.get_shared_data());
+				return true;
+			}
+		};
+		static nullacctor m_nullacctor;
+
 		// # 触发事件
-		template <typename TPARM>
-		static bool trigger_event(E_EVENTS atype, const TPARM& apram)
+		template <typename TPARM, typename TACTOR = nullacctor>
+		static bool trigger_event(E_EVENTS atype, const TPARM& apram, TACTOR* aactor = &m_nullacctor)
 		{
 			ngl::log_error()->print("trigger_event {}:E_EVENTS:{}", typeid(TPARM).name(), (int32_t)(atype));
 			if (check_parm<TPARM>(atype) == false)
@@ -115,8 +132,9 @@ namespace ngl
 				ngl::log_error()->print("trigger_event fail!!!");
 				return false;
 			}
-			auto pro = std::make_shared<TPARM>(apram);
-			actor::static_send_actor(actorid(), nguid::make(), pro);
+			auto lparm = std::make_shared<TPARM>(apram);
+			message<TPARM> lmessage(1, nullptr, lparm);
+			aactor->handle(lmessage);
 			return true;
 		}
 
@@ -139,5 +157,9 @@ namespace ngl
 
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
 	std::map<E_EVENTS, std::set<i64_actorid>> actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_eventmember;
+
+	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
+	actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::nullacctor actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_nullacctor;
+
 
 }//namespace ngl

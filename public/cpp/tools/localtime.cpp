@@ -35,6 +35,18 @@ namespace ngl
 		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	}
 
+	bool localtime::issameday(time_t a1, time_t a2)
+	{
+		time_t l1 = getsecond2time(a1, 0, 0, 0);
+		time_t l2 = getsecond2time(a2, 0, 0, 0);
+		return l1 == l2;
+	}
+
+	bool localtime::issameday(time_t autc)
+	{
+		return issameday(autc, localtime::gettime());
+	}
+
 	void localtime::printf_time2str(time_t anow, const char* format)
 	{//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
 		char lbuff[1024];

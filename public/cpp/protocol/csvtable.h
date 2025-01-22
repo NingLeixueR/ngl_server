@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-01-16 11:08:23
+// 创建时间 // 创建时间 25-01-22 18:07:42
 #pragma once
 
 #include "csv.h"
@@ -139,6 +139,8 @@ enum ETask
 	ETaskRoleLv = 0,	// 玩家等级
 	ETaskRoleVip = 1,	// 玩家vip等级
 	ETaskTaskId = 2,	// 完成某ID任务
+	ETaskRoleLogin = 3,	// 累计登陆
+	ETaskConsumeGold = 4,	// 累计消耗金币
 	ETaskCount,	
 };
 enum ETaskCondition
