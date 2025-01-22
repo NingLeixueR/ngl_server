@@ -47,6 +47,11 @@ namespace ngl
 		// # 获取毫秒 
 		static time_t gettimems();
 
+		// # 两个utc时间是否是同一天
+		static bool issameday(time_t a1, time_t a2);
+		// # 当前时间和参数utc时间是否是同一天
+		static bool issameday(time_t autc);
+
 		static void printf_time2str(time_t anow, const char* format);
 
 		// # Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S

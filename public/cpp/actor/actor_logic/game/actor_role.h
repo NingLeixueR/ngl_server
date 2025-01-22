@@ -2,6 +2,7 @@
 
 #include "actor_create.h"
 #include "actor_manage.h"
+#include "events_logic.h"
 #include "db_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
@@ -195,6 +196,8 @@ namespace ngl
 
 		//# 回显给客户端一个字符串
 		void echo_msg(const char* amsg);
+
+		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 	};
 }//namespace ngl
 
