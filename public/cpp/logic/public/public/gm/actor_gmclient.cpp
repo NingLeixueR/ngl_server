@@ -54,6 +54,20 @@ namespace ngl
 					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				}
 			);
+			handle_cmd::push("set_time", [this](int id, const ngl::json_read& aos)
+				{
+					struct operator_set_time
+					{
+						int32_t m_time = 0;
+						jsonfunc("time", m_time)
+					};
+					operator_set_time ltime;
+					if (aos.read("data", ltime))
+					{
+						localtime::settime(ltime.m_time);
+					}
+				}
+			);
 		}
 
 		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
