@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-01-22 18:07:42
+// 创建时间 // 创建时间 25-01-23 16:44:49
 #pragma once
 
 #include "csv.h"
@@ -28,7 +28,7 @@ enum EPH_HEAD_VAL
 };
 enum EPH
 {
-	EPH_MASK_VALUE = 0xf,	
+	EPH_MASK_VALUE = 0xff,	
 	EPH_MASK_COUNT = 2,	
 	EPH_MASK = 0,	// 用于确认是否使用包
 	EPH_BYTES = EPH_MASK_COUNT,	// 协议字节数
@@ -55,6 +55,7 @@ enum NODE_TYPE
 	CROSS = 10,	// 跨服服务器
 	CROSSDB = 11,	// 跨服数据库服务器
 	PUSHSERVERCONFIG = 12,	// 将服务器配置上传lbgmsys
+	NODE_TYPE_COUNT,	
 	FAIL = -1,	// 服务器类型错误
 };
 enum ENET_PROTOCOL

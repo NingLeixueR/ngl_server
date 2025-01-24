@@ -61,30 +61,51 @@ namespace ngl
 			return ltemp;
 		}
 
+		bool sendtogmclient(NODE_TYPE atype, const message<ngl::np_gm>* adata, actor_gm* agm)
+		{
+			const tab_servers* tab = ttab_servers::node_tnumber(atype, 1);
+			if (tab == nullptr)
+			{
+				return false;
+			}
+			if (ttab_servers::tab()->m_id != tab->m_id)
+			{
+				i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
+				agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
+				return true;
+			}
+			return false;
+		}
+
 		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			if (m_distribute.find(akey) == m_distribute.end())
 			{
 				return false;
 			}
+
+			// # distribute = all 分发给所有actor_gmclient
+			struct distributeall
+			{
+				bool m_distributeall = false;
+
+				jsonfunc("distributeall", m_distributeall)
+			};
+
+			distributeall ldistributeall;
+			if (aos.read("data", ldistributeall))
+			{
+				for (int i = 1; i < NODE_TYPE::NODE_TYPE_COUNT; ++i)
+				{
+					sendtogmclient((NODE_TYPE)i, adata, agm);
+				}
+				return false;
+			}
+
 			int lservertype = 0;
 			if (aos.read("data", lservertype))
 			{
-				const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
-				if (tab == nullptr)
-				{
-					return false;
-				}
-				if (ttab_servers::tab()->m_id != tab->m_id)
-				{
-					i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
-					agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return sendtogmclient((NODE_TYPE)lservertype, adata, agm);
 			}
 			return false;
 		}
@@ -134,17 +155,16 @@ namespace ngl
 						{
 							return;
 						}
-						if (ttab_servers::tab()->m_id == tab->m_id)
-						{
-							actor_gmclient::protocols pro;
-							actor_gmclient::get_allprotocol(pro);
+						assert(tab != nullptr && ttab_servers::tab()->m_id == tab->m_id);
 
-							json_write ljson;
-							ljson.write("all_protocol", pro);
-							ngl::np_gm_response lresponse;
-							ljson.get(lresponse.m_json);
-							agm->reply_php(adata->m_pack, lresponse);
-						}
+						actor_gmclient::protocols pro;
+						actor_gmclient::get_allprotocol(pro);
+
+						json_write ljson;
+						ljson.write("all_protocol", pro);
+						ngl::np_gm_response lresponse;
+						ljson.get(lresponse.m_json);
+						agm->reply_php(adata->m_pack, lresponse);
 					}
 					return;
 				}
@@ -167,6 +187,44 @@ namespace ngl
 						return;
 					}
 				});
+
+			actor_gm::handle_cmd::push("get_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+				{
+					ngl::json_write lwritejson;
+					lwritejson.write("time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
+					ngl::np_gm_response lresponse;
+					lwritejson.get(lresponse.m_json);
+					agm->reply_php(adata->m_pack, lresponse);
+					return;
+				});
+
+			actor_gm::handle_cmd::push("set_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+				{
+					ngl::json_write lwritejson;
+					lwritejson.write("operator", "set_time");
+
+					struct operator_set_time
+					{
+						int32_t m_time = 0;
+						jsonfunc("time", m_time)
+					};
+					operator_set_time ltime;
+					if (aos.read("data", ltime))
+					{
+						localtime::settime(ltime.m_time);
+						lwritejson.write("data", true);
+					}
+					else
+					{
+						lwritejson.write("data", false);
+					}
+
+					ngl::np_gm_response lresponse;
+					lwritejson.get(lresponse.m_json);
+					agm->reply_php(adata->m_pack, lresponse);
+
+				});
+
 		}
 	}
 
@@ -189,7 +247,6 @@ namespace ngl
 				}
 
 				init_handle_cmd(this);
-
 				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this))
 				{
 					return true;

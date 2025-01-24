@@ -15,7 +15,7 @@ namespace ngl
 		{
 			return false;
 		}
-		m_offset += (sti - lnow);
+		m_offset = (sti - lnow);
 		return true;
 	}
 
