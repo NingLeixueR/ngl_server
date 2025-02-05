@@ -58,6 +58,8 @@ namespace ngl
 		// # »Ø¸´gm.php
 		bool reply_php(const pack* apack, ngl::np_gm_response& adata)const;
 
+		static bool checklocalbytype(NODE_TYPE atype);
+
 		using handle_cmd = cmd<actor_gm, std::string, const ngl::json_read&, const message<ngl::np_gm>*>;
 		bool handle(const message<ngl::np_gm>& adata);
 

@@ -17,7 +17,7 @@ namespace ngl
 	//# 日志相关
 	const std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
 
-	std::shared_ptr<np_actor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)
+	std::shared_ptr<np_actor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const
 	{
 		if(m_actor == nullptr || !np_actor_logitem::check_level(aloglevel))
 		{

@@ -31,7 +31,7 @@ namespace ngl
 
 		actor_base* m_actor;
 
-		std::shared_ptr<np_actor_logitem> get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet);
+		std::shared_ptr<np_actor_logitem> get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const;
 	public:
 		explicit tools_log(actor_base* aactor = nullptr) :
 			m_actor(aactor)
@@ -42,42 +42,42 @@ namespace ngl
 			m_actor = aactor;
 		}
 
-		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_DEBUG, false);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_DEBUG, true);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_INFO, false);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_INFO, true);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_WARN, false);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_WARN, true);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_ERROR, false);
 		}
 
-		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())
+		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())const
 		{
 			return get_log(asource, ELOG_ERROR, true);
 		}

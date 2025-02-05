@@ -40,6 +40,7 @@ namespace ngl
 
 	bool actor_gm::reply_php(const pack* apack, ngl::np_gm_response& adata)const
 	{
+		log_error()->print("gm2php [{}]", adata.m_json);
 		send(apack->m_id, adata, nguid::make(), nguid::make());
 		return true;
 	}
@@ -47,13 +48,7 @@ namespace ngl
 	// 分发给独立进程的请求
 	class distribute_gmclient
 	{
-		std::set<std::string> m_distribute;
-
-		distribute_gmclient()
-		{
-			m_distribute.insert("all_protocol");
-			m_distribute.insert("server_stat");
-		}
+		distribute_gmclient(){}
 	public:
 		static distribute_gmclient& getInstance()
 		{
@@ -79,33 +74,31 @@ namespace ngl
 
 		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			if (m_distribute.find(akey) == m_distribute.end())
-			{
-				return false;
-			}
-
 			// # distribute = all 分发给所有actor_gmclient
-			struct distributeall
+			struct servertype
 			{
-				bool m_distributeall = false;
+				std::vector<int32_t> m_servertype;
 
-				jsonfunc("distributeall", m_distributeall)
+				jsonfunc("servertype", m_servertype)
 			};
 
-			distributeall ldistributeall;
-			if (aos.read("data", ldistributeall))
-			{
-				for (int i = 1; i < NODE_TYPE::NODE_TYPE_COUNT; ++i)
-				{
-					sendtogmclient((NODE_TYPE)i, adata, agm);
-				}
-				return false;
-			}
-
-			int lservertype = 0;
+			servertype lservertype;
 			if (aos.read("data", lservertype))
 			{
-				return sendtogmclient((NODE_TYPE)lservertype, adata, agm);
+				bool lret = false;
+				for (int i = 0; i < lservertype.m_servertype.size(); ++i)
+				{
+					NODE_TYPE lstype = (NODE_TYPE)lservertype.m_servertype[i];
+					if (actor_gm::checklocalbytype(lstype) == false)
+					{
+						sendtogmclient(lstype, adata, agm);
+					}
+					else
+					{
+						lret = true;
+					}
+				}
+				return lret;
 			}
 			return false;
 		}
@@ -228,6 +221,17 @@ namespace ngl
 		}
 	}
 
+	//assert(tab != nullptr && ttab_servers::tab()->m_id == tab->m_id);
+	bool actor_gm::checklocalbytype(NODE_TYPE atype)
+	{
+		const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)atype, 1);
+		if (tab == nullptr)
+		{
+			return false;
+		}
+		return ttab_servers::tab()->m_id == tab->m_id;
+	}
+
 	bool actor_gm::handle(const message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
@@ -247,7 +251,7 @@ namespace ngl
 				}
 
 				init_handle_cmd(this);
-				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this))
+				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this) == false)
 				{
 					return true;
 				}
