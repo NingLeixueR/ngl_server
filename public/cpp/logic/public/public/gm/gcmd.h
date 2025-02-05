@@ -2,6 +2,7 @@
 
 #include "define_json.h"
 #include "actor.h"
+#include "tools.h"
 
 namespace ngl
 {
@@ -30,6 +31,7 @@ namespace ngl
 				ngl::json_write lwrite;
 				lwrite.write("operator", m_operator);
 				lwrite.write("data", m_data);
+				lwrite.write("server_name", tools::server_name());
 
 				auto pro = std::make_shared<mforward<ngl::np_gm_response>>(id);
 				std::string ljson;

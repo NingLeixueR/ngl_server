@@ -68,6 +68,15 @@ namespace ngl
 					}
 				}
 			);
+			handle_cmd::push("get_time", [this](int id, const ngl::json_read& aos)
+				{
+					gcmd<std::string> lpro(id);
+					lpro.m_operator = "get_time";
+					lpro.m_data = localtime::time2str("%Y-%m-%d %H:%M:%S");
+				}
+			);
+
+		
 		}
 
 		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)

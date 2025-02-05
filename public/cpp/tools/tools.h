@@ -728,6 +728,8 @@ namespace ngl
 		static std::vector<std::string_view> get_line(const char* apbuff, size_t abuffsize);
 
 		static bool isnumber(const std::string& anumber);
+
+		static const std::string& server_name();
 	};
 
 	template <typename T>

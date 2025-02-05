@@ -1,3 +1,4 @@
+#include "ttab_servers.h"
 #include "sysconfig.h"
 #include "localtime.h"
 #include "hmac_sha1.h"
@@ -1261,4 +1262,14 @@ namespace ngl
 		return !anumber.empty() && std::all_of(anumber.begin(), anumber.end(), ::isdigit);
 	}
 
+	const std::string& tools::server_name()
+	{
+		const tab_servers* tab = ttab_servers::tab();
+		if (tab == nullptr)
+		{
+			static std::string lnull("");
+			return lnull;
+		}
+		return ttab_servers::tab()->m_name;
+	}
 }// namespace ngl

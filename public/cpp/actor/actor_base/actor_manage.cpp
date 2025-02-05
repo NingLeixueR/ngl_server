@@ -119,10 +119,7 @@ namespace ngl
 				handle_pram lparm = handle_pram::create(lguid, nguid::make(), pro);
 				push_task_id(lguid, lparm, false);
 			}
-			else
-			{
-				apactor->set_activity_stat(actor_stat_free);
-			}
+			apactor->set_activity_stat(actor_stat_free);
 			return true;
 		}
 
