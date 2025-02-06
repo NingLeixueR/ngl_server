@@ -1,6 +1,5 @@
 #include "rolekv.h"
 
-
 namespace ngl
 {
 	bool rolekv::value(const char* akey, int8_t& adata)
@@ -42,4 +41,4 @@ namespace ngl
 	{
 		return number_value(akey, adata);
 	}
-}
+}//namespace ngl
