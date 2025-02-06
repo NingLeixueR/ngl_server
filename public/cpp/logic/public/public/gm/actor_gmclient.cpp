@@ -70,8 +70,7 @@ namespace ngl
 			);
 			handle_cmd::push("get_time", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<std::string> lpro(id, "get_time");
-					lpro.m_data = localtime::time2str("%Y-%m-%d %H:%M:%S");
+					gcmd<std::string> lpro(id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
 				}
 			);
 		}
