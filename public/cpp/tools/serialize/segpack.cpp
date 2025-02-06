@@ -125,9 +125,7 @@ namespace ngl
 			if (aislanip == false && nconfig::node_type() != ROBOT && alen >= net_config_recv_buff_maxbyte)
 			{
 				m_data.erase(aid);
-				log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})"
-					, apack->m_head, (int)net_config_recv_buff_maxbyte
-				);
+				log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})", apack->m_head, (int)net_config_recv_buff_maxbyte);
 				return false;
 			}
 			if (!aislanip && !m_rate.add(aid))
@@ -230,9 +228,7 @@ namespace ngl
 				}
 				else
 				{
-					log_error()->print("time[{} < {} + {} ]"
-						, localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout()
-					);
+					log_error()->print("time[{} < {} + {} ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
 				}
 				return edopush::e_continue;
 			}

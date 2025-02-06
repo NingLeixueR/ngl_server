@@ -1,4 +1,5 @@
 #include "ttab_errormessage.h"
+#include "ttab_specialid.h"
 #include "ttab_attribute.h"
 #include "ttab_mergearea.h"
 #include "ttab_calendar.h"
@@ -6,6 +7,7 @@
 #include "ttab_random.h"
 #include "ttab_dbload.h"
 #include "manage_csv.h"
+#include "ttab_task.h"
 #include "csvtable.h"
 #include "drop.h"
 

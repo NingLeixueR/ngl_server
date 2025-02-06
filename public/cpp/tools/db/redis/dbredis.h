@@ -77,9 +77,7 @@ namespace ngl
 			ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
 			if (lflow.push(adata))
 			{
-				redisReply* lreply = cmd(
-					arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte()
-				);
+				redisReply* lreply = cmd(arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte());
 				if (lreply != nullptr)
 				{
 					freeReplyObject(lreply);

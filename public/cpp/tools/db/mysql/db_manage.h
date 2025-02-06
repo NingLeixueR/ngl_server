@@ -76,10 +76,7 @@ namespace ngl
 			}
 			adb->stmt_query(lbuff, llen, lbind);
 			
-			log_error()->print(
-				"INSERT INTO {} (id, area, data)VALUES({},{},[bindata])", 
-				tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), nguid::area(adata.m_id())
-			);
+			log_error()->print("{}", lbuff);
 		}
 
 		template <typename T>
@@ -116,6 +113,7 @@ namespace ngl
 				return;
 			}
 			adb->query(lbuff, llen);
+			log_error()->print("{}", lbuff);
 		}
 
 		// # 加载本地配置区服关联的所有合服数据
@@ -156,6 +154,7 @@ namespace ngl
 			{
 				return false;
 			}
+			log_error()->print("{}", lbuff);
 			return adb->select(lbuff, llen,
 				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
@@ -187,6 +186,7 @@ namespace ngl
 			{
 				return false;
 			}
+			log_error()->print("{}", lbuff);
 			return adb->select(lbuff, llen,
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
@@ -219,6 +219,7 @@ namespace ngl
 			{
 				return false;
 			}
+			log_error()->print("{}", lbuff);
 			return adb->select(lbuff, llen,
 				[adb, &aidset](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{

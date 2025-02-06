@@ -2,7 +2,6 @@
 #include "sysconfig.h"
 #include "xml.h"
 
-
 namespace ngl
 {
 	ELOGLEVEL	sysconfig::m_logwritelevel		= ELOG_ERROR;
@@ -100,4 +99,4 @@ namespace ngl
 	{
 		return m_gatewayids;
 	}
-}
+}//namespace ngl

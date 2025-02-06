@@ -210,8 +210,7 @@ namespace ngl
 				{
 					return false;
 				}
-				for (auto itor = adata.m_data->begin(); 
-					itor != adata.m_data->end(); ++itor)
+				for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
 				{
 					int32_t lbytes = itor->ByteSize();
 					if (push(lbytes) == false)
@@ -243,8 +242,7 @@ namespace ngl
 				{
 					return false;
 				}
-				for (auto itor = adata.m_data->begin(); 
-					itor != adata.m_data->end(); ++itor)
+				for (auto itor = adata.m_data->begin(); itor != adata.m_data->end(); ++itor)
 				{
 					int32_t lbytes = itor->ByteSize();
 					if (push(lbytes) == false)
@@ -677,8 +675,7 @@ namespace ngl
 				T& ldata = *adata.m_data.get();
 				google::protobuf::util::JsonParseOptions parseOptions;
 				std::string jsonString(&buff()[byte()]);
-				google::protobuf::util::Status lstat = 
-					google::protobuf::util::JsonStringToMessage(jsonString, &(*adata.m_data), parseOptions);
+				google::protobuf::util::Status lstat = google::protobuf::util::JsonStringToMessage(jsonString, &(*adata.m_data), parseOptions);
 				add_bytes(lbytes);
 			}
 			
@@ -749,9 +746,7 @@ namespace ngl
 					std::string json;
 					if (tools::protojson(ltemp, json) == false)
 					{
-						log_error()->print(
-							"tools::protojson<{}> fail", tools::type_name<T>()
-						);
+						log_error()->print("tools::protojson<{}> fail", tools::type_name<T>());
 						return false;
 					}
 					add_bytes(lbytes);
@@ -783,9 +778,7 @@ namespace ngl
 					T ltemp;
 					if (ltemp.ParseFromArray(&buff()[byte()], lbytes) == false)
 					{
-						log_error()->print(
-							"{}.ParseFromArray fail", tools::type_name<T>()
-						);
+						log_error()->print("{}.ParseFromArray fail", tools::type_name<T>());
 						return false;
 					}
 					add_bytes(lbytes);

@@ -38,5 +38,5 @@ namespace ngl
 
 	using i64_startfinishtime = int64_t;
 
-	using i64_hashcode = size_t;
+	using i64_hashcode		= size_t;
 }

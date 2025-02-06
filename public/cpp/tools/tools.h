@@ -377,29 +377,19 @@ namespace ngl
 
 #pragma region regular
 		static void sregex(
-			const std::string& apattern
-			, const std::string& adata
-			, const std::function<void(std::string&)>& afun
+			const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun
 		);
 
 		static void smatch(
-			const std::string& aexpression
-			, const std::string& adata
-			, const std::function<void(std::smatch&)>& afun
+			const std::string& aexpression, const std::string& adata, const std::function<void(std::smatch&)>& afun
 		);
 
 		static void replace(
-			const std::string& aexpression
-			, const std::string& areleace
-			, const std::string& adata
-			, std::string& aret
+			const std::string& aexpression, const std::string& areleace, const std::string& adata, std::string& aret
 		);
 
 		static bool replace_ret(
-			const std::string& aexpression
-			, const std::string& areleace
-			, std::string& adata
-			, std::string& aret
+			const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret
 		);
 #pragma endregion
 
@@ -493,8 +483,7 @@ namespace ngl
 
 		template <typename T>
 		static bool splicing(
-			const std::vector<T>& avec, const char* afg, std::string& astr, 
-			const std::function<std::string(const T&)> afunction = m_splicing<T>
+			const std::vector<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>
 		)
 		{
 			for (int i = 0; i < avec.size(); ++i)
@@ -523,8 +512,7 @@ namespace ngl
 
 		template <typename T>
 		static bool splicing(
-			const std::set<T>& avec, const char* afg, std::string& astr,
-			const std::function<std::string(const T&)> afunction = m_splicing<T>
+			const std::set<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>
 		)
 		{
 			int i = 0;
@@ -541,8 +529,7 @@ namespace ngl
 
 		template <typename TKEY, typename TVALUE>
 		static bool splicing(
-			const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,
-			const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>
+			const std::map<TKEY, TVALUE>& avec, const char* afg, std::string& astr, const std::function<std::string(const TKEY&, const TVALUE&)> afunction = m_splicingmap<TKEY,TVALUE>
 		)
 		{
 			bool lbool = false;
@@ -560,8 +547,7 @@ namespace ngl
 
 		template <typename TKEY, typename TVALUE>
 		static bool splicing(
-			const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,
-			const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>
+			const google::protobuf::Map<TKEY, TVALUE>& avec, const char* afg, std::string& astr,const std::function<std::string(const TKEY&,const TVALUE&)> afunction = m_splicingmap<TKEY, TVALUE>
 		)
 		{
 			bool lbool = false;

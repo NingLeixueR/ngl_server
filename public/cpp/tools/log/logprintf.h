@@ -7,7 +7,6 @@
 
 namespace ngl
 {
-
 	enum ELOG_TYPE
 	{
 		ELOG_LOCAL		= 0,

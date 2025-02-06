@@ -47,7 +47,9 @@ namespace ngl
 	bool pack::malloc(int32_t alen)
 	{
 		if (m_buff != nullptr)
+		{
 			free();
+		}
 		if (m_bpool == nullptr)
 		{
 			m_buff = new char[alen];

@@ -21,7 +21,6 @@ namespace ngl
 	{
 		free_nonformatstr();
 		free_str();
-
 		if (m_json != nullptr && m_free)
 		{
 			cJSON_Delete(m_json);
@@ -94,9 +93,7 @@ namespace ngl
 
 	void json_write::write(const char* akey, const bool aval)
 	{
-		cJSON_AddItemToObject(m_json, akey, 
-			aval? cJSON_CreateTrue() : cJSON_CreateFalse()
-		);
+		cJSON_AddItemToObject(m_json, akey, aval? cJSON_CreateTrue() : cJSON_CreateFalse());
 	}
 
 	void json_write::write(const char* akey, cJSON* aval)

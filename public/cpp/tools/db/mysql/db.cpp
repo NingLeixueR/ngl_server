@@ -2,7 +2,6 @@
 #include "nlog.h"
 #include "db.h"
 
-
 namespace ngl
 {
 	db::db() :
@@ -19,9 +18,7 @@ namespace ngl
 			return false;
 		}
 		m_arg = arg;
-		log_error()->print("[mysql] {}@{}:{} [password={}][dbname={}]"
-			, m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_passworld, m_arg.m_dbname
-		);
+		log_error()->print("[mysql] {}@{}:{} [password={}][dbname={}]", m_arg.m_account, m_arg.m_ip, m_arg.m_port, m_arg.m_passworld, m_arg.m_dbname);
 		m_mysql = mysql_init((MYSQL*)nullptr);
 		if (!m_mysql)
 		{
@@ -77,7 +74,8 @@ namespace ngl
 
 	bool db::query(const char* asql, int alen)
 	{
-		if (int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1)); ret != 0)
+		int ret = mysql_real_query(m_mysql, asql, (unsigned long)(alen + 1));
+		if (ret != 0)
 		{
 			log_error()->print("db::query[{}][{}]", mysql_error(m_mysql), asql);
 			return false;
