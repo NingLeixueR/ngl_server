@@ -52,6 +52,7 @@ namespace ngl
 		{
 			handle_cmd::push("ranklist", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<std::string> pro(id, "ranklist");
 					struct json_rank
 					{
 						int32_t m_type;
@@ -65,7 +66,6 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<std::string> pro(id);
 					auto prorank = m_ranklist.get_ranklist((pbdb::eranklist)lrank.m_type, lrank.m_page, lrank.m_everynum);
 					if (tools::protojson<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>(*prorank, pro.m_data) == false)
 					{

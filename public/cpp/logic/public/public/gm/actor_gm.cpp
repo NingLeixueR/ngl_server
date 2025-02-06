@@ -38,13 +38,6 @@ namespace ngl
 		send_actor(aactorid, pro);
 	}
 
-	bool actor_gm::reply_php(const pack* apack, ngl::np_gm_response& adata)const
-	{
-		log_error()->print("gm2php [{}]", adata.m_json);
-		send(apack->m_id, adata, nguid::make(), nguid::make());
-		return true;
-	}
-
 	// 分发给独立进程的请求
 	class distribute_gmclient
 	{
@@ -119,6 +112,7 @@ namespace ngl
 
 			actor_gm::handle_cmd::push("guid", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
+					gcmd<std::string> lresponse(adata->m_pack->m_id, "guid");
 					gm_guid lguid;
 					if (aos.read("data", lguid))
 					{
@@ -128,11 +122,7 @@ namespace ngl
 						{
 							return;
 						}
-						ngl::json_write lwritejson;
-						lwritejson.write("guid", nguid::make(ltype, lguid.m_area, lguid.m_dataid));
-						ngl::np_gm_response lresponse;
-						lwritejson.get(lresponse.m_json);
-						agm->reply_php(adata->m_pack, lresponse);
+						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 						return;
 					}
 				}
@@ -140,6 +130,7 @@ namespace ngl
 
 			actor_gm::handle_cmd::push("all_protocol", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
+					gcmd<actor_gmclient::protocols> lresponse(adata->m_pack->m_id, "all_protocol");
 					int lservertype = 0;
 					if (aos.read("data", lservertype))
 					{
@@ -149,15 +140,7 @@ namespace ngl
 							return;
 						}
 						assert(tab != nullptr && ttab_servers::tab()->m_id == tab->m_id);
-
-						actor_gmclient::protocols pro;
-						actor_gmclient::get_allprotocol(pro);
-
-						json_write ljson;
-						ljson.write("all_protocol", pro);
-						ngl::np_gm_response lresponse;
-						ljson.get(lresponse.m_json);
-						agm->reply_php(adata->m_pack, lresponse);
+						actor_gmclient::get_allprotocol(lresponse.m_data);
 					}
 					return;
 				}
@@ -165,6 +148,7 @@ namespace ngl
 
 			actor_gm::handle_cmd::push("close_actor", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
+					gcmd<bool> lresponse(adata->m_pack->m_id, "close_actor", false);
 					gm_guid lguid;
 					if (aos.read("data", lguid))
 					{
@@ -177,25 +161,21 @@ namespace ngl
 						nguid::make(ltype, lguid.m_area, lguid.m_dataid);
 						auto pro = std::make_shared<np_actor_close>();
 						agm->send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
+						lresponse.m_data = true;
 						return;
 					}
 				});
 
 			actor_gm::handle_cmd::push("get_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					ngl::json_write lwritejson;
-					lwritejson.write("time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
-					ngl::np_gm_response lresponse;
-					lwritejson.get(lresponse.m_json);
-					agm->reply_php(adata->m_pack, lresponse);
+					gcmd<std::string> lresponse(adata->m_pack->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
 					return;
 				});
 
 			actor_gm::handle_cmd::push("set_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					ngl::json_write lwritejson;
-					lwritejson.write("operator", "set_time");
-
+					gcmd<bool> lresponse(adata->m_pack->m_id, "set_time", false);
+					
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
@@ -205,17 +185,8 @@ namespace ngl
 					if (aos.read("data", ltime))
 					{
 						localtime::settime(ltime.m_time);
-						lwritejson.write("data", true);
+						lresponse.m_data = true;
 					}
-					else
-					{
-						lwritejson.write("data", false);
-					}
-
-					ngl::np_gm_response lresponse;
-					lwritejson.get(lresponse.m_json);
-					agm->reply_php(adata->m_pack, lresponse);
-
 				});
 
 		}
@@ -291,10 +262,15 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_gm::sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata)
+	{
+		log_error()->print("gm2php [{}]", adata.m_json);
+		send(aidentifier, adata, nguid::make(), nguid::make());
+		return true;
+	}
+
 	bool actor_gm::handle(const message<mforward<ngl::np_gm_response>>& adata)
 	{
-		log_error()->print("gm2php [{}]", adata.get_data()->data()->m_json);
-		send((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data(), nguid::make(), nguid::make());
-		return true;
+		return sendtophp((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data());
 	}
 }// namespace ngl

@@ -303,10 +303,8 @@ namespace ngl
 			{
 				handle_cmd::push("query", [this](int athread, int id, const ngl::json_read& aos)
 					{
-						gcmd<std::string> pro(id);
-						pro.m_operator	= "query_responce";
-						pro.m_data		= "";
-						int64_t lid		= 0;
+						gcmd<std::string> pro(id, "query");
+						int64_t lid	= 0;
 						if (aos.read("data", lid) == false)
 						{
 							return;
@@ -330,8 +328,7 @@ namespace ngl
 					});
 				handle_cmd::push("queryall", [this](int athread, int id, const ngl::json_read& aos)
 					{
-						gcmd<std::vector<std::string>> pro(id);
-						pro.m_operator = "query_responce";
+						gcmd<std::vector<std::string>> pro(id, "queryall");
 
 						struct query_page
 						{
@@ -363,9 +360,7 @@ namespace ngl
 					});
 				handle_cmd::push("change", [this](int athread, int id, const ngl::json_read& aos)
 					{
-						gcmd<bool> pro(id);
-						pro.m_operator = "change_responce";
-						pro.m_data = false;
+						gcmd<bool> pro(id, "change", false);
 
 						std::string ljson;
 						if (aos.read("data", ljson) == false)

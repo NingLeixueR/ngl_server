@@ -75,13 +75,12 @@ namespace ngl
 		{
 			handle_cmd::push("get_mails", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<std::string> pro(id, "get_mails");
 					int64_t roleid = 0;
 					if (aos.read("data", roleid) == false)
 					{
 						return;
 					}
-					gcmd<std::string> pro(id);
-					pro.m_operator = "get_mails_responce";
 					const pbdb::db_mail* ldb = m_mails.get_db_mail(roleid);
 					if (ldb == nullptr)
 					{
@@ -93,6 +92,7 @@ namespace ngl
 			);
 			handle_cmd::push("add_mail", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<bool> pro(id, "add_mail", false);
 					struct gm_mailitem
 					{
 						int32_t m_itemtid = -1;
@@ -106,7 +106,6 @@ namespace ngl
 						std::vector<gm_mailitem>  m_items;	// 邮件附件
 						jsonfunc("roleid", m_roleid, "content", m_content, "items", m_items)
 					};
-					// 返回 bool
 					gm_mail recv;
 					if (aos.read("data", recv) == false)
 					{
@@ -117,10 +116,6 @@ namespace ngl
 					{
 						litem[gmailitem.m_itemtid] += gmailitem.m_count;
 					}
-
-					gcmd<bool> pro(id);
-					pro.m_operator = "add_mail_responce";
-					pro.m_data = false;
 					if (m_mails.addmail(recv.m_roleid, litem, recv.m_content) == false)
 					{
 						return;
@@ -130,7 +125,7 @@ namespace ngl
 			);
 			handle_cmd::push("del_mail", [this](int id, const ngl::json_read& aos)
 				{
-					// 返回 bool
+					gcmd<bool> pro(id, "del_mail", false);
 					struct gm_deletemail
 					{
 						int64_t m_roleid = nguid::make();
@@ -142,10 +137,8 @@ namespace ngl
 					{
 						return;
 					}
-					gcmd<bool> pro(id);
-					pro.m_operator = "del_mail_responce";
-					pro.m_data = true;
 					m_mails.delmail(ldelmail.m_roleid, ldelmail.m_mailid, false);
+					pro.m_data = true;
 				}
 			);
 		}

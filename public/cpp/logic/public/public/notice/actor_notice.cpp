@@ -62,8 +62,7 @@ namespace ngl
 		{
 			handle_cmd::push("get_notice", [this](int id, const ngl::json_read& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
-					gcmd<std::vector<std::string>> pro(id);
-					pro.m_operator = "get_notice_responce";
+					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					
 					std::map<nguid, data_modified<pbdb::db_notice>>& lmapdb = m_notice.data();
 					for (const auto& [_guid, _data] : lmapdb)
@@ -76,31 +75,29 @@ namespace ngl
 			);
 			handle_cmd::push("add_notice", [this](int id, const ngl::json_read& aos)
 				{
-					// ·µ»Ø bool
+					gcmd<bool> pro(id, "add_notice", false);
 					gm_notice recv;
 					if (aos.read("data", recv) == false)
 					{
 						return;
 					}
-					gcmd<bool> pro(id);
-					pro.m_operator = "add_notice_responce";
 					pro.m_data = localtime::checkutc(recv.m_finishtime);
 					if (pro.m_data)
 					{
 						m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+						pro.m_data = true;
 					}
 				}
 			);
 			handle_cmd::push("del_notice", [this](int id, const ngl::json_read& aos)
 				{
 					// ·µ»Ø bool
+					gcmd<bool> pro(id, "del_notice", false);
 					int64_t lid = 0;
 					if (aos.read("data", lid) == false)
 					{
 						return;
 					}
-					gcmd<bool> pro(id);
-					pro.m_operator = "del_notice_responce";
 					pro.m_data = true;
 					m_notice.del_notice(lid);
 				}
