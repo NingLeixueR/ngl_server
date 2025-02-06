@@ -1,5 +1,5 @@
-#include "actor_gm.h"
 #include "actor_gmclient.h"
+#include "actor_gm.h"
 
 namespace ngl
 {
@@ -65,6 +65,7 @@ namespace ngl
 			return false;
 		}
 
+		// 返回值:是否还需要actor_gm处理
 		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			struct servertype
@@ -79,14 +80,12 @@ namespace ngl
 				for (int i = 0; i < lservertype.m_servertype.size(); ++i)
 				{
 					NODE_TYPE lstype = (NODE_TYPE)lservertype.m_servertype[i];
-					if (actor_gm::checklocalbytype(lstype) == false)
-					{
-						sendtogmclient(lstype, adata, agm);
-					}
-					else
+					if (actor_gm::checklocalbytype(lstype))
 					{
 						lret = true;
+						continue;
 					}
+					sendtogmclient(lstype, adata, agm);
 				}
 				return lret;
 			}
@@ -126,17 +125,7 @@ namespace ngl
 			actor_gm::handle_cmd::push("all_protocol", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<actor_gmclient::protocols> lresponse(adata->m_pack->m_id, "all_protocol");
-					int lservertype = 0;
-					if (aos.read("data", lservertype))
-					{
-						const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)lservertype, 1);
-						if (tab == nullptr)
-						{
-							return;
-						}
-						assert(tab != nullptr && ttab_servers::tab()->m_id == tab->m_id);
-						actor_gmclient::get_allprotocol(lresponse.m_data);
-					}
+					actor_gmclient::get_allprotocol(lresponse.m_data);
 				}
 			);
 
@@ -180,18 +169,12 @@ namespace ngl
 						lresponse.m_data = true;
 					}
 				});
-
 		}
 	}
 
 	bool actor_gm::checklocalbytype(NODE_TYPE atype)
 	{
-		const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)atype, 1);
-		if (tab == nullptr)
-		{
-			return false;
-		}
-		return ttab_servers::tab()->m_id == tab->m_id;
+		return ttab_servers::tab()->m_type == atype;
 	}
 
 	bool actor_gm::handle(const message<ngl::np_gm>& adata)
