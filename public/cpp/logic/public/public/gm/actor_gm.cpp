@@ -67,14 +67,11 @@ namespace ngl
 
 		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			// # distribute = all 分发给所有actor_gmclient
 			struct servertype
 			{
 				std::vector<int32_t> m_servertype;
-
 				jsonfunc("servertype", m_servertype)
 			};
-
 			servertype lservertype;
 			if (aos.read("data", lservertype))
 			{
@@ -106,7 +103,6 @@ namespace ngl
 				std::string m_actor_name;
 				int16_t m_area;
 				int32_t m_dataid;
-
 				jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 			};
 
@@ -123,7 +119,6 @@ namespace ngl
 							return;
 						}
 						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.m_area, lguid.m_dataid));
-						return;
 					}
 				}
 			);
@@ -142,7 +137,6 @@ namespace ngl
 						assert(tab != nullptr && ttab_servers::tab()->m_id == tab->m_id);
 						actor_gmclient::get_allprotocol(lresponse.m_data);
 					}
-					return;
 				}
 			);
 
@@ -162,7 +156,6 @@ namespace ngl
 						auto pro = std::make_shared<np_actor_close>();
 						agm->send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
 						lresponse.m_data = true;
-						return;
 					}
 				});
 
@@ -175,7 +168,6 @@ namespace ngl
 			actor_gm::handle_cmd::push("set_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->m_pack->m_id, "set_time", false);
-					
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
@@ -192,7 +184,6 @@ namespace ngl
 		}
 	}
 
-	//assert(tab != nullptr && ttab_servers::tab()->m_id == tab->m_id);
 	bool actor_gm::checklocalbytype(NODE_TYPE atype)
 	{
 		const tab_servers* tab = ttab_servers::node_tnumber((NODE_TYPE)atype, 1);
