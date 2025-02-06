@@ -55,14 +55,12 @@ namespace ngl
 		// # 转发给特定actor
 		void sendbyactorid(i64_actorid aactorid, const pack* apack, const ngl::np_gm& apro);
 
-		// # 回复gm.php
-		bool reply_php(const pack* apack, ngl::np_gm_response& adata)const;
-
 		static bool checklocalbytype(NODE_TYPE atype);
 
 		using handle_cmd = cmd<actor_gm, std::string, const ngl::json_read&, const message<ngl::np_gm>*>;
 		bool handle(const message<ngl::np_gm>& adata);
 
+		bool sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata);
 		bool handle(const message<mforward<ngl::np_gm_response>>& adata);
 	};
 }// namespace ngl

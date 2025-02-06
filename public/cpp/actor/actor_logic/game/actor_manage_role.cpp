@@ -85,6 +85,7 @@ namespace ngl
 		{
 			handle_gm::push("roleban", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<bool> pro(id, "roleban", false);
 					struct banrole
 					{
 						int64_t m_roleid = 0;
@@ -113,23 +114,14 @@ namespace ngl
 					lpdata->set_m_id(pbdb::db_keyvalue_ekv_account_ban);
 					lpdata->set_m_value(lbanrole);
 					nclient_keyvalue::change(pbdb::db_keyvalue_ekv_account_ban);
-
-					// ·µ»Ø {"data":int32_t}
-					gcmd<int32_t> pro(id);
-					pro.m_operator = "roleban_responce";
-					pro.m_data = 0;
+					pro.m_data = true;
 				}
 			);
 
 			handle_gm::push("get_roleban", [this](int id, const ngl::json_read&)
 				{
-					std::string lbanrole;
-					tools::splicing(m_roleban, "*", lbanrole);
-
-					// ·µ»Ø {"data":int32_t}
-					gcmd<std::string> pro(id);
-					pro.m_operator = "get_roleban_responce";
-					pro.m_data = lbanrole;
+					gcmd<std::string> pro(id, "get_roleban");
+					tools::splicing(m_roleban, "*", pro.m_data);
 				}
 			);
 		}

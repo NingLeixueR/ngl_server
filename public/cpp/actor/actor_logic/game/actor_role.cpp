@@ -275,6 +275,7 @@ namespace ngl
 		{
 			handle_gm::push("pay", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<int32_t> pro(id, "pay");
 					struct pay
 					{
 						std::string m_orderid;
@@ -286,42 +287,36 @@ namespace ngl
 					{
 						return;
 					}
-
-					// 返回 {"data":int32_t}
-					gcmd<int32_t> pro(id);
-					pro.m_operator = "pay_responce";
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				}
 			);
 			handle_gm::push("gmrechange", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<int32_t> pro(id, "gmrechange");
 					int32_t lrechargeid;
 					if (aos.read("data", lrechargeid) == false)
 					{
 						return;
 					}
-
 					std::string lorder;
 					createorder(lorder, lrechargeid);
-
-					// 返回 {"data":int32_t}
-					gcmd<int32_t> pro(id);
-					pro.m_operator = "rechange_responce";
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				});
 			handle_gm::push("rechange", [this](int id, const ngl::json_read& aos)
 				{//actor_role::loginpay() callback
+					gcmd<int32_t> pro(id, "rechange");
 					prorechange lrechange;
 					if (aos.read("data", lrechange) == false)
 					{
 						return;
 					}
 
-					rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
+					pro.m_data = rechange(lrechange.m_orderid, lrechange.m_rechargeid, false, true);
 				});
 			// 禁言 lduration=0解封
 			handle_gm::push("bantalk", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<bool> pro(id, "bantalk", false);
 					int32_t lduration;
 					if (aos.read("data", lduration) == false)
 					{
@@ -330,9 +325,7 @@ namespace ngl
 
 					int lnow = (int)localtime::gettime();
 					m_info.change_notalkutc(lnow + lduration);
-					gcmd<int32_t> pro(id);
-					pro.m_operator = "bantalk_responce";
-					pro.m_data = 0;
+					pro.m_data = true;
 					log_error()->print("[{}] bantalk [{}]", id_guid(), tools::time2str(lnow + lduration));
 				});
 		}

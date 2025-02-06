@@ -42,22 +42,19 @@ namespace ngl
 		{
 			handle_cmd::push("all_protocol", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<protocols> lpro(id);
-					lpro.m_operator = "all_protocol";
+					gcmd<protocols> lpro(id, "all_protocol");
 					get_allprotocol(lpro.m_data);					
 				}
 			);
 			handle_cmd::push("server_stat", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<actor_manage::msg_actor_stat> lpro(id);
-					lpro.m_operator = "server_stat";
+					gcmd<actor_manage::msg_actor_stat> lpro(id, "server_stat");
 					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				}
 			);
 			handle_cmd::push("set_time", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<std::string> lpro(id);
-					lpro.m_operator = "set_time";
+					gcmd<std::string> lpro(id, "set_time");
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
@@ -73,8 +70,7 @@ namespace ngl
 			);
 			handle_cmd::push("get_time", [this](int id, const ngl::json_read& aos)
 				{
-					gcmd<std::string> lpro(id);
-					lpro.m_operator = "get_time";
+					gcmd<std::string> lpro(id, "get_time");
 					lpro.m_data = localtime::time2str("%Y-%m-%d %H:%M:%S");
 				}
 			);

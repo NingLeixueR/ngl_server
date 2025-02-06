@@ -14,14 +14,21 @@ namespace ngl
 		gcmd(const gcmd&) = delete;
 		gcmd& operator=(const gcmd&) = delete;
 		int			id = 0;
-	public:
 		std::string m_operator;
+	public:
 		T			m_data;
 		bool		m_istoutf8 = true;
 
-		gcmd(int aid) :
+		gcmd(int aid, const std::string& aoperator) :
 			id(aid),
-			m_data()
+			m_data(),
+			m_operator(aoperator)
+		{}
+
+		gcmd(int aid, const std::string& aoperator, const T& adata) :
+			id(aid),
+			m_operator(aoperator),
+			m_data(adata)
 		{}
 
 		~gcmd()
@@ -32,18 +39,14 @@ namespace ngl
 				lwrite.write("operator", m_operator);
 				lwrite.write("data", m_data);
 				lwrite.write("server_name", tools::server_name());
-
-				auto pro = std::make_shared<mforward<ngl::np_gm_response>>(id);
 				std::string ljson;
 				lwrite.get(ljson);
 				if (m_istoutf8)
 				{
-					ngl::tools::to_utf8(ljson, pro->add_data()->m_json);
-				}
-				else
-				{
-					pro->add_data()->m_json = ljson;
-				}
+					ngl::tools::to_utf8(ljson, ljson);
+				}	
+				auto pro = std::make_shared<mforward<ngl::np_gm_response>>(id);
+				pro->add_data()->m_json = ljson;
 				actor::static_send_actor(nguid::make_self(ACTOR_GM), -1, pro);
 			}
 			Catch		
