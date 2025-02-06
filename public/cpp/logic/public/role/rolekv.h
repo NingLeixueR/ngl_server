@@ -104,4 +104,4 @@ namespace ngl
 			set_value(akey, lstr);
 		}
 	};
-}
+}//namespace ngl
