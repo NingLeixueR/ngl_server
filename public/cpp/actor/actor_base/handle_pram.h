@@ -115,7 +115,7 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static handle_pram create(
 			const nguid& aid, const nguid& arid, 
-			 const std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, 
+			const std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, 
 			const std::function<void()>& afailfun = nullptr
 		)
 		{
@@ -131,9 +131,7 @@ namespace ngl
 			return lpram;
 		}
 
-		static handle_pram create_pack(
-			const nguid& aid, const nguid& arid, const std::shared_ptr<pack>& apack
-		)
+		static handle_pram create_pack(const nguid& aid, const nguid& arid, const std::shared_ptr<pack>& apack)
 		{
 			handle_pram lpram;
 			lpram.m_data			= apack;

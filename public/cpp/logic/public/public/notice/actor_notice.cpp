@@ -63,7 +63,6 @@ namespace ngl
 			handle_cmd::push("get_notice", [this](int id, const ngl::json_read& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
-					
 					std::map<nguid, data_modified<pbdb::db_notice>>& lmapdb = m_notice.data();
 					for (const auto& [_guid, _data] : lmapdb)
 					{

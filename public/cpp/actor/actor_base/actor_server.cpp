@@ -103,10 +103,6 @@ namespace ngl
 						{
 							const nguid& lguid = ipair.first;
 							i32_serverid lserverid = ipair.second;
-							//if (asession.contains(lserverid) == false)
-							//{
-							//	continue;
-							//}
 							if (lrecv->m_node.m_serverid == lserverid)
 							{
 								continue;
