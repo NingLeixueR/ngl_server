@@ -142,7 +142,6 @@ namespace ngl
 				}
 			);
 		}
-
 		if (handle_cmd::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
 		{
 			log_error()->print("GM actor_mail operator[{}] ERROR", loperator);

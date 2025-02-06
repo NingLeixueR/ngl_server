@@ -99,14 +99,16 @@ struct std::formatter<ngl::pack_head>
 	auto format(const ngl::pack_head& val, FormatContext& ctx)const
 	{
 		auto out = ctx.out();
-		int64_t lvaluemask = *(int64_t*)&val.m_data[ngl::EPH_MASK];
-		std::stringstream ss;
-		ss << std::hex << std::uppercase << lvaluemask;
+		std::string ss;
+		int8_t* lparr = (int8_t*)&val.m_data[ngl::EPH_MASK];
+		std::for_each(lparr, lparr + sizeof(int32_t) * ngl::EPH_MASK_COUNT, [&ss](int8_t avalue)
+			{
+				ss += std::format("{} ", avalue);
+			});
 		ngl::nguid lactor(*(int64_t*)&val.m_data[ngl::EPH_ACTOR_TYPEAREA]);
 		ngl::nguid lrequestactor(*(int64_t*)&val.m_data[ngl::EPH_REQUEST_ACTOR_TYPEAREA]);
-		std::format_to(out, 
-			"HEAD[MASK:{},BYTES:{},TIME:{},PROTOCOLNUM:{},PROTOCOLTYPE:{},ACTOR:{},REQUEST_ACTOR:{}]", 
-			ss.str(), 
+		std::format_to(out, "HEAD[MASK:{},BYTES:{},TIME:{},PROTOCOLNUM:{},PROTOCOLTYPE:{},ACTOR:{},REQUEST_ACTOR:{}]", 
+			ss, 
 			val.m_data[ngl::EPH_BYTES],
 			ngl::localtime::time2str(val.m_data[ngl::EPH_TIME], "%y/%m/%d %H:%M:%S"),
 			val.m_data[ngl::EPH_PROTOCOLNUM],

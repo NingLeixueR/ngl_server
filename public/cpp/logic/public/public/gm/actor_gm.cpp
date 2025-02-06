@@ -194,7 +194,6 @@ namespace ngl
 				{
 					return true;
 				}
-
 				init_handle_cmd(this);
 				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this) == false)
 				{
