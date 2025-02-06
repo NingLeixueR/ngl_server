@@ -84,11 +84,11 @@ namespace ngl
 	int16_t tools::transformlittle(parm<int16_t>& avalues)
 	{
 		if constexpr (islittle())
+		{
 			return avalues.m_value;
+		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value =
-			(static_cast<int16_t>(value_p[0]) << 8)
-			| static_cast<int16_t>(value_p[1]);
+		avalues.m_value = (static_cast<int16_t>(value_p[0]) << 8) | static_cast<int16_t>(value_p[1]);
 		return avalues.m_value;
 	}
 
@@ -99,9 +99,7 @@ namespace ngl
 			return avalues.m_value;
 		}
 		unsigned char* value_p = reinterpret_cast<unsigned char*>(&avalues.m_value);
-		avalues.m_value =
-			(static_cast<uint16_t>(value_p[0]) << 8)
-			| static_cast<uint16_t>(value_p[1]);
+		avalues.m_value = (static_cast<uint16_t>(value_p[0]) << 8) | static_cast<uint16_t>(value_p[1]);
 		return avalues.m_value;
 	}
 
@@ -168,8 +166,6 @@ namespace ngl
 			| static_cast<uint64_t>(value_p[7]);
 		return avalues.m_value;
 	}
-
-    
 
     std::string tools::base64_encode(const char* data, std::size_t len)
     {
@@ -833,12 +829,10 @@ namespace ngl
 			ap[i] = ap[i] ^ sysconfig::xorkey()[j & sysconfig::xorkeynum()];
 		}
 	}
-
 }//namespace ngl
 
 namespace ngl
 {
-
 	class md5
 	{
 		md5(const md5&) = delete;
@@ -904,42 +898,51 @@ namespace ngl
 
 ///////////////////////////////////////////////
 // F, G, H and I are basic MD5 functions.
-	inline md5::uint4 md5::F(uint4 x, uint4 y, uint4 z) {
+	inline md5::uint4 md5::F(uint4 x, uint4 y, uint4 z) 
+	{
 		return (x & y) | ((~x) & z);
 	}
 
-	inline md5::uint4 md5::G(uint4 x, uint4 y, uint4 z) {
+	inline md5::uint4 md5::G(uint4 x, uint4 y, uint4 z) 
+	{
 		return (x & z) | (y & ~z);
 	}
 
-	inline md5::uint4 md5::H(uint4 x, uint4 y, uint4 z) {
+	inline md5::uint4 md5::H(uint4 x, uint4 y, uint4 z) 
+	{
 		return x ^ y ^ z;
 	}
 
-	inline md5::uint4 md5::I(uint4 x, uint4 y, uint4 z) {
+	inline md5::uint4 md5::I(uint4 x, uint4 y, uint4 z) 
+	{
 		return y ^ (x | ~z);
 	}
 
 	// rotate_left rotates x left n bits.
-	inline md5::uint4 md5::rotate_left(uint4 x, int n) {
+	inline md5::uint4 md5::rotate_left(uint4 x, int n) 
+	{
 		return (x << n) | (x >> (32 - n));
 	}
 
 	// FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.
 	// Rotation is separate from addition to prevent recomputation.
-	inline void md5::FF(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) {
+	inline void md5::FF(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) 
+	{
 		a = rotate_left(a + F(b, c, d) + x + ac, s) + b;
 	}
 
-	inline void md5::GG(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) {
+	inline void md5::GG(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) 
+	{
 		a = rotate_left(a + G(b, c, d) + x + ac, s) + b;
 	}
 
-	inline void md5::HH(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) {
+	inline void md5::HH(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) 
+	{
 		a = rotate_left(a + H(b, c, d) + x + ac, s) + b;
 	}
 
-	inline void md5::II(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) {
+	inline void md5::II(uint4& a, uint4 b, uint4 c, uint4 d, uint4 x, uint4 s, uint4 ac) 
+	{
 		a = rotate_left(a + I(b, c, d) + x + ac, s) + b;
 	}
 
@@ -1101,7 +1104,9 @@ namespace ngl
 
 		// Update number of bits
 		if ((count[0] += (length << 3)) < (length << 3))
+		{
 			count[1]++;
+		}
 		count[1] += (length >> 29);
 
 		// number of bytes we need to fill in buffer
@@ -1118,12 +1123,16 @@ namespace ngl
 
 			// transform chunks of blocksize (64 bytes)
 			for (i = firstpart; i + blocksize <= length; i += blocksize)
+			{
 				transform(&input[i]);
+			}
 
 			index = 0;
 		}
 		else
+		{
 			i = 0;
+		}
 
 		// buffer remaining input
 		memcpy(&buffer[index], &input[i], length - i);
@@ -1143,13 +1152,15 @@ namespace ngl
 	// the message digest and zeroizing the context.
 	md5& md5::finalize()
 	{
-		static unsigned char padding[64] = {
+		static unsigned char padding[64] = 
+		{
 		  0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		};
 
-		if (!finalized) {
+		if (!finalized) 
+		{
 			// Save number of bits
 			unsigned char bits[8];
 			encode(bits, count, 8);
@@ -1181,15 +1192,20 @@ namespace ngl
 	std::string md5::hexdigest() const
 	{
 		if (!finalized)
+		{
 			return "";
+		}
 
 		char buf[33] = {0};
 		for (int i = 0; i < 16; i++)
-			snprintf(buf + (i * 2), 33-(i * 2), "%02x", digest[i]);
+		{
+			snprintf(buf + (i * 2), 33 - (i * 2), "%02x", digest[i]);
+		}
 		buf[32] = 0;
 
 		return std::string(buf);
 	}
+
 	std::string md5::values() const
 	{
 		return hexdigest();
@@ -1197,7 +1213,6 @@ namespace ngl
 
 
 	//////////////////////////////
-
 	std::ostream& operator<<(std::ostream& out, md5& md5)
 	{
 		return out << md5.hexdigest();

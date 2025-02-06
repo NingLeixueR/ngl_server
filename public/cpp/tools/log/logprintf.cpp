@@ -118,11 +118,17 @@ namespace ngl
 		switch (aactortype)
 		{
 		case ELOG_LOCAL:
+		{
 			return llocal;
+		}
 		case ELOG_NETWORK:
+		{
 			return lnetwork;
+		}
 		case ELOG_BI:
+		{
 			return lbi;
+		}
 		}
 		return lnone;
 	}
@@ -218,13 +224,21 @@ namespace ngl
 		switch (nlogactor::log_type(aconfig.m_id))
 		{
 		case ELOG_LOCAL:
+		{
 			return std::make_shared<logfile_default>(aconfig);
+		}
 		case ELOG_NETWORK:
+		{
 			return std::make_shared<logfile_default>(aconfig);
+		}
 		case ELOG_BI:
+		{
 			return std::make_shared<logfile_bi>(aconfig);
+		}
 		default:
+		{
 			return nullptr;
+		}
 		}
 	}
 }// namespace ngl

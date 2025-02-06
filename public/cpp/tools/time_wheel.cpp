@@ -23,10 +23,7 @@ namespace ngl
 		int32_t			m_current_pos;		 // µ±«∞÷∏’Î
 	public:
 		wheel();
-		inline void set(
-			int64_t aslotms, int32_t aslotbit, wheel* anextround, 
-			wheel* alastround, time_wheel* atime_wheel
-		);
+		inline void set(int64_t aslotms, int32_t aslotbit, wheel* anextround, wheel* alastround, time_wheel* atime_wheel);
 
 		inline int slot_count();
 
@@ -140,7 +137,7 @@ namespace ngl
 
 		int64_t duration_ms()
 		{
-			return   m_current_ms - m_server_start_ms;
+			return m_current_ms - m_server_start_ms;
 		}
 
 		bool addtimer(wheel_node* apnode)

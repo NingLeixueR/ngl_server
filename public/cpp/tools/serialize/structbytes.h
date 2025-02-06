@@ -72,8 +72,7 @@ namespace ngl
 
 		static bool check_xor(int aprotocolnum)
 		{
-			if (tprotocol::protocol<np_gm>() == aprotocolnum
-				|| tprotocol::protocol<np_gm_response>() == aprotocolnum)
+			if (tprotocol::protocol<np_gm>() == aprotocolnum || tprotocol::protocol<np_gm_response>() == aprotocolnum)
 			{
 				return false;
 			}

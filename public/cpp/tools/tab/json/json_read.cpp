@@ -199,14 +199,20 @@ namespace ngl
 			switch (ajson->type)
 			{
 			case cJSON_True:
+			{
 				adata = true;
 				return true;
+			}
 			case cJSON_False:
+			{
 				adata = false;
 				return true;
+			}
 			case cJSON_Number:
+			{
 				adata = ajson->valueint != 0;
 				return true;
+			}
 			case cJSON_String:
 			{
 				std::string lvaluestr(ajson->valuestring);
