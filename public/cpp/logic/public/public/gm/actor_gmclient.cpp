@@ -56,6 +56,8 @@ namespace ngl
 			);
 			handle_cmd::push("set_time", [this](int id, const ngl::json_read& aos)
 				{
+					gcmd<std::string> lpro(id);
+					lpro.m_operator = "set_time";
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
@@ -64,7 +66,8 @@ namespace ngl
 					operator_set_time ltime;
 					if (aos.read("data", ltime))
 					{
-						localtime::settime(ltime.m_time);
+						bool lbool = localtime::settime(ltime.m_time);
+						lpro.m_data = std::format("set time {} # {}", localtime::time2str("%Y-%m-%d %H:%M:%S"), lbool? "success":"fail");
 					}
 				}
 			);
@@ -75,8 +78,6 @@ namespace ngl
 					lpro.m_data = localtime::time2str("%Y-%m-%d %H:%M:%S");
 				}
 			);
-
-		
 		}
 
 		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)
