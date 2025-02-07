@@ -15,21 +15,27 @@ namespace ngl
 		gcmd& operator=(const gcmd&) = delete;
 		int			id = 0;
 		std::string m_operator;
+		actor*		m_actor;
 	public:
 		T			m_data;
 		bool		m_istoutf8 = true;
 
-		gcmd(int aid, const std::string& aoperator) :
+		gcmd(int aid, const std::string& aoperator, actor* aactor = nullptr) :
 			id(aid),
 			m_data(),
-			m_operator(aoperator)
+			m_operator(aoperator),
+			m_actor(aactor)
 		{}
 
-		gcmd(int aid, const std::string& aoperator, const T& adata) :
+		gcmd(int aid, const std::string& aoperator, const T& adata, actor* aactor = nullptr) :
 			id(aid),
 			m_operator(aoperator),
-			m_data(adata)
+			m_data(adata),
+			m_actor(aactor)
 		{}
+
+		// 定义在[actor_gm.cpp]中 		
+		void execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro);
 
 		~gcmd()
 		{
@@ -44,10 +50,17 @@ namespace ngl
 				if (m_istoutf8)
 				{
 					ngl::tools::to_utf8(ljson, ljson);
-				}	
+				}
 				auto pro = std::make_shared<mforward<ngl::np_gm_response>>(id);
 				pro->add_data()->m_json = ljson;
-				actor::static_send_actor(nguid::make_self(ACTOR_GM), -1, pro);
+				if (m_actor == nullptr)
+				{
+					actor::static_send_actor(nguid::make_self(ACTOR_GM), -1, pro);
+				}
+				else
+				{
+					execute(pro);
+				}
 			}
 			Catch		
 		}
