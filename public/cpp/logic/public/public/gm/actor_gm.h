@@ -58,9 +58,10 @@ namespace ngl
 		static bool checklocalbytype(NODE_TYPE atype);
 
 		using handle_cmd = cmd<actor_gm, std::string, const ngl::json_read&, const message<ngl::np_gm>*>;
+		void init_handle_cmd();
 		bool handle(const message<ngl::np_gm>& adata);
 
-		bool sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata);
+		static bool sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata);
 		bool handle(const message<mforward<ngl::np_gm_response>>& adata);
 	};
 }// namespace ngl

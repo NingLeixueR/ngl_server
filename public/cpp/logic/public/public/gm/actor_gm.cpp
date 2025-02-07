@@ -93,9 +93,9 @@ namespace ngl
 		}
 	};
 
-	void init_handle_cmd(actor_gm* agm)
+	void actor_gm::init_handle_cmd()
 	{
-		if (actor_gm::handle_cmd::empty())
+		if (handle_cmd::empty())
 		{
 			struct gm_guid
 			{
@@ -105,9 +105,16 @@ namespace ngl
 				jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 			};
 
-			actor_gm::handle_cmd::push("guid", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::push("server_stat", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<std::string> lresponse(adata->m_pack->m_id, "guid");
+					gcmd<actor_manage::msg_actor_stat> lpro(adata->m_pack->m_id, "server_stat", this);
+					actor_manage::getInstance().get_actor_stat(lpro.m_data);
+				}
+			);
+
+			handle_cmd::push("guid", [this](const json_read& aos, const message<ngl::np_gm>* adata)
+				{
+					gcmd<std::string> lresponse(adata->m_pack->m_id, "guid", this);
 					gm_guid lguid;
 					if (aos.read("data", lguid))
 					{
@@ -122,16 +129,16 @@ namespace ngl
 				}
 			);
 
-			actor_gm::handle_cmd::push("all_protocol", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<actor_gmclient::protocols> lresponse(adata->m_pack->m_id, "all_protocol");
+					gcmd<actor_gmclient::protocols> lresponse(adata->m_pack->m_id, "all_protocol", this);
 					actor_gmclient::get_allprotocol(lresponse.m_data);
 				}
 			);
 
-			actor_gm::handle_cmd::push("close_actor", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::push("close_actor", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<bool> lresponse(adata->m_pack->m_id, "close_actor", false);
+					gcmd<bool> lresponse(adata->m_pack->m_id, "close_actor", false, this);
 					gm_guid lguid;
 					if (aos.read("data", lguid))
 					{
@@ -143,20 +150,20 @@ namespace ngl
 						}
 						nguid::make(ltype, lguid.m_area, lguid.m_dataid);
 						auto pro = std::make_shared<np_actor_close>();
-						agm->send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
+						send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
 						lresponse.m_data = true;
 					}
 				});
 
-			actor_gm::handle_cmd::push("get_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::push("get_time", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<std::string> lresponse(adata->m_pack->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
+					gcmd<std::string> lresponse(adata->m_pack->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
 				});
 
-			actor_gm::handle_cmd::push("set_time", [agm](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::push("set_time", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<bool> lresponse(adata->m_pack->m_id, "set_time", false);
+					gcmd<bool> lresponse(adata->m_pack->m_id, "set_time", false, this);
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
@@ -194,7 +201,7 @@ namespace ngl
 				{
 					return true;
 				}
-				init_handle_cmd(this);
+				init_handle_cmd();
 				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this) == false)
 				{
 					return true;
@@ -237,8 +244,8 @@ namespace ngl
 
 	bool actor_gm::sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata)
 	{
-		log_error()->print("gm2php [{}]", adata.m_json);
-		send(aidentifier, adata, nguid::make(), nguid::make());
+		::ngl::log_error()->print("gm2php [{}]", adata.m_json);
+		actor::send(aidentifier, adata, nguid::make(), nguid::make());
 		return true;
 	}
 
@@ -246,4 +253,13 @@ namespace ngl
 	{
 		return sendtophp((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data());
 	}
+
+	template <typename T>
+	void gcmd<T>::execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro)
+	{
+		assert(m_actor != nullptr);
+		assert(m_actor->id_guid() == actor_gm::getInstance().id_guid());
+		actor_gm::sendtophp(apro->identifier(), *apro->data());
+	}
+
 }// namespace ngl
