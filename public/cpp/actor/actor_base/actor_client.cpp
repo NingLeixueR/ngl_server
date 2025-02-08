@@ -60,14 +60,14 @@ namespace ngl
 
 		//# ×¢²áĞ­Òé
 		register_handle_custom<actor_client>::func<
-			np_connect_actor_server
-			, np_actor_server_register
-			, np_actornode_register_response
+			np_actornode_register_response
 			, np_actorclient_node_connect
-			, np_actornode_update
 			, np_actornode_connect_task
-			, np_actornode_update_mass
 			, np_actor_gatewayid_updata
+			, np_actornode_update_mass
+			, np_actor_server_register
+			, np_connect_actor_server
+			, np_actornode_update
 		>(true);
 	}
 
