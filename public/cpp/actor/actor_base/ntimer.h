@@ -22,13 +22,13 @@ namespace ngl
 			ET_MIN,			// 每分钟触发	asec秒
 			ET_INTERVAL_SEC,// 间隔n秒触发
 		};
-		int							m_type = 0;
-		int							m_timerid = 0;
-		int64_t						m_ms = 0;					// 相对于当前时间 ms
-		int							m_count = 1;				// 触发次数
-		std::function<int32_t(int64_t)> m_intervalms = nullptr;	// 触发间隔
-		std::shared_ptr<void>		m_parm = nullptr;			// 自定义参数
-		int64_t						m_triggerms = 0;			// 触发时的毫秒
+		int								m_type = 0;
+		int								m_timerid = 0;
+		int64_t							m_ms = 0;					// 相对于当前时间 ms
+		int								m_count = 1;				// 触发次数
+		std::function<int32_t(int64_t)> m_intervalms = nullptr;		// 触发间隔
+		std::shared_ptr<void>			m_parm = nullptr;			// 自定义参数
+		int64_t							m_triggerms = 0;			// 触发时的毫秒
 
 		template <typename T>
 		void set_parm(std::shared_ptr<T>& aparm)
