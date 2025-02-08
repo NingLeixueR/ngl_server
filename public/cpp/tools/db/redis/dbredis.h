@@ -44,7 +44,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool get(redisContext* arc, const char* atab, std::map<int, protobuf_data<T>>& adata)
+		static bool get(redisContext* arc, const char* atab, std::map<int, T>& adata)
 		{
 			redisReply* lreply = cmd(arc, "KEYS %s:*", atab);
 			if (lreply != nullptr)
@@ -71,7 +71,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool set(redisContext* arc, const char* atab, int akey, protobuf_data<T>& adata)
+		static bool set(redisContext* arc, const char* atab, int akey, const T& adata)
 		{
 			char lbuff[REDIS_DATA_MAX] = { 0x0 };
 			ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
@@ -99,10 +99,21 @@ namespace ngl
 		redis(const redis_arg& arg);
 
 		template <typename T>
+		bool get(const std::string& aname, int akey, T& adata)
+		{
+			return redis_cmd::get(m_rc, aname.c_str(), akey, adata);
+		}
+
+		template <typename T>
+		bool get(int akey, T& adata)
+		{
+			return get(T::name(), akey, adata);
+		}
+
+		template <typename T>
 		bool get(int akey, protobuf_data<T>& adata)
 		{
-			std::string lname = tools::protobuf_tabname<T>::name();
-			return redis_cmd::get(m_rc, lname.c_str(), akey, adata);
+			return get(tools::protobuf_tabname<T>::name(), akey, adata);
 		}
 
 		template <typename T>
@@ -112,10 +123,46 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool set(int akey, protobuf_data<T>& adata)
+		bool set(const std::string& aname, int akey, T& adata)
 		{
-			std::string lname = tools::protobuf_tabname<T>::name();
-			return redis_cmd::set(m_rc, lname.c_str(), akey, adata);
+			return redis_cmd::set(m_rc, aname.c_str(), akey, adata);
+		}
+
+		template <typename T>
+		bool set(int akey, const protobuf_data<T>& adata)
+		{
+			return set(tools::protobuf_tabname<T>::name(), akey, adata);
+		}
+
+		template <typename T>
+		bool set(int akey, const T& adata)
+		{
+			return set(T::name(), akey, adata);
+		}
+
+		template <typename T>
+		bool set(const std::string& aname, std::map<int, T>& adata)
+		{
+			for (auto itor = adata.begin(); itor != adata.end();++itor)
+			{
+				if (set(aname, itor->first, itor->second) == false)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		template <typename T>
+		bool set(std::map<int, T>& adata)
+		{
+			return set(T::name(), adata);
+		}
+
+		template <typename T>
+		bool set(std::map<int, protobuf_data<T>>& adata)
+		{
+			return set(tools::protobuf_tabname<T>::name(), adata);
 		}
 
 		template <typename T>
