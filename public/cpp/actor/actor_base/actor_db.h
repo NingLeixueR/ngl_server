@@ -227,8 +227,8 @@ namespace ngl
 		{
 			actor::register_handle_proto<tactor_db>::template func<
 				np_actordb_load<TDBTAB_TYPE, TDBTAB>
-				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_delete<TDBTAB_TYPE, TDBTAB>
+				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>
 			>(true);
 			actor::register_handle_custom<tactor_db>::template func<
