@@ -55,21 +55,17 @@ namespace ngl
 				}Catch
 				return nullptr;
 			};
-			std::string lname = aname;
-			fun_run lrunfun = [atype, lname](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 			{
 				nguid lactorguid(apack->m_head.get_actor());
 				nguid lrequestactorguid(apack->m_head.get_request_actor());
 				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
-				handle_pram lpram = handle_pram::create<T, false, false>(
-					lactorguid, lrequestactorguid, ldatapack
-				);
+				handle_pram lpram = handle_pram::create<T, false, false>(lactorguid, lrequestactorguid, ldatapack);
 				lpram.m_pack = apack;
 
 				actor_manage& lmanages = actor_manage::getInstance();
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
-				{
-					// actor type 是否无效  || //发给同类型的所有actor
+				{// actor type 是否无效  || //发给同类型的所有actor
 					lmanages.push_task_type(atype, lpram);
 					return true;
 				}
@@ -78,8 +74,7 @@ namespace ngl
 					if (lactorguid.type() == atype)
 					{
 						if (lactorguid.is_actoridnone())
-						{
-							// actor id 是否无效
+						{// actor id 是否无效
 							lmanages.push_task_type(atype, lpram);
 						}							
 						else
@@ -95,9 +90,7 @@ namespace ngl
 
 		// 转发[负责转发的actor必须是单例actor]
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
-		static void registry_actor_forward(
-			ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname
-		)
+		static void registry_actor_forward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 			{
