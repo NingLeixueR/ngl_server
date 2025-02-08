@@ -24,6 +24,7 @@ namespace ngl
 	class ndbclient_base;
 	class actor_manage_dbclient;
 
+	// # actor的log辅助
 	class tools_log
 	{
 		tools_log(const tools_log&) = delete;
@@ -33,54 +34,21 @@ namespace ngl
 
 		std::shared_ptr<np_actor_logitem> get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const;
 	public:
-		explicit tools_log(actor_base* aactor = nullptr) :
-			m_actor(aactor)
-		{}
+		explicit tools_log(actor_base* aactor = nullptr);
 
-		void set_logactor(actor_base* aactor)
-		{
-			m_actor = aactor;
-		}
+		void set_logactor(actor_base* aactor);
 
-		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_DEBUG, false);
-		}
+		std::shared_ptr<np_actor_logitem> log_debug(const std::source_location& asource = std::source_location::current())const;
+		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())const;
 
-		std::shared_ptr<np_actor_logitem> log_debug_net(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_DEBUG, true);
-		}
+		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())const;
+		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())const;
 
-		std::shared_ptr<np_actor_logitem> log_info(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_INFO, false);
-		}
+		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())const;
+		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())const;
 
-		std::shared_ptr<np_actor_logitem> log_info_net(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_INFO, true);
-		}
-
-		std::shared_ptr<np_actor_logitem> log_warn(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_WARN, false);
-		}
-
-		std::shared_ptr<np_actor_logitem> log_warn_net(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_WARN, true);
-		}
-
-		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_ERROR, false);
-		}
-
-		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())const
-		{
-			return get_log(asource, ELOG_ERROR, true);
-		}
+		std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current())const;
+		std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())const;
 	};
 
 	struct actorparmbase
@@ -105,7 +73,7 @@ namespace ngl
 	template <typename T>
 	struct message;
 
-	class actor_base:public tools_log
+	class actor_base : public tools_log
 	{
 		actor_base() = delete;
 		actor_base(const actor_base&) = delete;
@@ -114,7 +82,6 @@ namespace ngl
 		struct impl_actor_base;
 		struct impl_group;
 		impl<impl_actor_base>	m_impl_actor_base;
-
 		ngroup<i64_actorid>		m_group;
 
 		explicit actor_base(const actorparmbase& aparm);
@@ -298,7 +265,6 @@ namespace ngl
 			apro->m_uid.push_back(lguid.actordataid());
 			apro->m_area.push_back(lguid.area());
 		}
-
 	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
 		template <typename T>
