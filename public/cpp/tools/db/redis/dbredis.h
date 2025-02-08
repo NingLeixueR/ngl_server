@@ -95,14 +95,33 @@ namespace ngl
 		redisContext*	m_rc;
 		redis_arg		m_arg;
 		redis();
-	public:
-		redis(const redis_arg& arg);
 
 		template <typename T>
 		bool get(const std::string& aname, int akey, T& adata)
 		{
 			return redis_cmd::get(m_rc, aname.c_str(), akey, adata);
 		}
+
+		template <typename T>
+		bool set(const std::string& aname, int akey, T& adata)
+		{
+			return redis_cmd::set(m_rc, aname.c_str(), akey, adata);
+		}
+
+		template <typename T>
+		bool set(const std::string& aname, std::map<int, T>& adata)
+		{
+			for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+			{
+				if (set(aname, itor->first, itor->second) == false)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+	public:
+		redis(const redis_arg& arg);
 
 		template <typename T>
 		bool get(int akey, T& adata)
@@ -123,12 +142,6 @@ namespace ngl
 		}
 
 		template <typename T>
-		bool set(const std::string& aname, int akey, T& adata)
-		{
-			return redis_cmd::set(m_rc, aname.c_str(), akey, adata);
-		}
-
-		template <typename T>
 		bool set(int akey, const protobuf_data<T>& adata)
 		{
 			return set(tools::protobuf_tabname<T>::name(), akey, adata);
@@ -138,19 +151,6 @@ namespace ngl
 		bool set(int akey, const T& adata)
 		{
 			return set(T::name(), akey, adata);
-		}
-
-		template <typename T>
-		bool set(const std::string& aname, std::map<int, T>& adata)
-		{
-			for (auto itor = adata.begin(); itor != adata.end();++itor)
-			{
-				if (set(aname, itor->first, itor->second) == false)
-				{
-					return false;
-				}
-			}
-			return true;
 		}
 
 		template <typename T>
