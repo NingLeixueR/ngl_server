@@ -85,7 +85,23 @@ namespace ngl
 			lrolebase->set_m_moneysilver(i + 2000);
 			lredis.set(i, ltemp);
 		}
-		protobuf_data<pbdb::db_role> ltemp2;
-		lredis.get(1, ltemp2);
+
+		for (int i = 1; i < 10; ++i)
+		{
+			protobuf_data<pbdb::db_role> ltemp2;
+			lredis.get(i, ltemp2);
+		}
+		
+
+		np_connect_actor_server ltempk;
+
+		ltempk.m_serverid = 1989;
+		ltempk.m_session = 519;
+		lredis.set(322, ltempk);
+
+		np_connect_actor_server ltempk2;
+		lredis.get(322, ltempk2);
+
+		std::cout << std::endl;
 	}
 }// namespace ngl

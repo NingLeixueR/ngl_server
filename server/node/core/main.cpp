@@ -46,7 +46,9 @@ int main(int argc, char** argv)
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
+	{
 		return 0;
+	}
 
 	nconfig::set_server(argv[1], tab->m_id);
 
