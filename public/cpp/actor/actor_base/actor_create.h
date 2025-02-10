@@ -71,9 +71,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static void switch_process(
-			i64_actorid aactor, i32_serverid aserverid, i32_serverid atoserverid, T& adata
-		)
+		static void switch_process(i64_actorid aactor, i32_serverid aserverid, i32_serverid atoserverid, T& adata)
 		{
 			if (aserverid == atoserverid)
 			{
