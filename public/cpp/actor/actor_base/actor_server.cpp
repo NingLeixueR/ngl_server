@@ -42,6 +42,38 @@ namespace ngl
 		>(true);
 	}
 
+	void actor_server::forward_np_actornode_register(const pack* apack, std::vector<i32_sessionid>& avec, const nactornode& anode)
+	{
+		naddress::foreach([&avec, apack](const actor_node_session& anode)->bool
+			{
+				if (apack->m_id != anode.m_session)
+				{
+					avec.push_back(anode.m_session);
+				}
+				return true;
+			});
+		if (!avec.empty())
+		{
+			np_actornode_register_response lpram;
+			lpram.m_vec.push_back(anode);
+			nets::sendmore(avec, lpram, nguid::moreactor(), id_guid());
+		}
+	}
+
+	void actor_server::reply_np_actornode_register(const pack* apack)
+	{
+		np_actornode_register_response lpram;
+		naddress::foreach([&lpram, apack](const actor_node_session& anode)->bool
+			{
+				if (apack->m_id != anode.m_session)
+				{
+					lpram.m_vec.push_back(anode.m_node);
+				}
+				return true;
+			});
+		nets::sendbysession(apack->m_id, lpram, nguid::moreactor(), id_guid());
+	}
+
 	bool actor_server::handle(const message<np_actornode_register>& adata)
 	{
 		Try
@@ -56,33 +88,11 @@ namespace ngl
 			naddress::actor_add(lserverid, lrecv->m_add);
 
 			server_session::add(lserverid, lpack->m_id);
+
 			std::vector<i32_sessionid> lvec;
-			naddress::foreach(
-				[lrecv, &lvec, lpack](const actor_node_session& anode)->bool
-				{
-					if (lpack->m_id != anode.m_session)
-					{
-						lvec.push_back(anode.m_session);
-					}
-					return true;
-				});
-			if (!lvec.empty())
-			{
-				np_actornode_register_response lpram;
-				lpram.m_vec.push_back(lrecv->m_node);
-				nets::sendmore(lvec, lpram, nguid::moreactor(), id_guid());
-			}
-			{// -- 回复
-				np_actornode_register_response lpram;
-				naddress::foreach(
-					[&adata, &lpram, lpack](const actor_node_session& anode)->bool
-					{
-						if (lpack->m_id != anode.m_session)
-							lpram.m_vec.push_back(anode.m_node);
-						return true;
-					});
-				nets::sendbysession(lpack->m_id, lpram, nguid::moreactor(), id_guid());
-			}
+			forward_np_actornode_register(lpack, lvec, lrecv->m_node);
+			reply_np_actornode_register(lpack);
+
 			if (!lvec.empty())
 			{// -- actor_client_node_update 给其他结点
 				np_actornode_update lpram
@@ -95,9 +105,7 @@ namespace ngl
 			{
 				std::map<i32_serverid, np_actornode_update> lmapprotocol;
 				naddress::ergodic(
-					[&lrecv, &lmapprotocol](
-						const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>& asession
-					)->bool
+					[&lrecv, &lmapprotocol](const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&)->bool
 					{
 						for (const std::pair<const nguid, i32_serverid>& ipair : amap)
 						{

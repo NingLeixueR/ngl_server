@@ -28,6 +28,11 @@ namespace ngl
 			return nguid::make(ACTOR_SERVER, tab_self_area, nguid::none_actordataid());
 		}
 
+		// # 回复[np_actornode_register]请求
+		void reply_np_actornode_register(const pack* apack);
+		// # 转发[np_actornode_register]请求
+		void forward_np_actornode_register(const pack* apack, std::vector<i32_sessionid>& avec, const nactornode& anode);
+
 		// # [actor client -> actor server] register
 		// # 注册结点
 		bool handle(const message<np_actornode_register>& adata);
