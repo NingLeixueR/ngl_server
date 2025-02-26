@@ -123,6 +123,7 @@ namespace ngl
 		static std::string			 m_nodename;
 		static NODE_TYPE			 m_nodetype;
 		static i32_id				 m_nodeid;
+		static mail_info			 m_mail;
 
 		static void init();
 
@@ -140,9 +141,13 @@ namespace ngl
 
 		static bool read_db_arg(const char* aname, dbarg& m_dbarg);
 
+		static bool read_mail_arg(const char* aname, mailarg& amailarg);
+
 		static void loaddb();
 
 		static void loadcrossdb();
+
+		static void loadmail();
 
 		static void loadpublic();
 

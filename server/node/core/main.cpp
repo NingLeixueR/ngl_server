@@ -17,6 +17,8 @@ const std::string lerrpath = "参数错误:EXE name areaid tab_servers::tcount";
 
 Dumper lDumper;
 
+#include "email_sender.h"
+
 int main(int argc, char** argv)
 {
 	if (argc <= 3)
@@ -66,6 +68,11 @@ int main(int argc, char** argv)
 	// # 设置控制台窗口名称
 	SetConsoleTitle(lnodename.c_str());
 #endif
+
+	//std::string lmailtxt = std::format("{}:{}", lnodename, ngl::localtime::time2str("%Y-%m-%d %H:%M:%S"));
+	//ngl::test_mail(lmailtxt.c_str(), lmailtxt.c_str());
+
+	ngl::test_mail(ngl::xmlnode::m_mail.m_mailarg.m_title.c_str(), ngl::xmlnode::m_mail.m_mailarg.m_content.c_str());
 
 	Dumper::m_excname = lnodename;
 	switch (nconfig::node_type())
