@@ -89,7 +89,20 @@ namespace ngl
 		static void send(std::shared_ptr<http_parm>& adata);
 
 		static std::shared_ptr<http_parm> make_http();
+
+		struct parameter
+		{
+			std::string m_smtp;
+			std::string m_email;
+			std::string m_password;
+			std::string m_name;
+			std::string m_title;
+			std::string m_content;
+			std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
+		};
+		static void sendemail(const parameter& aparm);
 	};
 
 	void test_manage_curl();
+	void test_mail(const char* atitle, const char* acontent);
 }//namespace ngl
