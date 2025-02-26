@@ -17,6 +17,7 @@ namespace ngl
 	std::string				xmlnode::m_nodename;
 	NODE_TYPE				xmlnode::m_nodetype;
 	i32_id					xmlnode::m_nodeid;
+	mail_info				xmlnode::m_mail;
 
 	void xmlnode::init()
 	{
@@ -66,6 +67,7 @@ namespace ngl
 		loadpublic();
 		loaddb();
 		loadcrossdb();
+		loadmail();
 
 		log_error()->print("finish xmlnode read [{}]", lxmlname);
 	}
@@ -111,29 +113,71 @@ namespace ngl
 		return true;
 	}
 
-	bool xmlnode::read_db_arg(const char* aname, dbarg& m_dbarg)
+	bool xmlnode::read_db_arg(const char* aname, dbarg& adbarg)
 	{
 		std::string lchild = std::format("{}.db_connect", aname);
 		tinyxml2::XMLElement* lnode = xml::get_child(m_con, lchild.c_str());
-		if (xml::get_xmlattr(lnode, "port", m_dbarg.m_port) == false)
+		if (xml::get_xmlattr(lnode, "port", adbarg.m_port) == false)
 		{
 			return false;
 		}
-		if (xml::get_xmlattr(lnode, "ip", m_dbarg.m_ip) == false)
+		if (xml::get_xmlattr(lnode, "ip", adbarg.m_ip) == false)
 		{
 			return false;
 		}
-		if (xml::get_xmlattr(lnode, "dbname", m_dbarg.m_dbname) == false)
+		if (xml::get_xmlattr(lnode, "dbname", adbarg.m_dbname) == false)
 		{
 			return false;
 		}
-		if (xml::get_xmlattr(lnode, "passworld", m_dbarg.m_passworld) == false)
+		if (xml::get_xmlattr(lnode, "passworld", adbarg.m_passworld) == false)
 		{
 			return false;
 		}
-		if (xml::get_xmlattr(lnode, "account", m_dbarg.m_account) == false)
+		if (xml::get_xmlattr(lnode, "account", adbarg.m_account) == false)
 		{
 			return false;
+		}
+		return true;
+	}
+
+	bool xmlnode::read_mail_arg(const char* aname, mailarg& amailarg)
+	{
+		std::string lchild = std::format("{}.email", aname);
+		tinyxml2::XMLElement* lnode = xml::get_child(m_con, lchild.c_str());
+		if (xml::get_xmlattr(lnode, "smtp", amailarg.m_smtp) == false)
+		{
+			return false;
+		}
+		if (xml::get_xmlattr(lnode, "email", amailarg.m_email) == false)
+		{
+			return false;
+		}
+		if (xml::get_xmlattr(lnode, "passworld", amailarg.m_password) == false)
+		{
+			return false;
+		}
+		if (xml::get_xmlattr(lnode, "title", amailarg.m_title) == false)
+		{
+			return false;
+		}
+		if (xml::get_xmlattr(lnode, "content", amailarg.m_content) == false)
+		{
+			return false;
+		}
+
+		std::string lrecvmail;
+		if (xml::get_xmlattr(lnode, "recvmail", lrecvmail) == false)
+		{
+			return false;
+		}
+		ngl::tools::replace_ret("<", "", lrecvmail, lrecvmail);
+		std::vector<std::string> lvec;
+		ngl::tools::splite(lrecvmail.c_str(), ">", lvec);
+		for (std::string& item: lvec)
+		{
+			std::pair<std::string, std::string> lpair;
+			ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second);
+			amailarg.m_recvs.push_back(lpair);
 		}
 		return true;
 	}
@@ -147,6 +191,12 @@ namespace ngl
 	{
 		read_db_arg("crossdb", m_crossdb.m_dbarg);
 	}
+
+	void xmlnode::loadmail()
+	{
+		read_mail_arg("email", m_mail.m_mailarg);
+	}
+	
 
 	void xmlnode::loadpublic()
 	{

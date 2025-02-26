@@ -21,6 +21,20 @@ namespace ngl
 		{}
 	};
 
+	struct mailarg
+	{
+		std::string m_smtp;
+		std::string m_email;
+		std::string m_password;
+		std::string m_name;
+		std::vector<std::pair<std::string, std::string>> m_recvs;// key:mail value:name
+		std::string m_title;
+		std::string m_content;
+
+		mailarg()
+		{}
+	};
+
 	class xmlinfo
 	{
 		std::map<std::string, std::string> m_data;
@@ -56,4 +70,10 @@ namespace ngl
 	{
 		dbarg m_dbarg;
 	};	
+
+	struct mail_info
+	{
+		mailarg m_mailarg;
+	};
+	
 }// namespace ngl
