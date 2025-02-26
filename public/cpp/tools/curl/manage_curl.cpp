@@ -5,6 +5,7 @@
 #include "nlog.h"
 
 #include <thread>
+#include <format>
 
 namespace ngl
 {
@@ -248,7 +249,176 @@ namespace ngl
 	{
 		return std::make_shared<http_parm>();
 	}
-	
+
+	class email_sender
+	{
+		email_sender();
+		~email_sender() {}
+	public:
+		static email_sender& getInstance()
+		{
+			static email_sender ltemp;
+			return ltemp;
+		}
+		void send(const manage_curl::parameter& aparm);
+
+	private:
+		void sendmail(const manage_curl::parameter& aparm);
+		void run();
+
+		std::list<manage_curl::parameter> m_list;
+	};
+
+	struct email_sender_helper
+	{
+		static std::thread			 m_thread;
+		static std::shared_mutex	 m_mutex;
+		static ngl::sem				m_sem;
+	};
+
+	std::thread email_sender_helper::m_thread;
+	std::shared_mutex email_sender_helper::m_mutex;
+	ngl::sem email_sender_helper::m_sem;
+
+	email_sender::email_sender()
+	{
+		email_sender_helper::m_thread = std::thread(std::bind_front(&email_sender::run, this));
+	}
+
+	size_t g_payload_source(void* ptr, size_t size, size_t nmemb, void* userp)
+	{
+		const char* data = (const char*)userp;
+		static size_t index = 0;
+		size_t len = strlen(data);
+		size_t to_copy = std::min(len - index, size * nmemb);
+		memcpy(ptr, data + index, to_copy);
+		index += to_copy;
+		return to_copy;
+	}
+
+	void email_sender::sendmail(const manage_curl::parameter& aparm)
+	{
+		CURL* curl;
+		CURLcode res;
+
+		// 初始化libcurl
+		curl = curl_easy_init();
+
+		if (curl)
+		{
+			curl_slist* recipients = NULL;
+
+			// 设置SMTP服务器、发件人和收件人
+			curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
+			curl_easy_setopt(curl, CURLOPT_MAIL_FROM, aparm.m_email.c_str());
+			// 设置SMTP认证信息
+			curl_easy_setopt(curl, CURLOPT_USERNAME, aparm.m_email.c_str());
+			curl_easy_setopt(curl, CURLOPT_PASSWORD, aparm.m_password.c_str());
+
+			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+			//是否打开调试信息
+			curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
+			curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60L);
+			curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
+
+			// 设置收件人
+			for (const std::pair<std::string, std::string>& item : aparm.m_recvs)
+			{
+				recipients = curl_slist_append(recipients, std::format("<{}>", item.first).c_str());
+			}
+			curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
+
+			curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+
+			std::string payload = std::format("From: {}<{}>\r\n", aparm.m_name, aparm.m_email);
+			payload += "To: ";
+			for (int i = 0; i < aparm.m_recvs.size(); ++i)
+			{
+				if (i != 0)
+				{
+					payload += ",";
+				}
+				payload += std::format("{}<{}>", aparm.m_recvs[i].second, aparm.m_recvs[i].first);
+				//payload += m_recvs[i].first;
+			}
+			payload += "\r\n";
+			payload += std::format("Subject: {}\r\n", aparm.m_title);
+			payload += "\r\n"; // 空行表示header部分结束
+			payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
+
+			curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
+
+			curl_easy_setopt(curl, CURLOPT_READFUNCTION, g_payload_source); // 设置读取数据的回调函数
+			//curl_easy_setopt(curl, CURLOPT_READFUNCTION, NULL); // 传递邮件内容
+
+			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
+			// 发送邮件
+			res = curl_easy_perform(curl);
+
+			// 检查结果
+			if (res != CURLE_OK)
+			{
+				std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+			}
+			else
+			{
+				std::cout << "Email sent successfully!" << std::endl;
+			}
+
+			// 清理
+			curl_slist_free_all(recipients);
+			curl_easy_cleanup(curl);
+		}
+	}
+
+	void email_sender::run()
+	{
+		std::list<manage_curl::parameter> templist;
+		while (true)
+		{
+			{
+				monopoly_shared_lock(email_sender_helper::m_mutex);
+				m_list.swap(templist);
+			}
+			for (manage_curl::parameter& item : templist)
+			{
+				sendmail(item);
+			}
+			templist.clear();
+		}
+	}
+
+	void email_sender::send(const manage_curl::parameter& aparm)
+	{
+		monopoly_shared_lock(email_sender_helper::m_mutex);
+		m_list.push_back(aparm);
+		return;
+	}
+
+	void manage_curl::sendemail(const parameter& aparm)
+	{
+		ngl::email_sender::getInstance().send(aparm);
+	}
+
+	void test_mail(const char* atitle, const char* acontent)
+	{
+		ngl::manage_curl::parameter lparm
+		{
+			.m_smtp = xmlnode::m_mail.m_mailarg.m_smtp,
+			.m_email = xmlnode::m_mail.m_mailarg.m_email,
+			.m_password = xmlnode::m_mail.m_mailarg.m_password,
+			.m_name = xmlnode::m_mail.m_mailarg.m_name,
+			.m_title = atitle,
+			.m_content = acontent,
+			.m_recvs = {
+				/*{"libo1@youxigu.com", "李博"},
+				{"348634371@qq.com", "李博QQ"}*/
+			}
+		};
+		manage_curl::sendemail(lparm);
+	}
+
+
 	void test_manage_curl()
 	{
 		auto lhttp = ngl::manage_curl::make_http();
@@ -281,4 +451,6 @@ namespace ngl
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 		}
 	}
+
+
 }//namespace ngl
