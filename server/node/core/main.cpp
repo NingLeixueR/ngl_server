@@ -17,7 +17,6 @@ const std::string lerrpath = "²ÎÊı´íÎó:EXE name areaid tab_servers::tcount";
 
 Dumper lDumper;
 
-#include "email_sender.h"
 
 int main(int argc, char** argv)
 {
