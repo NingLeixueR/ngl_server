@@ -263,10 +263,12 @@ namespace ngl
 		void send(const manage_curl::parameter& aparm);
 
 	private:
+		size_t callback(void* ptr, size_t size, size_t nmemb, void* userp);
 		void sendmail(const manage_curl::parameter& aparm);
 		void run();
 
-		std::list<manage_curl::parameter> m_list;
+		std::list<manage_curl::parameter> m_list; 
+		int32_t m_index;
 	};
 
 	struct email_sender_helper
@@ -280,25 +282,26 @@ namespace ngl
 	std::shared_mutex email_sender_helper::m_mutex;
 	ngl::sem email_sender_helper::m_sem;
 
-	email_sender::email_sender()
+	email_sender::email_sender():
+		m_index(0)
 	{
 		email_sender_helper::m_thread = std::thread(std::bind_front(&email_sender::run, this));
 	}
 
-	size_t g_payload_source(void* ptr, size_t size, size_t nmemb, void* userp)
+	
+
+	size_t email_sender::callback(void* ptr, size_t size, size_t nmemb, void* userp)
 	{
-		return size * nmemb;
-		const char* data = (const char*)userp;
-		static size_t index = 0;
-		size_t len = strlen(data);
-		size_t to_copy = std::min(len - index, size * nmemb);
-		memcpy(ptr, data + index, to_copy);
-		index += to_copy;
+		std::string* data = (std::string*)userp;
+		size_t to_copy = std::min(data->size() - m_index, size * nmemb);
+		memcpy(ptr, data->c_str() + m_index, to_copy);
+		m_index += to_copy;
 		return to_copy;
 	}
 
 	void email_sender::sendmail(const manage_curl::parameter& aparm)
 	{
+		m_index = 0;
 		CURL* curl;
 		CURLcode res;
 
@@ -347,9 +350,11 @@ namespace ngl
 			payload += "\r\n"; // 空行表示header部分结束
 			payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
 
-			curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
 
-			curl_easy_setopt(curl, CURLOPT_READFUNCTION, g_payload_source); // 设置读取数据的回调函数
+
+			curl_easy_setopt(curl, CURLOPT_READDATA, &payload);
+
+			curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数
 			//curl_easy_setopt(curl, CURLOPT_READFUNCTION, NULL); // 传递邮件内容
 
 			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
@@ -363,7 +368,7 @@ namespace ngl
 			}
 			else
 			{
-				std::cout << "Email sent successfully!" << std::endl;
+				std::cout << "email send successfully!" << std::endl;
 			}
 
 			// 清理
