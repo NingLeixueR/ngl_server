@@ -287,6 +287,7 @@ namespace ngl
 
 	size_t g_payload_source(void* ptr, size_t size, size_t nmemb, void* userp)
 	{
+		return size * nmemb;
 		const char* data = (const char*)userp;
 		static size_t index = 0;
 		size_t len = strlen(data);
@@ -376,6 +377,7 @@ namespace ngl
 		std::list<manage_curl::parameter> templist;
 		while (true)
 		{
+			email_sender_helper::m_sem.wait();
 			{
 				monopoly_shared_lock(email_sender_helper::m_mutex);
 				m_list.swap(templist);
@@ -392,6 +394,7 @@ namespace ngl
 	{
 		monopoly_shared_lock(email_sender_helper::m_mutex);
 		m_list.push_back(aparm);
+		email_sender_helper::m_sem.post();
 		return;
 	}
 
