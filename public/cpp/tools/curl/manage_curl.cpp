@@ -411,8 +411,8 @@ namespace ngl
 			.m_title = atitle,
 			.m_content = acontent,
 			.m_recvs = {
-				/*{"libo1@youxigu.com", "李博"},
-				{"348634371@qq.com", "李博QQ"}*/
+				{"libo1@youxigu.com", "李博"},
+				{"348634371@qq.com", "李博QQ"}
 			}
 		};
 		manage_curl::sendemail(lparm);
