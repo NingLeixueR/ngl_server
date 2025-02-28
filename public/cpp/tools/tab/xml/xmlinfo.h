@@ -31,8 +31,7 @@ namespace ngl
 		std::string m_title;
 		std::string m_content;
 
-		mailarg()
-		{}
+		mailarg() = default;
 	};
 
 	class xmlinfo
