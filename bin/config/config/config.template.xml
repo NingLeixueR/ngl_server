@@ -40,4 +40,12 @@
 		<crossdb>
 				<db_connect account="root" passworld="123456" dbname="lbtestcross" ip="127.0.0.1" port="3306"/>
 		</crossdb>
+		<email>
+				<email 
+					smtp="smtp.163.com:25" 
+					email="xxxx@163.com" 
+					passworld="xxxx" 
+					recvmail="<348634371@qq.com:李博QQ>"
+					title = "xxxx"
+					content="xxxx"></email>
 </con>
