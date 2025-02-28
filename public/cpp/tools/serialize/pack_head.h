@@ -100,7 +100,7 @@ struct std::formatter<ngl::pack_head>
 	{
 		auto out = ctx.out();
 		std::string ss;
-		int8_t* lparr = (int8_t*)&val.m_data[ngl::EPH_MASK];
+		const int8_t* lparr = (const int8_t*)&val.m_data[ngl::EPH_MASK];
 		std::for_each(lparr, lparr + sizeof(int32_t) * ngl::EPH_MASK_COUNT, [&ss](int8_t avalue)
 			{
 				ss += std::format("{} ", avalue);

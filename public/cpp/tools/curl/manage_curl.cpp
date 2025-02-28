@@ -253,7 +253,7 @@ namespace ngl
 	class email_sender
 	{
 		email_sender();
-		~email_sender() {}
+		~email_sender() = default;
 	public:
 		static email_sender& getInstance()
 		{
@@ -278,9 +278,9 @@ namespace ngl
 		static ngl::sem				m_sem;
 	};
 
-	std::thread email_sender_helper::m_thread;
-	std::shared_mutex email_sender_helper::m_mutex;
-	ngl::sem email_sender_helper::m_sem;
+	std::thread			email_sender_helper::m_thread;
+	std::shared_mutex	email_sender_helper::m_mutex;
+	ngl::sem			email_sender_helper::m_sem;
 
 	email_sender::email_sender():
 		m_index(0)

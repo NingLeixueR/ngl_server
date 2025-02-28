@@ -41,7 +41,7 @@ namespace ngl
 	// 分发给独立进程的请求
 	class distribute_gmclient
 	{
-		distribute_gmclient(){}
+		distribute_gmclient() = default;
 	public:
 		static distribute_gmclient& getInstance()
 		{
