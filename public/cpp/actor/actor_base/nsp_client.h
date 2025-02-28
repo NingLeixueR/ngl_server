@@ -9,6 +9,9 @@ namespace ngl
 	template <typename TDerived, typename T>
 	class nsp_client
 	{
+	public:
+		using tnsp_client = nsp_client<TDerived, T>;
+	private:
 		nsp_client() = delete;
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
@@ -20,7 +23,7 @@ namespace ngl
 		static std::function<void(int64_t, const T&, bool)>	m_changedatafun;
 	public:
 		static std::map<i64_actorid, T> m_data;
-
+	private:
 		template <typename TX>
 		static std::string& type_name()
 		{
@@ -32,6 +35,44 @@ namespace ngl
 			m_actor->log_error()->print("{} {}:{}", amessage, type_name<TDerived>(), type_name<T>());
 		}
 
+		static void channel_data(TDerived*, message<np_channel_data<T>>& adata)
+		{
+			const np_channel_data<T>& recv = *adata.get_data();
+			std::map<int64_t, T>& lmap = *recv.m_data.m_data;
+			bool lfirstsynchronize = recv.m_firstsynchronize;
+			std::ranges::for_each(lmap, [lfirstsynchronize](const auto& apair)
+				{
+					if (!m_dataid.empty() && m_dataid.find(apair.first) == m_dataid.end())
+					{
+						return;
+					}
+					m_data[apair.first] = apair.second;
+					if (m_changedatafun != nullptr)
+					{
+						m_changedatafun(apair.first, apair.second, lfirstsynchronize);
+					}
+				});
+		}
+
+		static void channel_register_reply(TDerived*, message<np_channel_register_reply<T>>& adata)
+		{
+			log("nsp_client np_channel_register_reply");
+			auto& recv = *adata.get_data();
+			m_register[nguid::area(recv.m_actorid)] = true;
+		}
+
+		static void channel_check(TDerived*, message<np_channel_check>& adata)
+		{
+			auto lprecv = adata.get_data();
+			if (m_register[lprecv->m_area])
+			{
+				twheel::wheel().removetimer(lprecv->m_timer);
+				return;
+			}
+			register_echannel(lprecv->m_area);
+		}
+
+	public:
 		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
@@ -44,50 +85,19 @@ namespace ngl
 			m_actor		= aactor;
 			m_dataid	= adataid;
 			// 更新数据
-			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>
-			>([](TDerived*, message<np_channel_data<T>>& adata)
-				{
-					const np_channel_data<T>& recv = *adata.get_data();
-					std::map<int64_t, T>& lmap = *recv.m_data.m_data;
-					bool lfirstsynchronize = recv.m_firstsynchronize;
-					std::ranges::for_each(lmap, [lfirstsynchronize](const auto& apair)
-						{
-							if (!m_dataid.empty() && m_dataid.find(apair.first) == m_dataid.end())
-							{
-								return;
-							}
-							m_data[apair.first] = apair.second;
-							if (m_changedatafun != nullptr)
-							{
-								m_changedatafun(apair.first, apair.second, lfirstsynchronize);
-							}
-						});
-				});
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
+				std::bind_front(&tnsp_client::channel_data)
+			);
 
 			// 注册回复
-			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>
-			>([](TDerived*, message<np_channel_register_reply<T>>& adata)
-				{
-					log("nsp_client np_channel_register_reply");
-					auto& recv = *adata.get_data();
-					m_register[nguid::area(recv.m_actorid)] = true;
-				});
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
+				std::bind_front(&tnsp_client::channel_register_reply)
+			);
 
 			// 检查
-			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check
-			>([](TDerived*, message<np_channel_check>& adata)
-				{
-					auto lprecv = adata.get_data();
-					if (m_register[lprecv->m_area])
-					{
-						twheel::wheel().removetimer(lprecv->m_timer);
-						return;
-					}
-					register_echannel(lprecv->m_area);
-				});
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check>(
+				std::bind_front(&tnsp_client::channel_check)
+			);
 
 			i64_actorid lactorid = m_actor->id_guid();
 			std::ranges::for_each(m_register, [lactorid](const auto& apair)
