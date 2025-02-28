@@ -10,6 +10,9 @@ namespace ngl
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
 	class nsp_server
 	{
+	public:
+		using tnsp_server = nsp_server<ENUMDB, TDerived, TDATA>;
+	private:
 		nsp_server() = delete;
 		nsp_server(const nsp_server&) = delete;
 		nsp_server& operator=(const nsp_server&) = delete;
@@ -18,48 +21,64 @@ namespace ngl
 		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist; 
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
+		static void publish_foreach(
+			const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro, 
+			const std::pair<const i64_actorid, std::set<i64_actorid>>& apair
+		)
+		{
+			if (!apair.second.empty())
+			{
+				std::vector<i64_actorid> lvec;
+				std::set_intersection(aactoridset.begin(), aactoridset.end(), apair.second.begin(), apair.second.end(), lvec.begin());
+				if (lvec.empty())
+				{
+					return;
+				}
+			}
+			actor::static_send_actor(apair.first, nguid::make(), apro);
+		}
+
 		static void publish(const std::set<i64_actorid>& aactoridset, bool afirstsynchronize, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
 			apro->m_firstsynchronize = afirstsynchronize;
-			std::ranges::for_each(m_publishlist, [&aactoridset,&apro](const auto& apair)
-				{
-					if (!apair.second.empty())
-					{
-						std::vector<i64_actorid> lvec;
-						std::set_intersection(
-							aactoridset.begin(), aactoridset.end(),
-							apair.second.begin(), apair.second.end(),
-							lvec.begin()
-						);
-						if (lvec.empty())
-						{
-							return;
-						}
-					}
-					actor::static_send_actor(apair.first, nguid::make(), apro);
-				});
+			auto lforeachfun = std::bind_front(&tnsp_server::publish_foreach, std::ref(aactoridset), std::ref(apro));
+			std::ranges::for_each(m_publishlist, lforeachfun);
 		}
 
 		static void publish(i64_actorid aactorid, bool afirstsynchronize, std::shared_ptr<np_channel_data<TDATA>>& apro)
 		{
-			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
-			if (lp == nullptr)
-			{
-				return;
-			}
 			apro->m_firstsynchronize = afirstsynchronize;
-			std::ranges::for_each(m_publishlist, [aactorid, &apro](const auto& lpair)
-				{
-					if (!lpair.second.empty())
-					{
-						return;
-					}
-					if (lpair.second.contains(aactorid) == false)
-					{
-						return;
-					}
-					actor::static_send_actor(lpair.first, nguid::make(), apro);
-				});
+			std::set<i64_actorid> lactoridset = { aactorid };
+			auto lforeachfun = std::bind_front(&tnsp_server::publish_foreach, std::ref(lactoridset), std::ref(apro));
+			std::ranges::for_each(m_publishlist, lforeachfun);
+		}
+
+		static void channel_register(TDerived*, message<np_channel_register<TDATA>>& adata)
+		{
+			auto& recv = *adata.get_data();
+			m_publishlist[recv.m_actorid] = recv.m_dataid;
+			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
+			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
+			log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
+			m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
+			// # 同步需要的数据
+			sync(recv.m_actorid);
+		}
+
+		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
+		{
+			auto& recv = *adata.get_data();
+			std::map<int64_t, TDATA>& lmap = *recv.m_data.m_data;
+			std::set<i64_actorid> lactorset;
+			for (std::pair<const int64_t, TDATA>& lpair : lmap)
+			{
+				// # m_dbmodule->get:数据不存在就创建
+				data_modified<TDATA>* lp = m_dbmodule->get(lpair.first);
+				lp->get() = lpair.second;
+				lactorset.insert(lpair.first);
+			}
+			std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
+			publish(lactorset, false, pro);
 		}
 
 	public:
@@ -67,38 +86,10 @@ namespace ngl
 		{
 			m_dbmodule = adbmodule;
 			// # 订阅注册处理
-			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>
-			>([](TDerived*, message<np_channel_register<TDATA>>& adata)
-				{
-					auto& recv = *adata.get_data();
-					m_publishlist[recv.m_actorid] = recv.m_dataid;
-					auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
-					pro->m_actorid = m_dbmodule->actorbase()->id_guid();
-					log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
-					m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
-					// # 同步需要的数据
-					sync(recv.m_actorid);
-				});
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>>(std::bind_front(&tnsp_server::channel_register));
 
 			// # 订阅数据被修改
-			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>
-			>([](TDerived*, message<np_channel_data<TDATA>>& adata)
-				{
-					auto& recv = *adata.get_data();
-					std::map<int64_t, TDATA>& lmap = *recv.m_data.m_data;
-					std::set<i64_actorid> lactorset;
-					for (std::pair<const int64_t, TDATA>& lpair : lmap)
-					{
-						// # m_dbmodule->get:数据不存在就创建
-						data_modified<TDATA>* lp = m_dbmodule->get(lpair.first);
-						lp->get() = lpair.second;
-						lactorset.insert(lpair.first);
-					}
-					std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
-					publish(lactorset, false, pro);
-				});
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>>(std::bind_front(&tnsp_server::channel_data));
 		}
 
 		static void sync(i64_actorid aactor)
