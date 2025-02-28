@@ -263,7 +263,7 @@ namespace ngl
 		void send(const manage_curl::parameter& aparm);
 
 	private:
-		size_t callback(void* ptr, size_t size, size_t nmemb, void* userp);
+		static size_t callback(void* ptr, size_t size, size_t nmemb, void* userp);
 		void sendmail(const manage_curl::parameter& aparm);
 		void run();
 
@@ -292,12 +292,15 @@ namespace ngl
 
 	size_t email_sender::callback(void* ptr, size_t size, size_t nmemb, void* userp)
 	{
-		std::string data = (const char*)userp;
-		size_t to_copy = std::min(data.size() - m_index, size * nmemb);
-		memcpy(ptr, data.c_str() + m_index, to_copy);
-		m_index += to_copy;
+		std::string data((const char*)userp);
+		size_t to_copy = std::min(data.size() - email_sender::getInstance().m_index, size * nmemb);
+		const char* lp = data.c_str();
+		memcpy(ptr, data.c_str() + email_sender::getInstance().m_index, to_copy);
+		email_sender::getInstance().m_index += to_copy;
 		return to_copy;
 	}
+
+
 
 	void email_sender::sendmail(const manage_curl::parameter& aparm)
 	{
@@ -346,9 +349,9 @@ namespace ngl
 				//payload += m_recvs[i].first;
 			}
 			payload += "\r\n";
-			payload += std::format("Subject: \"{}\"\r\n", aparm.m_title);
+			payload += std::format("Subject: {}\r\n", aparm.m_title);
 			payload += "\r\n"; // 空行表示header部分结束
-			payload += std::format("\"{}\"\r\n", aparm.m_content); // 邮件内容
+			payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
 
 			
 			curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());

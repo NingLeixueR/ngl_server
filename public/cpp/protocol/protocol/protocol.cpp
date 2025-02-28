@@ -1,3 +1,4 @@
+#include "manage_curl.h"
 #include "protocol.h"
 #include "xmlinfo.h"
 #include "xml.h"
@@ -157,6 +158,39 @@ namespace ngl
 						}
 					}
 					nets::sendmsg(pack->m_id, lstr);
+				}
+			);
+			handle_cmd::push("/sendmail", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				{
+					// 接收邮件列表<邮件地址1:名字1>....<邮件地址n:名字n> 邮件标题 邮件内容
+					if (avec.size() < 4)
+					{
+						nets::sendmsg(pack->m_id, "参数错误");
+						return;
+					}
+					std::string ltemp = avec[1];
+					ngl::tools::replace_ret("<", "", ltemp, ltemp);
+					std::vector<std::string> lvec;
+					ngl::tools::splite(ltemp.c_str(), ">", lvec);
+					std::vector<std::pair<std::string,std::string>> lmailvec;
+					for (std::string& item : lvec)
+					{
+						std::pair<std::string, std::string> lpair;
+						ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second);
+						lmailvec.push_back(lpair);
+					}
+
+					ngl::manage_curl::parameter lparm
+					{
+						.m_smtp = xmlnode::m_mail.m_mailarg.m_smtp,
+						.m_email = xmlnode::m_mail.m_mailarg.m_email,
+						.m_password = xmlnode::m_mail.m_mailarg.m_password,
+						.m_name = xmlnode::m_mail.m_mailarg.m_name,
+						.m_title = avec[2],
+						.m_content = avec[3],
+						.m_recvs = lmailvec
+					};
+					manage_curl::sendemail(lparm);
 				}
 			);
 		}
