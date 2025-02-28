@@ -292,9 +292,9 @@ namespace ngl
 
 	size_t email_sender::callback(void* ptr, size_t size, size_t nmemb, void* userp)
 	{
-		std::string* data = (std::string*)userp;
-		size_t to_copy = std::min(data->size() - m_index, size * nmemb);
-		memcpy(ptr, data->c_str() + m_index, to_copy);
+		std::string data = (const char*)userp;
+		size_t to_copy = std::min(data.size() - m_index, size * nmemb);
+		memcpy(ptr, data.c_str() + m_index, to_copy);
 		m_index += to_copy;
 		return to_copy;
 	}
@@ -346,16 +346,14 @@ namespace ngl
 				//payload += m_recvs[i].first;
 			}
 			payload += "\r\n";
-			payload += std::format("Subject: {}\r\n", aparm.m_title);
+			payload += std::format("Subject: \"{}\"\r\n", aparm.m_title);
 			payload += "\r\n"; // 空行表示header部分结束
-			payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
+			payload += std::format("\"{}\"\r\n", aparm.m_content); // 邮件内容
 
-
-
-			curl_easy_setopt(curl, CURLOPT_READDATA, &payload);
+			
+			curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
 
 			curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数
-			//curl_easy_setopt(curl, CURLOPT_READFUNCTION, NULL); // 传递邮件内容
 
 			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, nullptr);
 			// 发送邮件
