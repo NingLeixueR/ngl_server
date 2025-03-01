@@ -122,11 +122,51 @@ namespace ngl
 		impl_protocol::register_protocol(atype, aprotocolnumber, aenumactor, apackfun, arunfun, aname);
 	}
 
+	class cmd_admin
+	{
+		static std::set<int> m_adminsocket;
+		static std::shared_mutex	m_mutex;
+	public:
+		static bool login(const std::string& auser, const std::string& apassworld)
+		{
+			monopoly_shared_lock(m_mutex);
+			if (auser != xmlnode::m_telnet.m_telnetarg.m_account)
+			{
+				return false;
+			}
+			if (apassworld != xmlnode::m_telnet.m_telnetarg.m_passworld)
+			{
+				return false;
+			}
+			return true;
+		}
+		static bool check(int asocket)
+		{
+			monopoly_shared_lock(m_mutex);
+			if (m_adminsocket.find(asocket) != m_adminsocket.end())
+			{
+				return false;
+			}
+			return true;
+		}
+	};
+
+	std::set<int> cmd_admin::m_adminsocket;
+	std::shared_mutex cmd_admin::m_mutex;
+
 	void protocol::cmd(const std::shared_ptr<pack>& apack)
 	{
 		std::vector<std::string> lvec;
 		if (tools::splite(apack->m_buff, " ", lvec) == false)
 		{
+			return;
+		}
+		if (cmd_admin::check(apack->m_id) == false)
+		{
+			if (lvec[0] == "/login" && lvec.size() >= 3)
+			{
+				cmd_admin::login(lvec[1], lvec[2]);
+			}
 			return;
 		}
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
