@@ -34,6 +34,15 @@ namespace ngl
 		mailarg() = default;
 	};
 
+	struct telnetarg
+	{
+		std::string m_account;
+		std::string m_passworld;
+
+		telnetarg() = default;
+	};
+
+
 	class xmlinfo
 	{
 		std::map<std::string, std::string> m_data;
@@ -73,6 +82,11 @@ namespace ngl
 	struct mail_info
 	{
 		mailarg m_mailarg;
+	};
+
+	struct telnet_info
+	{
+		telnetarg m_telnetarg;
 	};
 	
 }// namespace ngl

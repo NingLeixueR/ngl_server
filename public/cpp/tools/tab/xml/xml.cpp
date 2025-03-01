@@ -18,6 +18,7 @@ namespace ngl
 	NODE_TYPE				xmlnode::m_nodetype;
 	i32_id					xmlnode::m_nodeid;
 	mail_info				xmlnode::m_mail;
+	telnet_info				xmlnode::m_telnet;
 
 	void xmlnode::init()
 	{
@@ -182,6 +183,21 @@ namespace ngl
 		return true;
 	}
 
+	bool xmlnode::read_telnet_arg(const char* aname, telnetarg& amailarg)
+	{
+		std::string lchild = std::format("{}.telnet", aname);
+		tinyxml2::XMLElement* lnode = xml::get_child(m_con, lchild.c_str());
+		if (xml::get_xmlattr(lnode, "account", amailarg.m_account) == false)
+		{
+			return false;
+		}
+		if (xml::get_xmlattr(lnode, "passworld", amailarg.m_passworld) == false)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	void xmlnode::loaddb()
 	{
 		read_db_arg("db", m_db.m_dbarg);
@@ -197,6 +213,10 @@ namespace ngl
 		read_mail_arg("email", m_mail.m_mailarg);
 	}
 	
+	void xmlnode::loadtelnet()
+	{
+		read_telnet_arg("telnet", m_telnet.m_telnetarg);
+	}
 
 	void xmlnode::loadpublic()
 	{

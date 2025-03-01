@@ -124,6 +124,7 @@ namespace ngl
 		static NODE_TYPE			 m_nodetype;
 		static i32_id				 m_nodeid;
 		static mail_info			 m_mail;
+		static telnet_info			 m_telnet;
 
 		static void init();
 
@@ -143,11 +144,15 @@ namespace ngl
 
 		static bool read_mail_arg(const char* aname, mailarg& amailarg);
 
+		static bool read_telnet_arg(const char* aname, telnetarg& amailarg);
+
 		static void loaddb();
 
 		static void loadcrossdb();
 
 		static void loadmail();
+
+		static void loadtelnet();
 
 		static void loadpublic();
 
