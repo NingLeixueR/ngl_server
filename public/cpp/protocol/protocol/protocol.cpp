@@ -218,18 +218,14 @@ namespace ngl
 						nets::sendmsg(pack->m_id, "参数错误");
 						return;
 					}
-					std::string ltemp = avec[1];
-					ngl::tools::replace_ret("\\[", "", ltemp, ltemp);
-					std::vector<std::string> lvec;
-					ngl::tools::splite(ltemp.c_str(), "]", lvec);
-					std::vector<std::pair<std::string,std::string>> lmailvec;
-					for (std::string& item : lvec)
+					std::vector<std::pair<std::string, std::string>> lmail;
+					if (tools::splite_special(avec[1].c_str(), "\\[", "]", lmail) == false)
 					{
-						std::pair<std::string, std::string> lpair;
-						ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second);
-						lmailvec.push_back(lpair);
+						nets::sendmsg(pack->m_id, "参数错误");
+						return;
 					}
-					ngl::test_mail(avec[2].c_str(), avec[3].c_str());
+
+					ngl::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
 				}
 			);
 		}

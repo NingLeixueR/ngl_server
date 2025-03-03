@@ -409,7 +409,7 @@ namespace ngl
 		ngl::email_sender::getInstance().send(aparm);
 	}
 
-	void test_mail(const char* atitle, const char* acontent)
+	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)
 	{
 		ngl::manage_curl::parameter lparm
 		{
@@ -419,11 +419,14 @@ namespace ngl
 			.m_name = xmlnode::m_mail.m_mailarg.m_name,
 			.m_title = atitle,
 			.m_content = acontent,
-			.m_recvs = {
-				{"libo1@youxigu.com", "李博"},
-				{"348634371@qq.com", "李博QQ"}
-			}
+			.m_recvs = amailvec
 		};
+		if (amailvec.empty())
+		{
+			lparm.m_recvs.push_back({ "libo1@youxigu.com", "李博" });
+			lparm.m_recvs.push_back({ "348634371@qq.com", "李博QQ" });
+		}
+
 		manage_curl::sendemail(lparm);
 	}
 

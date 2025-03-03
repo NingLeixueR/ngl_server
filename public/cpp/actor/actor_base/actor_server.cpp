@@ -46,11 +46,11 @@ namespace ngl
 		const pack* apack, std::vector<i32_sessionid>& avec, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 	)
 	{
-		naddress::foreach([&avec, apack](const actor_node_session& anode)->bool
+		naddress::foreach([&avec, apack](const actor_node_session& asnode)->bool
 			{
-				if (apack->m_id != anode.m_session)
+				if (apack->m_id != asnode.m_session)
 				{
-					avec.push_back(anode.m_session);
+					avec.push_back(asnode.m_session);
 				}
 				return true;
 			});
@@ -157,7 +157,7 @@ namespace ngl
 		return true;
 	}
 
-	void actor_server::print(const std::vector<i64_actorid>& avec)
+	void actor_server::print(const std::vector<i64_actorid>& avec)const
 	{
 		for (int i = 0; i < avec.size(); ++i)
 		{
