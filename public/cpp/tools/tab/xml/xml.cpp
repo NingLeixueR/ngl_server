@@ -69,6 +69,7 @@ namespace ngl
 		loaddb();
 		loadcrossdb();
 		loadmail();
+		loadtelnet();
 
 		log_error()->print("finish xmlnode read [{}]", lxmlname);
 	}

@@ -134,7 +134,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (apassworld != xmlnode::m_telnet.m_telnetarg.m_passworld)
+			if (ngl::tools::md5(apassworld) != xmlnode::m_telnet.m_telnetarg.m_passworld)
 			{
 				return false;
 			}
@@ -145,9 +145,9 @@ namespace ngl
 			monopoly_shared_lock(m_mutex);
 			if (m_adminsocket.find(asocket) != m_adminsocket.end())
 			{
-				return false;
+				return true;
 			}
-			return true;
+			return false;
 		}
 	};
 
