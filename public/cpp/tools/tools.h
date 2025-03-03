@@ -472,6 +472,34 @@ namespace ngl
 			return splite(++aindex, avec, args...);
 		}
 	public:
+
+		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
+		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
+		template <typename TFIRST = std::string, typename TSECOND = std::string>
+		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
+		{
+			std::string ltemp = astr;
+			if (ngl::tools::replace_ret(akey1, "", ltemp, ltemp) == false)
+			{
+				return false;
+			}
+			std::vector<std::string> lvec;
+			if (ngl::tools::splite(ltemp.c_str(), akey2, lvec) == false)
+			{
+				return false;
+			}
+			std::vector<std::pair<std::string, std::string>> lmailvec;
+			for (std::string& item : lvec)
+			{
+				std::pair<TFIRST, TSECOND> lpair;
+				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
+				{
+					return false;
+				}
+				lmailvec.push_back(lpair);
+			}
+			return true;
+		}
 #pragma endregion
 
 #pragma region splicing

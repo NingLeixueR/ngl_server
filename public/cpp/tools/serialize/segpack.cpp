@@ -95,15 +95,15 @@ namespace ngl
 				return edopush::e_error;
 			}
 			// 支持telnet命令访问，telnet ip port 后记得['CTRL+]']
-			// 只支持256个字符的进程命令
+			// 只支持10240个字符的进程命令
 			pack_head& lhead = apack->m_head;
 			if (apack->m_buff == nullptr)
 			{
-				apack->malloc(256);
+				apack->malloc(10240);
 				memcpy(apack->m_buff, lhead.m_data, lhead.m_wpos);
 				apack->m_pos += lhead.m_wpos;
 			}
-			if (apack->m_pos + alen >= 256)
+			if (apack->m_pos + alen >= 10240)
 			{
 				return edopush::e_error;
 			}

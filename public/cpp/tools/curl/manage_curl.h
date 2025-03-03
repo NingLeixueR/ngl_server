@@ -104,5 +104,5 @@ namespace ngl
 	};
 
 	void test_manage_curl();
-	void test_mail(const char* atitle, const char* acontent);
+	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec = {});
 }//namespace ngl

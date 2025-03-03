@@ -172,15 +172,12 @@ namespace ngl
 		{
 			return false;
 		}
-		ngl::tools::replace_ret("\\[", "", lrecvmail, lrecvmail);
-		std::vector<std::string> lvec;
-		ngl::tools::splite(lrecvmail.c_str(), "]", lvec);
-		for (std::string& item: lvec)
+
+		if (tools::splite_special(lrecvmail.c_str(), "\\[", "]", amailarg.m_recvs) == false)
 		{
-			std::pair<std::string, std::string> lpair;
-			ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second);
-			amailarg.m_recvs.push_back(lpair);
+			return false;
 		}
+
 		return true;
 	}
 
