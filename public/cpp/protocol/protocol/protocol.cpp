@@ -165,7 +165,16 @@ namespace ngl
 		{
 			if (lvec[0] == "/login" && lvec.size() >= 3)
 			{
-				cmd_admin::login(lvec[1], lvec[2]);
+				if (cmd_admin::login(lvec[1], lvec[2]))
+				{
+					std::string lstr = std::format("{}:µÇÂ½³É¹¦\n", lvec[1]);
+					nets::sendmsg(apack->m_id, lstr);
+				}
+				else
+				{
+					std::string lstr = std::format("{}:µÇÂ½Ê§°Ü\n", lvec[1]);
+					nets::sendmsg(apack->m_id, lstr);
+				}
 			}
 			return;
 		}
