@@ -172,9 +172,9 @@ namespace ngl
 		{
 			return false;
 		}
-		ngl::tools::replace_ret("<", "", lrecvmail, lrecvmail);
+		ngl::tools::replace_ret("\\[", "", lrecvmail, lrecvmail);
 		std::vector<std::string> lvec;
-		ngl::tools::splite(lrecvmail.c_str(), ">", lvec);
+		ngl::tools::splite(lrecvmail.c_str(), "]", lvec);
 		for (std::string& item: lvec)
 		{
 			std::pair<std::string, std::string> lpair;

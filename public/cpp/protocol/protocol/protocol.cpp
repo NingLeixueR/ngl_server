@@ -127,7 +127,7 @@ namespace ngl
 		static std::set<int> m_adminsocket;
 		static std::shared_mutex	m_mutex;
 	public:
-		static bool login(const std::string& auser, const std::string& apassworld)
+		static bool login(int asocket, const std::string& auser, const std::string& apassworld)
 		{
 			monopoly_shared_lock(m_mutex);
 			if (auser != xmlnode::m_telnet.m_telnetarg.m_account)
@@ -138,6 +138,7 @@ namespace ngl
 			{
 				return false;
 			}
+			m_adminsocket.insert(asocket);
 			return true;
 		}
 		static bool check(int asocket)
@@ -165,7 +166,7 @@ namespace ngl
 		{
 			if (lvec[0] == "/login" && lvec.size() >= 3)
 			{
-				if (cmd_admin::login(lvec[1], lvec[2]))
+				if (cmd_admin::login(apack->m_id, lvec[1], lvec[2]))
 				{
 					std::string lstr = std::format("{}:登陆成功\n", lvec[1]);
 					nets::sendmsg(apack->m_id, lstr);
@@ -211,16 +212,16 @@ namespace ngl
 			);
 			handle_cmd::push("/sendmail", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
-					// 接收邮件列表<邮件地址1:名字1>....<邮件地址n:名字n> 邮件标题 邮件内容
+					// 接收邮件列表[邮件地址1:名字1]....[邮件地址n:名字n] 邮件标题 邮件内容
 					if (avec.size() < 4)
 					{
 						nets::sendmsg(pack->m_id, "参数错误");
 						return;
 					}
 					std::string ltemp = avec[1];
-					ngl::tools::replace_ret("<", "", ltemp, ltemp);
+					ngl::tools::replace_ret("\\[", "", ltemp, ltemp);
 					std::vector<std::string> lvec;
-					ngl::tools::splite(ltemp.c_str(), ">", lvec);
+					ngl::tools::splite(ltemp.c_str(), "]", lvec);
 					std::vector<std::pair<std::string,std::string>> lmailvec;
 					for (std::string& item : lvec)
 					{
