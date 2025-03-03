@@ -229,18 +229,7 @@ namespace ngl
 						ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second);
 						lmailvec.push_back(lpair);
 					}
-
-					ngl::manage_curl::parameter lparm
-					{
-						.m_smtp = xmlnode::m_mail.m_mailarg.m_smtp,
-						.m_email = xmlnode::m_mail.m_mailarg.m_email,
-						.m_password = xmlnode::m_mail.m_mailarg.m_password,
-						.m_name = xmlnode::m_mail.m_mailarg.m_name,
-						.m_title = avec[2],
-						.m_content = avec[3],
-						.m_recvs = lmailvec
-					};
-					manage_curl::sendemail(lparm);
+					ngl::test_mail(avec[2].c_str(), avec[3].c_str());
 				}
 			);
 		}
