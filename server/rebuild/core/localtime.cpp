@@ -458,4 +458,27 @@ namespace ngl
 	{
 		return getmoonday(gettime());
 	}
+
+	bool localtime::issameweek(time_t timestamp1, time_t timestamp2)
+	{
+		timestamp1 = getsecond2time(timestamp1, 0, 0);
+		timestamp2 = getsecond2time(timestamp2, 0, 0);
+		std::tm* timeinfo1 = std::localtime(&timestamp1);
+		std::tm* timeinfo2 = std::localtime(&timestamp2);
+
+		// 获取星期几
+		int dayOfWeek1 = timeinfo1->tm_wday;
+		int dayOfWeek2 = timeinfo2->tm_wday;
+
+		// 获取当前日期是本周的第几天
+		int daysToMonday1 = (dayOfWeek1 + 6) % 7;
+		int daysToMonday2 = (dayOfWeek2 + 6) % 7;
+
+		// 获取当前日期的起始时间（凌晨00:00:00）
+		std::time_t startOfWeek1 = timestamp1 - daysToMonday1 * 24 * 60 * 60;
+		std::time_t startOfWeek2 = timestamp2 - daysToMonday2 * 24 * 60 * 60;
+
+		// 判断两个时间是否在同一周
+		return (startOfWeek1 == startOfWeek2);
+	}
 }// namespace ngl

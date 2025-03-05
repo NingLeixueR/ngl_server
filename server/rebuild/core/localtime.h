@@ -104,6 +104,8 @@ namespace ngl
 		// 获取指定utc后几个小时
 		static int getutcbyhour(time_t utc, int hour);
 		static int getutcbymin(time_t utc, int min);
+
+		static bool issameweek(time_t timestamp1, time_t timestamp2);
 	private:
 		static time_t m_offset;		//时间偏移量
 	};
