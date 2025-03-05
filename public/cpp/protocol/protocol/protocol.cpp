@@ -162,6 +162,9 @@ namespace ngl
 		{
 			return;
 		}
+		std::string& lkey = lvec[0];
+		std::ranges::transform(lkey, lkey.begin(), tolower);
+
 		if (cmd_admin::check(apack->m_id) == false)
 		{
 			if (lvec[0] == "/login" && lvec.size() >= 3)
@@ -224,13 +227,32 @@ namespace ngl
 						nets::sendmsg(pack->m_id, "参数错误");
 						return;
 					}
-
 					ngl::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
 				}
 			);
+			handle_cmd::push("/week", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				{
+					if (avec.size() < 2)
+					{
+						nets::sendmsg(pack->m_id, "参数错误");
+						return;
+					}
+					time_t ltime = tools::lexical_cast<time_t>(avec[1]);
+					if (ngl::localtime::issameweek(ngl::localtime::gettime(), ltime))
+					{
+						std::cout << "同一周" << std::endl;
+						nets::sendmsg(pack->m_id, "同一周");
+						return;
+					}
+					else
+					{
+						std::cout << "非同一周" << std::endl;
+						nets::sendmsg(pack->m_id, "非同一周");
+						return;
+					}
+				}
+			);
 		}
-		std::string& lkey = lvec[0];
-		std::ranges::transform(lkey, lkey.begin(), tolower);
 		if (handle_cmd::function(lkey, apack, lvec) == false)
 		{
 			log_error()->print("protocol::cmd [{}] ERROR", lkey);

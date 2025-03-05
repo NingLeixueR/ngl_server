@@ -149,6 +149,8 @@ namespace ngl
 		static bool checkutc(time_t autc1, time_t autc2);
 		// # autc是否大于当前时间
 		static bool checkutc(time_t autc);
+
+		static bool issameweek(time_t timestamp1, time_t timestamp2);
 	private:
 		static time_t m_offset;		//时间偏移量
 	};
