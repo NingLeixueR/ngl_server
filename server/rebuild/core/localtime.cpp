@@ -461,23 +461,33 @@ namespace ngl
 
 	bool localtime::issameweek(time_t timestamp1, time_t timestamp2)
 	{
-		timestamp1 = getsecond2time(timestamp1, 0, 0);
-		timestamp2 = getsecond2time(timestamp2, 0, 0);
-		std::tm* timeinfo1 = std::localtime(&timestamp1);
-		std::tm* timeinfo2 = std::localtime(&timestamp2);
+		std::cout << std::format(
+			"<<<1>>> t1:{} t2:{}\n",
+			localtime::time2str(timestamp1, "%Y-%m-%d %H:%M:%S"),
+			localtime::time2str(timestamp2, "%Y-%m-%d %H:%M:%S")
+		);
+		timestamp1 = getsecond2time(timestamp1, 0, 0, 0);
+		timestamp2 = getsecond2time(timestamp2, 0, 0, 0);
+		std::cout << std::format(
+			"<<<2>>> t1:{} t2:{}\n",
+			localtime::time2str(timestamp1, "%Y-%m-%d %H:%M:%S"),
+			localtime::time2str(timestamp2, "%Y-%m-%d %H:%M:%S")
+		);
+		std::tm timeinfo1 = *std::localtime(&timestamp1);
+		std::tm timeinfo2 = *std::localtime(&timestamp2);
 
 		// 获取星期几
-		int dayOfWeek1 = timeinfo1->tm_wday;
-		int dayOfWeek2 = timeinfo2->tm_wday;
+		int dayOfWeek1 = timeinfo1.tm_wday == 0 ? 7 : timeinfo1.tm_wday;
+		int dayOfWeek2 = timeinfo2.tm_wday == 0 ? 7 : timeinfo2.tm_wday;
 
-		// 获取当前日期是本周的第几天
-		int daysToMonday1 = (dayOfWeek1 + 6) % 7;
-		int daysToMonday2 = (dayOfWeek2 + 6) % 7;
-
-		// 获取当前日期的起始时间（凌晨00:00:00）
-		std::time_t startOfWeek1 = timestamp1 - daysToMonday1 * 24 * 60 * 60;
-		std::time_t startOfWeek2 = timestamp2 - daysToMonday2 * 24 * 60 * 60;
-
+		// 获取周一utc
+		std::time_t startOfWeek1 = timestamp1 - (dayOfWeek1 - 1) * 24 * 60 * 60;
+		std::time_t startOfWeek2 = timestamp2 - (dayOfWeek2 - 1) * 24 * 60 * 60;
+		std::cout << std::format(
+			"<<<3>>> t1:{} t2:{}\n",
+			localtime::time2str(startOfWeek1, "%Y-%m-%d %H:%M:%S"),
+			localtime::time2str(startOfWeek2, "%Y-%m-%d %H:%M:%S")
+		);
 		// 判断两个时间是否在同一周
 		return (startOfWeek1 == startOfWeek2);
 	}
