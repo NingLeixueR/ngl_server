@@ -267,15 +267,15 @@ namespace ngl
 		void sendmail(const manage_curl::parameter& aparm);
 		void run();
 
-		std::list<manage_curl::parameter> m_list; 
-		int32_t m_index;
+		std::list<manage_curl::parameter>	m_list; 
+		int32_t								m_index;
 	};
 
 	struct email_sender_helper
 	{
-		static std::thread			 m_thread;
-		static std::shared_mutex	 m_mutex;
-		static ngl::sem				m_sem;
+		static std::thread				m_thread;
+		static std::shared_mutex		m_mutex;
+		static ngl::sem					m_sem;
 	};
 
 	std::thread			email_sender_helper::m_thread;
@@ -463,6 +463,4 @@ namespace ngl
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 		}
 	}
-
-
 }//namespace ngl
