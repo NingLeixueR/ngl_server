@@ -473,8 +473,10 @@ namespace ngl
 			localtime::time2str(timestamp1, "%Y-%m-%d %H:%M:%S"),
 			localtime::time2str(timestamp2, "%Y-%m-%d %H:%M:%S")
 		);
-		std::tm timeinfo1 = *std::localtime(&timestamp1);
-		std::tm timeinfo2 = *std::localtime(&timestamp2);
+		std::tm timeinfo1;
+		std::tm* lptimeinfo1 = std::localtime_s(&timeinfo1, &timestamp1);
+		std::tm timeinfo2;
+		std::tm* lptimeinfo2 = std::localtime_s(&timeinfo2, &timestamp2);
 
 		// 获取星期几
 		int dayOfWeek1 = timeinfo1.tm_wday == 0 ? 7 : timeinfo1.tm_wday;
