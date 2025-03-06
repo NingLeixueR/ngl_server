@@ -194,8 +194,7 @@ namespace ngl
 			);
 			handle_cmd::push("/print_guid", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
-					ENUM_ACTOR ltype;
-					ltype = em<ENUM_ACTOR>::get_enum(avec[1].c_str());
+					ENUM_ACTOR ltype = em<ENUM_ACTOR>::get_enum(avec[1].c_str());
 					if (ltype == em<ENUM_ACTOR>::enum_null())
 					{
 						return;
