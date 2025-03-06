@@ -17,7 +17,6 @@ const std::string lerrpath = "²ÎÊı´íÎó:EXE name areaid tab_servers::tcount";
 
 Dumper lDumper;
 
-
 int main(int argc, char** argv)
 {
 	if (argc <= 3)
