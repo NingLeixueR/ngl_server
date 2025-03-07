@@ -107,30 +107,47 @@ namespace ngl
 		// # 获取两个时间之间相差的天数
 		static time_t getspandays(time_t curr, time_t last);
 
-		// 当月的几号
+		// # 当月的几号
 		static int getmoonday(const tm* atm);
 		static int getmoonday(time_t curr);
 		static int getmoonday();
+
+		// # 月份
 		static int getmoon(const tm* atm);
 		static int getmoon(time_t curr);
 		static int getmoon();
+
+		// # 年
 		static int getyear(const tm* atm);
 		static int getyear(time_t curr);
 		static int getyear();
+
+		// # 周:日
 		static int getweekday(const tm* atm);
 		static int getweekday(time_t curr);
 		static int getweekday();
+
+		// # 小时
 		static int gethour(const tm* atm);
 		static int gethour(time_t curr);
 		static int gethour();
+
+		// # 分钟
 		static int getmin(const tm* atm);
 		static int getmin(time_t curr);
 		static int getmin();
+
+		// # 秒数
 		static int getsec(const tm* atm);
 		static int getsec(time_t curr);
 		static int getsec();
+
+		// # 获取周: 日 时 分
 		static void getweekday(time_t curr, int& weekday, int& hour, int& minute);
+
+		// # 获取tm
 		static void gettm(time_t curr, tm& atm);
+
 		// 获取指定utc后几个小时
 		static int getutcbyhour(time_t utc, int hour);
 		static int getutcbymin(time_t utc, int min);
