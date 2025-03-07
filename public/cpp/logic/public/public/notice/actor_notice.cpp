@@ -80,12 +80,8 @@ namespace ngl
 					{
 						return;
 					}
-					pro.m_data = localtime::checkutc(recv.m_finishtime);
-					if (pro.m_data)
-					{
-						m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
-						pro.m_data = true;
-					}
+					m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
+					pro.m_data = true;
 				}
 			);
 			handle_cmd::push("del_notice", [this](int id, const ngl::json_read& aos)

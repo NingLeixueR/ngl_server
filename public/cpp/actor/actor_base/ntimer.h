@@ -47,39 +47,18 @@ namespace ngl
 	public:
 		static time_t month_ms(time_t anow, int amonthday/*1-31*/, int ahour, int amin, int asec)
 		{
-			time_t lfirst = localtime::getmothday(anow, amonthday, ahour, amin, asec);
-			return (lfirst - anow) * localtime::MILLISECOND;
-		}
-
-		static bool check_monthday(int amonthday)
-		{
-			return amonthday >= 1 && amonthday <= 31;
-		}
-
-		static bool check_hour(int ahour)
-		{
-			return ahour >= 0 && ahour <= 23;
-		}
-
-		static bool check_min(int amin)
-		{
-			return amin >= 0 && amin <= 59;
-		}
-
-		static bool check_sec(int asec)
-		{
-			return asec >= 0 && asec <= 59;
-		}
-
-		static bool check_week(int aweek)
-		{
-			return aweek >= 1 && aweek <= 7;
+			std::pair<bool, time_t> lpair = localtime::getmothday(anow, amonthday, ahour, amin, asec);
+			if (lpair.first)
+			{
+				return (lpair.second - anow) * localtime::MILLISECOND;
+			}
+			return -1;
 		}
 
 		//ET_MONTH,		// 每月触发
 		static bool month(timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (check_monthday(amonthday) && check_hour(ahour) && check_min(amin) && check_sec(asec))
+			if (localtime::check_monthday(amonthday) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
 			{
 				aparm.m_type = timerparm::ET_WEEK;
 				aparm.m_ms = month_ms(localtime::gettime(), amonthday, ahour, amin, asec);
@@ -96,7 +75,7 @@ namespace ngl
 		// 每周触发 1-7
 		static bool week(timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (check_week(aweek) && check_hour(ahour) && check_min(amin) && check_sec(asec))
+			if (localtime::check_week(aweek) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
 			{
 				aparm.m_type = timerparm::ET_WEEK;
 				time_t lnow = localtime::gettime();
@@ -115,7 +94,7 @@ namespace ngl
 		// 每日触发  ahour时amin分asec秒
 		static bool day(timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (check_hour(ahour) && check_min(amin) && check_sec(asec))
+			if (localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
 			{
 				aparm.m_type = timerparm::ET_DAY;
 				time_t lnow = localtime::gettime();
@@ -134,7 +113,7 @@ namespace ngl
 		// 每小时触发  amin分asec秒
 		static bool hour(timerparm& aparm, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (check_min(amin) && check_sec(asec))
+			if (localtime::check_minute(amin) && localtime::check_sec(asec))
 			{
 				aparm.m_type = timerparm::ET_HOUR;
 				time_t lnow = localtime::gettime();
@@ -153,7 +132,7 @@ namespace ngl
 		// 每分钟触发  asec秒
 		static bool min(timerparm& aparm, int asec, int acount = 0x7fffffff)
 		{
-			if (check_sec(asec))
+			if (localtime::check_sec(asec))
 			{
 				aparm.m_type = timerparm::ET_MIN;
 				time_t lnow = localtime::gettime();

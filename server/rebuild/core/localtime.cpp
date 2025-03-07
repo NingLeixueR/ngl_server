@@ -8,6 +8,31 @@ namespace ngl
 {
 	time_t localtime::m_offset = 0;
 
+	bool localtime::check_monthday(int amonthday/*1-31*/)
+	{
+		return amonthday >= 1 && amonthday <= 31;
+	}
+
+	bool localtime::check_week(int aweek/*1-7*/)
+	{
+		return aweek >= 1 && aweek <= 7;
+	}
+
+	bool localtime::check_hour(int hour/*0-23*/)
+	{
+		return hour >= 0 && hour < 24;
+	}
+
+	bool localtime::check_minute(int minute/*0-59*/)
+	{
+		return minute >= 0 && minute < 59;
+	}
+
+	bool localtime::check_sec(int sec/*0-59*/)
+	{
+		return sec >= 0 && sec < 59;
+	}
+
 	/** 设置时间 */
 	bool localtime::settime(time_t sti)
 	{
@@ -16,7 +41,7 @@ namespace ngl
 		{
 			return false;
 		}
-		m_offset += (sti - lnow);
+		m_offset = (sti - lnow);
 		return true;
 	}
 
@@ -29,7 +54,7 @@ namespace ngl
 
 	time_t localtime::getms()
 	{
-		return gettimems() % 1000;
+		return gettimems() % MILLISECOND;
 	}
 
 	time_t localtime::gettimems()
@@ -37,14 +62,24 @@ namespace ngl
 		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	}
 
-	void localtime::printf_time2str(time_t anow, const char* format)
+	bool localtime::issameday(time_t a1, time_t a2)
+	{
+		return getsecond2time(a1, 0, 0, 0) == getsecond2time(a2, 0, 0, 0);
+	}
+
+	bool localtime::issameday(time_t autc)
+	{
+		return issameday(autc, localtime::gettime());
+	}
+
+	void localtime::printf_time2str(time_t anow, const char* format /*= "%Y-%m-%d %H:%M:%S"*/)
 	{//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
 		char lbuff[1024];
 		time2str(lbuff, 1024, anow, format);
 		std::cout << lbuff;
 	}
 
-	size_t localtime::time2str(char* str, int len, time_t anow, const char* format)
+	size_t localtime::time2str(char* str, int len, time_t anow, const char* format /*= "%Y-%m-%d %H:%M:%S"*/)
 	{//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
 		time_t curr = ((anow <= 0) ? gettime() : anow);
 		std::tm tmTime = *std::localtime(&curr);
@@ -83,63 +118,40 @@ namespace ngl
 	{
 		std::tm tmTime = *std::localtime(&utc);
 		//struct tm* ltime = localtime(&curr);
-		tmTime.tm_hour = hour;
-		tmTime.tm_min = minute;
-		tmTime.tm_sec = sec;
+		if (check_hour(hour))
+		{
+			tmTime.tm_hour = hour;
+		}
+		if (check_minute(minute))
+		{
+			tmTime.tm_min = minute;
+		}
+		if (check_sec(sec))
+		{
+			tmTime.tm_sec = sec;
+		}
 		return mktime(&tmTime);
 	}
 
 	time_t localtime::getsecond2time(int hour, int minute, int sec/*0-59*/)
 	{
 		time_t lnow = gettime();
-		std::tm tmTime = *std::localtime(&lnow);
-
-		tmTime.tm_hour = hour;
-		tmTime.tm_min = minute;
-		tmTime.tm_sec = sec;
-		time_t lret = mktime(&tmTime);
-		if (lret > lnow)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + DAY_SECOND;
-		}
+		time_t ltemp = getsecond2time(lnow, hour, minute, sec);
+		return lnow > ltemp ? ltemp + DAY_SECOND : ltemp;
 	}
 
 	time_t localtime::getsecond2time(int minute/*0-59*/, int sec/*0-59*/)
 	{
 		time_t lnow = gettime();
-		std::tm tmTime = *std::localtime(&lnow);
-		tmTime.tm_min = minute;
-		tmTime.tm_sec = sec;
-		time_t lret = mktime(&tmTime);
-		if (lret > lnow)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + HOUR_SECOND;
-		}
+		time_t ltemp = getsecond2time(lnow, -1, minute, sec);
+		return lnow > ltemp ? ltemp + HOUR_SECOND : ltemp;
 	}
 
 	time_t localtime::getsecond2time(int sec/*0-59*/)
 	{
 		time_t lnow = gettime();
-		std::tm tmTime = *std::localtime(&lnow);
-
-		tmTime.tm_sec = sec;
-		time_t lret = mktime(&tmTime);
-		if (lret > lnow)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + MINUTES_SECOND;
-		}
+		time_t ltemp = getsecond2time(lnow, -1, -1, sec);
+		return lnow > ltemp ? ltemp + MINUTES_SECOND : ltemp;
 	}
 
 	int localtime::getutcbyhour(time_t utc, int hour)
@@ -161,21 +173,10 @@ namespace ngl
 
 	time_t localtime::getweekday(time_t utc, int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
 	{
-		std::tm ltime = *std::localtime(&utc);
-
-		ltime.tm_hour = hour;
-		ltime.tm_min = minute;
-		ltime.tm_sec = sec;
-		time_t lret = mktime(&ltime);
-		int lweek = aweek - ltime.tm_wday;
-		if (lweek == 0)
-		{
-			return lret;
-		}
-		else
-		{
-			return lret + (lweek * DAY_SECOND);
-		}
+		time_t lret = getsecond2time(utc, hour, minute, sec);
+		std::tm tmTime = *std::localtime(&utc);
+		int lweek = tmTime.tm_wday == 0 ? 7 : tmTime.tm_wday;
+		return lret + (aweek- lweek) * DAY_SECOND;
 	}
 
 	time_t localtime::getweekday(int aweek, int hour, int minute, int sec/*0-59*/)
@@ -183,155 +184,57 @@ namespace ngl
 		return getweekday(gettime(), aweek, hour, minute, sec);
 	}
 
-	time_t localtime::getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
+	bool localtime::isleapyear(int year)
+	{
+		if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool localtime::mothday(int year, int month, int aday)
+	{
+		int lday[] =
+		{
+			31,28,31,30,31,30,31,31,30,31,30,31,
+		};
+		if (month == 2 && isleapyear(year))
+		{
+			lday[month - 1] = 29;
+		}
+		if (aday > lday[month - 1] || aday <= 0)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	std::pair<bool, time_t> localtime::getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
 	{
 		std::tm ltime = *std::localtime(&utc);
 
+		if (mothday(ltime.tm_year, ltime.tm_mday, amday) == false)
+		{
+			return std::make_pair(false, -1);
+		}
 		ltime.tm_mday = amday;
 		ltime.tm_hour = hour;
 		ltime.tm_min = minute;
 		ltime.tm_sec = sec;
-		time_t lret = mktime(&ltime);
-		if (utc < lret)
-		{
-			return lret;
-		}
-		else
-		{
-			if (ltime.tm_mon == 11)//---0-11月 年底
-			{
-				++ltime.tm_year;
-				ltime.tm_mon = 0;
-				ltime.tm_mday = amday;
-				ltime.tm_hour = hour;
-				ltime.tm_min = minute;
-				ltime.tm_sec = sec;
-				return mktime(&ltime);
-			}
-			++ltime.tm_mon;
-			return mktime(&ltime);
-		}
+		return std::make_pair(true, mktime(&ltime));
 	}
 
-	time_t localtime::getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
+	std::pair<bool, time_t> localtime::getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
 	{
-		time_t lnow = gettime();
-		return getmothday(lnow, amday, hour, minute, sec);
+		return getmothday(gettime(), amday, hour, minute, sec);
 	}
 
-	//获取两个时间之间相差的天数
 	time_t localtime::getspandays(time_t curr, time_t last)
 	{
-		std::tm ltime = *std::localtime(&curr);
-		ltime.tm_hour = 0;
-		ltime.tm_min = 0;
-		ltime.tm_sec = 0;
-		time_t newCurr = mktime(&ltime);
-
-		ltime = *std::localtime(&last);
-		ltime.tm_hour = 0;
-		ltime.tm_min = 0;
-		ltime.tm_sec = 0;
-		time_t newLast = mktime(&ltime);
-
-		return (newCurr - newLast) / DAY_SECOND;
-	}
-
-	time_t localtime::getnextweekdaytime(time_t curr, time_t weekday)
-	{
-		std::tm ltime = *std::localtime(&curr);
-		int currWeekday = ltime.tm_wday;
-
-		time_t weekdayInterval = weekday - currWeekday;
-		if (weekdayInterval <= 0)
-		{
-			weekdayInterval += WEEK_DAY;
-		}
-
-		return curr + weekdayInterval * DAY_SECOND - ltime.tm_hour * HOUR_SECOND - ltime.tm_min * MINUTES_SECOND - ltime.tm_sec;
-	}
-
-	time_t localtime::getnextweekdaytime(time_t curr, int weekday, int hour, int minute)
-	{
-		std::tm ltime = *std::localtime(&curr);
-		int currWeekday = ltime.tm_wday;
-
-		int weekdayInterval = weekday - currWeekday;
-		if (weekdayInterval < 0)
-		{
-			weekdayInterval += WEEK_DAY;
-		}
-		else if (weekdayInterval == 0)
-		{
-			time_t ltemp = getsecond2time(curr, hour, minute);
-			if (ltemp > curr)
-			{
-				return ltemp;
-			}
-			else
-			{
-				weekdayInterval += WEEK_DAY;
-				return getsecond2time(curr + WEEK_SECOND, hour, minute);
-			}
-		}
-		return getsecond2time(curr + weekdayInterval * DAY_SECOND, hour, minute);
-	}
-
-	bool localtime::isspanweekday(time_t curr, time_t last, int weekday)
-	{
-		return last >= getnextweekdaytime(curr, weekday);
-	}
-
-	bool localtime::isspanweekday(time_t curr, time_t last, int weekday, int hour, int minute)
-	{
-		return last >= getnextweekdaytime(curr, weekday, hour, minute);
-	}
-
-	//获得两个时间之间相差多少周
-	time_t localtime::getspanweeks(time_t curr, time_t last, int weekday)
-	{
-		return (getnextweekdaytime(curr, weekday) - getnextweekdaytime(last, weekday)) / WEEK_SECOND;
-	}
-
-	/**
-	获取指定小时，分钟时间和目前时间的差值，返回负数则表示指定时间已过 */
-	time_t localtime::getdesttimevalue(int hour, int minute, int sec)
-	{
-		time_t curr = gettime();  // 使用服务器的当前时间
-		time_t dest = curr;
-
-		std::tm ltime = *std::localtime(&dest);
-		ltime.tm_hour = hour;
-		ltime.tm_min = minute;
-		ltime.tm_sec = sec; // 精确秒数
-		dest = mktime(&ltime);
-		return dest - curr;
-	}
-
-	/*
-	获取utc那天的第x天的0点的utc时间，utc当天算第0天，utc明天算第1天
-	*/
-	time_t localtime::getutcbyday(time_t utc, int dayNum)
-	{
-		time_t utcDayUTC = getsecond2time(utc, 0, 0);
-		return utcDayUTC + dayNum * DAY_SECOND;
-
-	}
-
-	/**
-	获取指定年，月，日，小时，分钟时间和目前时间的差值，返回负数则表示指定时间已过 */
-	time_t localtime::getdestdayvalue(time_t curr, int year, int month, int day, int hour, int minute)
-	{
-		time_t dest = curr;
-		std::tm ltime = *std::localtime(&dest);
-		ltime.tm_hour = hour;
-		ltime.tm_min = minute;
-		ltime.tm_sec = 0; // 精确秒数
-		ltime.tm_year = year - 1900;// struct tm 的年份是从1900开始的
-		ltime.tm_mon = month - 1;// struct tm 的月份是从0到11的
-		ltime.tm_mday = day;
-		dest = mktime(&ltime);
-		return dest - curr;
+		time_t ltempcurr = getsecond2time(curr, 0, 0, 0);
+		time_t ltemplast = getsecond2time(last, 0, 0, 0);
+		return (ltempcurr - ltemplast) / DAY_SECOND;
 	}
 
 	void localtime::gettm(time_t curr, tm& atm)
@@ -459,38 +362,18 @@ namespace ngl
 		return getmoonday(gettime());
 	}
 
+	bool localtime::checkutc(time_t autc1, time_t autc2)
+	{
+		return autc1 > autc2;
+	}
+
+	bool localtime::checkutc(time_t autc)
+	{
+		return checkutc(autc, gettime());
+	}
+
 	bool localtime::issameweek(time_t timestamp1, time_t timestamp2)
 	{
-		std::cout << std::format(
-			"<<<1>>> t1:{} t2:{}\n",
-			localtime::time2str(timestamp1, "%Y-%m-%d %H:%M:%S"),
-			localtime::time2str(timestamp2, "%Y-%m-%d %H:%M:%S")
-		);
-		timestamp1 = getsecond2time(timestamp1, 0, 0, 0);
-		timestamp2 = getsecond2time(timestamp2, 0, 0, 0);
-		std::cout << std::format(
-			"<<<2>>> t1:{} t2:{}\n",
-			localtime::time2str(timestamp1, "%Y-%m-%d %H:%M:%S"),
-			localtime::time2str(timestamp2, "%Y-%m-%d %H:%M:%S")
-		);
-		std::tm timeinfo1;
-		std::tm* lptimeinfo1 = std::localtime_s(&timeinfo1, &timestamp1);
-		std::tm timeinfo2;
-		std::tm* lptimeinfo2 = std::localtime_s(&timeinfo2, &timestamp2);
-
-		// 获取星期几
-		int dayOfWeek1 = timeinfo1.tm_wday == 0 ? 7 : timeinfo1.tm_wday;
-		int dayOfWeek2 = timeinfo2.tm_wday == 0 ? 7 : timeinfo2.tm_wday;
-
-		// 获取周一utc
-		std::time_t startOfWeek1 = timestamp1 - (dayOfWeek1 - 1) * 24 * 60 * 60;
-		std::time_t startOfWeek2 = timestamp2 - (dayOfWeek2 - 1) * 24 * 60 * 60;
-		std::cout << std::format(
-			"<<<3>>> t1:{} t2:{}\n",
-			localtime::time2str(startOfWeek1, "%Y-%m-%d %H:%M:%S"),
-			localtime::time2str(startOfWeek2, "%Y-%m-%d %H:%M:%S")
-		);
-		// 判断两个时间是否在同一周
-		return (startOfWeek1 == startOfWeek2);
+		return (getweekday(timestamp1, 1, 0, 0, 0) == getweekday(timestamp2, 1, 0, 0, 0));
 	}
 }// namespace ngl
