@@ -31,52 +31,82 @@ namespace ngl
 			WEEK_SECOND			= WEEK_DAY * DAY_SECOND,			// 一周多少秒
 			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// 一周多少毫秒
 		};
+		// # 检查月份
+		static bool check_monthday(int amonthday/*1-31*/);
 
-		/** 设置时间 */
+		static bool check_week(int aweek/*1-7*/);
+
+		// # 检查小时
+		static bool check_hour(int hour/*0-23*/);
+
+		// # 检查分钟
+		static bool check_minute(int minute/*0-59*/);
+
+		// # 检查秒
+		static bool check_sec(int sec/*0-59*/);
+
+		// # 设置时间
 		static bool settime(time_t sti);
-		/** 获取时间*/
+
+		// # 获取时间
 		static time_t gettime();
-		/** 获取秒与秒之间的毫秒数 */
+
+		// # 获取秒与秒之间的毫秒数 
 		static time_t getms();
-		/** 获取毫秒 */
+
+		// # 获取毫秒
 		static time_t gettimems();
-		static void printf_time2str(time_t anow, const char* format);
-		//Year-Month-Day Hour:Minuts:Second %y-%m-%d %H:%M:%S
-		static size_t time2str(char* str, int len, time_t anow, const char* format);
-		static std::string time2str(time_t anow, const char* format);
-		static std::string time2str(const char* format);
+
+		// # 两个utc时间是否是同一天
+		static bool issameday(time_t a1, time_t a2);
+
+		// # 当前时间和参数utc时间是否是同一天
+		static bool issameday(time_t autc);
+
+		// # 打印时间
+		static void printf_time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
+
+		// # utc转换为字符串
+		static size_t time2str(char* str, int len, time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
+		static std::string time2str(time_t anow, const char* format = "%Y-%m-%d %H:%M:%S");
+		static std::string time2str(const char* format = "%Y-%m-%d %H:%M:%S");
+
+		// # 字符串转换为utc
 		static time_t str2time(const char* astr, const char* format = "%Y-%m-%d %H:%M:%S");
-		// 获取utc时刻那天的 小时分钟的utc
+
+		// # 获取utc时刻那天的 小时分钟的utc
 		static time_t getsecond2time(time_t utc, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
-		// 获取今天的指定 小时分钟的utc(如果时间已过则获取下一天的指定小时分钟的utc)
+
+		// # 获取今天的指定 小时分钟的utc(如果时间已过则获取下一天的指定小时分钟的utc)
 		static time_t getsecond2time(int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
-		// 获取指定分钟的utc(如果当前小时分钟秒数已过则获取下一个小时的)
+
+		// # 获取指定分钟的utc(如果当前小时分钟秒数已过则获取下一个小时的)
 		static time_t getsecond2time(int minute/*0-59*/, int sec/*0-59*/);
-		// 获取指定秒钟的utc(如果当前小时分钟秒数已过则获取下一个小时的)
+
+		// # 获取指定秒钟的utc(如果当前小时分钟秒数已过则获取下一个小时的)
 		static time_t getsecond2time(int sec/*0-59*/);
 
-		static time_t getweekday(time_t utc, int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
-		// 获取本周几的指定 小时分钟的utc(如果时间已过则获取下一周几的指定小时分钟的utc) 
+		// # 获取指定星期的小时分钟
+		static time_t getweekday(time_t utc, int aweek/*1-7*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
+
+		// # 获取本周几的指定 小时分钟的utc(如果时间已过则获取下一周几的指定小时分钟的utc) 
 		static time_t getweekday(int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
 
-		static time_t getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
-		// 获取本月 指定 日小时分钟的utc(如果时间已过则获取下一月的指定日小时分钟的utc) 
-		static time_t getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
+		// # 是否是闰年
+		static bool isleapyear(int year);
 
-		//获取两个时间之间相差的天数
+		// # 是否存在年月日
+		static bool mothday(int year, int month, int aday);
+
+		// # 获取指定utc所在月份的日时分秒
+		static std::pair<bool,time_t> getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
+
+		// # 获取本月 指定 日小时分钟的utc
+		static std::pair<bool, time_t> getmothday(int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/);
+
+		// # 获取两个时间之间相差的天数
 		static time_t getspandays(time_t curr, time_t last);
-		static time_t getnextweekdaytime(time_t curr, time_t weekday);
-		static time_t getnextweekdaytime(time_t curr, int weekday, int hour, int minute);
-		static bool isspanweekday(time_t curr, time_t last, int weekday);
-		static bool isspanweekday(time_t curr, time_t last, int weekday, int hour, int minute);
-		//获得两个时间之间相差多少周
-		static time_t getspanweeks(time_t curr, time_t last, int weekday);
-		//获取指定小时，分钟时间和目前时间的差值，返回负数则表示指定时间已过 */
-		static time_t getdesttimevalue(int hour, int minute, int sec);
-		//获取utc那天的第x天的0点的utc时间，utc当天算第0天，utc明天算第1天
-		static time_t getutcbyday(time_t utc, int dayNum);
-		//获取指定年，月，日，小时，分钟时间和目前时间的差值，返回负数则表示指定时间已过 */
-		static time_t getdestdayvalue(time_t curr, int year, int month, int day, int hour, int minute);
+
 		// 当月的几号
 		static int getmoonday(const tm* atm);
 		static int getmoonday(time_t curr);
@@ -104,6 +134,9 @@ namespace ngl
 		// 获取指定utc后几个小时
 		static int getutcbyhour(time_t utc, int hour);
 		static int getutcbymin(time_t utc, int min);
+
+		static bool checkutc(time_t autc1, time_t autc2);
+		static bool checkutc(time_t autc);
 
 		static bool issameweek(time_t timestamp1, time_t timestamp2);
 	private:
