@@ -152,7 +152,7 @@ namespace ngl
 #pragma endregion
 
 		//# CMD 协议
-		using handle_cmd = cmd<actor_role, std::string, actor_role*, const char*>;
+		using handle_cmd = cmd<actor_role, std::string, const pack*, actor_role*, const char*>;
 		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
 
 		//# 获取role数据
