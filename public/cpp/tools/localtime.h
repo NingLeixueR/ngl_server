@@ -32,6 +32,8 @@ namespace ngl
 			WEEK_MILLISECOND	= WEEK_SECOND * MILLISECOND,		// 一周多少毫秒
 		};
 		// # 检查月份
+		static bool check_month(int amonth/*1-12*/);
+
 		static bool check_monthday(int amonthday/*1-31*/);
 
 		static bool check_week(int aweek/*1-7*/);
