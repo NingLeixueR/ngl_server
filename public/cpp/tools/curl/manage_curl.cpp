@@ -268,39 +268,33 @@ namespace ngl
 		void run();
 
 		std::list<manage_curl::parameter>	m_list; 
-		int32_t								m_index;
+		int32_t								m_index = 0;
 	};
 
 	struct email_sender_helper
 	{
-		static std::thread				m_thread;
+		static std::jthread				m_thread;
 		static std::shared_mutex		m_mutex;
 		static ngl::sem					m_sem;
 	};
 
-	std::thread			email_sender_helper::m_thread;
+	std::jthread		email_sender_helper::m_thread;
 	std::shared_mutex	email_sender_helper::m_mutex;
 	ngl::sem			email_sender_helper::m_sem;
 
-	email_sender::email_sender():
-		m_index(0)
+	email_sender::email_sender()
 	{
-		email_sender_helper::m_thread = std::thread(std::bind_front(&email_sender::run, this));
+		email_sender_helper::m_thread = std::jthread(std::bind_front(&email_sender::run, this));
 	}
-
-	
 
 	size_t email_sender::callback(void* ptr, size_t size, size_t nmemb, void* userp)
 	{
 		std::string data((const char*)userp);
 		size_t to_copy = std::min(data.size() - email_sender::getInstance().m_index, size * nmemb);
-		const char* lp = data.c_str();
 		memcpy(ptr, data.c_str() + email_sender::getInstance().m_index, to_copy);
 		email_sender::getInstance().m_index += to_copy;
 		return to_copy;
 	}
-
-
 
 	void email_sender::sendmail(const manage_curl::parameter& aparm)
 	{
@@ -346,7 +340,6 @@ namespace ngl
 					payload += ",";
 				}
 				payload += std::format("{}<{}>", aparm.m_recvs[i].second, aparm.m_recvs[i].first);
-				//payload += m_recvs[i].first;
 			}
 			payload += "\r\n";
 			payload += std::format("Subject: {}\r\n", aparm.m_title);
@@ -423,10 +416,9 @@ namespace ngl
 		};
 		if (amailvec.empty())
 		{
-			lparm.m_recvs.push_back({ "libo1@youxigu.com", "李博" });
-			lparm.m_recvs.push_back({ "348634371@qq.com", "李博QQ" });
+			lparm.m_recvs.emplace_back(std::make_pair("libo1@youxigu.com", "李博"));
+			lparm.m_recvs.emplace_back(std::make_pair("348634371@qq.com", "李博QQ"));
 		}
-
 		manage_curl::sendemail(lparm);
 	}
 

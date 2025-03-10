@@ -8,6 +8,11 @@ namespace ngl
 {
 	time_t localtime::m_offset = 0;
 
+	bool localtime::check_month(int amonth/*1-12*/)
+	{
+		return amonth >= 1 && amonth <= 12;
+	}
+
 	bool localtime::check_monthday(int amonthday/*1-31*/)
 	{
 		return amonthday >= 1 && amonthday <= 31;
@@ -195,15 +200,26 @@ namespace ngl
 
 	bool localtime::mothday(int year, int month, int aday)
 	{
-		int lday[] =
+		if (check_month(month) == false)
 		{
-			31,28,31,30,31,30,31,31,30,31,30,31,
-		};
-		if (month == 2 && isleapyear(year))
-		{
-			lday[month - 1] = 29;
+			return false;
 		}
-		if (aday > lday[month - 1] || aday <= 0)
+		int* lpday = nullptr;
+		static int lday[2][12] =
+		{
+			{31,29,31,30,31,30,31,31,30,31,30,31},
+			{31,28,31,30,31,30,31,31,30,31,30,31}
+		};
+		if (isleapyear(year))
+		{
+			lpday = lday[0];
+		}
+		else
+		{
+			lpday = lday[1];
+		}
+
+		if (aday > lpday[month - 1] || aday <= 0)
 		{
 			return false;
 		}

@@ -35,7 +35,7 @@ namespace ngl
 			m_actor->log_error()->print("{} {}:{}", amessage, type_name<TDerived>(), type_name<T>());
 		}
 
-		static void channel_data(TDerived*, message<np_channel_data<T>>& adata)
+		static void channel_data(TDerived*, const message<np_channel_data<T>>& adata)
 		{
 			const np_channel_data<T>& recv = *adata.get_data();
 			std::map<int64_t, T>& lmap = *recv.m_data.m_data;
@@ -54,14 +54,14 @@ namespace ngl
 				});
 		}
 
-		static void channel_register_reply(TDerived*, message<np_channel_register_reply<T>>& adata)
+		static void channel_register_reply(TDerived*, const message<np_channel_register_reply<T>>& adata)
 		{
 			log("nsp_client np_channel_register_reply");
 			auto& recv = *adata.get_data();
 			m_register[nguid::area(recv.m_actorid)] = true;
 		}
 
-		static void channel_check(TDerived*, message<np_channel_check>& adata)
+		static void channel_check(TDerived*, const message<np_channel_check>& adata)
 		{
 			auto lprecv = adata.get_data();
 			if (m_register[lprecv->m_area])

@@ -46,7 +46,7 @@ namespace ngl
 		const pack* apack, std::vector<i32_sessionid>& avec, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 	)
 	{
-		naddress::foreach([&avec, apack](const actor_node_session& asnode)->bool
+		naddress::foreach([&avec, apack](const actor_node_session& asnode)
 			{
 				if (apack->m_id != asnode.m_session)
 				{
@@ -76,7 +76,7 @@ namespace ngl
 	void actor_server::reply_np_actornode_register(const pack* apack, i32_serverid aserverid)
 	{
 		np_actornode_register_response lpram;
-		naddress::foreach([&lpram, apack](const actor_node_session& anode)->bool
+		naddress::foreach([&lpram, apack](const actor_node_session& anode)
 			{
 				if (apack->m_id != anode.m_session)
 				{
@@ -87,8 +87,7 @@ namespace ngl
 		nets::sendbysession(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
-		naddress::ergodic(
-			[aserverid, &lmapprotocol](const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&)->bool
+		naddress::ergodic([aserverid, &lmapprotocol](const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&)
 			{
 				for (const std::pair<const nguid, i32_serverid>& ipair : amap)
 				{
@@ -159,11 +158,10 @@ namespace ngl
 
 	void actor_server::print(const std::vector<i64_actorid>& avec)const
 	{
-		for (int i = 0; i < avec.size(); ++i)
-		{
-			nguid lguid(avec[i]);
-			log_error()->print("np_actornode_update_mass guid:{}", lguid);
-		}
+		std::for_each(avec.begin(), avec.end(), [this](i64_actorid aactorid)
+			{
+				log_error()->print("np_actornode_update_mass guid:{}", nguid(aactorid));
+			});
 	}
 
 	bool actor_server::handle(const message<np_actornode_update_mass>& adata)

@@ -22,14 +22,15 @@ namespace ngl
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
 		static void publish_foreach(
-			const std::set<i64_actorid>& aactoridset, std::shared_ptr<np_channel_data<TDATA>>& apro, 
+			const std::set<i64_actorid>& aactoridset, 
+			std::shared_ptr<np_channel_data<TDATA>>& apro, 
 			const std::pair<const i64_actorid, std::set<i64_actorid>>& apair
 		)
 		{
 			if (!apair.second.empty())
 			{
 				std::vector<i64_actorid> lvec;
-				std::set_intersection(aactoridset.begin(), aactoridset.end(), apair.second.begin(), apair.second.end(), lvec.begin());
+				std::ranges::set_intersection(aactoridset, apair.second, std::back_inserter(lvec));
 				if (lvec.empty())
 				{
 					return;

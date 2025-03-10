@@ -127,7 +127,7 @@ namespace ngl
 		static std::set<int> m_adminsocket;
 		static std::shared_mutex	m_mutex;
 	public:
-		static bool login(int asocket, const std::string& auser, const std::string& apassworld)
+		static bool login(int asocket, const std::string_view& auser, const std::string& apassworld)
 		{
 			monopoly_shared_lock(m_mutex);
 			if (auser != xmlnode::m_telnet.m_telnetarg.m_account)
@@ -144,7 +144,7 @@ namespace ngl
 		static bool check(int asocket)
 		{
 			monopoly_shared_lock(m_mutex);
-			if (m_adminsocket.find(asocket) != m_adminsocket.end())
+			if (m_adminsocket.contains(asocket))
 			{
 				return true;
 			}
