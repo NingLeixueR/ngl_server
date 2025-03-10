@@ -163,10 +163,10 @@ namespace ngl
 				{
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
 					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
-					if (apack->m_protocol == ENET_KCP)
-					{
+					//if (apack->m_protocol == ENET_KCP)
+					//{
 						lpram.m_pack = apack;
-					}
+					//}
 					actor_manage::getInstance().push_task_id(lguid, lpram, false);
 				}
 				return true;

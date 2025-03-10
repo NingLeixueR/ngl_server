@@ -21,34 +21,34 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("/time", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/time", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
-					message lmessage(0, nullptr, &pro);
+					message lmessage(0, apack, &pro);
 					role->handle(lmessage);
 				}
 			);
-			handle_cmd::push("/name", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/name", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.rename(aparm);
 				}
 			);
-			handle_cmd::push("/lv", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/lv", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.change_lv(tools::lexical_cast<int>(aparm));
 				}
 			);
-			handle_cmd::push("/gold", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/gold", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.change_gold(tools::lexical_cast<int>(aparm));
 				}
 			);
-			handle_cmd::push("/silver", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/silver", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.change_silver(tools::lexical_cast<int>(aparm));
 				}
 			);
-			handle_cmd::push("/chat", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/chat", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					// c 3 0 channelid			// 获取所有聊天记录
 					// c 3 1 channelid "xxxx"	// 聊天发言	
@@ -73,7 +73,7 @@ namespace ngl
 					}
 				}
 			);
-			handle_cmd::push("/switch", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/switch", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
 					const tab_servers* tab = ttab_servers::find_first(GAME, [](tab_servers* atab)->bool
@@ -89,7 +89,7 @@ namespace ngl
 					role->handle(lmessage);
 				}
 			);
-			handle_cmd::push("/createorder", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/createorder", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					int32_t lrechargeid = 0;
 					if (tools::splite(aparm, "*", lrechargeid) == false)
@@ -99,21 +99,21 @@ namespace ngl
 					role->echo_msg(lorderid.c_str());
 				}
 			);
-			handle_cmd::push("/notices", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/notices", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE>();
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_NOTICE>(lmessage);
 				}
 			);
-			handle_cmd::push("/mails", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/mails", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST>();
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_MAIL>(lmessage);
 				}
 			);
-			handle_cmd::push("/create_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/create_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL>();
 					pro->set_m_name(aparm);
@@ -121,7 +121,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST>();
 					if(aparm != std::string(""))
@@ -132,7 +132,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/join_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/join_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
@@ -141,7 +141,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/cancel_join_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/cancel_join_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_JOIN_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
@@ -150,7 +150,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/ratify_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/ratify_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>();
 					int64_t lroleid = 0;
@@ -165,7 +165,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/cede_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/cede_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CEDE_FAMIL>();
 					int64_t lroleid = 0;
@@ -178,7 +178,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/leave_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/leave_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_LEAVE_FAMIL>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
@@ -186,7 +186,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/change_familyname", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/change_familyname", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>();
 					int64_t lfamilylid = 0;
@@ -201,7 +201,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/sign_family", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/sign_family", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMILSIGN>();
 					int64_t lfamilylid = 0;
@@ -214,7 +214,7 @@ namespace ngl
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				}
 			);
-			handle_cmd::push("/ranklist", [](actor_role* role, [[maybe_unused]] const char* aparm)
+			handle_cmd::push("/ranklist", [](const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST>();
 					bool liscross = true;
@@ -237,7 +237,7 @@ namespace ngl
 
 		std::string& lcmd = lvec[0];
 		std::ranges::transform(lcmd, lcmd.begin(), tolower);
-		if (handle_cmd::function(lcmd, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
+		if (handle_cmd::function(lcmd, adata.m_pack, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
 			log_error()->print("actor_role cmd [{}] ERROR", lcmd);
 		}
