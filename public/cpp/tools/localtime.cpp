@@ -259,12 +259,12 @@ namespace ngl
 
 
 #ifdef WIN32
-# define localtime_r localtime_s
+# define localtime_r(A,B) localtime_s(B,A)
 #endif
 
 	void localtime::gettm(time_t curr, tm& atm)
 	{
-		localtime_r(&atm, &curr);
+		localtime_r(&curr, &atm);
 	}
 
 	void localtime::getweekday(time_t curr, int& weekday, int& hour, int& minute)
