@@ -8,6 +8,11 @@ namespace ngl
 {
 	time_t localtime::m_offset = 0;
 
+	bool localtime::check_month(int amonth/*1-12*/)
+	{
+		return amonth >= 1 && amonth <= 12;
+	}
+
 	bool localtime::check_monthday(int amonthday/*1-31*/)
 	{
 		return amonthday >= 1 && amonthday <= 31;
@@ -116,8 +121,8 @@ namespace ngl
 	//获取utc时刻那天的 小时分钟的utc
 	time_t localtime::getsecond2time(time_t utc, int hour, int minute, int sec/*0-59*/)
 	{
-		std::tm tmTime = *std::localtime(&utc);
-		//struct tm* ltime = localtime(&curr);
+		std::tm tmTime;
+		gettm(utc, tmTime);
 		if (check_hour(hour))
 		{
 			tmTime.tm_hour = hour;
@@ -157,7 +162,8 @@ namespace ngl
 	int localtime::getutcbyhour(time_t utc, int hour)
 	{
 		time_t ltemp = utc + ((int)HOUR_SECOND * hour);
-		std::tm tmTime = *std::localtime(&ltemp);
+		std::tm tmTime;
+		gettm(ltemp, tmTime);
 		tmTime.tm_min = 0;
 		tmTime.tm_sec = 0;
 		return mktime(&tmTime);
@@ -166,7 +172,8 @@ namespace ngl
 	int localtime::getutcbymin(time_t utc, int min)
 	{
 		time_t ltemp = utc + ((int)MINUTES_SECOND * min);
-		std::tm ltime = *std::localtime(&ltemp);
+		std::tm ltime;
+		gettm(ltemp, ltime);
 		ltime.tm_sec = 0;
 		return mktime(&ltime);
 	}
@@ -174,7 +181,8 @@ namespace ngl
 	time_t localtime::getweekday(time_t utc, int aweek/*0-6*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
 	{
 		time_t lret = getsecond2time(utc, hour, minute, sec);
-		std::tm tmTime = *std::localtime(&utc);
+		std::tm tmTime;
+		gettm(utc, tmTime);
 		int lweek = tmTime.tm_wday == 0 ? 7 : tmTime.tm_wday;
 		return lret + (aweek- lweek) * DAY_SECOND;
 	}
@@ -195,15 +203,26 @@ namespace ngl
 
 	bool localtime::mothday(int year, int month, int aday)
 	{
-		int lday[] =
+		if (check_month(month) == false)
 		{
-			31,28,31,30,31,30,31,31,30,31,30,31,
-		};
-		if (month == 2 && isleapyear(year))
-		{
-			lday[month - 1] = 29;
+			return false;
 		}
-		if (aday > lday[month - 1] || aday <= 0)
+		int* lpday = nullptr;
+		static int lday[2][12] =
+		{
+			{31,29,31,30,31,30,31,31,30,31,30,31},
+			{31,28,31,30,31,30,31,31,30,31,30,31}
+		};
+		if (isleapyear(year))
+		{
+			lpday = lday[0];
+		}
+		else
+		{
+			lpday = lday[1];
+		}
+
+		if (aday > lpday[month - 1] || aday <= 0)
 		{
 			return false;
 		}
@@ -212,7 +231,8 @@ namespace ngl
 
 	std::pair<bool, time_t> localtime::getmothday(time_t utc, int amday/*1-31*/, int hour/*0-23*/, int minute/*0-59*/, int sec/*0-59*/)
 	{
-		std::tm ltime = *std::localtime(&utc);
+		std::tm ltime;
+		gettm(utc, ltime);
 
 		if (mothday(ltime.tm_year, ltime.tm_mday, amday) == false)
 		{
@@ -236,15 +256,16 @@ namespace ngl
 		time_t ltemplast = getsecond2time(last, 0, 0, 0);
 		return (ltempcurr - ltemplast) / DAY_SECOND;
 	}
-
 	void localtime::gettm(time_t curr, tm& atm)
 	{
-		atm = *std::localtime(&curr);
+		localtime_s(&atm, &curr);
 	}
 
 	void localtime::getweekday(time_t curr, int& weekday, int& hour, int& minute)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
+
 		weekday = ltime.tm_wday;
 		hour = ltime.tm_hour;
 		minute = ltime.tm_min;
@@ -257,7 +278,8 @@ namespace ngl
 
 	int localtime::getweekday(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return getweekday(&ltime);
 	}
 
@@ -268,7 +290,8 @@ namespace ngl
 
 	int localtime::getmoonday(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return getmoonday(&ltime);
 	}
 
@@ -279,7 +302,8 @@ namespace ngl
 
 	int localtime::getmoon(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return getweekday(&ltime);
 	}
 
@@ -291,7 +315,8 @@ namespace ngl
 
 	int localtime::getyear(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return getyear(&ltime);
 	}
 
@@ -302,7 +327,8 @@ namespace ngl
 
 	int localtime::gethour(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return gethour(&ltime);
 	}
 
@@ -313,7 +339,8 @@ namespace ngl
 
 	int localtime::getmin(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return getmin(&ltime);
 	}
 
@@ -324,7 +351,8 @@ namespace ngl
 
 	int localtime::getsec(time_t curr)
 	{
-		std::tm ltime = *std::localtime(&curr);
+		std::tm ltime;
+		gettm(curr, ltime);
 		return getsec(&ltime);
 	}
 

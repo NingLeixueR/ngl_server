@@ -161,4 +161,6 @@ namespace ngl
 	private:
 		static time_t m_offset;		//Ê±¼äÆ«ÒÆÁ¿
 	};
+
+	void test_isweek();
 }// namespace ngl
