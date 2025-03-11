@@ -257,9 +257,14 @@ namespace ngl
 		return (ltempcurr - ltemplast) / DAY_SECOND;
 	}
 
+
+#ifdef WIN32
+# define localtime_r localtime_s
+#endif
+
 	void localtime::gettm(time_t curr, tm& atm)
 	{
-		localtime_s(&atm, &curr);
+		localtime_r(&atm, &curr);
 	}
 
 	void localtime::getweekday(time_t curr, int& weekday, int& hour, int& minute)
