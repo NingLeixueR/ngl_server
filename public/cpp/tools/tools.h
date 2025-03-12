@@ -402,7 +402,7 @@ namespace ngl
 			{
 				return false;
 			}
-			for (std::string& item : lvec)
+			for (const auto& item : lvec)
 			{
 				avec.push_back(tools::lexical_cast<T>(item.c_str()));
 			}
@@ -417,7 +417,7 @@ namespace ngl
 			{
 				return false;
 			}
-			for (std::string& item : lvec)
+			for (const auto& item : lvec)
 			{
 				aset.insert(tools::lexical_cast<T>(item.c_str()));
 			}
@@ -489,7 +489,7 @@ namespace ngl
 				return false;
 			}
 			std::vector<std::pair<std::string, std::string>> lmailvec;
-			for (std::string& item : lvec)
+			for (const auto& item : lvec)
 			{
 				std::pair<TFIRST, TSECOND> lpair;
 				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
