@@ -207,7 +207,7 @@ namespace ngl
 		{
 			return false;
 		}
-		int* lpday = nullptr;
+		const int* lpday = nullptr;
 		static int lday[2][12] =
 		{
 			{31,29,31,30,31,30,31,31,30,31,30,31},
