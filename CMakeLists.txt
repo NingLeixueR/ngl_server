@@ -106,6 +106,9 @@ INCLUDE_DIRECTORIES(public/cpp/logic/public/public/family)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/friend)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/events)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
+INCLUDE_DIRECTORIES(public/cpp/logic/public/example)
+INCLUDE_DIRECTORIES(public/cpp/logic/public/example/match)
+
 INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 
 INCLUDE_DIRECTORIES(public/cpp/third_party)

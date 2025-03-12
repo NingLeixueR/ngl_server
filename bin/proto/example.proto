@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+
+import "db.proto";
+import "net.proto";
+
+package pbexample;
+//namespace
+//支持 SPEED(速度快，占用最大空间) CODE_SIZE LITE_RUNTIME(效率最高，且占用空间少，不支持反射)
+//option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
+option optimize_for = SPEED;
+
+enum EPLAY_TYPE
+{
+	EPLAY_GUESS_NUMBER = 0;
+}
+
+// 加入玩法
+message PROBUFF_NET_EXAMPLE_PLAY_JOIN
+{
+	optional EPLAY_TYPE m_type		= 1;
+};
+
+message PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE
+{
+	enum EERROR_CODE
+	{
+		EERROR_CODE_SUCCESS = 0;
+	}
+	optional EERROR_CODE m_errorcode		= 1;
+	optional int32 m_waittime				= 2; // 等待其他玩家加入时间(秒) 
+};
+
+// 同步匹配信息
+message PROBUFF_NET_EXAMPLE_PLAY_MATCHING
+{
+	optional int32 m_totalnumber			= 1; // 需要的总人数
+	repeated pbdb.db_brief m_players		= 2; // 匹配到的玩家
+};
+
+
+// 匹配结果
+message PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT
+{
+	enum EERROR_CODE
+	{
+		EERROR_CODE_SUCCESS = 0;
+		EERROR_CODE_TIMEOUT = 1;			// 超时
+		EERROR_CODE_CANCEL  = 2;			// 有玩家取消匹配
+		EERROR_CODE_CURRENT_CANCEL  = 3;	// 当前不允许取消匹配
+	}
+	optional EERROR_CODE m_errorcode		= 1;
+};
+
+// 是否需要确认加入
+message PROBUFF_NET_EXAMPLE_PLAY_CONFIRM
+{
+	optional bool m_isconfirm			= 1; // 是否需要确认加入
+};
+
+// 玩家确认加入
+message PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM
+{
+	optional bool m_isconfirm			= 1; // 是否需要确认加入
+};
+
+// 取消匹配
+message PROBUFF_NET_EXAMPLE_PLAY_CANCEL
+{
+	optional EPLAY_TYPE m_type		= 1;
+};
+
+///<<<<<<<<<<<<< 猜数字 
+
+
+
+
+
+///>>>>>>>>>>>>> 猜数字 
