@@ -61,7 +61,12 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     if (axml == "net")
     {
         lnamespace = "pbnet";
-    }else if (axml == "gm")
+    }
+    else if (axml == "examlpe")
+    {
+        lnamespace = "pbexamlpe";
+    }
+    else if (axml == "gm")
     {
         lnamespace = "GM";
     }
@@ -75,7 +80,10 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
         const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
         std::cout << "name: " << messageDescriptor->name() << std::endl;
         int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
-        if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos)
+        if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos 
+            || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos
+            || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
+            )
         {
             int32_t lnumber = (lprotocol == -1 ? ngl::xmlprotocol::free_protocol() : lprotocol);
             m_stream << "\t<config client = \"1\" name=\"class "
@@ -91,36 +99,73 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     lfile.write(m_stream.str());
 }
 
-void foreachProtobufMessages2(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
+std::string foreachProtobufMessages2(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
 {
-    ngl::writefile lfile("./pb_protocol.cpp");
-
     std::string lnamespace;
     if (axml == "net")
     {
         lnamespace = "pbnet";
+    }
+    else if (axml == "db")
+    {//pbdb
+        lnamespace = "pbdb";
+    }
+    else if (axml == "example")
+    {//pbexample
+        lnamespace = "pbexample";
     }
     else if (axml == "gm")
     {
         lnamespace = "GM";
     }
 
+    std::stringstream m_stream_pb;
+    int messageCount = fileDescriptor->message_type_count();
+    for (int i = 0; i < messageCount; ++i)
+    {
+        const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
+        std::cout << "name: " << messageDescriptor->name() << std::endl;
+        int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
+        if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos
+            || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos
+            || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
+            )
+        {
+            m_stream_pb << std::format("            null<{}::{}>,", lnamespace, messageDescriptor->name()) << std::endl;
+        }
+    }
+    return m_stream_pb.str();
+}
+
+void foreachProtobufMessages3(const std::string& astr)
+{
+    ngl::writefile lfile("./pb_protocol.cpp");
+
     std::stringstream m_stream;
+    m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
+    m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
     m_stream << "#include \"nprotocol.h\"" << std::endl;
     m_stream << "#include \"tprotocol.h\"" << std::endl;
+    m_stream << "#include \"actor.h\"" << std::endl;
+    m_stream << std::endl;
+    m_stream << "#include \"example.pb.h\"" << std::endl;
     m_stream << "#include \"net.pb.h\"" << std::endl;
+    m_stream << std::endl;
     m_stream << "#include <map>" << std::endl;
+    m_stream << std::endl;
     m_stream << "namespace ngl" << std::endl;
     m_stream << "{" << std::endl;
     m_stream << "   template <typename PB>" << std::endl;
     m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb)" << std::endl;
     m_stream << "   {" << std::endl;
+    m_stream << "       int32_t lprotocolnum = tprotocol::protocol<PB>();" << std::endl;
     m_stream << "       tprotocol::tp_forward::template func<" << std::endl;
     m_stream << "           ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>" << std::endl;
     m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>" << std::endl;
     m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>" << std::endl;
     m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>" << std::endl;
-    m_stream << "       >(EPROTOCOL_TYPE_PROTOCOLBUFF);" << std::endl;
+    m_stream << "           , np_actormodule_forward<PB>" << std::endl;
+    m_stream << "       >(EPROTOCOL_TYPE_PROTOCOLBUFF, lprotocolnum);" << std::endl;
     m_stream << "   }" << std::endl;
     m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
     m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;
@@ -131,29 +176,7 @@ void foreachProtobufMessages2(const google::protobuf::FileDescriptor* fileDescri
     m_stream << "   void tprotocol_forward_pb()" << std::endl;
     m_stream << "   {" << std::endl;
     m_stream << "        help_role_tprotocol_forward_pb(" << std::endl;
-   
-    std::stringstream m_stream_pb;
-    int messageCount = fileDescriptor->message_type_count();
-    bool lfirst = true;
-    for (int i = 0; i < messageCount; ++i)
-    {
-        const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
-        std::cout << "name: " << messageDescriptor->name() << std::endl;
-        int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
-        if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos)
-        {
-            if (lfirst)
-            {
-                m_stream_pb << std::format("            null<{}::{}>,", lnamespace, messageDescriptor->name()) << std::endl;
-            }
-            else
-            {
-                m_stream_pb << std::format("            ,null<{}::{}>,", lnamespace, messageDescriptor->name()) << std::endl;
-            }
-        }
-    }
-
-    std::string ltemp = m_stream_pb.str();
+    std::string ltemp = astr;
     if (!ltemp.empty())
     {
         if (ltemp[ltemp.size() - 2] == ',')
@@ -165,27 +188,24 @@ void foreachProtobufMessages2(const google::protobuf::FileDescriptor* fileDescri
             delete[]lbuff;
         }
     }
-
     m_stream << ltemp << std::endl;
-
     m_stream << "        );" << std::endl;
     m_stream << "   }" << std::endl;
-    m_stream << "}" << std::endl;
+    m_stream << "}//namespace ngl" << std::endl;
 
     lfile.write(m_stream.str());
-
 }
 
-void foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int32_t& aprotocol, const char* aname)
+std::string foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int32_t& aprotocol, const char* aname)
 {
     google::protobuf::compiler::Importer importer(&sourceTree, nullptr);
     const google::protobuf::FileDescriptor* fileDescriptor = importer.Import(std::string(aname) + ".proto");
     if (fileDescriptor == nullptr) {
         std::cerr << "Failed to import protobuf file descriptor" << std::endl;
-        return;
+        return "";
     }
     foreachProtobufMessages(fileDescriptor, aprotocol, aname);
-    foreachProtobufMessages2(fileDescriptor, aprotocol, aname);
+    return foreachProtobufMessages2(fileDescriptor, aprotocol, aname);
 }
 
 void traverseProtobufMessages(const char* apackname, const char* aname, const google::protobuf::FileDescriptor* fileDescriptor) {
@@ -362,7 +382,7 @@ int main(int argc, char** argv)
     g_stream_sql << " use lbtest;" << std::endl;
     g_stream_sql << std::endl;
 
-   traverseProtobuf(sourceTree, "Template", "db");
+    traverseProtobuf(sourceTree, "Template", "db");
   
     // 生成对应的sql文件
     ngl::writefile lsql("create_db.sql");
@@ -370,7 +390,8 @@ int main(int argc, char** argv)
     // 自动关联结构体为其提供协议号    
     ngl::xmlprotocol::load();
     int32_t lnumber = 0;
-    foreachProtobuf(sourceTree, lnumber, "net");
-
+    std::string ltempsss = foreachProtobuf(sourceTree, lnumber, "net");
+    ltempsss += foreachProtobuf(sourceTree, lnumber, "example");
+    foreachProtobufMessages3(ltempsss);
     return 0;
 }
