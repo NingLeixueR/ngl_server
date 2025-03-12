@@ -345,8 +345,7 @@ namespace ngl
 			payload += std::format("Subject: {}\r\n", aparm.m_title);
 			payload += "\r\n"; // 空行表示header部分结束
 			payload += std::format("{}\r\n", aparm.m_content); // 邮件内容
-
-			
+						
 			curl_easy_setopt(curl, CURLOPT_READDATA, payload.c_str());
 
 			curl_easy_setopt(curl, CURLOPT_READFUNCTION, &email_sender::callback); // 设置读取数据的回调函数

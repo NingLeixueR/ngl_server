@@ -726,6 +726,8 @@ namespace ngl
 				{
 					m_name = T().descriptor()->full_name();
 					ngl::tools::replace("pbdb.", "", m_name, m_name);
+					ngl::tools::replace("pbnet.", "", m_name, m_name);
+					ngl::tools::replace("pbexample.", "", m_name, m_name);
 				}
 				return m_name;
 			}
