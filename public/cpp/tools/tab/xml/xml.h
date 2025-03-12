@@ -33,7 +33,7 @@ namespace ngl
 				return nullptr;
 			}
 			tinyxml2::XMLElement* valElement = aele;
-			for (std::string& item : lvec)
+			for (const auto& item : lvec)
 			{
 				valElement = valElement->FirstChildElement(item.c_str());
 				if (valElement == nullptr)
