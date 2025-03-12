@@ -323,9 +323,9 @@ namespace ngl
 			curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30L);
 
 			// 设置收件人
-			for (const std::pair<std::string, std::string>& item : aparm.m_recvs)
+			for (const auto& [ mailarr, name ] : aparm.m_recvs)
 			{
-				recipients = curl_slist_append(recipients, std::format("<{}>", item.first).c_str());
+				recipients = curl_slist_append(recipients, std::format("<{}>", mailarr).c_str());
 			}
 			curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
