@@ -207,7 +207,7 @@ namespace ngl
 		{
 			return false;
 		}
-		int* lpday = nullptr;
+		const int* lpday = nullptr;
 		static int lday[2][12] =
 		{
 			{31,29,31,30,31,30,31,31,30,31,30,31},
@@ -256,9 +256,15 @@ namespace ngl
 		time_t ltemplast = getsecond2time(last, 0, 0, 0);
 		return (ltempcurr - ltemplast) / DAY_SECOND;
 	}
+
+
+#ifdef WIN32
+# define localtime_r(A,B) localtime_s(B,A)
+#endif
+
 	void localtime::gettm(time_t curr, tm& atm)
 	{
-		localtime_s(&atm, &curr);
+		localtime_r(&curr, &atm);
 	}
 
 	void localtime::getweekday(time_t curr, int& weekday, int& hour, int& minute)
@@ -304,7 +310,7 @@ namespace ngl
 	{
 		std::tm ltime;
 		gettm(curr, ltime);
-		return getweekday(&ltime);
+		return getmoon(&ltime);
 	}
 
 	int localtime::getyear(const tm* atm)
@@ -403,5 +409,15 @@ namespace ngl
 	bool localtime::issameweek(time_t timestamp1, time_t timestamp2)
 	{
 		return (getweekday(timestamp1, 1, 0, 0, 0) == getweekday(timestamp2, 1, 0, 0, 0));
+	}
+
+	void test_isweek()
+	{
+		time_t ltemp1 = ngl::localtime::gettime();
+		time_t ltemp2 = ltemp1 - 10 * 24 * 60 * 60;
+		for (int i = 0; i < 20; ++i, ltemp2 += 24 * 60 * 60)
+		{
+			std::cout << ngl::localtime::getmoon(ltemp2) << "." << ngl::localtime::getmoonday(ltemp2) << ":" << (ngl::localtime::issameweek(ltemp1, ltemp2) ? "yes" : "no") << std::endl;
+		}
 	}
 }// namespace ngl
