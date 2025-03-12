@@ -176,7 +176,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
+				static bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
 				if (lisforward == false)
 				{
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
@@ -197,7 +197,7 @@ namespace ngl
 			template <typename T>
 			static void func()
 			{
-				bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
+				static bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
 				if (lisforward == false)
 				{
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
