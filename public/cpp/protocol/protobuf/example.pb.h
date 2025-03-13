@@ -415,7 +415,6 @@ class PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE final :
 
   enum : int {
     kMRoomidFieldNumber = 2,
-    kMWaittimeFieldNumber = 3,
   };
   // optional int32 m_roomid = 2;
   bool has_m_roomid() const;
@@ -430,19 +429,6 @@ class PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE final :
   void _internal_set_m_roomid(int32_t value);
   public:
 
-  // optional int32 m_waittime = 3;
-  bool has_m_waittime() const;
-  private:
-  bool _internal_has_m_waittime() const;
-  public:
-  void clear_m_waittime();
-  int32_t m_waittime() const;
-  void set_m_waittime(int32_t value);
-  private:
-  int32_t _internal_m_waittime() const;
-  void _internal_set_m_waittime(int32_t value);
-  public:
-
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE)
  private:
   class _Internal;
@@ -454,7 +440,6 @@ class PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     int32_t m_roomid_;
-    int32_t m_waittime_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -755,11 +740,13 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMPlayersFieldNumber = 3,
+    kMPlayersFieldNumber = 5,
     kMRoomidFieldNumber = 1,
     kMTotalnumberFieldNumber = 2,
+    kMRoomcreateFieldNumber = 3,
+    kMRoomreadyFieldNumber = 4,
   };
-  // repeated .pbexample.PLAYER m_players = 3;
+  // repeated .pbexample.PLAYER m_players = 5;
   int m_players_size() const;
   private:
   int _internal_m_players_size() const;
@@ -803,6 +790,32 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING final :
   void _internal_set_m_totalnumber(int32_t value);
   public:
 
+  // optional int64 m_roomcreate = 3;
+  bool has_m_roomcreate() const;
+  private:
+  bool _internal_has_m_roomcreate() const;
+  public:
+  void clear_m_roomcreate();
+  int64_t m_roomcreate() const;
+  void set_m_roomcreate(int64_t value);
+  private:
+  int64_t _internal_m_roomcreate() const;
+  void _internal_set_m_roomcreate(int64_t value);
+  public:
+
+  // optional int64 m_roomready = 4;
+  bool has_m_roomready() const;
+  private:
+  bool _internal_has_m_roomready() const;
+  public:
+  void clear_m_roomready();
+  int64_t m_roomready() const;
+  void set_m_roomready(int64_t value);
+  private:
+  int64_t _internal_m_roomready() const;
+  void _internal_set_m_roomready(int64_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING)
  private:
   class _Internal;
@@ -816,6 +829,8 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING final :
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbexample::PLAYER > m_players_;
     int32_t m_roomid_;
     int32_t m_totalnumber_;
+    int64_t m_roomcreate_;
+    int64_t m_roomready_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -1563,34 +1578,6 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::set_m_roomid(int32_t value) 
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_roomid)
 }
 
-// optional int32 m_waittime = 3;
-inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_has_m_waittime() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::has_m_waittime() const {
-  return _internal_has_m_waittime();
-}
-inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::clear_m_waittime() {
-  _impl_.m_waittime_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline int32_t PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_m_waittime() const {
-  return _impl_.m_waittime_;
-}
-inline int32_t PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::m_waittime() const {
-  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_waittime)
-  return _internal_m_waittime();
-}
-inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_set_m_waittime(int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
-  _impl_.m_waittime_ = value;
-}
-inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::set_m_waittime(int32_t value) {
-  _internal_set_m_waittime(value);
-  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_waittime)
-}
-
 // -------------------------------------------------------------------
 
 // PLAYER
@@ -1770,7 +1757,63 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::set_m_totalnumber(int32_t value) 
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_totalnumber)
 }
 
-// repeated .pbexample.PLAYER m_players = 3;
+// optional int64 m_roomcreate = 3;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_has_m_roomcreate() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::has_m_roomcreate() const {
+  return _internal_has_m_roomcreate();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::clear_m_roomcreate() {
+  _impl_.m_roomcreate_ = int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline int64_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_roomcreate() const {
+  return _impl_.m_roomcreate_;
+}
+inline int64_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_roomcreate() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_roomcreate)
+  return _internal_m_roomcreate();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_set_m_roomcreate(int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_roomcreate_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::set_m_roomcreate(int64_t value) {
+  _internal_set_m_roomcreate(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_roomcreate)
+}
+
+// optional int64 m_roomready = 4;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_has_m_roomready() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::has_m_roomready() const {
+  return _internal_has_m_roomready();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::clear_m_roomready() {
+  _impl_.m_roomready_ = int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline int64_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_roomready() const {
+  return _impl_.m_roomready_;
+}
+inline int64_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_roomready() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_roomready)
+  return _internal_m_roomready();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_set_m_roomready(int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.m_roomready_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::set_m_roomready(int64_t value) {
+  _internal_set_m_roomready(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_roomready)
+}
+
+// repeated .pbexample.PLAYER m_players = 5;
 inline int PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_players_size() const {
   return _impl_.m_players_.size();
 }
