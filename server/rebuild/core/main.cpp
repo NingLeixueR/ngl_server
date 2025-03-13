@@ -54,6 +54,10 @@ void find(
 			{
 				lpath += (ch == '\\' ? '/' : ch);
 			}
+			if (lpath.find("third_party") == std::string::npos)
+			{
+				continue;
+			}
 
 			std::string lpath2 = &lpath.c_str()[sizeof("../../")-1];
 			std::cout << "dir:[" << lpath2 << "]" << std::endl;

@@ -22,7 +22,12 @@ namespace ngl
 		static int32_t		m_friendsapplylistcount;// 玩家好友请求列表数量
 		static int32_t		m_friendscount;			// 玩家好友数量
 		static int32_t		m_ranklistmaxcount;		// 排行榜最大条目数
+		// 例子游戏
+		static int32_t						m_example_room_maxtime;	// 例子游戏的最大匹配时间
+		static std::map<int32_t, int32_t>	m_example_totalnumber;	// 例子游戏的匹配人数
+
 		
+
 		ttab_specialid()
 		{}
 
@@ -70,8 +75,15 @@ namespace ngl
 						, de_pram(friendsapplylistcount)
 						, de_pram(familjoininterval)
 						, de_pram(friendscount)
-						, de_pram(ranklistmaxcount)						
-					);					
+						, de_pram(ranklistmaxcount)
+						, de_pram(example_room_maxtime)
+					);	
+					std::string lexample_totalnumber;
+					read_value(pair.second, "example_totalnumber", lexample_totalnumber);
+					if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
+					{
+						return;
+					}
 				});
 		}
 	};

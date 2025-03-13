@@ -190,13 +190,13 @@ namespace ngl
 			{
 				std::ranges::for_each(lfriendconst->m_friends(), [&pro, lfriendconst](i64_actorid afriends)
 					{
-						const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(afriends);
+						const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(afriends);
 						*pro->add_m_friends() = *lpbrief;
 					});
 
 				std::ranges::for_each(lfriendconst->m_applyfriends(), [&pro, lfriendconst](i64_actorid afriends)
 					{
-						const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(afriends);
+						const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(afriends);
 						*pro->add_m_applyfriends() = *lpbrief;
 					});
 			}
