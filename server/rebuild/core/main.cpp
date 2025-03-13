@@ -54,7 +54,7 @@ void find(
 			{
 				lpath += (ch == '\\' ? '/' : ch);
 			}
-			if (lpath.find("third_party") == std::string::npos)
+			if (lpath.find("third_party") != std::string::npos)
 			{
 				continue;
 			}
