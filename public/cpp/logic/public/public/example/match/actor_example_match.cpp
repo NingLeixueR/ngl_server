@@ -24,6 +24,8 @@ namespace ngl
 		auto pro = std::make_shared<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING>();
 		pro->set_m_roomid(aroom->m_roomid);
 		pro->set_m_totalnumber(aroom->m_totalnumber);
+		pro->set_m_roomcreate(aroom->m_roomcreate);
+		pro->set_m_roomready(aroom->m_roomready);
 		for (const auto [id, info] : aroom->m_players)
 		{
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(id);

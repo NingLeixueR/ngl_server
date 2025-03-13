@@ -110,6 +110,7 @@ namespace ngl
 			std::map<i64_actorid, player>	m_players;			// 参与匹配的玩家
 			std::set<i64_actorid>			m_playersset;		// 参与匹配的玩家
 			time_t							m_roomcreate;		// 房间创建时间
+			time_t							m_roomready;		// 房间就绪时间
 		};
 
 		std::map<i64_actorid, int32_t>				m_matching;				// key:roleid value:room id
@@ -117,6 +118,7 @@ namespace ngl
 		{
 			int32_t				m_index = 0;
 			std::set<int32_t>	m_roomlist;
+			std::set<int32_t>	m_readyroomlist; // 人满就绪列表
 		};
 		std::map<pbexample::EPLAY_TYPE, room_index>	m_roomindex;			// 房间号自增
 										/////////roomid////////
@@ -169,10 +171,14 @@ namespace ngl
 			lplayer.m_roleid = lroleid;
 			lproom->m_playersset.insert(lroleid);
 			m_matching[lroleid] = lproom->m_roomid;
+			if (lproom->m_playersset.size() >= lproom->m_totalnumber)
+			{
+				lproom->m_roomready = localtime::gettime();
+				m_roomindex[lproom->m_type].m_readyroomlist.insert(lproom->m_roomid);
+			}
 
 			auto pro = std::make_shared<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>();
 			pro->set_m_roomid(lproom->m_roomid);
-			pro->set_m_waittime(100);
 			send_client(lroleid, pro);
 
 			sync_match_info(lproom);
@@ -284,6 +290,12 @@ namespace ngl
 
 		bool timer_handle(const message<timerparm>& adata)
 		{
+			//std::map<pbexample::EPLAY_TYPE, room_index>	m_roomindex;			// 房间号自增
+			for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
+			{
+				item.second.m_readyroomlist;
+			}
+
 			ttab_specialid::m_example_room_maxtime;
 			return true;
 		}

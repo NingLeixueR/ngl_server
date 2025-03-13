@@ -39,8 +39,7 @@ PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::PROBUFF_NET_EXAMPLE_P
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.m_roomid_)*/0
-  , /*decltype(_impl_.m_waittime_)*/0} {}
+  , /*decltype(_impl_.m_roomid_)*/0} {}
 struct PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSEDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSEDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -71,7 +70,9 @@ PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_MATCHING::PROBUFF_NET_EXAMPLE_PLAY_M
   , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_.m_players_)*/{}
   , /*decltype(_impl_.m_roomid_)*/0
-  , /*decltype(_impl_.m_totalnumber_)*/0} {}
+  , /*decltype(_impl_.m_totalnumber_)*/0
+  , /*decltype(_impl_.m_roomcreate_)*/int64_t{0}
+  , /*decltype(_impl_.m_roomready_)*/int64_t{0}} {}
 struct PROBUFF_NET_EXAMPLE_PLAY_MATCHINGDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_MATCHINGDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -162,9 +163,7 @@ const uint32_t TableStruct_example_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE, _impl_.m_roomid_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE, _impl_.m_waittime_),
   0,
-  1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -183,9 +182,13 @@ const uint32_t TableStruct_example_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_roomid_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_totalnumber_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_roomcreate_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_roomready_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_players_),
   0,
   1,
+  2,
+  3,
   ~0u,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT, _internal_metadata_),
@@ -230,13 +233,13 @@ const uint32_t TableStruct_example_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN)},
-  { 8, 16, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE)},
-  { 18, 26, -1, sizeof(::pbexample::PLAYER)},
-  { 28, 37, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING)},
-  { 40, 48, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT)},
-  { 50, 58, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)},
-  { 60, 68, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM)},
-  { 70, 78, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL)},
+  { 8, 15, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE)},
+  { 16, 24, -1, sizeof(::pbexample::PLAYER)},
+  { 26, 37, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING)},
+  { 42, 50, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT)},
+  { 52, 60, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)},
+  { 62, 70, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM)},
+  { 72, 80, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -254,35 +257,36 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\n\rexample.proto\022\tpbexample\032\010db.proto\032\tne"
   "t.proto\"V\n\035PROBUFF_NET_EXAMPLE_PLAY_JOIN"
   "\022*\n\006m_type\030\001 \001(\0162\025.pbexample.EPLAY_TYPEH"
-  "\000\210\001\001B\t\n\007_m_type\"t\n&PROBUFF_NET_EXAMPLE_P"
+  "\000\210\001\001B\t\n\007_m_type\"L\n&PROBUFF_NET_EXAMPLE_P"
   "LAY_JOIN_RESPONSE\022\025\n\010m_roomid\030\002 \001(\005H\000\210\001\001"
-  "\022\027\n\nm_waittime\030\003 \001(\005H\001\210\001\001B\013\n\t_m_roomidB\r"
-  "\n\013_m_waittime\"h\n\006PLAYER\022&\n\tm_players\030\001 \001"
+  "B\013\n\t_m_roomid\"h\n\006PLAYER\022&\n\tm_players\030\001 \001"
   "(\0132\016.pbdb.db_briefH\000\210\001\001\022\030\n\013m_isconfirm\030\002"
   " \001(\010H\001\210\001\001B\014\n\n_m_playersB\016\n\014_m_isconfirm\""
-  "\233\001\n!PROBUFF_NET_EXAMPLE_PLAY_MATCHING\022\025\n"
+  "\361\001\n!PROBUFF_NET_EXAMPLE_PLAY_MATCHING\022\025\n"
   "\010m_roomid\030\001 \001(\005H\000\210\001\001\022\032\n\rm_totalnumber\030\002 "
-  "\001(\005H\001\210\001\001\022$\n\tm_players\030\003 \003(\0132\021.pbexample."
-  "PLAYERB\013\n\t_m_roomidB\020\n\016_m_totalnumber\"\225\001"
-  "\n(PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESU"
-  "LT\0225\n\013m_errorcode\030\001 \001(\0162\033.pbexample.PLAY"
-  "_EERROR_CODEH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001"
-  "B\016\n\014_m_errorcodeB\013\n\t_m_roomid\"p\n PROBUFF"
-  "_NET_EXAMPLE_PLAY_CONFIRM\022\030\n\013m_isconfirm"
-  "\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\016\n\014_m"
-  "_isconfirmB\013\n\t_m_roomid\"w\n\'PROBUFF_NET_E"
-  "XAMPLE_PLAY_PLAYER_CONFIRM\022\030\n\013m_isconfir"
-  "m\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001B\016\n\014_"
-  "m_isconfirmB\013\n\t_m_roomid\"|\n\037PROBUFF_NET_"
-  "EXAMPLE_PLAY_CANCEL\022*\n\006m_type\030\001 \001(\0162\025.pb"
-  "example.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_roomid\030\002 \001("
-  "\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomid*$\n\nEPLAY_"
-  "TYPE\022\026\n\022EPLAY_GUESS_NUMBER\020\000*\267\001\n\020PLAY_EE"
-  "RROR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000\022\027\n\023EE"
-  "RROR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE_CANCE"
-  "L\020\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020\003\022\033\n\027E"
-  "ERROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR_CODE_"
-  "ROOM_DESTORY\020\005B\002H\001b\006proto3"
+  "\001(\005H\001\210\001\001\022\031\n\014m_roomcreate\030\003 \001(\003H\002\210\001\001\022\030\n\013m"
+  "_roomready\030\004 \001(\003H\003\210\001\001\022$\n\tm_players\030\005 \003(\013"
+  "2\021.pbexample.PLAYERB\013\n\t_m_roomidB\020\n\016_m_t"
+  "otalnumberB\017\n\r_m_roomcreateB\016\n\014_m_roomre"
+  "ady\"\225\001\n(PROBUFF_NET_EXAMPLE_PLAY_MATCHIN"
+  "G_RESULT\0225\n\013m_errorcode\030\001 \001(\0162\033.pbexampl"
+  "e.PLAY_EERROR_CODEH\000\210\001\001\022\025\n\010m_roomid\030\002 \001("
+  "\005H\001\210\001\001B\016\n\014_m_errorcodeB\013\n\t_m_roomid\"p\n P"
+  "ROBUFF_NET_EXAMPLE_PLAY_CONFIRM\022\030\n\013m_isc"
+  "onfirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001"
+  "B\016\n\014_m_isconfirmB\013\n\t_m_roomid\"w\n\'PROBUFF"
+  "_NET_EXAMPLE_PLAY_PLAYER_CONFIRM\022\030\n\013m_is"
+  "confirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001"
+  "\001B\016\n\014_m_isconfirmB\013\n\t_m_roomid\"|\n\037PROBUF"
+  "F_NET_EXAMPLE_PLAY_CANCEL\022*\n\006m_type\030\001 \001("
+  "\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_roomi"
+  "d\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomid*$\n\n"
+  "EPLAY_TYPE\022\026\n\022EPLAY_GUESS_NUMBER\020\000*\267\001\n\020P"
+  "LAY_EERROR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000"
+  "\022\027\n\023EERROR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE"
+  "_CANCEL\020\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020"
+  "\003\022\033\n\027EERROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR"
+  "_CODE_ROOM_DESTORY\020\005B\002H\001b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -290,7 +294,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_example_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_example_2eproto = {
-    false, false, 1266, descriptor_table_protodef_example_2eproto,
+    false, false, 1312, descriptor_table_protodef_example_2eproto,
     "example.proto",
     &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_deps, 2, 8,
     schemas, file_default_instances, TableStruct_example_2eproto::offsets,
@@ -536,9 +540,6 @@ class PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_Internal {
   static void set_has_m_roomid(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_waittime(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
-  }
 };
 
 PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -553,13 +554,10 @@ PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE(c
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.m_roomid_){}
-    , decltype(_impl_.m_waittime_){}};
+    , decltype(_impl_.m_roomid_){}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.m_roomid_, &from._impl_.m_roomid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.m_waittime_) -
-    reinterpret_cast<char*>(&_impl_.m_roomid_)) + sizeof(_impl_.m_waittime_));
+  _this->_impl_.m_roomid_ = from._impl_.m_roomid_;
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE)
 }
 
@@ -571,7 +569,6 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::SharedCtor(
       decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.m_roomid_){0}
-    , decltype(_impl_.m_waittime_){0}
   };
 }
 
@@ -598,12 +595,7 @@ void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    ::memset(&_impl_.m_roomid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&_impl_.m_waittime_) -
-        reinterpret_cast<char*>(&_impl_.m_roomid_)) + sizeof(_impl_.m_waittime_));
-  }
+  _impl_.m_roomid_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -620,15 +612,6 @@ const char* PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_InternalParse(const char* p
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _Internal::set_has_m_roomid(&has_bits);
           _impl_.m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // optional int32 m_waittime = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          _Internal::set_has_m_waittime(&has_bits);
-          _impl_.m_waittime_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -669,12 +652,6 @@ uint8_t* PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_roomid(), target);
   }
 
-  // optional int32 m_waittime = 3;
-  if (_internal_has_m_waittime()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_waittime(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -691,19 +668,12 @@ size_t PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // optional int32 m_roomid = 2;
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    // optional int32 m_roomid = 2;
-    if (cached_has_bits & 0x00000001u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_roomid());
-    }
-
-    // optional int32 m_waittime = 3;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_waittime());
-    }
-
+  if (cached_has_bits & 0x00000001u) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_roomid());
   }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -722,15 +692,8 @@ void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::MergeImpl(::PROTOBUF_NAMESPACE_ID::
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      _this->_impl_.m_roomid_ = from._impl_.m_roomid_;
-    }
-    if (cached_has_bits & 0x00000002u) {
-      _this->_impl_.m_waittime_ = from._impl_.m_waittime_;
-    }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
+  if (from._internal_has_m_roomid()) {
+    _this->_internal_set_m_roomid(from._internal_m_roomid());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -750,12 +713,7 @@ void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::InternalSwap(PROBUFF_NET_EXAMPLE_PL
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE, _impl_.m_waittime_)
-      + sizeof(PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_impl_.m_waittime_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE, _impl_.m_roomid_)>(
-          reinterpret_cast<char*>(&_impl_.m_roomid_),
-          reinterpret_cast<char*>(&other->_impl_.m_roomid_));
+  swap(_impl_.m_roomid_, other->_impl_.m_roomid_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::GetMetadata() const {
@@ -1025,6 +983,12 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_Internal {
   static void set_has_m_totalnumber(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
+  static void set_has_m_roomcreate(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static void set_has_m_roomready(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
 };
 
 PROBUFF_NET_EXAMPLE_PLAY_MATCHING::PROBUFF_NET_EXAMPLE_PLAY_MATCHING(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -1041,12 +1005,14 @@ PROBUFF_NET_EXAMPLE_PLAY_MATCHING::PROBUFF_NET_EXAMPLE_PLAY_MATCHING(const PROBU
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.m_players_){from._impl_.m_players_}
     , decltype(_impl_.m_roomid_){}
-    , decltype(_impl_.m_totalnumber_){}};
+    , decltype(_impl_.m_totalnumber_){}
+    , decltype(_impl_.m_roomcreate_){}
+    , decltype(_impl_.m_roomready_){}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&_impl_.m_roomid_, &from._impl_.m_roomid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.m_totalnumber_) -
-    reinterpret_cast<char*>(&_impl_.m_roomid_)) + sizeof(_impl_.m_totalnumber_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.m_roomready_) -
+    reinterpret_cast<char*>(&_impl_.m_roomid_)) + sizeof(_impl_.m_roomready_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING)
 }
 
@@ -1060,6 +1026,8 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::SharedCtor(
     , decltype(_impl_.m_players_){arena}
     , decltype(_impl_.m_roomid_){0}
     , decltype(_impl_.m_totalnumber_){0}
+    , decltype(_impl_.m_roomcreate_){int64_t{0}}
+    , decltype(_impl_.m_roomready_){int64_t{0}}
   };
 }
 
@@ -1089,10 +1057,10 @@ void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::Clear() {
 
   _impl_.m_players_.Clear();
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x0000000fu) {
     ::memset(&_impl_.m_roomid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&_impl_.m_totalnumber_) -
-        reinterpret_cast<char*>(&_impl_.m_roomid_)) + sizeof(_impl_.m_totalnumber_));
+        reinterpret_cast<char*>(&_impl_.m_roomready_) -
+        reinterpret_cast<char*>(&_impl_.m_roomid_)) + sizeof(_impl_.m_roomready_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -1123,16 +1091,34 @@ const char* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_InternalParse(const char* ptr, :
         } else
           goto handle_unusual;
         continue;
-      // repeated .pbexample.PLAYER m_players = 3;
+      // optional int64 m_roomcreate = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _Internal::set_has_m_roomcreate(&has_bits);
+          _impl_.m_roomcreate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional int64 m_roomready = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _Internal::set_has_m_roomready(&has_bits);
+          _impl_.m_roomready_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .pbexample.PLAYER m_players = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_m_players(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<42>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -1178,12 +1164,24 @@ uint8_t* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_totalnumber(), target);
   }
 
-  // repeated .pbexample.PLAYER m_players = 3;
+  // optional int64 m_roomcreate = 3;
+  if (_internal_has_m_roomcreate()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_roomcreate(), target);
+  }
+
+  // optional int64 m_roomready = 4;
+  if (_internal_has_m_roomready()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(4, this->_internal_m_roomready(), target);
+  }
+
+  // repeated .pbexample.PLAYER m_players = 5;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_m_players_size()); i < n; i++) {
     const auto& repfield = this->_internal_m_players(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
+        InternalWriteMessage(5, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1202,7 +1200,7 @@ size_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .pbexample.PLAYER m_players = 3;
+  // repeated .pbexample.PLAYER m_players = 5;
   total_size += 1UL * this->_internal_m_players_size();
   for (const auto& msg : this->_impl_.m_players_) {
     total_size +=
@@ -1210,7 +1208,7 @@ size_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::ByteSizeLong() const {
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x0000000fu) {
     // optional int32 m_roomid = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_roomid());
@@ -1219,6 +1217,16 @@ size_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::ByteSizeLong() const {
     // optional int32 m_totalnumber = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_totalnumber());
+    }
+
+    // optional int64 m_roomcreate = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_m_roomcreate());
+    }
+
+    // optional int64 m_roomready = 4;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_m_roomready());
     }
 
   }
@@ -1242,12 +1250,18 @@ void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::MergeImpl(::PROTOBUF_NAMESPACE_ID::Messa
 
   _this->_impl_.m_players_.MergeFrom(from._impl_.m_players_);
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       _this->_impl_.m_roomid_ = from._impl_.m_roomid_;
     }
     if (cached_has_bits & 0x00000002u) {
       _this->_impl_.m_totalnumber_ = from._impl_.m_totalnumber_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_impl_.m_roomcreate_ = from._impl_.m_roomcreate_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.m_roomready_ = from._impl_.m_roomready_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
@@ -1271,8 +1285,8 @@ void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::InternalSwap(PROBUFF_NET_EXAMPLE_PLAY_MA
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.m_players_.InternalSwap(&other->_impl_.m_players_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_totalnumber_)
-      + sizeof(PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_impl_.m_totalnumber_)
+      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_roomready_)
+      + sizeof(PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_impl_.m_roomready_)
       - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_MATCHING, _impl_.m_roomid_)>(
           reinterpret_cast<char*>(&_impl_.m_roomid_),
           reinterpret_cast<char*>(&other->_impl_.m_roomid_));
