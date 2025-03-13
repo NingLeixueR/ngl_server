@@ -500,6 +500,31 @@ namespace ngl
 			}
 			return true;
 		}
+
+		template <typename TFIRST = std::string, typename TSECOND = std::string>
+		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::map<TFIRST, TSECOND>& amap)
+		{
+			std::string ltemp = astr;
+			if (ngl::tools::replace_ret(akey1, "", ltemp, ltemp) == false)
+			{
+				return false;
+			}
+			std::vector<std::string> lvec;
+			if (ngl::tools::splite(ltemp.c_str(), akey2, lvec) == false)
+			{
+				return false;
+			}
+			for (const auto& item : lvec)
+			{
+				std::pair<TFIRST, TSECOND> lpair;
+				if (ngl::tools::splite(item.c_str(), ":", lpair.first, lpair.second) == false)
+				{
+					return false;
+				}
+				amap.insert(lpair);
+			}
+			return true;
+		}
 #pragma endregion
 
 #pragma region splicing

@@ -1,6 +1,7 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-03-12 17:50:12
+// 创建时间 25-03-13 15:37:57
 #include "actor_manage_activity.cpp"
+#include "actor_example_match.cpp"
 #include "actor_manage_plays.cpp"
 #include "calendar_function.cpp"
 #include "actor_role_handle.cpp"

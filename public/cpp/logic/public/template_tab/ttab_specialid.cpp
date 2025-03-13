@@ -12,4 +12,6 @@ namespace ngl
 	int32_t		ttab_specialid::m_friendsapplylistcount = 0;
 	int32_t		ttab_specialid::m_friendscount = 0;
 	int32_t		ttab_specialid::m_ranklistmaxcount = 0;
+	int32_t		ttab_specialid::m_example_room_maxtime = 0;
+	std::map<int32_t, int32_t>	ttab_specialid::m_example_totalnumber;
 }

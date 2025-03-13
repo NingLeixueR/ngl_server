@@ -48,6 +48,9 @@ struct TableStruct_example_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_example_2eproto;
 namespace pbexample {
+class PLAYER;
+struct PLAYERDefaultTypeInternal;
+extern PLAYERDefaultTypeInternal _PLAYER_default_instance_;
 class PROBUFF_NET_EXAMPLE_PLAY_CANCEL;
 struct PROBUFF_NET_EXAMPLE_PLAY_CANCELDefaultTypeInternal;
 extern PROBUFF_NET_EXAMPLE_PLAY_CANCELDefaultTypeInternal _PROBUFF_NET_EXAMPLE_PLAY_CANCEL_default_instance_;
@@ -71,6 +74,7 @@ struct PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRMDefaultTypeInternal;
 extern PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRMDefaultTypeInternal _PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM_default_instance_;
 }  // namespace pbexample
 PROTOBUF_NAMESPACE_OPEN
+template<> ::pbexample::PLAYER* Arena::CreateMaybeMessage<::pbexample::PLAYER>(Arena*);
 template<> ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL* Arena::CreateMaybeMessage<::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL>(Arena*);
 template<> ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM* Arena::CreateMaybeMessage<::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM>(Arena*);
 template<> ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN* Arena::CreateMaybeMessage<::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>(Arena*);
@@ -81,57 +85,6 @@ template<> ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM* Arena::CreateMa
 PROTOBUF_NAMESPACE_CLOSE
 namespace pbexample {
 
-enum PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE : int {
-  PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_SUCCESS = 0,
-  PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
-};
-bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_IsValid(int value);
-constexpr PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_MIN = PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_SUCCESS;
-constexpr PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_MAX = PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_SUCCESS;
-constexpr int PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_ARRAYSIZE = PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_descriptor();
-template<typename T>
-inline const std::string& PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_descriptor(), enum_t_value);
-}
-inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE>(
-    PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_descriptor(), name, value);
-}
-enum PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE : int {
-  PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_SUCCESS = 0,
-  PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_TIMEOUT = 1,
-  PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_CANCEL = 2,
-  PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_CURRENT_CANCEL = 3,
-  PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
-};
-bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_IsValid(int value);
-constexpr PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_MIN = PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_SUCCESS;
-constexpr PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_MAX = PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_CURRENT_CANCEL;
-constexpr int PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_ARRAYSIZE = PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_descriptor();
-template<typename T>
-inline const std::string& PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_descriptor(), enum_t_value);
-}
-inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE>(
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_descriptor(), name, value);
-}
 enum EPLAY_TYPE : int {
   EPLAY_GUESS_NUMBER = 0,
   EPLAY_TYPE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
@@ -155,6 +108,35 @@ inline bool EPLAY_TYPE_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, EPLAY_TYPE* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<EPLAY_TYPE>(
     EPLAY_TYPE_descriptor(), name, value);
+}
+enum PLAY_EERROR_CODE : int {
+  EERROR_CODE_SUCCESS = 0,
+  EERROR_CODE_TIMEOUT = 1,
+  EERROR_CODE_CANCEL = 2,
+  EERROR_CODE_CURRENT_CANCEL = 3,
+  EERROR_CODE_NOTFINDROOM = 4,
+  EERROR_CODE_ROOM_DESTORY = 5,
+  PLAY_EERROR_CODE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  PLAY_EERROR_CODE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool PLAY_EERROR_CODE_IsValid(int value);
+constexpr PLAY_EERROR_CODE PLAY_EERROR_CODE_MIN = EERROR_CODE_SUCCESS;
+constexpr PLAY_EERROR_CODE PLAY_EERROR_CODE_MAX = EERROR_CODE_ROOM_DESTORY;
+constexpr int PLAY_EERROR_CODE_ARRAYSIZE = PLAY_EERROR_CODE_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAY_EERROR_CODE_descriptor();
+template<typename T>
+inline const std::string& PLAY_EERROR_CODE_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PLAY_EERROR_CODE>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function PLAY_EERROR_CODE_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    PLAY_EERROR_CODE_descriptor(), enum_t_value);
+}
+inline bool PLAY_EERROR_CODE_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PLAY_EERROR_CODE* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PLAY_EERROR_CODE>(
+    PLAY_EERROR_CODE_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -429,54 +411,26 @@ class PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE final :
 
   // nested types ----------------------------------------------------
 
-  typedef PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE EERROR_CODE;
-  static constexpr EERROR_CODE EERROR_CODE_SUCCESS =
-    PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_SUCCESS;
-  static inline bool EERROR_CODE_IsValid(int value) {
-    return PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_IsValid(value);
-  }
-  static constexpr EERROR_CODE EERROR_CODE_MIN =
-    PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_MIN;
-  static constexpr EERROR_CODE EERROR_CODE_MAX =
-    PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_MAX;
-  static constexpr int EERROR_CODE_ARRAYSIZE =
-    PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_EERROR_CODE_ARRAYSIZE;
-  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  EERROR_CODE_descriptor() {
-    return PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_descriptor();
-  }
-  template<typename T>
-  static inline const std::string& EERROR_CODE_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, EERROR_CODE>::value ||
-      ::std::is_integral<T>::value,
-      "Incorrect type passed to function EERROR_CODE_Name.");
-    return PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_Name(enum_t_value);
-  }
-  static inline bool EERROR_CODE_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      EERROR_CODE* value) {
-    return PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMErrorcodeFieldNumber = 1,
-    kMWaittimeFieldNumber = 2,
+    kMRoomidFieldNumber = 2,
+    kMWaittimeFieldNumber = 3,
   };
-  // optional .pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.EERROR_CODE m_errorcode = 1;
-  bool has_m_errorcode() const;
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
   private:
-  bool _internal_has_m_errorcode() const;
+  bool _internal_has_m_roomid() const;
   public:
-  void clear_m_errorcode();
-  ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE m_errorcode() const;
-  void set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE value);
+  void clear_m_roomid();
+  int32_t m_roomid() const;
+  void set_m_roomid(int32_t value);
   private:
-  ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE _internal_m_errorcode() const;
-  void _internal_set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE value);
+  int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(int32_t value);
   public:
 
-  // optional int32 m_waittime = 2;
+  // optional int32 m_waittime = 3;
   bool has_m_waittime() const;
   private:
   bool _internal_has_m_waittime() const;
@@ -499,8 +453,181 @@ class PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    int m_errorcode_;
+    int32_t m_roomid_;
     int32_t m_waittime_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_example_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PLAYER final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbexample.PLAYER) */ {
+ public:
+  inline PLAYER() : PLAYER(nullptr) {}
+  ~PLAYER() override;
+  explicit PROTOBUF_CONSTEXPR PLAYER(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PLAYER(const PLAYER& from);
+  PLAYER(PLAYER&& from) noexcept
+    : PLAYER() {
+    *this = ::std::move(from);
+  }
+
+  inline PLAYER& operator=(const PLAYER& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PLAYER& operator=(PLAYER&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PLAYER& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PLAYER* internal_default_instance() {
+    return reinterpret_cast<const PLAYER*>(
+               &_PLAYER_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(PLAYER& a, PLAYER& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PLAYER* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PLAYER* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PLAYER* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PLAYER>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PLAYER& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PLAYER& from) {
+    PLAYER::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PLAYER* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbexample.PLAYER";
+  }
+  protected:
+  explicit PLAYER(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMPlayersFieldNumber = 1,
+    kMIsconfirmFieldNumber = 2,
+  };
+  // optional .pbdb.db_brief m_players = 1;
+  bool has_m_players() const;
+  private:
+  bool _internal_has_m_players() const;
+  public:
+  void clear_m_players();
+  const ::pbdb::db_brief& m_players() const;
+  PROTOBUF_NODISCARD ::pbdb::db_brief* release_m_players();
+  ::pbdb::db_brief* mutable_m_players();
+  void set_allocated_m_players(::pbdb::db_brief* m_players);
+  private:
+  const ::pbdb::db_brief& _internal_m_players() const;
+  ::pbdb::db_brief* _internal_mutable_m_players();
+  public:
+  void unsafe_arena_set_allocated_m_players(
+      ::pbdb::db_brief* m_players);
+  ::pbdb::db_brief* unsafe_arena_release_m_players();
+
+  // optional bool m_isconfirm = 2;
+  bool has_m_isconfirm() const;
+  private:
+  bool _internal_has_m_isconfirm() const;
+  public:
+  void clear_m_isconfirm();
+  bool m_isconfirm() const;
+  void set_m_isconfirm(bool value);
+  private:
+  bool _internal_m_isconfirm() const;
+  void _internal_set_m_isconfirm(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbexample.PLAYER)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::pbdb::db_brief* m_players_;
+    bool m_isconfirm_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -555,7 +682,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING final :
                &_PROBUFF_NET_EXAMPLE_PLAY_MATCHING_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(PROBUFF_NET_EXAMPLE_PLAY_MATCHING& a, PROBUFF_NET_EXAMPLE_PLAY_MATCHING& b) {
     a.Swap(&b);
@@ -628,28 +755,42 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMPlayersFieldNumber = 2,
-    kMTotalnumberFieldNumber = 1,
+    kMPlayersFieldNumber = 3,
+    kMRoomidFieldNumber = 1,
+    kMTotalnumberFieldNumber = 2,
   };
-  // repeated .pbdb.db_brief m_players = 2;
+  // repeated .pbexample.PLAYER m_players = 3;
   int m_players_size() const;
   private:
   int _internal_m_players_size() const;
   public:
   void clear_m_players();
-  ::pbdb::db_brief* mutable_m_players(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_brief >*
+  ::pbexample::PLAYER* mutable_m_players(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbexample::PLAYER >*
       mutable_m_players();
   private:
-  const ::pbdb::db_brief& _internal_m_players(int index) const;
-  ::pbdb::db_brief* _internal_add_m_players();
+  const ::pbexample::PLAYER& _internal_m_players(int index) const;
+  ::pbexample::PLAYER* _internal_add_m_players();
   public:
-  const ::pbdb::db_brief& m_players(int index) const;
-  ::pbdb::db_brief* add_m_players();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_brief >&
+  const ::pbexample::PLAYER& m_players(int index) const;
+  ::pbexample::PLAYER* add_m_players();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbexample::PLAYER >&
       m_players() const;
 
-  // optional int32 m_totalnumber = 1;
+  // optional int32 m_roomid = 1;
+  bool has_m_roomid() const;
+  private:
+  bool _internal_has_m_roomid() const;
+  public:
+  void clear_m_roomid();
+  int32_t m_roomid() const;
+  void set_m_roomid(int32_t value);
+  private:
+  int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(int32_t value);
+  public:
+
+  // optional int32 m_totalnumber = 2;
   bool has_m_totalnumber() const;
   private:
   bool _internal_has_m_totalnumber() const;
@@ -672,7 +813,8 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_brief > m_players_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbexample::PLAYER > m_players_;
+    int32_t m_roomid_;
     int32_t m_totalnumber_;
   };
   union { Impl_ _impl_; };
@@ -728,7 +870,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT final :
                &_PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT& a, PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT& b) {
     a.Swap(&b);
@@ -798,56 +940,36 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT final :
 
   // nested types ----------------------------------------------------
 
-  typedef PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE EERROR_CODE;
-  static constexpr EERROR_CODE EERROR_CODE_SUCCESS =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_SUCCESS;
-  static constexpr EERROR_CODE EERROR_CODE_TIMEOUT =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_TIMEOUT;
-  static constexpr EERROR_CODE EERROR_CODE_CANCEL =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_CANCEL;
-  static constexpr EERROR_CODE EERROR_CODE_CURRENT_CANCEL =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_CURRENT_CANCEL;
-  static inline bool EERROR_CODE_IsValid(int value) {
-    return PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_IsValid(value);
-  }
-  static constexpr EERROR_CODE EERROR_CODE_MIN =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_MIN;
-  static constexpr EERROR_CODE EERROR_CODE_MAX =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_MAX;
-  static constexpr int EERROR_CODE_ARRAYSIZE =
-    PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_EERROR_CODE_ARRAYSIZE;
-  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  EERROR_CODE_descriptor() {
-    return PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_descriptor();
-  }
-  template<typename T>
-  static inline const std::string& EERROR_CODE_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, EERROR_CODE>::value ||
-      ::std::is_integral<T>::value,
-      "Incorrect type passed to function EERROR_CODE_Name.");
-    return PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_Name(enum_t_value);
-  }
-  static inline bool EERROR_CODE_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      EERROR_CODE* value) {
-    return PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   enum : int {
     kMErrorcodeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
-  // optional .pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT.EERROR_CODE m_errorcode = 1;
+  // optional .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
   bool has_m_errorcode() const;
   private:
   bool _internal_has_m_errorcode() const;
   public:
   void clear_m_errorcode();
-  ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE m_errorcode() const;
-  void set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE value);
+  ::pbexample::PLAY_EERROR_CODE m_errorcode() const;
+  void set_m_errorcode(::pbexample::PLAY_EERROR_CODE value);
   private:
-  ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE _internal_m_errorcode() const;
-  void _internal_set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE value);
+  ::pbexample::PLAY_EERROR_CODE _internal_m_errorcode() const;
+  void _internal_set_m_errorcode(::pbexample::PLAY_EERROR_CODE value);
+  public:
+
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  private:
+  bool _internal_has_m_roomid() const;
+  public:
+  void clear_m_roomid();
+  int32_t m_roomid() const;
+  void set_m_roomid(int32_t value);
+  private:
+  int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(int32_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT)
@@ -861,6 +983,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     int m_errorcode_;
+    int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -915,7 +1038,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_CONFIRM final :
                &_PROBUFF_NET_EXAMPLE_PLAY_CONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(PROBUFF_NET_EXAMPLE_PLAY_CONFIRM& a, PROBUFF_NET_EXAMPLE_PLAY_CONFIRM& b) {
     a.Swap(&b);
@@ -989,6 +1112,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_CONFIRM final :
 
   enum : int {
     kMIsconfirmFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
   // optional bool m_isconfirm = 1;
   bool has_m_isconfirm() const;
@@ -1003,6 +1127,19 @@ class PROBUFF_NET_EXAMPLE_PLAY_CONFIRM final :
   void _internal_set_m_isconfirm(bool value);
   public:
 
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  private:
+  bool _internal_has_m_roomid() const;
+  public:
+  void clear_m_roomid();
+  int32_t m_roomid() const;
+  void set_m_roomid(int32_t value);
+  private:
+  int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(int32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
  private:
   class _Internal;
@@ -1014,6 +1151,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_CONFIRM final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     bool m_isconfirm_;
+    int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -1068,7 +1206,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM final :
                &_PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM& a, PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM& b) {
     a.Swap(&b);
@@ -1142,6 +1280,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM final :
 
   enum : int {
     kMIsconfirmFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
   // optional bool m_isconfirm = 1;
   bool has_m_isconfirm() const;
@@ -1156,6 +1295,19 @@ class PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM final :
   void _internal_set_m_isconfirm(bool value);
   public:
 
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  private:
+  bool _internal_has_m_roomid() const;
+  public:
+  void clear_m_roomid();
+  int32_t m_roomid() const;
+  void set_m_roomid(int32_t value);
+  private:
+  int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(int32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM)
  private:
   class _Internal;
@@ -1167,6 +1319,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     bool m_isconfirm_;
+    int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -1221,7 +1374,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_CANCEL final :
                &_PROBUFF_NET_EXAMPLE_PLAY_CANCEL_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(PROBUFF_NET_EXAMPLE_PLAY_CANCEL& a, PROBUFF_NET_EXAMPLE_PLAY_CANCEL& b) {
     a.Swap(&b);
@@ -1295,6 +1448,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_CANCEL final :
 
   enum : int {
     kMTypeFieldNumber = 1,
+    kMRoomidFieldNumber = 2,
   };
   // optional .pbexample.EPLAY_TYPE m_type = 1;
   bool has_m_type() const;
@@ -1309,6 +1463,19 @@ class PROBUFF_NET_EXAMPLE_PLAY_CANCEL final :
   void _internal_set_m_type(::pbexample::EPLAY_TYPE value);
   public:
 
+  // optional int32 m_roomid = 2;
+  bool has_m_roomid() const;
+  private:
+  bool _internal_has_m_roomid() const;
+  public:
+  void clear_m_roomid();
+  int32_t m_roomid() const;
+  void set_m_roomid(int32_t value);
+  private:
+  int32_t _internal_m_roomid() const;
+  void _internal_set_m_roomid(int32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CANCEL)
  private:
   class _Internal;
@@ -1320,6 +1487,7 @@ class PROBUFF_NET_EXAMPLE_PLAY_CANCEL final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     int m_type_;
+    int32_t m_roomid_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -1367,35 +1535,35 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN::set_m_type(::pbexample::EPLAY_TYPE va
 
 // PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE
 
-// optional .pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.EERROR_CODE m_errorcode = 1;
-inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_has_m_errorcode() const {
+// optional int32 m_roomid = 2;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_has_m_roomid() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::has_m_errorcode() const {
-  return _internal_has_m_errorcode();
+inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::has_m_roomid() const {
+  return _internal_has_m_roomid();
 }
-inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::clear_m_errorcode() {
-  _impl_.m_errorcode_ = 0;
+inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::clear_m_roomid() {
+  _impl_.m_roomid_ = 0;
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_m_errorcode() const {
-  return static_cast< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE >(_impl_.m_errorcode_);
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
 }
-inline ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::m_errorcode() const {
-  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_errorcode)
-  return _internal_m_errorcode();
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_roomid)
+  return _internal_m_roomid();
 }
-inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE value) {
+inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_set_m_roomid(int32_t value) {
   _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.m_errorcode_ = value;
+  _impl_.m_roomid_ = value;
 }
-inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE value) {
-  _internal_set_m_errorcode(value);
-  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_errorcode)
+inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::set_m_roomid(int32_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE.m_roomid)
 }
 
-// optional int32 m_waittime = 2;
+// optional int32 m_waittime = 3;
 inline bool PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::_internal_has_m_waittime() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -1425,11 +1593,158 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE::set_m_waittime(int32_t value
 
 // -------------------------------------------------------------------
 
+// PLAYER
+
+// optional .pbdb.db_brief m_players = 1;
+inline bool PLAYER::_internal_has_m_players() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.m_players_ != nullptr);
+  return value;
+}
+inline bool PLAYER::has_m_players() const {
+  return _internal_has_m_players();
+}
+inline const ::pbdb::db_brief& PLAYER::_internal_m_players() const {
+  const ::pbdb::db_brief* p = _impl_.m_players_;
+  return p != nullptr ? *p : reinterpret_cast<const ::pbdb::db_brief&>(
+      ::pbdb::_db_brief_default_instance_);
+}
+inline const ::pbdb::db_brief& PLAYER::m_players() const {
+  // @@protoc_insertion_point(field_get:pbexample.PLAYER.m_players)
+  return _internal_m_players();
+}
+inline void PLAYER::unsafe_arena_set_allocated_m_players(
+    ::pbdb::db_brief* m_players) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.m_players_);
+  }
+  _impl_.m_players_ = m_players;
+  if (m_players) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbexample.PLAYER.m_players)
+}
+inline ::pbdb::db_brief* PLAYER::release_m_players() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::pbdb::db_brief* temp = _impl_.m_players_;
+  _impl_.m_players_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::pbdb::db_brief* PLAYER::unsafe_arena_release_m_players() {
+  // @@protoc_insertion_point(field_release:pbexample.PLAYER.m_players)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::pbdb::db_brief* temp = _impl_.m_players_;
+  _impl_.m_players_ = nullptr;
+  return temp;
+}
+inline ::pbdb::db_brief* PLAYER::_internal_mutable_m_players() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.m_players_ == nullptr) {
+    auto* p = CreateMaybeMessage<::pbdb::db_brief>(GetArenaForAllocation());
+    _impl_.m_players_ = p;
+  }
+  return _impl_.m_players_;
+}
+inline ::pbdb::db_brief* PLAYER::mutable_m_players() {
+  ::pbdb::db_brief* _msg = _internal_mutable_m_players();
+  // @@protoc_insertion_point(field_mutable:pbexample.PLAYER.m_players)
+  return _msg;
+}
+inline void PLAYER::set_allocated_m_players(::pbdb::db_brief* m_players) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.m_players_);
+  }
+  if (m_players) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(m_players));
+    if (message_arena != submessage_arena) {
+      m_players = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, m_players, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.m_players_ = m_players;
+  // @@protoc_insertion_point(field_set_allocated:pbexample.PLAYER.m_players)
+}
+
+// optional bool m_isconfirm = 2;
+inline bool PLAYER::_internal_has_m_isconfirm() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PLAYER::has_m_isconfirm() const {
+  return _internal_has_m_isconfirm();
+}
+inline void PLAYER::clear_m_isconfirm() {
+  _impl_.m_isconfirm_ = false;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline bool PLAYER::_internal_m_isconfirm() const {
+  return _impl_.m_isconfirm_;
+}
+inline bool PLAYER::m_isconfirm() const {
+  // @@protoc_insertion_point(field_get:pbexample.PLAYER.m_isconfirm)
+  return _internal_m_isconfirm();
+}
+inline void PLAYER::_internal_set_m_isconfirm(bool value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_isconfirm_ = value;
+}
+inline void PLAYER::set_m_isconfirm(bool value) {
+  _internal_set_m_isconfirm(value);
+  // @@protoc_insertion_point(field_set:pbexample.PLAYER.m_isconfirm)
+}
+
+// -------------------------------------------------------------------
+
 // PROBUFF_NET_EXAMPLE_PLAY_MATCHING
 
-// optional int32 m_totalnumber = 1;
-inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_has_m_totalnumber() const {
+// optional int32 m_roomid = 1;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_has_m_roomid() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::has_m_roomid() const {
+  return _internal_has_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::clear_m_roomid() {
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_set_m_roomid(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_roomid_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::set_m_roomid(int32_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_roomid)
+}
+
+// optional int32 m_totalnumber = 2;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_has_m_totalnumber() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::has_m_totalnumber() const {
@@ -1437,7 +1752,7 @@ inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING::has_m_totalnumber() const {
 }
 inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::clear_m_totalnumber() {
   _impl_.m_totalnumber_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline int32_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_totalnumber() const {
   return _impl_.m_totalnumber_;
@@ -1447,7 +1762,7 @@ inline int32_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_totalnumber() const {
   return _internal_m_totalnumber();
 }
 inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_set_m_totalnumber(int32_t value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_totalnumber_ = value;
 }
 inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::set_m_totalnumber(int32_t value) {
@@ -1455,38 +1770,41 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::set_m_totalnumber(int32_t value) 
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_totalnumber)
 }
 
-// repeated .pbdb.db_brief m_players = 2;
+// repeated .pbexample.PLAYER m_players = 3;
 inline int PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_players_size() const {
   return _impl_.m_players_.size();
 }
 inline int PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_players_size() const {
   return _internal_m_players_size();
 }
-inline ::pbdb::db_brief* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::mutable_m_players(int index) {
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING::clear_m_players() {
+  _impl_.m_players_.Clear();
+}
+inline ::pbexample::PLAYER* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::mutable_m_players(int index) {
   // @@protoc_insertion_point(field_mutable:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_players)
   return _impl_.m_players_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_brief >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbexample::PLAYER >*
 PROBUFF_NET_EXAMPLE_PLAY_MATCHING::mutable_m_players() {
   // @@protoc_insertion_point(field_mutable_list:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_players)
   return &_impl_.m_players_;
 }
-inline const ::pbdb::db_brief& PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_players(int index) const {
+inline const ::pbexample::PLAYER& PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_m_players(int index) const {
   return _impl_.m_players_.Get(index);
 }
-inline const ::pbdb::db_brief& PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_players(int index) const {
+inline const ::pbexample::PLAYER& PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_players(int index) const {
   // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_players)
   return _internal_m_players(index);
 }
-inline ::pbdb::db_brief* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_add_m_players() {
+inline ::pbexample::PLAYER* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::_internal_add_m_players() {
   return _impl_.m_players_.Add();
 }
-inline ::pbdb::db_brief* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::add_m_players() {
-  ::pbdb::db_brief* _add = _internal_add_m_players();
+inline ::pbexample::PLAYER* PROBUFF_NET_EXAMPLE_PLAY_MATCHING::add_m_players() {
+  ::pbexample::PLAYER* _add = _internal_add_m_players();
   // @@protoc_insertion_point(field_add:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_players)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_brief >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbexample::PLAYER >&
 PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_players() const {
   // @@protoc_insertion_point(field_list:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING.m_players)
   return _impl_.m_players_;
@@ -1496,7 +1814,7 @@ PROBUFF_NET_EXAMPLE_PLAY_MATCHING::m_players() const {
 
 // PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT
 
-// optional .pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT.EERROR_CODE m_errorcode = 1;
+// optional .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
 inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_has_m_errorcode() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -1508,20 +1826,48 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::clear_m_errorcode() {
   _impl_.m_errorcode_ = 0;
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_m_errorcode() const {
-  return static_cast< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE >(_impl_.m_errorcode_);
+inline ::pbexample::PLAY_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_m_errorcode() const {
+  return static_cast< ::pbexample::PLAY_EERROR_CODE >(_impl_.m_errorcode_);
 }
-inline ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::m_errorcode() const {
+inline ::pbexample::PLAY_EERROR_CODE PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::m_errorcode() const {
   // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT.m_errorcode)
   return _internal_m_errorcode();
 }
-inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE value) {
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_set_m_errorcode(::pbexample::PLAY_EERROR_CODE value) {
   _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.m_errorcode_ = value;
 }
-inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::set_m_errorcode(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE value) {
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::set_m_errorcode(::pbexample::PLAY_EERROR_CODE value) {
   _internal_set_m_errorcode(value);
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT.m_errorcode)
+}
+
+// optional int32 m_roomid = 2;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::has_m_roomid() const {
+  return _internal_has_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::clear_m_roomid() {
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::_internal_set_m_roomid(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_roomid_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::set_m_roomid(int32_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT.m_roomid)
 }
 
 // -------------------------------------------------------------------
@@ -1556,6 +1902,34 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::set_m_isconfirm(bool value) {
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM.m_isconfirm)
 }
 
+// optional int32 m_roomid = 2;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_internal_has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::has_m_roomid() const {
+  return _internal_has_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::clear_m_roomid() {
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_internal_set_m_roomid(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_roomid_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::set_m_roomid(int32_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM.m_roomid)
+}
+
 // -------------------------------------------------------------------
 
 // PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM
@@ -1586,6 +1960,34 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::_internal_set_m_isconfirm(b
 inline void PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::set_m_isconfirm(bool value) {
   _internal_set_m_isconfirm(value);
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM.m_isconfirm)
+}
+
+// optional int32 m_roomid = 2;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::_internal_has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::has_m_roomid() const {
+  return _internal_has_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::clear_m_roomid() {
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::_internal_set_m_roomid(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_roomid_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::set_m_roomid(int32_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM.m_roomid)
 }
 
 // -------------------------------------------------------------------
@@ -1620,9 +2022,39 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_CANCEL::set_m_type(::pbexample::EPLAY_TYPE 
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CANCEL.m_type)
 }
 
+// optional int32 m_roomid = 2;
+inline bool PROBUFF_NET_EXAMPLE_PLAY_CANCEL::_internal_has_m_roomid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_EXAMPLE_PLAY_CANCEL::has_m_roomid() const {
+  return _internal_has_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_CANCEL::clear_m_roomid() {
+  _impl_.m_roomid_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_CANCEL::_internal_m_roomid() const {
+  return _impl_.m_roomid_;
+}
+inline int32_t PROBUFF_NET_EXAMPLE_PLAY_CANCEL::m_roomid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CANCEL.m_roomid)
+  return _internal_m_roomid();
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_CANCEL::_internal_set_m_roomid(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_roomid_ = value;
+}
+inline void PROBUFF_NET_EXAMPLE_PLAY_CANCEL::set_m_roomid(int32_t value) {
+  _internal_set_m_roomid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CANCEL.m_roomid)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -1642,20 +2074,15 @@ inline void PROBUFF_NET_EXAMPLE_PLAY_CANCEL::set_m_type(::pbexample::EPLAY_TYPE 
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE>() {
-  return ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE_EERROR_CODE_descriptor();
-}
-template <> struct is_proto_enum< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE>() {
-  return ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_EERROR_CODE_descriptor();
-}
 template <> struct is_proto_enum< ::pbexample::EPLAY_TYPE> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::EPLAY_TYPE>() {
   return ::pbexample::EPLAY_TYPE_descriptor();
+}
+template <> struct is_proto_enum< ::pbexample::PLAY_EERROR_CODE> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::PLAY_EERROR_CODE>() {
+  return ::pbexample::PLAY_EERROR_CODE_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
