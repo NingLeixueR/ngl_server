@@ -122,7 +122,7 @@ namespace ngl
 										/////////roomid////////
 		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
 
-		void sync_match_info(room* aroom);
+		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
 		void sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
 
@@ -153,6 +153,10 @@ namespace ngl
 		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>>& adata)
 		{
 			i64_actorid lroleid = adata.get_data()->identifier();
+			if (m_matching.contains(lroleid))
+			{
+				return true;
+			}
 			const pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN* ldata = adata.get_data()->data();
 			pbexample::EPLAY_TYPE ltype = ldata->m_type();
 			room* lproom = matching_room(lroleid, ltype);
@@ -164,6 +168,7 @@ namespace ngl
 			lplayer.m_isconfirm = false;
 			lplayer.m_roleid = lroleid;
 			lproom->m_playersset.insert(lroleid);
+			m_matching[lroleid] = lproom->m_roomid;
 
 			auto pro = std::make_shared<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>();
 			pro->set_m_roomid(lproom->m_roomid);
@@ -247,6 +252,24 @@ namespace ngl
 			sync_match_info(lproom);
 			return true;
 		}
+
+		// # 玩家上线后请求匹配信息
+		bool handle(const message<np_request_match_info>& adata)
+		{
+			int32_t* lproomid = tools::findmap(m_matching, adata.get_data()->m_roleid);
+			if (lproomid == nullptr)
+			{
+				return true;
+			}
+			room* lproom = find_room(*lproomid);
+			if (lproom == nullptr)
+			{
+				return true;
+			}
+			sync_match_info(lproom, adata.get_data()->m_roleid);
+			return true;
+		}
+		
 
 		virtual void init()
 		{

@@ -8,5 +8,5 @@ namespace ngl
 {
 	std::map<size_t, tprotocol::pinfo>				tprotocol::m_keyval;
 	std::map<i32_protocolnum, tprotocol::pinfo*>	tprotocol::m_protocol;
-	int32_t tprotocol::lcustoms	= 200000000;
+	int32_t tprotocol::m_customs	= 200000000;
 }

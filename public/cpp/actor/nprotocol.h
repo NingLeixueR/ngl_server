@@ -913,6 +913,13 @@ namespace ngl
 		def_portocol(np_roleban, m_roleban)
 	};
 
+	// 玩家登陆获取匹配信息
+	struct np_request_match_info
+	{
+		i64_actorid m_roleid;
+		def_portocol(np_request_match_info, m_roleid)
+	};
+
 }//namespace ngl
 
 

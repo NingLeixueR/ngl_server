@@ -19,7 +19,7 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_example_match>::init(actor_brief::actor_type(), this, ldataid);
 	}
 
-	void actor_example_match::sync_match_info(room* aroom)
+	void actor_example_match::sync_match_info(room* aroom, i64_actorid aroleid /*= nguid::make()*/)
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING>();
 		pro->set_m_roomid(aroom->m_roomid);
@@ -34,7 +34,14 @@ namespace ngl
 				*lplayer.mutable_m_players() = *lpbrief;
 			}
 		}
-		send_client(aroom->m_playersset, pro);
+		if (aroleid == nguid::make())
+		{
+			send_client(aroom->m_playersset, pro);
+		}
+		else
+		{
+			send_client(aroleid, pro);
+		}
 	}
 
 	void actor_example_match::sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid /*= nguid::make()*/)

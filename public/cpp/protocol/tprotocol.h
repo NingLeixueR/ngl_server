@@ -29,7 +29,7 @@ namespace ngl
 		static std::map<i32_protocolnum, pinfo*>			m_protocol;
 		// net/gm		[1			-  100000000];
 		// custom		[200000001	-  300000000];
-		static int32_t							lcustoms/* = 200000000*/;
+		static int32_t							m_customs/* = 200000000*/;
 
 		template <typename T>
 		static size_t hash_code()
@@ -55,7 +55,7 @@ namespace ngl
 				linfo.m_type = atype;
 				if (aprotocolnum == -1)
 				{
-					linfo.m_protocol = ++lcustoms;
+					linfo.m_protocol = ++m_customs;
 				}
 				else
 				{
@@ -81,6 +81,17 @@ namespace ngl
 			}
 		};
 	public:
+
+		static bool set_customs_index(int32_t acustoms)
+		{
+			if (m_customs >= acustoms)
+			{
+				return false;
+			}
+			m_customs = acustoms;
+			return true;
+		}
+
 		using tp_customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
 		using tp_forward = template_arg<tforward, EPROTOCOL_TYPE, int32_t>;
 

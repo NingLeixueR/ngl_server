@@ -186,16 +186,21 @@ namespace ngl
 			/*200000039*/, np_channel_check
 			/*200000040*/, np_roleban
 			/*200000041*/, np_gateway_close_session
-			// ### 事件相关协议 start ### //
-			/*200000042*/, actor_events_logic::np_event_register
-			//# actor_events_logic
-			/*200000043*/, np_eevents_logic_rolelogin
-			/*200000044*/, np_eevents_logic_roleoffline
-			//# actor_events_map
-			/*200000045*/, np_eevents_map_leaveview
-			/*200000046*/, np_eevents_map_enterview
-			// ### 事件相关协议 finish ### //
+			/*200000042*/, np_request_match_info
 		> (EPROTOCOL_TYPE_CUSTOM);
+
+		tprotocol::set_customs_index(250000000);
+		tprotocol::tp_customs::template func <
+			// ### 事件相关协议 start ### //
+			/*250000001*/ actor_events_logic::np_event_register
+			//# actor_events_logic
+			/*250000002*/, np_eevents_logic_rolelogin
+			/*250000003*/, np_eevents_logic_roleoffline
+			//# actor_events_map
+			/*250000004*/, np_eevents_map_leaveview
+			/*250000005*/, np_eevents_map_enterview
+			// ### 事件相关协议 finish ### //
+		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 
 	template <typename PB>
