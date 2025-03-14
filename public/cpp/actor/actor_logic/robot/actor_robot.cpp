@@ -364,15 +364,15 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
 	{
 		log_error()->print("加入成功 房间:{}", adata.get_data()->m_roomid());
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING>& adata)
+	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata)
 	{
-		const pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING& lrecv = *adata.get_data();
+		const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& lrecv = *adata.get_data();
 
 		std::stringstream lstream;
 		lstream << std::format("#m_roomid#[{}]", lrecv.m_roomid()) << std::endl;
@@ -392,9 +392,9 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_robot::handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
+	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
 	{
-		const pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT& lrecv = *adata.get_data();
+		const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& lrecv = *adata.get_data();
 		log_error()->print("匹配结果:m_roomid:{} m_errorcode:{}", lrecv.m_roomid(), pbexample::PLAY_EERROR_CODE_Name(lrecv.m_errorcode()));
 		return true;
 	}

@@ -41,9 +41,9 @@ namespace ngl
 
 		// # Àı×ÓÓÎÏ·Æ¥Åä
 		register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF
-			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE
-			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING
-			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT
+			, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE
+			, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING
+			, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT
 		>();
 	}
 }//namespace ngl

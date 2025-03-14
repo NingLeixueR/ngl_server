@@ -52,8 +52,8 @@ namespace ngl
 			actor::register_timer<actor_example_match>(&actor_example_match::timer_handle);
 			// 协议注册
 			register_handle_proto<actor_example_match>::func<
-				mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>,
-				mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>
+				mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
+				mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
 			>(false);
 
 			register_handle_custom<actor_example_match>::func<
@@ -136,7 +136,7 @@ namespace ngl
 		// # 同步房间信息
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
-		// # 同步[PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT]
+		// # 同步[PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT]
 		void sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
 
 		// # 房间是否人满就绪
@@ -171,15 +171,15 @@ namespace ngl
 		bool timer_handle(const message<timerparm>& adata);
 
 		// # 加入匹配
-		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>>& adata);
+		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);
 		
 		// # 确认准备好进入例子游戏
-		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
+		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
 
 		// # 玩家上线后请求匹配信息
 		bool handle(const message<np_request_match_info>& adata);
 
 		// # 取消匹配
-		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL>>& adata);
+		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata);
 	};
 }//namespace ngl
