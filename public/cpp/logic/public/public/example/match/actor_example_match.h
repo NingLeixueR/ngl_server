@@ -133,18 +133,14 @@ namespace ngl
 										/////////roomid////////
 		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
 
+		// # 同步房间信息
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
+		// # 同步[PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT]
 		void sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
 
-		bool room_ready(room* aroom)
-		{
-			if (aroom->m_totalnumber >= aroom->m_playersset.size())
-			{
-				return true;
-			}
-			return false;
-		}
+		// # 房间是否人满就绪
+		bool room_ready(room* aroom);
 
 		// 根据玩家离线数据选择匹配房间
 		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
@@ -299,7 +295,6 @@ namespace ngl
 				}
 			}
 
-
 			sync_match_info(lproom);
 			return true;
 		}
@@ -379,6 +374,24 @@ namespace ngl
 				}
 			}
 
+			for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
+			{
+				for (auto [roomid, type] : item.second.m_roomlist)
+				{
+					if (type == room_index::eroom_matching)
+					{
+						room* lproom = find_room(item.first, roomid);
+						if (lproom == nullptr)
+						{
+							continue;
+						}
+						if (check_timeout(lproom->m_roomcreate, ttab_specialid::m_example_room_maxtime))
+						{
+							erase_room(lproom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_TIMEOUT);
+						}
+					}					
+				}
+			}
 			ttab_specialid::m_example_room_maxtime;
 			return true;
 		}
