@@ -60,4 +60,13 @@ namespace ngl
 			send_client(aroleid, pro);
 		}
 	}
+
+	bool actor_example_match::room_ready(room* aroom)
+	{
+		if (aroom->m_totalnumber >= aroom->m_playersset.size())
+		{
+			return true;
+		}
+		return false;
+	}
 }//namespace ngl
