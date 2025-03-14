@@ -16,12 +16,12 @@ enum EPLAY_TYPE
 }
 
 // 加入玩法
-message PROBUFF_NET_EXAMPLE_PLAY_JOIN
+message PROBUFF_EXAMPLE_PLAY_JOIN
 {
 	optional EPLAY_TYPE m_type		= 1;
 };
 
-message PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE
+message PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE
 {
 	optional int32 m_roomid					= 2; // 房间号
 };
@@ -33,7 +33,7 @@ message PLAYER
 };
 
 // 同步匹配信息
-message PROBUFF_NET_EXAMPLE_PLAY_MATCHING
+message PROBUFF_EXAMPLE_PLAY_MATCHING
 {
 	optional int32 m_roomid					= 1; // 房间号
 	optional int32 m_totalnumber			= 2; // 需要的总人数
@@ -55,21 +55,21 @@ message PROBUFF_NET_EXAMPLE_PLAY_MATCHING
 	}
 
 // 匹配结果
-message PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT
+message PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT
 {
 	optional PLAY_EERROR_CODE m_errorcode		= 1;
 	optional int32 m_roomid					= 2; // 房间号
 };
 
 // 玩家确认加入
-message PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM
+message PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM
 {
 	optional bool m_isconfirm				= 1; // 是否需要确认加入
 	optional int32 m_roomid					= 2; // 房间号
 };
 
 // 取消匹配
-message PROBUFF_NET_EXAMPLE_PLAY_CANCEL
+message PROBUFF_EXAMPLE_PLAY_CANCEL
 {
 	optional EPLAY_TYPE m_type				= 1;
 	optional int32 m_roomid					= 2; // 房间号

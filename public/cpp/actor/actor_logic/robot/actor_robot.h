@@ -71,9 +71,9 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata);
-		bool handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>& adata);
-		bool handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING>& adata);
-		bool handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT>& adata);
+		bool handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata);
+		bool handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata);
+		bool handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata);
 	};
 
 	class actor_manage_robot : public actor

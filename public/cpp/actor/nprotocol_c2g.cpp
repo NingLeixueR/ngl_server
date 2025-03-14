@@ -69,9 +69,9 @@ namespace ngl
 		// ACTOR_EXAMPLE_MATCH 模块二次转发
 		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
 			, ACTOR_EXAMPLE_MATCH
-			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN
-			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM
-			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL
+			, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN
+			, pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM
+			, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL
 		>();
 	}
 }// namespace ngl

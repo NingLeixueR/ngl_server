@@ -60,7 +60,7 @@ namespace ngl
 			for (const auto& [_roleid, _mails] : data())
 			{
 				int32_t& lid = m_maxid[_roleid];
-				(*lstream) << "+++++++++++++++[role:{}]+++++++++++++" << std::endl;
+				(*lstream) << std::format("+++++++++++++++[role:{}]+++++++++++++", _roleid) << std::endl;
 				for (const auto& [_id, _mail] : _mails.getconst().m_mail())
 				{
 					if (lid < _id)

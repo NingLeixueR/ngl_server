@@ -62,9 +62,9 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     {
         lnamespace = "pbnet";
     }
-    else if (axml == "examlpe")
+    else if (axml == "example")
     {
-        lnamespace = "pbexamlpe";
+        lnamespace = "pbexample";
     }
     else if (axml == "gm")
     {
