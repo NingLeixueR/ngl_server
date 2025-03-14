@@ -267,7 +267,7 @@ namespace ngl
 		static bool is_lanip(const std::string& aip);
 
 		template <typename T>
-		static bool protojson(T& adata, std::string& json)
+		static bool protojson(const T& adata, std::string& json)
 		{
 			google::protobuf::util::JsonPrintOptions options;
 			options.add_whitespace = false;
@@ -278,7 +278,7 @@ namespace ngl
 
 		// 以json格式打印pb数据
 		template <typename T>
-		static void print_protojson(T& adata)
+		static void print_protojson(const T& adata)
 		{
 			std::string json;
 			if (tools::protojson(adata, json))
@@ -293,6 +293,14 @@ namespace ngl
 					std::cout << std::format("{}", json) << std::endl;
 				}
 			}
+		}
+
+		// 通过json获取结构
+		template <typename T>
+		static bool jsontopro(const std::string& json, T& adata)
+		{
+			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(json, &adata);
+			return status.ok();
 		}
 
 		template <typename TKEY, typename TVAL>
