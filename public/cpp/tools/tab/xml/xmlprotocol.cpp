@@ -33,6 +33,7 @@ namespace ngl
 	void xmlprotocol::load()
 	{
 		read("./config/net_protocol.xml");
+		read("./config/example_protocol.xml");
 	}
 
 	int32_t xmlprotocol::protocol(const std::string& aname)
