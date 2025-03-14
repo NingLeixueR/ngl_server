@@ -55,6 +55,10 @@ namespace ngl
 				mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>,
 				mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>
 			>(false);
+
+			register_handle_custom<actor_example_match>::func<
+				np_request_match_info
+			>(true);
 		}
 
 		virtual void loaddb_finish(bool adbishave) {}
@@ -117,8 +121,13 @@ namespace ngl
 		struct room_index
 		{
 			int32_t				m_index = 0;
-			std::set<int32_t>	m_roomlist;
-			std::set<int32_t>	m_readyroomlist; // 人满就绪列表
+			enum eroom_stat
+			{
+				eroom_matching,		// 人未满匹配中
+				eroom_ready,		// 人满就绪
+			};
+			std::map<int32_t, eroom_stat>	m_roomlist;
+			std::list<int32_t>				m_readyroomlist;	// 人满就绪列表(顺序列表)
 		};
 		std::map<pbexample::EPLAY_TYPE, room_index>	m_roomindex;			// 房间号自增
 										/////////roomid////////
@@ -127,6 +136,15 @@ namespace ngl
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
 		void sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
+
+		bool room_ready(room* aroom)
+		{
+			if (aroom->m_totalnumber >= aroom->m_playersset.size())
+			{
+				return true;
+			}
+			return false;
+		}
 
 		// 根据玩家离线数据选择匹配房间
 		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
@@ -141,7 +159,7 @@ namespace ngl
 			{
 				for (std::pair<const int32_t, room>& lpair : *lmap)
 				{
-					if (lpair.second.m_totalnumber < lpair.second.m_playersset.size())
+					if (room_ready(&lpair.second) == false)
 					{
 						return &lpair.second;
 					}
@@ -151,7 +169,7 @@ namespace ngl
 			return nullptr;
 		}
 
-
+		// 加入匹配
 		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>>& adata)
 		{
 			i64_actorid lroleid = adata.get_data()->identifier();
@@ -171,10 +189,11 @@ namespace ngl
 			lplayer.m_roleid = lroleid;
 			lproom->m_playersset.insert(lroleid);
 			m_matching[lroleid] = lproom->m_roomid;
-			if (lproom->m_playersset.size() >= lproom->m_totalnumber)
+			if (room_ready(lproom))
 			{
 				lproom->m_roomready = localtime::gettime();
-				m_roomindex[lproom->m_type].m_readyroomlist.insert(lproom->m_roomid);
+				m_roomindex[lproom->m_type].m_readyroomlist.push_back(lproom->m_roomid);
+				m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_ready;
 			}
 
 			auto pro = std::make_shared<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>();
@@ -187,7 +206,6 @@ namespace ngl
 
 		room* find_room(int32_t aroomid)
 		{
-			//std::map<pbexample::EPLAY_TYPE, room_index>	m_roomindex;
 			for (const auto& [type, rindex] : m_roomindex)
 			{
 				if (rindex.m_roomlist.contains(aroomid))
@@ -202,6 +220,16 @@ namespace ngl
 			return nullptr;
 		}
 
+		room* find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid)
+		{
+			std::map<int32_t, room>* lmap = tools::findmap(m_room, atype);
+			if (lmap != nullptr)
+			{
+				return tools::findmap(*lmap, aroomid);
+			}
+			return nullptr;
+		}
+
 		room* add_room(pbexample::EPLAY_TYPE atype)
 		{
 			int32_t ltotalnumber = ttab_specialid::m_example_totalnumber[atype];
@@ -212,7 +240,7 @@ namespace ngl
 
 			room_index& lroomindex = m_roomindex[atype];
 			int32_t lroomid = ++lroomindex.m_index;
-			lroomindex.m_roomlist.insert(lroomid);
+			lroomindex.m_roomlist.insert(std::make_pair(lroomid, room_index::eroom_matching));
 			room& lroom = m_room[atype][lroomid];
 			lroom.m_type = atype;
 			lroom.m_roomcreate = localtime::gettime();
@@ -221,14 +249,15 @@ namespace ngl
 			return &lroom;
 		}
 
-		void erase_room(room* aroom)
+		void erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode = pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY)
 		{
-			sync_response(aroom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
+			sync_response(aroom, aerrorcode);
 			room_index& lroomindex = m_roomindex[aroom->m_type];
 			lroomindex.m_roomlist.erase(aroom->m_roomid);
 			m_room[aroom->m_type].erase(aroom->m_roomid);
 		}
 
+		// # 确认准备好进入例子游戏
 		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata)
 		{
 			i64_actorid lroleid = adata.get_data()->identifier();
@@ -253,7 +282,23 @@ namespace ngl
 				{
 					erase_room(lproom);
 				}
+				// 退出就绪
+				if (room_ready(lproom) == false)
+				{
+					lproom->m_roomready = 0;
+					m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_matching;
+					std::list<int32_t>& lready = m_roomindex[lproom->m_type].m_readyroomlist;
+					for(auto itor = lready.begin();itor != lready.end();++itor)
+					{
+						if (lproom->m_roomid == *itor)
+						{
+							lready.erase(itor);
+							break;
+						}
+					}
+				}
 			}
+
 
 			sync_match_info(lproom);
 			return true;
@@ -276,7 +321,6 @@ namespace ngl
 			return true;
 		}
 		
-
 		virtual void init()
 		{
 			timerparm tparm;
@@ -288,12 +332,51 @@ namespace ngl
 			set_timer(tparm);
 		}
 
+		bool check_timeout(time_t atime, int32_t ainterval)
+		{
+			time_t lnow = localtime::gettime();
+			if (lnow < atime)
+			{
+				return false;
+			}
+			time_t ltemp = lnow - atime;
+			if (ltemp >= ainterval)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		void matching_finish(room* aroom)
+		{
+			//### 通知玩法管理器创建对应玩法actor
+
+
+
+			erase_room(aroom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_FINISH);
+		}
+
 		bool timer_handle(const message<timerparm>& adata)
 		{
-			//std::map<pbexample::EPLAY_TYPE, room_index>	m_roomindex;			// 房间号自增
+			// 检查就绪
 			for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
 			{
-				item.second.m_readyroomlist;
+				for (int32_t roomid : item.second.m_readyroomlist)
+				{
+					room* lproom = find_room(item.first, roomid);
+					if (lproom == nullptr)
+					{
+						continue;
+					}
+					if (check_timeout(lproom->m_roomready, ttab_specialid::example_room_readytime))
+					{
+						matching_finish(lproom);
+					}
+					else
+					{// m_readyroomlist 是按照就绪顺序排列的链表，如果出现一个没到时间的说明后面也不到时间
+						break;
+					}
+				}
 			}
 
 			ttab_specialid::m_example_room_maxtime;
