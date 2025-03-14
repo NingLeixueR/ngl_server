@@ -6,9 +6,11 @@
 #include "db_manage.h"
 #include "db_data.h"
 #include "db_pool.h"
-#include "net.pb.h"
 #include "net.h"
 #include "db.h"
+
+#include "example.pb.h"
+#include "net.pb.h"
 
 namespace ngl
 {
@@ -69,6 +71,9 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata);
+		bool handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>& adata);
+		bool handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING>& adata);
+		bool handle(const message<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT>& adata);
 	};
 
 	class actor_manage_robot : public actor

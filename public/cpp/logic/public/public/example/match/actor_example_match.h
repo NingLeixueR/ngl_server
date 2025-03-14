@@ -157,8 +157,9 @@ namespace ngl
 		// # 删除房间
 		void erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode = pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
 
-	
-		
+		// # 玩家取消匹配
+		void erase_player_room(room* aroom, i64_actorid aroleid);
+
 		virtual void init();
 
 		// # 检查是否超时
@@ -177,5 +178,8 @@ namespace ngl
 
 		// # 玩家上线后请求匹配信息
 		bool handle(const message<np_request_match_info>& adata);
+
+		// # 取消匹配
+		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL>>& adata);
 	};
 }//namespace ngl

@@ -1,5 +1,7 @@
-#include "nforward.h"
+#include "example.pb.h"
 #include "net.pb.h"
+
+#include "nforward.h"
 
 namespace ngl
 {
@@ -35,6 +37,13 @@ namespace ngl
 			, pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE
 			, pbnet::PROBUFF_NET_ROLESTAT
 			, pbnet::PROBUFF_NET_MSG_RESPONSE
+		>();
+
+		// # Àı×ÓÓÎÏ·Æ¥Åä
+		register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE
+			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING
+			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT
 		>();
 	}
 }//namespace ngl

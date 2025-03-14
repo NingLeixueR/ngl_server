@@ -61,13 +61,6 @@ message PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT
 	optional int32 m_roomid					= 2; // 房间号
 };
 
-// 是否需要确认加入
-message PROBUFF_NET_EXAMPLE_PLAY_CONFIRM
-{
-	optional bool m_isconfirm				= 1; // 是否需要确认加入
-	optional int32 m_roomid					= 2; // 房间号
-};
-
 // 玩家确认加入
 message PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM
 {

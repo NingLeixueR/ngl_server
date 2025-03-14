@@ -1,3 +1,5 @@
+ // 注意【makeproto 工具生成文件，不要手动修改】
+ // 创建时间【2025-03-14 17:22:25】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -116,7 +118,6 @@ namespace ngl
             null<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>,
             null<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING>,
             null<pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT>,
-            null<pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM>,
             null<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>,
             null<pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL>
         );
