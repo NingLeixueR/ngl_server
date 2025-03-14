@@ -1,5 +1,7 @@
-#include "nforward.h"
+#include "example.pb.h"
 #include "net.pb.h"
+
+#include "nforward.h"
 
 namespace ngl
 {
@@ -55,13 +57,21 @@ namespace ngl
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
 
-		// ACTOR_RANKLIST 模块二次转发
+		// ACTOR_FRIENDS 模块二次转发
 		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
 			, ACTOR_FRIENDS
 			, pbnet::PROBUFF_NET_FRIEND
 			, pbnet::PROBUFF_NET_ADDFRIEND
 			, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND
 			, pbnet::PROBUFF_NET_ERASEFRIEND
+		>();
+
+		// ACTOR_EXAMPLE_MATCH 模块二次转发
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_EXAMPLE_MATCH
+			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN
+			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM
+			, pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL
 		>();
 	}
 }// namespace ngl

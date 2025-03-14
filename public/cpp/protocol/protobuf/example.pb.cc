@@ -97,21 +97,6 @@ struct PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULTDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULTDefaultTypeInternal _PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_default_instance_;
-PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.m_isconfirm_)*/false
-  , /*decltype(_impl_.m_roomid_)*/0} {}
-struct PROBUFF_NET_EXAMPLE_PLAY_CONFIRMDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_CONFIRMDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PROBUFF_NET_EXAMPLE_PLAY_CONFIRMDefaultTypeInternal() {}
-  union {
-    PROBUFF_NET_EXAMPLE_PLAY_CONFIRM _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_NET_EXAMPLE_PLAY_CONFIRMDefaultTypeInternal _PROBUFF_NET_EXAMPLE_PLAY_CONFIRM_default_instance_;
 PROTOBUF_CONSTEXPR PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
@@ -143,7 +128,7 @@ struct PROBUFF_NET_EXAMPLE_PLAY_CANCELDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_NET_EXAMPLE_PLAY_CANCELDefaultTypeInternal _PROBUFF_NET_EXAMPLE_PLAY_CANCEL_default_instance_;
 }  // namespace pbexample
-static ::_pb::Metadata file_level_metadata_example_2eproto[8];
+static ::_pb::Metadata file_level_metadata_example_2eproto[7];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_example_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_example_2eproto = nullptr;
 
@@ -200,16 +185,6 @@ const uint32_t TableStruct_example_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT, _impl_.m_roomid_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM, _impl_._has_bits_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM, _impl_.m_isconfirm_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM, _impl_.m_roomid_),
-  0,
-  1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -237,9 +212,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 16, 24, -1, sizeof(::pbexample::PLAYER)},
   { 26, 37, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING)},
   { 42, 50, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT)},
-  { 52, 60, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)},
-  { 62, 70, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM)},
-  { 72, 80, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL)},
+  { 52, 60, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM)},
+  { 62, 70, -1, sizeof(::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CANCEL)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -248,7 +222,6 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::pbexample::_PLAYER_default_instance_._instance,
   &::pbexample::_PROBUFF_NET_EXAMPLE_PLAY_MATCHING_default_instance_._instance,
   &::pbexample::_PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT_default_instance_._instance,
-  &::pbexample::_PROBUFF_NET_EXAMPLE_PLAY_CONFIRM_default_instance_._instance,
   &::pbexample::_PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM_default_instance_._instance,
   &::pbexample::_PROBUFF_NET_EXAMPLE_PLAY_CANCEL_default_instance_._instance,
 };
@@ -271,23 +244,20 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "ady\"\225\001\n(PROBUFF_NET_EXAMPLE_PLAY_MATCHIN"
   "G_RESULT\0225\n\013m_errorcode\030\001 \001(\0162\033.pbexampl"
   "e.PLAY_EERROR_CODEH\000\210\001\001\022\025\n\010m_roomid\030\002 \001("
-  "\005H\001\210\001\001B\016\n\014_m_errorcodeB\013\n\t_m_roomid\"p\n P"
-  "ROBUFF_NET_EXAMPLE_PLAY_CONFIRM\022\030\n\013m_isc"
-  "onfirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001\001"
-  "B\016\n\014_m_isconfirmB\013\n\t_m_roomid\"w\n\'PROBUFF"
-  "_NET_EXAMPLE_PLAY_PLAYER_CONFIRM\022\030\n\013m_is"
-  "confirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001"
-  "\001B\016\n\014_m_isconfirmB\013\n\t_m_roomid\"|\n\037PROBUF"
-  "F_NET_EXAMPLE_PLAY_CANCEL\022*\n\006m_type\030\001 \001("
-  "\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_roomi"
-  "d\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomid*$\n\n"
-  "EPLAY_TYPE\022\026\n\022EPLAY_GUESS_NUMBER\020\000*\317\001\n\020P"
-  "LAY_EERROR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000"
-  "\022\027\n\023EERROR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE"
-  "_CANCEL\020\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020"
-  "\003\022\033\n\027EERROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR"
-  "_CODE_ROOM_DESTORY\020\005\022\026\n\022EERROR_CODE_FINI"
-  "SH\020\006B\002H\001b\006proto3"
+  "\005H\001\210\001\001B\016\n\014_m_errorcodeB\013\n\t_m_roomid\"w\n\'P"
+  "ROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM\022\030"
+  "\n\013m_isconfirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001"
+  "(\005H\001\210\001\001B\016\n\014_m_isconfirmB\013\n\t_m_roomid\"|\n\037"
+  "PROBUFF_NET_EXAMPLE_PLAY_CANCEL\022*\n\006m_typ"
+  "e\030\001 \001(\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m"
+  "_roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_room"
+  "id*$\n\nEPLAY_TYPE\022\026\n\022EPLAY_GUESS_NUMBER\020\000"
+  "*\317\001\n\020PLAY_EERROR_CODE\022\027\n\023EERROR_CODE_SUC"
+  "CESS\020\000\022\027\n\023EERROR_CODE_TIMEOUT\020\001\022\026\n\022EERRO"
+  "R_CODE_CANCEL\020\002\022\036\n\032EERROR_CODE_CURRENT_C"
+  "ANCEL\020\003\022\033\n\027EERROR_CODE_NOTFINDROOM\020\004\022\034\n\030"
+  "EERROR_CODE_ROOM_DESTORY\020\005\022\026\n\022EERROR_COD"
+  "E_FINISH\020\006B\002H\001b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -295,9 +265,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_example_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_example_2eproto = {
-    false, false, 1336, descriptor_table_protodef_example_2eproto,
+    false, false, 1222, descriptor_table_protodef_example_2eproto,
     "example.proto",
-    &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_deps, 2, 8,
+    &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_deps, 2, 7,
     schemas, file_default_instances, TableStruct_example_2eproto::offsets,
     file_level_metadata_example_2eproto, file_level_enum_descriptors_example_2eproto,
     file_level_service_descriptors_example_2eproto,
@@ -1540,242 +1510,6 @@ void PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT::InternalSwap(PROBUFF_NET_EXAMPLE_
 
 // ===================================================================
 
-class PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_Internal {
- public:
-  using HasBits = decltype(std::declval<PROBUFF_NET_EXAMPLE_PLAY_CONFIRM>()._impl_._has_bits_);
-  static void set_has_m_isconfirm(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-  static void set_has_m_roomid(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
-  }
-};
-
-PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-}
-PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM(const PROBUFF_NET_EXAMPLE_PLAY_CONFIRM& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PROBUFF_NET_EXAMPLE_PLAY_CONFIRM* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.m_isconfirm_){}
-    , decltype(_impl_.m_roomid_){}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.m_isconfirm_, &from._impl_.m_isconfirm_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.m_roomid_) -
-    reinterpret_cast<char*>(&_impl_.m_isconfirm_)) + sizeof(_impl_.m_roomid_));
-  // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-}
-
-inline void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.m_isconfirm_){false}
-    , decltype(_impl_.m_roomid_){0}
-  };
-}
-
-PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::~PROBUFF_NET_EXAMPLE_PLAY_CONFIRM() {
-  // @@protoc_insertion_point(destructor:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-}
-
-void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::Clear() {
-// @@protoc_insertion_point(message_clear_start:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    ::memset(&_impl_.m_isconfirm_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&_impl_.m_roomid_) -
-        reinterpret_cast<char*>(&_impl_.m_isconfirm_)) + sizeof(_impl_.m_roomid_));
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // optional bool m_isconfirm = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _Internal::set_has_m_isconfirm(&has_bits);
-          _impl_.m_isconfirm_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // optional int32 m_roomid = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _Internal::set_has_m_roomid(&has_bits);
-          _impl_.m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // optional bool m_isconfirm = 1;
-  if (_internal_has_m_isconfirm()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_m_isconfirm(), target);
-  }
-
-  // optional int32 m_roomid = 2;
-  if (_internal_has_m_roomid()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_roomid(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  return target;
-}
-
-size_t PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    // optional bool m_isconfirm = 1;
-    if (cached_has_bits & 0x00000001u) {
-      total_size += 1 + 1;
-    }
-
-    // optional int32 m_roomid = 2;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_roomid());
-    }
-
-  }
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::GetClassData() const { return &_class_data_; }
-
-
-void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<PROBUFF_NET_EXAMPLE_PLAY_CONFIRM*>(&to_msg);
-  auto& from = static_cast<const PROBUFF_NET_EXAMPLE_PLAY_CONFIRM&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      _this->_impl_.m_isconfirm_ = from._impl_.m_isconfirm_;
-    }
-    if (cached_has_bits & 0x00000002u) {
-      _this->_impl_.m_roomid_ = from._impl_.m_roomid_;
-    }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-  }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::CopyFrom(const PROBUFF_NET_EXAMPLE_PLAY_CONFIRM& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pbexample.PROBUFF_NET_EXAMPLE_PLAY_CONFIRM)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::IsInitialized() const {
-  return true;
-}
-
-void PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::InternalSwap(PROBUFF_NET_EXAMPLE_PLAY_CONFIRM* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_CONFIRM, _impl_.m_roomid_)
-      + sizeof(PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::_impl_.m_roomid_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_EXAMPLE_PLAY_CONFIRM, _impl_.m_isconfirm_)>(
-          reinterpret_cast<char*>(&_impl_.m_isconfirm_),
-          reinterpret_cast<char*>(&other->_impl_.m_isconfirm_));
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_EXAMPLE_PLAY_CONFIRM::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[5]);
-}
-
-// ===================================================================
-
 class PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>()._impl_._has_bits_);
@@ -2007,7 +1741,7 @@ void PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::InternalSwap(PROBUFF_NET_EXAMPLE_P
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[6]);
+      file_level_metadata_example_2eproto[5]);
 }
 
 // ===================================================================
@@ -2245,7 +1979,7 @@ void PROBUFF_NET_EXAMPLE_PLAY_CANCEL::InternalSwap(PROBUFF_NET_EXAMPLE_PLAY_CANC
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_NET_EXAMPLE_PLAY_CANCEL::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[7]);
+      file_level_metadata_example_2eproto[6]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2270,10 +2004,6 @@ Arena::CreateMaybeMessage< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING >(Aren
 template<> PROTOBUF_NOINLINE ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT*
 Arena::CreateMaybeMessage< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_MATCHING_RESULT >(arena);
-}
-template<> PROTOBUF_NOINLINE ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM*
-Arena::CreateMaybeMessage< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_CONFIRM >(arena);
 }
 template<> PROTOBUF_NOINLINE ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM*
 Arena::CreateMaybeMessage< ::pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM >(Arena* arena) {
