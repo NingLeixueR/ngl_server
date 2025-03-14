@@ -25,7 +25,7 @@ namespace ngl
 		// 例子游戏
 		static int32_t						m_example_room_maxtime;	// 例子游戏的最大匹配时间
 		static std::map<int32_t, int32_t>	m_example_totalnumber;	// 例子游戏的匹配人数
-
+		static int32_t						example_room_readytime; // 例子游戏的等待玩家确认的最大时间
 		
 
 		ttab_specialid()

@@ -51,6 +51,7 @@ message PROBUFF_NET_EXAMPLE_PLAY_MATCHING
 		EERROR_CODE_CURRENT_CANCEL  = 3;	// 当前不允许取消匹配
 		EERROR_CODE_NOTFINDROOM = 4;		// 未找到指定room
 		EERROR_CODE_ROOM_DESTORY = 5;		// 房间被销毁
+		EERROR_CODE_FINISH = 6;				// 匹配完成销毁房间
 	}
 
 // 匹配结果

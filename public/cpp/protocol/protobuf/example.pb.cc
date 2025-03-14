@@ -281,12 +281,13 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "F_NET_EXAMPLE_PLAY_CANCEL\022*\n\006m_type\030\001 \001("
   "\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_roomi"
   "d\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomid*$\n\n"
-  "EPLAY_TYPE\022\026\n\022EPLAY_GUESS_NUMBER\020\000*\267\001\n\020P"
+  "EPLAY_TYPE\022\026\n\022EPLAY_GUESS_NUMBER\020\000*\317\001\n\020P"
   "LAY_EERROR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000"
   "\022\027\n\023EERROR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE"
   "_CANCEL\020\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020"
   "\003\022\033\n\027EERROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR"
-  "_CODE_ROOM_DESTORY\020\005B\002H\001b\006proto3"
+  "_CODE_ROOM_DESTORY\020\005\022\026\n\022EERROR_CODE_FINI"
+  "SH\020\006B\002H\001b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -294,7 +295,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_example_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_example_2eproto = {
-    false, false, 1312, descriptor_table_protodef_example_2eproto,
+    false, false, 1336, descriptor_table_protodef_example_2eproto,
     "example.proto",
     &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_deps, 2, 8,
     schemas, file_default_instances, TableStruct_example_2eproto::offsets,
@@ -333,6 +334,7 @@ bool PLAY_EERROR_CODE_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+    case 6:
       return true;
     default:
       return false;
