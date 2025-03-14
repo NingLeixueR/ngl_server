@@ -142,258 +142,40 @@ namespace ngl
 		// # 房间是否人满就绪
 		bool room_ready(room* aroom);
 
-		// 根据玩家离线数据选择匹配房间
-		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
-		{
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(aroleid);
-			if (lpbrief == nullptr)
-			{
-				return nullptr;
-			}
-			std::map<int32_t, room>* lmap = tools::findmap(m_room, atype);
-			if (atype == pbexample::EPLAY_TYPE::EPLAY_GUESS_NUMBER)
-			{
-				for (std::pair<const int32_t, room>& lpair : *lmap)
-				{
-					if (room_ready(&lpair.second) == false)
-					{
-						return &lpair.second;
-					}
-				}
-				return add_room(atype);
-			}
-			return nullptr;
-		}
+		// # 根据玩家离线数据选择匹配房间
+		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype);
 
-		// 加入匹配
-		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>>& adata)
-		{
-			i64_actorid lroleid = adata.get_data()->identifier();
-			if (m_matching.contains(lroleid))
-			{
-				return true;
-			}
-			const pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN* ldata = adata.get_data()->data();
-			pbexample::EPLAY_TYPE ltype = ldata->m_type();
-			room* lproom = matching_room(lroleid, ltype);
-			if (lproom == nullptr)
-			{
-				return true;
-			}
-			player& lplayer = lproom->m_players[lroleid];
-			lplayer.m_isconfirm = false;
-			lplayer.m_roleid = lroleid;
-			lproom->m_playersset.insert(lroleid);
-			m_matching[lroleid] = lproom->m_roomid;
-			if (room_ready(lproom))
-			{
-				lproom->m_roomready = localtime::gettime();
-				m_roomindex[lproom->m_type].m_readyroomlist.push_back(lproom->m_roomid);
-				m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_ready;
-			}
+		// # 查找房间
+		room* find_room(int32_t aroomid);
 
-			auto pro = std::make_shared<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN_RESPONSE>();
-			pro->set_m_roomid(lproom->m_roomid);
-			send_client(lroleid, pro);
+		// # 查找房间
+		room* find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid);
 
-			sync_match_info(lproom);
-			return true;
-		}
+		// # 增加房间
+		room* add_room(pbexample::EPLAY_TYPE atype);
 
-		room* find_room(int32_t aroomid)
-		{
-			for (const auto& [type, rindex] : m_roomindex)
-			{
-				if (rindex.m_roomlist.contains(aroomid))
-				{
-					std::map<int32_t, room>* lmap = tools::findmap(m_room, type);
-					if (lmap != nullptr)
-					{
-						return tools::findmap(*lmap, aroomid);
-					}
-				}
-			}
-			return nullptr;
-		}
+		// # 删除房间
+		void erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode = pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
 
-		room* find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid)
-		{
-			std::map<int32_t, room>* lmap = tools::findmap(m_room, atype);
-			if (lmap != nullptr)
-			{
-				return tools::findmap(*lmap, aroomid);
-			}
-			return nullptr;
-		}
+	
+		
+		virtual void init();
 
-		room* add_room(pbexample::EPLAY_TYPE atype)
-		{
-			int32_t ltotalnumber = ttab_specialid::m_example_totalnumber[atype];
-			if (ltotalnumber <= 0)
-			{
-				return nullptr;
-			}
+		// # 检查是否超时
+		bool check_timeout(time_t atime, int32_t ainterval);
 
-			room_index& lroomindex = m_roomindex[atype];
-			int32_t lroomid = ++lroomindex.m_index;
-			lroomindex.m_roomlist.insert(std::make_pair(lroomid, room_index::eroom_matching));
-			room& lroom = m_room[atype][lroomid];
-			lroom.m_type = atype;
-			lroom.m_roomcreate = localtime::gettime();
-			lroom.m_roomid = lroomid;
-			lroom.m_totalnumber = ltotalnumber;
-			return &lroom;
-		}
+		// # 匹配成功
+		void matching_finish(room* aroom);
 
-		void erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode = pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY)
-		{
-			sync_response(aroom, aerrorcode);
-			room_index& lroomindex = m_roomindex[aroom->m_type];
-			lroomindex.m_roomlist.erase(aroom->m_roomid);
-			m_room[aroom->m_type].erase(aroom->m_roomid);
-		}
+		bool timer_handle(const message<timerparm>& adata);
 
+		// # 加入匹配
+		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_JOIN>>& adata);
+		
 		// # 确认准备好进入例子游戏
-		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata)
-		{
-			i64_actorid lroleid = adata.get_data()->identifier();
-			const pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM* ldata = adata.get_data()->data();
-			room* lproom = find_room(ldata->m_roomid());
-			if (lproom == nullptr)
-			{
-				sync_response(nullptr, pbexample::PLAY_EERROR_CODE::EERROR_CODE_NOTFINDROOM);
-				return true;
-			}
-
-			if (ldata->m_isconfirm())
-			{
-				player* lpplayer = tools::findmap(lproom->m_players, lroleid);
-				lpplayer->m_isconfirm = true;
-			}
-			else
-			{
-				lproom->m_players.erase(lroleid);
-				lproom->m_playersset.erase(lroleid);
-				if (lproom->m_players.empty() || lproom->m_playersset.empty())
-				{
-					erase_room(lproom);
-				}
-				// 退出就绪
-				if (room_ready(lproom) == false)
-				{
-					lproom->m_roomready = 0;
-					m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_matching;
-					std::list<int32_t>& lready = m_roomindex[lproom->m_type].m_readyroomlist;
-					for(auto itor = lready.begin();itor != lready.end();++itor)
-					{
-						if (lproom->m_roomid == *itor)
-						{
-							lready.erase(itor);
-							break;
-						}
-					}
-				}
-			}
-
-			sync_match_info(lproom);
-			return true;
-		}
+		bool handle(const message<mforward<pbexample::PROBUFF_NET_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
 
 		// # 玩家上线后请求匹配信息
-		bool handle(const message<np_request_match_info>& adata)
-		{
-			int32_t* lproomid = tools::findmap(m_matching, adata.get_data()->m_roleid);
-			if (lproomid == nullptr)
-			{
-				return true;
-			}
-			room* lproom = find_room(*lproomid);
-			if (lproom == nullptr)
-			{
-				return true;
-			}
-			sync_match_info(lproom, adata.get_data()->m_roleid);
-			return true;
-		}
-		
-		virtual void init()
-		{
-			timerparm tparm;
-			if (make_timerparm::make_interval(tparm, 1) == false)
-			{
-				log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
-				return;
-			}
-			set_timer(tparm);
-		}
-
-		bool check_timeout(time_t atime, int32_t ainterval)
-		{
-			time_t lnow = localtime::gettime();
-			if (lnow < atime)
-			{
-				return false;
-			}
-			time_t ltemp = lnow - atime;
-			if (ltemp >= ainterval)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		void matching_finish(room* aroom)
-		{
-			//### 通知玩法管理器创建对应玩法actor
-
-
-
-			erase_room(aroom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_FINISH);
-		}
-
-		bool timer_handle(const message<timerparm>& adata)
-		{
-			// 检查就绪
-			for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
-			{
-				for (int32_t roomid : item.second.m_readyroomlist)
-				{
-					room* lproom = find_room(item.first, roomid);
-					if (lproom == nullptr)
-					{
-						continue;
-					}
-					if (check_timeout(lproom->m_roomready, ttab_specialid::example_room_readytime))
-					{
-						matching_finish(lproom);
-					}
-					else
-					{// m_readyroomlist 是按照就绪顺序排列的链表，如果出现一个没到时间的说明后面也不到时间
-						break;
-					}
-				}
-			}
-
-			for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
-			{
-				for (auto [roomid, type] : item.second.m_roomlist)
-				{
-					if (type == room_index::eroom_matching)
-					{
-						room* lproom = find_room(item.first, roomid);
-						if (lproom == nullptr)
-						{
-							continue;
-						}
-						if (check_timeout(lproom->m_roomcreate, ttab_specialid::m_example_room_maxtime))
-						{
-							erase_room(lproom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_TIMEOUT);
-						}
-					}					
-				}
-			}
-			ttab_specialid::m_example_room_maxtime;
-			return true;
-		}
+		bool handle(const message<np_request_match_info>& adata);
 	};
 }//namespace ngl
