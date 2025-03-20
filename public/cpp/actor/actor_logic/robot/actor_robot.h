@@ -308,6 +308,19 @@ namespace ngl
 								return true;
 							});
 					});
+
+				handle_cmd::push("protocol", [this](const std::vector<std::string>& avec)
+					{
+						foreach([this,&avec](actor_manage_robot::_robot& arobot)
+							{
+								std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[1], avec[2], nguid::moreactor(), arobot.m_actor_roleid);
+								if (lpack == nullptr)
+								{
+									nets::sendpack(arobot.m_session, lpack);
+								}
+								return true;
+							});
+					});
 			}
 
 			if (handle_cmd::function(lparm1, lrecv->m_parm) == false)

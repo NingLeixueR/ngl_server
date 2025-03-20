@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-03-14 20:01:46
+// 创建时间 25-03-20 09:48:49
 #include "actor_manage_activity.cpp"
 #include "actor_example_match.cpp"
 #include "actor_manage_plays.cpp"
@@ -32,6 +32,7 @@
 #include "actor_gateway.cpp"
 #include "actor_friends.cpp"
 #include "ttab_servers.cpp"
+#include "pbname_match.cpp"
 #include "net_protocol.cpp"
 #include "gateway_info.cpp"
 #include "events_logic.cpp"
