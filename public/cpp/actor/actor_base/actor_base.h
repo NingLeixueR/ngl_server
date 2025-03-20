@@ -206,6 +206,8 @@ namespace ngl
 		template <typename T>
 		static bool sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack);
 
+		static std::shared_ptr<pack> jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid);
+
 		//# 给指定连接发送数据
 		template <typename T>
 		static bool sendpack_session(i32_sessionid asession, std::shared_ptr<pack>& apack);

@@ -10,6 +10,7 @@
 #include "tools.h"
 #include "ukcp.h"
 #include "nlog.h"
+#include "json2binarypack.h"
 
 #include <queue>
 
@@ -19,7 +20,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-
 	if (argc <= 3)
 	{
 		std::cout << lerrpath << std::endl;
@@ -113,6 +113,12 @@ int main(int argc, char** argv)
 	default:
 		return 0;
 	}
+
+	std::shared_ptr<ngl::pack> lpack = std::make_shared<ngl::pack>();
+	std::string json_str = R"({
+        "m_type": 1
+    })";
+	ngl::jsontobinarypack<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>(json_str.c_str(), lpack, 0, 0);
 
 	while (1)
 	{

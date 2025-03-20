@@ -196,6 +196,104 @@ void foreachProtobufMessages3(const std::string& astr)
     lfile.write(m_stream.str());
 }
 
+std::string foreachProtobufMessages_make_shared1(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
+{
+    std::string lnamespace;
+    if (axml == "net")
+    {
+        lnamespace = "pbnet";
+    }
+    else if (axml == "db")
+    {//pbdb
+        lnamespace = "pbdb";
+    }
+    else if (axml == "example")
+    {//pbexample
+        lnamespace = "pbexample";
+    }
+    else if (axml == "gm")
+    {
+        lnamespace = "GM";
+    }
+
+    std::stringstream m_stream_pb;
+    int messageCount = fileDescriptor->message_type_count();
+    for (int i = 0; i < messageCount; ++i)
+    {
+        const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
+        std::cout << "name: " << messageDescriptor->name() << std::endl;
+        int32_t lprotocol = ngl::xmlprotocol::protocol(messageDescriptor->name());
+        if (messageDescriptor->name().find("PROBUFF_NET_") != std::string::npos
+            || messageDescriptor->name().find("PROBUFF_GM_") != std::string::npos
+            || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
+            )
+        {
+            m_stream_pb << std::format("            return std::make_shared<{}::{}>();", lnamespace, messageDescriptor->name()) << std::endl;
+        }
+    }
+    return m_stream_pb.str();
+}
+
+void foreachProtobufMessages_make_shared2(const std::string& astr)
+{
+    ngl::writefile lfile("./pb_makeshared.cpp");
+
+    std::stringstream m_stream;
+    m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
+    m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
+    m_stream << "#include \"nprotocol.h\"" << std::endl;
+    m_stream << "#include \"tprotocol.h\"" << std::endl;
+    m_stream << "#include \"actor.h\"" << std::endl;
+    m_stream << std::endl;
+    m_stream << "#include \"example.pb.h\"" << std::endl;
+    m_stream << "#include \"net.pb.h\"" << std::endl;
+    m_stream << std::endl;
+    m_stream << "#include <map>" << std::endl;
+    m_stream << std::endl;
+    m_stream << "namespace ngl" << std::endl;
+    m_stream << "{" << std::endl;
+    m_stream << "   class " << std::endl;
+    m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb)" << std::endl;
+    m_stream << "   {" << std::endl;
+    m_stream << "       int32_t lprotocolnum = tprotocol::protocol<PB>();" << std::endl;
+    m_stream << "       tprotocol::tp_forward::template func<" << std::endl;
+    m_stream << "           ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>" << std::endl;
+    m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>" << std::endl;
+    m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>" << std::endl;
+    m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>" << std::endl;
+    m_stream << "           , np_actormodule_forward<PB>" << std::endl;
+    m_stream << "       >(EPROTOCOL_TYPE_PROTOCOLBUFF, lprotocolnum);" << std::endl;
+    m_stream << "   }" << std::endl;
+    m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
+    m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;
+    m_stream << "   {" << std::endl;
+    m_stream << "       help_role_tprotocol_forward_pb<PB>(apb);" << std::endl;
+    m_stream << "       help_role_tprotocol_forward_pb<ARG...>(arg...);" << std::endl;
+    m_stream << "   }" << std::endl;
+    m_stream << "   void tprotocol_forward_pb()" << std::endl;
+    m_stream << "   {" << std::endl;
+    m_stream << "        help_role_tprotocol_forward_pb(" << std::endl;
+    std::string ltemp = astr;
+    if (!ltemp.empty())
+    {
+        if (ltemp[ltemp.size() - 2] == ',')
+        {
+            char* lbuff = new char[ltemp.size()];
+            memset(lbuff, 0x0, ltemp.size());
+            memcpy(lbuff, &ltemp[0], ltemp.size() - 2);
+            ltemp = lbuff;
+            delete[]lbuff;
+        }
+    }
+    m_stream << ltemp << std::endl;
+    m_stream << "        );" << std::endl;
+    m_stream << "   }" << std::endl;
+    m_stream << "}//namespace ngl" << std::endl;
+
+    lfile.write(m_stream.str());
+}
+
+
 std::string foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, int32_t& aprotocol, const char* aname)
 {
     google::protobuf::compiler::Importer importer(&sourceTree, nullptr);
