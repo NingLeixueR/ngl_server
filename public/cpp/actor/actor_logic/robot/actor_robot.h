@@ -314,7 +314,7 @@ namespace ngl
 						foreach([this,&avec](actor_manage_robot::_robot& arobot)
 							{
 								std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[1], avec[2], nguid::moreactor(), arobot.m_actor_roleid);
-								if (lpack == nullptr)
+								if (lpack != nullptr)
 								{
 									nets::sendpack(arobot.m_session, lpack);
 								}
