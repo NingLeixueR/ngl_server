@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-03-21 12:49:28】
+ // 创建时间【2025-03-21 13:40:53】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -126,7 +126,7 @@ namespace ngl
            lmap["pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT"] = std::bind_front(&j2p<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>::fun);
            lmap["pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM"] = std::bind_front(&j2p<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>::fun);
            lmap["pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL"] = std::bind_front(&j2p<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>::fun);
-     }
+         }
 		type_j2pfun* lpfun = tools::findmap(lmap, apbname);
 		if (lpfun != nullptr)
 		{
