@@ -227,11 +227,7 @@ std::string foreachProtobufMessages_json2pbbinary1(const google::protobuf::FileD
             || messageDescriptor->name().find("PROBUFF_EXAMPLE_") != std::string::npos
             )
         {
-            m_stream <<
-                std::format("           lmap[\"{}::{}\"] = std::bind_front(&j2p<{}::{}>::fun);"
-                    , lnamespace, messageDescriptor->name()
-                    , lnamespace, messageDescriptor->name()
-                ) << std::endl;
+            m_stream <<std::format("            mkdef_map({}::{});", lnamespace, messageDescriptor->name()) << std::endl;
         }
     }
     return m_stream.str();
@@ -281,7 +277,8 @@ namespace ngl
 		using type_j2pfun = std::function<void(const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid)>;
 		static std::map<std::string, type_j2pfun> lmap;
 		if (lmap.empty())
-		{)" << std::endl;
+		{
+            #define mkdef_map(NAME) lmap[#NAME] = std::bind_front(&j2p<NAME>::fun))" << std::endl;
 
 
     m_stream << astr;
