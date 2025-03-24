@@ -110,7 +110,7 @@ namespace ngl
 			memcpy(&apack->m_buff[apack->m_pos], ap, alen);
 			apack->m_pos += alen;
 			ap += alen;
-			alen -= alen;
+			alen = 0;
 			apack->m_buff[apack->m_pos] = '\0';
 			protocol::cmd(apack);
 			return edopush::e_break;
