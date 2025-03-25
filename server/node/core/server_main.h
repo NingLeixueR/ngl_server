@@ -250,7 +250,6 @@ void init_DB_FRIENDS()
 		});
 }
 
-
 bool start_db(int argc, char** argv)
 {
 	ngl::log_error()->print("[{}] start", "DB");
@@ -334,6 +333,7 @@ bool start_world()
 	ngl::actor_ranklist::getInstance();
 	ngl::actor_friends::getInstance();
 	ngl::actor_gmclient::getInstance();
+	ngl::actor_example_match::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
