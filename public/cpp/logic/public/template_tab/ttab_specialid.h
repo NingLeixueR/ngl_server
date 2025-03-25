@@ -55,7 +55,11 @@ namespace ngl
 		template <typename T, typename ...ARG>
 		inline bool read_value(const tab_specialid& atab, const char* akey, T& adata, ARG&... adatas)
 		{
-			return !read_value(atab, akey, adata) && !read_value(atab, adatas...);
+			if (read_value(atab, akey, adata))
+			{
+				return true;
+			}
+			return read_value(atab, adatas...);
 		}
 
 		void reload()final
