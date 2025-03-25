@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-03-21 16:47:15】
+ // 创建时间【2025-03-25 17:45:33】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -32,6 +32,7 @@ namespace ngl
 		}
 	};
 
+	
 	std::shared_ptr<pack> actor_base::jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		using type_j2pfun = std::function<void(const std::string&, const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid)>;

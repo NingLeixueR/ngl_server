@@ -250,7 +250,7 @@ void foreachProtobufMessages_json2pbbinary2(const std::string& astr)
 namespace ngl
 {
 	template <typename T>
-	static bool jsontobinarypack(const char* ajson, std::shared_ptr<pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
+	static bool jsontobinarypack(const char* aname, const char* ajson, std::shared_ptr<pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		T ltemp;
 		if (tools::jsontopro(ajson, ltemp))
@@ -258,6 +258,7 @@ namespace ngl
 			apack = actor_base::net_pack(ltemp, aactorid, arequestactorid);
 			return true;
 		}
+        log_error()->print("jsontobinarypack fail pbname[{}] json[{}]", aname, ajson);
 		return false;
 	}
 
@@ -265,16 +266,16 @@ namespace ngl
 	class j2p
 	{
 	public:
-		static void fun(const std::string& ajson, std::shared_ptr<ngl::pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
+		static void fun(const std::string& aname, const std::string& ajson, std::shared_ptr<ngl::pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			ngl::jsontobinarypack<T>(ajson.c_str(), apack, aactorid, arequestactorid);
+			ngl::jsontobinarypack<T>(aname.c_str(), ajson.c_str(), apack, aactorid, arequestactorid);
 		}
 	};
 
 	
 	std::shared_ptr<pack> actor_base::jsonpack(const std::string& apbname, const std::string& ajson, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		using type_j2pfun = std::function<void(const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid)>;
+		using type_j2pfun = std::function<void(const std::string&, const std::string&, std::shared_ptr<ngl::pack>&, i64_actorid, i64_actorid)>;
 		static std::map<std::string, type_j2pfun> lmap;
 		if (lmap.empty())
 		{
@@ -288,7 +289,7 @@ namespace ngl
 		if (lpfun != nullptr)
 		{
 			std::shared_ptr<ngl::pack> lpack = std::make_shared<ngl::pack>();
-			(*lpfun)(ajson, lpack, aactorid, arequestactorid);
+			(*lpfun)(apbname, ajson, lpack, aactorid, arequestactorid);
 			return lpack;
 		}
 		return nullptr;
