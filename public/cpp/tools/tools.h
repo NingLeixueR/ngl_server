@@ -396,7 +396,7 @@ namespace ngl
 			const std::string& aexpression, const std::string& areleace, const std::string& adata, std::string& aret
 		);
 
-		static bool replace_ret(
+		static void replace_ret(
 			const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret
 		);
 #pragma endregion
@@ -487,10 +487,7 @@ namespace ngl
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
 		{
 			std::string ltemp = astr;
-			if (ngl::tools::replace_ret(akey1, "", ltemp, ltemp) == false)
-			{
-				return false;
-			}
+			ngl::tools::replace_ret(akey1, "", ltemp, ltemp);
 			std::vector<std::string> lvec;
 			if (ngl::tools::splite(ltemp.c_str(), akey2, lvec) == false)
 			{
@@ -513,10 +510,7 @@ namespace ngl
 		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::map<TFIRST, TSECOND>& amap)
 		{
 			std::string ltemp = astr;
-			if (ngl::tools::replace_ret(akey1, "", ltemp, ltemp) == false)
-			{
-				return false;
-			}
+			ngl::tools::replace_ret(akey1, "", ltemp, ltemp);
 			std::vector<std::string> lvec;
 			if (ngl::tools::splite(ltemp.c_str(), akey2, lvec) == false)
 			{

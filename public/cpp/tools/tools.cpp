@@ -383,10 +383,9 @@ namespace ngl
 		aret = std::regex_replace(adata, reg, areleace);
 	}
 
-	bool tools::replace_ret(const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret)
+	void tools::replace_ret(const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret)
 	{
 		replace(aexpression, areleace, adata, aret);
-		return aret != adata;
 	}
 
 	bool tools::splite(const char* abuff, const char* afg, std::vector<std::string>& avec)
