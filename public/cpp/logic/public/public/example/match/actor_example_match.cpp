@@ -77,10 +77,10 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		std::map<int32_t, room>* lmap = tools::findmap(m_room, atype);
+		std::map<int32_t, room>& lmap = m_room[atype];
 		if (atype == pbexample::EPLAY_TYPE::EPLAY_GUESS_NUMBER)
 		{
-			for (std::pair<const int32_t, room>& lpair : *lmap)
+			for (std::pair<const int32_t, room>& lpair : lmap)
 			{
 				if (room_ready(&lpair.second) == false)
 				{

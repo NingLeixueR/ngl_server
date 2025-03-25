@@ -1,4 +1,5 @@
 #include "actor_manage_activity.h"
+#include "actor_example_match.h"
 #include "actor_manage_plays.h"
 #include "actor_manage_role.h"
 #include "actor_gatewayc2g.h"
@@ -102,40 +103,43 @@ namespace ngl
 	void auto_actor()
 	{
 #define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
+
+#define dautoactor(NAME, DEF) null<NAME>, em_pram(DEF)
 		// ### 新增actor需要补全
 		_auto_actor(
-			null<actor_client>, em_pram(ACTOR_CLIENT)
-			, null<actor_create>, em_pram(ACTOR_CREATE)
-			, null<actor_server>, em_pram(ACTOR_SERVER)
-			, null<actor_cross>, em_pram(ACTOR_CROSS)
-			, null<actor_manage_role>, em_pram(ACTOR_MANAGE_ROLE)
-			, null<actor_role>, em_pram(ACTOR_ROLE)
-			, null<actor_gateway>, em_pram(ACTOR_GATEWAY)
-			, null<actor_gatewayc2g>, em_pram(ACTOR_GATEWAY_C2G)
-			, null<actor_gatewayg2c>, em_pram(ACTOR_GATEWAY_G2C)
-			, null<actor_log>, em_pram(ACTOR_LOG)
-			, null<actor_login>, em_pram(ACTOR_LOGIN)
-			, null<actor_csvserver>, em_pram(ACTOR_CSVSERVER)
-			, null<actor_csvclient>, em_pram(ACTOR_CSVCLIENT)
-			, null<actor_robot>, em_pram(ACTOR_ROBOT)
-			, null<actor_manage_robot>, em_pram(ACTOR_MANAGE_ROBOT)
-			, null<actor_manage_activity>, em_pram(ACTOR_ACTIVITY_MANAGE)
-			, null<actor_brief>, em_pram(ACTOR_BRIEF)
-			, null<actor_chat>, em_pram(ACTOR_CHAT)
-			, null<actor_gm>, em_pram(ACTOR_GM)
-			, null<actor_gmclient>, em_pram(ACTOR_GMCLIENT)
-			, null<actor_mail>, em_pram(ACTOR_MAIL)
-			, null<actor_notice>, em_pram(ACTOR_NOTICE)
-			, null<actor_ranklist>, em_pram(ACTOR_RANKLIST)
-			, null<actor_matching>, em_pram(ACTOR_MATCHING)
-			, null<actor_manage_plays>, em_pram(ACTOR_MANAGE_PLAYS)
-			, null<actor_ugpalace>, em_pram(ACTOR_PLAYS_GO_UNDERGROUNDPALACE)
-			, null<actor_kcp>, em_pram(ACTOR_KCP)
-			, null<actor_calendar>, em_pram(ACTOR_CALENDAR)
-			, null<actor_plays>, em_pram(ACTOR_PLAYS)
-			, null<actor_keyvalue>, em_pram(ACTOR_KEYVALUE)
-			, null<actor_family>, em_pram(ACTOR_FAMILY)
-			, null<actor_friends>, em_pram(ACTOR_FRIENDS)
+			dautoactor(actor_client, ACTOR_CLIENT)
+			, dautoactor(actor_create, ACTOR_CREATE)
+			, dautoactor(actor_server, ACTOR_SERVER)
+			, dautoactor(actor_cross, ACTOR_CROSS)
+			, dautoactor(actor_manage_role, ACTOR_MANAGE_ROLE)
+			, dautoactor(actor_role, ACTOR_ROLE)
+			, dautoactor(actor_gateway, ACTOR_GATEWAY)
+			, dautoactor(actor_gatewayc2g, ACTOR_GATEWAY_C2G)
+			, dautoactor(actor_gatewayg2c, ACTOR_GATEWAY_G2C)
+			, dautoactor(actor_log, ACTOR_LOG)
+			, dautoactor(actor_login, ACTOR_LOGIN)
+			, dautoactor(actor_csvserver, ACTOR_CSVSERVER)
+			, dautoactor(actor_csvclient, ACTOR_CSVCLIENT)
+			, dautoactor(actor_robot, ACTOR_ROBOT)
+			, dautoactor(actor_manage_robot, ACTOR_MANAGE_ROBOT)
+			, dautoactor(actor_manage_activity, ACTOR_ACTIVITY_MANAGE)
+			, dautoactor(actor_brief, ACTOR_BRIEF)
+			, dautoactor(actor_chat, ACTOR_CHAT)
+			, dautoactor(actor_gm, ACTOR_GM)
+			, dautoactor(actor_gmclient, ACTOR_GMCLIENT)
+			, dautoactor(actor_mail, ACTOR_MAIL)
+			, dautoactor(actor_notice, ACTOR_NOTICE)
+			, dautoactor(actor_ranklist, ACTOR_RANKLIST)
+			, dautoactor(actor_matching, ACTOR_MATCHING)
+			, dautoactor(actor_manage_plays, ACTOR_MANAGE_PLAYS)
+			, dautoactor(actor_ugpalace, ACTOR_PLAYS_GO_UNDERGROUNDPALACE)
+			, dautoactor(actor_kcp, ACTOR_KCP)
+			, dautoactor(actor_calendar, ACTOR_CALENDAR)
+			, dautoactor(actor_plays, ACTOR_PLAYS)
+			, dautoactor(actor_keyvalue, ACTOR_KEYVALUE)
+			, dautoactor(actor_family, ACTOR_FAMILY)
+			, dautoactor(actor_friends, ACTOR_FRIENDS)
+			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
 			, em_events_null(actor_events_logic)
 			, em_events_null(actor_events_map)
 		);
@@ -143,6 +147,7 @@ namespace ngl
 
 	void tprotocol_customs()
 	{
+		tprotocol::set_customs_index(200000000);
 		// 新增内部协议需要补充
 		tprotocol::tp_customs::template func <
 			/*200000001*/np_gm
@@ -254,9 +259,5 @@ namespace ngl
 	void tcrossdb_init(bool ainstance)
 	{
 		tdb_ranklist::init(ainstance);
-	}
-
-	void init_all_pb()
-	{
 	}
 }//namespace ngl
