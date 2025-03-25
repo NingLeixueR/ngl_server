@@ -47,15 +47,15 @@ namespace ngl
 			if (atab.m_name == akey)
 			{
 				tovalue(adata, atab.m_value.c_str());
-				return false;	
+				return true;	
 			}
-			return true;
+			return false;
 		}
 
 		template <typename T, typename ...ARG>
 		inline bool read_value(const tab_specialid& atab, const char* akey, T& adata, ARG&... adatas)
 		{
-			return read_value(atab, akey, adata) && read_value(atab, adatas...);
+			return !read_value(atab, akey, adata) && !read_value(atab, adatas...);
 		}
 
 		void reload()final
@@ -64,7 +64,7 @@ namespace ngl
 
 			std::ranges::for_each(m_tablecsv, [this](const auto& pair)
 				{
-					read_value(
+					bool lread = read_value(
 						pair.second
 						, de_pram(rolemaxlv)
 						, de_pram(rolemaxvip)
@@ -79,10 +79,12 @@ namespace ngl
 						, de_pram(example_room_maxtime)
 					);	
 					std::string lexample_totalnumber;
-					read_value(pair.second, "example_totalnumber", lexample_totalnumber);
-					if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
+					if (lread == false && read_value(pair.second, "example_totalnumber", lexample_totalnumber))
 					{
-						return;
+						if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
+						{
+							return;
+						}
 					}
 				});
 		}
