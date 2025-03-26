@@ -42,6 +42,38 @@ namespace ngl
 
 	extern std::shared_ptr<np_actor_logitem> log_error(const std::source_location& asource = std::source_location::current());
 	extern std::shared_ptr<np_actor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
+
+	template <typename T>
+	void tools::print_protojson(const T& adata, bool aislog/* = false*/)
+	{
+		std::string json;
+		if (tools::protojson(adata, json))
+		{
+			const google::protobuf::Descriptor* descriptor = adata.GetDescriptor();
+			if (descriptor != nullptr)
+			{
+				if (aislog)
+				{
+					log_error()->print("{}:{}", descriptor->full_name(), json);
+				}
+				else
+				{
+					std::cout << std::format("{}:{}", descriptor->full_name(), json) << std::endl;
+				}
+			}
+			else
+			{
+				if (aislog)
+				{
+					log_error()->print("{}", json);
+				}
+				else
+				{
+					std::cout << std::format("{}", json) << std::endl;
+				}
+			}
+		}
+	}
 }//namespace ngl
 
 #define Assert(ISOK)	 \
