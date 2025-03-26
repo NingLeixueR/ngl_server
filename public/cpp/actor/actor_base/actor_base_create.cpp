@@ -50,7 +50,8 @@ namespace ngl
 		break;
 		case ACTOR_EXAMPLE_GUESS_NUMBER:
 		{
-			lpactor_base = new actor_guess_number(aid);
+			const std::set<i64_actorid>* lroleids = (std::set<i64_actorid>*)aparm;
+			lpactor_base = new actor_guess_number(*lroleids, aid);
 			actor_guess_number;
 		}
 		break;
