@@ -13,13 +13,15 @@
 #include "db_pool.h"
 #include "db_data.h"
 #include "ntimer.h"
-#include "net.pb.h"
 #include "rolekv.h"
 #include "task.h"
 #include "cmd.h"
 #include "bag.h"
 #include "net.h"
 #include "db.h"
+
+#include "example.pb.h"
+#include "net.pb.h"
 
 namespace ngl
 {
@@ -105,6 +107,11 @@ namespace ngl
 		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
 		{
 			return adata.m_iscross() ? ecross_cross_ordinary : ecross_ordinary;
+		}
+
+		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
+		{
+			return adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		//# 重载forward_before来指定转发前事件

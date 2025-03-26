@@ -54,6 +54,9 @@ extern PLAYERDefaultTypeInternal _PLAYER_default_instance_;
 class PROBUFF_EXAMPLE_PLAY_CANCEL;
 struct PROBUFF_EXAMPLE_PLAY_CANCELDefaultTypeInternal;
 extern PROBUFF_EXAMPLE_PLAY_CANCELDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_CANCEL_default_instance_;
+class PROBUFF_EXAMPLE_PLAY_CREATE;
+struct PROBUFF_EXAMPLE_PLAY_CREATEDefaultTypeInternal;
+extern PROBUFF_EXAMPLE_PLAY_CREATEDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_CREATE_default_instance_;
 class PROBUFF_EXAMPLE_PLAY_JOIN;
 struct PROBUFF_EXAMPLE_PLAY_JOINDefaultTypeInternal;
 extern PROBUFF_EXAMPLE_PLAY_JOINDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_JOIN_default_instance_;
@@ -69,18 +72,74 @@ extern PROBUFF_EXAMPLE_PLAY_MATCHING_RESULTDefaultTypeInternal _PROBUFF_EXAMPLE_
 class PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM;
 struct PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRMDefaultTypeInternal;
 extern PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRMDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM_default_instance_;
+class PROBUFF_GUESS_NUMBER_INFO;
+struct PROBUFF_GUESS_NUMBER_INFODefaultTypeInternal;
+extern PROBUFF_GUESS_NUMBER_INFODefaultTypeInternal _PROBUFF_GUESS_NUMBER_INFO_default_instance_;
 }  // namespace pbexample
 PROTOBUF_NAMESPACE_OPEN
 template<> ::pbexample::PLAYER* Arena::CreateMaybeMessage<::pbexample::PLAYER>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>(Arena*);
+template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>(Arena*);
+template<> ::pbexample::PROBUFF_GUESS_NUMBER_INFO* Arena::CreateMaybeMessage<::pbexample::PROBUFF_GUESS_NUMBER_INFO>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace pbexample {
 
+enum PROBUFF_EXAMPLE_PLAY_CREATE_estat : int {
+  PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success = 0,
+  PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_fail = 1,
+  PROBUFF_EXAMPLE_PLAY_CREATE_estat_PROBUFF_EXAMPLE_PLAY_CREATE_estat_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  PROBUFF_EXAMPLE_PLAY_CREATE_estat_PROBUFF_EXAMPLE_PLAY_CREATE_estat_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool PROBUFF_EXAMPLE_PLAY_CREATE_estat_IsValid(int value);
+constexpr PROBUFF_EXAMPLE_PLAY_CREATE_estat PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_MIN = PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success;
+constexpr PROBUFF_EXAMPLE_PLAY_CREATE_estat PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_MAX = PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_fail;
+constexpr int PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_ARRAYSIZE = PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PROBUFF_EXAMPLE_PLAY_CREATE_estat_descriptor();
+template<typename T>
+inline const std::string& PROBUFF_EXAMPLE_PLAY_CREATE_estat_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PROBUFF_EXAMPLE_PLAY_CREATE_estat>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function PROBUFF_EXAMPLE_PLAY_CREATE_estat_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_descriptor(), enum_t_value);
+}
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE_estat_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PROBUFF_EXAMPLE_PLAY_CREATE_estat* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PROBUFF_EXAMPLE_PLAY_CREATE_estat>(
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_descriptor(), name, value);
+}
+enum ECROSS : int {
+  ECROSS_NULL = 0,
+  ECROSS_ORDINARY = 1,
+  ECROSS_CROSS_ORDINARY = 2,
+  ECROSS_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  ECROSS_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool ECROSS_IsValid(int value);
+constexpr ECROSS ECROSS_MIN = ECROSS_NULL;
+constexpr ECROSS ECROSS_MAX = ECROSS_CROSS_ORDINARY;
+constexpr int ECROSS_ARRAYSIZE = ECROSS_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ECROSS_descriptor();
+template<typename T>
+inline const std::string& ECROSS_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ECROSS>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ECROSS_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ECROSS_descriptor(), enum_t_value);
+}
+inline bool ECROSS_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ECROSS* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ECROSS>(
+    ECROSS_descriptor(), name, value);
+}
 enum EPLAY_TYPE : int {
   EPLAY_GUESS_NUMBER = 0,
   EPLAY_TYPE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
@@ -258,9 +317,23 @@ class PROBUFF_EXAMPLE_PLAY_JOIN final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMTypeFieldNumber = 1,
+    kMCrossFieldNumber = 1,
+    kMTypeFieldNumber = 2,
   };
-  // optional .pbexample.EPLAY_TYPE m_type = 1;
+  // optional .pbexample.ECROSS m_cross = 1;
+  bool has_m_cross() const;
+  private:
+  bool _internal_has_m_cross() const;
+  public:
+  void clear_m_cross();
+  ::pbexample::ECROSS m_cross() const;
+  void set_m_cross(::pbexample::ECROSS value);
+  private:
+  ::pbexample::ECROSS _internal_m_cross() const;
+  void _internal_set_m_cross(::pbexample::ECROSS value);
+  public:
+
+  // optional .pbexample.EPLAY_TYPE m_type = 2;
   bool has_m_type() const;
   private:
   bool _internal_has_m_type() const;
@@ -283,6 +356,7 @@ class PROBUFF_EXAMPLE_PLAY_JOIN final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    int m_cross_;
     int m_type_;
   };
   union { Impl_ _impl_; };
@@ -1336,6 +1410,402 @@ class PROBUFF_EXAMPLE_PLAY_CANCEL final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
 };
+// -------------------------------------------------------------------
+
+class PROBUFF_EXAMPLE_PLAY_CREATE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE) */ {
+ public:
+  inline PROBUFF_EXAMPLE_PLAY_CREATE() : PROBUFF_EXAMPLE_PLAY_CREATE(nullptr) {}
+  ~PROBUFF_EXAMPLE_PLAY_CREATE() override;
+  explicit PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_PLAY_CREATE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_EXAMPLE_PLAY_CREATE(const PROBUFF_EXAMPLE_PLAY_CREATE& from);
+  PROBUFF_EXAMPLE_PLAY_CREATE(PROBUFF_EXAMPLE_PLAY_CREATE&& from) noexcept
+    : PROBUFF_EXAMPLE_PLAY_CREATE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_EXAMPLE_PLAY_CREATE& operator=(const PROBUFF_EXAMPLE_PLAY_CREATE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_EXAMPLE_PLAY_CREATE& operator=(PROBUFF_EXAMPLE_PLAY_CREATE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_EXAMPLE_PLAY_CREATE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_EXAMPLE_PLAY_CREATE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_EXAMPLE_PLAY_CREATE*>(
+               &_PROBUFF_EXAMPLE_PLAY_CREATE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(PROBUFF_EXAMPLE_PLAY_CREATE& a, PROBUFF_EXAMPLE_PLAY_CREATE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_EXAMPLE_PLAY_CREATE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_EXAMPLE_PLAY_CREATE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_EXAMPLE_PLAY_CREATE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_EXAMPLE_PLAY_CREATE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_EXAMPLE_PLAY_CREATE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_EXAMPLE_PLAY_CREATE& from) {
+    PROBUFF_EXAMPLE_PLAY_CREATE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_EXAMPLE_PLAY_CREATE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbexample.PROBUFF_EXAMPLE_PLAY_CREATE";
+  }
+  protected:
+  explicit PROBUFF_EXAMPLE_PLAY_CREATE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  typedef PROBUFF_EXAMPLE_PLAY_CREATE_estat estat;
+  static constexpr estat estat_success =
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success;
+  static constexpr estat estat_fail =
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_fail;
+  static inline bool estat_IsValid(int value) {
+    return PROBUFF_EXAMPLE_PLAY_CREATE_estat_IsValid(value);
+  }
+  static constexpr estat estat_MIN =
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_MIN;
+  static constexpr estat estat_MAX =
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_MAX;
+  static constexpr int estat_ARRAYSIZE =
+    PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_ARRAYSIZE;
+  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+  estat_descriptor() {
+    return PROBUFF_EXAMPLE_PLAY_CREATE_estat_descriptor();
+  }
+  template<typename T>
+  static inline const std::string& estat_Name(T enum_t_value) {
+    static_assert(::std::is_same<T, estat>::value ||
+      ::std::is_integral<T>::value,
+      "Incorrect type passed to function estat_Name.");
+    return PROBUFF_EXAMPLE_PLAY_CREATE_estat_Name(enum_t_value);
+  }
+  static inline bool estat_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
+      estat* value) {
+    return PROBUFF_EXAMPLE_PLAY_CREATE_estat_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMTypeFieldNumber = 1,
+    kMIndexFieldNumber = 2,
+    kMStatFieldNumber = 3,
+  };
+  // optional .pbexample.EPLAY_TYPE m_type = 1;
+  bool has_m_type() const;
+  private:
+  bool _internal_has_m_type() const;
+  public:
+  void clear_m_type();
+  ::pbexample::EPLAY_TYPE m_type() const;
+  void set_m_type(::pbexample::EPLAY_TYPE value);
+  private:
+  ::pbexample::EPLAY_TYPE _internal_m_type() const;
+  void _internal_set_m_type(::pbexample::EPLAY_TYPE value);
+  public:
+
+  // optional int32 m_index = 2;
+  bool has_m_index() const;
+  private:
+  bool _internal_has_m_index() const;
+  public:
+  void clear_m_index();
+  int32_t m_index() const;
+  void set_m_index(int32_t value);
+  private:
+  int32_t _internal_m_index() const;
+  void _internal_set_m_index(int32_t value);
+  public:
+
+  // optional .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat m_stat = 3;
+  bool has_m_stat() const;
+  private:
+  bool _internal_has_m_stat() const;
+  public:
+  void clear_m_stat();
+  ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat m_stat() const;
+  void set_m_stat(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat value);
+  private:
+  ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat _internal_m_stat() const;
+  void _internal_set_m_stat(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    int m_type_;
+    int32_t m_index_;
+    int m_stat_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_example_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PROBUFF_GUESS_NUMBER_INFO final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbexample.PROBUFF_GUESS_NUMBER_INFO) */ {
+ public:
+  inline PROBUFF_GUESS_NUMBER_INFO() : PROBUFF_GUESS_NUMBER_INFO(nullptr) {}
+  ~PROBUFF_GUESS_NUMBER_INFO() override;
+  explicit PROTOBUF_CONSTEXPR PROBUFF_GUESS_NUMBER_INFO(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_GUESS_NUMBER_INFO(const PROBUFF_GUESS_NUMBER_INFO& from);
+  PROBUFF_GUESS_NUMBER_INFO(PROBUFF_GUESS_NUMBER_INFO&& from) noexcept
+    : PROBUFF_GUESS_NUMBER_INFO() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_GUESS_NUMBER_INFO& operator=(const PROBUFF_GUESS_NUMBER_INFO& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_GUESS_NUMBER_INFO& operator=(PROBUFF_GUESS_NUMBER_INFO&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_GUESS_NUMBER_INFO& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_GUESS_NUMBER_INFO* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_GUESS_NUMBER_INFO*>(
+               &_PROBUFF_GUESS_NUMBER_INFO_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(PROBUFF_GUESS_NUMBER_INFO& a, PROBUFF_GUESS_NUMBER_INFO& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_GUESS_NUMBER_INFO* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_GUESS_NUMBER_INFO* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_GUESS_NUMBER_INFO* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_GUESS_NUMBER_INFO>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_GUESS_NUMBER_INFO& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_GUESS_NUMBER_INFO& from) {
+    PROBUFF_GUESS_NUMBER_INFO::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_GUESS_NUMBER_INFO* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbexample.PROBUFF_GUESS_NUMBER_INFO";
+  }
+  protected:
+  explicit PROBUFF_GUESS_NUMBER_INFO(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMMaxnumberFieldNumber = 1,
+    kMMinnumberFieldNumber = 2,
+    kMWhoguessFieldNumber = 3,
+  };
+  // optional int32 m_maxnumber = 1;
+  bool has_m_maxnumber() const;
+  private:
+  bool _internal_has_m_maxnumber() const;
+  public:
+  void clear_m_maxnumber();
+  int32_t m_maxnumber() const;
+  void set_m_maxnumber(int32_t value);
+  private:
+  int32_t _internal_m_maxnumber() const;
+  void _internal_set_m_maxnumber(int32_t value);
+  public:
+
+  // optional int32 m_minnumber = 2;
+  bool has_m_minnumber() const;
+  private:
+  bool _internal_has_m_minnumber() const;
+  public:
+  void clear_m_minnumber();
+  int32_t m_minnumber() const;
+  void set_m_minnumber(int32_t value);
+  private:
+  int32_t _internal_m_minnumber() const;
+  void _internal_set_m_minnumber(int32_t value);
+  public:
+
+  // optional int32 m_whoguess = 3;
+  bool has_m_whoguess() const;
+  private:
+  bool _internal_has_m_whoguess() const;
+  public:
+  void clear_m_whoguess();
+  int32_t m_whoguess() const;
+  void set_m_whoguess(int32_t value);
+  private:
+  int32_t _internal_m_whoguess() const;
+  void _internal_set_m_whoguess(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_GUESS_NUMBER_INFO)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    int32_t m_maxnumber_;
+    int32_t m_minnumber_;
+    int32_t m_whoguess_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_example_2eproto;
+};
 // ===================================================================
 
 
@@ -1347,9 +1817,37 @@ class PROBUFF_EXAMPLE_PLAY_CANCEL final :
 #endif  // __GNUC__
 // PROBUFF_EXAMPLE_PLAY_JOIN
 
-// optional .pbexample.EPLAY_TYPE m_type = 1;
-inline bool PROBUFF_EXAMPLE_PLAY_JOIN::_internal_has_m_type() const {
+// optional .pbexample.ECROSS m_cross = 1;
+inline bool PROBUFF_EXAMPLE_PLAY_JOIN::_internal_has_m_cross() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_JOIN::has_m_cross() const {
+  return _internal_has_m_cross();
+}
+inline void PROBUFF_EXAMPLE_PLAY_JOIN::clear_m_cross() {
+  _impl_.m_cross_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::pbexample::ECROSS PROBUFF_EXAMPLE_PLAY_JOIN::_internal_m_cross() const {
+  return static_cast< ::pbexample::ECROSS >(_impl_.m_cross_);
+}
+inline ::pbexample::ECROSS PROBUFF_EXAMPLE_PLAY_JOIN::m_cross() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_JOIN.m_cross)
+  return _internal_m_cross();
+}
+inline void PROBUFF_EXAMPLE_PLAY_JOIN::_internal_set_m_cross(::pbexample::ECROSS value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_cross_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_JOIN::set_m_cross(::pbexample::ECROSS value) {
+  _internal_set_m_cross(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_JOIN.m_cross)
+}
+
+// optional .pbexample.EPLAY_TYPE m_type = 2;
+inline bool PROBUFF_EXAMPLE_PLAY_JOIN::_internal_has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool PROBUFF_EXAMPLE_PLAY_JOIN::has_m_type() const {
@@ -1357,7 +1855,7 @@ inline bool PROBUFF_EXAMPLE_PLAY_JOIN::has_m_type() const {
 }
 inline void PROBUFF_EXAMPLE_PLAY_JOIN::clear_m_type() {
   _impl_.m_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::pbexample::EPLAY_TYPE PROBUFF_EXAMPLE_PLAY_JOIN::_internal_m_type() const {
   return static_cast< ::pbexample::EPLAY_TYPE >(_impl_.m_type_);
@@ -1367,7 +1865,7 @@ inline ::pbexample::EPLAY_TYPE PROBUFF_EXAMPLE_PLAY_JOIN::m_type() const {
   return _internal_m_type();
 }
 inline void PROBUFF_EXAMPLE_PLAY_JOIN::_internal_set_m_type(::pbexample::EPLAY_TYPE value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.m_type_ = value;
 }
 inline void PROBUFF_EXAMPLE_PLAY_JOIN::set_m_type(::pbexample::EPLAY_TYPE value) {
@@ -1862,9 +2360,189 @@ inline void PROBUFF_EXAMPLE_PLAY_CANCEL::set_m_roomid(int32_t value) {
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_CANCEL.m_roomid)
 }
 
+// -------------------------------------------------------------------
+
+// PROBUFF_EXAMPLE_PLAY_CREATE
+
+// optional .pbexample.EPLAY_TYPE m_type = 1;
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE::_internal_has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE::has_m_type() const {
+  return _internal_has_m_type();
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::pbexample::EPLAY_TYPE PROBUFF_EXAMPLE_PLAY_CREATE::_internal_m_type() const {
+  return static_cast< ::pbexample::EPLAY_TYPE >(_impl_.m_type_);
+}
+inline ::pbexample::EPLAY_TYPE PROBUFF_EXAMPLE_PLAY_CREATE::m_type() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::_internal_set_m_type(::pbexample::EPLAY_TYPE value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_type_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::set_m_type(::pbexample::EPLAY_TYPE value) {
+  _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.m_type)
+}
+
+// optional int32 m_index = 2;
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE::_internal_has_m_index() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE::has_m_index() const {
+  return _internal_has_m_index();
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::clear_m_index() {
+  _impl_.m_index_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int32_t PROBUFF_EXAMPLE_PLAY_CREATE::_internal_m_index() const {
+  return _impl_.m_index_;
+}
+inline int32_t PROBUFF_EXAMPLE_PLAY_CREATE::m_index() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.m_index)
+  return _internal_m_index();
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::_internal_set_m_index(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_index_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::set_m_index(int32_t value) {
+  _internal_set_m_index(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.m_index)
+}
+
+// optional .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat m_stat = 3;
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE::_internal_has_m_stat() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_CREATE::has_m_stat() const {
+  return _internal_has_m_stat();
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::clear_m_stat() {
+  _impl_.m_stat_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat PROBUFF_EXAMPLE_PLAY_CREATE::_internal_m_stat() const {
+  return static_cast< ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat >(_impl_.m_stat_);
+}
+inline ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat PROBUFF_EXAMPLE_PLAY_CREATE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.m_stat)
+  return _internal_m_stat();
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::_internal_set_m_stat(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_stat_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_CREATE::set_m_stat(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat value) {
+  _internal_set_m_stat(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.m_stat)
+}
+
+// -------------------------------------------------------------------
+
+// PROBUFF_GUESS_NUMBER_INFO
+
+// optional int32 m_maxnumber = 1;
+inline bool PROBUFF_GUESS_NUMBER_INFO::_internal_has_m_maxnumber() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_GUESS_NUMBER_INFO::has_m_maxnumber() const {
+  return _internal_has_m_maxnumber();
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::clear_m_maxnumber() {
+  _impl_.m_maxnumber_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline int32_t PROBUFF_GUESS_NUMBER_INFO::_internal_m_maxnumber() const {
+  return _impl_.m_maxnumber_;
+}
+inline int32_t PROBUFF_GUESS_NUMBER_INFO::m_maxnumber() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_GUESS_NUMBER_INFO.m_maxnumber)
+  return _internal_m_maxnumber();
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::_internal_set_m_maxnumber(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_maxnumber_ = value;
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::set_m_maxnumber(int32_t value) {
+  _internal_set_m_maxnumber(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_GUESS_NUMBER_INFO.m_maxnumber)
+}
+
+// optional int32 m_minnumber = 2;
+inline bool PROBUFF_GUESS_NUMBER_INFO::_internal_has_m_minnumber() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_GUESS_NUMBER_INFO::has_m_minnumber() const {
+  return _internal_has_m_minnumber();
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::clear_m_minnumber() {
+  _impl_.m_minnumber_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline int32_t PROBUFF_GUESS_NUMBER_INFO::_internal_m_minnumber() const {
+  return _impl_.m_minnumber_;
+}
+inline int32_t PROBUFF_GUESS_NUMBER_INFO::m_minnumber() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_GUESS_NUMBER_INFO.m_minnumber)
+  return _internal_m_minnumber();
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::_internal_set_m_minnumber(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_minnumber_ = value;
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::set_m_minnumber(int32_t value) {
+  _internal_set_m_minnumber(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_GUESS_NUMBER_INFO.m_minnumber)
+}
+
+// optional int32 m_whoguess = 3;
+inline bool PROBUFF_GUESS_NUMBER_INFO::_internal_has_m_whoguess() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_GUESS_NUMBER_INFO::has_m_whoguess() const {
+  return _internal_has_m_whoguess();
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::clear_m_whoguess() {
+  _impl_.m_whoguess_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline int32_t PROBUFF_GUESS_NUMBER_INFO::_internal_m_whoguess() const {
+  return _impl_.m_whoguess_;
+}
+inline int32_t PROBUFF_GUESS_NUMBER_INFO::m_whoguess() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_GUESS_NUMBER_INFO.m_whoguess)
+  return _internal_m_whoguess();
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::_internal_set_m_whoguess(int32_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_whoguess_ = value;
+}
+inline void PROBUFF_GUESS_NUMBER_INFO::set_m_whoguess(int32_t value) {
+  _internal_set_m_whoguess(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_GUESS_NUMBER_INFO.m_whoguess)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -1884,6 +2562,16 @@ inline void PROBUFF_EXAMPLE_PLAY_CANCEL::set_m_roomid(int32_t value) {
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat>() {
+  return ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_descriptor();
+}
+template <> struct is_proto_enum< ::pbexample::ECROSS> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::ECROSS>() {
+  return ::pbexample::ECROSS_descriptor();
+}
 template <> struct is_proto_enum< ::pbexample::EPLAY_TYPE> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::EPLAY_TYPE>() {

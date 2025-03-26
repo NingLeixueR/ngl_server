@@ -134,11 +134,15 @@ namespace ngl
 		lroom.m_roomcreate = localtime::gettime();
 		lroom.m_roomid = lroomid;
 		lroom.m_totalnumber = ltotalnumber;
+
+		log_error()->print("add room [{}]", lroomid);
+
 		return &lroom;
 	}
 
 	void actor_example_match::erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode /*= pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY*/)
 	{
+		log_error()->print("erase room [{}]", aroom->m_roomid);
 		sync_response(aroom, aerrorcode);
 		room_index& lroomindex = m_roomindex[aroom->m_type];
 		lroomindex.m_roomlist.erase(aroom->m_roomid);

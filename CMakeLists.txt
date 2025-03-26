@@ -108,6 +108,7 @@ INCLUDE_DIRECTORIES(public/cpp/logic/public/public/events)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/template_tab)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/example)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/public/example/match)
+INCLUDE_DIRECTORIES(public/cpp/logic/public/public/example/example_game)
 
 INCLUDE_DIRECTORIES(public/cpp/logic/tools)
 
