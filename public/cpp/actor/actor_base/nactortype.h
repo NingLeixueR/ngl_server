@@ -58,6 +58,8 @@ namespace ngl
 		ACTOR_EVENTS,											// 事件
 		ACTOR_EVENTS_MAX_COUNT = ACTOR_EVENTS+10,				// 事件预留10个
 		ACTOR_EXAMPLE_MATCH,									// 例子小游戏:匹配
+		ACTOR_EXAMPLE_MANAGE,									// 创建管理例子小游戏
+		ACTOR_EXAMPLE_GUESS_NUMBER,								// 例子小游戏:猜数字-数字炸弹
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,

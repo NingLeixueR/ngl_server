@@ -10,6 +10,13 @@ package pbexample;
 //option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
 option optimize_for = SPEED;
 
+enum ECROSS
+{
+	ECROSS_NULL				= 0;
+	ECROSS_ORDINARY			= 1;			// 本服转发
+	ECROSS_CROSS_ORDINARY	= 2;			// 跨服转发
+}
+
 enum EPLAY_TYPE
 {
 	EPLAY_GUESS_NUMBER = 0;
@@ -18,7 +25,8 @@ enum EPLAY_TYPE
 // 加入玩法
 message PROBUFF_EXAMPLE_PLAY_JOIN
 {
-	optional EPLAY_TYPE m_type		= 1;
+	optional ECROSS m_cross			= 1;
+	optional EPLAY_TYPE m_type		= 2;
 };
 
 message PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE
@@ -75,10 +83,29 @@ message PROBUFF_EXAMPLE_PLAY_CANCEL
 	optional int32 m_roomid					= 2; // 房间号
 };
 
-///<<<<<<<<<<<<< 猜数字 
+// 创建例子游戏成功
+message PROBUFF_EXAMPLE_PLAY_CREATE
+{
+	optional EPLAY_TYPE m_type				= 1;
+	optional int32 m_index					= 2;
+	enum estat
+	{
+		estat_success = 0;
+		estat_fail = 1;
+	}
+	optional estat m_stat					= 3;
+}
+
+///<<<<<<<<<<<<< 猜数字#数字炸弹 
 
 
-
+// 匹配结果
+message PROBUFF_GUESS_NUMBER_INFO
+{
+	optional int32 m_maxnumber					= 1; // 数字最大值
+	optional int32 m_minnumber					= 2; // 数字最小值
+	optional int32 m_whoguess					= 3; // 谁猜测
+};
 
 
 ///>>>>>>>>>>>>> 猜数字 

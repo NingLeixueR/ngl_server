@@ -1,3 +1,4 @@
+#include "actor_guess_number.h"
 #include "actor_ugpalace.h"
 #include "actor_manage.h"
 #include "actor_robot.h"
@@ -45,6 +46,12 @@ namespace ngl
 			lpactor_base = new actor_log(aid);
 			((actor_log*)(lpactor_base))->init_rfun<actor_log>();
 			actor_base::first_nregister<actor_log>(ACTOR_LOG);
+		}
+		break;
+		case ACTOR_EXAMPLE_GUESS_NUMBER:
+		{
+			lpactor_base = new actor_guess_number(aid);
+			actor_guess_number;
 		}
 		break;
 		default:

@@ -15,6 +15,9 @@
 #include "type.h"
 #include "xml.h"
 
+#include "example.pb.h"
+#include "net.pb.h"
+
 #include <source_location>
 #include <iostream>
 #include <sstream>
@@ -913,11 +916,20 @@ namespace ngl
 		def_portocol(np_roleban, m_roleban)
 	};
 
+	///### 例子小游戏
 	// 玩家登陆获取匹配信息
 	struct np_request_match_info
 	{
 		i64_actorid m_roleid;
 		def_portocol(np_request_match_info, m_roleid)
+	};
+
+	// actor_example_match->actor_example_manage 为指定玩家创建指定小游戏
+	struct np_create_example
+	{
+		pbexample::EPLAY_TYPE m_type;
+		std::set<i64_actorid> m_roleids;
+		def_portocol(np_create_example, m_type, m_roleids)
 	};
 
 }//namespace ngl
