@@ -366,19 +366,19 @@ namespace ngl
 
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
 	{
-		tools::print_protojson(*adata.get_data());
+		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
 
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata)
 	{
-		tools::print_protojson(*adata.get_data());
+		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
 
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
 	{
-		tools::print_protojson(*adata.get_data());
+		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
 

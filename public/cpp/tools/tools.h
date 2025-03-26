@@ -278,22 +278,7 @@ namespace ngl
 
 		// 以json格式打印pb数据
 		template <typename T>
-		static void print_protojson(const T& adata)
-		{
-			std::string json;
-			if (tools::protojson(adata, json))
-			{
-				const google::protobuf::Descriptor* descriptor = adata.GetDescriptor();
-				if (descriptor != nullptr)
-				{
-					std::cout << std::format("{}:{}", descriptor->full_name(), json) << std::endl;
-				}
-				else
-				{
-					std::cout << std::format("{}", json) << std::endl;
-				}
-			}
-		}
+		static void print_protojson(const T& adata, bool aislog = false);
 
 		// 通过json获取结构
 		template <typename T>
