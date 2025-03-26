@@ -27,8 +27,9 @@ namespace ngl
 		actor_guess_number& operator=(const actor_guess_number&) = delete;
 
 		std::set<i64_actorid> m_rolesds;
-		actor_guess_number(const std::set<i64_actorid>& aroleids, int32_t aindex);
 	public:
+		actor_guess_number(const std::set<i64_actorid>& aroleids, int32_t aindex);
+
 		static ENUM_ACTOR actor_type()
 		{
 			return ACTOR_EXAMPLE_GUESS_NUMBER;
