@@ -79,3 +79,21 @@ actor切换game进程
 		count = 1;
 	}
 /ranklist 本服/跨服(0/1) 排行榜类型 page(页码) everynum(每页数量)
+
+[匹配
+
+	//# 发起匹配
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_JOIN {"m_cross":1,"m_type":0}
+
+	//# 匹配成功后确认进入例子小游戏
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM {"m_isconfirm":true,m_roomid:1}
+
+	//# 取消匹配
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL {"m_type":0,m_roomid:1}
+	
+	//# 进入例子小游戏
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE {"m_cross":1,"m_type":0,m_exampleactorid:4295032882}
+	
+]
+
+aparm.m_enum == 200000043
