@@ -917,19 +917,35 @@ namespace ngl
 	};
 
 	///### 例子小游戏
-	// 玩家登陆获取匹配信息
-	struct np_request_match_info
+	// 玩家登陆
+	// 1、获取匹配信息
+	// 2、例子小游戏信息
+	struct np_login_request_info
 	{
 		i64_actorid m_roleid;
-		def_portocol(np_request_match_info, m_roleid)
+		def_portocol(np_login_request_info, m_roleid)
 	};
 
-	// actor_example_match->actor_example_manage 为指定玩家创建指定小游戏
+	// actor_example_match->actor_example_manage 为指定玩家创建指定例子小游戏
 	struct np_create_example
 	{
 		pbexample::EPLAY_TYPE m_type;
 		std::set<i64_actorid> m_roleids;
 		def_portocol(np_create_example, m_type, m_roleids)
+	};
+
+	// actor_example_manage->例子小游戏
+	struct np_example_entergame_ready
+	{
+		def_portocol(np_example_entergame_ready)
+	};
+
+	// 例子小游戏->actor_role
+	struct np_example_actorid
+	{
+		pbexample::EPLAY_TYPE m_type;
+		i64_actorid m_actorexampleid;
+		def_portocol(np_example_id, m_type, m_actorexampleid)
 	};
 
 }//namespace ngl

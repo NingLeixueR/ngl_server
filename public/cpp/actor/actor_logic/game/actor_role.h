@@ -37,6 +37,7 @@ namespace ngl
 		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
 		i64_actorid  m_playactorid;
+		std::pair<pbexample::EPLAY_TYPE, i64_actorid> m_example;
 	public:
 		actor_role(const actor_role&) = delete;
 		actor_role& operator=(const actor_role&) = delete;
@@ -70,7 +71,8 @@ namespace ngl
 		{
 			ecross_ordinary			= 1,			// 本服转发
 			ecross_cross_ordinary	= 2,			// 跨服转发
-			ecross_none				= 3,			// 错误转发
+			ecross_cross_example	= 3,			// 例子转发
+			ecross_none				= 4,			// 错误转发
 		};
 
 		//# 重载forward_type来指定转发类型
@@ -103,15 +105,32 @@ namespace ngl
 			return ecross_none;
 		}
 
-		// ranklist的转发类型
+		//# ranklist的转发类型
 		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
 		{
 			return adata.m_iscross() ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
+		//# 加入例子小游戏匹配的转发类型
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
 		{
 			return adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
+		}
+
+		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
+		{
+			return adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
+		}
+
+		//# 例子小游戏匹配的转发类型
+		ecross example_type()
+		{
+			return m_example.second == nguid::make() ? ecross_none : ecross_cross_example;
+		}
+
+		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata)
+		{
+			return example_type();
 		}
 
 		//# 重载forward_before来指定转发前事件
@@ -150,6 +169,9 @@ namespace ngl
 			case ecross_cross_ordinary:
 				lguid = nguid::make(ACTOR, tab_self_cros_area, forward_dataid(lparm));
 				break; 
+			case ecross_cross_example:
+				lguid = m_example.second;
+				break;
 			default:
 				return true;
 			}
@@ -205,6 +227,9 @@ namespace ngl
 		void echo_msg(const char* amsg);
 
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
+
+		//# 同步例子小游戏
+		bool handle(const message<np_example_actorid>& adata);
 	};
 }//namespace ngl
 

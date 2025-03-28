@@ -1,4 +1,4 @@
-#include "actor_guess_number.h"
+#include "actor_example_guess_number.h"
 #include "actor_ugpalace.h"
 #include "actor_manage.h"
 #include "actor_robot.h"
@@ -51,8 +51,9 @@ namespace ngl
 		case ACTOR_EXAMPLE_GUESS_NUMBER:
 		{
 			const std::set<i64_actorid>* lroleids = (std::set<i64_actorid>*)aparm;
-			lpactor_base = new actor_guess_number(*lroleids, aid);
-			actor_guess_number;
+			lpactor_base = new actor_example_guess_number(*lroleids, aid);
+			((actor_example_guess_number*)(lpactor_base))->init_rfun<actor_log>();
+			actor_base::first_nregister<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER);
 		}
 		break;
 		default:

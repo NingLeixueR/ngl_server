@@ -73,5 +73,17 @@ namespace ngl
 			, pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM
 			, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL
 		>();
+
+		// ACTOR_EXAMPLE_MANAGE 模块二次转发
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_EXAMPLE_MANAGE
+			, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
+		>();
+
+		// ACTOR_EXAMPLE_GUESS_NUMBER 模块二次转发
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF
+			, ACTOR_EXAMPLE_GUESS_NUMBER
+			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER
+		>();
 	}
 }// namespace ngl

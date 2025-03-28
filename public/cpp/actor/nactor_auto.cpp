@@ -1,4 +1,6 @@
+#include "actor_example_guess_number.h"
 #include "actor_manage_activity.h"
+#include "actor_example_manage.h"
 #include "actor_example_match.h"
 #include "actor_manage_plays.h"
 #include "actor_manage_role.h"
@@ -140,6 +142,8 @@ namespace ngl
 			, dautoactor(actor_family, ACTOR_FAMILY)
 			, dautoactor(actor_friends, ACTOR_FRIENDS)
 			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
+			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
+			, dautoactor(actor_example_guess_number, ACTOR_EXAMPLE_GUESS_NUMBER)
 			, em_events_null(actor_events_logic)
 			, em_events_null(actor_events_map)
 		);
@@ -191,7 +195,9 @@ namespace ngl
 			/*200000039*/, np_channel_check
 			/*200000040*/, np_roleban
 			/*200000041*/, np_gateway_close_session
-			/*200000042*/, np_request_match_info
+			/*200000042*/, np_login_request_info
+			/*200000043*/, np_create_example
+			/*200000044*/, np_example_entergame_ready
 		> (EPROTOCOL_TYPE_CUSTOM);
 
 		tprotocol::set_customs_index(250000000);

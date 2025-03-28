@@ -116,18 +116,19 @@ int main(int argc, char** argv)
 	}
 
 	std::map<int, std::map<std::string,int>> lmap;
+	std::map<int, std::map<std::string, int>> lmap2;
 	for (auto& item : lvec1)
 	{
-		lmap[item.first.size()].insert(item);
+		if (item.first.find("actor_") == std::string::npos) {
+			lmap[item.first.size()].insert(item);
+		}
+		else
+		{
+			lmap2[item.first.size()].insert(item);
+		}
+		
 	}
 
-	/*std::map<int, std::map<std::string, int>> lmapinclude;
-	for (auto& item : lvec3)
-	{
-		lmapinclude[item.first.size()].insert(item);
-	}*/
-
-	int llinecount = 0;
 	auto lsavefun = [&argv](int aindex, std::stringstream& astream)
 	{
 			std::string cname = std::format("{}_{}.cpp", argv[1], aindex);
@@ -141,44 +142,45 @@ int main(int argc, char** argv)
 			char ltmbuff[1024] = { 0 };
 			ngl::localtime::time2str(ltmbuff, 1024, ngl::localtime::gettime(), "// 创建时间 %y-%m-%d %H:%M:%S");
 			*m_stream << ltmbuff << std::endl;
-			/*for (const auto& item : lmapinclude)
-			{
-				for (const auto& item2 : item.second)
-				{
-					*m_stream << "#include \"" << item2.first << "\"" << std::endl;
-				}
-			}*/
 			return m_stream;
 		};
 
-	std::stringstream* m_stream = lmalloc();
-	int lindex = 0;
-	for (auto itor1 = lmap.rbegin(); itor1 != lmap.rend(); ++itor1)
-	{
-		for (auto itor2 = itor1->second.rbegin(); itor2!= itor1->second.rend();++itor2)
+	int lindex = 0; 
+	auto foreach_map = [&](std::stringstream* astream, std::map<int, std::map<std::string, int>>& amap)
 		{
-			if (llinecount > 20000)
+			int llinecount = 0;
+			for (auto itor1 = amap.rbegin(); itor1 != amap.rend(); ++itor1)
 			{
-				lsavefun(++lindex, *m_stream);
-				std::cout << std::format("index[{}] line:[{}] ", lindex, llinecount) << std::endl;
-				m_stream = lmalloc();
-				llinecount = 0;
+				for (auto itor2 = itor1->second.rbegin(); itor2 != itor1->second.rend(); ++itor2)
+				{
+					//if (llinecount > 2000000000)
+					//{
+					//	lsavefun(++lindex, *astream);
+					//	std::cout << std::format("index[{}] line:[{}] ", lindex, llinecount) << std::endl;
+					//	astream = lmalloc();
+					//	llinecount = 0;
+					//}
+					//
+					*astream << "#include \"" << itor2->first << "\"\n";
+					llinecount += itor2->second;
+				}
 			}
-			
-			*m_stream << "#include \"" << itor2->first << "\"\n";
-			llinecount += itor2->second;
-		}	
-	}
-	lsavefun(++lindex, *m_stream);
-	std::cout << std::format("index[{}] line:[{}] ", lindex, llinecount) << std::endl;
+			//if (llinecount > 0)
+			//{
+			//	lsavefun(++lindex, *astream);
+			//}
+		};
 
-	m_stream = lmalloc();
-
-	*m_stream << "extern \"C\"{\n";
+	std::stringstream* lstream = lmalloc();
+	foreach_map(lstream, lmap);
+	foreach_map(lstream, lmap2);
+	
+	//std::stringstream* m_stream = lmalloc();
+	*lstream << "extern \"C\"{\n";
 	for (const auto& item : lvec5)
-		*m_stream << "#include \"" << item.first << "\"\n";
-	*m_stream << "}//extern \"C\"\n";
-	lsavefun(++lindex, *m_stream);
+		*lstream << "#include \"" << item.first << "\"\n";
+	*lstream << "}//extern \"C\"\n";
+	lsavefun(++lindex, *lstream);
 
 	for (const auto& item : ldic)
 		m_streamtxt << "INCLUDE_DIRECTORIES(" << item << ")\n";

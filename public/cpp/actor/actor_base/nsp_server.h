@@ -56,6 +56,11 @@ namespace ngl
 
 		static void channel_register(TDerived*, message<np_channel_register<TDATA>>& adata)
 		{
+			if (m_dbmodule->actorbase() == nullptr)
+			{
+				log_error()->print("nsp_server::channel_register fail m_dbmodule->actorbase() == nullptr");
+				return;
+			}
 			auto& recv = *adata.get_data();
 			m_publishlist[recv.m_actorid] = recv.m_dataid;
 			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();

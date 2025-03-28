@@ -87,7 +87,7 @@ message PROBUFF_EXAMPLE_PLAY_CANCEL
 message PROBUFF_EXAMPLE_PLAY_CREATE
 {
 	optional EPLAY_TYPE m_type				= 1;
-	optional int32 m_index					= 2;
+	optional int64 m_exampleactorid			= 2;
 	enum estat
 	{
 		estat_success = 0;
@@ -96,16 +96,48 @@ message PROBUFF_EXAMPLE_PLAY_CREATE
 	optional estat m_stat					= 3;
 }
 
+// 进入例子游戏
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
+{
+	optional ECROSS m_cross					= 1;
+	optional EPLAY_TYPE m_type				= 2;
+	optional int64 m_exampleactorid			= 3;
+}
+
 ///<<<<<<<<<<<<< 猜数字#数字炸弹 
 
 
 // 匹配结果
-message PROBUFF_GUESS_NUMBER_INFO
+message PROBUFF_EXAMPLE_GUESS_NUMBER_INFO
 {
 	optional int32 m_maxnumber					= 1; // 数字最大值
 	optional int32 m_minnumber					= 2; // 数字最小值
 	optional int32 m_whoguess					= 3; // 谁猜测
 };
+
+message PROBUFF_EXAMPLE_GUESS_NUMBER
+{
+	optional int32 m_guessnumber				= 1; // 猜测值
+};
+
+enum E_GUESS_NUMBER_ERROR
+{
+	E_GUESS_NUMBER_ERROR_NULL = 0;
+	E_GUESS_NUMBER_ERROR_VALUE = 1;	// 值错误
+}
+
+message PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR
+{
+	optional E_GUESS_NUMBER_ERROR m_stat		= 1; // 错误值
+};
+
+message PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB
+{
+	optional int32 m_bombvalue					= 1; // 爆炸值
+	optional int64 m_roleid						= 2; // 触发爆炸的玩家
+};
+
+
 
 
 ///>>>>>>>>>>>>> 猜数字 
