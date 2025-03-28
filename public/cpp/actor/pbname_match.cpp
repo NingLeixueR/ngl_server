@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-03-25 17:45:33】
+ // 创建时间【2025-03-27 15:16:40】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -128,6 +128,12 @@ namespace ngl
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL);
+            mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE);
+            mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE);
+            mkdef_map(pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO);
+            mkdef_map(pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER);
+            mkdef_map(pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR);
+            mkdef_map(pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB);
          }
 		type_j2pfun* lpfun = tools::findmap(lmap, apbname);
 		if (lpfun != nullptr)

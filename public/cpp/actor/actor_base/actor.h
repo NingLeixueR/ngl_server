@@ -119,6 +119,7 @@ namespace ngl
 			template <typename T>
 			static void func(bool aisload)
 			{
+				std::string lname = tools::type_name<TDerived>();
 				ninst<TDerived, TYPE>().rfun((Tfun<TDerived, T>) & TDerived::handle, aisload);
 			}
 		};

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-03-25 17:45:33】
+ // 创建时间【2025-03-27 15:16:40】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -119,7 +119,13 @@ namespace ngl
             null<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>,
-            null<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>
+            null<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>,
+            null<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>,
+            null<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>,
+            null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>,
+            null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>,
+            null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>,
+            null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>
         );
    }
 }//namespace ngl

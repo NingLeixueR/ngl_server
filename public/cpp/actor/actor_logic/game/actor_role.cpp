@@ -381,4 +381,11 @@ namespace ngl
 		static_task::update_change(this, ETaskRoleLogin, 1);
 		return true;
 	}
+
+	bool actor_role::handle(const message<np_example_actorid>& adata)
+	{
+		m_example.first = adata.get_data()->m_type;
+		m_example.second = adata.get_data()->m_actorexampleid;
+		return true;
+	}
 }//namespace ngl

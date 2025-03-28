@@ -1,3 +1,4 @@
+#include "actor_example_manage.h"
 #include "actor_example_match.h"
 #include "actor_brief.h"
 
@@ -61,7 +62,7 @@ namespace ngl
 		}
 	}
 
-	bool actor_example_match::room_ready(room* aroom)
+	bool actor_example_match::room_count_ready(room* aroom)
 	{
 		if (aroom->m_playersset.size() >= aroom->m_totalnumber)
 		{
@@ -82,7 +83,7 @@ namespace ngl
 		{
 			for (std::pair<const int32_t, room>& lpair : lmap)
 			{
-				if (room_ready(&lpair.second) == false)
+				if (room_count_ready(&lpair.second) == false)
 				{
 					return &lpair.second;
 				}
@@ -196,10 +197,24 @@ namespace ngl
 	void actor_example_match::matching_finish(room* aroom)
 	{
 		//### 通知玩法管理器创建对应玩法actor
-
-
+		auto pro = std::make_shared<np_create_example>();
+		pro->m_roleids = aroom->m_playersset;
+		pro->m_type = aroom->m_type;
+		send_actor(actor_example_manage::actorid(), pro);
 
 		erase_room(aroom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_FINISH);
+	}
+
+	bool actor_example_match::check_ready(room* aroom)
+	{
+		for (const std::pair<const i64_actorid, player>& apair : aroom->m_players)
+		{
+			if (apair.second.m_isconfirm == false)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	bool actor_example_match::timer_handle(const message<timerparm>& adata)
@@ -267,7 +282,7 @@ namespace ngl
 		lplayer.m_roleid = lroleid;
 		lproom->m_playersset.insert(lroleid);
 		m_matching[lroleid] = lproom->m_roomid;
-		if (room_ready(lproom))
+		if (room_count_ready(lproom))
 		{
 			lproom->m_roomready = localtime::gettime();
 			m_roomindex[lproom->m_type].m_readyroomlist.push_back(lproom->m_roomid);
@@ -297,6 +312,11 @@ namespace ngl
 		{
 			player* lpplayer = tools::findmap(lproom->m_players, lroleid);
 			lpplayer->m_isconfirm = true;
+			sync_match_info(lproom);
+			if (check_ready(lproom))
+			{
+				matching_finish(lproom);
+			}
 		}
 		else
 		{
@@ -306,28 +326,30 @@ namespace ngl
 			{
 				erase_room(lproom);
 			}
-			// 退出就绪
-			if (room_ready(lproom) == false)
+			else
 			{
-				lproom->m_roomready = 0;
-				m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_matching;
-				std::list<int32_t>& lready = m_roomindex[lproom->m_type].m_readyroomlist;
-				for (auto itor = lready.begin(); itor != lready.end(); ++itor)
+				// 退出就绪
+				if (room_count_ready(lproom) == false)
 				{
-					if (lproom->m_roomid == *itor)
+					lproom->m_roomready = 0;
+					m_roomindex[lproom->m_type].m_roomlist[lproom->m_roomid] = room_index::eroom_matching;
+					std::list<int32_t>& lready = m_roomindex[lproom->m_type].m_readyroomlist;
+					for (auto itor = lready.begin(); itor != lready.end(); ++itor)
 					{
-						lready.erase(itor);
-						break;
+						if (lproom->m_roomid == *itor)
+						{
+							lready.erase(itor);
+							break;
+						}
 					}
 				}
+				sync_match_info(lproom);
 			}
 		}
-
-		sync_match_info(lproom);
 		return true;
 	}
 
-	bool actor_example_match::handle(const message<np_request_match_info>& adata)
+	bool actor_example_match::handle(const message<np_login_request_info>& adata)
 	{
 		int32_t* lproomid = tools::findmap(m_matching, adata.get_data()->m_roleid);
 		if (lproomid == nullptr)

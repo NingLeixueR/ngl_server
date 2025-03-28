@@ -44,6 +44,10 @@ namespace ngl
 			, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE
 			, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING
 			, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT
+			, pbexample::PROBUFF_EXAMPLE_PLAY_CREATE
+			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO
+			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR
+			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB
 		>();
 	}
 }//namespace ngl

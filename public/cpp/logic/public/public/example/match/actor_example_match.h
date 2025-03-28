@@ -44,7 +44,7 @@ namespace ngl
 			return nguid::make(ACTOR_EXAMPLE_MATCH, tab_self_area, nguid::none_actordataid());
 		}
 
-		virtual ~actor_example_match() {}
+		virtual ~actor_example_match() = default;
 
 		static void nregister()
 		{
@@ -57,7 +57,7 @@ namespace ngl
 			>(false);
 
 			register_handle_custom<actor_example_match>::func<
-				np_request_match_info
+				np_login_request_info
 			>(true);
 		}
 
@@ -140,7 +140,7 @@ namespace ngl
 		void sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
 
 		// # 房间是否人满就绪
-		bool room_ready(room* aroom);
+		bool room_count_ready(room* aroom);
 
 		// # 根据玩家离线数据选择匹配房间
 		room* matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype);
@@ -168,6 +168,9 @@ namespace ngl
 		// # 匹配成功
 		void matching_finish(room* aroom);
 
+		// # 检查就绪
+		bool check_ready(room* aroom);
+
 		bool timer_handle(const message<timerparm>& adata);
 
 		// # 加入匹配
@@ -177,7 +180,7 @@ namespace ngl
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
 
 		// # 玩家上线后请求匹配信息
-		bool handle(const message<np_request_match_info>& adata);
+		bool handle(const message<np_login_request_info>& adata);
 
 		// # 取消匹配
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata);

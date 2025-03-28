@@ -33,6 +33,18 @@ namespace ngl
 
 		int32_t m_exampleindex[eenum::exampleindex_max];
 
+		struct playinfo
+		{
+			std::map<i64_actorid, bool> m_role_enter_example; // 玩家是否进入例子游戏
+			std::set<i64_actorid> m_roles;
+			i64_actorid m_actorexampleid = nguid::make();
+			int32_t m_createexample = 0;
+		};
+		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_info;
+
+		using type_tuple = std::tuple<pbexample::EPLAY_TYPE, i64_actorid>;		
+		std::map<i64_actorid, type_tuple> m_playerexample; // key:roleid value:actor_exmple_xxx
+
 		actor_example_manage();
 	public:
 		friend class actor_instance<actor_example_manage>;
@@ -51,18 +63,17 @@ namespace ngl
 			return nguid::make(ACTOR_EXAMPLE_MANAGE, tab_self_area, nguid::none_actordataid());
 		}
 
-		virtual ~actor_example_manage() {}
+		virtual ~actor_example_manage() = default;
 
 		static void nregister()
 		{
 			// 协议注册
-		/*	register_handle_proto<actor_example_manage>::func<
-				mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
-				mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
-			>(false);*/
+			register_handle_proto<actor_example_manage>::func<
+				mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
+			>(false);
 
 			register_handle_custom<actor_example_manage>::func<
-				np_request_match_info
+				np_create_example
 			>(true);
 		}
 
@@ -70,6 +81,13 @@ namespace ngl
 
 		// # 匹配成功后 创建例子玩法
 		bool handle(const message<np_create_example>& adata);
+
+		// # 玩家登陆
+		bool handle(const message<np_login_request_info>& adata);
+
+		// # 玩家进入例子游戏
+		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
+		
 	};
 
 }//namespace ngl
