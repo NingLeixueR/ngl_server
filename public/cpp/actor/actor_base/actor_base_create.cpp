@@ -52,7 +52,7 @@ namespace ngl
 		{
 			const std::set<i64_actorid>* lroleids = (std::set<i64_actorid>*)aparm;
 			lpactor_base = new actor_example_guess_number(*lroleids, aid);
-			((actor_example_guess_number*)(lpactor_base))->init_rfun<actor_log>();
+			((actor_example_guess_number*)(lpactor_base))->init_rfun<actor_example_guess_number>();
 			actor_base::first_nregister<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER);
 		}
 		break;
