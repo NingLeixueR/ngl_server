@@ -230,7 +230,7 @@ namespace ngl
 				{
 					continue;
 				}
-				if (check_timeout(lproom->m_roomready, ttab_specialid::example_room_readytime))
+				if (check_timeout(lproom->m_roomready, ttab_specialid::m_example_room_readytime))
 				{
 					matching_finish(lproom);
 				}

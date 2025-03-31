@@ -8,3 +8,9 @@ m_id,m_name,m_remarks,m_value
 5,familsigndrop,军团签到的奖励,5
 6,familapplylistcount,玩家请求加入军团的最大数量,5
 7,familjoininterval,玩家请求加入/创建军团的冷却时间,360
+8,friendscount,玩家好友数量,50
+9,ranklistmaxcount,排行榜最大条目数,100
+#例子游戏,,,
+10,example_room_maxtime,例子游戏的最大匹配时间,60
+11,example_totalnumber,例子游戏的匹配人数,[0:3]
+12,example_room_readytime,例子游戏的等待玩家确认的最大时间,60

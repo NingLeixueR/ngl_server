@@ -60,6 +60,7 @@ namespace ngl
 		register_handle_custom<actor_role>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
+			, np_example_actorid
 		>(true);
 
 		register_handle_proto<actor_role>::func<
