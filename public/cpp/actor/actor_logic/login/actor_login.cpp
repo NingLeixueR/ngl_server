@@ -189,16 +189,17 @@ namespace ngl
 			auto itor = m_actorbyserver.find(lpaccount->getconst().m_id());
 			if (itor == m_actorbyserver.end())
 			{
-				lppair_account = &m_actorbyserver[lpaccount->getconst().m_id()];
+				pair_account ltempaccount;
 				// Éú³Ésession key
-				tools::uuid_make(lppair_account->m_session);
+				tools::uuid_make(ltempaccount.m_session);
 
 				std::pair<int32_t, int32_t> lpairgame;
 				std::pair<int32_t, int32_t> lpairgateway;
 				Assert(get_freeserver_game(lpairgame))
 				Assert(get_freeserver_gateway(lpairgateway))
-				lppair_account->m_gameserverid = lpairgame.first;
-				lppair_account->m_gatewayserverid = lpairgateway.first;
+				ltempaccount.m_gameserverid = lpairgame.first;
+				ltempaccount.m_gatewayserverid = lpairgateway.first;
+				m_actorbyserver[lpaccount->getconst().m_id()] = ltempaccount;
 			}
 			else
 			{
