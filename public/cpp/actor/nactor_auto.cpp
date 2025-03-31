@@ -198,6 +198,7 @@ namespace ngl
 			/*200000042*/, np_login_request_info
 			/*200000043*/, np_create_example
 			/*200000044*/, np_example_entergame_ready
+			/*200000045*/, np_example_actorid
 		> (EPROTOCOL_TYPE_CUSTOM);
 
 		tprotocol::set_customs_index(250000000);

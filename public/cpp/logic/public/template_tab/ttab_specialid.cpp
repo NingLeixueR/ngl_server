@@ -14,5 +14,5 @@ namespace ngl
 	int32_t		ttab_specialid::m_ranklistmaxcount = 0;
 	int32_t		ttab_specialid::m_example_room_maxtime = 0;
 	std::map<int32_t, int32_t>	ttab_specialid::m_example_totalnumber;
-	int32_t		ttab_specialid::example_room_readytime = 0;
+	int32_t		ttab_specialid::m_example_room_readytime = 0;
 }

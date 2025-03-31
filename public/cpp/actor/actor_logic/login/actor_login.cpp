@@ -200,6 +200,7 @@ namespace ngl
 				ltempaccount.m_gameserverid = lpairgame.first;
 				ltempaccount.m_gatewayserverid = lpairgateway.first;
 				m_actorbyserver[lpaccount->getconst().m_id()] = ltempaccount;
+				lppair_account = &m_actorbyserver[lpaccount->getconst().m_id()];
 			}
 			else
 			{
