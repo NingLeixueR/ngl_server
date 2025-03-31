@@ -112,7 +112,7 @@ message PROBUFF_EXAMPLE_GUESS_NUMBER_INFO
 {
 	optional int32 m_maxnumber					= 1; // 数字最大值
 	optional int32 m_minnumber					= 2; // 数字最小值
-	optional int32 m_whoguess					= 3; // 谁猜测
+	optional int64 m_whoguess					= 3; // 谁猜测
 };
 
 message PROBUFF_EXAMPLE_GUESS_NUMBER
@@ -136,8 +136,5 @@ message PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB
 	optional int32 m_bombvalue					= 1; // 爆炸值
 	optional int64 m_roleid						= 2; // 触发爆炸的玩家
 };
-
-
-
 
 ///>>>>>>>>>>>>> 猜数字 
