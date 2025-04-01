@@ -1286,4 +1286,15 @@ namespace ngl
 		}
 		return ttab_servers::tab()->m_name;
 	}
+
+	int tools::rand(bool aisrand /*= false*/)
+	{
+		static bool lbool = true;
+		if (lbool || aisrand)
+		{
+			lbool = false;
+			std::srand(std::time(0));
+		}
+		return std::rand();
+	}
 }// namespace ngl

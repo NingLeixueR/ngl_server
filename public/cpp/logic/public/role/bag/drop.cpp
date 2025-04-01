@@ -42,7 +42,7 @@ namespace ngl
 		std::set<int> lset;
 		for (int i = 0; i < lcount; ++i)
 		{
-			int lweightval = std::rand() % lweight;
+			int lweightval = tools::rand() % lweight;
 			int ltempweight = 0;
 			for (int j = 0; j < tab->m_randomdatas.size(); ++j)
 			{
@@ -72,7 +72,7 @@ namespace ngl
 					{
 						return false;
 					}
-					amap[tab->m_randomdatas[j].m_id] += lmin + std::rand() % ltemp;
+					amap[tab->m_randomdatas[j].m_id] += lmin + tools::rand() % ltemp;
 					break;
 				}
 			}

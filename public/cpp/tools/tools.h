@@ -758,6 +758,9 @@ namespace ngl
 		static bool isnumber(const std::string& anumber);
 
 		static const std::string& server_name();
+
+
+		static int rand(bool aisrand = false);
 	};
 
 	template <typename T>
