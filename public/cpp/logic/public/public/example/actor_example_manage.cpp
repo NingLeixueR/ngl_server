@@ -25,7 +25,7 @@ namespace ngl
 			return true;
 		}
 		bool lcreate = false;
-		actor_base* lpactor = nullptr;
+		std::shared_ptr<actor_base> lpactor = nullptr;
 		switch (lprecv->m_type)
 		{
 		case pbexample::EPLAY_GUESS_NUMBER:
@@ -50,14 +50,12 @@ namespace ngl
 				std::get<1>(m_playerexample[roleid]) = lpactor->id_guid();
 			}		
 
-
 			auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>();
 			pro->set_m_exampleactorid(lpactor->id_guid());
 			pro->set_m_type(lprecv->m_type);
 			pro->set_m_stat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
 			send_client(lprecv->m_roleids, pro);
-		}
-		
+		}		
 		return true;
 	}
 	

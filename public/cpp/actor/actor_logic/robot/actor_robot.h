@@ -100,10 +100,11 @@ namespace ngl
 	public:
 		struct _robot
 		{
-			i32_sessionid	m_session;
-			std::string		m_account;
-			actor_robot*	m_robot;
-			i64_actorid		m_actor_roleid;
+			i32_sessionid					m_session;
+			std::string						m_account;
+			std::shared_ptr<actor_robot>	m_robot;
+			i64_actorid						m_actor_roleid;
+
 			_robot() :
 				m_session(-1),
 				m_robot(nullptr),
@@ -119,9 +120,9 @@ namespace ngl
 			return actor_instance<actor_manage_robot>::instance();
 		}
 
-		actor_robot* create(i16_area aarea, i32_actordataid aroleid)
+		std::shared_ptr<actor_robot> create(i16_area aarea, i32_actordataid aroleid)
 		{
-			return (actor_robot*)actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aarea, aroleid, nullptr);
+			return std::dynamic_pointer_cast<actor_robot>(actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aarea, aroleid, nullptr));
 		}
 
 		static void login(const std::string& aaccount, const std::string& apasswold)
