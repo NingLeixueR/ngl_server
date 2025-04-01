@@ -18,7 +18,7 @@ namespace ngl
 		m_index(0),
 		m_maxnumber(101),
 		m_minnumber(0),
-		m_bombvalues(std::rand()%100+1)
+		m_bombvalues(tools::rand() % 100 + 1)
 	{
 		m_rolesds.assign(aroleids.begin(), aroleids.end());
 		tdb_brief::nsp_cli<actor_example_guess_number>::init(actor_brief::actor_type(), this, aroleids);

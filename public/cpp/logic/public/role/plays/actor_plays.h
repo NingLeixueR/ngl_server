@@ -126,7 +126,7 @@ namespace ngl
 				log_error()->print("actor_plays::handle(pbnet::PROBUFF_NET_ENTER_PLAYS) m_birthpoint.empty()");
 				return true;
 			}
-			int lindex = std::rand() % m_tab->m_birthpoint.size();
+			int lindex = tools::rand() % m_tab->m_birthpoint.size();
 			auto& item = get_constrole[lparm->identifier()];
 			item.reset(new unit_role(lparm->identifier()));
 			m_map.enter(item.get(), m_tab->m_birthpoint[lindex].m_x, m_tab->m_birthpoint[lindex].m_y);
