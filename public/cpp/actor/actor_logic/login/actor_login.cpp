@@ -185,7 +185,7 @@ namespace ngl
 			const data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
 			Assert(lpaccount != nullptr)
 
-			pair_account* lppair_account = nullptr;
+			const pair_account* lppair_account = nullptr;
 			auto itor = m_actorbyserver.find(lpaccount->getconst().m_id());
 			if (itor == m_actorbyserver.end())
 			{
