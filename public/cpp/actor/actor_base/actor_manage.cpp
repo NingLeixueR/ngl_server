@@ -214,33 +214,38 @@ namespace ngl
 		inline void push(const ptractor& apactor, nthread* atorthread)
 		{
 			std::function<void()> lfun = nullptr;
-			do
+
+			ngl_lock;
+			if (atorthread != nullptr)
 			{
-				ngl_lock;
-				if (atorthread != nullptr)
+				if (m_suspend)
 				{
-					if (m_suspend)
-					{
-						m_suspendthread.push_back(atorthread);
-					}
-					else
-					{
-						m_workthread.push_back(atorthread);
-					}
+					m_suspendthread.push_back(atorthread);
 				}
-				if (!m_actorbyid.contains(apactor->id_guid()))
-				{//erase_actor_byid
-					nguid leraseguid = apactor->id_guid();
-					std::function<void()>* lpfun = tools::findmap(m_delactorfun, leraseguid);
-					if (lpfun != nullptr)
-					{
-						lfun.swap(*lpfun);
-						m_delactorfun.erase(leraseguid);
-						apactor->set_activity_stat(actor_stat_close);
-						ngl_post;
-						break;
-					}
+				else
+				{
+					m_workthread.push_back(atorthread);
 				}
+			}
+			if (!m_actorbyid.contains(apactor->id_guid()))
+			{//erase_actor_byid
+				nguid leraseguid = apactor->id_guid();
+				std::function<void()>* lpfun = tools::findmap(m_delactorfun, leraseguid);
+				if (lpfun != nullptr)
+				{
+					lfun.swap(*lpfun);
+					m_delactorfun.erase(leraseguid);
+					apactor->set_activity_stat(actor_stat_close);
+					ngl_post;
+				}
+				apactor->release();
+				if (lpfun != nullptr)
+				{
+					lfun();
+				}
+			}
+			else
+			{
 				if (apactor->list_empty() == false)
 				{
 					m_actorlist.push_back(apactor);
@@ -251,12 +256,6 @@ namespace ngl
 					apactor->set_activity_stat(actor_stat_free);
 				}
 				ngl_post;
-				break;
-			} while (false);
-			if (lfun != nullptr)
-			{
-				apactor->release();
-				lfun();
 			}
 		}
 
