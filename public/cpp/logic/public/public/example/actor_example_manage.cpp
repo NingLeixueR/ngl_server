@@ -26,6 +26,7 @@ namespace ngl
 		}
 		bool lcreate = false;
 		std::shared_ptr<actor_base> lpactor = nullptr;
+		
 		switch (lprecv->m_type)
 		{
 		case pbexample::EPLAY_GUESS_NUMBER:
@@ -39,7 +40,10 @@ namespace ngl
 			lcreate = lpactor != nullptr;
 		}
 		break;
+		default:
+			return false;
 		}
+
 		if (lcreate)
 		{
 			m_info[lprecv->m_type][lpactor->id_guid()].m_roles = lprecv->m_roleids;
