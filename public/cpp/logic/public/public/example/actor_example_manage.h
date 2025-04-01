@@ -31,6 +31,7 @@ namespace ngl
 			exampleindex_max = pbexample::EPLAY_TYPE_MAX + 1,
 		};
 
+		std::array<int32_t, eenum::exampleindex_max> m_exampleindex;
 		int32_t m_exampleindex[eenum::exampleindex_max];
 
 		struct playinfo
