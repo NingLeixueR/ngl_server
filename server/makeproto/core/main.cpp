@@ -285,10 +285,10 @@ namespace ngl
     m_stream << astr;
 
     m_stream << R"(         }
-		type_j2pfun* lpfun = tools::findmap(lmap, apbname);
+		auto lpfun = tools::findmap(lmap, apbname);
 		if (lpfun != nullptr)
 		{
-			std::shared_ptr<ngl::pack> lpack = std::make_shared<ngl::pack>();
+			auto lpack = std::make_shared<ngl::pack>();
 			(*lpfun)(apbname, ajson, lpack, aactorid, arequestactorid);
 			return lpack;
 		}
