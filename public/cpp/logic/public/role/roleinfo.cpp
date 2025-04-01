@@ -120,4 +120,11 @@ namespace ngl
 		lrb->set_m_notalkutc(avalues);
 		sync_actor_brief();
 	}
+
+	bool roleinfo::bantalk()
+	{
+		int32_t lnow = (int32_t)localtime::gettime();
+		return lnow < db()->getconst().m_base().m_notalkutc();
+	}
+
 }// namespace ngl

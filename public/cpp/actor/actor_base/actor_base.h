@@ -540,7 +540,7 @@ namespace ngl
 		}
 
 		//# 用于创建非单例actor
-		static actor_base* create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr);
+		static std::shared_ptr<actor_base> create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm = nullptr);
 	};
 
 	template <typename T>

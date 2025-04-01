@@ -85,12 +85,8 @@ namespace ngl
 		//# 聊天的转发类型
 		ecross forward_type(const pbnet::PROBUFF_NET_CHAT& adata)
 		{
-			int32_t lnow = (int32_t)localtime::gettime();
-			if (lnow < m_info.notalkutc())
+			if (m_info.bantalk())
 			{
-				auto pro = std::make_shared<pbnet::PROBUFF_NET_ERROR>();
-				pro->set_m_errmessage(std::format("ban talk [{}]", tools::time2str(m_info.notalkutc())));
-				send_client(id_guid(), pro);
 				return ecross_none;
 			}
 			switch (adata.m_channelid())

@@ -10,49 +10,49 @@ namespace ngl
 {
 
 	// 用于创建非单例actor
-	actor_base* actor_base::create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/)
+	std::shared_ptr<actor_base> actor_base::create(ENUM_ACTOR atype, i16_area aarea, i32_actordataid aid, void* aparm/* = nullptr*/)
 	{
 		i64_actorid lactorid = nguid::make(atype, aarea, aid);
 		if (actor_manage::getInstance().is_have_actor(lactorid))
 		{
 			return nullptr;
 		}
-		actor_base* lpactor_base = nullptr;
+		std::shared_ptr<actor_base> lpactor_base = nullptr;
 		switch (atype)
 		{
 		case ACTOR_ROLE:
 		{
-			lpactor_base = new actor_role(tab_self_area, aid, aparm);
-			((actor_role*)(lpactor_base))->init_rfun<actor_role>();
+			lpactor_base = std::make_shared<actor_role>(tab_self_area, aid, aparm);
+			((actor_role*)(lpactor_base.get()))->init_rfun<actor_role>();
 			actor_base::first_nregister<actor_role>(ACTOR_ROLE);
 		}
 		break;
 		case ACTOR_ROBOT:
 		{
-			lpactor_base = new actor_robot(tab_self_area, aid, aparm);
-			((actor_robot*)(lpactor_base))->init_rfun<actor_robot>();
+			lpactor_base = std::make_shared<actor_robot>(tab_self_area, aid, aparm);
+			((actor_robot*)(lpactor_base.get()))->init_rfun<actor_robot>();
 			actor_base::first_nregister<actor_robot>(ACTOR_ROBOT);
 		}
 		break;
 		case ACTOR_PLAYS_GO_UNDERGROUNDPALACE:
 		{
-			lpactor_base = new actor_ugpalace(atype, aid, aparm);
-			((actor_ugpalace*)(lpactor_base))->init_rfun<actor_ugpalace>();
+			lpactor_base = std::make_shared<actor_ugpalace>(atype, aid, aparm);
+			((actor_ugpalace*)(lpactor_base.get()))->init_rfun<actor_ugpalace>();
 			actor_base::first_nregister<actor_ugpalace>(ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
 		}
 		break;
 		case ACTOR_LOG:
 		{
-			lpactor_base = new actor_log(aid);
-			((actor_log*)(lpactor_base))->init_rfun<actor_log>();
+			lpactor_base = std::make_shared<actor_log>(aid);
+			((actor_log*)(lpactor_base.get()))->init_rfun<actor_log>();
 			actor_base::first_nregister<actor_log>(ACTOR_LOG);
 		}
 		break;
 		case ACTOR_EXAMPLE_GUESS_NUMBER:
 		{
 			const std::set<i64_actorid>* lroleids = (std::set<i64_actorid>*)aparm;
-			lpactor_base = new actor_example_guess_number(*lroleids, aid);
-			((actor_example_guess_number*)(lpactor_base))->init_rfun<actor_example_guess_number>();
+			lpactor_base = std::make_shared<actor_example_guess_number>(*lroleids, aid);
+			((actor_example_guess_number*)(lpactor_base.get()))->init_rfun<actor_example_guess_number>();
 			actor_base::first_nregister<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER);
 		}
 		break;
