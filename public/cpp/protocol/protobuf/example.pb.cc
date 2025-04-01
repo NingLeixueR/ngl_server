@@ -166,7 +166,7 @@ PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::PROBUFF_EXAMPLE_GUESS_NUMB
   , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_.m_maxnumber_)*/0
   , /*decltype(_impl_.m_minnumber_)*/0
-  , /*decltype(_impl_.m_whoguess_)*/0} {}
+  , /*decltype(_impl_.m_whoguess_)*/int64_t{0}} {}
 struct PROBUFF_EXAMPLE_GUESS_NUMBER_INFODefaultTypeInternal {
   PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_GUESS_NUMBER_INFODefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -434,7 +434,7 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "ampleactorid\"\237\001\n!PROBUFF_EXAMPLE_GUESS_N"
   "UMBER_INFO\022\030\n\013m_maxnumber\030\001 \001(\005H\000\210\001\001\022\030\n\013"
   "m_minnumber\030\002 \001(\005H\001\210\001\001\022\027\n\nm_whoguess\030\003 \001"
-  "(\005H\002\210\001\001B\016\n\014_m_maxnumberB\016\n\014_m_minnumberB"
+  "(\003H\002\210\001\001B\016\n\014_m_maxnumberB\016\n\014_m_minnumberB"
   "\r\n\013_m_whoguess\"L\n\034PROBUFF_EXAMPLE_GUESS_"
   "NUMBER\022\032\n\rm_guessnumber\030\001 \001(\005H\000\210\001\001B\020\n\016_m"
   "_guessnumber\"e\n\"PROBUFF_EXAMPLE_GUESS_NU"
@@ -2860,7 +2860,7 @@ inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::SharedCtor(
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.m_maxnumber_){0}
     , decltype(_impl_.m_minnumber_){0}
-    , decltype(_impl_.m_whoguess_){0}
+    , decltype(_impl_.m_whoguess_){int64_t{0}}
   };
 }
 
@@ -2922,11 +2922,11 @@ const char* PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_InternalParse(const char* ptr, :
         } else
           goto handle_unusual;
         continue;
-      // optional int32 m_whoguess = 3;
+      // optional int64 m_whoguess = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           _Internal::set_has_m_whoguess(&has_bits);
-          _impl_.m_whoguess_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.m_whoguess_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -2973,10 +2973,10 @@ uint8_t* PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_minnumber(), target);
   }
 
-  // optional int32 m_whoguess = 3;
+  // optional int64 m_whoguess = 3;
   if (_internal_has_m_whoguess()) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_whoguess(), target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_whoguess(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3007,9 +3007,9 @@ size_t PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::ByteSizeLong() const {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_minnumber());
     }
 
-    // optional int32 m_whoguess = 3;
+    // optional int64 m_whoguess = 3;
     if (cached_has_bits & 0x00000004u) {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_m_whoguess());
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_m_whoguess());
     }
 
   }

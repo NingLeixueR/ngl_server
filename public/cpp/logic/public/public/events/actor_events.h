@@ -15,8 +15,6 @@ namespace ngl
 		ENUM_EVENTS_MAP,		// 对应eevents_map
 	};
 
-
-
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/, int E_EVENTS_COUNT>
 	class actor_events : public actor
 	{

@@ -2000,17 +2000,17 @@ class PROBUFF_EXAMPLE_GUESS_NUMBER_INFO final :
   void _internal_set_m_minnumber(int32_t value);
   public:
 
-  // optional int32 m_whoguess = 3;
+  // optional int64 m_whoguess = 3;
   bool has_m_whoguess() const;
   private:
   bool _internal_has_m_whoguess() const;
   public:
   void clear_m_whoguess();
-  int32_t m_whoguess() const;
-  void set_m_whoguess(int32_t value);
+  int64_t m_whoguess() const;
+  void set_m_whoguess(int64_t value);
   private:
-  int32_t _internal_m_whoguess() const;
-  void _internal_set_m_whoguess(int32_t value);
+  int64_t _internal_m_whoguess() const;
+  void _internal_set_m_whoguess(int64_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_INFO)
@@ -2025,7 +2025,7 @@ class PROBUFF_EXAMPLE_GUESS_NUMBER_INFO final :
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     int32_t m_maxnumber_;
     int32_t m_minnumber_;
-    int32_t m_whoguess_;
+    int64_t m_whoguess_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_example_2eproto;
@@ -3294,7 +3294,7 @@ inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::set_m_minnumber(int32_t value) {
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_INFO.m_minnumber)
 }
 
-// optional int32 m_whoguess = 3;
+// optional int64 m_whoguess = 3;
 inline bool PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_internal_has_m_whoguess() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -3303,21 +3303,21 @@ inline bool PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::has_m_whoguess() const {
   return _internal_has_m_whoguess();
 }
 inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::clear_m_whoguess() {
-  _impl_.m_whoguess_ = 0;
+  _impl_.m_whoguess_ = int64_t{0};
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
-inline int32_t PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_internal_m_whoguess() const {
+inline int64_t PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_internal_m_whoguess() const {
   return _impl_.m_whoguess_;
 }
-inline int32_t PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::m_whoguess() const {
+inline int64_t PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::m_whoguess() const {
   // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_INFO.m_whoguess)
   return _internal_m_whoguess();
 }
-inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_internal_set_m_whoguess(int32_t value) {
+inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_internal_set_m_whoguess(int64_t value) {
   _impl_._has_bits_[0] |= 0x00000004u;
   _impl_.m_whoguess_ = value;
 }
-inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::set_m_whoguess(int32_t value) {
+inline void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::set_m_whoguess(int64_t value) {
   _internal_set_m_whoguess(value);
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_INFO.m_whoguess)
 }
