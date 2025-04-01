@@ -135,10 +135,10 @@ namespace ngl
             mkdef_map(pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB);
          }
-		type_j2pfun* lpfun = tools::findmap(lmap, apbname);
+		auto lpfun = tools::findmap(lmap, apbname);
 		if (lpfun != nullptr)
 		{
-			std::shared_ptr<ngl::pack> lpack = std::make_shared<ngl::pack>();
+			auto lpack = std::make_shared<ngl::pack>();
 			(*lpfun)(apbname, ajson, lpack, aactorid, arequestactorid);
 			return lpack;
 		}
