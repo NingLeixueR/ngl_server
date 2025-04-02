@@ -388,6 +388,12 @@ namespace ngl
 		return true;
 	}
 
+	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);

@@ -73,11 +73,21 @@ namespace ngl
 		{
 			return true;
 		}
+
 		if (lpplayinfo->m_roles.contains(roleid) == false)
 		{
 			return true;
 		}
+
 		lpplayinfo->m_role_enter_example[roleid] = true;
+		{
+			auto lresponse = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>();
+			lresponse->set_m_cross(lpdata->m_cross());
+			lresponse->set_m_type(lpdata->m_type());
+			lresponse->set_m_exampleactorid(lpdata->m_exampleactorid());
+			actor::static_send_actor(lpplayinfo->m_roles, id_guid(), lresponse);
+		}
+		
 		if (lpplayinfo->m_role_enter_example.size() >= lpplayinfo->m_roles.size())
 		{
 			{

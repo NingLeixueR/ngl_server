@@ -72,6 +72,9 @@ extern PROBUFF_EXAMPLE_PLAY_CREATEDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_CREA
 class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE;
 struct PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLEDefaultTypeInternal;
 extern PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLEDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_default_instance_;
+class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE;
+struct PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSEDefaultTypeInternal;
+extern PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSEDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE_default_instance_;
 class PROBUFF_EXAMPLE_PLAY_JOIN;
 struct PROBUFF_EXAMPLE_PLAY_JOINDefaultTypeInternal;
 extern PROBUFF_EXAMPLE_PLAY_JOINDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_JOIN_default_instance_;
@@ -97,6 +100,7 @@ template<> ::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO* Arena::CreateMaybeMes
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>(Arena*);
+template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>(Arena*);
 template<> ::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING* Arena::CreateMaybeMessage<::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>(Arena*);
@@ -1849,6 +1853,214 @@ class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE final :
 };
 // -------------------------------------------------------------------
 
+class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE) */ {
+ public:
+  inline PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE() : PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(nullptr) {}
+  ~PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE() override;
+  explicit PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from);
+  PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE&& from) noexcept
+    : PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& operator=(const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& operator=(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE*>(
+               &_PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  friend void swap(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& a, PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from) {
+    PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE";
+  }
+  protected:
+  explicit PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMPlayersFieldNumber = 4,
+    kMCrossFieldNumber = 1,
+    kMTypeFieldNumber = 2,
+    kMExampleactoridFieldNumber = 3,
+  };
+  // repeated int64 m_players = 4;
+  int m_players_size() const;
+  private:
+  int _internal_m_players_size() const;
+  public:
+  void clear_m_players();
+  private:
+  int64_t _internal_m_players(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >&
+      _internal_m_players() const;
+  void _internal_add_m_players(int64_t value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >*
+      _internal_mutable_m_players();
+  public:
+  int64_t m_players(int index) const;
+  void set_m_players(int index, int64_t value);
+  void add_m_players(int64_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >&
+      m_players() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >*
+      mutable_m_players();
+
+  // optional .pbexample.ECROSS m_cross = 1;
+  bool has_m_cross() const;
+  private:
+  bool _internal_has_m_cross() const;
+  public:
+  void clear_m_cross();
+  ::pbexample::ECROSS m_cross() const;
+  void set_m_cross(::pbexample::ECROSS value);
+  private:
+  ::pbexample::ECROSS _internal_m_cross() const;
+  void _internal_set_m_cross(::pbexample::ECROSS value);
+  public:
+
+  // optional .pbexample.EPLAY_TYPE m_type = 2;
+  bool has_m_type() const;
+  private:
+  bool _internal_has_m_type() const;
+  public:
+  void clear_m_type();
+  ::pbexample::EPLAY_TYPE m_type() const;
+  void set_m_type(::pbexample::EPLAY_TYPE value);
+  private:
+  ::pbexample::EPLAY_TYPE _internal_m_type() const;
+  void _internal_set_m_type(::pbexample::EPLAY_TYPE value);
+  public:
+
+  // optional int64 m_exampleactorid = 3;
+  bool has_m_exampleactorid() const;
+  private:
+  bool _internal_has_m_exampleactorid() const;
+  public:
+  void clear_m_exampleactorid();
+  int64_t m_exampleactorid() const;
+  void set_m_exampleactorid(int64_t value);
+  private:
+  int64_t _internal_m_exampleactorid() const;
+  void _internal_set_m_exampleactorid(int64_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t > m_players_;
+    mutable std::atomic<int> _m_players_cached_byte_size_;
+    int m_cross_;
+    int m_type_;
+    int64_t m_exampleactorid_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_example_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PROBUFF_EXAMPLE_GUESS_NUMBER_INFO final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_INFO) */ {
  public:
@@ -1897,7 +2109,7 @@ class PROBUFF_EXAMPLE_GUESS_NUMBER_INFO final :
                &_PROBUFF_EXAMPLE_GUESS_NUMBER_INFO_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& a, PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& b) {
     a.Swap(&b);
@@ -2080,7 +2292,7 @@ class PROBUFF_EXAMPLE_GUESS_NUMBER final :
                &_PROBUFF_EXAMPLE_GUESS_NUMBER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(PROBUFF_EXAMPLE_GUESS_NUMBER& a, PROBUFF_EXAMPLE_GUESS_NUMBER& b) {
     a.Swap(&b);
@@ -2233,7 +2445,7 @@ class PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR final :
                &_PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& a, PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& b) {
     a.Swap(&b);
@@ -2386,7 +2598,7 @@ class PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB final :
                &_PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& a, PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& b) {
     a.Swap(&b);
@@ -3236,6 +3448,141 @@ inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::set_m_exampleactorid(int64_t val
 
 // -------------------------------------------------------------------
 
+// PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE
+
+// optional .pbexample.ECROSS m_cross = 1;
+inline bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_has_m_cross() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::has_m_cross() const {
+  return _internal_has_m_cross();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::clear_m_cross() {
+  _impl_.m_cross_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::pbexample::ECROSS PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_m_cross() const {
+  return static_cast< ::pbexample::ECROSS >(_impl_.m_cross_);
+}
+inline ::pbexample::ECROSS PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_cross() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_cross)
+  return _internal_m_cross();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_set_m_cross(::pbexample::ECROSS value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.m_cross_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::set_m_cross(::pbexample::ECROSS value) {
+  _internal_set_m_cross(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_cross)
+}
+
+// optional .pbexample.EPLAY_TYPE m_type = 2;
+inline bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_has_m_type() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::has_m_type() const {
+  return _internal_has_m_type();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::clear_m_type() {
+  _impl_.m_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::pbexample::EPLAY_TYPE PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_m_type() const {
+  return static_cast< ::pbexample::EPLAY_TYPE >(_impl_.m_type_);
+}
+inline ::pbexample::EPLAY_TYPE PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_type() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_type)
+  return _internal_m_type();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_set_m_type(::pbexample::EPLAY_TYPE value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.m_type_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::set_m_type(::pbexample::EPLAY_TYPE value) {
+  _internal_set_m_type(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_type)
+}
+
+// optional int64 m_exampleactorid = 3;
+inline bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_has_m_exampleactorid() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::has_m_exampleactorid() const {
+  return _internal_has_m_exampleactorid();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::clear_m_exampleactorid() {
+  _impl_.m_exampleactorid_ = int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline int64_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_m_exampleactorid() const {
+  return _impl_.m_exampleactorid_;
+}
+inline int64_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_exampleactorid() const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_exampleactorid)
+  return _internal_m_exampleactorid();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_set_m_exampleactorid(int64_t value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.m_exampleactorid_ = value;
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::set_m_exampleactorid(int64_t value) {
+  _internal_set_m_exampleactorid(value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_exampleactorid)
+}
+
+// repeated int64 m_players = 4;
+inline int PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_m_players_size() const {
+  return _impl_.m_players_.size();
+}
+inline int PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_players_size() const {
+  return _internal_m_players_size();
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::clear_m_players() {
+  _impl_.m_players_.Clear();
+}
+inline int64_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_m_players(int index) const {
+  return _impl_.m_players_.Get(index);
+}
+inline int64_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_players(int index) const {
+  // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_players)
+  return _internal_m_players(index);
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::set_m_players(int index, int64_t value) {
+  _impl_.m_players_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_players)
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_add_m_players(int64_t value) {
+  _impl_.m_players_.Add(value);
+}
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::add_m_players(int64_t value) {
+  _internal_add_m_players(value);
+  // @@protoc_insertion_point(field_add:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_players)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >&
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_m_players() const {
+  return _impl_.m_players_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >&
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_players() const {
+  // @@protoc_insertion_point(field_list:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_players)
+  return _internal_m_players();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >*
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_internal_mutable_m_players() {
+  return &_impl_.m_players_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int64_t >*
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::mutable_m_players() {
+  // @@protoc_insertion_point(field_mutable_list:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.m_players)
+  return _internal_mutable_m_players();
+}
+
+// -------------------------------------------------------------------
+
 // PROBUFF_EXAMPLE_GUESS_NUMBER_INFO
 
 // optional int32 m_maxnumber = 1;
@@ -3449,6 +3796,8 @@ inline void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::set_m_roleid(int64_t value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
