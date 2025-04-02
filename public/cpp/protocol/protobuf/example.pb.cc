@@ -160,6 +160,24 @@ struct PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLEDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLEDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_default_instance_;
+PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.m_players_)*/{}
+  , /*decltype(_impl_._m_players_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.m_cross_)*/0
+  , /*decltype(_impl_.m_type_)*/0
+  , /*decltype(_impl_.m_exampleactorid_)*/int64_t{0}} {}
+struct PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSEDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSEDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSEDefaultTypeInternal() {}
+  union {
+    PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSEDefaultTypeInternal _PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE_default_instance_;
 PROTOBUF_CONSTEXPR PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
@@ -220,7 +238,7 @@ struct PROBUFF_EXAMPLE_GUESS_NUMBER_BOMBDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PROBUFF_EXAMPLE_GUESS_NUMBER_BOMBDefaultTypeInternal _PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB_default_instance_;
 }  // namespace pbexample
-static ::_pb::Metadata file_level_metadata_example_2eproto[13];
+static ::_pb::Metadata file_level_metadata_example_2eproto[14];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_example_2eproto[5];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_example_2eproto = nullptr;
 
@@ -323,6 +341,20 @@ const uint32_t TableStruct_example_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   0,
   1,
   2,
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_._has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_.m_cross_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_.m_type_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_.m_exampleactorid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_.m_players_),
+  0,
+  1,
+  2,
+  ~0u,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -372,10 +404,11 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 64, 72, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL)},
   { 74, 83, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE)},
   { 86, 95, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE)},
-  { 98, 107, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO)},
-  { 110, 117, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER)},
-  { 118, 125, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR)},
-  { 126, 134, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB)},
+  { 98, 108, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)},
+  { 112, 121, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO)},
+  { 124, 131, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER)},
+  { 132, 139, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR)},
+  { 140, 148, -1, sizeof(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -388,6 +421,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::pbexample::_PROBUFF_EXAMPLE_PLAY_CANCEL_default_instance_._instance,
   &::pbexample::_PROBUFF_EXAMPLE_PLAY_CREATE_default_instance_._instance,
   &::pbexample::_PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_default_instance_._instance,
+  &::pbexample::_PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE_default_instance_._instance,
   &::pbexample::_PROBUFF_EXAMPLE_GUESS_NUMBER_INFO_default_instance_._instance,
   &::pbexample::_PROBUFF_EXAMPLE_GUESS_NUMBER_default_instance_._instance,
   &::pbexample::_PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR_default_instance_._instance,
@@ -431,29 +465,34 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "e.ECROSSH\000\210\001\001\022*\n\006m_type\030\002 \001(\0162\025.pbexampl"
   "e.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_exampleactorid\030\003 "
   "\001(\003H\002\210\001\001B\n\n\010_m_crossB\t\n\007_m_typeB\023\n\021_m_ex"
-  "ampleactorid\"\237\001\n!PROBUFF_EXAMPLE_GUESS_N"
-  "UMBER_INFO\022\030\n\013m_maxnumber\030\001 \001(\005H\000\210\001\001\022\030\n\013"
-  "m_minnumber\030\002 \001(\005H\001\210\001\001\022\027\n\nm_whoguess\030\003 \001"
-  "(\003H\002\210\001\001B\016\n\014_m_maxnumberB\016\n\014_m_minnumberB"
-  "\r\n\013_m_whoguess\"L\n\034PROBUFF_EXAMPLE_GUESS_"
-  "NUMBER\022\032\n\rm_guessnumber\030\001 \001(\005H\000\210\001\001B\020\n\016_m"
-  "_guessnumber\"e\n\"PROBUFF_EXAMPLE_GUESS_NU"
-  "MBER_ERROR\0224\n\006m_stat\030\001 \001(\0162\037.pbexample.E"
-  "_GUESS_NUMBER_ERRORH\000\210\001\001B\t\n\007_m_stat\"q\n!P"
-  "ROBUFF_EXAMPLE_GUESS_NUMBER_BOMB\022\030\n\013m_bo"
-  "mbvalue\030\001 \001(\005H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001"
-  "\001B\016\n\014_m_bombvalueB\013\n\t_m_roleid*I\n\006ECROSS"
-  "\022\017\n\013ECROSS_NULL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031"
-  "\n\025ECROSS_CROSS_ORDINARY\020\002*$\n\nEPLAY_TYPE\022"
-  "\026\n\022EPLAY_GUESS_NUMBER\020\000*\317\001\n\020PLAY_EERROR_"
-  "CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000\022\027\n\023EERROR_"
-  "CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE_CANCEL\020\002\022\036"
-  "\n\032EERROR_CODE_CURRENT_CANCEL\020\003\022\033\n\027EERROR"
-  "_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR_CODE_ROOM_"
-  "DESTORY\020\005\022\026\n\022EERROR_CODE_FINISH\020\006*U\n\024E_G"
-  "UESS_NUMBER_ERROR\022\035\n\031E_GUESS_NUMBER_ERRO"
-  "R_NULL\020\000\022\036\n\032E_GUESS_NUMBER_ERROR_VALUE\020\001"
-  "B\002H\001b\006proto3"
+  "ampleactorid\"\340\001\n+PROBUFF_EXAMPLE_PLAY_EN"
+  "TER_EXAMPLE_RESPONSE\022\'\n\007m_cross\030\001 \001(\0162\021."
+  "pbexample.ECROSSH\000\210\001\001\022*\n\006m_type\030\002 \001(\0162\025."
+  "pbexample.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_exampleac"
+  "torid\030\003 \001(\003H\002\210\001\001\022\021\n\tm_players\030\004 \003(\003B\n\n\010_"
+  "m_crossB\t\n\007_m_typeB\023\n\021_m_exampleactorid\""
+  "\237\001\n!PROBUFF_EXAMPLE_GUESS_NUMBER_INFO\022\030\n"
+  "\013m_maxnumber\030\001 \001(\005H\000\210\001\001\022\030\n\013m_minnumber\030\002"
+  " \001(\005H\001\210\001\001\022\027\n\nm_whoguess\030\003 \001(\003H\002\210\001\001B\016\n\014_m"
+  "_maxnumberB\016\n\014_m_minnumberB\r\n\013_m_whogues"
+  "s\"L\n\034PROBUFF_EXAMPLE_GUESS_NUMBER\022\032\n\rm_g"
+  "uessnumber\030\001 \001(\005H\000\210\001\001B\020\n\016_m_guessnumber\""
+  "e\n\"PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR\0224\n"
+  "\006m_stat\030\001 \001(\0162\037.pbexample.E_GUESS_NUMBER"
+  "_ERRORH\000\210\001\001B\t\n\007_m_stat\"q\n!PROBUFF_EXAMPL"
+  "E_GUESS_NUMBER_BOMB\022\030\n\013m_bombvalue\030\001 \001(\005"
+  "H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001B\016\n\014_m_bombv"
+  "alueB\013\n\t_m_roleid*I\n\006ECROSS\022\017\n\013ECROSS_NU"
+  "LL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031\n\025ECROSS_CROS"
+  "S_ORDINARY\020\002*$\n\nEPLAY_TYPE\022\026\n\022EPLAY_GUES"
+  "S_NUMBER\020\000*\317\001\n\020PLAY_EERROR_CODE\022\027\n\023EERRO"
+  "R_CODE_SUCCESS\020\000\022\027\n\023EERROR_CODE_TIMEOUT\020"
+  "\001\022\026\n\022EERROR_CODE_CANCEL\020\002\022\036\n\032EERROR_CODE"
+  "_CURRENT_CANCEL\020\003\022\033\n\027EERROR_CODE_NOTFIND"
+  "ROOM\020\004\022\034\n\030EERROR_CODE_ROOM_DESTORY\020\005\022\026\n\022"
+  "EERROR_CODE_FINISH\020\006*U\n\024E_GUESS_NUMBER_E"
+  "RROR\022\035\n\031E_GUESS_NUMBER_ERROR_NULL\020\000\022\036\n\032E"
+  "_GUESS_NUMBER_ERROR_VALUE\020\001B\002H\001b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -461,9 +500,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_example_2eproto_dep
 };
 static ::_pbi::once_flag descriptor_table_example_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_example_2eproto = {
-    false, false, 2332, descriptor_table_protodef_example_2eproto,
+    false, false, 2559, descriptor_table_protodef_example_2eproto,
     "example.proto",
-    &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_deps, 2, 13,
+    &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_deps, 2, 14,
     schemas, file_default_instances, TableStruct_example_2eproto::offsets,
     file_level_metadata_example_2eproto, file_level_enum_descriptors_example_2eproto,
     file_level_service_descriptors_example_2eproto,
@@ -2814,6 +2853,316 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::InternalSwap(PROBUFF_EXAMPLE_PLAY_ENTER
 
 // ===================================================================
 
+class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_Internal {
+ public:
+  using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>()._impl_._has_bits_);
+  static void set_has_m_cross(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_m_type(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_m_exampleactorid(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+};
+
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+}
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.m_players_){from._impl_.m_players_}
+    , /*decltype(_impl_._m_players_cached_byte_size_)*/{0}
+    , decltype(_impl_.m_cross_){}
+    , decltype(_impl_.m_type_){}
+    , decltype(_impl_.m_exampleactorid_){}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&_impl_.m_cross_, &from._impl_.m_cross_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.m_exampleactorid_) -
+    reinterpret_cast<char*>(&_impl_.m_cross_)) + sizeof(_impl_.m_exampleactorid_));
+  // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+}
+
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.m_players_){arena}
+    , /*decltype(_impl_._m_players_cached_byte_size_)*/{0}
+    , decltype(_impl_.m_cross_){0}
+    , decltype(_impl_.m_type_){0}
+    , decltype(_impl_.m_exampleactorid_){int64_t{0}}
+  };
+}
+
+PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::~PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE() {
+  // @@protoc_insertion_point(destructor:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.m_players_.~RepeatedField();
+}
+
+void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.m_players_.Clear();
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    ::memset(&_impl_.m_cross_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&_impl_.m_exampleactorid_) -
+        reinterpret_cast<char*>(&_impl_.m_cross_)) + sizeof(_impl_.m_exampleactorid_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional .pbexample.ECROSS m_cross = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_m_cross(static_cast<::pbexample::ECROSS>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional .pbexample.EPLAY_TYPE m_type = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_m_type(static_cast<::pbexample::EPLAY_TYPE>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional int64 m_exampleactorid = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _Internal::set_has_m_exampleactorid(&has_bits);
+          _impl_.m_exampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated int64 m_players = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt64Parser(_internal_mutable_m_players(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 32) {
+          _internal_add_m_players(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // optional .pbexample.ECROSS m_cross = 1;
+  if (_internal_has_m_cross()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_m_cross(), target);
+  }
+
+  // optional .pbexample.EPLAY_TYPE m_type = 2;
+  if (_internal_has_m_type()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_m_type(), target);
+  }
+
+  // optional int64 m_exampleactorid = 3;
+  if (_internal_has_m_exampleactorid()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_exampleactorid(), target);
+  }
+
+  // repeated int64 m_players = 4;
+  {
+    int byte_size = _impl_._m_players_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt64Packed(
+          4, _internal_m_players(), byte_size, target);
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  return target;
+}
+
+size_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated int64 m_players = 4;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      Int64Size(this->_impl_.m_players_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._m_players_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    // optional .pbexample.ECROSS m_cross = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::EnumSize(this->_internal_m_cross());
+    }
+
+    // optional .pbexample.EPLAY_TYPE m_type = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::EnumSize(this->_internal_m_type());
+    }
+
+    // optional int64 m_exampleactorid = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_m_exampleactorid());
+    }
+
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::GetClassData() const { return &_class_data_; }
+
+
+void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE*>(&to_msg);
+  auto& from = static_cast<const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.m_players_.MergeFrom(from._impl_.m_players_);
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_impl_.m_cross_ = from._impl_.m_cross_;
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_impl_.m_type_ = from._impl_.m_type_;
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_impl_.m_exampleactorid_ = from._impl_.m_exampleactorid_;
+    }
+    _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::CopyFrom(const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::IsInitialized() const {
+  return true;
+}
+
+void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::InternalSwap(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.m_players_.InternalSwap(&other->_impl_.m_players_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_.m_exampleactorid_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_impl_.m_exampleactorid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, _impl_.m_cross_)>(
+          reinterpret_cast<char*>(&_impl_.m_cross_),
+          reinterpret_cast<char*>(&other->_impl_.m_cross_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
+      file_level_metadata_example_2eproto[9]);
+}
+
+// ===================================================================
+
 class PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>()._impl_._has_bits_);
@@ -3073,7 +3422,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMBE
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[9]);
+      file_level_metadata_example_2eproto[10]);
 }
 
 // ===================================================================
@@ -3263,7 +3612,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMBER* ot
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[10]);
+      file_level_metadata_example_2eproto[11]);
 }
 
 // ===================================================================
@@ -3455,7 +3804,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMB
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[11]);
+      file_level_metadata_example_2eproto[12]);
 }
 
 // ===================================================================
@@ -3691,7 +4040,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMBE
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_example_2eproto_getter, &descriptor_table_example_2eproto_once,
-      file_level_metadata_example_2eproto[12]);
+      file_level_metadata_example_2eproto[13]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -3732,6 +4081,10 @@ Arena::CreateMaybeMessage< ::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE >(Arena* are
 template<> PROTOBUF_NOINLINE ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE*
 Arena::CreateMaybeMessage< ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE*
+Arena::CreateMaybeMessage< ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE >(arena);
 }
 template<> PROTOBUF_NOINLINE ::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO*
 Arena::CreateMaybeMessage< ::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO >(Arena* arena) {

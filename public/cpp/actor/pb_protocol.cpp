@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-01 14:15:09】
+ // 创建时间【2025-04-01 16:34:41】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -122,6 +122,7 @@ namespace ngl
             null<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>,
+            null<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>,
             null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>,
             null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>,
             null<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>,

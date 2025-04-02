@@ -104,6 +104,14 @@ message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
 	optional int64 m_exampleactorid			= 3;
 }
 
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE
+{
+	optional ECROSS m_cross					= 1;
+	optional EPLAY_TYPE m_type				= 2;
+	optional int64 m_exampleactorid			= 3;
+	repeated int64 m_players				= 4; // 进入游戏的玩家
+}
+
 ///<<<<<<<<<<<<< 猜数字#数字炸弹 
 
 
