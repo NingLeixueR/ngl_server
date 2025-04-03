@@ -219,7 +219,6 @@ namespace ngl
 
 	bool actor_example_match::timer_handle(const message<timerparm>& adata)
 	{
-		return true;
 		// ¼ì²é¾ÍÐ÷
 		for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)
 		{

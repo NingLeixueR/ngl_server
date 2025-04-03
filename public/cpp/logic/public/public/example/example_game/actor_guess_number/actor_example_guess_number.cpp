@@ -53,18 +53,59 @@ namespace ngl
 		return true;
 	}
 
-	void actor_example_guess_number::bomb(i64_actorid aroleid)
+	void actor_example_guess_number::bomb()
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>();
 		pro->set_m_bombvalue(m_bombvalues);
-		pro->set_m_roleid(aroleid);
+		pro->set_m_roleid(m_bombrole);
 		send_client(m_rolesds, pro);
+	}
+
+	bool actor_example_guess_number::isfinish()
+	{
+		return m_bombutc != 0 || m_bombrole != 0;
+	}
+
+	void actor_example_guess_number::set_finish(i64_actorid abombrole)
+	{
+		if (isfinish())
+		{
+			return;
+		}
+		m_bombutc = localtime::gettime();
+		m_bombrole = abombrole;
+	}
+
+	i64_actorid actor_example_guess_number::next_guess_role()
+	{
+		if (isfinish())
+		{
+			return nguid::make();
+		}
+		return m_index% m_rolesds.size();
+	}
+
+	void actor_example_guess_number::init()
+	{
+		timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 1) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
 	}
 
 	bool actor_example_guess_number::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata)
 	{
 		const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER* lpdata = adata.get_data()->data();
 		i64_actorid roleid = adata.get_data()->identifier();
+
+		if (isfinish())
+		{//游戏已经结束
+			bomb();
+			return true;
+		}
 
 		int32_t lnumber = lpdata->m_guessnumber();
 		if (lnumber >= m_maxnumber || lnumber <= m_minnumber)
@@ -77,7 +118,8 @@ namespace ngl
 
 		if (lnumber == m_bombvalues)
 		{//炸了 游戏结束
-			bomb(roleid);
+			set_finish(roleid);
+			bomb();
 			return true;
 		}
 
@@ -93,7 +135,8 @@ namespace ngl
 		int32_t lsize = m_maxnumber - 1 - m_minnumber;
 		if (lsize <= 1)
 		{//游戏结束 下一个人被炸
-			bomb(m_rolesds[m_index % m_rolesds.size()]);
+			set_finish(m_rolesds[next_guess_role()]);
+			bomb();
 			return true;
 		}
 
@@ -103,6 +146,31 @@ namespace ngl
 
 	bool actor_example_guess_number::timer_handle(const message<timerparm>& adata)
 	{
+		int32_t lnow = localtime::gettime();
+		if (isfinish() == false)
+		{
+			if (m_setputc == 0)
+			{
+				return true;
+			}
+			// 检查当前阶段时间
+			if (m_setputc + esetp_maxtime <= lnow)
+			{
+				i64_actorid roleid = next_guess_role();
+				pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER lPROBUFF_EXAMPLE_GUESS_NUMBER;
+				lPROBUFF_EXAMPLE_GUESS_NUMBER.set_m_guessnumber(m_minnumber+1);
+				mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER> pro(roleid, lPROBUFF_EXAMPLE_GUESS_NUMBER);
+				message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>> lmessage(0, nullptr, &pro);
+				handle(lmessage);
+			}
+		}
+		else
+		{
+			if (m_bombutc + equit_time <= lnow)
+			{
+				erase_actor_byid();
+			}
+		}
 		return true;
 	}
 
