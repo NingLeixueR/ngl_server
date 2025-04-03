@@ -26,13 +26,23 @@ namespace ngl
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;
 
-		int32_t m_maxnumber;
-		int32_t m_minnumber;
-		int32_t m_index;
-		int32_t m_setputc;
-		int32_t m_bombvalues;
+		enum
+		{
+			esetp_maxtime = 30, // 单步骤执行的最大秒数
+			equit_time = 10,	// 退出的最大秒数
+		};
+
+		int32_t m_maxnumber;	// 范围最大值
+		int32_t m_minnumber;	// 范围最小值
+		int32_t m_index;		// 猜测的玩家(索引)
+		int32_t m_setputc;		// 步骤时间
+		int32_t m_bombvalues;	// 炸弹值
 
 		std::vector<i64_actorid> m_rolesds;
+
+		int32_t m_bombutc;		// 触发炸弹值的时间
+		i64_actorid m_bombrole; // 触发炸弹值的玩家
+
 	public:
 		actor_example_guess_number(const std::set<i64_actorid>& aroleids, int32_t aindex);
 
@@ -46,6 +56,8 @@ namespace ngl
 			return nguid::make(ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, nguid::none_actordataid());
 		}
 
+		virtual void init();
+
 		virtual ~actor_example_guess_number() = default;
 
 		static void nregister();
@@ -56,7 +68,13 @@ namespace ngl
 
 		void next_setp();
 
-		void bomb(i64_actorid aroleid);
+		void bomb();
+
+		bool isfinish();
+
+		void set_finish(i64_actorid abombrole);
+
+		i64_actorid next_guess_role();
 
 		// # 所有人准备就绪 可以进入游戏
 		bool handle(const message<np_example_entergame_ready>& adata);
