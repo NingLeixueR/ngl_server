@@ -62,6 +62,22 @@ namespace ngl
 		}		
 		return true;
 	}
+
+	void actor_example_manage::enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype)
+	{
+		applayinfo->m_role_enter_example[aroleid] = true;
+		{
+			auto lresponse = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>();
+			lresponse->set_m_cross(across);
+			lresponse->set_m_type(atype);
+			lresponse->set_m_exampleactorid(applayinfo->m_actorexampleid);
+			for (const auto& item : applayinfo->m_role_enter_example)
+			{
+				lresponse->add_m_players(item.first);
+			}
+			send_client(applayinfo->m_roles, lresponse);
+		}
+	}
 	
 	bool actor_example_manage::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata)
 	{
@@ -79,19 +95,8 @@ namespace ngl
 			return true;
 		}
 
-		lpplayinfo->m_role_enter_example[roleid] = true;
-		{
-			auto lresponse = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>();
-			lresponse->set_m_cross(lpdata->m_cross());
-			lresponse->set_m_type(lpdata->m_type());
-			lresponse->set_m_exampleactorid(lpdata->m_exampleactorid());
-			for (const auto& item : lpplayinfo->m_role_enter_example)
-			{
-				lresponse->add_m_players(item.first);
-			}
-			send_client(lpplayinfo->m_roles, lresponse);
-		}
-		
+		enter_game(lpplayinfo, roleid, lpdata->m_cross(), lpdata->m_type());
+
 		if (lpplayinfo->m_role_enter_example.size() >= lpplayinfo->m_roles.size())
 		{
 			{
@@ -104,6 +109,8 @@ namespace ngl
 				pro->m_actorexampleid = lpdata->m_exampleactorid();
 				actor::static_send_actor(lpplayinfo->m_roles, id_guid(), pro);
 			}
+			m_finishinfo[lpdata->m_type()][lpdata->m_exampleactorid()] = *lpplayinfo;
+			m_info[lpdata->m_type()].erase(lpdata->m_exampleactorid());
 		}
 		return true;
 	}
@@ -121,6 +128,42 @@ namespace ngl
 		pro->m_actorexampleid = std::get<1>(*lptuple);
 		send_actor(adata.get_data()->m_roleid, pro);
 		
+		return true;
+	}
+
+	void actor_example_manage::init()
+	{
+		timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 1) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+	}
+
+	bool actor_example_manage::timer_handle(const message<timerparm>& adata)
+	{
+		int32_t lnow = localtime::gettime();
+		for (std::pair<const pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>>& item1 : m_info)
+		{
+			for (std::pair<const i64_actorid, playinfo>& item2 : item1.second)
+			{
+				if (item2.second.m_createexample + example_waittime <= lnow)
+				{
+					for (i64_actorid roleid :item2.second.m_roles)
+					{
+						if (item2.second.m_role_enter_example.contains(roleid) == false)
+						{
+							enter_game(&item2.second, roleid,
+								tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY,
+								item1.first
+							);
+						}
+					}
+				}
+			}
+		}
 		return true;
 	}
 

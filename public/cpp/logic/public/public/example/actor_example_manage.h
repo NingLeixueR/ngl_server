@@ -29,6 +29,7 @@ namespace ngl
 		enum eenum
 		{
 			exampleindex_max = pbexample::EPLAY_TYPE_MAX + 1,
+			example_waittime = 30,	// 等待进入游戏的最大秒数
 		};
 
 		std::array<int32_t, eenum::exampleindex_max> m_exampleindex;
@@ -41,6 +42,7 @@ namespace ngl
 			int32_t m_createexample = 0;
 		};
 		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_info;
+		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_finishinfo;
 
 		using type_tuple = std::tuple<pbexample::EPLAY_TYPE, i64_actorid>;		
 		std::map<i64_actorid, type_tuple> m_playerexample; // key:roleid value:actor_exmple_xxx
@@ -67,6 +69,9 @@ namespace ngl
 
 		static void nregister()
 		{
+			// 定时器
+			actor::register_timer<actor_example_manage>(&actor_example_manage::timer_handle);
+
 			// 协议注册
 			register_handle_proto<actor_example_manage>::func<
 				mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
@@ -76,8 +81,11 @@ namespace ngl
 				np_create_example
 			>(true);
 		}
+		virtual void init();
 
 		virtual void loaddb_finish(bool adbishave) {}
+
+		void enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype);
 
 		// # 匹配成功后 创建例子玩法
 		bool handle(const message<np_create_example>& adata);
@@ -88,6 +96,7 @@ namespace ngl
 		// # 玩家进入例子游戏
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
 		
+		bool timer_handle(const message<timerparm>& adata);
 	};
 
 }//namespace ngl
