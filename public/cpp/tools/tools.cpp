@@ -1288,16 +1288,19 @@ namespace ngl
 		return ttab_servers::tab()->m_name;
 	}
 
+	std::mt19937 g_tools_gen;
+	std::uniform_int_distribution<int> g_tools_dis(0, RAND_MAX);
+	std::mutex g_tools_mutex;
+
 	int tools::rand(bool aisrand /*= false*/)
 	{
-		static std::mt19937 gen;
-		static std::uniform_int_distribution<int> dis(0, RAND_MAX);
+		monopoly_lock(g_tools_mutex);
 		static bool lbool = true;
 		if (lbool || aisrand)
 		{
 			lbool = false;
-			gen = std::mt19937(std::random_device{}());
+			g_tools_gen = std::mt19937(std::random_device{}());
 		}
-		return dis(gen); 
+		return g_tools_dis(g_tools_gen);
 	}
 }// namespace ngl
