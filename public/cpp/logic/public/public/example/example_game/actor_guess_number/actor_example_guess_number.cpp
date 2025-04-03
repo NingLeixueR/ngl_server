@@ -26,6 +26,9 @@ namespace ngl
 
 	void actor_example_guess_number::nregister()
 	{
+		// 定时器
+		actor::register_timer<actor_example_guess_number>(&actor_example_guess_number::timer_handle);
+
 		// 协议注册
 		register_handle_proto<actor_example_guess_number>::func<
 			mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>
