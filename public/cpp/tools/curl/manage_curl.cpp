@@ -488,9 +488,10 @@ namespace ngl
 				//{"3:4":{"app":"[]","level":2,"startPos":3,"endPos":4,"maskWord":"sb"},"0:1":{"app":"[]","level":2,"startPos":0,"endPos":1,"maskWord":"»’±æ"}}
 				std::cout << aparm.m_recvdata;
 				cJSON* json = cJSON_Parse(aparm.m_recvdata.c_str());
-				if (json == NULL) {
+				if (json == NULL) 
+				{
 					printf("Ω‚ŒˆJSON ß∞‹!\n");
-					return 1;
+					return;
 				}
 
 				cJSON* item = NULL;

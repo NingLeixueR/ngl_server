@@ -85,7 +85,11 @@ namespace ngl
 			lresponse->set_m_cross(lpdata->m_cross());
 			lresponse->set_m_type(lpdata->m_type());
 			lresponse->set_m_exampleactorid(lpdata->m_exampleactorid());
-			actor::static_send_actor(lpplayinfo->m_roles, id_guid(), lresponse);
+			for (const auto& item : lpplayinfo->m_role_enter_example)
+			{
+				lresponse->add_m_players(item.first);
+			}
+			send_client(lpplayinfo->m_roles, lresponse);
 		}
 		
 		if (lpplayinfo->m_role_enter_example.size() >= lpplayinfo->m_roles.size())
