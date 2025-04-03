@@ -168,5 +168,32 @@ namespace ngl
 			}
 			return read(arg...);
 		}
+
+		void read_key(std::vector<std::string>& avec) const
+		{
+			cJSON* item = NULL;
+			cJSON_ArrayForEach(item, m_json)
+			{
+				avec.push_back(item->string);
+			}
+		}
+
+		void read_key(const std::function<void(const std::string&)>& afun) const
+		{
+			cJSON* item = NULL;
+			cJSON_ArrayForEach(item, m_json)
+			{
+				afun(item->string);
+			}
+		}
+
+		void read_key(const std::function<void(cJSON*)>& afun) const
+		{
+			cJSON* item = NULL;
+			cJSON_ArrayForEach(item, m_json)
+			{
+				afun(item);
+			}
+		}
 	};
 }// namespace ngl

@@ -495,7 +495,7 @@ namespace ngl
 				}
 
 				cJSON* item = NULL;
-				for (item = (json != 0) ? (json)->child : 0; item != 0; item = item->next)
+				cJSON_ArrayForEach(item, json)
 				{
 					// ´òÓ¡¼ü
 					printf("Key: %s\n", item->string);  // item->string ÊÇ¼üÃû
