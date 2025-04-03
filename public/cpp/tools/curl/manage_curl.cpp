@@ -6,6 +6,7 @@
 
 #include <thread>
 #include <format>
+#include <utf8.h> 
 
 namespace ngl
 {
@@ -453,5 +454,65 @@ namespace ngl
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 		}
+	}
+
+	void test_kkkk()
+	{
+		auto lhttp = ngl::manage_curl::make_http();
+		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTPS);
+		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+		ngl::manage_curl::set_url(lhttp, "https://xxxxxxxxxxx");
+
+		std::string lparm;
+		std::string toCheck = "日本人sb3";
+		std::string toCheck2;
+		ngl::tools::to_utf8(toCheck, toCheck2);
+
+		std::vector<uint32_t> utf32_str;
+		utf8::utf8to32(toCheck2.begin(), toCheck2.end(), std::back_inserter(utf32_str));
+
+		ngl::manage_curl::param(lparm, "toCheck", toCheck2.c_str());
+		ngl::manage_curl::param(lparm, "app", "xxx");
+		ngl::manage_curl::param(lparm, "byPinyin", "false");
+
+		std::string lstrmd5 = "yyyy";
+		lstrmd5 += toCheck2;
+
+		std::string lmd5str = ngl::tools::md5(lstrmd5);
+		ngl::manage_curl::param(lparm, "sig", lmd5str.c_str());
+
+		ngl::manage_curl::set_param(lhttp, lparm);
+
+		ngl::manage_curl::set_callback(lhttp, [&utf32_str](int anum, ngl::http_parm& aparm)
+			{
+				//{"3:4":{"app":"[]","level":2,"startPos":3,"endPos":4,"maskWord":"sb"},"0:1":{"app":"[]","level":2,"startPos":0,"endPos":1,"maskWord":"日本"}}
+				std::cout << aparm.m_recvdata;
+				cJSON* json = cJSON_Parse(aparm.m_recvdata.c_str());
+				if (json == NULL) {
+					printf("解析JSON失败!\n");
+					return 1;
+				}
+
+				cJSON* item = NULL;
+				for (item = (json != 0) ? (json)->child : 0; item != 0; item = item->next)
+				{
+					// 打印键
+					printf("Key: %s\n", item->string);  // item->string 是键名
+					int beg = 0;
+					int end = 0;
+					ngl::tools::splite(item->string, ":", beg, end);
+					for (int i = beg; i <= end; ++i)
+					{
+						utf32_str[i] = '*';
+					}
+				}
+				std::string result_utf8;
+				utf8::utf32to8(utf32_str.begin(), utf32_str.end(), std::back_inserter(result_utf8));
+				std::string result_utf82;
+				ngl::tools::to_asscii(result_utf8, result_utf82);
+
+				std::cout << std::endl << result_utf82;
+			});
+		ngl::manage_curl::send(lhttp);
 	}
 }//namespace ngl
