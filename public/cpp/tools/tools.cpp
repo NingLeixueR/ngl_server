@@ -21,6 +21,7 @@
 #include <vector>
 #include <locale>
 #include <string>
+#include <random>
 
 #if defined(_WIN32)
 #include <objbase.h>
@@ -1289,12 +1290,14 @@ namespace ngl
 
 	int tools::rand(bool aisrand /*= false*/)
 	{
+		static std::mt19937 gen;
+		static std::uniform_int_distribution<int> dis(0, RAND_MAX);
 		static bool lbool = true;
 		if (lbool || aisrand)
 		{
 			lbool = false;
-			std::srand(std::time(0));
+			gen = std::mt19937(std::random_device{}());
 		}
-		return std::rand();
+		return dis(gen); 
 	}
 }// namespace ngl
