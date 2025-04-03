@@ -258,7 +258,6 @@ namespace ngl
 				}
 			}
 		}
-		ttab_specialid::m_example_room_maxtime;
 		return true;
 	}
 
