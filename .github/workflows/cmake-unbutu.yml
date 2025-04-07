@@ -26,7 +26,7 @@ jobs:
       
     - name: Verify Protobuf installation
       run: |
-          #protoc --version  # 输出 protobuf 版本，应该显示 3.21.2
+          protoc --version 
           which protoc
           #sudo rm -rf /usr/local/include/google
           #sudo rm -rf /usr/local/lib/libproto*
