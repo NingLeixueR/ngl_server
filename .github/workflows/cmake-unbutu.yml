@@ -59,7 +59,7 @@ jobs:
           
     - name: Download Protobuf 3.21.2
       run: |
-          curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.21.2/protobuf-cpp-3.21.2.zip
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v3.21.2/protobuf-cpp-3.21.2.zip
           unzip protobuf-cpp-3.21.2.zip
           cd protobuf-3.21.2
           
