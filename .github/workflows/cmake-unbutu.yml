@@ -56,42 +56,23 @@ jobs:
        gcc --version
        $CC --version
        $CXX --version
-
-    - name: Check protobuf version (before removal)
-        run: protoc --version
-
-      - name: Remove protobuf
+          
+    - name: Download Protobuf 3.21.2
         run: |
-          sudo apt-get remove --purge -y protobuf-compiler
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-
-      - name: Check protobuf version (after removal)
+          curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.21.2/protobuf-cpp-3.21.2.zip
+          unzip protobuf-cpp-3.21.2.zip
+          cd protobuf-3.21.2
+          
+      - name: Install Protobuf 3.21.2
         run: |
-          if command -v protoc &> /dev/null
-          then
-            echo "Protobuf is still installed"
-          else
-            echo "Protobuf is successfully removed"
-          fi
-          
-    # Change to the third_party directory and extract the protobuf tar.gz file
-    - name: Extract and install protobuf
-      run: |
-        cd ./third_party
-        pwd
-        ls
-        unzip protobuf-3.21.2.zip
-        cd protobuf-3.21.2
-          
-        cmake ./
-        sudo make install
-        sudo ldconfig
-          
-      # Verify protobuf installation
-    - name: Verify protobuf installation
-      run: |
-        protoc --version
+          cd protobuf-3.21.2
+          ./configure
+          make
+          sudo make install
+
+      - name: Verify Protobuf installation
+        run: |
+          protoc --version  # 输出 protobuf 版本，应该显示 3.21.2
 
     - name: Install Boost.Interprocess
       run: |
