@@ -58,7 +58,7 @@ jobs:
        $CXX --version
         
     - name: Clean & Install Protobuf 3.21.2
-        run: |
+      run: |
           # 彻底清理旧版本
           sudo apt remove -y --purge libprotobuf-dev protobuf-compiler
           sudo rm -rf /usr/include/google/protobuf/ /usr/local/include/google/protobuf/
@@ -78,7 +78,7 @@ jobs:
         sudo ldconfig
 
     - name: Verify installation
-        run: |
+      run: |
           protoc --version
           ls -l /usr/local/include/google/protobuf/endian.h
 
