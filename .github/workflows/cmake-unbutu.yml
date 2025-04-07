@@ -78,13 +78,13 @@ jobs:
        sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev && dpkg-query -L libcurl4-openssl-dev
 
     - name: Download protobuf 3.21.12
-        run: |
+      run: |
           # 下载 protobuf 3.21.12 的源码
           curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.21.12/protobuf-all-3.21.12.tar.gz
           tar -xvzf protobuf-all-3.21.12.tar.gz
 
-   - name: Build and install protobuf 3.21.12
-        run: |
+    - name: Build and install protobuf 3.21.12
+      run: |
           # 进入解压后的 protobuf 目录
           cd protobuf-3.21.12
           # 配置、编译并安装
@@ -93,8 +93,8 @@ jobs:
           sudo make install
           sudo ldconfig  # 重新加载共享库缓存
 
-      - name: Verify protobuf installation
-        run: |
+    - name: Verify protobuf installation
+      run: |
           # 验证安装的 protobuf 版本
           protoc --version
         
