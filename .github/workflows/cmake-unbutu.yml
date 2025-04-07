@@ -81,7 +81,7 @@ jobs:
     - name: Download protobuf 3.21.12
       run: |
         curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.21.12/protobuf-all-3.21.12.tar.gz
-        tar -xvzf protobuf-all-3.21.12.tar.gz
+        tar xzf protobuf-all-3.21.12.tar.gz
         cd protobuf-3.21.12
         ./configure
         make
