@@ -24,10 +24,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
-    - name: Verify Protobuf installation
-      run: |
-          which protoc
-          
     - name: Download and Install CMake
       run: |
         curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
@@ -61,25 +57,23 @@ jobs:
        $CC --version
        $CXX --version
         
-    - name: Verify Protobuf installation
+    - name: Clean old protobuf
       run: |
-          protoc --version 
+        sudo apt remove -y libprotobuf-dev protobuf-compiler
+        sudo rm -rf /usr/include/google/protobuf/ /usr/local/include/google/protobuf/
+
+    - name: Install protobuf 3.21.2
+      run: |
+        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.21.2/protobuf-all-3.21.2.tar.gz
+        tar -xzf protobuf-all-3.21.2.tar.gz
+        cd protobuf-3.21.2 && ./configure --prefix=/usr/local && make -j$(nproc) && sudo make install
+        sudo ldconfig  # 刷新动态链接库
+
+    - name: Verify installation
+      run: |
+        protoc --version  # 应输出 libprotoc 3.21.2
+        ls -l /usr/local/include/google/protobuf/endian.h  # 确认使用新版头文件 
           
-    - name: Download Protobuf 3.21.2
-      run: |
-        cd ./third_party
-        pwd
-        ls
-        unzip protobuf-3.21.2.zip
-        cd protobuf-3.21.2
-        cmake ./
-        make
-        sudo make install
-
-    - name: Verify Protobuf installation
-      run: |
-          protoc --version 
-
     - name: Install Boost.Interprocess
       run: |
         sudo apt update
