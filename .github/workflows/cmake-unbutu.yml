@@ -64,7 +64,7 @@ jobs:
         pwd
         ls
         tar -xvzf protobuf-3.21.2.tar.gz
-        cd protobuf-3.21.12
+        cd protobuf-3.21.2
           
         # You can now run the usual installation steps for protobuf
         ./configure
