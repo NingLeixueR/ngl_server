@@ -59,9 +59,13 @@ jobs:
           
     - name: Download Protobuf 3.21.2
       run: |
-          wget https://github.com/protocolbuffers/protobuf/releases/download/v3.21.2/protobuf-cpp-3.21.2.zip
-          unzip protobuf-cpp-3.21.2.zip
-          cd protobuf-3.21.2
+        git clone https://github.com/protocolbuffers/protobuf.git
+        cd protobuf
+        git checkout v3.21.2
+        ./autogen.sh
+        ./configure
+        make
+        sudo make install
           
     - name: Install Protobuf 3.21.2
       run: |
