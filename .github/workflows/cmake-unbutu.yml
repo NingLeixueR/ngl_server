@@ -23,7 +23,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      
+                
     - name: Download and Install CMake
       run: |
         curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
@@ -57,23 +57,31 @@ jobs:
        $CC --version
        $CXX --version
         
-    - name: Clean old protobuf
+    - name: Clean & Install Protobuf 3.21.2
+        run: |
+          # 彻底清理旧版本
+          sudo apt remove -y --purge libprotobuf-dev protobuf-compiler
+          sudo rm -rf /usr/include/google/protobuf/ /usr/local/include/google/protobuf/
+          
+    - name: Download Protobuf 3.21.2
       run: |
-        sudo apt remove -y libprotobuf-dev protobuf-compiler
-        sudo rm -rf /usr/include/google/protobuf/ /usr/local/include/google/protobuf/
-
-    - name: Install protobuf 3.21.2
-      run: |
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v3.21.2/protobuf-all-3.21.2.tar.gz
-        tar -xzf protobuf-all-3.21.2.tar.gz
-        cd protobuf-3.21.2 && ./configure --prefix=/usr/local && make -j$(nproc) && sudo make install
-        sudo ldconfig  # 刷新动态链接库
+        cd ./third_party
+        pwd
+        ls
+        unzip protobuf-3.21.2.zip
+        cd protobuf-3.21.2
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dprotobuf_BUILD_SHARED_LIBS=OFF ..
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
 
     - name: Verify installation
-      run: |
-        protoc --version  # 应输出 libprotoc 3.21.2
-        ls -l /usr/local/include/google/protobuf/endian.h  # 确认使用新版头文件 
-          
+        run: |
+          protoc --version
+          ls -l /usr/local/include/google/protobuf/endian.h
+
     - name: Install Boost.Interprocess
       run: |
         sudo apt update
