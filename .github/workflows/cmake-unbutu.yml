@@ -24,7 +24,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
-     - name: Verify Protobuf installation
+    - name: Verify Protobuf installation
       run: |
           protoc --version  # 输出 protobuf 版本，应该显示 3.21.2
           which protoc
