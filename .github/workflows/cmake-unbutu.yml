@@ -26,10 +26,7 @@ jobs:
       
     - name: Verify Protobuf installation
       run: |
-          protoc --version 
           which protoc
-          #sudo rm -rf /usr/local/include/google
-          #sudo rm -rf /usr/local/lib/libproto*
           
     - name: Download and Install CMake
       run: |
