@@ -62,7 +62,7 @@ jobs:
         cd ./third_party
         pwd
         ls
-        unzip protobuf-all-3.12.2.zip
+        tar xzf protobuf-all-3.12.2.zip
         cd protobuf-3.12.2/cmake
         mkdir build
         cd build
