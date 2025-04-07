@@ -57,13 +57,13 @@ jobs:
        $CC --version
        $CXX --version
         
-    - name: Download Protobuf 3.21.1
+    - name: Download Protobuf 3.11.2
       run: |
         cd ./third_party
         pwd
         ls
-        unzip protobuf-3.21.1.zip
-        cd protobuf-3.21.1
+        unzip protobuf-3.11.2.zip
+        cd protobuf-3.11.2/cmake
         mkdir build
         cd build
           cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
