@@ -44,7 +44,7 @@ jobs:
         cd ./third_party
         pwd
         ls
-        tar -xvzf protobuf-all-3.21.12.tar.gz
+        tar -xvzf protobuf-3.21.2.tar.gz
         cd protobuf-3.21.12
           
         # You can now run the usual installation steps for protobuf
