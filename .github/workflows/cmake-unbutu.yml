@@ -66,13 +66,6 @@ jobs:
         ./configure
         make
         sudo make install
-          
-    - name: Install Protobuf 3.21.2
-      run: |
-          cd protobuf-3.21.2
-          ./configure
-          make
-          sudo make install
 
     - name: Verify Protobuf installation
       run: |
