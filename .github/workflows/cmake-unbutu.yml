@@ -63,6 +63,10 @@ jobs:
        gcc --version
        $CC --version
        $CXX --version
+        
+    - name: Verify Protobuf installation
+      run: |
+          protoc --version 
           
     - name: Download Protobuf 3.21.2
       run: |
@@ -77,7 +81,7 @@ jobs:
 
     - name: Verify Protobuf installation
       run: |
-          protoc --version  # 输出 protobuf 版本，应该显示 3.21.2
+          protoc --version 
 
     - name: Install Boost.Interprocess
       run: |
