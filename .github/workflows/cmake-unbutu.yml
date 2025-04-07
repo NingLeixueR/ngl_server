@@ -66,10 +66,9 @@ jobs:
         tar -xvzf protobuf-3.21.2.tar.gz
         cd protobuf-3.21.2
           
-        # You can now run the usual installation steps for protobuf
-        ./configure
         make
         sudo make install
+        sudo ldconfig
           
       # Verify protobuf installation
     - name: Verify protobuf installation
