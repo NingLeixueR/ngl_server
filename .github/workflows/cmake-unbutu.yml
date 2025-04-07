@@ -57,14 +57,6 @@ jobs:
        $CC --version
        $CXX --version
         
-    - name: Clean & Install Protobuf 3.21.2
-      run: |
-          # 彻底清理旧版本
-          sudo apt-get purge -y libprotobuf-dev protobuf-compiler
-          sudo rm -rf /usr/include/google/protobuf /usr/local/include/google/protobuf
-          sudo find / -name "libprotobuf*" -exec rm -rf {} \; 2>/dev/null
-          sudo ldconfig
-          
     - name: Download Protobuf 3.21.2
       run: |
         cd ./third_party
