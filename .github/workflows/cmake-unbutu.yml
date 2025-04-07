@@ -77,11 +77,11 @@ jobs:
       run: |
        sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev && dpkg-query -L libcurl4-openssl-dev
 
-      # 下载并安装 Protobuf 3.21.12
+      # 安装 Protobuf 3.21.12
     - name: Download protobuf 3.21.12
       run: |
-        curl -LO https://codeload.github.com/protocolbuffers/protobuf/tar.gz/refs/tags/v3.21.2
-        ls
+        pwd
+        find ./ -name protobuf-all-3.21.12.tar.gz
         tar xzf protobuf-all-3.21.12.tar.gz
         cd protobuf-3.21.12
         ./configure
