@@ -63,7 +63,7 @@ jobs:
         pwd
         ls
         unzip protobuf-all-3.11.2.zip
-        cd protobuf-all-3.11.2/cmake
+        cd protobuf-3.11.2/cmake
         mkdir build
         cd build
           cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
