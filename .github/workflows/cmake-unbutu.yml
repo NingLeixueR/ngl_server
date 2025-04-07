@@ -76,23 +76,6 @@ jobs:
     - name: Download and build curl
       run: |
        sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev && dpkg-query -L libcurl4-openssl-dev
-
-      # 安装 Protobuf 3.21.12
-    - name: Download protobuf 3.21.12
-      run: |
-        pwd
-        cd third_party
-        tar xzf protobuf-all-3.21.12.tar.gz
-        cd protobuf-3.21.12
-        ./configure
-        make
-        sudo make install
-        sudo ldconfig
-
-    - name: Verify protobuf installation
-      run: |
-          # 验证安装的 protobuf 版本
-          protoc --version
         
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
