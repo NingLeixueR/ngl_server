@@ -59,11 +59,12 @@ jobs:
           
     - name: Download Protobuf 3.21.2
       run: |
-        git clone https://github.com/protocolbuffers/protobuf.git
-        cd protobuf
-        git checkout v3.21.2
-        ./autogen.sh
-        ./configure
+        cd ./third_party
+        pwd
+        ls
+        unzip protobuf-3.21.2.zip
+        cd protobuf-3.21.2
+        cmake ./
         make
         sudo make install
 
