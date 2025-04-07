@@ -38,25 +38,6 @@ jobs:
         sudo apt-get install -y libcurl4-openssl-dev libprotobuf-dev protobuf-compiler libmysqlclient-dev  # 安装依赖
         sudo apt-get install uuid-dev
         
-    # Change to the third_party directory and extract the protobuf tar.gz file
-    - name: Extract and install protobuf
-      run: |
-        cd ./third_party
-        pwd
-        ls
-        tar -xvzf protobuf-3.21.2.tar.gz
-        cd protobuf-3.21.12
-          
-        # You can now run the usual installation steps for protobuf
-        ./configure
-        make
-        sudo make install
-          
-      # Verify protobuf installation
-    - name: Verify protobuf installation
-      run: |
-        protoc --version
-        
     - name: Install GCC 13
       run: |
        sudo apt-get update
@@ -75,6 +56,25 @@ jobs:
        gcc --version
        $CC --version
        $CXX --version
+
+    # Change to the third_party directory and extract the protobuf tar.gz file
+    - name: Extract and install protobuf
+      run: |
+        cd ./third_party
+        pwd
+        ls
+        tar -xvzf protobuf-3.21.2.tar.gz
+        cd protobuf-3.21.12
+          
+        # You can now run the usual installation steps for protobuf
+        ./configure
+        make
+        sudo make install
+          
+      # Verify protobuf installation
+    - name: Verify protobuf installation
+      run: |
+        protoc --version
 
     - name: Install Boost.Interprocess
       run: |
