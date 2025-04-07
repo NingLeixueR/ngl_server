@@ -24,6 +24,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
+     - name: Verify Protobuf installation
+      run: |
+          protoc --version  # 输出 protobuf 版本，应该显示 3.21.2
+          which protoc
+          sudo rm -rf /usr/local/include/google
+          sudo rm -rf /usr/local/lib/libproto*
+          
     - name: Download and Install CMake
       run: |
         curl -LO https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.tar.gz
