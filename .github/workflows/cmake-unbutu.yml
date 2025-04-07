@@ -81,6 +81,7 @@ jobs:
     - name: Download protobuf 3.21.12
       run: |
         curl -LO https://codeload.github.com/protocolbuffers/protobuf/tar.gz/refs/tags/v3.21.2
+        ll
         tar xzf protobuf-all-3.21.12.tar.gz
         cd protobuf-3.21.12
         ./configure
