@@ -63,7 +63,7 @@ jobs:
         cd ./third_party
         pwd
         ls
-        tar -xvzf protobuf-3.21.2.tar.gz
+        unzip protobuf-3.21.2.zip
         cd protobuf-3.21.2
           
         cmake ./
