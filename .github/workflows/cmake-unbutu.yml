@@ -82,6 +82,8 @@ jobs:
       run: |
         pwd
         find ./ -name protobuf-all-3.21.12.tar.gz
+      #/home/runner/work/ngl_server/ngl_server
+        cd third_party
         tar xzf protobuf-all-3.21.12.tar.gz
         cd protobuf-3.21.12
         ./configure
