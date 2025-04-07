@@ -57,6 +57,24 @@ jobs:
        $CC --version
        $CXX --version
 
+    - name: Check protobuf version (before removal)
+        run: protoc --version
+
+      - name: Remove protobuf
+        run: |
+          sudo apt-get remove --purge -y protobuf-compiler
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+
+      - name: Check protobuf version (after removal)
+        run: |
+          if command -v protoc &> /dev/null
+          then
+            echo "Protobuf is still installed"
+          else
+            echo "Protobuf is successfully removed"
+          fi
+          
     # Change to the third_party directory and extract the protobuf tar.gz file
     - name: Extract and install protobuf
       run: |
