@@ -759,7 +759,6 @@ namespace ngl
 
 		static const std::string& server_name();
 
-
 		static int rand();
 	};
 

@@ -151,7 +151,7 @@ namespace ngl
 		{
 			for (std::pair<const i64_actorid, playinfo>& item2 : item1.second)
 			{
-				if (item2.second.m_createexample + example_waittime <= lnow)
+				if (item2.second.m_createexample + example_waittime >= lnow)
 				{
 					for (i64_actorid roleid :item2.second.m_roles)
 					{
