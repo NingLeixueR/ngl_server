@@ -32,10 +32,7 @@ namespace ngl
 		case pbexample::EPLAY_GUESS_NUMBER:
 		{
 			lpactor = actor_base::create(
-				ACTOR_EXAMPLE_GUESS_NUMBER, 
-				tab_self_area, 
-				++m_exampleindex[pbexample::EPLAY_GUESS_NUMBER],
-				(void*)&lprecv->m_roleids
+				ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, ++m_exampleindex[pbexample::EPLAY_GUESS_NUMBER], (void*)&lprecv->m_roleids
 			);
 			lcreate = lpactor != nullptr;
 		}
@@ -145,6 +142,7 @@ namespace ngl
 	bool actor_example_manage::timer_handle(const message<timerparm>& adata)
 	{
 		int32_t lnow = localtime::gettime();
+		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;
 		for (std::pair<const pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>>& item1 : m_info)
 		{
 			for (std::pair<const i64_actorid, playinfo>& item2 : item1.second)
@@ -155,10 +153,8 @@ namespace ngl
 					{
 						if (item2.second.m_role_enter_example.contains(roleid) == false)
 						{
-							enter_game(&item2.second, roleid,
-								tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY,
-								item1.first
-							);
+							log_error()->print("actor_example_manage::timer_handle enter_game role[{}]", roleid);
+							enter_game(&item2.second, roleid, lecross, item1.first);
 						}
 					}
 				}
