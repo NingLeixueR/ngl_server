@@ -110,6 +110,10 @@ namespace ngl
 		//# 加入例子小游戏匹配的转发类型
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
 		{
+			if (m_example.second != 0)
+			{
+				return ecross_none;
+			}
 			return adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
 		}
 

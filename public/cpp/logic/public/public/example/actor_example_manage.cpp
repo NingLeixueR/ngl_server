@@ -43,6 +43,7 @@ namespace ngl
 		{
 			playinfo& lplayinfo = m_info[lprecv->m_type][lpactor->id_guid()];
 			lplayinfo.m_createexample = localtime::gettime();
+			lplayinfo.m_actorexampleid = lpactor->id_guid();
 			for (const auto& lpair : lprecv->m_roleids)
 			{
 				lplayinfo.m_roles.insert(lpair.second);
@@ -129,6 +130,28 @@ namespace ngl
 
 	bool actor_example_manage::handle(const message<np_example_equit>& adata)
 	{
+		const np_example_equit* lprecv = adata.get_data();
+		auto lpdata = tools::findmap(m_finishinfo, adata.get_data()->m_type);
+		if (lpdata == nullptr)
+		{
+			return true;
+		}
+		auto lpexample = tools::findmap(*lpdata, lprecv->m_exampleid);
+		if (lpexample == nullptr)
+		{
+			return true;
+		}
+		for (i64_actorid player: lpexample->m_roles)
+		{
+			m_playerexample.erase(player);
+		}
+
+		auto pro = std::make_shared<np_example_actorid>();
+		pro->m_type = adata.get_data()->m_type;
+		pro->m_actorexampleid = 0;
+		actor::static_send_actor(lpexample->m_roles, id_guid(), pro);
+
+		lpdata->erase(lprecv->m_exampleid);
 		return true;
 	}
 
@@ -151,7 +174,7 @@ namespace ngl
 		{
 			for (std::pair<const i64_actorid, playinfo>& item2 : item1.second)
 			{
-				if (item2.second.m_createexample + example_waittime >= lnow)
+				if (item2.second.m_createexample + example_waittime <= lnow)
 				{
 					for (i64_actorid roleid :item2.second.m_roles)
 					{

@@ -19,6 +19,10 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+
+	int32_t lv1 = ngl::tools::rand();
+	int32_t lv2 = ngl::tools::rand();
+	int32_t lv3 = ngl::tools::rand();
 	if (argc <= 3)
 	{
 		std::cout << lerrpath << std::endl;
