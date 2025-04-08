@@ -50,7 +50,7 @@ namespace ngl
 		break;
 		case ACTOR_EXAMPLE_GUESS_NUMBER:
 		{
-			const std::set<i64_actorid>* lroleids = (std::set<i64_actorid>*)aparm;
+			auto lroleids = (const std::map<int32_t, i64_actorid>*)aparm;
 			lpactor_base = std::make_shared<actor_example_guess_number>(*lroleids, aid);
 			((actor_example_guess_number*)(lpactor_base.get()))->init_rfun<actor_example_guess_number>();
 			actor_base::first_nregister<actor_example_guess_number>(ACTOR_EXAMPLE_GUESS_NUMBER);

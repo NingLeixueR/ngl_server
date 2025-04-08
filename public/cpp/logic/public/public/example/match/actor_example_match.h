@@ -104,17 +104,19 @@ namespace ngl
 		{
 			i64_actorid		m_roleid = 0;
 			bool			m_isconfirm = false; // 是否确认
+			int32_t			m_index = 0;
 		};
 
 		struct room
 		{
-			pbexample::EPLAY_TYPE			m_type;
-			int32_t							m_roomid;
-			int32_t							m_totalnumber;		// 需要的总人数
-			std::map<i64_actorid, player>	m_players;			// 参与匹配的玩家
-			std::set<i64_actorid>			m_playersset;		// 参与匹配的玩家
-			time_t							m_roomcreate;		// 房间创建时间
-			time_t							m_roomready;		// 房间就绪时间
+			pbexample::EPLAY_TYPE			m_type = pbexample::EPLAY_TYPE::EPLAY_NULL;
+			int32_t							m_roomid = 0;
+			int32_t							m_totalnumber = 0;		// 需要的总人数
+			std::map<i64_actorid, player>	m_players;				// 参与匹配的玩家
+			std::set<i64_actorid>			m_playersset;			// 参与匹配的玩家
+			time_t							m_roomcreate = 0;		// 房间创建时间
+			time_t							m_roomready = 0;		// 房间就绪时间
+			int32_t							m_index = 0;			// 进入房间的序号
 		};
 
 		std::map<i64_actorid, int32_t>				m_matching;				// key:roleid value:room id

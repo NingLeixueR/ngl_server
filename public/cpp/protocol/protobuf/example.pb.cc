@@ -504,15 +504,16 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001B\016\n\014_m_bombv"
   "alueB\013\n\t_m_roleid*I\n\006ECROSS\022\017\n\013ECROSS_NU"
   "LL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031\n\025ECROSS_CROS"
-  "S_ORDINARY\020\002*$\n\nEPLAY_TYPE\022\026\n\022EPLAY_GUES"
-  "S_NUMBER\020\000*\317\001\n\020PLAY_EERROR_CODE\022\027\n\023EERRO"
-  "R_CODE_SUCCESS\020\000\022\027\n\023EERROR_CODE_TIMEOUT\020"
-  "\001\022\026\n\022EERROR_CODE_CANCEL\020\002\022\036\n\032EERROR_CODE"
-  "_CURRENT_CANCEL\020\003\022\033\n\027EERROR_CODE_NOTFIND"
-  "ROOM\020\004\022\034\n\030EERROR_CODE_ROOM_DESTORY\020\005\022\026\n\022"
-  "EERROR_CODE_FINISH\020\006*U\n\024E_GUESS_NUMBER_E"
-  "RROR\022\035\n\031E_GUESS_NUMBER_ERROR_NULL\020\000\022\036\n\032E"
-  "_GUESS_NUMBER_ERROR_VALUE\020\001B\002H\001b\006proto3"
+  "S_ORDINARY\020\002*4\n\nEPLAY_TYPE\022\016\n\nEPLAY_NULL"
+  "\020\000\022\026\n\022EPLAY_GUESS_NUMBER\020\001*\317\001\n\020PLAY_EERR"
+  "OR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000\022\027\n\023EERR"
+  "OR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE_CANCEL\020"
+  "\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020\003\022\033\n\027EER"
+  "ROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR_CODE_RO"
+  "OM_DESTORY\020\005\022\026\n\022EERROR_CODE_FINISH\020\006*U\n\024"
+  "E_GUESS_NUMBER_ERROR\022\035\n\031E_GUESS_NUMBER_E"
+  "RROR_NULL\020\000\022\036\n\032E_GUESS_NUMBER_ERROR_VALU"
+  "E\020\001B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -536,7 +537,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_exa
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_example_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_example_2eproto = {
-  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2559,
+  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2575,
   &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_sccs, descriptor_table_example_2eproto_deps, 14, 2,
   schemas, file_default_instances, TableStruct_example_2eproto::offsets,
   file_level_metadata_example_2eproto, 14, file_level_enum_descriptors_example_2eproto, file_level_service_descriptors_example_2eproto,
@@ -588,6 +589,7 @@ const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* EPLAY_TYPE_descriptor() {
 bool EPLAY_TYPE_IsValid(int value) {
   switch (value) {
     case 0:
+    case 1:
       return true;
     default:
       return false;

@@ -19,7 +19,8 @@ enum ECROSS
 
 enum EPLAY_TYPE
 {
-	EPLAY_GUESS_NUMBER = 0;
+	EPLAY_NULL = 0;
+	EPLAY_GUESS_NUMBER = 1;
 }
 
 // 加入玩法

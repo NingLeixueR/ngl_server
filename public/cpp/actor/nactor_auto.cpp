@@ -186,22 +186,30 @@ namespace ngl
 			/*200000030*/, np_actor_kcp
 			/*200000031*/, np_calendar
 			/*200000032*/, np_actor_close
-			/*200000033*/, np_channel_register<pbdb::db_brief>
-			/*200000034*/, np_channel_register_reply<pbdb::db_brief>
-			/*200000035*/, np_channel_data<pbdb::db_brief>
-			/*200000036*/, np_channel_register<pbdb::db_keyvalue>
-			/*200000037*/, np_channel_register_reply<pbdb::db_keyvalue>
-			/*200000038*/, np_channel_data<pbdb::db_keyvalue>
-			/*200000039*/, np_channel_check
-			/*200000040*/, np_roleban
-			/*200000041*/, np_gateway_close_session
-			/*200000042*/, np_login_request_info
-			/*200000043*/, np_create_example
-			/*200000044*/, np_example_entergame_ready
-			/*200000045*/, np_example_actorid
+			/*200000033*/, np_channel_check
+			/*200000034*/, np_roleban
+			/*200000035*/, np_gateway_close_session
+			/*200000036*/, np_login_request_info
+			/*200000037*/, np_create_example
+			/*200000038*/, np_example_entergame_ready
+			/*200000039*/, np_example_actorid
+			/*200000040*/, np_example_equit
 		> (EPROTOCOL_TYPE_CUSTOM);
 
-		tprotocol::set_customs_index(250000000);
+		tprotocol::set_customs_index(210000000);
+		tprotocol::tp_customs::template func <
+			/*210000001*/ np_channel_register<pbdb::db_brief>
+			/*210000002*/, np_channel_register_reply<pbdb::db_brief>
+			/*210000003*/, np_channel_data<pbdb::db_brief>
+			/*210000004*/, np_channel_exit<pbdb::db_brief>
+			/*210000005*/, np_channel_register<pbdb::db_keyvalue>
+			/*210000006*/, np_channel_register_reply<pbdb::db_keyvalue>
+			/*210000007*/, np_channel_data<pbdb::db_keyvalue>
+			/*210000008*/, np_channel_exit<pbdb::db_keyvalue>
+		>(EPROTOCOL_TYPE_CUSTOM);
+		
+
+		tprotocol::set_customs_index(220000000);
 		tprotocol::tp_customs::template func <
 			// ### 事件相关协议 start ### //
 			/*250000001*/ actor_events_logic::np_event_register

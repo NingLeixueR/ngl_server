@@ -15,13 +15,14 @@
 #include "ntimer.h"
 #include "net.h"
 #include "db.h"
+#include "actor_example.h"
 
 #include "example.pb.h"
 #include "net.pb.h"
 
 namespace ngl
 {
-	class actor_example_guess_number : public actor
+	class actor_example_guess_number : public actor_example<actor_example_guess_number>
 	{
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;
@@ -38,13 +39,13 @@ namespace ngl
 		int32_t m_setputc;		// 步骤时间
 		int32_t m_bombvalues;	// 炸弹值
 
-		std::vector<i64_actorid> m_rolesds;
+		
 
 		int32_t m_bombutc;		// 触发炸弹值的时间
 		i64_actorid m_bombrole; // 触发炸弹值的玩家
 
 	public:
-		actor_example_guess_number(const std::set<i64_actorid>& aroleids, int32_t aindex);
+		actor_example_guess_number(const std::map<int32_t, i64_actorid>& aroleids, int32_t aindex);
 
 		static ENUM_ACTOR actor_type()
 		{

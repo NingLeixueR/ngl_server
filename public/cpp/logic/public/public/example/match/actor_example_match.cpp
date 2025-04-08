@@ -144,6 +144,10 @@ namespace ngl
 	void actor_example_match::erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode /*= pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY*/)
 	{
 		log_error()->print("erase room [{}]", aroom->m_roomid);
+		for (i64_actorid roleid : aroom->m_playersset)
+		{
+			m_matching.erase(roleid);
+		}		
 		sync_response(aroom, aerrorcode);
 		room_index& lroomindex = m_roomindex[aroom->m_type];
 		lroomindex.m_roomlist.erase(aroom->m_roomid);
@@ -198,7 +202,10 @@ namespace ngl
 	{
 		//### 通知玩法管理器创建对应玩法actor
 		auto pro = std::make_shared<np_create_example>();
-		pro->m_roleids = aroom->m_playersset;
+		for (const std::pair<const i64_actorid, player>& lpair : aroom->m_players)
+		{
+			pro->m_roleids[lpair.second.m_index] = lpair.second.m_roleid;
+		}
 		pro->m_type = aroom->m_type;
 		send_actor(actor_example_manage::actorid(), pro);
 
@@ -278,6 +285,7 @@ namespace ngl
 		player& lplayer = lproom->m_players[lroleid];
 		lplayer.m_isconfirm = false;
 		lplayer.m_roleid = lroleid;
+		lplayer.m_index = ++lproom->m_index;
 		lproom->m_playersset.insert(lroleid);
 		m_matching[lroleid] = lproom->m_roomid;
 		if (room_count_ready(lproom))

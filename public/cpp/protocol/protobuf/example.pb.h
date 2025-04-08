@@ -171,12 +171,13 @@ inline bool ECROSS_Parse(
     ECROSS_descriptor(), name, value);
 }
 enum EPLAY_TYPE : int {
-  EPLAY_GUESS_NUMBER = 0,
+  EPLAY_NULL = 0,
+  EPLAY_GUESS_NUMBER = 1,
   EPLAY_TYPE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   EPLAY_TYPE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool EPLAY_TYPE_IsValid(int value);
-constexpr EPLAY_TYPE EPLAY_TYPE_MIN = EPLAY_GUESS_NUMBER;
+constexpr EPLAY_TYPE EPLAY_TYPE_MIN = EPLAY_NULL;
 constexpr EPLAY_TYPE EPLAY_TYPE_MAX = EPLAY_GUESS_NUMBER;
 constexpr int EPLAY_TYPE_ARRAYSIZE = EPLAY_TYPE_MAX + 1;
 

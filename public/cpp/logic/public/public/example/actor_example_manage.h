@@ -78,7 +78,8 @@ namespace ngl
 			>(false);
 
 			register_handle_custom<actor_example_manage>::func<
-				np_create_example
+				np_create_example,
+				np_example_equit
 			>(true);
 		}
 		virtual void init();
@@ -95,6 +96,9 @@ namespace ngl
 
 		// # 玩家进入例子游戏
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
+
+		// # 例子游戏销毁退出
+		bool handle(const message<np_example_equit>& adata);
 		
 		bool timer_handle(const message<timerparm>& adata);
 	};

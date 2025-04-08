@@ -175,7 +175,7 @@ namespace ngl
 		ENUM_ACTOR		type();
 
 		//# 移除actor自身
-		void			erase_actor_byid();
+		virtual void	erase_actor_byid();
 
 		//# 移除指定actor
 		static void		erase_actor_byid(const nguid& aguid);
