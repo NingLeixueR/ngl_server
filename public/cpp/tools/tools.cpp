@@ -1297,7 +1297,7 @@ namespace ngl
 	std::uniform_int_distribution<int> g_tools_dis(0, RAND_MAX);
 	std::mutex g_tools_mutex;
 
-	int tools::rand(bool aisrand /*= false*/)
+	int tools::rand()
 	{
 		monopoly_lock(g_tools_mutex);
 		return g_tools_dis(g_tools_gen);
