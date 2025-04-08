@@ -760,7 +760,7 @@ namespace ngl
 		static const std::string& server_name();
 
 
-		static int rand(bool aisrand = false);
+		static int rand();
 	};
 
 	template <typename T>
