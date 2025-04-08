@@ -18,7 +18,9 @@ namespace ngl
 		m_index(0),
 		m_maxnumber(101),
 		m_minnumber(0),
-		m_bombvalues(tools::rand() % 100 + 1)
+		m_bombvalues(tools::rand() % 100 + 1),
+		m_bombutc(0),
+		m_bombrole(0)
 	{
 		m_rolesds.assign(aroleids.begin(), aroleids.end());
 		tdb_brief::nsp_cli<actor_example_guess_number>::init(actor_brief::actor_type(), this, aroleids);
@@ -109,7 +111,10 @@ namespace ngl
 			bomb();
 			return true;
 		}
-
+		if (roleid != next_guess_role())
+		{
+			return true;
+		}
 		int32_t lnumber = lpdata->m_guessnumber();
 		if (lnumber >= m_maxnumber || lnumber <= m_minnumber)
 		{
