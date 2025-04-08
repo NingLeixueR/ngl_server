@@ -83,16 +83,16 @@ actor切换game进程
 [匹配
 
 	//# 发起匹配
-	protocol pbexample::PROBUFF_EXAMPLE_PLAY_JOIN {"m_cross":1,"m_type":0}
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_JOIN {"m_cross":1,"m_type":1}
 
 	//# 匹配成功后确认进入例子小游戏
 	protocol pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM {"m_isconfirm":true,m_roomid:1}
 
 	//# 取消匹配
-	protocol pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL {"m_type":0,m_roomid:1}
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL {"m_type":1,m_roomid:1}
 	
 	//# 进入例子小游戏
-	protocol pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE {"m_cross":1,"m_type":0,m_exampleactorid:4295032882}
+	protocol pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE {"m_cross":1,"m_type":1,m_exampleactorid:4295032882}
 	
 	//# 猜测的数字
 	protocol pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER {"m_guessnumber":68}
