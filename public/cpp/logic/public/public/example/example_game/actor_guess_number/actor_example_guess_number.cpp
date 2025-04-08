@@ -87,7 +87,7 @@ namespace ngl
 		{
 			return nguid::make();
 		}
-		return m_index% m_rolesds.size();
+		return m_rolesds[m_index% m_rolesds.size()];
 	}
 
 	void actor_example_guess_number::init()
