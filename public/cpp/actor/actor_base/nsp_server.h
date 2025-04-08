@@ -71,6 +71,18 @@ namespace ngl
 			sync(recv.m_actorid);
 		}
 
+		static void channel_exit(TDerived*, message<np_channel_exit<TDATA>>& adata)
+		{
+			if (m_dbmodule->actorbase() == nullptr)
+			{
+				log_error()->print("nsp_server::channel_exit fail m_dbmodule->actorbase() == nullptr");
+				return;
+			}
+			auto& recv = *adata.get_data();
+			m_publishlist.erase(recv.m_actorid);
+			log_error()->print("nsp_server.np_channel_exit {}", nguid(recv.m_actorid));
+		}
+
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
 		{
 			auto& recv = *adata.get_data();
@@ -96,6 +108,9 @@ namespace ngl
 
 			// # 订阅数据被修改
 			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>>(std::bind_front(&tnsp_server::channel_data));
+
+			// # 退出订阅
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_exit<TDATA>>(std::bind_front(&tnsp_server::channel_exit));
 		}
 
 		static void sync(i64_actorid aactor)

@@ -3,18 +3,8 @@
 
 namespace ngl
 {
-	actor_example_guess_number::actor_example_guess_number(const std::set<i64_actorid>& aroleids, int32_t aindex) :
-		actor(
-			actorparm
-			{
-				.m_parm
-					{
-						.m_type = ACTOR_EXAMPLE_GUESS_NUMBER,
-						.m_area = tab_self_area,
-						.m_id	= aindex
-					},
-				.m_weight = 0x7fffffff,
-			}),
+	actor_example_guess_number::actor_example_guess_number(const std::map<int32_t, i64_actorid>& aroleids, int32_t aindex) :
+		actor_example<actor_example_guess_number>(pbexample::EPLAY_GUESS_NUMBER, ACTOR_EXAMPLE_GUESS_NUMBER, aindex, aroleids),
 		m_index(0),
 		m_maxnumber(101),
 		m_minnumber(0),
@@ -22,8 +12,6 @@ namespace ngl
 		m_bombutc(0),
 		m_bombrole(0)
 	{
-		m_rolesds.assign(aroleids.begin(), aroleids.end());
-		tdb_brief::nsp_cli<actor_example_guess_number>::init(actor_brief::actor_type(), this, aroleids);
 	}
 
 	void actor_example_guess_number::nregister()

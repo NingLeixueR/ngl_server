@@ -896,6 +896,13 @@ namespace ngl
 	};
 
 	template <typename TDATA>
+	struct np_channel_exit
+	{
+		i64_actorid				m_actorid;
+		def_portocol(np_channel_exit, m_actorid)
+	};
+
+	template <typename TDATA>
 	struct np_channel_data
 	{
 		bool m_firstsynchronize = false;					// 首次同步
@@ -930,7 +937,7 @@ namespace ngl
 	struct np_create_example
 	{
 		pbexample::EPLAY_TYPE m_type;
-		std::set<i64_actorid> m_roleids;
+		std::map<int32_t, i64_actorid> m_roleids;
 		def_portocol(np_create_example, m_type, m_roleids)
 	};
 
@@ -946,6 +953,14 @@ namespace ngl
 		pbexample::EPLAY_TYPE m_type;
 		i64_actorid m_actorexampleid;
 		def_portocol(np_example_id, m_type, m_actorexampleid)
+	};
+
+	// 例子小游戏->actor_example_manage 例子小游戏退出
+	struct np_example_equit
+	{
+		pbexample::EPLAY_TYPE m_type;
+		i64_actorid m_exampleid;
+		def_portocol(np_example_equit, m_type, m_exampleid)
 	};
 
 }//namespace ngl

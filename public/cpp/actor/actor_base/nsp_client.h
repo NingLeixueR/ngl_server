@@ -16,11 +16,12 @@ namespace ngl
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
-		static actor*									m_actor;
-		static std::map<i16_area, i64_actorid>			m_nspserver;
-		static std::map<i16_area, bool>					m_register;
-		static std::set<i64_actorid>					m_dataid;
+		static actor*										m_actor;
+		static std::map<i16_area, i64_actorid>				m_nspserver;
+		static std::map<i16_area, bool>						m_register;
+		static std::set<i64_actorid>						m_dataid;
 		static std::function<void(int64_t, const T&, bool)>	m_changedatafun;
+		static bool											m_activate;
 	public:
 		static std::map<i64_actorid, T> m_data;
 	private:
@@ -157,6 +158,23 @@ namespace ngl
 		static void set_changedata_fun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_changedatafun = afun;
+		}
+
+		// # ÇëÇóÍË³ö¶©ÔÄ
+		static void exit()
+		{
+			auto pro = std::make_shared<np_channel_exit<T>>();
+			pro->m_actorid = m_actor->id_guid();
+
+			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
+			if (lsetarea != nullptr)
+			{
+				for (i16_area area : *lsetarea)
+				{
+					actor::static_send_actor(m_nspserver[area], nguid::make(), pro);
+					m_register[area] = false;
+				}
+			}
 		}
 	private:
 		static void register_echannel(i16_area aarea)

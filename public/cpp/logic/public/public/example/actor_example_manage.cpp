@@ -31,9 +31,7 @@ namespace ngl
 		{
 		case pbexample::EPLAY_GUESS_NUMBER:
 		{
-			lpactor = actor_base::create(
-				ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, ++m_exampleindex[pbexample::EPLAY_GUESS_NUMBER], (void*)&lprecv->m_roleids
-			);
+			lpactor = actor_base::create(ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, ++m_exampleindex[pbexample::EPLAY_GUESS_NUMBER], (void*)&lprecv->m_roleids);
 			lcreate = lpactor != nullptr;
 		}
 		break;
@@ -43,19 +41,20 @@ namespace ngl
 
 		if (lcreate)
 		{
-			m_info[lprecv->m_type][lpactor->id_guid()].m_roles = lprecv->m_roleids;
-			m_info[lprecv->m_type][lpactor->id_guid()].m_createexample = localtime::gettime();
-			for (int64_t roleid : lprecv->m_roleids)
+			playinfo& lplayinfo = m_info[lprecv->m_type][lpactor->id_guid()];
+			lplayinfo.m_createexample = localtime::gettime();
+			for (const auto& lpair : lprecv->m_roleids)
 			{
-				std::get<0>(m_playerexample[roleid]) = lprecv->m_type;
-				std::get<1>(m_playerexample[roleid]) = lpactor->id_guid();
+				lplayinfo.m_roles.insert(lpair.second);
+				std::get<0>(m_playerexample[lpair.second]) = lprecv->m_type;
+				std::get<1>(m_playerexample[lpair.second]) = lpactor->id_guid();
 			}		
 
 			auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>();
 			pro->set_m_exampleactorid(lpactor->id_guid());
 			pro->set_m_type(lprecv->m_type);
 			pro->set_m_stat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
-			send_client(lprecv->m_roleids, pro);
+			send_client(lplayinfo.m_roles, pro);
 		}		
 		return true;
 	}
@@ -125,6 +124,11 @@ namespace ngl
 		pro->m_actorexampleid = std::get<1>(*lptuple);
 		send_actor(adata.get_data()->m_roleid, pro);
 		
+		return true;
+	}
+
+	bool actor_example_manage::handle(const message<np_example_equit>& adata)
+	{
 		return true;
 	}
 
