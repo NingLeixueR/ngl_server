@@ -46,15 +46,14 @@ namespace ngl
 			send_client(aroleid, pro);
 		}
 	}
-
-	void actor_example_match::sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid /*= nguid::make()*/)
+	void actor_example_match::send_error(pbexample::PLAY_MATCHING_EERROR_CODE acode, std::set<i64_actorid>* aplayer/* = nullptr*/, int32_t aroomid /*= 0*/, i64_actorid aroleid /*= nguid::make()*/)
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>();
-		pro->set_m_roomid(aroom->m_roomid);
+		pro->set_m_roomid(aroomid);
 		pro->set_m_errorcode(acode);
-		if (aroom != nullptr)
+		if (aplayer != nullptr)
 		{
-			send_client(aroom->m_playersset, pro);
+			send_client(*aplayer, pro);
 		}
 		else
 		{
@@ -144,14 +143,14 @@ namespace ngl
 		return &lroom;
 	}
 
-	void actor_example_match::erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode /*= pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY*/)
+	void actor_example_match::erase_room(room* aroom, pbexample::PLAY_MATCHING_EERROR_CODE aerrorcode /*= pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_ROOM_DESTORY*/)
 	{
 		log_error()->print("erase room [{}]", aroom->m_roomid);
 		for (i64_actorid roleid : aroom->m_playersset)
 		{
 			m_matching.erase(roleid);
-		}		
-		sync_response(aroom, aerrorcode);
+		}
+		send_error(aerrorcode, &aroom->m_playersset, aroom->m_roomid);
 		room_index& lroomindex = m_roomindex[aroom->m_type];
 		lroomindex.m_roomlist.erase(aroom->m_roomid);
 		m_room[aroom->m_type].erase(aroom->m_roomid);
@@ -164,7 +163,7 @@ namespace ngl
 		aroom->m_roomready = 0;
 		if (aroom->m_players.empty())
 		{
-			erase_room(aroom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_CANCEL);
+			erase_room(aroom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_CANCEL);
 		}
 		else
 		{
@@ -212,7 +211,7 @@ namespace ngl
 		pro->m_type = aroom->m_type;
 		send_actor(actor_example_manage::actorid(), pro);
 
-		erase_room(aroom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_FINISH);
+		erase_room(aroom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_FINISH);
 	}
 
 	bool actor_example_match::check_ready(room* aroom)
@@ -263,7 +262,7 @@ namespace ngl
 					}
 					if (check_timeout(lproom->m_roomcreate, ttab_specialid::m_example_room_maxtime))
 					{
-						erase_room(lproom, pbexample::PLAY_EERROR_CODE::EERROR_CODE_TIMEOUT);
+						erase_room(lproom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_TIMEOUT);
 					}
 				}
 			}
@@ -276,7 +275,7 @@ namespace ngl
 		i64_actorid lroleid = adata.get_data()->identifier();
 		if (m_matching.contains(lroleid))
 		{
-			sync_response(nullptr, pbexample::EERROR_CODE_NOTMATCH, lroleid);
+			send_error(pbexample::EERROR_CODE_NOTMATCH, nullptr, 0, lroleid);
 			return true;
 		}
 		const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* ldata = adata.get_data()->data();
@@ -284,7 +283,7 @@ namespace ngl
 		room* lproom = matching_room(lroleid, ltype);
 		if (lproom == nullptr)
 		{
-			sync_response(nullptr, pbexample::EERROR_CODE_CREATEROOM_FAIL, lroleid);
+			send_error(pbexample::EERROR_CODE_CREATEROOM_FAIL, nullptr, 0, lroleid);
 			return true;
 		}
 		player& lplayer = lproom->m_players[lroleid];
@@ -315,7 +314,7 @@ namespace ngl
 		room* lproom = find_room(ldata->m_roomid());
 		if (lproom == nullptr)
 		{
-			sync_response(nullptr, pbexample::PLAY_EERROR_CODE::EERROR_CODE_NOTFINDROOM, lroleid);
+			send_error(pbexample::EERROR_CODE_NOTFINDROOM, nullptr, 0, lroleid);
 			return true;
 		}
 
@@ -384,14 +383,14 @@ namespace ngl
 		int32_t* lproomid = tools::findmap(m_matching, lroleid);
 		if (lproomid == nullptr)
 		{
-			sync_response(nullptr, pbexample::PLAY_EERROR_CODE::EERROR_CODE_NOTFINDROOM, lroleid);
+			send_error(pbexample::EERROR_CODE_NOTFINDROOM, nullptr, 0, lroleid);
 			return true;
 		}
 
 		room* lproom = find_room(*lproomid);
 		if (lproom == nullptr)
 		{
-			sync_response(nullptr, pbexample::PLAY_EERROR_CODE::EERROR_CODE_NOTFINDROOM, lroleid);
+			send_error(pbexample::EERROR_CODE_NOTFINDROOM, nullptr, 0, lroleid);
 			return true;
 		}
 

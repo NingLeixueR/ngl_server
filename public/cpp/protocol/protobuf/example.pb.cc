@@ -464,58 +464,60 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\013m_roomready\030\004 \001(\003H\003\210\001\001\022$\n\tm_players\030\005 \003"
   "(\0132\021.pbexample.PLAYERB\013\n\t_m_roomidB\020\n\016_m"
   "_totalnumberB\017\n\r_m_roomcreateB\016\n\014_m_room"
-  "ready\"\221\001\n$PROBUFF_EXAMPLE_PLAY_MATCHING_"
-  "RESULT\0225\n\013m_errorcode\030\001 \001(\0162\033.pbexample."
-  "PLAY_EERROR_CODEH\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H"
-  "\001\210\001\001B\016\n\014_m_errorcodeB\013\n\t_m_roomid\"s\n#PRO"
-  "BUFF_EXAMPLE_PLAY_PLAYER_CONFIRM\022\030\n\013m_is"
-  "confirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030\002 \001(\005H\001\210\001"
-  "\001B\016\n\014_m_isconfirmB\013\n\t_m_roomid\"x\n\033PROBUF"
-  "F_EXAMPLE_PLAY_CANCEL\022*\n\006m_type\030\001 \001(\0162\025."
-  "pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_roomid\030\002 "
-  "\001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomid\"\202\002\n\033PRO"
-  "BUFF_EXAMPLE_PLAY_CREATE\022*\n\006m_type\030\001 \001(\016"
-  "2\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\035\n\020m_exampl"
-  "eactorid\030\002 \001(\003H\001\210\001\001\022A\n\006m_stat\030\003 \001(\0162,.pb"
-  "example.PROBUFF_EXAMPLE_PLAY_CREATE.esta"
-  "tH\002\210\001\001\"*\n\005estat\022\021\n\restat_success\020\000\022\016\n\nes"
-  "tat_fail\020\001B\t\n\007_m_typeB\023\n\021_m_exampleactor"
-  "idB\t\n\007_m_stat\"\304\001\n\"PROBUFF_EXAMPLE_PLAY_E"
-  "NTER_EXAMPLE\022\'\n\007m_cross\030\001 \001(\0162\021.pbexampl"
-  "e.ECROSSH\000\210\001\001\022*\n\006m_type\030\002 \001(\0162\025.pbexampl"
-  "e.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_exampleactorid\030\003 "
-  "\001(\003H\002\210\001\001B\n\n\010_m_crossB\t\n\007_m_typeB\023\n\021_m_ex"
-  "ampleactorid\"\340\001\n+PROBUFF_EXAMPLE_PLAY_EN"
-  "TER_EXAMPLE_RESPONSE\022\'\n\007m_cross\030\001 \001(\0162\021."
-  "pbexample.ECROSSH\000\210\001\001\022*\n\006m_type\030\002 \001(\0162\025."
-  "pbexample.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_exampleac"
-  "torid\030\003 \001(\003H\002\210\001\001\022\021\n\tm_players\030\004 \003(\003B\n\n\010_"
-  "m_crossB\t\n\007_m_typeB\023\n\021_m_exampleactorid\""
-  "\237\001\n!PROBUFF_EXAMPLE_GUESS_NUMBER_INFO\022\030\n"
-  "\013m_maxnumber\030\001 \001(\005H\000\210\001\001\022\030\n\013m_minnumber\030\002"
-  " \001(\005H\001\210\001\001\022\027\n\nm_whoguess\030\003 \001(\003H\002\210\001\001B\016\n\014_m"
-  "_maxnumberB\016\n\014_m_minnumberB\r\n\013_m_whogues"
-  "s\"L\n\034PROBUFF_EXAMPLE_GUESS_NUMBER\022\032\n\rm_g"
-  "uessnumber\030\001 \001(\005H\000\210\001\001B\020\n\016_m_guessnumber\""
-  "e\n\"PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR\0224\n"
-  "\006m_stat\030\001 \001(\0162\037.pbexample.E_GUESS_NUMBER"
-  "_ERRORH\000\210\001\001B\t\n\007_m_stat\"q\n!PROBUFF_EXAMPL"
-  "E_GUESS_NUMBER_BOMB\022\030\n\013m_bombvalue\030\001 \001(\005"
-  "H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001B\016\n\014_m_bombv"
-  "alueB\013\n\t_m_roleid*I\n\006ECROSS\022\017\n\013ECROSS_NU"
-  "LL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031\n\025ECROSS_CROS"
-  "S_ORDINARY\020\002*4\n\nEPLAY_TYPE\022\016\n\nEPLAY_NULL"
-  "\020\000\022\026\n\022EPLAY_GUESS_NUMBER\020\001*\212\002\n\020PLAY_EERR"
-  "OR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000\022\027\n\023EERR"
-  "OR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE_CANCEL\020"
-  "\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020\003\022\033\n\027EER"
-  "ROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR_CODE_RO"
-  "OM_DESTORY\020\005\022\026\n\022EERROR_CODE_FINISH\020\006\022\030\n\024"
-  "EERROR_CODE_NOTMATCH\020\007\022\037\n\033EERROR_CODE_CR"
-  "EATEROOM_FAIL\020\010*y\n\024E_GUESS_NUMBER_ERROR\022"
-  "\035\n\031E_GUESS_NUMBER_ERROR_NULL\020\000\022\036\n\032E_GUES"
-  "S_NUMBER_ERROR_VALUE\020\001\022\"\n\036E_GUESS_NUMBER"
-  "_ERROR_NOT_GUESS\020\002B\002H\001b\006proto3"
+  "ready\"\232\001\n$PROBUFF_EXAMPLE_PLAY_MATCHING_"
+  "RESULT\022>\n\013m_errorcode\030\001 \001(\0162$.pbexample."
+  "PLAY_MATCHING_EERROR_CODEH\000\210\001\001\022\025\n\010m_room"
+  "id\030\002 \001(\005H\001\210\001\001B\016\n\014_m_errorcodeB\013\n\t_m_room"
+  "id\"s\n#PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIR"
+  "M\022\030\n\013m_isconfirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030"
+  "\002 \001(\005H\001\210\001\001B\016\n\014_m_isconfirmB\013\n\t_m_roomid\""
+  "x\n\033PROBUFF_EXAMPLE_PLAY_CANCEL\022*\n\006m_type"
+  "\030\001 \001(\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_"
+  "roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomi"
+  "d\"\202\002\n\033PROBUFF_EXAMPLE_PLAY_CREATE\022*\n\006m_t"
+  "ype\030\001 \001(\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\035\n"
+  "\020m_exampleactorid\030\002 \001(\003H\001\210\001\001\022A\n\006m_stat\030\003"
+  " \001(\0162,.pbexample.PROBUFF_EXAMPLE_PLAY_CR"
+  "EATE.estatH\002\210\001\001\"*\n\005estat\022\021\n\restat_succes"
+  "s\020\000\022\016\n\nestat_fail\020\001B\t\n\007_m_typeB\023\n\021_m_exa"
+  "mpleactoridB\t\n\007_m_stat\"\304\001\n\"PROBUFF_EXAMP"
+  "LE_PLAY_ENTER_EXAMPLE\022\'\n\007m_cross\030\001 \001(\0162\021"
+  ".pbexample.ECROSSH\000\210\001\001\022*\n\006m_type\030\002 \001(\0162\025"
+  ".pbexample.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_examplea"
+  "ctorid\030\003 \001(\003H\002\210\001\001B\n\n\010_m_crossB\t\n\007_m_type"
+  "B\023\n\021_m_exampleactorid\"\340\001\n+PROBUFF_EXAMPL"
+  "E_PLAY_ENTER_EXAMPLE_RESPONSE\022\'\n\007m_cross"
+  "\030\001 \001(\0162\021.pbexample.ECROSSH\000\210\001\001\022*\n\006m_type"
+  "\030\002 \001(\0162\025.pbexample.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_"
+  "exampleactorid\030\003 \001(\003H\002\210\001\001\022\021\n\tm_players\030\004"
+  " \003(\003B\n\n\010_m_crossB\t\n\007_m_typeB\023\n\021_m_exampl"
+  "eactorid\"\237\001\n!PROBUFF_EXAMPLE_GUESS_NUMBE"
+  "R_INFO\022\030\n\013m_maxnumber\030\001 \001(\005H\000\210\001\001\022\030\n\013m_mi"
+  "nnumber\030\002 \001(\005H\001\210\001\001\022\027\n\nm_whoguess\030\003 \001(\003H\002"
+  "\210\001\001B\016\n\014_m_maxnumberB\016\n\014_m_minnumberB\r\n\013_"
+  "m_whoguess\"L\n\034PROBUFF_EXAMPLE_GUESS_NUMB"
+  "ER\022\032\n\rm_guessnumber\030\001 \001(\005H\000\210\001\001B\020\n\016_m_gue"
+  "ssnumber\"e\n\"PROBUFF_EXAMPLE_GUESS_NUMBER"
+  "_ERROR\0224\n\006m_stat\030\001 \001(\0162\037.pbexample.E_GUE"
+  "SS_NUMBER_ERRORH\000\210\001\001B\t\n\007_m_stat\"q\n!PROBU"
+  "FF_EXAMPLE_GUESS_NUMBER_BOMB\022\030\n\013m_bombva"
+  "lue\030\001 \001(\005H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001B\016\n"
+  "\014_m_bombvalueB\013\n\t_m_roleid*I\n\006ECROSS\022\017\n\013"
+  "ECROSS_NULL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031\n\025EC"
+  "ROSS_CROSS_ORDINARY\020\002*4\n\nEPLAY_TYPE\022\016\n\nE"
+  "PLAY_NULL\020\000\022\026\n\022EPLAY_GUESS_NUMBER\020\001*\315\002\n\031"
+  "PLAY_MATCHING_EERROR_CODE\022\027\n\023EERROR_CODE"
+  "_SUCCESS\020\000\022\027\n\023EERROR_CODE_TIMEOUT\020\001\022\026\n\022E"
+  "ERROR_CODE_CANCEL\020\002\022\036\n\032EERROR_CODE_CURRE"
+  "NT_CANCEL\020\003\022\033\n\027EERROR_CODE_NOTFINDROOM\020\004"
+  "\022\034\n\030EERROR_CODE_ROOM_DESTORY\020\005\022\026\n\022EERROR"
+  "_CODE_FINISH\020\006\022\030\n\024EERROR_CODE_NOTMATCH\020\007"
+  "\022\037\n\033EERROR_CODE_CREATEROOM_FAIL\020\010\022\037\n\033EER"
+  "ROR_CODE_CREATEGAME_FAIL\020\t\022\027\n\023EERROR_COD"
+  "E_NOTFIND\020\n*y\n\024E_GUESS_NUMBER_ERROR\022\035\n\031E"
+  "_GUESS_NUMBER_ERROR_NULL\020\000\022\036\n\032E_GUESS_NU"
+  "MBER_ERROR_VALUE\020\001\022\"\n\036E_GUESS_NUMBER_ERR"
+  "OR_NOT_GUESS\020\002B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -539,7 +541,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_exa
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_example_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_example_2eproto = {
-  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2670,
+  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2746,
   &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_sccs, descriptor_table_example_2eproto_deps, 14, 2,
   schemas, file_default_instances, TableStruct_example_2eproto::offsets,
   file_level_metadata_example_2eproto, 14, file_level_enum_descriptors_example_2eproto, file_level_service_descriptors_example_2eproto,
@@ -598,11 +600,11 @@ bool EPLAY_TYPE_IsValid(int value) {
   }
 }
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAY_EERROR_CODE_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAY_MATCHING_EERROR_CODE_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_example_2eproto);
   return file_level_enum_descriptors_example_2eproto[3];
 }
-bool PLAY_EERROR_CODE_IsValid(int value) {
+bool PLAY_MATCHING_EERROR_CODE_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -613,6 +615,8 @@ bool PLAY_EERROR_CODE_IsValid(int value) {
     case 6:
     case 7:
     case 8:
+    case 9:
+    case 10:
       return true;
     default:
       return false;
@@ -1802,12 +1806,12 @@ const char* PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_InternalParse(const char* ptr
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
+      // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_errorcode(static_cast<::pbexample::PLAY_EERROR_CODE>(val));
+          _internal_set_m_errorcode(static_cast<::pbexample::PLAY_MATCHING_EERROR_CODE>(val));
         } else goto handle_unusual;
         continue;
       // int32 m_roomid = 2;
@@ -1847,7 +1851,7 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
+  // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
   if (_internal_has_m_errorcode()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
@@ -1878,7 +1882,7 @@ size_t PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
+    // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_errorcode());

@@ -195,7 +195,7 @@ inline bool EPLAY_TYPE_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<EPLAY_TYPE>(
     EPLAY_TYPE_descriptor(), name, value);
 }
-enum PLAY_EERROR_CODE : int {
+enum PLAY_MATCHING_EERROR_CODE : int {
   EERROR_CODE_SUCCESS = 0,
   EERROR_CODE_TIMEOUT = 1,
   EERROR_CODE_CANCEL = 2,
@@ -205,27 +205,29 @@ enum PLAY_EERROR_CODE : int {
   EERROR_CODE_FINISH = 6,
   EERROR_CODE_NOTMATCH = 7,
   EERROR_CODE_CREATEROOM_FAIL = 8,
-  PLAY_EERROR_CODE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  PLAY_EERROR_CODE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+  EERROR_CODE_CREATEGAME_FAIL = 9,
+  EERROR_CODE_NOTFIND = 10,
+  PLAY_MATCHING_EERROR_CODE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  PLAY_MATCHING_EERROR_CODE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool PLAY_EERROR_CODE_IsValid(int value);
-constexpr PLAY_EERROR_CODE PLAY_EERROR_CODE_MIN = EERROR_CODE_SUCCESS;
-constexpr PLAY_EERROR_CODE PLAY_EERROR_CODE_MAX = EERROR_CODE_CREATEROOM_FAIL;
-constexpr int PLAY_EERROR_CODE_ARRAYSIZE = PLAY_EERROR_CODE_MAX + 1;
+bool PLAY_MATCHING_EERROR_CODE_IsValid(int value);
+constexpr PLAY_MATCHING_EERROR_CODE PLAY_MATCHING_EERROR_CODE_MIN = EERROR_CODE_SUCCESS;
+constexpr PLAY_MATCHING_EERROR_CODE PLAY_MATCHING_EERROR_CODE_MAX = EERROR_CODE_NOTFIND;
+constexpr int PLAY_MATCHING_EERROR_CODE_ARRAYSIZE = PLAY_MATCHING_EERROR_CODE_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAY_EERROR_CODE_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAY_MATCHING_EERROR_CODE_descriptor();
 template<typename T>
-inline const std::string& PLAY_EERROR_CODE_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, PLAY_EERROR_CODE>::value ||
+inline const std::string& PLAY_MATCHING_EERROR_CODE_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PLAY_MATCHING_EERROR_CODE>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function PLAY_EERROR_CODE_Name.");
+    "Incorrect type passed to function PLAY_MATCHING_EERROR_CODE_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    PLAY_EERROR_CODE_descriptor(), enum_t_value);
+    PLAY_MATCHING_EERROR_CODE_descriptor(), enum_t_value);
 }
-inline bool PLAY_EERROR_CODE_Parse(
-    const std::string& name, PLAY_EERROR_CODE* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PLAY_EERROR_CODE>(
-    PLAY_EERROR_CODE_descriptor(), name, value);
+inline bool PLAY_MATCHING_EERROR_CODE_Parse(
+    const std::string& name, PLAY_MATCHING_EERROR_CODE* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PLAY_MATCHING_EERROR_CODE>(
+    PLAY_MATCHING_EERROR_CODE_descriptor(), name, value);
 }
 enum E_GUESS_NUMBER_ERROR : int {
   E_GUESS_NUMBER_ERROR_NULL = 0,
@@ -1039,17 +1041,17 @@ class PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT PROTOBUF_FINAL :
     kMErrorcodeFieldNumber = 1,
     kMRoomidFieldNumber = 2,
   };
-  // .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
+  // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
   bool has_m_errorcode() const;
   private:
   bool _internal_has_m_errorcode() const;
   public:
   void clear_m_errorcode();
-  ::pbexample::PLAY_EERROR_CODE m_errorcode() const;
-  void set_m_errorcode(::pbexample::PLAY_EERROR_CODE value);
+  ::pbexample::PLAY_MATCHING_EERROR_CODE m_errorcode() const;
+  void set_m_errorcode(::pbexample::PLAY_MATCHING_EERROR_CODE value);
   private:
-  ::pbexample::PLAY_EERROR_CODE _internal_m_errorcode() const;
-  void _internal_set_m_errorcode(::pbexample::PLAY_EERROR_CODE value);
+  ::pbexample::PLAY_MATCHING_EERROR_CODE _internal_m_errorcode() const;
+  void _internal_set_m_errorcode(::pbexample::PLAY_MATCHING_EERROR_CODE value);
   public:
 
   // int32 m_roomid = 2;
@@ -2943,7 +2945,7 @@ PROBUFF_EXAMPLE_PLAY_MATCHING::m_players() const {
 
 // PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT
 
-// .pbexample.PLAY_EERROR_CODE m_errorcode = 1;
+// .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
 inline bool PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_internal_has_m_errorcode() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -2955,18 +2957,18 @@ inline void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::clear_m_errorcode() {
   m_errorcode_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::pbexample::PLAY_EERROR_CODE PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_internal_m_errorcode() const {
-  return static_cast< ::pbexample::PLAY_EERROR_CODE >(m_errorcode_);
+inline ::pbexample::PLAY_MATCHING_EERROR_CODE PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_internal_m_errorcode() const {
+  return static_cast< ::pbexample::PLAY_MATCHING_EERROR_CODE >(m_errorcode_);
 }
-inline ::pbexample::PLAY_EERROR_CODE PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::m_errorcode() const {
+inline ::pbexample::PLAY_MATCHING_EERROR_CODE PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::m_errorcode() const {
   // @@protoc_insertion_point(field_get:pbexample.PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT.m_errorcode)
   return _internal_m_errorcode();
 }
-inline void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_internal_set_m_errorcode(::pbexample::PLAY_EERROR_CODE value) {
+inline void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_internal_set_m_errorcode(::pbexample::PLAY_MATCHING_EERROR_CODE value) {
   _has_bits_[0] |= 0x00000001u;
   m_errorcode_ = value;
 }
-inline void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::set_m_errorcode(::pbexample::PLAY_EERROR_CODE value) {
+inline void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::set_m_errorcode(::pbexample::PLAY_MATCHING_EERROR_CODE value) {
   _internal_set_m_errorcode(value);
   // @@protoc_insertion_point(field_set:pbexample.PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT.m_errorcode)
 }
@@ -3693,10 +3695,10 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::EPLAY_TYPE>() {
   return ::pbexample::EPLAY_TYPE_descriptor();
 }
-template <> struct is_proto_enum< ::pbexample::PLAY_EERROR_CODE> : ::std::true_type {};
+template <> struct is_proto_enum< ::pbexample::PLAY_MATCHING_EERROR_CODE> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::PLAY_EERROR_CODE>() {
-  return ::pbexample::PLAY_EERROR_CODE_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::pbexample::PLAY_MATCHING_EERROR_CODE>() {
+  return ::pbexample::PLAY_MATCHING_EERROR_CODE_descriptor();
 }
 template <> struct is_proto_enum< ::pbexample::E_GUESS_NUMBER_ERROR> : ::std::true_type {};
 template <>
