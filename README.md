@@ -2,48 +2,48 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NingLeixueR_ngl&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NingLeixueR_ngl)
 ## ngl
 * Framework of c++ Game Server Based on Actor
-* »ùÓÚActorµÄc++ÓÎÏ··şÎñÆ÷¿ò¼Ü
+* åŸºäºActorçš„c++æ¸¸æˆæœåŠ¡å™¨æ¡†æ¶
 
-## ÒÀÀµµÄµÚÈı·½¿â
-  * <b>·Çboost¶ÀÁ¢°æ±¾µÄasio</b>
+## ä¾èµ–çš„ç¬¬ä¸‰æ–¹åº“
+  * <b>éboostç‹¬ç«‹ç‰ˆæœ¬çš„asio</b>
   * <b>curl</b>
   * <b>hiredis</b>
   * <b>mysql connect/c</b>
   * <b>protobuf 3.13.0</b>
 
-## Ä¿Â¼
-  * <b>ngl/3part</b><br/>´ËÄ¿Â¼ÓÃÓÚ´æ·ÅµÚÈı·½¿â
-  * <b>ngl/bin/idl</b><br/>csv±íÉú³É
-  * <b>ngl/bin/proto</b><br/>protoĞ­ÒéÉú³É
-  * <b>ngl/bin/rebuild.bat</b><br/>Óëcmake unity buildÀàËÆµÄ¼ÓËÙ±àÒë
-  * <b>ngl/public/cpp</b><br/>cpp·şÎñÆ÷Ô´Âë
-  * <b>ngl/server</b><br/>ÏîÄ¿Ô´ÎÄ¼ş
+## ç›®å½•
+  * <b>ngl/3part</b><br/>æ­¤ç›®å½•ç”¨äºå­˜æ”¾ç¬¬ä¸‰æ–¹åº“
+  * <b>ngl/bin/idl</b><br/>csvè¡¨ç”Ÿæˆ
+  * <b>ngl/bin/proto</b><br/>protoåè®®ç”Ÿæˆ
+  * <b>ngl/bin/rebuild.bat</b><br/>ä¸cmake unity buildç±»ä¼¼çš„åŠ é€Ÿç¼–è¯‘
+  * <b>ngl/public/cpp</b><br/>cppæœåŠ¡å™¨æºç 
+  * <b>ngl/server</b><br/>é¡¹ç›®æºæ–‡ä»¶
 
-## Ğ­ÒéÖ§³Ö
+## åè®®æ”¯æŒ
   * tcp
-  * ws(ÔİÊ±ÒÆ³ı)
+  * ws(æš‚æ—¶ç§»é™¤)
   * kcp
 
-## Linux CentOs±àÒë
-  * ±àÒë°²×°gcc (GCC) 13.1.0
-  * ±àÒë°²×°protobuf 3.21.12
-  * ÏÂÔØĞÂ°æ±¾µÄboost,boost±àÒë²¢¼ô²Ãºó½«Æä·ÅÖÃÔÚÄ¿Â¼/3part/boost/ÏÂ
-  * ÆäËûµÚÈı·½¿â×ÔĞĞ  yum install ½øĞĞ°²×°
-  * ´´½¨buildÄ¿Â¼£¬ÔÚbuildÄ¿Â¼ÏÂcmake .., È»ºómake
-  * ÔÚlinux±àÒëÔËĞĞ
+## Linux CentOsç¼–è¯‘
+  * ç¼–è¯‘å®‰è£…gcc (GCC) 13.1.0
+  * ç¼–è¯‘å®‰è£…protobuf 3.12.2
+  * ä¸‹è½½æ–°ç‰ˆæœ¬çš„boost,boostç¼–è¯‘å¹¶å‰ªè£åå°†å…¶æ”¾ç½®åœ¨ç›®å½•/3part/boost/ä¸‹
+  * å…¶ä»–ç¬¬ä¸‰æ–¹åº“è‡ªè¡Œ  yum install è¿›è¡Œå®‰è£…
+  * åˆ›å»ºbuildç›®å½•ï¼Œåœ¨buildç›®å½•ä¸‹cmake .., ç„¶åmake
+  * åœ¨linuxç¼–è¯‘è¿è¡Œ
      ```
      [root@localhost bin]# cat /etc/centos-release
      CentOS Linux release 7.9.2009 (Core)
      [root@localhost bin]# gcc --version
      gcc (GCC) 13.1.0
      ```
-  * ÔÚwin±àÒëÔËĞĞ(vs2022)
+  * åœ¨winç¼–è¯‘è¿è¡Œ(vs2022)
 
-## Àı×ÓÓÎÏ·
-  * [²ÂÊı×Ö](https://github.com/NingLeixueR/ngl_server/wiki/%E4%BE%8B%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%90%E7%8C%9C%E6%95%B0%E5%AD%97)
+## ä¾‹å­æ¸¸æˆ
+  * [çŒœæ•°å­—](https://github.com/NingLeixueR/ngl_server/wiki/%E4%BE%8B%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%90%E7%8C%9C%E6%95%B0%E5%AD%97)
 
-## ¸ü¶à½éÉÜ
+## æ›´å¤šä»‹ç»
   * [wiki](https://github.com/NingLeixueR/ngl_server/wiki)
 
-## QQÈº
+## QQç¾¤
   * 56257994
