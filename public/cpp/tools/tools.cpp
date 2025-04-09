@@ -1293,8 +1293,7 @@ namespace ngl
 	auto g_tools_now_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(g_tools_now).time_since_epoch().count();
 	std::random_device g_tools_rd;
 	std::seed_seq g_tools_seed{ static_cast<unsigned int>(g_tools_now_ns), g_tools_rd() };
-	// 已确认此处使用 std::mt19937 伪随机数生成器是安全的
-	// 原因：仅用于非安全敏感的场景，如游戏中的随机事件
+	// I confirm that using this pseudorandom number generator is not safe here.
 	std::mt19937 g_tools_gen(g_tools_seed);
 	std::uniform_int_distribution<int> g_tools_dis(0, RAND_MAX);
 	std::mutex g_tools_mutex;
