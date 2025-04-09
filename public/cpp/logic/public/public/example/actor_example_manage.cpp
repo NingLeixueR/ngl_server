@@ -1,5 +1,5 @@
 #include "actor_example_manage.h"
-
+#include "actor_example_match.h"
 
 
 namespace ngl
@@ -24,7 +24,6 @@ namespace ngl
 		{
 			return true;
 		}
-		bool lcreate = false;
 		std::shared_ptr<actor_base> lpactor = nullptr;
 		
 		switch (lprecv->m_type)
@@ -32,14 +31,11 @@ namespace ngl
 		case pbexample::EPLAY_GUESS_NUMBER:
 		{
 			lpactor = actor_base::create(ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, ++m_exampleindex[pbexample::EPLAY_GUESS_NUMBER], (void*)&lprecv->m_roleids);
-			lcreate = lpactor != nullptr;
 		}
 		break;
-		default:
-			return false;
 		}
 
-		if (lcreate)
+		if (lpactor != nullptr)
 		{
 			playinfo& lplayinfo = m_info[lprecv->m_type][lpactor->id_guid()];
 			lplayinfo.m_createexample = localtime::gettime();
@@ -56,7 +52,14 @@ namespace ngl
 			pro->set_m_type(lprecv->m_type);
 			pro->set_m_stat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
 			send_client(lplayinfo.m_roles, pro);
-		}		
+		}	
+		else
+		{
+			for (const auto& lpair : lprecv->m_roleids)
+			{
+				actor_example_match::send_error(pbexample::EERROR_CODE_CREATEGAME_FAIL, nullptr, 0, lpair.second);
+			}
+		}
 		return true;
 	}
 
@@ -75,7 +78,7 @@ namespace ngl
 			send_client(applayinfo->m_roles, lresponse);
 		}
 	}
-	
+
 	bool actor_example_manage::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata)
 	{
 		const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE* lpdata = adata.get_data()->data();
@@ -84,11 +87,13 @@ namespace ngl
 		playinfo* lpplayinfo = tools::findmap(m_info[lpdata->m_type()], lpdata->m_exampleactorid());
 		if (lpplayinfo == nullptr)
 		{
+			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, roleid);
 			return true;
 		}
 
 		if (lpplayinfo->m_roles.contains(roleid) == false)
 		{
+			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, roleid);
 			return true;
 		}
 

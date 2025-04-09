@@ -52,24 +52,26 @@ message PROBUFF_EXAMPLE_PLAY_MATCHING
 };
 
 
-	enum PLAY_EERROR_CODE
-	{
-		EERROR_CODE_SUCCESS = 0;
-		EERROR_CODE_TIMEOUT = 1;			// 超时
-		EERROR_CODE_CANCEL  = 2;			// 有玩家取消匹配
-		EERROR_CODE_CURRENT_CANCEL  = 3;	// 当前不允许取消匹配
-		EERROR_CODE_NOTFINDROOM = 4;		// 未找到指定room
-		EERROR_CODE_ROOM_DESTORY = 5;		// 房间被销毁
-		EERROR_CODE_FINISH = 6;				// 匹配完成销毁房间
-		EERROR_CODE_NOTMATCH = 7;			// 已参与其他匹配无法加入新的匹配
-		EERROR_CODE_CREATEROOM_FAIL = 8;	// 创建房间失败
-	}
+enum PLAY_MATCHING_EERROR_CODE
+{
+	EERROR_CODE_SUCCESS = 0;
+	EERROR_CODE_TIMEOUT = 1;			// 超时
+	EERROR_CODE_CANCEL  = 2;			// 有玩家取消匹配
+	EERROR_CODE_CURRENT_CANCEL  = 3;	// 当前不允许取消匹配
+	EERROR_CODE_NOTFINDROOM = 4;		// 未找到指定room
+	EERROR_CODE_ROOM_DESTORY = 5;		// 房间被销毁
+	EERROR_CODE_FINISH = 6;				// 匹配完成销毁房间
+	EERROR_CODE_NOTMATCH = 7;			// 已参与其他匹配无法加入新的匹配
+	EERROR_CODE_CREATEROOM_FAIL = 8;	// 创建房间失败
+	EERROR_CODE_CREATEGAME_FAIL = 9;	// 创建游戏失败
+	EERROR_CODE_NOTFIND = 10;			// 未找到指定目标
+}
 
 // 匹配结果
 message PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT
 {
-	optional PLAY_EERROR_CODE m_errorcode		= 1;
-	optional int32 m_roomid					= 2; // 房间号
+	optional PLAY_MATCHING_EERROR_CODE m_errorcode		= 1;
+	optional int32 m_roomid								= 2; // 房间号
 };
 
 // 玩家确认加入

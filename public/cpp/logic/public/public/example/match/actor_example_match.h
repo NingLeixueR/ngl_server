@@ -139,7 +139,7 @@ namespace ngl
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
 
 		// # 同步[PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT]
-		void sync_response(room* aroom, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
+		static void send_error(pbexample::PLAY_MATCHING_EERROR_CODE acode, std::set<i64_actorid>* aplayer = nullptr, int32_t aroomid = 0, i64_actorid aroleid = nguid::make());
 
 		// # 房间是否人满就绪
 		bool room_count_ready(room* aroom);
@@ -157,7 +157,7 @@ namespace ngl
 		room* add_room(pbexample::EPLAY_TYPE atype);
 
 		// # 删除房间
-		void erase_room(room* aroom, pbexample::PLAY_EERROR_CODE aerrorcode = pbexample::PLAY_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
+		void erase_room(room* aroom, pbexample::PLAY_MATCHING_EERROR_CODE aerrorcode = pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_ROOM_DESTORY);
 
 		// # 玩家取消匹配
 		void erase_player_room(room* aroom, i64_actorid aroleid);
