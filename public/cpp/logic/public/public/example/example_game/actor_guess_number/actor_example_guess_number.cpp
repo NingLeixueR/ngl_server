@@ -46,12 +46,19 @@ namespace ngl
 		return true;
 	}
 
-	void actor_example_guess_number::bomb()
+	void actor_example_guess_number::bomb(i64_actorid aroleid/* = nguid::make()*/)
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>();
 		pro->set_m_bombvalue(m_bombvalues);
 		pro->set_m_roleid(m_bombrole);
-		send_client(m_rolesds, pro);
+		if (aroleid == nguid::make())
+		{
+			send_client(m_rolesds, pro);
+		}
+		else
+		{
+			send_client(aroleid, pro);
+		}
 	}
 
 	bool actor_example_guess_number::isfinish()
@@ -89,6 +96,13 @@ namespace ngl
 		set_timer(tparm);
 	}
 
+	void actor_example_guess_number::send_error(i64_actorid aroleid, pbexample::E_GUESS_NUMBER_ERROR aerr)
+	{
+		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>();
+		pro->set_m_stat(aerr);
+		send_client(aroleid, pro);
+	}
+
 	bool actor_example_guess_number::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata)
 	{
 		const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER* lpdata = adata.get_data()->data();
@@ -101,14 +115,13 @@ namespace ngl
 		}
 		if (roleid != next_guess_role())
 		{
+			send_error(roleid, pbexample::E_GUESS_NUMBER_ERROR_NOT_GUESS);
 			return true;
 		}
 		int32_t lnumber = lpdata->m_guessnumber();
 		if (lnumber >= m_maxnumber || lnumber <= m_minnumber)
 		{
-			auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>();
-			pro->set_m_stat(pbexample::E_GUESS_NUMBER_ERROR_VALUE);
-			send_client(roleid, pro);
+			send_error(roleid, pbexample::E_GUESS_NUMBER_ERROR_VALUE);
 			return true;
 		}
 
@@ -131,7 +144,7 @@ namespace ngl
 		int32_t lsize = m_maxnumber - 1 - m_minnumber;
 		if (lsize <= 1)
 		{//游戏结束 下一个人被炸
-			set_finish(m_rolesds[next_guess_role()]);
+			set_finish(next_guess_role());
 			bomb();
 			return true;
 		}

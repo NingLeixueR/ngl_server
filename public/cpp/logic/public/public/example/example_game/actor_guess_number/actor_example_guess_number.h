@@ -69,13 +69,15 @@ namespace ngl
 
 		void next_setp();
 
-		void bomb();
+		void bomb(i64_actorid aroleid = nguid::make());
 
 		bool isfinish();
 
 		void set_finish(i64_actorid abombrole);
 
 		i64_actorid next_guess_role();
+
+		void send_error(i64_actorid aroleid, pbexample::E_GUESS_NUMBER_ERROR aerr);
 
 		// # 所有人准备就绪 可以进入游戏
 		bool handle(const message<np_example_entergame_ready>& adata);

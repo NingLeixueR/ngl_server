@@ -505,15 +505,17 @@ const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE
   "alueB\013\n\t_m_roleid*I\n\006ECROSS\022\017\n\013ECROSS_NU"
   "LL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031\n\025ECROSS_CROS"
   "S_ORDINARY\020\002*4\n\nEPLAY_TYPE\022\016\n\nEPLAY_NULL"
-  "\020\000\022\026\n\022EPLAY_GUESS_NUMBER\020\001*\317\001\n\020PLAY_EERR"
+  "\020\000\022\026\n\022EPLAY_GUESS_NUMBER\020\001*\212\002\n\020PLAY_EERR"
   "OR_CODE\022\027\n\023EERROR_CODE_SUCCESS\020\000\022\027\n\023EERR"
   "OR_CODE_TIMEOUT\020\001\022\026\n\022EERROR_CODE_CANCEL\020"
   "\002\022\036\n\032EERROR_CODE_CURRENT_CANCEL\020\003\022\033\n\027EER"
   "ROR_CODE_NOTFINDROOM\020\004\022\034\n\030EERROR_CODE_RO"
-  "OM_DESTORY\020\005\022\026\n\022EERROR_CODE_FINISH\020\006*U\n\024"
-  "E_GUESS_NUMBER_ERROR\022\035\n\031E_GUESS_NUMBER_E"
-  "RROR_NULL\020\000\022\036\n\032E_GUESS_NUMBER_ERROR_VALU"
-  "E\020\001B\002H\001b\006proto3"
+  "OM_DESTORY\020\005\022\026\n\022EERROR_CODE_FINISH\020\006\022\030\n\024"
+  "EERROR_CODE_NOTMATCH\020\007\022\037\n\033EERROR_CODE_CR"
+  "EATEROOM_FAIL\020\010*y\n\024E_GUESS_NUMBER_ERROR\022"
+  "\035\n\031E_GUESS_NUMBER_ERROR_NULL\020\000\022\036\n\032E_GUES"
+  "S_NUMBER_ERROR_VALUE\020\001\022\"\n\036E_GUESS_NUMBER"
+  "_ERROR_NOT_GUESS\020\002B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -537,7 +539,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_exa
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_example_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_example_2eproto = {
-  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2575,
+  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2670,
   &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_sccs, descriptor_table_example_2eproto_deps, 14, 2,
   schemas, file_default_instances, TableStruct_example_2eproto::offsets,
   file_level_metadata_example_2eproto, 14, file_level_enum_descriptors_example_2eproto, file_level_service_descriptors_example_2eproto,
@@ -609,6 +611,8 @@ bool PLAY_EERROR_CODE_IsValid(int value) {
     case 4:
     case 5:
     case 6:
+    case 7:
+    case 8:
       return true;
     default:
       return false;
@@ -623,6 +627,7 @@ bool E_GUESS_NUMBER_ERROR_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
       return true;
     default:
       return false;
