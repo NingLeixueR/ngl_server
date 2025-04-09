@@ -52,13 +52,16 @@ namespace ngl
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>();
 		pro->set_m_roomid(aroom->m_roomid);
 		pro->set_m_errorcode(acode);
-		if (aroleid == nguid::make())
+		if (aroom != nullptr)
 		{
 			send_client(aroom->m_playersset, pro);
 		}
 		else
 		{
-			send_client(aroleid, pro);
+			if (aroleid != nguid::make())
+			{
+				send_client(aroleid, pro);
+			}
 		}
 	}
 
@@ -273,6 +276,7 @@ namespace ngl
 		i64_actorid lroleid = adata.get_data()->identifier();
 		if (m_matching.contains(lroleid))
 		{
+			sync_response(nullptr, pbexample::EERROR_CODE_NOTMATCH, lroleid);
 			return true;
 		}
 		const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* ldata = adata.get_data()->data();
@@ -280,6 +284,7 @@ namespace ngl
 		room* lproom = matching_room(lroleid, ltype);
 		if (lproom == nullptr)
 		{
+			sync_response(nullptr, pbexample::EERROR_CODE_CREATEROOM_FAIL, lroleid);
 			return true;
 		}
 		player& lplayer = lproom->m_players[lroleid];
@@ -310,7 +315,7 @@ namespace ngl
 		room* lproom = find_room(ldata->m_roomid());
 		if (lproom == nullptr)
 		{
-			sync_response(nullptr, pbexample::PLAY_EERROR_CODE::EERROR_CODE_NOTFINDROOM);
+			sync_response(nullptr, pbexample::PLAY_EERROR_CODE::EERROR_CODE_NOTFINDROOM, lroleid);
 			return true;
 		}
 
@@ -357,7 +362,8 @@ namespace ngl
 
 	bool actor_example_match::handle(const message<np_login_request_info>& adata)
 	{
-		int32_t* lproomid = tools::findmap(m_matching, adata.get_data()->m_roleid);
+		i64_actorid lroleid = adata.get_data()->m_roleid;
+		int32_t* lproomid = tools::findmap(m_matching, lroleid);
 		if (lproomid == nullptr)
 		{
 			return true;
@@ -365,6 +371,7 @@ namespace ngl
 		room* lproom = find_room(*lproomid);
 		if (lproom == nullptr)
 		{
+			m_matching.erase(lroleid);
 			return true;
 		}
 		sync_match_info(lproom, adata.get_data()->m_roleid);
