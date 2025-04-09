@@ -88,9 +88,6 @@ namespace ngl
 
 		void enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype);
 
-		// # 同步[PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT]
-		//void send_error(std::set<i64_actorid>* aroles, pbexample::PLAY_EERROR_CODE acode, i64_actorid aroleid = nguid::make());
-
 		// # 匹配成功后 创建例子玩法
 		bool handle(const message<np_create_example>& adata);
 

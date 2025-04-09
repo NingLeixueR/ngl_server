@@ -1,5 +1,4 @@
 #include "actor_example_guess_number.h"
-#include "actor_ugpalace.h"
 #include "actor_manage.h"
 #include "actor_robot.h"
 #include "actor_base.h"
@@ -32,13 +31,6 @@ namespace ngl
 			lpactor_base = std::make_shared<actor_robot>(tab_self_area, aid, aparm);
 			((actor_robot*)(lpactor_base.get()))->init_rfun<actor_robot>();
 			actor_base::first_nregister<actor_robot>(ACTOR_ROBOT);
-		}
-		break;
-		case ACTOR_PLAYS_GO_UNDERGROUNDPALACE:
-		{
-			lpactor_base = std::make_shared<actor_ugpalace>(atype, aid, aparm);
-			((actor_ugpalace*)(lpactor_base.get()))->init_rfun<actor_ugpalace>();
-			actor_base::first_nregister<actor_ugpalace>(ACTOR_PLAYS_GO_UNDERGROUNDPALACE);
 		}
 		break;
 		case ACTOR_LOG:

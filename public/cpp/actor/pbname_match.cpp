@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-03 10:07:31】
+ // 创建时间【2025-04-09 14:44:56】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -77,19 +77,6 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW);
             mkdef_map(pbnet::PROBUFF_NET_SYNC_POSITION);
             mkdef_map(pbnet::PROBUFF_NET_CHANGE_ANGLE);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_CANCEL);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_CONFIRM);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_SYNC);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_MATCHING_SUCCESS);
-            mkdef_map(pbnet::PROBUFF_NET_ENTER_PLAYS);
             mkdef_map(pbnet::PROBUFF_NET_KCPSESSION);
             mkdef_map(pbnet::PROBUFF_NET_KCPSESSION_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD);

@@ -36,7 +36,6 @@ namespace ngl
 		rolekv		 m_rolekv;
 		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
-		i64_actorid  m_playactorid;
 		std::pair<pbexample::EPLAY_TYPE, i64_actorid> m_example;
 	public:
 		actor_role(const actor_role&) = delete;
@@ -198,9 +197,6 @@ namespace ngl
 
 		//# 断开连接
 		bool handle(const message<np_actor_disconnect_close>& adata);
-
-		//# 玩法创建成功  记录玩法actorid
-		bool handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata);
 
 		//# 领取任务奖励
 		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
