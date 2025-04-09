@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-08 17:22:49
+// 创建时间 25-04-09 14:51:43
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -47,7 +47,6 @@
 #include "ranklist.cpp"
 #include "protocol.cpp"
 #include "naddress.cpp"
-#include "matching.cpp"
 #include "csvtable.cpp"
 #include "autoitem.cpp"
 #include "asio_tcp.cpp"
@@ -95,7 +94,6 @@
 #include "actor_manage_activity.cpp"
 #include "actor_example_manage.cpp"
 #include "actor_example_match.cpp"
-#include "actor_manage_plays.cpp"
 #include "actor_role_handle.cpp"
 #include "actor_manage_role.cpp"
 #include "actor_base_create.cpp"
@@ -103,10 +101,8 @@
 #include "actor_gatewayc2g.cpp"
 #include "actor_csvserver.cpp"
 #include "actor_csvclient.cpp"
-#include "actor_ugpalace.cpp"
 #include "actor_role_cmd.cpp"
 #include "actor_ranklist.cpp"
-#include "actor_matching.cpp"
 #include "actor_keyvalue.cpp"
 #include "actor_gmclient.cpp"
 #include "actor_calendar.cpp"
@@ -119,7 +115,6 @@
 #include "actor_client.cpp"
 #include "nactor_auto.cpp"
 #include "actor_robot.cpp"
-#include "actor_plays.cpp"
 #include "actor_login.cpp"
 #include "actor_cross.cpp"
 #include "actor_brief.cpp"

@@ -31,7 +31,6 @@ namespace ngl
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
-		, m_playactorid(0)
 	{
 		assert(aarea == tab_self_area);
 	}
@@ -65,7 +64,6 @@ namespace ngl
 
 		register_handle_proto<actor_role>::func<
 			pbnet::PROBUFF_NET_ROLE_SYNC
-			, pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
 		>(true);
 

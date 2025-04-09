@@ -18,10 +18,8 @@ namespace ngl
 		//#######################  非单例  #####################
 		ACTOR_ROLE = 1,
 		ACTOR_ROBOT,												// 机器人
-		ACTOR_GUILD,												// 工会	
-		ACTOR_PLAYS,												// 玩法
+		ACTOR_GUILD,												// 工会
 		ACTOR_MANAGE_ROLE,											// 负责创建actor_role
-		ACTOR_PLAYS_GO_UNDERGROUNDPALACE = ACTOR_MANAGE_ROLE+1,		// 玩法[勇闯地宫]
 
 		ACTOR_PLAYS_END,
 		//#######################  单例  #######################
@@ -48,8 +46,6 @@ namespace ngl
 		ACTOR_ACTIVITY_MANAGE,									// 活动管理
 		ACTOR_BRIEF,											// brief简要信息
 		ACTOR_CROSS,											// 跨服
-		ACTOR_MANAGE_PLAYS,										// 创建玩法
-		ACTOR_MATCHING,											// 匹配
 		ACTOR_CALENDAR,											// 脚本日历
 		ACTOR_CHANNEL,											// 订阅/发布 
 		ACTOR_KEYVALUE,											// 公共key/value

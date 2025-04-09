@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-03 10:07:31】
+ // 创建时间【2025-04-09 14:44:56】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -69,19 +69,6 @@ namespace ngl
             null<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>,
             null<pbnet::PROBUFF_NET_SYNC_POSITION>,
             null<pbnet::PROBUFF_NET_CHANGE_ANGLE>,
-            null<pbnet::PROBUFF_NET_MATCHING>,
-            null<pbnet::PROBUFF_NET_MATCHING_RESPONSE>,
-            null<pbnet::PROBUFF_NET_MATCHING_CANCEL>,
-            null<pbnet::PROBUFF_NET_MATCHING_CANCEL_RESPONSE>,
-            null<pbnet::PROBUFF_NET_MEMBER_MATCHING_CANCEL>,
-            null<pbnet::PROBUFF_NET_MATCHING_WAITCONFIRM>,
-            null<pbnet::PROBUFF_NET_MATCHING_CONFIRM>,
-            null<pbnet::PROBUFF_NET_MATCHING_CONFIRM_RESPONSE>,
-            null<pbnet::PROBUFF_NET_SYNC_MATCHING_CONFIRM>,
-            null<pbnet::PROBUFF_NET_MATCHING_SYNC>,
-            null<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>,
-            null<pbnet::PROBUFF_NET_MATCHING_SUCCESS>,
-            null<pbnet::PROBUFF_NET_ENTER_PLAYS>,
             null<pbnet::PROBUFF_NET_KCPSESSION>,
             null<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>,
             null<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>,

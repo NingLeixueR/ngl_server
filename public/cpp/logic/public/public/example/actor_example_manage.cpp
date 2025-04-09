@@ -65,6 +65,7 @@ namespace ngl
 
 	void actor_example_manage::enter_game(playinfo* applayinfo, i64_actorid aroleid, pbexample::ECROSS across, pbexample::EPLAY_TYPE atype)
 	{
+		log_error()->print("actor_example_manage enter_game role[{}]", aroleid);
 		applayinfo->m_role_enter_example[aroleid] = true;
 		{
 			auto lresponse = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>();
@@ -185,7 +186,6 @@ namespace ngl
 					{
 						if (item2.second.m_role_enter_example.contains(roleid) == false)
 						{
-							log_error()->print("actor_example_manage::timer_handle enter_game role[{}]", roleid);
 							enter_game(&item2.second, roleid, lecross, item1.first);
 						}
 					}

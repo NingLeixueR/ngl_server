@@ -65,12 +65,6 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::handle(const message<pbnet::PROBUFF_NET_MATCHING_SUCCESS_RESPONSE>& adata)
-	{
-		m_playactorid = adata.get_data()->m_playsactorid();
-		return true;
-	}
-
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
 		tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());

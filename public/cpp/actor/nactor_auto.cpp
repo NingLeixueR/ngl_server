@@ -2,15 +2,12 @@
 #include "actor_manage_activity.h"
 #include "actor_example_manage.h"
 #include "actor_example_match.h"
-#include "actor_manage_plays.h"
 #include "actor_manage_role.h"
 #include "actor_gatewayc2g.h"
 #include "actor_gatewayg2c.h"
 #include "actor_csvserver.h"
 #include "actor_csvclient.h"
 #include "actor_ranklist.h"
-#include "actor_matching.h"
-#include "actor_ugpalace.h"
 #include "actor_calendar.h"
 #include "actor_gmclient.h"
 #include "actor_gateway.h"
@@ -132,12 +129,8 @@ namespace ngl
 			, dautoactor(actor_mail, ACTOR_MAIL)
 			, dautoactor(actor_notice, ACTOR_NOTICE)
 			, dautoactor(actor_ranklist, ACTOR_RANKLIST)
-			, dautoactor(actor_matching, ACTOR_MATCHING)
-			, dautoactor(actor_manage_plays, ACTOR_MANAGE_PLAYS)
-			, dautoactor(actor_ugpalace, ACTOR_PLAYS_GO_UNDERGROUNDPALACE)
 			, dautoactor(actor_kcp, ACTOR_KCP)
 			, dautoactor(actor_calendar, ACTOR_CALENDAR)
-			, dautoactor(actor_plays, ACTOR_PLAYS)
 			, dautoactor(actor_keyvalue, ACTOR_KEYVALUE)
 			, dautoactor(actor_family, ACTOR_FAMILY)
 			, dautoactor(actor_friends, ACTOR_FRIENDS)
