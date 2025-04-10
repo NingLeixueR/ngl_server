@@ -27,8 +27,6 @@ namespace ngl
 			return actor_instance<actor_gateway_g2c>::instance();
 		}
 
-		virtual ~actor_gateway_g2c();
-
 		static void nregister();
 
 		static ENUM_ACTOR actor_type()
