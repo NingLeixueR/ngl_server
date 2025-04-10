@@ -1,5 +1,5 @@
-﻿#include "actor_gatewayc2g.h"
-#include "actor_gatewayg2c.h"
+﻿#include "actor_gateway_c2g.h"
+#include "actor_gateway_g2c.h"
 #include "actor_gateway.h"
 #include "actor_server.h"
 #include "nregister.h"
@@ -58,8 +58,8 @@ namespace ngl
 
 	void actor_gateway::update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& apro)
 	{	
-		send_actor(actor_gatewayc2g::actorid(id()), apro);
-		send_actor(actor_gatewayg2c::actorid(id()), apro);
+		send_actor(actor_gateway_c2g::actorid(id()), apro);
+		send_actor(actor_gateway_g2c::actorid(id()), apro);
 	}
 
 	bool actor_gateway::handle(const message<np_gateway_close_session>& adata)

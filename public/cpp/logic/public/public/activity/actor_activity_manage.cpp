@@ -1,4 +1,4 @@
-#include "actor_manage_activity.h"
+#include "actor_activity_manage.h"
 #include "actor_keyvalue.h"
 #include "ttab_calendar.h"
 #include "actor_brief.h"
@@ -7,7 +7,7 @@
 
 namespace ngl
 {
-	actor_manage_activity::actor_manage_activity() :
+	actor_activity_manage::actor_activity_manage() :
 		actor(
 			actorparm
 			{
@@ -27,19 +27,19 @@ namespace ngl
 		nclient_keyvalue::init((ENUM_ACTOR)nguid::type(actor_keyvalue::actorid()), this, ldatakvid);
 	}
 
-	void actor_manage_activity::nregister()
+	void actor_activity_manage::nregister()
 	{
 		// 定时器
-		actor::register_timer<actor_manage_activity>(&actor_manage_activity::timer_handle);
+		actor::register_timer<actor_activity_manage>(&actor_activity_manage::timer_handle);
 		// 协议注册
-		register_handle_custom<actor_manage_activity>::func<
+		register_handle_custom<actor_activity_manage>::func<
 			np_actor_activity
 		>(false);
 	}
 
-	void actor_manage_activity::init()
+	void actor_activity_manage::init()
 	{
-		timerparm tparm;
+		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 5) == false)
 		{
 			log_error()->print("actor_manage_activity::init() make_timerparm::make_interval(tparm, 5) == false!!!");
@@ -66,7 +66,7 @@ namespace ngl
 		return twheel::wheel().addtimer(lparm);
 	}
 
-	void actor_manage_activity::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
+	void actor_activity_manage::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
 		if (auto itor = m_allactivity.find(aactivityid); itor != m_allactivity.end())
 		{
@@ -81,7 +81,7 @@ namespace ngl
 		add_activity(aactivityid, lactivity);
 	}
 
-	void actor_manage_activity::activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid)
+	void actor_activity_manage::activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
 		auto itor = m_allactivity.find(aactivityid);
 		if (itor == m_allactivity.end())
@@ -91,7 +91,7 @@ namespace ngl
 		itor->second->finish();
 	}
 	
-	bool actor_manage_activity::handle(const message<np_actor_activity>& adata)
+	bool actor_activity_manage::handle(const message<np_actor_activity>& adata)
 	{
 		const np_actor_activity& lrecv = *adata.get_data();
 		for (i64_actorid item : lrecv.m_activityids)
@@ -108,13 +108,13 @@ namespace ngl
 		return true;
 	}
 
-	void actor_manage_activity::loaddb_finish(bool adbishave) 
+	void actor_activity_manage::loaddb_finish(bool adbishave) 
 	{
 	}
 
-	bool actor_manage_activity::timer_handle(const message<timerparm>& adata)
+	bool actor_activity_manage::timer_handle(const message<np_timerparm>& adata)
 	{
-		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
+		if (adata.get_data()->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)
 		{
 			return false;
 		}

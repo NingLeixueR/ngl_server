@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[32]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[31]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -95,9 +95,6 @@ extern db_familyerDefaultTypeInternal _db_familyer_default_instance_;
 class db_friends;
 class db_friendsDefaultTypeInternal;
 extern db_friendsDefaultTypeInternal _db_friends_default_instance_;
-class db_guild;
-class db_guildDefaultTypeInternal;
-extern db_guildDefaultTypeInternal _db_guild_default_instance_;
 class db_keyvalue;
 class db_keyvalueDefaultTypeInternal;
 extern db_keyvalueDefaultTypeInternal _db_keyvalue_default_instance_;
@@ -169,7 +166,6 @@ template<> ::pbdb::db_calendar* Arena::CreateMaybeMessage<::pbdb::db_calendar>(A
 template<> ::pbdb::db_family* Arena::CreateMaybeMessage<::pbdb::db_family>(Arena*);
 template<> ::pbdb::db_familyer* Arena::CreateMaybeMessage<::pbdb::db_familyer>(Arena*);
 template<> ::pbdb::db_friends* Arena::CreateMaybeMessage<::pbdb::db_friends>(Arena*);
-template<> ::pbdb::db_guild* Arena::CreateMaybeMessage<::pbdb::db_guild>(Arena*);
 template<> ::pbdb::db_keyvalue* Arena::CreateMaybeMessage<::pbdb::db_keyvalue>(Arena*);
 template<> ::pbdb::db_mail* Arena::CreateMaybeMessage<::pbdb::db_mail>(Arena*);
 template<> ::pbdb::db_mail_MMailEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_mail_MMailEntry_DoNotUse>(Arena*);
@@ -251,17 +247,16 @@ enum ENUM_DB : int {
   ENUM_DB_BAG = 3,
   ENUM_DB_KEYVALUE = 4,
   ENUM_DB_MAIL = 5,
-  ENUM_DB_GUILD = 6,
-  ENUM_DB_NOTICE = 7,
-  ENUM_DB_RANKLIST = 8,
-  ENUM_DB_ACTIVITY = 9,
-  ENUM_DB_TASK = 10,
-  ENUM_DB_CALENDAR = 11,
-  ENUM_DB_ROLEKEYVALUE = 12,
-  ENUM_DB_FAMILY = 13,
-  ENUM_DB_FAMILYER = 14,
-  ENUM_DB_FRIENDS = 15,
-  ENUM_DB_COUNT = 16,
+  ENUM_DB_NOTICE = 6,
+  ENUM_DB_RANKLIST = 7,
+  ENUM_DB_ACTIVITY = 8,
+  ENUM_DB_TASK = 9,
+  ENUM_DB_CALENDAR = 10,
+  ENUM_DB_ROLEKEYVALUE = 11,
+  ENUM_DB_FAMILY = 12,
+  ENUM_DB_FAMILYER = 13,
+  ENUM_DB_FRIENDS = 14,
+  ENUM_DB_COUNT = 15,
   ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
@@ -2605,219 +2600,6 @@ class db_mail PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class db_guild PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_guild) */ {
- public:
-  inline db_guild() : db_guild(nullptr) {};
-  virtual ~db_guild();
-
-  db_guild(const db_guild& from);
-  db_guild(db_guild&& from) noexcept
-    : db_guild() {
-    *this = ::std::move(from);
-  }
-
-  inline db_guild& operator=(const db_guild& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline db_guild& operator=(db_guild&& from) noexcept {
-    if (GetArena() == from.GetArena()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const db_guild& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const db_guild* internal_default_instance() {
-    return reinterpret_cast<const db_guild*>(
-               &_db_guild_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    14;
-
-  friend void swap(db_guild& a, db_guild& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(db_guild* other) {
-    if (other == this) return;
-    if (GetArena() == other->GetArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(db_guild* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline db_guild* New() const final {
-    return CreateMaybeMessage<db_guild>(nullptr);
-  }
-
-  db_guild* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<db_guild>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const db_guild& from);
-  void MergeFrom(const db_guild& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(db_guild* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbdb.db_guild";
-  }
-  protected:
-  explicit db_guild(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kMMembersFieldNumber = 4,
-    kMGuildFieldNumber = 2,
-    kMIdFieldNumber = 1,
-    kMLeaderFieldNumber = 3,
-  };
-  // repeated int64 m_members = 4;
-  int m_members_size() const;
-  private:
-  int _internal_m_members_size() const;
-  public:
-  void clear_m_members();
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_members(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
-      _internal_m_members() const;
-  void _internal_add_m_members(::PROTOBUF_NAMESPACE_ID::int64 value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
-      _internal_mutable_m_members();
-  public:
-  ::PROTOBUF_NAMESPACE_ID::int64 m_members(int index) const;
-  void set_m_members(int index, ::PROTOBUF_NAMESPACE_ID::int64 value);
-  void add_m_members(::PROTOBUF_NAMESPACE_ID::int64 value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
-      m_members() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
-      mutable_m_members();
-
-  // string m_guild = 2;
-  bool has_m_guild() const;
-  private:
-  bool _internal_has_m_guild() const;
-  public:
-  void clear_m_guild();
-  const std::string& m_guild() const;
-  void set_m_guild(const std::string& value);
-  void set_m_guild(std::string&& value);
-  void set_m_guild(const char* value);
-  void set_m_guild(const char* value, size_t size);
-  std::string* mutable_m_guild();
-  std::string* release_m_guild();
-  void set_allocated_m_guild(std::string* m_guild);
-  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-  "    string fields are deprecated and will be removed in a"
-  "    future release.")
-  std::string* unsafe_arena_release_m_guild();
-  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
-  "    string fields are deprecated and will be removed in a"
-  "    future release.")
-  void unsafe_arena_set_allocated_m_guild(
-      std::string* m_guild);
-  private:
-  const std::string& _internal_m_guild() const;
-  void _internal_set_m_guild(const std::string& value);
-  std::string* _internal_mutable_m_guild();
-  public:
-
-  // int64 m_id = 1;
-  bool has_m_id() const;
-  private:
-  bool _internal_has_m_id() const;
-  public:
-  void clear_m_id();
-  ::PROTOBUF_NAMESPACE_ID::int64 m_id() const;
-  void set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_id() const;
-  void _internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
-  public:
-
-  // int64 m_leader = 3;
-  bool has_m_leader() const;
-  private:
-  bool _internal_has_m_leader() const;
-  public:
-  void clear_m_leader();
-  ::PROTOBUF_NAMESPACE_ID::int64 m_leader() const;
-  void set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_leader() const;
-  void _internal_set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:pbdb.db_guild)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 > m_members_;
-  mutable std::atomic<int> _m_members_cached_byte_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_guild_;
-  ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
-  ::PROTOBUF_NAMESPACE_ID::int64 m_leader_;
-  friend struct ::TableStruct_db_2eproto;
-};
-// -------------------------------------------------------------------
-
 class db_notice PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_notice) */ {
  public:
@@ -2860,7 +2642,7 @@ class db_notice PROTOBUF_FINAL :
                &_db_notice_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    14;
 
   friend void swap(db_notice& a, db_notice& b) {
     a.Swap(&b);
@@ -3063,7 +2845,7 @@ class rankitem PROTOBUF_FINAL :
                &_rankitem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    15;
 
   friend void swap(rankitem& a, rankitem& b) {
     a.Swap(&b);
@@ -3200,7 +2982,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[17];
+    return ::descriptor_table_db_2eproto.file_level_metadata[16];
   }
 
   public:
@@ -3250,7 +3032,7 @@ class db_ranklist PROTOBUF_FINAL :
                &_db_ranklist_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    17;
 
   friend void swap(db_ranklist& a, db_ranklist& b) {
     a.Swap(&b);
@@ -3397,7 +3179,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[19];
+    return ::descriptor_table_db_2eproto.file_level_metadata[18];
   }
 
   public:
@@ -3447,7 +3229,7 @@ class db_activity_drawcompliance PROTOBUF_FINAL :
                &_db_activity_drawcompliance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    19;
 
   friend void swap(db_activity_drawcompliance& a, db_activity_drawcompliance& b) {
     a.Swap(&b);
@@ -3594,7 +3376,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[21];
+    return ::descriptor_table_db_2eproto.file_level_metadata[20];
   }
 
   public:
@@ -3644,7 +3426,7 @@ class db_activity PROTOBUF_FINAL :
                &_db_activity_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    21;
 
   friend void swap(db_activity& a, db_activity& b) {
     a.Swap(&b);
@@ -3887,7 +3669,7 @@ class db_task_data_schedule PROTOBUF_FINAL :
                &_db_task_data_schedule_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    22;
 
   friend void swap(db_task_data_schedule& a, db_task_data_schedule& b) {
     a.Swap(&b);
@@ -4059,7 +3841,7 @@ class db_task_data PROTOBUF_FINAL :
                &_db_task_data_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    23;
 
   friend void swap(db_task_data& a, db_task_data& b) {
     a.Swap(&b);
@@ -4246,7 +4028,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[25];
+    return ::descriptor_table_db_2eproto.file_level_metadata[24];
   }
 
   public:
@@ -4276,7 +4058,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[26];
+    return ::descriptor_table_db_2eproto.file_level_metadata[25];
   }
 
   public:
@@ -4326,7 +4108,7 @@ class db_task PROTOBUF_FINAL :
                &_db_task_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    26;
 
   friend void swap(db_task& a, db_task& b) {
     a.Swap(&b);
@@ -4519,7 +4301,7 @@ class db_calendar PROTOBUF_FINAL :
                &_db_calendar_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    27;
 
   friend void swap(db_calendar& a, db_calendar& b) {
     a.Swap(&b);
@@ -4706,7 +4488,7 @@ class db_familyer PROTOBUF_FINAL :
                &_db_familyer_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    28;
 
   friend void swap(db_familyer& a, db_familyer& b) {
     a.Swap(&b);
@@ -4942,7 +4724,7 @@ class db_family PROTOBUF_FINAL :
                &_db_family_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    29;
 
   friend void swap(db_family& a, db_family& b) {
     a.Swap(&b);
@@ -5225,7 +5007,7 @@ class db_friends PROTOBUF_FINAL :
                &_db_friends_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    30;
 
   friend void swap(db_friends& a, db_friends& b) {
     a.Swap(&b);
@@ -7079,206 +6861,6 @@ db_mail::mutable_m_mail() {
 
 // -------------------------------------------------------------------
 
-// db_guild
-
-// int64 m_id = 1;
-inline bool db_guild::_internal_has_m_id() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool db_guild::has_m_id() const {
-  return _internal_has_m_id();
-}
-inline void db_guild::clear_m_id() {
-  m_id_ = PROTOBUF_LONGLONG(0);
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_guild::_internal_m_id() const {
-  return m_id_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_guild::m_id() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_guild.m_id)
-  return _internal_m_id();
-}
-inline void db_guild::_internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000002u;
-  m_id_ = value;
-}
-inline void db_guild::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _internal_set_m_id(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_guild.m_id)
-}
-
-// string m_guild = 2;
-inline bool db_guild::_internal_has_m_guild() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
-  return value;
-}
-inline bool db_guild::has_m_guild() const {
-  return _internal_has_m_guild();
-}
-inline void db_guild::clear_m_guild() {
-  m_guild_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline const std::string& db_guild::m_guild() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_guild.m_guild)
-  return _internal_m_guild();
-}
-inline void db_guild::set_m_guild(const std::string& value) {
-  _internal_set_m_guild(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_guild.m_guild)
-}
-inline std::string* db_guild::mutable_m_guild() {
-  // @@protoc_insertion_point(field_mutable:pbdb.db_guild.m_guild)
-  return _internal_mutable_m_guild();
-}
-inline const std::string& db_guild::_internal_m_guild() const {
-  return m_guild_.Get();
-}
-inline void db_guild::_internal_set_m_guild(const std::string& value) {
-  _has_bits_[0] |= 0x00000001u;
-  m_guild_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
-}
-inline void db_guild::set_m_guild(std::string&& value) {
-  _has_bits_[0] |= 0x00000001u;
-  m_guild_.Set(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:pbdb.db_guild.m_guild)
-}
-inline void db_guild::set_m_guild(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000001u;
-  m_guild_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-              GetArena());
-  // @@protoc_insertion_point(field_set_char:pbdb.db_guild.m_guild)
-}
-inline void db_guild::set_m_guild(const char* value,
-    size_t size) {
-  _has_bits_[0] |= 0x00000001u;
-  m_guild_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:pbdb.db_guild.m_guild)
-}
-inline std::string* db_guild::_internal_mutable_m_guild() {
-  _has_bits_[0] |= 0x00000001u;
-  return m_guild_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline std::string* db_guild::release_m_guild() {
-  // @@protoc_insertion_point(field_release:pbdb.db_guild.m_guild)
-  if (!_internal_has_m_guild()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000001u;
-  return m_guild_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void db_guild::set_allocated_m_guild(std::string* m_guild) {
-  if (m_guild != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  m_guild_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_guild,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:pbdb.db_guild.m_guild)
-}
-inline std::string* db_guild::unsafe_arena_release_m_guild() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:pbdb.db_guild.m_guild)
-  GOOGLE_DCHECK(GetArena() != nullptr);
-  _has_bits_[0] &= ~0x00000001u;
-  return m_guild_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      GetArena());
-}
-inline void db_guild::unsafe_arena_set_allocated_m_guild(
-    std::string* m_guild) {
-  GOOGLE_DCHECK(GetArena() != nullptr);
-  if (m_guild != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  m_guild_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      m_guild, GetArena());
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.db_guild.m_guild)
-}
-
-// int64 m_leader = 3;
-inline bool db_guild::_internal_has_m_leader() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
-  return value;
-}
-inline bool db_guild::has_m_leader() const {
-  return _internal_has_m_leader();
-}
-inline void db_guild::clear_m_leader() {
-  m_leader_ = PROTOBUF_LONGLONG(0);
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_guild::_internal_m_leader() const {
-  return m_leader_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_guild::m_leader() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_guild.m_leader)
-  return _internal_m_leader();
-}
-inline void db_guild::_internal_set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000004u;
-  m_leader_ = value;
-}
-inline void db_guild::set_m_leader(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _internal_set_m_leader(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_guild.m_leader)
-}
-
-// repeated int64 m_members = 4;
-inline int db_guild::_internal_m_members_size() const {
-  return m_members_.size();
-}
-inline int db_guild::m_members_size() const {
-  return _internal_m_members_size();
-}
-inline void db_guild::clear_m_members() {
-  m_members_.Clear();
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_guild::_internal_m_members(int index) const {
-  return m_members_.Get(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_guild::m_members(int index) const {
-  // @@protoc_insertion_point(field_get:pbdb.db_guild.m_members)
-  return _internal_m_members(index);
-}
-inline void db_guild::set_m_members(int index, ::PROTOBUF_NAMESPACE_ID::int64 value) {
-  m_members_.Set(index, value);
-  // @@protoc_insertion_point(field_set:pbdb.db_guild.m_members)
-}
-inline void db_guild::_internal_add_m_members(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  m_members_.Add(value);
-}
-inline void db_guild::add_m_members(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _internal_add_m_members(value);
-  // @@protoc_insertion_point(field_add:pbdb.db_guild.m_members)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
-db_guild::_internal_m_members() const {
-  return m_members_;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
-db_guild::m_members() const {
-  // @@protoc_insertion_point(field_list:pbdb.db_guild.m_members)
-  return _internal_m_members();
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
-db_guild::_internal_mutable_m_members() {
-  return &m_members_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
-db_guild::mutable_m_members() {
-  // @@protoc_insertion_point(field_mutable_list:pbdb.db_guild.m_members)
-  return _internal_mutable_m_members();
-}
-
-// -------------------------------------------------------------------
-
 // db_notice
 
 // int64 m_id = 1;
@@ -8904,8 +8486,6 @@ db_friends::mutable_m_applyfriends() {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

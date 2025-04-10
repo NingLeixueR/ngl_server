@@ -1,4 +1,4 @@
-#include "actor_manage_activity.h"
+#include "actor_activity_manage.h"
 #include "ttab_calendar.h"
 #include "activitydb.h"
 #include "activity.h"
@@ -12,7 +12,7 @@ namespace ngl
 		for (std::pair<const nguid, data_modified<pbdb::db_activity>>& item : data())
 		{
 			(*lstream) << std::format("activityid:{}", item.first) << std::endl;
-			actor_manage_activity* lactor = actor();
+			actor_activity_manage* lactor = actor();
 			const pbdb::db_activity& ldbactivity = item.second.getconst();
 			int32_t lactivityid = (int32_t)item.first.id();
 			std::shared_ptr<activity> lactivity = activity::make(ldbactivity.m_calendarid(), 

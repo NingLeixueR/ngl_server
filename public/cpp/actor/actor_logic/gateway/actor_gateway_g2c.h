@@ -12,22 +12,22 @@
 
 namespace ngl
 {
-	class actor_gatewayg2c : public actor
+	class actor_gateway_g2c : public actor
 	{
 		gateway_info m_info;
 
-		actor_gatewayg2c(const actor_gatewayg2c&) = delete;
-		actor_gatewayg2c& operator=(const actor_gatewayg2c&) = delete;
+		actor_gateway_g2c(const actor_gateway_g2c&) = delete;
+		actor_gateway_g2c& operator=(const actor_gateway_g2c&) = delete;
 
-		actor_gatewayg2c();
+		actor_gateway_g2c();
 	public:
-		friend class actor_instance<actor_gatewayg2c>;
-		static actor_gatewayg2c& getInstance()
+		friend class actor_instance<actor_gateway_g2c>;
+		static actor_gateway_g2c& getInstance()
 		{
-			return actor_instance<actor_gatewayg2c>::instance();
+			return actor_instance<actor_gateway_g2c>::instance();
 		}
 
-		virtual ~actor_gatewayg2c();
+		virtual ~actor_gateway_g2c();
 
 		static void nregister();
 

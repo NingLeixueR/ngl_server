@@ -1,10 +1,10 @@
 #include "actor_example_guess_number.h"
-#include "actor_manage_activity.h"
+#include "actor_activity_manage.h"
 #include "actor_example_manage.h"
 #include "actor_example_match.h"
 #include "actor_manage_role.h"
-#include "actor_gatewayc2g.h"
-#include "actor_gatewayg2c.h"
+#include "actor_gateway_c2g.h"
+#include "actor_gateway_g2c.h"
 #include "actor_csvserver.h"
 #include "actor_csvclient.h"
 #include "actor_ranklist.h"
@@ -38,6 +38,9 @@
 #include "ntimer.h"
 #include "net.pb.h"
 #include "actor.h"
+
+#include "auto_actor_enum.h"
+#include "nprotocol_auto.h"
 
 namespace ngl
 {
@@ -85,109 +88,18 @@ namespace ngl
 		}
 	}
 
-	template <typename TACTOR>
-	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
-	{
-		em<ENUM_ACTOR>::set(aenum, aname);
-		nactor_type<TACTOR>::inits(aenum);
-	}
-
-	template <typename TACTOR, typename ...ARG>
-	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg)
-	{
-		_auto_actor<TACTOR>(aactor, aenum, aname);
-		_auto_actor(arg...);
-	}
-
 	void auto_actor()
 	{
-#define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
-
-#define dautoactor(NAME, DEF) null<NAME>, em_pram(DEF)
-		// ### 新增actor需要补全
+		auto_actor_enum();
 		_auto_actor(
-			dautoactor(actor_client, ACTOR_CLIENT)
-			, dautoactor(actor_create, ACTOR_CREATE)
-			, dautoactor(actor_server, ACTOR_SERVER)
-			, dautoactor(actor_cross, ACTOR_CROSS)
-			, dautoactor(actor_manage_role, ACTOR_MANAGE_ROLE)
-			, dautoactor(actor_role, ACTOR_ROLE)
-			, dautoactor(actor_gateway, ACTOR_GATEWAY)
-			, dautoactor(actor_gatewayc2g, ACTOR_GATEWAY_C2G)
-			, dautoactor(actor_gatewayg2c, ACTOR_GATEWAY_G2C)
-			, dautoactor(actor_log, ACTOR_LOG)
-			, dautoactor(actor_login, ACTOR_LOGIN)
-			, dautoactor(actor_csvserver, ACTOR_CSVSERVER)
-			, dautoactor(actor_csvclient, ACTOR_CSVCLIENT)
-			, dautoactor(actor_robot, ACTOR_ROBOT)
-			, dautoactor(actor_manage_robot, ACTOR_MANAGE_ROBOT)
-			, dautoactor(actor_manage_activity, ACTOR_ACTIVITY_MANAGE)
-			, dautoactor(actor_brief, ACTOR_BRIEF)
-			, dautoactor(actor_chat, ACTOR_CHAT)
-			, dautoactor(actor_gm, ACTOR_GM)
-			, dautoactor(actor_gmclient, ACTOR_GMCLIENT)
-			, dautoactor(actor_mail, ACTOR_MAIL)
-			, dautoactor(actor_notice, ACTOR_NOTICE)
-			, dautoactor(actor_ranklist, ACTOR_RANKLIST)
-			, dautoactor(actor_kcp, ACTOR_KCP)
-			, dautoactor(actor_calendar, ACTOR_CALENDAR)
-			, dautoactor(actor_keyvalue, ACTOR_KEYVALUE)
-			, dautoactor(actor_family, ACTOR_FAMILY)
-			, dautoactor(actor_friends, ACTOR_FRIENDS)
-			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
-			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
-			, dautoactor(actor_example_guess_number, ACTOR_EXAMPLE_GUESS_NUMBER)
-			, em_events_null(actor_events_logic)
+			em_events_null(actor_events_logic)
 			, em_events_null(actor_events_map)
 		);
 	}
 
 	void tprotocol_customs()
 	{
-		tprotocol::set_customs_index(200000000);
-		// 新增内部协议需要补充
-		tprotocol::tp_customs::template func <
-			/*200000001*/np_gm
-			/*200000002*/, np_gm_response
-			/*200000003*/, mforward<np_gm>
-			/*200000004*/, mforward<np_gm_response>
-			/*200000005*/, timerparm
-			/*200000006*/, np_robot_pram
-			/*200000007*/, np_connect_actor_server
-			/*200000008*/, np_actor_server_register
-			/*200000009*/, np_actornode_register
-			/*200000010*/, np_actornode_register_response
-			/*200000011*/, np_actorclient_node_connect
-			/*200000012*/, np_actornode_update
-			/*200000013*/, np_actornode_update_server
-			/*200000014*/, np_actornode_update_mass
-			/*200000015*/, np_actornode_connect_task
-			/*200000016*/, np_actorrole_login
-			/*200000017*/, np_actorserver_connect
-			/*200000018*/, np_actor_session_close
-			/*200000019*/, np_actor_disconnect_close
-			/*200000020*/, np_logitem
-			/*200000021*/, np_actor_broadcast
-			/*200000022*/, np_actor_reloadcsv
-			/*200000023*/, np_actor_csv_verify_version
-			/*200000024*/, np_actor_senditem
-			/*200000025*/, np_actor_gatewayinfo_updata
-			/*200000026*/, np_actor_addmail
-			/*200000027*/, np_actor_activity
-			/*200000028*/, np_actor_gatewayid_updata
-			/*200000029*/, np_actorswitch_process<np_actorswitch_process_role>
-			/*200000030*/, np_actor_kcp
-			/*200000031*/, np_calendar
-			/*200000032*/, np_actor_close
-			/*200000033*/, np_channel_check
-			/*200000034*/, np_roleban
-			/*200000035*/, np_gateway_close_session
-			/*200000036*/, np_login_request_info
-			/*200000037*/, np_create_example
-			/*200000038*/, np_example_entergame_ready
-			/*200000039*/, np_example_actorid
-			/*200000040*/, np_example_equit
-		> (EPROTOCOL_TYPE_CUSTOM);
+		tprotocol_customs_200000000();
 
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs::template func <
@@ -201,7 +113,13 @@ namespace ngl
 			/*210000008*/, np_channel_exit<pbdb::db_keyvalue>
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
-
+		tprotocol::set_customs_index(220000000);
+		tprotocol::tp_customs::template func <
+			/*220000001*/mforward<np_gm>
+			/*220000002*/, mforward<np_gm_response>
+			/*220000003*/, np_actorswitch_process<np_actorswitch_process_role>
+		>(EPROTOCOL_TYPE_CUSTOM);
+		
 		tprotocol::set_customs_index(220000000);
 		tprotocol::tp_customs::template func <
 			// ### 事件相关协议 start ### //
@@ -256,7 +174,6 @@ namespace ngl
 		tdb_family::init(ainstance);
 		tdb_notice::init(ainstance);
 		tdb_rolekv::init(ainstance);
-		tdb_guild::init(ainstance);
 		tdb_brief::init(ainstance);
 		tdb_mail::init(ainstance);
 		tdb_task::init(ainstance);

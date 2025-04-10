@@ -503,7 +503,7 @@ namespace ngl
 		
 #pragma region broadcast
 		//# 设置定时任务参数
-		int32_t		set_timer(const timerparm& aparm);
+		int32_t		set_timer(const np_timerparm& aparm);
 
 		//# 是否支持广播
 		bool		isbroadcast();

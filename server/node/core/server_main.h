@@ -328,7 +328,7 @@ bool start_world()
 	ngl::actor_brief::getInstance();
 	ngl::actor_notice::getInstance();
 	ngl::actor_keyvalue::getInstance();
-	ngl::actor_manage_activity::getInstance();
+	ngl::actor_activity_manage::getInstance();
 	ngl::actor_family::getInstance();
 	ngl::actor_ranklist::getInstance();
 	ngl::actor_friends::getInstance();
@@ -372,8 +372,8 @@ bool start_gateway()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::actor_gateway::getInstance();
-	ngl::actor_gatewayg2c::getInstance();
-	ngl::actor_gatewayc2g::getInstance();
+	ngl::actor_gateway_g2c::getInstance();
+	ngl::actor_gateway_c2g::getInstance();
 	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();

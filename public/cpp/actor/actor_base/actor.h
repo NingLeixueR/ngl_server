@@ -62,9 +62,9 @@ namespace ngl
 
 		// # ×¢²á¶¨Ê±Æ÷
 		template <typename TDerived>
-		static void register_timer(Tfun<TDerived, timerparm> afun = &TDerived::timer_handle)
+		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, timerparm>(afun, false);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, np_timerparm>(afun, false);
 		}
 
 #pragma region register_db

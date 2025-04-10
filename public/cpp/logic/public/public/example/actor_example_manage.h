@@ -36,10 +36,11 @@ namespace ngl
 
 		struct playinfo
 		{
+			i64_actorid m_actorexampleid = nguid::make();
+			pbexample::EPLAY_TYPE m_type = pbexample::EPLAY_NULL;
+			int32_t m_createexample = 0;
 			std::map<i64_actorid, bool> m_role_enter_example; // 玩家是否进入例子游戏
 			std::set<i64_actorid> m_roles;
-			i64_actorid m_actorexampleid = nguid::make();
-			int32_t m_createexample = 0;
 		};
 		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_info;
 		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_finishinfo;
@@ -100,7 +101,7 @@ namespace ngl
 		// # 例子游戏销毁退出
 		bool handle(const message<np_example_equit>& adata);
 		
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<np_timerparm>& adata);
 	};
 
 }//namespace ngl

@@ -11,21 +11,21 @@
 
 namespace ngl
 {
-	class actor_gatewayc2g : public actor
+	class actor_gateway_c2g : public actor
 	{
-		actor_gatewayc2g(const actor_gatewayc2g&) = delete;
-		actor_gatewayc2g& operator=(const actor_gatewayc2g&) = delete;
+		actor_gateway_c2g(const actor_gateway_c2g&) = delete;
+		actor_gateway_c2g& operator=(const actor_gateway_c2g&) = delete;
 
 		gateway_info m_info;
-		actor_gatewayc2g();
+		actor_gateway_c2g();
 	public:
-		friend class actor_instance<actor_gatewayc2g>;
-		static actor_gatewayc2g& getInstance()
+		friend class actor_instance<actor_gateway_c2g>;
+		static actor_gateway_c2g& getInstance()
 		{
-			return actor_instance<actor_gatewayc2g>::instance();
+			return actor_instance<actor_gateway_c2g>::instance();
 		}
 
-		virtual ~actor_gatewayc2g();
+		virtual ~actor_gateway_c2g();
 
 		static void nregister();
 

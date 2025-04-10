@@ -1,16 +1,16 @@
-﻿#include "actor_gatewayg2c.h"
+﻿#include "actor_gateway_c2g.h"
 #include "nregister.h"
 #include "nforward.h"
 
 namespace ngl
 {
-	actor_gatewayg2c::actor_gatewayg2c() :
+	actor_gateway_c2g::actor_gateway_c2g() :
 		actor(
 			actorparm
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_GATEWAY_G2C,
+					.m_type = ACTOR_GATEWAY_C2G,
 					.m_area = tab_self_area,
 					.m_id = nconfig::m_nodeid,
 					.m_manage_dbclient = false
@@ -20,18 +20,18 @@ namespace ngl
 	{
 	}
 
-	actor_gatewayg2c::~actor_gatewayg2c() {}
+	actor_gateway_c2g::~actor_gateway_c2g() {}
 
-	void actor_gatewayg2c::nregister()
+	void actor_gateway_c2g::nregister()
 	{
-		register_handle_custom<actor_gatewayg2c>::func<
+		register_handle_custom<actor_gateway_c2g>::func<
 			np_actor_gatewayinfo_updata
 		>(false);
-		// Game 2 Client
-		nforward::g2c();
+		// Client 2 Game
+		nforward::c2g();
 	}
 
-	bool actor_gatewayg2c::handle(const message<np_actor_gatewayinfo_updata>& adata)
+	bool actor_gateway_c2g::handle(const message<np_actor_gatewayinfo_updata>& adata)
 	{
 		m_info.gatewayinfo_updata(*adata.get_data());
 		return true;

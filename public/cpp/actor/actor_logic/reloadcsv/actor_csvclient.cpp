@@ -20,7 +20,7 @@ namespace ngl
 
 	void actor_csvclient::init()
 	{
-		timerparm tparm;
+		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 5*60) == false)
 		{
 			log_error()->print("actor_csvclient::init() make_timerparm::make_interval(tparm, 60) == false!!!");
@@ -56,7 +56,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_csvclient::timer_handle(const message<timerparm>&)
+	bool actor_csvclient::timer_handle(const message<np_timerparm>&)
 	{
 		log_error()->print("############actor_csvclient::timer_handle###########");
 		auto pro = std::make_shared<np_actor_csv_verify_version>();

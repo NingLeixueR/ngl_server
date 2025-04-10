@@ -215,9 +215,9 @@ namespace ngl
 			return m_kcpsession;
 		}
 
-		inline int32_t set_timer(const timerparm& aparm)
+		inline int32_t set_timer(const np_timerparm& aparm)
 		{
-			auto lparm = std::make_shared<timerparm>(aparm);
+			auto lparm = std::make_shared<np_timerparm>(aparm);
 			return ntimer::addtimer(m_actor, lparm);
 		}
 
@@ -365,7 +365,7 @@ namespace ngl
 		impl_actor_base::start_broadcast();
 	}
 
-	int32_t actor_base::set_timer(const timerparm& aparm)
+	int32_t actor_base::set_timer(const np_timerparm& aparm)
 	{
 		return m_impl_actor_base()->set_timer(aparm);
 	}

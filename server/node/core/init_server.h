@@ -1,11 +1,11 @@
 #pragma once
 
-#include "actor_manage_activity.h"
+#include "actor_activity_manage.h"
 #include "actor_example_manage.h"
 #include "actor_example_match.h"
 #include "actor_manage_role.h"
-#include "actor_gatewayg2c.h"
-#include "actor_gatewayc2g.h"
+#include "actor_gateway_g2c.h"
+#include "actor_gateway_c2g.h"
 #include "actor_csvserver.h"
 #include "actor_csvclient.h"
 #include "actor_gmclient.h"

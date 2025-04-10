@@ -18,10 +18,8 @@ namespace ngl
 		//#######################  非单例  #####################
 		ACTOR_ROLE = 1,
 		ACTOR_ROBOT,												// 机器人
-		ACTOR_GUILD,												// 工会
 		ACTOR_MANAGE_ROLE,											// 负责创建actor_role
 
-		ACTOR_PLAYS_END,
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
 		ACTOR_SERVER = ACTOR_SIGNLE_START,						// 单例 actor address server  管理分发地址的中心
@@ -34,7 +32,6 @@ namespace ngl
 		ACTOR_LOG,
 		ACTOR_KCP,
 		ACTOR_MANAGE_ROBOT,
-		ACTOR_MANAGE_GUILD,										// 工会管理器
 		ACTOR_CSVCLIENT,										// 热更csv client
 		ACTOR_CSVSERVER,										// 热更csv server
 		ACTOR_NOTICE,											// 公告
@@ -47,7 +44,6 @@ namespace ngl
 		ACTOR_BRIEF,											// brief简要信息
 		ACTOR_CROSS,											// 跨服
 		ACTOR_CALENDAR,											// 脚本日历
-		ACTOR_CHANNEL,											// 订阅/发布 
 		ACTOR_KEYVALUE,											// 公共key/value
 		ACTOR_FAMILY,											// 军团家族
 		ACTOR_FRIENDS,											// 好友

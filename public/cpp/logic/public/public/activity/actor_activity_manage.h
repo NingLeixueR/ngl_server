@@ -20,28 +20,28 @@
 
 namespace ngl
 {
-	class actor_manage_activity : public actor
+	class actor_activity_manage : public actor
 	{
-		actor_manage_activity(const actor_manage_activity&) = delete;
-		actor_manage_activity& operator=(const actor_manage_activity&) = delete;
+		actor_activity_manage(const actor_activity_manage&) = delete;
+		actor_activity_manage& operator=(const actor_activity_manage&) = delete;
 
-		actor_manage_activity();
+		actor_activity_manage();
 
 		activitydb m_db;
 		std::map<int64_t, std::shared_ptr<activity>> m_allactivity;
 
-		using nclient_brief		= tdb_brief::nsp_cli<actor_manage_activity>;
-		using nclient_keyvalue	= tdb_keyvalue::nsp_cli<actor_manage_activity>;
+		using nclient_brief		= tdb_brief::nsp_cli<actor_activity_manage>;
+		using nclient_keyvalue	= tdb_keyvalue::nsp_cli<actor_activity_manage>;
 	public:
-		friend class actor_instance<actor_manage_activity>;
-		static actor_manage_activity& getInstance()
+		friend class actor_instance<actor_activity_manage>;
+		static actor_activity_manage& getInstance()
 		{
-			return actor_instance<actor_manage_activity>::instance();
+			return actor_instance<actor_activity_manage>::instance();
 		}
 
 		static void nregister();
 
-		virtual ~actor_manage_activity() {}
+		virtual ~actor_activity_manage() {}
 
 		virtual void loaddb_finish(bool adbishave);
 
@@ -75,7 +75,7 @@ namespace ngl
 
 		virtual void init();
 
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<np_timerparm>& adata);
 	private:
 	};
 }//namespace ngl

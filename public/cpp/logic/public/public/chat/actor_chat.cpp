@@ -32,7 +32,7 @@ namespace ngl
 
 	void actor_chat::init()
 	{
-		timerparm tparm;
+		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
 			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
@@ -41,9 +41,9 @@ namespace ngl
 		set_timer(tparm);			
 	}
 	
-	bool actor_chat::timer_handle(const message<timerparm>& adata)
+	bool actor_chat::timer_handle(const message<np_timerparm>& adata)
 	{
-		if (adata.get_data()->m_type != timerparm::ET_INTERVAL_SEC)
+		if (adata.get_data()->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)
 		{
 			return true;
 		}

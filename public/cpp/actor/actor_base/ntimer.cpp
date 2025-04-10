@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	int ntimer::addtimer(actor_base* actor, std::shared_ptr<timerparm>& aparm)
+	int ntimer::addtimer(actor_base* actor, std::shared_ptr<np_timerparm>& aparm)
 	{
 		i64_actorid lidguid = actor->id_guid();
 		wheel_parm lparm
@@ -19,7 +19,7 @@ namespace ngl
 					return;
 				}
 				aparm->m_triggerms = anode->m_parm.m_timerstart + anode->m_parm.m_ms;
-				actor::static_send_actor<timerparm, false>(lidguid, nguid::make(), aparm);
+				actor::static_send_actor<np_timerparm, false>(lidguid, nguid::make(), aparm);
 			}
 		};
 		aparm->m_timerid = (int)twheel::wheel().addtimer(lparm);

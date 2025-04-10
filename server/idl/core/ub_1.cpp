@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-09 14:51:50
+// 创建时间 25-04-09 21:36:03
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -91,14 +91,14 @@
 #include "aoi.cpp"
 #include "db.cpp"
 #include "actor_example_guess_number.cpp"
-#include "actor_manage_activity.cpp"
+#include "actor_activity_manage.cpp"
 #include "actor_example_manage.cpp"
 #include "actor_example_match.cpp"
 #include "actor_role_handle.cpp"
 #include "actor_manage_role.cpp"
+#include "actor_gateway_g2c.cpp"
+#include "actor_gateway_c2g.cpp"
 #include "actor_base_create.cpp"
-#include "actor_gatewayg2c.cpp"
-#include "actor_gatewayc2g.cpp"
 #include "actor_csvserver.cpp"
 #include "actor_csvclient.cpp"
 #include "actor_role_cmd.cpp"

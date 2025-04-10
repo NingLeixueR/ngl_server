@@ -1,7 +1,7 @@
 #pragma once
 
-#include "actor_gatewayc2g.h"
-#include "actor_gatewayg2c.h"
+#include "actor_gateway_c2g.h"
+#include "actor_gateway_g2c.h"
 #include "actor_gateway.h"
 #include "template_arg.h"
 #include "actor_robot.h"
@@ -25,7 +25,7 @@ namespace ngl
 			break;
 			case ngl::GATEWAY:
 			{
-				actor_gatewayc2g::register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
+				actor_gateway_c2g::register_forward_handle<TYPE, false, actor_gateway_c2g>:: template func<ARG...>();
 			}
 			break;
 			default:
@@ -48,7 +48,7 @@ namespace ngl
 			break;
 			case ngl::GATEWAY:
 			{
-				actor_gatewayc2g::register_forward_handle<TYPE, false, actor_gatewayc2g>:: template func<ARG...>();
+				actor_gateway_c2g::register_forward_handle<TYPE, false, actor_gateway_c2g>:: template func<ARG...>();
 			}
 			break;
 			default:
@@ -68,7 +68,7 @@ namespace ngl
 			break;
 			case ngl::GATEWAY:
 			{
-				actor_gatewayg2c::register_forward_handle<TYPE, true, actor_gatewayg2c>:: template func<ARG...>();
+				actor_gateway_g2c::register_forward_handle<TYPE, true, actor_gateway_g2c>:: template func<ARG...>();
 			}
 			break;
 			default:

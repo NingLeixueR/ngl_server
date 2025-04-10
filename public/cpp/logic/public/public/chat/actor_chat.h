@@ -55,6 +55,6 @@ namespace ngl
 
 		virtual void init();
 
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<np_timerparm>& adata);
 	};
 }//namespace ngl

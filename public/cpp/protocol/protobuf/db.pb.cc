@@ -88,10 +88,6 @@ class db_mailDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_mail> _instance;
 } _db_mail_default_instance_;
-class db_guildDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_guild> _instance;
-} _db_guild_default_instance_;
 class db_noticeDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_notice> _instance;
@@ -330,20 +326,6 @@ static void InitDefaultsscc_info_db_friends_db_2eproto() {
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_friends_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_friends_db_2eproto}, {}};
-
-static void InitDefaultsscc_info_db_guild_db_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::pbdb::_db_guild_default_instance_;
-    new (ptr) ::pbdb::db_guild();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::pbdb::db_guild::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_guild_db_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_guild_db_2eproto}, {}};
 
 static void InitDefaultsscc_info_db_keyvalue_db_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -619,7 +601,7 @@ static void InitDefaultsscc_info_rankitem_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_rankitem_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_rankitem_db_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[32];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[31];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_db_2eproto[4];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_db_2eproto = nullptr;
 
@@ -789,19 +771,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_db_2eproto::offsets[] PROTOBUF
   PROTOBUF_FIELD_OFFSET(::pbdb::db_mail, m_id_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_mail, m_mail_),
   0,
-  ~0u,
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_guild, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_guild, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_guild, m_id_),
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_guild, m_guild_),
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_guild, m_leader_),
-  PROTOBUF_FIELD_OFFSET(::pbdb::db_guild, m_members_),
-  1,
-  0,
-  2,
   ~0u,
   PROTOBUF_FIELD_OFFSET(::pbdb::db_notice, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbdb::db_notice, _internal_metadata_),
@@ -1020,24 +989,23 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 127, 140, sizeof(::pbdb::mail)},
   { 148, 155, sizeof(::pbdb::db_mail_MMailEntry_DoNotUse)},
   { 157, 164, sizeof(::pbdb::db_mail)},
-  { 166, 175, sizeof(::pbdb::db_guild)},
-  { 179, 188, sizeof(::pbdb::db_notice)},
-  { 192, 199, sizeof(::pbdb::rankitem)},
-  { 201, 208, sizeof(::pbdb::db_ranklist_MItemsEntry_DoNotUse)},
-  { 210, 217, sizeof(::pbdb::db_ranklist)},
-  { 219, 226, sizeof(::pbdb::db_activity_drawcompliance_MRewardEntry_DoNotUse)},
-  { 228, 235, sizeof(::pbdb::db_activity_drawcompliance)},
-  { 237, 244, sizeof(::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse)},
-  { 246, 258, sizeof(::pbdb::db_activity)},
-  { 265, 273, sizeof(::pbdb::db_task_data_schedule)},
-  { 276, 286, sizeof(::pbdb::db_task_data)},
-  { 291, 298, sizeof(::pbdb::db_task_MRundatasEntry_DoNotUse)},
-  { 300, 307, sizeof(::pbdb::db_task_MCompleteddatasEntry_DoNotUse)},
-  { 309, 317, sizeof(::pbdb::db_task)},
-  { 320, 329, sizeof(::pbdb::db_calendar)},
-  { 333, 343, sizeof(::pbdb::db_familyer)},
-  { 348, 361, sizeof(::pbdb::db_family)},
-  { 369, 377, sizeof(::pbdb::db_friends)},
+  { 166, 175, sizeof(::pbdb::db_notice)},
+  { 179, 186, sizeof(::pbdb::rankitem)},
+  { 188, 195, sizeof(::pbdb::db_ranklist_MItemsEntry_DoNotUse)},
+  { 197, 204, sizeof(::pbdb::db_ranklist)},
+  { 206, 213, sizeof(::pbdb::db_activity_drawcompliance_MRewardEntry_DoNotUse)},
+  { 215, 222, sizeof(::pbdb::db_activity_drawcompliance)},
+  { 224, 231, sizeof(::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse)},
+  { 233, 245, sizeof(::pbdb::db_activity)},
+  { 252, 260, sizeof(::pbdb::db_task_data_schedule)},
+  { 263, 273, sizeof(::pbdb::db_task_data)},
+  { 278, 285, sizeof(::pbdb::db_task_MRundatasEntry_DoNotUse)},
+  { 287, 294, sizeof(::pbdb::db_task_MCompleteddatasEntry_DoNotUse)},
+  { 296, 304, sizeof(::pbdb::db_task)},
+  { 307, 316, sizeof(::pbdb::db_calendar)},
+  { 320, 330, sizeof(::pbdb::db_familyer)},
+  { 335, 348, sizeof(::pbdb::db_family)},
+  { 356, 364, sizeof(::pbdb::db_friends)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1055,7 +1023,6 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_mail_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_mail_MMailEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_mail_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_guild_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_notice_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_rankitem_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_ranklist_MItemsEntry_DoNotUse_default_instance_),
@@ -1121,83 +1088,80 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "w\"\211\001\n\007db_mail\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022(\n\006m_ma"
   "il\030\002 \003(\0132\030.pbdb.db_mail.MMailEntry\0328\n\nMM"
   "ailEntry\022\013\n\003key\030\001 \001(\005\022\031\n\005value\030\002 \001(\0132\n.p"
-  "bdb.mail:\0028\001B\007\n\005_m_id\"\177\n\010db_guild\022\021\n\004m_i"
-  "d\030\001 \001(\003H\000\210\001\001\022\024\n\007m_guild\030\002 \001(\tH\001\210\001\001\022\025\n\010m_"
-  "leader\030\003 \001(\003H\002\210\001\001\022\021\n\tm_members\030\004 \003(\003B\007\n\005"
-  "_m_idB\n\n\010_m_guildB\013\n\t_m_leader\"\241\001\n\tdb_no"
-  "tice\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\025\n\010m_notice\030\002 \001("
-  "\tH\001\210\001\001\022\030\n\013m_starttime\030\003 \001(\005H\002\210\001\001\022\031\n\014m_fi"
-  "nishtime\030\004 \001(\005H\003\210\001\001B\007\n\005_m_idB\013\n\t_m_notic"
-  "eB\016\n\014_m_starttimeB\017\n\r_m_finishtime\"L\n\010ra"
-  "nkitem\022\024\n\007m_value\030\001 \001(\003H\000\210\001\001\022\023\n\006m_time\030\002"
-  " \001(\005H\001\210\001\001B\n\n\010_m_valueB\t\n\007_m_time\"\230\001\n\013db_"
-  "ranklist\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022.\n\007m_items\030\002"
-  " \003(\0132\035.pbdb.db_ranklist.MItemsEntry\032=\n\013M"
-  "ItemsEntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\0132\016"
-  ".pbdb.rankitem:\0028\001B\007\n\005_m_id\"\231\004\n\013db_activ"
-  "ity\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\022\n\005m_beg\030\002 \001(\005H\001\210"
-  "\001\001\022\022\n\005m_end\030\003 \001(\005H\002\210\001\001\022\024\n\007m_start\030\004 \001(\010H"
-  "\003\210\001\001\022\025\n\010m_finish\030\005 \001(\010H\004\210\001\001\022\031\n\014m_calenda"
-  "rid\030\006 \001(\005H\005\210\001\001\022@\n\020m_drawcompliance\030\007 \003(\013"
-  "2&.pbdb.db_activity.MDrawcomplianceEntry"
-  "\032\243\001\n\016drawcompliance\022\024\n\007m_count\030\001 \001(\005H\000\210\001"
-  "\001\022\?\n\010m_reward\030\002 \003(\0132-.pbdb.db_activity.d"
-  "rawcompliance.MRewardEntry\032.\n\014MRewardEnt"
-  "ry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\010:\0028\001B\n\n\010_m"
-  "_count\032X\n\024MDrawcomplianceEntry\022\013\n\003key\030\001 "
-  "\001(\003\022/\n\005value\030\002 \001(\0132 .pbdb.db_activity.dr"
-  "awcompliance:\0028\001B\007\n\005_m_idB\010\n\006_m_begB\010\n\006_"
-  "m_endB\n\n\010_m_startB\013\n\t_m_finishB\017\n\r_m_cal"
-  "endarid\"\367\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220"
-  "\n\nm_rundatas\030\002 \003(\0132\034.pbdb.db_task.MRunda"
-  "tasEntry\022<\n\020m_completeddatas\030\003 \003(\0132\".pbd"
-  "b.db_task.MCompleteddatasEntry\032u\n\rdata_s"
-  "chedule\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030"
-  "\002 \001(\005H\001\210\001\001\022\025\n\010m_sumint\030\003 \001(\005H\002\210\001\001B\t\n\007_m_"
-  "typeB\n\n\010_m_valueB\013\n\t_m_sumint\032\326\001\n\004data\022\025"
-  "\n\010m_taskid\030\001 \001(\005H\000\210\001\001\022\031\n\014m_receiveutc\030\002 "
-  "\001(\005H\001\210\001\001\022\027\n\nm_finshutc\030\003 \001(\005H\002\210\001\001\0220\n\013m_s"
-  "chedules\030\004 \003(\0132\033.pbdb.db_task.data_sched"
-  "ule\022\026\n\tm_receive\030\005 \001(\010H\003\210\001\001B\013\n\t_m_taskid"
-  "B\017\n\r_m_receiveutcB\r\n\013_m_finshutcB\014\n\n_m_r"
-  "eceive\032D\n\016MRundatasEntry\022\013\n\003key\030\001 \001(\005\022!\n"
-  "\005value\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001\032J\n\024"
-  "MCompleteddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005val"
-  "ue\030\002 \001(\0132\022.pbdb.db_task.data:\0028\001B\007\n\005_m_i"
-  "d\"\217\001\n\013db_calendar\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\023\n\006"
-  "m_time\030\002 \001(\003H\001\210\001\001\022\024\n\007m_start\030\003 \001(\010H\002\210\001\001\022"
-  "\025\n\010m_finish\030\004 \001(\010H\003\210\001\001B\007\n\005_m_idB\t\n\007_m_ti"
-  "meB\n\n\010_m_startB\013\n\t_m_finish\"\263\002\n\013db_famil"
-  "yer\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\026\n\tm_joinutc\030\002 \001("
-  "\005H\001\210\001\001\022\032\n\rm_lastsignutc\030\003 \001(\005H\002\210\001\001\022\033\n\016m_"
-  "lastleaveutc\030\004 \001(\005H\003\210\001\001\0224\n\nm_position\030\005 "
-  "\001(\0162\033.pbdb.db_familyer.epositionH\004\210\001\001\"\?\n"
-  "\teposition\022\010\n\004none\020\000\022\n\n\006leader\020\001\022\016\n\ncoun"
-  "sellor\020\002\022\014\n\010ordinary\020\003B\007\n\005_m_idB\014\n\n_m_jo"
-  "inutcB\020\n\016_m_lastsignutcB\021\n\017_m_lastleaveu"
-  "tcB\r\n\013_m_position\"\366\001\n\tdb_family\022\021\n\004m_id\030"
-  "\001 \001(\003H\000\210\001\001\022\030\n\013m_createutc\030\002 \001(\005H\001\210\001\001\022\023\n\006"
-  "m_name\030\003 \001(\tH\002\210\001\001\022\025\n\010m_leader\030\004 \001(\003H\003\210\001\001"
-  "\022\021\n\004m_lv\030\005 \001(\005H\004\210\001\001\022\022\n\005m_exp\030\006 \001(\005H\005\210\001\001\022"
-  "\020\n\010m_member\030\007 \003(\003\022\023\n\013m_applylist\030\010 \003(\003B\007"
-  "\n\005_m_idB\016\n\014_m_createutcB\t\n\007_m_nameB\013\n\t_m"
-  "_leaderB\007\n\005_m_lvB\010\n\006_m_exp\"S\n\ndb_friends"
-  "\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\021\n\tm_friends\030\002 \003(\003\022\026"
-  "\n\016m_applyfriends\030\003 \003(\003B\007\n\005_m_id*\343\002\n\007ENUM"
-  "_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014ENUM_DB_ROLE"
-  "\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENUM_DB_BAG\020\003\022\024"
-  "\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM_DB_MAIL\020\005\022\021"
-  "\n\rENUM_DB_GUILD\020\006\022\022\n\016ENUM_DB_NOTICE\020\007\022\024\n"
-  "\020ENUM_DB_RANKLIST\020\010\022\024\n\020ENUM_DB_ACTIVITY\020"
-  "\t\022\020\n\014ENUM_DB_TASK\020\n\022\024\n\020ENUM_DB_CALENDAR\020"
-  "\013\022\030\n\024ENUM_DB_ROLEKEYVALUE\020\014\022\022\n\016ENUM_DB_F"
-  "AMILY\020\r\022\024\n\020ENUM_DB_FAMILYER\020\016\022\023\n\017ENUM_DB"
-  "_FRIENDS\020\017\022\021\n\rENUM_DB_COUNT\020\020*\036\n\terankli"
-  "st\022\006\n\002lv\020\000\022\t\n\005count\020\001b\006proto3"
+  "bdb.mail:\0028\001B\007\n\005_m_id\"\241\001\n\tdb_notice\022\021\n\004m"
+  "_id\030\001 \001(\003H\000\210\001\001\022\025\n\010m_notice\030\002 \001(\tH\001\210\001\001\022\030\n"
+  "\013m_starttime\030\003 \001(\005H\002\210\001\001\022\031\n\014m_finishtime\030"
+  "\004 \001(\005H\003\210\001\001B\007\n\005_m_idB\013\n\t_m_noticeB\016\n\014_m_s"
+  "tarttimeB\017\n\r_m_finishtime\"L\n\010rankitem\022\024\n"
+  "\007m_value\030\001 \001(\003H\000\210\001\001\022\023\n\006m_time\030\002 \001(\005H\001\210\001\001"
+  "B\n\n\010_m_valueB\t\n\007_m_time\"\230\001\n\013db_ranklist\022"
+  "\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022.\n\007m_items\030\002 \003(\0132\035.pb"
+  "db.db_ranklist.MItemsEntry\032=\n\013MItemsEntr"
+  "y\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\0132\016.pbdb.ran"
+  "kitem:\0028\001B\007\n\005_m_id\"\231\004\n\013db_activity\022\021\n\004m_"
+  "id\030\001 \001(\003H\000\210\001\001\022\022\n\005m_beg\030\002 \001(\005H\001\210\001\001\022\022\n\005m_e"
+  "nd\030\003 \001(\005H\002\210\001\001\022\024\n\007m_start\030\004 \001(\010H\003\210\001\001\022\025\n\010m"
+  "_finish\030\005 \001(\010H\004\210\001\001\022\031\n\014m_calendarid\030\006 \001(\005"
+  "H\005\210\001\001\022@\n\020m_drawcompliance\030\007 \003(\0132&.pbdb.d"
+  "b_activity.MDrawcomplianceEntry\032\243\001\n\016draw"
+  "compliance\022\024\n\007m_count\030\001 \001(\005H\000\210\001\001\022\?\n\010m_re"
+  "ward\030\002 \003(\0132-.pbdb.db_activity.drawcompli"
+  "ance.MRewardEntry\032.\n\014MRewardEntry\022\013\n\003key"
+  "\030\001 \001(\005\022\r\n\005value\030\002 \001(\010:\0028\001B\n\n\010_m_count\032X\n"
+  "\024MDrawcomplianceEntry\022\013\n\003key\030\001 \001(\003\022/\n\005va"
+  "lue\030\002 \001(\0132 .pbdb.db_activity.drawcomplia"
+  "nce:\0028\001B\007\n\005_m_idB\010\n\006_m_begB\010\n\006_m_endB\n\n\010"
+  "_m_startB\013\n\t_m_finishB\017\n\r_m_calendarid\"\367"
+  "\004\n\007db_task\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220\n\nm_runda"
+  "tas\030\002 \003(\0132\034.pbdb.db_task.MRundatasEntry\022"
+  "<\n\020m_completeddatas\030\003 \003(\0132\".pbdb.db_task"
+  ".MCompleteddatasEntry\032u\n\rdata_schedule\022\023"
+  "\n\006m_type\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\005H\001\210\001"
+  "\001\022\025\n\010m_sumint\030\003 \001(\005H\002\210\001\001B\t\n\007_m_typeB\n\n\010_"
+  "m_valueB\013\n\t_m_sumint\032\326\001\n\004data\022\025\n\010m_taski"
+  "d\030\001 \001(\005H\000\210\001\001\022\031\n\014m_receiveutc\030\002 \001(\005H\001\210\001\001\022"
+  "\027\n\nm_finshutc\030\003 \001(\005H\002\210\001\001\0220\n\013m_schedules\030"
+  "\004 \003(\0132\033.pbdb.db_task.data_schedule\022\026\n\tm_"
+  "receive\030\005 \001(\010H\003\210\001\001B\013\n\t_m_taskidB\017\n\r_m_re"
+  "ceiveutcB\r\n\013_m_finshutcB\014\n\n_m_receive\032D\n"
+  "\016MRundatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002 "
+  "\001(\0132\022.pbdb.db_task.data:\0028\001\032J\n\024MComplete"
+  "ddatasEntry\022\013\n\003key\030\001 \001(\005\022!\n\005value\030\002 \001(\0132"
+  "\022.pbdb.db_task.data:\0028\001B\007\n\005_m_id\"\217\001\n\013db_"
+  "calendar\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\023\n\006m_time\030\002 "
+  "\001(\003H\001\210\001\001\022\024\n\007m_start\030\003 \001(\010H\002\210\001\001\022\025\n\010m_fini"
+  "sh\030\004 \001(\010H\003\210\001\001B\007\n\005_m_idB\t\n\007_m_timeB\n\n\010_m_"
+  "startB\013\n\t_m_finish\"\263\002\n\013db_familyer\022\021\n\004m_"
+  "id\030\001 \001(\003H\000\210\001\001\022\026\n\tm_joinutc\030\002 \001(\005H\001\210\001\001\022\032\n"
+  "\rm_lastsignutc\030\003 \001(\005H\002\210\001\001\022\033\n\016m_lastleave"
+  "utc\030\004 \001(\005H\003\210\001\001\0224\n\nm_position\030\005 \001(\0162\033.pbd"
+  "b.db_familyer.epositionH\004\210\001\001\"\?\n\tepositio"
+  "n\022\010\n\004none\020\000\022\n\n\006leader\020\001\022\016\n\ncounsellor\020\002\022"
+  "\014\n\010ordinary\020\003B\007\n\005_m_idB\014\n\n_m_joinutcB\020\n\016"
+  "_m_lastsignutcB\021\n\017_m_lastleaveutcB\r\n\013_m_"
+  "position\"\366\001\n\tdb_family\022\021\n\004m_id\030\001 \001(\003H\000\210\001"
+  "\001\022\030\n\013m_createutc\030\002 \001(\005H\001\210\001\001\022\023\n\006m_name\030\003 "
+  "\001(\tH\002\210\001\001\022\025\n\010m_leader\030\004 \001(\003H\003\210\001\001\022\021\n\004m_lv\030"
+  "\005 \001(\005H\004\210\001\001\022\022\n\005m_exp\030\006 \001(\005H\005\210\001\001\022\020\n\010m_memb"
+  "er\030\007 \003(\003\022\023\n\013m_applylist\030\010 \003(\003B\007\n\005_m_idB\016"
+  "\n\014_m_createutcB\t\n\007_m_nameB\013\n\t_m_leaderB\007"
+  "\n\005_m_lvB\010\n\006_m_exp\"S\n\ndb_friends\022\021\n\004m_id\030"
+  "\001 \001(\003H\000\210\001\001\022\021\n\tm_friends\030\002 \003(\003\022\026\n\016m_apply"
+  "friends\030\003 \003(\003B\007\n\005_m_id*\320\002\n\007ENUM_DB\022\023\n\017EN"
+  "UM_DB_ACCOUNT\020\000\022\020\n\014ENUM_DB_ROLE\020\001\022\021\n\rENU"
+  "M_DB_BRIEF\020\002\022\017\n\013ENUM_DB_BAG\020\003\022\024\n\020ENUM_DB"
+  "_KEYVALUE\020\004\022\020\n\014ENUM_DB_MAIL\020\005\022\022\n\016ENUM_DB"
+  "_NOTICE\020\006\022\024\n\020ENUM_DB_RANKLIST\020\007\022\024\n\020ENUM_"
+  "DB_ACTIVITY\020\010\022\020\n\014ENUM_DB_TASK\020\t\022\024\n\020ENUM_"
+  "DB_CALENDAR\020\n\022\030\n\024ENUM_DB_ROLEKEYVALUE\020\013\022"
+  "\022\n\016ENUM_DB_FAMILY\020\014\022\024\n\020ENUM_DB_FAMILYER\020"
+  "\r\022\023\n\017ENUM_DB_FRIENDS\020\016\022\021\n\rENUM_DB_COUNT\020"
+  "\017*\036\n\teranklist\022\006\n\002lv\020\000\022\t\n\005count\020\001b\006proto"
+  "3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[32] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[31] = {
   &scc_info_db_account_db_2eproto.base,
   &scc_info_db_activity_db_2eproto.base,
   &scc_info_db_activity_MDrawcomplianceEntry_DoNotUse_db_2eproto.base,
@@ -1210,7 +1174,6 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
   &scc_info_db_family_db_2eproto.base,
   &scc_info_db_familyer_db_2eproto.base,
   &scc_info_db_friends_db_2eproto.base,
-  &scc_info_db_guild_db_2eproto.base,
   &scc_info_db_keyvalue_db_2eproto.base,
   &scc_info_db_mail_db_2eproto.base,
   &scc_info_db_mail_MMailEntry_DoNotUse_db_2eproto.base,
@@ -1233,10 +1196,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 4709,
-  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 32, 0,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 4561,
+  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 31, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
-  file_level_metadata_db_2eproto, 32, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
+  file_level_metadata_db_2eproto, 31, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1310,7 +1273,6 @@ bool ENUM_DB_IsValid(int value) {
     case 13:
     case 14:
     case 15:
-    case 16:
       return true;
     default:
       return false;
@@ -4903,344 +4865,6 @@ void db_mail::InternalSwap(db_mail* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata db_mail::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void db_guild::InitAsDefaultInstance() {
-}
-class db_guild::_Internal {
- public:
-  using HasBits = decltype(std::declval<db_guild>()._has_bits_);
-  static void set_has_m_id(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
-  }
-  static void set_has_m_guild(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-  static void set_has_m_leader(HasBits* has_bits) {
-    (*has_bits)[0] |= 4u;
-  }
-};
-
-db_guild::db_guild(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  m_members_(arena) {
-  SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:pbdb.db_guild)
-}
-db_guild::db_guild(const db_guild& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _has_bits_(from._has_bits_),
-      m_members_(from.m_members_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  m_guild_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (from._internal_has_m_guild()) {
-    m_guild_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_m_guild(),
-      GetArena());
-  }
-  ::memcpy(&m_id_, &from.m_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_leader_) -
-    reinterpret_cast<char*>(&m_id_)) + sizeof(m_leader_));
-  // @@protoc_insertion_point(copy_constructor:pbdb.db_guild)
-}
-
-void db_guild::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_db_guild_db_2eproto.base);
-  m_guild_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&m_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_leader_) -
-      reinterpret_cast<char*>(&m_id_)) + sizeof(m_leader_));
-}
-
-db_guild::~db_guild() {
-  // @@protoc_insertion_point(destructor:pbdb.db_guild)
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-void db_guild::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
-  m_guild_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-
-void db_guild::ArenaDtor(void* object) {
-  db_guild* _this = reinterpret_cast< db_guild* >(object);
-  (void)_this;
-}
-void db_guild::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void db_guild::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const db_guild& db_guild::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_db_guild_db_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void db_guild::Clear() {
-// @@protoc_insertion_point(message_clear_start:pbdb.db_guild)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  m_members_.Clear();
-  cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    m_guild_.ClearNonDefaultToEmpty();
-  }
-  if (cached_has_bits & 0x00000006u) {
-    ::memset(&m_id_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_leader_) -
-        reinterpret_cast<char*>(&m_id_)) + sizeof(m_leader_));
-  }
-  _has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* db_guild::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // int64 m_id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_m_id(&has_bits);
-          m_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // string m_guild = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_m_guild();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_guild.m_guild"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // int64 m_leader = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          _Internal::set_has_m_leader(&has_bits);
-          m_leader_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // repeated int64 m_members = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt64Parser(_internal_mutable_m_members(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32) {
-          _internal_add_m_members(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  _has_bits_.Or(has_bits);
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* db_guild::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:pbdb.db_guild)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int64 m_id = 1;
-  if (_internal_has_m_id()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_id(), target);
-  }
-
-  // string m_guild = 2;
-  if (_internal_has_m_guild()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_guild().data(), static_cast<int>(this->_internal_m_guild().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_guild.m_guild");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_m_guild(), target);
-  }
-
-  // int64 m_leader = 3;
-  if (_internal_has_m_leader()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_leader(), target);
-  }
-
-  // repeated int64 m_members = 4;
-  {
-    int byte_size = _m_members_cached_byte_size_.load(std::memory_order_relaxed);
-    if (byte_size > 0) {
-      target = stream->WriteInt64Packed(
-          4, _internal_m_members(), byte_size, target);
-    }
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:pbdb.db_guild)
-  return target;
-}
-
-size_t db_guild::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:pbdb.db_guild)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated int64 m_members = 4;
-  {
-    size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      Int64Size(this->m_members_);
-    if (data_size > 0) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
-    }
-    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
-    _m_members_cached_byte_size_.store(cached_size,
-                                    std::memory_order_relaxed);
-    total_size += data_size;
-  }
-
-  cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
-    // string m_guild = 2;
-    if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-          this->_internal_m_guild());
-    }
-
-    // int64 m_id = 1;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_id());
-    }
-
-    // int64 m_leader = 3;
-    if (cached_has_bits & 0x00000004u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_leader());
-    }
-
-  }
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void db_guild::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:pbdb.db_guild)
-  GOOGLE_DCHECK_NE(&from, this);
-  const db_guild* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<db_guild>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbdb.db_guild)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbdb.db_guild)
-    MergeFrom(*source);
-  }
-}
-
-void db_guild::MergeFrom(const db_guild& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:pbdb.db_guild)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  m_members_.MergeFrom(from.m_members_);
-  cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
-    if (cached_has_bits & 0x00000001u) {
-      _internal_set_m_guild(from._internal_m_guild());
-    }
-    if (cached_has_bits & 0x00000002u) {
-      m_id_ = from.m_id_;
-    }
-    if (cached_has_bits & 0x00000004u) {
-      m_leader_ = from.m_leader_;
-    }
-    _has_bits_[0] |= cached_has_bits;
-  }
-}
-
-void db_guild::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:pbdb.db_guild)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void db_guild::CopyFrom(const db_guild& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:pbdb.db_guild)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool db_guild::IsInitialized() const {
-  return true;
-}
-
-void db_guild::InternalSwap(db_guild* other) {
-  using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(_has_bits_[0], other->_has_bits_[0]);
-  m_members_.InternalSwap(&other->m_members_);
-  m_guild_.Swap(&other->m_guild_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(db_guild, m_leader_)
-      + sizeof(db_guild::m_leader_)
-      - PROTOBUF_FIELD_OFFSET(db_guild, m_id_)>(
-          reinterpret_cast<char*>(&m_id_),
-          reinterpret_cast<char*>(&other->m_id_));
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata db_guild::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -9234,9 +8858,6 @@ template<> PROTOBUF_NOINLINE ::pbdb::db_mail_MMailEntry_DoNotUse* Arena::CreateM
 }
 template<> PROTOBUF_NOINLINE ::pbdb::db_mail* Arena::CreateMaybeMessage< ::pbdb::db_mail >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbdb::db_mail >(arena);
-}
-template<> PROTOBUF_NOINLINE ::pbdb::db_guild* Arena::CreateMaybeMessage< ::pbdb::db_guild >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::pbdb::db_guild >(arena);
 }
 template<> PROTOBUF_NOINLINE ::pbdb::db_notice* Arena::CreateMaybeMessage< ::pbdb::db_notice >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbdb::db_notice >(arena);
