@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-10 14:55:52
+// 创建时间 25-04-10 15:38:01
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -45,6 +45,7 @@
 #include "tinyxml2.cpp"
 #include "roleinfo.cpp"
 #include "ranklist.cpp"
+#include "protocol.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
 #include "autoitem.cpp"
