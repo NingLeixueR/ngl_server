@@ -146,6 +146,6 @@ namespace ngl
 		ntimer& operator=(const ntimer&) = delete;
 	public:
 		// 抛出一个定时器
-		static int addtimer(actor_base* actor, std::shared_ptr<np_timerparm>& aparm);
+		static int addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm);
 	};
 }//namespace ngl

@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	int ntimer::addtimer(actor_base* actor, std::shared_ptr<np_timerparm>& aparm)
+	int ntimer::addtimer(actor_base* actor, const std::shared_ptr<np_timerparm>& aparm)
 	{
 		i64_actorid lidguid = actor->id_guid();
 		wheel_parm lparm
