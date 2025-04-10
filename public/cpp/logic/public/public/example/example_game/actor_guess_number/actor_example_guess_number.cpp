@@ -87,7 +87,7 @@ namespace ngl
 
 	void actor_example_guess_number::init()
 	{
-		timerparm tparm;
+		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 1) == false)
 		{
 			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
@@ -153,7 +153,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_example_guess_number::timer_handle(const message<timerparm>& adata)
+	bool actor_example_guess_number::timer_handle(const message<np_timerparm>& adata)
 	{
 		int32_t lnow = localtime::gettime();
 		if (isfinish() == false)

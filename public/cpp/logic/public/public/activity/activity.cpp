@@ -1,5 +1,5 @@
 #include "activity_drawcompliance.h"
-#include "actor_manage_activity.h"
+#include "actor_activity_manage.h"
 #include "ttab_calendar.h"
 #include "activity.h"
 
@@ -79,7 +79,7 @@ namespace ngl
 								.m_start = astart,
 							});
 						pro->m_activityids.push_back(lactivityid);
-						actor::static_send_actor(actor_manage_activity::actorid(), nguid::make(), pro);
+						actor::static_send_actor(actor_activity_manage::actorid(), nguid::make(), pro);
 					}
 				};
 				twheel::wheel().addtimer(lparm);

@@ -217,7 +217,7 @@ namespace ngl
 		bool is_first_recharge(int32_t arechargeid);
 
 		//# 定时器
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<np_timerparm>& adata);
 
 		//# 回显给客户端一个字符串
 		void echo_msg(const char* amsg);

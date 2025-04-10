@@ -52,14 +52,11 @@ namespace ngl
 	using tdb_family	= typedb<pbdb::ENUM_DB_FAMILY, pbdb::db_family, actor_family>;
 	using tdb_familyer	= typedb<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer, actor_family>;
 
-	class actor_guild;
-	using tdb_guild		= typedb<pbdb::ENUM_DB_GUILD, pbdb::db_guild, actor_guild>;
-
 	class actor_notice;
 	using tdb_notice	= typedb<pbdb::ENUM_DB_NOTICE, pbdb::db_notice, actor_notice>;
 
-	class actor_manage_activity;
-	using tdb_activity	= typedb<pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity, actor_manage_activity>;
+	class actor_activity_manage;
+	using tdb_activity	= typedb<pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity, actor_activity_manage>;
 	
 	class actor_ranklist;
 	using tdb_ranklist	= typedb<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist, actor_ranklist>;

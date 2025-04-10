@@ -360,7 +360,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::timer_handle(const message<timerparm>& adata)
+	bool actor_role::timer_handle(const message<np_timerparm>& adata)
 	{
 		return true;
 	}

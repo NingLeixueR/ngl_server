@@ -1,4 +1,4 @@
-#include "actor_manage_activity.h"
+#include "actor_activity_manage.h"
 #include "calendar_function.h"
 #include "nprotocol.h"
 #include "actor.h"
@@ -28,7 +28,7 @@ namespace ngl
 				pro->m_calendarid = tab->m_id;
 				pro->m_start = astart;
 				pro->m_time = atime;
-				actor::static_send_actor(actor_manage_activity::actorid(), nguid::make(), pro);
+				actor::static_send_actor(actor_activity_manage::actorid(), nguid::make(), pro);
 		};
 
 		//np_actor_openactivity

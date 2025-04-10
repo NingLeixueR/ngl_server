@@ -173,7 +173,7 @@ namespace ngl
 		// # 检查就绪
 		bool check_ready(room* aroom);
 
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<np_timerparm>& adata);
 
 		// # 加入匹配
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);

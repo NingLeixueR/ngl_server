@@ -37,6 +37,6 @@ namespace ngl
 		bool handle(const message<np_actor_reloadcsv>& adata);
 
 		// # ¶¨Ê±Æ÷
-		bool timer_handle(const message<timerparm>& adata);
+		bool timer_handle(const message<np_timerparm>& adata);
 	};
 }//namespace ngl

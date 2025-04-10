@@ -78,6 +78,23 @@ namespace ngl
 			}
 			send_client(applayinfo->m_roles, lresponse);
 		}
+		if (applayinfo->m_role_enter_example.size() >= applayinfo->m_roles.size())
+		{
+			i64_actorid lactorexampleid = applayinfo->m_actorexampleid;
+			pbexample::EPLAY_TYPE ltype = applayinfo->m_type;
+			{
+				auto pro = std::make_shared<np_example_entergame_ready>();
+				send_actor(lactorexampleid, pro);
+			}
+			{
+				auto pro = std::make_shared<np_example_actorid>();
+				pro->m_type = ltype;
+				pro->m_actorexampleid = lactorexampleid;
+				actor::static_send_actor(lactorexampleid, id_guid(), pro);
+			}
+			m_finishinfo[ltype][lactorexampleid] = *applayinfo;
+			m_info[ltype].erase(lactorexampleid);
+		}
 	}
 
 	bool actor_example_manage::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata)
@@ -100,21 +117,6 @@ namespace ngl
 
 		enter_game(lpplayinfo, roleid, lpdata->m_cross(), lpdata->m_type());
 
-		if (lpplayinfo->m_role_enter_example.size() >= lpplayinfo->m_roles.size())
-		{
-			{
-				auto pro = std::make_shared<np_example_entergame_ready>();
-				send_actor(lpdata->m_exampleactorid(), pro);
-			}
-			{
-				auto pro = std::make_shared<np_example_actorid>();
-				pro->m_type = lpdata->m_type();
-				pro->m_actorexampleid = lpdata->m_exampleactorid();
-				actor::static_send_actor(lpplayinfo->m_roles, id_guid(), pro);
-			}
-			m_finishinfo[lpdata->m_type()][lpdata->m_exampleactorid()] = *lpplayinfo;
-			m_info[lpdata->m_type()].erase(lpdata->m_exampleactorid());
-		}
 		return true;
 	}
 
@@ -163,7 +165,7 @@ namespace ngl
 
 	void actor_example_manage::init()
 	{
-		timerparm tparm;
+		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 1) == false)
 		{
 			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
@@ -172,7 +174,7 @@ namespace ngl
 		set_timer(tparm);
 	}
 
-	bool actor_example_manage::timer_handle(const message<timerparm>& adata)
+	bool actor_example_manage::timer_handle(const message<np_timerparm>& adata)
 	{
 		int32_t lnow = localtime::gettime();
 		pbexample::ECROSS lecross = tab_self_area > 0 ? pbexample::ECROSS::ECROSS_ORDINARY : pbexample::ECROSS::ECROSS_CROSS_ORDINARY;

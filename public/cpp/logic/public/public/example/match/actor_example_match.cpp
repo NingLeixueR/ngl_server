@@ -176,7 +176,7 @@ namespace ngl
 
 	void actor_example_match::init()
 	{
-		timerparm tparm;
+		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 1) == false)
 		{
 			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
@@ -226,7 +226,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_example_match::timer_handle(const message<timerparm>& adata)
+	bool actor_example_match::timer_handle(const message<np_timerparm>& adata)
 	{
 		// ¼ì²é¾ÍÐ÷
 		for (std::pair<const pbexample::EPLAY_TYPE, room_index>& item : m_roomindex)

@@ -3,6 +3,11 @@
 
 #include "idl.h"
 #include "localtime.h"
+#include "tools.h"
+#include <algorithm>
+#include <string>
+#include <map>
+#include <ranges>
 
 class idlcppprotocol
 {
@@ -118,9 +123,6 @@ public:
 		ltempstr = ltempstr2;
 		return ltempstr;
 	}
-
-
-
 
 	void _cs()
 	{
@@ -261,7 +263,168 @@ public:
 			//_h(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}
 	}
-	
+
+
+	void _nprotocol_auto()
+	{
+		ngl::writefile lfile("nprotocol_auto.h");
+		std::stringstream m_stream;
+		m_stream << m_tit;
+		m_stream << R"(#pragma once
+
+#include "ndb_modular.h"
+#include "nsp_client.h"
+#include "nsp_server.h"
+#include "actor_db.h"
+#include "db.pb.h"
+
+
+namespace ngl
+{
+	void tprotocol_customs_200000000()
+	{
+		tprotocol::set_customs_index(200000000);
+		// 新增内部协议需要补充
+		tprotocol::tp_customs::template func <
+)";
+		int lindex = 200000000;
+		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		bool isdouhao = false;
+		for (std::pair<const std::string, idl_file>& item : lmap)
+		{
+			for (const auto& item2 : item.second.m_struct)
+			{
+				if (item2.name.find("np_") != std::string::npos)
+				{
+					std::cout << item2.name << std::endl;
+					if (isdouhao)
+					{
+						m_stream << "			/*" << ++lindex << "*/, " << item2.name << std::endl;
+					}
+					else
+					{
+						m_stream << "			/*" << ++lindex << "*/" << item2.name << std::endl;
+						isdouhao = true;
+					}
+				}				
+			}
+		}
+
+		m_stream << R"(		> (EPROTOCOL_TYPE_CUSTOM);
+	}
+}//namespace ngl)";
+		lfile.write(m_stream.str());
+	}
+
+	void _auto_actor_enum()
+	{
+		ngl::writefile lfile("auto_actor_enum.h");
+		std::stringstream m_stream;
+		m_stream << m_tit;
+		m_stream << R"(#pragma once
+
+#include "nactortype.h"
+
+#define em_events_null(NAME) null<NAME>,(ENUM_ACTOR)(ACTOR_EVENTS+ NAME::id_index()), #NAME
+#define dautoactor(NAME, DEF) null<NAME>, em_pram(DEF)
+
+namespace ngl
+{
+	template <typename TACTOR>
+	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname)
+	{
+		em<ENUM_ACTOR>::set(aenum, aname);
+		nactor_type<TACTOR>::inits(aenum);
+	}
+
+	template <typename TACTOR, typename ...ARG>
+	void _auto_actor(const TACTOR* aactor, ENUM_ACTOR aenum, const char* aname, const ARG&... arg)
+	{
+		_auto_actor<TACTOR>(aactor, aenum, aname);
+		_auto_actor(arg...);
+	}
+}//namespace ngl
+)";
+		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		for (std::pair<const std::string, idl_file>& item : lmap)
+		{
+			for (const auto& item2 : item.second.m_enum)
+			{
+				if (item2.name == "ENUM_ACTOR")
+				{
+					for (const auto& item3 : item2.dataVec)
+					{
+						if (
+							item3.m_type == "ACTOR_NONE" || 
+							item3.m_type == "ACTOR_EVENTS" || 
+							item3.m_type == "ACTOR_EVENTS_MAX_COUNT" || 
+							item3.m_type == "ACTOR_DB" || 
+							item3.m_type == "ACTOR_SIGNLE_FINISH" || 
+							item3.m_type == "ACTOR_COUNT" ||
+							item3.m_type == "ACTOR_SIGNLE_START" ||
+							item3.m_type == "+"
+							)
+						{
+							continue;
+						}
+						std::string lname = item3.m_type;
+						std::transform(lname.begin(), lname.end(), lname.begin(), [](unsigned char c) { return std::tolower(c); });
+						m_stream << "#include \"" << lname << ".h\"" << std::endl;
+					}
+				}
+			}
+		}
+		m_stream << R"(namespace ngl
+{
+	void auto_actor_enum()
+	{
+		_auto_actor(
+)";
+		bool isdouhao = false;
+		for (std::pair<const std::string, idl_file>& item : lmap)
+		{
+			for (const auto& item2 : item.second.m_enum)
+			{
+				if (item2.name == "ENUM_ACTOR")
+				{
+					for (const auto& item3 : item2.dataVec)
+					{
+						if (
+							item3.m_type == "ACTOR_NONE" ||
+							item3.m_type == "ACTOR_EVENTS" ||
+							item3.m_type == "ACTOR_EVENTS_MAX_COUNT" ||
+							item3.m_type == "ACTOR_DB" ||
+							item3.m_type == "ACTOR_SIGNLE_FINISH" ||
+							item3.m_type == "ACTOR_COUNT" ||
+							item3.m_type == "ACTOR_SIGNLE_START" ||
+							item3.m_type == "+"
+							)
+						{
+							continue;
+						}
+						std::string lname = item3.m_type;
+						std::transform(lname.begin(), lname.end(), lname.begin(), [](unsigned char c) { return std::tolower(c); });
+						std::cout << lname << std::endl;
+						if (isdouhao)
+						{
+							m_stream << "			, dautoactor(" << lname << ", " << item3.m_type << ")" << std::endl;
+						}
+						else
+						{
+							m_stream << "			dautoactor(" << lname << ", " << item3.m_type << ")" << std::endl;
+							isdouhao = true;
+						}
+					}
+				}
+			}
+		}
+
+		m_stream << R"(		);
+	}
+}//namespace ngl)";
+
+		lfile.write(m_stream.str());
+	}
 };
 
 
