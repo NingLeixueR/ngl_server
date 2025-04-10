@@ -20,8 +20,6 @@ namespace ngl
 	{
 	}
 
-	actor_gateway_c2g::~actor_gateway_c2g() {}
-
 	void actor_gateway_c2g::nregister()
 	{
 		register_handle_custom<actor_gateway_c2g>::func<

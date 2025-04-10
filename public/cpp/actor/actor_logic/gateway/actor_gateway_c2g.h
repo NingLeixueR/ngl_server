@@ -25,8 +25,6 @@ namespace ngl
 			return actor_instance<actor_gateway_c2g>::instance();
 		}
 
-		virtual ~actor_gateway_c2g();
-
 		static void nregister();
 
 		static ENUM_ACTOR actor_type()
@@ -72,4 +70,3 @@ namespace ngl
 		bool handle(const message<np_actor_gatewayinfo_updata>& adata);
 	};
 }//namespace ngl
-
