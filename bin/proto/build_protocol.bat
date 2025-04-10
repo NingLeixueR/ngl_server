@@ -8,15 +8,18 @@ protoc.exe --experimental_allow_proto3_optional  --csharp_out=./pro net.proto
 protoc.exe --experimental_allow_proto3_optional  --csharp_out=./pro db.proto
 protoc.exe --experimental_allow_proto3_optional  --csharp_out=./pro example.proto
 
-xcopy pro\*.cc ..\..\public\cpp\protocol\protobuf /s/y
-xcopy pro\*.h ..\..\public\cpp\protocol\protobuf /s/y
+xcopy pro\*.cc ..\..\public\cpp\actor\auto_edit\ /s/y
+xcopy pro\*.h ..\..\public\cpp\actor\auto_edit\ /s/y
 xcopy pro\*.cs ..\..\public\csharp\csharp\csharp\protobuf /s/y
 
 #xcopy /E /I /Y pro\phpcode  ..\..\..\php\
 
-xcopy ..\..\..\bin\Debug\makeproto.exe .\ /s/y
-xcopy ..\..\..\bin\Release\makeproto.exe .\ /s/y
+#xcopy ..\Debug\makeproto.exe .\ /s/y
+#xcopy ..\..\..\bin\Release\makeproto.exe .\ /s/y
 
-makeproto.exe ./
+cd ../Debug/
+makeproto.exe ../proto
+xcopy pb_protocol.cpp ..\..\public\cpp\actor\auto_edit\ /s/y
+xcopy pbname_match.cpp ..\..\public\cpp\actor\auto_edit\ /s/y
 
 pause

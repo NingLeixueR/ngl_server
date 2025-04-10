@@ -1,5 +1,4 @@
-xcopy ..\Debug\IDL.exe .\ /s/y
-#xcopy ..\Release\IDL.exe .\ /s/y
+cd ../Debug/
 IDL.exe protocol
-xcopy nprotocol_auto.h ..\..\public\cpp\actor\ /s/y
+xcopy nprotocol_auto.h ..\..\public\cpp\actor\auto_edit\ /s/y
 pause

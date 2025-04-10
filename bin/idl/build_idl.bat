@@ -1,8 +1,6 @@
-xcopy ..\Debug\IDL.exe .\ /s/y
-#xcopy ..\Release\IDL.exe .\ /s/y
+cd ../Debug/
 IDL.exe idl
-xcopy idlfile\*.h ..\..\public\cpp\protocol\ /s/y
-xcopy idlfile\*.cpp ..\..\public\cpp\protocol\ /s/y
+xcopy idlfile\*.h ..\..\public\cpp\actor\auto_edit\ /s/y
+xcopy idlfile\*.cpp ..\..\public\cpp\actor\auto_edit\ /s/y
 xcopy idlfile\*.cs ..\..\public\csharp\csharp\csharp\csv\ /s/y
 pause
-

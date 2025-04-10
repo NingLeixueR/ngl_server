@@ -403,22 +403,23 @@ public:
 	void analysis(std::string apth)
 	{
 		//// ----- 去掉文件后缀
-		bool lbool = true;
+		bool lsssbool = true;
 		std::string lname;
-		std::ranges::for_each(apth, [&lbool, &lname](char item)
+		std::ranges::for_each(apth, [&lsssbool, &lname](char item)
 			{
-				if (lbool)
+				if (item == '/' || item == '\\')
 				{
-					if (item == '.')
-					{
-						lbool = false;
-						return;
-					}
-					else if (item == '/' || item == '\\')
-					{
-						lname = "";
-						return;
-					}
+					lname = "";
+					lsssbool = true;
+					return;
+				}
+				if (item == '.')
+				{
+					lsssbool = false;
+					return;
+				}
+				if (lsssbool)
+				{
 					lname += item;
 				}
 			});
