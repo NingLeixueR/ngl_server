@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
 	if (argv[1] == std::string("idl"))
 	{
-		vector<const char*> lv = { "csvtable" };
+		vector<const char*> lv = { "../idl/csvtable" };
 		for (const char* item : lv)
 		{
 			idl::getInstance().analysis(string(item) + ".idl");

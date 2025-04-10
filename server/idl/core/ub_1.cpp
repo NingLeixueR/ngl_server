@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-09 21:36:03
+// 创建时间 25-04-10 14:55:59
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -45,7 +45,6 @@
 #include "tinyxml2.cpp"
 #include "roleinfo.cpp"
 #include "ranklist.cpp"
-#include "protocol.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
 #include "autoitem.cpp"
@@ -125,6 +124,7 @@
 #include "actor_log.cpp"
 #include "actor_kcp.cpp"
 #include "actor_gm.cpp"
+#include "protocol.cpp"
 extern "C"{
 #include "ikcp.c"
 }//extern "C"

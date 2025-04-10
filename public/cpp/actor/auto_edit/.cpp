@@ -1,6 +1,6 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-04-09 22:11:45
-#include "csvtable.h"
+// 创建时间 // 创建时间 25-04-10 15:10:07
+#include ".h"
 namespace ngl{
 net_works::net_works()
 {
