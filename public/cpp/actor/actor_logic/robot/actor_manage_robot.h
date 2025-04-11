@@ -190,7 +190,6 @@ namespace ngl
 									asio::ip::address::from_string(nets::ip(lpstructgame)), lpstructgame->m_port
 								);
 								i32_session lsession = arobot.m_session;
-								//i64_actorid lactorid = id_guid();
 								i64_actorid lactorid = arobot.m_robot->id_guid();
 
 								int16_t lkcp = nets::create_kcp();
