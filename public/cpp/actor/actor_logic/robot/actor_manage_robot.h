@@ -24,16 +24,10 @@ namespace ngl
 	public:
 		struct _robot
 		{
-			i32_sessionid					m_session;
-			std::string						m_account;
-			std::shared_ptr<actor_robot>	m_robot;
-			i64_actorid						m_actor_roleid;
-
-			_robot() :
-				m_session(-1),
-				m_robot(nullptr),
-				m_actor_roleid(nguid::moreactor())
-			{}
+			i32_sessionid					m_session = -1;
+			std::string						m_account = nullptr;
+			std::shared_ptr<actor_robot>	m_robot = nullptr;
+			i64_actorid						m_actor_roleid = nguid::make();
 		};
 
 		std::map<std::string, _robot> m_maprobot;
