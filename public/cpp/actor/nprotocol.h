@@ -374,9 +374,9 @@ namespace ngl
 		def_portocol_function(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
 	};
 
-	struct np_actor_logitem
+	struct nactor_logitem
 	{
-	private:		
+	private:
 		/** 临时数据 **/
 		std::string				m_src;						// 触发日志的文件位置
 		ENUM_ACTOR				m_actortype;
@@ -388,17 +388,17 @@ namespace ngl
 		/** 临时数据 **/
 		static bool				m_init;
 	public:
-		np_actor_logitem(ELOGLEVEL alevel = ELOG_NONE):
+		nactor_logitem(ELOGLEVEL alevel = ELOG_NONE) :
 			m_actortype(ACTOR_NONE),
 			m_logtype(ELOG_LOCAL),
 			m_level(alevel)
 		{
 		}
 
-		np_actor_logitem(
+		nactor_logitem(
 			ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 			, const std::source_location& asource = std::source_location::current()
-		):
+		) :
 			m_actortype(aactortype),
 			m_logtype(alogtype),
 			m_source(asource),
@@ -406,7 +406,7 @@ namespace ngl
 		{
 		}
 
-		~np_actor_logitem()
+		~nactor_logitem()
 		{
 		}
 	private:
@@ -485,7 +485,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		np_actor_logitem& operator<<(const T& adata)
+		nactor_logitem& operator<<(const T& adata)
 		{
 			if (m_init && check_level(m_level))
 			{
@@ -495,7 +495,7 @@ namespace ngl
 		}
 
 		// 重载 << 操作符以输出 std::endl
-		np_actor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
+		nactor_logitem& operator<<(std::ostream& (*manipulator)(std::ostream&))
 		{
 			if (m_init && check_level(m_level))
 			{

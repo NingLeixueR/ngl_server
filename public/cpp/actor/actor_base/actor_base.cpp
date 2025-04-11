@@ -15,7 +15,7 @@ namespace ngl
 	}
 
 	//# 日志相关
-	const std::shared_ptr<np_actor_logitem> g_actor_nonelog = std::make_shared<np_actor_logitem>();
+	const std::shared_ptr<nactor_logitem> g_actor_nonelog = std::make_shared<nactor_logitem>();
 
 	tools_log::tools_log(actor_base* aactor /*= nullptr*/) :
 		m_actor(aactor)
@@ -26,51 +26,51 @@ namespace ngl
 		m_actor = aactor;
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const
+	std::shared_ptr<nactor_logitem> tools_log::get_log(const std::source_location& asource, ELOGLEVEL aloglevel, bool anet)const
 	{
-		if(m_actor == nullptr || !np_actor_logitem::check_level(aloglevel))
+		if(m_actor == nullptr || !nactor_logitem::check_level(aloglevel))
 		{
 			return g_actor_nonelog;
 		}
-		return std::make_shared<np_actor_logitem>(aloglevel, m_actor->type(), anet ? ELOG_NETWORK : ELOG_LOCAL, asource);
+		return std::make_shared<nactor_logitem>(aloglevel, m_actor->type(), anet ? ELOG_NETWORK : ELOG_LOCAL, asource);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_debug(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_debug(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_DEBUG, false);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_debug_net(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_debug_net(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_DEBUG, true);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_info(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_info(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_INFO, false);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_info_net(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_info_net(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_INFO, true);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_warn(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_warn(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_WARN, false);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_warn_net(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_warn_net(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_WARN, true);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_error(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_error(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_ERROR, false);
 	}
 
-	std::shared_ptr<np_actor_logitem> tools_log::log_error_net(const std::source_location& asource/* = std::source_location::current()*/)const
+	std::shared_ptr<nactor_logitem> tools_log::log_error_net(const std::source_location& asource/* = std::source_location::current()*/)const
 	{
 		return get_log(asource, ELOG_ERROR, true);
 	}
