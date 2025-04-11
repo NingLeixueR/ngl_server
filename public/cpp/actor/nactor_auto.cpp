@@ -112,7 +112,7 @@ namespace ngl
 	using type_forward_pb = ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>;
 
 	template <typename PB>
-	void help_tprotocol_forward_pb(const PB* apb)
+	void help_tprotocol_forward_pb(const PB*)
 	{
 		tprotocol::tp_customs::template func<
 			ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
