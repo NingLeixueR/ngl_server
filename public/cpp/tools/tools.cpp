@@ -1293,7 +1293,6 @@ namespace ngl
 	auto g_tools_now_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(g_tools_now).time_since_epoch().count();
 	std::random_device g_tools_rd;
 	std::seed_seq g_tools_seed{ static_cast<unsigned int>(g_tools_now_ns), g_tools_rd() };
-	// I confirm that using this pseudorandom number generator is not safe here.
 	std::mt19937 g_tools_gen(g_tools_seed);
 	std::uniform_int_distribution<int> g_tools_dis(0, RAND_MAX);
 	std::mutex g_tools_mutex;
