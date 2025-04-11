@@ -197,7 +197,7 @@ namespace ngl
 
 		inline int bytes(ngl::serialize_bytes& abytes)const
 		{
-			int lbytes = abytes.bytes(m_identifier);;
+			int lbytes = abytes.bytes(m_identifier);
 			return lbytes += m_data->ByteSize();
 		}
 
