@@ -117,10 +117,4 @@ namespace ngl
 
 	// # actor event注册
 	void event_register();
-
-	// # db初始化
-	void tdb_init(bool ainstance);
-
-	// # cross db初始化
-	void tcrossdb_init(bool ainstance);
 }//namespace ngl

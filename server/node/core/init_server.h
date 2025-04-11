@@ -61,7 +61,7 @@ bool init_server(int aid)
 	ngl::tprotocol_customs();
 	ngl::tprotocol_forward_pb();
 	ngl::event_register();
-	ngl::tdb_init(true);
+	ngl::tdb::tdb_init(true);
 
 	// # Æô¶¯actor¹ã²¥
 	ngl::actor_base::start_broadcast();

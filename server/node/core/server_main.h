@@ -263,7 +263,7 @@ bool start_db(int argc, char** argv)
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::db_pool::init(nconfig::m_db.m_dbarg);
-	ngl::tdb_init(false);
+	ngl::tdb::tdb_init(false);
 
 	ngl::actor_gmclient::getInstance();
 	
@@ -301,7 +301,7 @@ bool start_crossdb()
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
 	ngl::db_pool::init(nconfig::m_crossdb.m_dbarg);
-	ngl::tcrossdb_init(false);
+	ngl::tdb::tcrossdb_init(false);
 
 	ngl::actor_gmclient::getInstance();
 
