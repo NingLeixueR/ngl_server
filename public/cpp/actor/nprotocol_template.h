@@ -115,11 +115,11 @@ namespace ngl
 
 		np_actormodule_forward(int64_t aidentifier, const T& adata) :
 			m_identifier(aidentifier),
-			m_data(new T(adata))
+			m_data(std::make_shared<T>(adata))
 		{
 		}
 
-		np_actormodule_forward(int64_t aidentifier) :
+		explicit np_actormodule_forward(int64_t aidentifier) :
 			m_identifier(aidentifier),
 			m_data(nullptr)
 		{
@@ -128,10 +128,6 @@ namespace ngl
 		np_actormodule_forward() :
 			m_identifier(0),
 			m_data(nullptr)
-		{
-		}
-
-		~np_actormodule_forward()
 		{
 		}
 

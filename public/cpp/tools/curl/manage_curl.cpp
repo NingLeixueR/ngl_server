@@ -308,7 +308,7 @@ namespace ngl
 
 		if (curl)
 		{
-			curl_slist* recipients = NULL;
+			curl_slist* recipients = nullptr;
 
 			// 设置SMTP服务器、发件人和收件人
 			curl_easy_setopt(curl, CURLOPT_URL, aparm.m_smtp.c_str());
@@ -488,13 +488,13 @@ namespace ngl
 				//{"3:4":{"app":"[]","level":2,"startPos":3,"endPos":4,"maskWord":"sb"},"0:1":{"app":"[]","level":2,"startPos":0,"endPos":1,"maskWord":"日本"}}
 				std::cout << aparm.m_recvdata;
 				cJSON* json = cJSON_Parse(aparm.m_recvdata.c_str());
-				if (json == NULL) 
+				if (json == nullptr) 
 				{
 					printf("解析JSON失败!\n");
 					return;
 				}
 
-				cJSON* item = NULL;
+				cJSON* item = nullptr;
 				cJSON_ArrayForEach(item, json)
 				{
 					// 打印键

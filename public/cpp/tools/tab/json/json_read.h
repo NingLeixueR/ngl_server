@@ -171,7 +171,7 @@ namespace ngl
 
 		void read_key(std::vector<std::string>& avec) const
 		{
-			cJSON* item = NULL;
+			cJSON* item = nullptr;
 			cJSON_ArrayForEach(item, m_json)
 			{
 				avec.push_back(item->string);
@@ -180,7 +180,7 @@ namespace ngl
 
 		void read_key(const std::function<void(const std::string&)>& afun) const
 		{
-			cJSON* item = NULL;
+			cJSON* item = nullptr;
 			cJSON_ArrayForEach(item, m_json)
 			{
 				afun(item->string);
@@ -189,7 +189,7 @@ namespace ngl
 
 		void read_key(const std::function<void(cJSON*)>& afun) const
 		{
-			cJSON* item = NULL;
+			cJSON* item = nullptr;
 			cJSON_ArrayForEach(item, m_json)
 			{
 				afun(item);

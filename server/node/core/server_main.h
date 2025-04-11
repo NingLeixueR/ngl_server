@@ -161,8 +161,8 @@ void init_DB_NOTICE()
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
 		ltemp.set_m_notice(lvec[i]);
-		ltemp.set_m_starttime((int32_t)time(NULL));
-		ltemp.set_m_finishtime((int32_t)time(NULL) + 36000);
+		ltemp.set_m_starttime((int32_t)time(nullptr));
+		ltemp.set_m_finishtime((int32_t)time(nullptr) + 36000);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
 	}
