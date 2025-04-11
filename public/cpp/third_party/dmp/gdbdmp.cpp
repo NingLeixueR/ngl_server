@@ -100,7 +100,7 @@ void cxerr()
 }
 
 Dumper::Dumper() {
-	dumperHandler = NULL;
+	dumperHandler = nullptr;
 	Dumper::setDumperHandler(cxerr);
 
 
