@@ -77,7 +77,7 @@ bool init_server(int aid)
 	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
 
 	// # actor管理模块已初始化完毕，可以将日志发送给actor_log
-	ngl::np_actor_logitem::m_init = true;
+	ngl::nactor_logitem::m_init = true;
 
 	ngl::log_error()->print("ngl::actor_manage::getInstance().init({})", tab->m_actorthreadnum);
 	return true;

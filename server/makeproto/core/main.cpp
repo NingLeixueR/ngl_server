@@ -99,6 +99,170 @@ void foreachProtobufMessages(const google::protobuf::FileDescriptor* fileDescrip
     lfile.write(m_stream.str());
 }
 
+void foreachProtobufEnum(const google::protobuf::FileDescriptor* fileDescriptor, const std::string& axml)
+{
+    std::string ldata;
+    {
+
+        // 读取文件nactor_auto.h
+        ngl::readfile lfile("../../public/cpp/actor/auto_edit/nactor_auto.h");
+        lfile.read(ldata);
+    }
+    // 正则表达式：匹配 "using <name> = typedb<...>;"
+    std::regex pattern(R"(using\s+([a-zA-Z0-9_]+)\s*=\s*typedb<([^>]+)>;)");
+
+    // 用于存储匹配到的结果
+    std::smatch matches;
+
+    // 迭代文本并查找所有匹配项
+    auto words_begin = std::sregex_iterator(ldata.begin(), ldata.end(), pattern);
+    auto words_end = std::sregex_iterator();
+
+    struct struttt
+    {
+        std::string name;
+        std::string enumname;
+        std::string proname;
+        std::string actorname;
+    };
+    std::map<std::string,struttt> lmap;
+    std::set<std::string> lset;
+    for (std::sregex_iterator i = words_begin; i != words_end; ++i) 
+    {
+        // 获取完整的匹配项（例如：using tdb_account = typedb<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, actor_login>;）
+        std::string full_match = (*i).str(0);
+        
+        struttt ltemp;
+        // 获取第一个括号里的部分（tdb_account, user_data, customer_data等）
+        ltemp.name = (*i).str(1);
+
+        // 获取第二部分，即 typedb<...> 内的内容
+        std::string arguments = (*i).str(2);
+        ngl::tools::splite(arguments.c_str(), ",", ltemp.enumname, ltemp.proname, ltemp.actorname);
+        ngl::tools::splite(ltemp.enumname.c_str(), "::", ltemp.enumname, ltemp.enumname);
+        ngl::tools::splite(ltemp.proname.c_str(), "::", ltemp.proname, ltemp.proname);
+        lmap[ltemp.enumname] = ltemp;
+        lset.insert(ltemp.actorname);
+    }
+
+
+
+    int messageCount = fileDescriptor->enum_type_count();
+    for (int i = 0; i < messageCount; ++i)
+    {
+        const auto& enumDescriptor = fileDescriptor->enum_type(i);
+        std::cout << "name: " << enumDescriptor->name() << std::endl;
+        if (enumDescriptor->name() == "ENUM_DB")
+        {
+            int enum_value_count = enumDescriptor->value_count();
+            std::cout << "Enum: " << enumDescriptor->name() << std::endl;
+
+            // 遍历枚举值
+            for (int j = 0; j < enum_value_count; ++j) 
+            {
+                const auto& enumValueDescriptor = enumDescriptor->value(j);
+                std::cout << "Enum Name: " << enumValueDescriptor->name() << ", Enum Value: "
+                    << enumValueDescriptor->number() << std::endl;
+                if (lmap.contains(enumValueDescriptor->name()) == false)
+                {
+                    if (enumValueDescriptor->name() == "ENUM_DB_COUNT")
+                    {
+                        continue;
+                    }
+                    struttt ltemp;
+                    
+                    ltemp.enumname = enumValueDescriptor->name();
+                    std::string ltempss;
+                    ngl::tools::splite(ltemp.enumname.c_str(), "_", ltempss, ltempss, ltempss);
+                    std::transform(ltempss.begin(), ltempss.end(), ltempss.begin(), [](unsigned char c) { return std::tolower(c); });
+                
+                    ltemp.actorname = "actor_xxxx";
+                    ltemp.proname = "db_";
+                    ltemp.proname += ltempss;
+                    ltemp.name = "t";
+                    ltemp.name += ltemp.proname;
+                    lmap[enumValueDescriptor->name()] = ltemp;
+                    lset.insert("actor_xxxx");
+                }
+            }
+        }
+    }
+
+    ngl::writefile lfile("../../public/cpp/actor/auto_edit/nactor_auto.h");
+
+    std::stringstream m_stream;
+    m_stream << R"(#pragma once
+
+#include "ndb_modular.h"
+#include "nsp_client.h"
+#include "nsp_server.h"
+#include "actor_db.h"
+#include "db.pb.h"
+
+namespace ngl
+{
+	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
+	class typedb
+	{
+		typedb() = delete;
+		typedb(const typedb&) = delete;
+		typedb& operator=(const typedb&) = delete;
+	public:
+		using db_actor   = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
+		using db_modular = ndb_modular<TDBTAB_TYPE, TDBTAB, TACTOR>;
+		// 订阅/发布[数据副本]
+		using nsp_ser	 = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
+		template <typename TDerived>
+		using nsp_cli	 = nsp_client<TDerived, TDBTAB>;
+		// [aregister == true] 主要是注册协议,宏与类型的绑定
+		// [aregister == false] 实例化db_actor,db server需要
+		static void init(bool aregister);
+	};
+
+	template <pbdb::ENUM_DB ENUM, typename TDATA, typename TACTOR>
+	void ndb_modular<ENUM, TDATA, TACTOR>::init_data()
+	{
+		initdata();
+		typedb<ENUM, TDATA, TACTOR>::nsp_ser::loadfish_sync();
+	}
+)";
+
+    for (const std::string& item : lset)
+    {
+        if (item == "actor_xxxx")
+        {// 让编译出错 玩家确认修改
+            m_stream << "\t#编译会出错，需要确认修改"<< std::endl;
+        }
+        m_stream << "\tclass " << item << ";" << std::endl;
+    }
+    m_stream << std::endl;
+    m_stream << std::endl;
+    for (const auto& item : lmap)
+    {
+        if (item.second.enumname == "ENUM_DB_COUNT")
+        {
+            continue;
+        }
+        if (item.second.actorname == "actor_xxxx")
+        {// 让编译出错 玩家确认修改
+            m_stream << "\t#编译会出错，需要确认修改" << std::endl;
+        }
+
+        m_stream
+            << std::format(
+            "\tusing {:<25}= typedb<pbdb::{}, pbdb::{}, {}>;"
+            , item.second.name
+            , item.second.enumname
+            , item.second.proname
+            , item.second.actorname
+        ) << std::endl;
+    }
+
+    m_stream << R"(}//namespace ngl)";
+    lfile.write(m_stream.str());
+}
+
+
 std::string foreachProtobufMessages2(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
 {
     std::string lnamespace;
@@ -436,48 +600,24 @@ void traverseProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, co
     traverseProtobufMessages(apackname, aname, fileDescriptor);
 }
 
+
+void traverseProtobufEnum(google::protobuf::compiler::DiskSourceTree& sourceTree, const char* aname)
+{
+    google::protobuf::compiler::Importer importer(&sourceTree, nullptr);
+    const google::protobuf::FileDescriptor* fileDescriptor = importer.Import(std::string(aname) + ".proto");
+    if (fileDescriptor == nullptr) {
+        std::cerr << "Failed to import protobuf file descriptor" << std::endl;
+    }
+    foreachProtobufEnum(fileDescriptor, aname);
+}
+
 int main(int argc, char** argv) 
 {
-    //if (argc > 1)
-    //{
-    //    if (std::string(argv[1]) == "push_config")
-    //    {
-    //        ngl::allcsv::load();
-    //        ngl::manage_csv<ngl::tab_servers>* mang = ngl::allcsv::get<ngl::manage_csv<ngl::tab_servers>>();
-    //        mang->foreach([](ngl::tab_servers& tab)
-    //            {
-    //               auto lhttp = ngl::manage_curl::make_http();
-    //                ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
-    //                ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-    //                ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/push_server_config.php");
 
-    //                ngl::net_works const* lpstruct = ngl::ttab_servers::nworks(ngl::ENET_PROTOCOL::ENET_TCP, &tab);
-    //                if (lpstruct == nullptr)
-    //                    return;
-
-    //                std::stringstream lstream;
-    //                //xx=xx&xx=xx&xx=xx
-    //                lstream
-    //                    << "id=" << tab.m_id << "&"
-    //                    << "area=" << tab.m_area << "&"
-    //                    << "name=" << tab.m_name << "&"
-    //                    << "ip=" << lpstruct->m_ip << "&"
-    //                    << "nip=" << lpstruct->m_nip << "&"
-    //                    << "port=" << lpstruct->m_port << "&"
-    //                    << "type=" << tab.m_type;
-
-    //                ngl::manage_curl::set_param(lhttp, lstream.str());
-    //                ngl::manage_curl::getInstance().send(lhttp);
-    //            });
-    //        while (1)
-    //        {
-    //            ngl::sleep::seconds(1);
-    //        }
-    //    }
-    //}
 
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);
+    traverseProtobufEnum(sourceTree, "db");
    
     g_stream_sql << "/*Date:" << ngl::localtime::time2str("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
     g_stream_sql << std::endl;

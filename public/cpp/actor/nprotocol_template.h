@@ -6,7 +6,6 @@
 #include "localtime.h"
 #include "serialize.h"
 #include "sysconfig.h"
-#include "logprintf.h"
 #include "ndefine.h"
 #include "nguid.h"
 #include "db.pb.h"
@@ -213,7 +212,6 @@ namespace ngl
 		}
 	};
 
-
 	template <typename TDATA>
 	using mforward = np_actormodule_forward<TDATA>;
 
@@ -288,7 +286,6 @@ namespace ngl
 
 		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
 	};
-
 
 	template <typename T>
 	struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
@@ -437,4 +434,5 @@ namespace ngl
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
 		def_portocol(np_channel_data<TDATA>, m_firstsynchronize, m_data)
 	};
+
 }//namespace ngl
