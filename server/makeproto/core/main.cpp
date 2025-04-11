@@ -227,6 +227,8 @@ namespace ngl
 	}
 )";
 
+    m_stream << std::endl;
+    m_stream << std::endl;
     for (const std::string& item : lset)
     {
         if (item == "actor_xxxx")
@@ -248,12 +250,14 @@ namespace ngl
             m_stream << "\t#编译会出错，需要确认修改" << std::endl;
         }
 
+       std::string enumname =  std::string("pbdb::") + item.second.enumname;
+       std::string proname = std::string("pbdb::") + item.second.proname;
         m_stream
             << std::format(
-            "\tusing {:<25}= typedb<pbdb::{}, pbdb::{}, {}>;"
+            "\tusing {} = typedb<{}, {}, {}>;"
             , item.second.name
-            , item.second.enumname
-            , item.second.proname
+            , enumname
+            , proname
             , item.second.actorname
         ) << std::endl;
     }
