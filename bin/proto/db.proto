@@ -23,7 +23,12 @@ enum ENUM_DB
 	ENUM_DB_FAMILYER		= 13;		// 军团成员
 	ENUM_DB_FRIENDS			= 14;		// 好友
 	ENUM_DB_COUNT			= 15;
+
+	// # 跨服
+	ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
 };
+
+
 
 // ENUM_DB_ACCOUNT,				// 账号数据
 message db_account
@@ -235,4 +240,12 @@ message db_friends
 	optional int64		m_id			= 1;	// 玩家roleid
 	repeated int64		m_friends		= 2;	// 好友列表
 	repeated int64		m_applyfriends	= 3;	// 好友请求列表
+}
+
+// # 跨服
+// ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
+message dbcross_test
+{
+	optional string		m_name			= 1;	// 名称
+	repeated int64		m_value			= 2;	// 值
 }

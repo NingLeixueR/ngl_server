@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-10 15:38:01
+// 创建时间 25-04-11 17:49:54
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -99,6 +99,7 @@
 #include "actor_gateway_g2c.cpp"
 #include "actor_gateway_c2g.cpp"
 #include "actor_base_create.cpp"
+#include "nactor_auto_tdb.cpp"
 #include "actor_csvserver.cpp"
 #include "actor_csvclient.cpp"
 #include "actor_role_cmd.cpp"

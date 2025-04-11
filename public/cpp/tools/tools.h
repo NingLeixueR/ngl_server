@@ -369,21 +369,13 @@ namespace ngl
 #pragma endregion
 
 #pragma region regular
-		static void sregex(
-			const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun
-		);
+		static void sregex(const std::string& apattern, const std::string& adata, const std::function<void(std::string&)>& afun);
 
-		static void smatch(
-			const std::string& aexpression, const std::string& adata, const std::function<void(std::smatch&)>& afun
-		);
+		static void smatch(const std::string& aexpression, const std::string& adata, const std::function<void(std::smatch&)>& afun);
 
-		static void replace(
-			const std::string& aexpression, const std::string& areleace, const std::string& adata, std::string& aret
-		);
+		static void replace(const std::string& aexpression, const std::string& areleace, const std::string& adata, std::string& aret);
 
-		static void replace_ret(
-			const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret
-		);
+		static void replace_ret(const std::string& aexpression, const std::string& areleace, std::string& adata, std::string& aret);
 #pragma endregion
 
 #pragma region splite

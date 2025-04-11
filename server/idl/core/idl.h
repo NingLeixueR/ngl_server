@@ -493,11 +493,11 @@ public:
 		ngl::tools::smatch(lpattern2, adata, [&lenumString](std::smatch& awhat)
 			{
 				Data ldataStr;
-		ldataStr.m_type = awhat[1];
-		ldataStr.m_values_name = awhat[2];
-		ldataStr.m_values_init = "";
-		ldataStr.zhushi = awhat[3];
-		lenumString.dataVec.push_back(ldataStr);
+				ldataStr.m_type = awhat[1];
+				ldataStr.m_values_name = awhat[2];
+				ldataStr.m_values_init = "";
+				ldataStr.zhushi = awhat[3];
+				lenumString.dataVec.push_back(ldataStr);
 			});
 
 		m_data[aname].m_enum.push_back(lenumString);

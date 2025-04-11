@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[31]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[32]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -140,6 +140,9 @@ extern db_task_dataDefaultTypeInternal _db_task_data_default_instance_;
 class db_task_data_schedule;
 class db_task_data_scheduleDefaultTypeInternal;
 extern db_task_data_scheduleDefaultTypeInternal _db_task_data_schedule_default_instance_;
+class dbcross_test;
+class dbcross_testDefaultTypeInternal;
+extern dbcross_testDefaultTypeInternal _dbcross_test_default_instance_;
 class item;
 class itemDefaultTypeInternal;
 extern itemDefaultTypeInternal _item_default_instance_;
@@ -181,6 +184,7 @@ template<> ::pbdb::db_task_MCompleteddatasEntry_DoNotUse* Arena::CreateMaybeMess
 template<> ::pbdb::db_task_MRundatasEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_task_MRundatasEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_task_data* Arena::CreateMaybeMessage<::pbdb::db_task_data>(Arena*);
 template<> ::pbdb::db_task_data_schedule* Arena::CreateMaybeMessage<::pbdb::db_task_data_schedule>(Arena*);
+template<> ::pbdb::dbcross_test* Arena::CreateMaybeMessage<::pbdb::dbcross_test>(Arena*);
 template<> ::pbdb::item* Arena::CreateMaybeMessage<::pbdb::item>(Arena*);
 template<> ::pbdb::mail* Arena::CreateMaybeMessage<::pbdb::mail>(Arena*);
 template<> ::pbdb::mailitem* Arena::CreateMaybeMessage<::pbdb::mailitem>(Arena*);
@@ -257,12 +261,13 @@ enum ENUM_DB : int {
   ENUM_DB_FAMILYER = 13,
   ENUM_DB_FRIENDS = 14,
   ENUM_DB_COUNT = 15,
+  ENUM_DBCROSS_TEST = 1001,
   ENUM_DB_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   ENUM_DB_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool ENUM_DB_IsValid(int value);
 constexpr ENUM_DB ENUM_DB_MIN = ENUM_DB_ACCOUNT;
-constexpr ENUM_DB ENUM_DB_MAX = ENUM_DB_COUNT;
+constexpr ENUM_DB ENUM_DB_MAX = ENUM_DBCROSS_TEST;
 constexpr int ENUM_DB_ARRAYSIZE = ENUM_DB_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ENUM_DB_descriptor();
@@ -5155,6 +5160,189 @@ class db_friends PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   friend struct ::TableStruct_db_2eproto;
 };
+// -------------------------------------------------------------------
+
+class dbcross_test PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.dbcross_test) */ {
+ public:
+  inline dbcross_test() : dbcross_test(nullptr) {};
+  virtual ~dbcross_test();
+
+  dbcross_test(const dbcross_test& from);
+  dbcross_test(dbcross_test&& from) noexcept
+    : dbcross_test() {
+    *this = ::std::move(from);
+  }
+
+  inline dbcross_test& operator=(const dbcross_test& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline dbcross_test& operator=(dbcross_test&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const dbcross_test& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const dbcross_test* internal_default_instance() {
+    return reinterpret_cast<const dbcross_test*>(
+               &_dbcross_test_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    31;
+
+  friend void swap(dbcross_test& a, dbcross_test& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(dbcross_test* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(dbcross_test* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline dbcross_test* New() const final {
+    return CreateMaybeMessage<dbcross_test>(nullptr);
+  }
+
+  dbcross_test* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<dbcross_test>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const dbcross_test& from);
+  void MergeFrom(const dbcross_test& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(dbcross_test* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.dbcross_test";
+  }
+  protected:
+  explicit dbcross_test(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMValueFieldNumber = 2,
+    kMNameFieldNumber = 1,
+  };
+  // repeated int64 m_value = 2;
+  int m_value_size() const;
+  private:
+  int _internal_m_value_size() const;
+  public:
+  void clear_m_value();
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_value(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+      _internal_m_value() const;
+  void _internal_add_m_value(::PROTOBUF_NAMESPACE_ID::int64 value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+      _internal_mutable_m_value();
+  public:
+  ::PROTOBUF_NAMESPACE_ID::int64 m_value(int index) const;
+  void set_m_value(int index, ::PROTOBUF_NAMESPACE_ID::int64 value);
+  void add_m_value(::PROTOBUF_NAMESPACE_ID::int64 value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+      m_value() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+      mutable_m_value();
+
+  // string m_name = 1;
+  bool has_m_name() const;
+  private:
+  bool _internal_has_m_name() const;
+  public:
+  void clear_m_name();
+  const std::string& m_name() const;
+  void set_m_name(const std::string& value);
+  void set_m_name(std::string&& value);
+  void set_m_name(const char* value);
+  void set_m_name(const char* value, size_t size);
+  std::string* mutable_m_name();
+  std::string* release_m_name();
+  void set_allocated_m_name(std::string* m_name);
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  std::string* unsafe_arena_release_m_name();
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  void unsafe_arena_set_allocated_m_name(
+      std::string* m_name);
+  private:
+  const std::string& _internal_m_name() const;
+  void _internal_set_m_name(const std::string& value);
+  std::string* _internal_mutable_m_name();
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.dbcross_test)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 > m_value_;
+  mutable std::atomic<int> _m_value_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr m_name_;
+  friend struct ::TableStruct_db_2eproto;
+};
 // ===================================================================
 
 
@@ -8483,9 +8671,155 @@ db_friends::mutable_m_applyfriends() {
   return _internal_mutable_m_applyfriends();
 }
 
+// -------------------------------------------------------------------
+
+// dbcross_test
+
+// string m_name = 1;
+inline bool dbcross_test::_internal_has_m_name() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool dbcross_test::has_m_name() const {
+  return _internal_has_m_name();
+}
+inline void dbcross_test::clear_m_name() {
+  m_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& dbcross_test::m_name() const {
+  // @@protoc_insertion_point(field_get:pbdb.dbcross_test.m_name)
+  return _internal_m_name();
+}
+inline void dbcross_test::set_m_name(const std::string& value) {
+  _internal_set_m_name(value);
+  // @@protoc_insertion_point(field_set:pbdb.dbcross_test.m_name)
+}
+inline std::string* dbcross_test::mutable_m_name() {
+  // @@protoc_insertion_point(field_mutable:pbdb.dbcross_test.m_name)
+  return _internal_mutable_m_name();
+}
+inline const std::string& dbcross_test::_internal_m_name() const {
+  return m_name_.Get();
+}
+inline void dbcross_test::_internal_set_m_name(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void dbcross_test::set_m_name(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:pbdb.dbcross_test.m_name)
+}
+inline void dbcross_test::set_m_name(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:pbdb.dbcross_test.m_name)
+}
+inline void dbcross_test::set_m_name(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:pbdb.dbcross_test.m_name)
+}
+inline std::string* dbcross_test::_internal_mutable_m_name() {
+  _has_bits_[0] |= 0x00000001u;
+  return m_name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* dbcross_test::release_m_name() {
+  // @@protoc_insertion_point(field_release:pbdb.dbcross_test.m_name)
+  if (!_internal_has_m_name()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return m_name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void dbcross_test::set_allocated_m_name(std::string* m_name) {
+  if (m_name != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  m_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_name,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:pbdb.dbcross_test.m_name)
+}
+inline std::string* dbcross_test::unsafe_arena_release_m_name() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:pbdb.dbcross_test.m_name)
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  _has_bits_[0] &= ~0x00000001u;
+  return m_name_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      GetArena());
+}
+inline void dbcross_test::unsafe_arena_set_allocated_m_name(
+    std::string* m_name) {
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  if (m_name != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  m_name_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      m_name, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.dbcross_test.m_name)
+}
+
+// repeated int64 m_value = 2;
+inline int dbcross_test::_internal_m_value_size() const {
+  return m_value_.size();
+}
+inline int dbcross_test::m_value_size() const {
+  return _internal_m_value_size();
+}
+inline void dbcross_test::clear_m_value() {
+  m_value_.Clear();
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 dbcross_test::_internal_m_value(int index) const {
+  return m_value_.Get(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 dbcross_test::m_value(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.dbcross_test.m_value)
+  return _internal_m_value(index);
+}
+inline void dbcross_test::set_m_value(int index, ::PROTOBUF_NAMESPACE_ID::int64 value) {
+  m_value_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pbdb.dbcross_test.m_value)
+}
+inline void dbcross_test::_internal_add_m_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  m_value_.Add(value);
+}
+inline void dbcross_test::add_m_value(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_add_m_value(value);
+  // @@protoc_insertion_point(field_add:pbdb.dbcross_test.m_value)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+dbcross_test::_internal_m_value() const {
+  return m_value_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >&
+dbcross_test::m_value() const {
+  // @@protoc_insertion_point(field_list:pbdb.dbcross_test.m_value)
+  return _internal_m_value();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+dbcross_test::_internal_mutable_m_value() {
+  return &m_value_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
+dbcross_test::mutable_m_value() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.dbcross_test.m_value)
+  return _internal_mutable_m_value();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

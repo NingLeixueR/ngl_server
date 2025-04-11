@@ -13,6 +13,7 @@
 
 #include "auto_actor_enum.h"
 #include "nprotocol_auto.h"
+#include "nactor_auto.h"
 
 namespace ngl
 {
@@ -134,27 +135,27 @@ namespace ngl
 		actor_events_logic::register_parm<np_eevents_logic_roleoffline>(eevents_logic_roleoffline);
 	}
 
-	void tdb_init(bool ainstance)
-	{
-		// 新增数据存储需要补全
-		tdb_ranklist::init(ainstance);
-		tdb_calendar::init(ainstance);
-		tdb_activity::init(ainstance);
-		tdb_keyvalue::init(ainstance);
-		tdb_familyer::init(ainstance);
-		tdb_friends::init(ainstance);
-		tdb_account::init(ainstance);
-		tdb_family::init(ainstance);
-		tdb_notice::init(ainstance);
-		tdb_rolekv::init(ainstance);
-		tdb_brief::init(ainstance);
-		tdb_mail::init(ainstance);
-		tdb_task::init(ainstance);
-		tdb_role::init(ainstance);
-		tdb_bag::init(ainstance);
-	}
+	//void tdb_init(bool ainstance)
+	//{
+	//	// 新增数据存储需要补全
+	//	tdb_ranklist::init(ainstance);
+	//	tdb_calendar::init(ainstance);
+	//	tdb_activity::init(ainstance);
+	//	tdb_keyvalue::init(ainstance);
+	//	tdb_familyer::init(ainstance);
+	//	tdb_friends::init(ainstance);
+	//	tdb_account::init(ainstance);
+	//	tdb_family::init(ainstance);
+	//	tdb_notice::init(ainstance);
+	//	tdb_rolekv::init(ainstance);
+	//	tdb_brief::init(ainstance);
+	//	tdb_mail::init(ainstance);
+	//	tdb_task::init(ainstance);
+	//	tdb_role::init(ainstance);
+	//	tdb_bag::init(ainstance);
+	//}
 
-	void tcrossdb_init(bool ainstance)
+	void tdb::tcrossdb_init(bool ainstance)
 	{
 		tdb_ranklist::init(ainstance);
 	}

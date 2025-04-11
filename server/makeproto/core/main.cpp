@@ -172,15 +172,16 @@ void foreachProtobufEnum(const google::protobuf::FileDescriptor* fileDescriptor,
                     struttt ltemp;
                     
                     ltemp.enumname = enumValueDescriptor->name();
-                    std::string ltempss;
-                    ngl::tools::splite(ltemp.enumname.c_str(), "_", ltempss, ltempss, ltempss);
-                    std::transform(ltempss.begin(), ltempss.end(), ltempss.begin(), [](unsigned char c) { return std::tolower(c); });
-                
+                    std::string ltempss1;
+                    std::string ltempss2;
+                    std::string ltempss3;
+                    ngl::tools::splite(ltemp.enumname.c_str(), "_", ltempss1, ltempss2, ltempss3);
+                    std::transform(ltempss3.begin(), ltempss3.end(), ltempss3.begin(), [](unsigned char c) { return std::tolower(c); });
+                    std::transform(ltempss2.begin(), ltempss2.end(), ltempss2.begin(), [](unsigned char c) { return std::tolower(c); });
+
                     ltemp.actorname = "actor_xxxx";
-                    ltemp.proname = "db_";
-                    ltemp.proname += ltempss;
-                    ltemp.name = "t";
-                    ltemp.name += ltemp.proname;
+                    ltemp.proname = std::format("{}_{}", ltempss2, ltempss3);
+                    ltemp.name = std::format("t{}", ltemp.proname);
                     lmap[enumValueDescriptor->name()] = ltemp;
                     lset.insert("actor_xxxx");
                 }
@@ -239,31 +240,101 @@ namespace ngl
     }
     m_stream << std::endl;
     m_stream << std::endl;
+    int lcount = 1;
+    do
+    {
+        for (const auto& item : lmap)
+        {
+            if (item.second.enumname == "ENUM_DB_COUNT")
+            {
+                continue;
+            }
+            
+
+            std::string enumname = std::string("pbdb::") + item.second.enumname;
+            ngl::tools::replace(" ", "", enumname, enumname);
+            std::string proname = std::string("pbdb::") + item.second.proname;
+            ngl::tools::replace(" ", "", proname, proname);
+            std::string name = item.second.name;
+            ngl::tools::replace(" ", "", name, name);
+            std::string actorname = item.second.actorname;
+            ngl::tools::replace(" ", "", actorname, actorname);
+            if (lcount == 1 && proname.find("dbcross") != std::string::npos)
+            {
+                if (item.second.actorname == "actor_xxxx")
+                {// 让编译出错 玩家确认修改
+                    m_stream << "\t#编译会出错，需要确认修改" << std::endl;
+                }
+                m_stream << std::format("\tusing {} = typedb<{}, {}, {}>;", name, enumname, proname, actorname) << std::endl;
+                continue;
+            }
+            if (lcount == 2 && proname.find("dbcross") == std::string::npos)
+            {
+                if (item.second.actorname == "actor_xxxx")
+                {// 让编译出错 玩家确认修改
+                    m_stream << "\t#编译会出错，需要确认修改" << std::endl;
+                }
+                m_stream << std::format("\tusing {} = typedb<{}, {}, {}>;", name, enumname, proname, actorname) << std::endl;
+                continue;
+            }
+        }
+        m_stream << std::endl;
+    }while(++lcount <= 2);
+
+    
+
+
+    m_stream << R"(
+	class tdb
+	{
+	public:
+		static void tdb_init(bool ainstance);
+
+		// # 定义在nactor_auto.cpp中,因为跨服是可选的
+		static void tcrossdb_init(bool ainstance);
+	};
+}//namespace ngl)";
+    lfile.write(m_stream.str());
+
+    
+    std::stringstream m_stream2;
+
+    m_stream2 << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
+    m_stream2 << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
+    m_stream2 << R"(#include "auto_actor_enum.h"
+#include "nprotocol_auto.h"
+#include "nactor_auto.h"
+
+namespace ngl
+{
+	void tdb::tdb_init(bool ainstance)
+	{
+)";
+
     for (const auto& item : lmap)
     {
         if (item.second.enumname == "ENUM_DB_COUNT")
         {
             continue;
         }
-        if (item.second.actorname == "actor_xxxx")
-        {// 让编译出错 玩家确认修改
-            m_stream << "\t#编译会出错，需要确认修改" << std::endl;
+
+        std::string enumname = std::string("pbdb::") + item.second.enumname;
+        ngl::tools::replace(" ", "", enumname, enumname);
+        std::string proname = std::string("pbdb::") + item.second.proname;
+        ngl::tools::replace(" ", "", proname, proname);
+        std::string name = item.second.name;
+        ngl::tools::replace(" ", "", name, name);
+        std::string actorname = item.second.actorname;
+        ngl::tools::replace(" ", "", actorname, actorname);
+        if (proname.find("dbcross") == std::string::npos)
+        {
+            m_stream2 << std::format("\t\t{}::init(ainstance);", name) << std::endl;
         }
-
-       std::string enumname =  std::string("pbdb::") + item.second.enumname;
-       std::string proname = std::string("pbdb::") + item.second.proname;
-        m_stream
-            << std::format(
-            "\tusing {} = typedb<{}, {}, {}>;"
-            , item.second.name
-            , enumname
-            , proname
-            , item.second.actorname
-        ) << std::endl;
     }
-
-    m_stream << R"(}//namespace ngl)";
-    lfile.write(m_stream.str());
+    m_stream2 << R"(    }
+}//namespace ngl)";
+    ngl::writefile lfile2("../../public/cpp/actor/auto_edit/nactor_auto_tdb.cpp");
+    lfile2.write(m_stream2.str());
 }
 
 

@@ -156,6 +156,10 @@ class db_friendsDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_friends> _instance;
 } _db_friends_default_instance_;
+class dbcross_testDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<dbcross_test> _instance;
+} _dbcross_test_default_instance_;
 }  // namespace pbdb
 static void InitDefaultsscc_info_db_account_db_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -544,6 +548,20 @@ static void InitDefaultsscc_info_db_task_data_schedule_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_task_data_schedule_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_task_data_schedule_db_2eproto}, {}};
 
+static void InitDefaultsscc_info_dbcross_test_db_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbdb::_dbcross_test_default_instance_;
+    new (ptr) ::pbdb::dbcross_test();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbdb::dbcross_test::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_dbcross_test_db_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_dbcross_test_db_2eproto}, {}};
+
 static void InitDefaultsscc_info_item_db_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -601,7 +619,7 @@ static void InitDefaultsscc_info_rankitem_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_rankitem_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_rankitem_db_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[31];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[32];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_db_2eproto[4];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_db_2eproto = nullptr;
 
@@ -973,6 +991,15 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_db_2eproto::offsets[] PROTOBUF
   0,
   ~0u,
   ~0u,
+  PROTOBUF_FIELD_OFFSET(::pbdb::dbcross_test, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::dbcross_test, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbdb::dbcross_test, m_name_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::dbcross_test, m_value_),
+  0,
+  ~0u,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 10, sizeof(::pbdb::db_account)},
@@ -1006,6 +1033,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 320, 330, sizeof(::pbdb::db_familyer)},
   { 335, 348, sizeof(::pbdb::db_family)},
   { 356, 364, sizeof(::pbdb::db_friends)},
+  { 367, 374, sizeof(::pbdb::dbcross_test)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1040,6 +1068,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_familyer_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_family_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_friends_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_dbcross_test_default_instance_),
 };
 
 const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -1147,21 +1176,23 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "\n\014_m_createutcB\t\n\007_m_nameB\013\n\t_m_leaderB\007"
   "\n\005_m_lvB\010\n\006_m_exp\"S\n\ndb_friends\022\021\n\004m_id\030"
   "\001 \001(\003H\000\210\001\001\022\021\n\tm_friends\030\002 \003(\003\022\026\n\016m_apply"
-  "friends\030\003 \003(\003B\007\n\005_m_id*\320\002\n\007ENUM_DB\022\023\n\017EN"
-  "UM_DB_ACCOUNT\020\000\022\020\n\014ENUM_DB_ROLE\020\001\022\021\n\rENU"
-  "M_DB_BRIEF\020\002\022\017\n\013ENUM_DB_BAG\020\003\022\024\n\020ENUM_DB"
-  "_KEYVALUE\020\004\022\020\n\014ENUM_DB_MAIL\020\005\022\022\n\016ENUM_DB"
-  "_NOTICE\020\006\022\024\n\020ENUM_DB_RANKLIST\020\007\022\024\n\020ENUM_"
-  "DB_ACTIVITY\020\010\022\020\n\014ENUM_DB_TASK\020\t\022\024\n\020ENUM_"
-  "DB_CALENDAR\020\n\022\030\n\024ENUM_DB_ROLEKEYVALUE\020\013\022"
-  "\022\n\016ENUM_DB_FAMILY\020\014\022\024\n\020ENUM_DB_FAMILYER\020"
-  "\r\022\023\n\017ENUM_DB_FRIENDS\020\016\022\021\n\rENUM_DB_COUNT\020"
-  "\017*\036\n\teranklist\022\006\n\002lv\020\000\022\t\n\005count\020\001b\006proto"
-  "3"
+  "friends\030\003 \003(\003B\007\n\005_m_id\"\?\n\014dbcross_test\022\023"
+  "\n\006m_name\030\001 \001(\tH\000\210\001\001\022\017\n\007m_value\030\002 \003(\003B\t\n\007"
+  "_m_name*\350\002\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000"
+  "\022\020\n\014ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n"
+  "\013ENUM_DB_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014"
+  "ENUM_DB_MAIL\020\005\022\022\n\016ENUM_DB_NOTICE\020\006\022\024\n\020EN"
+  "UM_DB_RANKLIST\020\007\022\024\n\020ENUM_DB_ACTIVITY\020\010\022\020"
+  "\n\014ENUM_DB_TASK\020\t\022\024\n\020ENUM_DB_CALENDAR\020\n\022\030"
+  "\n\024ENUM_DB_ROLEKEYVALUE\020\013\022\022\n\016ENUM_DB_FAMI"
+  "LY\020\014\022\024\n\020ENUM_DB_FAMILYER\020\r\022\023\n\017ENUM_DB_FR"
+  "IENDS\020\016\022\021\n\rENUM_DB_COUNT\020\017\022\026\n\021ENUM_DBCRO"
+  "SS_TEST\020\351\007*\036\n\teranklist\022\006\n\002lv\020\000\022\t\n\005count"
+  "\020\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[31] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[32] = {
   &scc_info_db_account_db_2eproto.base,
   &scc_info_db_activity_db_2eproto.base,
   &scc_info_db_activity_MDrawcomplianceEntry_DoNotUse_db_2eproto.base,
@@ -1189,6 +1220,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
   &scc_info_db_task_MRundatasEntry_DoNotUse_db_2eproto.base,
   &scc_info_db_task_data_db_2eproto.base,
   &scc_info_db_task_data_schedule_db_2eproto.base,
+  &scc_info_dbcross_test_db_2eproto.base,
   &scc_info_item_db_2eproto.base,
   &scc_info_mail_db_2eproto.base,
   &scc_info_mailitem_db_2eproto.base,
@@ -1196,10 +1228,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 4561,
-  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 31, 0,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 4650,
+  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 32, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
-  file_level_metadata_db_2eproto, 31, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
+  file_level_metadata_db_2eproto, 32, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1273,6 +1305,7 @@ bool ENUM_DB_IsValid(int value) {
     case 13:
     case 14:
     case 15:
+    case 1001:
       return true;
     default:
       return false;
@@ -8814,6 +8847,267 @@ void db_friends::InternalSwap(db_friends* other) {
 }
 
 
+// ===================================================================
+
+void dbcross_test::InitAsDefaultInstance() {
+}
+class dbcross_test::_Internal {
+ public:
+  using HasBits = decltype(std::declval<dbcross_test>()._has_bits_);
+  static void set_has_m_name(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+dbcross_test::dbcross_test(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  m_value_(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbdb.dbcross_test)
+}
+dbcross_test::dbcross_test(const dbcross_test& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_),
+      m_value_(from.m_value_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  m_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_m_name()) {
+    m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_m_name(),
+      GetArena());
+  }
+  // @@protoc_insertion_point(copy_constructor:pbdb.dbcross_test)
+}
+
+void dbcross_test::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_dbcross_test_db_2eproto.base);
+  m_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+dbcross_test::~dbcross_test() {
+  // @@protoc_insertion_point(destructor:pbdb.dbcross_test)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void dbcross_test::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  m_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void dbcross_test::ArenaDtor(void* object) {
+  dbcross_test* _this = reinterpret_cast< dbcross_test* >(object);
+  (void)_this;
+}
+void dbcross_test::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void dbcross_test::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const dbcross_test& dbcross_test::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_dbcross_test_db_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void dbcross_test::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbdb.dbcross_test)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  m_value_.Clear();
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    m_name_.ClearNonDefaultToEmpty();
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* dbcross_test::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string m_name = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_m_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.dbcross_test.m_name"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated int64 m_value = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt64Parser(_internal_mutable_m_value(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16) {
+          _internal_add_m_value(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* dbcross_test::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbdb.dbcross_test)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string m_name = 1;
+  if (_internal_has_m_name()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_m_name().data(), static_cast<int>(this->_internal_m_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "pbdb.dbcross_test.m_name");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_m_name(), target);
+  }
+
+  // repeated int64 m_value = 2;
+  {
+    int byte_size = _m_value_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt64Packed(
+          2, _internal_m_value(), byte_size, target);
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbdb.dbcross_test)
+  return target;
+}
+
+size_t dbcross_test::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbdb.dbcross_test)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated int64 m_value = 2;
+  {
+    size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      Int64Size(this->m_value_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
+    }
+    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
+    _m_value_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // string m_name = 1;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_m_name());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void dbcross_test::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbdb.dbcross_test)
+  GOOGLE_DCHECK_NE(&from, this);
+  const dbcross_test* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<dbcross_test>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbdb.dbcross_test)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbdb.dbcross_test)
+    MergeFrom(*source);
+  }
+}
+
+void dbcross_test::MergeFrom(const dbcross_test& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbdb.dbcross_test)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  m_value_.MergeFrom(from.m_value_);
+  if (from._internal_has_m_name()) {
+    _internal_set_m_name(from._internal_m_name());
+  }
+}
+
+void dbcross_test::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbdb.dbcross_test)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void dbcross_test::CopyFrom(const dbcross_test& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbdb.dbcross_test)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool dbcross_test::IsInitialized() const {
+  return true;
+}
+
+void dbcross_test::InternalSwap(dbcross_test* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  m_value_.InternalSwap(&other->m_value_);
+  m_name_.Swap(&other->m_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata dbcross_test::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace pbdb
 PROTOBUF_NAMESPACE_OPEN
@@ -8909,6 +9203,9 @@ template<> PROTOBUF_NOINLINE ::pbdb::db_family* Arena::CreateMaybeMessage< ::pbd
 }
 template<> PROTOBUF_NOINLINE ::pbdb::db_friends* Arena::CreateMaybeMessage< ::pbdb::db_friends >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbdb::db_friends >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbdb::dbcross_test* Arena::CreateMaybeMessage< ::pbdb::dbcross_test >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbdb::dbcross_test >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
