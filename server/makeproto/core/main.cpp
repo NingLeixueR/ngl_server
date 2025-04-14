@@ -14,6 +14,8 @@
 #include <google/protobuf/dynamic_message.h>
 #include <google/protobuf/descriptor.h>
 
+#include "net.pb.h"
+
 #include "tools.h"
 #include "operator_file.h"
 #include "xmlprotocol.h"

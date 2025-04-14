@@ -9,8 +9,13 @@ package pbnet;
 //option optimize_for = LITE_RUNTIME;	//不支持反射，代码和性能会提高不少
 option optimize_for = SPEED;
 
+// G2C					game->client
+// C2G					client->actor_role
+// C2G2					二次转发client->actor_role->ACTOR_XXX
+// XXX					特殊actor处理
+
 // [回复] 服务器用来回复端，一般用于cmd协议，用来返回一个字符串回显
-message PROBUFF_NET_MSG_RESPONSE
+message PROBUFF_NET_MSG_RESPONSE//G2C [actor_robot]
 {
 	optional string m_msg		= 1;
 };
@@ -21,13 +26,13 @@ message PROBUFF_NET_HEARTBEAT
 };
 
 // [请求]充值
-message PROBUFF_NET_RECHARGE
+message PROBUFF_NET_RECHARGE//C2G [actor_role]
 {
 	optional int32 m_rechargeid			= 1;
 };
 
 // [回复]充值
-message PROBUFF_NET_RECHARGE_RESPONSE
+message PROBUFF_NET_RECHARGE_RESPONSE//G2C [actor_robot]
 {
 	optional int32 m_rechargeid			= 1;
 	enum Estat
@@ -41,7 +46,7 @@ message PROBUFF_NET_RECHARGE_RESPONSE
 };
 
 // 通知客户端充值发货
-message PROBUFF_NET_DELIVER_GOODS_RECHARGE
+message PROBUFF_NET_DELIVER_GOODS_RECHARGE//G2C [actor_robot]
 {
 	optional int32 m_rechargeid			= 1;
 	optional string m_orderid			= 2;
@@ -51,36 +56,36 @@ message PROBUFF_NET_DELIVER_GOODS_RECHARGE
 
 
 // [发送]错误码
-message PROBUFF_NET_ERROR
+message PROBUFF_NET_ERROR//G2C [actor_robot]
 {
 	optional string m_errmessage	= 2; // 错误描述
 };
 
 
 // [请求]服务器时间
-message PROBUFF_NET_GET_TIME
+message PROBUFF_NET_GET_TIME//C2G [actor_role]
 {
 };
 
 // [回复]服务器时间
-message PROBUFF_NET_GET_TIME_RESPONSE
+message PROBUFF_NET_GET_TIME_RESPONSE//G2C [actor_robot]
 {
 	optional int32 m_utc			= 1; // 错误码
 };
 
 // [请求]获取公告列表
-message PROBUFF_NET_NOTICE
+message PROBUFF_NET_NOTICE//C2G_ACTOR_NOTICE
 {
 };
 
 // [回复]获取公告列表
-message PROBUFF_NET_NOTICE_RESPONSE
+message PROBUFF_NET_NOTICE_RESPONSE//C2G2 [actor_notice]
 {
 	repeated pbdb.db_notice m_notices		= 1;
 };
 
 // [请求]登录账号
-message PROBUFF_NET_ACOUNT_LOGIN
+message PROBUFF_NET_ACOUNT_LOGIN//XXX [actor_login]
 {
 	optional int32 m_area			= 1;	// 区服id
 	optional string m_account		= 2;	// 帐号
@@ -88,7 +93,7 @@ message PROBUFF_NET_ACOUNT_LOGIN
 };
 
 // [回复]登录账号
-message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
 {
 	optional int32 m_area			= 1;				// 区服id
 	optional int64 m_roleid			= 2;				// 玩家id
@@ -98,7 +103,7 @@ message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 };
 
 // [请求]玩家登录
-message PROBUFF_NET_ROLE_LOGIN
+message PROBUFF_NET_ROLE_LOGIN//XXX [actor_manage_robot,actor_role]
 {
 	optional int64 m_roleid			= 1;	// 玩家id
 	optional string m_session		= 2;
@@ -108,12 +113,12 @@ message PROBUFF_NET_ROLE_LOGIN
 };
 
 // [请求]获取角色信息
-message PROBUFF_NET_ROLE_SYNC
+message PROBUFF_NET_ROLE_SYNC//C2G [actor_role]
 {
 };
 
 // [回复]获取角色信息
-message PROBUFF_NET_ROLE_SYNC_RESPONSE
+message PROBUFF_NET_ROLE_SYNC_RESPONSE//G2C [actor_robot]
 {
 	optional pbdb.db_role m_role	= 1;
 	optional pbdb.db_bag m_bag		= 2;
@@ -121,23 +126,23 @@ message PROBUFF_NET_ROLE_SYNC_RESPONSE
 };
 
 // [请求]获取背包信息
-message PROBUFF_NET_BAG_SYNC
+message PROBUFF_NET_BAG_SYNC//C2G [actor_role]
 {
 };
 
 // [回复]获取背包信息
-message PROBUFF_NET_BAG_SYNC_RESPONSE
+message PROBUFF_NET_BAG_SYNC_RESPONSE//G2C [actor_robot]
 {
 	optional pbdb.db_bag m_bag			= 1;
 };
 
 // [请求]更新背包信息
-message PROBUFF_NET_BAG_UPDATE
+message PROBUFF_NET_BAG_UPDATE//C2G [actor_role]
 {
 };
 
 // [回复]更新背包信息
-message PROBUFF_NET_BAG_UPDATE_RESPONSE
+message PROBUFF_NET_BAG_UPDATE_RESPONSE//G2C [actor_robot]
 {
 	message delitem
 	{
@@ -157,7 +162,7 @@ message PROBUFF_NET_BAG_UPDATE_RESPONSE
 };
 
 // [请求]cmd协议
-message PROBUFF_NET_CMD
+message PROBUFF_NET_CMD//C2G [actor_role]
 {
 	// ## 命令							注释
 	// ## /time						获取服务器时间
@@ -171,7 +176,7 @@ message PROBUFF_NET_CMD
 };
 
 // [请求]聊天
-enum enum_logic_chat 
+enum enum_logic_chat
 {
 	get_chat_list		= 0;	// 获取聊天列表
 	chat_speak			= 1;	// 发言
@@ -186,7 +191,7 @@ enum enum_chat_channel
 	enum_chat_none			= 3;	// 错误
 };
 
-message PROBUFF_NET_CHAT
+message PROBUFF_NET_CHAT//C2G2 [actor_chat]
 {
 	optional int32 m_type				= 1; // enum_logic_chat
 	optional int32 m_channelid			= 2; // enum_chat_channel
@@ -202,7 +207,7 @@ message chatitem
 	optional int32 m_utc		= 4;
 };
 	
-message PROBUFF_NET_CHAT_RESPONSE
+message PROBUFF_NET_CHAT_RESPONSE//G2C [actor_robot]
 {
 	optional int32 m_type				= 1; // enum_logic_chat
 	optional int32 m_channelid			= 2; // tab_chat.m_id
@@ -211,63 +216,63 @@ message PROBUFF_NET_CHAT_RESPONSE
 };
 
 // [请求]切换线路
-message PROBUFF_NET_SWITCH_LINE
+message PROBUFF_NET_SWITCH_LINE//C2G [actor_role]
 {
 	optional int32 m_line				= 1;
 };
 
 // [回复]切换线路
-message PROBUFF_NET_SWITCH_LINE_RESPONSE
+message PROBUFF_NET_SWITCH_LINE_RESPONSE//G2C [actor_robot]
 {
 	optional int32 m_line				= 1;
 	optional bool m_stat				= 2;
 };
 
 // [请求]获取邮件列表
-message PROBUFF_NET_MAIL_LIST
+message PROBUFF_NET_MAIL_LIST//C2G2 [actor_mail]
 {
 };
 
 // [回复]获取邮件列表
-message PROBUFF_NET_MAIL_LIST_RESPONSE
+message PROBUFF_NET_MAIL_LIST_RESPONSE//G2C [actor_robot]
 {
 	map<int32, pbdb.mail> m_mail			= 1; // key mail id
 };
 
 // [请求]读取邮件
-message PROBUFF_NET_MAIL_READ
+message PROBUFF_NET_MAIL_READ//C2G2 [actor_mail]
 {
 	optional int64 m_mailid				= 1;
 };
 
 // [回复]读取邮件
-message PROBUFF_NET_MAIL_READ_RESPONSE
+message PROBUFF_NET_MAIL_READ_RESPONSE//G2C [actor_robot]
 {
 	optional int64 m_mailid				= 1;
 	optional bool m_stat				= 2;
 };
 
 // [请求]领取邮件附件
-message PROBUFF_NET_MAIL_DRAW
+message PROBUFF_NET_MAIL_DRAW//C2G2 [actor_mail]
 {
 	optional int64 m_mailid				= 1;
 };
 
 // [回复]领取邮件附件
-message PROBUFF_NET_MAIL_DRAW_RESPONSE
+message PROBUFF_NET_MAIL_DRAW_RESPONSE//G2C [actor_robot]
 {
 	optional int64 m_mailid				= 1;
 	optional bool m_stat				= 2;
 };
 
 // [请求]领取邮件附件
-message PROBUFF_NET_MAIL_DEL
+message PROBUFF_NET_MAIL_DEL//C2G2 [actor_mail]
 {
 	optional int64 m_mailid				= 1;
 };
 
 // [回复]领取邮件附件
-message PROBUFF_NET_MAIL_DEL_RESPONSE
+message PROBUFF_NET_MAIL_DEL_RESPONSE//G2C [actor_robot]
 {
 	optional int64 m_mailid				= 1;
 	optional bool m_stat				= 2;

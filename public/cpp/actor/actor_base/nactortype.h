@@ -18,7 +18,6 @@ namespace ngl
 		//#######################  非单例  #####################
 		ACTOR_ROLE = 1,
 		ACTOR_ROBOT,												// 机器人
-		ACTOR_MANAGE_ROLE,											// 负责创建actor_role
 
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
@@ -29,6 +28,7 @@ namespace ngl
 		ACTOR_GATEWAY_C2G,										// 网关 [Client]->[Game]
 		ACTOR_GATEWAY_G2C,										// 网关 [Game]	->[Client]
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
+		ACTOR_MANAGE_ROLE,										// 负责创建actor_role
 		ACTOR_LOG,
 		ACTOR_KCP,
 		ACTOR_MANAGE_ROBOT,
@@ -42,7 +42,6 @@ namespace ngl
 		ACTOR_RANKLIST,											// 排行榜
 		ACTOR_ACTIVITY_MANAGE,									// 活动管理
 		ACTOR_BRIEF,											// brief简要信息
-		ACTOR_CROSS,											// 跨服
 		ACTOR_CALENDAR,											// 脚本日历
 		ACTOR_KEYVALUE,											// 公共key/value
 		ACTOR_FAMILY,											// 军团家族
