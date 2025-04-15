@@ -7,6 +7,7 @@
 #include "tools.h"
 #include "sha1.h"
 
+#include <filesystem>
 #include <iostream>
 #include <cassert>
 #include <cstdint>
@@ -1269,7 +1270,7 @@ namespace ngl
 				break;
 			}
 		}
-		return lvec;		
+		return lvec;
 	}
 
 	bool tools::isnumber(const std::string& anumber)
@@ -1288,7 +1289,7 @@ namespace ngl
 		return ttab_servers::tab()->m_name;
 	}
 
-	
+
 	auto g_tools_now = std::chrono::high_resolution_clock::now();
 	auto g_tools_now_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(g_tools_now).time_since_epoch().count();
 	std::random_device g_tools_rd;
@@ -1302,4 +1303,34 @@ namespace ngl
 		monopoly_lock(g_tools_mutex);
 		return g_tools_dis(g_tools_gen);
 	}
+
+	void tools::transform_tolower(std::string& adata)
+	{
+		std::ranges::transform(adata, adata.begin(), tolower);
+	}
+
+	void tools::transform_toupper(std::string& adata)
+	{
+		std::ranges::transform(adata, adata.begin(), toupper);
+	}
+
+	bool tools::directories_exists(const std::string& apath)
+	{
+		return std::filesystem::exists(apath);
+	}
+
+	bool tools::file_exists(const std::string& apath)
+	{
+		return std::filesystem::exists(apath) && std::filesystem::is_regular_file(apath);
+	}
+
+	bool tools::create_directories(const std::string& apath)
+	{
+		if (!std::filesystem::exists(apath))
+		{
+			return std::filesystem::create_directories(apath);
+		}
+		return true;
+	}
+
 }// namespace ngl

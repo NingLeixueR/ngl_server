@@ -50,6 +50,8 @@ namespace ngl
 
 		void close_fstream();
 
+		bool create_directories(const std::string& apath);
+
 		void create();
 
 		virtual void printf(const np_logitem* alog) = 0;

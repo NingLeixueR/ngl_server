@@ -23,9 +23,15 @@ namespace ngl
 			TF::template func<T>(args...);
 		}
 	public:
-		template <typename T, typename ...ARG>
+		struct arg_null { def_portocol(arg_null) };
+
+		template <typename T = arg_null, typename ...ARG>
 		static void func(TARG... args)
 		{
+			if constexpr (std::is_same<T, arg_null>())
+			{
+				return;
+			}
 			func2<T>(args...);
 			if constexpr (sizeof...(ARG) > 1)
 			{
