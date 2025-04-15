@@ -24,7 +24,7 @@ namespace ngl
 			return actor_instance<actor_kcp>::instance();
 		}
 
-		virtual ~actor_kcp() {}
+		virtual ~actor_kcp() = default;
 
 		static void nregister();
 

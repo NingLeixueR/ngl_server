@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-15 09:55:23
+// 创建时间 25-04-15 21:24:12
 #include "PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE.cpp"
 #include "PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE.cpp"
 #include "PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.cpp"
@@ -191,6 +191,7 @@
 #include "actor_gateway_c2g.cpp"
 #include "actor_base_create.cpp"
 #include "actor_log_handle.cpp"
+#include "actor_kcp_handle.cpp"
 #include "nactor_auto_tdb.cpp"
 #include "actor_gm_handle.cpp"
 #include "actor_csvserver.cpp"
