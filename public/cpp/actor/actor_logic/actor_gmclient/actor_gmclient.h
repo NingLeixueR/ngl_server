@@ -31,23 +31,17 @@ namespace ngl
 			return actor_instance<actor_gmclient>::instance();
 		}
 
-		virtual void init() {}
+		virtual ~actor_gmclient() = default;
+
+		static ENUM_ACTOR actor_type();
+
+		static i64_actorid actorid(i16_area area);
+
+		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
-
-		virtual ~actor_gmclient() {}
-
-		virtual void loaddb_finish(bool adbishave) {}
-
-		static ENUM_ACTOR actor_type()
-		{
-			return ACTOR_GMCLIENT;
-		}
-
-		static i64_actorid actorid(i16_area area)
-		{
-			return nguid::make(actor_type(), area, ttab_servers::tab()->m_id);
-		}
 
 		struct protocols
 		{
@@ -61,6 +55,7 @@ namespace ngl
 
 		// # GM²Ù×÷
 		using handle_cmd = cmd<actor_gmclient, std::string, int, const ngl::json_read&>;
+
 		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl

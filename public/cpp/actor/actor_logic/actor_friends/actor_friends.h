@@ -38,28 +38,13 @@ namespace ngl
 
 		virtual ~actor_friends() = default;
 
-		virtual void init()
-		{
-			m_friends.set(this);
-		}
+		static ENUM_ACTOR actor_type();
+
+		static i64_actorid actorid(i16_area area);
+
+		virtual void init();
 		
-		virtual void loaddb_finish(bool adbishave)
-		{
-			actor_events_logic::tfun::func<>(
-				eevents_logic_rolelogin, actorid(tab_self_area),
-				eevents_logic_roleoffline, actorid(tab_self_area)
-			);
-		}
-
-		static ENUM_ACTOR actor_type()
-		{
-			return ACTOR_FRIENDS;
-		}
-
-		static i64_actorid actorid(i16_area area)
-		{
-			return nguid::make(actor_type(), area, nguid::none_actordataid());
-		}
+		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
 

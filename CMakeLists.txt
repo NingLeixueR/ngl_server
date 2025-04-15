@@ -102,6 +102,10 @@ INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_family/)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_family/message)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_activity_manage/)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_activity_manage/message)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_example_match/)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_example_match/message)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_gmclient/)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_gmclient/message)
 
 
 

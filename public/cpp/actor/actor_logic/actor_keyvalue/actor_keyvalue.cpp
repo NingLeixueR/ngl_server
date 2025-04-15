@@ -21,12 +21,12 @@ namespace ngl
 		tdb_keyvalue::nsp_ser::init(&m_keyvaluedb);
 	}
 
-	void actor_keyvalue::init() final
+	void actor_keyvalue::init()
 	{
 		m_keyvaluedb.set(this);
 	}
 
-	void actor_keyvalue::loaddb_finish(bool adbishave) final
+	void actor_keyvalue::loaddb_finish(bool adbishave)
 	{
 		log_error()->print("actor_keyvalue load finish!!!");
 	}

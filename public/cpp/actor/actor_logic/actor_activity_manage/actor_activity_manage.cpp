@@ -37,6 +37,19 @@ namespace ngl
 		return nguid::make(ACTOR_ACTIVITY_MANAGE, tab_self_area, nguid::none_actordataid());
 	}
 
+	void actor_activity_manage::add_activity(int64_t actorid, std::shared_ptr<activity>& activ)
+	{
+		auto itor = m_allactivity.insert(std::make_pair(actorid, activ));
+		if (itor.second == false)
+		{
+			return;
+		}
+		if (activ->calendarid() < 0)
+		{
+			activ->post_timer();
+		}
+	}
+
 	void actor_activity_manage::init()
 	{
 		np_timerparm tparm;
