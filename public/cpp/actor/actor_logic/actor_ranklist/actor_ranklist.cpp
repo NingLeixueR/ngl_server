@@ -36,7 +36,7 @@ namespace ngl
 		m_ranklist.set(this);
 	}
 
-	void loaddb_finish(bool adbishave) 
+	void actor_ranklist::loaddb_finish(bool adbishave)
 	{
 	}
 

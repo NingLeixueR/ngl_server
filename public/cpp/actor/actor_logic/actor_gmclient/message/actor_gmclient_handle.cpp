@@ -2,34 +2,6 @@
 
 namespace ngl
 {
-	actor_gmclient::actor_gmclient() :
-		actor(
-			actorparm
-			{
-				.m_parm
-				{
-					.m_type = ACTOR_GMCLIENT,
-					.m_area = tab_self_area,
-					.m_id = ttab_servers::tab()->m_id,
-				},
-				.m_weight = 0x7fffffff,
-			})
-	{
-	}
-
-	void actor_gmclient::nregister()
-	{
-		// Ð­Òé×¢²á
-		register_handle_custom<actor_gmclient>::func<
-			mforward<np_gm>
-		>(false);
-	}
-
-	void actor_gmclient::get_allprotocol(protocols& apro)
-	{
-		tprotocol::get_allprotocol(apro.m_promap, apro.m_custommap);
-	}
-
 	bool actor_gmclient::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
@@ -43,7 +15,7 @@ namespace ngl
 			handle_cmd::push("all_protocol", [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<protocols> lpro(id, "all_protocol");
-					get_allprotocol(lpro.m_data);					
+					get_allprotocol(lpro.m_data);
 				}
 			);
 			handle_cmd::push("server_stat", [this](int id, const ngl::json_read& aos)
@@ -64,7 +36,7 @@ namespace ngl
 					if (aos.read("data", ltime))
 					{
 						bool lbool = localtime::settime(ltime.m_time);
-						lpro.m_data = std::format("set time {} # {}", localtime::time2str("%Y-%m-%d %H:%M:%S"), lbool? "success":"fail");
+						lpro.m_data = std::format("set time {} # {}", localtime::time2str("%Y-%m-%d %H:%M:%S"), lbool ? "success" : "fail");
 					}
 				}
 			);

@@ -40,7 +40,7 @@ namespace ngl
 
 		static i64_actorid actorid();
 
-		virtual void loaddb_finish(bool adbishave)£»
+		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
 

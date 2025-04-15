@@ -46,36 +46,18 @@ namespace ngl
 		void activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 		void activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 	public:
-		static ENUM_ACTOR actor_type()
-		{
-			return ACTOR_ACTIVITY_MANAGE;
-		}
+		static ENUM_ACTOR actor_type();
 
-		static i64_actorid actorid()
-		{
-			return nguid::make(ACTOR_ACTIVITY_MANAGE, tab_self_area, nguid::none_actordataid());
-		}
+		static i64_actorid actorid();
 
-		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ)
-		{
-			auto itor = m_allactivity.insert(std::make_pair(actorid, activ));
-			if (itor.second == false)
-			{
-				return;
-			}
-			if (activ->calendarid() < 0)
-			{
-				activ->post_timer();
-			}
-		}
-
-		static void nregister();
-		
-		bool handle(const message<np_actor_activity>& adata);
+		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ);
 
 		virtual void init();
 
+		static void nregister();
+
 		bool timer_handle(const message<np_timerparm>& adata);
-	private:
+
+		bool handle(const message<np_actor_activity>& adata);
 	};
 }//namespace ngl
