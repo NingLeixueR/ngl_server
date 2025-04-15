@@ -106,6 +106,8 @@ INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_example_match/)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_example_match/message)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_gmclient/)
 INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_gmclient/message)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_kcp/)
+INCLUDE_DIRECTORIES(public/cpp/actor/actor_logic/actor_kcp/message)
 
 
 
