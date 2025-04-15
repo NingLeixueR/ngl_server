@@ -90,15 +90,6 @@ namespace ngl
 		m_stream.flush();
 	}
 
-	bool file_exists(const std::string& apath)
-	{
-		if (!std::filesystem::exists(apath))
-		{
-			return std::filesystem::create_directories(apath);
-		}
-		return true;
-	}
-
 	bool logfile::check_count()const
 	{
 		return m_count >= sysconfig::logline();
@@ -133,10 +124,22 @@ namespace ngl
 		return lnone;
 	}
 
+	bool logfile::create_directories(const std::string& apath)
+	{
+		if (tools::directories_exists(apath) == false)
+		{
+			if (tools::create_directories(apath) == false)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	void logfile::create()
 	{	
 		std::string lpath = std::format("./{}", m_config.m_dir);
-		if (file_exists(lpath) == false)
+		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}
@@ -148,21 +151,21 @@ namespace ngl
 			Throw("not create path {}", lpath);
 		}
 		lpath = std::format("{}/{}", lpath, lname);
-		if (file_exists(lpath) == false)
+		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}
 
 		std::string ltimestr = tools::time2str((int)localtime::gettime(), "%Y%m%d");
 		lpath = std::format("{}/{}", lpath, ltimestr);
-		if (file_exists(lpath) == false)
+		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}
 
 		std::string lelogname = elog_name(nlogactor::log_type(m_config.m_id));
 		lpath = std::format("{}/{}", lpath, lelogname);
-		if (file_exists(lpath) == false)
+		if (create_directories(lpath) == false)
 		{
 			Throw("not create path {}", lpath);
 		}

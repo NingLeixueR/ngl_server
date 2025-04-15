@@ -752,6 +752,18 @@ namespace ngl
 		static const std::string& server_name();
 
 		static int rand();
+
+		// 字符串大小写转换
+		static void transform_tolower(std::string& adata);
+		static void transform_toupper(std::string& adata);
+
+		// 判断文件夹是否存在
+		static bool directories_exists(const std::string& apath);
+
+		// 判断文件是否存在
+		static bool file_exists(const std::string& apath);
+
+		static bool create_directories(const std::string& apath);
 	};
 
 	template <typename T>
