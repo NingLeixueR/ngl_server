@@ -45,7 +45,7 @@ message PROBUFF_NET_RECHARGE_RESPONSE//G2C [actor_robot]
 	optional string m_orderid			= 3;
 };
 
-// 通知客户端充值发货
+// [回复]通知客户端充值发货
 message PROBUFF_NET_DELIVER_GOODS_RECHARGE//G2C [actor_robot]
 {
 	optional int32 m_rechargeid			= 1;
@@ -186,6 +186,7 @@ enum enum_chat_channel
 	enum_chat_none			= 3;	// 错误
 };
 
+// [请求]聊天
 message PROBUFF_NET_CHAT//C2G2 [actor_chat]
 {
 	optional int32 m_type				= 1; // enum_logic_chat
@@ -193,7 +194,6 @@ message PROBUFF_NET_CHAT//C2G2 [actor_chat]
 	optional string m_content			= 3; // m_type == chat_speak
 };
 
-// [回复]聊天
 message chatitem
 {
 	optional int64 m_roleid	= 1;
@@ -202,6 +202,7 @@ message chatitem
 	optional int32 m_utc		= 4;
 };
 	
+// [回复]聊天
 message PROBUFF_NET_CHAT_RESPONSE//G2C [actor_robot]
 {
 	optional int32 m_type				= 1; // enum_logic_chat
@@ -273,7 +274,7 @@ message PROBUFF_NET_MAIL_DEL_RESPONSE//G2C [actor_robot]
 	optional bool m_stat				= 2;
 };
 
-// 获取连接kcp-session
+// [请求]获取连接kcp-session
 message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
 {
 	optional int64	m_serverid	= 1;		// 玩家要进行kcp连接的服务器
@@ -282,13 +283,14 @@ message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
 	optional int32	m_conv		= 4;
 };
 
+// [回复]kcp-session
 message PROBUFF_NET_KCPSESSION_RESPONSE//G2C [actor_robot]
 {
 	optional string m_kcpsession	= 1;
 };
 
 
-// 领取任务奖励
+// [请求]领取任务奖励
 message PROBUFF_NET_TASK_RECEIVE_AWARD//C2G [actor_role]
 {
 	optional int32	m_taskid	= 1;		// 任务id
@@ -300,6 +302,7 @@ message drop_item
 	optional int32	m_count	= 2;
 };
 
+// [回复]领取任务奖励
 message PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE//G2C [actor_robot]
 {
 	optional int32	m_taskid			= 1;		// 任务id
@@ -356,7 +359,6 @@ message PROBUFF_NET_CEDE_FAMIL_RESPONSE//G2C [actor_robot]
 {
 	optional int32  m_stat				= 1;		// 状态
 }
-
 
 // [请求]离开军团
 message PROBUFF_NET_LEAVE_FAMIL//C2G2 [actor_family]
