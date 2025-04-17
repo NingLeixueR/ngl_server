@@ -683,8 +683,8 @@ namespace ngl
         }
         // 判断文件是否存在
         lpath += std::format("/{}", ltolower);
-        std::string lpathH = std::format("{}.h", lpath);
-        std::string lpathCPP = std::format("{}.cpp", lpath);
+        std::string lpathH = std::format("{}_1.h", lpath);
+        std::string lpathCPP = std::format("{}_1.cpp", lpath);
         if (ngl::tools::file_exists(lpathH) || ngl::tools::file_exists(lpathCPP))
         {
             return;
@@ -884,7 +884,7 @@ namespace ngl
         {
             enum_actor(item);
         }
-
+        return;
         // 读取.pro文件
         //message PROBUFF_NET_MSG_RESPONSE//G2C [actor_robot]
         struct vepro
