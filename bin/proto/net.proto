@@ -103,7 +103,7 @@ message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
 };
 
 // [请求]玩家登录
-message PROBUFF_NET_ROLE_LOGIN//XXX [actor_manage_robot,actor_role]
+message PROBUFF_NET_ROLE_LOGIN//XXX [actor_gateway,actor_manage_role]
 {
 	optional int64 m_roleid			= 1;	// 玩家id
 	optional string m_session		= 2;
@@ -136,13 +136,8 @@ message PROBUFF_NET_BAG_SYNC_RESPONSE//G2C [actor_robot]
 	optional pbdb.db_bag m_bag			= 1;
 };
 
-// [请求]更新背包信息
-message PROBUFF_NET_BAG_UPDATE//C2G [actor_role]
-{
-};
-
 // [回复]更新背包信息
-message PROBUFF_NET_BAG_UPDATE_RESPONSE//G2C [actor_robot]
+message PROBUFF_NET_BAG_UPDATE//G2C [actor_robot]
 {
 	message delitem
 	{

@@ -24,7 +24,7 @@ enum EPLAY_TYPE
 }
 
 // 加入玩法
-message PROBUFF_EXAMPLE_PLAY_JOIN//G2C2 [actor_example_match]
+message PROBUFF_EXAMPLE_PLAY_JOIN//C2G2 [actor_example_match]
 {
 	optional ECROSS m_cross			= 1;
 	optional EPLAY_TYPE m_type		= 2;
@@ -75,14 +75,14 @@ message PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT//G2C [actor_robot]
 };
 
 // 玩家确认加入
-message PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM//G2C2 [actor_example_match]
+message PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM//C2G2 [actor_example_match]
 {
 	optional bool m_isconfirm				= 1; // 是否需要确认加入
 	optional int32 m_roomid					= 2; // 房间号
 };
 
 // 取消匹配
-message PROBUFF_EXAMPLE_PLAY_CANCEL//G2C2 [actor_example_match]
+message PROBUFF_EXAMPLE_PLAY_CANCEL//C2G2 [actor_example_match]
 {
 	optional EPLAY_TYPE m_type				= 1;
 	optional int32 m_roomid					= 2; // 房间号
@@ -102,7 +102,7 @@ message PROBUFF_EXAMPLE_PLAY_CREATE//G2C [actor_robot]
 }
 
 // 进入例子游戏
-message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE//G2C2 [actor_example_manage]
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE//C2G2 [actor_example_manage]
 {
 	optional ECROSS m_cross					= 1;
 	optional EPLAY_TYPE m_type				= 2;
@@ -128,7 +128,7 @@ message PROBUFF_EXAMPLE_GUESS_NUMBER_INFO//G2C [actor_robot]
 	optional int64 m_whoguess					= 3; // 谁猜测
 };
 
-message PROBUFF_EXAMPLE_GUESS_NUMBER//G2C2 [actor_example_manage]
+message PROBUFF_EXAMPLE_GUESS_NUMBER//C2G2 [actor_example_guess_number]
 {
 	optional int32 m_guessnumber				= 1; // 猜测值
 };
