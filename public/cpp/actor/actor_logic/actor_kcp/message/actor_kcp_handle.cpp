@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	bool actor_kcp::handle(message<np_actor_kcp>& adata)
+	bool actor_kcp::handle(const message<np_actor_kcp>& adata)
 	{
 		auto lpram = adata.get_data();
 		auto lpack = adata.m_pack;

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-11 18:03:43】
+ // 创建时间【2025-04-16 15:45:42】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -72,11 +72,6 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_MAIL_DEL);
             mkdef_map(pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_SYNC_ATTRIBUTE);
-            mkdef_map(pbnet::PROBUFF_NET_SYNC_UNIT);
-            mkdef_map(pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW);
-            mkdef_map(pbnet::PROBUFF_NET_SYNC_POSITION);
-            mkdef_map(pbnet::PROBUFF_NET_CHANGE_ANGLE);
             mkdef_map(pbnet::PROBUFF_NET_KCPSESSION);
             mkdef_map(pbnet::PROBUFF_NET_KCPSESSION_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD);

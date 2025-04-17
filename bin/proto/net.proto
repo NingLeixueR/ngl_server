@@ -74,12 +74,12 @@ message PROBUFF_NET_GET_TIME_RESPONSE//G2C [actor_robot]
 };
 
 // [请求]获取公告列表
-message PROBUFF_NET_NOTICE//C2G_ACTOR_NOTICE
+message PROBUFF_NET_NOTICE//C2G2 [actor_notice]
 {
 };
 
 // [回复]获取公告列表
-message PROBUFF_NET_NOTICE_RESPONSE//C2G2 [actor_notice]
+message PROBUFF_NET_NOTICE_RESPONSE//G2C [actor_robot]
 {
 	repeated pbdb.db_notice m_notices		= 1;
 };
@@ -278,6 +278,237 @@ message PROBUFF_NET_MAIL_DEL_RESPONSE//G2C [actor_robot]
 	optional bool m_stat				= 2;
 };
 
+// 获取连接kcp-session
+message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
+{
+	optional int64	m_serverid	= 1;		// 玩家要进行kcp连接的服务器
+	optional string m_uip		= 2;
+	optional int32	m_uport		= 3;
+	optional int32	m_conv		= 4;
+};
+
+message PROBUFF_NET_KCPSESSION_RESPONSE//G2C [actor_robot]
+{
+	optional string m_kcpsession	= 1;
+};
+
+
+// 领取任务奖励
+message PROBUFF_NET_TASK_RECEIVE_AWARD//C2G [actor_role]
+{
+	optional int32	m_taskid	= 1;		// 任务id
+};
+
+message drop_item
+{
+	optional int32	m_item	= 1;
+	optional int32	m_count	= 2;
+};
+
+message PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE//G2C [actor_robot]
+{
+	optional int32	m_taskid			= 1;		// 任务id
+	optional bool   m_stat				= 2;		// 是否领取成功
+	map<int32,int32> m_drop				= 3;		// 奖励 key:itemid value:itemcount
+};
+
+// [请求]创建军团
+message PROBUFF_NET_CREATE_FAMIL//C2G2 [actor_family]
+{
+	optional string m_name = 1;	// 创建军团的名称
+}
+
+// [回复]创建军团
+message PROBUFF_NET_CREATE_FAMIL_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+// [请求]申请/取消加入军团
+message PROBUFF_NET_JOIN_FAMIL//C2G2 [actor_family]
+{
+	optional int64 m_familid = 1;
+	optional bool m_apply = 2;
+}
+
+// [回复]加入军团
+message PROBUFF_NET_JOIN_FAMIL_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+// [请求]军团长同意/不同意玩家加入军团
+message PROBUFF_NET_RATIFY_JOIN_FAMIL//C2G2 [actor_family]
+{
+	optional int64 m_roleid = 1;	
+	optional bool m_ratify = 2;
+}
+
+// [回复]军团长同意/不同意玩家加入军团
+message PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+// [请求]军团长转让军团
+message PROBUFF_NET_CEDE_FAMIL//C2G2 [actor_family]
+{
+	optional int64 m_roleid = 1;
+}
+
+// [回复]军团长转让军团
+message PROBUFF_NET_CEDE_FAMIL_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+
+// [请求]离开军团
+message PROBUFF_NET_LEAVE_FAMIL//C2G2 [actor_family]
+{
+	optional int64 m_familid = 1;	
+}
+
+// [回复]离开军团
+message PROBUFF_NET_LEAVE_FAMIL_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+// [请求]获取军团列表
+message PROBUFF_NET_FAMIL_LIST//C2G2 [actor_family]
+{	
+	optional int64 m_familid = 1;	
+}
+
+// [回复]获取军团列表
+message PROBUFF_NET_FAMIL_LIST_RESPONSE//G2C [actor_robot]
+{
+	optional int64 m_familid			= 1;	
+	repeated pbdb.db_family  m_family	= 2;
+}
+
+// [请求]修改军团名称
+message PROBUFF_NET_CHANGE_FAMILNAME//C2G2 [actor_family]
+{
+	optional int64 m_familid = 1;	
+	optional string m_name = 2;	// 修改军团名称
+}
+
+// [回复]修改军团名称
+message PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+// [请求]军团签到
+message PROBUFF_NET_FAMILSIGN//C2G2 [actor_family]
+{
+	optional int64 m_familid = 1;
+}
+
+// [回复]军团签到
+message PROBUFF_NET_FAMILSIGN_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat				= 1;		// 状态
+}
+
+// [回复]恭喜获得x物品
+message PROBUFF_NET_REWARD_ITEM_RESPONSE//G2C [actor_robot]
+{
+	map<int32,int32>	m_items	= 1;		// 获取的物品 key:物品tid value:物品数量
+}
+
+// [请求]获取排行榜
+message PROBUFF_NET_RANKLIST//C2G2 [actor_ranklist]
+{
+	optional bool m_iscross						= 1;
+	optional pbdb.eranklist m_type				= 2;
+	optional int32 m_page						= 3;
+	optional int32 m_everynum					= 4;
+};
+
+// [回复]获取排行榜
+message PROBUFF_NET_RANKLIST_RESPONSE//G2C [actor_robot]
+{
+	optional pbdb.eranklist m_type				= 1;
+	repeated pbdb.db_brief m_items				= 2;
+	optional int32 m_page						= 3;
+	optional int32 m_everynum					= 4;
+	optional int32 m_count						= 5;
+};
+
+// [请求]好友信息
+message PROBUFF_NET_FRIEND//C2G2 [actor_friends]
+{
+};
+
+// [回复]添加好友
+message PROBUFF_NET_FRIEND_RESPONSE//G2C [actor_robot]
+{
+	repeated pbdb.db_brief m_friends			= 1;
+	repeated pbdb.db_brief m_applyfriends		= 2;
+};
+
+// [请求]添加好友
+message PROBUFF_NET_ADDFRIEND//C2G2 [actor_friends]
+{
+	optional int64 m_friedid = 1;
+};
+
+// [回复]添加好友
+message PROBUFF_NET_ADDFRIEND_RESPONSE//G2C [actor_robot]
+{
+	optional int64	m_friedid	= 1;
+	optional int32  m_stat		= 2;		// 状态
+};
+
+// [请求]同意/拒绝添加好友
+message PROBUFF_NET_RATIFY_ADDFRIEND//C2G2 [actor_friends]
+{
+	optional int64	m_friedid		= 1;
+	optional bool	m_ratify		= 2;
+};
+
+// [回复]同意添加好友
+message PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE//G2C [actor_robot]
+{
+	optional int64	m_friedid		= 1;
+	optional bool	m_ratify		= 2;
+	optional int32  m_stat			= 3;		// 状态
+};
+
+// [请求]删除好友
+message PROBUFF_NET_ERASEFRIEND//C2G2 [actor_friends]
+{
+	optional int64 m_friedid = 1;
+};
+
+// [回复]删除好友
+message PROBUFF_NET_ERASEFRIEND_RESPONSE//G2C [actor_robot]
+{
+	optional int64 m_friedid = 1;
+	optional int32  m_stat  = 2;		// 状态
+};
+
+// [回复]玩家上线
+message PROBUFF_NET_ROLESTAT//G2C [actor_robot]
+{
+	enum stat
+	{
+		online	= 0;	// 上线
+		offline = 1;	// 下线
+	}
+	optional stat m_stat = 1;
+	enum logic_stat
+	{
+		friends = 0;
+		familyer = 1;
+	}
+	optional logic_stat m_logicstat = 2;
+	optional int64 m_roleid = 3;
+};
+
 ///////////////////////////////////////////////////////////////
 //// ################ [aoi地图相关 Start] ################ ////
 //// ##################################################### ////
@@ -340,32 +571,32 @@ message UNIT
 };
 
 // 同步属性值
-message PROBUFF_NET_SYNC_ATTRIBUTE
+message PROBUFF_NET_SYNC_ATTRIBUTE//G2C [actor_robot]
 {
 	repeated UnitModule m_modules		= 1;
 };
 
 // 同步玩家信息
-message PROBUFF_NET_SYNC_UNIT
+message PROBUFF_NET_SYNC_UNIT//G2C [actor_robot]
 {
 	repeated UNIT m_units				= 1;
 };
 
 // 进入视野
-message PROBUFF_NET_ENTER_LEAVE_VIEW
+message PROBUFF_NET_ENTER_LEAVE_VIEW//G2C [actor_robot]
 {
 	optional bool m_isenter				= 1;
 	repeated int64 m_units				= 2;
 };
 
 // 同步位置方向信息
-message PROBUFF_NET_SYNC_POSITION
+message PROBUFF_NET_SYNC_POSITION//G2C [actor_robot]
 {
 	map<int64,UNIT_POSITION> m_position = 1;
 };
 
 // 修改方向,速度
-message PROBUFF_NET_CHANGE_ANGLE
+message PROBUFF_NET_CHANGE_ANGLE//C2G [actor_role]
 {
 	optional UNIT_POSITION m_position		= 1;
 };
@@ -373,234 +604,3 @@ message PROBUFF_NET_CHANGE_ANGLE
 //// ###################################################### ///
 //// ################ [aoi地图相关 Finish] ################ ///
 ///////////////////////////////////////////////////////////////
-
-// 获取连接kcp-session
-message PROBUFF_NET_KCPSESSION
-{
-	optional int64	m_serverid	= 1;		// 玩家要进行kcp连接的服务器
-	optional string m_uip		= 2;
-	optional int32	m_uport		= 3;
-	optional int32	m_conv		= 4;
-};
-
-message PROBUFF_NET_KCPSESSION_RESPONSE
-{
-	optional string m_kcpsession	= 1;
-};
-
-
-// 领取任务奖励
-message PROBUFF_NET_TASK_RECEIVE_AWARD
-{
-	optional int32	m_taskid	= 1;		// 任务id
-};
-
-message drop_item
-{
-	optional int32	m_item	= 1;
-	optional int32	m_count	= 2;
-};
-
-message PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE
-{
-	optional int32	m_taskid			= 1;		// 任务id
-	optional bool   m_stat				= 2;		// 是否领取成功
-	map<int32,int32> m_drop				= 3;		// 奖励 key:itemid value:itemcount
-};
-
-// [请求]创建军团
-message PROBUFF_NET_CREATE_FAMIL
-{
-	optional string m_name = 1;	// 创建军团的名称
-}
-
-// [回复]创建军团
-message PROBUFF_NET_CREATE_FAMIL_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-// [请求]申请/取消加入军团
-message PROBUFF_NET_JOIN_FAMIL
-{
-	optional int64 m_familid = 1;
-	optional bool m_apply = 2;
-}
-
-// [回复]加入军团
-message PROBUFF_NET_JOIN_FAMIL_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-// [请求]军团长同意/不同意玩家加入军团
-message PROBUFF_NET_RATIFY_JOIN_FAMIL
-{
-	optional int64 m_roleid = 1;	
-	optional bool m_ratify = 2;
-}
-
-// [回复]军团长同意/不同意玩家加入军团
-message PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-// [请求]军团长转让军团
-message PROBUFF_NET_CEDE_FAMIL
-{
-	optional int64 m_roleid = 1;
-}
-
-// [回复]军团长转让军团
-message PROBUFF_NET_CEDE_FAMIL_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-
-// [请求]离开军团
-message PROBUFF_NET_LEAVE_FAMIL
-{
-	optional int64 m_familid = 1;	
-}
-
-// [回复]离开军团
-message PROBUFF_NET_LEAVE_FAMIL_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-// [请求]获取军团列表
-message PROBUFF_NET_FAMIL_LIST
-{	
-	optional int64 m_familid = 1;	
-}
-
-// [回复]获取军团列表
-message PROBUFF_NET_FAMIL_LIST_RESPONSE
-{
-	optional int64 m_familid			= 1;	
-	repeated pbdb.db_family  m_family	= 2;
-}
-
-// [请求]修改军团名称
-message PROBUFF_NET_CHANGE_FAMILNAME
-{
-	optional int64 m_familid = 1;	
-	optional string m_name = 2;	// 修改军团名称
-}
-
-// [回复]修改军团名称
-message PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-// [请求]军团签到
-message PROBUFF_NET_FAMILSIGN
-{
-	optional int64 m_familid = 1;
-}
-
-// [回复]军团签到
-message PROBUFF_NET_FAMILSIGN_RESPONSE
-{
-	optional int32  m_stat				= 1;		// 状态
-}
-
-// [回复]恭喜获得x物品
-message PROBUFF_NET_REWARD_ITEM_RESPONSE
-{
-	map<int32,int32>	m_items	= 1;		// 获取的物品 key:物品tid value:物品数量
-}
-
-// [请求]获取排行榜
-message PROBUFF_NET_RANKLIST
-{
-	optional bool m_iscross						= 1;
-	optional pbdb.eranklist m_type				= 2;
-	optional int32 m_page						= 3;
-	optional int32 m_everynum					= 4;
-};
-
-// [回复]获取排行榜
-message PROBUFF_NET_RANKLIST_RESPONSE
-{
-	optional pbdb.eranklist m_type				= 1;
-	repeated pbdb.db_brief m_items				= 2;
-	optional int32 m_page						= 3;
-	optional int32 m_everynum					= 4;
-	optional int32 m_count						= 5;
-};
-
-// [请求]好友信息
-message PROBUFF_NET_FRIEND
-{
-};
-
-// [回复]添加好友
-message PROBUFF_NET_FRIEND_RESPONSE
-{
-	repeated pbdb.db_brief m_friends			= 1;
-	repeated pbdb.db_brief m_applyfriends		= 2;
-};
-
-// [请求]添加好友
-message PROBUFF_NET_ADDFRIEND
-{
-	optional int64 m_friedid = 1;
-};
-
-// [回复]添加好友
-message PROBUFF_NET_ADDFRIEND_RESPONSE
-{
-	optional int64	m_friedid	= 1;
-	optional int32  m_stat		= 2;		// 状态
-};
-
-// [请求]同意/拒绝添加好友
-message PROBUFF_NET_RATIFY_ADDFRIEND
-{
-	optional int64	m_friedid		= 1;
-	optional bool	m_ratify		= 2;
-};
-
-// [回复]同意添加好友
-message PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE
-{
-	optional int64	m_friedid		= 1;
-	optional bool	m_ratify		= 2;
-	optional int32  m_stat			= 3;		// 状态
-};
-
-// [请求]删除好友
-message PROBUFF_NET_ERASEFRIEND
-{
-	optional int64 m_friedid = 1;
-};
-
-// [回复]删除好友
-message PROBUFF_NET_ERASEFRIEND_RESPONSE
-{
-	optional int64 m_friedid = 1;
-	optional int32  m_stat  = 2;		// 状态
-};
-
-// [回复]玩家上线
-message PROBUFF_NET_ROLESTAT
-{
-	enum stat
-	{
-		online	= 0;	// 上线
-		offline = 1;	// 下线
-	}
-	optional stat m_stat = 1;
-	enum logic_stat
-	{
-		friends = 0;
-		familyer = 1;
-	}
-	optional logic_stat m_logicstat = 2;
-	optional int64 m_roleid = 3;
-};

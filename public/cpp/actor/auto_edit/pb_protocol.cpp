@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-11 18:03:43】
+ // 创建时间【2025-04-16 15:45:42】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -64,11 +64,6 @@ namespace ngl
             null<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>,
             null<pbnet::PROBUFF_NET_MAIL_DEL>,
             null<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>,
-            null<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>,
-            null<pbnet::PROBUFF_NET_SYNC_UNIT>,
-            null<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>,
-            null<pbnet::PROBUFF_NET_SYNC_POSITION>,
-            null<pbnet::PROBUFF_NET_CHANGE_ANGLE>,
             null<pbnet::PROBUFF_NET_KCPSESSION>,
             null<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>,
             null<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>,

@@ -21,11 +21,9 @@
 #include "xmlprotocol.h"
 #include "xml_protocol.h"
 
+
 int main(int argc, char** argv) 
 {
-    char lbuf[1024] = { 0 };
-    sprintf(lbuf, "%06d%s", 100052362, "1144884207");
-
     xml_protocol::create_actor();
 
     google::protobuf::compiler::DiskSourceTree sourceTree;

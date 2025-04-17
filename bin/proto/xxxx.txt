@@ -1,0 +1,95 @@
+///////////////////////////////////////////////////////////////
+//// ################ [aoi地图相关 Start] ################ ////
+//// ##################################################### ////
+
+enum eunit
+{
+	eunit_role		= 0;		// 玩家单位
+	eunit_monster	= 1;		// 怪物单位
+	eunit_region	= 2;		// 区域单位
+};
+
+message VECTOR2
+{
+	optional int32 m_x = 1;
+	optional int32 m_y = 2;
+};
+
+message VECTOR3
+{
+	optional int32 m_x = 1;
+	optional int32 m_y = 2;
+	optional int32 m_z = 3;
+};
+
+message UNIT_POSITION
+{
+	optional int64 m_id			= 2;
+	optional VECTOR2 m_position = 3;
+	optional int32 m_angle		= 4;			// 方向角度[0-360]
+	optional int32 m_speed		= 5;			// 速度[米/秒]
+};
+
+message UnitAttribute
+{
+	 optional int32 m_type				= 1;	// EnumAttribute
+	 optional int64 m_value				= 2;	// 属性值
+};
+
+enum eunitstat
+{
+	eunitstat_normal			= 0;			// (0)正常状态
+	eunitstat_nomove			= 1;			// (1 << 0)无法移动
+	eunitstat_nonormalattack	= 2;			// (1 << 1)无法进行普通攻击
+	eunitstat_noreleaseskill	= 4;			// (1 << 2)无法释放技能
+};
+
+message UnitModule
+{
+	optional int32 m_mtype				= 1;		// EnumModule
+	repeated UnitAttribute m_modules	= 2;
+};
+
+message UNIT
+{
+	optional eunit m_type				= 1;
+	optional int64 m_id					= 2;
+	optional UNIT_POSITION m_position	= 3;
+	repeated UnitModule m_modules		= 4;
+	optional eunitstat m_stat			= 5;
+};
+
+// 同步属性值
+message PROBUFF_NET_SYNC_ATTRIBUTE//G2C [actor_robot]
+{
+	repeated UnitModule m_modules		= 1;
+};
+
+// 同步玩家信息
+message PROBUFF_NET_SYNC_UNIT//G2C [actor_robot]
+{
+	repeated UNIT m_units				= 1;
+};
+
+// 进入视野
+message PROBUFF_NET_ENTER_LEAVE_VIEW//G2C [actor_robot]
+{
+	optional bool m_isenter				= 1;
+	repeated int64 m_units				= 2;
+};
+
+// 同步位置方向信息
+message PROBUFF_NET_SYNC_POSITION//G2C [actor_robot]
+{
+	map<int64,UNIT_POSITION> m_position = 1;
+};
+
+// 修改方向,速度
+message PROBUFF_NET_CHANGE_ANGLE//C2G2 [actor_robot]
+{
+	optional UNIT_POSITION m_position		= 1;
+};
+
+//// ###################################################### ///
+//// ################ [aoi地图相关 Finish] ################ ///
+///////////////////////////////////////////////////////////////

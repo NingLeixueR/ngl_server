@@ -24,13 +24,13 @@ enum EPLAY_TYPE
 }
 
 // 加入玩法
-message PROBUFF_EXAMPLE_PLAY_JOIN
+message PROBUFF_EXAMPLE_PLAY_JOIN//G2C2 [actor_example_match]
 {
 	optional ECROSS m_cross			= 1;
 	optional EPLAY_TYPE m_type		= 2;
 };
 
-message PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE
+message PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE//G2C [actor_robot]
 {
 	optional int32 m_roomid					= 2; // 房间号
 };
@@ -42,7 +42,7 @@ message PLAYER
 };
 
 // 同步匹配信息
-message PROBUFF_EXAMPLE_PLAY_MATCHING
+message PROBUFF_EXAMPLE_PLAY_MATCHING//G2C [actor_robot]
 {
 	optional int32 m_roomid					= 1; // 房间号
 	optional int32 m_totalnumber			= 2; // 需要的总人数
@@ -68,28 +68,28 @@ enum PLAY_MATCHING_EERROR_CODE
 }
 
 // 匹配结果
-message PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT
+message PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT//G2C [actor_robot]
 {
 	optional PLAY_MATCHING_EERROR_CODE m_errorcode		= 1;
 	optional int32 m_roomid								= 2; // 房间号
 };
 
 // 玩家确认加入
-message PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM
+message PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM//G2C2 [actor_example_match]
 {
 	optional bool m_isconfirm				= 1; // 是否需要确认加入
 	optional int32 m_roomid					= 2; // 房间号
 };
 
 // 取消匹配
-message PROBUFF_EXAMPLE_PLAY_CANCEL
+message PROBUFF_EXAMPLE_PLAY_CANCEL//G2C2 [actor_example_match]
 {
 	optional EPLAY_TYPE m_type				= 1;
 	optional int32 m_roomid					= 2; // 房间号
 };
 
 // 创建例子游戏成功
-message PROBUFF_EXAMPLE_PLAY_CREATE
+message PROBUFF_EXAMPLE_PLAY_CREATE//G2C [actor_robot]
 {
 	optional EPLAY_TYPE m_type				= 1;
 	optional int64 m_exampleactorid			= 2;
@@ -102,14 +102,14 @@ message PROBUFF_EXAMPLE_PLAY_CREATE
 }
 
 // 进入例子游戏
-message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE//G2C2 [actor_example_manage]
 {
 	optional ECROSS m_cross					= 1;
 	optional EPLAY_TYPE m_type				= 2;
 	optional int64 m_exampleactorid			= 3;
 }
 
-message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE
+message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE//G2C [actor_robot]
 {
 	optional ECROSS m_cross					= 1;
 	optional EPLAY_TYPE m_type				= 2;
@@ -121,14 +121,14 @@ message PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE
 
 
 // 匹配结果
-message PROBUFF_EXAMPLE_GUESS_NUMBER_INFO
+message PROBUFF_EXAMPLE_GUESS_NUMBER_INFO//G2C [actor_robot]
 {
 	optional int32 m_maxnumber					= 1; // 数字最大值
 	optional int32 m_minnumber					= 2; // 数字最小值
 	optional int64 m_whoguess					= 3; // 谁猜测
 };
 
-message PROBUFF_EXAMPLE_GUESS_NUMBER
+message PROBUFF_EXAMPLE_GUESS_NUMBER//G2C2 [actor_example_manage]
 {
 	optional int32 m_guessnumber				= 1; // 猜测值
 };
@@ -140,12 +140,12 @@ enum E_GUESS_NUMBER_ERROR
 	E_GUESS_NUMBER_ERROR_NOT_GUESS = 2; // 当前阶段该玩家无法进行操作
 }
 
-message PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR
+message PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR//G2C [actor_robot]
 {
 	optional E_GUESS_NUMBER_ERROR m_stat		= 1; // 错误值
 };
 
-message PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB
+message PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB//G2C [actor_robot]
 {
 	optional int32 m_bombvalue					= 1; // 爆炸值
 	optional int64 m_roleid						= 2; // 触发爆炸的玩家
