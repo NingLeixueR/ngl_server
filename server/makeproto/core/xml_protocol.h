@@ -994,11 +994,12 @@ namespace ngl
                         continue;
                     }
                     std::string lnr;
+                    std::string llastnr;
                     bool lboolkk = false;
                     hactorfile& lhactorfile = lhactorfilemap[lactortolower];
                     lhactorfile.m_actorname = lactortolower;
                     std::string* lpnr = &lhactorfile.m_begnr;
-                    while (lfile.readline(lnr))
+                    for (; lfile.readline(lnr); llastnr = lnr)
                     {
                         if (lboolkk == false)
                         {
@@ -1017,9 +1018,19 @@ namespace ngl
                                 lpnr = &lhactorfile.m_endnr;
                             }
                         }
+
                         size_t lpos = lnr.find("handle(const message<");
-                        if (lpos != std::string::npos)
+                        size_t lpos2 = lnr.find("timer_handle(const message<");
+                        if (lpos != std::string::npos && lpos2 == std::string::npos)
                         {
+                            if (llastnr.find("//") != std::string::npos)
+                            {
+
+                            }
+                            else
+                            {
+                                *lpnr += std::format("{}\n", llastnr);
+                            }
                             std::string lstrhandl;
                             int lcout = 0;
                             for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
@@ -1045,9 +1056,11 @@ namespace ngl
                         }
                         else
                         {
-                            *lpnr += std::format("{}\n", lnr);
+                            //*lpnr += std::format("{}\n", lnr);
+                            *lpnr += std::format("{}\n", llastnr);
                         }
                     }
+                    *lpnr += std::format("{}\n", llastnr);                    
                 }
                
                 {
@@ -1147,6 +1160,7 @@ namespace ngl
                 // Ð´Èë.hÎÄ¼þ
                 if (lstream.str().empty() == false)
                 {
+
                     std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);
                     ngl::writefile lhfile(lactorhfile);
                     lhfile.write(lhactorfile.m_begnr);
