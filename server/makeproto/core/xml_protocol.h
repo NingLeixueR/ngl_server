@@ -820,7 +820,7 @@ namespace ngl
     static void create_actor()
     {
         //"enum ENUM_ACTOR{}"
-        std::set<std::string> lset;
+        std::set<std::string> lactorenumset;
         {
             std::string ldata;
             // 读取文件nactortype.h
@@ -874,13 +874,13 @@ namespace ngl
                         {
                             continue;
                         }
-                        lset.insert(lnr);
+                        lactorenumset.insert(lnr);
                     }
                 }
             }
         }
 
-        for (const std::string& item : lset)
+        for (const std::string& item : lactorenumset)
         {
             enum_actor(item);
         }
@@ -893,66 +893,144 @@ namespace ngl
             std::string m_tag;
             std::vector<std::string> m_vecactorname;
         };
-        std::map<std::string, vepro> lmap;
-        {
-            std::string ldata;
-            // 读取文件nactortype.h
-            ngl::readfile lfile("../proto/net.proto");
-            std::string lnr;
-            bool lbool = false;
-            while (lfile.readline(lnr))
+        std::map<std::string, std::map<std::string, std::set<std::string>>> lmessagemap;
+
+        auto lfun = [&lmessagemap](const char* fname)
             {
-                size_t lpos = lnr.find("message");
-                if (lpos == std::string::npos)
+                std::string ldata;
+                // 读取文件nactortype.h
+                std::string lfilename = std::format("../proto/{}.proto", fname);
+                ngl::readfile lfile(lfilename);
+                std::string lnr;
+                bool lbool = false;
+                while (lfile.readline(lnr))
                 {
-                    continue;
-                }
-                vepro ltempvepro;
-                for (size_t i = lpos+sizeof("message"); i < lnr.size(); ++i)
-                {
-                    if (lnr[i] == ' ' || lnr[i] == '/')
+                    size_t lpos = lnr.find("message");
+                    if (lpos == std::string::npos)
                     {
-                        break;
+                        continue;
                     }
-                    ltempvepro.m_name += lnr[i];
-                }
+                    vepro ltempvepro;
+                    for (size_t i = lpos + sizeof("message"); i < lnr.size(); ++i)
+                    {
+                        if (lnr[i] == ' ' || lnr[i] == '/')
+                        {
+                            break;
+                        }
+                        ltempvepro.m_name += lnr[i];
+                    }
 
-                lpos = lnr.find("//");
-                if (lpos == std::string::npos)
-                {
-                    continue;
-                }
-                for (size_t i = lpos + sizeof("//")-1; i < lnr.size(); ++i)
-                {
-                    if (lnr[i] == ' ' || lnr[i] == '[')
+                    lpos = lnr.find("//");
+                    if (lpos == std::string::npos)
                     {
-                        break;
+                        continue;
                     }
-                    ltempvepro.m_tag += lnr[i];
-                }
+                    for (size_t i = lpos + sizeof("//") - 1; i < lnr.size(); ++i)
+                    {
+                        if (lnr[i] == ' ' || lnr[i] == '[')
+                        {
+                            break;
+                        }
+                        ltempvepro.m_tag += lnr[i];
+                    }
 
-                lpos = lnr.find("[");
-                if (lpos == std::string::npos)
+                    lpos = lnr.find("[");
+                    if (lpos == std::string::npos)
+                    {
+                        continue;
+                    }
+                    std::string lactornamestr;
+                    for (size_t i = lpos + sizeof("[") - 1; i < lnr.size(); ++i)
+                    {
+                        if (lnr[i] == ' ' || lnr[i] == ']')
+                        {
+                            break;
+                        }
+                        lactornamestr += lnr[i];
+                    }
+                    ngl::tools::splite(lactornamestr.c_str(), ",", ltempvepro.m_vecactorname);
+                    if (ltempvepro.m_vecactorname.empty() == false)
+                    {
+                        std::cout << lnr << std::endl;
+                        for (std::string& itemactor : ltempvepro.m_vecactorname)
+                        {
+                            lmessagemap[itemactor][ltempvepro.m_tag].insert(ltempvepro.m_name);
+                        }
+                    }
+                }
+            };
+       
+        lfun("net");
+        lfun("example");
+        // 根据message检查actor文件中是否实现了对应的协议没有则插入
+
+        struct hactorfile
+        {
+            std::string m_actorname;
+            std::string m_begnr;
+            std::string m_endnr;
+            std::set<std::string> m_handle;
+        };
+        std::map<std::string, hactorfile> lhactorfilemap;
+        {
+            for (const std::string& item : lactorenumset)
+            {
+                std::string lactortolower = item;
+                ngl::tools::transform_tolower(lactortolower);
+
+                std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", lactortolower);
+                ngl::readfile lfile(lactorhfile);
+                if (lfile.is_open() == false)
                 {
+                    std::cout << "未找到actor文件:" << lactorhfile << std::endl;
                     continue;
                 }
-                std::string lactornamestr;
-                for (size_t i = lpos + sizeof("[")-1; i < lnr.size(); ++i)
+                std::string lnr;
+                bool lboolkk = false;
+                hactorfile& lhactorfile = lhactorfilemap[lactortolower];
+                std::string* lpnr = &lhactorfile.m_begnr;
+                while (lfile.readline(lnr))
                 {
-                    if (lnr[i] == ' ' || lnr[i] == ']')
+                    if (lboolkk == false)
                     {
-                        break;
+                        std::string lfindname = std::format("class {}", lactortolower);
+                        size_t lpos = lnr.find(lfindname);
+                        if (lpos != std::string::npos)
+                        {
+                            lboolkk = true;
+                        }
                     }
-                    lactornamestr += lnr[i];
-                }
-                ngl::tools::splite(lactornamestr.c_str(), ",", ltempvepro.m_vecactorname);
-                if (ltempvepro.m_vecactorname.empty() == false)
-                {
-                    std::cout << lnr << std::endl;
-                    lmap[ltempvepro.m_name] = ltempvepro;
+                    if (lboolkk)
+                    {
+                        size_t lpos = lnr.find("};");
+                        if (lpos != std::string::npos)
+                        {
+                            lpnr = &lhactorfile.m_endnr;
+                        }
+                    }
+                    *lpnr += std::format("{}\n", lnr);
+                    size_t lpos = lnr.find("handle(const message<");
+                    if (lpos != std::string::npos)
+                    {
+                        std::string lstrhandl;
+                        for (size_t i = lpos + sizeof("handle(const message<")-1; i < lnr.size(); ++i)
+                        {
+                            if (lnr[i] == '>')
+                            {
+                                break;
+                            }
+                            lstrhandl += lnr[i];
+                        }
+                        if (lstrhandl.empty() == false)
+                        {
+                            lhactorfile.m_handle.insert(lstrhandl);
+                        }
+                    }
+
                 }
             }
         }
+
     }
 };
 
