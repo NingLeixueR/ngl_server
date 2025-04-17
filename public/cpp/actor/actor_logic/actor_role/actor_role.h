@@ -25,6 +25,23 @@
 
 namespace ngl
 {
+	enum ecross
+	{
+		ecross_ordinary = 1,			// 本服转发
+		ecross_cross_ordinary = 2,		// 跨服转发
+		ecross_cross_example = 3,		// 例子转发
+		ecross_none = 4,				// 错误转发
+	};
+
+	struct prorechange
+	{
+		std::string m_orderid;
+		int32_t m_rechargeid = 0;
+		int64_t m_roleid = 0;
+
+		jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
+	};
+
 	class actor_role : public actor
 	{
 	public:
@@ -65,14 +82,7 @@ namespace ngl
 		void sync_data_client();
 
 #pragma region forward //转发相关
-		enum ecross
-		{
-			ecross_ordinary			= 1,			// 本服转发
-			ecross_cross_ordinary	= 2,			// 跨服转发
-			ecross_cross_example	= 3,			// 例子转发
-			ecross_none				= 4,			// 错误转发
-		};
-
+		
 		//# 重载forward_type来指定转发类型
 		template <typename T>
 		ecross forward_type(const T& adata)
@@ -178,14 +188,6 @@ namespace ngl
 		}
 #pragma endregion
 
-		struct prorechange
-		{
-			std::string m_orderid;
-			int32_t m_rechargeid = 0;
-			int64_t m_roleid = 0;
-
-			jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
-		};
 
 		//# 回显给客户端一个字符串
 		void echo_msg(const char* amsg);
