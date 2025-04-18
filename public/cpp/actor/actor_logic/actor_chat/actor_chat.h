@@ -51,6 +51,7 @@ namespace ngl
 
 		bool handle(const message<np_arg_null>&);
 
+		// [请求]聊天
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata);
 	};
 }//namespace ngl
