@@ -22,23 +22,22 @@
 
 namespace ngl
 {
+	enum eactor_example_guess_number
+	{
+		esetp_maxtime = 30, // 单步骤执行的最大秒数
+		equit_time = 10,	// 退出的最大秒数
+	};
+
 	class actor_example_guess_number : public actor_example<actor_example_guess_number>
 	{
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;
-
-		enum
-		{
-			esetp_maxtime = 30, // 单步骤执行的最大秒数
-			equit_time = 10,	// 退出的最大秒数
-		};
 
 		int32_t m_maxnumber;	// 范围最大值
 		int32_t m_minnumber;	// 范围最小值
 		int32_t m_index;		// 猜测的玩家(索引)
 		int32_t m_setputc;		// 步骤时间
 		int32_t m_bombvalues;	// 炸弹值
-
 		int32_t m_bombutc;		// 触发炸弹值的时间
 		i64_actorid m_bombrole; // 触发炸弹值的玩家
 
