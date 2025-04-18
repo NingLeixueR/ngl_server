@@ -35,48 +35,73 @@ namespace ngl
 		assert(aarea == tab_self_area);
 	}
 
-	i32_serverid actor_role::get_getwayserverid()
+	ENUM_ACTOR actor_role::actor_type()
 	{
-		return m_gatewayid;
+		return ACTOR_ROLE;
+	}
+
+	i64_actorid actor_role::actorid(int32_t adata)
+	{
+		return nguid::make(actor_type(), tab_self_area, adata);
 	}
 
 	void actor_role::init()
 	{
+		// 绑定DB结构:DB.set(this);
 		m_info.set(this);
 		m_bag.set(this);
 		m_task.set(this);
 		m_rolekv.set(this);
 
-		//如果启用定时任务，需完善
-		/*
-		np_timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 1) == false)
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
-			log_error()->print("actor_role::init() make_timerparm::make_interval(tparm, 1) == false!!!");
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		set_timer(tparm);
 		*/
 	}
 
+	void actor_role::loaddb_finish(bool adbishave)
+	{
+		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
+		sync_data_client();
+		m_info.sync_actor_brief();
+		loginpay();
+
+		np_eevents_logic_rolelogin lparm;
+		lparm.m_type = eevents_logic_rolelogin;
+		lparm.m_actorid = id_guid();
+		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm);
+		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm, this);
+	}
+
 	void actor_role::nregister()
 	{
 		// 定时器
-		register_timer<actor_role>(&actor_role::timer_handle);
+		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
-		register_handle_proto<actor_role>::func<
-			pbnet::PROBUFF_NET_ROLE_SYNC
-			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
-		>(true);
-
+		// 绑定自定义np_消息
 		register_handle_custom<actor_role>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, np_example_actorid
 		>(true);
 
-		// 协议注册
+		// 绑定pb消息
+		register_handle_proto<actor_role>::func<
+			pbnet::PROBUFF_NET_ROLE_SYNC
+			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
+		>(true);
+
 		nforward::c2g();
+	}
+
+	i32_serverid actor_role::get_getwayserverid()
+	{
+		return m_gatewayid;
 	}
 
 	void actor_role::loginpay()
@@ -132,20 +157,6 @@ namespace ngl
 				catch (...){}				
 			});
 		ngl::manage_curl::send(lhttp);
-	}
-
-	void actor_role::loaddb_finish(bool adbishave)
-	{
-		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
-		sync_data_client();
-		m_info.sync_actor_brief();
-		loginpay();
-
-		np_eevents_logic_rolelogin lparm;
-		lparm.m_type = eevents_logic_rolelogin;
-		lparm.m_actorid = id_guid();
-		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm);
-		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm, this);
 	}
 
 	void actor_role::erase_actor_before()
@@ -292,6 +303,11 @@ namespace ngl
 	}
 
 	bool actor_role::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_role::handle(const message<np_arg_null>&)
 	{
 		return true;
 	}

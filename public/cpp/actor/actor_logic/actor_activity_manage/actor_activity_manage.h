@@ -41,22 +41,25 @@ namespace ngl
 
 		virtual ~actor_activity_manage() = default;
 
-		virtual void loaddb_finish(bool adbishave);
-
-		void activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid);
-		void activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid);
-	public:
 		static ENUM_ACTOR actor_type();
 
 		static i64_actorid actorid();
 
-		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ);
-
 		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
 
+		void activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid);
+
+		void activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid);
+
+		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ);
+
 		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<np_actor_activity>& adata);
 	};

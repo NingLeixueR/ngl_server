@@ -63,7 +63,7 @@ namespace ngl
 						lstream << avec[i];
 					}
 					pro.set_m_cmd(lstream.str());
-					foreach([&pro, this](actor_manage_robot::_robot& arobot)
+					foreach([&pro, this](_robot& arobot)
 						{
 							send(&arobot, pro);
 							return true;
@@ -72,7 +72,7 @@ namespace ngl
 			// 进行kcp连接
 			handle_cmd::push("x1", [this](const std::vector<std::string>& avec)
 				{
-					foreach([this](actor_manage_robot::_robot& arobot)
+					foreach([this](_robot& arobot)
 						{
 							const tab_servers* tab = ttab_servers::tab();
 							const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 0);
@@ -111,7 +111,7 @@ namespace ngl
 			handle_cmd::push("x2", [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
-					foreach([&pro, this](actor_manage_robot::_robot& arobot)
+					foreach([&pro, this](_robot& arobot)
 						{
 							sendkcp(&arobot, pro);
 							return true;
@@ -121,7 +121,7 @@ namespace ngl
 			handle_cmd::push("x3", [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_FRIEND pro;
-					foreach([&pro, this](actor_manage_robot::_robot& arobot)
+					foreach([&pro, this](_robot& arobot)
 						{
 							send(&arobot, pro);
 							return true;
@@ -130,7 +130,7 @@ namespace ngl
 
 			handle_cmd::push("protocol", [this](const std::vector<std::string>& avec)
 				{
-					foreach([this, &avec](actor_manage_robot::_robot& arobot)
+					foreach([this, &avec](_robot& arobot)
 						{
 							std::shared_ptr<pack> lpack = actor_base::jsonpack(avec[1], avec[2], nguid::moreactor(), arobot.m_actor_roleid);
 							if (lpack != nullptr)

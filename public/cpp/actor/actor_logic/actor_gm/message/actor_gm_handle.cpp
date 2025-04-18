@@ -96,7 +96,7 @@ namespace ngl
 
 			handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<actor_gmclient::protocols> lresponse(adata->m_pack->m_id, "all_protocol", this);
+					gcmd<protocols> lresponse(adata->m_pack->m_id, "all_protocol", this);
 					actor_gmclient::get_allprotocol(lresponse.m_data);
 				}
 			);

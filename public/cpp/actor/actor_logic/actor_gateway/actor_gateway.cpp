@@ -32,8 +32,31 @@ namespace ngl
 		return nguid::make(actor_type(), tab_self_area, aactordataid);
 	}
 
+	void actor_gateway::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
+	}
+
+	void actor_gateway::loaddb_finish(bool adbishave)
+	{
+	}
+
 	void actor_gateway::nregister()
 	{
+		// 定时器
+		actor::register_timer<actor_gateway>(&actor_gateway::timer_handle);
+
+		// 绑定自定义np_消息
 		register_handle_custom<actor_gateway>::func<
 			np_actorrole_login
 			, np_gateway_close_session
@@ -42,6 +65,7 @@ namespace ngl
 			, np_actor_kcp
 		>(false);
 
+		// 绑定pb消息
 		register_handle_proto<actor_gateway>::func<
 			pbnet::PROBUFF_NET_ROLE_LOGIN
 			, pbnet::PROBUFF_NET_KCPSESSION
@@ -97,4 +121,14 @@ namespace ngl
 
 		sync_actorserver_gatewayid(nguid::make(ACTOR_ROLE, larea, lroleid), true);
 	}	
+
+	bool actor_gateway::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_gateway::handle(const message<np_arg_null>&)
+	{
+		return true;
+	}
 }//namespace ngl

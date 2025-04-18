@@ -30,6 +30,20 @@ namespace ngl
 		return nguid::make(ACTOR_CHAT, tab_self_area, nguid::none_actordataid());
 	}
 
+	void actor_chat::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+	}
+
 	void actor_chat::loaddb_finish(bool adbishave) 
 	{
 	}
@@ -38,21 +52,15 @@ namespace ngl
 	{
 		// 定时器
 		actor::register_timer<actor_chat>(&actor_chat::timer_handle);
-		// 协议注册
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_chat>::func<
+		>(true);
+
+		// 绑定pb消息
 		register_handle_proto<actor_chat>::func<
 			mforward<pbnet::PROBUFF_NET_CHAT>
-		>(false);
-	}
-
-	void actor_chat::init()
-	{
-		np_timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 2) == false)
-		{
-			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
-			return;
-		}
-		set_timer(tparm);			
+		>(true);
 	}
 	
 	bool actor_chat::timer_handle(const message<np_timerparm>& adata)
@@ -76,6 +84,11 @@ namespace ngl
 			send_allclient(pro);
 		}
 		m_update_chatitem.clear();
+		return true;
+	}
+
+	bool actor_chat::handle(const message<np_arg_null>&)
+	{
 		return true;
 	}
 }// namespace ngl

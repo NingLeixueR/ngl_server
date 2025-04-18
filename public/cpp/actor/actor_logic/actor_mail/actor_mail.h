@@ -33,8 +33,11 @@ namespace ngl
 		{
 			return actor_instance<actor_mail>::instance();
 		}
-
 		virtual ~actor_mail() = default;
+
+		static ENUM_ACTOR actor_type();
+
+		static i64_actorid actorid(i16_area area);
 
 		virtual void init();
 
@@ -42,16 +45,16 @@ namespace ngl
 
 		static void nregister();
 
-		static ENUM_ACTOR actor_type();
-
-		static i64_actorid actorid(i16_area area);
-
 		// # 发送邮件,根据掉落id，允许任意位置调用
 		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm);
 
 		static bool sendmail(i64_actorid aactorid, int32_t amailid, const std::map<int32_t, int32_t>& aitems, const std::string& aparm);
 
 		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		// # ACTOR_PROTOCOL_ADD_MAIL,新增邮件
 		bool handle(const message<np_actor_addmail>& adata);

@@ -40,13 +40,17 @@ namespace ngl
 
 		static ENUM_ACTOR actor_type();
 
-		static i64_actorid actorid(i16_area area);
+		static i64_actorid actorid(int32_t adataid);
 
 		virtual void init();
-		
+
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
 

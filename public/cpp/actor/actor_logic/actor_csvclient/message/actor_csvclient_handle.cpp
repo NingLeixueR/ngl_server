@@ -18,12 +18,4 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_csvclient::timer_handle(const message<np_timerparm>&)
-	{
-		log_error()->print("############actor_csvclient::timer_handle###########");
-		auto pro = std::make_shared<np_actor_csv_verify_version>();
-		allcsv::foreach_verify(pro->m_verify);
-		send_actor(actor_csvserver::actorid(), pro);
-		return true;
-	}
 }//namespace ngl

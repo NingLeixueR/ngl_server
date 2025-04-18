@@ -23,15 +23,26 @@ namespace ngl
 		return ACTOR_FAMILY;
 	}
 
-	i64_actorid actor_family::actorid(i16_area area)
+	i64_actorid actor_family::actorid(int32_t adataid)
 	{
-		return nguid::make(actor_type(), area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, adataid);
 	}
 
 	void actor_family::init()
 	{
+		// 绑定DB结构:DB.set(this);
 		m_familyer.set(this);
 		m_family.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
 	}
 
 	void actor_family::loaddb_finish(bool adbishave)
@@ -44,13 +55,17 @@ namespace ngl
 
 	void actor_family::nregister()
 	{
-		// 协议注册
+		// 定时器
+		actor::register_timer<actor_family>(&actor_family::timer_handle);
+
+		// 绑定自定义np_消息
 		register_handle_custom<actor_family>::func<
 			mforward<np_gm>
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_roleoffline
 		>(true);
 
+		// 绑定pb消息
 		register_handle_proto<actor_family>::func<
 			mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>
 			, mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>
@@ -61,5 +76,15 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>
 			, mforward<pbnet::PROBUFF_NET_FAMILSIGN>
 		>(true);
+	}
+
+	bool actor_family::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_family::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }// namespace ngl

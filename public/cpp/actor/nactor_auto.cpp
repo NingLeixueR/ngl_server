@@ -85,6 +85,7 @@ namespace ngl
 			/*210000007*/, np_channel_register_reply<pbdb::db_keyvalue>
 			/*210000008*/, np_channel_data<pbdb::db_keyvalue>
 			/*210000009*/, np_channel_exit<pbdb::db_keyvalue>
+			/*210000010*/, np_arg_null
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
 		tprotocol::set_customs_index(220000000);

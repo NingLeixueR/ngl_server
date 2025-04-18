@@ -685,10 +685,10 @@ namespace ngl
         lpath += std::format("/{}", ltolower);
         std::string lpathH = std::format("{}_1.h", lpath);
         std::string lpathCPP = std::format("{}_1.cpp", lpath);
-        if (ngl::tools::file_exists(lpathH) || ngl::tools::file_exists(lpathCPP))
-        {
-            return;
-        }
+        //if (ngl::tools::file_exists(lpathH) || ngl::tools::file_exists(lpathCPP))
+       // {
+        //    return;
+       // }
 
         ngl::writefile lfileH(lpathH);
 
@@ -712,9 +712,9 @@ namespace ngl
 #include "db.h"
 
 namespace ngl
-{
+{{
     class {0} : public actor
-	{
+	{{
 		{0}(const {0}&) = delete;
 		{0}& operator=(const {0}&) = delete;
 
@@ -722,9 +722,9 @@ namespace ngl
 	public:
 		friend class actor_instance<{0}>;
 		static {0}& getInstance()
-		{
+		{{
 			return actor_instance<{0}>::instance();
-		}
+		}}
 
 		virtual ~{0}() = default;
 
@@ -739,8 +739,10 @@ namespace ngl
 		static void nregister();
 
         bool timer_handle(const message<np_timerparm>& adata);
-	};
-}//namespace ngl)", ltolower);
+
+        bool handle(const message<np_arg_null>&);
+	}};
+}}//namespace ngl)", ltolower);
         lfileH.write(lnrh);
 
 
@@ -748,72 +750,79 @@ namespace ngl
        
         ngl::writefile lfileCPP(lpathCPP);
 
-        std::string lnrcpp = R"(#include "{0}.h"
+        std::string lnrcpp = std::format(R"(#include "{0}.h"
 
 namespace ngl
-{
+{{
 	{0}::{0}() :
 		actor(
 			actorparm
-			{
+			{{
 				.m_parm
-				{
+				{{
 					.m_type = {1},
 					.m_area = tab_self_area,
 					/*.m_manage_dbclient = true,*/
-				},
+				}},
 				.m_weight = 0x7fffffff,
 				.m_broadcast = true,
-			})
-	{
-	}
+			}})
+	{{
+	}}
 
 	ENUM_ACTOR {0}::actor_type()
-	{
+	{{
 		return {1};
-	}
+	}}
 
 	i64_actorid {0}::actorid()
-	{
+	{{
 		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
-	}
+	}}
 
 	void {0}::init()
-	{
+	{{
 		// 绑定DB结构:DB.set(this);
-        //
-        /* 设置timer_handle定时器
-        np_timerparm tparm;
+        
+        // 设置timer_handle定时器
+        /*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
-		{
+		{{
 			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
-		}
+		}}
 		set_timer(tparm);
         */
-	}
+	}}
 
 	void {0}::loaddb_finish(bool adbishave)
-	{
-	}
+	{{
+	}}
 
 	void {0}::nregister()
-	{
+	{{
+        // 定时器
+		actor::register_timer<{0}>(&{0}::timer_handle);
+
         // 绑定自定义np_消息
-		//register_handle_custom<{0}>::func<
-		//	np_xxxx
-		//>(true);
+		register_handle_custom<{0}>::func<
+		>(true);
 
         // 绑定pb消息
 		register_handle_proto<{0}>::func<
 		>(true);
-	}
+	}}
 
     bool {0}::timer_handle(const message<np_timerparm>& adata)
-    {
+    {{
         return true;
-    }
-}// namespace ngl)";
+    }}
+
+    bool {0}::handle(const message<np_arg_null>&)
+	{{
+		return true;
+	}}
+}}// namespace ngl)", ltolower, aenum);
         lfileCPP.write(lnrcpp);
     }
 
@@ -1074,11 +1083,11 @@ namespace ngl
                     if (ngl::tools::file_exists(lactorhfile) == false)
                     {
                         ngl::writefile lwfile(lactorhfile);
-                        lwfile.write(R"(#include "{}.h"
+                        lwfile.write(std::format(R"(#include "{}.h"
 
 namespace ngl
 {
-}//namespace ngl)");
+}//namespace ngl)", lactortolower));
                     }
 
                     ngl::readfile lfile(lactorhfile);

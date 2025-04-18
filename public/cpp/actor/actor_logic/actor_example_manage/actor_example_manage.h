@@ -72,6 +72,8 @@ namespace ngl
 
 		bool timer_handle(const message<np_timerparm>& adata);
 
+		bool handle(const message<np_arg_null>&);
+
 		// # 匹配成功后 创建例子玩法
 		bool handle(const message<np_create_example>& adata);
 
