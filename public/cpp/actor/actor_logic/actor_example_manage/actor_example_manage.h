@@ -21,18 +21,18 @@
 
 namespace ngl
 {
+	enum eactor_example_manage
+	{
+		exampleindex_max = pbexample::EPLAY_TYPE_MAX + 1,
+		example_waittime = 30,	// 等待进入游戏的最大秒数
+	};
+
 	class actor_example_manage : public actor
 	{
 		actor_example_manage(const actor_example_manage&) = delete;
 		actor_example_manage& operator=(const actor_example_manage&) = delete;
 
-		enum eenum
-		{
-			exampleindex_max = pbexample::EPLAY_TYPE_MAX + 1,
-			example_waittime = 30,	// 等待进入游戏的最大秒数
-		};
-
-		std::array<int32_t, eenum::exampleindex_max> m_exampleindex;
+		std::array<int32_t, exampleindex_max> m_exampleindex;
 
 		struct playinfo
 		{
