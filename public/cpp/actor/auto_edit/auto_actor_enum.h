@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-04-10 14:41:17
+// 创建时间 // 创建时间 25-04-18 10:51:28
 #pragma once
 
 #include "nactortype.h"
@@ -25,7 +25,6 @@ namespace ngl
 }//namespace ngl
 #include "actor_role.h"
 #include "actor_robot.h"
-#include "actor_manage_role.h"
 #include "actor_server.h"
 #include "actor_client.h"
 #include "actor_login.h"
@@ -33,6 +32,7 @@ namespace ngl
 #include "actor_gateway_c2g.h"
 #include "actor_gateway_g2c.h"
 #include "actor_create.h"
+#include "actor_manage_role.h"
 #include "actor_log.h"
 #include "actor_kcp.h"
 #include "actor_manage_robot.h"
@@ -60,7 +60,6 @@ namespace ngl
 		_auto_actor(
 			dautoactor(actor_role, ACTOR_ROLE)
 			, dautoactor(actor_robot, ACTOR_ROBOT)
-			, dautoactor(actor_manage_role, ACTOR_MANAGE_ROLE)
 			, dautoactor(actor_server, ACTOR_SERVER)
 			, dautoactor(actor_client, ACTOR_CLIENT)
 			, dautoactor(actor_login, ACTOR_LOGIN)
@@ -68,6 +67,7 @@ namespace ngl
 			, dautoactor(actor_gateway_c2g, ACTOR_GATEWAY_C2G)
 			, dautoactor(actor_gateway_g2c, ACTOR_GATEWAY_G2C)
 			, dautoactor(actor_create, ACTOR_CREATE)
+			, dautoactor(actor_manage_role, ACTOR_MANAGE_ROLE)
 			, dautoactor(actor_log, ACTOR_LOG)
 			, dautoactor(actor_kcp, ACTOR_KCP)
 			, dautoactor(actor_manage_robot, ACTOR_MANAGE_ROBOT)

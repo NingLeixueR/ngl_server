@@ -17,10 +17,6 @@ namespace ngl
 	{
 	}
 
-	void actor_gm::loaddb_finish(bool adbishave) 
-	{
-	}
-
 	ENUM_ACTOR actor_gm::actor_type()
 	{
 		return ACTOR_GM;
@@ -31,8 +27,39 @@ namespace ngl
 		return nguid::make(actor_type(), area, nguid::none_actordataid());
 	}
 
-	void actor_gm::init() 
+	void actor_gm::init()
 	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
+	}
+	
+	void actor_gm::loaddb_finish(bool adbishave)
+	{
+	}
+
+	void actor_gm::nregister()
+	{
+		// 定时器
+		actor::register_timer<actor_gm>(&actor_gm::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_gm>::func<
+			ngl::np_gm
+			, mforward<ngl::np_gm_response>
+		>(true);
+
+		// 绑定pb消息
+		register_handle_proto<actor_gm>::func<
+		>(true);
 	}
 
 	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, const ngl::np_gm& apro)
@@ -52,15 +79,6 @@ namespace ngl
 		return ttab_servers::tab()->m_type == atype;
 	}
 
-	void actor_gm::nregister()
-	{
-		// 协议注册
-		register_handle_custom<actor_gm>::func<
-			ngl::np_gm
-			, mforward<ngl::np_gm_response>
-		>(false);
-	}
-
 	bool actor_gm::sendtophp(i32_sessionid aidentifier, const ngl::np_gm_response& adata)
 	{
 		::ngl::log_error()->print("gm2php [{}]", adata.m_json);
@@ -74,5 +92,15 @@ namespace ngl
 		assert(m_actor != nullptr);
 		assert(m_actor->id_guid() == actor_gm::getInstance().id_guid());
 		actor_gm::sendtophp(apro->identifier(), *apro->data());
+	}
+
+	bool actor_gm::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_gm::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }// namespace ngl

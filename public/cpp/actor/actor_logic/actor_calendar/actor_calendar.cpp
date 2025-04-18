@@ -27,12 +27,23 @@ namespace ngl
 
 	i64_actorid actor_calendar::actorid()
 	{
-		return nguid::make(ACTOR_CALENDAR, tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 	}
 
 	void actor_calendar::init()
 	{
+		// 绑定DB结构:DB.set(this);
 		m_calendar.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
 	}
 
 	void actor_calendar::loaddb_finish(bool adbishave) 
@@ -41,9 +52,26 @@ namespace ngl
 
 	void actor_calendar::nregister()
 	{
-		// 协议注册
+		// 定时器
+		actor::register_timer<actor_calendar>(&actor_calendar::timer_handle);
+
+		// 绑定自定义np_消息
 		register_handle_custom<actor_calendar>::func<
 			np_calendar
 		>(true);
+
+		// 绑定pb消息
+		register_handle_proto<actor_calendar>::func<
+		>(true);
+	}
+
+	bool actor_calendar::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_calendar::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }// namespace ngl

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-16 15:45:42】
+ // 创建时间【2025-04-18 10:59:33】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -50,7 +50,6 @@ namespace ngl
             null<pbnet::PROBUFF_NET_BAG_SYNC>,
             null<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>,
             null<pbnet::PROBUFF_NET_BAG_UPDATE>,
-            null<pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE>,
             null<pbnet::PROBUFF_NET_CMD>,
             null<pbnet::PROBUFF_NET_CHAT>,
             null<pbnet::PROBUFF_NET_CHAT_RESPONSE>,
@@ -96,6 +95,11 @@ namespace ngl
             null<pbnet::PROBUFF_NET_ERASEFRIEND>,
             null<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>,
             null<pbnet::PROBUFF_NET_ROLESTAT>,
+            null<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>,
+            null<pbnet::PROBUFF_NET_SYNC_UNIT>,
+            null<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>,
+            null<pbnet::PROBUFF_NET_SYNC_POSITION>,
+            null<pbnet::PROBUFF_NET_CHANGE_ANGLE>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>,

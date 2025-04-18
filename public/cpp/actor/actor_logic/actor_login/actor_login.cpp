@@ -27,24 +27,52 @@ namespace ngl
 
 	i64_actorid actor_login::actorid()
 	{
-		return nguid::make(ACTOR_LOGIN, tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 	}
 
 	void actor_login::init()
 	{
+		// 绑定DB结构:DB.set(this);
 		m_account.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
 	}
 
 	void actor_login::loaddb_finish(bool adbishave)
 	{
-		auto lstream = log_error();
-		(*lstream) << "actor_login::loaddb_finish" << std::endl;
+		log_error()->print("actor_login::loaddb_finish");
 		for (const auto& item : m_account.data())
 		{
 			const pbdb::db_account& laccount = item.second.getconst();
-			(*lstream) << std::format("[{}][{}] {}",laccount.m_account(),laccount.m_passworld(), nguid(laccount.m_roleid())) << std::endl;
+			tools::print_protojson(laccount);
 		}
-		(*lstream).print("");
+	}
+
+	void actor_login::nregister()
+	{
+		// 定时器
+		actor::register_timer<actor_login>(&actor_login::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_login>::func<
+			np_actorserver_connect
+		>(true);
+		register_handle_custom<actor_login>::func<
+			np_actor_disconnect_close
+		>(false);
+
+		// 绑定pb消息
+		register_handle_proto<actor_login>::func<
+			pbnet::PROBUFF_NET_ACOUNT_LOGIN
+		>(false);
 	}
 
 	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
@@ -107,10 +135,7 @@ namespace ngl
 		return get_freeserver(m_gateway, apair);
 	}
 
-	bool actor_login::dec_freeserver(
-		std::map<i32_serverid, server_info>& amap, 
-		i32_serverid aserverid
-	)
+	bool actor_login::dec_freeserver(std::map<i32_serverid, server_info>& amap, i32_serverid aserverid)
 	{
 		auto itor = amap.find(aserverid);
 		if (itor == amap.end())
@@ -136,18 +161,13 @@ namespace ngl
 		log_error()->print("game[{}] \ngateway[{}]", m_game, m_gateway);
 	}
 
-	void actor_login::nregister()
+	bool actor_login::timer_handle(const message<np_timerparm>& adata)
 	{
-		register_handle_proto<actor_login>::func<
-			pbnet::PROBUFF_NET_ACOUNT_LOGIN
-		>(false);
+		return true;
+	}
 
-		register_handle_custom<actor_login>::func<
-			np_actor_disconnect_close
-		>(false);
-
-		register_handle_custom<actor_login>::func<
-			np_actorserver_connect
-		>(true);
+	bool actor_login::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }//namespace ngl

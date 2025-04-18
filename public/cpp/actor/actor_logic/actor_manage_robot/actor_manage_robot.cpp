@@ -19,6 +19,51 @@ namespace ngl
 	{
 	}
 
+	ENUM_ACTOR actor_manage_robot::actor_type()
+	{
+		return ACTOR_MANAGE_ROBOT;
+	}
+
+	i64_actorid actor_manage_robot::actorid()
+	{
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
+	}
+
+	void actor_manage_robot::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
+	}
+
+	void actor_manage_robot::loaddb_finish(bool adbishave)
+	{
+	}
+
+	void actor_manage_robot::nregister()
+	{
+		// 定时器
+		actor::register_timer<actor_manage_robot>(&actor_manage_robot::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_manage_robot>::func<
+			np_robot_pram
+		>(false);
+
+		// 绑定pb消息
+		register_handle_proto<actor_manage_robot>::func<
+			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+		>(false);
+	}
+
 	std::shared_ptr<actor_robot> actor_manage_robot::create(i16_area aarea, i32_actordataid aroleid)
 	{
 		return std::dynamic_pointer_cast<actor_robot>(actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aarea, aroleid, nullptr));
@@ -82,7 +127,7 @@ namespace ngl
 		}
 	}
 
-	actor_manage_robot::_robot* actor_manage_robot::get_robot(std::string aacount)
+	_robot* actor_manage_robot::get_robot(std::string aacount)
 	{
 		auto itor = m_maprobot.find(aacount);
 		if (itor == m_maprobot.end())
@@ -101,14 +146,13 @@ namespace ngl
 		return true;
 	}
 
-	void actor_manage_robot::nregister()
+	bool actor_manage_robot::timer_handle(const message<np_timerparm>& adata)
 	{
-		register_handle_custom<actor_manage_robot>::func<
-			np_robot_pram
-		>(false);
+		return true;
+	}
 
-		register_handle_proto<actor_manage_robot>::func<
-			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
-		>(false);
+	bool actor_manage_robot::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }//namespace ngl

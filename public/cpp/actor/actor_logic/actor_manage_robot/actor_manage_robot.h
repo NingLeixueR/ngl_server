@@ -4,17 +4,18 @@
 
 namespace ngl
 {
+	struct _robot
+	{
+		i32_sessionid					m_session = -1;
+		std::string						m_account;
+		std::shared_ptr<actor_robot>	m_robot = nullptr;
+		i64_actorid						m_actor_roleid = nguid::make();
+	};
+
 	class actor_manage_robot : public actor
 	{
 		actor_manage_robot();
 	public:
-		struct _robot
-		{
-			i32_sessionid					m_session = -1;
-			std::string						m_account;
-			std::shared_ptr<actor_robot>	m_robot = nullptr;
-			i64_actorid						m_actor_roleid = nguid::make();
-		};
 
 		std::map<std::string, _robot> m_maprobot;
 
@@ -23,6 +24,18 @@ namespace ngl
 		{ 
 			return actor_instance<actor_manage_robot>::instance();
 		}
+
+		virtual ~actor_manage_robot() = default;
+
+		static ENUM_ACTOR actor_type();
+
+		static i64_actorid actorid();
+
+		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
+
+		static void nregister();
 
 		std::shared_ptr<actor_robot> create(i16_area aarea, i32_actordataid aroleid);
 
@@ -38,15 +51,6 @@ namespace ngl
 
 		void create_robot(const std::string& arobotname);
 
-		static void nregister();
-
-		using handle_cmd = cmd<actor_manage_robot, std::string, const std::vector<std::string>&>;
-
-		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
-
-		bool handle(const message<np_robot_pram>& adata);
-		
-		
 		void foreach(const std::function<bool(_robot&)>& afun);
 
 		_robot* get_robot(std::string aacount);
@@ -64,6 +68,16 @@ namespace ngl
 		}		
 
 		bool getdata(_robot* arobot);
+
+		using handle_cmd = cmd<actor_manage_robot, std::string, const std::vector<std::string>&>;
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
+
+		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
+
+		bool handle(const message<np_robot_pram>& adata);
 	};
 }//namespace ngl
 	

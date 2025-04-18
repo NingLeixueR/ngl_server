@@ -44,15 +44,49 @@ namespace ngl
 		return nguid::make(actor_type(), nguid::none_area(), ttab_servers::tab()->m_tcount);
 	}
 
+	void actor_manage_role::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
+	}
+
+	void actor_manage_role::loaddb_finish(bool adbishave)
+	{
+	}
+
 	void actor_manage_role::nregister()
 	{
-		register_handle_proto<actor_manage_role>::func<
-			pbnet::PROBUFF_NET_ROLE_LOGIN
-		>(false);
+		// 定时器
+		actor::register_timer<actor_manage_role>(&actor_manage_role::timer_handle);
 
+		// 绑定自定义np_消息
 		register_handle_custom<actor_manage_role>::func<
 			mforward<np_gm>,
 			np_roleban
 		>(false);
+
+		// 绑定pb消息
+		register_handle_proto<actor_manage_role>::func<
+			pbnet::PROBUFF_NET_ROLE_LOGIN
+		>(false);
+	}
+
+	bool actor_manage_role::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_manage_role::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }//namespace ngl

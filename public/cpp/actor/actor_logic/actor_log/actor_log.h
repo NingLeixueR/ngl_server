@@ -17,6 +17,19 @@
 
 namespace ngl
 {
+	struct log_timerparm
+	{
+		enum etype
+		{
+			e_logflush,
+			e_create,
+		};
+		etype m_type;
+		log_timerparm(etype atype) :
+			m_type(atype)
+		{}
+	};
+
 	class actor_log : public actor
 	{
 		actor_log() = delete;
@@ -27,30 +40,21 @@ namespace ngl
 	public:
 		actor_log(i32_actordataid aid);
 
-		virtual ~actor_log()=default;
-
-		virtual void init();
-
-		static void nregister();
+		virtual ~actor_log() = default;
 
 		static ENUM_ACTOR actor_type();
 
 		static i64_actorid actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype);
 
-		struct log_timerparm
-		{
-			enum etype
-			{
-				e_logflush,
-				e_create,
-			};
-			etype m_type;
-			log_timerparm(etype atype) :
-				m_type(atype)
-			{}
-		};
+		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
+
+		static void nregister();
 
 		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<np_logitem>& adata);
 	};

@@ -21,7 +21,21 @@ namespace ngl
 
 	i64_actorid actor_example_guess_number::actorid()
 	{
-		return nguid::make(ACTOR_EXAMPLE_GUESS_NUMBER, tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
+	}
+
+	void actor_example_guess_number::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 1) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
 	}
 
 	void actor_example_guess_number::loaddb_finish(bool adbishave) 
@@ -85,16 +99,22 @@ namespace ngl
 		send_client(aroleid, pro);
 	}
 
-	void actor_example_guess_number::init()
+	void actor_example_guess_number::nregister()
 	{
-		np_timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 1) == false)
-		{
-			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
-			return;
-		}
-		set_timer(tparm);
+		// 定时器
+		actor::register_timer<actor_example_guess_number>(&actor_example_guess_number::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_example_guess_number>::func<
+			np_example_entergame_ready
+		>(true);
+
+		// 绑定pb消息
+		register_handle_proto<actor_example_guess_number>::func<
+			mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>
+		>(false);
 	}
+
 
 	bool actor_example_guess_number::timer_handle(const message<np_timerparm>& adata)
 	{
@@ -126,18 +146,8 @@ namespace ngl
 		return true;
 	}
 
-	void actor_example_guess_number::nregister()
+	bool actor_example_guess_number::handle(const message<np_arg_null>&)
 	{
-		// 定时器
-		actor::register_timer<actor_example_guess_number>(&actor_example_guess_number::timer_handle);
-
-		// 协议注册
-		register_handle_proto<actor_example_guess_number>::func<
-			mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>
-		>(false);
-
-		register_handle_custom<actor_example_guess_number>::func<
-			np_example_entergame_ready
-		>(true);
+		return true;
 	}
 }//namespace ngl

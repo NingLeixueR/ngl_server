@@ -31,26 +31,19 @@ namespace ngl
 		return ACTOR_LOG;
 	}
 
-	void actor_log::nregister()
-	{
-		// 定时器
-		actor::register_timer<actor_log>(&actor_log::timer_handle);
-
-		register_handle_custom<actor_log>::func<
-			np_logitem
-		>(false);
-	}
-
 	i64_actorid actor_log::actorid(ENUM_ACTOR aactortype, ELOG_TYPE alogtype)
 	{
 		nlogactor ltemp(aactortype, alogtype);
-		return nguid::make(ACTOR_LOG, tab_self_area, ltemp.m_value32);
+		return nguid::make(actor_type(), tab_self_area, ltemp.m_value32);
 	}
 
 	void actor_log::init()
 	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
 		// flush
-		int32_t lflushtime = m_log->m_config.flush_time()/1000;
+		int32_t lflushtime = m_log->m_config.flush_time() / 1000;
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, lflushtime) == false)
 		{
@@ -73,6 +66,25 @@ namespace ngl
 		set_timer(tparmcreate);
 	}
 
+	void actor_log::loaddb_finish(bool adbishave)
+	{
+	}
+
+	void actor_log::nregister()
+	{
+		// 定时器
+		actor::register_timer<actor_log>(&actor_log::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_log>::func<
+			np_logitem
+		>(false);
+
+		// 绑定pb消息
+		register_handle_proto<actor_log>::func<
+		>(true);
+	}
+	
 	bool actor_log::timer_handle(const message<np_timerparm>& adata)
 	{
 		std::shared_ptr<log_timerparm> lparm = std::static_pointer_cast<log_timerparm>(adata.get_data()->m_parm);
@@ -87,6 +99,11 @@ namespace ngl
 			m_log->create();
 			return true;
 		}
+		return true;
+	}
+
+	bool actor_log::handle(const message<np_arg_null>&)
+	{
 		return true;
 	}
 }//namespace ngl

@@ -27,11 +27,42 @@ namespace ngl
 
 	i64_actorid actor_example_match::actorid()
 	{
-		return nguid::make(ACTOR_EXAMPLE_MATCH, tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
+	}
+
+	void actor_example_match::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 1) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
 	}
 
 	void actor_example_match::loaddb_finish(bool adbishave) 
 	{
+	}
+
+	void actor_example_match::nregister()
+	{
+		// 定时器
+		actor::register_timer<actor_example_match>(&actor_example_match::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_example_match>::func<
+			np_login_request_info
+		>(true);
+
+		// 绑定pb消息
+		register_handle_proto<actor_example_match>::func<
+			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
+			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
+		>(false);
 	}
 
 	void actor_example_match::sync_match_info(room* aroom, i64_actorid aroleid /*= nguid::make()*/)
@@ -88,7 +119,7 @@ namespace ngl
 		return false;
 	}
 
-	actor_example_match::room* actor_example_match::matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
+	room* actor_example_match::matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
 	{
 		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(aroleid);
 		if (lpbrief == nullptr)
@@ -110,7 +141,7 @@ namespace ngl
 		return nullptr;
 	}
 
-	actor_example_match::room* actor_example_match::find_room(int32_t aroomid)
+	room* actor_example_match::find_room(int32_t aroomid)
 	{
 		for (const auto& [type, rindex] : m_roomindex)
 		{
@@ -126,7 +157,7 @@ namespace ngl
 		return nullptr;
 	}
 
-	actor_example_match::room* actor_example_match::find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid)
+	room* actor_example_match::find_room(pbexample::EPLAY_TYPE atype, int32_t aroomid)
 	{
 		std::map<int32_t, room>* lmap = tools::findmap(m_room, atype);
 		if (lmap != nullptr)
@@ -136,7 +167,7 @@ namespace ngl
 		return nullptr;
 	}
 
-	actor_example_match::room* actor_example_match::add_room(pbexample::EPLAY_TYPE atype)
+	room* actor_example_match::add_room(pbexample::EPLAY_TYPE atype)
 	{
 		int32_t ltotalnumber = ttab_specialid::m_example_totalnumber[atype];
 		if (ltotalnumber <= 0)
@@ -187,17 +218,6 @@ namespace ngl
 				item.second.m_isconfirm = false;
 			}
 		}
-	}
-
-	void actor_example_match::init()
-	{
-		np_timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 1) == false)
-		{
-			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
-			return;
-		}
-		set_timer(tparm);
 	}
 
 	bool actor_example_match::check_timeout(time_t atime, int32_t ainterval)
@@ -285,18 +305,8 @@ namespace ngl
 		return true;
 	}
 
-	void actor_example_match::nregister()
+	bool actor_example_match::handle(const message<np_arg_null>&)
 	{
-		// 定时器
-		actor::register_timer<actor_example_match>(&actor_example_match::timer_handle);
-		// 协议注册
-		register_handle_proto<actor_example_match>::func<
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
-		>(false);
-
-		register_handle_custom<actor_example_match>::func<
-			np_login_request_info
-		>(true);
+		return true;
 	}	
 }//namespace ngl

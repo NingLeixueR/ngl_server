@@ -27,36 +27,25 @@ namespace ngl
 			return actor_instance<actor_gateway_g2c>::instance();
 		}
 
-		static void nregister();
+		virtual ~actor_gateway_g2c() = default;
 
 		static ENUM_ACTOR actor_type();
 
 		static i64_actorid actorid(i32_actordataid aactordataid);
 
-		void get_allclient(std::map<i32_sessionid, i64_actorid>& amap)
-		{
-			for (const auto& itemfor1 : m_info.info())
-			{
-				for (const auto& itemfor2 : itemfor1.second)
-				{
-					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, itemfor2.second.m_area, itemfor2.second.m_dataid);
-					amap.insert(std::make_pair(itemfor2.second.m_socket, lactorid));
-				}
-			}
-		}
+		virtual void init();
 
-		void get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea)
-		{
-			auto itemitor = m_info.info().find(aarea);
-			if (itemitor != m_info.info().end())
-			{
-				for (const auto& itemfor1 : itemitor->second)
-				{
-					i64_actorid lactorid = nguid::make(ACTOR_ROBOT, itemfor1.second.m_area, itemfor1.second.m_dataid);
-					amap.insert(std::make_pair(itemfor1.second.m_socket, lactorid));
-				}
-			}
-		}
+		virtual void loaddb_finish(bool adbishave);
+
+		static void nregister();
+
+		void get_allclient(std::map<i32_sessionid, i64_actorid>& amap);
+
+		void get_allclientbyarea(std::map<i32_sessionid, i64_actorid>& amap, i16_area aarea);
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(const message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)

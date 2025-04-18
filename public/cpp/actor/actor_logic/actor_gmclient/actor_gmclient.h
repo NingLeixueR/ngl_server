@@ -18,6 +18,14 @@
 
 namespace ngl
 {
+	struct protocols
+	{
+		std::map<i32_protocolnum, std::string> m_promap;
+		std::map<i32_protocolnum, std::string> m_custommap;
+
+		jsonfunc("proto", m_promap, "custom", m_custommap)
+	};
+
 	class actor_gmclient : public actor
 	{
 		actor_gmclient(const actor_gmclient&) = delete;
@@ -43,18 +51,14 @@ namespace ngl
 
 		static void nregister();
 
-		struct protocols
-		{
-			std::map<i32_protocolnum, std::string> m_promap;
-			std::map<i32_protocolnum, std::string> m_custommap;
-
-			jsonfunc("proto", m_promap, "custom", m_custommap)
-		};
-
 		static void get_allprotocol(protocols& apro);
 
 		// # GM²Ù×÷
 		using handle_cmd = cmd<actor_gmclient, std::string, int, const ngl::json_read&>;
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<mforward<np_gm>>& adata);
 	};

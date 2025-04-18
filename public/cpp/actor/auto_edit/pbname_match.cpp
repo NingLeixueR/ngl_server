@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-16 15:45:42】
+ // 创建时间【2025-04-18 10:59:33】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -58,7 +58,6 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_BAG_SYNC);
             mkdef_map(pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_BAG_UPDATE);
-            mkdef_map(pbnet::PROBUFF_NET_BAG_UPDATE_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_CMD);
             mkdef_map(pbnet::PROBUFF_NET_CHAT);
             mkdef_map(pbnet::PROBUFF_NET_CHAT_RESPONSE);
@@ -104,6 +103,11 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_ERASEFRIEND);
             mkdef_map(pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_ROLESTAT);
+            mkdef_map(pbnet::PROBUFF_NET_SYNC_ATTRIBUTE);
+            mkdef_map(pbnet::PROBUFF_NET_SYNC_UNIT);
+            mkdef_map(pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW);
+            mkdef_map(pbnet::PROBUFF_NET_SYNC_POSITION);
+            mkdef_map(pbnet::PROBUFF_NET_CHANGE_ANGLE);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_JOIN);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING);

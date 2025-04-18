@@ -15,6 +15,13 @@
 
 namespace ngl
 {
+	struct pair_account
+	{
+		i32_serverid	m_gameserverid;
+		i32_serverid	m_gatewayserverid;
+		std::string		m_session;
+	};
+
 	class actor_login : public actor
 	{
 	public:
@@ -29,12 +36,6 @@ namespace ngl
 		std::map<i32_serverid, server_info> m_game;
 		std::map<i32_serverid, server_info> m_gateway;
 		i16_area							m_config_area;
-		struct pair_account
-		{
-			i32_serverid	m_gameserverid;
-			i32_serverid	m_gatewayserverid;
-			std::string		m_session;
-		};
 		std::map<i64_actorid, pair_account> m_actorbyserver;
 		// ----- Data End   -----
 
@@ -49,17 +50,17 @@ namespace ngl
 			return actor_instance<actor_login>::instance(); 
 		}
 
-		virtual void init();
-
 		virtual ~actor_login() = default;
-
-		static void nregister();
 
 		static ENUM_ACTOR actor_type();
 
 		static i64_actorid actorid();
 
+		virtual void init();
+
 		virtual void loaddb_finish(bool adbishave);
+
+		static void nregister();
 
 		// # 根据账号密码获取pbdb::db_account
 		data_modified<pbdb::db_account>* get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate);
@@ -84,6 +85,10 @@ namespace ngl
 
 		// # 打印空闲服务器数据
 		void printf_freeserver();
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<np_actorserver_connect>& adata);
 

@@ -21,10 +21,83 @@
 
 namespace ngl
 {
+	union nroomid
+	{
+	private:
+		int32_t m_id;
+		int16_t m_value[2];// m_value2[0] = type		m_value2[1] = room index
+	public:
+		nroomid(int32_t aid) :
+			m_id(aid)
+		{}
+
+		nroomid(pbexample::EPLAY_TYPE atype, int16_t aindex)
+		{
+			m_value[0] = atype;
+			m_value[1] = aindex;
+		}
+
+		int32_t roomid()
+		{
+			return m_id;
+		}
+
+		pbexample::EPLAY_TYPE type()
+		{
+			return (pbexample::EPLAY_TYPE)m_value[0];
+		}
+
+		int16_t index()
+		{
+			return m_value[1];
+		}
+
+		operator int32_t ()const
+		{
+			return m_id;
+		}
+	};
+
+	struct player
+	{
+		i64_actorid		m_roleid = 0;
+		bool			m_isconfirm = false; // 是否确认
+		int32_t			m_index = 0;
+	};
+
+	struct room
+	{
+		pbexample::EPLAY_TYPE			m_type = pbexample::EPLAY_TYPE::EPLAY_NULL;
+		int32_t							m_roomid = 0;
+		int32_t							m_totalnumber = 0;		// 需要的总人数
+		std::map<i64_actorid, player>	m_players;				// 参与匹配的玩家
+		std::set<i64_actorid>			m_playersset;			// 参与匹配的玩家
+		time_t							m_roomcreate = 0;		// 房间创建时间
+		time_t							m_roomready = 0;		// 房间就绪时间
+		int32_t							m_index = 0;			// 进入房间的序号
+	};
+
+	struct room_index
+	{
+		int32_t				m_index = 0;
+		enum eroom_stat
+		{
+			eroom_matching,		// 人未满匹配中
+			eroom_ready,		// 人满就绪
+		};
+		std::map<int32_t, eroom_stat>	m_roomlist;
+		std::list<int32_t>				m_readyroomlist;	// 人满就绪列表(顺序列表)
+	};
+
 	class actor_example_match : public actor
 	{
 		actor_example_match(const actor_example_match&) = delete;
 		actor_example_match& operator=(const actor_example_match&) = delete;
+
+		std::map<pbexample::EPLAY_TYPE, room_index>						m_roomindex;			// 房间号自增
+		/////////roomid////////
+		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
+		std::map<i64_actorid, int32_t>									m_matching;				// key:roleid value:room id
 
 		actor_example_match();
 	public:
@@ -40,81 +113,11 @@ namespace ngl
 
 		static i64_actorid actorid();
 
+		virtual void init();
+
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
-
-		union nroomid
-		{
-		private:
-			int32_t m_id;
-			int16_t m_value[2];// m_value2[0] = type		m_value2[1] = room index
-		public:
-			nroomid(int32_t aid) :
-				m_id(aid)
-			{}
-
-			nroomid(pbexample::EPLAY_TYPE atype, int16_t aindex)
-			{
-				m_value[0] = atype;
-				m_value[1] = aindex;
-			}
-
-			int32_t roomid()
-			{
-				return m_id;
-			}
-
-			pbexample::EPLAY_TYPE type()
-			{
-				return (pbexample::EPLAY_TYPE)m_value[0];
-			}
-
-			int16_t index()
-			{
-				return m_value[1];
-			}
-
-			operator int32_t ()const
-			{
-				return m_id;
-			}
-		};
-
-		struct player
-		{
-			i64_actorid		m_roleid = 0;
-			bool			m_isconfirm = false; // 是否确认
-			int32_t			m_index = 0;
-		};
-
-		struct room
-		{
-			pbexample::EPLAY_TYPE			m_type = pbexample::EPLAY_TYPE::EPLAY_NULL;
-			int32_t							m_roomid = 0;
-			int32_t							m_totalnumber = 0;		// 需要的总人数
-			std::map<i64_actorid, player>	m_players;				// 参与匹配的玩家
-			std::set<i64_actorid>			m_playersset;			// 参与匹配的玩家
-			time_t							m_roomcreate = 0;		// 房间创建时间
-			time_t							m_roomready = 0;		// 房间就绪时间
-			int32_t							m_index = 0;			// 进入房间的序号
-		};
-
-		std::map<i64_actorid, int32_t>				m_matching;				// key:roleid value:room id
-		struct room_index
-		{
-			int32_t				m_index = 0;
-			enum eroom_stat
-			{
-				eroom_matching,		// 人未满匹配中
-				eroom_ready,		// 人满就绪
-			};
-			std::map<int32_t, eroom_stat>	m_roomlist;
-			std::list<int32_t>				m_readyroomlist;	// 人满就绪列表(顺序列表)
-		};
-		std::map<pbexample::EPLAY_TYPE, room_index>						m_roomindex;			// 房间号自增
-										/////////roomid////////
-		std::map<pbexample::EPLAY_TYPE, std::map<int32_t, room>>		m_room;
 
 		// # 同步房间信息
 		void sync_match_info(room* aroom, i64_actorid aroleid = nguid::make());
@@ -143,8 +146,6 @@ namespace ngl
 		// # 玩家取消匹配
 		void erase_player_room(room* aroom, i64_actorid aroleid);
 
-		virtual void init();
-
 		// # 检查是否超时
 		bool check_timeout(time_t atime, int32_t ainterval);
 
@@ -155,6 +156,8 @@ namespace ngl
 		bool check_ready(room* aroom);
 
 		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		// # 加入匹配
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);

@@ -55,8 +55,6 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
-		bool timer_handle(const message<np_timerparm>& adata);
-
 		void next_setp();
 
 		void bomb(i64_actorid aroleid = nguid::make());
@@ -70,6 +68,10 @@ namespace ngl
 		void send_error(i64_actorid aroleid, pbexample::E_GUESS_NUMBER_ERROR aerr);
 
 		static void nregister();
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		// # 所有人准备就绪 可以进入游戏
 		bool handle(const message<np_example_entergame_ready>& adata);

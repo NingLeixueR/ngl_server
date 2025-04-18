@@ -29,11 +29,15 @@ namespace ngl
 
 		virtual ~actor_gateway() = default;
 
-		static void nregister();
-
 		static ENUM_ACTOR actor_type();
 
 		static i64_actorid actorid(i32_actordataid aactordataid);
+
+		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
+
+		static void nregister();
 
 		// # ֪ͨactor_server [actorid]->[gateway server id]
 		void sync_actorserver_gatewayid(const nguid& aguid, bool aisremove);
@@ -41,6 +45,10 @@ namespace ngl
 		void update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& ap);
 
 		void session_close(gateway_socket* ainfo);
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<np_gateway_close_session>& adata);
 

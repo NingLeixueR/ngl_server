@@ -25,16 +25,43 @@ namespace ngl
 
 	i64_actorid actor_notice::actorid()
 	{
-		return nguid::make(ACTOR_NOTICE, tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 	}
 
 	void actor_notice::init()
 	{
+		// 绑定DB结构:DB.set(this);
 		m_notice.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
 	}
 
 	void actor_notice::loaddb_finish(bool adbishave) 
 	{
+	}
+
+	void actor_notice::nregister()
+	{
+		// 定时器
+		actor::register_timer<actor_notice>(&actor_notice::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_notice>::func<
+			mforward<np_gm>
+		>(true);
+
+		// 绑定pb消息
+		register_handle_proto<actor_notice>::func<
+			mforward<pbnet::PROBUFF_NET_NOTICE>
+		>(true);
 	}
 
 	bool actor_notice::sendnotice(const std::string& anotice, int32_t astarttime, int32_t afinishtime)
@@ -47,15 +74,13 @@ namespace ngl
 		return true;
 	}
 
-	void actor_notice::nregister()
+	bool actor_notice::timer_handle(const message<np_timerparm>& adata)
 	{
-		// 协议注册
-		register_handle_custom<actor_notice>::func<
-			mforward<np_gm>
-		>(true);
+		return true;
+	}
 
-		register_handle_proto<actor_notice>::func<
-			mforward<pbnet::PROBUFF_NET_NOTICE>
-		>(true);
+	bool actor_notice::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }//namespace ngl

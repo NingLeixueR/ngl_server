@@ -28,7 +28,6 @@ namespace ngl
 		std::map<int, std::list<pbnet::chatitem>>	m_update_chatitem;
 
 		actor_chat();
-		virtual ~actor_chat() = default;
 	public:
 		friend class actor_instance<actor_chat>;
 		static actor_chat& getInstance()
@@ -36,17 +35,21 @@ namespace ngl
 			return actor_instance<actor_chat>::instance();
 		}
 
+		virtual ~actor_chat() = default;
+
 		static ENUM_ACTOR actor_type();
 
 		static i64_actorid actorid();
 
-		static void nregister();
+		virtual void init();
 
 		virtual void loaddb_finish(bool adbishave);
 
-		virtual void init();
+		static void nregister();
 
 		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata);
 	};

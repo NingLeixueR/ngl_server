@@ -30,19 +30,22 @@ namespace ngl
 
 		actor_robot(i16_area aarea, i32_actordataid arobotid, void*);
 
-		virtual void init(){}
+		virtual ~actor_robot() = default;
 
-		virtual ~actor_robot() {}
+		static ENUM_ACTOR actor_type();
+
+		static i64_actorid actorid(int32_t adataid);
+
+		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
 
-		static ENUM_ACTOR actor_type()
-		{
-			return ACTOR_ROBOT;
-		}
-
 		virtual const char* kcp_session();
 
+		bool timer_handle(const message<np_timerparm>& adata);
+		bool handle(const message<np_arg_null>&);
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
 		bool handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata);

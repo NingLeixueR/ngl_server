@@ -59,15 +59,19 @@ namespace ngl
 
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);
 
-		virtual i32_serverid get_getwayserverid();
+		virtual ~actor_role() = default;
 
-		virtual void init();
+		static ENUM_ACTOR actor_type();
+
+		static i64_actorid actorid(int32_t adata);
+
+		virtual void init(); 
+
+		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
 
-		virtual ~actor_role() = default;
-
-		virtual void loaddb_finish(bool adbishave);
+		virtual i32_serverid get_getwayserverid();
 
 		//# 执行handle之后调用
 		virtual void handle_after();
@@ -210,6 +214,8 @@ namespace ngl
 
 		//# 定时器
 		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		//# GM请求
 		bool handle(const message<mforward<np_gm>>& adata);

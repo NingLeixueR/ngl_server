@@ -24,7 +24,7 @@
 
 int main(int argc, char** argv) 
 {
-    xml_protocol::create_actor();
+    //xml_protocol::create_actor();
 
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);

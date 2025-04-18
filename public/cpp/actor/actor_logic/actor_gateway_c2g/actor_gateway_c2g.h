@@ -25,11 +25,22 @@ namespace ngl
 			return actor_instance<actor_gateway_c2g>::instance();
 		}
 
-		static void nregister();
+		virtual ~actor_gateway_c2g() = default;
 
 		static ENUM_ACTOR actor_type();
 
+
 		static i64_actorid actorid(i32_actordataid aactordataid);
+
+		virtual void init();
+
+		virtual void loaddb_finish(bool adbishave);
+
+		static void nregister();
+
+		bool timer_handle(const message<np_timerparm>& adata);
+
+		bool handle(const message<np_arg_null>&);
 
 		template <EPROTOCOL_TYPE TYPE, typename T>
 		bool handle(const message<np_actor_forward<T, TYPE, false, ngl::forward>>& adata)

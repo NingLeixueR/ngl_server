@@ -10,6 +10,12 @@ namespace ngl
 		辅助缺省参数: template_arg<TF,TARG...>
 		TF需要实现static func<T>(TARG...)
 	*/
+
+	struct np_arg_null
+	{
+		def_portocol(np_arg_null)
+	};
+
 	template <typename TF, typename ...TARG>
 	class template_arg
 	{
@@ -23,12 +29,10 @@ namespace ngl
 			TF::template func<T>(args...);
 		}
 	public:
-		struct arg_null { def_portocol(arg_null) };
-
-		template <typename T = arg_null, typename ...ARG>
+		template <typename T = np_arg_null, typename ...ARG>
 		static void func(TARG... args)
 		{
-			if constexpr (std::is_same<T, arg_null>())
+			if constexpr (std::is_same<T, np_arg_null>())
 			{
 				return;
 			}

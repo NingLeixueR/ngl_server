@@ -30,12 +30,46 @@ namespace ngl
 		return nguid::make(ACTOR_GATEWAY_C2G, tab_self_area, aactordataid);
 	}
 
+	void actor_gateway_c2g::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		/*np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 2) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
+		*/
+	}
+
+	void actor_gateway_c2g::loaddb_finish(bool adbishave)
+	{
+	}
+
 	void actor_gateway_c2g::nregister()
 	{
+		// 定时器
+		actor::register_timer<actor_gateway_c2g>(&actor_gateway_c2g::timer_handle);
+
+		// 绑定自定义np_消息
 		register_handle_custom<actor_gateway_c2g>::func<
 			np_actor_gatewayinfo_updata
 		>(false);
-		// Client 2 Game
+
+		// 绑定pb消息
 		nforward::c2g();
+	}
+
+	bool actor_gateway_c2g::timer_handle(const message<np_timerparm>& adata)
+	{
+		return true;
+	}
+
+	bool actor_gateway_c2g::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 }//namespace ngl

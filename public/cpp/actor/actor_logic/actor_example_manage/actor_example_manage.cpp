@@ -23,7 +23,21 @@ namespace ngl
 
 	i64_actorid actor_example_manage::actorid()
 	{
-		return nguid::make(ACTOR_EXAMPLE_MANAGE, tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
+	}
+
+	void actor_example_manage::init()
+	{
+		// 绑定DB结构:DB.set(this);
+
+		// 设置timer_handle定时器
+		np_timerparm tparm;
+		if (make_timerparm::make_interval(tparm, 1) == false)
+		{
+			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			return;
+		}
+		set_timer(tparm);
 	}
 
 	void actor_example_manage::loaddb_finish(bool adbishave) 
@@ -63,16 +77,27 @@ namespace ngl
 			m_info[ltype].erase(lactorexampleid);
 		}
 	}
-		
-	void actor_example_manage::init()
+	
+	void actor_example_manage::nregister()
 	{
-		np_timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 1) == false)
-		{
-			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
-			return;
-		}
-		set_timer(tparm);
+		// 定时器
+		actor::register_timer<actor_example_manage>(&actor_example_manage::timer_handle);
+
+		// 绑定自定义np_消息
+		register_handle_custom<actor_example_manage>::func<
+			np_create_example,
+			np_example_equit
+		>(true);
+
+		// 绑定pb消息
+		register_handle_proto<actor_example_manage>::func<
+			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
+		>(true);
+	}
+
+	bool actor_example_manage::handle(const message<np_arg_null>&)
+	{
+		return true;
 	}
 
 	bool actor_example_manage::timer_handle(const message<np_timerparm>& adata)
@@ -85,7 +110,7 @@ namespace ngl
 			{
 				if (item2.second.m_createexample + example_waittime <= lnow)
 				{
-					for (i64_actorid roleid :item2.second.m_roles)
+					for (i64_actorid roleid : item2.second.m_roles)
 					{
 						if (item2.second.m_role_enter_example.contains(roleid) == false)
 						{
@@ -96,21 +121,5 @@ namespace ngl
 			}
 		}
 		return true;
-	}
-
-	void actor_example_manage::nregister()
-	{
-		// 定时器
-		actor::register_timer<actor_example_manage>(&actor_example_manage::timer_handle);
-
-		// 协议注册
-		register_handle_proto<actor_example_manage>::func<
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
-		>(false);
-
-		register_handle_custom<actor_example_manage>::func<
-			np_create_example,
-			np_example_equit
-		>(true);
 	}
 }//namespace ngl

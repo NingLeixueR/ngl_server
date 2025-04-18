@@ -1,4 +1,4 @@
-#include "{}.h"
+#include "actor_brief.h"
 
 namespace ngl
 {
