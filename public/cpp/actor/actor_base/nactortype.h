@@ -17,7 +17,9 @@ namespace ngl
 		ACTOR_NONE = -1,
 		//#######################  非单例  #####################
 		ACTOR_ROLE = 1,
-		ACTOR_ROBOT,												// 机器人
+		ACTOR_ROBOT,											// 机器人
+		ACTOR_LOG,												// 日志
+		ACTOR_EXAMPLE_GUESS_NUMBER,								// 例子小游戏:猜数字-数字炸弹
 
 		//#######################  单例  #######################
 		ACTOR_SIGNLE_START,
@@ -29,7 +31,6 @@ namespace ngl
 		ACTOR_GATEWAY_G2C,										// 网关 [Game]	->[Client]
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_MANAGE_ROLE,										// 负责创建actor_role
-		ACTOR_LOG,
 		ACTOR_KCP,
 		ACTOR_MANAGE_ROBOT,
 		ACTOR_CSVCLIENT,										// 热更csv client
@@ -50,7 +51,6 @@ namespace ngl
 		ACTOR_EVENTS_MAX_COUNT = ACTOR_EVENTS+10,				// 事件预留10个
 		ACTOR_EXAMPLE_MATCH,									// 例子小游戏:匹配
 		ACTOR_EXAMPLE_MANAGE,									// 创建管理例子小游戏
-		ACTOR_EXAMPLE_GUESS_NUMBER,								// 例子小游戏:猜数字-数字炸弹
 		ACTOR_DB,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,
