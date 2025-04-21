@@ -27,25 +27,25 @@ namespace ngl
 		example_waittime = 30,	// 等待进入游戏的最大秒数
 	};
 
+	struct playinfo
+	{
+		i64_actorid m_actorexampleid = nguid::make();
+		pbexample::EPLAY_TYPE m_type = pbexample::EPLAY_NULL;
+		int32_t m_createexample = 0;
+		std::map<i64_actorid, bool> m_role_enter_example; // 玩家是否进入例子游戏
+		std::set<i64_actorid> m_roles;
+	};
+
 	class actor_example_manage : public actor
 	{
 		actor_example_manage(const actor_example_manage&) = delete;
 		actor_example_manage& operator=(const actor_example_manage&) = delete;
 
+		using type_tuple = std::tuple<pbexample::EPLAY_TYPE, i64_actorid>;
+
 		std::array<int32_t, exampleindex_max> m_exampleindex;
-
-		struct playinfo
-		{
-			i64_actorid m_actorexampleid = nguid::make();
-			pbexample::EPLAY_TYPE m_type = pbexample::EPLAY_NULL;
-			int32_t m_createexample = 0;
-			std::map<i64_actorid, bool> m_role_enter_example; // 玩家是否进入例子游戏
-			std::set<i64_actorid> m_roles;
-		};
 		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_info;
-		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_finishinfo;
-
-		using type_tuple = std::tuple<pbexample::EPLAY_TYPE, i64_actorid>;		
+		std::map<pbexample::EPLAY_TYPE, std::map<i64_actorid, playinfo>> m_finishinfo;		
 		std::map<i64_actorid, type_tuple> m_playerexample; // key:roleid value:actor_exmple_xxx
 
 		actor_example_manage();
