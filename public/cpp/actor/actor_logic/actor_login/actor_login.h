@@ -21,15 +21,15 @@ namespace ngl
 		i32_serverid	m_gatewayserverid;
 		std::string		m_session;
 	};
+	struct server_info
+	{
+		int32_t	m_id = 0;
+		int32_t	m_rolesize = 0;
+	};
 
 	class actor_login : public actor
 	{
 	public:
-		struct server_info
-		{
-			int32_t	m_id = 0;
-			int32_t	m_rolesize = 0;
-		};
 	private:
 		// ----- Data Begin -----
 		account								m_account;
