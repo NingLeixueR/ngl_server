@@ -99,14 +99,14 @@ namespace ngl
 }//namespace ngl
 
 template <>
-struct std::formatter<ngl::actor_login::server_info>
+struct std::formatter<ngl::server_info>
 {
 	constexpr auto parse(std::format_parse_context& ctx)
 	{
 		return ctx.begin();
 	}
 
-	auto format(const ngl::actor_login::server_info& aval, std::format_context& ctx)const
+	auto format(const ngl::server_info& aval, std::format_context& ctx)const
 	{
 		return std::format_to(ctx.out(), "[server_info:id{}-rolesize{}]", aval.m_id, aval.m_rolesize);
 	}
