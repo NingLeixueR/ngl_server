@@ -73,19 +73,11 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		// # 匹配成功后 创建例子玩法
-		bool handle(const message<np_create_example>& adata);
-
-		// # 玩家登陆
-		bool handle(const message<np_login_request_info>& adata);
-
-		// # 玩家进入例子游戏
+		// 进入例子游戏
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>>& adata);
-
-		// # 例子游戏销毁退出
+		bool handle(const message<np_create_example>& adata);
 		bool handle(const message<np_example_equit>& adata);
-		
+		bool handle(const message<np_login_request_info>& adata);
 	};
 
 }//namespace ngl

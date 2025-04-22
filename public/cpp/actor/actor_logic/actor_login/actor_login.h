@@ -89,11 +89,9 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		bool handle(const message<np_actorserver_connect>& adata);
-
 		bool handle(const message<np_actor_disconnect_close>& adata);
-
+		bool handle(const message<np_actorserver_connect>& adata);
+		// [ÇëÇó]µÇÂ¼ÕËºÅ
 		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata);
 	};
 }//namespace ngl

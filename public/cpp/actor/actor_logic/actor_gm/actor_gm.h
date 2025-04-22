@@ -57,13 +57,10 @@ namespace ngl
 
 		using handle_cmd = cmd<actor_gm, std::string, const ngl::json_read&, const message<ngl::np_gm>*>;
 
-
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		bool handle(const message<ngl::np_gm>& adata);
-
 		bool handle(const message<mforward<ngl::np_gm_response>>& adata);
+		bool handle(const message<ngl::np_gm>& adata);
 	};
 }// namespace ngl

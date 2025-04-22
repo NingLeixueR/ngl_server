@@ -58,9 +58,7 @@ namespace ngl
 		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ);
 
 		bool timer_handle(const message<np_timerparm>& adata);
-
 		bool handle(const message<np_arg_null>&);
-
 		bool handle(const message<np_actor_activity>& adata);
 	};
 }//namespace ngl

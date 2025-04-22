@@ -71,11 +71,8 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		// # 所有人准备就绪 可以进入游戏
-		bool handle(const message<np_example_entergame_ready>& adata);
-
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata);
+		bool handle(const message<np_example_entergame_ready>& adata);
 	};
 
 }//namespace ngl

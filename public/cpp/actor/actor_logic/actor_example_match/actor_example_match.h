@@ -158,17 +158,12 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		// # 加入匹配
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);
-		
-		// # 确认准备好进入例子游戏
-		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
-
-		// # 玩家上线后请求匹配信息
-		bool handle(const message<np_login_request_info>& adata);
-
-		// # 取消匹配
+		// 取消匹配
 		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>>& adata);
+		// 加入玩法
+		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>>& adata);
+		// 玩家确认加入
+		bool handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>>& adata);
+		bool handle(const message<np_login_request_info>& adata);
 	};
 }//namespace ngl

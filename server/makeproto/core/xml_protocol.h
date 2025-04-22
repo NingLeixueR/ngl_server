@@ -683,12 +683,12 @@ namespace ngl
         }
         // 判断文件是否存在
         lpath += std::format("/{}", ltolower);
-        std::string lpathH = std::format("{}_1.h", lpath);
-        std::string lpathCPP = std::format("{}_1.cpp", lpath);
-        //if (ngl::tools::file_exists(lpathH) || ngl::tools::file_exists(lpathCPP))
-       // {
-        //    return;
-       // }
+        std::string lpathH = std::format("{}.h", lpath);
+        std::string lpathCPP = std::format("{}.cpp", lpath);
+        if (ngl::tools::file_exists(lpathH) || ngl::tools::file_exists(lpathCPP))
+        {
+            return;
+        }
 
         ngl::writefile lfileH(lpathH);
 
@@ -879,6 +879,9 @@ namespace ngl
                             || lnr == "ACTOR_DB"
                             || lnr == "ACTOR_SIGNLE_FINISH"
                             || lnr == "ACTOR_COUNT"
+                            || lnr == "ACTOR_GATEWAY"
+                            || lnr == "ACTOR_GATEWAY_C2G"
+                            || lnr == "ACTOR_GATEWAY_G2C"
                             )
                         {
                             continue;
@@ -893,20 +896,37 @@ namespace ngl
         {
             enum_actor(item);
         }
-        return;
         // 读取.pro文件
         //message PROBUFF_NET_MSG_RESPONSE//G2C [actor_robot]
-        struct vepro
-        {
-            std::string m_name;
-            std::string m_tag;
-            std::vector<std::string> m_vecactorname;
-            std::string m_pbname;
-        };
-        std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> lmessagemap;
-        std::map<std::string, vepro> lmessageinfo;
+      ///*  struct vepro
+      //  {
+      //      std::string m_name;
+      //  };
+      //  std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> lmessagemap;
+      //  std::map<std::string, vepro> lmessageinfo;*/
 
-        auto lfun = [&lmessagemap,&lmessageinfo](const char* fname, const char* pbname)
+
+        struct hactorfile
+        {
+            std::string m_actorname;
+            std::string m_begnr;
+            std::string m_endnr;
+            std::string m_cppbegnr;
+            std::string m_cppendnr;
+            struct vepro
+            {
+                std::string m_message;
+                std::string m_tag;
+                std::vector<std::string> m_vecactorname;
+                std::string m_pbname;
+                std::string m_content;
+                std::string m_zhushi;
+            };
+            std::map<std::string, vepro> m_handle;
+        };
+        std::map<std::string, hactorfile> lhactorfilemap;
+
+        auto lfun = [&lhactorfilemap](const char* fname, const char* pbname)
             {
                 std::string ldata;
                 // 读取文件nactortype.h
@@ -922,7 +942,7 @@ namespace ngl
                     {
                         continue;
                     }
-                    vepro ltempvepro;
+                    hactorfile::vepro ltempvepro;
                     ltempvepro.m_pbname = pbname;
                     for (size_t i = lpos + sizeof("message"); i < lnr.size(); ++i)
                     {
@@ -930,7 +950,7 @@ namespace ngl
                         {
                             break;
                         }
-                        ltempvepro.m_name += lnr[i];
+                        ltempvepro.m_message += lnr[i];
                     }
 
                     lpos = lnr.find("//");
@@ -965,10 +985,25 @@ namespace ngl
                     if (ltempvepro.m_vecactorname.empty() == false)
                     {
                         std::cout << lnr << std::endl;
+                        bool isfirst = true;
                         for (std::string& itemactor : ltempvepro.m_vecactorname)
                         {
-                            lmessagemap[itemactor][ltempvepro.m_tag][ltempvepro.m_name] = llastnr.find("//") == std::string::npos ? "" : llastnr;
-                            lmessageinfo[ltempvepro.m_name] = ltempvepro;
+                            lhactorfilemap[itemactor].m_actorname = itemactor;
+                           
+                            if (isfirst)
+                            {
+                                isfirst = false;
+                                if (ltempvepro.m_tag == "C2G2")
+                                {
+                                    ltempvepro.m_message = std::format("mforward<{}::{}>", ltempvepro.m_pbname, ltempvepro.m_message);
+                                }
+                                else
+                                {
+                                    ltempvepro.m_message = std::format("{}::{}", ltempvepro.m_pbname, ltempvepro.m_message);
+                                }
+                            }
+                            ltempvepro.m_zhushi = llastnr.find("//") == std::string::npos ? "" : llastnr;
+                            lhactorfilemap[itemactor].m_handle[ltempvepro.m_message] = ltempvepro;
                         }
                     }
                 }
@@ -978,16 +1013,6 @@ namespace ngl
         lfun("example", "pbexample");
         // 根据message检查actor文件中是否实现了对应的协议没有则插入
 
-        struct hactorfile
-        {
-            std::string m_actorname;
-            std::string m_begnr;
-            std::string m_endnr;
-            std::string m_cppbegnr;
-            std::string m_cppendnr;
-            std::set<std::string> m_handle;
-        };
-        std::map<std::string, hactorfile> lhactorfilemap;
         {
             for (const std::string& item : lactorenumset)
             {
@@ -1008,7 +1033,7 @@ namespace ngl
                     hactorfile& lhactorfile = lhactorfilemap[lactortolower];
                     lhactorfile.m_actorname = lactortolower;
                     std::string* lpnr = &lhactorfile.m_begnr;
-                    for (; lfile.readline(lnr); llastnr = lnr)
+                    for (; lfile.readline(lnr); )
                     {
                         if (lboolkk == false)
                         {
@@ -1030,16 +1055,11 @@ namespace ngl
 
                         size_t lpos = lnr.find("handle(const message<");
                         size_t lpos2 = lnr.find("timer_handle(const message<");
-                        if (lpos != std::string::npos && lpos2 == std::string::npos)
+                        size_t lpos3 = lnr.find("handle(const message<np_arg_null");
+                        if (lpos != std::string::npos && lpos2 == std::string::npos && lpos3 == std::string::npos)
                         {
-                            if (llastnr.find("//") != std::string::npos)
-                            {
-
-                            }
-                            else
-                            {
-                                *lpnr += std::format("{}\n", llastnr);
-                            }
+                            llastnr = "";
+                           // *lpnr += std::format("{}\n", lnr);
                             std::string lstrhandl;
                             int lcout = 0;
                             for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
@@ -1060,16 +1080,47 @@ namespace ngl
                             }
                             if (lstrhandl.empty() == false)
                             {
-                                lhactorfile.m_handle.insert(lstrhandl);
+                                lhactorfile.m_handle[lstrhandl];
                             }
                         }
                         else
                         {
                             //*lpnr += std::format("{}\n", lnr);
-                            *lpnr += std::format("{}\n", llastnr);
+                            if (lnr.find("//") == std::string::npos)
+                            {
+                                if (llastnr.empty() == false)
+                                {
+                                    *lpnr += std::format("{}\n", llastnr);
+                                    llastnr = "";
+                                }
+                                *lpnr += std::format("{}\n", lnr);
+                            }
+                            else if(lnr.find("}//namespace ngl") != std::string::npos)
+                            {
+                                if (llastnr.empty() == false)
+                                {
+                                    *lpnr += std::format("{}\n", llastnr);
+                                    llastnr = "";
+                                }
+                                *lpnr += std::format("{}\n", lnr);
+                            }
+                            else
+                            {
+                                std::string lnrkkk = lnr;
+                                ngl::tools::replace(" ", "", lnrkkk, lnrkkk);
+                                ngl::tools::replace("\t", "", lnrkkk, lnrkkk);
+                                lnrkkk.resize(2);
+                                if (lnrkkk == "//")
+                                {
+                                    llastnr = lnr;
+                                }
+                                else
+                                {
+                                    *lpnr += std::format("{}\n", lnr);
+                                }
+                            }
                         }
-                    }
-                    *lpnr += std::format("{}\n", llastnr);                    
+                    }                 
                 }
                
                 {
@@ -1098,86 +1149,192 @@ namespace ngl
                     }
 
                     hactorfile& lhactorfile = lhactorfilemap[lactortolower];
-                    std::string* lpnr = &lhactorfile.m_cppbegnr;
                     std::string lnr;
+                    bool ismessage = false;
+                    std::string lmessage;
+                    bool isfinishbeg = false;
                     while (lfile.readline(lnr))
                     {
-                        size_t lpos = lnr.find("}//namespace ngl");
-                        if (lpos != std::string::npos)
+                        size_t lpos = lnr.find("namespace ngl");
+                        size_t lpos2 = lnr.find("}//namespace ngl");
+                        if (lpos != std::string::npos && lpos2 == std::string::npos)
                         {
-                            lpnr = &lhactorfile.m_cppendnr;
-                        }
+                            lhactorfile.m_cppbegnr += "\n{\n";
+                            lhactorfile.m_cppendnr += "\n}//namespace ngl\n";
+                            isfinishbeg = true;
+                            continue;
 
-                        *lpnr += std::format("{}\n", lnr);
+                        }
+                        if (ismessage == false)
+                        {
+                            size_t lpos = lnr.find("handle(const message<");
+                            if (lpos != std::string::npos)
+                            {
+                                // 获取message
+                                int lcout = 0;
+                                for (size_t i = lpos + sizeof("handle(const message<") - 1; i < lnr.size(); ++i)
+                                {
+                                    if (lnr[i] == '>' && lcout == 0)
+                                    {
+                                        break;
+                                    }
+                                    if (lnr[i] == '<')
+                                    {
+                                        ++lcout;
+                                    }
+                                    else if (lnr[i] == '>')
+                                    {
+                                        --lcout;
+                                    }
+                                    lmessage += lnr[i];
+                                }
+                                ismessage = true;
+                            }
+                        }
+                        else
+                        {
+                            if (lnr != "\t{")
+                            {
+                                lhactorfile.m_handle[lmessage].m_content += std::format("{}\n",lnr);
+                            }
+                            if (lnr == "\t}")
+                            {
+                                ismessage = false;
+                                lmessage = "";
+                            }
+                        }
                     }
                 }
             }
         }
 
+        std::cout << std::endl;
         // 写入文件
-        for (const auto& item1 : lmessagemap)
+        
+        for (const auto& item1 : lhactorfilemap)
         {
-            std::string actorname = item1.first;
-            auto itor = lhactorfilemap.find(actorname);
-            if (itor == lhactorfilemap.end())
+            std::string actorname = item1.second.m_actorname;
+            auto& lhactorfile = item1.second;
+            std::stringstream lstream;
+            std::stringstream lstreamcpp;
+            for (const auto& itme2 : item1.second.m_handle)
             {
-                continue;
+                itme2.second.m_zhushi;
+                if (!itme2.second.m_zhushi.empty())
+                {
+                    lstream << std::format(R"(		{})", itme2.second.m_zhushi) << std::endl;
+                }
+                lstream << std::format(R"(		bool handle(const message<{}>& adata);)", itme2.first) << std::endl;
             }
-            hactorfile& lhactorfile = itor->second;
-            for (const auto& item2 : item1.second)
+            // 写入.h文件
+            if (lstream.str().empty() == false)
             {
-                std::string ltype = item2.first;
-                std::stringstream lstream;
-                for (const auto& message : item2.second)
-                {
-                    std::string lmessage = message.first;
-                    vepro& ltttt = lmessageinfo[message.first];
-
-                    if (ltype == "C2G2")
-                    {
-                        if (ltttt.m_pbname.empty())
-                        {
-                            lmessage = std::format("mforward<{}>", message.first);
-                        }
-                        else
-                        {
-                            lmessage = std::format("mforward<{}::{}>", ltttt.m_pbname, message.first);
-                        }
-                    }
-                    else
-                    {
-                        if (ltttt.m_pbname.empty())
-                        {
-                            lmessage = std::format("{}", message.first);
-                        }
-                        else
-                        {
-                            lmessage = std::format("{}::{}", ltttt.m_pbname, message.first);
-                        }
-                    }
-                    //if(lhactorfile.m_handle.find(lmessage) == lhactorfile.m_handle.end())
-                    {
-                        std::cout << actorname << "#" << message.first << std::endl;
-                        if (message.second.empty() == false)
-                        {
-                            lstream << std::format(R"(		{})", message.second) << std::endl;
-                        }
-                        lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
-                    }                  
-                }
-
-                // 写入.h文件
-                if (lstream.str().empty() == false)
-                {
-
-                    std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);
-                    ngl::writefile lhfile(lactorhfile);
-                    lhfile.write(lhactorfile.m_begnr);
-                    lhfile.write(lstream.str());
-                    lhfile.write(lhactorfile.m_endnr);
-                }
+                   std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);
+                   ngl::writefile lhfile(lactorhfile);
+                   lhfile.write(lhactorfile.m_begnr);
+                   lhfile.write(lstream.str());
+                   lhfile.write(lhactorfile.m_endnr);
             }
         }
+
+        ////for(const auto& item1 : lhactorfilemap)
+        ////{
+        ////    std::string actorname = item1.second.m_actorname;
+        ////    const hactorfile& lhactorfile = item1.second;
+        ////    std::map<std::string, std::map<std::string, std::string>> lmap = lmessagemap[actorname];
+
+        ////    std::stringstream lstream;
+        ////    std::stringstream lstreamcpp;
+        ////    for (const auto& item2 :lhactorfile.m_handle)
+        ////    {
+        ////        std::string lmessage = item2.first;
+
+        ////        vepro& ltttt = lmessageinfo[lmessage];
+        ////        for (const auto& item3 : lmessagemap[actorname])
+        ////        {
+        ////            auto lptemp = ngl::tools::findmap(item3.second, lmessage);
+        ////            if (lptemp != nullptr && lptemp->empty() == false)
+        ////            {
+        ////                lstream << std::format(R"(		{})", *lptemp) << std::endl;
+        ////                break;
+        ////            }
+        ////        }
+        ////        lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
+
+        ////        lmap.erase(item2.first);
+        ////    }
+
+        ////    for (const auto& item2 : item1.second)
+        ////    {
+        ////        std::string ltype = item2.first;
+        ////        for (const auto& message : item2.second)
+        ////        {
+        ////            std::string lmessage = message.first;
+        ////            vepro& ltttt = lmessageinfo[message.first];
+
+        ////            if (ltype == "C2G2")
+        ////            {
+        ////                if (ltttt.m_pbname.empty())
+        ////                {
+        ////                    lmessage = std::format("mforward<{}>", message.first);
+        ////                }
+        ////                else
+        ////                {
+        ////                    lmessage = std::format("mforward<{}::{}>", ltttt.m_pbname, message.first);
+        ////                }
+        ////            }
+        ////            else
+        ////            {
+        ////                if (ltttt.m_pbname.empty())
+        ////                {
+        ////                    lmessage = std::format("{}", message.first);
+        ////                }
+        ////                else
+        ////                {
+        ////                    lmessage = std::format("{}::{}", ltttt.m_pbname, message.first);
+        ////                }
+        ////            }
+        ////            //if(lhactorfile.m_handle.find(lmessage) == lhactorfile.m_handle.end())
+        ////            {
+        ////                std::cout << actorname << "#" << message.first << std::endl;
+        ////                if (message.second.empty() == false)
+        ////                {
+        ////                    lstream << std::format(R"(		{})", message.second) << std::endl;
+        ////                }
+        ////                lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
+        ////            }  
+
+        ////            //cpp
+        ////            if (lhactorfile.m_handle.find(lmessage) == lhactorfile.m_handle.end() && lmessage != "np_arg_null")
+        ////            {
+        ////                lstreamcpp << std::format("\tbool {}::handle(const message<{}>& adata)", actorname, message.first) << std::endl;
+        ////                lstreamcpp << "\t{)" << std::endl;
+        ////                lstreamcpp << message.second << std::endl;
+        ////            }
+        ////        }
+
+        ////        // 写入.h文件
+        ////        if (lstream.str().empty() == false)
+        ////        {
+        ////            std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);
+        ////            ngl::writefile lhfile(lactorhfile);
+        ////            lhfile.write(lhactorfile.m_begnr);
+        ////            lhfile.write(lstream.str());
+        ////            lhfile.write(lhactorfile.m_endnr);
+        ////        }
+        ////        // 写入.cpp文件
+        ////        if (lstreamcpp.str().empty() == false)
+        ////        {
+        ////            std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/message/{0}_handle.cpp", actorname);
+        ////            ngl::writefile lhfile(lactorhfile);
+        ////            lhfile.write(lhactorfile.m_begnr);
+        ////            lhfile.write(lstreamcpp.str());
+        ////            lhfile.write(lhactorfile.m_endnr);
+        ////        }
+        ////    }
+
+
+       //// }
     }
 };
 

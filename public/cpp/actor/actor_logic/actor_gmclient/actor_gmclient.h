@@ -59,7 +59,6 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
 		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }// namespace ngl
