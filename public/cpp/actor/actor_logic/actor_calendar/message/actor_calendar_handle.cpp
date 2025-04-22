@@ -1,7 +1,6 @@
 #include "calendar_function.h"
 #include "actor_calendar.h"
 #include "ttab_calendar.h"
-
 namespace ngl
 {
 	bool actor_calendar::handle(const message<np_calendar>& adata)

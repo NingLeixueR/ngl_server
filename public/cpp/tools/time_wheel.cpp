@@ -273,12 +273,15 @@ namespace ngl
 					std::this_thread::sleep_for(std::chrono::milliseconds(ltempsleep));
 				}
 				monopoly_shared_lock(m_mutex);
-				wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
-				if (lpbnode != nullptr)
+				if (!m_wheel.empty())
 				{
-					addtimer(lpbnode);
-				}
-				m_current_ms += m_config.m_time_wheel_precision;
+					wheel_node* lpbnode = m_wheel[0]->shift_current_pos(nullptr);
+					if (lpbnode != nullptr)
+					{
+						addtimer(lpbnode);
+					}
+					m_current_ms += m_config.m_time_wheel_precision;
+				}				
 			}
 		}
 

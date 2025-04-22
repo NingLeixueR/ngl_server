@@ -988,6 +988,10 @@ namespace ngl
                         bool isfirst = true;
                         for (std::string& itemactor : ltempvepro.m_vecactorname)
                         {
+                            if (itemactor == "actor_gateway")
+                            {
+                                continue;
+                            }
                             lhactorfilemap[itemactor].m_actorname = itemactor;
                            
                             if (isfirst)
@@ -1152,19 +1156,8 @@ namespace ngl
                     std::string lnr;
                     bool ismessage = false;
                     std::string lmessage;
-                    bool isfinishbeg = false;
                     while (lfile.readline(lnr))
                     {
-                        size_t lpos = lnr.find("namespace ngl");
-                        size_t lpos2 = lnr.find("}//namespace ngl");
-                        if (lpos != std::string::npos && lpos2 == std::string::npos)
-                        {
-                            lhactorfile.m_cppbegnr += "\n{\n";
-                            lhactorfile.m_cppendnr += "\n}//namespace ngl\n";
-                            isfinishbeg = true;
-                            continue;
-
-                        }
                         if (ismessage == false)
                         {
                             size_t lpos = lnr.find("handle(const message<");
@@ -1189,6 +1182,23 @@ namespace ngl
                                     lmessage += lnr[i];
                                 }
                                 ismessage = true;
+                            }
+                            else
+                            {
+
+                                size_t lpos = lnr.find("}//namespace ngl");
+                                if (lpos != std::string::npos)
+                                {
+                                    lhactorfile.m_cppendnr += "}//namespace ngl\n";
+                                    continue;
+                                }
+                                else
+                                {
+                                    if (lnr != "")
+                                    {
+                                        lhactorfile.m_cppbegnr += std::format("{}\n", lnr);
+                                    }
+                                }
                             }
                         }
                         else
@@ -1225,6 +1235,18 @@ namespace ngl
                     lstream << std::format(R"(		{})", itme2.second.m_zhushi) << std::endl;
                 }
                 lstream << std::format(R"(		bool handle(const message<{}>& adata);)", itme2.first) << std::endl;
+
+                lstreamcpp << std::format("\tbool {}::handle(const message<{}>& adata)", actorname, itme2.first) << std::endl;
+                lstreamcpp << "\t{" << std::endl;
+                if (itme2.second.m_content.empty())
+                {
+                    lstreamcpp << "\t\treturn true;" << std::endl;
+                    lstreamcpp << "\t}" << std::endl;
+                }
+                else
+                {
+                    lstreamcpp << itme2.second.m_content;
+                }
             }
             // Ð´Èë.hÎÄ¼þ
             if (lstream.str().empty() == false)
@@ -1234,6 +1256,14 @@ namespace ngl
                    lhfile.write(lhactorfile.m_begnr);
                    lhfile.write(lstream.str());
                    lhfile.write(lhactorfile.m_endnr);
+            }
+            if (lstreamcpp.str().empty() == false)
+            {
+                std::string lactorcppfile = std::format("../../public/cpp/actor/actor_logic/{0}/message/{0}_handle.cpp", actorname);
+                ngl::writefile lcppfile(lactorcppfile);
+                lcppfile.write(lhactorfile.m_cppbegnr);
+                lcppfile.write(lstreamcpp.str());
+                lcppfile.write(lhactorfile.m_cppendnr);
             }
         }
 

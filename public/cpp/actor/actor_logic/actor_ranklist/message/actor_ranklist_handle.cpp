@@ -1,6 +1,5 @@
 #include "actor_ranklist.h"
 #include "actor_brief.h"
-
 namespace ngl
 {
 	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
@@ -44,7 +43,6 @@ namespace ngl
 		}
 		return true;
 	}
-
 	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
 		auto lrecv = adata.get_data()->data();

@@ -1,14 +1,7 @@
 #include "actor_example_guess_number.h"
 #include "actor_brief.h"
-
 namespace ngl
 {
-	bool actor_example_guess_number::handle(const message<np_example_entergame_ready>& adata)
-	{
-		next_setp();
-		return true;
-	}
-
 	bool actor_example_guess_number::handle(const message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>>& adata)
 	{
 		const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER* lpdata = adata.get_data()->data();
@@ -55,6 +48,11 @@ namespace ngl
 			return true;
 		}
 
+		next_setp();
+		return true;
+	}
+	bool actor_example_guess_number::handle(const message<np_example_entergame_ready>& adata)
+	{
 		next_setp();
 		return true;
 	}

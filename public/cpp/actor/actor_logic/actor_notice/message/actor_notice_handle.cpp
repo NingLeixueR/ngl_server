@@ -1,24 +1,14 @@
 #include "actor_notice.h"
-
 namespace ngl
 {
-	bool actor_notice::handle(const message<np_actor_addnotice>& adata)
-	{
-		auto& recv = *adata.get_data();
-		m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
-		return true;
-	}
-
 	struct gm_notice
 	{
 		int64_t		m_id;// 公告id
 		std::string	m_notice;
 		int32_t		m_starttime;// 开始时间
 		int32_t		m_finishtime;// 结束时间
-
 		jsonfunc("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
 	};
-
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{
 		//using type = mforward<np_gm_response>;
@@ -76,11 +66,16 @@ namespace ngl
 		}
 		return true;
 	}
-
 	bool actor_notice::handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata)
 	{
 		auto pro = m_notice.sync_notice(-1);
 		send_client(adata.get_data()->identifier(), pro);
+		return true;
+	}
+	bool actor_notice::handle(const message<np_actor_addnotice>& adata)
+	{
+		auto& recv = *adata.get_data();
+		m_notice.add_notice(recv.m_notice, recv.m_starttime, recv.m_finishtime);
 		return true;
 	}
 }//namespace ngl
