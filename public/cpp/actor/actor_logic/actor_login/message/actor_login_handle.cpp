@@ -1,8 +1,21 @@
 #include "actor_login.h"
 #include "nregister.h"
-
 namespace ngl
 {
+	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)
+	{
+		auto itor = m_actorbyserver.find(adata.get_data()->m_actorid);
+		if (itor == m_actorbyserver.end())
+		{
+			return true;
+		}
+		dec_freeserver_game(itor->second.m_gameserverid);
+		dec_freeserver_gateway(itor->second.m_gatewayserverid);
+		m_actorbyserver.erase(itor);
+
+		printf_freeserver();
+		return true;
+	}
 	bool actor_login::handle(const message<np_actorserver_connect>& adata)
 	{
 		auto lparm = adata.get_data();
@@ -23,22 +36,6 @@ namespace ngl
 		log_error()->print("message<np_actorserver_connect>:{}", lparm->m_serverid);
 		return true;
 	}
-
-	bool actor_login::handle(const message<np_actor_disconnect_close>& adata)
-	{
-		auto itor = m_actorbyserver.find(adata.get_data()->m_actorid);
-		if (itor == m_actorbyserver.end())
-		{
-			return true;
-		}
-		dec_freeserver_game(itor->second.m_gameserverid);
-		dec_freeserver_gateway(itor->second.m_gatewayserverid);
-		m_actorbyserver.erase(itor);
-
-		printf_freeserver();
-		return true;
-	}
-
 	bool actor_login::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN>& adata)
 	{
 		Try

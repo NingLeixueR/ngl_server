@@ -4,7 +4,6 @@
 #include "actor_brief.h"
 #include "activity.h"
 #include "net.pb.h"
-
 namespace ngl
 {
 	bool actor_activity_manage::handle(const message<np_actor_activity>& adata)

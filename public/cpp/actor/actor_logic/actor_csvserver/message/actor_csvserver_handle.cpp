@@ -1,5 +1,4 @@
 #include "actor_csvserver.h"
-
 namespace ngl
 {
 	bool actor_csvserver::handle(const message<np_actor_csv_verify_version>& adata)

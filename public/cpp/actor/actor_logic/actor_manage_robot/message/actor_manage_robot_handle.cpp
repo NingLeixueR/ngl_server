@@ -1,5 +1,4 @@
 #include "actor_manage_robot.h"
-
 namespace ngl
 {
 	bool actor_manage_robot::handle(const message<np_robot_pram>& adata)
@@ -148,7 +147,6 @@ namespace ngl
 		}
 		return true;
 	}
-
 	bool actor_manage_robot::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();

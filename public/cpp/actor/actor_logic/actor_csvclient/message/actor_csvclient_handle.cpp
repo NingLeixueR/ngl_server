@@ -1,7 +1,6 @@
 #include "actor_csvclient.h"
 #include "actor_csvserver.h"
 #include "actor_manage.h"
-
 namespace ngl
 {
 	bool actor_csvclient::handle(const message<np_actor_reloadcsv>& adata)
@@ -17,5 +16,4 @@ namespace ngl
 		}
 		return true;
 	}
-
 }//namespace ngl

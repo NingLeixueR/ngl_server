@@ -1,7 +1,6 @@
 #include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
-
 namespace ngl
 {
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata)
@@ -9,67 +8,64 @@ namespace ngl
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>& adata)
+	{
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_UPDATE>& adata)
+	{
+		return true;
+	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();
@@ -97,98 +93,114 @@ namespace ngl
 		}
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERROR>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>& adata)
+	{
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERROR>& adata)
 	{
-		Try
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
+	{
+		char lbuff[1024] = { 0 };
+		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->m_utc(), "%y/%m/%d %H:%M:%S");
+		log_error()->print("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
+	{
+		const tab_servers* tab = ttab_servers::tab();
+		m_kcpsessionmd5 = adata.get_data()->m_kcpsession();
+
+		const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
+		net_works const* lpworks = ttab_servers::nworks(ENET_KCP, tabgame);
+		if (lpworks == nullptr)
+			return false;
+		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
+	{
+		const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.get_data();
+		char lbuff[1024] = { 0 };
+		auto lstream = log_error();
+		for (const auto& [_id, _mail] : pro.m_mail())
 		{
-			log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
-				, adata.get_data()->m_role().m_base().m_name()
-				, adata.get_data()->m_role().m_base().m_lv()
-			);
-			m_data = *adata.get_data();
-		}Catch
-			return true;
+			(*lstream) << "[####################################################################]" << std::endl;
+			(*lstream) << "[mailid:	" << _mail.m_id() << "]" << std::endl;
+			std::string lcontent;
+			tools::to_asscii(_mail.m_content(), lcontent);
+			(*lstream) << "[content:	" << lcontent << "]" << std::endl;
+			ngl::localtime::time2str(lbuff, 1024, _mail.m_createutc(), "%y/%m/%d %H:%M:%S");
+			(*lstream) << "[createutc:	" << lbuff << "]" << std::endl;
+			(*lstream) << "[read:		" << (_mail.m_read() ? "yes" : "no") << "]" << std::endl;
+			(*lstream) << "[draw:		" << (_mail.m_draw() ? "yes" : "no") << "]" << std::endl;
+			(*lstream) << "[####################################################################]" << std::endl;
+		}
+		(*lstream).print("");
+		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
 	{
 		struct noticeitem
@@ -233,82 +245,66 @@ namespace ngl
 		);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata)
 	{
-		const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& pro = *adata.get_data();
-		char lbuff[1024] = { 0 };
-		auto lstream = log_error();
-		for (const auto& [_id, _mail] : pro.m_mail())
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>& adata)
+	{
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
+	{
+		Try
 		{
-			(*lstream) << "[####################################################################]" << std::endl;
-			(*lstream) << "[mailid:	" << _mail.m_id() << "]" << std::endl;
-			std::string lcontent;
-			tools::to_asscii(_mail.m_content(), lcontent);
-			(*lstream) << "[content:	" << lcontent << "]" << std::endl;
-			ngl::localtime::time2str(lbuff, 1024, _mail.m_createutc(), "%y/%m/%d %H:%M:%S");
-			(*lstream) << "[createutc:	" << lbuff << "]" << std::endl;
-			(*lstream) << "[read:		" << (_mail.m_read() ? "yes" : "no") << "]" << std::endl;
-			(*lstream) << "[draw:		" << (_mail.m_draw() ? "yes" : "no") << "]" << std::endl;
-			(*lstream) << "[####################################################################]" << std::endl;
-		}
-		(*lstream).print("");
-		return true;
+			log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
+				, adata.get_data()->m_role().m_base().m_name()
+				, adata.get_data()->m_role().m_base().m_lv()
+			);
+			m_data = *adata.get_data();
+		}Catch
+			return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>& adata)
 	{
-		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_POSITION>& adata)
 	{
-		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_UNIT>& adata)
 	{
-		const tab_servers* tab = ttab_servers::tab();
-		m_kcpsessionmd5 = adata.get_data()->m_kcpsession();
-
-		const tab_servers* tabgame = ttab_servers::tab("game", tab->m_area, 1);
-		net_works const* lpworks = ttab_servers::nworks(ENET_KCP, tabgame);
-		if (lpworks == nullptr)
-			return false;
-		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
-	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>& adata)
 	{
-		char lbuff[1024] = { 0 };
-		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->m_utc(), "%y/%m/%d %H:%M:%S");
-		log_error()->print("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
 		return true;
 	}
 }//namespace ngl

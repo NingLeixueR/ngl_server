@@ -1,5 +1,4 @@
 #include "actor_family.h"
-
 namespace ngl
 {
 	bool actor_family::handle(const message<mforward<np_gm>>& adata)
@@ -54,35 +53,6 @@ namespace ngl
 		}
 		return true;
 	}
-
-	bool actor_family::handle(const message<np_eevents_logic_rolelogin>& adata)
-	{
-		std::vector<i64_actorid> lfamilyers;
-		if (m_family.get_familyers(adata.get_data()->m_actorid, lfamilyers))
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLESTAT>();
-			pro->set_m_stat(pbnet::PROBUFF_NET_ROLESTAT::online);
-			pro->set_m_logicstat(pbnet::PROBUFF_NET_ROLESTAT::familyer);
-			pro->set_m_roleid(adata.get_data()->m_actorid);
-			send_client(lfamilyers, pro);
-		}
-		return true;
-	}
-
-	bool actor_family::handle(const message<np_eevents_logic_roleoffline>& adata)
-	{
-		std::vector<i64_actorid> lfamilyers;
-		if (m_family.get_familyers(adata.get_data()->m_actorid, lfamilyers))
-		{
-			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLESTAT>();
-			pro->set_m_stat(pbnet::PROBUFF_NET_ROLESTAT::offline);
-			pro->set_m_logicstat(pbnet::PROBUFF_NET_ROLESTAT::familyer);
-			pro->set_m_roleid(adata.get_data()->m_actorid);
-			send_client(lfamilyers, pro);
-		}
-		return true;
-	}
-
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -90,7 +60,6 @@ namespace ngl
 
 		return true;
 	}
-
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -102,7 +71,6 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -112,13 +80,6 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
-	{
-		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
-		return true;
-	}
-
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -130,7 +91,11 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
+	{
+		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
+		return true;
+	}
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -151,7 +116,6 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -163,7 +127,6 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -173,6 +136,32 @@ namespace ngl
 		int32_t lstat = m_family.ratify_join_family(lroleid, ljoinroleid, adata.get_data()->data()->m_ratify());
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
+		return true;
+	}
+	bool actor_family::handle(const message<np_eevents_logic_rolelogin>& adata)
+	{
+		std::vector<i64_actorid> lfamilyers;
+		if (m_family.get_familyers(adata.get_data()->m_actorid, lfamilyers))
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLESTAT>();
+			pro->set_m_stat(pbnet::PROBUFF_NET_ROLESTAT::online);
+			pro->set_m_logicstat(pbnet::PROBUFF_NET_ROLESTAT::familyer);
+			pro->set_m_roleid(adata.get_data()->m_actorid);
+			send_client(lfamilyers, pro);
+		}
+		return true;
+	}
+	bool actor_family::handle(const message<np_eevents_logic_roleoffline>& adata)
+	{
+		std::vector<i64_actorid> lfamilyers;
+		if (m_family.get_familyers(adata.get_data()->m_actorid, lfamilyers))
+		{
+			auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLESTAT>();
+			pro->set_m_stat(pbnet::PROBUFF_NET_ROLESTAT::offline);
+			pro->set_m_logicstat(pbnet::PROBUFF_NET_ROLESTAT::familyer);
+			pro->set_m_roleid(adata.get_data()->m_actorid);
+			send_client(lfamilyers, pro);
+		}
 		return true;
 	}
 }//namespace ngl

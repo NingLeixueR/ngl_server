@@ -1,6 +1,5 @@
 #include "actor_brief.h"
 #include "actor_chat.h"
-
 namespace ngl
 {
 	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)

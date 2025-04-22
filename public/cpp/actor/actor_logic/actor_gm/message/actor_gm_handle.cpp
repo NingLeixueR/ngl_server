@@ -1,6 +1,5 @@
 #include "actor_gmclient.h"
 #include "actor_gm.h"
-
 namespace ngl
 {
 	// 分发给独立进程的请求
@@ -13,7 +12,6 @@ namespace ngl
 			static distribute_gmclient ltemp;
 			return ltemp;
 		}
-
 		bool sendtogmclient(NODE_TYPE atype, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			const tab_servers* tab = ttab_servers::node_tnumber(atype, 1);
@@ -29,7 +27,6 @@ namespace ngl
 			}
 			return false;
 		}
-
 		// 返回值:是否还需要actor_gm处理
 		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
@@ -57,7 +54,6 @@ namespace ngl
 			return false;
 		}
 	};
-
 	void actor_gm::init_handle_cmd()
 	{
 		if (handle_cmd::empty())
@@ -69,14 +65,12 @@ namespace ngl
 				int32_t m_dataid;
 				jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 			};
-
 			handle_cmd::push("server_stat", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<actor_manage::msg_actor_stat> lpro(adata->m_pack->m_id, "server_stat", this);
 					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				}
 			);
-
 			handle_cmd::push("guid", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->m_pack->m_id, "guid", this);
@@ -93,14 +87,12 @@ namespace ngl
 					}
 				}
 			);
-
 			handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<protocols> lresponse(adata->m_pack->m_id, "all_protocol", this);
 					actor_gmclient::get_allprotocol(lresponse.m_data);
 				}
 			);
-
 			handle_cmd::push("close_actor", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->m_pack->m_id, "close_actor", false, this);
@@ -119,13 +111,11 @@ namespace ngl
 						lresponse.m_data = true;
 					}
 				});
-
 			handle_cmd::push("get_time", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->m_pack->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
 				});
-
 			handle_cmd::push("set_time", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->m_pack->m_id, "set_time", false, this);
@@ -143,7 +133,10 @@ namespace ngl
 				});
 		}
 	}
-
+	bool actor_gm::handle(const message<mforward<ngl::np_gm_response>>& adata)
+	{
+		return sendtophp((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data());
+	}
 	bool actor_gm::handle(const message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
@@ -200,10 +193,5 @@ namespace ngl
 		}
 
 		return true;
-	}
-
-	bool actor_gm::handle(const message<mforward<ngl::np_gm_response>>& adata)
-	{
-		return sendtophp((i32_sessionid)adata.get_data()->identifier(), *adata.get_data()->data());
 	}
 }//namespace ngl
