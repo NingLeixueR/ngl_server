@@ -55,23 +55,15 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		// # ACTOR_PROTOCOL_ADD_MAIL,新增邮件
-		bool handle(const message<np_actor_addmail>& adata);
-
-		// # GM操作mail
 		bool handle(const message<mforward<np_gm>>& adata);
-
-		// # 获取邮件列表
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata);
-		
-		// # 读取邮件
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata);
-
-		// # 领取邮件附件
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata);
-		
-		// # 删除邮件
+		// [请求]领取邮件附件
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DEL>>& adata);
+		// [请求]领取邮件附件
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata);
+		// [请求]获取邮件列表
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata);
+		// [请求]读取邮件
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_READ>>& adata);
+		bool handle(const message<np_actor_addmail>& adata);
 	};
 }// namespace ngl

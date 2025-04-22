@@ -216,35 +216,27 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		//# GM请求
 		bool handle(const message<mforward<np_gm>>& adata);
-
-		//# CMD请求 
-		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
-
-		//# 获取role数据
-		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
-
-		//# 获取服务器时间
-		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
-
-		//# 切换线路服务器
-		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
-
-		//# 发送物品
-		bool handle(const message<np_actor_senditem>& adata);
-
-		//# 断开连接
 		bool handle(const message<np_actor_disconnect_close>& adata);
-
-		//# 领取任务奖励
-		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
-
+		bool handle(const message<np_actor_senditem>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-
-		//# 同步例子小游戏
 		bool handle(const message<np_example_actorid>& adata);
+		// [请求]获取背包信息
+		bool handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata);
+		// 修改方向,速度
+		bool handle(const message<pbnet::PROBUFF_NET_CHANGE_ANGLE>& adata);
+		// [请求]cmd协议
+		bool handle(const message<pbnet::PROBUFF_NET_CMD>& adata);
+		// [请求]服务器时间
+		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata);
+		// [请求]充值
+		bool handle(const message<pbnet::PROBUFF_NET_RECHARGE>& adata);
+		// [请求]获取角色信息
+		bool handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC>& adata);
+		// [请求]切换线路
+		bool handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata);
+		// [请求]领取任务奖励
+		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata);
 	};
 }//namespace ngl
 

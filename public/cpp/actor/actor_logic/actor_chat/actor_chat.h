@@ -50,8 +50,7 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		// [è¯·æ±‚]èŠå¤©
+		// [ÇëÇó]ÁÄÌì
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata);
 	};
 }//namespace ngl

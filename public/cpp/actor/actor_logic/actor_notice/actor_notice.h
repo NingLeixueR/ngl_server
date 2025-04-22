@@ -53,12 +53,9 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		bool handle(const message<np_actor_addnotice>& adata);
-
 		bool handle(const message<mforward<np_gm>>& adata);
-
-		//# 客户端拉取公告
+		// [请求]获取公告列表
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_NOTICE>>& adata);
+		bool handle(const message<np_actor_addnotice>& adata);
 	};
 }//namespace ngl

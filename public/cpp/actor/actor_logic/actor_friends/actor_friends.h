@@ -51,22 +51,15 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
-
-		// # 添加好友
+		// [请求]添加好友
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_ADDFRIEND>>& adata);
-
-		// # 同意/拒绝好友申请
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>>& adata);
-
-		// # 删除好友
+		// [请求]删除好友
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_ERASEFRIEND>>& adata);
-
-		// # 好友上线
+		// [请求]好友信息
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
+		// [请求]同意/拒绝添加好友
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-
-		// # 好友下线
 		bool handle(const message<np_eevents_logic_roleoffline>& adata);
 	};
 }// namespace ngl

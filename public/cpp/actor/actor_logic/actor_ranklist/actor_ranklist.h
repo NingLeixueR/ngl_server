@@ -51,10 +51,8 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
-
-		// # GM操作
 		bool handle(const message<mforward<np_gm>>& adata);
+		// [请求]获取排行榜
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata);
 	};
 }// namespace ngl
