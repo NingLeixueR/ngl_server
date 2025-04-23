@@ -1217,8 +1217,6 @@ namespace ngl
             auto& lhactorfile = item1.second;
             std::stringstream lstream;
             std::stringstream lstreamcpp;
-            std::stringstream lstreamprotoregister;
-            std::stringstream lstreamprotoregister_np;
             for (const auto& itme2 : item1.second.m_handle)
             {
                 auto& lmessage = itme2.first;
@@ -1238,23 +1236,6 @@ namespace ngl
                 else
                 {
                     lstreamcpp << itme2.second.m_content;
-                }
-                // 注册协议
-                size_t lpos = lmessage.find("np_");
-                if (lpos != std::string::npos)
-                {
-                    //// 绑定自定义np_消息
-                    //register_handle_custom<actor_activity_manage>::func<
-                    //    np_actor_activity
-                    //>(false);
-                    lstreamprotoregister_np << "\t\t\t" << lmessage << std::endl;
-                }
-                else
-                {
-                    //// 绑定pb消息
-                    //register_handle_proto<actor_activity_manage>::func<
-                    //>(true);
-                    lstreamprotoregister << "\t\t\t" << lmessage << std::endl;
                 }
             }
 
@@ -1356,6 +1337,46 @@ namespace ngl
                     lcppfile.write(lcontent);
                 }
 
+            }
+
+            if (actorname == "actor_robot")
+            {
+                std::string lcontent;
+                {
+                    ngl::readfile lreadfile("../../public/cpp/actor/nprotocol_g2c.cpp");
+                    lreadfile.readcurrent(lcontent);
+                }
+                size_t lpos = lcontent.find("register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF");
+                std::string lbeg(lcontent.begin(), lcontent.begin() + lpos);
+                for (; lcontent[lpos] != '\n'; ++lpos)
+                {
+                    lbeg += lcontent[lpos];
+                }
+                std::string lend = R"(
+		>();
+	}
+}//namespace ngl)";
+                lcontent = lbeg;
+
+                int i = 0;
+                for (const auto& itme2 : item1.second.m_handle)
+                {
+                    if (itme2.first.find("np_") == std::string::npos)
+                    {
+                        if (i + 1 == item1.second.m_handle.size())
+                        {
+                            lcontent += std::format("\t\t\t{}", itme2.first);
+                        }
+                        else
+                        {
+                            lcontent += std::format("\t\t\t{},\n", itme2.first);
+                        }
+                    }
+                    ++i;
+                }
+                lcontent += lend;
+                ngl::writefile lhfile("../../public/cpp/actor/nprotocol_g2c.cpp");
+                lhfile.write(lcontent);
             }
 
             // 写入.h文件
