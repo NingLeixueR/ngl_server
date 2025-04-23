@@ -896,16 +896,6 @@ namespace ngl
         {
             enum_actor(item);
         }
-        // 读取.pro文件
-        //message PROBUFF_NET_MSG_RESPONSE//G2C [actor_robot]
-      ///*  struct vepro
-      //  {
-      //      std::string m_name;
-      //  };
-      //  std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> lmessagemap;
-      //  std::map<std::string, vepro> lmessageinfo;*/
-
-
         struct hactorfile
         {
             std::string m_actorname;
@@ -1227,16 +1217,18 @@ namespace ngl
             auto& lhactorfile = item1.second;
             std::stringstream lstream;
             std::stringstream lstreamcpp;
+            std::stringstream lstreamprotoregister;
+            std::stringstream lstreamprotoregister_np;
             for (const auto& itme2 : item1.second.m_handle)
             {
-                itme2.second.m_zhushi;
+                auto& lmessage = itme2.first;
                 if (!itme2.second.m_zhushi.empty())
                 {
                     lstream << std::format(R"(		{})", itme2.second.m_zhushi) << std::endl;
                 }
-                lstream << std::format(R"(		bool handle(const message<{}>& adata);)", itme2.first) << std::endl;
+                lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
 
-                lstreamcpp << std::format("\tbool {}::handle(const message<{}>& adata)", actorname, itme2.first) << std::endl;
+                lstreamcpp << std::format("\tbool {}::handle(const message<{}>& adata)", actorname, lmessage) << std::endl;
                 lstreamcpp << "\t{" << std::endl;
                 if (itme2.second.m_content.empty())
                 {
@@ -1247,7 +1239,125 @@ namespace ngl
                 {
                     lstreamcpp << itme2.second.m_content;
                 }
+                // 注册协议
+                size_t lpos = lmessage.find("np_");
+                if (lpos != std::string::npos)
+                {
+                    //// 绑定自定义np_消息
+                    //register_handle_custom<actor_activity_manage>::func<
+                    //    np_actor_activity
+                    //>(false);
+                    lstreamprotoregister_np << "\t\t\t" << lmessage << std::endl;
+                }
+                else
+                {
+                    //// 绑定pb消息
+                    //register_handle_proto<actor_activity_manage>::func<
+                    //>(true);
+                    lstreamprotoregister << "\t\t\t" << lmessage << std::endl;
+                }
             }
+
+            // 读取文件
+            {
+                std::string lcontent;
+
+                std::string lactorfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.cpp", actorname);
+                std::set<std::string> lset;
+                {
+                    ngl::readfile lreadfile(lactorfile);
+                    std::string lnr;
+                    std::string lfindstr1 = std::format("register_handle_custom<{}>::func<", actorname);
+                    std::string lfindstr2 = std::format("register_handle_proto<{}>::func<", actorname);
+                    bool lboool1 = false;
+                    bool lboool2 = false;
+                    while (lreadfile.readline(lnr))
+                    {
+                        {
+                            size_t lpos = lnr.find(lfindstr1);
+                            if (lpos != std::string::npos)
+                            {
+                                lboool1 = true;
+                                continue;
+                            }
+                            if (lboool1 && lnr.find(';') != std::string::npos)
+                            {
+                                lboool1 = false;
+                                continue;
+                            }
+                            if (lboool1)
+                            {
+                                ngl::tools::replace(" ", "", lnr, lnr);
+                                ngl::tools::replace("\t", "", lnr, lnr);
+                                ngl::tools::replace(",", "", lnr, lnr);
+                                lset.insert(lnr);
+                            }
+                        }
+                        {
+                            size_t lpos = lnr.find(lfindstr2);
+                            if (lpos != std::string::npos)
+                            {
+                                lboool2 = true;
+                                continue;
+                            }
+                            if (lboool2 && lnr.find(';') != std::string::npos)
+                            {
+                                lboool2 = false;
+                                continue;
+                            }
+                            if (lboool2)
+                            {
+                                ngl::tools::replace(" ", "", lnr, lnr);
+                                ngl::tools::replace("\t", "", lnr, lnr);
+                                ngl::tools::replace(",", "", lnr, lnr);
+                                lset.insert(lnr);
+                            }
+                        }
+                    }
+                }
+                {
+                    ngl::readfile lreadfile(lactorfile);
+                    lreadfile.readcurrent(lcontent);
+                }
+
+                std::set<std::string> lset2;
+                for (const auto& itme2 : item1.second.m_handle)
+                {
+                    if (lset.find(itme2.first) == lset.end())
+                    {
+                        lset2.insert(itme2.first);
+                    }
+                }
+
+                if (!lcontent.empty() && !lset2.empty() && actorname != "actor_robot" && actorname != "actor_role")
+                {
+
+                    {
+                        std::string lfindstr = std::format("actor::register_timer<{0}>(&{0}::timer_handle);", actorname);
+                        size_t lpos = lcontent.find(lfindstr);
+                        std::string lbeg(lcontent.begin(), lcontent.begin() + lpos);
+                        for (; lcontent[lpos] != '\n';++lpos)
+                        {
+                            lbeg += lcontent[lpos];
+                        }
+                        std::string lend(lcontent.begin() + lpos + 1, lcontent.end());
+                        lcontent = lbeg;
+                        lcontent += "\n";
+                        lcontent += "\n\t*************************************\n";
+                        for (const auto& lstr : lset2)
+                        {
+                            lcontent += lstr;
+                            lcontent += ',';
+                        }
+                        lcontent += "\n\t*************************************\n";
+                        lcontent += lend;
+                    }
+                    ngl::writefile lcppfile(lactorfile);
+                    lcppfile.write(lcontent);
+                }
+
+            }
+
             // 写入.h文件
             if (lstream.str().empty() == false)
             {

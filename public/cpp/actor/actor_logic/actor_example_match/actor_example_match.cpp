@@ -61,6 +61,7 @@ namespace ngl
 		// °ó¶¨pbÏûÏ¢
 		register_handle_proto<actor_example_match>::func<
 			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
+			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>,
 			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
 		>(false);
 	}

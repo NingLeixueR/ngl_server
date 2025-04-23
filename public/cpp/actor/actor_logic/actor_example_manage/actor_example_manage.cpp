@@ -86,7 +86,8 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle_custom<actor_example_manage>::func<
 			np_create_example,
-			np_example_equit
+			np_example_equit,
+			np_login_request_info
 		>(true);
 
 		// 绑定pb消息
