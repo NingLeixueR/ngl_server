@@ -58,10 +58,6 @@ namespace ngl
 		// 定时器
 		actor::register_timer<actor_family>(&actor_family::timer_handle);
 
-	*************************************
-mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>,
-	*************************************
-
 		// 绑定自定义np_消息
 		register_handle_custom<actor_family>::func<
 			mforward<np_gm>
@@ -72,13 +68,13 @@ mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>,
 		// 绑定pb消息
 		register_handle_proto<actor_family>::func<
 			mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>
-			, mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>
-			, mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>
-			, mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>
-			, mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_LEAVE>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_LIST>
-			, mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>
-			, mforward<pbnet::PROBUFF_NET_FAMILSIGN>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>
 		>(true);
 	}
 

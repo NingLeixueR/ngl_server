@@ -44,23 +44,22 @@ namespace ngl
 
 		// actor_family 模块二次转发
 		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_FAMILY
-			, pbnet::PROBUFF_NET_CEDE_FAMIL
-			, pbnet::PROBUFF_NET_CHANGE_FAMILNAME
-			, pbnet::PROBUFF_NET_FAMILSIGN
+			, pbnet::PROBUFF_NET_FAMIL_CEDE
+			, pbnet::PROBUFF_NET_FAMIL_CHANGENAME
 			, pbnet::PROBUFF_NET_FAMIL_CREATE
 			, pbnet::PROBUFF_NET_FAMIL_JOIN
+			, pbnet::PROBUFF_NET_FAMIL_LEAVE
 			, pbnet::PROBUFF_NET_FAMIL_LIST
-			, pbnet::PROBUFF_NET_JOIN_FAMIL
-			, pbnet::PROBUFF_NET_LEAVE_FAMIL
-			, pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL
+			, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN
+			, pbnet::PROBUFF_NET_FAMIL_SIGN
 		>();
 
 		// actor_friends 模块二次转发
 		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_FRIENDS
-			, pbnet::PROBUFF_NET_ADDFRIEND
-			, pbnet::PROBUFF_NET_ERASEFRIEND
 			, pbnet::PROBUFF_NET_FRIEND
-			, pbnet::PROBUFF_NET_RATIFY_ADDFRIEND
+			, pbnet::PROBUFF_NET_FRIEND_ADD
+			, pbnet::PROBUFF_NET_FRIEND_ERASE
+			, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD
 		>();
 
 		// actor_mail 模块二次转发

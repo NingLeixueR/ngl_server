@@ -68,9 +68,9 @@ namespace ngl
 
 		// ∞Û∂®pbœ˚œ¢
 		register_handle_proto<actor_friends>::func<
-			mforward<pbnet::PROBUFF_NET_ADDFRIEND>
-			, mforward<pbnet::PROBUFF_NET_ERASEFRIEND>
-			, mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>
+			mforward<pbnet::PROBUFF_NET_FRIEND_ADD>
+			, mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>
+			, mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>
 			, mforward<pbnet::PROBUFF_NET_FRIEND>
 		>(true);
 	}

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-24 16:07:32】
+ // 创建时间【2025-04-24 16:51:28】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -79,29 +79,29 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_JOIN);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL);
-            mkdef_map(pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_CEDE_FAMIL);
-            mkdef_map(pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_LEAVE_FAMIL);
-            mkdef_map(pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_CEDE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_LEAVE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_LIST);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_CHANGE_FAMILNAME);
-            mkdef_map(pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_FAMILSIGN);
-            mkdef_map(pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_CHANGENAME);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_SIGN);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_RANKLIST);
             mkdef_map(pbnet::PROBUFF_NET_RANKLIST_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_FRIEND);
             mkdef_map(pbnet::PROBUFF_NET_FRIEND_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_ADDFRIEND);
-            mkdef_map(pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_RATIFY_ADDFRIEND);
-            mkdef_map(pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE);
-            mkdef_map(pbnet::PROBUFF_NET_ERASEFRIEND);
-            mkdef_map(pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FRIEND_ADD);
+            mkdef_map(pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD);
+            mkdef_map(pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FRIEND_ERASE);
+            mkdef_map(pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_ROLESTAT);
             mkdef_map(pbnet::PROBUFF_NET_SYNC_ATTRIBUTE);
             mkdef_map(pbnet::PROBUFF_NET_SYNC_UNIT);

@@ -51,14 +51,14 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
-		// [请求]添加好友
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_ADDFRIEND>>& adata);
-		// [请求]删除好友
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_ERASEFRIEND>>& adata);
 		// [请求]好友信息
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND>>& adata);
+		// [请求]添加好友
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_ADD>>& adata);
+		// [请求]删除好友
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>>& adata);
 		// [请求]同意/拒绝添加好友
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>>& adata);
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 		bool handle(const message<np_eevents_logic_roleoffline>& adata);
 	};

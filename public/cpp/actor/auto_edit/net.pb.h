@@ -66,12 +66,6 @@ extern PROBUFF_NET_ACOUNT_LOGINDefaultTypeInternal _PROBUFF_NET_ACOUNT_LOGIN_def
 class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE;
 class PROBUFF_NET_ACOUNT_LOGIN_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_ACOUNT_LOGIN_RESPONSEDefaultTypeInternal _PROBUFF_NET_ACOUNT_LOGIN_RESPONSE_default_instance_;
-class PROBUFF_NET_ADDFRIEND;
-class PROBUFF_NET_ADDFRIENDDefaultTypeInternal;
-extern PROBUFF_NET_ADDFRIENDDefaultTypeInternal _PROBUFF_NET_ADDFRIEND_default_instance_;
-class PROBUFF_NET_ADDFRIEND_RESPONSE;
-class PROBUFF_NET_ADDFRIEND_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_ADDFRIEND_RESPONSEDefaultTypeInternal _PROBUFF_NET_ADDFRIEND_RESPONSE_default_instance_;
 class PROBUFF_NET_BAG_SYNC;
 class PROBUFF_NET_BAG_SYNCDefaultTypeInternal;
 extern PROBUFF_NET_BAG_SYNCDefaultTypeInternal _PROBUFF_NET_BAG_SYNC_default_instance_;
@@ -87,21 +81,9 @@ extern PROBUFF_NET_BAG_UPDATE_additemDefaultTypeInternal _PROBUFF_NET_BAG_UPDATE
 class PROBUFF_NET_BAG_UPDATE_delitem;
 class PROBUFF_NET_BAG_UPDATE_delitemDefaultTypeInternal;
 extern PROBUFF_NET_BAG_UPDATE_delitemDefaultTypeInternal _PROBUFF_NET_BAG_UPDATE_delitem_default_instance_;
-class PROBUFF_NET_CEDE_FAMIL;
-class PROBUFF_NET_CEDE_FAMILDefaultTypeInternal;
-extern PROBUFF_NET_CEDE_FAMILDefaultTypeInternal _PROBUFF_NET_CEDE_FAMIL_default_instance_;
-class PROBUFF_NET_CEDE_FAMIL_RESPONSE;
-class PROBUFF_NET_CEDE_FAMIL_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_CEDE_FAMIL_RESPONSEDefaultTypeInternal _PROBUFF_NET_CEDE_FAMIL_RESPONSE_default_instance_;
 class PROBUFF_NET_CHANGE_ANGLE;
 class PROBUFF_NET_CHANGE_ANGLEDefaultTypeInternal;
 extern PROBUFF_NET_CHANGE_ANGLEDefaultTypeInternal _PROBUFF_NET_CHANGE_ANGLE_default_instance_;
-class PROBUFF_NET_CHANGE_FAMILNAME;
-class PROBUFF_NET_CHANGE_FAMILNAMEDefaultTypeInternal;
-extern PROBUFF_NET_CHANGE_FAMILNAMEDefaultTypeInternal _PROBUFF_NET_CHANGE_FAMILNAME_default_instance_;
-class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE;
-class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_CHANGE_FAMILNAME_RESPONSEDefaultTypeInternal _PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE_default_instance_;
 class PROBUFF_NET_CHAT;
 class PROBUFF_NET_CHATDefaultTypeInternal;
 extern PROBUFF_NET_CHATDefaultTypeInternal _PROBUFF_NET_CHAT_default_instance_;
@@ -120,21 +102,21 @@ extern PROBUFF_NET_DELIVER_GOODS_RECHARGE_MItemsEntry_DoNotUseDefaultTypeInterna
 class PROBUFF_NET_ENTER_LEAVE_VIEW;
 class PROBUFF_NET_ENTER_LEAVE_VIEWDefaultTypeInternal;
 extern PROBUFF_NET_ENTER_LEAVE_VIEWDefaultTypeInternal _PROBUFF_NET_ENTER_LEAVE_VIEW_default_instance_;
-class PROBUFF_NET_ERASEFRIEND;
-class PROBUFF_NET_ERASEFRIENDDefaultTypeInternal;
-extern PROBUFF_NET_ERASEFRIENDDefaultTypeInternal _PROBUFF_NET_ERASEFRIEND_default_instance_;
-class PROBUFF_NET_ERASEFRIEND_RESPONSE;
-class PROBUFF_NET_ERASEFRIEND_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_ERASEFRIEND_RESPONSEDefaultTypeInternal _PROBUFF_NET_ERASEFRIEND_RESPONSE_default_instance_;
 class PROBUFF_NET_ERROR;
 class PROBUFF_NET_ERRORDefaultTypeInternal;
 extern PROBUFF_NET_ERRORDefaultTypeInternal _PROBUFF_NET_ERROR_default_instance_;
-class PROBUFF_NET_FAMILSIGN;
-class PROBUFF_NET_FAMILSIGNDefaultTypeInternal;
-extern PROBUFF_NET_FAMILSIGNDefaultTypeInternal _PROBUFF_NET_FAMILSIGN_default_instance_;
-class PROBUFF_NET_FAMILSIGN_RESPONSE;
-class PROBUFF_NET_FAMILSIGN_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_FAMILSIGN_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMILSIGN_RESPONSE_default_instance_;
+class PROBUFF_NET_FAMIL_CEDE;
+class PROBUFF_NET_FAMIL_CEDEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_CEDEDefaultTypeInternal _PROBUFF_NET_FAMIL_CEDE_default_instance_;
+class PROBUFF_NET_FAMIL_CEDE_RESPONSE;
+class PROBUFF_NET_FAMIL_CEDE_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_CEDE_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_CEDE_RESPONSE_default_instance_;
+class PROBUFF_NET_FAMIL_CHANGENAME;
+class PROBUFF_NET_FAMIL_CHANGENAMEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_CHANGENAMEDefaultTypeInternal _PROBUFF_NET_FAMIL_CHANGENAME_default_instance_;
+class PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE;
+class PROBUFF_NET_FAMIL_CHANGENAME_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_CHANGENAME_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE_default_instance_;
 class PROBUFF_NET_FAMIL_CREATE;
 class PROBUFF_NET_FAMIL_CREATEDefaultTypeInternal;
 extern PROBUFF_NET_FAMIL_CREATEDefaultTypeInternal _PROBUFF_NET_FAMIL_CREATE_default_instance_;
@@ -147,15 +129,51 @@ extern PROBUFF_NET_FAMIL_JOINDefaultTypeInternal _PROBUFF_NET_FAMIL_JOIN_default
 class PROBUFF_NET_FAMIL_JOIN_RESPONSE;
 class PROBUFF_NET_FAMIL_JOIN_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_FAMIL_JOIN_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_JOIN_RESPONSE_default_instance_;
+class PROBUFF_NET_FAMIL_LEAVE;
+class PROBUFF_NET_FAMIL_LEAVEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_LEAVEDefaultTypeInternal _PROBUFF_NET_FAMIL_LEAVE_default_instance_;
+class PROBUFF_NET_FAMIL_LEAVE_RESPONSE;
+class PROBUFF_NET_FAMIL_LEAVE_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_LEAVE_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_LEAVE_RESPONSE_default_instance_;
 class PROBUFF_NET_FAMIL_LIST;
 class PROBUFF_NET_FAMIL_LISTDefaultTypeInternal;
 extern PROBUFF_NET_FAMIL_LISTDefaultTypeInternal _PROBUFF_NET_FAMIL_LIST_default_instance_;
 class PROBUFF_NET_FAMIL_LIST_RESPONSE;
 class PROBUFF_NET_FAMIL_LIST_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_FAMIL_LIST_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_LIST_RESPONSE_default_instance_;
+class PROBUFF_NET_FAMIL_RATIFY_JOIN;
+class PROBUFF_NET_FAMIL_RATIFY_JOINDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_RATIFY_JOINDefaultTypeInternal _PROBUFF_NET_FAMIL_RATIFY_JOIN_default_instance_;
+class PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE;
+class PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE_default_instance_;
+class PROBUFF_NET_FAMIL_SIGN;
+class PROBUFF_NET_FAMIL_SIGNDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_SIGNDefaultTypeInternal _PROBUFF_NET_FAMIL_SIGN_default_instance_;
+class PROBUFF_NET_FAMIL_SIGN_RESPONSE;
+class PROBUFF_NET_FAMIL_SIGN_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FAMIL_SIGN_RESPONSEDefaultTypeInternal _PROBUFF_NET_FAMIL_SIGN_RESPONSE_default_instance_;
 class PROBUFF_NET_FRIEND;
 class PROBUFF_NET_FRIENDDefaultTypeInternal;
 extern PROBUFF_NET_FRIENDDefaultTypeInternal _PROBUFF_NET_FRIEND_default_instance_;
+class PROBUFF_NET_FRIEND_ADD;
+class PROBUFF_NET_FRIEND_ADDDefaultTypeInternal;
+extern PROBUFF_NET_FRIEND_ADDDefaultTypeInternal _PROBUFF_NET_FRIEND_ADD_default_instance_;
+class PROBUFF_NET_FRIEND_ADD_RESPONSE;
+class PROBUFF_NET_FRIEND_ADD_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FRIEND_ADD_RESPONSEDefaultTypeInternal _PROBUFF_NET_FRIEND_ADD_RESPONSE_default_instance_;
+class PROBUFF_NET_FRIEND_ERASE;
+class PROBUFF_NET_FRIEND_ERASEDefaultTypeInternal;
+extern PROBUFF_NET_FRIEND_ERASEDefaultTypeInternal _PROBUFF_NET_FRIEND_ERASE_default_instance_;
+class PROBUFF_NET_FRIEND_ERASE_RESPONSE;
+class PROBUFF_NET_FRIEND_ERASE_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FRIEND_ERASE_RESPONSEDefaultTypeInternal _PROBUFF_NET_FRIEND_ERASE_RESPONSE_default_instance_;
+class PROBUFF_NET_FRIEND_RATIFY_ADD;
+class PROBUFF_NET_FRIEND_RATIFY_ADDDefaultTypeInternal;
+extern PROBUFF_NET_FRIEND_RATIFY_ADDDefaultTypeInternal _PROBUFF_NET_FRIEND_RATIFY_ADD_default_instance_;
+class PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE;
+class PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSEDefaultTypeInternal;
+extern PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSEDefaultTypeInternal _PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE_default_instance_;
 class PROBUFF_NET_FRIEND_RESPONSE;
 class PROBUFF_NET_FRIEND_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_FRIEND_RESPONSEDefaultTypeInternal _PROBUFF_NET_FRIEND_RESPONSE_default_instance_;
@@ -174,12 +192,6 @@ extern PROBUFF_NET_KCPSESSIONDefaultTypeInternal _PROBUFF_NET_KCPSESSION_default
 class PROBUFF_NET_KCPSESSION_RESPONSE;
 class PROBUFF_NET_KCPSESSION_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_KCPSESSION_RESPONSEDefaultTypeInternal _PROBUFF_NET_KCPSESSION_RESPONSE_default_instance_;
-class PROBUFF_NET_LEAVE_FAMIL;
-class PROBUFF_NET_LEAVE_FAMILDefaultTypeInternal;
-extern PROBUFF_NET_LEAVE_FAMILDefaultTypeInternal _PROBUFF_NET_LEAVE_FAMIL_default_instance_;
-class PROBUFF_NET_LEAVE_FAMIL_RESPONSE;
-class PROBUFF_NET_LEAVE_FAMIL_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_LEAVE_FAMIL_RESPONSEDefaultTypeInternal _PROBUFF_NET_LEAVE_FAMIL_RESPONSE_default_instance_;
 class PROBUFF_NET_MAIL_DEL;
 class PROBUFF_NET_MAIL_DELDefaultTypeInternal;
 extern PROBUFF_NET_MAIL_DELDefaultTypeInternal _PROBUFF_NET_MAIL_DEL_default_instance_;
@@ -222,18 +234,6 @@ extern PROBUFF_NET_RANKLISTDefaultTypeInternal _PROBUFF_NET_RANKLIST_default_ins
 class PROBUFF_NET_RANKLIST_RESPONSE;
 class PROBUFF_NET_RANKLIST_RESPONSEDefaultTypeInternal;
 extern PROBUFF_NET_RANKLIST_RESPONSEDefaultTypeInternal _PROBUFF_NET_RANKLIST_RESPONSE_default_instance_;
-class PROBUFF_NET_RATIFY_ADDFRIEND;
-class PROBUFF_NET_RATIFY_ADDFRIENDDefaultTypeInternal;
-extern PROBUFF_NET_RATIFY_ADDFRIENDDefaultTypeInternal _PROBUFF_NET_RATIFY_ADDFRIEND_default_instance_;
-class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE;
-class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSEDefaultTypeInternal _PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE_default_instance_;
-class PROBUFF_NET_RATIFY_JOIN_FAMIL;
-class PROBUFF_NET_RATIFY_JOIN_FAMILDefaultTypeInternal;
-extern PROBUFF_NET_RATIFY_JOIN_FAMILDefaultTypeInternal _PROBUFF_NET_RATIFY_JOIN_FAMIL_default_instance_;
-class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE;
-class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSEDefaultTypeInternal;
-extern PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSEDefaultTypeInternal _PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE_default_instance_;
 class PROBUFF_NET_RECHARGE;
 class PROBUFF_NET_RECHARGEDefaultTypeInternal;
 extern PROBUFF_NET_RECHARGEDefaultTypeInternal _PROBUFF_NET_RECHARGE_default_instance_;
@@ -313,44 +313,48 @@ extern drop_itemDefaultTypeInternal _drop_item_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::pbnet::PROBUFF_NET_ACOUNT_LOGIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ACOUNT_LOGIN>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_ADDFRIEND* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ADDFRIEND>(Arena*);
-template<> ::pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_BAG_SYNC* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_SYNC>(Arena*);
 template<> ::pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_BAG_UPDATE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_UPDATE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_BAG_UPDATE_additem* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_UPDATE_additem>(Arena*);
 template<> ::pbnet::PROBUFF_NET_BAG_UPDATE_delitem* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_BAG_UPDATE_delitem>(Arena*);
-template<> ::pbnet::PROBUFF_NET_CEDE_FAMIL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CEDE_FAMIL>(Arena*);
-template<> ::pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_CHANGE_ANGLE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHANGE_ANGLE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_CHANGE_FAMILNAME* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHANGE_FAMILNAME>(Arena*);
-template<> ::pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_CHAT* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHAT>(Arena*);
 template<> ::pbnet::PROBUFF_NET_CHAT_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CHAT_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_CMD* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_CMD>(Arena*);
 template<> ::pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE_MItemsEntry_DoNotUse* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE_MItemsEntry_DoNotUse>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>(Arena*);
-template<> ::pbnet::PROBUFF_NET_ERASEFRIEND* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ERASEFRIEND>(Arena*);
-template<> ::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_ERROR* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_ERROR>(Arena*);
-template<> ::pbnet::PROBUFF_NET_FAMILSIGN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMILSIGN>(Arena*);
-template<> ::pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_CEDE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_CEDE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_CHANGENAME* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_CHANGENAME>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FAMIL_CREATE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_CREATE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FAMIL_JOIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_JOIN>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_LEAVE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_LEAVE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FAMIL_LIST* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_LIST>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_SIGN* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_SIGN>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FRIEND* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FRIEND_ADD* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_ADD>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FRIEND_ERASE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_ERASE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>(Arena*);
+template<> ::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_FRIEND_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_FRIEND_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_GET_TIME* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_TIME>(Arena*);
 template<> ::pbnet::PROBUFF_NET_GET_TIME_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_GET_TIME_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_HEARTBEAT* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_HEARTBEAT>(Arena*);
 template<> ::pbnet::PROBUFF_NET_KCPSESSION* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_KCPSESSION>(Arena*);
 template<> ::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_LEAVE_FAMIL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_LEAVE_FAMIL>(Arena*);
-template<> ::pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MAIL_DEL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_DEL>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_MAIL_DRAW* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_MAIL_DRAW>(Arena*);
@@ -365,10 +369,6 @@ template<> ::pbnet::PROBUFF_NET_NOTICE* Arena::CreateMaybeMessage<::pbnet::PROBU
 template<> ::pbnet::PROBUFF_NET_NOTICE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_NOTICE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RANKLIST* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RANKLIST>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RANKLIST_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RANKLIST_RESPONSE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_RATIFY_ADDFRIEND* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RATIFY_ADDFRIEND>(Arena*);
-template<> ::pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>(Arena*);
-template<> ::pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>(Arena*);
-template<> ::pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RECHARGE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RECHARGE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_RECHARGE_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_RECHARGE_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>(Arena*);
@@ -7662,23 +7662,23 @@ class PROBUFF_NET_FAMIL_JOIN_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL) */ {
+class PROBUFF_NET_FAMIL_RATIFY_JOIN PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN) */ {
  public:
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL() : PROBUFF_NET_RATIFY_JOIN_FAMIL(nullptr) {};
-  virtual ~PROBUFF_NET_RATIFY_JOIN_FAMIL();
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN() : PROBUFF_NET_FAMIL_RATIFY_JOIN(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_RATIFY_JOIN();
 
-  PROBUFF_NET_RATIFY_JOIN_FAMIL(const PROBUFF_NET_RATIFY_JOIN_FAMIL& from);
-  PROBUFF_NET_RATIFY_JOIN_FAMIL(PROBUFF_NET_RATIFY_JOIN_FAMIL&& from) noexcept
-    : PROBUFF_NET_RATIFY_JOIN_FAMIL() {
+  PROBUFF_NET_FAMIL_RATIFY_JOIN(const PROBUFF_NET_FAMIL_RATIFY_JOIN& from);
+  PROBUFF_NET_FAMIL_RATIFY_JOIN(PROBUFF_NET_FAMIL_RATIFY_JOIN&& from) noexcept
+    : PROBUFF_NET_FAMIL_RATIFY_JOIN() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL& operator=(const PROBUFF_NET_RATIFY_JOIN_FAMIL& from) {
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN& operator=(const PROBUFF_NET_FAMIL_RATIFY_JOIN& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL& operator=(PROBUFF_NET_RATIFY_JOIN_FAMIL&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN& operator=(PROBUFF_NET_FAMIL_RATIFY_JOIN&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -7696,20 +7696,20 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_RATIFY_JOIN_FAMIL& default_instance();
+  static const PROBUFF_NET_FAMIL_RATIFY_JOIN& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_RATIFY_JOIN_FAMIL* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_RATIFY_JOIN_FAMIL*>(
-               &_PROBUFF_NET_RATIFY_JOIN_FAMIL_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_RATIFY_JOIN* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_RATIFY_JOIN*>(
+               &_PROBUFF_NET_FAMIL_RATIFY_JOIN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     46;
 
-  friend void swap(PROBUFF_NET_RATIFY_JOIN_FAMIL& a, PROBUFF_NET_RATIFY_JOIN_FAMIL& b) {
+  friend void swap(PROBUFF_NET_FAMIL_RATIFY_JOIN& a, PROBUFF_NET_FAMIL_RATIFY_JOIN& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_RATIFY_JOIN_FAMIL* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_RATIFY_JOIN* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -7717,7 +7717,7 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_RATIFY_JOIN_FAMIL* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_RATIFY_JOIN* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -7725,17 +7725,17 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_JOIN_FAMIL>(nullptr);
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_RATIFY_JOIN>(nullptr);
   }
 
-  PROBUFF_NET_RATIFY_JOIN_FAMIL* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_JOIN_FAMIL>(arena);
+  PROBUFF_NET_FAMIL_RATIFY_JOIN* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_RATIFY_JOIN>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_RATIFY_JOIN_FAMIL& from);
-  void MergeFrom(const PROBUFF_NET_RATIFY_JOIN_FAMIL& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_RATIFY_JOIN& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_RATIFY_JOIN& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -7749,13 +7749,13 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_RATIFY_JOIN_FAMIL* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_RATIFY_JOIN* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL";
+    return "pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN";
   }
   protected:
-  explicit PROBUFF_NET_RATIFY_JOIN_FAMIL(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_RATIFY_JOIN(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -7804,7 +7804,7 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
   void _internal_set_m_ratify(bool value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN)
  private:
   class _Internal;
 
@@ -7819,23 +7819,23 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE) */ {
+class PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE() : PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE();
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE() : PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE();
 
-  PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE(const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& from);
-  PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE&& from) noexcept
-    : PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE() {
+  PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE(const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& from);
+  PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE(PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& operator=(const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& from) {
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& operator=(const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& operator=(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& operator=(PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -7853,20 +7853,20 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& default_instance();
+  static const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE*>(
-               &_PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE*>(
+               &_PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     47;
 
-  friend void swap(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& a, PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& a, PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -7874,7 +7874,7 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -7882,17 +7882,17 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>(arena);
+  PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -7906,13 +7906,13 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE";
+    return "pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -7947,7 +7947,7 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE)
  private:
   class _Internal;
 
@@ -7961,23 +7961,23 @@ class PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_CEDE_FAMIL) */ {
+class PROBUFF_NET_FAMIL_CEDE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_CEDE) */ {
  public:
-  inline PROBUFF_NET_CEDE_FAMIL() : PROBUFF_NET_CEDE_FAMIL(nullptr) {};
-  virtual ~PROBUFF_NET_CEDE_FAMIL();
+  inline PROBUFF_NET_FAMIL_CEDE() : PROBUFF_NET_FAMIL_CEDE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_CEDE();
 
-  PROBUFF_NET_CEDE_FAMIL(const PROBUFF_NET_CEDE_FAMIL& from);
-  PROBUFF_NET_CEDE_FAMIL(PROBUFF_NET_CEDE_FAMIL&& from) noexcept
-    : PROBUFF_NET_CEDE_FAMIL() {
+  PROBUFF_NET_FAMIL_CEDE(const PROBUFF_NET_FAMIL_CEDE& from);
+  PROBUFF_NET_FAMIL_CEDE(PROBUFF_NET_FAMIL_CEDE&& from) noexcept
+    : PROBUFF_NET_FAMIL_CEDE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_CEDE_FAMIL& operator=(const PROBUFF_NET_CEDE_FAMIL& from) {
+  inline PROBUFF_NET_FAMIL_CEDE& operator=(const PROBUFF_NET_FAMIL_CEDE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_CEDE_FAMIL& operator=(PROBUFF_NET_CEDE_FAMIL&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_CEDE& operator=(PROBUFF_NET_FAMIL_CEDE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -7995,20 +7995,20 @@ class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_CEDE_FAMIL& default_instance();
+  static const PROBUFF_NET_FAMIL_CEDE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_CEDE_FAMIL* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_CEDE_FAMIL*>(
-               &_PROBUFF_NET_CEDE_FAMIL_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_CEDE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_CEDE*>(
+               &_PROBUFF_NET_FAMIL_CEDE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     48;
 
-  friend void swap(PROBUFF_NET_CEDE_FAMIL& a, PROBUFF_NET_CEDE_FAMIL& b) {
+  friend void swap(PROBUFF_NET_FAMIL_CEDE& a, PROBUFF_NET_FAMIL_CEDE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_CEDE_FAMIL* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_CEDE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -8016,7 +8016,7 @@ class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_CEDE_FAMIL* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_CEDE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -8024,17 +8024,17 @@ class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_CEDE_FAMIL* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_CEDE_FAMIL>(nullptr);
+  inline PROBUFF_NET_FAMIL_CEDE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CEDE>(nullptr);
   }
 
-  PROBUFF_NET_CEDE_FAMIL* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_CEDE_FAMIL>(arena);
+  PROBUFF_NET_FAMIL_CEDE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CEDE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_CEDE_FAMIL& from);
-  void MergeFrom(const PROBUFF_NET_CEDE_FAMIL& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_CEDE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_CEDE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -8048,13 +8048,13 @@ class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_CEDE_FAMIL* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_CEDE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_CEDE_FAMIL";
+    return "pbnet.PROBUFF_NET_FAMIL_CEDE";
   }
   protected:
-  explicit PROBUFF_NET_CEDE_FAMIL(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_CEDE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -8089,7 +8089,7 @@ class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
   void _internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_CEDE_FAMIL)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_CEDE)
  private:
   class _Internal;
 
@@ -8103,23 +8103,23 @@ class PROBUFF_NET_CEDE_FAMIL PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_CEDE_FAMIL_RESPONSE) */ {
+class PROBUFF_NET_FAMIL_CEDE_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_CEDE_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_CEDE_FAMIL_RESPONSE() : PROBUFF_NET_CEDE_FAMIL_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_CEDE_FAMIL_RESPONSE();
+  inline PROBUFF_NET_FAMIL_CEDE_RESPONSE() : PROBUFF_NET_FAMIL_CEDE_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_CEDE_RESPONSE();
 
-  PROBUFF_NET_CEDE_FAMIL_RESPONSE(const PROBUFF_NET_CEDE_FAMIL_RESPONSE& from);
-  PROBUFF_NET_CEDE_FAMIL_RESPONSE(PROBUFF_NET_CEDE_FAMIL_RESPONSE&& from) noexcept
-    : PROBUFF_NET_CEDE_FAMIL_RESPONSE() {
+  PROBUFF_NET_FAMIL_CEDE_RESPONSE(const PROBUFF_NET_FAMIL_CEDE_RESPONSE& from);
+  PROBUFF_NET_FAMIL_CEDE_RESPONSE(PROBUFF_NET_FAMIL_CEDE_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FAMIL_CEDE_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_CEDE_FAMIL_RESPONSE& operator=(const PROBUFF_NET_CEDE_FAMIL_RESPONSE& from) {
+  inline PROBUFF_NET_FAMIL_CEDE_RESPONSE& operator=(const PROBUFF_NET_FAMIL_CEDE_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_CEDE_FAMIL_RESPONSE& operator=(PROBUFF_NET_CEDE_FAMIL_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_CEDE_RESPONSE& operator=(PROBUFF_NET_FAMIL_CEDE_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -8137,20 +8137,20 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_CEDE_FAMIL_RESPONSE& default_instance();
+  static const PROBUFF_NET_FAMIL_CEDE_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_CEDE_FAMIL_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_CEDE_FAMIL_RESPONSE*>(
-               &_PROBUFF_NET_CEDE_FAMIL_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_CEDE_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_CEDE_RESPONSE*>(
+               &_PROBUFF_NET_FAMIL_CEDE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     49;
 
-  friend void swap(PROBUFF_NET_CEDE_FAMIL_RESPONSE& a, PROBUFF_NET_CEDE_FAMIL_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FAMIL_CEDE_RESPONSE& a, PROBUFF_NET_FAMIL_CEDE_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_CEDE_FAMIL_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_CEDE_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -8158,7 +8158,7 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_CEDE_FAMIL_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_CEDE_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -8166,17 +8166,17 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_CEDE_FAMIL_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_CEDE_FAMIL_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FAMIL_CEDE_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CEDE_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_CEDE_FAMIL_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_CEDE_FAMIL_RESPONSE>(arena);
+  PROBUFF_NET_FAMIL_CEDE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CEDE_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_CEDE_FAMIL_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_CEDE_FAMIL_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_CEDE_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_CEDE_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -8190,13 +8190,13 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_CEDE_FAMIL_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_CEDE_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_CEDE_FAMIL_RESPONSE";
+    return "pbnet.PROBUFF_NET_FAMIL_CEDE_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_CEDE_FAMIL_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_CEDE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -8231,7 +8231,7 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_CEDE_FAMIL_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_CEDE_RESPONSE)
  private:
   class _Internal;
 
@@ -8245,23 +8245,23 @@ class PROBUFF_NET_CEDE_FAMIL_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_LEAVE_FAMIL) */ {
+class PROBUFF_NET_FAMIL_LEAVE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_LEAVE) */ {
  public:
-  inline PROBUFF_NET_LEAVE_FAMIL() : PROBUFF_NET_LEAVE_FAMIL(nullptr) {};
-  virtual ~PROBUFF_NET_LEAVE_FAMIL();
+  inline PROBUFF_NET_FAMIL_LEAVE() : PROBUFF_NET_FAMIL_LEAVE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_LEAVE();
 
-  PROBUFF_NET_LEAVE_FAMIL(const PROBUFF_NET_LEAVE_FAMIL& from);
-  PROBUFF_NET_LEAVE_FAMIL(PROBUFF_NET_LEAVE_FAMIL&& from) noexcept
-    : PROBUFF_NET_LEAVE_FAMIL() {
+  PROBUFF_NET_FAMIL_LEAVE(const PROBUFF_NET_FAMIL_LEAVE& from);
+  PROBUFF_NET_FAMIL_LEAVE(PROBUFF_NET_FAMIL_LEAVE&& from) noexcept
+    : PROBUFF_NET_FAMIL_LEAVE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_LEAVE_FAMIL& operator=(const PROBUFF_NET_LEAVE_FAMIL& from) {
+  inline PROBUFF_NET_FAMIL_LEAVE& operator=(const PROBUFF_NET_FAMIL_LEAVE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_LEAVE_FAMIL& operator=(PROBUFF_NET_LEAVE_FAMIL&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_LEAVE& operator=(PROBUFF_NET_FAMIL_LEAVE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -8279,20 +8279,20 @@ class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_LEAVE_FAMIL& default_instance();
+  static const PROBUFF_NET_FAMIL_LEAVE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_LEAVE_FAMIL* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_LEAVE_FAMIL*>(
-               &_PROBUFF_NET_LEAVE_FAMIL_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_LEAVE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_LEAVE*>(
+               &_PROBUFF_NET_FAMIL_LEAVE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     50;
 
-  friend void swap(PROBUFF_NET_LEAVE_FAMIL& a, PROBUFF_NET_LEAVE_FAMIL& b) {
+  friend void swap(PROBUFF_NET_FAMIL_LEAVE& a, PROBUFF_NET_FAMIL_LEAVE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_LEAVE_FAMIL* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_LEAVE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -8300,7 +8300,7 @@ class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_LEAVE_FAMIL* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_LEAVE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -8308,17 +8308,17 @@ class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_LEAVE_FAMIL* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_LEAVE_FAMIL>(nullptr);
+  inline PROBUFF_NET_FAMIL_LEAVE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_LEAVE>(nullptr);
   }
 
-  PROBUFF_NET_LEAVE_FAMIL* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_LEAVE_FAMIL>(arena);
+  PROBUFF_NET_FAMIL_LEAVE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_LEAVE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_LEAVE_FAMIL& from);
-  void MergeFrom(const PROBUFF_NET_LEAVE_FAMIL& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_LEAVE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_LEAVE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -8332,13 +8332,13 @@ class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_LEAVE_FAMIL* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_LEAVE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_LEAVE_FAMIL";
+    return "pbnet.PROBUFF_NET_FAMIL_LEAVE";
   }
   protected:
-  explicit PROBUFF_NET_LEAVE_FAMIL(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_LEAVE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -8373,7 +8373,7 @@ class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
   void _internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_LEAVE_FAMIL)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_LEAVE)
  private:
   class _Internal;
 
@@ -8387,23 +8387,23 @@ class PROBUFF_NET_LEAVE_FAMIL PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_LEAVE_FAMIL_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_LEAVE_FAMIL_RESPONSE) */ {
+class PROBUFF_NET_FAMIL_LEAVE_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_LEAVE_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_LEAVE_FAMIL_RESPONSE() : PROBUFF_NET_LEAVE_FAMIL_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_LEAVE_FAMIL_RESPONSE();
+  inline PROBUFF_NET_FAMIL_LEAVE_RESPONSE() : PROBUFF_NET_FAMIL_LEAVE_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_LEAVE_RESPONSE();
 
-  PROBUFF_NET_LEAVE_FAMIL_RESPONSE(const PROBUFF_NET_LEAVE_FAMIL_RESPONSE& from);
-  PROBUFF_NET_LEAVE_FAMIL_RESPONSE(PROBUFF_NET_LEAVE_FAMIL_RESPONSE&& from) noexcept
-    : PROBUFF_NET_LEAVE_FAMIL_RESPONSE() {
+  PROBUFF_NET_FAMIL_LEAVE_RESPONSE(const PROBUFF_NET_FAMIL_LEAVE_RESPONSE& from);
+  PROBUFF_NET_FAMIL_LEAVE_RESPONSE(PROBUFF_NET_FAMIL_LEAVE_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FAMIL_LEAVE_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_LEAVE_FAMIL_RESPONSE& operator=(const PROBUFF_NET_LEAVE_FAMIL_RESPONSE& from) {
+  inline PROBUFF_NET_FAMIL_LEAVE_RESPONSE& operator=(const PROBUFF_NET_FAMIL_LEAVE_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_LEAVE_FAMIL_RESPONSE& operator=(PROBUFF_NET_LEAVE_FAMIL_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_LEAVE_RESPONSE& operator=(PROBUFF_NET_FAMIL_LEAVE_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -8421,20 +8421,20 @@ class PROBUFF_NET_LEAVE_FAMIL_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_LEAVE_FAMIL_RESPONSE& default_instance();
+  static const PROBUFF_NET_FAMIL_LEAVE_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_LEAVE_FAMIL_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_LEAVE_FAMIL_RESPONSE*>(
-               &_PROBUFF_NET_LEAVE_FAMIL_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_LEAVE_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_LEAVE_RESPONSE*>(
+               &_PROBUFF_NET_FAMIL_LEAVE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     51;
 
-  friend void swap(PROBUFF_NET_LEAVE_FAMIL_RESPONSE& a, PROBUFF_NET_LEAVE_FAMIL_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FAMIL_LEAVE_RESPONSE& a, PROBUFF_NET_FAMIL_LEAVE_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_LEAVE_FAMIL_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_LEAVE_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -8442,7 +8442,7 @@ class PROBUFF_NET_LEAVE_FAMIL_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_LEAVE_FAMIL_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_LEAVE_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -8450,17 +8450,17 @@ class PROBUFF_NET_LEAVE_FAMIL_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_LEAVE_FAMIL_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_LEAVE_FAMIL_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FAMIL_LEAVE_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_LEAVE_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_LEAVE_FAMIL_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_LEAVE_FAMIL_RESPONSE>(arena);
+  PROBUFF_NET_FAMIL_LEAVE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_LEAVE_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_LEAVE_FAMIL_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_LEAVE_FAMIL_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_LEAVE_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_LEAVE_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -8474,13 +8474,13 @@ class PROBUFF_NET_LEAVE_FAMIL_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_LEAVE_FAMIL_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_LEAVE_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_LEAVE_FAMIL_RESPONSE";
+    return "pbnet.PROBUFF_NET_FAMIL_LEAVE_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_LEAVE_FAMIL_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_LEAVE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -8515,7 +8515,7 @@ class PROBUFF_NET_LEAVE_FAMIL_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_LEAVE_FAMIL_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_LEAVE_RESPONSE)
  private:
   class _Internal;
 
@@ -8833,23 +8833,23 @@ class PROBUFF_NET_FAMIL_LIST_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_CHANGE_FAMILNAME) */ {
+class PROBUFF_NET_FAMIL_CHANGENAME PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_CHANGENAME) */ {
  public:
-  inline PROBUFF_NET_CHANGE_FAMILNAME() : PROBUFF_NET_CHANGE_FAMILNAME(nullptr) {};
-  virtual ~PROBUFF_NET_CHANGE_FAMILNAME();
+  inline PROBUFF_NET_FAMIL_CHANGENAME() : PROBUFF_NET_FAMIL_CHANGENAME(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_CHANGENAME();
 
-  PROBUFF_NET_CHANGE_FAMILNAME(const PROBUFF_NET_CHANGE_FAMILNAME& from);
-  PROBUFF_NET_CHANGE_FAMILNAME(PROBUFF_NET_CHANGE_FAMILNAME&& from) noexcept
-    : PROBUFF_NET_CHANGE_FAMILNAME() {
+  PROBUFF_NET_FAMIL_CHANGENAME(const PROBUFF_NET_FAMIL_CHANGENAME& from);
+  PROBUFF_NET_FAMIL_CHANGENAME(PROBUFF_NET_FAMIL_CHANGENAME&& from) noexcept
+    : PROBUFF_NET_FAMIL_CHANGENAME() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_CHANGE_FAMILNAME& operator=(const PROBUFF_NET_CHANGE_FAMILNAME& from) {
+  inline PROBUFF_NET_FAMIL_CHANGENAME& operator=(const PROBUFF_NET_FAMIL_CHANGENAME& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_CHANGE_FAMILNAME& operator=(PROBUFF_NET_CHANGE_FAMILNAME&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_CHANGENAME& operator=(PROBUFF_NET_FAMIL_CHANGENAME&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -8867,20 +8867,20 @@ class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_CHANGE_FAMILNAME& default_instance();
+  static const PROBUFF_NET_FAMIL_CHANGENAME& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_CHANGE_FAMILNAME* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_CHANGE_FAMILNAME*>(
-               &_PROBUFF_NET_CHANGE_FAMILNAME_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_CHANGENAME* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_CHANGENAME*>(
+               &_PROBUFF_NET_FAMIL_CHANGENAME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     54;
 
-  friend void swap(PROBUFF_NET_CHANGE_FAMILNAME& a, PROBUFF_NET_CHANGE_FAMILNAME& b) {
+  friend void swap(PROBUFF_NET_FAMIL_CHANGENAME& a, PROBUFF_NET_FAMIL_CHANGENAME& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_CHANGE_FAMILNAME* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_CHANGENAME* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -8888,7 +8888,7 @@ class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_CHANGE_FAMILNAME* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_CHANGENAME* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -8896,17 +8896,17 @@ class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_CHANGE_FAMILNAME* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_CHANGE_FAMILNAME>(nullptr);
+  inline PROBUFF_NET_FAMIL_CHANGENAME* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CHANGENAME>(nullptr);
   }
 
-  PROBUFF_NET_CHANGE_FAMILNAME* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_CHANGE_FAMILNAME>(arena);
+  PROBUFF_NET_FAMIL_CHANGENAME* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CHANGENAME>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_CHANGE_FAMILNAME& from);
-  void MergeFrom(const PROBUFF_NET_CHANGE_FAMILNAME& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_CHANGENAME& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_CHANGENAME& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -8920,13 +8920,13 @@ class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_CHANGE_FAMILNAME* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_CHANGENAME* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_CHANGE_FAMILNAME";
+    return "pbnet.PROBUFF_NET_FAMIL_CHANGENAME";
   }
   protected:
-  explicit PROBUFF_NET_CHANGE_FAMILNAME(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_CHANGENAME(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -8991,7 +8991,7 @@ class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
   void _internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_CHANGE_FAMILNAME)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_CHANGENAME)
  private:
   class _Internal;
 
@@ -9006,23 +9006,23 @@ class PROBUFF_NET_CHANGE_FAMILNAME PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE) */ {
+class PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE() : PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE();
+  inline PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE() : PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE();
 
-  PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE(const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& from);
-  PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE&& from) noexcept
-    : PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE() {
+  PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE(const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& from);
+  PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE(PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& operator=(const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& from) {
+  inline PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& operator=(const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& operator=(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& operator=(PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -9040,20 +9040,20 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& default_instance();
+  static const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE*>(
-               &_PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE*>(
+               &_PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     55;
 
-  friend void swap(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& a, PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& a, PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -9061,7 +9061,7 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -9069,17 +9069,17 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>(arena);
+  PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -9093,13 +9093,13 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE";
+    return "pbnet.PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -9134,7 +9134,7 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE)
  private:
   class _Internal;
 
@@ -9148,23 +9148,23 @@ class PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMILSIGN) */ {
+class PROBUFF_NET_FAMIL_SIGN PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_SIGN) */ {
  public:
-  inline PROBUFF_NET_FAMILSIGN() : PROBUFF_NET_FAMILSIGN(nullptr) {};
-  virtual ~PROBUFF_NET_FAMILSIGN();
+  inline PROBUFF_NET_FAMIL_SIGN() : PROBUFF_NET_FAMIL_SIGN(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_SIGN();
 
-  PROBUFF_NET_FAMILSIGN(const PROBUFF_NET_FAMILSIGN& from);
-  PROBUFF_NET_FAMILSIGN(PROBUFF_NET_FAMILSIGN&& from) noexcept
-    : PROBUFF_NET_FAMILSIGN() {
+  PROBUFF_NET_FAMIL_SIGN(const PROBUFF_NET_FAMIL_SIGN& from);
+  PROBUFF_NET_FAMIL_SIGN(PROBUFF_NET_FAMIL_SIGN&& from) noexcept
+    : PROBUFF_NET_FAMIL_SIGN() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_FAMILSIGN& operator=(const PROBUFF_NET_FAMILSIGN& from) {
+  inline PROBUFF_NET_FAMIL_SIGN& operator=(const PROBUFF_NET_FAMIL_SIGN& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_FAMILSIGN& operator=(PROBUFF_NET_FAMILSIGN&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_SIGN& operator=(PROBUFF_NET_FAMIL_SIGN&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -9182,20 +9182,20 @@ class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_FAMILSIGN& default_instance();
+  static const PROBUFF_NET_FAMIL_SIGN& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_FAMILSIGN* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_FAMILSIGN*>(
-               &_PROBUFF_NET_FAMILSIGN_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_SIGN* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_SIGN*>(
+               &_PROBUFF_NET_FAMIL_SIGN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     56;
 
-  friend void swap(PROBUFF_NET_FAMILSIGN& a, PROBUFF_NET_FAMILSIGN& b) {
+  friend void swap(PROBUFF_NET_FAMIL_SIGN& a, PROBUFF_NET_FAMIL_SIGN& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_FAMILSIGN* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_SIGN* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -9203,7 +9203,7 @@ class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_FAMILSIGN* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_SIGN* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -9211,17 +9211,17 @@ class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_FAMILSIGN* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_FAMILSIGN>(nullptr);
+  inline PROBUFF_NET_FAMIL_SIGN* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_SIGN>(nullptr);
   }
 
-  PROBUFF_NET_FAMILSIGN* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_FAMILSIGN>(arena);
+  PROBUFF_NET_FAMIL_SIGN* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_SIGN>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_FAMILSIGN& from);
-  void MergeFrom(const PROBUFF_NET_FAMILSIGN& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_SIGN& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_SIGN& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -9235,13 +9235,13 @@ class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_FAMILSIGN* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_SIGN* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_FAMILSIGN";
+    return "pbnet.PROBUFF_NET_FAMIL_SIGN";
   }
   protected:
-  explicit PROBUFF_NET_FAMILSIGN(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_SIGN(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -9276,7 +9276,7 @@ class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
   void _internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMILSIGN)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_SIGN)
  private:
   class _Internal;
 
@@ -9290,23 +9290,23 @@ class PROBUFF_NET_FAMILSIGN PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_FAMILSIGN_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMILSIGN_RESPONSE) */ {
+class PROBUFF_NET_FAMIL_SIGN_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FAMIL_SIGN_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_FAMILSIGN_RESPONSE() : PROBUFF_NET_FAMILSIGN_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_FAMILSIGN_RESPONSE();
+  inline PROBUFF_NET_FAMIL_SIGN_RESPONSE() : PROBUFF_NET_FAMIL_SIGN_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FAMIL_SIGN_RESPONSE();
 
-  PROBUFF_NET_FAMILSIGN_RESPONSE(const PROBUFF_NET_FAMILSIGN_RESPONSE& from);
-  PROBUFF_NET_FAMILSIGN_RESPONSE(PROBUFF_NET_FAMILSIGN_RESPONSE&& from) noexcept
-    : PROBUFF_NET_FAMILSIGN_RESPONSE() {
+  PROBUFF_NET_FAMIL_SIGN_RESPONSE(const PROBUFF_NET_FAMIL_SIGN_RESPONSE& from);
+  PROBUFF_NET_FAMIL_SIGN_RESPONSE(PROBUFF_NET_FAMIL_SIGN_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FAMIL_SIGN_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_FAMILSIGN_RESPONSE& operator=(const PROBUFF_NET_FAMILSIGN_RESPONSE& from) {
+  inline PROBUFF_NET_FAMIL_SIGN_RESPONSE& operator=(const PROBUFF_NET_FAMIL_SIGN_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_FAMILSIGN_RESPONSE& operator=(PROBUFF_NET_FAMILSIGN_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FAMIL_SIGN_RESPONSE& operator=(PROBUFF_NET_FAMIL_SIGN_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -9324,20 +9324,20 @@ class PROBUFF_NET_FAMILSIGN_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_FAMILSIGN_RESPONSE& default_instance();
+  static const PROBUFF_NET_FAMIL_SIGN_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_FAMILSIGN_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_FAMILSIGN_RESPONSE*>(
-               &_PROBUFF_NET_FAMILSIGN_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FAMIL_SIGN_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FAMIL_SIGN_RESPONSE*>(
+               &_PROBUFF_NET_FAMIL_SIGN_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     57;
 
-  friend void swap(PROBUFF_NET_FAMILSIGN_RESPONSE& a, PROBUFF_NET_FAMILSIGN_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FAMIL_SIGN_RESPONSE& a, PROBUFF_NET_FAMIL_SIGN_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_FAMILSIGN_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FAMIL_SIGN_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -9345,7 +9345,7 @@ class PROBUFF_NET_FAMILSIGN_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_FAMILSIGN_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FAMIL_SIGN_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -9353,17 +9353,17 @@ class PROBUFF_NET_FAMILSIGN_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_FAMILSIGN_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_FAMILSIGN_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FAMIL_SIGN_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_SIGN_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_FAMILSIGN_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_FAMILSIGN_RESPONSE>(arena);
+  PROBUFF_NET_FAMIL_SIGN_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FAMIL_SIGN_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_FAMILSIGN_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_FAMILSIGN_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FAMIL_SIGN_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FAMIL_SIGN_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -9377,13 +9377,13 @@ class PROBUFF_NET_FAMILSIGN_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_FAMILSIGN_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FAMIL_SIGN_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_FAMILSIGN_RESPONSE";
+    return "pbnet.PROBUFF_NET_FAMIL_SIGN_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_FAMILSIGN_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FAMIL_SIGN_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -9418,7 +9418,7 @@ class PROBUFF_NET_FAMILSIGN_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMILSIGN_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FAMIL_SIGN_RESPONSE)
  private:
   class _Internal;
 
@@ -10297,23 +10297,23 @@ class PROBUFF_NET_FRIEND_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_ADDFRIEND) */ {
+class PROBUFF_NET_FRIEND_ADD PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FRIEND_ADD) */ {
  public:
-  inline PROBUFF_NET_ADDFRIEND() : PROBUFF_NET_ADDFRIEND(nullptr) {};
-  virtual ~PROBUFF_NET_ADDFRIEND();
+  inline PROBUFF_NET_FRIEND_ADD() : PROBUFF_NET_FRIEND_ADD(nullptr) {};
+  virtual ~PROBUFF_NET_FRIEND_ADD();
 
-  PROBUFF_NET_ADDFRIEND(const PROBUFF_NET_ADDFRIEND& from);
-  PROBUFF_NET_ADDFRIEND(PROBUFF_NET_ADDFRIEND&& from) noexcept
-    : PROBUFF_NET_ADDFRIEND() {
+  PROBUFF_NET_FRIEND_ADD(const PROBUFF_NET_FRIEND_ADD& from);
+  PROBUFF_NET_FRIEND_ADD(PROBUFF_NET_FRIEND_ADD&& from) noexcept
+    : PROBUFF_NET_FRIEND_ADD() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_ADDFRIEND& operator=(const PROBUFF_NET_ADDFRIEND& from) {
+  inline PROBUFF_NET_FRIEND_ADD& operator=(const PROBUFF_NET_FRIEND_ADD& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_ADDFRIEND& operator=(PROBUFF_NET_ADDFRIEND&& from) noexcept {
+  inline PROBUFF_NET_FRIEND_ADD& operator=(PROBUFF_NET_FRIEND_ADD&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -10331,20 +10331,20 @@ class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_ADDFRIEND& default_instance();
+  static const PROBUFF_NET_FRIEND_ADD& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_ADDFRIEND* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_ADDFRIEND*>(
-               &_PROBUFF_NET_ADDFRIEND_default_instance_);
+  static inline const PROBUFF_NET_FRIEND_ADD* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FRIEND_ADD*>(
+               &_PROBUFF_NET_FRIEND_ADD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     64;
 
-  friend void swap(PROBUFF_NET_ADDFRIEND& a, PROBUFF_NET_ADDFRIEND& b) {
+  friend void swap(PROBUFF_NET_FRIEND_ADD& a, PROBUFF_NET_FRIEND_ADD& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_ADDFRIEND* other) {
+  inline void Swap(PROBUFF_NET_FRIEND_ADD* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -10352,7 +10352,7 @@ class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_ADDFRIEND* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FRIEND_ADD* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -10360,17 +10360,17 @@ class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_ADDFRIEND* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_ADDFRIEND>(nullptr);
+  inline PROBUFF_NET_FRIEND_ADD* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ADD>(nullptr);
   }
 
-  PROBUFF_NET_ADDFRIEND* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_ADDFRIEND>(arena);
+  PROBUFF_NET_FRIEND_ADD* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ADD>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_ADDFRIEND& from);
-  void MergeFrom(const PROBUFF_NET_ADDFRIEND& from);
+  void CopyFrom(const PROBUFF_NET_FRIEND_ADD& from);
+  void MergeFrom(const PROBUFF_NET_FRIEND_ADD& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -10384,13 +10384,13 @@ class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_ADDFRIEND* other);
+  void InternalSwap(PROBUFF_NET_FRIEND_ADD* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_ADDFRIEND";
+    return "pbnet.PROBUFF_NET_FRIEND_ADD";
   }
   protected:
-  explicit PROBUFF_NET_ADDFRIEND(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FRIEND_ADD(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -10425,7 +10425,7 @@ class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
   void _internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ADDFRIEND)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FRIEND_ADD)
  private:
   class _Internal;
 
@@ -10439,23 +10439,23 @@ class PROBUFF_NET_ADDFRIEND PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE) */ {
+class PROBUFF_NET_FRIEND_ADD_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_ADDFRIEND_RESPONSE() : PROBUFF_NET_ADDFRIEND_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_ADDFRIEND_RESPONSE();
+  inline PROBUFF_NET_FRIEND_ADD_RESPONSE() : PROBUFF_NET_FRIEND_ADD_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FRIEND_ADD_RESPONSE();
 
-  PROBUFF_NET_ADDFRIEND_RESPONSE(const PROBUFF_NET_ADDFRIEND_RESPONSE& from);
-  PROBUFF_NET_ADDFRIEND_RESPONSE(PROBUFF_NET_ADDFRIEND_RESPONSE&& from) noexcept
-    : PROBUFF_NET_ADDFRIEND_RESPONSE() {
+  PROBUFF_NET_FRIEND_ADD_RESPONSE(const PROBUFF_NET_FRIEND_ADD_RESPONSE& from);
+  PROBUFF_NET_FRIEND_ADD_RESPONSE(PROBUFF_NET_FRIEND_ADD_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FRIEND_ADD_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_ADDFRIEND_RESPONSE& operator=(const PROBUFF_NET_ADDFRIEND_RESPONSE& from) {
+  inline PROBUFF_NET_FRIEND_ADD_RESPONSE& operator=(const PROBUFF_NET_FRIEND_ADD_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_ADDFRIEND_RESPONSE& operator=(PROBUFF_NET_ADDFRIEND_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FRIEND_ADD_RESPONSE& operator=(PROBUFF_NET_FRIEND_ADD_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -10473,20 +10473,20 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_ADDFRIEND_RESPONSE& default_instance();
+  static const PROBUFF_NET_FRIEND_ADD_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_ADDFRIEND_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_ADDFRIEND_RESPONSE*>(
-               &_PROBUFF_NET_ADDFRIEND_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FRIEND_ADD_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FRIEND_ADD_RESPONSE*>(
+               &_PROBUFF_NET_FRIEND_ADD_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     65;
 
-  friend void swap(PROBUFF_NET_ADDFRIEND_RESPONSE& a, PROBUFF_NET_ADDFRIEND_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FRIEND_ADD_RESPONSE& a, PROBUFF_NET_FRIEND_ADD_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_ADDFRIEND_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FRIEND_ADD_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -10494,7 +10494,7 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_ADDFRIEND_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FRIEND_ADD_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -10502,17 +10502,17 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_ADDFRIEND_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_ADDFRIEND_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FRIEND_ADD_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ADD_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_ADDFRIEND_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_ADDFRIEND_RESPONSE>(arena);
+  PROBUFF_NET_FRIEND_ADD_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ADD_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_ADDFRIEND_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_ADDFRIEND_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FRIEND_ADD_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FRIEND_ADD_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -10526,13 +10526,13 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_ADDFRIEND_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FRIEND_ADD_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE";
+    return "pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_ADDFRIEND_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FRIEND_ADD_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -10581,7 +10581,7 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE)
  private:
   class _Internal;
 
@@ -10596,23 +10596,23 @@ class PROBUFF_NET_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND) */ {
+class PROBUFF_NET_FRIEND_RATIFY_ADD PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD) */ {
  public:
-  inline PROBUFF_NET_RATIFY_ADDFRIEND() : PROBUFF_NET_RATIFY_ADDFRIEND(nullptr) {};
-  virtual ~PROBUFF_NET_RATIFY_ADDFRIEND();
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD() : PROBUFF_NET_FRIEND_RATIFY_ADD(nullptr) {};
+  virtual ~PROBUFF_NET_FRIEND_RATIFY_ADD();
 
-  PROBUFF_NET_RATIFY_ADDFRIEND(const PROBUFF_NET_RATIFY_ADDFRIEND& from);
-  PROBUFF_NET_RATIFY_ADDFRIEND(PROBUFF_NET_RATIFY_ADDFRIEND&& from) noexcept
-    : PROBUFF_NET_RATIFY_ADDFRIEND() {
+  PROBUFF_NET_FRIEND_RATIFY_ADD(const PROBUFF_NET_FRIEND_RATIFY_ADD& from);
+  PROBUFF_NET_FRIEND_RATIFY_ADD(PROBUFF_NET_FRIEND_RATIFY_ADD&& from) noexcept
+    : PROBUFF_NET_FRIEND_RATIFY_ADD() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_RATIFY_ADDFRIEND& operator=(const PROBUFF_NET_RATIFY_ADDFRIEND& from) {
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD& operator=(const PROBUFF_NET_FRIEND_RATIFY_ADD& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_RATIFY_ADDFRIEND& operator=(PROBUFF_NET_RATIFY_ADDFRIEND&& from) noexcept {
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD& operator=(PROBUFF_NET_FRIEND_RATIFY_ADD&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -10630,20 +10630,20 @@ class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_RATIFY_ADDFRIEND& default_instance();
+  static const PROBUFF_NET_FRIEND_RATIFY_ADD& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_RATIFY_ADDFRIEND* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_RATIFY_ADDFRIEND*>(
-               &_PROBUFF_NET_RATIFY_ADDFRIEND_default_instance_);
+  static inline const PROBUFF_NET_FRIEND_RATIFY_ADD* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FRIEND_RATIFY_ADD*>(
+               &_PROBUFF_NET_FRIEND_RATIFY_ADD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     66;
 
-  friend void swap(PROBUFF_NET_RATIFY_ADDFRIEND& a, PROBUFF_NET_RATIFY_ADDFRIEND& b) {
+  friend void swap(PROBUFF_NET_FRIEND_RATIFY_ADD& a, PROBUFF_NET_FRIEND_RATIFY_ADD& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_RATIFY_ADDFRIEND* other) {
+  inline void Swap(PROBUFF_NET_FRIEND_RATIFY_ADD* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -10651,7 +10651,7 @@ class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_RATIFY_ADDFRIEND* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FRIEND_RATIFY_ADD* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -10659,17 +10659,17 @@ class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_RATIFY_ADDFRIEND* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_ADDFRIEND>(nullptr);
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_RATIFY_ADD>(nullptr);
   }
 
-  PROBUFF_NET_RATIFY_ADDFRIEND* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_ADDFRIEND>(arena);
+  PROBUFF_NET_FRIEND_RATIFY_ADD* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_RATIFY_ADD>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_RATIFY_ADDFRIEND& from);
-  void MergeFrom(const PROBUFF_NET_RATIFY_ADDFRIEND& from);
+  void CopyFrom(const PROBUFF_NET_FRIEND_RATIFY_ADD& from);
+  void MergeFrom(const PROBUFF_NET_FRIEND_RATIFY_ADD& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -10683,13 +10683,13 @@ class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_RATIFY_ADDFRIEND* other);
+  void InternalSwap(PROBUFF_NET_FRIEND_RATIFY_ADD* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_RATIFY_ADDFRIEND";
+    return "pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD";
   }
   protected:
-  explicit PROBUFF_NET_RATIFY_ADDFRIEND(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FRIEND_RATIFY_ADD(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -10738,7 +10738,7 @@ class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
   void _internal_set_m_ratify(bool value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD)
  private:
   class _Internal;
 
@@ -10753,23 +10753,23 @@ class PROBUFF_NET_RATIFY_ADDFRIEND PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE) */ {
+class PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE() : PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE();
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE() : PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE();
 
-  PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE(const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& from);
-  PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE&& from) noexcept
-    : PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE() {
+  PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE(const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& from);
+  PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE(PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& operator=(const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& from) {
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& operator=(const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& operator=(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& operator=(PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -10787,20 +10787,20 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& default_instance();
+  static const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE*>(
-               &_PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE*>(
+               &_PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     67;
 
-  friend void swap(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& a, PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& a, PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -10808,7 +10808,7 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -10816,17 +10816,17 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>(arena);
+  PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -10840,13 +10840,13 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE";
+    return "pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -10909,7 +10909,7 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE)
  private:
   class _Internal;
 
@@ -10925,23 +10925,23 @@ class PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_ERASEFRIEND) */ {
+class PROBUFF_NET_FRIEND_ERASE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FRIEND_ERASE) */ {
  public:
-  inline PROBUFF_NET_ERASEFRIEND() : PROBUFF_NET_ERASEFRIEND(nullptr) {};
-  virtual ~PROBUFF_NET_ERASEFRIEND();
+  inline PROBUFF_NET_FRIEND_ERASE() : PROBUFF_NET_FRIEND_ERASE(nullptr) {};
+  virtual ~PROBUFF_NET_FRIEND_ERASE();
 
-  PROBUFF_NET_ERASEFRIEND(const PROBUFF_NET_ERASEFRIEND& from);
-  PROBUFF_NET_ERASEFRIEND(PROBUFF_NET_ERASEFRIEND&& from) noexcept
-    : PROBUFF_NET_ERASEFRIEND() {
+  PROBUFF_NET_FRIEND_ERASE(const PROBUFF_NET_FRIEND_ERASE& from);
+  PROBUFF_NET_FRIEND_ERASE(PROBUFF_NET_FRIEND_ERASE&& from) noexcept
+    : PROBUFF_NET_FRIEND_ERASE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_ERASEFRIEND& operator=(const PROBUFF_NET_ERASEFRIEND& from) {
+  inline PROBUFF_NET_FRIEND_ERASE& operator=(const PROBUFF_NET_FRIEND_ERASE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_ERASEFRIEND& operator=(PROBUFF_NET_ERASEFRIEND&& from) noexcept {
+  inline PROBUFF_NET_FRIEND_ERASE& operator=(PROBUFF_NET_FRIEND_ERASE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -10959,20 +10959,20 @@ class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_ERASEFRIEND& default_instance();
+  static const PROBUFF_NET_FRIEND_ERASE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_ERASEFRIEND* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_ERASEFRIEND*>(
-               &_PROBUFF_NET_ERASEFRIEND_default_instance_);
+  static inline const PROBUFF_NET_FRIEND_ERASE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FRIEND_ERASE*>(
+               &_PROBUFF_NET_FRIEND_ERASE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     68;
 
-  friend void swap(PROBUFF_NET_ERASEFRIEND& a, PROBUFF_NET_ERASEFRIEND& b) {
+  friend void swap(PROBUFF_NET_FRIEND_ERASE& a, PROBUFF_NET_FRIEND_ERASE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_ERASEFRIEND* other) {
+  inline void Swap(PROBUFF_NET_FRIEND_ERASE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -10980,7 +10980,7 @@ class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_ERASEFRIEND* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FRIEND_ERASE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -10988,17 +10988,17 @@ class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_ERASEFRIEND* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_ERASEFRIEND>(nullptr);
+  inline PROBUFF_NET_FRIEND_ERASE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ERASE>(nullptr);
   }
 
-  PROBUFF_NET_ERASEFRIEND* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_ERASEFRIEND>(arena);
+  PROBUFF_NET_FRIEND_ERASE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ERASE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_ERASEFRIEND& from);
-  void MergeFrom(const PROBUFF_NET_ERASEFRIEND& from);
+  void CopyFrom(const PROBUFF_NET_FRIEND_ERASE& from);
+  void MergeFrom(const PROBUFF_NET_FRIEND_ERASE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -11012,13 +11012,13 @@ class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_ERASEFRIEND* other);
+  void InternalSwap(PROBUFF_NET_FRIEND_ERASE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_ERASEFRIEND";
+    return "pbnet.PROBUFF_NET_FRIEND_ERASE";
   }
   protected:
-  explicit PROBUFF_NET_ERASEFRIEND(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FRIEND_ERASE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -11053,7 +11053,7 @@ class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
   void _internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ERASEFRIEND)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FRIEND_ERASE)
  private:
   class _Internal;
 
@@ -11067,23 +11067,23 @@ class PROBUFF_NET_ERASEFRIEND PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
-class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE) */ {
+class PROBUFF_NET_FRIEND_ERASE_RESPONSE PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE) */ {
  public:
-  inline PROBUFF_NET_ERASEFRIEND_RESPONSE() : PROBUFF_NET_ERASEFRIEND_RESPONSE(nullptr) {};
-  virtual ~PROBUFF_NET_ERASEFRIEND_RESPONSE();
+  inline PROBUFF_NET_FRIEND_ERASE_RESPONSE() : PROBUFF_NET_FRIEND_ERASE_RESPONSE(nullptr) {};
+  virtual ~PROBUFF_NET_FRIEND_ERASE_RESPONSE();
 
-  PROBUFF_NET_ERASEFRIEND_RESPONSE(const PROBUFF_NET_ERASEFRIEND_RESPONSE& from);
-  PROBUFF_NET_ERASEFRIEND_RESPONSE(PROBUFF_NET_ERASEFRIEND_RESPONSE&& from) noexcept
-    : PROBUFF_NET_ERASEFRIEND_RESPONSE() {
+  PROBUFF_NET_FRIEND_ERASE_RESPONSE(const PROBUFF_NET_FRIEND_ERASE_RESPONSE& from);
+  PROBUFF_NET_FRIEND_ERASE_RESPONSE(PROBUFF_NET_FRIEND_ERASE_RESPONSE&& from) noexcept
+    : PROBUFF_NET_FRIEND_ERASE_RESPONSE() {
     *this = ::std::move(from);
   }
 
-  inline PROBUFF_NET_ERASEFRIEND_RESPONSE& operator=(const PROBUFF_NET_ERASEFRIEND_RESPONSE& from) {
+  inline PROBUFF_NET_FRIEND_ERASE_RESPONSE& operator=(const PROBUFF_NET_FRIEND_ERASE_RESPONSE& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PROBUFF_NET_ERASEFRIEND_RESPONSE& operator=(PROBUFF_NET_ERASEFRIEND_RESPONSE&& from) noexcept {
+  inline PROBUFF_NET_FRIEND_ERASE_RESPONSE& operator=(PROBUFF_NET_FRIEND_ERASE_RESPONSE&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -11101,20 +11101,20 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PROBUFF_NET_ERASEFRIEND_RESPONSE& default_instance();
+  static const PROBUFF_NET_FRIEND_ERASE_RESPONSE& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PROBUFF_NET_ERASEFRIEND_RESPONSE* internal_default_instance() {
-    return reinterpret_cast<const PROBUFF_NET_ERASEFRIEND_RESPONSE*>(
-               &_PROBUFF_NET_ERASEFRIEND_RESPONSE_default_instance_);
+  static inline const PROBUFF_NET_FRIEND_ERASE_RESPONSE* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_FRIEND_ERASE_RESPONSE*>(
+               &_PROBUFF_NET_FRIEND_ERASE_RESPONSE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     69;
 
-  friend void swap(PROBUFF_NET_ERASEFRIEND_RESPONSE& a, PROBUFF_NET_ERASEFRIEND_RESPONSE& b) {
+  friend void swap(PROBUFF_NET_FRIEND_ERASE_RESPONSE& a, PROBUFF_NET_FRIEND_ERASE_RESPONSE& b) {
     a.Swap(&b);
   }
-  inline void Swap(PROBUFF_NET_ERASEFRIEND_RESPONSE* other) {
+  inline void Swap(PROBUFF_NET_FRIEND_ERASE_RESPONSE* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -11122,7 +11122,7 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PROBUFF_NET_ERASEFRIEND_RESPONSE* other) {
+  void UnsafeArenaSwap(PROBUFF_NET_FRIEND_ERASE_RESPONSE* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -11130,17 +11130,17 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline PROBUFF_NET_ERASEFRIEND_RESPONSE* New() const final {
-    return CreateMaybeMessage<PROBUFF_NET_ERASEFRIEND_RESPONSE>(nullptr);
+  inline PROBUFF_NET_FRIEND_ERASE_RESPONSE* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ERASE_RESPONSE>(nullptr);
   }
 
-  PROBUFF_NET_ERASEFRIEND_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PROBUFF_NET_ERASEFRIEND_RESPONSE>(arena);
+  PROBUFF_NET_FRIEND_ERASE_RESPONSE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_FRIEND_ERASE_RESPONSE>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PROBUFF_NET_ERASEFRIEND_RESPONSE& from);
-  void MergeFrom(const PROBUFF_NET_ERASEFRIEND_RESPONSE& from);
+  void CopyFrom(const PROBUFF_NET_FRIEND_ERASE_RESPONSE& from);
+  void MergeFrom(const PROBUFF_NET_FRIEND_ERASE_RESPONSE& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -11154,13 +11154,13 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PROBUFF_NET_ERASEFRIEND_RESPONSE* other);
+  void InternalSwap(PROBUFF_NET_FRIEND_ERASE_RESPONSE* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE";
+    return "pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE";
   }
   protected:
-  explicit PROBUFF_NET_ERASEFRIEND_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit PROBUFF_NET_FRIEND_ERASE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -11209,7 +11209,7 @@ class PROBUFF_NET_ERASEFRIEND_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE)
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE)
  private:
   class _Internal;
 
@@ -16979,222 +16979,222 @@ inline void PROBUFF_NET_FAMIL_JOIN_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID:
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_RATIFY_JOIN_FAMIL
+// PROBUFF_NET_FAMIL_RATIFY_JOIN
 
 // int64 m_roleid = 1;
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL::_internal_has_m_roleid() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN::_internal_has_m_roleid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL::has_m_roleid() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN::has_m_roleid() const {
   return _internal_has_m_roleid();
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL::clear_m_roleid() {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN::clear_m_roleid() {
   m_roleid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_RATIFY_JOIN_FAMIL::_internal_m_roleid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_RATIFY_JOIN::_internal_m_roleid() const {
   return m_roleid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_RATIFY_JOIN_FAMIL::m_roleid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL.m_roleid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_RATIFY_JOIN::m_roleid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN.m_roleid)
   return _internal_m_roleid();
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_roleid_ = value;
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_roleid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL.m_roleid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN.m_roleid)
 }
 
 // bool m_ratify = 2;
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL::_internal_has_m_ratify() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN::_internal_has_m_ratify() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL::has_m_ratify() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN::has_m_ratify() const {
   return _internal_has_m_ratify();
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL::clear_m_ratify() {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN::clear_m_ratify() {
   m_ratify_ = false;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL::_internal_m_ratify() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN::_internal_m_ratify() const {
   return m_ratify_;
 }
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL::m_ratify() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL.m_ratify)
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN::m_ratify() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN.m_ratify)
   return _internal_m_ratify();
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL::_internal_set_m_ratify(bool value) {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN::_internal_set_m_ratify(bool value) {
   _has_bits_[0] |= 0x00000002u;
   m_ratify_ = value;
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL::set_m_ratify(bool value) {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN::set_m_ratify(bool value) {
   _internal_set_m_ratify(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL.m_ratify)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN.m_ratify)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE
+// PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE
 
 // int32 m_stat = 1;
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000001u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_CEDE_FAMIL
+// PROBUFF_NET_FAMIL_CEDE
 
 // int64 m_roleid = 1;
-inline bool PROBUFF_NET_CEDE_FAMIL::_internal_has_m_roleid() const {
+inline bool PROBUFF_NET_FAMIL_CEDE::_internal_has_m_roleid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_CEDE_FAMIL::has_m_roleid() const {
+inline bool PROBUFF_NET_FAMIL_CEDE::has_m_roleid() const {
   return _internal_has_m_roleid();
 }
-inline void PROBUFF_NET_CEDE_FAMIL::clear_m_roleid() {
+inline void PROBUFF_NET_FAMIL_CEDE::clear_m_roleid() {
   m_roleid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_CEDE_FAMIL::_internal_m_roleid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_CEDE::_internal_m_roleid() const {
   return m_roleid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_CEDE_FAMIL::m_roleid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_CEDE_FAMIL.m_roleid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_CEDE::m_roleid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_CEDE.m_roleid)
   return _internal_m_roleid();
 }
-inline void PROBUFF_NET_CEDE_FAMIL::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_CEDE::_internal_set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_roleid_ = value;
 }
-inline void PROBUFF_NET_CEDE_FAMIL::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_CEDE::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_roleid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_CEDE_FAMIL.m_roleid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_CEDE.m_roleid)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_CEDE_FAMIL_RESPONSE
+// PROBUFF_NET_FAMIL_CEDE_RESPONSE
 
 // int32 m_stat = 1;
-inline bool PROBUFF_NET_CEDE_FAMIL_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_CEDE_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_CEDE_FAMIL_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_CEDE_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_CEDE_FAMIL_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FAMIL_CEDE_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_CEDE_FAMIL_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_CEDE_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_CEDE_FAMIL_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_CEDE_FAMIL_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_CEDE_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_CEDE_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_CEDE_FAMIL_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_CEDE_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000001u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_CEDE_FAMIL_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_CEDE_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_CEDE_FAMIL_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_CEDE_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_LEAVE_FAMIL
+// PROBUFF_NET_FAMIL_LEAVE
 
 // int64 m_familid = 1;
-inline bool PROBUFF_NET_LEAVE_FAMIL::_internal_has_m_familid() const {
+inline bool PROBUFF_NET_FAMIL_LEAVE::_internal_has_m_familid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_LEAVE_FAMIL::has_m_familid() const {
+inline bool PROBUFF_NET_FAMIL_LEAVE::has_m_familid() const {
   return _internal_has_m_familid();
 }
-inline void PROBUFF_NET_LEAVE_FAMIL::clear_m_familid() {
+inline void PROBUFF_NET_FAMIL_LEAVE::clear_m_familid() {
   m_familid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_LEAVE_FAMIL::_internal_m_familid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_LEAVE::_internal_m_familid() const {
   return m_familid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_LEAVE_FAMIL::m_familid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_LEAVE_FAMIL.m_familid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_LEAVE::m_familid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_LEAVE.m_familid)
   return _internal_m_familid();
 }
-inline void PROBUFF_NET_LEAVE_FAMIL::_internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_LEAVE::_internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_familid_ = value;
 }
-inline void PROBUFF_NET_LEAVE_FAMIL::set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_LEAVE::set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_familid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_LEAVE_FAMIL.m_familid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_LEAVE.m_familid)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_LEAVE_FAMIL_RESPONSE
+// PROBUFF_NET_FAMIL_LEAVE_RESPONSE
 
 // int32 m_stat = 1;
-inline bool PROBUFF_NET_LEAVE_FAMIL_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_LEAVE_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_LEAVE_FAMIL_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_LEAVE_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_LEAVE_FAMIL_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FAMIL_LEAVE_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_LEAVE_FAMIL_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_LEAVE_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_LEAVE_FAMIL_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_LEAVE_FAMIL_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_LEAVE_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_LEAVE_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_LEAVE_FAMIL_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_LEAVE_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000001u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_LEAVE_FAMIL_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_LEAVE_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_LEAVE_FAMIL_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_LEAVE_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
@@ -17299,100 +17299,100 @@ PROBUFF_NET_FAMIL_LIST_RESPONSE::m_family() const {
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_CHANGE_FAMILNAME
+// PROBUFF_NET_FAMIL_CHANGENAME
 
 // int64 m_familid = 1;
-inline bool PROBUFF_NET_CHANGE_FAMILNAME::_internal_has_m_familid() const {
+inline bool PROBUFF_NET_FAMIL_CHANGENAME::_internal_has_m_familid() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_CHANGE_FAMILNAME::has_m_familid() const {
+inline bool PROBUFF_NET_FAMIL_CHANGENAME::has_m_familid() const {
   return _internal_has_m_familid();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::clear_m_familid() {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::clear_m_familid() {
   m_familid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000002u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_CHANGE_FAMILNAME::_internal_m_familid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_CHANGENAME::_internal_m_familid() const {
   return m_familid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_CHANGE_FAMILNAME::m_familid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_familid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_CHANGENAME::m_familid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_familid)
   return _internal_m_familid();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::_internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::_internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000002u;
   m_familid_ = value;
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_familid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_familid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_familid)
 }
 
 // string m_name = 2;
-inline bool PROBUFF_NET_CHANGE_FAMILNAME::_internal_has_m_name() const {
+inline bool PROBUFF_NET_FAMIL_CHANGENAME::_internal_has_m_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_CHANGE_FAMILNAME::has_m_name() const {
+inline bool PROBUFF_NET_FAMIL_CHANGENAME::has_m_name() const {
   return _internal_has_m_name();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::clear_m_name() {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::clear_m_name() {
   m_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _has_bits_[0] &= ~0x00000001u;
 }
-inline const std::string& PROBUFF_NET_CHANGE_FAMILNAME::m_name() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+inline const std::string& PROBUFF_NET_FAMIL_CHANGENAME::m_name() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
   return _internal_m_name();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::set_m_name(const std::string& value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(const std::string& value) {
   _internal_set_m_name(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
-inline std::string* PROBUFF_NET_CHANGE_FAMILNAME::mutable_m_name() {
-  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+inline std::string* PROBUFF_NET_FAMIL_CHANGENAME::mutable_m_name() {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
   return _internal_mutable_m_name();
 }
-inline const std::string& PROBUFF_NET_CHANGE_FAMILNAME::_internal_m_name() const {
+inline const std::string& PROBUFF_NET_FAMIL_CHANGENAME::_internal_m_name() const {
   return m_name_.Get();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::_internal_set_m_name(const std::string& value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::_internal_set_m_name(const std::string& value) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::set_m_name(std::string&& value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(std::string&& value) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+  // @@protoc_insertion_point(field_set_rvalue:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::set_m_name(const char* value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
               GetArena());
-  // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+  // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::set_m_name(const char* value,
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(const char* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+  // @@protoc_insertion_point(field_set_pointer:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
-inline std::string* PROBUFF_NET_CHANGE_FAMILNAME::_internal_mutable_m_name() {
+inline std::string* PROBUFF_NET_FAMIL_CHANGENAME::_internal_mutable_m_name() {
   _has_bits_[0] |= 0x00000001u;
   return m_name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline std::string* PROBUFF_NET_CHANGE_FAMILNAME::release_m_name() {
-  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+inline std::string* PROBUFF_NET_FAMIL_CHANGENAME::release_m_name() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
   if (!_internal_has_m_name()) {
     return nullptr;
   }
   _has_bits_[0] &= ~0x00000001u;
   return m_name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::set_allocated_m_name(std::string* m_name) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_allocated_m_name(std::string* m_name) {
   if (m_name != nullptr) {
     _has_bits_[0] |= 0x00000001u;
   } else {
@@ -17400,16 +17400,16 @@ inline void PROBUFF_NET_CHANGE_FAMILNAME::set_allocated_m_name(std::string* m_na
   }
   m_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), m_name,
       GetArena());
-  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
-inline std::string* PROBUFF_NET_CHANGE_FAMILNAME::unsafe_arena_release_m_name() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+inline std::string* PROBUFF_NET_FAMIL_CHANGENAME::unsafe_arena_release_m_name() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
   GOOGLE_DCHECK(GetArena() != nullptr);
   _has_bits_[0] &= ~0x00000001u;
   return m_name_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       GetArena());
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME::unsafe_arena_set_allocated_m_name(
+inline void PROBUFF_NET_FAMIL_CHANGENAME::unsafe_arena_set_allocated_m_name(
     std::string* m_name) {
   GOOGLE_DCHECK(GetArena() != nullptr);
   if (m_name != nullptr) {
@@ -17419,103 +17419,103 @@ inline void PROBUFF_NET_CHANGE_FAMILNAME::unsafe_arena_set_allocated_m_name(
   }
   m_name_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       m_name, GetArena());
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_CHANGE_FAMILNAME.m_name)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE
+// PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE
 
 // int32 m_stat = 1;
-inline bool PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000001u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_FAMILSIGN
+// PROBUFF_NET_FAMIL_SIGN
 
 // int64 m_familid = 1;
-inline bool PROBUFF_NET_FAMILSIGN::_internal_has_m_familid() const {
+inline bool PROBUFF_NET_FAMIL_SIGN::_internal_has_m_familid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_FAMILSIGN::has_m_familid() const {
+inline bool PROBUFF_NET_FAMIL_SIGN::has_m_familid() const {
   return _internal_has_m_familid();
 }
-inline void PROBUFF_NET_FAMILSIGN::clear_m_familid() {
+inline void PROBUFF_NET_FAMIL_SIGN::clear_m_familid() {
   m_familid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMILSIGN::_internal_m_familid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_SIGN::_internal_m_familid() const {
   return m_familid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMILSIGN::m_familid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMILSIGN.m_familid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FAMIL_SIGN::m_familid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_SIGN.m_familid)
   return _internal_m_familid();
 }
-inline void PROBUFF_NET_FAMILSIGN::_internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_SIGN::_internal_set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_familid_ = value;
 }
-inline void PROBUFF_NET_FAMILSIGN::set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FAMIL_SIGN::set_m_familid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_familid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMILSIGN.m_familid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_SIGN.m_familid)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_FAMILSIGN_RESPONSE
+// PROBUFF_NET_FAMIL_SIGN_RESPONSE
 
 // int32 m_stat = 1;
-inline bool PROBUFF_NET_FAMILSIGN_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_SIGN_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_FAMILSIGN_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FAMIL_SIGN_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_FAMILSIGN_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FAMIL_SIGN_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMILSIGN_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_SIGN_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMILSIGN_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMILSIGN_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FAMIL_SIGN_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FAMIL_SIGN_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_FAMILSIGN_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_SIGN_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000001u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_FAMILSIGN_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FAMIL_SIGN_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMILSIGN_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_SIGN_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
@@ -17903,334 +17903,334 @@ PROBUFF_NET_FRIEND_RESPONSE::m_applyfriends() const {
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_ADDFRIEND
+// PROBUFF_NET_FRIEND_ADD
 
 // int64 m_friedid = 1;
-inline bool PROBUFF_NET_ADDFRIEND::_internal_has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ADD::_internal_has_m_friedid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ADDFRIEND::has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ADD::has_m_friedid() const {
   return _internal_has_m_friedid();
 }
-inline void PROBUFF_NET_ADDFRIEND::clear_m_friedid() {
+inline void PROBUFF_NET_FRIEND_ADD::clear_m_friedid() {
   m_friedid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ADDFRIEND::_internal_m_friedid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ADD::_internal_m_friedid() const {
   return m_friedid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ADDFRIEND::m_friedid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ADDFRIEND.m_friedid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ADD::m_friedid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_ADD.m_friedid)
   return _internal_m_friedid();
 }
-inline void PROBUFF_NET_ADDFRIEND::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ADD::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_friedid_ = value;
 }
-inline void PROBUFF_NET_ADDFRIEND::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ADD::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_friedid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ADDFRIEND.m_friedid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_ADD.m_friedid)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_ADDFRIEND_RESPONSE
+// PROBUFF_NET_FRIEND_ADD_RESPONSE
 
 // int64 m_friedid = 1;
-inline bool PROBUFF_NET_ADDFRIEND_RESPONSE::_internal_has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ADD_RESPONSE::_internal_has_m_friedid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ADDFRIEND_RESPONSE::has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ADD_RESPONSE::has_m_friedid() const {
   return _internal_has_m_friedid();
 }
-inline void PROBUFF_NET_ADDFRIEND_RESPONSE::clear_m_friedid() {
+inline void PROBUFF_NET_FRIEND_ADD_RESPONSE::clear_m_friedid() {
   m_friedid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ADDFRIEND_RESPONSE::_internal_m_friedid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ADD_RESPONSE::_internal_m_friedid() const {
   return m_friedid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ADDFRIEND_RESPONSE::m_friedid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE.m_friedid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ADD_RESPONSE::m_friedid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE.m_friedid)
   return _internal_m_friedid();
 }
-inline void PROBUFF_NET_ADDFRIEND_RESPONSE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ADD_RESPONSE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_friedid_ = value;
 }
-inline void PROBUFF_NET_ADDFRIEND_RESPONSE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ADD_RESPONSE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_friedid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE.m_friedid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE.m_friedid)
 }
 
 // int32 m_stat = 2;
-inline bool PROBUFF_NET_ADDFRIEND_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FRIEND_ADD_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ADDFRIEND_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FRIEND_ADD_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_ADDFRIEND_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FRIEND_ADD_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_ADDFRIEND_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FRIEND_ADD_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_ADDFRIEND_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FRIEND_ADD_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_ADDFRIEND_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FRIEND_ADD_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000002u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_ADDFRIEND_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FRIEND_ADD_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ADDFRIEND_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_ADD_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_RATIFY_ADDFRIEND
+// PROBUFF_NET_FRIEND_RATIFY_ADD
 
 // int64 m_friedid = 1;
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND::_internal_has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD::_internal_has_m_friedid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND::has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD::has_m_friedid() const {
   return _internal_has_m_friedid();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND::clear_m_friedid() {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD::clear_m_friedid() {
   m_friedid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_RATIFY_ADDFRIEND::_internal_m_friedid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_RATIFY_ADD::_internal_m_friedid() const {
   return m_friedid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_RATIFY_ADDFRIEND::m_friedid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND.m_friedid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_RATIFY_ADD::m_friedid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD.m_friedid)
   return _internal_m_friedid();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_friedid_ = value;
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_friedid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND.m_friedid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD.m_friedid)
 }
 
 // bool m_ratify = 2;
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND::_internal_has_m_ratify() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD::_internal_has_m_ratify() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND::has_m_ratify() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD::has_m_ratify() const {
   return _internal_has_m_ratify();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND::clear_m_ratify() {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD::clear_m_ratify() {
   m_ratify_ = false;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND::_internal_m_ratify() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD::_internal_m_ratify() const {
   return m_ratify_;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND::m_ratify() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND.m_ratify)
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD::m_ratify() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD.m_ratify)
   return _internal_m_ratify();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND::_internal_set_m_ratify(bool value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD::_internal_set_m_ratify(bool value) {
   _has_bits_[0] |= 0x00000002u;
   m_ratify_ = value;
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND::set_m_ratify(bool value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD::set_m_ratify(bool value) {
   _internal_set_m_ratify(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND.m_ratify)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD.m_ratify)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE
+// PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE
 
 // int64 m_friedid = 1;
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_has_m_friedid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::has_m_friedid() const {
   return _internal_has_m_friedid();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::clear_m_friedid() {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::clear_m_friedid() {
   m_friedid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_m_friedid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_m_friedid() const {
   return m_friedid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::m_friedid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.m_friedid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::m_friedid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE.m_friedid)
   return _internal_m_friedid();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_friedid_ = value;
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_friedid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.m_friedid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE.m_friedid)
 }
 
 // bool m_ratify = 2;
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_has_m_ratify() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_has_m_ratify() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::has_m_ratify() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::has_m_ratify() const {
   return _internal_has_m_ratify();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::clear_m_ratify() {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::clear_m_ratify() {
   m_ratify_ = false;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_m_ratify() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_m_ratify() const {
   return m_ratify_;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::m_ratify() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.m_ratify)
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::m_ratify() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE.m_ratify)
   return _internal_m_ratify();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_set_m_ratify(bool value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_set_m_ratify(bool value) {
   _has_bits_[0] |= 0x00000002u;
   m_ratify_ = value;
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::set_m_ratify(bool value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::set_m_ratify(bool value) {
   _internal_set_m_ratify(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.m_ratify)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE.m_ratify)
 }
 
 // int32 m_stat = 3;
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000004u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000004u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_ERASEFRIEND
+// PROBUFF_NET_FRIEND_ERASE
 
 // int64 m_friedid = 1;
-inline bool PROBUFF_NET_ERASEFRIEND::_internal_has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ERASE::_internal_has_m_friedid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ERASEFRIEND::has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ERASE::has_m_friedid() const {
   return _internal_has_m_friedid();
 }
-inline void PROBUFF_NET_ERASEFRIEND::clear_m_friedid() {
+inline void PROBUFF_NET_FRIEND_ERASE::clear_m_friedid() {
   m_friedid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ERASEFRIEND::_internal_m_friedid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ERASE::_internal_m_friedid() const {
   return m_friedid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ERASEFRIEND::m_friedid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ERASEFRIEND.m_friedid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ERASE::m_friedid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_ERASE.m_friedid)
   return _internal_m_friedid();
 }
-inline void PROBUFF_NET_ERASEFRIEND::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ERASE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_friedid_ = value;
 }
-inline void PROBUFF_NET_ERASEFRIEND::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ERASE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_friedid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ERASEFRIEND.m_friedid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_ERASE.m_friedid)
 }
 
 // -------------------------------------------------------------------
 
-// PROBUFF_NET_ERASEFRIEND_RESPONSE
+// PROBUFF_NET_FRIEND_ERASE_RESPONSE
 
 // int64 m_friedid = 1;
-inline bool PROBUFF_NET_ERASEFRIEND_RESPONSE::_internal_has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ERASE_RESPONSE::_internal_has_m_friedid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ERASEFRIEND_RESPONSE::has_m_friedid() const {
+inline bool PROBUFF_NET_FRIEND_ERASE_RESPONSE::has_m_friedid() const {
   return _internal_has_m_friedid();
 }
-inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::clear_m_friedid() {
+inline void PROBUFF_NET_FRIEND_ERASE_RESPONSE::clear_m_friedid() {
   m_friedid_ = PROTOBUF_LONGLONG(0);
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ERASEFRIEND_RESPONSE::_internal_m_friedid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ERASE_RESPONSE::_internal_m_friedid() const {
   return m_friedid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_ERASEFRIEND_RESPONSE::m_friedid() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE.m_friedid)
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_FRIEND_ERASE_RESPONSE::m_friedid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE.m_friedid)
   return _internal_m_friedid();
 }
-inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ERASE_RESPONSE::_internal_set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _has_bits_[0] |= 0x00000001u;
   m_friedid_ = value;
 }
-inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void PROBUFF_NET_FRIEND_ERASE_RESPONSE::set_m_friedid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_m_friedid(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE.m_friedid)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE.m_friedid)
 }
 
 // int32 m_stat = 2;
-inline bool PROBUFF_NET_ERASEFRIEND_RESPONSE::_internal_has_m_stat() const {
+inline bool PROBUFF_NET_FRIEND_ERASE_RESPONSE::_internal_has_m_stat() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool PROBUFF_NET_ERASEFRIEND_RESPONSE::has_m_stat() const {
+inline bool PROBUFF_NET_FRIEND_ERASE_RESPONSE::has_m_stat() const {
   return _internal_has_m_stat();
 }
-inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::clear_m_stat() {
+inline void PROBUFF_NET_FRIEND_ERASE_RESPONSE::clear_m_stat() {
   m_stat_ = 0;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_ERASEFRIEND_RESPONSE::_internal_m_stat() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FRIEND_ERASE_RESPONSE::_internal_m_stat() const {
   return m_stat_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_ERASEFRIEND_RESPONSE::m_stat() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE.m_stat)
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_FRIEND_ERASE_RESPONSE::m_stat() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE.m_stat)
   return _internal_m_stat();
 }
-inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FRIEND_ERASE_RESPONSE::_internal_set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000002u;
   m_stat_ = value;
 }
-inline void PROBUFF_NET_ERASEFRIEND_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PROBUFF_NET_FRIEND_ERASE_RESPONSE::set_m_stat(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_stat(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ERASEFRIEND_RESPONSE.m_stat)
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FRIEND_ERASE_RESPONSE.m_stat)
 }
 
 // -------------------------------------------------------------------
