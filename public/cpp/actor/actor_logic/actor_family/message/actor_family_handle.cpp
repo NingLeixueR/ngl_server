@@ -71,15 +71,6 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata)
-	{
-		i64_actorid lroleid = adata.get_data()->identifier();
-		auto pro = std::make_shared<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>();
-		int32_t lstat = m_family.create_family(lroleid, adata.get_data()->data()->m_name());
-		pro->set_m_stat(lstat);
-		send_client(lroleid, pro);
-		return true;
-	}
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
@@ -91,17 +82,21 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata)
 	{
-		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
+		i64_actorid lroleid = adata.get_data()->identifier();
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>();
+		int32_t lstat = m_family.create_family(lroleid, adata.get_data()->data()->m_name());
+		pro->set_m_stat(lstat);
+		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
 
-		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>();
+		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>();
 		int32_t lstat = 0;
 		if (adata.get_data()->data()->m_apply())
 		{
@@ -114,6 +109,15 @@ namespace ngl
 
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
+		return true;
+	}
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
+	{
+		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
+		return true;
+	}
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
+	{
 		return true;
 	}
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)

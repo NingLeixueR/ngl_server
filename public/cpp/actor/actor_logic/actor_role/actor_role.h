@@ -153,7 +153,7 @@ namespace ngl
 		}
 
 		//# 转发"创建军团"前
-		bool forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata);
+		bool forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata);
 
 		//# 重载dataid来指定转发模块的dataid
 		template <typename T>

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-04-21 19:45:45】
+ // 创建时间【2025-04-24 16:07:32】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -67,10 +67,10 @@ namespace ngl
             null<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>,
             null<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>,
             null<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>,
-            null<pbnet::PROBUFF_NET_CREATE_FAMIL>,
-            null<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>,
-            null<pbnet::PROBUFF_NET_JOIN_FAMIL>,
-            null<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>,
+            null<pbnet::PROBUFF_NET_FAMIL_CREATE>,
+            null<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>,
+            null<pbnet::PROBUFF_NET_FAMIL_JOIN>,
+            null<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>,
             null<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>,
             null<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>,
             null<pbnet::PROBUFF_NET_CEDE_FAMIL>,

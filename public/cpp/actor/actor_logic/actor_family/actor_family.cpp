@@ -58,6 +58,10 @@ namespace ngl
 		// 定时器
 		actor::register_timer<actor_family>(&actor_family::timer_handle);
 
+	*************************************
+mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>,
+	*************************************
+
 		// 绑定自定义np_消息
 		register_handle_custom<actor_family>::func<
 			mforward<np_gm>
@@ -67,7 +71,7 @@ namespace ngl
 
 		// 绑定pb消息
 		register_handle_proto<actor_family>::func<
-			mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>
+			mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>
 			, mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>
 			, mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>
 			, mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>

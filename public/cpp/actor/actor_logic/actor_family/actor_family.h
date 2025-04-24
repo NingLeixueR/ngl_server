@@ -64,13 +64,14 @@ namespace ngl
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata);
 		// [请求]修改军团名称
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata);
-		// [请求]创建军团
-		bool handle(const message<mforward<pbnet::PROBUFF_NET_CREATE_FAMIL>>& adata);
 		// [请求]军团签到
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata);
+		// [请求]创建军团
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata);
+		// [请求]申请/取消加入军团
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata);
 		// [请求]获取军团列表
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata);
-		// [请求]申请/取消加入军团
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata);
 		// [请求]离开军团
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata);
