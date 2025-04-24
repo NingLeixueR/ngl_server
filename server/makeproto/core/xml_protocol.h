@@ -1340,18 +1340,23 @@ namespace ngl
             }
 
             if (actorname == "actor_robot")
-            {
+            {//g2c
                 std::string lcontent;
                 {
                     ngl::readfile lreadfile("../../public/cpp/actor/nprotocol_g2c.cpp");
                     lreadfile.readcurrent(lcontent);
                 }
-                size_t lpos = lcontent.find("register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF");
+
+                ngl::tools::replace("\r\n", "\n", lcontent, lcontent);
+                ngl::tools::replace("\r", "\n", lcontent, lcontent);
+
+                size_t lpos = lcontent.find("register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF,");
                 std::string lbeg(lcontent.begin(), lcontent.begin() + lpos);
                 for (; lcontent[lpos] != '\n'; ++lpos)
                 {
                     lbeg += lcontent[lpos];
                 }
+                lbeg += "\n";
                 std::string lend = R"(
 		>();
 	}
@@ -1379,6 +1384,88 @@ namespace ngl
                 lhfile.write(lcontent);
             }
 
+            if (actorname == "actor_role")
+            {//c2g
+                std::string lcontent;
+                {
+                    ngl::readfile lreadfile("../../public/cpp/actor/nprotocol_c2g.cpp");
+                    lreadfile.readcurrent(lcontent);
+                }
+                ngl::tools::replace("\r\n", "\n", lcontent, lcontent);
+                ngl::tools::replace("\r", "\n", lcontent, lcontent);
+
+                size_t lpos = lcontent.find("register_c2g<EPROTOCOL_TYPE_PROTOCOLBUFF");
+                std::string lbeg(lcontent.begin(), lcontent.begin() + lpos);
+                for (; lcontent[lpos] != '\n'; ++lpos)
+                {
+                    lbeg += lcontent[lpos];
+                }
+                lbeg += "\n";
+                std::string lend = R"(
+	}
+}// namespace ngl)";
+                // 整理
+                std::set<std::string> lpt;
+                std::map<std::string, std::set<std::string>> l2ci;
+                for (const auto& itme2 : item1.second.m_handle)
+                {
+                   
+                    // 转发 mforward<pbnet::XXX>
+                    auto& lmessage = itme2.first;
+                    if (lmessage.find("np_") != std::string::npos)
+                    {
+                        continue;
+                    }
+                    lpt.insert(lmessage);
+                }
+                for (const auto& item1 : lhactorfilemap)
+                {
+                    for (const auto& item2 : item1.second.m_handle)
+                    {
+                        if (item2.first.find("np_") != std::string::npos)
+                        {
+                            continue;
+                        }
+                        size_t lpos = item2.first.find("mforward<");
+                        std::string ltemp;
+                        if (lpos != std::string::npos)
+                        {
+                            for (int i = lpos + sizeof("mforward<")-1; item2.first[i] != '>'; ++i)
+                            {
+                                ltemp += item2.first[i];
+                            }
+                            l2ci[item1.first].insert(ltemp);
+                        }
+                    }                    
+                }
+
+                lcontent = lbeg;
+                // role需要处理的
+                for (const auto& item1 : lpt)
+                {
+                    lcontent += std::format("\t\t\t, {}\n", item1);
+                }
+                lcontent += std::format("\t\t>();\n");
+                // 二次转发
+                for (const auto& item1 : l2ci)
+                {
+                    lcontent += "\n";
+					std::string ltemp = item1.first;
+					ngl::tools::transform_toupper(ltemp);
+                    lcontent += std::format("\t\t// {} 模块二次转发\n", item1.first);
+                    lcontent += std::format("\t\tregister_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, {}\n", ltemp);
+                    for (const auto& item2 : item1.second)
+                    {
+                        lcontent += std::format("\t\t\t, {}\n", item2);
+                    }
+                    lcontent += std::format("\t\t>();\n");
+                }
+
+                lcontent += lend;
+                ngl::writefile lhfile("../../public/cpp/actor/nprotocol_c2g.cpp");
+                lhfile.write(lcontent);
+
+            }
             // 写入.h文件
             if (lstream.str().empty() == false)
             {
@@ -1397,105 +1484,6 @@ namespace ngl
                 lcppfile.write(lhactorfile.m_cppendnr);
             }
         }
-
-        ////for(const auto& item1 : lhactorfilemap)
-        ////{
-        ////    std::string actorname = item1.second.m_actorname;
-        ////    const hactorfile& lhactorfile = item1.second;
-        ////    std::map<std::string, std::map<std::string, std::string>> lmap = lmessagemap[actorname];
-
-        ////    std::stringstream lstream;
-        ////    std::stringstream lstreamcpp;
-        ////    for (const auto& item2 :lhactorfile.m_handle)
-        ////    {
-        ////        std::string lmessage = item2.first;
-
-        ////        vepro& ltttt = lmessageinfo[lmessage];
-        ////        for (const auto& item3 : lmessagemap[actorname])
-        ////        {
-        ////            auto lptemp = ngl::tools::findmap(item3.second, lmessage);
-        ////            if (lptemp != nullptr && lptemp->empty() == false)
-        ////            {
-        ////                lstream << std::format(R"(		{})", *lptemp) << std::endl;
-        ////                break;
-        ////            }
-        ////        }
-        ////        lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
-
-        ////        lmap.erase(item2.first);
-        ////    }
-
-        ////    for (const auto& item2 : item1.second)
-        ////    {
-        ////        std::string ltype = item2.first;
-        ////        for (const auto& message : item2.second)
-        ////        {
-        ////            std::string lmessage = message.first;
-        ////            vepro& ltttt = lmessageinfo[message.first];
-
-        ////            if (ltype == "C2G2")
-        ////            {
-        ////                if (ltttt.m_pbname.empty())
-        ////                {
-        ////                    lmessage = std::format("mforward<{}>", message.first);
-        ////                }
-        ////                else
-        ////                {
-        ////                    lmessage = std::format("mforward<{}::{}>", ltttt.m_pbname, message.first);
-        ////                }
-        ////            }
-        ////            else
-        ////            {
-        ////                if (ltttt.m_pbname.empty())
-        ////                {
-        ////                    lmessage = std::format("{}", message.first);
-        ////                }
-        ////                else
-        ////                {
-        ////                    lmessage = std::format("{}::{}", ltttt.m_pbname, message.first);
-        ////                }
-        ////            }
-        ////            //if(lhactorfile.m_handle.find(lmessage) == lhactorfile.m_handle.end())
-        ////            {
-        ////                std::cout << actorname << "#" << message.first << std::endl;
-        ////                if (message.second.empty() == false)
-        ////                {
-        ////                    lstream << std::format(R"(		{})", message.second) << std::endl;
-        ////                }
-        ////                lstream << std::format(R"(		bool handle(const message<{}>& adata);)", lmessage) << std::endl;
-        ////            }  
-
-        ////            //cpp
-        ////            if (lhactorfile.m_handle.find(lmessage) == lhactorfile.m_handle.end() && lmessage != "np_arg_null")
-        ////            {
-        ////                lstreamcpp << std::format("\tbool {}::handle(const message<{}>& adata)", actorname, message.first) << std::endl;
-        ////                lstreamcpp << "\t{)" << std::endl;
-        ////                lstreamcpp << message.second << std::endl;
-        ////            }
-        ////        }
-
-        ////        // 写入.h文件
-        ////        if (lstream.str().empty() == false)
-        ////        {
-        ////            std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/{0}.h", actorname);
-        ////            ngl::writefile lhfile(lactorhfile);
-        ////            lhfile.write(lhactorfile.m_begnr);
-        ////            lhfile.write(lstream.str());
-        ////            lhfile.write(lhactorfile.m_endnr);
-        ////        }
-        ////        // 写入.cpp文件
-        ////        if (lstreamcpp.str().empty() == false)
-        ////        {
-        ////            std::string lactorhfile = std::format("../../public/cpp/actor/actor_logic/{0}/message/{0}_handle.cpp", actorname);
-        ////            ngl::writefile lhfile(lactorhfile);
-        ////            lhfile.write(lhactorfile.m_begnr);
-        ////            lhfile.write(lstreamcpp.str());
-        ////            lhfile.write(lhactorfile.m_endnr);
-        ////        }
-        ////    }
-
-
-       //// }
     }
 };
 
