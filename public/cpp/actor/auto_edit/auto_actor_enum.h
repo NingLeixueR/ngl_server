@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-04-18 10:51:28
+// 创建时间 // 创建时间 25-04-24 17:09:09
 #pragma once
 
 #include "nactortype.h"
@@ -25,6 +25,8 @@ namespace ngl
 }//namespace ngl
 #include "actor_role.h"
 #include "actor_robot.h"
+#include "actor_log.h"
+#include "actor_example_guess_number.h"
 #include "actor_server.h"
 #include "actor_client.h"
 #include "actor_login.h"
@@ -33,7 +35,6 @@ namespace ngl
 #include "actor_gateway_g2c.h"
 #include "actor_create.h"
 #include "actor_manage_role.h"
-#include "actor_log.h"
 #include "actor_kcp.h"
 #include "actor_manage_robot.h"
 #include "actor_csvclient.h"
@@ -52,7 +53,6 @@ namespace ngl
 #include "actor_friends.h"
 #include "actor_example_match.h"
 #include "actor_example_manage.h"
-#include "actor_example_guess_number.h"
 namespace ngl
 {
 	void auto_actor_enum()
@@ -60,6 +60,8 @@ namespace ngl
 		_auto_actor(
 			dautoactor(actor_role, ACTOR_ROLE)
 			, dautoactor(actor_robot, ACTOR_ROBOT)
+			, dautoactor(actor_log, ACTOR_LOG)
+			, dautoactor(actor_example_guess_number, ACTOR_EXAMPLE_GUESS_NUMBER)
 			, dautoactor(actor_server, ACTOR_SERVER)
 			, dautoactor(actor_client, ACTOR_CLIENT)
 			, dautoactor(actor_login, ACTOR_LOGIN)
@@ -68,7 +70,6 @@ namespace ngl
 			, dautoactor(actor_gateway_g2c, ACTOR_GATEWAY_G2C)
 			, dautoactor(actor_create, ACTOR_CREATE)
 			, dautoactor(actor_manage_role, ACTOR_MANAGE_ROLE)
-			, dautoactor(actor_log, ACTOR_LOG)
 			, dautoactor(actor_kcp, ACTOR_KCP)
 			, dautoactor(actor_manage_robot, ACTOR_MANAGE_ROBOT)
 			, dautoactor(actor_csvclient, ACTOR_CSVCLIENT)
@@ -87,7 +88,6 @@ namespace ngl
 			, dautoactor(actor_friends, ACTOR_FRIENDS)
 			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
 			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
-			, dautoactor(actor_example_guess_number, ACTOR_EXAMPLE_GUESS_NUMBER)
 		);
 	}
 }//namespace ngl
