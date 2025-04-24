@@ -285,7 +285,7 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_role::forward_before(const pbnet::PROBUFF_NET_CREATE_FAMIL& adata)
+	bool actor_role::forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
 	{
 		if (ttab_specialid::m_createfamilconsume > m_info.gold())
 		{

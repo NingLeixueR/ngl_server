@@ -93,11 +93,6 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
@@ -120,6 +115,15 @@ namespace ngl
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata)
+	{
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)

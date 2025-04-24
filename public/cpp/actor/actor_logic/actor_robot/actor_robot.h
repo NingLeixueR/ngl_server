@@ -71,8 +71,6 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata);
 		// [回复]聊天
 		bool handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata);
-		// [回复]创建军团
-		bool handle(const message<pbnet::PROBUFF_NET_CREATE_FAMIL_RESPONSE>& adata);
 		// [回复]通知客户端充值发货
 		bool handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata);
 		// 进入视野
@@ -83,13 +81,16 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_ERROR>& adata);
 		// [回复]军团签到
 		bool handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata);
+		// [回复]创建军团
+		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>& adata);
+		// [回复]加入军团
+		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata);
 		// [回复]获取军团列表
 		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata);
 		// [回复]添加好友
 		bool handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata);
 		// [回复]服务器时间
 		bool handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata);
-		// [回复]加入军团
 		bool handle(const message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata);
 		// [回复]kcp-session
 		bool handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata);
