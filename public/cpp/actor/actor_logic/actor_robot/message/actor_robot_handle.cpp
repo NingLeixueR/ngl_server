@@ -43,27 +43,12 @@ namespace ngl
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ADDFRIEND_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>& adata)
 	{
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_UPDATE>& adata)
 	{
-		return true;
-	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CEDE_FAMIL_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
@@ -102,17 +87,17 @@ namespace ngl
 	{
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERASEFRIEND_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERROR>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>& adata)
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
@@ -124,9 +109,40 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata)
 	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE>& adata)
+	{
+		tools::print_protojson(*adata.get_data(), true);
+		return true;
+	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;
@@ -143,11 +159,6 @@ namespace ngl
 		log_error()->print("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
 		return true;
 	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_JOIN_FAMIL_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
 		const tab_servers* tab = ttab_servers::tab();
@@ -158,11 +169,6 @@ namespace ngl
 		if (lpworks == nullptr)
 			return false;
 		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
-	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
@@ -250,16 +256,6 @@ namespace ngl
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_ADDFRIEND_RESPONSE>& adata)
-	{
-		tools::print_protojson(*adata.get_data(), true);
-		return true;
-	}
-	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>& adata)
 	{
 		tools::print_protojson(*adata.get_data(), true);
 		return true;

@@ -53,31 +53,20 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CEDE_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid lcederoleid = adata.get_data()->data()->m_roleid();
 
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
 
-		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_CHANGE_FAMILNAME_RESPONSE>();
+		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>();
 		int32_t lstat = m_family.change_familyname(lroleid, familid, adata.get_data()->data()->m_name());
-		pro->set_m_stat(lstat);
-		send_client(lroleid, pro);
-		return true;
-	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMILSIGN>>& adata)
-	{
-		i64_actorid lroleid = adata.get_data()->identifier();
-		i64_actorid familid = adata.get_data()->data()->m_familid();
-
-		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_FAMILSIGN_RESPONSE>();
-		int32_t lstat = m_family.sign_family(lroleid, familid);
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
 		return true;
@@ -111,33 +100,40 @@ namespace ngl
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
-	{
-		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
-		return true;
-	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_JOIN_FAMIL>>& adata)
-	{
-		return true;
-	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_LEAVE_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LEAVE>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid familid = adata.get_data()->data()->m_familid();
 
-		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_LEAVE_FAMIL_RESPONSE>();
+		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>();
 		int32_t lstat = m_family.leave_family(lroleid, familid);
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
 		return true;
 	}
-	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>>& adata)
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_LIST>>& adata)
+	{
+		m_family.sync_family(adata.get_data()->identifier(), adata.get_data()->data()->m_familid());
+		return true;
+	}
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid ljoinroleid = adata.get_data()->data()->m_roleid();
 
-		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL_RESPONSE>();
+		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>();
 		int32_t lstat = m_family.ratify_join_family(lroleid, ljoinroleid, adata.get_data()->data()->m_ratify());
+		pro->set_m_stat(lstat);
+		send_client(lroleid, pro);
+		return true;
+	}
+	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>>& adata)
+	{
+		i64_actorid lroleid = adata.get_data()->identifier();
+		i64_actorid familid = adata.get_data()->data()->m_familid();
+
+		auto pro = std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>();
+		int32_t lstat = m_family.sign_family(lroleid, familid);
 		pro->set_m_stat(lstat);
 		send_client(lroleid, pro);
 		return true;

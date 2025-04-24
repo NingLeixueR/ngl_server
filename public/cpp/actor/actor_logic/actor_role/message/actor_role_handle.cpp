@@ -278,7 +278,7 @@ namespace ngl
 			);
 			handle_cmd::push("/ratify_family", []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_RATIFY_JOIN_FAMIL>();
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>();
 					int64_t lroleid = 0;
 					int32_t lratify = 0;
 					if (tools::splite(aparm, "*", lroleid, lratify) == false)
@@ -293,7 +293,7 @@ namespace ngl
 			);
 			handle_cmd::push("/cede_family", []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_CEDE_FAMIL>();
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_CEDE>();
 					int64_t lroleid = 0;
 					if (tools::splite(aparm, "*", lroleid) == false)
 					{
@@ -306,7 +306,7 @@ namespace ngl
 			);
 			handle_cmd::push("/leave_family", []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_LEAVE_FAMIL>();
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LEAVE>();
 					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
@@ -314,7 +314,7 @@ namespace ngl
 			);
 			handle_cmd::push("/change_familyname", []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_CHANGE_FAMILNAME>();
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>();
 					int64_t lfamilylid = 0;
 					std::string lfamilylname;
 					if (tools::splite(aparm, "*", lfamilylid, lfamilylname) == false)
@@ -329,7 +329,7 @@ namespace ngl
 			);
 			handle_cmd::push("/sign_family", []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
-					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMILSIGN>();
+					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_SIGN>();
 					int64_t lfamilylid = 0;
 					if (tools::splite(aparm, "*", lfamilylid) == false)
 					{
