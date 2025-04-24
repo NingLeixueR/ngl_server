@@ -9,7 +9,8 @@ namespace ngl
 	// # 会注册gateway的转发与client的处理
 	void nforward::g2c()
 	{
-		register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF,			pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB,			pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB,
+		register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF,
+			pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB,
 			pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR,
 			pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO,
 			pbexample::PROBUFF_EXAMPLE_PLAY_CREATE,
