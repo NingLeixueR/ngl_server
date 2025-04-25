@@ -4,6 +4,7 @@
 #include "time_wheel.h"
 #include "nlog.h"
 
+#include <algorithm>
 #include <array>
 #include <list>
 
@@ -113,22 +114,21 @@ namespace ngl
 
 		char* malloc_private(int32_t abytes)
 		{
-			for (int32_t i = 0; i < Count; ++i)
+			auto itor = std::lower_bound(m_bytes.begin(), m_bytes.end(), abytes);
+			if (itor != m_bytes.end())
 			{
-				if (abytes <= m_bytes[i])
+				int lpos = itor - m_bytes.begin();
 				{
+					monopoly_shared_lock(m_mutex);
+					if (m_pool[lpos].empty() == false)
 					{
-						monopoly_shared_lock(m_mutex);
-						if (m_pool[i].empty() == false)
-						{
-							char* ret = nullptr;
-							ret = *m_pool[i].begin();
-							m_pool[i].pop_front();
-							return ret;
-						}
+						char* ret = nullptr;
+						ret = *m_pool[lpos].begin();
+						m_pool[lpos].pop_front();
+						return ret;
 					}
-					return  nmalloc(i);
 				}
+				return  nmalloc(i);
 			}
 			return nmalloc(-1, abytes);
 		}
