@@ -18,8 +18,6 @@ namespace ngl
 		return;
 	}
 
-	pack::~pack() {}
-
 	void pack::set(bpool& apool) 
 	{ 
 		m_bpool = &apool; 
@@ -89,13 +87,14 @@ namespace ngl
 		pack_head::head_set_actor((int32_t*)m_buff, aactor, arequestactorid);
 	}
 
+	pack::~pack()
+	{
+		free();
+	}
+
 	std::shared_ptr<pack> pack::make_pack(bpool* apool, int32_t alen)
 	{
-		std::shared_ptr<pack> lpack(new pack(), [](pack* apack)
-			{
-				apack->free();
-				delete apack;
-			});
+		std::shared_ptr<pack> lpack = std::make_shared<pack>();
 		lpack->set(*apool);
 		if (alen > 0)
 		{
