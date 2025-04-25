@@ -285,9 +285,7 @@ namespace ngl
 				return tools::lexical_cast<std::string>(_id);
 			});
 
-		auto lstream = log_error();
-		std::string lparmstr = std::format("#已完成的任务[{}]##正在进行的任务[{}]#", lfinishtask, lruntask);
-		lstream->print(lparmstr);
+		log_error()->print("#已完成的任务[{}]#正在进行的任务[{}]#", lfinishtask, lruntask);
 
 		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务

@@ -17,9 +17,7 @@ namespace ngl
 		lvalue.set_rattr(EnumAttribute::E_Hp, avalues / 100);
 		lvalue.set_rattr(EnumAttribute::E_Speed, avalues / 100);
 
-		for (EnumModule j = EnumModule::E_ModuleNull;
-			j != amodule;
-			j = (EnumModule)(j+1))
+		for (EnumModule j = EnumModule::E_ModuleNull;j != amodule;j = (EnumModule)(j+1))
 		{
 			if (j == EnumModule::E_ModuleNull)
 			{
@@ -38,8 +36,7 @@ namespace ngl
 		attribute lattr;
 
 		// ## E_ModuleBuff
-		for (EnumModule i = EnumModule::E_ModuleRoot;
-			i < EnumModule::E_ModuleCount; i = (EnumModule)(i+1))
+		for (EnumModule i = EnumModule::E_ModuleRoot;i < EnumModule::E_ModuleCount; i = (EnumModule)(i+1))
 		{
 			attribute_value lvalue = init_attribute_value(i, 10);
 			lattr.init_data(i, lvalue);

@@ -18,12 +18,12 @@ namespace ngl
 
 	void roleinfo::initdata()
 	{
-		auto lstream = log_error();
-		(*lstream) << "#[roleinfo]	#[load finish]" << std::endl;
-		(*lstream) << "#[id]		#["<< actorbase()->id_guid() <<"]" << std::endl;
-		(*lstream) << "#[name]		#[" << name() << "]" << std::endl;
-		(*lstream) << "#[lv]		#[" << lv() << "]" << std::endl;
-		(*lstream).print("");
+		log_error()->print(R"(
+#[roleinfo]	#[load finish]
+#[id]		#[{}]
+#[name]		#[{}]
+#[lv]		#[{}]
+)", actorbase()->id_guid(), name(), lv());
 	}
 
 	const i64_actorid roleinfo::m_id()

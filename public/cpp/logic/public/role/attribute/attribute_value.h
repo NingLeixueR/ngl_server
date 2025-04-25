@@ -13,7 +13,7 @@
 
 namespace ngl
 {
-	class enum_attr_str
+	class enum_attr_name
 	{
 		static std::array<std::string, E_Count> m_arr;
 	public:
@@ -26,7 +26,7 @@ namespace ngl
 			m_arr[E_Speed]		= "ËÙ¶È";
 		}
 
-		static const char* str(EnumAttribute atype)
+		static const char* name(EnumAttribute atype)
 		{
 			return m_arr[atype].c_str();
 		}
@@ -115,7 +115,7 @@ namespace ngl
 			(*lstream) << "##############" << std::endl;
 			for (const auto& [key, values] : m_fight)
 			{
-				(*lstream) << std::format("[{}]:[{}]", enum_attr_str::str(key), values) << std::endl;
+				(*lstream) << std::format("[{}]:[{}]", enum_attr_name::name(key), values) << std::endl;
 			}
 			(*lstream) << "fight:" << m_fightscore << std::endl;
 			(*lstream) << "##############" << std::endl;
