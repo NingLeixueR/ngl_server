@@ -8,7 +8,6 @@ namespace ngl
 {
 	void drop::init()
 	{
-		std::srand(std::time(nullptr));
 	}
 
 	bool drop::weight(int aid, std::map<int, int>& amap)
@@ -89,14 +88,7 @@ namespace ngl
 
 	void print_weight(const std::map<int, int>& amap)
 	{
-		auto lstream = log_error();
-		(*lstream) << "weight[";
-		for (const auto& [key, value] : amap)
-		{
-			(*lstream) << key << ":" << value << ",";
-		}
-		(*lstream) << "]" << std::endl;
-		(*lstream).print("");
+		log_error()->print("drop:weight:{}", amap);
 	}
 
 	bool drop::droplist(int aid, int acount, std::map<int, int>& amap)

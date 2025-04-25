@@ -14,9 +14,14 @@ namespace ngl
 		}
 		if (consume::use(arole, tab->m_consume, 1) == false)
 		{
+			log_error()->print("synthesis::use id:{} role:{} consume::use faile {}", aid, arole->id_guid(), tab->m_consume);
 			return false;
 		}
-		drop::use(arole, tab->m_generate, 1);
+		if (drop::use(arole, tab->m_generate, 1) == false)
+		{
+			log_error()->print("synthesis::use id:{} role:{} drop::use faile {}", aid, arole->id_guid(), tab->m_generate);
+			return false;
+		}
 		return true;
 	}
 }// namespace ngl
