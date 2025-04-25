@@ -44,10 +44,10 @@ namespace ngl
 	extern std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
 
 	template <typename T>
-	void tools::print_protojson(const T& adata, bool aislog/* = false*/)
+	void tools::print_json2proto(const T& adata, bool aislog/* = false*/)
 	{
 		std::string json;
-		if (tools::protojson(adata, json))
+		if (tools::proto2json(adata, json))
 		{
 			const google::protobuf::Descriptor* descriptor = adata.GetDescriptor();
 			if (descriptor != nullptr)

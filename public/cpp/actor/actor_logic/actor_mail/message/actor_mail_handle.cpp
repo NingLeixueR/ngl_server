@@ -24,7 +24,7 @@ namespace ngl
 					{
 						return;
 					}
-					serialize::proto_json(*ldb, pro.m_data);
+					tools::proto2json(*ldb, pro.m_data);
 					pro.m_istoutf8 = false;
 				}
 			);

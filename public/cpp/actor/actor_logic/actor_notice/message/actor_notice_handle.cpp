@@ -29,7 +29,7 @@ namespace ngl
 					for (const auto& [_guid, _data] : lmapdb)
 					{
 						pro.m_data.resize(pro.m_data.size() + 1);
-						serialize::proto_json(_data.getconst(), *pro.m_data.rbegin());
+						tools::proto2json(_data.getconst(), *pro.m_data.rbegin());
 					}
 					pro.m_istoutf8 = false;
 				}

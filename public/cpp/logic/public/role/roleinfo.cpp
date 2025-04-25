@@ -11,7 +11,7 @@ namespace ngl
 		pro->m_data.m_data->insert(std::make_pair(actor()->id_guid(), get_constbrief()));
 	
 		// ²âÊÔ´úÂë
-		tools::print_protojson(get_constbrief());
+		tools::print_json2proto(get_constbrief());
 
 		actor::static_send_actor(actor_brief::actorid(), nguid::make(), pro);
 	}
