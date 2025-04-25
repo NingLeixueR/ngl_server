@@ -109,7 +109,6 @@ namespace ngl
 			linfo.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF;
 			linfo.m_protocol = lprotocol;
 			m_protocol[linfo.m_protocol] = &linfo;
-
 			return true;
 		}
 
