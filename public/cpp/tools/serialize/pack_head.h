@@ -23,19 +23,23 @@ namespace ngl
 		void					set_mask();
 		EPH_HEAD_VAL			check_mask()const;
 
-		// # 给包头设置或者获取时间
+		// # 给包头设置/获取时间
 		static void		head_set_time(int32_t* abuff);
 		static i32_time head_get_time(const int32_t* abuff);
+
+		// # 设置时间戳
 		void			set_time();
+
+		// # 获取时间戳
 		i32_time		get_time()const;
 
 		// # 设置actor 
 		// # aactor:发送给哪个actor /* aenum == ACTOR_NONE 此值无效 */
 		// # arequestactorid:哪个actor发送的
 		static void head_set_actor(int32_t* abuff, i64_actorid aactor, i64_actorid arequestactorid);
+		static void head_set_actor(int32_t* abuff, i64_actorid aactor);
 		void set_actor(i64_actorid aactor, i64_actorid arequestactorid);
 		void set_requestactor(i64_actorid arequestactorid);
-		static void set_actor(int32_t* abuff, i64_actorid aactor);
 
 		// # 获取要发送给哪个actor
 		i64_actorid		get_actor()const;

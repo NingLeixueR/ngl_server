@@ -52,7 +52,7 @@ namespace ngl
 		for (const auto& item : m_account.data())
 		{
 			const pbdb::db_account& laccount = item.second.getconst();
-			tools::print_protojson(laccount);
+			tools::print_json2proto(laccount);
 		}
 	}
 

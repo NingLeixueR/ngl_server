@@ -108,16 +108,6 @@ namespace ngl
 			return basetype((void*)&adata, sizeof(T));
 		}
 
-		template <typename T>
-		static bool proto_json(const T& adata, std::string& ajson)
-		{
-			google::protobuf::util::JsonPrintOptions options;
-			options.add_whitespace = false;
-			options.always_print_primitive_fields = false;
-			options.preserve_proto_field_names = false;
-			return google::protobuf::util::MessageToJsonString(adata, &ajson, options).ok();
-		}
-
 		template <typename T, bool IS_FORWARD>
 		inline bool push(const protobuf_data<T, IS_FORWARD>& adata)
 		{
@@ -145,7 +135,7 @@ namespace ngl
 			else
 			{
 				std::string json;
-				if (proto_json(*adata.m_data, json))
+				if (tools::proto2json(*adata.m_data, json))
 				{
 					int32_t len = (int32_t)json.size() + 1;
 					memcpy(&buff()[byte()], json.c_str(), len);
@@ -744,7 +734,7 @@ namespace ngl
 						return false;
 					}
 					std::string json;
-					if (tools::protojson(ltemp, json) == false)
+					if (tools::proto2json(ltemp, json) == false)
 					{
 						log_error()->print("tools::protojson<{}> fail", tools::type_name<T>());
 						return false;

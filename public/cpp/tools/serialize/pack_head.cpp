@@ -22,18 +22,18 @@ namespace ngl
 		*(i64_actorid*)(&abuff[EPH::EPH_REQUEST_ACTOR_TYPEAREA]) = arequestactorid;
 	}
 
+	void pack_head::head_set_actor(int32_t* abuff, i64_actorid aactor)
+	{
+		serialize lserialize((char*)&abuff[EPH::EPH_ACTOR_TYPEAREA], sizeof(i64_actorid));
+		lserialize.push(((int32_t*)(&aactor))[0], ((int32_t*)(&aactor))[1]);
+	}
+
 	void pack_head::set_actor(
 		i64_actorid aactor, /* aenum == ACTOR_NONE 此值无效 */
 		i64_actorid arequestactorid
 	)
 	{
 		head_set_actor(m_data, aactor, arequestactorid);
-	}
-
-	void pack_head::set_actor(int32_t* abuff, i64_actorid aactor)
-	{
-		serialize lserialize((char*)&abuff[EPH::EPH_ACTOR_TYPEAREA], sizeof(i64_actorid));
-		lserialize.push(((int32_t*)(&aactor))[0], ((int32_t*)(&aactor))[1]);
 	}
 
 	void pack_head::set_requestactor(i64_actorid arequestactor)
