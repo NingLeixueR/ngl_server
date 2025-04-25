@@ -128,7 +128,7 @@ namespace ngl
 						return ret;
 					}
 				}
-				return  nmalloc(i);
+				return  nmalloc(lpos);
 			}
 			return nmalloc(-1, abytes);
 		}
