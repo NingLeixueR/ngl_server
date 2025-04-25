@@ -27,21 +27,27 @@ namespace ngl
 
 		void sync_actor_brief();
 
+		// # 等级
 		int32_t lv();
 		void change_lv(int avalues);
 
+		// # vip
 		int32_t vip();
 		void change_vip(int avalues);
 
+		// # 名字
 		const char* name();
 		void rename(const char* aname);
 
+		// # 金币
 		int32_t gold();
 		void change_gold(int avalues);
 
+		// # 银币
 		int32_t silver();
 		void change_silver(int avalues);
 
+		// # 禁言
 		int32_t notalkutc();
 		void change_notalkutc(int avalues);
 		bool bantalk();

@@ -13,7 +13,7 @@ namespace ngl
 	//  std::string lremakes = local_get_remakes(role); //lremakes == "test_1"
 	// {
 	//		lremakes = local_get_remakes(role); //lremakes == "test_1"
-	//		add_remakes(lremakes, "test_2");
+	//		local_remakes(lremakes, "test_2");
 	//		role->addite();
 	//		lremakes = local_get_remakes(role); //lremakes == "test_2"
 	// }

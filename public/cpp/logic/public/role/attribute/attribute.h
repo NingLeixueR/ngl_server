@@ -103,26 +103,26 @@ namespace ngl
 			m_sync = async;
 		}
 
-		// #### 初始化数据 将模块属性输入
+		// # 初始化数据 将模块属性输入
 		void init_data(EnumModule aenum, attribute_value& avalue)
 		{
 			m_moduledata[aenum] = avalue;
 			m_moduledata[aenum].m_module = aenum;
 		}
 
-		// #### 计算输入的模块属性 生成最终属性与战力
+		// # 计算输入的模块属性 生成最终属性与战力
 		void init()
 		{
-			for (EnumModule i = E_ModuleRoot;
-				i < E_ModuleCount;
-				i = (EnumModule)(i + 1))
+			for (EnumModule i = E_ModuleRoot;i < E_ModuleCount;i = (EnumModule)(i + 1))
 			{
 				add_module(i);
 			}
 			for (std::pair<const EnumModule, attribute_value>& lpair : m_moduledata)
 			{
 				if (lpair.first == E_ModuleRoot)
+				{
 					continue;
+				}
 				lpair.second.update();
 				ttab_attribute::add(root().m_attr, lpair.second.m_fight);
 			}

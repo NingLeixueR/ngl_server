@@ -16,12 +16,10 @@ namespace ngl
 		rolekv() = default;
 		~rolekv() = default;
 
-		//## 可以缓存，防止多次解析vales
+		// # 可以缓存，防止多次解析vales
 		virtual void initdata()
 		{
-			auto lstream = log_error();
-			(*lstream) << std::format("[db_rolekeyvalue load finish] id{}", actorbase()->id_guid()) << std::endl;
-			(*lstream).print("");
+			log_error()->print("[db_rolekeyvalue load finish] id:{}", actorbase()->id_guid());
 		}
 
 		const pbdb::db_rolekeyvalue& get_constkv()
@@ -60,20 +58,20 @@ namespace ngl
 		}
 	public:
 		bool value(const char* akey, int8_t& adata);
-
 		bool value(const char* akey, uint8_t& adata);
-
 		bool value(const char* akey, int32_t& adata);
-
 		bool value(const char* akey, uint32_t& adata);
-
 		bool value(const char* akey, int64_t& adata);
-
 		bool value(const char* akey, uint64_t& adata);
-
 		bool value(const char* akey, float& adata);
-
 		bool value(const char* akey, double& adata);
+
+		template <typename T>
+		void set_value(const char* akey, T& adata)
+		{
+			pbdb::db_rolekeyvalue& ltemp = get_kv();
+			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
+		}
 
 		template <typename ...ARG>
 		bool json_value(const char* akey, ARG&... arg)
@@ -85,13 +83,6 @@ namespace ngl
 			}
 			json_read ljread(ltemp.c_str());
 			return ljread.read(arg...);
-		}
-
-		template <typename T>
-		void set_value(const char* akey, T& adata)
-		{
-			pbdb::db_rolekeyvalue& ltemp = get_kv();
-			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
 		}
 
 		template <typename ...ARG>

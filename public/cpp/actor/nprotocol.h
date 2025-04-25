@@ -412,15 +412,15 @@ namespace ngl
 	private:
 		void set_source()
 		{
-			std::string_view str = m_source.file_name();
-			auto pos = FindSrcPos(str);
+			std::string_view name = m_source.file_name();
+			auto pos = FindSrcPos(name);
 			if (pos != std::string_view::npos)
 			{
-				m_src = str.substr(pos + 1);
+				m_src = name.substr(pos + 1);
 			}
 			else
 			{
-				m_src = str;
+				m_src = name;
 			}
 			m_src = std::format("{:^20}:{:^5}", m_src, m_source.line());
 		}

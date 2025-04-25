@@ -2,5 +2,5 @@
 
 namespace ngl
 {
-	std::array<std::string, E_Count> enum_attr_str::m_arr;
+	std::array<std::string, E_Count> enum_attr_name::m_arr;
 }// namespace ngl
