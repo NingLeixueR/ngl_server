@@ -109,7 +109,6 @@ namespace ngl
 			register_actor<TYPE, TDerived>(aisload, afun);
 			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
-
 	private:
 		// # ×¢²áactor³ÉÔ±handleº¯Êý
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
