@@ -82,7 +82,7 @@ namespace ngl
 		struct impl_actor_base;
 		struct impl_group;
 		impl<impl_actor_base>	m_impl_actor_base;
-		ngroup<i64_actorid>		m_group;
+		ngroup					m_group;
 
 		explicit actor_base(const actorparmbase& aparm);
 	public:
@@ -123,71 +123,79 @@ namespace ngl
 		//# 初始化数据
 		//# 一般actor对象会在其重载虚函数中
 		//# 让dbclient与actor对象进行绑定
-		virtual void		init() {}
+		virtual void init() 
+		{
+		}
 
 		//# 获取actor状态
-		virtual actor_stat	get_activity_stat()						= 0;
+		virtual actor_stat get_activity_stat() = 0;
 
 		//# 设置actor状态
-		virtual void		set_activity_stat(actor_stat astat)		= 0;
+		virtual void set_activity_stat(actor_stat astat) = 0;
 
 		//# 检查任务列表是否为空
-		virtual bool		list_empty()							= 0;
+		virtual bool list_empty() = 0;
 
 		//# 进行任务
-		virtual void		actor_handle(i32_threadid athreadid)	= 0;
+		virtual void actor_handle(i32_threadid athreadid) = 0;
 
 		//# 添加任务
-		virtual void		push(handle_pram& apram)				= 0;
+		virtual void push(handle_pram& apram) = 0;
 
 		//# 执行handle之后调用
-		virtual void		handle_after(handle_pram&) {}
+		virtual void handle_after(handle_pram&) 
+		{
+		}
 
 		//# 派生actor重载此函数 会在数据加载完成后调用
-		virtual void		loaddb_finish(bool adbishave) {}
+		virtual void loaddb_finish(bool adbishave) 
+		{
+		}
 
 		//# 删除actor时候会被调用
-		virtual void		release() = 0;
+		virtual void release() = 0;
 
 		//# 移除actor前一刻调用
-		virtual void		erase_actor_before() {}
+		virtual void erase_actor_before() 
+		{
+		}
 #pragma endregion 
 
 		//# 保存dbclient
-		virtual void	save();
+		virtual void save();
 
 		//# 是否为单例
-		bool			is_single();
+		bool is_single();
 
 		//# 获取actor guid
-		nguid&			guid();
+		nguid& guid();
 
 		//# 获取actor guid i64_actorid
-		i64_actorid		id_guid();
+		i64_actorid id_guid();
 
 		//# 获取actor guid的数据id
 		i32_actordataid id();
 
 		//# 获取actor guid的区服id
-		i16_area		area();
+		i16_area area();
 
 		//# 获取actor guid的actor type
-		ENUM_ACTOR		type();
+		ENUM_ACTOR type();
 
 		//# 移除actor自身
-		virtual void	erase_actor_byid();
+		virtual void erase_actor_byid();
 
 		//# 移除指定actor
-		static void		erase_actor_byid(const nguid& aguid);
+		static void erase_actor_byid(const nguid& aguid);
 
 		//# 向指定actor添加任务
-		static void		push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
+		static void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
 
 		//# 给actor自身添加任务
-		void			push_task_id(handle_pram& apram, bool abool);
+		void push_task_id(handle_pram& apram, bool abool);
 
 		//# 给指定类型的actor添加任务
-		void			push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false)const;
+		void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false)const;
 
 #pragma region net
 		//# 生成包
@@ -456,7 +464,7 @@ namespace ngl
 
 #pragma region group
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
-		int create_group();
+		int create_group(ENUM_ACTOR atype = ACTOR_NONE);
 		
 		//# 移除一个分组
 		void remove_group(int agroupid);

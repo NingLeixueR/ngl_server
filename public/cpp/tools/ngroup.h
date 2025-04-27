@@ -7,64 +7,73 @@
 
 namespace ngl
 {
-	template <typename TMEMBER>
 	class ngroup
 	{
-		struct ginfo
+		struct info
 		{
-			std::set<TMEMBER>	m_actorlist;
+			ENUM_ACTOR m_type;
+			std::set<i64_actorid> m_actorlist;
 		};
-		std::map<int, ginfo>		m_group;
-		int							m_currentoffset;
+		std::map<int, info>				m_group;
+		int								m_currentoffset;
 	public:
-		ngroup() :
+		inline ngroup() :
 			m_currentoffset(0)
 		{}
 
 		// # 创建一个分组
-		inline int create_group()
+		inline int create(ENUM_ACTOR atype = ACTOR_NONE)
 		{
-			ginfo& linfo = m_group[++m_currentoffset];
+			auto& linfo = m_group[++m_currentoffset];
 			linfo.m_actorlist.clear();
+			linfo.m_type = atype;
 			return m_currentoffset;
 		}
 
 		// # 移除一个分组
-		inline void remove_group(int agroupid)
+		inline void remove(int agroupid)
 		{
 			m_group.erase(agroupid);
 		}
 
-		inline bool add_group_member(int agroupid, const TMEMBER& amember)
+		inline bool add_member(int agroupid, i64_actorid amember)
 		{
-			ginfo* lginfo = tools::findmap(m_group, agroupid);
-			if (lginfo == nullptr)
+			info* linfo = tools::findmap(m_group, agroupid);
+			if (linfo == nullptr)
 			{
 				log_error()->print("add_group_member not find groupid[{}]", agroupid);
 				return false;
 			}
-			lginfo->m_actorlist.insert(amember);
+			if (linfo->m_type != ACTOR_NONE)
+			{
+				amember = nguid::make_type(amember, linfo->m_type);
+			}
+			linfo->m_actorlist.insert(amember);
 			return true;
 		}
 
-		inline void remove_group_member(int agroupid, const TMEMBER& amember)
+		inline void remove_member(int agroupid, i64_actorid amember)
 		{
-			ginfo* lginfo = tools::findmap(m_group, agroupid);
-			if (lginfo == nullptr)
+			info* linfo = tools::findmap(m_group, agroupid);
+			if (linfo == nullptr)
 			{
 				return;
 			}
-			lginfo->m_actorlist.erase(amember);
+			if (linfo->m_type != ACTOR_NONE)
+			{
+				amember = nguid::make_type(amember, linfo->m_type);
+			}
+			linfo->m_actorlist.erase(amember);
 		}
 
 		inline const std::set<i64_actorid>* get_group(int agroupid)
 		{
-			ginfo* lginfo = tools::findmap(m_group, agroupid);
-			if (lginfo == nullptr)
+			info* linfo = tools::findmap(m_group, agroupid);
+			if (linfo == nullptr)
 			{
 				return nullptr;
 			}
-			return &lginfo->m_actorlist;
+			return &linfo->m_actorlist;
 		}
 	};
 }//namespace ngl
