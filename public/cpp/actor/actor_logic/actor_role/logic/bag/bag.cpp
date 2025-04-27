@@ -91,7 +91,6 @@ namespace ngl
 		{
 			return false;
 		}
-		int lid = get_constbag().m_maxid();
 		for (auto& item : lvec)
 		{
 			if (tab->m_isstack)
@@ -104,8 +103,6 @@ namespace ngl
 					{
 						continue;
 					}
-					lpitem->set_m_id(++lid);
-					get_bag().set_m_maxid(lid);
 					m_stackitems.insert({ item.m_tid(), lpitem });
 				}
 				else
