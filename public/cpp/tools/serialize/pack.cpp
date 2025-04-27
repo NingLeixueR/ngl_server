@@ -89,7 +89,11 @@ namespace ngl
 
 	pack::~pack()
 	{
-		free();
+		Try
+		{
+			free();
+
+		}Catch;
 	}
 
 	std::shared_ptr<pack> pack::make_pack(bpool* apool, int32_t alen)
