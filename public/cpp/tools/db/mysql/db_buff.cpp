@@ -21,28 +21,26 @@ namespace ngl
 		return false;
 	}
 	
-	bool db_buff::malloc(ptr& aptr, int32_t apos)
+	void db_buff::malloc(ptr& aptr, int32_t apos)
 	{
-		if (m_buffcount <= apos)
-		{
-			return false;
-		}
-		aptr.free();
 		int32_t llen = m_buffsize * (apos + 1);
-		for (auto itor = m_bufflist.begin(); itor != m_bufflist.end(); ++itor)
+		if (m_buffcount > apos)
 		{
-			if (itor->second >= llen)
+			aptr.free();
+			for (auto itor = m_bufflist.begin(); itor != m_bufflist.end(); ++itor)
 			{
-				aptr.m_buff = itor->first;
-				aptr.m_bufflen = itor->second;
-				m_bufflist.pop_front();
-				return true;
+				if (itor->second >= llen)
+				{
+					aptr.m_buff = itor->first;
+					aptr.m_bufflen = itor->second;
+					m_bufflist.pop_front();
+					return;
+				}
 			}
 		}
-
 		aptr.m_buff = new char[llen];
 		aptr.m_bufflen = llen;
-		return true;
+		return;
 	}
 
 	void db_buff::free(ptr& aptr)

@@ -84,7 +84,7 @@ namespace ngl
 		bool malloc_function(ptr& aptr, const std::function<bool(ptr&)>& afun);
 
 	private:
-		bool malloc(ptr& aptr, int32_t apos);
+		void malloc(ptr& aptr, int32_t apos);
 		
 		void free(ptr& aptr);
 		
