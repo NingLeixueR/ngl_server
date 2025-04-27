@@ -511,13 +511,13 @@ namespace ngl
 		
 #pragma region broadcast
 		//# 设置定时任务参数
-		int32_t		set_timer(const np_timerparm& aparm);
+		int32_t set_timer(const np_timerparm& aparm);
 
 		//# 是否支持广播
-		bool		isbroadcast();
+		bool isbroadcast();
 
 		//# 设置是否支持广播
-		void		set_broadcast(bool aisbroadcast);
+		void set_broadcast(bool aisbroadcast);
 
 		//# 启动广播定时器
 		static void start_broadcast();
