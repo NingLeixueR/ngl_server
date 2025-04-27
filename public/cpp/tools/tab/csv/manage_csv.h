@@ -31,7 +31,7 @@ namespace ngl
 		static void set_path(const std::string& apath, const std::string& aname)
 		{
 			m_path = std::format("{}/{}", apath, aname);
-			if (filetools::path_exist(m_path) == false)
+			if (tools::directories_exists(m_path) == false)
 			{
 				m_path = std::format("{}/csv", apath);
 			}
@@ -165,7 +165,7 @@ namespace ngl
 			ltemp.m_save = [](const std::string& acsvcontent)
 			{
 				std::string lcsvname = manage_csv<T>::path();
-				filetools::remove(lcsvname);
+				tools::file_remove(lcsvname);
 				writefile lrf(lcsvname);
 				lrf.write(acsvcontent);
 			};

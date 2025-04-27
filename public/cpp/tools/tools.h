@@ -202,7 +202,11 @@ namespace ngl
 			}
 			else
 			{
-				return source != "0" || source != "";
+				if (source != "0" && source != "")
+				{
+					return true;
+				}
+				return false;
 			}
 		}
 
@@ -763,7 +767,15 @@ namespace ngl
 		// 判断文件是否存在
 		static bool file_exists(const std::string& apath);
 
+		// 创建目录
 		static bool create_directories(const std::string& apath);
+
+		// 移除文件
+		static bool file_remove(const std::string& afilename);
+
+		// # 获取dir下所有文件
+		// # aiteration是否循环迭代dir下的所有目录
+		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 	};
 
 	template <typename T>

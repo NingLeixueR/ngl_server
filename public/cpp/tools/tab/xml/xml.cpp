@@ -53,7 +53,7 @@ namespace ngl
 	void xmlnode::load(const std::string& axmlpath, const std::string& aname)
 	{
 		std::string lxmlname = std::format("{}/config/config_{}.xml", axmlpath, aname);
-		if (filetools::exist(lxmlname) == false)
+		if (tools::file_exists(lxmlname) == false)
 		{
 			lxmlname = std::format("{}/config/config.xml", axmlpath);
 		}
