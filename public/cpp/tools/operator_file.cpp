@@ -22,7 +22,9 @@ namespace ngl
 				m_file.close();
 			}
 		}
-		catch (...) {}
+		catch (...) 
+		{
+		}
 	}
 
 	bool readfile::is_open()const
@@ -166,45 +168,5 @@ namespace ngl
 				m_file.close();
 			}
 		}Catch
-	}
-
-	bool filetools::remove(const std::string& afilename)
-	{
-		return ::remove(afilename.c_str()) == 0;
-	}
-
-	bool filetools::exist(const std::string& afilename)
-	{
-		std::ifstream f(afilename.c_str());
-		return f.good();
-	}
-
-	bool filetools::path_exist(const std::string& apath)
-	{
-		return std::filesystem::exists(apath);
-	}
-
-	void filetools::dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration/* = false*/)
-	{
-		for (const auto& entry : std::filesystem::directory_iterator(apath)) 
-		{
-			if (entry.is_regular_file()) 
-			{
-				afilevec.push_back(entry.path().string());
-				std::cout << "File: " << entry.path() << std::endl;
-			}
-			else if (entry.is_directory()) 
-			{
-				std::cout << "Directory: " << entry.path() << std::endl;
-				if (aiteration)
-				{
-					dir(entry.path().string(), afilevec);
-				}
-			}
-			else 
-			{
-				std::cout << "Other: " << entry.path() << std::endl;
-			}
-		}
-	}
+	}	
 }// namespace ngl

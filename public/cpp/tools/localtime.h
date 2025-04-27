@@ -150,7 +150,7 @@ namespace ngl
 		// # 获取tm
 		static void gettm(time_t curr, tm& atm);
 
-		// 获取指定utc后几个小时
+		// # 获取指定utc后几个小时
 		static int getutcbyhour(time_t utc, int hour);
 		static int getutcbymin(time_t utc, int min);
 

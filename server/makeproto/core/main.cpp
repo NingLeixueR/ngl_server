@@ -55,7 +55,5 @@ int main(int argc, char** argv)
     xml_protocol::pb_protocol(lpair.first);
     xml_protocol::json2_fun(lpair.second);
 
-
-
     return 0;
 }

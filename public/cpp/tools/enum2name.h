@@ -28,7 +28,7 @@ namespace ngl
 
 		static void rename(std::string& astr)
 		{
-			std::ranges::transform(astr, astr.begin(), tolower);
+			tools::transform_tolower(astr);
 		}
 	public:
 		static void set(ENUMT aenum, const char* aname, int anum = 0)
@@ -37,8 +37,8 @@ namespace ngl
 			ltemp.m_never = aname;
 			ltemp.m_tolower = aname;
 			ltemp.m_toupper = aname;
-			std::ranges::transform(ltemp.m_tolower, ltemp.m_tolower.begin(), tolower);
-			std::ranges::transform(ltemp.m_toupper, ltemp.m_toupper.begin(), toupper);
+			tools::transform_tolower(ltemp.m_tolower);
+			tools::transform_toupper(ltemp.m_toupper);
 
 			m_datan2e[anum][ltemp.m_never] = aenum;
 			m_datan2e[anum][ltemp.m_tolower] = aenum;

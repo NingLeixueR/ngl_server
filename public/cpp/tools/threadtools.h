@@ -84,8 +84,8 @@ namespace ngl
 		CV.wait(__Lock__, FUN);							\
 	}
 
-// # 使用信号量还是条件变量
-//#define OPEN_SEM
+// # 使用信号量/条件变量
+#define OPEN_SEM
 
 #ifdef OPEN_SEM
 # define ngl_lockinit							\
@@ -94,7 +94,7 @@ namespace ngl
 #else
 # define ngl_lockinit							\
 		std::mutex					m_mutex;	\
-		std::condition_variable		m_cv;
+		std::condition_variable		m_cv
 #endif//OPEN_SEM
 
 #ifdef OPEN_SEM
@@ -118,7 +118,7 @@ namespace ngl
 		work_list(const work_list&) = delete;
 		work_list& operator=(const work_list&) = delete;
 
-		ngl_lockinit
+		ngl_lockinit;
 
 		std::list<NODE>				m_list;
 		std::function<void(NODE&)>	m_fun;
