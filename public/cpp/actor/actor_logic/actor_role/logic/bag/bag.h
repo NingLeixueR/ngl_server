@@ -39,5 +39,7 @@ namespace ngl
 		bool checkbyid(int32_t aid);
 
 		void sync_client();
+
+		void print_bi(int32_t aitemid, int32_t atid, int32_t acount, bool aisadd = true);
 	};
 }// namespace ngl

@@ -43,6 +43,9 @@ namespace ngl
 	extern std::shared_ptr<nactor_logitem> log_error(const std::source_location& asource = std::source_location::current());
 	extern std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource = std::source_location::current());
 
+	extern std::shared_ptr<nactor_logitem> log_bi(const std::source_location& asource = std::source_location::current());
+
+
 	template <typename T>
 	void tools::print_json2proto(const T& adata, bool aislog/* = false*/)
 	{
