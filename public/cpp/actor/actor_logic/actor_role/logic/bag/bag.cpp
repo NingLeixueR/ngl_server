@@ -1,5 +1,6 @@
 #include "actor_role.h"
 #include "autoitem.h"
+#include "bi_item.h"
 #include "nlog.h"
 #include "bag.h"
 
@@ -59,7 +60,23 @@ namespace ngl
 			return nullptr;
 		}
 		lbag.set_m_maxid(lid);
+
+		print_bi(aitem.m_id(), aitem.m_tid(), aitem.m_count());
 		return &lpair.first->second;
+	}
+
+	void bag::print_bi(int32_t aitemid, int32_t atid, int32_t acount, bool aisadd /*= true*/)
+	{
+		bi_item ltempbi;
+		ltempbi.m_serverid = nconfig::m_nodeid;
+		ltempbi.m_itemid = aitemid;
+		ltempbi.m_tid = atid;
+		ltempbi.m_count = acount;
+		ltempbi.m_roleid = actor()->id_guid();
+		ltempbi.m_time = localtime::gettime();
+		ltempbi.m_mask = local_get_remakes(actor());
+		ltempbi.m_adddec = aisadd ? 1 : 2;
+		ltempbi.print();
 	}
 
 	bool bag::add_item(int32_t atid, int32_t acount)
@@ -69,12 +86,12 @@ namespace ngl
 		{
 			return false;
 		}
-		int lid = get_constbag().m_maxid();
 		tab_item* tab = ngl::allcsv::tab<tab_item>(atid);
 		if (tab == nullptr)
 		{
 			return false;
 		}
+		int lid = get_constbag().m_maxid();
 		for (auto& item : lvec)
 		{
 			if (tab->m_isstack)
@@ -87,12 +104,15 @@ namespace ngl
 					{
 						continue;
 					}
+					lpitem->set_m_id(++lid);
+					get_bag().set_m_maxid(lid);
 					m_stackitems.insert({ item.m_tid(), lpitem });
 				}
 				else
 				{
 					pbdb::item* lpitem = itor->second;
 					lpitem->set_m_count(lpitem->m_count() + item.m_count());
+					print_bi(lpitem->m_id(), atid, item.m_count());
 				}
 				m_autoitem->add(atid, acount);
 			}
@@ -107,8 +127,6 @@ namespace ngl
 				m_autoitem->add(item.m_id());
 			}
 		}
-		get_bag().set_m_maxid(lid);
-		//LogBI("%|%|%|%", actorbase()->id_guid(), g_remakes(actor()), atid, acount)
 		return true;
 	}
 
@@ -128,7 +146,6 @@ namespace ngl
 			add(litem);
 			m_autoitem->add(litem.m_id());
 		}
-			
 		return true;
 	}
 
@@ -147,6 +164,7 @@ namespace ngl
 			return false;
 		}
 		m_autoitem->del(atid, acount);
+		int32_t litemid = itor->second->m_id();
 		if (acount == 0)
 		{
 			get_bag().mutable_m_items()->erase(itor->second->m_id());
@@ -154,6 +172,7 @@ namespace ngl
 			return true;
 		}
 		itor->second->set_m_count(lcount);
+		print_bi(litemid, atid, acount, false);
 		return true;
 	}
 
@@ -165,6 +184,7 @@ namespace ngl
 		{
 			return false;
 		}
+		int32_t tid = itor->second->m_tid();
 		tab_item* tab = ngl::allcsv::tab<tab_item>(itor->second->m_tid());
 		if (tab == nullptr)
 		{
@@ -176,6 +196,7 @@ namespace ngl
 		}
 		m_nostackitems.erase(itor);
 		m_autoitem->del(aid);
+		print_bi(aid, tid, 1, false);
 		return true;
 	}
 

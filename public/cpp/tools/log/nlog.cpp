@@ -86,4 +86,9 @@ namespace ngl
 	{
 		return get_log(asource, ELOG_ERROR, true);
 	}
+
+	std::shared_ptr<nactor_logitem> log_bi(const std::source_location& asource)
+	{
+		return std::make_shared<nactor_logitem>(ELOG_ERROR, ACTOR_NONE, ELOG_BI, asource);
+	}
 }// namespace ngl
