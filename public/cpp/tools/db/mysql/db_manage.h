@@ -63,9 +63,9 @@ namespace ngl
 
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
 			// # REPLACE INTO 则会先删除数据，然后再插入。
-			char lbuff[1024] = { 0 };
+			char lbuff[4096] = { 0 };
 			int llen = snprintf(
-				lbuff, 1024
+				lbuff, 4096
 				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
 				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), larea
 			);
