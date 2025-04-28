@@ -88,7 +88,7 @@ namespace ngl
 			T ldata;
 			if (db_data<T>::get(aid, ldata) == false)
 			{
-				log_error()->print("db_manage::save id:{} !!! name:{}", aid, tools::protobuf_tabname<T>::name());
+				log_error()->print("db_manage::save fail id:{} !!! name:{}", aid, tools::protobuf_tabname<T>::name());
 				return;
 			}
 			save(adb, ldata);

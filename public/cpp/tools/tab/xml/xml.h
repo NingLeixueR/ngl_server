@@ -158,7 +158,5 @@ namespace ngl
 
 		static xmlinfo* get_publicconfig();
 	};
-
 }
-
 #define nconfig ngl::xmlnode

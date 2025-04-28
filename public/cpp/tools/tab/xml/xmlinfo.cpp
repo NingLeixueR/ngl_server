@@ -10,14 +10,7 @@ namespace ngl
 {
 	void xmlinfo::plog()
 	{
-		auto lstream = log_error();
-		(*lstream) << "##########xmlinfo##########" << std::endl;
-		for (const auto& [_key, _val] : m_data)
-		{
-			(*lstream) << "[" << _key << ":" << _val << "]" << std::endl;
-		}
-		(*lstream) << "##########xmlinfo#########" << std::endl;
-		lstream->print("");
+		log_error()->print("xmlinfo:{}", m_data);
 	}
 	
 	bool xmlinfo::find(const char* akey, bool& adata)
