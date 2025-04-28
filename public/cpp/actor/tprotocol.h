@@ -81,7 +81,6 @@ namespace ngl
 			}
 		};
 	public:
-
 		static bool set_customs_index(int32_t acustoms)
 		{
 			if (m_customs >= acustoms)

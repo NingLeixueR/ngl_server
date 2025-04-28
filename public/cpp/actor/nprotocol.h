@@ -75,6 +75,7 @@ namespace ngl
 	{
 		int32_t m_serverid;
 		int32_t m_session;
+
 		def_portocol(np_connect_actor_server, m_serverid, m_session)
 	};
 

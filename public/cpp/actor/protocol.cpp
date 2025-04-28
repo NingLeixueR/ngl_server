@@ -28,7 +28,10 @@ namespace ngl
 
 		static void print(const char* amsg, EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
 		{
-			log_error()->print("protocol::push msg:{} protocolnum:{} name:{}", amsg, aprotocolnum, name(aprotocoltype, aprotocolnum));
+			log_error()->print(
+				"protocol::push msg:{} protocolnum:{} name:{}", 
+				amsg, aprotocolnum, name(aprotocoltype, aprotocolnum)
+			);
 		}
 
 		static pfun* find(EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
@@ -85,19 +88,22 @@ namespace ngl
 		}
 
 		// # 注册网络协议
+		// parm EPROTOCOL_TYPE atype				协议类型
+		// parm i32_protocolnum aprotocolnumber		协议号
+		// parm ENUM_ACTOR aenumactor				actor类型
+		// parm const fun_pack& apackfun			解包回调
+		// parm const fun_run& arunfun				逻辑回调
+		// parm const char* aname					debug name
 		static void register_protocol(
-			EPROTOCOL_TYPE atype					// 协议类型
-			, int aprotocolnumber					// 协议号
-			, ENUM_ACTOR aenumactor					// 处理此网络协议的actor类型
-			, const protocol::fun_pack& apackfun	// 解析数据包函数
-			, const protocol::fun_run& arunfun		// 交付给actor_manage的函数
-			, const char* aname						// 用于调试
+			EPROTOCOL_TYPE atype, int aprotocolnumber, ENUM_ACTOR aenumactor
+			, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun
+			, const char* aname
 		)
 		{
 			lock_write(m_mutex);
 			pfun& lprotocol = m_protocolfun[atype][aprotocolnumber];
-			lprotocol.m_packfun				= apackfun;
-			lprotocol.m_runfun[aenumactor]	= arunfun;
+			lprotocol.m_packfun = apackfun;
+			lprotocol.m_runfun[aenumactor] = arunfun;
 			em<eprotocol_tar>::set((eprotocol_tar)aprotocolnumber, aname, atype);
 		}
 	};
@@ -111,11 +117,8 @@ namespace ngl
 	}
 
 	void protocol::register_protocol(
-		EPROTOCOL_TYPE atype
-		, i32_protocolnum aprotocolnumber
-		, ENUM_ACTOR aenumactor
-		, const protocol::fun_pack& apackfun
-		, const protocol::fun_run& arunfun
+		EPROTOCOL_TYPE atype, i32_protocolnum aprotocolnumber, ENUM_ACTOR aenumactor
+		, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun
 		, const char* aname
 	)
 	{
