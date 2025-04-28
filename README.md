@@ -1,7 +1,6 @@
 [![Build C++](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-unbutu.yml/badge.svg)](https://github.com/NingLeixueR/ngl/actions/workflows/cmake-unbutu.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NingLeixueR_ngl&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NingLeixueR_ngl)
 ## ngl
-* Framework of c++ Game Server Based on Actor
 * 基于Actor的c++游戏服务器框架
 
 ## 依赖的第三方库
@@ -12,16 +11,11 @@
   * <b>protobuf 3.13.0</b>
 
 ## 目录
-  * <b>ngl/3part</b><br/>此目录用于存放第三方库
-  * <b>ngl/bin/idl</b><br/>csv表生成
-  * <b>ngl/bin/proto</b><br/>proto协议生成
-  * <b>ngl/bin/rebuild.bat</b><br/>与cmake unity build类似的加速编译
   * <b>ngl/public/cpp</b><br/>cpp服务器源码
   * <b>ngl/server</b><br/>项目源文件
 
 ## 协议支持
   * tcp
-  * ws(暂时移除)
   * kcp
 
 ## Linux CentOs编译
