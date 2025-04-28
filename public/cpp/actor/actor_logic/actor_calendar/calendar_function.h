@@ -45,5 +45,9 @@ namespace ngl
 			itor->second.m_finish(tab, atime);
 			acalendar->set_m_finish(true);
 		}
+
+	private:
+		static void operator_activ(tab_calendar* tab, int64_t atime, bool astart);
+		static void operator_task(tab_calendar* tab, int64_t atime, bool astart);
 	};
 }//namespace ngl

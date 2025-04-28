@@ -188,14 +188,14 @@ namespace ngl
 		//# 移除指定actor
 		static void erase_actor_byid(const nguid& aguid);
 
-		//# 向指定actor添加任务
-		static void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
-
 		//# 给actor自身添加任务
 		void push_task_id(handle_pram& apram, bool abool);
 
+		//# 向指定actor添加任务
+		static void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
+
 		//# 给指定类型的actor添加任务
-		void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false)const;
+		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
 
 #pragma region net
 		//# 生成包
@@ -451,6 +451,14 @@ namespace ngl
 				lpram.m_actor = actorid;
 				push_task_id(actorid, lpram, true);
 			}
+		}
+
+		template <typename T, bool IS_SEND = true>
+		static void static_send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false)
+		{
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), nguid::make(), adata);
+			lpram.m_forwardtype = true;
+			push_task_type(atype, lpram, aotherserver);
 		}
 
 		//# 发送数据到指定的actor

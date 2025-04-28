@@ -101,23 +101,16 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<np_eevents_logic_rolelogin>& adata)
 	{
-		time_t llastloginutc = 0;
-		time_t lnow = localtime::gettime();
-		if (m_rolekv.value("lastloginutc", llastloginutc))
-		{
-			if (localtime::issameday(lnow, llastloginutc))
-			{
-				return true;
-			}
-		}
-		m_rolekv.set_value("lastloginutc", lnow);
-		static_task::update_change(this, ETaskRoleLogin, 1);
 		return true;
 	}
 	bool actor_role::handle(const message<np_example_actorid>& adata)
 	{
 		m_example.first = adata.get_data()->m_type;
 		m_example.second = adata.get_data()->m_actorexampleid;
+		return true;
+	}
+	bool actor_role::handle(const message<np_actor_calendar_response>& adata)
+	{
 		return true;
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)

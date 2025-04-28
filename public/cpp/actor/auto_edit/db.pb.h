@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[32]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[33]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -59,6 +59,9 @@ struct TableStruct_db_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto;
 namespace pbdb {
+class calendar_pair;
+class calendar_pairDefaultTypeInternal;
+extern calendar_pairDefaultTypeInternal _calendar_pair_default_instance_;
 class db_account;
 class db_accountDefaultTypeInternal;
 extern db_accountDefaultTypeInternal _db_account_default_instance_;
@@ -157,6 +160,7 @@ class rankitemDefaultTypeInternal;
 extern rankitemDefaultTypeInternal _rankitem_default_instance_;
 }  // namespace pbdb
 PROTOBUF_NAMESPACE_OPEN
+template<> ::pbdb::calendar_pair* Arena::CreateMaybeMessage<::pbdb::calendar_pair>(Arena*);
 template<> ::pbdb::db_account* Arena::CreateMaybeMessage<::pbdb::db_account>(Arena*);
 template<> ::pbdb::db_activity* Arena::CreateMaybeMessage<::pbdb::db_activity>(Arena*);
 template<> ::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse>(Arena*);
@@ -4264,6 +4268,154 @@ class db_task PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class calendar_pair PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.calendar_pair) */ {
+ public:
+  inline calendar_pair() : calendar_pair(nullptr) {};
+  virtual ~calendar_pair();
+
+  calendar_pair(const calendar_pair& from);
+  calendar_pair(calendar_pair&& from) noexcept
+    : calendar_pair() {
+    *this = ::std::move(from);
+  }
+
+  inline calendar_pair& operator=(const calendar_pair& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline calendar_pair& operator=(calendar_pair&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const calendar_pair& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const calendar_pair* internal_default_instance() {
+    return reinterpret_cast<const calendar_pair*>(
+               &_calendar_pair_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    27;
+
+  friend void swap(calendar_pair& a, calendar_pair& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(calendar_pair* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(calendar_pair* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline calendar_pair* New() const final {
+    return CreateMaybeMessage<calendar_pair>(nullptr);
+  }
+
+  calendar_pair* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<calendar_pair>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const calendar_pair& from);
+  void MergeFrom(const calendar_pair& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(calendar_pair* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.calendar_pair";
+  }
+  protected:
+  explicit calendar_pair(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMTriggertimeFieldNumber = 1,
+    kMIsstartFieldNumber = 2,
+  };
+  // int32 m_triggertime = 1;
+  void clear_m_triggertime();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_triggertime() const;
+  void set_m_triggertime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_triggertime() const;
+  void _internal_set_m_triggertime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // bool m_isstart = 2;
+  void clear_m_isstart();
+  bool m_isstart() const;
+  void set_m_isstart(bool value);
+  private:
+  bool _internal_m_isstart() const;
+  void _internal_set_m_isstart(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.calendar_pair)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_triggertime_;
+  bool m_isstart_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
 class db_calendar PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_calendar) */ {
  public:
@@ -4306,7 +4458,7 @@ class db_calendar PROTOBUF_FINAL :
                &_db_calendar_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    28;
 
   friend void swap(db_calendar& a, db_calendar& b) {
     a.Swap(&b);
@@ -4377,11 +4529,30 @@ class db_calendar PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kMTriggerlistFieldNumber = 5,
     kMIdFieldNumber = 1,
     kMTimeFieldNumber = 2,
     kMStartFieldNumber = 3,
     kMFinishFieldNumber = 4,
   };
+  // repeated .pbdb.calendar_pair m_triggerlist = 5;
+  int m_triggerlist_size() const;
+  private:
+  int _internal_m_triggerlist_size() const;
+  public:
+  void clear_m_triggerlist();
+  ::pbdb::calendar_pair* mutable_m_triggerlist(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::calendar_pair >*
+      mutable_m_triggerlist();
+  private:
+  const ::pbdb::calendar_pair& _internal_m_triggerlist(int index) const;
+  ::pbdb::calendar_pair* _internal_add_m_triggerlist();
+  public:
+  const ::pbdb::calendar_pair& m_triggerlist(int index) const;
+  ::pbdb::calendar_pair* add_m_triggerlist();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::calendar_pair >&
+      m_triggerlist() const;
+
   // int64 m_id = 1;
   bool has_m_id() const;
   private:
@@ -4443,6 +4614,7 @@ class db_calendar PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::calendar_pair > m_triggerlist_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_time_;
   bool m_start_;
@@ -4493,7 +4665,7 @@ class db_familyer PROTOBUF_FINAL :
                &_db_familyer_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    29;
 
   friend void swap(db_familyer& a, db_familyer& b) {
     a.Swap(&b);
@@ -4729,7 +4901,7 @@ class db_family PROTOBUF_FINAL :
                &_db_family_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    30;
 
   friend void swap(db_family& a, db_family& b) {
     a.Swap(&b);
@@ -5012,7 +5184,7 @@ class db_friends PROTOBUF_FINAL :
                &_db_friends_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    31;
 
   friend void swap(db_friends& a, db_friends& b) {
     a.Swap(&b);
@@ -5204,7 +5376,7 @@ class dbcross_test PROTOBUF_FINAL :
                &_dbcross_test_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    32;
 
   friend void swap(dbcross_test& a, dbcross_test& b) {
     a.Swap(&b);
@@ -7956,6 +8128,50 @@ db_task::mutable_m_completeddatas() {
 
 // -------------------------------------------------------------------
 
+// calendar_pair
+
+// int32 m_triggertime = 1;
+inline void calendar_pair::clear_m_triggertime() {
+  m_triggertime_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 calendar_pair::_internal_m_triggertime() const {
+  return m_triggertime_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 calendar_pair::m_triggertime() const {
+  // @@protoc_insertion_point(field_get:pbdb.calendar_pair.m_triggertime)
+  return _internal_m_triggertime();
+}
+inline void calendar_pair::_internal_set_m_triggertime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  m_triggertime_ = value;
+}
+inline void calendar_pair::set_m_triggertime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_triggertime(value);
+  // @@protoc_insertion_point(field_set:pbdb.calendar_pair.m_triggertime)
+}
+
+// bool m_isstart = 2;
+inline void calendar_pair::clear_m_isstart() {
+  m_isstart_ = false;
+}
+inline bool calendar_pair::_internal_m_isstart() const {
+  return m_isstart_;
+}
+inline bool calendar_pair::m_isstart() const {
+  // @@protoc_insertion_point(field_get:pbdb.calendar_pair.m_isstart)
+  return _internal_m_isstart();
+}
+inline void calendar_pair::_internal_set_m_isstart(bool value) {
+  
+  m_isstart_ = value;
+}
+inline void calendar_pair::set_m_isstart(bool value) {
+  _internal_set_m_isstart(value);
+  // @@protoc_insertion_point(field_set:pbdb.calendar_pair.m_isstart)
+}
+
+// -------------------------------------------------------------------
+
 // db_calendar
 
 // int64 m_id = 1;
@@ -8068,6 +8284,45 @@ inline void db_calendar::_internal_set_m_finish(bool value) {
 inline void db_calendar::set_m_finish(bool value) {
   _internal_set_m_finish(value);
   // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_finish)
+}
+
+// repeated .pbdb.calendar_pair m_triggerlist = 5;
+inline int db_calendar::_internal_m_triggerlist_size() const {
+  return m_triggerlist_.size();
+}
+inline int db_calendar::m_triggerlist_size() const {
+  return _internal_m_triggerlist_size();
+}
+inline void db_calendar::clear_m_triggerlist() {
+  m_triggerlist_.Clear();
+}
+inline ::pbdb::calendar_pair* db_calendar::mutable_m_triggerlist(int index) {
+  // @@protoc_insertion_point(field_mutable:pbdb.db_calendar.m_triggerlist)
+  return m_triggerlist_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::calendar_pair >*
+db_calendar::mutable_m_triggerlist() {
+  // @@protoc_insertion_point(field_mutable_list:pbdb.db_calendar.m_triggerlist)
+  return &m_triggerlist_;
+}
+inline const ::pbdb::calendar_pair& db_calendar::_internal_m_triggerlist(int index) const {
+  return m_triggerlist_.Get(index);
+}
+inline const ::pbdb::calendar_pair& db_calendar::m_triggerlist(int index) const {
+  // @@protoc_insertion_point(field_get:pbdb.db_calendar.m_triggerlist)
+  return _internal_m_triggerlist(index);
+}
+inline ::pbdb::calendar_pair* db_calendar::_internal_add_m_triggerlist() {
+  return m_triggerlist_.Add();
+}
+inline ::pbdb::calendar_pair* db_calendar::add_m_triggerlist() {
+  // @@protoc_insertion_point(field_add:pbdb.db_calendar.m_triggerlist)
+  return _internal_add_m_triggerlist();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::calendar_pair >&
+db_calendar::m_triggerlist() const {
+  // @@protoc_insertion_point(field_list:pbdb.db_calendar.m_triggerlist)
+  return m_triggerlist_;
 }
 
 // -------------------------------------------------------------------
@@ -8818,6 +9073,8 @@ dbcross_test::mutable_m_value() {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

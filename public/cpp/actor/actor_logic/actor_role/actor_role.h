@@ -192,6 +192,8 @@ namespace ngl
 		}
 #pragma endregion
 
+		//# 重置登陆时间
+		void reset_logintime();
 
 		//# 回显给客户端一个字符串
 		void echo_msg(const char* amsg);
@@ -221,6 +223,7 @@ namespace ngl
 		bool handle(const message<np_actor_senditem>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 		bool handle(const message<np_example_actorid>& adata);
+		bool handle(const message<np_actor_calendar_response>& adata);		
 		// [请求]获取背包信息
 		bool handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata);
 		// 修改方向,速度

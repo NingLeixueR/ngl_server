@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-04-25 15:57:22
+// 创建时间 // 创建时间 25-04-28 21:39:21
 #pragma once
 
 #include "csv.h"
@@ -128,8 +128,8 @@ enum ECalendar
 };
 enum ECalendarType
 {
-	ECalendarTypeEveryDay,	// 每日定时刷新
 	ECalendarTypeActivity,	// 活动开启与关闭
+	ECalendarTypeTask,	// 任务接取与放弃
 };
 enum EActivity
 {
@@ -530,8 +530,8 @@ struct tab_calendar
 	std::vector<tweek>               m_week                          ; // [index:4][load:y] m_type=0,tweek(周几开始(1-7)*开启时间HH:mm:ss*周几结束(1-7)*结束时间HH:mm:ss)
 	std::vector<tserveropen>         m_serveropen                    ; // [index:5][load:y] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
 	std::vector<tregularslot>        m_tregularslot                  ; // [index:6][load:y] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
-	ECalendarType                    m_carendar                      ; // [index:7][load:y] (0.每日定时刷新1.活动开启与关闭)
-	std::vector<int32_t>             m_carendarparm                  ; // [index:8][load:y] (m_carendar == ECalendarTypeActivity:活动id)
+	ECalendarType                    m_carendar                      ; // [index:7][load:y] (0.无 1.活动开启与关闭)
+	std::string                      m_carendarparm                  ; // [index:8][load:y] (ECalendarTypeActivity:活动id,ECalendarTypeTask:任务id)
 	/*********************************/
 	tab_calendar();
 	// 序列化反序列化相关
