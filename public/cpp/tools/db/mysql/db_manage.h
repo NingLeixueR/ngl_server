@@ -7,17 +7,20 @@
 #include "tools.h"
 #include "db.h"
 
-// 如果此值为true 
-// 将"proto的二进制"保存
-// 如果此值为false 
-// 将把"proto的json串"保存
-#define DDBSAVE_PROTO_BINARY (true)
-
 namespace ngl
 {
 	class db_manage
 	{ 
+		static bool m_dbprotobinary;
 	public:
+		static void init()
+		{
+			if (nconfig::get_publicconfig()->find("dbprotobinary", m_dbprotobinary) == false)
+			{
+				log_error()->print("db xml config dbprotobinary falile");
+			}
+		}
+
 		template <typename T>
 		static int serialize(db* adb, db_buff::ptr& aptr, T& adata)
 		{
@@ -42,7 +45,7 @@ namespace ngl
 			if (m_savetemp.m_data == nullptr)
 			{
 				m_savetemp.make();
-				m_savetemp.m_isbinary = DDBSAVE_PROTO_BINARY;
+				m_savetemp.m_isbinary = m_dbprotobinary;
 			}
 			*m_savetemp.m_data = adata;
 
@@ -159,7 +162,7 @@ namespace ngl
 				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					protobuf_data<T> ldata;
-					ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
+					ldata.m_isbinary = m_dbprotobinary;
 					bool lunserialize = db_manage::unserialize(
 						adb, ldata, amysqlrow[1], alens[1]
 					);
@@ -191,7 +194,7 @@ namespace ngl
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
 					protobuf_data<T> ldata;
-					ldata.m_isbinary = DDBSAVE_PROTO_BINARY;
+					ldata.m_isbinary = m_dbprotobinary;
 					bool lunserialize = ngl::db_manage::unserialize(
 						adb, ldata, amysqlrow[1], alens[1]
 					);

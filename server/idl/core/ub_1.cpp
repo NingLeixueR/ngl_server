@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-04-25 15:56:42
+// 创建时间 25-04-28 11:11:21
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -40,6 +40,7 @@
 #include "logprintf.cpp"
 #include "localtime.cpp"
 #include "json_read.cpp"
+#include "db_manage.cpp"
 #include "attribute.cpp"
 #include "asio_base.cpp"
 #include "tinyxml2.cpp"
