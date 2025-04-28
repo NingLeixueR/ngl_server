@@ -47,7 +47,6 @@ namespace ngl
 
 		//# 主动连接
 		void activ_connect(i32_serverid aserverid);
-
 	public:
 		//# 向actor_server注册结点
 		void actor_server_register();
