@@ -65,11 +65,11 @@ namespace ngl
 			return;
 		}
 
-		loadpublic();
-		loaddb();
 		loadcrossdb();
-		loadmail();
+		loadpublic();
 		loadtelnet();
+		loadmail();
+		loaddb();
 
 		log_error()->print("finish xmlnode read [{}]", lxmlname);
 	}

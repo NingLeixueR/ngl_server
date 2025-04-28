@@ -42,7 +42,6 @@ namespace ngl
 		telnetarg() = default;
 	};
 
-
 	class xmlinfo
 	{
 		std::map<std::string, std::string> m_data;
@@ -88,5 +87,4 @@ namespace ngl
 	{
 		telnetarg m_telnetarg;
 	};
-	
 }// namespace ngl

@@ -255,7 +255,9 @@ bool start_db(int argc, char** argv)
 	ngl::log_error()->print("[{}] start", "DB");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -295,7 +297,9 @@ bool start_crossdb()
 {
 	ngl::log_error()->print("[{}] start", "CROSSDB");
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 	ngl::actor_client::getInstance();
 
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
@@ -315,7 +319,9 @@ bool start_world()
 	ngl::log_error()->print("[{}] start", "WORLD");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -346,7 +352,9 @@ bool start_login()
 	ngl::log_error()->print("[{}] start", "LOGIN");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -365,7 +373,9 @@ bool start_gateway()
 	ngl::log_error()->print("[{}] start", "GATEWAY");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -386,7 +396,9 @@ bool start_log()
 	ngl::log_error()->print("[{}] start", "LOG");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -403,7 +415,9 @@ bool start_actor()
 	ngl::log_error()->print("[{}] start", "ACTORSERVER");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_server::getInstance();
 
@@ -419,7 +433,9 @@ bool start_game()
 	ngl::log_error()->print("[{}] start", "GAME");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -441,7 +457,9 @@ bool start_cross()
 	ngl::log_error()->print("[{}] start", "CROSS");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -462,10 +480,14 @@ bool start_pushserverconfig()
 	ngl::xmlinfo* lpublicxml = ngl::xmlnode::get_publicconfig();
 	std::string lgmurl;
 	if (!lpublicxml->find("gmurl", lgmurl))
+	{
 		return false;
+	}
 	std::string lpushserver;
 	if (!lpublicxml->find("push_server_config", lpushserver))
+	{
 		return false;
+	}
 	lpushserver = lgmurl + "/" + lpushserver;
 
 	ngl::ttab_servers::foreach_server([&lpushserver](const ngl::tab_servers* aserver)
@@ -522,7 +544,9 @@ bool start_csvserver()
 	ngl::log_error()->print("[{}] start", "RELOADCSV");
 
 	if (!init_server(nconfig::m_nodeid))
+	{
 		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -541,7 +565,9 @@ bool start_robot(int argc, char** argv)
 	ngl::log_error()->print("[{}] start", "ROBOT");
 
 	if (!init_server(nconfig::m_nodeid))
-		return 0;
+	{
+		return false;
+	}
 
 	ngl::actor_client::getInstance();
 
@@ -564,7 +590,9 @@ bool start_robot(int argc, char** argv)
 			std::cin.getline(lbuff, 4096);
 			std::vector<std::string> lvec;
 			if (ngl::tools::splite(lbuff, " ", lvec) == false)
+			{
 				continue;
+			}
 			ngl::actor_manage_robot::parse_command(lvec);
 		}
 	}
@@ -605,7 +633,9 @@ bool start_robot(int argc, char** argv)
 					lcmd = lbuff;
 					lvec.clear();
 					if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
+					{
 						continue;
+					}
 					if (lvec[0] == "test" || lvec[0] == "TEST")
 					{
 						lms.clear();
