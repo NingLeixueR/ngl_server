@@ -145,9 +145,9 @@ namespace ngl
 			// ### sethead start ###
 			apack->m_head.m_data[EPH_BYTES] = (apack->m_len - pack_head::size()) + encryption_bytexor::bytes(adata);
 			apack->m_head.set_mask();
-			apack->m_head.set_protocol(tprotocol::protocol<T>());
-			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_time();
+			apack->m_head.set_actor(aactorid, arequestactorid);
+			apack->m_head.set_protocol(tprotocol::protocol<T>());
 			apack->m_head.set_protocoltype(tprotocol::protocol_type<T>());
 			//log_error()->print(
 			// "##tobytes## tprotocol::protocol<{}>() = {}", 

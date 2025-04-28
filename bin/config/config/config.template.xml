@@ -32,6 +32,7 @@
 					logwritelevel = "1"
 					logconsolelevel = "3"
 					consumings = "100"
+					dbprotobinary = "false"
 				></config>
 		</public>
 		<db>

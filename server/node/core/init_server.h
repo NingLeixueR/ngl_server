@@ -33,6 +33,7 @@
 #include "sysconfig.h"
 #include "actor_log.h"
 #include "actor_kcp.h"
+#include "db_manage.h"
 #include "actor_db.h"
 #include "actor_gm.h"
 #include "dbredis.h"

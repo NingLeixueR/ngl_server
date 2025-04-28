@@ -264,6 +264,7 @@ bool start_db(int argc, char** argv)
 
 	ngl::db_pool::init(nconfig::m_db.m_dbarg);
 	ngl::tdb::tdb_init(false);
+	ngl::db_manage::init();
 
 	ngl::actor_gmclient::getInstance();
 	
