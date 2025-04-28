@@ -1,4 +1,5 @@
 ﻿#include "ttab_specialid.h"
+#include "actor_calendar.h"
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
@@ -64,6 +65,29 @@ namespace ngl
 		*/
 	}
 
+	void actor_role::reset_logintime()
+	{
+		time_t lloginutc = 0;
+		time_t lnow = localtime::gettime();
+		bool isloginutc = false;
+		if (m_rolekv.value("loginutc", lloginutc))
+		{
+			if (localtime::issameday(lnow, lloginutc) == false)
+			{
+				isloginutc = true;
+			}
+		}
+		else
+		{
+			isloginutc = true;
+		}
+		if (isloginutc)
+		{
+			m_rolekv.set_value("loginutc", lnow);
+			static_task::update_change(this, ETaskRoleLogin, 1);
+		}
+	}
+
 	void actor_role::loaddb_finish(bool adbishave)
 	{
 		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
@@ -71,11 +95,20 @@ namespace ngl
 		m_info.sync_actor_brief();
 		loginpay();
 
+		// # 登陆事件
 		np_eevents_logic_rolelogin lparm;
 		lparm.m_type = eevents_logic_rolelogin;
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm);
-		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm, this);
+
+		reset_logintime();
+		
+		// # 登陆向actor_calendar请求[日历id的时间对应关系]
+		time_t lloginoututc = 0;
+		m_rolekv.value("loginoututc", lloginoututc);
+		auto lcalendar_requst = std::make_shared<mforward<np_actor_calendar_requst>>(id_guid());
+		lcalendar_requst->add_data()->m_loginoututc = lloginoututc;
+		send_actor(actor_calendar::actorid(), lcalendar_requst);
 	}
 
 	void actor_role::nregister()
@@ -88,6 +121,7 @@ namespace ngl
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, np_example_actorid
+			, np_actor_calendar_response
 		>(true);
 
 		// 绑定pb消息

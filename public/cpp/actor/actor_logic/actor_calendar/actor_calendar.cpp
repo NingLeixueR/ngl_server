@@ -57,7 +57,8 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_calendar>::func<
-			np_calendar
+			np_calendar,
+			mforward<np_actor_calendar_requst>
 		>(true);
 
 		// 绑定pb消息

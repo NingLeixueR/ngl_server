@@ -77,30 +77,24 @@ namespace ngl
 		{		
 			std::map<nguid, data_modified<pbdb::db_calendar>>* lmap = get_calendar();
 
-			auto lstream = log_error();
-			(*lstream) << "actor_calendar###loaddb_finish" << std::endl;
+			log_error()->print("actor_calendar###loaddb_finish");
 			int32_t lnow = (int32_t)localtime::gettime();
 			for (std::pair<const nguid, data_modified<pbdb::db_calendar> >& item : *lmap)
 			{
-				(*lstream) << std::format("calendar[{}]", item.first.id()) << std::endl;
 				const pbdb::db_calendar& lcalendar = item.second.getconst();
-
 
 				int64_t ltime = lcalendar.m_time();
 				int32_t lbeg = ttab_calendar::data::beg(ltime);
 				int32_t lend = ttab_calendar::data::end(ltime);
 				
-				(*lstream)
-					<< std::format(
-						"start[{}:{}]",
-						localtime::time2str(lbeg, "%y/%m/%d %H:%M:%S"),
-						lcalendar.m_start() ? "true" : "false"
-					)
-					<< std::format(
-						"finish[{}:{}]",
-						localtime::time2str(lend, "%y/%m/%d %H:%M:%S"),
-						lcalendar.m_finish() ? "true" : "false"
-					) << std::endl;
+				log_error()->print(
+					"calendar[{}] start[{}:{}]finish[{}:{}]", 
+					item.first.id(),
+					localtime::time2str(lbeg, "%y/%m/%d %H:%M:%S"), 
+					lcalendar.m_start() ? 1 : 0,
+					localtime::time2str(lend, "%y/%m/%d %H:%M:%S"),
+					lcalendar.m_finish() ? 1 : 0
+				);
 
 				pbdb::db_calendar* itemcalendar = get_calendar(item.first.id());
 				if (itemcalendar == nullptr)
@@ -132,7 +126,6 @@ namespace ngl
 					ttab_calendar::post(tab, ltime, *itemcalendar);
 				}
 			}
-			(*lstream).print("");
 			// ##
 			for (std::pair<const int32_t, ttab_calendar::data>& item :ttab_calendar::m_data)
 			{
@@ -150,6 +143,62 @@ namespace ngl
 					lcalendar.set_m_start(false);
 					add(item.first, lcalendar);
 					ttab_calendar::post(ttab_calendar::tab(item.first), ltime, *get_calendar(item.first));
+				}
+			}
+
+			
+		}
+
+		// # 添加历史触发列表
+		void add_trigger_list(int64_t acalendarid, int32_t atriggertime, bool aisstart)
+		{
+			auto ldatda = get_calendar();
+			auto itor = ldatda->find(acalendarid);
+			if (itor == ldatda->end())
+			{
+				return;
+			}
+			auto ltrigger = itor->second.get().add_m_triggerlist();
+			ltrigger->set_m_triggertime(atriggertime);
+			ltrigger->set_m_isstart(aisstart);
+
+			auto lptriggerlist = itor->second.get().mutable_m_triggerlist();
+			if (lptriggerlist == nullptr)
+			{
+				return;
+			}
+			int32_t l2week = localtime::gettime() - 2*localtime::WEEK_SECOND;
+			auto itors = lptriggerlist->begin();
+			for (; itors != lptriggerlist->end();)
+			{
+				if (l2week < itors->m_triggertime())
+				{
+					itors = lptriggerlist->erase(itors);
+				}
+				else
+				{
+					++itors;
+				}
+			}
+			
+		}
+
+		// # 获取历史触发列表
+		void get_trigger_list(int32_t atriggertime, std::map<int64_t, std::vector<calendar_pair>>& acalendarlist)
+		{
+			for (const auto& item1 : *get_calendar())
+			{
+				int64_t calendarid = item1.first;
+				for (const auto& item2 : item1.second.getconst().m_triggerlist())
+				{
+					if (atriggertime < item2.m_triggertime())
+					{
+						acalendarlist[calendarid].push_back(calendar_pair
+							{
+								.m_triggerutc = item2.m_triggertime(),
+								.m_isstart = item2.m_isstart()
+							});
+					}
 				}
 			}
 		}

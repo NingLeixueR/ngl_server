@@ -320,7 +320,7 @@ namespace ngl
 		actor_manage::getInstance().push_task_id(aguid, apram, abool);
 	}
 
-	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)const
+	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
 	{
 		actor_manage::getInstance().push_task_type(atype, apram, aotherserver);
 	}

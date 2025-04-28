@@ -309,6 +309,39 @@ namespace ngl
 		def_portocol(np_actor_openactivity, m_activityids, m_time, m_calendarid, m_start)
 	};
 
+	// ---- 
+	struct np_actor_task
+	{
+		std::vector<i64_actorid> m_taskids;
+		int64_t m_time = -1;
+		int32_t m_calendarid = -1;
+		bool m_start = false;
+
+		def_portocol(np_actor_task, m_taskids, m_time, m_calendarid, m_start)
+	};
+
+	struct np_actor_calendar_requst
+	{
+		int64_t m_loginoututc = -1;
+
+		def_portocol(np_actor_calendar_requst, m_loginoututc);
+	};
+
+	struct calendar_pair
+	{
+		int64_t m_triggerutc = -1;
+		bool m_isstart = false;
+
+		def_portocol(calendar_pair, m_triggerutc, m_isstart);
+	};
+
+	struct np_actor_calendar_response
+	{
+		std::map<int64_t, std::vector<calendar_pair>> m_calendarlist;
+
+		def_portocol(np_actor_calendar_response, m_calendarlist);
+	};
+
 	// ---- 通知kcp服务器创建连接
 	struct np_actor_kcp
 	{

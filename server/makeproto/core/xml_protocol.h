@@ -188,7 +188,7 @@ namespace ngl
 	static bool jsontobinarypack(const char* aname, const char* ajson, std::shared_ptr<pack>& apack, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		T ltemp;
-		if (tools::jsontopro(ajson, ltemp))
+		if (tools::json2proto(ajson, ltemp))
 		{
 			apack = actor_base::net_pack(ltemp, aactorid, arequestactorid);
 			return true;

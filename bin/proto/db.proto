@@ -198,12 +198,19 @@ message db_task
 	map<int32,data> m_completeddatas	= 3; // 已完成的任务数据
 }
 
+message calendar_pair
+{
+	int32 m_triggertime		= 1; //触发时间
+	bool m_isstart			= 2; //k	
+}
+
 message db_calendar
 {
 	optional int64 m_id				= 1; // 脚本日历id
 	optional int64 m_time			= 2; // 32bit 开始时间 32 结束时间
 	optional bool m_start			= 3; // 是否开启
 	optional bool m_finish			= 4; // 是否结束
+	repeated calendar_pair m_triggerlist = 5; // 历史触发列表(保留两周历史)
 }
 
 message db_familyer
