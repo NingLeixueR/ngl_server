@@ -614,7 +614,9 @@ bool start_robot(int argc, char** argv)
 		}
 		std::vector<std::string> lvec;
 		if (ngl::tools::splite(lcmd.c_str(), " ", lvec) == false)
+		{
 			return false;
+		}
 		ngl::actor_manage_robot::parse_command(lvec);
 		int lnum = 10000;
 

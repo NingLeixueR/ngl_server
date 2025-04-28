@@ -95,16 +95,16 @@ namespace ngl
 			/*220000003*/, np_actorswitch_process<np_actorswitch_process_role>
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
-		tprotocol::set_customs_index(220000000);
+		tprotocol::set_customs_index(230000000);
 		tprotocol::tp_customs::template func <
 			// ### 事件相关协议 start ### //
-			/*250000001*/ actor_events_logic::np_event_register
+			/*230000001*/ actor_events_logic::np_event_register
 			//# actor_events_logic
-			/*250000002*/, np_eevents_logic_rolelogin
-			/*250000003*/, np_eevents_logic_roleoffline
+			/*230000002*/, np_eevents_logic_rolelogin
+			/*230000003*/, np_eevents_logic_roleoffline
 			//# actor_events_map
-			/*250000004*/, np_eevents_map_leaveview
-			/*250000005*/, np_eevents_map_enterview
+			/*230000004*/, np_eevents_map_leaveview
+			/*230000005*/, np_eevents_map_enterview
 			// ### 事件相关协议 finish ### //
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}
@@ -135,26 +135,6 @@ namespace ngl
 		actor_events_logic::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
 		actor_events_logic::register_parm<np_eevents_logic_roleoffline>(eevents_logic_roleoffline);
 	}
-
-	//void tdb_init(bool ainstance)
-	//{
-	//	// 新增数据存储需要补全
-	//	tdb_ranklist::init(ainstance);
-	//	tdb_calendar::init(ainstance);
-	//	tdb_activity::init(ainstance);
-	//	tdb_keyvalue::init(ainstance);
-	//	tdb_familyer::init(ainstance);
-	//	tdb_friends::init(ainstance);
-	//	tdb_account::init(ainstance);
-	//	tdb_family::init(ainstance);
-	//	tdb_notice::init(ainstance);
-	//	tdb_rolekv::init(ainstance);
-	//	tdb_brief::init(ainstance);
-	//	tdb_mail::init(ainstance);
-	//	tdb_task::init(ainstance);
-	//	tdb_role::init(ainstance);
-	//	tdb_bag::init(ainstance);
-	//}
 
 	void tdb::tcrossdb_init(bool ainstance)
 	{

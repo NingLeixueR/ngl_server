@@ -29,16 +29,20 @@ namespace ngl
 
 		static void push(std::shared_ptr<pack>& apack);
 
+		// # 注册协议
+		// parm EPROTOCOL_TYPE atype				协议类型
+		// parm i32_protocolnum aprotocolnumber		协议号
+		// parm ENUM_ACTOR aenumactor				actor类型
+		// parm const fun_pack& apackfun			解包回调
+		// parm const fun_run& arunfun				逻辑回调
+		// parm const char* aname					debug name
 		static void register_protocol(
-			EPROTOCOL_TYPE atype					// 协议类型
-			, i32_protocolnum aprotocolnumber		// 协议号
-			, ENUM_ACTOR aenumactor					// actor类型
-			, const fun_pack& apackfun				// 解包回调
-			, const fun_run& arunfun				// 逻辑回调
-			, const char* aname						// debug name
+			EPROTOCOL_TYPE atype, i32_protocolnum aprotocolnumber, ENUM_ACTOR aenumactor
+			, const fun_pack& apackfun, const fun_run& arunfun
+			, const char* aname
 		);
 
-		// ACTOR间通信 
+		// # ACTOR间通信 
 		template <typename T, EPROTOCOL_TYPE TYPE>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
@@ -88,7 +92,7 @@ namespace ngl
 			register_protocol(TYPE, tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
-		// 转发[负责转发的actor必须是单例actor]
+		// # 转发[负责转发的actor必须是单例actor]
 		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
 		static void registry_actor_forward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{

@@ -66,7 +66,6 @@ namespace ngl
 	using tdb_rolekv = typedb<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue, actor_role>;
 	using tdb_task = typedb<pbdb::ENUM_DB_TASK, pbdb::db_task, actor_role>;
 
-
 	class tdb
 	{
 	public:
