@@ -221,9 +221,9 @@ namespace ngl
 		bool handle(const message<mforward<np_gm>>& adata);
 		bool handle(const message<np_actor_disconnect_close>& adata);
 		bool handle(const message<np_actor_senditem>& adata);
+		bool handle(const message<np_actor_task>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 		bool handle(const message<np_example_actorid>& adata);
-		bool handle(const message<np_actor_calendar_response>& adata);		
 		// [请求]获取背包信息
 		bool handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata);
 		// 修改方向,速度

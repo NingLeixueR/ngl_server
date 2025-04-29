@@ -194,8 +194,12 @@ message db_task
 		repeated data_schedule m_schedules  = 4; // 任务进度
 		optional bool m_receive				= 5; // 任务奖励是否已领取
 	}
+	message complete
+	{
+		repeated data m_history			= 1;	// 历史已完成任务
+	}
 	map<int32,data> m_rundatas			= 2; // 正在进行的任务数据
-	map<int32,data> m_completeddatas	= 3; // 已完成的任务数据
+	map<int32,complete> m_completeddatas	= 3; // 已完成的任务数据
 }
 
 message calendar_pair

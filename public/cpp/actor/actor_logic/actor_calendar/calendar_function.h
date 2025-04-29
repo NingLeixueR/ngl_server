@@ -23,7 +23,20 @@ namespace ngl
 	public:
 		static void init();
 
-		static void start(tab_calendar* tab, int64_t atime, pbdb::db_calendar* acalendar)
+		static void trigger(tab_calendar* tab, int64_t atime, bool aisstart, pbdb::db_calendar* acalendar = nullptr)
+		{
+			if (aisstart)
+			{
+				start(tab, atime, acalendar);
+			}
+			else
+			{
+				finish(tab, atime, acalendar);
+			}
+		}
+
+	private:
+		static void start(tab_calendar* tab, int64_t atime, pbdb::db_calendar* acalendar = nullptr)
 		{
 			acalendar->set_m_time(atime);
 			auto itor = m_fun.find(tab->m_carendar);
@@ -32,7 +45,10 @@ namespace ngl
 				return;
 			}
 			itor->second.m_start(tab, atime);
-			acalendar->set_m_start(true);
+			if (acalendar != nullptr)
+			{
+				acalendar->set_m_start(true);
+			}
 		}
 
 		static void finish(tab_calendar* tab, int64_t atime, pbdb::db_calendar* acalendar)
@@ -43,11 +59,14 @@ namespace ngl
 				return;
 			}
 			itor->second.m_finish(tab, atime);
-			acalendar->set_m_finish(true);
+			if (acalendar != nullptr)
+			{
+				acalendar->set_m_finish(true);
+			}
 		}
 
-	private:
 		static void operator_activ(tab_calendar* tab, int64_t atime, bool astart);
+
 		static void operator_task(tab_calendar* tab, int64_t atime, bool astart);
 	};
 }//namespace ngl
