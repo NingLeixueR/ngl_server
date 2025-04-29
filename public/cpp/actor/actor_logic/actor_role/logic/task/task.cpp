@@ -308,7 +308,7 @@ namespace ngl
 			});
 
 		log_error()->print("#已完成的任务[{}]#正在进行的任务[{}]#", lfinishtask, lruntask);
-
+		
 		actor_role* lrole = actor();
 		// ### 检查是否有可接受的任务
 		auto tabs = allcsv::get<ttab_task>();
