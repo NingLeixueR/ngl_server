@@ -167,5 +167,43 @@ namespace ngl
 			}
 			return &table->m_taskcomplete;
 		}
+
+		// # 任务是否可重复完成
+		static bool repeat(actor_role* rd, i32_taskid ataskid)
+		{
+			tab_task* table = tab(ataskid);
+			if (table == nullptr)
+			{
+				return false;
+			}
+			if (table->m_type == ETaskTypeRepeat || table->m_type == ETaskTypeDaily)
+			{
+				int32_t lmaxcount = tools::lexical_cast<int32_t>(table->m_typeparm);
+				const auto& lcomplete = rd->m_task.get_consttask().m_completeddatas();
+				auto itor = lcomplete.find(ataskid);
+				if (itor != lcomplete.end())
+				{
+					return true;
+				}
+				int32_t lcount = 0;
+				if (table->m_type == ETaskTypeDaily)
+				{
+					for (const auto& item : itor->second.m_history())
+					{
+						item.m_finshutc();
+						if (localtime::issameday(item.m_finshutc()))
+						{
+							++lcount;
+						}
+					}
+				}
+				else
+				{
+					lcount = itor->second.m_history().size();
+				}
+				return lcount < lmaxcount;
+			}
+			return false;
+		}
 	};
 }//namespace ngl

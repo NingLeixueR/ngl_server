@@ -86,7 +86,7 @@ namespace ngl
 		return true;
 	}
 
-	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::complete(actor_role* arole)
+	google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::complete(actor_role* arole)
 	{
 		return *arole->m_task.get_task().mutable_m_completeddatas();
 	}
@@ -96,7 +96,7 @@ namespace ngl
 		return *arole->m_task.get_task().mutable_m_rundatas();
 	}
 
-	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_complete(actor_role* arole)
+	const google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::const_complete(actor_role* arole)
 	{
 		return arole->m_task.get_task().m_completeddatas();
 	}
@@ -120,11 +120,15 @@ namespace ngl
 
 	bool static_task::receive_task(actor_role* arole, i32_taskid ataskid)
 	{
-		//## 接收任务前先查看是否已经完成了
-		if (isfinish_task(arole, ataskid))
-		{
-			return false;
+		if (ttab_task::repeat(arole, ataskid) == false)
+		{//## 不可重复完成任务
+			//## 接收任务前先查看是否已经完成了
+			if (isfinish_task(arole, ataskid))
+			{
+				return false;
+			}
 		}
+		
 		//## 此任务是否已经被接收
 		if (isreceive_task(arole, ataskid))
 		{
@@ -142,7 +146,6 @@ namespace ngl
 			return false;
 		}
 
-		arole->m_task.get_consttask();
 		pbdb::db_task::data ltemp;
 		ltemp.set_m_taskid(ataskid);
 		ltemp.set_m_receiveutc(localtime::gettime());
@@ -155,13 +158,32 @@ namespace ngl
 		return true;
 	}
 
+	bool static_task::reset_task(actor_role* arole, i32_taskid ataskid)
+	{
+		erase_task(arole, ataskid);
+		receive_task(arole, ataskid);
+		return true;
+	}
+
+	bool static_task::erase_task(actor_role* arole, i32_taskid ataskid)
+	{
+		finish_task(arole, ataskid);
+
+		arole->m_task.get_task().mutable_m_rundatas()->erase(ataskid);
+		return true;
+	}
+
 	bool static_task::finish_task(actor_role* arole, i32_taskid ataskid)
 	{
-		// # 接收任务前先查看是否已经完成了
-		if (isfinish_task(arole, ataskid))
+		if (ttab_task::repeat(arole, ataskid) == false)
 		{
-			return false;
+			// # 完成任务前先查看是否已经完成了
+			if (isfinish_task(arole, ataskid))
+			{
+				return false;
+			}
 		}
+		
 		// # 此任务是否已经接收
 		if (isreceive_task(arole, ataskid) == false)
 		{
@@ -198,7 +220,7 @@ namespace ngl
 				}
 			}
 			itor->second.set_m_finshutc(localtime::gettime());
-			complete(arole).insert({ ataskid, itor->second });
+			*complete(arole)[ataskid].add_m_history() = itor->second;
 			run(arole).erase(itor);
 			update_change(arole, ETaskTaskId, ataskid);
 			return true;
@@ -273,8 +295,8 @@ namespace ngl
 		auto lrundatas = ltask.mutable_m_rundatas();
 
 		std::string lfinishtask;
-		tools::splicing<int32_t, pbdb::db_task_data>(*lcompleteddatas, "|", lfinishtask, 
-			[](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
+		tools::splicing<int32_t, pbdb::db_task_complete>(*lcompleteddatas, "|", lfinishtask, 
+			[](const int32_t& _id, const pbdb::db_task_complete& _value)->std::string
 			{
 				return tools::lexical_cast<std::string>(_id);
 			});

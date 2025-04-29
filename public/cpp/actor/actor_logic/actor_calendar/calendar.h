@@ -11,6 +11,12 @@
 
 namespace ngl
 {
+	struct calendar_trigger
+	{
+		int64_t m_triggerutc = -1;
+		bool m_isstart = false;
+	};
+
 	class calendar : public tdb_calendar::db_modular
 	{
 		calendar(const calendar&) = delete;
@@ -110,7 +116,7 @@ namespace ngl
 				if (lcalendar.m_start() == false && lnow >= lbeg)
 				{
 					// 执行 start
-					calendar_function::start(tab, ltime, itemcalendar);
+					calendar_function::trigger(tab, ltime, true, itemcalendar);
 				}
 				else
 				{
@@ -119,7 +125,7 @@ namespace ngl
 				if (lcalendar.m_finish() == false && lnow >= lend)
 				{
 					// 执行 finish
-					calendar_function::finish(tab, ltime, itemcalendar);
+					calendar_function::trigger(tab, ltime, false, itemcalendar);
 				}
 				else
 				{
@@ -145,8 +151,6 @@ namespace ngl
 					ttab_calendar::post(ttab_calendar::tab(item.first), ltime, *get_calendar(item.first));
 				}
 			}
-
-			
 		}
 
 		// # 添加历史触发列表
@@ -184,7 +188,7 @@ namespace ngl
 		}
 
 		// # 获取历史触发列表
-		void get_trigger_list(int32_t atriggertime, std::map<int64_t, std::vector<calendar_pair>>& acalendarlist)
+		void get_trigger_list(int32_t atriggertime, std::map<int64_t, std::vector<calendar_trigger>>& acalendarlist)
 		{
 			for (const auto& item1 : *get_calendar())
 			{
@@ -193,7 +197,7 @@ namespace ngl
 				{
 					if (atriggertime < item2.m_triggertime())
 					{
-						acalendarlist[calendarid].push_back(calendar_pair
+						acalendarlist[calendarid].push_back(calendar_trigger
 							{
 								.m_triggerutc = item2.m_triggertime(),
 								.m_isstart = item2.m_isstart()

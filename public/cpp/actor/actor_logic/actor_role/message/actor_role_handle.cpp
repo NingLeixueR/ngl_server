@@ -99,6 +99,29 @@ namespace ngl
 		m_bag.add_item(lparm->m_item);
 		return true;
 	}
+	bool actor_role::handle(const message<np_actor_task>& adata)
+	{
+		const np_actor_task* recv = adata.get_data();
+		if (recv == nullptr)
+		{
+			return true;
+		}
+		recv->m_taskids;
+		recv->m_start;
+		if (recv->m_start)
+		{
+			for (i64_actorid taskid : recv->m_taskids)
+			{
+				static_task::receive_task(this, taskid);
+			}
+		}
+		else
+		{
+			//static_task::
+		}
+
+		return true;
+	}
 	bool actor_role::handle(const message<np_eevents_logic_rolelogin>& adata)
 	{
 		return true;
@@ -107,10 +130,6 @@ namespace ngl
 	{
 		m_example.first = adata.get_data()->m_type;
 		m_example.second = adata.get_data()->m_actorexampleid;
-		return true;
-	}
-	bool actor_role::handle(const message<np_actor_calendar_response>& adata)
-	{
 		return true;
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC>& adata)

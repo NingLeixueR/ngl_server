@@ -327,21 +327,6 @@ namespace ngl
 		def_portocol(np_actor_calendar_requst, m_loginoututc);
 	};
 
-	struct calendar_pair
-	{
-		int64_t m_triggerutc = -1;
-		bool m_isstart = false;
-
-		def_portocol(calendar_pair, m_triggerutc, m_isstart);
-	};
-
-	struct np_actor_calendar_response
-	{
-		std::map<int64_t, std::vector<calendar_pair>> m_calendarlist;
-
-		def_portocol(np_actor_calendar_response, m_calendarlist);
-	};
-
 	// ---- 通知kcp服务器创建连接
 	struct np_actor_kcp
 	{

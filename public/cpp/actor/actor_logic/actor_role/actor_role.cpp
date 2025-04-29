@@ -121,7 +121,7 @@ namespace ngl
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, np_example_actorid
-			, np_actor_calendar_response
+			, np_actor_task
 		>(true);
 
 		// 绑定pb消息

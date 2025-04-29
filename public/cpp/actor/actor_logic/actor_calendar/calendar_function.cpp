@@ -45,11 +45,11 @@ namespace ngl
 		m_fun[ECalendarTypeTask] = {
 			.m_start = [](tab_calendar* tab, int64_t atime)
 			{
-
+				operator_activ(tab, atime, true);
 			},
 			.m_finish = [](tab_calendar* tab, int64_t atime)
 			{
-
+				operator_activ(tab, atime, false);
 			}
 		};
 	}
