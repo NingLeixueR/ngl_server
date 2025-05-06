@@ -263,8 +263,11 @@ namespace ngl
 
 		~slist_production()
 		{
-			m_list.clear(m_freefree);
-			m_free.clear(m_freefree);
+			Try
+			{
+				m_list.clear(m_freefree);
+				m_free.clear(m_freefree);
+			}Catch;
 		}
 
 		inline void clear()
