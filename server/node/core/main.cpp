@@ -18,67 +18,8 @@ const std::string lerrpath = "²ÎÊı´íÎó:EXE name areaid tab_servers::tcount";
 
 Dumper lDumper;
 
-struct ssss
-{
-	int m_value;
-	~ssss()
-	{
-		std::cout << "hello world " << m_value << std::endl;
-	}
-};
-struct kkkk
-{
-	std::shared_ptr<ssss> m_1;
-	~kkkk()
-	{}
-};
 int main(int argc, char** argv)
 {
-	kkkk* ltemp = (kkkk*)std::malloc(sizeof(kkkk));
-	for (int i = 0; i < 100; ++i)
-	{
-		ltemp = new(ltemp)kkkk();
-		ltemp->m_1 = std::make_shared<ssss>();
-		ltemp->m_1->m_value = i;
-		ltemp->~kkkk();
-	}
-	
-
-
-	{
-		ngl::slist<int> ls1(5, 50, 10);
-		ngl::slist<int> ls2(5, 50, 10);
-		for (int i = 0; i < 100; ++i)
-		{
-			ls1.push_back(i);
-		}
-
-		for (int i = 101; i < 200; ++i)
-		{
-			ls2.push_back(i);
-		}
-
-		for (int i = 0; i < 100; ++i)
-		{
-			if (i % 2 == 0)
-			{
-				std::cout << ls1.front() << std::endl;
-				ls1.pop_front();
-			}
-		}
-
-		for (int i = 0; i < 100; ++i)
-		{
-			if (i % 2 == 0)
-			{
-				std::cout << ls2.front() << std::endl;
-				ls2.pop_front();
-			}
-		}
-
-		ls1.push_front(ls2);
-	}
-	
 	if (argc <= 3)
 	{
 		std::cout << lerrpath << std::endl;

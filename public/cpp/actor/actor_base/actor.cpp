@@ -18,13 +18,17 @@ namespace ngl
 #ifdef STL_MESSAGELIST
 		template <typename T>
 		using tls = std::list<T>;
+		template <typename T>
+		using trunls = std::list<T>;
 #else
 		template <typename T>
-		using tls = slist<T>;
+		using tls = slist_production<T>;
+		template <typename T>
+		using trunls = slist_consumption<T>;
 #endif//DEF_ACTOR_USE_LIST
 
 		tls<handle_pram>				m_list;		// 待处理消息列表
-		tls<handle_pram>				m_locallist;// 正在处理消息列表
+		trunls<handle_pram>				m_locallist;// 正在处理消息列表
 		actor_stat						m_stat;		// actor状态
 		std::shared_mutex				m_mutex;	// 锁:[m_list:待处理消息列表]
 		int32_t							m_weight;	// 权重
@@ -118,13 +122,13 @@ namespace ngl
 			return false;
 		}
 
-		inline void swaplist(tls<handle_pram>& als)
+		inline void swaplist(trunls<handle_pram>& als)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_list.swap(als);
 		}
 
-		inline void insertlist(tls<handle_pram>& als)
+		inline void insertlist(trunls<handle_pram>& als)
 		{
 			monopoly_shared_lock(m_mutex);
 #ifdef STL_MESSAGELIST

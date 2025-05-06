@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-06 14:20:37
+// 创建时间 25-05-06 17:32:55
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -69,6 +69,7 @@
 #include "gdbdmp.cpp"
 #include "family.cpp"
 #include "tools.cpp"
+#include "slist.cpp"
 #include "nrfun.cpp"
 #include "nguid.cpp"
 #include "mdump.cpp"
