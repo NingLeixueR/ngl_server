@@ -1,5 +1,6 @@
 #include "actor_manage.h"
 #include "ndbclient.h"
+#include "slist.h"
 #include "actor.h"
 #include "net.h"
 
@@ -14,15 +15,16 @@ namespace ngl
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
 
-#ifdef DEF_ACTOR_USE_DEQUE
-		template <typename T>
-		using tls = std::deque<T>;
-#else
+#ifdef STL_MESSAGELIST
 		template <typename T>
 		using tls = std::list<T>;
+#else
+		template <typename T>
+		using tls = slist<T>;
 #endif//DEF_ACTOR_USE_LIST
 
 		tls<handle_pram>				m_list;		// 待处理消息列表
+		tls<handle_pram>				m_locallist;// 正在处理消息列表
 		actor_stat						m_stat;		// actor状态
 		std::shared_mutex				m_mutex;	// 锁:[m_list:待处理消息列表]
 		int32_t							m_weight;	// 权重
@@ -111,6 +113,7 @@ namespace ngl
 					return true;
 				}
 				lprfun->notfindfun(m_actor, athreadid, aparm);
+				return true;
 			}Catch
 			return false;
 		}
@@ -124,7 +127,11 @@ namespace ngl
 		inline void insertlist(tls<handle_pram>& als)
 		{
 			monopoly_shared_lock(m_mutex);
+#ifdef STL_MESSAGELIST
 			m_list.insert(m_list.begin(), als.begin(), als.end());
+#else
+			m_list.push_front(als);
+#endif
 		}
 	public:
 		inline void actor_handle(i32_threadid athreadid, int aweight)
@@ -133,31 +140,30 @@ namespace ngl
 			{
 				return;
 			}
-			tls<handle_pram> llist;
-			swaplist(llist);
-			if (aweight < llist.size())
+			swaplist(m_locallist);
+			if (aweight < m_locallist.size())
 			{
-				m_actor->log_error()->print("actor handle [weight:{}/count:{}]", aweight, llist.size());
+				m_actor->log_error()->print("actor handle [weight:{}/count:{}]", aweight, m_locallist.size());
 			}
 			time_t lbeg = localtime::gettimems();
 			int32_t lcount = 0;
-			while (--aweight >= 0 && llist.empty() != true)
+			while (--aweight >= 0 && m_locallist.empty() != true)
 			{
 				if (m_release == false && localtime::gettimems()- lbeg> m_timeout)
 				{
 					break;
 				}
-				handle_pram& lparm = llist.front();
+				handle_pram& lparm = m_locallist.front();
 				if (ahandle(athreadid, lparm) == true)
 				{
 					m_actor->handle_after(lparm);
 				}
-				llist.pop_front();
+				m_locallist.pop_front();
 				++lcount;
 			}
-			if (llist.empty() == false)
+			if (!m_locallist.empty())
 			{
-				insertlist(llist);
+				insertlist(m_locallist);
 			}
 		}
 

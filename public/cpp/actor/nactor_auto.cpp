@@ -93,6 +93,7 @@ namespace ngl
 			/*220000001*/mforward<np_gm>
 			/*220000002*/, mforward<np_gm_response>
 			/*220000003*/, np_actorswitch_process<np_actorswitch_process_role>
+			/*220000004*/, mforward<np_actor_calendar_requst>
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
 		tprotocol::set_customs_index(230000000);

@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-04-25 15:56:51
+// 创建时间 // 创建时间 25-05-06 14:20:49
 #pragma once
 
 #include "ndb_modular.h"
@@ -44,18 +44,20 @@ namespace ngl
 			/*200000026*/, np_actor_gatewayinfo_updata
 			/*200000027*/, np_actor_addmail
 			/*200000028*/, np_actor_activity
-			/*200000029*/, np_actor_kcp
-			/*200000030*/, np_calendar
-			/*200000031*/, np_actor_addnotice
-			/*200000032*/, np_actor_close
-			/*200000033*/, np_logitem
-			/*200000034*/, np_channel_check
-			/*200000035*/, np_roleban
-			/*200000036*/, np_login_request_info
-			/*200000037*/, np_create_example
-			/*200000038*/, np_example_entergame_ready
-			/*200000039*/, np_example_actorid
-			/*200000040*/, np_example_equit
+			/*200000029*/, np_actor_task
+			/*200000030*/, np_actor_calendar_requst
+			/*200000031*/, np_actor_kcp
+			/*200000032*/, np_calendar
+			/*200000033*/, np_actor_addnotice
+			/*200000034*/, np_actor_close
+			/*200000035*/, np_logitem
+			/*200000036*/, np_channel_check
+			/*200000037*/, np_roleban
+			/*200000038*/, np_login_request_info
+			/*200000039*/, np_create_example
+			/*200000040*/, np_example_entergame_ready
+			/*200000041*/, np_example_actorid
+			/*200000042*/, np_example_equit
 		> (EPROTOCOL_TYPE_CUSTOM);
 	}
 }//namespace ngl
