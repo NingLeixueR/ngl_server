@@ -180,8 +180,59 @@ namespace ngl
 		}
 	};
 
+	// 消费队列
 	template <typename T>
-	class slist
+	class slist_consumption
+	{
+		lsnode<T> m_list;
+		lsnode<T> m_free;
+		std::function<void(node<T>*)> m_listfree;
+	public:
+		slist_consumption():
+			m_listfree([this](node<T>* adata)
+				{
+					std::destroy_at(adata);
+					m_free.push_back(adata);
+				})
+		{
+		}
+
+		lsnode<T>& get_list()
+		{
+			return m_list;
+		}
+
+		lsnode<T>& get_free()
+		{
+			return m_free;
+		}
+
+		inline bool empty()const
+		{
+			return m_list.size() == 0;
+		}
+
+		inline int size()const
+		{
+			return m_list.size();
+		}
+
+		inline void pop_front()
+		{
+			m_list.pop(m_listfree);
+		}
+
+		inline T& front()
+		{
+			auto ptr = m_list.front();
+			assert(ptr != nullptr);
+			return ptr->m_data;
+		}
+	};
+
+	// 生产队列
+	template <typename T>
+	class slist_production
 	{
 		int m_initcapacity;
 		int m_expand;
@@ -192,7 +243,7 @@ namespace ngl
 
 		int m_maxsize;
 	public:
-		slist(int asize = 10, int amaxsize = 1000, int aexpand = 10) :
+		slist_production(int asize = 10, int amaxsize = 1000, int aexpand = 10) :
 			m_expand(aexpand),
 			m_initcapacity(asize),
 			m_free(asize),
@@ -210,7 +261,7 @@ namespace ngl
 		{
 		}
 
-		~slist()
+		~slist_production()
 		{
 			m_list.clear(m_freefree);
 			m_free.clear(m_freefree);
@@ -332,18 +383,15 @@ namespace ngl
 			return true;
 		}
 
-		inline void push_front(slist<T>& alist)
+		inline void push_front(slist_consumption<T>& alist)
 		{
-			m_list.push_front(alist.m_list);
+			m_list.push_front(alist.get_list());
+			m_free.push_front(alist.get_free());
 		}
 
-		inline void swap(slist<T>& ar)
+		inline void swap(slist_consumption<T>& ar)
 		{
-			m_list.swap(ar.m_list);
-			m_free.swap(ar.m_free);
-			std::swap(m_initcapacity, ar.m_initcapacity);
-			std::swap(m_expand, ar.m_expand);
-			std::swap(m_maxsize, ar.m_maxsize);
+			m_list.swap(ar.get_list());
 		}
 
 		inline void pop_front()
@@ -365,4 +413,6 @@ namespace ngl
 			return ptr->m_data;
 		}
 	};
+
+	extern void test_slist();
 }
