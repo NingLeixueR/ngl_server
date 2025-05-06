@@ -199,14 +199,12 @@ namespace ngl
 			m_maxsize(amaxsize),
 			m_listfree([this](node<T>* adata)
 				{
-					adata->~node<T>();
-					//std::destroy_at(adata);
+					std::destroy_at(adata);
 					m_free.push_back(adata);
 				}),
 			m_freefree([this](node<T>* adata)
 				{
-					adata->~node<T>();
-					//std::destroy_at(adata);
+					std::destroy_at(adata);
 					std::free(adata);
 				})
 		{
