@@ -1,12 +1,7 @@
 #pragma once
 
 #include <functional>
-
-#include "threadtools.h"
-#include "time_wheel.h"
-#include "localtime.h"
-#include "type.h"
-#include "nlog.h"
+#include <iostream>
 
 namespace ngl
 {
@@ -263,11 +258,15 @@ namespace ngl
 
 		~slist_production()
 		{
-			Try
+			try
 			{
 				m_list.clear(m_freefree);
 				m_free.clear(m_freefree);
-			}Catch;
+			}
+			catch(...)
+			{
+				std::cout << "throw ~slist_production()" << std::endl;
+			}
 		}
 
 		inline void clear()
