@@ -14,6 +14,71 @@
 
 namespace ngl
 {
+	struct thruput
+	{
+		std::atomic<int32_t> m_count = 0;
+		int32_t m_maxcount = 0;
+		time_t m_beg = 0;
+		time_t m_end = 0;
+	};
+	class test_thruput
+	{
+		std::vector<thruput*> m_rounds;
+	public:
+		static test_thruput& getInstance()
+		{
+			static test_thruput ltemp;
+			return ltemp;
+		}
+
+		void change_rounds(int arounds)
+		{
+			m_rounds[arounds]->m_count.fetch_add(1, std::memory_order_relaxed);
+			if (m_rounds[arounds]->m_count >= m_rounds[arounds]->m_maxcount)
+			{
+				m_rounds[arounds]->m_end = ngl::time_wheel::getms();
+				test_thruput::getInstance().print(arounds);
+			}
+		}
+
+		void add_rounds(int32_t aactorcount, int32_t aeverycount)
+		{
+			m_rounds.push_back(new thruput
+			{
+				.m_count = 0,
+				.m_maxcount = aactorcount * aeverycount,
+				.m_beg = ngl::time_wheel::getms(),
+				.m_end = 0
+			});
+
+			auto pro = std::make_shared<np_thruput_test>();
+			pro->m_rounds = m_rounds.size() - 1;
+			for (int i = 0; i < aeverycount; ++i)
+			{
+				actor::static_send_actor(ACTOR_ROBOT, pro);
+			}
+		}
+
+		void print(int arounds)
+		{
+			std::cout << std::format("rounds:{} m_count:{} m_maxcount:{} beg:{} end:{} space:{}\n", 
+				arounds, m_rounds[arounds]->m_count.load(), 
+				m_rounds[arounds]->m_maxcount, 
+				m_rounds[arounds]->m_beg, m_rounds[arounds]->m_end, 
+				m_rounds[arounds]->m_end - m_rounds[arounds]->m_beg
+			);
+		}
+
+		void release()
+		{
+			for (int32_t i = 0; i < m_rounds.size(); ++i)
+			{
+				delete m_rounds[i];
+			}
+			m_rounds.clear();
+		}
+	};
+
 	class actor_robot : public actor
 	{
 		// ----- Data Begin -----
@@ -47,6 +112,7 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
+		bool handle(const message<np_thruput_test>& adata);
 		bool handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata);
 		bool handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>& adata);
 		// Æ¥Åä½á¹û

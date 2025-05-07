@@ -57,6 +57,7 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_robot>::func<
+			np_thruput_test
 		>(true);
 
 		// 绑定pb消息

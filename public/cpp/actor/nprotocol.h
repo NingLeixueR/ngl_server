@@ -577,4 +577,10 @@ namespace ngl
 		def_portocol(np_example_equit, m_type, m_exampleid)
 	};
 
+	struct np_thruput_test
+	{
+		int32_t m_rounds = 0;
+		def_portocol(np_thruput_test, m_rounds)
+	};
+
 }//namespace ngl
