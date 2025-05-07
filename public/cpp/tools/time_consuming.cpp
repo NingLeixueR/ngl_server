@@ -20,4 +20,4 @@ namespace ngl
 		bool lerror = lconsuming > sysconfig::consumings();
 		(lerror ? log_error() : log_info())->print("time consuming [{}:{}]", m_name, lconsuming);
 	}
-}
+}//namespace ngl
