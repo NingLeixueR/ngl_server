@@ -3,6 +3,11 @@
 #include "nforward.h"
 namespace ngl
 {
+	bool actor_robot::handle(const message<np_thruput_test>& adata)
+	{
+		test_thruput::getInstance().change_rounds(adata.get_data()->m_rounds);
+		return true;
+	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata)
 	{
 		tools::print_json2proto(*adata.get_data(), true);

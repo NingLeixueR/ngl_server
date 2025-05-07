@@ -139,6 +139,22 @@ namespace ngl
 							return true;
 						});
 				});
+
+			handle_cmd::push("test_thruput", [this](const std::vector<std::string>& avec)
+				{
+					int32_t lrounds = tools::lexical_cast<int32_t>(avec[1]);
+					int32_t lactorcount = tools::lexical_cast<int32_t>(avec[2]);
+					int32_t leverycount = tools::lexical_cast<int32_t>(avec[3]);
+					for (int i = 0; i < lrounds; ++i)
+					{
+						test_thruput::getInstance().add_rounds(lactorcount, leverycount);
+					}
+				});
+
+			handle_cmd::push("release_thruput", [this](const std::vector<std::string>& avec)
+				{
+					test_thruput::getInstance().release();
+				});
 		}
 
 		if (handle_cmd::function(lparm1, lrecv->m_parm) == false)
