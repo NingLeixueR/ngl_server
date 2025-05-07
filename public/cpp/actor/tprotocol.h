@@ -25,11 +25,11 @@ namespace ngl
 			bool m_forward = false;
 		};
 	private:
-		static std::map<size_t, pinfo>						m_keyval;
-		static std::map<i32_protocolnum, pinfo*>			m_protocol;
+		static std::map<size_t, pinfo>				m_keyval;
+		static std::map<i32_protocolnum, pinfo*>	m_protocol;
 		// net/gm		[1			-  100000000];
 		// custom		[200000001	-  300000000];
-		static int32_t							m_customs/* = 200000000*/;
+		static int32_t								m_customs/* = 200000000*/;
 
 		template <typename T>
 		static size_t hash_code()
