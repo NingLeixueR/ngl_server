@@ -38,7 +38,7 @@
 
 ## 更多介绍
   * [wiki](https://github.com/NingLeixueR/ngl_server/wiki)
-  * [deepwiki](https://deepwiki.com/NingLeixueR/ngl_serve)
+  * [deepwiki](https://deepwiki.com/NingLeixueR/ngl_server)
 
 ## QQ群
   * 56257994
