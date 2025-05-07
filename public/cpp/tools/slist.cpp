@@ -52,5 +52,29 @@ namespace ngl
 		}
 		lconsuming = ngl::time_wheel::getms() - lbeg;
 		std::cout << "slist:" << lconsuming << std::endl;
+
+		lbeg = ngl::time_wheel::getms();
+		std::deque<int> ldeque1;
+		std::deque<int> ldeque2;
+		for (int i = 0; i < 10000; ++i)
+		{
+			for (int j = 0; j < 400; ++j)
+			{
+				ldeque1.push_back(j);
+			}
+			ldeque1.swap(ldeque2);
+			for (int j = 0; j < 400; ++j)
+			{
+				ldeque1.push_back(j);
+			}
+			for (int j = 0; j < 200; ++j)
+			{
+				ldeque2.pop_front();
+			}
+			ldeque1.insert(ldeque1.begin(), ldeque2.begin(), ldeque2.end());
+			ldeque1.clear();
+		}
+		lconsuming = ngl::time_wheel::getms() - lbeg;
+		std::cout << "deque:" << lconsuming << std::endl;
 	}
 }//namespace ngl
