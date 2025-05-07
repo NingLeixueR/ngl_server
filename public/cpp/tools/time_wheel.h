@@ -98,7 +98,7 @@ namespace ngl
 		int	count();
 
 		// # 是否没有正在执行的定时器
-		bool	empty();
+		bool empty();
 
 		// # 获取服务器启动的毫秒数
 		int64_t server_start_ms();
