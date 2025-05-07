@@ -2,6 +2,7 @@
 #include "json_write.h"
 #include "json_read.h"
 #include "nprotocol.h"
+#include "worklist.h"
 #include "nlog.h"
 
 #include <thread>
@@ -86,7 +87,7 @@ namespace ngl
 	struct manage_curl::impl_manage_curl
 	{
 		std::unique_ptr<std::thread>			m_thread;
-		work_list<std::shared_ptr<http_parm>>		m_list;
+		worklist<std::shared_ptr<http_parm>>	m_list;
 
 		impl_manage_curl() :
 			m_thread(nullptr),
@@ -515,5 +516,28 @@ namespace ngl
 				std::cout << std::endl << result_utf82;
 			});
 		ngl::manage_curl::send(lhttp);
+	}
+
+	void test_curl()
+	{
+		auto lhttp = ngl::manage_curl::make_http();
+		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
+		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
+		ngl::manage_curl::set_url(lhttp, "http://192.168.3.120:8080/");
+
+		std::string lparm;
+		ngl::manage_curl::set_param(lhttp, lparm);
+		bool lbool = true;
+
+		ngl::manage_curl::set_callback(lhttp, [&lbool](int anum, ngl::http_parm& aparm)
+			{
+				log_error()->print("curl callback [{}]", aparm.m_recvdata);
+				lbool = false;
+			});
+		ngl::manage_curl::send(lhttp);
+		while (lbool)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+		}
 	}
 }//namespace ngl

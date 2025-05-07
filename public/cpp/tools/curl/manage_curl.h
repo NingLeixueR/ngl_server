@@ -103,6 +103,7 @@ namespace ngl
 		static void sendemail(const parameter& aparm);
 	};
 
+	void test_curl();
 	void test_manage_curl();
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec = {});
 }//namespace ngl

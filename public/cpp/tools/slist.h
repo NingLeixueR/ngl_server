@@ -10,6 +10,11 @@ namespace ngl
 	{
 		T m_data;
 		node<T>* m_next = nullptr;
+
+		node<T>* next()
+		{
+			return m_next;
+		}
 	};
 
 	template <typename T>
@@ -42,7 +47,17 @@ namespace ngl
 			return m_size <= 0;
 		}
 
-		void push_front(lsnode<T>& als)
+		node<T>* begin()
+		{
+			return m_head;
+		}
+
+		node<T>* end()
+		{
+			return nullptr;
+		}
+
+		inline void push_front(lsnode<T>& als)
 		{
 			if (als.empty())
 			{
@@ -222,6 +237,21 @@ namespace ngl
 			auto ptr = m_list.front();
 			assert(ptr != nullptr);
 			return ptr->m_data;
+		}
+
+		inline void clear()
+		{
+			m_list.clear(m_listfree);
+		}
+
+		void foreach(const std::function<void(T&)>& afun)
+		{
+			auto itor = m_list.begin();
+			while (itor != m_list.end())
+			{
+				afun(itor->m_data);
+				itor = itor->next();
+			}
 		}
 	};
 
