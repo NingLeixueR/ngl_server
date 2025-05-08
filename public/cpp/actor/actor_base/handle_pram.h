@@ -42,8 +42,8 @@ namespace ngl
 		std::shared_ptr<void>	m_data			= nullptr;					// 协议结构
 		std::shared_ptr<pack>	m_pack			= nullptr;					// 如果是网络消息会携带pack信息
 		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;	// 协议类型
-		nguid					m_actor;									// 发送给哪个actor
-		nguid					m_requestactor;								// 哪个actor发送的
+		nguid					m_actor			= nguid::make();			// 发送给哪个actor
+		nguid					m_requestactor	= nguid::make();			// 哪个actor发送的
 
 		using forwardtype = std::function<
 			void(const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram&)

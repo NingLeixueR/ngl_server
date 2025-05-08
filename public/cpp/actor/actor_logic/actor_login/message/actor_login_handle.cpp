@@ -41,7 +41,7 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			auto lpack = adata.m_pack;
+			auto lpack = adata.get_pack();
 			Assert(lpack != nullptr)
 			log_info()->print("############ Login[{}][{}][{}] ############",
 				lparm->m_area(), lparm->m_account(), lparm->m_password()
@@ -84,7 +84,7 @@ namespace ngl
 				.m_gatewayid = lppair_account->m_gatewayserverid,
 				.m_area = (int16_t)lpaccount->getconst().m_area(),
 				.m_iscreate = iscreate,
-				.m_socketid = adata.m_pack->m_id,
+				.m_socketid = adata.get_pack()->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
 			nets::sendbyserver(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());
@@ -95,7 +95,7 @@ namespace ngl
 			procli.set_m_session(pro.m_session);
 			procli.set_m_account(pro.m_account);
 			procli.set_m_gatewayid(pro.m_gatewayid);
-			nets::sendbysession(adata.m_pack->m_id, procli, lpack->m_head.get_request_actor(), id_guid());
+			nets::sendbysession(adata.get_pack()->m_id, procli, lpack->m_head.get_request_actor(), id_guid());
 
 		}Catch
 			return true;

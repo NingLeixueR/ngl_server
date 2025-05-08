@@ -240,19 +240,19 @@ namespace ngl
 		{
 			std::string lname = tools::protobuf_tabname<TDBTAB>::name();
 			log_error()->print("load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id);
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.m_thread, adata.m_pack, *adata.get_data());
+			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
 
 		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::save(adata.m_thread, adata.m_pack, *adata.get_data());
+			actor_dbtab<TDBTAB_TYPE, TDBTAB>::save(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
 
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::del(adata.m_thread, adata.get_data()->m_data);
+			actor_dbtab<TDBTAB_TYPE, TDBTAB>::del(adata.thread(), adata.get_data()->m_data);
 			return true;
 		}
 
@@ -270,13 +270,13 @@ namespace ngl
 					{
 						continue;
 					}
-					db_manage::save<TDBTAB>(db_pool::get(adata.m_thread), id);
+					db_manage::save<TDBTAB>(db_pool::get(adata.thread()), id);
 				}
 				break;
 				case enum_clist_del:
 				{
 					ngl::db_data<TDBTAB>::remove(id);
-					db_manage::del<TDBTAB>(db_pool::get(adata.m_thread), id);
+					db_manage::del<TDBTAB>(db_pool::get(adata.thread()), id);
 				}
 				break;
 				default:
@@ -380,7 +380,7 @@ namespace ngl
 					});
 			}
 
-			if (handle_cmd::function(loperator, adata.m_thread, parm.identifier(), lojson) == false)
+			if (handle_cmd::function(loperator, adata.thread(), parm.identifier(), lojson) == false)
 			{
 				log_error()->print("GM actor_db operator[{}] ERROR", loperator);
 			}

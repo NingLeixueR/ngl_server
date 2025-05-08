@@ -22,7 +22,7 @@ namespace ngl
 			if (ttab_servers::tab()->m_id != tab->m_id)
 			{
 				i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
-				agm->sendbyactorid(lactorid, adata->m_pack, *adata->get_data());
+				agm->sendbyactorid(lactorid, adata->get_pack(), *adata->get_data());
 				return true;
 			}
 			return false;
@@ -67,13 +67,13 @@ namespace ngl
 			};
 			handle_cmd::push("server_stat", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<actor_manage::msg_actor_stat> lpro(adata->m_pack->m_id, "server_stat", this);
+					gcmd<actor_manage::msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
 					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				}
 			);
 			handle_cmd::push("guid", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<std::string> lresponse(adata->m_pack->m_id, "guid", this);
+					gcmd<std::string> lresponse(adata->get_pack()->m_id, "guid", this);
 					gm_guid lguid;
 					if (aos.read("data", lguid))
 					{
@@ -89,13 +89,13 @@ namespace ngl
 			);
 			handle_cmd::push("all_protocol", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<protocols> lresponse(adata->m_pack->m_id, "all_protocol", this);
+					gcmd<protocols> lresponse(adata->get_pack()->m_id, "all_protocol", this);
 					actor_gmclient::get_allprotocol(lresponse.m_data);
 				}
 			);
 			handle_cmd::push("close_actor", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<bool> lresponse(adata->m_pack->m_id, "close_actor", false, this);
+					gcmd<bool> lresponse(adata->get_pack()->m_id, "close_actor", false, this);
 					gm_guid lguid;
 					if (aos.read("data", lguid))
 					{
@@ -113,12 +113,12 @@ namespace ngl
 				});
 			handle_cmd::push("get_time", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<std::string> lresponse(adata->m_pack->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
+					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
 				});
 			handle_cmd::push("set_time", [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
-					gcmd<bool> lresponse(adata->m_pack->m_id, "set_time", false, this);
+					gcmd<bool> lresponse(adata->get_pack()->m_id, "set_time", false, this);
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
@@ -178,17 +178,17 @@ namespace ngl
 						return true;
 					}
 					i64_actorid ldbactorid = nguid::make(db_enum((pbdb::ENUM_DB)(ltype)), tab_self_area, nguid::none_actordataid());
-					sendbyactorid(ldbactorid, adata.m_pack, *adata.get_data());
+					sendbyactorid(ldbactorid, adata.get_pack(), *adata.get_data());
 				}
 				return true;
 			}
 
-			sendbytype(ltype, adata.m_pack, *adata.get_data());
+			sendbytype(ltype, adata.get_pack(), *adata.get_data());
 			return true;
 		}
 		else if (lreadjson.read("actor_id", lactorid))
 		{// ### ·Çµ¥Àý
-			sendbyactorid(lactorid, adata.m_pack, *adata.get_data());
+			sendbyactorid(lactorid, adata.get_pack(), *adata.get_data());
 			return true;
 		}
 

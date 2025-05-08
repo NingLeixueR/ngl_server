@@ -23,8 +23,8 @@ namespace ngl
 		nrfunbase(const nrfunbase&) = delete;
 		nrfunbase& operator=(const nrfunbase&) = delete;
 	protected:
-		std::map<i32_protocolnum, nlogicfun>	m_fun;
-		tnotfindfun								m_notfindfun;
+		std::map<i32_protocolnum, nlogicfun>	m_fun;				// key:协议号 value:处理方法
+		tnotfindfun								m_notfindfun;		// 如果在m_fun没有查找到处理方法,则使用其处理
 	public:
 		nrfunbase() = default;
 
@@ -42,15 +42,14 @@ namespace ngl
 	struct message
 	{
 	private:
-		std::shared_ptr<T>	m_shared_data;
-		T*					m_original_data;
-	public:
-		i32_threadid		m_thread;			// 线程id
-		const pack*			m_pack;				// 如果消息来自网络，这个值不为空即为网络数据包
-
 		message() = delete;
 
-		message(i32_threadid athread, const pack* apack, std::shared_ptr<T>& adata) :
+		std::shared_ptr<T>	m_shared_data		= nullptr;	// 数据
+		T*					m_original_data		= nullptr;	// 数据
+		i32_threadid		m_thread			= 0;		// 线程id
+		const pack*			m_pack				= nullptr;	// 如果消息来自网络，这个值不为空即为网络数据包
+	public:
+		inline message(i32_threadid athread, const pack* apack, std::shared_ptr<T>& adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_shared_data(adata),
@@ -58,7 +57,7 @@ namespace ngl
 		{
 		}
 
-		message(i32_threadid athread, const pack* apack, T* adata) :
+		inline message(i32_threadid athread, const pack* apack, T* adata) :
 			m_thread(athread),
 			m_pack(apack),
 			m_original_data(adata),
@@ -66,7 +65,7 @@ namespace ngl
 		{
 		}
 
-		const T* get_data()const
+		inline const T* get_data()const
 		{
 			if (m_shared_data != nullptr)
 			{
@@ -75,9 +74,19 @@ namespace ngl
 			return m_original_data;
 		}
 
-		const std::shared_ptr<T>& get_shared_data()const
+		inline const std::shared_ptr<T>& get_shared_data()const
 		{
 			return m_shared_data;
+		}
+
+		inline const pack* get_pack()const
+		{
+			return m_pack;
+		}
+
+		inline i32_threadid thread()const
+		{
+			return m_thread;
 		}
 	};
 
@@ -85,7 +94,8 @@ namespace ngl
 	using Tfun = bool (TDerived::*)(const message<TPRAM>&);
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	class nrfun : public nrfunbase
+	class nrfun : 
+		public nrfunbase
 	{
 		nrfun(const nrfun&) = delete;
 		nrfun& operator=(const nrfun&) = delete;
@@ -107,15 +117,19 @@ namespace ngl
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
+		//# actor间消息处理
 		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
 
+		//# actor间消息处理,不注册网络层
 		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
+		//# 注册转发协议
 		template <bool BOOL, typename T>
 		nrfun& rfun_forward(const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
 
+		//# 注册接收转发协议处理协议
 		template <typename T>
 		nrfun& rfun_recvforward(const Tfun<TDerived, T> afun, bool aisload = false);
 	};

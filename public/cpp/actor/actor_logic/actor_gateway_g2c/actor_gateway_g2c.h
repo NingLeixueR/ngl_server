@@ -51,7 +51,7 @@ namespace ngl
 		bool handle(const message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)
 		{
 			auto lparm = adata.get_data();
-			auto lpack = adata.m_pack;
+			auto lpack = adata.get_pack();
 			// Game->Gate  需要把这个消息传递给Client服务器
 			gateway_socket* info = nullptr;
 			std::map<i32_sessionid, i64_actorid> lmap;

@@ -234,7 +234,7 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			auto lpack = adata.m_pack;
+			auto lpack = adata.get_pack();
 			i32_serverid lserverid = lparm->m_id;
 			Assert(lserverid != nconfig::m_nodeid)
 
@@ -284,8 +284,8 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_update_mass>& adata)
 	{
 		auto lparm = adata.get_data();
-		auto lpack = adata.m_pack;
-		int32_t lthreadid = adata.m_thread;
+		auto lpack = adata.get_pack();
+		int32_t lthreadid = adata.thread();
 
 		message<np_actornode_update> lmessage(lthreadid, lpack, (np_actornode_update*)&lparm->m_mass);
 

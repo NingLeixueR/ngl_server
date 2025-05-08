@@ -114,7 +114,7 @@ namespace ngl
 		Try
 		{
 			auto lrecv = adata.get_data();
-			auto lpack = adata.m_pack;
+			auto lpack = adata.get_pack();
 			Assert(lpack != nullptr)
 			Assert(naddress::set_node(lrecv->m_node))
 
@@ -134,7 +134,7 @@ namespace ngl
 	bool actor_server::handle(const message<np_actornode_update_server>& adata)
 	{
 		auto lrecv = adata.get_data();
-		auto lpack = adata.m_pack;
+		auto lpack = adata.get_pack();
 		const i32_serverid lserverid = lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
 		naddress::actor_add(lserverid, lrecv->m_data.m_add);
 		naddress::actor_del(lrecv->m_data.m_del);
@@ -167,8 +167,8 @@ namespace ngl
 	bool actor_server::handle(const message<np_actornode_update_mass>& adata)
 	{
 		auto lparm = adata.get_data();
-		auto lpack = adata.m_pack;
-		int32_t lthreadid = adata.m_thread;
+		auto lpack = adata.get_pack();
+		int32_t lthreadid = adata.thread();
 		auto pro = std::make_shared<np_actornode_update_server>();
 		pro->m_data = lparm->m_mass;
 
@@ -182,7 +182,7 @@ namespace ngl
 	bool actor_server::handle(const message<np_actor_gatewayid_updata>& adata)
 	{
 		auto lrecv = adata.get_data();
-		auto lpack = adata.m_pack;
+		auto lpack = adata.get_pack();
 		if (lrecv->m_isremove)
 		{
 			naddress::remove_gatewayid(lrecv->m_actorid);

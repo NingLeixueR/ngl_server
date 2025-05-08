@@ -375,7 +375,7 @@ namespace ngl
 
 		std::string& lcmd = lvec[0];
 		std::ranges::transform(lcmd, lcmd.begin(), tolower);
-		if (handle_cmd::function(lcmd, adata.m_pack, this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
+		if (handle_cmd::function(lcmd, adata.get_pack(), this, (lvec.size() >= 2 ? lvec[1].c_str() : "")) == false)
 		{
 			log_error()->print("actor_role cmd [{}] ERROR", lcmd);
 		}
@@ -383,9 +383,10 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_GET_TIME>& adata)
 	{
-		i64_actorid lrequest = adata.m_pack->m_head.get_request_actor();
+		auto lpack = adata.get_pack();
+		i64_actorid lrequest = lpack->m_head.get_request_actor();
 		log_error()->print("{},NAME={}", guid(), m_info.get_constrole().m_base().m_name());
-		if (adata.m_pack->m_protocol == ENET_KCP)
+		if (lpack->m_protocol == ENET_KCP)
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
 			pro.set_m_utc((int32_t)localtime::gettime());
