@@ -19,7 +19,7 @@ namespace ngl
 		std::shared_ptr<actor_base> lpactor_base = nullptr;
 		auto linitfun = [] <ENUM_ACTOR ACTORTYPE, typename TActorDerived>(std::shared_ptr<actor_base>& apactor)
 		{
-			((TActorDerived*)(apactor.get()))->init_rfun<TActorDerived>();
+			((TActorDerived*)(apactor.get()))->template init_rfun<TActorDerived>();
 			actor_base::first_nregister<TActorDerived>(ACTORTYPE);
 		};
 
