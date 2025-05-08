@@ -51,7 +51,7 @@ public:
 				lStruct._h_protocol();
 			}
 			delete lpInamespace;
-			ngl::writefile lfile(".\\idlfile\\" + item.first + ".h");
+			ngl::writefile lfile("..\\idl\\idlfile\\" + item.first + ".h");
 			lfile.write(lstr);
 			//_h(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}
@@ -85,7 +85,7 @@ public:
 			}
 
 			
-			ngl::writefile lfile(".\\idlfile\\" + item.first + ".cpp");
+			ngl::writefile lfile("..\\idl\\idlfile\\" + item.first + ".cpp");
 			lfile.write(lstr);
 			//_cpp(".\\idlfile\\" + item.first, item.second, item.first == "game_db", item.first == "csvtable");
 		}

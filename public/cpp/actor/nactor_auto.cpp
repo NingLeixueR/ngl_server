@@ -76,16 +76,18 @@ namespace ngl
 
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs::template func <
-			/*210000001*/ nactor_logitem
-			/*210000002*/, np_channel_register<pbdb::db_brief>
-			/*210000003*/, np_channel_register_reply<pbdb::db_brief>
-			/*210000004*/, np_channel_data<pbdb::db_brief>
-			/*210000005*/, np_channel_exit<pbdb::db_brief>
-			/*210000006*/, np_channel_register<pbdb::db_keyvalue>
-			/*210000007*/, np_channel_register_reply<pbdb::db_keyvalue>
-			/*210000008*/, np_channel_data<pbdb::db_keyvalue>
-			/*210000009*/, np_channel_exit<pbdb::db_keyvalue>
-			/*210000010*/, np_arg_null
+			/*210000001*/np_gm
+			/*210000002*/, np_gm_response
+			/*210000003*/, nactor_logitem
+			/*210000004*/, np_channel_register<pbdb::db_brief>
+			/*210000005*/, np_channel_register_reply<pbdb::db_brief>
+			/*210000006*/, np_channel_data<pbdb::db_brief>
+			/*210000007*/, np_channel_exit<pbdb::db_brief>
+			/*210000008*/, np_channel_register<pbdb::db_keyvalue>
+			/*210000009*/, np_channel_register_reply<pbdb::db_keyvalue>
+			/*210000010*/, np_channel_data<pbdb::db_keyvalue>
+			/*210000011*/, np_channel_exit<pbdb::db_keyvalue>
+			/*210000012*/, np_arg_null
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
 		tprotocol::set_customs_index(220000000);

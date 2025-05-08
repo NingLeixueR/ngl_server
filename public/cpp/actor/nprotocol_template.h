@@ -431,4 +431,18 @@ namespace ngl
 		def_portocol(np_channel_data<TDATA>, m_firstsynchronize, m_data)
 	};
 
+	struct np_gm
+	{
+		std::string m_json;
+
+		def_portocol(np_gm, m_json)
+	};
+
+	struct np_gm_response
+	{
+		std::string m_json;
+
+		def_portocol(np_gm_response, m_json)
+	};
+
 }//namespace ngl
