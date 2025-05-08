@@ -14,12 +14,12 @@ namespace ngl
 		impl_actor() = delete;
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
-
+//#define STL_MESSAGELIST
 #ifdef STL_MESSAGELIST
 		template <typename T>
-		using tls = std::list<T>;
+		using tls = std::deque<T>;
 		template <typename T>
-		using trunls = std::list<T>;
+		using trunls = std::deque<T>;
 #else
 		template <typename T>
 		using tls = slist_production<T>;
