@@ -14,15 +14,19 @@ namespace ngl
 		db_data() = delete;
 		db_data(const db_data&) = delete;
 		db_data& operator=(const db_data&) = delete;
-
 	private:
 		static std::map<i64_actorid, T>		m_data;
-
 		// # 加载出id 防止内存穿透
 		static std::set<int64_t>			m_idindex;
 	public:
-		// # 数据的所有索引
-		static const std::set<int64_t>& id_index()
+		// # 获取数据的所有索引
+		static const std::set<int64_t>& const_id_index()
+		{
+			return m_idindex;
+		}
+
+		// # 获取数据的所有索引
+		static std::set<int64_t>& id_index()
 		{
 			return m_idindex;
 		}
@@ -30,11 +34,6 @@ namespace ngl
 		static void set_index(int64_t aid)
 		{
 			m_idindex.insert(aid);
-		}
-
-		static void set_index(std::set<int64_t>& asetid)
-		{
-			m_idindex = asetid;
 		}
 
 		static void erase_index(int64_t aid)
