@@ -17,36 +17,33 @@ namespace ngl
 			return nullptr;
 		}
 		std::shared_ptr<actor_base> lpactor_base = nullptr;
-		auto linitfun = [] <ENUM_ACTOR ACTORTYPE, typename TActorDerived, typename ...ARG>(std::shared_ptr<actor_base>& apactor, ARG&... arg)
+		auto linitfun = [] < typename TActorDerived, typename ...ARG>(ENUM_ACTOR actortype, std::shared_ptr<actor_base>& apactor, ARG&... arg)
 		{
-
 			apactor = std::make_shared<TActorDerived>(arg...);
 			((TActorDerived*)(apactor.get()))->template init_rfun<TActorDerived>();
-			actor_base::first_nregister<TActorDerived>(ACTORTYPE);
+			actor_base::first_nregister<TActorDerived>(actortype);
 		};
-
 		switch (atype)
 		{
 			case ACTOR_ROLE:
 			{
-				linitfun.operator()<ACTOR_ROLE, actor_role>(lpactor_base, tab_self_area, aid, aparm);
+				linitfun.operator()<actor_role>(ACTOR_ROLE, lpactor_base, tab_self_area, aid, aparm);
 			}
 			break;
 			case ACTOR_ROBOT:
 			{
-				linitfun.operator()<ACTOR_ROBOT, actor_robot>(lpactor_base, tab_self_area, aid, aparm);
+				linitfun.operator()<actor_robot>(ACTOR_ROBOT, lpactor_base, tab_self_area, aid, aparm);
 			}
 			break;
 			case ACTOR_LOG:
 			{
-				linitfun.operator()<ACTOR_LOG, actor_log>(lpactor_base, aid);
+				linitfun.operator()<actor_log>(ACTOR_LOG, lpactor_base, aid);
 			}
 			break;
 			case ACTOR_EXAMPLE_GUESS_NUMBER:
 			{
-
-				linitfun.operator()<ACTOR_EXAMPLE_GUESS_NUMBER, actor_example_guess_number>(
-					lpactor_base, *(const std::map<int32_t, i64_actorid>*)aparm, aid
+				linitfun.operator()<actor_example_guess_number>(
+					ACTOR_EXAMPLE_GUESS_NUMBER, lpactor_base, *(const std::map<int32_t, i64_actorid>*)aparm, aid
 				);
 			}
 			break;

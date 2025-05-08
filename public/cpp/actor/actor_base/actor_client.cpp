@@ -37,7 +37,8 @@ namespace ngl
 	}
 
 	actor_client::~actor_client()
-	{}
+	{
+	}
 
 	i64_actorid actor_client::actorid()
 	{
@@ -90,8 +91,9 @@ namespace ngl
 	{
 		const tab_servers* tab = ttab_servers::tab();
 		const tab_servers* tabactor = ttab_servers::tab(adata.get_data()->m_serverid);
-		i64_actorid	lactorid = id_guid();
+		assert(tab != nullptr && tabactor != nullptr);
 
+		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();
 		set_node(tabactor->m_id, adata.get_data()->m_session);
 		naddress::actor_add(tabactor->m_id, lactorserve);
@@ -141,8 +143,7 @@ namespace ngl
 
 	void actor_client::actor_server_register()
 	{
-		auto pro = std::make_shared<np_actor_server_register>();
-		send_actor(id_guid(), pro);
+		send_actor(id_guid(), std::make_shared<np_actor_server_register>());
 	}
 
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
@@ -176,7 +177,7 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
-					log_error()->print("activ_connect connect node:{} success", aserverid);
+					log_error()->print("actor_client::activ_connect connect node:{} success", aserverid);
 
 					set_node(aserverid, asession);
 
