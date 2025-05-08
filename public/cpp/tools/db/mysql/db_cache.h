@@ -9,7 +9,6 @@
 
 namespace ngl
 {
-	template <typename T>
 	class db_cache
 	{
 		db_cache(const db_cache&) = delete;
@@ -32,7 +31,7 @@ namespace ngl
 					.m_intervalms	= [aintervalms](int64_t) {return aintervalms; } ,
 					.m_count		= 0x7fffffff,
 					.m_pram			= nullptr,
-					.m_fun			= std::bind_front(&db_cache<T>::execute, this),
+					.m_fun			= std::bind_front(&db_cache::execute, this),
 				});
 		}
 

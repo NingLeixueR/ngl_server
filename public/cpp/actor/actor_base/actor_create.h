@@ -13,25 +13,13 @@ namespace ngl
 {
 	// actor切换进程
 	// actor内部临时数据无法迁移
-	class actor_create : public actor
+	class actor_create : 
+		public actor
 	{
 		actor_create(const actor_create&) = delete;
 		actor_create& operator=(const actor_create&) = delete;
 
-		actor_create() :
-			actor(
-				actorparm
-				{
-					.m_parm
-					{
-						.m_type = ACTOR_CREATE,
-						.m_area = tab_self_area,
-						.m_id = nconfig::m_nodeid,
-					},
-					.m_weight = 0x7fffffff,
-				})
-		{
-		}
+		actor_create();
 	public:
 		friend class actor_instance<actor_create>;
 		static actor_create& getInstance()
@@ -39,19 +27,11 @@ namespace ngl
 			return actor_instance<actor_create>::instance();
 		}
 
-		virtual ~actor_create() {}
+		virtual ~actor_create() = default;
 
-		static void nregister()
-		{
-			register_handle_custom<actor_create>::func<
-				np_actorswitch_process<np_actorswitch_process_role>
-			>(false);
-		}
+		static void nregister();
 
-		static i64_actorid actorid(i32_actordataid adataid)
-		{
-			return nguid::make(ACTOR_CREATE, tab_self_area, adataid);
-		}
+		static i64_actorid actorid(i32_actordataid adataid);
 
 		// # 在指定[Server]上创建[Actor]
 		template <typename T>

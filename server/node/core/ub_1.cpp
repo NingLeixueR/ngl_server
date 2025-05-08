@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-08 11:31:08
+// 创建时间 25-05-08 19:28:37
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -141,6 +141,7 @@
 #include "actor_notice.cpp"
 #include "actor_manage.cpp"
 #include "actor_family.cpp"
+#include "actor_create.cpp"
 #include "actor_client.cpp"
 #include "nactor_auto.cpp"
 #include "actor_robot.cpp"

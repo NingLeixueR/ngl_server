@@ -23,9 +23,9 @@ namespace ngl
 		actor_dbtab(const actor_dbtab&) = delete;
 		actor_dbtab& operator=(const actor_dbtab&) = delete;
 
-		static tab_dbload*		m_tab;
-		static db_cache<TDBTAB> m_cache_save;
-		static db_cache<TDBTAB> m_cache_del;
+		static tab_dbload*		m_tab;			// 数据库加载策略
+		static db_cache			m_cache_save;	// 数据保存队列
+		static db_cache			m_cache_del;	// 数据删除队列
 
 		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
@@ -42,18 +42,17 @@ namespace ngl
 
 				Assert(m_tab != nullptr)
 
+				// # 设置数据保存/数据删除队列
 				m_cache_save.set_cachefun(std::bind_front(&cachelist<TDBTAB>, enum_clist_save), m_tab->m_dbcacheintervalms);
 				m_cache_del.set_cachefun(std::bind_front(&cachelist<TDBTAB>, enum_clist_del), m_tab->m_dbcacheintervalms);
 
 				if (m_tab->m_isloadall == true)
-				{
+				{// 加载全部数据
 					db_manage::select<TDBTAB>(db_pool::get(0));
 				}
 				else
-				{
-					std::set<int64_t> lindexset;
-					db_manage::select<TDBTAB>(db_pool::get(0), lindexset);
-					db_data<TDBTAB>::set_index(lindexset);
+				{// 加载全部id 防止内存穿透
+					db_manage::select<TDBTAB>(db_pool::get(0), db_data<TDBTAB>::id_index());
 				}
 			}Catch
 		}
@@ -94,7 +93,6 @@ namespace ngl
 					});
 				pro.m_over = true;
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-				
 				log_info()->print("loadall[{}]", tools::protobuf_tabname<TDBTAB>::name());
 			}Catch
 		}
@@ -146,8 +144,7 @@ namespace ngl
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 
-				using type_message = np_actordb_load<TDBTAB_TYPE, TDBTAB>;
-				log_error()->print("load finish {}:{}", tools::type_name<type_message>(), nguid(lrequestactor));
+				log_error()->print("load finish {}:{}", tools::type_name<np_actordb_load<TDBTAB_TYPE, TDBTAB>>(), nguid(lrequestactor));
 			}
 		}
 
@@ -166,10 +163,10 @@ namespace ngl
 			m_cache_del.push(aid);
 		}
 
-		static void del(i32_threadid, const std::vector<i64_actorid>& aid)
+		static void del(i32_threadid, const std::vector<i64_actorid>& aids)
 		{
-			ngl::db_data<TDBTAB>::remove(aid);
-			m_cache_del.push(aid);
+			ngl::db_data<TDBTAB>::remove(aids);
+			m_cache_del.push(aids);
 		}
 
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
@@ -186,10 +183,10 @@ namespace ngl
 	tab_dbload* actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_tab = nullptr;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	db_cache<TDBTAB> actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_save;
+	db_cache actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_save;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	db_cache<TDBTAB> actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_del;
+	db_cache actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_del;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db : public actor
