@@ -28,26 +28,26 @@ namespace ngl
 			case ACTOR_ROLE:
 			{
 				lpactor_base = std::make_shared<actor_role>(tab_self_area, aid, aparm);
-				linitfun.operator() < ACTOR_ROLE, actor_role > (lpactor_base);
+				linitfun.operator()<ACTOR_ROLE, actor_role>(lpactor_base);
 			}
 			break;
 			case ACTOR_ROBOT:
 			{
 				lpactor_base = std::make_shared<actor_robot>(tab_self_area, aid, aparm);
-				linitfun.operator() < ACTOR_ROBOT, actor_robot > (lpactor_base);
+				linitfun.operator()<ACTOR_ROBOT, actor_robot>(lpactor_base);
 			}
 			break;
 			case ACTOR_LOG:
 			{
 				lpactor_base = std::make_shared<actor_log>(aid);
-				linitfun.operator() < ACTOR_LOG, actor_log > (lpactor_base);
+				linitfun.operator()<ACTOR_LOG, actor_log>(lpactor_base);
 			}
 			break;
 			case ACTOR_EXAMPLE_GUESS_NUMBER:
 			{
 				auto lroleids = (const std::map<int32_t, i64_actorid>*)aparm;
 				lpactor_base = std::make_shared<actor_example_guess_number>(*lroleids, aid);
-				linitfun.operator() < ACTOR_EXAMPLE_GUESS_NUMBER, actor_example_guess_number > (lpactor_base);
+				linitfun.operator()<ACTOR_EXAMPLE_GUESS_NUMBER, actor_example_guess_number>(lpactor_base);
 			}
 			break;
 			default:
