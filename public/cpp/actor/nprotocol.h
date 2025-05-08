@@ -34,20 +34,6 @@ namespace ngl
 		apparm->m_parm = std::static_pointer_cast<void>(aparm);
 	}
 
-	struct np_gm
-	{
-		std::string m_json;
-
-		def_portocol(np_gm, m_json)
-	};
-
-	struct np_gm_response
-	{
-		std::string m_json;
-
-		def_portocol(np_gm_response, m_json)
-	};
-
 	// »úÆ÷ÈË²âÊÔ
 	struct np_robot_pram
 	{
