@@ -17,10 +17,10 @@ namespace ngl
 			return nullptr;
 		}
 		std::shared_ptr<actor_base> lpactor_base = nullptr;
-		auto linitfun = [] <ENUM_ACTOR ACTORTYPE, typename TActorDerived, typename ...ARG>(std::shared_ptr<actor_base>& apactor, ARG... arg)
+		auto linitfun = [] <ENUM_ACTOR ACTORTYPE, typename TActorDerived, typename ...ARG>(std::shared_ptr<actor_base>& apactor, ARG&... arg)
 		{
 
-			apactor = std::make_shared<actor_role>(arg...);
+			apactor = std::make_shared<TActorDerived>(arg...);
 			((TActorDerived*)(apactor.get()))->template init_rfun<TActorDerived>();
 			actor_base::first_nregister<TActorDerived>(ACTORTYPE);
 		};
