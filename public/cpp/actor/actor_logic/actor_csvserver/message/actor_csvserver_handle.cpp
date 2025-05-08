@@ -5,7 +5,7 @@ namespace ngl
 	{
 		log_error()->print("############actor_reloadcsv_distribute::handle###########");
 		auto lparm = adata.get_data();
-		auto lpack = adata.m_pack;
+		auto lpack = adata.get_pack();
 		np_actor_reloadcsv pro;
 		const auto& lversion = allcsv::all();
 		std::ranges::for_each(lversion, [&lparm, &pro](const auto& apair)

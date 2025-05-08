@@ -138,7 +138,7 @@ namespace ngl
 		Try
 		{
 			auto lpram = adata.get_data();
-			auto lpack = adata.m_pack;
+			auto lpack = adata.get_pack();
 			Assert(lpack != nullptr)
 			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
 				, lpack->m_id, lpram->m_roleid(), lpram->m_session()
@@ -183,7 +183,7 @@ namespace ngl
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
 	{
 		auto lpram = adata.get_data();
-		auto lpack = adata.m_pack;
+		auto lpack = adata.get_pack();
 
 		/////////////////////////////////////
 		// 多robot公用一个tcp连接会有问题
