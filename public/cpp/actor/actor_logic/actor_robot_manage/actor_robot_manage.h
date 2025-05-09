@@ -12,20 +12,20 @@ namespace ngl
 		i64_actorid						m_actor_roleid = nguid::make();
 	};
 
-	class actor_manage_robot : public actor
+	class actor_robot_manage : public actor
 	{
-		actor_manage_robot();
+		actor_robot_manage();
 	public:
 
 		std::map<std::string, _robot> m_maprobot;
 
-		friend class actor_instance<actor_manage_robot>;
-		static actor_manage_robot& getInstance() 
+		friend class actor_instance<actor_robot_manage>;
+		static actor_robot_manage& getInstance() 
 		{ 
-			return actor_instance<actor_manage_robot>::instance();
+			return actor_instance<actor_robot_manage>::instance();
 		}
 
-		virtual ~actor_manage_robot() = default;
+		virtual ~actor_robot_manage() = default;
 
 		static ENUM_ACTOR actor_type();
 
@@ -69,13 +69,12 @@ namespace ngl
 
 		bool getdata(_robot* arobot);
 
-		using handle_cmd = cmd<actor_manage_robot, std::string, const std::vector<std::string>&>;
+		using handle_cmd = cmd<actor_robot_manage, std::string, const std::vector<std::string>&>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
 		bool handle(const message<np_robot_pram>& adata);
-		// [»Ø¸´]µÇÂ¼ÕËºÅ
 		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
 	};
 }//namespace ngl
