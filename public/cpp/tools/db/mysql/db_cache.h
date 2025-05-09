@@ -14,15 +14,16 @@ namespace ngl
 		db_cache(const db_cache&) = delete;
 		db_cache& operator=(const db_cache&) = delete;
 
-		std::set<i64_actorid>						m_ls;
+		std::set<i64_actorid>						m_cachelist;
+		std::set<i64_actorid>						m_copycachelist;
 		std::function<void(std::set<i64_actorid>&)> m_fun;
 		std::shared_mutex							m_mutex;
 	public:
-		db_cache() 
+		inline db_cache() 
 		{
 		}
 
-		void set_cachefun(const std::function<void(std::set<i64_actorid>&)>& afun, int32_t aintervalms)
+		inline void set_cachefun(const std::function<void(std::set<i64_actorid>&)>& afun, int32_t aintervalms)
 		{
 			m_fun = afun;
 			twheel::wheel().addtimer(wheel_parm
@@ -35,25 +36,28 @@ namespace ngl
 				});
 		}
 
-		void push(i64_actorid aid)
+		inline void push(i64_actorid aid)
 		{
 			monopoly_shared_lock(m_mutex);
-			m_ls.insert(aid);
+			m_cachelist.insert(aid);
 		}
 
-		void push(const std::vector<i64_actorid>& aidlist)
+		inline void push(const std::vector<i64_actorid>& aidlist)
 		{
 			monopoly_shared_lock(m_mutex);
-			m_ls.insert(aidlist.begin(), aidlist.end());
+			m_cachelist.insert(aidlist.begin(), aidlist.end());
 		}
 
-		void execute(const wheel_node*)
+		inline void execute(const wheel_node*)
 		{
-			monopoly_shared_lock(m_mutex);
-			if (m_ls.empty() != true)
 			{
-				m_fun(m_ls);
-				m_ls.clear();
+				monopoly_shared_lock(m_mutex);
+				m_cachelist.swap(m_copycachelist);
+			}
+			if (!m_copycachelist.empty())
+			{
+				m_fun(m_copycachelist);
+				m_copycachelist.clear();
 			}
 		}
 	};
