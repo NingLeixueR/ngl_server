@@ -43,7 +43,7 @@ namespace ngl
 			bool lfirstsynchronize = recv.m_firstsynchronize;
 			std::ranges::for_each(lmap, [lfirstsynchronize](const auto& apair)
 				{
-					if (!m_dataid.empty() && m_dataid.find(apair.first) == m_dataid.end())
+					if (!m_dataid.empty() && !m_dataid.contains(apair.first))
 					{
 						return;
 					}
