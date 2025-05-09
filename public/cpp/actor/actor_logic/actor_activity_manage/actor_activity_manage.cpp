@@ -45,7 +45,7 @@ namespace ngl
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 5) == false)
 		{
-			log_error()->print("actor_manage_activity::init() make_timerparm::make_interval(tparm, 5) == false!!!");
+			log_error()->print("actor_activity_manage::init() make_timerparm::make_interval(tparm, 5) == false!!!");
 			return;
 		}
 		set_timer(tparm);
@@ -90,7 +90,7 @@ namespace ngl
 		wheel_parm lparm
 		{
 			.m_ms = lms,
-			.m_intervalms = nullptr ,
+			.m_intervalms = nullptr,
 			.m_count = 1,
 			.m_fun = [afun](const wheel_node* anode)
 			{
@@ -102,12 +102,12 @@ namespace ngl
 
 	void actor_activity_manage::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
-		if (auto itor = m_allactivity.find(aactivityid); itor != m_allactivity.end())
+		if(m_allactivity.contains(aactivityid))
 		{
 			return;
 		}
-
-		if (const auto tab = allcsv::tab<tab_activity>((int32_t)aactivityid); tab == nullptr)
+		const auto tab = allcsv::tab<tab_activity>((int32_t)aactivityid);
+		if (tab == nullptr)
 		{
 			return;
 		}
@@ -131,7 +131,6 @@ namespace ngl
 		{
 			return false;
 		}
-
 		return true;
 	}
 
