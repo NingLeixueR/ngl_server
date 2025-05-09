@@ -44,10 +44,10 @@ namespace ngl
 
 	struct nactornode
 	{
-		std::string		m_name;						// 服务器名称
-		NODE_TYPE		m_nodetype;					// 服务器类型
-		i32_serverid	m_serverid = -1;			// 服务器id
-		std::vector<i16_actortype>	m_actortype;	// ENUM_ACTOR_TYPE
+		std::string		m_name;							// 服务器名称
+		NODE_TYPE		m_nodetype = NODE_TYPE::FAIL;	// 服务器类型
+		i32_serverid	m_serverid = -1;				// 服务器id
+		std::vector<i16_actortype>	m_actortype;		// ENUM_ACTOR_TYPE
 
 		def_portocol_function(nactornode, m_name, m_serverid, m_actortype)
 	};

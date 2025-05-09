@@ -210,7 +210,7 @@ namespace ngl
 		inline bool is_have_actor(const nguid& aguid)
 		{
 			ngl_lock;
-			return m_actorbyid.find(aguid) != m_actorbyid.end();
+			return m_actorbyid.contains(aguid);
 		}
 		
 		// # 将thread与actor一起交给impl_actor_manage

@@ -17,9 +17,6 @@ namespace ngl
 	{
 	}
 
-	actor_server::~actor_server()
-	{}
-
 	void actor_server::nregister()
 	{
 		//# 设置未找到协议处理函数
@@ -43,23 +40,24 @@ namespace ngl
 	}
 
 	void actor_server::forward_np_actornode_register(
-		const pack* apack, std::vector<i32_sessionid>& avec, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
+		const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 	)
 	{
-		naddress::foreach([&avec, apack](const actor_node_session& asnode)
+		std::vector<i32_sessionid> lsessionvec;
+		naddress::foreach([&lsessionvec, apack](const actor_node_session& asnode)
 			{
 				if (apack->m_id != asnode.m_session)
 				{
-					avec.push_back(asnode.m_session);
+					lsessionvec.push_back(asnode.m_session);
 				}
 				return true;
 			});
-		if (!avec.empty())
+		if (!lsessionvec.empty())
 		{
 			{
 				np_actornode_register_response lpram;
 				lpram.m_vec.push_back(anode);
-				nets::sendmore(avec, lpram, nguid::moreactor(), id_guid());
+				nets::sendmore(lsessionvec, lpram, nguid::moreactor(), id_guid());
 			}
 			{
 				// -- actor_client_node_update 给其他结点
@@ -68,7 +66,7 @@ namespace ngl
 					.m_id = aserverid,
 					.m_add = aadd,
 				};
-				nets::sendmore(avec, lpram, nguid::moreactor(), id_guid());
+				nets::sendmore(lsessionvec, lpram, nguid::moreactor(), id_guid());
 			}			
 		}
 	}
@@ -103,9 +101,9 @@ namespace ngl
 				}
 				return true;
 			});
-		for (const std::pair<const i32_serverid, np_actornode_update>& item : lmapprotocol)
+		for (const auto& [_, pro]: lmapprotocol)
 		{
-			nets::sendbysession(apack->m_id, item.second, nguid::moreactor(), id_guid());
+			nets::sendbysession(apack->m_id, pro, nguid::moreactor(), id_guid());
 		}
 	}
 
@@ -115,17 +113,16 @@ namespace ngl
 		{
 			auto lrecv = adata.get_data();
 			auto lpack = adata.get_pack();
-			Assert(lpack != nullptr)
-			Assert(naddress::set_node(lrecv->m_node))
+			Assert(lpack != nullptr);
+			Assert(naddress::set_node(lrecv->m_node));
 
 			i32_serverid lserverid = lrecv->m_node.m_serverid;
 			naddress::set_session(lserverid, lpack->m_id);
-			naddress::actor_add(lserverid, lrecv->m_add);
+			naddress::add_actor_address(lserverid, lrecv->m_add);
 
 			server_session::add(lserverid, lpack->m_id);
 
-			std::vector<i32_sessionid> lvec;
-			forward_np_actornode_register(lpack, lvec, lrecv->m_node, lserverid, lrecv->m_add);
+			forward_np_actornode_register(lpack, lrecv->m_node, lserverid, lrecv->m_add);
 			reply_np_actornode_register(lpack, lserverid);
 		}Catch
 		return true;
@@ -136,8 +133,8 @@ namespace ngl
 		auto lrecv = adata.get_data();
 		auto lpack = adata.get_pack();
 		const i32_serverid lserverid = lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
-		naddress::actor_add(lserverid, lrecv->m_data.m_add);
-		naddress::actor_del(lrecv->m_data.m_del);
+		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
+		naddress::del_actor_address(lrecv->m_data.m_del);
 		// # 分发给其他结点
 		std::vector<i32_sessionid> lvec;
 		naddress::foreach([lserverid, &lvec](const actor_node_session& anode)->bool
@@ -168,13 +165,13 @@ namespace ngl
 	{
 		auto lparm = adata.get_data();
 		auto lpack = adata.get_pack();
-		int32_t lthreadid = adata.thread();
+
 		auto pro = std::make_shared<np_actornode_update_server>();
 		pro->m_data = lparm->m_mass;
 
 		print(lparm->m_mass.m_add);
 
-		message<np_actornode_update_server> lmessage(lthreadid, lpack, pro);
+		message<np_actornode_update_server> lmessage(adata.thread(), lpack, pro);
 		handle(lmessage);
 		return true;
 	}
@@ -191,19 +188,19 @@ namespace ngl
 		{
 			naddress::add_gatewayid(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
-		std::vector<i32_sessionid> lvec;
-		naddress::foreach([&lvec, lpack](const actor_node_session& anode)
+		std::vector<i32_sessionid> lsessionvec;
+		naddress::foreach([&lsessionvec, lpack](const actor_node_session& anode)
 			{
 				if (lpack->m_id != anode.m_session)
 				{
-					lvec.push_back(anode.m_session);
+					lsessionvec.push_back(anode.m_session);
 				}
 				return true;
 			}
 		);
-		if (lvec.empty() == false)
+		if (lsessionvec.empty() == false)
 		{
-			nets::sendmore(lvec, *lrecv, nguid::moreactor(), id_guid());
+			nets::sendmore(lsessionvec, *lrecv, nguid::moreactor(), id_guid());
 		}
 		return true;
 	}

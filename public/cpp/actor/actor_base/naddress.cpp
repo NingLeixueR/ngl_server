@@ -31,14 +31,7 @@ namespace ngl
 
 		static void print_address()
 		{
-			auto lstream = log_error();
-			(*lstream) << "+-+-+-+-+-+-+-+-+-[actor address]+-+-+-+-+-+-+-+-+-+" << std::endl;
-			for (const auto& [key, value] : m_actorserver)
-			{
-				(*lstream) << std::format("[{}]", key) << std::endl;
-			}
-			(*lstream) << "+-+-+-+-+-+-+-+-+-[actor address]+-+-+-+-+-+-+-+-+-+" << std::endl;
-			(*lstream).print("");
+			log_error()->print("actor address:{}", m_actorserver);
 		}
 
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid)
@@ -47,7 +40,7 @@ namespace ngl
 			{
 				i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
 				i32_serverid lserverid = get_server(lactorrole);
-				Assert(lserverid != -1)
+				Assert(lserverid != -1);
 				return get_session(lserverid);
 			}Catch
 			return -1;
@@ -62,14 +55,14 @@ namespace ngl
 			return true;
 		}
 
-		static void actor_add(i32_serverid aserverid, i64_actorid adataid)
+		static void add_actor_address(i32_serverid aserverid, i64_actorid adataid)
 		{
 			nguid lguid(adataid);
 			m_actorserver[lguid] = aserverid;
 			m_actortypeserver[lguid.type()].insert(adataid);
 		}
 
-		static void actor_del(i64_actorid adataid)
+		static void del_actor_address(i64_actorid adataid)
 		{
 			nguid lguid(adataid);
 			m_actorserver.erase(lguid);
@@ -197,31 +190,31 @@ namespace ngl
 		return impl_actor_address::forward(apram);
 	}
 
-	void naddress::actor_add(i32_serverid aserverid, i64_actorid adataid)
+	void naddress::add_actor_address(i32_serverid aserverid, i64_actorid adataid)
 	{
-		impl_actor_address::actor_add(aserverid, adataid);
+		impl_actor_address::add_actor_address(aserverid, adataid);
 	}
 
-	void naddress::actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
+	void naddress::add_actor_address(i32_serverid aserverid, const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
 		{
-			actor_add(aserverid, item);
+			add_actor_address(aserverid, item);
 		}
 		//#ifdef _DEBUG
 		//		print_address();
 		//#endif
 	}
 
-	void naddress::actor_del(i64_actorid adataid)
+	void naddress::del_actor_address(i64_actorid adataid)
 	{
-		impl_actor_address::actor_del(adataid);
+		impl_actor_address::del_actor_address(adataid);
 	}
 
-	void naddress::actor_del(const std::vector<i64_actorid>& avec)
+	void naddress::del_actor_address(const std::vector<i64_actorid>& avec)
 	{
 		for (const i64_actorid item : avec)
-			actor_del(item);
+			del_actor_address(item);
 	}
 
 	void naddress::set_session(i32_serverid aserverid, i32_sessionid asession)

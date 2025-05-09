@@ -139,15 +139,15 @@ namespace ngl
 		{
 			auto lpram = adata.get_data();
 			auto lpack = adata.get_pack();
-			Assert(lpack != nullptr)
+			Assert(lpack != nullptr);
 			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
 				, lpack->m_id, lpram->m_roleid(), lpram->m_session()
 			);
 			nguid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 
-			Assert(linfo != nullptr)
-			Assert(linfo->m_session == lpram->m_session())
+			Assert(linfo != nullptr);
+			Assert(linfo->m_session == lpram->m_session());
 
 			if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 			{
