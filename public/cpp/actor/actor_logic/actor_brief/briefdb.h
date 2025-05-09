@@ -55,9 +55,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			std::map<nguid, data_modified<pbdb::db_brief>> lmap;
-			log_error()->print("actor_brief###loaddb_finish\n {}", lmap);
-			//log_error()->print("actor_brief###loaddb_finish\n {}", data());
+			log_error()->print("actor_brief###loaddb_finish\n {}", data());
 		}
 
 		void update(const std::vector<pbdb::db_brief>& m_vecinfo)
