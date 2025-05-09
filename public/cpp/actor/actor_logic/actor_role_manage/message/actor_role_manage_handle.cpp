@@ -1,11 +1,11 @@
-#include "actor_manage_role.h"
+#include "actor_role_manage.h"
 #include "actor_keyvalue.h"
 #include "actor_create.h"
 #include "nregister.h"
 #include "ntimer.h"
 namespace ngl
 {
-	bool actor_manage_role::handle(const message<mforward<np_gm>>& adata)
+	bool actor_role_manage::handle(const message<mforward<np_gm>>& adata)
 	{
 		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
@@ -64,12 +64,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_manage_role::handle(const message<np_roleban>& adata)
-	{
-		m_roleban = adata.get_data()->m_roleban;
-		return true;
-	}
-	bool actor_manage_role::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
+	bool actor_role_manage::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
 		auto recv = adata.get_data();
 

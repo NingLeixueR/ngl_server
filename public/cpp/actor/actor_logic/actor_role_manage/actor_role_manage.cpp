@@ -1,4 +1,4 @@
-#include "actor_manage_role.h"
+#include "actor_role_manage.h"
 #include "actor_keyvalue.h"
 #include "actor_create.h"
 #include "nregister.h"
@@ -6,13 +6,13 @@
 
 namespace ngl
 {
-	actor_manage_role::actor_manage_role() :
+	actor_role_manage::actor_role_manage() :
 		actor(
 			actorparm
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_MANAGE_ROLE,
+					.m_type = ACTOR_ROLE_MANAGE,
 					.m_area = tab_self_area,
 					.m_id = ttab_servers::tab()->m_tcount
 				},
@@ -27,24 +27,24 @@ namespace ngl
 					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]", 
 					aid, akeyval.m_value().c_str(), afirstsynchronize?"first":"change"
 				);
-
-				auto pro = std::make_shared<np_roleban>();
-				tools::splite(akeyval.m_value().c_str(), "*", pro->m_roleban);
-				actor::static_send_actor(actor_manage_role::actorid(), nguid::make(), pro);
+				if (afirstsynchronize)
+				{
+					tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
+				}
 			});
 	}
 
-	ENUM_ACTOR actor_manage_role::actor_type()
+	ENUM_ACTOR actor_role_manage::actor_type()
 	{
-		return ACTOR_MANAGE_ROLE;
+		return ACTOR_ROLE_MANAGE;
 	}
 
-	i64_actorid actor_manage_role::actorid()
+	i64_actorid actor_role_manage::actorid()
 	{
 		return nguid::make(actor_type(), nguid::none_area(), ttab_servers::tab()->m_tcount);
 	}
 
-	void actor_manage_role::init()
+	void actor_role_manage::init()
 	{
 		// 绑定DB结构:DB.set(this);
 
@@ -59,33 +59,32 @@ namespace ngl
 		*/
 	}
 
-	void actor_manage_role::loaddb_finish(bool adbishave)
+	void actor_role_manage::loaddb_finish(bool adbishave)
 	{
 	}
 
-	void actor_manage_role::nregister()
+	void actor_role_manage::nregister()
 	{
 		// 定时器
-		actor::register_timer<actor_manage_role>(&actor_manage_role::timer_handle);
+		actor::register_timer<actor_role_manage>(&actor_role_manage::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_manage_role>::func<
-			mforward<np_gm>,
-			np_roleban
+		register_handle_custom<actor_role_manage>::func<
+			mforward<np_gm>
 		>(false);
 
 		// 绑定pb消息
-		register_handle_proto<actor_manage_role>::func<
+		register_handle_proto<actor_role_manage>::func<
 			pbnet::PROBUFF_NET_ROLE_LOGIN
 		>(false);
 	}
 
-	bool actor_manage_role::timer_handle(const message<np_timerparm>& adata)
+	bool actor_role_manage::timer_handle(const message<np_timerparm>& adata)
 	{
 		return true;
 	}
 
-	bool actor_manage_role::handle(const message<np_arg_null>&)
+	bool actor_role_manage::handle(const message<np_arg_null>&)
 	{
 		return true;
 	}

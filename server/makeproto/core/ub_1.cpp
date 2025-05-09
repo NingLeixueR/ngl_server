@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-08 19:28:44
+// 创建时间 25-05-09 10:44:32
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -98,7 +98,7 @@
 #include "actor_example_match_handle.cpp"
 #include "actor_example_guess_number.cpp"
 #include "actor_manage_robot_handle.cpp"
-#include "actor_manage_role_handle.cpp"
+#include "actor_role_manage_handle.cpp"
 #include "actor_gateway_g2c_handle.cpp"
 #include "actor_gateway_c2g_handle.cpp"
 #include "actor_csvserver_handle.cpp"
@@ -118,8 +118,8 @@
 #include "actor_manage_robot.cpp"
 #include "actor_login_handle.cpp"
 #include "actor_brief_handle.cpp"
+#include "actor_role_manage.cpp"
 #include "actor_role_handle.cpp"
-#include "actor_manage_role.cpp"
 #include "actor_mail_handle.cpp"
 #include "actor_gateway_g2c.cpp"
 #include "actor_gateway_c2g.cpp"

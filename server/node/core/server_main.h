@@ -442,7 +442,7 @@ bool start_game()
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
-	ngl::actor_manage_role::getInstance();
+	ngl::actor_role_manage::getInstance();
 	ngl::actor_create::getInstance();
 	ngl::actor_kcp::getInstance();
 	ngl::actor_calendar::getInstance();
