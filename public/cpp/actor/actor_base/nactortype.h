@@ -34,6 +34,7 @@ namespace ngl
 		ACTOR_KCP,
 		ACTOR_ROBOT_MANAGE,
 		ACTOR_CSVSERVER,										// 热更csv server
+		ACTOR_CSVCLIENT,										// 热更csv client
 		ACTOR_NOTICE,											// 公告
 		ACTOR_GM,												// GM			(world 进程 )
 		ACTOR_GMCLIENT,											// GM CLIENT	(除了world进程每个进程都应该有此进程)
