@@ -1,15 +1,15 @@
-#include "actor_manage_robot.h"
+#include "actor_robot_manage.h"
 
 
 namespace ngl
 {
-	actor_manage_robot::actor_manage_robot() :
+	actor_robot_manage::actor_robot_manage() :
 		actor(
 			actorparm
 			{
 				.m_parm
 				{
-					.m_type = ACTOR_MANAGE_ROBOT,
+					.m_type = ACTOR_ROBOT_MANAGE,
 					.m_area = tab_self_area,
 					.m_id = nconfig::m_nodeid,
 					.m_manage_dbclient = false
@@ -19,17 +19,17 @@ namespace ngl
 	{
 	}
 
-	ENUM_ACTOR actor_manage_robot::actor_type()
+	ENUM_ACTOR actor_robot_manage::actor_type()
 	{
-		return ACTOR_MANAGE_ROBOT;
+		return ACTOR_ROBOT_MANAGE;
 	}
 
-	i64_actorid actor_manage_robot::actorid()
+	i64_actorid actor_robot_manage::actorid()
 	{
 		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 	}
 
-	void actor_manage_robot::init()
+	void actor_robot_manage::init()
 	{
 		// 绑定DB结构:DB.set(this);
 
@@ -44,32 +44,32 @@ namespace ngl
 		*/
 	}
 
-	void actor_manage_robot::loaddb_finish(bool adbishave)
+	void actor_robot_manage::loaddb_finish(bool adbishave)
 	{
 	}
 
-	void actor_manage_robot::nregister()
+	void actor_robot_manage::nregister()
 	{
 		// 定时器
-		actor::register_timer<actor_manage_robot>(&actor_manage_robot::timer_handle);
+		actor::register_timer<actor_robot_manage>(&actor_robot_manage::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_manage_robot>::func<
+		register_handle_custom<actor_robot_manage>::func<
 			np_robot_pram
 		>(false);
 
 		// 绑定pb消息
-		register_handle_proto<actor_manage_robot>::func<
+		register_handle_proto<actor_robot_manage>::func<
 			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 		>(false);
 	}
 
-	std::shared_ptr<actor_robot> actor_manage_robot::create(i16_area aarea, i32_actordataid aroleid)
+	std::shared_ptr<actor_robot> actor_robot_manage::create(i16_area aarea, i32_actordataid aroleid)
 	{
 		return std::dynamic_pointer_cast<actor_robot>(actor_base::create(ENUM_ACTOR::ACTOR_ROBOT, aarea, aroleid, nullptr));
 	}
 
-	void actor_manage_robot::login(const std::string& aaccount, const std::string& apasswold)
+	void actor_robot_manage::login(const std::string& aaccount, const std::string& apasswold)
 	{
 		pbnet::PROBUFF_NET_ACOUNT_LOGIN pro;
 		pro.set_m_area(tab_self_area);
@@ -80,12 +80,12 @@ namespace ngl
 		nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
 	}
 
-	bool actor_manage_robot::check_connect(i32_serverid aserverid)const
+	bool actor_robot_manage::check_connect(i32_serverid aserverid)const
 	{
 		return ttab_servers::tab(aserverid) != nullptr && ttab_servers::connect(aserverid) != nullptr;
 	}
 
-	void actor_manage_robot::connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const
+	void actor_robot_manage::connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const
 	{
 		if (check_connect(aserverid))
 		{
@@ -93,33 +93,33 @@ namespace ngl
 		}
 	}
 
-	bool actor_manage_robot::parse_command(std::vector<std::string>& aparm)
+	bool actor_robot_manage::parse_command(std::vector<std::string>& aparm)
 	{
 		auto ldata = std::make_shared<np_robot_pram>();
 		ldata->m_parm.swap(aparm);
-		i64_actorid lid = ngl::nguid::make(ACTOR_MANAGE_ROBOT, tab_self_area, nconfig::m_nodeid);
+		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig::m_nodeid);
 		handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
 		actor_manage::getInstance().push_task_id(lid, lparm, false);
 		return true;
 	}
 
-	void actor_manage_robot::create_robot(const std::string& arobotname)
+	void actor_robot_manage::create_robot(const std::string& arobotname)
 	{
-		ngl::actor_manage_robot::login(arobotname, "123456");
+		ngl::actor_robot_manage::login(arobotname, "123456");
 	}
 
-	void actor_manage_robot::create_robots(const std::string& arobotname, int abeg, int aend)
+	void actor_robot_manage::create_robots(const std::string& arobotname, int abeg, int aend)
 	{
 		for (int i = abeg; i <= aend; ++i)
 		{
 			std::string lname(arobotname);
 			lname += "";
 			lname += tools::lexical_cast<std::string>(i);
-			ngl::actor_manage_robot::login(lname, "123456");
+			ngl::actor_robot_manage::login(lname, "123456");
 		}
 	}
 
-	void actor_manage_robot::foreach(const std::function<bool(_robot&)>& afun)
+	void actor_robot_manage::foreach(const std::function<bool(_robot&)>& afun)
 	{
 		for (std::pair<const std::string, _robot>& item : m_maprobot)
 		{
@@ -127,7 +127,7 @@ namespace ngl
 		}
 	}
 
-	_robot* actor_manage_robot::get_robot(std::string aacount)
+	_robot* actor_robot_manage::get_robot(std::string aacount)
 	{
 		auto itor = m_maprobot.find(aacount);
 		if (itor == m_maprobot.end())
@@ -137,7 +137,7 @@ namespace ngl
 		return &itor->second;
 	}
 
-	bool actor_manage_robot::getdata(_robot* arobot)
+	bool actor_robot_manage::getdata(_robot* arobot)
 	{
 		if (arobot == nullptr)
 		{
@@ -146,12 +146,12 @@ namespace ngl
 		return true;
 	}
 
-	bool actor_manage_robot::timer_handle(const message<np_timerparm>& adata)
+	bool actor_robot_manage::timer_handle(const message<np_timerparm>& adata)
 	{
 		return true;
 	}
 
-	bool actor_manage_robot::handle(const message<np_arg_null>&)
+	bool actor_robot_manage::handle(const message<np_arg_null>&)
 	{
 		return true;
 	}

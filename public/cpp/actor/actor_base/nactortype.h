@@ -32,7 +32,7 @@ namespace ngl
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
 		ACTOR_ROLE_MANAGE,										// 负责创建actor_role
 		ACTOR_KCP,
-		ACTOR_MANAGE_ROBOT,
+		ACTOR_ROBOT_MANAGE,
 		ACTOR_CSVCLIENT,										// 热更csv client
 		ACTOR_CSVSERVER,										// 热更csv server
 		ACTOR_NOTICE,											// 公告

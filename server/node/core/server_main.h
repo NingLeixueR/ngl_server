@@ -576,9 +576,9 @@ bool start_robot(int argc, char** argv)
 
 	ngl::actor_gmclient::getInstance();
 
-	ngl::actor_manage_robot::getInstance();
+	ngl::actor_robot_manage::getInstance();
 
-	ngl::actor_manage_robot::getInstance().connect(ngl::ttab_servers::tab()->m_login, [](int asession)
+	ngl::actor_robot_manage::getInstance().connect(ngl::ttab_servers::tab()->m_login, [](int asession)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
 		});
@@ -593,7 +593,7 @@ bool start_robot(int argc, char** argv)
 			{
 				continue;
 			}
-			ngl::actor_manage_robot::parse_command(lvec);
+			ngl::actor_robot_manage::parse_command(lvec);
 		}
 	}
 	else
@@ -617,7 +617,7 @@ bool start_robot(int argc, char** argv)
 		{
 			return false;
 		}
-		ngl::actor_manage_robot::parse_command(lvec);
+		ngl::actor_robot_manage::parse_command(lvec);
 		int lnum = 10000;
 
 		bool ltest = false;
@@ -673,7 +673,7 @@ bool start_robot(int argc, char** argv)
 						ltest = true;
 						continue;
 					}
-					ngl::actor_manage_robot::parse_command(lvec);
+					ngl::actor_robot_manage::parse_command(lvec);
 				}
 			});
 
@@ -689,7 +689,7 @@ bool start_robot(int argc, char** argv)
 				ngl::sleep::milliseconds(lms[j]);
 				std::vector<std::string> lcmdvec2 = lcmdvec[j];
 				lcmdvec2.push_back(ngl::tools::lexical_cast<std::string>(i));
-				ngl::actor_manage_robot::parse_command(lcmdvec2);
+				ngl::actor_robot_manage::parse_command(lcmdvec2);
 			}
 		}
 	}

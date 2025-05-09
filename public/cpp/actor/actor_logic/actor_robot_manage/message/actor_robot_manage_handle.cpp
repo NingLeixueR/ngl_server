@@ -1,7 +1,7 @@
-#include "actor_manage_robot.h"
+#include "actor_robot_manage.h"
 namespace ngl
 {
-	bool actor_manage_robot::handle(const message<np_robot_pram>& adata)
+	bool actor_robot_manage::handle(const message<np_robot_pram>& adata)
 	{
 		auto lrecv = adata.get_data();
 		std::string lparm1;
@@ -163,7 +163,7 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_manage_robot::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
+	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();
 		_robot& lrobot = m_maprobot[lrecv->m_account()];
