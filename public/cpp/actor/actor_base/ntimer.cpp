@@ -15,7 +15,8 @@ namespace ngl
 			{
 				if (actor_manage::getInstance().is_have_actor(lidguid) == false)
 				{
-					log_error()->print("time run fail: {}", (nguid)lidguid);
+					log_error()->print("time run fail: {} , {}", (nguid)lidguid, aparm->m_timerid);
+					twheel::wheel().removetimer(aparm->m_timerid);
 					return;
 				}
 				aparm->m_triggerms = anode->m_parm.m_timerstart + anode->m_parm.m_ms;
