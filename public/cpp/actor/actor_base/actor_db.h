@@ -27,9 +27,7 @@ namespace ngl
 		static db_cache			m_cache_save;	// 数据保存队列
 		static db_cache			m_cache_del;	// 数据删除队列
 
-		template <typename TDB>
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
-
 	public:
 		using type_actor_dbtab = actor_dbtab<TDBTAB_TYPE, TDBTAB>;
 
@@ -43,8 +41,8 @@ namespace ngl
 				Assert(m_tab != nullptr)
 
 				// # 设置数据保存/数据删除队列
-				m_cache_save.set_cachefun(std::bind_front(&cachelist<TDBTAB>, enum_clist_save), m_tab->m_dbcacheintervalms);
-				m_cache_del.set_cachefun(std::bind_front(&cachelist<TDBTAB>, enum_clist_del), m_tab->m_dbcacheintervalms);
+				m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
+				m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
 
 				if (m_tab->m_isloadall == true)
 				{// 加载全部数据
@@ -386,14 +384,13 @@ namespace ngl
 	};
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	template <typename TDB>
 	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
 	{
 		if (aset.empty())
 		{
 			return;
 		}
-		auto pro = std::make_shared<np_actortime_db_cache<TDB>>();
+		auto pro = std::make_shared<np_actortime_db_cache<TDBTAB>>();
 		pro->m_type = atype;
 		pro->m_ls.swap(aset);
 
