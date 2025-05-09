@@ -155,6 +155,7 @@ namespace ngl
 		}
 
 		// # 如果数据发生变化
+		// # 在回调函数中 可以直接调用寄生actor的内部变量因为回调函数是在actor.nsp_client.handle中被调用的
 		static void set_changedata_fun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_changedatafun = afun;

@@ -13,23 +13,23 @@
 
 namespace ngl
 {
-	class actor_manage_role : public actor
+	class actor_role_manage : public actor
 	{
-		actor_manage_role(const actor_manage_role&) = delete;
-		actor_manage_role& operator=(const actor_manage_role&) = delete;
+		actor_role_manage(const actor_role_manage&) = delete;
+		actor_role_manage& operator=(const actor_role_manage&) = delete;
 
-		actor_manage_role();
+		actor_role_manage();
 
 		std::set<int64_t> m_roleban;
-		using nclient_keyvalue = tdb_keyvalue::nsp_cli<actor_manage_role>;
+		using nclient_keyvalue = tdb_keyvalue::nsp_cli<actor_role_manage>;
 	public:
-		friend class actor_instance<actor_manage_role>;
-		static actor_manage_role& getInstance() 
+		friend class actor_instance<actor_role_manage>;
+		static actor_role_manage& getInstance()
 		{ 
-			return actor_instance<actor_manage_role>::instance(); 
+			return actor_instance<actor_role_manage>::instance();
 		}
 
-		virtual ~actor_manage_role() = default;
+		virtual ~actor_role_manage() = default;
 
 		static ENUM_ACTOR actor_type();
 
@@ -48,8 +48,6 @@ namespace ngl
 
 		bool handle(const message<np_arg_null>&);
 		bool handle(const message<mforward<np_gm>>& adata);
-		bool handle(const message<np_roleban>& adata);
-		// [ÇëÇó]Íæ¼ÒµÇÂ¼
 		bool handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata);
 	};
 }//namespace ngl

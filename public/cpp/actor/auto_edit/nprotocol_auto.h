@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-08 11:50:49
+// 创建时间 // 创建时间 25-05-09 10:44:51
 #pragma once
 
 #include "ndb_modular.h"
@@ -50,13 +50,12 @@ namespace ngl
 			/*200000032*/, np_actor_close
 			/*200000033*/, np_logitem
 			/*200000034*/, np_channel_check
-			/*200000035*/, np_roleban
-			/*200000036*/, np_login_request_info
-			/*200000037*/, np_create_example
-			/*200000038*/, np_example_entergame_ready
-			/*200000039*/, np_example_actorid
-			/*200000040*/, np_example_equit
-			/*200000041*/, np_thruput_test
+			/*200000035*/, np_login_request_info
+			/*200000036*/, np_create_example
+			/*200000037*/, np_example_entergame_ready
+			/*200000038*/, np_example_actorid
+			/*200000039*/, np_example_equit
+			/*200000040*/, np_thruput_test
 		> (EPROTOCOL_TYPE_CUSTOM);
 	}
 }//namespace ngl

@@ -517,12 +517,6 @@ namespace ngl
 		def_portocol(np_channel_check, m_timer, m_area)
 	};
 
-	struct np_roleban
-	{
-		std::set<int64_t> m_roleban;
-		def_portocol(np_roleban, m_roleban)
-	};
-
 	///### 例子小游戏
 	// 玩家登陆
 	// 1、获取匹配信息

@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-08 11:50:54
+// 创建时间 // 创建时间 25-05-09 10:45:31
 #pragma once
 
 #include "nactortype.h"
@@ -34,7 +34,7 @@ namespace ngl
 #include "actor_gateway_c2g.h"
 #include "actor_gateway_g2c.h"
 #include "actor_create.h"
-#include "actor_manage_role.h"
+#include "actor_role_manage.h"
 #include "actor_kcp.h"
 #include "actor_manage_robot.h"
 #include "actor_csvclient.h"
@@ -69,7 +69,7 @@ namespace ngl
 			, dautoactor(actor_gateway_c2g, ACTOR_GATEWAY_C2G)
 			, dautoactor(actor_gateway_g2c, ACTOR_GATEWAY_G2C)
 			, dautoactor(actor_create, ACTOR_CREATE)
-			, dautoactor(actor_manage_role, ACTOR_MANAGE_ROLE)
+			, dautoactor(actor_role_manage, ACTOR_ROLE_MANAGE)
 			, dautoactor(actor_kcp, ACTOR_KCP)
 			, dautoactor(actor_manage_robot, ACTOR_MANAGE_ROBOT)
 			, dautoactor(actor_csvclient, ACTOR_CSVCLIENT)

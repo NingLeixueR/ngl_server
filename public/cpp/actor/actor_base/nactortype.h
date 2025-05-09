@@ -30,7 +30,7 @@ namespace ngl
 		ACTOR_GATEWAY_C2G,										// 网关 [Client]->[Game]
 		ACTOR_GATEWAY_G2C,										// 网关 [Game]	->[Client]
 		ACTOR_CREATE,											// 在指定[Server]上创建[Actor]
-		ACTOR_MANAGE_ROLE,										// 负责创建actor_role
+		ACTOR_ROLE_MANAGE,										// 负责创建actor_role
 		ACTOR_KCP,
 		ACTOR_MANAGE_ROBOT,
 		ACTOR_CSVCLIENT,										// 热更csv client
