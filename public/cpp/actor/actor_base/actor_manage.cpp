@@ -39,7 +39,7 @@ namespace ngl
 
 		inline void init(i32_threadsize apthreadnum)
 		{
-			if (m_workthread.empty() == false)
+			if (!m_workthread.empty())
 			{
 				return;
 			}
@@ -77,7 +77,6 @@ namespace ngl
 						});
 					adata.m_vec.push_back(ltemp);
 				});
-
 		}
 
 		// 当前进程是ACTORSERVER返回"actor_server::actorid()"否则返回"actor_client::actorid()"
@@ -108,16 +107,18 @@ namespace ngl
 			if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
 			{
 				// 新增的actor 
-				auto pro = std::make_shared<np_actornode_update_mass>();
-				pro->m_mass = np_actornode_update
-				{
-					.m_id = nconfig::m_nodeid,
-					.m_add = {guid},
-				};
-				pro->m_fun = afun;
-				nguid lguid = nodetypebyguid();
-				handle_pram lparm = handle_pram::create(lguid, nguid::make(), pro);
-				push_task_id(lguid, lparm, false);
+				auto pro = std::make_shared<np_actornode_update_mass>(
+					np_actornode_update_mass
+					{
+						.m_mass = np_actornode_update
+						{
+							.m_id = nconfig::m_nodeid,
+							.m_add = {guid},
+						},
+						.m_fun = afun
+					}
+				);
+				push_task_id(nodetypebyguid(), pro, false);
 			}
 			apactor->set_activity_stat(actor_stat_free);
 			return true;
@@ -126,15 +127,17 @@ namespace ngl
 		inline void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun)
 		{
 			// 通知actor_client已经删除actor 
-			auto pro = std::make_shared<np_actornode_update_mass>();
-			pro->m_mass = np_actornode_update
-			{
-				.m_id = nconfig::m_nodeid,
-				.m_del = {aguid.id()}
-			};
-			nguid lcguid = nodetypebyguid();
-			handle_pram lparm = handle_pram::create(lcguid, nguid::make(), pro);
-			push_task_id(lcguid, lparm, false);
+			auto pro = std::make_shared<np_actornode_update_mass>(
+				np_actornode_update_mass
+				{
+					.m_mass = np_actornode_update
+					{
+						.m_id = nconfig::m_nodeid,
+						.m_del = {aguid}
+					}
+				}
+			);
+			push_task_id(nodetypebyguid(), pro, false);
 
 			bool isrunfun = false;
 			ptractor lpactor = nullptr;
@@ -297,6 +300,13 @@ namespace ngl
 				}
 			}
 			return *lpactorptr;
+		}
+
+		template <typename T>
+		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram, bool abool)
+		{
+			handle_pram lparm = handle_pram::create(aguid, nguid::make(), apram);
+			push_task_id(aguid, lparm, abool);
 		}
 
 		inline void push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
