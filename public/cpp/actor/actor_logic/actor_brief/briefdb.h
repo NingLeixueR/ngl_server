@@ -81,7 +81,7 @@ struct std::formatter<ngl::data_modified<pbdb::db_brief>>
 	{
 		const auto& lbrief = aval.getconst();
 		return std::format_to(ctx.out(),
-			"<m_id={}:m_lv={}:m_moneygold={}:m_moneysilver={}:m_name={}:m_vip={}>",
+			"<m_id={}:m_lv={}:m_moneygold={}:m_moneysilver={}:m_name={}:m_vip={}>\n",
 			lbrief.m_id(), lbrief.m_lv(), lbrief.m_moneygold(), lbrief.m_moneysilver(), lbrief.m_name(), lbrief.m_vip()
 		);
 	}
