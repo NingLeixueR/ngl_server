@@ -3,7 +3,8 @@
 
 namespace ngl
 {
-	class activity_drawcompliance : public activity
+	class activity_drawcompliance : 
+		public activity
 	{
 		activity_drawcompliance(const activity_drawcompliance&) = delete;
 		activity_drawcompliance& operator=(const activity_drawcompliance&) = delete;

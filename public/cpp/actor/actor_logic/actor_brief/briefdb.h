@@ -55,29 +55,9 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log_error();
-			(*lstream) << "actor_brief###loaddb_finish" << std::endl;
-			for (const std::pair<const nguid, data_modified<pbdb::db_brief>>& pair : data())
-			{
-				const pbdb::db_brief& lbrief = pair.second.getconst();
-				(*lstream) << std::format(
-					"++++++++++++++++++++++\n"
-					"+m_id={}\n"
-					"+m_lv={}\n"
-					"+m_moneygold={}\n"
-					"+m_moneysilver={}\n"
-					"+m_name={}\n"
-					"+m_vip={}\n"
-					"++++++++++++++++++++++\n",
-					lbrief.m_id(),
-					lbrief.m_lv(),
-					lbrief.m_moneygold(),
-					lbrief.m_moneysilver(),
-					lbrief.m_name(),
-					lbrief.m_vip()
-				);
-			}
-			(*lstream).print("");
+			std::map<nguid, data_modified<pbdb::db_brief>> lmap;
+			log_error()->print("actor_brief###loaddb_finish\n {}", lmap);
+			//log_error()->print("actor_brief###loaddb_finish\n {}", data());
 		}
 
 		void update(const std::vector<pbdb::db_brief>& m_vecinfo)
@@ -89,3 +69,22 @@ namespace ngl
 		}
 	};
 }// namespace ngl
+
+
+template <>
+struct std::formatter<ngl::data_modified<pbdb::db_brief>>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::data_modified<pbdb::db_brief>& aval, std::format_context& ctx)const
+	{
+		const auto& lbrief = aval.getconst();
+		return std::format_to(ctx.out(),
+			"<m_id={}:m_lv={}:m_moneygold={}:m_moneysilver={}:m_name={}:m_vip={}>",
+			lbrief.m_id(), lbrief.m_lv(), lbrief.m_moneygold(), lbrief.m_moneysilver(), lbrief.m_name(), lbrief.m_vip()
+		);
+	}
+};

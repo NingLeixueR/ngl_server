@@ -9,7 +9,8 @@
 
 namespace ngl
 {
-	class activitydb : public tdb_activity::db_modular
+	class activitydb : 
+		public tdb_activity::db_modular
 	{
 		activitydb(const activitydb&) = delete;
 		activitydb& operator=(const activitydb&) = delete;
@@ -21,24 +22,26 @@ namespace ngl
 			m_id = -1;
 		}
 
-		const pbdb::db_activity* get_constactivity(int64_t aactivity)
+		data_modified<pbdb::db_activity>* finddata(int64_t aactivity)
 		{
 			auto itor = data().find(aactivity);
 			if (itor == data().end())
 			{
 				return nullptr;
 			}
-			return &itor->second.getconst();
+			return &itor->second;
+		}
+
+		const pbdb::db_activity* get_constactivity(int64_t aactivity)
+		{
+			auto lpdata = finddata(aactivity);
+			return lpdata == nullptr ? nullptr : &lpdata->getconst();
 		}
 
 		pbdb::db_activity* get_activity(int64_t aactivity, bool achange = true)
 		{
-			auto itor = data().find(aactivity);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.get(achange);
+			auto lpdata = finddata(aactivity);
+			return lpdata == nullptr ? nullptr : &lpdata->get();
 		}
 
 		void initdata() final;
