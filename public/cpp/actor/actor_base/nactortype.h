@@ -15,13 +15,13 @@ namespace ngl
 	enum ENUM_ACTOR
 	{
 		ACTOR_NONE = -1,
-		//#######################  非单例  #####################
+		//# 非单例
 		ACTOR_ROLE = 1,
 		ACTOR_ROBOT,											// 机器人
 		ACTOR_LOG,												// 日志
 		ACTOR_EXAMPLE_GUESS_NUMBER,								// 例子小游戏:猜数字-数字炸弹
 
-		//#######################  单例  #######################
+		//# 单例(包括全局单例，和单进程单例) 
 		ACTOR_SIGNLE_START,
 		ACTOR_SERVER = ACTOR_SIGNLE_START,						// 单例 actor address server  管理分发地址的中心
 		ACTOR_CLIENT,											// 单例 actor address client 
@@ -33,7 +33,6 @@ namespace ngl
 		ACTOR_ROLE_MANAGE,										// 负责创建actor_role
 		ACTOR_KCP,
 		ACTOR_ROBOT_MANAGE,
-		ACTOR_CSVCLIENT,										// 热更csv client
 		ACTOR_CSVSERVER,										// 热更csv server
 		ACTOR_NOTICE,											// 公告
 		ACTOR_GM,												// GM			(world 进程 )
