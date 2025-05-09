@@ -19,7 +19,7 @@ namespace ngl
 			for (int i = 0; i < tab->m_threadnum; ++i)
 			{
 				m_vec[i] = new db();
-				Assert(m_vec[i]->connectdb(adbarg))
+				Assert(m_vec[i]->connectdb(adbarg));
 			}
 			return;
 		}Catch

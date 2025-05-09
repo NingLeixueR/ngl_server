@@ -9,7 +9,8 @@
 
 namespace ngl
 {
-	// ## actor_client actor_server 用来管理actor地址
+	// # (actor_client/actor_server) 用来管理actor地址
+	// # 只允许(actor_client/actor_server) 调用
 	class naddress
 	{
 		naddress() = delete;
@@ -40,16 +41,16 @@ namespace ngl
 		static bool set_node(const nactornode& anode);
 
 		//# 添加actor
-		static void actor_add(i32_serverid aserverid, i64_actorid adataid);
+		static void add_actor_address(i32_serverid aserverid, i64_actorid adataid);
 
 		//# 添加一组actor
-		static void actor_add(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
+		static void add_actor_address(i32_serverid aserverid, const std::vector<i64_actorid>& avec);
 
 		//# 删除actor
-		static void actor_del(i64_actorid adataid);
+		static void del_actor_address(i64_actorid adataid);
 
 		//# 删除一组actor
-		static void actor_del(const std::vector<i64_actorid>& avec);
+		static void del_actor_address(const std::vector<i64_actorid>& avec);
 
 		//# 设置session
 		static void set_session(i32_serverid aserverid, i32_sessionid asession);

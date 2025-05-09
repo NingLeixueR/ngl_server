@@ -15,8 +15,8 @@ namespace ngl
 
 	struct actor_node_session
 	{
-		i32_sessionid	m_session;	// 服务器session
-		nactornode		m_node;		// 服务器基本信息
+		i32_sessionid	m_session = -1;	// 服务器session
+		nactornode		m_node;		    // 服务器基本信息
 
 		actor_node_session();
 		actor_node_session(i32_sessionid asession, const nactornode& anode);
@@ -49,9 +49,9 @@ namespace ngl
 			void(const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram&)
 		>;
 
-		forwardtype				m_forwardfun;			// 转发函数
-		bool					m_forwardtype = false;	// 转发给所有类型
-		std::function<void()>	m_failfun;				// 如何actor_client都找不到目标actor则调用
+		forwardtype				m_forwardfun	= nullptr;			// 转发函数
+		bool					m_forwardtype	= false;			// 转发给所有类型
+		std::function<void()>	m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
 
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);

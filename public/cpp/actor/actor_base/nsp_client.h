@@ -77,7 +77,7 @@ namespace ngl
 		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
-			Assert(lsetarea->empty() == false)
+			Assert(lsetarea->empty() == false);
 			for (i16_area area : *lsetarea)
 			{
 				m_nspserver[area] = nguid::make(atype, area, nguid::none_actordataid());

@@ -96,7 +96,7 @@ namespace ngl
 		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();
 		set_node(tabactor->m_id, adata.get_data()->m_session);
-		naddress::actor_add(tabactor->m_id, lactorserve);
+		naddress::add_actor_address(tabactor->m_id, lactorserve);
 
 		//注册结点
 		np_actornode_register lpram
@@ -155,8 +155,8 @@ namespace ngl
 		Try
 		{
 			// # 需要尝试连接ActorServer结点 并向其注册自己
-			Assert(ttab_servers::node_type() != ngl::ACTORSERVER)
-			Assert(ttab_servers::node_type() != ngl::ROBOT)
+			Assert(ttab_servers::node_type() != ngl::ACTORSERVER);
+			Assert(ttab_servers::node_type() != ngl::ROBOT);
 			const tab_servers * tab = ttab_servers::tab();
 			for (int32_t id : tab->m_actorserver)
 			{
@@ -198,7 +198,7 @@ namespace ngl
 		{
 			auto lparm				= adata.get_data();
 			const tab_servers* tab	= ttab_servers::tab();
-			Assert(tab != nullptr)
+			Assert(tab != nullptr);
 			for(const nactornode& node :lparm->m_vec)
 			{
 				if (server_session::sessionid(node.m_serverid) == -1)
@@ -237,7 +237,7 @@ namespace ngl
 			auto lparm = adata.get_data();
 			auto lpack = adata.get_pack();
 			i32_serverid lserverid = lparm->m_id;
-			Assert(lserverid != nconfig::m_nodeid)
+			Assert(lserverid != nconfig::m_nodeid);
 
 			node_update(this, nconfig::m_nodeid, lpack->m_id);
 
@@ -276,8 +276,8 @@ namespace ngl
 		Try
 		{
 			auto lparm = adata.get_data();
-			naddress::actor_add(lparm->m_id, lparm->m_add);
-			naddress::actor_del(lparm->m_del);
+			naddress::add_actor_address(lparm->m_id, lparm->m_add);
+			naddress::del_actor_address(lparm->m_del);
 		}Catch
 		return true;
 	}

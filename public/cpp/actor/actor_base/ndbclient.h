@@ -124,7 +124,7 @@ namespace ngl
 			Try
 			{
 				const tab_servers* tab = ttab_servers::tab();
-				Assert(tab != nullptr)
+				Assert(tab != nullptr);
 				auto pro = std::make_shared<np_actornode_connect_task>();
 				pro->m_serverid = tab->m_db;
 				pro->m_fun = std::bind_front(&type_ndbclient::loaddb, this, m_id);
@@ -232,7 +232,8 @@ namespace ngl
 
 				set_logactor(aactor);
 
-				Assert(m_tab = ttab_dbload::get_tabdb<TDBTAB>(); m_tab != nullptr)
+				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
+				Assert(m_tab != nullptr);
 				
 				static bool m_register = false;
 				if ( m_register == false)
@@ -443,7 +444,7 @@ namespace ngl
 		{
 			Try
 			{
-				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end())
+				Assert(m_typedbclientmap.find(adbclient->type()) == m_typedbclientmap.end());
 				m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 				init(adbclient, m_actor,  aid);
 			}Catch
@@ -551,9 +552,9 @@ namespace ngl
 		Try
 		{
 			const std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
-			Assert(mdbclient != nullptr)
+			Assert(mdbclient != nullptr);
 			ndbclient<DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<DBTYPE, TDBTAB, TACTOR>(false);
-			Assert(lp != nullptr)
+			Assert(lp != nullptr);
 			return lp->handle(adata);
 		}Catch
 		return true;

@@ -79,14 +79,7 @@ namespace ngl
 	}
 }//namespace ngl
 
-#define Assert(ISOK)	 \
-		if(ISOK)		 \
-		{				 \
-		}				 \
-		else			 \
-		{				 \
-			throw #ISOK; \
-		}
+#define Assert(ISOK)	((ISOK)== false)?(throw #ISOK,0):1
 
 #define Try				try
 #define Catch																					\

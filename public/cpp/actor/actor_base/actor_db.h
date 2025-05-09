@@ -38,7 +38,7 @@ namespace ngl
 			{
 				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
 
-				Assert(m_tab != nullptr)
+				Assert(m_tab != nullptr);
 
 				// # 设置数据保存/数据删除队列
 				m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
@@ -60,7 +60,7 @@ namespace ngl
 		{
 			Try
 			{
-				Assert(m_tab->m_isloadall)
+				Assert(m_tab->m_isloadall);
 				if (!m_tab->m_network)
 				{
 					return;
@@ -120,7 +120,7 @@ namespace ngl
 			{
 				Try
 				{
-					Assert(m_tab->m_isloadall)
+					Assert(m_tab->m_isloadall);
 					//加载全部数据
 					loadall(apack, adata);
 				}Catch
