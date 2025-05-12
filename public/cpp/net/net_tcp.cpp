@@ -38,7 +38,7 @@ namespace ngl
 				// 防止玩家数据无法保存造成回档
 				i32_serverid lserverid = server_session::serverid(asession);
 				if (lserverid != -1 && ttab_servers::node_type(lserverid) == NODE_TYPE::DB)
-				{//
+				{
 					*(int32_t*)(nullptr) = 19890519;
 				}
 				close(asession);
