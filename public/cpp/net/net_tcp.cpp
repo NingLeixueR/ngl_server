@@ -1,6 +1,7 @@
 #include "protocol.h"
 #include "net_tcp.h"
 #include "nguid.h"
+#include "xml.h"
 
 namespace ngl
 {
@@ -30,7 +31,18 @@ namespace ngl
 
 		std::function<bool(service_io*, const char*, uint32_t)> lfun = std::bind_front(&net_tcp::socket_recv, this);
 
-		std::function<void(i32_sessionid)> lclosefun = std::bind_front(&net_tcp::close, this);
+		std::function<void(i32_sessionid)> lclosefun = [this](i32_sessionid asession)
+			{
+				// 如果断开连接的是db服务器 
+				// 自动关闭此进程
+				// 防止玩家数据无法保存造成回档
+				i32_serverid lserverid = server_session::serverid(asession);
+				if (lserverid != -1 && ttab_servers::node_type(lserverid) == NODE_TYPE::DB)
+				{//
+					*(int32_t*)(nullptr) = 19890519;
+				}
+				close(asession);
+			};
 		m_server = new asio_tcp(
 			m_index, port(), lsocketthreadnum, lfun, lclosefun, [](i32_sessionid asessionid, bool abool, const pack*) 
 			{
@@ -58,7 +70,7 @@ namespace ngl
 
 	void net_tcp::set_close(int asession, const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun)
 	{
-		m_server->set_close(asession, [this, aip, aport, afun]()
+		m_server->set_close(asession, [this, aip, aport, afun, asession]()
 			{
 				connect(aip, aport, afun);
 			});
