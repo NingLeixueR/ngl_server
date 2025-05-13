@@ -107,7 +107,6 @@ namespace ngl
 		time_t lloginoututc = 0;
 		m_rolekv.value("loginoututc", lloginoututc);
 		auto lcalendar_requst = std::make_shared<mforward<np_actor_calendar_requst>>(id_guid());
-		lcalendar_requst->add_data()->m_loginoututc = lloginoututc;
 		send_actor(actor_calendar::actorid(), lcalendar_requst);
 	}
 
@@ -121,7 +120,7 @@ namespace ngl
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, np_example_actorid
-			, np_actor_task
+			, np_calendar_actor_task
 		>(true);
 
 		// 绑定pb消息

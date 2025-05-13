@@ -1,4 +1,5 @@
 #include "ttab_specialid.h"
+#include "actor_calendar.h"
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
@@ -99,16 +100,14 @@ namespace ngl
 		m_bag.add_item(lparm->m_item);
 		return true;
 	}
-	bool actor_role::handle(const message<np_actor_task>& adata)
+	bool actor_role::handle(const message<np_calendar_actor_task>& adata)
 	{
-		const np_actor_task* recv = adata.get_data();
+		const np_calendar_actor_task* recv = adata.get_data();
 		if (recv == nullptr)
 		{
 			return true;
 		}
-		recv->m_taskids;
-		recv->m_start;
-		if (recv->m_start)
+		if (recv->m_info.m_start)
 		{
 			for (i64_actorid taskid : recv->m_taskids)
 			{
@@ -117,9 +116,16 @@ namespace ngl
 		}
 		else
 		{
-			//static_task::
+			for (i64_actorid taskid : recv->m_taskids)
+			{
+				static_task::finish_task(this, taskid);
+				static_task::erase_task(this, taskid);
+			}
 		}
-
+		auto pro = std::make_shared<mforward<np_calendar_actor_respond>>(id_guid());
+		np_calendar_actor_respond* lpdata = pro->add_data();
+		lpdata->m_info = recv->m_info;
+		send_actor(actor_calendar::actorid(), pro);
 		return true;
 	}
 	bool actor_role::handle(const message<np_eevents_logic_rolelogin>& adata)

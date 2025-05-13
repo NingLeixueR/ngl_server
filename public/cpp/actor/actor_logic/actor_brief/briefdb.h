@@ -68,7 +68,6 @@ namespace ngl
 	};
 }// namespace ngl
 
-
 template <>
 struct std::formatter<ngl::data_modified<pbdb::db_brief>>
 {
