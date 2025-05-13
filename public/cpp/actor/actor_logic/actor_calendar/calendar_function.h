@@ -13,60 +13,58 @@ namespace ngl
 		calendar_function(const calendar_function&) = delete;
 		calendar_function& operator=(const calendar_function&) = delete;
 
-		using typecallback = std::function<void(tab_calendar*, int64_t)>;
-		struct callback
-		{
-			typecallback m_start;
-			typecallback m_finish;
-		};
-		static std::map<ECalendarType, callback> m_fun;
+		using tcall = std::tuple<
+			std::function<bool(tab_calendar*, pbdb::db_calendar*, int32_t, i64_actorid)>,
+			std::function<bool(tab_calendar*, pbdb::db_calendar*, int32_t, i64_actorid)>
+		>;
+		static std::array<tcall, ECalendarType::ECalendarTypeCount> m_call;
+
+		static void push(
+			ECalendarType atype,
+			const std::function<bool(tab_calendar*, pbdb::db_calendar*, int32_t, i64_actorid)>& astart,
+			const std::function<bool(tab_calendar*, pbdb::db_calendar*, int32_t, i64_actorid)>& afinish
+		);
 	public:
 		static void init();
 
-		static void trigger(tab_calendar* tab, int64_t atime, bool aisstart, pbdb::db_calendar* acalendar = nullptr)
+		static bool trigger(tab_calendar* tab, pbdb::db_calendar* acalendar, int64_t atime, bool aisstart,  i64_actorid aactor = nguid::make())
 		{
 			if (aisstart)
 			{
-				start(tab, atime, acalendar);
+				return start(tab, acalendar, atime, aactor);
 			}
 			else
 			{
-				finish(tab, atime, acalendar);
+				return finish(tab, acalendar, atime, aactor);
 			}
 		}
 
 	private:
-		static void start(tab_calendar* tab, int64_t atime, pbdb::db_calendar* acalendar = nullptr)
+		static bool start(tab_calendar* tab, pbdb::db_calendar* acalendar, int32_t atime, i64_actorid aactor)
 		{
-			acalendar->set_m_time(atime);
-			auto itor = m_fun.find(tab->m_carendar);
-			if (itor == m_fun.end())
+			if (tab->m_carendar >= ECalendarTypeCount)
 			{
-				return;
+				return false;
 			}
-			itor->second.m_start(tab, atime);
-			if (acalendar != nullptr)
-			{
-				acalendar->set_m_start(true);
-			}
+			acalendar->set_m_start(atime);
+			tcall& lcall = m_call[tab->m_carendar];
+			auto lstart = std::get<0>(lcall);
+			return lstart(tab, acalendar, atime, aactor);
 		}
 
-		static void finish(tab_calendar* tab, int64_t atime, pbdb::db_calendar* acalendar)
+		static bool finish(tab_calendar* tab, pbdb::db_calendar* acalendar, int32_t atime, i64_actorid aactor)
 		{
-			auto itor = m_fun.find(tab->m_carendar);
-			if (itor == m_fun.end())
+			if (tab->m_carendar >= ECalendarTypeCount)
 			{
-				return;
+				return false;
 			}
-			itor->second.m_finish(tab, atime);
-			if (acalendar != nullptr)
-			{
-				acalendar->set_m_finish(true);
-			}
+			acalendar->set_m_finish(atime);
+			tcall& lcall = m_call[tab->m_carendar];
+			auto lfinish = std::get<1>(lcall);
+			return lfinish(tab, acalendar, atime, aactor);
 		}
 
-		static void operator_activ(tab_calendar* tab, int64_t atime, bool astart);
-
-		static void operator_task(tab_calendar* tab, int64_t atime, bool astart);
+		static bool operator_activ(tab_calendar* tab, pbdb::db_calendar* acalendar, int64_t atime, bool astart, i64_actorid aactor);
+		static bool operator_task(tab_calendar* tab, pbdb::db_calendar* acalendar, int64_t atime, bool astart, i64_actorid aactor);
 	};
 }//namespace ngl

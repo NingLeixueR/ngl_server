@@ -47,7 +47,8 @@ namespace ngl
 	}
 
 	void actor_calendar::loaddb_finish(bool adbishave) 
-	{
+	{//加载数据完成
+
 	}
 
 	void actor_calendar::nregister()
@@ -57,7 +58,6 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_calendar>::func<
-			np_calendar,
 			mforward<np_actor_calendar_requst>
 		>(true);
 

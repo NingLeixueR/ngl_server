@@ -284,34 +284,47 @@ namespace ngl
 		def_portocol(np_actor_addmail, m_roleid, m_tid, m_items, m_parm)
 	};
 
-	// ---- 通知actor_manage_activity开启关闭活动
-	struct np_actor_activity
+	struct ncalendar_info
 	{
-		std::vector<i64_actorid> m_activityids;
 		int64_t m_time = -1;
 		int32_t m_calendarid = -1;
 		bool m_start = false;
 
-		def_portocol(np_actor_openactivity, m_activityids, m_time, m_calendarid, m_start)
+		def_portocol(ncalendar_info, m_time, m_calendarid, m_start)
+	};
+
+	// ---- 通知actor_manage_activity开启关闭活动
+	struct np_calendar_actor_activity
+	{
+		ncalendar_info m_info;
+		std::vector<i64_actorid> m_activityids;
+		
+		def_portocol(np_calendar_actor_activity, m_info, m_activityids)
 	};
 
 	// ---- 
-	struct np_actor_task
+	struct np_calendar_actor_task
 	{
+		ncalendar_info m_info;
 		std::vector<i64_actorid> m_taskids;
-		int64_t m_time = -1;
-		int32_t m_calendarid = -1;
-		bool m_start = false;
 
-		def_portocol(np_actor_task, m_taskids, m_time, m_calendarid, m_start)
+		def_portocol(np_calendar_actor_task, m_info, m_taskids)
 	};
+
+	struct np_calendar_actor_respond
+	{
+		ncalendar_info m_info;
+
+		def_portocol(np_calendar_actor_respond, m_info)
+	};
+
 
 	struct np_actor_calendar_requst
 	{
-		int64_t m_loginoututc = -1;
-
-		def_portocol(np_actor_calendar_requst, m_loginoututc);
+		def_portocol(np_actor_calendar_requst);
 	};
+
+
 
 	// ---- 通知kcp服务器创建连接
 	struct np_actor_kcp
@@ -334,15 +347,6 @@ namespace ngl
 		int32_t m_end = -1;
 
 		def_portocol_function(calendar_utc, m_time, m_beg, m_end)
-	};
-
-	struct np_calendar
-	{
-		int32_t m_calendarid = -1;
-		int64_t m_time = -1;
-		bool m_start = false;
-
-		def_portocol(np_calendar, m_calendarid, m_time, m_start)
 	};
 
 	// ---- 新增邮件

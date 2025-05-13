@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[34]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[35]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -89,6 +89,9 @@ extern db_briefDefaultTypeInternal _db_brief_default_instance_;
 class db_calendar;
 class db_calendarDefaultTypeInternal;
 extern db_calendarDefaultTypeInternal _db_calendar_default_instance_;
+class db_calendar_MActortriggerEntry_DoNotUse;
+class db_calendar_MActortriggerEntry_DoNotUseDefaultTypeInternal;
+extern db_calendar_MActortriggerEntry_DoNotUseDefaultTypeInternal _db_calendar_MActortriggerEntry_DoNotUse_default_instance_;
 class db_family;
 class db_familyDefaultTypeInternal;
 extern db_familyDefaultTypeInternal _db_family_default_instance_;
@@ -173,6 +176,7 @@ template<> ::pbdb::db_bag* Arena::CreateMaybeMessage<::pbdb::db_bag>(Arena*);
 template<> ::pbdb::db_bag_MItemsEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_bag_MItemsEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_brief* Arena::CreateMaybeMessage<::pbdb::db_brief>(Arena*);
 template<> ::pbdb::db_calendar* Arena::CreateMaybeMessage<::pbdb::db_calendar>(Arena*);
+template<> ::pbdb::db_calendar_MActortriggerEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_calendar_MActortriggerEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_family* Arena::CreateMaybeMessage<::pbdb::db_family>(Arena*);
 template<> ::pbdb::db_familyer* Arena::CreateMaybeMessage<::pbdb::db_familyer>(Arena*);
 template<> ::pbdb::db_friends* Arena::CreateMaybeMessage<::pbdb::db_friends>(Arena*);
@@ -4567,6 +4571,36 @@ class calendar_pair PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class db_calendar_MActortriggerEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_calendar_MActortriggerEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_calendar_MActortriggerEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    0 > SuperType;
+  db_calendar_MActortriggerEntry_DoNotUse();
+  db_calendar_MActortriggerEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_calendar_MActortriggerEntry_DoNotUse& other);
+  static const db_calendar_MActortriggerEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_calendar_MActortriggerEntry_DoNotUse*>(&_db_calendar_MActortriggerEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[29];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
 class db_calendar PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_calendar) */ {
  public:
@@ -4609,7 +4643,7 @@ class db_calendar PROTOBUF_FINAL :
                &_db_calendar_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    30;
 
   friend void swap(db_calendar& a, db_calendar& b) {
     a.Swap(&b);
@@ -4677,16 +4711,36 @@ class db_calendar PROTOBUF_FINAL :
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMTriggerlistFieldNumber = 5,
+    kMActortriggerFieldNumber = 6,
+    kMTriggerlistFieldNumber = 7,
     kMIdFieldNumber = 1,
-    kMTimeFieldNumber = 2,
-    kMStartFieldNumber = 3,
-    kMFinishFieldNumber = 4,
+    kMStartFieldNumber = 2,
+    kMFinishFieldNumber = 3,
+    kMIsstartFieldNumber = 4,
+    kMIsfinishFieldNumber = 5,
   };
-  // repeated .pbdb.calendar_pair m_triggerlist = 5;
+  // map<int64, int32> m_actortrigger = 6;
+  int m_actortrigger_size() const;
+  private:
+  int _internal_m_actortrigger_size() const;
+  public:
+  void clear_m_actortrigger();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >&
+      _internal_m_actortrigger() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >*
+      _internal_mutable_m_actortrigger();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >&
+      m_actortrigger() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >*
+      mutable_m_actortrigger();
+
+  // repeated .pbdb.calendar_pair m_triggerlist = 7;
   int m_triggerlist_size() const;
   private:
   int _internal_m_triggerlist_size() const;
@@ -4717,43 +4771,56 @@ class db_calendar PROTOBUF_FINAL :
   void _internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // int64 m_time = 2;
-  bool has_m_time() const;
-  private:
-  bool _internal_has_m_time() const;
-  public:
-  void clear_m_time();
-  ::PROTOBUF_NAMESPACE_ID::int64 m_time() const;
-  void set_m_time(::PROTOBUF_NAMESPACE_ID::int64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_m_time() const;
-  void _internal_set_m_time(::PROTOBUF_NAMESPACE_ID::int64 value);
-  public:
-
-  // bool m_start = 3;
+  // int32 m_start = 2;
   bool has_m_start() const;
   private:
   bool _internal_has_m_start() const;
   public:
   void clear_m_start();
-  bool m_start() const;
-  void set_m_start(bool value);
+  ::PROTOBUF_NAMESPACE_ID::int32 m_start() const;
+  void set_m_start(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  bool _internal_m_start() const;
-  void _internal_set_m_start(bool value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_start() const;
+  void _internal_set_m_start(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // bool m_finish = 4;
+  // int32 m_finish = 3;
   bool has_m_finish() const;
   private:
   bool _internal_has_m_finish() const;
   public:
   void clear_m_finish();
-  bool m_finish() const;
-  void set_m_finish(bool value);
+  ::PROTOBUF_NAMESPACE_ID::int32 m_finish() const;
+  void set_m_finish(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  bool _internal_m_finish() const;
-  void _internal_set_m_finish(bool value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_finish() const;
+  void _internal_set_m_finish(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 m_isstart = 4;
+  bool has_m_isstart() const;
+  private:
+  bool _internal_has_m_isstart() const;
+  public:
+  void clear_m_isstart();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_isstart() const;
+  void set_m_isstart(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_isstart() const;
+  void _internal_set_m_isstart(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 m_isfinish = 5;
+  bool has_m_isfinish() const;
+  private:
+  bool _internal_has_m_isfinish() const;
+  public:
+  void clear_m_isfinish();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_isfinish() const;
+  void set_m_isfinish(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_isfinish() const;
+  void _internal_set_m_isfinish(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:pbdb.db_calendar)
@@ -4765,11 +4832,18 @@ class db_calendar PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      db_calendar_MActortriggerEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      0 > m_actortrigger_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::calendar_pair > m_triggerlist_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
-  ::PROTOBUF_NAMESPACE_ID::int64 m_time_;
-  bool m_start_;
-  bool m_finish_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_start_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_finish_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_isstart_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_isfinish_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
@@ -4816,7 +4890,7 @@ class db_familyer PROTOBUF_FINAL :
                &_db_familyer_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    31;
 
   friend void swap(db_familyer& a, db_familyer& b) {
     a.Swap(&b);
@@ -5052,7 +5126,7 @@ class db_family PROTOBUF_FINAL :
                &_db_family_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    32;
 
   friend void swap(db_family& a, db_family& b) {
     a.Swap(&b);
@@ -5335,7 +5409,7 @@ class db_friends PROTOBUF_FINAL :
                &_db_friends_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    33;
 
   friend void swap(db_friends& a, db_friends& b) {
     a.Swap(&b);
@@ -5527,7 +5601,7 @@ class dbcross_test PROTOBUF_FINAL :
                &_dbcross_test_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    34;
 
   friend void swap(dbcross_test& a, dbcross_test& b) {
     a.Swap(&b);
@@ -8366,6 +8440,8 @@ inline void calendar_pair::set_m_isstart(bool value) {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 // db_calendar
 
 // int64 m_id = 1;
@@ -8396,91 +8472,148 @@ inline void db_calendar::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_id)
 }
 
-// int64 m_time = 2;
-inline bool db_calendar::_internal_has_m_time() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
-  return value;
-}
-inline bool db_calendar::has_m_time() const {
-  return _internal_has_m_time();
-}
-inline void db_calendar::clear_m_time() {
-  m_time_ = PROTOBUF_LONGLONG(0);
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_calendar::_internal_m_time() const {
-  return m_time_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int64 db_calendar::m_time() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_calendar.m_time)
-  return _internal_m_time();
-}
-inline void db_calendar::_internal_set_m_time(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000002u;
-  m_time_ = value;
-}
-inline void db_calendar::set_m_time(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _internal_set_m_time(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_time)
-}
-
-// bool m_start = 3;
+// int32 m_start = 2;
 inline bool db_calendar::_internal_has_m_start() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool db_calendar::has_m_start() const {
   return _internal_has_m_start();
 }
 inline void db_calendar::clear_m_start() {
-  m_start_ = false;
-  _has_bits_[0] &= ~0x00000004u;
+  m_start_ = 0;
+  _has_bits_[0] &= ~0x00000002u;
 }
-inline bool db_calendar::_internal_m_start() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::_internal_m_start() const {
   return m_start_;
 }
-inline bool db_calendar::m_start() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::m_start() const {
   // @@protoc_insertion_point(field_get:pbdb.db_calendar.m_start)
   return _internal_m_start();
 }
-inline void db_calendar::_internal_set_m_start(bool value) {
-  _has_bits_[0] |= 0x00000004u;
+inline void db_calendar::_internal_set_m_start(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000002u;
   m_start_ = value;
 }
-inline void db_calendar::set_m_start(bool value) {
+inline void db_calendar::set_m_start(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_start(value);
   // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_start)
 }
 
-// bool m_finish = 4;
+// int32 m_finish = 3;
 inline bool db_calendar::_internal_has_m_finish() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool db_calendar::has_m_finish() const {
   return _internal_has_m_finish();
 }
 inline void db_calendar::clear_m_finish() {
-  m_finish_ = false;
-  _has_bits_[0] &= ~0x00000008u;
+  m_finish_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
 }
-inline bool db_calendar::_internal_m_finish() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::_internal_m_finish() const {
   return m_finish_;
 }
-inline bool db_calendar::m_finish() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::m_finish() const {
   // @@protoc_insertion_point(field_get:pbdb.db_calendar.m_finish)
   return _internal_m_finish();
 }
-inline void db_calendar::_internal_set_m_finish(bool value) {
-  _has_bits_[0] |= 0x00000008u;
+inline void db_calendar::_internal_set_m_finish(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
   m_finish_ = value;
 }
-inline void db_calendar::set_m_finish(bool value) {
+inline void db_calendar::set_m_finish(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_finish(value);
   // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_finish)
 }
 
-// repeated .pbdb.calendar_pair m_triggerlist = 5;
+// int32 m_isstart = 4;
+inline bool db_calendar::_internal_has_m_isstart() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool db_calendar::has_m_isstart() const {
+  return _internal_has_m_isstart();
+}
+inline void db_calendar::clear_m_isstart() {
+  m_isstart_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::_internal_m_isstart() const {
+  return m_isstart_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::m_isstart() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_calendar.m_isstart)
+  return _internal_m_isstart();
+}
+inline void db_calendar::_internal_set_m_isstart(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000008u;
+  m_isstart_ = value;
+}
+inline void db_calendar::set_m_isstart(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_isstart(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_isstart)
+}
+
+// int32 m_isfinish = 5;
+inline bool db_calendar::_internal_has_m_isfinish() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
+inline bool db_calendar::has_m_isfinish() const {
+  return _internal_has_m_isfinish();
+}
+inline void db_calendar::clear_m_isfinish() {
+  m_isfinish_ = 0;
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::_internal_m_isfinish() const {
+  return m_isfinish_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_calendar::m_isfinish() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_calendar.m_isfinish)
+  return _internal_m_isfinish();
+}
+inline void db_calendar::_internal_set_m_isfinish(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000010u;
+  m_isfinish_ = value;
+}
+inline void db_calendar::set_m_isfinish(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_isfinish(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_calendar.m_isfinish)
+}
+
+// map<int64, int32> m_actortrigger = 6;
+inline int db_calendar::_internal_m_actortrigger_size() const {
+  return m_actortrigger_.size();
+}
+inline int db_calendar::m_actortrigger_size() const {
+  return _internal_m_actortrigger_size();
+}
+inline void db_calendar::clear_m_actortrigger() {
+  m_actortrigger_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >&
+db_calendar::_internal_m_actortrigger() const {
+  return m_actortrigger_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >&
+db_calendar::m_actortrigger() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_calendar.m_actortrigger)
+  return _internal_m_actortrigger();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >*
+db_calendar::_internal_mutable_m_actortrigger() {
+  return m_actortrigger_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::int32 >*
+db_calendar::mutable_m_actortrigger() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_calendar.m_actortrigger)
+  return _internal_mutable_m_actortrigger();
+}
+
+// repeated .pbdb.calendar_pair m_triggerlist = 7;
 inline int db_calendar::_internal_m_triggerlist_size() const {
   return m_triggerlist_.size();
 }
@@ -9267,6 +9400,8 @@ dbcross_test::mutable_m_value() {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

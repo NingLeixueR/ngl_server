@@ -221,7 +221,7 @@ namespace ngl
 		bool handle(const message<mforward<np_gm>>& adata);
 		bool handle(const message<np_actor_disconnect_close>& adata);
 		bool handle(const message<np_actor_senditem>& adata);
-		bool handle(const message<np_actor_task>& adata);
+		bool handle(const message<np_calendar_actor_task>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 		bool handle(const message<np_example_actorid>& adata);
 		// [请求]获取背包信息

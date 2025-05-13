@@ -72,14 +72,7 @@ namespace ngl
 			return m_activity->getconst().m_calendarid();
 		}
 
-	private:
-		void post(bool astart);
 	public:
-		void post_timer()
-		{
-			post(true);
-			post(false);
-		}
 
 		// »î¶¯¿ªÆô
 		virtual void start() {}

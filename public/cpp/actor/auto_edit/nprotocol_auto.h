@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-09 11:04:03
+// 创建时间 // 创建时间 25-05-13 19:01:54
 #pragma once
 
 #include "ndb_modular.h"
@@ -41,11 +41,11 @@ namespace ngl
 			/*200000023*/, np_actor_senditem
 			/*200000024*/, np_actor_gatewayinfo_updata
 			/*200000025*/, np_actor_addmail
-			/*200000026*/, np_actor_activity
-			/*200000027*/, np_actor_task
-			/*200000028*/, np_actor_calendar_requst
-			/*200000029*/, np_actor_kcp
-			/*200000030*/, np_calendar
+			/*200000026*/, np_calendar_actor_activity
+			/*200000027*/, np_calendar_actor_task
+			/*200000028*/, np_calendar_actor_respond
+			/*200000029*/, np_actor_calendar_requst
+			/*200000030*/, np_actor_kcp
 			/*200000031*/, np_actor_addnotice
 			/*200000032*/, np_actor_close
 			/*200000033*/, np_logitem

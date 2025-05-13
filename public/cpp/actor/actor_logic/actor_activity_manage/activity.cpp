@@ -41,49 +41,5 @@ namespace ngl
 			ldb.set_m_calendarid(acalendarid);
 			m_activity = adb.add(activityid, ldb);
 		}
-	}
-
-	void activity::post(bool astart)
-	{
-		if ((astart ? is_start() : is_finish()) == false && calendarid() < 0)
-		{
-			int32_t lnow = (int32_t)localtime::gettime();
-			int32_t ltime = astart ? start_utc() : finish_utc();
-			int32_t ltemp = ltime - lnow;
-			if (ltemp < 0)
-			{
-				if (astart)
-				{
-					start();
-				}
-				else
-				{
-					finish();
-				}
-			}
-			else
-			{
-				int64_t ltime = ttab_calendar::data::time(start_utc(), finish_utc());
-				int64_t lactivityid = m_activityid;
-				wheel_parm lparm
-				{
-					.m_ms = ltemp * 1000,
-					.m_intervalms = nullptr ,
-					.m_count = 1,
-					.m_fun = [ltime,lactivityid,astart](const wheel_node* anode)
-					{
-						auto pro = std::make_shared<np_actor_activity>(np_actor_activity
-							{
-								.m_time = ltime,
-								.m_calendarid = -1,
-								.m_start = astart,
-							});
-						pro->m_activityids.push_back(lactivityid);
-						actor::static_send_actor(actor_activity_manage::actorid(), nguid::make(), pro);
-					}
-				};
-				twheel::wheel().addtimer(lparm);
-			}
-		}
-	}
+	}	
 }//namespace ngl

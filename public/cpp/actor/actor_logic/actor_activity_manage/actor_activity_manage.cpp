@@ -41,14 +41,6 @@ namespace ngl
 	{
 		// 绑定DB结构:DB.set(this);
 		m_db.set(this);
-		// 设置timer_handle定时器
-		np_timerparm tparm;
-		if (make_timerparm::make_interval(tparm, 5) == false)
-		{
-			log_error()->print("actor_activity_manage::init() make_timerparm::make_interval(tparm, 5) == false!!!");
-			return;
-		}
-		set_timer(tparm);
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
@@ -62,7 +54,7 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_activity_manage>::func<
-			np_actor_activity
+			np_calendar_actor_activity
 		>(false);
 
 		// 绑定pb消息
@@ -76,10 +68,6 @@ namespace ngl
 		if (itor.second == false)
 		{
 			return;
-		}
-		if (activ->calendarid() < 0)
-		{
-			activ->post_timer();
 		}
 	}
 

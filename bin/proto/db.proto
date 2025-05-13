@@ -210,11 +210,13 @@ message calendar_pair
 
 message db_calendar
 {
-	optional int64 m_id				= 1; // 脚本日历id
-	optional int64 m_time			= 2; // 32bit 开始时间 32 结束时间
-	optional bool m_start			= 3; // 是否开启
-	optional bool m_finish			= 4; // 是否结束
-	repeated calendar_pair m_triggerlist = 5; // 历史触发列表(保留两周历史)
+	optional int64 m_id							= 1; // 脚本日历id
+	optional int32 m_start						= 2; // 开始时间
+	optional int32 m_finish						= 3; // 结束时间
+	optional int32 m_isstart					= 4; // 是否触发过开始
+	optional int32 m_isfinish					= 5; // 是否触发过结束
+	map<int64,int32> m_actortrigger				= 6; // key:actorid value:最后一次触发时间
+	repeated calendar_pair m_triggerlist		= 7; // 已触发列表:key:触发时间
 }
 
 message db_familyer
