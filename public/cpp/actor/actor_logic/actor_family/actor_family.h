@@ -44,7 +44,7 @@ namespace ngl
 
 		static ENUM_ACTOR actor_type();
 
-		static i64_actorid actorid(int32_t adataid);
+		static i64_actorid actorid();
 
 		virtual void init();
 
