@@ -11,7 +11,7 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		log_warn()->print("connect [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
+		log_error()->print("server_session::add [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
 		{
 			lock_write(m_mutex);
 			m_server.erase(aserverid);
@@ -29,6 +29,7 @@ namespace ngl
 		{
 			return;
 		}
+		log_error()->print("server_session::remove [{}:{}] [{}]", itor->second, ttab_servers::tab(itor->second)->m_name, asession);
 		m_server.erase(itor->second);
 		m_session.erase(itor);
 	}

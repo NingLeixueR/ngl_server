@@ -26,9 +26,9 @@ namespace ngl
 		return ACTOR_FRIENDS;
 	}
 
-	i64_actorid actor_friends::actorid(int32_t adataid)
+	i64_actorid actor_friends::actorid()
 	{
-		return nguid::make(actor_type(), tab_self_area, adataid);
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 	}
 
 	void actor_friends::init()
@@ -50,8 +50,8 @@ namespace ngl
 	void actor_friends::loaddb_finish(bool adbishave)
 	{
 		actor_events_logic::tfun::func<>(
-			eevents_logic_rolelogin, actorid(tab_self_area),
-			eevents_logic_roleoffline, actorid(tab_self_area)
+			eevents_logic_rolelogin, actorid(),
+			eevents_logic_roleoffline, actorid()
 		);
 	}
 
