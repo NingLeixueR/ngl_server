@@ -90,7 +90,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<np_actor_disconnect_close>& adata)
 	{
-		erase_actor_byid();
+		erase_actor();
 		return true;
 	}
 	bool actor_role::handle(const message<np_actor_senditem>& adata)
@@ -375,6 +375,11 @@ namespace ngl
 					pro->set_m_everynum(leverynum);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_RANKLIST>(lmessage);
+				}
+			);
+			handle_cmd::push("/exit", []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					role->erase_actor();
 				}
 			);
 		}

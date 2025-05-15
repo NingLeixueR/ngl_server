@@ -109,10 +109,10 @@ namespace ngl
 			}
 		}
 
-		inline void erase_actor_byid()const
+		inline void erase_actor()const
 		{
 			m_actor->erase_actor_before();
-			actor_manage::getInstance().erase_actor_byid(m_guid);
+			actor_manage::getInstance().erase_actor(m_guid);
 		}
 
 		inline bool is_single()const
@@ -261,9 +261,9 @@ namespace ngl
 		m_impl_actor_base.make_unique(this, aparm);
 	}
 
-	void actor_base::erase_actor_byid()
+	void actor_base::erase_actor()
 	{
-		m_impl_actor_base()->erase_actor_byid();
+		m_impl_actor_base()->erase_actor();
 	}
 
 	bool actor_base::is_single()
@@ -310,9 +310,9 @@ namespace ngl
 	{
 	}
 
-	void actor_base::erase_actor_byid(const nguid& aguid)
+	void actor_base::erase_actor(const nguid& aguid)
 	{
-		actor_manage::getInstance().erase_actor_byid(aguid);
+		actor_manage::getInstance().erase_actor(aguid);
 	}
 
 	void actor_base::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)

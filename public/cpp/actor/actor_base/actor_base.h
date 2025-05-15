@@ -183,10 +183,10 @@ namespace ngl
 		ENUM_ACTOR type();
 
 		//# 移除actor自身
-		virtual void erase_actor_byid();
+		virtual void erase_actor();
 
 		//# 移除指定actor
-		static void erase_actor_byid(const nguid& aguid);
+		static void erase_actor(const nguid& aguid);
 
 		//# 给actor自身添加任务
 		void push_task_id(handle_pram& apram, bool abool);

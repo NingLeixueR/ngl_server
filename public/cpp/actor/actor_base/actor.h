@@ -249,7 +249,7 @@ namespace ngl
 		// # ¹Ø±Õ´Ëactor
 		bool handle(const message<np_actor_close>&)
 		{
-			erase_actor_byid();
+			erase_actor();
 			return true;
 		}
 	};

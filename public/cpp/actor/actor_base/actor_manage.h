@@ -45,7 +45,7 @@ namespace ngl
 		bool add_actor(const ptractor& apactor, const std::function<void()>& afun);
 
 		//# ÒÆ³ýactor
-		void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun = nullptr);
+		void erase_actor(const nguid& aguid, const std::function<void()>& afun = nullptr);
 
 		//# ÊÇ·ñ´æÔÚÄ³¸öactor
 		bool is_have_actor(const nguid& aguid);

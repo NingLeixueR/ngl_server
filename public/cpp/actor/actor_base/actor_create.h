@@ -87,7 +87,7 @@ namespace ngl
 			}
 			else if (lparm->m_serverid == nconfig::m_nodeid)
 			{
-				actor_manage::getInstance().erase_actor_byid(lparm->m_actor, [lparm]()
+				actor_manage::getInstance().erase_actor(lparm->m_actor, [lparm]()
 					{
 						auto pro = std::make_shared<np_actorswitch_process<T>>(*lparm);
 						actor_create::switch_process_send<T>(pro);

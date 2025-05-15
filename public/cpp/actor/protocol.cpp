@@ -254,6 +254,42 @@ namespace ngl
 					}
 				}
 			);
+			// 测试两台服务器是否联通
+			// ping serverid
+			handle_cmd::push("/ping", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				{
+					if (avec.size() < 2)
+					{
+						nets::sendmsg(pack->m_id, "参数错误");
+						return;
+					}
+					i32_serverid lserverid = tools::lexical_cast<i32_serverid>(avec[1]);
+					ttab_servers::tab(lserverid);
+					i32_session lsession = server_session::sessionid(lserverid);
+					nets::sendmsg(lsession, "/login libo 123456");
+					wheel_parm lparm
+					{
+						.m_ms = (int32_t)(2000),
+						.m_intervalms = [](int64_t) {return 2000; },
+						.m_count = 1,
+						.m_fun = [lsession](const wheel_node* anode)
+						{
+							nets::sendmsg(lsession, "/each china");
+						}
+					};
+					twheel::wheel().addtimer(lparm);
+				}
+			);
+			handle_cmd::push("/echo", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				{
+					if (avec.size() < 2)
+					{
+						nets::sendmsg(pack->m_id, "参数错误");
+						return;
+					}
+					std::cout << std::format("###{}###",avec[1]) << std::endl;
+				}
+			);
 		}
 		if (handle_cmd::function(lkey, apack, lvec) == false)
 		{
