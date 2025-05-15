@@ -140,7 +140,7 @@ namespace ngl
 		{
 			if (m_bombutc + equit_time <= lnow)
 			{
-				erase_actor_byid();
+				erase_actor();
 			}
 		}
 		return true;

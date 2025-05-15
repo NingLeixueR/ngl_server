@@ -59,7 +59,7 @@ namespace ngl
 		inline void push_back(T&& anode)
 		{
 			{
-				ngl_lock;
+				monopoly_shared_lock(m_mutex);
 				m_list.push_back(anode);
 			}
 			ngl_post;
@@ -68,7 +68,7 @@ namespace ngl
 		inline void push_back(T& anode)
 		{
 			{
-				ngl_lock;
+				monopoly_shared_lock(m_mutex);
 				m_list.push_back(anode);
 			}
 			ngl_post;

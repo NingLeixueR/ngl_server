@@ -60,13 +60,13 @@ namespace ngl
 
 		inline int32_t actor_count()
 		{
-			ngl_lock;
+			ngl_lock_s;
 			return (int32_t)m_actorbyid.size();
 		}
 
 		inline void get_actor_stat(msg_actor_stat& adata)
 		{
-			ngl_lock;
+			ngl_lock_s;
 			std::ranges::for_each(m_actorbytype, [&adata](const auto& apair)
 				{
 					msg_actor ltemp;
@@ -89,7 +89,7 @@ namespace ngl
 		{
 			const nguid& guid = apactor->guid();
 			{
-				ngl_lock;
+				ngl_lock_s;
 				if (m_actorbyid.contains(guid))
 				{
 					std::cout << std::format("impl_actor_manage add_actor m_actorbyid.contains(guid:{}) fail", guid) << std::endl;
@@ -124,7 +124,7 @@ namespace ngl
 			return true;
 		}
 
-		inline void erase_actor_byid(const nguid& aguid, const std::function<void()>& afun)
+		inline void erase_actor(const nguid& aguid, const std::function<void()>& afun)
 		{
 			// 通知actor_client已经删除actor 
 			auto pro = std::make_shared<np_actornode_update_mass>(
@@ -142,7 +142,7 @@ namespace ngl
 			bool isrunfun = false;
 			ptractor lpactor = nullptr;
 			{
-				ngl_lock;
+				ngl_lock_s;
 				ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid);
 				if (lpactorptr == nullptr)
 				{
@@ -203,13 +203,13 @@ namespace ngl
 
 		inline ptractor& get_actor(const nguid& aguid)
 		{
-			ngl_lock;
+			ngl_lock_s;
 			return nosafe_get_actor(aguid);
 		}
 
 		inline bool is_have_actor(const nguid& aguid)
 		{
-			ngl_lock;
+			ngl_lock_s;
 			return m_actorbyid.contains(aguid);
 		}
 		
@@ -217,49 +217,57 @@ namespace ngl
 		inline void push(const ptractor& apactor, nthread* atorthread)
 		{
 			std::function<void()> lfun = nullptr;
-
-			ngl_lock;
-			if (atorthread != nullptr)
+			bool lrelease = false;
 			{
-				if (m_suspend)
+				ngl_lock_s;
+				if (atorthread != nullptr)
 				{
-					m_suspendthread.push_back(atorthread);
+					if (m_suspend)
+					{
+						m_suspendthread.push_back(atorthread);
+					}
+					else
+					{
+						m_workthread.push_back(atorthread);
+					}
+				}
+				if (!m_actorbyid.contains(apactor->id_guid()))
+				{//erase_actor
+					nguid leraseguid = apactor->id_guid();
+					std::function<void()>* lpfun = tools::findmap(m_delactorfun, leraseguid);
+					if (lpfun != nullptr)
+					{
+						lfun.swap(*lpfun);
+						m_delactorfun.erase(leraseguid);
+						apactor->set_activity_stat(actor_stat_close);
+						ngl_post;
+					}
+					lrelease = true;
 				}
 				else
 				{
-					m_workthread.push_back(atorthread);
-				}
-			}
-			if (!m_actorbyid.contains(apactor->id_guid()))
-			{//erase_actor_byid
-				nguid leraseguid = apactor->id_guid();
-				std::function<void()>* lpfun = tools::findmap(m_delactorfun, leraseguid);
-				if (lpfun != nullptr)
-				{
-					lfun.swap(*lpfun);
-					m_delactorfun.erase(leraseguid);
-					apactor->set_activity_stat(actor_stat_close);
+					if (apactor->list_empty() == false)
+					{
+						m_actorlist.push_back(apactor);
+						apactor->set_activity_stat(actor_stat_list);
+					}
+					else
+					{
+						apactor->set_activity_stat(actor_stat_free);
+					}
 					ngl_post;
 				}
+			}
+			
+			if (lrelease)
+			{
 				apactor->release();
-				if (lpfun != nullptr)
+				if (lfun != nullptr)
 				{
 					lfun();
 				}
 			}
-			else
-			{
-				if (apactor->list_empty() == false)
-				{
-					m_actorlist.push_back(apactor);
-					apactor->set_activity_stat(actor_stat_list);
-				}
-				else
-				{
-					apactor->set_activity_stat(actor_stat_free);
-				}
-				ngl_post;
-			}
+
 		}
 
 		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
@@ -311,7 +319,7 @@ namespace ngl
 
 		inline void push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 		{
-			ngl_lock;
+			ngl_lock_s
 			ptractor lpptractor = nosafe_get_actorbyid(aguid, apram, abool);
 			if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
 			{
@@ -323,7 +331,7 @@ namespace ngl
 
 		inline void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver)
 		{
-			ngl_lock;
+			ngl_lock_s;
 			// 1.先发给本机上的atype
 			for (const auto& [key, value] : m_actorbytype[atype])
 			{
@@ -348,7 +356,7 @@ namespace ngl
 
 		inline void broadcast_task(handle_pram& apram)
 		{
-			ngl_lock;
+			ngl_lock_s;
 			for (const auto& [key, value] : m_actorbroadcast)
 			{
 				if (value->isbroadcast())
@@ -364,7 +372,7 @@ namespace ngl
 			int lthreadnum = 0;
 			while (lthreadnum + 1 < m_threadnum)
 			{
-				ngl_lock;
+				ngl_lock_s;
 				m_suspend = true;
 				if (m_workthread.empty() == false)
 				{
@@ -377,7 +385,7 @@ namespace ngl
 
 		inline void finish_suspend_thread()
 		{
-			ngl_lock;
+			ngl_lock_s;
 			m_suspend = false;
 			m_workthread.insert(m_workthread.end(), m_suspendthread.begin(), m_suspendthread.end());
 			m_suspendthread.clear();
@@ -466,9 +474,9 @@ namespace ngl
 		return add_actor(ltemp, afun);
 	}
 
-	void actor_manage::erase_actor_byid(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
+	void actor_manage::erase_actor(const nguid& aguid, const std::function<void()>& afun /*= nullptr*/)
 	{
-		m_impl_actor_manage()->erase_actor_byid(aguid, afun);
+		m_impl_actor_manage()->erase_actor(aguid, afun);
 	}
 
 	bool actor_manage::is_have_actor(const nguid& aguid)
