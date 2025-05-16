@@ -103,6 +103,7 @@ namespace ngl
 # define ngl_lock monopoly_lock(m_mutex)
 #endif//OPEN_SEM
 
+// ÓÃÓÚ¼ì²éËÀËø
 #ifdef DECHECK_LOCK_TAR
 # define ngl_lock_s std::cout << std::format("lock_open:{},{}", __FILE__,__LINE__) << std::endl;\
 ngl_lock;\
