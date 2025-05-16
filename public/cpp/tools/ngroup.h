@@ -36,6 +36,7 @@ namespace ngl
 			m_group.erase(agroupid);
 		}
 
+		// # 在分组中添加一个成员
 		inline bool add_member(int agroupid, i64_actorid amember)
 		{
 			info* linfo = tools::findmap(m_group, agroupid);
@@ -52,6 +53,7 @@ namespace ngl
 			return true;
 		}
 
+		// # 在分组中移除一个成员
 		inline void remove_member(int agroupid, i64_actorid amember)
 		{
 			info* linfo = tools::findmap(m_group, agroupid);
@@ -66,6 +68,7 @@ namespace ngl
 			linfo->m_actorlist.erase(amember);
 		}
 
+		// # 获取分组中的所有成员
 		inline const std::set<i64_actorid>* get_group(int agroupid)
 		{
 			info* linfo = tools::findmap(m_group, agroupid);

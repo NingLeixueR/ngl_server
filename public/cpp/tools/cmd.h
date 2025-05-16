@@ -27,11 +27,6 @@ namespace ngl
 			return m_fun.empty();
 		}
 
-		static void push(const TKEY& akey, const std::function<void(ARG...)>& afun)
-		{
-			m_fun[akey] = afun;
-		}
-
 		static bool function(const TKEY& akey, ARG... arg)
 		{
 			auto itor = m_fun.find(akey);
@@ -41,6 +36,11 @@ namespace ngl
 			}
 			itor->second(arg...);
 			return true;
+		}
+
+		static std::function<void(ARG...)>& add(const TKEY& akey)
+		{
+			return m_fun[akey];
 		}
 	};
 

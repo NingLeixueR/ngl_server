@@ -11,7 +11,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("change_familyname", [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("change_familyname") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<bool> pro(id, "change_familyname", false);
 					struct gm_changename
@@ -27,10 +27,9 @@ namespace ngl
 					}
 					pro.m_data = true;
 					m_family.change_familyname(-1, recv.m_familid, recv.m_familname);
-				}
-			);
+				};
 
-			handle_cmd::push("get_family", [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("get_family") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<std::string> pro(id, "get_family");
 					int64_t familid = 0;
@@ -43,8 +42,7 @@ namespace ngl
 					{
 						return;
 					}
-				}
-			);
+				};
 		}
 
 		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)

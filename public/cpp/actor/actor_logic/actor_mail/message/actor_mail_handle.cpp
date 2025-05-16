@@ -11,7 +11,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("get_mails", [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("get_mails") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<std::string> pro(id, "get_mails");
 					int64_t roleid = 0;
@@ -26,9 +26,9 @@ namespace ngl
 					}
 					tools::proto2json(*ldb, pro.m_data);
 					pro.m_istoutf8 = false;
-				}
-			);
-			handle_cmd::push("add_mail", [this](int id, const ngl::json_read& aos)
+				};
+
+			handle_cmd::add("add_mail") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<bool> pro(id, "add_mail", false);
 					struct gm_mailitem
@@ -59,9 +59,9 @@ namespace ngl
 						return;
 					}
 					pro.m_data = true;
-				}
-			);
-			handle_cmd::push("del_mail", [this](int id, const ngl::json_read& aos)
+				};
+
+			handle_cmd::add("del_mail") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<bool> pro(id, "del_mail", false);
 					struct gm_deletemail
@@ -77,8 +77,7 @@ namespace ngl
 					}
 					m_mails.delmail(ldelmail.m_roleid, ldelmail.m_mailid, false);
 					pro.m_data = true;
-				}
-			);
+				};
 		}
 		if (handle_cmd::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
 		{

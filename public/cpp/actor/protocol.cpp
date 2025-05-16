@@ -188,14 +188,14 @@ namespace ngl
 		using handle_cmd = ngl::cmd<protocol, std::string, const std::shared_ptr<pack>&, const std::vector<std::string>&>;
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("/actor_count", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>&)
+			handle_cmd::add("/actor_count") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>&)
 				{
 					int32_t lcount = actor_manage::getInstance().actor_count();
 					std::string lstr = std::format("actor count:{}\n", lcount);
 					nets::sendmsg(pack->m_id, lstr);
-				}
-			);
-			handle_cmd::push("/print_guid", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				};
+
+			handle_cmd::add("/print_guid") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
 					ENUM_ACTOR ltype = em<ENUM_ACTOR>::get_enum(avec[1].c_str());
 					if (ltype == em<ENUM_ACTOR>::enum_null())
@@ -213,9 +213,9 @@ namespace ngl
 						}
 					}
 					nets::sendmsg(pack->m_id, lstr);
-				}
-			);
-			handle_cmd::push("/sendmail", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				};
+
+			handle_cmd::add("/sendmail") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
 					// 接收邮件列表[邮件地址1:名字1]....[邮件地址n:名字n] 邮件标题 邮件内容
 					if (avec.size() < 4)
@@ -230,9 +230,9 @@ namespace ngl
 						return;
 					}
 					ngl::test_mail(avec[2].c_str(), avec[3].c_str(), lmail);
-				}
-			);
-			handle_cmd::push("/week", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				};
+
+			handle_cmd::add("/week") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
 					if (avec.size() < 2)
 					{
@@ -252,11 +252,11 @@ namespace ngl
 						nets::sendmsg(pack->m_id, "非同一周");
 						return;
 					}
-				}
-			);
+				};
+
 			// 测试两台服务器是否联通
 			// ping serverid
-			handle_cmd::push("/ping", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+			handle_cmd::add("/ping") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
 					if (avec.size() < 2)
 					{
@@ -278,9 +278,9 @@ namespace ngl
 						}
 					};
 					twheel::wheel().addtimer(lparm);
-				}
-			);
-			handle_cmd::push("/echo", [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
+				};
+
+			handle_cmd::add("/echo") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>& avec)
 				{
 					if (avec.size() < 2)
 					{
@@ -288,8 +288,7 @@ namespace ngl
 						return;
 					}
 					std::cout << std::format("###{}###",avec[1]) << std::endl;
-				}
-			);
+				};
 		}
 		if (handle_cmd::function(lkey, apack, lvec) == false)
 		{

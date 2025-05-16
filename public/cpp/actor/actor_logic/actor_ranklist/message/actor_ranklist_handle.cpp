@@ -12,7 +12,7 @@ namespace ngl
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("ranklist", [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("ranklist") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<std::string> pro(id, "ranklist");
 					struct json_rank
@@ -33,8 +33,7 @@ namespace ngl
 					{
 						return;
 					}
-				}
-			);
+				};
 		}
 
 		if (handle_cmd::function(loperator, (int32_t)adata.get_data()->identifier(), lojson) == false)

@@ -16,7 +16,7 @@ namespace ngl
 
 		if (handle_gm::empty())
 		{
-			handle_gm::push("roleban", [this](int id, const ngl::json_read& aos)
+			handle_gm::add("roleban") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<bool> pro(id, "roleban", false);
 					struct banrole
@@ -48,15 +48,13 @@ namespace ngl
 					lpdata->set_m_value(lbanrole);
 					nclient_keyvalue::change(pbdb::db_keyvalue_ekv_account_ban);
 					pro.m_data = true;
-				}
-			);
+				};
 
-			handle_gm::push("get_roleban", [this](int id, const ngl::json_read&)
+			handle_gm::add("get_roleban") = [this](int id, const ngl::json_read&)
 				{
 					gcmd<std::string> pro(id, "get_roleban");
 					tools::splicing(m_roleban, "*", pro.m_data);
-				}
-			);
+				};
 		}
 		if (handle_gm::function(loperator, (int)adata.get_data()->identifier(), lojson) == false)
 		{

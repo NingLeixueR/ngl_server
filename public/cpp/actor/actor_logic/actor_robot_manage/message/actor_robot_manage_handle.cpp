@@ -13,19 +13,21 @@ namespace ngl
 
 		if (handle_cmd::empty())
 		{
-			handle_cmd::push("logins", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("logins") = [this](const std::vector<std::string>& avec)
 				{
 					const std::string& lrobotname = avec[1];
 					int lbeg = tools::lexical_cast<int>(avec[2].c_str());
 					int lend = tools::lexical_cast<int>(avec[3].c_str());
 					create_robots(lrobotname, lbeg, lend);
-				});
-			handle_cmd::push("login", [this](const std::vector<std::string>& avec)
+				};
+
+			handle_cmd::add("login") = [this](const std::vector<std::string>& avec)
 				{
 					create_robot(avec[1]);
-				});
+				};
+
 			// c libo1 1
-			handle_cmd::push("c", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("c") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_CMD pro;
 					std::stringstream lstream;
@@ -43,9 +45,10 @@ namespace ngl
 					}
 					pro.set_m_cmd(lstream.str());
 					send(get_robot(avec[1]), pro);
-				});
+				};
+
 			// C 1
-			handle_cmd::push("d", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("d") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_CMD pro;
 					std::stringstream lstream;
@@ -67,9 +70,10 @@ namespace ngl
 							send(&arobot, pro);
 							return true;
 						});
-				});
+				};
+
 			// 进行kcp连接
-			handle_cmd::push("x1", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("x1") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this](_robot& arobot)
 						{
@@ -105,9 +109,10 @@ namespace ngl
 								});
 							return true;
 						});
-				});
+				};
+
 			// 使用kcp连接发送GET_TIME协议
-			handle_cmd::push("x2", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("x2") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_GET_TIME pro;
 					foreach([&pro, this](_robot& arobot)
@@ -115,9 +120,9 @@ namespace ngl
 							sendkcp(&arobot, pro);
 							return true;
 						});
-				});
+				};
 
-			handle_cmd::push("x3", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("x3") = [this](const std::vector<std::string>& avec)
 				{
 					pbnet::PROBUFF_NET_FRIEND pro;
 					foreach([&pro, this](_robot& arobot)
@@ -125,9 +130,9 @@ namespace ngl
 							send(&arobot, pro);
 							return true;
 						});
-				});
+				};
 
-			handle_cmd::push("protocol", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("protocol") = [this](const std::vector<std::string>& avec)
 				{
 					foreach([this, &avec](_robot& arobot)
 						{
@@ -138,9 +143,9 @@ namespace ngl
 							}
 							return true;
 						});
-				});
+				};
 
-			handle_cmd::push("test_thruput", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("test_thruput") = [this](const std::vector<std::string>& avec)
 				{
 					int32_t lrounds = tools::lexical_cast<int32_t>(avec[1]);
 					int32_t lactorcount = tools::lexical_cast<int32_t>(avec[2]);
@@ -149,12 +154,12 @@ namespace ngl
 					{
 						test_thruput::getInstance().add_rounds(lactorcount, leverycount);
 					}
-				});
+				};
 
-			handle_cmd::push("release_thruput", [this](const std::vector<std::string>& avec)
+			handle_cmd::add("release_thruput") = [this](const std::vector<std::string>& avec)
 				{
 					test_thruput::getInstance().release();
-				});
+				};
 		}
 
 		if (handle_cmd::function(lparm1, lrecv->m_parm) == false)

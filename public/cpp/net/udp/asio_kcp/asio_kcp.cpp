@@ -338,7 +338,7 @@ namespace ngl
 
 		static void register_fun(ecmd anum, const ecmd_callback& afun)
 		{
-			handle_cmd::push(anum, afun);
+			handle_cmd::add(anum) = afun;
 		}
 
 		static bool sendcmd(asio_kcp* akcp, i32_sessionid asession, ecmd acmd, const std::string& ajson);
