@@ -11,7 +11,7 @@ namespace ngl
 		T m_data;
 		node<T>* m_next = nullptr;
 
-		node<T>* next()
+		inline node<T>* next()
 		{
 			return m_next;
 		}
@@ -24,13 +24,13 @@ namespace ngl
 		node<T>* m_tail;
 		int m_size;
 	public:
-		lsnode() :
+		inline lsnode() :
 			m_head(nullptr),
 			m_tail(nullptr),
 			m_size(0)
 		{}
 
-		lsnode(int asize) :
+		inline lsnode(int asize) :
 			m_head(nullptr),
 			m_tail(nullptr),
 			m_size(0)
@@ -42,17 +42,17 @@ namespace ngl
 		{
 		}
 
-		bool empty()const
+		inline bool empty()const
 		{
 			return m_size <= 0;
 		}
 
-		node<T>* begin()
+		inline node<T>* begin()
 		{
 			return m_head;
 		}
 
-		node<T>* end()
+		inline node<T>* end()
 		{
 			return nullptr;
 		}
@@ -198,7 +198,7 @@ namespace ngl
 		lsnode<T> m_free;
 		std::function<void(node<T>*)> m_listfree;
 	public:
-		slist_consumption():
+		inline slist_consumption():
 			m_listfree([this](node<T>* adata)
 				{
 					std::destroy_at(adata);
@@ -207,12 +207,12 @@ namespace ngl
 		{
 		}
 
-		lsnode<T>& get_list()
+		inline lsnode<T>& get_list()
 		{
 			return m_list;
 		}
 
-		lsnode<T>& get_free()
+		inline lsnode<T>& get_free()
 		{
 			return m_free;
 		}
@@ -244,7 +244,7 @@ namespace ngl
 			m_list.clear(m_listfree);
 		}
 
-		void foreach(const std::function<void(T&)>& afun)
+		inline void foreach(const std::function<void(T&)>& afun)
 		{
 			auto itor = m_list.begin();
 			while (itor != m_list.end())
@@ -268,7 +268,7 @@ namespace ngl
 
 		int m_maxsize;
 	public:
-		slist_production(int asize = 10, int amaxsize = 1000, int aexpand = 10) :
+		inline slist_production(int asize = 10, int amaxsize = 1000, int aexpand = 10) :
 			m_expand(aexpand),
 			m_initcapacity(asize),
 			m_free(asize),
@@ -344,7 +344,7 @@ namespace ngl
 			return lpnode;
 		}
 
-		bool operator_evaluation(node<T>* lpnode, const T& adata)
+		inline bool operator_evaluation(node<T>* lpnode, const T& adata)
 		{
 			try
 			{

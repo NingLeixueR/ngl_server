@@ -296,10 +296,10 @@ namespace ngl
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::push("query", [this](int athread, int id, const ngl::json_read& aos)
+				handle_cmd::add("query") = [this](int athread, int id, const ngl::json_read& aos)
 					{
 						gcmd<std::string> pro(id, "query");
-						int64_t lid	= 0;
+						int64_t lid = 0;
 						if (aos.read("data", lid) == false)
 						{
 							return;
@@ -320,8 +320,9 @@ namespace ngl
 								pro.m_data = lbuff;
 							}
 						}
-					});
-				handle_cmd::push("queryall", [this](int athread, int id, const ngl::json_read& aos)
+					};
+
+				handle_cmd::add("queryall") = [this](int athread, int id, const ngl::json_read& aos)
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");
 
@@ -337,7 +338,7 @@ namespace ngl
 						{
 							return;
 						}
-						int32_t lbegindex = lpage.m_everypagecount* (lpage.m_page - 1);
+						int32_t lbegindex = lpage.m_everypagecount * (lpage.m_page - 1);
 						int32_t lendindex = lbegindex + lpage.m_everypagecount;
 
 						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro](int32_t aindex, TDBTAB& aitem)
@@ -352,8 +353,9 @@ namespace ngl
 									pro.m_data.push_back(lbuff);
 								}
 							});
-					});
-				handle_cmd::push("change", [this](int athread, int id, const ngl::json_read& aos)
+					};
+
+				handle_cmd::add("change") = [this](int athread, int id, const ngl::json_read& aos)
 					{
 						gcmd<bool> pro(id, "change", false);
 
@@ -372,7 +374,7 @@ namespace ngl
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
 						db_manage::save<TDBTAB>(db_pool::get(athread), lid);
 						pro.m_data = true;
-					});
+					};
 			}
 
 			if (handle_cmd::function(loperator, adata.thread(), parm.identifier(), lojson) == false)
