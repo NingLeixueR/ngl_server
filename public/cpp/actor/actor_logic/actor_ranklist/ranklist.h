@@ -14,12 +14,13 @@ namespace ngl
 {
 	class actor_ranklist;
 
-	class ranklist : public tdb_ranklist::db_modular
+	class ranklist : 
+		public tdb_ranklist::db_modular
 	{
 		ranklist(const ranklist&) = delete;
 		ranklist& operator=(const ranklist&) = delete;
 
-		std::map<i64_actorid, rank_item> m_data;
+		std::map<i64_actorid, rank_item> m_maprankitem;
 		std::unique_ptr<rankset_base> m_ranks[pbdb::eranklist::count];
 	public:
 		ranklist();
