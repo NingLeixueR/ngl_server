@@ -319,7 +319,7 @@ namespace ngl
 
 		inline void push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 		{
-			ngl_lock_s
+			ngl_lock_s;
 			ptractor lpptractor = nosafe_get_actorbyid(aguid, apram, abool);
 			if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
 			{
