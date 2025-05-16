@@ -4,7 +4,8 @@
 
 namespace ngl
 {
-	class account : public tdb_account::db_modular
+	class account : 
+		public tdb_account::db_modular
 	{
 		account(const account&) = delete;
 		account& operator=(const account&) = delete;
@@ -13,7 +14,7 @@ namespace ngl
 		{
 			std::map<std::string, data_modified<pbdb::db_account>*> m_data;
 		};
-		std::map<i16_area, accountbyname> m_data;
+		std::map<i16_area, accountbyname> m_areaofaccount;
 		
 		int32_t m_max_accountid;
 	public:

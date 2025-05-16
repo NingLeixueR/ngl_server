@@ -18,7 +18,7 @@ namespace ngl
 		log_error()->print("actor_login###loaddb_finish");
 		foreach([this](data_modified<pbdb::db_account>& dbaccount)
 			{
-				m_data[dbaccount.getconst().m_area()].m_data[dbaccount.getconst().m_account()] = &dbaccount;
+				m_areaofaccount[dbaccount.getconst().m_area()].m_data[dbaccount.getconst().m_account()] = &dbaccount;
 				m_max_accountid = std::max(m_max_accountid, nguid::actordataid(dbaccount.getconst().m_id()));
 			});
 	}
@@ -30,6 +30,6 @@ namespace ngl
 
 	std::map<std::string, data_modified<pbdb::db_account>*>& account::accountbyarea(int area)
 	{
-		return m_data[area].m_data;
+		return m_areaofaccount[area].m_data;
 	}
 }//namespace ngl
