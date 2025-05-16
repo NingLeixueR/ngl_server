@@ -405,7 +405,7 @@ namespace ngl
 					for (;;)
 					{
 						{
-							monopoly_shared_lock(m_mutex);
+							ngl_lock_s;
 							if (m_actorlist.empty() || m_workthread.empty() || m_suspend)
 							{
 								break;
