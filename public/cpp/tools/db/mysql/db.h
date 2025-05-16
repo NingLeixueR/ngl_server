@@ -25,7 +25,6 @@ namespace ngl
 		bool	m_connectdb;
 		MYSQL*	m_mysql;
 		dbarg	m_arg;
-
 	public:
 		db();
 

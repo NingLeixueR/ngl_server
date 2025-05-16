@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-13 19:01:43
+// 创建时间 25-05-16 17:04:07
 #include "calendar_function.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -49,6 +49,7 @@
 #include "protocol.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
+#include "calendar.cpp"
 #include "autoitem.cpp"
 #include "asio_tcp.cpp"
 #include "asio_kcp.cpp"

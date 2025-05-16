@@ -113,9 +113,9 @@ namespace ngl
 		
 		static void print()
 		{
-			for (const std::pair<const int, std::map<ENUMT, data>>& item : m_datae2n)
+			for (const auto& item : m_datae2n)
 			{
-				for (const std::pair<const ENUMT, data>& ipair : item.second)
+				for (const auto& ipair : item.second)
 				{
 					std::cout << std::format("{}:{}", (int)ipair.first, ipair.secod.m_never) << std::endl;
 				}

@@ -27,8 +27,8 @@ namespace ngl
 	private:
 		static std::map<size_t, pinfo>				m_keyval;
 		static std::map<i32_protocolnum, pinfo*>	m_protocol;
-		// net/gm		[1			-  100000000];
-		// custom		[200000001	-  300000000];
+		// pbnet/pbexample		[1			-  100000000];
+		// custom				[200000001	-  300000000];
 		static int32_t								m_customs/* = 200000000*/;
 
 		template <typename T>
@@ -46,21 +46,16 @@ namespace ngl
 			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
-				if (m_keyval.find(lcode) != m_keyval.end())
+				if(m_keyval.contains(lcode))
 				{
 					return nullptr;
 				}
 				pinfo& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
 				linfo.m_type = atype;
-				if (aprotocolnum == -1)
-				{
-					linfo.m_protocol = ++m_customs;
-				}
-				else
-				{
-					linfo.m_protocol = aprotocolnum;
-				}
+
+				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
+
 				m_protocol[linfo.m_protocol] = &linfo;
 				return &linfo;
 			}
@@ -84,7 +79,7 @@ namespace ngl
 		static bool set_customs_index(int32_t acustoms)
 		{
 			if (m_customs >= acustoms)
-			{
+			{//不允许往回设置
 				return false;
 			}
 			m_customs = acustoms;

@@ -10,7 +10,8 @@
 
 namespace ngl
 {
-	class familyer : public tdb_familyer::db_modular
+	class familyer : 
+		public tdb_familyer::db_modular
 	{
 		familyer(const familyer&) = delete;
 		familyer& operator=(const familyer&) = delete;
@@ -23,32 +24,22 @@ namespace ngl
 			m_id = -1;
 		}
 
-		const pbdb::db_familyer* get_constfamilyer(i64_actorid aroleid)
+		data_modified<pbdb::db_familyer>* get_familyer(i64_actorid aroleid)
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
 			{
 				return nullptr;
 			}
-			return &itor->second.getconst();
-		}
-
-		pbdb::db_familyer* get_familyer(i64_actorid aroleid, bool achange = true)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.get(achange);
+			return &itor->second;
 		}
 
 		pbdb::db_familyer* add_familyer(i64_actorid aroleid)
 		{
-			pbdb::db_familyer* lpfamilyer = get_familyer(aroleid);
-			if (lpfamilyer == nullptr)
+			data_modified<pbdb::db_familyer>* lpfamilyer = get_familyer(aroleid);
+			if (lpfamilyer != nullptr)
 			{
-				return lpfamilyer;
+				return &lpfamilyer->get();
 			}
 			pbdb::db_familyer lfamilyer;
 			lfamilyer.set_m_id(aroleid);
@@ -56,23 +47,17 @@ namespace ngl
 			lfamilyer.set_m_lastleaveutc(0);
 			lfamilyer.set_m_lastsignutc(0);
 			lfamilyer.set_m_position(pbdb::db_familyer_eposition_none);
-			auto lptemp = add(aroleid, lfamilyer);
-			if (lptemp == nullptr)
+			lpfamilyer = add(aroleid, lfamilyer);
+			if (lpfamilyer == nullptr)
 			{
 				return nullptr;
 			}
-			return &lptemp->get();
+			return &lpfamilyer->get();
 		}
 
 		void initdata()final
 		{
-			auto lstream = log_error();
-			(*lstream) << "familyer###loaddb_finish" << std::endl;
-			for (const auto& [_roleid, _data] : data())
-			{
-				(*lstream) << std::format("roleid={} m_joinutc={}", _roleid, _data.getconst().m_joinutc()) << std::endl;
-			}
-			lstream->print("");
+			log_error()->print("{}", data());
 		}
 
 		// 检查是否可以创建军团
@@ -92,7 +77,8 @@ namespace ngl
 		}
 	};
 
-	class family : public tdb_family::db_modular
+	class family : 
+		public tdb_family::db_modular
 	{
 		family(const family&) = delete;
 		family& operator=(const family&) = delete;
@@ -112,30 +98,19 @@ namespace ngl
 			m_id = -1;
 		}
 
-		const pbdb::db_family* get_constfamily(i64_actorid afamilyid)
+		ngl::data_modified<pbdb::db_family>* get_family(i64_actorid afamilyid)
 		{
 			auto itor = data().find(afamilyid);
 			if (itor == data().end())
 			{
 				return nullptr;
 			}
-			return &itor->second.getconst();
-		}
-
-		pbdb::db_family* get_family(i64_actorid afamilyid, bool achange = true)
-		{
-			auto itor = data().find(afamilyid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.get(achange);
+			return &itor->second;
 		}
 
 		void initdata()final
 		{
-			auto lstream = log_error();
-			(*lstream) << "family###loaddb_finish" << std::endl;
+			log_error()->print("{}", data());
 			for (const auto& [_familyid, _family] : data())
 			{
 				const pbdb::db_family& lbdfamily = _family.getconst();
@@ -144,15 +119,8 @@ namespace ngl
 				std::string lmember;
 				for (i64_actorid roleid : lbdfamily.m_member())
 				{
-					lmember += std::format("{},", roleid);
 					m_rolefamily[roleid] = _familyid;
 				}
-				(*lstream) <<
-					std::format("id:{} name:{} createutc:{} leader:{} lv:{} exp:{} member:[{}]",
-						_familyid, lbdfamily.m_name(), lbdfamily.m_createutc(),
-						lbdfamily.m_leader(), lbdfamily.m_lv(), lbdfamily.m_exp(),
-						lmember
-					) << std::endl;
 
 				m_familyname.insert(lbdfamily.m_name());
 
@@ -161,7 +129,6 @@ namespace ngl
 					m_applylist[roleid].insert(_familyid);
 				}
 			}
-			(*lstream).print("");
 		}
 
 		// # 创建军团
@@ -199,3 +166,40 @@ namespace ngl
 		bool get_familyers(i64_actorid aroleid, std::vector<i64_actorid>& afamilyers);
 	};
 }// namespace ngl
+
+template <>
+struct std::formatter<ngl::data_modified<pbdb::db_familyer>>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::data_modified<pbdb::db_familyer>& aval, std::format_context& ctx)const
+	{
+		const auto& lfamilyer = aval.getconst();
+		return std::format_to(ctx.out(),
+			"pbdb::db_familyer:<roleid={},m_joinutc={},m_lastsignutc={},m_lastleaveutc={},m_position={}>\n",
+			lfamilyer.m_id(), lfamilyer.m_joinutc(), lfamilyer.m_lastsignutc(), lfamilyer.m_lastleaveutc(), (int32_t)lfamilyer.m_position()
+		);
+	}
+};
+
+//ngl::data_modified<pbdb::db_family>
+template <>
+struct std::formatter<ngl::data_modified<pbdb::db_family>>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::data_modified<pbdb::db_family>& aval, std::format_context& ctx)const
+	{
+		const auto& lfamily = aval.getconst();
+		return std::format_to(ctx.out(),
+			"pbdb::db_family:<m_id={},m_createutc={},m_name={},m_leader={},m_lv={},m_exp={}>\n",
+			lfamily.m_id(), lfamily.m_createutc(), lfamily.m_name(), lfamily.m_leader(), lfamily.m_lv(), lfamily.m_exp()
+		);
+	}
+};
