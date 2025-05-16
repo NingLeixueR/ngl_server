@@ -57,11 +57,11 @@ namespace ngl
 			{
 				if (aislog)
 				{
-					log_error()->print("{}:{}", descriptor->full_name(), json);
+					log_error()->print("{}:{}", descriptor->full_name(), tools::format_json(json));
 				}
 				else
 				{
-					std::cout << std::format("{}:{}", descriptor->full_name(), json) << std::endl;
+					std::cout << std::format("{}:{}", descriptor->full_name(), tools::format_json(json)) << std::endl;
 				}
 			}
 			else

@@ -2,6 +2,7 @@
 #include "sysconfig.h"
 #include "localtime.h"
 #include "hmac_sha1.h"
+#include "json_read.h"
 #include "base64.h"
 #include "varint.h"
 #include "tools.h"
@@ -1360,5 +1361,12 @@ namespace ngl
 				std::cout << "Other: " << entry.path() << std::endl;
 			}
 		}
+	}
+
+	std::string& tools::format_json(std::string& ajson)
+	{
+		cJSON* ljson = cJSON_Parse(ajson.c_str());
+		ajson = cJSON_Print(ljson);
+		return ajson;
 	}
 }// namespace ngl
