@@ -10,12 +10,12 @@ namespace ngl
 		{
 			return true;
 		}
-		pbdb::db_calendar* lcalendar = m_calendar.get_calendar(acalendarid);
+		data_modified<pbdb::db_calendar>* lcalendar = m_calendar.get_calendar(acalendarid);
 		if (lcalendar == nullptr)
 		{
 			return true;
 		}
-		calendar_function::trigger(tab, lcalendar, atime, astart);
+		calendar_function::trigger(tab, lcalendar->get(), atime, astart);
 		if (!astart)
 		{
 			m_calendar.next_calendar(acalendarid, atime);
@@ -40,12 +40,12 @@ namespace ngl
 			}
 			for (const auto& item2 : item1.second)
 			{
-				pbdb::db_calendar* lpcalendar = m_calendar.get_calendar(item1.first);
+				data_modified<pbdb::db_calendar>* lpcalendar = m_calendar.get_calendar(item1.first);
 				if (lpcalendar == nullptr)
 				{
 					continue;
 				}
-				calendar_function::trigger(tab, lpcalendar, item2.m_triggertime(), item2.m_isstart(),  lidentifier);
+				calendar_function::trigger(tab, lpcalendar->get(), item2.m_triggertime(), item2.m_isstart(), lidentifier);
 			}
 		}
 

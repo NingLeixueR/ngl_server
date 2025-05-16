@@ -114,7 +114,7 @@ namespace ngl
 			return &itor->second;
 		}
 
-		static void post(tab_calendar* atab, int32_t autc, bool astart, pbdb::db_calendar& acalendar);
+		static void post(tab_calendar* atab, int32_t autc, bool astart);
 
 		// 今日流失的秒数
 		static std::pair<bool,int32_t> daysecond(const char* astr)

@@ -423,7 +423,6 @@ namespace ngl
 		manage_curl::sendemail(lparm);
 	}
 
-
 	void test_manage_curl()
 	{
 		auto lhttp = ngl::manage_curl::make_http();

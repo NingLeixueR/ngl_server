@@ -286,7 +286,7 @@ namespace ngl
 
 	struct ncalendar_info
 	{
-		int64_t m_time = -1;
+		int32_t m_time = -1;
 		int32_t m_calendarid = -1;
 		bool m_start = false;
 

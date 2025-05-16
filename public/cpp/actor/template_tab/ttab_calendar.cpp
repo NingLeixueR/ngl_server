@@ -35,7 +35,7 @@ namespace ngl
 		calendar_wheel.addtimer(lparm);
 	}
 
-	void ttab_calendar::post(tab_calendar* atab, int32_t autc, bool astart, pbdb::db_calendar& acalendar)
+	void ttab_calendar::post(tab_calendar* atab, int32_t autc, bool astart)
 	{
 		ttab_calendar_post(atab, autc, astart);
 	}
