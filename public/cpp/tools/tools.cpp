@@ -778,7 +778,7 @@ namespace ngl
 			return false;
 		}
 		(*apto) |= ltarget << 4;
-		if (_hexget(*&apso[1], ltarget) == false)
+		if (_hexget(apso[1], ltarget) == false)
 		{
 			return false;
 		}
