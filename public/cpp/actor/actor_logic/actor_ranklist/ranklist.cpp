@@ -55,8 +55,8 @@ namespace ngl
 			}
 		}
 
-		auto itor = m_data.find(abrief.m_id());
-		if (itor != m_data.end())
+		auto itor = m_maprankitem.find(abrief.m_id());
+		if (itor != m_maprankitem.end())
 		{
 			if (litem.equal_value(atype, itor->second) == false)
 			{
@@ -68,7 +68,7 @@ namespace ngl
 		}
 		else
 		{
-			m_data.insert(std::make_pair(abrief.m_id(), litem));
+			m_maprankitem.insert(std::make_pair(abrief.m_id(), litem));
 			return true;
 		}
 		return false;
@@ -87,7 +87,7 @@ namespace ngl
 		}
 		if (lupdate)
 		{
-			rank_item& ldata = m_data[abrief.m_id()];
+			rank_item& ldata = m_maprankitem[abrief.m_id()];
 			for (int i = 0; i < pbdb::eranklist::count; ++i)
 			{
 				if (lupdatearr[i])
@@ -113,7 +113,7 @@ namespace ngl
 
 	void ranklist::add_data(const pbdb::db_ranklist& aitem)
 	{
-		rank_item& ltempitem = m_data[aitem.m_id()];
+		rank_item& ltempitem = m_maprankitem[aitem.m_id()];
 		ltempitem.m_actorid = aitem.m_id();
 
 		for (const std::pair<const int32_t, pbdb::rankitem>& ritem : aitem.m_items())
