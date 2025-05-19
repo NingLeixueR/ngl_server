@@ -27,24 +27,14 @@ namespace ngl
 			m_id = -1;
 		}
 
-		const pbdb::db_keyvalue* get_constkeyvaluedb(i64_actorid aroleid)
+		data_modified<pbdb::db_keyvalue>* get_valuedb(i64_actorid aroleid)
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
 			{
 				return nullptr;
 			}
-			return &itor->second.getconst();
-		}
-
-		pbdb::db_keyvalue* get_keyvaluedb(i64_actorid aroleid, bool achange = true)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.get(achange);
+			return &itor->second;
 		}
 
 		// 没有就添加
@@ -55,13 +45,7 @@ namespace ngl
 
 		virtual void initdata()
 		{
-			auto lstream = log_error();
-			(*lstream) << "actor_keyvalue###loaddb_finish" << std::endl;
-			for (const auto& [_id, _data] : data())
-			{
-				(*lstream) << std::format("key/value = {}/{}", _data.getconst().m_id(), _data.getconst().m_value()) << std::endl;
-			}
-			lstream->print("");
+			log_error()->print("actor_keyvalue###loaddb_finish {}", data());
 		}
 
 		void update(const std::vector<pbdb::db_keyvalue>& m_vecinfo)
@@ -73,3 +57,22 @@ namespace ngl
 		}
 	};
 }// namespace ngl
+
+//ngl::data_modified<pbdb::db_keyvalue>
+template <>
+struct std::formatter<ngl::data_modified<pbdb::db_keyvalue>>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::data_modified<pbdb::db_keyvalue>& aval, std::format_context& ctx)const
+	{
+		const auto& lkeyvalue = aval.getconst();
+		return std::format_to(ctx.out(),
+			"pbdb::db_keyvalue:<m_id={},m_value={}>\n",
+			lkeyvalue.m_id(), lkeyvalue.m_value()
+		);
+	}
+};

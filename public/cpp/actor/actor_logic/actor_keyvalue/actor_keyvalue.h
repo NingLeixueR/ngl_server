@@ -18,7 +18,8 @@
 
 namespace ngl
 {
-	class actor_keyvalue : public actor
+	class actor_keyvalue : 
+		public actor
 	{
 		actor_keyvalue(const actor_keyvalue&) = delete;
 		actor_keyvalue& operator=(const actor_keyvalue&) = delete;
