@@ -142,7 +142,7 @@ message db_notice
 
 enum eranklist
 {
-	lv			= 0;		// 等级排行
+	lv			= 0;		// 等级排行(值大排名越高)
 	count		= 1;
 }
 

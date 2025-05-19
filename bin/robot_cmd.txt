@@ -78,7 +78,7 @@ actor切换game进程
 		lv = 0;		// 等级排行
 		count = 1;
 	}
-/ranklist 本服/跨服(0/1) 排行榜类型 page(页码) everynum(每页数量)
+/ranklist 本服/跨服(0/1) 排行榜类型 page(页码)
 
 [匹配
 

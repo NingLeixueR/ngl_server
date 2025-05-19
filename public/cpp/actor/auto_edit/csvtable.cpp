@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-13 19:02:36
+// 创建时间 // 创建时间 25-05-19 18:10:39
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()
@@ -105,6 +105,9 @@ tab_familylv::tab_familylv()
 {
 }
 tab_mergearea::tab_mergearea()
+{
+}
+tab_ranklist::tab_ranklist()
 {
 }
 }//namespace ngl

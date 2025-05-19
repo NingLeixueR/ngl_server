@@ -548,3 +548,14 @@ struct tab_mergearea
 
 	int32_t m_mergeid;							// [index:3][load:y] 合并到的区服id
 };
+
+struct tab_ranklist
+{
+	int32_t m_id;								// [index:0][load:y] eranklist(0:等级排行)
+	string m_name;								// [index:1][load:y] 名字 
+	string m_remarks;							// [index:2][load:n] 备注
+
+	int32_t m_maxitem;							// [index:3][load:y] 最大排行结点数量
+	int32_t m_showitem;							// [index:3][load:y] 展示排行结点数量
+	int32_t m_everypagecount;					// [index:3][load:y] 每页展示结点数量
+};
