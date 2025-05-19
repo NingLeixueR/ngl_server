@@ -23,7 +23,6 @@ namespace ngl
 		m_calendar.add_trigger_list(acalendarid, atime, astart);
 		return true;
 	}
-
 	bool actor_calendar::handle(const message<mforward<np_actor_calendar_requst>>& adata)
 	{
 		i64_actorid lidentifier = adata.get_data()->identifier();;
@@ -51,7 +50,6 @@ namespace ngl
 
 		return true;
 	}
-
 	bool actor_calendar::handle(const message<mforward<np_calendar_actor_respond>>& adata)
 	{
 		i64_actorid lidentifier = adata.get_data()->identifier();;

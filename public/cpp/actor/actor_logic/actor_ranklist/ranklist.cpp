@@ -171,8 +171,7 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
 		pro->set_m_type(atype);
 		pro->set_m_page(apage);
-		pro->set_m_everynum(aeverynum);
-		int32_t lcount = m_ranks[atype]->getpage(apage, aeverynum, [&pro](int32_t aindex, const rank_item* aitem)
+		int32_t lcount = m_ranks[atype]->getpage(apage, [&pro](int32_t aindex, const rank_item* aitem)
 			{
 				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
 				if (lpbrief != nullptr)

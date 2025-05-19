@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-13 19:02:36
+// 创建时间 // 创建时间 25-05-19 18:10:39
 #pragma once
 
 #include "csv.h"
@@ -819,6 +819,26 @@ struct tab_mergearea
 	{
 		std::string lm_remarks;
 		def_rcsv2(m_id,m_name,lm_remarks,m_mergeid);
+	}
+};
+struct tab_ranklist
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] eranklist(0:等级排行)
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	int32_t                          m_maxitem                       ; // [index:3][load:y] 最大排行结点数量
+	int32_t                          m_showitem                      ; // [index:3][load:y] 展示排行结点数量
+	int32_t                          m_everypagecount                ; // [index:3][load:y] 每页展示结点数量
+	/*********************************/
+	tab_ranklist();
+	// 序列化反序列化相关
+	def_portocol(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv2(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount);
 	}
 };
 }//namespace ngl

@@ -367,14 +367,13 @@ namespace ngl
 					int32_t ltype = 0;
 					int32_t lpage = 0;
 					int32_t leverynum = 0;
-					if (tools::splite(aparm, "*", liscross, ltype, lpage, leverynum) == false)
+					if (tools::splite(aparm, "*", liscross, ltype, lpage) == false)
 					{
 						return;
 					}
 					pro->set_m_iscross(liscross);
 					pro->set_m_type((pbdb::eranklist)ltype);
 					pro->set_m_page(lpage);
-					pro->set_m_everynum(leverynum);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_RANKLIST>(lmessage);
 				};

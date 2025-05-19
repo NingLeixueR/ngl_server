@@ -70,7 +70,6 @@ namespace ngl
 					gcmd<actor_manage::msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
 					actor_manage::getInstance().get_actor_stat(lpro.m_data);
 				};
-
 			handle_cmd::add("guid") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "guid", this);
@@ -86,13 +85,11 @@ namespace ngl
 						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 					}
 				};
-
 			handle_cmd::add("all_protocol") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<protocols> lresponse(adata->get_pack()->m_id, "all_protocol", this);
 					actor_gmclient::get_allprotocol(lresponse.m_data);
 				};
-
 			handle_cmd::add("close_actor") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->get_pack()->m_id, "close_actor", false, this);
@@ -111,13 +108,11 @@ namespace ngl
 						lresponse.m_data = true;
 					}
 				};
-
 			handle_cmd::add("get_time") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
 				};
-
 			handle_cmd::add("set_time") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->get_pack()->m_id, "set_time", false, this);

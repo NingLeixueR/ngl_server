@@ -8,9 +8,9 @@ namespace ngl
 {
 	struct rank_item
 	{
-		i64_actorid m_actorid;
-		int64_t		m_values[pbdb::eranklist::count];
-		int32_t		m_time[pbdb::eranklist::count];
+		i64_actorid m_actorid						= nguid::make(); // actor id
+		int64_t	m_values[pbdb::eranklist::count]	= {0};			 // 属性值
+		int32_t	m_time[pbdb::eranklist::count]		= {0};			 // 刷新时间
 
 		rank_item() :
 			m_actorid(0),
@@ -45,7 +45,7 @@ namespace ngl
 			m_actorid = abrief.m_id();
 			init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 				{
-					return  abrief.m_lv();
+					return abrief.m_lv();
 				});
 		}
 
@@ -56,31 +56,52 @@ namespace ngl
 			ltemp.set_m_value(m_values[atype]);
 		}
 
-		bool bigger(pbdb::eranklist atype, const rank_item& ar)
+		enum ecompare
 		{
-			if (m_values[atype] > ar.m_values[atype])
+			eless_bigger	= 1,		// 大于
+			eless_less		= -1,		// 小于
+			eless_equal		= 0,		// 等于
+		};
+
+		ecompare value_compare(int64_t al, int64_t ar)
+		{
+			if (al > ar)
 			{
-				return true;
+				return eless_bigger;
 			}
-			else if (m_values[atype] < ar.m_values[atype])
+			else if (ar < ar)
 			{
-				return false;
+				return eless_less;
+			}
+			return eless_equal;
+		}
+
+		// 值比较 
+		ecompare value_compare(pbdb::eranklist atype, const rank_item& ar)
+		{
+			ecompare ltype = value_compare(m_values[atype], ar.m_values[atype]);
+			if (atype == pbdb::eranklist::lv)
+			{//值越大排名越高
+				return ltype;
 			}
 			else
 			{
-				if (m_time[atype] < ar.m_time[atype])
-				{
-					return true;
-				}
-				else if (m_time[atype] > ar.m_time[atype])
-				{
-					return false;
-				}
-				else
+				return (ecompare)(-(int32_t)ltype);
+			}
+		}
+
+		bool compare(pbdb::eranklist atype, const rank_item& ar)
+		{
+			ecompare ltype = value_compare(atype, ar);
+			if (ltype == eless_equal)
+			{
+				ltype = (ecompare)(-(int32_t)value_compare(atype, ar));
+				if (ltype == eless_equal)
 				{
 					return m_actorid < ar.m_actorid;
 				}
 			}
+			return ltype == eless_bigger ? true : false;
 		}
 
 		bool equal_value(pbdb::eranklist atype, const rank_item& ar)
