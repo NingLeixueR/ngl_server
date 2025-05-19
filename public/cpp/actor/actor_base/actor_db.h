@@ -322,17 +322,17 @@ namespace ngl
 						}
 					};
 
+				struct query_page
+				{
+					int32_t m_everypagecount;
+					int32_t m_page;
+
+					jsonfunc("everypagecount", m_everypagecount, "page", m_page)
+				};
+
 				handle_cmd::add("queryall") = [this](int athread, int id, const ngl::json_read& aos)
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");
-
-						struct query_page
-						{
-							int32_t m_everypagecount;
-							int32_t m_page;
-
-							jsonfunc("everypagecount", m_everypagecount, "page", m_page)
-						};
 						query_page lpage;
 						if (aos.read("data", lpage) == false)
 						{
