@@ -5,6 +5,11 @@ namespace ngl
 	bool db_buff::malloc_function(ptr& aptr, const std::function<bool(ptr&)>& afun)
 	{
 		int32_t lpos = 0;
+		if (!m_buffbyte.empty())
+		{
+			lpos = m_buffbyte.rbegin()->first / m_buffsize;
+		}
+
 		while (lpos < m_buffcount)
 		{
 			malloc(aptr, lpos);
@@ -23,19 +28,16 @@ namespace ngl
 	
 	void db_buff::malloc(ptr& aptr, int32_t apos)
 	{
-		int32_t llen = m_buffsize * (apos + 1);
+		aptr.free();
+		int32_t llen = m_buffsize * apos;
 		if (m_buffcount > apos)
 		{
-			aptr.free();
-			for (auto itor = m_bufflist.begin(); itor != m_bufflist.end(); ++itor)
+			auto itor = m_buffbyte.find(m_buffcount);
+			if (itor != m_buffbyte.end())
 			{
-				if (itor->second >= llen)
-				{
-					aptr.m_buff = itor->first;
-					aptr.m_bufflen = itor->second;
-					m_bufflist.pop_front();
-					return;
-				}
+				aptr.m_buff = itor->second;
+				aptr.m_bufflen = itor->first;
+				return;
 			}
 		}
 		aptr.m_buff = new char[llen];
@@ -45,7 +47,7 @@ namespace ngl
 
 	void db_buff::free(ptr& aptr)
 	{
-		m_bufflist.push_back(std::make_pair(aptr.m_buff, aptr.m_bufflen));
+		m_buffbyte[aptr.m_bufflen] = aptr.m_buff;
 		aptr.m_buff = nullptr;
 		aptr.m_bufflen = 0;
 	}

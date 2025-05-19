@@ -88,6 +88,6 @@ namespace ngl
 		
 		void free(ptr& aptr);
 		
-		std::list<std::pair<char*, int32_t>> m_bufflist;
+		std::map<int32_t, char*> m_buffbyte;
 	};
 }// namespace ngl
