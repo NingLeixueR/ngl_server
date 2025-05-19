@@ -9,19 +9,18 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE_RESPONSE>();
 		if (aactorid == -1)
 		{
-			for (const auto& [id, dbnotice] : *get_notice())
+			for (const auto& [id, dbnotice] : data())
 			{
 				*pro->add_m_notices() = dbnotice.getconst();
 			}
 			return pro;
 		}
-		auto itor = get_notice()->find(aactorid);
-		if (itor == get_notice()->end())
+		data_modified<pbdb::db_notice>* lpdb_notice = get_notice(aactorid);
+		if (lpdb_notice == nullptr)
 		{
 			return nullptr;
 		}
-		
-		*pro->add_m_notices() = itor->second.getconst();
+		*pro->add_m_notices() = lpdb_notice->getconst();
 		return pro;
 	}
 
