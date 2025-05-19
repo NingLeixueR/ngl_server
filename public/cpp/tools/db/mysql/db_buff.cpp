@@ -7,7 +7,7 @@ namespace ngl
 		int32_t lpos = 0;
 		if (!m_buffbyte.empty())
 		{
-			lpos = m_buffbyte.rbegin()->first / m_buffsize;
+			lpos = (m_buffbyte.rbegin()->first / m_buffsize) - 1;
 		}
 
 		while (lpos < m_buffcount)
@@ -29,16 +29,13 @@ namespace ngl
 	void db_buff::malloc(ptr& aptr, int32_t apos)
 	{
 		aptr.free();
-		int32_t llen = m_buffsize * apos;
-		if (m_buffcount > apos)
+		int32_t llen = m_buffsize * (apos + 1);
+		auto itor = m_buffbyte.find(llen);
+		if (itor != m_buffbyte.end())
 		{
-			auto itor = m_buffbyte.find(m_buffcount);
-			if (itor != m_buffbyte.end())
-			{
-				aptr.m_buff = itor->second;
-				aptr.m_bufflen = itor->first;
-				return;
-			}
+			aptr.m_buff = itor->second;
+			aptr.m_bufflen = itor->first;
+			return;
 		}
 		aptr.m_buff = new char[llen];
 		aptr.m_bufflen = llen;
