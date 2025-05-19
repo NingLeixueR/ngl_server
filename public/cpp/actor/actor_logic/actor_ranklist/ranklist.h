@@ -45,8 +45,8 @@ namespace ngl
 
 		pbdb::db_ranklist* get(i64_actorid aactorid);
 		
-		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(pbdb::eranklist atype, int32_t apage, int32_t aeverynum);
+		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(pbdb::eranklist atype, int32_t apage);
 
-		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, int32_t aeverynum);
+		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
 	};
 }// namespace ngl

@@ -166,7 +166,7 @@ namespace ngl
 		return &(*get_ranklist())[aactorid].get();
 	}
 
-	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(pbdb::eranklist atype, int32_t apage, int32_t aeverynum)
+	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(pbdb::eranklist atype, int32_t apage)
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
 		pro->set_m_type(atype);
@@ -183,9 +183,9 @@ namespace ngl
 		return pro;
 	}
 
-	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage, int32_t aeverynum)
+	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)
 	{
-		auto pro = get_ranklist(atype, apage, aeverynum);
+		auto pro = get_ranklist(atype, apage);
 		actor::send_client(aroleid, pro);
 	}
 }//namespace ngl
