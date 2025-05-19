@@ -214,3 +214,20 @@ struct std::formatter<google::protobuf::RepeatedField<T>>
 		return out;
 	}
 };
+
+#define mk_formatter(NAME)															\
+template <>																			\
+struct std::formatter<ngl::data_modified<NAME>>										\
+{																					\
+	constexpr auto parse(const std::format_parse_context& ctx)const					\
+	{																				\
+		return ctx.begin();															\
+	}																				\
+	auto format(const ngl::data_modified<NAME>& aval, std::format_context& ctx)const\
+	{																				\
+		std::string ldb;															\
+		ngl::tools::proto2json(aval.getconst(), ldb);								\
+		const auto& laccount = aval.getconst();										\
+		return std::format_to(ctx.out(), #NAME":<{}>\n", ldb);						\
+	}																				\
+};

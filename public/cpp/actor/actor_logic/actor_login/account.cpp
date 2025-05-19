@@ -15,7 +15,7 @@ namespace ngl
 
 	void account::initdata()
 	{
-		log_error()->print("actor_login###loaddb_finish");
+		log_error()->print("actor_login###loaddb_finish {}", data());
 		foreach([this](data_modified<pbdb::db_account>& dbaccount)
 			{
 				m_areaofaccount[dbaccount.getconst().m_area()].m_data[dbaccount.getconst().m_account()] = &dbaccount;

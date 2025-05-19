@@ -68,20 +68,4 @@ namespace ngl
 	};
 }// namespace ngl
 
-template <>
-struct std::formatter<ngl::data_modified<pbdb::db_brief>>
-{
-	constexpr auto parse(const std::format_parse_context& ctx)const
-	{
-		return ctx.begin();
-	}
-
-	auto format(const ngl::data_modified<pbdb::db_brief>& aval, std::format_context& ctx)const
-	{
-		const auto& lbrief = aval.getconst();
-		return std::format_to(ctx.out(),
-			"<m_id={}:m_lv={}:m_moneygold={}:m_moneysilver={}:m_name={}:m_vip={}>\n",
-			lbrief.m_id(), lbrief.m_lv(), lbrief.m_moneygold(), lbrief.m_moneysilver(), lbrief.m_name(), lbrief.m_vip()
-		);
-	}
-};
+mk_formatter(pbdb::db_brief)

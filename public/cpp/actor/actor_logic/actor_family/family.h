@@ -185,21 +185,4 @@ struct std::formatter<ngl::data_modified<pbdb::db_familyer>>
 	}
 };
 
-//ngl::data_modified<pbdb::db_family>
-template <>
-struct std::formatter<ngl::data_modified<pbdb::db_family>>
-{
-	constexpr auto parse(const std::format_parse_context& ctx)const
-	{
-		return ctx.begin();
-	}
-
-	auto format(const ngl::data_modified<pbdb::db_family>& aval, std::format_context& ctx)const
-	{
-		const auto& lfamily = aval.getconst();
-		return std::format_to(ctx.out(),
-			"pbdb::db_family:<m_id={},m_createutc={},m_name={},m_leader={},m_lv={},m_exp={}>\n",
-			lfamily.m_id(), lfamily.m_createutc(), lfamily.m_name(), lfamily.m_leader(), lfamily.m_lv(), lfamily.m_exp()
-		);
-	}
-};
+mk_formatter(pbdb::db_family)

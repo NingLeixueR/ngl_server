@@ -19,12 +19,12 @@ namespace ngl
 					{
 						return;
 					}
-					const pbdb::db_mail* ldb = m_mails.get_db_mail(roleid);
-					if (ldb == nullptr)
+					data_modified<pbdb::db_mail>* lpdb_mail = m_mails.get_mails(id);
+					if (lpdb_mail == nullptr)
 					{
 						return;
 					}
-					tools::proto2json(*ldb, pro.m_data);
+					tools::proto2json(lpdb_mail->get(), pro.m_data);
 					pro.m_istoutf8 = false;
 				};
 

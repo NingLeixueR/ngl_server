@@ -9,7 +9,8 @@
 
 namespace ngl
 {
-	class mails : public tdb_mail::db_modular
+	class mails : 
+		public tdb_mail::db_modular
 	{
 		mails(const mails&) = delete;
 		mails& operator=(const mails&) = delete;
@@ -23,64 +24,19 @@ namespace ngl
 			m_id = -1;
 		}
 
-		const google::protobuf::Map<int32_t, pbdb::mail>* get_constmails(i64_actorid aroleid)
+		data_modified<pbdb::db_mail>* get_mails(i64_actorid aroleid)
 		{
 			auto itor = data().find(aroleid);
 			if (itor == data().end())
 			{
 				return nullptr;
 			}
-			return &itor->second.getconst().m_mail();
-		}
-
-		google::protobuf::Map<int32_t, pbdb::mail>* get_mails(i64_actorid aroleid, bool achange = true)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return itor->second.get(achange).mutable_m_mail();
-		}
-
-		const pbdb::db_mail* get_db_mail(i64_actorid aroleid)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.getconst();
+			return &itor->second;
 		}
 
 		virtual void initdata()
 		{
-			auto lstream = log_error();
-			(*lstream) << "actor_mail###loaddb_finish" << std::endl;
-			for (const auto& [_roleid, _mails] : data())
-			{
-				int32_t& lid = m_maxid[_roleid];
-				(*lstream) << std::format("+++++++++++++++[role:{}]+++++++++++++", _roleid) << std::endl;
-				for (const auto& [_id, _mail] : _mails.getconst().m_mail())
-				{
-					if (lid < _id)
-					{
-						lid = _id;
-					}
-					(*lstream) << std::format(
-						"+mailid:{}\n"
-						"+tid:{}\n"
-						"+draw:{}\n"
-						"+read:{}\n"
-						"-----------------------------------------",
-						_mail.m_id(),
-						_mail.m_tid(),
-						(_mail.m_draw() ? "yes" : "no"),
-						(_mail.m_read() ? "yes" : "no")
-					) << std::endl;
-				}				
-			}
-			(*lstream).print("");
+			log_error()->print("actor_mail###loaddb_finish ", data());
 		}
 
 		int32_t& maxid(i64_actorid aroleid)
@@ -121,8 +77,8 @@ namespace ngl
 				lpmailitem->set_m_itemtid(itemid);
 				lpmailitem->set_m_count(count);
 			}
-			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid);
-			if (lpmap == nullptr)
+			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			if (lpdb_mail == nullptr)
 			{
 				pbdb::db_mail ldbmail;
 				ldbmail.set_m_id(aroleid);
@@ -130,7 +86,7 @@ namespace ngl
 				add(aroleid, ldbmail);
 				return true;
 			}
-			lpmap->insert({ lid, lmail });
+			lpdb_mail->get().mutable_m_mail()->insert({ lid, lmail });
 			return true;
 		}
 
@@ -147,13 +103,13 @@ namespace ngl
 
 		pbdb::mail* get_mail(i64_actorid aroleid, int64_t aid)
 		{
-			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid);
-			if (lpmap == nullptr)
+			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			if (lpdb_mail == nullptr)
 			{
 				return nullptr;
 			}
-			auto itor = lpmap->find((int32_t)aid);
-			if (itor == lpmap->end())
+			auto itor = lpdb_mail->get().mutable_m_mail()->find((int32_t)aid);
+			if (itor == lpdb_mail->get().mutable_m_mail()->end())
 			{
 				return nullptr;
 			}
@@ -163,14 +119,14 @@ namespace ngl
 		// # Ò»¼ü²Ù×÷
 		void one_touch(i64_actorid aroleid, std::function<bool(const pbdb::mail&)> acheck, const std::function<void(int32_t)>& afun)
 		{
-			google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
-			if (lmap == nullptr)
+			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			if (lpdb_mail == nullptr)
 			{
 				return;
 			}
 
 			std::vector<int32_t> ldellist;
-			for (const auto& [_id, _mail] : *lmap)
+			for (const auto& [_id, _mail] : *lpdb_mail->get().mutable_m_mail())
 			{
 				if (_id != -1 && acheck(_mail))
 				{
@@ -228,13 +184,13 @@ namespace ngl
 					}
 				}
 				
-				google::protobuf::Map<int32_t, pbdb::mail>* lmap = get_mails(aroleid);
-				if (lmap == nullptr)
+				data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+				if (lpdb_mail == nullptr)
 				{
 					return false;
 				}
 
-				lmap->erase((int32_t)aid);
+				lpdb_mail->get().mutable_m_mail()->erase((int32_t)aid);
 			}
 			else
 			{
@@ -252,13 +208,13 @@ namespace ngl
 
 		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
 		{
-			google::protobuf::Map<int32_t, pbdb::mail>* lpmap = get_mails(aroleid); 
-			if (lpmap == nullptr)
+			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			if (lpdb_mail == nullptr)
 			{
 				return nullptr;
 			}
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
-			for (const auto& [_mailid, _mails] : *lpmap)
+			for (const auto& [_mailid, _mails] : *lpdb_mail->get().mutable_m_mail())
 			{
 				pro->mutable_m_mail()->insert({ _mailid, _mails });
 			}
@@ -266,3 +222,5 @@ namespace ngl
 		}
 	};
 }// namespace ngl
+
+mk_formatter(pbdb::db_mail)
