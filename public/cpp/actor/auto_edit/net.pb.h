@@ -9729,7 +9729,6 @@ class PROBUFF_NET_RANKLIST PROTOBUF_FINAL :
     kMIscrossFieldNumber = 1,
     kMTypeFieldNumber = 2,
     kMPageFieldNumber = 3,
-    kMEverynumFieldNumber = 4,
   };
   // bool m_iscross = 1;
   bool has_m_iscross() const;
@@ -9770,19 +9769,6 @@ class PROBUFF_NET_RANKLIST PROTOBUF_FINAL :
   void _internal_set_m_page(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 m_everynum = 4;
-  bool has_m_everynum() const;
-  private:
-  bool _internal_has_m_everynum() const;
-  public:
-  void clear_m_everynum();
-  ::PROTOBUF_NAMESPACE_ID::int32 m_everynum() const;
-  void set_m_everynum(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_everynum() const;
-  void _internal_set_m_everynum(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_RANKLIST)
  private:
   class _Internal;
@@ -9795,7 +9781,6 @@ class PROBUFF_NET_RANKLIST PROTOBUF_FINAL :
   bool m_iscross_;
   int m_type_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_page_;
-  ::PROTOBUF_NAMESPACE_ID::int32 m_everynum_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -17624,34 +17609,6 @@ inline void PROBUFF_NET_RANKLIST::_internal_set_m_page(::PROTOBUF_NAMESPACE_ID::
 inline void PROBUFF_NET_RANKLIST::set_m_page(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_page(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST.m_page)
-}
-
-// int32 m_everynum = 4;
-inline bool PROBUFF_NET_RANKLIST::_internal_has_m_everynum() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
-  return value;
-}
-inline bool PROBUFF_NET_RANKLIST::has_m_everynum() const {
-  return _internal_has_m_everynum();
-}
-inline void PROBUFF_NET_RANKLIST::clear_m_everynum() {
-  m_everynum_ = 0;
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST::_internal_m_everynum() const {
-  return m_everynum_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST::m_everynum() const {
-  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RANKLIST.m_everynum)
-  return _internal_m_everynum();
-}
-inline void PROBUFF_NET_RANKLIST::_internal_set_m_everynum(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000008u;
-  m_everynum_ = value;
-}
-inline void PROBUFF_NET_RANKLIST::set_m_everynum(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_m_everynum(value);
-  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST.m_everynum)
 }
 
 // -------------------------------------------------------------------
