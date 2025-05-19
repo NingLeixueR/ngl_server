@@ -29,3 +29,5 @@ namespace ngl
 		std::map<std::string, data_modified<pbdb::db_account>*>& accountbyarea(int area);
 	};
 }//namespace ngl
+
+mk_formatter(pbdb::db_account)

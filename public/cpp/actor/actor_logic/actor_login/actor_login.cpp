@@ -48,12 +48,6 @@ namespace ngl
 
 	void actor_login::loaddb_finish(bool adbishave)
 	{
-		log_error()->print("actor_login::loaddb_finish");
-		for (const auto& item : m_account.data())
-		{
-			const pbdb::db_account& laccount = item.second.getconst();
-			tools::print_json2proto(laccount);
-		}
 	}
 
 	void actor_login::nregister()

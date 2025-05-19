@@ -184,22 +184,5 @@ namespace ngl
 	};
 }// namespace ngl
 
-//ngl::data_modified<pbdb::db_friends>
-template <>
-struct std::formatter<ngl::data_modified<pbdb::db_friends>>
-{
-	constexpr auto parse(const std::format_parse_context& ctx)const
-	{
-		return ctx.begin();
-	}
-
-	auto format(const ngl::data_modified<pbdb::db_friends>& aval, std::format_context& ctx)const
-	{
-		const auto& lfriends = aval.getconst();
-		return std::format_to(ctx.out(),
-			"pbdb::db_friends:<m_id={},m_friends={},m_applyfriends={}>\n",
-			lfriends.m_id(), lfriends.m_friends(), lfriends.m_applyfriends()
-		);
-	}
-};
+mk_formatter(pbdb::db_friends)
 

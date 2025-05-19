@@ -58,21 +58,4 @@ namespace ngl
 	};
 }// namespace ngl
 
-//ngl::data_modified<pbdb::db_keyvalue>
-template <>
-struct std::formatter<ngl::data_modified<pbdb::db_keyvalue>>
-{
-	constexpr auto parse(const std::format_parse_context& ctx)const
-	{
-		return ctx.begin();
-	}
-
-	auto format(const ngl::data_modified<pbdb::db_keyvalue>& aval, std::format_context& ctx)const
-	{
-		const auto& lkeyvalue = aval.getconst();
-		return std::format_to(ctx.out(),
-			"pbdb::db_keyvalue:<m_id={},m_value={}>\n",
-			lkeyvalue.m_id(), lkeyvalue.m_value()
-		);
-	}
-};
+mk_formatter(pbdb::db_keyvalue)
