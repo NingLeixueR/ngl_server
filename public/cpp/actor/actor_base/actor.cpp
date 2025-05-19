@@ -14,7 +14,7 @@ namespace ngl
 		impl_actor() = delete;
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
-//#define STL_MESSAGELIST
+
 #ifdef STL_MESSAGELIST
 		template <typename T>
 		using tls = std::deque<T>;
@@ -27,20 +27,18 @@ namespace ngl
 		using trunls = slist_consumption<T>;
 #endif//DEF_ACTOR_USE_LIST
 
-		tls<handle_pram>				m_list;		// 待处理消息列表
-		trunls<handle_pram>				m_locallist;// 正在处理消息列表
-		actor_stat						m_stat;		// actor状态
-		std::shared_mutex				m_mutex;	// 锁:[m_list:待处理消息列表]
-		int32_t							m_weight;	// 权重
-		int32_t							m_timeout;	// 超时:(当actor处理消息超过此时间)
-		bool							m_release;  // 释放将忽略权重和超时
+		tls<handle_pram>				m_list;							// 待处理消息列表
+		trunls<handle_pram>				m_locallist;					// 正在处理消息列表
+		actor_stat						m_stat = actor_stat_init;		// actor状态
+		std::shared_mutex				m_mutex;						// 锁:[m_list:待处理消息列表]
+		int32_t							m_weight;						// 权重
+		int32_t							m_timeout;						// 超时:(当actor处理消息超过此时间)
+		bool							m_release = false;				// 释放将忽略权重和超时
 		actor*							m_actor;
 
 		explicit impl_actor(const actorparm& aparm, actor* aactor)
-			: m_stat(actor_stat_init)
-			, m_weight(aparm.m_weight)
+			: m_weight(aparm.m_weight)
 			, m_timeout(aparm.m_timeout)
-			, m_release(false)
 			, m_actor(aactor)
 		{
 		}
@@ -77,14 +75,14 @@ namespace ngl
 		}
 
 		// # 向actor消息列表中添加消息
-		inline void push(handle_pram& apram)
+		inline void push(const handle_pram& apram)
 		{
 			monopoly_shared_lock(m_mutex);
 			m_list.push_back(apram);
 		}
 	private:
 		// # 设置kcp
-		inline void set_kcp(handle_pram& aparm)
+		inline void set_kcp(const handle_pram& aparm)
 		{
 			if (aparm.m_pack == nullptr)
 			{
