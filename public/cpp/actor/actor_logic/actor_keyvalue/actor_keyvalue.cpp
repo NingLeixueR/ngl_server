@@ -49,7 +49,6 @@ namespace ngl
 
 	void actor_keyvalue::loaddb_finish(bool adbishave)
 	{
-		log_error()->print("actor_keyvalue load finish!!!");
 	}
 
 	void actor_keyvalue::nregister()
