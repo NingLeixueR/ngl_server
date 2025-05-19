@@ -167,22 +167,5 @@ namespace ngl
 	};
 }// namespace ngl
 
-template <>
-struct std::formatter<ngl::data_modified<pbdb::db_familyer>>
-{
-	constexpr auto parse(const std::format_parse_context& ctx)const
-	{
-		return ctx.begin();
-	}
-
-	auto format(const ngl::data_modified<pbdb::db_familyer>& aval, std::format_context& ctx)const
-	{
-		const auto& lfamilyer = aval.getconst();
-		return std::format_to(ctx.out(),
-			"pbdb::db_familyer:<roleid={},m_joinutc={},m_lastsignutc={},m_lastleaveutc={},m_position={}>\n",
-			lfamilyer.m_id(), lfamilyer.m_joinutc(), lfamilyer.m_lastsignutc(), lfamilyer.m_lastleaveutc(), (int32_t)lfamilyer.m_position()
-		);
-	}
-};
-
+mk_formatter(pbdb::db_familyer)
 mk_formatter(pbdb::db_family)

@@ -227,21 +227,4 @@ namespace ngl
 	};
 }// namespace ngl
 
-template <>
-struct std::formatter<ngl::data_modified<pbdb::db_calendar>>
-{
-	constexpr auto parse(const std::format_parse_context& ctx)const
-	{
-		return ctx.begin();
-	}
-
-	auto format(const ngl::data_modified<pbdb::db_calendar>& aval, std::format_context& ctx)const
-	{
-		const auto& lcalendar = aval.getconst();
-		return std::format_to(ctx.out(),"<calendar={},start={}:{},finish={}:{}>\n",
-			lcalendar.m_id(), 
-			ngl::localtime::time2str(lcalendar.m_start(), "%y/%m/%d %H:%M:%S"), lcalendar.m_isstart() ? 1 : 0,
-			ngl::localtime::time2str(lcalendar.m_finish(), "%y/%m/%d %H:%M:%S"), lcalendar.m_isfinish() ? 1 : 0
-		);
-	}
-};
+mk_formatter(pbdb::db_calendar)
