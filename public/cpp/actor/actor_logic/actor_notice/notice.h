@@ -5,15 +5,16 @@
 
 namespace ngl
 {
-	class notice : public tdb_notice::db_modular
+	class notice : 
+		public tdb_notice::db_modular
 	{
 		notice(const notice&) = delete;
 		notice& operator=(const notice&) = delete;
 
-		int64_t m_maxid;
+		int64_t m_maxid = -1;
+		int64_t m_removetimer = -1;
 	public:
-		notice() :
-			m_maxid(0)
+		notice()
 		{
 		}
 
@@ -22,28 +23,25 @@ namespace ngl
 			m_id = -1;
 		}
 
-		std::map<nguid, data_modified<pbdb::db_notice>>* get_notice()
+		data_modified<pbdb::db_notice>* get_notice(i64_actorid anoticeid)
 		{
-			return &data();
+			auto itor = data().find(anoticeid);
+			if (itor == data().end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
 		}
 
 		virtual void initdata()
 		{
-			auto lstream = log_error();
-			(*lstream) << "actor_notice###loaddb_finish" << std::endl;
+			log_error()->print("actor_notice###loaddb_finish {}", data());
 			m_maxid = 0;
-			for (const auto& [id, dbnotice] : *get_notice())
+			for (const auto& [id, dbnotice] : data())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
-				std::string lstart = localtime::time2str(lnotice.m_starttime(), "%y/%m/%d %H:%M:%S");
-				std::string lfinish = localtime::time2str(lnotice.m_finishtime(), "%y/%m/%d %H:%M:%S");
-				(*lstream)<< std::format(
-					"notice###id:{} notice:{} start:{} finish:{}",
-					lnotice.m_id(), lnotice.m_notice(), lstart, lfinish
-				) << std::endl;
 				m_maxid = std::max(m_maxid, lnotice.m_id());
 			}
-			(*lstream).print("");
 
 			remove_notice();
 
@@ -60,6 +58,7 @@ namespace ngl
 					remove_notice();
 				}
 			};
+			m_removetimer = (int32_t)twheel::wheel().addtimer(lparm);
 		}
 
 		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)
@@ -89,3 +88,5 @@ namespace ngl
 		std::shared_ptr<pbnet::PROBUFF_NET_NOTICE_RESPONSE> sync_notice(i64_actorid aactorid = -1);
 	};
 }//namespace ngl
+
+mk_formatter(pbdb::db_notice)

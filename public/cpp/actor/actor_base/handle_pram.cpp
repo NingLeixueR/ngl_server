@@ -4,8 +4,7 @@
 
 namespace ngl
 {
-	actor_node_session::actor_node_session() :
-		m_session(-1)
+	actor_node_session::actor_node_session()
 	{}
 
 	actor_node_session::actor_node_session(i32_sessionid asession, const nactornode& anode) :
@@ -14,7 +13,6 @@ namespace ngl
 	{}
 
 	actor_node_session::actor_node_session(const nactornode& anode) :
-		m_session(-1),
 		m_node(anode)
 	{}
 

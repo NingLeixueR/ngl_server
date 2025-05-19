@@ -52,16 +52,14 @@ namespace ngl
 		inline message(i32_threadid athread, const pack* apack, std::shared_ptr<T>& adata) :
 			m_thread(athread),
 			m_pack(apack),
-			m_shared_data(adata),
-			m_original_data(nullptr)
+			m_shared_data(adata)
 		{
 		}
 
 		inline message(i32_threadid athread, const pack* apack, T* adata) :
 			m_thread(athread),
 			m_pack(apack),
-			m_original_data(adata),
-			m_shared_data(nullptr)
+			m_original_data(adata)
 		{
 		}
 

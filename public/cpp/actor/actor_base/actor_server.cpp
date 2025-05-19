@@ -171,8 +171,7 @@ namespace ngl
 
 		print(lparm->m_mass.m_add);
 
-		message<np_actornode_update_server> lmessage(adata.thread(), lpack, pro);
-		handle(lmessage);
+		handle(message(adata.thread(), lpack, pro));
 		return true;
 	}
 

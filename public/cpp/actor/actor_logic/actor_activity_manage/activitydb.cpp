@@ -7,10 +7,10 @@ namespace ngl
 {
 	void activitydb::initdata()
 	{
-		std::vector<nguid> lactivityids;
+		log_error()->print("actor_manage_activity###loaddb_finish {}", data());
+
 		for (std::pair<const nguid, data_modified<pbdb::db_activity>>& item : data())
 		{
-			lactivityids.push_back(item.first);
 			actor_activity_manage* lactor = actor();
 			const pbdb::db_activity& ldbactivity = item.second.getconst();
 			int32_t lactivityid = (int32_t)item.first.id();
@@ -19,6 +19,5 @@ namespace ngl
 			);
 			lactor->add_activity(item.first, lactivity);
 		}
-		log_error()->print("actor_manage_activity###loaddb_finish activityids:{}", lactivityids);
 	}
 }//namespace ngl
