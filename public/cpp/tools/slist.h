@@ -304,12 +304,12 @@ namespace ngl
 			m_list.clear(m_listfree);
 		}
 
-		inline bool empty()
+		inline bool empty()const
 		{
 			return m_list.size() == 0;
 		}
 
-		inline int size()
+		inline int size()const
 		{
 			return m_list.size();
 		}

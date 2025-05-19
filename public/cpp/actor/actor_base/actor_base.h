@@ -73,19 +73,21 @@ namespace ngl
 	template <typename T>
 	struct message;
 
-	class actor_base : public tools_log
+	class actor_base : 
+		public tools_log
 	{
 		actor_base() = delete;
 		actor_base(const actor_base&) = delete;
 		actor_base& operator=(const actor_base&) = delete;
-	protected:
+	private:
 		struct impl_actor_base;
 		struct impl_group;
 		impl<impl_actor_base>	m_impl_actor_base;
 		ngroup					m_group;
 
-		explicit actor_base(const actorparmbase& aparm);
 	public:
+		explicit actor_base(const actorparmbase& aparm);
+
 #pragma region db
 		//# 获取actor_manage_dbclient实例
 		using ptr_manage_dbc = std::unique_ptr<actor_manage_dbclient>;
