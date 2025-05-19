@@ -185,3 +185,32 @@ struct std::formatter<std::map<TKEY, TVAL>>
 		return out;
 	}
 };
+
+//const ::PROTOBUF_NAMESPACE_ID::RepeatedField<T>
+template <typename T>
+struct std::formatter<google::protobuf::RepeatedField<T>>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+
+	auto format(const google::protobuf::RepeatedField<T>& aval, std::format_context& ctx)const
+	{
+		auto out = ctx.out();
+		std::format_to(out, "protobuf::RepeatedField[");
+		for(int i = 0;i< aval.size();++i)
+		{
+			if (i + 1 == aval.size())
+			{
+				std::format_to(out, "{}", aval[i]);
+			}
+			else
+			{
+				std::format_to(out, "{},", aval[i]);
+			}
+		}
+		format_to(out, "]");
+		return out;
+	}
+};
