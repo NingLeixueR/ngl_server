@@ -1,3 +1,17 @@
+#include "ttab_activity.h"
+#include "ttab_activity_drawcompliance.h"
+#include "ttab_card.h"
+#include "ttab_chat.h"
+#include "ttab_consume.h"
+#include "ttab_equip.h"
+#include "ttab_equiplv.h"
+#include "ttab_item.h"
+#include "ttab_mail.h"
+#include "ttab_map.h"
+#include "ttab_matching.h"
+#include "ttab_plays.h"
+#include "ttab_recharge.h"
+#include "ttab_synthesis.h"
 #include "ttab_errormessage.h"
 #include "ttab_specialid.h"
 #include "ttab_attribute.h"
@@ -94,27 +108,30 @@ namespace ngl
 		{
 			loadcsv<ttab_calendar>();
 			loadcsv<ttab_ranklist>();
-			loadcsv<manage_csv<tab_activity_drawcompliance>>();
-			loadcsv<manage_csv<tab_activity>>();
+			loadcsv<ttab_activity_drawcompliance>();
+			loadcsv<ttab_activity>();
+			loadcsv<ttab_matching>(); 
+			loadcsv<ttab_plays>();
 		}
 		if (NODE_TYPE::GAME == nconfig::node_type())
 		{
 			loadcsv<ttab_task>();
-			loadcsv<manage_csv<tab_errormessage>>();
-			loadcsv<manage_csv<tab_recharge>>();
+			loadcsv<ttab_errormessage>();
+			loadcsv<ttab_recharge>();
 		}
 		if (NODE_TYPE::GAME == nconfig::node_type() || NODE_TYPE::WORLD == nconfig::node_type())
 		{
 			loadcsv<ttab_attribute>();
 			loadcsv<ttab_random>();
-			loadcsv<manage_csv<tab_synthesis>>();
-			loadcsv<manage_csv<tab_consume>>();
-			loadcsv<manage_csv<tab_equiplv>>();
-			loadcsv<manage_csv<tab_equip>>();
-			loadcsv<manage_csv<tab_item>>();
-			loadcsv<manage_csv<tab_card>>();
-			loadcsv<manage_csv<tab_mail>>();
-			loadcsv<manage_csv<tab_chat>>();
+			loadcsv<ttab_synthesis>();
+			loadcsv<ttab_consume>();
+			loadcsv<ttab_equiplv>();
+			loadcsv<ttab_equip>();
+			loadcsv<ttab_item>();
+			loadcsv<ttab_card>();
+			loadcsv<ttab_mail>();
+			loadcsv<ttab_chat>();
+			loadcsv<ttab_map>();
 		}
 	}
 

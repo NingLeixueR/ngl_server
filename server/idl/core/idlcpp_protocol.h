@@ -494,13 +494,13 @@ namespace ngl
 				{
 					lbeg += "#include \"t"+ itemstr +".h\"\n";
 				}
-				auto lpos = lneirong.find("loadcsv<ttab_servers>();");
+				auto lpos = lneirong.find("		loadcsv<ttab_servers>();");
 				if (lpos == std::string::npos)
 				{
 					continue;
 				}
 				std::string lqian = std::string(lneirong.begin(), lneirong.begin()+ lpos);
-				std::string lhou = std::string(lneirong.begin() + lpos+1, lneirong.end());
+				std::string lhou = std::string(lneirong.begin() + lpos, lneirong.end());
 				std::string lzhongjian = "###########归类哪些结点需要加载##############\n";
 				for (const auto& itemstr : lset)
 				{
