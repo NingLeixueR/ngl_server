@@ -6,7 +6,7 @@
 
 namespace ngl
 {
-	struct ttab_servers : 
+	struct ttab_servers :
 		public manage_csv<tab_servers>
 	{
 		ttab_servers(const ttab_servers&) = delete;
@@ -18,6 +18,28 @@ namespace ngl
 		ttab_servers()
 		{}
 
+		static const std::map<int, tab_servers>& tablecsv()
+		{
+			const ttab_servers* ttab = allcsv::get<ttab_servers>();
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_servers* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
+
+		static const tab_servers* tab()
+		{
+			return tab(nconfig::m_nodeid);
+		}
+
 		void reload()final
 		{
 			m_areaofserver.clear();
@@ -27,23 +49,7 @@ namespace ngl
 			}
 		}
 
-		static const tab_servers* tab(i32_serverid aserverid)
-		{
-			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			if (ttab == nullptr)
-			{
-				return nullptr;
-			}
-			auto itor = ttab->m_tablecsv.find(aserverid);
-			return &itor->second;
-		}
-
-		static const tab_servers* tab()
-		{
-			return tab(nconfig::m_nodeid);
-		}
-
-		static const tab_servers* tab(const std::string& aname,int area, int32_t atcount)
+		static const tab_servers* tab(const std::string& aname, int area, int32_t atcount)
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			assert(ttab != nullptr);
@@ -77,7 +83,7 @@ namespace ngl
 		static const net_works* get_nworks(ENET_PROTOCOL atype)
 		{
 			//nconfig::m_nodeid
-			const tab_servers* ltab =  tab();
+			const tab_servers* ltab = tab();
 			if (ltab == nullptr)
 			{
 				return nullptr;
@@ -222,7 +228,7 @@ namespace ngl
 			if (larea == nullptr)
 			{
 				return false;
-			}			
+			}
 
 			for (const auto& [_area, _vec] : m_areaofserver)
 			{

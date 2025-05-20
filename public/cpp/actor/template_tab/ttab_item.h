@@ -10,19 +10,25 @@ namespace ngl
 		public manage_csv<tab_item>
 	{
 		ttab_item(const ttab_item&) = delete;
-		ttab_item operator=(const ttab_item&) = delete;
+		ttab_item& operator=(const ttab_item&) = delete;
 		using type_tab = tab_item;
 		ttab_item()
 		{}
 
-		static const tab_item* tab(int32_t aid)
+		static const std::map<int, tab_item>& tablecsv()
 		{
 			const ttab_item* ttab = allcsv::get<ttab_item>();
-			if (ttab == nullptr)
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_item* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
 			{
-				 return nullptr;
+				return nullptr;
 			}
-			auto itor = ttab->m_tablecsv.find(aid);
 			return &itor->second;
 		}
 	};

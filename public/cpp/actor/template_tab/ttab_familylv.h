@@ -6,8 +6,7 @@
 
 namespace ngl
 {
-
-	struct ttab_familylv : 
+	struct ttab_familylv :
 		public manage_csv<tab_familylv>
 	{
 		ttab_familylv(const ttab_familylv&) = delete;
@@ -17,14 +16,31 @@ namespace ngl
 		static std::map<int32_t, int32_t> m_failylvexp;		// key:lv value:exp
 		static std::map<int32_t, int32_t> m_failyrolecount;	// key:lv value:rolecount
 	public:
+		ttab_familylv()
+		{}
 
-		ttab_familylv() = default;
+		static const std::map<int, tab_familylv>& tablecsv()
+		{
+			const ttab_familylv* ttab = allcsv::get<ttab_familylv>();
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_familylv* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
 
 		void reload()final
 		{
 			m_failylvexp.clear();
 			m_failyrolecount.clear();
-			std::ranges::for_each(m_tablecsv, [this](const auto& apair)
+			std::ranges::for_each(tablecsv(), [this](const auto& apair)
 				{
 					m_failylvexp[apair.first] = apair.second.m_exp;
 					m_failyrolecount[apair.first] = apair.second.m_maxmembers;

@@ -7,12 +7,12 @@ namespace ngl
 {
 	std::map<int32_t, ttab_calendar::data> ttab_calendar::m_data;
 
-	void operator_calendar(tab_calendar* atab, int32_t autc, bool astart)
+	void operator_calendar(const tab_calendar* atab, int32_t autc, bool astart)
 	{
 		actor_calendar::getInstance().operatpr_calendar(atab->m_id, autc, astart);
 	}
 
-	void ttab_calendar_post(tab_calendar* atab, int64_t autc, bool astart)
+	void ttab_calendar_post(const tab_calendar* atab, int64_t autc, bool astart)
 	{
 		int lnow = (int)localtime::gettime();
 		
@@ -35,7 +35,7 @@ namespace ngl
 		calendar_wheel.addtimer(lparm);
 	}
 
-	void ttab_calendar::post(tab_calendar* atab, int32_t autc, bool astart)
+	void ttab_calendar::post(const tab_calendar* atab, int32_t autc, bool astart)
 	{
 		ttab_calendar_post(atab, autc, astart);
 	}

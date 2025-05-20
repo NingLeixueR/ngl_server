@@ -85,7 +85,7 @@ namespace ngl
 				{
 					continue;
 				}
-				tab_calendar* tab = ttab_calendar::tab((int32_t)item.first);
+				const tab_calendar* tab = ttab_calendar::tab((int32_t)item.first);
 				if (tab == nullptr)
 				{
 					continue;
@@ -190,7 +190,7 @@ namespace ngl
 			for (const auto& item1 : *get_calendar())
 			{
 				int64_t lcalendarid = item1.first;
-				tab_calendar* tab = ttab_calendar::tab(lcalendarid);
+				const tab_calendar* tab = ttab_calendar::tab(lcalendarid);
 				if (tab == nullptr)
 				{
 					continue;

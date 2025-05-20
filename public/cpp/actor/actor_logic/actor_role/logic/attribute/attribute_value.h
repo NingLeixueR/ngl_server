@@ -75,7 +75,7 @@ namespace ngl
 
 		int64_t fight(EnumAttribute atype, double avalues)
 		{
-			tab_attribute* tab = ttab_attribute::attr(atype);
+			const tab_attribute* tab = ttab_attribute::attr(atype);
 			if (tab == nullptr)
 			{
 				return 0;

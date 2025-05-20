@@ -3,13 +3,13 @@
 #include "manage_csv.h"
 #include "tools.h"
 #include "nguid.h"
-#include "type.h"
 #include "nlog.h"
+#include "type.h"
 #include "xml.h"
 
 namespace ngl
 {
-	struct ttab_mergearea : 
+	struct ttab_mergearea :
 		public manage_csv<tab_mergearea>
 	{
 		ttab_mergearea(const ttab_mergearea&) = delete;
@@ -23,6 +23,23 @@ namespace ngl
 
 		ttab_mergearea()
 		{}
+
+		static const std::map<int, tab_mergearea>& tablecsv()
+		{
+			const ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_mergearea* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
 
 		void reload()final
 		{

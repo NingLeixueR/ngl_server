@@ -12,7 +12,7 @@ namespace ngl
 		static std::array<task_check*, ETaskCount> m_data;
 	public:
 		// 检查条件是否满足
-		static bool check(actor_role* arole, task_condition& atab)
+		static bool check(actor_role* arole, const task_condition& atab)
 		{
 			if (atab.m_condition == ETaskConditionMore)
 			{
@@ -29,20 +29,20 @@ namespace ngl
 			return false;
 		}
 
-		static void schedules(actor_role* arole, pbdb::db_task::data_schedule& adata, task_condition& atab)
+		static void schedules(actor_role* arole, pbdb::db_task::data_schedule& adata, const task_condition& atab)
 		{
 			adata.set_m_type(atab.m_type);
 			adata.set_m_sumint(atab.m_parmint);
 			adata.set_m_value(m_data[atab.m_type]->values(arole, atab));
 		}
 
-		virtual int32_t values(actor_role* arole, task_condition& atab) = 0;
+		virtual int32_t values(actor_role* arole, const task_condition& atab) = 0;
 	};
 
 	// 条件检查:ETaskRoleLv 玩家等级
 	class taskcheck_rolelv : public task_check
 	{
-		virtual int32_t values(actor_role* arole, task_condition& atab)
+		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
 			return arole->m_info.lv();
 		}
@@ -51,7 +51,7 @@ namespace ngl
 	// 条件检查:ETaskRoleVip 玩家vip等级
 	class taskcheck_rolevip : public task_check
 	{
-		virtual int32_t values(actor_role* arole, task_condition& atab)
+		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
 			return arole->m_info.vip();
 		}
@@ -60,7 +60,7 @@ namespace ngl
 	// 条件检查:ETaskTaskId 完成某ID任务
 	class taskcheck_taskid : public task_check
 	{
-		virtual int32_t values(actor_role* arole, task_condition& atab)
+		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
 			auto& lmap = arole->m_task.get_consttask().m_completeddatas();
 			return lmap.find(atab.m_parmint) != lmap.end()? atab.m_parmint :-1;
@@ -74,9 +74,9 @@ namespace ngl
 		(task_check*)new taskcheck_taskid()
 	};
 
-	bool static_task::check_condition(actor_role* arole, std::vector<task_condition>& acondition)
+	bool static_task::check_condition(actor_role* arole, const std::vector<task_condition>& acondition)
 	{
-		for (task_condition& item : acondition)
+		for (const task_condition& item : acondition)
 		{
 			if (task_check::check(arole, item) == false)
 			{
@@ -135,7 +135,7 @@ namespace ngl
 			return true;
 		}
 
-		std::vector<task_condition>* lvec = ttab_task::condition_receive(ataskid);
+		const std::vector<task_condition>* lvec = ttab_task::condition_receive(ataskid);
 		if (lvec == nullptr)
 		{
 			return false;
@@ -189,7 +189,7 @@ namespace ngl
 		{
 			return false;
 		}
-		std::vector<task_condition>* lvecfinish = ttab_task::condition_complete(ataskid);
+		const std::vector<task_condition>* lvecfinish = ttab_task::condition_complete(ataskid);
 		if (lvecfinish != nullptr && check_condition(arole, *lvecfinish))
 		{
 			auto& lruntask = run(arole);
@@ -199,7 +199,7 @@ namespace ngl
 				return false;
 			}
 			// # 发送奖励
-			tab_task* tab = ttab_task::tab(ataskid);
+			const tab_task* tab = ttab_task::tab(ataskid);
 			if (tab == nullptr)
 			{
 				return false;
@@ -248,7 +248,7 @@ namespace ngl
 						{
 							if (lschedule.m_type() == atype)
 							{
-								task_condition* lpcondition = ttab_task::condition_complete(taskid, atype);
+								const task_condition* lpcondition = ttab_task::condition_complete(taskid, atype);
 								if (lpcondition != nullptr)
 								{
 									task_check::schedules(arole, lschedule, *lpcondition);

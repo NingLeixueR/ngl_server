@@ -460,19 +460,27 @@ namespace ngl
 						lstream << "\t\tpublic manage_csv<" << struc.name << ">" << std::endl;
 						lstream << "\t{" << std::endl;
 						lstream << "\t\tt" << struc.name  << "(const t" << struc.name <<"&) = delete;" << std::endl;
-						lstream << "\t\tt" << struc.name << " operator=(const t" << struc.name << "&) = delete;" << std::endl;
+						lstream << "\t\tt" << struc.name << "& operator=(const t" << struc.name << "&) = delete;" << std::endl;
 						lstream << "\t\t" << "using type_tab = " << struc.name << ";" << std::endl;
 						lstream << "\t\tt" << struc.name << "()" << std::endl;
 						lstream << "\t\t{}" << std::endl;
 						lstream << std::endl;
+
+						lstream << "\t\tstatic const std::map<int, "<< struc.name <<">& tablecsv()" << std::endl;
+						lstream << "\t\t{" << std::endl;
+						lstream << "\t\t\tconst t"<< struc.name <<"* ttab = allcsv::get<t"<< struc.name <<">();" << std::endl;
+						lstream << "\t\t\tassert(ttab == nullptr);" << std::endl;
+						lstream << "\t\t\treturn ttab->m_tablecsv;" << std::endl;
+						lstream << "\t\t}" << std::endl;
+
 						lstream << "\t\tstatic const " << struc.name << "* tab(int32_t aid)" << std::endl;
 						lstream << "\t\t{" << std::endl;
-						lstream << "\t\t\tconst t"<< struc.name << "* ttab = allcsv::get<t"<< struc.name << ">();" << std::endl;
-						lstream << "\t\t\tif (ttab == nullptr)" << std::endl;
+						lstream << "\t\t\tconst auto& lmap = tablecsv();" << std::endl;
+						lstream << "\t\t\tauto itor = lmap.find(aid);" << std::endl;
+						lstream << "\t\t\tif (itor == lmap.end())" << std::endl;
 						lstream << "\t\t\t{" << std::endl;
-						lstream << "\t\t\t\t return nullptr;" << std::endl;
+						lstream << "\t\t\t\treturn nullptr;" << std::endl;
 						lstream << "\t\t\t}" << std::endl;
-						lstream << "\t\t\tauto itor = ttab->m_tablecsv.find(aid);" << std::endl;
 						lstream << "\t\t\treturn &itor->second;" << std::endl;
 						lstream << "\t\t}" << std::endl;
 						lstream << "\t};" << std::endl;

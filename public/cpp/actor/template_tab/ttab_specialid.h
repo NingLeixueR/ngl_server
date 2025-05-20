@@ -6,8 +6,7 @@
 
 namespace ngl
 {
-
-	struct ttab_specialid : 
+	struct ttab_specialid :
 		public manage_csv<tab_specialid>
 	{
 		ttab_specialid(const ttab_specialid&) = delete;
@@ -28,10 +27,26 @@ namespace ngl
 		static int32_t						m_example_room_maxtime;	// 例子游戏的最大匹配时间
 		static std::map<int32_t, int32_t>	m_example_totalnumber;	// 例子游戏的匹配人数
 		static int32_t						m_example_room_readytime; // 例子游戏的等待玩家确认的最大时间
-		
 
 		ttab_specialid()
 		{}
+
+		static const std::map<int, tab_specialid>& tablecsv()
+		{
+			const ttab_specialid* ttab = allcsv::get<ttab_specialid>();
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_specialid* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
 
 		static void tovalue(int32_t& apvalue, const char* astr)
 		{
@@ -49,7 +64,7 @@ namespace ngl
 			if (atab.m_name == akey)
 			{
 				tovalue(adata, atab.m_value.c_str());
-				return true;	
+				return true;
 			}
 			return false;
 		}
@@ -84,7 +99,7 @@ namespace ngl
 						, de_pram(ranklistmaxcount)
 						, de_pram(example_room_maxtime)
 						, de_pram(example_room_readytime)
-					);	
+					);
 					std::string lexample_totalnumber;
 					if (lread == false && read_value(pair.second, "example_totalnumber", lexample_totalnumber))
 					{
