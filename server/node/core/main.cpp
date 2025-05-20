@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
 	// # º”‘ÿcsv≈‰÷√
 	ngl::csvbase::set_path("./csv", lname);
-	ngl::allcsv::load();
+	//ngl::allcsv::load();
 
 	const ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
