@@ -49,7 +49,7 @@ namespace ngl
 		manage_csv(const manage_csv&) = delete;
 		manage_csv& operator=(const manage_csv&) = delete;
 
-		using TAB = T;
+		using type_tab = T;
 
 		std::map<int, T>	m_tablecsv;
 		std::string			m_verify;		// ÄÚÈİµÄmd5Öµ

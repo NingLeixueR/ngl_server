@@ -3,6 +3,7 @@
 #include "ttab_attribute.h"
 #include "ttab_mergearea.h"
 #include "ttab_calendar.h"
+#include "ttab_ranklist.h"
 #include "ttab_servers.h"
 #include "ttab_random.h"
 #include "ttab_dbload.h"
@@ -64,14 +65,15 @@ namespace ngl
 
 	std::map<std::string, csvbase*> allcsv::m_data; // key: TAB::name()
 
-	template <typename TTAB,typename TTABCLASS>
+	template <typename TTAB>
 	void loadcsv()
 	{
+		using TAB = typename TTAB::type_tab;
 		static bool isinitload = false;
 		if (isinitload == false)
 		{
-			csvbase* lp = new TTABCLASS();
-			allcsv::add(TTAB::name(), lp);
+			csvbase* lp = new TTAB();
+			allcsv::add(TAB::name(), lp);
 			lp->load();
 			lp->reload();
 			isinitload = true;
@@ -80,29 +82,29 @@ namespace ngl
 
 	void allcsv::load()
 	{
-		loadcsv<tab_random, ttab_random>();
-		loadcsv<tab_calendar, ttab_calendar>();
-		loadcsv<tab_attribute, ttab_attribute>();
-		loadcsv<tab_servers, ttab_servers>();
+		loadcsv<ttab_random>();
+		loadcsv<ttab_calendar>();
+		loadcsv<ttab_attribute>();
+		loadcsv<ttab_servers>();
+		loadcsv<ttab_specialid>();
+		loadcsv<ttab_task>();
+		loadcsv<ttab_servers>();
+		loadcsv<ttab_dbload>();
+		loadcsv<ttab_mergearea>();
+		loadcsv<ttab_ranklist>();
 
-		loadcsv<tab_consume, manage_csv<tab_consume>>();
-		loadcsv<tab_mail, manage_csv<tab_mail>>();
-		loadcsv<tab_chat, manage_csv<tab_chat>>();
-		loadcsv<tab_activity, manage_csv<tab_activity>>();	
-		loadcsv<tab_activity_drawcompliance, manage_csv<tab_activity_drawcompliance>>();
-		loadcsv<tab_equip, manage_csv<tab_equip>>();
-		loadcsv<tab_equiplv, manage_csv<tab_equiplv>>();
-		loadcsv<tab_errormessage, manage_csv<tab_errormessage>>();
-		loadcsv<tab_item, manage_csv<tab_item>>();
-		loadcsv<tab_specialid, ttab_specialid>();
-		loadcsv<tab_synthesis, manage_csv<tab_synthesis>>();
-		loadcsv<tab_task, ttab_task>();
-		loadcsv<tab_card, manage_csv<tab_card>>();
-		loadcsv<tab_servers, ttab_servers>();
-		loadcsv<tab_dbload, ttab_dbload>();
-		loadcsv<tab_recharge, manage_csv<tab_recharge>>();
-		loadcsv<tab_mergearea, ttab_mergearea>();
-		
+		loadcsv<manage_csv<tab_consume>>();
+		loadcsv<manage_csv<tab_mail>>();
+		loadcsv<manage_csv<tab_chat>>();
+		loadcsv<manage_csv<tab_activity>>();	
+		loadcsv<manage_csv<tab_activity_drawcompliance>>();
+		loadcsv<manage_csv<tab_equip>>();
+		loadcsv<manage_csv<tab_equiplv>>();
+		loadcsv<manage_csv<tab_errormessage>>();
+		loadcsv<manage_csv<tab_item>>();
+		loadcsv<manage_csv<tab_synthesis>>();
+		loadcsv<manage_csv<tab_card>>();
+		loadcsv<manage_csv<tab_recharge>>();		
 	}
 
 	void allcsv::add(const char* akey, csvbase* ap)

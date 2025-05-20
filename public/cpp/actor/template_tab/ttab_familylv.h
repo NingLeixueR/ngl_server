@@ -7,10 +7,12 @@
 namespace ngl
 {
 
-	struct ttab_familylv : public manage_csv<tab_familylv>
+	struct ttab_familylv : 
+		public manage_csv<tab_familylv>
 	{
 		ttab_familylv(const ttab_familylv&) = delete;
 		ttab_familylv& operator=(const ttab_familylv&) = delete;
+		using type_tab = tab_familylv;
 	private:
 		static std::map<int32_t, int32_t> m_failylvexp;		// key:lv value:exp
 		static std::map<int32_t, int32_t> m_failyrolecount;	// key:lv value:rolecount

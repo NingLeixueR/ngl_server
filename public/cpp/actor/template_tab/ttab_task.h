@@ -12,10 +12,12 @@ namespace ngl
 	using i32_rolelv = int32_t;
 	using i32_rolevip = int32_t;
 
-	struct ttab_task : public manage_csv<tab_task>
+	struct ttab_task : 
+		public manage_csv<tab_task>
 	{
 		ttab_task(const ttab_task&) = delete;
 		ttab_task& operator=(const ttab_task&) = delete;
+		using type_tab = tab_task;
 
 		// first	: 根据可接受条件进行分类 
 		// second	: 根据可完成条件进行分类 

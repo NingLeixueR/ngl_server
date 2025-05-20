@@ -7,10 +7,12 @@
 namespace ngl
 {
 
-	struct ttab_ranklist : public manage_csv<tab_ranklist>
+	struct ttab_ranklist : 
+		public manage_csv<tab_ranklist>
 	{
 		ttab_ranklist(const ttab_ranklist&) = delete;
 		ttab_ranklist& operator=(const ttab_ranklist&) = delete;
+		using type_tab = tab_ranklist;
 
 		ttab_ranklist()
 		{}

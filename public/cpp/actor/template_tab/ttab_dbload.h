@@ -4,10 +4,12 @@
 
 namespace ngl
 {
-	struct ttab_dbload : public manage_csv<tab_dbload>
+	struct ttab_dbload : 
+		public manage_csv<tab_dbload>
 	{
 		ttab_dbload(const ttab_dbload&) = delete;
 		ttab_dbload& operator=(const ttab_dbload&) = delete;
+		using type_tab = tab_dbload;
 
 		static std::map<std::string, tab_dbload*> m_name2data;
 		static tab_dbload m_universalize;

@@ -65,7 +65,7 @@ namespace ngl
 			auto itor = m_rankdata.begin();
 			for (int i = 0; i < pagesize; ++i)
 			{
-				m_page.push_back(itor);
+				m_page[i] = itor;
 				if (itor != m_rankdata.end())
 				{
 					std::advance(itor, ltab->m_everypagecount);
@@ -103,15 +103,17 @@ namespace ngl
 
 		virtual int32_t getpage(int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
 		{
-			if (apage - 1 >= m_page.size())
-			{
-				return (int32_t)m_rankdata.size();
-			}
+			
 			if (m_time != m_pagetime)
 			{
 				init();
 			}
-			
+
+			if (apage - 1 >= m_page.size())
+			{
+				return (int32_t)m_rankdata.size();
+			}
+
 			auto ltab = tab();
 			int32_t lbegindex = (apage - 1) * ltab->m_everypagecount;
 			int32_t lendindex = lbegindex + ltab->m_everypagecount;
