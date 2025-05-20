@@ -82,11 +82,11 @@ namespace ngl
 			ecompare ltype = value_compare(m_values[atype], ar.m_values[atype]);
 			if (atype == pbdb::eranklist::lv)
 			{//值越大排名越高
-				return ltype;
+				return (ecompare)(-(int32_t)ltype); 
 			}
 			else
 			{
-				return (ecompare)(-(int32_t)ltype);
+				return ltype;
 			}
 		}
 

@@ -5,10 +5,12 @@
 
 namespace ngl
 {
-	struct ttab_random : public manage_csv<tab_random>
+	struct ttab_random : 
+		public manage_csv<tab_random>
 	{
 		ttab_random(const ttab_random&) = delete;
 		ttab_random& operator=(const ttab_random&) = delete;
+		using type_tab = tab_random;
 
 		ttab_random()
 		{}

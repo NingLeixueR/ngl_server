@@ -9,10 +9,12 @@
 
 namespace ngl
 {
-	struct ttab_mergearea : public manage_csv<tab_mergearea>
+	struct ttab_mergearea : 
+		public manage_csv<tab_mergearea>
 	{
 		ttab_mergearea(const ttab_mergearea&) = delete;
 		ttab_mergearea& operator=(const ttab_mergearea&) = delete;
+		using type_tab = tab_mergearea;
 
 		// key: 区服id value: 合并到哪个区服
 		static std::map<i16_area, i16_area> m_merge1;
