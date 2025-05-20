@@ -21,14 +21,14 @@ namespace ngl
 						int32_t m_page;
 						int32_t m_everynum;
 
-						jsonfunc("type", m_type, "page", m_page, "everynum", m_everynum)
+						jsonfunc("type", m_type, "page", m_page)
 					};
 					json_rank lrank;
 					if (aos.read("data", lrank) == false)
 					{
 						return;
 					}
-					auto prorank = m_ranklist.get_ranklist((pbdb::eranklist)lrank.m_type, lrank.m_page, lrank.m_everynum);
+					auto prorank = m_ranklist.get_ranklist((pbdb::eranklist)lrank.m_type, lrank.m_page);
 					if (tools::proto2json<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>(*prorank, pro.m_data) == false)
 					{
 						return;
