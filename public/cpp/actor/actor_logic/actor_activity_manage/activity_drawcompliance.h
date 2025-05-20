@@ -1,5 +1,6 @@
 #pragma once
 #include "activity.h"
+#include "ttab_activity_drawcompliance.h"
 
 namespace ngl
 {
@@ -49,9 +50,7 @@ namespace ngl
 				itor = lmap->insert({ aroleid, ltemp }).first;
 			}
 
-			manage_csv<tab_activity_drawcompliance>* lpmanagecsv =
-				allcsv::get<manage_csv<tab_activity_drawcompliance>>();
-			for (const auto& [_id, _data] : lpmanagecsv->m_tablecsv)
+			for (const auto& [_id, _data] : ttab_activity_drawcompliance::tablecsv())
 			{
 				if (itor->second.m_count() > _id)
 				{

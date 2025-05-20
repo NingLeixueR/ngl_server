@@ -3,11 +3,13 @@
 #include "manage_csv.h"
 #include "localtime.h"
 #include "xmlinfo.h"
+#include "type.h"
 #include "nlog.h"
+#include "xml.h"
 
 namespace ngl
 {
-	struct ttab_calendar : 
+	struct ttab_calendar :
 		public manage_csv<tab_calendar>
 	{
 		ttab_calendar(const ttab_calendar&) = delete;
@@ -15,9 +17,10 @@ namespace ngl
 		using type_tab = tab_calendar;
 
 		static const int m_count = 10;
+
 		struct data
 		{
-			tab_calendar* m_tab;
+			const tab_calendar* m_tab;
 
 			void add(int32_t abeg, int32_t aend)
 			{
@@ -41,7 +44,7 @@ namespace ngl
 
 			static int32_t end(int64_t atime)
 			{
-				int32_t lvalue[2] = {0};
+				int32_t lvalue[2] = { 0 };
 				*(int64_t*)lvalue = atime;
 				return lvalue[1];
 			}
@@ -51,6 +54,26 @@ namespace ngl
 		};
 
 		static std::map<int32_t, data> m_data;
+
+		ttab_calendar()
+		{}
+
+		static const std::map<int, tab_calendar>& tablecsv()
+		{
+			const ttab_calendar* ttab = allcsv::get<ttab_calendar>();
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_calendar* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
 
 		static bool reload_calendar(int32_t acalendar)
 		{
@@ -105,21 +128,10 @@ namespace ngl
 			return *itorutc;
 		}
 
-		ttab_calendar()
-		{}
-
-		static tab_calendar* tab(int32_t aid)
-		{
-			ttab_calendar* ttab = allcsv::get<ttab_calendar>();
-			assert(ttab != nullptr);
-			auto itor = ttab->m_tablecsv.find(aid);
-			return &itor->second;
-		}
-
-		static void post(tab_calendar* atab, int32_t autc, bool astart);
+		static void post(const tab_calendar* atab, int32_t autc, bool astart);
 
 		// 今日流失的秒数
-		static std::pair<bool,int32_t> daysecond(const char* astr)
+		static std::pair<bool, int32_t> daysecond(const char* astr)
 		{
 			//HH:mm:ss
 			int hour = 0;
@@ -144,21 +156,21 @@ namespace ngl
 			for (int64_t ltime : m_data[aid].m_utc)
 			{
 				std::string lbegstr = localtime::time2str(data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S");
-				std::string lendstr = localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S");				
+				std::string lendstr = localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S");
 				lstr += std::format("[{}]->[{}]\n", lbegstr, lendstr);
 			}
 			(*lstream) << std::format("{}", lstr);
 			(*lstream).print("");
 		}
 
-		static void init_week(int aid, std::vector<tweek>& aweek)
+		static void init_week(int aid, const std::vector<tweek>& aweek)
 		{
 			int32_t lnow = (int32_t)localtime::gettime();
 			std::vector<int32_t> lvec;
 			int32_t lid = 0;
 			for (auto& item : aweek)
 			{
-				int32_t lweekdaystart = (int32_t)localtime::getweekday(item.m_weekstart == localtime::WEEK_DAY ? 0: item.m_weekstart, 0, 0, 0);
+				int32_t lweekdaystart = (int32_t)localtime::getweekday(item.m_weekstart == localtime::WEEK_DAY ? 0 : item.m_weekstart, 0, 0, 0);
 				int32_t lweekdayfinish = (int32_t)localtime::getweekday(item.m_weekfinish == localtime::WEEK_DAY ? 0 : item.m_weekfinish, 0, 0, 0);
 
 				std::pair<bool, int32_t> lpairopen = daysecond(item.m_opentime.c_str());
@@ -180,7 +192,7 @@ namespace ngl
 			printf_time(aid);
 		}
 
-		static void init_serveropen(int aid, std::vector<tserveropen>& atserveropen)
+		static void init_serveropen(int aid, const std::vector<tserveropen>& atserveropen)
 		{
 			int32_t lnow = (int32_t)localtime::gettime();
 			int32_t lopentime = sysconfig::open_servertime();
@@ -206,7 +218,7 @@ namespace ngl
 			printf_time(aid);
 		}
 
-		static void init_tregularslot(int aid, std::vector<tregularslot>& atregularslot)
+		static void init_tregularslot(int aid, const std::vector<tregularslot>& atregularslot)
 		{
 			int32_t lnow = (int32_t)localtime::gettime();
 			for (auto& item : atregularslot)
@@ -248,4 +260,4 @@ namespace ngl
 			return false;
 		}
 	};
-}// namespace ngl
+}//namespace ngl

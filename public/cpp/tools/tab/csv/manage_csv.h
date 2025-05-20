@@ -51,12 +51,29 @@ namespace ngl
 
 		using type_tab = T;
 
+	protected:
 		std::map<int, T>	m_tablecsv;
 		std::string			m_verify;		// ÄÚÈÝµÄmd5Öµ
 
+		virtual void* get(int aid)
+		{
+			auto itor = m_tablecsv.find(aid);
+			return itor == m_tablecsv.end()? nullptr: &itor->second;
+		}
+
+		T* find(int aid)
+		{
+			auto itor = m_tablecsv.find(aid);
+			return itor == m_tablecsv.end()? nullptr: &itor->second;
+		}
+
+	public:
+		virtual void reload()
+		{}
+
 		manage_csv()
 		{}
-		
+
 		virtual const std::string& verify()const
 		{
 			return m_verify;
@@ -74,21 +91,6 @@ namespace ngl
 		}
 
 		virtual void load();
-
-		virtual void* get(int aid)
-		{
-			auto itor = m_tablecsv.find(aid);
-			return itor == m_tablecsv.end()? nullptr: &itor->second;
-		}
-
-		T* find(int aid)
-		{
-			auto itor = m_tablecsv.find(aid);
-			return itor == m_tablecsv.end()? nullptr: &itor->second;
-		}
-
-		virtual void reload()
-		{}
 
 		void foreach(const std::function<void(T&)>& afun)
 		{

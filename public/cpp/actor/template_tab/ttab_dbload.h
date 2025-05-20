@@ -1,10 +1,12 @@
 #pragma once
 
 #include "manage_csv.h"
+#include "type.h"
+#include "xml.h"
 
 namespace ngl
 {
-	struct ttab_dbload : 
+	struct ttab_dbload :
 		public manage_csv<tab_dbload>
 	{
 		ttab_dbload(const ttab_dbload&) = delete;
@@ -16,6 +18,23 @@ namespace ngl
 
 		ttab_dbload()
 		{}
+
+		static const std::map<int, tab_dbload>& tablecsv()
+		{
+			const ttab_dbload* ttab = allcsv::get<ttab_dbload>();
+			assert(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+		static const tab_dbload* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
 
 		void reload()final
 		{
@@ -48,4 +67,4 @@ namespace ngl
 			return *tab;
 		}
 	};
-}// namespace ngl
+}//namespace ngl

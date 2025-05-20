@@ -14,20 +14,20 @@ namespace ngl
 		calendar_function& operator=(const calendar_function&) = delete;
 
 		using tcall = std::tuple<
-			std::function<bool(tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>,
-			std::function<bool(tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>
+			std::function<bool(const tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>,
+			std::function<bool(const tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>
 		>;
 		static std::array<tcall, ECalendarType::ECalendarTypeCount> m_call;
 
 		static void push(
 			ECalendarType atype,
-			const std::function<bool(tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& astart,
-			const std::function<bool(tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& afinish
+			const std::function<bool(const tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& astart,
+			const std::function<bool(const tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& afinish
 		);
 	public:
 		static void init();
 
-		static bool trigger(tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool aisstart,  i64_actorid aactor = nguid::make())
+		static bool trigger(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool aisstart,  i64_actorid aactor = nguid::make())
 		{
 			if (aisstart)
 			{
@@ -40,7 +40,7 @@ namespace ngl
 		}
 
 	private:
-		static bool start(tab_calendar* tab, pbdb::db_calendar& acalendar, int32_t atime, i64_actorid aactor)
+		static bool start(const tab_calendar* tab, pbdb::db_calendar& acalendar, int32_t atime, i64_actorid aactor)
 		{
 			if (tab->m_carendar >= ECalendarTypeCount)
 			{
@@ -52,7 +52,7 @@ namespace ngl
 			return lstart(tab, acalendar, atime, aactor);
 		}
 
-		static bool finish(tab_calendar* tab, pbdb::db_calendar& acalendar, int32_t atime, i64_actorid aactor)
+		static bool finish(const tab_calendar* tab, pbdb::db_calendar& acalendar, int32_t atime, i64_actorid aactor)
 		{
 			if (tab->m_carendar >= ECalendarTypeCount)
 			{
@@ -64,7 +64,7 @@ namespace ngl
 			return lfinish(tab, acalendar, atime, aactor);
 		}
 
-		static bool operator_activ(tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor);
-		static bool operator_task(tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor);
+		static bool operator_activ(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor);
+		static bool operator_task(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor);
 	};
 }//namespace ngl

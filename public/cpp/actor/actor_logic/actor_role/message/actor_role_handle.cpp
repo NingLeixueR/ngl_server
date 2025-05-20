@@ -1,4 +1,5 @@
 #include "ttab_specialid.h"
+#include "tttab_task.h"
 #include "actor_calendar.h"
 #include "actor_events.h"
 #include "manage_curl.h"
@@ -442,7 +443,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
-		tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());
+		const tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());
 		if (tab == nullptr)
 		{
 			return true;

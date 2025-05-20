@@ -5,7 +5,7 @@ namespace ngl
 {
 	bool actor_calendar::operatpr_calendar(int32_t acalendarid, int32_t atime, bool astart)
 	{
-		tab_calendar* tab = ttab_calendar::tab(acalendarid);
+		const tab_calendar* tab = ttab_calendar::tab(acalendarid);
 		if (tab == nullptr)
 		{
 			return true;
@@ -32,7 +32,7 @@ namespace ngl
 
 		for (const auto& item1 : ltriggerlist)
 		{
-			tab_calendar* tab = ttab_calendar::tab(item1.first);
+			const tab_calendar* tab = ttab_calendar::tab(item1.first);
 			if (tab == nullptr)
 			{
 				continue;

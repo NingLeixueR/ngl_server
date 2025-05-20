@@ -8,7 +8,7 @@ namespace ngl
 	std::array<calendar_function::tcall, ECalendarType::ECalendarTypeCount> calendar_function::m_call;
 	time_wheel calendar_wheel;
 
-	bool calendar_function::operator_activ(tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor)
+	bool calendar_function::operator_activ(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor)
 	{
 		auto pro = std::make_shared<np_calendar_actor_activity>();
 		tools::splite(tab->m_carendarparm.c_str(), "*", pro->m_activityids);
@@ -19,7 +19,7 @@ namespace ngl
 		return true;
 	}
 
-	bool calendar_function::operator_task(tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor)
+	bool calendar_function::operator_task(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor)
 	{
 		auto pro = std::make_shared<np_calendar_actor_task>();
 		tools::splite(tab->m_carendarparm.c_str(), "*", pro->m_taskids);
@@ -39,8 +39,8 @@ namespace ngl
 
 	void calendar_function::push(
 		ECalendarType atype,
-		const std::function<bool(tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& astart,
-		const std::function<bool(tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& afinish
+		const std::function<bool(const tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& astart,
+		const std::function<bool(const tab_calendar*, pbdb::db_calendar&, int32_t, i64_actorid)>& afinish
 	)
 	{
 		m_call[atype] = std::make_tuple(astart, afinish);
@@ -49,20 +49,20 @@ namespace ngl
 	void calendar_function::init()
 	{
 		push(ECalendarTypeActivity,
-			[](tab_calendar* tab, pbdb::db_calendar& acalendar, int32_t atime, i64_actorid aactor)->bool
+			[](const tab_calendar* tab, pbdb::db_calendar& acalendar, int32_t atime, i64_actorid aactor)->bool
 			{
 				return operator_activ(tab, acalendar, atime, true, aactor);
 			},
-			[](tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, i64_actorid aactor)->bool
+			[](const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, i64_actorid aactor)->bool
 			{
 				return operator_activ(tab, acalendar, atime, true, aactor);
 			});
 		push(ECalendarTypeTask,
-			[](tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, i64_actorid aactor)->bool
+			[](const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, i64_actorid aactor)->bool
 			{
 				return operator_activ(tab, acalendar, atime, true, aactor);
 			},
-			[](tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, i64_actorid aactor)->bool
+			[](const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, i64_actorid aactor)->bool
 			{
 				return operator_activ(tab, acalendar, atime, true, aactor);
 			});
