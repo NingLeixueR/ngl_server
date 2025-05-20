@@ -82,29 +82,40 @@ namespace ngl
 
 	void allcsv::load()
 	{
-		loadcsv<ttab_random>();
-		loadcsv<ttab_calendar>();
-		loadcsv<ttab_attribute>();
 		loadcsv<ttab_servers>();
 		loadcsv<ttab_specialid>();
-		loadcsv<ttab_task>();
-		loadcsv<ttab_servers>();
-		loadcsv<ttab_dbload>();
-		loadcsv<ttab_mergearea>();
-		loadcsv<ttab_ranklist>();
 
-		loadcsv<manage_csv<tab_consume>>();
-		loadcsv<manage_csv<tab_mail>>();
-		loadcsv<manage_csv<tab_chat>>();
-		loadcsv<manage_csv<tab_activity>>();	
-		loadcsv<manage_csv<tab_activity_drawcompliance>>();
-		loadcsv<manage_csv<tab_equip>>();
-		loadcsv<manage_csv<tab_equiplv>>();
-		loadcsv<manage_csv<tab_errormessage>>();
-		loadcsv<manage_csv<tab_item>>();
-		loadcsv<manage_csv<tab_synthesis>>();
-		loadcsv<manage_csv<tab_card>>();
-		loadcsv<manage_csv<tab_recharge>>();		
+		if (NODE_TYPE::DB == nconfig::node_type())
+		{
+			loadcsv<ttab_mergearea>();
+			loadcsv<ttab_dbload>();
+		}
+		if (NODE_TYPE::WORLD == nconfig::node_type())
+		{
+			loadcsv<ttab_calendar>();
+			loadcsv<ttab_ranklist>();
+			loadcsv<manage_csv<tab_activity_drawcompliance>>();
+			loadcsv<manage_csv<tab_activity>>();
+		}
+		if (NODE_TYPE::GAME == nconfig::node_type())
+		{
+			loadcsv<ttab_task>();
+			loadcsv<manage_csv<tab_errormessage>>();
+			loadcsv<manage_csv<tab_recharge>>();
+		}
+		if (NODE_TYPE::GAME == nconfig::node_type() || NODE_TYPE::WORLD == nconfig::node_type())
+		{
+			loadcsv<ttab_attribute>();
+			loadcsv<ttab_random>();
+			loadcsv<manage_csv<tab_synthesis>>();
+			loadcsv<manage_csv<tab_consume>>();
+			loadcsv<manage_csv<tab_equiplv>>();
+			loadcsv<manage_csv<tab_equip>>();
+			loadcsv<manage_csv<tab_item>>();
+			loadcsv<manage_csv<tab_card>>();
+			loadcsv<manage_csv<tab_mail>>();
+			loadcsv<manage_csv<tab_chat>>();
+		}
 	}
 
 	void allcsv::add(const char* akey, csvbase* ap)
