@@ -425,6 +425,94 @@ namespace ngl
 
 		lfile.write(m_stream.str());
 	}
+
+	void _ttab()
+	{
+		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		for (std::pair<const std::string, idl_file>& item : lmap)
+		{
+			//Struct lStruct(lstr, item.second.m_struct, item.second.m_enum);
+			std::set<std::string> lset;
+			if (item.first == "csvtable")
+			{
+				idl_file& ltemp = item.second;
+				for (auto& struc : ltemp.m_struct)
+				{
+					if (struc.name.find("tab_") == std::string::npos)
+					{
+						continue;
+					}
+					if (ngl::tools::file_exists(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name)) == false)
+					{
+						lset.insert(struc.name);
+						ngl::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
+
+						std::stringstream lstream;
+						lstream << "#pragma once" << std::endl;
+						lstream << std::endl;
+						lstream << "#include \"manage_csv.h\"" << std::endl;
+						lstream << "#include \"type.h\"" << std::endl;
+						lstream << "#include \"xml.h\"" << std::endl; 
+						lstream << std::endl;
+						lstream << "namespace ngl" << std::endl;
+						lstream << "{" << std::endl;
+						lstream << "\tstruct t"<< struc.name << " :" << std::endl;
+						lstream << "\t\tpublic manage_csv<" << struc.name << ">" << std::endl;
+						lstream << "\t{" << std::endl;
+						lstream << "\t\tt" << struc.name  << "(const t" << struc.name <<"&) = delete;" << std::endl;
+						lstream << "\t\tt" << struc.name << " operator=(const t" << struc.name << "&) = delete;" << std::endl;
+						lstream << "\t\t" << "using type_tab = " << struc.name << ";" << std::endl;
+						lstream << "\t\tt" << struc.name << "()" << std::endl;
+						lstream << "\t\t{}" << std::endl;
+						lstream << std::endl;
+						lstream << "\t\tstatic const " << struc.name << "* tab(int32_t aid)" << std::endl;
+						lstream << "\t\t{" << std::endl;
+						lstream << "\t\t\tconst t"<< struc.name << "* ttab = allcsv::get<t"<< struc.name << ">();" << std::endl;
+						lstream << "\t\t\tif (ttab == nullptr)" << std::endl;
+						lstream << "\t\t\t{" << std::endl;
+						lstream << "\t\t\t\t return nullptr;" << std::endl;
+						lstream << "\t\t\t}" << std::endl;
+						lstream << "\t\t\tauto itor = ttab->m_tablecsv.find(aid);" << std::endl;
+						lstream << "\t\t\treturn &itor->second;" << std::endl;
+						lstream << "\t\t}" << std::endl;
+						lstream << "\t};" << std::endl;
+						lstream << "}//namespace ngl" << std::endl;
+						lfile.write(lstream.str());
+					}
+				}
+			}
+
+			if (!lset.empty())
+			{
+				std::string lneirong;
+				{
+					ngl::readfile lread("../../public/cpp/tools/tab/csv/manage_csv.cpp");
+					lread.read(lneirong);
+				}
+				std::string lbeg;
+				for (const auto& itemstr : lset)
+				{
+					lbeg += "#include \"t"+ itemstr +".h\"\n";
+				}
+				auto lpos = lneirong.find("loadcsv<ttab_servers>();");
+				if (lpos == std::string::npos)
+				{
+					continue;
+				}
+				std::string lqian = std::string(lneirong.begin(), lneirong.begin()+ lpos);
+				std::string lhou = std::string(lneirong.begin() + lpos+1, lneirong.end());
+				std::string lzhongjian = "###########归类哪些结点需要加载##############\n";
+				for (const auto& itemstr : lset)
+				{
+					lzhongjian += "loadcsv<t"+ itemstr +">();\n";
+				}
+				lzhongjian += "###########归类哪些结点需要加载##############\n";
+
+				ngl::writefile lfile("../../public/cpp/tools/tab/csv/manage_csv.cpp");
+				lfile.write(lbeg+ lqian+ lzhongjian + lhou);
+			}
+		}
+	}
 };
 
 

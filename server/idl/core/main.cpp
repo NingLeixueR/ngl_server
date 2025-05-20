@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 		idlcppprotocol::getInstance()._cpp();
 		idlcppprotocol::getInstance()._cs();
 
+		idlcppprotocol::getInstance()._ttab();
 	}
 	else if (argv[1] == std::string("protocol"))
 	{
