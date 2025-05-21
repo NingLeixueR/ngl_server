@@ -49,6 +49,8 @@ namespace ngl
 		std::vector<setitor> m_page;
 		int64_t m_pagetime = 0; // m_page更新时间
 
+		std::map<i64_actorid, int32_t> m_rolerank;// key:roleid value:排名
+
 		const tab_ranklist* tab()
 		{
 			auto ltab = ttab_ranklist::tab(ETYPE);
@@ -56,7 +58,7 @@ namespace ngl
 			return ltab;
 		}
 
-		void init(i64_actorid aroleid)
+		void init()
 		{
 			m_page.clear();
 			auto ltab = tab();
@@ -73,6 +75,13 @@ namespace ngl
 				}
 			}
 			m_pagetime = m_time;
+
+			int lrank = 1;
+			for (const rank_item* item : m_rankdata)
+			{
+				m_rolerank[item->m_actorid] = lrank;
+				++lrank;
+			}
 		}
 	public:
 		virtual void erase(rank_item* aitem)
@@ -104,10 +113,9 @@ namespace ngl
 
 		virtual int32_t getpage(i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
 		{
-			
 			if (m_time != m_pagetime)
 			{
-				init(aroleid);
+				init();
 			}
 
 			if (apage - 1 >= m_page.size())
@@ -132,15 +140,12 @@ namespace ngl
 
 		virtual int32_t role_rank(i64_actorid aroleid)
 		{
-			auto roleitor = std::ranges::find_if(m_rankdata, [aroleid](rank_item* aitem)
-				{
-					return aitem->m_actorid == aroleid;
-				});
-			if (roleitor != m_rankdata.end())
+			auto itor = m_rolerank.find(aroleid);
+			if (itor == m_rolerank.end())
 			{
-				return std::distance(m_rankdata.begin(), roleitor) + 1;
+				return -1;
 			}
-			return -1;
+			return itor->second;
 		}
 	};
 }//namespace ngl
