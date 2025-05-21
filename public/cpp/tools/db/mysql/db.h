@@ -12,9 +12,6 @@
 #include "db_buff.h"
 #include "xmlinfo.h"
 
-#define _SQL_BUFF_SIZE_ (102400)
-#define _SQL_BUFF_COUNT_ (10)
-
 namespace ngl
 {
 	class db

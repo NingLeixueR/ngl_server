@@ -6,8 +6,7 @@ namespace ngl
 {
 	db::db() :
 		m_connectdb(false),
-		m_mysql(nullptr),
-		m_malloc(_SQL_BUFF_COUNT_, _SQL_BUFF_SIZE_)
+		m_mysql(nullptr)
 	{
 	}
 
