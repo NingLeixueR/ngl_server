@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ttab_specialid.h"
+#include "actor_example.h"
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
@@ -15,7 +16,6 @@
 #include "ntimer.h"
 #include "net.h"
 #include "db.h"
-#include "actor_example.h"
 
 #include "example.pb.h"
 #include "net.pb.h"

@@ -1,7 +1,9 @@
 #pragma once 
+#include "actor_example_manage.h"
 #include "ttab_specialid.h"
 #include "actor_manage.h"
 #include "actor_create.h"
+#include "actor_brief.h"
 #include "ndb_modular.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
@@ -18,8 +20,6 @@
 #include "example.pb.h"
 #include "net.pb.h"
 
-#include "actor_example_manage.h"
-#include "actor_brief.h"
 
 namespace ngl
 {
