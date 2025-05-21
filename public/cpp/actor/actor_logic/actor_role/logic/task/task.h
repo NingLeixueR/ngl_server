@@ -6,21 +6,14 @@
 
 namespace ngl
 {
-	class task: public tdb_task::db_modular
+	class task : 
+		public tdb_task::db_modular
 	{
 	public:
 		task() 
 		{}
 
-		pbdb::db_task& get_task(bool achange = true)
-		{
-			return db()->get(achange);
-		}
-
-		const pbdb::db_task& get_consttask()
-		{
-			return db()->getconst();
-		}
+		data_modified<pbdb::db_task>& get_task();
 
 		virtual void initdata();
 	};
@@ -62,3 +55,5 @@ namespace ngl
 		static bool reset_task(actor_role* arole, i32_taskid ataskid);
 	};
 }// namespace ngl
+
+mk_formatter(pbdb::db_task)

@@ -62,7 +62,7 @@ namespace ngl
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
-			auto& lmap = arole->m_task.get_consttask().m_completeddatas();
+			auto& lmap = arole->m_task.get_task().getconst().m_completeddatas();
 			return lmap.find(atab.m_parmint) != lmap.end()? atab.m_parmint :-1;
 		}
 	};
@@ -88,22 +88,22 @@ namespace ngl
 
 	google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::complete(actor_role* arole)
 	{
-		return *arole->m_task.get_task().mutable_m_completeddatas();
+		return *arole->m_task.get_task().get().mutable_m_completeddatas();
 	}
 
 	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::run(actor_role* arole)
 	{
-		return *arole->m_task.get_task().mutable_m_rundatas();
+		return *arole->m_task.get_task().get().mutable_m_rundatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::const_complete(actor_role* arole)
 	{
-		return arole->m_task.get_task().m_completeddatas();
+		return arole->m_task.get_task().getconst().m_completeddatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_run(actor_role* arole)
 	{
-		return arole->m_task.get_task().m_rundatas();
+		return arole->m_task.get_task().getconst().m_rundatas();
 	}
 
 	bool static_task::isfinish_task(actor_role* arole, i32_taskid ataskid)
@@ -169,7 +169,7 @@ namespace ngl
 	{
 		finish_task(arole, ataskid);
 
-		arole->m_task.get_task().mutable_m_rundatas()->erase(ataskid);
+		arole->m_task.get_task().get().mutable_m_rundatas()->erase(ataskid);
 		return true;
 	}
 
@@ -288,37 +288,23 @@ namespace ngl
 		return true;
 	}
 
+	data_modified<pbdb::db_task>& task::get_task()
+	{
+		return data()[actor()->id_guid()];
+	}
+
 	void task::initdata()
 	{
-		pbdb::db_task& ltask = db()->get(false);
-		auto lcompleteddatas = ltask.mutable_m_completeddatas();
-		auto lrundatas = ltask.mutable_m_rundatas();
-
-		std::string lfinishtask;
-		tools::splicing<int32_t, pbdb::db_task_complete>(*lcompleteddatas, "|", lfinishtask, 
-			[](const int32_t& _id, const pbdb::db_task_complete& _value)->std::string
-			{
-				return tools::lexical_cast<std::string>(_id);
-			});
-		std::string lruntask;
-		tools::splicing<int32_t, pbdb::db_task_data>(*lrundatas, "|", lruntask, 
-			[](const int32_t& _id, const pbdb::db_task_data& _value)->std::string
-			{
-				return tools::lexical_cast<std::string>(_id);
-			});
-
-		log_error()->print("#已完成的任务[{}]#正在进行的任务[{}]#", lfinishtask, lruntask);
-		
-		actor_role* lrole = actor();
+		log_error()->print("task load finish {}", data());
 		// ### 检查是否有可接受的任务
 		auto tabs = allcsv::get<ttab_task>();
-		tabs->foreach([this, lrole](tab_task& atask)
+		tabs->foreach([this](tab_task& atask)
 			{
 				// # 检查任务是否可接收
-				if (static_task::receive_task(lrole, atask.m_id) == true)
+				if (static_task::receive_task(actor(), atask.m_id) == true)
 				{// 可接受或者已接受
 					// # 检查任务是否可完成
-					if (static_task::finish_task(lrole, atask.m_id))
+					if (static_task::finish_task(actor(), atask.m_id))
 					{
 						return;
 					}
