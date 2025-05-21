@@ -7,7 +7,8 @@
 
 namespace ngl
 {
-	class rolekv : public tdb_rolekv::db_modular
+	class rolekv : 
+		public tdb_rolekv::db_modular
 	{
 		rolekv(const rolekv&) = delete;
 		rolekv& operator=(const rolekv&) = delete;
@@ -19,24 +20,17 @@ namespace ngl
 		// # 可以缓存，防止多次解析vales
 		virtual void initdata()
 		{
-			log_error()->print("[db_rolekeyvalue load finish] id:{}", actorbase()->id_guid());
+			log_error()->print("[db_rolekeyvalue load finish] {}", data());
 		}
 
-		const pbdb::db_rolekeyvalue& get_constkv()
-		{
-			return db()->getconst();
-		}
-
-		pbdb::db_rolekeyvalue& get_kv()
-		{
-			return db()->get();
-		}
+		data_modified<pbdb::db_rolekeyvalue>& get_rolekv();
 
 		bool value(const char* akey, std::string& adata)
 		{
-			const pbdb::db_rolekeyvalue& ltemp = get_constkv();
-			auto itor = ltemp.m_data().find(akey);
-			if (itor == ltemp.m_data().end())
+			data_modified<pbdb::db_rolekeyvalue>& ltemp = get_rolekv();
+			auto& lmap = ltemp.getconst().m_data();
+			auto itor = lmap.find(akey);
+			if (itor == lmap.end())
 			{
 				return false;
 			}
@@ -69,7 +63,7 @@ namespace ngl
 		template <typename T>
 		void set_value(const char* akey, T& adata)
 		{
-			pbdb::db_rolekeyvalue& ltemp = get_kv();
+			pbdb::db_rolekeyvalue& ltemp = get_rolekv().get();
 			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
 		}
 
@@ -96,3 +90,5 @@ namespace ngl
 		}
 	};
 }//namespace ngl
+
+mk_formatter(pbdb::db_rolekeyvalue)
