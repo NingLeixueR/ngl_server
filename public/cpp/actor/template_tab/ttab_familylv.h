@@ -22,7 +22,7 @@ namespace ngl
 		static const std::map<int, tab_familylv>& tablecsv()
 		{
 			const ttab_familylv* ttab = allcsv::get<ttab_familylv>();
-			assert(ttab == nullptr);
+			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_familylv* tab(int32_t aid)

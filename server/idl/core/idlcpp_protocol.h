@@ -469,7 +469,7 @@ namespace ngl
 						lstream << "\t\tstatic const std::map<int, "<< struc.name <<">& tablecsv()" << std::endl;
 						lstream << "\t\t{" << std::endl;
 						lstream << "\t\t\tconst t"<< struc.name <<"* ttab = allcsv::get<t"<< struc.name <<">();" << std::endl;
-						lstream << "\t\t\tassert(ttab == nullptr);" << std::endl;
+						lstream << "\t\t\tassert(ttab != nullptr);" << std::endl;
 						lstream << "\t\t\treturn ttab->m_tablecsv;" << std::endl;
 						lstream << "\t\t}" << std::endl;
 

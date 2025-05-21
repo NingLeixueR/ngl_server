@@ -22,7 +22,7 @@ namespace ngl
 		static const std::map<int, tab_dbload>& tablecsv()
 		{
 			const ttab_dbload* ttab = allcsv::get<ttab_dbload>();
-			assert(ttab == nullptr);
+			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_dbload* tab(int32_t aid)

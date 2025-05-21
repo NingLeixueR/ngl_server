@@ -19,7 +19,7 @@ namespace ngl
 		static const std::map<int, tab_random>& tablecsv()
 		{
 			const ttab_random* ttab = allcsv::get<ttab_random>();
-			assert(ttab == nullptr);
+			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_random* tab(int32_t aid)
