@@ -38,6 +38,8 @@ int main(int argc, char** argv)
 	// # 初始化关联枚举NODE_TYPE与字符串
 	nconfig::init();
 
+	nconfig::set_server(argv[1]);
+
 	// # 加载xml配置
 	nconfig::load("./config", std::format("{}_{}", lname, ltcount));
 
@@ -51,7 +53,7 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	nconfig::set_server(argv[1], tab->m_id);
+	nconfig::set_nodeid(tab->m_id);
 
 	std::string lnodename;
 	if (larea < 0)

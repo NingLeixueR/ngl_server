@@ -2,5 +2,5 @@
 
 namespace ngl
 {
-	std::vector<std::pair<int32_t, int32_t>> ttab_attribute::m_uplowlimit;
+	std::map<int32_t, std::tuple<int32_t, int32_t>> ttab_attribute::m_uplowlimit;
 }// namespace ngl

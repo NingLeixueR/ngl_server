@@ -41,12 +41,16 @@ namespace ngl
 		return m_nodetype;
 	}
 
-	void xmlnode::set_server(const char* aservertypename, int anodeid)
+	void xmlnode::set_server(const char* aservertypename)
 	{
 		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
 		Assert(lnodetype != em<NODE_TYPE>::enum_null());
 		m_nodename = aservertypename;
 		m_nodetype = lnodetype;
+	}
+
+	void xmlnode::set_nodeid(int anodeid)
+	{
 		m_nodeid = anodeid;
 	}
 
