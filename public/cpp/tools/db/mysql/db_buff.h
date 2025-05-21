@@ -35,59 +35,44 @@ namespace ngl
 
 		enum
 		{
-			e_buffsize = 102400,
-			e_maxcount = 20,
+			e_buffsize = 10 * 1024 * 1024, // µ•blob…œœﬁ 10M
 		};
-		int m_count = 1;
 		std::shared_ptr<dbuff> m_buff;
 	public:
-		db_buff() :
-			m_buff(std::make_shared<dbuff>(e_buffsize* 1))
+		inline db_buff() :
+			m_buff(std::make_shared<dbuff>(e_buffsize))
 		{}
 
-		char* buff()
+		inline char* buff()
 		{
 			return m_buff->m_buff;
 		}
 
-		int32_t buffsize()
+		inline int32_t buffsize()
 		{
 			return m_buff->m_buffsize;
 		}
 
-		int32_t pos()
+		inline int32_t pos()
 		{
 			return m_buff->m_pos;
 		}
 
-		void reset()
+		inline void reset()
 		{
 			m_buff->m_pos = 0;
 		}
 
 		template <typename T>
-		int serialize(T& adata)
+		inline void serialize(T& adata)
 		{
-			int lbyte = 0;
-			std::function<bool(std::shared_ptr<dbuff>&)> lfun = [&adata, &lbyte](std::shared_ptr<dbuff>& abuff)->bool
-				{
-					abuff->m_pos = 0;
-					ngl::serialize lserialize(abuff->m_buff, abuff->m_buffsize);
-					if (lserialize.push(adata))
-					{
-						abuff->m_pos = lserialize.byte();
-						return true;
-					}
-					return false;
-				};
-			if (malloc_function(lfun))
+			ngl::serialize lserialize(m_buff->m_buff, m_buff->m_buffsize);
+			if (lserialize.push(adata))
 			{
-				return lbyte;
+				m_buff->m_pos = lserialize.byte();
+				return;
 			}
 			Throw("malloc_buff.serialize fail");
 		}
-
-		bool malloc_function(const std::function<bool(std::shared_ptr<dbuff>&)>& afun);
-
 	};
 }// namespace ngl
