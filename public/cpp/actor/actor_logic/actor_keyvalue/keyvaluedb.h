@@ -12,7 +12,8 @@ namespace ngl
 {
 	class actor_keyvalue;
 
-	class keyvaluedb : public tdb_keyvalue::db_modular
+	class keyvaluedb : 
+		public tdb_keyvalue::db_modular
 	{
 		keyvaluedb(const keyvaluedb&) = delete;
 		keyvaluedb& operator=(const keyvaluedb&) = delete;
