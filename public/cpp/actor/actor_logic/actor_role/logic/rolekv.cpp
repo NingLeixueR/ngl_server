@@ -1,7 +1,13 @@
+#include "actor_role.h"
 #include "rolekv.h"
 
 namespace ngl
 {
+	data_modified<pbdb::db_rolekeyvalue>& rolekv::get_rolekv()
+	{
+		return data()[actor()->id_guid()];
+	}
+
 	bool rolekv::value(const char* akey, int8_t& adata)
 	{
 		return number_value(akey, adata);
