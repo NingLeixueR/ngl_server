@@ -1,0 +1,4 @@
+int32_t,string,string,int32_t,int32_t,int32_t
+m_id,m_name,m_remarks,m_maxitem,m_showitem,m_everypagecount
+ [index:0][load:y] eranklist(0:等级排行), [index:1][load:y] 名字 , [index:2][load:n] 备注, [index:3][load:y] 最大排行结点数量, [index:3][load:y] 展示排行结点数量, [index:3][load:y] 每页展示结点数量
+0,等级排行,等级排行,100,50,10
