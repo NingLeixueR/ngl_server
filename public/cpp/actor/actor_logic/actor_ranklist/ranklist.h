@@ -27,11 +27,7 @@ namespace ngl
 
 		virtual void set_id();
 
-		std::map<nguid, data_modified<pbdb::db_ranklist>>* get_ranklist();
-
-		const pbdb::db_ranklist* get_constrank(i64_actorid aroleid);
-
-		pbdb::db_ranklist* get_rank(i64_actorid aroleid, bool achange = true);
+		data_modified<pbdb::db_ranklist>* get_rank(i64_actorid aroleid);
 
 		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize);
 
@@ -50,3 +46,5 @@ namespace ngl
 		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
 	};
 }// namespace ngl
+
+mk_formatter(pbdb::db_ranklist)

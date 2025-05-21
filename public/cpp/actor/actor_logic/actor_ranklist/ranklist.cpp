@@ -13,29 +13,14 @@ namespace ngl
 		m_id = -1;
 	}
 
-	std::map<nguid, data_modified<pbdb::db_ranklist>>* ranklist::get_ranklist()
-	{
-		return &data();
-	}
-
-	const pbdb::db_ranklist* ranklist::get_constrank(i64_actorid aroleid)
+	data_modified<pbdb::db_ranklist>* ranklist::get_rank(i64_actorid aroleid)
 	{
 		auto itor = data().find(aroleid);
 		if (itor == data().end())
 		{
 			return nullptr;
 		}
-		return &itor->second.getconst();
-	}
-
-	pbdb::db_ranklist* ranklist::get_rank(i64_actorid aroleid, bool achange/* = true*/)
-	{
-		auto itor = data().find(aroleid);
-		if (itor == data().end())
-		{
-			return nullptr;
-		}
-		return &itor->second.get(achange);
+		return &itor->second;
 	}
 
 	bool ranklist::update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize)
@@ -132,7 +117,7 @@ namespace ngl
 
 	void ranklist::initdata()
 	{
-		log_error()->print("actor_ranklist###loaddb_finish");
+		log_error()->print("actor_ranklist###loaddb_finish {}", data());
 		for (const std::pair<const nguid, data_modified<pbdb::db_ranklist>>& item : data())
 		{
 			const pbdb::db_ranklist& ltemp = item.second.getconst();
