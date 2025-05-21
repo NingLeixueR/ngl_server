@@ -99,12 +99,12 @@ namespace ngl
 		loadcsv<ttab_servers>();
 		loadcsv<ttab_specialid>();
 
-		if (NODE_TYPE::DB == nconfig::node_type())
+		//if (NODE_TYPE::DB == nconfig::node_type())
 		{
 			loadcsv<ttab_mergearea>();
 			loadcsv<ttab_dbload>();
 		}
-		if (NODE_TYPE::WORLD == nconfig::node_type())
+		//if (NODE_TYPE::WORLD == nconfig::node_type())
 		{
 			loadcsv<ttab_calendar>();
 			loadcsv<ttab_ranklist>();
@@ -113,13 +113,13 @@ namespace ngl
 			loadcsv<ttab_matching>(); 
 			loadcsv<ttab_plays>();
 		}
-		if (NODE_TYPE::GAME == nconfig::node_type())
+		//if (NODE_TYPE::GAME == nconfig::node_type())
 		{
 			loadcsv<ttab_task>();
 			loadcsv<ttab_errormessage>();
 			loadcsv<ttab_recharge>();
 		}
-		if (NODE_TYPE::GAME == nconfig::node_type() || NODE_TYPE::WORLD == nconfig::node_type())
+		//if (NODE_TYPE::GAME == nconfig::node_type() || NODE_TYPE::WORLD == nconfig::node_type())
 		{
 			loadcsv<ttab_attribute>();
 			loadcsv<ttab_random>();

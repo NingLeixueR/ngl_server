@@ -27,7 +27,7 @@ namespace ngl
 		static const std::map<int, tab_mergearea>& tablecsv()
 		{
 			const ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
-			assert(ttab == nullptr);
+			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_mergearea* tab(int32_t aid)
