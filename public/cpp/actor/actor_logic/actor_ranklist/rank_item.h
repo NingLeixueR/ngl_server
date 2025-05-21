@@ -69,7 +69,7 @@ namespace ngl
 			{
 				return eless_bigger;
 			}
-			else if (ar < ar)
+			else if (al < ar)
 			{
 				return eless_less;
 			}
