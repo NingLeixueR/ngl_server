@@ -22,7 +22,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static int serialize(db* adb, T& adata)
+		static void serialize(db* adb, T& adata)
 		{
 			return adb->m_malloc.serialize(adata);
 		}
