@@ -38,7 +38,7 @@ namespace ngl
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 1) == false)
 		{
-			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			log_error()->print("actor_example_match::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		set_timer(tparm);

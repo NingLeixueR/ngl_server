@@ -40,7 +40,7 @@ namespace ngl
 		/*np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 2) == false)
 		{
-			log_error()->print("actor_chat::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			log_error()->print("actor_brief::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		set_timer(tparm);
@@ -49,7 +49,6 @@ namespace ngl
 
 	void actor_brief::loaddb_finish(bool adbishave)
 	{
-		log_error()->print("actor_brief::loaddb_finish({})", adbishave ? "true" : "false");
 	}
 
 	void actor_brief::nregister()

@@ -12,7 +12,8 @@ namespace ngl
 {
 	class actor_brief;
 
-	class briefdb : public tdb_brief::db_modular
+	class briefdb : 
+		public tdb_brief::db_modular
 	{
 		briefdb(const briefdb&) = delete;
 		briefdb& operator=(const briefdb&) = delete;
@@ -25,26 +26,6 @@ namespace ngl
 		virtual void set_id()
 		{
 			m_id = -1;
-		}
-
-		const pbdb::db_brief* get_constbrief(i64_actorid aroleid)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.getconst();
-		}
-
-		pbdb::db_brief* get_brief(i64_actorid aroleid, bool achange = true)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second.get(achange);
 		}
 
 		// 没有就添加
