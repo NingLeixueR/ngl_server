@@ -22,9 +22,9 @@ namespace ngl
 		}
 
 		template <typename T>
-		static int serialize(db* adb, db_buff::ptr& aptr, T& adata)
+		static int serialize(db* adb, T& adata)
 		{
-			return adb->m_malloc.serialize(aptr, adata);
+			return adb->m_malloc.serialize(adata);
 		}
 
 		template <typename T>
@@ -49,14 +49,13 @@ namespace ngl
 			}
 			*m_savetemp.m_data = adata;
 
-			db_buff::ptr lbinptr(&adb->m_malloc);
-			int32_t lbuffpos = db_manage::serialize(adb, lbinptr, m_savetemp);
+			db_manage::serialize(adb, m_savetemp);
 
 			MYSQL_BIND lbind[1];
 			memset(lbind, 0, sizeof(MYSQL_BIND));
 			lbind[0].buffer_type	= MYSQL_TYPE_LONG_BLOB;
-			lbind[0].buffer			= (void*)lbinptr.m_buff;
-			lbind[0].buffer_length	= lbuffpos;
+			lbind[0].buffer			= (void*)adb->m_malloc.buff();
+			lbind[0].buffer_length	= adb->m_malloc.pos();
 
 			i16_area larea = nguid::area(adata.m_id());
 			if (larea == 0)

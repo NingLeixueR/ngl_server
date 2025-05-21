@@ -8,86 +8,86 @@
 
 namespace ngl
 {
+	struct dbuff
+	{
+		char* m_buff;
+		int32_t m_buffsize;
+		int32_t m_pos;
+
+		dbuff(int32_t abuffsize):
+			m_buff(new char[abuffsize]),
+			m_buffsize(abuffsize),
+			m_pos(0)
+		{
+
+		}
+
+		~dbuff()
+		{
+			delete []m_buff;
+		}
+	};
+
 	class db_buff
 	{
-		db_buff() = delete;
 		db_buff(const db_buff&) = delete;
 		db_buff& operator=(const db_buff&) = delete;
 
-		int m_buffcount;
-		int m_buffsize;
+		enum
+		{
+			e_buffsize = 102400,
+			e_maxcount = 20,
+		};
+		int m_count = 1;
+		std::shared_ptr<dbuff> m_buff;
 	public:
-		db_buff(int abuffcount, int abuffsize) :
-			m_buffcount(abuffcount),
-			m_buffsize(abuffsize)
+		db_buff() :
+			m_buff(std::make_shared<dbuff>(e_buffsize* 1))
 		{}
 
-		class ptr
+		char* buff()
 		{
-			db_buff* m_mb;
-		public:
-			char* m_buff;
-			int32_t m_bufflen;
+			return m_buff->m_buff;
+		}
 
-			ptr(db_buff* amb) :
-				m_buff(nullptr),
-				m_bufflen(0),
-				m_mb(amb)
-			{}
+		int32_t buffsize()
+		{
+			return m_buff->m_buffsize;
+		}
 
-			ptr(db_buff* amb, char* abuff, int32_t abufflen) :
-				m_buff(abuff),
-				m_bufflen(abufflen),
-				m_mb(amb)
-			{}
+		int32_t pos()
+		{
+			return m_buff->m_pos;
+		}
 
-			void free()
-			{
-				if (m_mb != nullptr && m_buff != nullptr && m_bufflen > 0)
-				{
-					m_mb->free(*this);
-					m_buff = nullptr;
-					m_bufflen = 0;
-				}
-			}
-
-			~ptr()
-			{
-				if (m_mb != nullptr && m_buff != nullptr && m_bufflen > 0)
-				{
-					m_mb->free(*this);
-				}
-			}
-		};
+		void reset()
+		{
+			m_buff->m_pos = 0;
+		}
 
 		template <typename T>
-		int serialize(ptr& aptr, T& adata)
+		int serialize(T& adata)
 		{
 			int lbyte = 0;
-			std::function<bool(ptr&)> lfun = [&adata, &lbyte](ptr& aptr)->bool
+			std::function<bool(std::shared_ptr<dbuff>&)> lfun = [&adata, &lbyte](std::shared_ptr<dbuff>& abuff)->bool
 				{
-					ngl::serialize lserialize(aptr.m_buff, aptr.m_bufflen);
+					abuff->m_pos = 0;
+					ngl::serialize lserialize(abuff->m_buff, abuff->m_buffsize);
 					if (lserialize.push(adata))
 					{
-						lbyte = lserialize.byte();
+						abuff->m_pos = lserialize.byte();
 						return true;
 					}
 					return false;
 				};
-			if (malloc_function(aptr, lfun))
+			if (malloc_function(lfun))
 			{
 				return lbyte;
 			}
 			Throw("malloc_buff.serialize fail");
 		}
 
-		bool malloc_function(ptr& aptr, const std::function<bool(ptr&)>& afun);
+		bool malloc_function(const std::function<bool(std::shared_ptr<dbuff>&)>& afun);
 
-	private:
-		void malloc(ptr& aptr, int32_t apos);
-		
-		void free(ptr& aptr);
-		
-		std::map<int32_t, char*> m_buffbyte;
 	};
 }// namespace ngl
