@@ -54,4 +54,6 @@ namespace ngl
 		void change_notalkutc(int avalues);
 		bool bantalk();
 	};
-}
+}//namespace ngl
+
+mk_formatter(pbdb::db_role)

@@ -397,7 +397,7 @@ namespace ngl
 	{
 		auto lpack = adata.get_pack();
 		i64_actorid lrequest = lpack->m_head.get_request_actor();
-		log_error()->print("{},NAME={}", guid(), m_info.get_constrole().m_base().m_name());
+		log_error()->print("{},NAME={}", guid(), m_info.name());
 		if (lpack->m_protocol == ENET_KCP)
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
