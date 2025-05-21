@@ -21,7 +21,7 @@ namespace ngl
 		ranklist& operator=(const ranklist&) = delete;
 
 		std::map<i64_actorid, rank_item> m_maprankitem;
-		std::unique_ptr<rankset_base> m_ranks[pbdb::eranklist::count];
+		std::map<pbdb::eranklist, std::unique_ptr<rankset_base>> m_ranks;
 	public:
 		ranklist();
 
@@ -41,7 +41,7 @@ namespace ngl
 
 		pbdb::db_ranklist* get(i64_actorid aactorid);
 		
-		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(pbdb::eranklist atype, int32_t apage);
+		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
 
 		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
 	};

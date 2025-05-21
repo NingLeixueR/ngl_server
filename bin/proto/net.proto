@@ -422,6 +422,7 @@ message PROBUFF_NET_RANKLIST_RESPONSE//G2C [actor_robot]
 	repeated pbdb.db_brief m_items				= 2;
 	optional int32 m_page						= 3;
 	optional int32 m_count						= 4;
+	optional int32 m_rolerank					= 5;
 };
 
 // [请求]好友信息

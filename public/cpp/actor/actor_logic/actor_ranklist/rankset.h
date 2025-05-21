@@ -22,11 +22,11 @@ namespace ngl
 		rankset_base() :
 			m_count(-1)
 		{}
-
+	
 		virtual void erase(rank_item* aitem) = 0;
 		virtual void insert(rank_item* aitem) = 0;
 		virtual void foreach(const std::function<void(int32_t, const rank_item*)>&) = 0;
-		virtual int32_t getpage(int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun) = 0;
+		virtual int32_t getpage(i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun) = 0;
 		virtual void set_count(int32_t acount)
 		{
 			m_count = acount;
@@ -35,7 +35,8 @@ namespace ngl
 		{
 			return m_count;
 		}
-		virtual void check() = 0;
+		virtual int32_t role_rank(i64_actorid aroleid) = 0;
+
 	};
 
 	template <pbdb::eranklist ETYPE>
@@ -55,7 +56,7 @@ namespace ngl
 			return ltab;
 		}
 
-		void init()
+		void init(i64_actorid aroleid)
 		{
 			m_page.clear();
 			auto ltab = tab();
@@ -101,12 +102,12 @@ namespace ngl
 			}
 		}
 
-		virtual int32_t getpage(int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
+		virtual int32_t getpage(i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
 		{
 			
 			if (m_time != m_pagetime)
 			{
-				init();
+				init(aroleid);
 			}
 
 			if (apage - 1 >= m_page.size())
@@ -129,17 +130,17 @@ namespace ngl
 			return (int32_t)m_rankdata.size();
 		}
 
-		void check()
+		virtual int32_t role_rank(i64_actorid aroleid)
 		{
-			int32_t lcount = count();
-			if (lcount <= 0)
+			auto roleitor = std::ranges::find_if(m_rankdata, [aroleid](rank_item* aitem)
+				{
+					return aitem->m_actorid == aroleid;
+				});
+			if (roleitor != m_rankdata.end())
 			{
-				return;
+				return std::distance(m_rankdata.begin(), roleitor) + 1;
 			}
-			while (lcount < m_rankdata.size())
-			{
-				m_rankdata.erase(std::prev(m_rankdata.end()));
-			}
+			return -1;
 		}
 	};
 }//namespace ngl

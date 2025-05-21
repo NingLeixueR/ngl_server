@@ -142,8 +142,10 @@ message db_notice
 
 enum eranklist
 {
-	lv			= 0;		// 等级排行(值大排名越高)
+	//基础 ranklist中的类型
+	lv			= 0;			// 等级排行(值大排名越高)
 	count		= 1;
+	//活动
 }
 
 message rankitem

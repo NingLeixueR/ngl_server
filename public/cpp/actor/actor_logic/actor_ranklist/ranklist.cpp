@@ -77,7 +77,7 @@ namespace ngl
 			{
 				if (lupdatearr[i])
 				{
-					m_ranks[i]->erase(&ldata);
+					m_ranks[(pbdb::eranklist)i]->erase(&ldata);
 				}
 			}
 			ldata = litem;
@@ -85,11 +85,7 @@ namespace ngl
 			{
 				if (lupdatearr[i])
 				{
-					if (i == pbdb::eranklist::lv)
-					{
-						m_ranks[i]->insert(&ldata);
-						m_ranks[i]->check();
-					}
+					m_ranks[(pbdb::eranklist)i]->insert(&ldata);
 				}
 			}
 		}
@@ -109,9 +105,8 @@ namespace ngl
 
 		for (int32_t i = 0; i < pbdb::eranklist::count; ++i)
 		{
-			rankset_base& lrank = *m_ranks[i].get();
+			rankset_base& lrank = *m_ranks[(pbdb::eranklist)i].get();
 			lrank.insert(&ltempitem);
-			m_ranks[i]->check();
 		}
 	}
 
@@ -152,12 +147,12 @@ namespace ngl
 		return &data()[aactorid].get();
 	}
 
-	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(pbdb::eranklist atype, int32_t apage)
+	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
 		pro->set_m_type(atype);
 		pro->set_m_page(apage);
-		int32_t lcount = m_ranks[atype]->getpage(apage, [&pro](int32_t aindex, const rank_item* aitem)
+		int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro](int32_t aindex, const rank_item* aitem)
 			{
 				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
 				if (lpbrief != nullptr)
@@ -166,12 +161,13 @@ namespace ngl
 				}
 			});
 		pro->set_m_count(lcount);
+		pro->set_m_rolerank(m_ranks[atype]->role_rank(aroleid));
 		return pro;
 	}
 
 	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)
 	{
-		auto pro = get_ranklist(atype, apage);
+		auto pro = get_ranklist(aroleid, atype, apage);
 		actor::send_client(aroleid, pro);
 	}
 }//namespace ngl
