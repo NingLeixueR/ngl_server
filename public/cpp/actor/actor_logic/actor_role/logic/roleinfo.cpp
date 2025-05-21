@@ -18,12 +18,7 @@ namespace ngl
 
 	void roleinfo::initdata()
 	{
-		log_error()->print(R"(
-#[roleinfo]	#[load finish]
-#[id]		#[{}]
-#[name]		#[{}]
-#[lv]		#[{}]
-)", actorbase()->id_guid(), name(), lv());
+		log_error()->print("roleinfo load finish {}", data());
 	}
 
 	const i64_actorid roleinfo::m_id()
@@ -31,100 +26,99 @@ namespace ngl
 		return (int)db()->getconst().m_id();
 	}
 
-	const pbdb::db_role& roleinfo::get_constrole()
+	data_modified<pbdb::db_role>& roleinfo::get_role()
 	{
-		return db()->getconst();
+		return data()[actor()->id_guid()];
+	}
+
+	pbdb::db_brief& roleinfo::get_brief()
+	{
+		return *get_role().get().mutable_m_base();
 	}
 
 	const pbdb::db_brief& roleinfo::get_constbrief()
 	{
-		return db()->getconst().m_base();
+		return get_role().getconst().m_base();
 	}
 
 	int32_t roleinfo::lv()
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		return lrb->m_lv();
+		return get_constbrief().m_lv();
 	}
 
 	void roleinfo::change_lv(int avalues)
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		lrb->set_m_lv(lrb->m_lv() + avalues);
+		pbdb::db_brief& lrb = get_brief();
+		lrb.set_m_lv(lrb.m_lv() + avalues);
 		sync_actor_brief();
-		static_task::update_change(actor(), ETaskRoleLv, lrb->m_lv());
+		static_task::update_change(actor(), ETaskRoleLv, lrb.m_lv());
 	}
 
 	int32_t roleinfo::vip()
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		return lrb->m_vip();
+		return get_constbrief().m_vip();
 	}
 
 	void roleinfo::change_vip(int avalues)
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		lrb->set_m_vip(lrb->m_vip() + avalues);
+		pbdb::db_brief& lrb = get_brief();
+		lrb.set_m_vip(lrb.m_vip() + avalues);
 		sync_actor_brief();
-		static_task::update_change(actor(), ETaskRoleVip, lrb->m_vip());
+		static_task::update_change(actor(), ETaskRoleLv, lrb.m_lv());
 	}
 
 	const char* roleinfo::name()
 	{
-		pbdb::db_brief* lrb = db()->get(false).mutable_m_base();
-		return lrb->m_name().c_str();
+		return get_constbrief().m_name().c_str();
 	}
 
 	void roleinfo::rename(const char* aname)
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		lrb->set_m_name(aname);
+		pbdb::db_brief& lrb = get_brief();
+		lrb.set_m_name(aname);
 		sync_actor_brief();
 	}
 
 	int32_t roleinfo::gold()
 	{
-		pbdb::db_brief* lrb = db()->get(false).mutable_m_base();
-		return lrb->m_moneygold();
+		return get_constbrief().m_moneygold();
 	}
 
 	void roleinfo::change_gold(int avalues)
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		lrb->set_m_moneygold(lrb->m_moneygold() + avalues);
+		pbdb::db_brief& lrb = get_brief();
+		lrb.set_m_moneygold(lrb.m_moneygold() + avalues);
 		sync_actor_brief();
 	}
 
 	int32_t roleinfo::silver()
 	{
-		pbdb::db_brief* lrb = db()->get(false).mutable_m_base();
-		return lrb->m_moneysilver();
+		return get_constbrief().m_moneysilver();
 	}
 
 	void roleinfo::change_silver(int avalues)
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		lrb->set_m_moneysilver(lrb->m_moneysilver() + avalues);
+		pbdb::db_brief& lrb = get_brief();
+		lrb.set_m_moneysilver(lrb.m_moneysilver() + avalues);
 		sync_actor_brief();
 	}
 
 	int32_t roleinfo::notalkutc()
 	{
-		pbdb::db_brief* lrb = db()->get(false).mutable_m_base();
-		return lrb->m_notalkutc();
+		return get_constbrief().m_notalkutc();
 	}
 
 	void roleinfo::change_notalkutc(int avalues)
 	{
-		pbdb::db_brief* lrb = db()->get(true).mutable_m_base();
-		lrb->set_m_notalkutc(avalues);
+		pbdb::db_brief& lrb = get_brief();
+		lrb.set_m_notalkutc(avalues);
 		sync_actor_brief();
 	}
 
 	bool roleinfo::bantalk()
 	{
 		int32_t lnow = (int32_t)localtime::gettime();
-		return lnow < db()->getconst().m_base().m_notalkutc();
+		return lnow < get_constbrief().m_notalkutc();
 	}
 
 }// namespace ngl
