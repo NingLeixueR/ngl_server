@@ -93,6 +93,10 @@ namespace ngl
 		virtual void insert(rank_item* aitem)
 		{
 			auto ltab = tab();
+			if (aitem->value(ETYPE) < ltab->m_minvalue)
+			{// 没达到入榜最小值
+				return;
+			}
 			m_rankdata.insert(aitem);
 			while (m_rankdata.size() > ltab->m_maxitem)
 			{

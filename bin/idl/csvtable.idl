@@ -556,6 +556,7 @@ struct tab_ranklist
 	string m_remarks;							// [index:2][load:n] 备注
 
 	int32_t m_maxitem;							// [index:3][load:y] 最大排行结点数量
-	int32_t m_showitem;							// [index:3][load:y] 展示排行结点数量
-	int32_t m_everypagecount;					// [index:3][load:y] 每页展示结点数量
+	int32_t m_showitem;							// [index:4][load:y] 展示排行结点数量
+	int32_t m_everypagecount;					// [index:5][load:y] 每页展示结点数量
+	int32_t m_minvalue;							// [index:6][load:y] 最小入榜值
 };
