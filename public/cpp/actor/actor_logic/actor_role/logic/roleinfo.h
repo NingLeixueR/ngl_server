@@ -7,7 +7,8 @@
 
 namespace ngl
 {
-	class roleinfo : public tdb_role::db_modular
+	class roleinfo : 
+		public tdb_role::db_modular
 	{
 		roleinfo(const roleinfo&) = delete;
 		roleinfo& operator=(const roleinfo&) = delete;
@@ -21,8 +22,9 @@ namespace ngl
 
 		const i64_actorid m_id();
 
-		const pbdb::db_role& get_constrole();
+		data_modified<pbdb::db_role>& get_role();
 
+		pbdb::db_brief& get_brief();
 		const pbdb::db_brief& get_constbrief();
 
 		void sync_actor_brief();
