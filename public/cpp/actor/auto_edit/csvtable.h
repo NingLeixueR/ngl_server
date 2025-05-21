@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-20 21:40:32
+// 创建时间 // 创建时间 25-05-21 22:09:12
 #pragma once
 
 #include "csv.h"
@@ -828,17 +828,18 @@ struct tab_ranklist
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	int32_t                          m_maxitem                       ; // [index:3][load:y] 最大排行结点数量
-	int32_t                          m_showitem                      ; // [index:3][load:y] 展示排行结点数量
-	int32_t                          m_everypagecount                ; // [index:3][load:y] 每页展示结点数量
+	int32_t                          m_showitem                      ; // [index:4][load:y] 展示排行结点数量
+	int32_t                          m_everypagecount                ; // [index:5][load:y] 每页展示结点数量
+	int32_t                          m_minvalue                      ; // [index:6][load:y] 最小入榜值
 	/*********************************/
 	tab_ranklist();
 	// 序列化反序列化相关
-	def_portocol(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount)
+	def_portocol(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount, m_minvalue)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount);
+		def_rcsv2(m_id,m_name,lm_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue);
 	}
 };
 }//namespace ngl

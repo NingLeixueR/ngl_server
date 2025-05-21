@@ -108,5 +108,10 @@ namespace ngl
 		{
 			return m_values[atype] == ar.m_values[atype];
 		}
+
+		int64_t value(pbdb::eranklist atype)
+		{
+			return m_values[atype];
+		}
 	};
 }//namespace ngl
