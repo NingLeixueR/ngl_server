@@ -132,23 +132,24 @@ namespace ngl
 
 	const pbdb::db_ranklist* ranklist::find(i64_actorid aactorid)
 	{
-		auto itor = get_ranklist()->find(aactorid);
-		if (itor == get_ranklist()->end())
+		auto lprank = get_rank(aactorid);
+		if (lprank == nullptr)
 		{
 			return nullptr;
 		}
-		return &itor->second.getconst();
+		return &lprank->getconst();
 	}
 
 	pbdb::db_ranklist* ranklist::get(i64_actorid aactorid)
 	{
-		if (get_ranklist()->find(aactorid) == get_ranklist()->end())
+		auto lprank = get_rank(aactorid);
+		if (lprank == nullptr)
 		{
 			pbdb::db_ranklist ldbranklist;
 			ldbranklist.set_m_id(aactorid);
 			add(aactorid, ldbranklist);
 		}
-		return &(*get_ranklist())[aactorid].get();
+		return &data()[aactorid].get();
 	}
 
 	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(pbdb::eranklist atype, int32_t apage)
