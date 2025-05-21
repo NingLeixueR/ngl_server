@@ -2072,10 +2072,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBU
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE, m_items_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE, m_page_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE, m_count_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE, m_rolerank_),
   0,
   ~0u,
   1,
   2,
+  3,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_FRIEND, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2323,28 +2325,28 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 482, 489, sizeof(::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse)},
   { 491, -1, sizeof(::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE)},
   { 497, 505, sizeof(::pbnet::PROBUFF_NET_RANKLIST)},
-  { 508, 517, sizeof(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE)},
-  { 521, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND)},
-  { 526, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND_RESPONSE)},
-  { 533, 539, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD)},
-  { 540, 547, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE)},
-  { 549, 556, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD)},
-  { 558, 566, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE)},
-  { 569, 575, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE)},
-  { 576, 583, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE)},
-  { 585, 593, sizeof(::pbnet::PROBUFF_NET_ROLESTAT)},
-  { 596, 603, sizeof(::pbnet::VECTOR2)},
-  { 605, 613, sizeof(::pbnet::VECTOR3)},
-  { 616, 625, sizeof(::pbnet::UNIT_POSITION)},
-  { 629, 636, sizeof(::pbnet::UnitAttribute)},
-  { 638, 645, sizeof(::pbnet::UnitModule)},
-  { 647, 657, sizeof(::pbnet::UNIT)},
-  { 662, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE)},
-  { 668, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_UNIT)},
-  { 674, 681, sizeof(::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW)},
-  { 683, 690, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse)},
-  { 692, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION)},
-  { 698, 704, sizeof(::pbnet::PROBUFF_NET_CHANGE_ANGLE)},
+  { 508, 518, sizeof(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE)},
+  { 523, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND)},
+  { 528, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND_RESPONSE)},
+  { 535, 541, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD)},
+  { 542, 549, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE)},
+  { 551, 558, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD)},
+  { 560, 568, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE)},
+  { 571, 577, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE)},
+  { 578, 585, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE)},
+  { 587, 595, sizeof(::pbnet::PROBUFF_NET_ROLESTAT)},
+  { 598, 605, sizeof(::pbnet::VECTOR2)},
+  { 607, 615, sizeof(::pbnet::VECTOR3)},
+  { 618, 627, sizeof(::pbnet::UNIT_POSITION)},
+  { 631, 638, sizeof(::pbnet::UnitAttribute)},
+  { 640, 647, sizeof(::pbnet::UnitModule)},
+  { 649, 659, sizeof(::pbnet::UNIT)},
+  { 664, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE)},
+  { 670, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_UNIT)},
+  { 676, 683, sizeof(::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW)},
+  { 685, 692, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse)},
+  { 694, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION)},
+  { 700, 706, sizeof(::pbnet::PROBUFF_NET_CHANGE_ANGLE)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -2575,11 +2577,12 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "BUFF_NET_RANKLIST\022\026\n\tm_iscross\030\001 \001(\010H\000\210\001"
   "\001\022$\n\006m_type\030\002 \001(\0162\017.pbdb.eranklistH\001\210\001\001\022"
   "\023\n\006m_page\030\003 \001(\005H\002\210\001\001B\014\n\n_m_iscrossB\t\n\007_m"
-  "_typeB\t\n\007_m_page\"\263\001\n\035PROBUFF_NET_RANKLIS"
+  "_typeB\t\n\007_m_page\"\333\001\n\035PROBUFF_NET_RANKLIS"
   "T_RESPONSE\022$\n\006m_type\030\001 \001(\0162\017.pbdb.erankl"
   "istH\000\210\001\001\022\037\n\007m_items\030\002 \003(\0132\016.pbdb.db_brie"
   "f\022\023\n\006m_page\030\003 \001(\005H\001\210\001\001\022\024\n\007m_count\030\004 \001(\005H"
-  "\002\210\001\001B\t\n\007_m_typeB\t\n\007_m_pageB\n\n\010_m_count\"\024"
+  "\002\210\001\001\022\027\n\nm_rolerank\030\005 \001(\005H\003\210\001\001B\t\n\007_m_type"
+  "B\t\n\007_m_pageB\n\n\010_m_countB\r\n\013_m_rolerank\"\024"
   "\n\022PROBUFF_NET_FRIEND\"h\n\033PROBUFF_NET_FRIE"
   "ND_RESPONSE\022!\n\tm_friends\030\001 \003(\0132\016.pbdb.db"
   "_brief\022&\n\016m_applyfriends\030\002 \003(\0132\016.pbdb.db"
@@ -2736,7 +2739,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 8423,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 8463,
   &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 83, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
   file_level_metadata_net_2eproto, 83, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
@@ -16711,6 +16714,9 @@ class PROBUFF_NET_RANKLIST_RESPONSE::_Internal {
   static void set_has_m_count(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
+  static void set_has_m_rolerank(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
 };
 
 void PROBUFF_NET_RANKLIST_RESPONSE::clear_m_items() {
@@ -16729,16 +16735,16 @@ PROBUFF_NET_RANKLIST_RESPONSE::PROBUFF_NET_RANKLIST_RESPONSE(const PROBUFF_NET_R
       m_items_(from.m_items_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&m_type_, &from.m_type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_count_) -
-    reinterpret_cast<char*>(&m_type_)) + sizeof(m_count_));
+    static_cast<size_t>(reinterpret_cast<char*>(&m_rolerank_) -
+    reinterpret_cast<char*>(&m_type_)) + sizeof(m_rolerank_));
   // @@protoc_insertion_point(copy_constructor:pbnet.PROBUFF_NET_RANKLIST_RESPONSE)
 }
 
 void PROBUFF_NET_RANKLIST_RESPONSE::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PROBUFF_NET_RANKLIST_RESPONSE_net_2eproto.base);
   ::memset(&m_type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_count_) -
-      reinterpret_cast<char*>(&m_type_)) + sizeof(m_count_));
+      reinterpret_cast<char*>(&m_rolerank_) -
+      reinterpret_cast<char*>(&m_type_)) + sizeof(m_rolerank_));
 }
 
 PROBUFF_NET_RANKLIST_RESPONSE::~PROBUFF_NET_RANKLIST_RESPONSE() {
@@ -16774,10 +16780,10 @@ void PROBUFF_NET_RANKLIST_RESPONSE::Clear() {
 
   m_items_.Clear();
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     ::memset(&m_type_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_count_) -
-        reinterpret_cast<char*>(&m_type_)) + sizeof(m_count_));
+        reinterpret_cast<char*>(&m_rolerank_) -
+        reinterpret_cast<char*>(&m_type_)) + sizeof(m_rolerank_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -16825,6 +16831,14 @@ const char* PROBUFF_NET_RANKLIST_RESPONSE::_InternalParse(const char* ptr, ::PRO
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           _Internal::set_has_m_count(&has_bits);
           m_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 m_rolerank = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          _Internal::set_has_m_rolerank(&has_bits);
+          m_rolerank_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -16884,6 +16898,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_m_count(), target);
   }
 
+  // int32 m_rolerank = 5;
+  if (_internal_has_m_rolerank()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_m_rolerank(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -16908,7 +16928,7 @@ size_t PROBUFF_NET_RANKLIST_RESPONSE::ByteSizeLong() const {
   }
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     // .pbdb.eranklist m_type = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -16927,6 +16947,13 @@ size_t PROBUFF_NET_RANKLIST_RESPONSE::ByteSizeLong() const {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_m_count());
+    }
+
+    // int32 m_rolerank = 5;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_rolerank());
     }
 
   }
@@ -16963,7 +16990,7 @@ void PROBUFF_NET_RANKLIST_RESPONSE::MergeFrom(const PROBUFF_NET_RANKLIST_RESPONS
 
   m_items_.MergeFrom(from.m_items_);
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       m_type_ = from.m_type_;
     }
@@ -16972,6 +16999,9 @@ void PROBUFF_NET_RANKLIST_RESPONSE::MergeFrom(const PROBUFF_NET_RANKLIST_RESPONS
     }
     if (cached_has_bits & 0x00000004u) {
       m_count_ = from.m_count_;
+    }
+    if (cached_has_bits & 0x00000008u) {
+      m_rolerank_ = from.m_rolerank_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -17001,8 +17031,8 @@ void PROBUFF_NET_RANKLIST_RESPONSE::InternalSwap(PROBUFF_NET_RANKLIST_RESPONSE* 
   swap(_has_bits_[0], other->_has_bits_[0]);
   m_items_.InternalSwap(&other->m_items_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_RANKLIST_RESPONSE, m_count_)
-      + sizeof(PROBUFF_NET_RANKLIST_RESPONSE::m_count_)
+      PROTOBUF_FIELD_OFFSET(PROBUFF_NET_RANKLIST_RESPONSE, m_rolerank_)
+      + sizeof(PROBUFF_NET_RANKLIST_RESPONSE::m_rolerank_)
       - PROTOBUF_FIELD_OFFSET(PROBUFF_NET_RANKLIST_RESPONSE, m_type_)>(
           reinterpret_cast<char*>(&m_type_),
           reinterpret_cast<char*>(&other->m_type_));

@@ -9902,6 +9902,7 @@ class PROBUFF_NET_RANKLIST_RESPONSE PROTOBUF_FINAL :
     kMTypeFieldNumber = 1,
     kMPageFieldNumber = 3,
     kMCountFieldNumber = 4,
+    kMRolerankFieldNumber = 5,
   };
   // repeated .pbdb.db_brief m_items = 2;
   int m_items_size() const;
@@ -9960,6 +9961,19 @@ class PROBUFF_NET_RANKLIST_RESPONSE PROTOBUF_FINAL :
   void _internal_set_m_count(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 m_rolerank = 5;
+  bool has_m_rolerank() const;
+  private:
+  bool _internal_has_m_rolerank() const;
+  public:
+  void clear_m_rolerank();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_rolerank() const;
+  void set_m_rolerank(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_rolerank() const;
+  void _internal_set_m_rolerank(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_RANKLIST_RESPONSE)
  private:
   class _Internal;
@@ -9973,6 +9987,7 @@ class PROBUFF_NET_RANKLIST_RESPONSE PROTOBUF_FINAL :
   int m_type_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_page_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_count_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_rolerank_;
   friend struct ::TableStruct_net_2eproto;
 };
 // -------------------------------------------------------------------
@@ -17733,6 +17748,34 @@ inline void PROBUFF_NET_RANKLIST_RESPONSE::_internal_set_m_count(::PROTOBUF_NAME
 inline void PROBUFF_NET_RANKLIST_RESPONSE::set_m_count(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_m_count(value);
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST_RESPONSE.m_count)
+}
+
+// int32 m_rolerank = 5;
+inline bool PROBUFF_NET_RANKLIST_RESPONSE::_internal_has_m_rolerank() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_RANKLIST_RESPONSE::has_m_rolerank() const {
+  return _internal_has_m_rolerank();
+}
+inline void PROBUFF_NET_RANKLIST_RESPONSE::clear_m_rolerank() {
+  m_rolerank_ = 0;
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST_RESPONSE::_internal_m_rolerank() const {
+  return m_rolerank_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST_RESPONSE::m_rolerank() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RANKLIST_RESPONSE.m_rolerank)
+  return _internal_m_rolerank();
+}
+inline void PROBUFF_NET_RANKLIST_RESPONSE::_internal_set_m_rolerank(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000008u;
+  m_rolerank_ = value;
+}
+inline void PROBUFF_NET_RANKLIST_RESPONSE::set_m_rolerank(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_rolerank(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST_RESPONSE.m_rolerank)
 }
 
 // -------------------------------------------------------------------
