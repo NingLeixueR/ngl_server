@@ -10,22 +10,18 @@ namespace ngl
 		: m_autoitem(std::make_unique<autoitem>())
 	{}
 
-	pbdb::db_bag& bag::get_bag()
+	data_modified<pbdb::db_bag>& bag::get_bag()
 	{
-		return db()->get();
-	}
-
-	const pbdb::db_bag& bag::get_constbag()
-	{
-		return db()->getconst();
+		return data()[actor()->id_guid()];
 	}
 
 	void bag::initdata()
 	{
-		pbdb::db_bag& lbag = db()->get(false);
-		auto lpmap = lbag.mutable_m_items();
+		data_modified<pbdb::db_bag>& lbag = get_bag();
+		auto lpmap = lbag.getconst().m_items();
+		
 
-		for (auto itor = lpmap->begin(); itor != lpmap->end(); ++itor)
+		for (auto itor = lpmap.begin(); itor != lpmap.end(); ++itor)
 		{
 			int32_t tid = itor->second.m_tid();
 			tab_item* tab = ngl::allcsv::tab<tab_item>(tid);
@@ -46,9 +42,10 @@ namespace ngl
 
 	pbdb::item* bag::add(pbdb::item& aitem)
 	{
-		int lid = get_constbag().m_maxid();
-		pbdb::db_bag& lbag = get_bag();
-		aitem.set_m_id(++lid);
+		data_modified<pbdb::db_bag>& ldb_bag = get_bag();
+		pbdb::db_bag& lbag = ldb_bag.get();
+		int32_t lindexid = lbag.m_maxid();
+		aitem.set_m_id(++lindexid);
 		
 		auto lpair = lbag.mutable_m_items()->insert({ aitem.m_id(), aitem });
 		if (lpair.second == false)
@@ -59,7 +56,7 @@ namespace ngl
 			);
 			return nullptr;
 		}
-		lbag.set_m_maxid(lid);
+		lbag.set_m_maxid(lindexid);
 
 		print_bi(aitem.m_id(), aitem.m_tid(), aitem.m_count());
 		return &lpair.first->second;
@@ -164,7 +161,7 @@ namespace ngl
 		int32_t litemid = itor->second->m_id();
 		if (acount == 0)
 		{
-			get_bag().mutable_m_items()->erase(itor->second->m_id());
+			get_bag().get().mutable_m_items()->erase(itor->second->m_id());
 			m_stackitems.erase(itor);
 			return true;
 		}

@@ -18,9 +18,7 @@ namespace ngl
 	public:
 		bag();
 
-		pbdb::db_bag& get_bag();
-
-		const pbdb::db_bag& get_constbag();
+		data_modified<pbdb::db_bag>& get_bag();
 
 		virtual void initdata();
 
@@ -43,3 +41,5 @@ namespace ngl
 		void print_bi(int32_t aitemid, int32_t atid, int32_t acount, bool aisadd = true);
 	};
 }// namespace ngl
+
+mk_formatter(pbdb::db_bag)
