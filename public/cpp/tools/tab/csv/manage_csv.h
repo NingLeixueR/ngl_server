@@ -126,7 +126,8 @@ namespace ngl
 		{
 			std::string lname = TAB::name();
 			csvbase** lp = tools::findmap(m_data, lname);
-			return lp == nullptr ? nullptr : (TAB*)*lp;
+			assert(lp != nullptr);
+			return (TAB*)*lp;
 		}
 
 		template <typename TAB>

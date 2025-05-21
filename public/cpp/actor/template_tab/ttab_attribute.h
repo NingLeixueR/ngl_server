@@ -17,7 +17,8 @@ namespace ngl
 		ttab_attribute& operator=(const ttab_attribute&) = delete;
 		using type_tab = tab_attribute;
 	private:
-		static std::vector<std::pair<int32_t, int32_t>> m_uplowlimit;
+		
+		static std::map<int32_t, std::tuple<int32_t, int32_t>> m_uplowlimit;
 	public:
 		ttab_attribute()
 		{}
@@ -65,8 +66,7 @@ namespace ngl
 			{
 				if (key < EnumAttribute::E_Count)
 				{
-					m_uplowlimit[key].first = value.m_uplimit;
-					m_uplowlimit[key].second = value.m_lowlimit;
+					m_uplowlimit[key] = std::make_tuple(value.m_uplimit, value.m_lowlimit);
 				}
 			}
 		}
@@ -81,14 +81,14 @@ namespace ngl
 			{
 				return avalues;
 			}
-			std::pair<int32_t, int32_t>& lpair = m_uplowlimit[atype];
-			if (avalues > lpair.first)
+			std::tuple<int32_t, int32_t>& lpair = m_uplowlimit[atype];
+			if (avalues > std::get<0>(lpair))
 			{
-				return lpair.first;
+				return std::get<0>(lpair);
 			}
-			else if (avalues < lpair.second)
+			else if (avalues < std::get<1>(lpair))
 			{
-				return lpair.second;
+				return std::get<1>(lpair);
 			}
 			else
 			{

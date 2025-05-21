@@ -130,7 +130,9 @@ namespace ngl
 
 		static NODE_TYPE node_type();
 
-		static void set_server(const char* aservertypename, int anodeid);
+		static void set_server(const char* aservertypename);
+
+		static void set_nodeid(int anodeid);
 
 		static void load(const std::string& axmlpath, const std::string& aname);
 
