@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-21 22:09:12
+// 创建时间 // 创建时间 25-05-22 17:45:32
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()
@@ -69,6 +69,9 @@ tab_mail::tab_mail()
 {
 }
 tab_chat::tab_chat()
+{
+}
+activity_task::activity_task()
 {
 }
 tab_activity::tab_activity()

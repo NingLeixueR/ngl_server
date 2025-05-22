@@ -119,8 +119,8 @@ namespace ngl
 		register_handle_custom<actor_role>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
+			, mforward<np_operator_task>
 			, np_example_actorid
-			, np_calendar_actor_task
 		>(true);
 
 		// 绑定pb消息

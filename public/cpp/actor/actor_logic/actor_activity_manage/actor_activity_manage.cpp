@@ -54,7 +54,8 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_activity_manage>::func<
-			np_calendar_actor_activity
+			np_calendar_actor_activity,
+			mforward<np_operator_task_response>
 		>(false);
 
 		// 绑定pb消息
@@ -62,14 +63,6 @@ namespace ngl
 		>(true);
 	}
 
-	void actor_activity_manage::add_activity(int64_t actorid, std::shared_ptr<activity>& activ)
-	{
-		auto itor = m_allactivity.insert(std::make_pair(actorid, activ));
-		if (itor.second == false)
-		{
-			return;
-		}
-	}
 
 	int64_t post_timer(int32_t autc, const std::function<void(const wheel_node* anode)>& afun)
 	{
@@ -88,9 +81,30 @@ namespace ngl
 		return twheel::wheel().addtimer(lparm);
 	}
 
+	std::shared_ptr<activity>& actor_activity_manage::get_activity(int64_t aactivityid)
+	{
+		static std::shared_ptr<activity> lnull = nullptr;
+		auto itor = m_activitys.find(aactivityid);
+		if (itor == m_activitys.end())
+		{
+			return lnull;
+		}
+		return itor->second;
+	}
+
+	void actor_activity_manage::add_activity(std::shared_ptr<activity>& aactivity)
+	{
+		m_activitys.insert(std::make_pair(aactivity->activityid(), aactivity));
+	}
+
+	void actor_activity_manage::erase_activity(int64_t aactivityid)
+	{
+		m_activitys.erase(aactivityid);
+	}
+
 	void actor_activity_manage::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
-		if(m_allactivity.contains(aactivityid))
+		if(m_activitys.contains(aactivityid))
 		{
 			return;
 		}
@@ -99,18 +113,20 @@ namespace ngl
 		{
 			return;
 		}
-		std::shared_ptr<activity> lactivity = activity::make(acalendarid, (int32_t)aactivityid, atime, m_db);
-		add_activity(aactivityid, lactivity);
+		std::shared_ptr<activity> lpactivity = activity::make(acalendarid, (int32_t)aactivityid, atime, m_db);
+		add_activity(lpactivity);
+		lpactivity->start();
 	}
 
 	void actor_activity_manage::activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid)
 	{
-		auto itor = m_allactivity.find(aactivityid);
-		if (itor == m_allactivity.end())
+		auto itor = m_activitys.find(aactivityid);
+		if (itor == m_activitys.end())
 		{
 			return;
 		}
 		itor->second->finish();
+		erase_activity(aactivityid);
 	}
 
 	bool actor_activity_manage::timer_handle(const message<np_timerparm>& adata)

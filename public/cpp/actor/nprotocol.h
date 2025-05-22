@@ -302,15 +302,6 @@ namespace ngl
 		def_portocol(np_calendar_actor_activity, m_info, m_activityids)
 	};
 
-	// ---- 
-	struct np_calendar_actor_task
-	{
-		ncalendar_info m_info;
-		std::vector<i64_actorid> m_taskids;
-
-		def_portocol(np_calendar_actor_task, m_info, m_taskids)
-	};
-
 	struct np_calendar_actor_respond
 	{
 		ncalendar_info m_info;
@@ -565,6 +556,23 @@ namespace ngl
 	{
 		int32_t m_rounds = 0;
 		def_portocol(np_thruput_test, m_rounds)
+	};
+
+	// 接收/移除任务
+	struct np_operator_task
+	{
+		std::string m_msg;
+		bool m_isreceive;
+		std::vector<int32_t> m_taskids;
+
+		def_portocol(np_receive_task, m_msg, m_isreceive, m_taskids)
+	};
+
+	struct np_operator_task_response
+	{
+		std::string m_msg;
+		bool m_isreceive;
+		def_portocol(np_operator_task_response, m_msg, m_isreceive)
 	};
 
 }//namespace ngl
