@@ -61,18 +61,16 @@ namespace ngl
 			TF::func(args...);
 		}
 	public:
+		static void func(TARG... args)
+		{
+			func(args...);
+		}
+
 		template <typename ...ARG>
 		static void func(TARG... args, ARG... args2)
 		{
-			func2(args...);
-			if constexpr (sizeof...(ARG) <= sizeof...(TARG))
-			{
-				func2(args2...);
-			}
-			else
-			{
-				func(args2...);
-			}
+			func(args...);
+			func(args2...);
 		}
 	};
 }//namespace ngl
