@@ -66,22 +66,16 @@ namespace ngl
 			m_page.resize(pagesize);
 
 			auto itor = m_rankdata.begin();
+			
 			for (int i = 0; i < pagesize; ++i)
 			{
 				m_page[i] = itor;
-				if (itor != m_rankdata.end())
+				for (int j = 1; itor != m_rankdata.end() && j <= ltab->m_everypagecount; ++itor,++j)
 				{
-					std::advance(itor, ltab->m_everypagecount);
+					m_rolerank[(*itor)->m_actorid] = i * ltab->m_everypagecount + j;
 				}
 			}
 			m_pagetime = m_time;
-
-			int lrank = 1;
-			for (const rank_item* item : m_rankdata)
-			{
-				m_rolerank[item->m_actorid] = lrank;
-				++lrank;
-			}
 		}
 	public:
 		virtual void erase(rank_item* aitem)
