@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-21 22:09:12
+// 创建时间 // 创建时间 25-05-22 17:45:32
 #pragma once
 
 #include "csv.h"
@@ -130,7 +130,6 @@ enum ECalendarType
 {
 	ECalendarTypeNull,	// 无
 	ECalendarTypeActivity,	// 活动开启与关闭
-	ECalendarTypeTask,	// 任务接取与放弃
 	ECalendarTypeCount,	
 };
 enum EActivity
@@ -585,6 +584,22 @@ struct tab_chat
 		def_rcsv2(m_id,m_name,lm_remarks,m_time,m_count);
 	}
 };
+struct activity_task
+{
+	/*********************************/
+	int32_t                          m_begday                        ; // 第几天(从1开始)接收
+	int32_t                          m_endday                        ; // 第几天(从1开始)移除
+	std::vector<int32_t>             m_taskids                       ; // 任务列表
+	/*********************************/
+	activity_task();
+	// 序列化反序列化相关
+	def_portocol(activity_task, m_begday, m_endday, m_taskids)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		def_rcsv2(m_begday,m_endday,m_taskids);
+	}
+};
 struct tab_activity
 {
 	/*********************************/
@@ -592,15 +607,17 @@ struct tab_activity
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>)
+	std::vector<int32_t>             m_task                          ; // [index:4][load:y] 活动期间接取任务
+	std::vector<activity_task>       m_taskday                       ; // [index:5][load:y] 活动期间接取任务(第几天接收任务)
 	/*********************************/
 	tab_activity();
 	// 序列化反序列化相关
-	def_portocol(tab_activity, m_id, m_name, m_type)
+	def_portocol(tab_activity, m_id, m_name, m_type, m_task, m_taskday)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type);
+		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_task,m_taskday);
 	}
 };
 struct tab_activity_drawcompliance

@@ -19,7 +19,8 @@
 
 namespace ngl
 {
-	class actor_ranklist : public actor
+	class actor_ranklist : 
+		public actor
 	{
 		actor_ranklist(const actor_ranklist&) = delete;
 		actor_ranklist& operator=(const actor_ranklist&) = delete;

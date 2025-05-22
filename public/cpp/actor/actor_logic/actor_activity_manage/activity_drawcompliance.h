@@ -12,10 +12,9 @@ namespace ngl
 
 		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb)
 		{
-			std::shared_ptr<activity> ret = std::make_shared<activity_drawcompliance>(
+			return std::make_shared<activity_drawcompliance>(
 				acalendarid, aactivityid, atime, adb
 			);
-			return ret;
 		}
 	public:
 

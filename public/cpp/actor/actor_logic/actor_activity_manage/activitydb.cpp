@@ -17,7 +17,7 @@ namespace ngl
 			std::shared_ptr<activity> lactivity = activity::make(ldbactivity.m_calendarid(), 
 				lactivityid, ttab_calendar::data::time(ldbactivity.m_beg(), ldbactivity.m_end()), *this
 			);
-			lactor->add_activity(item.first, lactivity);
+			lactor->add_activity(lactivity);
 		}
 	}
 }//namespace ngl

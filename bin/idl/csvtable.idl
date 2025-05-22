@@ -337,7 +337,6 @@ enum ECalendarType
 {
 	ECalendarTypeNull,				// 无
 	ECalendarTypeActivity,			// 活动开启与关闭
-	ECalendarTypeTask,				// 任务接取与放弃
 	ECalendarTypeCount,
 };
 
@@ -383,6 +382,13 @@ enum EActivity
 	EActivityDrawCompliance = 1,				// 类似咸鱼之王的<<招募达标>>
 };
 
+struct activity_task
+{
+	int32_t m_begday;					// 第几天(从1开始)接收
+	int32_t m_endday;					// 第几天(从1开始)移除(-1代表活动结束)
+	vector<int32_t> m_taskids;			// 任务列表
+};
+
 struct tab_activity
 {
 	int32_t m_id;								// [index:0][load:y] id 
@@ -390,6 +396,8 @@ struct tab_activity
 	string m_remarks;							// [index:2][load:n] 备注
 
 	EActivity m_type;							// [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>)
+	vector<int32_t> m_task;						// [index:4][load:y] 活动期间接取任务
+	vector<activity_task> m_taskday;			// [index:5][load:y] 活动期间接取任务(第几天接收任务)
 };
 
 struct tab_activity_drawcompliance

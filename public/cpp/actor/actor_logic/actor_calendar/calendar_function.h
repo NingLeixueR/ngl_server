@@ -65,6 +65,5 @@ namespace ngl
 		}
 
 		static bool operator_activ(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor);
-		static bool operator_task(const tab_calendar* tab, pbdb::db_calendar& acalendar, int64_t atime, bool astart, i64_actorid aactor);
 	};
 }//namespace ngl

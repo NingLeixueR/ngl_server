@@ -91,26 +91,15 @@ namespace ngl
 		}
 		return true;
 	}
-	bool actor_role::handle(const message<np_actor_disconnect_close>& adata)
+	bool actor_role::handle(const message<mforward<np_operator_task>>& adata)
 	{
-		erase_actor();
-		return true;
-	}
-	bool actor_role::handle(const message<np_actor_senditem>& adata)
-	{
-		auto lparm = adata.get_data();
-		local_remakes(this, lparm->m_src);
-		m_bag.add_item(lparm->m_item);
-		return true;
-	}
-	bool actor_role::handle(const message<np_calendar_actor_task>& adata)
-	{
-		const np_calendar_actor_task* recv = adata.get_data();
+		i64_actorid lactorid = adata.get_data()->identifier();
+		const np_operator_task* recv = adata.get_data()->data();
 		if (recv == nullptr)
 		{
 			return true;
 		}
-		if (recv->m_info.m_start)
+		if (recv->m_isreceive)
 		{
 			for (i64_actorid taskid : recv->m_taskids)
 			{
@@ -125,10 +114,24 @@ namespace ngl
 				static_task::erase_task(this, taskid);
 			}
 		}
-		auto pro = std::make_shared<mforward<np_calendar_actor_respond>>(id_guid());
-		np_calendar_actor_respond* lpdata = pro->add_data();
-		lpdata->m_info = recv->m_info;
-		send_actor(actor_calendar::actorid(), pro);
+		log_error()->print("actor_role.np_operator_task {}:{}:{}:{}", 
+			nguid(id_guid()), recv->m_msg, recv->m_isreceive?"receive":"remove", recv->m_taskids
+		);
+		auto pro = std::make_shared<mforward<np_operator_task_response>>();
+		pro->add_data()->m_msg = recv->m_msg;
+		send_actor(lactorid, pro);
+		return true;
+	}
+	bool actor_role::handle(const message<np_actor_disconnect_close>& adata)
+	{
+		erase_actor();
+		return true;
+	}
+	bool actor_role::handle(const message<np_actor_senditem>& adata)
+	{
+		auto lparm = adata.get_data();
+		local_remakes(this, lparm->m_src);
+		m_bag.add_item(lparm->m_item);
 		return true;
 	}
 	bool actor_role::handle(const message<np_eevents_logic_rolelogin>& adata)

@@ -169,6 +169,14 @@ message db_activity
 	optional bool m_start		= 4; // 是否开启
 	optional bool m_finish		= 5; // 是否关闭
 	optional int32 m_calendarid = 6; // >0:脚本日历控制 <0:activity自行控制开关
+	message mstat
+	{
+		int32 m_logintime			= 1;
+		map<int32,bool> m_opentask	= 2; //key:>0 tab_activity.m_taskday, =-1 tab_activity.m_task value:是否开启
+		map<int32,bool> m_closetask = 3; //key:>0 tab_activity.m_taskday, =-1 tab_activity.m_task value:是否关闭
+	}
+	map<int64,mstat> m_stat		= 7;
+
 
 	// tab_activity.m_type == EActivityDrawCompliance
 	message drawcompliance
@@ -176,7 +184,7 @@ message db_activity
 		optional int32 m_count		= 1; // 累计次数
 		map<int32,bool> m_reward	= 2; // 累计领取哪些奖励
 	}
-	map<int64,drawcompliance> m_drawcompliance	= 7;
+	map<int64,drawcompliance> m_drawcompliance	= 8;
 }
 
 message db_task

@@ -6,6 +6,7 @@
 #include "db_data.h"
 #include "db_pool.h"
 #include "db.h"
+#include "events_logic.h"
 #include "ndb_modular.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
@@ -20,7 +21,8 @@
 
 namespace ngl
 {
-	class actor_activity_manage : public actor
+	class actor_activity_manage : 
+		public actor
 	{
 		actor_activity_manage(const actor_activity_manage&) = delete;
 		actor_activity_manage& operator=(const actor_activity_manage&) = delete;
@@ -28,7 +30,7 @@ namespace ngl
 		actor_activity_manage();
 
 		activitydb m_db;
-		std::map<int64_t, std::shared_ptr<activity>> m_allactivity;
+		std::map<int64_t, std::shared_ptr<activity>> m_activitys;
 
 		using nclient_brief		= tdb_brief::nsp_cli<actor_activity_manage>;
 		using nclient_keyvalue	= tdb_keyvalue::nsp_cli<actor_activity_manage>;
@@ -51,14 +53,19 @@ namespace ngl
 
 		static void nregister();
 
+		std::shared_ptr<activity>& get_activity(int64_t aactivityid);
+
+		void add_activity(std::shared_ptr<activity>& aactivity);
+		void erase_activity(int64_t aactivityid);
+
 		void activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 
 		void activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid);
 
-		void add_activity(int64_t actorid, std::shared_ptr<activity>& activ);
-
 		bool timer_handle(const message<np_timerparm>& adata);
 		bool handle(const message<np_arg_null>&);
+		bool handle(const message<mforward<np_operator_task_response>>& adata);
 		bool handle(const message<np_calendar_actor_activity>& adata);
+		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 	};
 }//namespace ngl

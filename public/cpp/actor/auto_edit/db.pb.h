@@ -51,7 +51,7 @@ struct TableStruct_db_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[35]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[39]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -71,12 +71,24 @@ extern db_activityDefaultTypeInternal _db_activity_default_instance_;
 class db_activity_MDrawcomplianceEntry_DoNotUse;
 class db_activity_MDrawcomplianceEntry_DoNotUseDefaultTypeInternal;
 extern db_activity_MDrawcomplianceEntry_DoNotUseDefaultTypeInternal _db_activity_MDrawcomplianceEntry_DoNotUse_default_instance_;
+class db_activity_MStatEntry_DoNotUse;
+class db_activity_MStatEntry_DoNotUseDefaultTypeInternal;
+extern db_activity_MStatEntry_DoNotUseDefaultTypeInternal _db_activity_MStatEntry_DoNotUse_default_instance_;
 class db_activity_drawcompliance;
 class db_activity_drawcomplianceDefaultTypeInternal;
 extern db_activity_drawcomplianceDefaultTypeInternal _db_activity_drawcompliance_default_instance_;
 class db_activity_drawcompliance_MRewardEntry_DoNotUse;
 class db_activity_drawcompliance_MRewardEntry_DoNotUseDefaultTypeInternal;
 extern db_activity_drawcompliance_MRewardEntry_DoNotUseDefaultTypeInternal _db_activity_drawcompliance_MRewardEntry_DoNotUse_default_instance_;
+class db_activity_mstat;
+class db_activity_mstatDefaultTypeInternal;
+extern db_activity_mstatDefaultTypeInternal _db_activity_mstat_default_instance_;
+class db_activity_mstat_MClosetaskEntry_DoNotUse;
+class db_activity_mstat_MClosetaskEntry_DoNotUseDefaultTypeInternal;
+extern db_activity_mstat_MClosetaskEntry_DoNotUseDefaultTypeInternal _db_activity_mstat_MClosetaskEntry_DoNotUse_default_instance_;
+class db_activity_mstat_MOpentaskEntry_DoNotUse;
+class db_activity_mstat_MOpentaskEntry_DoNotUseDefaultTypeInternal;
+extern db_activity_mstat_MOpentaskEntry_DoNotUseDefaultTypeInternal _db_activity_mstat_MOpentaskEntry_DoNotUse_default_instance_;
 class db_bag;
 class db_bagDefaultTypeInternal;
 extern db_bagDefaultTypeInternal _db_bag_default_instance_;
@@ -170,8 +182,12 @@ template<> ::pbdb::calendar_pair* Arena::CreateMaybeMessage<::pbdb::calendar_pai
 template<> ::pbdb::db_account* Arena::CreateMaybeMessage<::pbdb::db_account>(Arena*);
 template<> ::pbdb::db_activity* Arena::CreateMaybeMessage<::pbdb::db_activity>(Arena*);
 template<> ::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_activity_MDrawcomplianceEntry_DoNotUse>(Arena*);
+template<> ::pbdb::db_activity_MStatEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_activity_MStatEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_activity_drawcompliance* Arena::CreateMaybeMessage<::pbdb::db_activity_drawcompliance>(Arena*);
 template<> ::pbdb::db_activity_drawcompliance_MRewardEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_activity_drawcompliance_MRewardEntry_DoNotUse>(Arena*);
+template<> ::pbdb::db_activity_mstat* Arena::CreateMaybeMessage<::pbdb::db_activity_mstat>(Arena*);
+template<> ::pbdb::db_activity_mstat_MClosetaskEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_activity_mstat_MClosetaskEntry_DoNotUse>(Arena*);
+template<> ::pbdb::db_activity_mstat_MOpentaskEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_activity_mstat_MOpentaskEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_bag* Arena::CreateMaybeMessage<::pbdb::db_bag>(Arena*);
 template<> ::pbdb::db_bag_MItemsEntry_DoNotUse* Arena::CreateMaybeMessage<::pbdb::db_bag_MItemsEntry_DoNotUse>(Arena*);
 template<> ::pbdb::db_brief* Arena::CreateMaybeMessage<::pbdb::db_brief>(Arena*);
@@ -3174,6 +3190,282 @@ class db_ranklist PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class db_activity_mstat_MOpentaskEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_mstat_MOpentaskEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, bool,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_mstat_MOpentaskEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, bool,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL,
+    0 > SuperType;
+  db_activity_mstat_MOpentaskEntry_DoNotUse();
+  db_activity_mstat_MOpentaskEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_activity_mstat_MOpentaskEntry_DoNotUse& other);
+  static const db_activity_mstat_MOpentaskEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_activity_mstat_MOpentaskEntry_DoNotUse*>(&_db_activity_mstat_MOpentaskEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[18];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class db_activity_mstat_MClosetaskEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_mstat_MClosetaskEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, bool,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_mstat_MClosetaskEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, bool,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL,
+    0 > SuperType;
+  db_activity_mstat_MClosetaskEntry_DoNotUse();
+  db_activity_mstat_MClosetaskEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_activity_mstat_MClosetaskEntry_DoNotUse& other);
+  static const db_activity_mstat_MClosetaskEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_activity_mstat_MClosetaskEntry_DoNotUse*>(&_db_activity_mstat_MClosetaskEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[19];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class db_activity_mstat PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbdb.db_activity.mstat) */ {
+ public:
+  inline db_activity_mstat() : db_activity_mstat(nullptr) {};
+  virtual ~db_activity_mstat();
+
+  db_activity_mstat(const db_activity_mstat& from);
+  db_activity_mstat(db_activity_mstat&& from) noexcept
+    : db_activity_mstat() {
+    *this = ::std::move(from);
+  }
+
+  inline db_activity_mstat& operator=(const db_activity_mstat& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline db_activity_mstat& operator=(db_activity_mstat&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const db_activity_mstat& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const db_activity_mstat* internal_default_instance() {
+    return reinterpret_cast<const db_activity_mstat*>(
+               &_db_activity_mstat_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(db_activity_mstat& a, db_activity_mstat& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(db_activity_mstat* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(db_activity_mstat* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline db_activity_mstat* New() const final {
+    return CreateMaybeMessage<db_activity_mstat>(nullptr);
+  }
+
+  db_activity_mstat* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<db_activity_mstat>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const db_activity_mstat& from);
+  void MergeFrom(const db_activity_mstat& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(db_activity_mstat* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbdb.db_activity.mstat";
+  }
+  protected:
+  explicit db_activity_mstat(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMOpentaskFieldNumber = 2,
+    kMClosetaskFieldNumber = 3,
+    kMLogintimeFieldNumber = 1,
+  };
+  // map<int32, bool> m_opentask = 2;
+  int m_opentask_size() const;
+  private:
+  int _internal_m_opentask_size() const;
+  public:
+  void clear_m_opentask();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+      _internal_m_opentask() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+      _internal_mutable_m_opentask();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+      m_opentask() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+      mutable_m_opentask();
+
+  // map<int32, bool> m_closetask = 3;
+  int m_closetask_size() const;
+  private:
+  int _internal_m_closetask_size() const;
+  public:
+  void clear_m_closetask();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+      _internal_m_closetask() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+      _internal_mutable_m_closetask();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+      m_closetask() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+      mutable_m_closetask();
+
+  // int32 m_logintime = 1;
+  void clear_m_logintime();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_logintime() const;
+  void set_m_logintime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_logintime() const;
+  void _internal_set_m_logintime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbdb.db_activity.mstat)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      db_activity_mstat_MOpentaskEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, bool,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL,
+      0 > m_opentask_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      db_activity_mstat_MClosetaskEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, bool,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL,
+      0 > m_closetask_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_logintime_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_db_2eproto;
+};
+// -------------------------------------------------------------------
+
+class db_activity_MStatEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_MStatEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_MStatEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  db_activity_MStatEntry_DoNotUse();
+  db_activity_MStatEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const db_activity_MStatEntry_DoNotUse& other);
+  static const db_activity_MStatEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const db_activity_MStatEntry_DoNotUse*>(&_db_activity_MStatEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
+    return ::descriptor_table_db_2eproto.file_level_metadata[21];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
 class db_activity_drawcompliance_MRewardEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_activity_drawcompliance_MRewardEntry_DoNotUse, 
     ::PROTOBUF_NAMESPACE_ID::int32, bool,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
@@ -3196,7 +3488,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[18];
+    return ::descriptor_table_db_2eproto.file_level_metadata[22];
   }
 
   public:
@@ -3246,7 +3538,7 @@ class db_activity_drawcompliance PROTOBUF_FINAL :
                &_db_activity_drawcompliance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    23;
 
   friend void swap(db_activity_drawcompliance& a, db_activity_drawcompliance& b) {
     a.Swap(&b);
@@ -3393,7 +3685,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[20];
+    return ::descriptor_table_db_2eproto.file_level_metadata[24];
   }
 
   public:
@@ -3443,7 +3735,7 @@ class db_activity PROTOBUF_FINAL :
                &_db_activity_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    25;
 
   friend void swap(db_activity& a, db_activity& b) {
     a.Swap(&b);
@@ -3511,12 +3803,14 @@ class db_activity PROTOBUF_FINAL :
 
   // nested types ----------------------------------------------------
 
+  typedef db_activity_mstat mstat;
   typedef db_activity_drawcompliance drawcompliance;
 
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMDrawcomplianceFieldNumber = 7,
+    kMStatFieldNumber = 7,
+    kMDrawcomplianceFieldNumber = 8,
     kMIdFieldNumber = 1,
     kMBegFieldNumber = 2,
     kMEndFieldNumber = 3,
@@ -3524,7 +3818,24 @@ class db_activity PROTOBUF_FINAL :
     kMFinishFieldNumber = 5,
     kMCalendaridFieldNumber = 6,
   };
-  // map<int64, .pbdb.db_activity.drawcompliance> m_drawcompliance = 7;
+  // map<int64, .pbdb.db_activity.mstat> m_stat = 7;
+  int m_stat_size() const;
+  private:
+  int _internal_m_stat_size() const;
+  public:
+  void clear_m_stat();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >&
+      _internal_m_stat() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >*
+      _internal_mutable_m_stat();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >&
+      m_stat() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >*
+      mutable_m_stat();
+
+  // map<int64, .pbdb.db_activity.drawcompliance> m_drawcompliance = 8;
   int m_drawcompliance_size() const;
   private:
   int _internal_m_drawcompliance_size() const;
@@ -3629,6 +3940,12 @@ class db_activity PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      db_activity_MStatEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > m_stat_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
       db_activity_MDrawcomplianceEntry_DoNotUse,
       ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_drawcompliance,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
@@ -3686,7 +4003,7 @@ class db_task_data_schedule PROTOBUF_FINAL :
                &_db_task_data_schedule_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    26;
 
   friend void swap(db_task_data_schedule& a, db_task_data_schedule& b) {
     a.Swap(&b);
@@ -3858,7 +4175,7 @@ class db_task_data PROTOBUF_FINAL :
                &_db_task_data_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    27;
 
   friend void swap(db_task_data& a, db_task_data& b) {
     a.Swap(&b);
@@ -4065,7 +4382,7 @@ class db_task_complete PROTOBUF_FINAL :
                &_db_task_complete_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    28;
 
   friend void swap(db_task_complete& a, db_task_complete& b) {
     a.Swap(&b);
@@ -4191,7 +4508,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[25];
+    return ::descriptor_table_db_2eproto.file_level_metadata[29];
   }
 
   public:
@@ -4221,7 +4538,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[26];
+    return ::descriptor_table_db_2eproto.file_level_metadata[30];
   }
 
   public:
@@ -4271,7 +4588,7 @@ class db_task PROTOBUF_FINAL :
                &_db_task_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    31;
 
   friend void swap(db_task& a, db_task& b) {
     a.Swap(&b);
@@ -4465,7 +4782,7 @@ class calendar_pair PROTOBUF_FINAL :
                &_calendar_pair_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    32;
 
   friend void swap(calendar_pair& a, calendar_pair& b) {
     a.Swap(&b);
@@ -4593,7 +4910,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_db_2eproto);
-    return ::descriptor_table_db_2eproto.file_level_metadata[29];
+    return ::descriptor_table_db_2eproto.file_level_metadata[33];
   }
 
   public:
@@ -4643,7 +4960,7 @@ class db_calendar PROTOBUF_FINAL :
                &_db_calendar_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    34;
 
   friend void swap(db_calendar& a, db_calendar& b) {
     a.Swap(&b);
@@ -4890,7 +5207,7 @@ class db_familyer PROTOBUF_FINAL :
                &_db_familyer_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    35;
 
   friend void swap(db_familyer& a, db_familyer& b) {
     a.Swap(&b);
@@ -5126,7 +5443,7 @@ class db_family PROTOBUF_FINAL :
                &_db_family_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    36;
 
   friend void swap(db_family& a, db_family& b) {
     a.Swap(&b);
@@ -5409,7 +5726,7 @@ class db_friends PROTOBUF_FINAL :
                &_db_friends_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    37;
 
   friend void swap(db_friends& a, db_friends& b) {
     a.Swap(&b);
@@ -5601,7 +5918,7 @@ class dbcross_test PROTOBUF_FINAL :
                &_dbcross_test_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    38;
 
   friend void swap(dbcross_test& a, dbcross_test& b) {
     a.Swap(&b);
@@ -7752,6 +8069,94 @@ db_ranklist::mutable_m_items() {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// db_activity_mstat
+
+// int32 m_logintime = 1;
+inline void db_activity_mstat::clear_m_logintime() {
+  m_logintime_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_activity_mstat::_internal_m_logintime() const {
+  return m_logintime_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_activity_mstat::m_logintime() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_activity.mstat.m_logintime)
+  return _internal_m_logintime();
+}
+inline void db_activity_mstat::_internal_set_m_logintime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  m_logintime_ = value;
+}
+inline void db_activity_mstat::set_m_logintime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_logintime(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_activity.mstat.m_logintime)
+}
+
+// map<int32, bool> m_opentask = 2;
+inline int db_activity_mstat::_internal_m_opentask_size() const {
+  return m_opentask_.size();
+}
+inline int db_activity_mstat::m_opentask_size() const {
+  return _internal_m_opentask_size();
+}
+inline void db_activity_mstat::clear_m_opentask() {
+  m_opentask_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+db_activity_mstat::_internal_m_opentask() const {
+  return m_opentask_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+db_activity_mstat::m_opentask() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_activity.mstat.m_opentask)
+  return _internal_m_opentask();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+db_activity_mstat::_internal_mutable_m_opentask() {
+  return m_opentask_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+db_activity_mstat::mutable_m_opentask() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_activity.mstat.m_opentask)
+  return _internal_mutable_m_opentask();
+}
+
+// map<int32, bool> m_closetask = 3;
+inline int db_activity_mstat::_internal_m_closetask_size() const {
+  return m_closetask_.size();
+}
+inline int db_activity_mstat::m_closetask_size() const {
+  return _internal_m_closetask_size();
+}
+inline void db_activity_mstat::clear_m_closetask() {
+  m_closetask_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+db_activity_mstat::_internal_m_closetask() const {
+  return m_closetask_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >&
+db_activity_mstat::m_closetask() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_activity.mstat.m_closetask)
+  return _internal_m_closetask();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+db_activity_mstat::_internal_mutable_m_closetask() {
+  return m_closetask_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, bool >*
+db_activity_mstat::mutable_m_closetask() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_activity.mstat.m_closetask)
+  return _internal_mutable_m_closetask();
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // db_activity_drawcompliance
 
 // int32 m_count = 1;
@@ -7985,7 +8390,36 @@ inline void db_activity::set_m_calendarid(::PROTOBUF_NAMESPACE_ID::int32 value) 
   // @@protoc_insertion_point(field_set:pbdb.db_activity.m_calendarid)
 }
 
-// map<int64, .pbdb.db_activity.drawcompliance> m_drawcompliance = 7;
+// map<int64, .pbdb.db_activity.mstat> m_stat = 7;
+inline int db_activity::_internal_m_stat_size() const {
+  return m_stat_.size();
+}
+inline int db_activity::m_stat_size() const {
+  return _internal_m_stat_size();
+}
+inline void db_activity::clear_m_stat() {
+  m_stat_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >&
+db_activity::_internal_m_stat() const {
+  return m_stat_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >&
+db_activity::m_stat() const {
+  // @@protoc_insertion_point(field_map:pbdb.db_activity.m_stat)
+  return _internal_m_stat();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >*
+db_activity::_internal_mutable_m_stat() {
+  return m_stat_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, ::pbdb::db_activity_mstat >*
+db_activity::mutable_m_stat() {
+  // @@protoc_insertion_point(field_mutable_map:pbdb.db_activity.m_stat)
+  return _internal_mutable_m_stat();
+}
+
+// map<int64, .pbdb.db_activity.drawcompliance> m_drawcompliance = 8;
 inline int db_activity::_internal_m_drawcompliance_size() const {
   return m_drawcompliance_.size();
 }
@@ -9400,6 +9834,14 @@ dbcross_test::mutable_m_value() {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
