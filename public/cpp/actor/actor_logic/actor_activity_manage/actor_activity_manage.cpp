@@ -45,6 +45,9 @@ namespace ngl
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
 	{
+		actor_events_logic::tfun::func(
+			eevents_logic_rolelogin, actorid()
+		);
 	}
 
 	void actor_activity_manage::nregister()
