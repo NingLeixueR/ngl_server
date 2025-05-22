@@ -23,26 +23,34 @@ namespace ngl
 			return tdb_brief::nsp_cli<actor_ranklist>::getconst(m_actorid);
 		}
 
-		void init(const pbdb::db_brief& abrief, const pbdb::db_ranklist* aranklist, pbdb::eranklist atype, const std::function<int64_t(const pbdb::db_brief&)>& avalfun)
+		void init(
+			const pbdb::db_brief& abrief, 
+			data_modified<pbdb::db_ranklist>* aranklist, 
+			pbdb::eranklist atype, 
+			const std::function<int64_t(const pbdb::db_brief&)>& avalfun
+		)
 		{
 			m_values[atype] = avalfun(abrief);
 
-			if (aranklist != nullptr)
+			auto& lmap = aranklist->getconst().m_items();
+			auto itor = lmap.find(atype);
+			if (itor != lmap.end())
 			{
-				auto& lmap = aranklist->m_items();
-				auto itor = lmap.find((int32_t)atype);
-				if (itor != lmap.end())
+				if (itor->second.m_value() != m_values[atype])
+				{
+					change(atype, aranklist->get());
+				}
+				else
 				{
 					m_time[atype] = itor->second.m_time();
-					return;
 				}
+				return;
 			}
-			m_time[atype] = (int32_t)localtime::gettime();
+			m_time[atype] = localtime::gettime();
 		}
 
-		void init(const pbdb::db_brief& abrief, const pbdb::db_ranklist* aranklist)
+		void init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
 		{
-			m_actorid = abrief.m_id();
 			init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 				{
 					return abrief.m_lv();
@@ -52,6 +60,7 @@ namespace ngl
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
 		{
 			pbdb::rankitem& ltemp = (*aranklist.mutable_m_items())[atype];
+			m_time[atype] = localtime::gettime();
 			ltemp.set_m_time(m_time[atype]);
 			ltemp.set_m_value(m_values[atype]);
 		}
@@ -90,12 +99,18 @@ namespace ngl
 			}
 		}
 
+		ecompare time_compare(pbdb::eranklist atype, const rank_item& ar)
+		{
+			ecompare ltype = value_compare(m_time[atype], ar.m_time[atype]);
+			return (ecompare)(-(int32_t)ltype);
+		}
+
 		bool compare(pbdb::eranklist atype, const rank_item& ar)
 		{
 			ecompare ltype = value_compare(atype, ar);
 			if (ltype == eless_equal)
 			{
-				ltype = (ecompare)(-(int32_t)value_compare(atype, ar));
+				ltype = time_compare(atype, ar);
 				if (ltype == eless_equal)
 				{
 					return m_actorid < ar.m_actorid;
