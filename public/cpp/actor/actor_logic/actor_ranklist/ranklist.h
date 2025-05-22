@@ -37,8 +37,6 @@ namespace ngl
 
 		virtual void initdata();
 
-		const pbdb::db_ranklist* find(i64_actorid aactorid);
-
 		pbdb::db_ranklist* get(i64_actorid aactorid);
 		
 		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
