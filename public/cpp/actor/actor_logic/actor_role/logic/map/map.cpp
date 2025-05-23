@@ -126,7 +126,7 @@ namespace ngl
 			np_eevents_map_leaveview lparm;
 			lparm.m_leaveunitid = aunit->id();
 			lparm.m_unitids.swap(lview);
-			actor_events_map::trigger_event(eevents_map_leaveview, lparm);
+			actor_events_map::trigger_event(lparm);
 		}
 
 		lview.clear();
@@ -154,7 +154,7 @@ namespace ngl
 			np_eevents_map_enterview lparm;
 			lparm.m_enterunitid = aunit->id();
 			lparm.m_unitids.swap(lview);
-			actor_events_map::trigger_event(eevents_map_enterview, lparm);
+			actor_events_map::trigger_event(lparm);
 		}
 
 		aunit->set_x(ax);

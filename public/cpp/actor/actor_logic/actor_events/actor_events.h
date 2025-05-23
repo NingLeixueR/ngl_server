@@ -122,10 +122,10 @@ namespace ngl
 
 		// # ´¥·¢ÊÂ¼þ
 		template <typename TPARM, typename TACTOR = nullacctor>
-		static bool trigger_event(E_EVENTS atype, const TPARM& apram, TACTOR* aactor = &m_nullacctor)
+		static bool trigger_event(const TPARM& apram, TACTOR* aactor = &m_nullacctor)
 		{
-			ngl::log_error()->print("trigger_event {}:E_EVENTS:{}", typeid(TPARM).name(), (int32_t)(atype));
-			if (check_parm<TPARM>(atype) == false)
+			ngl::log_error()->print("trigger_event {}:E_EVENTS:{}", typeid(TPARM).name(), (int32_t)(apram.m_type));
+			if (check_parm<TPARM>(apram.m_type) == false)
 			{
 				ngl::log_error()->print("trigger_event fail!!!");
 				return false;

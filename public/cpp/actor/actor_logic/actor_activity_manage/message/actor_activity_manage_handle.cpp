@@ -52,7 +52,15 @@ namespace ngl
 		{
 			itor->second->rolelogin(lrecv->m_actorid);
 		}
-
+		return true;
+	}
+	bool actor_activity_manage::handle(const message<np_eevents_logic_rolelevelchange>& adata)
+	{
+		const np_eevents_logic_rolelevelchange* lrecv = adata.get_data();
+		for (auto itor = m_activitys.begin(); itor != m_activitys.end(); ++itor)
+		{
+			itor->second->rolelevelchange(lrecv->m_actorid, lrecv->m_beforelevel, lrecv->m_nowlevel);
+		}
 		return true;
 	}
 }//namespace ngl

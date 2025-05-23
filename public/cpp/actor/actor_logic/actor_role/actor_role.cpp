@@ -97,9 +97,8 @@ namespace ngl
 
 		// # 登陆事件
 		np_eevents_logic_rolelogin lparm;
-		lparm.m_type = eevents_logic_rolelogin;
 		lparm.m_actorid = id_guid();
-		actor_events_logic::trigger_event(eevents_logic_rolelogin, lparm);
+		actor_events_logic::trigger_event(lparm);
 
 		reset_logintime();
 		
@@ -195,9 +194,8 @@ namespace ngl
 	void actor_role::erase_actor_before()
 	{
 		np_eevents_logic_roleoffline lparm;
-		lparm.m_type = eevents_logic_roleoffline;
 		lparm.m_actorid = id_guid();
-		actor_events_logic::trigger_event(eevents_logic_roleoffline, lparm);
+		actor_events_logic::trigger_event(lparm);
 	}
 
 	void actor_role::handle_after()

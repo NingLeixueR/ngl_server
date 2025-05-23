@@ -90,4 +90,12 @@ namespace ngl
 		}
 	}
 
+	void activity::rolelevelchange(i64_actorid aroleid, int32_t abeforelevel, int32_t anowlevel)
+	{
+		actor_activity_manage::getInstance().log_error()->print(
+			"activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]",
+			activityid(), aroleid, abeforelevel, anowlevel
+		);
+	}
+
 }//namespace ngl

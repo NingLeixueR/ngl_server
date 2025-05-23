@@ -31,6 +31,7 @@ namespace ngl
 
 		// # µÈ¼¶
 		int32_t lv();
+		void change_lv_event(int avalues);
 		void change_lv(int avalues);
 
 		// # vip
