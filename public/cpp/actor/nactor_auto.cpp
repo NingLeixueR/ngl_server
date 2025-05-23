@@ -74,40 +74,39 @@ namespace ngl
 	{
 		tprotocol_customs_200000000();
 
-		tprotocol::set_customs_index(210000000);
-		tprotocol::tp_customs::template func <
-			/*210000001*/np_gm
-			/*210000002*/, np_gm_response
-			/*210000003*/, nactor_logitem
-			/*210000004*/, np_channel_register<pbdb::db_brief>
-			/*210000005*/, np_channel_register_reply<pbdb::db_brief>
-			/*210000006*/, np_channel_data<pbdb::db_brief>
-			/*210000007*/, np_channel_exit<pbdb::db_brief>
-			/*210000008*/, np_channel_register<pbdb::db_keyvalue>
-			/*210000009*/, np_channel_register_reply<pbdb::db_keyvalue>
-			/*210000010*/, np_channel_data<pbdb::db_keyvalue>
-			/*210000011*/, np_channel_exit<pbdb::db_keyvalue>
-			/*210000012*/, np_arg_null
-		>(EPROTOCOL_TYPE_CUSTOM);
-		
 		tprotocol::set_customs_index(220000000);
 		tprotocol::tp_customs::template func <
-			/*220000001*/mforward<np_gm>
-			/*220000002*/, mforward<np_gm_response>
-			/*220000003*/, np_actorswitch_process<np_actorswitch_process_role>
-			/*220000004*/, mforward<np_actor_calendar_requst>
+			/*220000001*/np_gm
+			/*220000002*/, np_gm_response
+			/*220000003*/, nactor_logitem
+			/*220000004*/, np_channel_register<pbdb::db_brief>
+			/*220000005*/, np_channel_register_reply<pbdb::db_brief>
+			/*220000006*/, np_channel_data<pbdb::db_brief>
+			/*220000007*/, np_channel_exit<pbdb::db_brief>
+			/*220000008*/, np_channel_register<pbdb::db_keyvalue>
+			/*220000009*/, np_channel_register_reply<pbdb::db_keyvalue>
+			/*220000010*/, np_channel_data<pbdb::db_keyvalue>
+			/*220000011*/, np_channel_exit<pbdb::db_keyvalue>
+			/*220000012*/, np_arg_null
 		>(EPROTOCOL_TYPE_CUSTOM);
 		
 		tprotocol::set_customs_index(230000000);
 		tprotocol::tp_customs::template func <
+			/*230000001*/mforward<np_gm>
+			/*230000002*/, mforward<np_gm_response>
+			/*230000003*/, np_actorswitch_process<np_actorswitch_process_role>
+		>(EPROTOCOL_TYPE_CUSTOM);
+		
+		tprotocol::set_customs_index(240000000);
+		tprotocol::tp_customs::template func <
 			// ### 事件相关协议 start ### //
-			/*230000001*/ actor_events_logic::np_event_register
+			/*240000001*/ actor_events_logic::np_event_register
 			//# actor_events_logic
-			/*230000002*/, np_eevents_logic_rolelogin
-			/*230000003*/, np_eevents_logic_roleoffline
+			/*240000002*/, np_eevents_logic_rolelogin
+			/*240000003*/, np_eevents_logic_roleoffline
 			//# actor_events_map
-			/*230000004*/, np_eevents_map_leaveview
-			/*230000005*/, np_eevents_map_enterview
+			/*240000004*/, np_eevents_map_leaveview
+			/*240000005*/, np_eevents_map_enterview
 			// ### 事件相关协议 finish ### //
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}

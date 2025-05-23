@@ -310,9 +310,33 @@ namespace ngl
 			}
 		}
 
-		m_stream << R"(		> (EPROTOCOL_TYPE_CUSTOM);
-	}
-}//namespace ngl)";
+		m_stream << R"(		>(EPROTOCOL_TYPE_CUSTOM);)" << std::endl;
+		m_stream << "		tprotocol::set_customs_index(210000000);" << std::endl;
+		m_stream << "		tprotocol::tp_customs::template func<" << std::endl;
+		lindex = 210000000;
+		isdouhao = false;
+		for (std::pair<const std::string, idl_file>& item : lmap)
+		{
+			for (const auto& item2 : item.second.m_struct)
+			{
+				if (item2.name.find("np_") != std::string::npos)
+				{
+					std::cout << item2.name << std::endl;
+					if (isdouhao)
+					{
+						m_stream << std::format("			/*{}*/, mforward<{}>", ++lindex, item2.name) << std::endl;
+					}
+					else
+					{
+						m_stream << std::format("			/*{}*/mforward<{}>", ++lindex, item2.name) << std::endl;
+						isdouhao = true;
+					}
+				}
+			}
+		}
+		m_stream << R"(		>(EPROTOCOL_TYPE_CUSTOM);)" << std::endl;
+		m_stream << "	}" << std::endl;
+		m_stream << "}//namespace ngl" << std::endl;
 		lfile.write(m_stream.str());
 	}
 
