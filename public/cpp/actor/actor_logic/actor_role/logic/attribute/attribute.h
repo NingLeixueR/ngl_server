@@ -207,7 +207,7 @@ namespace ngl
 			{
 				np_eevents_map_death lparm;
 				lparm.m_deathunitid = m_unitid;
-				actor_events_map::trigger_event(eevents_map_death, lparm);
+				actor_events_map::trigger_event(lparm);
 			}
 		}
 

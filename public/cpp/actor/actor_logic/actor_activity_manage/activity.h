@@ -103,6 +103,9 @@ namespace ngl
 			}
 		}
 
+		// # 调用:玩家等级发生变化
+		virtual void rolelevelchange(i64_actorid aroleid, int32_t abeforelevel, int32_t anowlevel);
+
 		// # 调用:活动关闭
 		virtual void finish() 
 		{

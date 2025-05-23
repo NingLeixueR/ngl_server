@@ -96,19 +96,28 @@ namespace ngl
 			/*230000002*/, mforward<np_gm_response>
 			/*230000003*/, np_actorswitch_process<np_actorswitch_process_role>
 		>(EPROTOCOL_TYPE_CUSTOM);
-		
+
+		// ### 事件相关协议 start ### //
 		tprotocol::set_customs_index(240000000);
 		tprotocol::tp_customs::template func <
-			// ### 事件相关协议 start ### //
 			/*240000001*/ actor_events_logic::np_event_register
-			//# actor_events_logic
-			/*240000002*/, np_eevents_logic_rolelogin
-			/*240000003*/, np_eevents_logic_roleoffline
-			//# actor_events_map
-			/*240000004*/, np_eevents_map_leaveview
-			/*240000005*/, np_eevents_map_enterview
-			// ### 事件相关协议 finish ### //
 		>(EPROTOCOL_TYPE_CUSTOM);
+
+		//# actor_events_logic
+		tprotocol::set_customs_index(240001000);
+		tprotocol::tp_customs::template func <
+			/*240001001*/ np_eevents_logic_rolelogin
+			/*240001002*/, np_eevents_logic_roleoffline
+			/*240001003*/, np_eevents_logic_rolelevelchange
+		>(EPROTOCOL_TYPE_CUSTOM);
+
+		//# actor_events_map
+		tprotocol::set_customs_index(240002000);
+		tprotocol::tp_customs::template func <
+			/*240002001*/ np_eevents_map_leaveview
+			/*240002002*/, np_eevents_map_enterview
+		>(EPROTOCOL_TYPE_CUSTOM);
+		// ### 事件相关协议 finish ### //
 	}
 
 	template <typename PB>

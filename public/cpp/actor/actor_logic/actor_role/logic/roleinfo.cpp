@@ -46,8 +46,18 @@ namespace ngl
 		return get_constbrief().m_lv();
 	}
 
+	void roleinfo::change_lv_event(int avalues)
+	{
+		np_eevents_logic_rolelevelchange lparm;
+		lparm.m_actorid = actor()->id_guid();
+		lparm.m_beforelevel = get_brief().m_lv();
+		lparm.m_nowlevel = get_brief().m_lv() + avalues;
+		actor_events_logic::trigger_event(lparm);
+	}
+
 	void roleinfo::change_lv(int avalues)
 	{
+		change_lv_event(avalues);
 		pbdb::db_brief& lrb = get_brief();
 		lrb.set_m_lv(lrb.m_lv() + avalues);
 		sync_actor_brief();
