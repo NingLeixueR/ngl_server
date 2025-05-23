@@ -61,6 +61,10 @@ namespace ngl
 			TF::func(args...);
 		}
 	public:
+		static void func()
+		{
+		}
+
 		static void func(TARG... args)
 		{
 			func2(args...);
