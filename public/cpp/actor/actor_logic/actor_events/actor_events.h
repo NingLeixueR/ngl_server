@@ -158,6 +158,4 @@ namespace ngl
 
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS, int E_EVENTS_COUNT>
 	actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::nullacctor actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>::m_nullacctor;
-
-
 }//namespace ngl
