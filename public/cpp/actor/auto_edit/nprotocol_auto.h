@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-23 10:24:41
+// 创建时间 // 创建时间 25-05-23 16:13:36
 #pragma once
 
 #include "ndb_modular.h"
@@ -57,6 +57,50 @@ namespace ngl
 			/*200000039*/, np_thruput_test
 			/*200000040*/, np_operator_task
 			/*200000041*/, np_operator_task_response
-		> (EPROTOCOL_TYPE_CUSTOM);
+		>(EPROTOCOL_TYPE_CUSTOM);
+		tprotocol::set_customs_index(210000000);
+		tprotocol::tp_customs::template func<
+			/*210000001*/mforward<np_timerparm>
+			/*210000002*/, mforward<np_robot_pram>
+			/*210000003*/, mforward<np_actor_server_register>
+			/*210000004*/, mforward<np_connect_actor_server>
+			/*210000005*/, mforward<np_actornode_register>
+			/*210000006*/, mforward<np_actornode_register_response>
+			/*210000007*/, mforward<np_actorclient_node_connect>
+			/*210000008*/, mforward<np_actornode_update>
+			/*210000009*/, mforward<np_actornode_update_server>
+			/*210000010*/, mforward<np_actornode_update_mass>
+			/*210000011*/, mforward<np_actornode_connect_task>
+			/*210000012*/, mforward<np_actorrole_login>
+			/*210000013*/, mforward<np_gateway_close_session>
+			/*210000014*/, mforward<np_actorswitch_process_role>
+			/*210000015*/, mforward<np_actorswitch_process_plays>
+			/*210000016*/, mforward<np_actorserver_connect>
+			/*210000017*/, mforward<np_actor_session_close>
+			/*210000018*/, mforward<np_actor_disconnect_close>
+			/*210000019*/, mforward<np_actor_gatewayid_updata>
+			/*210000020*/, mforward<np_actor_broadcast>
+			/*210000021*/, mforward<np_actor_reloadcsv>
+			/*210000022*/, mforward<np_actor_csv_verify_version>
+			/*210000023*/, mforward<np_actor_senditem>
+			/*210000024*/, mforward<np_actor_gatewayinfo_updata>
+			/*210000025*/, mforward<np_actor_addmail>
+			/*210000026*/, mforward<np_calendar_actor_activity>
+			/*210000027*/, mforward<np_calendar_actor_respond>
+			/*210000028*/, mforward<np_actor_calendar_requst>
+			/*210000029*/, mforward<np_actor_kcp>
+			/*210000030*/, mforward<np_actor_addnotice>
+			/*210000031*/, mforward<np_actor_close>
+			/*210000032*/, mforward<np_logitem>
+			/*210000033*/, mforward<np_channel_check>
+			/*210000034*/, mforward<np_login_request_info>
+			/*210000035*/, mforward<np_create_example>
+			/*210000036*/, mforward<np_example_entergame_ready>
+			/*210000037*/, mforward<np_example_actorid>
+			/*210000038*/, mforward<np_example_equit>
+			/*210000039*/, mforward<np_thruput_test>
+			/*210000040*/, mforward<np_operator_task>
+			/*210000041*/, mforward<np_operator_task_response>
+		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 }//namespace ngl
