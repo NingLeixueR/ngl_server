@@ -63,7 +63,7 @@ namespace ngl
 	public:
 		static void func(TARG... args)
 		{
-			func(args...);
+			func2(args...);
 		}
 
 		template <typename ...ARG>

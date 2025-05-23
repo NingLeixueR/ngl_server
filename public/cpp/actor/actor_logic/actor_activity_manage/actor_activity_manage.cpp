@@ -55,10 +55,12 @@ namespace ngl
 		// 定时器
 		actor::register_timer<actor_activity_manage>(&actor_activity_manage::timer_handle);
 
+
 		// 绑定自定义np_消息
 		register_handle_custom<actor_activity_manage>::func<
 			np_calendar_actor_activity,
-			mforward<np_operator_task_response>
+			mforward<np_operator_task_response>,
+			np_eevents_logic_rolelogin
 		>(false);
 
 		// 绑定pb消息
