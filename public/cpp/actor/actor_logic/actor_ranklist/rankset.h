@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ttab_ranklist.h"
+#include "ttab_activity.h"
 #include "rank_item.h"
 
 namespace ngl

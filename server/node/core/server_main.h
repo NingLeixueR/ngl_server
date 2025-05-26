@@ -342,6 +342,7 @@ bool start_world()
 	ngl::actor_gmclient::getInstance();
 	ngl::actor_example_match::getInstance();
 	ngl::actor_example_manage::getInstance();
+	ngl::actor_calendar::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;
@@ -445,7 +446,6 @@ bool start_game()
 	ngl::actor_role_manage::getInstance();
 	ngl::actor_create::getInstance();
 	ngl::actor_kcp::getInstance();
-	ngl::actor_calendar::getInstance();
 	ngl::actor_gmclient::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();

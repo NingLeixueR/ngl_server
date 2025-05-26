@@ -80,6 +80,12 @@ namespace ngl
 			assert(ltab != nullptr);
 			return ltab;
 		}
+
+		// # 是否支持排行榜
+		bool is_rank()
+		{
+			return activityid() >= 1000 || activityid() < 2000;
+		}
 	public:
 		// # 调用:活动开启
 		virtual void start() {}
@@ -105,6 +111,12 @@ namespace ngl
 
 		// # 调用:玩家等级发生变化
 		virtual void rolelevelchange(i64_actorid aroleid, int32_t abeforelevel, int32_t anowlevel);
+
+		// # 调用:玩家金币发生变化
+		virtual void rolegoldchange(i64_actorid aroleid, int32_t abeforegold, int32_t anowgold);
+
+		// # db_brief.m_activityvalues发生变化后调用
+		static void brief_activityvalues(i64_actorid aroleid);
 
 		// # 调用:活动关闭
 		virtual void finish() 

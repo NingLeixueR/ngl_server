@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-23 16:14:04
+// 创建时间 // 创建时间 25-05-26 20:57:04
 #pragma once
 
 #include "csv.h"
@@ -135,6 +135,7 @@ enum ECalendarType
 enum EActivity
 {
 	EActivityDrawCompliance = 1,	// 类似咸鱼之王的<<招募达标>>
+	EActivityTopRank = 2,	// 冲榜
 };
 enum ETask
 {
@@ -606,18 +607,19 @@ struct tab_activity
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
-	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>)
+	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>2冲榜)
 	std::vector<int32_t>             m_task                          ; // [index:4][load:y] 活动期间接取任务
 	std::vector<activity_task>       m_taskday                       ; // [index:5][load:y] 活动期间接取任务(第几天接收任务)
+	std::vector<int32_t>             m_ranktype                      ; // [index:6][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)
 	/*********************************/
 	tab_activity();
 	// 序列化反序列化相关
-	def_portocol(tab_activity, m_id, m_name, m_type, m_task, m_taskday)
+	def_portocol(tab_activity, m_id, m_name, m_type, m_task, m_taskday, m_ranktype)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_task,m_taskday);
+		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_task,m_taskday,m_ranktype);
 	}
 };
 struct tab_activity_drawcompliance

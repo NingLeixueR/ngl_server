@@ -45,6 +45,23 @@ namespace ngl
 		send_actor(actor_calendar::actorid(), pro);
 		return true;
 	}
+	bool actor_activity_manage::handle(const message<np_eevents_logic_rolevaluechange>& adata)
+	{
+		const np_eevents_logic_rolevaluechange* lrecv = adata.get_data();
+		for (auto itor = m_activitys.begin(); itor != m_activitys.end(); ++itor)
+		{
+			switch (lrecv->m_type)
+			{
+			case eevents_logic::eevents_logic_rolelevelchange:
+				itor->second->rolelevelchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
+				break;
+			case eevents_logic::eevents_logic_rolegoldchange:
+				itor->second->rolegoldchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
+				break;
+			}
+		}
+		return true;
+	}
 	bool actor_activity_manage::handle(const message<np_eevents_logic_rolelogin>& adata)
 	{
 		const np_eevents_logic_rolelogin* lrecv = adata.get_data();
@@ -52,15 +69,7 @@ namespace ngl
 		{
 			itor->second->rolelogin(lrecv->m_actorid);
 		}
-		return true;
-	}
-	bool actor_activity_manage::handle(const message<np_eevents_logic_rolelevelchange>& adata)
-	{
-		const np_eevents_logic_rolelevelchange* lrecv = adata.get_data();
-		for (auto itor = m_activitys.begin(); itor != m_activitys.end(); ++itor)
-		{
-			itor->second->rolelevelchange(lrecv->m_actorid, lrecv->m_beforelevel, lrecv->m_nowlevel);
-		}
+		activity::brief_activityvalues(lrecv->m_actorid);
 		return true;
 	}
 }//namespace ngl

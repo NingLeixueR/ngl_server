@@ -108,7 +108,7 @@ namespace ngl
 		tprotocol::tp_customs::template func <
 			/*240001001*/ np_eevents_logic_rolelogin
 			/*240001002*/, np_eevents_logic_roleoffline
-			/*240001003*/, np_eevents_logic_rolelevelchange
+			/*240001003*/, np_eevents_logic_rolevaluechange
 		>(EPROTOCOL_TYPE_CUSTOM);
 
 		//# actor_events_map

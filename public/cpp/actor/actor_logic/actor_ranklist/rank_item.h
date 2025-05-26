@@ -6,16 +6,18 @@
 
 namespace ngl
 {
+	struct rank_pair
+	{
+		int64_t m_value = 0;
+		int32_t m_time = 0;
+	};
 	struct rank_item
 	{
-		i64_actorid m_actorid						= nguid::make(); // actor id
-		int64_t	m_values[pbdb::eranklist::count]	= {0};			 // 属性值
-		int32_t	m_time[pbdb::eranklist::count]		= {0};			 // 刷新时间
+		i64_actorid m_actorid = nguid::make();					// actor id
+		std::map<pbdb::eranklist, rank_pair> m_data;			// 属性值/刷新时间
 
 		rank_item() :
-			m_actorid(0),
-			m_values{ 0 },
-			m_time{ 0 }
+			m_actorid(0)
 		{}
 
 		const pbdb::db_brief* get()const
@@ -30,23 +32,23 @@ namespace ngl
 			const std::function<int64_t(const pbdb::db_brief&)>& avalfun
 		)
 		{
-			m_values[atype] = avalfun(abrief);
+			m_data[atype].m_value = avalfun(abrief);
 
 			auto& lmap = aranklist->getconst().m_items();
 			auto itor = lmap.find(atype);
 			if (itor != lmap.end())
 			{
-				if (itor->second.m_value() != m_values[atype])
+				if (itor->second.m_value() != m_data[atype].m_value)
 				{
 					change(atype, aranklist->get());
 				}
 				else
 				{
-					m_time[atype] = itor->second.m_time();
+					m_data[atype].m_time = itor->second.m_time();
 				}
 				return;
 			}
-			m_time[atype] = localtime::gettime();
+			change(atype, aranklist->get());
 		}
 
 		void init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
@@ -55,14 +57,24 @@ namespace ngl
 				{
 					return abrief.m_lv();
 				});
+
+			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1001), [](const pbdb::db_brief& abrief)
+				{
+					auto itor = abrief.m_activityvalues().m_activity_rolelv().find(pbdb::eranklist::activity_lv + 1001);
+					if (itor == abrief.m_activityvalues().m_activity_rolelv().end())
+					{
+						return -1;
+					}
+					return itor->second;
+				});
 		}
 
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
 		{
 			pbdb::rankitem& ltemp = (*aranklist.mutable_m_items())[atype];
-			m_time[atype] = localtime::gettime();
-			ltemp.set_m_time(m_time[atype]);
-			ltemp.set_m_value(m_values[atype]);
+			m_data[atype].m_time = localtime::gettime();
+			ltemp.set_m_time(m_data[atype].m_time);
+			ltemp.set_m_value(m_data[atype].m_value);
 		}
 
 		enum ecompare
@@ -86,10 +98,13 @@ namespace ngl
 		}
 
 		// 值比较 
-		ecompare value_compare(pbdb::eranklist atype, const rank_item& ar)
+		ecompare value_compare(pbdb::eranklist atype, rank_item& ar)
 		{
-			ecompare ltype = value_compare(m_values[atype], ar.m_values[atype]);
-			if (atype == pbdb::eranklist::lv)
+			auto itor = ar.m_data.find(atype);
+			ecompare ltype = value_compare(m_data[atype].m_value, ar.m_data[atype].m_value);
+			if (atype == pbdb::eranklist::lv ||
+				atype == pbdb::eranklist::activity_lv+1001
+				)
 			{//值越大排名越高
 				return ltype;
 			}
@@ -99,13 +114,13 @@ namespace ngl
 			}
 		}
 
-		ecompare time_compare(pbdb::eranklist atype, const rank_item& ar)
+		ecompare time_compare(pbdb::eranklist atype, rank_item& ar)
 		{
-			ecompare ltype = value_compare(m_time[atype], ar.m_time[atype]);
+			ecompare ltype = value_compare(m_data[atype].m_time, ar.m_data[atype].m_time);
 			return (ecompare)(-(int32_t)ltype);
 		}
 
-		bool compare(pbdb::eranklist atype, const rank_item& ar)
+		bool compare(pbdb::eranklist atype, rank_item& ar)
 		{
 			ecompare ltype = value_compare(atype, ar);
 			if (ltype == eless_equal)
@@ -119,14 +134,14 @@ namespace ngl
 			return ltype == eless_bigger ? true : false;
 		}
 
-		bool equal_value(pbdb::eranklist atype, const rank_item& ar)
+		bool equal_value(pbdb::eranklist atype, rank_item& ar)
 		{
-			return m_values[atype] == ar.m_values[atype];
+			return m_data[atype].m_value == ar.m_data[atype].m_value;
 		}
 
 		int64_t value(pbdb::eranklist atype)
 		{
-			return m_values[atype];
+			return m_data[atype].m_value;
 		}
 	};
 }//namespace ngl

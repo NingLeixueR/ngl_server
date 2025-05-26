@@ -40,6 +40,12 @@ message db_account
 	optional int32	m_area			= 5;				// 区服id
 }
 
+message brief_activityvalues
+{
+	map<int32,int32> m_activity_rolelv = 1;		// 活动期间玩家等级变化值 key:活动id value:等级增加值
+	map<int32,int32> m_activity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
+}
+
 // ENUM_DB_BRIEF,			// 玩家简要数据
 message db_brief
 {
@@ -51,6 +57,7 @@ message db_brief
 	optional int32 m_vip			= 6;				// vip等级
 	optional int32 m_notalkutc		= 7;				// 被禁言的期限
 	optional int32 m_createutc		= 8;				// 创角时间
+	optional brief_activityvalues m_activityvalues	= 9;	//活动值
 }
 
 // ENUM_DB_ROLE,			// 玩家数据
@@ -146,6 +153,8 @@ enum eranklist
 	lv			= 0;			// 等级排行(值大排名越高)
 	count		= 1;
 	//活动
+	activity_lv		= 1000000;		// 活动期间玩家等级变化值
+	activity_gold	= 2000000;		// 活动期间玩家金币增加值
 }
 
 message rankitem

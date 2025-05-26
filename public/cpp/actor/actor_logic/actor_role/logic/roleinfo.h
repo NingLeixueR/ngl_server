@@ -29,9 +29,10 @@ namespace ngl
 
 		void sync_actor_brief();
 
+		void change_event(eevents_logic type, int abegvalue, int32_t anowvalue);
+
 		// # µÈ¼¶
 		int32_t lv();
-		void change_lv_event(int avalues);
 		void change_lv(int avalues);
 
 		// # vip
