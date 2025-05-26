@@ -9728,7 +9728,8 @@ class PROBUFF_NET_RANKLIST PROTOBUF_FINAL :
   enum : int {
     kMIscrossFieldNumber = 1,
     kMTypeFieldNumber = 2,
-    kMPageFieldNumber = 3,
+    kMActivityidFieldNumber = 3,
+    kMPageFieldNumber = 4,
   };
   // bool m_iscross = 1;
   bool has_m_iscross() const;
@@ -9756,7 +9757,20 @@ class PROBUFF_NET_RANKLIST PROTOBUF_FINAL :
   void _internal_set_m_type(::pbdb::eranklist value);
   public:
 
-  // int32 m_page = 3;
+  // int32 m_activityid = 3;
+  bool has_m_activityid() const;
+  private:
+  bool _internal_has_m_activityid() const;
+  public:
+  void clear_m_activityid();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_activityid() const;
+  void set_m_activityid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_activityid() const;
+  void _internal_set_m_activityid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 m_page = 4;
   bool has_m_page() const;
   private:
   bool _internal_has_m_page() const;
@@ -9780,6 +9794,7 @@ class PROBUFF_NET_RANKLIST PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   bool m_iscross_;
   int m_type_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_activityid_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_page_;
   friend struct ::TableStruct_net_2eproto;
 };
@@ -17598,9 +17613,37 @@ inline void PROBUFF_NET_RANKLIST::set_m_type(::pbdb::eranklist value) {
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST.m_type)
 }
 
-// int32 m_page = 3;
-inline bool PROBUFF_NET_RANKLIST::_internal_has_m_page() const {
+// int32 m_activityid = 3;
+inline bool PROBUFF_NET_RANKLIST::_internal_has_m_activityid() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_RANKLIST::has_m_activityid() const {
+  return _internal_has_m_activityid();
+}
+inline void PROBUFF_NET_RANKLIST::clear_m_activityid() {
+  m_activityid_ = 0;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST::_internal_m_activityid() const {
+  return m_activityid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST::m_activityid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_RANKLIST.m_activityid)
+  return _internal_m_activityid();
+}
+inline void PROBUFF_NET_RANKLIST::_internal_set_m_activityid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  m_activityid_ = value;
+}
+inline void PROBUFF_NET_RANKLIST::set_m_activityid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_activityid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RANKLIST.m_activityid)
+}
+
+// int32 m_page = 4;
+inline bool PROBUFF_NET_RANKLIST::_internal_has_m_page() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
   return value;
 }
 inline bool PROBUFF_NET_RANKLIST::has_m_page() const {
@@ -17608,7 +17651,7 @@ inline bool PROBUFF_NET_RANKLIST::has_m_page() const {
 }
 inline void PROBUFF_NET_RANKLIST::clear_m_page() {
   m_page_ = 0;
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST::_internal_m_page() const {
   return m_page_;
@@ -17618,7 +17661,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 PROBUFF_NET_RANKLIST::m_page() const {
   return _internal_m_page();
 }
 inline void PROBUFF_NET_RANKLIST::_internal_set_m_page(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   m_page_ = value;
 }
 inline void PROBUFF_NET_RANKLIST::set_m_page(::PROTOBUF_NAMESPACE_ID::int32 value) {

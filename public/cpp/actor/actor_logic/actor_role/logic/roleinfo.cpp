@@ -41,24 +41,24 @@ namespace ngl
 		return get_role().getconst().m_base();
 	}
 
+	void roleinfo::change_event(eevents_logic type, int abegvalue, int32_t anowvalue)
+	{
+		np_eevents_logic_rolevaluechange lparm(type);
+		lparm.m_actorid = actor()->id_guid();
+		lparm.m_beforevalue = abegvalue;
+		lparm.m_nowvalue = anowvalue;
+		actor_events_logic::trigger_event(lparm);
+	}
+
 	int32_t roleinfo::lv()
 	{
 		return get_constbrief().m_lv();
 	}
 
-	void roleinfo::change_lv_event(int avalues)
-	{
-		np_eevents_logic_rolelevelchange lparm;
-		lparm.m_actorid = actor()->id_guid();
-		lparm.m_beforelevel = get_brief().m_lv();
-		lparm.m_nowlevel = get_brief().m_lv() + avalues;
-		actor_events_logic::trigger_event(lparm);
-	}
-
 	void roleinfo::change_lv(int avalues)
 	{
-		change_lv_event(avalues);
 		pbdb::db_brief& lrb = get_brief();
+		change_event(eevents_logic::eevents_logic_rolelevelchange, lrb.m_lv(), lrb.m_lv() + avalues);
 		lrb.set_m_lv(lrb.m_lv() + avalues);
 		sync_actor_brief();
 		static_task::update_change(actor(), ETaskRoleLv, lrb.m_lv());
@@ -97,6 +97,7 @@ namespace ngl
 	void roleinfo::change_gold(int avalues)
 	{
 		pbdb::db_brief& lrb = get_brief();
+		change_event(eevents_logic::eevents_logic_rolelevelchange, lrb.m_moneygold(), lrb.m_moneygold() + avalues);
 		lrb.set_m_moneygold(lrb.m_moneygold() + avalues);
 		sync_actor_brief();
 	}

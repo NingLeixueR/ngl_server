@@ -2,10 +2,14 @@
 
 namespace ngl
 {
+
+
 	ranklist::ranklist()
 	{
 		m_ranks[pbdb::eranklist::lv] = std::make_unique<rankset<pbdb::eranklist::lv>>();
 		m_ranks[pbdb::eranklist::lv]->set_count(ttab_specialid::m_ranklistmaxcount);
+
+		create_activity_rank<pbdb::eranklist::activity_lv + 1001>();
 	}
 
 	void ranklist::set_id()
@@ -33,8 +37,8 @@ namespace ngl
 			auto& lmap = *lpdata->mutable_m_items();
 			for (int i = 0; i < pbdb::eranklist::count; ++i)
 			{
-				lmap[i].set_m_time(litem.m_time[i]);
-				lmap[i].set_m_value(litem.m_values[i]);
+				lmap[i].set_m_time(litem.m_data[(pbdb::eranklist)i].m_time);
+				lmap[i].set_m_value(litem.m_data[(pbdb::eranklist)i].m_value);
 			}
 			lpdb_ranklist = get_rank(abrief.m_id());
 			assert(lpdb_ranklist != nullptr);
@@ -85,8 +89,9 @@ namespace ngl
 
 		for (const std::pair<const int32_t, pbdb::rankitem>& ritem : aitem.m_items())
 		{
-			ltempitem.m_time[(pbdb::eranklist)ritem.first] = ritem.second.m_time();
-			ltempitem.m_values[(pbdb::eranklist)ritem.first] = ritem.second.m_value();
+			rank_pair& lpair = ltempitem.m_data[(pbdb::eranklist)ritem.first];
+			lpair.m_time = ritem.second.m_time();
+			lpair.m_value = ritem.second.m_value();
 		}
 
 		for (int32_t i = 0; i < pbdb::eranklist::count; ++i)
@@ -107,7 +112,16 @@ namespace ngl
 
 		tdb_brief::nsp_cli<actor_ranklist>::set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
-				update_value(abrief, afirstsynchronize);
+				/*for (const auto& item : abrief.m_activityvalues().m_activity_rolelv())
+				{
+					pbdb::eranklist ltype = (pbdb::eranklist)(pbdb::activity_lv + item.first);
+					if (!m_ranks.contains(ltype))
+					{
+						m_ranks[ltype] = create_rankset::create(pbdb::activity_lv, aid);
+						m_ranks[ltype]->set_count(ttab_specialid::m_ranklistmaxcount);
+					}
+				}*/
+				update_value(abrief, afirstsynchronize);				
 			});
 	}
 
@@ -141,7 +155,7 @@ namespace ngl
 		return pro;
 	}
 
-	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)
+	void ranklist::sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage)
 	{
 		auto pro = get_ranklist(aroleid, atype, apage);
 		actor::send_client(aroleid, pro);

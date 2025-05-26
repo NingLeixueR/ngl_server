@@ -15,7 +15,7 @@
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_bag_db_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_brief_db_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_brief_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_family_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_notice_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_db_role_db_2eproto;
@@ -2059,10 +2059,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_net_2eproto::offsets[] PROTOBU
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST, m_iscross_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST, m_type_),
+  PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST, m_activityid_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST, m_page_),
   0,
   1,
   2,
+  3,
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2324,29 +2326,29 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 475, 481, sizeof(::pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE)},
   { 482, 489, sizeof(::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE_MItemsEntry_DoNotUse)},
   { 491, -1, sizeof(::pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE)},
-  { 497, 505, sizeof(::pbnet::PROBUFF_NET_RANKLIST)},
-  { 508, 518, sizeof(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE)},
-  { 523, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND)},
-  { 528, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND_RESPONSE)},
-  { 535, 541, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD)},
-  { 542, 549, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE)},
-  { 551, 558, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD)},
-  { 560, 568, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE)},
-  { 571, 577, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE)},
-  { 578, 585, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE)},
-  { 587, 595, sizeof(::pbnet::PROBUFF_NET_ROLESTAT)},
-  { 598, 605, sizeof(::pbnet::VECTOR2)},
-  { 607, 615, sizeof(::pbnet::VECTOR3)},
-  { 618, 627, sizeof(::pbnet::UNIT_POSITION)},
-  { 631, 638, sizeof(::pbnet::UnitAttribute)},
-  { 640, 647, sizeof(::pbnet::UnitModule)},
-  { 649, 659, sizeof(::pbnet::UNIT)},
-  { 664, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE)},
-  { 670, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_UNIT)},
-  { 676, 683, sizeof(::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW)},
-  { 685, 692, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse)},
-  { 694, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION)},
-  { 700, 706, sizeof(::pbnet::PROBUFF_NET_CHANGE_ANGLE)},
+  { 497, 506, sizeof(::pbnet::PROBUFF_NET_RANKLIST)},
+  { 510, 520, sizeof(::pbnet::PROBUFF_NET_RANKLIST_RESPONSE)},
+  { 525, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND)},
+  { 530, -1, sizeof(::pbnet::PROBUFF_NET_FRIEND_RESPONSE)},
+  { 537, 543, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD)},
+  { 544, 551, sizeof(::pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE)},
+  { 553, 560, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD)},
+  { 562, 570, sizeof(::pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE)},
+  { 573, 579, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE)},
+  { 580, 587, sizeof(::pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE)},
+  { 589, 597, sizeof(::pbnet::PROBUFF_NET_ROLESTAT)},
+  { 600, 607, sizeof(::pbnet::VECTOR2)},
+  { 609, 617, sizeof(::pbnet::VECTOR3)},
+  { 620, 629, sizeof(::pbnet::UNIT_POSITION)},
+  { 633, 640, sizeof(::pbnet::UnitAttribute)},
+  { 642, 649, sizeof(::pbnet::UnitModule)},
+  { 651, 661, sizeof(::pbnet::UNIT)},
+  { 666, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_ATTRIBUTE)},
+  { 672, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_UNIT)},
+  { 678, 685, sizeof(::pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW)},
+  { 687, 694, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION_MPositionEntry_DoNotUse)},
+  { 696, -1, sizeof(::pbnet::PROBUFF_NET_SYNC_POSITION)},
+  { 702, 708, sizeof(::pbnet::PROBUFF_NET_CHANGE_ANGLE)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -2573,81 +2575,82 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "\001\n PROBUFF_NET_REWARD_ITEM_RESPONSE\022D\n\007m"
   "_items\030\001 \003(\01323.pbnet.PROBUFF_NET_REWARD_"
   "ITEM_RESPONSE.MItemsEntry\032-\n\013MItemsEntry"
-  "\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\005:\0028\001\"\215\001\n\024PRO"
+  "\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\005:\0028\001\"\271\001\n\024PRO"
   "BUFF_NET_RANKLIST\022\026\n\tm_iscross\030\001 \001(\010H\000\210\001"
   "\001\022$\n\006m_type\030\002 \001(\0162\017.pbdb.eranklistH\001\210\001\001\022"
-  "\023\n\006m_page\030\003 \001(\005H\002\210\001\001B\014\n\n_m_iscrossB\t\n\007_m"
-  "_typeB\t\n\007_m_page\"\333\001\n\035PROBUFF_NET_RANKLIS"
-  "T_RESPONSE\022$\n\006m_type\030\001 \001(\0162\017.pbdb.erankl"
-  "istH\000\210\001\001\022\037\n\007m_items\030\002 \003(\0132\016.pbdb.db_brie"
-  "f\022\023\n\006m_page\030\003 \001(\005H\001\210\001\001\022\024\n\007m_count\030\004 \001(\005H"
-  "\002\210\001\001\022\027\n\nm_rolerank\030\005 \001(\005H\003\210\001\001B\t\n\007_m_type"
-  "B\t\n\007_m_pageB\n\n\010_m_countB\r\n\013_m_rolerank\"\024"
-  "\n\022PROBUFF_NET_FRIEND\"h\n\033PROBUFF_NET_FRIE"
-  "ND_RESPONSE\022!\n\tm_friends\030\001 \003(\0132\016.pbdb.db"
-  "_brief\022&\n\016m_applyfriends\030\002 \003(\0132\016.pbdb.db"
-  "_brief\">\n\026PROBUFF_NET_FRIEND_ADD\022\026\n\tm_fr"
-  "iedid\030\001 \001(\003H\000\210\001\001B\014\n\n_m_friedid\"g\n\037PROBUF"
-  "F_NET_FRIEND_ADD_RESPONSE\022\026\n\tm_friedid\030\001"
-  " \001(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\005H\001\210\001\001B\014\n\n_m_fri"
-  "edidB\t\n\007_m_stat\"i\n\035PROBUFF_NET_FRIEND_RA"
-  "TIFY_ADD\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\025\n\010m_ra"
-  "tify\030\002 \001(\010H\001\210\001\001B\014\n\n_m_friedidB\013\n\t_m_rati"
-  "fy\"\222\001\n&PROBUFF_NET_FRIEND_RATIFY_ADD_RES"
-  "PONSE\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\025\n\010m_ratif"
-  "y\030\002 \001(\010H\001\210\001\001\022\023\n\006m_stat\030\003 \001(\005H\002\210\001\001B\014\n\n_m_"
-  "friedidB\013\n\t_m_ratifyB\t\n\007_m_stat\"@\n\030PROBU"
-  "FF_NET_FRIEND_ERASE\022\026\n\tm_friedid\030\001 \001(\003H\000"
-  "\210\001\001B\014\n\n_m_friedid\"i\n!PROBUFF_NET_FRIEND_"
-  "ERASE_RESPONSE\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\023"
-  "\n\006m_stat\030\002 \001(\005H\001\210\001\001B\014\n\n_m_friedidB\t\n\007_m_"
-  "stat\"\230\002\n\024PROBUFF_NET_ROLESTAT\0225\n\006m_stat\030"
-  "\001 \001(\0162 .pbnet.PROBUFF_NET_ROLESTAT.statH"
-  "\000\210\001\001\022@\n\013m_logicstat\030\002 \001(\0162&.pbnet.PROBUF"
-  "F_NET_ROLESTAT.logic_statH\001\210\001\001\022\025\n\010m_role"
-  "id\030\003 \001(\003H\002\210\001\001\"\037\n\004stat\022\n\n\006online\020\000\022\013\n\007off"
-  "line\020\001\"\'\n\nlogic_stat\022\013\n\007friends\020\000\022\014\n\010fam"
-  "ilyer\020\001B\t\n\007_m_statB\016\n\014_m_logicstatB\013\n\t_m"
-  "_roleid\"=\n\007VECTOR2\022\020\n\003m_x\030\001 \001(\005H\000\210\001\001\022\020\n\003"
-  "m_y\030\002 \001(\005H\001\210\001\001B\006\n\004_m_xB\006\n\004_m_y\"W\n\007VECTOR"
-  "3\022\020\n\003m_x\030\001 \001(\005H\000\210\001\001\022\020\n\003m_y\030\002 \001(\005H\001\210\001\001\022\020\n"
-  "\003m_z\030\003 \001(\005H\002\210\001\001B\006\n\004_m_xB\006\n\004_m_yB\006\n\004_m_z\""
-  "\247\001\n\rUNIT_POSITION\022\021\n\004m_id\030\002 \001(\003H\000\210\001\001\022\'\n\n"
-  "m_position\030\003 \001(\0132\016.pbnet.VECTOR2H\001\210\001\001\022\024\n"
-  "\007m_angle\030\004 \001(\005H\002\210\001\001\022\024\n\007m_speed\030\005 \001(\005H\003\210\001"
-  "\001B\007\n\005_m_idB\r\n\013_m_positionB\n\n\010_m_angleB\n\n"
-  "\010_m_speed\"Q\n\rUnitAttribute\022\023\n\006m_type\030\001 \001"
-  "(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\003H\001\210\001\001B\t\n\007_m_type"
-  "B\n\n\010_m_value\"W\n\nUnitModule\022\024\n\007m_mtype\030\001 "
-  "\001(\005H\000\210\001\001\022\'\n\tm_modules\030\002 \003(\0132\024.pbnet.Unit"
-  "AttributeB\n\n\010_m_mtype\"\346\001\n\004UNIT\022!\n\006m_type"
-  "\030\001 \001(\0162\014.pbnet.eunitH\000\210\001\001\022\021\n\004m_id\030\002 \001(\003H"
-  "\001\210\001\001\022-\n\nm_position\030\003 \001(\0132\024.pbnet.UNIT_PO"
-  "SITIONH\002\210\001\001\022$\n\tm_modules\030\004 \003(\0132\021.pbnet.U"
-  "nitModule\022%\n\006m_stat\030\005 \001(\0162\020.pbnet.eunits"
-  "tatH\003\210\001\001B\t\n\007_m_typeB\007\n\005_m_idB\r\n\013_m_posit"
-  "ionB\t\n\007_m_stat\"B\n\032PROBUFF_NET_SYNC_ATTRI"
-  "BUTE\022$\n\tm_modules\030\001 \003(\0132\021.pbnet.UnitModu"
-  "le\"5\n\025PROBUFF_NET_SYNC_UNIT\022\034\n\007m_units\030\001"
-  " \003(\0132\013.pbnet.UNIT\"U\n\034PROBUFF_NET_ENTER_L"
-  "EAVE_VIEW\022\026\n\tm_isenter\030\001 \001(\010H\000\210\001\001\022\017\n\007m_u"
-  "nits\030\002 \003(\003B\014\n\n_m_isenter\"\250\001\n\031PROBUFF_NET"
-  "_SYNC_POSITION\022C\n\nm_position\030\001 \003(\0132/.pbn"
-  "et.PROBUFF_NET_SYNC_POSITION.MPositionEn"
-  "try\032F\n\016MPositionEntry\022\013\n\003key\030\001 \001(\003\022#\n\005va"
-  "lue\030\002 \001(\0132\024.pbnet.UNIT_POSITION:\0028\001\"X\n\030P"
-  "ROBUFF_NET_CHANGE_ANGLE\022-\n\nm_position\030\001 "
-  "\001(\0132\024.pbnet.UNIT_POSITIONH\000\210\001\001B\r\n\013_m_pos"
-  "ition*F\n\017enum_logic_chat\022\021\n\rget_chat_lis"
-  "t\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020\002*q\n"
-  "\021enum_chat_channel\022\022\n\016enum_chat_zero\020\000\022\026"
-  "\n\022enum_chat_ordinary\020\001\022\034\n\030enum_chat_cros"
-  "s_ordinary\020\002\022\022\n\016enum_chat_none\020\003*<\n\005euni"
-  "t\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001\022\020\n\014"
-  "eunit_region\020\002*s\n\teunitstat\022\024\n\020eunitstat"
-  "_normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030eunit"
-  "stat_nonormalattack\020\002\022\034\n\030eunitstat_norel"
-  "easeskill\020\004B\002H\001b\006proto3"
+  "\031\n\014m_activityid\030\003 \001(\005H\002\210\001\001\022\023\n\006m_page\030\004 \001"
+  "(\005H\003\210\001\001B\014\n\n_m_iscrossB\t\n\007_m_typeB\017\n\r_m_a"
+  "ctivityidB\t\n\007_m_page\"\333\001\n\035PROBUFF_NET_RAN"
+  "KLIST_RESPONSE\022$\n\006m_type\030\001 \001(\0162\017.pbdb.er"
+  "anklistH\000\210\001\001\022\037\n\007m_items\030\002 \003(\0132\016.pbdb.db_"
+  "brief\022\023\n\006m_page\030\003 \001(\005H\001\210\001\001\022\024\n\007m_count\030\004 "
+  "\001(\005H\002\210\001\001\022\027\n\nm_rolerank\030\005 \001(\005H\003\210\001\001B\t\n\007_m_"
+  "typeB\t\n\007_m_pageB\n\n\010_m_countB\r\n\013_m_rolera"
+  "nk\"\024\n\022PROBUFF_NET_FRIEND\"h\n\033PROBUFF_NET_"
+  "FRIEND_RESPONSE\022!\n\tm_friends\030\001 \003(\0132\016.pbd"
+  "b.db_brief\022&\n\016m_applyfriends\030\002 \003(\0132\016.pbd"
+  "b.db_brief\">\n\026PROBUFF_NET_FRIEND_ADD\022\026\n\t"
+  "m_friedid\030\001 \001(\003H\000\210\001\001B\014\n\n_m_friedid\"g\n\037PR"
+  "OBUFF_NET_FRIEND_ADD_RESPONSE\022\026\n\tm_fried"
+  "id\030\001 \001(\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\005H\001\210\001\001B\014\n\n_m"
+  "_friedidB\t\n\007_m_stat\"i\n\035PROBUFF_NET_FRIEN"
+  "D_RATIFY_ADD\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\025\n\010"
+  "m_ratify\030\002 \001(\010H\001\210\001\001B\014\n\n_m_friedidB\013\n\t_m_"
+  "ratify\"\222\001\n&PROBUFF_NET_FRIEND_RATIFY_ADD"
+  "_RESPONSE\022\026\n\tm_friedid\030\001 \001(\003H\000\210\001\001\022\025\n\010m_r"
+  "atify\030\002 \001(\010H\001\210\001\001\022\023\n\006m_stat\030\003 \001(\005H\002\210\001\001B\014\n"
+  "\n_m_friedidB\013\n\t_m_ratifyB\t\n\007_m_stat\"@\n\030P"
+  "ROBUFF_NET_FRIEND_ERASE\022\026\n\tm_friedid\030\001 \001"
+  "(\003H\000\210\001\001B\014\n\n_m_friedid\"i\n!PROBUFF_NET_FRI"
+  "END_ERASE_RESPONSE\022\026\n\tm_friedid\030\001 \001(\003H\000\210"
+  "\001\001\022\023\n\006m_stat\030\002 \001(\005H\001\210\001\001B\014\n\n_m_friedidB\t\n"
+  "\007_m_stat\"\230\002\n\024PROBUFF_NET_ROLESTAT\0225\n\006m_s"
+  "tat\030\001 \001(\0162 .pbnet.PROBUFF_NET_ROLESTAT.s"
+  "tatH\000\210\001\001\022@\n\013m_logicstat\030\002 \001(\0162&.pbnet.PR"
+  "OBUFF_NET_ROLESTAT.logic_statH\001\210\001\001\022\025\n\010m_"
+  "roleid\030\003 \001(\003H\002\210\001\001\"\037\n\004stat\022\n\n\006online\020\000\022\013\n"
+  "\007offline\020\001\"\'\n\nlogic_stat\022\013\n\007friends\020\000\022\014\n"
+  "\010familyer\020\001B\t\n\007_m_statB\016\n\014_m_logicstatB\013"
+  "\n\t_m_roleid\"=\n\007VECTOR2\022\020\n\003m_x\030\001 \001(\005H\000\210\001\001"
+  "\022\020\n\003m_y\030\002 \001(\005H\001\210\001\001B\006\n\004_m_xB\006\n\004_m_y\"W\n\007VE"
+  "CTOR3\022\020\n\003m_x\030\001 \001(\005H\000\210\001\001\022\020\n\003m_y\030\002 \001(\005H\001\210\001"
+  "\001\022\020\n\003m_z\030\003 \001(\005H\002\210\001\001B\006\n\004_m_xB\006\n\004_m_yB\006\n\004_"
+  "m_z\"\247\001\n\rUNIT_POSITION\022\021\n\004m_id\030\002 \001(\003H\000\210\001\001"
+  "\022\'\n\nm_position\030\003 \001(\0132\016.pbnet.VECTOR2H\001\210\001"
+  "\001\022\024\n\007m_angle\030\004 \001(\005H\002\210\001\001\022\024\n\007m_speed\030\005 \001(\005"
+  "H\003\210\001\001B\007\n\005_m_idB\r\n\013_m_positionB\n\n\010_m_angl"
+  "eB\n\n\010_m_speed\"Q\n\rUnitAttribute\022\023\n\006m_type"
+  "\030\001 \001(\005H\000\210\001\001\022\024\n\007m_value\030\002 \001(\003H\001\210\001\001B\t\n\007_m_"
+  "typeB\n\n\010_m_value\"W\n\nUnitModule\022\024\n\007m_mtyp"
+  "e\030\001 \001(\005H\000\210\001\001\022\'\n\tm_modules\030\002 \003(\0132\024.pbnet."
+  "UnitAttributeB\n\n\010_m_mtype\"\346\001\n\004UNIT\022!\n\006m_"
+  "type\030\001 \001(\0162\014.pbnet.eunitH\000\210\001\001\022\021\n\004m_id\030\002 "
+  "\001(\003H\001\210\001\001\022-\n\nm_position\030\003 \001(\0132\024.pbnet.UNI"
+  "T_POSITIONH\002\210\001\001\022$\n\tm_modules\030\004 \003(\0132\021.pbn"
+  "et.UnitModule\022%\n\006m_stat\030\005 \001(\0162\020.pbnet.eu"
+  "nitstatH\003\210\001\001B\t\n\007_m_typeB\007\n\005_m_idB\r\n\013_m_p"
+  "ositionB\t\n\007_m_stat\"B\n\032PROBUFF_NET_SYNC_A"
+  "TTRIBUTE\022$\n\tm_modules\030\001 \003(\0132\021.pbnet.Unit"
+  "Module\"5\n\025PROBUFF_NET_SYNC_UNIT\022\034\n\007m_uni"
+  "ts\030\001 \003(\0132\013.pbnet.UNIT\"U\n\034PROBUFF_NET_ENT"
+  "ER_LEAVE_VIEW\022\026\n\tm_isenter\030\001 \001(\010H\000\210\001\001\022\017\n"
+  "\007m_units\030\002 \003(\003B\014\n\n_m_isenter\"\250\001\n\031PROBUFF"
+  "_NET_SYNC_POSITION\022C\n\nm_position\030\001 \003(\0132/"
+  ".pbnet.PROBUFF_NET_SYNC_POSITION.MPositi"
+  "onEntry\032F\n\016MPositionEntry\022\013\n\003key\030\001 \001(\003\022#"
+  "\n\005value\030\002 \001(\0132\024.pbnet.UNIT_POSITION:\0028\001\""
+  "X\n\030PROBUFF_NET_CHANGE_ANGLE\022-\n\nm_positio"
+  "n\030\001 \001(\0132\024.pbnet.UNIT_POSITIONH\000\210\001\001B\r\n\013_m"
+  "_position*F\n\017enum_logic_chat\022\021\n\rget_chat"
+  "_list\020\000\022\016\n\nchat_speak\020\001\022\020\n\014updata_speck\020"
+  "\002*q\n\021enum_chat_channel\022\022\n\016enum_chat_zero"
+  "\020\000\022\026\n\022enum_chat_ordinary\020\001\022\034\n\030enum_chat_"
+  "cross_ordinary\020\002\022\022\n\016enum_chat_none\020\003*<\n\005"
+  "eunit\022\016\n\neunit_role\020\000\022\021\n\reunit_monster\020\001"
+  "\022\020\n\014eunit_region\020\002*s\n\teunitstat\022\024\n\020eunit"
+  "stat_normal\020\000\022\024\n\020eunitstat_nomove\020\001\022\034\n\030e"
+  "unitstat_nonormalattack\020\002\022\034\n\030eunitstat_n"
+  "oreleaseskill\020\004B\002H\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_net_2eproto_deps[1] = {
   &::descriptor_table_db_2eproto,
@@ -2739,7 +2742,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_net
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_net_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_net_2eproto = {
-  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 8463,
+  false, false, descriptor_table_protodef_net_2eproto, "net.proto", 8507,
   &descriptor_table_net_2eproto_once, descriptor_table_net_2eproto_sccs, descriptor_table_net_2eproto_deps, 83, 1,
   schemas, file_default_instances, TableStruct_net_2eproto::offsets,
   file_level_metadata_net_2eproto, 83, file_level_enum_descriptors_net_2eproto, file_level_service_descriptors_net_2eproto,
@@ -16431,8 +16434,11 @@ class PROBUFF_NET_RANKLIST::_Internal {
   static void set_has_m_type(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_page(HasBits* has_bits) {
+  static void set_has_m_activityid(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
+  }
+  static void set_has_m_page(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
   }
 };
 
@@ -16490,7 +16496,7 @@ void PROBUFF_NET_RANKLIST::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     ::memset(&m_iscross_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&m_page_) -
         reinterpret_cast<char*>(&m_iscross_)) + sizeof(m_page_));
@@ -16524,9 +16530,17 @@ const char* PROBUFF_NET_RANKLIST::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           _internal_set_m_type(static_cast<::pbdb::eranklist>(val));
         } else goto handle_unusual;
         continue;
-      // int32 m_page = 3;
+      // int32 m_activityid = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          _Internal::set_has_m_activityid(&has_bits);
+          m_activityid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 m_page = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           _Internal::set_has_m_page(&has_bits);
           m_page_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -16574,10 +16588,16 @@ failure:
       2, this->_internal_m_type(), target);
   }
 
-  // int32 m_page = 3;
+  // int32 m_activityid = 3;
+  if (_internal_has_m_activityid()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_activityid(), target);
+  }
+
+  // int32 m_page = 4;
   if (_internal_has_m_page()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_page(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_m_page(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -16597,7 +16617,7 @@ size_t PROBUFF_NET_RANKLIST::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     // bool m_iscross = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 + 1;
@@ -16609,8 +16629,15 @@ size_t PROBUFF_NET_RANKLIST::ByteSizeLong() const {
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_type());
     }
 
-    // int32 m_page = 3;
+    // int32 m_activityid = 3;
     if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_m_activityid());
+    }
+
+    // int32 m_page = 4;
+    if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_m_page());
@@ -16649,7 +16676,7 @@ void PROBUFF_NET_RANKLIST::MergeFrom(const PROBUFF_NET_RANKLIST& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       m_iscross_ = from.m_iscross_;
     }
@@ -16657,6 +16684,9 @@ void PROBUFF_NET_RANKLIST::MergeFrom(const PROBUFF_NET_RANKLIST& from) {
       m_type_ = from.m_type_;
     }
     if (cached_has_bits & 0x00000004u) {
+      m_activityid_ = from.m_activityid_;
+    }
+    if (cached_has_bits & 0x00000008u) {
       m_page_ = from.m_page_;
     }
     _has_bits_[0] |= cached_has_bits;

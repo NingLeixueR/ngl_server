@@ -92,10 +92,73 @@ namespace ngl
 
 	void activity::rolelevelchange(i64_actorid aroleid, int32_t abeforelevel, int32_t anowlevel)
 	{
+		if (!is_rank())
+		{
+			return;
+		}
+		const tab_activity* lpactivity = tab();
+		if (lpactivity == nullptr)
+		{
+			return;
+		}
+
 		actor_activity_manage::getInstance().log_error()->print(
 			"activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]",
 			activityid(), aroleid, abeforelevel, anowlevel
 		);
+
+		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
+			{
+				return atype == pbdb::eranklist::activity_lv;
+			});
+		if (itor == lpactivity->m_ranktype.end())
+		{
+			return;
+		}
+		// 活动期间产生等级变化
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::get(aroleid);
+		if (lpbrief != nullptr)
+		{
+			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolelv())[activityid()] += anowlevel - abeforelevel;
+		}
+	}
+
+	void activity::rolegoldchange(i64_actorid aroleid, int32_t abeforegold, int32_t anowgold)
+	{
+		if (!is_rank())
+		{
+			return;
+		}
+		const tab_activity* lpactivity = tab();
+		if (lpactivity == nullptr)
+		{
+			return;
+		}
+
+		actor_activity_manage::getInstance().log_error()->print(
+			"activity [{}] rolegoldchange roleid:[{}] beforegold[{}] nowgold[{}]",
+			activityid(), aroleid, abeforegold, anowgold
+		);
+
+		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
+			{
+				return atype == pbdb::eranklist::activity_lv;
+			});
+		if (itor == lpactivity->m_ranktype.end())
+		{
+			return;
+		}
+		// 活动期间产生等级变化
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::get(aroleid);
+		if (lpbrief != nullptr)
+		{
+			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolegold())[activityid()] += anowgold - abeforegold;
+		}
+	}
+
+	void activity::brief_activityvalues(i64_actorid aroleid)
+	{
+		tdb_brief::nsp_cli<actor_activity_manage>::change(aroleid);
 	}
 
 }//namespace ngl

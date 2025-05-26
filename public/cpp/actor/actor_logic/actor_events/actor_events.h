@@ -99,14 +99,14 @@ namespace ngl
 		class register_actor_event
 		{
 		public:
-			static void func(E_EVENTS atype, i64_actorid aactorid)
+			static void func(i64_actorid aactorid, E_EVENTS atype)
 			{
 				auto pro = std::make_shared<np_event_register>();
 				pro->m_vecpair.push_back({ atype, aactorid });
 				actor::static_send_actor(actorid(), aactorid, pro);
 			}
 		};
-		using tfun = ngl::template_arg_s<register_actor_event, E_EVENTS, i64_actorid>;
+		using tfun = ngl::template_arg_event<register_actor_event>;
 
 		class nullacctor
 		{

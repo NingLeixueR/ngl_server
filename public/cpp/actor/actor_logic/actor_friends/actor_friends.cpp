@@ -50,8 +50,9 @@ namespace ngl
 	void actor_friends::loaddb_finish(bool adbishave)
 	{
 		actor_events_logic::tfun::func<>(
-			eevents_logic_rolelogin, actorid(),
-			eevents_logic_roleoffline, actorid()
+			actorid()
+			, eevents_logic_rolelogin
+			, eevents_logic_roleoffline
 		);
 	}
 

@@ -7,9 +7,11 @@ namespace ngl
 	// 事件枚举类型
 	enum eevents_logic
 	{
+		eevents_logic_null,				// 未赋值
 		eevents_logic_rolelogin,		// 玩家登陆
 		eevents_logic_roleoffline,		// 玩家下线
 		eevents_logic_rolelevelchange,	// 玩家等级发生变化
+		eevents_logic_rolegoldchange,	// 玩家金币发生变化
 		eevents_logic_count,
 	};
 
@@ -50,21 +52,28 @@ namespace ngl
 		def_portocol(np_eevents_logic_roleoffline, m_type, m_actorid)
 	};
 
-	class np_eevents_logic_rolelevelchange :
+	class np_eevents_logic_rolevaluechange :
 		public np_eevents_logic
 	{
 	public:
-		np_eevents_logic_rolelevelchange() :
-			np_eevents_logic(eevents_logic_rolelevelchange),
+		np_eevents_logic_rolevaluechange() :
+			np_eevents_logic(eevents_logic_null),
 			m_actorid(0),
-			m_beforelevel(0),
-			m_nowlevel(0)
+			m_beforevalue(0),
+			m_nowvalue(0)
+		{}
+
+		np_eevents_logic_rolevaluechange(eevents_logic atype) :
+			np_eevents_logic(atype),
+			m_actorid(0),
+			m_beforevalue(0),
+			m_nowvalue(0)
 		{}
 
 		i64_actorid m_actorid;
-		int32_t m_beforelevel;
-		int32_t m_nowlevel;
-		def_portocol(np_eevents_logic_rolelevelchange, m_type, m_actorid, m_beforelevel, m_nowlevel)
+		int32_t m_beforevalue;
+		int32_t m_nowvalue;
+		def_portocol(np_eevents_logic_rolevaluechange, m_type, m_actorid, m_beforevalue, m_nowvalue)
 	};
 
 	using actor_events_logic = actor_events<ENUM_EVENTS_LOGIC, eevents_logic, eevents_logic_count>;

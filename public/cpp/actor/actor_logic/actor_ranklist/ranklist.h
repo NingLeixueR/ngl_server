@@ -22,6 +22,14 @@ namespace ngl
 
 		std::map<i64_actorid, rank_item> m_maprankitem;
 		std::map<pbdb::eranklist, std::unique_ptr<rankset_base>> m_ranks;
+
+		template <int32_t N>
+		void create_activity_rank()
+		{
+			m_ranks[(pbdb::eranklist)(pbdb::eranklist::activity_lv + N)] 
+				= std::make_unique<rankset<(pbdb::eranklist)(pbdb::eranklist::activity_lv + N)>>();
+			m_ranks[(pbdb::eranklist)(pbdb::eranklist::activity_lv + N)]->set_count(ttab_specialid::m_ranklistmaxcount);
+		}
 	public:
 		ranklist();
 
@@ -41,7 +49,7 @@ namespace ngl
 		
 		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
 
-		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
+		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage);
 	};
 }// namespace ngl
 

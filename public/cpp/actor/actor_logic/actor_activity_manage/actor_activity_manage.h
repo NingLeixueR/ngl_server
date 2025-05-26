@@ -66,9 +66,7 @@ namespace ngl
 		bool handle(const message<np_arg_null>&);
 		bool handle(const message<mforward<np_operator_task_response>>& adata);
 		bool handle(const message<np_calendar_actor_activity>& adata);
-		// # 玩家登陆事件
+		bool handle(const message<np_eevents_logic_rolevaluechange>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
-		// # 玩家等级发生变化
-		bool handle(const message<np_eevents_logic_rolelevelchange>& adata);
 	};
 }//namespace ngl

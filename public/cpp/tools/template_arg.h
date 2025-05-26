@@ -1,7 +1,7 @@
 #pragma once
 
 #include "tools.h"
-
+#include "type.h"
 #include <iostream>
 
 namespace ngl
@@ -49,32 +49,34 @@ namespace ngl
 	};
 
 
-	template <typename TF, typename ...TARG>
-	class template_arg_s
+	template <typename TF>
+	class template_arg_event
 	{
-		template_arg_s() = delete;
-		template_arg_s(const template_arg_s&) = delete;
-		template_arg_s& operator=(const template_arg_s&) = delete;
+		template_arg_event() = delete;
+		template_arg_event(const template_arg_event&) = delete;
+		template_arg_event& operator=(const template_arg_event&) = delete;
 
-		static void func2(TARG... args)
+		template <typename TE>
+		static void func2(i64_actorid aactorid, TE atype)
 		{
-			TF::func(args...);
+			TF::func(aactorid, atype);
 		}
 	public:
 		static void func()
 		{
 		}
 
-		static void func(TARG... args)
+		template <typename TE>
+		static void func(i64_actorid aactorid, TE atype)
 		{
-			func2(args...);
+			func2(aactorid, atype);
 		}
 
-		template <typename ...ARG>
-		static void func(TARG... args, ARG... args2)
+		template <typename TE, typename ...ARG>
+		static void func(i64_actorid aactorid, TE atype, ARG... args2)
 		{
-			func(args...);
-			func(args2...);
+			func(aactorid, atype);
+			func(aactorid, args2...);
 		}
 	};
 }//namespace ngl

@@ -21,7 +21,6 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldataid;
-		
 		nclient_brief::init((ENUM_ACTOR)nguid::type(actor_brief::actorid()), this, ldataid);
 		std::set<i64_actorid> ldatakvid;
 		nclient_keyvalue::init((ENUM_ACTOR)nguid::type(actor_keyvalue::actorid()), this, ldatakvid);
@@ -46,8 +45,10 @@ namespace ngl
 	void actor_activity_manage::loaddb_finish(bool adbishave)
 	{
 		actor_events_logic::tfun::func(
-			eevents_logic_rolelogin, actorid()
-			, eevents_logic_rolelevelchange, actorid()
+			actorid()
+			, eevents_logic_rolelogin
+			, eevents_logic_rolelevelchange
+			, eevents_logic_rolegoldchange
 		);
 	}
 
@@ -61,7 +62,7 @@ namespace ngl
 			np_calendar_actor_activity
 			, mforward<np_operator_task_response>
 			, np_eevents_logic_rolelogin
-			, np_eevents_logic_rolelevelchange
+			, np_eevents_logic_rolevaluechange
 		>(false);
 
 		// ∞Û∂®pbœ˚œ¢
