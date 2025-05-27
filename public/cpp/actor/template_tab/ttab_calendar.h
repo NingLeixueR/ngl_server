@@ -150,17 +150,7 @@ namespace ngl
 
 		static void printf_time(int aid)
 		{
-			auto lstream = log_error();
-			(*lstream) << std::endl;
-			std::string lstr = "";
-			for (int64_t ltime : m_data[aid].m_utc)
-			{
-				std::string lbegstr = localtime::time2str(data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S");
-				std::string lendstr = localtime::time2str(data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S");
-				lstr += std::format("[{}]->[{}]\n", lbegstr, lendstr);
-			}
-			(*lstream) << std::format("{}", lstr);
-			(*lstream).print("");
+			log_error()->print("tab_calendar:{} [\n{}]", aid, m_data[aid]);
 		}
 
 		static void init_week(int aid, const std::vector<tweek>& aweek)
@@ -261,3 +251,24 @@ namespace ngl
 		}
 	};
 }//namespace ngl
+
+//ttab_calendar::data
+template <>
+struct std::formatter<ngl::ttab_calendar::data>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+	auto format(const ngl::ttab_calendar::data& aval, std::format_context& ctx)const
+	{
+		auto out = ctx.out();
+		for (int64_t ltime : aval.m_utc)
+		{
+			std::string lbegstr = ngl::localtime::time2str(ngl::ttab_calendar::data::beg(ltime), "%Y/%m/%d(%u) %H:%M:%S");
+			std::string lendstr = ngl::localtime::time2str(ngl::ttab_calendar::data::end(ltime), "%Y/%m/%d(%u) %H:%M:%S");
+			std::format_to(out, "[{}]->[{}]\n", lbegstr, lendstr);
+		}
+		return out;
+	}
+};

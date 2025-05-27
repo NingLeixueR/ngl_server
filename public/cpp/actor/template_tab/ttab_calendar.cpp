@@ -1,6 +1,5 @@
 #include "ttab_calendar.h"
-#include "actor_calendar.h"
-#include "calendar_function.h"
+#include "time_wheel.h"
 #include "xmlinfo.h"
 
 namespace ngl
@@ -9,7 +8,7 @@ namespace ngl
 
 	void operator_calendar(const tab_calendar* atab, int32_t autc, bool astart)
 	{
-		actor_calendar::getInstance().operatpr_calendar(atab->m_id, autc, astart);
+		//actor_calendar::getInstance().operatpr_calendar(atab->m_id, autc, astart);
 	}
 
 	void ttab_calendar_post(const tab_calendar* atab, int64_t autc, bool astart)
@@ -32,7 +31,7 @@ namespace ngl
 				operator_calendar(atab, autc, astart);
 			}
 		};
-		calendar_wheel.addtimer(lparm);
+		twheel::wheel().addtimer(lparm);
 	}
 
 	void ttab_calendar::post(const tab_calendar* atab, int32_t autc, bool astart)

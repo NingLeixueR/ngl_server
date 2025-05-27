@@ -36,7 +36,6 @@ namespace ngl
 
 	class  actor_activity_manage;
 	class  actor_brief;
-	class  actor_calendar;
 	class  actor_cross_test;
 	class  actor_family;
 	class  actor_friends;
@@ -54,7 +53,6 @@ namespace ngl
 	using tdb_activity = typedb<pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity, actor_activity_manage>;
 	using tdb_bag = typedb<pbdb::ENUM_DB_BAG, pbdb::db_bag, actor_role>;
 	using tdb_brief = typedb<pbdb::ENUM_DB_BRIEF, pbdb::db_brief, actor_brief>;
-	using tdb_calendar = typedb<pbdb::ENUM_DB_CALENDAR, pbdb::db_calendar, actor_calendar>;
 	using tdb_family = typedb<pbdb::ENUM_DB_FAMILY, pbdb::db_family, actor_family>;
 	using tdb_familyer = typedb<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer, actor_family>;
 	using tdb_friends = typedb<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends, actor_friends>;

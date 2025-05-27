@@ -1,6 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-26 20:52:27
-#include "calendar_function.cpp"
+// 创建时间 25-05-27 17:55:25
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
 #include "ttab_mergearea.cpp"
@@ -49,7 +48,6 @@
 #include "protocol.cpp"
 #include "naddress.cpp"
 #include "csvtable.cpp"
-#include "calendar.cpp"
 #include "autoitem.cpp"
 #include "asio_tcp.cpp"
 #include "asio_kcp.cpp"
@@ -106,7 +104,6 @@
 #include "actor_ranklist_handle.cpp"
 #include "actor_keyvalue_handle.cpp"
 #include "actor_gmclient_handle.cpp"
-#include "actor_calendar_handle.cpp"
 #include "actor_activity_manage.cpp"
 #include "actor_gateway_handle.cpp"
 #include "actor_friends_handle.cpp"
@@ -134,7 +131,6 @@
 #include "actor_ranklist.cpp"
 #include "actor_keyvalue.cpp"
 #include "actor_gmclient.cpp"
-#include "actor_calendar.cpp"
 #include "actor_gateway.cpp"
 #include "actor_friends.cpp"
 #include "actor_server.cpp"

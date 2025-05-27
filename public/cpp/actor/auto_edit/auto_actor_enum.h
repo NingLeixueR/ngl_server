@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-26 20:53:21
+// 创建时间 // 创建时间 25-05-27 17:57:18
 #pragma once
 
 #include "nactortype.h"
@@ -47,7 +47,6 @@ namespace ngl
 #include "actor_ranklist.h"
 #include "actor_activity_manage.h"
 #include "actor_brief.h"
-#include "actor_calendar.h"
 #include "actor_keyvalue.h"
 #include "actor_family.h"
 #include "actor_friends.h"
@@ -82,7 +81,6 @@ namespace ngl
 			, dautoactor(actor_ranklist, ACTOR_RANKLIST)
 			, dautoactor(actor_activity_manage, ACTOR_ACTIVITY_MANAGE)
 			, dautoactor(actor_brief, ACTOR_BRIEF)
-			, dautoactor(actor_calendar, ACTOR_CALENDAR)
 			, dautoactor(actor_keyvalue, ACTOR_KEYVALUE)
 			, dautoactor(actor_family, ACTOR_FAMILY)
 			, dautoactor(actor_friends, ACTOR_FRIENDS)

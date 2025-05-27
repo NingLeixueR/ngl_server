@@ -59,8 +59,7 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_activity_manage>::func<
-			np_calendar_actor_activity
-			, mforward<np_operator_task_response>
+			mforward<np_operator_task_response>
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_rolevaluechange
 		>(false);

@@ -1,9 +1,6 @@
 #pragma once
 
-#include "operator_file.h"
-#include "nprotocol.h"
 #include "tools.h"
-#include "nlog.h"
 
 #include <functional>
 #include <iostream>
