@@ -1,5 +1,4 @@
 ﻿#include "ttab_specialid.h"
-#include "actor_calendar.h"
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
@@ -101,12 +100,6 @@ namespace ngl
 		actor_events_logic::trigger_event(lparm);
 
 		reset_logintime();
-		
-		// # 登陆向actor_calendar请求[日历id的时间对应关系]
-		time_t lloginoututc = 0;
-		m_rolekv.value("loginoututc", lloginoututc);
-		auto lcalendar_requst = std::make_shared<mforward<np_actor_calendar_requst>>(id_guid());
-		send_actor(actor_calendar::actorid(), lcalendar_requst);
 	}
 
 	void actor_role::nregister()

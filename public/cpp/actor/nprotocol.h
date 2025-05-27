@@ -293,30 +293,6 @@ namespace ngl
 		def_portocol(ncalendar_info, m_time, m_calendarid, m_start)
 	};
 
-	// ---- 通知actor_manage_activity开启关闭活动
-	struct np_calendar_actor_activity
-	{
-		ncalendar_info m_info;
-		std::vector<i64_actorid> m_activityids;
-		
-		def_portocol(np_calendar_actor_activity, m_info, m_activityids)
-	};
-
-	struct np_calendar_actor_respond
-	{
-		ncalendar_info m_info;
-
-		def_portocol(np_calendar_actor_respond, m_info)
-	};
-
-
-	struct np_actor_calendar_requst
-	{
-		def_portocol(np_actor_calendar_requst);
-	};
-
-
-
 	// ---- 通知kcp服务器创建连接
 	struct np_actor_kcp
 	{

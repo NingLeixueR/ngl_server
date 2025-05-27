@@ -10,7 +10,6 @@
 #include "actor_csvclient.h"
 #include "actor_gmclient.h"
 #include "actor_keyvalue.h"
-#include "actor_calendar.h"
 #include "actor_ranklist.h"
 #include "actor_friends.h"
 #include "actor_gateway.h"

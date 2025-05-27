@@ -17,7 +17,6 @@ namespace ngl
 		ttab_attribute& operator=(const ttab_attribute&) = delete;
 		using type_tab = tab_attribute;
 	private:
-		
 		static std::map<int32_t, std::tuple<int32_t, int32_t>> m_uplowlimit;
 	public:
 		ttab_attribute()

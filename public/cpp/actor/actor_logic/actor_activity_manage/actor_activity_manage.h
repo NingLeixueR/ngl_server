@@ -65,8 +65,7 @@ namespace ngl
 		bool timer_handle(const message<np_timerparm>& adata);
 		bool handle(const message<np_arg_null>&);
 		bool handle(const message<mforward<np_operator_task_response>>& adata);
-		bool handle(const message<np_calendar_actor_activity>& adata);
-		bool handle(const message<np_eevents_logic_rolevaluechange>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
+		bool handle(const message<np_eevents_logic_rolevaluechange>& adata);
 	};
 }//namespace ngl

@@ -17,12 +17,11 @@ enum ENUM_DB
 	ENUM_DB_RANKLIST		= 7;		// 排行数据
 	ENUM_DB_ACTIVITY		= 8;		// 活动数据
 	ENUM_DB_TASK			= 9;		// 任务数据
-	ENUM_DB_CALENDAR		= 10;		// 脚本日历数据
-	ENUM_DB_ROLEKEYVALUE	= 11;		// 玩家个人key/value数据
-	ENUM_DB_FAMILY			= 12;		// 军团
-	ENUM_DB_FAMILYER		= 13;		// 军团成员
-	ENUM_DB_FRIENDS			= 14;		// 好友
-	ENUM_DB_COUNT			= 15;
+	ENUM_DB_ROLEKEYVALUE	= 10;		// 玩家个人key/value数据
+	ENUM_DB_FAMILY			= 11;		// 军团
+	ENUM_DB_FAMILYER		= 12;		// 军团成员
+	ENUM_DB_FRIENDS			= 13;		// 好友
+	ENUM_DB_COUNT			= 14;
 
 	// # 跨服
 	ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
@@ -219,23 +218,6 @@ message db_task
 	}
 	map<int32,data> m_rundatas			= 2; // 正在进行的任务数据
 	map<int32,complete> m_completeddatas	= 3; // 已完成的任务数据
-}
-
-message calendar_pair
-{
-	int32 m_triggertime		= 1; //触发时间
-	bool m_isstart			= 2; //k	
-}
-
-message db_calendar
-{
-	optional int64 m_id							= 1; // 脚本日历id
-	optional int32 m_start						= 2; // 开始时间
-	optional int32 m_finish						= 3; // 结束时间
-	optional int32 m_isstart					= 4; // 是否触发过开始
-	optional int32 m_isfinish					= 5; // 是否触发过结束
-	map<int64,int32> m_actortrigger				= 6; // key:actorid value:最后一次触发时间
-	repeated calendar_pair m_triggerlist		= 7; // 已触发列表:key:触发时间
 }
 
 message db_familyer
