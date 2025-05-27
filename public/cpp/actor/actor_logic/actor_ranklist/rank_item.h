@@ -102,8 +102,9 @@ namespace ngl
 		{
 			auto itor = ar.m_data.find(atype);
 			ecompare ltype = value_compare(m_data[atype].m_value, ar.m_data[atype].m_value);
-			if (atype == pbdb::eranklist::lv ||
-				atype == pbdb::eranklist::activity_lv+1001
+			if (atype == pbdb::eranklist::lv 
+				|| atype == pbdb::eranklist::activity_lv + 1001
+				|| atype == pbdb::eranklist::activity_gold + 1001
 				)
 			{//值越大排名越高
 				return ltype;
