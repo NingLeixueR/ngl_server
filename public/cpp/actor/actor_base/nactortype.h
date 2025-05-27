@@ -43,7 +43,6 @@ namespace ngl
 		ACTOR_RANKLIST,											// 排行榜
 		ACTOR_ACTIVITY_MANAGE,									// 活动管理
 		ACTOR_BRIEF,											// brief简要信息
-		ACTOR_CALENDAR,											// 脚本日历
 		ACTOR_KEYVALUE,											// 公共key/value
 		ACTOR_FAMILY,											// 军团家族
 		ACTOR_FRIENDS,											// 好友
