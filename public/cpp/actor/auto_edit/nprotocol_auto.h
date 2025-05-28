@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-27 17:56:15
+// 创建时间 // 创建时间 25-05-28 21:06:05
 #pragma once
 
 #include "ndb_modular.h"
@@ -41,19 +41,19 @@ namespace ngl
 			/*200000023*/, np_actor_senditem
 			/*200000024*/, np_actor_gatewayinfo_updata
 			/*200000025*/, np_actor_addmail
-			/*200000029*/, np_actor_kcp
-			/*200000030*/, np_actor_addnotice
-			/*200000031*/, np_actor_close
-			/*200000032*/, np_logitem
-			/*200000033*/, np_channel_check
-			/*200000034*/, np_login_request_info
-			/*200000035*/, np_create_example
-			/*200000036*/, np_example_entergame_ready
-			/*200000037*/, np_example_actorid
-			/*200000038*/, np_example_equit
-			/*200000039*/, np_thruput_test
-			/*200000040*/, np_operator_task
-			/*200000041*/, np_operator_task_response
+			/*200000026*/, np_actor_kcp
+			/*200000027*/, np_actor_addnotice
+			/*200000028*/, np_actor_close
+			/*200000029*/, np_logitem
+			/*200000030*/, np_channel_check
+			/*200000031*/, np_login_request_info
+			/*200000032*/, np_create_example
+			/*200000033*/, np_example_entergame_ready
+			/*200000034*/, np_example_actorid
+			/*200000035*/, np_example_equit
+			/*200000036*/, np_thruput_test
+			/*200000037*/, np_operator_task
+			/*200000038*/, np_operator_task_response
 		>(EPROTOCOL_TYPE_CUSTOM);
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs::template func<
@@ -82,19 +82,19 @@ namespace ngl
 			/*210000023*/, mforward<np_actor_senditem>
 			/*210000024*/, mforward<np_actor_gatewayinfo_updata>
 			/*210000025*/, mforward<np_actor_addmail>
-			/*210000029*/, mforward<np_actor_kcp>
-			/*210000030*/, mforward<np_actor_addnotice>
-			/*210000031*/, mforward<np_actor_close>
-			/*210000032*/, mforward<np_logitem>
-			/*210000033*/, mforward<np_channel_check>
-			/*210000034*/, mforward<np_login_request_info>
-			/*210000035*/, mforward<np_create_example>
-			/*210000036*/, mforward<np_example_entergame_ready>
-			/*210000037*/, mforward<np_example_actorid>
-			/*210000038*/, mforward<np_example_equit>
-			/*210000039*/, mforward<np_thruput_test>
-			/*210000040*/, mforward<np_operator_task>
-			/*210000041*/, mforward<np_operator_task_response>
+			/*210000026*/, mforward<np_actor_kcp>
+			/*210000027*/, mforward<np_actor_addnotice>
+			/*210000028*/, mforward<np_actor_close>
+			/*210000029*/, mforward<np_logitem>
+			/*210000030*/, mforward<np_channel_check>
+			/*210000031*/, mforward<np_login_request_info>
+			/*210000032*/, mforward<np_create_example>
+			/*210000033*/, mforward<np_example_entergame_ready>
+			/*210000034*/, mforward<np_example_actorid>
+			/*210000035*/, mforward<np_example_equit>
+			/*210000036*/, mforward<np_thruput_test>
+			/*210000037*/, mforward<np_operator_task>
+			/*210000038*/, mforward<np_operator_task_response>
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 }//namespace ngl
