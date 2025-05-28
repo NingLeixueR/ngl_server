@@ -10,16 +10,16 @@ namespace ngl
 		activity_drawcompliance(const activity_drawcompliance&) = delete;
 		activity_drawcompliance& operator=(const activity_drawcompliance&) = delete;
 
-		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb)
+		virtual std::shared_ptr<activity> create(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
 		{
 			return std::make_shared<activity_drawcompliance>(
-				acalendarid, aactivityid, atime, adb
+				aactivityid, atime, aactivitydb, aactivitytimedb
 			);
 		}
 	public:
 
-		activity_drawcompliance(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) :
-			activity(acalendarid, aactivityid, atime, adb)
+		activity_drawcompliance(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb) :
+			activity(aactivityid, atime, aactivitydb, aactivitytimedb)
 		{}
 
 		activity_drawcompliance()
@@ -44,7 +44,7 @@ namespace ngl
 			auto itor = lmap->find(aroleid);
 			if (itor == lmap->end())
 			{
-				pbdb::db_activity::drawcompliance ltemp;
+				pbdb::activity_drawcompliance ltemp;
 				ltemp.set_m_count(acount);
 				itor = lmap->insert({ aroleid, ltemp }).first;
 			}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "activitytimedb.h"
 #include "ttab_activity.h"
 #include "activitydb.h"
 #include "drop.h"
@@ -12,9 +13,9 @@ namespace ngl
 		activity& operator=(const activity&) = delete;
 
 		static std::map<EActivity, activity*> m_activityall;
-		virtual std::shared_ptr<activity> create(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb) = 0;
+		virtual std::shared_ptr<activity> create(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb) = 0;
 	public:
-		static std::shared_ptr<activity> make(int32_t acalendarid, int32_t aactivityid, int64_t atime, activitydb& adb)
+		static std::shared_ptr<activity> make(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
 		{
 			tab_activity* tab = allcsv::tab<tab_activity>(aactivityid);
 			auto itor = m_activityall.find(tab->m_type);
@@ -22,50 +23,44 @@ namespace ngl
 			{
 				return nullptr;
 			}
-			return itor->second->create(acalendarid, aactivityid, atime, adb);
+			return itor->second->create(aactivityid, atime, aactivitydb, aactivitytimedb);
 		}
 	protected:
-		int64_t m_activityid;
-		data_modified<pbdb::db_activity>* m_activity;
+		tab_activity* m_tab = nullptr;
+		data_modified<pbdb::db_activity>* m_activity = nullptr;
+		data_modified<pbdb::db_activitytimes>* m_activitytimes = nullptr;
 	public:
-		activity(int32_t acalendarid, int64_t activityid, int64_t atime, activitydb& adb);
+		activity(int64_t activityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb);
 		activity();
 
 		EActivity type()
 		{
-			tab_activity* tab = allcsv::tab<tab_activity>((int32_t)m_activityid);
-			Assert(tab != nullptr);
-			return tab->m_type;
+			return m_tab->m_type;
 		}
 
 		int64_t activityid()
 		{
-			return m_activityid;
+			return m_tab->m_id;
 		}
 
 		virtual bool is_start()
 		{
-			return m_activity->getconst().m_start();
+			return m_activitytimes->getconst().m_start();
 		}
 
 		virtual bool is_finish()
 		{
-			return m_activity->getconst().m_finish();
+			return m_activitytimes->getconst().m_finish();
 		}
 
 		int32_t start_utc()
 		{
-			return m_activity->getconst().m_beg();
+			return m_activitytimes->getconst().m_beg();
 		}
 
 		int32_t finish_utc()
 		{
-			return m_activity->getconst().m_end();
-		}
-
-		int32_t calendarid()
-		{
-			return m_activity->getconst().m_calendarid();
+			return m_activitytimes->getconst().m_end();
 		}
 
 		// # 此刻是活动第几天
@@ -76,9 +71,7 @@ namespace ngl
 
 		const tab_activity* tab()
 		{
-			const tab_activity* ltab = ttab_activity::tab(m_activityid);
-			assert(ltab != nullptr);
-			return ltab;
+			return m_tab;
 		}
 
 		// # 是否支持排行榜
@@ -88,10 +81,17 @@ namespace ngl
 		}
 	public:
 		// # 调用:活动开启
-		virtual void start() {}
+		virtual void start() 
+		{
+			log_error()->print("activity::start() activityid=[{}]", activityid());
+			m_activitytimes->get().set_m_start(true);
+		}
 
 		// # 调用:活动开启后和服务器重启
-		virtual void init() {}
+		virtual void init() 
+		{
+			log_error()->print("activity::init() activityid=[{}]", activityid());
+		}
 
 		// # 调用:玩家登陆
 		virtual void rolelogin(i64_actorid aroleid);
@@ -101,11 +101,11 @@ namespace ngl
 		{
 			if (aisreceive)
 			{
-				(*(*m_activity->get().mutable_m_stat())[aroleid].mutable_m_opentask())[aindex] = true;
+				(*(*m_activity->get().mutable_m_task())[aroleid].mutable_m_open())[aindex] = true;
 			}
 			else
 			{
-				(*(*m_activity->get().mutable_m_stat())[aroleid].mutable_m_closetask())[aindex] = true;
+				(*(*m_activity->get().mutable_m_task())[aroleid].mutable_m_close())[aindex] = true;
 			}
 		}
 
