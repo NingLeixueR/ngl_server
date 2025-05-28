@@ -1,6 +1,7 @@
 #include "ttab_specialid.h"
 #include "ttab_familylv.h"
 #include "actor_family.h"
+#include "actor_drop.h"
 #include "csvtable.h"
 #include "family.h"
 
@@ -331,7 +332,7 @@ namespace ngl
 		lpfamily->get().set_m_exp(lexp);
 
 		// ·¢ËÍ½±Àø
-		if (drop::use(aroleid, ttab_specialid::m_familsigndrop, 1, afamilyid) == false)
+		if (actor_drop::use(ttab_specialid::m_familsigndrop, 1, aroleid, "family sign") == false)
 		{
 			return 7;
 		}

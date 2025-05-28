@@ -1,13 +1,14 @@
 #include "ttab_specialid.h"
-#include "ttab_task.h"
 #include "actor_events.h"
 #include "manage_curl.h"
+#include "actor_drop.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "actor_role.h"
 #include "json_write.h"
 #include "json_read.h"
 #include "nregister.h"
+#include "ttab_task.h"
 #include "nforward.h"
 #include "net.pb.h"
 #include "drop.h"
@@ -455,7 +456,8 @@ namespace ngl
 		pro->set_m_taskid(adata.get_data()->m_taskid());
 
 		std::map<int, int> ldrop;
-		if (drop::droplist(tab->m_dropid, 1, ldrop) == false)
+		std::string lsrc = std::format("task receive award");		
+		if (actor_drop::use(tab->m_dropid, 1, id_guid(), lsrc, &ldrop) == false)
 		{
 			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->m_taskid(), tab->m_dropid);
 			return true;

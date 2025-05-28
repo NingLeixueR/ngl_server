@@ -1,4 +1,5 @@
 #include "actor_mail.h"
+#include "actor_drop.h"
 
 namespace ngl
 {
@@ -71,7 +72,7 @@ namespace ngl
 	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)
 	{
 		std::map<int32_t, int32_t> lmap;
-		if (drop::droplist(adropid, 1, lmap) == false)
+		if (actor_drop::droplist(adropid, 1, lmap) == false)
 		{
 			ngl::log_error()->print("role:{} mailid:{} drop:{} parm:{} fail!!!", nguid(aactorid), amailid, adropid, aparm);
 			return false;

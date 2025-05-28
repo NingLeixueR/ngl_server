@@ -2,6 +2,7 @@
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
+#include "actor_drop.h"
 #include "nsp_client.h"
 #include "actor_role.h"
 #include "json_write.h"
@@ -233,17 +234,15 @@ namespace ngl
 
 	int32_t actor_role::rechange(std::string& aorderid, int32_t arechargeid, bool agm, bool areporting)
 	{
-		int32_t lstat = 1;
+		int32_t lstat = 0;
 		int32_t lgold = 0;
-		auto psenditem = std::make_shared<np_actor_senditem>();
 		tab_recharge* tab = allcsv::tab<tab_recharge>(arechargeid);
+		std::map<int, int> litems;
 		if (tab != nullptr)
 		{
-			psenditem->m_src = std::format("recharge orderid={} rechargeid={} roleid={}", aorderid, arechargeid, id_guid());
-			if (drop::droplist(tab->m_dropid, 1, psenditem->m_item))
+			std::string lsrc = std::format("recharge orderid={} rechargeid={}", aorderid, arechargeid);
+			if(actor_drop::use(tab->m_dropid, 1, id_guid(), lsrc, &litems))
 			{
-				message ltemp(0, nullptr, psenditem.get());
-				handle(ltemp);
 				lgold += tab->m_gold;
 				lgold += tab->m_bonus;
 				if (is_first_recharge(arechargeid))
@@ -254,15 +253,15 @@ namespace ngl
 			}
 			else
 			{
-				lstat = 2;
+				lstat = 1;
 			}
 		}
 		else
 		{
-			lstat = 3;
+			lstat = 2;
 		}
 		
-		if (areporting)
+		if (areporting && lstat == 0)
 		{
 			// ### 发货成功上报gm ###
 			auto lhttp = ngl::manage_curl::make_http();
@@ -279,13 +278,13 @@ namespace ngl
 			ngl::manage_curl::send(lhttp);
 		}
 
-		if (lgold > 0 || !psenditem->m_item.empty())
+		if (lgold > 0 || lstat == 0)
 		{
 			auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
 			cpro->set_m_rechargeid(arechargeid);
 			cpro->set_m_orderid(aorderid);
 			cpro->set_m_gold(lgold);
-			for (auto itor = psenditem->m_item.begin(); itor != psenditem->m_item.end(); ++itor)
+			for (auto itor = litems.begin(); itor != litems.end(); ++itor)
 			{
 				(*cpro->mutable_m_items())[itor->first] = itor->second;
 			}

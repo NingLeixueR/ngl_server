@@ -198,6 +198,8 @@ namespace ngl
 	};
 
 	// nsp_client的封装 用于只读不能写
+	// 用于非单例类actor，例如actor_role,在actor_role的各个实例中使用nsp_constclient
+
 	template <typename TDerived, typename TACTOR, typename T>
 	class nsp_constclient
 	{
@@ -211,7 +213,7 @@ namespace ngl
 			m_instance(anc)
 		{}
 
-		static const T* getconst(i64_actorid aactorid)
+		const T* getconst(i64_actorid aactorid)
 		{
 			return m_instance.getconst(aactorid);
 		}

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-28 15:22:19
+// 创建时间 25-05-28 20:54:53
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
 #include "ttab_mergearea.cpp"
@@ -146,6 +146,7 @@
 #include "actor_brief.cpp"
 #include "actor_role.cpp"
 #include "actor_mail.cpp"
+#include "actor_drop.cpp"
 #include "actor_chat.cpp"
 #include "actor_base.cpp"
 #include "actor_log.cpp"

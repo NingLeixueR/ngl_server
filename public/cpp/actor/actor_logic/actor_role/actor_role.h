@@ -42,7 +42,8 @@ namespace ngl
 		jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
 	};
 
-	class actor_role : public actor
+	class actor_role : 
+		public actor
 	{
 	public:
 		remakes		 m_remakes;
