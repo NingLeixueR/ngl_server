@@ -22,7 +22,7 @@ namespace ngl
 
 		const pbdb::db_brief* get()const
 		{
-			return tdb_brief::nsp_cli<actor_ranklist>::getconst(m_actorid);
+			return tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(m_actorid);
 		}
 
 		void init(

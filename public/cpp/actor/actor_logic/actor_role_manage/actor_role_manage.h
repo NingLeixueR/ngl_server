@@ -21,7 +21,6 @@ namespace ngl
 		actor_role_manage();
 
 		std::set<int64_t> m_roleban;
-		using nclient_keyvalue = tdb_keyvalue::nsp_cli<actor_role_manage>;
 	public:
 		friend class actor_instance<actor_role_manage>;
 		static actor_role_manage& getInstance()

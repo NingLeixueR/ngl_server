@@ -17,8 +17,7 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_friends>::init(actor_brief::actor_type(), this, ldataid);
+		tdb_brief::nsp_cli<actor_friends>::getInstance().init(this, {});
 	}
 
 	ENUM_ACTOR actor_friends::actor_type()

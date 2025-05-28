@@ -20,8 +20,9 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldatakvid{ pbdb::db_keyvalue_ekv_account_ban };
-		nclient_keyvalue::init(actor_keyvalue::actor_type(), this, ldatakvid);
-		nclient_keyvalue::set_changedata_fun([this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance().init(this, ldatakvid);
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance().set_changedata_fun(
+			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
 			{
 				log_error()->print(
 					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]", 

@@ -17,7 +17,7 @@ namespace ngl
 			})
 	{
 		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_example_match>::init(actor_brief::actor_type(), this, ldataid);
+		tdb_brief::nsp_cli<actor_example_match>::getInstance().init(this, ldataid);
 	}
 
 	ENUM_ACTOR actor_example_match::actor_type()
@@ -75,7 +75,7 @@ namespace ngl
 		pro->set_m_roomready(aroom->m_roomready);
 		for (const auto [id, info] : aroom->m_players)
 		{
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(id);
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getInstance().getconst(id);
 			if (lpbrief != nullptr)
 			{
 				pbexample::PLAYER& lplayer = *pro->mutable_m_players()->Add();
@@ -122,7 +122,7 @@ namespace ngl
 
 	room* actor_example_match::matching_room(i64_actorid aroleid, pbexample::EPLAY_TYPE atype)
 	{
-		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getconst(aroleid);
+		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getInstance().getconst(aroleid);
 		if (lpbrief == nullptr)
 		{
 			return nullptr;
