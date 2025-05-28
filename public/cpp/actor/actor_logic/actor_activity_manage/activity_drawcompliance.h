@@ -1,6 +1,7 @@
 #pragma once
-#include "activity.h"
 #include "ttab_activity_drawcompliance.h"
+#include "actor_drop.h"
+#include "activity.h"
 
 namespace ngl
 {
@@ -16,6 +17,7 @@ namespace ngl
 				aactivityid, atime, aactivitydb, aactivitytimedb
 			);
 		}
+
 	public:
 
 		activity_drawcompliance(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb) :
@@ -57,17 +59,15 @@ namespace ngl
 					if (itorreward == itor->second.mutable_m_reward()->end())
 					{
 						// 发送
-						auto pro = std::make_shared<np_actor_addmail>();
-						pro->m_roleid = aroleid;
-						pro->m_tid = _data.m_mailid;
-						if (drop::droplist(_data.m_dropid, 1, pro->m_items) == false)
+						std::string lsrc = std::format(
+							"activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", 
+							aroleid, _data.m_mailid, _data.m_dropid
+						);
+						if (actor_drop::use(_data.m_dropid, 1, aroleid, lsrc, nullptr, _data.m_mailid))
 						{
-							continue;
+							// 记录已领取
+							itor->second.mutable_m_reward()->insert({ _id, true });
 						}
-						actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
-
-						// 记录已领取
-						itor->second.mutable_m_reward()->insert({ _id, true });
 					}
 				}
 			}

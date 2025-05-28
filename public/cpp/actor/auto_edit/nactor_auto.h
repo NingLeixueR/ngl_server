@@ -21,6 +21,22 @@ namespace ngl
 		using nsp_ser	 = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
 		using nsp_cli	 = nsp_client<TDerived, TACTOR, TDBTAB>;
+		template <typename TDerived>
+		using nsp_constcli = nsp_constclient<TDerived, TACTOR, TDBTAB>;
+
+		template <typename TDerived>
+		static nsp_constcli<TDerived>& get_constcli()
+		{
+			static nsp_constcli<TDerived> ltemp(nsp_cli<TDerived>::getInstance());
+			return ltemp;
+		}
+
+		template <typename TDerived>
+		static void constcli_init(TDerived* aactor, const std::set<i64_actorid>& adataid)
+		{
+			nsp_cli<TDerived>::getInstance().init(aactor, adataid);
+		}
+
 		// [aregister == true] 主要是注册协议,宏与类型的绑定
 		// [aregister == false] 实例化db_actor,db server需要
 		static void init(bool aregister);

@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-27 17:57:05
+// 创建时间 // 创建时间 25-05-28 17:40:40
 #pragma once
 
 #include "csv.h"
@@ -409,17 +409,17 @@ struct tab_random
 	std::vector<trandom>             m_randomdatas                   ; // [index:3][load:y] trandom(id*min*max*weight)
 	bool                             m_exclusive                     ; // [index:4][load:y] 排他性多次掉落时使用（true不会掉落出已掉落物品 false会掉落出已掉落物品）
 	int32_t                          m_count                         ; // [index:5][load:y] 随机数量
-	int32_t                          m_calendarids                   ; // [index:6][load:y] 是否关联日历表,只有日历触发才会执行此掉落
+	std::set<int32_t>                m_activityids                   ; // [index:6][load:y] 只有活动开启才会触发此掉落
 	std::vector<int32_t>             m_childrandomids                ; // [index:7][load:y] 子随机
 	/*********************************/
 	tab_random();
 	// 序列化反序列化相关
-	def_portocol(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_calendarids, m_childrandomids)
+	def_portocol(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_calendarids,m_childrandomids);
+		def_rcsv2(m_id,m_name,lm_remarks,m_randomdatas,m_exclusive,m_count,m_activityids,m_childrandomids);
 	}
 };
 struct tconsume

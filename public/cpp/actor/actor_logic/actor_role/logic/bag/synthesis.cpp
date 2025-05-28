@@ -1,4 +1,5 @@
 #include "actor_role.h"
+#include "actor_drop.h"
 #include "synthesis.h"
 #include "consume.h"
 #include "drop.h"
@@ -17,7 +18,8 @@ namespace ngl
 			log_error()->print("synthesis::use id:{} role:{} consume::use faile {}", aid, arole->id_guid(), tab->m_consume);
 			return false;
 		}
-		if (drop::use(arole, tab->m_generate, 1) == false)
+		std::string lsrc = std::format("synthesis::use({},{})", nguid(arole->id_guid()), aid);
+		if (actor_drop::use(tab->m_generate, 1, arole->id_guid(), lsrc, nullptr) == false)
 		{
 			log_error()->print("synthesis::use id:{} role:{} drop::use faile {}", aid, arole->id_guid(), tab->m_generate);
 			return false;
