@@ -16,12 +16,13 @@ enum ENUM_DB
 	ENUM_DB_NOTICE			= 6;		// 公告数据
 	ENUM_DB_RANKLIST		= 7;		// 排行数据
 	ENUM_DB_ACTIVITY		= 8;		// 活动数据
-	ENUM_DB_TASK			= 9;		// 任务数据
-	ENUM_DB_ROLEKEYVALUE	= 10;		// 玩家个人key/value数据
-	ENUM_DB_FAMILY			= 11;		// 军团
-	ENUM_DB_FAMILYER		= 12;		// 军团成员
-	ENUM_DB_FRIENDS			= 13;		// 好友
-	ENUM_DB_COUNT			= 14;
+	ENUM_DB_ACTIVITYTIMES	= 9;		// 活动开启关闭时间
+	ENUM_DB_TASK			= 10;		// 任务数据
+	ENUM_DB_ROLEKEYVALUE	= 11;		// 玩家个人key/value数据
+	ENUM_DB_FAMILY			= 12;		// 军团
+	ENUM_DB_FAMILYER		= 13;		// 军团成员
+	ENUM_DB_FRIENDS			= 14;		// 好友
+	ENUM_DB_COUNT			= 15;
 
 	// # 跨服
 	ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
@@ -169,30 +170,33 @@ message db_ranklist
 	map<int32,rankitem> m_items	= 2;				// key:排行榜类型eranklist
 }
 
-message db_activity
+message db_activitytimes
 {
 	optional int64 m_id			= 1; // tab_actiivity 表id
 	optional int32 m_beg		= 2; // 活动开启时间
 	optional int32 m_end		= 3; // 活动结束时间
-	optional bool m_start		= 4; // 是否开启
-	optional bool m_finish		= 5; // 是否关闭
-	optional int32 m_calendarid = 6; // >0:脚本日历控制 <0:activity自行控制开关
-	message mstat
-	{
-		int32 m_logintime			= 1;
-		map<int32,bool> m_opentask	= 2; //key:>0 tab_activity.m_taskday, =-1 tab_activity.m_task value:是否开启
-		map<int32,bool> m_closetask = 3; //key:>0 tab_activity.m_taskday, =-1 tab_activity.m_task value:是否关闭
-	}
-	map<int64,mstat> m_stat		= 7;
+	optional bool m_start		= 4; // 是否已开启(执行了开启方法)
+	optional bool m_finish		= 5; // 是否已关闭(执行了关闭方法)
+}
 
+message activity_task
+{
+	map<int32,bool> m_open	= 1;	// key:day
+	map<int32,bool> m_close = 2;	// key:day
+}
 
+message activity_drawcompliance
+{
+	optional int32 m_count		= 1; // 累计次数
+	map<int32,bool> m_reward	= 2; // 累计领取哪些奖励
+}
+
+message db_activity
+{
+	optional int64 m_id										= 1; // tab_actiivity 表id
+	map<int64,activity_task> m_task							= 2; // key:roleid
 	// tab_activity.m_type == EActivityDrawCompliance
-	message drawcompliance
-	{
-		optional int32 m_count		= 1; // 累计次数
-		map<int32,bool> m_reward	= 2; // 累计领取哪些奖励
-	}
-	map<int64,drawcompliance> m_drawcompliance	= 8;
+	map<int64,activity_drawcompliance> m_drawcompliance		= 3;
 }
 
 message db_task

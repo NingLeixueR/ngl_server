@@ -20,7 +20,7 @@ namespace ngl
 		// 订阅/发布[数据副本]
 		using nsp_ser	 = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
-		using nsp_cli	 = nsp_client<TDerived, TDBTAB>;
+		using nsp_cli	 = nsp_client<TDerived, TACTOR, TDBTAB>;
 		// [aregister == true] 主要是注册协议,宏与类型的绑定
 		// [aregister == false] 实例化db_actor,db server需要
 		static void init(bool aregister);
@@ -34,7 +34,6 @@ namespace ngl
 	}
 
 
-	class  actor_activity_manage;
 	class  actor_brief;
 	class  actor_cross_test;
 	class  actor_family;
@@ -45,12 +44,14 @@ namespace ngl
 	class  actor_notice;
 	class  actor_ranklist;
 	class  actor_role;
+	class  actor_activity_manage;
 
 
 	using tdbcross_test = typedb<pbdb::ENUM_DBCROSS_TEST, pbdb::dbcross_test, actor_cross_test>;
 
 	using tdb_account = typedb<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account, actor_login>;
 	using tdb_activity = typedb<pbdb::ENUM_DB_ACTIVITY, pbdb::db_activity, actor_activity_manage>;
+	using tdb_activitytimes = typedb<pbdb::ENUM_DB_ACTIVITYTIMES, pbdb::db_activitytimes, actor_activity_manage>;
 	using tdb_bag = typedb<pbdb::ENUM_DB_BAG, pbdb::db_bag, actor_role>;
 	using tdb_brief = typedb<pbdb::ENUM_DB_BRIEF, pbdb::db_brief, actor_brief>;
 	using tdb_family = typedb<pbdb::ENUM_DB_FAMILY, pbdb::db_family, actor_family>;

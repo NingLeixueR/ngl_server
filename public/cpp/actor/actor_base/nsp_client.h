@@ -6,24 +6,24 @@ namespace ngl
 {
 	//# 订阅/发布[数据副本]
 	//# nsp_client接收nsp_server分发的数据与修改数据后向nsp_server同步
-	template <typename TDerived, typename T>
+	template <typename TDerived, typename TACTOR, typename T>
 	class nsp_client
 	{
-	public:
-		using tnsp_client = nsp_client<TDerived, T>;
 	private:
-		nsp_client() = delete;
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
-		static actor*										m_actor;
-		static std::map<i16_area, i64_actorid>				m_nspserver;
-		static std::map<i16_area, bool>						m_register;
-		static std::set<i64_actorid>						m_dataid;
-		static std::function<void(int64_t, const T&, bool)>	m_changedatafun;
-		static bool											m_activate;
+		actor*											m_actor = nullptr;
+		std::map<i16_area, i64_actorid>					m_nspserver;
+		std::map<i16_area, bool>						m_register;
+		std::set<i64_actorid>							m_dataid;
+		std::function<void(int64_t, const T&, bool)>	m_changedatafun;
+		bool											m_activate = false;
+
+		nsp_client()
+		{}
 	public:
-		static std::map<i64_actorid, T> m_data;
+		std::map<i64_actorid, T> m_data;
 	private:
 		template <typename TX>
 		static std::string& type_name()
@@ -31,17 +31,17 @@ namespace ngl
 			return tools::type_name<TX>();
 		}
 
-		static void log(const char* amessage)
+		void log(const char* amessage)
 		{
 			m_actor->log_error()->print("{} {}:{}", amessage, type_name<TDerived>(), type_name<T>());
 		}
 
-		static void channel_data(TDerived*, const message<np_channel_data<T>>& adata)
+		void channel_data(TDerived*, const message<np_channel_data<T>>& adata)
 		{
 			const np_channel_data<T>& recv = *adata.get_data();
 			std::map<int64_t, T>& lmap = *recv.m_data.m_data;
 			bool lfirstsynchronize = recv.m_firstsynchronize;
-			std::ranges::for_each(lmap, [lfirstsynchronize](const auto& apair)
+			std::ranges::for_each(lmap, [this,lfirstsynchronize](const auto& apair)
 				{
 					if (!m_dataid.empty() && !m_dataid.contains(apair.first))
 					{
@@ -55,14 +55,14 @@ namespace ngl
 				});
 		}
 
-		static void channel_register_reply(TDerived*, const message<np_channel_register_reply<T>>& adata)
+		void channel_register_reply(TDerived*, const message<np_channel_register_reply<T>>& adata)
 		{
 			log("nsp_client np_channel_register_reply");
 			auto& recv = *adata.get_data();
 			m_register[nguid::area(recv.m_actorid)] = true;
 		}
 
-		static void channel_check(TDerived*, const message<np_channel_check>& adata)
+		void channel_check(TDerived*, const message<np_channel_check>& adata)
 		{
 			auto lprecv = adata.get_data();
 			if (m_register[lprecv->m_area])
@@ -74,30 +74,38 @@ namespace ngl
 		}
 
 	public:
-		static void init(ENUM_ACTOR atype, TDerived* aactor, const std::set<i64_actorid>& adataid)
+		static nsp_client<TDerived, TACTOR, T>& getInstance()
+		{
+			static nsp_client<TDerived, TACTOR, T> ltemp;
+			return ltemp;
+		}
+
+
+		void init(TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
 			Assert(lsetarea->empty() == false);
+			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
 			for (i16_area area : *lsetarea)
 			{
-				m_nspserver[area] = nguid::make(atype, area, nguid::none_actordataid());
+				m_nspserver[area] = nguid::make(ltype, area, nguid::none_actordataid());
 				m_register[area] = false;
 			}
 			m_actor		= aactor;
 			m_dataid	= adataid;
 			// 更新数据
 			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
-				std::bind_front(&tnsp_client::channel_data)
+				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_data, this)
 			);
 
 			// 注册回复
 			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
-				std::bind_front(&tnsp_client::channel_register_reply)
+				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_register_reply, this)
 			);
 
 			// 检查
 			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check>(
-				std::bind_front(&tnsp_client::channel_check)
+				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_check, this)
 			);
 
 			i64_actorid lactorid = m_actor->id_guid();
@@ -123,24 +131,24 @@ namespace ngl
 				});			
 		}
 
-		static const T* getconst(i64_actorid aactorid)
+		const T* getconst(i64_actorid aactorid)const
+		{
+			const T* lp = tools::findmap(m_data, aactorid);
+			return lp;
+		}
+
+		T* get(i64_actorid aactorid)
 		{
 			T* lp = tools::findmap(m_data, aactorid);
 			return lp;
 		}
 
-		static T* get(i64_actorid aactorid)
-		{
-			T* lp = tools::findmap(m_data, aactorid);
-			return lp;
-		}
-
-		static T* add(i64_actorid aactorid)
+		T* add(i64_actorid aactorid)
 		{
 			return &m_data[aactorid];
 		}
 
-		static void change(i64_actorid aactorid)
+		void change(i64_actorid aactorid)
 		{
 			T* lpdata = tools::findmap(m_data, aactorid);
 			if (lpdata == nullptr)
@@ -156,13 +164,13 @@ namespace ngl
 
 		// # 如果数据发生变化
 		// # 在回调函数中 可以直接调用寄生actor的内部变量因为回调函数是在actor.nsp_client.handle中被调用的
-		static void set_changedata_fun(const std::function<void(int64_t, const T&, bool)>& afun)
+		void set_changedata_fun(const std::function<void(int64_t, const T&, bool)>& afun)
 		{
 			m_changedatafun = afun;
 		}
 
 		// # 请求退出订阅
-		static void exit()
+		void exit()
 		{
 			auto pro = std::make_shared<np_channel_exit<T>>();
 			pro->m_actorid = m_actor->id_guid();
@@ -178,7 +186,7 @@ namespace ngl
 			}
 		}
 	private:
-		static void register_echannel(i16_area aarea)
+		void register_echannel(i16_area aarea)
 		{
 			log("nsp_client register");
 			auto pro = std::make_shared<np_channel_register<T>>();
@@ -189,21 +197,23 @@ namespace ngl
 		}
 	};
 
-	template <typename TDerived, typename T>
-	std::map<i64_actorid, T> nsp_client<TDerived, T>::m_data;
+	// nsp_client的封装 用于只读不能写
+	template <typename TDerived, typename TACTOR, typename T>
+	class nsp_constclient
+	{
+		nsp_constclient() = delete;
+		nsp_constclient(const nsp_constclient&) = delete;
+		nsp_constclient& operator=(const nsp_constclient&) = delete;
+		
+		const nsp_client<TDerived, TACTOR, T>& m_instance;
+	public:
+		nsp_constclient(const nsp_client<TDerived, TACTOR, T>& anc) :
+			m_instance(anc)
+		{}
 
-	template <typename TDerived, typename T>
-	std::map<i16_area, i64_actorid> nsp_client<TDerived, T>::m_nspserver = {};
-
-	template <typename TDerived, typename T>
-	actor* nsp_client<TDerived, T>::m_actor = nullptr;
-
-	template <typename TDerived, typename T>
-	std::map<i16_area, bool> nsp_client<TDerived, T>::m_register = {};
-
-	template <typename TDerived, typename T>
-	std::set<i64_actorid> nsp_client<TDerived, T>::m_dataid;
-
-	template <typename TDerived, typename T>
-	std::function<void(int64_t, const T&, bool)>	nsp_client<TDerived, T>::m_changedatafun;
+		static const T* getconst(i64_actorid aactorid)
+		{
+			return m_instance.getconst(aactorid);
+		}
+	};
 }//namespace ngl

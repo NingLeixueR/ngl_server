@@ -1,11 +1,12 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-05-27 17:55:37
+// 创建时间 25-05-28 15:23:20
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
 #include "ttab_mergearea.cpp"
 #include "ttab_attribute.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"
+#include "activitytimedb.cpp"
 #include "ttab_familylv.cpp"
 #include "ttab_calendar.cpp"
 #include "operator_file.cpp"

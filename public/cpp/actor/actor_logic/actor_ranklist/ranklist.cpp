@@ -50,7 +50,7 @@ namespace ngl
 
 	bool ranklist::update_value(const pbdb::db_brief& abrief, bool afirstsynchronize)
 	{
-		std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::m_data;
+		std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::getInstance().m_data;
 		rank_item litem;
 		litem.m_actorid = abrief.m_id();
 		bool lupdatearr[pbdb::eranklist::count] = { false };
@@ -110,7 +110,7 @@ namespace ngl
 			add_data(ltemp);
 		}
 
-		tdb_brief::nsp_cli<actor_ranklist>::set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
+		tdb_brief::nsp_cli<actor_ranklist>::getInstance().set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
 				/*for (const auto& item : abrief.m_activityvalues().m_activity_rolelv())
 				{
@@ -144,7 +144,7 @@ namespace ngl
 		pro->set_m_page(apage);
 		int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro](int32_t aindex, const rank_item* aitem)
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getconst(aitem->m_actorid);
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(aitem->m_actorid);
 				if (lpbrief != nullptr)
 				{
 					*pro->add_m_items() = *lpbrief;
