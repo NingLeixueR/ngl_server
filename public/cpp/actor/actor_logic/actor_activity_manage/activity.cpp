@@ -8,62 +8,59 @@ namespace ngl
 	std::map<EActivity, activity*> activity::m_activityall;
 	activity_drawcompliance g_activity_drawcompliance;
 
-	activity::activity() :
-		m_activityid(-1)
-		, m_activity(nullptr)
+	activity::activity()
 	{
 
 	}
 
-	activity::activity(int32_t acalendarid, int64_t activityid, int64_t atime, activitydb& adb) :
-		m_activityid(activityid)
-		, m_activity(nullptr)
+	activity::activity(int64_t activityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
 	{
-		tab_activity* tab = allcsv::tab<tab_activity>((int32_t)activityid);
-		if (tab == nullptr)
-		{
-			log_error()->print("tab_activity id[{}] not find!!!", activityid);
-			return;
-		}
-		auto itor = adb.data().find(activityid);
-		if (itor != adb.data().end())
-		{
-			m_activity = &itor->second;
-		}
-		else
+		m_tab = allcsv::tab<tab_activity>((int32_t)activityid);
+		assert(m_tab != nullptr);
+
+		m_activity = aactivitydb.get_activity(activityid);
+		if (m_activity == nullptr)
 		{
 			pbdb::db_activity ldb;
+			ldb.set_m_id(activityid);
+			m_activity = aactivitydb.add(activityid, ldb);
+		}
+		m_activitytimes = aactivitytimedb.get_activity(activityid);
+		if (m_activitytimes == nullptr)
+		{
+			pbdb::db_activitytimes ldb;
 			ldb.set_m_id(activityid);
 			ldb.set_m_beg(ttab_calendar::data::beg(atime));
 			ldb.set_m_end(ttab_calendar::data::end(atime));
 			ldb.set_m_start(false);
 			ldb.set_m_finish(false);
-			ldb.set_m_calendarid(acalendarid);
-			m_activity = adb.add(activityid, ldb);
+			m_activitytimes = aactivitytimedb.add(activityid, ldb);
 		}
 	}	
 
 	void activity::rolelogin(i64_actorid aroleid)
 	{
+		log_error()->print("activity::rolelogin() activityid=[{}] roleid=[{}]", activityid(), aroleid);
 		const tab_activity* ltab = tab();
 		int32_t lday = day();
 		auto& ldb_activity = m_activity->getconst();
-		auto itor = ldb_activity.m_stat().find(aroleid);
-		if (itor == ldb_activity.m_stat().end())
-		{
-			(*m_activity->get().mutable_m_stat())[aroleid];
-			itor = ldb_activity.m_stat().find(aroleid);
-		}
-		const pbdb::db_activity_mstat& lmstat = itor->second;
 
-		// 开启任务
+		auto itor = ldb_activity.m_task().find(aroleid);
+		if (itor == ldb_activity.m_task().end())
+		{
+			(*m_activity->get().mutable_m_task())[aroleid];
+			itor = ldb_activity.m_task().find(aroleid);
+		}
+		const pbdb::activity_task& ltask = itor->second;
+
 		for (int32_t i = 0; i < ltab->m_taskday.size(); ++i)
 		{
 			auto& item = ltab->m_taskday[i];
+			// 开启任务
 			if (lday >= item.m_begday && lday < item.m_endday)
 			{
-				auto itoropen = lmstat.m_opentask().find(i);
-				if (itoropen == lmstat.m_opentask().end())
+				auto itoropen = ltask.m_open().find(i);
+				if (itoropen == ltask.m_open().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
 					np_operator_task* lnp = pro->add_data();
@@ -73,11 +70,12 @@ namespace ngl
 					actor::static_send_actor(aroleid, nguid::make(), pro);
 				}
 			}
+			// 关闭任务
 			if (lday >= item.m_endday)
 			{
-				auto itoropen = lmstat.m_opentask().find(i);
-				auto itorclose = lmstat.m_closetask().find(i);
-				if (itoropen != lmstat.m_opentask().end() && itorclose == lmstat.m_closetask().end())
+				auto itoropen = ltask.m_open().find(i);
+				auto itorclose = ltask.m_close().find(i);
+				if (itoropen != ltask.m_open().end() && itorclose == ltask.m_close().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
 					np_operator_task* lnp = pro->add_data();
@@ -116,7 +114,7 @@ namespace ngl
 			return;
 		}
 		// 活动期间产生等级变化
-		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::get(aroleid);
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::getInstance().get(aroleid);
 		if (lpbrief != nullptr)
 		{
 			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolelv())[activityid()] += anowlevel - abeforelevel;
@@ -149,7 +147,7 @@ namespace ngl
 			return;
 		}
 		// 活动期间产生等级变化
-		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::get(aroleid);
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::getInstance().get(aroleid);
 		if (lpbrief != nullptr)
 		{
 			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolegold())[activityid()] += anowgold - abeforegold;
@@ -158,7 +156,7 @@ namespace ngl
 
 	void activity::brief_activityvalues(i64_actorid aroleid)
 	{
-		tdb_brief::nsp_cli<actor_activity_manage>::change(aroleid);
+		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().change(aroleid);
 	}
 
 }//namespace ngl

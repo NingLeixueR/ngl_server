@@ -20,10 +20,8 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		std::set<i64_actorid> ldataid;
-		nclient_brief::init((ENUM_ACTOR)nguid::type(actor_brief::actorid()), this, ldataid);
-		std::set<i64_actorid> ldatakvid;
-		nclient_keyvalue::init((ENUM_ACTOR)nguid::type(actor_keyvalue::actorid()), this, ldatakvid);
+		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
 	}
 
 	ENUM_ACTOR actor_activity_manage::actor_type()
@@ -39,7 +37,8 @@ namespace ngl
 	void actor_activity_manage::init()
 	{
 		// 绑定DB结构:DB.set(this);
-		m_db.set(this);
+		m_activitydb.set(this);
+		m_activitytimedb.set(this);
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
@@ -67,24 +66,6 @@ namespace ngl
 		// 绑定pb消息
 		register_handle_proto<actor_activity_manage>::func<
 		>(true);
-	}
-
-
-	int64_t post_timer(int32_t autc, const std::function<void(const wheel_node* anode)>& afun)
-	{
-		auto lms = (int32_t)(localtime::gettime() * 1000 - (autc * 1000));
-
-		wheel_parm lparm
-		{
-			.m_ms = lms,
-			.m_intervalms = nullptr,
-			.m_count = 1,
-			.m_fun = [afun](const wheel_node* anode)
-			{
-				afun(anode);
-			}
-		};
-		return twheel::wheel().addtimer(lparm);
 	}
 
 	std::shared_ptr<activity>& actor_activity_manage::get_activity(int64_t aactivityid)
@@ -119,7 +100,7 @@ namespace ngl
 		{
 			return;
 		}
-		std::shared_ptr<activity> lpactivity = activity::make(acalendarid, (int32_t)aactivityid, atime, m_db);
+		std::shared_ptr<activity> lpactivity = activity::make((int32_t)aactivityid, atime, m_activitydb, m_activitytimedb);
 		add_activity(lpactivity);
 		lpactivity->start();
 	}
