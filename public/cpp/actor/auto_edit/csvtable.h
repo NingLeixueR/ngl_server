@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-29 21:05:52
+// 创建时间 // 创建时间 25-05-29 22:00:30
 #pragma once
 
 #include "csv.h"
@@ -535,29 +535,6 @@ struct tregularslot
 		def_rcsv2(m_opentime,m_closetime);
 	}
 };
-struct tab_calendar
-{
-	/*********************************/
-	int32_t                          m_id                            ; // [index:0][load:y] id 
-	std::string                      m_name                          ; // [index:1][load:y] 名字 
-//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
-	ECalendar                        m_type                          ; // [index:3][load:y] ECalendar(0:周几,1:以开服时间以来的天数,2:固定时间段)
-	std::vector<tweek>               m_week                          ; // [index:4][load:y] m_type=0,tweek(周几开始(1-7)*开启时间HH:mm:ss*周几结束(1-7)*结束时间HH:mm:ss)
-	std::vector<tserveropen>         m_serveropen                    ; // [index:5][load:y] m_type=1,tserveropen(开服后多少天开启*开启时间HH:mm:ss*开服后多少天结束*结束时间HH:mm:ss)
-	std::vector<tregularslot>        m_tregularslot                  ; // [index:6][load:y] m_type=2,tregularslot(开启时间YYYY/MM/DD HH:mm:ss*结束时间YYYY/MM/DD HH:mm:ss)
-	ECalendarType                    m_carendar                      ; // [index:7][load:y] (0.无 1.活动开启与关闭 2.任务接取与放弃)
-	std::string                      m_carendarparm                  ; // [index:8][load:y] (ECalendarTypeActivity:活动id,ECalendarTypeTask:任务id)
-	/*********************************/
-	tab_calendar();
-	// 序列化反序列化相关
-	def_portocol(tab_calendar, m_id, m_name, m_type, m_week, m_serveropen, m_tregularslot, m_carendar, m_carendarparm)
-	// csv相关
-	inline bool rcsv(ngl::csvpair& apair)
-	{
-		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_week,m_serveropen,m_tregularslot,m_carendar,m_carendarparm);
-	}
-};
 struct tab_mail
 {
 	/*********************************/
@@ -675,11 +652,11 @@ struct tab_activityalways
 	int                              m_wehour                        ; // [index:9][load:y] 时
 	int                              m_weminute                      ; // [index:10][load:y] 分
 	int                              m_wesecond                      ; // [index:11][load:y] 秒
-	int                              m_mbday                         ; // [index:12][load:y] 周几(1-7)
+	int                              m_mbday                         ; // [index:12][load:y] 每月几号(1-31)
 	int                              m_mbhour                        ; // [index:13][load:y] 时
 	int                              m_mbminute                      ; // [index:14][load:y] 分
 	int                              m_mbsecond                      ; // [index:15][load:y] 秒
-	int                              m_meday                         ; // [index:16][load:y] 周几(1-7)
+	int                              m_meday                         ; // [index:16][load:y] 每月几号(1-31)
 	int                              m_mehour                        ; // [index:17][load:y] 时
 	int                              m_meminute                      ; // [index:18][load:y] 分
 	int                              m_mesecond                      ; // [index:19][load:y] 秒

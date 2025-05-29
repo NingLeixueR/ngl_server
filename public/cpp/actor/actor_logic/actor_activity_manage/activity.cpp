@@ -1,6 +1,5 @@
 #include "activity_drawcompliance.h"
 #include "actor_activity_manage.h"
-#include "ttab_calendar.h"
 #include "activity.h"
 
 namespace ngl
