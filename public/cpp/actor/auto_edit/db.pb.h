@@ -227,12 +227,13 @@ namespace pbdb {
 enum db_keyvalue_ekv : int {
   db_keyvalue_ekv_none = 0,
   db_keyvalue_ekv_account_ban = 1,
+  db_keyvalue_ekv_open_server = 2,
   db_keyvalue_ekv_db_keyvalue_ekv_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   db_keyvalue_ekv_db_keyvalue_ekv_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool db_keyvalue_ekv_IsValid(int value);
 constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MIN = db_keyvalue_ekv_none;
-constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MAX = db_keyvalue_ekv_account_ban;
+constexpr db_keyvalue_ekv db_keyvalue_ekv_ekv_MAX = db_keyvalue_ekv_open_server;
 constexpr int db_keyvalue_ekv_ekv_ARRAYSIZE = db_keyvalue_ekv_ekv_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* db_keyvalue_ekv_descriptor();
@@ -1967,6 +1968,8 @@ class db_keyvalue PROTOBUF_FINAL :
     db_keyvalue_ekv_none;
   static constexpr ekv account_ban =
     db_keyvalue_ekv_account_ban;
+  static constexpr ekv open_server =
+    db_keyvalue_ekv_open_server;
   static inline bool ekv_IsValid(int value) {
     return db_keyvalue_ekv_IsValid(value);
   }
@@ -3566,7 +3569,7 @@ class db_activitytimes PROTOBUF_FINAL :
   enum : int {
     kMIdFieldNumber = 1,
     kMBegFieldNumber = 2,
-    kMEndFieldNumber = 3,
+    kMDurationFieldNumber = 3,
     kMStartFieldNumber = 4,
     kMFinishFieldNumber = 5,
   };
@@ -3596,17 +3599,17 @@ class db_activitytimes PROTOBUF_FINAL :
   void _internal_set_m_beg(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 m_end = 3;
-  bool has_m_end() const;
+  // int32 m_duration = 3;
+  bool has_m_duration() const;
   private:
-  bool _internal_has_m_end() const;
+  bool _internal_has_m_duration() const;
   public:
-  void clear_m_end();
-  ::PROTOBUF_NAMESPACE_ID::int32 m_end() const;
-  void set_m_end(::PROTOBUF_NAMESPACE_ID::int32 value);
+  void clear_m_duration();
+  ::PROTOBUF_NAMESPACE_ID::int32 m_duration() const;
+  void set_m_duration(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_end() const;
-  void _internal_set_m_end(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_m_duration() const;
+  void _internal_set_m_duration(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // bool m_start = 4;
@@ -3646,7 +3649,7 @@ class db_activitytimes PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_beg_;
-  ::PROTOBUF_NAMESPACE_ID::int32 m_end_;
+  ::PROTOBUF_NAMESPACE_ID::int32 m_duration_;
   bool m_start_;
   bool m_finish_;
   friend struct ::TableStruct_db_2eproto;
@@ -8225,32 +8228,32 @@ inline void db_activitytimes::set_m_beg(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_activitytimes.m_beg)
 }
 
-// int32 m_end = 3;
-inline bool db_activitytimes::_internal_has_m_end() const {
+// int32 m_duration = 3;
+inline bool db_activitytimes::_internal_has_m_duration() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
-inline bool db_activitytimes::has_m_end() const {
-  return _internal_has_m_end();
+inline bool db_activitytimes::has_m_duration() const {
+  return _internal_has_m_duration();
 }
-inline void db_activitytimes::clear_m_end() {
-  m_end_ = 0;
+inline void db_activitytimes::clear_m_duration() {
+  m_duration_ = 0;
   _has_bits_[0] &= ~0x00000004u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 db_activitytimes::_internal_m_end() const {
-  return m_end_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_activitytimes::_internal_m_duration() const {
+  return m_duration_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 db_activitytimes::m_end() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_activitytimes.m_end)
-  return _internal_m_end();
+inline ::PROTOBUF_NAMESPACE_ID::int32 db_activitytimes::m_duration() const {
+  // @@protoc_insertion_point(field_get:pbdb.db_activitytimes.m_duration)
+  return _internal_m_duration();
 }
-inline void db_activitytimes::_internal_set_m_end(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void db_activitytimes::_internal_set_m_duration(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000004u;
-  m_end_ = value;
+  m_duration_ = value;
 }
-inline void db_activitytimes::set_m_end(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_m_end(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_activitytimes.m_end)
+inline void db_activitytimes::set_m_duration(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_m_duration(value);
+  // @@protoc_insertion_point(field_set:pbdb.db_activitytimes.m_duration)
 }
 
 // bool m_start = 4;

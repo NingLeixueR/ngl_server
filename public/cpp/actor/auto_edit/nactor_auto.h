@@ -50,6 +50,7 @@ namespace ngl
 	}
 
 
+	class  actor_activity_manage;
 	class  actor_brief;
 	class  actor_cross_test;
 	class  actor_family;
@@ -60,7 +61,6 @@ namespace ngl
 	class  actor_notice;
 	class  actor_ranklist;
 	class  actor_role;
-	class  actor_activity_manage;
 
 
 	using tdbcross_test = typedb<pbdb::ENUM_DBCROSS_TEST, pbdb::dbcross_test, actor_cross_test>;

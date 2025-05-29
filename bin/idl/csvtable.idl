@@ -390,6 +390,13 @@ struct activity_task
 	vector<int32_t> m_taskids;			// 任务列表
 };
 
+
+enum EActivityOpen
+{
+	EActivityOpenGm = 0,			// Gm开启
+	EActivityOpenAlways = 1,		// 常驻活动
+};
+
 struct tab_activity
 {
 	int32_t m_id;								// [index:0][load:y] id 
@@ -397,9 +404,26 @@ struct tab_activity
 	string m_remarks;							// [index:2][load:n] 备注
 
 	EActivity m_type;							// [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>2冲榜)
-	vector<int32_t> m_task;						// [index:4][load:y] 活动期间接取任务
-	vector<activity_task> m_taskday;			// [index:5][load:y] 活动期间接取任务(第几天接收任务)
-	vector<int32_t> m_ranktype;					// [index:6][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)
+	EActivityOpen m_open;						// [index:4][load:y] 开启方式
+	vector<int32_t> m_task;						// [index:5][load:y] 活动期间接取任务
+	vector<activity_task> m_taskday;			// [index:6][load:y] 活动期间接取任务(第几天接收任务)
+	vector<int32_t> m_ranktype;					// [index:7][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)
+};
+
+struct tab_openserveractivity
+{
+	int32_t m_id;								// [index:0][load:y] id 
+	string m_name;								// [index:1][load:y] 名字 
+	string m_remarks;							// [index:2][load:n] 备注
+
+	int m_openday;								// [index:3][load:y] 开服第几天开启（开服当天算为第一天）
+	int m_openhour;								// [index:4][load:y] 时
+	int m_openminute;							// [index:5][load:y] 分
+	int m_opensecond;							// [index:6][load:y] 秒
+	int m_closeday;								// [index:7][load:y] 开服第几天开启（开服当天算为第一天）
+	int m_closehour;							// [index:8][load:y] 时
+	int m_closeminute;							// [index:9][load:y] 分
+	int m_closesecond;							// [index:10][load:y] 秒
 };
 
 struct tab_activity_drawcompliance

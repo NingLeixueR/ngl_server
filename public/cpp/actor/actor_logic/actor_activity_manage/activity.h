@@ -13,24 +13,29 @@ namespace ngl
 		activity& operator=(const activity&) = delete;
 
 		static std::map<EActivity, activity*> m_activityall;
-		virtual std::shared_ptr<activity> create(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb) = 0;
+		virtual std::shared_ptr<activity> create(
+			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
+		) = 0;
 	public:
-		static std::shared_ptr<activity> make(int32_t aactivityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
+		static std::shared_ptr<activity> make(
+			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
+		)
 		{
-			tab_activity* tab = allcsv::tab<tab_activity>(aactivityid);
-			auto itor = m_activityall.find(tab->m_type);
+			const tab_activity* ltab = ttab_activity::tab(aactivityid);
+			auto itor = m_activityall.find(ltab->m_type);
 			if (itor == m_activityall.end())
 			{
 				return nullptr;
 			}
-			return itor->second->create(aactivityid, atime, aactivitydb, aactivitytimedb);
+			return itor->second->create(aactivityid, atime, aduration, aactivitydb, aactivitytimedb);
 		}
 	protected:
-		tab_activity* m_tab = nullptr;
+		const tab_activity* m_tab = nullptr;
 		data_modified<pbdb::db_activity>* m_activity = nullptr;
 		data_modified<pbdb::db_activitytimes>* m_activitytimes = nullptr;
+
 	public:
-		activity(int64_t activityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb);
+		activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb);
 		activity();
 
 		EActivity type()
@@ -60,7 +65,11 @@ namespace ngl
 
 		int32_t finish_utc()
 		{
-			return m_activitytimes->getconst().m_end();
+			if (m_activitytimes->getconst().m_duration() == -1)
+			{
+				return -1;
+			}
+			return start_utc() + m_activitytimes->getconst().m_duration();
 		}
 
 		// # 此刻是活动第几天
@@ -121,7 +130,8 @@ namespace ngl
 		// # 调用:活动关闭
 		virtual void finish() 
 		{
-
+			log_error()->print("activity::finish() activityid=[{}]", activityid());
+			m_activitytimes->get().set_m_start(false);
 		}
 	};
 }// namespace ngl

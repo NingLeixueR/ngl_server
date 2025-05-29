@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-29 11:18:30
+// 创建时间 // 创建时间 25-05-29 17:07:01
 #pragma once
 
 #include "csv.h"
@@ -136,6 +136,11 @@ enum EActivity
 {
 	EActivityDrawCompliance = 1,	// 类似咸鱼之王的<<招募达标>>
 	EActivityTopRank = 2,	// 冲榜
+};
+enum EActivityOpen
+{
+	EActivityOpenGm = 0,	// Gm开启
+	EActivityOpenAlways = 1,	// 常驻活动
 };
 enum ETask
 {
@@ -608,18 +613,44 @@ struct tab_activity
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
 	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>2冲榜)
-	std::vector<int32_t>             m_task                          ; // [index:4][load:y] 活动期间接取任务
-	std::vector<activity_task>       m_taskday                       ; // [index:5][load:y] 活动期间接取任务(第几天接收任务)
-	std::vector<int32_t>             m_ranktype                      ; // [index:6][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)
+	EActivityOpen                    m_open                          ; // [index:4][load:y] 开启方式
+	std::vector<int32_t>             m_task                          ; // [index:5][load:y] 活动期间接取任务
+	std::vector<activity_task>       m_taskday                       ; // [index:6][load:y] 活动期间接取任务(第几天接收任务)
+	std::vector<int32_t>             m_ranktype                      ; // [index:7][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)
 	/*********************************/
 	tab_activity();
 	// 序列化反序列化相关
-	def_portocol(tab_activity, m_id, m_name, m_type, m_task, m_taskday, m_ranktype)
+	def_portocol(tab_activity, m_id, m_name, m_type, m_open, m_task, m_taskday, m_ranktype)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_task,m_taskday,m_ranktype);
+		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_open,m_task,m_taskday,m_ranktype);
+	}
+};
+struct tab_openserveractivity
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] id 
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	int                              m_openday                       ; // [index:3][load:y] 开服第几天开启（开服当天算为第一天）
+	int                              m_openhour                      ; // [index:4][load:y] 时
+	int                              m_openminute                    ; // [index:5][load:y] 分
+	int                              m_opensecond                    ; // [index:6][load:y] 秒
+	int                              m_closeday                      ; // [index:7][load:y] 开服第几天开启（开服当天算为第一天）
+	int                              m_closehour                     ; // [index:8][load:y] 时
+	int                              m_closeminute                   ; // [index:9][load:y] 分
+	int                              m_closesecond                   ; // [index:10][load:y] 秒
+	/*********************************/
+	tab_openserveractivity();
+	// 序列化反序列化相关
+	def_portocol(tab_openserveractivity, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv2(m_id,m_name,lm_remarks,m_openday,m_openhour,m_openminute,m_opensecond,m_closeday,m_closehour,m_closeminute,m_closesecond);
 	}
 };
 struct tab_activity_drawcompliance

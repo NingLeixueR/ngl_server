@@ -1,3 +1,4 @@
+#include "ttab_openserveractivity.h"
 #include "ttab_activity.h"
 #include "ttab_activity_drawcompliance.h"
 #include "ttab_card.h"
@@ -109,6 +110,7 @@ namespace ngl
 			loadcsv<ttab_ranklist>();
 			loadcsv<ttab_activity_drawcompliance>();
 			loadcsv<ttab_activity>();
+			loadcsv<ttab_openserveractivity>();
 			loadcsv<ttab_matching>(); 
 			loadcsv<ttab_plays>();
 		}
