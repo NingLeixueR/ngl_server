@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-29 21:05:52
+// 创建时间 // 创建时间 25-05-29 22:00:30
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()
@@ -60,9 +60,6 @@ tserveropen::tserveropen()
 {
 }
 tregularslot::tregularslot()
-{
-}
-tab_calendar::tab_calendar()
 {
 }
 tab_mail::tab_mail()

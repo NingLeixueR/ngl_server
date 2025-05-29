@@ -18,7 +18,6 @@
 #include "ttab_specialid.h"
 #include "ttab_attribute.h"
 #include "ttab_mergearea.h"
-#include "ttab_calendar.h"
 #include "ttab_ranklist.h"
 #include "ttab_servers.h"
 #include "ttab_random.h"
@@ -124,7 +123,6 @@ namespace ngl
 		}
 		if (NODE_TYPE::GAME == nconfig::node_type() || NODE_TYPE::WORLD == nconfig::node_type())
 		{
-			loadcsv<ttab_calendar>();
 			loadcsv<ttab_attribute>();
 			loadcsv<ttab_random>();
 			loadcsv<ttab_synthesis>();
