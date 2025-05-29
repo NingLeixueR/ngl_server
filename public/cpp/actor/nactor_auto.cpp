@@ -11,6 +11,7 @@
 #include "net.pb.h"
 #include "actor.h"
 
+#include "reister_channel_db.h"
 #include "auto_actor_enum.h"
 #include "nprotocol_auto.h"
 #include "nactor_auto.h"
@@ -70,49 +71,55 @@ namespace ngl
 		);
 	}
 
+	template <typename T>
+	void reister_channel_db()
+	{
+		tprotocol::tp_customs::template func <
+			np_channel_register<pbdb::db_keyvalue>
+			, np_channel_register_reply<pbdb::db_keyvalue>
+			, np_channel_data<pbdb::db_keyvalue>
+			, np_channel_exit<pbdb::db_keyvalue>
+		>(EPROTOCOL_TYPE_CUSTOM);
+	}
+
 	void tprotocol_customs()
 	{
 		tprotocol_customs_200000000();
 
-		tprotocol::set_customs_index(220000000);
+		tprotocol::set_customs_index(100000000);
 		tprotocol::tp_customs::template func <
-			/*220000001*/np_gm
-			/*220000002*/, np_gm_response
-			/*220000003*/, nactor_logitem
-			/*220000004*/, np_channel_register<pbdb::db_brief>
-			/*220000005*/, np_channel_register_reply<pbdb::db_brief>
-			/*220000006*/, np_channel_data<pbdb::db_brief>
-			/*220000007*/, np_channel_exit<pbdb::db_brief>
-			/*220000008*/, np_channel_register<pbdb::db_keyvalue>
-			/*220000009*/, np_channel_register_reply<pbdb::db_keyvalue>
-			/*220000010*/, np_channel_data<pbdb::db_keyvalue>
-			/*220000011*/, np_channel_exit<pbdb::db_keyvalue>
-			/*220000012*/, np_arg_null
+			/*100000001*/np_gm
+			/*100000002*/, np_gm_response
+			/*100000003*/, nactor_logitem
+			/*100000004*/, np_arg_null
 		>(EPROTOCOL_TYPE_CUSTOM);
+
+		// 占用110000000->120000000
+		reister_channel_db();
 		
-		tprotocol::set_customs_index(230000000);
+		tprotocol::set_customs_index(120000000);
 		tprotocol::tp_customs::template func <
-			/*230000001*/mforward<np_gm>
-			/*230000002*/, mforward<np_gm_response>
-			/*230000003*/, np_actorswitch_process<np_actorswitch_process_role>
+			/*120000001*/mforward<np_gm>
+			/*120000002*/, mforward<np_gm_response>
+			/*120000003*/, np_actorswitch_process<np_actorswitch_process_role>
 		>(EPROTOCOL_TYPE_CUSTOM);
 
 		// ### 事件相关协议 start ### //
-		tprotocol::set_customs_index(240000000);
+		tprotocol::set_customs_index(130000000);
 		tprotocol::tp_customs::template func <
-			/*240000001*/ actor_events_logic::np_event_register
+			/*130000001*/ actor_events_logic::np_event_register
 		>(EPROTOCOL_TYPE_CUSTOM);
 
 		//# actor_events_logic
-		tprotocol::set_customs_index(240001000);
+		tprotocol::set_customs_index(130010000);
 		tprotocol::tp_customs::template func <
-			/*240001001*/ np_eevents_logic_rolelogin
-			/*240001002*/, np_eevents_logic_roleoffline
-			/*240001003*/, np_eevents_logic_rolevaluechange
+			/*130010001*/ np_eevents_logic_rolelogin
+			/*130010002*/, np_eevents_logic_roleoffline
+			/*130010003*/, np_eevents_logic_rolevaluechange
 		>(EPROTOCOL_TYPE_CUSTOM);
 
 		//# actor_events_map
-		tprotocol::set_customs_index(240002000);
+		tprotocol::set_customs_index(130020000);
 		tprotocol::tp_customs::template func <
 			/*240002001*/ np_eevents_map_leaveview
 			/*240002002*/, np_eevents_map_enterview

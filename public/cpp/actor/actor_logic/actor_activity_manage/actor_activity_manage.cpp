@@ -22,6 +22,8 @@ namespace ngl
 	{
 		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
 		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
+
+		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 	}
 
 	ENUM_ACTOR actor_activity_manage::actor_type()

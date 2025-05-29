@@ -418,7 +418,23 @@ namespace ngl
 		// 订阅/发布[数据副本]
 		using nsp_ser	 = nsp_server<TDBTAB_TYPE, TACTOR, TDBTAB>;
 		template <typename TDerived>
-		using nsp_cli	 = nsp_client<TDerived, TDBTAB>;
+		using nsp_cli	 = nsp_client<TDerived, TACTOR, TDBTAB>;
+		template <typename TDerived>
+		using nsp_constcli = nsp_constclient<TDerived, TACTOR, TDBTAB>;
+
+		template <typename TDerived>
+		static nsp_constcli<TDerived>& get_constcli()
+		{
+			static nsp_constcli<TDerived> ltemp(nsp_cli<TDerived>::getInstance());
+			return ltemp;
+		}
+
+		template <typename TDerived>
+		static void constcli_init(TDerived* aactor, const std::set<i64_actorid>& adataid)
+		{
+			nsp_cli<TDerived>::getInstance().init(aactor, adataid);
+		}
+
 		// [aregister == true] 主要是注册协议,宏与类型的绑定
 		// [aregister == false] 实例化db_actor,db server需要
 		static void init(bool aregister);
@@ -496,6 +512,7 @@ namespace ngl
         lfile.write(m_stream.str());
 
         std::stringstream m_stream2;
+        std::stringstream m_stream3;
         m_stream2 << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
         m_stream2 << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
         m_stream2 << R"(#include "auto_actor_enum.h"
@@ -531,6 +548,46 @@ namespace ngl
 }//namespace ngl)";
         ngl::writefile lfile2("../../public/cpp/actor/auto_edit/nactor_auto_tdb.cpp");
         lfile2.write(m_stream2.str());
+
+
+        m_stream3 << "namespace ngl" << std::endl;
+        m_stream3 << "{" << std::endl;
+        m_stream3 << std::endl;
+        m_stream3 << "\ttemplate <typename T>" << std::endl;
+        m_stream3 << "\tvoid _reister_channel_db()" << std::endl;
+        m_stream3 << "\t{" << std::endl;
+        m_stream3 << "\t\ttprotocol::tp_customs::template func <" << std::endl;
+        m_stream3 << "\t\t\tnp_channel_register<T>" << std::endl;
+        m_stream3 << "\t\t\t, np_channel_register_reply<T>" << std::endl;
+        m_stream3 << "\t\t\t, np_channel_data<T>" << std::endl;
+        m_stream3 << "\t\t\t, np_channel_exit<T>" << std::endl;
+        m_stream3 << "\t\t>(EPROTOCOL_TYPE_CUSTOM);" << std::endl;
+        m_stream3 << "\t}" << std::endl;
+        m_stream3 << std::endl;
+        m_stream3 << "\tvoid reister_channel_db()" << std::endl;
+        m_stream3 << "\t{" << std::endl;
+
+        int lindex333 = 110000000;
+        for (const auto& item : lmap)
+        {
+            if (item.second.enumname == "ENUM_DB_COUNT")
+            {
+                continue;
+            }
+
+            std::string enumname = std::string("pbdb::") + &(item.second.enumname.c_str()[sizeof("enum_")-1]);
+            ngl::tools::replace(" ", "", enumname, enumname);
+            ngl::tools::transform_tolower(enumname);
+           
+            m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
+            m_stream3 << std::format("\t\t_reister_channel_db<{}>();", enumname) << std::endl;
+            lindex333 += 10;
+        }
+        m_stream3 << "\t}" << std::endl;
+        m_stream3 << "}//namespace ngl" << std::endl;
+
+        ngl::writefile lfile3("../../public/cpp/actor/auto_edit/reister_channel_db.h");
+        lfile3.write(m_stream3.str());
     }
 
     static void nactor_auto(google::protobuf::compiler::DiskSourceTree& sourceTree, const char* aname)
