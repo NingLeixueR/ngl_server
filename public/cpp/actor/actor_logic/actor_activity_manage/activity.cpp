@@ -13,9 +13,9 @@ namespace ngl
 
 	}
 
-	activity::activity(int64_t activityid, int64_t atime, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
+	activity::activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
 	{
-		m_tab = allcsv::tab<tab_activity>((int32_t)activityid);
+		m_tab = ttab_activity::tab(activityid);
 		assert(m_tab != nullptr);
 
 		m_activity = aactivitydb.get_activity(activityid);
@@ -30,8 +30,8 @@ namespace ngl
 		{
 			pbdb::db_activitytimes ldb;
 			ldb.set_m_id(activityid);
-			ldb.set_m_beg(ttab_calendar::data::beg(atime));
-			ldb.set_m_end(ttab_calendar::data::end(atime));
+			ldb.set_m_beg(atime);
+			ldb.set_m_duration(aduration);
 			ldb.set_m_start(false);
 			ldb.set_m_finish(false);
 			m_activitytimes = aactivitytimedb.add(activityid, ldb);

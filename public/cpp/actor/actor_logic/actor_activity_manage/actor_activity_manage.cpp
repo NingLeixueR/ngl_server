@@ -1,3 +1,4 @@
+#include "ttab_openserveractivity.h"
 #include "actor_activity_manage.h"
 #include "actor_keyvalue.h"
 #include "ttab_calendar.h"
@@ -51,6 +52,65 @@ namespace ngl
 			, eevents_logic_rolelevelchange
 			, eevents_logic_rolegoldchange
 		);
+
+		// 加载初始化活动
+		int32_t lnow = localtime::gettime();
+		for (const auto& [ activityid, activitytime] : m_activitytimedb.data())
+		{
+			const tab_activity* ltab = ttab_activity::tab(activityid);
+			if (ltab == nullptr)
+			{
+				continue;
+			}
+			const pbdb::db_activitytimes& lactivitytimes = activitytime.getconst();
+			if (lactivitytimes.m_finish())
+			{
+				m_activitys[activityid] = nullptr;
+				
+			}
+			else
+			{
+				int32_t lbeg = lactivitytimes.m_beg();
+				int32_t lduration = lactivitytimes.m_duration();
+				start_activity(ltab->m_id, lbeg, lduration);
+			}
+		}
+
+		for (const auto& [activityid, tab] : ttab_activity::tablecsv())
+		{
+			auto& lactivity = m_activitys[activityid];
+			if (lactivity == nullptr)
+			{
+				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
+				{
+					start_activity(activityid, lnow, -1);
+				}
+			}
+		}
+
+		//ttab_openserveractivity
+		
+		pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().get(pbdb::db_keyvalue::open_server);
+		int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
+		
+		assert(lkeyvalue != nullptr);
+		for (const auto& [activityid, tab] : ttab_openserveractivity::tablecsv())
+		{
+			auto& lactivity = m_activitys[activityid];
+			if (lactivity == nullptr)
+			{
+				//lopenserver
+				int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND
+					+ tab.m_openhour * localtime::HOUR_SECOND
+					+ tab.m_openminute * localtime::MINUTES_SECOND
+					+ tab.m_opensecond;
+				int32_t lend = (tab.m_closeday - 1) * localtime::DAY_SECOND
+					+ tab.m_closehour * localtime::HOUR_SECOND
+					+ tab.m_closeminute * localtime::MINUTES_SECOND
+					+ tab.m_closesecond;
+				start_activity(activityid, lbeg, lend- lbeg);
+			}
+		}
 	}
 
 	void actor_activity_manage::nregister()
@@ -81,33 +141,42 @@ namespace ngl
 		return itor->second;
 	}
 
-	void actor_activity_manage::add_activity(std::shared_ptr<activity>& aactivity)
-	{
-		m_activitys.insert(std::make_pair(aactivity->activityid(), aactivity));
-	}
-
 	void actor_activity_manage::erase_activity(int64_t aactivityid)
 	{
 		m_activitys.erase(aactivityid);
 	}
 
-	void actor_activity_manage::activity_start(int64_t aactivityid, int64_t atime, int32_t acalendarid)
+	void actor_activity_manage::start_activity(int64_t aactivityid, int32_t atime, int32_t aduration)
 	{
-		if(m_activitys.contains(aactivityid))
+		const tab_activity* ltab = ttab_activity::tab(aactivityid);
+		if (ltab == nullptr)
 		{
 			return;
 		}
-		const auto tab = allcsv::tab<tab_activity>((int32_t)aactivityid);
-		if (tab == nullptr)
+		int32_t lnow = localtime::gettime();
+		if (atime < lnow)
 		{
-			return;
+			post_timer(aactivityid, eactivity_start, atime, aduration);
 		}
-		std::shared_ptr<activity> lpactivity = activity::make((int32_t)aactivityid, atime, m_activitydb, m_activitytimedb);
-		add_activity(lpactivity);
-		lpactivity->start();
+		else if (lnow >= atime + aduration)
+		{
+			m_activitys[aactivityid] = activity::make(
+				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
+			);
+			m_activitys[aactivityid]->init();
+			m_activitys[aactivityid]->finish();
+			m_activitys[aactivityid] = nullptr;
+		}
+		else
+		{
+			if (aduration > 0)
+			{
+				post_timer(aactivityid, eactivity_close, atime, aduration);
+			}
+		}
 	}
 
-	void actor_activity_manage::activity_finish(int64_t aactivityid, int64_t atime, int32_t acalendarid)
+	void actor_activity_manage::finish_activity(int64_t aactivityid)
 	{
 		auto itor = m_activitys.find(aactivityid);
 		if (itor == m_activitys.end())
@@ -118,12 +187,57 @@ namespace ngl
 		erase_activity(aactivityid);
 	}
 
+	void actor_activity_manage::post_timer(int32_t aactivityid, etimerparm_activity atype, int32_t abeg, int32_t aduration)
+	{
+		auto ltimerparm = std::make_shared<np_timerparm>();
+		int32_t lduration = 0;
+		if (atype == eactivity_close)
+		{
+			lduration = (abeg + aduration) - localtime::gettime();
+		}
+		else if (atype == eactivity_start)
+		{
+			lduration = localtime::gettime() - abeg;
+		}
+		
+		make_timerparm::make_interval(*ltimerparm, lduration, 1);
+		auto ltimerparm_activity = std::make_shared<timerparm_activity>();
+		ltimerparm_activity->m_type = atype;
+		ltimerparm_activity->m_activityid = aactivityid;
+		ltimerparm_activity->m_beg = abeg;
+		ltimerparm_activity->m_duration = aduration;
+		timerparm_set_parm(ltimerparm.get(), ltimerparm_activity);		
+		ntimer::addtimer(this, ltimerparm);
+	}
+
 	bool actor_activity_manage::timer_handle(const message<np_timerparm>& adata)
 	{
 		if (adata.get_data()->m_type != E_ACTOR_TIMER::ET_INTERVAL_SEC)
 		{
 			return false;
 		}
+		const np_timerparm* lpparm = adata.get_data();
+		std::shared_ptr<timerparm_activity> lpvparm = std::static_pointer_cast<timerparm_activity>(lpparm->m_parm);
+		if (lpvparm == nullptr)
+		{
+			return false;
+		}
+		auto lpactivity = get_activity(lpvparm->m_activityid);
+		if (lpactivity == nullptr)
+		{
+			return false;
+		}
+		if (lpvparm->m_type == eactivity_close)
+		{
+			finish_activity(lpvparm->m_activityid);
+			return true;
+		}
+		else if (lpvparm->m_type == eactivity_start)
+		{
+			start_activity(lpvparm->m_activityid, lpvparm->m_beg, lpvparm->m_duration);
+			return true;
+		}
+
 		return true;
 	}
 
