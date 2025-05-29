@@ -62,6 +62,10 @@ namespace ngl
 				return;
 			}
 			auto& recv = *adata.get_data();
+			if (m_publishlist.contains(recv.m_actorid))
+			{
+				log_error()->print("nsp_server::channel_register fail recv.m_actorid=[{}]", nguid(recv.m_actorid));
+			}
 			m_publishlist[recv.m_actorid] = recv.m_dataid;
 			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
