@@ -1,5 +1,6 @@
-#include "ttab_openserveractivity.h"
+#include "ttab_activityopenserver.h"
 #include "actor_activity_manage.h"
+#include "ttab_activityalways.h"
 #include "actor_keyvalue.h"
 #include "ttab_calendar.h"
 #include "actor_brief.h"
@@ -82,19 +83,100 @@ namespace ngl
 			if (lactivity == nullptr)
 			{
 				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
-				{
-					start_activity(activityid, lnow, -1);
+				{//ttab_activityalways
+					const tab_activityalways* ltabalways = ttab_activityalways::tab(activityid);
+					if (ltabalways == nullptr)
+					{
+						start_activity(activityid, lnow, -1);
+						continue;
+					}
+					int32_t lnow = localtime::gettime();
+					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
+					{
+						int32_t lbeg = localtime::getweekday(
+							lnow,
+							ltabalways->m_wbday==7?0: ltabalways->m_wbday, 
+							ltabalways->m_wbhour, 
+							ltabalways->m_wbminute, 
+							ltabalways->m_wbsecond
+						);
+						int32_t lend = localtime::getweekday(
+							lnow,
+							ltabalways->m_weday == 7 ? 0 : ltabalways->m_weday,
+							ltabalways->m_wehour,
+							ltabalways->m_weminute,
+							ltabalways->m_wesecond
+						);
+						start_activity(activityid, lbeg, lend - lbeg);
+						continue;
+					}
+					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysMonth)
+					{
+						std::pair<bool, time_t> lbeg = localtime::getmothday(
+							lnow,
+							ltabalways->m_mbday,
+							ltabalways->m_mbhour,
+							ltabalways->m_mbminute,
+							ltabalways->m_mbsecond
+						);
+						if (lbeg.second)
+						{
+							continue;
+						}
+						std::pair<bool, time_t> lend;
+						int32_t lmeday = ltabalways->m_meday;
+						auto lfun = [&lmeday,&lend, lnow, ltabalways]()
+						{
+								do
+								{
+									if (lmeday < lmeday)
+									{
+										return false;
+									}
+									lend = localtime::getmothday(
+										lnow,
+										lmeday,
+										ltabalways->m_mehour,
+										ltabalways->m_meminute,
+										ltabalways->m_mesecond
+									);
+									--lmeday;
+								} while (!lend.first);
+								return true;
+						};
+						if (!lfun())
+						{
+							continue;
+						}
+						start_activity(activityid, lbeg.second, lend.second - lbeg.second);
+						continue;
+					}
+					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
+					{
+						int32_t lbeg = localtime::getsecond2time(
+							lnow,
+							ltabalways->m_fbhour,
+							ltabalways->m_fbminute,
+							ltabalways->m_fbsecond
+						);
+						int32_t lend = localtime::getsecond2time(
+							lnow+ ltabalways->m_fixedday* localtime::DAY_SECOND,
+							ltabalways->m_fbhour,
+							ltabalways->m_fbminute,
+							ltabalways->m_fbsecond
+						);
+						start_activity(activityid, lbeg, lend - lbeg);
+						continue;
+					}
 				}
 			}
 		}
 
-		//ttab_openserveractivity
-		
 		pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().get(pbdb::db_keyvalue::open_server);
 		int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
 		
 		assert(lkeyvalue != nullptr);
-		for (const auto& [activityid, tab] : ttab_openserveractivity::tablecsv())
+		for (const auto& [activityid, tab] : ttab_activityopenserver::tablecsv())
 		{
 			auto& lactivity = m_activitys[activityid];
 			if (lactivity == nullptr)
@@ -148,6 +230,11 @@ namespace ngl
 
 	void actor_activity_manage::start_activity(int64_t aactivityid, int32_t atime, int32_t aduration)
 	{
+		if (aduration < 0)
+		{
+			log_error()->print("start_activity fail activityid=[{}] time=[{}] duration=[{}]", aactivityid, atime, aduration);
+			return;
+		}
 		const tab_activity* ltab = ttab_activity::tab(aactivityid);
 		if (ltab == nullptr)
 		{
