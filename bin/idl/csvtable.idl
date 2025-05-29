@@ -410,7 +410,7 @@ struct tab_activity
 	vector<int32_t> m_ranktype;					// [index:7][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)
 };
 
-struct tab_openserveractivity
+struct tab_activityopenserver
 {
 	int32_t m_id;								// [index:0][load:y] id 
 	string m_name;								// [index:1][load:y] 名字 
@@ -424,6 +424,54 @@ struct tab_openserveractivity
 	int m_closehour;							// [index:8][load:y] 时
 	int m_closeminute;							// [index:9][load:y] 分
 	int m_closesecond;							// [index:10][load:y] 秒
+};
+
+enum EActivityAlways
+{
+	EActivityAlwaysNull = 0,		
+	EActivityAlwaysWeek = 1,		// 周
+	EActivityAlwaysMonth = 2,		// 月
+	EActivityAlwaysFixed = 3,		// 间隔固定时间
+};
+
+
+struct tab_activityalways
+{
+	int32_t m_id;								// [index:0][load:y] id 
+	string m_name;								// [index:1][load:y] 名字 
+	string m_remarks;							// [index:2][load:n] 备注
+
+	EActivityAlways m_type;						// [index:3][load:y] 常驻活动的周期类型
+	//EActivityAlwaysWeek
+	//wb:weekbeg we:weekend
+	int m_wbday;								// [index:4][load:y] 周几(1-7)
+	int m_wbhour;								// [index:5][load:y] 时
+	int m_wbminute;								// [index:6][load:y] 分
+	int m_wbsecond;								// [index:7][load:y] 秒
+	int m_weday;								// [index:8][load:y] 周几(1-7)
+	int m_wehour;								// [index:9][load:y] 时
+	int m_weminute;								// [index:10][load:y] 分
+	int m_wesecond;								// [index:11][load:y] 秒
+	//EActivityAlwaysMonth
+	int m_mbday;								// [index:12][load:y] 每月几号(1-31)
+	int m_mbhour;								// [index:13][load:y] 时
+	int m_mbminute;								// [index:14][load:y] 分
+	int m_mbsecond;								// [index:15][load:y] 秒
+	int m_meday;								// [index:16][load:y] 每月几号(1-31)
+	int m_mehour;								// [index:17][load:y] 时
+	int m_meminute;								// [index:18][load:y] 分
+	int m_mesecond;								// [index:19][load:y] 秒
+	//EActivityAlwaysFixed
+	//fb:fixebeg fe:fixeend
+	int m_fixedday;								// [index:20][load:y] 持续到第几天
+	//开启那天的时间
+	int m_fbhour;								// [index:21][load:y] 时
+	int m_fbminute;								// [index:22][load:y] 分
+	int m_fbsecond;								// [index:23][load:y] 秒
+	//结束那天的时间
+	int m_fehour;								// [index:24][load:y] 时
+	int m_feminute;								// [index:25][load:y] 分
+	int m_fesecond;								// [index:26][load:y] 秒
 };
 
 struct tab_activity_drawcompliance

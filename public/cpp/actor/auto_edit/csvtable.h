@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-29 17:07:01
+// 创建时间 // 创建时间 25-05-29 21:05:52
 #pragma once
 
 #include "csv.h"
@@ -141,6 +141,13 @@ enum EActivityOpen
 {
 	EActivityOpenGm = 0,	// Gm开启
 	EActivityOpenAlways = 1,	// 常驻活动
+};
+enum EActivityAlways
+{
+	EActivityAlwaysNull = 0,	
+	EActivityAlwaysWeek = 1,	// 周
+	EActivityAlwaysMonth = 2,	// 月
+	EActivityAlwaysFixed = 3,	// 间隔固定时间
 };
 enum ETask
 {
@@ -628,7 +635,7 @@ struct tab_activity
 		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_open,m_task,m_taskday,m_ranktype);
 	}
 };
-struct tab_openserveractivity
+struct tab_activityopenserver
 {
 	/*********************************/
 	int32_t                          m_id                            ; // [index:0][load:y] id 
@@ -643,14 +650,55 @@ struct tab_openserveractivity
 	int                              m_closeminute                   ; // [index:9][load:y] 分
 	int                              m_closesecond                   ; // [index:10][load:y] 秒
 	/*********************************/
-	tab_openserveractivity();
+	tab_activityopenserver();
 	// 序列化反序列化相关
-	def_portocol(tab_openserveractivity, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
+	def_portocol(tab_activityopenserver, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
 		def_rcsv2(m_id,m_name,lm_remarks,m_openday,m_openhour,m_openminute,m_opensecond,m_closeday,m_closehour,m_closeminute,m_closesecond);
+	}
+};
+struct tab_activityalways
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] id 
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	EActivityAlways                  m_type                          ; // [index:3][load:y] 常驻活动的周期类型
+	int                              m_wbday                         ; // [index:4][load:y] 周几(1-7)
+	int                              m_wbhour                        ; // [index:5][load:y] 时
+	int                              m_wbminute                      ; // [index:6][load:y] 分
+	int                              m_wbsecond                      ; // [index:7][load:y] 秒
+	int                              m_weday                         ; // [index:8][load:y] 周几(1-7)
+	int                              m_wehour                        ; // [index:9][load:y] 时
+	int                              m_weminute                      ; // [index:10][load:y] 分
+	int                              m_wesecond                      ; // [index:11][load:y] 秒
+	int                              m_mbday                         ; // [index:12][load:y] 周几(1-7)
+	int                              m_mbhour                        ; // [index:13][load:y] 时
+	int                              m_mbminute                      ; // [index:14][load:y] 分
+	int                              m_mbsecond                      ; // [index:15][load:y] 秒
+	int                              m_meday                         ; // [index:16][load:y] 周几(1-7)
+	int                              m_mehour                        ; // [index:17][load:y] 时
+	int                              m_meminute                      ; // [index:18][load:y] 分
+	int                              m_mesecond                      ; // [index:19][load:y] 秒
+	int                              m_fixedday                      ; // [index:20][load:y] 持续到第几天
+	int                              m_fbhour                        ; // [index:21][load:y] 时
+	int                              m_fbminute                      ; // [index:22][load:y] 分
+	int                              m_fbsecond                      ; // [index:23][load:y] 秒
+	int                              m_fehour                        ; // [index:24][load:y] 时
+	int                              m_feminute                      ; // [index:25][load:y] 分
+	int                              m_fesecond                      ; // [index:26][load:y] 秒
+	/*********************************/
+	tab_activityalways();
+	// 序列化反序列化相关
+	def_portocol(tab_activityalways, m_id, m_name, m_type, m_wbday, m_wbhour, m_wbminute, m_wbsecond, m_weday, m_wehour, m_weminute, m_wesecond, m_mbday, m_mbhour, m_mbminute, m_mbsecond, m_meday, m_mehour, m_meminute, m_mesecond, m_fixedday, m_fbhour, m_fbminute, m_fbsecond, m_fehour, m_feminute, m_fesecond)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv2(m_id,m_name,lm_remarks,m_type,m_wbday,m_wbhour,m_wbminute,m_wbsecond,m_weday,m_wehour,m_weminute,m_wesecond,m_mbday,m_mbhour,m_mbminute,m_mbsecond,m_meday,m_mehour,m_meminute,m_mesecond,m_fixedday,m_fbhour,m_fbminute,m_fbsecond,m_fehour,m_feminute,m_fesecond);
 	}
 };
 struct tab_activity_drawcompliance
