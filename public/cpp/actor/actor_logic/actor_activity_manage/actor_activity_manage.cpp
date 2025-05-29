@@ -256,6 +256,11 @@ namespace ngl
 		}
 		else
 		{
+			m_activitys[aactivityid] = activity::make(
+				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
+			);
+			m_activitys[aactivityid]->start();
+			m_activitys[aactivityid]->init();
 			if (aduration > 0)
 			{
 				post_timer(aactivityid, eactivity_close, atime, aduration);
