@@ -100,6 +100,7 @@ message db_keyvalue
 	{
 		none			= 0;
 		account_ban		= 1;	// 封号列表
+		open_server		= 2;	// 开服时间
 	}
 	optional int64 m_id					= 1;				// ekeyvalue
 	optional string m_value				= 2;				// value
@@ -174,7 +175,7 @@ message db_activitytimes
 {
 	optional int64 m_id			= 1; // tab_actiivity 表id
 	optional int32 m_beg		= 2; // 活动开启时间
-	optional int32 m_end		= 3; // 活动结束时间
+	optional int32 m_duration	= 3; // 活动持续时间
 	optional bool m_start		= 4; // 是否已开启(执行了开启方法)
 	optional bool m_finish		= 5; // 是否已关闭(执行了关闭方法)
 }

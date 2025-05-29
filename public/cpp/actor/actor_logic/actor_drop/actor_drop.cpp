@@ -11,7 +11,8 @@ namespace ngl
 				.m_parm
 					{
 						.m_type = ACTOR_DROP,
-						.m_area = tab_self_area
+						.m_area = tab_self_area,
+						.m_id = nconfig::m_nodeid
 					},
 				.m_weight = 0x7fffffff,
 			})
@@ -26,7 +27,7 @@ namespace ngl
 
 	i64_actorid actor_drop::actorid()
 	{
-		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nconfig::m_nodeid);
 	}
 
 	void actor_drop::init()
