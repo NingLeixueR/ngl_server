@@ -15,7 +15,12 @@ namespace ngl
 		static std::map<EActivity, activity*> m_activityall;
 		virtual std::shared_ptr<activity> create(
 			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
-		) = 0;
+		)
+		{
+			return std::make_shared<activity>(
+				aactivityid, atime, aduration, aactivitydb, aactivitytimedb
+			);
+		}
 	public:
 		static std::shared_ptr<activity> make(
 			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
@@ -39,7 +44,7 @@ namespace ngl
 	public:
 		activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb);
 
-		activity();
+		activity(EActivity atype);
 
 		EActivity type()
 		{

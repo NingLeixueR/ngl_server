@@ -46,8 +46,14 @@ namespace ngl
 
 		static void nregister();
 
+		// # GM²Ù×÷
+		using handle_cmd = cmd<actor_keyvalue, std::string, int, const ngl::json_read&>;
+
+
 		bool timer_handle(const message<np_timerparm>& adata);
 
 		bool handle(const message<np_arg_null>&);
+
+		bool handle(const message<mforward<np_gm>>& adata);
 	};
 }//namespace ngl

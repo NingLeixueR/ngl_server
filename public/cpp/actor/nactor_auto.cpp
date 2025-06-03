@@ -121,8 +121,8 @@ namespace ngl
 		//# actor_events_map
 		tprotocol::set_customs_index(130020000);
 		tprotocol::tp_customs::template func <
-			/*240002001*/ np_eevents_map_leaveview
-			/*240002002*/, np_eevents_map_enterview
+			/*130020001*/ np_eevents_map_leaveview
+			/*130020002*/, np_eevents_map_enterview
 		>(EPROTOCOL_TYPE_CUSTOM);
 		// ### 事件相关协议 finish ### //
 	}

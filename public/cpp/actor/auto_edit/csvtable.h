@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-03 10:03:48
+// 创建时间 // 创建时间 25-06-03 18:29:21
 #pragma once
 
 #include "csv.h"
@@ -695,6 +695,27 @@ struct tab_activity_drawcompliance
 	{
 		std::string lm_remarks;
 		def_rcsv2(m_id,m_name,lm_remarks,m_dropid,m_mailid);
+	}
+};
+struct tab_activity_toprank
+{
+	/*********************************/
+	int32_t                          m_id                            ; // [index:0][load:y] id 
+	std::string                      m_name                          ; // [index:1][load:y] 名字 
+//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	int32_t                          m_activityid                    ; // [index:3][load:y] 活动id
+	int32_t                          m_rank                          ; // [index:3][load:y] 排名
+	int32_t                          m_dropid                        ; // [index:4][load:y] 掉落id
+	int32_t                          m_mailid                        ; // [index:5][load:y] 邮件id
+	/*********************************/
+	tab_activity_toprank();
+	// 序列化反序列化相关
+	def_portocol(tab_activity_toprank, m_id, m_name, m_activityid, m_rank, m_dropid, m_mailid)
+	// csv相关
+	inline bool rcsv(ngl::csvpair& apair)
+	{
+		std::string lm_remarks;
+		def_rcsv2(m_id,m_name,lm_remarks,m_activityid,m_rank,m_dropid,m_mailid);
 	}
 };
 struct task_condition

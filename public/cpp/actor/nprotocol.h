@@ -548,7 +548,24 @@ namespace ngl
 	{
 		std::string m_msg;
 		bool m_isreceive;
+
 		def_portocol(np_operator_task_response, m_msg, m_isreceive)
+	};
+
+	// 拉取排行信息
+	struct np_get_rank
+	{
+		int32_t m_rankid = 0;
+
+		def_portocol(np_get_rank, m_rankid)
+	};
+
+	struct np_get_rank_response
+	{
+		int32_t m_rankid = 0;
+		std::vector<int64_t> m_rolerank;
+
+		def_portocol(np_get_rank_response, m_rankid, m_rolerank)
 	};
 
 }//namespace ngl

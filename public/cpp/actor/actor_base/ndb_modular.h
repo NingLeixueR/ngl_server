@@ -127,7 +127,7 @@ namespace ngl
 			ldata.get().set_m_id(aid);
 			return &ldata;
 		}
-		
+
 		// # 删除指定数据
 		inline void erase(nguid aid)
 		{

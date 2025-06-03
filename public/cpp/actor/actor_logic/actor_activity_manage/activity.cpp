@@ -1,11 +1,13 @@
 #include "activity_drawcompliance.h"
 #include "actor_activity_manage.h"
+#include "activity_rank.h"
 #include "activity.h"
 
 namespace ngl
 {
 	std::map<EActivity, activity*> activity::m_activityall;
 	activity_drawcompliance g_activity_drawcompliance;
+	activity_rank g_activity_rank;
 
 	activity::activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb):
 		m_activitydb(&aactivitydb),
@@ -33,8 +35,10 @@ namespace ngl
 		}
 	}	
 
-	activity::activity()
-	{}
+	activity::activity(EActivity atype)
+	{
+		m_activityall[atype] = this;
+	}
 
 	void activity::rolelogin(i64_actorid aroleid)
 	{
@@ -138,7 +142,7 @@ namespace ngl
 
 		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
 			{
-				return atype == pbdb::eranklist::activity_lv;
+				return atype == pbdb::eranklist::activity_gold;
 			});
 		if (itor == lpactivity->m_ranktype.end())
 		{

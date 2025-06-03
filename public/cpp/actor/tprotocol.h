@@ -79,10 +79,10 @@ namespace ngl
 	public:
 		static bool set_customs_index(int32_t acustoms)
 		{
-			if (m_customs >= acustoms)
-			{//不允许往回设置
-				return false;
-			}
+			//if (m_customs >= acustoms)
+			//{//不允许往回设置
+			//	return false;
+			//}
 			m_customs = acustoms;
 			return true;
 		}

@@ -24,7 +24,8 @@ namespace ngl
 			activity(aactivityid, atime, aduration, aactivitydb, aactivitytimedb)
 		{}
 
-		activity_drawcompliance()
+		activity_drawcompliance():
+			activity(EActivityDrawCompliance)
 		{}
 
 		// »î¶¯¿ªÆô

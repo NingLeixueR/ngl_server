@@ -1,5 +1,6 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-06-03 10:02:46
+// 创建时间 25-06-03 19:57:00
+#include "ttab_activity_toprank.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
 #include "ttab_mergearea.cpp"
@@ -11,6 +12,7 @@
 #include "operator_file.cpp"
 #include "nprotocol_g2c.cpp"
 #include "nprotocol_c2g.cpp"
+#include "activity_rank.cpp"
 #include "ttab_servers.cpp"
 #include "pbname_match.cpp"
 #include "net_protocol.cpp"

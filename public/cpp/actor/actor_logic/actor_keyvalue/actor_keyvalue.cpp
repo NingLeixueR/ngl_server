@@ -58,6 +58,7 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle_custom<actor_keyvalue>::func<
+			mforward<np_gm>
 		>(true);
 
 		// 绑定pb消息
