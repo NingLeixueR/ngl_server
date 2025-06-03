@@ -177,7 +177,6 @@ message db_activitytimes
 	optional int32 m_beg		= 2; // 活动开启时间
 	optional int32 m_duration	= 3; // 活动持续时间
 	optional bool m_start		= 4; // 是否已开启(执行了开启方法)
-	optional bool m_finish		= 5; // 是否已关闭(执行了关闭方法)
 }
 
 message activity_task

@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-05-29 22:00:30
+// 创建时间 // 创建时间 25-06-03 10:03:48
 #pragma once
 
 #include "csv.h"
@@ -596,8 +596,8 @@ struct tab_activity
 	int32_t                          m_id                            ; // [index:0][load:y] id 
 	std::string                      m_name                          ; // [index:1][load:y] 名字 
 //	std::string                      m_remarks                       ; // [index:2][load:n] 备注
-	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1类似咸鱼之王的<<招募达标>>2冲榜)
-	EActivityOpen                    m_open                          ; // [index:4][load:y] 开启方式
+	EActivity                        m_type                          ; // [index:3][load:y] 活动类型(1:类似咸鱼之王的<<招募达标>>2:冲榜)
+	EActivityOpen                    m_open                          ; // [index:4][load:y] 开启方式(0:GM开启1:常驻活动)
 	std::vector<int32_t>             m_task                          ; // [index:5][load:y] 活动期间接取任务
 	std::vector<activity_task>       m_taskday                       ; // [index:6][load:y] 活动期间接取任务(第几天接收任务)
 	std::vector<int32_t>             m_ranktype                      ; // [index:7][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)

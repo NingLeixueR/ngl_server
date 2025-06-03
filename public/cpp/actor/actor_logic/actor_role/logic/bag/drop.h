@@ -35,7 +35,6 @@ namespace ngl
 					if (lnow >= lpactivitytimes->m_beg()
 						&& lnow < lpactivitytimes->m_beg()+ lpactivitytimes->m_duration()
 						&& lpactivitytimes->m_start()
-						&& !lpactivitytimes->m_finish()
 						)
 					{
 						return true;

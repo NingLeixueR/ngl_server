@@ -57,6 +57,7 @@ namespace ngl
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
 
 				m_protocol[linfo.m_protocol] = &linfo;
+				std::cout << linfo.m_protocol << "-" << typeid(T).name() << std::endl;
 				return &linfo;
 			}
 		};

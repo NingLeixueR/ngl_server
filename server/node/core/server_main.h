@@ -328,21 +328,21 @@ bool start_world()
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 
-	ngl::actor_drop::getInstance();
-	ngl::actor_events_logic::getInstance();
-	ngl::actor_gm::getInstance();
-	ngl::actor_mail::getInstance();
-	ngl::actor_chat::getInstance();
-	ngl::actor_brief::getInstance();
-	ngl::actor_notice::getInstance();
-	ngl::actor_keyvalue::getInstance();
+	//ngl::actor_drop::getInstance();
+	//ngl::actor_events_logic::getInstance();
+	//ngl::actor_gm::getInstance();
+	//ngl::actor_mail::getInstance();
+	//ngl::actor_chat::getInstance();
+	//ngl::actor_brief::getInstance();
+	//ngl::actor_notice::getInstance();
+	//ngl::actor_keyvalue::getInstance();
 	ngl::actor_activity_manage::getInstance();
-	ngl::actor_family::getInstance();
-	ngl::actor_ranklist::getInstance();
-	ngl::actor_friends::getInstance();
-	ngl::actor_gmclient::getInstance();
-	ngl::actor_example_match::getInstance();
-	ngl::actor_example_manage::getInstance();
+	//ngl::actor_family::getInstance();
+	//ngl::actor_ranklist::getInstance();
+	//ngl::actor_friends::getInstance();
+	//ngl::actor_gmclient::getInstance();
+	//ngl::actor_example_match::getInstance();
+	//ngl::actor_example_manage::getInstance();
 
 	ngl::actor_client::getInstance().actor_server_register();
 	return true;

@@ -17,6 +17,7 @@ namespace ngl
 					.m_type = ACTOR_ACTIVITY_MANAGE,
 					.m_area = tab_self_area,
 					//.m_id = nconfig::m_nodeid,
+					.m_manage_dbclient = true,
 				},
 				.m_weight = 0x7fffffff,
 			})
@@ -63,23 +64,14 @@ namespace ngl
 				continue;
 			}
 			const pbdb::db_activitytimes& lactivitytimes = activitytime.getconst();
-			if (lactivitytimes.m_finish())
-			{
-				m_activitys[activityid] = nullptr;
-				
-			}
-			else
-			{
-				int32_t lbeg = lactivitytimes.m_beg();
-				int32_t lduration = lactivitytimes.m_duration();
-				start_activity(ltab->m_id, lbeg, lduration);
-			}
+			int32_t lbeg = lactivitytimes.m_beg();
+			int32_t lduration = lactivitytimes.m_duration();
+			start_activity(ltab->m_id, lbeg, lduration);
 		}
 
 		for (const auto& [activityid, tab] : ttab_activity::tablecsv())
 		{
-			auto& lactivity = m_activitys[activityid];
-			if (lactivity == nullptr)
+			if (!m_activitys.contains(activityid))
 			{
 				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
 				{//ttab_activityalways
@@ -89,7 +81,6 @@ namespace ngl
 						start_activity(activityid, lnow, -1);
 						continue;
 					}
-					int32_t lnow = localtime::gettime();
 					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
 					{
 						int32_t lbeg = localtime::getweekday(
@@ -177,8 +168,7 @@ namespace ngl
 		assert(lkeyvalue != nullptr);
 		for (const auto& [activityid, tab] : ttab_activityopenserver::tablecsv())
 		{
-			auto& lactivity = m_activitys[activityid];
-			if (lactivity == nullptr)
+			if (!m_activitys.contains(activityid))
 			{
 				//lopenserver
 				int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND
@@ -229,7 +219,7 @@ namespace ngl
 
 	void actor_activity_manage::start_activity(int64_t aactivityid, int32_t atime, int32_t aduration)
 	{
-		if (aduration < 0)
+		if (aduration < 0 && aduration !=-1)
 		{
 			log_error()->print("start_activity fail activityid=[{}] time=[{}] duration=[{}]", aactivityid, atime, aduration);
 			return;
@@ -240,21 +230,23 @@ namespace ngl
 			return;
 		}
 		int32_t lnow = localtime::gettime();
-		if (atime < lnow)
-		{
+		if (lnow < atime)
+		{//未来时间定时开启活动
 			post_timer(aactivityid, eactivity_start, atime, aduration);
+			return;
 		}
-		else if (lnow >= atime + aduration)
-		{
+		if (lnow >= atime + aduration && aduration != -1)
+		{//关闭活动
 			m_activitys[aactivityid] = activity::make(
 				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
 			);
 			m_activitys[aactivityid]->init();
 			m_activitys[aactivityid]->finish();
 			m_activitys[aactivityid] = nullptr;
+			return;
 		}
-		else
-		{
+		if ((lnow > atime && lnow < atime + aduration) || (lnow > atime && aduration == -1))
+		{//开启活动
 			m_activitys[aactivityid] = activity::make(
 				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
 			);
@@ -288,7 +280,12 @@ namespace ngl
 		}
 		else if (atype == eactivity_start)
 		{
-			lduration = localtime::gettime() - abeg;
+			lduration = abeg - localtime::gettime();
+		}
+
+		if (lduration < 0)
+		{
+			lduration = 0;
 		}
 		
 		make_timerparm::make_interval(*ltimerparm, lduration, 1);

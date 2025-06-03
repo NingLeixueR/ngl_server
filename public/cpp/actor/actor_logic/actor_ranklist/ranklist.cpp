@@ -7,9 +7,9 @@ namespace ngl
 	ranklist::ranklist()
 	{
 		m_ranks[pbdb::eranklist::lv] = std::make_unique<rankset<pbdb::eranklist::lv>>();
-		m_ranks[pbdb::eranklist::lv]->set_count(ttab_specialid::m_ranklistmaxcount);
 
-		create_activity_rank<pbdb::eranklist::activity_lv + 1001>();
+		create_activity_rank<pbdb::eranklist::activity_lv, 1>();
+		create_activity_rank<pbdb::eranklist::activity_gold, 1>();
 	}
 
 	void ranklist::set_id()

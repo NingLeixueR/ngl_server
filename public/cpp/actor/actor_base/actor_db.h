@@ -187,7 +187,8 @@ namespace ngl
 	db_cache actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_del;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	class actor_db : public actor
+	class actor_db :
+		public actor
 	{
 		using tactor_db = actor_db<TDBTAB_TYPE, TDBTAB>;
 	private:
