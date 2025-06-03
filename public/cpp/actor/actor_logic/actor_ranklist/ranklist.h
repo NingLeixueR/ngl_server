@@ -23,12 +23,11 @@ namespace ngl
 		std::map<i64_actorid, rank_item> m_maprankitem;
 		std::map<pbdb::eranklist, std::unique_ptr<rankset_base>> m_ranks;
 
-		template <int32_t N>
+		template <pbdb::eranklist RANKTYPE, int32_t N>
 		void create_activity_rank()
 		{
-			m_ranks[(pbdb::eranklist)(pbdb::eranklist::activity_lv + N)] 
-				= std::make_unique<rankset<(pbdb::eranklist)(pbdb::eranklist::activity_lv + N)>>();
-			m_ranks[(pbdb::eranklist)(pbdb::eranklist::activity_lv + N)]->set_count(ttab_specialid::m_ranklistmaxcount);
+			m_ranks[(pbdb::eranklist)(RANKTYPE + N)]
+				= std::make_unique<rankset<(pbdb::eranklist)(RANKTYPE + N)>>();
 		}
 	public:
 		ranklist();

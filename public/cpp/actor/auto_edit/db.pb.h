@@ -3571,7 +3571,6 @@ class db_activitytimes PROTOBUF_FINAL :
     kMBegFieldNumber = 2,
     kMDurationFieldNumber = 3,
     kMStartFieldNumber = 4,
-    kMFinishFieldNumber = 5,
   };
   // int64 m_id = 1;
   bool has_m_id() const;
@@ -3625,19 +3624,6 @@ class db_activitytimes PROTOBUF_FINAL :
   void _internal_set_m_start(bool value);
   public:
 
-  // bool m_finish = 5;
-  bool has_m_finish() const;
-  private:
-  bool _internal_has_m_finish() const;
-  public:
-  void clear_m_finish();
-  bool m_finish() const;
-  void set_m_finish(bool value);
-  private:
-  bool _internal_m_finish() const;
-  void _internal_set_m_finish(bool value);
-  public:
-
   // @@protoc_insertion_point(class_scope:pbdb.db_activitytimes)
  private:
   class _Internal;
@@ -3651,7 +3637,6 @@ class db_activitytimes PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::int32 m_beg_;
   ::PROTOBUF_NAMESPACE_ID::int32 m_duration_;
   bool m_start_;
-  bool m_finish_;
   friend struct ::TableStruct_db_2eproto;
 };
 // -------------------------------------------------------------------
@@ -8282,34 +8267,6 @@ inline void db_activitytimes::_internal_set_m_start(bool value) {
 inline void db_activitytimes::set_m_start(bool value) {
   _internal_set_m_start(value);
   // @@protoc_insertion_point(field_set:pbdb.db_activitytimes.m_start)
-}
-
-// bool m_finish = 5;
-inline bool db_activitytimes::_internal_has_m_finish() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
-  return value;
-}
-inline bool db_activitytimes::has_m_finish() const {
-  return _internal_has_m_finish();
-}
-inline void db_activitytimes::clear_m_finish() {
-  m_finish_ = false;
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline bool db_activitytimes::_internal_m_finish() const {
-  return m_finish_;
-}
-inline bool db_activitytimes::m_finish() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_activitytimes.m_finish)
-  return _internal_m_finish();
-}
-inline void db_activitytimes::_internal_set_m_finish(bool value) {
-  _has_bits_[0] |= 0x00000010u;
-  m_finish_ = value;
-}
-inline void db_activitytimes::set_m_finish(bool value) {
-  _internal_set_m_finish(value);
-  // @@protoc_insertion_point(field_set:pbdb.db_activitytimes.m_finish)
 }
 
 // -------------------------------------------------------------------

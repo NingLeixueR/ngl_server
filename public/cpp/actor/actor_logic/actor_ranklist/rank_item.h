@@ -51,6 +51,28 @@ namespace ngl
 			change(atype, aranklist->get());
 		}
 
+		template <int ACTIVITYID>
+		int64_t activitylv(const pbdb::db_brief& abrief)
+		{
+			auto itor = abrief.m_activityvalues().m_activity_rolelv().find(pbdb::eranklist::activity_lv + ACTIVITYID);
+			if (itor == abrief.m_activityvalues().m_activity_rolelv().end())
+			{
+				return -1;
+			}
+			return itor->second;
+		};
+
+		template <int ACTIVITYID>
+		int64_t activitygold(const pbdb::db_brief& abrief)
+		{
+			auto itor = abrief.m_activityvalues().m_activity_rolegold().find(pbdb::eranklist::activity_gold + ACTIVITYID);
+			if (itor == abrief.m_activityvalues().m_activity_rolegold().end())
+			{
+				return -1;
+			}
+			return itor->second;
+		};
+
 		void init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
 		{
 			init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
@@ -58,15 +80,14 @@ namespace ngl
 					return abrief.m_lv();
 				});
 
-			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1001), [](const pbdb::db_brief& abrief)
-				{
-					auto itor = abrief.m_activityvalues().m_activity_rolelv().find(pbdb::eranklist::activity_lv + 1001);
-					if (itor == abrief.m_activityvalues().m_activity_rolelv().end())
-					{
-						return -1;
-					}
-					return itor->second;
-				});
+
+			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1), 
+				std::bind(&rank_item::activitylv<1001>, this, std::placeholders::_1)
+			);
+
+			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
+				std::bind(&rank_item::activitylv<1001>, this, std::placeholders::_1)
+			);
 		}
 
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)

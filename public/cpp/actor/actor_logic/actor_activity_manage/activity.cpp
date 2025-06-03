@@ -7,12 +7,9 @@ namespace ngl
 	std::map<EActivity, activity*> activity::m_activityall;
 	activity_drawcompliance g_activity_drawcompliance;
 
-	activity::activity()
-	{
-
-	}
-
-	activity::activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
+	activity::activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb):
+		m_activitydb(&aactivitydb),
+		m_activitytimedb(&aactivitytimedb)
 	{
 		m_tab = ttab_activity::tab(activityid);
 		assert(m_tab != nullptr);
@@ -32,10 +29,12 @@ namespace ngl
 			ldb.set_m_beg(atime);
 			ldb.set_m_duration(aduration);
 			ldb.set_m_start(false);
-			ldb.set_m_finish(false);
 			m_activitytimes = aactivitytimedb.add(activityid, ldb);
 		}
 	}	
+
+	activity::activity()
+	{}
 
 	void activity::rolelogin(i64_actorid aroleid)
 	{

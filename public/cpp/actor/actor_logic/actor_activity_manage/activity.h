@@ -30,12 +30,15 @@ namespace ngl
 			return itor->second->create(aactivityid, atime, aduration, aactivitydb, aactivitytimedb);
 		}
 	protected:
-		const tab_activity* m_tab = nullptr;
-		data_modified<pbdb::db_activity>* m_activity = nullptr;
-		data_modified<pbdb::db_activitytimes>* m_activitytimes = nullptr;
+		const tab_activity* m_tab								= nullptr;
+		data_modified<pbdb::db_activity>* m_activity			= nullptr;
+		data_modified<pbdb::db_activitytimes>* m_activitytimes	= nullptr;
+		activitydb* m_activitydb								= nullptr;
+		activitytimedb* m_activitytimedb						= nullptr;
 
 	public:
 		activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb);
+
 		activity();
 
 		EActivity type()
@@ -51,11 +54,6 @@ namespace ngl
 		virtual bool is_start()
 		{
 			return m_activitytimes->getconst().m_start();
-		}
-
-		virtual bool is_finish()
-		{
-			return m_activitytimes->getconst().m_finish();
 		}
 
 		int32_t start_utc()
@@ -86,12 +84,16 @@ namespace ngl
 		// # 是否支持排行榜
 		bool is_rank()
 		{
-			return activityid() >= 1000 || activityid() < 2000;
+			return activityid() >= pbdb::eranklist::activity_lv;
 		}
 	public:
 		// # 调用:活动开启
 		virtual void start() 
 		{
+			if (m_activitytimes->getconst().m_start())
+			{
+				return;
+			}
 			log_error()->print("activity::start() activityid=[{}]", activityid());
 			m_activitytimes->get().set_m_start(true);
 		}
@@ -131,7 +133,9 @@ namespace ngl
 		virtual void finish() 
 		{
 			log_error()->print("activity::finish() activityid=[{}]", activityid());
-			m_activitytimes->get().set_m_start(false);
+
+			m_activitydb->erase(activityid());
+			m_activitytimedb->erase(activityid());
 		}
 	};
 }// namespace ngl

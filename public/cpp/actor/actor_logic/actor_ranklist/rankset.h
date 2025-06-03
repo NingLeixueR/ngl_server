@@ -18,24 +18,43 @@ namespace ngl
 
 	class rankset_base
 	{
-		int32_t m_count;
+		const tab_ranklist* m_tab;
 	public:
-		rankset_base() :
-			m_count(-1)
-		{}
+		rankset_base(pbdb::eranklist aranktype) :
+			m_tab(ttab_ranklist::tab(aranktype))
+		{
+			assert(m_tab != nullptr);
+		}
 	
+		inline const tab_ranklist* tab()
+		{
+			return m_tab;
+		}
+
+		inline int32_t showitem()
+		{
+			return m_tab->m_showitem;
+		}
+
+		inline int32_t everypagecount()
+		{
+			return m_tab->m_everypagecount;
+		}
+
+		inline int32_t maxitem()
+		{
+			return m_tab->m_maxitem;
+		}
+
+		inline int32_t minvalue()
+		{
+			return m_tab->m_minvalue;
+		}		
+
 		virtual void erase(rank_item* aitem) = 0;
 		virtual void insert(rank_item* aitem) = 0;
 		virtual void foreach(const std::function<void(int32_t, const rank_item*)>&) = 0;
 		virtual int32_t getpage(i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun) = 0;
-		virtual void set_count(int32_t acount)
-		{
-			m_count = acount;
-		}
-		virtual int32_t count()
-		{
-			return m_count;
-		}
 		virtual int32_t role_rank(i64_actorid aroleid) = 0;
 
 	};
@@ -62,23 +81,26 @@ namespace ngl
 		void init()
 		{
 			m_page.clear();
-			auto ltab = tab();
-			int pagesize = ltab->m_showitem / ltab->m_everypagecount;
+			int32_t leverypagecount = everypagecount();
+			int pagesize = showitem() / leverypagecount;
 			m_page.resize(pagesize);
 
 			auto itor = m_rankdata.begin();
-			
 			for (int i = 0; i < pagesize; ++i)
 			{
 				m_page[i] = itor;
-				for (int j = 1; itor != m_rankdata.end() && j <= ltab->m_everypagecount; ++itor,++j)
+				for (int j = 1; itor != m_rankdata.end() && j <= leverypagecount; ++itor,++j)
 				{
-					m_rolerank[(*itor)->m_actorid] = i * ltab->m_everypagecount + j;
+					m_rolerank[(*itor)->m_actorid] = i * leverypagecount + j;
 				}
 			}
 			m_pagetime = m_time;
 		}
 	public:
+		rankset() :
+			rankset_base(ETYPE)
+		{}
+
 		virtual void erase(rank_item* aitem)
 		{
 			m_rankdata.erase(aitem);
@@ -87,13 +109,12 @@ namespace ngl
 
 		virtual void insert(rank_item* aitem)
 		{
-			auto ltab = tab();
-			if (aitem->value(ETYPE) < ltab->m_minvalue)
+			if (aitem->value(ETYPE) < minvalue())
 			{// 没达到入榜最小值
 				return;
 			}
 			m_rankdata.insert(aitem);
-			while (m_rankdata.size() > ltab->m_maxitem)
+			while (m_rankdata.size() > maxitem())
 			{
 				auto itor = std::prev(m_rankdata.end());
 				m_rankdata.erase(itor);
@@ -106,7 +127,7 @@ namespace ngl
 			int32_t lindex = 0;
 			for (const rank_item* item : m_rankdata)
 			{
-				afun(lindex++, item);
+				afun(++lindex, item);
 			}
 		}
 
@@ -122,15 +143,15 @@ namespace ngl
 				return (int32_t)m_rankdata.size();
 			}
 
-			auto ltab = tab();
-			int32_t lbegindex = (apage - 1) * ltab->m_everypagecount;
-			int32_t lendindex = lbegindex + ltab->m_everypagecount;
+			int32_t leverypagecount = everypagecount();
+			int32_t lbegindex = (apage - 1) * leverypagecount;
+			int32_t lendindex = lbegindex + leverypagecount;
 			if (lbegindex < 0 || lbegindex > m_rankdata.size())
 			{
 				return (int32_t)m_rankdata.size();
 			}
 			auto itor = m_page[apage - 1];
-			for (int lindex = 1; itor != m_rankdata.end() && lindex <= ltab->m_everypagecount; ++lindex, ++itor)
+			for (int lindex = 1; itor != m_rankdata.end() && lindex <= leverypagecount; ++lindex, ++itor)
 			{
 				afun(lindex, *itor);
 			}
