@@ -58,6 +58,7 @@ namespace ngl
 			ldata.set_m_id(aid);
 			ldata.set_m_value(tools::lexical_cast<std::string>(adata));
 			update_keyvalue(&ldata);
+			return true;
 		}
 
 
