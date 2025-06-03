@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-03 10:03:48
+// 创建时间 // 创建时间 25-06-03 18:29:21
 #include "csvtable.h"
 namespace ngl{
 net_works::net_works()
@@ -81,6 +81,9 @@ tab_activityalways::tab_activityalways()
 {
 }
 tab_activity_drawcompliance::tab_activity_drawcompliance()
+{
+}
+tab_activity_toprank::tab_activity_toprank()
 {
 }
 task_condition::task_condition()

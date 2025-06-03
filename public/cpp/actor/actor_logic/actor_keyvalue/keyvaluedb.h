@@ -38,6 +38,29 @@ namespace ngl
 			return &itor->second;
 		}
 
+
+		template <typename T>
+		bool keyvalue(nguid aid, T& adata)
+		{
+			data_modified<pbdb::db_keyvalue>* lp = get(aid);
+			if (lp == nullptr)
+			{
+				return false;
+			}
+			adata = tools::lexical_cast<T>(lp->getconst().m_value());
+			return true;
+		}
+
+		template <typename T>
+		bool add_keyvalue(nguid aid, const T& adata)
+		{
+			pbdb::db_keyvalue ldata;
+			ldata.set_m_id(aid);
+			ldata.set_m_value(tools::lexical_cast<std::string>(adata));
+			update_keyvalue(&ldata);
+		}
+
+
 		// 没有就添加
 		void update_keyvalue(const pbdb::db_keyvalue* adata)
 		{

@@ -20,6 +20,7 @@ namespace ngl
 					.m_manage_dbclient = true,
 				},
 				.m_weight = 0x7fffffff,
+				.m_broadcast = true
 			})
 	{
 		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
@@ -119,7 +120,7 @@ namespace ngl
 						{
 								do
 								{
-									if (lmeday < lmeday)
+									if (lmeday <= 0)
 									{
 										return false;
 									}
@@ -163,25 +164,28 @@ namespace ngl
 		}
 
 		pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().get(pbdb::db_keyvalue::open_server);
-		int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
-		
-		assert(lkeyvalue != nullptr);
-		for (const auto& [activityid, tab] : ttab_activityopenserver::tablecsv())
+		if (lkeyvalue != nullptr)
 		{
-			if (!m_activitys.contains(activityid))
+			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
+
+			assert(lkeyvalue != nullptr);
+			for (const auto& [activityid, tab] : ttab_activityopenserver::tablecsv())
 			{
-				//lopenserver
-				int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND
-					+ tab.m_openhour * localtime::HOUR_SECOND
-					+ tab.m_openminute * localtime::MINUTES_SECOND
-					+ tab.m_opensecond;
-				int32_t lend = (tab.m_closeday - 1) * localtime::DAY_SECOND
-					+ tab.m_closehour * localtime::HOUR_SECOND
-					+ tab.m_closeminute * localtime::MINUTES_SECOND
-					+ tab.m_closesecond;
-				start_activity(activityid, lbeg, lend- lbeg);
+				if (!m_activitys.contains(activityid))
+				{
+					//lopenserver
+					int32_t lbeg = (tab.m_openday - 1) * localtime::DAY_SECOND
+						+ tab.m_openhour * localtime::HOUR_SECOND
+						+ tab.m_openminute * localtime::MINUTES_SECOND
+						+ tab.m_opensecond;
+					int32_t lend = (tab.m_closeday - 1) * localtime::DAY_SECOND
+						+ tab.m_closehour * localtime::HOUR_SECOND
+						+ tab.m_closeminute * localtime::MINUTES_SECOND
+						+ tab.m_closesecond;
+					start_activity(activityid, lbeg, lend - lbeg);
+				}
 			}
-		}
+		}		
 	}
 
 	void actor_activity_manage::nregister()

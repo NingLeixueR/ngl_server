@@ -357,6 +357,7 @@ namespace ngl
 		{
 			if (m_data.contains(aid))
 			{
+				log_error()->print("dbclient add fail id=[{}]", aid);
 				return nullptr;
 			}
 			data_modified<TDBTAB>* lpdata = &m_data[aid];

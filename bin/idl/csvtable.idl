@@ -468,6 +468,18 @@ struct tab_activity_drawcompliance
 	int32_t m_mailid;							// [index:4][load:y] 邮件id
 };
 
+struct tab_activity_toprank
+{
+	int32_t m_id;								// [index:0][load:y] id 
+	string m_name;								// [index:1][load:y] 名字 
+	string m_remarks;							// [index:2][load:n] 备注
+
+	int32_t m_activityid;						// [index:3][load:y] 活动id
+	int32_t m_rank;								// [index:3][load:y] 排名
+	int32_t m_dropid;							// [index:4][load:y] 掉落id
+	int32_t m_mailid;							// [index:5][load:y] 邮件id
+};
+
 enum ETask
 {
 	ETaskRoleLv  = 0,		// 玩家等级

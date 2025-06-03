@@ -1,3 +1,4 @@
+#include "ttab_activity_toprank.h"
 #include "ttab_activityalways.h"
 #include "ttab_activityopenserver.h"
 #include "ttab_activity.h"
@@ -108,9 +109,10 @@ namespace ngl
 		if (NODE_TYPE::WORLD == nconfig::node_type())
 		{
 			loadcsv<ttab_ranklist>();
-			loadcsv<ttab_activity_drawcompliance>();
 			loadcsv<ttab_activity>();
+			loadcsv<ttab_activity_drawcompliance>();
 			loadcsv<ttab_activityopenserver>();
+			loadcsv<ttab_activity_toprank>();
 			loadcsv<ttab_activityalways>();
 			loadcsv<ttab_matching>(); 
 			loadcsv<ttab_plays>();
