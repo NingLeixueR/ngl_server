@@ -73,7 +73,7 @@ namespace ngl
 		pro->set_m_totalnumber(aroom->m_totalnumber);
 		pro->set_m_roomcreate(aroom->m_roomcreate);
 		pro->set_m_roomready(aroom->m_roomready);
-		for (const auto [id, info] : aroom->m_players)
+		for (const auto& [id, info] : aroom->m_players)
 		{
 			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::getInstance().getconst(id);
 			if (lpbrief != nullptr)

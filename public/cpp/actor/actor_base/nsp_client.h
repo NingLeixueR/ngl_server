@@ -19,11 +19,14 @@ namespace ngl
 		std::set<i64_actorid>							m_dataid;
 		std::function<void(int64_t, const T&, bool)>	m_changedatafun;
 		bool											m_activate = false;
-
-		nsp_client()
-		{}
-	public:
 		std::map<i64_actorid, T> m_data;
+
+		nsp_client() = default;
+	public:
+		std::map<i64_actorid, T>& data()
+		{
+			return m_data;
+		}
 	private:
 		template <typename TX>
 		static std::string& type_name()
@@ -84,7 +87,7 @@ namespace ngl
 		{
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
 			Assert(lsetarea->empty() == false);
-			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
+			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
 			for (i16_area area : *lsetarea)
 			{
 				m_nspserver[area] = nguid::make(ltype, area, nguid::none_actordataid());
@@ -147,9 +150,9 @@ namespace ngl
 			return m_data;
 		}
 
-		void foreach(const std::function<void(const T&)>& afun)
+		void foreach(const std::function<void(const T&)>& afun)const
 		{
-			for (const auto [_key, _value] : m_data)
+			for (const auto& [_key, _value] : m_data)
 			{
 				afun(_value);
 			}
@@ -243,7 +246,7 @@ namespace ngl
 		
 		const nsp_client<TDerived, TACTOR, T>& m_instance;
 	public:
-		nsp_constclient(const nsp_client<TDerived, TACTOR, T>& anc) :
+		explicit nsp_constclient(const nsp_client<TDerived, TACTOR, T>& anc) :
 			m_instance(anc)
 		{}
 
