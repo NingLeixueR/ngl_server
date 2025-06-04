@@ -97,7 +97,7 @@ namespace ngl
 	void roleinfo::change_gold(int avalues)
 	{
 		pbdb::db_brief& lrb = get_brief();
-		change_event(eevents_logic::eevents_logic_rolelevelchange, lrb.m_moneygold(), lrb.m_moneygold() + avalues);
+		change_event(eevents_logic::eevents_logic_rolegoldchange, lrb.m_moneygold(), lrb.m_moneygold() + avalues);
 		lrb.set_m_moneygold(lrb.m_moneygold() + avalues);
 		sync_actor_brief();
 	}

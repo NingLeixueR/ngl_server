@@ -33,7 +33,7 @@ namespace ngl
 			lpdb_ranklist = get_rank(abrief.m_id());
 			assert(lpdb_ranklist != nullptr);
 		}
-		return litem.init(abrief, lpdb_ranklist);
+		return litem.init(atype, abrief, lpdb_ranklist);
 	}
 
 	bool ranklist::update_value(const pbdb::db_brief& abrief, bool afirstsynchronize)

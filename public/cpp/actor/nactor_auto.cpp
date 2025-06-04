@@ -152,6 +152,8 @@ namespace ngl
 	{
 		actor_events_logic::register_parm<np_eevents_logic_rolelogin>(eevents_logic_rolelogin);
 		actor_events_logic::register_parm<np_eevents_logic_roleoffline>(eevents_logic_roleoffline);
+		actor_events_logic::register_parm<np_eevents_logic_rolevaluechange>(eevents_logic_rolelevelchange);
+		actor_events_logic::register_parm<np_eevents_logic_rolevaluechange>(eevents_logic_rolegoldchange);
 	}
 
 	void tdb::tcrossdb_init(bool ainstance)
