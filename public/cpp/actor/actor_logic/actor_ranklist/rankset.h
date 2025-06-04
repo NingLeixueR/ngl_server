@@ -131,7 +131,7 @@ namespace ngl
 			}
 		}
 
-		int32_t showcount()
+		int32_t get_showcount()
 		{
 			int32_t lshow = showcount();
 			int32_t lcount = m_rankdata.size();
@@ -147,7 +147,7 @@ namespace ngl
 
 			if (apage - 1 >= m_page.size())
 			{
-				return showcount();
+				return get_showcount();
 			}
 
 			int32_t leverypagecount = everypagecount();
@@ -155,14 +155,14 @@ namespace ngl
 			int32_t lendindex = lbegindex + leverypagecount;
 			if (lbegindex < 0 || lbegindex > m_rankdata.size())
 			{
-				return showcount();
+				return get_showcount();
 			}
 			auto itor = m_page[apage - 1];
 			for (int lindex = 1; itor != m_rankdata.end() && lindex <= leverypagecount; ++lindex, ++itor)
 			{
 				afun(lindex, *itor);
 			}
-			return showcount();
+			return get_showcount();
 		}
 
 		virtual int32_t role_rank(i64_actorid aroleid)
