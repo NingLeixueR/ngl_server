@@ -2,14 +2,10 @@
 
 namespace ngl
 {
-
-
 	ranklist::ranklist()
 	{
-		m_ranks[pbdb::eranklist::lv] = std::make_unique<rankset<pbdb::eranklist::lv>>();
-
-		create_activity_rank<pbdb::eranklist::activity_lv, 1>();
-		create_activity_rank<pbdb::eranklist::activity_gold, 1>();
+		m_ranks[pbdb::eranklist::lv] = make_rank::make(pbdb::eranklist::lv);
+		m_ranks[pbdb::eranklist::gold] = make_rank::make(pbdb::eranklist::gold);
 	}
 
 	void ranklist::set_id()
@@ -17,9 +13,9 @@ namespace ngl
 		m_id = -1;
 	}
 
-	data_modified<pbdb::db_ranklist>* ranklist::get_rank(i64_actorid aroleid)
+	data_modified<pbdb::db_ranklist>* ranklist::get_rank(i64_actorid arankid)
 	{
-		auto itor = data().find(aroleid);
+		auto itor = data().find(arankid);
 		if (itor == data().end())
 		{
 			return nullptr;
@@ -34,17 +30,10 @@ namespace ngl
 		{
 			pbdb::db_ranklist* lpdata = get(abrief.m_id());
 			lpdata->set_m_id(abrief.m_id());
-			auto& lmap = *lpdata->mutable_m_items();
-			for (int i = 0; i < pbdb::eranklist::count; ++i)
-			{
-				lmap[i].set_m_time(litem.m_data[(pbdb::eranklist)i].m_time);
-				lmap[i].set_m_value(litem.m_data[(pbdb::eranklist)i].m_value);
-			}
 			lpdb_ranklist = get_rank(abrief.m_id());
 			assert(lpdb_ranklist != nullptr);
 		}
 		litem.init(abrief, lpdb_ranklist);
-
 		return true;
 	}
 
@@ -53,29 +42,29 @@ namespace ngl
 		std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::getInstance().m_data;
 		rank_item litem;
 		litem.m_actorid = abrief.m_id();
-		bool lupdatearr[pbdb::eranklist::count] = { false };
+		std::map<pbdb::eranklist, bool> lupdatearr;
 		bool lupdate = false;
-		for (int i = 0; i < pbdb::eranklist::count; ++i)
+		for (const auto& [_ranktype, _] : m_ranks)
 		{
-			lupdatearr[i] = update_value(pbdb::eranklist::lv, litem, abrief, afirstsynchronize);
-			lupdate = lupdate || lupdatearr[i];
+			lupdatearr[_ranktype] = update_value(_ranktype, litem, abrief, afirstsynchronize);
+			lupdate = lupdate || lupdatearr[_ranktype];
 		}
 		if (lupdate)
 		{
 			rank_item& ldata = m_maprankitem[abrief.m_id()];
-			for (int i = 0; i < pbdb::eranklist::count; ++i)
+			for (const auto& [_ranktype, _] : m_ranks)
 			{
-				if (lupdatearr[i])
+				if (lupdatearr[_ranktype])
 				{
-					m_ranks[(pbdb::eranklist)i]->erase(&ldata);
+					m_ranks[_ranktype]->erase(&ldata);
 				}
 			}
 			ldata = litem;
-			for (int i = 0; i < pbdb::eranklist::count; ++i)
+			for (const auto& [_ranktype, _] : m_ranks)
 			{
-				if (lupdatearr[i])
+				if (lupdatearr[_ranktype])
 				{
-					m_ranks[(pbdb::eranklist)i]->insert(&ldata);
+					m_ranks[_ranktype]->insert(&ldata);
 				}
 			}
 		}
@@ -94,9 +83,9 @@ namespace ngl
 			lpair.m_value = ritem.second.m_value();
 		}
 
-		for (int32_t i = 0; i < pbdb::eranklist::count; ++i)
+		for (const auto& [_ranktype, _rank] : m_ranks)
 		{
-			rankset_base& lrank = *m_ranks[(pbdb::eranklist)i].get();
+			rankset_base& lrank = *_rank.get();
 			lrank.insert(&ltempitem);
 		}
 	}
@@ -112,15 +101,6 @@ namespace ngl
 
 		tdb_brief::nsp_cli<actor_ranklist>::getInstance().set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
-				/*for (const auto& item : abrief.m_activityvalues().m_activity_rolelv())
-				{
-					pbdb::eranklist ltype = (pbdb::eranklist)(pbdb::activity_lv + item.first);
-					if (!m_ranks.contains(ltype))
-					{
-						m_ranks[ltype] = create_rankset::create(pbdb::activity_lv, aid);
-						m_ranks[ltype]->set_count(ttab_specialid::m_ranklistmaxcount);
-					}
-				}*/
 				update_value(abrief, afirstsynchronize);				
 			});
 	}
@@ -142,16 +122,24 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>();
 		pro->set_m_type(atype);
 		pro->set_m_page(apage);
-		int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro](int32_t aindex, const rank_item* aitem)
-			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(aitem->m_actorid);
-				if (lpbrief != nullptr)
+		if (m_ranks.contains(atype))
+		{
+			int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro](int32_t aindex, const rank_item* aitem)
 				{
-					*pro->add_m_items() = *lpbrief;
-				}
-			});
-		pro->set_m_count(lcount);
-		pro->set_m_rolerank(m_ranks[atype]->role_rank(aroleid));
+					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(aitem->m_actorid);
+					if (lpbrief != nullptr)
+					{
+						*pro->add_m_items() = *lpbrief;
+					}
+				});
+			pro->set_m_count(lcount);
+			pro->set_m_rolerank(m_ranks[atype]->role_rank(aroleid));
+		}
+		else
+		{
+			pro->set_m_count(0);
+			pro->set_m_rolerank(-1);
+		}		
 		return pro;
 	}
 
@@ -159,5 +147,37 @@ namespace ngl
 	{
 		auto pro = get_ranklist(aroleid, atype, apage);
 		actor::send_client(aroleid, pro);
+	}
+
+	void ranklist::get_rank(int32_t arankid, std::vector<int64_t>& arolerank)
+	{
+		if (m_ranks.contains((pbdb::eranklist)arankid))
+		{
+			m_ranks[(pbdb::eranklist)arankid]->foreach([&arolerank](int32_t aindex, const rank_item* aitem)
+				{
+					arolerank.push_back(aitem->m_actorid);
+				});
+		}
+	}
+
+	void ranklist::remove_rank(int32_t arankid)
+	{
+		auto itor = m_ranks.find((pbdb::eranklist)arankid);
+		if (itor == m_ranks.end())
+		{
+			return;
+		}
+		m_ranks.erase((pbdb::eranklist)arankid);
+		erase(arankid);
+	}
+
+	void ranklist::add_rank(int32_t arankid)
+	{
+		std::unique_ptr<rankset_base> ltemp = make_rank::make((pbdb::eranklist)arankid);
+		if (ltemp == nullptr)
+		{
+			return;
+		}
+		m_ranks[(pbdb::eranklist)arankid] = std::move(ltemp);
 	}
 }//namespace ngl

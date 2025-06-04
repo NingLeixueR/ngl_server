@@ -80,6 +80,10 @@ namespace ngl
 					return abrief.m_lv();
 				});
 
+			init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
+				{
+					return abrief.m_moneygold();
+				});
 
 			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1), 
 				std::bind(&rank_item::activitylv<1001>, this, std::placeholders::_1)

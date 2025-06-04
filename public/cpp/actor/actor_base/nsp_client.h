@@ -80,7 +80,6 @@ namespace ngl
 			return ltemp;
 		}
 
-
 		void init(TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
@@ -141,6 +140,41 @@ namespace ngl
 		{
 			T* lp = tools::findmap(m_data, aactorid);
 			return lp;
+		}
+
+		const std::map<i64_actorid, T>& get_map()
+		{
+			return m_data;
+		}
+
+		void foreach(const std::function<void(const T&)>& afun)
+		{
+			for (const auto [_key, _value] : m_data)
+			{
+				afun(_value);
+			}
+		}
+
+		void foreach_change(const std::function<bool(T&)>& afun)
+		{
+			std::map<i16_area, std::shared_ptr<np_channel_data<T>>> lmap;
+			for (auto itor = m_data.begin();itor != m_data.end();++itor)
+			{
+				i16_area larea = nguid::area(itor->first);
+				if (!lmap.contains(larea))
+				{
+					lmap[larea] = std::make_shared<np_channel_data<T>>();
+					lmap[larea]->m_data.make();
+				}
+				if (afun(itor->second))
+				{
+					(*lmap[larea]->m_data.m_data)[itor->first] = itor->second;
+				}
+			}
+			for (auto itor = lmap.begin(); itor != lmap.end(); ++itor)
+			{
+				actor::static_send_actor(m_nspserver[itor->first], nguid::make(), itor->second);
+			}
 		}
 
 		T* add(i64_actorid aactorid)

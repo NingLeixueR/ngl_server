@@ -1,5 +1,6 @@
 #include "actor_activity_manage.h"
 #include "actor_keyvalue.h"
+#include "activity_rank.h"
 #include "actor_brief.h"
 #include "activity.h"
 #include "net.pb.h"
@@ -47,6 +48,16 @@ namespace ngl
 				itor->second->rolegoldchange(lrecv->m_actorid, lrecv->m_beforevalue, lrecv->m_nowvalue);
 				break;
 			}
+		}
+		return true;
+	}
+	bool actor_activity_manage::handle(const message<np_get_rank_response>& adata)
+	{
+		const np_get_rank_response* lrecv = adata.get_data();
+		auto itor = m_activitys.find(lrecv->m_rankid);
+		if (itor != m_activitys.end() && itor->second->type() == EActivity::EActivityTopRank)
+		{
+			((activity_rank*)(itor->second.get()))->handle(*lrecv);
 		}
 		return true;
 	}

@@ -58,6 +58,8 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle_custom<actor_ranklist>::func<
 			mforward<np_gm>
+			, np_activityrank_operator
+			, np_get_rank
 		>(true);
 
 		// 绑定pb消息

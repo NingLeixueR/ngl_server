@@ -48,4 +48,29 @@ namespace ngl
 		m_ranklist.sync_ranklist(adata.get_data()->identifier(), lrecv->m_type(), lrecv->m_activityid(), lrecv->m_page());
 		return true;
 	}
+	bool actor_ranklist::handle(const message<np_activityrank_operator>& adata)
+	{
+		auto lrecv = adata.get_data();
+		int32_t lrankid = lrecv->m_rankid;
+		m_ranklist.remove_rank(lrankid);
+		tdb_brief::nsp_cli<actor_ranklist>::getInstance().foreach_change([lrankid](pbdb::db_brief& abrief)
+			{
+				abrief.mutable_m_activityvalues()->mutable_m_activity_rolelv()->erase(lrankid);
+				abrief.mutable_m_activityvalues()->mutable_m_activity_rolegold()->erase(lrankid);
+				return true;
+			});
+		if (lrecv->m_iscreate)
+		{
+			m_ranklist.add_rank(lrankid);
+		}
+		return true;
+	}
+	bool actor_ranklist::handle(const message<np_get_rank>& adata)
+	{
+		auto lrecv = adata.get_data();
+		auto pro = std::make_shared<np_get_rank_response>();
+		pro->m_rankid = lrecv->m_rankid;
+		m_ranklist.get_rank(lrecv->m_rankid, pro->m_rolerank);
+		return true;
+	}
 }//namespace ngl

@@ -568,4 +568,13 @@ namespace ngl
 		def_portocol(np_get_rank_response, m_rankid, m_rolerank)
 	};
 
+	// 增加删除活动排行榜
+	struct np_activityrank_operator
+	{
+		int32_t m_rankid = 0;
+		bool m_iscreate = true;
+
+		def_portocol(np_activityrank_operator, m_rankid, m_iscreate)
+	};
+
 }//namespace ngl

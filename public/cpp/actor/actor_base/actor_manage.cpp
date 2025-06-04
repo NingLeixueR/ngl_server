@@ -32,6 +32,8 @@ namespace ngl
 		std::set<i16_actortype>								m_actortype;
 		// # 删除actor后需要执行的操作(延迟操作:删除的瞬间actor正是运行状态,等待其回归后进行删除)
 		std::map<nguid, std::function<void()>>				m_delactorfun;
+		// # actor就绪状态(如果需要加载db，db加载完成)
+		std::set<nguid>										m_ready;
 
 		impl_actor_manage() :
 			m_thread(&impl_actor_manage::run, this)
@@ -48,6 +50,18 @@ namespace ngl
 			{
 				m_workthread.push_back(new nthread(i));
 			}
+		}
+
+		inline bool ready(const nguid& aguid)
+		{
+			ngl_lock_s;
+			return m_ready.contains(aguid);
+		}
+
+		inline void set_ready(const nguid& aguid)
+		{
+			ngl_lock_s;
+			m_ready.insert(aguid);
 		}
 
 		inline void get_type(std::vector<i16_actortype>& aactortype) const
@@ -522,6 +536,16 @@ namespace ngl
 	void actor_manage::get_actor_stat(msg_actor_stat& adata)
 	{
 		m_impl_actor_manage()->get_actor_stat(adata);
+	}
+
+	bool actor_manage::ready(const nguid& aguid)
+	{
+		return m_impl_actor_manage()->ready(aguid);
+	}
+
+	void actor_manage::set_ready(const nguid& aguid)
+	{
+		m_impl_actor_manage()->set_ready(aguid);
 	}
 
 	actor_suspendthread::actor_suspendthread()

@@ -206,7 +206,7 @@ void init_DB_FAMILY()
 
 void init_DB_RANKLIST()
 {
-	for (int i = 1; i < 100; ++i)
+	/*for (int i = 1; i < 100; ++i)
 	{
 		pbdb::db_ranklist ltemp;
 		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
@@ -216,7 +216,7 @@ void init_DB_RANKLIST()
 		(*ltemp.mutable_m_items())[(int)pbdb::eranklist::lv] = lrankitem;
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
-	}
+	}*/
 }
 
 void init_DB_FRIENDS()
@@ -336,9 +336,9 @@ bool start_world()
 	ngl::actor_brief::getInstance();
 	ngl::actor_notice::getInstance();
 	ngl::actor_keyvalue::getInstance();
+	ngl::actor_ranklist::getInstance();
 	ngl::actor_activity_manage::getInstance();
 	ngl::actor_family::getInstance();
-	ngl::actor_ranklist::getInstance();
 	ngl::actor_friends::getInstance();
 	ngl::actor_gmclient::getInstance();
 	ngl::actor_example_match::getInstance();

@@ -38,6 +38,11 @@ namespace ngl
 		//# 获取本进程存在的actor类型
 		void get_type(std::vector<i16_actortype>& aactortype);
 
+		//# actor就绪状态(如果需要加载db，db加载完成)
+		bool ready(const nguid& aguid);
+
+		void set_ready(const nguid& aguid);
+
 		//# 添加actor
 		bool add_actor(actor_base* apactor, const std::function<void()>& afun);
 

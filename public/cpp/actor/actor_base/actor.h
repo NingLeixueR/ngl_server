@@ -220,6 +220,8 @@ namespace ngl
 		actor_stat get_activity_stat() final;
 
 		void set_activity_stat(actor_stat astat) final;
+
+		void wait_ready(const nguid& aguid);
 	private:
 		// # 释放actor消息列表
 		void release() final;
