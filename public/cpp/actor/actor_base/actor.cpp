@@ -176,8 +176,7 @@ namespace ngl
 	};
 
 	actor::actor(const actorparm& aparm) :
-		actor_base(aparm.m_parm),
-		m_actorfun({nullptr})
+		actor_base(aparm.m_parm)
 	{
 		// 检查数据库依赖actorparmbase.m_manage_dbclient
 		// 如果依赖数据库那么需要开启"是否支持广播"m_broadcast

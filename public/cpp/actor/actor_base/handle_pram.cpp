@@ -4,9 +4,6 @@
 
 namespace ngl
 {
-	actor_node_session::actor_node_session()
-	{}
-
 	actor_node_session::actor_node_session(i32_sessionid asession, const nactornode& anode) :
 		m_session(asession),
 		m_node(anode)

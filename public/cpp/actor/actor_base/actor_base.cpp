@@ -181,7 +181,7 @@ namespace ngl
 
 		inline void db_component_init_data()
 		{
-			for (const auto [_, ldbcomponent] : m_dbcomponent)
+			for (const auto& [_, ldbcomponent] : m_dbcomponent)
 			{
 				ldbcomponent->init_data();
 			}
@@ -191,14 +191,14 @@ namespace ngl
 		{
 			if (acreate)
 			{
-				for (const auto [key, value] : m_dbcomponent)
+				for (const auto& [key, value] : m_dbcomponent)
 				{
 					value->create();
 				}
 			}
 			else
 			{
-				for (const auto [key, value] : m_dbcomponent)
+				for (const auto& [key, value] : m_dbcomponent)
 				{
 					value->init();
 				}

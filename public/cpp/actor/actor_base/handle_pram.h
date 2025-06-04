@@ -18,7 +18,7 @@ namespace ngl
 		i32_sessionid	m_session = -1;	// 服务器session
 		nactornode		m_node;		    // 服务器基本信息
 
-		actor_node_session();
+		actor_node_session() = default;
 		actor_node_session(i32_sessionid asession, const nactornode& anode);
 		explicit actor_node_session(const nactornode& anode);
 	};

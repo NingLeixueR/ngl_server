@@ -39,7 +39,6 @@ namespace ngl
 
 	bool ranklist::update_value(const pbdb::db_brief& abrief, bool afirstsynchronize)
 	{
-		std::map<i64_actorid, pbdb::db_brief>& ldata = tdb_brief::nsp_cli<actor_ranklist>::getInstance().m_data;
 		rank_item litem;
 		litem.m_actorid = abrief.m_id();
 		std::map<pbdb::eranklist, bool> lupdatearr;

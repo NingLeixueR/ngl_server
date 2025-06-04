@@ -31,7 +31,7 @@ namespace ngl
 		struct impl_actor;
 		ngl::impl<impl_actor> m_impl_actor;
 
-		std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun;
+		std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun = { nullptr };
 
 #pragma region register // 消息注册接口
 		template <typename TDerived, EPROTOCOL_TYPE TYPE>
