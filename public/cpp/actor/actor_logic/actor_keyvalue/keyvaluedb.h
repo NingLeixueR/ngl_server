@@ -25,7 +25,7 @@ namespace ngl
 
 		virtual void set_id()
 		{
-			m_id = -1;
+			set_actorid(nguid::make());
 		}
 
 		data_modified<pbdb::db_keyvalue>* get_valuedb(i64_actorid aroleid)

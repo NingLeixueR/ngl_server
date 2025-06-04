@@ -13,16 +13,42 @@ namespace ngl
 		ndb_component(const ndb_component&) = delete;
 		ndb_component& operator=(const ndb_component&) = delete;
 
-	protected:
+	private:
 		actor_base*				m_actor;		// 宿主actor
 		i64_actorid				m_id;			// 宿主actor id
 		ndbclient_base*			m_dbclient;		// ndbclient基类
 		pbdb::ENUM_DB			m_type;			// 数据类型
 
-		ndb_component(pbdb::ENUM_DB aenum);
+	protected:
+		explicit ndb_component(pbdb::ENUM_DB aenum);
+
+		inline void set_actorid(i64_actorid aid)
+		{
+			m_id = aid;
+		}
+		inline i64_actorid get_actorid()
+		{
+			return m_id;
+		}
+
+		inline void set_actor(actor_base* aactor)
+		{
+			m_actor = aactor;
+		}
+		inline actor_base* get_actor()
+		{
+			return m_actor;
+		}
 
 		//# 设置ndbclient基类
-		void				set_dbclient(ndbclient_base* adbclient);
+		inline void set_dbclient(ndbclient_base* andbclient)
+		{
+			m_dbclient = andbclient;
+		}
+		inline ndbclient_base* get_dbclient()
+		{
+			return m_dbclient;
+		}
 	public:
 		//# 设置宿主actor
 		void				set(actor_base* aactor);
@@ -102,7 +128,7 @@ namespace ngl
 		//# 获取m_id对应的数据
 		inline data_modified<TDATA>* get()
 		{
-			return get(m_id);
+			return get(get_actorid());
 		}
 
 		// # 查找指定数据
@@ -119,7 +145,7 @@ namespace ngl
 			{
 				return ret;
 			}
-			if (m_id != -1 && m_id != aid)
+			if (get_actorid() != nguid::make() && get_actorid() != aid)
 			{
 				return nullptr;
 			}
@@ -142,7 +168,7 @@ namespace ngl
 		// # 获取宿主actor
 		inline TACTOR* actor()
 		{ 
-			return (TACTOR*)m_actor; 
+			return (TACTOR*)get_actor();
 		}
 
 		inline void create()
@@ -165,7 +191,8 @@ namespace ngl
 
 		inline ndbclient<ENUM, TDATA, TACTOR>* get_actor_dbclient()
 		{
-			return (ndbclient<ENUM, TDATA, TACTOR>*)m_dbclient;
+			
+			return (ndbclient<ENUM, TDATA, TACTOR>*)get_dbclient();
 		}
 
 		inline data_modified<TDATA>* add(i64_actorid aid, const TDATA& adbtab)

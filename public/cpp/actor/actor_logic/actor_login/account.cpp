@@ -10,7 +10,7 @@ namespace ngl
 
 	void account::set_id()
 	{
-		m_id = -1;
+		set_actorid(nguid::make());
 	}
 
 	void account::initdata()

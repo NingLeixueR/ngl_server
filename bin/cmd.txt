@@ -10,7 +10,11 @@ START
 
 TESTS 1000 d /chat 1 1 china
 TESTS 1000 d /lv 100
+TESTS 1000 d /gold 100
 TESTS 1000 d /ranklist 0 0 1
+TESTS 1000 d /ranklist 0 1 1
+TESTS 1000 d /ranklist 0 1000001 1
+TESTS 1000 d /ranklist 0 2000001 1
 START
 
 TESTS 1000 d /chat 1 1 china

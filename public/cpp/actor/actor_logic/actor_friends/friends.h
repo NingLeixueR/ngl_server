@@ -21,7 +21,7 @@ namespace ngl
 
 		void set_id()final
 		{
-			m_id = -1;
+			set_actorid(nguid::make());
 		}
 
 		data_modified<pbdb::db_friends>* get_friends(i64_actorid aroleid, bool achange = true)

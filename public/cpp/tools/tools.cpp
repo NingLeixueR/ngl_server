@@ -6,6 +6,7 @@
 #include "base64.h"
 #include "varint.h"
 #include "tools.h"
+#include "nguid.h"
 #include "sha1.h"
 
 #include <filesystem>

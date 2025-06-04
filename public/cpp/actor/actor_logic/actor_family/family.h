@@ -21,7 +21,7 @@ namespace ngl
 
 		void set_id()final
 		{
-			m_id = -1;
+			set_actorid(nguid::make());
 		}
 
 		data_modified<pbdb::db_familyer>* get_familyer(i64_actorid aroleid)
@@ -95,7 +95,7 @@ namespace ngl
 
 		void set_id()final
 		{
-			m_id = -1;
+			set_actorid(nguid::make());
 		}
 
 		ngl::data_modified<pbdb::db_family>* get_family(i64_actorid afamilyid)

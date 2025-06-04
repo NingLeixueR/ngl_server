@@ -19,7 +19,7 @@ namespace ngl
 
 		void set_id() final
 		{
-			m_id = -1;
+			set_actorid(nguid::make());
 		}
 
 		data_modified<pbdb::db_activitytimes>* get_activity(int64_t aactivity)

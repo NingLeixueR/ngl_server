@@ -21,7 +21,7 @@ namespace ngl
 
 		virtual void set_id()
 		{
-			m_id = -1;
+			set_actorid(nguid::make());
 		}
 
 		data_modified<pbdb::db_mail>* get_mails(i64_actorid aroleid)

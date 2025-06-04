@@ -9,11 +9,6 @@ namespace ngl
 		m_type(aenum)
 	{}
 
-	void ndb_component::set_dbclient(ndbclient_base* adbclient)
-	{
-		m_dbclient = adbclient;
-	}
-
 	void ndb_component::set(actor_base* aactor)
 	{
 		m_actor = aactor;

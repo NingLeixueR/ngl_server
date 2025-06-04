@@ -1,4 +1,4 @@
-#include "xml.h"
+#include "ttab_servers.h"
 #include "nprotocol.h"
 #include "tinyxml2.h"
 #include "csvtable.h"
@@ -6,6 +6,7 @@
 #include "tools.h"
 #include "type.h"
 #include "nlog.h"
+#include "xml.h"
 
 namespace ngl
 {
@@ -39,6 +40,16 @@ namespace ngl
 	NODE_TYPE xmlnode::node_type()
 	{
 		return m_nodetype;
+	}
+
+	i16_area xmlnode::area()
+	{
+		auto ltab = ttab_servers::tab(m_nodeid);
+		if (ltab == nullptr)
+		{
+			return nguid::none_area();
+		}
+		return ltab->m_area;
 	}
 
 	void xmlnode::set_server(const char* aservertypename)

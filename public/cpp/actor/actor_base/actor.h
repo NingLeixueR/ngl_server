@@ -254,5 +254,10 @@ namespace ngl
 			erase_actor();
 			return true;
 		}
+
+		static i64_actorid tab2actor(ENUM_ACTOR atype, int32_t atabid)
+		{
+			return nguid::make(atype, nconfig::area(), atabid);
+		}
 	};
 }//namespace ngl

@@ -95,6 +95,8 @@ namespace ngl
 	//# Îö¹¹µ÷ÓÃactor_manage.finish_suspend_thread
 	class actor_suspendthread
 	{
+		actor_suspendthread(const actor_suspendthread&) = delete;
+		actor_suspendthread& operator=(const actor_suspendthread&) = delete;
 	public:
 		actor_suspendthread();
 		~actor_suspendthread();
