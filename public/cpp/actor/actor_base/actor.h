@@ -16,18 +16,6 @@ namespace ngl
 		int32_t			m_weight	= 10;			// 权重:单次获取线程后处理消息的数量
 		int32_t			m_timeout	= 0x7fffffff;	// 超时:(当actor处理消息超过此时间)
 		bool			m_broadcast	= false;		// 是否支持广播(如果需要加载dbclient，需要支持广播)
-
-		actorparm()
-		{
-			// 检查数据库依赖actorparmbase.m_manage_dbclient
-			// 如果依赖数据库那么需要开启"是否支持广播"m_broadcast
-			// 以便顺利保存数据修改
-			if (m_parm.m_manage_dbclient && !m_broadcast)
-			{
-				m_broadcast = true;
-				log_error()->print("actorparm fail [m_parm.m_manage_dbclient && !m_broadcast]");
-			}
-		}
 	};
 
 	template <typename T>
