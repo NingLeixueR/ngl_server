@@ -179,5 +179,10 @@ namespace ngl
 			return;
 		}
 		m_ranks[(pbdb::eranklist)arankid] = std::move(ltemp);
+		auto& lrank = m_ranks[(pbdb::eranklist)arankid];
+		for (auto itor = m_maprankitem.begin(); itor != m_maprankitem.end(); ++itor)
+		{
+			lrank->insert(&itor->second);
+		}
 	}
 }//namespace ngl

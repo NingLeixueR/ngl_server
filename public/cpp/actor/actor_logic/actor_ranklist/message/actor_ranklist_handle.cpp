@@ -62,6 +62,7 @@ namespace ngl
 		if (lrecv->m_iscreate)
 		{
 			m_ranklist.add_rank(lrankid);
+			
 		}
 		return true;
 	}

@@ -131,6 +131,13 @@ namespace ngl
 			}
 		}
 
+		int32_t showcount()
+		{
+			int32_t lshow = showcount();
+			int32_t lcount = m_rankdata.size();
+			return lshow > lcount ? lcount : lshow;
+		}
+
 		virtual int32_t getpage(i64_actorid aroleid, int32_t apage, const std::function<void(int32_t, const rank_item*)>& afun)
 		{
 			if (m_time != m_pagetime)
@@ -140,7 +147,7 @@ namespace ngl
 
 			if (apage - 1 >= m_page.size())
 			{
-				return (int32_t)m_rankdata.size();
+				return showcount();
 			}
 
 			int32_t leverypagecount = everypagecount();
@@ -148,14 +155,14 @@ namespace ngl
 			int32_t lendindex = lbegindex + leverypagecount;
 			if (lbegindex < 0 || lbegindex > m_rankdata.size())
 			{
-				return (int32_t)m_rankdata.size();
+				return showcount();
 			}
 			auto itor = m_page[apage - 1];
 			for (int lindex = 1; itor != m_rankdata.end() && lindex <= leverypagecount; ++lindex, ++itor)
 			{
 				afun(lindex, *itor);
 			}
-			return (int32_t)m_rankdata.size();
+			return showcount();
 		}
 
 		virtual int32_t role_rank(i64_actorid aroleid)
