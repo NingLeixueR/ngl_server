@@ -254,7 +254,7 @@ namespace ngl
 			m_activitys[aactivityid] = nullptr;
 			return;
 		}
-		if ((lnow > atime && lnow < atime + aduration) || (lnow > atime && aduration == -1))
+		if ((lnow >= atime && lnow < atime + aduration) || (lnow >= atime && aduration == -1))
 		{//¿ªÆô»î¶¯
 			m_activitys[aactivityid] = activity::make(
 				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
