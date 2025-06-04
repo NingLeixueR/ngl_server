@@ -75,27 +75,30 @@ namespace ngl
 			return itor->second;
 		};
 
-		bool init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
+		bool init(pbdb::eranklist atype, const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
 		{
-			bool lbool = false;
-			lbool = lbool || init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
-				{
-					return abrief.m_lv();
-				});
-
-			lbool = lbool || init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
-				{
-					return abrief.m_moneygold();
-				});
-
-			lbool = lbool || init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1),
-				std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
-			);
-
-			lbool = lbool || init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
-				std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
-			);
-			return lbool;
+			switch (atype)
+			{
+			case pbdb::eranklist::lv:
+				return init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
+					{
+						return abrief.m_lv();
+					});
+			case pbdb::eranklist::gold:
+				return init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
+					{
+						return abrief.m_moneygold();
+					});
+			case pbdb::eranklist::activity_lv + 1:
+				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1),
+					std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
+				);
+			case pbdb::eranklist::activity_gold + 1:
+				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
+					std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
+				);
+			}
+			return false;
 		}
 
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
