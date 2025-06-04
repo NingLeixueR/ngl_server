@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-03 17:52:12
+// 创建时间 // 创建时间 25-06-04 15:30:50
 #pragma once
 
 #include "ndb_modular.h"
@@ -54,6 +54,9 @@ namespace ngl
 			/*200000036*/, np_thruput_test
 			/*200000037*/, np_operator_task
 			/*200000038*/, np_operator_task_response
+			/*200000039*/, np_get_rank
+			/*200000040*/, np_get_rank_response
+			/*200000041*/, np_activityrank_operator
 		>(EPROTOCOL_TYPE_CUSTOM);
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs::template func<
@@ -95,6 +98,9 @@ namespace ngl
 			/*210000036*/, mforward<np_thruput_test>
 			/*210000037*/, mforward<np_operator_task>
 			/*210000038*/, mforward<np_operator_task_response>
+			/*210000039*/, mforward<np_get_rank>
+			/*210000040*/, mforward<np_get_rank_response>
+			/*210000041*/, mforward<np_activityrank_operator>
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 }//namespace ngl

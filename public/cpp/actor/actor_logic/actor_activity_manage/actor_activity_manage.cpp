@@ -2,6 +2,7 @@
 #include "actor_activity_manage.h"
 #include "ttab_activityalways.h"
 #include "actor_keyvalue.h"
+#include "actor_ranklist.h"
 #include "actor_brief.h"
 #include "activity.h"
 #include "net.pb.h"
@@ -48,6 +49,9 @@ namespace ngl
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
 	{
+		// 等待 actor_ranklist loaddb_finish
+		wait_ready(actor_ranklist::actorid());
+
 		actor_events_logic::tfun::func(
 			actorid()
 			, eevents_logic_rolelogin
@@ -198,6 +202,7 @@ namespace ngl
 			mforward<np_operator_task_response>
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_rolevaluechange
+			, np_get_rank_response
 		>(false);
 
 		// 绑定pb消息

@@ -152,7 +152,8 @@ enum eranklist
 {
 	//基础 ranklist中的类型
 	lv			= 0;			// 等级排行(值大排名越高)
-	count		= 1;
+	gold		= 1;
+	count		= 2;
 	//活动
 	activity_lv		= 1000000;		// 活动期间玩家等级变化值
 	activity_gold	= 2000000;		// 活动期间玩家金币增加值

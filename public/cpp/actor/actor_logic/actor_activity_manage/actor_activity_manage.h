@@ -82,5 +82,6 @@ namespace ngl
 		bool handle(const message<mforward<np_operator_task_response>>& adata);
 		bool handle(const message<np_eevents_logic_rolelogin>& adata);
 		bool handle(const message<np_eevents_logic_rolevaluechange>& adata);
+		bool handle(const message<np_get_rank_response>& adata);
 	};
 }//namespace ngl

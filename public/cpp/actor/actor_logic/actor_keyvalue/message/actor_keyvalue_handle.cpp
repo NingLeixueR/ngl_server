@@ -1,5 +1,4 @@
 #include "actor_keyvalue.h"
-
 namespace ngl
 {
 	bool actor_keyvalue::handle(const message<mforward<np_gm>>& adata)

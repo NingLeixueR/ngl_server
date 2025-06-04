@@ -5,6 +5,15 @@
 
 namespace ngl
 {
+	void activity_rank::start()
+	{
+		auto pro = std::make_shared<np_activityrank_operator>();
+		pro->m_iscreate = true;
+		pro->m_rankid = activityid();
+		actor::static_send_actor(actor_ranklist::actorid(), nguid::make(), pro);
+		activity::start();
+	}
+
 	void activity_rank::finish()
 	{
 		// # 发送排行奖励 
@@ -30,12 +39,17 @@ namespace ngl
 			// 发送邮件
 			std::string lsrc = std::format(
 				"activity_rank activityid=[{}] role=[{}] mail=[{}] drop=[{}]",
-				activityid(), aresponse.m_rolerank[i], lmailid, lreward
+				activityid(), nguid(aresponse.m_rolerank[i]), lmailid, lreward
 			);
-			if (actor_drop::use(lreward, 1, aresponse.m_rolerank[i], lsrc, nullptr, lmailid))
+			if (!actor_drop::use(lreward, 1, aresponse.m_rolerank[i], lsrc, nullptr, lmailid))
 			{
+				log_error()->print("activity_rank fail [{}]", lsrc);
 			}
 		}
+		auto pro = std::make_shared<np_activityrank_operator>();
+		pro->m_iscreate = false;
+		pro->m_rankid = activityid();
+		actor::static_send_actor(actor_ranklist::actorid(), nguid::make(), pro);
 		activity::finish();
 	}
 

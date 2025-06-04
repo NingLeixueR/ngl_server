@@ -1432,9 +1432,9 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "B_TASK\020\n\022\030\n\024ENUM_DB_ROLEKEYVALUE\020\013\022\022\n\016EN"
   "UM_DB_FAMILY\020\014\022\024\n\020ENUM_DB_FAMILYER\020\r\022\023\n\017"
   "ENUM_DB_FRIENDS\020\016\022\021\n\rENUM_DB_COUNT\020\017\022\026\n\021"
-  "ENUM_DBCROSS_TEST\020\351\007*F\n\teranklist\022\006\n\002lv\020"
-  "\000\022\t\n\005count\020\001\022\021\n\013activity_lv\020\300\204=\022\023\n\ractiv"
-  "ity_gold\020\200\211zb\006proto3"
+  "ENUM_DBCROSS_TEST\020\351\007*P\n\teranklist\022\006\n\002lv\020"
+  "\000\022\010\n\004gold\020\001\022\t\n\005count\020\002\022\021\n\013activity_lv\020\300\204"
+  "=\022\023\n\ractivity_gold\020\200\211zb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
@@ -1482,7 +1482,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 5300,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 5310,
   &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 40, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
   file_level_metadata_db_2eproto, 40, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
@@ -1576,6 +1576,7 @@ bool eranklist_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
     case 1000000:
     case 2000000:
       return true;

@@ -52,15 +52,15 @@ namespace ngl
 		sleep& operator=(const sleep&) = delete;
 	public:
 		// # 线程睡眠[avalue]小时
-		static void seconds(int32_t avalue)
-		{
-			std::this_thread::sleep_for(std::chrono::seconds(avalue));
-		}
-
-		// # 线程睡眠[avalue]秒
 		static void hours(int32_t avalue)
 		{
 			std::this_thread::sleep_for(std::chrono::hours(avalue));
+		}
+		
+		// # 线程睡眠[avalue]秒
+		static void seconds(int32_t avalue)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(avalue));
 		}
 
 		// # 线程睡眠[avalue]毫秒

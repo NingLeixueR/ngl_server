@@ -22,19 +22,12 @@ namespace ngl
 
 		std::map<i64_actorid, rank_item> m_maprankitem;
 		std::map<pbdb::eranklist, std::unique_ptr<rankset_base>> m_ranks;
-
-		template <pbdb::eranklist RANKTYPE, int32_t N>
-		void create_activity_rank()
-		{
-			m_ranks[(pbdb::eranklist)(RANKTYPE + N)]
-				= std::make_unique<rankset<(pbdb::eranklist)(RANKTYPE + N)>>();
-		}
 	public:
 		ranklist();
 
 		virtual void set_id();
 
-		data_modified<pbdb::db_ranklist>* get_rank(i64_actorid aroleid);
+		data_modified<pbdb::db_ranklist>* get_rank(i64_actorid arankid);
 
 		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize);
 
@@ -49,6 +42,12 @@ namespace ngl
 		std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage);
 
 		void sync_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t aactivityid, int32_t apage);
+
+		void get_rank(int32_t arankid, std::vector<int64_t>& arolerank);
+
+		void remove_rank(int32_t arankid);
+
+		void add_rank(int32_t arankid);
 	};
 }// namespace ngl
 

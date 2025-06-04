@@ -29,6 +29,7 @@ namespace ngl
 			activity(EActivityTopRank)
 		{}
 
+		virtual void start();
 		// »î¶¯¹Ø±Õ
 		virtual void finish();
 

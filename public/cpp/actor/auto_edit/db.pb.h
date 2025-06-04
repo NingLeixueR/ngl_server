@@ -319,7 +319,8 @@ inline bool ENUM_DB_Parse(
 }
 enum eranklist : int {
   lv = 0,
-  count = 1,
+  gold = 1,
+  count = 2,
   activity_lv = 1000000,
   activity_gold = 2000000,
   eranklist_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),

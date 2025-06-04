@@ -242,4 +242,12 @@ namespace ngl
 		broadcast();
 		return true;
 	}
+
+	void actor::wait_ready(const nguid& aguid)
+	{
+		while (!actor_manage::getInstance().ready(aguid))
+		{
+			sleep::seconds(1);
+		}
+	}
 }//namespace ngl

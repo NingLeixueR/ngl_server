@@ -168,4 +168,29 @@ namespace ngl
 			return itor->second;
 		}
 	};
+
+	class make_rank
+	{
+		template <pbdb::eranklist RANKTYPE, int32_t N>
+		static std::unique_ptr<rankset_base> create_activity_rank()
+		{
+			return std::make_unique<rankset<(pbdb::eranklist)(RANKTYPE + N)>>();
+		}
+	public:
+		static std::unique_ptr<rankset_base> make(pbdb::eranklist atype)
+		{
+			switch (atype)
+			{
+			case pbdb::eranklist::lv:
+				return std::make_unique<rankset<pbdb::eranklist::lv>>();
+			case pbdb::eranklist::gold:
+				return std::make_unique<rankset<pbdb::eranklist::gold>>();
+			case pbdb::eranklist::activity_lv + 1:
+				return create_activity_rank<pbdb::eranklist::activity_lv, 1>();
+			case pbdb::eranklist::activity_gold + 1:
+				return create_activity_rank<pbdb::eranklist::activity_gold, 1>();
+			}
+			return nullptr;
+		}
+	};
 }//namespace ngl
