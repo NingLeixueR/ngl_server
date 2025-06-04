@@ -777,7 +777,6 @@ namespace ngl
 		// # aiteration是否循环迭代dir下的所有目录
 		static void dir(const std::string& apath, std::vector<std::string>& afilevec, bool aiteration = false);
 
-
 		static std::string& format_json(std::string& ajson);
 	};
 

@@ -35,6 +35,7 @@ namespace ngl
 			return itor->second->create(aactivityid, atime, aduration, aactivitydb, aactivitytimedb);
 		}
 	protected:
+		i64_actorid m_actorid									= 0;
 		const tab_activity* m_tab								= nullptr;
 		data_modified<pbdb::db_activity>* m_activity			= nullptr;
 		data_modified<pbdb::db_activitytimes>* m_activitytimes	= nullptr;
@@ -53,7 +54,7 @@ namespace ngl
 
 		int64_t activityid()
 		{
-			return m_tab->m_id;
+			return m_actorid;
 		}
 
 		virtual bool is_start()

@@ -25,7 +25,7 @@ namespace ngl
 			return tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(m_actorid);
 		}
 
-		void init(
+		bool init(
 			const pbdb::db_brief& abrief, 
 			data_modified<pbdb::db_ranklist>* aranklist, 
 			pbdb::eranklist atype, 
@@ -41,14 +41,16 @@ namespace ngl
 				if (itor->second.m_value() != m_data[atype].m_value)
 				{
 					change(atype, aranklist->get());
+					return true;
 				}
 				else
 				{
 					m_data[atype].m_time = itor->second.m_time();
-				}
-				return;
+					return false;
+				}				
 			}
 			change(atype, aranklist->get());
+			return true;
 		}
 
 		template <int ACTIVITYID>
@@ -73,25 +75,27 @@ namespace ngl
 			return itor->second;
 		};
 
-		void init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
+		bool init(const pbdb::db_brief& abrief, data_modified<pbdb::db_ranklist>* aranklist)
 		{
-			init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
+			bool lbool = false;
+			lbool = lbool || init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 				{
 					return abrief.m_lv();
 				});
 
-			init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
+			lbool = lbool || init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
 				{
 					return abrief.m_moneygold();
 				});
 
-			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1), 
-				std::bind(&rank_item::activitylv<1001>, this, std::placeholders::_1)
+			lbool = lbool || init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1),
+				std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
 			);
 
-			init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
-				std::bind(&rank_item::activitylv<1001>, this, std::placeholders::_1)
+			lbool = lbool || init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
+				std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
 			);
+			return lbool;
 		}
 
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)

@@ -16,22 +16,24 @@ namespace ngl
 		m_tab = ttab_activity::tab(activityid);
 		assert(m_tab != nullptr);
 
-		m_activity = aactivitydb.get_activity(activityid);
+		m_actorid = actor::tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
+
+		m_activity = aactivitydb.get_activity(m_actorid);
 		if (m_activity == nullptr)
 		{
 			pbdb::db_activity ldb;
-			ldb.set_m_id(activityid);
-			m_activity = aactivitydb.add(activityid, ldb);
+			ldb.set_m_id(m_actorid);
+			m_activity = aactivitydb.add(m_actorid, ldb);
 		}
-		m_activitytimes = aactivitytimedb.get_activity(activityid);
+		m_activitytimes = aactivitytimedb.get_activity(m_actorid);
 		if (m_activitytimes == nullptr)
 		{
 			pbdb::db_activitytimes ldb;
-			ldb.set_m_id(activityid);
+			ldb.set_m_id(m_actorid);
 			ldb.set_m_beg(atime);
 			ldb.set_m_duration(aduration);
 			ldb.set_m_start(false);
-			m_activitytimes = aactivitytimedb.add(activityid, ldb);
+			m_activitytimes = aactivitytimedb.add(m_actorid, ldb);
 		}
 	}	
 

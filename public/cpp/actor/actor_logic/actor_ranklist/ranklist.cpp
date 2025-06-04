@@ -10,7 +10,7 @@ namespace ngl
 
 	void ranklist::set_id()
 	{
-		m_id = -1;
+		set_actorid(nguid::make());
 	}
 
 	data_modified<pbdb::db_ranklist>* ranklist::get_rank(i64_actorid arankid)
@@ -33,8 +33,7 @@ namespace ngl
 			lpdb_ranklist = get_rank(abrief.m_id());
 			assert(lpdb_ranklist != nullptr);
 		}
-		litem.init(abrief, lpdb_ranklist);
-		return true;
+		return litem.init(abrief, lpdb_ranklist);
 	}
 
 	bool ranklist::update_value(const pbdb::db_brief& abrief, bool afirstsynchronize)

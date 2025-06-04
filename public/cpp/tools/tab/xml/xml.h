@@ -130,6 +130,8 @@ namespace ngl
 
 		static NODE_TYPE node_type();
 
+		static i16_area area();
+
 		static void set_server(const char* aservertypename);
 
 		static void set_nodeid(int anodeid);
