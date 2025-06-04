@@ -179,8 +179,22 @@ namespace ngl
 		actor_base(aparm.m_parm),
 		m_actorfun({nullptr})
 	{
-		m_impl_actor.make_unique(aparm, this);
-		set_broadcast(aparm.m_broadcast);
+		// 检查数据库依赖actorparmbase.m_manage_dbclient
+		// 如果依赖数据库那么需要开启"是否支持广播"m_broadcast
+		// 以便顺利保存数据修改
+		if (aparm.m_parm.m_manage_dbclient && !aparm.m_broadcast)
+		{
+			log_error()->print("actorparm fail [m_parm.m_manage_dbclient && !m_broadcast]");
+			actorparm lparm = aparm;
+			lparm.m_broadcast = true;
+			m_impl_actor.make_unique(lparm, this);
+			set_broadcast(true);
+		}
+		else
+		{
+			m_impl_actor.make_unique(aparm, this);
+			set_broadcast(aparm.m_broadcast);
+		}
 	}
 
 	actor::~actor()
