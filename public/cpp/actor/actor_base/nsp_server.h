@@ -75,7 +75,7 @@ namespace ngl
 					pro->m_actorids.insert(apair.first);
 				});
 			log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
-			m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
+			m_dbmodule->actor()->send_actor(pro->m_actorids, pro);
 			// # 同步需要的数据
 			sync(recv.m_actorid);
 		}
@@ -112,8 +112,8 @@ namespace ngl
 				lp->get() = lpair.second;
 				lactorset.insert(lpair.first);
 			}
-			std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
-			publish(lactorset, false, pro);
+			//std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
+			//publish(lactorset, false, pro);
 		}
 
 	public:
