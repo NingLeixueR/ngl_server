@@ -9,6 +9,7 @@ namespace ngl
 			, np_channel_register_reply<T>
 			, np_channel_data<T>
 			, np_channel_exit<T>
+			, np_channel_check<T>
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 

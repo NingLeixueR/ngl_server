@@ -25,6 +25,10 @@ namespace ngl
 			})
 	{
 		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
+		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().set_changedata_fun([](int64_t, const pbdb::db_brief&, bool)
+			{
+				std::cout << std::endl;
+			});
 		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
 
 		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);

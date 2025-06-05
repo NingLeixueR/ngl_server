@@ -45,7 +45,6 @@ namespace ngl
 			/*200000027*/, np_actor_addnotice
 			/*200000028*/, np_actor_close
 			/*200000029*/, np_logitem
-			/*200000030*/, np_channel_check
 			/*200000031*/, np_login_request_info
 			/*200000032*/, np_create_example
 			/*200000033*/, np_example_entergame_ready
@@ -89,7 +88,6 @@ namespace ngl
 			/*210000027*/, mforward<np_actor_addnotice>
 			/*210000028*/, mforward<np_actor_close>
 			/*210000029*/, mforward<np_logitem>
-			/*210000030*/, mforward<np_channel_check>
 			/*210000031*/, mforward<np_login_request_info>
 			/*210000032*/, mforward<np_create_example>
 			/*210000033*/, mforward<np_example_entergame_ready>

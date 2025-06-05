@@ -71,17 +71,6 @@ namespace ngl
 		);
 	}
 
-	template <typename T>
-	void reister_channel_db()
-	{
-		tprotocol::tp_customs::template func <
-			np_channel_register<pbdb::db_keyvalue>
-			, np_channel_register_reply<pbdb::db_keyvalue>
-			, np_channel_data<pbdb::db_keyvalue>
-			, np_channel_exit<pbdb::db_keyvalue>
-		>(EPROTOCOL_TYPE_CUSTOM);
-	}
-
 	void tprotocol_customs()
 	{
 		tprotocol_customs_200000000();

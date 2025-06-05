@@ -20,6 +20,9 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	int64_t lnum1 = ngl::nguid::make(ngl::ACTOR_BRIEF, 1, -1);
+	int64_t lnum2 = ngl::nguid::make(ngl::ACTOR_KEYVALUE, 1, -1);
+
 	if (argc <= 3)
 	{
 		std::cout << lerrpath << std::endl;
