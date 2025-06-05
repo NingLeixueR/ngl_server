@@ -481,13 +481,6 @@ namespace ngl
 		}
 	};
 
-	struct np_channel_check
-	{
-		int64_t m_timer;
-		i16_area m_area;
-		def_portocol(np_channel_check, m_timer, m_area)
-	};
-
 	///### 例子小游戏
 	// 玩家登陆
 	// 1、获取匹配信息

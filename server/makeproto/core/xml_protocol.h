@@ -561,6 +561,7 @@ namespace ngl
         m_stream3 << "\t\t\t, np_channel_register_reply<T>" << std::endl;
         m_stream3 << "\t\t\t, np_channel_data<T>" << std::endl;
         m_stream3 << "\t\t\t, np_channel_exit<T>" << std::endl;
+        m_stream3 << "\t\t\t, np_channel_check<T>" << std::endl;
         m_stream3 << "\t\t>(EPROTOCOL_TYPE_CUSTOM);" << std::endl;
         m_stream3 << "\t}" << std::endl;
         m_stream3 << std::endl;

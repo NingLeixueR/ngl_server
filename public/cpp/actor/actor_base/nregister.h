@@ -12,7 +12,8 @@ namespace ngl
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
 	template <typename TTTDerived, typename T>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(const std::function<void(TTTDerived*, message<T>&)>& afun)
-	{
+	{		
+		std::cout << "REGISTER:" << typeid(T).name() << "##########" << tprotocol::protocol<T>() << std::endl;
 		m_fun[tprotocol::protocol<T>()] = nlogicfun
 		{
 			.m_isdbload = false,

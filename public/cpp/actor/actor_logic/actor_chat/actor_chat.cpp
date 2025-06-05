@@ -16,8 +16,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_chat>::getInstance().init(this, ldataid);
+		tdb_brief::nsp_cli<actor_chat>::getInstance().init(this, {});
 	}
 
 	ENUM_ACTOR actor_chat::actor_type()

@@ -65,7 +65,7 @@ namespace ngl
 			m_register[nguid::area(recv.m_actorid)] = true;
 		}
 
-		void channel_check(TDerived*, const message<np_channel_check>& adata)
+		void channel_check(TDerived*, const message<np_channel_check<T>>& adata)
 		{
 			auto lprecv = adata.get_data();
 			if (m_register[lprecv->m_area])
@@ -106,7 +106,7 @@ namespace ngl
 			);
 
 			// ¼ì²é
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check>(
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
 				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_check, this)
 			);
 
@@ -121,8 +121,8 @@ namespace ngl
 						.m_count = 0x7fffffff,
 						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
-							auto pro = std::make_shared<np_channel_check>(
-								np_channel_check{
+							auto pro = std::make_shared<np_channel_check<T>>(
+								np_channel_check<T>{
 									.m_timer = anode->m_timerid,
 									.m_area = larea,
 								});
