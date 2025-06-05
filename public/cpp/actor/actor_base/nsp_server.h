@@ -75,7 +75,7 @@ namespace ngl
 					pro->m_actorids.insert(apair.first);
 				});
 			log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
-			m_dbmodule->actor()->send_actor(pro->m_actorids, pro);
+			m_dbmodule->actor()->send_actor(pro->m_actorids, nguid::make(), pro);
 			// # 同步需要的数据
 			sync(recv.m_actorid);
 		}
