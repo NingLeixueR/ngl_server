@@ -31,7 +31,6 @@ namespace ngl
 		{
 			itor->second->rolelogin(lrecv->m_actorid);
 		}
-		activity::brief_activityvalues(lrecv->m_actorid);
 		return true;
 	}
 	bool actor_activity_manage::handle(const message<np_eevents_logic_rolevaluechange>& adata)

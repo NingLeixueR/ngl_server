@@ -67,7 +67,7 @@ namespace ngl
 		int32_t lnow = localtime::gettime();
 		for (const auto& [ activityid, activitytime] : m_activitytimedb.data())
 		{
-			const tab_activity* ltab = ttab_activity::tab(activityid);
+			const tab_activity* ltab = ttab_activity::tab(nguid::actordataid(activityid));
 			if (ltab == nullptr)
 			{
 				continue;
@@ -75,19 +75,20 @@ namespace ngl
 			const pbdb::db_activitytimes& lactivitytimes = activitytime.getconst();
 			int32_t lbeg = lactivitytimes.m_beg();
 			int32_t lduration = lactivitytimes.m_duration();
-			start_activity(ltab->m_id, lbeg, lduration);
+			start_activity(activityid, lbeg, lduration);
 		}
 
 		for (const auto& [activityid, tab] : ttab_activity::tablecsv())
 		{
-			if (!m_activitys.contains(activityid))
+			i64_actorid lactoractivityid = tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
+			if (!m_activitys.contains(lactoractivityid))
 			{
 				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
 				{//ttab_activityalways
 					const tab_activityalways* ltabalways = ttab_activityalways::tab(activityid);
 					if (ltabalways == nullptr)
 					{
-						start_activity(activityid, lnow, -1);
+						start_activity(lactoractivityid, lnow, -1);
 						continue;
 					}
 					if (ltabalways->m_type == EActivityAlways::EActivityAlwaysWeek)
@@ -147,7 +148,7 @@ namespace ngl
 						{
 							continue;
 						}
-						start_activity(activityid, lbeg.second, lend.second - lbeg.second);
+						start_activity(lactoractivityid, lbeg.second, lend.second - lbeg.second);
 						continue;
 					}
 					else if (ltabalways->m_type == EActivityAlways::EActivityAlwaysFixed)
@@ -164,7 +165,7 @@ namespace ngl
 							ltabalways->m_fbminute,
 							ltabalways->m_fbsecond
 						);
-						start_activity(activityid, lbeg, lend - lbeg);
+						start_activity(lactoractivityid, lbeg, lend - lbeg);
 						continue;
 					}
 				}
@@ -214,7 +215,7 @@ namespace ngl
 		>(true);
 	}
 
-	std::shared_ptr<activity>& actor_activity_manage::get_activity(int64_t aactivityid)
+	std::shared_ptr<activity>& actor_activity_manage::get_activity(i64_actorid aactivityid)
 	{
 		static std::shared_ptr<activity> lnull = nullptr;
 		auto itor = m_activitys.find(aactivityid);
@@ -225,19 +226,19 @@ namespace ngl
 		return itor->second;
 	}
 
-	void actor_activity_manage::erase_activity(int64_t aactivityid)
+	void actor_activity_manage::erase_activity(i64_actorid aactivityid)
 	{
 		m_activitys.erase(aactivityid);
 	}
 
-	void actor_activity_manage::start_activity(int64_t aactivityid, int32_t atime, int32_t aduration)
+	void actor_activity_manage::start_activity(i64_actorid aactivityid, int32_t atime, int32_t aduration)
 	{
 		if (aduration < 0 && aduration !=-1)
 		{
-			log_error()->print("start_activity fail activityid=[{}] time=[{}] duration=[{}]", aactivityid, atime, aduration);
+			log_error()->print("start_activity fail activityid=[{}] time=[{}] duration=[{}]", nguid(aactivityid), atime, aduration);
 			return;
 		}
-		const tab_activity* ltab = ttab_activity::tab(aactivityid);
+		const tab_activity* ltab = ttab_activity::tab(nguid::actordataid(aactivityid));
 		if (ltab == nullptr)
 		{
 			return;
@@ -251,7 +252,7 @@ namespace ngl
 		if (lnow >= atime + aduration && aduration != -1)
 		{//关闭活动
 			m_activitys[aactivityid] = activity::make(
-				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
+				nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb
 			);
 			m_activitys[aactivityid]->init();
 			m_activitys[aactivityid]->finish();
@@ -261,7 +262,7 @@ namespace ngl
 		if ((lnow >= atime && lnow < atime + aduration) || (lnow >= atime && aduration == -1))
 		{//开启活动
 			m_activitys[aactivityid] = activity::make(
-				aactivityid, atime, aduration, m_activitydb, m_activitytimedb
+				nguid::actordataid(aactivityid), atime, aduration, m_activitydb, m_activitytimedb
 			);
 			m_activitys[aactivityid]->start();
 			m_activitys[aactivityid]->init();
@@ -272,7 +273,7 @@ namespace ngl
 		}
 	}
 
-	void actor_activity_manage::finish_activity(int64_t aactivityid)
+	void actor_activity_manage::finish_activity(i64_actorid aactivityid)
 	{
 		auto itor = m_activitys.find(aactivityid);
 		if (itor == m_activitys.end())
@@ -283,7 +284,7 @@ namespace ngl
 		erase_activity(aactivityid);
 	}
 
-	void actor_activity_manage::post_timer(int32_t aactivityid, etimerparm_activity atype, int32_t abeg, int32_t aduration)
+	void actor_activity_manage::post_timer(i64_actorid aactivityid, etimerparm_activity atype, int32_t abeg, int32_t aduration)
 	{
 		auto ltimerparm = std::make_shared<np_timerparm>();
 		int32_t lduration = 0;

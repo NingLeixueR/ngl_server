@@ -64,14 +64,13 @@ message db_brief
 message db_role
 {
 	optional int64 m_id					= 1;				// role id
-	optional db_brief m_base			= 2;				// 玩家基础信息
 	// 充值信息
 	message recharge
 	{
 		optional int32 m_rechargeid		= 1;	// 充值id
 		optional int32 m_utc			= 2;	// 充值时间
 	}
-	repeated recharge m_recharge		= 3;
+	repeated recharge m_recharge		= 2;
 }
 
 //ENUM_DB_BAG,			// 背包数据

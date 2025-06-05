@@ -14,10 +14,12 @@ namespace ngl
 	class drop
 	{
 		friend class actor_drop;
+		TACTOR* m_actor = nullptr;
 	private:
 		void init(TACTOR* aactor, const std::set<i64_actorid>& adataid)
 		{
-			tdb_activitytimes::constcli_init<TACTOR>(aactor, adataid);
+			m_actor = aactor;
+			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid()).init(m_actor, {});
 		}
 
 		bool isactivity(const tab_random* tab)
@@ -29,7 +31,8 @@ namespace ngl
 			int32_t lnow = localtime::gettime();
 			for (int32_t activityid : tab->m_activityids)
 			{
-				const pbdb::db_activitytimes* lpactivitytimes = tdb_activitytimes::get_constcli<TACTOR>().getconst(activityid);
+				const pbdb::db_activitytimes* lpactivitytimes = 
+					tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid()).getconst(activityid);
 				if (lpactivitytimes != nullptr)
 				{
 					if (lnow >= lpactivitytimes->m_beg()

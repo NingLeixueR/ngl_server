@@ -121,8 +121,9 @@ message PROBUFF_NET_ROLE_SYNC//C2G [actor_role]
 message PROBUFF_NET_ROLE_SYNC_RESPONSE//G2C [actor_robot]
 {
 	optional pbdb.db_role m_role	= 1;
-	optional pbdb.db_bag m_bag		= 2;
-	optional pbdb.db_task m_task	= 3;
+	optional pbdb.db_brief m_brief	= 2;
+	optional pbdb.db_bag m_bag		= 3;
+	optional pbdb.db_task m_task	= 4;
 };
 
 // [请求]获取背包信息

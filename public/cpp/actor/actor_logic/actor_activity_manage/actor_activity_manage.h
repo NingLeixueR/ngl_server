@@ -30,7 +30,7 @@ namespace ngl
 	struct timerparm_activity
 	{
 		etimerparm_activity m_type = eactivity_null;
-		int32_t m_activityid = 0;
+		i64_actorid m_activityid = 0;
 		int32_t m_beg = 0;
 		int32_t m_duration = 0;
 	};
@@ -43,7 +43,7 @@ namespace ngl
 
 		actor_activity_manage();
 
-		std::map<int32_t, std::shared_ptr<activity>> m_activitys;
+		std::map<i64_actorid, std::shared_ptr<activity>> m_activitys;
 	public:
 		activitydb m_activitydb;
 		activitytimedb m_activitytimedb;
@@ -66,15 +66,15 @@ namespace ngl
 
 		static void nregister();
 
-		std::shared_ptr<activity>& get_activity(int64_t aactivityid);
+		std::shared_ptr<activity>& get_activity(i64_actorid aactivityid);
 
-		void erase_activity(int64_t aactivityid);
+		void erase_activity(i64_actorid aactivityid);
 
-		void start_activity(int64_t aactivityid, int32_t atime, int32_t aduration);
+		void start_activity(i64_actorid aactivityid, int32_t atime, int32_t aduration);
 
-		void finish_activity(int64_t aactivityid);
+		void finish_activity(i64_actorid aactivityid);
 
-		void post_timer(int32_t aactivityid, etimerparm_activity atype, int32_t abeg, int32_t aduration);
+		void post_timer(i64_actorid aactivityid, etimerparm_activity atype, int32_t abeg, int32_t aduration);
 
 
 		bool timer_handle(const message<np_timerparm>& adata);

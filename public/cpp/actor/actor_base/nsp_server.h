@@ -2,6 +2,7 @@
 
 #include "ndb_modular.h"
 #include <algorithm>
+#include <ranges>
 
 namespace ngl
 {
@@ -69,6 +70,10 @@ namespace ngl
 			m_publishlist[recv.m_actorid] = recv.m_dataid;
 			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
+			std::ranges::for_each(m_publishlist, [&pro](const auto& apair)
+				{
+					pro->m_actorids.insert(apair.first);
+				});
 			log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
 			m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
 			// # 同步需要的数据
@@ -85,6 +90,14 @@ namespace ngl
 			auto& recv = *adata.get_data();
 			m_publishlist.erase(recv.m_actorid);
 			log_error()->print("nsp_server.np_channel_exit {}", nguid(recv.m_actorid));
+
+			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
+			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
+			std::ranges::for_each(m_publishlist, [&pro](const auto& apair)
+				{
+					pro->m_actorids.insert(apair.first);
+				});
+			m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
 		}
 
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
