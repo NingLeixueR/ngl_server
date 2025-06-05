@@ -161,7 +161,7 @@ namespace ngl
 	{
 		char lbuff[1024] = { 0 };
 		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->m_utc(), "%y/%m/%d %H:%M:%S");
-		log_error()->print("[{}][{}]", m_data.m_role().m_base().m_name(), lbuff);
+		log_error()->print("[{}][{}]", m_data.m_brief().m_name(), lbuff);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
@@ -256,7 +256,7 @@ namespace ngl
 		ngl::tools::to_asscii(lstr, lstrasscii);
 		log_error()->print(
 			"[{}:{}] {}",
-			area(), m_data.m_role().m_base().m_name(), lstrasscii
+			area(), m_data.m_brief().m_name(), lstrasscii
 		);
 		return true;
 	}
@@ -284,8 +284,8 @@ namespace ngl
 		Try
 		{
 			log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
-				, adata.get_data()->m_role().m_base().m_name()
-				, adata.get_data()->m_role().m_base().m_lv()
+				, adata.get_data()->m_brief().m_name()
+				, adata.get_data()->m_brief().m_lv()
 			);
 			m_data = *adata.get_data();
 		}Catch

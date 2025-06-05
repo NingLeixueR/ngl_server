@@ -106,7 +106,7 @@ namespace ngl
 
 		actor_activity_manage::getInstance().log_error()->print(
 			"activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]",
-			activityid(), aroleid, abeforelevel, anowlevel
+			nguid(activityid()), aroleid, abeforelevel, anowlevel
 		);
 
 		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
@@ -121,8 +121,9 @@ namespace ngl
 		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::getInstance().get(aroleid);
 		if (lpbrief != nullptr)
 		{
-			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolelv())[activityid()] += anowlevel - abeforelevel;
+			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolelv())[lpactivity->m_id] += anowlevel - abeforelevel;
 		}
+		brief_activityvalues(aroleid);
 	}
 
 	void activity::rolegoldchange(i64_actorid aroleid, int32_t abeforegold, int32_t anowgold)
@@ -139,7 +140,7 @@ namespace ngl
 
 		actor_activity_manage::getInstance().log_error()->print(
 			"activity [{}] rolegoldchange roleid:[{}] beforegold[{}] nowgold[{}]",
-			activityid(), aroleid, abeforegold, anowgold
+			nguid(activityid()), aroleid, abeforegold, anowgold
 		);
 
 		auto itor = std::ranges::find_if(lpactivity->m_ranktype, [](int atype)
@@ -154,8 +155,9 @@ namespace ngl
 		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::getInstance().get(aroleid);
 		if (lpbrief != nullptr)
 		{
-			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolegold())[activityid()] += anowgold - abeforegold;
+			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolegold())[lpactivity->m_id] += anowgold - abeforegold;
 		}
+		brief_activityvalues(aroleid);
 	}
 
 	void activity::brief_activityvalues(i64_actorid aroleid)

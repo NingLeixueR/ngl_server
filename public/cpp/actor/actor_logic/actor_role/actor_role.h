@@ -60,7 +60,7 @@ namespace ngl
 
 		actor_role(i16_area aarea, i32_actordataid aroleid, void* adata);
 
-		virtual ~actor_role() = default;
+		virtual ~actor_role();
 
 		static ENUM_ACTOR actor_type();
 
@@ -71,6 +71,8 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
+
+		void login_finish();
 
 		virtual i32_serverid get_getwayserverid();
 

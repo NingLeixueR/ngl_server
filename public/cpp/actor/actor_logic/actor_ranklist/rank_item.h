@@ -95,7 +95,7 @@ namespace ngl
 				);
 			case pbdb::eranklist::activity_gold + 1:
 				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_gold + 1),
-					std::bind(&rank_item::activitylv<1>, this, std::placeholders::_1)
+					std::bind(&rank_item::activitygold<1>, this, std::placeholders::_1)
 				);
 			}
 			return false;
@@ -135,8 +135,9 @@ namespace ngl
 			auto itor = ar.m_data.find(atype);
 			ecompare ltype = value_compare(m_data[atype].m_value, ar.m_data[atype].m_value);
 			if (atype == pbdb::eranklist::lv 
-				|| atype == pbdb::eranklist::activity_lv + 1001
-				|| atype == pbdb::eranklist::activity_gold + 1001
+				|| atype == pbdb::eranklist::gold
+				|| atype == pbdb::eranklist::activity_lv + 1
+				|| atype == pbdb::eranklist::activity_gold + 1
 				)
 			{//值越大排名越高
 				return ltype;

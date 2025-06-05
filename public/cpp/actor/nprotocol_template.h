@@ -413,6 +413,7 @@ namespace ngl
 	struct np_channel_register_reply
 	{
 		i64_actorid m_actorid;
+		std::set<i64_actorid> m_actorids;// 其他副本结点(nsp_client)
 		def_portocol(np_channel_register_reply, m_actorid)
 	};
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ndb_modular.h"
+#include "threadtools.h"
 
 namespace ngl
 {
@@ -19,8 +20,11 @@ namespace ngl
 		std::set<i64_actorid>							m_dataid;
 		std::function<void(int64_t, const T&, bool)>	m_changedatafun;
 		bool											m_activate = false;
-		std::map<i64_actorid, T> m_data;
-
+		std::map<i64_actorid, T>						m_data;
+		std::set<i64_actorid>							m_other;
+		static std::shared_mutex									m_mutex;
+		static std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>	m_map;
+	private:
 		nsp_client() = default;
 	public:
 		std::map<i64_actorid, T>& data()
@@ -63,6 +67,8 @@ namespace ngl
 			log("nsp_client np_channel_register_reply");
 			auto& recv = *adata.get_data();
 			m_register[nguid::area(recv.m_actorid)] = true;
+			m_other = recv.m_actorids;
+			m_other.erase(m_actor->id_guid());
 		}
 
 		void channel_check(TDerived*, const message<np_channel_check<T>>& adata)
@@ -77,10 +83,25 @@ namespace ngl
 		}
 
 	public:
-		static nsp_client<TDerived, TACTOR, T>& getInstance()
+		static nsp_client<TDerived, TACTOR, T>& getInstance(int64_t adataid = nguid::make())
 		{
-			static nsp_client<TDerived, TACTOR, T> ltemp;
-			return ltemp;
+			std::lock_guard<std::shared_mutex> llock(nsp_client<TDerived, TACTOR, T>::m_mutex);
+			if (!m_map.contains(adataid))
+			{
+				m_map[adataid] = new nsp_client<TDerived, TACTOR, T>();
+			}
+			return *m_map[adataid];
+		}
+
+		static void freensp(int64_t adataid = nguid::make())
+		{
+			std::lock_guard<std::shared_mutex> llock(nsp_client<TDerived, TACTOR, T>::m_mutex);
+			auto itor = m_map.find(adataid);
+			if (itor != m_map.end())
+			{
+				delete itor->second;
+				m_map.erase(itor);
+			}
 		}
 
 		void init(TDerived* aactor, const std::set<i64_actorid>& adataid)
@@ -197,6 +218,8 @@ namespace ngl
 			pro->m_data.make();
 			(*pro->m_data.m_data)[aactorid] = *lpdata;
 			actor::static_send_actor(m_nspserver[nguid::area(aactorid)], nguid::make(), pro);
+
+			actor::static_send_actor(m_other, nguid::make(), pro);
 		}
 
 		// # 如果数据发生变化
@@ -234,25 +257,9 @@ namespace ngl
 		}
 	};
 
-	// nsp_client的封装 用于只读不能写
-	// 用于非单例类actor，例如actor_role,在actor_role的各个实例中使用nsp_constclient
+	template <typename TDerived, typename TACTOR, typename T>
+	std::shared_mutex nsp_client<TDerived, TACTOR, T>::m_mutex;
 
 	template <typename TDerived, typename TACTOR, typename T>
-	class nsp_constclient
-	{
-		nsp_constclient() = delete;
-		nsp_constclient(const nsp_constclient&) = delete;
-		nsp_constclient& operator=(const nsp_constclient&) = delete;
-		
-		const nsp_client<TDerived, TACTOR, T>& m_instance;
-	public:
-		explicit nsp_constclient(const nsp_client<TDerived, TACTOR, T>& anc) :
-			m_instance(anc)
-		{}
-
-		const T* getconst(i64_actorid aactorid)
-		{
-			return m_instance.getconst(aactorid);
-		}
-	};
+	std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>	nsp_client<TDerived, TACTOR, T>::m_map;
 }//namespace ngl

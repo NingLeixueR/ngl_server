@@ -33,7 +33,19 @@ namespace ngl
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
 	{
-		assert(aarea == tab_self_area);
+		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).init(this, { id_guid() });
+		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+			{
+				if (afirstsynchronize)
+				{// 数据完全加载
+					login_finish();
+				}
+			});
+	}
+
+	actor_role::~actor_role()
+	{
+		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
 	}
 
 	ENUM_ACTOR actor_role::actor_type()
@@ -91,8 +103,13 @@ namespace ngl
 	void actor_role::loaddb_finish(bool adbishave)
 	{
 		log_error()->print("actor_role###loaddb_finish#[{}]", guid());
+	}
+
+	void actor_role::login_finish()
+	{
+		log_error()->print("actor_role###login_finish#[{}]", guid());
 		sync_data_client();
-		m_info.sync_actor_brief();
+		//m_info.sync_actor_brief();
 		loginpay();
 
 		// # 登陆事件
@@ -221,6 +238,11 @@ namespace ngl
 		*pro->mutable_m_role()	= m_info.get()->getconst();
 		*pro->mutable_m_bag()	= m_bag.get()->getconst();
 		*pro->mutable_m_task()	= m_task.get()->getconst();
+		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).getconst(id_guid());
+		if (lpbrief != nullptr)
+		{
+			*pro->mutable_m_brief() = *lpbrief;
+		}
 		send_client(id_guid(), pro);
 	}
 

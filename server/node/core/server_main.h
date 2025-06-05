@@ -34,15 +34,15 @@ void init_DB_ROLE(const char* aname, int beg)
 
 		ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 		ltemp.set_m_id(lid);
-		pbdb::db_brief* lrolebase = ltemp.mutable_m_base();
-		lrolebase->set_m_id(lid);
-		lrolebase->set_m_name(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		lrolebase->set_m_lv(i);
-		lrolebase->set_m_moneygold(i + 1000);
-		lrolebase->set_m_moneysilver(i + 2000);
-		lrolebase->set_m_createutc((int32_t)ngl::localtime::gettime());
+		pbdb::db_brief lrolebase;
+		lrolebase.set_m_id(lid);
+		lrolebase.set_m_name(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
+		lrolebase.set_m_lv(i);
+		lrolebase.set_m_moneygold(0);
+		lrolebase.set_m_moneysilver(0);
+		lrolebase.set_m_createutc((int32_t)ngl::localtime::gettime());
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, *lrolebase);
+		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, lrolebase);
 		ngl::actor_dbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
 	}
 }

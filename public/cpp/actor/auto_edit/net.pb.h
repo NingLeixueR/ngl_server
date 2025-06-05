@@ -3056,8 +3056,9 @@ class PROBUFF_NET_ROLE_SYNC_RESPONSE PROTOBUF_FINAL :
 
   enum : int {
     kMRoleFieldNumber = 1,
-    kMBagFieldNumber = 2,
-    kMTaskFieldNumber = 3,
+    kMBriefFieldNumber = 2,
+    kMBagFieldNumber = 3,
+    kMTaskFieldNumber = 4,
   };
   // .pbdb.db_role m_role = 1;
   bool has_m_role() const;
@@ -3077,7 +3078,25 @@ class PROBUFF_NET_ROLE_SYNC_RESPONSE PROTOBUF_FINAL :
       ::pbdb::db_role* m_role);
   ::pbdb::db_role* unsafe_arena_release_m_role();
 
-  // .pbdb.db_bag m_bag = 2;
+  // .pbdb.db_brief m_brief = 2;
+  bool has_m_brief() const;
+  private:
+  bool _internal_has_m_brief() const;
+  public:
+  void clear_m_brief();
+  const ::pbdb::db_brief& m_brief() const;
+  ::pbdb::db_brief* release_m_brief();
+  ::pbdb::db_brief* mutable_m_brief();
+  void set_allocated_m_brief(::pbdb::db_brief* m_brief);
+  private:
+  const ::pbdb::db_brief& _internal_m_brief() const;
+  ::pbdb::db_brief* _internal_mutable_m_brief();
+  public:
+  void unsafe_arena_set_allocated_m_brief(
+      ::pbdb::db_brief* m_brief);
+  ::pbdb::db_brief* unsafe_arena_release_m_brief();
+
+  // .pbdb.db_bag m_bag = 3;
   bool has_m_bag() const;
   private:
   bool _internal_has_m_bag() const;
@@ -3095,7 +3114,7 @@ class PROBUFF_NET_ROLE_SYNC_RESPONSE PROTOBUF_FINAL :
       ::pbdb::db_bag* m_bag);
   ::pbdb::db_bag* unsafe_arena_release_m_bag();
 
-  // .pbdb.db_task m_task = 3;
+  // .pbdb.db_task m_task = 4;
   bool has_m_task() const;
   private:
   bool _internal_has_m_task() const;
@@ -3123,6 +3142,7 @@ class PROBUFF_NET_ROLE_SYNC_RESPONSE PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::pbdb::db_role* m_role_;
+  ::pbdb::db_brief* m_brief_;
   ::pbdb::db_bag* m_bag_;
   ::pbdb::db_task* m_task_;
   friend struct ::TableStruct_net_2eproto;
@@ -14733,9 +14753,86 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::set_allocated_m_role(::pbdb::db_role
   // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_role)
 }
 
-// .pbdb.db_bag m_bag = 2;
-inline bool PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_has_m_bag() const {
+// .pbdb.db_brief m_brief = 2;
+inline bool PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_has_m_brief() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || m_brief_ != nullptr);
+  return value;
+}
+inline bool PROBUFF_NET_ROLE_SYNC_RESPONSE::has_m_brief() const {
+  return _internal_has_m_brief();
+}
+inline const ::pbdb::db_brief& PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_m_brief() const {
+  const ::pbdb::db_brief* p = m_brief_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::pbdb::db_brief*>(
+      &::pbdb::_db_brief_default_instance_);
+}
+inline const ::pbdb::db_brief& PROBUFF_NET_ROLE_SYNC_RESPONSE::m_brief() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_brief)
+  return _internal_m_brief();
+}
+inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::unsafe_arena_set_allocated_m_brief(
+    ::pbdb::db_brief* m_brief) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(m_brief_);
+  }
+  m_brief_ = m_brief;
+  if (m_brief) {
+    _has_bits_[0] |= 0x00000002u;
+  } else {
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_brief)
+}
+inline ::pbdb::db_brief* PROBUFF_NET_ROLE_SYNC_RESPONSE::release_m_brief() {
+  auto temp = unsafe_arena_release_m_brief();
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::pbdb::db_brief* PROBUFF_NET_ROLE_SYNC_RESPONSE::unsafe_arena_release_m_brief() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_brief)
+  _has_bits_[0] &= ~0x00000002u;
+  ::pbdb::db_brief* temp = m_brief_;
+  m_brief_ = nullptr;
+  return temp;
+}
+inline ::pbdb::db_brief* PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_mutable_m_brief() {
+  _has_bits_[0] |= 0x00000002u;
+  if (m_brief_ == nullptr) {
+    auto* p = CreateMaybeMessage<::pbdb::db_brief>(GetArena());
+    m_brief_ = p;
+  }
+  return m_brief_;
+}
+inline ::pbdb::db_brief* PROBUFF_NET_ROLE_SYNC_RESPONSE::mutable_m_brief() {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_brief)
+  return _internal_mutable_m_brief();
+}
+inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::set_allocated_m_brief(::pbdb::db_brief* m_brief) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(m_brief_);
+  }
+  if (m_brief) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(m_brief)->GetArena();
+    if (message_arena != submessage_arena) {
+      m_brief = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, m_brief, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000002u;
+  } else {
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  m_brief_ = m_brief;
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_brief)
+}
+
+// .pbdb.db_bag m_bag = 3;
+inline bool PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_has_m_bag() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   PROTOBUF_ASSUME(!value || m_bag_ != nullptr);
   return value;
 }
@@ -14758,9 +14855,9 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::unsafe_arena_set_allocated_m_bag(
   }
   m_bag_ = m_bag;
   if (m_bag) {
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000004u;
   } else {
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_bag)
 }
@@ -14773,13 +14870,13 @@ inline ::pbdb::db_bag* PROBUFF_NET_ROLE_SYNC_RESPONSE::release_m_bag() {
 }
 inline ::pbdb::db_bag* PROBUFF_NET_ROLE_SYNC_RESPONSE::unsafe_arena_release_m_bag() {
   // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_bag)
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
   ::pbdb::db_bag* temp = m_bag_;
   m_bag_ = nullptr;
   return temp;
 }
 inline ::pbdb::db_bag* PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_mutable_m_bag() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   if (m_bag_ == nullptr) {
     auto* p = CreateMaybeMessage<::pbdb::db_bag>(GetArena());
     m_bag_ = p;
@@ -14802,17 +14899,17 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::set_allocated_m_bag(::pbdb::db_bag* 
       m_bag = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, m_bag, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000002u;
+    _has_bits_[0] |= 0x00000004u;
   } else {
-    _has_bits_[0] &= ~0x00000002u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   m_bag_ = m_bag;
   // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_bag)
 }
 
-// .pbdb.db_task m_task = 3;
+// .pbdb.db_task m_task = 4;
 inline bool PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_has_m_task() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
   PROTOBUF_ASSUME(!value || m_task_ != nullptr);
   return value;
 }
@@ -14835,9 +14932,9 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::unsafe_arena_set_allocated_m_task(
   }
   m_task_ = m_task;
   if (m_task) {
-    _has_bits_[0] |= 0x00000004u;
+    _has_bits_[0] |= 0x00000008u;
   } else {
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000008u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_task)
 }
@@ -14850,13 +14947,13 @@ inline ::pbdb::db_task* PROBUFF_NET_ROLE_SYNC_RESPONSE::release_m_task() {
 }
 inline ::pbdb::db_task* PROBUFF_NET_ROLE_SYNC_RESPONSE::unsafe_arena_release_m_task() {
   // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_task)
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
   ::pbdb::db_task* temp = m_task_;
   m_task_ = nullptr;
   return temp;
 }
 inline ::pbdb::db_task* PROBUFF_NET_ROLE_SYNC_RESPONSE::_internal_mutable_m_task() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   if (m_task_ == nullptr) {
     auto* p = CreateMaybeMessage<::pbdb::db_task>(GetArena());
     m_task_ = p;
@@ -14879,9 +14976,9 @@ inline void PROBUFF_NET_ROLE_SYNC_RESPONSE::set_allocated_m_task(::pbdb::db_task
       m_task = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, m_task, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000004u;
+    _has_bits_[0] |= 0x00000008u;
   } else {
-    _has_bits_[0] &= ~0x00000004u;
+    _has_bits_[0] &= ~0x00000008u;
   }
   m_task_ = m_task;
   // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_ROLE_SYNC_RESPONSE.m_task)

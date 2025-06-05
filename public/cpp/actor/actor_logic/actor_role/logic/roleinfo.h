@@ -24,10 +24,8 @@ namespace ngl
 
 		data_modified<pbdb::db_role>& get_role();
 
-		pbdb::db_brief& get_brief();
-		const pbdb::db_brief& get_constbrief();
-
-		void sync_actor_brief();
+		pbdb::db_brief* get_brief();
+		const pbdb::db_brief* get_constbrief();
 
 		void change_event(eevents_logic type, int abegvalue, int32_t anowvalue);
 

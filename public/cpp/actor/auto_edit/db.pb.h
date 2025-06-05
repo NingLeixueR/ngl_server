@@ -1371,11 +1371,10 @@ class db_role PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMRechargeFieldNumber = 3,
-    kMBaseFieldNumber = 2,
+    kMRechargeFieldNumber = 2,
     kMIdFieldNumber = 1,
   };
-  // repeated .pbdb.db_role.recharge m_recharge = 3;
+  // repeated .pbdb.db_role.recharge m_recharge = 2;
   int m_recharge_size() const;
   private:
   int _internal_m_recharge_size() const;
@@ -1392,24 +1391,6 @@ class db_role PROTOBUF_FINAL :
   ::pbdb::db_role_recharge* add_m_recharge();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge >&
       m_recharge() const;
-
-  // .pbdb.db_brief m_base = 2;
-  bool has_m_base() const;
-  private:
-  bool _internal_has_m_base() const;
-  public:
-  void clear_m_base();
-  const ::pbdb::db_brief& m_base() const;
-  ::pbdb::db_brief* release_m_base();
-  ::pbdb::db_brief* mutable_m_base();
-  void set_allocated_m_base(::pbdb::db_brief* m_base);
-  private:
-  const ::pbdb::db_brief& _internal_m_base() const;
-  ::pbdb::db_brief* _internal_mutable_m_base();
-  public:
-  void unsafe_arena_set_allocated_m_base(
-      ::pbdb::db_brief* m_base);
-  ::pbdb::db_brief* unsafe_arena_release_m_base();
 
   // int64 m_id = 1;
   bool has_m_id() const;
@@ -1434,7 +1415,6 @@ class db_role PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::db_role_recharge > m_recharge_;
-  ::pbdb::db_brief* m_base_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   friend struct ::TableStruct_db_2eproto;
 };
@@ -6786,7 +6766,7 @@ inline void db_role_recharge::set_m_utc(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int64 m_id = 1;
 inline bool db_role::_internal_has_m_id() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline bool db_role::has_m_id() const {
@@ -6794,7 +6774,7 @@ inline bool db_role::has_m_id() const {
 }
 inline void db_role::clear_m_id() {
   m_id_ = PROTOBUF_LONGLONG(0);
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int64 db_role::_internal_m_id() const {
   return m_id_;
@@ -6804,7 +6784,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int64 db_role::m_id() const {
   return _internal_m_id();
 }
 inline void db_role::_internal_set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000001u;
   m_id_ = value;
 }
 inline void db_role::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
@@ -6812,91 +6792,7 @@ inline void db_role::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_role.m_id)
 }
 
-// .pbdb.db_brief m_base = 2;
-inline bool db_role::_internal_has_m_base() const {
-  bool value = (_has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || m_base_ != nullptr);
-  return value;
-}
-inline bool db_role::has_m_base() const {
-  return _internal_has_m_base();
-}
-inline void db_role::clear_m_base() {
-  if (GetArena() == nullptr && m_base_ != nullptr) {
-    delete m_base_;
-  }
-  m_base_ = nullptr;
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline const ::pbdb::db_brief& db_role::_internal_m_base() const {
-  const ::pbdb::db_brief* p = m_base_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::pbdb::db_brief*>(
-      &::pbdb::_db_brief_default_instance_);
-}
-inline const ::pbdb::db_brief& db_role::m_base() const {
-  // @@protoc_insertion_point(field_get:pbdb.db_role.m_base)
-  return _internal_m_base();
-}
-inline void db_role::unsafe_arena_set_allocated_m_base(
-    ::pbdb::db_brief* m_base) {
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(m_base_);
-  }
-  m_base_ = m_base;
-  if (m_base) {
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.db_role.m_base)
-}
-inline ::pbdb::db_brief* db_role::release_m_base() {
-  auto temp = unsafe_arena_release_m_base();
-  if (GetArena() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-  return temp;
-}
-inline ::pbdb::db_brief* db_role::unsafe_arena_release_m_base() {
-  // @@protoc_insertion_point(field_release:pbdb.db_role.m_base)
-  _has_bits_[0] &= ~0x00000001u;
-  ::pbdb::db_brief* temp = m_base_;
-  m_base_ = nullptr;
-  return temp;
-}
-inline ::pbdb::db_brief* db_role::_internal_mutable_m_base() {
-  _has_bits_[0] |= 0x00000001u;
-  if (m_base_ == nullptr) {
-    auto* p = CreateMaybeMessage<::pbdb::db_brief>(GetArena());
-    m_base_ = p;
-  }
-  return m_base_;
-}
-inline ::pbdb::db_brief* db_role::mutable_m_base() {
-  // @@protoc_insertion_point(field_mutable:pbdb.db_role.m_base)
-  return _internal_mutable_m_base();
-}
-inline void db_role::set_allocated_m_base(::pbdb::db_brief* m_base) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
-  if (message_arena == nullptr) {
-    delete m_base_;
-  }
-  if (m_base) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(m_base);
-    if (message_arena != submessage_arena) {
-      m_base = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, m_base, submessage_arena);
-    }
-    _has_bits_[0] |= 0x00000001u;
-  } else {
-    _has_bits_[0] &= ~0x00000001u;
-  }
-  m_base_ = m_base;
-  // @@protoc_insertion_point(field_set_allocated:pbdb.db_role.m_base)
-}
-
-// repeated .pbdb.db_role.recharge m_recharge = 3;
+// repeated .pbdb.db_role.recharge m_recharge = 2;
 inline int db_role::_internal_m_recharge_size() const {
   return m_recharge_.size();
 }
