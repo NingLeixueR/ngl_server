@@ -24,12 +24,8 @@ namespace ngl
 				.m_broadcast = true
 			})
 	{
-		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
-		tdb_brief::nsp_cli<actor_activity_manage>::getInstance().set_changedata_fun([](int64_t, const pbdb::db_brief&, bool)
-			{
-				std::cout << std::endl;
-			});
-		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().init(this, {});
+		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
 
 		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 	}
@@ -172,7 +168,7 @@ namespace ngl
 			}
 		}
 
-		pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance().get(pbdb::db_keyvalue::open_server);
+		pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid()).get(pbdb::db_keyvalue::open_server);
 		if (lkeyvalue != nullptr)
 		{
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());

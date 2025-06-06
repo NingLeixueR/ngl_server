@@ -19,8 +19,8 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance().init(this, { pbdb::db_keyvalue_ekv_account_ban });
-		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance().set_changedata_fun(
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid(), true).init(this, { pbdb::db_keyvalue_ekv_account_ban });
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).set_changedata_fun(
 			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
 			{
 				log_error()->print(

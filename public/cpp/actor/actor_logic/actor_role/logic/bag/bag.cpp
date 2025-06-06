@@ -12,7 +12,7 @@ namespace ngl
 
 	data_modified<pbdb::db_bag>& bag::get_bag()
 	{
-		return data()[actor()->id_guid()];
+		return data()[get_actor()->id_guid()];
 	}
 
 	void bag::initdata()
@@ -52,7 +52,7 @@ namespace ngl
 		{
 			log_error()->print(
 				"add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false", 
-				actor()->id_guid(), aitem.m_tid(), aitem.m_id()
+				get_actor()->id_guid(), aitem.m_tid(), aitem.m_id()
 			);
 			return nullptr;
 		}
@@ -69,9 +69,9 @@ namespace ngl
 		ltempbi.m_itemid = aitemid;
 		ltempbi.m_tid = atid;
 		ltempbi.m_count = acount;
-		ltempbi.m_roleid = actor()->id_guid();
+		ltempbi.m_roleid = get_actor()->id_guid();
 		ltempbi.m_time = localtime::gettime();
-		ltempbi.m_mask = local_get_remakes(actor());
+		ltempbi.m_mask = local_get_remakes(nactor());
 		ltempbi.m_adddec = aisadd ? 1 : 2;
 		ltempbi.print();
 	}
@@ -79,7 +79,7 @@ namespace ngl
 	bool bag::add_item(int32_t atid, int32_t acount)
 	{
 		std::vector<pbdb::item> lvec;
-		if (item_create::create(actor(), atid, acount, lvec) == false)
+		if (item_create::create(nactor(), atid, acount, lvec) == false)
 		{
 			return false;
 		}
@@ -245,6 +245,6 @@ namespace ngl
 		{
 			ldelnostackitems->Add(itemid);
 		}
-		actor()->send_client(actor()->id_guid(), pro);
+		nactor()->send_client(get_actor()->id_guid(), pro);
 	}
 }// namespace ngl

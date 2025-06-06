@@ -35,7 +35,7 @@ namespace ngl
 				continue;
 			if (localtime::checkutc(lnotice.m_finishtime()) == false)
 			{
-				actor()->log_error()->print(
+				nactor()->log_error()->print(
 					"remove_notice {}:{}-{}:{}",
 					lnotice.m_id(),
 					localtime::time2str(lnotice.m_starttime(), "%Y-%m-%d %H:%M:%S"),

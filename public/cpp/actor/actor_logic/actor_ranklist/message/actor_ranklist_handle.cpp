@@ -53,7 +53,7 @@ namespace ngl
 		auto lrecv = adata.get_data();
 		int32_t lrankid = lrecv->m_rankid;
 		m_ranklist.remove_rank(lrankid);
-		tdb_brief::nsp_cli<actor_ranklist>::getInstance().foreach_change([lrankid](pbdb::db_brief& abrief)
+		tdb_brief::nsp_cli<actor_ranklist>::getInstance(id_guid()).foreach_change([lrankid](pbdb::db_brief& abrief)
 			{
 				abrief.mutable_m_activityvalues()->mutable_m_activity_rolelv()->erase(lrankid);
 				abrief.mutable_m_activityvalues()->mutable_m_activity_rolegold()->erase(lrankid);

@@ -16,7 +16,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		tdb_brief::nsp_cli<actor_chat>::getInstance().init(this, {});
+		tdb_brief::nsp_cli<actor_chat>::getInstance(id_guid(), true).init(this, {});
 	}
 
 	ENUM_ACTOR actor_chat::actor_type()

@@ -145,7 +145,7 @@ namespace ngl
 			swaplist(m_locallist);
 			if (aweight < m_locallist.size())
 			{
-				m_actor->log_error()->print("actor handle [weight:{}/count:{}]", aweight, m_locallist.size());
+				m_actor->log_error()->print("actor handle {}:[weight:{}/count:{}]", nguid(m_actor->id_guid()), aweight, m_locallist.size());
 			}
 			time_t lbeg = localtime::gettimems();
 			int32_t lcount = 0;

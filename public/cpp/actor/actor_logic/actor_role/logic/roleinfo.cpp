@@ -16,23 +16,23 @@ namespace ngl
 
 	data_modified<pbdb::db_role>& roleinfo::get_role()
 	{
-		return data()[actor()->id_guid()];
+		return data()[get_actor()->id_guid()];
 	}
 
 	pbdb::db_brief* roleinfo::get_brief()
 	{
-		return tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).get(actor()->id_guid());
+		return tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).get(get_actor()->id_guid());
 	}
 
 	const pbdb::db_brief* roleinfo::get_constbrief()
 	{
-		return tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).getconst(actor()->id_guid());
+		return tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).getconst(get_actor()->id_guid());
 	}
 
 	void roleinfo::change_event(eevents_logic type, int abegvalue, int32_t anowvalue)
 	{
 		np_eevents_logic_rolevaluechange lparm(type);
-		lparm.m_actorid = actor()->id_guid();
+		lparm.m_actorid = get_actor()->id_guid();
 		lparm.m_beforevalue = abegvalue;
 		lparm.m_nowvalue = anowvalue;
 		actor_events_logic::trigger_event(lparm);
@@ -43,7 +43,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::lv fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::lv fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->m_lv();
@@ -54,13 +54,13 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::change_lv fail role[{}] value[{}]", nguid(actor()->id_guid()), avalues);
+			log_error()->print("roleinfo::change_lv fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		int32_t loldvalue = lrb->m_moneygold();
 		lrb->set_m_lv(loldvalue + avalues);
-		tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).change(actor()->id_guid());
-		static_task::update_change(actor(), ETaskRoleLv, lrb->m_lv());
+		tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).change(get_actor()->id_guid());
+		static_task::update_change(nactor(), ETaskRoleLv, lrb->m_lv());
 		change_event(eevents_logic::eevents_logic_rolelevelchange, loldvalue, loldvalue + avalues);
 	}
 
@@ -69,7 +69,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::vip fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::vip fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->m_vip();
@@ -80,12 +80,12 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::change_vip fail role[{}] value[{}]", nguid(actor()->id_guid()), avalues);
+			log_error()->print("roleinfo::change_vip fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		lrb->set_m_vip(lrb->m_vip() + avalues);
-		tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).change(actor()->id_guid());
-		static_task::update_change(actor(), ETaskRoleLv, lrb->m_lv());
+		tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).change(get_actor()->id_guid());
+		static_task::update_change(nactor(), ETaskRoleLv, lrb->m_lv());
 	}
 
 	const char* roleinfo::name()
@@ -93,7 +93,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::name fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::name fail role[{}]", nguid(get_actor()->id_guid()));
 			return "";
 		}
 		return lrb->m_name().c_str();
@@ -104,11 +104,11 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::rename fail role[{}] value[{}]", nguid(actor()->id_guid()), aname);
+			log_error()->print("roleinfo::rename fail role[{}] value[{}]", nguid(get_actor()->id_guid()), aname);
 			return;
 		}
 		lrb->set_m_name(aname);
-		tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).change(actor()->id_guid());
+		tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).change(get_actor()->id_guid());
 	}
 
 	int32_t roleinfo::gold()
@@ -116,7 +116,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::gold fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::gold fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->m_moneygold();
@@ -127,12 +127,12 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::change_gold fail role[{}] value[{}]", nguid(actor()->id_guid()), avalues);
+			log_error()->print("roleinfo::change_gold fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		int32_t loldvalue = lrb->m_moneygold();
 		lrb->set_m_moneygold(loldvalue + avalues);
-		tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).change(actor()->id_guid());
+		tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).change(get_actor()->id_guid());
 
 		change_event(eevents_logic::eevents_logic_rolegoldchange, loldvalue, loldvalue + avalues);
 	}
@@ -142,7 +142,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::silver fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::silver fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->m_moneysilver();
@@ -153,11 +153,11 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::change_silver fail role[{}] value[{}]", nguid(actor()->id_guid()), avalues);
+			log_error()->print("roleinfo::change_silver fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		lrb->set_m_moneysilver(lrb->m_moneysilver() + avalues);
-		tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).change(actor()->id_guid());
+		tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).change(get_actor()->id_guid());
 	}
 
 	int32_t roleinfo::notalkutc()
@@ -165,7 +165,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::notalkutc fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::notalkutc fail role[{}]", nguid(get_actor()->id_guid()));
 			return -1;
 		}
 		return lrb->m_notalkutc();
@@ -176,11 +176,11 @@ namespace ngl
 		pbdb::db_brief* lrb = get_brief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::change_notalkutc fail role[{}] value[{}]", nguid(actor()->id_guid()), avalues);
+			log_error()->print("roleinfo::change_notalkutc fail role[{}] value[{}]", nguid(get_actor()->id_guid()), avalues);
 			return;
 		}
 		lrb->set_m_notalkutc(avalues);
-		tdb_brief::nsp_cli<actor_role>::getInstance(actor()->id_guid()).change(actor()->id_guid());
+		tdb_brief::nsp_cli<actor_role>::getInstance(get_actor()->id_guid()).change(get_actor()->id_guid());
 	}
 
 	bool roleinfo::bantalk()
@@ -188,7 +188,7 @@ namespace ngl
 		const pbdb::db_brief* lrb = get_constbrief();
 		if (lrb == nullptr)
 		{
-			log_error()->print("roleinfo::bantalk fail role[{}]", nguid(actor()->id_guid()));
+			log_error()->print("roleinfo::bantalk fail role[{}]", nguid(get_actor()->id_guid()));
 			return false;
 		}
 		int32_t lnow = (int32_t)localtime::gettime();

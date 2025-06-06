@@ -17,7 +17,7 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		tdb_brief::nsp_cli<actor_friends>::getInstance().init(this, {});
+		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid(), true).init(this, {});
 	}
 
 	ENUM_ACTOR actor_friends::actor_type()

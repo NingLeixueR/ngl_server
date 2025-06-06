@@ -290,7 +290,7 @@ namespace ngl
 
 	data_modified<pbdb::db_task>& task::get_task()
 	{
-		return data()[actor()->id_guid()];
+		return data()[get_actor()->id_guid()];
 	}
 
 	void task::initdata()
@@ -301,10 +301,10 @@ namespace ngl
 		tabs->foreach([this](tab_task& atask)
 			{
 				// # 检查任务是否可接收
-				if (static_task::receive_task(actor(), atask.m_id) == true)
+				if (static_task::receive_task(nactor(), atask.m_id) == true)
 				{// 可接受或者已接受
 					// # 检查任务是否可完成
-					if (static_task::finish_task(actor(), atask.m_id))
+					if (static_task::finish_task(nactor(), atask.m_id))
 					{
 						return;
 					}

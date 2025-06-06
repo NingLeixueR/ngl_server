@@ -166,7 +166,7 @@ namespace ngl
 		}
 
 		// # »ñÈ¡ËÞÖ÷actor
-		inline TACTOR* actor()
+		inline TACTOR* nactor()
 		{ 
 			return (TACTOR*)get_actor();
 		}

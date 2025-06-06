@@ -418,6 +418,19 @@ namespace ngl
 	};
 
 	template <typename TDATA>
+	struct np_channel_dataid_sync
+	{
+		i64_actorid m_actorid = 0;
+		// delete
+		i64_actorid m_deleteactorid = 0;
+		// add
+		i64_actorid m_addactorid = 0;
+		std::set<i64_actorid> m_adddataids;
+
+		def_portocol(np_channel_dataid_sync, m_actorid, m_deleteactorid, m_addactorid, m_adddataids)
+	};
+
+	template <typename TDATA>
 	struct np_channel_exit
 	{
 		i64_actorid				m_actorid;
