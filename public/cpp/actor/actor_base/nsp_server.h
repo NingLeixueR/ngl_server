@@ -70,12 +70,14 @@ namespace ngl
 			m_publishlist[recv.m_actorid] = recv.m_dataid;
 			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
+			pro->m_publishlist = m_publishlist;
+			log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
+
 			std::ranges::for_each(m_publishlist, [&pro](const auto& apair)
 				{
-					pro->m_actorids.insert(apair.first);
+					actor::static_send_actor(apair.first, nguid::make(), pro);
 				});
-			log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
-			actor::static_send_actor(pro->m_actorids, nguid::make(), pro);
+			
 			// # 同步需要的数据
 			sync(recv.m_actorid);
 		}
@@ -93,11 +95,11 @@ namespace ngl
 
 			auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
+			pro->m_publishlist = m_publishlist;
 			std::ranges::for_each(m_publishlist, [&pro](const auto& apair)
 				{
-					pro->m_actorids.insert(apair.first);
+					actor::static_send_actor(apair.first, nguid::make(), pro);
 				});
-			m_dbmodule->actor()->send_actor(recv.m_actorid, pro);
 		}
 
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
