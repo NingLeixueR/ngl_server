@@ -21,7 +21,7 @@ namespace ngl
 		std::function<void(int64_t, const T&, bool)>	m_changedatafun;
 		bool											m_activate = false;
 		std::map<i64_actorid, T>						m_data;
-		std::set<i64_actorid>							m_other;
+		std::map<i64_actorid, std::set<i64_actorid>>	m_publishlist;
 		static std::shared_mutex									m_mutex;
 		static std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>	m_map;
 	private:
@@ -67,8 +67,8 @@ namespace ngl
 			log("nsp_client np_channel_register_reply");
 			auto& recv = *adata.get_data();
 			m_register[nguid::area(recv.m_actorid)] = true;
-			m_other = recv.m_actorids;
-			m_other.erase(m_actor->id_guid());
+			m_publishlist = recv.m_publishlist;
+			m_publishlist.erase(m_actor->id_guid());
 		}
 
 		void channel_check(TDerived*, const message<np_channel_check<T>>& adata)
@@ -219,7 +219,13 @@ namespace ngl
 			(*pro->m_data.m_data)[aactorid] = *lpdata;
 			actor::static_send_actor(m_nspserver[nguid::area(aactorid)], nguid::make(), pro);
 
-			actor::static_send_actor(m_other, nguid::make(), pro);
+			for (const auto& item : m_publishlist)
+			{
+				if (item.second.empty() || item.second.contains(aactorid))
+				{
+					actor::static_send_actor(item.first, nguid::make(), pro);
+				}
+			}			
 		}
 
 		// # 如果数据发生变化
