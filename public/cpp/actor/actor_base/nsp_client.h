@@ -195,8 +195,8 @@ namespace ngl
 					i16_area larea = apair.first;
 					wheel_parm lparm
 					{
-						.m_ms = 5000,
-						.m_intervalms = [](int64_t) {return 5000; } ,
+						.m_ms = 10000,
+						.m_intervalms = [](int64_t) {return 10000; } ,
 						.m_count = 0x7fffffff,
 						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
