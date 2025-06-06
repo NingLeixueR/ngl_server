@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-06-04 15:30:37
+// 创建时间 25-06-06 20:49:25
 #include "ttab_activity_toprank.cpp"
 #include "attribute_value.cpp"
 #include "ttab_specialid.cpp"
@@ -36,6 +36,7 @@
 #include "sysconfig.cpp"
 #include "synthesis.cpp"
 #include "serialize.cpp"
+#include "rank_item.cpp"
 #include "pack_head.cpp"
 #include "nprotocol.cpp"
 #include "logprintf.cpp"

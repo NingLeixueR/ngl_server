@@ -82,12 +82,30 @@ namespace ngl
 			register_echannel(lprecv->m_area);
 		}
 
+		void channel_dataid_sync(TDerived*, const message<np_channel_dataid_sync<T>>& adata)
+		{
+			const np_channel_dataid_sync<T>* lpdata = adata.get_data();
+			if (lpdata == nullptr)
+			{
+				return;
+			}
+			if (lpdata->m_deleteactorid != 0)
+			{
+				m_publishlist.erase(lpdata->m_deleteactorid);
+			}
+			if (lpdata->m_addactorid != 0)
+			{
+				m_publishlist[lpdata->m_addactorid] = lpdata->m_adddataids;
+			}
+		}
+
 	public:
-		static nsp_client<TDerived, TACTOR, T>& getInstance(int64_t adataid = nguid::make())
+		static nsp_client<TDerived, TACTOR, T>& getInstance(int64_t adataid = nguid::make(), bool acreate = false)
 		{
 			std::lock_guard<std::shared_mutex> llock(nsp_client<TDerived, TACTOR, T>::m_mutex);
 			if (!m_map.contains(adataid))
 			{
+				assert(acreate);
 				m_map[adataid] = new nsp_client<TDerived, TACTOR, T>();
 			}
 			return *m_map[adataid];
@@ -116,20 +134,60 @@ namespace ngl
 			}
 			m_actor		= aactor;
 			m_dataid	= adataid;
-			// 更新数据
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
-				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_data, this)
-			);
+			
+			static bool lisregister = false;
+			if (!lisregister)
+			{
+				lisregister = true;
 
-			// 注册回复
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
-				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_register_reply, this)
-			);
+				// 更新数据
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
+					[](TDerived* aacotor, const message<np_channel_data<T>>& adata)
+					{
+						if (aacotor == nullptr)
+						{
+							return;
+						}
+						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_data(aacotor, adata);
+					}
+				);
 
-			// 检查
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
-				std::bind_front(&nsp_client<TDerived, TACTOR, T>::channel_check, this)
-			);
+				// 注册回复
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
+					[](TDerived* aacotor, const message<np_channel_register_reply<T>>& adata)
+					{
+						if (aacotor == nullptr)
+						{
+							return;
+						}
+						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_register_reply(aacotor, adata);
+					}
+				);
+
+				// 检查
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
+					[](TDerived* aacotor, const message<np_channel_check<T>>& adata)
+					{
+						if (aacotor == nullptr)
+						{
+							return;
+						}
+						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_check(aacotor, adata);
+					}
+				);
+
+				// 同步channel_dataid
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>(
+					[](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
+					{
+						if (aacotor == nullptr)
+						{
+							return;
+						}
+						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
+					}
+				);
+			}
 
 			i64_actorid lactorid = m_actor->id_guid();
 			std::ranges::for_each(m_register, [lactorid](const auto& apair)

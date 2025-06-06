@@ -52,7 +52,7 @@ namespace ngl
 				m_rolesds.push_back(item.second);
 				lset.insert(item.second);
 			}
-			tdb_brief::nsp_cli<TACTOR>::getInstance().init((TACTOR*)this, lset);
+			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid(), true).init((TACTOR*)this, lset);
 		}
 
 		virtual void erase_actor_before()
@@ -61,7 +61,7 @@ namespace ngl
 			pro->m_exampleid = id_guid();
 			pro->m_type = m_playertype;
 			send_actor(actor_example_manage::actorid(), pro);
-			tdb_brief::nsp_cli<TACTOR>::getInstance().exit();
+			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid()).exit();
 		}
 	};
 }

@@ -13,7 +13,6 @@ namespace ngl
 					.m_type = ACTOR_ROBOT,
 					.m_area = aarea,
 					.m_id = arobotid,
-					.m_manage_dbclient = true
 				},
 				.m_weight = 0x7fffffff,
 			})

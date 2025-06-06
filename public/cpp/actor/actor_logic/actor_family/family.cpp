@@ -13,7 +13,7 @@ namespace ngl
 		{
 			return 1;
 		}
-		if (actor()->m_familyer.check_createfamily(aroleid) == false)
+		if (nactor()->m_familyer.check_createfamily(aroleid) == false)
 		{
 			return 2;
 		}
@@ -34,7 +34,7 @@ namespace ngl
 		ldbfamily.set_m_exp(0);
 		*ldbfamily.mutable_m_member()->Add() = aroleid;
 
-		pbdb::db_familyer* lpfamilyer = actor()->m_familyer.add_familyer(aroleid);
+		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 3;
@@ -175,14 +175,14 @@ namespace ngl
 
 		lpfamily->get().set_m_leader(acederoleid);
 
-		pbdb::db_familyer* lpfamilyer = actor()->m_familyer.add_familyer(aroleid);
+		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 6;
 		}
 		lpfamilyer->set_m_position(pbdb::db_familyer_eposition_ordinary);
 
-		pbdb::db_familyer* lpcedefamilyer = actor()->m_familyer.add_familyer(acederoleid);
+		pbdb::db_familyer* lpcedefamilyer = nactor()->m_familyer.add_familyer(acederoleid);
 		if (lpcedefamilyer == nullptr)
 		{
 			return 7;
@@ -203,7 +203,7 @@ namespace ngl
 		{
 			return 2;
 		}
-		pbdb::db_familyer* lpfamilyer = actor()->m_familyer.add_familyer(aroleid);
+		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 3;
@@ -297,7 +297,7 @@ namespace ngl
 			return 2;
 		}
 
-		pbdb::db_familyer* lpfamilyer = actor()->m_familyer.add_familyer(aroleid);
+		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 3;

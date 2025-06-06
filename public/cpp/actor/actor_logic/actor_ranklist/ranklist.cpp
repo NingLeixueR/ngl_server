@@ -97,7 +97,7 @@ namespace ngl
 			add_data(ltemp);
 		}
 
-		tdb_brief::nsp_cli<actor_ranklist>::getInstance().set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
+		tdb_brief::nsp_cli<actor_ranklist>::getInstance(get_actor()->id_guid()).set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
 				update_value(abrief, afirstsynchronize);				
 			});
@@ -122,9 +122,9 @@ namespace ngl
 		pro->set_m_page(apage);
 		if (m_ranks.contains(atype))
 		{
-			int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro](int32_t aindex, const rank_item* aitem)
+			int32_t lcount = m_ranks[atype]->getpage(aroleid, apage, [&pro,this](int32_t aindex, const rank_item* aitem)
 				{
-					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(aitem->m_actorid);
+					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_ranklist>::getInstance(get_actor()->id_guid()).getconst(aitem->m_actorid);
 					if (lpbrief != nullptr)
 					{
 						*pro->add_m_items() = *lpbrief;

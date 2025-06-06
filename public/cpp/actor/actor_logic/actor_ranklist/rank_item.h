@@ -20,10 +20,7 @@ namespace ngl
 			m_actorid(0)
 		{}
 
-		const pbdb::db_brief* get()const
-		{
-			return tdb_brief::nsp_cli<actor_ranklist>::getInstance().getconst(m_actorid);
-		}
+		const pbdb::db_brief* get()const;
 
 		bool init(
 			const pbdb::db_brief& abrief, 
