@@ -16,8 +16,6 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		std::set<i64_actorid> ldataid;
-		tdb_brief::nsp_cli<actor_example_match>::getInstance(id_guid(), true).init(this, ldataid);
 	}
 
 	ENUM_ACTOR actor_example_match::actor_type()
@@ -42,6 +40,8 @@ namespace ngl
 			return;
 		}
 		set_timer(tparm);
+
+		tdb_brief::nsp_cli<actor_example_match>::getInstance(id_guid(), true).init(this, {});
 	}
 
 	void actor_example_match::loaddb_finish(bool adbishave) 

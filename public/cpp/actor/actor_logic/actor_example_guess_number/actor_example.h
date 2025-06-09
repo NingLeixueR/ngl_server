@@ -24,7 +24,8 @@
 namespace ngl
 {
 	template <typename TACTOR>
-	class actor_example : public actor
+	class actor_example : 
+		public actor
 	{
 		actor_example(const actor_example&) = delete;
 		actor_example& operator=(const actor_example&) = delete;
@@ -46,13 +47,11 @@ namespace ngl
 			m_playertype(aplayertype)
 		{
 			m_rolesds.reserve(aroleids.size());
-			std::set<i64_actorid> lset;
-			for (const std::pair<const int32_t, i64_actorid>& item : aroleids)
-			{
-				m_rolesds.push_back(item.second);
-				lset.insert(item.second);
-			}
-			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid(), true).init((TACTOR*)this, lset);
+			std::ranges::for_each(aroleids, [this](const auto& apair)
+				{
+					m_rolesds.push_back(apair.second);
+				}
+			);
 		}
 
 		virtual void erase_actor_before()
@@ -62,6 +61,17 @@ namespace ngl
 			pro->m_type = m_playertype;
 			send_actor(actor_example_manage::actorid(), pro);
 			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid()).exit();
+		}
+
+		virtual void init()
+		{
+			std::set<i64_actorid> lset;
+			std::ranges::for_each(m_rolesds, [&lset](i64_actorid aroleid)
+				{
+					lset.insert(aroleid);
+				}
+			);
+			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid(), true).init((TACTOR*)this, lset);
 		}
 	};
 }

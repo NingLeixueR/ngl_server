@@ -24,10 +24,6 @@ namespace ngl
 				.m_broadcast = true
 			})
 	{
-		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
-		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
-
-		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 	}
 
 	ENUM_ACTOR actor_activity_manage::actor_type()
@@ -45,6 +41,10 @@ namespace ngl
 		// °ó¶¨DB½á¹¹:DB.set(this);
 		m_activitydb.set(this);
 		m_activitytimedb.set(this);
+
+		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
+		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)

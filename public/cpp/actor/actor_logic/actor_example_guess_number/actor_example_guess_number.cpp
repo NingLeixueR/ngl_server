@@ -26,6 +26,8 @@ namespace ngl
 
 	void actor_example_guess_number::init()
 	{
+		actor_example::init();
+
 		// 绑定DB结构:DB.set(this);
 
 		// 设置timer_handle定时器
