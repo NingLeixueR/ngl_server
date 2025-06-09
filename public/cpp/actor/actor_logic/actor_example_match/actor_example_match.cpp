@@ -47,6 +47,7 @@ namespace ngl
 	void actor_example_match::erase_actor_before()
 	{
 		tdb_brief::nsp_cli<actor_example_match>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_example_match>::freensp(id_guid());
 	}
 
 	void actor_example_match::loaddb_finish(bool adbishave) 

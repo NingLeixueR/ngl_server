@@ -68,6 +68,7 @@ namespace ngl
 		virtual void erase_actor_before()
 		{
 			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid()).exit();
+			tdb_brief::nsp_cli<TACTOR>::freensp(id_guid());
 		}
 	};
 }//namespace ngl

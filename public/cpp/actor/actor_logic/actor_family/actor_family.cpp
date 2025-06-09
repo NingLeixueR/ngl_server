@@ -50,6 +50,7 @@ namespace ngl
 	void actor_family::erase_actor_before()
 	{
 		tdb_brief::nsp_cli<actor_family>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_family>::freensp(id_guid());
 	}
 
 	void actor_family::loaddb_finish(bool adbishave)
