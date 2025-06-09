@@ -47,6 +47,11 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid(), true).init(this, {});
 	}
 
+	void actor_friends::erase_actor_before()
+	{
+		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid()).exit();
+	}
+
 	void actor_friends::loaddb_finish(bool adbishave)
 	{
 		actor_events_logic::tfun::func<>(

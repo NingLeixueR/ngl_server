@@ -314,6 +314,19 @@ message PROBUFF_NET_FAMIL_CREATE_RESPONSE//G2C [actor_robot]
 	optional int32  m_stat				= 1;		// 状态
 }
 
+// [请求]获取军团信息
+message PROBUFF_NET_FAMIL_INFO//C2G2 [actor_family]
+{
+}
+
+// [回复]创建军团
+message PROBUFF_NET_FAMIL_INFO_RESPONSE//G2C [actor_robot]
+{
+	optional int32  m_stat					= 1;		// 状态
+	optional pbdb.db_family	m_info			= 2;				
+	repeated pbdb.db_brief m_member			= 3;
+}
+
 // [请求]申请/取消加入军团
 message PROBUFF_NET_FAMIL_JOIN//C2G2 [actor_family]
 {

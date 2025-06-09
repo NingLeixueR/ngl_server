@@ -9,9 +9,10 @@ namespace ngl
 	{
 		ELOG_NONE = -1,		// 无
 		ELOG_DEBUG = 0,		// 测试信息
-		ELOG_INFO,			// 打印
-		ELOG_WARN,			// 警告
-		ELOG_ERROR,			// 错误
+		ELOG_INFO = 1,		// 打印
+		ELOG_WARN = 2,		// 警告
+		ELOG_ERROR = 3,		// 错误
+		ELOG_MAX = 4,		// 边界值
 	};
 
 	struct sysconfig

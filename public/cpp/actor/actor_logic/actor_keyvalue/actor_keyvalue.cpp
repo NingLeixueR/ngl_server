@@ -18,7 +18,6 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		tdb_keyvalue::nsp_ser::init(&m_keyvaluedb);
 	}
 
 	ENUM_ACTOR actor_keyvalue::actor_type()
@@ -45,6 +44,8 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		tdb_keyvalue::nsp_ser::init(&m_keyvaluedb);
 	}
 
 	void actor_keyvalue::loaddb_finish(bool adbishave)

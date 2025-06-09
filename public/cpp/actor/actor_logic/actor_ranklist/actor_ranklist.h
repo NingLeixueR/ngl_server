@@ -45,6 +45,8 @@ namespace ngl
 
 		virtual void loaddb_finish(bool adbishave);
 
+		virtual void erase_actor_before();
+
 		static void nregister();
 
 		using handle_cmd = cmd<actor_ranklist, std::string, int, const ngl::json_read&>;

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-06-06 20:51:26】
+ // 创建时间【2025-06-09 17:16:35】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -77,6 +77,8 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_CREATE);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_INFO);
+            mkdef_map(pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_JOIN);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE);
             mkdef_map(pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN);

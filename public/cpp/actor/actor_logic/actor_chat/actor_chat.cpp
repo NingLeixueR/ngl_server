@@ -44,6 +44,11 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_chat>::getInstance(id_guid(), true).init(this, {});
 	}
 
+	void actor_chat::erase_actor_before()
+	{
+		tdb_brief::nsp_cli<actor_chat>::getInstance(id_guid()).exit();
+	}
+
 	void actor_chat::loaddb_finish(bool adbishave) 
 	{
 	}

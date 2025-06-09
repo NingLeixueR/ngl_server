@@ -47,6 +47,12 @@ namespace ngl
 		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 	}
 
+	void actor_activity_manage::erase_actor_before()
+	{
+		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
+	}
+
 	void actor_activity_manage::loaddb_finish(bool adbishave)
 	{
 		// µÈ´ý actor_ranklist loaddb_finish

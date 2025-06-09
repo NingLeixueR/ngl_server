@@ -36,7 +36,8 @@ namespace ngl
 		std::set<i64_actorid> m_roles;
 	};
 
-	class actor_example_manage : public actor
+	class actor_example_manage : 
+		public actor
 	{
 		actor_example_manage(const actor_example_manage&) = delete;
 		actor_example_manage& operator=(const actor_example_manage&) = delete;
@@ -63,6 +64,8 @@ namespace ngl
 		static i64_actorid actorid();
 
 		virtual void init();
+
+		virtual void erase_actor_before();
 
 		virtual void loaddb_finish(bool adbishave);
 

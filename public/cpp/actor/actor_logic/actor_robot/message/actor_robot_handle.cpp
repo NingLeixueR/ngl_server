@@ -112,6 +112,10 @@ namespace ngl
 		tools::print_json2proto(*adata.get_data(), true);
 		return true;
 	}
+	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>& adata)
+	{
+		return true;
+	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata)
 	{
 		tools::print_json2proto(*adata.get_data(), true);
