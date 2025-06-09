@@ -119,13 +119,17 @@ namespace ngl
 				return;
 			}
 			auto& recv = *adata.get_data();
-			if (m_publishlist.contains(recv.m_actorid))
+			bool lisdataidlsync = m_publishlist.contains(recv.m_actorid);
+			if (!m_publishlist.contains(recv.m_actorid))
 			{
-				log_error()->print("nsp_server::channel_register fail recv.m_actorid=[{}]", nguid(recv.m_actorid));
+				m_publishlist[recv.m_actorid] = recv.m_dataid;
 			}
-			m_publishlist[recv.m_actorid] = recv.m_dataid;
-			addremove_channel_dataid_sync(true, recv.m_actorid);
+			else
+			{
+				log_error()->print("nsp_server::channel_register fail recv.m_actorid=[{}]", nguid(recv.m_actorid));				
+			}
 
+			addremove_channel_dataid_sync(true, recv.m_actorid);
 			// # 同步需要的数据
 			sync(recv.m_actorid);
 		}

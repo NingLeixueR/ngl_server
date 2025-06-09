@@ -26,7 +26,7 @@ namespace ngl
 		{
 			m_id = aid;
 		}
-		inline i64_actorid get_actorid()
+		inline i64_actorid get_actorid()const
 		{
 			return m_id;
 		}

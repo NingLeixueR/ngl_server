@@ -28,19 +28,11 @@ namespace ngl
 					.m_manage_dbclient = true
 				},
 				.m_weight = 10,
-				.m_timeout = 1000,
+				.m_timeout = 5000,
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
 	{
-		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid(), true).init(this, { id_guid() });
-		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
-			{
-				if (afirstsynchronize)
-				{// 数据完全加载
-					login_finish();
-				}
-			});
 	}
 
 	actor_role::~actor_role()
@@ -75,6 +67,15 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid(), true).init(this, { id_guid() });
+		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+			{
+				if (afirstsynchronize)
+				{// 数据完全加载
+					login_finish();
+				}
+			});
 	}
 
 	void actor_role::reset_logintime()
