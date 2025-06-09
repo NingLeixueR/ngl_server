@@ -69,6 +69,17 @@ namespace ngl
 			auto& recv = *adata.get_data();
 			m_register[nguid::area(recv.m_actorid)] = true;
 			m_publishlist = recv.m_publishlist;
+			//¥Ú”°
+			//std::vector<nguid> lvec;
+			//std::ranges::for_each(recv.m_publishlist, [&lvec](const auto& apair)
+			//	{
+			//		lvec.push_back(apair.first);
+			//	});
+			//std::cout << std::format("name:{} size:{} list:{}"
+			//	, typeid(nsp_client<TDerived, TACTOR, T>).name()
+			//	, m_publishlist.size()
+			//	, lvec
+			//) << std::endl;
 			m_publishlist.erase(m_actor->id_guid());
 		}
 
@@ -314,7 +325,7 @@ namespace ngl
 			log("nsp_client register");
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
-
+			pro->m_dataid = m_dataid;
 			log_error()->print("nsp_client register: {} -> {}", nguid(pro->m_actorid), nguid(m_nspserver[aarea]));
 			actor::static_send_actor(m_nspserver[aarea], nguid::make(), pro);
 		}
