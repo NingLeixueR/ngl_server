@@ -37,7 +37,6 @@ namespace ngl
 
 	actor_role::~actor_role()
 	{
-		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
 	}
 
 	ENUM_ACTOR actor_role::actor_type()
@@ -76,6 +75,12 @@ namespace ngl
 					login_finish();
 				}
 			});
+	}
+
+	void actor_role::erase_actor_before()
+	{
+		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
 	}
 
 	void actor_role::reset_logintime()

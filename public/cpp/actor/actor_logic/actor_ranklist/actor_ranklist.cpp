@@ -50,6 +50,7 @@ namespace ngl
 	void actor_ranklist::erase_actor_before()
 	{
 		tdb_brief::nsp_cli<actor_ranklist>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_ranklist>::freensp(id_guid());
 	}
 
 	void actor_ranklist::loaddb_finish(bool adbishave)

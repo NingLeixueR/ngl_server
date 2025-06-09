@@ -50,7 +50,9 @@ namespace ngl
 	void actor_activity_manage::erase_actor_before()
 	{
 		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
 		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)
