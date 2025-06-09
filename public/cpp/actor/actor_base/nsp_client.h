@@ -22,11 +22,12 @@ namespace ngl
 		bool											m_activate = false;
 		std::map<i64_actorid, T>						m_data;
 		std::map<i64_actorid, std::set<i64_actorid>>	m_publishlist;
-		static std::shared_mutex									m_mutex;
-		static std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>	m_map;
-	private:
-		nsp_client() = default;
+		static std::mutex															m_mutex;
+		static std::map<int64_t, std::shared_ptr<nsp_client<TDerived, TACTOR, T>>>	m_map;
+
 	public:
+		nsp_client() = default;
+
 		std::map<i64_actorid, T>& data()
 		{
 			return m_data;
@@ -102,24 +103,22 @@ namespace ngl
 	public:
 		static nsp_client<TDerived, TACTOR, T>& getInstance(int64_t adataid = nguid::make(), bool acreate = false)
 		{
-			std::lock_guard<std::shared_mutex> llock(nsp_client<TDerived, TACTOR, T>::m_mutex);
-			if (!m_map.contains(adataid))
+			monopoly_lock(m_mutex);
+			auto itor = m_map.find(adataid);
+			if (itor == m_map.end())
 			{
 				assert(acreate);
-				m_map[adataid] = new nsp_client<TDerived, TACTOR, T>();
+				auto lpclient = std::make_shared<nsp_client<TDerived, TACTOR, T>>();
+				m_map.insert(std::make_pair(adataid, lpclient));
+				return *lpclient;
 			}
-			return *m_map[adataid];
+			return *itor->second;
 		}
 
 		static void freensp(int64_t adataid = nguid::make())
 		{
-			std::lock_guard<std::shared_mutex> llock(nsp_client<TDerived, TACTOR, T>::m_mutex);
-			auto itor = m_map.find(adataid);
-			if (itor != m_map.end())
-			{
-				delete itor->second;
-				m_map.erase(itor);
-			}
+			monopoly_lock(m_mutex);
+			m_map.erase(adataid);
 		}
 
 		void init(TDerived* aactor, const std::set<i64_actorid>& adataid)
@@ -195,8 +194,8 @@ namespace ngl
 					i16_area larea = apair.first;
 					wheel_parm lparm
 					{
-						.m_ms = 10000,
-						.m_intervalms = [](int64_t) {return 10000; } ,
+						.m_ms = 1,
+						.m_intervalms = [](int64_t) {return 20000; } ,
 						.m_count = 0x7fffffff,
 						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
@@ -322,8 +321,8 @@ namespace ngl
 	};
 
 	template <typename TDerived, typename TACTOR, typename T>
-	std::shared_mutex nsp_client<TDerived, TACTOR, T>::m_mutex;
+	std::mutex nsp_client<TDerived, TACTOR, T>::m_mutex;
 
 	template <typename TDerived, typename TACTOR, typename T>
-	std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>	nsp_client<TDerived, TACTOR, T>::m_map;
+	std::map<int64_t, std::shared_ptr<nsp_client<TDerived, TACTOR, T>>>	nsp_client<TDerived, TACTOR, T>::m_map;
 }//namespace ngl
