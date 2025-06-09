@@ -207,7 +207,7 @@ namespace ngl
 					{
 						.m_ms = 1000,
 						.m_intervalms = [](int64_t) {return 10000; } ,
-						.m_count = 2,
+						.m_count = 0x7fffffff,
 						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
 							auto pro = std::make_shared<np_channel_check<T>>(
