@@ -79,6 +79,10 @@ namespace ngl
 
 	void actor_role::erase_actor_before()
 	{
+		np_eevents_logic_roleoffline lparm;
+		lparm.m_actorid = id_guid();
+		actor_events_logic::trigger_event(lparm);
+
 		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
 	}
@@ -206,13 +210,6 @@ namespace ngl
 				catch (...){}				
 			});
 		ngl::manage_curl::send(lhttp);
-	}
-
-	void actor_role::erase_actor_before()
-	{
-		np_eevents_logic_roleoffline lparm;
-		lparm.m_actorid = id_guid();
-		actor_events_logic::trigger_event(lparm);
 	}
 
 	void actor_role::handle_after()
