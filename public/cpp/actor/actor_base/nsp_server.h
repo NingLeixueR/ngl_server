@@ -76,7 +76,7 @@ namespace ngl
 			}
 
 			std::vector<int64_t> lvec;
-			std::ranges::for_each(m_publishlist, [&pro, aacountid, &lvec](const auto& apair)
+			std::ranges::for_each(m_publishlist, [&pro, aacountid, &lvec, &itor](const auto& apair)
 				{
 					if (apair.first == aacountid)
 					{
@@ -88,11 +88,13 @@ namespace ngl
 					}
 					else
 					{
-						std::set<int64_t> intersection;
-						std::ranges::set_intersection(apair.second, pro->m_adddataids, std::inserter(intersection, intersection.begin()));
-						if (!intersection.empty())
+						for (i64_actorid dataid : apair.second)
 						{
-							lvec.push_back(apair.first);
+							if (itor->second.contains(dataid))
+							{
+								lvec.push_back(apair.first);
+								break;
+							}
 						}
 					}
 				});
@@ -105,7 +107,25 @@ namespace ngl
 			{
 				auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
 				pro->m_actorid = m_dbmodule->actorbase()->id_guid();
-				pro->m_publishlist = m_publishlist;
+
+				for (i64_actorid lactorid : lvec)
+				{
+					auto& lset = m_publishlist[lactorid];
+					if (itor->second.empty() || lset.empty())
+					{
+						pro->m_publishlist[lactorid] = m_publishlist[lactorid];
+					}
+					else
+					{
+						std::set<int64_t> intersection;
+						std::ranges::set_intersection(itor->second, lset, std::inserter(intersection, intersection.begin()));
+						if (!intersection.empty())
+						{
+							pro->m_publishlist[lactorid].swap(intersection);
+						}
+					}
+				}
+				//pro->m_publishlist = m_publishlist;
 				//log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
 				actor::static_send_actor(aacountid, nguid::make(), pro);
 			}
