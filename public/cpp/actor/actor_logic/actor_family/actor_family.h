@@ -22,7 +22,8 @@
 
 namespace ngl
 {
-	class actor_family : public actor
+	class actor_family : 
+		public actor
 	{
 		actor_family(const actor_family&) = delete;
 		actor_family& operator=(const actor_family&) = delete;
@@ -48,6 +49,8 @@ namespace ngl
 
 		virtual void init();
 
+		virtual void erase_actor_before();
+
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
@@ -66,6 +69,8 @@ namespace ngl
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata);
 		// [请求]创建军团
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>>& adata);
+		// [请求]获取军团信息
+		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_INFO>>& adata);
 		// [请求]申请/取消加入军团
 		bool handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata);
 		// [请求]离开军团

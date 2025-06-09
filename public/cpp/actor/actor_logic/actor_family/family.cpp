@@ -47,7 +47,7 @@ namespace ngl
 		
 		add(lfamilyid, ldbfamily);
 		m_rolefamily[aroleid] = lfamilyid;
-		sync_family(aroleid, lfamilyid);
+		sync_family(aroleid);
 		return 0;
 	}
 
@@ -256,9 +256,40 @@ namespace ngl
 		}
 	}
 
-	void family::sync_family(i64_actorid aroleid, i64_actorid afamilyid)
+	void family::sync_familylist(i64_actorid aroleid, i64_actorid afamilyid)
 	{
 		auto pro = get_familylist(afamilyid);
+		actor::send_client(aroleid, pro);
+	}
+
+	void family::sync_family(i64_actorid aroleid)
+	{
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>();
+		pro->set_m_stat(0);
+		auto itor = m_rolefamily.find(aroleid);
+		if (itor == m_rolefamily.end())
+		{
+			pro->set_m_stat(1);
+			actor::send_client(aroleid, pro);
+			return;
+		}
+		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(itor->second);
+		if (lpfamily == nullptr)
+		{
+			pro->set_m_stat(2);
+			actor::send_client(aroleid, pro);
+			return;
+		}
+		const auto& lfamily = lpfamily->getconst();
+		*pro->mutable_m_info() = lfamily;
+		std::ranges::for_each(lfamily.m_member(), [this, &pro](int64_t aroleid)
+			{
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_family>::getInstance(get_actor()->id_guid()).getconst(aroleid);
+				if (lpbrief != nullptr)
+				{
+					*pro->add_m_member() = *lpbrief;
+				}				
+			});
 		actor::send_client(aroleid, pro);
 	}
 
@@ -279,7 +310,7 @@ namespace ngl
 		lpfamily->get().set_m_name(afamilyname.c_str());
 		if (aroleid != -1)
 		{
-			sync_family(aroleid, afamilyid);
+			sync_family(aroleid);
 		}
 		return 0;
 	}

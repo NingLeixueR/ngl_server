@@ -143,6 +143,8 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>& adata);
 		// [回复]创建军团
 		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>& adata);
+		// [回复]创建军团
+		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>& adata);
 		// [回复]加入军团
 		bool handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata);
 		// [回复]离开军团

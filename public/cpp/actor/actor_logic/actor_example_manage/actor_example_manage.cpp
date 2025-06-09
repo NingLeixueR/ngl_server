@@ -1,5 +1,6 @@
 #include "actor_example_manage.h"
 #include "actor_example_match.h"
+#include "actor_brief.h"
 
 namespace ngl
 {
@@ -38,6 +39,13 @@ namespace ngl
 			return;
 		}
 		set_timer(tparm);
+
+		tdb_brief::nsp_cli<actor_example_manage>::getInstance(id_guid(), true).init(this, {});
+	}
+
+	void actor_example_manage::erase_actor_before()
+	{
+		tdb_brief::nsp_cli<actor_example_manage>::getInstance(id_guid()).exit();
 	}
 
 	void actor_example_manage::loaddb_finish(bool adbishave) 

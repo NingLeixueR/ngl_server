@@ -140,7 +140,7 @@ namespace ngl
 			auto lpram = adata.get_data();
 			auto lpack = adata.get_pack();
 			Assert(lpack != nullptr);
-			log_info()->print("############ GateWay Login[{}][{}][{}] ############"
+			log_error()->print("############ GateWay Login[{}][{}][{}] ############"
 				, lpack->m_id, lpram->m_roleid(), lpram->m_session()
 			);
 			nguid lguid(lpram->m_roleid());
@@ -177,7 +177,7 @@ namespace ngl
 			nets::sendbyserver(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
 			return true;
 		}Catch
-			return false;
+		return false;
 	}
 
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)

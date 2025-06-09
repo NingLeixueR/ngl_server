@@ -45,6 +45,11 @@ namespace ngl
 		m_drop.init(this, {});
 	}
 
+	void actor_drop::erase_actor_before()
+	{
+		m_drop.exit();
+	}
+
 	void actor_drop::loaddb_finish(bool adbishave)
 	{
 	}

@@ -54,15 +54,6 @@ namespace ngl
 			);
 		}
 
-		virtual void erase_actor_before()
-		{
-			auto pro = std::make_shared<np_example_equit>();
-			pro->m_exampleid = id_guid();
-			pro->m_type = m_playertype;
-			send_actor(actor_example_manage::actorid(), pro);
-			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid()).exit();
-		}
-
 		virtual void init()
 		{
 			std::set<i64_actorid> lset;
@@ -73,5 +64,10 @@ namespace ngl
 			);
 			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid(), true).init((TACTOR*)this, lset);
 		}
+
+		virtual void erase_actor_before()
+		{
+			tdb_brief::nsp_cli<TACTOR>::getInstance(id_guid()).exit();
+		}
 	};
-}
+}//namespace ngl

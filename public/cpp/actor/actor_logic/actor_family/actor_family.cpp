@@ -43,6 +43,13 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		tdb_brief::nsp_cli<actor_family>::getInstance(id_guid(), true).init(this, {});
+	}
+
+	void actor_family::erase_actor_before()
+	{
+		tdb_brief::nsp_cli<actor_family>::getInstance(id_guid()).exit();
 	}
 
 	void actor_family::loaddb_finish(bool adbishave)
@@ -76,6 +83,7 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_FAMIL_LIST>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_INFO>
 		>(true);
 	}
 

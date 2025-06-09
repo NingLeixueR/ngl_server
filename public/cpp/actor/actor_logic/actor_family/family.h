@@ -160,7 +160,9 @@ namespace ngl
 
 		std::shared_ptr<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE> get_familylist(i64_actorid afamilyid);
 
-		void sync_family(i64_actorid aroleid, i64_actorid afamilyid);
+		void sync_familylist(i64_actorid aroleid, i64_actorid afamilyid);
+
+		void sync_family(i64_actorid aroleid);
 
 		// # 获取军团所有人
 		bool get_familyers(i64_actorid aroleid, std::vector<i64_actorid>& afamilyers);

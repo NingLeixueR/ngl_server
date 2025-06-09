@@ -44,6 +44,8 @@ namespace ngl
 
 		virtual void init();
 
+		virtual void erase_actor_before();
+
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();

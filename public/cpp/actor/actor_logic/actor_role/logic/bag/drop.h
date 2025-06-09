@@ -22,6 +22,11 @@ namespace ngl
 			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid(), true).init(m_actor, {});
 		}
 
+		void exit()
+		{
+			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid()).exit();
+		}
+
 		bool isactivity(const tab_random* tab)
 		{
 			if (tab->m_activityids.empty())
