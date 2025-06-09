@@ -19,19 +19,6 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid(), true).init(this, { pbdb::db_keyvalue_ekv_account_ban });
-		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).set_changedata_fun(
-			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
-			{
-				log_error()->print(
-					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]", 
-					aid, akeyval.m_value().c_str(), afirstsynchronize?"first":"change"
-				);
-				if (afirstsynchronize)
-				{
-					tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
-				}
-			});
 	}
 
 	ENUM_ACTOR actor_role_manage::actor_type()
@@ -57,6 +44,21 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid(), true).init(this, { pbdb::db_keyvalue_ekv_account_ban });
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).set_changedata_fun(
+			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
+			{
+				log_error()->print(
+					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]",
+					aid, akeyval.m_value().c_str(), afirstsynchronize ? "first" : "change"
+				);
+				if (afirstsynchronize)
+				{
+					tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
+				}
+			});
 	}
 
 	void actor_role_manage::loaddb_finish(bool adbishave)

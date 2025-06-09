@@ -17,7 +17,6 @@ namespace ngl
 				.m_broadcast = true,
 			})
 	{
-		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid(), true).init(this, {});
 	}
 
 	ENUM_ACTOR actor_friends::actor_type()
@@ -44,6 +43,8 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid(), true).init(this, {});
 	}
 
 	void actor_friends::loaddb_finish(bool adbishave)

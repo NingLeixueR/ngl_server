@@ -17,7 +17,6 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		m_drop.init(this, {});
 	}
 
 	ENUM_ACTOR actor_drop::actor_type()
@@ -42,6 +41,8 @@ namespace ngl
 		//	return;
 		//}
 		//set_timer(tparm);
+
+		m_drop.init(this, {});
 	}
 
 	void actor_drop::loaddb_finish(bool adbishave)
