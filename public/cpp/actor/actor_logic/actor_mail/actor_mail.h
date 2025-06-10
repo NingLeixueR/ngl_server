@@ -25,6 +25,7 @@ namespace ngl
 		actor_mail& operator=(const actor_mail&) = delete;
 
 		mails m_mails;
+		drop<actor_mail> m_drop;
 
 		actor_mail();
 	public:
@@ -41,14 +42,19 @@ namespace ngl
 
 		virtual void init();
 
+		virtual void erase_actor_before();
+
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
 
+		drop<actor_mail>& get_drop()
+		{
+			return m_drop;
+		}
+
 		// # 发送邮件,根据掉落id，允许任意位置调用
 		static bool sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm);
-
-		static bool sendmail(i64_actorid aactorid, int32_t amailid, const std::map<int32_t, int32_t>& aitems, const std::string& aparm);
 
 		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;
 

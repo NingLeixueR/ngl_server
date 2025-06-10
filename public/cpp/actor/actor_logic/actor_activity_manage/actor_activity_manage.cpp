@@ -45,6 +45,8 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
 		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init(this, {});
 		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
+
+		m_drop.init(this, {});
 	}
 
 	void actor_activity_manage::erase_actor_before()
@@ -53,6 +55,8 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
 		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
+
+		m_drop.exit();
 	}
 
 	void actor_activity_manage::loaddb_finish(bool adbishave)

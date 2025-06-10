@@ -1,6 +1,5 @@
 #pragma once
 #include "ttab_activity_drawcompliance.h"
-#include "actor_drop.h"
 #include "activity.h"
 
 namespace ngl
@@ -64,7 +63,7 @@ namespace ngl
 							"activity_drawcompliance role=[{}] mail=[{}] drop=[{}]", 
 							aroleid, _data.m_mailid, _data.m_dropid
 						);
-						if (actor_drop::use(_data.m_dropid, 1, aroleid, lsrc, nullptr, _data.m_mailid))
+						if (actor_activity_manage::get_drop().use(_data.m_dropid, 1, aroleid, lsrc, nullptr, _data.m_mailid))
 						{
 							// 记录已领取
 							itor->second.mutable_m_reward()->insert({ _id, true });

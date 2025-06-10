@@ -23,7 +23,6 @@
 #include "actor_robot.h"
 #include "xmlprotocol.h"
 #include "manage_curl.h"
-#include "actor_drop.h"
 #include "time_wheel.h"
 #include "actor_mail.h"
 #include "actor_chat.h"

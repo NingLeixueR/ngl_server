@@ -1,6 +1,5 @@
 #pragma once
 #include "ttab_activity_toprank.h"
-#include "actor_drop.h"
 #include "activity.h"
 #include "actor.h"
 

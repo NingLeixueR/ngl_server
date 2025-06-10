@@ -44,6 +44,7 @@ namespace ngl
 		actor_activity_manage();
 
 		std::map<i64_actorid, std::shared_ptr<activity>> m_activitys;
+		drop<actor_activity_manage> m_drop;
 	public:
 		activitydb m_activitydb;
 		activitytimedb m_activitytimedb;
@@ -78,6 +79,10 @@ namespace ngl
 
 		void post_timer(i64_actorid aactivityid, etimerparm_activity atype, int32_t abeg, int32_t aduration);
 
+		static drop<actor_activity_manage>& get_drop()
+		{
+			return getInstance().m_drop;
+		}
 
 		bool timer_handle(const message<np_timerparm>& adata);
 		bool handle(const message<np_arg_null>&);

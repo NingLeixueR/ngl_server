@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-06 20:51:15
+// 创建时间 // 创建时间 25-06-10 10:19:31
 #pragma once
 
 #include "nactortype.h"
@@ -50,7 +50,6 @@ namespace ngl
 #include "actor_keyvalue.h"
 #include "actor_family.h"
 #include "actor_friends.h"
-#include "actor_drop.h"
 #include "actor_example_match.h"
 #include "actor_example_manage.h"
 namespace ngl
@@ -85,7 +84,6 @@ namespace ngl
 			, dautoactor(actor_keyvalue, ACTOR_KEYVALUE)
 			, dautoactor(actor_family, ACTOR_FAMILY)
 			, dautoactor(actor_friends, ACTOR_FRIENDS)
-			, dautoactor(actor_drop, ACTOR_DROP)
 			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
 			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
 		);

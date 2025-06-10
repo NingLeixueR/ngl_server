@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-06 20:50:59
+// 创建时间 // 创建时间 25-06-10 10:19:27
 #pragma once
 
 #include "csv.h"
@@ -869,15 +869,16 @@ struct tab_recharge
 	int32_t                          m_vipexp                        ; // [index:8][load:y] 充值该档位赠送的vip经验
 	int32_t                          m_count                         ; // [index:9][load:y] 是否限制充值次数
 	std::vector<int32_t>             m_activityid                    ; // [index:10][load:y] 必须指定活动开启时才能充值这一档
+	int32_t                          m_mailid                        ; // [index:11][load:y] 邮件id
 	/*********************************/
 	tab_recharge();
 	// 序列化反序列化相关
-	def_portocol(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid)
+	def_portocol(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
 		std::string lm_remarks;
-		def_rcsv2(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid);
+		def_rcsv2(m_id,m_name,lm_remarks,m_price,m_gold,m_bonus,m_firstbonus,m_dropid,m_vipexp,m_count,m_activityid,m_mailid);
 	}
 };
 struct tab_familylv
