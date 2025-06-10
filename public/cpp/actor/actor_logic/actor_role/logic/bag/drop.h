@@ -15,7 +15,7 @@ namespace ngl
 	{
 		friend class actor_drop;
 		TACTOR* m_actor = nullptr;
-	private:
+	public:
 		void init(TACTOR* aactor, const std::set<i64_actorid>& adataid)
 		{
 			m_actor = aactor;
@@ -197,11 +197,10 @@ namespace ngl
 				auto pro = std::make_shared<np_actor_addmail>();
 				pro->m_roleid = aroleid;
 				pro->m_tid = amailid;
-				if (drop::droplist(aid, acount, pro->m_items))
-				{
-					actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
-					return true;
-				}
+				pro->m_dropid = aid;
+				pro->m_dropcount = acount;
+				actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
+				return true;
 			}
 
 			return false;

@@ -41,7 +41,7 @@ namespace ngl
 				"activity_rank activityid=[{}] role=[{}] mail=[{}] drop=[{}]",
 				activityid(), nguid(aresponse.m_rolerank[i]), lmailid, lreward
 			);
-			if (!actor_drop::use(lreward, 1, aresponse.m_rolerank[i], lsrc, nullptr, lmailid))
+			if (!actor_activity_manage::get_drop().use(lreward, 1, aresponse.m_rolerank[i], lsrc, nullptr, lmailid))
 			{
 				log_error()->print("activity_rank fail [{}]", lsrc);
 			}

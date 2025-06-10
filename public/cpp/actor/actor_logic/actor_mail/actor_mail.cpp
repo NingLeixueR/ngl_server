@@ -1,5 +1,4 @@
 #include "actor_mail.h"
-#include "actor_drop.h"
 
 namespace ngl
 {
@@ -43,6 +42,13 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		m_drop.init(this, {});
+	}
+
+	void actor_mail::erase_actor_before()
+	{
+		m_drop.exit();
 	}
 	
 	void actor_mail::loaddb_finish(bool adbishave)
@@ -71,21 +77,10 @@ namespace ngl
 
 	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)
 	{
-		std::map<int32_t, int32_t> lmap;
-		if (actor_drop::droplist(adropid, 1, lmap) == false)
-		{
-			ngl::log_error()->print("role:{} mailid:{} drop:{} parm:{} fail!!!", nguid(aactorid), amailid, adropid, aparm);
-			return false;
-		}
-		return sendmail(aactorid, amailid, lmap, aparm);
-	}
-
-	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, const std::map<int32_t, int32_t>& aitems, const std::string& aparm)
-	{
 		auto pro = std::make_shared<np_actor_addmail>();
 		pro->m_roleid = aactorid;
 		pro->m_tid = amailid;
-		pro->m_items = aitems;
+		pro->m_dropid = adropid;
 		pro->m_parm = aparm;
 		actor::static_send_actor(actorid(nguid::area(aactorid)), nguid::make(), pro);
 		return true;

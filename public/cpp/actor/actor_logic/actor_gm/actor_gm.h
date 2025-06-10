@@ -18,7 +18,8 @@
 
 namespace ngl
 {
-	class actor_gm : public actor
+	class actor_gm : 
+		public actor
 	{
 		actor_gm(const actor_gm&) = delete;
 		actor_gm& operator=(const actor_gm&) = delete;

@@ -1,7 +1,6 @@
 #include "ttab_specialid.h"
 #include "actor_events.h"
 #include "manage_curl.h"
-#include "actor_drop.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "actor_role.h"
@@ -457,7 +456,7 @@ namespace ngl
 
 		std::map<int, int> ldrop;
 		std::string lsrc = std::format("task receive award");		
-		if (actor_drop::use(tab->m_dropid, 1, id_guid(), lsrc, &ldrop) == false)
+		if (!get_drop().use(tab->m_dropid, 1, id_guid(), lsrc, &ldrop))
 		{
 			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->m_taskid(), tab->m_dropid);
 			return true;

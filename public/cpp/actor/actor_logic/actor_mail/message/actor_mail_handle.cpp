@@ -144,7 +144,15 @@ namespace ngl
 	bool actor_mail::handle(const message<np_actor_addmail>& adata)
 	{
 		auto lparm = adata.get_data();
-		m_mails.addmail(lparm->m_roleid, lparm->m_tid, lparm->m_items, lparm->m_parm);
+
+		std::map<int32_t, int32_t> litems;
+		if (getInstance().get_drop().droplist(lparm->m_dropid, 1, litems) == false)
+		{
+			ngl::log_error()->print("role:{} mailid:{} drop:{} parm:{} fail!!!", nguid(lparm->m_roleid), lparm->m_tid, lparm->m_dropid, lparm->m_parm);
+			return false;
+		}
+
+		m_mails.addmail(lparm->m_roleid, lparm->m_tid, litems, lparm->m_parm);
 		return true;
 	}
 }//namespace ngl

@@ -3,6 +3,7 @@
 #include "actor_create.h"
 #include "actor_manage.h"
 #include "events_logic.h"
+#include "manage_curl.h"
 #include "db_manage.h"
 #include "ndbclient.h"
 #include "nprotocol.h"
@@ -14,6 +15,7 @@
 #include "db_data.h"
 #include "ntimer.h"
 #include "rolekv.h"
+#include "drop.h"
 #include "task.h"
 #include "cmd.h"
 #include "bag.h"
@@ -54,6 +56,7 @@ namespace ngl
 		attribute	 m_attribute;
 		i32_serverid m_gatewayid;
 		std::pair<pbexample::EPLAY_TYPE, i64_actorid> m_example;
+		drop<actor_role> m_drop;
 	public:
 		actor_role(const actor_role&) = delete;
 		actor_role& operator=(const actor_role&) = delete;
@@ -82,6 +85,11 @@ namespace ngl
 		virtual void erase_actor_before();
 
 		i64_actorid roleid();
+
+		drop<actor_role>& get_drop()
+		{
+			return m_drop;
+		}
 
 		//# 设置更新角色属性
 		void update_attribute(EnumModule amodule, attribute_value& avalue);
@@ -205,6 +213,8 @@ namespace ngl
 
 		//# 登录请求未发货充值
 		void loginpay();
+
+		void requestgm(const char* aurl, const std::string& aparm, const std::function<void(int32_t, http_parm&)>& acall);
 
 		//# 请求创建订单
 		void createorder(std::string& aorder, int32_t arechargeid);

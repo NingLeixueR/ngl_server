@@ -17,6 +17,7 @@
 #include "type.h"
 #include "drop.h"
 #include "nlog.h"
+#include "drop.h"
 #include "net.h"
 #include "db.h"
 
@@ -32,6 +33,7 @@ namespace ngl
 		friend class family;
 		familyer m_familyer;
 		family m_family;
+		drop<actor_family> m_drop;
 
 		actor_family();
 	public:
@@ -54,6 +56,11 @@ namespace ngl
 		virtual void loaddb_finish(bool adbishave);
 
 		static void nregister();
+
+		drop<actor_family>& get_drop()
+		{
+			return m_drop;
+		}
 		
 		// # GM²Ù×÷
 		using handle_cmd = cmd<actor_mail, std::string, int, const ngl::json_read&>;

@@ -1,8 +1,8 @@
 ﻿#include "ttab_specialid.h"
+#include "ttab_recharge.h"
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
-#include "actor_drop.h"
 #include "nsp_client.h"
 #include "actor_role.h"
 #include "json_write.h"
@@ -75,6 +75,8 @@ namespace ngl
 					login_finish();
 				}
 			});
+
+		m_drop.init(this, {});
 	}
 
 	void actor_role::erase_actor_before()
@@ -85,6 +87,8 @@ namespace ngl
 
 		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
+
+		m_drop.exit();
 	}
 
 	void actor_role::reset_logintime()
@@ -157,17 +161,24 @@ namespace ngl
 		return m_gatewayid;
 	}
 
-	void actor_role::loginpay()
+
+	void actor_role::requestgm(const char* aurl, const std::string& aparm, const std::function<void(int, http_parm&)>& acall)
 	{
-		// ### 检查是否有充值未发货
 		auto lhttp = ngl::manage_curl::make_http();
 		ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
 		ngl::manage_curl::set_type(lhttp, ngl::ENUM_TYPE_GET);
-		ngl::manage_curl::set_url(lhttp, "http://127.0.0.1:800/pay/pay_login.php");
+		ngl::manage_curl::set_url(lhttp, aurl);
 
-		ngl::manage_curl::set_param(lhttp, std::format("roleid={}", id_guid()).c_str());
+		ngl::manage_curl::set_param(lhttp, aparm);
 
-		ngl::manage_curl::set_callback(lhttp, [this](int, http_parm& ahttp)
+		ngl::manage_curl::set_callback(lhttp, acall);
+		ngl::manage_curl::send(lhttp);
+	}
+
+	void actor_role::loginpay()
+	{
+		// ### 检查是否有充值未发货
+		requestgm("http://127.0.0.1:800/pay/pay_login.php", std::format("roleid={}", id_guid()), [this](int, http_parm& ahttp)
 			{
 				if (ahttp.m_recvdata.empty())
 				{
@@ -191,25 +202,67 @@ namespace ngl
 					if (ltempjson.read("rechargeid", lrechargeid) == false)
 					{
 						return;
-					}						
+					}
 					int64_t lroleid = -1;
 					if (ltempjson.read("roleid", lroleid) == false)
 					{
 						return;
 					}
-					
-					auto pro = std::make_shared<mforward<np_gm_response>>();
-					np_gm_response* lp = pro->add_data();
-					prorechange prore;
-					ngl::json_write lwrite;
-					lwrite.write("operator", "rechange");
-					lwrite.write("data", prore);
-					lwrite.get(lp->m_json);
-					actor::static_send_actor(lroleid, nguid::make(), pro);
+
+					auto lpayhttp = ngl::manage_curl::make_http();
+
+					std::string lquestparm;
+					ngl::manage_curl::param(lquestparm, "orderid", lorderid.c_str());
+					ngl::manage_curl::param(lquestparm, "rechargeid", lrechargeid);
+					ngl::manage_curl::param(lquestparm, "roleid", lroleid);
+					requestgm("http://127.0.0.1:800/pay/pay_login_stat.php", lquestparm, [this](int32_t, http_parm& ahttp)
+						{
+							log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
+
+							try
+							{
+								json_read ltempjson(ahttp.m_recvdata.c_str());
+								if (ltempjson.check() == false)
+								{
+									log_error()->print("actor_role::loginpay curl callback fail");
+									return;
+								}
+								int32_t lstat = -1;
+								if (ltempjson.read("orderid", lstat) == false)
+								{
+									return;
+								}
+								if (lstat != 0)
+								{
+									return;
+								}
+								int32_t lrechargeid = -1;
+								if (ltempjson.read("rechargeid", lrechargeid) == false)
+								{
+									return;
+								}
+								std::string lorderid;
+								if (ltempjson.read("orderid", lorderid) == false)
+								{
+									return;
+								}
+
+								const tab_recharge* ltab = ttab_recharge::tab(lrechargeid);
+								if (ltab == nullptr)
+								{
+									return;
+								}
+
+								rechange(lorderid, lrechargeid, false, true);
+							}
+							catch (...)
+							{
+							}
+						});
 				}
-				catch (...){}				
+				catch (...) {}
 			});
-		ngl::manage_curl::send(lhttp);
+		
 	}
 
 	void actor_role::handle_after()
@@ -266,7 +319,7 @@ namespace ngl
 		if (tab != nullptr)
 		{
 			std::string lsrc = std::format("recharge orderid={} rechargeid={}", aorderid, arechargeid);
-			if(actor_drop::use(tab->m_dropid, 1, id_guid(), lsrc, &litems))
+			if(get_drop().use(tab->m_dropid, 1, id_guid(), lsrc, &litems))
 			{
 				lgold += tab->m_gold;
 				lgold += tab->m_bonus;
