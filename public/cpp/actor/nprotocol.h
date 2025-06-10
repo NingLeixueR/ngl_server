@@ -278,10 +278,11 @@ namespace ngl
 	{
 		i64_actorid					m_roleid = -1;
 		int32_t						m_tid = -1;
-		std::map<int32_t, int32_t>	m_items;
 		std::string					m_parm;
+		int32_t						m_dropid = -1;
+		int32_t						m_dropcount = -1;
 
-		def_portocol(np_actor_addmail, m_roleid, m_tid, m_items, m_parm)
+		def_portocol(np_actor_addmail, m_roleid, m_tid, m_parm, m_dropid, m_dropcount)
 	};
 
 	struct ncalendar_info
