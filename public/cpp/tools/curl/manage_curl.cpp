@@ -219,9 +219,14 @@ namespace ngl
 		ahttp->headers(aheaders); 
 	}
 
-	void manage_curl::set_callback(std::shared_ptr<http_parm>& ahttp, std::function<void(int, http_parm&)> aback)
+	void manage_curl::set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback)
 	{ 
 		ahttp->m_impl_http()->m_callback = aback; 
+	}
+
+	void manage_curl::param(std::string& astrparam, const char* akey, const std::string& aval)
+	{
+		param(astrparam, akey, aval.c_str());
 	}
 
 	void manage_curl::param(std::string& astrparam, const char* akey, const char* aval)
