@@ -79,9 +79,10 @@ namespace ngl
 		static void set_headers(std::shared_ptr<http_parm>& ahttp, std::vector<std::string>& aheaders);
 
 		// # 设置回调
-		static void set_callback(std::shared_ptr<http_parm>& ahttp, std::function<void(int, http_parm&)> aback);
+		static void set_callback(std::shared_ptr<http_parm>& ahttp, const std::function<void(int, http_parm&)>& aback);
 
 		// # 辅助设置http访问参数
+		static void param(std::string& astrparam, const char* akey, const std::string& aval);
 		static void param(std::string& astrparam, const char* akey, const char* aval);
 		static void param(std::string& astrparam, const char* akey, int aval);
 		
