@@ -81,9 +81,26 @@ namespace ngl
 				std::set<i64_actorid> lset;
 				// ·¢ËÍ¸ø m_writeall
 				lset.insert(m_writealls.begin(), m_writealls.end());
-				for (const auto& item : m_publishlist)
+				
+				if (lonlyread || ldataid.empty())
 				{
-					lset.insert(item.first);
+					for (const auto& item : m_publishlist)
+					{
+						lset.insert(item.first);
+					}
+				}
+				else
+				{
+					for (const auto& item : m_publishlist)
+					{
+						if (std::ranges::find_if(item.second, [&ldataid](i64_actorid dataid)
+							{
+								return ldataid.contains(dataid);
+							}) != item.second.end())
+						{
+							lset.insert(item.first);
+						}
+					}
 				}
 				lset.erase(lactorid);
 				actor::static_send_actor(lset, nguid::make(), pro);
