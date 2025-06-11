@@ -44,7 +44,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		tdb_brief::nsp_cli<actor_ranklist>::getInstance(id_guid(), true).init(this, {});
+		tdb_brief::nsp_cli<actor_ranklist>::getInstance(id_guid(), true).init_writeall(this);
 	}
 
 	void actor_ranklist::erase_actor_before()

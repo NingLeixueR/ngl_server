@@ -1370,4 +1370,12 @@ namespace ngl
 		ajson = cJSON_Print(ljson);
 		return ajson;
 	}
+
+	void tools::core_dump(bool acreate/* = true*/)
+	{
+		if (acreate)
+		{
+			*(int32_t*)(nullptr) = 19890519;
+		}
+	}
 }// namespace ngl

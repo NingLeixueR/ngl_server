@@ -44,7 +44,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid(), true).init(this, {});
+		tdb_brief::nsp_cli<actor_friends>::getInstance(id_guid(), true).init_onlyread(this);
 	}
 
 	void actor_friends::erase_actor_before()

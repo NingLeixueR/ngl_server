@@ -45,8 +45,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-
-		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid(), true).init(this, { pbdb::db_keyvalue_ekv_account_ban });
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid(), true).init_parts(this, { pbdb::db_keyvalue_ekv_account_ban });
 		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).set_changedata_fun(
 			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
 			{
@@ -59,6 +58,11 @@ namespace ngl
 					tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
 				}
 			});
+	}
+
+	void actor_role_manage::erase_actor_before()
+	{
+		tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).exit();
 	}
 
 	void actor_role_manage::loaddb_finish(bool adbishave)
