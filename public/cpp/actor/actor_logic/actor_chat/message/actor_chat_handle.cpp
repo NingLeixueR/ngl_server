@@ -28,7 +28,7 @@ namespace ngl
 			//}
 			llastspeakutc = (int)localtime::gettime();
 
-			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_chat>::getInstance(id_guid()).get(adata.get_data()->identifier());
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_chat>::getInstance(id_guid()).getconst(adata.get_data()->identifier());
 			if (lpbrief == nullptr)
 			{
 				return true;

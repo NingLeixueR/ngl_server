@@ -400,34 +400,42 @@ namespace ngl
 
 		def_portocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
-
+		
 	template <typename TDATA>
 	struct np_channel_register
 	{
-		i64_actorid				m_actorid;
-		std::set<i64_actorid>	m_dataid;
-		def_portocol(np_channel_register, m_actorid, m_dataid)
+		i64_actorid	m_actorid		= nguid::make();			// 子节点id
+		bool m_onlyread				= true;						// 是否只读
+		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
+
+		def_portocol(np_channel_register, m_actorid, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
 	struct np_channel_register_reply
 	{
-		i64_actorid m_actorid;
-		std::map<i64_actorid, std::set<i64_actorid>> m_publishlist;// 其他副本结点(nsp_client)
-		def_portocol(np_channel_register_reply, m_actorid, m_publishlist)
+		i64_actorid m_actorid;												// 子节点id
+		std::set<i64_actorid> m_onlyreads;									// 只读全部数据
+		std::set<i64_actorid> m_writealls;									// 读/写全部数据
+		// m_publishlist_write.first:<结点id>
+		// m_publishlist_write.second:<读写的数据id列表>
+		std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist;
+
+		def_portocol(np_channel_register_reply, m_actorid, m_onlyreads, m_writealls, m_publishlist)
 	};
 
 	template <typename TDATA>
 	struct np_channel_dataid_sync
 	{
-		i64_actorid m_actorid = 0;
-		// delete
-		i64_actorid m_deleteactorid = 0;
+		i64_actorid m_actorid = 0;								// 异变的子节点id
+		bool m_add = true;										// 增加还是删除
 		// add
-		i64_actorid m_addactorid = 0;
-		std::set<i64_actorid> m_adddataids;
+		// [
+		bool m_onlyread = true;									// 是否只读
+		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
+		// ]
 
-		def_portocol(np_channel_dataid_sync, m_actorid, m_deleteactorid, m_addactorid, m_adddataids)
+		def_portocol(np_channel_dataid_sync, m_actorid, m_add, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>

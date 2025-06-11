@@ -17,14 +17,25 @@ namespace ngl
 		actor*											m_actor = nullptr;
 		std::map<i16_area, i64_actorid>					m_nspserver;
 		std::map<i16_area, bool>						m_register;
-		std::set<i64_actorid>							m_dataid;
 		std::function<void(int64_t, const T&, bool)>	m_changedatafun;
 		bool											m_activate = false;
 		std::map<i64_actorid, T>						m_data;
-		std::map<i64_actorid, std::set<i64_actorid>>	m_publishlist;
 		static std::mutex															m_mutex;
 		static std::map<int64_t, std::shared_ptr<nsp_client<TDerived, TACTOR, T>>>	m_map;
 
+		bool											m_onlyread = true;		// 只读
+		std::set<i64_actorid>							m_dataid;				// 关注哪些数据,结点可读可写
+
+		// [[ m_onlyread == false 才有意义
+			std::set<i64_actorid> m_onlyreads;									// 只读全部数据
+			std::set<i64_actorid> m_writealls;									// 读/写全部数据
+			// m_publishlist1.first:<结点id>
+			// m_publishlist1.second:<读写的数据id列表>
+			std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist1;
+			// m_publishlist2.first:<数据id>
+			// m_publishlist2.second:读写的结点列表
+			std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist2;							//<数据>被<哪些结点>关注
+		// ]]
 	public:
 		nsp_client() = default;
 
@@ -51,9 +62,9 @@ namespace ngl
 			bool lfirstsynchronize = recv.m_firstsynchronize;
 			std::ranges::for_each(lmap, [this,lfirstsynchronize](const auto& apair)
 				{
-					if (!m_dataid.empty() && !m_dataid.contains(apair.first))
+					if (!m_dataid.empty())
 					{
-						return;
+						tools::core_dump(!m_dataid.contains(apair.first));
 					}
 					m_data[apair.first] = apair.second;
 					if (m_changedatafun != nullptr)
@@ -63,24 +74,88 @@ namespace ngl
 				});
 		}
 
+		// 打印信息
+		void print_info()
+		{
+			// 打印
+			std::vector<nguid> lreads;
+			std::ranges::for_each(m_onlyreads, [&lreads](i64_actorid anodeid)
+				{
+					lreads.push_back(anodeid);
+				});
+			std::vector<nguid> lwrites;
+			std::ranges::for_each(m_writealls, [&lwrites](i64_actorid anodeid)
+				{
+					lwrites.push_back(anodeid);
+				});
+			std::map<nguid, std::set<int64_t>> lparts;
+			for (const auto& item : m_publishlist1)
+			{
+				i64_actorid lnodeid = item.first;
+				for (i64_actorid dataid : item.second)
+				{
+					lparts[lnodeid].insert(dataid);
+				}
+			}
+
+			std::string llogstr = std::format("name:{} read:{} write:{} part:{}"
+				, typeid(nsp_client<TDerived, TACTOR, T>).name(), lreads, lwrites, lparts
+			);
+			std::cout << llogstr << std::endl;
+		}
+
 		void channel_register_reply(TDerived*, const message<np_channel_register_reply<T>>& adata)
 		{
 			log("nsp_client np_channel_register_reply");
-			auto& recv = *adata.get_data();
-			m_register[nguid::area(recv.m_actorid)] = true;
-			m_publishlist = recv.m_publishlist;
-			//打印
-			//std::vector<nguid> lvec;
-			//std::ranges::for_each(recv.m_publishlist, [&lvec](const auto& apair)
-			//	{
-			//		lvec.push_back(apair.first);
-			//	});
-			//std::cout << std::format("name:{} size:{} list:{}"
-			//	, typeid(nsp_client<TDerived, TACTOR, T>).name()
-			//	, m_publishlist.size()
-			//	, lvec
-			//) << std::endl;
-			m_publishlist.erase(m_actor->id_guid());
+			const np_channel_register_reply<T>* recv = adata.get_data();
+
+			tools::core_dump(m_actor->id_guid() != recv->m_actorid);
+
+			m_register[nguid::area(recv->m_actorid)] = true;
+
+			// 如果此结点是只读结点那么根本没必要知道其他结点关注什么数据
+			if (!m_onlyread)
+			{
+				m_onlyreads = recv->m_onlyreads;
+				m_onlyreads.erase(m_actor->id_guid());
+
+				m_writealls = recv->m_writealls;
+				m_writealls.erase(m_actor->id_guid());
+
+				if (m_dataid.empty())
+				{
+					m_publishlist1 = recv->m_publishlist;
+					m_publishlist1.erase(m_actor->id_guid());
+					for (const auto& item : m_publishlist1)
+					{
+						i64_actorid lnodeid = item.first;
+						for (i64_actorid dataid : item.second)
+						{
+							m_publishlist2[dataid].insert(lnodeid);
+						}
+					}
+				}
+				else
+				{
+					for (const auto& item : recv->m_publishlist)
+					{
+						i64_actorid lnodeid = item.first;
+						if (lnodeid == item.first)
+						{
+							continue;
+						}
+						for (i64_actorid dataid : item.second)
+						{
+							if (m_dataid.contains(dataid))
+							{
+								m_publishlist1[lnodeid].insert(dataid);
+								m_publishlist2[dataid].insert(lnodeid);
+							}							
+						}
+					}
+				}
+				print_info();
+			}
 		}
 
 		void channel_check(TDerived*, const message<np_channel_check<T>>& adata)
@@ -96,19 +171,70 @@ namespace ngl
 
 		void channel_dataid_sync(TDerived*, const message<np_channel_dataid_sync<T>>& adata)
 		{
+			if (m_onlyread)
+			{// 只读全部数据 不关注其他结点
+				return;
+			}
 			const np_channel_dataid_sync<T>* lpdata = adata.get_data();
 			if (lpdata == nullptr)
 			{
 				return;
 			}
-			if (lpdata->m_deleteactorid != 0)
+			if (lpdata->m_onlyread == m_actor->id_guid())
 			{
-				m_publishlist.erase(lpdata->m_deleteactorid);
+				return;
 			}
-			if (lpdata->m_addactorid != 0)
+			if (lpdata->m_add)
 			{
-				m_publishlist[lpdata->m_addactorid] = lpdata->m_adddataids;
+				if (lpdata->m_onlyread)
+				{
+					m_onlyreads.insert(lpdata->m_actorid);
+				}
+				else
+				{
+					if (lpdata->m_dataid.empty())
+					{
+						m_writealls.insert(lpdata->m_actorid);
+					}
+					else
+					{
+						if (m_dataid.empty())
+						{
+							m_publishlist1[lpdata->m_actorid].insert(lpdata->m_dataid.begin(), lpdata->m_dataid.end());
+							for (i64_actorid dataid : lpdata->m_dataid)
+							{
+								m_publishlist2[dataid].insert(lpdata->m_actorid);
+							}
+						}
+						else
+						{
+							for (i64_actorid dataid : lpdata->m_dataid)
+							{
+								if (m_dataid.contains(dataid))
+								{
+									m_publishlist1[lpdata->m_actorid].insert(dataid);
+								}
+							}
+							for (i64_actorid dataid : m_publishlist1[lpdata->m_actorid])
+							{
+								m_publishlist2[dataid].insert(lpdata->m_actorid);
+							}
+						}
+					}
+				}
 			}
+			else
+			{
+				m_onlyreads.erase(lpdata->m_actorid);
+				m_writealls.erase(lpdata->m_actorid);
+				for (i64_actorid dataid : m_publishlist1[lpdata->m_actorid])
+				{
+					m_publishlist2[dataid].erase(lpdata->m_actorid);
+				}
+				m_publishlist1.erase(lpdata->m_actorid);
+			}
+
+			print_info();
 		}
 
 	public:
@@ -132,8 +258,35 @@ namespace ngl
 			m_map.erase(adataid);
 		}
 
+		// 只读
+		void init_onlyread(TDerived* aactor)
+		{
+			init(aactor, true, {});
+		}
+
+		void init_writeall(TDerived* aactor)
+		{
+			init(aactor, false, {});
+		}
+
+		void init_parts(TDerived* aactor, const std::set<i64_actorid>& adataid)
+		{
+			init(aactor, false, adataid);
+		}
+
+	private:
 		void init(TDerived* aactor, const std::set<i64_actorid>& adataid)
 		{
+			init(aactor, false, adataid);
+		}
+
+		void init(TDerived* aactor, bool aonlyread, const std::set<i64_actorid>& adataid)
+		{
+			m_onlyread = aonlyread;
+			if (!m_onlyread)
+			{
+				m_dataid = adataid;
+			}
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
 			Assert(lsetarea->empty() == false);
 			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
@@ -222,6 +375,7 @@ namespace ngl
 				});			
 		}
 
+	public:
 		const T* getconst(i64_actorid aactorid)const
 		{
 			const T* lp = tools::findmap(m_data, aactorid);
@@ -230,6 +384,7 @@ namespace ngl
 
 		T* get(i64_actorid aactorid)
 		{
+			tools::core_dump(m_onlyread);
 			T* lp = tools::findmap(m_data, aactorid);
 			return lp;
 		}
@@ -249,6 +404,7 @@ namespace ngl
 
 		void foreach_change(const std::function<bool(T&)>& afun)
 		{
+			tools::core_dump(m_onlyread);
 			std::map<i16_area, std::shared_ptr<np_channel_data<T>>> lmap;
 			for (auto itor = m_data.begin();itor != m_data.end();++itor)
 			{
@@ -269,31 +425,50 @@ namespace ngl
 			}
 		}
 
-		T* add(i64_actorid aactorid)
+		T* add(i64_actorid adataid)
 		{
-			return &m_data[aactorid];
+			tools::core_dump(m_onlyread);
+			if (!m_dataid.empty())
+			{
+				tools::core_dump(!m_dataid.contains(adataid));
+			}
+			return &m_data[adataid];
 		}
 
-		void change(i64_actorid aactorid)
+		bool change(i64_actorid adataid)
 		{
-			T* lpdata = tools::findmap(m_data, aactorid);
+			tools::core_dump(m_onlyread);
+			if (!m_dataid.empty())
+			{// 不是读写全部数据
+				tools::core_dump(!m_dataid.contains(adataid));
+			}
+
+			T* lpdata = tools::findmap(m_data, adataid);
 			if (lpdata == nullptr)
 			{
-				return;
+				return false;
 			}
 
 			auto pro = std::make_shared<np_channel_data<T>>();
 			pro->m_data.make();
-			(*pro->m_data.m_data)[aactorid] = *lpdata;
-			actor::static_send_actor(m_nspserver[nguid::area(aactorid)], nguid::make(), pro);
+			(*pro->m_data.m_data)[adataid] = *lpdata;
 
-			for (const auto& item : m_publishlist)
+			// # 发送给nsp server
+			actor::static_send_actor(m_nspserver[nguid::area(adataid)], nguid::make(), pro);
+			// # 发送给其他nsp client结点
+			std::set<i64_actorid> lnodeids;
+			// # 只读全部的结点
+			lnodeids.insert(m_onlyreads.begin(), m_onlyreads.end());
+			// # 读/写全部的结点
+			lnodeids.insert(m_writealls.begin(), m_writealls.end());
+			// # <数据>被<哪些结点>关注
+			auto itor = m_publishlist2.find(adataid);
+			if (itor != m_publishlist2.end())
 			{
-				if (item.second.empty() || item.second.contains(aactorid))
-				{
-					actor::static_send_actor(item.first, nguid::make(), pro);
-				}
-			}			
+				lnodeids.insert(itor->second.begin(), itor->second.end());
+			}
+			actor::static_send_actor(lnodeids, m_actor->id_guid(), pro);
+			return true;
 		}
 
 		// # 如果数据发生变化
@@ -325,6 +500,7 @@ namespace ngl
 			log("nsp_client register");
 			auto pro = std::make_shared<np_channel_register<T>>();
 			pro->m_actorid = m_actor->id_guid();
+			pro->m_onlyread = m_onlyread;
 			pro->m_dataid = m_dataid;
 			log_error()->print("nsp_client register: {} -> {}", nguid(pro->m_actorid), nguid(m_nspserver[aarea]));
 			actor::static_send_actor(m_nspserver[aarea], nguid::make(), pro);

@@ -41,7 +41,7 @@ namespace ngl
 		}
 		set_timer(tparm);
 
-		tdb_brief::nsp_cli<actor_example_match>::getInstance(id_guid(), true).init(this, {});
+		tdb_brief::nsp_cli<actor_example_match>::getInstance(id_guid(), true).init_onlyread(this);
 	}
 
 	void actor_example_match::erase_actor_before()

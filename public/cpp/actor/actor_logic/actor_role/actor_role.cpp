@@ -27,8 +27,8 @@ namespace ngl
 					.m_id		= aroleid,
 					.m_manage_dbclient = true
 				},
-				.m_weight = 10,
-				.m_timeout = 5000,
+				.m_weight = 0x7fffffff,
+				.m_timeout = 10000,
 				.m_broadcast = true,
 			})
 		, m_gatewayid(((np_actorswitch_process_role*)(adata))->m_gatewayid)
@@ -66,8 +66,7 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
-
-		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid(), true).init(this, { id_guid() });
+		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid(), true).init_parts(this, { id_guid() });
 		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)

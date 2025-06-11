@@ -44,7 +44,7 @@ namespace ngl
 		set_timer(tparm);
 		*/
 
-		tdb_brief::nsp_cli<actor_family>::getInstance(id_guid(), true).init(this, {});
+		tdb_brief::nsp_cli<actor_family>::getInstance(id_guid(), true).init_onlyread(this);
 		m_drop.init(this, {});
 
 	}

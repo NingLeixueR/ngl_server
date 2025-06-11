@@ -18,118 +18,14 @@ namespace ngl
 		nsp_server(const nsp_server&) = delete;
 		nsp_server& operator=(const nsp_server&) = delete;
 
-		// # 发布列表	key/value(需要同步给谁/同步哪些数据:nguid::make()为全部)
-		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist; 
+
+		static std::set<i64_actorid>							m_onlyreads;								// 只读全部数据
+		static std::set<i64_actorid>							m_writealls;								// 读/写全部数据
+		// m_publishlist_write.first:<结点id>
+		// m_publishlist_write.second:<读写的数据id列表>
+		static std::map<i64_actorid, std::set<i64_actorid>>		m_publishlist;
+
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
-
-		static void publish_foreach(
-			const std::set<i64_actorid>& aactoridset, 
-			std::shared_ptr<np_channel_data<TDATA>>& apro, 
-			const std::pair<const i64_actorid, std::set<i64_actorid>>& apair
-		)
-		{
-			if (!apair.second.empty())
-			{
-				auto itor = std::ranges::find_if(aactoridset, [&apair](i64_actorid aactorid)->bool
-					{
-						return apair.second.contains(aactorid);
-					});
-				if (itor == aactoridset.end())
-				{
-					return;
-				}
-			}
-			actor::static_send_actor(apair.first, nguid::make(), apro);
-		}
-
-		static void publish(const std::set<i64_actorid>& aactoridset, bool afirstsynchronize, std::shared_ptr<np_channel_data<TDATA>>& apro)
-		{
-			apro->m_firstsynchronize = afirstsynchronize;
-			auto lforeachfun = std::bind_front(&tnsp_server::publish_foreach, std::ref(aactoridset), std::ref(apro));
-			std::ranges::for_each(m_publishlist, lforeachfun);
-		}
-
-		static void publish(i64_actorid aactorid, bool afirstsynchronize, std::shared_ptr<np_channel_data<TDATA>>& apro)
-		{
-			apro->m_firstsynchronize = afirstsynchronize;
-			std::set<i64_actorid> lactoridset = { aactorid };
-			auto lforeachfun = std::bind_front(&tnsp_server::publish_foreach, std::ref(lactoridset), std::ref(apro));
-			std::ranges::for_each(m_publishlist, lforeachfun);
-		}
-
-		static void addremove_channel_dataid_sync(bool aadd, int64_t aacountid)
-		{
-			auto itor = m_publishlist.find(aacountid);
-			if (itor == m_publishlist.end())
-			{
-				return;
-			}
-			auto pro = std::make_shared<np_channel_dataid_sync<TDATA>>();
-			pro->m_actorid = m_dbmodule->actorbase()->id_guid();
-			if (!aadd)
-			{
-				pro->m_deleteactorid = aacountid;
-			}
-			else
-			{
-				pro->m_adddataids = itor->second;
-			}
-
-			std::vector<int64_t> lvec;
-			std::ranges::for_each(m_publishlist, [&pro, aacountid, &lvec, &itor](const auto& apair)
-				{
-					if (apair.first == aacountid)
-					{
-						return;
-					}
-					if (apair.second.empty())
-					{
-						lvec.push_back(apair.first);
-					}
-					else
-					{
-						for (i64_actorid dataid : apair.second)
-						{
-							if (itor->second.contains(dataid))
-							{
-								lvec.push_back(apair.first);
-								break;
-							}
-						}
-					}
-				});
-			actor::static_send_actor(lvec, nguid::make(), pro);
-			if (!aadd)
-			{
-				m_publishlist.erase(aacountid);
-			}
-			else
-			{
-				auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
-				pro->m_actorid = m_dbmodule->actorbase()->id_guid();
-
-				for (i64_actorid lactorid : lvec)
-				{
-					auto& lset = m_publishlist[lactorid];
-					if (itor->second.empty() || lset.empty())
-					{
-						pro->m_publishlist[lactorid] = m_publishlist[lactorid];
-					}
-					else
-					{
-						std::set<int64_t> intersection;
-						std::ranges::set_intersection(itor->second, lset, std::inserter(intersection, intersection.begin()));
-						if (!intersection.empty())
-						{
-							pro->m_publishlist[lactorid].swap(intersection);
-						}
-					}
-				}
-				//pro->m_publishlist = m_publishlist;
-				//log_error()->print("nsp_server.np_channel_register reply {}", nguid(recv.m_actorid));
-				actor::static_send_actor(aacountid, nguid::make(), pro);
-			}
-		}
 
 		static void channel_register(TDerived*, message<np_channel_register<TDATA>>& adata)
 		{
@@ -138,18 +34,99 @@ namespace ngl
 				log_error()->print("nsp_server::channel_register fail m_dbmodule->actorbase() == nullptr");
 				return;
 			}
-			auto& recv = *adata.get_data();
-			bool lisdataidlsync = m_publishlist.contains(recv.m_actorid);
-			if (!m_publishlist.contains(recv.m_actorid))
+			const np_channel_register<TDATA>* recv = adata.get_data();
+
+			i64_actorid lactorid = recv->m_actorid;
+			bool lonlyread = recv->m_onlyread;
+			const std::set<i64_actorid>& ldataid = recv->m_dataid;
+
+			if (m_onlyreads.contains(lactorid))
 			{
-				m_publishlist[recv.m_actorid] = recv.m_dataid;
-				addremove_channel_dataid_sync(true, recv.m_actorid);
-				// # 同步需要的数据
-				sync(recv.m_actorid);
+				return;
+			}
+
+			if (m_writealls.contains(lactorid))
+			{
+				return;
+			}
+
+			if (m_publishlist.contains(lactorid))
+			{
+				return;
+			}
+
+			if (lonlyread)
+			{
+				m_onlyreads.insert(lactorid);
 			}
 			else
 			{
-				log_error()->print("nsp_server::channel_register fail recv.m_actorid=[{}]", nguid(recv.m_actorid));				
+				if (ldataid.empty())
+				{
+					m_writealls.insert(lactorid);
+				}
+				else
+				{
+					m_publishlist[lactorid] = ldataid;
+				}
+			}
+
+			{
+				auto pro = std::make_shared<np_channel_dataid_sync<TDATA>>();
+				pro->m_actorid = lactorid;
+				pro->m_add = true;
+				pro->m_onlyread = lonlyread;
+				pro->m_dataid = ldataid;
+
+				std::set<i64_actorid> lset;
+				// 发送给 m_writeall
+				lset.insert(m_writealls.begin(), m_writealls.end());
+				for (const auto& item : m_publishlist)
+				{
+					lset.insert(item.first);
+				}
+				lset.erase(lactorid);
+				actor::static_send_actor(lset, nguid::make(), pro);
+			}
+			
+
+			{//回复
+				auto pro = std::make_shared<np_channel_register_reply<TDATA>>();
+				pro->m_actorid = lactorid;
+				pro->m_onlyreads = m_onlyreads;
+				pro->m_writealls = m_writealls;
+				pro->m_publishlist = m_publishlist;
+				actor::static_send_actor(lactorid, nguid::make(), pro);
+			}
+
+			{
+				auto pro = std::make_shared<np_channel_data<TDATA>>();
+				pro->m_data.make();
+				//ndb_modular<ENUMDB, TDATA, TDerived>*
+				std::map<nguid, data_modified<TDATA>>& ldata = m_dbmodule->data();
+				if (lonlyread || ldataid.empty())
+				{
+					for (const std::pair<const nguid, data_modified<TDATA>>& itempair : ldata)
+					{
+						pro->m_firstsynchronize = true;
+						std::map<int64_t, TDATA>& lmapdata = *pro->m_data.m_data;
+						i64_actorid ldataid = itempair.first;
+						lmapdata[itempair.first] = itempair.second.getconst();
+					}
+				}
+				else
+				{
+					for (i64_actorid dataid : ldataid)
+					{
+						auto itor = ldata.find(dataid);
+						if (itor != ldata.end())
+						{
+							pro->m_firstsynchronize = true;
+							(*pro->m_data.m_data)[dataid] = itor->second.getconst();
+						}
+					}
+				}
+				actor::static_send_actor(lactorid, nguid::make(), pro);
 			}
 		}
 
@@ -160,27 +137,69 @@ namespace ngl
 				log_error()->print("nsp_server::channel_exit fail m_dbmodule->actorbase() == nullptr");
 				return;
 			}
-			auto& recv = *adata.get_data();
+			const np_channel_exit<TDATA>* recv = adata.get_data();
 
-			log_error()->print("nsp_server.np_channel_exit {}", nguid(recv.m_actorid));
+			log_error()->print("nsp_server.np_channel_exit {}", nguid(recv->m_actorid));
 
-			addremove_channel_dataid_sync(false, recv.m_actorid);
+			auto pro = std::make_shared<np_channel_dataid_sync<TDATA>>();
+			pro->m_actorid = recv->m_actorid;
+			pro->m_add = false;
+
+			// 移除的结点性质
+			// 1、读/写全部数据  => 给全部[m_writealls + 全部part] 发送
+			bool lwriteall = m_writealls.contains(recv->m_actorid);
+			// 2、读全部数据 => 给全部[m_writealls + 全部part] 发送
+			bool lreadeall = m_onlyreads.contains(recv->m_actorid);
+			// 3、读写部分数据 => 给全部[m_writealls + part中相交的] 发送
+			//auto itor = m_publishlist.find(recv->m_actorid);
+
+			m_writealls.erase(recv->m_actorid);
+			m_onlyreads.erase(recv->m_actorid);
+
+			std::set<i64_actorid> lset;
+			lset.insert(m_writealls.begin(), m_writealls.end());
+			if (lwriteall || lreadeall)
+			{
+				for (const auto& item : m_publishlist)
+				{
+					lset.insert(item.first);
+				}
+			}
+			else
+			{
+				auto itor = m_publishlist.find(recv->m_actorid);
+				if (itor != m_publishlist.end())
+				{
+					for (const auto& item : m_publishlist)
+					{
+						if (item.first == recv->m_actorid)
+						{
+							continue;
+						}
+						std::set<i64_actorid> lvvset;
+						std::ranges::set_intersection(itor->second, item.second, std::inserter(lvvset, lvvset.end()));
+						if (!lvvset.empty())
+						{
+							lset.insert(item.first);
+						}
+					}
+				}
+			}
+
+			m_publishlist.erase(recv->m_actorid);
+			actor::static_send_actor(lset, nguid::make(), pro);
 		}
 
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
 		{
 			auto& recv = *adata.get_data();
 			std::map<int64_t, TDATA>& lmap = *recv.m_data.m_data;
-			std::set<i64_actorid> lactorset;
 			for (std::pair<const int64_t, TDATA>& lpair : lmap)
 			{
 				// # m_dbmodule->get:数据不存在就创建
 				data_modified<TDATA>* lp = m_dbmodule->get(lpair.first);
 				lp->get() = lpair.second;
-				lactorset.insert(lpair.first);
 			}
-			//std::shared_ptr<np_channel_data<TDATA>> pro = adata.get_shared_data();
-			//publish(lactorset, false, pro);
 		}
 
 	public:
@@ -247,44 +266,16 @@ namespace ngl
 					sync(apair.first);
 				});
 		}
-
-		// # 数据变更
-		// # 1、主动调用void publish(i64_actorid aactorid)
-		// # 2、通过np_channel_data<TDATA>协议修改数据后会自动调用publish分发
-		// # 此函数是主动调用需要的
-		static void publish(i64_actorid aactorid)
-		{
-			data_modified<TDATA>* lp = m_dbmodule->find(aactorid);
-			if (lp == nullptr)
-			{
-				return;
-			}
-			auto pro = std::make_shared<np_channel_data<TDATA>>();
-			pro->m_data.make();
-			(*pro->m_data.m_data)[aactorid] = lp->getconst();
-			publish(aactorid, false, pro);
-		}
-
-		static void publish(const std::set<i64_actorid>& aactoridset)
-		{
-			auto pro = std::make_shared<np_channel_data<TDATA>>();
-			pro->m_data.make();
-			std::map<int64_t, TDATA>& lmap = *pro->m_data.m_data;
-			for (i64_actorid iactorid : aactoridset)
-			{
-				data_modified<TDATA>* lp = m_dbmodule->find(iactorid);
-				if (lp == nullptr)
-				{
-					continue;
-				}
-				lmap[iactorid] = lp->getconst();
-			}
-			publish(aactoridset, false, pro);
-		}
 	};
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
 	std::map<i64_actorid, std::set<i64_actorid>> nsp_server<ENUMDB, TDerived, TDATA>::m_publishlist;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
+	std::set<i64_actorid> nsp_server<ENUMDB, TDerived, TDATA>::m_onlyreads;
+
+	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
+	std::set<i64_actorid> nsp_server<ENUMDB, TDerived, TDATA>::m_writealls;
 
 	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
 	ndb_modular<ENUMDB, TDATA, TDerived>* nsp_server<ENUMDB, TDerived, TDATA>::m_dbmodule;

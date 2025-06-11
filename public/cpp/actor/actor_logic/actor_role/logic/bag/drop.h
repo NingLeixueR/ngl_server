@@ -19,7 +19,7 @@ namespace ngl
 		void init(TACTOR* aactor, const std::set<i64_actorid>& adataid)
 		{
 			m_actor = aactor;
-			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid(), true).init(m_actor, {});
+			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid(), true).init_onlyread(m_actor);
 		}
 
 		void exit()
