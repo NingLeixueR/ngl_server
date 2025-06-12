@@ -40,20 +40,9 @@ namespace ngl
 			return tab(nconfig::m_nodeid);
 		}
 
-		void reload()final
-		{
-			m_areaofserver.clear();
-			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
-			{
-				m_areaofserver[pair.second.m_area].push_back(&pair.second);
-			}
-		}
-
 		static const tab_servers* tab(const std::string& aname, int area, int32_t atcount)
 		{
-			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			assert(ttab != nullptr);
-			for (const std::pair<const int, tab_servers>& item : ttab->m_tablecsv)
+			for (const std::pair<const int, tab_servers>& item : tablecsv())
 			{
 				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
 				{
@@ -61,6 +50,15 @@ namespace ngl
 				}
 			}
 			return nullptr;
+		}
+
+		void reload()final
+		{
+			m_areaofserver.clear();
+			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
+			{
+				m_areaofserver[pair.second.m_area].push_back(&pair.second);
+			}
 		}
 
 		static const net_works* nworks(ENET_PROTOCOL atype, const tab_servers* atab)
