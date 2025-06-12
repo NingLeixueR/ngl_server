@@ -1,30 +1,4 @@
-#include "ttab_activity_toprank.h"
-#include "ttab_activityalways.h"
-#include "ttab_activityopenserver.h"
-#include "ttab_activity.h"
-#include "ttab_activity_drawcompliance.h"
-#include "ttab_card.h"
-#include "ttab_chat.h"
-#include "ttab_consume.h"
-#include "ttab_equip.h"
-#include "ttab_equiplv.h"
-#include "ttab_item.h"
-#include "ttab_mail.h"
-#include "ttab_map.h"
-#include "ttab_matching.h"
-#include "ttab_plays.h"
-#include "ttab_recharge.h"
-#include "ttab_synthesis.h"
-#include "ttab_errormessage.h"
-#include "ttab_specialid.h"
-#include "ttab_attribute.h"
-#include "ttab_mergearea.h"
-#include "ttab_ranklist.h"
-#include "ttab_servers.h"
-#include "ttab_random.h"
-#include "ttab_dbload.h"
 #include "manage_csv.h"
-#include "ttab_task.h"
 #include "csvtable.h"
 #include "drop.h"
 
@@ -80,64 +54,6 @@ namespace ngl
 	}
 
 	std::map<std::string, csvbase*> allcsv::m_data; // key: TAB::name()
-
-	template <typename TTAB>
-	void loadcsv()
-	{
-		using TAB = typename TTAB::type_tab;
-		static bool isinitload = false;
-		if (isinitload == false)
-		{
-			csvbase* lp = new TTAB();
-			allcsv::add(TAB::name(), lp);
-			lp->load();
-			lp->reload();
-			isinitload = true;
-		}
-	}
-
-	void allcsv::load()
-	{
-		loadcsv<ttab_servers>();
-		loadcsv<ttab_specialid>();
-
-		if (NODE_TYPE::DB == nconfig::node_type())
-		{
-			loadcsv<ttab_mergearea>();
-			loadcsv<ttab_dbload>();
-		}
-		if (NODE_TYPE::WORLD == nconfig::node_type())
-		{
-			loadcsv<ttab_ranklist>();
-			loadcsv<ttab_activity>();
-			loadcsv<ttab_activity_drawcompliance>();
-			loadcsv<ttab_activityopenserver>();
-			loadcsv<ttab_activity_toprank>();
-			loadcsv<ttab_activityalways>();
-			loadcsv<ttab_matching>(); 
-			loadcsv<ttab_plays>();
-		}
-		if (NODE_TYPE::GAME == nconfig::node_type())
-		{
-			loadcsv<ttab_task>();
-			loadcsv<ttab_errormessage>();
-			loadcsv<ttab_recharge>();
-		}
-		if (NODE_TYPE::GAME == nconfig::node_type() || NODE_TYPE::WORLD == nconfig::node_type())
-		{
-			loadcsv<ttab_attribute>();
-			loadcsv<ttab_random>();
-			loadcsv<ttab_synthesis>();
-			loadcsv<ttab_consume>();
-			loadcsv<ttab_equiplv>();
-			loadcsv<ttab_equip>();
-			loadcsv<ttab_item>();
-			loadcsv<ttab_card>();
-			loadcsv<ttab_mail>();
-			loadcsv<ttab_chat>();
-			loadcsv<ttab_map>();
-		}
-	}
 
 	void allcsv::add(const char* akey, csvbase* ap)
 	{

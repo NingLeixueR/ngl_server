@@ -44,7 +44,8 @@ namespace ngl
 	};
 
 	template <typename T>
-	struct manage_csv : public csvbase
+	struct manage_csv : 
+		public csvbase
 	{
 		manage_csv(const manage_csv&) = delete;
 		manage_csv& operator=(const manage_csv&) = delete;
@@ -115,19 +116,32 @@ namespace ngl
 	{
 		static std::map<std::string, csvbase*> m_data; // key: TAB::name()
 	public:
-		static void load();
-
 		static void add(const char* akey, csvbase* ap);
 
 		static csvbase* get_csvbase(const std::string& akey);
 
-		template <typename TAB>
-		static TAB* get()
+		template <typename TTAB>
+		static void loadcsv()
 		{
-			std::string lname = TAB::name();
+			static std::atomic<bool> lload = true;
+			if (lload.exchange(false))
+			{
+				using TAB = typename TTAB::type_tab;
+				csvbase* lp = new TTAB();
+				allcsv::add(TAB::name(), lp);
+				lp->load();
+				lp->reload();
+			}
+		}
+
+		template <typename TTAB>
+		static TTAB* get()
+		{
+			loadcsv<TTAB>();
+			std::string lname = TTAB::name();
 			csvbase** lp = tools::findmap(m_data, lname);
 			assert(lp != nullptr);
-			return (TAB*)*lp;
+			return (TTAB*)*lp;
 		}
 
 		template <typename TAB>

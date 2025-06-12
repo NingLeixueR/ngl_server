@@ -471,45 +471,49 @@ namespace ngl
 						lset.insert(struc.name);
 						ngl::writefile lfile(std::format("../../public/cpp/actor/template_tab/t{}.h", struc.name));
 
-						std::stringstream lstream;
-						lstream << "#pragma once" << std::endl;
-						lstream << std::endl;
-						lstream << "#include \"manage_csv.h\"" << std::endl;
-						lstream << "#include \"type.h\"" << std::endl;
-						lstream << "#include \"xml.h\"" << std::endl; 
-						lstream << std::endl;
-						lstream << "namespace ngl" << std::endl;
-						lstream << "{" << std::endl;
-						lstream << "\tstruct t"<< struc.name << " :" << std::endl;
-						lstream << "\t\tpublic manage_csv<" << struc.name << ">" << std::endl;
-						lstream << "\t{" << std::endl;
-						lstream << "\t\tt" << struc.name  << "(const t" << struc.name <<"&) = delete;" << std::endl;
-						lstream << "\t\tt" << struc.name << "& operator=(const t" << struc.name << "&) = delete;" << std::endl;
-						lstream << "\t\t" << "using type_tab = " << struc.name << ";" << std::endl;
-						lstream << "\t\tt" << struc.name << "()" << std::endl;
-						lstream << "\t\t{}" << std::endl;
-						lstream << std::endl;
 
-						lstream << "\t\tstatic const std::map<int, "<< struc.name <<">& tablecsv()" << std::endl;
-						lstream << "\t\t{" << std::endl;
-						lstream << "\t\t\tconst t"<< struc.name <<"* ttab = allcsv::get<t"<< struc.name <<">();" << std::endl;
-						lstream << "\t\t\tassert(ttab != nullptr);" << std::endl;
-						lstream << "\t\t\treturn ttab->m_tablecsv;" << std::endl;
-						lstream << "\t\t}" << std::endl;
+						std::string lcsvpp = std::format(R"(#pragma once
 
-						lstream << "\t\tstatic const " << struc.name << "* tab(int32_t aid)" << std::endl;
-						lstream << "\t\t{" << std::endl;
-						lstream << "\t\t\tconst auto& lmap = tablecsv();" << std::endl;
-						lstream << "\t\t\tauto itor = lmap.find(aid);" << std::endl;
-						lstream << "\t\t\tif (itor == lmap.end())" << std::endl;
-						lstream << "\t\t\t{" << std::endl;
-						lstream << "\t\t\t\treturn nullptr;" << std::endl;
-						lstream << "\t\t\t}" << std::endl;
-						lstream << "\t\t\treturn &itor->second;" << std::endl;
-						lstream << "\t\t}" << std::endl;
-						lstream << "\t};" << std::endl;
-						lstream << "}//namespace ngl" << std::endl;
-						lfile.write(lstream.str());
+#include "manage_csv.h"
+#include "type.h"
+#include "xml.h"
+
+namespace ngl
+{
+	struct t{} :
+		public manage_csv<{}>
+	{{
+		t{}(const t{}&) = delete;
+		t{}& operator=(const t{}&) = delete;
+		using type_tab = {};
+		t{}()
+		{{}}
+
+		void reload()final
+		{{
+			std::cout << "{} reload" << std::endl;
+		}}	
+
+		static const std::map<int, {}>& tablecsv()
+		{{
+			const t{}* ttab = allcsv::get<t{}>();
+			assert(ttab != nullptr);
+			return ttab->m_tablecsv;
+		}}
+
+		static const {}* tab(int32_t aid)
+		{{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{{
+				return nullptr;
+			}}
+			return &itor->second;
+		}}
+	}};
+}//namespace ngl)", struc.name);
+						lfile.write(lcsvpp.c_str());
 					}
 				}
 			}
