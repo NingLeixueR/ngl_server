@@ -109,22 +109,19 @@ namespace ngl
 
 	bool actor_server::handle(const message<np_actornode_register>& adata)
 	{
-		Try
-		{
-			auto lrecv = adata.get_data();
-			auto lpack = adata.get_pack();
-			Assert(lpack != nullptr);
-			Assert(naddress::set_node(lrecv->m_node));
+		auto lrecv = adata.get_data();
+		auto lpack = adata.get_pack();
+		tools::core_dump(lpack == nullptr);
+		tools::core_dump(!naddress::set_node(lrecv->m_node));
 
-			i32_serverid lserverid = lrecv->m_node.m_serverid;
-			naddress::set_session(lserverid, lpack->m_id);
-			naddress::add_actor_address(lserverid, lrecv->m_add);
+		i32_serverid lserverid = lrecv->m_node.m_serverid;
+		naddress::set_session(lserverid, lpack->m_id);
+		naddress::add_actor_address(lserverid, lrecv->m_add);
 
-			server_session::add(lserverid, lpack->m_id);
+		server_session::add(lserverid, lpack->m_id);
 
-			forward_np_actornode_register(lpack, lrecv->m_node, lserverid, lrecv->m_add);
-			reply_np_actornode_register(lpack, lserverid);
-		}Catch
+		forward_np_actornode_register(lpack, lrecv->m_node, lserverid, lrecv->m_add);
+		reply_np_actornode_register(lpack, lserverid);
 		return true;
 	}
 

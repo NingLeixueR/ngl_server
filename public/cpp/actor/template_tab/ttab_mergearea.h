@@ -20,6 +20,7 @@ namespace ngl
 		static std::map<i16_area, i16_area> m_merge1;
 		// key: 合服区服id value: 哪些区服在此区服
 		static std::map<i16_area, std::set<i16_area>> m_merge2;
+		static bool m_load;
 
 		ttab_mergearea()
 		{}
@@ -27,9 +28,10 @@ namespace ngl
 		static const std::map<int, tab_mergearea>& tablecsv()
 		{
 			const ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
+
 		static const tab_mergearea* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
@@ -56,11 +58,13 @@ namespace ngl
 		// 哪些区服在此区服
 		static std::set<i16_area>* mergelist(i16_area aarea)
 		{
+			allcsv::loadcsv<ttab_mergearea>();
 			return tools::findmap(m_merge2, aarea);
 		}
 
 		static i16_area mergeid(i16_area aarea)
 		{
+			allcsv::loadcsv<ttab_mergearea>();
 			i16_area* ret = tools::findmap(m_merge1, aarea);
 			if (ret == nullptr)
 			{

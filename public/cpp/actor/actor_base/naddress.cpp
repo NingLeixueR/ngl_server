@@ -36,14 +36,10 @@ namespace ngl
 
 		static i32_sessionid sessionbyrole(i16_area aarea, i32_actordataid aroleid)
 		{
-			Try
-			{
-				i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
-				i32_serverid lserverid = get_server(lactorrole);
-				Assert(lserverid != -1);
-				return get_session(lserverid);
-			}Catch
-			return -1;
+			i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
+			i32_serverid lserverid = get_server(lactorrole);
+			tools::core_dump(lserverid == -1);
+			return get_session(lserverid);
 		}
 
 		static bool forward(handle_pram& apram)

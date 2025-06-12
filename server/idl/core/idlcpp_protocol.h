@@ -497,7 +497,7 @@ namespace ngl
 		static const std::map<int, {}>& tablecsv()
 		{{
 			const t{}* ttab = allcsv::get<t{}>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}}
 

@@ -29,7 +29,7 @@ namespace ngl
 		static const std::map<int, tab_task>& tablecsv()
 		{
 			const ttab_task* ttab = allcsv::get<ttab_task>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_task* tab(int32_t aid)
@@ -52,7 +52,7 @@ namespace ngl
 			else if (aitem.m_condition == ETaskConditionMore)
 			{//>=
 				auto itor = m_maxval.find(aitem.m_type);
-				assert(itor != m_maxval.end());
+				tools::core_dump(itor == m_maxval.end());
 				for (int i = aitem.m_parmint; i <= itor->second; ++i)
 				{
 					if (areceive)

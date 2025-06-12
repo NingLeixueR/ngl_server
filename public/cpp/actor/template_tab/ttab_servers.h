@@ -21,7 +21,7 @@ namespace ngl
 		static const std::map<int, tab_servers>& tablecsv()
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_servers* tab(int32_t aid)
@@ -106,7 +106,7 @@ namespace ngl
 	private:
 		static const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
 		{
-			assert(alocalserver != aotherserver);
+			tools::core_dump(alocalserver == aotherserver);
 			const tab_servers* ltab1 = tab(alocalserver);
 			const tab_servers* ltab2 = tab(aotherserver);
 			if (alocalserver > aotherserver)
@@ -139,7 +139,7 @@ namespace ngl
 		static NODE_TYPE node_type(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
-			assert(ltab != nullptr);
+			tools::core_dump(ltab == nullptr);
 			return ltab->m_type;
 		}
 
@@ -151,7 +151,7 @@ namespace ngl
 		static const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			for (const std::pair<const int, tab_servers>& pair : ttab->m_tablecsv)
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
@@ -165,6 +165,7 @@ namespace ngl
 		// 便利所有服务器
 		static void foreach_server(const std::function<void(const tab_servers*)>& afun)
 		{
+			allcsv::loadcsv<ttab_servers>();
 			for (const auto& [_area, _vec] : m_areaofserver)
 			{
 				for (const tab_servers* iserver : _vec)
@@ -177,6 +178,7 @@ namespace ngl
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
 		static const std::set<i16_area>* get_area(i16_area aarea)
 		{
+			allcsv::loadcsv<ttab_servers>();
 			static std::map<i16_area, std::set<i16_area>> lmap;
 			if (aarea < 0)
 			{
@@ -259,6 +261,7 @@ namespace ngl
 
 		static tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)>& afun)
 		{
+			allcsv::loadcsv<ttab_servers>();
 			std::vector<tab_servers*>* litem = tools::findmap(m_areaofserver, tab()->m_area);
 			if (litem == nullptr)
 			{

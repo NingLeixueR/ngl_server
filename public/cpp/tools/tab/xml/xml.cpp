@@ -55,7 +55,7 @@ namespace ngl
 	void xmlnode::set_server(const char* aservertypename)
 	{
 		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
-		Assert(lnodetype != em<NODE_TYPE>::enum_null());
+		tools::core_dump(lnodetype == em<NODE_TYPE>::enum_null());
 		m_nodename = aservertypename;
 		m_nodetype = lnodetype;
 	}

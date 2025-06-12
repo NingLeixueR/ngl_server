@@ -140,7 +140,7 @@ namespace ngl
 			loadcsv<TTAB>();
 			std::string lname = TTAB::name();
 			csvbase** lp = tools::findmap(m_data, lname);
-			assert(lp != nullptr);
+			tools::core_dump(lp == nullptr);
 			return (TTAB*)*lp;
 		}
 

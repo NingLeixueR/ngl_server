@@ -19,7 +19,7 @@ namespace ngl
 		static const std::map<int, tab_random>& tablecsv()
 		{
 			const ttab_random* ttab = allcsv::get<ttab_random>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_random* tab(int32_t aid)
@@ -35,16 +35,16 @@ namespace ngl
 
 		bool is_loop(int32_t aid, std::set<int32_t>& aset)
 		{
-			tab_random* tab = find(aid);
-			if (tab == nullptr)
+			const tab_random* ltab = tab(aid);
+			if (ltab == nullptr)
 			{
 				return false;
 			}
-			if (aset.insert(tab->m_id).second == false)
+			if (aset.insert(ltab->m_id).second == false)
 			{
 				return false;
 			}
-			for (int32_t id : tab->m_childrandomids)
+			for (int32_t id : ltab->m_childrandomids)
 			{
 				if (is_loop(id, aset) == false)
 				{

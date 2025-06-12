@@ -417,7 +417,7 @@ bool start_log()
 
 	ngl::actor_client::instance();
 
-	assert(ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX && ngl::sysconfig::logwritelevel() > ngl::ELOG_NONE);
+	ngl::tools::core_dump(ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX && ngl::sysconfig::logwritelevel() > ngl::ELOG_NONE);
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	ngl::actor_gmclient::instance();
