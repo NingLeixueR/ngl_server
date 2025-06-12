@@ -111,7 +111,7 @@ namespace ngl
 				.m_serverid = tab->m_id,
 			}
 		};
-		actor_manage::getInstance().get_type(lpram.m_node.m_actortype);
+		actor_manage::instance().get_type(lpram.m_node.m_actortype);
 		naddress::ergodic(
 			[&lpram](const std::map<nguid, i32_serverid>& aactorserver, const std::map<i32_serverid, actor_node_session>&)
 			{
@@ -265,7 +265,7 @@ namespace ngl
 				pro->m_serverid = lserverid;
 				nguid lguid = nguid::make_self(ACTOR_LOGIN);
 				handle_pram lparm = handle_pram::create(lguid, guid(), pro);
-				actor_manage::getInstance().push_task_id(lguid, lparm, false);
+				actor_manage::instance().push_task_id(lguid, lparm, false);
 			}
 		}Catch
 		return true;

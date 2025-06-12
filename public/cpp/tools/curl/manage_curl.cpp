@@ -249,7 +249,7 @@ namespace ngl
 
 	void manage_curl::send(std::shared_ptr<http_parm>& adata)
 	{
-		getInstance().m_impl_manage_curl()->send(adata);
+		instance().m_impl_manage_curl()->send(adata);
 	}
 
 	std::shared_ptr<http_parm> manage_curl::make_http()
@@ -262,7 +262,7 @@ namespace ngl
 		email_sender();
 		~email_sender() = default;
 	public:
-		static email_sender& getInstance()
+		static email_sender& instance()
 		{
 			static email_sender ltemp;
 			return ltemp;
@@ -297,9 +297,9 @@ namespace ngl
 	size_t email_sender::callback(void* ptr, size_t size, size_t nmemb, void* userp)
 	{
 		std::string data((const char*)userp);
-		size_t to_copy = std::min(data.size() - email_sender::getInstance().m_index, size * nmemb);
-		memcpy(ptr, data.c_str() + email_sender::getInstance().m_index, to_copy);
-		email_sender::getInstance().m_index += to_copy;
+		size_t to_copy = std::min(data.size() - email_sender::instance().m_index, size * nmemb);
+		memcpy(ptr, data.c_str() + email_sender::instance().m_index, to_copy);
+		email_sender::instance().m_index += to_copy;
 		return to_copy;
 	}
 
@@ -405,7 +405,7 @@ namespace ngl
 
 	void manage_curl::sendemail(const parameter& aparm)
 	{
-		ngl::email_sender::getInstance().send(aparm);
+		ngl::email_sender::instance().send(aparm);
 	}
 
 	void test_mail(const char* atitle, const char* acontent, const std::vector<std::pair<std::string, std::string>>& amailvec/* = {}*/)

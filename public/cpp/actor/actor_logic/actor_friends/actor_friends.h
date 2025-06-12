@@ -31,7 +31,7 @@ namespace ngl
 		actor_friends();
 	public:
 		friend class actor_instance<actor_friends>;
-		static actor_friends& getInstance()
+		static actor_friends& instance()
 		{
 			return actor_instance<actor_friends>::instance();
 		}

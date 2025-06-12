@@ -58,7 +58,7 @@ namespace ngl
 		}
 		else
 		{
-			db_actor::getInstance();
+			db_actor::instance();
 		}
 	}
 

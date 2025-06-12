@@ -212,7 +212,7 @@ namespace ngl
 		}
 	public:
 		friend class actor_instance<tactor_db>;
-		static tactor_db& getInstance()
+		static tactor_db& instance()
 		{
 			return actor_instance<tactor_db>::instance();
 		}

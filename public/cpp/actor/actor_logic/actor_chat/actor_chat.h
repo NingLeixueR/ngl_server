@@ -30,7 +30,7 @@ namespace ngl
 		actor_chat();
 	public:
 		friend class actor_instance<actor_chat>;
-		static actor_chat& getInstance()
+		static actor_chat& instance()
 		{
 			return actor_instance<actor_chat>::instance();
 		}

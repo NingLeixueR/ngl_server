@@ -765,7 +765,7 @@ namespace ngl
 		{0}();
 	public:
 		friend class actor_instance<{0}>;
-		static {0}& getInstance()
+		static {0}& instance()
 		{{
 			return actor_instance<{0}>::instance();
 		}}

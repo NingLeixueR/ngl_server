@@ -152,13 +152,13 @@ namespace ngl
 					int32_t leverycount = tools::lexical_cast<int32_t>(avec[3]);
 					for (int i = 0; i < lrounds; ++i)
 					{
-						test_thruput::getInstance().add_rounds(lactorcount, leverycount);
+						test_thruput::instance().add_rounds(lactorcount, leverycount);
 					}
 				};
 
 			handle_cmd::add("release_thruput") = [this](const std::vector<std::string>& avec)
 				{
-					test_thruput::getInstance().release();
+					test_thruput::instance().release();
 				};
 		}
 

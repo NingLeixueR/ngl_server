@@ -43,10 +43,10 @@ namespace ngl
 					std::string lbanrole;
 					tools::splicing(m_roleban, "*", lbanrole);
 
-					pbdb::db_keyvalue* lpdata = tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).add(pbdb::db_keyvalue_ekv_account_ban);
+					pbdb::db_keyvalue* lpdata = tdb_keyvalue::nsp_cli<actor_role_manage>::instance(id_guid()).add(pbdb::db_keyvalue_ekv_account_ban);
 					lpdata->set_m_id(pbdb::db_keyvalue_ekv_account_ban);
 					lpdata->set_m_value(lbanrole);
-					tdb_keyvalue::nsp_cli<actor_role_manage>::getInstance(id_guid()).change(pbdb::db_keyvalue_ekv_account_ban);
+					tdb_keyvalue::nsp_cli<actor_role_manage>::instance(id_guid()).change(pbdb::db_keyvalue_ekv_account_ban);
 					pro.m_data = true;
 				};
 

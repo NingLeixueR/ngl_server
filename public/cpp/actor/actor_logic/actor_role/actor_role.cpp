@@ -66,8 +66,8 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
-		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid(), true).init_parts(this, { id_guid() });
-		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+		tdb_brief::nsp_cli<actor_role>::instance(id_guid(), true).init_parts(this, { id_guid() });
+		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)
 				{// 数据完全加载
@@ -84,7 +84,7 @@ namespace ngl
 		lparm.m_actorid = id_guid();
 		actor_events_logic::trigger_event(lparm);
 
-		tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_role>::freensp(id_guid());
 
 		m_drop.exit();
@@ -293,7 +293,7 @@ namespace ngl
 		*pro->mutable_m_role()	= m_info.get()->getconst();
 		*pro->mutable_m_bag()	= m_bag.get()->getconst();
 		*pro->mutable_m_task()	= m_task.get()->getconst();
-		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_role>::getInstance(id_guid()).getconst(id_guid());
+		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_role>::instance(id_guid()).getconst(id_guid());
 		if (lpbrief != nullptr)
 		{
 			*pro->mutable_m_brief() = *lpbrief;

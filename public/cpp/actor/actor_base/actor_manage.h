@@ -26,7 +26,7 @@ namespace ngl
 		actor_manage();
 		~actor_manage();
 	public:
-		static actor_manage& getInstance()
+		static actor_manage& instance()
 		{
 			static actor_manage ltemp;
 			return ltemp;
@@ -114,7 +114,7 @@ namespace ngl
 			{
 				first = false;
 				T* lptemp = &ltemp;
-				actor_manage::getInstance().add_actor(&ltemp, [lptemp]()
+				actor_manage::instance().add_actor(&ltemp, [lptemp]()
 				{
 						Try
 						{

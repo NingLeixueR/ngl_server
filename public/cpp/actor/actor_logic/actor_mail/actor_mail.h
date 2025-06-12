@@ -30,7 +30,7 @@ namespace ngl
 		actor_mail();
 	public:
 		friend class actor_instance<actor_mail>;
-		static actor_mail& getInstance()
+		static actor_mail& instance()
 		{
 			return actor_instance<actor_mail>::instance();
 		}

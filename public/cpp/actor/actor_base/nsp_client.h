@@ -14,17 +14,17 @@ namespace ngl
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
-		actor*											m_actor = nullptr;
-		std::map<i16_area, i64_actorid>					m_nspserver;
-		std::map<i16_area, bool>						m_register;
-		std::function<void(int64_t, const T&, bool)>	m_changedatafun;
-		bool											m_activate = false;
-		std::map<i64_actorid, T>						m_data;
-		static std::mutex															m_mutex;
-		static std::map<int64_t, std::shared_ptr<nsp_client<TDerived, TACTOR, T>>>	m_map;
+		actor*															m_actor = nullptr;
+		std::map<i16_area, i64_actorid>									m_nspserver;
+		std::map<i16_area, bool>										m_register;
+		std::function<void(int64_t, const T&, bool)>					m_changedatafun;
+		std::map<i64_actorid, T>										m_data;
 
-		bool											m_onlyread = true;		// 只读
-		std::set<i64_actorid>							m_dataid;				// 关注哪些数据,结点可读可写
+		static std::mutex												m_mutex;
+		static std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>		m_instance;
+
+		bool															m_onlyread = true;		// 只读
+		std::set<i64_actorid>											m_dataid;				// 关注哪些数据,结点可读可写
 
 		// [[ m_onlyread == false 才有意义
 			std::set<i64_actorid> m_onlyreads;									// 只读全部数据
@@ -36,32 +36,25 @@ namespace ngl
 			// m_publishlist2.second:读写的结点列表
 			std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist2;							//<数据>被<哪些结点>关注
 		// ]]
-	public:
-		nsp_client() = default;
 
-		std::map<i64_actorid, T>& data()
-		{
-			return m_data;
-		}
+		nsp_client() = default;
 	private:
-		template <typename TX>
-		static std::string& type_name()
-		{
-			return tools::type_name<TX>();
-		}
 
 		void log(const char* amessage)
 		{
-			m_actor->log_error()->print("{} {}:{}", amessage, type_name<TDerived>(), type_name<T>());
+			m_actor->log_error()->print(
+				"{} {}:{}", amessage, tools::type_name<TDerived>(), tools::type_name<T>()
+			);
 		}
 
 		void channel_data(TDerived*, const message<np_channel_data<T>>& adata)
 		{
-			const np_channel_data<T>& recv = *adata.get_data();
-			std::map<int64_t, T>& lmap = *recv.m_data.m_data;
-			bool lfirstsynchronize = recv.m_firstsynchronize;
+			const np_channel_data<T>* recv = adata.get_data();
+			std::map<int64_t, T>& lmap = *recv->m_data.m_data;
+			bool lfirstsynchronize = recv->m_firstsynchronize;
 			std::ranges::for_each(lmap, [this,lfirstsynchronize](const auto& apair)
 				{
+					// # 其他结点不能发送非本结点关注的数据的改变
 					if (!m_dataid.empty())
 					{
 						tools::core_dump(!m_dataid.contains(apair.first));
@@ -97,7 +90,6 @@ namespace ngl
 					lparts[lnodeid].insert(dataid);
 				}
 			}
-
 			std::string llogstr = std::format("name:{} read:{} write:{} part:{}"
 				, typeid(nsp_client<TDerived, TACTOR, T>).name(), lreads, lwrites, lparts
 			);
@@ -238,15 +230,15 @@ namespace ngl
 		}
 
 	public:
-		static nsp_client<TDerived, TACTOR, T>& getInstance(int64_t adataid = nguid::make(), bool acreate = false)
+		static nsp_client<TDerived, TACTOR, T>& instance(int64_t adataid = nguid::make(), bool acreate = false)
 		{
 			monopoly_lock(m_mutex);
-			auto itor = m_map.find(adataid);
-			if (itor == m_map.end())
+			auto itor = m_instance.find(adataid);
+			if (itor == m_instance.end())
 			{
-				assert(acreate);
-				auto lpclient = std::make_shared<nsp_client<TDerived, TACTOR, T>>();
-				m_map.insert(std::make_pair(adataid, lpclient));
+				tools::core_dump(!acreate || m_instance.contains(adataid));
+				nsp_client<TDerived, TACTOR, T>* lpclient = new nsp_client<TDerived, TACTOR, T>();
+				m_instance[adataid] = lpclient;
 				return *lpclient;
 			}
 			return *itor->second;
@@ -255,7 +247,13 @@ namespace ngl
 		static void freensp(int64_t adataid = nguid::make())
 		{
 			monopoly_lock(m_mutex);
-			m_map.erase(adataid);
+			auto itor = m_instance.find(adataid);
+			if (itor == m_instance.end())
+			{
+				return;
+			}
+			delete itor->second;
+			m_instance.erase(adataid);
 		}
 
 		// 只读
@@ -311,7 +309,7 @@ namespace ngl
 						{
 							return;
 						}
-						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_data(aacotor, adata);
+						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_data(aacotor, adata);
 					}
 				);
 
@@ -323,7 +321,7 @@ namespace ngl
 						{
 							return;
 						}
-						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_register_reply(aacotor, adata);
+						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_register_reply(aacotor, adata);
 					}
 				);
 
@@ -335,21 +333,24 @@ namespace ngl
 						{
 							return;
 						}
-						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_check(aacotor, adata);
+						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_check(aacotor, adata);
 					}
 				);
 
 				// 同步channel_dataid
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>(
-					[](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
-					{
-						if (aacotor == nullptr)
+				if (!aonlyread)
+				{//只读结点不需要知道数据被哪些结点订阅，因为他不能修改数据
+					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>(
+						[](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
 						{
-							return;
+							if (aacotor == nullptr)
+							{
+								return;
+							}
+							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
 						}
-						nsp_client<TDerived, TACTOR, T>::getInstance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
-					}
-				);
+					);
+				}				
 			}
 
 			i64_actorid lactorid = m_actor->id_guid();
@@ -389,7 +390,7 @@ namespace ngl
 			return lp;
 		}
 
-		const std::map<i64_actorid, T>& get_map()
+		const std::map<i64_actorid, T>& data()const
 		{
 			return m_data;
 		}
@@ -511,5 +512,5 @@ namespace ngl
 	std::mutex nsp_client<TDerived, TACTOR, T>::m_mutex;
 
 	template <typename TDerived, typename TACTOR, typename T>
-	std::map<int64_t, std::shared_ptr<nsp_client<TDerived, TACTOR, T>>>	nsp_client<TDerived, TACTOR, T>::m_map;
+	std::map<int64_t, nsp_client<TDerived, TACTOR, T>*>	nsp_client<TDerived, TACTOR, T>::m_instance;
 }//namespace ngl

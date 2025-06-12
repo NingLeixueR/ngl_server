@@ -52,7 +52,7 @@ namespace ngl
 		actor_example_manage();
 	public:
 		friend class actor_instance<actor_example_manage>;
-		static actor_example_manage& getInstance()
+		static actor_example_manage& instance()
 		{
 			return actor_instance<actor_example_manage>::instance();
 		}

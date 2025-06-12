@@ -489,7 +489,7 @@ namespace ngl
 				return false;
 			}
 
-			actor_manage::getInstance().set_ready(m_actor->id_guid());
+			actor_manage::instance().set_ready(m_actor->id_guid());
 				
 			m_actor->db_component_init_data();
 

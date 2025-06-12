@@ -77,7 +77,7 @@ namespace ngl
 		pro.set_m_password(apasswold);
 		const tab_servers* tab = ttab_servers::tab();
 		assert(tab != nullptr);
-		nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), getInstance().id_guid());
+		nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid)const
@@ -99,7 +99,7 @@ namespace ngl
 		ldata->m_parm.swap(aparm);
 		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig::m_nodeid);
 		handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
-		actor_manage::getInstance().push_task_id(lid, lparm, false);
+		actor_manage::instance().push_task_id(lid, lparm, false);
 		return true;
 	}
 

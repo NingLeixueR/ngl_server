@@ -40,12 +40,12 @@ namespace ngl
 		}
 		set_timer(tparm);
 
-		//tdb_brief::nsp_cli<actor_example_manage>::getInstance(id_guid(), true).init_onlyread(this);
+		//tdb_brief::nsp_cli<actor_example_manage>::instance(id_guid(), true).init_onlyread(this);
 	}
 
 	void actor_example_manage::erase_actor_before()
 	{
-		//tdb_brief::nsp_cli<actor_example_manage>::getInstance(id_guid()).exit();
+		//tdb_brief::nsp_cli<actor_example_manage>::instance(id_guid()).exit();
 		//tdb_brief::nsp_cli<actor_example_manage>::freensp(id_guid());
 	}
 

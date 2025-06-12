@@ -10,25 +10,25 @@ int main(int argc, char* argv[])
 		vector<const char*> lv = { "../idl/csvtable" };
 		for (const char* item : lv)
 		{
-			idl::getInstance().analysis(string(item) + ".idl");
+			idl::instance().analysis(string(item) + ".idl");
 		}
-		idlcppprotocol::getInstance()._h();
-		idlcppprotocol::getInstance()._cpp();
-		idlcppprotocol::getInstance()._cs();
+		idlcppprotocol::instance()._h();
+		idlcppprotocol::instance()._cpp();
+		idlcppprotocol::instance()._cs();
 
-		idlcppprotocol::getInstance()._ttab();
+		idlcppprotocol::instance()._ttab();
 	}
 	else if (argv[1] == std::string("protocol"))
 	{
-		idl::getInstance(true);
-		idl::getInstance().analysis("../../public/cpp/actor/nprotocol.h");
-		idlcppprotocol::getInstance()._nprotocol_auto();
+		idl::instance(true);
+		idl::instance().analysis("../../public/cpp/actor/nprotocol.h");
+		idlcppprotocol::instance()._nprotocol_auto();
 	}
 	else if (argv[1] == std::string("actor"))
 	{
-		idl::getInstance(true);
-		idl::getInstance().analysis("../../public/cpp/actor/actor_base/nactortype.h");
-		idlcppprotocol::getInstance()._auto_actor_enum();
+		idl::instance(true);
+		idl::instance().analysis("../../public/cpp/actor/actor_base/nactortype.h");
+		idlcppprotocol::instance()._auto_actor_enum();
 	}
 
 

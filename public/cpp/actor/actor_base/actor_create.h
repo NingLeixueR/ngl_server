@@ -22,7 +22,7 @@ namespace ngl
 		actor_create();
 	public:
 		friend class actor_instance<actor_create>;
-		static actor_create& getInstance()
+		static actor_create& instance()
 		{
 			return actor_instance<actor_create>::instance();
 		}
@@ -87,7 +87,7 @@ namespace ngl
 			}
 			else if (lparm->m_serverid == nconfig::m_nodeid)
 			{
-				actor_manage::getInstance().erase_actor(lparm->m_actor, [lparm]()
+				actor_manage::instance().erase_actor(lparm->m_actor, [lparm]()
 					{
 						auto pro = std::make_shared<np_actorswitch_process<T>>(*lparm);
 						actor_create::switch_process_send<T>(pro);

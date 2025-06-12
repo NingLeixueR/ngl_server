@@ -56,7 +56,7 @@ namespace ngl
 		manage_curl();
 		~manage_curl();
 
-		static manage_curl& getInstance()
+		static manage_curl& instance()
 		{
 			static manage_curl temp;
 			return temp;

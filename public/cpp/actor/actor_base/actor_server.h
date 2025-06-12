@@ -15,7 +15,7 @@ namespace ngl
 		actor_server();
 	public:
 		friend class actor_instance<actor_server>;
-		static actor_server& getInstance()
+		static actor_server& instance()
 		{
 			return actor_instance<actor_server>::instance();
 		}

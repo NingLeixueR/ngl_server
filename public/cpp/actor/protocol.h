@@ -67,7 +67,7 @@ namespace ngl
 				handle_pram lpram = handle_pram::create<T, false, false>(lactorguid, lrequestactorguid, ldatapack);
 				lpram.m_pack = apack;
 
-				actor_manage& lmanages = actor_manage::getInstance();
+				actor_manage& lmanages = actor_manage::instance();
 				if (lactorguid.is_actortypenone() || lactorguid.is_moreactor(atype))
 				{// actor type 是否无效  || //发给同类型的所有actor
 					lmanages.push_task_type(atype, lpram);
@@ -119,7 +119,7 @@ namespace ngl
 				nguid lrequestguid(apack->m_head.get_request_actor());
 				handle_pram lpram = handle_pram::create(lguid, lrequestguid, ldatapack);
 				lpram.m_pack = apack;
-				actor_manage::getInstance().push_task_id(lguid, lpram, false);
+				actor_manage::instance().push_task_id(lguid, lpram, false);
 				return true;
 			};			
 			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);
@@ -168,7 +168,7 @@ namespace ngl
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
 					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
-					actor_manage::getInstance().push_task_id(lguid, lpram, false);
+					actor_manage::instance().push_task_id(lguid, lpram, false);
 				}
 				return true;
 			};

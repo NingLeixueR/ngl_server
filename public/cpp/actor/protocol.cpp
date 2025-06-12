@@ -190,7 +190,7 @@ namespace ngl
 		{
 			handle_cmd::add("/actor_count") = [](const std::shared_ptr<pack>& pack, const std::vector<std::string>&)
 				{
-					int32_t lcount = actor_manage::getInstance().actor_count();
+					int32_t lcount = actor_manage::instance().actor_count();
 					std::string lstr = std::format("actor count:{}\n", lcount);
 					nets::sendmsg(pack->m_id, lstr);
 				};

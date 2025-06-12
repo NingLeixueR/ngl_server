@@ -7,7 +7,7 @@ namespace ngl
 	{
 		distribute_gmclient() = default;
 	public:
-		static distribute_gmclient& getInstance()
+		static distribute_gmclient& instance()
 		{
 			static distribute_gmclient ltemp;
 			return ltemp;
@@ -68,7 +68,7 @@ namespace ngl
 			handle_cmd::add("server_stat") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<actor_manage::msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
-					actor_manage::getInstance().get_actor_stat(lpro.m_data);
+					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
 			handle_cmd::add("guid") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
@@ -152,7 +152,7 @@ namespace ngl
 					return true;
 				}
 				init_handle_cmd();
-				if (distribute_gmclient::getInstance().distribute(loperator, lreadjson, &adata, this) == false)
+				if (distribute_gmclient::instance().distribute(loperator, lreadjson, &adata, this) == false)
 				{
 					return true;
 				}

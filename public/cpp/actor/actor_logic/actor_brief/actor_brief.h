@@ -29,7 +29,7 @@ namespace ngl
 		briefdb m_briefdb;
 	public:
 		friend class actor_instance<actor_brief>;
-		static actor_brief& getInstance()
+		static actor_brief& instance()
 		{
 			return actor_instance<actor_brief>::instance();
 		}

@@ -244,7 +244,7 @@ namespace ngl
 
 	void actor::wait_ready(const nguid& aguid)
 	{
-		while (!actor_manage::getInstance().ready(aguid))
+		while (!actor_manage::instance().ready(aguid))
 		{
 			sleep::seconds(1);
 		}

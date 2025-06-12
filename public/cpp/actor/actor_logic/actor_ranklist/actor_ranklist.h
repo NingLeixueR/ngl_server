@@ -30,7 +30,7 @@ namespace ngl
 		actor_ranklist();
 	public:
 		friend class actor_instance<actor_ranklist>;
-		static actor_ranklist& getInstance()
+		static actor_ranklist& instance()
 		{
 			return actor_instance<actor_ranklist>::instance();
 		}

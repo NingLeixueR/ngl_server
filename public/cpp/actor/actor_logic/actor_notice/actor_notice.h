@@ -29,7 +29,7 @@ namespace ngl
 		actor_notice();
 	public:
 		friend class actor_instance<actor_notice>;
-		static actor_notice& getInstance()
+		static actor_notice& instance()
 		{
 			return actor_instance<actor_notice>::instance();
 		}

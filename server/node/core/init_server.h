@@ -74,11 +74,11 @@ bool init_server(int aid)
 	ngl::nets::init(tab->m_threadnum, tab->m_outernet);
 
 	// # 初始化actor管理模块
-	ngl::actor_manage::getInstance().init(tab->m_actorthreadnum);
+	ngl::actor_manage::instance().init(tab->m_actorthreadnum);
 
 	// # actor管理模块已初始化完毕，可以将日志发送给actor_log
 	ngl::nactor_logitem::m_init = true;
 
-	ngl::log_error()->print("ngl::actor_manage::getInstance().init({})", tab->m_actorthreadnum);
+	ngl::log_error()->print("ngl::actor_manage::instance().init({})", tab->m_actorthreadnum);
 	return true;
 }

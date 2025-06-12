@@ -283,7 +283,7 @@ namespace ngl
 		*pro->mutable_m_info() = lfamily;
 		std::ranges::for_each(lfamily.m_member(), [this, &pro](int64_t aroleid)
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_family>::getInstance(get_actor()->id_guid()).getconst(aroleid);
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
 				if (lpbrief != nullptr)
 				{
 					*pro->add_m_member() = *lpbrief;
@@ -362,7 +362,7 @@ namespace ngl
 		lpfamily->get().set_m_exp(lexp);
 
 		// ·¢ËÍ½±Àø
-		if (!actor_family::getInstance().get_drop().use(ttab_specialid::m_familsigndrop, 1, aroleid, "family sign"))
+		if (!actor_family::instance().get_drop().use(ttab_specialid::m_familsigndrop, 1, aroleid, "family sign"))
 		{
 			return 7;
 		}

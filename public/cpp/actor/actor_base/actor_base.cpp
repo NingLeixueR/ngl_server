@@ -112,7 +112,7 @@ namespace ngl
 		inline void erase_actor()const
 		{
 			m_actor->erase_actor_before();
-			actor_manage::getInstance().erase_actor(m_guid);
+			actor_manage::instance().erase_actor(m_guid);
 		}
 
 		inline bool is_single()const
@@ -245,7 +245,7 @@ namespace ngl
 				{
 					auto pro = std::make_shared<np_actor_broadcast>();
 					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
-					actor_manage::getInstance().broadcast_task(lpram);
+					actor_manage::instance().broadcast_task(lpram);
 				}
 			};
 			m_broadcasttimer = (int32_t)twheel::wheel().addtimer(lparm);
@@ -312,22 +312,22 @@ namespace ngl
 
 	void actor_base::erase_actor(const nguid& aguid)
 	{
-		actor_manage::getInstance().erase_actor(aguid);
+		actor_manage::instance().erase_actor(aguid);
 	}
 
 	void actor_base::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 	{
-		actor_manage::getInstance().push_task_id(aguid, apram, abool);
+		actor_manage::instance().push_task_id(aguid, apram, abool);
 	}
 
 	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
 	{
-		actor_manage::getInstance().push_task_type(atype, apram, aotherserver);
+		actor_manage::instance().push_task_type(atype, apram, aotherserver);
 	}
 
 	void actor_base::push_task_id(handle_pram& apram, bool abool)
 	{
-		actor_manage::getInstance().push_task_id(m_impl_actor_base()->m_guid, apram, abool);
+		actor_manage::instance().push_task_id(m_impl_actor_base()->m_guid, apram, abool);
 	}
 
 	void actor_base::save()
