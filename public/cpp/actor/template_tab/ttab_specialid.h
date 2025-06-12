@@ -34,7 +34,7 @@ namespace ngl
 		static const std::map<int, tab_specialid>& tablecsv()
 		{
 			const ttab_specialid* ttab = allcsv::get<ttab_specialid>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_specialid* tab(int32_t aid)

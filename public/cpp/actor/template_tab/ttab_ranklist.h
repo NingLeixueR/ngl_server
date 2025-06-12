@@ -18,7 +18,7 @@ namespace ngl
 		static const std::map<int, tab_ranklist>& tablecsv()
 		{
 			const ttab_ranklist* ttab = allcsv::get<ttab_ranklist>();
-			assert(ttab != nullptr);
+			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 		static const tab_ranklist* tab(int32_t aid)

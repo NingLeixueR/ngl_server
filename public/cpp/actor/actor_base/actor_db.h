@@ -34,65 +34,59 @@ namespace ngl
 		// # 初始化
 		static void init()
 		{
-			Try
-			{
-				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
+			m_tab = ttab_dbload::get_tabdb<TDBTAB>();
 
-				Assert(m_tab != nullptr);
+			tools::core_dump(m_tab == nullptr);
 
-				// # 设置数据保存/数据删除队列
-				m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
-				m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
+			// # 设置数据保存/数据删除队列
+			m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
+			m_cache_del.set_cachefun(std::bind_front(&cachelist, enum_clist_del), m_tab->m_dbcacheintervalms);
 
-				if (m_tab->m_isloadall == true)
-				{// 加载全部数据
-					db_manage::select<TDBTAB>(db_pool::get(0));
-				}
-				else
-				{// 加载全部id 防止内存穿透
-					db_manage::select<TDBTAB>(db_pool::get(0), db_data<TDBTAB>::id_index());
-				}
-			}Catch
+			if (m_tab->m_isloadall == true)
+			{// 加载全部数据
+				db_manage::select<TDBTAB>(db_pool::get(0));
+			}
+			else
+			{// 加载全部id 防止内存穿透
+				db_manage::select<TDBTAB>(db_pool::get(0), db_data<TDBTAB>::id_index());
+			}
 		}
 
 		// # 加载表中的所有数据
 		static void loadall(const pack* apack, [[maybe_unused]] const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			Try
+			tools::core_dump(!m_tab->m_isloadall);
+			if (!m_tab->m_network)
 			{
-				Assert(m_tab->m_isloadall);
-				if (!m_tab->m_network)
+				return;
+			}
+			int lsendmaxcount = m_tab->m_sendmaxcount;
+			if (lsendmaxcount <= 0)
+			{
+				lsendmaxcount = 10;
+			}
+			i64_actorid lrequestactor = apack->m_head.get_request_actor();
+			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
+			pro.m_stat = true;
+			pro.m_over = false;
+			pro.m_data.make();
+			ngl::db_data<TDBTAB>::foreach_index(
+				[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
-					return;
-				}
-				int lsendmaxcount = m_tab->m_sendmaxcount;
-				if (lsendmaxcount <= 0)
-				{
-					lsendmaxcount = 10;
-				}
-				i64_actorid lrequestactor = apack->m_head.get_request_actor();
-				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
-				pro.m_stat = true;
-				pro.m_over = false;
-				pro.m_data.make();
-				ngl::db_data<TDBTAB>::foreach_index(
-					[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
+					nguid lguid(atab.m_id());
+					pro.m_data.m_data->insert(std::make_pair(lguid, atab));
+					if (aindex % lsendmaxcount == 0)
 					{
-						nguid lguid(atab.m_id());
-						pro.m_data.m_data->insert(std::make_pair(lguid, atab));
-						if (aindex % lsendmaxcount == 0)
-						{
-							nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-							pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
-							pro.m_stat = true;
-							pro.m_over = false;
-							pro.m_data.make();
-						}
-					});
-				pro.m_over = true;
-				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-				log_info()->print("loadall[{}]", tools::protobuf_tabname<TDBTAB>::name());
-			}Catch
+						nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
+						pro.m_stat = true;
+						pro.m_over = false;
+						pro.m_data.make();
+					}
+				});
+			pro.m_over = true;
+			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
+			log_info()->print("loadall[{}]", tools::protobuf_tabname<TDBTAB>::name());
 		}
 
 		// # 加载表中的指定数据
@@ -118,12 +112,8 @@ namespace ngl
 			i64_actorid lid = adata.m_id.id();
 			if (lid == -1)
 			{
-				Try
-				{
-					Assert(m_tab->m_isloadall);
-					//加载全部数据
-					loadall(apack, adata);
-				}Catch
+				//加载全部数据
+				loadall(apack, adata);
 			}
 			else
 			{

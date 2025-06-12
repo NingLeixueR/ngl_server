@@ -235,7 +235,7 @@ namespace ngl
 		inline T& front()
 		{
 			auto ptr = m_list.front();
-			assert(ptr != nullptr);
+			tools::core_dump(ptr == nullptr);
 			return ptr->m_data;
 		}
 
@@ -441,7 +441,7 @@ namespace ngl
 		inline T& front()
 		{
 		 	auto ptr = m_list.front();
-			assert(ptr != nullptr);
+			tools::core_dump(ptr == nullptr);
 			return ptr->m_data;
 		}
 	};

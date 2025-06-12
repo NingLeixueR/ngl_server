@@ -286,7 +286,7 @@ namespace ngl
 				m_dataid = adataid;
 			}
 			const std::set<i16_area>* lsetarea = ttab_servers::get_arealist(nconfig::m_nodeid);
-			Assert(lsetarea->empty() == false);
+			tools::core_dump(lsetarea == nullptr || lsetarea->empty());
 			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
 			for (i16_area area : *lsetarea)
 			{

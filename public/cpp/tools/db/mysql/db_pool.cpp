@@ -8,29 +8,23 @@ namespace ngl
 
 	void db_pool::init(const dbarg& adbarg)
 	{
-		Try
+		if (!m_vec.empty())
 		{
-			if (!m_vec.empty())
-			{
-				return;
-			}
-			const tab_servers* tab = ttab_servers::tab();
-			m_vec.resize(tab->m_threadnum);
-			for (int i = 0; i < tab->m_threadnum; ++i)
-			{
-				m_vec[i] = new db();
-				Assert(m_vec[i]->connectdb(adbarg));
-			}
 			return;
-		}Catch
+		}
+		const tab_servers* tab = ttab_servers::tab();
+		m_vec.resize(tab->m_threadnum);
+		for (int i = 0; i < tab->m_threadnum; ++i)
+		{
+			m_vec[i] = new db();
+			tools::core_dump(!m_vec[i]->connectdb(adbarg));
+		}
+		return;
 	}
 
 	db* db_pool::get(int32_t aindex)
 	{
-		Try
-		{
-			return m_vec.at(aindex);
-		}Catch
-		return nullptr;
+		tools::core_dump(aindex >= m_vec.size() || aindex < 0);
+		return m_vec[aindex];
 	}
 }// namespace ngl

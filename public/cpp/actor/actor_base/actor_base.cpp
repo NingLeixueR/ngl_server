@@ -152,11 +152,8 @@ namespace ngl
 
 		inline void add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
 		{
-			Try
-			{
-				Assert(m_dbclient != nullptr);
-				m_dbclient->add(adbclient, aid);
-			}Catch
+			tools::core_dump(m_dbclient == nullptr);
+			m_dbclient->add(adbclient, aid);
 		}
 
 		inline void save()

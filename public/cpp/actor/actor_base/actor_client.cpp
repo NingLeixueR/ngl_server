@@ -152,17 +152,14 @@ namespace ngl
 		{
 			return true;
 		}
-		Try
+		// # 需要尝试连接ActorServer结点 并向其注册自己
+		tools::core_dump(ttab_servers::node_type() == ngl::ACTORSERVER);
+		tools::core_dump(ttab_servers::node_type() == ngl::ROBOT);
+		const tab_servers* tab = ttab_servers::tab();
+		for (int32_t id : tab->m_actorserver)
 		{
-			// # 需要尝试连接ActorServer结点 并向其注册自己
-			Assert(ttab_servers::node_type() != ngl::ACTORSERVER);
-			Assert(ttab_servers::node_type() != ngl::ROBOT);
-			const tab_servers * tab = ttab_servers::tab();
-			for (int32_t id : tab->m_actorserver)
-			{
-				actor_server_register(id);
-			}
-		}Catch
+			actor_server_register(id);
+		}
 		return true;
 	}
 
@@ -194,21 +191,18 @@ namespace ngl
 		{
 			return true;
 		}
-		Try
+		auto lparm = adata.get_data();
+		const tab_servers* tab = ttab_servers::tab();
+		tools::core_dump(tab == nullptr);
+		for (const nactornode& node : lparm->m_vec)
 		{
-			auto lparm				= adata.get_data();
-			const tab_servers* tab	= ttab_servers::tab();
-			Assert(tab != nullptr);
-			for(const nactornode& node :lparm->m_vec)
+			if (server_session::sessionid(node.m_serverid) == -1)
 			{
-				if (server_session::sessionid(node.m_serverid) == -1)
-				{
-					// # 比较id(较大的主动连接较小的)
-					// # NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
-					activ_connect(node.m_serverid);
-				}
+				// # 比较id(较大的主动连接较小的)
+				// # NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
+				activ_connect(node.m_serverid);
 			}
-		}Catch
+		}
 		return true;
 	}
 
@@ -232,42 +226,39 @@ namespace ngl
 		{
 			return true;
 		}
-		Try
+		auto lparm = adata.get_data();
+		auto lpack = adata.get_pack();
+		i32_serverid lserverid = lparm->m_id;
+		tools::core_dump(lserverid == nconfig::m_nodeid);
+
+		node_update(this, nconfig::m_nodeid, lpack->m_id);
+
+		server_session::add(lserverid, lpack->m_id);
+
+		set_node(lserverid, lpack->m_id);
+		naddress::set_session(lserverid, lpack->m_id);
+
+		// 主动连接
+		if (isactiv_connect(lserverid) == false)
 		{
-			auto lparm = adata.get_data();
-			auto lpack = adata.get_pack();
-			i32_serverid lserverid = lparm->m_id;
-			Assert(lserverid != nconfig::m_nodeid);
+			np_actorclient_node_connect pro;
+			pro.m_id = nconfig::m_nodeid;
+			nets::sendbysession(lpack->m_id, pro, nguid::moreactor(), id_guid());
+		}
 
-			node_update(this, nconfig::m_nodeid, lpack->m_id);
+		set_connect_fnish(lparm->m_id);
+		connect_fnish();
 
-			server_session::add(lserverid, lpack->m_id);
-
-			set_node(lserverid, lpack->m_id);
-			naddress::set_session(lserverid, lpack->m_id);
-
-			// 主动连接
-			if (isactiv_connect(lserverid) == false)
-			{
-				np_actorclient_node_connect pro;
-				pro.m_id = nconfig::m_nodeid;
-				nets::sendbysession(lpack->m_id, pro, nguid::moreactor(), id_guid());
-			}
-
-			set_connect_fnish(lparm->m_id);
-			connect_fnish();
-
-			// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
-			NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
-			if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
-			{
-				auto pro = std::make_shared<np_actorserver_connect>();
-				pro->m_serverid = lserverid;
-				nguid lguid = nguid::make_self(ACTOR_LOGIN);
-				handle_pram lparm = handle_pram::create(lguid, guid(), pro);
-				actor_manage::instance().push_task_id(lguid, lparm, false);
-			}
-		}Catch
+		// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
+		NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
+		if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
+		{
+			auto pro = std::make_shared<np_actorserver_connect>();
+			pro->m_serverid = lserverid;
+			nguid lguid = nguid::make_self(ACTOR_LOGIN);
+			handle_pram lparm = handle_pram::create(lguid, guid(), pro);
+			actor_manage::instance().push_task_id(lguid, lparm, false);
+		}
 		return true;
 	}
 

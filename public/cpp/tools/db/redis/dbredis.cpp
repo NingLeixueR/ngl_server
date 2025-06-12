@@ -47,12 +47,12 @@ namespace ngl
 		if (m_rc->err)
 		{
 			log_error()->print("[ERROR] Redis[{}] ", m_rc->err);
-			assert(0);
+			tools::core_dump();
 			return;
 		}
 		if (!redis_cmd::cmd(m_rc, "AUTH %s", arg.m_passworld.c_str()))
 		{
-			assert(0);
+			tools::core_dump();
 			return;
 		}
 	}

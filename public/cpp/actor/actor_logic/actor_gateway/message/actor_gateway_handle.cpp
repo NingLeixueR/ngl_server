@@ -81,56 +81,49 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<np_actorswitch_process<np_actorswitch_process_role>>& adata)
 	{
-		Try
-		{
-			auto lpram = adata.get_data();
-			nguid lguid(lpram->m_actor);
+		auto lpram = adata.get_data();
+		nguid lguid(lpram->m_actor);
 
-			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
-			Assert(linfo != nullptr);
-			if (lpram->m_toserverid != 0)
-			{
-				linfo->m_gameid = lpram->m_toserverid;
-				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_add = {*linfo} }));
-			}
-		}Catch
-			return true;
+		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
+		tools::core_dump(linfo == nullptr);
+		if (lpram->m_toserverid != 0)
+		{
+			linfo->m_gameid = lpram->m_toserverid;
+			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
+		}
+		return true;
 	}
 
 	bool actor_gateway::handle(const message<np_actor_session_close>& adata)
 	{
-		Try
+		auto lpram = adata.get_data();
+		if (sysconfig::robot_test())
 		{
-			auto lpram = adata.get_data();
-			if (sysconfig::robot_test())
-			{
-				std::vector<gateway_socket*> lvec;
-				m_info.foreach([&lvec, lpram](gateway_socket* agetway)
+			std::vector<gateway_socket*> lvec;
+			m_info.foreach([&lvec, lpram](gateway_socket* agetway)
+				{
+					if (lpram->m_sessionid == agetway->m_socket)
 					{
-						if (lpram->m_sessionid == agetway->m_socket)
-						{
-							lvec.push_back(agetway);
-						}
-					});
-				std::ranges::for_each(lvec, [this](gateway_socket* asocket)
-					{
-						gateway_socket* linfo = m_info.get(asocket->m_area, asocket->m_dataid);
-						session_close(linfo);
-					});
-			}
-			else
-			{
-				gateway_socket* linfo = m_info.get(lpram->m_sessionid);
-				Assert(linfo != nullptr);
-				session_close(linfo);
-			}
+						lvec.push_back(agetway);
+					}
+				});
+			std::ranges::for_each(lvec, [this](gateway_socket* asocket)
+				{
+					gateway_socket* linfo = m_info.get(asocket->m_area, asocket->m_dataid);
+					session_close(linfo);
+				});
+		}
+		else
+		{
+			gateway_socket* linfo = m_info.get(lpram->m_sessionid);
+			tools::core_dump(linfo == nullptr);
+			session_close(linfo);
+		}
 
-			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_delsocket = {lpram->m_sessionid}}));
+		update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_delsocket = {lpram->m_sessionid} }));
 
-			m_info.remove_socket(lpram->m_sessionid);
-			return true;
-		}Catch
-			return false;
+		m_info.remove_socket(lpram->m_sessionid);
+		return true;
 	}
 
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
@@ -139,15 +132,16 @@ namespace ngl
 		{
 			auto lpram = adata.get_data();
 			auto lpack = adata.get_pack();
-			Assert(lpack != nullptr);
+
+			tools::core_dump(lpack == nullptr);
+
 			log_error()->print("############ GateWay Login[{}][{}][{}] ############"
 				, lpack->m_id, lpram->m_roleid(), lpram->m_session()
 			);
 			nguid lguid(lpram->m_roleid());
 			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 
-			Assert(linfo != nullptr);
-			Assert(linfo->m_session == lpram->m_session());
+			tools::core_dump(linfo == nullptr || linfo->m_session == lpram->m_session());
 
 			if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 			{
