@@ -29,7 +29,7 @@ namespace ngl
 		keyvaluedb m_keyvaluedb;
 	public:
 		friend class actor_instance<actor_keyvalue>;
-		static actor_keyvalue& getInstance()
+		static actor_keyvalue& instance()
 		{
 			return actor_instance<actor_keyvalue>::instance();
 		}

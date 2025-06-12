@@ -90,7 +90,7 @@ namespace ngl
 	void gcmd<T>::execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro)
 	{
 		assert(m_actor != nullptr);
-		assert(m_actor->id_guid() == actor_gm::getInstance().id_guid());
+		assert(m_actor->id_guid() == actor_gm::instance().id_guid());
 		actor_gm::sendtophp(apro->identifier(), *apro->data());
 	}
 

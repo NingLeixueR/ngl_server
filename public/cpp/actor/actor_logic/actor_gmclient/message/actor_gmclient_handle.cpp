@@ -20,7 +20,7 @@ namespace ngl
 			handle_cmd::add("server_stat") = [this](int id, const ngl::json_read& aos)
 				{
 					gcmd<actor_manage::msg_actor_stat> lpro(id, "server_stat");
-					actor_manage::getInstance().get_actor_stat(lpro.m_data);
+					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
 
 			handle_cmd::add("set_time") = [this](int id, const ngl::json_read& aos)

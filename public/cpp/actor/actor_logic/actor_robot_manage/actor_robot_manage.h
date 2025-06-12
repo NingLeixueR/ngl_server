@@ -20,7 +20,7 @@ namespace ngl
 		std::map<std::string, _robot> m_maprobot;
 
 		friend class actor_instance<actor_robot_manage>;
-		static actor_robot_manage& getInstance() 
+		static actor_robot_manage& instance() 
 		{ 
 			return actor_instance<actor_robot_manage>::instance();
 		}

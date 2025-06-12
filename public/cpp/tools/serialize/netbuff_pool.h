@@ -168,7 +168,7 @@ namespace ngl
 			netbuff<enum_pool_buff_bytes, enum_pool_count>({50, 50, 40, 30, 20, 20, 20, 10, 10, 10})
 		{}
 	public:
-		static netbuff_pool& getInstance()
+		static netbuff_pool& instance()
 		{
 			static netbuff_pool lnet;
 			return lnet;
@@ -178,7 +178,7 @@ namespace ngl
 		{
 			if constexpr (ISUSENETPOOL == true)
 			{
-				return getInstance().malloc_private(abytes);
+				return instance().malloc_private(abytes);
 			}
 			return new char[abytes];
 		}
@@ -187,7 +187,7 @@ namespace ngl
 		{
 			if constexpr (ISUSENETPOOL == true)
 			{
-				getInstance().free_private(abuff);
+				instance().free_private(abuff);
 				return;
 			}
 			delete[] abuff;

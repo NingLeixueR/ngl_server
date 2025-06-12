@@ -146,7 +146,7 @@ namespace ngl
 		auto lparm = adata.get_data();
 
 		std::map<int32_t, int32_t> litems;
-		if (getInstance().get_drop().droplist(lparm->m_dropid, 1, litems) == false)
+		if (instance().get_drop().droplist(lparm->m_dropid, 1, litems) == false)
 		{
 			ngl::log_error()->print("role:{} mailid:{} drop:{} parm:{} fail!!!", nguid(lparm->m_roleid), lparm->m_tid, lparm->m_dropid, lparm->m_parm);
 			return false;

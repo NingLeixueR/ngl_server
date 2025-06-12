@@ -385,7 +385,7 @@ class idl
 {
 	std::map<std::string, idl_file> m_data;
 public:
-	static idl& getInstance(bool arecreate = false)
+	static idl& instance(bool arecreate = false)
 	{
 		static idl ltemp;
 		if (arecreate)

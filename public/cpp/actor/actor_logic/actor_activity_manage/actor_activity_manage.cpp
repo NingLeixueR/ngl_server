@@ -42,8 +42,8 @@ namespace ngl
 		m_activitydb.set(this);
 		m_activitytimedb.set(this);
 
-		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init_writeall(this);
-		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid(), true).init_onlyread(this);
+		tdb_brief::nsp_cli<actor_activity_manage>::instance(id_guid(), true).init_writeall(this);
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::instance(id_guid(), true).init_onlyread(this);
 		tdb_activitytimes::nsp_ser::init(&m_activitytimedb);
 
 		m_drop.init(this, {});
@@ -51,9 +51,9 @@ namespace ngl
 
 	void actor_activity_manage::erase_actor_before()
 	{
-		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_activity_manage>::instance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
-		tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid()).exit();
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::instance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
 
 		m_drop.exit();
@@ -180,7 +180,7 @@ namespace ngl
 			}
 		}
 
-		const pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::getInstance(id_guid()).getconst(pbdb::db_keyvalue::open_server);
+		const pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::instance(id_guid()).getconst(pbdb::db_keyvalue::open_server);
 		if (lkeyvalue != nullptr)
 		{
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());

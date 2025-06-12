@@ -28,7 +28,7 @@ namespace ngl
 		virtual ~actor_client();
 	public:
 		friend class actor_instance<actor_client>;
-		static actor_client& getInstance() 
+		static actor_client& instance() 
 		{ 
 			return actor_instance<actor_client>::instance(); 
 		}

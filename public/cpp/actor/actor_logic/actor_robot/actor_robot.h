@@ -25,7 +25,7 @@ namespace ngl
 	{
 		std::vector<thruput*> m_rounds;
 	public:
-		static test_thruput& getInstance()
+		static test_thruput& instance()
 		{
 			static test_thruput ltemp;
 			return ltemp;
@@ -37,7 +37,7 @@ namespace ngl
 			if (m_rounds[arounds]->m_count >= m_rounds[arounds]->m_maxcount)
 			{
 				m_rounds[arounds]->m_end = ngl::time_wheel::getms();
-				test_thruput::getInstance().print(arounds);
+				test_thruput::instance().print(arounds);
 			}
 		}
 

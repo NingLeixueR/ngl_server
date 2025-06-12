@@ -22,7 +22,7 @@ namespace ngl
 		actor_gateway();
 	public:
 		friend class actor_instance<actor_gateway>;
-		static actor_gateway& getInstance() 
+		static actor_gateway& instance() 
 		{ 
 			return actor_instance<actor_gateway>::instance(); 
 		}

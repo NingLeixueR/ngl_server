@@ -19,12 +19,12 @@ namespace ngl
 		void init(TACTOR* aactor, const std::set<i64_actorid>& adataid)
 		{
 			m_actor = aactor;
-			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid(), true).init_onlyread(m_actor);
+			tdb_activitytimes::nsp_cli<TACTOR>::instance(m_actor->id_guid(), true).init_onlyread(m_actor);
 		}
 
 		void exit()
 		{
-			tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid()).exit();
+			tdb_activitytimes::nsp_cli<TACTOR>::instance(m_actor->id_guid()).exit();
 		}
 
 		bool isactivity(const tab_random* tab)
@@ -37,7 +37,7 @@ namespace ngl
 			for (int32_t activityid : tab->m_activityids)
 			{
 				const pbdb::db_activitytimes* lpactivitytimes = 
-					tdb_activitytimes::nsp_cli<TACTOR>::getInstance(m_actor->id_guid()).getconst(activityid);
+					tdb_activitytimes::nsp_cli<TACTOR>::instance(m_actor->id_guid()).getconst(activityid);
 				if (lpactivitytimes != nullptr)
 				{
 					if (lnow >= lpactivitytimes->m_beg()

@@ -23,7 +23,7 @@ namespace ngl
 		std::set<int64_t> m_roleban;
 	public:
 		friend class actor_instance<actor_role_manage>;
-		static actor_role_manage& getInstance()
+		static actor_role_manage& instance()
 		{ 
 			return actor_instance<actor_role_manage>::instance();
 		}

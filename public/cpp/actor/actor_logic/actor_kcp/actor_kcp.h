@@ -19,7 +19,7 @@ namespace ngl
 		actor_kcp();
 	public:
 		friend class actor_instance<actor_kcp>;
-		static actor_kcp& getInstance()
+		static actor_kcp& instance()
 		{
 			return actor_instance<actor_kcp>::instance();
 		}

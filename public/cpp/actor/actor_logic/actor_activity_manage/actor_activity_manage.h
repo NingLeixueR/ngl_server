@@ -50,7 +50,7 @@ namespace ngl
 		activitytimedb m_activitytimedb;
 
 		friend class actor_instance<actor_activity_manage>;
-		static actor_activity_manage& getInstance()
+		static actor_activity_manage& instance()
 		{
 			return actor_instance<actor_activity_manage>::instance();
 		}
@@ -81,7 +81,7 @@ namespace ngl
 
 		static drop<actor_activity_manage>& get_drop()
 		{
-			return getInstance().m_drop;
+			return instance().m_drop;
 		}
 
 		bool timer_handle(const message<np_timerparm>& adata);

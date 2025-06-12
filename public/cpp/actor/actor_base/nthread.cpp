@@ -55,7 +55,7 @@ namespace ngl
 						m_actor = nullptr;
 						m_isactivity = false;
 					}
-					actor_manage::getInstance().push(lpactor, athread);
+					actor_manage::instance().push(lpactor, athread);
 				}
 			}
 		}

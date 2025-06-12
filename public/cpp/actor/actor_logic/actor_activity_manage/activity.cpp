@@ -104,7 +104,7 @@ namespace ngl
 			return;
 		}
 
-		actor_activity_manage::getInstance().log_error()->print(
+		actor_activity_manage::instance().log_error()->print(
 			"activity [{}] rolelevelchange roleid:[{}] beforelevel[{}] nowlevel[{}]",
 			nguid(activityid()), aroleid, abeforelevel, anowlevel
 		);
@@ -118,7 +118,7 @@ namespace ngl
 			return;
 		}
 		// 活动期间产生等级变化
-		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::getInstance(actor_activity_manage::actorid()).get(aroleid);
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::instance(actor_activity_manage::actorid()).get(aroleid);
 		if (lpbrief != nullptr)
 		{
 			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolelv())[lpactivity->m_id] += anowlevel - abeforelevel;
@@ -138,7 +138,7 @@ namespace ngl
 			return;
 		}
 
-		actor_activity_manage::getInstance().log_error()->print(
+		actor_activity_manage::instance().log_error()->print(
 			"activity [{}] rolegoldchange roleid:[{}] beforegold[{}] nowgold[{}]",
 			nguid(activityid()), aroleid, abeforegold, anowgold
 		);
@@ -152,7 +152,7 @@ namespace ngl
 			return;
 		}
 		// 活动期间产生等级变化
-		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::getInstance(actor_activity_manage::actorid()).get(aroleid);
+		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::instance(actor_activity_manage::actorid()).get(aroleid);
 		if (lpbrief != nullptr)
 		{
 			(*lpbrief->mutable_m_activityvalues()->mutable_m_activity_rolegold())[lpactivity->m_id] += anowgold - abeforegold;
@@ -162,7 +162,7 @@ namespace ngl
 
 	void activity::brief_activityvalues(i64_actorid aroleid)
 	{
-		tdb_brief::nsp_cli<actor_activity_manage>::getInstance(actor_activity_manage::actorid()).change(aroleid);
+		tdb_brief::nsp_cli<actor_activity_manage>::instance(actor_activity_manage::actorid()).change(aroleid);
 	}
 
 }//namespace ngl

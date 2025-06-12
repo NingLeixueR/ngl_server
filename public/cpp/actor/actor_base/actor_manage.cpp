@@ -551,14 +551,14 @@ namespace ngl
 	actor_suspendthread::actor_suspendthread()
 	{
 		log_info()->print("start actor_suspendthread");
-		actor_manage::getInstance().statrt_suspend_thread();
+		actor_manage::instance().statrt_suspend_thread();
 	}
 
 	actor_suspendthread::~actor_suspendthread()
 	{
 		Try
 		{
-			actor_manage::getInstance().finish_suspend_thread();
+			actor_manage::instance().finish_suspend_thread();
 			log_info()->print("finish actor_suspendthread");
 		}Catch
 	}

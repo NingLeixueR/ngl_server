@@ -47,7 +47,7 @@ namespace ngl
 		using type_actor_events = actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>;
 
 		friend class actor_instance<type_actor_events>;
-		static type_actor_events& getInstance()
+		static type_actor_events& instance()
 		{
 			return actor_instance<type_actor_events>::instance();
 		}

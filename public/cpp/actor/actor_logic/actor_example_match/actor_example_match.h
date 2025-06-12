@@ -102,7 +102,7 @@ namespace ngl
 		actor_example_match();
 	public:
 		friend class actor_instance<actor_example_match>;
-		static actor_example_match& getInstance()
+		static actor_example_match& instance()
 		{
 			return actor_instance<actor_example_match>::instance();
 		}

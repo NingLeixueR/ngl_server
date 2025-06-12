@@ -23,7 +23,7 @@ class idlcppprotocol
 
 	std::string m_tit;
 public:
-	static idlcppprotocol& getInstance()
+	static idlcppprotocol& instance()
 	{
 		static idlcppprotocol ltemp;
 		return ltemp;
@@ -31,7 +31,7 @@ public:
 
 	void _h()
 	{
-		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			std::string lstr;
@@ -60,7 +60,7 @@ public:
 	
 	void _cpp()
 	{
-		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			std::string lstr;
@@ -126,7 +126,7 @@ public:
 
 	void _cs()
 	{
-		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			if (item.first != "csvtable")
@@ -288,7 +288,7 @@ namespace ngl
 		tprotocol::tp_customs::template func <
 )";
 		int lindex = 200000000;
-		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		bool isdouhao = false;
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
@@ -369,7 +369,7 @@ namespace ngl
 	}
 }//namespace ngl
 )";
-		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			for (const auto& item2 : item.second.m_enum)
@@ -452,7 +452,7 @@ namespace ngl
 
 	void _ttab()
 	{
-		std::map<std::string, idl_file>& lmap = idl::getInstance().data();
+		std::map<std::string, idl_file>& lmap = idl::instance().data();
 		for (std::pair<const std::string, idl_file>& item : lmap)
 		{
 			//Struct lStruct(lstr, item.second.m_struct, item.second.m_enum);

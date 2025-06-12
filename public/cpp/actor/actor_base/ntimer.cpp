@@ -13,7 +13,7 @@ namespace ngl
 			.m_count		= aparm->m_count,
 			.m_fun			= [lidguid, aparm](const wheel_node* anode)
 			{
-				if (actor_manage::getInstance().is_have_actor(lidguid) == false)
+				if (actor_manage::instance().is_have_actor(lidguid) == false)
 				{
 					log_error()->print("time run fail: {} , {}", (nguid)lidguid, aparm->m_timerid);
 					twheel::wheel().removetimer(aparm->m_timerid);

@@ -259,7 +259,7 @@ bool start_db(int argc, char** argv)
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -271,9 +271,9 @@ bool start_db(int argc, char** argv)
 	ngl::tdb::tdb_init(false);
 	ngl::db_manage::init();
 
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_gmclient::instance();
 	
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 
 	// ----------------test start-------------------- //
 	if (argc >= 5)
@@ -303,7 +303,7 @@ bool start_crossdb()
 	{
 		return false;
 	}
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -314,9 +314,9 @@ bool start_crossdb()
 	ngl::db_pool::init(nconfig::m_crossdb.m_dbarg);
 	ngl::tdb::tcrossdb_init(false);
 
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -329,7 +329,7 @@ bool start_world()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -337,22 +337,22 @@ bool start_world()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_events_logic::getInstance();
-	ngl::actor_gm::getInstance();
-	ngl::actor_mail::getInstance();
-	ngl::actor_chat::getInstance();
-	ngl::actor_brief::getInstance();
-	ngl::actor_notice::getInstance();
-	ngl::actor_keyvalue::getInstance();
-	ngl::actor_ranklist::getInstance();
-	ngl::actor_activity_manage::getInstance();
-	ngl::actor_family::getInstance();
-	ngl::actor_friends::getInstance();
-	ngl::actor_gmclient::getInstance();
-	ngl::actor_example_match::getInstance();
-	ngl::actor_example_manage::getInstance();
+	ngl::actor_events_logic::instance();
+	ngl::actor_gm::instance();
+	ngl::actor_mail::instance();
+	ngl::actor_chat::instance();
+	ngl::actor_brief::instance();
+	ngl::actor_notice::instance();
+	ngl::actor_keyvalue::instance();
+	ngl::actor_ranklist::instance();
+	ngl::actor_activity_manage::instance();
+	ngl::actor_family::instance();
+	ngl::actor_friends::instance();
+	ngl::actor_gmclient::instance();
+	ngl::actor_example_match::instance();
+	ngl::actor_example_manage::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -365,7 +365,7 @@ bool start_login()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -373,10 +373,10 @@ bool start_login()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_login::getInstance();
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_login::instance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -389,7 +389,7 @@ bool start_gateway()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -397,12 +397,12 @@ bool start_gateway()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_gateway::getInstance();
-	ngl::actor_gateway_g2c::getInstance();
-	ngl::actor_gateway_c2g::getInstance();
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_gateway::instance();
+	ngl::actor_gateway_g2c::instance();
+	ngl::actor_gateway_c2g::instance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -415,14 +415,14 @@ bool start_log()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	assert(ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX && ngl::sysconfig::logwritelevel() > ngl::ELOG_NONE);
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -435,7 +435,7 @@ bool start_actor()
 		return false;
 	}
 
-	ngl::actor_server::getInstance();
+	ngl::actor_server::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -443,7 +443,7 @@ bool start_actor()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_gmclient::instance();
 
 	return true;
 }
@@ -457,7 +457,7 @@ bool start_game()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -465,12 +465,12 @@ bool start_game()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_role_manage::getInstance();
-	ngl::actor_create::getInstance();
-	ngl::actor_kcp::getInstance();
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_role_manage::instance();
+	ngl::actor_create::instance();
+	ngl::actor_kcp::instance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -483,7 +483,7 @@ bool start_cross()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -491,11 +491,11 @@ bool start_cross()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_chat::getInstance();
-	ngl::actor_ranklist::getInstance();
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_chat::instance();
+	ngl::actor_ranklist::instance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -573,7 +573,7 @@ bool start_csvserver()
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -581,10 +581,10 @@ bool start_csvserver()
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_csvserver::getInstance();
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_csvserver::instance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_client::getInstance().actor_server_register();
+	ngl::actor_client::instance().actor_server_register();
 	return true;
 }
 
@@ -597,7 +597,7 @@ bool start_robot(int argc, char** argv)
 		return false;
 	}
 
-	ngl::actor_client::getInstance();
+	ngl::actor_client::instance();
 
 	if (ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX)
 	{
@@ -605,11 +605,11 @@ bool start_robot(int argc, char** argv)
 		ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	}
 
-	ngl::actor_gmclient::getInstance();
+	ngl::actor_gmclient::instance();
 
-	ngl::actor_robot_manage::getInstance();
+	ngl::actor_robot_manage::instance();
 
-	ngl::actor_robot_manage::getInstance().connect(ngl::ttab_servers::tab()->m_login, [](int asession)
+	ngl::actor_robot_manage::instance().connect(ngl::ttab_servers::tab()->m_login, [](int asession)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
 		});

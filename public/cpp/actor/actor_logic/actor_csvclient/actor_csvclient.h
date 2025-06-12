@@ -13,7 +13,7 @@ namespace ngl
 		actor_csvclient();
 	public:
 		friend class actor_instance<actor_csvclient>;
-		static actor_csvclient& getInstance()
+		static actor_csvclient& instance()
 		{
 			return actor_instance<actor_csvclient>::instance();
 		}
