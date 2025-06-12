@@ -121,7 +121,7 @@ namespace ngl
 		// # 当与db服务器发生连接时触发加载数据事件
 		void load() final
 		{
-			const tab_servers* tab = ttab_servers::tab();
+			const tab_servers* tab = ttab_servers::instance().tab();
 			tools::core_dump(tab == nullptr);
 			auto pro = std::make_shared<np_actornode_connect_task>();
 			pro->m_serverid = tab->m_db;
@@ -141,7 +141,7 @@ namespace ngl
 		// # db结点的id
 		i32_actordataid dbnodeid()
 		{
-			const tab_servers* tab = ttab_servers::tab();
+			const tab_servers* tab = ttab_servers::instance().tab();
 			return tab->m_db;
 		}
 
@@ -229,7 +229,7 @@ namespace ngl
 
 				set_logactor(aactor);
 
-				m_tab = ttab_dbload::get_tabdb<TDBTAB>();
+				m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
 				tools::core_dump(m_tab == nullptr);
 				
 				static bool m_register = false;
@@ -440,7 +440,7 @@ namespace ngl
 
 		void add(ndbclient_base* adbclient, const nguid& aid)
 		{
-			tools::core_dump(!m_typedbclientmap.contains(adbclient->type()));
+			tools::core_dump(m_typedbclientmap.contains(adbclient->type()));
 			m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 			init(adbclient, m_actor, aid);
 		}

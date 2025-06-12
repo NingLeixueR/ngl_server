@@ -264,7 +264,7 @@ namespace ngl
 						return;
 					}
 					i32_serverid lserverid = tools::lexical_cast<i32_serverid>(avec[1]);
-					ttab_servers::tab(lserverid);
+					ttab_servers::instance().tab(lserverid);
 					i32_session lsession = server_session::sessionid(lserverid);
 					nets::sendmsg(lsession, "/login libo 123456");
 					wheel_parm lparm

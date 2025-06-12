@@ -78,10 +78,10 @@ namespace ngl
 		{
 			.m_isremove = aisremove,
 			.m_actorid = nguid::make(ACTOR_ROLE, aguid.area(), aguid.actordataid()),
-			.m_gatewayid = ttab_servers::tab()->m_id,
+			.m_gatewayid = ttab_servers::instance().tab()->m_id,
 		};
 
-		for (i32_serverid iserverid : ttab_servers::tab()->m_actorserver)
+		for (i32_serverid iserverid : ttab_servers::instance().tab()->m_actorserver)
 		{
 			i64_actorid lactorserve = actor_server::actorid();
 			actor_base::send_server(iserverid, pro, lactorserve, nguid::make());

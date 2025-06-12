@@ -414,7 +414,7 @@ namespace ngl
 
 	bool actor_base::iskcp()
 	{
-		static bool lkcp = (ttab_servers::nworks(ENET_KCP) != nullptr) ? true : false;
+		static bool lkcp = (ttab_servers::instance().nworks(ENET_KCP) != nullptr) ? true : false;
 		return lkcp;
 	}
 

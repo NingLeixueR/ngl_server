@@ -6,25 +6,46 @@
 
 namespace ngl
 {
-	struct ttab_dbload :
+	class ttab_dbload :
 		public manage_csv<tab_dbload>
 	{
 		ttab_dbload(const ttab_dbload&) = delete;
 		ttab_dbload& operator=(const ttab_dbload&) = delete;
-		using type_tab = tab_dbload;
 
-		static std::map<std::string, tab_dbload*> m_name2data;
+		std::map<std::string, tab_dbload*> m_name2data;
 
 		ttab_dbload()
-		{}
+		{
+			allcsv::loadcsv(this);
+		}
 
-		static const std::map<int, tab_dbload>& tablecsv()
+		void reload()final
+		{
+			std::cout << "[ttab_dbload] reload" << std::endl;
+			for (std::pair<const int, tab_dbload>& ipair : m_tablecsv)
+			{
+				tab_dbload& tab = ipair.second;
+				m_name2data[tab.m_name] = &tab;
+			}
+		}
+
+	public:
+		using type_tab = tab_dbload;
+
+		static ttab_dbload& instance()
+		{
+			static ttab_dbload ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_dbload>& tablecsv()
 		{
 			const ttab_dbload* ttab = allcsv::get<ttab_dbload>();
 			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_dbload* tab(int32_t aid)
+
+		const tab_dbload* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);
@@ -35,19 +56,9 @@ namespace ngl
 			return &itor->second;
 		}
 
-		void reload()final
-		{
-			for (std::pair<const int, tab_dbload>& ipair : m_tablecsv)
-			{
-				tab_dbload& tab = ipair.second;
-				m_name2data[tab.m_name] = &tab;
-			}
-		}
-
 		template <typename T>
-		static tab_dbload* get_tabdb()
+		tab_dbload* get_tabdb()
 		{
-			allcsv::loadcsv<ttab_dbload>();
 			std::string lname = T().descriptor()->full_name();
 			ngl::tools::replace("pbdb.", "", lname, lname);
 			std::ranges::transform(lname, lname.begin(), toupper);

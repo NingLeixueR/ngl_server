@@ -193,7 +193,7 @@ namespace ngl
 
 	void logfile_default::printf(const np_logitem* alog)
 	{
-		const tab_servers* tab = ttab_servers::tab(alog->m_serverid);
+		const tab_servers* tab = ttab_servers::instance().tab(alog->m_serverid);
 		m_stream << 
 			std::format("[{}][name:{},serverid:{},tcount:{}]{}\n#\n{}\n#\n", ngl::localtime::time2str(alog->m_time, "%H:%M:%S"), 
 				tab->m_name, tab->m_id, tab->m_tcount, alog->m_src, alog->m_data

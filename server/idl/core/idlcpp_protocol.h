@@ -480,28 +480,39 @@ namespace ngl
 
 namespace ngl
 {
-	struct t{} :
+	class t{} :
 		public manage_csv<{}>
 	{{
 		t{}(const t{}&) = delete;
 		t{}& operator=(const t{}&) = delete;
-		using type_tab = {};
+
 		t{}()
-		{{}}
+		{{
+			allcsv::loadcsv(this);
+		}}
 
 		void reload()final
 		{{
 			std::cout << "{} reload" << std::endl;
 		}}	
 
-		static const std::map<int, {}>& tablecsv()
+	public:
+		using type_tab = {};
+
+		static t{}& instance()
+		{{
+			static t{} ltemp;
+			return ltemp;
+		}}
+
+		const std::map<int, {}>& tablecsv()
 		{{
 			const t{}* ttab = allcsv::get<t{}>();
 			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}}
 
-		static const {}* tab(int32_t aid)
+		const {}* tab(int32_t aid)
 		{{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);

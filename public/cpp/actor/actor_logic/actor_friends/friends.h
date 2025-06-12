@@ -53,11 +53,11 @@ namespace ngl
 				return 1;
 			}
 			auto& lconstfriends = lfriends->getconst();
-			if (lconstfriends.m_friends_size() >= ttab_specialid::m_friendscount)
+			if (lconstfriends.m_friends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 2;
 			}
-			if (lconstfriends.m_applyfriends_size() >= ttab_specialid::m_friendsapplylistcount)
+			if (lconstfriends.m_applyfriends_size() >= ttab_specialid::instance().m_friendsapplylistcount)
 			{
 				return 3;
 			}
@@ -89,11 +89,11 @@ namespace ngl
 			{
 				return 2;
 			}
-			if (lfriends1->getconst().m_friends_size() >= ttab_specialid::m_friendscount)
+			if (lfriends1->getconst().m_friends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 3;
 			}
-			if (lfriends2->getconst().m_friends_size() >= ttab_specialid::m_friendscount)
+			if (lfriends2->getconst().m_friends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 4;
 			}

@@ -21,7 +21,7 @@ namespace ngl
 		const tab_ranklist* m_tab;
 	public:
 		rankset_base(pbdb::eranklist aranktype) :
-			m_tab(ttab_ranklist::tab(aranktype))
+			m_tab(ttab_ranklist::instance().tab(aranktype))
 		{
 			assert(m_tab != nullptr);
 		}

@@ -11,7 +11,7 @@ namespace ngl
 
 	void server_session::add(i32_serverid aserverid, i32_sessionid asession)
 	{
-		log_error()->print("server_session::add [{}:{}] [{}]", aserverid, ttab_servers::tab(aserverid)->m_name, asession);
+		log_error()->print("server_session::add [{}:{}] [{}]", aserverid, ttab_servers::instance().tab(aserverid)->m_name, asession);
 		{
 			lock_write(m_mutex);
 			m_server.erase(aserverid);
@@ -29,7 +29,7 @@ namespace ngl
 		{
 			return;
 		}
-		log_error()->print("server_session::remove [{}:{}] [{}]", itor->second, ttab_servers::tab(itor->second)->m_name, asession);
+		log_error()->print("server_session::remove [{}:{}] [{}]", itor->second, ttab_servers::instance().tab(itor->second)->m_name, asession);
 		m_server.erase(itor->second);
 		m_session.erase(itor);
 	}
@@ -60,7 +60,7 @@ namespace ngl
 	{
 		if (aserverid != -1)
 		{
-			const tab_servers* tab = ttab_servers::tab(aserverid);
+			const tab_servers* tab = ttab_servers::instance().tab(aserverid);
 			if (tab != nullptr)
 			{
 				asername = tab->m_name;

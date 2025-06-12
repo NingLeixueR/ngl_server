@@ -26,7 +26,7 @@ namespace ngl
 			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
 		)
 		{
-			const tab_activity* ltab = ttab_activity::tab(aactivityid);
+			const tab_activity* ltab = ttab_activity::instance().tab(aactivityid);
 			auto itor = m_activityall.find(ltab->m_type);
 			if (itor == m_activityall.end())
 			{

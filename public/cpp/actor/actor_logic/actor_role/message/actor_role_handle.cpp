@@ -218,7 +218,7 @@ namespace ngl
 			handle_cmd::add("/switch") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
-					const tab_servers* tab = ttab_servers::find_first(GAME, [](tab_servers* atab)->bool
+					const tab_servers* tab = ttab_servers::instance().find_first(GAME, [](tab_servers* atab)->bool
 						{
 							return atab->m_id != nconfig::m_nodeid;
 						});
@@ -426,7 +426,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		const tab_servers* tab = ttab_servers::node_tnumber(GAME, adata.get_data()->m_line());
+		const tab_servers* tab = ttab_servers::instance().node_tnumber(GAME, adata.get_data()->m_line());
 		if (tab == nullptr)
 		{
 			return false;
@@ -445,7 +445,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
-		const tab_task* tab = ttab_task::tab(adata.get_data()->m_taskid());
+		const tab_task* tab = ttab_task::instance().tab(adata.get_data()->m_taskid());
 		if (tab == nullptr)
 		{
 			return true;

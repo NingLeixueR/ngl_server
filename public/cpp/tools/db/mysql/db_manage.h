@@ -60,7 +60,7 @@ namespace ngl
 			i16_area larea = nguid::area(adata.m_id());
 			if (larea == 0)
 			{
-				larea = ttab_servers::tab()->m_area;
+				larea = ttab_servers::instance().tab()->m_area;
 			}
 
 			// # INSERT INTO %s  (id,data)VALUES(%lld,'%s')  ON DUPLICATE KEY UPDATE %s
@@ -124,7 +124,7 @@ namespace ngl
 			static std::string lareastr;
 			if (lareastr.empty())
 			{
-				std::set<i16_area>* lareaset = ttab_mergearea::mergelist(ttab_servers::tab()->m_area);
+				std::set<i16_area>* lareaset = ttab_mergearea::instance().mergelist(ttab_servers::instance().tab()->m_area);
 				tools::core_dump(lareaset == nullptr);
 
 				// # 删除小于0的元素

@@ -19,7 +19,7 @@ namespace ngl
 		logfile::config lconfig
 		{
 			.m_id = aid,
-			.m_dir = std::format("log/{}", ttab_servers::tab()->m_name),
+			.m_dir = std::format("log/{}", ttab_servers::instance().tab()->m_name),
 			.m_flush_time = 10,
 		};
 		nconfig::get_publicconfig()->find("log_flushtime", lconfig.m_flush_time);

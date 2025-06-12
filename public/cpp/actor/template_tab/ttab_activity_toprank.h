@@ -6,26 +6,46 @@
 
 namespace ngl
 {
-	struct ttab_activity_toprank :
+	class ttab_activity_toprank :
 		public manage_csv<tab_activity_toprank>
 	{
 		ttab_activity_toprank(const ttab_activity_toprank&) = delete;
 		ttab_activity_toprank& operator=(const ttab_activity_toprank&) = delete;
-		using type_tab = tab_activity_toprank;
 
 		// key:activityid //value.key:rank 
-		static std::map<int32_t, std::map<int32_t, const tab_activity_toprank*>> m_activityrank;
+		std::map<int32_t, std::map<int32_t, const tab_activity_toprank*>> m_activityrank;
 
 		ttab_activity_toprank()
-		{}
+		{
+			allcsv::loadcsv(this);
+		}
 
-		static const std::map<int, tab_activity_toprank>& tablecsv()
+		void reload()final
+		{
+			std::cout << "[ttab_activity_toprank] reload" << std::endl;
+			for (std::pair<const int, tab_activity_toprank>& pair : m_tablecsv)
+			{
+				m_activityrank[pair.second.m_activityid][pair.second.m_rank] = &pair.second;
+			}
+		}
+
+	public:
+		using type_tab = tab_activity_toprank;
+
+		static ttab_activity_toprank& instance()
+		{
+			static ttab_activity_toprank ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_activity_toprank>& tablecsv()
 		{
 			const ttab_activity_toprank* ttab = allcsv::get<ttab_activity_toprank>();
 			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_activity_toprank* tab(int32_t aid)
+
+		const tab_activity_toprank* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);
@@ -36,15 +56,7 @@ namespace ngl
 			return &itor->second;
 		}
 
-		void reload()final
-		{
-			for (std::pair<const int, tab_activity_toprank>& pair : m_tablecsv)
-			{
-				m_activityrank[pair.second.m_activityid][pair.second.m_rank] = &pair.second;
-			}
-		}
-
-		static bool rankreward(int32_t aactivityid, int32_t arank, int32_t& amailid, int32_t& areward)
+		bool rankreward(int32_t aactivityid, int32_t arank, int32_t& amailid, int32_t& areward)
 		{
 			auto lprankmap = tools::findmap(m_activityrank, aactivityid);
 			if (lprankmap == nullptr)
@@ -60,6 +72,5 @@ namespace ngl
 			areward = reward_it->second->m_dropid;
 			return true;
 		}
-
 	};
 }//namespace ngl

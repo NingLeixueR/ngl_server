@@ -9,42 +9,25 @@
 
 namespace ngl
 {
-	struct ttab_mergearea :
+	class ttab_mergearea :
 		public manage_csv<tab_mergearea>
 	{
 		ttab_mergearea(const ttab_mergearea&) = delete;
 		ttab_mergearea& operator=(const ttab_mergearea&) = delete;
-		using type_tab = tab_mergearea;
 
 		// key: 区服id value: 合并到哪个区服
-		static std::map<i16_area, i16_area> m_merge1;
+		std::map<i16_area, i16_area> m_merge1;
 		// key: 合服区服id value: 哪些区服在此区服
-		static std::map<i16_area, std::set<i16_area>> m_merge2;
-		static bool m_load;
+		std::map<i16_area, std::set<i16_area>> m_merge2;
 
 		ttab_mergearea()
-		{}
-
-		static const std::map<int, tab_mergearea>& tablecsv()
 		{
-			const ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
-			tools::core_dump(ttab == nullptr);
-			return ttab->m_tablecsv;
-		}
-
-		static const tab_mergearea* tab(int32_t aid)
-		{
-			const auto& lmap = tablecsv();
-			auto itor = lmap.find(aid);
-			if (itor == lmap.end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
+			allcsv::loadcsv(this);
 		}
 
 		void reload()final
 		{
+			std::cout << "[ttab_mergearea] reload" << std::endl;
 			for (std::pair<const int, tab_mergearea>& pair : m_tablecsv)
 			{
 				i16_area larea = (i16_area)pair.second.m_id;
@@ -55,16 +38,41 @@ namespace ngl
 			}
 		}
 
-		// 哪些区服在此区服
-		static std::set<i16_area>* mergelist(i16_area aarea)
+	public:
+		using type_tab = tab_mergearea;
+
+		static ttab_mergearea& instance()
 		{
-			allcsv::loadcsv<ttab_mergearea>();
+			static ttab_mergearea ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_mergearea>& tablecsv()
+		{
+			const ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
+			tools::core_dump(ttab == nullptr);
+			return ttab->m_tablecsv;
+		}
+
+		const tab_mergearea* tab(int32_t aid)
+		{
+			const auto& lmap = tablecsv();
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
+		}
+
+		// 哪些区服在此区服
+		std::set<i16_area>* mergelist(i16_area aarea)
+		{
 			return tools::findmap(m_merge2, aarea);
 		}
 
-		static i16_area mergeid(i16_area aarea)
+		i16_area mergeid(i16_area aarea)
 		{
-			allcsv::loadcsv<ttab_mergearea>();
 			i16_area* ret = tools::findmap(m_merge1, aarea);
 			if (ret == nullptr)
 			{

@@ -14,12 +14,12 @@ namespace ngl
 		}
 		bool sendtogmclient(NODE_TYPE atype, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
-			const tab_servers* tab = ttab_servers::node_tnumber(atype, 1);
+			const tab_servers* tab = ttab_servers::instance().node_tnumber(atype, 1);
 			if (tab == nullptr)
 			{
 				return false;
 			}
-			if (ttab_servers::tab()->m_id != tab->m_id)
+			if (ttab_servers::instance().tab()->m_id != tab->m_id)
 			{
 				i64_actorid lactorid = nguid::make(ACTOR_GMCLIENT, tab_self_area, tab->m_id);
 				agm->sendbyactorid(lactorid, adata->get_pack(), *adata->get_data());

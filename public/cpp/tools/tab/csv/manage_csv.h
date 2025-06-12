@@ -121,13 +121,13 @@ namespace ngl
 		static csvbase* get_csvbase(const std::string& akey);
 
 		template <typename TTAB>
-		static void loadcsv()
+		static void loadcsv(TTAB* athis)
 		{
 			static std::atomic<bool> lload = true;
 			if (lload.exchange(false))
 			{
 				using TAB = typename TTAB::type_tab;
-				csvbase* lp = new TTAB();
+				csvbase* lp = athis;
 				allcsv::add(TAB::name(), lp);
 				lp->load();
 				lp->reload();
@@ -137,7 +137,6 @@ namespace ngl
 		template <typename TTAB>
 		static TTAB* get()
 		{
-			loadcsv<TTAB>();
 			std::string lname = TTAB::name();
 			csvbase** lp = tools::findmap(m_data, lname);
 			tools::core_dump(lp == nullptr);

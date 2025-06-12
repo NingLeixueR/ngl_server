@@ -176,7 +176,7 @@ namespace ngl
 
 	room* actor_example_match::add_room(pbexample::EPLAY_TYPE atype)
 	{
-		int32_t ltotalnumber = ttab_specialid::m_example_totalnumber[atype];
+		int32_t ltotalnumber = ttab_specialid::instance().m_example_totalnumber[atype];
 		if (ltotalnumber <= 0)
 		{
 			return nullptr;
@@ -280,7 +280,7 @@ namespace ngl
 				{
 					continue;
 				}
-				if (check_timeout(lproom->m_roomready, ttab_specialid::m_example_room_readytime))
+				if (check_timeout(lproom->m_roomready, ttab_specialid::instance().m_example_room_readytime))
 				{
 					matching_finish(lproom);
 				}
@@ -302,7 +302,7 @@ namespace ngl
 					{
 						continue;
 					}
-					if (check_timeout(lproom->m_roomcreate, ttab_specialid::m_example_room_maxtime))
+					if (check_timeout(lproom->m_roomcreate, ttab_specialid::instance().m_example_room_maxtime))
 					{
 						erase_room(lproom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_TIMEOUT);
 					}

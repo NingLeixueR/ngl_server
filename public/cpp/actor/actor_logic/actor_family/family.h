@@ -69,7 +69,7 @@ namespace ngl
 				return false;
 			}
 			auto lnow = (int32_t)localtime::gettime();
-			if (lnow - lpfamilyer->m_lastleaveutc() < ttab_specialid::m_familjoininterval)
+			if (lnow - lpfamilyer->m_lastleaveutc() < ttab_specialid::instance().m_familjoininterval)
 			{
 				return false;
 			}

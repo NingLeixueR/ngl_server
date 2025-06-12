@@ -157,7 +157,7 @@ void init_DB_NOTICE()
 	for (int i = 1; i < 10; ++i)
 	{
 		pbdb::db_notice ltemp;
-		ltemp.set_m_id((ngl::ttab_servers::tab()->m_area*100)+i);
+		ltemp.set_m_id((ngl::ttab_servers::instance().tab()->m_area*100)+i);
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
 		ltemp.set_m_notice(lvec[i]);
@@ -515,7 +515,7 @@ bool start_pushserverconfig()
 	}
 	lpushserver = lgmurl + "/" + lpushserver;
 
-	ngl::ttab_servers::foreach_server([&lpushserver](const ngl::tab_servers* aserver)
+	ngl::ttab_servers::instance().foreach_server([&lpushserver](const ngl::tab_servers* aserver)
 		{
 			auto lhttp = ngl::manage_curl::make_http();
 			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
@@ -609,7 +609,7 @@ bool start_robot(int argc, char** argv)
 
 	ngl::actor_robot_manage::instance();
 
-	ngl::actor_robot_manage::instance().connect(ngl::ttab_servers::tab()->m_login, [](int asession)
+	ngl::actor_robot_manage::instance().connect(ngl::ttab_servers::instance().tab()->m_login, [](int asession)
 		{
 			std::cout << "连接Login服务器成功" << std::endl;
 		});

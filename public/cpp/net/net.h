@@ -84,7 +84,7 @@ namespace ngl
 			for (auto itor = asession.begin(); itor != asession.end(); ++itor)
 			{
 				ENET_PROTOCOL ltype = session2type(itor->first);
-				if (ttab_servers::isefficient(ltype))
+				if (ttab_servers::instance().isefficient(ltype))
 				{
 					lset.insert(ltype);
 				}
@@ -112,7 +112,7 @@ namespace ngl
 			for (auto itor = asession.begin(); itor != asession.end(); ++itor)
 			{
 				ENET_PROTOCOL ltype = session2type(*itor);
-				if (ttab_servers::isefficient(ltype))
+				if (ttab_servers::instance().isefficient(ltype))
 				{
 					lset.insert(ltype);
 				}
