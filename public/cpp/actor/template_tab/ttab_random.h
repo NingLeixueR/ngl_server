@@ -4,25 +4,50 @@
 #include "type.h"
 #include "nlog.h"
 #include "xml.h"
+#include "nlog.h"
 
 namespace ngl
 {
-	struct ttab_random :
+	class ttab_random :
 		public manage_csv<tab_random>
 	{
 		ttab_random(const ttab_random&) = delete;
 		ttab_random& operator=(const ttab_random&) = delete;
-		using type_tab = tab_random;
-		ttab_random()
-		{}
 
-		static const std::map<int, tab_random>& tablecsv()
+		ttab_random()
+		{
+			allcsv::loadcsv(this);
+		}
+
+		void reload()final
+		{
+			std::cout << "[ttab_random] reload" << std::endl;
+			// ## 检查所有子掉落是否循环引用
+			for (std::pair<const int, tab_random>& ipair : m_tablecsv)
+			{
+				tab_random& tab = ipair.second;
+				std::set<int32_t> lset;
+				tools::core_dump(!is_loop(tab.m_id, lset));
+			}
+		}
+
+	public:
+		using type_tab = tab_random;
+
+		static ttab_random& instance()
+		{
+			static ttab_random ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_random>& tablecsv()
 		{
 			const ttab_random* ttab = allcsv::get<ttab_random>();
 			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_random* tab(int32_t aid)
+
+		const tab_random* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);
@@ -53,7 +78,5 @@ namespace ngl
 			}
 			return true;
 		}
-
-		void reload()final;
 	};
 }//namespace ngl

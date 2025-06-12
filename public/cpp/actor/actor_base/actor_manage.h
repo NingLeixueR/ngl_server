@@ -110,24 +110,17 @@ namespace ngl
 		static bool first = true;
 		if (first)
 		{
-			Try
-			{
-				first = false;
-				T* lptemp = &ltemp;
-				actor_manage::instance().add_actor(&ltemp, [lptemp]()
+			first = false;
+			T* lptemp = &ltemp;
+			actor_manage::instance().add_actor(&ltemp, [lptemp]()
 				{
-						Try
-						{
-							lptemp->set_activity_stat(actor_stat_free);
-							lptemp->init();
-							lptemp->init_db_component(false);
-							actor::create_log(lptemp->type());
-						}
-						Catch
+					lptemp->set_activity_stat(actor_stat_free);
+					lptemp->init();
+					lptemp->init_db_component(false);
+					actor::create_log(lptemp->type());
 				});
-				ltemp.template init_rfun<T>();
-				T::nregister();
-			}Catch
+			ltemp.template init_rfun<T>();
+			T::nregister();
 		}
 		return ltemp;
 	}

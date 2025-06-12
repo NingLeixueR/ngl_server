@@ -34,7 +34,7 @@ namespace ngl
 		// # ≥ı ºªØ
 		static void init()
 		{
-			m_tab = ttab_dbload::get_tabdb<TDBTAB>();
+			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
 
 			tools::core_dump(m_tab == nullptr);
 

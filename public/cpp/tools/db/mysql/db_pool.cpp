@@ -12,7 +12,7 @@ namespace ngl
 		{
 			return;
 		}
-		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::instance().tab();
 		m_vec.resize(tab->m_threadnum);
 		for (int i = 0; i < tab->m_threadnum; ++i)
 		{

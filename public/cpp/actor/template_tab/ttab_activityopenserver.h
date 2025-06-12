@@ -6,22 +6,39 @@
 
 namespace ngl
 {
-	struct ttab_activityopenserver :
+	class ttab_activityopenserver :
 		public manage_csv<tab_activityopenserver>
 	{
 		ttab_activityopenserver(const ttab_activityopenserver&) = delete;
 		ttab_activityopenserver& operator=(const ttab_activityopenserver&) = delete;
-		using type_tab = tab_activityopenserver;
-		ttab_activityopenserver()
-		{}
 
-		static const std::map<int, tab_activityopenserver>& tablecsv()
+		ttab_activityopenserver()
+		{
+			allcsv::loadcsv(this);
+		}
+
+		void reload()final
+		{
+			std::cout << "[ttab_activityopenserver] reload" << std::endl;
+		}
+
+	public:
+		using type_tab = tab_activityopenserver;
+
+		static ttab_activityopenserver& instance()
+		{
+			static ttab_activityopenserver ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_activityopenserver>& tablecsv()
 		{
 			const ttab_activityopenserver* ttab = allcsv::get<ttab_activityopenserver>();
 			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_activityopenserver* tab(int32_t aid)
+
+		const tab_activityopenserver* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);

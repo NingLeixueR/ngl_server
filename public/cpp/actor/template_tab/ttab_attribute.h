@@ -15,20 +15,37 @@ namespace ngl
 	{
 		ttab_attribute(const ttab_attribute&) = delete;
 		ttab_attribute& operator=(const ttab_attribute&) = delete;
-		using type_tab = tab_attribute;
-	private:
-		static std::map<int32_t, std::tuple<int32_t, int32_t>> m_uplowlimit;
-	public:
-		ttab_attribute()
-		{}
 
-		static const std::map<int, tab_attribute>& tablecsv()
+		std::map<int32_t, std::tuple<int32_t, int32_t>> m_uplowlimit;
+
+		ttab_attribute()
+		{
+			allcsv::loadcsv(this);
+		}
+
+		void reload()final
+		{
+			std::cout << "[ttab_attribute] reload" << std::endl;
+			init_uplowlimit();
+		}
+
+	public:
+		using type_tab = tab_attribute;
+
+		static ttab_attribute& instance()
+		{
+			static ttab_attribute ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_attribute>& tablecsv()
 		{
 			const ttab_attribute* ttab = allcsv::get<ttab_attribute>();
 			assert(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_attribute* tab(int32_t aid)
+
+		const tab_attribute* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);
@@ -39,17 +56,12 @@ namespace ngl
 			return &itor->second;
 		}
 
-		void reload()final
-		{
-			init_uplowlimit();
-		}
-
-		static const tab_attribute* attr(EnumAttribute atype)
+		const tab_attribute* attr(EnumAttribute atype)
 		{
 			return tab(atype);
 		}
 
-		static float fightcoefficient(EnumAttribute atype)
+		float fightcoefficient(EnumAttribute atype)
 		{
 			const tab_attribute* ltab = tab(atype);
 			if (ltab == nullptr)
@@ -59,7 +71,7 @@ namespace ngl
 			return ltab->m_fightcoefficient;
 		}
 
-		static void init_uplowlimit()
+		void init_uplowlimit()
 		{
 			for (const auto& [key, value] : tablecsv())
 			{
@@ -70,7 +82,7 @@ namespace ngl
 			}
 		}
 
-		static int32_t uplowlimit(EnumAttribute atype, int32_t avalues)
+		int32_t uplowlimit(EnumAttribute atype, int32_t avalues)
 		{
 			if (m_uplowlimit.empty())
 			{
@@ -95,7 +107,7 @@ namespace ngl
 			}
 		}
 
-		static void add(map_attrvalue& al, const map_attrvalue& ar)
+		void add(map_attrvalue& al, const map_attrvalue& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{
@@ -103,7 +115,7 @@ namespace ngl
 			}
 		}
 
-		static void add(map_attrratio& al, const map_attrratio& ar)
+		void add(map_attrratio& al, const map_attrratio& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{
@@ -111,7 +123,7 @@ namespace ngl
 			}
 		}
 
-		static void dec(map_attrvalue& al, const map_attrvalue& ar)
+		void dec(map_attrvalue& al, const map_attrvalue& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{
@@ -119,7 +131,7 @@ namespace ngl
 			}
 		}
 
-		static void dec(map_attrratio& al, const map_attrratio& ar)
+		void dec(map_attrratio& al, const map_attrratio& ar)
 		{
 			for (const auto& [key, value] : ar)
 			{

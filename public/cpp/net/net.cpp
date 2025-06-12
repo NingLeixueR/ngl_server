@@ -35,7 +35,7 @@ namespace ngl
 
 	net_protocol* nets::nettype(ENET_PROTOCOL atype)
 	{
-		if (ttab_servers::isefficient(atype) && m_net[atype] != nullptr)
+		if (ttab_servers::instance().isefficient(atype) && m_net[atype] != nullptr)
 		{
 			return m_net[atype];
 		}
@@ -44,7 +44,7 @@ namespace ngl
 
 	bool nets::check_serverkcp()
 	{
-		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::instance().tab();
 		if (tab == nullptr)
 		{
 			return false;
@@ -88,7 +88,7 @@ namespace ngl
 			return false;
 		}
 
-		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::instance().tab();
 		if (tab == nullptr)
 		{
 			return false;
@@ -156,7 +156,7 @@ namespace ngl
 
 	net_works const* nets::ipport(i32_serverid aserverid, std::pair<str_ip, i16_port>& apair)
 	{
-		net_works const* lpstruct = ttab_servers::connect(aserverid);
+		net_works const* lpstruct = ttab_servers::instance().connect(aserverid);
 		if (lpstruct == nullptr)
 		{
 			return nullptr;

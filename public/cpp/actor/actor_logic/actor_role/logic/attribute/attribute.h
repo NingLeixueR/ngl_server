@@ -36,7 +36,7 @@ namespace ngl
 			}
 			for (const auto& [key, value] : itor->second.m_crattr)
 			{
-				ttab_attribute::add(m_moduledata[key].m_orattr, value);
+				ttab_attribute::instance().add(m_moduledata[key].m_orattr, value);
 			}
 		}
 
@@ -47,13 +47,13 @@ namespace ngl
 			{
 				return;
 			}
-			ttab_attribute::dec(root().m_attr, itor->second.m_fight);
+			ttab_attribute::instance().dec(root().m_attr, itor->second.m_fight);
 			for (const auto& [key, value] : itor->second.m_crattr)
 			{
-				ttab_attribute::dec(m_moduledata[key].m_orattr, value);
+				ttab_attribute::instance().dec(m_moduledata[key].m_orattr, value);
 				if (key != EnumModule::E_ModuleRoot)
 				{
-					ttab_attribute::dec(root().m_attr, m_moduledata[key].m_fight);
+					ttab_attribute::instance().dec(root().m_attr, m_moduledata[key].m_fight);
 				}
 			}
 		}
@@ -76,14 +76,14 @@ namespace ngl
 				return;
 			}
 			itor->second.update();
-			ttab_attribute::add(root().m_attr, itor->second.m_fight);
+			ttab_attribute::instance().add(root().m_attr, itor->second.m_fight);
 			for (const auto& [key, value] : itor->second.m_crattr)
 			{
-				ttab_attribute::add(m_moduledata[key].m_orattr, value);
+				ttab_attribute::instance().add(m_moduledata[key].m_orattr, value);
 				if (is_module_root(key) == false)
 				{
 					m_moduledata[key].update();
-					ttab_attribute::add(root().m_attr, m_moduledata[key].m_fight);
+					ttab_attribute::instance().add(root().m_attr, m_moduledata[key].m_fight);
 				}
 			}
 			root().update();
@@ -124,7 +124,7 @@ namespace ngl
 					continue;
 				}
 				lpair.second.update();
-				ttab_attribute::add(root().m_attr, lpair.second.m_fight);
+				ttab_attribute::instance().add(root().m_attr, lpair.second.m_fight);
 			}
 			root().update();
 		}

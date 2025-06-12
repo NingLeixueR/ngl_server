@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 	// # ¼ÓÔØcsvÅäÖÃ
 	ngl::csvbase::set_path("./csv", lname);
 
-	const ngl::tab_servers* tab = ngl::ttab_servers::tab(argv[1], larea, ltcount);
+	const ngl::tab_servers* tab = ngl::ttab_servers::instance().tab(argv[1], larea, ltcount);
 	if (tab == nullptr)
 	{
 		return 0;

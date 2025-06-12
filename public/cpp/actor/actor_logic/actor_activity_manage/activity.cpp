@@ -13,7 +13,7 @@ namespace ngl
 		m_activitydb(&aactivitydb),
 		m_activitytimedb(&aactivitytimedb)
 	{
-		m_tab = ttab_activity::tab(activityid);
+		m_tab = ttab_activity::instance().tab(activityid);
 		assert(m_tab != nullptr);
 
 		m_actorid = actor::tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);

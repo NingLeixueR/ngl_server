@@ -44,11 +44,8 @@ namespace ngl
 
 	i16_area xmlnode::area()
 	{
-		auto ltab = ttab_servers::tab(m_nodeid);
-		if (ltab == nullptr)
-		{
-			return nguid::none_area();
-		}
+		auto ltab = ttab_servers::instance().tab(m_nodeid);
+		tools::core_dump(ltab == nullptr);
 		return ltab->m_area;
 	}
 

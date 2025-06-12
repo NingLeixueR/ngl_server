@@ -19,7 +19,7 @@ namespace ngl
 		{
 			if (m_localnum == 0)
 			{
-				m_localnum = (ttab_servers::tab()->m_type * 100 + ttab_servers::tab()->m_tcount);
+				m_localnum = (ttab_servers::instance().tab()->m_type * 100 + ttab_servers::instance().tab()->m_tcount);
 			}
 			m_value16[1] = 0x8000 | m_localnum;
 		}

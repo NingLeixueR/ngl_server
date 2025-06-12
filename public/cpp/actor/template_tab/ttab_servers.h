@@ -6,25 +6,46 @@
 
 namespace ngl
 {
-	struct ttab_servers :
+	class ttab_servers :
 		public manage_csv<tab_servers>
 	{
 		ttab_servers(const ttab_servers&) = delete;
 		ttab_servers& operator=(const ttab_servers&) = delete;
-		using type_tab = tab_servers;
 
-		static std::map<int16_t, std::vector<tab_servers*>> m_areaofserver;
+		std::map<int16_t, std::vector<tab_servers*>> m_areaofserver;
 
 		ttab_servers()
-		{}
+		{
+			allcsv::loadcsv(this);
+		}
 
-		static const std::map<int, tab_servers>& tablecsv()
+		void reload()final
+		{
+			std::cout << "[ttab_servers] reload" << std::endl;
+			m_areaofserver.clear();
+			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
+			{
+				m_areaofserver[pair.second.m_area].push_back(&pair.second);
+			}
+		}
+
+	public:
+		using type_tab = tab_servers;
+
+		static ttab_servers& instance()
+		{
+			static ttab_servers ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_servers>& tablecsv()
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_servers* tab(int32_t aid)
+
+		const tab_servers* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);
@@ -35,12 +56,12 @@ namespace ngl
 			return &itor->second;
 		}
 
-		static const tab_servers* tab()
+		const tab_servers* tab()
 		{
 			return tab(nconfig::m_nodeid);
 		}
 
-		static const tab_servers* tab(const std::string& aname, int area, int32_t atcount)
+		const tab_servers* tab(const std::string& aname, int area, int32_t atcount)
 		{
 			for (const std::pair<const int, tab_servers>& item : tablecsv())
 			{
@@ -52,16 +73,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		void reload()final
-		{
-			m_areaofserver.clear();
-			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
-			{
-				m_areaofserver[pair.second.m_area].push_back(&pair.second);
-			}
-		}
-
-		static const net_works* nworks(ENET_PROTOCOL atype, const tab_servers* atab)
+		const net_works* nworks(ENET_PROTOCOL atype, const tab_servers* atab)
 		{
 			for (auto& item : atab->m_net)
 			{
@@ -73,12 +85,12 @@ namespace ngl
 			return nullptr;
 		}
 
-		static const net_works* nworks(ENET_PROTOCOL atype)
+		const net_works* nworks(ENET_PROTOCOL atype)
 		{
 			return nworks(atype, tab());
 		}
 
-		static const net_works* get_nworks(ENET_PROTOCOL atype)
+		const net_works* get_nworks(ENET_PROTOCOL atype)
 		{
 			//nconfig::m_nodeid
 			const tab_servers* ltab = tab();
@@ -89,7 +101,7 @@ namespace ngl
 			return nworks(atype, ltab);
 		}
 
-		static const net_works* get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype)
+		const net_works* get_nworks(const std::string& aname, int area, int32_t atcount, ENET_PROTOCOL atype)
 		{
 			const tab_servers* ltab = tab(aname, area, atcount);
 			if (ltab == nullptr)
@@ -99,12 +111,12 @@ namespace ngl
 			return nworks(atype, ltab);
 		}
 
-		static bool isefficient(ENET_PROTOCOL atype)
+		bool isefficient(ENET_PROTOCOL atype)
 		{
 			return atype == ENET_TCP || atype == ENET_WS;
 		}
 	private:
-		static const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
+		const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
 		{
 			tools::core_dump(alocalserver == aotherserver);
 			const tab_servers* ltab1 = tab(alocalserver);
@@ -131,24 +143,24 @@ namespace ngl
 			return nullptr;
 		}
 	public:
-		static net_works const* connect(i32_serverid aserverid)
+		net_works const* connect(i32_serverid aserverid)
 		{
 			return connect(nconfig::m_nodeid, aserverid);
 		}
 
-		static NODE_TYPE node_type(i32_serverid aserverid)
+		NODE_TYPE node_type(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
 			tools::core_dump(ltab == nullptr);
 			return ltab->m_type;
 		}
 
-		static NODE_TYPE node_type()
+		NODE_TYPE node_type()
 		{
 			return node_type(nconfig::m_nodeid);
 		}
 
-		static const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
+		const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
 			tools::core_dump(ttab == nullptr);
@@ -163,9 +175,8 @@ namespace ngl
 		}
 
 		// 便利所有服务器
-		static void foreach_server(const std::function<void(const tab_servers*)>& afun)
+		void foreach_server(const std::function<void(const tab_servers*)>& afun)
 		{
-			allcsv::loadcsv<ttab_servers>();
 			for (const auto& [_area, _vec] : m_areaofserver)
 			{
 				for (const tab_servers* iserver : _vec)
@@ -176,9 +187,8 @@ namespace ngl
 		}
 
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
-		static const std::set<i16_area>* get_area(i16_area aarea)
+		const std::set<i16_area>* get_area(i16_area aarea)
 		{
-			allcsv::loadcsv<ttab_servers>();
 			static std::map<i16_area, std::set<i16_area>> lmap;
 			if (aarea < 0)
 			{
@@ -222,7 +232,7 @@ namespace ngl
 
 		// 服务器类型	atype
 		// 区服			aarea（负数代表跨服,需要提供跨服内所有atype服务器）
-		static bool foreach_server(NODE_TYPE atype, i16_area aarea, const std::function<void(const tab_servers*)>& afun)
+		bool foreach_server(NODE_TYPE atype, i16_area aarea, const std::function<void(const tab_servers*)>& afun)
 		{
 			const std::set<i16_area>* larea = get_area(aarea);
 			if (larea == nullptr)
@@ -251,7 +261,7 @@ namespace ngl
 			return true;
 		}
 
-		static bool get_server(NODE_TYPE atype, i16_area aarea, std::vector<i32_serverid>& avec)
+		bool get_server(NODE_TYPE atype, i16_area aarea, std::vector<i32_serverid>& avec)
 		{
 			return foreach_server(atype, aarea, [&avec](const tab_servers* iserver)
 				{
@@ -259,9 +269,8 @@ namespace ngl
 				});
 		}
 
-		static tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)>& afun)
+		tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)>& afun)
 		{
-			allcsv::loadcsv<ttab_servers>();
 			std::vector<tab_servers*>* litem = tools::findmap(m_areaofserver, tab()->m_area);
 			if (litem == nullptr)
 			{
@@ -278,7 +287,7 @@ namespace ngl
 		}
 
 		// 获取服务器所在区服
-		static const std::set<i16_area>* get_arealist(i32_serverid aserverid)
+		const std::set<i16_area>* get_arealist(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
 			if (ltab == nullptr)
@@ -290,5 +299,5 @@ namespace ngl
 	};
 }//namespace ngl
 
-#define tab_self_area  ngl::ttab_servers::tab()->m_area
-#define tab_self_cros_area  ngl::ttab_servers::tab()->m_crossarea
+#define tab_self_area  ngl::ttab_servers::instance().tab()->m_area
+#define tab_self_cros_area  ngl::ttab_servers::instance().tab()->m_crossarea

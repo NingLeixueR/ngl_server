@@ -246,7 +246,7 @@ namespace ngl
 									return;
 								}
 
-								const tab_recharge* ltab = ttab_recharge::tab(lrechargeid);
+								const tab_recharge* ltab = ttab_recharge::instance().tab(lrechargeid);
 								if (ltab == nullptr)
 								{
 									return;
@@ -387,11 +387,11 @@ namespace ngl
 
 	bool actor_role::forward_before(const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
 	{
-		if (ttab_specialid::m_createfamilconsume > m_info.gold())
+		if (ttab_specialid::instance().m_createfamilconsume > m_info.gold())
 		{
 			return false;
 		}
-		m_info.change_gold(-ttab_specialid::m_createfamilconsume);
+		m_info.change_gold(-ttab_specialid::instance().m_createfamilconsume);
 		return true;
 	}
 

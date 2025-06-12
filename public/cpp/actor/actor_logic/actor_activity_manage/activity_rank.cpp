@@ -32,7 +32,7 @@ namespace ngl
 		{
 			int32_t lmailid = 0;
 			int32_t lreward = 0;
-			if (ttab_activity_toprank::rankreward(m_tab->m_id, i + 1, lmailid, lreward))
+			if (ttab_activity_toprank::instance().rankreward(m_tab->m_id, i + 1, lmailid, lreward))
 			{
 				continue;
 			}

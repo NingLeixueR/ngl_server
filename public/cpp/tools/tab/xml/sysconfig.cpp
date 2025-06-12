@@ -89,7 +89,7 @@ namespace ngl
 	void sysconfig::init_gatewayids()
 	{
 		m_gatewayids.clear();
-		if (ttab_servers::get_server(GATEWAY, tab_self_area, m_gatewayids) == false)
+		if (ttab_servers::instance().get_server(GATEWAY, tab_self_area, m_gatewayids) == false)
 		{
 			return;
 		}

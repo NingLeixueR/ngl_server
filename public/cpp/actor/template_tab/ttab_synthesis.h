@@ -6,22 +6,39 @@
 
 namespace ngl
 {
-	struct ttab_synthesis :
+	class ttab_synthesis :
 		public manage_csv<tab_synthesis>
 	{
 		ttab_synthesis(const ttab_synthesis&) = delete;
 		ttab_synthesis& operator=(const ttab_synthesis&) = delete;
-		using type_tab = tab_synthesis;
-		ttab_synthesis()
-		{}
 
-		static const std::map<int, tab_synthesis>& tablecsv()
+		ttab_synthesis()
+		{
+			allcsv::loadcsv(this);
+		}
+
+		void reload()final
+		{
+			std::cout << "[ttab_synthesis] reload" << std::endl;
+		}
+
+	public:
+		using type_tab = tab_synthesis;
+
+		static ttab_synthesis& instance()
+		{
+			static ttab_synthesis ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_synthesis>& tablecsv()
 		{
 			const ttab_synthesis* ttab = allcsv::get<ttab_synthesis>();
 			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_synthesis* tab(int32_t aid)
+		
+		const tab_synthesis* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);

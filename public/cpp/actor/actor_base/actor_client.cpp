@@ -74,7 +74,7 @@ namespace ngl
 
 	void set_node(int32_t aserverid, int asession)
 	{
-		tab_servers const* tab = ttab_servers::tab(aserverid);
+		tab_servers const* tab = ttab_servers::instance().tab(aserverid);
 		if (tab == nullptr)
 		{
 			return;
@@ -89,8 +89,8 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_connect_actor_server>& adata)
 	{
-		const tab_servers* tab = ttab_servers::tab();
-		const tab_servers* tabactor = ttab_servers::tab(adata.get_data()->m_serverid);
+		const tab_servers* tab = ttab_servers::instance().tab();
+		const tab_servers* tabactor = ttab_servers::instance().tab(adata.get_data()->m_serverid);
 		assert(tab != nullptr && tabactor != nullptr);
 
 		i64_actorid	lactorid = id_guid();
@@ -153,9 +153,9 @@ namespace ngl
 			return true;
 		}
 		// # 需要尝试连接ActorServer结点 并向其注册自己
-		tools::core_dump(ttab_servers::node_type() == ngl::ACTORSERVER);
-		tools::core_dump(ttab_servers::node_type() == ngl::ROBOT);
-		const tab_servers* tab = ttab_servers::tab();
+		tools::core_dump(ttab_servers::instance().node_type() == ngl::ACTORSERVER);
+		tools::core_dump(ttab_servers::instance().node_type() == ngl::ROBOT);
+		const tab_servers* tab = ttab_servers::instance().tab();
 		for (int32_t id : tab->m_actorserver)
 		{
 			actor_server_register(id);
@@ -192,7 +192,7 @@ namespace ngl
 			return true;
 		}
 		auto lparm = adata.get_data();
-		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::instance().tab();
 		tools::core_dump(tab == nullptr);
 		for (const nactornode& node : lparm->m_vec)
 		{
@@ -250,7 +250,7 @@ namespace ngl
 		connect_fnish();
 
 		// 当前结点类型如果是登陆服务器，且连接的结点为[GAME/GATEWAY]
-		NODE_TYPE lservertype = ttab_servers::node_type(lserverid);
+		NODE_TYPE lservertype = ttab_servers::instance().node_type(lserverid);
 		if (xmlnode::node_type() == ngl::LOGIN && (lservertype == ngl::GAME || lservertype == ngl::GATEWAY))
 		{
 			auto pro = std::make_shared<np_actorserver_connect>();

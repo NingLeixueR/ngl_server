@@ -75,14 +75,14 @@ namespace ngl
 		pro.set_m_area(tab_self_area);
 		pro.set_m_account(aaccount);
 		pro.set_m_password(apasswold);
-		const tab_servers* tab = ttab_servers::tab();
+		const tab_servers* tab = ttab_servers::instance().tab();
 		assert(tab != nullptr);
 		nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), instance().id_guid());
 	}
 
 	bool actor_robot_manage::check_connect(i32_serverid aserverid)const
 	{
-		return ttab_servers::tab(aserverid) != nullptr && ttab_servers::connect(aserverid) != nullptr;
+		return ttab_servers::instance().tab(aserverid) != nullptr && ttab_servers::instance().connect(aserverid) != nullptr;
 	}
 
 	void actor_robot_manage::connect(i32_serverid aserverid, const std::function<void(i32_sessionid)>& afun) const

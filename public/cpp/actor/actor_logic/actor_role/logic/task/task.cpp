@@ -120,7 +120,7 @@ namespace ngl
 
 	bool static_task::receive_task(actor_role* arole, i32_taskid ataskid)
 	{
-		if (ttab_task::repeat(arole, ataskid) == false)
+		if (ttab_task::instance().repeat(arole, ataskid) == false)
 		{//## 不可重复完成任务
 			//## 接收任务前先查看是否已经完成了
 			if (isfinish_task(arole, ataskid))
@@ -135,7 +135,7 @@ namespace ngl
 			return true;
 		}
 
-		const std::vector<task_condition>* lvec = ttab_task::condition_receive(ataskid);
+		const std::vector<task_condition>* lvec = ttab_task::instance().condition_receive(ataskid);
 		if (lvec == nullptr)
 		{
 			return false;
@@ -175,7 +175,7 @@ namespace ngl
 
 	bool static_task::finish_task(actor_role* arole, i32_taskid ataskid)
 	{
-		if (ttab_task::repeat(arole, ataskid) == false)
+		if (ttab_task::instance().repeat(arole, ataskid) == false)
 		{
 			// # 完成任务前先查看是否已经完成了
 			if (isfinish_task(arole, ataskid))
@@ -189,7 +189,7 @@ namespace ngl
 		{
 			return false;
 		}
-		const std::vector<task_condition>* lvecfinish = ttab_task::condition_complete(ataskid);
+		const std::vector<task_condition>* lvecfinish = ttab_task::instance().condition_complete(ataskid);
 		if (lvecfinish != nullptr && check_condition(arole, *lvecfinish))
 		{
 			auto& lruntask = run(arole);
@@ -199,7 +199,7 @@ namespace ngl
 				return false;
 			}
 			// # 发送奖励
-			const tab_task* tab = ttab_task::tab(ataskid);
+			const tab_task* tab = ttab_task::instance().tab(ataskid);
 			if (tab == nullptr)
 			{
 				return false;
@@ -248,7 +248,7 @@ namespace ngl
 						{
 							if (lschedule.m_type() == atype)
 							{
-								const task_condition* lpcondition = ttab_task::condition_complete(taskid, atype);
+								const task_condition* lpcondition = ttab_task::instance().condition_complete(taskid, atype);
 								if (lpcondition != nullptr)
 								{
 									task_check::schedules(arole, lschedule, *lpcondition);
@@ -270,7 +270,7 @@ namespace ngl
 	bool static_task::update_change(actor_role* arole, ETask atype, int32_t avalues)
 	{
 		{
-			std::set<i32_taskid>* ltaskset = ttab_task::check(atype, avalues, true);
+			std::set<i32_taskid>* ltaskset = ttab_task::instance().check(atype, avalues, true);
 			if (ltaskset == nullptr)
 			{
 				return false;
@@ -278,7 +278,7 @@ namespace ngl
 			update_change(arole, atype, ltaskset);
 		}
 		{
-			std::set<i32_taskid>* ltaskset = ttab_task::check(atype, avalues, false);
+			std::set<i32_taskid>* ltaskset = ttab_task::instance().check(atype, avalues, false);
 			if (ltaskset == nullptr)
 			{
 				return false;

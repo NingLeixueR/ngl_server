@@ -6,22 +6,39 @@
 
 namespace ngl
 {
-	struct ttab_chat :
+	class ttab_chat :
 		public manage_csv<tab_chat>
 	{
 		ttab_chat(const ttab_chat&) = delete;
 		ttab_chat& operator=(const ttab_chat&) = delete;
-		using type_tab = tab_chat;
-		ttab_chat()
-		{}
 
-		static const std::map<int, tab_chat>& tablecsv()
+		ttab_chat()
+		{
+			allcsv::loadcsv(this);
+		}
+
+		void reload()final
+		{
+			std::cout << "[ttab_chat] reload" << std::endl;
+		}
+
+	public:
+		using type_tab = tab_chat;
+
+		static ttab_chat& instance()
+		{
+			static ttab_chat ltemp;
+			return ltemp;
+		}
+
+		const std::map<int, tab_chat>& tablecsv()
 		{
 			const ttab_chat* ttab = allcsv::get<ttab_chat>();
 			assert(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
-		static const tab_chat* tab(int32_t aid)
+
+		const tab_chat* tab(int32_t aid)
 		{
 			const auto& lmap = tablecsv();
 			auto itor = lmap.find(aid);

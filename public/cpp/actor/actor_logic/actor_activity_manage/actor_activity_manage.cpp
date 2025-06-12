@@ -75,7 +75,7 @@ namespace ngl
 		int32_t lnow = localtime::gettime();
 		for (const auto& [ activityid, activitytime] : m_activitytimedb.data())
 		{
-			const tab_activity* ltab = ttab_activity::tab(nguid::actordataid(activityid));
+			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(activityid));
 			if (ltab == nullptr)
 			{
 				continue;
@@ -86,14 +86,14 @@ namespace ngl
 			start_activity(activityid, lbeg, lduration);
 		}
 
-		for (const auto& [activityid, tab] : ttab_activity::tablecsv())
+		for (const auto& [activityid, tab] : ttab_activity::instance().tablecsv())
 		{
 			i64_actorid lactoractivityid = tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
 			if (!m_activitys.contains(lactoractivityid))
 			{
 				if (tab.m_open == EActivityOpen::EActivityOpenAlways)
 				{//ttab_activityalways
-					const tab_activityalways* ltabalways = ttab_activityalways::tab(activityid);
+					const tab_activityalways* ltabalways = ttab_activityalways::instance().tab(activityid);
 					if (ltabalways == nullptr)
 					{
 						start_activity(lactoractivityid, lnow, -1);
@@ -186,7 +186,7 @@ namespace ngl
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
 
 			assert(lkeyvalue != nullptr);
-			for (const auto& [activityid, tab] : ttab_activityopenserver::tablecsv())
+			for (const auto& [activityid, tab] : ttab_activityopenserver::instance().tablecsv())
 			{
 				if (!m_activitys.contains(activityid))
 				{
@@ -246,7 +246,7 @@ namespace ngl
 			log_error()->print("start_activity fail activityid=[{}] time=[{}] duration=[{}]", nguid(aactivityid), atime, aduration);
 			return;
 		}
-		const tab_activity* ltab = ttab_activity::tab(nguid::actordataid(aactivityid));
+		const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(aactivityid));
 		if (ltab == nullptr)
 		{
 			return;

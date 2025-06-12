@@ -67,7 +67,7 @@ namespace ngl
 					itor->second += itor->second * value;
 					if (m_module == EnumModule::E_ModuleRoot)
 					{
-						itor->second = ttab_attribute::uplowlimit(key, itor->second);
+						itor->second = ttab_attribute::instance().uplowlimit(key, itor->second);
 					}
 				}
 			}
@@ -75,7 +75,7 @@ namespace ngl
 
 		int64_t fight(EnumAttribute atype, double avalues)
 		{
-			const tab_attribute* tab = ttab_attribute::attr(atype);
+			const tab_attribute* tab = ttab_attribute::instance().attr(atype);
 			if (tab == nullptr)
 			{
 				return 0;
@@ -103,7 +103,7 @@ namespace ngl
 			m_fight.clear();
 			m_fight = m_attr;
 			map_attrratio lrattr(m_rattr);
-			ttab_attribute::add(lrattr, m_orattr);
+			ttab_attribute::instance().add(lrattr, m_orattr);
 			update(m_fight, lrattr);
 			return fight();
 		}

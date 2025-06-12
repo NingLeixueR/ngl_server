@@ -63,7 +63,7 @@ namespace ngl
 		{
 			return 2;
 		}
-		if (lset.size() >= ttab_specialid::m_familapplylistcount)
+		if (lset.size() >= ttab_specialid::instance().m_familapplylistcount)
 		{
 			return 3;
 		}
@@ -72,7 +72,7 @@ namespace ngl
 		{
 			return 4;
 		}
-		int32_t* lmaxcount = ttab_familylv::failylvmaxcount(lpfamily->getconst().m_lv());
+		int32_t* lmaxcount = ttab_familylv::instance().failylvmaxcount(lpfamily->getconst().m_lv());
 		if (lmaxcount == nullptr)
 		{
 			return 5;
@@ -348,12 +348,12 @@ namespace ngl
 		lpfamilyer->set_m_lastsignutc((int32_t)localtime::gettime());
 
 		// 给军团增加经验
-		int32_t* lpexp = ttab_familylv::failylvexp(lpfamily->getconst().m_lv());
+		int32_t* lpexp = ttab_familylv::instance().failylvexp(lpfamily->getconst().m_lv());
 		if (lpexp == nullptr)
 		{
 			return 6;
 		}
-		int32_t lexp = lpfamily->getconst().m_exp() + ttab_specialid::m_familsignexp;
+		int32_t lexp = lpfamily->getconst().m_exp() + ttab_specialid::instance().m_familsignexp;
 		if (*lpexp <= lexp)
 		{
 			lexp -= *lpexp;
@@ -362,7 +362,7 @@ namespace ngl
 		lpfamily->get().set_m_exp(lexp);
 
 		// 发送奖励
-		if (!actor_family::instance().get_drop().use(ttab_specialid::m_familsigndrop, 1, aroleid, "family sign"))
+		if (!actor_family::instance().get_drop().use(ttab_specialid::instance().m_familsigndrop, 1, aroleid, "family sign"))
 		{
 			return 7;
 		}
