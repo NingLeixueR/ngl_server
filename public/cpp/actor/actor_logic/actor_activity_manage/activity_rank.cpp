@@ -1,6 +1,6 @@
 #include "actor_activity_manage.h"
-#include "activity_rank.h"
 #include "actor_ranklist.h"
+#include "activity_rank.h"
 
 
 namespace ngl

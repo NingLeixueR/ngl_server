@@ -55,7 +55,9 @@ namespace ngl
 		bool weight(int aid, std::map<int, int>& amap)
 		{
 			const tab_random* tab = allcsv::tab<tab_random>(aid);
-			assert(tab != nullptr);
+
+			tools::no_core_dump(tab != nullptr);
+
 			if (!isactivity(tab))
 			{
 				return false;

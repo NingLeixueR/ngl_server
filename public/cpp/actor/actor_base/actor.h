@@ -177,10 +177,10 @@ namespace ngl
 			static void func()
 			{
 				static bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
-				if (lisforward == false)
+				if (!lisforward)
 				{
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
-					assert(false);
+					tools::no_core_dump();
 				}
 				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
 			}
@@ -198,13 +198,11 @@ namespace ngl
 			static void func()
 			{
 				static bool lisforward = isforward<T, ngl::forward>() && isforward<T, T>();
-				if (lisforward == false)
+				if (!lisforward)
 				{
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
-					assert(false);
+					tools::no_core_dump();
 				}
-				// 如果异常 说明需要在[tprotocol_forward_pb]中注册
-				assert(lisforward);
 				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
 			}
 		};

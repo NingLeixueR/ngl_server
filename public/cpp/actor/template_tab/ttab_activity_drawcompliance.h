@@ -34,7 +34,7 @@ namespace ngl
 		const std::map<int, tab_activity_drawcompliance>& tablecsv()
 		{
 			const ttab_activity_drawcompliance* ttab = allcsv::get<ttab_activity_drawcompliance>();
-			assert(ttab == nullptr);
+			tools::no_core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 

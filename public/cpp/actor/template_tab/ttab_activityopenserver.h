@@ -34,7 +34,7 @@ namespace ngl
 		const std::map<int, tab_activityopenserver>& tablecsv()
 		{
 			const ttab_activityopenserver* ttab = allcsv::get<ttab_activityopenserver>();
-			assert(ttab != nullptr);
+			tools::no_core_dump(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 

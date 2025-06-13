@@ -16,7 +16,8 @@ namespace ngl
 	};
 
 	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/, int E_EVENTS_COUNT>
-	class actor_events : public actor
+	class actor_events : 
+		public actor
 	{
 		actor_events(const actor_events&) = delete;
 		actor_events& operator=(const actor_events&) = delete;
@@ -40,7 +41,7 @@ namespace ngl
 	public:
 		static int32_t id_index()
 		{
-			assert((int32_t)ETYPE <= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS));
+			tools::no_core_dump((int32_t)ETYPE <= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS));
 			return (int32_t)ETYPE;
 		}
 

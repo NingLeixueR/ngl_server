@@ -91,7 +91,8 @@ namespace ngl
 	{
 		const tab_servers* tab = ttab_servers::instance().tab();
 		const tab_servers* tabactor = ttab_servers::instance().tab(adata.get_data()->m_serverid);
-		assert(tab != nullptr && tabactor != nullptr);
+
+		tools::no_core_dump(tab != nullptr && tabactor != nullptr);
 
 		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();

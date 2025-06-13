@@ -47,26 +47,31 @@ namespace ngl
 
 		activity(EActivity atype);
 
+		// # 获取活动类型
 		EActivity type()
 		{
 			return m_tab->m_type;
 		}
 
+		// # 获取活动ID
 		int64_t activityid()
 		{
 			return m_actorid;
 		}
 
+		// # 活动是否开启
 		virtual bool is_start()
 		{
 			return m_activitytimes->getconst().m_start();
 		}
 
+		// # 活动开启时间
 		int32_t start_utc()
 		{
 			return m_activitytimes->getconst().m_beg();
 		}
-
+		
+		// # 活动结束时间
 		int32_t finish_utc()
 		{
 			if (m_activitytimes->getconst().m_duration() == -1)
@@ -82,6 +87,7 @@ namespace ngl
 			return localtime::getspandays(localtime::gettime(), start_utc());
 		}
 
+		// # 获取活动表
 		const tab_activity* tab()
 		{
 			return m_tab;

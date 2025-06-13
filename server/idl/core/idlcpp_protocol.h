@@ -508,7 +508,7 @@ namespace ngl
 		const std::map<int, {}>& tablecsv()
 		{{
 			const t{}* ttab = allcsv::get<t{}>();
-			tools::core_dump(ttab == nullptr);
+			tools::no_core_dump(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}}
 

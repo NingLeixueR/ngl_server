@@ -13,14 +13,15 @@
 
 namespace ngl
 {
-	class actor_role_manage : public actor
+	class actor_role_manage : 
+		public actor
 	{
 		actor_role_manage(const actor_role_manage&) = delete;
 		actor_role_manage& operator=(const actor_role_manage&) = delete;
 
 		actor_role_manage();
 
-		std::set<int64_t> m_roleban;
+		std::set<i64_actorid> m_roleban;
 	public:
 		friend class actor_instance<actor_role_manage>;
 		static actor_role_manage& instance()

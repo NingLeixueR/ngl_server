@@ -18,7 +18,6 @@ namespace ngl
 		}
 
 	public:
-
 		activity_drawcompliance(int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb) :
 			activity(aactivityid, atime, aduration, aactivitydb, aactivitytimedb)
 		{}

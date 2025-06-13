@@ -17,7 +17,7 @@ namespace ngl
 				.m_weight = 0x7fffffff,
 			})
 	{
-		assert(aarea == tab_self_area);
+		tools::no_core_dump(aarea == tab_self_area);
 	}
 
 	ENUM_ACTOR actor_robot::actor_type()
