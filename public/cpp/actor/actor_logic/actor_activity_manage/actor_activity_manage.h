@@ -2,10 +2,6 @@
 
 #include "actor_manage.h"
 #include "actor_create.h"
-#include "db_manage.h"
-#include "db_data.h"
-#include "db_pool.h"
-#include "db.h"
 #include "events_logic.h"
 #include "ndb_modular.h"
 #include "nsp_server.h"
@@ -18,6 +14,11 @@
 #include "ntimer.h"
 #include "net.pb.h"
 #include "net.h"
+
+#include "db_manage.h"
+#include "db_data.h"
+#include "db_pool.h"
+#include "db.h"
 
 namespace ngl
 {

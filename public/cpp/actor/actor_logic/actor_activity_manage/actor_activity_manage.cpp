@@ -184,8 +184,6 @@ namespace ngl
 		if (lkeyvalue != nullptr)
 		{
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
-
-			assert(lkeyvalue != nullptr);
 			for (const auto& [activityid, tab] : ttab_activityopenserver::instance().tablecsv())
 			{
 				if (!m_activitys.contains(activityid))

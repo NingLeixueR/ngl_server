@@ -23,7 +23,7 @@ namespace ngl
 		rankset_base(pbdb::eranklist aranktype) :
 			m_tab(ttab_ranklist::instance().tab(aranktype))
 		{
-			assert(m_tab != nullptr);
+			tools::no_core_dump(m_tab != nullptr);
 		}
 	
 		inline const tab_ranklist* tab()
@@ -74,7 +74,7 @@ namespace ngl
 		const tab_ranklist* tab()
 		{
 			auto ltab = ttab_ranklist::tab(ETYPE);
-			assert(ltab != nullptr);
+			tools::no_core_dump(ltab != nullptr);
 			return ltab;
 		}
 

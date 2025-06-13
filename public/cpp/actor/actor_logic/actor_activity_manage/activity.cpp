@@ -14,7 +14,7 @@ namespace ngl
 		m_activitytimedb(&aactivitytimedb)
 	{
 		m_tab = ttab_activity::instance().tab(activityid);
-		assert(m_tab != nullptr);
+		tools::no_core_dump(m_tab != nullptr);
 
 		m_actorid = actor::tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
 
@@ -55,8 +55,8 @@ namespace ngl
 			(*m_activity->get().mutable_m_task())[aroleid];
 			itor = ldb_activity.m_task().find(aroleid);
 		}
-		const pbdb::activity_task& ltask = itor->second;
 
+		const pbdb::activity_task& ltask = itor->second;
 		for (int32_t i = 0; i < ltab->m_taskday.size(); ++i)
 		{
 			auto& item = ltab->m_taskday[i];
@@ -117,6 +117,7 @@ namespace ngl
 		{
 			return;
 		}
+
 		// 活动期间产生等级变化
 		pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_activity_manage>::instance(actor_activity_manage::actorid()).get(aroleid);
 		if (lpbrief != nullptr)
@@ -164,5 +165,4 @@ namespace ngl
 	{
 		tdb_brief::nsp_cli<actor_activity_manage>::instance(actor_activity_manage::actorid()).change(aroleid);
 	}
-
 }//namespace ngl
