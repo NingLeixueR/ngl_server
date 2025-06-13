@@ -128,50 +128,63 @@ namespace ngl
 
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_ROLE_LOGIN>& adata)
 	{
-		Try
+		auto lpram = adata.get_data();
+		auto lpack = adata.get_pack();
+
+		tools::no_core_dump(lpack != nullptr);
+
+		log_error()->print("############ GateWay Login[{}][{}][{}] ############"
+			, lpack->m_id, lpram->m_roleid(), lpram->m_session()
+		);
+		nguid lguid(lpram->m_roleid());
+		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
+
+		tools::no_core_dump(linfo != nullptr && linfo->m_session == lpram->m_session());
+		if (linfo == nullptr)
 		{
-			auto lpram = adata.get_data();
-			auto lpack = adata.get_pack();
-
-			tools::no_core_dump(lpack != nullptr);
-
-			log_error()->print("############ GateWay Login[{}][{}][{}] ############"
-				, lpack->m_id, lpram->m_roleid(), lpram->m_session()
+			log_error()->print("GateWay Login # [area:{}][dataid:{}][ not find gateway_socket] "
+				, lguid.area(), lguid.actordataid()
 			);
-			nguid lguid(lpram->m_roleid());
-			gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
-
-			tools::no_core_dump(linfo != nullptr && linfo->m_session == lpram->m_session());
-
-			if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
+			return true;
+		}
+		else
+		{
+			if (linfo->m_session != lpram->m_session())
 			{
-				nets::net(linfo->m_socket)->close_net(linfo->m_socket);
-				linfo->m_socket = 0;
-				if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
-				{
-					update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_add = {*linfo} }));
-				}
-				// 断线重连或者其他设备顶号
-				pbnet::PROBUFF_NET_ROLE_SYNC pro;
-				i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
-				nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
+				log_error()->print("GateWay Login # [area:{}][dataid:{}][{}:{}][m_session fail] "
+					, lguid.area(), lguid.actordataid(), linfo->m_session, lpram->m_session()
+				);
 				return true;
 			}
-
+		}
+		
+		if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
+		{
+			nets::net(linfo->m_socket)->close_net(linfo->m_socket);
+			linfo->m_socket = 0;
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 			{
-				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{.m_add = {*linfo} }));
+				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
 			}
-
-			pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
-			lprampro.set_m_iscreate(linfo->m_iscreate);
-			linfo->m_iscreate = false;
-			lprampro.set_m_gatewayid(nconfig::m_nodeid);
-			lprampro.set_m_area(linfo->m_area);
-			nets::sendbyserver(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
+			// 断线重连或者其他设备顶号
+			pbnet::PROBUFF_NET_ROLE_SYNC pro;
+			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
+			nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
 			return true;
-		}Catch
-		return false;
+		}
+
+		if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
+		{
+			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
+		}
+
+		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
+		lprampro.set_m_iscreate(linfo->m_iscreate);
+		linfo->m_iscreate = false;
+		lprampro.set_m_gatewayid(nconfig::m_nodeid);
+		lprampro.set_m_area(linfo->m_area);
+		nets::sendbyserver(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
+		return true;
 	}
 
 	bool actor_gateway::handle(const message<pbnet::PROBUFF_NET_KCPSESSION>& adata)
