@@ -152,7 +152,11 @@ namespace ngl
 
 		inline void add_dbclient(ndbclient_base* adbclient, i64_actorid aid)
 		{
-			tools::no_core_dump(m_dbclient != nullptr);
+			if (m_dbclient == nullptr)
+			{
+				tools::no_core_dump();
+				return;
+			}
 			m_dbclient->add(adbclient, aid);
 		}
 

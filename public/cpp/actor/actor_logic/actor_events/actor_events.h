@@ -41,7 +41,11 @@ namespace ngl
 	public:
 		static int32_t id_index()
 		{
-			tools::no_core_dump((int32_t)ETYPE <= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS));
+			if ((int32_t)ETYPE >= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS))
+			{
+				tools::no_core_dump();
+				return -1;
+			}
 			return (int32_t)ETYPE;
 		}
 

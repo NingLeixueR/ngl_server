@@ -111,8 +111,12 @@ namespace ngl
 	{
 		auto lrecv = adata.get_data();
 		auto lpack = adata.get_pack();
-		tools::no_core_dump(lpack != nullptr);
-		tools::no_core_dump(naddress::set_node(lrecv->m_node));
+
+		if (!naddress::set_node(lrecv->m_node))
+		{
+			tools::no_core_dump();
+			return true;
+		}
 
 		i32_serverid lserverid = lrecv->m_node.m_serverid;
 		naddress::set_session(lserverid, lpack->m_id);

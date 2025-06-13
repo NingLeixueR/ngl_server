@@ -109,7 +109,11 @@ namespace ngl
 			{
 				set_kcp(aparm);
 				nrfunbase* lprfun = m_actor->m_actorfun[aparm.m_protocoltype];
-				tools::no_core_dump(lprfun != nullptr);
+				if (lprfun == nullptr)
+				{
+					tools::no_core_dump();
+					return false;
+				}
 				if (lprfun->handle_switch(m_actor, athreadid, aparm))
 				{
 					return true;

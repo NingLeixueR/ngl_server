@@ -14,7 +14,11 @@ namespace ngl
 		m_activitytimedb(&aactivitytimedb)
 	{
 		m_tab = ttab_activity::instance().tab(activityid);
-		tools::no_core_dump(m_tab != nullptr);
+		if (m_tab == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
 
 		m_actorid = actor::tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
 

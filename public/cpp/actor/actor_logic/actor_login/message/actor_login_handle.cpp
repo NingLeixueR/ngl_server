@@ -62,8 +62,12 @@ namespace ngl
 
 			std::pair<int32_t, int32_t> lpairgame;
 			std::pair<int32_t, int32_t> lpairgateway;
-			tools::no_core_dump(get_freeserver_game(lpairgame));
-			tools::no_core_dump(get_freeserver_gateway(lpairgateway));
+			if (get_freeserver_game(lpairgame) && get_freeserver_gateway(lpairgateway))
+			{
+				tools::no_core_dump();
+				return true;
+			}
+
 			ltempaccount.m_gameserverid = lpairgame.first;
 			ltempaccount.m_gatewayserverid = lpairgateway.first;
 			m_actorbyserver[lpaccount->getconst().m_id()] = ltempaccount;

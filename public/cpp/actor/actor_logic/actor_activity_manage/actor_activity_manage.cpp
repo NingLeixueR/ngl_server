@@ -86,7 +86,7 @@ namespace ngl
 			start_activity(activityid, lbeg, lduration);
 		}
 
-		for (const auto& [activityid, tab] : ttab_activity::instance().tablecsv())
+		for (const auto& [activityid, tab] : *ttab_activity::instance().tablecsv())
 		{
 			i64_actorid lactoractivityid = tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
 			if (!m_activitys.contains(lactoractivityid))
@@ -184,7 +184,7 @@ namespace ngl
 		if (lkeyvalue != nullptr)
 		{
 			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
-			for (const auto& [activityid, tab] : ttab_activityopenserver::instance().tablecsv())
+			for (const auto& [activityid, tab] : *ttab_activityopenserver::instance().tablecsv())
 			{
 				if (!m_activitys.contains(activityid))
 				{

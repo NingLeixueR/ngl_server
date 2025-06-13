@@ -92,7 +92,11 @@ namespace ngl
 		const tab_servers* tab = ttab_servers::instance().tab();
 		const tab_servers* tabactor = ttab_servers::instance().tab(adata.get_data()->m_serverid);
 
-		tools::no_core_dump(tab != nullptr && tabactor != nullptr);
+		if (tab == nullptr || tabactor == nullptr)
+		{
+			tools::no_core_dump();
+			return true;
+		}
 
 		i64_actorid	lactorid = id_guid();
 		i64_actorid lactorserve = actor_server::actorid();
@@ -154,8 +158,11 @@ namespace ngl
 			return true;
 		}
 		// # 需要尝试连接ActorServer结点 并向其注册自己
-		tools::no_core_dump(ttab_servers::instance().node_type() != ngl::ACTORSERVER);
-		tools::no_core_dump(ttab_servers::instance().node_type() != ngl::ROBOT);
+		if (ttab_servers::instance().node_type() == ngl::ACTORSERVER || ttab_servers::instance().node_type() == ngl::ROBOT)
+		{
+			tools::no_core_dump();
+			return true;
+		}
 		const tab_servers* tab = ttab_servers::instance().tab();
 		for (int32_t id : tab->m_actorserver)
 		{
@@ -193,8 +200,14 @@ namespace ngl
 			return true;
 		}
 		auto lparm = adata.get_data();
+
 		const tab_servers* tab = ttab_servers::instance().tab();
-		tools::no_core_dump(tab != nullptr);
+		if (tab == nullptr)
+		{
+			tools::no_core_dump();
+			return true;
+		}
+
 		for (const nactornode& node : lparm->m_vec)
 		{
 			if (server_session::sessionid(node.m_serverid) == -1)
@@ -229,8 +242,14 @@ namespace ngl
 		}
 		auto lparm = adata.get_data();
 		auto lpack = adata.get_pack();
+
 		i32_serverid lserverid = lparm->m_id;
-		tools::no_core_dump(lserverid != nconfig::m_nodeid);
+
+		if (lserverid == nconfig::m_nodeid)
+		{
+			tools::no_core_dump();
+			return true;
+		}
 
 		node_update(this, nconfig::m_nodeid, lpack->m_id);
 
