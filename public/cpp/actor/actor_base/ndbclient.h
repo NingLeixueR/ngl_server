@@ -122,7 +122,7 @@ namespace ngl
 		void load() final
 		{
 			const tab_servers* tab = ttab_servers::instance().tab();
-			tools::core_dump(tab == nullptr);
+			tools::no_core_dump(tab != nullptr);
 			auto pro = std::make_shared<np_actornode_connect_task>();
 			pro->m_serverid = tab->m_db;
 			pro->m_fun = std::bind_front(&type_ndbclient::loaddb, this, m_id);
@@ -230,7 +230,7 @@ namespace ngl
 				set_logactor(aactor);
 
 				m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
-				tools::core_dump(m_tab == nullptr);
+				tools::no_core_dump(m_tab != nullptr);
 				
 				static bool m_register = false;
 				if ( m_register == false)
@@ -440,7 +440,7 @@ namespace ngl
 
 		void add(ndbclient_base* adbclient, const nguid& aid)
 		{
-			tools::core_dump(m_typedbclientmap.contains(adbclient->type()));
+			tools::no_core_dump(!m_typedbclientmap.contains(adbclient->type()));
 			m_typedbclientmap.insert(std::make_pair(adbclient->type(), adbclient));
 			init(adbclient, m_actor, aid);
 		}
@@ -547,9 +547,9 @@ namespace ngl
 	bool actor_base::handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 	{
 		const std::unique_ptr<actor_manage_dbclient>& mdbclient = get_actor_manage_dbclient();
-		tools::core_dump(mdbclient == nullptr);
+		tools::no_core_dump(mdbclient != nullptr);
 		ndbclient<DBTYPE, TDBTAB, TACTOR>* lp = mdbclient->data<DBTYPE, TDBTAB, TACTOR>(false);
-		tools::core_dump(lp == nullptr);
+		tools::no_core_dump(lp != nullptr);
 		return lp->handle(adata);
 	}
 }//namespace ngl

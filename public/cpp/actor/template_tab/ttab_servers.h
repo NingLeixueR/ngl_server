@@ -33,7 +33,7 @@ namespace ngl
 					for (i32_serverid serverid : pair.second.m_actorserver)
 					{
 						const tab_servers* ltab = tab(serverid);
-						tools::core_dump(ltab == nullptr);
+						tools::no_core_dump(ltab != nullptr);
 						m_maparea[pair.second.m_area].insert(ltab->m_area);
 					}
 				}	
@@ -132,7 +132,7 @@ namespace ngl
 	private:
 		const net_works* connect(i32_serverid alocalserver, i32_serverid aotherserver)
 		{
-			tools::core_dump(alocalserver == aotherserver);
+			tools::no_core_dump(alocalserver != aotherserver);
 			const tab_servers* ltab1 = tab(alocalserver);
 			const tab_servers* ltab2 = tab(aotherserver);
 			if (alocalserver > aotherserver)
@@ -165,7 +165,7 @@ namespace ngl
 		NODE_TYPE node_type(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
-			tools::core_dump(ltab == nullptr);
+			tools::no_core_dump(ltab != nullptr);
 			return ltab->m_type;
 		}
 
@@ -177,7 +177,7 @@ namespace ngl
 		const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			tools::core_dump(ttab == nullptr);
+			tools::no_core_dump(ttab != nullptr);
 			for (const std::pair<const int, tab_servers>& pair : ttab->m_tablecsv)
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
@@ -203,7 +203,7 @@ namespace ngl
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
 		const std::set<i16_area>* get_area(i16_area aarea)
 		{
-			tools::core_dump(!m_maparea.contains(aarea));
+			tools::no_core_dump(m_maparea.contains(aarea));
 			return &m_maparea[aarea];
 		}
 

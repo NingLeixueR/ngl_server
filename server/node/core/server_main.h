@@ -50,9 +50,9 @@ void init_DB_ROLE(const char* aname, int beg)
 void init_DB_ROLE()
 {
 	std::cout << "#########init_DB_ROLE()#############" << std::endl;
-	std::string lstr = std::format("{}_zone{}_", "libo", nconfig::area);
+	std::string lstr = std::format("{}_zone{}_", "libo", nconfig::area());
 	init_DB_ROLE(lstr.c_str(), (0 * DEF_COUNT) + 1);
-	lstr = std::format("{}_zone{}_", "wac", nconfig::area);
+	lstr = std::format("{}_zone{}_", "wac", nconfig::area());
 	init_DB_ROLE(lstr.c_str(), (1 * DEF_COUNT) + 1);
 }
 
@@ -419,7 +419,7 @@ bool start_log()
 
 	ngl::actor_client::instance();
 
-	ngl::tools::core_dump(ngl::sysconfig::logwritelevel() < ngl::ELOG_MAX && ngl::sysconfig::logwritelevel() > ngl::ELOG_NONE);
+	ngl::tools::no_core_dump(ngl::sysconfig::logwritelevel() >= ngl::ELOG_MAX || ngl::sysconfig::logwritelevel() <= ngl::ELOG_NONE);
 	ngl::nlogactor lnlogactor(ngl::ACTOR_NONE, ngl::ELOG_LOCAL);
 	ngl::actor_base::create(ngl::ACTOR_LOG, tab_self_area, lnlogactor.m_value32);
 	ngl::actor_gmclient::instance();

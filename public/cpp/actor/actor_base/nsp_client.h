@@ -57,7 +57,7 @@ namespace ngl
 					// # 其他结点不能发送非本结点关注的数据的改变
 					if (!m_dataid.empty())
 					{
-						tools::core_dump(!m_dataid.contains(apair.first));
+						tools::no_core_dump(m_dataid.contains(apair.first));
 					}
 					m_data[apair.first] = apair.second;
 					if (m_changedatafun != nullptr)
@@ -101,7 +101,7 @@ namespace ngl
 			log("nsp_client np_channel_register_reply");
 			const np_channel_register_reply<T>* recv = adata.get_data();
 
-			tools::core_dump(m_actor->id_guid() != recv->m_actorid);
+			tools::no_core_dump(m_actor->id_guid() == recv->m_actorid);
 
 			m_register[nguid::area(recv->m_actorid)] = true;
 
@@ -236,7 +236,7 @@ namespace ngl
 			auto itor = m_instance.find(adataid);
 			if (itor == m_instance.end())
 			{
-				tools::core_dump(!acreate || m_instance.contains(adataid));
+				tools::no_core_dump(acreate && !m_instance.contains(adataid));
 				nsp_client<TDerived, TACTOR, T>* lpclient = new nsp_client<TDerived, TACTOR, T>();
 				m_instance[adataid] = lpclient;
 				return *lpclient;
@@ -286,7 +286,7 @@ namespace ngl
 				m_dataid = adataid;
 			}
 			const std::set<i16_area>* lsetarea = ttab_servers::instance().get_arealist(nconfig::m_nodeid);
-			tools::core_dump(lsetarea == nullptr || lsetarea->empty());
+			tools::no_core_dump(lsetarea != nullptr && !lsetarea->empty());
 			auto ltype = (ENUM_ACTOR)nguid::type(TACTOR::actorid());
 			for (i16_area area : *lsetarea)
 			{
@@ -385,7 +385,7 @@ namespace ngl
 
 		T* get(i64_actorid aactorid)
 		{
-			tools::core_dump(m_onlyread);
+			tools::no_core_dump(!m_onlyread);
 			T* lp = tools::findmap(m_data, aactorid);
 			return lp;
 		}
@@ -405,7 +405,7 @@ namespace ngl
 
 		void foreach_change(const std::function<bool(T&)>& afun)
 		{
-			tools::core_dump(m_onlyread);
+			tools::no_core_dump(!m_onlyread);
 			std::map<i16_area, std::shared_ptr<np_channel_data<T>>> lmap;
 			for (auto itor = m_data.begin();itor != m_data.end();++itor)
 			{
@@ -428,20 +428,20 @@ namespace ngl
 
 		T* add(i64_actorid adataid)
 		{
-			tools::core_dump(m_onlyread);
+			tools::no_core_dump(!m_onlyread);
 			if (!m_dataid.empty())
 			{
-				tools::core_dump(!m_dataid.contains(adataid));
+				tools::no_core_dump(m_dataid.contains(adataid));
 			}
 			return &m_data[adataid];
 		}
 
 		bool change(i64_actorid adataid)
 		{
-			tools::core_dump(m_onlyread);
+			tools::no_core_dump(!m_onlyread);
 			if (!m_dataid.empty())
 			{// 不是读写全部数据
-				tools::core_dump(!m_dataid.contains(adataid));
+				tools::no_core_dump(m_dataid.contains(adataid));
 			}
 
 			T* lpdata = tools::findmap(m_data, adataid);

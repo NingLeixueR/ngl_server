@@ -1283,7 +1283,7 @@ namespace ngl
 	const std::string& tools::server_name()
 	{
 		const tab_servers* tab = ttab_servers::instance().tab();
-		tools::core_dump(tab == nullptr);
+		tools::no_core_dump(tab != nullptr);
 		return tab->m_name;
 	}
 
@@ -1367,11 +1367,12 @@ namespace ngl
 		return ajson;
 	}
 
-	void tools::core_dump(bool acreate/* = true*/)
+	void tools::no_core_dump(bool anocreate/* = false*/)
 	{
-		if (acreate)
+		if (!anocreate)
 		{
-			*(int32_t*)(nullptr) = 19890519;
+			int32_t lnum = 0;
+			lnum = 19890519/ lnum;
 		}
 	}
 }// namespace ngl
