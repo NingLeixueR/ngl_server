@@ -168,7 +168,7 @@ namespace ngl
 			linfo->m_iscreate = false;
 			lprampro.set_m_gatewayid(nconfig::m_nodeid);
 			lprampro.set_m_area(linfo->m_area);
-			nets::sendbyserver(linfo->m_gameid, *lpram, nguid::moreactor(), id_guid());
+			nets::sendbyserver(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
 			return true;
 		}Catch
 		return false;
