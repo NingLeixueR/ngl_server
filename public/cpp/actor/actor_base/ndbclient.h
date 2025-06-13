@@ -220,26 +220,23 @@ namespace ngl
 
 		void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) final
 		{
-			Try
+			m_actor = aactor;
+			m_manage_dbclient = amdb;
+			m_id = aid;
+			m_load = false;
+
+			set_logactor(aactor);
+
+			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
+			tools::no_core_dump(m_tab != nullptr);
+
+			static bool m_register = false;
+			if (m_register == false)
 			{
-				m_actor				= aactor;
-				m_manage_dbclient	= amdb;
-				m_id				= aid;
-				m_load				= false;
-
-				set_logactor(aactor);
-
-				m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
-				tools::no_core_dump(m_tab != nullptr);
-				
-				static bool m_register = false;
-				if ( m_register == false)
-				{
-					m_register = true;
-					actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
-				}
-				init_load();
-			}Catch
+				m_register = true;
+				actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
+			}
+			init_load();
 		}
 
 		bool isload() final	
@@ -401,19 +398,17 @@ namespace ngl
 
 		bool handle(const message<np_actordb_load_response<DBTYPE, TDBTAB>>& adata)
 		{
-			Try
-			{
-				if (!adata.get_data()->m_stat)
-				{//加载失败  数据库中没有数据
-					return loadfinish();
-				}
-				using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
-				log_error()->print(
-					"db load respones:[{}] recv_over[{}]"
-					, tools::type_name<type_message>(), adata.get_data()->m_over ? "finish" : "no finishi"
-				);
-				loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
-			}Catch
+			if (!adata.get_data()->m_stat)
+			{//加载失败  数据库中没有数据
+				return loadfinish();
+			}
+			using type_message = np_actordb_load_response<DBTYPE, TDBTAB>;
+			log_error()->print(
+				"db load respones:[{}] recv_over[{}]"
+				, tools::type_name<type_message>()
+				, adata.get_data()->m_over ? "finish" : "no finishi"
+			);
+			loadfinish(adata.get_data()->data(), adata.get_data()->m_over);
 			return true;
 		}
 
@@ -452,10 +447,7 @@ namespace ngl
 
 		void init(ndbclient_base* adbclient, actor_base* aactor, const nguid& aid)
 		{
-			Try
-			{
-				adbclient->init(this, aactor, aid);
-			}Catch
+			adbclient->init(this, aactor, aid);
 		}
 
 		bool on_load_finish(bool adbishave)

@@ -92,7 +92,6 @@ namespace ngl
 		Try
 		{
 			free();
-
 		}Catch;
 	}
 

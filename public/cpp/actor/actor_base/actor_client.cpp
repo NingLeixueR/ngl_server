@@ -14,7 +14,7 @@ namespace ngl
 		impl_actor_client& operator=(const impl_actor_client&) = delete;
 
 		std::map<i32_serverid, std::list<std::function<void()>>>	m_connectfun;
-		std::set<uint32_t>											m_connectserverid;
+		std::set<i32_serverid>										m_connectserverid;
 
 		impl_actor_client()
 		{}
@@ -264,12 +264,9 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
-		Try
-		{
-			auto lparm = adata.get_data();
-			naddress::add_actor_address(lparm->m_id, lparm->m_add);
-			naddress::del_actor_address(lparm->m_del);
-		}Catch
+		auto lparm = adata.get_data();
+		naddress::add_actor_address(lparm->m_id, lparm->m_add);
+		naddress::del_actor_address(lparm->m_del);
 		return true;
 	}
 	
@@ -305,7 +302,7 @@ namespace ngl
 	void actor_client::connect_fnish()
 	{
 		auto& lconnectfun = m_impl_actor_client()->m_connectfun;
-		const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
+		const std::set<i32_serverid>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
 		if (lconnectfun.empty())
 		{
 			return;
@@ -334,17 +331,14 @@ namespace ngl
 		{
 			return true;
 		}
-		Try
+		auto lparm = adata.get_data();
+		const std::set<i32_serverid>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
+		if (lconnectserverid.contains(lparm->m_serverid))
 		{
-			auto lparm = adata.get_data();
-			const std::set<uint32_t>& lconnectserverid = m_impl_actor_client()->m_connectserverid;
-			if(lconnectserverid.contains(lparm->m_serverid))
-			{
-				lparm->m_fun();
-				return true;
-			}
-			m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
-		}Catch
+			lparm->m_fun();
+			return true;
+		}
+		m_impl_actor_client()->m_connectfun[lparm->m_serverid].push_back(lparm->m_fun);
 		return true;
 	}
 	
