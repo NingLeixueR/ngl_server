@@ -96,7 +96,7 @@ namespace ngl
 
 	void actor_gateway::session_close(gateway_socket* ainfo)
 	{
-		tools::core_dump(ainfo == nullptr);
+		tools::no_core_dump(ainfo != nullptr);
 
 		ainfo->m_socket = 0;
 		i32_actordataid lroleid = ainfo->m_dataid;

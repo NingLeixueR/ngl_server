@@ -62,7 +62,7 @@ namespace ngl
 		const std::map<int, tab_task>& tablecsv()
 		{
 			const ttab_task* ttab = allcsv::get<ttab_task>();
-			tools::core_dump(ttab == nullptr);
+			tools::no_core_dump(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 
@@ -86,7 +86,7 @@ namespace ngl
 			else if (aitem.m_condition == ETaskConditionMore)
 			{//>=
 				auto itor = m_maxval.find(aitem.m_type);
-				tools::core_dump(itor == m_maxval.end());
+				tools::no_core_dump(itor != m_maxval.end());
 				for (int i = aitem.m_parmint; i <= itor->second; ++i)
 				{
 					if (areceive)

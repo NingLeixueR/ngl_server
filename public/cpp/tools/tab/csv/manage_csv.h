@@ -139,7 +139,7 @@ namespace ngl
 		{
 			std::string lname = TTAB::name();
 			csvbase** lp = tools::findmap(m_data, lname);
-			tools::core_dump(lp == nullptr);
+			tools::no_core_dump(lp != nullptr);
 			return (TTAB*)*lp;
 		}
 

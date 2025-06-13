@@ -39,7 +39,7 @@ namespace ngl
 				i32_serverid lserverid = server_session::serverid(asession);
 				if (lserverid != -1 && ttab_servers::instance().node_type(lserverid) == NODE_TYPE::DB)
 				{
-					tools::core_dump();
+					tools::no_core_dump();
 				}
 				close(asession);
 			};

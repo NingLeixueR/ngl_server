@@ -43,7 +43,7 @@ namespace ngl
 			auto lparm = adata.get_data();
 			auto lpack = adata.get_pack();
 
-			tools::core_dump(lpack == nullptr);
+			tools::no_core_dump(lpack != nullptr);
 
 			log_info()->print("############ Login[{}][{}][{}] ############",
 				lparm->m_area(), lparm->m_account(), lparm->m_password()
@@ -51,7 +51,7 @@ namespace ngl
 			bool iscreate = false;
 
 			const data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
-			tools::core_dump(lpaccount == nullptr);
+			tools::no_core_dump(lpaccount != nullptr);
 
 			const pair_account* lppair_account = nullptr;
 			auto itor = m_actorbyserver.find(lpaccount->getconst().m_id());
@@ -63,8 +63,8 @@ namespace ngl
 
 				std::pair<int32_t, int32_t> lpairgame;
 				std::pair<int32_t, int32_t> lpairgateway;
-				tools::core_dump(!get_freeserver_game(lpairgame));
-				tools::core_dump(!get_freeserver_gateway(lpairgateway));
+				tools::no_core_dump(get_freeserver_game(lpairgame));
+				tools::no_core_dump(get_freeserver_gateway(lpairgateway));
 				ltempaccount.m_gameserverid = lpairgame.first;
 				ltempaccount.m_gatewayserverid = lpairgateway.first;
 				m_actorbyserver[lpaccount->getconst().m_id()] = ltempaccount;

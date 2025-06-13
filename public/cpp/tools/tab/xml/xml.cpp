@@ -45,14 +45,14 @@ namespace ngl
 	i16_area xmlnode::area()
 	{
 		auto ltab = ttab_servers::instance().tab(m_nodeid);
-		tools::core_dump(ltab == nullptr);
+		tools::no_core_dump(ltab != nullptr);
 		return ltab->m_area;
 	}
 
 	void xmlnode::set_server(const char* aservertypename)
 	{
 		NODE_TYPE lnodetype = em<NODE_TYPE>::get_enum(aservertypename);
-		tools::core_dump(lnodetype == em<NODE_TYPE>::enum_null());
+		tools::no_core_dump(lnodetype != em<NODE_TYPE>::enum_null());
 		m_nodename = aservertypename;
 		m_nodetype = lnodetype;
 	}

@@ -50,7 +50,7 @@ namespace ngl
 		const std::map<int, tab_mergearea>& tablecsv()
 		{
 			const ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
-			tools::core_dump(ttab == nullptr);
+			tools::no_core_dump(ttab != nullptr);
 			return ttab->m_tablecsv;
 		}
 
@@ -68,7 +68,7 @@ namespace ngl
 		// 哪些区服在此区服
 		std::set<i16_area>* mergelist(i16_area aarea)
 		{
-			tools::core_dump(!m_merge2.contains(aarea));
+			tools::no_core_dump(m_merge2.contains(aarea));
 			return &m_merge2[aarea];
 		}
 

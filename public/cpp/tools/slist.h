@@ -235,7 +235,7 @@ namespace ngl
 		inline T& front()
 		{
 			auto ptr = m_list.front();
-			tools::core_dump(ptr == nullptr);
+			tools::no_core_dump(ptr != nullptr);
 			return ptr->m_data;
 		}
 

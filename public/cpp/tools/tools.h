@@ -765,7 +765,7 @@ namespace ngl
 		static std::string& format_json(std::string& ajson);
 
 		// 不可恢复的异常，直接生成core dump
-		static void core_dump(bool acreate = true);
+		static void no_core_dump(bool anocreate = false);
 	};
 
 	template <typename T>
