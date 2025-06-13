@@ -68,7 +68,8 @@ namespace ngl
 		// 哪些区服在此区服
 		std::set<i16_area>* mergelist(i16_area aarea)
 		{
-			return tools::findmap(m_merge2, aarea);
+			tools::core_dump(!m_merge2.contains(aarea));
+			return &m_merge2[aarea];
 		}
 
 		i16_area mergeid(i16_area aarea)

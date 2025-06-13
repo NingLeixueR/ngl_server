@@ -12,7 +12,8 @@ namespace ngl
 		ttab_servers(const ttab_servers&) = delete;
 		ttab_servers& operator=(const ttab_servers&) = delete;
 
-		std::map<int16_t, std::vector<tab_servers*>> m_areaofserver;
+		std::map<i16_area, std::vector<tab_servers*>> m_areaofserver;
+		std::map<i16_area, std::set<i16_area>> m_maparea;
 
 		ttab_servers()
 		{
@@ -23,9 +24,23 @@ namespace ngl
 		{
 			std::cout << "[ttab_servers] reload" << std::endl;
 			m_areaofserver.clear();
+			m_maparea.clear();
 			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
 			{
 				m_areaofserver[pair.second.m_area].push_back(&pair.second);
+				if (pair.second.m_area < 0)
+				{
+					for (i32_serverid serverid : pair.second.m_actorserver)
+					{
+						const tab_servers* ltab = tab(serverid);
+						tools::core_dump(ltab == nullptr);
+						m_maparea[pair.second.m_area].insert(ltab->m_area);
+					}
+				}	
+				else
+				{
+					m_maparea[pair.second.m_area].insert(pair.second.m_area);
+				}
 			}
 		}
 
@@ -41,7 +56,6 @@ namespace ngl
 		const std::map<int, tab_servers>& tablecsv()
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			tools::core_dump(ttab == nullptr);
 			return ttab->m_tablecsv;
 		}
 
@@ -189,45 +203,8 @@ namespace ngl
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
 		const std::set<i16_area>* get_area(i16_area aarea)
 		{
-			static std::map<i16_area, std::set<i16_area>> lmap;
-			if (aarea < 0)
-			{
-				const std::set<i16_area>* lset = tools::findmap(lmap, aarea);
-				if (lset != nullptr)
-				{
-					return lset;
-				}
-				std::set<i16_area>& ltempset = lmap[aarea];
-				auto itor = m_areaofserver.find(aarea);
-				if (itor == m_areaofserver.end())
-				{
-					return nullptr;
-				}
-				if (itor->second.empty())
-				{
-					return nullptr;
-				}
-				const tab_servers* ltab = *itor->second.begin();
-				if (ltab == nullptr)
-				{
-					return nullptr;
-				}
-				for (i32_serverid itemid : ltab->m_actorserver)
-				{
-					const tab_servers* tabactor = tab(itemid);
-					if (ltab == nullptr)
-					{
-						continue;
-					}
-					ltempset.insert(tabactor->m_area);
-				}
-				return &ltempset;
-			}
-			else
-			{
-				lmap[aarea].insert(aarea);
-				return &lmap[aarea];
-			}
+			tools::core_dump(!m_maparea.contains(aarea));
+			return &m_maparea[aarea];
 		}
 
 		// 服务器类型	atype

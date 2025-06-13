@@ -118,21 +118,31 @@ namespace ngl
 			log_error()->print("{}", lbuff);
 		}
 
+		static void get_area(i16_area aarea, std::set<i16_area>& aareaset)
+		{
+			const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(aarea);
+			for (i16_area larea : *lareaset)
+			{
+				std::set<i16_area>* lmergeareaset = ttab_mergearea::instance().mergelist(larea);
+				aareaset.insert(lmergeareaset->begin(), lmergeareaset->end());
+			}
+		}
+
 		// # 加载本地配置区服关联的所有合服数据
 		static const char* where_area()
 		{
 			static std::string lareastr;
 			if (lareastr.empty())
 			{
-				std::set<i16_area>* lareaset = ttab_mergearea::instance().mergelist(ttab_servers::instance().tab()->m_area);
-				tools::core_dump(lareaset == nullptr);
-
+				std::set<i16_area> lareaset;
+				get_area(ttab_servers::instance().tab()->m_area, lareaset);
+				
 				// # 删除小于0的元素
-				auto it = lareaset->lower_bound(0);
-				lareaset->erase(lareaset->begin(), it);
-				if (!lareaset->empty())
+				//auto it = lareaset.lower_bound(0);
+				//lareaset.erase(lareaset.begin(), it);
+				if (!lareaset.empty())
 				{
-					tools::splicing(*lareaset, " AND area = ", lareastr);
+					tools::splicing(lareaset, " OR area = ", lareastr);
 					lareastr = " area = " + lareastr;
 				}
 				else
@@ -149,7 +159,7 @@ namespace ngl
 			// # 从数据库中加载
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
-				"SELECT id,data FROM %s WHERE id = '%lld' AND %s;",
+				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);",
 				tools::protobuf_tabname<T>::name().c_str(), aid, where_area()
 			);
 			if (llen <= 0)
