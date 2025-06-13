@@ -31,7 +31,11 @@ namespace ngl
 			pbdb::db_ranklist* lpdata = get(abrief.m_id());
 			lpdata->set_m_id(abrief.m_id());
 			lpdb_ranklist = get_rank(abrief.m_id());
-			tools::no_core_dump(lpdb_ranklist != nullptr);
+			if (lpdb_ranklist == nullptr)
+			{
+				tools::no_core_dump();
+				return true;
+			}
 		}
 		return litem.init(atype, abrief, lpdb_ranklist);
 	}

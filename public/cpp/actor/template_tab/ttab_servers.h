@@ -33,7 +33,11 @@ namespace ngl
 					for (i32_serverid serverid : pair.second.m_actorserver)
 					{
 						const tab_servers* ltab = tab(serverid);
-						tools::no_core_dump(ltab != nullptr);
+						if (ltab == nullptr)
+						{
+							tools::no_core_dump();
+							continue;
+						}
 						m_maparea[pair.second.m_area].insert(ltab->m_area);
 					}
 				}	
@@ -165,7 +169,11 @@ namespace ngl
 		NODE_TYPE node_type(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
-			tools::no_core_dump(ltab != nullptr);
+			if (ltab == nullptr)
+			{
+				tools::no_core_dump();
+				return FAIL;
+			}
 			return ltab->m_type;
 		}
 
@@ -177,7 +185,11 @@ namespace ngl
 		const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
 			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			tools::no_core_dump(ttab != nullptr);
+			if (ttab == nullptr)
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
 			for (const std::pair<const int, tab_servers>& pair : ttab->m_tablecsv)
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
@@ -203,7 +215,11 @@ namespace ngl
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
 		const std::set<i16_area>* get_area(i16_area aarea)
 		{
-			tools::no_core_dump(m_maparea.contains(aarea));
+			if (!m_maparea.contains(aarea))
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
 			return &m_maparea[aarea];
 		}
 

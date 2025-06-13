@@ -1289,7 +1289,12 @@ namespace ngl
 		template <typename T, bool IS_FORWARD>
 		inline int bytes(const protobuf_data<T, IS_FORWARD>& adata)
 		{
-			tools::no_core_dump(adata.m_data != nullptr);
+			if (adata.m_data == nullptr)
+			{
+				tools::no_core_dump();
+				return -1;
+			}
+
 			if (adata.m_isbinary)
 			{
 				int32_t lbytes = adata.m_data->ByteSize();
@@ -1308,7 +1313,12 @@ namespace ngl
 		template <typename KEY, typename VALUE>
 		inline int bytes(const protobuf_data<std::map<KEY, VALUE>>& adata)
 		{
-			tools::no_core_dump(adata.m_data != nullptr);
+			if (adata.m_data == nullptr)
+			{
+				tools::no_core_dump();
+				return -1;
+			}
+
 			bytes(int16_t(adata.m_data->size()));
 			for (std::pair<const KEY, VALUE>& pair : *adata.m_data)
 			{

@@ -89,7 +89,11 @@ namespace ngl
 	template <typename T>
 	void gcmd<T>::execute(std::shared_ptr<mforward<ngl::np_gm_response>>& apro)
 	{
-		tools::no_core_dump(m_actor != nullptr && m_actor->id_guid() == actor_gm::instance().id_guid());
+		if (m_actor == nullptr || m_actor->id_guid() != actor_gm::instance().id_guid())
+		{
+			tools::no_core_dump();
+			return;
+		}
 		actor_gm::sendtophp(apro->identifier(), *apro->data());
 	}
 

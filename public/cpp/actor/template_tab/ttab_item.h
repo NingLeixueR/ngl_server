@@ -31,18 +31,22 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_item>& tablecsv()
+		const std::map<int, tab_item>* tablecsv()
 		{
 			const ttab_item* ttab = allcsv::get<ttab_item>();
-			tools::no_core_dump(ttab != nullptr);
-			return ttab->m_tablecsv;
+			if (ttab == nullptr)
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
+			return &ttab->m_tablecsv;
 		}
 
 		const tab_item* tab(int32_t aid)
 		{
-			const auto& lmap = tablecsv();
-			auto itor = lmap.find(aid);
-			if (itor == lmap.end())
+			auto lmap = tablecsv();
+			auto itor = lmap->find(aid);
+			if (itor == lmap->end())
 			{
 				return nullptr;
 			}

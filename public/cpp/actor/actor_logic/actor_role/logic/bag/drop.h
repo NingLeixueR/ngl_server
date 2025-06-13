@@ -54,19 +54,23 @@ namespace ngl
 
 		bool weight(int aid, std::map<int, int>& amap)
 		{
-			const tab_random* tab = allcsv::tab<tab_random>(aid);
+			const tab_random* ltab = allcsv::tab<tab_random>(aid);
 
-			tools::no_core_dump(tab != nullptr);
+			if (ltab == nullptr)
+			{
+				tools::no_core_dump();
+				return false;
+			}
 
-			if (!isactivity(tab))
+			if (!isactivity(ltab))
 			{
 				return false;
 			}
 
 			int lweight = 0;
-			for (int i = 0; i < tab->m_randomdatas.size(); ++i)
+			for (int i = 0; i < ltab->m_randomdatas.size(); ++i)
 			{
-				lweight += tab->m_randomdatas[i].m_weight;
+				lweight += ltab->m_randomdatas[i].m_weight;
 			}
 
 			if (lweight <= 0)
@@ -74,14 +78,14 @@ namespace ngl
 				return false;
 			}
 
-			int lcount = tab->m_count;
-			bool lexclusive = tab->m_exclusive;
+			int lcount = ltab->m_count;
+			bool lexclusive = ltab->m_exclusive;
 			std::set<int> lset;
 			for (int i = 0; i < lcount; ++i)
 			{
 				int lweightval = tools::rand() % lweight;
 				int ltempweight = 0;
-				for (int j = 0; j < tab->m_randomdatas.size(); ++j)
+				for (int j = 0; j < ltab->m_randomdatas.size(); ++j)
 				{
 					if (lexclusive)
 					{
@@ -90,31 +94,31 @@ namespace ngl
 							continue;
 						}
 					}
-					ltempweight += tab->m_randomdatas[j].m_weight;
+					ltempweight += ltab->m_randomdatas[j].m_weight;
 					if (lweightval <= ltempweight)
 					{
 						if (lexclusive)
 						{
 							lset.insert(j);
-							lweight -= tab->m_randomdatas[j].m_weight;
+							lweight -= ltab->m_randomdatas[j].m_weight;
 							if (lweight <= 0)
 							{
 								return true;
 							}
 						}
-						int lmin = tab->m_randomdatas[j].m_min;
-						int lmax = tab->m_randomdatas[j].m_max;
+						int lmin = ltab->m_randomdatas[j].m_min;
+						int lmax = ltab->m_randomdatas[j].m_max;
 						int ltemp = lmax - lmin;
 						if (ltemp <= 0)
 						{
 							return false;
 						}
-						amap[tab->m_randomdatas[j].m_id] += lmin + tools::rand() % ltemp;
+						amap[ltab->m_randomdatas[j].m_id] += lmin + tools::rand() % ltemp;
 						break;
 					}
 				}
 			}
-			for (int32_t childid : tab->m_childrandomids)
+			for (int32_t childid : ltab->m_childrandomids)
 			{
 				if (weight(childid, amap) == false)
 				{

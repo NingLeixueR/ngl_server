@@ -38,7 +38,13 @@ namespace ngl
 		{
 			i64_actorid lactorrole = nguid::make(ACTOR_ROLE, aarea, aroleid);
 			i32_serverid lserverid = get_server(lactorrole);
-			tools::no_core_dump(lserverid != -1);
+
+			if (lserverid == -1)
+			{
+				tools::no_core_dump();
+				return -1;
+			}
+
 			return get_session(lserverid);
 		}
 

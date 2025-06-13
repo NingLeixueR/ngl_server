@@ -76,7 +76,12 @@ namespace ngl
 		pro.set_m_account(aaccount);
 		pro.set_m_password(apasswold);
 		const tab_servers* tab = ttab_servers::instance().tab();
-		tools::no_core_dump(tab != nullptr);
+		if (tab == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
+
 		nets::sendbyserver(tab->m_login, pro, nguid::moreactor(), instance().id_guid());
 	}
 

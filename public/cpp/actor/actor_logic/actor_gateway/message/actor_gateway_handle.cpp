@@ -85,7 +85,12 @@ namespace ngl
 		nguid lguid(lpram->m_actor);
 
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
-		tools::no_core_dump(linfo != nullptr);
+		if (linfo == nullptr)
+		{
+			tools::no_core_dump();
+			return true;
+		}
+
 		if (lpram->m_toserverid != 0)
 		{
 			linfo->m_gameid = lpram->m_toserverid;
@@ -116,7 +121,12 @@ namespace ngl
 		else
 		{
 			gateway_socket* linfo = m_info.get(lpram->m_sessionid);
-			tools::no_core_dump(linfo != nullptr);
+			if (linfo == nullptr)
+			{
+				tools::no_core_dump();
+				return true;
+			}
+
 			session_close(linfo);
 		}
 
@@ -131,31 +141,15 @@ namespace ngl
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		tools::no_core_dump(lpack != nullptr);
-
 		log_error()->print("############ GateWay Login[{}][{}][{}] ############"
 			, lpack->m_id, lpram->m_roleid(), lpram->m_session()
 		);
 		nguid lguid(lpram->m_roleid());
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
-
-		tools::no_core_dump(linfo != nullptr && linfo->m_session == lpram->m_session());
-		if (linfo == nullptr)
+		if (linfo == nullptr || linfo->m_session != lpram->m_session())
 		{
-			log_error()->print("GateWay Login # [area:{}][dataid:{}][ not find gateway_socket] "
-				, lguid.area(), lguid.actordataid()
-			);
+			tools::no_core_dump();
 			return true;
-		}
-		else
-		{
-			if (linfo->m_session != lpram->m_session())
-			{
-				log_error()->print("GateWay Login # [area:{}][dataid:{}][{}:{}][m_session fail] "
-					, lguid.area(), lguid.actordataid(), linfo->m_session, lpram->m_session()
-				);
-				return true;
-			}
 		}
 		
 		if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)

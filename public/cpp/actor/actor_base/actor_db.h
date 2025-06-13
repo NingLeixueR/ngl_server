@@ -36,7 +36,11 @@ namespace ngl
 		{
 			m_tab = ttab_dbload::instance().get_tabdb<TDBTAB>();
 
-			tools::no_core_dump(m_tab != nullptr);
+			if (m_tab == nullptr)
+			{
+				tools::no_core_dump();
+				return;
+			}
 
 			// # 设置数据保存/数据删除队列
 			m_cache_save.set_cachefun(std::bind_front(&cachelist, enum_clist_save), m_tab->m_dbcacheintervalms);
@@ -55,7 +59,11 @@ namespace ngl
 		// # 加载表中的所有数据
 		static void loadall(const pack* apack, [[maybe_unused]] const np_actordb_load<TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			tools::no_core_dump(m_tab->m_isloadall);
+			if (!m_tab->m_isloadall)
+			{
+				tools::no_core_dump();
+				return;
+			}
 			if (!m_tab->m_network)
 			{
 				return;

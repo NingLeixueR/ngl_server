@@ -59,18 +59,22 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_task>& tablecsv()
+		const std::map<int, tab_task>* tablecsv()
 		{
 			const ttab_task* ttab = allcsv::get<ttab_task>();
-			tools::no_core_dump(ttab != nullptr);
-			return ttab->m_tablecsv;
+			if (ttab == nullptr)
+			{
+				tools::no_core_dump();
+				return nullptr;
+			}
+			return &ttab->m_tablecsv;
 		}
 
 		const tab_task* tab(int32_t aid)
 		{
-			const auto& lmap = tablecsv();
-			auto itor = lmap.find(aid);
-			if (itor == lmap.end())
+			auto lmap = tablecsv();
+			auto itor = lmap->find(aid);
+			if (itor == lmap->end())
 			{
 				return nullptr;
 			}
@@ -86,7 +90,11 @@ namespace ngl
 			else if (aitem.m_condition == ETaskConditionMore)
 			{//>=
 				auto itor = m_maxval.find(aitem.m_type);
-				tools::no_core_dump(itor != m_maxval.end());
+				if (itor == m_maxval.end())
+				{
+					tools::no_core_dump();
+					return;
+				}
 				for (int i = aitem.m_parmint; i <= itor->second; ++i)
 				{
 					if (areceive)
