@@ -50,8 +50,10 @@ void init_DB_ROLE(const char* aname, int beg)
 void init_DB_ROLE()
 {
 	std::cout << "#########init_DB_ROLE()#############" << std::endl;
-	init_DB_ROLE("libo", (0 * DEF_COUNT) + 1);
-	init_DB_ROLE("wac", (1 * DEF_COUNT) + 1);
+	std::string lstr = std::format("{}_zone{}_", "libo", nconfig::area);
+	init_DB_ROLE(lstr.c_str(), (0 * DEF_COUNT) + 1);
+	lstr = std::format("{}_zone{}_", "wac", nconfig::area);
+	init_DB_ROLE(lstr.c_str(), (1 * DEF_COUNT) + 1);
 }
 
 //DB_BAG
