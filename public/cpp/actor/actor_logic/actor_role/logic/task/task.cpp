@@ -62,7 +62,7 @@ namespace ngl
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
-			auto& lmap = arole->m_task.get_task().getconst().m_completeddatas();
+			auto& lmap = arole->m_task.get()->getconst().m_completeddatas();
 			return lmap.find(atab.m_parmint) != lmap.end()? atab.m_parmint :-1;
 		}
 	};
@@ -88,22 +88,22 @@ namespace ngl
 
 	google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::complete(actor_role* arole)
 	{
-		return *arole->m_task.get_task().get().mutable_m_completeddatas();
+		return *arole->m_task.get()->get().mutable_m_completeddatas();
 	}
 
 	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::run(actor_role* arole)
 	{
-		return *arole->m_task.get_task().get().mutable_m_rundatas();
+		return *arole->m_task.get()->get().mutable_m_rundatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::const_complete(actor_role* arole)
 	{
-		return arole->m_task.get_task().getconst().m_completeddatas();
+		return arole->m_task.get()->getconst().m_completeddatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_run(actor_role* arole)
 	{
-		return arole->m_task.get_task().getconst().m_rundatas();
+		return arole->m_task.get()->getconst().m_rundatas();
 	}
 
 	bool static_task::isfinish_task(actor_role* arole, i32_taskid ataskid)
@@ -169,7 +169,7 @@ namespace ngl
 	{
 		finish_task(arole, ataskid);
 
-		arole->m_task.get_task().get().mutable_m_rundatas()->erase(ataskid);
+		arole->m_task.get()->get().mutable_m_rundatas()->erase(ataskid);
 		return true;
 	}
 
@@ -286,11 +286,6 @@ namespace ngl
 			update_change(arole, atype, ltaskset);
 		}
 		return true;
-	}
-
-	data_modified<pbdb::db_task>& task::get_task()
-	{
-		return data()[get_actor()->id_guid()];
 	}
 
 	void task::initdata()
