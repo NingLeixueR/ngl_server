@@ -12,7 +12,8 @@ namespace ngl
 		i64_actorid						m_actor_roleid = nguid::make();
 	};
 
-	class actor_robot_manage : public actor
+	class actor_robot_manage : 
+		public actor
 	{
 		actor_robot_manage();
 	public:
