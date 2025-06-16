@@ -13,24 +13,14 @@ namespace ngl
 		set_actorid(nguid::make());
 	}
 
-	data_modified<pbdb::db_ranklist>* ranklist::get_rank(i64_actorid arankid)
-	{
-		auto itor = data().find(arankid);
-		if (itor == data().end())
-		{
-			return nullptr;
-		}
-		return &itor->second;
-	}
-
 	bool ranklist::update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize)
 	{
-		data_modified<pbdb::db_ranklist>* lpdb_ranklist = get_rank(abrief.m_id());
+		data_modified<pbdb::db_ranklist>* lpdb_ranklist = find(abrief.m_id());
 		if (lpdb_ranklist == nullptr)
 		{
 			pbdb::db_ranklist* lpdata = get(abrief.m_id());
 			lpdata->set_m_id(abrief.m_id());
-			lpdb_ranklist = get_rank(abrief.m_id());
+			lpdb_ranklist = find(abrief.m_id());
 			if (lpdb_ranklist == nullptr)
 			{
 				tools::no_core_dump();
@@ -109,7 +99,7 @@ namespace ngl
 
 	pbdb::db_ranklist* ranklist::get(i64_actorid aactorid)
 	{
-		auto lprank = get_rank(aactorid);
+		data_modified<pbdb::db_ranklist>* lprank = find(aactorid);
 		if (lprank == nullptr)
 		{
 			pbdb::db_ranklist ldbranklist;

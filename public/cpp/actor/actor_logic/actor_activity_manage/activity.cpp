@@ -22,14 +22,14 @@ namespace ngl
 
 		m_actorid = actor::tab2actor(ACTOR_ACTIVITY_MANAGE, activityid);
 
-		m_activity = aactivitydb.get_activity(m_actorid);
+		m_activity = aactivitydb.find(m_actorid);
 		if (m_activity == nullptr)
 		{
 			pbdb::db_activity ldb;
 			ldb.set_m_id(m_actorid);
 			m_activity = aactivitydb.add(m_actorid, ldb);
 		}
-		m_activitytimes = aactivitytimedb.get_activity(m_actorid);
+		m_activitytimes = aactivitytimedb.find(m_actorid);
 		if (m_activitytimes == nullptr)
 		{
 			pbdb::db_activitytimes ldb;

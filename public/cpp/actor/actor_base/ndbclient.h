@@ -61,7 +61,8 @@ namespace ngl
 	};
 
 	template <typename TDBTAB>
-	struct data_modified : data_modified_base
+	struct data_modified : 
+		public data_modified_base
 	{
 	private:
 		data_modified(const data_modified&) = delete;

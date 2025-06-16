@@ -24,37 +24,6 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		data_modified<pbdb::db_familyer>* get_familyer(i64_actorid aroleid)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
-		pbdb::db_familyer* add_familyer(i64_actorid aroleid)
-		{
-			data_modified<pbdb::db_familyer>* lpfamilyer = get_familyer(aroleid);
-			if (lpfamilyer != nullptr)
-			{
-				return &lpfamilyer->get();
-			}
-			pbdb::db_familyer lfamilyer;
-			lfamilyer.set_m_id(aroleid);
-			lfamilyer.set_m_joinutc(0);
-			lfamilyer.set_m_lastleaveutc(0);
-			lfamilyer.set_m_lastsignutc(0);
-			lfamilyer.set_m_position(pbdb::db_familyer_eposition_none);
-			lpfamilyer = add(aroleid, lfamilyer);
-			if (lpfamilyer == nullptr)
-			{
-				return nullptr;
-			}
-			return &lpfamilyer->get();
-		}
-
 		void initdata()final
 		{
 			log_error()->print("{}", data());
@@ -63,13 +32,13 @@ namespace ngl
 		// 检查是否可以创建军团
 		bool check_createfamily(i64_actorid aroleid)
 		{
-			pbdb::db_familyer* lpfamilyer = add_familyer(aroleid);
-			if (lpfamilyer->m_position() != pbdb::db_familyer_eposition_none)
+			data_modified<pbdb::db_familyer>* lpdbfamilyer = get(aroleid);
+			if (lpdbfamilyer == nullptr)
 			{
 				return false;
 			}
 			auto lnow = (int32_t)localtime::gettime();
-			if (lnow - lpfamilyer->m_lastleaveutc() < ttab_specialid::instance().m_familjoininterval)
+			if (lnow - lpdbfamilyer->getconst().m_lastleaveutc() < ttab_specialid::instance().m_familjoininterval)
 			{
 				return false;
 			}
@@ -83,7 +52,7 @@ namespace ngl
 		family(const family&) = delete;
 		family& operator=(const family&) = delete;
 
-		int64_t m_maxid;
+		int32_t									m_maxid = 0;
 		std::map<int64_t, int64_t>				m_rolefamily;	// key:roleid value:familyid
 		std::map<int64_t, std::set<int64_t>>	m_applylist;	// key:roleid value:std::set<familyid>
 		std::set<std::string>					m_familyname;	// 用来检查军团名称是否重复
@@ -98,23 +67,13 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		ngl::data_modified<pbdb::db_family>* get_family(i64_actorid afamilyid)
-		{
-			auto itor = data().find(afamilyid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
 		void initdata()final
 		{
 			log_error()->print("{}", data());
 			for (const auto& [_familyid, _family] : data())
 			{
 				const pbdb::db_family& lbdfamily = _family.getconst();
-				m_maxid = std::max(m_maxid, _familyid.id());
+				m_maxid = std::max(m_maxid, (int32_t)_familyid.id());
 				
 				std::string lmember;
 				for (i64_actorid roleid : lbdfamily.m_member())

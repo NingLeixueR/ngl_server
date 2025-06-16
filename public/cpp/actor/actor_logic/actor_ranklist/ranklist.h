@@ -27,8 +27,6 @@ namespace ngl
 
 		virtual void set_id();
 
-		data_modified<pbdb::db_ranklist>* get_rank(i64_actorid arankid);
-
 		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize);
 
 		bool update_value(const pbdb::db_brief& abrief, bool afirstsynchronize);

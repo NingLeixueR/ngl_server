@@ -28,17 +28,6 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		data_modified<pbdb::db_keyvalue>* get_valuedb(i64_actorid aroleid)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
-
 		template <typename T>
 		bool keyvalue(nguid aid, T& adata)
 		{

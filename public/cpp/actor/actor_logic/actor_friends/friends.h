@@ -24,16 +24,6 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		data_modified<pbdb::db_friends>* get_friends(i64_actorid aroleid, bool achange = true)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
 		void initdata()final
 		{
 			log_error()->print("friends###loaddb_finish {}", data());
@@ -47,7 +37,7 @@ namespace ngl
 		// 请求添加好友
 		int addfriends(i64_actorid aroleid, i64_actorid afriends)
 		{
-			data_modified<pbdb::db_friends>* lfriends = get_friends(aroleid);
+			data_modified<pbdb::db_friends>* lfriends = get(aroleid);
 			if (lfriends == nullptr)
 			{
 				return 1;
@@ -71,20 +61,19 @@ namespace ngl
 			{
 				return 5;
 			}
-			pbdb::db_friends& lpfriend = lfriends->get();
-			lpfriend.add_m_applyfriends(aroleid);
+			lfriends->get().add_m_applyfriends(aroleid);
 			return 0;
 		}
 
 		// 同意/拒绝好友申请
 		int ratifyfriends(i64_actorid aroleid, i64_actorid afriends, bool aratify)
 		{
-			data_modified<pbdb::db_friends>* lfriends1 = get_friends(aroleid);
+			data_modified<pbdb::db_friends>* lfriends1 = get(aroleid);
 			if (lfriends1 == nullptr)
 			{
 				return 1;
 			}
-			data_modified<pbdb::db_friends>* lfriends2 = get_friends(afriends);
+			data_modified<pbdb::db_friends>* lfriends2 = get(afriends);
 			if (lfriends2 == nullptr)
 			{
 				return 2;
@@ -117,12 +106,12 @@ namespace ngl
 		// 删除好友
 		int erasefriends(i64_actorid aroleid, i64_actorid afriends)
 		{
-			data_modified<pbdb::db_friends>* lfriends1 = get_friends(aroleid);
+			data_modified<pbdb::db_friends>* lfriends1 = get(aroleid);
 			if (lfriends1 == nullptr)
 			{
 				return 1;
 			}
-			data_modified<pbdb::db_friends>* lfriends2 = get_friends(afriends);
+			data_modified<pbdb::db_friends>* lfriends2 = get(afriends);
 			if (lfriends2 == nullptr)
 			{
 				return 2;
@@ -149,7 +138,7 @@ namespace ngl
 		void syncfriends(i64_actorid aroleid)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_RESPONSE>();
-			data_modified<pbdb::db_friends>* lfriends = get_friends(aroleid);
+			data_modified<pbdb::db_friends>* lfriends = get(aroleid);
 			if (lfriends != nullptr)
 			{
 				std::ranges::for_each(lfriends->getconst().m_friends(), [&pro, lfriends, this](i64_actorid afriends)
@@ -178,7 +167,7 @@ namespace ngl
 		// 获取好友
 		bool get_friends(i64_actorid aroleid, std::vector<i64_actorid>& afriends)
 		{
-			data_modified<pbdb::db_friends>* lfriends = get_friends(aroleid);
+			data_modified<pbdb::db_friends>* lfriends = get(aroleid);
 			if (lfriends == nullptr)
 			{
 				return false;

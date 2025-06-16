@@ -22,16 +22,6 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		data_modified<pbdb::db_activity>* get_activity(int64_t aactivity)
-		{
-			auto itor = data().find(aactivity);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
 		void initdata() final;
 	};
 }// namespace ngl

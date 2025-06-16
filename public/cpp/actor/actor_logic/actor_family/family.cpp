@@ -20,11 +20,10 @@ namespace ngl
 		{
 			return 3;
 		}
-		pbdb::db_family ldbfamily;
-		++m_maxid;
 
+		pbdb::db_family ldbfamily;
 		int32_t lnow = (int32_t)localtime::gettime();
-		i64_actorid lfamilyid = nguid::make(ACTOR_FAMILY, tab_self_area, (i32_actordataid)m_maxid);
+		i64_actorid lfamilyid = nguid::make(ACTOR_FAMILY, tab_self_area, ++m_maxid);
 		ldbfamily.set_m_id(lfamilyid);
 		ldbfamily.set_m_createutc(lnow);
 		ldbfamily.set_m_name(aname);
@@ -33,16 +32,16 @@ namespace ngl
 		ldbfamily.set_m_exp(0);
 		*ldbfamily.mutable_m_member()->Add() = aroleid;
 
-		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
+		data_modified<pbdb::db_familyer>* lpfamilyer = nactor()->m_familyer.get(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 3;
 		}
-
-		lpfamilyer->set_m_joinutc(lnow);
-		lpfamilyer->set_m_lastsignutc(0);
-		lpfamilyer->set_m_position(pbdb::db_familyer_eposition_leader);
-		lpfamilyer->set_m_id(aroleid);
+		pbdb::db_familyer& lfamilyer = lpfamilyer->get();
+		lfamilyer.set_m_id(aroleid);
+		lfamilyer.set_m_lastsignutc(0);
+		lfamilyer.set_m_joinutc(lnow);
+		lfamilyer.set_m_position(pbdb::db_familyer_eposition_leader);
 		
 		add(lfamilyid, ldbfamily);
 		m_rolefamily[aroleid] = lfamilyid;
@@ -67,7 +66,7 @@ namespace ngl
 		{
 			return 3;
 		}
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(afamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = get(afamilyid);
 		if (lpfamily == nullptr)
 		{
 			return 4;
@@ -91,7 +90,7 @@ namespace ngl
 	{
 		std::set<int64_t>& lset = m_applylist[aroleid];
 		lset.erase(afamilyid);
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(afamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = get(afamilyid);
 		if (lpfamily == nullptr)
 		{
 			return 1;
@@ -126,7 +125,7 @@ namespace ngl
 		}
 		if (aratify)
 		{
-			ngl::data_modified<pbdb::db_family>* lpfamily = get_family(lfamilyid);
+			ngl::data_modified<pbdb::db_family>* lpfamily = get(lfamilyid);
 			if (lpfamily == nullptr)
 			{
 				return 1;
@@ -162,7 +161,7 @@ namespace ngl
 			return 2;
 		}
 
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(*lfamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = find(*lfamilyid);
 		if (lpfamily == nullptr)
 		{
 			return 3;
@@ -174,19 +173,19 @@ namespace ngl
 
 		lpfamily->get().set_m_leader(acederoleid);
 
-		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
+		data_modified<pbdb::db_familyer>* lpfamilyer = nactor()->m_familyer.get(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 6;
 		}
-		lpfamilyer->set_m_position(pbdb::db_familyer_eposition_ordinary);
+		lpfamilyer->get().set_m_position(pbdb::db_familyer_eposition_ordinary);
 
-		pbdb::db_familyer* lpcedefamilyer = nactor()->m_familyer.add_familyer(acederoleid);
+		data_modified<pbdb::db_familyer>* lpcedefamilyer = nactor()->m_familyer.get(acederoleid);
 		if (lpcedefamilyer == nullptr)
 		{
 			return 7;
 		}
-		lpcedefamilyer->set_m_position(pbdb::db_familyer_eposition_leader);
+		lpcedefamilyer->get().set_m_position(pbdb::db_familyer_eposition_leader);
 
 		return 0;
 	}
@@ -202,17 +201,17 @@ namespace ngl
 		{
 			return 2;
 		}
-		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
+		data_modified<pbdb::db_familyer>* lpfamilyer = nactor()->m_familyer.get(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 3;
 		}
-		if (lpfamilyer->m_position() == pbdb::db_familyer_eposition_leader)
+		if (lpfamilyer->get().m_position() == pbdb::db_familyer_eposition_leader)
 		{
 			return 4;
 		}
 		
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(afamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = find(afamilyid);
 		if (lpfamily == nullptr)
 		{
 			return 5;
@@ -223,8 +222,8 @@ namespace ngl
 		{
 			return 6;
 		}
-		lpfamilyer->set_m_position(pbdb::db_familyer_eposition_none);
-		lpfamilyer->set_m_lastleaveutc((int32_t)localtime::gettime());
+		lpfamilyer->get().set_m_position(pbdb::db_familyer_eposition_none);
+		lpfamilyer->get().set_m_lastleaveutc((int32_t)localtime::gettime());
 		lmember.erase(itor);
 		return 0;
 	}
@@ -243,7 +242,7 @@ namespace ngl
 		}
 		else
 		{
-			ngl::data_modified<pbdb::db_family>* lpfamily = get_family(afamilyid);
+			ngl::data_modified<pbdb::db_family>* lpfamily = find(afamilyid);
 			if (lpfamily == nullptr)
 			{
 				return nullptr;
@@ -272,7 +271,7 @@ namespace ngl
 			actor::send_client(aroleid, pro);
 			return;
 		}
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(itor->second);
+		ngl::data_modified<pbdb::db_family>* lpfamily = find(itor->second);
 		if (lpfamily == nullptr)
 		{
 			pro->set_m_stat(2);
@@ -294,7 +293,7 @@ namespace ngl
 
 	int32_t family::change_familyname(i64_actorid aroleid, i64_actorid afamilyid, const std::string& afamilyname)
 	{
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(afamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = find(afamilyid);
 		if (lpfamily == nullptr)
 		{
 			return 1;
@@ -327,25 +326,25 @@ namespace ngl
 			return 2;
 		}
 
-		pbdb::db_familyer* lpfamilyer = nactor()->m_familyer.add_familyer(aroleid);
+		ngl::data_modified<pbdb::db_familyer>* lpfamilyer = nactor()->m_familyer.get(aroleid);
 		if (lpfamilyer == nullptr)
 		{
 			return 3;
 		}
 
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(afamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = find(afamilyid);
 		if (lpfamily == nullptr)
 		{
 			return 4;
 		}
 
 		auto lnow = (int32_t)localtime::gettime();
-		if (localtime::getspandays(lnow, lpfamilyer->m_lastsignutc()) == 0)
+		if (localtime::getspandays(lnow, lpfamilyer->getconst().m_lastsignutc()) == 0)
 		{
 			return 5;
 		}
 
-		lpfamilyer->set_m_lastsignutc((int32_t)localtime::gettime());
+		lpfamilyer->get().set_m_lastsignutc((int32_t)localtime::gettime());
 
 		// 给军团增加经验
 		int32_t* lpexp = ttab_familylv::instance().failylvexp(lpfamily->getconst().m_lv());
@@ -376,7 +375,7 @@ namespace ngl
 		{
 			return false;
 		}
-		ngl::data_modified<pbdb::db_family>* lpfamily = get_family(*lfamilyid);
+		ngl::data_modified<pbdb::db_family>* lpfamily = find(*lfamilyid);
 		if (lpfamily == nullptr)
 		{
 			return false;

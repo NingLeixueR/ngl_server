@@ -373,7 +373,7 @@ namespace ngl
 
 	bool actor_role::is_first_recharge(int32_t arechargeid)
 	{
-		auto& lrole = m_info.get_role().getconst();
+		auto& lrole = m_info.get()->getconst();
 		int lcount = 0;
 		for (const auto& item : lrole.m_recharge())
 		{
