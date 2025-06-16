@@ -531,36 +531,6 @@ namespace ngl
 					}
 				}
 			}
-
-			if (!lset.empty())
-			{
-				std::string lneirong;
-				{
-					ngl::readfile lread("../../public/cpp/tools/tab/csv/manage_csv.cpp");
-					lread.read(lneirong);
-				}
-				std::string lbeg;
-				for (const auto& itemstr : lset)
-				{
-					lbeg += "#include \"t"+ itemstr +".h\"\n";
-				}
-				auto lpos = lneirong.find("		loadcsv<ttab_servers>();");
-				if (lpos == std::string::npos)
-				{
-					continue;
-				}
-				std::string lqian = std::string(lneirong.begin(), lneirong.begin()+ lpos);
-				std::string lhou = std::string(lneirong.begin() + lpos, lneirong.end());
-				std::string lzhongjian = "###########归类哪些结点需要加载##############\n";
-				for (const auto& itemstr : lset)
-				{
-					lzhongjian += "loadcsv<t"+ itemstr +">();\n";
-				}
-				lzhongjian += "###########归类哪些结点需要加载##############\n";
-
-				ngl::writefile lfile("../../public/cpp/tools/tab/csv/manage_csv.cpp");
-				lfile.write(lbeg+ lqian+ lzhongjian + lhou);
-			}
 		}
 	}
 };
