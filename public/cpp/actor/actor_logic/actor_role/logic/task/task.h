@@ -13,8 +13,6 @@ namespace ngl
 		task() 
 		{}
 
-		data_modified<pbdb::db_task>& get_task();
-
 		virtual void initdata();
 	};
 
