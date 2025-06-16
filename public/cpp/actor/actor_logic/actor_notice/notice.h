@@ -23,16 +23,6 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		data_modified<pbdb::db_notice>* get_notice(i64_actorid anoticeid)
-		{
-			auto itor = data().find(anoticeid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
 		virtual void initdata()
 		{
 			log_error()->print("actor_notice###loaddb_finish {}", data());

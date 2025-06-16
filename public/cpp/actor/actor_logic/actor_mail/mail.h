@@ -24,16 +24,6 @@ namespace ngl
 			set_actorid(nguid::make());
 		}
 
-		data_modified<pbdb::db_mail>* get_mails(i64_actorid aroleid)
-		{
-			auto itor = data().find(aroleid);
-			if (itor == data().end())
-			{
-				return nullptr;
-			}
-			return &itor->second;
-		}
-
 		virtual void initdata()
 		{
 			log_error()->print("actor_mail###loaddb_finish ", data());
@@ -77,14 +67,10 @@ namespace ngl
 				lpmailitem->set_m_itemtid(itemid);
 				lpmailitem->set_m_count(count);
 			}
-			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
 			if (lpdb_mail == nullptr)
 			{
-				pbdb::db_mail ldbmail;
-				ldbmail.set_m_id(aroleid);
-				ldbmail.mutable_m_mail()->insert({ lid, lmail });
-				add(aroleid, ldbmail);
-				return true;
+				return false;
 			}
 			lpdb_mail->get().mutable_m_mail()->insert({ lid, lmail });
 			return true;
@@ -103,7 +89,7 @@ namespace ngl
 
 		pbdb::mail* get_mail(i64_actorid aroleid, int64_t aid)
 		{
-			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			data_modified<pbdb::db_mail>* lpdb_mail = find(aroleid);
 			if (lpdb_mail == nullptr)
 			{
 				return nullptr;
@@ -119,7 +105,7 @@ namespace ngl
 		// # Ò»¼ü²Ù×÷
 		void one_touch(i64_actorid aroleid, std::function<bool(const pbdb::mail&)> acheck, const std::function<void(int32_t)>& afun)
 		{
-			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
 			if (lpdb_mail == nullptr)
 			{
 				return;
@@ -184,7 +170,7 @@ namespace ngl
 					}
 				}
 				
-				data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+				data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
 				if (lpdb_mail == nullptr)
 				{
 					return false;
@@ -208,7 +194,7 @@ namespace ngl
 
 		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
 		{
-			data_modified<pbdb::db_mail>* lpdb_mail = get_mails(aroleid);
+			data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
 			if (lpdb_mail == nullptr)
 			{
 				return nullptr;

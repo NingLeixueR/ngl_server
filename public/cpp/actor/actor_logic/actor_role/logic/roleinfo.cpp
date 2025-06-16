@@ -14,11 +14,6 @@ namespace ngl
 		return (int)db()->getconst().m_id();
 	}
 
-	data_modified<pbdb::db_role>& roleinfo::get_role()
-	{
-		return data()[get_actor()->id_guid()];
-	}
-
 	pbdb::db_brief* roleinfo::get_brief()
 	{
 		return tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).get(get_actor()->id_guid());

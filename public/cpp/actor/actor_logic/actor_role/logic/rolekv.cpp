@@ -3,11 +3,6 @@
 
 namespace ngl
 {
-	data_modified<pbdb::db_rolekeyvalue>& rolekv::get_rolekv()
-	{
-		return data()[get_actor()->id_guid()];
-	}
-
 	bool rolekv::value(const char* akey, int8_t& adata)
 	{
 		return number_value(akey, adata);

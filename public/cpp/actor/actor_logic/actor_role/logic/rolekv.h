@@ -23,11 +23,9 @@ namespace ngl
 			log_error()->print("[db_rolekeyvalue load finish] {}", data());
 		}
 
-		data_modified<pbdb::db_rolekeyvalue>& get_rolekv();
-
 		bool value(const char* akey, std::string& adata)
 		{
-			data_modified<pbdb::db_rolekeyvalue>& ltemp = get_rolekv();
+			data_modified<pbdb::db_rolekeyvalue>& ltemp = data()[get_actor()->id_guid()];
 			auto& lmap = ltemp.getconst().m_data();
 			auto itor = lmap.find(akey);
 			if (itor == lmap.end())
@@ -63,7 +61,7 @@ namespace ngl
 		template <typename T>
 		void set_value(const char* akey, T& adata)
 		{
-			pbdb::db_rolekeyvalue& ltemp = get_rolekv().get();
+			pbdb::db_rolekeyvalue& ltemp = data()[get_actor()->id_guid()].get();
 			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
 		}
 

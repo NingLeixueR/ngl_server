@@ -19,7 +19,7 @@ namespace ngl
 					{
 						return;
 					}
-					data_modified<pbdb::db_mail>* lpdb_mail = m_mails.get_mails(id);
+					data_modified<pbdb::db_mail>* lpdb_mail = m_mails.get(id);
 					if (lpdb_mail == nullptr)
 					{
 						return;

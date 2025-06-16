@@ -15,7 +15,7 @@ namespace ngl
 			}
 			return pro;
 		}
-		data_modified<pbdb::db_notice>* lpdb_notice = get_notice(aactorid);
+		data_modified<pbdb::db_notice>* lpdb_notice = find(aactorid);
 		if (lpdb_notice == nullptr)
 		{
 			return nullptr;
