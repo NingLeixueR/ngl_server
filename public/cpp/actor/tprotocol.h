@@ -39,9 +39,8 @@ namespace ngl
 		}
 
 		//CUSTOM
-		class tcustoms
+		struct tcustoms
 		{
-		public:
 			template <typename T>
 			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum = -1)
 			{
@@ -61,9 +60,8 @@ namespace ngl
 				return &linfo;
 			}
 		};
-		class tforward
+		struct tforward
 		{
-		public:
 			template <typename T>
 			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum)
 			{

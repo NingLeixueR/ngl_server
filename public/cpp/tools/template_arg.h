@@ -48,7 +48,6 @@ namespace ngl
 		}
 	};
 
-
 	template <typename TF>
 	class template_arg_event
 	{
