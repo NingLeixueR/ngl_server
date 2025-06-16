@@ -84,7 +84,6 @@ namespace ngl
 		struct impl_group;
 		impl<impl_actor_base>	m_impl_actor_base;
 		ngroup					m_group;
-
 	public:
 		explicit actor_base(const actorparmbase& aparm);
 
