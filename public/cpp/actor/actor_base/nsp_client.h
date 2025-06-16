@@ -244,7 +244,8 @@ namespace ngl
 			auto itor = m_instance.find(adataid);
 			if (itor == m_instance.end())
 			{
-				tools::no_core_dump(!acreate && !m_instance.contains(adataid));
+				tools::no_core_dump(acreate);
+				tools::no_core_dump(!m_instance.contains(adataid));
 				nsp_client<TDerived, TACTOR, T>* lpclient = new nsp_client<TDerived, TACTOR, T>();
 				m_instance[adataid] = lpclient;
 				return *lpclient;
