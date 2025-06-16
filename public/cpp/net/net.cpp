@@ -35,9 +35,12 @@ namespace ngl
 
 	net_protocol* nets::nettype(ENET_PROTOCOL atype)
 	{
-		if (ttab_servers::instance().isefficient(atype) && m_net[atype] != nullptr)
+		if (ttab_servers::instance().isefficient(atype))
 		{
-			return m_net[atype];
+			if (m_net.size() > atype)
+			{
+				return m_net[atype];
+			}
 		}
 		return nullptr;
 	}

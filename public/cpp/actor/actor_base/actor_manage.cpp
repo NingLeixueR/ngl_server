@@ -555,8 +555,12 @@ namespace ngl
 	}
 
 	actor_suspendthread::~actor_suspendthread()
-	{
-		actor_manage::instance().finish_suspend_thread();
-		log_info()->print("finish actor_suspendthread");
+	{		
+		Try
+		{
+			actor_manage::instance().finish_suspend_thread();
+			log_info()->print("finish actor_suspendthread");
+		}
+		Catch;		
 	}
 }//namespace ngl
