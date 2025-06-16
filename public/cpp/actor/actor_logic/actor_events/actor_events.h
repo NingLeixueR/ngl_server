@@ -101,9 +101,8 @@ namespace ngl
 		}
 
 		// # actor×¢²á¹Ø×¢µÄevent
-		class register_actor_event
+		struct register_actor_event
 		{
-		public:
 			static void func(i64_actorid aactorid, E_EVENTS atype)
 			{
 				auto pro = std::make_shared<np_event_register>();
@@ -111,11 +110,10 @@ namespace ngl
 				actor::static_send_actor(actorid(), aactorid, pro);
 			}
 		};
-		using tfun = ngl::template_arg_event<register_actor_event>;
+		using tfun = template_arg_event<register_actor_event>;
 
-		class nullacctor
+		struct nullacctor
 		{
-		public:
 			template <typename TPARM>
 			bool handle(const message<TPARM>& adata)
 			{

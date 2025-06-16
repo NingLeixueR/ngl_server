@@ -112,9 +112,8 @@ namespace ngl
 	private:
 		// # 注册actor成员handle函数
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
-		class register_actor_handle
+		struct register_actor_handle
 		{
-		public:
 			template <typename T>
 			static void func(bool aisload)
 			{
@@ -147,9 +146,8 @@ namespace ngl
 
 		//# 注册 [forward:转发协议]
 		template <EPROTOCOL_TYPE TYPE, bool IsForward, typename TDerived>
-		class cregister_forward_handle
+		struct cregister_forward_handle
 		{
-		public:
 			template <typename T>
 			static void func()
 			{
@@ -170,9 +168,8 @@ namespace ngl
 
 		//# 注册 [forward:转发协议] recvforward
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
-		class cregister_recvforward_handle
+		struct cregister_recvforward_handle
 		{
-		public:
 			template <typename T>
 			static void func()
 			{
@@ -191,9 +188,8 @@ namespace ngl
 
 		//# 服务于二次转发
 		template <EPROTOCOL_TYPE TYPE, ENUM_ACTOR ACTOR, typename TDerived>
-		class cregister_recvforward_handle2
+		struct cregister_recvforward_handle2
 		{
-		public:
 			template <typename T>
 			static void func()
 			{
