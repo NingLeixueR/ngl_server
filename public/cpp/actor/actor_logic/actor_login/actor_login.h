@@ -27,7 +27,8 @@ namespace ngl
 		int32_t	m_rolesize = 0;
 	};
 
-	class actor_login : public actor
+	class actor_login : 
+		public actor
 	{
 	public:
 	private:

@@ -28,7 +28,8 @@ namespace ngl
 		equit_time = 10,	// 退出的最大秒数
 	};
 
-	class actor_example_guess_number : public actor_example<actor_example_guess_number>
+	class actor_example_guess_number : 
+		public actor_example<actor_example_guess_number>
 	{
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;

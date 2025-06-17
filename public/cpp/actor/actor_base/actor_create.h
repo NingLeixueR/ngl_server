@@ -38,7 +38,8 @@ namespace ngl
 		static void switch_process_send(std::shared_ptr<np_actorswitch_process<T>>& pro)
 		{
 			// # 2 如果是actor_role发给gateway
-			if (auto ltype = (ENUM_ACTOR)nguid::type(pro->m_actor); ltype == ENUM_ACTOR::ACTOR_ROLE)
+			ENUM_ACTOR ltype = (ENUM_ACTOR)nguid::type(pro->m_actor);
+			if (ltype == ENUM_ACTOR::ACTOR_ROLE)
 			{
 				nguid lguid(pro->m_actor);
 				auto lp = (np_actorswitch_process_role*)&(pro.get()->m_pram);

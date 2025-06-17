@@ -48,7 +48,10 @@ namespace ngl
 
 	void activity::rolelogin(i64_actorid aroleid)
 	{
-		log_error()->print("activity::rolelogin() activityid=[{}] roleid=[{}]", activityid(), aroleid);
+		log_error()->print(
+			"activity::rolelogin() activityid=[{}] roleid=[{}]", 
+			activityid(), aroleid
+		);
 		const tab_activity* ltab = tab();
 		int32_t lday = day();
 		auto& ldb_activity = m_activity->getconst();

@@ -74,7 +74,7 @@ namespace ngl
 
 	void set_node(int32_t aserverid, int asession)
 	{
-		tab_servers const* tab = ttab_servers::instance().tab(aserverid);
+		const tab_servers* tab = ttab_servers::instance().tab(aserverid);
 		if (tab == nullptr)
 		{
 			return;
@@ -109,8 +109,9 @@ namespace ngl
 			.m_node
 			{
 				.m_name = std::format(
-					"node<id:{},type:{},name:{},tcount:{},area:{}>",
-					tab->m_id, em<NODE_TYPE>::get_name(tab->m_type), tab->m_name, tab->m_tcount, tab->m_area
+					"node<id:{},type:{},name:{},tcount:{},area:{}>"
+					, tab->m_id, em<NODE_TYPE>::get_name(tab->m_type)
+					, tab->m_name, tab->m_tcount, tab->m_area
 				),
 				.m_nodetype = tab->m_type,
 				.m_serverid = tab->m_id,
@@ -329,7 +330,7 @@ namespace ngl
 		}
 		for (auto itor = lconnectfun.begin(); itor != lconnectfun.end(); ++itor)
 		{
-			if (lconnectserverid.contains(itor->first) == false)
+			if (!lconnectserverid.contains(itor->first))
 			{
 				continue;
 			}
