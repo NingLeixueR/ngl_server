@@ -126,7 +126,7 @@ namespace ngl
 		}
 
 		//# 获取m_id对应的数据
-		inline data_modified<TDATA>* get()
+		inline data_modified<TDATA>& get()
 		{
 			return get(get_actorid());
 		}
@@ -138,20 +138,15 @@ namespace ngl
 		}
 
 		// # 与find类似(只是没有就添加)
-		inline data_modified<TDATA>* get(nguid aid)
+		inline data_modified<TDATA>& get(nguid aid)
 		{
-			data_modified<TDATA>* ret = tools::findmap(data(), aid);
-			if (ret != nullptr)
-			{
-				return ret;
-			}
 			if (get_actorid() != nguid::make() && get_actorid() != aid)
 			{
-				return nullptr;
+				tools::no_core_dump();
 			}
 			data_modified<TDATA>& ldata = data()[aid];
 			ldata.get().set_m_id(aid);
-			return &ldata;
+			return ldata;
 		}
 
 		// # 删除指定数据

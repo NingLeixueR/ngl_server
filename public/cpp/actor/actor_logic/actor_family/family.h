@@ -32,13 +32,9 @@ namespace ngl
 		// 检查是否可以创建军团
 		bool check_createfamily(i64_actorid aroleid)
 		{
-			data_modified<pbdb::db_familyer>* lpdbfamilyer = get(aroleid);
-			if (lpdbfamilyer == nullptr)
-			{
-				return false;
-			}
+			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
 			auto lnow = (int32_t)localtime::gettime();
-			if (lnow - lpdbfamilyer->getconst().m_lastleaveutc() < ttab_specialid::instance().m_familjoininterval)
+			if (lnow - lpdbfamilyer.getconst().m_lastleaveutc() < ttab_specialid::instance().m_familjoininterval)
 			{
 				return false;
 			}

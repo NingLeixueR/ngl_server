@@ -208,7 +208,7 @@ namespace ngl
 			{
 				int32_t lmaxcount = tools::lexical_cast<int32_t>(table->m_typeparm);
 				
-				const auto& lcomplete = rd->m_task.get()->getconst().m_completeddatas();
+				const auto& lcomplete = rd->m_task.get().getconst().m_completeddatas();
 				auto itor = lcomplete.find(ataskid);
 				if (itor != lcomplete.end())
 				{
