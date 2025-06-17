@@ -27,7 +27,7 @@ namespace ngl
 		{
 			pbdb::db_activity ldb;
 			ldb.set_m_id(m_actorid);
-			m_activity = aactivitydb.add(m_actorid, ldb);
+			m_activity = &aactivitydb.add(m_actorid, ldb);
 		}
 		m_activitytimes = aactivitytimedb.find(m_actorid);
 		if (m_activitytimes == nullptr)
@@ -37,7 +37,7 @@ namespace ngl
 			ldb.set_m_beg(atime);
 			ldb.set_m_duration(aduration);
 			ldb.set_m_start(false);
-			m_activitytimes = aactivitytimedb.add(m_actorid, ldb);
+			m_activitytimes = &aactivitytimedb.add(m_actorid, ldb);
 		}
 	}	
 

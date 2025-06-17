@@ -190,9 +190,15 @@ namespace ngl
 			return (ndbclient<ENUM, TDATA, TACTOR>*)get_dbclient();
 		}
 
-		inline data_modified<TDATA>* add(i64_actorid aid, const TDATA& adbtab)
+		inline data_modified<TDATA>& add(i64_actorid aid, const TDATA& adbtab)
 		{
-			return m_data.add(aid, adbtab);
+			if (get_actorid() != nguid::make() && get_actorid() != aid)
+			{
+				tools::no_core_dump();
+			}
+			data_modified<TDATA>& ldata = get(aid);
+			ldata.get() = adbtab;
+			return ldata;
 		}
 
 		inline void remove(int64_t aid)

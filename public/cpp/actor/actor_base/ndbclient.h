@@ -18,7 +18,7 @@ namespace ngl
 	{
 	protected:
 		pbdb::ENUM_DB m_type;
-		ndbclient_base(pbdb::ENUM_DB atype) :
+		explicit ndbclient_base(pbdb::ENUM_DB atype) :
 			m_type(atype)
 		{}
 	public:
@@ -110,7 +110,8 @@ namespace ngl
 	class actor_db;
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename TACTOR>
-	class ndbclient : public ndbclient_base, tools_log
+	class ndbclient : 
+		public ndbclient_base, tools_log
 	{
 		ndbclient(const ndbclient&) = delete;
 		ndbclient& operator=(const ndbclient&) = delete;
@@ -356,7 +357,7 @@ namespace ngl
 			return &m_data[aid];
 		}
 
-		data_modified<TDBTAB>* add(const nguid& aid, const TDBTAB& adbtab)
+		/*data_modified<TDBTAB>* add(const nguid& aid, const TDBTAB& adbtab)
 		{
 			if (m_data.contains(aid))
 			{
@@ -371,7 +372,7 @@ namespace ngl
 				m_dbdata = lpdata;
 			}
 			return lpdata;
-		}
+		}*/
 
 		// # º”‘ÿÕÍ≥…
 		bool loadfinish()
