@@ -18,8 +18,6 @@ namespace ngl
 	public:
 		bag();
 
-		data_modified<pbdb::db_bag>& get_bag();
-
 		virtual void initdata();
 
 		pbdb::item* add(pbdb::item& aitem);
