@@ -214,8 +214,8 @@ namespace ngl
 			for (std::pair<const int64_t, TDATA>& lpair : lmap)
 			{
 				// # m_dbmodule->get:数据不存在就创建
-				data_modified<TDATA>* lp = m_dbmodule->get(lpair.first);
-				lp->get() = lpair.second;
+				data_modified<TDATA>& ldata = m_dbmodule->get(lpair.first);
+				ldata.get() = lpair.second;
 			}
 		}
 
@@ -261,8 +261,8 @@ namespace ngl
 			{
 				for (i64_actorid actorid : *lpset)
 				{
-					data_modified<TDATA>* lp = m_dbmodule->get(actorid);
-					lmap[lp->getconst().m_id()] = lp->getconst();
+					data_modified<TDATA>& ldata = m_dbmodule->get(actorid);
+					lmap[ldata.getconst().m_id()] = ldata.getconst();
 				}
 			}
 			if (!lmap.empty())

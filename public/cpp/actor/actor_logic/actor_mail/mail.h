@@ -67,12 +67,8 @@ namespace ngl
 				lpmailitem->set_m_itemtid(itemid);
 				lpmailitem->set_m_count(count);
 			}
-			data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
-			if (lpdb_mail == nullptr)
-			{
-				return false;
-			}
-			lpdb_mail->get().mutable_m_mail()->insert({ lid, lmail });
+			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
+			lpdb_mail.get().mutable_m_mail()->insert({ lid, lmail });
 			return true;
 		}
 
@@ -105,14 +101,9 @@ namespace ngl
 		// # Ò»¼ü²Ù×÷
 		void one_touch(i64_actorid aroleid, std::function<bool(const pbdb::mail&)> acheck, const std::function<void(int32_t)>& afun)
 		{
-			data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
-			if (lpdb_mail == nullptr)
-			{
-				return;
-			}
-
+			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			std::vector<int32_t> ldellist;
-			for (const auto& [_id, _mail] : *lpdb_mail->get().mutable_m_mail())
+			for (const auto& [_id, _mail] : *lpdb_mail.get().mutable_m_mail())
 			{
 				if (_id != -1 && acheck(_mail))
 				{
@@ -170,13 +161,8 @@ namespace ngl
 					}
 				}
 				
-				data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
-				if (lpdb_mail == nullptr)
-				{
-					return false;
-				}
-
-				lpdb_mail->get().mutable_m_mail()->erase((int32_t)aid);
+				data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
+				lpdb_mail.get().mutable_m_mail()->erase((int32_t)aid);
 			}
 			else
 			{
@@ -194,13 +180,9 @@ namespace ngl
 
 		std::shared_ptr<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE> sync_mail(i64_actorid aroleid, i64_actorid amailid = -1)
 		{
-			data_modified<pbdb::db_mail>* lpdb_mail = get(aroleid);
-			if (lpdb_mail == nullptr)
-			{
-				return nullptr;
-			}
+			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
-			for (const auto& [_mailid, _mails] : *lpdb_mail->get().mutable_m_mail())
+			for (const auto& [_mailid, _mails] : *lpdb_mail.get().mutable_m_mail())
 			{
 				pro->mutable_m_mail()->insert({ _mailid, _mails });
 			}

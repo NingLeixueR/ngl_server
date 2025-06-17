@@ -290,9 +290,9 @@ namespace ngl
 	void actor_role::sync_data_client()
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>();
-		*pro->mutable_m_role()	= m_info.get()->getconst();
-		*pro->mutable_m_bag()	= m_bag.get()->getconst();
-		*pro->mutable_m_task()	= m_task.get()->getconst();
+		*pro->mutable_m_role()	= m_info.get().getconst();
+		*pro->mutable_m_bag()	= m_bag.get().getconst();
+		*pro->mutable_m_task()	= m_task.get().getconst();
 		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_role>::instance(id_guid()).getconst(id_guid());
 		if (lpbrief != nullptr)
 		{
@@ -373,7 +373,7 @@ namespace ngl
 
 	bool actor_role::is_first_recharge(int32_t arechargeid)
 	{
-		auto& lrole = m_info.get()->getconst();
+		auto& lrole = m_info.get().getconst();
 		int lcount = 0;
 		for (const auto& item : lrole.m_recharge())
 		{

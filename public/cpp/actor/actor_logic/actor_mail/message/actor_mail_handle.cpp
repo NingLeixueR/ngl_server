@@ -19,12 +19,8 @@ namespace ngl
 					{
 						return;
 					}
-					data_modified<pbdb::db_mail>* lpdb_mail = m_mails.get(id);
-					if (lpdb_mail == nullptr)
-					{
-						return;
-					}
-					tools::proto2json(lpdb_mail->get(), pro.m_data);
+					data_modified<pbdb::db_mail>& lpdb_mail = m_mails.get(id);
+					tools::proto2json(lpdb_mail.get(), pro.m_data);
 					pro.m_istoutf8 = false;
 				};
 

@@ -12,7 +12,7 @@ namespace ngl
 
 	void bag::initdata()
 	{
-		data_modified<pbdb::db_bag>& lbag = *get();
+		data_modified<pbdb::db_bag>& lbag = get();
 		auto lpmap = lbag.getconst().m_items();
 		
 
@@ -37,7 +37,7 @@ namespace ngl
 
 	pbdb::item* bag::add(pbdb::item& aitem)
 	{
-		data_modified<pbdb::db_bag>& ldb_bag = *get();
+		data_modified<pbdb::db_bag>& ldb_bag = get();
 		pbdb::db_bag& lbag = ldb_bag.get();
 		int32_t lindexid = lbag.m_maxid();
 		aitem.set_m_id(++lindexid);
@@ -156,7 +156,7 @@ namespace ngl
 		int32_t litemid = itor->second->m_id();
 		if (acount == 0)
 		{
-			get()->get().mutable_m_items()->erase(itor->second->m_id());
+			get().get().mutable_m_items()->erase(itor->second->m_id());
 			m_stackitems.erase(itor);
 			return true;
 		}

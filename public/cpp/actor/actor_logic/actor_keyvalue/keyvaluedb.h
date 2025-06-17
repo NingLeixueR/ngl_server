@@ -31,12 +31,8 @@ namespace ngl
 		template <typename T>
 		bool keyvalue(nguid aid, T& adata)
 		{
-			data_modified<pbdb::db_keyvalue>* lp = get(aid);
-			if (lp == nullptr)
-			{
-				return false;
-			}
-			adata = tools::lexical_cast<T>(lp->getconst().m_value());
+			data_modified<pbdb::db_keyvalue>& ldata = get(aid);
+			adata = tools::lexical_cast<T>(ldata.getconst().m_value());
 			return true;
 		}
 
