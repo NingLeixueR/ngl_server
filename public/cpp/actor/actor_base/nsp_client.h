@@ -71,10 +71,9 @@ namespace ngl
 				});
 		}
 
-		// 打印信息
+		// # 打印信息
 		void print_info()
 		{
-			// 打印
 			std::vector<nguid> lreads;
 			std::ranges::for_each(m_onlyreads, [&lreads](i64_actorid anodeid)
 				{
@@ -233,7 +232,6 @@ namespace ngl
 				}
 				m_publishlist1.erase(lpdata->m_actorid);
 			}
-
 			print_info();
 		}
 

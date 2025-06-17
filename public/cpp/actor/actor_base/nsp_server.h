@@ -218,7 +218,6 @@ namespace ngl
 				ldata.get() = lpair.second;
 			}
 		}
-
 	public:
 		static void init(ndb_modular<ENUMDB, TDATA, TDerived>* adbmodule)
 		{

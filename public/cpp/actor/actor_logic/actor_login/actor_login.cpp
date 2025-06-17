@@ -91,10 +91,10 @@ namespace ngl
 			laccount.set_m_id(lid);
 			laccount.set_m_roleid(lid);
 
-			data_modified<pbdb::db_account>* lpaccount = m_account.add(lid, laccount);
-			lmap[account] = lpaccount;
+			data_modified<pbdb::db_account>& lpaccount = m_account.add(lid, laccount);
+			lmap[account] = &lpaccount;
 			aiscreate = true;
-			return lpaccount;
+			return &lpaccount;
 		}
 	}
 
