@@ -90,8 +90,7 @@ namespace ngl
 			{
 				handle_pram_send<T, IS_SEND>::sendclient(adata.m_actor, adata.m_requestactor, adata);
 			};
-			apram.m_forwardfun = lfun;
-				
+			apram.m_forwardfun = lfun;				
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>

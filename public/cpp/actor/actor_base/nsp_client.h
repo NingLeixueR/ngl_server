@@ -153,7 +153,7 @@ namespace ngl
 						}
 					}
 				}
-				print_info();
+				//print_info();
 			}
 		}
 
@@ -232,7 +232,7 @@ namespace ngl
 				}
 				m_publishlist1.erase(lpdata->m_actorid);
 			}
-			print_info();
+			//print_info();
 		}
 
 	public:

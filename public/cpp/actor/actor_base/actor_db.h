@@ -29,8 +29,6 @@ namespace ngl
 
 		static void cachelist(enum_cache_list atype, std::set<i64_actorid>& aset);
 	public:
-		using type_actor_dbtab = actor_dbtab<TDBTAB_TYPE, TDBTAB>;
-
 		// # ≥ı ºªØ
 		static void init()
 		{
@@ -127,7 +125,7 @@ namespace ngl
 			{
 				if(db_data<TDBTAB>::data_stat(lid) == db_data<TDBTAB>::edbdata_notdata)
 				{
-					log_error()->print("load fail notdata {}:{}", tools::type_name<type_actor_dbtab>(), nguid(lid));
+					log_error()->print("load fail notdata {}:{}", tools::type_name<actor_dbtab<TDBTAB_TYPE, TDBTAB>>(), nguid(lid));
 					return;
 				}
 					
