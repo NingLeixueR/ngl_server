@@ -143,8 +143,12 @@ namespace ngl
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, mforward<np_operator_task>
-			, np_example_actorid
 		>(true);
+
+		register_handle_custom<actor_role, true>::func<
+			np_example_actorid
+		>(true);
+
 
 		// 绑定pb消息
 		register_handle_proto<actor_role, false>::func<

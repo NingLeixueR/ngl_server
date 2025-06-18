@@ -390,24 +390,21 @@ namespace ngl
 		void send_actor(const nguid& aguid, const T& adata)
 		{
 			auto pro = std::make_shared<T>(adata);
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), pro);
-			push_task_id(aguid, lpram, true);
+			static_send_actor(aguid, id_guid(), pro);
 		}
 
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata);
-			push_task_id(aguid, lpram, true);
+			static_send_actor(aguid, id_guid(), adata);
 		}
 
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, guid(), adata, afailfun);
-			push_task_id(aguid, lpram, true);
+			static_send_actor(aguid, id_guid(), adata, afailfun);
 		}
 
 		//# 向指定actor发送pack
@@ -421,43 +418,13 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), guid(), adata);
-			lpram.m_forwardtype = true;
-			push_task_type(atype, lpram, aotherserver);
-		}
-
-		//# 发送数据到指定的actor
-		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
-		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
-			push_task_id(aguid, lpram, true);
+			static_send_actor(atype, adata, aotherserver);
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const std::vector<i64_actorid>& avecguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
-		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
-			for (i64_actorid actorid: avecguid)
-			{
-				lpram.m_actor = actorid;
-				push_task_id(actorid, lpram, true);
-			}
-		}
-
-		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
-		{
-			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
-			for (i64_actorid actorid : asetguid)
-			{
-				lpram.m_actor = actorid;
-				push_task_id(actorid, lpram, true);
-			}
-		}
-
-		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false)
+		static void static_send_actor(
+			ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false
+		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), nguid::make(), adata);
 			lpram.m_forwardtype = true;
@@ -466,17 +433,41 @@ namespace ngl
 
 		//# 发送数据到指定的actor
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
+		static void static_send_actor(
+			const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata
+		)
+		{
+			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
+			push_task_id(aguid, lpram, true);
+		}
+
+		//# 发送数据到指定的actor
+		template <typename T, bool IS_SEND = true>
+		static void static_send_actor(
+			const nguid& aguid, const nguid& arequestguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun
+		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
 
-		template <typename T>
-		static void static_masssend_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
+		template <typename T, bool IS_SEND = true>
+		static void static_mass_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
 		{
-			handle_pram lpram = handle_pram::create<T, true>(asetguid, arequestguid, adata);
-			push_task_id(asetguid, lpram, true);
+			//if constexpr (MASS)
+			//{
+				handle_pram lpram = handle_pram::create<T, true>(asetguid, arequestguid, adata);
+				push_task_id(asetguid, lpram, true);
+			//}
+			//else
+			//{
+			//	handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
+			//	for (i64_actorid actorid : asetguid)
+			//	{
+			//		lpram.m_actor = actorid;
+			//		push_task_id(actorid, lpram, true);
+			//	}
+			//}
 		}
 
 #pragma endregion
