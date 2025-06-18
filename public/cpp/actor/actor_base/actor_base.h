@@ -194,6 +194,7 @@ namespace ngl
 
 		//# 向指定actor添加任务
 		static void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
+		static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool);
 
 		//# 给指定类型的actor添加任务
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
@@ -270,11 +271,12 @@ namespace ngl
 		}
 
 		template <typename T>
-		static void cpro_push_actorid(const std::shared_ptr<tactor_forward<T>>& apro, i64_actorid aid)
+		static i64_actorid cpro_push_actorid(const std::shared_ptr<tactor_forward<T>>& apro, i64_actorid aid)
 		{
 			nguid lguid(aid);
 			apro->m_uid.push_back(lguid.actordataid());
 			apro->m_area.push_back(lguid.area());
+			return lguid.make_type(nguid::none_type());
 		}
 	public:
 		//# 根据actor_role.guidid给所在客户端发送数据
@@ -287,7 +289,7 @@ namespace ngl
 			}
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, aid);
-			handle_pram lpram = handle_pram::create(aid, nguid::make(), pro);
+			handle_pram lpram = handle_pram::create(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 
@@ -329,7 +331,7 @@ namespace ngl
 				{
 					cpro_push_actorid(pro, aactorid);
 				});
-			handle_pram lpram = handle_pram::create(*abeg, nguid::make(), pro);
+			handle_pram lpram = handle_pram::create(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 	public:
@@ -469,6 +471,14 @@ namespace ngl
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
 			push_task_id(aguid, lpram, true);
 		}
+
+		template <typename T>
+		static void static_masssend_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
+		{
+			handle_pram lpram = handle_pram::create<T, true>(asetguid, arequestguid, adata);
+			push_task_id(asetguid, lpram, true);
+		}
+
 #pragma endregion
 
 #pragma region group

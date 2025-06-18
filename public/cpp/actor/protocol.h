@@ -175,6 +175,35 @@ namespace ngl
 			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);			
 		}
 
+		// 接收转发的消息
+		template <typename T, EPROTOCOL_TYPE TYPE>
+		static void registry_actor_mass(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		{
+			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
+				{
+					Try
+					{
+						np_mass_actor<T>* lp = new np_mass_actor<T>();
+						std::shared_ptr<void> ltemp(lp);
+						if (structbytes<np_mass_actor<T>>::tostruct(apack, *lp))
+						{
+							return ltemp;
+						}
+					}Catch
+					return nullptr;
+				};
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+				{
+					std::shared_ptr<np_mass_actor<T>> ldatapack = std::static_pointer_cast<np_mass_actor<T>>(aptrpram);
+					std::set<i64_actorid>& lactorids = ldatapack->m_actorids;
+					nguid lrequestguid(apack->m_head.get_request_actor());
+					handle_pram lpram = handle_pram::create<np_mass_actor<T>, false>(lactorids, lrequestguid, ldatapack);
+					actor_manage::instance().push_task_id(lactorids, lpram, false);
+					return true;
+				};
+			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);
+		}
+
 		static void cmd(const std::shared_ptr<pack>& apack);
 	};
 }// namespace ngl

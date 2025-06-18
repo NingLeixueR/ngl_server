@@ -65,7 +65,7 @@ namespace ngl
 
 		static void nregister()
 		{
-			register_handle_custom<type_actor_events>::template func<
+			register_handle_custom<type_actor_events, false>::template func<
 				type_actor_events::np_event_register
 			>(true);
 		}
@@ -75,7 +75,7 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype]= typeid(TPARM).hash_code();
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, type_actor_events, TPARM>
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, type_actor_events, false, TPARM>
 				(
 					[atype](type_actor_events*, message<TPARM>& adata)
 					{

@@ -217,13 +217,13 @@ namespace ngl
 
 		static void nregister()
 		{
-			actor::register_handle_proto<tactor_db>::template func<
+			actor::register_handle_proto<tactor_db, false>::template func<
 				np_actordb_load<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_delete<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>
 			>(true);
-			actor::register_handle_custom<tactor_db>::template func<
+			actor::register_handle_custom<tactor_db, false>::template func<
 				mforward<np_gm>
 			>(true);
 		}

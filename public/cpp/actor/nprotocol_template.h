@@ -360,7 +360,6 @@ namespace ngl
 	struct np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
 	{
 		using BASE_TYPE = T;
-		static const bool				isusing = ISUSING;
 		std::vector<i32_actordataid>	m_uid;
 		std::vector<i16_area>			m_area;
 	private:
@@ -381,12 +380,39 @@ namespace ngl
 			:m_data(nullptr)
 		{}
 
-		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING ? false : true, T>& adata)
+		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, !ISUSING, T>& adata)
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
 	};
+
+	// # 群发数据给其他actor
+	template <typename T>
+	struct np_mass_actor
+	{
+		std::set<i64_actorid>	m_actorids;
+	private:
+		std::shared_ptr<T> m_data;
+	public:
+		void set_data(const std::shared_ptr<T>& adata)
+		{
+			m_data = adata;
+		}
+
+		const T* get_data()const
+		{
+			return m_data.get();
+		}
+
+		std::shared_ptr<T> get_shared()const
+		{
+			return m_data;
+		}
+
+		def_portocol(np_mass_actor, m_actorids, *m_data)
+	};
+
 
 	// ---- actor 切换进程
 	//ACTOR_SPROCESS_ROLE

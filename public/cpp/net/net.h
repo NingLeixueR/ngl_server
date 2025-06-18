@@ -196,14 +196,18 @@ namespace ngl
 		return lpair;
 	}
 
-	template <typename T, bool IS_SEND /*= true*/>
-	bool handle_pram_send<T, IS_SEND>::sendbyserver(i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const handle_pram& adata)
+	template <typename T>
+	bool handle_pram_send<T>::sendbyserver(i32_serverid aserverid, const handle_pram& adata)
 	{
-		if (IS_SEND == false)
-		{
-			return true;
-		}
-		return nets::sendbyserver(aserverid, *(T*)adata.m_data.get(), aactorid, arequestactorid);
+		return nets::sendbyserver(aserverid, *(T*)adata.m_data.get(), adata.m_actor, adata.m_requestactor);
+	}
+
+	template <typename T>
+	bool handle_pram_send<T>::sendbyserver(
+		i32_serverid aserverid, const nguid& aactorid, const nguid& arequestactorid, const T& adata
+	)
+	{
+		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
 
 	template <typename T>

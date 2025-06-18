@@ -60,12 +60,12 @@ namespace ngl
 		actor::register_timer<actor_example_match>(&actor_example_match::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_example_match>::func<
+		register_handle_custom<actor_example_match, false>::func<
 			np_login_request_info
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_example_match>::func<
+		register_handle_proto<actor_example_match, false>::func<
 			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
 			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>,
 			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
