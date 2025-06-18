@@ -139,7 +139,7 @@ namespace ngl
 		actor::register_timer<actor_role>(&actor_role::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_role>::func<
+		register_handle_custom<actor_role, false>::func<
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, mforward<np_operator_task>
@@ -147,7 +147,7 @@ namespace ngl
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_role>::func<
+		register_handle_proto<actor_role, false>::func<
 			pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
 		>(true);

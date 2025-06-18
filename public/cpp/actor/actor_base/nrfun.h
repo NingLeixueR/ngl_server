@@ -107,20 +107,20 @@ namespace ngl
 		}
 
 		//# 允许任意std::function<void(TTTDerived*, T&)>挂载到指定actor上
-		template <typename TTTDerived, typename T>
-		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun);
+		template <typename TTTDerived, typename T, bool MASS>
+		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, bool aisload = false);
 
 		//# bool aisload = false 
 		//# 是否允许db数据加载完成之前处理此消息
-		template <typename TTTDerived, typename T>
+		template <typename TTTDerived, typename T, bool MASS>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		//# actor间消息处理
-		template <typename TTTDerived, typename T>
+		template <typename TTTDerived, typename T, bool MASS>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		//# actor间消息处理,不注册网络层
-		template <typename TTTDerived, typename T>
+		template <typename TTTDerived, typename T, bool MASS>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		//# 注册转发协议

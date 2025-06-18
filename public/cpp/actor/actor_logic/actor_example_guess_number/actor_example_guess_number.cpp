@@ -107,12 +107,12 @@ namespace ngl
 		actor::register_timer<actor_example_guess_number>(&actor_example_guess_number::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_example_guess_number>::func<
+		register_handle_custom<actor_example_guess_number,false>::func<
 			np_example_entergame_ready
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_example_guess_number>::func<
+		register_handle_proto<actor_example_guess_number, false>::func<
 			mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>
 		>(false);
 	}

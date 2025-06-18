@@ -314,7 +314,7 @@ namespace ngl
 				lisregister = true;
 
 				// 更新数据
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_data<T>>(
 					[](TDerived* aacotor, const message<np_channel_data<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -326,7 +326,7 @@ namespace ngl
 				);
 
 				// 注册回复
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_register_reply<T>>(
 					[](TDerived* aacotor, const message<np_channel_register_reply<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -338,7 +338,7 @@ namespace ngl
 				);
 
 				// 检查
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_check<T>>(
 					[](TDerived* aacotor, const message<np_channel_check<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -352,7 +352,7 @@ namespace ngl
 				// 同步channel_dataid
 				if (!aonlyread)
 				{//只读结点不需要知道数据被哪些结点订阅，因为他不能修改数据
-					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>(
+					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_dataid_sync<T>>(
 						[](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
 						{
 							if (aacotor == nullptr)

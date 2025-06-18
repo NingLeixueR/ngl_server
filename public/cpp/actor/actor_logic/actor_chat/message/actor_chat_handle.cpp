@@ -1,5 +1,6 @@
 #include "actor_brief.h"
 #include "actor_chat.h"
+#include "ttab_chat.h"
 namespace ngl
 {
 	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
@@ -12,7 +13,7 @@ namespace ngl
 			pro->set_m_channelid(recv.m_channelid());
 			pro->set_m_stat(false);
 
-			tab_chat* ltab = allcsv::tab<tab_chat>(recv.m_channelid());
+			const tab_chat* ltab = ttab_chat::instance().tab(recv.m_channelid());
 			if (ltab == nullptr)
 			{
 				send_client(adata.get_data()->identifier(), pro);

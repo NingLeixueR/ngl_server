@@ -321,6 +321,11 @@ namespace ngl
 		actor_manage::instance().push_task_id(aguid, apram, abool);
 	}
 
+	void actor_base::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool)
+	{
+		actor_manage::instance().push_task_id(asetguid, apram, abool);
+	}
+
 	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
 	{
 		actor_manage::instance().push_task_type(atype, apram, aotherserver);

@@ -60,6 +60,7 @@ namespace ngl
 
 		//# 向actor中添加任务
 		void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
+		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool);
 
 		//# 向某个类型的actor中添加任务
 		void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);

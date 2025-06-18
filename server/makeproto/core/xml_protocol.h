@@ -846,14 +846,14 @@ namespace ngl
 	void {0}::nregister()
 	{{
         // 定时器
-		actor::register_timer<{0}>(&{0}::timer_handle);
+		actor::register_timer<{0}, false>(&{0}::timer_handle);
 
         // 绑定自定义np_消息
-		register_handle_custom<{0}>::func<
+		register_handle_custom<{0}, false>::func<
 		>(true);
 
         // 绑定pb消息
-		register_handle_proto<{0}>::func<
+		register_handle_proto<{0}, false>::func<
 		>(true);
 	}}
 

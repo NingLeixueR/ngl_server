@@ -58,11 +58,11 @@ namespace ngl
 		actor::register_timer<actor_brief>(&actor_brief::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_brief>::func<
+		register_handle_custom<actor_brief, false>::func<
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_brief>::func<
+		register_handle_proto<actor_brief, false>::func<
 		>(true);
 	}
 	

@@ -10,55 +10,111 @@
 namespace ngl
 {
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename TTTDerived, typename T>
-	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(const std::function<void(TTTDerived*, message<T>&)>& afun)
-	{		
-		std::cout << "REGISTER:" << typeid(T).name() << "##########" << tprotocol::protocol<T>() << std::endl;
-		m_fun[tprotocol::protocol<T>()] = nlogicfun
+	template <typename TTTDerived, typename T, bool MASS>
+	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, bool aisload /*= false*/)
+	{	
+		if constexpr(MASS)
 		{
-			.m_isdbload = false,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+			std::cout <<
+				std::format("Register Anonymity: {} # {}", typeid(np_mass_actor<T>).name(), tprotocol::protocol<np_mass_actor<T>>())
+				<< std::endl;
+			m_fun[tprotocol::protocol<np_mass_actor<T>>()] = nlogicfun
 			{
-				std::shared_ptr<T> ldata = std::static_pointer_cast<T>(apram.m_data);
-				message<T> lmessage(athreadid, apram.m_pack.get(), ldata);
-				afun((TTTDerived*)aactor, lmessage);
-			}
-		};
-		protocol::registry_actor<T, TYPE>(nactor_type<TDerived>::type(), tprotocol::protocol_name<T>().c_str());
+				.m_isdbload = aisload,
+				.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+				{
+					std::shared_ptr<np_mass_actor<T>> ldata = std::static_pointer_cast<np_mass_actor<T>>(apram.m_data);
+					std::shared_ptr<T> ltemp = ldata->get_shared();
+					message<T> lmessage(athreadid, apram.m_pack.get(), ltemp);
+					afun((TTTDerived*)aactor, lmessage);
+				}
+			};
+			protocol::registry_actor_mass<T, TYPE>(
+				nactor_type<TDerived>::type(),
+				tprotocol::protocol<np_mass_actor<T>>(),
+				tprotocol::protocol_name<np_mass_actor<T>>().c_str()
+			);
+		}
+		else
+		{
+			std::cout <<
+				std::format("Register Anonymity: {} # {}", typeid(T).name(), tprotocol::protocol<T>())
+				<< std::endl;
+			m_fun[tprotocol::protocol<T>()] = nlogicfun
+			{
+				.m_isdbload = aisload,
+				.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+				{
+					std::shared_ptr<T> ldata = std::static_pointer_cast<T>(apram.m_data);
+					message<T> lmessage(athreadid, apram.m_pack.get(), ldata);
+					afun((TTTDerived*)aactor, lmessage);
+				}
+			};
+			protocol::registry_actor<T, TYPE>(nactor_type<TDerived>::type(), tprotocol::protocol_name<T>().c_str());
+		}
 		return *this;
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename TTTDerived, typename T>
+	template <typename TTTDerived, typename T, bool MASS>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
 	{
-		m_fun[tprotocol::protocol<T>()] = nlogicfun
+		if constexpr (MASS)
 		{
-			.m_isdbload = aisload,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+			m_fun[tprotocol::protocol<np_mass_actor<T>>()] = nlogicfun
 			{
-				std::shared_ptr<T> ldata = std::static_pointer_cast<T>(apram.m_data);
-				message<T> lmessage(athreadid, apram.m_pack.get(), ldata);
-				(((TTTDerived*)(aactor))->*afun)(lmessage);
-			}
-		};
+				.m_isdbload = aisload,
+				.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+				{
+					std::shared_ptr<np_mass_actor<T>> ldata = std::static_pointer_cast<np_mass_actor<T>>(apram.m_data);
+					std::shared_ptr<T> ltemp = ldata->get_shared();
+					message<T> lmessage(athreadid, apram.m_pack.get(), ltemp);
+					(((TTTDerived*)(aactor))->*afun)(lmessage);
+				}
+			};
+		}
+		else
+		{
+			m_fun[tprotocol::protocol<T>()] = nlogicfun
+			{
+				.m_isdbload = aisload,
+				.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
+				{
+					std::shared_ptr<T> ldata = std::static_pointer_cast<T>(apram.m_data);
+					message<T> lmessage(athreadid, apram.m_pack.get(), ldata);
+					(((TTTDerived*)(aactor))->*afun)(lmessage);
+				}
+			};
+		}
+		
 		return *this;
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename TTTDerived, typename T>
+	template <typename TTTDerived, typename T, bool MASS>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(const Tfun<TTTDerived, T> afun, bool aisload/* = false*/)
 	{
-		rfun<TTTDerived, T>(afun, nactor_type<TDerived>::type(), aisload);
+		rfun<TTTDerived, T, MASS>(afun, nactor_type<TDerived>::type(), aisload);
 		return *this;
 	}
 
 	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	template <typename TTTDerived, typename T>
+	template <typename TTTDerived, typename T, bool MASS>
 	nrfun<TDerived, TYPE>& nrfun<TDerived, TYPE>::rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload/* = false*/)
 	{
-		rfun_nonet<TTTDerived, T>(afun, aisload);
-		protocol::registry_actor<T, TYPE>(atype, tprotocol::protocol_name<T>().c_str());
+		rfun_nonet<TTTDerived, T, MASS>(afun, aisload);
+		if constexpr (MASS)
+		{
+			protocol::registry_actor_mass<T, TYPE>(
+				atype,
+				tprotocol::protocol<np_mass_actor<T>>(),
+				tprotocol::protocol_name<np_mass_actor<T>>().c_str()
+			);
+		}
+		else
+		{
+			protocol::registry_actor<T, TYPE>(atype, tprotocol::protocol_name<T>().c_str());
+		}
 		return *this;
 	}
 

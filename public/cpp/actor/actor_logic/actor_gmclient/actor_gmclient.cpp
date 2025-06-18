@@ -57,12 +57,12 @@ namespace ngl
 		actor::register_timer<actor_gmclient>(&actor_gmclient::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_gmclient>::func<
+		register_handle_custom<actor_gmclient, false>::func<
 			mforward<np_gm>
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_gmclient>::func<
+		register_handle_proto<actor_gmclient, false>::func<
 		>(true);
 	}
 

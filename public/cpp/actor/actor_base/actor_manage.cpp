@@ -343,6 +343,32 @@ namespace ngl
 			nosafe_push_task_id(lpptractor, apram);
 		}
 
+		inline void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool)
+		{
+			ngl_lock_s;
+			bool lmass = false;
+			ptractor lpclient = nullptr;
+			for (i64_actorid actorid : asetguid)
+			{
+				ptractor lpptractor = nosafe_get_actorbyid(actorid, apram, abool);
+				if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
+				{
+					continue;
+				}
+				if (lpptractor->id_guid() == nodetypebyguid())
+				{
+					lmass = true;
+					lpclient = lpptractor;
+					continue;
+				}
+				nosafe_push_task_id(lpptractor, apram);
+			}
+			if (lmass && abool)
+			{
+				nosafe_push_task_id(lpclient, apram);
+			}
+		}
+
 		inline void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver)
 		{
 			ngl_lock_s;
@@ -506,6 +532,11 @@ namespace ngl
 	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
 	{
 		m_impl_actor_manage()->push_task_id(aguid, apram, abool);
+	}
+
+	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool)
+	{
+		m_impl_actor_manage()->push_task_id(asetguid, apram, abool);
 	}
 
 	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
