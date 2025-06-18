@@ -1,6 +1,5 @@
 namespace ngl
 {
-
 	template <typename T>
 	void _reister_channel_db()
 	{
@@ -11,6 +10,8 @@ namespace ngl
 			, np_channel_exit<T>
 			, np_channel_check<T>
 			, np_channel_dataid_sync<T>
+			, np_mass_actor<np_channel_data<T>>
+			, np_mass_actor<np_channel_dataid_sync<T>>
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 

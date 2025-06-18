@@ -244,6 +244,7 @@ namespace ngl
 				handle_pram_send<np_mass_actor<T>>::sendbyserver(lserverid, lactorid, lrequestactor, pro);
 			}
 		}
+		return true;
 	}
 
 	template <>
