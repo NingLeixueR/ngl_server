@@ -535,24 +535,25 @@ namespace ngl
         lfile2.write(m_stream2.str());
 
 
-        m_stream3 << "namespace ngl" << std::endl;
-        m_stream3 << "{" << std::endl;
-        m_stream3 << std::endl;
-        m_stream3 << "\ttemplate <typename T>" << std::endl;
-        m_stream3 << "\tvoid _reister_channel_db()" << std::endl;
-        m_stream3 << "\t{" << std::endl;
-        m_stream3 << "\t\ttprotocol::tp_customs::template func <" << std::endl;
-        m_stream3 << "\t\t\tnp_channel_register<T>" << std::endl;
-        m_stream3 << "\t\t\t, np_channel_register_reply<T>" << std::endl;
-        m_stream3 << "\t\t\t, np_channel_data<T>" << std::endl;
-        m_stream3 << "\t\t\t, np_channel_exit<T>" << std::endl;
-        m_stream3 << "\t\t\t, np_channel_check<T>" << std::endl;
-        m_stream3 << "\t\t\t, np_channel_dataid_sync<T>" << std::endl;
-        m_stream3 << "\t\t>(EPROTOCOL_TYPE_CUSTOM);" << std::endl;
-        m_stream3 << "\t}" << std::endl;
-        m_stream3 << std::endl;
-        m_stream3 << "\tvoid reister_channel_db()" << std::endl;
-        m_stream3 << "\t{" << std::endl;
+        m_stream3 << R"(namespace ngl
+{
+	template <typename T>
+	void _reister_channel_db()
+	{
+		tprotocol::tp_customs::template func <
+			np_channel_register<T>
+			, np_channel_register_reply<T>
+			, np_channel_data<T>
+			, np_channel_exit<T>
+			, np_channel_check<T>
+			, np_channel_dataid_sync<T>
+            , np_mass_actor<np_channel_data<T>>
+			, np_mass_actor<np_channel_dataid_sync<T>>
+		>(EPROTOCOL_TYPE_CUSTOM);
+	}
+
+	void reister_channel_db()
+	{)" << std::endl;
 
         int lindex333 = 110000000;
         for (const auto& item : lmap)
