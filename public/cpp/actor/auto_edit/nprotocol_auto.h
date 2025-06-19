@@ -56,7 +56,7 @@ namespace ngl
 			/*200000038*/, np_get_rank
 			/*200000039*/, np_get_rank_response
 			/*200000040*/, np_activityrank_operator
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs::template func<
 			/*210000001*/mforward<np_timerparm>
@@ -99,6 +99,6 @@ namespace ngl
 			/*210000038*/, mforward<np_get_rank>
 			/*210000039*/, mforward<np_get_rank_response>
 			/*210000040*/, mforward<np_activityrank_operator>
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 	}
 }//namespace ngl

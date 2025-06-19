@@ -547,8 +547,6 @@ namespace ngl
 			, np_channel_exit<T>
 			, np_channel_check<T>
 			, np_channel_dataid_sync<T>
-            , np_mass_actor<np_channel_data<T>>
-			, np_mass_actor<np_channel_dataid_sync<T>>
 		>(EPROTOCOL_TYPE_CUSTOM);
 	}
 
@@ -556,6 +554,7 @@ namespace ngl
 	{)" << std::endl;
 
         int lindex333 = 110000000;
+        m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
         for (const auto& item : lmap)
         {
             if (item.second.enumname == "ENUM_DB_COUNT")
@@ -567,7 +566,7 @@ namespace ngl
             ngl::tools::replace(" ", "", enumname, enumname);
             ngl::tools::transform_tolower(enumname);
            
-            m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
+            //m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
             m_stream3 << std::format("\t\t_reister_channel_db<{}>();", enumname) << std::endl;
             lindex333 += 10;
         }
