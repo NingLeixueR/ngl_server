@@ -454,20 +454,11 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static void static_send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
 		{
-			//if constexpr (MASS)
-			//{
+			if (!asetguid.empty())
+			{
 				handle_pram lpram = handle_pram::create<T, true>(asetguid, arequestguid, adata);
 				push_task_id(asetguid, lpram, true);
-			//}
-			//else
-			//{
-			//	handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make(), arequestguid, adata);
-			//	for (i64_actorid actorid : asetguid)
-			//	{
-			//		lpram.m_actor = actorid;
-			//		push_task_id(actorid, lpram, true);
-			//	}
-			//}
+			}
 		}
 
 #pragma endregion

@@ -91,7 +91,8 @@ namespace ngl
 			add_data(ltemp);
 		}
 
-		tdb_brief::nsp_cli<actor_ranklist>::instance(get_actor()->id_guid()).set_changedata_fun([this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
+		tdb_brief::nsp_cli<actor_ranklist>::instance(get_actor()->id_guid()).set_changedata_fun(
+			[this](int64_t aid, const pbdb::db_brief& abrief, bool afirstsynchronize)
 			{
 				update_value(abrief, afirstsynchronize);				
 			});

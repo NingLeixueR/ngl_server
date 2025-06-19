@@ -127,7 +127,6 @@ namespace ngl
 					{
 						pro->m_firstsynchronize = true;
 						std::map<int64_t, TDATA>& lmapdata = *pro->m_data.m_data;
-						i64_actorid ldataid = itempair.first;
 						lmapdata[itempair.first] = itempair.second.getconst();
 					}
 				}
@@ -143,6 +142,7 @@ namespace ngl
 						}
 					}
 				}
+				log_error()->print("nsp_server send data_modified<{}> : {}", typeid(TDATA).name(), nguid(lactorid));
 				actor::static_send_actor(lactorid, nguid::make(), pro);
 			}
 		}
@@ -223,13 +223,13 @@ namespace ngl
 		{
 			m_dbmodule = adbmodule;
 			// # 订阅注册处理
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>>(std::bind_front(&tnsp_server::channel_register));
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>>(std::bind_front(&tnsp_server::channel_register), false);
 
 			// # 订阅数据被修改
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>>(std::bind_front(&tnsp_server::channel_data));
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>>(std::bind_front(&tnsp_server::channel_data), false);
 
 			// # 退出订阅
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_exit<TDATA>>(std::bind_front(&tnsp_server::channel_exit));
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_exit<TDATA>>(std::bind_front(&tnsp_server::channel_exit), false);
 		}
 
 		static void sync(i64_actorid aactor)
