@@ -288,10 +288,7 @@ namespace ngl
 		void init(TDerived* aactor, bool aonlyread, const std::set<i64_actorid>& adataid)
 		{
 			m_onlyread = aonlyread;
-			if (!m_onlyread)
-			{
-				m_dataid = adataid;
-			}
+			m_dataid = adataid;
 			const std::set<i16_area>* lsetarea = ttab_servers::instance().get_arealist(nconfig::m_nodeid);
 			if (lsetarea == nullptr || lsetarea->empty())
 			{
@@ -308,20 +305,20 @@ namespace ngl
 			m_actor		= aactor;
 			m_dataid	= adataid;
 			
-			static bool lisregister = false;
-			if (!lisregister)
+			static std::atomic<bool> lisregister = true;
+			if (lisregister.exchange(false))
 			{
-				lisregister = true;
-
 				// 更新数据
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>([](TDerived* aacotor, const message<np_channel_data<T>>& adata)
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
+					[](TDerived* aacotor, const message<np_channel_data<T>>& adata)
 					{
 						if (aacotor == nullptr)
 						{
 							return;
 						}
+						log_error()->print("nsp_client recv np_channel_data<{}> : {}", typeid(T).name(), nguid(aacotor->id_guid()));
 						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_data(aacotor, adata);
-					});
+					}, false);
 
 				// 注册回复
 				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
@@ -332,8 +329,7 @@ namespace ngl
 							return;
 						}
 						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_register_reply(aacotor, adata);
-					}
-				);
+					}, false);
 
 				// 检查
 				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
@@ -344,8 +340,7 @@ namespace ngl
 							return;
 						}
 						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_check(aacotor, adata);
-					}
-				);
+					}, false);
 
 				// 同步channel_dataid
 				if (!aonlyread)
@@ -357,7 +352,7 @@ namespace ngl
 								return;
 							}
 							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
-						});
+						}, false);
 				}				
 			}
 
@@ -368,7 +363,7 @@ namespace ngl
 					wheel_parm lparm
 					{
 						.m_ms = 1000,
-						.m_intervalms = [](int64_t) {return 10000; } ,
+						.m_intervalms = [](int64_t) {return 1000; } ,
 						.m_count = 0x7fffffff,
 						.m_fun = [larea,lactorid](const wheel_node* anode)
 						{
