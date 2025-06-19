@@ -39,19 +39,20 @@ namespace ngl
 		}
 
 		//CUSTOM
+		template <EPROTOCOL_TYPE TYPE>
 		struct tcustoms
 		{
 			template <typename T>
-			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum = -1)
+			static pinfo* funcx(int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
-				if(m_keyval.contains(lcode))
+				if (m_keyval.contains(lcode))
 				{
 					return nullptr;
 				}
 				pinfo& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
-				linfo.m_type = atype;
+				linfo.m_type = TYPE;
 
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
 
@@ -59,13 +60,23 @@ namespace ngl
 				std::cout << linfo.m_protocol << "-" << typeid(T).name() << std::endl;
 				return &linfo;
 			}
+
+			template <typename T>
+			static pinfo* func(int32_t aprotocolnum = -1)
+			{
+				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+				{
+					funcx<np_mass_actor<T>>(aprotocolnum);
+				}
+				funcx<T>(aprotocolnum);
+			}
 		};
 		struct tforward
 		{
 			template <typename T>
-			static pinfo* func(EPROTOCOL_TYPE atype, int32_t aprotocolnum)
+			static pinfo* func(int32_t aprotocolnum)
 			{
-				pinfo* lptemp = tcustoms::func<T>(atype, aprotocolnum);
+				pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
 				if (lptemp == nullptr)
 				{
 					return nullptr;
@@ -85,8 +96,8 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms, EPROTOCOL_TYPE>;
-		using tp_forward = template_arg<tforward, EPROTOCOL_TYPE, int32_t>;
+		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM>, int32_t>;
+		using tp_forward = template_arg<tforward, int32_t>;
 
 		template <typename T>
 		static bool init_protobufs()

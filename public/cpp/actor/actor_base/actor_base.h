@@ -452,7 +452,7 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true>
-		static void static_mass_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
+		static void static_send_actor(const std::set<i64_actorid>& asetguid, const nguid& arequestguid, const std::shared_ptr<T>& adata)
 		{
 			//if constexpr (MASS)
 			//{

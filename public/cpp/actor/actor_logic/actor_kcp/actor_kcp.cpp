@@ -54,12 +54,12 @@ namespace ngl
 		actor::register_timer<actor_kcp>(&actor_kcp::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_kcp, false>::func<
+		register_handle_custom<actor_kcp>::func<
 			np_actor_kcp
 		>(false);
 
 		// 绑定pb消息
-		register_handle_proto<actor_kcp, false>::func<
+		register_handle_proto<actor_kcp>::func<
 		>(true);
 	}
 

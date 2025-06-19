@@ -68,13 +68,13 @@ namespace ngl
 		actor::register_timer<actor_friends>(&actor_friends::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_friends, false>::func<
+		register_handle_custom<actor_friends>::func<
 			np_eevents_logic_rolelogin
 			, np_eevents_logic_roleoffline
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_friends, false>::func<
+		register_handle_proto<actor_friends>::func<
 			mforward<pbnet::PROBUFF_NET_FRIEND_ADD>
 			, mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>
 			, mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>

@@ -76,12 +76,12 @@ namespace ngl
 		actor::register_timer<actor_log>(&actor_log::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_log, false>::func<
+		register_handle_custom<actor_log>::func<
 			np_logitem
 		>(false);
 
 		// 绑定pb消息
-		register_handle_proto<actor_log, false>::func<
+		register_handle_proto<actor_log>::func<
 		>(true);
 	}
 	

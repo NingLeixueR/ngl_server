@@ -52,12 +52,12 @@ namespace ngl
 		actor::register_timer<actor_csvclient>(&actor_csvclient::timer_handle);
 		
 		// 绑定自定义np_消息
-		register_handle_custom<actor_csvclient, false>::func<
+		register_handle_custom<actor_csvclient>::func<
 			np_actor_reloadcsv
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_csvclient, false>::func<
+		register_handle_proto<actor_csvclient>::func<
 		>(true);
 	}
 

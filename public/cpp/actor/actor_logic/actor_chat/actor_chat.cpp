@@ -60,11 +60,11 @@ namespace ngl
 		actor::register_timer<actor_chat>(&actor_chat::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_chat, false>::func<
+		register_handle_custom<actor_chat>::func<
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_chat, false>::func<
+		register_handle_proto<actor_chat>::func<
 			mforward<pbnet::PROBUFF_NET_CHAT>
 		>(true);
 	}

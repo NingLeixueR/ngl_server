@@ -78,4 +78,10 @@ namespace ngl
 			func(aactorid, args2...);
 		}
 	};
+
+
+
+
+
+
 }//namespace ngl
