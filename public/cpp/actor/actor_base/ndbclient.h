@@ -240,10 +240,9 @@ namespace ngl
 				return;
 			}
 
-			static bool m_register = false;
-			if (m_register == false)
+			static std::atomic<bool> lregister = true;
+			if (lregister.exchange(false))
 			{
-				m_register = true;
 				actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
 			}
 			init_load();
