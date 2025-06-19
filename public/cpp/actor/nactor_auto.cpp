@@ -38,7 +38,7 @@ namespace ngl
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
 	void typedb<TDBTAB_TYPE, TDBTAB, TACTOR>::init(bool ainit)
 	{
-		if (ainit == true)
+		if (ainit)
 		{
 			using type_actor_db = ngl::actor_db<TDBTAB_TYPE, TDBTAB>;
 			ENUM_ACTOR lenum = db_enum(TDBTAB_TYPE);
@@ -127,7 +127,7 @@ namespace ngl
 			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>
 			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
 			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
-		>(EPROTOCOL_TYPE_PROTOCOLBUFF);
+		>();
 	}
 
 	template <typename PB, typename ...ARG>

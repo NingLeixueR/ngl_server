@@ -64,6 +64,7 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, np_timerparm, true>(afun, false);
 			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, np_timerparm, false>(afun, false);
 		}
 
@@ -76,7 +77,8 @@ namespace ngl
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
 			auto lfun = &actor_base::template handle<DBTYPE, TDBTAB, TDerived>;
-			ninst<TDerived, EPROTOCOL_TYPE_PROTOCOLBUFF>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, false>(lfun, true);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, true>(lfun, true);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, false>(lfun, true);
 		}
 
 		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
