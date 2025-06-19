@@ -1,4 +1,5 @@
 #pragma once
+#include "nprotocol_template.h"
 #include "template_arg.h"
 #include "xmlprotocol.h"
 #include "net.pb.h"
@@ -43,12 +44,12 @@ namespace ngl
 		struct tcustoms
 		{
 			template <typename T>
-			static pinfo* funcx(int32_t aprotocolnum = -1)
+			static void funcx(int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.contains(lcode))
 				{
-					return nullptr;
+					return;
 				}
 				pinfo& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
@@ -58,11 +59,10 @@ namespace ngl
 
 				m_protocol[linfo.m_protocol] = &linfo;
 				std::cout << linfo.m_protocol << "-" << typeid(T).name() << std::endl;
-				return &linfo;
 			}
 
 			template <typename T>
-			static pinfo* func(int32_t aprotocolnum = -1)
+			static void func(int32_t aprotocolnum = -1)
 			{
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
@@ -74,7 +74,7 @@ namespace ngl
 		struct tforward
 		{
 			template <typename T>
-			static pinfo* func(int32_t aprotocolnum)
+			static void func(int32_t aprotocolnum)
 			{
 				pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
 				if (lptemp == nullptr)
@@ -82,7 +82,6 @@ namespace ngl
 					return nullptr;
 				}
 				lptemp->m_forward = true;
-				return lptemp;
 			}
 		};
 	public:
