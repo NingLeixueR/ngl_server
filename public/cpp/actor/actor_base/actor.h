@@ -108,9 +108,9 @@ namespace ngl
 		{
 			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
-				ninst<TDerived, TYPE>().rfun<TDerived, T, true>(afun, aisload);
+				ninst<TDerived, TYPE>().template rfun<TDerived, T, true>(afun, aisload);
 			}
-			ninst<TDerived, TYPE>().rfun<TDerived, T, false>(afun, aisload);
+			ninst<TDerived, TYPE>().template rfun<TDerived, T, false>(afun, aisload);
 		}
 
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
