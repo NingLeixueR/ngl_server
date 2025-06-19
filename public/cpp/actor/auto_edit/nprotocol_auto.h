@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-19 15:52:10
+// 创建时间 // 创建时间 25-06-19 16:01:48
 #pragma once
 
 #include "ndb_modular.h"
@@ -100,45 +100,85 @@ namespace ngl
 		tprotocol::set_customs_index(210000000);
 		tprotocol::tp_customs::template func<
 			/*210000001*/mforward<np_timerparm>
-			/*210000002*/, mforward<np_robot_pram>
-			/*210000003*/, mforward<np_actor_server_register>
-			/*210000004*/, mforward<np_connect_actor_server>
-			/*210000005*/, mforward<np_actornode_register>
-			/*210000006*/, mforward<np_actornode_register_response>
-			/*210000007*/, mforward<np_actorclient_node_connect>
-			/*210000008*/, mforward<np_actornode_update>
-			/*210000009*/, mforward<np_actornode_update_server>
-			/*210000010*/, mforward<np_actornode_update_mass>
-			/*210000011*/, mforward<np_actornode_connect_task>
-			/*210000012*/, mforward<np_actorrole_login>
-			/*210000013*/, mforward<np_gateway_close_session>
-			/*210000014*/, mforward<np_actorswitch_process_role>
-			/*210000015*/, mforward<np_actorswitch_process_plays>
-			/*210000016*/, mforward<np_actorserver_connect>
-			/*210000017*/, mforward<np_actor_session_close>
-			/*210000018*/, mforward<np_actor_disconnect_close>
-			/*210000019*/, mforward<np_actor_gatewayid_updata>
-			/*210000020*/, mforward<np_actor_broadcast>
-			/*210000021*/, mforward<np_actor_reloadcsv>
-			/*210000022*/, mforward<np_actor_csv_verify_version>
-			/*210000023*/, mforward<np_actor_senditem>
-			/*210000024*/, mforward<np_actor_gatewayinfo_updata>
-			/*210000025*/, mforward<np_actor_addmail>
-			/*210000026*/, mforward<np_actor_kcp>
-			/*210000027*/, mforward<np_actor_addnotice>
-			/*210000028*/, mforward<np_actor_close>
-			/*210000029*/, mforward<np_logitem>
-			/*210000030*/, mforward<np_login_request_info>
-			/*210000031*/, mforward<np_create_example>
-			/*210000032*/, mforward<np_example_entergame_ready>
-			/*210000033*/, mforward<np_example_actorid>
-			/*210000034*/, mforward<np_example_equit>
-			/*210000035*/, mforward<np_thruput_test>
-			/*210000036*/, mforward<np_operator_task>
-			/*210000037*/, mforward<np_operator_task_response>
-			/*210000038*/, mforward<np_get_rank>
-			/*210000039*/, mforward<np_get_rank_response>
-			/*210000040*/, mforward<np_activityrank_operator>
+			/*210000002, np_mass_actor<mforward<np_timerparm>>>*/
+			/*210000003*/, mforward<np_robot_pram>
+			/*210000004, np_mass_actor<mforward<np_robot_pram>>>*/
+			/*210000005*/, mforward<np_actor_server_register>
+			/*210000006, np_mass_actor<mforward<np_actor_server_register>>>*/
+			/*210000007*/, mforward<np_connect_actor_server>
+			/*210000008, np_mass_actor<mforward<np_connect_actor_server>>>*/
+			/*210000009*/, mforward<np_actornode_register>
+			/*210000010, np_mass_actor<mforward<np_actornode_register>>>*/
+			/*210000011*/, mforward<np_actornode_register_response>
+			/*210000012, np_mass_actor<mforward<np_actornode_register_response>>>*/
+			/*210000013*/, mforward<np_actorclient_node_connect>
+			/*210000014, np_mass_actor<mforward<np_actorclient_node_connect>>>*/
+			/*210000015*/, mforward<np_actornode_update>
+			/*210000016, np_mass_actor<mforward<np_actornode_update>>>*/
+			/*210000017*/, mforward<np_actornode_update_server>
+			/*210000018, np_mass_actor<mforward<np_actornode_update_server>>>*/
+			/*210000019*/, mforward<np_actornode_update_mass>
+			/*210000020, np_mass_actor<mforward<np_actornode_update_mass>>>*/
+			/*210000021*/, mforward<np_actornode_connect_task>
+			/*210000022, np_mass_actor<mforward<np_actornode_connect_task>>>*/
+			/*210000023*/, mforward<np_actorrole_login>
+			/*210000024, np_mass_actor<mforward<np_actorrole_login>>>*/
+			/*210000025*/, mforward<np_gateway_close_session>
+			/*210000026, np_mass_actor<mforward<np_gateway_close_session>>>*/
+			/*210000027*/, mforward<np_actorswitch_process_role>
+			/*210000028, np_mass_actor<mforward<np_actorswitch_process_role>>>*/
+			/*210000029*/, mforward<np_actorswitch_process_plays>
+			/*210000030, np_mass_actor<mforward<np_actorswitch_process_plays>>>*/
+			/*210000031*/, mforward<np_actorserver_connect>
+			/*210000032, np_mass_actor<mforward<np_actorserver_connect>>>*/
+			/*210000033*/, mforward<np_actor_session_close>
+			/*210000034, np_mass_actor<mforward<np_actor_session_close>>>*/
+			/*210000035*/, mforward<np_actor_disconnect_close>
+			/*210000036, np_mass_actor<mforward<np_actor_disconnect_close>>>*/
+			/*210000037*/, mforward<np_actor_gatewayid_updata>
+			/*210000038, np_mass_actor<mforward<np_actor_gatewayid_updata>>>*/
+			/*210000039*/, mforward<np_actor_broadcast>
+			/*210000040, np_mass_actor<mforward<np_actor_broadcast>>>*/
+			/*210000041*/, mforward<np_actor_reloadcsv>
+			/*210000042, np_mass_actor<mforward<np_actor_reloadcsv>>>*/
+			/*210000043*/, mforward<np_actor_csv_verify_version>
+			/*210000044, np_mass_actor<mforward<np_actor_csv_verify_version>>>*/
+			/*210000045*/, mforward<np_actor_senditem>
+			/*210000046, np_mass_actor<mforward<np_actor_senditem>>>*/
+			/*210000047*/, mforward<np_actor_gatewayinfo_updata>
+			/*210000048, np_mass_actor<mforward<np_actor_gatewayinfo_updata>>>*/
+			/*210000049*/, mforward<np_actor_addmail>
+			/*210000050, np_mass_actor<mforward<np_actor_addmail>>>*/
+			/*210000051*/, mforward<np_actor_kcp>
+			/*210000052, np_mass_actor<mforward<np_actor_kcp>>>*/
+			/*210000053*/, mforward<np_actor_addnotice>
+			/*210000054, np_mass_actor<mforward<np_actor_addnotice>>>*/
+			/*210000055*/, mforward<np_actor_close>
+			/*210000056, np_mass_actor<mforward<np_actor_close>>>*/
+			/*210000057*/, mforward<np_logitem>
+			/*210000058, np_mass_actor<mforward<np_logitem>>>*/
+			/*210000059*/, mforward<np_login_request_info>
+			/*210000060, np_mass_actor<mforward<np_login_request_info>>>*/
+			/*210000061*/, mforward<np_create_example>
+			/*210000062, np_mass_actor<mforward<np_create_example>>>*/
+			/*210000063*/, mforward<np_example_entergame_ready>
+			/*210000064, np_mass_actor<mforward<np_example_entergame_ready>>>*/
+			/*210000065*/, mforward<np_example_actorid>
+			/*210000066, np_mass_actor<mforward<np_example_actorid>>>*/
+			/*210000067*/, mforward<np_example_equit>
+			/*210000068, np_mass_actor<mforward<np_example_equit>>>*/
+			/*210000069*/, mforward<np_thruput_test>
+			/*210000070, np_mass_actor<mforward<np_thruput_test>>>*/
+			/*210000071*/, mforward<np_operator_task>
+			/*210000072, np_mass_actor<mforward<np_operator_task>>>*/
+			/*210000073*/, mforward<np_operator_task_response>
+			/*210000074, np_mass_actor<mforward<np_operator_task_response>>>*/
+			/*210000075*/, mforward<np_get_rank>
+			/*210000076, np_mass_actor<mforward<np_get_rank>>>*/
+			/*210000077*/, mforward<np_get_rank_response>
+			/*210000078, np_mass_actor<mforward<np_get_rank_response>>>*/
+			/*210000079*/, mforward<np_activityrank_operator>
+			/*210000080, np_mass_actor<mforward<np_activityrank_operator>>>*/
 		>();
 	}
 }//namespace ngl
