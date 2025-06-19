@@ -95,7 +95,7 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM>, int32_t>;
+		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM>>;
 		using tp_forward = template_arg<tforward, int32_t>;
 
 		template <typename T>

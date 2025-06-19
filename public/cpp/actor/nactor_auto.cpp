@@ -32,7 +32,7 @@ namespace ngl
 			, np_actordb_save<DBTYPE, TDB>
 			, np_actordb_delete<DBTYPE, TDB>
 			, np_actortime_db_cache<TDB>
-		>(EPROTOCOL_TYPE_PROTOCOLBUFF);
+		>();
 	}
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
@@ -81,7 +81,7 @@ namespace ngl
 			/*100000002*/, np_gm_response
 			/*100000003*/, nactor_logitem
 			/*100000004*/, np_arg_null
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 
 		// 占用110000000->120000000
 		reister_channel_db();
@@ -91,13 +91,13 @@ namespace ngl
 			/*120000001*/mforward<np_gm>
 			/*120000002*/, mforward<np_gm_response>
 			/*120000003*/, np_actorswitch_process<np_actorswitch_process_role>
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 
 		// ### 事件相关协议 start ### //
 		tprotocol::set_customs_index(130000000);
 		tprotocol::tp_customs::template func <
 			/*130000001*/ actor_events_logic::np_event_register
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 
 		//# actor_events_logic
 		tprotocol::set_customs_index(130010000);
@@ -105,14 +105,14 @@ namespace ngl
 			/*130010001*/ np_eevents_logic_rolelogin
 			/*130010002*/, np_eevents_logic_roleoffline
 			/*130010003*/, np_eevents_logic_rolevaluechange
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 
 		//# actor_events_map
 		tprotocol::set_customs_index(130020000);
 		tprotocol::tp_customs::template func <
 			/*130020001*/ np_eevents_map_leaveview
 			/*130020002*/, np_eevents_map_enterview
-		>(EPROTOCOL_TYPE_CUSTOM);
+		>();
 		// ### 事件相关协议 finish ### //
 	}
 

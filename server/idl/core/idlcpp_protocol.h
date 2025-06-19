@@ -312,7 +312,7 @@ namespace ngl
 			}
 		}
 
-		m_stream << R"(		>(EPROTOCOL_TYPE_CUSTOM);)" << std::endl;
+		m_stream << R"(		>();)" << std::endl;
 		m_stream << "		tprotocol::set_customs_index(210000000);" << std::endl;
 		m_stream << "		tprotocol::tp_customs::template func<" << std::endl;
 		lindex = 210000000;
@@ -336,7 +336,7 @@ namespace ngl
 				}
 			}
 		}
-		m_stream << R"(		>(EPROTOCOL_TYPE_CUSTOM);)" << std::endl;
+		m_stream << R"(		>();)" << std::endl;
 		m_stream << "	}" << std::endl;
 		m_stream << "}//namespace ngl" << std::endl;
 		lfile.write(m_stream.str());
