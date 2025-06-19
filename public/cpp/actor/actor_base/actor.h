@@ -130,9 +130,9 @@ namespace ngl
 				std::string lname = tools::type_name<TDerived>();
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
-					ninst<TDerived, TYPE>().rfun<TDerived, T, true>((Tfun<TDerived, T>) & TDerived::handle, aisload);
+					ninst<TDerived, TYPE>().template rfun<TDerived, T, true>((Tfun<TDerived, T>) & TDerived::handle, aisload);
 				}
-				ninst<TDerived, TYPE>().rfun<TDerived, T, false>((Tfun<TDerived, T>) & TDerived::handle, aisload);
+				ninst<TDerived, TYPE>().template rfun<TDerived, T, false>((Tfun<TDerived, T>) & TDerived::handle, aisload);
 			}
 		};
 	public:
@@ -153,9 +153,9 @@ namespace ngl
 		{
 			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
-				ninst<TDerived, TYPE>().rfun_nonet<TDerived, T, true>(afun, aisload);
+				ninst<TDerived, TYPE>().template rfun_nonet<TDerived, T, true>(afun, aisload);
 			}
-			ninst<TDerived, TYPE>().rfun_nonet<TDerived, T, false>(afun, aisload);
+			ninst<TDerived, TYPE>().template rfun_nonet<TDerived, T, false>(afun, aisload);
 		}
 #pragma endregion 
 
