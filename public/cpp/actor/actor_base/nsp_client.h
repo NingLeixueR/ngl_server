@@ -314,19 +314,17 @@ namespace ngl
 				lisregister = true;
 
 				// 更新数据
-				std::function<void(TDerived*, const message<np_channel_data<T>>&)> lchannel_data = [](TDerived* aacotor, const message<np_channel_data<T>>& adata)
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>([](TDerived* aacotor, const message<np_channel_data<T>>& adata)
 					{
 						if (aacotor == nullptr)
 						{
 							return;
 						}
 						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_data(aacotor, adata);
-					};
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, true, np_channel_data<T>>(lchannel_data);
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_data<T>>(lchannel_data);
+					});
 
 				// 注册回复
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_register_reply<T>>(
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
 					[](TDerived* aacotor, const message<np_channel_register_reply<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -338,7 +336,7 @@ namespace ngl
 				);
 
 				// 检查
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_check<T>>(
+				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
 					[](TDerived* aacotor, const message<np_channel_check<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -352,16 +350,14 @@ namespace ngl
 				// 同步channel_dataid
 				if (!aonlyread)
 				{//只读结点不需要知道数据被哪些结点订阅，因为他不能修改数据
-					std::function<void(TDerived*, const message<np_channel_dataid_sync<T>>&)> lchannel_dataid_sync = [](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
+					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>([](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
 						{
 							if (aacotor == nullptr)
 							{
 								return;
 							}
 							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
-						};
-					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, true, np_channel_dataid_sync<T>>(lchannel_dataid_sync);
-					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, false, np_channel_dataid_sync<T>>(lchannel_dataid_sync);
+						});
 				}				
 			}
 
@@ -504,7 +500,7 @@ namespace ngl
 			{
 				lnodeids.insert(itor->second.begin(), itor->second.end());
 			}
-			actor::static_masssend_actor(lnodeids, m_actor->id_guid(), pro);
+			actor::static_send_actor(lnodeids, m_actor->id_guid(), pro);
 			return true;
 		}
 

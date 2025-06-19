@@ -90,7 +90,7 @@ namespace ngl
 		auto pro = std::make_shared<np_example_actorid>();
 		pro->m_type = adata.get_data()->m_type;
 		pro->m_actorexampleid = 0;
-		actor::static_mass_actor(lpexample->m_roles, id_guid(), pro);
+		actor::static_send_actor(lpexample->m_roles, id_guid(), pro);
 
 		lpdata->erase(lprecv->m_exampleid);
 		return true;

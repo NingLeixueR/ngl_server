@@ -54,10 +54,10 @@ namespace ngl
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
-				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_broadcast, false>(true, (Tfun<actor, np_actor_broadcast>) & actor::handle);
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_broadcast>(true, (Tfun<actor, np_actor_broadcast>) & actor::handle);
 			}
 			// # 注册actor close处理函数
-			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_close, false>(true, (Tfun<actor, np_actor_close>) & actor::handle);
+			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_close>(true, (Tfun<actor, np_actor_close>) & actor::handle);
 		}
 
 		// # 注册定时器
@@ -90,54 +90,70 @@ namespace ngl
 #pragma region register_actor
 
 		// # 用来注册匿名函数挂载在对应actor上
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, bool MASS, typename T>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor_s(const std::function<void(TDerived*, message<T>&)>& afun, bool aisload = true)
 		{
-			ninst<TDerived, TYPE>().template rfun<TDerived, T, MASS>(afun, aisload);
+			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+			{
+				ninst<TDerived, TYPE>().template rfun<TDerived, T, true>(afun, aisload);
+			}
+			ninst<TDerived, TYPE>().template rfun<TDerived, T, false>(afun, aisload);
 		}
 
 		// # 注册actor成员函数(可以是非handle)
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, bool MASS, typename T>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actor(bool aisload,  T afun)
 		{
-			ninst<TDerived, TYPE>().rfun<TDerived, T, MASS>(afun, aisload);
+			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+			{
+				ninst<TDerived, TYPE>().rfun<TDerived, T, true>(afun, aisload);
+			}
+			ninst<TDerived, TYPE>().rfun<TDerived, T, false>(afun, aisload);
 		}
 
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, bool MASS, typename T, typename ...ARG>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, typename ...ARG>
 		static void register_actor(bool aisload, T afun, ARG... argfun)
 		{
-			register_actor<TYPE, TDerived, MASS, T>(aisload, afun);
-			register_actor<TYPE, TDerived, MASS, ARG...>(aisload, argfun...);
+			register_actor<TYPE, TDerived, T>(aisload, afun);
+			register_actor<TYPE, TDerived, ARG...>(aisload, argfun...);
 		}
 	private:
 		// # 注册actor成员handle函数
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, bool MASS>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		struct register_actor_handle
 		{
 			template <typename T>
 			static void func(bool aisload)
 			{
 				std::string lname = tools::type_name<TDerived>();
-				ninst<TDerived, TYPE>().rfun<TDerived, T, MASS>((Tfun<TDerived, T>) & TDerived::handle, aisload);
+				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+				{
+					ninst<TDerived, TYPE>().rfun<TDerived, T, true>((Tfun<TDerived, T>) & TDerived::handle, aisload);
+				}
+				ninst<TDerived, TYPE>().rfun<TDerived, T, false>((Tfun<TDerived, T>) & TDerived::handle, aisload);
 			}
 		};
 	public:
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, bool MASS>
-		using register_handle = template_arg<actor::register_actor_handle<TYPE, TDerived, MASS>, bool>;
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
+		using register_handle = template_arg<actor::register_actor_handle<TYPE, TDerived>, bool>;
 
-		template <typename TDerived, bool MASS>
-		using register_handle_custom = register_handle<EPROTOCOL_TYPE_CUSTOM, TDerived, MASS>;
+		template <typename TDerived>
+		using register_handle_custom = register_handle<EPROTOCOL_TYPE_CUSTOM, TDerived>;
 
-		template <typename TDerived, bool MASS>
-		using register_handle_proto = register_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived, MASS>;
+		template <typename TDerived>
+		using register_handle_proto = register_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived>;
 #pragma endregion 
 
 #pragma region register_actornonet
 		//# 与register_actor类似 只不过不注册网络层
-		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T, bool MASS>
+		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
 		static void register_actornonet(bool aisload, const Tfun<TDerived, T> afun)
 		{
-			ninst<TDerived, TYPE>().rfun_nonet<TDerived, T, MASS>(afun, aisload);
+			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+			{
+				ninst<TDerived, TYPE>().rfun_nonet<TDerived, T, true>(afun, aisload);
+			}
+			ninst<TDerived, TYPE>().rfun_nonet<TDerived, T, false>(afun, aisload);
 		}
 #pragma endregion 
 

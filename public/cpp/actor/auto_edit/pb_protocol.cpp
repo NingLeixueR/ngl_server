@@ -21,7 +21,7 @@ namespace ngl
            , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
            , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
            , np_actormodule_forward<PB>
-       >(EPROTOCOL_TYPE_PROTOCOLBUFF, lprotocolnum);
+       >(lprotocolnum);
    }
    template <typename PB, typename ...ARG>
    void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)

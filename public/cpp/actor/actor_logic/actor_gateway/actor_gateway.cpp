@@ -57,7 +57,7 @@ namespace ngl
 		actor::register_timer<actor_gateway>(&actor_gateway::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_gateway, false>::func<
+		register_handle_custom<actor_gateway>::func<
 			np_actorrole_login
 			, np_gateway_close_session
 			, np_actorswitch_process<np_actorswitch_process_role>
@@ -66,7 +66,7 @@ namespace ngl
 		>(false);
 
 		// 绑定pb消息
-		register_handle_proto<actor_gateway, false>::func<
+		register_handle_proto<actor_gateway>::func<
 			pbnet::PROBUFF_NET_ROLE_LOGIN
 			, pbnet::PROBUFF_NET_KCPSESSION
 		>(false);

@@ -274,7 +274,7 @@ namespace ngl
         m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>" << std::endl;
         m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>" << std::endl;
         m_stream << "           , np_actormodule_forward<PB>" << std::endl;
-        m_stream << "       >(EPROTOCOL_TYPE_PROTOCOLBUFF, lprotocolnum);" << std::endl;
+        m_stream << "       >(lprotocolnum);" << std::endl;
         m_stream << "   }" << std::endl;
         m_stream << "   template <typename PB, typename ...ARG>" << std::endl;
         m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)" << std::endl;

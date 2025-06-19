@@ -54,13 +54,13 @@ namespace ngl
 		actor::register_timer<actor_notice>(&actor_notice::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_notice, false>::func<
+		register_handle_custom<actor_notice>::func<
 			mforward<np_gm>,
 			np_actor_addnotice
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_notice, false>::func<
+		register_handle_proto<actor_notice>::func<
 			mforward<pbnet::PROBUFF_NET_NOTICE>
 		>(true);
 	}

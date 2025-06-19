@@ -24,7 +24,7 @@ namespace ngl
 
 	void actor_create::nregister()
 	{
-		register_handle_custom<actor_create, false>::func<
+		register_handle_custom<actor_create>::func<
 			np_actorswitch_process<np_actorswitch_process_role>
 		>(false);
 	}
