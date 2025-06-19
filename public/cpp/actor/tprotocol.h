@@ -44,12 +44,12 @@ namespace ngl
 		struct tcustoms
 		{
 			template <typename T>
-			static void funcx(int32_t aprotocolnum = -1)
+			static pinfo* funcx(int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.contains(lcode))
 				{
-					return;
+					return nullptr;
 				}
 				pinfo& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
@@ -59,16 +59,17 @@ namespace ngl
 
 				m_protocol[linfo.m_protocol] = &linfo;
 				std::cout << linfo.m_protocol << "-" << typeid(T).name() << std::endl;
+				return &linfo;
 			}
 
 			template <typename T>
-			static void func(int32_t aprotocolnum = -1)
+			static pinfo* func(int32_t aprotocolnum = -1)
 			{
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
 					funcx<np_mass_actor<T>>(aprotocolnum);
 				}
-				funcx<T>(aprotocolnum);
+				return funcx<T>(aprotocolnum);
 			}
 		};
 		struct tforward
@@ -77,11 +78,10 @@ namespace ngl
 			static void func(int32_t aprotocolnum)
 			{
 				pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
-				if (lptemp == nullptr)
+				if (lptemp != nullptr)
 				{
-					return nullptr;
+					lptemp->m_forward = true;
 				}
-				lptemp->m_forward = true;
 			}
 		};
 	public:
