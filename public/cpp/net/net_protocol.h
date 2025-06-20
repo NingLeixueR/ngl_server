@@ -163,25 +163,20 @@ namespace ngl
 		// # 给一组sesion发送消息
 		// # key: session values:aactorid
 		// # std::map<uint32_t, uint32_t>& asession
-		bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
-	private:
+		bool sendmore(
+			const std::map<i32_sessionid, i64_actorid>& asession, 
+			i64_actorid aactorid, 
+			std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
+		);
+
 		template <typename TSTL>
-		bool sendmore_stl(const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair);
-	public:
-		bool sendmore(const std::vector<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
-		{
-			return sendmore_stl(asession, aactorid, arequestactorid, apair);
-		}
-
-		bool sendmore(const std::list<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
-		{
-			return sendmore_stl(asession, aactorid, arequestactorid, apair);
-		}
-
-		bool sendmore(const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
-		{
-			return sendmore_stl(asession, aactorid, arequestactorid, apair);
-		}
+		bool sendmore(
+			const TSTL& asession,
+			i64_actorid aactorid,
+			i64_actorid arequestactorid,
+			std::pair<std::shared_ptr<pack>,
+			std::shared_ptr<pack>>&apair
+		);
 
 		template <typename T>
 		void send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)

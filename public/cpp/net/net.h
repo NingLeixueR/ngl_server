@@ -80,9 +80,9 @@ namespace ngl
 		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, T& adata, i64_actorid aactorid)
 		{
 			std::set<ENET_PROTOCOL> lset;
-			for (auto itor = asession.begin(); itor != asession.end(); ++itor)
+			for (const auto& lpair : asession)
 			{
-				ENET_PROTOCOL ltype = session2type(itor->first);
+				ENET_PROTOCOL ltype = session2type(lpair.first);
 				if (ttab_servers::instance().isefficient(ltype))
 				{
 					lset.insert(ltype);
@@ -93,9 +93,9 @@ namespace ngl
 			{
 				return false;
 			}
-			for (ENET_PROTOCOL item : lset)
+			for (ENET_PROTOCOL ltype : lset)
 			{
-				net_protocol* lpprotocol = ngl::nets::nettype(item);
+				net_protocol* lpprotocol = ngl::nets::nettype(ltype);
 				if (lpprotocol != nullptr)
 				{
 					lpprotocol->sendmore(asession, aactorid, lpair);
@@ -107,13 +107,13 @@ namespace ngl
 		template <typename T, typename TSTL>
 		static bool sendmore(const TSTL& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::set<ENET_PROTOCOL> lset;
-			for (auto itor = asession.begin(); itor != asession.end(); ++itor)
+			std::map<ENET_PROTOCOL, std::set<i32_sessionid>> lmap;
+			for (i32_sessionid asession : asession)
 			{
-				ENET_PROTOCOL ltype = session2type(*itor);
+				ENET_PROTOCOL ltype = session2type(asession);
 				if (ttab_servers::instance().isefficient(ltype))
 				{
-					lset.insert(ltype);
+					lmap[ltype].insert(asession);
 				}
 			}
 			auto lpair = net_protocol::more_pack(adata, aactorid);
@@ -121,12 +121,12 @@ namespace ngl
 			{
 				return false;
 			}
-			for (ENET_PROTOCOL item : lset)
+			for (const auto& apair : lmap)
 			{
-				net_protocol* lpprotocol = ngl::nets::nettype(item);
+				net_protocol* lpprotocol = ngl::nets::nettype(apair.first);
 				if (lpprotocol != nullptr)
 				{
-					lpprotocol->sendmore(asession, aactorid, arequestactorid, lpair);
+					lpprotocol->sendmore(apair.second, aactorid, arequestactorid, lpair);
 				}
 			}
 			return true;
@@ -149,7 +149,7 @@ namespace ngl
 namespace ngl
 {
 	template <typename TSTL>
-	bool net_protocol::sendmore_stl(
+	bool net_protocol::sendmore(
 		const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, 
 		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
 	)

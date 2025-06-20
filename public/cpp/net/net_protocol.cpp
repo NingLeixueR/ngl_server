@@ -162,7 +162,11 @@ namespace ngl
 		return net_send(lsession, apack);
 	}
 
-	bool net_protocol::sendmore(const std::map<i32_sessionid, i64_actorid>& asession, i64_actorid aactorid, std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair)
+	bool net_protocol::sendmore(
+		const std::map<i32_sessionid, i64_actorid>& asession, 
+		i64_actorid aactorid, 
+		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
+	)
 	{
 		for (auto& item : asession)
 		{
