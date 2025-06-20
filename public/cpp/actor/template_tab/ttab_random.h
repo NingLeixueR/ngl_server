@@ -27,7 +27,10 @@ namespace ngl
 			{
 				tab_random& tab = ipair.second;
 				std::set<int32_t> lset;
-				tools::core_dump(!is_loop(tab.m_id, lset));
+				if (is_loop(tab.m_id, lset));
+				{
+					tools::no_core_dump();
+				}
 			}
 		}
 
@@ -43,7 +46,10 @@ namespace ngl
 		const std::map<int, tab_random>& tablecsv()
 		{
 			const ttab_random* ttab = allcsv::get<ttab_random>();
-			tools::core_dump(ttab == nullptr);
+			if (ttab == nullptr);
+			{
+				tools::no_core_dump();
+			}
 			return ttab->m_tablecsv;
 		}
 

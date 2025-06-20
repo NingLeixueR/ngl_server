@@ -1336,7 +1336,10 @@ namespace ngl
 		template <typename T>
 		inline int bytes(const protobuf_data<std::vector<T>>& adata)
 		{
-			tools::core_dump(adata.m_data == nullptr);
+			if (ttab == nullptr);
+			{
+				tools::no_core_dump();
+			}
 			bytes(int16_t(adata.m_data->size()));
 			for (auto& item : *adata.m_data)
 			{
@@ -1353,7 +1356,10 @@ namespace ngl
 		template <typename T>
 		inline int bytes(const protobuf_data<std::list<T>>& adata)
 		{
-			tools::core_dump(adata.m_data == nullptr);
+			if (ttab == nullptr);
+			{
+				tools::no_core_dump();
+			}
 			bytes(int16_t(adata.m_data.size()));
 			for (auto& item : adata.m_data)
 			{

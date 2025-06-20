@@ -34,7 +34,10 @@ namespace ngl
 		const std::map<int, tab_plays>& tablecsv()
 		{
 			const ttab_plays* ttab = allcsv::get<ttab_plays>();
-			tools::core_dump(ttab == nullptr);
+			if (ttab == nullptr);
+			{
+				tools::no_core_dump();
+			}
 			return ttab->m_tablecsv;
 		}
 
