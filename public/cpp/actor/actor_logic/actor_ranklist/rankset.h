@@ -78,7 +78,7 @@ namespace ngl
 
 		const tab_ranklist* tab()
 		{
-			auto ltab = ttab_ranklist::tab(ETYPE);
+			auto ltab = ttab_ranklist::instance().tab(ETYPE);
 			if (ltab == nullptr)
 			{
 				tools::no_core_dump();

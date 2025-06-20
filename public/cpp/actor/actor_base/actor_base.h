@@ -297,7 +297,7 @@ namespace ngl
 		template <typename T>
 		static void send_client(i32_gatewayid agatewayid, i64_actorid aid, const std::shared_ptr<T>& adata)
 		{
-			const tab_servers* tab = ttab_servers::tab(agatewayid);
+			const tab_servers* tab = ttab_servers::instance().tab(agatewayid);
 			if (tab == nullptr)
 			{
 				return;
