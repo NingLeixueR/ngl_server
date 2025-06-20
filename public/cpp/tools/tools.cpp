@@ -1376,8 +1376,7 @@ namespace ngl
 	{
 		if (!anocreate)
 		{
-			int32_t lnum = 0;
-			lnum = 19890519/ lnum;
+			*(int*)(nullptr) = 19890519;
 		}
 	}
 }// namespace ngl

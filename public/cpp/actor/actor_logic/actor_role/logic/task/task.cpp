@@ -292,14 +292,13 @@ namespace ngl
 	{
 		log_error()->print("task load finish {}", data());
 		// ### 检查是否有可接受的任务
-		auto tabs = allcsv::get<ttab_task>();
-		tabs->foreach([this](tab_task& atask)
+		std::ranges::for_each(*ttab_task::instance().tablecsv(), [this](const auto& atask)
 			{
 				// # 检查任务是否可接收
-				if (static_task::receive_task(nactor(), atask.m_id) == true)
+				if (static_task::receive_task(nactor(), atask.second.m_id) == true)
 				{// 可接受或者已接受
 					// # 检查任务是否可完成
-					if (static_task::finish_task(nactor(), atask.m_id))
+					if (static_task::finish_task(nactor(), atask.second.m_id))
 					{
 						return;
 					}
