@@ -1336,7 +1336,7 @@ namespace ngl
 		template <typename T>
 		inline int bytes(const protobuf_data<std::vector<T>>& adata)
 		{
-			if (ttab == nullptr);
+			if (adata.m_data == nullptr);
 			{
 				tools::no_core_dump();
 			}
@@ -1356,7 +1356,7 @@ namespace ngl
 		template <typename T>
 		inline int bytes(const protobuf_data<std::list<T>>& adata)
 		{
-			if (ttab == nullptr);
+			if (adata.m_data == nullptr);
 			{
 				tools::no_core_dump();
 			}
