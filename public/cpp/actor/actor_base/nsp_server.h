@@ -13,6 +13,10 @@ namespace ngl
 	{
 	public:
 		using tnsp_server = nsp_server<ENUMDB, TDerived, TDATA>;
+		enum
+		{
+			ESEND_MAX_COUNT = 10,
+		};
 	private:
 		nsp_server() = delete;
 		nsp_server(const nsp_server&) = delete;
@@ -127,8 +131,18 @@ namespace ngl
 					{
 						pro->m_firstsynchronize = true;
 						std::map<int64_t, TDATA>& lmapdata = *pro->m_data.m_data;
+
 						lmapdata[itempair.first] = itempair.second.getconst();
+						if (lmapdata.size() >= ESEND_MAX_COUNT)
+						{
+							actor::static_send_actor(lactorid, nguid::make(), pro);
+							pro = std::make_shared<np_channel_data<TDATA>>();
+							pro->m_data.make();
+						}
 					}
+					pro->m_recvfinish = true;
+					actor::static_send_actor(lactorid, nguid::make(), pro);
+					return;
 				}
 				else
 				{
@@ -142,7 +156,6 @@ namespace ngl
 						}
 					}
 				}
-				log_error()->print("nsp_server send data_modified<{}> : {}", typeid(TDATA).name(), nguid(lactorid));
 				actor::static_send_actor(lactorid, nguid::make(), pro);
 			}
 		}

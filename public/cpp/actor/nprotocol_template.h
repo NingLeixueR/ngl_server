@@ -475,8 +475,9 @@ namespace ngl
 	struct np_channel_data
 	{
 		bool m_firstsynchronize = false;					// 首次同步
+		bool m_recvfinish = false;
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
-		def_portocol(np_channel_data<TDATA>, m_firstsynchronize, m_data)
+		def_portocol(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
 	};
 
 	template <typename TDATA>
