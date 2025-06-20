@@ -11,7 +11,7 @@ namespace ngl
 {
 	i64_actorid actor_base::actorclient_guid()
 	{
-		return actor_client::actorid();
+		return actor_manage::instance().get_clientguid();
 	}
 
 	//# 日志相关

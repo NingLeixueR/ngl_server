@@ -46,20 +46,19 @@ namespace ngl
 			return sendbysession(lsession, adata, aactorid, arequestactorid);
 		}
 
-		template <typename T>
-		static bool sendbyserver(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename T, typename CONTAINER>
+		static bool sendbyserver(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::vector<i32_session> lsessionvec;
-			for (i32_serverid iserverid : aserverid)
-			{
-				i32_session lsession = server_session::sessionid(iserverid);
-				if (lsession == -1)
+			std::ranges::for_each(aserverids, [&lsessionvec](i32_serverid iserverid)
 				{
-					continue;
-				}
-				lsessionvec.push_back(lsession);
-			}
-			if (lsessionvec.empty() != true)
+					i32_session lsession = server_session::sessionid(iserverid);
+					if (lsession != -1)
+					{
+						lsessionvec.push_back(lsession);
+					}
+				});
+			if (!lsessionvec.empty())
 			{
 				return sendmore(lsessionvec, adata, aactorid, arequestactorid);
 			}
@@ -222,12 +221,11 @@ namespace ngl
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
 
-	template <typename T>
-	bool actor_base::send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	template <typename T, typename CONTAINER>
+	bool actor_base::send_server(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
-		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
+		return nets::sendbyserver(aserverids, adata, aactorid, arequestactorid);
 	}
-
 
 	template <typename T>
 	bool actor_base::sendpack_server(i32_serverid aserverid, std::shared_ptr<pack>& apack)

@@ -1,3 +1,4 @@
+#include "ttab_mergearea.h"
 #include "ttab_servers.h"
 #include "sysconfig.h"
 #include "xml.h"
@@ -25,7 +26,7 @@ namespace ngl
 	int32_t		sysconfig::m_heart_beat_interval = 10;
 	int32_t		sysconfig::m_net_timeout		= 600000;
 	std::string	sysconfig::m_gmurl;
-	std::vector<i32_serverid> sysconfig::m_gatewayids;
+	std::set<i32_serverid> sysconfig::m_gatewayids;
 
 	void sysconfig::init()
 	{
@@ -89,13 +90,19 @@ namespace ngl
 	void sysconfig::init_gatewayids()
 	{
 		m_gatewayids.clear();
-		if (ttab_servers::instance().get_server(GATEWAY, tab_self_area, m_gatewayids) == false)
+
+		std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(tab_self_area);
+		if (lareas == nullptr)
 		{
-			return;
+			std::ranges::for_each(*lareas, [](i16_area aarea)
+				{
+					ttab_servers::instance().get_server(GATEWAY, aarea, sysconfig::m_gatewayids);
+				});
 		}
+		ttab_servers::instance().get_server(GATEWAY, tab_self_area, m_gatewayids);
 	}
 
-	std::vector<i32_serverid>& sysconfig::gatewayids()
+	std::set<i32_serverid>& sysconfig::gatewayids()
 	{
 		return m_gatewayids;
 	}
