@@ -123,10 +123,8 @@ namespace ngl
 			gateway_socket* linfo = m_info.get(lpram->m_sessionid);
 			if (linfo == nullptr)
 			{
-				tools::no_core_dump();
 				return true;
 			}
-
 			session_close(linfo);
 		}
 

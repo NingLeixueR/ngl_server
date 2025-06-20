@@ -14,7 +14,7 @@ namespace ngl
 		impl_actor() = delete;
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
-
+#define STL_MESSAGELIST
 #ifdef STL_MESSAGELIST
 		template <typename T>
 		using tls = std::deque<T>;
@@ -31,16 +31,20 @@ namespace ngl
 		trunls<handle_pram>				m_locallist;					// 正在处理消息列表
 		actor_stat						m_stat = actor_stat_init;		// actor状态
 		std::shared_mutex				m_mutex;						// 锁:[m_list:待处理消息列表]
-		int32_t							m_weight;						// 权重
-		int32_t							m_timeout;						// 超时:(当actor处理消息超过此时间)
+		int32_t							m_weight = 0;					// 权重
+		int32_t							m_timeout = 0;					// 超时:(当actor处理消息超过此时间)
 		bool							m_release = false;				// 释放将忽略权重和超时
-		actor*							m_actor;
+		actor*							m_actor = nullptr;
 
 		explicit impl_actor(const actorparm& aparm, actor* aactor)
 			: m_weight(aparm.m_weight)
 			, m_timeout(aparm.m_timeout)
 			, m_actor(aactor)
 		{
+			if (aparm.m_weight <= 0 || m_timeout <= 0 || aactor == nullptr)
+			{
+				tools::no_core_dump();
+			}
 		}
 
 		// # 释放actor所持有的资源
@@ -105,8 +109,8 @@ namespace ngl
 			{
 				return false;
 			}
-			Try
-			{
+			//Try
+			//{
 				set_kcp(aparm);
 				nrfunbase* lprfun = m_actor->m_actorfun[aparm.m_protocoltype];
 				if (lprfun == nullptr)
@@ -120,7 +124,7 @@ namespace ngl
 				}
 				lprfun->notfindfun(m_actor, athreadid, aparm);
 				return true;
-			}Catch
+			//}Catch
 			return false;
 		}
 
