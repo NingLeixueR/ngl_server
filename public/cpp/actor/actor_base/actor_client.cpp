@@ -110,8 +110,11 @@ namespace ngl
 			{
 				.m_name = std::format(
 					"node<id:{},type:{},name:{},tcount:{},area:{}>"
-					, tab->m_id, em<NODE_TYPE>::get_name(tab->m_type)
-					, tab->m_name, tab->m_tcount, tab->m_area
+					, tab->m_id
+					, em<NODE_TYPE>::get_name(tab->m_type)
+					, tab->m_name
+					, tab->m_tcount
+					, tab->m_area
 				),
 				.m_nodetype = tab->m_type,
 				.m_serverid = tab->m_id,
@@ -154,12 +157,12 @@ namespace ngl
 
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
 	{
-		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
-		{
-			return true;
-		}
 		// # 需要尝试连接ActorServer结点 并向其注册自己
-		if (ttab_servers::instance().node_type() == ngl::ACTORSERVER || ttab_servers::instance().node_type() == ngl::ROBOT)
+		NODE_TYPE ltype = ttab_servers::instance().node_type();
+		if (nconfig::m_nodetype != ltype
+			|| ltype == ngl::ACTORSERVER
+			|| ltype == ngl::ROBOT
+			)
 		{
 			tools::no_core_dump();
 			return true;

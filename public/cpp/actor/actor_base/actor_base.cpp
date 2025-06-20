@@ -77,11 +77,11 @@ namespace ngl
 
 	struct actor_base::impl_actor_base
 	{
-		nguid										m_guid;				// actor guid
-		std::unique_ptr<actor_manage_dbclient>		m_dbclient;			// dbclient组件管理器
-		bool										m_isload;			// 数据是否加载完成
+		nguid										m_guid = nguid::make();			// actor guid
+		std::unique_ptr<actor_manage_dbclient>		m_dbclient = nullptr;			// dbclient组件管理器
+		bool										m_isload = false;				// 数据是否加载完成
 		std::map<pbdb::ENUM_DB, ndb_component*>		m_dbcomponent;
-		actor_base*									m_actor;
+		actor_base*									m_actor = nullptr;
 
 		i32_session									m_kcpsession = -1;
 
@@ -190,16 +190,13 @@ namespace ngl
 
 		inline void init_db_component(bool acreate)const
 		{
-			if (acreate)
+			for (const auto& [key, value] : m_dbcomponent)
 			{
-				for (const auto& [key, value] : m_dbcomponent)
+				if (acreate)
 				{
 					value->create();
 				}
-			}
-			else
-			{
-				for (const auto& [key, value] : m_dbcomponent)
+				else
 				{
 					value->init();
 				}
@@ -245,7 +242,9 @@ namespace ngl
 				.m_fun = [](const wheel_node*)
 				{
 					auto pro = std::make_shared<np_actor_broadcast>();
-					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(nguid::make(), nguid::make(), pro);
+					handle_pram lpram = handle_pram::create<np_actor_broadcast, false>(
+						nguid::make(), nguid::make(), pro
+					);
 					actor_manage::instance().broadcast_task(lpram);
 				}
 			};
