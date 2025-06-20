@@ -3,6 +3,8 @@
 #include <functional>
 #include <iostream>
 
+#include "tools.h"
+
 namespace ngl
 {
 	template <typename T>
@@ -441,7 +443,10 @@ namespace ngl
 		inline T& front()
 		{
 		 	auto ptr = m_list.front();
-			tools::core_dump(ptr == nullptr);
+			if (ptr == nullptr)
+			{
+				tools::core_dump();
+			}
 			return ptr->m_data;
 		}
 	};
