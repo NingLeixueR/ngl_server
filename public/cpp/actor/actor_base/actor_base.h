@@ -297,11 +297,10 @@ namespace ngl
 		static void send_client(const CONTAINER& asetid, const std::shared_ptr<T>& adata)
 		{
 			auto pro = create_cpro(adata);
-			std::ranges::for_each(asetid, [&pro](i64_actorid aactorid)
-				{
-					cpro_push_actorid(pro, aactorid);
-				}
-			);
+			for (i64_actorid aactorid : asetid)
+			{
+				cpro_push_actorid(pro, aactorid);
+			}
 			handle_pram lpram = handle_pram::create(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
 		}
@@ -339,21 +338,21 @@ namespace ngl
 		void send_actor(const nguid& aguid, const T& adata)
 		{
 			auto pro = std::make_shared<T>(adata);
-			static_send_actor(aguid, id_guid(), pro);
+			static_send_actor<T, IS_SEND>(aguid, id_guid(), pro);
 		}
 
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata)
 		{
-			static_send_actor(aguid, id_guid(), adata);
+			static_send_actor<T, IS_SEND>(aguid, id_guid(), adata);
 		}
 
 		//# 向指定actor发送数据
 		template <typename T, bool IS_SEND = true>
 		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
 		{
-			static_send_actor(aguid, id_guid(), adata, afailfun);
+			static_send_actor<T, IS_SEND>(aguid, id_guid(), adata, afailfun);
 		}
 
 		//# 向指定actor发送pack
@@ -367,7 +366,7 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false)
 		{
-			static_send_actor(atype, adata, aotherserver);
+			static_send_actor<T, IS_SEND>(atype, adata, aotherserver);
 		}
 
 		template <typename T, bool IS_SEND = true>

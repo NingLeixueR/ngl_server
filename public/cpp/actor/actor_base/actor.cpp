@@ -14,6 +14,7 @@ namespace ngl
 		impl_actor() = delete;
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
+
 #define STL_MESSAGELIST
 #ifdef STL_MESSAGELIST
 		template <typename T>
@@ -88,15 +89,9 @@ namespace ngl
 		// # ÉèÖÃkcp
 		inline void set_kcp(const handle_pram& aparm)
 		{
-			if (aparm.m_pack == nullptr)
-			{
-				return;
-			}
-			if (aparm.m_pack->m_protocol != ENET_KCP)
-			{
-				return;
-			}
-			if (m_actor->is_single())
+			if (aparm.m_pack == nullptr
+				|| aparm.m_pack->m_protocol != ENET_KCP
+				|| m_actor->is_single())
 			{
 				return;
 			}

@@ -54,10 +54,14 @@ namespace ngl
 			if (isbroadcast())
 			{
 				// # 注册广播处理函数
-				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_broadcast>(true, (Tfun<actor, np_actor_broadcast>) & actor::handle);
+				register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_broadcast>(
+						true, (Tfun<actor, np_actor_broadcast>) & actor::handle
+					);
 			}
 			// # 注册actor close处理函数
-			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_close>(true, (Tfun<actor, np_actor_close>) & actor::handle);
+			register_actornonet<EPROTOCOL_TYPE_CUSTOM, TDerived, np_actor_close>(
+				true, (Tfun<actor, np_actor_close>) & actor::handle
+			);
 		}
 
 		// # 注册定时器
@@ -76,9 +80,12 @@ namespace ngl
 		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
-			auto lfun = &actor_base::template handle<DBTYPE, TDBTAB, TDerived>;
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, true>(lfun, true);
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, false>(lfun, true);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, true>(
+				&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, true
+			);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, false>(
+				&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, true
+			);
 		}
 
 		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
