@@ -32,6 +32,9 @@ namespace ngl
 			return ltemp;
 		}
 
+		//# 获取
+		nguid get_clientguid();
+
 		//# 初始化 设置工作线程数量
 		void init(i32_threadsize apthreadnum);
 

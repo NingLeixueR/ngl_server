@@ -98,7 +98,7 @@ namespace ngl
 		{
 			return xmlnode::m_nodetype == ACTORSERVER ? actor_server::actorid() : actor_client::actorid();
 		}
-
+		
 		inline bool add_actor(const ptractor& apactor, const std::function<void()>& afun)
 		{
 			const nguid& guid = apactor->guid();
@@ -577,6 +577,11 @@ namespace ngl
 	void actor_manage::set_ready(const nguid& aguid)
 	{
 		m_impl_actor_manage()->set_ready(aguid);
+	}
+
+	nguid actor_manage::get_clientguid()
+	{
+		return m_impl_actor_manage()->nodetypebyguid();
 	}
 
 	actor_suspendthread::actor_suspendthread()

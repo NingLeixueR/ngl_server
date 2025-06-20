@@ -254,11 +254,11 @@ namespace ngl
 			return true;
 		}
 
-		bool get_server(NODE_TYPE atype, i16_area aarea, std::vector<i32_serverid>& avec)
+		bool get_server(NODE_TYPE atype, i16_area aarea, std::set<i32_serverid>& aset)
 		{
-			return foreach_server(atype, aarea, [&avec](const tab_servers* iserver)
+			return foreach_server(atype, aarea, [&aset](const tab_servers* iserver)
 				{
-					avec.push_back(iserver->m_id);
+					aset.insert(iserver->m_id);
 				});
 		}
 

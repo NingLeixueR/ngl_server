@@ -209,8 +209,8 @@ namespace ngl
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 向一组服务器发送数据
-		template <typename T>
-		static bool send_server(const std::vector<i32_serverid>& aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		template <typename T, typename CONTAINER>
+		static bool send_server(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 发送pack到指定服务器
 		template <typename T>
@@ -293,84 +293,29 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram, true);
 		}
 
-		//# 向指定的gateway发送数据 actor_role.guidid用来确定是哪个客户端 
-		template <typename T>
-		static void send_client(i32_gatewayid agatewayid, i64_actorid aid, const std::shared_ptr<T>& adata)
-		{
-			const tab_servers* tab = ttab_servers::instance().tab(agatewayid);
-			if (tab == nullptr)
-			{
-				return;
-			}
-			if (tab->m_type != ngl::NODE_TYPE::GATEWAY)
-			{
-				return;
-			}
-			auto pro = create_cpro(adata);
-			cpro_push_actorid(pro, aid);
-			send_server(agatewayid, *pro.get(), nguid::make(), aid);
-		}
-
-		template <typename T>
-		static void send_client(const std::vector<i32_gatewayid>& agatewayid, i64_actorid aid, const std::shared_ptr<T>& adata)
+		template <typename T, typename CONTAINER>
+		static void send_client(const CONTAINER& asetid, const std::shared_ptr<T>& adata)
 		{
 			auto pro = create_cpro(adata);
-			cpro_push_actorid(pro, aid);
-			send_server(agatewayid, *pro.get(), nguid::make(), aid);
-		}
-	private:
-		template <typename T, typename ITOR>
-		static void client_pro(ITOR abeg, ITOR aend, const std::shared_ptr<T>& adata)
-		{
-			if (abeg == aend)
-			{
-				return;
-			}
-			auto pro = create_cpro(adata);
-			std::for_each(abeg, aend, [&pro](i64_actorid aactorid)
+			std::ranges::for_each(asetid, [&pro](i64_actorid aactorid)
 				{
 					cpro_push_actorid(pro, aactorid);
-				});
+				}
+			);
 			handle_pram lpram = handle_pram::create(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram, true);
-		}
-	public:
-		//# 根据actor_role.guidid确定客户端，
-		//# 给一组客户端发送数据
-		template <typename T>
-		static void send_client(const std::initializer_list<i64_actorid>& alist, const std::shared_ptr<T>& adata)
-		{
-			client_pro(alist.begin(), alist.end(), adata);
-		}
-
-		template <typename T>
-		static void send_client(const std::vector<i64_actorid>& avecid, const std::shared_ptr<T>& adata)
-		{
-			client_pro(avecid.begin(), avecid.end(), adata);
-		}
-
-		template <typename T>
-		static void send_client(const std::list<i64_actorid>& avecid, const std::shared_ptr<T>& adata)
-		{
-			client_pro(avecid.begin(), avecid.end(), adata);
-		}
-
-		template <typename T>
-		static void send_client(const std::set<i64_actorid>& asetid, const std::shared_ptr<T>& adata)
-		{
-			client_pro(asetid.begin(), asetid.end(), adata);
 		}
 
 		//# 向所有客户端发送消息
 		template <typename T>
 		static void send_allclient(const std::shared_ptr<T>& adata)
 		{
-			std::vector<i32_serverid>& lgatewayids = sysconfig::gatewayids();
+			std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
 			if (lgatewayids.empty())
 			{
 				return;
 			}
-			send_client(lgatewayids, nguid::make(), adata);
+			send_server(lgatewayids, *adata, nguid::make(), nguid::make());
 		}
 
 		//# 往指定区服所有客户端发送消息
@@ -379,7 +324,7 @@ namespace ngl
 		{
 			ttab_servers::foreach_server(GATEWAY, aarea, [&adata](const tab_servers* atab)
 				{
-					send_client(atab->m_id, nguid::make(), adata);
+					send_server(atab->m_id, *adata, nguid::make(), nguid::make());
 				});
 		}
 #pragma endregion

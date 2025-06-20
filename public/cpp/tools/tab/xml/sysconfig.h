@@ -52,7 +52,7 @@ namespace ngl
 		static std::string	m_gmurl;				// gm url
 
 		// # Íø¹ØÁĞ±í
-		static std::vector<i32_serverid> m_gatewayids;
+		static std::set<i32_serverid> m_gatewayids;
 	public:
 		static void init();
 
@@ -79,6 +79,6 @@ namespace ngl
 		static std::string& gmurl()			{ return m_gmurl; }
 		
 		static void init_gatewayids();
-		static std::vector<i32_serverid>& gatewayids();
+		static std::set<i32_serverid>& gatewayids();
 	};
 }//namespace ngl
