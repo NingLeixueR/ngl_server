@@ -315,16 +315,20 @@ namespace ngl
 			{
 				return;
 			}
-			send_server(lgatewayids, *adata, nguid::make(), nguid::make());
+			auto pro = create_cpro(adata);
+			cpro_push_actorid(pro, nguid::make());
+			send_server(lgatewayids, *pro, nguid::make(), nguid::make());
 		}
 
 		//# 往指定区服所有客户端发送消息
 		template <typename T>
 		static void send_allclient(i16_area aarea, const std::shared_ptr<T>& adata)
 		{
-			ttab_servers::foreach_server(GATEWAY, aarea, [&adata](const tab_servers* atab)
+			auto pro = create_cpro(adata);
+			cpro_push_actorid(pro, nguid::make());
+			ttab_servers::foreach_server(GATEWAY, aarea, [&pro](const tab_servers* atab)
 				{
-					send_server(atab->m_id, *adata, nguid::make(), nguid::make());
+					send_server(atab->m_id, *pro, nguid::make(), nguid::make());
 				});
 		}
 #pragma endregion
