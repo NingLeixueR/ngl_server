@@ -308,7 +308,7 @@ namespace ngl
 
 		//# 向所有客户端发送消息
 		template <typename T>
-		static void send_allclient(const std::shared_ptr<T>& adata)
+		static void send_client(const std::shared_ptr<T>& adata)
 		{
 			std::set<i32_serverid>& lgatewayids = sysconfig::gatewayids();
 			if (lgatewayids.empty())
@@ -322,7 +322,7 @@ namespace ngl
 
 		//# 往指定区服所有客户端发送消息
 		template <typename T>
-		static void send_allclient(i16_area aarea, const std::shared_ptr<T>& adata)
+		static void send_client(i16_area aarea, const std::shared_ptr<T>& adata)
 		{
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, nguid::make());

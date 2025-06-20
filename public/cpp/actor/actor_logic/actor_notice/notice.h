@@ -65,7 +65,7 @@ namespace ngl
 			{
 				return;
 			}
-			actor::send_allclient(pro);
+			actor::send_client(pro);
 		}
 
 		void del_notice(int64_t aid)

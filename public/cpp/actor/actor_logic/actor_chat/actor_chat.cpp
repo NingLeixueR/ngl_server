@@ -87,7 +87,7 @@ namespace ngl
 			{
 				*pro->add_m_chatlist() = item;
 			}
-			send_allclient(pro);
+			send_client(pro);
 		}
 		m_update_chatitem.clear();
 		return true;
