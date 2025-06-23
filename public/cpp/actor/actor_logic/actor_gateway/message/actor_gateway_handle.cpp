@@ -146,7 +146,7 @@ namespace ngl
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
 		if (linfo == nullptr || linfo->m_session != lpram->m_session())
 		{
-			tools::no_core_dump();
+			//tools::no_core_dump();
 			return true;
 		}
 		

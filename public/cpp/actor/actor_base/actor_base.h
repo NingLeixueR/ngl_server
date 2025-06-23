@@ -407,17 +407,17 @@ namespace ngl
 			}
 			std::set<i64_actorid> lclient;
 			std::set<i64_actorid> lactors;
-			std::ranges::for_each(*lset, [&lclient, &lactors](i64_actorid aactor)
+			for (i64_actorid aactor : *lset)
+			{
+				if ((ENUM_ACTOR)nguid::type(aactor) != ACTOR_ROBOT)
 				{
-					if ((ENUM_ACTOR)nguid::type(aactor) != ACTOR_ROBOT)
-					{
-						lactors.insert(aactor);
-					}
-					else
-					{
-						lclient.insert(aactor);
-					}
-				});
+					lactors.insert(aactor);
+				}
+				else
+				{
+					lclient.insert(aactor);
+				}
+			}
 			if (!lclient.empty())
 			{
 				send_client(lclient, adata);
