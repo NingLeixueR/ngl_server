@@ -132,7 +132,7 @@ namespace ngl
 						.m_fun = afun
 					}
 				);
-				push_task_id(nodetypebyguid(), pro, false);
+				push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
 			}
 			apactor->set_activity_stat(actor_stat_free);
 			return true;
@@ -151,7 +151,7 @@ namespace ngl
 					}
 				}
 			);
-			push_task_id(nodetypebyguid(), pro, false);
+			push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
 
 			bool isrunfun = false;
 			ptractor lpactor = nullptr;
@@ -302,16 +302,12 @@ namespace ngl
 			ngl_post;
 		}
 
-		inline ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram, bool abool)
+		inline ptractor& nosafe_get_actorbyid(const nguid& aguid, handle_pram& apram)
 		{
 			static ptractor lnull(nullptr);
 			ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid); 
 			if (lpactorptr == nullptr)
 			{
-				if (!abool)
-				{
-					return lnull;
-				}
 				// 发给actor_client/actor_server
 				// 如果是actor_server结点需要发送给actor_server
 				nguid lguid = nodetypebyguid();
@@ -324,17 +320,17 @@ namespace ngl
 			return *lpactorptr;
 		}
 
-		template <typename T>
-		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram, bool abool)
+		template <typename T, bool IS_SEND = true>
+		inline void push_task_id(const nguid& aguid, std::shared_ptr<T>& apram)
 		{
-			handle_pram lparm = handle_pram::create(aguid, nguid::make(), apram);
-			push_task_id(aguid, lparm, abool);
+			handle_pram lparm = handle_pram::create<T, IS_SEND>(aguid, nguid::make(), apram);
+			push_task_id(aguid, lparm);
 		}
 
-		inline void push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
+		inline void push_task_id(const nguid& aguid, handle_pram& apram)
 		{
 			ngl_lock_s;
-			ptractor lpptractor = nosafe_get_actorbyid(aguid, apram, abool);
+			ptractor lpptractor = nosafe_get_actorbyid(aguid, apram);
 			if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
 			{
 				std::cout << "push_task_id fail !!!" << std::endl;
@@ -343,14 +339,14 @@ namespace ngl
 			nosafe_push_task_id(lpptractor, apram);
 		}
 
-		inline void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool)
+		inline void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
 		{
 			ngl_lock_s;
 			bool lmass = false;
 			ptractor lpclient = nullptr;
 			for (i64_actorid actorid : asetguid)
 			{
-				ptractor lpptractor = nosafe_get_actorbyid(actorid, apram, abool);
+				ptractor lpptractor = nosafe_get_actorbyid(actorid, apram);
 				if (lpptractor == nullptr || lpptractor->get_activity_stat() == actor_stat_close)
 				{
 					continue;
@@ -363,13 +359,13 @@ namespace ngl
 				}
 				nosafe_push_task_id(lpptractor, apram);
 			}
-			if (lmass && abool)
+			if (lmass)
 			{
 				nosafe_push_task_id(lpclient, apram);
 			}
 		}
 
-		inline void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver)
+		inline void push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 		{
 			ngl_lock_s;
 			// 1.先发给本机上的atype
@@ -380,18 +376,15 @@ namespace ngl
 					nosafe_push_task_id(value, apram);
 				}
 			}
-			ngl_post;
 			// 2.然后发给actor_client，发给其他服务器
-			if (aotherserver == true)
+			nguid lguid = nodetypebyguid();
+			ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
+			if (lpptractor == nullptr)
 			{
-				nguid lguid = nodetypebyguid();
-				ptractor* lpptractor = tools::findmap(m_actorbyid, lguid);
-				if (lpptractor == nullptr)
-				{
-					return;
-				}
-				nosafe_push_task_id(*lpptractor, apram);
+				return;
 			}
+			nosafe_push_task_id(*lpptractor, apram);
+			ngl_post;
 		}
 
 		inline void broadcast_task(handle_pram& apram)
@@ -529,19 +522,19 @@ namespace ngl
 		m_impl_actor_manage()->push(apactor, atorthread);
 	}
 
-	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
+	void actor_manage::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
-		m_impl_actor_manage()->push_task_id(aguid, apram, abool);
+		m_impl_actor_manage()->push_task_id(aguid, apram);
 	}
 
-	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool)
+	void actor_manage::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
 	{
-		m_impl_actor_manage()->push_task_id(asetguid, apram, abool);
+		m_impl_actor_manage()->push_task_id(asetguid, apram);
 	}
 
-	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
+	void actor_manage::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
-		m_impl_actor_manage()->push_task_type(atype, apram, aotherserver);
+		m_impl_actor_manage()->push_task_type(atype, apram);
 	}
 
 	void actor_manage::broadcast_task(handle_pram& apram)

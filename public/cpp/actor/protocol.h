@@ -83,7 +83,7 @@ namespace ngl
 						}							
 						else
 						{
-							lmanages.push_task_id(lactorguid.id(), lpram, false);
+							lmanages.push_task_id(lactorguid.id(), lpram);
 						}
 					}
 				}
@@ -117,9 +117,9 @@ namespace ngl
 				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
 				nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
 				nguid lrequestguid(apack->m_head.get_request_actor());
-				handle_pram lpram = handle_pram::create(lguid, lrequestguid, ldatapack);
+				handle_pram lpram = handle_pram::create<typeforward, false>(lguid, lrequestguid, ldatapack);
 				lpram.m_pack = apack;
-				actor_manage::instance().push_task_id(lguid, lpram, false);
+				actor_manage::instance().push_task_id(lguid, lpram);
 				return true;
 			};			
 			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);
@@ -168,7 +168,7 @@ namespace ngl
 					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
 					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
-					actor_manage::instance().push_task_id(lguid, lpram, false);
+					actor_manage::instance().push_task_id(lguid, lpram);
 				}
 				return true;
 			};
@@ -198,7 +198,7 @@ namespace ngl
 					std::set<i64_actorid>& lactorids = ldatapack->m_actorids;
 					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<np_mass_actor<T>, false>(lactorids, lrequestguid, ldatapack);
-					actor_manage::instance().push_task_id(lactorids, lpram, false);
+					actor_manage::instance().push_task_id(lactorids, lpram);
 					return true;
 				};
 			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);

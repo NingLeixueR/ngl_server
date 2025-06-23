@@ -122,7 +122,11 @@ namespace ngl
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
-		static handle_pram create(const nguid& aid, const nguid& arid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
+		static handle_pram create(
+			const nguid& aid, const nguid& arid, 
+			const std::shared_ptr<T>& adata, 
+			const std::function<void()>& afailfun = nullptr
+		)
 		{
 			handle_pram lpram;
 			lpram.m_enum			= tprotocol::protocol<T>();

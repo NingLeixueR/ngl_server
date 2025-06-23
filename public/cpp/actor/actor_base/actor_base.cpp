@@ -315,24 +315,24 @@ namespace ngl
 		actor_manage::instance().erase_actor(aguid);
 	}
 
-	void actor_base::push_task_id(const nguid& aguid, handle_pram& apram, bool abool)
+	void actor_base::push_task_id(const nguid& aguid, handle_pram& apram)
 	{
-		actor_manage::instance().push_task_id(aguid, apram, abool);
+		actor_manage::instance().push_task_id(aguid, apram);
 	}
 
-	void actor_base::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool)
+	void actor_base::push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram)
 	{
-		actor_manage::instance().push_task_id(asetguid, apram, abool);
+		actor_manage::instance().push_task_id(asetguid, apram);
 	}
 
-	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver/* = false*/)
+	void actor_base::push_task_type(ENUM_ACTOR atype, handle_pram& apram)
 	{
-		actor_manage::instance().push_task_type(atype, apram, aotherserver);
+		actor_manage::instance().push_task_type(atype, apram);
 	}
 
-	void actor_base::push_task_id(handle_pram& apram, bool abool)
+	void actor_base::push_task_id(handle_pram& apram)
 	{
-		actor_manage::instance().push_task_id(m_impl_actor_base()->m_guid, apram, abool);
+		actor_manage::instance().push_task_id(m_impl_actor_base()->m_guid, apram);
 	}
 
 	void actor_base::save()
