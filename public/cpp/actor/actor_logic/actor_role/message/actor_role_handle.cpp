@@ -118,7 +118,7 @@ namespace ngl
 		);
 		auto pro = std::make_shared<mforward<np_operator_task_response>>();
 		pro->add_data()->m_msg = recv->m_msg;
-		send_actor(lactorid, pro);
+		actor::send_actor(lactorid, id_guid(), pro);
 		return true;
 	}
 	bool actor_role::handle(const message<np_actor_disconnect_close>& adata)

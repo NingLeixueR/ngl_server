@@ -107,7 +107,7 @@ namespace ngl
 					}
 				}
 				lset.erase(lactorid);
-				actor::static_send_actor(lset, nguid::make(), pro);
+				actor::send_actor(lset, nguid::make(), pro);
 			}
 			
 
@@ -117,7 +117,7 @@ namespace ngl
 				pro->m_onlyreads = m_onlyreads;
 				pro->m_writealls = m_writealls;
 				pro->m_publishlist = m_publishlist;
-				actor::static_send_actor(lactorid, nguid::make(), pro);
+				actor::send_actor(lactorid, nguid::make(), pro);
 			}
 
 			{
@@ -135,13 +135,13 @@ namespace ngl
 						lmapdata[itempair.first] = itempair.second.getconst();
 						if (lmapdata.size() >= ESEND_MAX_COUNT)
 						{
-							actor::static_send_actor(lactorid, nguid::make(), pro);
+							actor::send_actor(lactorid, nguid::make(), pro);
 							pro = std::make_shared<np_channel_data<TDATA>>();
 							pro->m_data.make();
 						}
 					}
 					pro->m_recvfinish = true;
-					actor::static_send_actor(lactorid, nguid::make(), pro);
+					actor::send_actor(lactorid, nguid::make(), pro);
 					return;
 				}
 				else
@@ -156,7 +156,7 @@ namespace ngl
 						}
 					}
 				}
-				actor::static_send_actor(lactorid, nguid::make(), pro);
+				actor::send_actor(lactorid, nguid::make(), pro);
 			}
 		}
 
@@ -217,7 +217,7 @@ namespace ngl
 			}
 
 			m_publishlist.erase(recv->m_actorid);
-			actor::static_send_actor(lset, nguid::make(), pro);
+			actor::send_actor(lset, nguid::make(), pro);
 		}
 
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
@@ -279,7 +279,7 @@ namespace ngl
 			}
 			if (!lmap.empty())
 			{
-				actor::static_send_actor(aactor, nguid::make(), pro);
+				actor::send_actor(aactor, nguid::make(), pro);
 			}
 		}
 

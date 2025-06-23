@@ -29,12 +29,12 @@ namespace ngl
 			auto pro = std::make_shared<np_actor_disconnect_close>();
 			pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
 			// ##### 通知game服务器 玩家已经断开连接
-			send_actor(pro->m_actorid, pro);
+			actor::send_actor(pro->m_actorid, id_guid(), pro);
 			// ##### 通知login服务器 玩家已经断开连接
 			ttab_servers::instance().foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
 				{
 					nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
-					send_actor(lguid, pro);
+					actor::send_actor(lguid, id_guid(), pro);
 				});
 		}
 		return true;

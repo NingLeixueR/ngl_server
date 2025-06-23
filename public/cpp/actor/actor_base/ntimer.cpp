@@ -20,7 +20,7 @@ namespace ngl
 					return;
 				}
 				aparm->m_triggerms = anode->m_parm.m_timerstart + anode->m_parm.m_ms;
-				actor::static_send_actor<np_timerparm, false>(lidguid, nguid::make(), aparm);
+				actor::send_actor<np_timerparm, false>(lidguid, nguid::make(), aparm);
 			}
 		};
 		aparm->m_timerid = (int)twheel::wheel().addtimer(lparm);

@@ -17,9 +17,9 @@ namespace ngl
 	{
 	}
 
-	i64_actorid actor_create::actorid(i32_actordataid adataid)
+	i64_actorid actor_create::actorid(i32_serverid aserverid)
 	{
-		return nguid::make(ACTOR_CREATE, tab_self_area, adataid);
+		return nguid::make(ACTOR_CREATE, tab_self_area, aserverid);
 	}
 
 	void actor_create::nregister()

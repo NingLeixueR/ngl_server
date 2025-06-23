@@ -372,7 +372,7 @@ namespace ngl
 									.m_timer = anode->m_timerid,
 									.m_area = larea,
 								});
-							actor::static_send_actor(lactorid, nguid::make(), pro);
+							actor::send_actor(lactorid, nguid::make(), pro);
 						}
 					};
 					twheel::wheel().addtimer(lparm);
@@ -433,7 +433,7 @@ namespace ngl
 			}
 			for (auto itor = lmap.begin(); itor != lmap.end(); ++itor)
 			{
-				actor::static_send_actor(m_nspserver[itor->first], nguid::make(), itor->second);
+				actor::send_actor(m_nspserver[itor->first], nguid::make(), itor->second);
 			}
 		}
 
@@ -482,7 +482,7 @@ namespace ngl
 			(*pro->m_data.m_data)[adataid] = *lpdata;
 
 			// # 发送给nsp server
-			actor::static_send_actor(m_nspserver[nguid::area(adataid)], nguid::make(), pro);
+			actor::send_actor(m_nspserver[nguid::area(adataid)], nguid::make(), pro);
 			// # 发送给其他nsp client结点
 			std::set<i64_actorid> lnodeids;
 			// # 只读全部的结点
@@ -495,7 +495,7 @@ namespace ngl
 			{
 				lnodeids.insert(itor->second.begin(), itor->second.end());
 			}
-			actor::static_send_actor(lnodeids, m_actor->id_guid(), pro);
+			actor::send_actor(lnodeids, m_actor->id_guid(), pro);
 			return true;
 		}
 
@@ -517,7 +517,7 @@ namespace ngl
 			{
 				for (i16_area area : *lsetarea)
 				{
-					actor::static_send_actor(m_nspserver[area], nguid::make(), pro);
+					actor::send_actor(m_nspserver[area], nguid::make(), pro);
 					m_register[area] = false;
 				}
 			}
@@ -531,7 +531,7 @@ namespace ngl
 			pro->m_onlyread = m_onlyread;
 			pro->m_dataid = m_dataid;
 			log_error()->print("nsp_client register: {} -> {}", nguid(pro->m_actorid), nguid(m_nspserver[aarea]));
-			actor::static_send_actor(m_nspserver[aarea], nguid::make(), pro);
+			actor::send_actor(m_nspserver[aarea], nguid::make(), pro);
 		}
 	};
 

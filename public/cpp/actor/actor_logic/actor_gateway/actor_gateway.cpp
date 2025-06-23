@@ -90,8 +90,8 @@ namespace ngl
 
 	void actor_gateway::update_gateway_info(const std::shared_ptr<np_actor_gatewayinfo_updata>& apro)
 	{	
-		send_actor(actor_gateway_c2g::actorid(id()), apro);
-		send_actor(actor_gateway_g2c::actorid(id()), apro);
+		actor::send_actor(actor_gateway_c2g::actorid(id()), id_guid(), apro);
+		actor::send_actor(actor_gateway_g2c::actorid(id()), id_guid(), apro);
 	}
 
 	void actor_gateway::session_close(gateway_socket* ainfo)
@@ -118,7 +118,7 @@ namespace ngl
 						.m_roleid = lroleid,
 						.m_area = larea,
 					});
-				send_actor(id_guid(), pro);
+				actor::send_actor(id_guid(), nguid::make(), pro);
 			}
 		};
 		twheel::wheel().addtimer(lparm);

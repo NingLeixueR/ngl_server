@@ -66,7 +66,7 @@ namespace ngl
 		log_error()->print("############actor_csvclient::timer_handle###########");
 		auto pro = std::make_shared<np_actor_csv_verify_version>();
 		allcsv::foreach_verify(pro->m_verify);
-		send_actor(actor_csvserver::actorid(), pro);
+		actor::send_actor(actor_csvserver::actorid(), id_guid(), pro);
 		return true;
 	}
 
