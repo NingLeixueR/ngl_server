@@ -15,7 +15,7 @@ namespace ngl
 		using tnsp_server = nsp_server<ENUMDB, TDerived, TDATA>;
 		enum
 		{
-			ESEND_MAX_COUNT = 10,
+			ESEND_MAX_COUNT = 100,
 		};
 	private:
 		nsp_server() = delete;

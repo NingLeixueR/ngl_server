@@ -190,14 +190,14 @@ namespace ngl
 		static void erase_actor(const nguid& aguid);
 
 		//# 给actor自身添加任务
-		void push_task_id(handle_pram& apram, bool abool);
+		void push_task_id(handle_pram& apram);
 
 		//# 向指定actor添加任务
-		static void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
-		static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool);
+		static void push_task_id(const nguid& aguid, handle_pram& apram);
+		static void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
 		//# 给指定类型的actor添加任务
-		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
+		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 #pragma region net
 		//# 生成包
@@ -289,8 +289,8 @@ namespace ngl
 			}
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, aid);
-			handle_pram lpram = handle_pram::create(nguid::make(), nguid::make(), pro);
-			push_task_id(actorclient_guid(), lpram, true);
+			handle_pram lpram = handle_pram::create<T, true>(nguid::make(), nguid::make(), pro);
+			push_task_id(actorclient_guid(), lpram);
 		}
 
 		template <typename T, typename CONTAINER>
@@ -301,8 +301,8 @@ namespace ngl
 			{
 				cpro_push_actorid(pro, aactorid);
 			}
-			handle_pram lpram = handle_pram::create(nguid::make(), nguid::make(), pro);
-			push_task_id(actorclient_guid(), lpram, true);
+			handle_pram lpram = handle_pram::create<T, true>(nguid::make(), nguid::make(), pro);
+			push_task_id(actorclient_guid(), lpram);
 		}
 
 		//# 向所有客户端发送消息
@@ -333,50 +333,33 @@ namespace ngl
 #pragma endregion
 
 #pragma region send_actor
-		//# 向指定actor发送数据
-		template <typename T, bool IS_SEND = true>
-		void send_actor(const nguid& aguid, const T& adata)
-		{
-			auto pro = std::make_shared<T>(adata);
-			static_send_actor<T, IS_SEND>(aguid, id_guid(), pro);
-		}
-
-		//# 向指定actor发送数据
-		template <typename T, bool IS_SEND = true>
-		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata)
-		{
-			static_send_actor<T, IS_SEND>(aguid, id_guid(), adata);
-		}
-
-		//# 向指定actor发送数据
-		template <typename T, bool IS_SEND = true>
-		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun)
-		{
-			static_send_actor<T, IS_SEND>(aguid, id_guid(), adata, afailfun);
-		}
-
 		//# 向指定actor发送pack
 		void send_actor_pack(const nguid& aguid, const std::shared_ptr<pack>& adata)
 		{
 			handle_pram lpram = handle_pram::create_pack(aguid, guid(), adata);
-			push_task_id(aguid, lpram, true);
+			push_task_id(aguid, lpram);
+		}
+
+		//# 向指定actor发送数据
+		template <typename T, bool IS_SEND = true>
+		void send_actor(const nguid& aguid, const std::shared_ptr<T>& adata, const std::function<void()>& afailfun = nullptr)
+		{
+			static_send_actor<T, IS_SEND>(aguid, id_guid(), adata, afailfun);
 		}
 
 		//# 群发给指定类型的所有actor
-		template <typename T, bool IS_SEND = true>
-		void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false)
-		{
-			static_send_actor<T, IS_SEND>(atype, adata, aotherserver);
-		}
+		//template <typename T, bool IS_SEND = true>
+		//void send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false)
+		//{
+		//	static_send_actor<T, IS_SEND>(atype, adata, aotherserver);
+		//}
 
 		template <typename T, bool IS_SEND = true>
-		static void static_send_actor(
-			ENUM_ACTOR atype, const std::shared_ptr<T>& adata, bool aotherserver = false
-		)
+		static void static_send_actor(ENUM_ACTOR atype, const std::shared_ptr<T>& adata)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(nguid::make_self(atype), nguid::make(), adata);
 			lpram.m_forwardtype = true;
-			push_task_type(atype, lpram, aotherserver);
+			push_task_type(atype, lpram);
 		}
 
 		//# 发送数据到指定的actor
@@ -386,7 +369,7 @@ namespace ngl
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata);
-			push_task_id(aguid, lpram, true);
+			push_task_id(aguid, lpram);
 		}
 
 		//# 发送数据到指定的actor
@@ -396,7 +379,7 @@ namespace ngl
 		)
 		{
 			handle_pram lpram = handle_pram::create<T, IS_SEND>(aguid, arequestguid, adata, afailfun);
-			push_task_id(aguid, lpram, true);
+			push_task_id(aguid, lpram);
 		}
 
 		template <typename T, bool IS_SEND = true>
@@ -404,8 +387,8 @@ namespace ngl
 		{
 			if (!asetguid.empty())
 			{
-				handle_pram lpram = handle_pram::create<T, true>(asetguid, arequestguid, adata);
-				push_task_id(asetguid, lpram, true);
+				handle_pram lpram = handle_pram::create<T, IS_SEND>(asetguid, arequestguid, adata);
+				push_task_id(asetguid, lpram);
 			}
 		}
 
@@ -437,13 +420,12 @@ namespace ngl
 				return false;
 			}
 			std::set<i64_actorid> lclient;
-			handle_pram lpram = handle_pram::create<T>(nguid::make(), guid(), adata);
-			std::ranges::for_each(*lset, [&lpram, adata, &lclient](i64_actorid aactor)
+			std::set<i64_actorid> lactors;
+			std::ranges::for_each(*lset, [&lclient, &lactors](i64_actorid aactor)
 				{
 					if ((ENUM_ACTOR)nguid::type(aactor) != ACTOR_ROBOT)
 					{
-						lpram.m_actor = aactor;
-						push_task_id(aactor, lpram, true);
+						lactors.insert(aactor);
 					}
 					else
 					{
@@ -453,6 +435,10 @@ namespace ngl
 			if (!lclient.empty())
 			{
 				send_client(lclient, adata);
+			}
+			if (!lactors.empty())
+			{
+				send_actor(lactors, adata);
 			}
 			return true;
 		}

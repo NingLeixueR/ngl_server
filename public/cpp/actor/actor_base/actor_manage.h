@@ -62,11 +62,11 @@ namespace ngl
 		void push(const ptractor& apactor, nthread* atorthread = nullptr);
 
 		//# 向actor中添加任务
-		void push_task_id(const nguid& aguid, handle_pram& apram, bool abool);
-		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram, bool abool);
+		void push_task_id(const nguid& aguid, handle_pram& apram);
+		void push_task_id(const std::set<i64_actorid>& asetguid, handle_pram& apram);
 
 		//# 向某个类型的actor中添加任务
-		void push_task_type(ENUM_ACTOR atype, handle_pram& apram, bool aotherserver = false);
+		void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 		//# 向当前进程所有actor广播消息
 		void broadcast_task(handle_pram& apram);

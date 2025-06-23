@@ -281,7 +281,7 @@ namespace ngl
 			pro->m_serverid = lserverid;
 			nguid lguid = nguid::make_self(ACTOR_LOGIN);
 			handle_pram lparm = handle_pram::create(lguid, guid(), pro);
-			actor_manage::instance().push_task_id(lguid, lparm, false);
+			actor_manage::instance().push_task_id(lguid, lparm);
 		}
 		return true;
 	}

@@ -114,7 +114,7 @@ namespace ngl
 
 		if (!naddress::set_node(lrecv->m_node))
 		{
-			tools::no_core_dump();
+			//tools::no_core_dump();
 			return true;
 		}
 

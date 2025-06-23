@@ -65,7 +65,7 @@ namespace ngl
 	void actor_gm::sendbytype(ENUM_ACTOR atype, const pack* apack, const ngl::np_gm& apro)
 	{
 		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
-		send_actor(atype, pro, true);
+		send_actor(atype, pro);
 	}
 
 	void actor_gm::sendbyactorid(i64_actorid aactorid, const pack* apack, const ngl::np_gm& apro)

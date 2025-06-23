@@ -104,7 +104,7 @@ namespace ngl
 		ldata->m_parm.swap(aparm);
 		i64_actorid lid = ngl::nguid::make(ACTOR_ROBOT_MANAGE, tab_self_area, nconfig::m_nodeid);
 		handle_pram lparm = ngl::handle_pram::create<np_robot_pram, false, false>(lid, nguid::moreactor(), ldata);
-		actor_manage::instance().push_task_id(lid, lparm, false);
+		actor_manage::instance().push_task_id(lid, lparm);
 		return true;
 	}
 
