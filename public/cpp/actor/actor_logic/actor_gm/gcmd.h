@@ -55,7 +55,7 @@ namespace ngl
 				pro->add_data()->m_json = ljson;
 				if (m_actor == nullptr)
 				{
-					actor::static_send_actor(nguid::make_self(ACTOR_GM), -1, pro);
+					actor::send_actor(nguid::make_self(ACTOR_GM), nguid::make(), pro);
 				}
 				else
 				{

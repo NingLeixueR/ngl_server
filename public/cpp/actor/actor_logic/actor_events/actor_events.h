@@ -84,7 +84,7 @@ namespace ngl
 						{
 							return;
 						}
-						actor::static_send_actor(*lmember, actorid(), adata.get_shared_data());
+						actor::send_actor(*lmember, actorid(), adata.get_shared_data());
 					}
 				);
 		}
@@ -107,7 +107,7 @@ namespace ngl
 			{
 				auto pro = std::make_shared<np_event_register>();
 				pro->m_vecpair.push_back({ atype, aactorid });
-				actor::static_send_actor(actorid(), aactorid, pro);
+				actor::send_actor(actorid(), aactorid, pro);
 			}
 		};
 		using tfun = template_arg_event<register_actor_event>;
@@ -117,7 +117,7 @@ namespace ngl
 			template <typename TPARM>
 			bool handle(const message<TPARM>& adata)
 			{
-				actor::static_send_actor(actorid(), nguid::make(), adata.get_shared_data());
+				actor::send_actor(actorid(), nguid::make(), adata.get_shared_data());
 				return true;
 			}
 		};

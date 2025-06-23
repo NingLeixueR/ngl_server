@@ -133,7 +133,7 @@ namespace ngl
 			pro->m_serverid = tab->m_db;
 			pro->m_fun = std::bind_front(&type_ndbclient::loaddb, this, m_id);
 			nguid lclientguid = actor_client::actorid();
-			actor::static_send_actor(lclientguid, m_actor->guid(), pro);
+			actor::send_actor(lclientguid, m_actor->guid(), pro);
 		}
 	private:
 		// # МгдиЪ§Он

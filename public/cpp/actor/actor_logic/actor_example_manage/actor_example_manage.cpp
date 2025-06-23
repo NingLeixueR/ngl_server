@@ -74,13 +74,13 @@ namespace ngl
 			pbexample::EPLAY_TYPE ltype = applayinfo->m_type;
 			{
 				auto pro = std::make_shared<np_example_entergame_ready>();
-				send_actor(lactorexampleid, pro);
+				actor::send_actor(lactorexampleid, id_guid(), pro);
 			}
 			{
 				auto pro = std::make_shared<np_example_actorid>();
 				pro->m_type = ltype;
 				pro->m_actorexampleid = lactorexampleid;
-				actor::static_send_actor(lactorexampleid, id_guid(), pro);
+				actor::send_actor(lactorexampleid, id_guid(), pro);
 			}
 			m_finishinfo[ltype][lactorexampleid] = *applayinfo;
 			m_info[ltype].erase(lactorexampleid);

@@ -71,7 +71,7 @@ namespace ngl
 		pro->m_notice = anotice;
 		pro->m_starttime = astarttime;
 		pro->m_finishtime = afinishtime;
-		actor::static_send_actor(actorid(), nguid::make(), pro);
+		actor::send_actor(actorid(), actor_notice::actorid(), pro);
 		return true;
 	}
 

@@ -90,7 +90,7 @@ namespace ngl
 		auto pro = std::make_shared<np_example_actorid>();
 		pro->m_type = adata.get_data()->m_type;
 		pro->m_actorexampleid = 0;
-		actor::static_send_actor(lpexample->m_roles, id_guid(), pro);
+		actor::send_actor(lpexample->m_roles, id_guid(), pro);
 
 		lpdata->erase(lprecv->m_exampleid);
 		return true;
@@ -106,7 +106,7 @@ namespace ngl
 		auto pro = std::make_shared<np_example_actorid>();
 		pro->m_type = std::get<0>(*lptuple);
 		pro->m_actorexampleid = std::get<1>(*lptuple);
-		send_actor(adata.get_data()->m_roleid, pro);
+		actor::send_actor(adata.get_data()->m_roleid, id_guid(), pro);
 
 		return true;
 	}

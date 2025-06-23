@@ -395,6 +395,6 @@ namespace ngl
 
 		ENUM_ACTOR ltype = nactor_type<actor_db<TDBTAB_TYPE, TDBTAB>>::type();
 		i64_actorid lactorid = nguid::make(ltype, tab_self_area, nguid::none_actordataid());
-		actor::static_send_actor(lactorid, nguid::make(), pro);
+		actor::send_actor(lactorid, nguid::make(), pro);
 	}
 }//namespace ngl

@@ -8,6 +8,6 @@ namespace ngl
 	void nactor_logitem::send(std::shared_ptr<np_logitem> pro)
 	{
 		// # ACTOR_TYPE # ELOG_TYPE
-		actor::static_send_actor(actor_log::actorid(m_actortype, m_logtype), nguid::make(), pro);
+		actor::send_actor(actor_log::actorid(m_actortype, m_logtype), nguid::make(), pro);
 	}
 }//namespace ngl

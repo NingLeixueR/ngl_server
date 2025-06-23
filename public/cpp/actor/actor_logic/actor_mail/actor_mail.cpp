@@ -82,7 +82,7 @@ namespace ngl
 		pro->m_tid = amailid;
 		pro->m_dropid = adropid;
 		pro->m_parm = aparm;
-		actor::static_send_actor(actorid(nguid::area(aactorid)), nguid::make(), pro);
+		actor::send_actor(actorid(nguid::area(aactorid)), nguid::make(), pro);
 		return true;
 	}
 

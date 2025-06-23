@@ -10,7 +10,7 @@ namespace ngl
 		auto pro = std::make_shared<np_activityrank_operator>();
 		pro->m_iscreate = true;
 		pro->m_rankid = m_tab->m_id;
-		actor::static_send_actor(actor_ranklist::actorid(), nguid::make(), pro);
+		actor::send_actor(actor_ranklist::actorid(), nguid::make(), pro);
 		activity::start();
 	}
 
@@ -22,7 +22,7 @@ namespace ngl
 		auto pro = std::make_shared<np_get_rank>();
 		pro->m_rankid = m_tab->m_id;
 
-		actor::static_send_actor(actor_ranklist::actorid(), actor_activity_manage::actorid(), pro);
+		actor::send_actor(actor_ranklist::actorid(), actor_activity_manage::actorid(), pro);
 		return;
 	}
 
@@ -49,7 +49,7 @@ namespace ngl
 		auto pro = std::make_shared<np_activityrank_operator>();
 		pro->m_iscreate = false;
 		pro->m_rankid = m_tab->m_id;
-		actor::static_send_actor(actor_ranklist::actorid(), nguid::make(), pro);
+		actor::send_actor(actor_ranklist::actorid(), nguid::make(), pro);
 		activity::finish();
 	}
 

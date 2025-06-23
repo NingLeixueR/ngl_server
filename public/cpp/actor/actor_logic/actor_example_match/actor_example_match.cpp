@@ -251,7 +251,7 @@ namespace ngl
 			pro->m_roleids[lpair.second.m_index] = lpair.second.m_roleid;
 		}
 		pro->m_type = aroom->m_type;
-		send_actor(actor_example_manage::actorid(), pro);
+		actor::send_actor(actor_example_manage::actorid(), id_guid(), pro);
 
 		erase_room(aroom, pbexample::PLAY_MATCHING_EERROR_CODE::EERROR_CODE_FINISH);
 	}

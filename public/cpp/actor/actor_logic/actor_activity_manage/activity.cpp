@@ -78,7 +78,7 @@ namespace ngl
 					lnp->m_isreceive = true;
 					lnp->m_taskids = item.m_taskids;
 					lnp->m_msg = std::format("{}:{}", activityid(), i);
-					actor::static_send_actor(aroleid, nguid::make(), pro);
+					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
 			// ¹Ø±ÕÈÎÎñ
@@ -93,7 +93,7 @@ namespace ngl
 					lnp->m_isreceive = false;
 					lnp->m_taskids = item.m_taskids;
 					lnp->m_msg = std::format("{}:{}", activityid(), i);
-					actor::static_send_actor(aroleid, nguid::make(), pro);
+					actor::send_actor(aroleid, nguid::make(), pro);
 				}
 			}
 		}

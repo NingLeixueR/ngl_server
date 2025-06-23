@@ -55,7 +55,7 @@ namespace ngl
 			pro->m_rounds = m_rounds.size() - 1;
 			for (int i = 0; i < aeverycount; ++i)
 			{
-				actor::static_send_actor(ACTOR_ROBOT, pro);
+				actor::send_actor(ACTOR_ROBOT, pro);
 			}
 		}
 

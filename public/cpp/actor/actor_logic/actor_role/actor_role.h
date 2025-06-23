@@ -198,7 +198,7 @@ namespace ngl
 			default:
 				return true;
 			}
-			send_actor(lguid, pro);
+			actor::send_actor(lguid, id_guid(), pro);
 			return true;
 		}
 #pragma endregion

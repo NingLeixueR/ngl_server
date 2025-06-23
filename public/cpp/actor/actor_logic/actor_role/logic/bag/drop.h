@@ -189,7 +189,7 @@ namespace ngl
 				if (droplist(aid, acount, lmap))
 				{
 					map2goolemap(lmap, *pro->mutable_m_items());
-					actor::static_send_actor(aroleid, nguid::make(), psenditem);
+					actor::send_actor(aroleid, nguid::make(), psenditem);
 					actor::send_client(aroleid, pro);
 					if (amap != nullptr)
 					{
@@ -205,7 +205,7 @@ namespace ngl
 				pro->m_tid = amailid;
 				pro->m_dropid = aid;
 				pro->m_dropcount = acount;
-				actor::static_send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
+				actor::send_actor(nguid::make_self(ACTOR_MAIL), nguid::make(), pro);
 				return true;
 			}
 

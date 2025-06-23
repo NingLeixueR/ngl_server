@@ -104,7 +104,7 @@ namespace ngl
 						}
 						nguid::make(ltype, lguid.m_area, lguid.m_dataid);
 						auto pro = std::make_shared<np_actor_close>();
-						send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), pro);
+						actor::send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), id_guid(), pro);
 						lresponse.m_data = true;
 					}
 				};
