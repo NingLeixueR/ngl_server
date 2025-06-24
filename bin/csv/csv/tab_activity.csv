@@ -1,3 +1,5 @@
-int32_t,string,string,EActivity,int32_t,
-m_id,m_name,m_remarks,m_type,m_calendarid,
-" [index:0] id "," [index:1] 名字 "," [index:2] 备注"," [index:3] 活动类型(1类似咸鱼之王的<<招募达标>>)"," [index:4] 关联的脚本日历",
+int32_t,string,string,EActivity,EActivityOpen,vector<int32_t>,vector<activity_task>,vector<int32_t>
+m_id,m_name,m_remarks,m_type,m_open,m_task,m_taskday,m_ranktype
+ [index:0][load:y] id , [index:1][load:y] 名字 , [index:2][load:n] 备注, [index:3][load:y] 活动类型(1:类似咸鱼之王的<<招募达标>>2:冲榜), [index:4][load:y] 开启方式(0:GM开启1:常驻活动), [index:5][load:y] 活动期间接取任务, [index:6][load:y] 活动期间接取任务(第几天接收任务)," [index:7][load:y] 支持的活动排行列表(eranklist.activity_lv:1000000活动期间玩家等级变化值,eranklist.activity_gold:2000000活动期间玩家金币增加值)"
+1000001,等级冲榜,冲榜,2,0,,,1000000
+2000001,金币冲榜,冲榜,2,1,,,2000000
