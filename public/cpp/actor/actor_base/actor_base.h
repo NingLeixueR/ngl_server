@@ -382,19 +382,19 @@ namespace ngl
 
 #pragma region group
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
-		int create_group(ENUM_ACTOR atype = ACTOR_NONE);
+		int32_t create_group(ENUM_ACTOR atype = ACTOR_NONE);
 		
 		//# 移除一个分组
-		void remove_group(int agroupid);
+		void remove_group(int32_t agroupid);
 		
 		//# 将成员加入某个群发分组
-		bool add_group_member(int agroupid, i64_actorid amember);
+		bool add_group_member(int32_t agroupid, i64_actorid amember);
 		
 		//# 将成员从某个群发分组中移除
-		void remove_group_member(int agroupid, i64_actorid amember);
+		void remove_group_member(int32_t agroupid, i64_actorid amember);
 		
 		//# 获取group id中的actor列表与类型
-		const std::set<i64_actorid>* get_group(int agroupid);
+		const std::set<i64_actorid>* get_group(int32_t agroupid);
 
 		//# 给一组成员发送消息
 		template <typename T>
