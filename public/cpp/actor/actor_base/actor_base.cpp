@@ -385,27 +385,27 @@ namespace ngl
 		m_impl_actor_base()->set_broadcast(aisbroadcast);
 	}
 
-	int actor_base::create_group(ENUM_ACTOR atype/*= ACTOR_NONE*/)
+	int32_t actor_base::create_group(ENUM_ACTOR atype/*= ACTOR_NONE*/)
 	{
 		return m_group.create(atype);
 	}
 
-	void actor_base::remove_group(int agroupid)
+	void actor_base::remove_group(int32_t agroupid)
 	{
 		m_group.remove(agroupid);
 	}
 
-	bool actor_base::add_group_member(int agroupid, i64_actorid amember)
+	bool actor_base::add_group_member(int32_t agroupid, i64_actorid amember)
 	{
 		return m_group.add_member(agroupid, amember);
 	}
 
-	void actor_base::remove_group_member(int agroupid, i64_actorid amember)
+	void actor_base::remove_group_member(int32_t agroupid, i64_actorid amember)
 	{
 		m_group.remove_member(agroupid, amember);
 	}
 
-	const std::set<i64_actorid>* actor_base::get_group(int agroupid)
+	const std::set<i64_actorid>* actor_base::get_group(int32_t agroupid)
 	{
 		return m_group.get_group(agroupid);
 	}
