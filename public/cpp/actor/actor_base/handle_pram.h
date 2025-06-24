@@ -296,9 +296,9 @@ namespace ngl
 	bool handle_pram_send<T>::sendclient(handle_pram& adata)
 	{
 
-		nguid lactorid = adata.m_actor;
-		nguid lrequestactor = adata.m_requestactor;
-		auto ldata = (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)adata.m_data.get();
+		nguid lactorid			= adata.m_actor;
+		nguid lrequestactor		= adata.m_requestactor;
+		auto ldata				= (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)adata.m_data.get();
 		std::vector<i32_actordataid>& luid	= ldata->m_uid;
 		std::vector<i16_area>& larea		= ldata->m_area;
 		std::set<i32_serverid> lgateway;
