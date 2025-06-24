@@ -56,6 +56,8 @@ namespace ngl
 		bool					m_forwardtype	= false;			// 转发给所有类型
 		std::function<void()>	m_failfun		= nullptr;			// 如何actor_client都找不到目标actor则调用
 
+		bool					m_issend		= true;				// 是否会发送给其他进程
+
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
 
@@ -95,9 +97,9 @@ namespace ngl
 		template <typename T, bool IS_SEND = true>
 		static void	make_massfun(handle_pram& apram)
 		{
-			static auto lfun = [](
-				const std::map<i32_serverid, actor_node_session>&,
-				const std::map<nguid, i32_serverid>&, handle_pram& adata
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&
+				, const std::map<nguid, i32_serverid>&
+				, handle_pram& adata
 				)
 				{
 					if (IS_SEND)
@@ -108,15 +110,15 @@ namespace ngl
 			apram.m_forwardfun = lfun;
 		}
 
-		template <typename T, bool IS_SEND = true>
+		template <typename T>
 		static void	make_client(handle_pram& apram)
 		{
-			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&, const std::map<nguid, i32_serverid>&, handle_pram& adata)
+			static auto lfun = [](const std::map<i32_serverid, actor_node_session>&
+				, const std::map<nguid, i32_serverid>&
+				, handle_pram& adata
+				)
 			{
-				if (IS_SEND)
-				{
-					handle_pram_send<T>::sendclient(adata);
-				}
+				handle_pram_send<T>::sendclient(adata);
 			};
 			apram.m_forwardfun = lfun;				
 		}
@@ -135,6 +137,7 @@ namespace ngl
 			lpram.m_requestactor	= arid;
 			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
+			lpram.m_issend			= IS_SEND;
 			if (IS_FORWARDFUN)
 			{
 				make_forwardfun<T, IS_SEND>(lpram);
@@ -143,7 +146,7 @@ namespace ngl
 			return lpram;
 		}
 
-		template <typename T, bool IS_SEND = true>
+		template <typename T>
 		static handle_pram create(
 			const nguid& aid, const nguid& arid, 
 			const std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata, 
@@ -157,7 +160,8 @@ namespace ngl
 			lpram.m_requestactor	= arid;
 			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
-			make_client<T, IS_SEND>(lpram);
+			lpram.m_issend			= true;
+			make_client<T>(lpram);
 			lpram.m_failfun			= afailfun;
 			return lpram;
 		}
@@ -168,13 +172,14 @@ namespace ngl
 		)
 		{
 			handle_pram lpram;
-			lpram.m_enum = tprotocol::protocol<T>();
-			lpram.m_data = adata;
-			lpram.m_actor = nguid::make();
-			lpram.m_massactors = aids;
-			lpram.m_requestactor = arid;
-			lpram.m_protocoltype = (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
-			lpram.m_forwardfun = nullptr;
+			lpram.m_enum			= tprotocol::protocol<T>();
+			lpram.m_data			= adata;
+			lpram.m_actor			= nguid::make();
+			lpram.m_massactors		= aids;
+			lpram.m_requestactor	= arid;
+			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
+			lpram.m_forwardfun		= nullptr;
+			lpram.m_issend			= IS_SEND;
 			make_massfun<T, IS_SEND>(lpram);
 			return lpram;
 		}

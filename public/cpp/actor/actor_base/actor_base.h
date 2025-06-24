@@ -289,7 +289,7 @@ namespace ngl
 			}
 			auto pro = create_cpro(adata);
 			cpro_push_actorid(pro, aid);
-			handle_pram lpram = handle_pram::create<T, true>(nguid::make(), nguid::make(), pro);
+			handle_pram lpram = handle_pram::create<T>(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram);
 		}
 
@@ -301,7 +301,7 @@ namespace ngl
 			{
 				cpro_push_actorid(pro, aactorid);
 			}
-			handle_pram lpram = handle_pram::create<T, true>(nguid::make(), nguid::make(), pro);
+			handle_pram lpram = handle_pram::create<T>(nguid::make(), nguid::make(), pro);
 			push_task_id(actorclient_guid(), lpram);
 		}
 
