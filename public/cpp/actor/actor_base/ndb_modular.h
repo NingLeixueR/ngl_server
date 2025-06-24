@@ -22,29 +22,13 @@ namespace ngl
 	protected:
 		explicit ndb_component(pbdb::ENUM_DB aenum);
 
-		inline void set_actorid(i64_actorid aid)
-		{
-			m_id = aid;
-		}
-		inline i64_actorid get_actorid()const
-		{
-			return m_id;
-		}
-
-		inline void set_actor(actor_base* aactor)
-		{
-			m_actor = aactor;
-		}
-		inline actor_base* get_actor()
-		{
-			return m_actor;
-		}
-
 		//# 设置ndbclient基类
 		inline void set_dbclient(ndbclient_base* andbclient)
 		{
 			m_dbclient = andbclient;
 		}
+
+		//# 获取ndbclient基类
 		inline ndbclient_base* get_dbclient()
 		{
 			return m_dbclient;
@@ -53,8 +37,11 @@ namespace ngl
 		//# 设置宿主actor
 		void				set(actor_base* aactor);
 
+		// # 获取actor
+		actor_base*			get_actor();
+
 		//# 获取宿主actor id
-		i64_actorid			id()const;
+		i64_actorid			get_actorid()const;
 
 		//# 获取数据类型
 		pbdb::ENUM_DB		type()const;
@@ -62,8 +49,11 @@ namespace ngl
 		//# 获取宿主actor
 		actor_base*			actorbase();
 
+		//# 服务于related_actorid,用于自定义actor id
+		void				set_actorid(i64_actorid aactorid);
+
 		//# 设置m_id关联m_actor
-		virtual void		set_id();
+		virtual void		related_actorid();
 
 		//# 设置m_actor关联m_dbclient
 		void				init();

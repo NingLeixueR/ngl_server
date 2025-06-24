@@ -86,12 +86,16 @@ namespace ngl
 				const std::map<nguid, i32_serverid>&, handle_pram& adata
 				)
 			{
-				if (IS_SEND)
-				{
-					handle_pram_send<T>::send(adata);
-				}
+				handle_pram_send<T>::send(adata);
 			};
-			apram.m_forwardfun = lfun;
+			if constexpr (IS_SEND)
+			{
+				apram.m_forwardfun = lfun;
+			}
+			else
+			{
+				apram.m_forwardfun = nullptr;
+			}
 		}
 
 		template <typename T, bool IS_SEND = true>
@@ -102,12 +106,16 @@ namespace ngl
 				, handle_pram& adata
 				)
 				{
-					if (IS_SEND)
-					{
-						handle_pram_send<T>::sendmass(adata);
-					}
+					handle_pram_send<T>::sendmass(adata);
 				};
-			apram.m_forwardfun = lfun;
+			if constexpr (IS_SEND)
+			{
+				apram.m_forwardfun = lfun;
+			}
+			else
+			{
+				apram.m_forwardfun = nullptr;
+			}
 		}
 
 		template <typename T>
@@ -120,7 +128,7 @@ namespace ngl
 			{
 				handle_pram_send<T>::sendclient(adata);
 			};
-			apram.m_forwardfun = lfun;				
+			apram.m_forwardfun = lfun;
 		}
 
 		template <typename T, bool IS_SEND = true, bool IS_FORWARDFUN = true>
@@ -138,10 +146,7 @@ namespace ngl
 			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
 			lpram.m_issend			= IS_SEND;
-			if (IS_FORWARDFUN)
-			{
-				make_forwardfun<T, IS_SEND>(lpram);
-			}
+			make_forwardfun<T, IS_FORWARDFUN&& IS_SEND>(lpram);
 			lpram.m_failfun			= afailfun;
 			return lpram;
 		}

@@ -16,7 +16,12 @@ namespace ngl
 		set_logactor(aactor);
 	}
 
-	i64_actorid ndb_component::id()const
+	actor_base* ndb_component::get_actor()
+	{
+		return m_actor;
+	}
+
+	i64_actorid ndb_component::get_actorid()const
 	{
 		return m_id;
 	}
@@ -31,14 +36,19 @@ namespace ngl
 		return m_actor;
 	}
 
-	void ndb_component::set_id()
+	void ndb_component::set_actorid(i64_actorid aactorid)
+	{
+		m_id = aactorid;
+	}
+
+	void ndb_component::related_actorid()
 	{
 		m_id = m_actor->id_guid();
 	}
 
 	void ndb_component::init()
 	{
-		set_id();
+		related_actorid();
 		m_actor->add_dbclient(m_dbclient, m_id);
 	}
 
