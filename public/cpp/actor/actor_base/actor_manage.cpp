@@ -308,6 +308,10 @@ namespace ngl
 			ptractor* lpactorptr = tools::findmap(m_actorbyid, aguid); 
 			if (lpactorptr == nullptr)
 			{
+				if (!apram.m_issend)
+				{
+					return lnull;
+				}
 				// 发给actor_client/actor_server
 				// 如果是actor_server结点需要发送给actor_server
 				nguid lguid = nodetypebyguid();
