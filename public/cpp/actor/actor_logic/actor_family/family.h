@@ -19,7 +19,7 @@ namespace ngl
 	public:
 		familyer() = default;
 
-		void set_id()final
+		void related_actorid()final
 		{
 			set_actorid(nguid::make());
 		}
@@ -58,7 +58,7 @@ namespace ngl
 		{
 		}
 
-		void set_id()final
+		void related_actorid()final
 		{
 			set_actorid(nguid::make());
 		}
