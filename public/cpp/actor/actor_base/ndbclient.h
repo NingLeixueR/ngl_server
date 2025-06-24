@@ -175,7 +175,7 @@ namespace ngl
 		bool										m_load = false;
 		actor_manage_dbclient*						m_manage_dbclient = nullptr;
 		actor_base*									m_actor = nullptr;
-		std::vector<int64_t>						m_dellist;
+		std::vector<int64_t>						m_dellist;									// 删除列表
 		std::string									m_name = tools::type_name<type_ndbclient>();// 主要调试需要知道TACTOR的名字
 	public:
 		ndbclient():
@@ -413,7 +413,7 @@ namespace ngl
 	class actor_manage_dbclient
 	{
 		using tmap_dbclient = std::map<pbdb::ENUM_DB, ndbclient_base*>;
-		actor_base*						m_actor;
+		actor_base*						m_actor = nullptr;
 		tmap_dbclient					m_typedbclientmap;
 		tmap_dbclient					m_dbclientmap;			//已经加载完的
 		std::function<void(bool)>		m_fun;					//bool db数据库是否有该数据
@@ -450,7 +450,7 @@ namespace ngl
 				log_error()->print("on_load_finish m_typedbclientmap.empty()");
 				return false;
 			}
-				
+			
 			for (auto itor = m_typedbclientmap.begin(); itor != m_typedbclientmap.end();)
 			{
 				if (!itor->second->isload())
@@ -495,33 +495,37 @@ namespace ngl
 				aloadfinish? m_dbclientmap : m_typedbclientmap, ENUM
 			);
 			if (lp == nullptr)
+			{
 				return nullptr;
+			}
 			return (ndbclient<ENUM, TDATA, TACTOR>*)(*lp);
 		}
 
 	private:
 		void foreach_function(const std::function<void(ndbclient_base*)>& afun)
 		{
-			for (auto itor = m_dbclientmap.begin();itor != m_dbclientmap.end(); ++itor)
+			for(std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair :m_dbclientmap)
 			{
-				afun(itor->second);
+				afun(lpair.second);
 			}
 		}
 	public:
 		void save()
 		{
-			foreach_function([](ndbclient_base* ap)
+			static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
 				{
 					ap->savedb();
-				});
+				};
+			foreach_function(lfun);
 		}
 
 		void del()
 		{
-			foreach_function([](ndbclient_base* ap)
+			static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
 				{
 					ap->deldb();
-				});
+				};
+			foreach_function(lfun);
 		}
 	};
 }
