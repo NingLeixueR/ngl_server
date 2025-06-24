@@ -20,7 +20,7 @@ namespace ngl
 	public:
 		account();
 
-		virtual void set_id();
+		void related_actorid() final;
 
 		virtual void initdata();
 

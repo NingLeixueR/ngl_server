@@ -25,7 +25,7 @@ namespace ngl
 	public:
 		ranklist();
 
-		virtual void set_id();
+		void related_actorid() final;
 
 		bool update_value(pbdb::eranklist atype, rank_item& litem, const pbdb::db_brief& abrief, bool afirstsynchronize);
 

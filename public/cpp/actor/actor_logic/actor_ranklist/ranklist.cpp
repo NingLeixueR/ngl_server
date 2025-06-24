@@ -8,7 +8,7 @@ namespace ngl
 		m_ranks[pbdb::eranklist::gold] = make_rank::make(pbdb::eranklist::gold);
 	}
 
-	void ranklist::set_id()
+	void ranklist::related_actorid()
 	{
 		set_actorid(nguid::make());
 	}

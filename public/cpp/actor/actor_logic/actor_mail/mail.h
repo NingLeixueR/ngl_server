@@ -19,7 +19,7 @@ namespace ngl
 	public:
 		mails() = default;
 
-		virtual void set_id()
+		void related_actorid() final
 		{
 			set_actorid(nguid::make());
 		}

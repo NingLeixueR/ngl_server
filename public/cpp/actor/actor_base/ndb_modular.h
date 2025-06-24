@@ -23,16 +23,10 @@ namespace ngl
 		explicit ndb_component(pbdb::ENUM_DB aenum);
 
 		//# 设置ndbclient基类
-		inline void set_dbclient(ndbclient_base* andbclient)
-		{
-			m_dbclient = andbclient;
-		}
+		void set_dbclient(ndbclient_base* andbclient);
 
 		//# 获取ndbclient基类
-		inline ndbclient_base* get_dbclient()
-		{
-			return m_dbclient;
-		}
+		inline ndbclient_base* get_dbclient();
 	public:
 		//# 设置宿主actor
 		void				set(actor_base* aactor);
@@ -94,19 +88,23 @@ namespace ngl
 		//# 遍历data
 		inline void foreach(const std::function<void(data_modified<TDATA>&)>& afun)
 		{
-			std::ranges::for_each(data(), [&afun](std::pair<const nguid, data_modified<TDATA>>& apair)
-				{
-					afun(apair.second);
-				});
+			for (std::pair<const nguid, data_modified<TDATA>>& apair : data())
+			{
+				afun(apair.second);
+			}
 		}
 
-		//# 遍历data(如果匿名函数返回true则退出遍历)
-		inline void foreach(const std::function<bool(data_modified<TDATA>&)>& afun)
+		//# 查找指定数据
+		inline data_modified<TDATA>* find(const std::function<bool(data_modified<TDATA>&)>& afun)
 		{
-			std::ranges::find_if(data(), [&afun](std::pair<const nguid, data_modified<TDATA>>& apair)
+			for (std::pair<const nguid, data_modified<TDATA>>& apair : data())
+			{
+				if (afun(apair.second))
 				{
-					return afun(apair.second);
-				});
+					return &apair.second;
+				}
+			}
+			return nullptr;
 		}
 
 		//# 获取所有数据
