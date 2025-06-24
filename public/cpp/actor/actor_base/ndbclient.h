@@ -117,6 +117,7 @@ namespace ngl
 		ndbclient& operator=(const ndbclient&) = delete;
 
 		using type_ndbclient = ndbclient<DBTYPE, TDBTAB, TACTOR>;
+		
 		tab_dbload* m_tab = nullptr;
 	public:
 		// # 向actor_client设置连接后事件
@@ -211,7 +212,7 @@ namespace ngl
 		// # 获取nguid数据
 		data_modified<TDBTAB>* get_data(const nguid& aid)
 		{
-			if (aid == m_id && m_id != -1)
+			if (aid == m_id && m_id != nguid::make())
 			{
 				return m_dbdata;
 			}
@@ -226,10 +227,10 @@ namespace ngl
 
 		void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) final
 		{
-			m_actor = aactor;
-			m_manage_dbclient = amdb;
-			m_id = aid;
-			m_load = false;
+			m_actor				= aactor;
+			m_manage_dbclient	= amdb;
+			m_id				= aid;
+			m_load				= false;
 
 			set_logactor(aactor);
 
@@ -255,7 +256,7 @@ namespace ngl
 
 		void savedb_all()		
 		{ 
-			savedb(-1); 
+			savedb(nguid::make()); 
 		}
 
 		void savedb()final
@@ -266,7 +267,6 @@ namespace ngl
 		void savedb(const nguid& aid)
 		{
 			np_actordb_save<DBTYPE, TDBTAB> pro;
-			std::list<data_modified<TDBTAB>*> lclearlist;
 			if (aid != nguid::make())
 			{
 				data_modified<TDBTAB>* lp = nullptr;
@@ -280,23 +280,25 @@ namespace ngl
 				}
 				if (lp != nullptr && lp->is_modified())
 				{
-					lclearlist.push_back(lp);
 					pro.add(lp->getconst().m_id(), lp->getconst());
+					// # 清空标志位 
+					lp->clear_modified();
 				}			
 			}
 			else
 			{
-				std::ranges::for_each(m_data, [&pro, &lclearlist](std::pair<const nguid, data_modified<TDBTAB>>& apair)
+				for (std::pair<const nguid, data_modified<TDBTAB>>& apair : m_data)
+				{
+					data_modified<TDBTAB>& ldata = apair.second;
+					if (ldata.is_modified())
 					{
-						data_modified<TDBTAB>& ldata = apair.second;
-						if (ldata.is_modified())
-						{
-							lclearlist.push_back(&ldata);
-							pro.add(ldata.getconst().m_id(), ldata.getconst());
-						}
-					});
+						pro.add(ldata.getconst().m_id(), ldata.getconst());
+						// # 清空标志位 
+						ldata.clear_modified();
+					}
+				}
 			}
-			if (pro.empty() == false)
+			if (!pro.empty())
 			{
 				log_error()->print("ndbclient<{}> save {}", m_name, aid);
 				// # 先序列化 再让actor_client确认位置
@@ -309,11 +311,6 @@ namespace ngl
 				}
 				// # 异步发送pack
 				m_actor->send_actor_pack(lactorid, lpack);
-				// # 执行清空[裁剪修改]标志位 
-				for (data_modified<TDBTAB>* dataptr : lclearlist)
-				{
-					dataptr->clear_modified();
-				}
 			}
 		}
 
@@ -355,23 +352,6 @@ namespace ngl
 			}
 			return &m_data[aid];
 		}
-
-		/*data_modified<TDBTAB>* add(const nguid& aid, const TDBTAB& adbtab)
-		{
-			if (m_data.contains(aid))
-			{
-				log_error()->print("dbclient add fail id=[{}]", aid);
-				return nullptr;
-			}
-			data_modified<TDBTAB>* lpdata = &m_data[aid];
-			lpdata->set(adbtab, true);
-			savedb(aid);
-			if (aid == m_id)
-			{
-				m_dbdata = lpdata;
-			}
-			return lpdata;
-		}*/
 
 		// # 加载完成
 		bool loadfinish()
