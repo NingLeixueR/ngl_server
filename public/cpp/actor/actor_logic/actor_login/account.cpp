@@ -8,7 +8,7 @@ namespace ngl
 	{
 	}
 
-	void account::set_id()
+	void account::related_actorid()
 	{
 		set_actorid(nguid::make());
 	}
