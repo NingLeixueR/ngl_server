@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-06-23 17:32:49】
+ // 创建时间【2025-06-24 19:17:04】
 #include "auto_actor_enum.h"
 #include "nprotocol_auto.h"
 #include "nactor_auto.h"

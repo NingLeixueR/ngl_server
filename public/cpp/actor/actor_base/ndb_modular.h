@@ -14,10 +14,10 @@ namespace ngl
 		ndb_component& operator=(const ndb_component&) = delete;
 
 	private:
-		actor_base*				m_actor;		// 宿主actor
-		i64_actorid				m_id;			// 宿主actor id
-		ndbclient_base*			m_dbclient;		// ndbclient基类
-		pbdb::ENUM_DB			m_type;			// 数据类型
+		actor_base*				m_actor = nullptr;								// 宿主actor
+		i64_actorid				m_id = 0;										// 宿主actor id
+		ndbclient_base*			m_dbclient = nullptr;							// ndbclient基类
+		pbdb::ENUM_DB			m_type = pbdb::ENUM_DB::ENUM_DB_FAIL;			// 数据类型
 
 	protected:
 		explicit ndb_component(pbdb::ENUM_DB aenum);

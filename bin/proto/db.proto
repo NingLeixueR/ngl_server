@@ -26,6 +26,9 @@ enum ENUM_DB
 
 	// # ©Г╥Ч
 	ENUM_DBCROSS_TEST		= 1001;		// ╡Бйт©Г╥Ч
+
+	
+	ENUM_DB_FAIL			= -1;		// нч
 };
 
 

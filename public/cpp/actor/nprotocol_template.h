@@ -61,7 +61,9 @@ namespace ngl
 		void add(const nguid& akey, const T& avalue)
 		{
 			if (m_data.m_data == nullptr)
+			{
 				m_data.make();
+			}
 			m_data.m_data->insert(std::make_pair(akey, avalue));
 		}
 

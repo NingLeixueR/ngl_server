@@ -369,7 +369,7 @@ namespace ngl
                         << enumValueDescriptor->number() << std::endl;
                     if (lmap.contains(enumValueDescriptor->name()) == false)
                     {
-                        if (enumValueDescriptor->name() == "ENUM_DB_COUNT")
+                        if (enumValueDescriptor->name() == "ENUM_DB_COUNT" || enumValueDescriptor->name() == "ENUM_DB_FAIL")
                         {
                             continue;
                         }
@@ -450,7 +450,7 @@ namespace ngl
         {
             for (const auto& item : lmap)
             {
-                if (item.second.enumname == "ENUM_DB_COUNT")
+                if (item.second.enumname == "ENUM_DB_COUNT" || item.second.enumname == "ENUM_DB_FAIL")
                 {
                     continue;
                 }
@@ -511,7 +511,7 @@ namespace ngl
 )";
         for (const auto& item : lmap)
         {
-            if (item.second.enumname == "ENUM_DB_COUNT")
+            if (item.second.enumname == "ENUM_DB_COUNT" || item.second.enumname == "ENUM_DB_FAIL")
             {
                 continue;
             }

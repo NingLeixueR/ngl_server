@@ -1418,7 +1418,7 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "(\003H\000\210\001\001\022\021\n\tm_friends\030\002 \003(\003\022\026\n\016m_applyfri"
   "ends\030\003 \003(\003B\007\n\005_m_id\"\?\n\014dbcross_test\022\023\n\006m"
   "_name\030\001 \001(\tH\000\210\001\001\022\017\n\007m_value\030\002 \003(\003B\t\n\007_m_"
-  "name*\355\002\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n"
+  "name*\210\003\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n"
   "\014ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013EN"
   "UM_DB_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENU"
   "M_DB_MAIL\020\005\022\022\n\016ENUM_DB_NOTICE\020\006\022\024\n\020ENUM_"
@@ -1427,9 +1427,10 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "\022\030\n\024ENUM_DB_ROLEKEYVALUE\020\013\022\022\n\016ENUM_DB_FA"
   "MILY\020\014\022\024\n\020ENUM_DB_FAMILYER\020\r\022\023\n\017ENUM_DB_"
   "FRIENDS\020\016\022\021\n\rENUM_DB_COUNT\020\017\022\026\n\021ENUM_DBC"
-  "ROSS_TEST\020\351\007*P\n\teranklist\022\006\n\002lv\020\000\022\010\n\004gol"
-  "d\020\001\022\t\n\005count\020\002\022\021\n\013activity_lv\020\300\204=\022\023\n\ract"
-  "ivity_gold\020\200\211zb\006proto3"
+  "ROSS_TEST\020\351\007\022\031\n\014ENUM_DB_FAIL\020\377\377\377\377\377\377\377\377\377\001*"
+  "P\n\teranklist\022\006\n\002lv\020\000\022\010\n\004gold\020\001\022\t\n\005count\020"
+  "\002\022\021\n\013activity_lv\020\300\204=\022\023\n\ractivity_gold\020\200\211"
+  "zb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
@@ -1477,7 +1478,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 5262,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 5289,
   &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 40, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
   file_level_metadata_db_2eproto, 40, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
@@ -1540,6 +1541,7 @@ const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ENUM_DB_descriptor() {
 }
 bool ENUM_DB_IsValid(int value) {
   switch (value) {
+    case -1:
     case 0:
     case 1:
     case 2:
