@@ -34,14 +34,13 @@ namespace ngl
 		actor_example_guess_number(const actor_example_guess_number&) = delete;
 		actor_example_guess_number& operator=(const actor_example_guess_number&) = delete;
 
-		int32_t m_maxnumber;	// 范围最大值
-		int32_t m_minnumber;	// 范围最小值
-		int32_t m_index;		// 猜测的玩家(索引)
-		int32_t m_setputc;		// 步骤时间
-		int32_t m_bombvalues;	// 炸弹值
-		int32_t m_bombutc;		// 触发炸弹值的时间
-		i64_actorid m_bombrole; // 触发炸弹值的玩家
-
+		int32_t m_maxnumber		= 1000;	// 范围最大值
+		int32_t m_minnumber		= 0;	// 范围最小值
+		int32_t m_index			= 0;	// 猜测的玩家(索引)
+		int32_t m_setputc		= 0;	// 步骤时间
+		int32_t m_bombvalues	= 0;	// 炸弹值
+		int32_t m_bombutc		= 0;	// 触发炸弹值的时间
+		i64_actorid m_bombrole	= 0;	// 触发炸弹值的玩家
 	public:
 		actor_example_guess_number(const std::map<int32_t, i64_actorid>& aroleids, int32_t aindex);
 
