@@ -16,7 +16,7 @@ namespace ngl
 
 		actor*															m_actor = nullptr;
 		std::map<i16_area, i64_actorid>									m_nspserver;
-		std::map<i16_area, bool>										m_register;
+		std::map<i16_area, bool>										m_register; // std::tuple<bool,int32_t> 1:注册是否成功 2:定时器
 		std::function<void(int64_t, const T&, bool)>					m_changedatafun;
 		std::map<i64_actorid, T>										m_data;
 
@@ -162,6 +162,7 @@ namespace ngl
 			auto lprecv = adata.get_data();
 			if (m_register[lprecv->m_area])
 			{
+				std::cout << std::format("type.{}:area.{}:timerid.{}", typeid(TDerived).name(), lprecv->m_area, lprecv->m_timer) << std::endl;
 				twheel::wheel().removetimer(lprecv->m_timer);
 				return;
 			}
@@ -345,7 +346,8 @@ namespace ngl
 				// 同步channel_dataid
 				if (!aonlyread)
 				{//只读结点不需要知道数据被哪些结点订阅，因为他不能修改数据
-					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>([](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
+					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>(
+						[](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
 						{
 							if (aacotor == nullptr)
 							{
@@ -357,26 +359,25 @@ namespace ngl
 			}
 
 			i64_actorid lactorid = m_actor->id_guid();
-			std::ranges::for_each(m_register, [lactorid](const auto& apair)
+			for (std::pair<const i16_area, bool>& item : m_register)
+			{
+				i16_area larea = item.first;
+				wheel_parm lparm
 				{
-					i16_area larea = apair.first;
-					wheel_parm lparm
+					.m_ms = 1000,
+					.m_intervalms = [](int64_t) {return 10000; } ,
+					.m_count = 0x7fffffff,
+					.m_fun = [larea, lactorid](const wheel_node* anode)
 					{
-						.m_ms = 1000,
-						.m_intervalms = [](int64_t) {return 10000; } ,
-						.m_count = 0x7fffffff,
-						.m_fun = [larea,lactorid](const wheel_node* anode)
-						{
-							auto pro = std::make_shared<np_channel_check<T>>(
-								np_channel_check<T>{
-									.m_timer = anode->m_timerid,
-									.m_area = larea,
-								});
-							actor::send_actor(lactorid, nguid::make(), pro);
-						}
-					};
-					twheel::wheel().addtimer(lparm);
-				});			
+						auto pro = std::make_shared<np_channel_check<T>>(
+							np_channel_check<T>{
+								.m_timer = anode->m_timerid,
+								.m_area = larea,
+							});
+						actor::send_actor(lactorid, nguid::make(), pro);
+					}
+				};twheel::wheel().addtimer(lparm);
+			}		
 		}
 
 	public:

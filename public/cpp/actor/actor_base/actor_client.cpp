@@ -80,9 +80,9 @@ namespace ngl
 			return;
 		}
 		nactornode lnode;
-		lnode.m_name = tab->m_name;
-		lnode.m_serverid = aserverid;
-		lnode.m_nodetype = tab->m_type;
+		lnode.m_name		= tab->m_name;
+		lnode.m_serverid	= aserverid;
+		lnode.m_nodetype	= tab->m_type;
 		naddress::set_node(lnode);
 		naddress::set_session(aserverid, asession);
 	}
@@ -140,7 +140,9 @@ namespace ngl
 	void actor_client::actor_server_register(i32_serverid aactorserver)
 	{
 		if (nconfig::m_nodetype == NODE_TYPE::ROBOT)
+		{
 			return;
+		}
 		nets::connect(aactorserver, [this, aactorserver](int asession)
 			{
 				auto pro = std::make_shared<np_connect_actor_server>();
@@ -186,8 +188,6 @@ namespace ngl
 		{
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
-					log_error()->print("actor_client::activ_connect connect node:{} success", aserverid);
-
 					set_node(aserverid, asession);
 
 					np_actorclient_node_connect pro;
@@ -342,10 +342,6 @@ namespace ngl
 				fun();
 			}
 			itor = lconnectfun.erase(itor);
-			if (itor == lconnectfun.end())
-			{
-				return;
-			}
 		}
 	}
 	
