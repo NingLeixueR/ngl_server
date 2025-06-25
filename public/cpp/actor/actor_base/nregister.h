@@ -15,9 +15,6 @@ namespace ngl
 	{	
 		if constexpr(MASS)
 		{
-			std::cout <<
-				std::format("Register Anonymity: {} # {}", typeid(np_mass_actor<T>).name(), tprotocol::protocol<np_mass_actor<T>>())
-				<< std::endl;
 			m_fun[tprotocol::protocol<np_mass_actor<T>>()] = nlogicfun
 			{
 				.m_isdbload = aisload,
@@ -37,9 +34,6 @@ namespace ngl
 		}
 		else
 		{
-			std::cout <<
-				std::format("Register Anonymity: {} # {}", typeid(T).name(), tprotocol::protocol<T>())
-				<< std::endl;
 			m_fun[tprotocol::protocol<T>()] = nlogicfun
 			{
 				.m_isdbload = aisload,

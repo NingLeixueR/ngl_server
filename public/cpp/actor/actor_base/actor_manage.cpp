@@ -117,7 +117,6 @@ namespace ngl
 					m_actorbroadcast[guid] = apactor;
 				}
 			}
-
 			if (apactor->type() != ACTOR_CLIENT && apactor->type() != ACTOR_SERVER)
 			{
 				// 新增的actor 
@@ -134,7 +133,10 @@ namespace ngl
 				);
 				push_task_id<np_actornode_update_mass, false>(nodetypebyguid(), pro);
 			}
-			apactor->set_activity_stat(actor_stat_free);
+			else
+			{
+				apactor->set_activity_stat(actor_stat_free);
+			}
 			return true;
 		}
 
@@ -254,13 +256,13 @@ namespace ngl
 						lfun.swap(*lpfun);
 						m_delactorfun.erase(leraseguid);
 						apactor->set_activity_stat(actor_stat_close);
+						lrelease = true;
 						ngl_post;
 					}
-					lrelease = true;
 				}
 				else
 				{
-					if (apactor->list_empty() == false)
+					if (!apactor->list_empty())
 					{
 						m_actorlist.push_back(apactor);
 						apactor->set_activity_stat(actor_stat_list);
@@ -276,12 +278,8 @@ namespace ngl
 			if (lrelease)
 			{
 				apactor->release();
-				if (lfun != nullptr)
-				{
-					lfun();
-				}
+				lfun();
 			}
-
 		}
 
 		// # nosafe_开头的函数代表"内部操作未加锁"，不允许类外调用
