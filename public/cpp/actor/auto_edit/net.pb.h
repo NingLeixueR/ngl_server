@@ -704,7 +704,7 @@ class PROBUFF_NET_MSG_RESPONSE PROTOBUF_FINAL :
   enum : int {
     kMMsgFieldNumber = 1,
   };
-  // string m_msg = 1;
+  // bytes m_msg = 1;
   bool has_m_msg() const;
   private:
   bool _internal_has_m_msg() const;
@@ -714,7 +714,7 @@ class PROBUFF_NET_MSG_RESPONSE PROTOBUF_FINAL :
   void set_m_msg(const std::string& value);
   void set_m_msg(std::string&& value);
   void set_m_msg(const char* value);
-  void set_m_msg(const char* value, size_t size);
+  void set_m_msg(const void* value, size_t size);
   std::string* mutable_m_msg();
   std::string* release_m_msg();
   void set_allocated_m_msg(std::string* m_msg);
@@ -1162,7 +1162,7 @@ class PROBUFF_NET_RECHARGE_RESPONSE PROTOBUF_FINAL :
     kMRechargeidFieldNumber = 1,
     kMStatFieldNumber = 2,
   };
-  // string m_orderid = 3;
+  // bytes m_orderid = 3;
   bool has_m_orderid() const;
   private:
   bool _internal_has_m_orderid() const;
@@ -1172,7 +1172,7 @@ class PROBUFF_NET_RECHARGE_RESPONSE PROTOBUF_FINAL :
   void set_m_orderid(const std::string& value);
   void set_m_orderid(std::string&& value);
   void set_m_orderid(const char* value);
-  void set_m_orderid(const char* value, size_t size);
+  void set_m_orderid(const void* value, size_t size);
   std::string* mutable_m_orderid();
   std::string* release_m_orderid();
   void set_allocated_m_orderid(std::string* m_orderid);
@@ -1399,7 +1399,7 @@ class PROBUFF_NET_DELIVER_GOODS_RECHARGE PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::int32 >*
       mutable_m_items();
 
-  // string m_orderid = 2;
+  // bytes m_orderid = 2;
   bool has_m_orderid() const;
   private:
   bool _internal_has_m_orderid() const;
@@ -1409,7 +1409,7 @@ class PROBUFF_NET_DELIVER_GOODS_RECHARGE PROTOBUF_FINAL :
   void set_m_orderid(const std::string& value);
   void set_m_orderid(std::string&& value);
   void set_m_orderid(const char* value);
-  void set_m_orderid(const char* value, size_t size);
+  void set_m_orderid(const void* value, size_t size);
   std::string* mutable_m_orderid();
   std::string* release_m_orderid();
   void set_allocated_m_orderid(std::string* m_orderid);
@@ -1591,7 +1591,7 @@ class PROBUFF_NET_ERROR PROTOBUF_FINAL :
   enum : int {
     kMErrmessageFieldNumber = 2,
   };
-  // string m_errmessage = 2;
+  // bytes m_errmessage = 2;
   bool has_m_errmessage() const;
   private:
   bool _internal_has_m_errmessage() const;
@@ -1601,7 +1601,7 @@ class PROBUFF_NET_ERROR PROTOBUF_FINAL :
   void set_m_errmessage(const std::string& value);
   void set_m_errmessage(std::string&& value);
   void set_m_errmessage(const char* value);
-  void set_m_errmessage(const char* value, size_t size);
+  void set_m_errmessage(const void* value, size_t size);
   std::string* mutable_m_errmessage();
   std::string* release_m_errmessage();
   void set_allocated_m_errmessage(std::string* m_errmessage);
@@ -2287,7 +2287,7 @@ class PROBUFF_NET_ACOUNT_LOGIN PROTOBUF_FINAL :
     kMPasswordFieldNumber = 3,
     kMAreaFieldNumber = 1,
   };
-  // string m_account = 2;
+  // bytes m_account = 2;
   bool has_m_account() const;
   private:
   bool _internal_has_m_account() const;
@@ -2297,7 +2297,7 @@ class PROBUFF_NET_ACOUNT_LOGIN PROTOBUF_FINAL :
   void set_m_account(const std::string& value);
   void set_m_account(std::string&& value);
   void set_m_account(const char* value);
-  void set_m_account(const char* value, size_t size);
+  void set_m_account(const void* value, size_t size);
   std::string* mutable_m_account();
   std::string* release_m_account();
   void set_allocated_m_account(std::string* m_account);
@@ -2316,7 +2316,7 @@ class PROBUFF_NET_ACOUNT_LOGIN PROTOBUF_FINAL :
   std::string* _internal_mutable_m_account();
   public:
 
-  // string m_password = 3;
+  // bytes m_password = 3;
   bool has_m_password() const;
   private:
   bool _internal_has_m_password() const;
@@ -2326,7 +2326,7 @@ class PROBUFF_NET_ACOUNT_LOGIN PROTOBUF_FINAL :
   void set_m_password(const std::string& value);
   void set_m_password(std::string&& value);
   void set_m_password(const char* value);
-  void set_m_password(const char* value, size_t size);
+  void set_m_password(const void* value, size_t size);
   std::string* mutable_m_password();
   std::string* release_m_password();
   void set_allocated_m_password(std::string* m_password);
@@ -2493,7 +2493,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
     kMAreaFieldNumber = 1,
     kMGatewayidFieldNumber = 5,
   };
-  // string m_session = 3;
+  // bytes m_session = 3;
   bool has_m_session() const;
   private:
   bool _internal_has_m_session() const;
@@ -2503,7 +2503,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
   void set_m_session(const std::string& value);
   void set_m_session(std::string&& value);
   void set_m_session(const char* value);
-  void set_m_session(const char* value, size_t size);
+  void set_m_session(const void* value, size_t size);
   std::string* mutable_m_session();
   std::string* release_m_session();
   void set_allocated_m_session(std::string* m_session);
@@ -2522,7 +2522,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
   std::string* _internal_mutable_m_session();
   public:
 
-  // string m_account = 4;
+  // bytes m_account = 4;
   bool has_m_account() const;
   private:
   bool _internal_has_m_account() const;
@@ -2532,7 +2532,7 @@ class PROBUFF_NET_ACOUNT_LOGIN_RESPONSE PROTOBUF_FINAL :
   void set_m_account(const std::string& value);
   void set_m_account(std::string&& value);
   void set_m_account(const char* value);
-  void set_m_account(const char* value, size_t size);
+  void set_m_account(const void* value, size_t size);
   std::string* mutable_m_account();
   std::string* release_m_account();
   void set_allocated_m_account(std::string* m_account);
@@ -2727,7 +2727,7 @@ class PROBUFF_NET_ROLE_LOGIN PROTOBUF_FINAL :
     kMAreaFieldNumber = 4,
     kMGatewayidFieldNumber = 5,
   };
-  // string m_session = 2;
+  // bytes m_session = 2;
   bool has_m_session() const;
   private:
   bool _internal_has_m_session() const;
@@ -2737,7 +2737,7 @@ class PROBUFF_NET_ROLE_LOGIN PROTOBUF_FINAL :
   void set_m_session(const std::string& value);
   void set_m_session(std::string&& value);
   void set_m_session(const char* value);
-  void set_m_session(const char* value, size_t size);
+  void set_m_session(const void* value, size_t size);
   std::string* mutable_m_session();
   std::string* release_m_session();
   void set_allocated_m_session(std::string* m_session);
@@ -4076,7 +4076,7 @@ class PROBUFF_NET_CMD PROTOBUF_FINAL :
   enum : int {
     kMCmdFieldNumber = 1,
   };
-  // string m_cmd = 1;
+  // bytes m_cmd = 1;
   bool has_m_cmd() const;
   private:
   bool _internal_has_m_cmd() const;
@@ -4086,7 +4086,7 @@ class PROBUFF_NET_CMD PROTOBUF_FINAL :
   void set_m_cmd(const std::string& value);
   void set_m_cmd(std::string&& value);
   void set_m_cmd(const char* value);
-  void set_m_cmd(const char* value, size_t size);
+  void set_m_cmd(const void* value, size_t size);
   std::string* mutable_m_cmd();
   std::string* release_m_cmd();
   void set_allocated_m_cmd(std::string* m_cmd);
@@ -4236,7 +4236,7 @@ class PROBUFF_NET_CHAT PROTOBUF_FINAL :
     kMTypeFieldNumber = 1,
     kMChannelidFieldNumber = 2,
   };
-  // string m_content = 3;
+  // bytes m_content = 3;
   bool has_m_content() const;
   private:
   bool _internal_has_m_content() const;
@@ -4246,7 +4246,7 @@ class PROBUFF_NET_CHAT PROTOBUF_FINAL :
   void set_m_content(const std::string& value);
   void set_m_content(std::string&& value);
   void set_m_content(const char* value);
-  void set_m_content(const char* value, size_t size);
+  void set_m_content(const void* value, size_t size);
   std::string* mutable_m_content();
   std::string* release_m_content();
   void set_allocated_m_content(std::string* m_content);
@@ -4425,7 +4425,7 @@ class chatitem PROTOBUF_FINAL :
     kMRoleidFieldNumber = 1,
     kMUtcFieldNumber = 4,
   };
-  // string m_rolename = 2;
+  // bytes m_rolename = 2;
   bool has_m_rolename() const;
   private:
   bool _internal_has_m_rolename() const;
@@ -4435,7 +4435,7 @@ class chatitem PROTOBUF_FINAL :
   void set_m_rolename(const std::string& value);
   void set_m_rolename(std::string&& value);
   void set_m_rolename(const char* value);
-  void set_m_rolename(const char* value, size_t size);
+  void set_m_rolename(const void* value, size_t size);
   std::string* mutable_m_rolename();
   std::string* release_m_rolename();
   void set_allocated_m_rolename(std::string* m_rolename);
@@ -4454,7 +4454,7 @@ class chatitem PROTOBUF_FINAL :
   std::string* _internal_mutable_m_rolename();
   public:
 
-  // string m_content = 3;
+  // bytes m_content = 3;
   bool has_m_content() const;
   private:
   bool _internal_has_m_content() const;
@@ -4464,7 +4464,7 @@ class chatitem PROTOBUF_FINAL :
   void set_m_content(const std::string& value);
   void set_m_content(std::string&& value);
   void set_m_content(const char* value);
-  void set_m_content(const char* value, size_t size);
+  void set_m_content(const void* value, size_t size);
   std::string* mutable_m_content();
   std::string* release_m_content();
   void set_allocated_m_content(std::string* m_content);
@@ -6337,7 +6337,7 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
     kMUportFieldNumber = 3,
     kMConvFieldNumber = 4,
   };
-  // string m_uip = 2;
+  // bytes m_uip = 2;
   bool has_m_uip() const;
   private:
   bool _internal_has_m_uip() const;
@@ -6347,7 +6347,7 @@ class PROBUFF_NET_KCPSESSION PROTOBUF_FINAL :
   void set_m_uip(const std::string& value);
   void set_m_uip(std::string&& value);
   void set_m_uip(const char* value);
-  void set_m_uip(const char* value, size_t size);
+  void set_m_uip(const void* value, size_t size);
   std::string* mutable_m_uip();
   std::string* release_m_uip();
   void set_allocated_m_uip(std::string* m_uip);
@@ -6537,7 +6537,7 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   enum : int {
     kMKcpsessionFieldNumber = 1,
   };
-  // string m_kcpsession = 1;
+  // bytes m_kcpsession = 1;
   bool has_m_kcpsession() const;
   private:
   bool _internal_has_m_kcpsession() const;
@@ -6547,7 +6547,7 @@ class PROBUFF_NET_KCPSESSION_RESPONSE PROTOBUF_FINAL :
   void set_m_kcpsession(const std::string& value);
   void set_m_kcpsession(std::string&& value);
   void set_m_kcpsession(const char* value);
-  void set_m_kcpsession(const char* value, size_t size);
+  void set_m_kcpsession(const void* value, size_t size);
   std::string* mutable_m_kcpsession();
   std::string* release_m_kcpsession();
   void set_allocated_m_kcpsession(std::string* m_kcpsession);
@@ -7206,7 +7206,7 @@ class PROBUFF_NET_FAMIL_CREATE PROTOBUF_FINAL :
   enum : int {
     kMNameFieldNumber = 1,
   };
-  // string m_name = 1;
+  // bytes m_name = 1;
   bool has_m_name() const;
   private:
   bool _internal_has_m_name() const;
@@ -7216,7 +7216,7 @@ class PROBUFF_NET_FAMIL_CREATE PROTOBUF_FINAL :
   void set_m_name(const std::string& value);
   void set_m_name(std::string&& value);
   void set_m_name(const char* value);
-  void set_m_name(const char* value, size_t size);
+  void set_m_name(const void* value, size_t size);
   std::string* mutable_m_name();
   std::string* release_m_name();
   void set_allocated_m_name(std::string* m_name);
@@ -9283,7 +9283,7 @@ class PROBUFF_NET_FAMIL_CHANGENAME PROTOBUF_FINAL :
     kMNameFieldNumber = 2,
     kMFamilidFieldNumber = 1,
   };
-  // string m_name = 2;
+  // bytes m_name = 2;
   bool has_m_name() const;
   private:
   bool _internal_has_m_name() const;
@@ -9293,7 +9293,7 @@ class PROBUFF_NET_FAMIL_CHANGENAME PROTOBUF_FINAL :
   void set_m_name(const std::string& value);
   void set_m_name(std::string&& value);
   void set_m_name(const char* value);
-  void set_m_name(const char* value, size_t size);
+  void set_m_name(const void* value, size_t size);
   std::string* mutable_m_name();
   std::string* release_m_name();
   void set_allocated_m_name(std::string* m_name);
@@ -13638,7 +13638,7 @@ class PROBUFF_NET_CHANGE_ANGLE PROTOBUF_FINAL :
 #endif  // __GNUC__
 // PROBUFF_NET_MSG_RESPONSE
 
-// string m_msg = 1;
+// bytes m_msg = 1;
 inline bool PROBUFF_NET_MSG_RESPONSE::_internal_has_m_msg() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -13682,7 +13682,7 @@ inline void PROBUFF_NET_MSG_RESPONSE::set_m_msg(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg)
 }
-inline void PROBUFF_NET_MSG_RESPONSE::set_m_msg(const char* value,
+inline void PROBUFF_NET_MSG_RESPONSE::set_m_msg(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_msg_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -13827,7 +13827,7 @@ inline void PROBUFF_NET_RECHARGE_RESPONSE::set_m_stat(::pbnet::PROBUFF_NET_RECHA
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_RECHARGE_RESPONSE.m_stat)
 }
 
-// string m_orderid = 3;
+// bytes m_orderid = 3;
 inline bool PROBUFF_NET_RECHARGE_RESPONSE::_internal_has_m_orderid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -13871,7 +13871,7 @@ inline void PROBUFF_NET_RECHARGE_RESPONSE::set_m_orderid(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_RECHARGE_RESPONSE.m_orderid)
 }
-inline void PROBUFF_NET_RECHARGE_RESPONSE::set_m_orderid(const char* value,
+inline void PROBUFF_NET_RECHARGE_RESPONSE::set_m_orderid(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_orderid_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -13954,7 +13954,7 @@ inline void PROBUFF_NET_DELIVER_GOODS_RECHARGE::set_m_rechargeid(::PROTOBUF_NAME
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_DELIVER_GOODS_RECHARGE.m_rechargeid)
 }
 
-// string m_orderid = 2;
+// bytes m_orderid = 2;
 inline bool PROBUFF_NET_DELIVER_GOODS_RECHARGE::_internal_has_m_orderid() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -13998,7 +13998,7 @@ inline void PROBUFF_NET_DELIVER_GOODS_RECHARGE::set_m_orderid(const char* value)
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_DELIVER_GOODS_RECHARGE.m_orderid)
 }
-inline void PROBUFF_NET_DELIVER_GOODS_RECHARGE::set_m_orderid(const char* value,
+inline void PROBUFF_NET_DELIVER_GOODS_RECHARGE::set_m_orderid(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_orderid_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -14108,7 +14108,7 @@ PROBUFF_NET_DELIVER_GOODS_RECHARGE::mutable_m_items() {
 
 // PROBUFF_NET_ERROR
 
-// string m_errmessage = 2;
+// bytes m_errmessage = 2;
 inline bool PROBUFF_NET_ERROR::_internal_has_m_errmessage() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -14152,7 +14152,7 @@ inline void PROBUFF_NET_ERROR::set_m_errmessage(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_ERROR.m_errmessage)
 }
-inline void PROBUFF_NET_ERROR::set_m_errmessage(const char* value,
+inline void PROBUFF_NET_ERROR::set_m_errmessage(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_errmessage_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -14313,7 +14313,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_area(::PROTOBUF_NAMESPACE_ID::int32 
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_area)
 }
 
-// string m_account = 2;
+// bytes m_account = 2;
 inline bool PROBUFF_NET_ACOUNT_LOGIN::_internal_has_m_account() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -14357,7 +14357,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_account(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_account)
 }
-inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_account(const char* value,
+inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_account(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_account_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -14406,7 +14406,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN::unsafe_arena_set_allocated_m_account(
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_account)
 }
 
-// string m_password = 3;
+// bytes m_password = 3;
 inline bool PROBUFF_NET_ACOUNT_LOGIN::_internal_has_m_password() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -14450,7 +14450,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_password(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_password)
 }
-inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_password(const char* value,
+inline void PROBUFF_NET_ACOUNT_LOGIN::set_m_password(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000002u;
   m_password_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -14559,7 +14559,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_roleid(::PROTOBUF_NAMESPACE
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_roleid)
 }
 
-// string m_session = 3;
+// bytes m_session = 3;
 inline bool PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::_internal_has_m_session() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -14603,7 +14603,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_session(const char* value) 
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_session)
 }
-inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_session(const char* value,
+inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_session(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_session_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -14652,7 +14652,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::unsafe_arena_set_allocated_m_sess
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_session)
 }
 
-// string m_account = 4;
+// bytes m_account = 4;
 inline bool PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::_internal_has_m_account() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -14696,7 +14696,7 @@ inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_account(const char* value) 
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_account)
 }
-inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_account(const char* value,
+inline void PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::set_m_account(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000002u;
   m_account_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -14805,7 +14805,7 @@ inline void PROBUFF_NET_ROLE_LOGIN::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_ROLE_LOGIN.m_roleid)
 }
 
-// string m_session = 2;
+// bytes m_session = 2;
 inline bool PROBUFF_NET_ROLE_LOGIN::_internal_has_m_session() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -14849,7 +14849,7 @@ inline void PROBUFF_NET_ROLE_LOGIN::set_m_session(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_ROLE_LOGIN.m_session)
 }
-inline void PROBUFF_NET_ROLE_LOGIN::set_m_session(const char* value,
+inline void PROBUFF_NET_ROLE_LOGIN::set_m_session(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_session_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -15683,7 +15683,7 @@ PROBUFF_NET_BAG_UPDATE::mutable_m_addnostackitems() {
 
 // PROBUFF_NET_CMD
 
-// string m_cmd = 1;
+// bytes m_cmd = 1;
 inline bool PROBUFF_NET_CMD::_internal_has_m_cmd() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -15727,7 +15727,7 @@ inline void PROBUFF_NET_CMD::set_m_cmd(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_CMD.m_cmd)
 }
-inline void PROBUFF_NET_CMD::set_m_cmd(const char* value,
+inline void PROBUFF_NET_CMD::set_m_cmd(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_cmd_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -15836,7 +15836,7 @@ inline void PROBUFF_NET_CHAT::set_m_channelid(::PROTOBUF_NAMESPACE_ID::int32 val
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_CHAT.m_channelid)
 }
 
-// string m_content = 3;
+// bytes m_content = 3;
 inline bool PROBUFF_NET_CHAT::_internal_has_m_content() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -15880,7 +15880,7 @@ inline void PROBUFF_NET_CHAT::set_m_content(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_CHAT.m_content)
 }
-inline void PROBUFF_NET_CHAT::set_m_content(const char* value,
+inline void PROBUFF_NET_CHAT::set_m_content(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_content_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -15961,7 +15961,7 @@ inline void chatitem::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbnet.chatitem.m_roleid)
 }
 
-// string m_rolename = 2;
+// bytes m_rolename = 2;
 inline bool chatitem::_internal_has_m_rolename() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -16005,7 +16005,7 @@ inline void chatitem::set_m_rolename(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.chatitem.m_rolename)
 }
-inline void chatitem::set_m_rolename(const char* value,
+inline void chatitem::set_m_rolename(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_rolename_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -16054,7 +16054,7 @@ inline void chatitem::unsafe_arena_set_allocated_m_rolename(
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.chatitem.m_rolename)
 }
 
-// string m_content = 3;
+// bytes m_content = 3;
 inline bool chatitem::_internal_has_m_content() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -16098,7 +16098,7 @@ inline void chatitem::set_m_content(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.chatitem.m_content)
 }
-inline void chatitem::set_m_content(const char* value,
+inline void chatitem::set_m_content(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000002u;
   m_content_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -16738,7 +16738,7 @@ inline void PROBUFF_NET_KCPSESSION::set_m_serverid(::PROTOBUF_NAMESPACE_ID::int6
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_KCPSESSION.m_serverid)
 }
 
-// string m_uip = 2;
+// bytes m_uip = 2;
 inline bool PROBUFF_NET_KCPSESSION::_internal_has_m_uip() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -16782,7 +16782,7 @@ inline void PROBUFF_NET_KCPSESSION::set_m_uip(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_KCPSESSION.m_uip)
 }
-inline void PROBUFF_NET_KCPSESSION::set_m_uip(const char* value,
+inline void PROBUFF_NET_KCPSESSION::set_m_uip(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_uip_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -16891,7 +16891,7 @@ inline void PROBUFF_NET_KCPSESSION::set_m_conv(::PROTOBUF_NAMESPACE_ID::int32 va
 
 // PROBUFF_NET_KCPSESSION_RESPONSE
 
-// string m_kcpsession = 1;
+// bytes m_kcpsession = 1;
 inline bool PROBUFF_NET_KCPSESSION_RESPONSE::_internal_has_m_kcpsession() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -16935,7 +16935,7 @@ inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(const char* value)
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession)
 }
-inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(const char* value,
+inline void PROBUFF_NET_KCPSESSION_RESPONSE::set_m_kcpsession(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_kcpsession_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -17171,7 +17171,7 @@ PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE::mutable_m_drop() {
 
 // PROBUFF_NET_FAMIL_CREATE
 
-// string m_name = 1;
+// bytes m_name = 1;
 inline bool PROBUFF_NET_FAMIL_CREATE::_internal_has_m_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -17215,7 +17215,7 @@ inline void PROBUFF_NET_FAMIL_CREATE::set_m_name(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_FAMIL_CREATE.m_name)
 }
-inline void PROBUFF_NET_FAMIL_CREATE::set_m_name(const char* value,
+inline void PROBUFF_NET_FAMIL_CREATE::set_m_name(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -17889,7 +17889,7 @@ inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_familid(::PROTOBUF_NAMESPACE_ID:
   // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_familid)
 }
 
-// string m_name = 2;
+// bytes m_name = 2;
 inline bool PROBUFF_NET_FAMIL_CHANGENAME::_internal_has_m_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -17933,7 +17933,7 @@ inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name)
 }
-inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(const char* value,
+inline void PROBUFF_NET_FAMIL_CHANGENAME::set_m_name(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(

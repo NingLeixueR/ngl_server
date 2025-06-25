@@ -128,6 +128,10 @@ namespace ngl
 		// # 与find类似(只是没有就添加)
 		inline data_modified<TDATA>& get(nguid aid)
 		{
+			if (aid == nguid::make())
+			{
+				tools::no_core_dump();
+			}
 			if (get_actorid() != nguid::make() && get_actorid() != aid)
 			{
 				tools::no_core_dump();

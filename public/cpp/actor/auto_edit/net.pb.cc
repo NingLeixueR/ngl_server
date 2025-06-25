@@ -2500,40 +2500,40 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\tnet.proto\022\005pbnet\032\010db.proto\"8\n\030PROBUFF_"
-  "NET_MSG_RESPONSE\022\022\n\005m_msg\030\001 \001(\tH\000\210\001\001B\010\n\006"
+  "NET_MSG_RESPONSE\022\022\n\005m_msg\030\001 \001(\014H\000\210\001\001B\010\n\006"
   "_m_msg\"\027\n\025PROBUFF_NET_HEARTBEAT\"B\n\024PROBU"
   "FF_NET_RECHARGE\022\031\n\014m_rechargeid\030\001 \001(\005H\000\210"
   "\001\001B\017\n\r_m_rechargeid\"\206\002\n\035PROBUFF_NET_RECH"
   "ARGE_RESPONSE\022\031\n\014m_rechargeid\030\001 \001(\005H\000\210\001\001"
   "\022\?\n\006m_stat\030\002 \001(\0162*.pbnet.PROBUFF_NET_REC"
   "HARGE_RESPONSE.EstatH\001\210\001\001\022\026\n\tm_orderid\030\003"
-  " \001(\tH\002\210\001\001\"G\n\005Estat\022\021\n\rEstat_Success\020\000\022\027\n"
+  " \001(\014H\002\210\001\001\"G\n\005Estat\022\021\n\rEstat_Success\020\000\022\027\n"
   "\023Estat_NotRechargeId\020\001\022\022\n\016Estat_MaxCount"
   "\020\002B\017\n\r_m_rechargeidB\t\n\007_m_statB\014\n\n_m_ord"
   "erid\"\215\002\n\"PROBUFF_NET_DELIVER_GOODS_RECHA"
   "RGE\022\031\n\014m_rechargeid\030\001 \001(\005H\000\210\001\001\022\026\n\tm_orde"
-  "rid\030\002 \001(\tH\001\210\001\001\022\023\n\006m_gold\030\003 \001(\005H\002\210\001\001\022F\n\007m"
+  "rid\030\002 \001(\014H\001\210\001\001\022\023\n\006m_gold\030\003 \001(\005H\002\210\001\001\022F\n\007m"
   "_items\030\004 \003(\01325.pbnet.PROBUFF_NET_DELIVER"
   "_GOODS_RECHARGE.MItemsEntry\032-\n\013MItemsEnt"
   "ry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\005:\0028\001B\017\n\r_m"
   "_rechargeidB\014\n\n_m_orderidB\t\n\007_m_gold\"\?\n\021"
-  "PROBUFF_NET_ERROR\022\031\n\014m_errmessage\030\002 \001(\tH"
+  "PROBUFF_NET_ERROR\022\031\n\014m_errmessage\030\002 \001(\014H"
   "\000\210\001\001B\017\n\r_m_errmessage\"\026\n\024PROBUFF_NET_GET"
   "_TIME\"=\n\035PROBUFF_NET_GET_TIME_RESPONSE\022\022"
   "\n\005m_utc\030\001 \001(\005H\000\210\001\001B\010\n\006_m_utc\"\024\n\022PROBUFF_"
   "NET_NOTICE\"A\n\033PROBUFF_NET_NOTICE_RESPONS"
   "E\022\"\n\tm_notices\030\001 \003(\0132\017.pbdb.db_notice\"\210\001"
   "\n\030PROBUFF_NET_ACOUNT_LOGIN\022\023\n\006m_area\030\001 \001"
-  "(\005H\000\210\001\001\022\026\n\tm_account\030\002 \001(\tH\001\210\001\001\022\027\n\nm_pas"
-  "sword\030\003 \001(\tH\002\210\001\001B\t\n\007_m_areaB\014\n\n_m_accoun"
+  "(\005H\000\210\001\001\022\026\n\tm_account\030\002 \001(\014H\001\210\001\001\022\027\n\nm_pas"
+  "sword\030\003 \001(\014H\002\210\001\001B\t\n\007_m_areaB\014\n\n_m_accoun"
   "tB\r\n\013_m_password\"\335\001\n!PROBUFF_NET_ACOUNT_"
   "LOGIN_RESPONSE\022\023\n\006m_area\030\001 \001(\005H\000\210\001\001\022\025\n\010m"
-  "_roleid\030\002 \001(\003H\001\210\001\001\022\026\n\tm_session\030\003 \001(\tH\002\210"
-  "\001\001\022\026\n\tm_account\030\004 \001(\tH\003\210\001\001\022\030\n\013m_gatewayi"
+  "_roleid\030\002 \001(\003H\001\210\001\001\022\026\n\tm_session\030\003 \001(\014H\002\210"
+  "\001\001\022\026\n\tm_account\030\004 \001(\014H\003\210\001\001\022\030\n\013m_gatewayi"
   "d\030\005 \001(\005H\004\210\001\001B\t\n\007_m_areaB\013\n\t_m_roleidB\014\n\n"
   "_m_sessionB\014\n\n_m_accountB\016\n\014_m_gatewayid"
   "\"\324\001\n\026PROBUFF_NET_ROLE_LOGIN\022\025\n\010m_roleid\030"
-  "\001 \001(\003H\000\210\001\001\022\026\n\tm_session\030\002 \001(\tH\001\210\001\001\022\027\n\nm_"
+  "\001 \001(\003H\000\210\001\001\022\026\n\tm_session\030\002 \001(\014H\001\210\001\001\022\027\n\nm_"
   "iscreate\030\003 \001(\010H\002\210\001\001\022\023\n\006m_area\030\004 \001(\005H\003\210\001\001"
   "\022\030\n\013m_gatewayid\030\005 \001(\005H\004\210\001\001B\013\n\t_m_roleidB"
   "\014\n\n_m_sessionB\r\n\013_m_iscreateB\t\n\007_m_areaB"
@@ -2555,13 +2555,13 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "ount\030\002 \001(\005H\001\210\001\001B\007\n\005_m_idB\n\n\010_m_count\032G\n\007"
   "additem\022\021\n\004m_id\030\001 \001(\005H\000\210\001\001\022\024\n\007m_count\030\002 "
   "\001(\005H\001\210\001\001B\007\n\005_m_idB\n\n\010_m_count\"/\n\017PROBUFF"
-  "_NET_CMD\022\022\n\005m_cmd\030\001 \001(\tH\000\210\001\001B\010\n\006_m_cmd\"\202"
+  "_NET_CMD\022\022\n\005m_cmd\030\001 \001(\014H\000\210\001\001B\010\n\006_m_cmd\"\202"
   "\001\n\020PROBUFF_NET_CHAT\022\023\n\006m_type\030\001 \001(\005H\000\210\001\001"
   "\022\030\n\013m_channelid\030\002 \001(\005H\001\210\001\001\022\026\n\tm_content\030"
-  "\003 \001(\tH\002\210\001\001B\t\n\007_m_typeB\016\n\014_m_channelidB\014\n"
+  "\003 \001(\014H\002\210\001\001B\t\n\007_m_typeB\016\n\014_m_channelidB\014\n"
   "\n_m_content\"\232\001\n\010chatitem\022\025\n\010m_roleid\030\001 \001"
-  "(\003H\000\210\001\001\022\027\n\nm_rolename\030\002 \001(\tH\001\210\001\001\022\026\n\tm_co"
-  "ntent\030\003 \001(\tH\002\210\001\001\022\022\n\005m_utc\030\004 \001(\005H\003\210\001\001B\013\n\t"
+  "(\003H\000\210\001\001\022\027\n\nm_rolename\030\002 \001(\014H\001\210\001\001\022\026\n\tm_co"
+  "ntent\030\003 \001(\014H\002\210\001\001\022\022\n\005m_utc\030\004 \001(\005H\003\210\001\001B\013\n\t"
   "_m_roleidB\r\n\013_m_rolenameB\014\n\n_m_contentB\010"
   "\n\006_m_utc\"\252\001\n\031PROBUFF_NET_CHAT_RESPONSE\022\023"
   "\n\006m_type\030\001 \001(\005H\000\210\001\001\022\030\n\013m_channelid\030\002 \001(\005"
@@ -2589,11 +2589,11 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "F_NET_MAIL_DEL_RESPONSE\022\025\n\010m_mailid\030\001 \001("
   "\003H\000\210\001\001\022\023\n\006m_stat\030\002 \001(\010H\001\210\001\001B\013\n\t_m_mailid"
   "B\t\n\007_m_stat\"\240\001\n\026PROBUFF_NET_KCPSESSION\022\027"
-  "\n\nm_serverid\030\001 \001(\003H\000\210\001\001\022\022\n\005m_uip\030\002 \001(\tH\001"
+  "\n\nm_serverid\030\001 \001(\003H\000\210\001\001\022\022\n\005m_uip\030\002 \001(\014H\001"
   "\210\001\001\022\024\n\007m_uport\030\003 \001(\005H\002\210\001\001\022\023\n\006m_conv\030\004 \001("
   "\005H\003\210\001\001B\r\n\013_m_serveridB\010\n\006_m_uipB\n\n\010_m_up"
   "ortB\t\n\007_m_conv\"M\n\037PROBUFF_NET_KCPSESSION"
-  "_RESPONSE\022\031\n\014m_kcpsession\030\001 \001(\tH\000\210\001\001B\017\n\r"
+  "_RESPONSE\022\031\n\014m_kcpsession\030\001 \001(\014H\000\210\001\001B\017\n\r"
   "_m_kcpsession\"D\n\036PROBUFF_NET_TASK_RECEIV"
   "E_AWARD\022\025\n\010m_taskid\030\001 \001(\005H\000\210\001\001B\013\n\t_m_tas"
   "kid\"M\n\tdrop_item\022\023\n\006m_item\030\001 \001(\005H\000\210\001\001\022\024\n"
@@ -2604,7 +2604,7 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "FF_NET_TASK_RECEIVE_AWARD_RESPONSE.MDrop"
   "Entry\032,\n\nMDropEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005valu"
   "e\030\002 \001(\005:\0028\001B\013\n\t_m_taskidB\t\n\007_m_stat\":\n\030P"
-  "ROBUFF_NET_FAMIL_CREATE\022\023\n\006m_name\030\001 \001(\tH"
+  "ROBUFF_NET_FAMIL_CREATE\022\023\n\006m_name\030\001 \001(\014H"
   "\000\210\001\001B\t\n\007_m_name\"C\n!PROBUFF_NET_FAMIL_CRE"
   "ATE_RESPONSE\022\023\n\006m_stat\030\001 \001(\005H\000\210\001\001B\t\n\007_m_"
   "stat\"\030\n\026PROBUFF_NET_FAMIL_INFO\"\224\001\n\037PROBU"
@@ -2632,7 +2632,7 @@ const char descriptor_table_protodef_net_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "SPONSE\022\026\n\tm_familid\030\001 \001(\003H\000\210\001\001\022!\n\010m_fami"
   "ly\030\002 \003(\0132\017.pbdb.db_familyB\014\n\n_m_familid\""
   "d\n\034PROBUFF_NET_FAMIL_CHANGENAME\022\026\n\tm_fam"
-  "ilid\030\001 \001(\003H\000\210\001\001\022\023\n\006m_name\030\002 \001(\tH\001\210\001\001B\014\n\n"
+  "ilid\030\001 \001(\003H\000\210\001\001\022\023\n\006m_name\030\002 \001(\014H\001\210\001\001B\014\n\n"
   "_m_familidB\t\n\007_m_name\"G\n%PROBUFF_NET_FAM"
   "IL_CHANGENAME_RESPONSE\022\023\n\006m_stat\030\001 \001(\005H\000"
   "\210\001\001B\t\n\007_m_stat\">\n\026PROBUFF_NET_FAMIL_SIGN"
@@ -3032,12 +3032,11 @@ const char* PROBUFF_NET_MSG_RESPONSE::_InternalParse(const char* ptr, ::PROTOBUF
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string m_msg = 1;
+      // bytes m_msg = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_m_msg();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3070,13 +3069,9 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string m_msg = 1;
+  // bytes m_msg = 1;
   if (_internal_has_m_msg()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_msg().data(), static_cast<int>(this->_internal_m_msg().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_MSG_RESPONSE.m_msg");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         1, this->_internal_m_msg(), target);
   }
 
@@ -3096,11 +3091,11 @@ size_t PROBUFF_NET_MSG_RESPONSE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string m_msg = 1;
+  // bytes m_msg = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_m_msg());
   }
 
@@ -3660,12 +3655,11 @@ const char* PROBUFF_NET_RECHARGE_RESPONSE::_InternalParse(const char* ptr, ::PRO
           _internal_set_m_stat(static_cast<::pbnet::PROBUFF_NET_RECHARGE_RESPONSE_Estat>(val));
         } else goto handle_unusual;
         continue;
-      // string m_orderid = 3;
+      // bytes m_orderid = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_orderid();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_RECHARGE_RESPONSE.m_orderid"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3711,13 +3705,9 @@ failure:
       2, this->_internal_m_stat(), target);
   }
 
-  // string m_orderid = 3;
+  // bytes m_orderid = 3;
   if (_internal_has_m_orderid()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_orderid().data(), static_cast<int>(this->_internal_m_orderid().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_RECHARGE_RESPONSE.m_orderid");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_orderid(), target);
   }
 
@@ -3739,10 +3729,10 @@ size_t PROBUFF_NET_RECHARGE_RESPONSE::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // string m_orderid = 3;
+    // bytes m_orderid = 3;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_orderid());
     }
 
@@ -3971,12 +3961,11 @@ const char* PROBUFF_NET_DELIVER_GOODS_RECHARGE::_InternalParse(const char* ptr, 
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_orderid = 2;
+      // bytes m_orderid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_orderid();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_DELIVER_GOODS_RECHARGE.m_orderid"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4035,13 +4024,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_rechargeid(), target);
   }
 
-  // string m_orderid = 2;
+  // bytes m_orderid = 2;
   if (_internal_has_m_orderid()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_orderid().data(), static_cast<int>(this->_internal_m_orderid().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_DELIVER_GOODS_RECHARGE.m_orderid");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_orderid(), target);
   }
 
@@ -4109,10 +4094,10 @@ size_t PROBUFF_NET_DELIVER_GOODS_RECHARGE::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // string m_orderid = 2;
+    // bytes m_orderid = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_orderid());
     }
 
@@ -4299,12 +4284,11 @@ const char* PROBUFF_NET_ERROR::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string m_errmessage = 2;
+      // bytes m_errmessage = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_errmessage();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_ERROR.m_errmessage"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4337,13 +4321,9 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string m_errmessage = 2;
+  // bytes m_errmessage = 2;
   if (_internal_has_m_errmessage()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_errmessage().data(), static_cast<int>(this->_internal_m_errmessage().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_ERROR.m_errmessage");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_errmessage(), target);
   }
 
@@ -4363,11 +4343,11 @@ size_t PROBUFF_NET_ERROR::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string m_errmessage = 2;
+  // bytes m_errmessage = 2;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_m_errmessage());
   }
 
@@ -5294,21 +5274,19 @@ const char* PROBUFF_NET_ACOUNT_LOGIN::_InternalParse(const char* ptr, ::PROTOBUF
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_account = 2;
+      // bytes m_account = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_account();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_account"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_password = 3;
+      // bytes m_password = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_password();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_password"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -5347,23 +5325,15 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_area(), target);
   }
 
-  // string m_account = 2;
+  // bytes m_account = 2;
   if (_internal_has_m_account()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_account().data(), static_cast<int>(this->_internal_m_account().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_account");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_account(), target);
   }
 
-  // string m_password = 3;
+  // bytes m_password = 3;
   if (_internal_has_m_password()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_password().data(), static_cast<int>(this->_internal_m_password().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_ACOUNT_LOGIN.m_password");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_password(), target);
   }
 
@@ -5385,17 +5355,17 @@ size_t PROBUFF_NET_ACOUNT_LOGIN::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // string m_account = 2;
+    // bytes m_account = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_account());
     }
 
-    // string m_password = 3;
+    // bytes m_password = 3;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_password());
     }
 
@@ -5620,21 +5590,19 @@ const char* PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::_InternalParse(const char* ptr, :
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_session = 3;
+      // bytes m_session = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_session();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_session"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_account = 4;
+      // bytes m_account = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           auto str = _internal_mutable_m_account();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_account"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -5687,23 +5655,15 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_m_roleid(), target);
   }
 
-  // string m_session = 3;
+  // bytes m_session = 3;
   if (_internal_has_m_session()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_session().data(), static_cast<int>(this->_internal_m_session().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_session");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_session(), target);
   }
 
-  // string m_account = 4;
+  // bytes m_account = 4;
   if (_internal_has_m_account()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_account().data(), static_cast<int>(this->_internal_m_account().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_ACOUNT_LOGIN_RESPONSE.m_account");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         4, this->_internal_m_account(), target);
   }
 
@@ -5731,17 +5691,17 @@ size_t PROBUFF_NET_ACOUNT_LOGIN_RESPONSE::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
-    // string m_session = 3;
+    // bytes m_session = 3;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_session());
     }
 
-    // string m_account = 4;
+    // bytes m_account = 4;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_account());
     }
 
@@ -5971,12 +5931,11 @@ const char* PROBUFF_NET_ROLE_LOGIN::_InternalParse(const char* ptr, ::PROTOBUF_N
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_session = 2;
+      // bytes m_session = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_session();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_ROLE_LOGIN.m_session"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -6039,13 +5998,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_roleid(), target);
   }
 
-  // string m_session = 2;
+  // bytes m_session = 2;
   if (_internal_has_m_session()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_session().data(), static_cast<int>(this->_internal_m_session().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_ROLE_LOGIN.m_session");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_session(), target);
   }
 
@@ -6085,10 +6040,10 @@ size_t PROBUFF_NET_ROLE_LOGIN::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
-    // string m_session = 2;
+    // bytes m_session = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_session());
     }
 
@@ -8090,12 +8045,11 @@ const char* PROBUFF_NET_CMD::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string m_cmd = 1;
+      // bytes m_cmd = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_m_cmd();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_CMD.m_cmd"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8128,13 +8082,9 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string m_cmd = 1;
+  // bytes m_cmd = 1;
   if (_internal_has_m_cmd()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_cmd().data(), static_cast<int>(this->_internal_m_cmd().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_CMD.m_cmd");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         1, this->_internal_m_cmd(), target);
   }
 
@@ -8154,11 +8104,11 @@ size_t PROBUFF_NET_CMD::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string m_cmd = 1;
+  // bytes m_cmd = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_m_cmd());
   }
 
@@ -8345,12 +8295,11 @@ const char* PROBUFF_NET_CHAT::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_content = 3;
+      // bytes m_content = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_content();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_CHAT.m_content"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8395,13 +8344,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_channelid(), target);
   }
 
-  // string m_content = 3;
+  // bytes m_content = 3;
   if (_internal_has_m_content()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_content().data(), static_cast<int>(this->_internal_m_content().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_CHAT.m_content");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_content(), target);
   }
 
@@ -8423,10 +8368,10 @@ size_t PROBUFF_NET_CHAT::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // string m_content = 3;
+    // bytes m_content = 3;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_content());
     }
 
@@ -8651,21 +8596,19 @@ const char* chatitem::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_rolename = 2;
+      // bytes m_rolename = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_rolename();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.chatitem.m_rolename"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_content = 3;
+      // bytes m_content = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_content();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.chatitem.m_content"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8712,23 +8655,15 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_roleid(), target);
   }
 
-  // string m_rolename = 2;
+  // bytes m_rolename = 2;
   if (_internal_has_m_rolename()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_rolename().data(), static_cast<int>(this->_internal_m_rolename().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.chatitem.m_rolename");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_rolename(), target);
   }
 
-  // string m_content = 3;
+  // bytes m_content = 3;
   if (_internal_has_m_content()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_content().data(), static_cast<int>(this->_internal_m_content().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.chatitem.m_content");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_content(), target);
   }
 
@@ -8756,17 +8691,17 @@ size_t chatitem::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
-    // string m_rolename = 2;
+    // bytes m_rolename = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_rolename());
     }
 
-    // string m_content = 3;
+    // bytes m_content = 3;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_content());
     }
 
@@ -11553,12 +11488,11 @@ const char* PROBUFF_NET_KCPSESSION::_InternalParse(const char* ptr, ::PROTOBUF_N
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_uip = 2;
+      // bytes m_uip = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_uip();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_KCPSESSION.m_uip"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -11613,13 +11547,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_serverid(), target);
   }
 
-  // string m_uip = 2;
+  // bytes m_uip = 2;
   if (_internal_has_m_uip()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_uip().data(), static_cast<int>(this->_internal_m_uip().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_KCPSESSION.m_uip");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_uip(), target);
   }
 
@@ -11653,10 +11583,10 @@ size_t PROBUFF_NET_KCPSESSION::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
-    // string m_uip = 2;
+    // bytes m_uip = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_uip());
     }
 
@@ -11851,12 +11781,11 @@ const char* PROBUFF_NET_KCPSESSION_RESPONSE::_InternalParse(const char* ptr, ::P
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string m_kcpsession = 1;
+      // bytes m_kcpsession = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_m_kcpsession();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -11889,13 +11818,9 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string m_kcpsession = 1;
+  // bytes m_kcpsession = 1;
   if (_internal_has_m_kcpsession()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_kcpsession().data(), static_cast<int>(this->_internal_m_kcpsession().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_KCPSESSION_RESPONSE.m_kcpsession");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         1, this->_internal_m_kcpsession(), target);
   }
 
@@ -11915,11 +11840,11 @@ size_t PROBUFF_NET_KCPSESSION_RESPONSE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string m_kcpsession = 1;
+  // bytes m_kcpsession = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_m_kcpsession());
   }
 
@@ -12864,12 +12789,11 @@ const char* PROBUFF_NET_FAMIL_CREATE::_InternalParse(const char* ptr, ::PROTOBUF
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string m_name = 1;
+      // bytes m_name = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_m_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_FAMIL_CREATE.m_name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -12902,13 +12826,9 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string m_name = 1;
+  // bytes m_name = 1;
   if (_internal_has_m_name()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_name().data(), static_cast<int>(this->_internal_m_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_FAMIL_CREATE.m_name");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         1, this->_internal_m_name(), target);
   }
 
@@ -12928,11 +12848,11 @@ size_t PROBUFF_NET_FAMIL_CREATE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string m_name = 1;
+  // bytes m_name = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_m_name());
   }
 
@@ -15991,12 +15911,11 @@ const char* PROBUFF_NET_FAMIL_CHANGENAME::_InternalParse(const char* ptr, ::PROT
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_name = 2;
+      // bytes m_name = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -16035,13 +15954,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_familid(), target);
   }
 
-  // string m_name = 2;
+  // bytes m_name = 2;
   if (_internal_has_m_name()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_name().data(), static_cast<int>(this->_internal_m_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbnet.PROBUFF_NET_FAMIL_CHANGENAME.m_name");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_name(), target);
   }
 
@@ -16063,10 +15978,10 @@ size_t PROBUFF_NET_FAMIL_CHANGENAME::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // string m_name = 2;
+    // bytes m_name = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_name());
     }
 

@@ -557,7 +557,7 @@ namespace ngl
         m_stream3 << std::format("\t\ttprotocol::set_customs_index({});", lindex333) << std::endl;
         for (const auto& item : lmap)
         {
-            if (item.second.enumname == "ENUM_DB_COUNT")
+            if (item.second.enumname == "ENUM_DB_COUNT" || item.second.enumname == "ENUM_DB_FAIL")
             {
                 continue;
             }
