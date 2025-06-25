@@ -255,7 +255,9 @@ namespace ngl
 		inline void close(i32_sessionid sessionid)
 		{
 			if (sessionid <= 0)
+			{
 				return;
+			}
 			
 			// 通知逻辑层session断开连接
 			std::shared_ptr<service_tcp> lpservice = nullptr;
@@ -294,9 +296,42 @@ namespace ngl
 			}
 		}
 
-		inline void close(const service_tcp* ap)
+		inline void close(service_tcp* ap)
 		{
 			close(ap->m_sessionid);
+			close_socket(ap->m_socket);
+		}
+
+		inline void close_socket(asio::ip::tcp::socket& socket)
+		{
+			asio::error_code ec;
+
+			// 步骤1: 取消所有异步操作
+			socket.cancel(ec);
+			if (ec) 
+			{
+				std::cerr << "Cancel error: " << ec.message() << "\n";
+			}
+
+			// 步骤2: 关闭连接方向（可选但推荐）
+			if (socket.is_open()) 
+			{
+				socket.shutdown(asio::ip::tcp::socket::shutdown_both, ec);
+				// 忽略"not_connected"错误（可能已自然关闭）
+				if (ec && ec != asio::error::not_connected) 
+				{
+					std::cerr << "Shutdown error: " << ec.message() << "\n";
+				}
+			}
+
+			// 步骤3: 关闭socket释放资源
+			if (socket.is_open()) 
+			{
+				socket.close(ec);
+				if (ec) {
+					std::cerr << "Close error: " << ec.message() << "\n";
+				}
+			}
 		}
 
 		inline void close_net(i32_sessionid sessionid)
@@ -311,6 +346,10 @@ namespace ngl
 					m_data.erase(itor);
 				}
 				m_sessionclose.erase(sessionid);
+			}
+			if (lpservice != nullptr)
+			{
+				close_socket(lpservice->m_socket);
 			}
 		}
 
