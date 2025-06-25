@@ -13,7 +13,7 @@ namespace ngl
 	struct actorparm
 	{
 		actorparmbase	m_parm;
-		int32_t			m_weight	= 10;			// 权重:单次获取线程后处理消息的数量
+		int32_t			m_weight	= 0x7fffffff;	// 权重:单次获取线程后处理消息的数量
 		int32_t			m_timeout	= 0x7fffffff;	// 超时:(当actor处理消息超过此时间)
 		bool			m_broadcast	= false;		// 是否支持广播(如果需要加载dbclient，需要支持广播)
 	};
@@ -80,12 +80,10 @@ namespace ngl
 		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
 		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
 		{
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, true>(
-				&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, true
-			);
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, false>(
-				&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, true
-			);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>()
+				.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>, false>(
+					&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, true
+				);
 		}
 
 		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
