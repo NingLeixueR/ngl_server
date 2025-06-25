@@ -17,7 +17,7 @@ option optimize_for = SPEED;
 // [回复] 服务器用来回复端，一般用于cmd协议，用来返回一个字符串回显
 message PROBUFF_NET_MSG_RESPONSE//G2C [actor_robot]
 {
-	optional string m_msg		= 1;
+	optional bytes m_msg		= 1;
 };
 
 // [请求]心跳协议
@@ -42,14 +42,14 @@ message PROBUFF_NET_RECHARGE_RESPONSE//G2C [actor_robot]
 		Estat_MaxCount		= 2;	// 超过充值最大限制次数
 	}
 	optional Estat m_stat				= 2;
-	optional string m_orderid			= 3;
+	optional bytes m_orderid			= 3;
 };
 
 // [回复]通知客户端充值发货
 message PROBUFF_NET_DELIVER_GOODS_RECHARGE//G2C [actor_robot]
 {
 	optional int32 m_rechargeid			= 1;
-	optional string m_orderid			= 2;
+	optional bytes m_orderid			= 2;
 	optional int32 m_gold				= 3;
 	map<int32,int32> m_items			= 4;
 };
@@ -58,7 +58,7 @@ message PROBUFF_NET_DELIVER_GOODS_RECHARGE//G2C [actor_robot]
 // [发送]错误码
 message PROBUFF_NET_ERROR//G2C [actor_robot]
 {
-	optional string m_errmessage	= 2; // 错误描述
+	optional bytes m_errmessage	= 2; // 错误描述
 };
 
 
@@ -88,8 +88,8 @@ message PROBUFF_NET_NOTICE_RESPONSE//G2C [actor_robot]
 message PROBUFF_NET_ACOUNT_LOGIN//XXX [actor_login]
 {
 	optional int32 m_area			= 1;	// 区服id
-	optional string m_account		= 2;	// 帐号
-	optional string m_password		= 3;	// 密码
+	optional bytes m_account		= 2;	// 帐号
+	optional bytes m_password		= 3;	// 密码
 };
 
 // [回复]登录账号
@@ -97,8 +97,8 @@ message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
 {
 	optional int32 m_area			= 1;				// 区服id
 	optional int64 m_roleid			= 2;				// 玩家id
-	optional string m_session		= 3;
-	optional string m_account		= 4;				// 帐号
+	optional bytes m_session		= 3;
+	optional bytes m_account		= 4;				// 帐号
 	optional int32 m_gatewayid		= 5;				// 网关id
 };
 
@@ -106,7 +106,7 @@ message PROBUFF_NET_ACOUNT_LOGIN_RESPONSE//XXX [actor_manage_robot]
 message PROBUFF_NET_ROLE_LOGIN//XXX [actor_gateway,actor_manage_role]
 {
 	optional int64 m_roleid			= 1;	// 玩家id
-	optional string m_session		= 2;
+	optional bytes m_session		= 2;
 	optional bool m_iscreate		= 3;
 	optional int32 m_area			= 4;	// 区服id
 	optional int32 m_gatewayid	    = 5;
@@ -160,7 +160,7 @@ message PROBUFF_NET_BAG_UPDATE//G2C [actor_robot]
 // [请求]cmd协议
 message PROBUFF_NET_CMD//C2G [actor_role]
 {
-	optional string m_cmd						= 1;
+	optional bytes m_cmd						= 1;
 };
 
 // [请求]聊天
@@ -184,14 +184,14 @@ message PROBUFF_NET_CHAT//C2G2 [actor_chat]
 {
 	optional int32 m_type				= 1; // enum_logic_chat
 	optional int32 m_channelid			= 2; // enum_chat_channel
-	optional string m_content			= 3; // m_type == chat_speak
+	optional bytes m_content			= 3; // m_type == chat_speak
 };
 
 message chatitem
 {
 	optional int64 m_roleid	= 1;
-	optional string m_rolename	= 2;
-	optional string m_content	= 3;
+	optional bytes m_rolename	= 2;
+	optional bytes m_content	= 3;
 	optional int32 m_utc		= 4;
 };
 	
@@ -271,7 +271,7 @@ message PROBUFF_NET_MAIL_DEL_RESPONSE//G2C [actor_robot]
 message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
 {
 	optional int64	m_serverid	= 1;		// 玩家要进行kcp连接的服务器
-	optional string m_uip		= 2;
+	optional bytes m_uip		= 2;
 	optional int32	m_uport		= 3;
 	optional int32	m_conv		= 4;
 };
@@ -279,7 +279,7 @@ message PROBUFF_NET_KCPSESSION//XXX [actor_gateway]
 // [回复]kcp-session
 message PROBUFF_NET_KCPSESSION_RESPONSE//G2C [actor_robot]
 {
-	optional string m_kcpsession	= 1;
+	optional bytes m_kcpsession	= 1;
 };
 
 // [请求]领取任务奖励
@@ -305,7 +305,7 @@ message PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE//G2C [actor_robot]
 // [请求]创建军团
 message PROBUFF_NET_FAMIL_CREATE//C2G2 [actor_family]
 {
-	optional string m_name = 1;	// 创建军团的名称
+	optional bytes m_name = 1;	// 创建军团的名称
 }
 
 // [回复]创建军团
@@ -394,7 +394,7 @@ message PROBUFF_NET_FAMIL_LIST_RESPONSE//G2C [actor_robot]
 message PROBUFF_NET_FAMIL_CHANGENAME//C2G2 [actor_family]
 {
 	optional int64 m_familid = 1;	
-	optional string m_name = 2;	// 修改军团名称
+	optional bytes m_name = 2;	// 修改军团名称
 }
 
 // [回复]修改军团名称

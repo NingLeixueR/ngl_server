@@ -1300,7 +1300,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\010db.proto\022\004pbdb\"\274\001\n\ndb_account\022\021\n\004m_id\030"
   "\001 \001(\003H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001\022\026\n\tm_a"
-  "ccount\030\003 \001(\tH\002\210\001\001\022\030\n\013m_passworld\030\004 \001(\tH\003"
+  "ccount\030\003 \001(\014H\002\210\001\001\022\030\n\013m_passworld\030\004 \001(\014H\003"
   "\210\001\001\022\023\n\006m_area\030\005 \001(\005H\004\210\001\001B\007\n\005_m_idB\013\n\t_m_"
   "roleidB\014\n\n_m_accountB\016\n\014_m_passworldB\t\n\007"
   "_m_area\"\244\002\n\024brief_activityvalues\022J\n\021m_ac"
@@ -1311,7 +1311,7 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "yRolelvEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005value\030\002 \001(\005"
   ":\0028\001\0328\n\026MActivityRolegoldEntry\022\013\n\003key\030\001 "
   "\001(\005\022\r\n\005value\030\002 \001(\005:\0028\001\"\374\002\n\010db_brief\022\021\n\004m"
-  "_id\030\001 \001(\003H\000\210\001\001\022\023\n\006m_name\030\002 \001(\tH\001\210\001\001\022\021\n\004m"
+  "_id\030\001 \001(\003H\000\210\001\001\022\023\n\006m_name\030\002 \001(\014H\001\210\001\001\022\021\n\004m"
   "_lv\030\003 \001(\005H\002\210\001\001\022\030\n\013m_moneygold\030\004 \001(\005H\003\210\001\001"
   "\022\032\n\rm_moneysilver\030\005 \001(\005H\004\210\001\001\022\022\n\005m_vip\030\006 "
   "\001(\005H\005\210\001\001\022\030\n\013m_notalkutc\030\007 \001(\005H\006\210\001\001\022\030\n\013m_"
@@ -1334,17 +1334,17 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "sEntry\022\013\n\003key\030\001 \001(\005\022\031\n\005value\030\002 \001(\0132\n.pbd"
   "b.item:\0028\001B\007\n\005_m_idB\n\n\010_m_maxid\"~\n\013db_ke"
   "yvalue\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\024\n\007m_value\030\002 \001"
-  "(\tH\001\210\001\001\"1\n\003ekv\022\010\n\004none\020\000\022\017\n\013account_ban\020"
+  "(\014H\001\210\001\001\"1\n\003ekv\022\010\n\004none\020\000\022\017\n\013account_ban\020"
   "\001\022\017\n\013open_server\020\002B\007\n\005_m_idB\n\n\010_m_value\""
   "\215\001\n\017db_rolekeyvalue\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\0220"
   "\n\006m_data\030\002 \003(\0132 .pbdb.db_rolekeyvalue.MD"
   "ataEntry\032,\n\nMDataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v"
-  "alue\030\002 \001(\t:\0028\001B\007\n\005_m_id\"R\n\010mailitem\022\026\n\tm"
+  "alue\030\002 \001(\014:\0028\001B\007\n\005_m_id\"R\n\010mailitem\022\026\n\tm"
   "_itemtid\030\001 \001(\005H\000\210\001\001\022\024\n\007m_count\030\002 \001(\005H\001\210\001"
   "\001B\014\n\n_m_itemtidB\n\n\010_m_count\"\223\002\n\004mail\022\021\n\004"
   "m_id\030\001 \001(\005H\000\210\001\001\022\030\n\013m_createutc\030\002 \001(\005H\001\210\001"
-  "\001\022\022\n\005m_tid\030\003 \001(\005H\002\210\001\001\022\024\n\007m_prams\030\004 \001(\tH\003"
-  "\210\001\001\022\026\n\tm_content\030\005 \001(\tH\004\210\001\001\022\037\n\007m_items\030\006"
+  "\001\022\022\n\005m_tid\030\003 \001(\005H\002\210\001\001\022\024\n\007m_prams\030\004 \001(\014H\003"
+  "\210\001\001\022\026\n\tm_content\030\005 \001(\014H\004\210\001\001\022\037\n\007m_items\030\006"
   " \003(\0132\016.pbdb.mailitem\022\023\n\006m_read\030\007 \001(\010H\005\210\001"
   "\001\022\023\n\006m_draw\030\010 \001(\010H\006\210\001\001B\007\n\005_m_idB\016\n\014_m_cr"
   "eateutcB\010\n\006_m_tidB\n\n\010_m_pramsB\014\n\n_m_cont"
@@ -1353,7 +1353,7 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "db_mail.MMailEntry\0328\n\nMMailEntry\022\013\n\003key\030"
   "\001 \001(\005\022\031\n\005value\030\002 \001(\0132\n.pbdb.mail:\0028\001B\007\n\005"
   "_m_id\"\241\001\n\tdb_notice\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\025"
-  "\n\010m_notice\030\002 \001(\tH\001\210\001\001\022\030\n\013m_starttime\030\003 \001"
+  "\n\010m_notice\030\002 \001(\014H\001\210\001\001\022\030\n\013m_starttime\030\003 \001"
   "(\005H\002\210\001\001\022\031\n\014m_finishtime\030\004 \001(\005H\003\210\001\001B\007\n\005_m"
   "_idB\013\n\t_m_noticeB\016\n\014_m_starttimeB\017\n\r_m_f"
   "inishtime\"L\n\010rankitem\022\024\n\007m_value\030\001 \001(\003H\000"
@@ -1409,7 +1409,7 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "ordinary\020\003B\007\n\005_m_idB\014\n\n_m_joinutcB\020\n\016_m_"
   "lastsignutcB\021\n\017_m_lastleaveutcB\r\n\013_m_pos"
   "ition\"\366\001\n\tdb_family\022\021\n\004m_id\030\001 \001(\003H\000\210\001\001\022\030"
-  "\n\013m_createutc\030\002 \001(\005H\001\210\001\001\022\023\n\006m_name\030\003 \001(\t"
+  "\n\013m_createutc\030\002 \001(\005H\001\210\001\001\022\023\n\006m_name\030\003 \001(\014"
   "H\002\210\001\001\022\025\n\010m_leader\030\004 \001(\003H\003\210\001\001\022\021\n\004m_lv\030\005 \001"
   "(\005H\004\210\001\001\022\022\n\005m_exp\030\006 \001(\005H\005\210\001\001\022\020\n\010m_member\030"
   "\007 \003(\003\022\023\n\013m_applylist\030\010 \003(\003B\007\n\005_m_idB\016\n\014_"
@@ -1417,7 +1417,7 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   "m_lvB\010\n\006_m_exp\"S\n\ndb_friends\022\021\n\004m_id\030\001 \001"
   "(\003H\000\210\001\001\022\021\n\tm_friends\030\002 \003(\003\022\026\n\016m_applyfri"
   "ends\030\003 \003(\003B\007\n\005_m_id\"\?\n\014dbcross_test\022\023\n\006m"
-  "_name\030\001 \001(\tH\000\210\001\001\022\017\n\007m_value\030\002 \003(\003B\t\n\007_m_"
+  "_name\030\001 \001(\014H\000\210\001\001\022\017\n\007m_value\030\002 \003(\003B\t\n\007_m_"
   "name*\210\003\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n"
   "\014ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013EN"
   "UM_DB_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENU"
@@ -1718,21 +1718,19 @@ const char* db_account::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_account = 3;
+      // bytes m_account = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_account();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_account.m_account"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_passworld = 4;
+      // bytes m_passworld = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           auto str = _internal_mutable_m_passworld();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_account.m_passworld"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1785,23 +1783,15 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_m_roleid(), target);
   }
 
-  // string m_account = 3;
+  // bytes m_account = 3;
   if (_internal_has_m_account()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_account().data(), static_cast<int>(this->_internal_m_account().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_account.m_account");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_account(), target);
   }
 
-  // string m_passworld = 4;
+  // bytes m_passworld = 4;
   if (_internal_has_m_passworld()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_passworld().data(), static_cast<int>(this->_internal_m_passworld().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_account.m_passworld");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         4, this->_internal_m_passworld(), target);
   }
 
@@ -1829,17 +1819,17 @@ size_t db_account::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000001fu) {
-    // string m_account = 3;
+    // bytes m_account = 3;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_account());
     }
 
-    // string m_passworld = 4;
+    // bytes m_passworld = 4;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_passworld());
     }
 
@@ -2422,12 +2412,11 @@ const char* db_brief::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_name = 2;
+      // bytes m_name = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_brief.m_name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2521,13 +2510,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_id(), target);
   }
 
-  // string m_name = 2;
+  // bytes m_name = 2;
   if (_internal_has_m_name()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_name().data(), static_cast<int>(this->_internal_m_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_brief.m_name");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_name(), target);
   }
 
@@ -2593,10 +2578,10 @@ size_t db_brief::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
-    // string m_name = 2;
+    // bytes m_name = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_name());
     }
 
@@ -4017,12 +4002,11 @@ const char* db_keyvalue::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_value = 2;
+      // bytes m_value = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_value();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_keyvalue.m_value"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4061,13 +4045,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_id(), target);
   }
 
-  // string m_value = 2;
+  // bytes m_value = 2;
   if (_internal_has_m_value()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_value().data(), static_cast<int>(this->_internal_m_value().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_keyvalue.m_value");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_value(), target);
   }
 
@@ -4089,10 +4069,10 @@ size_t db_keyvalue::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // string m_value = 2;
+    // bytes m_value = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_value());
     }
 
@@ -4282,7 +4262,7 @@ const char* db_rolekeyvalue::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // map<string, string> m_data = 2;
+      // map<string, bytes> m_data = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr -= 1;
@@ -4329,7 +4309,7 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_id(), target);
   }
 
-  // map<string, string> m_data = 2;
+  // map<string, bytes> m_data = 2;
   if (!this->_internal_m_data().empty()) {
     typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_pointer
         ConstPtr;
@@ -4341,10 +4321,6 @@ failure:
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
           "pbdb.db_rolekeyvalue.MDataEntry.key");
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-          p->second.data(), static_cast<int>(p->second.length()),
-          ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-          "pbdb.db_rolekeyvalue.MDataEntry.value");
       }
     };
 
@@ -4390,7 +4366,7 @@ size_t db_rolekeyvalue::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<string, string> m_data = 2;
+  // map<string, bytes> m_data = 2;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_m_data_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
@@ -4882,21 +4858,19 @@ const char* mail::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_prams = 4;
+      // bytes m_prams = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           auto str = _internal_mutable_m_prams();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.mail.m_prams"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_content = 5;
+      // bytes m_content = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_m_content();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.mail.m_content"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4975,23 +4949,15 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_m_tid(), target);
   }
 
-  // string m_prams = 4;
+  // bytes m_prams = 4;
   if (_internal_has_m_prams()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_prams().data(), static_cast<int>(this->_internal_m_prams().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.mail.m_prams");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         4, this->_internal_m_prams(), target);
   }
 
-  // string m_content = 5;
+  // bytes m_content = 5;
   if (_internal_has_m_content()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_content().data(), static_cast<int>(this->_internal_m_content().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.mail.m_content");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         5, this->_internal_m_content(), target);
   }
 
@@ -5040,17 +5006,17 @@ size_t mail::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000007fu) {
-    // string m_prams = 4;
+    // bytes m_prams = 4;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_prams());
     }
 
-    // string m_content = 5;
+    // bytes m_content = 5;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_content());
     }
 
@@ -5578,12 +5544,11 @@ const char* db_notice::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_notice = 2;
+      // bytes m_notice = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_m_notice();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_notice.m_notice"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -5638,13 +5603,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_m_id(), target);
   }
 
-  // string m_notice = 2;
+  // bytes m_notice = 2;
   if (_internal_has_m_notice()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_notice().data(), static_cast<int>(this->_internal_m_notice().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_notice.m_notice");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_m_notice(), target);
   }
 
@@ -5678,10 +5639,10 @@ size_t db_notice::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
-    // string m_notice = 2;
+    // bytes m_notice = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_notice());
     }
 
@@ -9246,12 +9207,11 @@ const char* db_family::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string m_name = 3;
+      // bytes m_name = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_m_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_family.m_name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -9340,13 +9300,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_createutc(), target);
   }
 
-  // string m_name = 3;
+  // bytes m_name = 3;
   if (_internal_has_m_name()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_name().data(), static_cast<int>(this->_internal_m_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.db_family.m_name");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_m_name(), target);
   }
 
@@ -9434,10 +9390,10 @@ size_t db_family::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000003fu) {
-    // string m_name = 3;
+    // bytes m_name = 3;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
           this->_internal_m_name());
     }
 
@@ -9945,12 +9901,11 @@ const char* dbcross_test::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string m_name = 1;
+      // bytes m_name = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_m_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.dbcross_test.m_name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -9993,13 +9948,9 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string m_name = 1;
+  // bytes m_name = 1;
   if (_internal_has_m_name()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_m_name().data(), static_cast<int>(this->_internal_m_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "pbdb.dbcross_test.m_name");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         1, this->_internal_m_name(), target);
   }
 
@@ -10043,11 +9994,11 @@ size_t dbcross_test::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // string m_name = 1;
+  // bytes m_name = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_m_name());
   }
 

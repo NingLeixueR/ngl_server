@@ -467,7 +467,7 @@ class db_account PROTOBUF_FINAL :
     kMRoleidFieldNumber = 2,
     kMAreaFieldNumber = 5,
   };
-  // string m_account = 3;
+  // bytes m_account = 3;
   bool has_m_account() const;
   private:
   bool _internal_has_m_account() const;
@@ -477,7 +477,7 @@ class db_account PROTOBUF_FINAL :
   void set_m_account(const std::string& value);
   void set_m_account(std::string&& value);
   void set_m_account(const char* value);
-  void set_m_account(const char* value, size_t size);
+  void set_m_account(const void* value, size_t size);
   std::string* mutable_m_account();
   std::string* release_m_account();
   void set_allocated_m_account(std::string* m_account);
@@ -496,7 +496,7 @@ class db_account PROTOBUF_FINAL :
   std::string* _internal_mutable_m_account();
   public:
 
-  // string m_passworld = 4;
+  // bytes m_passworld = 4;
   bool has_m_passworld() const;
   private:
   bool _internal_has_m_passworld() const;
@@ -506,7 +506,7 @@ class db_account PROTOBUF_FINAL :
   void set_m_passworld(const std::string& value);
   void set_m_passworld(std::string&& value);
   void set_m_passworld(const char* value);
-  void set_m_passworld(const char* value, size_t size);
+  void set_m_passworld(const void* value, size_t size);
   std::string* mutable_m_passworld();
   std::string* release_m_passworld();
   void set_allocated_m_passworld(std::string* m_passworld);
@@ -940,7 +940,7 @@ class db_brief PROTOBUF_FINAL :
     kMNotalkutcFieldNumber = 7,
     kMCreateutcFieldNumber = 8,
   };
-  // string m_name = 2;
+  // bytes m_name = 2;
   bool has_m_name() const;
   private:
   bool _internal_has_m_name() const;
@@ -950,7 +950,7 @@ class db_brief PROTOBUF_FINAL :
   void set_m_name(const std::string& value);
   void set_m_name(std::string&& value);
   void set_m_name(const char* value);
-  void set_m_name(const char* value, size_t size);
+  void set_m_name(const void* value, size_t size);
   std::string* mutable_m_name();
   std::string* release_m_name();
   void set_allocated_m_name(std::string* m_name);
@@ -1983,7 +1983,7 @@ class db_keyvalue PROTOBUF_FINAL :
     kMValueFieldNumber = 2,
     kMIdFieldNumber = 1,
   };
-  // string m_value = 2;
+  // bytes m_value = 2;
   bool has_m_value() const;
   private:
   bool _internal_has_m_value() const;
@@ -1993,7 +1993,7 @@ class db_keyvalue PROTOBUF_FINAL :
   void set_m_value(const std::string& value);
   void set_m_value(std::string&& value);
   void set_m_value(const char* value);
-  void set_m_value(const char* value, size_t size);
+  void set_m_value(const void* value, size_t size);
   std::string* mutable_m_value();
   std::string* release_m_value();
   void set_allocated_m_value(std::string* m_value);
@@ -2043,13 +2043,13 @@ class db_keyvalue PROTOBUF_FINAL :
 class db_rolekeyvalue_MDataEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_rolekeyvalue_MDataEntry_DoNotUse, 
     std::string, std::string,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BYTES,
     0 > {
 public:
   typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<db_rolekeyvalue_MDataEntry_DoNotUse, 
     std::string, std::string,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BYTES,
     0 > SuperType;
   db_rolekeyvalue_MDataEntry_DoNotUse();
   db_rolekeyvalue_MDataEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -2058,9 +2058,7 @@ public:
   static bool ValidateKey(std::string* s) {
     return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "pbdb.db_rolekeyvalue.MDataEntry.key");
  }
-  static bool ValidateValue(std::string* s) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "pbdb.db_rolekeyvalue.MDataEntry.value");
- }
+  static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
   ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
   private:
@@ -2191,7 +2189,7 @@ class db_rolekeyvalue PROTOBUF_FINAL :
     kMDataFieldNumber = 2,
     kMIdFieldNumber = 1,
   };
-  // map<string, string> m_data = 2;
+  // map<string, bytes> m_data = 2;
   int m_data_size() const;
   private:
   int _internal_m_data_size() const;
@@ -2234,7 +2232,7 @@ class db_rolekeyvalue PROTOBUF_FINAL :
       db_rolekeyvalue_MDataEntry_DoNotUse,
       std::string, std::string,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BYTES,
       0 > m_data_;
   ::PROTOBUF_NAMESPACE_ID::int64 m_id_;
   friend struct ::TableStruct_db_2eproto;
@@ -2538,7 +2536,7 @@ class mail PROTOBUF_FINAL :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pbdb::mailitem >&
       m_items() const;
 
-  // string m_prams = 4;
+  // bytes m_prams = 4;
   bool has_m_prams() const;
   private:
   bool _internal_has_m_prams() const;
@@ -2548,7 +2546,7 @@ class mail PROTOBUF_FINAL :
   void set_m_prams(const std::string& value);
   void set_m_prams(std::string&& value);
   void set_m_prams(const char* value);
-  void set_m_prams(const char* value, size_t size);
+  void set_m_prams(const void* value, size_t size);
   std::string* mutable_m_prams();
   std::string* release_m_prams();
   void set_allocated_m_prams(std::string* m_prams);
@@ -2567,7 +2565,7 @@ class mail PROTOBUF_FINAL :
   std::string* _internal_mutable_m_prams();
   public:
 
-  // string m_content = 5;
+  // bytes m_content = 5;
   bool has_m_content() const;
   private:
   bool _internal_has_m_content() const;
@@ -2577,7 +2575,7 @@ class mail PROTOBUF_FINAL :
   void set_m_content(const std::string& value);
   void set_m_content(std::string&& value);
   void set_m_content(const char* value);
-  void set_m_content(const char* value, size_t size);
+  void set_m_content(const void* value, size_t size);
   std::string* mutable_m_content();
   std::string* release_m_content();
   void set_allocated_m_content(std::string* m_content);
@@ -2997,7 +2995,7 @@ class db_notice PROTOBUF_FINAL :
     kMStarttimeFieldNumber = 3,
     kMFinishtimeFieldNumber = 4,
   };
-  // string m_notice = 2;
+  // bytes m_notice = 2;
   bool has_m_notice() const;
   private:
   bool _internal_has_m_notice() const;
@@ -3007,7 +3005,7 @@ class db_notice PROTOBUF_FINAL :
   void set_m_notice(const std::string& value);
   void set_m_notice(std::string&& value);
   void set_m_notice(const char* value);
-  void set_m_notice(const char* value, size_t size);
+  void set_m_notice(const void* value, size_t size);
   std::string* mutable_m_notice();
   std::string* release_m_notice();
   void set_allocated_m_notice(std::string* m_notice);
@@ -5487,7 +5485,7 @@ class db_family PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
       mutable_m_applylist();
 
-  // string m_name = 3;
+  // bytes m_name = 3;
   bool has_m_name() const;
   private:
   bool _internal_has_m_name() const;
@@ -5497,7 +5495,7 @@ class db_family PROTOBUF_FINAL :
   void set_m_name(const std::string& value);
   void set_m_name(std::string&& value);
   void set_m_name(const char* value);
-  void set_m_name(const char* value, size_t size);
+  void set_m_name(const void* value, size_t size);
   std::string* mutable_m_name();
   std::string* release_m_name();
   void set_allocated_m_name(std::string* m_name);
@@ -5934,7 +5932,7 @@ class dbcross_test PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int64 >*
       mutable_m_value();
 
-  // string m_name = 1;
+  // bytes m_name = 1;
   bool has_m_name() const;
   private:
   bool _internal_has_m_name() const;
@@ -5944,7 +5942,7 @@ class dbcross_test PROTOBUF_FINAL :
   void set_m_name(const std::string& value);
   void set_m_name(std::string&& value);
   void set_m_name(const char* value);
-  void set_m_name(const char* value, size_t size);
+  void set_m_name(const void* value, size_t size);
   std::string* mutable_m_name();
   std::string* release_m_name();
   void set_allocated_m_name(std::string* m_name);
@@ -6044,7 +6042,7 @@ inline void db_account::set_m_roleid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_account.m_roleid)
 }
 
-// string m_account = 3;
+// bytes m_account = 3;
 inline bool db_account::_internal_has_m_account() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -6088,7 +6086,7 @@ inline void db_account::set_m_account(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_account.m_account)
 }
-inline void db_account::set_m_account(const char* value,
+inline void db_account::set_m_account(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_account_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -6137,7 +6135,7 @@ inline void db_account::unsafe_arena_set_allocated_m_account(
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.db_account.m_account)
 }
 
-// string m_passworld = 4;
+// bytes m_passworld = 4;
 inline bool db_account::_internal_has_m_passworld() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -6181,7 +6179,7 @@ inline void db_account::set_m_passworld(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_account.m_passworld)
 }
-inline void db_account::set_m_passworld(const char* value,
+inline void db_account::set_m_passworld(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000002u;
   m_passworld_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -6356,7 +6354,7 @@ inline void db_brief::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_brief.m_id)
 }
 
-// string m_name = 2;
+// bytes m_name = 2;
 inline bool db_brief::_internal_has_m_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -6400,7 +6398,7 @@ inline void db_brief::set_m_name(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_brief.m_name)
 }
-inline void db_brief::set_m_name(const char* value,
+inline void db_brief::set_m_name(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -7099,7 +7097,7 @@ inline void db_keyvalue::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_keyvalue.m_id)
 }
 
-// string m_value = 2;
+// bytes m_value = 2;
 inline bool db_keyvalue::_internal_has_m_value() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -7143,7 +7141,7 @@ inline void db_keyvalue::set_m_value(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_keyvalue.m_value)
 }
-inline void db_keyvalue::set_m_value(const char* value,
+inline void db_keyvalue::set_m_value(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_value_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -7226,7 +7224,7 @@ inline void db_rolekeyvalue::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_rolekeyvalue.m_id)
 }
 
-// map<string, string> m_data = 2;
+// map<string, bytes> m_data = 2;
 inline int db_rolekeyvalue::_internal_m_data_size() const {
   return m_data_.size();
 }
@@ -7403,7 +7401,7 @@ inline void mail::set_m_tid(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:pbdb.mail.m_tid)
 }
 
-// string m_prams = 4;
+// bytes m_prams = 4;
 inline bool mail::_internal_has_m_prams() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -7447,7 +7445,7 @@ inline void mail::set_m_prams(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.mail.m_prams)
 }
-inline void mail::set_m_prams(const char* value,
+inline void mail::set_m_prams(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_prams_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -7496,7 +7494,7 @@ inline void mail::unsafe_arena_set_allocated_m_prams(
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbdb.mail.m_prams)
 }
 
-// string m_content = 5;
+// bytes m_content = 5;
 inline bool mail::_internal_has_m_content() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -7540,7 +7538,7 @@ inline void mail::set_m_content(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.mail.m_content)
 }
-inline void mail::set_m_content(const char* value,
+inline void mail::set_m_content(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000002u;
   m_content_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -7779,7 +7777,7 @@ inline void db_notice::set_m_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_notice.m_id)
 }
 
-// string m_notice = 2;
+// bytes m_notice = 2;
 inline bool db_notice::_internal_has_m_notice() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -7823,7 +7821,7 @@ inline void db_notice::set_m_notice(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_notice.m_notice)
 }
-inline void db_notice::set_m_notice(const char* value,
+inline void db_notice::set_m_notice(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_notice_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -8974,7 +8972,7 @@ inline void db_family::set_m_createutc(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:pbdb.db_family.m_createutc)
 }
 
-// string m_name = 3;
+// bytes m_name = 3;
 inline bool db_family::_internal_has_m_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -9018,7 +9016,7 @@ inline void db_family::set_m_name(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.db_family.m_name)
 }
-inline void db_family::set_m_name(const char* value,
+inline void db_family::set_m_name(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
@@ -9375,7 +9373,7 @@ db_friends::mutable_m_applyfriends() {
 
 // dbcross_test
 
-// string m_name = 1;
+// bytes m_name = 1;
 inline bool dbcross_test::_internal_has_m_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -9419,7 +9417,7 @@ inline void dbcross_test::set_m_name(const char* value) {
               GetArena());
   // @@protoc_insertion_point(field_set_char:pbdb.dbcross_test.m_name)
 }
-inline void dbcross_test::set_m_name(const char* value,
+inline void dbcross_test::set_m_name(const void* value,
     size_t size) {
   _has_bits_[0] |= 0x00000001u;
   m_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
