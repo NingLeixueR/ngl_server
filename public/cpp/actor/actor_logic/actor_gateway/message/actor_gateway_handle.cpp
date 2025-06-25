@@ -152,16 +152,26 @@ namespace ngl
 		
 		if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
 		{
+			i32_socket loldsocket = linfo->m_socket;
 			nets::net(linfo->m_socket)->close_net(linfo->m_socket);
+			m_info.remove_socket(linfo->m_socket);
 			linfo->m_socket = 0;
 			if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 			{
-				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
+				update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata
+					{
+						.m_add = { *linfo },
+						.m_delsocket = { loldsocket },
+						.m_delactorid = { nguid::make(ACTOR_ROLE,lguid.area(), lguid.actordataid()) },
+					}));
 			}
 			// 断线重连或者其他设备顶号
-			pbnet::PROBUFF_NET_ROLE_SYNC pro;
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
-			nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
+			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
+			sendrole(linfo->m_gameid, lroleactor, ltemp);
+
+			
+			//nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
 			return true;
 		}
 
