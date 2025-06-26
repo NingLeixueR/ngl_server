@@ -37,8 +37,11 @@ namespace ngl
 		// parm const fun_run& arunfun				Âß¼­»Øµ÷
 		// parm const char* aname					debug name
 		static void register_protocol(
-			EPROTOCOL_TYPE atype, i32_protocolnum aprotocolnumber, ENUM_ACTOR aenumactor
-			, const fun_pack& apackfun, const fun_run& arunfun
+			EPROTOCOL_TYPE atype
+			, i32_protocolnum aprotocolnumber
+			, ENUM_ACTOR aenumactor
+			, const fun_pack& apackfun
+			, const fun_run& arunfun
 			, const char* aname
 		);
 
