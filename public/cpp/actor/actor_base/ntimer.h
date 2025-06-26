@@ -29,7 +29,12 @@ namespace ngl
 		//ET_MONTH,		// 每月触发
 		static bool month(np_timerparm& aparm, int amonthday/*1-31*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (localtime::check_monthday(amonthday) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
+			if (
+				localtime::check_monthday(amonthday) 
+				&& localtime::check_hour(ahour) 
+				&& localtime::check_minute(amin) 
+				&& localtime::check_sec(asec)
+				)
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_WEEK;
 				aparm.m_ms = month_ms(localtime::gettime(), amonthday, ahour, amin, asec);
@@ -46,7 +51,12 @@ namespace ngl
 		// 每周触发 1-7
 		static bool week(np_timerparm& aparm, int aweek/*1-7*/, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (localtime::check_week(aweek) && localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
+			if (
+				localtime::check_week(aweek) 
+				&& localtime::check_hour(ahour) 
+				&& localtime::check_minute(amin) 
+				&& localtime::check_sec(asec)
+				)
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_WEEK;
 				time_t lnow = localtime::gettime();
@@ -65,7 +75,11 @@ namespace ngl
 		// 每日触发  ahour时amin分asec秒
 		static bool day(np_timerparm& aparm, int ahour, int amin, int asec, int acount = 0x7fffffff)
 		{
-			if (localtime::check_hour(ahour) && localtime::check_minute(amin) && localtime::check_sec(asec))
+			if (
+				localtime::check_hour(ahour) 
+				&& localtime::check_minute(amin) 
+				&& localtime::check_sec(asec)
+				)
 			{
 				aparm.m_type = E_ACTOR_TIMER::ET_DAY;
 				time_t lnow = localtime::gettime();
