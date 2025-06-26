@@ -39,32 +39,32 @@ namespace ngl
 			std::cout << "[ttab_specialid] reload" << std::endl;
 #define de_pram(NAME) #NAME,m_##NAME
 
-			std::ranges::for_each(m_tablecsv, [this](const auto& pair)
+			for (const auto& pair : m_tablecsv)
+			{
+				bool lread = read_value(
+					pair.second
+					, de_pram(rolemaxlv)
+					, de_pram(rolemaxvip)
+					, de_pram(createfamilconsume)
+					, de_pram(familsignexp)
+					, de_pram(familsigndrop)
+					, de_pram(familapplylistcount)
+					, de_pram(friendsapplylistcount)
+					, de_pram(familjoininterval)
+					, de_pram(friendscount)
+					, de_pram(ranklistmaxcount)
+					, de_pram(example_room_maxtime)
+					, de_pram(example_room_readytime)
+				);
+				std::string lexample_totalnumber;
+				if (lread == false && read_value(pair.second, "example_totalnumber", lexample_totalnumber))
 				{
-					bool lread = read_value(
-						pair.second
-						, de_pram(rolemaxlv)
-						, de_pram(rolemaxvip)
-						, de_pram(createfamilconsume)
-						, de_pram(familsignexp)
-						, de_pram(familsigndrop)
-						, de_pram(familapplylistcount)
-						, de_pram(friendsapplylistcount)
-						, de_pram(familjoininterval)
-						, de_pram(friendscount)
-						, de_pram(ranklistmaxcount)
-						, de_pram(example_room_maxtime)
-						, de_pram(example_room_readytime)
-					);
-					std::string lexample_totalnumber;
-					if (lread == false && read_value(pair.second, "example_totalnumber", lexample_totalnumber))
+					if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
 					{
-						if (tools::splite_special(lexample_totalnumber.c_str(), "\\[", "]", m_example_totalnumber) == false)
-						{
-							return;
-						}
+						return;
 					}
-				});
+				}
+			}
 		}
 
 	public:

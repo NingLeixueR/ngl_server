@@ -195,18 +195,18 @@ namespace ngl
 		// # 获取当前进程已注册的所有协议
 		static void get_allprotocol(std::map<i32_protocolnum, std::string>& apromap, std::map<i32_protocolnum, std::string>& acustommap)
 		{
-			std::ranges::for_each(m_keyval, [&apromap, &acustommap](const auto& apair)
+			for (const auto& apair : m_keyval)
+			{
+				const pinfo& litem = apair.second;
+				if (litem.m_type == EPROTOCOL_TYPE_CUSTOM)
 				{
-					const pinfo& litem = apair.second;
-					if (litem.m_type == EPROTOCOL_TYPE_CUSTOM)
-					{
-						acustommap[litem.m_protocol] = litem.m_name;
-					}
-					else
-					{
-						apromap[litem.m_protocol] = litem.m_name;
-					}
-				});
+					acustommap[litem.m_protocol] = litem.m_name;
+				}
+				else
+				{
+					apromap[litem.m_protocol] = litem.m_name;
+				}
+			}
 		}
 	};
 }// namespace ngl

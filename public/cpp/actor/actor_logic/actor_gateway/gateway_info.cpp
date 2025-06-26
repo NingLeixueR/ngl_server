@@ -156,17 +156,17 @@ namespace ngl
 
 	void gateway_info::gatewayinfo_updata(const np_actor_gatewayinfo_updata& adata)
 	{
-		std::ranges::for_each(adata.m_delsocket, [this](i32_socket asocket)
-			{
-				remove_socket(asocket);
-			});
-		std::ranges::for_each(adata.m_delactorid, [this](i64_actorid aactorid)
-			{
-				remove_actorid(aactorid);
-			});
-		std::ranges::for_each(adata.m_add, [this](const gateway_socket& agetway)
-			{
-				updata(agetway);
-			});
+		for (i32_socket asocket : adata.m_delsocket)
+		{
+			remove_socket(asocket);
+		}
+		for (i64_actorid aactorid : adata.m_delactorid)
+		{
+			remove_actorid(aactorid);
+		}
+		for (const gateway_socket& agetway : adata.m_add)
+		{
+			updata(agetway);
+		}
 	}
 }//namespace ngl

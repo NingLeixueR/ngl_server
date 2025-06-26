@@ -246,10 +246,10 @@ void init_DB_FRIENDS()
 		}
 	}
 
-	std::ranges::for_each(lmap, [](const auto& apair)
-		{
-			ngl::actor_dbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
-		});
+	for (const auto& apair : lmap)
+	{
+		ngl::actor_dbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
+	}
 }
 
 bool start_db(int argc, char** argv)

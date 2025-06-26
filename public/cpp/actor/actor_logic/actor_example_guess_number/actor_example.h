@@ -47,21 +47,19 @@ namespace ngl
 			m_playertype(aplayertype)
 		{
 			m_rolesds.reserve(aroleids.size());
-			std::ranges::for_each(aroleids, [this](const auto& apair)
-				{
-					m_rolesds.push_back(apair.second);
-				}
-			);
+			for (const auto& apair : aroleids)
+			{
+				m_rolesds.push_back(apair.second);
+			}
 		}
 
 		virtual void init()
 		{
 			std::set<i64_actorid> lset;
-			std::ranges::for_each(m_rolesds, [&lset](i64_actorid aroleid)
-				{
-					lset.insert(aroleid);
-				}
-			);
+			for (i64_actorid aroleid : m_rolesds)
+			{
+				lset.insert(aroleid);
+			}
 			tdb_brief::nsp_cli<TACTOR>::instance(id_guid(), true).init_parts((TACTOR*)this, lset);
 		}
 

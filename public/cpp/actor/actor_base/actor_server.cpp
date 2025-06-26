@@ -156,10 +156,10 @@ namespace ngl
 
 	void actor_server::print(const std::vector<i64_actorid>& avec)const
 	{
-		std::ranges::for_each(avec, [this](i64_actorid aactorid)
-			{
-				log_error()->print("np_actornode_update_mass guid:{}", nguid(aactorid));
-			});
+		for (i64_actorid aactorid : avec)
+		{
+			log_error()->print("np_actornode_update_mass guid:{}", nguid(aactorid));
+		}
 	}
 
 	bool actor_server::handle(const message<np_actornode_update_mass>& adata)

@@ -118,25 +118,25 @@ namespace ngl
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_RESPONSE>();
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			std::ranges::for_each(lfriends.getconst().m_friends(), [&pro, &lfriends, this](i64_actorid afriends)
+			for (i64_actorid afriends : lfriends.getconst().m_friends())
+			{
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
+				if (lpbrief == nullptr)
 				{
-					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
-					if (lpbrief == nullptr)
-					{
-						return;
-					}
-					*pro->add_m_friends() = *lpbrief;
-				});
+					return;
+				}
+				*pro->add_m_friends() = *lpbrief;
+			}
 
-			std::ranges::for_each(lfriends.getconst().m_applyfriends(), [&pro, &lfriends, this](i64_actorid afriends)
+			for (i64_actorid afriends : lfriends.getconst().m_applyfriends())
+			{
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
+				if (lpbrief == nullptr)
 				{
-					const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
-					if (lpbrief == nullptr)
-					{
-						return;
-					}
-					*pro->add_m_applyfriends() = *lpbrief;
-				});
+					return;
+				}
+				*pro->add_m_applyfriends() = *lpbrief;
+			}
 			actor::send_client(aroleid, pro);
 		}
 
@@ -144,10 +144,10 @@ namespace ngl
 		bool get_friends(i64_actorid aroleid, std::vector<i64_actorid>& afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			std::ranges::for_each(lfriends.getconst().m_friends(), [&afriends](i64_actorid aactorid)
-				{
-					afriends.push_back(aactorid);
-				});
+			for (i64_actorid aactorid : lfriends.getconst().m_friends())
+			{
+				afriends.push_back(aactorid);
+			}
 			return !afriends.empty();
 		}
 	};

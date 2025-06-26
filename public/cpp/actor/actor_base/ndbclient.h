@@ -473,11 +473,10 @@ namespace ngl
 			m_actor->db_component_init_data();
 
 			// 1、将数据修改为[裁剪修改]
-			std::ranges::for_each(m_dbclientmap, [](std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair)
-				{
-					lpair.second->clear_modified();
-				});
-
+			for (std::pair<const pbdb::ENUM_DB, ndbclient_base*>& lpair : m_dbclientmap)
+			{
+				lpair.second->clear_modified();
+			}
 			// 2、做一些初始化之类的工作,并且需要的话将其发送给客户端
 			m_fun(adbishave);
 			return true;

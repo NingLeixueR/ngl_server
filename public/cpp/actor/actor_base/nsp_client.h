@@ -56,38 +56,38 @@ namespace ngl
 			const np_channel_data<T>* recv = adata.get_data();
 			std::map<int64_t, T>& lmap = *recv->m_data.m_data;
 			bool lfirstsynchronize = recv->m_firstsynchronize;
-			std::ranges::for_each(lmap, [this,lfirstsynchronize](const auto& apair)
+			for (const auto& apair : lmap)
+			{
+				// # 其他结点不能发送非本结点关注的数据的改变
+				if (!m_dataid.empty())
 				{
-					// # 其他结点不能发送非本结点关注的数据的改变
-					if (!m_dataid.empty())
+					if (!m_dataid.contains(apair.first))
 					{
-						if (!m_dataid.contains(apair.first))
-						{
-							tools::no_core_dump();
-							return;
-						}
+						tools::no_core_dump();
+						return;
 					}
-					m_data[apair.first] = apair.second;
-					if (m_changedatafun != nullptr)
-					{
-						m_changedatafun(apair.first, apair.second, lfirstsynchronize);
-					}
-				});
+				}
+				m_data[apair.first] = apair.second;
+				if (m_changedatafun != nullptr)
+				{
+					m_changedatafun(apair.first, apair.second, lfirstsynchronize);
+				}
+			}
 		}
 
 		// # 打印信息
 		void print_info()
 		{
 			std::vector<nguid> lreads;
-			std::ranges::for_each(m_onlyreads, [&lreads](i64_actorid anodeid)
-				{
-					lreads.push_back(anodeid);
-				});
+			for (i64_actorid anodeid : m_onlyreads)
+			{
+				lreads.push_back(anodeid);
+			}
 			std::vector<nguid> lwrites;
-			std::ranges::for_each(m_writealls, [&lwrites](i64_actorid anodeid)
-				{
-					lwrites.push_back(anodeid);
-				});
+			for (i64_actorid anodeid : m_writealls)
+			{
+				lwrites.push_back(anodeid);
+			}
 			std::map<nguid, std::set<int64_t>> lparts;
 			for (const auto& item : m_publishlist1)
 			{

@@ -25,13 +25,12 @@ namespace ngl
 			std::cout << "[ttab_familylv] reload" << std::endl;
 			m_failylvexp.clear();
 			m_failyrolecount.clear();
-			std::ranges::for_each(*tablecsv(), [this](const auto& apair)
-				{
-					m_failylvexp[apair.first] = apair.second.m_exp;
-					m_failyrolecount[apair.first] = apair.second.m_maxmembers;
-				});
+			for (const auto& apair : *tablecsv())
+			{
+				m_failylvexp[apair.first] = apair.second.m_exp;
+				m_failyrolecount[apair.first] = apair.second.m_maxmembers;
+			}
 		}
-
 	public:
 		using type_tab = tab_familylv;
 
