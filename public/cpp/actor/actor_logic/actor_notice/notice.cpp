@@ -36,11 +36,11 @@ namespace ngl
 			if (localtime::checkutc(lnotice.m_finishtime()) == false)
 			{
 				nactor()->log_error()->print(
-					"remove_notice {}:{}-{}:{}",
-					lnotice.m_id(),
-					localtime::time2str(lnotice.m_starttime(), "%Y-%m-%d %H:%M:%S"),
-					localtime::time2str(lnotice.m_finishtime(), "%Y-%m-%d %H:%M:%S"),
-					lnotice.m_notice()
+					"remove_notice {}:{}-{}:{}"
+					, lnotice.m_id()
+					, localtime::time2str(lnotice.m_starttime(), "%Y-%m-%d %H:%M:%S")
+					, localtime::time2str(lnotice.m_finishtime(), "%Y-%m-%d %H:%M:%S")
+					, lnotice.m_notice()
 				);
 				remove(lnotice.m_id());
 			}

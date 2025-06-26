@@ -46,7 +46,6 @@ namespace ngl
 			return true;
 		}
 
-
 		// 没有就添加
 		void update_keyvalue(const pbdb::db_keyvalue* adata)
 		{

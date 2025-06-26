@@ -52,5 +52,4 @@ namespace ngl
 		actor::send_actor(actor_ranklist::actorid(), nguid::make(), pro);
 		activity::finish();
 	}
-
 }//namespace ngl

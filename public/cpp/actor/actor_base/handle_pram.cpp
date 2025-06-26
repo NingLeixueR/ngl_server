@@ -18,9 +18,9 @@ namespace ngl
 		return naddress::get_server(aactorid);
 	}
 
-	i32_serverid handle_pram::get_gatewayid(i64_actorid aactorid)
+	i32_serverid handle_pram::gatewayid(i64_actorid aactorid)
 	{
-		return naddress::get_gatewayid(aactorid);
+		return naddress::gatewayid(aactorid);
 	}
 
 	void handle_pram::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)

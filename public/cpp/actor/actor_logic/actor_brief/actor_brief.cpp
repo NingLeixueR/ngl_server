@@ -1,6 +1,6 @@
 #include "actor_brief.h"
-#include "net.pb.h"
 #include "nsp_server.h"
+#include "net.pb.h"
 
 namespace ngl
 {

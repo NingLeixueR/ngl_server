@@ -36,18 +36,18 @@ namespace ngl
 	{
 		friend class attribute;
 	private:
-		// ### [absolute] 属性绝对值  
+		// # [absolute] 属性绝对值  
 		map_attrvalue m_attr;
-		// ### 万分比属性[自身提供的]
+		// # 万分比属性[自身提供的]
 		map_attrratio m_rattr;
-		// ### 万分比属性[别人提供的]
+		// # 万分比属性[别人提供的]
 		map_attrratio m_orattr;
-		// ########### 以下比例属性 是往父链上添加的属性 ##########
-		// ### key:哪个模块加的比例属性
+		// ## 以下比例属性 是往父链上添加的属性 ##
+		// # key:哪个模块加的比例属性
 		map_moduleratio m_crattr;		// 往父链的[万分比属性]上添加 
-		// #### [m_attr+m_rattr] 产生的属性
+		// # [m_attr+m_rattr] 产生的属性
 		map_attrvalue m_fight;
-		// ### 战力
+		// # 战力
 		int64_t m_fightscore;
 
 		EnumModule m_module;
@@ -111,15 +111,7 @@ namespace ngl
 		// 打印属性
 		void printf()
 		{
-			auto lstream = log_error();
-			(*lstream) << "##############" << std::endl;
-			for (const auto& [key, values] : m_fight)
-			{
-				(*lstream) << std::format("[{}]:[{}]", enum_attr_name::name(key), values) << std::endl;
-			}
-			(*lstream) << "fight:" << m_fightscore << std::endl;
-			(*lstream) << "##############" << std::endl;
-			(*lstream).print("");
+			log_error()->print("attr # {}", m_fight);
 		}
 
 		// 清空属性
@@ -129,7 +121,6 @@ namespace ngl
 			m_rattr.clear();
 			m_crattr.clear();
 		}
-
 
 		// 添加属性
 		void set_attr(EnumAttribute atype, double avalues)
@@ -179,3 +170,19 @@ namespace ngl
 		}
 	};
 }// namespace ngl
+
+//std::map<EnumAttribute, int64_t>
+
+template <>
+struct std::formatter<ngl::EnumAttribute>
+{
+	constexpr auto parse(const std::format_parse_context& ctx)const
+	{
+		return ctx.begin();
+	}
+
+	auto format(const ngl::EnumAttribute aval, std::format_context& ctx)const
+	{
+		return std::format_to(ctx.out(), "{}", ngl::enum_attr_name::name(aval));
+	}
+};

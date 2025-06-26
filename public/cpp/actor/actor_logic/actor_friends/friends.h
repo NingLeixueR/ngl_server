@@ -29,7 +29,11 @@ namespace ngl
 			log_error()->print("friends###loaddb_finish {}", data());
 		}
 
-		bool check_friends(const google::protobuf::RepeatedField<i64_actorid>& avec1, const google::protobuf::RepeatedField<i64_actorid>& avec2, i64_actorid aroleid)
+		bool check_friends(
+			const google::protobuf::RepeatedField<i64_actorid>& avec1, 
+			const google::protobuf::RepeatedField<i64_actorid>& avec2, 
+			i64_actorid aroleid
+		)
 		{
 			return std::find(avec1.begin(), avec1.end(), aroleid) != avec1.end() || std::find(avec2.begin(), avec2.end(), aroleid) != avec2.end();
 		}

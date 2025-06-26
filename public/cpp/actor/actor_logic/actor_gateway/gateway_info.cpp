@@ -121,18 +121,7 @@ namespace ngl
 		return itor->second;
 	}
 
-	void gateway_info::get_subscribe_to(std::map<i64_actorid, i32_serverid>& m_subscribe_to)
-	{
-		for (const auto& [_area, _map] : m_info)
-		{
-			for (const auto& [_roledataid, _info] : _map)
-			{
-				m_subscribe_to.insert(std::make_pair(ngl::nguid::make(ACTOR_ROLE, _area, _roledataid), _info.m_gatewayid));
-			}
-		}
-	}
-
-	int64_t gateway_info::get_gatewayid(i64_actorid aid)
+	int64_t gateway_info::gatewayid(i64_actorid aid)
 	{
 		auto itor = m_info.find(ngl::nguid::area(aid));
 		if (itor == m_info.end())
@@ -154,7 +143,7 @@ namespace ngl
 		}
 	}
 
-	void gateway_info::gatewayinfo_updata(const np_actor_gatewayinfo_updata& adata)
+	void gateway_info::updata(const np_actor_gatewayinfo_updata& adata)
 	{
 		for (i32_socket asocket : adata.m_delsocket)
 		{

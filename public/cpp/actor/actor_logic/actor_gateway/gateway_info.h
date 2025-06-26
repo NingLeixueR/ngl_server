@@ -12,9 +12,9 @@ namespace ngl
 		gateway_info(const gateway_info&) = delete;
 		gateway_info& operator=(const gateway_info&) = delete;
 
-		// key area  value key roleid
+		// key:area  value.key:roleid
 		std::map<i16_area, std::map<i32_actordataid, gateway_socket>> m_info;
-		// key socket
+		// key:socket
 		std::map<i32_socket, gateway_socket*> m_sockinfo;
 	public:
 		gateway_info() {}
@@ -37,13 +37,11 @@ namespace ngl
 		// # 根据socket获取gateway_socket
 		gateway_socket* get(i32_socket asocket);
 
-		void get_subscribe_to(std::map<i64_actorid, i32_serverid>& m_subscribe_to);
-
 		// # 根据actorid获取gatewayid
-		int64_t get_gatewayid(i64_actorid aid);
+		int64_t gatewayid(i64_actorid aid);
 
 		void foreach(const std::function<void(gateway_socket*)>& afun);
 
-		void gatewayinfo_updata(const np_actor_gatewayinfo_updata& adata);
+		void updata(const np_actor_gatewayinfo_updata& adata);
 	};
 }//namespace ngl

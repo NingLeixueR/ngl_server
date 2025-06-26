@@ -177,9 +177,24 @@ namespace ngl
 			return false;
 		}
 
-		bool use(int aid, int acount, i64_actorid aroleid,const std::string& asrc = "", std::map<int, int>* amap = nullptr, int32_t amailid = -1)
+		bool use(
+			int aid
+			, int acount
+			, i64_actorid aroleid
+			,const std::string& asrc = ""
+			, std::map<int, int>* amap = nullptr
+			, int32_t amailid = -1
+		)
 		{
-			std::string lsrc = std::format("drop<{}>::use({},{},{},{}) src={}", typeid(TACTOR).name(), aid, acount, nguid(aroleid), amailid, asrc);
+			std::string lsrc = std::format(
+				"drop<{}>::use({},{},{},{}) src={}"
+				, typeid(TACTOR).name()
+				, aid
+				, acount
+				, nguid(aroleid)
+				, amailid
+				, asrc
+			);
 			log_error()->print(lsrc);
 			if (amailid == -1)
 			{
@@ -214,4 +229,3 @@ namespace ngl
 		}
 	};
 }// namespace ngl
-

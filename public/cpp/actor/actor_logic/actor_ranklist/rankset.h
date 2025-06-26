@@ -28,7 +28,6 @@ namespace ngl
 				tools::no_core_dump();
 				return;
 			}
-			tools::no_core_dump(m_tab != nullptr);
 		}
 	
 		inline const tab_ranklist* tab()

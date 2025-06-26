@@ -137,18 +137,39 @@ namespace ngl
 			{
 				return ecross_none;
 			}
-			return adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
+			if (adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY)
+			{
+				return ecross_cross_ordinary;
+			}
+			else
+			{
+				return ecross_ordinary;
+			}
 		}
 
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
 		{
-			return adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
+			if (adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY)
+			{
+				return ecross_cross_ordinary;
+			}
+			else
+			{
+				return ecross_ordinary;
+			}
 		}
 
 		//# 例子小游戏匹配的转发类型
 		ecross example_type()
 		{
-			return m_example.second == nguid::make() ? ecross_none : ecross_cross_example;
+			if (m_example.second == nguid::make())
+			{
+				return ecross_none;
+			}
+			else
+			{
+				return ecross_cross_example;
+			}
 		}
 
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata)

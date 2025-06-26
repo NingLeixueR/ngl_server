@@ -26,7 +26,8 @@ namespace ngl
 		jsonfunc("proto", m_promap, "custom", m_custommap)
 	};
 
-	class actor_gmclient : public actor
+	class actor_gmclient : 
+		public actor
 	{
 		actor_gmclient(const actor_gmclient&) = delete;
 		actor_gmclient& operator=(const actor_gmclient&) = delete;

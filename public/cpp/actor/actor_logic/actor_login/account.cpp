@@ -18,7 +18,9 @@ namespace ngl
 		log_error()->print("actor_login###loaddb_finish {}", data());
 		foreach([this](data_modified<pbdb::db_account>& dbaccount)
 			{
-				m_areaofaccount[dbaccount.getconst().m_area()].m_data[dbaccount.getconst().m_account()] = &dbaccount;
+				i16_area larea = dbaccount.getconst().m_area();
+				const std::string& laccount = dbaccount.getconst().m_account();
+				m_areaofaccount[larea].m_data[laccount] = &dbaccount;
 				m_max_accountid = std::max(m_max_accountid, nguid::actordataid(dbaccount.getconst().m_id()));
 			});
 	}

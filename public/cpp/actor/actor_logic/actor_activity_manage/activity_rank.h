@@ -11,16 +11,26 @@ namespace ngl
 		activity_rank(const activity_rank&) = delete;
 		activity_rank& operator=(const activity_rank&) = delete;
 
-		virtual std::shared_ptr<activity> create(int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb)
+		virtual std::shared_ptr<activity> create(
+			int32_t aactivityid
+			, int32_t atime
+			, int32_t aduration
+			, activitydb& aactivitydb
+			, activitytimedb& aactivitytimedb
+		)
 		{
 			return std::make_shared<activity_rank>(
 				aactivityid, atime, aduration, aactivitydb, aactivitytimedb
 			);
 		}
-
 	public:
-
-		activity_rank(int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb) :
+		activity_rank(
+			int32_t aactivityid
+			, int32_t atime
+			, int32_t aduration
+			, activitydb& aactivitydb
+			, activitytimedb& aactivitytimedb
+		) :
 			activity(aactivityid, atime, aduration, aactivitydb, aactivitytimedb)
 		{}
 
@@ -34,4 +44,4 @@ namespace ngl
 
 		void handle(const np_get_rank_response& aresponse);
 	};
-}
+}//namespace ngl

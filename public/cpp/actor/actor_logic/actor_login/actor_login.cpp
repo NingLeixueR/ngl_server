@@ -69,7 +69,12 @@ namespace ngl
 		>(false);
 	}
 
-	data_modified<pbdb::db_account>* actor_login::get_account(int area, const std::string& account, const std::string& apassworld, bool& aiscreate)
+	data_modified<pbdb::db_account>* actor_login::get_account(
+		int area
+		, const std::string& account
+		, const std::string& apassworld
+		, bool& aiscreate
+	)
 	{
 		aiscreate = false;
 		auto& lmap = m_account.accountbyarea(area);

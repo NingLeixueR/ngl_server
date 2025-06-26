@@ -28,13 +28,13 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_actor_disconnect_close>();
 			pro->m_actorid = nguid::make(ACTOR_ROLE, larea, lroleid);
-			// ##### 通知game服务器 玩家已经断开连接
-			actor::send_actor(pro->m_actorid, id_guid(), pro);
-			// ##### 通知login服务器 玩家已经断开连接
+			// # 通知game服务器 玩家已经断开连接
+			send_actor(pro->m_actorid, id_guid(), pro);
+			// # 通知login服务器 玩家已经断开连接
 			ttab_servers::instance().foreach_server(LOGIN, tab_self_area, [&pro, this](const tab_servers* atab)
 				{
 					nguid lguid(ACTOR_LOGIN, tab_self_area, atab->m_id);
-					actor::send_actor(lguid, id_guid(), pro);
+					send_actor(lguid, id_guid(), pro);
 				});
 		}
 		return true;
@@ -62,7 +62,14 @@ namespace ngl
 		};
 		m_info.updata(ltemp);
 
-		update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {ltemp} }));
+		update_gateway_info(
+			std::make_shared<np_actor_gatewayinfo_updata>(
+				np_actor_gatewayinfo_updata
+				{ 
+					.m_add = {ltemp} 
+				}
+			)
+		);
 
 		// ## 通知actor_server [actorid]->[gateway server id]
 		sync_actorserver_gatewayid(lguid, false);
@@ -94,7 +101,14 @@ namespace ngl
 		if (lpram->m_toserverid != 0)
 		{
 			linfo->m_gameid = lpram->m_toserverid;
-			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
+			update_gateway_info(
+				std::make_shared<np_actor_gatewayinfo_updata>(
+					np_actor_gatewayinfo_updata
+					{ 
+						.m_add = {*linfo} 
+					}
+				)
+			);
 		}
 		return true;
 	}
@@ -128,7 +142,14 @@ namespace ngl
 			session_close(linfo);
 		}
 
-		update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_delsocket = {lpram->m_sessionid} }));
+		update_gateway_info(
+			std::make_shared<np_actor_gatewayinfo_updata>(
+				np_actor_gatewayinfo_updata
+				{ 
+					.m_delsocket = {lpram->m_sessionid} 
+				}
+			)
+		);
 
 		m_info.remove_socket(lpram->m_sessionid);
 		return true;
@@ -139,8 +160,8 @@ namespace ngl
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		log_error()->print("############ GateWay Login[{}][{}][{}] ############"
-			, lpack->m_id, lpram->m_roleid(), lpram->m_session()
+		log_error()->print("# GateWay Login[{}][{}][{}] #"
+			, lpack->m_id, nguid(lpram->m_roleid()), lpram->m_session()
 		);
 		nguid lguid(lpram->m_roleid());
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
@@ -150,7 +171,11 @@ namespace ngl
 			return true;
 		}
 		
-		if (sysconfig::robot_test() == false && lpack->m_id != linfo->m_socket && linfo->m_socket > 0)
+		if (
+			sysconfig::robot_test() == false 
+			&& lpack->m_id != linfo->m_socket 
+			&& linfo->m_socket > 0
+			)
 		{
 			i32_socket loldsocket = linfo->m_socket;
 			nets::net(linfo->m_socket)->close_net(linfo->m_socket);
@@ -169,15 +194,19 @@ namespace ngl
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
 			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
 			sendrole(linfo->m_gameid, lroleactor, ltemp);
-
-			
-			//nets::sendbyserver(linfo->m_gameid, pro, lroleactor, id_guid());
 			return true;
 		}
 
 		if (m_info.updata_socket(lguid.area(), lguid.actordataid(), lpack->m_id))
 		{
-			update_gateway_info(std::make_shared<np_actor_gatewayinfo_updata>(np_actor_gatewayinfo_updata{ .m_add = {*linfo} }));
+			update_gateway_info(
+				std::make_shared<np_actor_gatewayinfo_updata>(
+					np_actor_gatewayinfo_updata
+					{ 
+						.m_add = {*linfo} 
+					}
+				)
+			);
 		}
 
 		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
@@ -194,17 +223,25 @@ namespace ngl
 		auto lpram = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		/////////////////////////////////////
+		i16_area larea = nguid::none_area();
+		i32_actordataid lactordataid = nguid::none_actordataid();
 		// 多robot公用一个tcp连接会有问题
-		//gateway_socket* lpstruct = m_info.get(lpack->m_id);
-		//if (lpstruct == nullptr)
-		//	return true;
-		//i16_area larea = lpstruct->m_area;
-		//i32_actordataid lactordataid = lpstruct->m_dataid;
-		i64_actorid request_actor = lpack->m_head.get_request_actor();
-		i16_area larea = nguid::area(request_actor);
-		i32_actordataid lactordataid = nguid::actordataid(request_actor);
-		///////////////////////////////
+		if (sysconfig::robot_test())
+		{
+			i64_actorid request_actor = lpack->m_head.get_request_actor();
+			larea = nguid::area(request_actor);
+			lactordataid = nguid::actordataid(request_actor);
+		}
+		else
+		{
+			gateway_socket* lpstruct = m_info.get(lpack->m_id);
+			if (lpstruct == nullptr)
+			{
+				return true;
+			}
+			larea = lpstruct->m_area;
+			lactordataid = lpstruct->m_dataid;
+		}
 
 		std::string lkcpsession;
 		if (ukcp::create_session(nguid::make(nguid::none_type(), larea, lactordataid), lkcpsession) == false)
@@ -214,13 +251,13 @@ namespace ngl
 
 		// ### 通知kcp服务器创建连接
 		np_actor_kcp pro;
-		pro.m_kcpsession = lkcpsession;
-		pro.m_sessionid = lpack->m_id;
-		pro.m_area = nguid::area(request_actor);
-		pro.m_dataid = nguid::actordataid(request_actor);
-		pro.m_uip = lpram->m_uip();
-		pro.m_uport = lpram->m_uport();
-		pro.m_conv = lpram->m_conv();
+		pro.m_kcpsession	= lkcpsession;
+		pro.m_sessionid		= lpack->m_id;
+		pro.m_area			= larea;
+		pro.m_dataid		= lactordataid;
+		pro.m_uip			= lpram->m_uip();
+		pro.m_uport			= lpram->m_uport();
+		pro.m_conv			= lpram->m_conv();
 
 		nets::sendbyserver((i32_serverid)lpram->m_serverid(), pro, nguid::make(), nguid::make());
 

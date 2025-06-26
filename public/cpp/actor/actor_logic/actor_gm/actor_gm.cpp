@@ -71,7 +71,7 @@ namespace ngl
 	void actor_gm::sendbyactorid(i64_actorid aactorid, const pack* apack, const ngl::np_gm& apro)
 	{
 		auto pro = std::make_shared<mforward<ngl::np_gm>>(apack->m_id, apro);
-		actor::send_actor(aactorid, id_guid(), pro);
+		send_actor(aactorid, id_guid(), pro);
 	}
 
 	bool actor_gm::checklocalbytype(NODE_TYPE atype)

@@ -79,4 +79,3 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata);
 	};
 }//namespace ngl
-	
