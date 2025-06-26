@@ -111,10 +111,10 @@ namespace ngl
 				if (lpgrid != nullptr)
 				{
 					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					std::ranges::for_each(*lpset, [&lview](i64_actorid item)
-						{
-							lview.insert(item);
-						});
+					for (i64_actorid item : *lpset)
+					{
+						lview.insert(item);
+					}
 				}
 			}
 		}
@@ -139,10 +139,10 @@ namespace ngl
 				if (lpgrid != nullptr)
 				{
 					std::set<i64_actorid>* lpset = lpgrid->get_unitlist();
-					std::ranges::for_each(*lpset, [&lview](i64_actorid item)
-						{
-							lview.insert(item);
-						});
+					for (i64_actorid item : *lpset)
+					{
+						lview.insert(item);
+					}
 				}
 			}
 		}

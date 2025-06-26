@@ -251,14 +251,14 @@ namespace ngl
 		}
 		const auto& lfamily = lpfamily->getconst();
 		*pro->mutable_m_info() = lfamily;
-		std::ranges::for_each(lfamily.m_member(), [this, &pro](int64_t aroleid)
+		for (int64_t aroleid : lfamily.m_member())
+		{
+			const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
+			if (lpbrief != nullptr)
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_family>::instance(get_actor()->id_guid()).getconst(aroleid);
-				if (lpbrief != nullptr)
-				{
-					*pro->add_m_member() = *lpbrief;
-				}				
-			});
+				*pro->add_m_member() = *lpbrief;
+			}
+		}
 		actor::send_client(aroleid, pro);
 	}
 
@@ -347,14 +347,14 @@ namespace ngl
 		{
 			return false;
 		}
-		std::ranges::for_each(lpfamily->getconst().m_member(), [&afamilyers, aroleid](const int64_t afamilyer)
+		for (const int64_t afamilyer : lpfamily->getconst().m_member())
+		{
+			if (afamilyer == aroleid)
 			{
-				if (afamilyer == aroleid)
-				{
-					return;
-				}
-				afamilyers.push_back(afamilyer);
-			});
+				continue;
+			}
+			afamilyers.push_back(afamilyer);
+		}
 		return !afamilyers.empty();
 	}
 }//namespace ngl

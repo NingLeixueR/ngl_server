@@ -112,11 +112,11 @@ namespace ngl
 						lvec.push_back(agetway);
 					}
 				});
-			std::ranges::for_each(lvec, [this](gateway_socket* asocket)
-				{
-					gateway_socket* linfo = m_info.get(asocket->m_area, asocket->m_dataid);
-					session_close(linfo);
-				});
+			for (gateway_socket* asocket : lvec)
+			{
+				gateway_socket* linfo = m_info.get(asocket->m_area, asocket->m_dataid);
+				session_close(linfo);
+			}
 		}
 		else
 		{

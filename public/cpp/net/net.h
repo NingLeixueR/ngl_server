@@ -50,14 +50,14 @@ namespace ngl
 		static bool sendbyserver(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::vector<i32_session> lsessionvec;
-			std::ranges::for_each(aserverids, [&lsessionvec](i32_serverid iserverid)
+			for (i32_serverid iserverid : aserverids)
+			{
+				i32_session lsession = server_session::sessionid(iserverid);
+				if (lsession != -1)
 				{
-					i32_session lsession = server_session::sessionid(iserverid);
-					if (lsession != -1)
-					{
-						lsessionvec.push_back(lsession);
-					}
-				});
+					lsessionvec.push_back(lsession);
+				}
+			}
 			if (!lsessionvec.empty())
 			{
 				return sendmore(lsessionvec, adata, aactorid, arequestactorid);

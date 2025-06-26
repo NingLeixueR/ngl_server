@@ -108,10 +108,10 @@ namespace ngl
 			std::set<nguid>* lset = tools::findmap(m_actortypeserver, (i16_actortype)atype);
 			if (lset != nullptr)
 			{
-				std::ranges::for_each(*lset, [&avec](const nguid& aguid)
-					{
-						avec.insert(get_server(aguid));
-					});
+				for (const nguid& aguid : *lset)
+				{
+					avec.insert(get_server(aguid));
+				}
 			}
 		}
 
@@ -155,15 +155,15 @@ namespace ngl
 
 		static void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 		{
-			std::ranges::for_each(aactorset, [&aserverset](const auto& aguid)
+			for (const auto& aguid : aactorset)
+			{
+				const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
+				if (lserverid == nullptr)
 				{
-					const i32_serverid* lserverid = tools::findmap(m_rolegateway, aguid);
-					if (lserverid == nullptr)
-					{
-						return;
-					}
-					aserverset.insert(*lserverid);
-				});
+					return;
+				}
+				aserverset.insert(*lserverid);
+			}
 		}
 	};
 

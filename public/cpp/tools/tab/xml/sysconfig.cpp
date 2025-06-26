@@ -94,10 +94,10 @@ namespace ngl
 		std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(tab_self_area);
 		if (lareas == nullptr)
 		{
-			std::ranges::for_each(*lareas, [](i16_area aarea)
-				{
-					ttab_servers::instance().get_server(GATEWAY, aarea, sysconfig::m_gatewayids);
-				});
+			for (i16_area aarea : *lareas)
+			{
+				ttab_servers::instance().get_server(GATEWAY, aarea, sysconfig::m_gatewayids);
+			}
 		}
 		ttab_servers::instance().get_server(GATEWAY, tab_self_area, m_gatewayids);
 	}
