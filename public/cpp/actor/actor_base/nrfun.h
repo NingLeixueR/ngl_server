@@ -125,7 +125,11 @@ namespace ngl
 
 		//# 注册转发协议
 		template <bool BOOL, typename T>
-		nrfun& rfun_forward(const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun, ENUM_ACTOR atype, bool aisload = false);
+		nrfun& rfun_forward(
+			const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun
+			, ENUM_ACTOR atype
+			, bool aisload = false
+		);
 
 		//# 注册接收转发协议处理协议
 		template <typename T>

@@ -25,14 +25,22 @@ namespace ngl
 		{
 			if (aactor->type() != ACTOR_CLIENT && aactor->type() != ACTOR_SERVER)
 			{
-				log_error()->print("{}::handle_switch  m_fun.find({}) == end", aactor->guid(), apram.m_enum);
+				log_error()->print(
+					"{}::handle_switch  m_fun.find({}) == end"
+					, aactor->guid()
+					, apram.m_enum
+				);
 			}
 			return false;
 		}
 		bool lisloadfinish = aactor->isloadfinish();
 		if (lisloadfinish == false && itor->second.m_isdbload == false)
 		{
-			log_error()->print("{}::handle_switch isloadfinish() == {}", aactor->guid(), lisloadfinish);
+			log_error()->print(
+				"{}::handle_switch isloadfinish() == {}"
+				, aactor->guid()
+				, lisloadfinish
+			);
 			return false;
 		}
 		std::string lenumname = tprotocol::protocol_name(apram.m_enum);
