@@ -14,6 +14,8 @@ namespace ngl
 		nsp_client(const nsp_client&) = delete;
 		nsp_client& operator=(const nsp_client&) = delete;
 
+		using tnsp_client = nsp_client<TDerived, TACTOR, T>;
+
 		actor*															m_actor = nullptr;
 		std::map<i16_area, i64_actorid>									m_nspserver;
 		std::map<i16_area, bool>										m_register;
@@ -43,7 +45,9 @@ namespace ngl
 		void log(const char* amessage)
 		{
 			m_actor->log_error()->print(
-				"{} {}:{}", amessage, tools::type_name<TDerived>(), tools::type_name<T>()
+				"{}:{}"
+				, tools::type_name<tnsp_client>()
+				, amessage
 			);
 		}
 

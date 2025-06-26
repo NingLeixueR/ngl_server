@@ -83,9 +83,9 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype]= typeid(TPARM).hash_code();
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, type_actor_events, TPARM>
+			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, tactor_events, TPARM>
 				(
-					[atype](type_actor_events*, message<TPARM>& adata)
+					[atype](tactor_events*, message<TPARM>& adata)
 					{
 						std::set<i64_actorid>* lmember = tools::findmap(m_eventmember, atype);
 						if (lmember == nullptr)

@@ -8,7 +8,11 @@ namespace ngl
 {
 	//# 订阅/发布[数据副本]
 	//# nsp_server负责分发数据,当数据发生变化
-	template <pbdb::ENUM_DB ENUMDB, typename TDerived, typename TDATA>
+	template <
+		pbdb::ENUM_DB ENUMDB,	// 数据类型枚举
+		typename TDerived,		// 寄宿的actor
+		typename TDATA			// 数据类型
+	>
 	class nsp_server
 	{
 	public:
@@ -22,7 +26,6 @@ namespace ngl
 		nsp_server(const nsp_server&) = delete;
 		nsp_server& operator=(const nsp_server&) = delete;
 
-
 		static std::set<i64_actorid>							m_onlyreads;								// 只读全部数据
 		static std::set<i64_actorid>							m_writealls;								// 读/写全部数据
 		// m_publishlist_write.first:<结点id>
@@ -31,11 +34,20 @@ namespace ngl
 
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
+		static void log(const char* amessage)
+		{
+			m_dbmodule->get_actor()->log_error()->print(
+				"{}:{}"
+				, tools::type_name<tnsp_server>()
+				, amessage
+			);
+		}
+
 		static void channel_register(TDerived*, message<np_channel_register<TDATA>>& adata)
 		{
 			if (m_dbmodule->actorbase() == nullptr)
 			{
-				log_error()->print("nsp_server::channel_register fail m_dbmodule->actorbase() == nullptr");
+				log("channel_register fail");
 				return;
 			}
 			const np_channel_register<TDATA>* recv = adata.get_data();
@@ -123,7 +135,6 @@ namespace ngl
 			{
 				auto pro = std::make_shared<np_channel_data<TDATA>>();
 				pro->m_data.make();
-				//ndb_modular<ENUMDB, TDATA, TDerived>*
 				std::map<nguid, data_modified<TDATA>>& ldata = m_dbmodule->data();
 				if (lonlyread || ldataid.empty())
 				{
@@ -164,12 +175,12 @@ namespace ngl
 		{
 			if (m_dbmodule->actorbase() == nullptr)
 			{
-				log_error()->print("nsp_server::channel_exit fail m_dbmodule->actorbase() == nullptr");
+				log("channel_exit fail");
 				return;
 			}
 			const np_channel_exit<TDATA>* recv = adata.get_data();
 
-			log_error()->print("nsp_server.np_channel_exit {}", nguid(recv->m_actorid));
+			log(std::format("np_channel_exit {}", nguid(recv->m_actorid)).c_str());
 
 			auto pro = std::make_shared<np_channel_dataid_sync<TDATA>>();
 			pro->m_actorid = recv->m_actorid;
@@ -236,13 +247,19 @@ namespace ngl
 		{
 			m_dbmodule = adbmodule;
 			// # 订阅注册处理
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>>(std::bind_front(&tnsp_server::channel_register), false);
+			actor::register_actor_s<
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>
+			>(std::bind_front(&tnsp_server::channel_register), false);
 
 			// # 订阅数据被修改
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>>(std::bind_front(&tnsp_server::channel_data), false);
+			actor::register_actor_s<
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>
+			>(std::bind_front(&tnsp_server::channel_data), false);
 
 			// # 退出订阅
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_exit<TDATA>>(std::bind_front(&tnsp_server::channel_exit), false);
+			actor::register_actor_s<
+				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_exit<TDATA>
+			>(std::bind_front(&tnsp_server::channel_exit), false);
 		}
 
 		static void sync(i64_actorid aactor)
@@ -290,10 +307,10 @@ namespace ngl
 			{
 				return;
 			}
-			std::ranges::for_each(m_publishlist, [](const auto& apair)
-				{
-					sync(apair.first);
-				});
+			for (const auto& apair : m_publishlist)
+			{
+				sync(apair.first);
+			}
 		}
 	};
 
