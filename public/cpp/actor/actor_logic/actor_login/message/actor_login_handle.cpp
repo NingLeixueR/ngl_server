@@ -64,7 +64,7 @@ namespace ngl
 			std::pair<int32_t, int32_t> lpairgateway;
 			if (!get_freeserver_game(lpairgame) || !get_freeserver_gateway(lpairgateway))
 			{
-				tools::no_core_dump();
+				//tools::no_core_dump();
 				return true;
 			}
 
