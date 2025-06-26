@@ -12,7 +12,6 @@
 #include "net.pb.h"
 #include "drop.h"
 #include "gcmd.h"
-
 namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
