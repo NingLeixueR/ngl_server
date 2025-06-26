@@ -46,8 +46,10 @@ namespace ngl
 		if (lpair.second == false)
 		{
 			log_error()->print(
-				"add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false", 
-				get_actor()->id_guid(), aitem.m_tid(), aitem.m_id()
+				"add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false"
+				, get_actor()->id_guid()
+				, aitem.m_tid()
+				, aitem.m_id()
 			);
 			return nullptr;
 		}

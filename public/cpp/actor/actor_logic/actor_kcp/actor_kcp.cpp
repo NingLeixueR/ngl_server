@@ -16,7 +16,6 @@ namespace ngl
 			.m_weight = 0x7fffffff
 		})
 	{
-
 	}
 
 	ENUM_ACTOR actor_kcp::actor_type()

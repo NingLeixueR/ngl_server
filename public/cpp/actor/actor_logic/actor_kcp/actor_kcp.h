@@ -11,7 +11,8 @@
 
 namespace ngl
 {
-	class actor_kcp : public actor
+	class actor_kcp : 
+		public actor
 	{
 		actor_kcp(const actor_kcp&) = delete;
 		actor_kcp& operator=(const actor_kcp&) = delete;

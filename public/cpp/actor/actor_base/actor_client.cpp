@@ -148,13 +148,13 @@ namespace ngl
 				auto pro = std::make_shared<np_connect_actor_server>();
 				pro->m_serverid = aactorserver;
 				pro->m_session = asession;
-				actor::send_actor(id_guid(), id_guid(), pro);
+				send_actor(id_guid(), id_guid(), pro);
 			}, false, true);
 	}
 
 	void actor_client::actor_server_register()
 	{
-		actor::send_actor(id_guid(), id_guid(), std::make_shared<np_actor_server_register>());
+		send_actor(id_guid(), id_guid(), std::make_shared<np_actor_server_register>());
 	}
 
 	bool actor_client::handle(const message<np_actor_server_register>& adata)
@@ -308,7 +308,7 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_actornode_update_server>();
 			pro->m_data = lparm->m_mass;
-			actor::send_actor(actor_server::actorid(), id_guid(), pro);
+			send_actor(actor_server::actorid(), id_guid(), pro);
 		}
 		
 		if (lparm->m_fun != nullptr)

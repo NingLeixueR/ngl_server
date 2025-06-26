@@ -67,7 +67,8 @@ namespace ngl
 		set_timer(tparm);
 		*/
 		tdb_brief::nsp_cli<actor_role>::instance(id_guid(), true).init_parts(this, { id_guid() });
-		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).set_changedata_fun([this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
+		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).set_changedata_fun(
+			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
 				if (afirstsynchronize)
 				{// 数据完全加载

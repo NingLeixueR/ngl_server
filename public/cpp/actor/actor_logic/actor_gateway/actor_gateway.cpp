@@ -84,7 +84,7 @@ namespace ngl
 		for (i32_serverid iserverid : ttab_servers::instance().tab()->m_actorserver)
 		{
 			i64_actorid lactorserve = actor_server::actorid();
-			actor_base::send_server(iserverid, pro, lactorserve, nguid::make());
+			actor::send_server(iserverid, pro, lactorserve, nguid::make());
 		}
 	}
 

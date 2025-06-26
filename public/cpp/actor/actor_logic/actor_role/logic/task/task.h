@@ -21,6 +21,7 @@ namespace ngl
 	public:
 		// # 检查条件是否都完成
 		static bool check_condition(actor_role* arole, const std::vector<task_condition>& acondition);
+
 		// # 获取已完成任务
 		static google::protobuf::Map<int32_t, pbdb::db_task_complete>& complete(actor_role* arole);
 		static const google::protobuf::Map<int32_t, pbdb::db_task_complete>& const_complete(actor_role* arole);

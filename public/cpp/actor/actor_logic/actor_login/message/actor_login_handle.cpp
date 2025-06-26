@@ -41,8 +41,10 @@ namespace ngl
 		auto lparm = adata.get_data();
 		auto lpack = adata.get_pack();
 
-		log_info()->print("############ Login[{}][{}][{}] ############",
-			lparm->m_area(), lparm->m_account(), lparm->m_password()
+		log_info()->print("# Login[{}][{}][{}] #",
+			lparm->m_area()
+			, lparm->m_account()
+			, lparm->m_password()
 		);
 		bool iscreate = false;
 
@@ -82,15 +84,15 @@ namespace ngl
 		{
 			np_actorrole_login pro
 			{
-				.m_session = lppair_account->m_session,
-				.m_accountid = lpaccount->getconst().m_id(),
-				.m_account = lparm->m_account(),
-				.m_roleid = lpaccount->getconst().m_roleid(),
-				.m_gameid = lppair_account->m_gameserverid,
-				.m_gatewayid = lppair_account->m_gatewayserverid,
-				.m_area = (i16_area)lpaccount->getconst().m_area(),
-				.m_iscreate = iscreate,
-				.m_socketid = adata.get_pack()->m_id,
+				.m_session		= lppair_account->m_session,
+				.m_accountid	= lpaccount->getconst().m_id(),
+				.m_account		= lparm->m_account(),
+				.m_roleid		= lpaccount->getconst().m_roleid(),
+				.m_gameid		= lppair_account->m_gameserverid,
+				.m_gatewayid	= lppair_account->m_gatewayserverid,
+				.m_area			= (i16_area)lpaccount->getconst().m_area(),
+				.m_iscreate		= iscreate,
+				.m_socketid		= adata.get_pack()->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
 			};
 			nets::sendbyserver(pro.m_gatewayid, pro, nguid::moreactor(), id_guid());

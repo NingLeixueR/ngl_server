@@ -35,7 +35,7 @@ namespace ngl
 		np_timerparm tparm;
 		if (make_timerparm::make_interval(tparm, 1) == false)
 		{
-			log_error()->print("actor_example_guess_number::init() make_timerparm::make_interval(tparm, 2) == false!!!");
+			log_error()->print("actor_example_manage::init() make_timerparm::make_interval(tparm, 2) == false!!!");
 			return;
 		}
 		set_timer(tparm);
@@ -70,13 +70,13 @@ namespace ngl
 			pbexample::EPLAY_TYPE ltype = applayinfo->m_type;
 			{
 				auto pro = std::make_shared<np_example_entergame_ready>();
-				actor::send_actor(lactorexampleid, id_guid(), pro);
+				send_actor(lactorexampleid, id_guid(), pro);
 			}
 			{
 				auto pro = std::make_shared<np_example_actorid>();
 				pro->m_type = ltype;
 				pro->m_actorexampleid = lactorexampleid;
-				actor::send_actor(lactorexampleid, id_guid(), pro);
+				send_actor(lactorexampleid, id_guid(), pro);
 			}
 			m_finishinfo[ltype][lactorexampleid] = *applayinfo;
 			m_info[ltype].erase(lactorexampleid);

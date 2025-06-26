@@ -62,7 +62,7 @@ namespace ngl
 		static i32_serverid		get_server(i64_actorid aactorid);
 
 		//# 根据[actorid]获取[gatewayid]
-		static i32_serverid		get_gatewayid(i64_actorid aactorid);
+		static i32_serverid		gatewayid(i64_actorid aactorid);
 
 		//# 根据[服务器类型]获取[服务器列表]
 		static void				get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
@@ -310,7 +310,7 @@ namespace ngl
 		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
 		{
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, larea[i], luid[i]);
-			i32_serverid lserverid = handle_pram::get_gatewayid(lroleactor);
+			i32_serverid lserverid = handle_pram::gatewayid(lroleactor);
 			if (lserverid > 0)
 			{
 				lgateway.insert(lserverid);

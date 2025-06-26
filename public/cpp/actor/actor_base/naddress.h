@@ -67,7 +67,7 @@ namespace ngl
 
 #pragma region gateway
 		//# [ACTOR_ID(ACTOR_ROLE的actor)] -> [GATEWAY_SERVER_ID]
-		static i32_serverid get_gatewayid(const nguid& aguid);
+		static i32_serverid gatewayid(const nguid& aguid);
 
 		//# 将actor_role.actorid与gatewayid关联
 		static void add_gatewayid(const nguid& aguid, i32_serverid aserverid);
@@ -76,7 +76,7 @@ namespace ngl
 		static void remove_gatewayid(const nguid& aguid);
 
 		//# 获取一组actor_role.actorid与gatewayid的关联
-		static void get_gatewayid(
+		static void gatewayid(
 			const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset
 		);
 #pragma endregion

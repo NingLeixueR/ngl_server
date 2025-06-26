@@ -25,12 +25,14 @@ namespace ngl
 			e_create,
 		};
 		etype m_type;
+
 		log_timerparm(etype atype) :
 			m_type(atype)
 		{}
 	};
 
-	class actor_log : public actor
+	class actor_log : 
+		public actor
 	{
 		actor_log() = delete;
 		actor_log(const actor_log&) = delete;

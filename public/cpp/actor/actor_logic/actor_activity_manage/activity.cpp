@@ -9,7 +9,13 @@ namespace ngl
 	activity_drawcompliance g_activity_drawcompliance;
 	activity_rank g_activity_rank;
 
-	activity::activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb):
+	activity::activity(
+		int32_t activityid
+		, int32_t atime
+		, int32_t aduration
+		, activitydb& aactivitydb
+		, activitytimedb& aactivitytimedb
+	):
 		m_activitydb(&aactivitydb),
 		m_activitytimedb(&aactivitytimedb)
 	{

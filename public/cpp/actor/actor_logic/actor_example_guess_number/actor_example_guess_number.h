@@ -24,8 +24,10 @@ namespace ngl
 {
 	enum eactor_example_guess_number
 	{
-		esetp_maxtime = 30, // 单步骤执行的最大秒数
-		equit_time = 10,	// 退出的最大秒数
+		guess_number_esetp_maxtime = 30, // 单步骤执行的最大秒数
+		guess_number_equit_time = 10,	// 退出的最大秒数
+		guess_number_max_number = 101,
+		guess_number_min_number = 0,
 	};
 
 	class actor_example_guess_number : 

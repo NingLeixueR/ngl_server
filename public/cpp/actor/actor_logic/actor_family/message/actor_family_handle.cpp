@@ -55,7 +55,10 @@ namespace ngl
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		i64_actorid lcederoleid = adata.get_data()->data()->m_roleid();
-
+		auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>();
+		int32_t lstat = m_family.cede_family(lroleid, lcederoleid);
+		pro->set_m_stat(lstat);
+		send_client(lroleid, pro);
 		return true;
 	}
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>>& adata)
@@ -81,7 +84,7 @@ namespace ngl
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_INFO>>& adata)
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
-
+		m_family.sync_family(lroleid);
 		return true;
 	}
 	bool actor_family::handle(const message<mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>>& adata)

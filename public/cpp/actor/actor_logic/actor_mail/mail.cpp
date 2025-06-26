@@ -3,7 +3,7 @@
 
 namespace ngl
 {
-	bool mails::drawmail(int64_t aroleid, int64_t aid)
+	bool mails::drawmail(i64_actorid aroleid, int64_t aid)
 	{
 		if (aid != -1)
 		{

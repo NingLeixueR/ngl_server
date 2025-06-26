@@ -6,7 +6,8 @@ namespace ngl
 	std::map<EItemType, item_create*> item_create::m_data;
 
 	// ²ÄÁÏ
-	class item_create_material : public item_create
+	class item_create_material : 
+		public item_create
 	{
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
@@ -48,7 +49,8 @@ namespace ngl
 	};
 
 	// ×°±¸
-	class item_create_equip : public item_create
+	class item_create_equip : 
+		public item_create
 	{
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
@@ -69,7 +71,8 @@ namespace ngl
 	};
 
 	// ¿¨ÅÆ
-	class item_create_card : public item_create
+	class item_create_card : 
+		public item_create
 	{
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{

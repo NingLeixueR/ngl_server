@@ -50,8 +50,9 @@ namespace ngl
 			[this](int64_t aid, const pbdb::db_keyvalue& akeyval, bool afirstsynchronize)
 			{
 				log_error()->print(
-					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]",
-					aid, akeyval.m_value().c_str(), afirstsynchronize ? "first" : "change"
+					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]"
+					, aid, akeyval.m_value().c_str()
+					, afirstsynchronize ? "first" : "change"
 				);
 				if (afirstsynchronize)
 				{

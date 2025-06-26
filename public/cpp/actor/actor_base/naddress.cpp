@@ -133,7 +133,7 @@ namespace ngl
 			return m_actorserver;
 		}
 
-		static i32_serverid get_gatewayid(const nguid& aguid)
+		static i32_serverid gatewayid(const nguid& aguid)
 		{
 			const i32_serverid* lpserverid = tools::findmap(m_rolegateway, aguid);
 			if (lpserverid == nullptr)
@@ -153,7 +153,7 @@ namespace ngl
 			m_rolegateway.erase(aguid);
 		}
 
-		static void get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
+		static void gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 		{
 			for (const auto& aguid : aactorset)
 			{
@@ -254,9 +254,9 @@ namespace ngl
 		return impl_actor_address::get_actorserver_map();
 	}
 
-	i32_serverid naddress::get_gatewayid(const nguid& aguid)
+	i32_serverid naddress::gatewayid(const nguid& aguid)
 	{
-		return impl_actor_address::get_gatewayid(aguid);
+		return impl_actor_address::gatewayid(aguid);
 	}
 
 	void naddress::add_gatewayid(const nguid& aguid, i32_serverid aserverid)
@@ -269,8 +269,8 @@ namespace ngl
 		impl_actor_address::remove_gatewayid(aguid);
 	}
 
-	void naddress::get_gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
+	void naddress::gatewayid(const std::set<nguid>& aactorset, std::set<i32_serverid>& aserverset)
 	{
-		impl_actor_address::get_gatewayid(aactorset, aserverset);
+		impl_actor_address::gatewayid(aactorset, aserverset);
 	}
 }//namespace ngl

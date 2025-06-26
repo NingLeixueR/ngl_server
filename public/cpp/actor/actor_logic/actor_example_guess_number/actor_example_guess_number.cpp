@@ -6,9 +6,9 @@ namespace ngl
 	actor_example_guess_number::actor_example_guess_number(const std::map<int32_t, i64_actorid>& aroleids, int32_t aindex) :
 		actor_example<actor_example_guess_number>(pbexample::EPLAY_GUESS_NUMBER, ACTOR_EXAMPLE_GUESS_NUMBER, aindex, aroleids),
 		m_index(0),
-		m_maxnumber(101),
-		m_minnumber(0),
-		m_bombvalues(tools::rand() % 100 + 1),
+		m_maxnumber(guess_number_max_number),
+		m_minnumber(guess_number_min_number),
+		m_bombvalues(tools::rand() % guess_number_max_number + 1),
 		m_bombutc(0),
 		m_bombrole(0)
 	{
@@ -128,7 +128,7 @@ namespace ngl
 				return true;
 			}
 			// 检查当前阶段时间
-			if (m_setputc + esetp_maxtime <= lnow)
+			if (m_setputc + guess_number_esetp_maxtime <= lnow)
 			{
 				i64_actorid roleid = next_guess_role();
 				pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER lPROBUFF_EXAMPLE_GUESS_NUMBER;
@@ -140,7 +140,7 @@ namespace ngl
 		}
 		else
 		{
-			if (m_bombutc + equit_time <= lnow)
+			if (m_bombutc + guess_number_equit_time <= lnow)
 			{
 				erase_actor();
 			}

@@ -19,7 +19,8 @@
 
 namespace ngl
 {
-	class actor_mail : public actor
+	class actor_mail : 
+		public actor
 	{
 		actor_mail(const actor_mail&) = delete;
 		actor_mail& operator=(const actor_mail&) = delete;

@@ -14,7 +14,11 @@ namespace ngl
 
 		static std::map<EActivity, activity*> m_activityall;
 		virtual std::shared_ptr<activity> create(
-			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
+			int32_t aactivityid
+			, int32_t atime
+			, int32_t aduration
+			, activitydb& aactivitydb
+			, activitytimedb& aactivitytimedb
 		)
 		{
 			return std::make_shared<activity>(
@@ -23,7 +27,11 @@ namespace ngl
 		}
 	public:
 		static std::shared_ptr<activity> make(
-			int32_t aactivityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb
+			int32_t aactivityid
+			, int32_t atime
+			, int32_t aduration
+			, activitydb& aactivitydb
+			, activitytimedb& aactivitytimedb
 		)
 		{
 			const tab_activity* ltab = ttab_activity::instance().tab(aactivityid);
@@ -43,7 +51,13 @@ namespace ngl
 		activitytimedb* m_activitytimedb						= nullptr;
 
 	public:
-		activity(int32_t activityid, int32_t atime, int32_t aduration, activitydb& aactivitydb, activitytimedb& aactivitytimedb);
+		activity(
+			int32_t activityid
+			, int32_t atime
+			, int32_t aduration
+			, activitydb& aactivitydb
+			, activitytimedb& aactivitytimedb
+		);
 
 		activity(EActivity atype);
 

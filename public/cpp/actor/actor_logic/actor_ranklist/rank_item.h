@@ -3,7 +3,6 @@
 #include "nactor_auto.h"
 #include "db.pb.h"
 
-
 namespace ngl
 {
 	struct rank_pair
@@ -23,10 +22,10 @@ namespace ngl
 		const pbdb::db_brief* get()const;
 
 		bool init(
-			const pbdb::db_brief& abrief, 
-			data_modified<pbdb::db_ranklist>* aranklist, 
-			pbdb::eranklist atype, 
-			const std::function<int64_t(const pbdb::db_brief&)>& avalfun
+			const pbdb::db_brief& abrief
+			, data_modified<pbdb::db_ranklist>* aranklist
+			, pbdb::eranklist atype
+			, const std::function<int64_t(const pbdb::db_brief&)>& avalfun
 		)
 		{
 			m_data[atype].m_value = avalfun(abrief);
@@ -53,7 +52,9 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitylv(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.m_activityvalues().m_activity_rolelv().find(pbdb::eranklist::activity_lv + ACTIVITYID);
+			auto itor = abrief.m_activityvalues().m_activity_rolelv().find(
+				pbdb::eranklist::activity_lv + ACTIVITYID
+			);
 			if (itor == abrief.m_activityvalues().m_activity_rolelv().end())
 			{
 				return -1;
@@ -64,7 +65,9 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitygold(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.m_activityvalues().m_activity_rolegold().find(pbdb::eranklist::activity_gold + ACTIVITYID);
+			auto itor = abrief.m_activityvalues().m_activity_rolegold().find(
+				pbdb::eranklist::activity_gold + ACTIVITYID
+			);
 			if (itor == abrief.m_activityvalues().m_activity_rolegold().end())
 			{
 				return -1;

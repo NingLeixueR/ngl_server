@@ -40,7 +40,8 @@ namespace ngl
 	};
 
 	// 条件检查:ETaskRoleLv 玩家等级
-	class taskcheck_rolelv : public task_check
+	class taskcheck_rolelv : 
+		public task_check
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
@@ -49,7 +50,8 @@ namespace ngl
 	};
 
 	// 条件检查:ETaskRoleVip 玩家vip等级
-	class taskcheck_rolevip : public task_check
+	class taskcheck_rolevip : 
+		public task_check
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
@@ -58,7 +60,8 @@ namespace ngl
 	};
 
 	// 条件检查:ETaskTaskId 完成某ID任务
-	class taskcheck_taskid : public task_check
+	class taskcheck_taskid : 
+		public task_check
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{

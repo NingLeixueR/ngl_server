@@ -19,7 +19,8 @@
 
 namespace ngl
 {
-	class actor_notice : public actor
+	class actor_notice : 
+		public actor
 	{
 		actor_notice(const actor_notice&) = delete;
 		actor_notice& operator=(const actor_notice&) = delete;
