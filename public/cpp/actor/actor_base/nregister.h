@@ -79,8 +79,7 @@ namespace ngl
 					(((TTTDerived*)(aactor))->*afun)(lmessage);
 				}
 			};
-		}
-		
+		}		
 		return *this;
 	}
 
@@ -130,7 +129,9 @@ namespace ngl
 
 		int32_t lprotocol		= tprotocol::protocol<type_forward>();
 		const std::string lname = tprotocol::protocol_name<type_forward>();
-		protocol::registry_actor_forward<T, type_forward::isusing, TYPE>(atype, lprotocol, lname.c_str());
+		protocol::registry_actor_forward<T, type_forward::isusing, TYPE>(
+			atype, lprotocol, lname.c_str()
+		);
 		return *this;
 	}
 
@@ -155,7 +156,9 @@ namespace ngl
 		ENUM_ACTOR ltype		= nactor_type<TDerived>::type();
 		int32_t lprotocol		= tprotocol::protocol<type_forward>();
 		const std::string lname = tprotocol::protocol_name<type_forward>();
-		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(ltype, lprotocol, lname.c_str());
+		protocol::registry_actor_recvforward<T, type_forward::isusing, TYPE>(
+			ltype, lprotocol, lname.c_str()
+		);
 		return *this;
 	}
 }//namespace ngl

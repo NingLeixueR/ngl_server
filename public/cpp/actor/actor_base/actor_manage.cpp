@@ -81,16 +81,17 @@ namespace ngl
 		inline void get_actor_stat(msg_actor_stat& adata)
 		{
 			ngl_lock_s;
-			std::ranges::for_each(m_actorbytype, [&adata](const auto& apair)
+			//std::map<ENUM_ACTOR, std::map<nguid, ptractor>>		m_actorbytype;
+			for (const auto& apair : m_actorbytype)
+			{
+				msg_actor ltemp;
+				ltemp.m_actor_name = em<ENUM_ACTOR>::get_name(apair.first);
+				for (const auto& aguidprt : apair.second)
 				{
-					msg_actor ltemp;
-					ltemp.m_actor_name = em<ENUM_ACTOR>::get_name(apair.first);
-					std::ranges::for_each(apair.second, [&ltemp](const auto& aguidprt)
-						{
-							ltemp.m_actor[nguid::area(aguidprt.first)].push_back(nguid::actordataid(aguidprt.first));
-						});
-					adata.m_vec.push_back(ltemp);
-				});
+					ltemp.m_actor[nguid::area(aguidprt.first)].push_back(nguid::actordataid(aguidprt.first));
+				}
+				adata.m_vec.push_back(ltemp);
+			}
 		}
 
 		// 当前进程是ACTORSERVER返回"actor_server::actorid()"否则返回"actor_client::actorid()"
