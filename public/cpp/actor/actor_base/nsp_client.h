@@ -16,7 +16,7 @@ namespace ngl
 
 		actor*															m_actor = nullptr;
 		std::map<i16_area, i64_actorid>									m_nspserver;
-		std::map<i16_area, bool>										m_register; // std::tuple<bool,int32_t> 1:注册是否成功 2:定时器
+		std::map<i16_area, bool>										m_register;
 		std::function<void(int64_t, const T&, bool)>					m_changedatafun;
 		std::map<i64_actorid, T>										m_data;
 
@@ -162,7 +162,6 @@ namespace ngl
 			auto lprecv = adata.get_data();
 			if (m_register[lprecv->m_area])
 			{
-				std::cout << std::format("type.{}:area.{}:timerid.{}", typeid(TDerived).name(), lprecv->m_area, lprecv->m_timer) << std::endl;
 				twheel::wheel().removetimer(lprecv->m_timer);
 				return;
 			}
