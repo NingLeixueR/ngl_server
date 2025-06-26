@@ -15,7 +15,11 @@ namespace ngl
 		ENUM_EVENTS_MAP,		// 对应eevents_map
 	};
 
-	template <ENUM_EVENTS ETYPE, typename E_EVENTS/* 事件枚举类型*/, int E_EVENTS_COUNT>
+	template <
+		ENUM_EVENTS ETYPE			// 事件类型
+		, typename E_EVENTS			// 子事件类型
+		, int E_EVENTS_COUNT		// 子事件数量
+	>
 	class actor_events : 
 		public actor
 	{
@@ -36,37 +40,41 @@ namespace ngl
 				})
 		{}
 
-		static std::array<i64_hashcode, E_EVENTS_COUNT> m_parmtype;
-		static std::map<E_EVENTS, std::set<i64_actorid>> m_eventmember;
+		static std::array<i64_hashcode, E_EVENTS_COUNT>		m_parmtype;
+		static std::map<E_EVENTS, std::set<i64_actorid>>	m_eventmember;
 	public:
 		static int32_t id_index()
 		{
-			if ((int32_t)ETYPE >= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS))
+			if constexpr ((int32_t)ETYPE >= (int32_t)(ACTOR_EVENTS_MAX_COUNT - ACTOR_EVENTS))
 			{
 				tools::no_core_dump();
 				return -1;
 			}
-			return (int32_t)ETYPE;
+			else
+			{
+				return (int32_t)ETYPE;
+			}
 		}
 
-		using type_actor_events = actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>;
+		using tactor_events = actor_events<ETYPE, E_EVENTS, E_EVENTS_COUNT>;
 
-		friend class actor_instance<type_actor_events>;
-		static type_actor_events& instance()
+		friend class actor_instance<tactor_events>;
+		static tactor_events& instance()
 		{
-			return actor_instance<type_actor_events>::instance();
+			return actor_instance<tactor_events>::instance();
 		}
 
 		struct np_event_register
 		{
 			std::vector<std::pair<E_EVENTS, i64_actorid>> m_vecpair;
+
 			def_portocol(np_event_register, m_vecpair)
 		};
 
 		static void nregister()
 		{
-			register_handle_custom<type_actor_events>::template func<
-				type_actor_events::np_event_register
+			register_handle_custom<tactor_events>::template func<
+				tactor_events::np_event_register
 			>(true);
 		}
 
@@ -145,7 +153,10 @@ namespace ngl
 			for (const auto& item : pro.m_vecpair)
 			{
 				ngl::log_error()->print(
-					"np_event_register {}:E_EVENTS:{} actor:{}", typeid(E_EVENTS).name(), (int32_t)(item.first), nguid(item.second)
+					"np_event_register {}:E_EVENTS:{} actor:{}"
+					, typeid(E_EVENTS).name()
+					, (int32_t)(item.first)
+					, nguid(item.second)
 				);
 				m_eventmember[item.first].insert(item.second);
 			}

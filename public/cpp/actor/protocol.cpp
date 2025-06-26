@@ -29,8 +29,10 @@ namespace ngl
 		static void print(const char* amsg, EPROTOCOL_TYPE aprotocoltype, i32_protocolnum aprotocolnum)
 		{
 			log_error()->print(
-				"protocol::push msg:{} protocolnum:{} name:{}", 
-				amsg, aprotocolnum, name(aprotocoltype, aprotocolnum)
+				"protocol::push msg:{} protocolnum:{} name:{}"
+				, amsg
+				, aprotocolnum
+				, name(aprotocoltype, aprotocolnum)
 			);
 		}
 
@@ -71,10 +73,10 @@ namespace ngl
 			auto lactortype = (ENUM_ACTOR)apack->m_head.get_actortype();
 			if (lactortype == nguid::none<ENUM_ACTOR>())
 			{
-				std::ranges::for_each(lpfun->m_runfun, [&apack,&lptrpram](const auto& item)
-					{
-						item.second(apack, lptrpram);
-					});
+				for (std::pair<const ENUM_ACTOR, protocol::fun_run>& item : lpfun->m_runfun)
+				{
+					item.second(apack, lptrpram);
+				}
 			}
 			else
 			{
@@ -95,8 +97,11 @@ namespace ngl
 		// parm const fun_run& arunfun				Âß¼­»Øµ÷
 		// parm const char* aname					debug name
 		static void register_protocol(
-			EPROTOCOL_TYPE atype, int aprotocolnumber, ENUM_ACTOR aenumactor
-			, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun
+			EPROTOCOL_TYPE atype
+			, int aprotocolnumber
+			, ENUM_ACTOR aenumactor
+			, const protocol::fun_pack& apackfun
+			, const protocol::fun_run& arunfun
 			, const char* aname
 		)
 		{
