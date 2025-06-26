@@ -1,6 +1,5 @@
 #include "actor_kcp.h"
 #include "ukcp.h"
-
 namespace ngl
 {
 	bool actor_kcp::handle(const message<np_actor_kcp>& adata)
