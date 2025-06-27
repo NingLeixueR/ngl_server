@@ -13,6 +13,7 @@
 #include "nlog.h"
 #include "slist.h"
 #include <queue>
+#include "tools.h"
 
 const std::string lerrpath = "参数错误:EXE name areaid tab_servers::tcount";
 
@@ -61,16 +62,13 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		lnodename = std::format("node_{}_{}_{}", lname, larea, ltcount);
+		lnodename = std::format("node_{}_{}_{}", lname, tab->m_area, ltcount);
 	}
 
 #ifdef WIN32
 	// # 设置控制台窗口名称
 	SetConsoleTitle(lnodename.c_str());
 #endif
-
-	//std::string lmailtxt = std::format("{}:{}", lnodename, ngl::localtime::time2str("%Y-%m-%d %H:%M:%S"));
-	//ngl::test_mail(lmailtxt.c_str(), lmailtxt.c_str());
 
 	Dumper::m_excname = lnodename;
 	switch (nconfig::node_type())

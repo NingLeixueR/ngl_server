@@ -218,7 +218,7 @@ namespace ngl
 			handle_cmd::add("/switch") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_SWITCH_LINE>();
-					const tab_servers* tab = ttab_servers::instance().find_first(GAME, [](tab_servers* atab)->bool
+					const tab_servers* tab = ttab_servers::instance().find_first(GAME, nconfig::area(), [](const tab_servers* atab)->bool
 						{
 							return atab->m_id != nconfig::m_nodeid;
 						});
