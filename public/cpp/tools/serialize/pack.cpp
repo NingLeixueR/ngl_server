@@ -63,19 +63,20 @@ namespace ngl
 
 	void pack::free()
 	{
-		if (m_buff != nullptr)
+		if (m_buff == nullptr)
 		{
-			if (m_bpool != nullptr)
-			{
-				m_bpool->free(m_buff, m_len);
-			}
-			else
-			{
-				delete[] m_buff;
-			}
-			m_buff = nullptr;
-			m_len = 0;
+			return;
 		}
+		if (m_bpool != nullptr)
+		{
+			m_bpool->free(m_buff, m_len);
+		}
+		else
+		{
+			delete[] m_buff;
+		}
+		m_buff = nullptr;
+		m_len = 0;
 	}
 
 	void pack::set_actor(i64_actorid aactor, i64_actorid arequestactorid)
@@ -92,7 +93,7 @@ namespace ngl
 		Try
 		{
 			free();
-		}Catch;
+		}Catch
 	}
 
 	std::shared_ptr<pack> pack::make_pack(bpool* apool, int32_t alen)

@@ -1,7 +1,6 @@
 #include "threadtools.h"
 #include "slist.h"
 
-
 namespace ngl
 {
 	template <typename T>

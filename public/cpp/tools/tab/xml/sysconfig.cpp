@@ -92,7 +92,7 @@ namespace ngl
 		m_gatewayids.clear();
 
 		std::set<i16_area>* lareas = ttab_mergearea::instance().mergelist(tab_self_area);
-		if (lareas == nullptr)
+		if (lareas != nullptr)
 		{
 			for (i16_area aarea : *lareas)
 			{
