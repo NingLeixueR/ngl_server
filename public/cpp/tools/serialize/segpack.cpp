@@ -74,7 +74,8 @@ namespace ngl
 		{
 			std::shared_ptr<pack> lpack = nullptr;
 			// # 查看有没有残包
-			if (auto itor = m_data.find(aid); itor != m_data.end())
+			auto itor = m_data.find(aid);
+			if (itor != m_data.end())
 			{
 				lpack = itor->second;
 				m_data.erase(itor);
@@ -125,7 +126,11 @@ namespace ngl
 			if (aislanip == false && nconfig::node_type() != ROBOT && alen >= net_config_recv_buff_maxbyte)
 			{
 				m_data.erase(aid);
-				log_error()->print("sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})", apack->m_head, (int)net_config_recv_buff_maxbyte);
+				log_error()->print(
+					"sockect recv {} len >= SOCKECT_MAX_BUFF_SIZE({})"
+					, apack->m_head
+					, (int)net_config_recv_buff_maxbyte
+				);
 				return false;
 			}
 			if (!aislanip && !m_rate.add(aid))
@@ -176,7 +181,8 @@ namespace ngl
 				return edopush::e_break;
 			}
 			std::shared_ptr<pack> lpack = remnant_package(aid);
-			if (EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen); lval == EPH_HEAD_MASK_FAIL)
+			EPH_HEAD_VAL lval = lpack->m_head.push(ap, alen);
+			if (lval == EPH_HEAD_MASK_FAIL)
 			{
 				return telnet_cmd(lpack, ap, alen, aislanip);
 			}
@@ -228,7 +234,12 @@ namespace ngl
 				}
 				else
 				{
-					log_error()->print("time[{} < {} + {} ]", localtime::gettime(), lpack->m_head.getvalue(EPH_TIME), sysconfig::net_timeout());
+					log_error()->print(
+						"segpack time[{} < {} + {} ]"
+						, localtime::gettime()
+						, lpack->m_head.getvalue(EPH_TIME)
+						, sysconfig::net_timeout()
+					);
 				}
 				return edopush::e_continue;
 			}

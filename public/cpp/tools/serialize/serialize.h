@@ -152,8 +152,9 @@ namespace ngl
 			if (adata.m_data == nullptr)
 			{
 				log_error()->print(
-					"serialize::push<{},{}>(protobuf_data:std::map)",
-					tools::type_name<KEY>(), tools::type_name<VALUE>()
+					"serialize::push<{},{}>(protobuf_data:std::map)"
+					, tools::type_name<KEY>()
+					, tools::type_name<VALUE>()
 				);
 				return false;
 			}
@@ -665,7 +666,9 @@ namespace ngl
 				T& ldata = *adata.m_data.get();
 				google::protobuf::util::JsonParseOptions parseOptions;
 				std::string jsonString(&buff()[byte()]);
-				google::protobuf::util::Status lstat = google::protobuf::util::JsonStringToMessage(jsonString, &(*adata.m_data), parseOptions);
+				google::protobuf::util::Status lstat = google::protobuf::util::JsonStringToMessage(
+					jsonString, &(*adata.m_data), parseOptions
+				);
 				add_bytes(lbytes);
 			}
 			

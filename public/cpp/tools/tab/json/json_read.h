@@ -44,7 +44,11 @@ namespace ngl
 		bool read(const char* akey, json_read& adata) const;
 
 		template <typename T>
-		bool read_number(const char* akey, std::vector<T>& aval, const std::function<bool(const cJSON* ajson, T& aval)>& afun)const
+		bool read_number(
+			const char* akey
+			, std::vector<T>& aval
+			, const std::function<bool(const cJSON* ajson, T& aval)>& afun
+		)const
 		{
 			cJSON* ltemp = nullptr;
 			if (read(akey, ltemp) == false)

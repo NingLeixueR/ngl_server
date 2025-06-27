@@ -10,7 +10,6 @@ namespace ngl
 		辅助缺省参数: template_arg<TF,TARG...>
 		TF需要实现static func<T>(TARG...)
 	*/
-
 	struct np_arg_null
 	{
 		def_portocol(np_arg_null)
@@ -78,10 +77,4 @@ namespace ngl
 			func(aactorid, args2...);
 		}
 	};
-
-
-
-
-
-
 }//namespace ngl

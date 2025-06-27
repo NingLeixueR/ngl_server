@@ -18,7 +18,9 @@
 	{																\
 		ngl::json_read ltemp;										\
 		if (ijsn.read(akey, ltemp) == false)						\
+		{															\
 			return false;											\
+		}															\
 		return read(ltemp);											\
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\

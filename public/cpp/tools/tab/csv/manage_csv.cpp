@@ -68,7 +68,11 @@ namespace ngl
 	csvbase* allcsv::get_csvbase(const std::string& akey)
 	{
 		csvbase** lp = tools::findmap(m_data, akey);
-		return lp == nullptr ? nullptr : *lp;
+		if (lp == nullptr)
+		{
+			return nullptr;
+		}
+		return *lp;
 	}
 
 	void allcsv::foreach_verify(std::map<std::string, std::string>& averify)

@@ -176,7 +176,7 @@ namespace ngl
 
 		static char* malloc(int abytes)
 		{
-			if constexpr (ISUSENETPOOL == true)
+			if constexpr (ISUSENETPOOL)
 			{
 				return instance().malloc_private(abytes);
 			}
@@ -185,7 +185,7 @@ namespace ngl
 
 		static void free(char* abuff)
 		{
-			if constexpr (ISUSENETPOOL == true)
+			if constexpr (ISUSENETPOOL)
 			{
 				instance().free_private(abuff);
 				return;

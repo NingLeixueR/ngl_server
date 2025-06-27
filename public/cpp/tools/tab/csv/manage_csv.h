@@ -59,13 +59,21 @@ namespace ngl
 		virtual void* get(int aid)
 		{
 			auto itor = m_tablecsv.find(aid);
-			return itor == m_tablecsv.end()? nullptr: &itor->second;
+			if (itor == m_tablecsv.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
 		}
 
 		T* find(int aid)
 		{
 			auto itor = m_tablecsv.find(aid);
-			return itor == m_tablecsv.end()? nullptr: &itor->second;
+			if (itor == m_tablecsv.end())
+			{
+				return nullptr;
+			}
+			return &itor->second;
 		}
 
 	public:
