@@ -50,7 +50,10 @@ namespace ngl
 					m_merge2[lmergeid].insert(lpset->begin(), lpset->end());
 					m_merge2[lmergeid].insert(larea);
 					m_merge1[larea] = lmergeid;
-					m_merge2.erase(larea);
+					if (larea != lmergeid)
+					{
+						m_merge2.erase(larea);
+					}					
 				}				
 			}
 		}
