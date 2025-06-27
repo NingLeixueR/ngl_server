@@ -74,7 +74,6 @@ namespace ngl
 		{
 			if (!m_merge2.contains(aarea))
 			{
-				tools::no_core_dump();
 				return nullptr;
 			}
 			return &m_merge2[aarea];
