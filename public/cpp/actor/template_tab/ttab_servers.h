@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ttab_mergearea.h"
 #include "manage_csv.h"
 #include "type.h"
 #include "xml.h"
@@ -12,8 +13,8 @@ namespace ngl
 		ttab_servers(const ttab_servers&) = delete;
 		ttab_servers& operator=(const ttab_servers&) = delete;
 
-		std::map<i16_area, std::vector<tab_servers*>> m_areaofserver;
-		std::map<i16_area, std::set<i16_area>> m_maparea;
+		std::map<i16_area, std::map<i32_serverid, const tab_servers*>> m_areaserver;
+		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
 
 		ttab_servers()
 		{
@@ -23,27 +24,38 @@ namespace ngl
 		void reload()final
 		{
 			std::cout << "[ttab_servers] reload" << std::endl;
-			m_areaofserver.clear();
-			m_maparea.clear();
-			for (std::pair<const int, tab_servers>& pair : m_tablecsv)
+			m_areaserver.clear();
+			for (const auto& item : tablecsv())
 			{
-				m_areaofserver[pair.second.m_area].push_back(&pair.second);
-				if (pair.second.m_area < 0)
+				m_areaserver[item.second.m_area][item.first] = &item.second;
+
+				if (item.second.m_area < 0)
 				{
-					for (i32_serverid serverid : pair.second.m_actorserver)
+					std::set<i16_area> lsetarea;
+					for (i32_serverid actorserverid : item.second.m_actorserver)
 					{
-						const tab_servers* ltab = tab(serverid);
+						const tab_servers* ltab = tab(actorserverid);
 						if (ltab == nullptr)
 						{
-							tools::no_core_dump();
 							continue;
 						}
-						m_maparea[pair.second.m_area].insert(ltab->m_area);
+						lsetarea.insert(ltab->m_area);
 					}
-				}	
-				else
-				{
-					m_maparea[pair.second.m_area].insert(pair.second.m_area);
+
+					for (i16_area area : lsetarea)
+					{
+						i16_area mergearea = ttab_mergearea::instance().mergeid(area);
+						if (mergearea == nguid::none_area())
+						{
+							continue;
+						}
+						std::set<i16_area>* mergeareaset = ttab_mergearea::instance().mergelist(mergearea);
+						if (mergeareaset == nullptr)
+						{
+							continue;
+						}
+						m_coressserver[item.second.m_area].insert(mergeareaset->begin(), mergeareaset->end());
+					}
 				}
 			}
 		}
@@ -81,6 +93,11 @@ namespace ngl
 
 		const tab_servers* tab(const std::string& aname, int area, int32_t atcount)
 		{
+			i16_area larea = ttab_mergearea::instance().mergeid(area);
+			if (larea != nguid::none_area())
+			{
+				area = larea;
+			}
 			for (const std::pair<const int, tab_servers>& item : tablecsv())
 			{
 				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
@@ -184,13 +201,7 @@ namespace ngl
 
 		const tab_servers* node_tnumber(NODE_TYPE atype, int32_t anumber)
 		{
-			const ttab_servers* ttab = allcsv::get<ttab_servers>();
-			if (ttab == nullptr)
-			{
-				tools::no_core_dump();
-				return nullptr;
-			}
-			for (const std::pair<const int, tab_servers>& pair : ttab->m_tablecsv)
+			for (const std::pair<const int, tab_servers>& pair : ttab_servers::tablecsv())
 			{
 				if (pair.second.m_type == atype && pair.second.m_tcount == anumber)
 				{
@@ -203,24 +214,32 @@ namespace ngl
 		// 便利所有服务器
 		void foreach_server(const std::function<void(const tab_servers*)>& afun)
 		{
-			for (const auto& [_area, _vec] : m_areaofserver)
-			{
-				for (const tab_servers* iserver : _vec)
+			ttab_mergearea::instance().foreach([&afun](i16_area aarea, std::set<i16_area>& aset)
 				{
-					afun(iserver);
-				}
-			}
+					
+					auto lpmap = tools::findmap(ttab_servers::instance().m_areaserver, aarea);
+					if (lpmap == nullptr)
+					{
+						return;
+					}
+					for (const auto& item : *lpmap)
+					{
+						afun(item.second);
+					}
+				});
 		}
 
 		// 获取所有区服(负数区服是跨服区服需要转化为跨服内所有区服)
 		const std::set<i16_area>* get_area(i16_area aarea)
 		{
-			if (!m_maparea.contains(aarea))
+			if (aarea > 0)
 			{
-				tools::no_core_dump();
-				return nullptr;
+				return ttab_mergearea::instance().mergelist(aarea);
 			}
-			return &m_maparea[aarea];
+			else
+			{
+				return tools::findmap(m_coressserver, aarea);				
+			}
 		}
 
 		// 服务器类型	atype
@@ -232,22 +251,18 @@ namespace ngl
 			{
 				return false;
 			}
-
-			for (const auto& [_area, _vec] : m_areaofserver)
+			for (i16_area area : *larea)
 			{
-				if (larea->find(_area) == larea->end())
+				auto lmap = tools::findmap(m_areaserver, area);
+				if (lmap == nullptr)
 				{
 					continue;
 				}
-				for (const tab_servers* iserver : _vec)
+				for (auto [_serverid, _servertab] : *lmap)
 				{
-					if (atype == FAIL)
+					if (atype == _servertab->m_type)
 					{
-						afun(iserver);
-					}
-					else if (iserver->m_type == atype)
-					{
-						afun(iserver);
+						afun(_servertab);
 					}
 				}
 			}
@@ -262,18 +277,16 @@ namespace ngl
 				});
 		}
 
-		tab_servers* find_first(NODE_TYPE atype, const std::function<bool(tab_servers*)>& afun)
+		const tab_servers* find_first(NODE_TYPE atype, i16_area aarea, const std::function<bool(const tab_servers*)>& afun)
 		{
-			std::vector<tab_servers*>* litem = tools::findmap(m_areaofserver, tab()->m_area);
-			if (litem == nullptr)
+			std::set<i32_serverid> lset;
+			get_server(atype, aarea, lset);
+			for (i32_serverid serverid : lset)
 			{
-				return nullptr;
-			}
-			for (tab_servers* iserver : *litem)
-			{
-				if (iserver->m_type == atype && afun(iserver))
+				const tab_servers* ltab = tab(serverid);
+				if (ltab != nullptr && afun(tab(serverid)))
 				{
-					return iserver;
+					return ltab;
 				}
 			}
 			return nullptr;
