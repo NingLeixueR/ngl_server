@@ -124,6 +124,10 @@ namespace ngl
 			for (i16_area larea : *lareaset)
 			{
 				std::set<i16_area>* lmergeareaset = ttab_mergearea::instance().mergelist(larea);
+				if (lmergeareaset == nullptr)
+				{
+					continue;
+				}
 				aareaset.insert(lmergeareaset->begin(), lmergeareaset->end());
 			}
 		}
