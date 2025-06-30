@@ -33,7 +33,7 @@ namespace ngl
 			// 2->4, 6->8
 			// 4->10, 8->10
 			// {{1,2},{2,4},{3,4},{4,10},{5,6},{6,8},{7,8},{8,10},{9.10}}
-			// {10,{1,2,3,4,5,6,7,8,9}}
+			// {10,{1,2,3,4,5,6,7,8,9,10}}
 			for (std::pair<const int, tab_mergearea>& pair : m_tablecsv)
 			{
 				i16_area larea = (i16_area)pair.second.m_id;
