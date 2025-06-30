@@ -77,7 +77,7 @@ namespace ngl
 				return;
 			}
 			adb->stmt_query(lbuff, llen, lbind);
-			
+			adb->m_malloc.reset();
 			log_error()->print("{}", lbuff);
 		}
 
