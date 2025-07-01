@@ -4,19 +4,23 @@
 
 namespace ngl
 {
-	std::vector<db*> db_pool::m_vec;
-
 	void db_pool::init(const dbarg& adbarg)
 	{
 		if (!m_vec.empty())
 		{
+			tools::no_core_dump();
 			return;
 		}
 		const tab_servers* tab = ttab_servers::instance().tab();
+		if (tab == nullptr)
+		{
+			tools::no_core_dump();
+			return;
+		}
 		m_vec.resize(tab->m_threadnum);
 		for (int i = 0; i < tab->m_threadnum; ++i)
 		{
-			m_vec[i] = new db();
+			m_vec[i] = std::make_shared<db>();
 			if (!m_vec[i]->connectdb(adbarg))
 			{
 				tools::no_core_dump();
@@ -33,6 +37,6 @@ namespace ngl
 			tools::no_core_dump();
 			return nullptr;
 		}
-		return m_vec[aindex];
+		return m_vec[aindex].get();
 	}
 }// namespace ngl
