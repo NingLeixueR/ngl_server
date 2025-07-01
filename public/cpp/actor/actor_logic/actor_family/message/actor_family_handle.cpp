@@ -1,4 +1,5 @@
 #include "actor_family.h"
+
 namespace ngl
 {
 	bool actor_family::handle(const message<mforward<np_gm>>& adata)

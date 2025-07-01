@@ -1,5 +1,6 @@
 #include "actor_gmclient.h"
 #include "actor_gm.h"
+
 namespace ngl
 {
 	// 分发给独立进程的请求

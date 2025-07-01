@@ -201,4 +201,3 @@ namespace ngl
 		bool handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>& adata);
 	};
 }//namespace ngl
-	

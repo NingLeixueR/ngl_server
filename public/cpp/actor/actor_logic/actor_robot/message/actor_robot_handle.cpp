@@ -1,6 +1,7 @@
 #include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
+
 namespace ngl
 {
 	bool actor_robot::handle(const message<np_thruput_test>& adata)
