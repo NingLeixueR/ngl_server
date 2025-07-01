@@ -380,6 +380,24 @@ namespace ngl
 
 #pragma endregion
 
+		// # 方便调试打印协议
+		template <bool PROTO, typename T>
+		void handle_print(const message<T>& adata)
+		{
+			if constexpr (PROTO)
+			{
+				tools::print_json2proto(*adata.get_data(), true);
+			}
+			else
+			{
+				json_write ljson;
+				ljson.write("message", *adata.get_data());
+				std::string lstr;
+				ljson.get(lstr);
+				log_error()->print("{}", lstr);
+			}
+		}
+
 #pragma region group
 		//# 创建一个群发分组(可以指定ActorType,主要是为了区分客户端与普通actor)
 		int32_t create_group(ENUM_ACTOR atype = ACTOR_NONE);
