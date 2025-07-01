@@ -292,7 +292,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		// 获取服务器所在区服
+		// 获取服务器所在区服(包括被合服的服务器)
 		const std::set<i16_area>* get_arealist(i32_serverid aserverid)
 		{
 			const tab_servers* ltab = tab(aserverid);
@@ -301,6 +301,26 @@ namespace ngl
 				return nullptr;
 			}
 			return get_area(ltab->m_area);
+		}
+
+		// 获取服务器所在的区服(不包括被合服的服务器)
+		const void get_arealist_nonrepet(i32_serverid aserverid, std::set<i16_area>& aareaset)
+		{
+			const std::set<i16_area>* larealist = get_arealist(aserverid);
+			if (larealist == nullptr)
+			{
+				return;
+			}
+			for (i16_area larea : *larealist)
+			{
+				i16_area lmergeid = ttab_mergearea::instance().mergeid(larea);
+				if (lmergeid == nguid::none_area() || lmergeid == larea)
+				{
+					aareaset.insert(larea);
+					continue;
+				}
+				aareaset.insert(lmergeid);
+			}			
 		}
 	};
 }//namespace ngl
