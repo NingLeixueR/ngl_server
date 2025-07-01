@@ -13,15 +13,13 @@
 #include "slist.h"
 #include "tools.h"
 
-const std::string lerrpath = "参数错误:EXE name areaid tab_servers::tcount";
-
 Dumper lDumper;
 
 int main(int argc, char** argv)
 {
 	if (argc <= 3)
 	{
-		std::cout << lerrpath << std::endl;
+		std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;
 		return 0;
 	}
 
