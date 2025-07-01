@@ -136,24 +136,28 @@ namespace ngl
 		static const char* where_area()
 		{
 			static std::string lareastr;
-			if (lareastr.empty())
+			static std::atomic<bool> linit = true;
+			if (linit.exchange(false))
 			{
-				std::set<i16_area> lareaset;
-				get_area(ttab_servers::instance().tab()->m_area, lareaset);
-				
-				// # 删除小于0的元素
-				//auto it = lareaset.lower_bound(0);
-				//lareaset.erase(lareaset.begin(), it);
-				if (!lareaset.empty())
+				if (lareastr.empty())
 				{
-					tools::splicing(lareaset, " OR area = ", lareastr);
-					lareastr = " area = " + lareastr;
+					std::set<i16_area> lareaset;
+					get_area(ttab_servers::instance().tab()->m_area, lareaset);
+
+					// # 删除小于0的元素
+					//auto it = lareaset.lower_bound(0);
+					//lareaset.erase(lareaset.begin(), it);
+					if (!lareaset.empty())
+					{
+						tools::splicing(lareaset, " OR area = ", lareastr);
+						lareastr = " area = " + lareastr;
+					}
+					else
+					{
+						lareastr = " 1 = 1 ";
+					}
 				}
-				else
-				{
-					lareastr = " 1 = 1 ";
-				}
-			}
+			}			
 			return lareastr.c_str();
 		}
 
