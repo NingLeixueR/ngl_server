@@ -149,6 +149,8 @@ INCLUDE_DIRECTORIES(public/cpp/third_party/dmp)
 INCLUDE_DIRECTORIES(public/cpp/third_party/hmac_sha1)
 INCLUDE_DIRECTORIES(public/cpp/third_party/utf8cpp)
 INCLUDE_DIRECTORIES(public/cpp/third_party/utf8cpp/utf8)
+INCLUDE_DIRECTORIES(public/cpp/third_party/lua)
+INCLUDE_DIRECTORIES(public/cpp/third_party/lua/include)
 
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 #ADD_DEFINITIONS(-DASIO_NO_DEPRECATED)
