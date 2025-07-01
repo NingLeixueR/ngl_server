@@ -3,7 +3,6 @@
 #include "template_arg.h"
 #include "server_main.h"
 #include "manage_curl.h"
-#include "define_json.h"
 #include "nactortype.h"
 #include "tprotocol.h"
 #include "asio_kcp.h"

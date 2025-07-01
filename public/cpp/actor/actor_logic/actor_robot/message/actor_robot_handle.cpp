@@ -218,12 +218,12 @@ namespace ngl
 			std::string m_notice;		// 内容
 			std::string m_starttime;	// 开始时间
 			std::string m_finishtime;	// 结束时间
-			jsonfunc("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
+			def_jsonfunction("id", m_id, "notice", m_notice, "starttime", m_starttime, "finishtime", m_finishtime)
 		};
 		struct notices
 		{
 			std::vector<noticeitem> m_notices;
-			jsonfunc("notices", m_notices)
+			def_jsonfunction("notices", m_notices)
 		};
 		json_write ljson;
 		notices lnotices;

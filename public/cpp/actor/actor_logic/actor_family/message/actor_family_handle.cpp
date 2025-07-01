@@ -18,7 +18,7 @@ namespace ngl
 					{
 						int64_t m_familid;
 						std::string m_familname;
-						jsonfunc("familid", m_familid, "familname", m_familname)
+						def_jsonfunction("familid", m_familid, "familname", m_familname)
 					};
 					gm_changename recv;
 					if (aos.read("data", recv) == false)

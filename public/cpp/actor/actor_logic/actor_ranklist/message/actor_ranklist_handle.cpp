@@ -21,7 +21,7 @@ namespace ngl
 						int32_t m_page;
 						int32_t m_everynum;
 
-						jsonfunc("type", m_type, "page", m_page)
+						def_jsonfunction("type", m_type, "page", m_page)
 					};
 					json_rank lrank;
 					if (aos.read("data", lrank) == false)

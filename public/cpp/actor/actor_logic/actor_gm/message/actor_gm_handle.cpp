@@ -33,7 +33,7 @@ namespace ngl
 			struct servertype
 			{
 				std::vector<int32_t> m_servertype;
-				jsonfunc("servertype", m_servertype)
+				def_jsonfunction("servertype", m_servertype)
 			};
 			servertype lservertype;
 			if (aos.read("data", lservertype))
@@ -63,7 +63,7 @@ namespace ngl
 				std::string m_actor_name;
 				int16_t m_area;
 				int32_t m_dataid;
-				jsonfunc("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
+				def_jsonfunction("actor_name", m_actor_name, "area", m_area, "dataid", m_dataid)
 			};
 			handle_cmd::add("server_stat") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
 				{
@@ -119,7 +119,7 @@ namespace ngl
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
-						jsonfunc("time", m_time)
+						def_jsonfunction("time", m_time)
 					};
 					operator_set_time ltime;
 					if (aos.read("data", ltime))

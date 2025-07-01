@@ -2,10 +2,10 @@
 
 #include "actor_client.h"
 #include "threadtools.h"
-#include "define_json.h"
 #include "actor_base.h"
 #include "naddress.h"
 #include "nthread.h"
+#include "ndefine.h"
 #include "pack.h"
 #include "impl.h"
 
@@ -83,12 +83,12 @@ namespace ngl
 		{
 			std::string m_actor_name;
 			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
-			jsonfunc("actor_name", m_actor_name, "actor", m_actor)
+			def_jsonfunction("actor_name", m_actor_name, "actor", m_actor)
 		};
 		struct msg_actor_stat
 		{
 			std::vector<msg_actor> m_vec;
-			jsonfunc("vec", m_vec)
+			def_jsonfunction("vec", m_vec)
 		};
 		void get_actor_stat(msg_actor_stat& adata);
 	};

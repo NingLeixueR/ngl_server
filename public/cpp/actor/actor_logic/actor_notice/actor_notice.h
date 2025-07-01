@@ -3,7 +3,6 @@
 #include "actor_manage.h"
 #include "actor_create.h"
 #include "ndb_modular.h"
-#include "define_json.h"
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "ndbclient.h"

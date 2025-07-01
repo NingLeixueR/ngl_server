@@ -41,7 +41,7 @@ namespace ngl
 		int32_t m_rechargeid = 0;
 		int64_t m_roleid = 0;
 
-		jsonfunc("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
+		def_jsonfunction("orderid", m_orderid, "rechargeid", m_rechargeid, "roleid", m_roleid)
 	};
 
 	class actor_role : 
