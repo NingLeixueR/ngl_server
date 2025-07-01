@@ -11,7 +11,6 @@
 #include "ukcp.h"
 #include "nlog.h"
 #include "slist.h"
-#include <queue>
 #include "tools.h"
 
 const std::string lerrpath = "²ÎÊı´íÎó:EXE name areaid tab_servers::tcount";
