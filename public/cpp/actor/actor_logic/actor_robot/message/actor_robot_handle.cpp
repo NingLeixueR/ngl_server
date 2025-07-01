@@ -10,50 +10,52 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_BAG_UPDATE>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
@@ -85,80 +87,82 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ERROR>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_FRIEND_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
@@ -176,32 +180,34 @@ namespace ngl
 		const tab_servers* tabgame = ttab_servers::instance().tab("game", tab->m_area, 1);
 		net_works const* lpworks = ttab_servers::instance().nworks(ENET_KCP, tabgame);
 		if (lpworks == nullptr)
+		{
 			return false;
+		}
 		return connect_kcp(m_kcp, lpworks->m_ip, lpworks->m_port);
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MAIL_READ_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_MSG_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_NOTICE_RESPONSE>& adata)
@@ -250,21 +256,22 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_RECHARGE_RESPONSE>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLESTAT>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
@@ -278,23 +285,27 @@ namespace ngl
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)
 	{
-		tools::print_json2proto(*adata.get_data(), true);
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_ATTRIBUTE>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_POSITION>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SYNC_UNIT>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>& adata)
 	{
+		handle_print<true>(adata);
 		return true;
 	}
 }//namespace ngl

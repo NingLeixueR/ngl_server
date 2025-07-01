@@ -46,10 +46,10 @@
 ///// 简化定义协议类
 // --- 名称 ....(成员)
 #define def_portocol_function(_Name,...)					\
-	def_function_pop	(__VA_ARGS__)				\
-	def_function_push	(__VA_ARGS__)				\
-	def_portocol_bytes	(__VA_ARGS__)				\
-	def_portocol_name	(_Name)
+	def_function_pop	(__VA_ARGS__)						\
+	def_function_push	(__VA_ARGS__)						\
+	def_portocol_bytes	(__VA_ARGS__)						\
+	def_portocol_name	(_Name)								
 
 // --- 协议号  协议类型  名称 ....(成员)
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
