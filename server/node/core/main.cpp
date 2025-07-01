@@ -13,10 +13,17 @@
 #include "slist.h"
 #include "tools.h"
 
+
+#include "lua.hpp"
+
 Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L);  // 打开标准库
+	luaL_dostring(L, "print('Hello from Lua!')");
+
 	if (argc <= 3)
 	{
 		std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;

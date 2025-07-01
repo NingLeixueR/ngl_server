@@ -118,20 +118,6 @@ namespace ngl
 			log_error()->print("{}", lbuff);
 		}
 
-		static void get_area(i16_area aarea, std::set<i16_area>& aareaset)
-		{
-			const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(aarea);
-			for (i16_area larea : *lareaset)
-			{
-				std::set<i16_area>* lmergeareaset = ttab_mergearea::instance().mergelist(larea);
-				if (lmergeareaset == nullptr)
-				{
-					continue;
-				}
-				aareaset.insert(lmergeareaset->begin(), lmergeareaset->end());
-			}
-		}
-
 		// # 加载本地配置区服关联的所有合服数据
 		static const char* where_area()
 		{
@@ -141,20 +127,18 @@ namespace ngl
 			{
 				if (lareastr.empty())
 				{
-					std::set<i16_area> lareaset;
-					get_area(ttab_servers::instance().tab()->m_area, lareaset);
-
+					const std::set<i16_area>* lareaset = ttab_servers::instance().get_area(nconfig::area());
 					// # 删除小于0的元素
 					//auto it = lareaset.lower_bound(0);
 					//lareaset.erase(lareaset.begin(), it);
-					if (!lareaset.empty())
+					if (lareaset == nullptr || lareaset->empty())
 					{
-						tools::splicing(lareaset, " OR area = ", lareastr);
-						lareastr = " area = " + lareastr;
+						lareastr = " 1 = 1 ";
 					}
 					else
 					{
-						lareastr = " 1 = 1 ";
+						tools::splicing(*lareaset, " OR area = ", lareastr);
+						lareastr = " area = " + lareastr;
 					}
 				}
 			}			
