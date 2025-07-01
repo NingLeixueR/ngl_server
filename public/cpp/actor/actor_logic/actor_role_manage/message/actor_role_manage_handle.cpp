@@ -23,7 +23,7 @@ namespace ngl
 					{
 						int64_t m_roleid = 0;
 						int32_t m_stat = 0;
-						jsonfunc("roleid", m_roleid, "stat", m_stat)
+						def_jsonfunction("roleid", m_roleid, "stat", m_stat)
 					};
 					banrole m_banrole;
 					if (aos.read("data", m_banrole) == false)
