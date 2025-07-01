@@ -46,11 +46,11 @@ namespace ngl
 
 			if (m_tab->m_isloadall == true)
 			{// 加载全部数据
-				db_manage::select<TDBTAB>(db_pool::get(0));
+				db_manage::select<TDBTAB>(db_pool::instance().get(0));
 			}
 			else
 			{// 加载全部id 防止内存穿透
-				db_manage::select<TDBTAB>(db_pool::get(0), db_data<TDBTAB>::id_index());
+				db_manage::select<TDBTAB>(db_pool::instance().get(0), db_data<TDBTAB>::id_index());
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace ngl
 			}
 			if (ngl::db_data<TDBTAB>::data_stat(aid) == ngl::db_data<TDBTAB>::edbdata_notload)
 			{
-				db_manage::select<TDBTAB>(db_pool::get(athreadid), aid);
+				db_manage::select<TDBTAB>(db_pool::instance().get(athreadid), aid);
 			}
 		}
 
@@ -262,13 +262,13 @@ namespace ngl
 					{
 						continue;
 					}
-					db_manage::save<TDBTAB>(db_pool::get(adata.thread()), id);
+					db_manage::save<TDBTAB>(db_pool::instance().get(adata.thread()), id);
 				}
 				break;
 				case enum_clist_del:
 				{
 					ngl::db_data<TDBTAB>::remove(id);
-					db_manage::del<TDBTAB>(db_pool::get(adata.thread()), id);
+					db_manage::del<TDBTAB>(db_pool::instance().get(adata.thread()), id);
 				}
 				break;
 				default:
@@ -303,7 +303,7 @@ namespace ngl
 						}
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
 						{
-							db_manage::select<TDBTAB>(db_pool::get(athread), lid);
+							db_manage::select<TDBTAB>(db_pool::instance().get(athread), lid);
 						}
 						protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
@@ -369,7 +369,7 @@ namespace ngl
 						}
 						int64_t lid = ldata.m_data->m_id();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
-						db_manage::save<TDBTAB>(db_pool::get(athread), lid);
+						db_manage::save<TDBTAB>(db_pool::instance().get(athread), lid);
 						pro.m_data = true;
 					};
 			}
