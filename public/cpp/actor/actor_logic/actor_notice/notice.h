@@ -30,7 +30,7 @@ namespace ngl
 			for (const auto& [id, dbnotice] : data())
 			{
 				const pbdb::db_notice& lnotice = dbnotice.getconst();
-				m_maxid = std::max(m_maxid, lnotice.m_id());
+				m_maxid = std::max(m_maxid, lnotice.mid());
 			}
 
 			remove_notice();
@@ -54,10 +54,10 @@ namespace ngl
 		void add_notice(const std::string& anotice, int32_t abeg, int32_t aend)
 		{
 			pbdb::db_notice lnotice;
-			lnotice.set_m_id(++m_maxid);
-			lnotice.set_m_notice(anotice);
-			lnotice.set_m_starttime(abeg);
-			lnotice.set_m_finishtime(aend);
+			lnotice.set_mid(++m_maxid);
+			lnotice.set_mnotice(anotice);
+			lnotice.set_mstarttime(abeg);
+			lnotice.set_mfinishtime(aend);
 			add(m_maxid, lnotice);
 
 			auto pro = sync_notice(m_maxid);

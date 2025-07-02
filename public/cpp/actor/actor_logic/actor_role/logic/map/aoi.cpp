@@ -126,11 +126,11 @@ namespace ngl
 
 	float aoi::distance(const pbnet::VECTOR2& apos1, const pbnet::VECTOR2& apos2)
 	{
-		return distance(apos1.m_x(), apos1.m_y(), apos2.m_x(), apos2.m_y());
+		return distance(apos1.mx(), apos1.my(), apos2.mx(), apos2.my());
 	}
 
 	float aoi::distance(const pbnet::VECTOR3& apos1, const pbnet::VECTOR3& apos2)
 	{
-		return distance(apos1.m_x(), apos1.m_y(), apos2.m_x(), apos2.m_y());
+		return distance(apos1.mx(), apos1.my(), apos2.mx(), apos2.my());
 	}
 }

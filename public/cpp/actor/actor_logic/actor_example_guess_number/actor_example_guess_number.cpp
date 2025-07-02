@@ -47,9 +47,9 @@ namespace ngl
 	void actor_example_guess_number::next_setp()
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>();
-		pro->set_m_maxnumber(m_maxnumber);
-		pro->set_m_minnumber(m_minnumber);
-		pro->set_m_whoguess(m_rolesds[m_index % m_rolesds.size()]);
+		pro->set_mmaxnumber(m_maxnumber);
+		pro->set_mminnumber(m_minnumber);
+		pro->set_mwhoguess(m_rolesds[m_index % m_rolesds.size()]);
 		++m_index;
 		send_client(m_rolesds, pro);
 		m_setputc = localtime::gettime();
@@ -58,8 +58,8 @@ namespace ngl
 	void actor_example_guess_number::bomb(i64_actorid aroleid/* = nguid::make()*/)
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>();
-		pro->set_m_bombvalue(m_bombvalues);
-		pro->set_m_roleid(m_bombrole);
+		pro->set_mbombvalue(m_bombvalues);
+		pro->set_mroleid(m_bombrole);
 		if (aroleid == nguid::make())
 		{
 			send_client(m_rolesds, pro);
@@ -97,7 +97,7 @@ namespace ngl
 	void actor_example_guess_number::send_error(i64_actorid aroleid, pbexample::E_GUESS_NUMBER_ERROR aerr)
 	{
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>();
-		pro->set_m_stat(aerr);
+		pro->set_mstat(aerr);
 		send_client(aroleid, pro);
 	}
 
@@ -132,7 +132,7 @@ namespace ngl
 			{
 				i64_actorid roleid = next_guess_role();
 				pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER lPROBUFF_EXAMPLE_GUESS_NUMBER;
-				lPROBUFF_EXAMPLE_GUESS_NUMBER.set_m_guessnumber(m_minnumber + 1);
+				lPROBUFF_EXAMPLE_GUESS_NUMBER.set_mguessnumber(m_minnumber + 1);
 				mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER> pro(roleid, lPROBUFF_EXAMPLE_GUESS_NUMBER);
 				message<mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>> lmessage(0, nullptr, &pro);
 				handle(lmessage);

@@ -76,13 +76,13 @@ namespace ngl
 			ltemp.make();
 			
 			ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
-			ltemp->set_m_id(lid);
+			ltemp->set_mid(lid);
 			pbdb::db_brief lrolebase;
-			lrolebase.set_m_id(lid);
-			lrolebase.set_m_name(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
-			lrolebase.set_m_lv(i);
-			lrolebase.set_m_moneygold(i + 1000);
-			lrolebase.set_m_moneysilver(i + 2000);
+			lrolebase.set_mid(lid);
+			lrolebase.set_mname(std::string("libo") + ngl::tools::lexical_cast<std::string>(i));
+			lrolebase.set_mlv(i);
+			lrolebase.set_mmoneygold(i + 1000);
+			lrolebase.set_mmoneysilver(i + 2000);
 			lredis.set(i, ltemp);
 		}
 

@@ -24,6 +24,42 @@ int main(int argc, char** argv)
 	luaL_openlibs(L);  // 打开标准库
 	luaL_dostring(L, "print('Hello from Lua!')");
 
+	pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE pro;
+	pro.set_mgold(1000);
+	pro.set_morderid("kcf");
+	pro.set_mrechargeid(1234);
+	(*pro.mutable_mitems())[123] = 456;
+	(*pro.mutable_mitems())[456] = 789;
+	std::string lstr;
+	ngl::tools::proto2json(pro, lstr);
+	// lua写入json
+
+	lua_pushstring(L, lstr.c_str());
+	lua_setglobal(L, "json_str");
+
+	// 执行Lua代码调用cjson
+	int status = luaL_dostring(L, R"(
+		local cjson = require("cjson")
+		
+		print(json_str)
+		local decodeData = cjson.decode(json_str)
+		for k,v in pairs(decodeData) do
+			print(type(v))
+			if type(v) == "table" then
+				for k1,v1 in pairs(v) do
+					print(k1, v1)
+				end
+			else
+				print(k, v)
+			end
+		end
+    )");
+
+	if (status != LUA_OK) {
+		std::cerr << "错误: " << lua_tostring(L, -1) << std::endl;
+	}
+
+	lua_close(L);
 	if (argc <= 3)
 	{
 		std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;

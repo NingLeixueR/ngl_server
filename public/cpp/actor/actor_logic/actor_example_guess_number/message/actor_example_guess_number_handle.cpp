@@ -17,7 +17,7 @@ namespace ngl
 			send_error(roleid, pbexample::E_GUESS_NUMBER_ERROR_NOT_GUESS);
 			return true;
 		}
-		int32_t lnumber = lpdata->m_guessnumber();
+		int32_t lnumber = lpdata->mguessnumber();
 		if (lnumber >= m_maxnumber || lnumber <= m_minnumber)
 		{
 			send_error(roleid, pbexample::E_GUESS_NUMBER_ERROR_VALUE);

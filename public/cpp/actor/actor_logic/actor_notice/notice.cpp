@@ -11,7 +11,7 @@ namespace ngl
 		{
 			for (const auto& [id, dbnotice] : data())
 			{
-				*pro->add_m_notices() = dbnotice.getconst();
+				*pro->add_mnotices() = dbnotice.getconst();
 			}
 			return pro;
 		}
@@ -20,7 +20,7 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		*pro->add_m_notices() = lpdb_notice->getconst();
+		*pro->add_mnotices() = lpdb_notice->getconst();
 		return pro;
 	}
 
@@ -31,18 +31,18 @@ namespace ngl
 		for (const auto& [id, dbnotice] : lnotice)
 		{
 			const pbdb::db_notice& lnotice = dbnotice.getconst();
-			if (lnotice.m_finishtime() != -1)
+			if (lnotice.mfinishtime() != -1)
 				continue;
-			if (localtime::checkutc(lnotice.m_finishtime()) == false)
+			if (localtime::checkutc(lnotice.mfinishtime()) == false)
 			{
 				nactor()->log_error()->print(
 					"remove_notice {}:{}-{}:{}"
-					, lnotice.m_id()
-					, localtime::time2str(lnotice.m_starttime(), "%Y-%m-%d %H:%M:%S")
-					, localtime::time2str(lnotice.m_finishtime(), "%Y-%m-%d %H:%M:%S")
-					, lnotice.m_notice()
+					, lnotice.mid()
+					, localtime::time2str(lnotice.mstarttime(), "%Y-%m-%d %H:%M:%S")
+					, localtime::time2str(lnotice.mfinishtime(), "%Y-%m-%d %H:%M:%S")
+					, lnotice.mnotice()
 				);
-				remove(lnotice.m_id());
+				remove(lnotice.mid());
 			}
 		}
 	}

@@ -81,7 +81,7 @@ namespace ngl
 		auto itor = lmap.find(account);
 		if (itor != lmap.end())
 		{
-			if (itor->second->getconst().m_passworld() != apassworld)
+			if (itor->second->getconst().mpassworld() != apassworld)
 			{
 				return nullptr;
 			}
@@ -90,11 +90,11 @@ namespace ngl
 		else
 		{
 			pbdb::db_account laccount;
-			laccount.set_m_account(account);
-			laccount.set_m_passworld(apassworld);
+			laccount.set_maccount(account);
+			laccount.set_mpassworld(apassworld);
 			int64_t lid = nguid::make(ACTOR_ROLE, m_config_area, ++m_account.max_accountid());
-			laccount.set_m_id(lid);
-			laccount.set_m_roleid(lid);
+			laccount.set_mid(lid);
+			laccount.set_mroleid(lid);
 
 			data_modified<pbdb::db_account>& lpaccount = m_account.add(lid, laccount);
 			lmap[account] = &lpaccount;

@@ -152,6 +152,8 @@ INCLUDE_DIRECTORIES(public/cpp/third_party/utf8cpp/utf8)
 INCLUDE_DIRECTORIES(public/cpp/third_party/lua)
 INCLUDE_DIRECTORIES(public/cpp/third_party/lua/include)
 
+INCLUDE_DIRECTORIES(third_party/lua-cjson-2.1.0/lua-cjson-2.1.0/)
+
 ADD_DEFINITIONS(-DASIO_STANDALONE)
 #ADD_DEFINITIONS(-DASIO_NO_DEPRECATED)
 ADD_DEFINITIONS(-D_WEBSOCKETPP_CPP11_TYPE_TRAITS_)

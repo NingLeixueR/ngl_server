@@ -76,16 +76,16 @@ namespace ngl
 			return true;
 		}
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
-		pro->set_m_stat(true);
-		pro->set_m_type(pbnet::updata_speck);
+		pro->set_mstat(true);
+		pro->set_mtype(pbnet::ENUM_UPDATA_SPEAK);
 
 		for (const auto& [_channelid, _update] : m_update_chatitem)
 		{
-			pro->set_m_channelid(_channelid);
-			pro->clear_m_chatlist();
+			pro->set_mchannelid(_channelid);
+			pro->clear_mchatlist();
 			for (const pbnet::chatitem& item : _update)
 			{
-				*pro->add_m_chatlist() = item;
+				*pro->add_mchatlist() = item;
 			}
 			send_client(pro);
 		}

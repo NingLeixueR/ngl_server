@@ -154,10 +154,10 @@ namespace ngl
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_CMD>& adata)
 	{
 		const pbnet::PROBUFF_NET_CMD& lparm = *adata.get_data();
-		log_info()->print("cmd [{}]", lparm.m_cmd());
+		log_info()->print("cmd [{}]", lparm.mcmd());
 
 		std::vector<std::string> lvec;
-		if (tools::splite(lparm.m_cmd().c_str(), "|", lvec) == false)
+		if (tools::splite(lparm.mcmd().c_str(), "|", lvec) == false)
 		{
 			return true;
 		}
@@ -200,15 +200,15 @@ namespace ngl
 					if (lvec.size() >= 2)
 					{
 						auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT>();
-						pro->set_m_type((pbnet::enum_logic_chat)tools::lexical_cast<int>(lvec[0].c_str()));
-						pro->set_m_channelid(tools::lexical_cast<int>(lvec[1].c_str()));
-						if (pro->m_type() == pbnet::chat_speak)
+						pro->set_mtype((pbnet::ENUM_LOGIC_CHAT)tools::lexical_cast<int>(lvec[0].c_str()));
+						pro->set_mchannelid(tools::lexical_cast<int>(lvec[1].c_str()));
+						if (pro->mtype() == pbnet::ENUM_CHAT_SPEAK)
 						{
 							if (lvec.size() < 3)
 							{
 								return;
 							}
-							pro->set_m_content(lvec[2]);
+							pro->set_mcontent(lvec[2]);
 						}
 						message lmessage(0, nullptr, pro);
 						role->handle_forward<ACTOR_CHAT>(lmessage);
@@ -227,7 +227,7 @@ namespace ngl
 					{
 						return;
 					}
-					pro->set_m_line(tab->m_tcount);
+					pro->set_mline(tab->m_tcount);
 					message lmessage(0, nullptr, pro);
 					role->handle(lmessage);
 				};
@@ -261,7 +261,7 @@ namespace ngl
 			handle_cmd::add("/create_family") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_CREATE>();
-					pro->set_m_name(aparm);
+					pro->set_mname(aparm);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -271,11 +271,11 @@ namespace ngl
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST>();
 					if (aparm != std::string(""))
 					{
-						pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+						pro->set_mfamilid(tools::lexical_cast<int64_t>(aparm));
 					}
 					else
 					{
-						pro->set_m_familid(-1);
+						pro->set_mfamilid(-1);
 					}
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
@@ -284,8 +284,8 @@ namespace ngl
 			handle_cmd::add("/join_family") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_JOIN>();
-					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
-					pro->set_m_apply(true);
+					pro->set_mfamilid(tools::lexical_cast<int64_t>(aparm));
+					pro->set_mapply(true);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -293,8 +293,8 @@ namespace ngl
 			handle_cmd::add("/cancel_join_family") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_JOIN>();
-					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
-					pro->set_m_apply(false);
+					pro->set_mfamilid(tools::lexical_cast<int64_t>(aparm));
+					pro->set_mapply(false);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -308,8 +308,8 @@ namespace ngl
 					{
 						return;
 					}
-					pro->set_m_roleid(lroleid);
-					pro->set_m_ratify(lratify);
+					pro->set_mroleid(lroleid);
+					pro->set_mratify(lratify);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -322,7 +322,7 @@ namespace ngl
 					{
 						return;
 					}
-					pro->set_m_roleid(lroleid);
+					pro->set_mroleid(lroleid);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -330,7 +330,7 @@ namespace ngl
 			handle_cmd::add("/leave_family") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LEAVE>();
-					pro->set_m_familid(tools::lexical_cast<int64_t>(aparm));
+					pro->set_mfamilid(tools::lexical_cast<int64_t>(aparm));
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -344,8 +344,8 @@ namespace ngl
 					{
 						return;
 					}
-					pro->set_m_familid(lfamilylid);
-					pro->set_m_name(lfamilylname);
+					pro->set_mfamilid(lfamilylid);
+					pro->set_mname(lfamilylname);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -358,7 +358,7 @@ namespace ngl
 					{
 						return;
 					}
-					pro->set_m_familid(lfamilylid);
+					pro->set_mfamilid(lfamilylid);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_FAMILY>(lmessage);
 				};
@@ -374,9 +374,9 @@ namespace ngl
 					{
 						return;
 					}
-					pro->set_m_iscross(liscross);
-					pro->set_m_type((pbdb::eranklist)ltype);
-					pro->set_m_page(lpage);
+					pro->set_miscross(liscross);
+					pro->set_mtype((pbdb::eranklist)ltype);
+					pro->set_mpage(lpage);
 					message lmessage(1, nullptr, pro);
 					role->handle_forward<ACTOR_RANKLIST>(lmessage);
 				};
@@ -403,13 +403,13 @@ namespace ngl
 		if (lpack->m_protocol == ENET_KCP)
 		{
 			pbnet::PROBUFF_NET_GET_TIME_RESPONSE pro;
-			pro.set_m_utc((int32_t)localtime::gettime());
+			pro.set_mutc((int32_t)localtime::gettime());
 			sendkcp(pro, lrequest);
 		}
 		else
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>();
-			pro->set_m_utc((int32_t)localtime::gettime());
+			pro->set_mutc((int32_t)localtime::gettime());
 			send_client(id_guid(), pro);
 		}
 		return true;
@@ -426,7 +426,7 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE>& adata)
 	{
-		const tab_servers* tab = ttab_servers::instance().node_tnumber(GAME, adata.get_data()->m_line());
+		const tab_servers* tab = ttab_servers::instance().node_tnumber(GAME, adata.get_data()->mline());
 		if (tab == nullptr)
 		{
 			return false;
@@ -434,7 +434,7 @@ namespace ngl
 		i32_sessionid lsession = server_session::sessionid(tab->m_id);
 		if (lsession == -1)
 		{
-			log_error()->print("PROBUFF_NET_SWITCH_LINE ERROR line[{}] severid[{}]", adata.get_data()->m_line(), tab->m_id);
+			log_error()->print("PROBUFF_NET_SWITCH_LINE ERROR line[{}] severid[{}]", adata.get_data()->mline(), tab->m_id);
 			return false;
 		}
 		np_actorswitch_process_role pro;
@@ -445,23 +445,23 @@ namespace ngl
 	}
 	bool actor_role::handle(const message<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>& adata)
 	{
-		const tab_task* tab = ttab_task::instance().tab(adata.get_data()->m_taskid());
+		const tab_task* tab = ttab_task::instance().tab(adata.get_data()->mtaskid());
 		if (tab == nullptr)
 		{
 			return true;
 		}
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>();
-		pro->set_m_taskid(adata.get_data()->m_taskid());
+		pro->set_mtaskid(adata.get_data()->mtaskid());
 
 		std::map<int, int> ldrop;
 		std::string lsrc = std::format("task receive award");		
 		if (!get_drop().use(tab->m_dropid, 1, id_guid(), lsrc, &ldrop))
 		{
-			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->m_taskid(), tab->m_dropid);
+			log_error()->print("task:{} drop:{} fail!!!", adata.get_data()->mtaskid(), tab->m_dropid);
 			return true;
 		}
-		tools::copy(ldrop, *pro->mutable_m_drop());
+		tools::copy(ldrop, *pro->mutable_mdrop());
 		m_bag.add_item(ldrop);
 		return true;
 	}

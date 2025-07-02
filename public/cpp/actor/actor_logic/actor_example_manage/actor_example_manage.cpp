@@ -55,12 +55,12 @@ namespace ngl
 		applayinfo->m_role_enter_example[aroleid] = true;
 		{
 			auto lresponse = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>();
-			lresponse->set_m_cross(across);
-			lresponse->set_m_type(atype);
-			lresponse->set_m_exampleactorid(applayinfo->m_actorexampleid);
+			lresponse->set_mcross(across);
+			lresponse->set_mtype(atype);
+			lresponse->set_mexampleactorid(applayinfo->m_actorexampleid);
 			for (const auto& item : applayinfo->m_role_enter_example)
 			{
-				lresponse->add_m_players(item.first);
+				lresponse->add_mplayers(item.first);
 			}
 			send_client(applayinfo->m_roles, lresponse);
 		}

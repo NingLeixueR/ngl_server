@@ -186,7 +186,7 @@ namespace ngl
 		void create(const nguid& aid) final
 		{
 			m_dbdata = &m_data[aid];
-			m_dbdata->get().set_m_id(aid);
+			m_dbdata->get().set_mid(aid);
 			m_id = aid;
 		}
 
@@ -280,7 +280,7 @@ namespace ngl
 				}
 				if (lp != nullptr && lp->is_modified())
 				{
-					pro.add(lp->getconst().m_id(), lp->getconst());
+					pro.add(lp->getconst().mid(), lp->getconst());
 					// # 清空标志位 
 					lp->clear_modified();
 				}			
@@ -292,7 +292,7 @@ namespace ngl
 					data_modified<TDBTAB>& ldata = apair.second;
 					if (ldata.is_modified())
 					{
-						pro.add(ldata.getconst().m_id(), ldata.getconst());
+						pro.add(ldata.getconst().mid(), ldata.getconst());
 						// # 清空标志位 
 						ldata.clear_modified();
 					}

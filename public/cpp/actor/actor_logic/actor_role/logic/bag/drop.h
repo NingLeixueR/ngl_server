@@ -41,9 +41,9 @@ namespace ngl
 					tdb_activitytimes::nsp_cli<TACTOR>::instance(m_actor->id_guid()).getconst(activityid);
 				if (lpactivitytimes != nullptr)
 				{
-					if (lnow >= lpactivitytimes->m_beg()
-						&& lnow < lpactivitytimes->m_beg()+ lpactivitytimes->m_duration()
-						&& lpactivitytimes->m_start()
+					if (lnow >= lpactivitytimes->mbeg()
+						&& lnow < lpactivitytimes->mbeg()+ lpactivitytimes->mduration()
+						&& lpactivitytimes->mstart()
 						)
 					{
 						return true;
@@ -204,7 +204,7 @@ namespace ngl
 				std::map<int, int> lmap;
 				if (droplist(aid, acount, lmap))
 				{
-					map2goolemap(lmap, *pro->mutable_m_items());
+					map2goolemap(lmap, *pro->mutable_mitems());
 					actor::send_actor(aroleid, nguid::make(), psenditem);
 					actor::send_client(aroleid, pro);
 					if (amap != nullptr)

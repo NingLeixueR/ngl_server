@@ -295,13 +295,13 @@ namespace ngl
 	void actor_role::sync_data_client()
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>();
-		*pro->mutable_m_role()	= m_info.get().getconst();
-		*pro->mutable_m_bag()	= m_bag.get().getconst();
-		*pro->mutable_m_task()	= m_task.get().getconst();
+		*pro->mutable_mrole()	= m_info.get().getconst();
+		*pro->mutable_mbag()	= m_bag.get().getconst();
+		*pro->mutable_mtask()	= m_task.get().getconst();
 		const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_role>::instance(id_guid()).getconst(id_guid());
 		if (lpbrief != nullptr)
 		{
-			*pro->mutable_m_brief() = *lpbrief;
+			*pro->mutable_mbrief() = *lpbrief;
 		}
 		send_client(id_guid(), pro);
 	}
@@ -363,12 +363,12 @@ namespace ngl
 		if (lgold > 0 || lstat == 0)
 		{
 			auto cpro = std::make_shared<pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE>();
-			cpro->set_m_rechargeid(arechargeid);
-			cpro->set_m_orderid(aorderid);
-			cpro->set_m_gold(lgold);
+			cpro->set_mrechargeid(arechargeid);
+			cpro->set_morderid(aorderid);
+			cpro->set_mgold(lgold);
 			for (auto itor = litems.begin(); itor != litems.end(); ++itor)
 			{
-				(*cpro->mutable_m_items())[itor->first] = itor->second;
+				(*cpro->mutable_mitems())[itor->first] = itor->second;
 			}
 			send_client(id_guid(), cpro);
 		}	
@@ -380,9 +380,9 @@ namespace ngl
 	{
 		auto& lrole = m_info.get().getconst();
 		int lcount = 0;
-		for (const auto& item : lrole.m_recharge())
+		for (const auto& item : lrole.mrecharge())
 		{
-			if (item.m_rechargeid() == arechargeid)
+			if (item.mrechargeid() == arechargeid)
 			{
 				return false;
 			}
@@ -403,7 +403,7 @@ namespace ngl
 	void actor_role::echo_msg(const char* amsg)
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_MSG_RESPONSE>();
-		pro->set_m_msg(amsg);
+		pro->set_mmsg(amsg);
 		send_client(id_guid(), pro);
 	}
 

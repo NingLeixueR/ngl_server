@@ -42,20 +42,20 @@ namespace ngl
 		auto lpack = adata.get_pack();
 
 		log_info()->print("# Login[{}][{}][{}] #",
-			lparm->m_area()
-			, lparm->m_account()
-			, lparm->m_password()
+			lparm->marea()
+			, lparm->maccount()
+			, lparm->mpassword()
 		);
 		bool iscreate = false;
 
-		const data_modified<pbdb::db_account>* lpaccount = get_account(lparm->m_area(), lparm->m_account(), lparm->m_password(), iscreate);
+		const data_modified<pbdb::db_account>* lpaccount = get_account(lparm->marea(), lparm->maccount(), lparm->mpassword(), iscreate);
 		if (lpaccount == nullptr)
 		{
 			return true;
 		}
 		
 		const pair_account* lppair_account = nullptr;
-		auto itor = m_actorbyserver.find(lpaccount->getconst().m_id());
+		auto itor = m_actorbyserver.find(lpaccount->getconst().mid());
 		if (itor == m_actorbyserver.end())
 		{
 			pair_account ltempaccount;
@@ -72,8 +72,8 @@ namespace ngl
 
 			ltempaccount.m_gameserverid = lpairgame.first;
 			ltempaccount.m_gatewayserverid = lpairgateway.first;
-			m_actorbyserver[lpaccount->getconst().m_id()] = ltempaccount;
-			lppair_account = &m_actorbyserver[lpaccount->getconst().m_id()];
+			m_actorbyserver[lpaccount->getconst().mid()] = ltempaccount;
+			lppair_account = &m_actorbyserver[lpaccount->getconst().mid()];
 		}
 		else
 		{
@@ -85,12 +85,12 @@ namespace ngl
 			np_actorrole_login pro
 			{
 				.m_session		= lppair_account->m_session,
-				.m_accountid	= lpaccount->getconst().m_id(),
-				.m_account		= lparm->m_account(),
-				.m_roleid		= lpaccount->getconst().m_roleid(),
+				.m_accountid	= lpaccount->getconst().mid(),
+				.m_account		= lparm->maccount(),
+				.m_roleid		= lpaccount->getconst().mroleid(),
 				.m_gameid		= lppair_account->m_gameserverid,
 				.m_gatewayid	= lppair_account->m_gatewayserverid,
-				.m_area			= (i16_area)lpaccount->getconst().m_area(),
+				.m_area			= (i16_area)lpaccount->getconst().marea(),
 				.m_iscreate		= iscreate,
 				.m_socketid		= adata.get_pack()->m_id,
 				.m_request_actor = lpack->m_head.get_request_actor(),
@@ -101,11 +101,11 @@ namespace ngl
 		// # ֪ͨclient
 		{
 			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE pro;
-			pro.set_m_roleid(lpaccount->getconst().m_roleid());
-			pro.set_m_area((i16_area)lpaccount->getconst().m_area());
-			pro.set_m_session(lppair_account->m_session);
-			pro.set_m_account(lparm->m_account());
-			pro.set_m_gatewayid(lppair_account->m_gatewayserverid);
+			pro.set_mroleid(lpaccount->getconst().mroleid());
+			pro.set_marea((i16_area)lpaccount->getconst().marea());
+			pro.set_msession(lppair_account->m_session);
+			pro.set_maccount(lparm->maccount());
+			pro.set_mgatewayid(lppair_account->m_gatewayserverid);
 			nets::sendbysession(adata.get_pack()->m_id, pro, lpack->m_head.get_request_actor(), id_guid());
 		}
 		

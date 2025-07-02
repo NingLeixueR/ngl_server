@@ -1,7 +1,6 @@
 #include "actor_robot.h"
 #include "nregister.h"
 #include "nforward.h"
-
 namespace ngl
 {
 	bool actor_robot::handle(const message<np_thruput_test>& adata)
@@ -62,26 +61,26 @@ namespace ngl
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_CHAT_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();
-		if (lrecv->m_type() == pbnet::get_chat_list)
+		if (lrecv->mtype() == pbnet::ENUM_GET_CHAT_LIST)
 		{
 			char lbuff[1024] = { 0 };
-			for (const auto& item : lrecv->m_chatlist())
+			for (const auto& item : lrecv->mchatlist())
 			{
-				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
-				log_error()->print("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
+				ngl::localtime::time2str(lbuff, 1024, item.mutc(), "%y/%m/%d %H:%M:%S");
+				log_error()->print("[{}:{}:{}] {}", nguid::area(item.mroleid()), item.mrolename(), lbuff, item.mcontent());
 			}
 		}
-		else if (lrecv->m_type() == pbnet::chat_speak)
+		else if (lrecv->mtype() == pbnet::ENUM_CHAT_SPEAK)
 		{
 			//log_error()->print("{}", (lrecv->m_stat() ? "[发言成功]" : "[发言失败] "));
 		}
-		else if (lrecv->m_type() == pbnet::updata_speck)
+		else if (lrecv->mtype() == pbnet::ENUM_UPDATA_SPEAK)
 		{
 			char lbuff[1024] = { 0 };
-			for (const auto& item : lrecv->m_chatlist())
+			for (const auto& item : lrecv->mchatlist())
 			{
-				ngl::localtime::time2str(lbuff, 1024, item.m_utc(), "%y/%m/%d %H:%M:%S");
-				log_error()->print("[{}:{}:{}] {}", nguid::area(item.m_roleid()), item.m_rolename(), lbuff, item.m_content());
+				ngl::localtime::time2str(lbuff, 1024, item.mutc(), "%y/%m/%d %H:%M:%S");
+				log_error()->print("[{}:{}:{}] {}", nguid::area(item.mroleid()), item.mrolename(), lbuff, item.mcontent());
 			}
 		}
 		return true;
@@ -169,14 +168,14 @@ namespace ngl
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_GET_TIME_RESPONSE>& adata)
 	{
 		char lbuff[1024] = { 0 };
-		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->m_utc(), "%y/%m/%d %H:%M:%S");
-		log_error()->print("[{}][{}]", m_data.m_brief().m_name(), lbuff);
+		ngl::localtime::time2str(lbuff, 1024, adata.get_data()->mutc(), "%y/%m/%d %H:%M:%S");
+		log_error()->print("[{}][{}]", m_data.mbrief().mname(), lbuff);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_KCPSESSION_RESPONSE>& adata)
 	{
 		const tab_servers* tab = ttab_servers::instance().tab();
-		m_kcpsessionmd5 = adata.get_data()->m_kcpsession();
+		m_kcpsessionmd5 = adata.get_data()->mkcpsession();
 
 		const tab_servers* tabgame = ttab_servers::instance().tab("game", tab->m_area, 1);
 		net_works const* lpworks = ttab_servers::instance().nworks(ENET_KCP, tabgame);
@@ -230,15 +229,15 @@ namespace ngl
 		notices lnotices;
 		char lbuffstart[1024] = { 0 };
 		char lbufffinish[1024] = { 0 };
-		for (const auto& item : adata.get_data()->m_notices())
+		for (const auto& item : adata.get_data()->mnotices())
 		{
-			ngl::localtime::time2str(lbuffstart, 1024, item.m_starttime(), "%Y/%m/%d %H:%M:%S");
-			ngl::localtime::time2str(lbufffinish, 1024, item.m_finishtime(), "%Y/%m/%d %H:%M:%S");
+			ngl::localtime::time2str(lbuffstart, 1024, item.mstarttime(), "%Y/%m/%d %H:%M:%S");
+			ngl::localtime::time2str(lbufffinish, 1024, item.mfinishtime(), "%Y/%m/%d %H:%M:%S");
 			lnotices.m_notices.push_back(
 				noticeitem
 				{
-					.m_id = item.m_id(),
-					.m_notice = item.m_notice(),
+					.m_id = item.mid(),
+					.m_notice = item.mnotice(),
 					.m_starttime = lbuffstart,
 					.m_finishtime = lbufffinish,
 				}
@@ -251,7 +250,7 @@ namespace ngl
 		ngl::tools::to_asscii(lstr, lstrasscii);
 		log_error()->print(
 			"[{}:{}] {}",
-			area(), m_data.m_brief().m_name(), lstrasscii
+			area(), m_data.mbrief().mname(), lstrasscii
 		);
 		return true;
 	}
@@ -278,8 +277,8 @@ namespace ngl
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE>& adata)
 	{
 		log_error()->print("[LOGIC_ROLE_SYNC:{}:{}]"
-			, adata.get_data()->m_brief().m_name()
-			, adata.get_data()->m_brief().m_lv()
+			, adata.get_data()->mbrief().mname()
+			, adata.get_data()->mbrief().mlv()
 		);
 		m_data = *adata.get_data();
 		return true;

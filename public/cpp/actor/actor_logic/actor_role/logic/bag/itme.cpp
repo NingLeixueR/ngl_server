@@ -12,9 +12,9 @@ namespace ngl
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
 			pbdb::item litem;
-			litem.set_m_id(-1);
-			litem.set_m_count(acount);
-			litem.set_m_tid(atid);
+			litem.set_mid(-1);
+			litem.set_mcount(acount);
+			litem.set_mtid(atid);
 
 			avec.push_back(litem);
 			return true;
@@ -55,11 +55,11 @@ namespace ngl
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
 			pbdb::item litem;
-			litem.set_m_id(-1);
-			litem.set_m_count(acount);
-			litem.set_m_tid(atid);
-			litem.set_m_star(1);
-			litem.set_m_lv(1);
+			litem.set_mid(-1);
+			litem.set_mcount(acount);
+			litem.set_mtid(atid);
+			litem.set_mstar(1);
+			litem.set_mlv(1);
 
 			avec.push_back(litem);
 			return true;
@@ -77,11 +77,11 @@ namespace ngl
 		virtual bool mode(actor_role* arole, int32_t atid, int32_t acount, std::vector<pbdb::item>& avec)
 		{
 			pbdb::item litem;
-			litem.set_m_id(-1);
-			litem.set_m_count(acount);
-			litem.set_m_tid(atid);
-			litem.set_m_star(1);
-			litem.set_m_lv(1);
+			litem.set_mid(-1);
+			litem.set_mcount(acount);
+			litem.set_mtid(atid);
+			litem.set_mstar(1);
+			litem.set_mlv(1);
 
 			avec.push_back(litem);
 			return true;

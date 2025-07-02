@@ -9,11 +9,11 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_account ltemp;
-		ltemp.set_m_account(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		ltemp.set_m_passworld("123456");
-		ltemp.set_m_roleid(ltemp.m_id());
-		ltemp.set_m_area(tab_self_area);
+		ltemp.set_maccount(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mpassworld("123456");
+		ltemp.set_mroleid(ltemp.mid());
+		ltemp.set_marea(tab_self_area);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
 	}
@@ -33,14 +33,14 @@ void init_DB_ROLE(const char* aname, int beg)
 		pbdb::db_role ltemp;
 
 		ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
-		ltemp.set_m_id(lid);
+		ltemp.set_mid(lid);
 		pbdb::db_brief lrolebase;
-		lrolebase.set_m_id(lid);
-		lrolebase.set_m_name(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
-		lrolebase.set_m_lv(i);
-		lrolebase.set_m_moneygold(0);
-		lrolebase.set_m_moneysilver(0);
-		lrolebase.set_m_createutc((int32_t)ngl::localtime::gettime());
+		lrolebase.set_mid(lid);
+		lrolebase.set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
+		lrolebase.set_mlv(i);
+		lrolebase.set_mmoneygold(0);
+		lrolebase.set_mmoneysilver(0);
+		lrolebase.set_mcreateutc((int32_t)ngl::localtime::gettime());
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, lrolebase);
 		ngl::actor_dbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
@@ -62,8 +62,8 @@ void init_DB_BAG(const char* aname, int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_bag ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		ltemp.set_m_maxid(1);
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mmaxid(1);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
 	}
@@ -80,17 +80,17 @@ void init_DB_TASK(const char* aname, int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_task ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		auto lrundatas = ltemp.mutable_m_rundatas();
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		auto lrundatas = ltemp.mutable_mrundatas();
 		std::pair<int32_t, pbdb::db_task::data> lpair;
 		lpair.first = 1;
-		lpair.second.set_m_taskid(1);
-		lpair.second.set_m_receiveutc(0);
-		lpair.second.set_m_finshutc(0);
-		auto lschedules = lpair.second.mutable_m_schedules();
+		lpair.second.set_mtaskid(1);
+		lpair.second.set_mreceiveutc(0);
+		lpair.second.set_mfinshutc(0);
+		auto lschedules = lpair.second.mutable_mschedules();
 		auto lschedulesnode = lschedules->Add();
-		lschedulesnode->set_m_value(1);
-		lschedulesnode->set_m_sumint(10);
+		lschedulesnode->set_mvalue(1);
+		lschedulesnode->set_msumint(10);
 		(*lrundatas)[lpair.first] = lpair.second;
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_TASK, pbdb::db_task>::save(0, ltemp);
@@ -109,7 +109,7 @@ void init_DB_MAIL(int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_mail ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
 	}
@@ -126,10 +126,10 @@ void init_DB_ROLEKEYVALUE(int beg)
 	for (int i = beg; i < beg + DEF_COUNT; ++i)
 	{
 		pbdb::db_rolekeyvalue ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		(*ltemp.mutable_m_data())["test1"] = "1";
-		(*ltemp.mutable_m_data())["test2"] = "2";
-		(*ltemp.mutable_m_data())["test3"] = "3";
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		(*ltemp.mutable_mdata())["test1"] = "1";
+		(*ltemp.mutable_mdata())["test2"] = "2";
+		(*ltemp.mutable_mdata())["test3"] = "3";
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue>::save(0, ltemp);
 	}
@@ -159,12 +159,12 @@ void init_DB_NOTICE()
 	for (int i = 1; i < 10; ++i)
 	{
 		pbdb::db_notice ltemp;
-		ltemp.set_m_id((ngl::ttab_servers::instance().tab()->m_area*100)+i);
+		ltemp.set_mid((ngl::ttab_servers::instance().tab()->m_area*100)+i);
 		if (ngl::tools::to_utf8(lvec[i], lvec[i]) == false)
 			continue;
-		ltemp.set_m_notice(lvec[i]);
-		ltemp.set_m_starttime((int32_t)time(nullptr));
-		ltemp.set_m_finishtime((int32_t)time(nullptr) + 36000);
+		ltemp.set_mnotice(lvec[i]);
+		ltemp.set_mstarttime((int32_t)time(nullptr));
+		ltemp.set_mfinishtime((int32_t)time(nullptr) + 36000);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
 	}
@@ -173,10 +173,10 @@ void init_DB_NOTICE()
 void init_DB_KEYVAL()
 {
 	pbdb::db_keyvalue ltemp;
-	ltemp.set_m_id(pbdb::db_keyvalue_ekv_none);
+	ltemp.set_mid(pbdb::db_keyvalue_ekv_none);
 	int32_t lnow = (int32_t)ngl::localtime::gettime();
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
-	ltemp.set_m_value(ltempstr);
+	ltemp.set_mvalue(ltempstr);
 
 	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
 }
@@ -186,21 +186,21 @@ void init_DB_FAMILY()
 	for (int i = 1; i < 100; ++i)
 	{
 		pbdb::db_family ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, i));
-		ltemp.set_m_createutc((int32_t)ngl::localtime::gettime());
-		ltemp.set_m_exp(100);
-		ltemp.set_m_lv(1);
-		ltemp.set_m_name(std::format("FLIBO{}", i));
-		ltemp.set_m_leader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		*ltemp.mutable_m_member()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_FAMILY, tab_self_area, i));
+		ltemp.set_mcreateutc((int32_t)ngl::localtime::gettime());
+		ltemp.set_mexp(100);
+		ltemp.set_mlv(1);
+		ltemp.set_mname(std::format("FLIBO{}", i));
+		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
 
 		pbdb::db_familyer ltempfamilyer;
-		ltempfamilyer.set_m_joinutc((int32_t)ngl::localtime::gettime());
-		ltempfamilyer.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
-		ltempfamilyer.set_m_position(pbdb::db_familyer_eposition_leader);
-		ltempfamilyer.set_m_lastsignutc((int32_t)ngl::localtime::gettime());
+		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
+		ltempfamilyer.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
+		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
 	}
@@ -211,11 +211,11 @@ void init_DB_RANKLIST()
 	/*for (int i = 1; i < 100; ++i)
 	{
 		pbdb::db_ranklist ltemp;
-		ltemp.set_m_id(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
+		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		pbdb::rankitem lrankitem;
-		lrankitem.set_m_time((int32_t)ngl::localtime::gettime());
-		lrankitem.set_m_value(i);
-		(*ltemp.mutable_m_items())[(int)pbdb::eranklist::lv] = lrankitem;
+		lrankitem.set_mtime((int32_t)ngl::localtime::gettime());
+		lrankitem.set_mvalue(i);
+		(*ltemp.mutable_mitems())[(int)pbdb::eranklist::lv] = lrankitem;
 
 		ngl::actor_dbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
 	}*/
@@ -232,15 +232,15 @@ void init_DB_FRIENDS()
 		{
 			ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j1);
 			pbdb::db_friends& lfriends = lmap[lactor1];
-			lfriends.set_m_id(lactor1);
+			lfriends.set_mid(lactor1);
 			for (int j2 = lbeg; j2 < lend; ++j2)
 			{
 				if (j1 != j2)
 				{
 					ngl::i64_actorid lactor2 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2);
 					ngl::i64_actorid lactor3 = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, j2+10);
-					lfriends.add_m_friends(lactor2);
-					lfriends.add_m_applyfriends(lactor3);
+					lfriends.add_mfriends(lactor2);
+					lfriends.add_mapplyfriends(lactor3);
 				}
 			}
 		}

@@ -51,12 +51,12 @@ namespace ngl
 			{
 				log_error()->print(
 					"actor_manage_role nclient_keyvalue::set_changedata_fun####### [{}:{}:{}]"
-					, aid, akeyval.m_value().c_str()
+					, aid, akeyval.mvalue().c_str()
 					, afirstsynchronize ? "first" : "change"
 				);
 				if (afirstsynchronize)
 				{
-					tools::splite(akeyval.m_value().c_str(), "*", m_roleban);
+					tools::splite(akeyval.mvalue().c_str(), "*", m_roleban);
 				}
 			});
 	}

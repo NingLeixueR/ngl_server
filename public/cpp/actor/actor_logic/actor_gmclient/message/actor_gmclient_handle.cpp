@@ -1,5 +1,4 @@
 #include "actor_gmclient.h"
-
 namespace ngl
 {
 	bool actor_gmclient::handle(const message<mforward<np_gm>>& adata)

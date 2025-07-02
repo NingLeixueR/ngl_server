@@ -12,15 +12,15 @@ namespace ngl
 			{
 				return false;
 			}
-			if (ltemp->m_draw() == true)
+			if (ltemp->mdraw() == true)
 			{
 				return false;
 			}
 			auto pro = std::make_shared<np_actor_senditem>();
-			for (int i = 0; i < ltemp->m_items_size(); ++i)
+			for (int i = 0; i < ltemp->mitems_size(); ++i)
 			{
-				const pbdb::mailitem&  lmailitem = ltemp->m_items()[i];
-				pro->m_item.insert({ lmailitem.m_itemtid(),lmailitem.m_count() });
+				const pbdb::mailitem&  lmailitem = ltemp->mitems()[i];
+				pro->m_item.insert({ lmailitem.mitemtid(),lmailitem.mcount() });
 			}
 			actor::send_actor(aroleid, get_actor()->id_guid(), pro);
 		}
@@ -28,7 +28,7 @@ namespace ngl
 		{// Ò»¼üÁìÈ¡
 			one_touch(aroleid, [](const pbdb::mail& amail)
 				{
-					return amail.m_draw() == false;
+					return amail.mdraw() == false;
 				}, [aroleid, this](int32_t aid)
 				{
 					drawmail(aroleid, aid);

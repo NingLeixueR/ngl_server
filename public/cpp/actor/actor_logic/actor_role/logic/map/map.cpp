@@ -66,10 +66,10 @@ namespace ngl
 		{
 			return false;
 		}
-		aUNIT->set_m_id(aunit->id());
-		aUNIT->set_m_type(aunit->type());
+		aUNIT->set_mid(aunit->id());
+		aUNIT->set_mtype(aunit->type());
 		//pbnet::VECTOR2*;
-		*aUNIT->mutable_m_position() = aunit->position();
+		*aUNIT->mutable_mposition() = aunit->position();
 		return true;
 	}
 
@@ -100,7 +100,7 @@ namespace ngl
 		m_grids.idaround_list(lenter_pos, lgrids2);
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>();
-		pro->add_m_units(aunit->id());
+		pro->add_munits(aunit->id());
 		std::set<i64_actorid> lview;
 		// leave Àë¿ªÊÓÒ°
 		for (int32_t id : lgrids1)
@@ -120,7 +120,7 @@ namespace ngl
 		}
 		if (lview.empty() == false)
 		{
-			pro->set_m_isenter(false);
+			pro->set_misenter(false);
 			actor::send_client(lview, pro);
 
 			np_eevents_map_leaveview lparm;
@@ -148,7 +148,7 @@ namespace ngl
 		}
 		if (lview.empty() == false)
 		{
-			pro->set_m_isenter(true);
+			pro->set_misenter(true);
 			actor::send_client(lview, pro);
 
 			np_eevents_map_enterview lparm;
@@ -169,8 +169,8 @@ namespace ngl
 		m_grids.leave(aunit, lgrid);
 
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>();
-		pro->add_m_units(aunit->id());
-		pro->set_m_isenter(false);
+		pro->add_munits(aunit->id());
+		pro->set_misenter(false);
 
 		std::set<int32_t> lgrids;
 		m_grids.idaround_list(m_grids.id(aunit->x(), aunit->y()), lgrids);
@@ -188,7 +188,7 @@ namespace ngl
 	void aoimap::sync_position(unit* aunit, int32_t agridid)
 	{
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_SYNC_POSITION>();
-		(*pro->mutable_m_position())[aunit->id()] = aunit->position();
+		(*pro->mutable_mposition())[aunit->id()] = aunit->position();
 
 		std::set<int32_t> lgrids;
 		m_grids.idaround_list(agridid, lgrids);
@@ -246,8 +246,8 @@ namespace ngl
 
 	void aoimap::change(pbnet::UNIT_POSITION& aposition)
 	{
-		change_angle(aposition.m_id(), aposition.m_angle());
-		change_speed(aposition.m_id(), aposition.m_speed());
+		change_angle(aposition.mid(), aposition.mangle());
+		change_speed(aposition.mid(), aposition.mspeed());
 	}
 
 	void aoimap::update(int64_t ams)
@@ -257,20 +257,20 @@ namespace ngl
 			itor != m_roleunit.end(); ++itor)
 		{
 			itor->second->update(ams, lpos);
-			move(itor->second, lpos.m_x(), lpos.m_y());
+			move(itor->second, lpos.mx(), lpos.my());
 		}
 		for (auto itor = m_monster.begin();
 			itor != m_monster.end(); ++itor)
 		{
 			itor->second->update(ams, lpos);
-			move(itor->second, lpos.m_x(), lpos.m_y());
+			move(itor->second, lpos.mx(), lpos.my());
 		}
 
 		for (auto itor = m_region.begin();
 			itor != m_region.end(); ++itor)
 		{
 			itor->second->update(ams, lpos);
-			move(itor->second, lpos.m_x(), lpos.m_y());
+			move(itor->second, lpos.mx(), lpos.my());
 		}
 	}
 }// namespace ngl

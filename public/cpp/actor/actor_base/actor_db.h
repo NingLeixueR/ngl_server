@@ -79,7 +79,7 @@ namespace ngl
 			ngl::db_data<TDBTAB>::foreach_index(
 				[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
-					nguid lguid(atab.m_id());
+					nguid lguid(atab.mid());
 					pro.m_data.m_data->insert(std::make_pair(lguid, atab));
 					if (aindex % lsendmaxcount == 0)
 					{
@@ -145,7 +145,7 @@ namespace ngl
 		// # 异步保存数据  将需要保存的数据添加到缓存保存队列
 		static void save(i32_threadid, const TDBTAB& adata)
 		{
-			int64_t lid = adata.m_id();
+			int64_t lid = adata.mid();
 			ngl::db_data<TDBTAB>::set(lid, adata);
 			m_cache_save.push(lid);
 		}
@@ -367,7 +367,7 @@ namespace ngl
 						{
 							return;
 						}
-						int64_t lid = ldata.m_data->m_id();
+						int64_t lid = ldata.m_data->mid();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
 						db_manage::save<TDBTAB>(db_pool::instance().get(athread), lid);
 						pro.m_data = true;

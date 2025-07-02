@@ -137,7 +137,7 @@ namespace ngl
 				tools::no_core_dump();
 			}
 			data_modified<TDATA>& ldata = data()[aid];
-			ldata.get().set_m_id(aid);
+			ldata.get().set_mid(aid);
 			return ldata;
 		}
 

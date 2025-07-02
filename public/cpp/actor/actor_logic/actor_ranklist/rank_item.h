@@ -30,18 +30,18 @@ namespace ngl
 		{
 			m_data[atype].m_value = avalfun(abrief);
 
-			auto& lmap = aranklist->getconst().m_items();
+			auto& lmap = aranklist->getconst().mitems();
 			auto itor = lmap.find(atype);
 			if (itor != lmap.end())
 			{
-				if (itor->second.m_value() != m_data[atype].m_value)
+				if (itor->second.mvalue() != m_data[atype].m_value)
 				{
 					change(atype, aranklist->get());
 					return true;
 				}
 				else
 				{
-					m_data[atype].m_time = itor->second.m_time();
+					m_data[atype].m_time = itor->second.mtime();
 					return false;
 				}				
 			}
@@ -52,10 +52,10 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitylv(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.m_activityvalues().m_activity_rolelv().find(
+			auto itor = abrief.mactivityvalues().mactivity_rolelv().find(
 				pbdb::eranklist::activity_lv + ACTIVITYID
 			);
-			if (itor == abrief.m_activityvalues().m_activity_rolelv().end())
+			if (itor == abrief.mactivityvalues().mactivity_rolelv().end())
 			{
 				return -1;
 			}
@@ -65,10 +65,10 @@ namespace ngl
 		template <int ACTIVITYID>
 		int64_t activitygold(const pbdb::db_brief& abrief)
 		{
-			auto itor = abrief.m_activityvalues().m_activity_rolegold().find(
+			auto itor = abrief.mactivityvalues().mactivity_rolegold().find(
 				pbdb::eranklist::activity_gold + ACTIVITYID
 			);
-			if (itor == abrief.m_activityvalues().m_activity_rolegold().end())
+			if (itor == abrief.mactivityvalues().mactivity_rolegold().end())
 			{
 				return -1;
 			}
@@ -82,12 +82,12 @@ namespace ngl
 			case pbdb::eranklist::lv:
 				return init(abrief, aranklist, pbdb::eranklist::lv, [](const pbdb::db_brief& abrief)
 					{
-						return abrief.m_lv();
+						return abrief.mlv();
 					});
 			case pbdb::eranklist::gold:
 				return init(abrief, aranklist, pbdb::eranklist::gold, [](const pbdb::db_brief& abrief)
 					{
-						return abrief.m_moneygold();
+						return abrief.mmoneygold();
 					});
 			case pbdb::eranklist::activity_lv + 1:
 				return init(abrief, aranklist, (pbdb::eranklist)(pbdb::eranklist::activity_lv + 1),
@@ -103,10 +103,10 @@ namespace ngl
 
 		void change(pbdb::eranklist atype, pbdb::db_ranklist& aranklist)
 		{
-			pbdb::rankitem& ltemp = (*aranklist.mutable_m_items())[atype];
+			pbdb::rankitem& ltemp = (*aranklist.mutable_mitems())[atype];
 			m_data[atype].m_time = localtime::gettime();
-			ltemp.set_m_time(m_data[atype].m_time);
-			ltemp.set_m_value(m_data[atype].m_value);
+			ltemp.set_mtime(m_data[atype].m_time);
+			ltemp.set_mvalue(m_data[atype].m_value);
 		}
 
 		enum ecompare

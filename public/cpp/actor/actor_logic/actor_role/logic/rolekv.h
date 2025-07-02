@@ -26,7 +26,7 @@ namespace ngl
 		bool value(const char* akey, std::string& adata)
 		{
 			data_modified<pbdb::db_rolekeyvalue>& ltemp = data()[get_actor()->id_guid()];
-			auto& lmap = ltemp.getconst().m_data();
+			auto& lmap = ltemp.getconst().mdata();
 			auto itor = lmap.find(akey);
 			if (itor == lmap.end())
 			{
@@ -62,7 +62,7 @@ namespace ngl
 		void set_value(const char* akey, T& adata)
 		{
 			pbdb::db_rolekeyvalue& ltemp = data()[get_actor()->id_guid()].get();
-			(*ltemp.mutable_m_data())[akey] = std::format("{}", adata);
+			(*ltemp.mutable_mdata())[akey] = std::format("{}", adata);
 		}
 
 		template <typename ...ARG>

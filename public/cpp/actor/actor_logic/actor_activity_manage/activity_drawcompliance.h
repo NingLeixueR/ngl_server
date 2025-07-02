@@ -53,21 +53,21 @@ namespace ngl
 		void update(i64_actorid aroleid, int acount)
 		{
 			pbdb::db_activity& lactivitydb = m_activity->get();
-			auto lmap = lactivitydb.mutable_m_drawcompliance();
+			auto lmap = lactivitydb.mutable_mdrawcompliance();
 			auto itor = lmap->find(aroleid);
 			if (itor == lmap->end())
 			{
 				pbdb::activity_drawcompliance ltemp;
-				ltemp.set_m_count(acount);
+				ltemp.set_mcount(acount);
 				itor = lmap->insert({ aroleid, ltemp }).first;
 			}
 
 			for (const auto& [_id, _data] : *ttab_activity_drawcompliance::instance().tablecsv())
 			{
-				if (itor->second.m_count() > _id)
+				if (itor->second.mcount() > _id)
 				{
-					auto itorreward = itor->second.mutable_m_reward()->find(_id);
-					if (itorreward == itor->second.mutable_m_reward()->end())
+					auto itorreward = itor->second.mutable_mreward()->find(_id);
+					if (itorreward == itor->second.mutable_mreward()->end())
 					{
 						// 发送
 						std::string lsrc = std::format(
@@ -77,7 +77,7 @@ namespace ngl
 						if (actor_activity_manage::get_drop().use(_data.m_dropid, 1, aroleid, lsrc, nullptr, _data.m_mailid))
 						{
 							// 记录已领取
-							itor->second.mutable_m_reward()->insert({ _id, true });
+							itor->second.mutable_mreward()->insert({ _id, true });
 						}
 					}
 				}

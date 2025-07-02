@@ -90,8 +90,8 @@ namespace ngl
 			return true;
 		}
 		pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE pro;
-		pro.set_m_mailid(lpdata->m_mailid());
-		pro.set_m_stat(m_mails.delmail(lparm->identifier(), lpdata->m_mailid()));
+		pro.set_mmailid(lpdata->mmailid());
+		pro.set_mstat(m_mails.delmail(lparm->identifier(), lpdata->mmailid()));
 		return true;
 	}
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_DRAW>>& adata)
@@ -103,8 +103,8 @@ namespace ngl
 			return true;
 		}
 		pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE pro;
-		pro.set_m_mailid(lpdata->m_mailid());
-		pro.set_m_stat(m_mails.drawmail(lparm->identifier(), lpdata->m_mailid()));
+		pro.set_mmailid(lpdata->mmailid());
+		pro.set_mstat(m_mails.drawmail(lparm->identifier(), lpdata->mmailid()));
 		return true;
 	}
 	bool actor_mail::handle(const message<mforward<pbnet::PROBUFF_NET_MAIL_LIST>>& adata)
@@ -133,8 +133,8 @@ namespace ngl
 			return true;
 		}
 		pbnet::PROBUFF_NET_MAIL_READ_RESPONSE pro;
-		pro.set_m_mailid(lpdata->m_mailid());
-		pro.set_m_stat(m_mails.readmail(lparm->identifier(), lpdata->m_mailid()));
+		pro.set_mmailid(lpdata->mmailid());
+		pro.set_mstat(m_mails.readmail(lparm->identifier(), lpdata->mmailid()));
 		return true;
 	}
 	bool actor_mail::handle(const message<np_actor_addmail>& adata)

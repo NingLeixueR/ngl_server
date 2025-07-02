@@ -36,63 +36,63 @@ enum ENUM_DB
 // ENUM_DB_ACCOUNT,				// 账号数据
 message db_account
 {
-	optional int64	m_id			= 1;				// 帐号id
-	optional int64	m_roleid		= 2;				// 角色id
-	optional bytes m_account		= 3;				// 账号
-	optional bytes m_passworld		= 4;				// 密码
-	optional int32	m_area			= 5;				// 区服id
+	optional int64	mid			= 1;				// 帐号id
+	optional int64	mroleid		= 2;				// 角色id
+	optional string maccount		= 3;				// 账号
+	optional string mpassworld		= 4;				// 密码
+	optional int32	marea			= 5;				// 区服id
 }
 
 message brief_activityvalues
 {
-	map<int32,int32> m_activity_rolelv = 1;		// 活动期间玩家等级变化值 key:活动id value:等级增加值
-	map<int32,int32> m_activity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
+	map<int32,int32> mactivity_rolelv = 1;		// 活动期间玩家等级变化值 key:活动id value:等级增加值
+	map<int32,int32> mactivity_rolegold = 2;	// 活动期间玩家获取金币量 key:活动id value:等级增加值
 }
 
 // ENUM_DB_BRIEF,			// 玩家简要数据
 message db_brief
 {
-	optional int64 m_id				= 1;				// role id
-	optional bytes m_name			= 2;				// 名字
-	optional int32 m_lv				= 3;				// 等级
-	optional int32 m_moneygold		= 4;				// 金币
-	optional int32 m_moneysilver	= 5;				// 银币
-	optional int32 m_vip			= 6;				// vip等级
-	optional int32 m_notalkutc		= 7;				// 被禁言的期限
-	optional int32 m_createutc		= 8;				// 创角时间
-	optional brief_activityvalues m_activityvalues	= 9;	//活动值
+	optional int64 mid				= 1;				// role id
+	optional string mname			= 2;				// 名字
+	optional int32 mlv				= 3;				// 等级
+	optional int32 mmoneygold		= 4;				// 金币
+	optional int32 mmoneysilver	= 5;				// 银币
+	optional int32 mvip			= 6;				// vip等级
+	optional int32 mnotalkutc		= 7;				// 被禁言的期限
+	optional int32 mcreateutc		= 8;				// 创角时间
+	optional brief_activityvalues mactivityvalues	= 9;	//活动值
 }
 
 // ENUM_DB_ROLE,			// 玩家数据
 message db_role
 {
-	optional int64 m_id					= 1;				// role id
+	optional int64 mid					= 1;				// role id
 	// 充值信息
 	message recharge
 	{
-		optional int32 m_rechargeid		= 1;	// 充值id
-		optional int32 m_utc			= 2;	// 充值时间
+		optional int32 mrechargeid		= 1;	// 充值id
+		optional int32 mutc			= 2;	// 充值时间
 	}
-	repeated recharge m_recharge		= 2;
+	repeated recharge mrecharge		= 2;
 }
 
 //ENUM_DB_BAG,			// 背包数据
 message item
 {
-	optional int32 m_id			= 1;
-	optional int32 m_tid		= 2; // tab id
-	optional int32 m_count		= 3;
+	optional int32 mid			= 1;
+	optional int32 mtid		= 2; // tab id
+	optional int32 mcount		= 3;
 	// ## 卡牌 装备
-	optional int32 m_lv			= 4;	// 等级
-	optional int32 m_star		= 5;	// 星级
+	optional int32 mlv			= 4;	// 等级
+	optional int32 mstar		= 5;	// 星级
 }
 
 
 message db_bag
 {
-	optional int64 m_id					= 1;	// roleid
-	map<int32, item> m_items			= 2;	// key item id
-	optional int32 m_maxid				= 3;
+	optional int64 mid					= 1;	// roleid
+	map<int32, item> mitems			= 2;	// key item id
+	optional int32 mmaxid				= 3;
 }
 
 //ENUM_DB_KEYVALUE,		// 公共key/value数据
@@ -104,50 +104,50 @@ message db_keyvalue
 		account_ban		= 1;	// 封号列表
 		open_server		= 2;	// 开服时间
 	}
-	optional int64 m_id					= 1;				// ekeyvalue
-	optional bytes m_value				= 2;				// value
+	optional int64 mid					= 1;				// ekeyvalue
+	optional string mvalue				= 2;				// value
 }
 
 //ENUM_DB_ROLEKEYVALUE,		// 玩家个人key/value数据
 message db_rolekeyvalue
 {
-	optional int64 m_id					= 1;
-	map<string,bytes> m_data			= 2;				// key/val
+	optional int64 mid					= 1;
+	map<string,string> mdata			= 2;				// key/val
 }
 
 //ENUM_DB_MAIL,			// 邮件数据
 message mailitem
 {
-	optional int32 m_itemtid	= 1;
-	optional int32 m_count		= 2;
+	optional int32 mitemtid	= 1;
+	optional int32 mcount		= 2;
 }
 message mail
 {
-	optional int32 m_id				= 1;
-	optional int32 m_createutc		= 2;	// 创建时间
+	optional int32 mid				= 1;
+	optional int32 mcreateutc		= 2;	// 创建时间
 	//// [邮件内容] 1.邮件表id关联参数
-	optional int32 m_tid			= 3;	// 邮件表id
-	optional bytes m_prams			= 4;	// 参数以#号分割pram1#pram2..
+	optional int32 mtid			= 3;	// 邮件表id
+	optional string mprams			= 4;	// 参数以#号分割pram1#pram2..
 	//// [邮件内容] 2.字符串
-	optional bytes m_content		= 5;	// 邮件内容
-	repeated mailitem  m_items		= 6;	// 邮件附件
-	optional bool m_read			= 7;	// 是否已读
-	optional bool m_draw			= 8;	// 是否领取附件	
+	optional string mcontent		= 5;	// 邮件内容
+	repeated mailitem  mitems		= 6;	// 邮件附件
+	optional bool mread			= 7;	// 是否已读
+	optional bool mdraw			= 8;	// 是否领取附件	
 }
 
 message db_mail
 {
-	optional int64 m_id				= 1;
-	map<int32, mail> m_mail			= 2; // key mail id
+	optional int64 mid				= 1;
+	map<int32, mail> mmail			= 2; // key mail id
 }
 
 //ENUM_DB_NOTICE,			// 公告数据
 message db_notice
 {
-	optional int64 m_id			= 1;				// 公告id
-	optional bytes m_notice	= 2;				// 内容
-	optional int32 m_starttime	= 3;				// 开始时间
-	optional int32 m_finishtime	= 4;				// 结束时间
+	optional int64 mid			= 1;				// 公告id
+	optional string mnotice	= 2;				// 内容
+	optional int32 mstarttime	= 3;				// 开始时间
+	optional int32 mfinishtime	= 4;				// 结束时间
 };
 
 enum eranklist
@@ -163,76 +163,76 @@ enum eranklist
 
 message rankitem
 {
-	optional int64 m_value	= 1;
-	optional int32 m_time	= 2;
+	optional int64 mvalue	= 1;
+	optional int32 mtime	= 2;
 }
 
 //ENUM_DB_RANKLIST,		// 排行数据
 message db_ranklist
 {
-	optional int64 m_id			= 1;				// roleid
-	map<int32,rankitem> m_items	= 2;				// key:排行榜类型eranklist
+	optional int64 mid			= 1;				// roleid
+	map<int32,rankitem> mitems	= 2;				// key:排行榜类型eranklist
 }
 
 message db_activitytimes
 {
-	optional int64 m_id			= 1; // tab_actiivity 表id
-	optional int32 m_beg		= 2; // 活动开启时间
-	optional int32 m_duration	= 3; // 活动持续时间
-	optional bool m_start		= 4; // 是否已开启(执行了开启方法)
+	optional int64 mid			= 1; // tab_actiivity 表id
+	optional int32 mbeg		= 2; // 活动开启时间
+	optional int32 mduration	= 3; // 活动持续时间
+	optional bool mstart		= 4; // 是否已开启(执行了开启方法)
 }
 
 message activity_task
 {
-	map<int32,bool> m_open	= 1;	// key:day
-	map<int32,bool> m_close = 2;	// key:day
+	map<int32,bool> mopen	= 1;	// key:day
+	map<int32,bool> mclose = 2;	// key:day
 }
 
 message activity_drawcompliance
 {
-	optional int32 m_count		= 1; // 累计次数
-	map<int32,bool> m_reward	= 2; // 累计领取哪些奖励
+	optional int32 mcount		= 1; // 累计次数
+	map<int32,bool> mreward	= 2; // 累计领取哪些奖励
 }
 
 message db_activity
 {
-	optional int64 m_id										= 1; // tab_actiivity 表id
-	map<int64,activity_task> m_task							= 2; // key:roleid
-	// tab_activity.m_type == EActivityDrawCompliance
-	map<int64,activity_drawcompliance> m_drawcompliance		= 3;
+	optional int64 mid										= 1; // tab_actiivity 表id
+	map<int64,activity_task> mtask							= 2; // key:roleid
+	// tab_activity.mtype == EActivityDrawCompliance
+	map<int64,activity_drawcompliance> mdrawcompliance		= 3;
 }
 
 message db_task
 {
-	optional int64 m_id				= 1; // roleid
+	optional int64 mid				= 1; // roleid
 	message data_schedule
 	{
-		optional int32 m_type			= 1;	// csvtable.ETask
-		optional int32 m_value			= 2;	// 当前值 
-		optional int32 m_sumint			= 3;	// 总值
+		optional int32 mtype			= 1;	// csvtable.ETask
+		optional int32 mvalue			= 2;	// 当前值 
+		optional int32 msumint			= 3;	// 总值
 	}
 	message data
 	{
-		optional int32 m_taskid				= 1; // 任务id
-		optional int32 m_receiveutc			= 2; // 接收任务时间
-		optional int32 m_finshutc			= 3; // 完成任务时间
-		repeated data_schedule m_schedules  = 4; // 任务进度
-		optional bool m_receive				= 5; // 任务奖励是否已领取
+		optional int32 mtaskid				= 1; // 任务id
+		optional int32 mreceiveutc			= 2; // 接收任务时间
+		optional int32 mfinshutc			= 3; // 完成任务时间
+		repeated data_schedule mschedules  = 4; // 任务进度
+		optional bool mreceive				= 5; // 任务奖励是否已领取
 	}
 	message complete
 	{
-		repeated data m_history			= 1;	// 历史已完成任务
+		repeated data mhistory			= 1;	// 历史已完成任务
 	}
-	map<int32,data> m_rundatas			= 2; // 正在进行的任务数据
-	map<int32,complete> m_completeddatas	= 3; // 已完成的任务数据
+	map<int32,data> mrundatas			= 2; // 正在进行的任务数据
+	map<int32,complete> mcompleteddatas	= 3; // 已完成的任务数据
 }
 
 message db_familyer
 {
-	optional int64 m_id					= 1;	// 军团成员id
-	optional int32 m_joinutc			= 2;	// 加入军团的时间
-	optional int32 m_lastsignutc		= 3;	// 上次签到时间
-	optional int32 m_lastleaveutc		= 4;	// 上次离开军团时间
+	optional int64 mid					= 1;	// 军团成员id
+	optional int32 mjoinutc			= 2;	// 加入军团的时间
+	optional int32 mlastsignutc		= 3;	// 上次签到时间
+	optional int32 mlastleaveutc		= 4;	// 上次离开军团时间
 	// 职位
 	enum eposition
 	{
@@ -241,32 +241,32 @@ message db_familyer
 		counsellor	= 2;		// 军师
 		ordinary	= 3;		// 普通成员
 	}
-	optional eposition m_position		= 5; // 职位
+	optional eposition mposition		= 5; // 职位
 }
 
 message db_family
 {
-	optional int64		m_id			= 1; // 军团id
-	optional int32		m_createutc		= 2; // 军团创建时间
-	optional bytes		m_name			= 3; // 军团名称
-	optional int64		m_leader		= 4; // 军团长
-	optional int32		m_lv			= 5; // 军团等级
-	optional int32		m_exp			= 6; // 军团经验
-	repeated int64		m_member		= 7; // 成员
-	repeated int64		m_applylist		= 8; // 申请列表
+	optional int64		mid			= 1; // 军团id
+	optional int32		mcreateutc		= 2; // 军团创建时间
+	optional string		mname			= 3; // 军团名称
+	optional int64		mleader		= 4; // 军团长
+	optional int32		mlv			= 5; // 军团等级
+	optional int32		mexp			= 6; // 军团经验
+	repeated int64		mmember		= 7; // 成员
+	repeated int64		mapplylist		= 8; // 申请列表
 }
 
 message db_friends
 {
-	optional int64		m_id			= 1;	// 玩家roleid
-	repeated int64		m_friends		= 2;	// 好友列表
-	repeated int64		m_applyfriends	= 3;	// 好友请求列表
+	optional int64		mid			= 1;	// 玩家roleid
+	repeated int64		mfriends		= 2;	// 好友列表
+	repeated int64		mapplyfriends	= 3;	// 好友请求列表
 }
 
 // # 跨服
 // ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
 message dbcross_test
 {
-	optional bytes		m_name			= 1;	// 名称
-	repeated int64		m_value			= 2;	// 值
+	optional string		mname			= 1;	// 名称
+	repeated int64		mvalue			= 2;	// 值
 }
