@@ -13,12 +13,12 @@ namespace ngl
 	void bag::initdata()
 	{
 		data_modified<pbdb::db_bag>& lbag = get();
-		auto lpmap = lbag.getconst().m_items();
+		auto lpmap = lbag.getconst().mitems();
 		
 
 		for (auto itor = lpmap.begin(); itor != lpmap.end(); ++itor)
 		{
-			int32_t tid = itor->second.m_tid();
+			int32_t tid = itor->second.mtid();
 			tab_item* tab = ngl::allcsv::tab<tab_item>(tid);
 			if (tab == nullptr)
 			{
@@ -39,23 +39,23 @@ namespace ngl
 	{
 		data_modified<pbdb::db_bag>& ldb_bag = get();
 		pbdb::db_bag& lbag = ldb_bag.get();
-		int32_t lindexid = lbag.m_maxid();
-		aitem.set_m_id(++lindexid);
+		int32_t lindexid = lbag.mmaxid();
+		aitem.set_mid(++lindexid);
 		
-		auto lpair = lbag.mutable_m_items()->insert({ aitem.m_id(), aitem });
+		auto lpair = lbag.mutable_mitems()->insert({ aitem.mid(), aitem });
 		if (lpair.second == false)
 		{
 			log_error()->print(
-				"add_item roleid=[{}] tid=[{}] mutable_m_items()->insert({}) == false"
+				"add_item roleid=[{}] tid=[{}] mutable_mitems()->insert({}) == false"
 				, get_actor()->id_guid()
-				, aitem.m_tid()
-				, aitem.m_id()
+				, aitem.mtid()
+				, aitem.mid()
 			);
 			return nullptr;
 		}
-		lbag.set_m_maxid(lindexid);
+		lbag.set_mmaxid(lindexid);
 
-		print_bi(aitem.m_id(), aitem.m_tid(), aitem.m_count());
+		print_bi(aitem.mid(), aitem.mtid(), aitem.mcount());
 		return &lpair.first->second;
 	}
 
@@ -89,7 +89,7 @@ namespace ngl
 		{
 			if (tab->m_isstack)
 			{
-				auto itor = m_stackitems.find(item.m_tid());
+				auto itor = m_stackitems.find(item.mtid());
 				if (itor == m_stackitems.end())
 				{
 					pbdb::item* lpitem = add(item);
@@ -97,13 +97,13 @@ namespace ngl
 					{
 						continue;
 					}
-					m_stackitems.insert({ item.m_tid(), lpitem });
+					m_stackitems.insert({ item.mtid(), lpitem });
 				}
 				else
 				{
 					pbdb::item* lpitem = itor->second;
-					lpitem->set_m_count(lpitem->m_count() + item.m_count());
-					print_bi(lpitem->m_id(), atid, item.m_count());
+					lpitem->set_mcount(lpitem->mcount() + item.mcount());
+					print_bi(lpitem->mid(), atid, item.mcount());
 				}
 				m_autoitem->add(atid, acount);
 			}
@@ -114,8 +114,8 @@ namespace ngl
 				{
 					continue;
 				}
-				m_nostackitems.insert({ item.m_id(), lpitem });
-				m_autoitem->add(item.m_id());
+				m_nostackitems.insert({ item.mid(), lpitem });
+				m_autoitem->add(item.mid());
 			}
 		}
 		return true;
@@ -135,7 +135,7 @@ namespace ngl
 		for (auto& litem : avec)
 		{
 			add(litem);
-			m_autoitem->add(litem.m_id());
+			m_autoitem->add(litem.mid());
 		}
 		return true;
 	}
@@ -148,21 +148,21 @@ namespace ngl
 		{
 			return false;
 		}
-		int lcount = itor->second->m_count();
+		int lcount = itor->second->mcount();
 		lcount -= acount;
 		if (acount < 0)
 		{
 			return false;
 		}
 		m_autoitem->del(atid, acount);
-		int32_t litemid = itor->second->m_id();
+		int32_t litemid = itor->second->mid();
 		if (acount == 0)
 		{
-			get().get().mutable_m_items()->erase(itor->second->m_id());
+			get().get().mutable_mitems()->erase(itor->second->mid());
 			m_stackitems.erase(itor);
 			return true;
 		}
-		itor->second->set_m_count(lcount);
+		itor->second->set_mcount(lcount);
 		print_bi(litemid, atid, acount, false);
 		return true;
 	}
@@ -175,8 +175,8 @@ namespace ngl
 		{
 			return false;
 		}
-		int32_t tid = itor->second->m_tid();
-		tab_item* tab = ngl::allcsv::tab<tab_item>(itor->second->m_tid());
+		int32_t tid = itor->second->mtid();
+		tab_item* tab = ngl::allcsv::tab<tab_item>(itor->second->mtid());
 		if (tab == nullptr)
 		{
 			return false;
@@ -198,7 +198,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return acount >= itor->second->m_count();
+		return acount >= itor->second->mcount();
 	}
 
 	bool bag::checkbyid(int32_t aid)
@@ -218,26 +218,26 @@ namespace ngl
 			return;
 		}
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_BAG_UPDATE>();
-		auto ladditems = pro->mutable_m_additems();
+		auto ladditems = pro->mutable_madditems();
 		for (const auto& [_id, _count] : m_autoitem->m_addstackitems)
 		{
 			auto ladditem = ladditems->Add();
-			ladditem->set_m_id(_id);
-			ladditem->set_m_count(_count);
+			ladditem->set_mid(_id);
+			ladditem->set_mcount(_count);
 		}
-		auto laddnostackitems = pro->mutable_m_addnostackitems();
+		auto laddnostackitems = pro->mutable_maddnostackitems();
 		for (int32_t itemid : m_autoitem->m_addnostackitems)
 		{
 			laddnostackitems->Add(itemid);
 		}
-		auto ldelitems = pro->mutable_m_delitems();
+		auto ldelitems = pro->mutable_mdelitems();
 		for (const auto& [_id, _count] : m_autoitem->m_delstackitems)
 		{
 			auto ldelitem = ldelitems->Add();
-			ldelitem->set_m_id(_id);
-			ldelitem->set_m_count(_count);
+			ldelitem->set_mid(_id);
+			ldelitem->set_mcount(_count);
 		}
-		auto ldelnostackitems = pro->mutable_m_delnostackitems();
+		auto ldelnostackitems = pro->mutable_mdelnostackitems();
 		for (int32_t itemid : m_autoitem->m_delnostackitems)
 		{
 			ldelnostackitems->Add(itemid);

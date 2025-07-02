@@ -291,7 +291,7 @@ namespace ngl
 				for (i64_actorid actorid : *lpset)
 				{
 					data_modified<TDATA>& ldata = m_dbmodule->get(actorid);
-					lmap[ldata.getconst().m_id()] = ldata.getconst();
+					lmap[ldata.getconst().mid()] = ldata.getconst();
 				}
 			}
 			if (!lmap.empty())

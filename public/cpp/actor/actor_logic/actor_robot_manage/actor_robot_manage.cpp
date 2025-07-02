@@ -72,9 +72,9 @@ namespace ngl
 	void actor_robot_manage::login(const std::string& aaccount, const std::string& apasswold)
 	{
 		pbnet::PROBUFF_NET_ACOUNT_LOGIN pro;
-		pro.set_m_area(tab_self_area);
-		pro.set_m_account(aaccount);
-		pro.set_m_password(apasswold);
+		pro.set_marea(tab_self_area);
+		pro.set_maccount(aaccount);
+		pro.set_mpassword(apasswold);
 		const tab_servers* tab = ttab_servers::instance().tab();
 		if (tab == nullptr)
 		{

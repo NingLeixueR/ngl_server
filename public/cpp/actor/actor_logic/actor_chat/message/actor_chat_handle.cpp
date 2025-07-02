@@ -6,14 +6,14 @@ namespace ngl
 	bool actor_chat::handle(const message<mforward<pbnet::PROBUFF_NET_CHAT>>& adata)
 	{
 		const pbnet::PROBUFF_NET_CHAT& recv = *adata.get_data()->data();
-		if (recv.m_type() == pbnet::chat_speak)
+		if (recv.mtype() == pbnet::ENUM_CHAT_SPEAK)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
-			pro->set_m_type(pbnet::chat_speak);
-			pro->set_m_channelid(recv.m_channelid());
-			pro->set_m_stat(false);
+			pro->set_mtype(pbnet::ENUM_CHAT_SPEAK);
+			pro->set_mchannelid(recv.mchannelid());
+			pro->set_mstat(false);
 
-			const tab_chat* ltab = ttab_chat::instance().tab(recv.m_channelid());
+			const tab_chat* ltab = ttab_chat::instance().tab(recv.mchannelid());
 			if (ltab == nullptr)
 			{
 				send_client(adata.get_data()->identifier(), pro);
@@ -35,33 +35,33 @@ namespace ngl
 				return true;
 			}
 
-			std::list<pbnet::chatitem>& lvec = m_update_chatitem[recv.m_channelid()];
+			std::list<pbnet::chatitem>& lvec = m_update_chatitem[recv.mchannelid()];
 			lvec.push_back(pbnet::chatitem());
 			pbnet::chatitem& lchatitem = *lvec.rbegin();
 
-			lchatitem.set_m_rolename(lpbrief->m_name());
-			lchatitem.set_m_utc((int)localtime::gettime());
-			lchatitem.set_m_content(recv.m_content());
-			lchatitem.set_m_roleid(lpbrief->m_id());
+			lchatitem.set_mrolename(lpbrief->mname());
+			lchatitem.set_mutc((int)localtime::gettime());
+			lchatitem.set_mcontent(recv.mcontent());
+			lchatitem.set_mroleid(lpbrief->mid());
 
-			std::list<pbnet::chatitem>& lschatitem = m_chatitem[recv.m_channelid()];
+			std::list<pbnet::chatitem>& lschatitem = m_chatitem[recv.mchannelid()];
 			lschatitem.push_back(lchatitem);
 			if (lschatitem.size() > ltab->m_count)
 			{
 				lschatitem.pop_front();
 			}
 
-			pro->set_m_stat(true);
+			pro->set_mstat(true);
 			send_client(adata.get_data()->identifier(), pro);
 		}
-		else if (recv.m_type() == pbnet::get_chat_list)
+		else if (recv.mtype() == pbnet::ENUM_GET_CHAT_LIST)
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_CHAT_RESPONSE>();
-			pro->set_m_stat(false);
-			pro->set_m_type(pbnet::get_chat_list);
-			pro->set_m_channelid(recv.m_channelid());
+			pro->set_mstat(false);
+			pro->set_mtype(pbnet::ENUM_GET_CHAT_LIST);
+			pro->set_mchannelid(recv.mchannelid());
 
-			auto itor_channelid = m_chatitem.find(recv.m_channelid());
+			auto itor_channelid = m_chatitem.find(recv.mchannelid());
 			if (itor_channelid == m_chatitem.end())
 			{
 				send_client(adata.get_data()->identifier(), pro);
@@ -69,9 +69,9 @@ namespace ngl
 			}
 			for (pbnet::chatitem& item : itor_channelid->second)
 			{
-				*pro->add_m_chatlist() = item;
+				*pro->add_mchatlist() = item;
 			}
-			pro->set_m_stat(true);
+			pro->set_mstat(true);
 			send_client(adata.get_data()->identifier(), pro);
 			return true;
 		}

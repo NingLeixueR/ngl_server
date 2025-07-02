@@ -43,7 +43,7 @@ namespace ngl
 						}
 						lstream << avec[i];
 					}
-					pro.set_m_cmd(lstream.str());
+					pro.set_mcmd(lstream.str());
 					send(get_robot(avec[1]), pro);
 				};
 
@@ -64,7 +64,7 @@ namespace ngl
 						}
 						lstream << avec[i];
 					}
-					pro.set_m_cmd(lstream.str());
+					pro.set_mcmd(lstream.str());
 					foreach([&pro, this](_robot& arobot)
 						{
 							send(&arobot, pro);
@@ -101,10 +101,10 @@ namespace ngl
 									ukcp::m_localuip = buff;
 									// »ñÈ¡kcp-session
 									pbnet::PROBUFF_NET_KCPSESSION pro;
-									pro.set_m_serverid(tabgame->m_id);
-									pro.set_m_uip(ukcp::m_localuip);
-									pro.set_m_uport(lkcp);
-									pro.set_m_conv(ukcp::m_conv);
+									pro.set_mserverid(tabgame->m_id);
+									pro.set_muip(ukcp::m_localuip);
+									pro.set_muport(lkcp);
+									pro.set_mconv(ukcp::m_conv);
 									nets::sendbysession(lsession, pro, nguid::moreactor(), lactorid);
 								});
 							return true;
@@ -171,21 +171,21 @@ namespace ngl
 	bool actor_robot_manage::handle(const message<pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE>& adata)
 	{
 		auto lrecv = adata.get_data();
-		_robot& lrobot = m_maprobot[lrecv->m_account()];
-		lrobot.m_robot = create((i16_area)lrecv->m_area(), nguid::actordataid(lrecv->m_roleid()));
-		lrobot.m_account = lrecv->m_account();
+		_robot& lrobot = m_maprobot[lrecv->maccount()];
+		lrobot.m_robot = create((i16_area)lrecv->marea(), nguid::actordataid(lrecv->mroleid()));
+		lrobot.m_account = lrecv->maccount();
 		lrobot.m_actor_roleid = nguid::make_type(lrobot.m_robot->id_guid(), ACTOR_ROLE);
 
-		connect(lrecv->m_gatewayid(), [lrecv, &lrobot, this](int asession)
+		connect(lrecv->mgatewayid(), [lrecv, &lrobot, this](int asession)
 			{
 				lrobot.m_session = asession;
 				lrobot.m_robot->m_session = asession;
 				pbnet::PROBUFF_NET_ROLE_LOGIN pro;
-				pro.set_m_roleid(lrecv->m_roleid());
-				pro.set_m_session(lrecv->m_session());
-				pro.set_m_area(lrecv->m_area());
-				pro.set_m_iscreate(false);
-				pro.set_m_gatewayid(lrecv->m_gatewayid());
+				pro.set_mroleid(lrecv->mroleid());
+				pro.set_msession(lrecv->msession());
+				pro.set_marea(lrecv->marea());
+				pro.set_miscreate(false);
+				pro.set_mgatewayid(lrecv->mgatewayid());
 				nets::sendbysession(asession, pro, nguid::moreactor(), this->id_guid());
 			});
 

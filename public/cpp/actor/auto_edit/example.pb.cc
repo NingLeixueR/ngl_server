@@ -282,8 +282,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN, m_cross_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN, m_type_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN, mcross_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN, mtype_),
   0,
   1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE, _has_bits_),
@@ -291,15 +291,15 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE, m_roomid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE, mroomid_),
   0,
   PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, m_players_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, m_isconfirm_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, mplayers_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PLAYER, misconfirm_),
   0,
   1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, _has_bits_),
@@ -307,11 +307,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, m_roomid_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, m_totalnumber_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, m_roomcreate_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, m_roomready_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, m_players_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, mroomid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, mtotalnumber_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, mroomcreate_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, mroomready_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING, mplayers_),
   0,
   1,
   2,
@@ -322,8 +322,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, m_errorcode_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, m_roomid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, merrorcode_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, mroomid_),
   0,
   1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, _has_bits_),
@@ -331,8 +331,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, m_isconfirm_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, m_roomid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, misconfirm_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, mroomid_),
   0,
   1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL, _has_bits_),
@@ -340,8 +340,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL, m_type_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL, m_roomid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL, mtype_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL, mroomid_),
   0,
   1,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, _has_bits_),
@@ -349,9 +349,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, m_type_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, m_exampleactorid_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, m_stat_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, mtype_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, mexampleactorid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE, mstat_),
   1,
   0,
   2,
@@ -360,9 +360,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, m_cross_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, m_type_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, m_exampleactorid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, mcross_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, mtype_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, mexampleactorid_),
   0,
   1,
   2,
@@ -371,10 +371,10 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, m_cross_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, m_type_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, m_exampleactorid_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, m_players_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, mcross_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, mtype_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, mexampleactorid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, mplayers_),
   0,
   1,
   2,
@@ -384,9 +384,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, m_maxnumber_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, m_minnumber_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, m_whoguess_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, mmaxnumber_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, mminnumber_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, mwhoguess_),
   0,
   1,
   2,
@@ -395,22 +395,22 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_example_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER, m_guessnumber_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER, mguessnumber_),
   0,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR, m_stat_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR, mstat_),
   0,
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, m_bombvalue_),
-  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, m_roleid_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, mbombvalue_),
+  PROTOBUF_FIELD_OFFSET(::pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, mroleid_),
   1,
   0,
 };
@@ -450,74 +450,73 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_example_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rexample.proto\022\tpbexample\032\010db.proto\032\tne"
-  "t.proto\"\207\001\n\031PROBUFF_EXAMPLE_PLAY_JOIN\022\'\n"
-  "\007m_cross\030\001 \001(\0162\021.pbexample.ECROSSH\000\210\001\001\022*"
-  "\n\006m_type\030\002 \001(\0162\025.pbexample.EPLAY_TYPEH\001\210"
-  "\001\001B\n\n\010_m_crossB\t\n\007_m_type\"H\n\"PROBUFF_EXA"
-  "MPLE_PLAY_JOIN_RESPONSE\022\025\n\010m_roomid\030\002 \001("
-  "\005H\000\210\001\001B\013\n\t_m_roomid\"h\n\006PLAYER\022&\n\tm_playe"
-  "rs\030\001 \001(\0132\016.pbdb.db_briefH\000\210\001\001\022\030\n\013m_iscon"
-  "firm\030\002 \001(\010H\001\210\001\001B\014\n\n_m_playersB\016\n\014_m_isco"
-  "nfirm\"\355\001\n\035PROBUFF_EXAMPLE_PLAY_MATCHING\022"
-  "\025\n\010m_roomid\030\001 \001(\005H\000\210\001\001\022\032\n\rm_totalnumber\030"
-  "\002 \001(\005H\001\210\001\001\022\031\n\014m_roomcreate\030\003 \001(\003H\002\210\001\001\022\030\n"
-  "\013m_roomready\030\004 \001(\003H\003\210\001\001\022$\n\tm_players\030\005 \003"
-  "(\0132\021.pbexample.PLAYERB\013\n\t_m_roomidB\020\n\016_m"
-  "_totalnumberB\017\n\r_m_roomcreateB\016\n\014_m_room"
-  "ready\"\232\001\n$PROBUFF_EXAMPLE_PLAY_MATCHING_"
-  "RESULT\022>\n\013m_errorcode\030\001 \001(\0162$.pbexample."
-  "PLAY_MATCHING_EERROR_CODEH\000\210\001\001\022\025\n\010m_room"
-  "id\030\002 \001(\005H\001\210\001\001B\016\n\014_m_errorcodeB\013\n\t_m_room"
-  "id\"s\n#PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIR"
-  "M\022\030\n\013m_isconfirm\030\001 \001(\010H\000\210\001\001\022\025\n\010m_roomid\030"
-  "\002 \001(\005H\001\210\001\001B\016\n\014_m_isconfirmB\013\n\t_m_roomid\""
-  "x\n\033PROBUFF_EXAMPLE_PLAY_CANCEL\022*\n\006m_type"
-  "\030\001 \001(\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\025\n\010m_"
-  "roomid\030\002 \001(\005H\001\210\001\001B\t\n\007_m_typeB\013\n\t_m_roomi"
-  "d\"\202\002\n\033PROBUFF_EXAMPLE_PLAY_CREATE\022*\n\006m_t"
-  "ype\030\001 \001(\0162\025.pbexample.EPLAY_TYPEH\000\210\001\001\022\035\n"
-  "\020m_exampleactorid\030\002 \001(\003H\001\210\001\001\022A\n\006m_stat\030\003"
-  " \001(\0162,.pbexample.PROBUFF_EXAMPLE_PLAY_CR"
-  "EATE.estatH\002\210\001\001\"*\n\005estat\022\021\n\restat_succes"
-  "s\020\000\022\016\n\nestat_fail\020\001B\t\n\007_m_typeB\023\n\021_m_exa"
-  "mpleactoridB\t\n\007_m_stat\"\304\001\n\"PROBUFF_EXAMP"
-  "LE_PLAY_ENTER_EXAMPLE\022\'\n\007m_cross\030\001 \001(\0162\021"
-  ".pbexample.ECROSSH\000\210\001\001\022*\n\006m_type\030\002 \001(\0162\025"
-  ".pbexample.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_examplea"
-  "ctorid\030\003 \001(\003H\002\210\001\001B\n\n\010_m_crossB\t\n\007_m_type"
-  "B\023\n\021_m_exampleactorid\"\340\001\n+PROBUFF_EXAMPL"
-  "E_PLAY_ENTER_EXAMPLE_RESPONSE\022\'\n\007m_cross"
-  "\030\001 \001(\0162\021.pbexample.ECROSSH\000\210\001\001\022*\n\006m_type"
-  "\030\002 \001(\0162\025.pbexample.EPLAY_TYPEH\001\210\001\001\022\035\n\020m_"
-  "exampleactorid\030\003 \001(\003H\002\210\001\001\022\021\n\tm_players\030\004"
-  " \003(\003B\n\n\010_m_crossB\t\n\007_m_typeB\023\n\021_m_exampl"
-  "eactorid\"\237\001\n!PROBUFF_EXAMPLE_GUESS_NUMBE"
-  "R_INFO\022\030\n\013m_maxnumber\030\001 \001(\005H\000\210\001\001\022\030\n\013m_mi"
-  "nnumber\030\002 \001(\005H\001\210\001\001\022\027\n\nm_whoguess\030\003 \001(\003H\002"
-  "\210\001\001B\016\n\014_m_maxnumberB\016\n\014_m_minnumberB\r\n\013_"
-  "m_whoguess\"L\n\034PROBUFF_EXAMPLE_GUESS_NUMB"
-  "ER\022\032\n\rm_guessnumber\030\001 \001(\005H\000\210\001\001B\020\n\016_m_gue"
-  "ssnumber\"e\n\"PROBUFF_EXAMPLE_GUESS_NUMBER"
-  "_ERROR\0224\n\006m_stat\030\001 \001(\0162\037.pbexample.E_GUE"
-  "SS_NUMBER_ERRORH\000\210\001\001B\t\n\007_m_stat\"q\n!PROBU"
-  "FF_EXAMPLE_GUESS_NUMBER_BOMB\022\030\n\013m_bombva"
-  "lue\030\001 \001(\005H\000\210\001\001\022\025\n\010m_roleid\030\002 \001(\003H\001\210\001\001B\016\n"
-  "\014_m_bombvalueB\013\n\t_m_roleid*I\n\006ECROSS\022\017\n\013"
-  "ECROSS_NULL\020\000\022\023\n\017ECROSS_ORDINARY\020\001\022\031\n\025EC"
-  "ROSS_CROSS_ORDINARY\020\002*4\n\nEPLAY_TYPE\022\016\n\nE"
-  "PLAY_NULL\020\000\022\026\n\022EPLAY_GUESS_NUMBER\020\001*\315\002\n\031"
-  "PLAY_MATCHING_EERROR_CODE\022\027\n\023EERROR_CODE"
-  "_SUCCESS\020\000\022\027\n\023EERROR_CODE_TIMEOUT\020\001\022\026\n\022E"
-  "ERROR_CODE_CANCEL\020\002\022\036\n\032EERROR_CODE_CURRE"
-  "NT_CANCEL\020\003\022\033\n\027EERROR_CODE_NOTFINDROOM\020\004"
-  "\022\034\n\030EERROR_CODE_ROOM_DESTORY\020\005\022\026\n\022EERROR"
-  "_CODE_FINISH\020\006\022\030\n\024EERROR_CODE_NOTMATCH\020\007"
-  "\022\037\n\033EERROR_CODE_CREATEROOM_FAIL\020\010\022\037\n\033EER"
-  "ROR_CODE_CREATEGAME_FAIL\020\t\022\027\n\023EERROR_COD"
-  "E_NOTFIND\020\n*y\n\024E_GUESS_NUMBER_ERROR\022\035\n\031E"
-  "_GUESS_NUMBER_ERROR_NULL\020\000\022\036\n\032E_GUESS_NU"
-  "MBER_ERROR_VALUE\020\001\022\"\n\036E_GUESS_NUMBER_ERR"
-  "OR_NOT_GUESS\020\002B\002H\001b\006proto3"
+  "t.proto\"\203\001\n\031PROBUFF_EXAMPLE_PLAY_JOIN\022&\n"
+  "\006mcross\030\001 \001(\0162\021.pbexample.ECROSSH\000\210\001\001\022)\n"
+  "\005mtype\030\002 \001(\0162\025.pbexample.EPLAY_TYPEH\001\210\001\001"
+  "B\t\n\007_mcrossB\010\n\006_mtype\"F\n\"PROBUFF_EXAMPLE"
+  "_PLAY_JOIN_RESPONSE\022\024\n\007mroomid\030\002 \001(\005H\000\210\001"
+  "\001B\n\n\010_mroomid\"d\n\006PLAYER\022%\n\010mplayers\030\001 \001("
+  "\0132\016.pbdb.db_briefH\000\210\001\001\022\027\n\nmisconfirm\030\002 \001"
+  "(\010H\001\210\001\001B\013\n\t_mplayersB\r\n\013_misconfirm\"\344\001\n\035"
+  "PROBUFF_EXAMPLE_PLAY_MATCHING\022\024\n\007mroomid"
+  "\030\001 \001(\005H\000\210\001\001\022\031\n\014mtotalnumber\030\002 \001(\005H\001\210\001\001\022\030"
+  "\n\013mroomcreate\030\003 \001(\003H\002\210\001\001\022\027\n\nmroomready\030\004"
+  " \001(\003H\003\210\001\001\022#\n\010mplayers\030\005 \003(\0132\021.pbexample."
+  "PLAYERB\n\n\010_mroomidB\017\n\r_mtotalnumberB\016\n\014_"
+  "mroomcreateB\r\n\013_mroomready\"\226\001\n$PROBUFF_E"
+  "XAMPLE_PLAY_MATCHING_RESULT\022=\n\nmerrorcod"
+  "e\030\001 \001(\0162$.pbexample.PLAY_MATCHING_EERROR"
+  "_CODEH\000\210\001\001\022\024\n\007mroomid\030\002 \001(\005H\001\210\001\001B\r\n\013_mer"
+  "rorcodeB\n\n\010_mroomid\"o\n#PROBUFF_EXAMPLE_P"
+  "LAY_PLAYER_CONFIRM\022\027\n\nmisconfirm\030\001 \001(\010H\000"
+  "\210\001\001\022\024\n\007mroomid\030\002 \001(\005H\001\210\001\001B\r\n\013_misconfirm"
+  "B\n\n\010_mroomid\"t\n\033PROBUFF_EXAMPLE_PLAY_CAN"
+  "CEL\022)\n\005mtype\030\001 \001(\0162\025.pbexample.EPLAY_TYP"
+  "EH\000\210\001\001\022\024\n\007mroomid\030\002 \001(\005H\001\210\001\001B\010\n\006_mtypeB\n"
+  "\n\010_mroomid\"\374\001\n\033PROBUFF_EXAMPLE_PLAY_CREA"
+  "TE\022)\n\005mtype\030\001 \001(\0162\025.pbexample.EPLAY_TYPE"
+  "H\000\210\001\001\022\034\n\017mexampleactorid\030\002 \001(\003H\001\210\001\001\022@\n\005m"
+  "stat\030\003 \001(\0162,.pbexample.PROBUFF_EXAMPLE_P"
+  "LAY_CREATE.estatH\002\210\001\001\"*\n\005estat\022\021\n\restat_"
+  "success\020\000\022\016\n\nestat_fail\020\001B\010\n\006_mtypeB\022\n\020_"
+  "mexampleactoridB\010\n\006_mstat\"\276\001\n\"PROBUFF_EX"
+  "AMPLE_PLAY_ENTER_EXAMPLE\022&\n\006mcross\030\001 \001(\016"
+  "2\021.pbexample.ECROSSH\000\210\001\001\022)\n\005mtype\030\002 \001(\0162"
+  "\025.pbexample.EPLAY_TYPEH\001\210\001\001\022\034\n\017mexamplea"
+  "ctorid\030\003 \001(\003H\002\210\001\001B\t\n\007_mcrossB\010\n\006_mtypeB\022"
+  "\n\020_mexampleactorid\"\331\001\n+PROBUFF_EXAMPLE_P"
+  "LAY_ENTER_EXAMPLE_RESPONSE\022&\n\006mcross\030\001 \001"
+  "(\0162\021.pbexample.ECROSSH\000\210\001\001\022)\n\005mtype\030\002 \001("
+  "\0162\025.pbexample.EPLAY_TYPEH\001\210\001\001\022\034\n\017mexampl"
+  "eactorid\030\003 \001(\003H\002\210\001\001\022\020\n\010mplayers\030\004 \003(\003B\t\n"
+  "\007_mcrossB\010\n\006_mtypeB\022\n\020_mexampleactorid\"\231"
+  "\001\n!PROBUFF_EXAMPLE_GUESS_NUMBER_INFO\022\027\n\n"
+  "mmaxnumber\030\001 \001(\005H\000\210\001\001\022\027\n\nmminnumber\030\002 \001("
+  "\005H\001\210\001\001\022\026\n\tmwhoguess\030\003 \001(\003H\002\210\001\001B\r\n\013_mmaxn"
+  "umberB\r\n\013_mminnumberB\014\n\n_mwhoguess\"J\n\034PR"
+  "OBUFF_EXAMPLE_GUESS_NUMBER\022\031\n\014mguessnumb"
+  "er\030\001 \001(\005H\000\210\001\001B\017\n\r_mguessnumber\"c\n\"PROBUF"
+  "F_EXAMPLE_GUESS_NUMBER_ERROR\0223\n\005mstat\030\001 "
+  "\001(\0162\037.pbexample.E_GUESS_NUMBER_ERRORH\000\210\001"
+  "\001B\010\n\006_mstat\"m\n!PROBUFF_EXAMPLE_GUESS_NUM"
+  "BER_BOMB\022\027\n\nmbombvalue\030\001 \001(\005H\000\210\001\001\022\024\n\007mro"
+  "leid\030\002 \001(\003H\001\210\001\001B\r\n\013_mbombvalueB\n\n\010_mrole"
+  "id*I\n\006ECROSS\022\017\n\013ECROSS_NULL\020\000\022\023\n\017ECROSS_"
+  "ORDINARY\020\001\022\031\n\025ECROSS_CROSS_ORDINARY\020\002*4\n"
+  "\nEPLAY_TYPE\022\016\n\nEPLAY_NULL\020\000\022\026\n\022EPLAY_GUE"
+  "SS_NUMBER\020\001*\315\002\n\031PLAY_MATCHING_EERROR_COD"
+  "E\022\027\n\023EERROR_CODE_SUCCESS\020\000\022\027\n\023EERROR_COD"
+  "E_TIMEOUT\020\001\022\026\n\022EERROR_CODE_CANCEL\020\002\022\036\n\032E"
+  "ERROR_CODE_CURRENT_CANCEL\020\003\022\033\n\027EERROR_CO"
+  "DE_NOTFINDROOM\020\004\022\034\n\030EERROR_CODE_ROOM_DES"
+  "TORY\020\005\022\026\n\022EERROR_CODE_FINISH\020\006\022\030\n\024EERROR"
+  "_CODE_NOTMATCH\020\007\022\037\n\033EERROR_CODE_CREATERO"
+  "OM_FAIL\020\010\022\037\n\033EERROR_CODE_CREATEGAME_FAIL"
+  "\020\t\022\027\n\023EERROR_CODE_NOTFIND\020\n*y\n\024E_GUESS_N"
+  "UMBER_ERROR\022\035\n\031E_GUESS_NUMBER_ERROR_NULL"
+  "\020\000\022\036\n\032E_GUESS_NUMBER_ERROR_VALUE\020\001\022\"\n\036E_"
+  "GUESS_NUMBER_ERROR_NOT_GUESS\020\002B\002H\001b\006prot"
+  "o3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_example_2eproto_deps[2] = {
   &::descriptor_table_db_2eproto,
@@ -541,7 +540,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_exa
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_example_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_example_2eproto = {
-  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2746,
+  false, false, descriptor_table_protodef_example_2eproto, "example.proto", 2682,
   &descriptor_table_example_2eproto_once, descriptor_table_example_2eproto_sccs, descriptor_table_example_2eproto_deps, 14, 2,
   schemas, file_default_instances, TableStruct_example_2eproto::offsets,
   file_level_metadata_example_2eproto, 14, file_level_enum_descriptors_example_2eproto, file_level_service_descriptors_example_2eproto,
@@ -646,10 +645,10 @@ void PROBUFF_EXAMPLE_PLAY_JOIN::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_JOIN::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_JOIN>()._has_bits_);
-  static void set_has_m_cross(HasBits* has_bits) {
+  static void set_has_mcross(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_type(HasBits* has_bits) {
+  static void set_has_mtype(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
 };
@@ -664,16 +663,16 @@ PROBUFF_EXAMPLE_PLAY_JOIN::PROBUFF_EXAMPLE_PLAY_JOIN(const PROBUFF_EXAMPLE_PLAY_
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_cross_, &from.m_cross_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_type_) -
-    reinterpret_cast<char*>(&m_cross_)) + sizeof(m_type_));
+  ::memcpy(&mcross_, &from.mcross_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mtype_) -
+    reinterpret_cast<char*>(&mcross_)) + sizeof(mtype_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_JOIN)
 }
 
 void PROBUFF_EXAMPLE_PLAY_JOIN::SharedCtor() {
-  ::memset(&m_cross_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_type_) -
-      reinterpret_cast<char*>(&m_cross_)) + sizeof(m_type_));
+  ::memset(&mcross_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mtype_) -
+      reinterpret_cast<char*>(&mcross_)) + sizeof(mtype_));
 }
 
 PROBUFF_EXAMPLE_PLAY_JOIN::~PROBUFF_EXAMPLE_PLAY_JOIN() {
@@ -709,9 +708,9 @@ void PROBUFF_EXAMPLE_PLAY_JOIN::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_cross_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_type_) -
-        reinterpret_cast<char*>(&m_cross_)) + sizeof(m_type_));
+    ::memset(&mcross_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mtype_) -
+        reinterpret_cast<char*>(&mcross_)) + sizeof(mtype_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -726,20 +725,20 @@ const char* PROBUFF_EXAMPLE_PLAY_JOIN::_InternalParse(const char* ptr, ::PROTOBU
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.ECROSS m_cross = 1;
+      // .pbexample.ECROSS mcross = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_cross(static_cast<::pbexample::ECROSS>(val));
+          _internal_set_mcross(static_cast<::pbexample::ECROSS>(val));
         } else goto handle_unusual;
         continue;
-      // .pbexample.EPLAY_TYPE m_type = 2;
+      // .pbexample.EPLAY_TYPE mtype = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_type(static_cast<::pbexample::EPLAY_TYPE>(val));
+          _internal_set_mtype(static_cast<::pbexample::EPLAY_TYPE>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -771,18 +770,18 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.ECROSS m_cross = 1;
-  if (_internal_has_m_cross()) {
+  // .pbexample.ECROSS mcross = 1;
+  if (_internal_has_mcross()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_cross(), target);
+      1, this->_internal_mcross(), target);
   }
 
-  // .pbexample.EPLAY_TYPE m_type = 2;
-  if (_internal_has_m_type()) {
+  // .pbexample.EPLAY_TYPE mtype = 2;
+  if (_internal_has_mtype()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_m_type(), target);
+      2, this->_internal_mtype(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -803,16 +802,16 @@ size_t PROBUFF_EXAMPLE_PLAY_JOIN::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // .pbexample.ECROSS m_cross = 1;
+    // .pbexample.ECROSS mcross = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_cross());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mcross());
     }
 
-    // .pbexample.EPLAY_TYPE m_type = 2;
+    // .pbexample.EPLAY_TYPE mtype = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_type());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mtype());
     }
 
   }
@@ -850,10 +849,10 @@ void PROBUFF_EXAMPLE_PLAY_JOIN::MergeFrom(const PROBUFF_EXAMPLE_PLAY_JOIN& from)
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      m_cross_ = from.m_cross_;
+      mcross_ = from.mcross_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_type_ = from.m_type_;
+      mtype_ = from.mtype_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -882,11 +881,11 @@ void PROBUFF_EXAMPLE_PLAY_JOIN::InternalSwap(PROBUFF_EXAMPLE_PLAY_JOIN* other) {
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_JOIN, m_type_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_JOIN::m_type_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_JOIN, m_cross_)>(
-          reinterpret_cast<char*>(&m_cross_),
-          reinterpret_cast<char*>(&other->m_cross_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_JOIN, mtype_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_JOIN::mtype_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_JOIN, mcross_)>(
+          reinterpret_cast<char*>(&mcross_),
+          reinterpret_cast<char*>(&other->mcross_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_JOIN::GetMetadata() const {
@@ -901,7 +900,7 @@ void PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>()._has_bits_);
-  static void set_has_m_roomid(HasBits* has_bits) {
+  static void set_has_mroomid(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
@@ -916,12 +915,12 @@ PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE(const PRO
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  m_roomid_ = from.m_roomid_;
+  mroomid_ = from.mroomid_;
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE)
 }
 
 void PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::SharedCtor() {
-  m_roomid_ = 0;
+  mroomid_ = 0;
 }
 
 PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::~PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE() {
@@ -955,7 +954,7 @@ void PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  m_roomid_ = 0;
+  mroomid_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -969,11 +968,11 @@ const char* PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::_InternalParse(const char* ptr, 
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // int32 m_roomid = 2;
+      // int32 mroomid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_roomid(&has_bits);
-          m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomid(&has_bits);
+          mroomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1006,10 +1005,10 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 m_roomid = 2;
-  if (_internal_has_m_roomid()) {
+  // int32 mroomid = 2;
+  if (_internal_has_mroomid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_roomid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_mroomid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1028,12 +1027,12 @@ size_t PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int32 m_roomid = 2;
+  // int32 mroomid = 2;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_m_roomid());
+        this->_internal_mroomid());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1067,8 +1066,8 @@ void PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::MergeFrom(const PROBUFF_EXAMPLE_PLAY_JO
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_m_roomid()) {
-    _internal_set_m_roomid(from._internal_m_roomid());
+  if (from._internal_has_mroomid()) {
+    _internal_set_mroomid(from._internal_mroomid());
   }
 }
 
@@ -1094,7 +1093,7 @@ void PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::InternalSwap(PROBUFF_EXAMPLE_PLAY_JOIN_
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(m_roomid_, other->m_roomid_);
+  swap(mroomid_, other->mroomid_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::GetMetadata() const {
@@ -1105,30 +1104,30 @@ void PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE::InternalSwap(PROBUFF_EXAMPLE_PLAY_JOIN_
 // ===================================================================
 
 void PLAYER::InitAsDefaultInstance() {
-  ::pbexample::_PLAYER_default_instance_._instance.get_mutable()->m_players_ = const_cast< ::pbdb::db_brief*>(
+  ::pbexample::_PLAYER_default_instance_._instance.get_mutable()->mplayers_ = const_cast< ::pbdb::db_brief*>(
       ::pbdb::db_brief::internal_default_instance());
 }
 class PLAYER::_Internal {
  public:
   using HasBits = decltype(std::declval<PLAYER>()._has_bits_);
-  static const ::pbdb::db_brief& m_players(const PLAYER* msg);
-  static void set_has_m_players(HasBits* has_bits) {
+  static const ::pbdb::db_brief& mplayers(const PLAYER* msg);
+  static void set_has_mplayers(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_isconfirm(HasBits* has_bits) {
+  static void set_has_misconfirm(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
 };
 
 const ::pbdb::db_brief&
-PLAYER::_Internal::m_players(const PLAYER* msg) {
-  return *msg->m_players_;
+PLAYER::_Internal::mplayers(const PLAYER* msg) {
+  return *msg->mplayers_;
 }
-void PLAYER::clear_m_players() {
-  if (GetArena() == nullptr && m_players_ != nullptr) {
-    delete m_players_;
+void PLAYER::clear_mplayers() {
+  if (GetArena() == nullptr && mplayers_ != nullptr) {
+    delete mplayers_;
   }
-  m_players_ = nullptr;
+  mplayers_ = nullptr;
   _has_bits_[0] &= ~0x00000001u;
 }
 PLAYER::PLAYER(::PROTOBUF_NAMESPACE_ID::Arena* arena)
@@ -1141,20 +1140,20 @@ PLAYER::PLAYER(const PLAYER& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_m_players()) {
-    m_players_ = new ::pbdb::db_brief(*from.m_players_);
+  if (from._internal_has_mplayers()) {
+    mplayers_ = new ::pbdb::db_brief(*from.mplayers_);
   } else {
-    m_players_ = nullptr;
+    mplayers_ = nullptr;
   }
-  m_isconfirm_ = from.m_isconfirm_;
+  misconfirm_ = from.misconfirm_;
   // @@protoc_insertion_point(copy_constructor:pbexample.PLAYER)
 }
 
 void PLAYER::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PLAYER_example_2eproto.base);
-  ::memset(&m_players_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_isconfirm_) -
-      reinterpret_cast<char*>(&m_players_)) + sizeof(m_isconfirm_));
+  ::memset(&mplayers_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&misconfirm_) -
+      reinterpret_cast<char*>(&mplayers_)) + sizeof(misconfirm_));
 }
 
 PLAYER::~PLAYER() {
@@ -1165,7 +1164,7 @@ PLAYER::~PLAYER() {
 
 void PLAYER::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  if (this != internal_default_instance()) delete m_players_;
+  if (this != internal_default_instance()) delete mplayers_;
 }
 
 void PLAYER::ArenaDtor(void* object) {
@@ -1191,12 +1190,12 @@ void PLAYER::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    if (GetArena() == nullptr && m_players_ != nullptr) {
-      delete m_players_;
+    if (GetArena() == nullptr && mplayers_ != nullptr) {
+      delete mplayers_;
     }
-    m_players_ = nullptr;
+    mplayers_ = nullptr;
   }
-  m_isconfirm_ = false;
+  misconfirm_ = false;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1210,18 +1209,18 @@ const char* PLAYER::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbdb.db_brief m_players = 1;
+      // .pbdb.db_brief mplayers = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_m_players(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_mplayers(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool m_isconfirm = 2;
+      // bool misconfirm = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_isconfirm(&has_bits);
-          m_isconfirm_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_misconfirm(&has_bits);
+          misconfirm_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1254,18 +1253,18 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbdb.db_brief m_players = 1;
-  if (_internal_has_m_players()) {
+  // .pbdb.db_brief mplayers = 1;
+  if (_internal_has_mplayers()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::m_players(this), target, stream);
+        1, _Internal::mplayers(this), target, stream);
   }
 
-  // bool m_isconfirm = 2;
-  if (_internal_has_m_isconfirm()) {
+  // bool misconfirm = 2;
+  if (_internal_has_misconfirm()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_m_isconfirm(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_misconfirm(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1286,14 +1285,14 @@ size_t PLAYER::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // .pbdb.db_brief m_players = 1;
+    // .pbdb.db_brief mplayers = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *m_players_);
+          *mplayers_);
     }
 
-    // bool m_isconfirm = 2;
+    // bool misconfirm = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 + 1;
     }
@@ -1333,10 +1332,10 @@ void PLAYER::MergeFrom(const PLAYER& from) {
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_mutable_m_players()->::pbdb::db_brief::MergeFrom(from._internal_m_players());
+      _internal_mutable_mplayers()->::pbdb::db_brief::MergeFrom(from._internal_mplayers());
     }
     if (cached_has_bits & 0x00000002u) {
-      m_isconfirm_ = from.m_isconfirm_;
+      misconfirm_ = from.misconfirm_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -1365,11 +1364,11 @@ void PLAYER::InternalSwap(PLAYER* other) {
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PLAYER, m_isconfirm_)
-      + sizeof(PLAYER::m_isconfirm_)
-      - PROTOBUF_FIELD_OFFSET(PLAYER, m_players_)>(
-          reinterpret_cast<char*>(&m_players_),
-          reinterpret_cast<char*>(&other->m_players_));
+      PROTOBUF_FIELD_OFFSET(PLAYER, misconfirm_)
+      + sizeof(PLAYER::misconfirm_)
+      - PROTOBUF_FIELD_OFFSET(PLAYER, mplayers_)>(
+          reinterpret_cast<char*>(&mplayers_),
+          reinterpret_cast<char*>(&other->mplayers_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PLAYER::GetMetadata() const {
@@ -1384,23 +1383,23 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_MATCHING::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_MATCHING>()._has_bits_);
-  static void set_has_m_roomid(HasBits* has_bits) {
+  static void set_has_mroomid(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_totalnumber(HasBits* has_bits) {
+  static void set_has_mtotalnumber(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_roomcreate(HasBits* has_bits) {
+  static void set_has_mroomcreate(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
-  static void set_has_m_roomready(HasBits* has_bits) {
+  static void set_has_mroomready(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
   }
 };
 
 PROBUFF_EXAMPLE_PLAY_MATCHING::PROBUFF_EXAMPLE_PLAY_MATCHING(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  m_players_(arena) {
+  mplayers_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_MATCHING)
@@ -1408,19 +1407,19 @@ PROBUFF_EXAMPLE_PLAY_MATCHING::PROBUFF_EXAMPLE_PLAY_MATCHING(::PROTOBUF_NAMESPAC
 PROBUFF_EXAMPLE_PLAY_MATCHING::PROBUFF_EXAMPLE_PLAY_MATCHING(const PROBUFF_EXAMPLE_PLAY_MATCHING& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_),
-      m_players_(from.m_players_) {
+      mplayers_(from.mplayers_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_roomid_, &from.m_roomid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_roomready_) -
-    reinterpret_cast<char*>(&m_roomid_)) + sizeof(m_roomready_));
+  ::memcpy(&mroomid_, &from.mroomid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mroomready_) -
+    reinterpret_cast<char*>(&mroomid_)) + sizeof(mroomready_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_MATCHING)
 }
 
 void PROBUFF_EXAMPLE_PLAY_MATCHING::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PROBUFF_EXAMPLE_PLAY_MATCHING_example_2eproto.base);
-  ::memset(&m_roomid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_roomready_) -
-      reinterpret_cast<char*>(&m_roomid_)) + sizeof(m_roomready_));
+  ::memset(&mroomid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mroomready_) -
+      reinterpret_cast<char*>(&mroomid_)) + sizeof(mroomready_));
 }
 
 PROBUFF_EXAMPLE_PLAY_MATCHING::~PROBUFF_EXAMPLE_PLAY_MATCHING() {
@@ -1454,12 +1453,12 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  m_players_.Clear();
+  mplayers_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
-    ::memset(&m_roomid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_roomready_) -
-        reinterpret_cast<char*>(&m_roomid_)) + sizeof(m_roomready_));
+    ::memset(&mroomid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mroomready_) -
+        reinterpret_cast<char*>(&mroomid_)) + sizeof(mroomready_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -1474,45 +1473,45 @@ const char* PROBUFF_EXAMPLE_PLAY_MATCHING::_InternalParse(const char* ptr, ::PRO
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // int32 m_roomid = 1;
+      // int32 mroomid = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_m_roomid(&has_bits);
-          m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomid(&has_bits);
+          mroomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 m_totalnumber = 2;
+      // int32 mtotalnumber = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_totalnumber(&has_bits);
-          m_totalnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mtotalnumber(&has_bits);
+          mtotalnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int64 m_roomcreate = 3;
+      // int64 mroomcreate = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          _Internal::set_has_m_roomcreate(&has_bits);
-          m_roomcreate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomcreate(&has_bits);
+          mroomcreate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int64 m_roomready = 4;
+      // int64 mroomready = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          _Internal::set_has_m_roomready(&has_bits);
-          m_roomready_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomready(&has_bits);
+          mroomready_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated .pbexample.PLAYER m_players = 5;
+      // repeated .pbexample.PLAYER mplayers = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_m_players(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_mplayers(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<42>(ptr));
@@ -1547,36 +1546,36 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 m_roomid = 1;
-  if (_internal_has_m_roomid()) {
+  // int32 mroomid = 1;
+  if (_internal_has_mroomid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_roomid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_mroomid(), target);
   }
 
-  // int32 m_totalnumber = 2;
-  if (_internal_has_m_totalnumber()) {
+  // int32 mtotalnumber = 2;
+  if (_internal_has_mtotalnumber()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_totalnumber(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_mtotalnumber(), target);
   }
 
-  // int64 m_roomcreate = 3;
-  if (_internal_has_m_roomcreate()) {
+  // int64 mroomcreate = 3;
+  if (_internal_has_mroomcreate()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_roomcreate(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_mroomcreate(), target);
   }
 
-  // int64 m_roomready = 4;
-  if (_internal_has_m_roomready()) {
+  // int64 mroomready = 4;
+  if (_internal_has_mroomready()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(4, this->_internal_m_roomready(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(4, this->_internal_mroomready(), target);
   }
 
-  // repeated .pbexample.PLAYER m_players = 5;
+  // repeated .pbexample.PLAYER mplayers = 5;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_m_players_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_mplayers_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(5, this->_internal_m_players(i), target, stream);
+      InternalWriteMessage(5, this->_internal_mplayers(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1595,41 +1594,41 @@ size_t PROBUFF_EXAMPLE_PLAY_MATCHING::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .pbexample.PLAYER m_players = 5;
-  total_size += 1UL * this->_internal_m_players_size();
-  for (const auto& msg : this->m_players_) {
+  // repeated .pbexample.PLAYER mplayers = 5;
+  total_size += 1UL * this->_internal_mplayers_size();
+  for (const auto& msg : this->mplayers_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
-    // int32 m_roomid = 1;
+    // int32 mroomid = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_roomid());
+          this->_internal_mroomid());
     }
 
-    // int32 m_totalnumber = 2;
+    // int32 mtotalnumber = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_totalnumber());
+          this->_internal_mtotalnumber());
     }
 
-    // int64 m_roomcreate = 3;
+    // int64 mroomcreate = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_roomcreate());
+          this->_internal_mroomcreate());
     }
 
-    // int64 m_roomready = 4;
+    // int64 mroomready = 4;
     if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_roomready());
+          this->_internal_mroomready());
     }
 
   }
@@ -1664,20 +1663,20 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING::MergeFrom(const PROBUFF_EXAMPLE_PLAY_MATCHIN
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  m_players_.MergeFrom(from.m_players_);
+  mplayers_.MergeFrom(from.mplayers_);
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
-      m_roomid_ = from.m_roomid_;
+      mroomid_ = from.mroomid_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_totalnumber_ = from.m_totalnumber_;
+      mtotalnumber_ = from.mtotalnumber_;
     }
     if (cached_has_bits & 0x00000004u) {
-      m_roomcreate_ = from.m_roomcreate_;
+      mroomcreate_ = from.mroomcreate_;
     }
     if (cached_has_bits & 0x00000008u) {
-      m_roomready_ = from.m_roomready_;
+      mroomready_ = from.mroomready_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -1705,13 +1704,13 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING::InternalSwap(PROBUFF_EXAMPLE_PLAY_MATCHING* 
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  m_players_.InternalSwap(&other->m_players_);
+  mplayers_.InternalSwap(&other->mplayers_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING, m_roomready_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_MATCHING::m_roomready_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING, m_roomid_)>(
-          reinterpret_cast<char*>(&m_roomid_),
-          reinterpret_cast<char*>(&other->m_roomid_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING, mroomready_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_MATCHING::mroomready_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING, mroomid_)>(
+          reinterpret_cast<char*>(&mroomid_),
+          reinterpret_cast<char*>(&other->mroomid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_MATCHING::GetMetadata() const {
@@ -1726,10 +1725,10 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT>()._has_bits_);
-  static void set_has_m_errorcode(HasBits* has_bits) {
+  static void set_has_merrorcode(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_roomid(HasBits* has_bits) {
+  static void set_has_mroomid(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
 };
@@ -1744,16 +1743,16 @@ PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT(const
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_errorcode_, &from.m_errorcode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_roomid_) -
-    reinterpret_cast<char*>(&m_errorcode_)) + sizeof(m_roomid_));
+  ::memcpy(&merrorcode_, &from.merrorcode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mroomid_) -
+    reinterpret_cast<char*>(&merrorcode_)) + sizeof(mroomid_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT)
 }
 
 void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::SharedCtor() {
-  ::memset(&m_errorcode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_roomid_) -
-      reinterpret_cast<char*>(&m_errorcode_)) + sizeof(m_roomid_));
+  ::memset(&merrorcode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mroomid_) -
+      reinterpret_cast<char*>(&merrorcode_)) + sizeof(mroomid_));
 }
 
 PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::~PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT() {
@@ -1789,9 +1788,9 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_errorcode_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_roomid_) -
-        reinterpret_cast<char*>(&m_errorcode_)) + sizeof(m_roomid_));
+    ::memset(&merrorcode_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mroomid_) -
+        reinterpret_cast<char*>(&merrorcode_)) + sizeof(mroomid_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -1806,19 +1805,19 @@ const char* PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::_InternalParse(const char* ptr
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
+      // .pbexample.PLAY_MATCHING_EERROR_CODE merrorcode = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_errorcode(static_cast<::pbexample::PLAY_MATCHING_EERROR_CODE>(val));
+          _internal_set_merrorcode(static_cast<::pbexample::PLAY_MATCHING_EERROR_CODE>(val));
         } else goto handle_unusual;
         continue;
-      // int32 m_roomid = 2;
+      // int32 mroomid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_roomid(&has_bits);
-          m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomid(&has_bits);
+          mroomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1851,17 +1850,17 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
-  if (_internal_has_m_errorcode()) {
+  // .pbexample.PLAY_MATCHING_EERROR_CODE merrorcode = 1;
+  if (_internal_has_merrorcode()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_errorcode(), target);
+      1, this->_internal_merrorcode(), target);
   }
 
-  // int32 m_roomid = 2;
-  if (_internal_has_m_roomid()) {
+  // int32 mroomid = 2;
+  if (_internal_has_mroomid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_roomid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_mroomid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1882,17 +1881,17 @@ size_t PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // .pbexample.PLAY_MATCHING_EERROR_CODE m_errorcode = 1;
+    // .pbexample.PLAY_MATCHING_EERROR_CODE merrorcode = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_errorcode());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_merrorcode());
     }
 
-    // int32 m_roomid = 2;
+    // int32 mroomid = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_roomid());
+          this->_internal_mroomid());
     }
 
   }
@@ -1930,10 +1929,10 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::MergeFrom(const PROBUFF_EXAMPLE_PLAY_
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      m_errorcode_ = from.m_errorcode_;
+      merrorcode_ = from.merrorcode_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_roomid_ = from.m_roomid_;
+      mroomid_ = from.mroomid_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -1962,11 +1961,11 @@ void PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::InternalSwap(PROBUFF_EXAMPLE_PLAY_MAT
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, m_roomid_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::m_roomid_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, m_errorcode_)>(
-          reinterpret_cast<char*>(&m_errorcode_),
-          reinterpret_cast<char*>(&other->m_errorcode_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, mroomid_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::mroomid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT, merrorcode_)>(
+          reinterpret_cast<char*>(&merrorcode_),
+          reinterpret_cast<char*>(&other->merrorcode_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT::GetMetadata() const {
@@ -1981,10 +1980,10 @@ void PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>()._has_bits_);
-  static void set_has_m_isconfirm(HasBits* has_bits) {
+  static void set_has_misconfirm(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_roomid(HasBits* has_bits) {
+  static void set_has_mroomid(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
 };
@@ -1999,16 +1998,16 @@ PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM(const P
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_isconfirm_, &from.m_isconfirm_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_roomid_) -
-    reinterpret_cast<char*>(&m_isconfirm_)) + sizeof(m_roomid_));
+  ::memcpy(&misconfirm_, &from.misconfirm_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mroomid_) -
+    reinterpret_cast<char*>(&misconfirm_)) + sizeof(mroomid_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM)
 }
 
 void PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::SharedCtor() {
-  ::memset(&m_isconfirm_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_roomid_) -
-      reinterpret_cast<char*>(&m_isconfirm_)) + sizeof(m_roomid_));
+  ::memset(&misconfirm_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mroomid_) -
+      reinterpret_cast<char*>(&misconfirm_)) + sizeof(mroomid_));
 }
 
 PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::~PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM() {
@@ -2044,9 +2043,9 @@ void PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_isconfirm_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_roomid_) -
-        reinterpret_cast<char*>(&m_isconfirm_)) + sizeof(m_roomid_));
+    ::memset(&misconfirm_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mroomid_) -
+        reinterpret_cast<char*>(&misconfirm_)) + sizeof(mroomid_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -2061,19 +2060,19 @@ const char* PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::_InternalParse(const char* ptr,
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // bool m_isconfirm = 1;
+      // bool misconfirm = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_m_isconfirm(&has_bits);
-          m_isconfirm_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_misconfirm(&has_bits);
+          misconfirm_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 m_roomid = 2;
+      // int32 mroomid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_roomid(&has_bits);
-          m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomid(&has_bits);
+          mroomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2106,16 +2105,16 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool m_isconfirm = 1;
-  if (_internal_has_m_isconfirm()) {
+  // bool misconfirm = 1;
+  if (_internal_has_misconfirm()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_m_isconfirm(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_misconfirm(), target);
   }
 
-  // int32 m_roomid = 2;
-  if (_internal_has_m_roomid()) {
+  // int32 mroomid = 2;
+  if (_internal_has_mroomid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_roomid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_mroomid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2136,16 +2135,16 @@ size_t PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // bool m_isconfirm = 1;
+    // bool misconfirm = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 + 1;
     }
 
-    // int32 m_roomid = 2;
+    // int32 mroomid = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_roomid());
+          this->_internal_mroomid());
     }
 
   }
@@ -2183,10 +2182,10 @@ void PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::MergeFrom(const PROBUFF_EXAMPLE_PLAY_P
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      m_isconfirm_ = from.m_isconfirm_;
+      misconfirm_ = from.misconfirm_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_roomid_ = from.m_roomid_;
+      mroomid_ = from.mroomid_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -2215,11 +2214,11 @@ void PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::InternalSwap(PROBUFF_EXAMPLE_PLAY_PLAY
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, m_roomid_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::m_roomid_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, m_isconfirm_)>(
-          reinterpret_cast<char*>(&m_isconfirm_),
-          reinterpret_cast<char*>(&other->m_isconfirm_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, mroomid_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::mroomid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM, misconfirm_)>(
+          reinterpret_cast<char*>(&misconfirm_),
+          reinterpret_cast<char*>(&other->misconfirm_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM::GetMetadata() const {
@@ -2234,10 +2233,10 @@ void PROBUFF_EXAMPLE_PLAY_CANCEL::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_CANCEL::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_CANCEL>()._has_bits_);
-  static void set_has_m_type(HasBits* has_bits) {
+  static void set_has_mtype(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_roomid(HasBits* has_bits) {
+  static void set_has_mroomid(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
 };
@@ -2252,16 +2251,16 @@ PROBUFF_EXAMPLE_PLAY_CANCEL::PROBUFF_EXAMPLE_PLAY_CANCEL(const PROBUFF_EXAMPLE_P
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_type_, &from.m_type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_roomid_) -
-    reinterpret_cast<char*>(&m_type_)) + sizeof(m_roomid_));
+  ::memcpy(&mtype_, &from.mtype_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mroomid_) -
+    reinterpret_cast<char*>(&mtype_)) + sizeof(mroomid_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_CANCEL)
 }
 
 void PROBUFF_EXAMPLE_PLAY_CANCEL::SharedCtor() {
-  ::memset(&m_type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_roomid_) -
-      reinterpret_cast<char*>(&m_type_)) + sizeof(m_roomid_));
+  ::memset(&mtype_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mroomid_) -
+      reinterpret_cast<char*>(&mtype_)) + sizeof(mroomid_));
 }
 
 PROBUFF_EXAMPLE_PLAY_CANCEL::~PROBUFF_EXAMPLE_PLAY_CANCEL() {
@@ -2297,9 +2296,9 @@ void PROBUFF_EXAMPLE_PLAY_CANCEL::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_type_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_roomid_) -
-        reinterpret_cast<char*>(&m_type_)) + sizeof(m_roomid_));
+    ::memset(&mtype_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mroomid_) -
+        reinterpret_cast<char*>(&mtype_)) + sizeof(mroomid_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -2314,19 +2313,19 @@ const char* PROBUFF_EXAMPLE_PLAY_CANCEL::_InternalParse(const char* ptr, ::PROTO
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.EPLAY_TYPE m_type = 1;
+      // .pbexample.EPLAY_TYPE mtype = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_type(static_cast<::pbexample::EPLAY_TYPE>(val));
+          _internal_set_mtype(static_cast<::pbexample::EPLAY_TYPE>(val));
         } else goto handle_unusual;
         continue;
-      // int32 m_roomid = 2;
+      // int32 mroomid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_roomid(&has_bits);
-          m_roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroomid(&has_bits);
+          mroomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2359,17 +2358,17 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.EPLAY_TYPE m_type = 1;
-  if (_internal_has_m_type()) {
+  // .pbexample.EPLAY_TYPE mtype = 1;
+  if (_internal_has_mtype()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_type(), target);
+      1, this->_internal_mtype(), target);
   }
 
-  // int32 m_roomid = 2;
-  if (_internal_has_m_roomid()) {
+  // int32 mroomid = 2;
+  if (_internal_has_mroomid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_roomid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_mroomid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2390,17 +2389,17 @@ size_t PROBUFF_EXAMPLE_PLAY_CANCEL::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // .pbexample.EPLAY_TYPE m_type = 1;
+    // .pbexample.EPLAY_TYPE mtype = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_type());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mtype());
     }
 
-    // int32 m_roomid = 2;
+    // int32 mroomid = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_roomid());
+          this->_internal_mroomid());
     }
 
   }
@@ -2438,10 +2437,10 @@ void PROBUFF_EXAMPLE_PLAY_CANCEL::MergeFrom(const PROBUFF_EXAMPLE_PLAY_CANCEL& f
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      m_type_ = from.m_type_;
+      mtype_ = from.mtype_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_roomid_ = from.m_roomid_;
+      mroomid_ = from.mroomid_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -2470,11 +2469,11 @@ void PROBUFF_EXAMPLE_PLAY_CANCEL::InternalSwap(PROBUFF_EXAMPLE_PLAY_CANCEL* othe
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CANCEL, m_roomid_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_CANCEL::m_roomid_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CANCEL, m_type_)>(
-          reinterpret_cast<char*>(&m_type_),
-          reinterpret_cast<char*>(&other->m_type_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CANCEL, mroomid_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_CANCEL::mroomid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CANCEL, mtype_)>(
+          reinterpret_cast<char*>(&mtype_),
+          reinterpret_cast<char*>(&other->mtype_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_CANCEL::GetMetadata() const {
@@ -2489,13 +2488,13 @@ void PROBUFF_EXAMPLE_PLAY_CREATE::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_CREATE::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_CREATE>()._has_bits_);
-  static void set_has_m_type(HasBits* has_bits) {
+  static void set_has_mtype(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_exampleactorid(HasBits* has_bits) {
+  static void set_has_mexampleactorid(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_stat(HasBits* has_bits) {
+  static void set_has_mstat(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
 };
@@ -2510,16 +2509,16 @@ PROBUFF_EXAMPLE_PLAY_CREATE::PROBUFF_EXAMPLE_PLAY_CREATE(const PROBUFF_EXAMPLE_P
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_exampleactorid_, &from.m_exampleactorid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_stat_) -
-    reinterpret_cast<char*>(&m_exampleactorid_)) + sizeof(m_stat_));
+  ::memcpy(&mexampleactorid_, &from.mexampleactorid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mstat_) -
+    reinterpret_cast<char*>(&mexampleactorid_)) + sizeof(mstat_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_CREATE)
 }
 
 void PROBUFF_EXAMPLE_PLAY_CREATE::SharedCtor() {
-  ::memset(&m_exampleactorid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_stat_) -
-      reinterpret_cast<char*>(&m_exampleactorid_)) + sizeof(m_stat_));
+  ::memset(&mexampleactorid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mstat_) -
+      reinterpret_cast<char*>(&mexampleactorid_)) + sizeof(mstat_));
 }
 
 PROBUFF_EXAMPLE_PLAY_CREATE::~PROBUFF_EXAMPLE_PLAY_CREATE() {
@@ -2555,9 +2554,9 @@ void PROBUFF_EXAMPLE_PLAY_CREATE::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    ::memset(&m_exampleactorid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_stat_) -
-        reinterpret_cast<char*>(&m_exampleactorid_)) + sizeof(m_stat_));
+    ::memset(&mexampleactorid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mstat_) -
+        reinterpret_cast<char*>(&mexampleactorid_)) + sizeof(mstat_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -2572,28 +2571,28 @@ const char* PROBUFF_EXAMPLE_PLAY_CREATE::_InternalParse(const char* ptr, ::PROTO
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.EPLAY_TYPE m_type = 1;
+      // .pbexample.EPLAY_TYPE mtype = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_type(static_cast<::pbexample::EPLAY_TYPE>(val));
+          _internal_set_mtype(static_cast<::pbexample::EPLAY_TYPE>(val));
         } else goto handle_unusual;
         continue;
-      // int64 m_exampleactorid = 2;
+      // int64 mexampleactorid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_exampleactorid(&has_bits);
-          m_exampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mexampleactorid(&has_bits);
+          mexampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat m_stat = 3;
+      // .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat mstat = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_stat(static_cast<::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat>(val));
+          _internal_set_mstat(static_cast<::pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -2625,24 +2624,24 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.EPLAY_TYPE m_type = 1;
-  if (_internal_has_m_type()) {
+  // .pbexample.EPLAY_TYPE mtype = 1;
+  if (_internal_has_mtype()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_type(), target);
+      1, this->_internal_mtype(), target);
   }
 
-  // int64 m_exampleactorid = 2;
-  if (_internal_has_m_exampleactorid()) {
+  // int64 mexampleactorid = 2;
+  if (_internal_has_mexampleactorid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_m_exampleactorid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_mexampleactorid(), target);
   }
 
-  // .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat m_stat = 3;
-  if (_internal_has_m_stat()) {
+  // .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat mstat = 3;
+  if (_internal_has_mstat()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      3, this->_internal_m_stat(), target);
+      3, this->_internal_mstat(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2663,23 +2662,23 @@ size_t PROBUFF_EXAMPLE_PLAY_CREATE::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // int64 m_exampleactorid = 2;
+    // int64 mexampleactorid = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_exampleactorid());
+          this->_internal_mexampleactorid());
     }
 
-    // .pbexample.EPLAY_TYPE m_type = 1;
+    // .pbexample.EPLAY_TYPE mtype = 1;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_type());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mtype());
     }
 
-    // .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat m_stat = 3;
+    // .pbexample.PROBUFF_EXAMPLE_PLAY_CREATE.estat mstat = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_stat());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mstat());
     }
 
   }
@@ -2717,13 +2716,13 @@ void PROBUFF_EXAMPLE_PLAY_CREATE::MergeFrom(const PROBUFF_EXAMPLE_PLAY_CREATE& f
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      m_exampleactorid_ = from.m_exampleactorid_;
+      mexampleactorid_ = from.mexampleactorid_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_type_ = from.m_type_;
+      mtype_ = from.mtype_;
     }
     if (cached_has_bits & 0x00000004u) {
-      m_stat_ = from.m_stat_;
+      mstat_ = from.mstat_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -2752,11 +2751,11 @@ void PROBUFF_EXAMPLE_PLAY_CREATE::InternalSwap(PROBUFF_EXAMPLE_PLAY_CREATE* othe
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CREATE, m_stat_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_CREATE::m_stat_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CREATE, m_exampleactorid_)>(
-          reinterpret_cast<char*>(&m_exampleactorid_),
-          reinterpret_cast<char*>(&other->m_exampleactorid_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CREATE, mstat_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_CREATE::mstat_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_CREATE, mexampleactorid_)>(
+          reinterpret_cast<char*>(&mexampleactorid_),
+          reinterpret_cast<char*>(&other->mexampleactorid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_CREATE::GetMetadata() const {
@@ -2771,13 +2770,13 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>()._has_bits_);
-  static void set_has_m_cross(HasBits* has_bits) {
+  static void set_has_mcross(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_type(HasBits* has_bits) {
+  static void set_has_mtype(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_exampleactorid(HasBits* has_bits) {
+  static void set_has_mexampleactorid(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
 };
@@ -2792,16 +2791,16 @@ PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE(const PRO
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_cross_, &from.m_cross_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_exampleactorid_) -
-    reinterpret_cast<char*>(&m_cross_)) + sizeof(m_exampleactorid_));
+  ::memcpy(&mcross_, &from.mcross_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mexampleactorid_) -
+    reinterpret_cast<char*>(&mcross_)) + sizeof(mexampleactorid_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE)
 }
 
 void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::SharedCtor() {
-  ::memset(&m_cross_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_exampleactorid_) -
-      reinterpret_cast<char*>(&m_cross_)) + sizeof(m_exampleactorid_));
+  ::memset(&mcross_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mexampleactorid_) -
+      reinterpret_cast<char*>(&mcross_)) + sizeof(mexampleactorid_));
 }
 
 PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::~PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE() {
@@ -2837,9 +2836,9 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    ::memset(&m_cross_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_exampleactorid_) -
-        reinterpret_cast<char*>(&m_cross_)) + sizeof(m_exampleactorid_));
+    ::memset(&mcross_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mexampleactorid_) -
+        reinterpret_cast<char*>(&mcross_)) + sizeof(mexampleactorid_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -2854,27 +2853,27 @@ const char* PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::_InternalParse(const char* ptr, 
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.ECROSS m_cross = 1;
+      // .pbexample.ECROSS mcross = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_cross(static_cast<::pbexample::ECROSS>(val));
+          _internal_set_mcross(static_cast<::pbexample::ECROSS>(val));
         } else goto handle_unusual;
         continue;
-      // .pbexample.EPLAY_TYPE m_type = 2;
+      // .pbexample.EPLAY_TYPE mtype = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_type(static_cast<::pbexample::EPLAY_TYPE>(val));
+          _internal_set_mtype(static_cast<::pbexample::EPLAY_TYPE>(val));
         } else goto handle_unusual;
         continue;
-      // int64 m_exampleactorid = 3;
+      // int64 mexampleactorid = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          _Internal::set_has_m_exampleactorid(&has_bits);
-          m_exampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mexampleactorid(&has_bits);
+          mexampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2907,24 +2906,24 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.ECROSS m_cross = 1;
-  if (_internal_has_m_cross()) {
+  // .pbexample.ECROSS mcross = 1;
+  if (_internal_has_mcross()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_cross(), target);
+      1, this->_internal_mcross(), target);
   }
 
-  // .pbexample.EPLAY_TYPE m_type = 2;
-  if (_internal_has_m_type()) {
+  // .pbexample.EPLAY_TYPE mtype = 2;
+  if (_internal_has_mtype()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_m_type(), target);
+      2, this->_internal_mtype(), target);
   }
 
-  // int64 m_exampleactorid = 3;
-  if (_internal_has_m_exampleactorid()) {
+  // int64 mexampleactorid = 3;
+  if (_internal_has_mexampleactorid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_exampleactorid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_mexampleactorid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2945,23 +2944,23 @@ size_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // .pbexample.ECROSS m_cross = 1;
+    // .pbexample.ECROSS mcross = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_cross());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mcross());
     }
 
-    // .pbexample.EPLAY_TYPE m_type = 2;
+    // .pbexample.EPLAY_TYPE mtype = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_type());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mtype());
     }
 
-    // int64 m_exampleactorid = 3;
+    // int64 mexampleactorid = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_exampleactorid());
+          this->_internal_mexampleactorid());
     }
 
   }
@@ -2999,13 +2998,13 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::MergeFrom(const PROBUFF_EXAMPLE_PLAY_EN
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      m_cross_ = from.m_cross_;
+      mcross_ = from.mcross_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_type_ = from.m_type_;
+      mtype_ = from.mtype_;
     }
     if (cached_has_bits & 0x00000004u) {
-      m_exampleactorid_ = from.m_exampleactorid_;
+      mexampleactorid_ = from.mexampleactorid_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -3034,11 +3033,11 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::InternalSwap(PROBUFF_EXAMPLE_PLAY_ENTER
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, m_exampleactorid_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::m_exampleactorid_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, m_cross_)>(
-          reinterpret_cast<char*>(&m_cross_),
-          reinterpret_cast<char*>(&other->m_cross_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, mexampleactorid_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::mexampleactorid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE, mcross_)>(
+          reinterpret_cast<char*>(&mcross_),
+          reinterpret_cast<char*>(&other->mcross_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE::GetMetadata() const {
@@ -3053,20 +3052,20 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE>()._has_bits_);
-  static void set_has_m_cross(HasBits* has_bits) {
+  static void set_has_mcross(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_type(HasBits* has_bits) {
+  static void set_has_mtype(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_exampleactorid(HasBits* has_bits) {
+  static void set_has_mexampleactorid(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
 };
 
 PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  m_players_(arena) {
+  mplayers_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
@@ -3074,18 +3073,18 @@ PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_
 PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE(const PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_),
-      m_players_(from.m_players_) {
+      mplayers_(from.mplayers_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_cross_, &from.m_cross_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_exampleactorid_) -
-    reinterpret_cast<char*>(&m_cross_)) + sizeof(m_exampleactorid_));
+  ::memcpy(&mcross_, &from.mcross_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mexampleactorid_) -
+    reinterpret_cast<char*>(&mcross_)) + sizeof(mexampleactorid_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE)
 }
 
 void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::SharedCtor() {
-  ::memset(&m_cross_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_exampleactorid_) -
-      reinterpret_cast<char*>(&m_cross_)) + sizeof(m_exampleactorid_));
+  ::memset(&mcross_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mexampleactorid_) -
+      reinterpret_cast<char*>(&mcross_)) + sizeof(mexampleactorid_));
 }
 
 PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::~PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE() {
@@ -3119,12 +3118,12 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  m_players_.Clear();
+  mplayers_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    ::memset(&m_cross_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_exampleactorid_) -
-        reinterpret_cast<char*>(&m_cross_)) + sizeof(m_exampleactorid_));
+    ::memset(&mcross_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mexampleactorid_) -
+        reinterpret_cast<char*>(&mcross_)) + sizeof(mexampleactorid_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -3139,37 +3138,37 @@ const char* PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::_InternalParse(const ch
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.ECROSS m_cross = 1;
+      // .pbexample.ECROSS mcross = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_cross(static_cast<::pbexample::ECROSS>(val));
+          _internal_set_mcross(static_cast<::pbexample::ECROSS>(val));
         } else goto handle_unusual;
         continue;
-      // .pbexample.EPLAY_TYPE m_type = 2;
+      // .pbexample.EPLAY_TYPE mtype = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_type(static_cast<::pbexample::EPLAY_TYPE>(val));
+          _internal_set_mtype(static_cast<::pbexample::EPLAY_TYPE>(val));
         } else goto handle_unusual;
         continue;
-      // int64 m_exampleactorid = 3;
+      // int64 mexampleactorid = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          _Internal::set_has_m_exampleactorid(&has_bits);
-          m_exampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mexampleactorid(&has_bits);
+          mexampleactorid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // repeated int64 m_players = 4;
+      // repeated int64 mplayers = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt64Parser(_internal_mutable_m_players(), ptr, ctx);
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt64Parser(_internal_mutable_mplayers(), ptr, ctx);
           CHK_(ptr);
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32) {
-          _internal_add_m_players(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          _internal_add_mplayers(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3202,32 +3201,32 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.ECROSS m_cross = 1;
-  if (_internal_has_m_cross()) {
+  // .pbexample.ECROSS mcross = 1;
+  if (_internal_has_mcross()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_cross(), target);
+      1, this->_internal_mcross(), target);
   }
 
-  // .pbexample.EPLAY_TYPE m_type = 2;
-  if (_internal_has_m_type()) {
+  // .pbexample.EPLAY_TYPE mtype = 2;
+  if (_internal_has_mtype()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_m_type(), target);
+      2, this->_internal_mtype(), target);
   }
 
-  // int64 m_exampleactorid = 3;
-  if (_internal_has_m_exampleactorid()) {
+  // int64 mexampleactorid = 3;
+  if (_internal_has_mexampleactorid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_exampleactorid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_mexampleactorid(), target);
   }
 
-  // repeated int64 m_players = 4;
+  // repeated int64 mplayers = 4;
   {
-    int byte_size = _m_players_cached_byte_size_.load(std::memory_order_relaxed);
+    int byte_size = _mplayers_cached_byte_size_.load(std::memory_order_relaxed);
     if (byte_size > 0) {
       target = stream->WriteInt64Packed(
-          4, _internal_m_players(), byte_size, target);
+          4, _internal_mplayers(), byte_size, target);
     }
   }
 
@@ -3247,40 +3246,40 @@ size_t PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated int64 m_players = 4;
+  // repeated int64 mplayers = 4;
   {
     size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      Int64Size(this->m_players_);
+      Int64Size(this->mplayers_);
     if (data_size > 0) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
             static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
     }
     int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
-    _m_players_cached_byte_size_.store(cached_size,
+    _mplayers_cached_byte_size_.store(cached_size,
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // .pbexample.ECROSS m_cross = 1;
+    // .pbexample.ECROSS mcross = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_cross());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mcross());
     }
 
-    // .pbexample.EPLAY_TYPE m_type = 2;
+    // .pbexample.EPLAY_TYPE mtype = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_type());
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mtype());
     }
 
-    // int64 m_exampleactorid = 3;
+    // int64 mexampleactorid = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_exampleactorid());
+          this->_internal_mexampleactorid());
     }
 
   }
@@ -3315,17 +3314,17 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::MergeFrom(const PROBUFF_EXAMPL
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  m_players_.MergeFrom(from.m_players_);
+  mplayers_.MergeFrom(from.mplayers_);
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      m_cross_ = from.m_cross_;
+      mcross_ = from.mcross_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_type_ = from.m_type_;
+      mtype_ = from.mtype_;
     }
     if (cached_has_bits & 0x00000004u) {
-      m_exampleactorid_ = from.m_exampleactorid_;
+      mexampleactorid_ = from.mexampleactorid_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -3353,13 +3352,13 @@ void PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::InternalSwap(PROBUFF_EXAMPLE_P
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  m_players_.InternalSwap(&other->m_players_);
+  mplayers_.InternalSwap(&other->mplayers_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, m_exampleactorid_)
-      + sizeof(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::m_exampleactorid_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, m_cross_)>(
-          reinterpret_cast<char*>(&m_cross_),
-          reinterpret_cast<char*>(&other->m_cross_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, mexampleactorid_)
+      + sizeof(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::mexampleactorid_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE, mcross_)>(
+          reinterpret_cast<char*>(&mcross_),
+          reinterpret_cast<char*>(&other->mcross_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE::GetMetadata() const {
@@ -3374,13 +3373,13 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_GUESS_NUMBER_INFO>()._has_bits_);
-  static void set_has_m_maxnumber(HasBits* has_bits) {
+  static void set_has_mmaxnumber(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_m_minnumber(HasBits* has_bits) {
+  static void set_has_mminnumber(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_whoguess(HasBits* has_bits) {
+  static void set_has_mwhoguess(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
 };
@@ -3395,16 +3394,16 @@ PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO(const PROBU
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_maxnumber_, &from.m_maxnumber_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_whoguess_) -
-    reinterpret_cast<char*>(&m_maxnumber_)) + sizeof(m_whoguess_));
+  ::memcpy(&mmaxnumber_, &from.mmaxnumber_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mwhoguess_) -
+    reinterpret_cast<char*>(&mmaxnumber_)) + sizeof(mwhoguess_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_INFO)
 }
 
 void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::SharedCtor() {
-  ::memset(&m_maxnumber_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_whoguess_) -
-      reinterpret_cast<char*>(&m_maxnumber_)) + sizeof(m_whoguess_));
+  ::memset(&mmaxnumber_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mwhoguess_) -
+      reinterpret_cast<char*>(&mmaxnumber_)) + sizeof(mwhoguess_));
 }
 
 PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::~PROBUFF_EXAMPLE_GUESS_NUMBER_INFO() {
@@ -3440,9 +3439,9 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    ::memset(&m_maxnumber_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_whoguess_) -
-        reinterpret_cast<char*>(&m_maxnumber_)) + sizeof(m_whoguess_));
+    ::memset(&mmaxnumber_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mwhoguess_) -
+        reinterpret_cast<char*>(&mmaxnumber_)) + sizeof(mwhoguess_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -3457,27 +3456,27 @@ const char* PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::_InternalParse(const char* ptr, :
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // int32 m_maxnumber = 1;
+      // int32 mmaxnumber = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_m_maxnumber(&has_bits);
-          m_maxnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mmaxnumber(&has_bits);
+          mmaxnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 m_minnumber = 2;
+      // int32 mminnumber = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_minnumber(&has_bits);
-          m_minnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mminnumber(&has_bits);
+          mminnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int64 m_whoguess = 3;
+      // int64 mwhoguess = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          _Internal::set_has_m_whoguess(&has_bits);
-          m_whoguess_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mwhoguess(&has_bits);
+          mwhoguess_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3510,22 +3509,22 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 m_maxnumber = 1;
-  if (_internal_has_m_maxnumber()) {
+  // int32 mmaxnumber = 1;
+  if (_internal_has_mmaxnumber()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_maxnumber(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_mmaxnumber(), target);
   }
 
-  // int32 m_minnumber = 2;
-  if (_internal_has_m_minnumber()) {
+  // int32 mminnumber = 2;
+  if (_internal_has_mminnumber()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_m_minnumber(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_mminnumber(), target);
   }
 
-  // int64 m_whoguess = 3;
-  if (_internal_has_m_whoguess()) {
+  // int64 mwhoguess = 3;
+  if (_internal_has_mwhoguess()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_m_whoguess(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_mwhoguess(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3546,25 +3545,25 @@ size_t PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // int32 m_maxnumber = 1;
+    // int32 mmaxnumber = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_maxnumber());
+          this->_internal_mmaxnumber());
     }
 
-    // int32 m_minnumber = 2;
+    // int32 mminnumber = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_minnumber());
+          this->_internal_mminnumber());
     }
 
-    // int64 m_whoguess = 3;
+    // int64 mwhoguess = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_whoguess());
+          this->_internal_mwhoguess());
     }
 
   }
@@ -3602,13 +3601,13 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::MergeFrom(const PROBUFF_EXAMPLE_GUESS_NU
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      m_maxnumber_ = from.m_maxnumber_;
+      mmaxnumber_ = from.mmaxnumber_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_minnumber_ = from.m_minnumber_;
+      mminnumber_ = from.mminnumber_;
     }
     if (cached_has_bits & 0x00000004u) {
-      m_whoguess_ = from.m_whoguess_;
+      mwhoguess_ = from.mwhoguess_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -3637,11 +3636,11 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMBE
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, m_whoguess_)
-      + sizeof(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::m_whoguess_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, m_maxnumber_)>(
-          reinterpret_cast<char*>(&m_maxnumber_),
-          reinterpret_cast<char*>(&other->m_maxnumber_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, mwhoguess_)
+      + sizeof(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::mwhoguess_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_INFO, mmaxnumber_)>(
+          reinterpret_cast<char*>(&mmaxnumber_),
+          reinterpret_cast<char*>(&other->mmaxnumber_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER_INFO::GetMetadata() const {
@@ -3656,7 +3655,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_GUESS_NUMBER::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_GUESS_NUMBER>()._has_bits_);
-  static void set_has_m_guessnumber(HasBits* has_bits) {
+  static void set_has_mguessnumber(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
@@ -3671,12 +3670,12 @@ PROBUFF_EXAMPLE_GUESS_NUMBER::PROBUFF_EXAMPLE_GUESS_NUMBER(const PROBUFF_EXAMPLE
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  m_guessnumber_ = from.m_guessnumber_;
+  mguessnumber_ = from.mguessnumber_;
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER)
 }
 
 void PROBUFF_EXAMPLE_GUESS_NUMBER::SharedCtor() {
-  m_guessnumber_ = 0;
+  mguessnumber_ = 0;
 }
 
 PROBUFF_EXAMPLE_GUESS_NUMBER::~PROBUFF_EXAMPLE_GUESS_NUMBER() {
@@ -3710,7 +3709,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  m_guessnumber_ = 0;
+  mguessnumber_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -3724,11 +3723,11 @@ const char* PROBUFF_EXAMPLE_GUESS_NUMBER::_InternalParse(const char* ptr, ::PROT
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // int32 m_guessnumber = 1;
+      // int32 mguessnumber = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_m_guessnumber(&has_bits);
-          m_guessnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mguessnumber(&has_bits);
+          mguessnumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3761,10 +3760,10 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 m_guessnumber = 1;
-  if (_internal_has_m_guessnumber()) {
+  // int32 mguessnumber = 1;
+  if (_internal_has_mguessnumber()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_guessnumber(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_mguessnumber(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3783,12 +3782,12 @@ size_t PROBUFF_EXAMPLE_GUESS_NUMBER::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int32 m_guessnumber = 1;
+  // int32 mguessnumber = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_m_guessnumber());
+        this->_internal_mguessnumber());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3822,8 +3821,8 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER::MergeFrom(const PROBUFF_EXAMPLE_GUESS_NUMBER&
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_m_guessnumber()) {
-    _internal_set_m_guessnumber(from._internal_m_guessnumber());
+  if (from._internal_has_mguessnumber()) {
+    _internal_set_mguessnumber(from._internal_mguessnumber());
   }
 }
 
@@ -3849,7 +3848,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMBER* ot
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(m_guessnumber_, other->m_guessnumber_);
+  swap(mguessnumber_, other->mguessnumber_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER::GetMetadata() const {
@@ -3864,7 +3863,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR>()._has_bits_);
-  static void set_has_m_stat(HasBits* has_bits) {
+  static void set_has_mstat(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
@@ -3879,12 +3878,12 @@ PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR(const PRO
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  m_stat_ = from.m_stat_;
+  mstat_ = from.mstat_;
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR)
 }
 
 void PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::SharedCtor() {
-  m_stat_ = 0;
+  mstat_ = 0;
 }
 
 PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::~PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR() {
@@ -3918,7 +3917,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  m_stat_ = 0;
+  mstat_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -3932,12 +3931,12 @@ const char* PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::_InternalParse(const char* ptr, 
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // .pbexample.E_GUESS_NUMBER_ERROR m_stat = 1;
+      // .pbexample.E_GUESS_NUMBER_ERROR mstat = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_m_stat(static_cast<::pbexample::E_GUESS_NUMBER_ERROR>(val));
+          _internal_set_mstat(static_cast<::pbexample::E_GUESS_NUMBER_ERROR>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -3969,11 +3968,11 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .pbexample.E_GUESS_NUMBER_ERROR m_stat = 1;
-  if (_internal_has_m_stat()) {
+  // .pbexample.E_GUESS_NUMBER_ERROR mstat = 1;
+  if (_internal_has_mstat()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_m_stat(), target);
+      1, this->_internal_mstat(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3992,11 +3991,11 @@ size_t PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .pbexample.E_GUESS_NUMBER_ERROR m_stat = 1;
+  // .pbexample.E_GUESS_NUMBER_ERROR mstat = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_m_stat());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_mstat());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4030,8 +4029,8 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::MergeFrom(const PROBUFF_EXAMPLE_GUESS_N
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_m_stat()) {
-    _internal_set_m_stat(from._internal_m_stat());
+  if (from._internal_has_mstat()) {
+    _internal_set_mstat(from._internal_mstat());
   }
 }
 
@@ -4057,7 +4056,7 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMB
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(m_stat_, other->m_stat_);
+  swap(mstat_, other->mstat_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR::GetMetadata() const {
@@ -4072,10 +4071,10 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::InitAsDefaultInstance() {
 class PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::_Internal {
  public:
   using HasBits = decltype(std::declval<PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB>()._has_bits_);
-  static void set_has_m_bombvalue(HasBits* has_bits) {
+  static void set_has_mbombvalue(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
-  static void set_has_m_roleid(HasBits* has_bits) {
+  static void set_has_mroleid(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
@@ -4090,16 +4089,16 @@ PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB(const PROBU
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&m_roleid_, &from.m_roleid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&m_bombvalue_) -
-    reinterpret_cast<char*>(&m_roleid_)) + sizeof(m_bombvalue_));
+  ::memcpy(&mroleid_, &from.mroleid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&mbombvalue_) -
+    reinterpret_cast<char*>(&mroleid_)) + sizeof(mbombvalue_));
   // @@protoc_insertion_point(copy_constructor:pbexample.PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB)
 }
 
 void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::SharedCtor() {
-  ::memset(&m_roleid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&m_bombvalue_) -
-      reinterpret_cast<char*>(&m_roleid_)) + sizeof(m_bombvalue_));
+  ::memset(&mroleid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&mbombvalue_) -
+      reinterpret_cast<char*>(&mroleid_)) + sizeof(mbombvalue_));
 }
 
 PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::~PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB() {
@@ -4135,9 +4134,9 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::Clear() {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    ::memset(&m_roleid_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&m_bombvalue_) -
-        reinterpret_cast<char*>(&m_roleid_)) + sizeof(m_bombvalue_));
+    ::memset(&mroleid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&mbombvalue_) -
+        reinterpret_cast<char*>(&mroleid_)) + sizeof(mbombvalue_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -4152,19 +4151,19 @@ const char* PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::_InternalParse(const char* ptr, :
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // int32 m_bombvalue = 1;
+      // int32 mbombvalue = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_m_bombvalue(&has_bits);
-          m_bombvalue_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mbombvalue(&has_bits);
+          mbombvalue_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int64 m_roleid = 2;
+      // int64 mroleid = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          _Internal::set_has_m_roleid(&has_bits);
-          m_roleid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _Internal::set_has_mroleid(&has_bits);
+          mroleid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4197,16 +4196,16 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 m_bombvalue = 1;
-  if (_internal_has_m_bombvalue()) {
+  // int32 mbombvalue = 1;
+  if (_internal_has_mbombvalue()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_m_bombvalue(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_mbombvalue(), target);
   }
 
-  // int64 m_roleid = 2;
-  if (_internal_has_m_roleid()) {
+  // int64 mroleid = 2;
+  if (_internal_has_mroleid()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_m_roleid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_mroleid(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4227,18 +4226,18 @@ size_t PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // int64 m_roleid = 2;
+    // int64 mroleid = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
-          this->_internal_m_roleid());
+          this->_internal_mroleid());
     }
 
-    // int32 m_bombvalue = 1;
+    // int32 mbombvalue = 1;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-          this->_internal_m_bombvalue());
+          this->_internal_mbombvalue());
     }
 
   }
@@ -4276,10 +4275,10 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::MergeFrom(const PROBUFF_EXAMPLE_GUESS_NU
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      m_roleid_ = from.m_roleid_;
+      mroleid_ = from.mroleid_;
     }
     if (cached_has_bits & 0x00000002u) {
-      m_bombvalue_ = from.m_bombvalue_;
+      mbombvalue_ = from.mbombvalue_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -4308,11 +4307,11 @@ void PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::InternalSwap(PROBUFF_EXAMPLE_GUESS_NUMBE
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, m_bombvalue_)
-      + sizeof(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::m_bombvalue_)
-      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, m_roleid_)>(
-          reinterpret_cast<char*>(&m_roleid_),
-          reinterpret_cast<char*>(&other->m_roleid_));
+      PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, mbombvalue_)
+      + sizeof(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::mbombvalue_)
+      - PROTOBUF_FIELD_OFFSET(PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB, mroleid_)>(
+          reinterpret_cast<char*>(&mroleid_),
+          reinterpret_cast<char*>(&other->mroleid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB::GetMetadata() const {

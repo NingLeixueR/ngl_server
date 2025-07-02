@@ -57,7 +57,7 @@ namespace ngl
 			lbind[0].buffer			= (void*)adb->m_malloc.buff();
 			lbind[0].buffer_length	= adb->m_malloc.pos();
 
-			i16_area larea = nguid::area(adata.m_id());
+			i16_area larea = nguid::area(adata.mid());
 			if (larea == 0)
 			{
 				larea = ttab_servers::instance().tab()->m_area;
@@ -69,7 +69,7 @@ namespace ngl
 			int llen = snprintf(
 				lbuff, 4096
 				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
-				, tools::protobuf_tabname<T>::name().c_str(), adata.m_id(), larea
+				, tools::protobuf_tabname<T>::name().c_str(), adata.mid(), larea
 			);
 
 			if (llen <= 0)
@@ -171,7 +171,7 @@ namespace ngl
 					{
 						return false;
 					}
-					ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
+					ngl::db_data<T>::set(ldata.m_data->mid(), *ldata.m_data);
 					return true;
 				}
 			);
@@ -203,7 +203,7 @@ namespace ngl
 					{
 						return false;
 					}
-					ngl::db_data<T>::set(ldata.m_data->m_id(), *ldata.m_data);
+					ngl::db_data<T>::set(ldata.m_data->mid(), *ldata.m_data);
 					return true;
 				}
 			);

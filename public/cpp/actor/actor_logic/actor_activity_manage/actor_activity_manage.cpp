@@ -81,8 +81,8 @@ namespace ngl
 				continue;
 			}
 			const pbdb::db_activitytimes& lactivitytimes = activitytime.getconst();
-			int32_t lbeg = lactivitytimes.m_beg();
-			int32_t lduration = lactivitytimes.m_duration();
+			int32_t lbeg = lactivitytimes.mbeg();
+			int32_t lduration = lactivitytimes.mduration();
 			start_activity(activityid, lbeg, lduration);
 		}
 
@@ -183,7 +183,7 @@ namespace ngl
 		const pbdb::db_keyvalue* lkeyvalue = tdb_keyvalue::nsp_cli<actor_activity_manage>::instance(id_guid()).getconst(pbdb::db_keyvalue::open_server);
 		if (lkeyvalue != nullptr)
 		{
-			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->m_value());
+			int32_t lopenserver = tools::lexical_cast<int32_t>(lkeyvalue->mvalue());
 			for (const auto& [activityid, tab] : *ttab_activityopenserver::instance().tablecsv())
 			{
 				if (!m_activitys.contains(activityid))

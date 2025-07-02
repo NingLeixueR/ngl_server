@@ -7,7 +7,7 @@ namespace ngl
 		const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE* lpdata = adata.get_data()->data();
 		i64_actorid roleid = adata.get_data()->identifier();
 
-		playinfo* lpplayinfo = tools::findmap(m_info[lpdata->m_type()], lpdata->m_exampleactorid());
+		playinfo* lpplayinfo = tools::findmap(m_info[lpdata->mtype()], lpdata->mexampleactorid());
 		if (lpplayinfo == nullptr)
 		{
 			actor_example_match::send_error(pbexample::EERROR_CODE_NOTFIND, nullptr, 0, roleid);
@@ -20,7 +20,7 @@ namespace ngl
 			return true;
 		}
 
-		enter_game(lpplayinfo, roleid, lpdata->m_cross(), lpdata->m_type());
+		enter_game(lpplayinfo, roleid, lpdata->mcross(), lpdata->mtype());
 
 		return true;
 	}
@@ -55,9 +55,9 @@ namespace ngl
 			}
 
 			auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_CREATE>();
-			pro->set_m_exampleactorid(lpactor->id_guid());
-			pro->set_m_type(lprecv->m_type);
-			pro->set_m_stat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
+			pro->set_mexampleactorid(lpactor->id_guid());
+			pro->set_mtype(lprecv->m_type);
+			pro->set_mstat(pbexample::PROBUFF_EXAMPLE_PLAY_CREATE_estat_estat_success);
 			send_client(lplayinfo.m_roles, pro);
 		}
 		else

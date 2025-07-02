@@ -112,13 +112,13 @@ namespace ngl
 			{
 				return ecross_none;
 			}
-			switch (adata.m_channelid())
+			switch (adata.mchannelid())
 			{
-			case pbnet::enum_chat_channel::enum_chat_ordinary:
+			case pbnet::ENUM_CHAT_CHANNEL::ENUM_CHAT_CHANNEL_ORDINARY:
 				return ecross_ordinary;
-			case pbnet::enum_chat_channel::enum_chat_cross_ordinary:
+			case pbnet::ENUM_CHAT_CHANNEL::ENUM_CHAT_CHANNEL_CROSS_ORDINARY:
 				return ecross_cross_ordinary;
-			case pbnet::enum_chat_channel::enum_chat_none:
+			case pbnet::ENUM_CHAT_CHANNEL::ENUM_CHAT_CHANNEL_NONE:
 				return ecross_none;
 			}
 			return ecross_none;
@@ -127,7 +127,7 @@ namespace ngl
 		//# ranklist的转发类型
 		ecross forward_type(const pbnet::PROBUFF_NET_RANKLIST& adata)
 		{
-			return adata.m_iscross() ? ecross_cross_ordinary : ecross_ordinary;
+			return adata.miscross() ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		//# 加入例子小游戏匹配的转发类型
@@ -137,7 +137,7 @@ namespace ngl
 			{
 				return ecross_none;
 			}
-			if (adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY)
+			if (adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY)
 			{
 				return ecross_cross_ordinary;
 			}
@@ -149,7 +149,7 @@ namespace ngl
 
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
 		{
-			if (adata.m_cross() == pbexample::ECROSS_CROSS_ORDINARY)
+			if (adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY)
 			{
 				return ecross_cross_ordinary;
 			}

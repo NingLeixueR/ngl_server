@@ -208,7 +208,7 @@ namespace ngl
 			{
 				int32_t lmaxcount = tools::lexical_cast<int32_t>(table->m_typeparm);
 				
-				const auto& lcomplete = rd->m_task.get().getconst().m_completeddatas();
+				const auto& lcomplete = rd->m_task.get().getconst().mcompleteddatas();
 				auto itor = lcomplete.find(ataskid);
 				if (itor != lcomplete.end())
 				{
@@ -217,10 +217,10 @@ namespace ngl
 				int32_t lcount = 0;
 				if (table->m_type == ETaskTypeDaily)
 				{
-					for (const auto& item : itor->second.m_history())
+					for (const auto& item : itor->second.mhistory())
 					{
-						item.m_finshutc();
-						if (localtime::issameday(item.m_finshutc()))
+						item.mfinshutc();
+						if (localtime::issameday(item.mfinshutc()))
 						{
 							++lcount;
 						}
@@ -228,7 +228,7 @@ namespace ngl
 				}
 				else
 				{
-					lcount = itor->second.m_history().size();
+					lcount = itor->second.mhistory().size();
 				}
 				return lcount < lmaxcount;
 			}

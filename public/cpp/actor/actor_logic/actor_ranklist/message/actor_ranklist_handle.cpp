@@ -45,7 +45,7 @@ namespace ngl
 	bool actor_ranklist::handle(const message<mforward<pbnet::PROBUFF_NET_RANKLIST>>& adata)
 	{
 		auto lrecv = adata.get_data()->data();
-		m_ranklist.sync_ranklist(adata.get_data()->identifier(), lrecv->m_type(), lrecv->m_activityid(), lrecv->m_page());
+		m_ranklist.sync_ranklist(adata.get_data()->identifier(), lrecv->mtype(), lrecv->mactivityid(), lrecv->mpage());
 		return true;
 	}
 	bool actor_ranklist::handle(const message<np_activityrank_operator>& adata)
@@ -55,8 +55,8 @@ namespace ngl
 		m_ranklist.remove_rank(lrankid);
 		tdb_brief::nsp_cli<actor_ranklist>::instance(id_guid()).foreach_change([lrankid](pbdb::db_brief& abrief)
 			{
-				abrief.mutable_m_activityvalues()->mutable_m_activity_rolelv()->erase(lrankid);
-				abrief.mutable_m_activityvalues()->mutable_m_activity_rolegold()->erase(lrankid);
+				abrief.mutable_mactivityvalues()->mutable_mactivity_rolelv()->erase(lrankid);
+				abrief.mutable_mactivityvalues()->mutable_mactivity_rolegold()->erase(lrankid);
 				return true;
 			});
 		if (lrecv->m_iscreate)

@@ -43,16 +43,16 @@ namespace ngl
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
 			const pbdb::db_friends& lconstfriends = lfriends.getconst();
-			if (lconstfriends.m_friends_size() >= ttab_specialid::instance().m_friendscount)
+			if (lconstfriends.mfriends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 1;
 			}
-			if (lconstfriends.m_applyfriends_size() >= ttab_specialid::instance().m_friendsapplylistcount)
+			if (lconstfriends.mapplyfriends_size() >= ttab_specialid::instance().m_friendsapplylistcount)
 			{
 				return 2;
 			}
-			auto& lfriendslist = lconstfriends.m_friends();
-			auto& lapplyfriends = lconstfriends.m_applyfriends();
+			auto& lfriendslist = lconstfriends.mfriends();
+			auto& lapplyfriends = lconstfriends.mapplyfriends();
 			if (check_friends(lfriendslist, lapplyfriends, afriends))
 			{
 				return 3;
@@ -61,7 +61,7 @@ namespace ngl
 			{
 				return 4;
 			}
-			lfriends.get().add_m_applyfriends(aroleid);
+			lfriends.get().add_mapplyfriends(aroleid);
 			return 5;
 		}
 
@@ -70,16 +70,16 @@ namespace ngl
 		{
 			data_modified<pbdb::db_friends>& lfriends1 = get(aroleid);
 			data_modified<pbdb::db_friends>& lfriends2 = get(afriends);
-			if (lfriends1.getconst().m_friends_size() >= ttab_specialid::instance().m_friendscount)
+			if (lfriends1.getconst().mfriends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 1;
 			}
-			if (lfriends2.getconst().m_friends_size() >= ttab_specialid::instance().m_friendscount)
+			if (lfriends2.getconst().mfriends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 2;
 			}
 			
-			auto lpapplyfriends = lfriends1.get().mutable_m_applyfriends();
+			auto lpapplyfriends = lfriends1.get().mutable_mapplyfriends();
 			auto itor = std::find(lpapplyfriends->begin(), lpapplyfriends->end(), afriends);
 			if (itor == lpapplyfriends->end())
 			{
@@ -88,8 +88,8 @@ namespace ngl
 			lpapplyfriends->erase(itor);
 			if (aratify)
 			{
-				lfriends1.get().add_m_friends(afriends);
-				lfriends2.get().add_m_friends(afriends);
+				lfriends1.get().add_mfriends(afriends);
+				lfriends2.get().add_mfriends(afriends);
 			}
 			return 0;
 		}
@@ -99,7 +99,7 @@ namespace ngl
 		{
 			data_modified<pbdb::db_friends>& lfriends1 = get(aroleid);
 			data_modified<pbdb::db_friends>& lfriends2 = get(afriends);
-			auto lpfriends1 = lfriends1.get().mutable_m_friends();
+			auto lpfriends1 = lfriends1.get().mutable_mfriends();
 			auto itor = std::find(lpfriends1->begin(), lpfriends1->end(), afriends);
 			if (itor == lpfriends1->end())
 			{
@@ -107,7 +107,7 @@ namespace ngl
 			}
 			lpfriends1->erase(itor);
 
-			auto lpfriends2 = lfriends2.get().mutable_m_friends();
+			auto lpfriends2 = lfriends2.get().mutable_mfriends();
 			auto itor2 = std::find(lpfriends2->begin(), lpfriends2->end(), afriends);
 			if (itor == lpfriends2->end())
 			{
@@ -122,24 +122,24 @@ namespace ngl
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_RESPONSE>();
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			for (i64_actorid afriends : lfriends.getconst().m_friends())
+			for (i64_actorid afriends : lfriends.getconst().mfriends())
 			{
 				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
 				if (lpbrief == nullptr)
 				{
 					return;
 				}
-				*pro->add_m_friends() = *lpbrief;
+				*pro->add_mfriends() = *lpbrief;
 			}
 
-			for (i64_actorid afriends : lfriends.getconst().m_applyfriends())
+			for (i64_actorid afriends : lfriends.getconst().mapplyfriends())
 			{
 				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
 				if (lpbrief == nullptr)
 				{
 					return;
 				}
-				*pro->add_m_applyfriends() = *lpbrief;
+				*pro->add_mapplyfriends() = *lpbrief;
 			}
 			actor::send_client(aroleid, pro);
 		}
@@ -148,7 +148,7 @@ namespace ngl
 		bool get_friends(i64_actorid aroleid, std::vector<i64_actorid>& afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			for (i64_actorid aactorid : lfriends.getconst().m_friends())
+			for (i64_actorid aactorid : lfriends.getconst().mfriends())
 			{
 				afriends.push_back(aactorid);
 			}

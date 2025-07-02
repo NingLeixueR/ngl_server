@@ -60,21 +60,21 @@ namespace ngl
 			
 			pbdb::mail lmail;
 			int32_t& lid = maxid(aroleid);
-			lmail.set_m_id(++lid);
-			lmail.set_m_tid(atid);
-			lmail.set_m_createutc((int32_t)localtime::gettime());
-			lmail.set_m_draw(false);
-			lmail.set_m_read(false);
-			lmail.set_m_prams(aparm);
-			lmail.set_m_content(acontent);
+			lmail.set_mid(++lid);
+			lmail.set_mtid(atid);
+			lmail.set_mcreateutc((int32_t)localtime::gettime());
+			lmail.set_mdraw(false);
+			lmail.set_mread(false);
+			lmail.set_mprams(aparm);
+			lmail.set_mcontent(acontent);
 			for (const auto& [itemid, count] : aitem)
 			{
-				pbdb::mailitem* lpmailitem = lmail.add_m_items();
-				lpmailitem->set_m_itemtid(itemid);
-				lpmailitem->set_m_count(count);
+				pbdb::mailitem* lpmailitem = lmail.add_mitems();
+				lpmailitem->set_mitemtid(itemid);
+				lpmailitem->set_mcount(count);
 			}
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
-			lpdb_mail.get().mutable_m_mail()->insert({ lid, lmail });
+			lpdb_mail.get().mutable_mmail()->insert({ lid, lmail });
 			return true;
 		}
 
@@ -96,8 +96,8 @@ namespace ngl
 			{
 				return nullptr;
 			}
-			auto itor = lpdb_mail->get().mutable_m_mail()->find((int32_t)aid);
-			if (itor == lpdb_mail->get().mutable_m_mail()->end())
+			auto itor = lpdb_mail->get().mutable_mmail()->find((int32_t)aid);
+			if (itor == lpdb_mail->get().mutable_mmail()->end())
 			{
 				return nullptr;
 			}
@@ -109,11 +109,11 @@ namespace ngl
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			std::vector<int32_t> ldellist;
-			for (const auto& [_id, _mail] : *lpdb_mail.get().mutable_m_mail())
+			for (const auto& [_id, _mail] : *lpdb_mail.get().mutable_mmail())
 			{
 				if (_id != -1 && acheck(_mail))
 				{
-					ldellist.push_back(_mail.m_id());
+					ldellist.push_back(_mail.mid());
 				}
 			}
 
@@ -132,13 +132,13 @@ namespace ngl
 				{
 					return false;
 				}
-				ltemp->set_m_read(true);
+				ltemp->set_mread(true);
 			}
 			else
 			{
 				one_touch(aroleid, [](const pbdb::mail& amail)
 					{
-						return amail.m_read() == false;
+						return amail.mread() == false;
 					}, 
 					[aroleid, this](int32_t aid)
 					{
@@ -161,20 +161,20 @@ namespace ngl
 				}
 				if (acheckdrawread)
 				{
-					if (ltemp->m_draw() == false || ltemp->m_read() == false)
+					if (ltemp->mdraw() == false || ltemp->mread() == false)
 					{
 						return false;
 					}
 				}
 				
 				data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
-				lpdb_mail.get().mutable_m_mail()->erase((int32_t)aid);
+				lpdb_mail.get().mutable_mmail()->erase((int32_t)aid);
 			}
 			else
 			{
 				one_touch(aroleid, [](const pbdb::mail& amail)
 					{
-						return amail.m_read() && amail.m_draw();
+						return amail.mread() && amail.mdraw();
 					}, 
 					[aroleid, this](int32_t aid)
 					{
@@ -188,9 +188,9 @@ namespace ngl
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
-			for (const auto& [_mailid, _mails] : *lpdb_mail.get().mutable_m_mail())
+			for (const auto& [_mailid, _mails] : *lpdb_mail.get().mutable_mmail())
 			{
-				pro->mutable_m_mail()->insert({ _mailid, _mails });
+				pro->mutable_mmail()->insert({ _mailid, _mails });
 			}
 			return pro;
 		}

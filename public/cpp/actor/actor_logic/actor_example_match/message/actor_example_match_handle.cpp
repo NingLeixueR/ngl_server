@@ -32,7 +32,7 @@ namespace ngl
 			return true;
 		}
 		const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN* ldata = adata.get_data()->data();
-		pbexample::EPLAY_TYPE ltype = ldata->m_type();
+		pbexample::EPLAY_TYPE ltype = ldata->mtype();
 		room* lproom = matching_room(lroleid, ltype);
 		if (lproom == nullptr)
 		{
@@ -53,7 +53,7 @@ namespace ngl
 		}
 
 		auto pro = std::make_shared<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>();
-		pro->set_m_roomid(lproom->m_roomid);
+		pro->set_mroomid(lproom->m_roomid);
 		send_client(lroleid, pro);
 
 		sync_match_info(lproom);
@@ -63,14 +63,14 @@ namespace ngl
 	{
 		i64_actorid lroleid = adata.get_data()->identifier();
 		const pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM* ldata = adata.get_data()->data();
-		room* lproom = find_room(ldata->m_roomid());
+		room* lproom = find_room(ldata->mroomid());
 		if (lproom == nullptr)
 		{
 			send_error(pbexample::EERROR_CODE_NOTFINDROOM, nullptr, 0, lroleid);
 			return true;
 		}
 
-		if (ldata->m_isconfirm())
+		if (ldata->misconfirm())
 		{
 			player* lpplayer = tools::findmap(lproom->m_players, lroleid);
 			lpplayer->m_isconfirm = true;

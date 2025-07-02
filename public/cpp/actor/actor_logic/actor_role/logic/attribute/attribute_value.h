@@ -160,12 +160,12 @@ namespace ngl
 
 		void topb(pbnet::UnitModule& aunitmodule)
 		{
-			aunitmodule.set_m_mtype(m_module);
+			aunitmodule.set_mmtype(m_module);
 			for (std::pair<const EnumAttribute, int64_t>& item : m_fight)
 			{
-				pbnet::UnitAttribute* lptemp = aunitmodule.add_m_modules();
-				lptemp->set_m_type(item.first);
-				lptemp->set_m_value(item.second);
+				pbnet::UnitAttribute* lptemp = aunitmodule.add_mmodules();
+				lptemp->set_mtype(item.first);
+				lptemp->set_mvalue(item.second);
 			}
 		}
 	};

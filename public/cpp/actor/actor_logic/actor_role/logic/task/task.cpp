@@ -31,9 +31,9 @@ namespace ngl
 
 		static void schedules(actor_role* arole, pbdb::db_task::data_schedule& adata, const task_condition& atab)
 		{
-			adata.set_m_type(atab.m_type);
-			adata.set_m_sumint(atab.m_parmint);
-			adata.set_m_value(m_data[atab.m_type]->values(arole, atab));
+			adata.set_mtype(atab.m_type);
+			adata.set_msumint(atab.m_parmint);
+			adata.set_mvalue(m_data[atab.m_type]->values(arole, atab));
 		}
 
 		virtual int32_t values(actor_role* arole, const task_condition& atab) = 0;
@@ -65,7 +65,7 @@ namespace ngl
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
-			auto& lmap = arole->m_task.get().getconst().m_completeddatas();
+			auto& lmap = arole->m_task.get().getconst().mcompleteddatas();
 			return lmap.find(atab.m_parmint) != lmap.end()? atab.m_parmint :-1;
 		}
 	};
@@ -91,22 +91,22 @@ namespace ngl
 
 	google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::complete(actor_role* arole)
 	{
-		return *arole->m_task.get().get().mutable_m_completeddatas();
+		return *arole->m_task.get().get().mutable_mcompleteddatas();
 	}
 
 	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::run(actor_role* arole)
 	{
-		return *arole->m_task.get().get().mutable_m_rundatas();
+		return *arole->m_task.get().get().mutable_mrundatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::const_complete(actor_role* arole)
 	{
-		return arole->m_task.get().getconst().m_completeddatas();
+		return arole->m_task.get().getconst().mcompleteddatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_run(actor_role* arole)
 	{
-		return arole->m_task.get().getconst().m_rundatas();
+		return arole->m_task.get().getconst().mrundatas();
 	}
 
 	bool static_task::isfinish_task(actor_role* arole, i32_taskid ataskid)
@@ -150,14 +150,14 @@ namespace ngl
 		}
 
 		pbdb::db_task::data ltemp;
-		ltemp.set_m_taskid(ataskid);
-		ltemp.set_m_receiveutc(localtime::gettime());
-		ltemp.set_m_finshutc(-1);
+		ltemp.set_mtaskid(ataskid);
+		ltemp.set_mreceiveutc(localtime::gettime());
+		ltemp.set_mfinshutc(-1);
 		for (auto& item : *lvec)
 		{
-			task_check::schedules(arole, *ltemp.mutable_m_schedules()->Add(), item);
+			task_check::schedules(arole, *ltemp.mutable_mschedules()->Add(), item);
 		}
-		arole->m_task.get().get().mutable_m_rundatas()->insert({ ataskid, ltemp });
+		arole->m_task.get().get().mutable_mrundatas()->insert({ ataskid, ltemp });
 		return true;
 	}
 
@@ -172,7 +172,7 @@ namespace ngl
 	{
 		finish_task(arole, ataskid);
 
-		arole->m_task.get().get().mutable_m_rundatas()->erase(ataskid);
+		arole->m_task.get().get().mutable_mrundatas()->erase(ataskid);
 		return true;
 	}
 
@@ -219,11 +219,11 @@ namespace ngl
 						);
 						return false;
 					}
-					itor->second.set_m_receive(true);
+					itor->second.set_mreceive(true);
 				}
 			}
-			itor->second.set_m_finshutc(localtime::gettime());
-			*complete(arole)[ataskid].add_m_history() = itor->second;
+			itor->second.set_mfinshutc(localtime::gettime());
+			*complete(arole)[ataskid].add_mhistory() = itor->second;
 			run(arole).erase(itor);
 			update_change(arole, ETaskTaskId, ataskid);
 			return true;
@@ -242,14 +242,14 @@ namespace ngl
 			if (itorrun != lconst_rundatas.end())
 			{
 				//## 已接收任务更新进度
-				for (int i = 0; i < itorrun->second.m_schedules_size(); ++i)
+				for (int i = 0; i < itorrun->second.mschedules_size(); ++i)
 				{
 					auto& lcomplete = run(arole);
 					for (auto itor = lcomplete.begin(); itor != lcomplete.end(); ++itor)
 					{
-						for (pbdb::db_task::data_schedule& lschedule : *itor->second.mutable_m_schedules())
+						for (pbdb::db_task::data_schedule& lschedule : *itor->second.mutable_mschedules())
 						{
-							if (lschedule.m_type() == atype)
+							if (lschedule.mtype() == atype)
 							{
 								const task_condition* lpcondition = ttab_task::instance().condition_complete(taskid, atype);
 								if (lpcondition != nullptr)

@@ -81,7 +81,7 @@ namespace ngl
 	{
 		auto lpram = adata.get_data();
 		pbnet::PROBUFF_NET_KCPSESSION_RESPONSE pro;
-		pro.set_m_kcpsession(lpram->m_kcpsession);
+		pro.set_mkcpsession(lpram->m_kcpsession);
 		nets::sendbysession(lpram->m_sessionid, pro, nguid::make(ACTOR_ROBOT, lpram->m_area, lpram->m_dataid), nguid::make());
 		return true;
 	}
@@ -161,11 +161,11 @@ namespace ngl
 		auto lpack = adata.get_pack();
 
 		log_error()->print("# GateWay Login[{}][{}][{}] #"
-			, lpack->m_id, nguid(lpram->m_roleid()), lpram->m_session()
+			, lpack->m_id, nguid(lpram->mroleid()), lpram->msession()
 		);
-		nguid lguid(lpram->m_roleid());
+		nguid lguid(lpram->mroleid());
 		gateway_socket* linfo = m_info.get(lguid.area(), lguid.actordataid());
-		if (linfo == nullptr || linfo->m_session != lpram->m_session())
+		if (linfo == nullptr || linfo->m_session != lpram->msession())
 		{
 			//tools::no_core_dump();
 			return true;
@@ -210,10 +210,10 @@ namespace ngl
 		}
 
 		pbnet::PROBUFF_NET_ROLE_LOGIN lprampro = *lpram;
-		lprampro.set_m_iscreate(linfo->m_iscreate);
+		lprampro.set_miscreate(linfo->m_iscreate);
 		linfo->m_iscreate = false;
-		lprampro.set_m_gatewayid(nconfig::m_nodeid);
-		lprampro.set_m_area(linfo->m_area);
+		lprampro.set_mgatewayid(nconfig::m_nodeid);
+		lprampro.set_marea(linfo->m_area);
 		nets::sendbyserver(linfo->m_gameid, lprampro, nguid::moreactor(), id_guid());
 		return true;
 	}
@@ -255,11 +255,11 @@ namespace ngl
 		pro.m_sessionid		= lpack->m_id;
 		pro.m_area			= larea;
 		pro.m_dataid		= lactordataid;
-		pro.m_uip			= lpram->m_uip();
-		pro.m_uport			= lpram->m_uport();
-		pro.m_conv			= lpram->m_conv();
+		pro.m_uip			= lpram->muip();
+		pro.m_uport			= lpram->muport();
+		pro.m_conv			= lpram->mconv();
 
-		nets::sendbyserver((i32_serverid)lpram->m_serverid(), pro, nguid::make(), nguid::make());
+		nets::sendbyserver((i32_serverid)lpram->mserverid(), pro, nguid::make(), nguid::make());
 
 		return true;
 	}

@@ -34,7 +34,7 @@ namespace ngl
 		{
 			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
 			auto lnow = (int32_t)localtime::gettime();
-			if (lnow - lpdbfamilyer.getconst().m_lastleaveutc() < ttab_specialid::instance().m_familjoininterval)
+			if (lnow - lpdbfamilyer.getconst().mlastleaveutc() < ttab_specialid::instance().m_familjoininterval)
 			{
 				return false;
 			}
@@ -72,14 +72,14 @@ namespace ngl
 				m_maxid = std::max(m_maxid, (int32_t)_familyid.id());
 				
 				std::string lmember;
-				for (i64_actorid roleid : lbdfamily.m_member())
+				for (i64_actorid roleid : lbdfamily.mmember())
 				{
 					m_rolefamily[roleid] = _familyid;
 				}
 
-				m_familyname.insert(lbdfamily.m_name());
+				m_familyname.insert(lbdfamily.mname());
 
-				for (i64_actorid roleid : lbdfamily.m_applylist())
+				for (i64_actorid roleid : lbdfamily.mapplylist())
 				{
 					m_applylist[roleid].insert(_familyid);
 				}

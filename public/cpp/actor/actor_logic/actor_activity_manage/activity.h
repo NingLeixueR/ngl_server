@@ -76,23 +76,23 @@ namespace ngl
 		// # 活动是否开启
 		virtual bool is_start()
 		{
-			return m_activitytimes->getconst().m_start();
+			return m_activitytimes->getconst().mstart();
 		}
 
 		// # 活动开启时间
 		int32_t start_utc()
 		{
-			return m_activitytimes->getconst().m_beg();
+			return m_activitytimes->getconst().mbeg();
 		}
 		
 		// # 活动结束时间
 		int32_t finish_utc()
 		{
-			if (m_activitytimes->getconst().m_duration() == -1)
+			if (m_activitytimes->getconst().mduration() == -1)
 			{
 				return -1;
 			}
-			return start_utc() + m_activitytimes->getconst().m_duration();
+			return start_utc() + m_activitytimes->getconst().mduration();
 		}
 
 		// # 此刻是活动第几天
@@ -116,12 +116,12 @@ namespace ngl
 		// # 调用:活动开启
 		virtual void start() 
 		{
-			if (m_activitytimes->getconst().m_start())
+			if (m_activitytimes->getconst().mstart())
 			{
 				return;
 			}
 			log_error()->print("activity::start() activityid=[{}]", activityid());
-			m_activitytimes->get().set_m_start(true);
+			m_activitytimes->get().set_mstart(true);
 		}
 
 		// # 调用:活动开启后和服务器重启
@@ -138,11 +138,11 @@ namespace ngl
 		{
 			if (aisreceive)
 			{
-				(*(*m_activity->get().mutable_m_task())[aroleid].mutable_m_open())[aindex] = true;
+				(*(*m_activity->get().mutable_mtask())[aroleid].mutable_mopen())[aindex] = true;
 			}
 			else
 			{
-				(*(*m_activity->get().mutable_m_task())[aroleid].mutable_m_close())[aindex] = true;
+				(*(*m_activity->get().mutable_mtask())[aroleid].mutable_mclose())[aindex] = true;
 			}
 		}
 

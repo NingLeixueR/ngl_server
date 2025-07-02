@@ -44,8 +44,8 @@ namespace ngl
 					tools::splicing(m_roleban, "*", lbanrole);
 
 					pbdb::db_keyvalue* lpdata = tdb_keyvalue::nsp_cli<actor_role_manage>::instance(id_guid()).add(pbdb::db_keyvalue_ekv_account_ban);
-					lpdata->set_m_id(pbdb::db_keyvalue_ekv_account_ban);
-					lpdata->set_m_value(lbanrole);
+					lpdata->set_mid(pbdb::db_keyvalue_ekv_account_ban);
+					lpdata->set_mvalue(lbanrole);
 					tdb_keyvalue::nsp_cli<actor_role_manage>::instance(id_guid()).change(pbdb::db_keyvalue_ekv_account_ban);
 					pro.m_data = true;
 				};
@@ -66,19 +66,19 @@ namespace ngl
 	{
 		auto recv = adata.get_data();
 
-		if (m_roleban.contains(recv->m_roleid()))
+		if (m_roleban.contains(recv->mroleid()))
 		{
 			return true;
 		}
 
-		nguid lguid(recv->m_roleid());
-		log_error()->print("actor_manage_role roleid:{}", recv->m_roleid());
+		nguid lguid(recv->mroleid());
+		log_error()->print("actor_manage_role roleid:{}", recv->mroleid());
 		np_actorswitch_process_role pro
 		{
-			.m_create = recv->m_iscreate(),
-			.m_gatewayid = recv->m_gatewayid(),
+			.m_create = recv->miscreate(),
+			.m_gatewayid = recv->mgatewayid(),
 		};
-		actor_create::switch_process(recv->m_roleid(), 0, nconfig::m_nodeid, pro);
+		actor_create::switch_process(recv->mroleid(), 0, nconfig::m_nodeid, pro);
 		return true;
 	}
 }//namespace ngl
