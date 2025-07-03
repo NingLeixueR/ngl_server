@@ -4,6 +4,7 @@
 #include "handle_pram.h"
 #include "nactortype.h"
 #include "localtime.h"
+#include "nscript.h"
 #include "ntimer.h"
 #include "ngroup.h"
 #include "nguid.h"
@@ -57,6 +58,8 @@ namespace ngl
 		i16_area		m_area				= tab_self_area;					// 区服
 		i32_actordataid m_id				= nguid::none_actordataid();		// 数据id
 		bool			m_manage_dbclient	= false;							// 是否有数据库依赖
+		enscript		m_enscript			= enscript_none;					// 脚本支持
+		std::string		m_scriptname;											// 脚本文件
 	};
 
 	// # actor的状态
@@ -198,6 +201,51 @@ namespace ngl
 
 		//# 给指定类型的actor添加任务
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
+
+#pragma region nscript
+		bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson);
+
+		template <typename T>
+		bool nscript_push_data(const T& adat)
+		{
+			std::string ljson;
+			if (!tools::proto2json(adat, ljson))
+			{
+				return false;
+			}
+			std::string& lname = tools::type_name<T>();
+			nscript_push_data(lname, adat.mid(), ljson);
+		}
+
+		bool nscript_handle(const std::string& ajson);
+
+		template <typename T>
+		bool nscript_handle(const T& adat)
+		{
+			std::string ljson;
+			if (!tools::proto2json(adat, ljson))
+			{
+				return false;
+			}
+			nscript_handle(ljson);
+		}
+
+		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson);
+
+		template <typename T>
+		bool nscript_check_outdata(T& adat)
+		{
+			std::string& lname = tools::type_name<T>();
+			std::string ljson;
+			if (nscript_check_outdata(lname, ljson))
+			{
+				tools::json2proto(ljson, adat);
+				return true;
+			}
+			return false;
+		}
+
+#pragma endregion 
 
 #pragma region net
 		//# 生成包

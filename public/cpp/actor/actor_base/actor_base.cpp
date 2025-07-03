@@ -92,7 +92,9 @@ namespace ngl
 		//# 推送广播的定时器id
 		static int									m_broadcasttimer;
 		//# 是否接收广播消息
-		bool										m_isbroadcast = false;			
+		bool										m_isbroadcast = false;	
+
+		std::shared_ptr<nscript>					m_script = nullptr;
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
@@ -106,6 +108,11 @@ namespace ngl
 					{
 						aactor->loaddb_finish(adbishave);
 					});
+			}
+			if (aparm.m_enscript != enscript_none)
+			{
+				m_script = nscript::malloc_script(aparm.m_enscript);
+				m_script->init(aparm.m_scriptname);
 			}
 		}
 
@@ -217,6 +224,21 @@ namespace ngl
 		{
 			auto lparm = std::make_shared<np_timerparm>(aparm);
 			return ntimer::addtimer(m_actor, lparm);
+		}
+
+		bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
+		{
+			return m_script->push_data(adbname, aactorid, adatajson);
+		}
+
+		bool nscript_handle(const std::string& ajson)
+		{
+			return m_script->handle(ajson);
+		}
+
+		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
+		{
+			return m_script->check_outdata(adbname, aactorid, adatajson);
 		}
 
 		inline bool isbroadcast()const
@@ -363,6 +385,21 @@ namespace ngl
 	void actor_base::init_db_component(bool acreate)
 	{
 		m_impl_actor_base()->init_db_component(acreate);
+	}
+
+	bool actor_base::nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
+	{
+		return m_impl_actor_base()->nscript_push_data(adbname, aactorid, adatajson);
+	}
+
+	bool actor_base::nscript_handle(const std::string& ajson)
+	{
+		return m_impl_actor_base()->nscript_handle(ajson);
+	}
+
+	bool actor_base::nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
+	{
+		return m_impl_actor_base()->nscript_check_outdata(adbname, aactorid, adatajson);
 	}
 
 	void actor_base::start_broadcast()
