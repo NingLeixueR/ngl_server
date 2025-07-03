@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-07-02 10:06:43
+// 创建时间 25-07-03 21:04:16
 #include "attribute_value.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"
@@ -50,6 +50,7 @@
 #include "segpack.cpp"
 #include "remakes.cpp"
 #include "nthread.cpp"
+#include "nscript.cpp"
 #include "net_tcp.cpp"
 #include "dbredis.cpp"
 #include "db_pool.cpp"

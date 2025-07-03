@@ -29,6 +29,7 @@ namespace ngl
 		virtual void create(const nguid& aid) = 0;
 		virtual void init(actor_manage_dbclient* amdb, actor_base* aactor, const nguid& aid) = 0;
 		virtual void clear_modified() = 0;
+		virtual void nscript_push_data() = 0;
 
 		pbdb::ENUM_DB type()const
 		{
@@ -342,6 +343,16 @@ namespace ngl
 				m_actor->send_actor_pack(lactorid, lpack);
 			}
 		}
+
+		void nscript_push_data() final
+		{
+			//std::map<nguid, data_modified<TDBTAB>> m_data;
+			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
+			{
+				const TDBTAB& lval = item.second.getconst();
+				m_actor->nscript_push_data(lval);
+			}
+		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
 		{
@@ -477,7 +488,11 @@ namespace ngl
 			{
 				lpair.second->clear_modified();
 			}
-			// 2、做一些初始化之类的工作,并且需要的话将其发送给客户端
+
+			// 2、数据压倒脚本中
+			nscript_push_data();
+
+			// 3、做一些初始化之类的工作,并且需要的话将其发送给客户端
 			m_fun(adbishave);
 			return true;
 		}
@@ -523,6 +538,15 @@ namespace ngl
 			static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
 				{
 					ap->deldb();
+				};
+			foreach_function(lfun);
+		}
+
+		void nscript_push_data()
+		{
+			static std::function<void(ndbclient_base*)> lfun = [](ndbclient_base* ap)
+				{
+					ap->nscript_push_data();
 				};
 			foreach_function(lfun);
 		}
