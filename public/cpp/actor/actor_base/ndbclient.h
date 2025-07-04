@@ -40,7 +40,7 @@ namespace ngl
 	class data_modified_base
 	{
 	private:
-		bool m_ischange = false;
+		mutable bool m_ischange = false;
 	public:
 		// # 是否发生修改
 		bool is_modified()const
@@ -49,13 +49,13 @@ namespace ngl
 		}
 
 		// # 设置为修改状态
-		void modified()
+		void modified()const
 		{
 			m_ischange = true;
 		}
 
 		// # 清空修改状态
-		void clear_modified()
+		void clear_modified()const
 		{
 			m_ischange = false;
 		}
@@ -69,21 +69,15 @@ namespace ngl
 		data_modified(const data_modified&) = delete;
 		data_modified& operator=(const data_modified&) = delete;
 
-		TDBTAB m_data;
-		TDBTAB* m_pdata = nullptr;
+		mutable TDBTAB m_data;
+		mutable TDBTAB* m_pdata = nullptr;
+		actor_base* m_actor = nullptr;
 	public:
-		explicit data_modified(TDBTAB* adata):
-			m_pdata(adata)
-		{}
-
-		explicit data_modified(const TDBTAB& adata) :
-			m_data(adata)
-		{}
-
 		data_modified() = default;
 
-		void set(const TDBTAB& adata, bool achange = false)
+		void set(actor_base* aactor, const TDBTAB& adata, bool achange = false)
 		{
+			m_actor = aactor;
 			m_data = adata;
 			m_pdata = nullptr;
 			if (achange)
@@ -92,18 +86,27 @@ namespace ngl
 			}
 		}
 
-		TDBTAB& get(bool achange = true)
+		// # get与getconst获取数据前先 "检查脚本语言中的备份是否被修改"
+		TDBTAB& get(bool achange = true, bool anscript = true)
 		{
-			if (achange)
+			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			// # 检查脚本语言中的备份是否被修改
+			if ((anscript && m_actor->nscript_check_outdata(ldata.mid(), ldata)) || achange)
 			{
 				modified();
 			}
-			return m_pdata == nullptr ? m_data : *m_pdata;
+			return ldata;
 		}
 
-		const TDBTAB& getconst()const
+		const TDBTAB& getconst(bool anscript = true)const
 		{
-			return m_pdata == nullptr ? m_data : *m_pdata;
+			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			// # 检查脚本语言中的备份是否被修改
+			if (anscript && m_actor->nscript_check_outdata(ldata.mid(), ldata))
+			{
+				modified();
+			}
+			return ldata;
 		}
 	};
 
@@ -267,6 +270,16 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
+			if (aid == nguid::make())
+			{
+				m_actor->nscript_check_outdata(m_data);
+			}
+			else
+			{
+				data_modified<TDBTAB>* lpdata = tools::findmap(m_data, aid);
+				lpdata->getconst();
+			}
+
 			np_actordb_save<DBTYPE, TDBTAB> pro;
 			if (aid != nguid::make())
 			{
@@ -380,7 +393,7 @@ namespace ngl
 		{
 			for (const std::pair<const nguid, TDBTAB>& lpair : adata)
 			{
-				m_data[lpair.first].set(lpair.second);
+				m_data[lpair.first].set(m_actor, lpair.second);
 			}
 
 			auto itor = m_data.find(m_id);
@@ -571,5 +584,32 @@ namespace ngl
 			return true;
 		}
 		return lp->handle(adata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_check_outdata(std::map<nguid, data_modified<T>>& adata)
+	{
+		std::string& lname = tools::type_name<T>();
+		std::string ljson;
+		if (nscript_check_outdata(lname, nguid::make(), ljson))
+		{
+			struct nscript_outdata
+			{
+				std::map<i64_actorid, std::string> m_data;
+				def_jsonfunction("data", m_data)
+			};
+			ngl::json_read lread(ljson.c_str());
+			nscript_outdata ltemp;
+			if (!ltemp.read(lread))
+			{
+				return false;
+			}
+			for (std::pair<const i64_actorid, std::string>& item : ltemp.m_data)
+			{
+				tools::json2proto(ljson, adata[item.first].get(true, false));
+			}
+			return true;
+		}
+		return false;
 	}
 }//namespace ngl

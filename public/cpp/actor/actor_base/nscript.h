@@ -1,14 +1,20 @@
 #pragma once
 
 #include "lua.hpp"
+#include "nguid.h"
 
 #include <string>
 #include <map>
 
+//#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+//# define LOG_SCRIPT(...)  ::ngl::log_error()->print(##__VA_ARGS__)
+//#else
+//# define LOG_SCRIPT(...)  ::ngl::log_error()->print(__VA_OPT__(,) ##__VA_ARGS__)
+//#endif
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-# define LOG_SCRIPT(...)  ::ngl::log_error()->print(##__VA_ARGS__)
+# define LOG_SCRIPT(...)  std::cout<<(##__VA_ARGS__)
 #else
-# define LOG_SCRIPT(...)  ::ngl::log_error()->print(__VA_OPT__(,) ##__VA_ARGS__)
+# define LOG_SCRIPT(...)  std::cout<<(__VA_OPT__(,) ##__VA_ARGS__)
 #endif
 
 namespace ngl
@@ -28,7 +34,6 @@ namespace ngl
 		virtual bool push_data(const std::string& adbname, i64_actorid aactorid, const std::string& adatajson) = 0;
 		virtual bool handle(const std::string& ajson) = 0;
 		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
-
 
 		static std::shared_ptr<nscript> malloc_script(enscript atype)
 		{
@@ -145,23 +150,29 @@ namespace ngl
 		}
 
 		// # 查询数据是否被修改#如果被修改就加载数据
+		// # aactorid == nguid::make() 检查全部数据
 		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson)
 		{
 			if (L == nullptr)
 			{
 				return false;
 			}
-			int result = lua_getglobal(L, "check_outdata");
+			bool lall = aactorid == nguid::make();
+
+			int result = lua_getglobal(L, lall ? "check_outdata_all" : "check_outdata");
 			if (result == LUA_TNIL)
 			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.check_outdata]", m_scriptpath);
+				LOG_SCRIPT("lua_getglobal get failure[{}.{}]", m_scriptpath, lall ? "check_outdata_all" : "check_outdata");
 				lua_pop(L, 1);
 				return false;
 			}
 			lua_pushstring(L, adbname.c_str());
-			lua_pushinteger(L, aactorid);
+			if (lall)
+			{
+				lua_pushinteger(L, aactorid);
+			}
 			lua_pushstring(L, adatajson.c_str());
-			if (lua_pcall(L, 3, 2, 0) != LUA_OK)
+			if (lua_pcall(L, lall ? 2 : 3, 2, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1);
@@ -199,5 +210,4 @@ namespace ngl
 			return success;
 		}
 	};
-
 }//namespace ngl

@@ -9,9 +9,10 @@ namespace ngl
 		auto pro = std::make_shared<pbnet::PROBUFF_NET_NOTICE_RESPONSE>();
 		if (aactorid == -1)
 		{
-			for (const auto& [id, dbnotice] : data())
+			//std::pair<const nguid, data_modified<pbdb::db_notice>>
+			for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
 			{
-				*pro->add_mnotices() = dbnotice.getconst();
+				*pro->add_mnotices() = lpair.second.getconst();
 			}
 			return pro;
 		}
@@ -27,12 +28,13 @@ namespace ngl
 	void notice::remove_notice()
 	{
 		int32_t lnow = (int32_t)localtime::gettime();
-		std::map<nguid, data_modified<pbdb::db_notice>>& lnotice = data();
-		for (const auto& [id, dbnotice] : lnotice)
+		for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
 		{
-			const pbdb::db_notice& lnotice = dbnotice.getconst();
+			const pbdb::db_notice& lnotice = lpair.second.getconst();
 			if (lnotice.mfinishtime() != -1)
+			{
 				continue;
+			}
 			if (localtime::checkutc(lnotice.mfinishtime()) == false)
 			{
 				nactor()->log_error()->print(

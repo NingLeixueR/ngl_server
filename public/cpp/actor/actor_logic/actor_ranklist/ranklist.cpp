@@ -85,7 +85,7 @@ namespace ngl
 	void ranklist::initdata()
 	{
 		log_error()->print("actor_ranklist###loaddb_finish {}", data());
-		for (const std::pair<const nguid, data_modified<pbdb::db_ranklist>>& item : data())
+		for (std::pair<const nguid, data_modified<pbdb::db_ranklist>>& item : data())
 		{
 			const pbdb::db_ranklist& ltemp = item.second.getconst();
 			add_data(ltemp);

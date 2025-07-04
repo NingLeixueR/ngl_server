@@ -24,6 +24,8 @@ namespace ngl
 	class ndb_component;
 	class ndbclient_base;
 	class actor_manage_dbclient;
+	template <typename TDBTAB>
+	struct data_modified;
 
 	// # actor的log辅助
 	class tools_log
@@ -214,7 +216,7 @@ namespace ngl
 				return false;
 			}
 			std::string& lname = tools::type_name<T>();
-			nscript_push_data(lname, adat.mid(), ljson);
+			return nscript_push_data(lname, adat.mid(), ljson);
 		}
 
 		bool nscript_handle(const std::string& ajson);
@@ -227,23 +229,26 @@ namespace ngl
 			{
 				return false;
 			}
-			nscript_handle(ljson);
+			return nscript_handle(ljson);
 		}
 
 		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson);
 
 		template <typename T>
-		bool nscript_check_outdata(T& adat)
+		bool nscript_check_outdata(i64_actorid aactorid, T& adata)
 		{
 			std::string& lname = tools::type_name<T>();
 			std::string ljson;
-			if (nscript_check_outdata(lname, ljson))
+			if (nscript_check_outdata(lname, aactorid, ljson))
 			{
-				tools::json2proto(ljson, adat);
+				tools::json2proto(ljson, adata);
 				return true;
 			}
 			return false;
 		}
+
+		template <typename T>
+		bool nscript_check_outdata(std::map<nguid, data_modified<T>>& adata);
 
 #pragma endregion 
 
