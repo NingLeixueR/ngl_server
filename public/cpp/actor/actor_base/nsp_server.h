@@ -280,8 +280,7 @@ namespace ngl
 			std::map<int64_t, TDATA>& lmap = *pro->m_data.m_data;
 			if (lpset->empty())
 			{
-				std::map<nguid, data_modified<TDATA>>& ldatamap = m_dbmodule->data();
-				for (const auto& lpair : ldatamap)
+				for (std::pair<const nguid, data_modified<TDATA>>& lpair : m_dbmodule->data())
 				{
 					lmap[lpair.first] = lpair.second.getconst();
 				}

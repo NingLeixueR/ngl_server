@@ -205,9 +205,9 @@ namespace ngl
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>();
 			pro->set_mfamilid(afamilyid);
-			for (const auto& [_familid, _famil] : data())
+			for (std::pair<const nguid, data_modified<pbdb::db_family>>& lpair : data())
 			{
-				*pro->add_mfamily() = _famil.getconst();
+				*pro->add_mfamily() = lpair.second.getconst();
 			}
 			return pro;
 		}

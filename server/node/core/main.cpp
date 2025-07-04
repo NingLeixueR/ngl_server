@@ -17,9 +17,30 @@
 #include "lua.hpp"
 
 Dumper lDumper;
+struct nscript_outdata
+{
+	std::vector<std::string> m_vecdata;
+	def_jsonfunction("m_vecdata", m_vecdata)
+};
 
 int main(int argc, char** argv)
 {
+	ngl::nscriptlua lnscriptlua;
+	lnscriptlua.init("test.lua");
+	lnscriptlua.push_data("kkk", 1, "k1");
+	lnscriptlua.push_data("kkk", 2, "k2");
+	lnscriptlua.push_data("kkk", 3, "k3");
+	lnscriptlua.handle("1234567");
+	std::string kkkkkkkkkkkk;
+	lnscriptlua.check_outdata("kkk", ngl::nguid::make(), kkkkkkkkkkkk);
+
+	nscript_outdata ltemp;
+	ltemp.m_vecdata = {"123", "456", "789"};
+	ngl::json_write lwrite;
+	ltemp.write(lwrite);
+	std::string lstrtt;
+	lwrite.get(lstrtt);
+
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;

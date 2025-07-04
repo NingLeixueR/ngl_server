@@ -73,17 +73,18 @@ namespace ngl
 
 		// 加载初始化活动
 		int32_t lnow = localtime::gettime();
-		for (const auto& [ activityid, activitytime] : m_activitytimedb.data())
+		//std::pair<const nguid, data_modified<pbdb::db_family>>
+		for (std::pair<const nguid, data_modified<pbdb::db_activitytimes>>& lpair : m_activitytimedb.data())
 		{
-			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(activityid));
+			const tab_activity* ltab = ttab_activity::instance().tab(nguid::actordataid(lpair.first));
 			if (ltab == nullptr)
 			{
 				continue;
 			}
-			const pbdb::db_activitytimes& lactivitytimes = activitytime.getconst();
+			const pbdb::db_activitytimes& lactivitytimes = lpair.second.getconst();
 			int32_t lbeg = lactivitytimes.mbeg();
 			int32_t lduration = lactivitytimes.mduration();
-			start_activity(activityid, lbeg, lduration);
+			start_activity(lpair.first, lbeg, lduration);
 		}
 
 		for (const auto& [activityid, tab] : *ttab_activity::instance().tablecsv())

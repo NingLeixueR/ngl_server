@@ -66,22 +66,22 @@ namespace ngl
 		void initdata()final
 		{
 			log_error()->print("{}", data());
-			for (const auto& [_familyid, _family] : data())
+			for (std::pair<const nguid, data_modified<pbdb::db_family>>& lpair : data())
 			{
-				const pbdb::db_family& lbdfamily = _family.getconst();
-				m_maxid = std::max(m_maxid, (int32_t)_familyid.id());
+				const pbdb::db_family& lbdfamily = lpair.second.getconst();
+				m_maxid = std::max(m_maxid, (int32_t)lpair.first.id());
 				
 				std::string lmember;
 				for (i64_actorid roleid : lbdfamily.mmember())
 				{
-					m_rolefamily[roleid] = _familyid;
+					m_rolefamily[roleid] = lpair.first;
 				}
 
 				m_familyname.insert(lbdfamily.mname());
 
 				for (i64_actorid roleid : lbdfamily.mapplylist())
 				{
-					m_applylist[roleid].insert(_familyid);
+					m_applylist[roleid].insert(lpair.first);
 				}
 			}
 		}

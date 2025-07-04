@@ -27,9 +27,11 @@ namespace ngl
 		{
 			log_error()->print("actor_notice###loaddb_finish {}", data());
 			m_maxid = 0;
-			for (const auto& [id, dbnotice] : data())
+			//std::map<nguid, data_modified<TDATA>>
+			
+			for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
 			{
-				const pbdb::db_notice& lnotice = dbnotice.getconst();
+				const pbdb::db_notice& lnotice = lpair.second.getconst();
 				m_maxid = std::max(m_maxid, lnotice.mid());
 			}
 
