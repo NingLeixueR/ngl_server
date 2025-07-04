@@ -595,7 +595,7 @@ namespace ngl
 		{
 			struct nscript_outdata
 			{
-				std::map<i64_actorid, std::string> m_data;
+				std::map<std::string, std::string> m_data;
 				def_jsonfunction("data", m_data)
 			};
 			ngl::json_read lread(ljson.c_str());
@@ -604,9 +604,9 @@ namespace ngl
 			{
 				return false;
 			}
-			for (std::pair<const i64_actorid, std::string>& item : ltemp.m_data)
+			for (std::pair<const std::string, std::string>& item : ltemp.m_data)
 			{
-				tools::json2proto(ljson, adata[item.first].get(true, false));
+				tools::json2proto(ljson, adata[tools::lexical_cast<i64_actorid>(item.first)].get(true, false));
 			}
 			return true;
 		}

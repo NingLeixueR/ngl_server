@@ -151,6 +151,26 @@ namespace ngl
 			return true;
 		}
 
+		template <typename VAL>
+		bool read(const char* akey, std::map<std::string, VAL>& aval) const
+		{
+
+			json_read ltemp;
+			if (read(akey, ltemp) == false)
+			{
+				return false;
+			}
+
+			for (cJSON* child = ltemp.m_json->child; child != nullptr; child = child->next)
+			{
+				if (!ltemp.read(child->string, aval[child->string]))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
 		template <typename T>
 		bool read(const char* akey, std::list<T>& aval) const
 		{

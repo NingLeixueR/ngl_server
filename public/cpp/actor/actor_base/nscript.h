@@ -113,9 +113,10 @@ namespace ngl
 				return false;
 			}
 			lua_pushstring(L, adbname.c_str());
-			lua_pushinteger(L, aactorid);
+			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
+			//lua_pushinteger(L, aactorid);
 			lua_pushstring(L, adatajson.c_str());
-			if (lua_pcall(L, 2, 0, 0) != LUA_OK)
+			if (lua_pcall(L, 3, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.push_data error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1); // µ¯³ö´íÎóÐÅÏ¢
@@ -169,10 +170,11 @@ namespace ngl
 			lua_pushstring(L, adbname.c_str());
 			if (lall)
 			{
-				lua_pushinteger(L, aactorid);
+				lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
+				//lua_pushinteger(L, aactorid);
 			}
 			lua_pushstring(L, adatajson.c_str());
-			if (lua_pcall(L, lall ? 2 : 3, 2, 0) != LUA_OK)
+			if (lua_pcall(L, lall ? 3 : 2, 2, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1);
