@@ -551,3 +551,24 @@ namespace ngl
 		static T& instance();
 	};
 }//namespace ngl
+
+namespace ngl
+{
+	template <typename T>
+	static void tprotocol::tforward::func(int32_t aprotocolnum)
+	{
+		pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
+		if (lptemp != nullptr)
+		{
+			lptemp->m_forward = true;
+			//std::function<void(int64_t, const char*)> m_toclient;
+			lptemp->m_toclient = [](int64_t aactorid, const char* adata)
+				{
+					auto pro = std::make_shared<typename T::BASE_TYPE>();
+					tools::json2proto<typename T::BASE_TYPE>(adata, *pro);
+					actor_base::send_client(aactorid, pro);
+				};
+
+		}
+	}
+}

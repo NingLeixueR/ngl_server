@@ -24,10 +24,15 @@ namespace ngl
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
 			bool m_forward = false;
+			// # 为了给脚本提供根据结构名字发送数据给客户端:参数pb的json串
+			std::function<void(int64_t, const char*)> m_toclient;
+			// # 为了给脚本提供根据结构名字发送数据给其他actor:参数pb的json串
+			std::function<void(int64_t, const char*)> m_toactor;
 		};
 	private:
 		static std::map<size_t, pinfo>				m_keyval;
 		static std::map<i32_protocolnum, pinfo*>	m_protocol;
+		static std::map<std::string, pinfo*>		m_nameprotocol;
 		// pbnet/pbexample		[1			-  100000000];
 		// custom				[200000001	-  300000000];
 		static int32_t								m_customs/* = 200000000*/;
@@ -58,6 +63,8 @@ namespace ngl
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
 
 				m_protocol[linfo.m_protocol] = &linfo;
+				m_nameprotocol[linfo.m_name] = &linfo;
+
 				std::cout << linfo.m_protocol << "-" << typeid(T).name() << std::endl;
 				return &linfo;
 			}
@@ -75,14 +82,22 @@ namespace ngl
 		struct tforward
 		{
 			template <typename T>
-			static void func(int32_t aprotocolnum)
-			{
-				pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
-				if (lptemp != nullptr)
-				{
-					lptemp->m_forward = true;
-				}
-			}
+			static void func(int32_t aprotocolnum);
+			//{
+			//	pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
+			//	if (lptemp != nullptr)
+			//	{
+			//		lptemp->m_forward = true;
+			//		//std::function<void(int64_t, const char*)> m_toclient;
+			//		lptemp->m_toclient = [](int64_t aactorid, const char* adata)
+			//			{
+			//				auto pro = std::make_shared<typename T::BASE_TYPE>();
+			//				tools::json2proto<typename T::BASE_TYPE>(adata, *pro);
+			//				actor::static_send_client();
+			//			};
+
+			//	}
+			//}
 		};
 	public:
 		static bool set_customs_index(int32_t acustoms)
@@ -129,6 +144,16 @@ namespace ngl
 				{
 					Throw("itor == m_keyval.end()");
 				}
+			}
+			return itor->second;
+		}
+
+		static pinfo* getbyname(const char* aname)
+		{
+			auto itor = m_nameprotocol.find(aname);
+			if (itor == m_nameprotocol.end())
+			{
+				return nullptr;
 			}
 			return itor->second;
 		}
