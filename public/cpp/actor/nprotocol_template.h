@@ -109,6 +109,8 @@ namespace ngl
 		int64_t				m_identifier = 0;
 		std::shared_ptr<T>	m_data;
 	public:
+		using BASE_TYPE = T;
+
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
 			m_data(adata)
@@ -257,6 +259,7 @@ namespace ngl
 		}
 
 		def_portocol(np_actor_forward, m_uid, m_area/*, m_data*/)
+		def_jsonfunction("m_uid", m_uid, "m_area", m_area)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
@@ -283,6 +286,7 @@ namespace ngl
 		}
 
 		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
+		def_jsonfunction()
 	};
 
 	template <typename T>
@@ -317,6 +321,7 @@ namespace ngl
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data)
+		def_jsonfunction("m_uid", m_uid, "m_area", m_area, "m_data", m_data)
 	};
 
 	template <typename T>
@@ -356,6 +361,7 @@ namespace ngl
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data)
+		def_jsonfunction("m_uid", m_uid, "m_area", m_area, "m_data", m_data)
 	};
 
 	template <typename T, bool ISUSING>
@@ -387,6 +393,7 @@ namespace ngl
 		{}
 
 		def_portocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
+		def_jsonfunction("m_uid", m_uid, "m_area", m_area, "m_data", m_data != nullptr ? *m_data : m_data_)
 	};
 
 	// # 群发数据给其他actor
