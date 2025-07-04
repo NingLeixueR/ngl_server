@@ -17,21 +17,12 @@
 # define LOG_SCRIPT(...)  std::cout<<(__VA_OPT__(,) ##__VA_ARGS__)
 #endif
 
-// 需要为脚本语言提供 根据 <结构名name  结构json串> 构造出对应结构
-class toclient
-{
-public:
-
-};
-
 extern "C"
 {
-
-
 	// # lua发送给客户端
+	// # 需要为脚本语言提供 根据 <结构名name  结构json串> 构造出对应结构
 	extern int send_client(lua_State* L);
 }
-
 
 namespace ngl
 {
