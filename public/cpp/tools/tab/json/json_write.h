@@ -64,6 +64,17 @@ namespace ngl
 			write(akey, lvec);
 		}
 
+		template <typename VAL>
+		void write(const char* akey, const std::map<std::string, VAL>& aval)
+		{
+			json_write ltemp;
+			for (const auto& item : aval)
+			{
+				ltemp.write(item.first.c_str(), item.second);
+			}
+			write(akey, ltemp);
+		}
+
 		template <typename T>
 		void write(const char* akey, const std::list<T>& aval)
 		{
