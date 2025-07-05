@@ -5,6 +5,11 @@ function handle(data)
 	-- 如何获取db数据:明确需求是否修改
 	-- 无需修改数据使用 dbdata:getconst("xxxxx")
 	-- 需修改数据使用 dbdata:get("xxxxx")
+	dbdata:get("kkk","1")
+	dbdata:get("kkk","777")
+end
+--[[
+	return;
 	print("222222222222222222222222222222222222")
 	ldata1 = dbdata:get("PROBUFF_NET_DELIVER_GOODS_RECHARGE")
 	ldata1['mgold'] = 789;
@@ -16,3 +21,4 @@ function handle(data)
 	print(ldata2['mgold'])
 	print("3333333333333333333333333333333333333")
 end
+]]--
