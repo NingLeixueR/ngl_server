@@ -228,17 +228,29 @@ namespace ngl
 
 		bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
 		{
-			return m_script->push_data(adbname, aactorid, adatajson);
+			if (m_script != nullptr)
+			{
+				return m_script->push_data(adbname, aactorid, adatajson);
+			}
+			return false;
 		}
 
 		bool nscript_handle(const std::string& ajson)
 		{
-			return m_script->handle(ajson);
+			if (m_script != nullptr)
+			{
+				return m_script->handle(ajson);
+			}
+			return false;
 		}
 
 		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
 		{
-			return m_script->check_outdata(adbname, aactorid, adatajson);
+			if (m_script != nullptr)
+			{
+				return m_script->check_outdata(adbname, aactorid, adatajson);
+			}
+			return false;
 		}
 
 		inline bool isbroadcast()const

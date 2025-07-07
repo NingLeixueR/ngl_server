@@ -34,7 +34,7 @@ namespace ngl
 
 		i64_actorid m_leaveunitid;
 		std::set<i64_actorid> m_unitids;
-		def_portocol(np_eevents_map_leaveview, m_type, m_leaveunitid, m_unitids)
+		dprotocoljson(np_eevents_map_leaveview, m_type, m_leaveunitid, m_unitids)
 	};
 
 	class np_eevents_map_enterview :public np_eevents_map
@@ -47,7 +47,7 @@ namespace ngl
 
 		i64_actorid m_enterunitid;
 		std::set<i64_actorid> m_unitids;
-		def_portocol(np_eevents_map_enterview, m_enterunitid, m_unitids)
+		dprotocoljson(np_eevents_map_enterview, m_enterunitid, m_unitids)
 	};
 
 	class np_eevents_map_death :public np_eevents_map
@@ -59,7 +59,7 @@ namespace ngl
 		{}
 
 		i64_actorid m_deathunitid;
-		def_portocol(np_eevents_map_death, m_deathunitid)
+		dprotocoljson(np_eevents_map_death, m_deathunitid)
 	};
 
 	using actor_events_map = actor_events<ENUM_EVENTS_LOGIC, eevents_map, eevents_map_count>;

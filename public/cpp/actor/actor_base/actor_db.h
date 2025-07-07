@@ -324,7 +324,7 @@ namespace ngl
 					int32_t m_everypagecount;
 					int32_t m_page;
 
-					def_jsonfunction("everypagecount", m_everypagecount, "page", m_page)
+					def_jsonfunction(m_everypagecount, m_page)
 				};
 
 				handle_cmd::add("queryall") = [this](int athread, int id, const ngl::json_read& aos)

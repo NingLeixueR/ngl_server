@@ -15,8 +15,35 @@
 
 Dumper lDumper;
 
+namespace ngl
+{
+	struct aaaaaa
+	{
+		int32_t a1 = 1;
+		int32_t a2 = 2;
+		int32_t a3 = 3;
+
+		def_jsonfunction(a1, a2, a3)
+	};
+}
+
 int main(int argc, char** argv)
 {
+	ngl::aaaaaa ltemp;
+	
+	//abc::fun(def_jsonfunction22(a1, a2, a3), def_jsonfunction33(a1, a2, a3));
+
+	
+	//abc::fun(0, def_jsonfunction33(a1, a2, a3));
+
+	//int32_t a1 = 1;
+	//int32_t a2 = 2;
+	//int32_t a3 = 3;
+	//std::string_view lstr = def_jsonfunction22(a1,a2,a3);
+	//split_string<3>(lstr);
+	//constexpr auto parts = lstr.split(',');  // 编译期分割
+	//abc::fun(lstr, def_jsonfunction33(__VA_ARGS__));
+
 	if (argc <= 3)
 	{
 		std::cout << "参数错误:EXE name areaid tab_servers::tcount" << std::endl;

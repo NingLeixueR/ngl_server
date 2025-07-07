@@ -206,7 +206,7 @@ public:
 	void _h_serialize(std::stringstream& astream, StructVec& astruct)
 	{
 		astream << "	// 序列化反序列化相关" << std::endl;
-		astream << "	def_portocol("<< astruct.name;
+		astream << "	dprotocoljson("<< astruct.name;
 		for (Data item_ : astruct.dataVec)
 		{
 			if (item_.m_load == "n")

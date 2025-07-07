@@ -32,7 +32,7 @@ namespace ngl
 	{
 		nguid m_id = -1;
 
-		def_portocol(np_actordb_load, m_id)
+		dprotocoljson(np_actordb_load, m_id)
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>
@@ -47,7 +47,7 @@ namespace ngl
 			return *m_data.m_data;
 		}
 
-		def_portocol(actor_db_load_response<T>, m_stat, m_data, m_over)
+		dprotocoljson(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
 	// ---- [actor db server -> actor db client]
@@ -74,7 +74,7 @@ namespace ngl
 			return m_data.m_data->empty();
 		}
 
-		def_portocol(actor_db_save<T>, m_data)
+		dprotocoljson(actor_db_save<T>, m_data)
 	};
 
 	// 从db server删除数据
@@ -83,7 +83,7 @@ namespace ngl
 	{
 		std::vector<int64_t> m_data;
 
-		def_portocol(actor_db_delete<T>, m_data)
+		dprotocoljson(actor_db_delete<T>, m_data)
 	};
 
 	// db cache list  保存缓存列表
@@ -98,7 +98,7 @@ namespace ngl
 		enum_cache_list			m_type;
 		std::set<i64_actorid>	m_ls;
 
-		def_portocol(actor_time_db_cache<T>, m_ls)
+		dprotocoljson(actor_time_db_cache<T>, m_ls)
 	};
 
 	// ---- 模块间转发
@@ -258,8 +258,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		def_portocol(np_actor_forward, m_uid, m_area/*, m_data*/)
-		def_jsonfunction("m_uid", m_uid, "m_area", m_area)
+		dprotocoljson(np_actor_forward, m_uid, m_area/*, m_data*/)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
@@ -285,8 +284,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		def_portocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
-		def_jsonfunction()
+		dprotocoljson(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
 	};
 
 	template <typename T>
@@ -320,8 +318,7 @@ namespace ngl
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
-		def_portocol(np_actor_forward, m_uid, m_area, m_data)
-		def_jsonfunction("m_uid", m_uid, "m_area", m_area, "m_data", m_data)
+		dprotocoljson(np_actor_forward, m_uid, m_area, m_data)
 	};
 
 	template <typename T>
@@ -360,8 +357,7 @@ namespace ngl
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
-		def_portocol(np_actor_forward, m_uid, m_area, m_data)
-		def_jsonfunction("m_uid", m_uid, "m_area", m_area, "m_data", m_data)
+		dprotocoljson(np_actor_forward, m_uid, m_area, m_data)
 	};
 
 	template <typename T, bool ISUSING>
@@ -392,8 +388,7 @@ namespace ngl
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 
-		def_portocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
-		def_jsonfunction("m_uid", m_uid, "m_area", m_area, "m_data", m_data != nullptr ? *m_data : m_data_)
+		dprotocoljson(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
 	};
 
 	// # 群发数据给其他actor
@@ -419,7 +414,7 @@ namespace ngl
 			return m_data;
 		}
 
-		def_portocol(np_mass_actor, m_actorids, *m_data)
+		dprotocoljson(np_mass_actor, m_actorids, *m_data)
 	};
 
 
@@ -433,7 +428,7 @@ namespace ngl
 		i32_serverid	m_toserverid = 0;
 		T				m_pram;
 
-		def_portocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
+		dprotocoljson(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 		
 	template <typename TDATA>
@@ -443,7 +438,7 @@ namespace ngl
 		bool m_onlyread				= true;						// 是否只读
 		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 
-		def_portocol(np_channel_register, m_actorid, m_onlyread, m_dataid)
+		dprotocoljson(np_channel_register, m_actorid, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
@@ -456,7 +451,7 @@ namespace ngl
 		// m_publishlist_write.second:<读写的数据id列表>
 		std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist;
 
-		def_portocol(np_channel_register_reply, m_actorid, m_onlyreads, m_writealls, m_publishlist)
+		dprotocoljson(np_channel_register_reply, m_actorid, m_onlyreads, m_writealls, m_publishlist)
 	};
 
 	template <typename TDATA>
@@ -470,14 +465,14 @@ namespace ngl
 		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 		// ]
 
-		def_portocol(np_channel_dataid_sync, m_actorid, m_add, m_onlyread, m_dataid)
+		dprotocoljson(np_channel_dataid_sync, m_actorid, m_add, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
 	struct np_channel_exit
 	{
 		i64_actorid				m_actorid;
-		def_portocol(np_channel_exit, m_actorid)
+		dprotocoljson(np_channel_exit, m_actorid)
 	};
 
 	template <typename TDATA>
@@ -486,7 +481,7 @@ namespace ngl
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
-		def_portocol(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
+		dprotocoljson(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
 	};
 
 	template <typename TDATA>
@@ -494,7 +489,7 @@ namespace ngl
 	{
 		int64_t m_timer;
 		i16_area m_area;
-		def_portocol(np_channel_check, m_timer, m_area)
+		dprotocoljson(np_channel_check, m_timer, m_area)
 	};
 
 
@@ -502,14 +497,14 @@ namespace ngl
 	{
 		std::string m_json;
 
-		def_portocol(np_gm, m_json)
+		dprotocoljson(np_gm, m_json)
 	};
 
 	struct np_gm_response
 	{
 		std::string m_json;
 
-		def_portocol(np_gm_response, m_json)
+		dprotocoljson(np_gm_response, m_json)
 	};
 
 }//namespace ngl
