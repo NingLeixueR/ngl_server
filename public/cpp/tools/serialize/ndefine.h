@@ -53,9 +53,9 @@
 
 // --- 协议号  协议类型  名称 ....(成员)
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
-# define def_portocol(_Name,...)  def_portocol_function(_Name, ##__VA_ARGS__)
+# define def_protocol(_Name,...)  def_portocol_function(_Name, ##__VA_ARGS__)
 #else
-# define def_portocol(_Name,...)  def_portocol_function(_Name __VA_OPT__(,) ##__VA_ARGS__)
+# define def_protocol(_Name,...)  def_portocol_function(_Name __VA_OPT__(,) ##__VA_ARGS__)
 #endif
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
@@ -77,6 +77,155 @@
 #include "json_write.h"
 #include "json_read.h"
 
+
+enum
+{
+	ESPLIT_STR = 32,
+};
+
+class help_writejson
+{
+	const std::array<std::string_view, ESPLIT_STR>& m_parts;
+	ngl::json_write& m_json;
+
+	template <typename T>
+	bool dosth(ngl::json_write& ijson, const std::string_view& astr, const T& adata)
+	{
+		ijson.write(astr.data(), adata);
+		return true;
+	}
+public:
+	help_writejson(const std::array<std::string_view, ESPLIT_STR>& aparts, ngl::json_write& aijson) :
+		m_parts(aparts),
+		m_json(aijson)
+	{}
+
+	bool fun(int32_t apos)
+	{
+		return true;
+	}
+
+	template <typename T>
+	bool fun(
+		int32_t apos
+		, const T& adata
+	)
+	{
+		dosth(m_json, m_parts[apos], adata);
+		return true;
+	}
+
+	template <typename T, typename ...ARG>
+	bool fun(
+		int32_t apos
+		, const T& adata
+		, const ARG&... args
+	)
+	{
+		if constexpr (sizeof...(ARG) >= 1)
+		{
+			return fun(apos, adata) && fun(++apos, args...);
+		}
+		else
+		{
+			return fun(apos, adata);
+		}
+	}
+};
+
+class help_readjson
+{
+	const std::array<std::string_view, ESPLIT_STR>& m_parts;
+	const ngl::json_read& m_json;
+
+	template <typename T>
+	bool dosth(const ngl::json_read& ojson, const std::string_view& astr, T& adata)
+	{
+		return ojson.read(astr.data(), adata);
+	}
+public:
+	help_readjson(const std::array<std::string_view, ESPLIT_STR>& aparts, const ngl::json_read& aijson) :
+		m_parts(aparts),
+		m_json(aijson)
+	{}
+
+	bool fun(int32_t apos)
+	{
+		return true;
+	}
+
+	template <typename T>
+	bool fun(
+		int32_t apos
+		, T& adata
+	)
+	{
+		dosth(m_json, m_parts[apos], adata);
+		return true;
+	}
+
+	template <typename T, typename ...ARG>
+	bool fun(
+		int32_t apos
+		, T& adata
+		, ARG&... args
+	)
+	{
+		if constexpr (sizeof...(ARG) >= 1)
+		{
+			return fun(apos, adata) && fun(++apos, args...);
+		}
+		else
+		{
+			return fun(apos, adata);
+		}
+	}
+};
+
+class tools_split_str
+{
+public:
+	static constexpr auto fun(std::string_view str)
+	{
+		std::array<std::string_view, ESPLIT_STR> parts{};
+		size_t count = 0;
+		size_t start = 0;
+
+		for (size_t i = 0; i < str.size(); ++i)
+		{
+			if (str[i] == ',' && count < ESPLIT_STR)
+			{
+				parts[count++] = str.substr(start, i - start);
+				if (str[i + 1] == ' ')
+				{
+					start = i + 2;
+				}
+				else
+				{
+					start = i + 1;
+				}
+			}
+		}
+
+		// 处理最后一部分
+		if (start < str.size() && count < ESPLIT_STR)
+		{
+			parts[count++] = str.substr(start);
+		}
+
+		return parts;
+	}
+
+	static constexpr auto fun()
+	{
+		std::array<std::string_view, ESPLIT_STR> parts{};
+		return parts;
+	}
+};
+
+
+
+
 #define def_jsonfunction(...)										\
 	inline void write(ngl::json_write& ijsn, const char* akey)const	\
 	{																\
@@ -86,9 +235,12 @@
 	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		ijsn.write(__VA_ARGS__);									\
+		constexpr std::array<std::string_view, ESPLIT_STR> parts =	\
+			tools_split_str::fun(#__VA_ARGS__);						\
+		help_writejson ltemp(parts, ijsn);				\
+		ltemp.fun(0, __VA_ARGS__);									\
 	}																\
-	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
+	inline bool read(const ngl::json_read& ijsn, const char* akey)		\
 	{																\
 		ngl::json_read ltemp;										\
 		if (ijsn.read(akey, ltemp) == false)						\
@@ -97,7 +249,21 @@
 		}															\
 		return read(ltemp);											\
 	}																\
-	inline bool read(const ngl::json_read& ijsn) 					\
+	inline bool read(const ngl::json_read& ijsn) 							\
 	{																\
-		return ijsn.read(__VA_ARGS__);								\
+		constexpr std::array<std::string_view, ESPLIT_STR> parts =  \
+			tools_split_str::fun(#__VA_ARGS__);							\
+		help_readjson ltemp(parts, ijsn);				\
+		return ltemp.fun(0, __VA_ARGS__);							\
 	}
+
+
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+# define def_json(...)  def_jsonfunction(##__VA_ARGS__)
+#else
+# define def_json(...)  def_jsonfunction(__VA_OPT__(,) ##__VA_ARGS__)
+#endif
+
+#define dprotocoljson(NAME, ...)			\
+	def_jsonfunction(__VA_ARGS__)			\
+	def_protocol(NAME, __VA_ARGS__)

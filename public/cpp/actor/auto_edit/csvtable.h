@@ -187,7 +187,7 @@ struct net_works
 	/*********************************/
 	net_works();
 	// 序列化反序列化相关
-	def_portocol(net_works, m_type, m_ip, m_nip, m_port)
+	dprotocoljson(net_works, m_type, m_ip, m_nip, m_port)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -215,7 +215,7 @@ struct tab_servers
 	/*********************************/
 	tab_servers();
 	// 序列化反序列化相关
-	def_portocol(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver, m_net)
+	dprotocoljson(tab_servers, m_id, m_name, m_area, m_type, m_tcount, m_threadnum, m_actorthreadnum, m_outernet, m_db, m_reloadcsv, m_login, m_crossarea, m_actorserver, m_net)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -236,7 +236,7 @@ struct tab_dbload
 	/*********************************/
 	tab_dbload();
 	// 序列化反序列化相关
-	def_portocol(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount, m_dbcacheintervalms)
+	dprotocoljson(tab_dbload, m_id, m_name, m_isloadall, m_network, m_sendmaxcount, m_dbcacheintervalms)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -254,7 +254,7 @@ struct tab_errormessage
 	/*********************************/
 	tab_errormessage();
 	// 序列化反序列化相关
-	def_portocol(tab_errormessage, m_id, m_name, m_message)
+	dprotocoljson(tab_errormessage, m_id, m_name, m_message)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -272,7 +272,7 @@ struct tab_specialid
 	/*********************************/
 	tab_specialid();
 	// 序列化反序列化相关
-	def_portocol(tab_specialid, m_id, m_name, m_value)
+	dprotocoljson(tab_specialid, m_id, m_name, m_value)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -293,7 +293,7 @@ struct tab_attribute
 	/*********************************/
 	tab_attribute();
 	// 序列化反序列化相关
-	def_portocol(tab_attribute, m_id, m_name, m_fightcoefficient, m_initvalue, m_uplimit, m_lowlimit)
+	dprotocoljson(tab_attribute, m_id, m_name, m_fightcoefficient, m_initvalue, m_uplimit, m_lowlimit)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -314,7 +314,7 @@ struct tab_item
 	/*********************************/
 	tab_item();
 	// 序列化反序列化相关
-	def_portocol(tab_item, m_id, m_name, m_ranks, m_type, m_quality, m_isstack)
+	dprotocoljson(tab_item, m_id, m_name, m_ranks, m_type, m_quality, m_isstack)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -331,7 +331,7 @@ struct attributevalue
 	/*********************************/
 	attributevalue();
 	// 序列化反序列化相关
-	def_portocol(attributevalue, m_id, m_isratio, m_value)
+	dprotocoljson(attributevalue, m_id, m_isratio, m_value)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -349,7 +349,7 @@ struct tab_equip
 	/*********************************/
 	tab_equip();
 	// 序列化反序列化相关
-	def_portocol(tab_equip, m_id, m_name, m_position, m_attributevalues)
+	dprotocoljson(tab_equip, m_id, m_name, m_position, m_attributevalues)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -368,7 +368,7 @@ struct tab_equiplv
 	/*********************************/
 	tab_equiplv();
 	// 序列化反序列化相关
-	def_portocol(tab_equiplv, m_id, m_name, m_consume, m_attributevalues)
+	dprotocoljson(tab_equiplv, m_id, m_name, m_consume, m_attributevalues)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -387,7 +387,7 @@ struct tab_card
 	/*********************************/
 	tab_card();
 	// 序列化反序列化相关
-	def_portocol(tab_card, m_id, m_name, m_quality, m_attributevalues)
+	dprotocoljson(tab_card, m_id, m_name, m_quality, m_attributevalues)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -405,7 +405,7 @@ struct trandom
 	/*********************************/
 	trandom();
 	// 序列化反序列化相关
-	def_portocol(trandom, m_id, m_min, m_max, m_weight)
+	dprotocoljson(trandom, m_id, m_min, m_max, m_weight)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -426,7 +426,7 @@ struct tab_random
 	/*********************************/
 	tab_random();
 	// 序列化反序列化相关
-	def_portocol(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
+	dprotocoljson(tab_random, m_id, m_name, m_randomdatas, m_exclusive, m_count, m_activityids, m_childrandomids)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -442,7 +442,7 @@ struct tconsume
 	/*********************************/
 	tconsume();
 	// 序列化反序列化相关
-	def_portocol(tconsume, m_tid, m_count)
+	dprotocoljson(tconsume, m_tid, m_count)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -459,7 +459,7 @@ struct tab_consume
 	/*********************************/
 	tab_consume();
 	// 序列化反序列化相关
-	def_portocol(tab_consume, m_id, m_name, m_consumeitems)
+	dprotocoljson(tab_consume, m_id, m_name, m_consumeitems)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -478,7 +478,7 @@ struct tab_synthesis
 	/*********************************/
 	tab_synthesis();
 	// 序列化反序列化相关
-	def_portocol(tab_synthesis, m_id, m_name, m_consume, m_generate)
+	dprotocoljson(tab_synthesis, m_id, m_name, m_consume, m_generate)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -496,7 +496,7 @@ struct tweek
 	/*********************************/
 	tweek();
 	// 序列化反序列化相关
-	def_portocol(tweek, m_weekstart, m_opentime, m_weekfinish, m_closetime)
+	dprotocoljson(tweek, m_weekstart, m_opentime, m_weekfinish, m_closetime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -513,7 +513,7 @@ struct tserveropen
 	/*********************************/
 	tserveropen();
 	// 序列化反序列化相关
-	def_portocol(tserveropen, m_beg, m_opentime, m_end, m_closetime)
+	dprotocoljson(tserveropen, m_beg, m_opentime, m_end, m_closetime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -528,7 +528,7 @@ struct tregularslot
 	/*********************************/
 	tregularslot();
 	// 序列化反序列化相关
-	def_portocol(tregularslot, m_opentime, m_closetime)
+	dprotocoljson(tregularslot, m_opentime, m_closetime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -547,7 +547,7 @@ struct tab_mail
 	/*********************************/
 	tab_mail();
 	// 序列化反序列化相关
-	def_portocol(tab_mail, m_id, m_name, m_title, m_author, m_content)
+	dprotocoljson(tab_mail, m_id, m_name, m_title, m_author, m_content)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -566,7 +566,7 @@ struct tab_chat
 	/*********************************/
 	tab_chat();
 	// 序列化反序列化相关
-	def_portocol(tab_chat, m_id, m_name, m_time, m_count)
+	dprotocoljson(tab_chat, m_id, m_name, m_time, m_count)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -583,7 +583,7 @@ struct activity_task
 	/*********************************/
 	activity_task();
 	// 序列化反序列化相关
-	def_portocol(activity_task, m_begday, m_endday, m_taskids)
+	dprotocoljson(activity_task, m_begday, m_endday, m_taskids)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -604,7 +604,7 @@ struct tab_activity
 	/*********************************/
 	tab_activity();
 	// 序列化反序列化相关
-	def_portocol(tab_activity, m_id, m_name, m_type, m_open, m_task, m_taskday, m_ranktype)
+	dprotocoljson(tab_activity, m_id, m_name, m_type, m_open, m_task, m_taskday, m_ranktype)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -629,7 +629,7 @@ struct tab_activityopenserver
 	/*********************************/
 	tab_activityopenserver();
 	// 序列化反序列化相关
-	def_portocol(tab_activityopenserver, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
+	dprotocoljson(tab_activityopenserver, m_id, m_name, m_openday, m_openhour, m_openminute, m_opensecond, m_closeday, m_closehour, m_closeminute, m_closesecond)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -670,7 +670,7 @@ struct tab_activityalways
 	/*********************************/
 	tab_activityalways();
 	// 序列化反序列化相关
-	def_portocol(tab_activityalways, m_id, m_name, m_type, m_wbday, m_wbhour, m_wbminute, m_wbsecond, m_weday, m_wehour, m_weminute, m_wesecond, m_mbday, m_mbhour, m_mbminute, m_mbsecond, m_meday, m_mehour, m_meminute, m_mesecond, m_fixedday, m_fbhour, m_fbminute, m_fbsecond, m_fehour, m_feminute, m_fesecond)
+	dprotocoljson(tab_activityalways, m_id, m_name, m_type, m_wbday, m_wbhour, m_wbminute, m_wbsecond, m_weday, m_wehour, m_weminute, m_wesecond, m_mbday, m_mbhour, m_mbminute, m_mbsecond, m_meday, m_mehour, m_meminute, m_mesecond, m_fixedday, m_fbhour, m_fbminute, m_fbsecond, m_fehour, m_feminute, m_fesecond)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -689,7 +689,7 @@ struct tab_activity_drawcompliance
 	/*********************************/
 	tab_activity_drawcompliance();
 	// 序列化反序列化相关
-	def_portocol(tab_activity_drawcompliance, m_id, m_name, m_dropid, m_mailid)
+	dprotocoljson(tab_activity_drawcompliance, m_id, m_name, m_dropid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -710,7 +710,7 @@ struct tab_activity_toprank
 	/*********************************/
 	tab_activity_toprank();
 	// 序列化反序列化相关
-	def_portocol(tab_activity_toprank, m_id, m_name, m_activityid, m_rank, m_dropid, m_mailid)
+	dprotocoljson(tab_activity_toprank, m_id, m_name, m_activityid, m_rank, m_dropid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -727,7 +727,7 @@ struct task_condition
 	/*********************************/
 	task_condition();
 	// 序列化反序列化相关
-	def_portocol(task_condition, m_type, m_condition, m_parmint)
+	dprotocoljson(task_condition, m_type, m_condition, m_parmint)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -750,7 +750,7 @@ struct tab_task
 	/*********************************/
 	tab_task();
 	// 序列化反序列化相关
-	def_portocol(tab_task, m_id, m_name, m_type, m_typeparm, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
+	dprotocoljson(tab_task, m_id, m_name, m_type, m_typeparm, m_taskreceive, m_taskcomplete, m_dropid, m_autoreceive, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -761,11 +761,11 @@ struct tab_task
 struct obstacles_data
 {
 	/*********************************/
-	std::vector<eobstacles>          m_data                          ; 
+	std::vector<int32_t>          m_data                          ; //eobstacles
 	/*********************************/
 	obstacles_data();
 	// 序列化反序列化相关
-	def_portocol(obstacles_data, m_data)
+	dprotocoljson(obstacles_data, m_data)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -788,7 +788,7 @@ struct tab_map
 	/*********************************/
 	tab_map();
 	// 序列化反序列化相关
-	def_portocol(tab_map, m_id, m_name, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
+	dprotocoljson(tab_map, m_id, m_name, m_w, m_l, m_nx, m_ny, m_obstaclenx, m_obstacleny, m_obstacles)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -809,7 +809,7 @@ struct tab_matching
 	/*********************************/
 	tab_matching();
 	// 序列化反序列化相关
-	def_portocol(tab_matching, m_id, m_name, m_count, m_time, m_iswaitconfirm, m_waitconfirmtime)
+	dprotocoljson(tab_matching, m_id, m_name, m_count, m_time, m_iswaitconfirm, m_waitconfirmtime)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -825,7 +825,7 @@ struct Vector2
 	/*********************************/
 	Vector2();
 	// 序列化反序列化相关
-	def_portocol(Vector2, m_x, m_y)
+	dprotocoljson(Vector2, m_x, m_y)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -847,7 +847,7 @@ struct tab_plays
 	/*********************************/
 	tab_plays();
 	// 序列化反序列化相关
-	def_portocol(tab_plays, m_id, m_name, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
+	dprotocoljson(tab_plays, m_id, m_name, m_type, m_mapid, m_preparation_tm, m_play_tm, m_settlement_tm, m_birthpoint)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -873,7 +873,7 @@ struct tab_recharge
 	/*********************************/
 	tab_recharge();
 	// 序列化反序列化相关
-	def_portocol(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
+	dprotocoljson(tab_recharge, m_id, m_name, m_price, m_gold, m_bonus, m_firstbonus, m_dropid, m_vipexp, m_count, m_activityid, m_mailid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -892,7 +892,7 @@ struct tab_familylv
 	/*********************************/
 	tab_familylv();
 	// 序列化反序列化相关
-	def_portocol(tab_familylv, m_id, m_name, m_exp, m_maxmembers)
+	dprotocoljson(tab_familylv, m_id, m_name, m_exp, m_maxmembers)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -910,7 +910,7 @@ struct tab_mergearea
 	/*********************************/
 	tab_mergearea();
 	// 序列化反序列化相关
-	def_portocol(tab_mergearea, m_id, m_name, m_mergeid)
+	dprotocoljson(tab_mergearea, m_id, m_name, m_mergeid)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{
@@ -931,7 +931,7 @@ struct tab_ranklist
 	/*********************************/
 	tab_ranklist();
 	// 序列化反序列化相关
-	def_portocol(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount, m_minvalue)
+	dprotocoljson(tab_ranklist, m_id, m_name, m_maxitem, m_showitem, m_everypagecount, m_minvalue)
 	// csv相关
 	inline bool rcsv(ngl::csvpair& apair)
 	{

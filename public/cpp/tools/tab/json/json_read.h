@@ -12,6 +12,22 @@
 
 namespace ngl
 {
+	class json_read;
+
+	template <typename E, bool IS_ENUM>
+	class enum_operator_readjson
+	{
+	public:
+		static bool fun(const ngl::json_read& ijsn, const char* akey, E& adata);
+	};
+
+	template <typename E>
+	class enum_operator_readjson<E, true>
+	{
+	public:
+		static bool fun(const ngl::json_read& ijsn, const char* akey, E& adata);
+	};
+
 	class json_read
 	{
 		cJSON*	m_json;
@@ -85,7 +101,7 @@ namespace ngl
 		template <typename T>
 		bool read(const char* akey, T& adata) const
 		{
-			return adata.read(*this, akey);
+			return enum_operator_readjson<T, std::is_enum<T>::value>::fun(*this, akey, adata);
 		}
 
 		template <typename T>
@@ -220,4 +236,23 @@ namespace ngl
 			}
 		}
 	};
+
+	template <typename E, bool IS_ENUM>
+	bool enum_operator_readjson<E, IS_ENUM>::fun(const ngl::json_read& ijsn, const char* akey, E& adata)
+	{
+		return ijsn.read(akey, adata);
+	}
+
+	template <typename E>
+	bool enum_operator_readjson<E, true>::fun(const ngl::json_read& ijsn, const char* akey, E& adata)
+	{
+		int32_t ltemp = 0;
+		if (ijsn.read(akey, ltemp))
+		{
+			adata = (E)ltemp;
+			return true;
+		}
+		return false;
+	}
+
 }// namespace ngl

@@ -12,7 +12,7 @@ namespace ngl
 	*/
 	struct np_arg_null
 	{
-		def_portocol(np_arg_null)
+		dprotocoljson(np_arg_null)
 	};
 
 	template <typename TF, typename ...TARG>

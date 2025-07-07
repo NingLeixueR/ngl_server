@@ -25,9 +25,9 @@ namespace ngl
 			std::string		m_name;
 			bool m_forward = false;
 			// # 为了给脚本提供根据结构名字发送数据给客户端:参数pb的json串
-			std::function<void(int64_t, const char*)> m_toclient;
+			std::function<bool(int64_t, const char*)> m_toclient;
 			// # 为了给脚本提供根据结构名字发送数据给其他actor:参数pb的json串
-			std::function<void(int64_t, const char*)> m_toactor;
+			std::function<bool(int64_t, const char*)> m_toactor;
 		};
 	private:
 		static std::map<size_t, pinfo>				m_keyval;
@@ -83,21 +83,6 @@ namespace ngl
 		{
 			template <typename T>
 			static void func(int32_t aprotocolnum);
-			//{
-			//	pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
-			//	if (lptemp != nullptr)
-			//	{
-			//		lptemp->m_forward = true;
-			//		//std::function<void(int64_t, const char*)> m_toclient;
-			//		lptemp->m_toclient = [](int64_t aactorid, const char* adata)
-			//			{
-			//				auto pro = std::make_shared<typename T::BASE_TYPE>();
-			//				tools::json2proto<typename T::BASE_TYPE>(adata, *pro);
-			//				actor::static_send_client();
-			//			};
-
-			//	}
-			//}
 		};
 	public:
 		static bool set_customs_index(int32_t acustoms)

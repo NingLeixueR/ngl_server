@@ -596,7 +596,7 @@ namespace ngl
 			struct nscript_outdata
 			{
 				std::map<std::string, std::string> m_data;
-				def_jsonfunction("data", m_data)
+				def_jsonfunction(m_data)
 			};
 			ngl::json_read lread(ljson.c_str());
 			nscript_outdata ltemp;

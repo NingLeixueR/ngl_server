@@ -68,7 +68,7 @@ namespace ngl
 		{
 			std::vector<std::pair<E_EVENTS, i64_actorid>> m_vecpair;
 
-			def_portocol(np_event_register, m_vecpair)
+			dprotocoljson(np_event_register, m_vecpair)
 		};
 
 		static void nregister()

@@ -32,7 +32,7 @@ namespace ngl
 					{
 						std::string m_orderid;
 						int32_t m_rechargeid;
-						def_jsonfunction("orderid", m_orderid, "rechargeid", m_rechargeid)
+						def_jsonfunction(m_orderid, m_rechargeid)
 					};
 					pay lpay;
 					if (aos.read("data", lpay) == false)

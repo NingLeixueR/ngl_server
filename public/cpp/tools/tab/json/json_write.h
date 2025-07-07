@@ -11,6 +11,22 @@
 
 namespace ngl
 {
+	class json_write;
+	// # 用于json枚举类型
+	template <typename E, bool IS_ENUM>
+	class enum_operator_writejson
+	{
+	public:
+		static void fun(json_write& ijsn, const char* akey, const E& adata);
+	};
+
+	template <typename E>
+	class enum_operator_writejson<E, true>
+	{
+	public:
+		static void fun(json_write& ijsn, const char* akey, const E& adata);
+	};
+
 	class json_write
 	{
 	public:
@@ -85,7 +101,7 @@ namespace ngl
 		template <typename T>
 		void write(const char* akey, const T& aval)
 		{
-			aval.write(*this, akey);
+			enum_operator_writejson<T, std::is_enum<T>::value>::fun(*this, akey, aval);
 		}
 
 		template <typename T>
@@ -140,4 +156,16 @@ namespace ngl
 		bool			m_isnonformatstr;
 		bool			m_free;
 	};
+
+	template <typename E, bool IS_ENUM>
+	void enum_operator_writejson<E, IS_ENUM>::fun(json_write& ijsn, const char* akey, const E& adata)
+	{
+		ijsn.write(akey, adata);
+	}
+
+	template <typename E>
+	void enum_operator_writejson<E, true>::fun(json_write& ijsn, const char* akey, const E& adata)
+	{
+		ijsn.write(akey, (int32_t)adata);
+	}
 }// namespace ngl

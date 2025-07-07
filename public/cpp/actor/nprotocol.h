@@ -25,7 +25,7 @@ namespace ngl
 		std::shared_ptr<void>			m_parm = nullptr;			// 自定义参数
 		int64_t							m_triggerms = 0;			// 触发时的毫秒
 
-		def_portocol(np_timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
+		dprotocoljson(np_timerparm, m_type, m_timerid, m_ms, m_count, m_triggerms)
 	};
 
 	template <typename T>
@@ -39,7 +39,7 @@ namespace ngl
 	{
 		std::vector<std::string> m_parm;
 
-		def_portocol(np_robot_pram, m_parm)
+		dprotocoljson(np_robot_pram, m_parm)
 	};
 
 	struct nactornode
@@ -49,12 +49,12 @@ namespace ngl
 		i32_serverid	m_serverid = -1;				// 服务器id
 		std::vector<i16_actortype>	m_actortype;		// ENUM_ACTOR_TYPE
 
-		def_portocol_function(nactornode, m_name, m_serverid, m_actortype)
+		dprotocoljson(nactornode, m_name, m_serverid, m_actortype)
 	};
 
 	struct np_actor_server_register
 	{
-		def_portocol(np_actor_server_register)
+		dprotocoljson(np_actor_server_register)
 	};
 
 	struct np_connect_actor_server
@@ -62,7 +62,7 @@ namespace ngl
 		int32_t m_serverid;
 		int32_t m_session;
 
-		def_portocol(np_connect_actor_server, m_serverid, m_session)
+		dprotocoljson(np_connect_actor_server, m_serverid, m_session)
 	};
 
 	// ---- [actor client -> actor server] register
@@ -72,7 +72,7 @@ namespace ngl
 		nactornode m_node;
 		std::vector<i64_actorid> m_add;
 
-		def_portocol(np_actornode_register, m_node, m_add)
+		dprotocoljson(np_actornode_register, m_node, m_add)
 	};
 
 	// ---- [actor client -> actor server] register
@@ -81,7 +81,7 @@ namespace ngl
 	{
 		std::vector<nactornode> m_vec;
 
-		def_portocol(np_actornode_register_response, m_vec)
+		dprotocoljson(np_actornode_register_response, m_vec)
 	};
 
 	// ---- [actor client -> actor client] connect(actor客户端相互连接,id大的) 
@@ -90,7 +90,7 @@ namespace ngl
 	{
 		i32_serverid m_id = -1;
 
-		def_portocol(np_actorclient_node_connect, m_id)
+		dprotocoljson(np_actorclient_node_connect, m_id)
 	};
 
 	// ---- [actor server -> actor client]	[actor client -> actor server] 
@@ -101,14 +101,14 @@ namespace ngl
 		std::vector<i64_actorid> m_add;
 		std::vector<i64_actorid> m_del;
 
-		def_portocol(np_actornode_update, m_id, m_add, m_del)
+		dprotocoljson(np_actornode_update, m_id, m_add, m_del)
 	};
 
 	struct np_actornode_update_server
 	{
 		np_actornode_update m_data;
 
-		def_portocol(np_actornode_update_server, m_data)
+		dprotocoljson(np_actornode_update_server, m_data)
 	};
 
 	// 向actor客户端同步结点信息(群发)
@@ -117,7 +117,7 @@ namespace ngl
 		np_actornode_update m_mass;
 		std::function<void()> m_fun;
 
-		def_portocol(np_actornode_update_mass_client, m_mass)
+		dprotocoljson(np_actornode_update_mass_client, m_mass)
 	};
 
 	// ---- [local actor client]
@@ -128,7 +128,7 @@ namespace ngl
 		i32_serverid m_serverid;
 		std::function<void()> m_fun;
 
-		def_portocol(np_actornode_connect_task, m_serverid)
+		dprotocoljson(np_actornode_connect_task, m_serverid)
 	};
 
 	// ---- [login -> game]
@@ -147,7 +147,7 @@ namespace ngl
 		i32_socket		m_socketid = 0;
 		i64_actorid		m_request_actor = 0;
 
-		def_portocol(np_actorrole_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
+		dprotocoljson(np_actorrole_login, m_session, m_accountid, m_account, m_roleid, m_gameid, m_gatewayid, m_area, m_iscreate, m_socketid, m_request_actor)
 	};
 
 	struct np_gateway_close_session
@@ -155,7 +155,7 @@ namespace ngl
 		i32_actordataid m_roleid;
 		i16_area m_area;
 
-		def_portocol(np_gateway_close_session, m_roleid, m_area)
+		dprotocoljson(np_gateway_close_session, m_roleid, m_area)
 	};
 
 	struct np_actorswitch_process_role
@@ -163,14 +163,14 @@ namespace ngl
 		bool	m_create = false;
 		int		m_gatewayid = 0;
 
-		def_portocol(np_actorswitch_process_role, m_create, m_gatewayid);
+		dprotocoljson(np_actorswitch_process_role, m_create, m_gatewayid);
 	};
 
 	struct np_actorswitch_process_plays
 	{
 		std::vector<i64_actorid> m_players;
 
-		def_portocol(np_actorswitch_process_plays, m_players);
+		dprotocoljson(np_actorswitch_process_plays, m_players);
 	};
 
 	// ---- 服务器会通过此消息告诉对方连接成功 
@@ -178,7 +178,7 @@ namespace ngl
 	{
 		i32_serverid m_serverid;
 
-		def_portocol(np_actorserver_connect, m_serverid);
+		dprotocoljson(np_actorserver_connect, m_serverid);
 	};
 
 	// ---- SESSION断开连接		ACTOR_SESSION_CLOSE
@@ -186,7 +186,7 @@ namespace ngl
 	{
 		i32_sessionid m_sessionid = 0;
 
-		def_portocol(np_actor_session_close, m_sessionid)
+		dprotocoljson(np_actor_session_close, m_sessionid)
 	};
 
 	// ---- [game,login] 玩家与gateway断开连接  ACTOR_DISCONNECT_CLOSE,
@@ -194,7 +194,7 @@ namespace ngl
 	{
 		i64_actorid m_actorid;
 
-		def_portocol(np_actor_disconnect_close, m_actorid)
+		dprotocoljson(np_actor_disconnect_close, m_actorid)
 	};
 
 	struct np_actor_gatewayid_updata
@@ -203,14 +203,14 @@ namespace ngl
 		i64_actorid		m_actorid;
 		i32_serverid	m_gatewayid;
 
-		def_portocol(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
+		dprotocoljson(np_actor_gatewayid_updata, m_isremove, m_actorid, m_gatewayid)
 	};
 
 	// ---- 间隔一段时间发起的全员(所有actor)广播
 	// ## 可以在这个广播里推送一些需要处理的任务,例如 保存数据
 	struct np_actor_broadcast
 	{
-		def_portocol(np_actor_broadcast)
+		dprotocoljson(np_actor_broadcast)
 	};
 
 	// ---- 重新加载csv
@@ -218,7 +218,7 @@ namespace ngl
 	{
 		std::map<std::string, std::string> m_csvcontent;
 
-		def_portocol(np_actor_reloadcsv, m_csvcontent)
+		dprotocoljson(np_actor_reloadcsv, m_csvcontent)
 	};
 
 	// ---- 核实csv版本
@@ -226,7 +226,7 @@ namespace ngl
 	{
 		std::map<std::string, std::string> m_verify; // key: tab typeid(TAB).hash_code() val:md5
 
-		def_portocol(np_actor_csv_verify_version, m_verify)
+		dprotocoljson(np_actor_csv_verify_version, m_verify)
 	};
 
 	// ---- 发送物品给actor role模块
@@ -235,7 +235,7 @@ namespace ngl
 		std::string					m_src;//物品来源
 		std::map<int32_t, int32_t>	m_item;
 
-		def_portocol(np_actor_senditem, m_src, m_item)
+		dprotocoljson(np_actor_senditem, m_src, m_item)
 	};
 
 	struct chat
@@ -246,7 +246,7 @@ namespace ngl
 		std::string m_content;
 		int			m_utc = -1;				//发言utc
 
-		def_portocol_function(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
+		dprotocoljson(chat, m_id, m_roleid, m_rolename, m_content, m_utc)
 	};
 
 	struct gateway_socket
@@ -260,7 +260,7 @@ namespace ngl
 		i32_socket			m_socket = -1;
 		bool				m_iscreate = false;
 
-		def_portocol_function(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
+		dprotocoljson(gateway_socket, m_session, m_area, m_accountid, m_dataid, m_gameid, m_gatewayid, m_socket, m_iscreate)
 	};
 
 	// ---- 更新连接数据
@@ -270,7 +270,7 @@ namespace ngl
 		std::vector<i32_socket>		m_delsocket;
 		std::vector<i64_actorid>	m_delactorid;
 
-		def_portocol(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
+		dprotocoljson(np_actor_gatewayinfo_updata, m_add, m_delsocket, m_delactorid)
 	};
 
 	// ---- 新增邮件
@@ -282,7 +282,7 @@ namespace ngl
 		int32_t						m_dropid = -1;
 		int32_t						m_dropcount = -1;
 
-		def_portocol(np_actor_addmail, m_roleid, m_tid, m_parm, m_dropid, m_dropcount)
+		dprotocoljson(np_actor_addmail, m_roleid, m_tid, m_parm, m_dropid, m_dropcount)
 	};
 
 	struct ncalendar_info
@@ -291,7 +291,7 @@ namespace ngl
 		int32_t m_calendarid = -1;
 		bool m_start = false;
 
-		def_portocol(ncalendar_info, m_time, m_calendarid, m_start)
+		dprotocoljson(ncalendar_info, m_time, m_calendarid, m_start)
 	};
 
 	// ---- 通知kcp服务器创建连接
@@ -305,7 +305,7 @@ namespace ngl
 		i16_port			m_uport = -1;
 		int32_t				m_conv = -1;
 
-		def_portocol(np_actor_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
+		dprotocoljson(np_actor_kcp, m_kcpsession, m_sessionid, m_area, m_dataid, m_uip, m_uport, m_conv)
 	};
 
 	struct calendar_utc
@@ -314,7 +314,7 @@ namespace ngl
 		int32_t m_beg = -1;
 		int32_t m_end = -1;
 
-		def_portocol_function(calendar_utc, m_time, m_beg, m_end)
+		dprotocoljson(calendar_utc, m_time, m_beg, m_end)
 	};
 
 	// ---- 新增邮件
@@ -324,13 +324,13 @@ namespace ngl
 		int32_t m_starttime = -1;	// 开始时间
 		int32_t m_finishtime = -1;	// 结束时间
 
-		def_portocol(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
+		dprotocoljson(np_actor_addnotice, m_notice, m_starttime, m_finishtime)
 	};
 
 	// ---- 关闭指定actor(不能关闭actor_role)
 	struct np_actor_close
 	{
-		def_portocol(np_actor_close)
+		dprotocoljson(np_actor_close)
 	};
 
 #ifdef WIN32
@@ -348,7 +348,7 @@ namespace ngl
 		std::string		m_data;						// 日志内容
 		int32_t			m_time = -1;				// 日志发生时间
 
-		def_portocol_function(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
+		dprotocoljson(logitem, m_serverid, m_loglevel, m_src, m_data, m_time)
 	};
 
 	struct nactor_logitem
@@ -489,7 +489,7 @@ namespace ngl
 	struct np_login_request_info
 	{
 		i64_actorid m_roleid;
-		def_portocol(np_login_request_info, m_roleid)
+		dprotocoljson(np_login_request_info, m_roleid)
 	};
 
 	// actor_example_match->actor_example_manage 为指定玩家创建指定例子小游戏
@@ -497,13 +497,13 @@ namespace ngl
 	{
 		pbexample::EPLAY_TYPE m_type;
 		std::map<int32_t, i64_actorid> m_roleids;
-		def_portocol(np_create_example, m_type, m_roleids)
+		dprotocoljson(np_create_example, m_type, m_roleids)
 	};
 
 	// actor_example_manage->例子小游戏
 	struct np_example_entergame_ready
 	{
-		def_portocol(np_example_entergame_ready)
+		dprotocoljson(np_example_entergame_ready)
 	};
 
 	// 例子小游戏->actor_role
@@ -511,7 +511,7 @@ namespace ngl
 	{
 		pbexample::EPLAY_TYPE m_type;
 		i64_actorid m_actorexampleid;
-		def_portocol(np_example_id, m_type, m_actorexampleid)
+		dprotocoljson(np_example_id, m_type, m_actorexampleid)
 	};
 
 	// 例子小游戏->actor_example_manage 例子小游戏退出
@@ -519,13 +519,13 @@ namespace ngl
 	{
 		pbexample::EPLAY_TYPE m_type;
 		i64_actorid m_exampleid;
-		def_portocol(np_example_equit, m_type, m_exampleid)
+		dprotocoljson(np_example_equit, m_type, m_exampleid)
 	};
 
 	struct np_thruput_test
 	{
 		int32_t m_rounds = 0;
-		def_portocol(np_thruput_test, m_rounds)
+		dprotocoljson(np_thruput_test, m_rounds)
 	};
 
 	// 接收/移除任务
@@ -535,7 +535,7 @@ namespace ngl
 		bool m_isreceive;
 		std::vector<int32_t> m_taskids;
 
-		def_portocol(np_receive_task, m_msg, m_isreceive, m_taskids)
+		dprotocoljson(np_receive_task, m_msg, m_isreceive, m_taskids)
 	};
 
 	struct np_operator_task_response
@@ -543,7 +543,7 @@ namespace ngl
 		std::string m_msg;
 		bool m_isreceive;
 
-		def_portocol(np_operator_task_response, m_msg, m_isreceive)
+		dprotocoljson(np_operator_task_response, m_msg, m_isreceive)
 	};
 
 	// 拉取排行信息
@@ -551,7 +551,7 @@ namespace ngl
 	{
 		int32_t m_rankid = 0;
 
-		def_portocol(np_get_rank, m_rankid)
+		dprotocoljson(np_get_rank, m_rankid)
 	};
 
 	struct np_get_rank_response
@@ -559,7 +559,7 @@ namespace ngl
 		int32_t m_rankid = 0;
 		std::vector<int64_t> m_rolerank;
 
-		def_portocol(np_get_rank_response, m_rankid, m_rolerank)
+		dprotocoljson(np_get_rank_response, m_rankid, m_rolerank)
 	};
 
 	// 增加删除活动排行榜
@@ -568,7 +568,7 @@ namespace ngl
 		int32_t m_rankid = 0;
 		bool m_iscreate = true;
 
-		def_portocol(np_activityrank_operator, m_rankid, m_iscreate)
+		dprotocoljson(np_activityrank_operator, m_rankid, m_iscreate)
 	};
 
 }//namespace ngl
