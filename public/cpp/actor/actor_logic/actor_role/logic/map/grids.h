@@ -69,11 +69,12 @@ namespace ngl
 			int lindex = 0;
 			for (obstacles_data& item : aobstacles)
 			{
-				for (eobstacles& eitem : item.m_data)
+				//eobstacles
+				for (int32_t eitem : item.m_data)
 				{
 					obstacle& lobstacle = m_grid[lindex];
 					lobstacle.m_id = lindex;
-					lobstacle.m_pass = eitem;
+					lobstacle.m_pass = (eobstacles)eitem;
 					++lindex;
 				}				
 			}
