@@ -6,16 +6,8 @@
 #include <string>
 #include <map>
 
-//#if defined(WIN32)||defined(WINCE)||defined(WIN64)
 //# define LOG_SCRIPT(...)  ::ngl::log_error()->print(##__VA_ARGS__)
-//#else
-//# define LOG_SCRIPT(...)  ::ngl::log_error()->print(__VA_OPT__(,) ##__VA_ARGS__)
-//#endif
-#if defined(WIN32)||defined(WINCE)||defined(WIN64)
 # define LOG_SCRIPT(...)  std::cout<<(##__VA_ARGS__)
-#else
-# define LOG_SCRIPT(...)  std::cout<<(__VA_OPT__(,) ##__VA_ARGS__)
-#endif
 
 extern "C"
 {
