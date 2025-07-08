@@ -555,7 +555,7 @@ namespace ngl
 namespace ngl
 {
 	template <typename T>
-	static void tprotocol::tforward::func(int32_t aprotocolnum)
+	void tprotocol::tforward::func(int32_t aprotocolnum)
 	{
 		pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
 		if (lptemp != nullptr)
@@ -583,9 +583,6 @@ namespace ngl
 				};
 		}
 	}
-
-
-
 
 	template <EPROTOCOL_TYPE TYPE>
 	template <typename TX>
