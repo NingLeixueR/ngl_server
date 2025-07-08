@@ -104,11 +104,11 @@ jobs:
         cd ..
         lua -v  # Verify installation
 
-    - name: Install lua-cjson 2.1.0
+    - name: Install lua-cjson from latest source
       run: |
-        wget https://github.com/openresty/lua-cjson/archive/v2.1.0.tar.gz
-        tar -xzf v2.1.0.tar.gz
-        cd lua-cjson-2.1.0
+        wget https://github.com/openresty/lua-cjson/archive/refs/heads/master.zip
+        unzip master.zip
+        cd lua-cjson-master
         make LUA_INCLUDE_DIR=/usr/local/include
         sudo make install LUA_LIB_DIR=/usr/local/lib/lua/5.4
         cd ..
