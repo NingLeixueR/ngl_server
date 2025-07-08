@@ -571,6 +571,29 @@ namespace ngl
 					actor_base::send_client(aactorid, pro);
 					return true;
 				};
+			lptemp->m_toactor = [](int64_t aactorid, const char* adata)
+				{
+					auto pro = std::make_shared<typename T::BASE_TYPE>();
+					if (!tools::json2proto<typename T::BASE_TYPE>(adata, *pro))
+					{
+						return false;
+					}
+					actor_base::send_actor(aactorid, nguid::make(), pro);
+					return true;
+				};
 		}
+	}
+
+
+
+
+	template <EPROTOCOL_TYPE TYPE>
+	template <typename TX>
+	void tprotocol::tcustoms<TYPE>::send_actor(int64_t aactorid, const char* adata)
+	{
+		ngl::json_read lread(adata);
+		auto pro = std::make_shared<TX>();
+		pro->read(lread);
+		actor_base::send_actor(aactorid, nguid::make(), pro);
 	}
 }

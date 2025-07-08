@@ -66,9 +66,10 @@ namespace ngl
 
 		struct np_event_register
 		{
-			std::vector<std::pair<E_EVENTS, i64_actorid>> m_vecpair;
-
-			dprotocoljson(np_event_register, m_vecpair)
+			//std::map<E_EVENTS, std::set<i64_actorid>> m_vecpair;
+			E_EVENTS m_event;
+			i64_actorid m_actorid;
+			dprotocoljson(np_event_register, m_event, m_actorid)
 		};
 
 		static void nregister()
@@ -114,7 +115,8 @@ namespace ngl
 			static void func(i64_actorid aactorid, E_EVENTS atype)
 			{
 				auto pro = std::make_shared<np_event_register>();
-				pro->m_vecpair.push_back({ atype, aactorid });
+				pro->m_event = atype;
+				pro->m_actorid = aactorid;
 				actor::send_actor(actorid(), aactorid, pro);
 			}
 		};
@@ -150,16 +152,13 @@ namespace ngl
 		bool handle(const message<np_event_register>& adata)
 		{
 			const np_event_register& pro = *adata.get_data();
-			for (const auto& item : pro.m_vecpair)
-			{
-				ngl::log_error()->print(
-					"np_event_register {}:E_EVENTS:{} actor:{}"
-					, typeid(E_EVENTS).name()
-					, (int32_t)(item.first)
-					, nguid(item.second)
-				);
-				m_eventmember[item.first].insert(item.second);
-			}
+			ngl::log_error()->print(
+				"np_event_register {}:E_EVENTS:{} actor:{}"
+				, typeid(E_EVENTS).name()
+				, (int32_t)(pro.m_event)
+				, nguid(pro.m_actorid)
+			);
+			m_eventmember[pro.m_event].insert(pro.m_actorid);
 			return true;
 		}
 	};

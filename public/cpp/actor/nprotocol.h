@@ -365,6 +365,8 @@ namespace ngl
 		/** ÁÙÊ±Êý¾Ý **/
 		static bool				m_init;
 	public:
+		dprotocoljson(nactor_logitem, m_src, m_actortype, m_logtype)
+
 		nactor_logitem(ELOGLEVEL alevel = ELOG_NONE) :
 			m_actortype(ACTOR_NONE),
 			m_logtype(ELOG_LOCAL),

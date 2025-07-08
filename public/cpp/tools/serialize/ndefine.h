@@ -223,8 +223,31 @@ public:
 	}
 };
 
-
-
+// 特殊情况使用
+#define def_jsonfunction_parm(...)									\
+	inline void write(ngl::json_write& ijsn, const char* akey)const	\
+	{																\
+		ngl::json_write ltemp;										\
+		write(ltemp);												\
+		ijsn.write(akey, ltemp.nofree());							\
+	}																\
+	inline void write(ngl::json_write& ijsn)const					\
+	{																\
+		ijsn.write(__VA_ARGS__);									\
+	}																\
+	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
+	{																\
+		ngl::json_read ltemp;										\
+		if (ijsn.read(akey, ltemp) == false)						\
+		{															\
+			return false;											\
+		}															\
+		return read(ltemp);											\
+	}																\
+	inline bool read(const ngl::json_read& ijsn) 					\
+	{																\
+		return ijsn.read(__VA_ARGS__);								\
+	}
 
 #define def_jsonfunction(...)										\
 	inline void write(ngl::json_write& ijsn, const char* akey)const	\
@@ -237,10 +260,10 @@ public:
 	{																\
 		constexpr std::array<std::string_view, ESPLIT_STR> parts =	\
 			tools_split_str::fun(#__VA_ARGS__);						\
-		help_writejson ltemp(parts, ijsn);				\
+		help_writejson ltemp(parts, ijsn);							\
 		ltemp.fun(0, __VA_ARGS__);									\
 	}																\
-	inline bool read(const ngl::json_read& ijsn, const char* akey)		\
+	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
 	{																\
 		ngl::json_read ltemp;										\
 		if (ijsn.read(akey, ltemp) == false)						\
@@ -249,11 +272,11 @@ public:
 		}															\
 		return read(ltemp);											\
 	}																\
-	inline bool read(const ngl::json_read& ijsn) 							\
+	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
 		constexpr std::array<std::string_view, ESPLIT_STR> parts =  \
-			tools_split_str::fun(#__VA_ARGS__);							\
-		help_readjson ltemp(parts, ijsn);				\
+			tools_split_str::fun(#__VA_ARGS__);						\
+		help_readjson ltemp(parts, ijsn);							\
 		return ltemp.fun(0, __VA_ARGS__);							\
 	}
 
