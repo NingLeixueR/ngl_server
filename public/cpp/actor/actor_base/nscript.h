@@ -6,8 +6,8 @@
 #include <string>
 #include <map>
 
-//# define LOG_SCRIPT(...)  ::ngl::log_error()->print(##__VA_ARGS__)
-# define LOG_SCRIPT(...)  std::cout<<(##__VA_ARGS__)
+//# define LOG_SCRIPT(...)  ::ngl::log_error()->print(__VA_ARGS__)
+# define LOG_SCRIPT(...)  std::cout<<std::format(__VA_ARGS__)
 
 extern "C"
 {
