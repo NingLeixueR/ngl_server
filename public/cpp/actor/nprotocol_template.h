@@ -111,6 +111,8 @@ namespace ngl
 	public:
 		using BASE_TYPE = T;
 
+		def_jsonfunction_parm("m_identifier", m_identifier, "m_data", *m_data)
+
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
 			m_data(adata)
@@ -414,7 +416,8 @@ namespace ngl
 			return m_data;
 		}
 
-		dprotocoljson(np_mass_actor, m_actorids, *m_data)
+		def_jsonfunction_parm("m_actorids", m_actorids, "m_data", *m_data)
+		def_protocol(np_mass_actor, m_actorids, *m_data)
 	};
 
 

@@ -27,7 +27,7 @@ namespace ngl
 			// # 为了给脚本提供根据结构名字发送数据给客户端:参数pb的json串
 			std::function<bool(int64_t, const char*)> m_toclient;
 			// # 为了给脚本提供根据结构名字发送数据给其他actor:参数pb的json串
-			std::function<bool(int64_t, const char*)> m_toactor;
+			std::function<void(int64_t, const char*)> m_toactor;
 		};
 	private:
 		static std::map<size_t, pinfo>				m_keyval;
@@ -48,6 +48,9 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE>
 		struct tcustoms
 		{
+			template <typename TX>
+			static void send_actor(int64_t aactorid, const char* adata);
+
 			template <typename T>
 			static pinfo* funcx(int32_t aprotocolnum = -1)
 			{
@@ -74,9 +77,31 @@ namespace ngl
 			{
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
-					funcx<np_mass_actor<T>>(aprotocolnum);
+					pinfo* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
+					
+					if (linfo != nullptr)
+					{
+						linfo->m_toactor = std::bind(
+							&tcustoms<TYPE>::send_actor<np_mass_actor<T>>
+							, std::placeholders::_1
+							, std::placeholders::_2
+						);
+					}
+					linfo = funcx<T>(aprotocolnum);
+					if (linfo != nullptr)
+					{
+						linfo->m_toactor = std::bind(
+							&tcustoms<TYPE>::send_actor<T>
+							, std::placeholders::_1
+							, std::placeholders::_2
+						);
+					}
+					return linfo;
 				}
-				return funcx<T>(aprotocolnum);
+				else
+				{
+					return funcx<T>(aprotocolnum);
+				}
 			}
 		};
 		struct tforward
@@ -203,7 +228,11 @@ namespace ngl
 		}
 
 		// # 获取当前进程已注册的所有协议
-		static void get_allprotocol(std::map<i32_protocolnum, std::string>& apromap, std::map<i32_protocolnum, std::string>& acustommap)
+		static void get_allprotocol(
+			std::map<i32_protocolnum
+			, std::string>& apromap
+			, std::map<i32_protocolnum, std::string>& acustommap
+		)
 		{
 			for (const auto& apair : m_keyval)
 			{

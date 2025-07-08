@@ -22,6 +22,7 @@ extern "C"
 	// # lua发送给客户端
 	// # 需要为脚本语言提供 根据 <结构名name  结构json串> 构造出对应结构
 	extern int send_client(lua_State* L);
+	extern int send_actor(lua_State* L);
 }
 
 namespace ngl
@@ -83,6 +84,7 @@ namespace ngl
 			lua_pop(L, 1);
 
 			lua_register(L, "send_client", send_client);
+			lua_register(L, "send_actor", send_client);			
 		}
 
 		virtual void init(const std::string& ascript)
