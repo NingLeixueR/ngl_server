@@ -26,20 +26,29 @@ local function new()
 	    end
     end
 
+    function instance:json_decode(adatajson)
+        local success, parsedData = pcall(function()
+            return cjson.decode(adatajson)
+        end)
+        
+        if not success then
+            print("JSON decode error:", adatajson)
+            return {}
+        end
+        return parsedData
+    end
+    -- cjson.encode(self.data[adbname][aactorid]["data"])
+    function instance:json_encode(adata)
+        return cjson.encode(adata)
+    end
+
     function instance:push_data(adbname, aactorid, adatajson)
         if not adatajson or adatajson == "" then
             print("Error: adatajson is nil or empty")
             return
         end
         
-        local success, parsedData = pcall(function()
-            return cjson.decode(adatajson)
-        end)
-        
-        if not success then
-            print("JSON decode error:", parsedData)
-            parsedData = {}
-        end
+        local parsedData = self:json_decode(adatajson)
         
         if not self.data[adbname] then
             self.data[adbname] = {}
@@ -49,11 +58,6 @@ local function new()
             parsed_data = parsedData,
             change = false
         }
-        print("#######################")
-        self:printf(self.data)
-        print("vvvvvvvvvvvvvvvvvvvvvvvvvvv")
-        print(cjson.encode(self.data))
-        print("#######################")
     end
 
     function instance:get(adbname, aactorid)
@@ -79,7 +83,7 @@ local function new()
     function instance:check_outdata(adbname, aactorid)
         if self.data[adbname][aactorid] then
             if self.data[adbname][aactorid]["change"] then
-                return true, cjson.encode(self.data[adbname][aactorid]["data"])
+                return true, self:json_encode(self.data[adbname][aactorid]["data"])
             end
         end
         return false, ""
@@ -87,21 +91,19 @@ local function new()
 
     function instance:check_outdata_all(adbname)
         local ret = {}
-        ret["data"] = {}
+        ret["m_data"] = {}
         if self.data[adbname] then
             for k,v in pairs(self.data[adbname]) do
                 print(k)
                 self:printf(v)
 		        if v["change"] then
-                    ret["data"][k] = cjson.encode(v["parsed_data"])
+                    ret["m_data"][k] = self:json_encode(v["parsed_data"])
                     v["change"] = false
 		        end
 	        end
         end
-        return true, cjson.encode(ret)
+        return true, self:json_encode(ret)
     end
-
-    
 
     return instance
 end
