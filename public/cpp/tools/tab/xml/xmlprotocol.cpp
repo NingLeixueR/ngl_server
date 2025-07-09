@@ -23,7 +23,7 @@ namespace ngl
 				int32_t lnumber = 0;
 				if (ltemp.find("name", lname) && ltemp.find("number", lnumber))
 				{
-					xmlprotocol::m_protocol[lname] = lnumber;
+					xmlprotocol::m_protocol[tools::type_name_handle(lname)] = lnumber;
 				}
 				ltemp.plog();
 			};

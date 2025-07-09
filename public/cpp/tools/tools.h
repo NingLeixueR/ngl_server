@@ -701,6 +701,18 @@ namespace ngl
 		static void bytexor(char* ap, int32_t aplen, int apos);
 	#pragma endregion
 
+		static std::string& type_name_handle(std::string& aname)
+		{
+			ngl::tools::replace("struct ", "", aname, aname);
+			ngl::tools::replace("class ", "", aname, aname);
+			ngl::tools::replace("ngl::", "", aname, aname);
+			ngl::tools::replace("pbdb::", "", aname, aname);
+			ngl::tools::replace("pbnet::", "", aname, aname);
+			ngl::tools::replace("pbexample::", "", aname, aname);
+			ngl::tools::replace(" ", "", aname, aname);
+			return aname;
+		}
+
 		template <typename T>
 		static std::string& type_name()
 		{
@@ -708,13 +720,7 @@ namespace ngl
 			static std::atomic<bool> lfirst = true;
 			if (lfirst.exchange(false))
 			{
-				ngl::tools::replace("struct ", "", lname, lname);
-				ngl::tools::replace("class ", "", lname, lname);
-				ngl::tools::replace("ngl::", "", lname, lname);
-				ngl::tools::replace("pbdb::", "", lname, lname);
-				ngl::tools::replace("pbnet::", "", lname, lname);
-				ngl::tools::replace("pbexample::", "", lname, lname);
-				ngl::tools::replace(" ", "", lname, lname);
+				type_name_handle(lname);
 			}
 			return lname;
 		}
