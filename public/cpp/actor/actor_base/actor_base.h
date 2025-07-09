@@ -219,7 +219,7 @@ namespace ngl
 			return nscript_push_data(lname, adat.mid(), ljson);
 		}
 
-		bool nscript_handle(const std::string& ajson);
+		bool nscript_handle(const std::string& aname, const std::string& ajson);
 
 		template <typename T>
 		bool nscript_handle(const T& adat)
@@ -229,7 +229,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return nscript_handle(ljson);
+			return nscript_handle(tools::type_name<T>(), ljson);
 		}
 
 		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson);

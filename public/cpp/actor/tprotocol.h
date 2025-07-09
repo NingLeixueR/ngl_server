@@ -66,13 +66,9 @@ namespace ngl
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
 
 				m_protocol[linfo.m_protocol] = &linfo;
-				ngl::tools::replace("struct ", "", linfo.m_name, linfo.m_name);
-				ngl::tools::replace("class ", "", linfo.m_name, linfo.m_name);
-				ngl::tools::replace("ngl::", "", linfo.m_name, linfo.m_name);
-				ngl::tools::replace(" ", "", linfo.m_name, linfo.m_name);
 
 				m_nameprotocol[linfo.m_name] = &linfo;
-				std::cout << linfo.m_protocol << "-" << typeid(T).name() << std::endl;
+				std::cout << linfo.m_protocol << "-" << linfo.m_name << std::endl;
 				return &linfo;
 			}
 

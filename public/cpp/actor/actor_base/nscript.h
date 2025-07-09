@@ -32,7 +32,7 @@ namespace ngl
 	public:
 		virtual void init(const std::string& ascript) = 0;
 		virtual bool push_data(const std::string& adbname, i64_actorid aactorid, const std::string& adatajson) = 0;
-		virtual bool handle(const std::string& ajson) = 0;
+		virtual bool handle(const std::string& aname, const std::string& ajson) = 0;
 		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
 
 		static std::shared_ptr<nscript> malloc_script(enscript atype)
@@ -61,6 +61,7 @@ namespace ngl
 		{
 			lua_close(L);
 		}
+
 		void setupluapaths()
 		{
 			lua_getglobal(L, "package");
@@ -129,7 +130,7 @@ namespace ngl
 		}
 
 		// # 消息处理
-		virtual bool handle(const std::string& ajson)
+		virtual bool handle(const std::string& aname, const std::string& ajson)
 		{
 			if (L == nullptr)
 			{
@@ -142,8 +143,9 @@ namespace ngl
 				lua_pop(L, 1); // 弹出nil值
 				return false;
 			}
+			lua_pushstring(L, aname.c_str());
 			lua_pushstring(L, ajson.c_str());
-			if (lua_pcall(L, 1, 0, 0) != LUA_OK)
+			if (lua_pcall(L, 2, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.handle error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1); // 弹出错误信息
