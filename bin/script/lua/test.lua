@@ -3,22 +3,14 @@ require("dbdata")
 
 function handle(data)
 	-- 如何获取db数据:明确需求是否修改
-	-- 无需修改数据使用 dbdata:getconst("xxxxx")
-	-- 需修改数据使用 dbdata:get("xxxxx")
+	-- 无需修改数据使用 dbdata:getconst("数据名称")
+	-- 需修改数据使用 dbdata:get("数据名称")
+
+	-- 如何发送数据给client,actor
+	-- nguid:actor_type#areaid#dataid
+	send_client("guid", "msgname", "msgjson")
+	send_actor("guid", "msgname", "msgjson")
+
 	dbdata:get("kkk","1")
 	dbdata:get("kkk","777")
 end
---[[
-	return;
-	print("222222222222222222222222222222222222")
-	ldata1 = dbdata:get("PROBUFF_NET_DELIVER_GOODS_RECHARGE")
-	ldata1['mgold'] = 789;
-	dbdata:printf(ldata1)
-	print("2222222222222222222222222222222222222")
-	print("3333333333333333333333333333333333333")
-	ldata2 = dbdata:getconst("PROBUFF_NET_DELIVER_GOODS_RECHARGE")
-	
-	print(ldata2['mgold'])
-	print("3333333333333333333333333333333333333")
-end
-]]--
