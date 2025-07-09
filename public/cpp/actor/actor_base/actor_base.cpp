@@ -235,11 +235,11 @@ namespace ngl
 			return false;
 		}
 
-		bool nscript_handle(const std::string& ajson)
+		bool nscript_handle(const std::string& aname, const std::string& ajson)
 		{
 			if (m_script != nullptr)
 			{
-				return m_script->handle(ajson);
+				return m_script->handle(aname, ajson);
 			}
 			return false;
 		}
@@ -404,9 +404,9 @@ namespace ngl
 		return m_impl_actor_base()->nscript_push_data(adbname, aactorid, adatajson);
 	}
 
-	bool actor_base::nscript_handle(const std::string& ajson)
+	bool actor_base::nscript_handle(const std::string& aname, const std::string& ajson)
 	{
-		return m_impl_actor_base()->nscript_handle(ajson);
+		return m_impl_actor_base()->nscript_handle(aname, ajson);
 	}
 
 	bool actor_base::nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)

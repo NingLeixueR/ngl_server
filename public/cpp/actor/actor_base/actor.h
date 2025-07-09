@@ -274,6 +274,14 @@ namespace ngl
 			return true;
 		}
 
+		// # 脚本语言处理消息
+		template <typename TDATA>
+		bool handle_script(const message<TDATA>& adata)
+		{
+			nscript_handle(*adata.get_data());
+			return true;
+		}
+
 		static i64_actorid tab2actor(ENUM_ACTOR atype, int32_t atabid)
 		{
 			return nguid::make(atype, nconfig::area(), atabid);
