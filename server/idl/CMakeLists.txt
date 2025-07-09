@@ -45,6 +45,10 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/hiredis.lib)
 	TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/libprotobuf.lib)
 	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/libprotobuf.lib)
+	TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/lua54.lib)
+	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/lua54.lib)
+	TARGET_LINK_LIBRARIES(IDL debug ${PROJECT_SOURCE_DIR}/../../lib/winlib/luacjosn.lib)
+	TARGET_LINK_LIBRARIES(IDL optimized ${PROJECT_SOURCE_DIR}/../../lib/winlib/luacjosn.lib)
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 
