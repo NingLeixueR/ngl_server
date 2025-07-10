@@ -22,7 +22,8 @@ enum ENUM_DB
 	ENUM_DB_FAMILY			= 12;		// 军团
 	ENUM_DB_FAMILYER		= 13;		// 军团成员
 	ENUM_DB_FRIENDS			= 14;		// 好友
-	ENUM_DB_COUNT			= 15;
+	ENUM_DB_TESTLUA			= 15;		// 测试lua脚本的处理
+	ENUM_DB_COUNT			= 16;
 
 	// # 跨服
 	ENUM_DBCROSS_TEST		= 1001;		// 测试跨服
@@ -269,4 +270,17 @@ message dbcross_test
 {
 	optional string		mname			= 1;	// 名称
 	repeated int64		mvalue			= 2;	// 值
+}
+
+//ENUM_DB_TESTLUA			= 15;		// 测试lua脚本的处理
+message db_testlua
+{
+	optional int64		mid				= 1;
+	repeated int64		mvalue			= 2;
+	message luadata
+	{
+		optional string		mkey			= 1;
+		optional string		mval			= 2;
+	}
+	map<int32,luadata>		mdatas			= 3; 
 }

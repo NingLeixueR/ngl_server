@@ -69,8 +69,10 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, np_timerparm, true>(afun, false);
-			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template rfun_nonet<TDerived, np_timerparm, false>(afun, false);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template 
+				rfun_nonet<TDerived, np_timerparm, true>(afun, false);
+			ninst<TDerived, EPROTOCOL_TYPE_CUSTOM>().template 
+				rfun_nonet<TDerived, np_timerparm, false>(afun, false);
 		}
 
 #pragma region register_db
@@ -152,6 +154,29 @@ namespace ngl
 		using register_handle_proto = register_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, TDerived>;
 #pragma endregion 
 
+		//# 注册 脚本处理协议
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
+		struct cregister_actor_handle
+		{
+			template <typename T>
+			static void func(bool aisload = false)
+			{
+				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+				{
+					ninst<TDerived, TYPE>().template rfun<actor, T, true>(
+						(Tfun<actor, T>) & actor::handle_script<TYPE, T>, aisload
+					);
+				}
+				ninst<TDerived, TYPE>().template rfun<actor, T, false>(
+					(Tfun<actor, T>) & actor::handle_script<TYPE, T>, aisload
+				);
+			}
+		};
+		
+		template <EPROTOCOL_TYPE TYPE, typename TDerived>
+		using register_script_handle = template_arg<actor::cregister_actor_handle<TYPE, TDerived>, bool>;
+
+
 #pragma region register_actornonet
 		//# 与register_actor类似 只不过不注册网络层
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>
@@ -176,7 +201,9 @@ namespace ngl
 			static void func()
 			{
 				using type_np_actor_forward = Tfun<TDerived, np_actor_forward<T, TYPE, IsForward, ngl::forward>>;
-				ninst<TDerived, TYPE>().template rfun_forward<IsForward>((type_np_actor_forward)&TDerived::handle, nactor_type<TDerived>::type(), false);
+				ninst<TDerived, TYPE>().template rfun_forward<IsForward>(
+					(type_np_actor_forward)&TDerived::handle, nactor_type<TDerived>::type(), false
+				);
 			}
 		};
 
@@ -203,7 +230,9 @@ namespace ngl
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
 					tools::no_core_dump();
 				}
-				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::handle, false);
+				ninst<TDerived, TYPE>().rfun_recvforward(
+					(Tfun<TDerived, T>) & TDerived::handle, false
+				);
 			}
 		};
 
@@ -223,7 +252,9 @@ namespace ngl
 					std::cout << std::format("tprotocol_forward_pb:{}", tools::type_name<T>()) << std::endl;
 					tools::no_core_dump();
 				}
-				ninst<TDerived, TYPE>().rfun_recvforward((Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false);
+				ninst<TDerived, TYPE>().rfun_recvforward(
+					(Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>, false
+				);
 			}
 		};
 
@@ -275,10 +306,10 @@ namespace ngl
 		}
 
 		// # 脚本语言处理消息
-		template <typename TDATA>
-		bool handle_script(const message<TDATA>& adata)
+		template <EPROTOCOL_TYPE TYPE, typename TMESSAGE>
+		bool handle_script(const message<TMESSAGE>& adata)
 		{
-			nscript_handle(*adata.get_data());
+			nscript_handle<TYPE, TMESSAGE>(*adata.get_data());
 			return true;
 		}
 
