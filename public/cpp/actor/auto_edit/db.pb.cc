@@ -34,6 +34,8 @@ extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SC
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_task_complete_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_task_data_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_task_data_schedule_db_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_testlua_MdatasEntry_DoNotUse_db_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_testlua_luadata_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_item_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_mail_db_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_db_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_mailitem_db_2eproto;
@@ -199,6 +201,18 @@ class dbcross_testDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<dbcross_test> _instance;
 } _dbcross_test_default_instance_;
+class db_testlua_luadataDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_testlua_luadata> _instance;
+} _db_testlua_luadata_default_instance_;
+class db_testlua_MdatasEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_testlua_MdatasEntry_DoNotUse> _instance;
+} _db_testlua_MdatasEntry_DoNotUse_default_instance_;
+class db_testluaDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<db_testlua> _instance;
+} _db_testlua_default_instance_;
 }  // namespace pbdb
 static void InitDefaultsscc_info_activity_drawcompliance_db_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -701,6 +715,49 @@ static void InitDefaultsscc_info_db_task_data_schedule_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_task_data_schedule_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_task_data_schedule_db_2eproto}, {}};
 
+static void InitDefaultsscc_info_db_testlua_db_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbdb::_db_testlua_default_instance_;
+    new (ptr) ::pbdb::db_testlua();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbdb::db_testlua::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_testlua_db_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_db_testlua_db_2eproto}, {
+      &scc_info_db_testlua_MdatasEntry_DoNotUse_db_2eproto.base,}};
+
+static void InitDefaultsscc_info_db_testlua_MdatasEntry_DoNotUse_db_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbdb::_db_testlua_MdatasEntry_DoNotUse_default_instance_;
+    new (ptr) ::pbdb::db_testlua_MdatasEntry_DoNotUse();
+  }
+  ::pbdb::db_testlua_MdatasEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_db_testlua_MdatasEntry_DoNotUse_db_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_db_testlua_MdatasEntry_DoNotUse_db_2eproto}, {
+      &scc_info_db_testlua_luadata_db_2eproto.base,}};
+
+static void InitDefaultsscc_info_db_testlua_luadata_db_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::pbdb::_db_testlua_luadata_default_instance_;
+    new (ptr) ::pbdb::db_testlua_luadata();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::pbdb::db_testlua_luadata::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_db_testlua_luadata_db_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_db_testlua_luadata_db_2eproto}, {}};
+
 static void InitDefaultsscc_info_dbcross_test_db_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -772,7 +829,7 @@ static void InitDefaultsscc_info_rankitem_db_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_rankitem_db_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_rankitem_db_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[40];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_db_2eproto[43];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_db_2eproto[4];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_db_2eproto = nullptr;
 
@@ -1210,6 +1267,35 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_db_2eproto::offsets[] PROTOBUF
   PROTOBUF_FIELD_OFFSET(::pbdb::dbcross_test, mvalue_),
   0,
   ~0u,
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_luadata, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_luadata, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_luadata, mkey_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_luadata, mval_),
+  0,
+  1,
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_MdatasEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_MdatasEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_MdatasEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua_MdatasEntry_DoNotUse, value_),
+  0,
+  1,
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua, mid_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua, mvalue_),
+  PROTOBUF_FIELD_OFFSET(::pbdb::db_testlua, mdatas_),
+  0,
+  ~0u,
+  ~0u,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 10, sizeof(::pbdb::db_account)},
@@ -1252,6 +1338,9 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 392, 405, sizeof(::pbdb::db_family)},
   { 413, 421, sizeof(::pbdb::db_friends)},
   { 424, 431, sizeof(::pbdb::dbcross_test)},
+  { 433, 440, sizeof(::pbdb::db_testlua_luadata)},
+  { 442, 449, sizeof(::pbdb::db_testlua_MdatasEntry_DoNotUse)},
+  { 451, 459, sizeof(::pbdb::db_testlua)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1295,6 +1384,9 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_family_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_friends_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_dbcross_test_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_testlua_luadata_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_testlua_MdatasEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::pbdb::_db_testlua_default_instance_),
 };
 
 const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -1414,23 +1506,29 @@ const char descriptor_table_protodef_db_2eproto[] PROTOBUF_SECTION_VARIABLE(prot
   " \001(\003H\000\210\001\001\022\020\n\010mfriends\030\002 \003(\003\022\025\n\rmapplyfri"
   "ends\030\003 \003(\003B\006\n\004_mid\"<\n\014dbcross_test\022\022\n\005mn"
   "ame\030\001 \001(\tH\000\210\001\001\022\016\n\006mvalue\030\002 \003(\003B\010\n\006_mname"
-  "*\210\003\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014ENU"
-  "M_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENUM_D"
-  "B_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM_DB"
-  "_MAIL\020\005\022\022\n\016ENUM_DB_NOTICE\020\006\022\024\n\020ENUM_DB_R"
-  "ANKLIST\020\007\022\024\n\020ENUM_DB_ACTIVITY\020\010\022\031\n\025ENUM_"
-  "DB_ACTIVITYTIMES\020\t\022\020\n\014ENUM_DB_TASK\020\n\022\030\n\024"
-  "ENUM_DB_ROLEKEYVALUE\020\013\022\022\n\016ENUM_DB_FAMILY"
-  "\020\014\022\024\n\020ENUM_DB_FAMILYER\020\r\022\023\n\017ENUM_DB_FRIE"
-  "NDS\020\016\022\021\n\rENUM_DB_COUNT\020\017\022\026\n\021ENUM_DBCROSS"
-  "_TEST\020\351\007\022\031\n\014ENUM_DB_FAIL\020\377\377\377\377\377\377\377\377\377\001*P\n\te"
-  "ranklist\022\006\n\002lv\020\000\022\010\n\004gold\020\001\022\t\n\005count\020\002\022\021\n"
-  "\013activity_lv\020\300\204=\022\023\n\ractivity_gold\020\200\211zb\006p"
-  "roto3"
+  "\"\360\001\n\ndb_testlua\022\020\n\003mid\030\001 \001(\003H\000\210\001\001\022\016\n\006mva"
+  "lue\030\002 \003(\003\022,\n\006mdatas\030\003 \003(\0132\034.pbdb.db_test"
+  "lua.MdatasEntry\032A\n\007luadata\022\021\n\004mkey\030\001 \001(\t"
+  "H\000\210\001\001\022\021\n\004mval\030\002 \001(\tH\001\210\001\001B\007\n\005_mkeyB\007\n\005_mv"
+  "al\032G\n\013MdatasEntry\022\013\n\003key\030\001 \001(\005\022\'\n\005value\030"
+  "\002 \001(\0132\030.pbdb.db_testlua.luadata:\0028\001B\006\n\004_"
+  "mid*\235\003\n\007ENUM_DB\022\023\n\017ENUM_DB_ACCOUNT\020\000\022\020\n\014"
+  "ENUM_DB_ROLE\020\001\022\021\n\rENUM_DB_BRIEF\020\002\022\017\n\013ENU"
+  "M_DB_BAG\020\003\022\024\n\020ENUM_DB_KEYVALUE\020\004\022\020\n\014ENUM"
+  "_DB_MAIL\020\005\022\022\n\016ENUM_DB_NOTICE\020\006\022\024\n\020ENUM_D"
+  "B_RANKLIST\020\007\022\024\n\020ENUM_DB_ACTIVITY\020\010\022\031\n\025EN"
+  "UM_DB_ACTIVITYTIMES\020\t\022\020\n\014ENUM_DB_TASK\020\n\022"
+  "\030\n\024ENUM_DB_ROLEKEYVALUE\020\013\022\022\n\016ENUM_DB_FAM"
+  "ILY\020\014\022\024\n\020ENUM_DB_FAMILYER\020\r\022\023\n\017ENUM_DB_F"
+  "RIENDS\020\016\022\023\n\017ENUM_DB_TESTLUA\020\017\022\021\n\rENUM_DB"
+  "_COUNT\020\020\022\026\n\021ENUM_DBCROSS_TEST\020\351\007\022\031\n\014ENUM"
+  "_DB_FAIL\020\377\377\377\377\377\377\377\377\377\001*P\n\teranklist\022\006\n\002lv\020\000"
+  "\022\010\n\004gold\020\001\022\t\n\005count\020\002\022\021\n\013activity_lv\020\300\204="
+  "\022\023\n\ractivity_gold\020\200\211zb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_db_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[40] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_2eproto_sccs[43] = {
   &scc_info_activity_drawcompliance_db_2eproto.base,
   &scc_info_activity_drawcompliance_MrewardEntry_DoNotUse_db_2eproto.base,
   &scc_info_activity_task_db_2eproto.base,
@@ -1466,6 +1564,9 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
   &scc_info_db_task_complete_db_2eproto.base,
   &scc_info_db_task_data_db_2eproto.base,
   &scc_info_db_task_data_schedule_db_2eproto.base,
+  &scc_info_db_testlua_db_2eproto.base,
+  &scc_info_db_testlua_MdatasEntry_DoNotUse_db_2eproto.base,
+  &scc_info_db_testlua_luadata_db_2eproto.base,
   &scc_info_dbcross_test_db_2eproto.base,
   &scc_info_item_db_2eproto.base,
   &scc_info_mail_db_2eproto.base,
@@ -1474,10 +1575,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_db_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_db_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_db_2eproto = {
-  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 5125,
-  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 40, 0,
+  false, false, descriptor_table_protodef_db_2eproto, "db.proto", 5389,
+  &descriptor_table_db_2eproto_once, descriptor_table_db_2eproto_sccs, descriptor_table_db_2eproto_deps, 43, 0,
   schemas, file_default_instances, TableStruct_db_2eproto::offsets,
-  file_level_metadata_db_2eproto, 40, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
+  file_level_metadata_db_2eproto, 43, file_level_enum_descriptors_db_2eproto, file_level_service_descriptors_db_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1554,6 +1655,7 @@ bool ENUM_DB_IsValid(int value) {
     case 13:
     case 14:
     case 15:
+    case 16:
     case 1001:
       return true;
     default:
@@ -10115,6 +10217,600 @@ void dbcross_test::InternalSwap(dbcross_test* other) {
 }
 
 
+// ===================================================================
+
+void db_testlua_luadata::InitAsDefaultInstance() {
+}
+class db_testlua_luadata::_Internal {
+ public:
+  using HasBits = decltype(std::declval<db_testlua_luadata>()._has_bits_);
+  static void set_has_mkey(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_mval(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+};
+
+db_testlua_luadata::db_testlua_luadata(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbdb.db_testlua.luadata)
+}
+db_testlua_luadata::db_testlua_luadata(const db_testlua_luadata& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  mkey_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_mkey()) {
+    mkey_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_mkey(),
+      GetArena());
+  }
+  mval_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_mval()) {
+    mval_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_mval(),
+      GetArena());
+  }
+  // @@protoc_insertion_point(copy_constructor:pbdb.db_testlua.luadata)
+}
+
+void db_testlua_luadata::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_db_testlua_luadata_db_2eproto.base);
+  mkey_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  mval_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+db_testlua_luadata::~db_testlua_luadata() {
+  // @@protoc_insertion_point(destructor:pbdb.db_testlua.luadata)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void db_testlua_luadata::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  mkey_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  mval_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void db_testlua_luadata::ArenaDtor(void* object) {
+  db_testlua_luadata* _this = reinterpret_cast< db_testlua_luadata* >(object);
+  (void)_this;
+}
+void db_testlua_luadata::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void db_testlua_luadata::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const db_testlua_luadata& db_testlua_luadata::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_db_testlua_luadata_db_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void db_testlua_luadata::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbdb.db_testlua.luadata)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      mkey_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      mval_.ClearNonDefaultToEmpty();
+    }
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* db_testlua_luadata::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string mkey = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_mkey();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_testlua.luadata.mkey"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string mval = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_mval();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "pbdb.db_testlua.luadata.mval"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* db_testlua_luadata::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbdb.db_testlua.luadata)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string mkey = 1;
+  if (_internal_has_mkey()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_mkey().data(), static_cast<int>(this->_internal_mkey().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "pbdb.db_testlua.luadata.mkey");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_mkey(), target);
+  }
+
+  // string mval = 2;
+  if (_internal_has_mval()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_mval().data(), static_cast<int>(this->_internal_mval().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "pbdb.db_testlua.luadata.mval");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_mval(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbdb.db_testlua.luadata)
+  return target;
+}
+
+size_t db_testlua_luadata::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbdb.db_testlua.luadata)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    // string mkey = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_mkey());
+    }
+
+    // string mval = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_mval());
+    }
+
+  }
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void db_testlua_luadata::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbdb.db_testlua.luadata)
+  GOOGLE_DCHECK_NE(&from, this);
+  const db_testlua_luadata* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<db_testlua_luadata>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbdb.db_testlua.luadata)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbdb.db_testlua.luadata)
+    MergeFrom(*source);
+  }
+}
+
+void db_testlua_luadata::MergeFrom(const db_testlua_luadata& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbdb.db_testlua.luadata)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      _internal_set_mkey(from._internal_mkey());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _internal_set_mval(from._internal_mval());
+    }
+  }
+}
+
+void db_testlua_luadata::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbdb.db_testlua.luadata)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void db_testlua_luadata::CopyFrom(const db_testlua_luadata& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbdb.db_testlua.luadata)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool db_testlua_luadata::IsInitialized() const {
+  return true;
+}
+
+void db_testlua_luadata::InternalSwap(db_testlua_luadata* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  mkey_.Swap(&other->mkey_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  mval_.Swap(&other->mval_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata db_testlua_luadata::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+db_testlua_MdatasEntry_DoNotUse::db_testlua_MdatasEntry_DoNotUse() {}
+db_testlua_MdatasEntry_DoNotUse::db_testlua_MdatasEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+    : SuperType(arena) {}
+void db_testlua_MdatasEntry_DoNotUse::MergeFrom(const db_testlua_MdatasEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::PROTOBUF_NAMESPACE_ID::Metadata db_testlua_MdatasEntry_DoNotUse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+void db_testlua_MdatasEntry_DoNotUse::MergeFrom(
+    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
+  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+void db_testlua::InitAsDefaultInstance() {
+}
+class db_testlua::_Internal {
+ public:
+  using HasBits = decltype(std::declval<db_testlua>()._has_bits_);
+  static void set_has_mid(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+db_testlua::db_testlua(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  mvalue_(arena),
+  mdatas_(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:pbdb.db_testlua)
+}
+db_testlua::db_testlua(const db_testlua& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_),
+      mvalue_(from.mvalue_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  mdatas_.MergeFrom(from.mdatas_);
+  mid_ = from.mid_;
+  // @@protoc_insertion_point(copy_constructor:pbdb.db_testlua)
+}
+
+void db_testlua::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_db_testlua_db_2eproto.base);
+  mid_ = PROTOBUF_LONGLONG(0);
+}
+
+db_testlua::~db_testlua() {
+  // @@protoc_insertion_point(destructor:pbdb.db_testlua)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void db_testlua::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void db_testlua::ArenaDtor(void* object) {
+  db_testlua* _this = reinterpret_cast< db_testlua* >(object);
+  (void)_this;
+}
+void db_testlua::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void db_testlua::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const db_testlua& db_testlua::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_db_testlua_db_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void db_testlua::Clear() {
+// @@protoc_insertion_point(message_clear_start:pbdb.db_testlua)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  mvalue_.Clear();
+  mdatas_.Clear();
+  mid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* db_testlua::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int64 mid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_mid(&has_bits);
+          mid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated int64 mvalue = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt64Parser(_internal_mutable_mvalue(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16) {
+          _internal_add_mvalue(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // map<int32, .pbdb.db_testlua.luadata> mdatas = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(&mdatas_, ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* db_testlua::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:pbdb.db_testlua)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 mid = 1;
+  if (_internal_has_mid()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->_internal_mid(), target);
+  }
+
+  // repeated int64 mvalue = 2;
+  {
+    int byte_size = _mvalue_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt64Packed(
+          2, _internal_mvalue(), byte_size, target);
+    }
+  }
+
+  // map<int32, .pbdb.db_testlua.luadata> mdatas = 3;
+  if (!this->_internal_mdatas().empty()) {
+    typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::db_testlua_luadata >::const_pointer
+        ConstPtr;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::SortItem< ::PROTOBUF_NAMESPACE_ID::int32, ConstPtr > SortItem;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByFirstField<SortItem> Less;
+
+    if (stream->IsSerializationDeterministic() &&
+        this->_internal_mdatas().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->_internal_mdatas().size()]);
+      typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::db_testlua_luadata >::size_type size_type;
+      size_type n = 0;
+      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::db_testlua_luadata >::const_iterator
+          it = this->_internal_mdatas().begin();
+          it != this->_internal_mdatas().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      for (size_type i = 0; i < n; i++) {
+        target = db_testlua_MdatasEntry_DoNotUse::Funcs::InternalSerialize(3, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+      }
+    } else {
+      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::db_testlua_luadata >::const_iterator
+          it = this->_internal_mdatas().begin();
+          it != this->_internal_mdatas().end(); ++it) {
+        target = db_testlua_MdatasEntry_DoNotUse::Funcs::InternalSerialize(3, it->first, it->second, target, stream);
+      }
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:pbdb.db_testlua)
+  return target;
+}
+
+size_t db_testlua::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:pbdb.db_testlua)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated int64 mvalue = 2;
+  {
+    size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      Int64Size(this->mvalue_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
+    }
+    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
+    _mvalue_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // map<int32, .pbdb.db_testlua.luadata> mdatas = 3;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_mdatas_size());
+  for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::pbdb::db_testlua_luadata >::const_iterator
+      it = this->_internal_mdatas().begin();
+      it != this->_internal_mdatas().end(); ++it) {
+    total_size += db_testlua_MdatasEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+  }
+
+  // int64 mid = 1;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+        this->_internal_mid());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void db_testlua::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:pbdb.db_testlua)
+  GOOGLE_DCHECK_NE(&from, this);
+  const db_testlua* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<db_testlua>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:pbdb.db_testlua)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:pbdb.db_testlua)
+    MergeFrom(*source);
+  }
+}
+
+void db_testlua::MergeFrom(const db_testlua& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pbdb.db_testlua)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  mvalue_.MergeFrom(from.mvalue_);
+  mdatas_.MergeFrom(from.mdatas_);
+  if (from._internal_has_mid()) {
+    _internal_set_mid(from._internal_mid());
+  }
+}
+
+void db_testlua::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:pbdb.db_testlua)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void db_testlua::CopyFrom(const db_testlua& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pbdb.db_testlua)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool db_testlua::IsInitialized() const {
+  return true;
+}
+
+void db_testlua::InternalSwap(db_testlua* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  mvalue_.InternalSwap(&other->mvalue_);
+  mdatas_.Swap(&other->mdatas_);
+  swap(mid_, other->mid_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata db_testlua::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace pbdb
 PROTOBUF_NAMESPACE_OPEN
@@ -10237,6 +10933,15 @@ template<> PROTOBUF_NOINLINE ::pbdb::db_friends* Arena::CreateMaybeMessage< ::pb
 }
 template<> PROTOBUF_NOINLINE ::pbdb::dbcross_test* Arena::CreateMaybeMessage< ::pbdb::dbcross_test >(Arena* arena) {
   return Arena::CreateMessageInternal< ::pbdb::dbcross_test >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbdb::db_testlua_luadata* Arena::CreateMaybeMessage< ::pbdb::db_testlua_luadata >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbdb::db_testlua_luadata >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbdb::db_testlua_MdatasEntry_DoNotUse* Arena::CreateMaybeMessage< ::pbdb::db_testlua_MdatasEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbdb::db_testlua_MdatasEntry_DoNotUse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::pbdb::db_testlua* Arena::CreateMaybeMessage< ::pbdb::db_testlua >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::pbdb::db_testlua >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-07-03 21:04:06
+// 创建时间 25-07-09 19:17:20
 #include "attribute_value.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"
@@ -47,6 +47,7 @@
 #include "asio_kcp.cpp"
 #include "activity.cpp"
 #include "xmlinfo.cpp"
+#include "testlua.cpp"
 #include "segpack.cpp"
 #include "remakes.cpp"
 #include "nthread.cpp"
@@ -126,6 +127,7 @@
 #include "actor_ranklist.cpp"
 #include "actor_keyvalue.cpp"
 #include "actor_gmclient.cpp"
+#include "actor_testlua.cpp"
 #include "actor_gateway.cpp"
 #include "actor_friends.cpp"
 #include "actor_server.cpp"

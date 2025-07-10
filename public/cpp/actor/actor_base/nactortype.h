@@ -50,7 +50,8 @@ namespace ngl
 		ACTOR_EVENTS_MAX_COUNT = ACTOR_EVENTS+10,								// 事件预留10个
 		ACTOR_EXAMPLE_MATCH			= 54,										// 例子小游戏:匹配
 		ACTOR_EXAMPLE_MANAGE		= 55,										// 创建管理例子小游戏
-		ACTOR_DB					= 56,										// 必须是最后一个
+		ACTOR_TESTLUA				= 56,										// 测试lua
+		ACTOR_DB					= 57,										// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,
 	};

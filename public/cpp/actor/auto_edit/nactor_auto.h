@@ -46,6 +46,7 @@ namespace ngl
 	class  actor_notice;
 	class  actor_ranklist;
 	class  actor_role;
+	class  actor_testlua;
 
 
 	using tdbcross_test = typedb<pbdb::ENUM_DBCROSS_TEST, pbdb::dbcross_test, actor_cross_test>;
@@ -65,7 +66,7 @@ namespace ngl
 	using tdb_role = typedb<pbdb::ENUM_DB_ROLE, pbdb::db_role, actor_role>;
 	using tdb_rolekv = typedb<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue, actor_role>;
 	using tdb_task = typedb<pbdb::ENUM_DB_TASK, pbdb::db_task, actor_role>;
-
+	using tdb_testlua = typedb<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua, actor_testlua>;
 
 	class tdb
 	{
