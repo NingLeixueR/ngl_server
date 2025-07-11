@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-26 20:09:09
+// 创建时间 // 创建时间 25-07-11 16:49:00
 #pragma once
 
 #include "csv.h"
@@ -761,7 +761,7 @@ struct tab_task
 struct obstacles_data
 {
 	/*********************************/
-	std::vector<int32_t>          m_data                          ; //eobstacles
+	std::vector<int32_t>             m_data                          ; //eobstacles
 	/*********************************/
 	obstacles_data();
 	// 序列化反序列化相关

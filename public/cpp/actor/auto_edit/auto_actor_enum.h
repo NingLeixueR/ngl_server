@@ -1,5 +1,5 @@
 // 注意【IDL 工具生成文件，不要手动修改】
-// 创建时间 // 创建时间 25-06-26 20:09:12
+// 创建时间 // 创建时间 25-07-11 16:49:07
 #pragma once
 
 #include "nactortype.h"
@@ -52,6 +52,7 @@ namespace ngl
 #include "actor_friends.h"
 #include "actor_example_match.h"
 #include "actor_example_manage.h"
+#include "actor_testlua.h"
 namespace ngl
 {
 	void auto_actor_enum()
@@ -86,6 +87,7 @@ namespace ngl
 			, dautoactor(actor_friends, ACTOR_FRIENDS)
 			, dautoactor(actor_example_match, ACTOR_EXAMPLE_MATCH)
 			, dautoactor(actor_example_manage, ACTOR_EXAMPLE_MANAGE)
+			, dautoactor(actor_testlua, ACTOR_TESTLUA)
 		);
 	}
 }//namespace ngl
