@@ -51,5 +51,7 @@ extern "C"
 
 namespace ngl
 {
-	std::map<enscript, std::shared_ptr<nscript>> nscript::m_data;
+	std::map<enscript, nscript*> nscript::m_data;
+	nscriptlua g_mallocnscriptlua(true);
+
 }//namespace ngl
