@@ -44,6 +44,9 @@ namespace ngl
 		}
 		set_timer(tparm);
 		*/
+
+		// # 将csv数据写入lua
+		nscript_push_csv<ttab_servers>();
 	}
 
 	void actor_testlua::erase_actor_before()
@@ -63,19 +66,6 @@ namespace ngl
 		register_script_handle<EPROTOCOL_TYPE_CUSTOM, actor_testlua>::func<
 				np_actor_addmail
 			>(true);
-		//// 绑定自定义np_消息
-		//register_handle_custom<actor_mail>::func<
-		//	np_actor_addmail
-		//	, mforward<np_gm>
-		//>(true);
-
-		//// 绑定pb消息
-		//register_handle_proto<actor_mail>::func<
-		//	mforward<pbnet::PROBUFF_NET_MAIL_LIST>
-		//	, mforward<pbnet::PROBUFF_NET_MAIL_READ>
-		//	, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>
-		//	, mforward<pbnet::PROBUFF_NET_MAIL_DEL>
-		//>(true);
 	}
 
 	bool actor_testlua::timer_handle(const message<np_timerparm>& adata)
