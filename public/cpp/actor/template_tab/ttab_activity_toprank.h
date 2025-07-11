@@ -41,7 +41,7 @@ namespace ngl
 		std::map<int, tab_activity_toprank>& tablecsv()
 		{
 			ttab_activity_toprank* ttab = allcsv::get<ttab_activity_toprank>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

@@ -41,7 +41,7 @@ namespace ngl
 		std::map<int, tab_dbload>& tablecsv()
 		{
 			ttab_dbload* ttab = allcsv::get<ttab_dbload>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

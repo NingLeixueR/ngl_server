@@ -43,7 +43,7 @@ namespace ngl
 		std::map<int, tab_familylv>& tablecsv()
 		{
 			ttab_familylv* ttab = allcsv::get<ttab_familylv>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

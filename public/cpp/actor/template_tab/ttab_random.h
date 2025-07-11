@@ -46,7 +46,7 @@ namespace ngl
 		std::map<int, tab_random>& tablecsv()
 		{
 			ttab_random* ttab = allcsv::get<ttab_random>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

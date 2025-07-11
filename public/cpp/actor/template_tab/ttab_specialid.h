@@ -79,7 +79,7 @@ namespace ngl
 		std::map<int, tab_specialid>& tablecsv()
 		{
 			ttab_specialid* ttab = allcsv::get<ttab_specialid>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}
