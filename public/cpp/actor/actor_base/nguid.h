@@ -428,4 +428,15 @@ namespace ngl
 		}
 	};
 
+	template <typename To, typename From>
+	To tools::lexical_cast(const From& from)
+	{
+		return lexical_cast2<To>::fun(from);
+	}
+
+	template <typename To>
+	To& tools::lexical_cast(To& from)
+	{
+		return from;
+	}
 }

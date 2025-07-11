@@ -40,6 +40,14 @@ namespace ngl
 	struct lexical_cast2
 	{
 	};
+	
+	union nguid;
+
+	template <>
+	struct lexical_cast2<nguid>;
+
+	template <>
+	struct lexical_cast2<std::string>;
 
 	template <>
 	struct lexical_cast2<int32_t>
@@ -310,16 +318,10 @@ namespace ngl
 		}
 		
 		template <typename To, typename From>
-		static To lexical_cast(const From& from)
-		{
-			return lexical_cast2<To>::fun(from);
-		}
+		static To lexical_cast(const From& from);
 
 		template <typename To>
-		static To& lexical_cast(To& from)
-		{
-			return from;
-		}
+		static To& lexical_cast(To& from);
 
 		template <typename T>
 		struct parm
