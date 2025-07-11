@@ -31,9 +31,9 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_plays>& tablecsv()
+		std::map<int, tab_plays>& tablecsv()
 		{
-			const ttab_plays* ttab = allcsv::get<ttab_plays>();
+			ttab_plays* ttab = allcsv::get<ttab_plays>();
 			if (ttab == nullptr);
 			{
 				tools::no_core_dump();
@@ -43,7 +43,7 @@ namespace ngl
 
 		const tab_plays* tab(int32_t aid)
 		{
-			const auto& lmap = tablecsv();
+			auto lmap = tablecsv();
 			auto itor = lmap.find(aid);
 			if (itor == lmap.end())
 			{

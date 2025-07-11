@@ -31,16 +31,19 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_equiplv>& tablecsv()
+		std::map<int, tab_equiplv>& tablecsv()
 		{
-			const ttab_equiplv* ttab = allcsv::get<ttab_equiplv>();
-			tools::no_core_dump(ttab != nullptr);
+			ttab_equiplv* ttab = allcsv::get<ttab_equiplv>();
+			if (ttab == nullptr);
+			{
+				tools::no_core_dump();
+			}
 			return ttab->m_tablecsv;
 		}
 
 		const tab_equiplv* tab(int32_t aid)
 		{
-			const auto& lmap = tablecsv();
+			auto lmap = tablecsv();
 			auto itor = lmap.find(aid);
 			if (itor == lmap.end())
 			{

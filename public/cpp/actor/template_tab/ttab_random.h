@@ -43,9 +43,9 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_random>& tablecsv()
+		std::map<int, tab_random>& tablecsv()
 		{
-			const ttab_random* ttab = allcsv::get<ttab_random>();
+			ttab_random* ttab = allcsv::get<ttab_random>();
 			if (ttab == nullptr);
 			{
 				tools::no_core_dump();
@@ -55,7 +55,7 @@ namespace ngl
 
 		const tab_random* tab(int32_t aid)
 		{
-			const auto& lmap = tablecsv();
+			auto lmap = tablecsv();
 			auto itor = lmap.find(aid);
 			if (itor == lmap.end())
 			{
