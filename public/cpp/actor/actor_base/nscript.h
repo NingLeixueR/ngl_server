@@ -28,8 +28,23 @@ namespace ngl
 	class nscript
 	{
 		virtual std::shared_ptr<nscript> mscript() = 0;
-		static std::map<enscript, std::shared_ptr<nscript>> m_data;
+		static std::map<enscript, nscript*> m_data;
+		enscript m_type;
 	public:
+		nscript(enscript atype, bool amallocinit = false):
+			m_type(atype)
+		{
+			if (amallocinit)
+			{
+				m_data[atype] = this;
+			}
+		}
+
+		enscript type()
+		{
+			return m_type;
+		}
+
 		virtual void init(const std::string& ascript) = 0;
 		virtual bool push_data(const std::string& adbname, i64_actorid aactorid, const std::string& adatajson) = 0;
 		virtual bool handle(const std::string& aname, const std::string& ajson) = 0;
@@ -57,6 +72,10 @@ namespace ngl
 			return std::make_shared<nscriptlua>();
 		}
 	public:
+		nscriptlua(bool amallocinit = false) :
+			nscript(enscript_lua, amallocinit)
+		{}
+
 		virtual ~nscriptlua()
 		{
 			lua_close(L);
