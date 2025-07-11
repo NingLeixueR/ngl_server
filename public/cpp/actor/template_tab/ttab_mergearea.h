@@ -70,7 +70,7 @@ namespace ngl
 		std::map<int, tab_mergearea>& tablecsv()
 		{
 			ttab_mergearea* ttab = allcsv::get<ttab_mergearea>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

@@ -72,7 +72,7 @@ namespace ngl
 		std::map<int, tab_servers>& tablecsv()
 		{
 			ttab_servers* ttab = allcsv::get<ttab_servers>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

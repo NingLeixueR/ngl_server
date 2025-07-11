@@ -34,7 +34,7 @@ namespace ngl
 		std::map<int, tab_errormessage>& tablecsv()
 		{
 			ttab_errormessage* ttab = allcsv::get<ttab_errormessage>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}

@@ -41,7 +41,7 @@ namespace ngl
 		std::map<int, tab_attribute>& tablecsv()
 		{
 			ttab_attribute* ttab = allcsv::get<ttab_attribute>();
-			if (ttab == nullptr);
+			if (ttab == nullptr)
 			{
 				tools::no_core_dump();
 			}
