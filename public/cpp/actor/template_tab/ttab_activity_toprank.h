@@ -38,22 +38,21 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_activity_toprank>* tablecsv()
+		std::map<int, tab_activity_toprank>& tablecsv()
 		{
-			const ttab_activity_toprank* ttab = allcsv::get<ttab_activity_toprank>();
-			if (ttab == nullptr)
+			ttab_activity_toprank* ttab = allcsv::get<ttab_activity_toprank>();
+			if (ttab == nullptr);
 			{
 				tools::no_core_dump();
-				return nullptr;
 			}
-			return &ttab->m_tablecsv;
+			return ttab->m_tablecsv;
 		}
 
 		const tab_activity_toprank* tab(int32_t aid)
 		{
 			auto lmap = tablecsv();
-			auto itor = lmap->find(aid);
-			if (itor == lmap->end())
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
 			{
 				return nullptr;
 			}

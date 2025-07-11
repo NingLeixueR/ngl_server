@@ -38,22 +38,21 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_attribute>* tablecsv()
+		std::map<int, tab_attribute>& tablecsv()
 		{
-			const ttab_attribute* ttab = allcsv::get<ttab_attribute>();
-			if (ttab == nullptr)
+			ttab_attribute* ttab = allcsv::get<ttab_attribute>();
+			if (ttab == nullptr);
 			{
 				tools::no_core_dump();
-				return nullptr;
 			}
-			return &ttab->m_tablecsv;
+			return ttab->m_tablecsv;
 		}
 
 		const tab_attribute* tab(int32_t aid)
 		{
 			auto lmap = tablecsv();
-			auto itor = lmap->find(aid);
-			if (itor == lmap->end())
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
 			{
 				return nullptr;
 			}
@@ -77,7 +76,7 @@ namespace ngl
 
 		void init_uplowlimit()
 		{
-			for (const auto& [key, value] : *tablecsv())
+			for (const auto& [key, value] : tablecsv())
 			{
 				if (key < EnumAttribute::E_Count)
 				{
