@@ -85,17 +85,17 @@ enum
 
 class help_writejson
 {
-	const std::array<std::string_view, ESPLIT_STR>& m_parts;
+	const std::vector<const char*>& m_parts;
 	ngl::json_write& m_json;
 
 	template <typename T>
-	bool dosth(ngl::json_write& ijson, const std::string_view& astr, const T& adata)
+	bool dosth(ngl::json_write& ijson, const char* astr, const T& adata)
 	{
-		ijson.write(astr.data(), adata);
+		ijson.write(astr, adata);
 		return true;
 	}
 public:
-	help_writejson(const std::array<std::string_view, ESPLIT_STR>& aparts, ngl::json_write& aijson) :
+	help_writejson(const std::vector<const char*>& aparts, ngl::json_write& aijson) :
 		m_parts(aparts),
 		m_json(aijson)
 	{}
@@ -135,16 +135,16 @@ public:
 
 class help_readjson
 {
-	const std::array<std::string_view, ESPLIT_STR>& m_parts;
+	const std::vector<const char*>& m_parts;
 	const ngl::json_read& m_json;
 
 	template <typename T>
-	bool dosth(const ngl::json_read& ojson, const std::string_view& astr, T& adata)
+	bool dosth(const ngl::json_read& ojson, const char* astr, T& adata)
 	{
-		return ojson.read(astr.data(), adata);
+		return ojson.read(astr, adata);
 	}
 public:
-	help_readjson(const std::array<std::string_view, ESPLIT_STR>& aparts, const ngl::json_read& aijson) :
+	help_readjson(const std::vector<const char*>& aparts, const ngl::json_read& aijson) :
 		m_parts(aparts),
 		m_json(aijson)
 	{}
@@ -179,47 +179,6 @@ public:
 		{
 			return fun(apos, adata);
 		}
-	}
-};
-
-class tools_split_str
-{
-public:
-	static constexpr auto fun(std::string_view str)
-	{
-		std::array<std::string_view, ESPLIT_STR> parts{};
-		size_t count = 0;
-		size_t start = 0;
-
-		for (size_t i = 0; i < str.size(); ++i)
-		{
-			if (str[i] == ',' && count < ESPLIT_STR)
-			{
-				parts[count++] = str.substr(start, i - start);
-				if (str[i + 1] == ' ')
-				{
-					start = i + 2;
-				}
-				else
-				{
-					start = i + 1;
-				}
-			}
-		}
-
-		// 处理最后一部分
-		if (start < str.size() && count < ESPLIT_STR)
-		{
-			parts[count++] = str.substr(start);
-		}
-
-		return parts;
-	}
-
-	static constexpr auto fun()
-	{
-		std::array<std::string_view, ESPLIT_STR> parts{};
-		return parts;
 	}
 };
 
@@ -258,7 +217,6 @@ public:
 	def_jsonfunction_write_parm(__VA_ARGS__)
 
 
-
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_jsonfunction(...)										\
 	inline void write(ngl::json_write& ijsn, const char* akey)const	\
@@ -267,11 +225,35 @@ public:
 		write(ltemp);												\
 		ijsn.write(akey, ltemp.nofree());							\
 	}																\
+	inline std::vector<const char*>& jsonparmvec(const char* astr = nullptr)const	\
+	{																\
+		static std::vector<const char*> tempvec;					\
+		if(astr == nullptr)											\
+		{															\
+			return tempvec;											\
+		}															\
+		static std::string tempstr(astr);							\
+		static std::atomic<bool> lregister = true;					\
+		if (lregister.exchange(false) && !tempstr.empty())			\
+		{															\
+			ngl::tools::replace(" ", "", tempstr, tempstr);			\
+			int32_t lpos = 0;										\
+			for (int32_t i = 0; i < tempstr.size(); ++i)			\
+			{														\
+				if (tempstr[i] == ',')								\
+				{													\
+					tempstr[i] = '\0';								\
+					tempvec.push_back(&tempstr.c_str()[lpos]);		\
+					lpos = i + 1;									\
+				}													\
+			}														\
+			tempvec.push_back(&tempstr.c_str()[lpos]);				\
+		}															\
+		return tempvec;												\
+	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		constexpr std::array<std::string_view, ESPLIT_STR> parts =	\
-			tools_split_str::fun(#__VA_ARGS__);						\
-		help_writejson ltemp(parts, ijsn);							\
+		help_writejson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
 		ltemp.fun(0, __VA_ARGS__);									\
 	}																\
 	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
@@ -285,9 +267,7 @@ public:
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
-		constexpr std::array<std::string_view, ESPLIT_STR> parts =  \
-			tools_split_str::fun(#__VA_ARGS__);						\
-		help_readjson ltemp(parts, ijsn);							\
+		help_readjson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
 		return ltemp.fun(0, __VA_ARGS__);							\
 	}
 #else
@@ -298,11 +278,34 @@ public:
 		write(ltemp);												\
 		ijsn.write(akey, ltemp.nofree());							\
 	}																\
+	inline std::vector<const char*>& jsonparmvec(const char* astr = nullptr)const	\
+	{																\
+		static std::vector<const char*> tempvec;					\
+		if(astr == nullptr)											\
+		{															\
+			return tempvec;											\
+		}															\
+		static std::string tempstr(astr);							\
+		static std::atomic<bool> lregister = true;					\
+		if (lregister.exchange(false) && !tempstr.empty())			\
+		{															\
+			int32_t lpos = 0;										\
+			for (int32_t i = 0; i < tempstr.size(); ++i)			\
+			{														\
+				if (tempstr[i] == ',')								\
+				{													\
+					tempstr[i] = '\0';								\
+					tempvec.push_back(&tempstr.c_str()[lpos]);		\
+					lpos = i + 1;									\
+				}													\
+			}														\
+			tempvec.push_back(&tempstr.c_str()[lpos]);				\
+		}															\
+		return tempvec;												\
+	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		constexpr std::array<std::string_view, ESPLIT_STR> parts =	\
-			tools_split_str::fun(#__VA_ARGS__);						\
-		help_writejson ltemp(parts, ijsn);							\
+		help_writejson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
 		ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);					\
 	}																\
 	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
@@ -316,9 +319,7 @@ public:
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
-		constexpr std::array<std::string_view, ESPLIT_STR> parts =  \
-			tools_split_str::fun(#__VA_ARGS__);						\
-		help_readjson ltemp(parts, ijsn);							\
+		help_readjson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
 		return ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);			\
 	}
 #endif
