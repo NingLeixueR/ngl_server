@@ -510,4 +510,90 @@ namespace ngl
 		dprotocoljson(np_gm_response, m_json)
 	};
 
+	// EPROTOCOL_TYPE 类型指的是TMAP::value_type
+	template <EPROTOCOL_TYPE TYPE, typename TMAP>
+	struct tmapjson
+	{
+		TMAP& m_data;
+		const char* m_name;
+
+		tmapjson(TMAP& adata) :
+			m_data(adata),
+			m_name(tools::type_name<typename TMAP::value_type>().c_str())
+		{}
+
+		inline bool read(const ngl::json_read& ijsn, const char* akey)
+		{
+			ngl::json_read ltemp;
+			if (ijsn.read(akey, ltemp) == false)
+			{
+				return false;
+			}
+			return read(ltemp);
+		}
+
+		struct nscript_outdata
+		{
+			std::map<std::string, std::string> m_data;
+			def_jsonfunction(m_data)
+		};
+
+		inline bool read(const ngl::json_read& ijsn)
+		{
+			nscript_outdata ltemp;
+			if (!ijsn.read(m_name, ltemp))
+			{
+				return false;
+			}
+			for (const auto& item :ltemp.m_data)
+			{
+				typename TMAP::value_type::second_type& lvalue = m_data[tools::lexical_cast<typename TMAP::key_type>(item.first)];
+				if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
+				{
+					if (!tools::json2proto(item.second, lvalue))
+					{
+						return false;
+					}
+				}
+				else
+				{
+					if (!tools::json2custom(item.second, lvalue))
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		inline void write(ngl::json_write& ijsn, const char* akey)const
+		{
+			ngl::json_write ltemp;
+			write(ltemp);
+			ijsn.write(akey, ltemp.nofree());
+		}
+		inline void write(ngl::json_write& ijsn)const
+		{
+			ngl::json_write ltemp1;
+			for (const auto& item : m_data)
+			{
+				std::string ljson;
+				if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
+				{
+					if (!tools::proto2json(item.second, ljson))
+					{
+						log_error()->print("tmapjson tools::proto2json fail");
+					}
+				}
+				else
+				{
+					tools::custom2json(item.second, ljson);
+				}
+				ltemp1.write(tools::lexical_cast<std::string>(item.first).c_str(), ljson.c_str());
+			}
+			ngl::json_write ltemp2;
+			ltemp2.write(m_name, ltemp1);
+		}
+	};
+
 }//namespace ngl
