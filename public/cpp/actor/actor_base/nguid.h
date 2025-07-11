@@ -383,3 +383,49 @@ struct std::formatter<ngl::nguid>
 		}
 	}
 };
+
+
+namespace ngl
+{
+	template <>
+	struct lexical_cast2<nguid>
+	{
+		static nguid fun(const std::string& source)
+		{
+			int64_t lvalue = tools::lexical_cast<int64_t>(source);
+			return nguid(lvalue);
+		}
+
+		static nguid fun(const char* source)
+		{
+			int64_t lvalue = tools::lexical_cast<int64_t>(source);
+			return nguid(lvalue);
+		}
+	};
+
+	template <>
+	struct lexical_cast2<std::string>
+	{
+		template <typename Source>
+		static std::string fun(const Source& source)
+		{
+			return std::format("{}", source);
+		}
+
+		static std::string fun(const std::string& source)
+		{
+			return source;
+		}
+
+		static std::string fun(const char* source)
+		{
+			return source;
+		}
+
+		static std::string fun(const nguid& source)
+		{
+			return tools::lexical_cast<std::string>((int64_t)(source));
+		}
+	};
+
+}

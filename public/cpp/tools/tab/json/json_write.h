@@ -70,15 +70,7 @@ namespace ngl
 		void write(const char* akey, const std::vector<std::string>& aval);
 
 		template <typename KEY, typename VAL>
-		void write(const char* akey, const std::map<KEY, VAL>& aval)
-		{
-			std::vector<std::pair<std::string, VAL>> lvec;
-			for (auto itor = aval.begin(); itor != aval.end(); ++itor)
-			{
-				lvec.push_back(std::make_pair(tools::lexical_cast<std::string>(itor->first), itor->second));
-			}
-			write(akey, lvec);
-		}
+		void write(const char* akey, const std::map<KEY, VAL>& aval);
 
 		template <typename VAL>
 		void write(const char* akey, const std::map<std::string, VAL>& aval)

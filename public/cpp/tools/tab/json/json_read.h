@@ -153,24 +153,11 @@ namespace ngl
 		}
 
 		template <typename KEY, typename VAL>
-		bool read(const char* akey, std::map<KEY, VAL>& aval) const
-		{
-			std::vector<std::pair<std::string, VAL>> lvec;
-			if (read(akey, lvec) == false)
-			{
-				return false;
-			}
-			for (int i = 0; i < lvec.size(); ++i)
-			{
-				aval.insert(std::make_pair(tools::lexical_cast<KEY>(lvec[i].first), lvec[i].second));
-			}
-			return true;
-		}
+		bool read(const char* akey, std::map<KEY, VAL>& aval) const;
 
 		template <typename VAL>
 		bool read(const char* akey, std::map<std::string, VAL>& aval) const
 		{
-
 			json_read ltemp;
 			if (read(akey, ltemp) == false)
 			{

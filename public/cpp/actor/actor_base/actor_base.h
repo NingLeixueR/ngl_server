@@ -207,16 +207,57 @@ namespace ngl
 #pragma region nscript
 		bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson);
 
-		template <typename T>
-		bool nscript_push_data(const T& adat)
+		template <EPROTOCOL_TYPE TYPE, typename T>
+		bool nscript_push_data(const T& adata)
 		{
 			std::string ljson;
-			if (!tools::proto2json(adat, ljson))
+			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
-				return false;
+				if (!tools::proto2json(adata, ljson))
+				{
+					return false;
+				}
 			}
-			std::string& lname = tools::type_name<T>();
-			return nscript_push_data(lname, adat.mid(), ljson);
+			else
+			{
+				json_write ljwrite;
+				adata.write(ljwrite);
+				ljwrite.get(ljson);
+			}
+			
+			return nscript_push_data(tools::type_name<T>(), -1, ljson);
+		}
+
+		template <EPROTOCOL_TYPE TYPE, typename T>
+		bool nscript_push_data(const std::map<int64_t, T>& adata)
+		{
+			std::string ljson;
+			int64_t lid = 0;
+			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
+			{
+				if (!tools::proto2json(adata, ljson))
+				{
+					return false;
+				}
+				lid = adata.mid();
+			}
+			else
+			{
+				json_write ljwrite;
+				adata.write(ljwrite);
+				ljwrite.get(ljson);
+				lid = -1;
+			}
+
+			return nscript_push_data(tools::type_name<T>(), lid, ljson);
+		}
+
+		// # 压入csv数据表
+		template <typename TT>
+		bool nscript_push_csv()
+		{
+			tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<int, typename TT::type_tab>> ltemp(TT::instance().tablecsv());
+			return nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
 		}
 
 		bool nscript_handle(const std::string& aname, const std::string& ajson);

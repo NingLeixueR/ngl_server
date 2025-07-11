@@ -108,6 +108,39 @@ namespace ngl
 			}
 			return ldata;
 		}
+
+		inline bool read(const ngl::json_read& ijsn, const char* akey)
+		{
+			ngl::json_read ltemp;
+			if (ijsn.read(akey, ltemp) == false)
+			{
+				return false;
+			}
+			return read(ltemp);
+		}
+
+		inline bool read(const ngl::json_read& ijsn)
+		{
+			std::string ljson;
+			if (!ijsn.read("data", ljson))
+			{
+				return false;
+			}
+			return tools::json2proto(ljson, get(false, false));
+		}
+
+		inline void write(ngl::json_write& ijsn, const char* akey)const	
+		{
+			ngl::json_write ltemp;
+			write(ltemp);
+			ijsn.write(akey, ltemp.nofree());
+		}
+		inline void write(ngl::json_write& ijsn)const
+		{
+			std::string ljson;
+			tools::proto2json(getconst(false), ljson);
+			ijsn.write("data", ljson);
+		}
 	};
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
@@ -359,12 +392,8 @@ namespace ngl
 
 		void nscript_push_data() final
 		{
-			//std::map<nguid, data_modified<TDBTAB>> m_data;
-			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
-			{
-				const TDBTAB& lval = item.second.getconst();
-				m_actor->nscript_push_data(lval);
-			}
+			tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<nguid, data_modified<TDBTAB>>> ltemp(m_data);
+			m_actor->nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
 		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
@@ -593,20 +622,19 @@ namespace ngl
 		std::string ljson;
 		if (nscript_check_outdata(lname, nguid::make(), ljson))
 		{
-			struct nscript_outdata
-			{
-				std::map<std::string, std::string> m_data;
-				def_jsonfunction(m_data)
-			};
 			ngl::json_read lread(ljson.c_str());
-			nscript_outdata ltemp;
-			if (!ltemp.read(lread))
+
+			std::map<nguid, T> m_data;
+			tmapjson<EPROTOCOL_TYPE_PROTOCOLBUFF, std::map<nguid, T>> ltemp(m_data);
+			json_read ljread;
+			if (!ltemp.read(ljread))
 			{
 				return false;
 			}
-			for (std::pair<const std::string, std::string>& item : ltemp.m_data)
+
+			for (std::pair<const nguid, T>& item : m_data)
 			{
-				tools::json2proto(ljson, adata[tools::lexical_cast<i64_actorid>(item.first)].get(true, false));
+				tools::json2proto(ljson, adata[item.first].get(false,false));
 			}
 			return true;
 		}

@@ -18,6 +18,10 @@
 
 #include <google/protobuf/util/json_util.h>
 
+#include "json_read.h"
+#include "json_write.h"
+
+
 #ifdef WIN32
 #define snprintf _snprintf
 #endif //WIN32
@@ -35,26 +39,6 @@ namespace ngl
 	template <typename Target>
 	struct lexical_cast2
 	{
-	};
-
-	template <>
-	struct lexical_cast2<std::string>
-	{
-		template <typename Source>
-		static std::string fun(const Source& source)
-		{
-			return std::format("{}", source);
-		}
-
-		static std::string fun(const std::string& source)
-		{
-			return source;
-		}
-
-		static std::string fun(const char* source)
-		{
-			return source;
-		}
 	};
 
 	template <>
@@ -290,6 +274,21 @@ namespace ngl
 		{
 			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(json, &adata);
 			return status.ok();
+		}
+
+		//EPROTOCOL_TYPE_CUSTOM
+		template <typename T>
+		static bool json2custom(const std::string& json, T& adata)
+		{
+			json_read ljread;
+			return adata.read(ljread);
+		}
+
+		template <typename T>
+		static void custom2json(const T& adata, const std::string& json)
+		{
+			json_write ljwrite;
+			adata.write(ljwrite);
 		}
 
 		template <typename TKEY, typename TVAL>
@@ -794,3 +793,32 @@ namespace ngl
 			return tools::lexical_cast<std::string>(adata);
 		};
 }//namespace ngl
+
+namespace ngl
+{
+	template <typename KEY, typename VAL>
+	bool json_read::read(const char* akey, std::map<KEY, VAL>& aval)const
+	{
+		std::vector<std::pair<std::string, VAL>> lvec;
+		if (read(akey, lvec) == false)
+		{
+			return false;
+		}
+		for (int i = 0; i < lvec.size(); ++i)
+		{
+			aval.insert(std::make_pair(tools::lexical_cast<KEY>(lvec[i].first), lvec[i].second));
+		}
+		return true;
+	}
+
+	template <typename KEY, typename VAL>
+	void json_write::write(const char* akey, const std::map<KEY, VAL>& aval)
+	{
+		std::vector<std::pair<std::string, VAL>> lvec;
+		for (auto itor = aval.begin(); itor != aval.end(); ++itor)
+		{
+			lvec.push_back(std::make_pair(tools::lexical_cast<std::string>(itor->first), itor->second));
+		}
+		write(akey, lvec);
+	}
+}
