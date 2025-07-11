@@ -15,6 +15,18 @@
 
 Dumper lDumper;
 
+struct aaaaaaaa
+{
+	/*********************************/
+	int32_t                          m_id; // [index:0][load:y] id 
+	std::string                      m_name; // [index:1][load:y] 名字 
+	//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
+	int16_t                          m_area; // [index:3][load:y] 区服
+	/*********************************/
+	// 序列化反序列化相关
+	dprotocoljson(aaaaaaaa, m_id, m_name, m_area)
+};
+
 int main(int argc, char** argv)
 {
 	std::map<int, float>::key_type;
@@ -49,6 +61,22 @@ int main(int argc, char** argv)
 	{
 		return 0;
 	}
+	std::string ljson;
+	ngl::json_write ljwrite;
+	aaaaaaaa laaaaaaaa;
+	laaaaaaaa.m_id = 1;
+	laaaaaaaa.m_name = "china";
+	laaaaaaaa.m_area = 3;
+	laaaaaaaa.write(ljwrite);
+	ljwrite.get(ljson);
+	
+
+	/*ngl::tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<int, typename ngl::ttab_servers::type_tab>> ltemp(ngl::ttab_servers::instance().tablecsv());
+	std::string ljson;
+	ngl::json_write ljwrite;
+	ltemp.write(ljwrite);
+	ljwrite.get(ljson);*/
+
 
 	nconfig::set_nodeid(tab->m_id);
 

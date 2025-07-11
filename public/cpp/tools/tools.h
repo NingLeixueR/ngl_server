@@ -293,10 +293,11 @@ namespace ngl
 		}
 
 		template <typename T>
-		static void custom2json(const T& adata, const std::string& json)
+		static void custom2json(const T& adata, std::string& ajson)
 		{
 			json_write ljwrite;
 			adata.write(ljwrite);
+			ljwrite.get(ajson);
 		}
 
 		template <typename TKEY, typename TVAL>
