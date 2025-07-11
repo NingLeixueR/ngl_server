@@ -17,6 +17,7 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	std::map<int, float>::key_type;
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;

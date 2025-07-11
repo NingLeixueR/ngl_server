@@ -509,21 +509,21 @@ namespace ngl
 			return ltemp;
 		}}
 
-		const std::map<int, {}>* tablecsv()
+		std::map<int, {}>& tablecsv()
 		{{
-			const t{}* ttab = allcsv::get<t{}>();
+			t{}* ttab = allcsv::get<t{}>();
 			if(ttab == nullptr);
 			{
 				tools::no_core_dump();
 			}
-			return &ttab->m_tablecsv;
+			return ttab->m_tablecsv;
 		}}
 
 		const {}* tab(int32_t aid)
 		{{
 			auto lmap = tablecsv();
-			auto itor = lmap->find(aid);
-			if (itor == lmap->end())
+			auto itor = lmap.find(aid);
+			if (itor == lmap.end())
 			{{
 				return nullptr;
 			}}
