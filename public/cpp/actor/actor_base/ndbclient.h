@@ -66,8 +66,8 @@ namespace ngl
 		public data_modified_base
 	{
 	private:
-		data_modified(const data_modified&) = delete;
-		data_modified& operator=(const data_modified&) = delete;
+		//data_modified(const data_modified&) = delete;
+		//data_modified& operator=(const data_modified&) = delete;
 
 		mutable TDBTAB m_data;
 		mutable TDBTAB* m_pdata = nullptr;
@@ -392,8 +392,8 @@ namespace ngl
 
 		void nscript_push_data() final
 		{
-			tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<nguid, data_modified<TDBTAB>>> ltemp(m_data);
-			m_actor->nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
+			//tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<nguid, data_modified<TDBTAB>>> ltemp(m_data);
+			//m_actor->nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
 		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
@@ -618,7 +618,7 @@ namespace ngl
 	template <typename T>
 	bool actor_base::nscript_check_outdata(std::map<nguid, data_modified<T>>& adata)
 	{
-		std::string& lname = tools::type_name<T>();
+		/*std::string& lname = tools::type_name<T>();
 		std::string ljson;
 		if (nscript_check_outdata(lname, nguid::make(), ljson))
 		{
@@ -637,7 +637,7 @@ namespace ngl
 				tools::json2proto(ljson, adata[item.first].get(false,false));
 			}
 			return true;
-		}
+		}*/
 		return false;
 	}
 }//namespace ngl

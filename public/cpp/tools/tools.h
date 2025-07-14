@@ -272,6 +272,17 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
+		template <typename T>
+		static bool proto2json(const google::protobuf::Map<std::string, T>& adata, std::string& json)
+		{
+			google::protobuf::util::JsonPrintOptions options;
+			options.add_whitespace = false;
+			options.always_print_primitive_fields = false;
+			options.preserve_proto_field_names = false;
+			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();
+		}
+
+
 		// 以json格式打印pb数据
 		template <typename T>
 		static void print_json2proto(const T& adata, bool aislog = false);
@@ -279,6 +290,13 @@ namespace ngl
 		// 通过json获取结构
 		template <typename T>
 		static bool json2proto(const std::string& json, T& adata)
+		{
+			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(json, &adata);
+			return status.ok();
+		}
+
+		template <typename T>
+		static bool json2proto(const std::string& json, google::protobuf::Map<std::string, T>& adata)
 		{
 			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(json, &adata);
 			return status.ok();
@@ -800,28 +818,33 @@ namespace ngl
 namespace ngl
 {
 	template <typename KEY, typename VAL>
-	bool json_read::read(const char* akey, std::map<KEY, VAL>& aval)const
+	void json_write::write_mapnumber(const char* akey, const std::map<KEY, VAL>& aval)
 	{
-		std::vector<std::pair<std::string, VAL>> lvec;
-		if (read(akey, lvec) == false)
+		json_write ltemp;
+		for (const auto& item : aval)
 		{
-			return false;
+			ltemp.write(tools::lexical_cast<std::string>(item.first).c_str(), item.second);
 		}
-		for (int i = 0; i < lvec.size(); ++i)
-		{
-			aval.insert(std::make_pair(tools::lexical_cast<KEY>(lvec[i].first), lvec[i].second));
-		}
-		return true;
+		write(akey, ltemp);
 	}
 
 	template <typename KEY, typename VAL>
-	void json_write::write(const char* akey, const std::map<KEY, VAL>& aval)
+	bool json_read::read_mapnumber(const char* akey, std::map<KEY, VAL>& aval) const
 	{
-		std::vector<std::pair<std::string, VAL>> lvec;
-		for (auto itor = aval.begin(); itor != aval.end(); ++itor)
+		json_read ltemp;
+		if (read(akey, ltemp) == false)
 		{
-			lvec.push_back(std::make_pair(tools::lexical_cast<std::string>(itor->first), itor->second));
+			return false;
 		}
-		write(akey, lvec);
+
+		for (cJSON* child = ltemp.m_json->child; child != nullptr; child = child->next)
+		{
+			KEY lkey = tools::lexical_cast<KEY>(child->string);
+			if (!ltemp.read(child->string, aval[lkey]))
+			{
+				return false;
+			}				
+		}
+		return true;
 	}
 }
