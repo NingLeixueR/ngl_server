@@ -13,20 +13,10 @@
 namespace ngl
 {
 	class json_read;
+	union nguid;
 
-	template <typename E, bool IS_ENUM>
-	class enum_operator_readjson
-	{
-	public:
-		static bool fun(const ngl::json_read& ijsn, const char* akey, E& adata);
-	};
-
-	template <typename E>
-	class enum_operator_readjson<E, true>
-	{
-	public:
-		static bool fun(const ngl::json_read& ijsn, const char* akey, E& adata);
-	};
+	template <typename T, bool IS_FORWARD>
+	struct protobuf_data;
 
 	class json_read
 	{
@@ -44,6 +34,11 @@ namespace ngl
 			return m_json != nullptr;
 		}
 
+		cJSON* json()
+		{
+			return m_json;
+		}
+
 		bool read(const char* akey, std::string& adata) const;
 		bool read(const char* akey, int8_t& adata) const;
 		bool read(const char* akey, int16_t& adata) const;
@@ -58,12 +53,16 @@ namespace ngl
 		bool read(const char* akey, bool& adata) const;
 		bool read(const char* akey, cJSON*& adata) const;
 		bool read(const char* akey, json_read& adata) const;
+		bool read(const char* akey, nguid& aval) const;
+		//protobuf_data
+
+		template <typename T, bool IS_FORWARD = false>
+		bool read(const char* akey, protobuf_data<T, IS_FORWARD>& aval) const;
 
 		template <typename T>
 		bool read_number(
 			const char* akey
-			, std::vector<T>& aval
-			, const std::function<bool(const cJSON* ajson, T& aval)>& afun
+			, const std::function<void(const cJSON* ajson)>& afun
 		)const
 		{
 			cJSON* ltemp = nullptr;
@@ -75,12 +74,7 @@ namespace ngl
 			for (int i = 0; i < lsize; ++i)
 			{
 				cJSON* ret = cJSON_GetArrayItem(ltemp, i);
-				T lval;
-				if (afun(ret, lval) == false)
-				{
-					continue;
-				}
-				aval.push_back(lval);
+				afun(ret);
 			}
 			return true;
 		}
@@ -98,10 +92,49 @@ namespace ngl
 		bool read(const char* akey, std::vector<bool>& adata) const;
 		bool read(const char* akey, std::vector<std::string> & adata) const;
 
+		bool read(const char* akey, std::list<int8_t>& adata) const;
+		bool read(const char* akey, std::list<int16_t>& adata) const;
+		bool read(const char* akey, std::list<int32_t>& adata) const;
+		bool read(const char* akey, std::list<int64_t>& adata) const;
+		bool read(const char* akey, std::list<uint8_t>& adata) const;
+		bool read(const char* akey, std::list<uint16_t>& adata) const;
+		bool read(const char* akey, std::list<uint32_t>& adata) const;
+		bool read(const char* akey, std::list<uint64_t>& adata) const;
+		bool read(const char* akey, std::list<float>& adata) const;
+		bool read(const char* akey, std::list<double>& adata) const;
+		bool read(const char* akey, std::list<bool>& adata) const;
+		bool read(const char* akey, std::list<std::string>& adata) const;
+
+		bool read(const char* akey, std::set<int8_t>& adata) const;
+		bool read(const char* akey, std::set<int16_t>& adata) const;
+		bool read(const char* akey, std::set<int32_t>& adata) const;
+		bool read(const char* akey, std::set<int64_t>& adata) const;
+		bool read(const char* akey, std::set<uint8_t>& adata) const;
+		bool read(const char* akey, std::set<uint16_t>& adata) const;
+		bool read(const char* akey, std::set<uint32_t>& adata) const;
+		bool read(const char* akey, std::set<uint64_t>& adata) const;
+		bool read(const char* akey, std::set<float>& adata) const;
+		bool read(const char* akey, std::set<double>& adata) const;
+		bool read(const char* akey, std::set<bool>& adata) const;
+		bool read(const char* akey, std::set<std::string>& adata) const;
+
 		template <typename T>
 		bool read(const char* akey, T& adata) const
 		{
-			return enum_operator_readjson<T, std::is_enum<T>::value>::fun(*this, akey, adata);
+			if constexpr (std::is_enum<T>::value)
+			{
+				int32_t ltemp = 0;
+				if (read(akey, ltemp))
+				{
+					adata = (T)ltemp;
+					return true;
+				}
+				return false;
+			}
+			else
+			{
+				return adata.read(*this, akey);
+			}
 		}
 
 		template <typename T>
@@ -126,34 +159,48 @@ namespace ngl
 			return true;
 		}
 
-		template <typename VAL>
-		bool read(const char* akey, std::vector<std::pair<std::string, VAL>>& adata) const
-		{
-			const cJSON* ret = cJSON_GetObjectItem(m_json, akey);
-			if (nullptr == ret || ret->type != cJSON_Array)
-			{
-				return false;
-			}
-			int lsize = cJSON_GetArraySize(ret);
-			for (int i = 0; i < lsize; ++i)
-			{
-				cJSON* tempret = cJSON_GetArrayItem(ret, i);
-				std::string lkey = tempret->child->string;
-				VAL lval;
-				json_read lretobj;
-				lretobj.m_free = false;
-				lretobj.m_json = tempret;
-				if (lretobj.read(lkey.c_str(), lval) == false)
-				{
-					continue;
-				}
-				adata.push_back(std::make_pair(lkey, lval));
-			}
-			return true;
-		}
 
 		template <typename KEY, typename VAL>
-		bool read(const char* akey, std::map<KEY, VAL>& aval) const;
+		bool read_mapnumber(const char* akey, std::map<KEY, VAL>& aval) const;
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<nguid, VAL>& aval) const;
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<int16_t, VAL>& aval) const
+		{
+			return read_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<uint16_t, VAL>& aval) const
+		{
+			return read_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<int32_t, VAL>& aval) const
+		{
+			return read_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<uint32_t, VAL>& aval) const
+		{
+			return read_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<int64_t, VAL>& aval) const
+		{
+			return read_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		bool read(const char* akey, std::map<uint64_t, VAL>& aval) const
+		{
+			return read_mapnumber(akey, aval);
+		}
 
 		template <typename VAL>
 		bool read(const char* akey, std::map<std::string, VAL>& aval) const
@@ -223,23 +270,5 @@ namespace ngl
 			}
 		}
 	};
-
-	template <typename E, bool IS_ENUM>
-	bool enum_operator_readjson<E, IS_ENUM>::fun(const ngl::json_read& ijsn, const char* akey, E& adata)
-	{
-		return ijsn.read(akey, adata);
-	}
-
-	template <typename E>
-	bool enum_operator_readjson<E, true>::fun(const ngl::json_read& ijsn, const char* akey, E& adata)
-	{
-		int32_t ltemp = 0;
-		if (ijsn.read(akey, ltemp))
-		{
-			adata = (E)ltemp;
-			return true;
-		}
-		return false;
-	}
 
 }// namespace ngl

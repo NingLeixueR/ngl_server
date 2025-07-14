@@ -519,7 +519,7 @@ namespace ngl
 
 		tmapjson(TMAP& adata) :
 			m_data(adata),
-			m_name(tools::type_name<typename TMAP::value_type>().c_str())
+			m_name(tools::type_name<typename TMAP::value_type::second_type>().c_str())
 		{}
 
 		inline bool read(const ngl::json_read& ijsn, const char* akey)
@@ -532,37 +532,29 @@ namespace ngl
 			return read(ltemp);
 		}
 
-		struct nscript_outdata
-		{
-			std::map<std::string, std::string> m_data;
-			def_jsonfunction(m_data)
-		};
-
 		inline bool read(const ngl::json_read& ijsn)
 		{
-			nscript_outdata ltemp;
-			if (!ijsn.read(m_name, ltemp))
+
+			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
-				return false;
+			//	google::protobuf::Map<std::string, typename TMAP::value_type::second_type> lmap;
+			//	for (const auto& item : ltemp.m_data)
+			//	{
+			//		lmap[tools::lexical_cast<std::string>(item.first)] = item.second;
+			//	}
+			//	std::string ltempstr;
+			//	if (!tools::json2proto(ltempstr, lmap))
+			//	{
+			//		return false;
+			//	}
 			}
-			for (const auto& item :ltemp.m_data)
+			else
 			{
-				typename TMAP::value_type::second_type& lvalue = m_data[tools::lexical_cast<typename TMAP::key_type>(item.first)];
-				if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
-				{
-					if (!tools::json2proto(item.second, lvalue))
-					{
-						return false;
-					}
-				}
-				else
-				{
-					if (!tools::json2custom(item.second, lvalue))
-					{
-						return false;
-					}
-				}
+				std::map<std::string, typename TMAP::value_type::second_type> lmap;
+				return ijsn.read(m_name, lmap);
 			}
+
+			
 			return true;
 		}
 
@@ -575,24 +567,28 @@ namespace ngl
 		inline void write(ngl::json_write& ijsn)const
 		{
 			ngl::json_write ltemp1;
-			for (const auto& item : m_data)
+			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
-				std::string ljson;
-				if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
+				google::protobuf::Map<std::string, typename TMAP::value_type::second_type> lmap;
+				for (const auto& item : m_data)
 				{
-					if (!tools::proto2json(item.second, ljson))
-					{
-						log_error()->print("tmapjson tools::proto2json fail");
-					}
+					lmap[tools::lexical_cast<std::string>(item.first)] = item.second;
 				}
-				else
+				std::string ltempstr;
+				if (!tools::json2proto(ltempstr, lmap))
 				{
-					tools::custom2json(item.second, ljson);
+					return false;
 				}
-				ltemp1.write(tools::lexical_cast<std::string>(item.first).c_str(), ljson.c_str());
 			}
-			ngl::json_write ltemp2;
-			ltemp2.write(m_name, ltemp1);
+			else
+			{
+				std::map<std::string, typename TMAP::value_type::second_type> lmap;
+				for (const auto& item : m_data)
+				{
+					lmap.insert(std::make_pair(tools::lexical_cast<std::string>(item.first), item.second));
+				}
+				ijsn.write(m_name, lmap);
+			}
 		}
 	};
 

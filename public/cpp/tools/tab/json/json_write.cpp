@@ -129,7 +129,30 @@ namespace ngl
 		writenumber(akey, lvec);
 	}
 
+	void json_write::write(const char* akey, const std::list<int8_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<int8_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
 	void json_write::write(const char* akey, const std::vector<int16_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::list<int16_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+	void json_write::write(const char* akey, const std::set<int16_t>& aval)
 	{
 		std::vector<int32_t> lvec(aval.begin(), aval.end());
 		writenumber(akey, lvec);
@@ -140,7 +163,31 @@ namespace ngl
 		writenumber(akey, aval);
 	}
 
+	void json_write::write(const char* akey, const std::list<int32_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<int32_t>& aval)
+	{
+		std::vector<int32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
 	void json_write::write(const char* akey, const std::vector<uint8_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::list<uint8_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<uint8_t>& aval)
 	{
 		std::vector<uint32_t> lvec(aval.begin(), aval.end());
 		writenumber(akey, lvec);
@@ -152,9 +199,33 @@ namespace ngl
 		writenumber(akey, lvec);
 	}
 
+	void json_write::write(const char* akey, const std::list<uint16_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<uint16_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
 	void json_write::write(const char* akey, const std::vector<uint32_t>& aval)
 	{
 		writenumber(akey, aval);
+	}
+
+	void json_write::write(const char* akey, const std::list<uint32_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<uint32_t>& aval)
+	{
+		std::vector<uint32_t> lvec(aval.begin(), aval.end());
+		writenumber(akey, lvec);
 	}
 
 	void json_write::write(const char* akey, const std::vector<float>& aval)
@@ -163,10 +234,34 @@ namespace ngl
 		write(akey, ljson);
 	}
 
+	void json_write::write(const char* akey, const std::list<float>& aval)
+	{
+		std::vector<float> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<float>& aval)
+	{
+		std::vector<float> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
 	void json_write::write(const char* akey, const std::vector<double>& aval)
 	{
 		cJSON* ljson = cJSON_CreateDoubleArray(aval.data(), (int)aval.size());
 		write(akey, ljson);
+	}
+
+	void json_write::write(const char* akey, const std::list<double>& aval)
+	{
+		std::vector<double> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<double>& aval)
+	{
+		std::vector<double> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
 	}
 
 	void json_write::write(const char* akey, const std::vector<int64_t>& aval)
@@ -180,6 +275,18 @@ namespace ngl
 		write(akey, ljson);
 	}
 
+	void json_write::write(const char* akey, const std::list<int64_t>& aval)
+	{
+		std::vector<int64_t> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<int64_t>& aval)
+	{
+		std::vector<int64_t> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
 	void json_write::write(const char* akey, const std::vector<uint64_t>& aval)
 	{
 		cJSON* ljson = cJSON_CreateArray();
@@ -191,7 +298,39 @@ namespace ngl
 		write(akey, ljson);
 	}
 
+	void json_write::write(const char* akey, const std::list<uint64_t>& aval)
+	{
+		std::vector<uint64_t> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
+	void json_write::write(const char* akey, const std::set<uint64_t>& aval)
+	{
+		std::vector<uint64_t> lvec(aval.begin(), aval.end());
+		write(akey, lvec);
+	}
+
 	void json_write::write(const char* akey, const std::vector<std::string>& aval)
+	{
+		cJSON* ljson = cJSON_CreateArray();
+		for (const std::string& item : aval)
+		{
+			cJSON_AddItemToArray(ljson, cJSON_CreateString(item.c_str()));
+		}
+		write(akey, ljson);
+	}
+
+	void json_write::write(const char* akey, const std::list<std::string>& aval)
+	{
+		cJSON* ljson = cJSON_CreateArray();
+		for (const std::string& item : aval)
+		{
+			cJSON_AddItemToArray(ljson, cJSON_CreateString(item.c_str()));
+		}
+		write(akey, ljson);
+	}
+
+	void json_write::write(const char* akey, const std::set<std::string>& aval)
 	{
 		cJSON* ljson = cJSON_CreateArray();
 		for (const std::string& item : aval)

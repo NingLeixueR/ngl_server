@@ -12,20 +12,7 @@
 namespace ngl
 {
 	class json_write;
-	// # 用于json枚举类型
-	template <typename E, bool IS_ENUM>
-	class enum_operator_writejson
-	{
-	public:
-		static void fun(json_write& ijsn, const char* akey, const E& adata);
-	};
-
-	template <typename E>
-	class enum_operator_writejson<E, true>
-	{
-	public:
-		static void fun(json_write& ijsn, const char* akey, const E& adata);
-	};
+	union nguid;
 
 	class json_write
 	{
@@ -69,8 +56,29 @@ namespace ngl
 		void write(const char* akey, const std::vector<uint64_t>& aval);
 		void write(const char* akey, const std::vector<std::string>& aval);
 
-		template <typename KEY, typename VAL>
-		void write(const char* akey, const std::map<KEY, VAL>& aval);
+		void write(const char* akey, const std::list<int8_t>& aval);
+		void write(const char* akey, const std::list<int16_t>& aval);
+		void write(const char* akey, const std::list<int32_t>& aval);
+		void write(const char* akey, const std::list<uint8_t>& aval);
+		void write(const char* akey, const std::list<uint16_t>& aval);
+		void write(const char* akey, const std::list<uint32_t>& aval);
+		void write(const char* akey, const std::list<float>& aval);
+		void write(const char* akey, const std::list<double>& aval);
+		void write(const char* akey, const std::list<int64_t>& aval);
+		void write(const char* akey, const std::list<uint64_t>& aval);
+		void write(const char* akey, const std::list<std::string>& aval);
+
+		void write(const char* akey, const std::set<int8_t>& aval);
+		void write(const char* akey, const std::set<int16_t>& aval);
+		void write(const char* akey, const std::set<int32_t>& aval);
+		void write(const char* akey, const std::set<uint8_t>& aval);
+		void write(const char* akey, const std::set<uint16_t>& aval);
+		void write(const char* akey, const std::set<uint32_t>& aval);
+		void write(const char* akey, const std::set<float>& aval);
+		void write(const char* akey, const std::set<double>& aval);
+		void write(const char* akey, const std::set<int64_t>& aval);
+		void write(const char* akey, const std::set<uint64_t>& aval);
+		void write(const char* akey, const std::set<std::string>& aval);
 
 		template <typename VAL>
 		void write(const char* akey, const std::map<std::string, VAL>& aval)
@@ -83,17 +91,46 @@ namespace ngl
 			write(akey, ltemp);
 		}
 
-		template <typename T>
-		void write(const char* akey, const std::list<T>& aval)
+		template <typename KEY, typename VAL>
+		void write_mapnumber(const char* akey, const std::map<KEY, VAL>& aval);
+
+		template <typename VAL>
+		void write(const char* akey, const std::map<nguid, VAL>& aval);
+
+		template <typename VAL>
+		void write(const char* akey, const std::map<int16_t, VAL>& aval)
 		{
-			std::vector<T> ltemp(aval.begin(), aval.end());
-			write(akey, ltemp);
+			write_mapnumber(akey, aval);
 		}
 
-		template <typename T>
-		void write(const char* akey, const T& aval)
+		template <typename VAL>
+		void write(const char* akey, const std::map<uint16_t, VAL>& aval)
 		{
-			enum_operator_writejson<T, std::is_enum<T>::value>::fun(*this, akey, aval);
+			write_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		void write(const char* akey, const std::map<int32_t, VAL>& aval)
+		{
+			write_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		void write(const char* akey, const std::map<uint32_t, VAL>& aval)
+		{
+			write_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		void write(const char* akey, const std::map<int64_t, VAL>& aval)
+		{
+			write_mapnumber(akey, aval);
+		}
+
+		template <typename VAL>
+		void write(const char* akey, const std::map<uint64_t, VAL>& aval)
+		{
+			write_mapnumber(akey, aval);
 		}
 
 		template <typename T>
@@ -109,18 +146,46 @@ namespace ngl
 			write(akey, larray);
 		}
 
-		template <typename TVAL>
-		void write(const char* akey, const std::vector<std::pair<std::string, TVAL>>& aval)
+		template <typename T>
+		void write(const char* akey, const std::list<T>& aval)
 		{
 			cJSON* larray = cJSON_CreateArray();
-			for (const std::pair<std::string, TVAL>& apair : aval)
+			for (const T& item : aval)
 			{
 				ngl::json_write ltemp;
-				ltemp.write(apair.first.c_str(), apair.second);
+				item.write(ltemp);
 				cJSON_AddItemToArray(larray, ltemp.nofree());
 			}
 			write(akey, larray);
 		}
+
+		template <typename T>
+		void write(const char* akey, const std::set<T>& aval)
+		{
+			cJSON* larray = cJSON_CreateArray();
+			for (const T& item : aval)
+			{
+				ngl::json_write ltemp;
+				item.write(ltemp);
+				cJSON_AddItemToArray(larray, ltemp.nofree());
+			}
+			write(akey, larray);
+		}
+
+		template <typename T>
+		void write(const char* akey, const T& aval)
+		{
+			if constexpr (std::is_enum<T>::value)
+			{
+				write(akey, (int32_t)aval);
+			}
+			else
+			{
+				aval.write(*this, akey);
+			}
+		}
+
+		
 
 		// 支持没有参数
 		void write();
@@ -149,15 +214,4 @@ namespace ngl
 		bool			m_free;
 	};
 
-	template <typename E, bool IS_ENUM>
-	void enum_operator_writejson<E, IS_ENUM>::fun(json_write& ijsn, const char* akey, const E& adata)
-	{
-		ijsn.write(akey, adata);
-	}
-
-	template <typename E>
-	void enum_operator_writejson<E, true>::fun(json_write& ijsn, const char* akey, const E& adata)
-	{
-		ijsn.write(akey, (int32_t)adata);
-	}
 }// namespace ngl

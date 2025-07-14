@@ -1,5 +1,6 @@
 #include "json_read.h"
 #include "tools.h"
+#include "nguid.h"
 
 namespace ngl
 {
@@ -301,6 +302,17 @@ namespace ngl
 		return true;
 	}
 
+	bool json_read::read(const char* akey, nguid& aval)const
+	{
+		int64_t lvalue = 0;
+		if (read(akey, lvalue))
+		{
+			aval = nguid(lvalue);
+			return true;
+		}
+		return false;
+	}
+
 	bool json_read::read(const char* akey, json_read& adata) const
 	{
 		if (read(akey, adata.m_json) == false)
@@ -313,85 +325,398 @@ namespace ngl
 
 	bool json_read::read(const char* akey, std::vector<int8_t>& adata) const
 	{
-		return read_number<int8_t>(akey, adata, [](const cJSON* ajson, int8_t& aval)->bool
+		return read_number<int8_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				int8_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
 			});
 	}
+
+	bool json_read::read(const char* akey, std::list<int8_t>& adata) const
+	{
+		return read_number<int8_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int8_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<int8_t>& adata) const
+	{
+		return read_number<int8_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int8_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
+			});
+	}
+
 	bool json_read::read(const char* akey, std::vector<int16_t>& adata) const
 	{
-		return read_number<int16_t>(akey, adata, [](const cJSON* ajson, int16_t& aval)->bool
+		return read_number<int16_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				int16_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
 			});
 	}
+
+	bool json_read::read(const char* akey, std::list<int16_t>& adata) const
+	{
+		return read_number<int16_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int16_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<int16_t>& adata) const
+	{
+		return read_number<int16_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int16_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
+			});
+	}
+
 	bool json_read::read(const char* akey, std::vector<int32_t>& adata) const
 	{
-		return read_number<int32_t>(akey, adata, [](const cJSON* ajson, int32_t& aval)->bool
+		return read_number<int32_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				int32_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<int32_t>& adata) const
+	{
+		return read_number<int32_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int32_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<int32_t>& adata) const
+	{
+		return read_number<int32_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int32_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
 			});
 	}
 
 	bool json_read::read(const char* akey, std::vector<int64_t>& adata) const
 	{
-		return read_number<int64_t>(akey, adata, [](const cJSON* ajson, int64_t& aval)->bool
+		return read_number<int64_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				int64_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<int64_t>& adata) const
+	{
+		return read_number<int64_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int64_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<int64_t>& adata) const
+	{
+		return read_number<int64_t>(akey, [&adata](const cJSON* ajson)
+			{
+				int64_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
 			});
 	}
 
 	bool json_read::read(const char* akey, std::vector<uint8_t>& adata) const
 	{
-		return read_number<uint8_t>(akey, adata, [](const cJSON* ajson, uint8_t& aval)->bool
+		return read_number<uint8_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				uint8_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<uint8_t>& adata) const
+	{
+		return read_number<uint8_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint8_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<uint8_t>& adata) const
+	{
+		return read_number<uint8_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint8_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
 			});
 	}
 
 	bool json_read::read(const char* akey, std::vector<uint16_t>& adata) const
 	{
-		return read_number<uint16_t>(akey, adata, [](const cJSON* ajson, uint16_t& aval)->bool
+		return read_number<uint16_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				uint16_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
 			});
 	}
+
+	bool json_read::read(const char* akey, std::list<uint16_t>& adata) const
+	{
+		return read_number<uint16_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint16_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<uint16_t>& adata) const
+	{
+		return read_number<uint16_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint16_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
+			});
+	}
+
 	bool json_read::read(const char* akey, std::vector<uint32_t>& adata) const
 	{
-		return read_number<uint32_t>(akey, adata, [](const cJSON* ajson, uint32_t& aval)->bool
+		return read_number<uint32_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				uint32_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<uint32_t>& adata) const
+	{
+		return read_number<uint32_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint32_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<uint32_t>& adata) const
+	{
+		return read_number<uint32_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint32_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
 			});
 	}
 
 	bool json_read::read(const char* akey, std::vector<uint64_t>& adata) const
 	{
-		return read_number<uint64_t>(akey, adata, [](const cJSON* ajson, uint64_t& aval)->bool
+		return read_number<uint64_t>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				uint64_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<uint64_t>& adata) const
+	{
+		return read_number<uint64_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint64_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<uint64_t>& adata) const
+	{
+		return read_number<uint64_t>(akey, [&adata](const cJSON* ajson)
+			{
+				uint64_t aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
 			});
 	}
 
 	bool json_read::read(const char* akey, std::vector<float>& adata) const
 	{
-		return read_number<float>(akey, adata, [](const cJSON* ajson, float& aval)->bool
+		return read_number<float>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
-			});
-	}
-	bool json_read::read(const char* akey, std::vector<double>& adata) const
-	{
-		return read_number<double>(akey, adata, [](const cJSON* ajson, double& aval)->bool
-			{
-				return json_read_number::fun_value(ajson, aval);
+				float aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
 			});
 	}
 
+	bool json_read::read(const char* akey, std::list<float>& adata) const
+	{
+		return read_number<float>(akey, [&adata](const cJSON* ajson)
+			{
+				float aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<float>& adata) const
+	{
+		return read_number<float>(akey, [&adata](const cJSON* ajson)
+			{
+				float aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::vector<double>& adata) const
+	{
+		return read_number<double>(akey, [&adata](const cJSON* ajson)
+			{
+				double aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<double>& adata) const
+	{
+		return read_number<double>(akey, [&adata](const cJSON* ajson)
+			{
+				double aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<double>& adata) const
+	{
+		return read_number<double>(akey, [&adata](const cJSON* ajson)
+			{
+				double aval = 0;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
+			});
+	}
+
+
 	bool json_read::read(const char* akey, std::vector<bool>& adata) const
 	{
-		return read_number<bool>(akey, adata, [](const cJSON* ajson, bool& aval)->bool
+		return read_number<bool>(akey, [&adata](const cJSON* ajson)
 			{
-				return json_read_number::fun_value(ajson, aval);
+				bool aval = true;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::list<bool>& adata) const
+	{
+		return read_number<bool>(akey, [&adata](const cJSON* ajson)
+			{
+				bool aval = true;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.push_back(aval);
+				}
+			});
+	}
+
+	bool json_read::read(const char* akey, std::set<bool>& adata) const
+	{
+		return read_number<bool>(akey, [&adata](const cJSON* ajson)
+			{
+				bool aval = true;
+				if (json_read_number::fun_value(ajson, aval))
+				{
+					adata.insert(aval);
+				}
 			});
 	}
 
@@ -415,4 +740,47 @@ namespace ngl
 		}
 		return true;
 	}
+
+	bool json_read::read(const char* akey, std::list<std::string>& adata) const
+	{
+		cJSON* ltemp = nullptr;
+		if (read(akey, ltemp) == false)
+		{
+			return false;
+		}
+		int lsize = cJSON_GetArraySize(ltemp);
+		for (int i = 0; i < lsize; ++i)
+		{
+			const cJSON* ret = cJSON_GetArrayItem(ltemp, i);
+			if (nullptr == ret || ret->type != cJSON_String)
+			{
+				continue;
+			}
+			std::string lval;
+			adata.emplace_back(ret->valuestring);
+		}
+		return true;
+	}
+
+	bool json_read::read(const char* akey, std::set<std::string>& adata) const
+	{
+		cJSON* ltemp = nullptr;
+		if (read(akey, ltemp) == false)
+		{
+			return false;
+		}
+		int lsize = cJSON_GetArraySize(ltemp);
+		for (int i = 0; i < lsize; ++i)
+		{
+			const cJSON* ret = cJSON_GetArrayItem(ltemp, i);
+			if (nullptr == ret || ret->type != cJSON_String)
+			{
+				continue;
+			}
+			std::string lval;
+			adata.insert(ret->valuestring);
+		}
+		return true;
+	}
+
 }// namespace ngl
