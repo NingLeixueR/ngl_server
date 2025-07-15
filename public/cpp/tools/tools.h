@@ -272,14 +272,35 @@ namespace ngl
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
 
-		template <typename T>
-		static bool proto2json(const google::protobuf::Map<std::string, T>& adata, std::string& json)
+		template <typename TKEY, typename TVALUE>
+		static bool proto2json(const std::map<TKEY, TVALUE>& adata, std::string& json)
 		{
-			google::protobuf::util::JsonPrintOptions options;
-			options.add_whitespace = false;
-			options.always_print_primitive_fields = false;
-			options.preserve_proto_field_names = false;
-			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();
+			json = "{\"";
+			json += tools::type_name<TVALUE>();
+			json += "\":{";
+			bool lfirst = true;
+			for (const auto item : adata)
+			{
+				if (lfirst)
+				{
+					lfirst = false;
+				}
+				else
+				{
+					json += ",";
+				}
+				std::string ltemp;
+				if (!proto2json(item.second, ltemp))
+				{
+					continue;
+				}
+				json += "\"";
+				json += item.first;
+				json += "\":";
+				json += ltemp;
+			}
+			json += "}}";
+			return true;
 		}
 
 
@@ -295,27 +316,59 @@ namespace ngl
 			return status.ok();
 		}
 
-		template <typename T>
-		static bool json2proto(const std::string& json, google::protobuf::Map<std::string, T>& adata)
+		template <typename TKEY, typename TVALUE>
+		static bool json2proto(
+			const std::string& json
+			, std::map<TKEY, TVALUE>& adata
+		)
 		{
-			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(json, &adata);
-			return status.ok();
+			json_read ltempread(json.c_str());
+			std::map<std::string, json_read> lmap;
+			ltempread.read(tools::type_name<TVALUE>().c_str(), lmap);
+
+			for (const auto& item :lmap)
+			{
+				std::string ltemp = item.second.get();
+				TVALUE ltempt;
+				google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(ltemp, &ltempt);
+				if (status.ok())
+				{
+					adata[tools::lexical_cast<TKEY>(item.first)] = ltempt;
+				}
+			}
+			return true;
 		}
 
 		//EPROTOCOL_TYPE_CUSTOM
 		template <typename T>
 		static bool json2custom(const std::string& json, T& adata)
 		{
-			json_read ljread;
-			return adata.read(ljread);
+			json_read ljread(json);
+			return ljread.read(tools::type_name<T>().c_str(), adata);
+		}
+
+		template <typename TKEY, typename TVALUE>
+		static bool json2custom(const std::string& json, std::map<TKEY, TVALUE>& adata)
+		{
+			json_read ljread(json);
+			return ljread.read(tools::type_name<TVALUE>().c_str(), adata);
 		}
 
 		template <typename T>
 		static void custom2json(const T& adata, std::string& ajson)
 		{
 			json_write ljwrite;
-			adata.write(ljwrite);
+			ljwrite.write(tools::type_name<T>().c_str(), adata);
 			ljwrite.get(ajson);
+		}
+
+		template <typename TKEY, typename TVALUE>
+		static bool custom2json(std::map<TKEY, TVALUE>& adata, std::string& ajson)
+		{
+			json_write ljwrite;
+			ljwrite.write(tools::type_name<TVALUE>().c_str(), adata);
+			ljwrite.get(ajson);
+			return true;
 		}
 
 		template <typename TKEY, typename TVAL>
@@ -712,14 +765,14 @@ namespace ngl
 
 	#pragma endregion
 
-	#pragma region hexbytes
+#pragma region hexbytes
 		static int	to_hex(void* apso, int alen, void* apto);
 		static bool to_bytes(void* apso, int alen, void* apto, int& apotlen);
-	#pragma endregion
+#pragma endregion
 
-	#pragma region encryption
+#pragma region encryption
 		static void bytexor(char* ap, int32_t aplen, int apos);
-	#pragma endregion
+#pragma endregion
 
 		static std::string& type_name_handle(std::string& aname)
 		{

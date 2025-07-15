@@ -392,6 +392,8 @@ namespace ngl
 
 		void nscript_push_data() final
 		{
+			// map<,TDBTAB*>
+			//tmapjson<EPROTOCOL_TYPE_CUSTOM, TDBTAB> ltemp(m_data);
 			//tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<nguid, data_modified<TDBTAB>>> ltemp(m_data);
 			//m_actor->nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
 		}

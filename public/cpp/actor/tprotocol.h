@@ -45,7 +45,7 @@ namespace ngl
 		}
 
 		//CUSTOM
-		template <EPROTOCOL_TYPE TYPE>
+		template <EPROTOCOL_TYPE TYPE, bool REGISTER_JSON>
 		struct tcustoms
 		{
 			template <typename TX>
@@ -78,23 +78,28 @@ namespace ngl
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
 					pinfo* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
-					
 					if (linfo != nullptr)
 					{
-						linfo->m_toactor = std::bind(
-							&tcustoms<TYPE>::send_actor<np_mass_actor<T>>
-							, std::placeholders::_1
-							, std::placeholders::_2
-						);
+						if constexpr (REGISTER_JSON)
+						{
+							linfo->m_toactor = std::bind(
+								&tcustoms<TYPE, REGISTER_JSON>::send_actor<np_mass_actor<T>>
+								, std::placeholders::_1
+								, std::placeholders::_2
+							);
+						}						
 					}
 					linfo = funcx<T>(aprotocolnum);
 					if (linfo != nullptr)
 					{
-						linfo->m_toactor = std::bind(
-							&tcustoms<TYPE>::send_actor<T>
-							, std::placeholders::_1
-							, std::placeholders::_2
-						);
+						if constexpr (REGISTER_JSON)
+						{
+							linfo->m_toactor = std::bind(
+								&tcustoms<TYPE, REGISTER_JSON>::send_actor<T>
+								, std::placeholders::_1
+								, std::placeholders::_2
+							);
+						}
 					}
 					return linfo;
 				}
@@ -116,7 +121,8 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM>>;
+		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, false>>;
+		using tp_customsjson = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, true>>;
 		using tp_forward = template_arg<tforward, int32_t>;
 
 		template <typename T>

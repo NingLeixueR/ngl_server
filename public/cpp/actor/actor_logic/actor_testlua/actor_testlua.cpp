@@ -46,23 +46,7 @@ namespace ngl
 		*/
 
 		// # 将csv数据写入lua
-		//nscript_push_csv<ttab_servers>();
-
-		tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<int, typename ttab_servers::type_tab>> ltemp(ttab_servers::instance().tablecsv());
-		json_write ljwrite;
-		ltemp.write(ljwrite);
-		std::string ljson;
-		ljwrite.get(ljson);
-
-		std::map<int, tab_servers> lmap;
-		tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<int, typename ttab_servers::type_tab>> ltemp2(lmap);
-
-		json_read ljread(ljson.c_str());
-		if (ltemp2.read(ljread))
-		{
-			std::cout << std::endl;
-		}
-
+		nscript_push_csv<ttab_servers>();
 	}
 
 	void actor_testlua::erase_actor_before()
