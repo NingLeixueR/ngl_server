@@ -47,7 +47,7 @@ namespace ngl
 			return *m_data.m_data;
 		}
 
-		dprotocoljson(actor_db_load_response<T>, m_stat, m_data, m_over)
+		def_protocol(actor_db_load_response<T>, m_stat, m_data, m_over)
 	};
 
 	// ---- [actor db server -> actor db client]
@@ -74,7 +74,7 @@ namespace ngl
 			return m_data.m_data->empty();
 		}
 
-		dprotocoljson(actor_db_save<T>, m_data)
+		def_protocol(actor_db_save<T>, m_data)
 	};
 
 	// 从db server删除数据
@@ -320,7 +320,7 @@ namespace ngl
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
-		dprotocoljson(np_actor_forward, m_uid, m_area, m_data)
+		def_protocol(np_actor_forward, m_uid, m_area, m_data)
 	};
 
 	template <typename T>
@@ -359,7 +359,7 @@ namespace ngl
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
 		{}
 
-		dprotocoljson(np_actor_forward, m_uid, m_area, m_data)
+		def_protocol(np_actor_forward, m_uid, m_area, m_data)
 	};
 
 	template <typename T, bool ISUSING>
@@ -484,7 +484,7 @@ namespace ngl
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
 		protobuf_data<std::map<int64_t, TDATA>> m_data;
-		dprotocoljson(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
+		def_protocol(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
 	};
 
 	template <typename TDATA>
@@ -511,15 +511,15 @@ namespace ngl
 	};
 
 	// EPROTOCOL_TYPE 类型指的是TMAP::value_type
-	template <EPROTOCOL_TYPE TYPE, typename TMAP>
+	/*template <EPROTOCOL_TYPE TYPE, typename TKEY,typename TVAL>
 	struct tmapjson
 	{
-		TMAP& m_data;
+		std::map<TKEY, TVAL>& m_data;
 		const char* m_name;
 
-		tmapjson(TMAP& adata) :
+		tmapjson(std::map<TKEY, TVAL>& adata) :
 			m_data(adata),
-			m_name(tools::type_name<typename TMAP::value_type::second_type>().c_str())
+			m_name(tools::type_name<TVAL>().c_str())
 		{}
 
 		inline bool read(const ngl::json_read& ijsn, const char* akey)
@@ -534,28 +534,14 @@ namespace ngl
 
 		inline bool read(const ngl::json_read& ijsn)
 		{
-
 			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
-			//	google::protobuf::Map<std::string, typename TMAP::value_type::second_type> lmap;
-			//	for (const auto& item : ltemp.m_data)
-			//	{
-			//		lmap[tools::lexical_cast<std::string>(item.first)] = item.second;
-			//	}
-			//	std::string ltempstr;
-			//	if (!tools::json2proto(ltempstr, lmap))
-			//	{
-			//		return false;
-			//	}
+				return tools::json2proto(ijsn.get(), m_data);
 			}
 			else
 			{
-				std::map<std::string, typename TMAP::value_type::second_type> lmap;
-				return ijsn.read(m_name, lmap);
+				return ijsn.read(m_name, m_data);
 			}
-
-			
-			return true;
 		}
 
 		inline void write(ngl::json_write& ijsn, const char* akey)const
@@ -566,30 +552,20 @@ namespace ngl
 		}
 		inline void write(ngl::json_write& ijsn)const
 		{
-			ngl::json_write ltemp1;
 			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
 			{
-				google::protobuf::Map<std::string, typename TMAP::value_type::second_type> lmap;
-				for (const auto& item : m_data)
+				std::string ltempjson;
+				ijsn.get(ltempjson);
+				if (!tools::json2proto(ltempjson, m_data))
 				{
-					lmap[tools::lexical_cast<std::string>(item.first)] = item.second;
-				}
-				std::string ltempstr;
-				if (!tools::json2proto(ltempstr, lmap))
-				{
-					return false;
+					return;
 				}
 			}
 			else
 			{
-				std::map<std::string, typename TMAP::value_type::second_type> lmap;
-				for (const auto& item : m_data)
-				{
-					lmap.insert(std::make_pair(tools::lexical_cast<std::string>(item.first), item.second));
-				}
-				ijsn.write(m_name, lmap);
+				ijsn.write(m_name, m_data);
 			}
 		}
-	};
+	};*/
 
 }//namespace ngl

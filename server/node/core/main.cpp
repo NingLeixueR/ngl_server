@@ -61,21 +61,35 @@ int main(int argc, char** argv)
 	{
 		return 0;
 	}
-	std::string ljson;
-	ngl::json_write ljwrite;
-	aaaaaaaa laaaaaaaa;
-	laaaaaaaa.m_id = 1;
-	laaaaaaaa.m_name = "china";
-	laaaaaaaa.m_area = 3;
-	laaaaaaaa.write(ljwrite);
-	ljwrite.get(ljson);
-	
 
-	/*ngl::tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<int, typename ngl::ttab_servers::type_tab>> ltemp(ngl::ttab_servers::instance().tablecsv());
-	std::string ljson;
-	ngl::json_write ljwrite;
-	ltemp.write(ljwrite);
-	ljwrite.get(ljson);*/
+	std::map<std::string, pbdb::db_account> lmap;
+	for (int i = 1;i<10; ++i)
+	{
+		pbdb::db_account ltemp;
+		ltemp.set_mid(i);
+		ltemp.set_maccount(std::format("libo{}",i));
+		ltemp.set_marea(i + 10);
+		ltemp.set_mpassworld(std::format("ribenrensb{}", i));
+		ltemp.set_mroleid(1000 + i);
+		lmap[ngl::tools::lexical_cast<std::string>(i)] = ltemp;
+	}
+	std::string ljsontemp;
+	ngl::tools::proto2json(lmap, ljsontemp);
+
+	std::map<std::string, pbdb::db_account> lmap2;
+	ngl::tools::json2proto(ljsontemp, lmap2);
+
+
+	//ngl::tmapjson<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::db_account> ltempkk1(lmap2);
+	//ngl::json_write lwritekk1;
+	//ltempkk1.write(lwritekk1);
+	//std::string ljsonkk1;
+	//lwritekk1.get(ljsonkk1);
+
+	//std::map<std::string, pbdb::db_account> lmap3;
+	//ngl::tmapjson<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::db_account> ltempkk2(lmap3);
+	//ngl::json_read lreadkk1;
+	//ltempkk2.read(lreadkk1);
 
 
 	nconfig::set_nodeid(tab->m_id);

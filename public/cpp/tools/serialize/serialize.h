@@ -1967,9 +1967,4 @@ namespace ngl
 		return m_size;
 	}	
 
-	template <typename T, bool IS_FORWARD /*= false*/>
-	bool json_read::read(const char* akey, protobuf_data<T, IS_FORWARD>& aval) const
-	{
-		return tools::json2proto(akey, *aval.m_data);
-	}
 }// namespace ngl

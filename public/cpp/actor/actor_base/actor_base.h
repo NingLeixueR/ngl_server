@@ -220,9 +220,7 @@ namespace ngl
 			}
 			else
 			{
-				json_write ljwrite;
-				adata.write(ljwrite);
-				ljwrite.get(ljson);
+				tools::custom2json(adata, ljson);
 			}
 			
 			return nscript_push_data(tools::type_name<T>(), -1, ljson);
@@ -256,8 +254,8 @@ namespace ngl
 		template <typename TT>
 		bool nscript_push_csv()
 		{
-			tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<int, typename TT::type_tab>> ltemp(TT::instance().tablecsv());
-			return nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
+			//tmapjson<EPROTOCOL_TYPE_CUSTOM, typename TT::type_tab> ltemp(TT::instance().tablecsv());
+			return nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(TT::instance().tablecsv());
 		}
 
 		bool nscript_handle(const std::string& aname, const std::string& ajson);
@@ -607,7 +605,7 @@ namespace ngl
 	template <typename T>
 	void tprotocol::tforward::func(int32_t aprotocolnum)
 	{
-		pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF>::func<T>(aprotocolnum);
+		pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF,true>::func<T>(aprotocolnum);
 		if (lptemp != nullptr)
 		{
 			lptemp->m_forward = true;
@@ -634,9 +632,9 @@ namespace ngl
 		}
 	}
 
-	template <EPROTOCOL_TYPE TYPE>
+	template <EPROTOCOL_TYPE TYPE, bool REGISTER_JSON>
 	template <typename TX>
-	void tprotocol::tcustoms<TYPE>::send_actor(int64_t aactorid, const char* adata)
+	void tprotocol::tcustoms<TYPE, REGISTER_JSON>::send_actor(int64_t aactorid, const char* adata)
 	{
 		ngl::json_read lread(adata);
 		auto pro = std::make_shared<TX>();

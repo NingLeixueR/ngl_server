@@ -29,6 +29,14 @@ namespace ngl
 
 		virtual ~json_read();
 
+		std::string get()const
+		{
+			char* json_str = cJSON_PrintUnformatted(m_json);
+			std::string ltemp(json_str);
+			free(json_str); 
+			return ltemp;
+		}
+
 		bool check()
 		{
 			return m_json != nullptr;
@@ -54,10 +62,7 @@ namespace ngl
 		bool read(const char* akey, cJSON*& adata) const;
 		bool read(const char* akey, json_read& adata) const;
 		bool read(const char* akey, nguid& aval) const;
-		//protobuf_data
-
-		template <typename T, bool IS_FORWARD = false>
-		bool read(const char* akey, protobuf_data<T, IS_FORWARD>& aval) const;
+		
 
 		template <typename T>
 		bool read_number(
@@ -203,7 +208,10 @@ namespace ngl
 		}
 
 		template <typename VAL>
-		bool read(const char* akey, std::map<std::string, VAL>& aval) const
+		bool read(
+			const char* akey
+			, std::map<std::string, VAL>& aval
+		) const
 		{
 			json_read ltemp;
 			if (read(akey, ltemp) == false)
