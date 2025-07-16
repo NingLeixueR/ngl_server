@@ -185,7 +185,6 @@ namespace ngl
 			}
 		}
 
-		
 
 		// 支持没有参数
 		void write();

@@ -303,6 +303,37 @@ namespace ngl
 			return true;
 		}
 
+		template <typename TKEY, typename TVALUE>
+		static bool proto2json(const std::map<TKEY, TVALUE*>& adata, std::string& json)
+		{
+			json = "{\"";
+			json += tools::type_name<TVALUE>();
+			json += "\":{";
+			bool lfirst = true;
+			for (const auto item : adata)
+			{
+				if (lfirst)
+				{
+					lfirst = false;
+				}
+				else
+				{
+					json += ",";
+				}
+				std::string ltemp;
+				if (!proto2json(*item.second, ltemp))
+				{
+					continue;
+				}
+				json += "\"";
+				json += item.first;
+				json += "\":";
+				json += ltemp;
+			}
+			json += "}}";
+			return true;
+		}
+
 
 		// 以json格式打印pb数据
 		template <typename T>
@@ -330,8 +361,7 @@ namespace ngl
 			{
 				std::string ltemp = item.second.get();
 				TVALUE ltempt;
-				google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(ltemp, &ltempt);
-				if (status.ok())
+				if (json2proto(ltemp, ltempt))
 				{
 					adata[tools::lexical_cast<TKEY>(item.first)] = ltempt;
 				}
@@ -363,7 +393,7 @@ namespace ngl
 		}
 
 		template <typename TKEY, typename TVALUE>
-		static bool custom2json(std::map<TKEY, TVALUE>& adata, std::string& ajson)
+		static bool custom2json(const std::map<TKEY, TVALUE>& adata, std::string& ajson)
 		{
 			json_write ljwrite;
 			ljwrite.write(tools::type_name<TVALUE>().c_str(), adata);
