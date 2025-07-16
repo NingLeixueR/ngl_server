@@ -252,6 +252,26 @@ void init_DB_FRIENDS()
 	}
 }
 
+void init_DB_TESTLUA()
+{
+	std::map<ngl::i64_actorid, pbdb::db_testlua> lmap;
+	for (int i = 0; i < 10; ++i)
+	{
+		ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_TESTLUA, tab_self_area, i);
+		pbdb::db_testlua& ltestlua = lmap[lactor1];
+		ltestlua.set_mid(i);
+		for (int j = 0; j < 10; ++j)
+		{
+			ltestlua.add_mvalue(i*1000 + i);
+		}
+	}
+
+	for (const auto& apair : lmap)
+	{
+		ngl::actor_dbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua>::save(0, apair.second);
+	}
+}
+
 bool start_db(int argc, char** argv)
 {
 	ngl::log_error()->print("[{}] start", "DB");
@@ -293,6 +313,7 @@ bool start_db(int argc, char** argv)
 			init_DB_ROLEKEYVALUE();
 			init_DB_RANKLIST();
 			init_DB_FRIENDS();
+			init_DB_TESTLUA();
 		}		
 	}
 	return true;
