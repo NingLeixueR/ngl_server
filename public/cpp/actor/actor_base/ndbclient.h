@@ -392,10 +392,12 @@ namespace ngl
 
 		void nscript_push_data() final
 		{
-			// map<,TDBTAB*>
-			//tmapjson<EPROTOCOL_TYPE_CUSTOM, TDBTAB> ltemp(m_data);
-			//tmapjson<EPROTOCOL_TYPE_CUSTOM, std::map<nguid, data_modified<TDBTAB>>> ltemp(m_data);
-			//m_actor->nscript_push_data<EPROTOCOL_TYPE_CUSTOM>(ltemp);
+			std::map<int64_t, TDBTAB*> lmap;
+			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
+			{
+				lmap.insert(std::make_pair((int64_t)item.first, &item.second.get(false, false)));
+			}
+			m_actor->nscript_proto_push_data<TDBTAB>(lmap);
 		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
@@ -620,26 +622,21 @@ namespace ngl
 	template <typename T>
 	bool actor_base::nscript_check_outdata(std::map<nguid, data_modified<T>>& adata)
 	{
-		/*std::string& lname = tools::type_name<T>();
+		std::string& lname = tools::type_name<T>();
 		std::string ljson;
 		if (nscript_check_outdata(lname, nguid::make(), ljson))
 		{
-			ngl::json_read lread(ljson.c_str());
-
-			std::map<nguid, T> m_data;
-			tmapjson<EPROTOCOL_TYPE_PROTOCOLBUFF, std::map<nguid, T>> ltemp(m_data);
-			json_read ljread;
-			if (!ltemp.read(ljread))
+			std::map<int64_t, T> lmap;
+			if (!tools::json2proto(ljson, lmap))
 			{
 				return false;
 			}
-
-			for (std::pair<const nguid, T>& item : m_data)
+			for (const auto item : lmap)
 			{
-				tools::json2proto(ljson, adata[item.first].get(false,false));
+				adata[item.first].get(false, false) = item.second;
 			}
 			return true;
-		}*/
+		}
 		return false;
 	}
 }//namespace ngl
