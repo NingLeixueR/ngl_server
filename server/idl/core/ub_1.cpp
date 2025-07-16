@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-07-11 16:35:08
+// 创建时间 25-07-16 14:58:06
 #include "attribute_value.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"
@@ -101,6 +101,7 @@
 #include "actor_keyvalue_handle.cpp"
 #include "actor_gmclient_handle.cpp"
 #include "actor_activity_manage.cpp"
+#include "actor_testlua_handle.cpp"
 #include "actor_gateway_handle.cpp"
 #include "actor_friends_handle.cpp"
 #include "actor_example_manage.cpp"

@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-07-02 20:24:31】
+ // 创建时间【2025-07-16 11:50:40】
 #include "auto_actor_enum.h"
 #include "nprotocol_auto.h"
 #include "nactor_auto.h"
@@ -23,5 +23,6 @@ namespace ngl
 		tdb_role::init(ainstance);
 		tdb_rolekv::init(ainstance);
 		tdb_task::init(ainstance);
+		tdb_testlua::init(ainstance);
     }
 }//namespace ngl

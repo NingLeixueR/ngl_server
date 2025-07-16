@@ -68,6 +68,7 @@ namespace ngl
 	using tdb_task = typedb<pbdb::ENUM_DB_TASK, pbdb::db_task, actor_role>;
 	using tdb_testlua = typedb<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua, actor_testlua>;
 
+
 	class tdb
 	{
 	public:
