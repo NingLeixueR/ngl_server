@@ -62,7 +62,6 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_testlua>(&actor_testlua::timer_handle);
 
-
 		register_script_handle<EPROTOCOL_TYPE_CUSTOM, actor_testlua>::func<
 				np_actor_addmail
 			>(true);

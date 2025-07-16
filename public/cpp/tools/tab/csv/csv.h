@@ -333,7 +333,7 @@ namespace ngl
 						continue;
 					}
 					T ltemp;
-					if (ltemp.rcsv(lpair))
+					if (ltemp.rcsv(lpair) && ltemp.m_id != 0)
 					{
 						adata.insert(std::make_pair(ltemp.m_id, ltemp));
 						lpair.clear();

@@ -32,5 +32,6 @@ namespace ngl
 		_reister_channel_db<pbdb::db_role>();
 		_reister_channel_db<pbdb::db_rolekeyvalue>();
 		_reister_channel_db<pbdb::db_task>();
+		_reister_channel_db<pbdb::db_testlua>();
 	}
 }//namespace ngl
