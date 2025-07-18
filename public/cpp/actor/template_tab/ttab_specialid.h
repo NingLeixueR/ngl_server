@@ -76,7 +76,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		std::map<int, tab_specialid>& tablecsv()
+		const std::map<int, tab_specialid>& tablecsv()
 		{
 			ttab_specialid* ttab = allcsv::get<ttab_specialid>();
 			if (ttab == nullptr)
@@ -88,9 +88,8 @@ namespace ngl
 
 		const tab_specialid* tab(int32_t aid)
 		{
-			auto lmap = tablecsv();
-			auto itor = lmap.find(aid);
-			if (itor == lmap.end())
+			auto itor = tablecsv().find(aid);
+			if (itor == tablecsv().end())
 			{
 				return nullptr;
 			}

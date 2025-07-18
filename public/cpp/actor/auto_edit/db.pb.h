@@ -332,16 +332,17 @@ inline bool ENUM_DB_Parse(
     ENUM_DB_descriptor(), name, value);
 }
 enum eranklist : int {
-  lv = 0,
-  gold = 1,
-  count = 2,
+  eranklist_null = 0,
+  lv = 1,
+  gold = 2,
+  count = 3,
   activity_lv = 1000000,
   activity_gold = 2000000,
   eranklist_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   eranklist_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool eranklist_IsValid(int value);
-constexpr eranklist eranklist_MIN = lv;
+constexpr eranklist eranklist_MIN = eranklist_null;
 constexpr eranklist eranklist_MAX = activity_gold;
 constexpr int eranklist_ARRAYSIZE = eranklist_MAX + 1;
 

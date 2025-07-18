@@ -9,7 +9,7 @@ namespace ngl
 		db_pool(const db_pool&) = delete;
 		db_pool& operator=(const db_pool&) = delete;
 
-		std::vector<std::shared_ptr<db>> m_vec;
+		std::vector<db*> m_vec;
 
 		db_pool()
 		{}

@@ -10,6 +10,10 @@ namespace ngl
 {
 	struct dbuff
 	{
+		dbuff(const dbuff&) = delete;
+		dbuff& operator=(const dbuff&) = delete;
+		dbuff() = delete;
+
 		char* m_buff;
 		int32_t m_buffsize;
 		int32_t m_pos;
@@ -37,11 +41,11 @@ namespace ngl
 		{
 			e_buffsize = 10 * 1024 * 1024, // µ•blob…œœﬁ 10M
 		};
-		std::shared_ptr<dbuff> m_buff;
-		std::shared_ptr<dbuff> m_mallocbuff;
+		dbuff* m_buff;
+		dbuff* m_mallocbuff;
 	public:
 		inline db_buff() :
-			m_buff(std::make_shared<dbuff>(e_buffsize))
+			m_buff(new dbuff(e_buffsize))
 			, m_mallocbuff(nullptr)
 		{}
 
@@ -82,7 +86,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		inline bool do_serialize(T& adata, std::shared_ptr<dbuff>& abuff)
+		inline bool do_serialize(T& adata, dbuff* abuff)
 		{
 			ngl::serialize lserialize(m_buff->m_buff, m_buff->m_buffsize);
 			if (lserialize.push(adata))
@@ -106,7 +110,11 @@ namespace ngl
 				int32_t lbytes = adata.m_data->ByteSize();
 				if (lbytes > e_buffsize)
 				{
-					m_mallocbuff = std::make_shared<dbuff>(lbytes);
+					if (m_mallocbuff != nullptr)
+					{
+						delete m_mallocbuff;
+					}
+					m_mallocbuff = new dbuff(lbytes);
 					if (do_serialize(adata, m_mallocbuff))
 					{
 						return;
