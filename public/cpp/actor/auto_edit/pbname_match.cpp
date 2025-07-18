@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-07-18 10:27:20】
+ // 创建时间【2025-07-18 16:54:14】
 #include "actor_base.h"
 #include "tools.h"
 #include "pack.h"
@@ -110,6 +110,7 @@ namespace ngl
             mkdef_map(pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW);
             mkdef_map(pbnet::PROBUFF_NET_SYNC_POSITION);
             mkdef_map(pbnet::PROBUFF_NET_CHANGE_ANGLE);
+            mkdef_map(pbnet::PROBUFF_NET_TESTLUA);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_JOIN);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE);
             mkdef_map(pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING);

@@ -606,3 +606,11 @@ message PROBUFF_NET_CHANGE_ANGLE//C2G [actor_role]
 //// ###################################################### ///
 //// ################ [aoi地图相关 Finish] ################ ///
 ///////////////////////////////////////////////////////////////
+
+// [请求]删除好友
+message PROBUFF_NET_TESTLUA//C2G2 [actor_testlua]
+{
+	optional int64 mid = 1;
+	optional string mvalue = 2;
+	map<int64,string> mdata = 3;
+};

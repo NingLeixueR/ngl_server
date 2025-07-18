@@ -309,7 +309,14 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata)
 		{
-			nscript_handle<TYPE, TMESSAGE>(*adata.get_data());
+			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+			{
+				nscript_custom_handle(*adata.get_data());
+			}
+			else
+			{
+				nscript_proto_handle(*adata.get_data());
+			}
 			return true;
 		}
 

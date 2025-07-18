@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-07-18 10:27:20】
+ // 创建时间【2025-07-18 16:54:14】
 #include "nprotocol.h"
 #include "tprotocol.h"
 #include "actor.h"
@@ -102,6 +102,7 @@ namespace ngl
             null<pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW>,
             null<pbnet::PROBUFF_NET_SYNC_POSITION>,
             null<pbnet::PROBUFF_NET_CHANGE_ANGLE>,
+            null<pbnet::PROBUFF_NET_TESTLUA>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE>,
             null<pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING>,

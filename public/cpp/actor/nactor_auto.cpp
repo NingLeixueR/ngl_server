@@ -97,6 +97,8 @@ namespace ngl
 			/*120000004, np_mass_actor<mforward<np_gm_response>>*/
 			/*120000005*/, np_actorswitch_process<np_actorswitch_process_role>
 			/*120000006, np_mass_actor<np_actorswitch_process<np_actorswitch_process_role>>*/
+			/*120000007*/, np_testlua
+			/*120000008, np_mass_actor<np_testlua>*/
 		>();
 
 		// ### 事件相关协议 start ### //

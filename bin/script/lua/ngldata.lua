@@ -1,4 +1,5 @@
 local cjson = require("cjson")
+local logger = require("nlog").get_instance("./log/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".log") -- 获取日志实例
 
 local ngldata = {}
 
@@ -16,50 +17,48 @@ local function new()
         __metatable = false  -- 防止获取或修改元表
     }
 
+
     function instance:print_table(t, indent, visited)
-        indent = indent or 0
-        visited = visited or {}  -- 记录已访问的 table，避免循环引用死循环
-    
-        -- 非 table 类型直接打印
-        if type(t) ~= "table" then
-            local str = tostring(t)
-            -- 字符串加引号，方便区分
-            if type(t) == "string" then
-                str = '"' .. str .. '"'
-            end
-            print(string.rep("  ", indent) .. str)
-            return
-        end
-    
-        -- 处理循环引用
-        if visited[t] then
-            print(string.rep("  ", indent) .. "table (循环引用)")
-            return
-        end
-        visited[t] = true
-    
-        local indent_str = string.rep("  ", indent)
-        print(indent_str .. "{")  -- 开始打印 table
-    
-        -- 遍历 table 中的键值对
-        for k, v in pairs(t) do
-            -- 处理键的格式
-            local key_str
-            if type(k) == "string" and k:match("^[%a_][%a%d_]*$") then
-                -- 合法标识符（字母/下划线开头）直接作为键
-                key_str = k .. " = "
-            else
-                -- 其他类型的键用 [键] 表示（如数字、特殊字符字符串）
-                key_str = "[" .. tostring(k) .. "] = "
-            end
-        
-            -- 打印键和值（值递归处理）
-            io.write(indent_str .. "  " .. key_str)
-            self:print_table(v, indent + 1, visited)
-        end
-    
-        print(indent_str .. "}")  -- 结束打印 table
-    end
+		indent = indent or 0
+		visited = visited or {}
+		local indent_str = string.rep("  ", indent)
+
+		if type(t) ~= "table" then
+			local str = tostring(t)
+			if type(t) == "string" then str = '"' .. str .. '"' end
+			logger:write(indent_str .. str)
+			return
+		end
+
+		if visited[t] then
+			logger:write(indent_str .. "table (循环引用)")
+			return
+		end
+		visited[t] = true
+
+		logger:write(indent_str .. "{")
+		
+		for k, v in pairs(t) do
+			local key_str
+			if type(k) == "string" and k:match("^[%a_][%a%d_]*$") then
+				key_str = k .. " = "
+			else
+				key_str = "[" .. tostring(k) .. "] = "
+			end
+			
+			local line_start = indent_str .. "  " .. key_str
+			if type(v) == "table" then
+				logger:write(line_start)
+				self:print_table(v, indent + 1, visited)
+			else
+				local value_str = tostring(v)
+				if type(v) == "string" then value_str = '"' .. value_str .. '"' end
+				logger:write(line_start .. value_str)
+			end
+		end
+
+		logger:write(indent_str .. "}")
+	end
 
     function instance:json_decode(adatajson)
         local success, parsedData = pcall(function()
@@ -67,7 +66,7 @@ local function new()
         end)
         
         if not success then
-            print("JSON decode error:", adatajson)
+            logger:write("JSON decode error:", adatajson)
             return {}
         end
         return parsedData
@@ -79,7 +78,7 @@ local function new()
 
     function instance:push_data(adbname, aactorid, adatajson)
         if not adatajson or adatajson == "" then
-            print("Error: adatajson is nil or empty")
+            logger:write("Error: adatajson is nil or empty")
             return
         end
         
@@ -92,7 +91,6 @@ local function new()
          if aactorid == "-1" then
             for k,v in pairs(parsedData) do
                 for k1,v1 in pairs(v) do
-                    print("k1="..k1)
                     self.data[adbname][k1] = {
                         parsed_data = v1,
                         change = false
@@ -107,9 +105,9 @@ local function new()
                 }
 	        end
         end
-        print("#########################################")
+        logger:write("#########################################")
         self:print_table(self.data)
-        print("#########################################")
+        logger:write("#########################################")
     end
 
     function instance:get(adbname, aactorid)
@@ -133,28 +131,31 @@ local function new()
     end
 
     function instance:check_outdata(adbname, aactorid)
-        if self.data[adbname][aactorid] then
+        ret = {}
+        if aactorid == "-1" then
+            ret[adbname] = {}
+            if self.data[adbname] then
+                for k,v in pairs(self.data[adbname]) do
+		            if v["change"] then
+                        ret[adbname][k] = self:json_encode(v["parsed_data"])
+                        v["change"] = false
+		            end
+	            end
+                if #ret[adbname] > 0 then
+                    return true, self:json_encode(ret)
+                end
+            end
+        else
+            ret[adbname] = {}
             if self.data[adbname][aactorid]["change"] then
-                return true, self:json_encode(self.data[adbname][aactorid]["data"])
+                ret[adbname][aactorid] = self:json_encode(v["parsed_data"])
+                self.data[adbname][aactorid]["change"] = false
+            end
+            if #ret[adbname] > 0 then
+                    return true, self:json_encode(ret)
             end
         end
         return false, ""
-    end
-
-    function instance:check_outdata_all(adbname)
-        local ret = {}
-        ret["m_data"] = {}
-        if self.data[adbname] then
-            for k,v in pairs(self.data[adbname]) do
-                print(k)
-                self:printf(v)
-		        if v["change"] then
-                    ret["m_data"][k] = self:json_encode(v["parsed_data"])
-                    v["change"] = false
-		        end
-	        end
-        end
-        return true, self:json_encode(ret)
     end
 
     return instance

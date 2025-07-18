@@ -182,23 +182,17 @@ namespace ngl
 			{
 				return false;
 			}
-			bool lall = aactorid == nguid::make();
 
-			int result = lua_getglobal(L, lall ? "check_outdata_all" : "check_outdata");
+			int result = lua_getglobal(L, "check_outdata");
 			if (result == LUA_TNIL)
 			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.{}]", m_scriptpath, lall ? "check_outdata_all" : "check_outdata");
+				LOG_SCRIPT("lua_getglobal get failure[{}.{}]", m_scriptpath, "check_outdata");
 				lua_pop(L, 1);
 				return false;
 			}
 			lua_pushstring(L, adbname.c_str());
-			if (lall)
-			{
-				lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
-				//lua_pushinteger(L, aactorid);
-			}
-			lua_pushstring(L, adatajson.c_str());
-			if (lua_pcall(L, lall ? 3 : 2, 2, 0) != LUA_OK)
+			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
+			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1);
