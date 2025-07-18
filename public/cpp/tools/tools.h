@@ -42,6 +42,10 @@ namespace ngl
 	};
 	
 	union nguid;
+	template <typename T>
+	struct np_actormodule_forward;
+	template <typename TDATA>
+	using mforward = np_actormodule_forward<TDATA>;
 
 	template <>
 	struct lexical_cast2<nguid>;
@@ -271,6 +275,9 @@ namespace ngl
 			options.preserve_proto_field_names = false;
 			return google::protobuf::util::MessageToJsonString(adata, &json, options).ok();		
 		}
+
+		template <typename T>
+		static bool proto2json(const mforward<T>& adata, std::string& json);
 
 		template <typename TKEY, typename TVALUE>
 		static bool proto2json(const std::map<TKEY, TVALUE>& adata, std::string& json)

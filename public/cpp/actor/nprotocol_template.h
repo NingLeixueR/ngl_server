@@ -217,6 +217,23 @@ namespace ngl
 	template <typename TDATA>
 	using mforward = np_actormodule_forward<TDATA>;
 
+	template <typename T>
+	bool tools::proto2json(const mforward<T>& adata, std::string& json)
+	{
+		const T* ldata = adata.data();
+		if (ldata == nullptr)
+		{
+			return false;
+		}
+		std::string ltemp;
+		if (!proto2json(*ldata, ltemp))
+		{
+			return false;
+		}
+		json = std::format(R"({"msg":"{}","identifier":"{}","data":"{}"})", tools::type_name<T>(), adata.identifier(), ltemp);
+		return true;
+	}
+
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
 	struct np_actor_forward
 	{
@@ -510,62 +527,11 @@ namespace ngl
 		dprotocoljson(np_gm_response, m_json)
 	};
 
-	// EPROTOCOL_TYPE 类型指的是TMAP::value_type
-	/*template <EPROTOCOL_TYPE TYPE, typename TKEY,typename TVAL>
-	struct tmapjson
+	struct np_testlua
 	{
-		std::map<TKEY, TVAL>& m_data;
-		const char* m_name;
+		std::string m_name;
+		std::map<int, std::string> m_data;
 
-		tmapjson(std::map<TKEY, TVAL>& adata) :
-			m_data(adata),
-			m_name(tools::type_name<TVAL>().c_str())
-		{}
-
-		inline bool read(const ngl::json_read& ijsn, const char* akey)
-		{
-			ngl::json_read ltemp;
-			if (ijsn.read(akey, ltemp) == false)
-			{
-				return false;
-			}
-			return read(ltemp);
-		}
-
-		inline bool read(const ngl::json_read& ijsn)
-		{
-			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
-			{
-				return tools::json2proto(ijsn.get(), m_data);
-			}
-			else
-			{
-				return ijsn.read(m_name, m_data);
-			}
-		}
-
-		inline void write(ngl::json_write& ijsn, const char* akey)const
-		{
-			ngl::json_write ltemp;
-			write(ltemp);
-			ijsn.write(akey, ltemp.nofree());
-		}
-		inline void write(ngl::json_write& ijsn)const
-		{
-			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
-			{
-				std::string ltempjson;
-				ijsn.get(ltempjson);
-				if (!tools::json2proto(ltempjson, m_data))
-				{
-					return;
-				}
-			}
-			else
-			{
-				ijsn.write(m_name, m_data);
-			}
-		}
-	};*/
-
+		dprotocoljson(np_testlua, m_name, m_data)
+	};
 }//namespace ngl

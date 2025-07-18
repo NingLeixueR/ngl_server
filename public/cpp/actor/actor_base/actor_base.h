@@ -265,22 +265,23 @@ namespace ngl
 
 		bool nscript_handle(const std::string& aname, const std::string& ajson);
 
-		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool nscript_handle(const T& adat)
+		template <typename T>
+		bool nscript_custom_handle(const T& adata)
 		{
 			std::string ljson;
-			if constexpr (TYPE == EPROTOCOL_TYPE_PROTOCOLBUFF)
+			json_write ljwrite;
+			adata.write(ljwrite);
+			ljwrite.get(ljson);
+			return nscript_handle(tools::type_name<T>(), ljson);
+		}
+
+		template <typename T>
+		bool nscript_proto_handle(const T& adat)
+		{
+			std::string ljson;
+			if (!tools::proto2json(adat, ljson))
 			{
-				if (!tools::proto2json(adat, ljson))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				json_write ljwrite;
-				adat.write(ljwrite);
-				ljwrite.get(ljson);
+				return false;
 			}
 			return nscript_handle(tools::type_name<T>(), ljson);
 		}

@@ -11,7 +11,3 @@ end
 function check_outdata(adbname, aactorid)
     return ngldata:check_outdata(adbname, aactorid)
 end
-
-function check_outdata_all(adbname)
-    return ngldata:check_outdata_all(adbname)
-end

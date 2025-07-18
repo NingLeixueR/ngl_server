@@ -15,5 +15,6 @@ function handle(amsgname, amsgjson)
 	ngldata:get("kkk","777")
 
 	-- 可以通过[amsgname]和[amsgjson]进行消息处理
-
+	print("msg name:" .. amsgname)
+	print(amsgjson)
 end

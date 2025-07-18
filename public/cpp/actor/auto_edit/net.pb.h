@@ -52,7 +52,7 @@ struct TableStruct_net_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[85]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[87]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -291,6 +291,12 @@ extern PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSEDefaultTypeInternal _PROBUFF_NET_T
 class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MdropEntry_DoNotUse;
 class PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MdropEntry_DoNotUseDefaultTypeInternal;
 extern PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MdropEntry_DoNotUseDefaultTypeInternal _PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MdropEntry_DoNotUse_default_instance_;
+class PROBUFF_NET_TESTLUA;
+class PROBUFF_NET_TESTLUADefaultTypeInternal;
+extern PROBUFF_NET_TESTLUADefaultTypeInternal _PROBUFF_NET_TESTLUA_default_instance_;
+class PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse;
+class PROBUFF_NET_TESTLUA_MdataEntry_DoNotUseDefaultTypeInternal;
+extern PROBUFF_NET_TESTLUA_MdataEntry_DoNotUseDefaultTypeInternal _PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse_default_instance_;
 class UNIT;
 class UNITDefaultTypeInternal;
 extern UNITDefaultTypeInternal _UNIT_default_instance_;
@@ -394,6 +400,8 @@ template<> ::pbnet::PROBUFF_NET_SYNC_UNIT* Arena::CreateMaybeMessage<::pbnet::PR
 template<> ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD>(Arena*);
 template<> ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE>(Arena*);
 template<> ::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MdropEntry_DoNotUse* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE_MdropEntry_DoNotUse>(Arena*);
+template<> ::pbnet::PROBUFF_NET_TESTLUA* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_TESTLUA>(Arena*);
+template<> ::pbnet::PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse* Arena::CreateMaybeMessage<::pbnet::PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse>(Arena*);
 template<> ::pbnet::UNIT* Arena::CreateMaybeMessage<::pbnet::UNIT>(Arena*);
 template<> ::pbnet::UNIT_POSITION* Arena::CreateMaybeMessage<::pbnet::UNIT_POSITION>(Arena*);
 template<> ::pbnet::UnitAttribute* Arena::CreateMaybeMessage<::pbnet::UnitAttribute>(Arena*);
@@ -13627,6 +13635,236 @@ class PROBUFF_NET_CHANGE_ANGLE PROTOBUF_FINAL :
   ::pbnet::UNIT_POSITION* mposition_;
   friend struct ::TableStruct_net_2eproto;
 };
+// -------------------------------------------------------------------
+
+class PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, std::string,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int64, std::string,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    0 > SuperType;
+  PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse();
+  PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse& other);
+  static const PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse*>(&_PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(std::string* s) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "pbnet.PROBUFF_NET_TESTLUA.MdataEntry.value");
+ }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_net_2eproto);
+    return ::descriptor_table_net_2eproto.file_level_metadata[85];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class PROBUFF_NET_TESTLUA PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pbnet.PROBUFF_NET_TESTLUA) */ {
+ public:
+  inline PROBUFF_NET_TESTLUA() : PROBUFF_NET_TESTLUA(nullptr) {};
+  virtual ~PROBUFF_NET_TESTLUA();
+
+  PROBUFF_NET_TESTLUA(const PROBUFF_NET_TESTLUA& from);
+  PROBUFF_NET_TESTLUA(PROBUFF_NET_TESTLUA&& from) noexcept
+    : PROBUFF_NET_TESTLUA() {
+    *this = ::std::move(from);
+  }
+
+  inline PROBUFF_NET_TESTLUA& operator=(const PROBUFF_NET_TESTLUA& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PROBUFF_NET_TESTLUA& operator=(PROBUFF_NET_TESTLUA&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PROBUFF_NET_TESTLUA& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PROBUFF_NET_TESTLUA* internal_default_instance() {
+    return reinterpret_cast<const PROBUFF_NET_TESTLUA*>(
+               &_PROBUFF_NET_TESTLUA_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    86;
+
+  friend void swap(PROBUFF_NET_TESTLUA& a, PROBUFF_NET_TESTLUA& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PROBUFF_NET_TESTLUA* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PROBUFF_NET_TESTLUA* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PROBUFF_NET_TESTLUA* New() const final {
+    return CreateMaybeMessage<PROBUFF_NET_TESTLUA>(nullptr);
+  }
+
+  PROBUFF_NET_TESTLUA* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PROBUFF_NET_TESTLUA>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PROBUFF_NET_TESTLUA& from);
+  void MergeFrom(const PROBUFF_NET_TESTLUA& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PROBUFF_NET_TESTLUA* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "pbnet.PROBUFF_NET_TESTLUA";
+  }
+  protected:
+  explicit PROBUFF_NET_TESTLUA(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_net_2eproto);
+    return ::descriptor_table_net_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMdataFieldNumber = 3,
+    kMvalueFieldNumber = 2,
+    kMidFieldNumber = 1,
+  };
+  // map<int64, string> mdata = 3;
+  int mdata_size() const;
+  private:
+  int _internal_mdata_size() const;
+  public:
+  void clear_mdata();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >&
+      _internal_mdata() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >*
+      _internal_mutable_mdata();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >&
+      mdata() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >*
+      mutable_mdata();
+
+  // string mvalue = 2;
+  bool has_mvalue() const;
+  private:
+  bool _internal_has_mvalue() const;
+  public:
+  void clear_mvalue();
+  const std::string& mvalue() const;
+  void set_mvalue(const std::string& value);
+  void set_mvalue(std::string&& value);
+  void set_mvalue(const char* value);
+  void set_mvalue(const char* value, size_t size);
+  std::string* mutable_mvalue();
+  std::string* release_mvalue();
+  void set_allocated_mvalue(std::string* mvalue);
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  std::string* unsafe_arena_release_mvalue();
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  void unsafe_arena_set_allocated_mvalue(
+      std::string* mvalue);
+  private:
+  const std::string& _internal_mvalue() const;
+  void _internal_set_mvalue(const std::string& value);
+  std::string* _internal_mutable_mvalue();
+  public:
+
+  // int64 mid = 1;
+  bool has_mid() const;
+  private:
+  bool _internal_has_mid() const;
+  public:
+  void clear_mid();
+  ::PROTOBUF_NAMESPACE_ID::int64 mid() const;
+  void set_mid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_mid() const;
+  void _internal_set_mid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:pbnet.PROBUFF_NET_TESTLUA)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      PROBUFF_NET_TESTLUA_MdataEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int64, std::string,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      0 > mdata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr mvalue_;
+  ::PROTOBUF_NAMESPACE_ID::int64 mid_;
+  friend struct ::TableStruct_net_2eproto;
+};
 // ===================================================================
 
 
@@ -19831,9 +20069,169 @@ inline void PROBUFF_NET_CHANGE_ANGLE::set_allocated_mposition(::pbnet::UNIT_POSI
   // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_CHANGE_ANGLE.mposition)
 }
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// PROBUFF_NET_TESTLUA
+
+// int64 mid = 1;
+inline bool PROBUFF_NET_TESTLUA::_internal_has_mid() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_TESTLUA::has_mid() const {
+  return _internal_has_mid();
+}
+inline void PROBUFF_NET_TESTLUA::clear_mid() {
+  mid_ = PROTOBUF_LONGLONG(0);
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_TESTLUA::_internal_mid() const {
+  return mid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 PROBUFF_NET_TESTLUA::mid() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_TESTLUA.mid)
+  return _internal_mid();
+}
+inline void PROBUFF_NET_TESTLUA::_internal_set_mid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _has_bits_[0] |= 0x00000002u;
+  mid_ = value;
+}
+inline void PROBUFF_NET_TESTLUA::set_mid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_mid(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_TESTLUA.mid)
+}
+
+// string mvalue = 2;
+inline bool PROBUFF_NET_TESTLUA::_internal_has_mvalue() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool PROBUFF_NET_TESTLUA::has_mvalue() const {
+  return _internal_has_mvalue();
+}
+inline void PROBUFF_NET_TESTLUA::clear_mvalue() {
+  mvalue_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& PROBUFF_NET_TESTLUA::mvalue() const {
+  // @@protoc_insertion_point(field_get:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+  return _internal_mvalue();
+}
+inline void PROBUFF_NET_TESTLUA::set_mvalue(const std::string& value) {
+  _internal_set_mvalue(value);
+  // @@protoc_insertion_point(field_set:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+}
+inline std::string* PROBUFF_NET_TESTLUA::mutable_mvalue() {
+  // @@protoc_insertion_point(field_mutable:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+  return _internal_mutable_mvalue();
+}
+inline const std::string& PROBUFF_NET_TESTLUA::_internal_mvalue() const {
+  return mvalue_.Get();
+}
+inline void PROBUFF_NET_TESTLUA::_internal_set_mvalue(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  mvalue_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void PROBUFF_NET_TESTLUA::set_mvalue(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  mvalue_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+}
+inline void PROBUFF_NET_TESTLUA::set_mvalue(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  mvalue_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+}
+inline void PROBUFF_NET_TESTLUA::set_mvalue(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  mvalue_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+}
+inline std::string* PROBUFF_NET_TESTLUA::_internal_mutable_mvalue() {
+  _has_bits_[0] |= 0x00000001u;
+  return mvalue_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* PROBUFF_NET_TESTLUA::release_mvalue() {
+  // @@protoc_insertion_point(field_release:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+  if (!_internal_has_mvalue()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return mvalue_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PROBUFF_NET_TESTLUA::set_allocated_mvalue(std::string* mvalue) {
+  if (mvalue != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  mvalue_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), mvalue,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+}
+inline std::string* PROBUFF_NET_TESTLUA::unsafe_arena_release_mvalue() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  _has_bits_[0] &= ~0x00000001u;
+  return mvalue_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      GetArena());
+}
+inline void PROBUFF_NET_TESTLUA::unsafe_arena_set_allocated_mvalue(
+    std::string* mvalue) {
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  if (mvalue != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  mvalue_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      mvalue, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pbnet.PROBUFF_NET_TESTLUA.mvalue)
+}
+
+// map<int64, string> mdata = 3;
+inline int PROBUFF_NET_TESTLUA::_internal_mdata_size() const {
+  return mdata_.size();
+}
+inline int PROBUFF_NET_TESTLUA::mdata_size() const {
+  return _internal_mdata_size();
+}
+inline void PROBUFF_NET_TESTLUA::clear_mdata() {
+  mdata_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >&
+PROBUFF_NET_TESTLUA::_internal_mdata() const {
+  return mdata_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >&
+PROBUFF_NET_TESTLUA::mdata() const {
+  // @@protoc_insertion_point(field_map:pbnet.PROBUFF_NET_TESTLUA.mdata)
+  return _internal_mdata();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >*
+PROBUFF_NET_TESTLUA::_internal_mutable_mdata() {
+  return mdata_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int64, std::string >*
+PROBUFF_NET_TESTLUA::mutable_mdata() {
+  // @@protoc_insertion_point(field_mutable_map:pbnet.PROBUFF_NET_TESTLUA.mdata)
+  return _internal_mutable_mdata();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

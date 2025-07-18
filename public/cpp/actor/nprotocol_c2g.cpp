@@ -81,5 +81,10 @@ namespace ngl
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
 
+		// actor_testlua 模块二次转发
+		register_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, ACTOR_TESTLUA
+			, pbnet::PROBUFF_NET_TESTLUA
+		>();
+
 	}
 }// namespace ngl
