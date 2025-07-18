@@ -90,8 +90,12 @@ namespace ngl
 		TDBTAB& get(bool achange = true, bool anscript = true)
 		{
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			if (achange)
+			{
+				modified();
+			}
 			// # 检查脚本语言中的备份是否被修改
-			if ((anscript && m_actor->nscript_check_outdata(ldata.mid(), ldata)) || achange)
+			if (anscript && m_actor != nullptr && m_actor->nscript_check_outdata(ldata.mid(), ldata))
 			{
 				modified();
 			}
@@ -102,7 +106,7 @@ namespace ngl
 		{
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
 			// # 检查脚本语言中的备份是否被修改
-			if (anscript && m_actor->nscript_check_outdata(ldata.mid(), ldata))
+			if (anscript && m_actor != nullptr && m_actor->nscript_check_outdata(ldata.mid(), ldata))
 			{
 				modified();
 			}

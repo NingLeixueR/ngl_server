@@ -79,19 +79,6 @@ int main(int argc, char** argv)
 	std::map<std::string, pbdb::db_account> lmap2;
 	ngl::tools::json2proto(ljsontemp, lmap2);
 
-
-	//ngl::tmapjson<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::db_account> ltempkk1(lmap2);
-	//ngl::json_write lwritekk1;
-	//ltempkk1.write(lwritekk1);
-	//std::string ljsonkk1;
-	//lwritekk1.get(ljsonkk1);
-
-	//std::map<std::string, pbdb::db_account> lmap3;
-	//ngl::tmapjson<EPROTOCOL_TYPE_PROTOCOLBUFF, pbdb::db_account> ltempkk2(lmap3);
-	//ngl::json_read lreadkk1;
-	//ltempkk2.read(lreadkk1);
-
-
 	nconfig::set_nodeid(tab->m_id);
 
 	std::string lnodename;
