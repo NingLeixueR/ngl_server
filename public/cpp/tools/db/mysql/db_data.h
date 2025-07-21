@@ -107,15 +107,16 @@ namespace ngl
 			return &itor->second;
 		}
 
-		static bool get(i64_actorid aid, T& adata)
+		static bool add(i64_actorid aid, T& adata)
 		{
 			auto itor = m_data.find(aid);
-			if (itor == m_data.end())
+			if (itor != m_data.end())
 			{
 				return false;
 			}
-			adata = itor->second;
-			return true;
+			T& ldata = m_data[aid];
+			ldata.set_mid(aid);
+			return &ldata;
 		}
 
 		static void foreach(const std::function<void(T&)>& afun)

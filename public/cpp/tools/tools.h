@@ -302,7 +302,7 @@ namespace ngl
 					continue;
 				}
 				json += "\"";
-				json += item.first;
+				json += tools::lexical_cast<std::string>(item.first);
 				json += "\":";
 				json += ltemp;
 			}
@@ -333,7 +333,7 @@ namespace ngl
 					continue;
 				}
 				json += "\"";
-				json += item.first;
+				json += tools::lexical_cast<std::string>(item.first);
 				json += "\":";
 				json += ltemp;
 			}

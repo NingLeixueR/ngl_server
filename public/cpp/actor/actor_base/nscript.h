@@ -88,7 +88,7 @@ namespace ngl
 			std::string lpath = lua_tostring(L, -1);
 
 			// 添加自定义路径（保留原有路径）
-			lpath += ";./script/lua/?.lua";
+			lpath += std::format(";{}?.lua", sysconfig::lua());
 
 			lua_pop(L, 1);
 			lua_pushstring(L, lpath.c_str());
@@ -104,14 +104,15 @@ namespace ngl
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
 			setupluapaths();
-			if (luaL_loadfile(L, "./script/lua/rfunction.lua") || lua_pcall(L, 0, 0, 0))
+			
+			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
 			{
 				LOG_SCRIPT("can't run [{}] : {} !", m_scriptpath, lua_tostring(L, -1));
 				lua_close(L);
 				L = nullptr;
 				return;
 			}
-			m_scriptpath = std::format("./script/lua/{}", ascript);
+			m_scriptpath = std::format("../script/lua/{}", ascript);
 			if (luaL_loadfile(L, m_scriptpath.c_str()) || lua_pcall(L, 0, 0, 0))
 			{
 				LOG_SCRIPT("can't run [{}] : {} !", m_scriptpath, lua_tostring(L, -1));

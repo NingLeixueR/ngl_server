@@ -259,7 +259,7 @@ void init_DB_TESTLUA()
 	{
 		ngl::i64_actorid lactor1 = ngl::nguid::make(ngl::ACTOR_TESTLUA, tab_self_area, i);
 		pbdb::db_testlua& ltestlua = lmap[lactor1];
-		ltestlua.set_mid(i);
+		ltestlua.set_mid(lactor1);
 		for (int j = 0; j < 10; ++j)
 		{
 			ltestlua.add_mvalue(i*1000 + i);

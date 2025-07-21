@@ -1,5 +1,5 @@
 local cjson = require("cjson")
-local logger = require("nlog").get_instance("./log/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".log") -- 获取日志实例
+local logger = require("nlog").get_instance("./log/lua/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".log") -- 获取日志实例
 
 local ngldata = {}
 
@@ -106,7 +106,11 @@ local function new()
 	        end
         end
         logger:write("#########################################")
-        self:print_table(self.data)
+		if aactorid == "-1" then
+			self:print_table(self.data[adbname])
+		else
+			self:print_table(self.data[adbname][aactorid])
+		end
         logger:write("#########################################")
     end
 

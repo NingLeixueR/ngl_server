@@ -205,6 +205,8 @@ namespace ngl
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 #pragma region nscript
+		bool nscript_using();
+
 		bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson);
 
 		template <typename T>

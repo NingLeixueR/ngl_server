@@ -396,6 +396,10 @@ namespace ngl
 
 		void nscript_push_data() final
 		{
+			if (!m_actor->nscript_using())
+			{
+				return;
+			}
 			std::map<int64_t, TDBTAB*> lmap;
 			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
 			{

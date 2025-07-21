@@ -134,7 +134,14 @@ namespace ngl
 				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
 				pro.m_data.make();
 				pro.m_over = true;
-				pro.m_stat = ngl::db_data<TDBTAB>::get(lid, (*pro.m_data.m_data)[adata.m_id]);
+				pro.m_stat = false;
+
+				TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
+				if (ldata != nullptr)
+				{
+					(*pro.m_data.m_data)[adata.m_id] = *ldata;
+				}
+
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
 				nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 
@@ -308,14 +315,17 @@ namespace ngl
 						protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
 						m_savetemp.m_data = std::make_shared<TDBTAB>();
-						if (ngl::db_data<TDBTAB>::get(lid, *m_savetemp.m_data.get()))
+						TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
+						if (ldata == nullptr)
 						{
-							char lbuff[10240] = { 0 };
-							ngl::serialize lserialize(lbuff, 10240);
-							if (lserialize.push(m_savetemp))
-							{
-								pro.m_data = lbuff;
-							}
+							return;
+						}
+						*m_savetemp.m_data.get() = *ldata;
+						char lbuff[102400] = { 0 };
+						ngl::serialize lserialize(lbuff, 102400);
+						if (lserialize.push(m_savetemp))
+						{
+							pro.m_data = lbuff;
 						}
 					};
 

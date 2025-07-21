@@ -53,6 +53,8 @@ namespace ngl
 
 		// # 网关列表
 		static std::set<i32_serverid> m_gatewayids;
+
+		static std::string m_lua;					// lua所在目录
 	public:
 		static void init();
 
@@ -77,6 +79,7 @@ namespace ngl
 		static int32_t heart_beat_interval() { return m_heart_beat_interval; }
 		static int32_t net_timeout()		{ return m_net_timeout; }
 		static std::string& gmurl()			{ return m_gmurl; }
+		static std::string& lua()			{ return m_lua; }
 		
 		static void init_gatewayids();
 		static std::set<i32_serverid>& gatewayids();
