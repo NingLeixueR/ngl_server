@@ -8,11 +8,11 @@ function handle(amsgname, amsgjson)
 
 	-- 如何发送数据给client,actor
 	-- nguid:actor_type#areaid#dataid
-	send_client("guid", "msgname", "msgjson")
-	send_actor("guid", "msgname", "msgjson")
+	--send_client("guid", "msgname", "msgjson")
+	--send_actor("guid", "msgname", "msgjson")
 
-	ngldata:get("kkk","1")
-	ngldata:get("kkk","777")
+	--ngldata:get("kkk","1")
+	--ngldata:get("kkk","777")
 
 	-- 可以通过[amsgname]和[amsgjson]进行消息处理
 	print("msg name:" .. amsgname)

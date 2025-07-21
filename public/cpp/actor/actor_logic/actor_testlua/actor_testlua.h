@@ -38,7 +38,7 @@ namespace ngl
 
 		static ENUM_ACTOR actor_type();
 
-		static i64_actorid actorid(i16_area area);
+		static i64_actorid actorid();
 
 		virtual void init();
 

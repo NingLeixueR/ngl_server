@@ -25,9 +25,9 @@ namespace ngl
 		return ACTOR_TESTLUA;
 	}
 
-	i64_actorid actor_testlua::actorid(i16_area area)
+	i64_actorid actor_testlua::actorid()
 	{
-		return nguid::make(actor_type(), area, nguid::none_actordataid());
+		return nguid::make(actor_type(), tab_self_area, nguid::none_actordataid());
 	}
 
 	void actor_testlua::init()

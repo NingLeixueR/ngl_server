@@ -105,13 +105,14 @@ local function new()
                 }
 	        end
         end
-        logger:write("#########################################")
 		if aactorid == "-1" then
+            logger:write("##"..adbname.."##")
 			self:print_table(self.data[adbname])
 		else
+            logger:write("##"..adbname.."("..aactorid..")##")
 			self:print_table(self.data[adbname][aactorid])
 		end
-        logger:write("#########################################")
+        logger:write("####")
     end
 
     function instance:get(adbname, aactorid)
