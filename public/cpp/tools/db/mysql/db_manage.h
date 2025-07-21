@@ -69,7 +69,7 @@ namespace ngl
 			int llen = snprintf(
 				lbuff, 4096
 				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
-				, tools::protobuf_tabname<T>::name().c_str(), adata.mid(), larea
+				, tools::protobuf_tabname<T>::name().c_str(), adata->mid(), larea
 			);
 
 			if (llen <= 0)
