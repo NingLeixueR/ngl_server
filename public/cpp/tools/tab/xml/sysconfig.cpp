@@ -27,6 +27,7 @@ namespace ngl
 	int32_t		sysconfig::m_net_timeout		= 600000;
 	std::string	sysconfig::m_gmurl;
 	std::set<i32_serverid> sysconfig::m_gatewayids;
+	std::string	sysconfig::m_lua;
 
 	void sysconfig::init()
 	{
@@ -83,6 +84,7 @@ namespace ngl
 		lpublicxml->find("head_version", m_head_version);
 
 		lpublicxml->find("gmurl", m_gmurl);
+		lpublicxml->find("lua", m_lua);
 
 		init_gatewayids();
 	}

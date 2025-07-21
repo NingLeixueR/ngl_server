@@ -226,7 +226,12 @@ namespace ngl
 			return ntimer::addtimer(m_actor, lparm);
 		}
 
-		bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
+		inline bool nscript_using()
+		{
+			return m_script != nullptr;
+		}
+
+		inline bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
 		{
 			if (m_script != nullptr)
 			{
@@ -235,7 +240,7 @@ namespace ngl
 			return false;
 		}
 
-		bool nscript_handle(const std::string& aname, const std::string& ajson)
+		inline bool nscript_handle(const std::string& aname, const std::string& ajson)
 		{
 			if (m_script != nullptr)
 			{
@@ -244,7 +249,7 @@ namespace ngl
 			return false;
 		}
 
-		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
+		inline bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
 		{
 			if (m_script != nullptr)
 			{
@@ -397,6 +402,11 @@ namespace ngl
 	void actor_base::init_db_component(bool acreate)
 	{
 		m_impl_actor_base()->init_db_component(acreate);
+	}
+
+	bool actor_base::nscript_using()
+	{
+		return m_impl_actor_base()->nscript_using();
 	}
 
 	bool actor_base::nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)

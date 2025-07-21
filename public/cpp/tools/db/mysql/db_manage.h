@@ -39,7 +39,7 @@ namespace ngl
 		}
 		
 		template <typename T>
-		static void save(db* adb, T& adata)
+		static void save(db* adb, T* adata)
 		{
 			static protobuf_data<T> m_savetemp;
 			if (m_savetemp.m_data == nullptr)
@@ -47,7 +47,7 @@ namespace ngl
 				m_savetemp.make();
 				m_savetemp.m_isbinary = m_dbprotobinary;
 			}
-			*m_savetemp.m_data = adata;
+			*m_savetemp.m_data = *adata;
 
 			db_manage::serialize(adb, m_savetemp);
 
@@ -57,7 +57,7 @@ namespace ngl
 			lbind[0].buffer			= (void*)adb->m_malloc.buff();
 			lbind[0].buffer_length	= adb->m_malloc.pos();
 
-			i16_area larea = nguid::area(adata.mid());
+			i16_area larea = nguid::area(adata->mid());
 			if (larea == 0)
 			{
 				larea = ttab_servers::instance().tab()->m_area;
@@ -84,8 +84,8 @@ namespace ngl
 		template <typename T>
 		static void save(db* adb, i64_actorid aid)
 		{
-			T ldata;
-			if (db_data<T>::get(aid, ldata) == false)
+			T* ldata = db_data<T>::find(aid);
+			if (ldata == nullptr)
 			{
 				log_error()->print("db_manage::save fail id:{} !!! name:{}", aid, tools::protobuf_tabname<T>::name());
 				return;
