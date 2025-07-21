@@ -230,7 +230,7 @@ namespace ngl
 		{
 			return false;
 		}
-		json = std::format(R"({"msg":"{}","identifier":"{}","data":"{}"})", tools::type_name<T>(), adata.identifier(), ltemp);
+		json = std::format(R"({{"msg":"{}","identifier":"{}","data":{}}})", tools::type_name<T>(), adata.identifier(), ltemp);
 		return true;
 	}
 

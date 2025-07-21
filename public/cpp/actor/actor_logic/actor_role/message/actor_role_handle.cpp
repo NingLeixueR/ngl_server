@@ -1,4 +1,5 @@
 #include "ttab_specialid.h"
+#include "actor_testlua.h"
 #include "actor_events.h"
 #include "manage_curl.h"
 #include "nsp_server.h"
@@ -384,6 +385,35 @@ namespace ngl
 			handle_cmd::add("/exit") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->erase_actor();
+				};
+
+			handle_cmd::add("/testlua") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
+				{
+					int32_t lnumber = 0;
+					if (tools::splite(aparm, "*", lnumber) == false)
+					{
+						return;
+					}
+					if (lnumber == 1)
+					{
+						auto pro = std::make_shared<pbnet::PROBUFF_NET_TESTLUA>();
+						(*pro->mutable_mdata())[5] = "t5";
+						(*pro->mutable_mdata())[4] = "t4";
+						(*pro->mutable_mdata())[3] = "t3";
+						*pro->mutable_mvalue() = "ribenrensb3";
+						pro->set_mid(1989);
+						message lmessage(1, nullptr, pro);
+						role->handle_forward<ACTOR_TESTLUA>(lmessage);
+					}
+					else if (lnumber == 2)
+					{
+						auto pro = std::make_shared<np_testlua>();
+						pro->m_name = "libo";
+						pro->m_data[1] = "wac1";
+						pro->m_data[2] = "lzs2";
+						pro->m_data[3] = "lzm3";
+						actor::send_actor(actor_testlua::actorid(), nguid::make(), pro);
+					}
 				};
 		}
 
