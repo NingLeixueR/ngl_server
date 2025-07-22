@@ -15,18 +15,6 @@
 
 Dumper lDumper;
 
-struct aaaaaaaa
-{
-	/*********************************/
-	int32_t                          m_id; // [index:0][load:y] id 
-	std::string                      m_name; // [index:1][load:y] 名字 
-	//	std::string                      m_remarks                       ; // [index:2][load:n] 备注
-	int16_t                          m_area; // [index:3][load:y] 区服
-	/*********************************/
-	// 序列化反序列化相关
-	dprotocoljson(aaaaaaaa, m_id, m_name, m_area)
-};
-
 int main(int argc, char** argv)
 {
 	if (argc <= 3)
@@ -60,23 +48,6 @@ int main(int argc, char** argv)
 	{
 		return 0;
 	}
-
-	std::map<std::string, pbdb::db_account> lmap;
-	for (int i = 1;i<10; ++i)
-	{
-		pbdb::db_account ltemp;
-		ltemp.set_mid(i);
-		ltemp.set_maccount(std::format("libo{}",i));
-		ltemp.set_marea(i + 10);
-		ltemp.set_mpassworld(std::format("ribenrensb{}", i));
-		ltemp.set_mroleid(1000 + i);
-		lmap[ngl::tools::lexical_cast<std::string>(i)] = ltemp;
-	}
-	std::string ljsontemp;
-	ngl::tools::proto2json(lmap, ljsontemp);
-
-	std::map<std::string, pbdb::db_account> lmap2;
-	ngl::tools::json2proto(ljsontemp, lmap2);
 
 	nconfig::set_nodeid(tab->m_id);
 
