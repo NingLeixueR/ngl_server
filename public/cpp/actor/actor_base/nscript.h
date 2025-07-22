@@ -11,9 +11,18 @@
 
 extern "C"
 {
-	// # lua发送给客户端
-	// # 需要为脚本语言提供 根据 <结构名name  结构json串> 构造出对应结构
+	extern int nguidstr2int64str(lua_State* L);
+
+	// # lua发送协议给客户端
+	// # parm 1 nguid(actor_type#areaid#dataid)
+	// # parm 2 msgname
+	// # parm 3 jsonmsg 
 	extern int send_client(lua_State* L);
+
+	// # lua发送协议给其他actor
+	// # parm 1 nguid(actor_type#areaid#dataid)
+	// # parm 2 msgname
+	// # parm 3 jsonmsg 
 	extern int send_actor(lua_State* L);
 }
 
@@ -95,8 +104,9 @@ namespace ngl
 			lua_setfield(L, -2, "path");
 			lua_pop(L, 1);
 
+			lua_register(L, "nguidstr2int64str", nguidstr2int64str);
 			lua_register(L, "send_client", send_client);
-			lua_register(L, "send_actor", send_client);			
+			lua_register(L, "send_actor", send_client);		
 		}
 
 		virtual void init(const std::string& ascript)

@@ -1,5 +1,5 @@
 local cjson = require("cjson")
-local logger = require("nlog").get_instance("./log/lua/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".log") -- 获取日志实例
+local logger = require("nlog").get_instance("./log/lua/ngldata"..os.date("%Y_%m_%d__%H_%M_%S")..".json") -- 获取日志实例
 
 local ngldata = {}
 
@@ -121,6 +121,8 @@ local function new()
                 return self.data[adbname]
             end
        else
+           --self:print_table(self.data[adbname])
+           --self:print_table(self.data[adbname][aactorid])
            if self.data[adbname] and self.data[adbname][aactorid] then
               self.data[adbname][aactorid]["change"] = true
               return self.data[adbname][aactorid]["parsed_data"]
@@ -146,13 +148,16 @@ local function new()
         if aactorid == "-1" then
             ret[adbname] = {}
             if self.data[adbname] then
+                local retbool = false
                 for k,v in pairs(self.data[adbname]) do
+                    self:print_table(v)
 		            if v["change"] then
                         ret[adbname][k] = self:json_encode(v["parsed_data"])
                         v["change"] = false
+                        retbool = true
 		            end
 	            end
-                if #ret[adbname] > 0 then
+                if retbool then
                     return true, self:json_encode(ret)
                 end
             end
@@ -161,9 +166,7 @@ local function new()
             if self.data[adbname][aactorid]["change"] then
                 ret[adbname][aactorid] = self:json_encode(v["parsed_data"])
                 self.data[adbname][aactorid]["change"] = false
-            end
-            if #ret[adbname] > 0 then
-                    return true, self:json_encode(ret)
+                return true, self:json_encode(ret)
             end
         end
         return false, ""

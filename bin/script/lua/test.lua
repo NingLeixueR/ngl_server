@@ -20,4 +20,23 @@ function handle(amsgname, amsgjson)
 	-- 可以通过[amsgname]和[amsgjson]进行消息处理
 	print("msg name:" .. amsgname)
 	print(amsgjson)
+
+	
+
+	if amsgname == "np_actormodule_forward<PROBUFF_NET_TESTLUA>" then
+		local testlua = ngldata:get("db_testlua", nguidstr2int64str("actor_testlua#1#1"))
+		--ngldata:print_table(testlua)
+		if testlua ~= nil then
+			ngldata:print_table(testlua["mvalue"])
+			testlua["mvalue"][1] = nil
+			testlua["mvalue"][3] = nil
+			testlua["mvalue"][5] = nil
+			ngldata:print_table(testlua["mvalue"])
+		end
+	elseif amsgname == "np_testlua" then
+		local ret, data = ngldata:check_outdata("db_testlua", "-1")
+		if ret then
+			print(data)
+		end
+	end
 end

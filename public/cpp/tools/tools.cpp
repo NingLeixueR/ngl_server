@@ -1379,4 +1379,16 @@ namespace ngl
 			*(int*)(nullptr) = 19890519;
 		}
 	}
+
+	int64_t tools::nguidstr2int64(const char* anguidstr)
+	{
+		ngl::ENUM_ACTOR lactortype;
+		std::string lactortypestr;
+		ngl::i16_area larea;
+		ngl::i32_actordataid ldataid;
+		ngl::tools::splite(anguidstr, "#", lactortypestr, larea, ldataid);
+		lactortype = ngl::em<ngl::ENUM_ACTOR>::get_enum(lactortypestr.c_str());
+		std::cout << "tools nguid:" << lactortypestr << "#" << (int32_t)lactortype << ":" << larea << ":" << ldataid << std::endl;
+		return ngl::nguid::make(lactortype, larea, ldataid);
+	}
 }// namespace ngl
