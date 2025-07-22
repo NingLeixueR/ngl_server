@@ -116,9 +116,15 @@ local function new()
     end
 
     function instance:get(adbname, aactorid)
-       if self.data[adbname][aactorid] then
-          self.data[adbname][aactorid]["change"] = true
-          return self.data[adbname][aactorid]["parsed_data"]
+       if aactorid == "-1" then
+            if self.data[adbname] then
+                return self.data[adbname]
+            end
+       else
+           if self.data[adbname] and self.data[adbname][aactorid] then
+              self.data[adbname][aactorid]["change"] = true
+              return self.data[adbname][aactorid]["parsed_data"]
+           end
        end
        return nil
     end

@@ -11,7 +11,10 @@ function handle(amsgname, amsgjson)
 	--send_client("guid", "msgname", "msgjson")
 	--send_actor("guid", "msgname", "msgjson")
 
-	--ngldata:get("kkk","1")
+	local tab = ngldata:get("tab_servers","1")
+	if tab ~= nil then
+		ngldata:print_table(tab)
+	end
 	--ngldata:get("kkk","777")
 
 	-- 可以通过[amsgname]和[amsgjson]进行消息处理
