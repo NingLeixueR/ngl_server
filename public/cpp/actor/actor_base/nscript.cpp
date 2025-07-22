@@ -3,17 +3,22 @@
 
 extern "C"
 {
+	int nguidstr2int64str(lua_State* L)
+	{
+		const char* nguidstr = luaL_checkstring(L, 1);
+		int64_t lactorid = ngl::tools::nguidstr2int64(nguidstr);
+
+		std::string lnguidstr = ngl::tools::lexical_cast<std::string>(lactorid);
+		std::cout << "cpp nguid:" << lactorid << ":" << lnguidstr << std::endl;
+		lua_pushstring(L, lnguidstr.c_str());
+		return 1;
+	}
+
 	int send_client(lua_State* L)
 	{
 		//actor_type#areaid#dataid
 		const char* nguidstr = luaL_checkstring(L, 1);
-		ngl::ENUM_ACTOR lactortype;
-		std::string lactortypestr;
-		ngl::i16_area larea;
-		ngl::i32_actordataid ldataid;
-		ngl::tools::splite(nguidstr, "#", lactortypestr, larea, ldataid);
-		lactortype = ngl::em<ngl::ENUM_ACTOR>::get_enum(lactortypestr.c_str());
-		ngl::i64_actorid lactorid = ngl::nguid::make(lactortype, larea, ldataid);
+		int64_t lactorid = ngl::tools::nguidstr2int64(nguidstr);
 
 		const char* lmsgname = luaL_checkstring(L, 2);
 		const char* ljsonmsg = luaL_checkstring(L, 3);

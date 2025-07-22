@@ -893,6 +893,9 @@ namespace ngl
 
 		// 不可恢复的异常，直接生成core dump
 		static void no_core_dump(bool anocreate = false);
+
+		// nguid str(actor_type#areaid#dataid) => nguid int64_t
+		static int64_t nguidstr2int64(const char* anguidstr);
 	};
 
 	template <typename T>
