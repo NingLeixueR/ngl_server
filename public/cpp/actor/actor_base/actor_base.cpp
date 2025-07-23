@@ -111,8 +111,16 @@ namespace ngl
 			}
 			if (aparm.m_enscript != enscript_none)
 			{
-				m_script = nscript::malloc_script(aparm.m_enscript);
+				m_script = nscript::malloc_script(aparm.m_enscript, aactor);
 				m_script->init(aparm.m_scriptname);
+
+				nscript_sysdata lsysdata
+				{
+					.m_nguid = tools::lexical_cast<std::string>(id_guid())
+				};
+				std::string lsysdatajson;
+				tools::custom2json(lsysdata, lsysdatajson);
+				m_script->init_sysdata(lsysdatajson);
 			}
 		}
 
@@ -231,11 +239,11 @@ namespace ngl
 			return m_script != nullptr;
 		}
 
-		inline bool nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
+		inline bool nscript_push_data(const std::string& adbname, const std::string& adatajson, bool aedit)
 		{
 			if (m_script != nullptr)
 			{
-				return m_script->push_data(adbname, aactorid, adatajson);
+				return m_script->push_data(adbname, adatajson, aedit);
 			}
 			return false;
 		}
@@ -409,9 +417,9 @@ namespace ngl
 		return m_impl_actor_base()->nscript_using();
 	}
 
-	bool actor_base::nscript_push_data(const std::string& adbname, i64_accountid aactorid, const std::string& adatajson)
+	bool actor_base::nscript_push_data(const std::string& adbname, const std::string& adatajson, bool aedit /*= false*/)
 	{
-		return m_impl_actor_base()->nscript_push_data(adbname, aactorid, adatajson);
+		return m_impl_actor_base()->nscript_push_data(adbname, adatajson, aedit);
 	}
 
 	bool actor_base::nscript_handle(const std::string& aname, const std::string& ajson)

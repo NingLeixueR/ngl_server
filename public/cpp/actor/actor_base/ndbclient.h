@@ -405,7 +405,7 @@ namespace ngl
 			{
 				lmap.insert(std::make_pair((int64_t)item.first, &item.second.get(false, false)));
 			}
-			m_actor->nscript_proto_push_data<TDBTAB>(lmap);
+			m_actor->nscript_proto_push_data<TDBTAB>(lmap, true);
 		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)
