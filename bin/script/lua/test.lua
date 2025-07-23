@@ -28,9 +28,9 @@ function handle(amsgname, amsgjson)
 		--ngldata:print_table(testlua)
 		if testlua ~= nil then
 			ngldata:print_table(testlua["mvalue"])
-			testlua["mvalue"][1] = nil
-			testlua["mvalue"][3] = nil
-			testlua["mvalue"][5] = nil
+			table.remove(testlua["mvalue"], 1)
+			table.remove(testlua["mvalue"], 3)
+			table.remove(testlua["mvalue"], 5)
 			ngldata:print_table(testlua["mvalue"])
 		end
 	elseif amsgname == "np_testlua" then

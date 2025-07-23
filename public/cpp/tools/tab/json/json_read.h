@@ -66,8 +66,7 @@ namespace ngl
 
 		template <typename T>
 		bool read_number(
-			const char* akey
-			, const std::function<void(const cJSON* ajson)>& afun
+			const char* akey, const std::function<void(const cJSON* ajson)>& afun
 		)const
 		{
 			cJSON* ltemp = nullptr;
