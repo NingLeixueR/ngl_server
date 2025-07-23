@@ -24,29 +24,38 @@ extern "C"
 	// # parm 2 msgname
 	// # parm 3 jsonmsg 
 	extern int send_actor(lua_State* L);
+
 }
 
 namespace ngl
 {
+	class actor_base;
+
 	enum enscript
 	{
 		enscript_none,
 		enscript_lua,
 	};
 
+	struct nscript_sysdata
+	{
+		std::string m_nguid;
+
+		dprotocoljson(nscript_sysdata, m_nguid)
+	};
+
 	class nscript
 	{
-		virtual std::shared_ptr<nscript> mscript() = 0;
+		virtual std::shared_ptr<nscript> mscript(actor_base*) = 0;
 		static std::map<enscript, nscript*> m_data;
 		enscript m_type;
+		actor_base* m_actor;
 	public:
-		nscript(enscript atype, bool amallocinit = false):
-			m_type(atype)
+		nscript(enscript atype, actor_base* aactor, bool amallocinit = false);
+
+		actor_base* get_actor()
 		{
-			if (amallocinit)
-			{
-				m_data[atype] = this;
-			}
+			return m_actor;
 		}
 
 		enscript type()
@@ -54,19 +63,20 @@ namespace ngl
 			return m_type;
 		}
 
+		virtual bool init_sysdata(const std::string& asysjson) = 0;
 		virtual void init(const std::string& ascript) = 0;
-		virtual bool push_data(const std::string& adbname, i64_actorid aactorid, const std::string& adatajson) = 0;
+		virtual bool push_data(const std::string& adbname, const std::string& adatajson, bool aedit) = 0;
 		virtual bool handle(const std::string& aname, const std::string& ajson) = 0;
 		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
 
-		static std::shared_ptr<nscript> malloc_script(enscript atype)
+		static std::shared_ptr<nscript> malloc_script(enscript atype, actor_base* aactor)
 		{
 			auto itor = m_data.find(atype);
 			if (itor == m_data.end())
 			{
 				return nullptr;
 			}
-			return itor->second->mscript();
+			return itor->second->mscript(aactor);
 		}
 	};
 
@@ -76,13 +86,13 @@ namespace ngl
 		lua_State* L = nullptr;
 		std::string m_scriptpath;//脚本文件名称
 
-		virtual std::shared_ptr<nscript> mscript()
+		virtual std::shared_ptr<nscript> mscript(actor_base* aactor)
 		{
-			return std::make_shared<nscriptlua>();
+			return std::make_shared<nscriptlua>(aactor);
 		}
 	public:
-		nscriptlua(bool amallocinit = false) :
-			nscript(enscript_lua, amallocinit)
+		nscriptlua(actor_base* aactor, bool amallocinit = false) :
+			nscript(enscript_lua, aactor, amallocinit)
 		{}
 
 		virtual ~nscriptlua()
@@ -132,8 +142,31 @@ namespace ngl
 			}
 		}
 
+		virtual bool init_sysdata(const std::string& asysjson)
+		{
+			if (L == nullptr)
+			{
+				return false;
+			}
+			int result = lua_getglobal(L, "init_sysdata");
+			if (result == LUA_TNIL)
+			{
+				LOG_SCRIPT("lua_getglobal get failure[{}.init_sysdata]", m_scriptpath);
+				lua_pop(L, 1); // 弹出nil值
+				return false;
+			}
+			lua_pushstring(L, asysjson.c_str());
+			if (lua_pcall(L, 1, 0, 0) != LUA_OK)
+			{
+				LOG_SCRIPT("{}.init_sysdata error [{}]", m_scriptpath, lua_tostring(L, -1));
+				lua_pop(L, 1); // 弹出错误信息
+				return false;
+			}
+			return true;
+		}
+
 		// # 将db数据压入
-		virtual bool push_data(const std::string& adbname, i64_actorid aactorid, const std::string& adatajson)
+		virtual bool push_data(const std::string& adbname, const std::string& adatajson, bool aedit)
 		{
 			if (L == nullptr)
 			{
@@ -147,9 +180,8 @@ namespace ngl
 				return false;
 			}
 			lua_pushstring(L, adbname.c_str());
-			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
-			//lua_pushinteger(L, aactorid);
 			lua_pushstring(L, adatajson.c_str());
+			lua_pushboolean(L, aedit);
 			if (lua_pcall(L, 3, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.push_data error [{}]", m_scriptpath, lua_tostring(L, -1));

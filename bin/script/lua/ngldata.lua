@@ -7,7 +7,11 @@ local ngldata = {}
 local function new()
     local instance = 
     {
-        data = {},  -- 数据
+        data = {},   -- 数据
+        edit = {},   -- 数据是否允许被编辑
+        change = {}, -- 哪些数据被改变
+
+        sysdata = {},
     }
 
     local readonlyMT = {
@@ -16,7 +20,6 @@ local function new()
         end,
         __metatable = false  -- 防止获取或修改元表
     }
-
 
     function instance:print_table(t, indent, visited)
 		indent = indent or 0
@@ -76,7 +79,16 @@ local function new()
         return cjson.encode(adata)
     end
 
-    function instance:push_data(adbname, aactorid, adatajson)
+    function instance:push_sysdata(asysjson)
+        self.sysdata = self:json_decode(asysjson)
+    end
+
+    function instance:push_data(adbname, adatajson, aedit)
+        if aedit then
+            logger:write("instance:push_data("..adbname..","..adatajson..",true)")
+        else
+            logger:write("instance:push_data("..adbname..","..adatajson..",false)")
+        end
         if not adatajson or adatajson == "" then
             logger:write("Error: adatajson is nil or empty")
             return
@@ -86,85 +98,85 @@ local function new()
         
         if not self.data[adbname] then
             self.data[adbname] = {}
+            self.edit[adbname] = aedit
+            self.change[adbname] = {}
         end
 
-         if aactorid == "-1" then
-            for k,v in pairs(parsedData) do
-                for k1,v1 in pairs(v) do
-                    self.data[adbname][k1] = {
-                        parsed_data = v1,
-                        change = false
-                    }
-                end
-	        end
-        else
-            for k,v in pairs(parsedData) do
-                self.data[adbname][aactorid] = {
-                    parsed_data = v,
-                    change = false
+        for k,v in pairs(parsedData) do
+            for k1,v1 in pairs(v) do
+                self.data[adbname][k1] = {
+                    parsed_data = v1
                 }
-	        end
-        end
-		if aactorid == "-1" then
-            logger:write("##"..adbname.."##")
-			self:print_table(self.data[adbname])
-		else
-            logger:write("##"..adbname.."("..aactorid..")##")
-			self:print_table(self.data[adbname][aactorid])
-		end
+            end
+	    end
+        
+        logger:write("##"..adbname.."##")
+        self:print_table(parsedData)
         logger:write("####")
     end
 
     function instance:get(adbname, aactorid)
-       if aactorid == "-1" then
-            if self.data[adbname] then
-                return self.data[adbname]
-            end
-       else
-           --self:print_table(self.data[adbname])
-           --self:print_table(self.data[adbname][aactorid])
-           if self.data[adbname] and self.data[adbname][aactorid] then
-              self.data[adbname][aactorid]["change"] = true
-              return self.data[adbname][aactorid]["parsed_data"]
-           end
+       if self.edit[adbname] == false then
+            return nil;
+       end
+
+       if self.data[adbname] and self.data[adbname][aactorid] then
+            self.change[adbname][aactorid] = true
+            return self.data[adbname][aactorid]["parsed_data"]
        end
        return nil
     end
 
     function instance:getconst(adbname, aactorid)
        local data = self.data[adbname][aactorid] and self.data[adbname][aactorid]["parsed_data"] or nil
-       if data then
+       if data ~= nil then
+           self:print_table(data)
            return setmetatable({}, {
                 __index = data,
                 __newindex = readonlyMT.__newindex,
-                __metatable = readonlyMT.__metatable
+                __metatable = readonlyMT.__metatable,
+                __pairs = function(t)
+                    return pairs(data)
+                end
            })
        end
        return nil
     end
 
+    function instance:remove(adbname, aactorid)
+        self.data[adbname][aactorid] = nil
+        self.change[adbname][aactorid] = nil
+        remove
+    end
+
     function instance:check_outdata(adbname, aactorid)
+        if self.edit[adbname] == false then
+            return false, ""
+        end
         ret = {}
+        self:print_table(self.change[adbname])
         if aactorid == "-1" then
             ret[adbname] = {}
+            retbool = false
             if self.data[adbname] then
-                local retbool = false
-                for k,v in pairs(self.data[adbname]) do
-		            if v["change"] then
-                        ret[adbname][k] = v["parsed_data"]
-                        v["change"] = false
+                for k,v in pairs(self.change[adbname]) do
+                    if v then
+                        ret[adbname][k] = self.data[adbname][k]["parsed_data"]
                         retbool = true
 		            end
-	            end
+                end
+                self.change[adbname] = {}
                 if retbool then
+                    logger:write("instance:check_outdata("..adbname..", "..aactorid..")")
                     return true, self:json_encode(ret)
                 end
             end
         else
             ret[adbname] = {}
-            if self.data[adbname][aactorid]["change"] then
-                ret[adbname][aactorid] = v["parsed_data"]
-                self.data[adbname][aactorid]["change"] = false
+            if self.change[adbname][aactorid] then
+                ret[adbname][aactorid] = self.data[adbname][aactorid]["parsed_data"]
+                self.change[adbname][aactorid] = nil
+                logger:write("instance:check_outdata("..adbname..", "..aactorid..")")
                 return true, self:json_encode(ret)
             end
         end
