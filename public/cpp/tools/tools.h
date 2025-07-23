@@ -362,7 +362,10 @@ namespace ngl
 		{
 			json_read ltempread(json.c_str());
 			std::map<std::string, json_read> lmap;
-			ltempread.read(tools::type_name<TVALUE>().c_str(), lmap);
+			if (!ltempread.read(tools::type_name<TVALUE>().c_str(), lmap))
+			{
+				return false;
+			}
 
 			for (const auto& item :lmap)
 			{
@@ -575,7 +578,12 @@ namespace ngl
 		// 特殊分割:类似"接收邮件列表[邮件地址1:名字1]"
 		// [348634371@qq.com:libo][libo1@youxigu.com:libo1]
 		template <typename TFIRST = std::string, typename TSECOND = std::string>
-		static bool splite_special(const char* astr, const char* akey1, const char* akey2, std::vector<std::pair<TFIRST, TSECOND>>& avec)
+		static bool splite_special(
+			const char* astr
+			, const char* akey1
+			, const char* akey2
+			, std::vector<std::pair<TFIRST, TSECOND>>& avec
+		)
 		{
 			std::string ltemp = astr;
 			ngl::tools::replace_ret(akey1, "", ltemp, ltemp);
@@ -629,7 +637,10 @@ namespace ngl
 
 		template <typename T>
 		static bool splicing(
-			const std::vector<T>& avec, const char* afg, std::string& astr, const std::function<std::string(const T&)> afunction = m_splicing<T>
+			const std::vector<T>& avec
+			, const char* afg
+			, std::string& astr
+			, const std::function<std::string(const T&)> afunction = m_splicing<T>
 		)
 		{
 			for (int i = 0; i < avec.size(); ++i)

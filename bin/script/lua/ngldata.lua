@@ -150,9 +150,8 @@ local function new()
             if self.data[adbname] then
                 local retbool = false
                 for k,v in pairs(self.data[adbname]) do
-                    self:print_table(v)
 		            if v["change"] then
-                        ret[adbname][k] = self:json_encode(v["parsed_data"])
+                        ret[adbname][k] = v["parsed_data"]
                         v["change"] = false
                         retbool = true
 		            end
@@ -164,7 +163,7 @@ local function new()
         else
             ret[adbname] = {}
             if self.data[adbname][aactorid]["change"] then
-                ret[adbname][aactorid] = self:json_encode(v["parsed_data"])
+                ret[adbname][aactorid] = v["parsed_data"]
                 self.data[adbname][aactorid]["change"] = false
                 return true, self:json_encode(ret)
             end

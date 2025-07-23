@@ -641,7 +641,7 @@ namespace ngl
 			}
 			for (const auto item : lmap)
 			{
-				adata[item.first].get(false, false) = item.second;
+				adata[item.first].get(true, false) = item.second;
 			}
 			return true;
 		}

@@ -298,8 +298,9 @@ namespace ngl
 		if (ret->type == cJSON_Object || ret->type == cJSON_Array)
 		{
 			adata = ret;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	bool json_read::read(const char* akey, nguid& aval)const
