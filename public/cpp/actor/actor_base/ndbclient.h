@@ -564,7 +564,10 @@ namespace ngl
 			nscript_push_data();
 
 			// 3、做一些初始化之类的工作,并且需要的话将其发送给客户端
+			// 3.1 c++内部操作
 			m_fun(adbishave);
+			// 3.2 通知脚本
+			m_actor->nscript_db_loadfinish();
 			return true;
 		}
 
@@ -647,9 +650,8 @@ namespace ngl
 	template <typename T>
 	bool actor_base::nscript_check_outdata(std::map<nguid, data_modified<T>>& adata)
 	{
-		std::string& lname = tools::type_name<T>();
 		std::string ljson;
-		if (nscript_check_outdata(lname, nguid::make(), ljson))
+		if (nscript_check_outdata(tools::type_name<T>().c_str(), nguid::make(), ljson))
 		{
 			std::map<int64_t, T> lmap;
 			if (!tools::json2proto(ljson, lmap))
@@ -668,12 +670,12 @@ namespace ngl
 	template <typename T>
 	bool actor_base::nscript_check_outdata_del(i64_actorid aactorid)
 	{
-		return nscript_check_outdata_del(tools::type_name<T>(), aactorid);
+		return nscript_check_outdata_del(tools::type_name<T>().c_str(), aactorid);
 	}
 
 	template <typename T>
 	bool actor_base::nscript_check_outdata_del(std::vector<i64_actorid>& avec)
 	{
-		return nscript_check_outdata_del(tools::type_name<T>(), avec);
+		return nscript_check_outdata_del(tools::type_name<T>().c_str(), avec);
 	}
 }//namespace ngl

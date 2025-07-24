@@ -12,7 +12,6 @@ namespace ngl
 					.m_area = tab_self_area,
 					.m_manage_dbclient = true,
 					.m_enscript = enscript_lua,
-					.m_scriptname = "test.lua"
 				},
 				.m_weight = 0x7fffffff,
 				.m_broadcast = true,

@@ -88,14 +88,26 @@ namespace ngl
 			return m_type;
 		}
 
-		virtual bool init_sysdata(const std::string& asysjson) = 0;
-		virtual void init(const std::string& ascript) = 0;
-		virtual bool push_data(const std::string& adbname, const std::string& adatajson, bool aedit) = 0;
-		virtual bool handle(const std::string& aname, const std::string& ajson) = 0;
+		// # 初始化一些杂项
+		virtual bool init_sysdata(const char* asysjson) = 0;
+
+		// # lua初始化
+		virtual void init(const char* asubdirectory, const char* ascript) = 0;
+
+		// # 将数据压入lua
+		virtual bool push_data(const char* adbname, const char* adatajson, bool aedit) = 0;
+
+		// # 数据加载完成
+		virtual bool db_loadfinish() = 0;
+
+		// # lua消息处理
+		virtual bool handle(const char* aname, const char* ajson) = 0;
+
 		// # 检查数据是否被修改
-		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
+		virtual bool check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson) = 0;
+
 		// # 检查数据是否被删除
-		virtual bool check_outdata_del(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
+		virtual bool check_outdata_del(const char* adbname, i64_actorid aactorid, std::string& adatajson) = 0;
 
 		static std::shared_ptr<nscript> malloc_script(enscript atype, actor_base* aactor)
 		{
@@ -147,7 +159,7 @@ namespace ngl
 			lua_register(L, "send_actor", send_client);		
 		}
 
-		virtual void init(const std::string& ascript)
+		virtual void init(const char* asubdirectory, const char* ascript)
 		{
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
@@ -155,22 +167,22 @@ namespace ngl
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
 			{
-				LOG_SCRIPT("can't run [{}] : {} !", m_scriptpath, lua_tostring(L, -1));
+				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
 				lua_close(L);
 				L = nullptr;
 				return;
 			}
-			m_scriptpath = std::format("../script/lua/{}", ascript);
+			m_scriptpath = std::format("../script/lua/{}/{}", asubdirectory, ascript);
 			if (luaL_loadfile(L, m_scriptpath.c_str()) || lua_pcall(L, 0, 0, 0))
 			{
-				LOG_SCRIPT("can't run [{}] : {} !", m_scriptpath, lua_tostring(L, -1));
+				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
 				lua_close(L);
 				L = nullptr;
 				return;
 			}
 		}
 
-		virtual bool init_sysdata(const std::string& asysjson)
+		virtual bool init_sysdata(const char* asysjson)
 		{
 			if (L == nullptr)
 			{
@@ -183,7 +195,7 @@ namespace ngl
 				lua_pop(L, 1); // 弹出nil值
 				return false;
 			}
-			lua_pushstring(L, asysjson.c_str());
+			lua_pushstring(L, asysjson);
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.init_sysdata error [{}]", m_scriptpath, lua_tostring(L, -1));
@@ -194,7 +206,7 @@ namespace ngl
 		}
 
 		// # 将db数据压入
-		virtual bool push_data(const std::string& adbname, const std::string& adatajson, bool aedit)
+		virtual bool push_data(const char* adbname, const char* adatajson, bool aedit)
 		{
 			if (L == nullptr)
 			{
@@ -207,8 +219,8 @@ namespace ngl
 				lua_pop(L, 1); // 弹出nil值
 				return false;
 			}
-			lua_pushstring(L, adbname.c_str());
-			lua_pushstring(L, adatajson.c_str());
+			lua_pushstring(L, adbname);
+			lua_pushstring(L, adatajson);
 			lua_pushboolean(L, aedit);
 			if (lua_pcall(L, 3, 0, 0) != LUA_OK)
 			{
@@ -219,8 +231,31 @@ namespace ngl
 			return true;
 		}
 
+		virtual bool db_loadfinish()
+		{
+			if (L == nullptr)
+			{
+				return false;
+			}
+			int result = lua_getglobal(L, "db_loadfinish");
+			if (result == LUA_TNIL)
+			{
+				LOG_SCRIPT("lua_getglobal get failure[{}.db_loadfinish]", m_scriptpath);
+				lua_pop(L, 1); // 弹出nil值
+				return false;
+			}
+			if (lua_pcall(L, 0, 0, 0) != LUA_OK)
+			{
+				LOG_SCRIPT("{}.db_loadfinish error [{}]", m_scriptpath, lua_tostring(L, -1));
+				lua_pop(L, 1); // 弹出错误信息
+				return false;
+			}
+
+			return true;
+		}
+
 		// # 消息处理
-		virtual bool handle(const std::string& aname, const std::string& ajson)
+		virtual bool handle(const char* aname, const char* ajson)
 		{
 			if (L == nullptr)
 			{
@@ -233,8 +268,8 @@ namespace ngl
 				lua_pop(L, 1); // 弹出nil值
 				return false;
 			}
-			lua_pushstring(L, aname.c_str());
-			lua_pushstring(L, ajson.c_str());
+			lua_pushstring(L, aname);
+			lua_pushstring(L, ajson);
 			if (lua_pcall(L, 2, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.handle error [{}]", m_scriptpath, lua_tostring(L, -1));
@@ -247,7 +282,7 @@ namespace ngl
 
 		// # 查询数据是否被修改#如果被修改就加载数据
 		// # aactorid == nguid::make() 检查全部数据
-		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson)
+		virtual bool check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson)
 		{
 			if (L == nullptr)
 			{
@@ -261,7 +296,7 @@ namespace ngl
 				lua_pop(L, 1);
 				return false;
 			}
-			lua_pushstring(L, adbname.c_str());
+			lua_pushstring(L, adbname);
 			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
 			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
 			{
@@ -301,7 +336,7 @@ namespace ngl
 			return success;
 		}
 
-		virtual bool check_outdata_del(const std::string& adbname, i64_actorid aactorid, std::string& adatajson)
+		virtual bool check_outdata_del(const char* adbname, i64_actorid aactorid, std::string& adatajson)
 		{
 			if (L == nullptr)
 			{
@@ -315,7 +350,7 @@ namespace ngl
 				lua_pop(L, 1);
 				return false;
 			}
-			lua_pushstring(L, adbname.c_str());
+			lua_pushstring(L, adbname);
 			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
 			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
 			{

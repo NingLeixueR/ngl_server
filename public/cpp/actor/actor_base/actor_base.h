@@ -61,7 +61,6 @@ namespace ngl
 		i32_actordataid m_id				= nguid::none_actordataid();		// 数据id
 		bool			m_manage_dbclient	= false;							// 是否有数据库依赖
 		enscript		m_enscript			= enscript_none;					// 脚本支持
-		std::string		m_scriptname;											// 脚本文件
 	};
 
 	// # actor的状态
@@ -207,14 +206,14 @@ namespace ngl
 #pragma region nscript
 		bool nscript_using();
 
-		bool nscript_push_data(const std::string& adbname, const std::string& adatajson, bool aedit = false);
+		bool nscript_push_data(const char* adbname, const char* adatajson, bool aedit = false);
 
 		template <typename T>
 		bool nscript_custom_push_data(const T& adata, bool aedit = false)
 		{
 			std::string ljson;
 			tools::custom2json(adata, ljson);
-			return nscript_push_data(tools::type_name<T>(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), ljson, aedit);
 		}
 
 		template <typename T>
@@ -222,7 +221,7 @@ namespace ngl
 		{
 			std::string ljson;
 			tools::custom2json(adata, ljson);
-			return nscript_push_data(tools::type_name<T>(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), ljson.c_str(), aedit);
 		}
 
 		template <typename T>
@@ -233,7 +232,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return nscript_push_data(tools::type_name<T>(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), ljson, aedit);
 		}
 
 		template <typename T>
@@ -244,7 +243,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return nscript_push_data(tools::type_name<T>(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), ljson, aedit);
 		}
 
 		template <typename T>
@@ -255,7 +254,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return nscript_push_data(tools::type_name<T>(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), ljson.c_str(), aedit);
 		}
 
 		// # 压入csv数据表
@@ -265,7 +264,7 @@ namespace ngl
 			return nscript_custom_push_data<typename TT::type_tab>(TT::instance().tablecsv(), false);
 		}
 
-		bool nscript_handle(const std::string& aname, const std::string& ajson);
+		bool nscript_handle(const char* aname, const char* ajson);
 
 		template <typename T>
 		bool nscript_custom_handle(const T& adata)
@@ -274,7 +273,7 @@ namespace ngl
 			json_write ljwrite;
 			adata.write(ljwrite);
 			ljwrite.get(ljson);
-			return nscript_handle(tools::type_name<T>(), ljson);
+			return nscript_handle(tools::type_name<T>().c_str(), ljson.c_str());
 		}
 
 		template <typename T>
@@ -285,16 +284,16 @@ namespace ngl
 			{
 				return false;
 			}
-			return nscript_handle(tools::type_name<T>(), ljson);
+			return nscript_handle(tools::type_name<T>().c_str(), ljson.c_str());
 		}
 
-		bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson);
+		bool nscript_check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson);
 
 		template <typename T>
 		bool nscript_check_outdata(i64_actorid aactorid, T& adata)
 		{
 			std::string ljson;
-			if (nscript_check_outdata(tools::type_name<T>(), aactorid, ljson))
+			if (nscript_check_outdata(tools::type_name<T>().c_str(), aactorid, ljson))
 			{
 				tools::json2proto(ljson, adata);
 				return true;
@@ -305,15 +304,17 @@ namespace ngl
 		template <typename T>
 		bool nscript_check_outdata(std::map<nguid, data_modified<T>>& adata);
 
-		bool nscript_check_outdata_del(const std::string& adbname, i64_actorid aactorid);
+		bool nscript_check_outdata_del(const char* adbname, i64_actorid aactorid);
 
-		bool nscript_check_outdata_del(const std::string& adbname, std::vector<i64_actorid>& aactorid);
+		bool nscript_check_outdata_del(const char* adbname, std::vector<i64_actorid>& aactorid);
 
 		template <typename T>
 		bool nscript_check_outdata_del(i64_actorid aactorid);
 
 		template <typename T>
 		bool nscript_check_outdata_del(std::vector<i64_actorid>& avec);
+
+		void nscript_db_loadfinish();
 
 #pragma endregion 
 
