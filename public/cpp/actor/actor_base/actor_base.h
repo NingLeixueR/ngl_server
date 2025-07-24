@@ -305,6 +305,16 @@ namespace ngl
 		template <typename T>
 		bool nscript_check_outdata(std::map<nguid, data_modified<T>>& adata);
 
+		bool nscript_check_outdata_del(const std::string& adbname, i64_actorid aactorid);
+
+		bool nscript_check_outdata_del(const std::string& adbname, std::vector<i64_actorid>& aactorid);
+
+		template <typename T>
+		bool nscript_check_outdata_del(i64_actorid aactorid);
+
+		template <typename T>
+		bool nscript_check_outdata_del(std::vector<i64_actorid>& avec);
+
 #pragma endregion 
 
 #pragma region net

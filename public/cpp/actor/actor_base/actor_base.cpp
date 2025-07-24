@@ -266,6 +266,41 @@ namespace ngl
 			return false;
 		}
 
+		inline bool nscript_check_outdata_del(const std::string& adbname, i64_actorid aactorid)
+		{
+			if (m_script != nullptr)
+			{
+				std::string ldatajson;
+				return m_script->check_outdata_del(adbname, aactorid, ldatajson);
+			}
+			return false;
+		}
+
+		inline bool nscript_check_outdata_del(const std::string& adbname, std::vector<int64_t>& avec)
+		{
+			if (m_script != nullptr)
+			{
+				std::string ljson;
+				if (!m_script->check_outdata_del(adbname, -1, ljson))
+				{
+					return false;
+				}
+
+				json_read lread(ljson.c_str());
+				std::vector<std::string> lvec;
+				if (!lread.read(adbname.c_str(), lvec))
+				{
+					return false;
+				}
+				for (std::string& item : lvec)
+				{
+					avec.push_back(tools::lexical_cast<int64_t>(item));
+				}
+				return true;
+			}
+			return false;
+		}
+
 		inline bool isbroadcast()const
 		{
 			return m_isbroadcast;
@@ -427,9 +462,19 @@ namespace ngl
 		return m_impl_actor_base()->nscript_handle(aname, ajson);
 	}
 
-	bool actor_base::nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
+	bool actor_base::nscript_check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson)
 	{
 		return m_impl_actor_base()->nscript_check_outdata(adbname, aactorid, adatajson);
+	}
+
+	bool actor_base::nscript_check_outdata_del(const std::string& adbname, i64_actorid aactorid)
+	{
+		return m_impl_actor_base()->nscript_check_outdata_del(adbname, aactorid);
+	}
+
+	bool actor_base::nscript_check_outdata_del(const std::string& adbname, std::vector<i64_actorid>& aactorid)
+	{
+		return m_impl_actor_base()->nscript_check_outdata_del(adbname, aactorid);
 	}
 
 	void actor_base::start_broadcast()

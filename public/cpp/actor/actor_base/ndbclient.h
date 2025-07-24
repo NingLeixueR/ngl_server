@@ -310,11 +310,23 @@ namespace ngl
 			if (aid == nguid::make())
 			{
 				m_actor->nscript_check_outdata(m_data);
+				std::vector<int64_t> ldelvec;
+				if (m_actor->nscript_check_outdata_del<TDBTAB>(ldelvec))
+				{
+					del(ldelvec);
+				}
 			}
 			else
 			{
-				data_modified<TDBTAB>* lpdata = tools::findmap(m_data, aid);
-				lpdata->getconst();
+				if (m_actor->nscript_check_outdata_del<TDBTAB>((int64_t)aid))
+				{
+					del(aid);
+				}
+				else
+				{
+					data_modified<TDBTAB>* lpdata = tools::findmap(m_data, aid);
+					lpdata->getconst();
+				}
 			}
 
 			np_actordb_save<DBTYPE, TDBTAB> pro;
@@ -369,6 +381,15 @@ namespace ngl
 		{
 			m_dellist.push_back((int64_t)aid);
 			m_data.erase((int64_t)aid);
+		}
+
+		void del(std::vector<int64_t>& adelvec)
+		{
+			for (int64_t delval : adelvec)
+			{
+				m_dellist.push_back(delval);
+				m_data.erase(delval);
+			}
 		}
 
 		void deldb() final
@@ -646,5 +667,17 @@ namespace ngl
 			return true;
 		}
 		return false;
+	}
+
+	template <typename T>
+	bool actor_base::nscript_check_outdata_del(i64_actorid aactorid)
+	{
+		return nscript_check_outdata_del(tools::type_name<T>(), aactorid);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_check_outdata_del(std::vector<i64_actorid>& avec)
+	{
+		return nscript_check_outdata_del(tools::type_name<T>(), avec);
 	}
 }//namespace ngl

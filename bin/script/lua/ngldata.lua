@@ -10,6 +10,7 @@ local function new()
         data = {},   -- 数据
         edit = {},   -- 数据是否允许被编辑
         change = {}, -- 哪些数据被改变
+        del = {}, -- 哪些数据被删除
 
         sysdata = {},
     }
@@ -100,6 +101,7 @@ local function new()
             self.data[adbname] = {}
             self.edit[adbname] = aedit
             self.change[adbname] = {}
+            self.del[adbname] = {}
         end
 
         for k,v in pairs(parsedData) do
@@ -146,7 +148,10 @@ local function new()
     function instance:remove(adbname, aactorid)
         self.data[adbname][aactorid] = nil
         self.change[adbname][aactorid] = nil
-        remove
+        if self.del[adbname] then
+           self.del[adbname] = {}
+        end
+        self.del[adbname][aactorid] = true
     end
 
     function instance:check_outdata(adbname, aactorid)
@@ -173,15 +178,60 @@ local function new()
             end
         else
             ret[adbname] = {}
+            retbool = false
             if self.change[adbname][aactorid] then
                 ret[adbname][aactorid] = self.data[adbname][aactorid]["parsed_data"]
                 self.change[adbname][aactorid] = nil
+                retbool = true
+            end
+            if retbool then
                 logger:write("instance:check_outdata("..adbname..", "..aactorid..")")
                 return true, self:json_encode(ret)
             end
         end
         return false, ""
     end
+
+    function instance:check_outdata_del(adbname, aactorid)
+        if self.edit[adbname] == false then
+            return false, ""
+        end
+        ret = {}
+        self:print_table(self.del[adbname])
+        if aactorid == "-1" then
+            ret[adbname] = {}
+            retbool = false
+            if self.del[adbname] then
+                for k,v in pairs(self.del[adbname]) do
+                    if v then
+                        table.insert(ret[adbname], k)
+                        retbool = true
+		            end
+                end
+               self.del[adbname] = {}
+               if retbool then
+                   logger:write("instance:check_outdata_del("..adbname..", "..aactorid..")")
+                   return true, self:json_encode(ret)
+               end
+            end
+        else
+            ret[adbname] = {}
+            retbool = false
+            if self.del[adbname][aactorid] then
+                table.insert(ret[adbname], k)
+                retbool = true
+            end
+
+            self.del[adbname][aactorid] = nil
+            
+            if retbool then
+                logger:write("instance:check_outdata_del("..adbname..", "..aactorid..")")
+                return true, self:json_encode(ret)
+            end
+        end
+        return false, ""
+    end
+    
 
     return instance
 end

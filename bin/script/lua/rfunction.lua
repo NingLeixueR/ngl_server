@@ -17,6 +17,13 @@ function push_data(adbname, adatajson, aedit)
     ngldata:push_data(adbname, adatajson, aedit)
 end
 
+-- 检查数据是否被修改
 function check_outdata(adbname, aactorid)
     return ngldata:check_outdata(adbname, aactorid)
 end
+
+-- 检查数据是否被删除
+function check_outdata_del(adbname, aactorid)
+    return ngldata:check_outdata_del(adbname, aactorid)
+end
+

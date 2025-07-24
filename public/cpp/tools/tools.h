@@ -354,6 +354,20 @@ namespace ngl
 			return status.ok();
 		}
 
+		template <typename T>
+		static bool json2proto(const std::string& json, const std::string& aname, T& adata)
+		{
+			json_read ltempread(json.c_str());
+			json_read ltempread2;
+			if (!ltempread.read(aname.c_str(), ltempread2))
+			{
+				return false;
+			}
+			
+			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(ltempread2.get(), &adata);
+			return status.ok();
+		}
+
 		template <typename TKEY, typename TVALUE>
 		static bool json2proto(
 			const std::string& json
