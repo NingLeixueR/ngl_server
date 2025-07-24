@@ -24,7 +24,6 @@ extern "C"
 	// # parm 2 msgname
 	// # parm 3 jsonmsg 
 	extern int send_actor(lua_State* L);
-
 }
 
 namespace ngl
@@ -35,6 +34,32 @@ namespace ngl
 	{
 		enscript_none,
 		enscript_lua,
+	};
+
+	class luatools
+	{
+	public:
+		// 保存 void* 到 Lua
+		template <typename T>
+		static void pointer_to_lua(lua_State* L, T* ptr, int64_t aid)
+		{
+			std::string lname = std::format("{}_{}", tools::type_name<T>(), aid);
+			lua_pushlightuserdata(L, ptr);
+			lua_setglobal(L, lname.c_str());
+		}
+
+		// 从 Lua 获取 void*
+		template <typename T>
+		static T* pointer_from_lua(lua_State* L, int64_t aid)
+		{
+			std::string lname = std::format("{}_{}", tools::type_name<T>(), aid);
+			lua_getglobal(L, lname.c_str());  // 获取全局变量
+			if (lua_islightuserdata(L, -1))
+			{
+				return (T*)lua_touserdata(L, -1);  // 返回指针
+			}
+			return NULL;  // 类型不匹配
+		}
 	};
 
 	struct nscript_sysdata
@@ -67,7 +92,10 @@ namespace ngl
 		virtual void init(const std::string& ascript) = 0;
 		virtual bool push_data(const std::string& adbname, const std::string& adatajson, bool aedit) = 0;
 		virtual bool handle(const std::string& aname, const std::string& ajson) = 0;
+		// # 检查数据是否被修改
 		virtual bool check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
+		// # 检查数据是否被删除
+		virtual bool check_outdata_del(const std::string& adbname, i64_actorid aactorid, std::string& adatajson) = 0;
 
 		static std::shared_ptr<nscript> malloc_script(enscript atype, actor_base* aactor)
 		{
@@ -124,7 +152,7 @@ namespace ngl
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
 			setupluapaths();
-			
+
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
 			{
 				LOG_SCRIPT("can't run [{}] : {} !", m_scriptpath, lua_tostring(L, -1));
@@ -230,6 +258,60 @@ namespace ngl
 			if (result == LUA_TNIL)
 			{
 				LOG_SCRIPT("lua_getglobal get failure[{}.{}]", m_scriptpath, "check_outdata");
+				lua_pop(L, 1);
+				return false;
+			}
+			lua_pushstring(L, adbname.c_str());
+			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
+			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
+			{
+				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
+				lua_pop(L, 1);
+				return false;
+			}
+
+			if (lua_gettop(L) < 2)
+			{
+				LOG_SCRIPT("{}.check_outdata return count error", m_scriptpath);
+				lua_settop(L, -lua_gettop(L));
+				return false;
+			}
+
+			if (!lua_isboolean(L, -2))
+			{
+				LOG_SCRIPT("{}.check_outdata return error isboolean", m_scriptpath);
+				lua_settop(L, -lua_gettop(L));
+				return false;
+			}
+
+			if (!lua_isstring(L, -1))
+			{
+				LOG_SCRIPT("{}.check_outdata return error isstring", m_scriptpath);
+				lua_pop(L, 1);
+				return false;
+			}
+
+			bool success = lua_toboolean(L, -2) != 0;
+			if (success)
+			{
+				adatajson = lua_tostring(L, -1);
+			}
+			lua_pop(L, 2);
+
+			return success;
+		}
+
+		virtual bool check_outdata_del(const std::string& adbname, i64_actorid aactorid, std::string& adatajson)
+		{
+			if (L == nullptr)
+			{
+				return false;
+			}
+
+			int result = lua_getglobal(L, "check_outdata_del");
+			if (result == LUA_TNIL)
+			{
+				LOG_SCRIPT("lua_getglobal get failure[{}.check_outdata_del]", m_scriptpath);
 				lua_pop(L, 1);
 				return false;
 			}

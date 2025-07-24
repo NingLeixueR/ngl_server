@@ -55,5 +55,6 @@ function handle(amsgname, amsgjson)
 		if ret then
 			print(data)
 		end
+		ngldata:remove("db_testlua", "34359803960")
 	end
 end

@@ -1,5 +1,6 @@
 #include "tprotocol.h"
 #include "nscript.h"
+#include "actor_manage.h"
 
 extern "C"
 {
@@ -51,7 +52,7 @@ extern "C"
 
 		lua_pushboolean(L, true);
 		return 1;
-	}
+	}	
 }
 
 namespace ngl
