@@ -66,8 +66,8 @@ namespace ngl
 		public data_modified_base
 	{
 	private:
-		//data_modified(const data_modified&) = delete;
-		//data_modified& operator=(const data_modified&) = delete;
+		data_modified(const data_modified&) = delete;
+		data_modified& operator=(const data_modified&) = delete;
 
 		mutable TDBTAB m_data;
 		mutable TDBTAB* m_pdata = nullptr;
@@ -111,39 +111,6 @@ namespace ngl
 				modified();
 			}
 			return ldata;
-		}
-
-		inline bool read(const ngl::json_read& ijsn, const char* akey)
-		{
-			ngl::json_read ltemp;
-			if (ijsn.read(akey, ltemp) == false)
-			{
-				return false;
-			}
-			return read(ltemp);
-		}
-
-		inline bool read(const ngl::json_read& ijsn)
-		{
-			std::string ljson;
-			if (!ijsn.read("data", ljson))
-			{
-				return false;
-			}
-			return tools::json2proto(ljson, get(false, false));
-		}
-
-		inline void write(ngl::json_write& ijsn, const char* akey)const	
-		{
-			ngl::json_write ltemp;
-			write(ltemp);
-			ijsn.write(akey, ltemp.nofree());
-		}
-		inline void write(ngl::json_write& ijsn)const
-		{
-			std::string ljson;
-			tools::proto2json(getconst(false), ljson);
-			ijsn.write("data", ljson);
 		}
 	};
 
