@@ -281,6 +281,7 @@ namespace ngl
 			, adata.get_data()->mbrief().mlv()
 		);
 		m_data = *adata.get_data();
+		handle_print<true>(adata);
 		return true;
 	}
 	bool actor_robot::handle(const message<pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE>& adata)

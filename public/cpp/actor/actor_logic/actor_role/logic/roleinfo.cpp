@@ -59,7 +59,7 @@ namespace ngl
 			);
 			return;
 		}
-		int32_t loldvalue = lrb->mmoneygold();
+		int32_t loldvalue = lrb->mlv();
 		lrb->set_mlv(loldvalue + avalues);
 		tdb_brief::nsp_cli<actor_role>::instance(get_actor()->id_guid()).change(get_actor()->id_guid());
 		static_task::update_change(nactor(), ETaskRoleLv, lrb->mlv());
