@@ -37,33 +37,41 @@ namespace ngl
 		}
 	};
 
-	class data_modified_base
+	template <typename TDBTAB>
+	class nmodified
 	{
 	private:
-		mutable bool m_ischange = false;
+		static std::set<i64_actorid> m_modified;
 	public:
-		// # 是否发生修改
-		bool is_modified()const
+		static std::set<i64_actorid>& which_modified()
 		{
-			return m_ischange;
+			return m_modified;
+		}
+
+		static bool is_modified(i64_actorid aidentifier)
+		{
+			return m_modified.find(aidentifier) != m_modified.end();
 		}
 
 		// # 设置为修改状态
-		void modified()const
+		static void modified(i64_actorid aidentifier)
 		{
-			m_ischange = true;
+			m_modified.insert(aidentifier);
 		}
 
 		// # 清空修改状态
-		void clear_modified()const
+		static void clear_modified(i64_actorid aidentifier)
 		{
-			m_ischange = false;
+			m_modified.erase(aidentifier);
 		}
 	};
 
 	template <typename TDBTAB>
-	struct data_modified : 
-		public data_modified_base
+	std::set<i64_actorid> nmodified<TDBTAB>::m_modified;
+
+
+	template <typename TDBTAB>
+	struct data_modified 
 	{
 	private:
 		data_modified(const data_modified&) = delete;
@@ -74,6 +82,29 @@ namespace ngl
 		actor_base* m_actor = nullptr;
 	public:
 		data_modified() = default;
+
+		inline i64_actorid identifier()const
+		{
+			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			return ldata.mid();
+		}
+
+		inline bool is_modified()
+		{
+			nmodified<TDBTAB>::is_modified(identifier());
+		}
+
+		// # 设置为修改状态
+		inline void modified()const
+		{
+			nmodified<TDBTAB>::modified(identifier());
+		}
+
+		// # 清空修改状态
+		inline void clear_modified()const
+		{
+			nmodified<TDBTAB>::clear_modified(identifier());
+		}
 
 		void set(actor_base* aactor, const TDBTAB& adata, bool achange = false)
 		{
@@ -297,36 +328,34 @@ namespace ngl
 			}
 
 			np_actordb_save<DBTYPE, TDBTAB> pro;
+			data_modified<TDBTAB>* lpdata = nullptr;
 			if (aid != nguid::make())
 			{
-				data_modified<TDBTAB>* lp = nullptr;
 				if (aid == m_id)
 				{
-					lp = m_dbdata;
+					lpdata = m_dbdata;
 				}
 				else
 				{
-					lp = tools::findmap(m_data, aid);
+					lpdata = tools::findmap(m_data, aid);
 				}
-				if (lp != nullptr && lp->is_modified())
+				if (lpdata != nullptr && lpdata->is_modified())
 				{
-					pro.add(lp->getconst().mid(), lp->getconst());
+					pro.add(aid, lpdata->getconst(false));
 					// # 清空标志位 
-					lp->clear_modified();
+					lpdata->clear_modified();
 				}			
 			}
 			else
 			{
-				for (std::pair<const nguid, data_modified<TDBTAB>>& apair : m_data)
+				std::set<i64_actorid>& lmodified = nmodified<TDBTAB>::which_modified();
+				for (i64_actorid lactorid : lmodified)
 				{
-					data_modified<TDBTAB>& ldata = apair.second;
-					if (ldata.is_modified())
-					{
-						pro.add(ldata.getconst().mid(), ldata.getconst());
-						// # 清空标志位 
-						ldata.clear_modified();
-					}
+					lpdata = tools::findmap(m_data, nguid(lactorid));
+					pro.add(lactorid, lpdata->getconst(false));
 				}
+				// # 清空标志位 
+				lmodified.clear();
 			}
 			if (!pro.empty())
 			{
