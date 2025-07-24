@@ -91,7 +91,7 @@ namespace ngl
 
 		inline bool is_modified()
 		{
-			nmodified<TDBTAB>::is_modified(identifier());
+			return nmodified<TDBTAB>::is_modified(identifier());
 		}
 
 		// # ÉèÖÃÎªĞŞ¸Ä×´Ì¬
