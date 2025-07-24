@@ -174,21 +174,25 @@ namespace ngl
 			handle_cmd::add("/name") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.rename(aparm);
+					role->sync_data_client();
 				};
 
 			handle_cmd::add("/lv") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.change_lv(tools::lexical_cast<int>(aparm));
+					role->sync_data_client();
 				};
 
 			handle_cmd::add("/gold") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.change_gold(tools::lexical_cast<int>(aparm));
+					role->sync_data_client();
 				};
 
 			handle_cmd::add("/silver") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
 				{
 					role->m_info.change_silver(tools::lexical_cast<int>(aparm));
+					role->sync_data_client();
 				};
 
 			handle_cmd::add("/chat") = []([[maybe_unused]] const pack* apack, actor_role* role, [[maybe_unused]] const char* aparm)
