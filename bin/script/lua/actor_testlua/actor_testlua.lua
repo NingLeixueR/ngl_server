@@ -16,7 +16,6 @@ end
 
 function db_loadfinish()
     -- 数据加载完成
-	print("lua # db_loadfinish")
 end
 
 function handle(amsgname, amsgjson)

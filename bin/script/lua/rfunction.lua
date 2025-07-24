@@ -27,3 +27,4 @@ function check_outdata_del(adbname, aactorid)
     return ngldata:check_outdata_del(adbname, aactorid)
 end
 
+

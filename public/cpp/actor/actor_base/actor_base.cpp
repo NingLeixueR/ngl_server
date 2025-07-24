@@ -112,7 +112,9 @@ namespace ngl
 			if (aparm.m_enscript != enscript_none)
 			{
 				m_script = nscript::malloc_script(aparm.m_enscript, aactor);
-				m_script->init(aparm.m_scriptname);
+
+				const char* lactorname = em<ENUM_ACTOR>::get_name(type());
+				m_script->init(lactorname, std::format("{}.lua", lactorname).c_str());
 
 				nscript_sysdata lsysdata
 				{
@@ -120,7 +122,7 @@ namespace ngl
 				};
 				std::string lsysdatajson;
 				tools::custom2json(lsysdata, lsysdatajson);
-				m_script->init_sysdata(lsysdatajson);
+				m_script->init_sysdata(lsysdatajson.c_str());
 			}
 		}
 
@@ -239,66 +241,76 @@ namespace ngl
 			return m_script != nullptr;
 		}
 
-		inline bool nscript_push_data(const std::string& adbname, const std::string& adatajson, bool aedit)
+		inline bool nscript_push_data(const char* adbname, const char* adatajson, bool aedit)
 		{
-			if (m_script != nullptr)
+			if (!nscript_using())
 			{
-				return m_script->push_data(adbname, adatajson, aedit);
+				return false;
 			}
-			return false;
+			return m_script->push_data(adbname, adatajson, aedit);
 		}
 
-		inline bool nscript_handle(const std::string& aname, const std::string& ajson)
+		inline bool nscript_handle(const char* aname, const char* ajson)
 		{
-			if (m_script != nullptr)
+			if (!nscript_using())
 			{
-				return m_script->handle(aname, ajson);
+				return false;
 			}
-			return false;
+			return m_script->handle(aname, ajson);
 		}
 
-		inline bool nscript_check_outdata(const std::string& adbname, i64_accountid aactorid, std::string& adatajson)
+		inline bool nscript_check_outdata(const char* adbname, i64_accountid aactorid, std::string& adatajson)
 		{
-			if (m_script != nullptr)
+			if (!nscript_using())
 			{
-				return m_script->check_outdata(adbname, aactorid, adatajson);
+				return false;
 			}
-			return false;
+			return m_script->check_outdata(adbname, aactorid, adatajson);
 		}
 
-		inline bool nscript_check_outdata_del(const std::string& adbname, i64_actorid aactorid)
+		inline bool nscript_check_outdata_del(const char* adbname, i64_actorid aactorid)
 		{
-			if (m_script != nullptr)
+			if (!nscript_using())
 			{
-				std::string ldatajson;
-				return m_script->check_outdata_del(adbname, aactorid, ldatajson);
+				return false;			
 			}
-			return false;
+			std::string ldatajson;
+			return m_script->check_outdata_del(adbname, aactorid, ldatajson);
 		}
 
-		inline bool nscript_check_outdata_del(const std::string& adbname, std::vector<int64_t>& avec)
+		inline bool nscript_check_outdata_del(const char* adbname, std::vector<int64_t>& avec)
 		{
-			if (m_script != nullptr)
+			if (!nscript_using())
 			{
-				std::string ljson;
-				if (!m_script->check_outdata_del(adbname, -1, ljson))
-				{
-					return false;
-				}
-
-				json_read lread(ljson.c_str());
-				std::vector<std::string> lvec;
-				if (!lread.read(adbname.c_str(), lvec))
-				{
-					return false;
-				}
-				for (std::string& item : lvec)
-				{
-					avec.push_back(tools::lexical_cast<int64_t>(item));
-				}
-				return true;
+				return false;
 			}
-			return false;
+
+			std::string ljson;
+			if (!m_script->check_outdata_del(adbname, -1, ljson))
+			{
+				return false;
+			}
+
+			json_read lread(ljson.c_str());
+			std::vector<std::string> lvec;
+			if (!lread.read(adbname, lvec))
+			{
+				return false;
+			}
+			for (std::string& item : lvec)
+			{
+				avec.push_back(tools::lexical_cast<int64_t>(item));
+			}
+			return true;
+		}
+
+		inline void nscript_db_loadfinish()
+		{
+			if (!nscript_using())
+			{
+				return;
+			}
+			m_script->db_loadfinish();
 		}
 
 		inline bool isbroadcast()const
@@ -452,29 +464,34 @@ namespace ngl
 		return m_impl_actor_base()->nscript_using();
 	}
 
-	bool actor_base::nscript_push_data(const std::string& adbname, const std::string& adatajson, bool aedit /*= false*/)
+	bool actor_base::nscript_push_data(const char* adbname, const char* adatajson, bool aedit /*= false*/)
 	{
 		return m_impl_actor_base()->nscript_push_data(adbname, adatajson, aedit);
 	}
 
-	bool actor_base::nscript_handle(const std::string& aname, const std::string& ajson)
+	bool actor_base::nscript_handle(const char* aname, const char* ajson)
 	{
 		return m_impl_actor_base()->nscript_handle(aname, ajson);
 	}
 
-	bool actor_base::nscript_check_outdata(const std::string& adbname, i64_actorid aactorid, std::string& adatajson)
+	bool actor_base::nscript_check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson)
 	{
 		return m_impl_actor_base()->nscript_check_outdata(adbname, aactorid, adatajson);
 	}
 
-	bool actor_base::nscript_check_outdata_del(const std::string& adbname, i64_actorid aactorid)
+	bool actor_base::nscript_check_outdata_del(const char* adbname, i64_actorid aactorid)
 	{
 		return m_impl_actor_base()->nscript_check_outdata_del(adbname, aactorid);
 	}
 
-	bool actor_base::nscript_check_outdata_del(const std::string& adbname, std::vector<i64_actorid>& aactorid)
+	bool actor_base::nscript_check_outdata_del(const char* adbname, std::vector<i64_actorid>& aactorid)
 	{
 		return m_impl_actor_base()->nscript_check_outdata_del(adbname, aactorid);
+	}
+
+	void actor_base::nscript_db_loadfinish()
+	{
+		return m_impl_actor_base()->nscript_db_loadfinish();
 	}
 
 	void actor_base::start_broadcast()
