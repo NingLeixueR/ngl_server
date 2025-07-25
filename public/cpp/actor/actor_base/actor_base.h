@@ -210,7 +210,7 @@ namespace ngl
 		template <typename TDBNSP>
 		void nscript_correlation_dbnsp(const std::function<void(const char*)>& afun)
 		{
-			nscript_correlation_dbnsp(tools::type_name<TDBNSP>(), afun);
+			nscript_correlation_dbnsp(tools::type_name<TDBNSP>().c_str(), afun);
 		}
 
 		void nscript_change_dbnsp();

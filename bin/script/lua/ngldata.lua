@@ -14,7 +14,7 @@ local function new()
         data_source = {},       -- 数据来源：db,csv,dbnsp  如果数据来源dbnsp,修改数据后将自动调用auto_save方法
 
         -- 临时数据,dbnsp显示调用,自动保存 --
-        dbnsp_autosave = {}
+        dbnsp_autosave = {},
         -------------------------------------
 
         sysdata = {},

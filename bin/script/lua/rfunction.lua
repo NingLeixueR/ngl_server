@@ -15,7 +15,7 @@ end
 -- parm adatajson   json数据
 -- parm aedit       数据是否允许在lua中修改
 function push_data(adbname, adata_source, adatajson, aedit)
-    ngldata:push_data(adbname, adatajson, aedit)
+    ngldata:push_data(adbname, adata_source, adatajson, aedit)
 end
 
 -- 检查数据是否被修改
