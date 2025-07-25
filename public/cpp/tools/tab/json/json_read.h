@@ -63,7 +63,6 @@ namespace ngl
 		bool read(const char* akey, json_read& adata) const;
 		bool read(const char* akey, nguid& aval) const;
 		
-
 		template <typename T>
 		bool read_number(
 			const char* akey, const std::function<void(const cJSON* ajson)>& afun
