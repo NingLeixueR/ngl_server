@@ -204,64 +204,77 @@ namespace ngl
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 #pragma region nscript
+		// # 为nsp_client数据dbnsp设置字符串关联
+		void nscript_correlation_dbnsp(const char* aname, const std::function<void(const char*)>& afun);
+
+		template <typename TDBNSP>
+		void nscript_correlation_dbnsp(const std::function<void(const char*)>& afun)
+		{
+			nscript_correlation_dbnsp(tools::type_name<TDBNSP>(), afun);
+		}
+
+		void nscript_change_dbnsp();
+
 		bool nscript_using();
 
-		bool nscript_push_data(const char* adbname, const char* adatajson, bool aedit = false);
+		bool nscript_push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit = false);
 
 		template <typename T>
-		bool nscript_custom_push_data(const T& adata, bool aedit = false)
+		bool nscript_custom_push_data(const char* adata_source, const T& adata, bool aedit = false)
 		{
 			std::string ljson;
 			tools::custom2json(adata, ljson);
-			return nscript_push_data(tools::type_name<T>().c_str(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), adata_source, ljson, aedit);
 		}
 
+		// # 专属压缩csv数据，所以map.key的类型为int32_t
 		template <typename T>
-		bool nscript_custom_push_data(const std::map<int32_t, T>& adata, bool aedit = false)
+		bool nscript_custom_push_data(const char* adata_source, const std::map<int32_t, T>& adata, bool aedit = false)
 		{
 			std::string ljson;
 			tools::custom2json(adata, ljson);
-			return nscript_push_data(tools::type_name<T>().c_str(), ljson.c_str(), aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), adata_source, ljson.c_str(), aedit);
 		}
 
 		template <typename T>
-		bool nscript_proto_push_data(const T& adata, bool aedit = false)
+		bool nscript_proto_push_data(const char* adata_source, const T& adata, bool aedit = false)
 		{
 			std::string ljson;
 			if (!tools::proto2json(adata, ljson))
 			{
 				return false;
 			}
-			return nscript_push_data(tools::type_name<T>().c_str(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), adata_source, ljson, aedit);
 		}
 
+		// # 专属压缩db数据，所以map.key的类型为int64_t
 		template <typename T>
-		bool nscript_proto_push_data(const std::map<int64_t, T>& adata, bool aedit = false)
+		bool nscript_proto_push_data(const char* adata_source, const std::map<int64_t, T>& adata, bool aedit = false)
 		{
 			std::string ljson;
 			if (!tools::proto2json(adata, ljson))
 			{
 				return false;
 			}
-			return nscript_push_data(tools::type_name<T>().c_str(), ljson, aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), adata_source, ljson.c_str(), aedit);
 		}
 
 		template <typename T>
-		bool nscript_proto_push_data(const std::map<int64_t, T*>& adata, bool aedit = false)
+		bool nscript_proto_push_data(const char* adata_source, const std::map<int64_t, T*>& adata, bool aedit = false)
 		{
 			std::string ljson;
 			if (!tools::proto2json(adata, ljson))
 			{
 				return false;
 			}
-			return nscript_push_data(tools::type_name<T>().c_str(), ljson.c_str(), aedit);
+			return nscript_push_data(tools::type_name<T>().c_str(), adata_source, ljson.c_str(), aedit);
 		}
 
 		// # 压入csv数据表
 		template <typename TT>
 		bool nscript_push_csv()
 		{
-			return nscript_custom_push_data<typename TT::type_tab>(TT::instance().tablecsv(), false);
+			return nscript_custom_push_data<typename TT::type_tab>("csv", TT::instance().tablecsv(), false);
 		}
 
 		bool nscript_handle(const char* aname, const char* ajson);

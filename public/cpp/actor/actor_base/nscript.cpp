@@ -1,6 +1,7 @@
 #include "tprotocol.h"
 #include "nscript.h"
 #include "actor_manage.h"
+#include "actor_base.h"
 
 extern "C"
 {

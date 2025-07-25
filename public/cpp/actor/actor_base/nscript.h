@@ -41,7 +41,7 @@ namespace ngl
 	public:
 		// 保存 void* 到 Lua
 		template <typename T>
-		static void pointer_to_lua(lua_State* L, T* ptr, int64_t aid)
+		static void set_pointer(lua_State* L, T* ptr, int64_t aid = 0)
 		{
 			std::string lname = std::format("{}_{}", tools::type_name<T>(), aid);
 			lua_pushlightuserdata(L, ptr);
@@ -50,7 +50,7 @@ namespace ngl
 
 		// 从 Lua 获取 void*
 		template <typename T>
-		static T* pointer_from_lua(lua_State* L, int64_t aid)
+		static T* get_pointer(lua_State* L, int64_t aid = 0)
 		{
 			std::string lname = std::format("{}_{}", tools::type_name<T>(), aid);
 			lua_getglobal(L, lname.c_str());  // 获取全局变量
@@ -58,7 +58,7 @@ namespace ngl
 			{
 				return (T*)lua_touserdata(L, -1);  // 返回指针
 			}
-			return NULL;  // 类型不匹配
+			return nullptr;  // 类型不匹配
 		}
 	};
 
@@ -95,7 +95,7 @@ namespace ngl
 		virtual void init(const char* asubdirectory, const char* ascript) = 0;
 
 		// # 将数据压入lua
-		virtual bool push_data(const char* adbname, const char* adatajson, bool aedit) = 0;
+		virtual bool push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit) = 0;
 
 		// # 数据加载完成
 		virtual bool db_loadfinish() = 0;
@@ -108,6 +108,9 @@ namespace ngl
 
 		// # 检查数据是否被删除
 		virtual bool check_outdata_del(const char* adbname, i64_actorid aactorid, std::string& adatajson) = 0;
+
+		// # 消息结束后会自动调用
+		virtual bool dbnsp_auto_save(std::string& ajson) = 0;
 
 		static std::shared_ptr<nscript> malloc_script(enscript atype, actor_base* aactor)
 		{
@@ -156,7 +159,8 @@ namespace ngl
 
 			lua_register(L, "nguidstr2int64str", nguidstr2int64str);
 			lua_register(L, "send_client", send_client);
-			lua_register(L, "send_actor", send_client);		
+			lua_register(L, "send_actor", send_client);	
+			lua_register(L, "nsp_auto_save", send_client);			
 		}
 
 		virtual void init(const char* asubdirectory, const char* ascript)
@@ -164,6 +168,8 @@ namespace ngl
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
 			setupluapaths();
+
+			luatools::set_pointer(L, get_actor());
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
 			{
@@ -206,7 +212,7 @@ namespace ngl
 		}
 
 		// # 将db数据压入
-		virtual bool push_data(const char* adbname, const char* adatajson, bool aedit)
+		virtual bool push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit)
 		{
 			if (L == nullptr)
 			{
@@ -220,9 +226,10 @@ namespace ngl
 				return false;
 			}
 			lua_pushstring(L, adbname);
+			lua_pushstring(L, adata_source);
 			lua_pushstring(L, adatajson);
 			lua_pushboolean(L, aedit);
-			if (lua_pcall(L, 3, 0, 0) != LUA_OK)
+			if (lua_pcall(L, 4, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.push_data error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1); // 弹出错误信息
@@ -335,7 +342,9 @@ namespace ngl
 
 			return success;
 		}
-
+		
+		// # 查询数据是否被删除
+		// # aactorid == nguid::make() 检查全部数据
 		virtual bool check_outdata_del(const char* adbname, i64_actorid aactorid, std::string& adatajson)
 		{
 			if (L == nullptr)
@@ -384,6 +393,59 @@ namespace ngl
 			if (success)
 			{
 				adatajson = lua_tostring(L, -1);
+			}
+			lua_pop(L, 2);
+
+			return success;
+		}
+	
+		virtual bool dbnsp_auto_save(std::string& ajson)
+		{
+			if (L == nullptr)
+			{
+				return false;
+			}
+
+			int result = lua_getglobal(L, "dbnsp_auto_save");
+			if (result == LUA_TNIL)
+			{
+				LOG_SCRIPT("lua_getglobal get failure[{}.dbnsp_auto_save]", m_scriptpath);
+				lua_pop(L, 1);
+				return false;
+			}
+			
+			if (lua_pcall(L, 0, 2, 0) != LUA_OK)
+			{
+				LOG_SCRIPT("{}.dbnsp_auto_save error [{}]", m_scriptpath, lua_tostring(L, -1));
+				lua_pop(L, 1);
+				return false;
+			}
+
+			if (lua_gettop(L) < 2)
+			{
+				LOG_SCRIPT("{}.dbnsp_auto_save return count error", m_scriptpath);
+				lua_settop(L, -lua_gettop(L));
+				return false;
+			}
+
+			if (!lua_isboolean(L, -2))
+			{
+				LOG_SCRIPT("{}.dbnsp_auto_save return error isboolean", m_scriptpath);
+				lua_settop(L, -lua_gettop(L));
+				return false;
+			}
+
+			if (!lua_isstring(L, -1))
+			{
+				LOG_SCRIPT("{}.dbnsp_auto_save return error isstring", m_scriptpath);
+				lua_pop(L, 1);
+				return false;
+			}
+
+			bool success = lua_toboolean(L, -2) != 0;
+			if (success)
+			{
+				ajson = lua_tostring(L, -1);
 			}
 			lua_pop(L, 2);
 

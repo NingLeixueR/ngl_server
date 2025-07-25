@@ -74,6 +74,8 @@ namespace ngl
 					m_changedatafun(apair.first, apair.second, lfirstsynchronize);
 				}
 			}
+
+			m_actor->nscript_proto_push_data("dbnsp", m_data, m_onlyread == false);
 		}
 
 		// # ¥Ú”°–≈œ¢
@@ -356,6 +358,21 @@ namespace ngl
 							}
 							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
 						}, false);
+
+					m_actor->nscript_correlation_dbnsp<T>([this](const char* ajson)
+						{
+							std::map<int64_t, T> lmap;
+							if (!tools::json2proto(ajson, lmap))
+							{
+								return;
+							}
+							for (const auto& item : lmap)
+							{
+								m_data[item.first] = item.second;
+								change(item.first);
+							}
+							return;
+						});
 				}				
 			}
 
