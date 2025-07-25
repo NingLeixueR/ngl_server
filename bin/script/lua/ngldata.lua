@@ -7,10 +7,15 @@ local ngldata = {}
 local function new()
     local instance = 
     {
-        data = {},   -- 数据
-        edit = {},   -- 数据是否允许被编辑
-        change = {}, -- 哪些数据被改变
-        del = {}, -- 哪些数据被删除
+        data = {},              -- 数据
+        edit = {},              -- 数据是否允许被编辑
+        change = {},            -- 哪些数据被改变
+        del = {},               -- 哪些数据被删除
+        data_source = {},       -- 数据来源：db,csv,dbnsp  如果数据来源dbnsp,修改数据后将自动调用auto_save方法
+
+        -- 临时数据,dbnsp显示调用,自动保存 --
+        dbnsp_autosave = {}
+        -------------------------------------
 
         sysdata = {},
     }
@@ -84,7 +89,7 @@ local function new()
         self.sysdata = self:json_decode(asysjson)
     end
 
-    function instance:push_data(adbname, adatajson, aedit)
+    function instance:push_data(adbname, adata_source, adatajson, aedit)
         if aedit then
             logger:write("instance:push_data("..adbname..","..adatajson..",true)")
         else
@@ -111,6 +116,9 @@ local function new()
                 }
             end
 	    end
+
+        
+        self.data_source[adbname] = adata_source
         
         logger:write("##"..adbname.."##")
         self:print_table(parsedData)
@@ -124,9 +132,32 @@ local function new()
 
        if self.data[adbname] and self.data[adbname][aactorid] then
             self.change[adbname][aactorid] = true
+            if self.data_source[adbname] == "dbnsp" then
+                self.dbnsp_autosave[adbname] = true
+            end
             return self.data[adbname][aactorid]["parsed_data"]
        end
        return nil
+    end
+
+    -- 手动save，当get 返回的true,数据  需要手动显示调用
+    function instance:dbnsp_auto_save()
+        ret = {}
+
+        for k1,v1 in pairs(self.dbnsp_autosave) do
+            ret[adbname] = {}
+            if v1 then
+                for k2,v2 in pairs(self.change[adbname]) do
+                    if v2 then
+                        ret[adbname][k2] = self.data[adbname][k2]["parsed_data"]
+		            end
+                end
+            self.change[adbname] = {}
+		    end
+        end
+        self.dbnsp_autosave = {}
+       
+        return true,self:json_encode(ret)
     end
 
     function instance:getconst(adbname, aactorid)

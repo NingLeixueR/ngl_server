@@ -241,13 +241,13 @@ namespace ngl
 			return m_script != nullptr;
 		}
 
-		inline bool nscript_push_data(const char* adbname, const char* adatajson, bool aedit)
+		inline bool nscript_push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit)
 		{
 			if (!nscript_using())
 			{
 				return false;
 			}
-			return m_script->push_data(adbname, adatajson, aedit);
+			return m_script->push_data(adbname, adata_source, adatajson, aedit);
 		}
 
 		inline bool nscript_handle(const char* aname, const char* ajson)
@@ -311,6 +311,34 @@ namespace ngl
 				return;
 			}
 			m_script->db_loadfinish();
+		}
+
+		std::map<std::string, std::function<void(const char*)>> m_dbnsp;
+
+		inline void nscript_correlation_dbnsp(
+			const char* aname
+			, const std::function<void(const char*)>& afun
+		)
+		{
+			if (!nscript_using())
+			{
+				return;
+			}
+			m_dbnsp[aname] = afun;
+		}
+
+		inline void nscript_change_dbnsp()
+		{
+			if (!nscript_using())
+			{
+				return;
+			}
+			std::string ljson;
+			m_script->dbnsp_auto_save(ljson);
+			for (const auto& apair : m_dbnsp)
+			{
+				apair.second(ljson.c_str());
+			}
 		}
 
 		inline bool isbroadcast()const
@@ -464,9 +492,9 @@ namespace ngl
 		return m_impl_actor_base()->nscript_using();
 	}
 
-	bool actor_base::nscript_push_data(const char* adbname, const char* adatajson, bool aedit /*= false*/)
+	bool actor_base::nscript_push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit /*= false*/)
 	{
-		return m_impl_actor_base()->nscript_push_data(adbname, adatajson, aedit);
+		return m_impl_actor_base()->nscript_push_data(adbname, adata_source, adatajson, aedit);
 	}
 
 	bool actor_base::nscript_handle(const char* aname, const char* ajson)
@@ -492,6 +520,19 @@ namespace ngl
 	void actor_base::nscript_db_loadfinish()
 	{
 		return m_impl_actor_base()->nscript_db_loadfinish();
+	}
+
+	void actor_base::nscript_correlation_dbnsp(
+		const char* aname
+		, const std::function<void(const char*)>& afun
+	)
+	{
+		return m_impl_actor_base()->nscript_correlation_dbnsp(aname, afun);
+	}
+
+	void actor_base::nscript_change_dbnsp()
+	{
+		return m_impl_actor_base()->nscript_change_dbnsp();
 	}
 
 	void actor_base::start_broadcast()

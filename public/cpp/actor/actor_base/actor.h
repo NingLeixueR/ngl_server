@@ -317,6 +317,7 @@ namespace ngl
 			{
 				nscript_proto_handle(*adata.get_data());
 			}
+			nscript_change_dbnsp();
 			return true;
 		}
 
