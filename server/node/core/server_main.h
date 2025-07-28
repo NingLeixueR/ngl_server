@@ -375,6 +375,7 @@ bool start_world()
 	ngl::actor_example_match::instance();
 	ngl::actor_example_manage::instance();
 	ngl::actor_testlua::instance();
+	ngl::actor_testlua2::instance();
 
 	ngl::actor_client::instance().actor_server_register();
 	return true;

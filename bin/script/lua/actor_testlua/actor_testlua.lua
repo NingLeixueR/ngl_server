@@ -1,18 +1,6 @@
 local ngldata = require("ngldata").getInstance()
 require("ngldata")
 
-function print_table(t)
-    if type(t) ~= "table" then
-        print(t)
-        return
-    end
-    print("{")
-    for k, v in pairs(t) do
-        print("  " .. tostring(k) .. ": " .. tostring(v))
-    end
-    print("}")
-end
-
 
 function db_loadfinish()
     -- 数据加载完成
@@ -62,4 +50,6 @@ function handle(amsgname, amsgjson)
 		end
 		ngldata:remove("db_testlua", "34359803960")
 	end
+
+	send_client("actor_testlua2#1#-1", amsgname, amsgjson)
 end

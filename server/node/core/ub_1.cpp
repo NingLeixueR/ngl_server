@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-07-18 16:50:41
+// 创建时间 25-07-28 11:38:33
 #include "attribute_value.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"
@@ -97,6 +97,7 @@
 #include "actor_gateway_c2g_handle.cpp"
 #include "actor_csvserver_handle.cpp"
 #include "actor_csvclient_handle.cpp"
+#include "actor_testlua2_handle.cpp"
 #include "actor_ranklist_handle.cpp"
 #include "actor_keyvalue_handle.cpp"
 #include "actor_gmclient_handle.cpp"
@@ -125,6 +126,7 @@
 #include "actor_gm_handle.cpp"
 #include "actor_csvserver.cpp"
 #include "actor_csvclient.cpp"
+#include "actor_testlua2.cpp"
 #include "actor_ranklist.cpp"
 #include "actor_keyvalue.cpp"
 #include "actor_gmclient.cpp"

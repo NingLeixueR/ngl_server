@@ -52,6 +52,7 @@ namespace ngl
 		ACTOR_EXAMPLE_MATCH = 54,									// 例子小游戏:匹配
 		ACTOR_EXAMPLE_MANAGE = 55,									// 创建管理例子小游戏
 		ACTOR_TESTLUA = 56,											// 测试lua
+		ACTOR_TESTLUA2 = 57,										// 测试lua2
 		ACTOR_DB = 57,												// 必须是最后一个
 		ACTOR_SIGNLE_FINISH = ACTOR_DB + pbdb::ENUM_DB_COUNT,
 		ACTOR_COUNT = ACTOR_SIGNLE_FINISH,
