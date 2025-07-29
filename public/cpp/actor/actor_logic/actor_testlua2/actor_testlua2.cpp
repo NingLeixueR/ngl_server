@@ -58,9 +58,9 @@ namespace ngl
 	void actor_testlua2::nregister()
 	{
 		// ¶¨Ê±Æ÷
-		actor::register_timer<actor_testlua>(&actor_testlua::timer_handle);
+		actor::register_timer<actor_testlua2>(&actor_testlua2::timer_handle);
 
-		register_script_handle<EPROTOCOL_TYPE_CUSTOM, actor_testlua>::func<
+		register_script_handle<EPROTOCOL_TYPE_CUSTOM, actor_testlua2>::func<
 			np_testlua
 		>(true);
 	}
