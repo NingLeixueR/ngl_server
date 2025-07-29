@@ -63,7 +63,7 @@ namespace ngl
 
 		register_script_handle<EPROTOCOL_TYPE_CUSTOM, actor_testlua>::func<
 			np_testlua
-			>(true);
+		>(true);
 		register_script_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_testlua>::func<
 			mforward<pbnet::PROBUFF_NET_TESTLUA>
 		>(true);

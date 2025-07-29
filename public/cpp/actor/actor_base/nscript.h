@@ -159,7 +159,7 @@ namespace ngl
 
 			lua_register(L, "nguidstr2int64str", nguidstr2int64str);
 			lua_register(L, "send_client", send_client);
-			lua_register(L, "send_actor", send_client);	
+			lua_register(L, "send_actor", send_actor);
 			lua_register(L, "nsp_auto_save", send_client);			
 		}
 
