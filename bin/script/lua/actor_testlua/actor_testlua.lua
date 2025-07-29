@@ -26,7 +26,6 @@ function handle(amsgname, amsgjson)
 	print("ngldata:getconst ############################")
 	local tabconst = ngldata:getconst("tab_servers","1")
 	if tabconst ~= nil then
-		print_table(tabconst)
 		print("tabconst.m_threadnum = "..tabconst.m_threadnum)
 	end
 	print("############################")
@@ -51,5 +50,5 @@ function handle(amsgname, amsgjson)
 		ngldata:remove("db_testlua", "34359803960")
 	end
 
-	send_client("actor_testlua2#1#-1", amsgname, amsgjson)
+	send_actor("actor_testlua2#1#-1", amsgname, amsgjson)
 end
