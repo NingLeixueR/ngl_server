@@ -323,7 +323,7 @@ namespace ngl
 			int result = lua_getglobal(L, "data_checkout");
 			if (result == LUA_TNIL)
 			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.check_outdata]", m_scriptpath);
+				LOG_SCRIPT("lua_getglobal get failure[{}.data_checkout]", m_scriptpath);
 				lua_pop(L, 1);
 				return false;
 			}
@@ -331,14 +331,14 @@ namespace ngl
 			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
 			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
 			{
-				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
+				LOG_SCRIPT("{}.data_checkout error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1);
 				return false;
 			}
 
 			if (lua_gettop(L) < 2)
 			{
-				LOG_SCRIPT("{}.check_outdata return count error", m_scriptpath);
+				LOG_SCRIPT("{}.data_checkout return count error", m_scriptpath);
 				lua_settop(L, -lua_gettop(L));
 				return false;
 			}

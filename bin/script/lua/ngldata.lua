@@ -119,7 +119,7 @@ local function new()
     end
 
     function instance:get(aname, adataid)
-       logger:write("instance:get("..aname..","..adataid)
+       logger:write("instance:get("..aname..","..adataid..")")
        if self.edit[aname] == false then
             return nil;
        end
@@ -132,26 +132,33 @@ local function new()
     end
 
     function instance:getconst(aname, adataid)
-       local data = self.data[aname][adataid] and self.data[aname][adataid]["parsed_data"] or nil
-       if data ~= nil then
-           self:print_table(data)
-           return setmetatable({}, {
-                __index = data,
-                __newindex = readonlyMT.__newindex,
-                __metatable = readonlyMT.__metatable,
-                __pairs = function(t)
-                    return pairs(data)
-                end
-           })
-       end
-       return nil
+        logger:write("instance:getconst("..aname..","..adataid..")")
+        if self.data[aname] and self.data[aname][adataid] then
+            local data = self.data[aname][adataid] and self.data[aname][adataid]["parsed_data"] or nil
+            if data ~= nil then
+                self:print_table(data)
+                return setmetatable({}, {
+                    __index = data,
+                    __newindex = readonlyMT.__newindex,
+                    __metatable = readonlyMT.__metatable,
+                    __pairs = function(t)
+                        return pairs(data)
+                    end
+                })
+            end
+        end
+        return nil
     end
 
     -- parm iscpp ÊÇ·ñcppµ÷ÓÃ
     function instance:data_del(aname, adataid, iscpp)
         logger:write("instance:data_del("..aname..","..adataid)
-        self.data[aname][adataid] = nil
-        self.change[aname][adataid] = nil
+        if self.data[aname][adataid] then
+            self.data[aname][adataid] = nil
+        end
+        if self.change[aname][adataid] then
+            self.change[aname][adataid] = nil
+        end
         if iscpp == nil then
             self.del[aname][adataid] = true
         else
@@ -214,7 +221,6 @@ local function new()
             return false, ""
         end
         ret = {}
-        self:print_table(self.del[aname])
         ret[aname] = {}
         retbool = false
         if self.del[aname] then

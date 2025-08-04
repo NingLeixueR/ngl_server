@@ -19,7 +19,7 @@ function data_push(aname, asource, ajson, aedit)
 end
 
 function data_del(aname, adataid)
-    ngldata:data_del(aname, adataid)
+    ngldata:data_del(aname, adataid, true)
 end
 
 -- 检查数据是否被修改
