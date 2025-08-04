@@ -74,7 +74,12 @@ namespace ngl
 				lpmailitem->set_mcount(count);
 			}
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
-			lpdb_mail.get().mutable_mmail()->insert({ lid, lmail });
+			pbdb::db_mail* lpdbmail = lpdb_mail.get();
+			if (lpdbmail == nullptr)
+			{
+				return false;
+			}
+			lpdbmail->mutable_mmail()->insert({ lid, lmail });
 			return true;
 		}
 
@@ -96,8 +101,14 @@ namespace ngl
 			{
 				return nullptr;
 			}
-			auto itor = lpdb_mail->get().mutable_mmail()->find((int32_t)aid);
-			if (itor == lpdb_mail->get().mutable_mmail()->end())
+			pbdb::db_mail* lpdbmail = lpdb_mail->get();
+			if (lpdbmail == nullptr)
+			{
+				return nullptr;
+			}
+
+			auto itor = lpdbmail->mutable_mmail()->find((int32_t)aid);
+			if (itor == lpdbmail->mutable_mmail()->end())
 			{
 				return nullptr;
 			}
@@ -109,7 +120,12 @@ namespace ngl
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			std::vector<int32_t> ldellist;
-			for (const auto& [_id, _mail] : *lpdb_mail.get().mutable_mmail())
+			pbdb::db_mail* lpdbmail = lpdb_mail.get();
+			if (lpdbmail == nullptr)
+			{
+				return;
+			}
+			for (const auto& [_id, _mail] : *lpdbmail->mutable_mmail())
 			{
 				if (_id != -1 && acheck(_mail))
 				{
@@ -168,7 +184,12 @@ namespace ngl
 				}
 				
 				data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
-				lpdb_mail.get().mutable_mmail()->erase((int32_t)aid);
+				pbdb::db_mail* lpdbmail = lpdb_mail.get();
+				if (lpdbmail == nullptr)
+				{
+					return false;
+				}
+				lpdbmail->mutable_mmail()->erase((int32_t)aid);
 			}
 			else
 			{
@@ -188,7 +209,12 @@ namespace ngl
 		{
 			data_modified<pbdb::db_mail>& lpdb_mail = get(aroleid);
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE>();
-			for (const auto& [_mailid, _mails] : *lpdb_mail.get().mutable_mmail())
+			pbdb::db_mail* lpdbmail = lpdb_mail.get();
+			if (lpdbmail == nullptr)
+			{
+				return nullptr;
+			}
+			for (const auto& [_mailid, _mails] : *lpdbmail->mutable_mmail())
 			{
 				pro->mutable_mmail()->insert({ _mailid, _mails });
 			}

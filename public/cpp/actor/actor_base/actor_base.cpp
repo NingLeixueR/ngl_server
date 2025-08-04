@@ -93,8 +93,25 @@ namespace ngl
 		static int									m_broadcasttimer;
 		//# 是否接收广播消息
 		bool										m_isbroadcast = false;	
-
+		//# 对脚本语言的支持
+		using type_nscript_pair = std::pair<
+			std::function<bool(const char*)>
+			, std::function<bool(const char*)>
+		>;
+		struct nscript_info
+		{
+			std::string m_name;
+			actor_base::ecorrelation m_type;
+			type_nscript_pair m_function;
+		};
+		using map_name_nscript = std::map<std::string, nscript_info>;
+		using map_type_nscript = std::map<actor_base::ecorrelation, std::map<std::string, nscript_info*>>;
 		std::shared_ptr<nscript>					m_script = nullptr;
+		// 用于存储检查脚本中是否修改删除数据的处理函数
+		map_name_nscript							m_scriptnamecheck;
+		map_type_nscript							m_scripttypecheck;
+
+
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
@@ -241,13 +258,15 @@ namespace ngl
 			return m_script != nullptr;
 		}
 
-		inline bool nscript_push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit)
+		inline bool nscript_data_push(
+			const char* adbname, const char* adata_source, const char* adatajson, bool aedit
+		)
 		{
 			if (!nscript_using())
 			{
 				return false;
 			}
-			return m_script->push_data(adbname, adata_source, adatajson, aedit);
+			return m_script->data_push(adbname, adata_source, adatajson, aedit);
 		}
 
 		inline bool nscript_handle(const char* aname, const char* ajson)
@@ -259,47 +278,73 @@ namespace ngl
 			return m_script->handle(aname, ajson);
 		}
 
-		inline bool nscript_check_outdata(const char* adbname, i64_accountid aactorid, std::string& adatajson)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return m_script->check_outdata(adbname, aactorid, adatajson);
-		}
-
-		inline bool nscript_check_outdata_del(const char* adbname, i64_actorid aactorid)
-		{
-			if (!nscript_using())
-			{
-				return false;			
-			}
-			std::string ldatajson;
-			return m_script->check_outdata_del(adbname, aactorid, ldatajson);
-		}
-
-		inline bool nscript_check_outdata_del(const char* adbname, std::vector<int64_t>& avec)
+		template <bool DEL>
+		inline bool nscript_check(const char* aname, i64_accountid adataid)
 		{
 			if (!nscript_using())
 			{
 				return false;
 			}
 
+			auto itor = m_scriptnamecheck.find(aname);
+			if (itor == m_scriptnamecheck.end())
+			{
+				return false;
+			}
 			std::string ljson;
-			if (!m_script->check_outdata_del(adbname, -1, ljson))
+			if constexpr(DEL)
+			{
+				if (!m_script->data_checkdel(aname, adataid, ljson))
+				{
+					return false;
+				}
+				return itor->second.m_function.second(ljson.c_str());
+			}
+			else
+			{
+				if (!m_script->data_checkout(aname, adataid, ljson))
+				{
+					return false;
+				}
+				return itor->second.m_function.first(ljson.c_str());
+			}
+			
+		}
+
+		template <bool DEL>
+		inline bool nscript_check(actor_base::ecorrelation atype)
+		{
+			if (!nscript_using())
 			{
 				return false;
 			}
 
-			json_read lread(ljson.c_str());
-			std::vector<std::string> lvec;
-			if (!lread.read(adbname, lvec))
+			auto itor = m_scripttypecheck.find(atype);
+			if (itor == m_scripttypecheck.end())
 			{
 				return false;
 			}
-			for (std::string& item : lvec)
+
+			for (const auto& item : itor->second)
 			{
-				avec.push_back(tools::lexical_cast<int64_t>(item));
+				nscript_info* lpinfo = item.second;
+				std::string ljson;
+				if constexpr(DEL)
+				{
+					if (!m_script->data_checkdel(lpinfo->m_name.c_str(), nguid::make(), ljson))
+					{
+						continue;
+					}
+					lpinfo->m_function.second(ljson.c_str());
+				}
+				else
+				{
+					if (!m_script->data_checkout(lpinfo->m_name.c_str(), nguid::make(), ljson))
+					{
+						continue;
+					}
+					lpinfo->m_function.first(ljson.c_str());
+				}				
 			}
 			return true;
 		}
@@ -313,32 +358,33 @@ namespace ngl
 			m_script->db_loadfinish();
 		}
 
-		std::map<std::string, std::function<void(const char*)>> m_dbnsp;
-
-		inline void nscript_correlation_dbnsp(
-			const char* aname
-			, const std::function<void(const char*)>& afun
+		inline void nscript_correlation_checkout(
+			actor_base::ecorrelation atype
+			, const char* aname
+			, const actor_base::nscript_callback& achangefun
+			, const actor_base::nscript_callback& adelfun
 		)
 		{
 			if (!nscript_using())
 			{
 				return;
 			}
-			m_dbnsp[aname] = afun;
+
+			nscript_info* lpinfo = &m_scriptnamecheck[aname];
+			lpinfo->m_type = atype;
+			lpinfo->m_name = aname;
+			lpinfo->m_function = std::make_pair(achangefun, adelfun);
+
+			m_scripttypecheck[atype][aname] = lpinfo;
 		}
 
-		inline void nscript_change_dbnsp()
+		void nscript_data_del(const char* aname, int64_t adataid)
 		{
 			if (!nscript_using())
 			{
 				return;
 			}
-			std::string ljson;
-			m_script->dbnsp_auto_save(ljson);
-			for (const auto& apair : m_dbnsp)
-			{
-				apair.second(ljson.c_str());
-			}
+			m_script->data_del(aname, adataid);
 		}
 
 		inline bool isbroadcast()const
@@ -487,54 +533,6 @@ namespace ngl
 		m_impl_actor_base()->init_db_component(acreate);
 	}
 
-	bool actor_base::nscript_using()
-	{
-		return m_impl_actor_base()->nscript_using();
-	}
-
-	bool actor_base::nscript_push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit /*= false*/)
-	{
-		return m_impl_actor_base()->nscript_push_data(adbname, adata_source, adatajson, aedit);
-	}
-
-	bool actor_base::nscript_handle(const char* aname, const char* ajson)
-	{
-		return m_impl_actor_base()->nscript_handle(aname, ajson);
-	}
-
-	bool actor_base::nscript_check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson)
-	{
-		return m_impl_actor_base()->nscript_check_outdata(adbname, aactorid, adatajson);
-	}
-
-	bool actor_base::nscript_check_outdata_del(const char* adbname, i64_actorid aactorid)
-	{
-		return m_impl_actor_base()->nscript_check_outdata_del(adbname, aactorid);
-	}
-
-	bool actor_base::nscript_check_outdata_del(const char* adbname, std::vector<i64_actorid>& aactorid)
-	{
-		return m_impl_actor_base()->nscript_check_outdata_del(adbname, aactorid);
-	}
-
-	void actor_base::nscript_db_loadfinish()
-	{
-		return m_impl_actor_base()->nscript_db_loadfinish();
-	}
-
-	void actor_base::nscript_correlation_dbnsp(
-		const char* aname
-		, const std::function<void(const char*)>& afun
-	)
-	{
-		return m_impl_actor_base()->nscript_correlation_dbnsp(aname, afun);
-	}
-
-	void actor_base::nscript_change_dbnsp()
-	{
-		return m_impl_actor_base()->nscript_change_dbnsp();
-	}
-
 	void actor_base::start_broadcast()
 	{
 		impl_actor_base::start_broadcast();
@@ -619,4 +617,63 @@ namespace ngl
 			});
 		return true;
 	}
+
+	bool actor_base::nscript_using()
+	{
+		return m_impl_actor_base()->nscript_using();
+	}
+
+	bool actor_base::nscript_data_push(
+		const char* adbname, const char* adata_source, const char* adatajson, bool aedit /*= false*/
+	)
+	{
+		return m_impl_actor_base()->nscript_data_push(adbname, adata_source, adatajson, aedit);
+	}
+
+	bool actor_base::nscript_handle(const char* aname, const char* ajson)
+	{
+		return m_impl_actor_base()->nscript_handle(aname, ajson);
+	}
+
+	bool actor_base::nscript_check(const char* adbname, i64_actorid aactorid, bool adel)
+	{
+		if (adel)
+		{
+			return m_impl_actor_base()->nscript_check<true>(adbname, aactorid);
+		}
+		else
+		{
+			return m_impl_actor_base()->nscript_check<false>(adbname, aactorid);
+		}
+	}
+
+	bool actor_base::nscript_check(actor_base::ecorrelation atype, bool adel)
+	{
+		if (adel)
+		{
+			return m_impl_actor_base()->nscript_check<true>(atype);
+		}
+		else
+		{
+			return m_impl_actor_base()->nscript_check<false>(atype);
+		}
+	}
+
+	void actor_base::nscript_db_loadfinish()
+	{
+		return m_impl_actor_base()->nscript_db_loadfinish();
+	}
+
+	void actor_base::nscript_correlation_checkout(
+		actor_base::ecorrelation atype, const char* aname, const actor_base::nscript_callback& achangefun, const actor_base::nscript_callback& adelfun
+	)
+	{
+		return m_impl_actor_base()->nscript_correlation_checkout(atype, aname, achangefun, adelfun);
+	}
+
+	void actor_base::nscript_data_del(const char* aname, int64_t adataid)
+	{
+		return m_impl_actor_base()->nscript_data_del(aname, adataid);
+	}
+
 }//namespace ngl

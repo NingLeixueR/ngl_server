@@ -87,8 +87,12 @@ namespace ngl
 		log_error()->print("actor_ranklist###loaddb_finish {}", data());
 		for (std::pair<const nguid, data_modified<pbdb::db_ranklist>>& item : data())
 		{
-			const pbdb::db_ranklist& ltemp = item.second.getconst();
-			add_data(ltemp);
+			const pbdb::db_ranklist* lpdbranklist = item.second.getconst();
+			if (lpdbranklist == nullptr)
+			{
+				continue;
+			}
+			add_data(*lpdbranklist);
 		}
 
 		tdb_brief::nsp_cli<actor_ranklist>::instance(get_actor()->id_guid()).set_changedata_fun(
@@ -107,7 +111,7 @@ namespace ngl
 			ldbranklist.set_mid(aactorid);
 			add(aactorid, ldbranklist);
 		}
-		return &data()[aactorid].get();
+		return data()[aactorid].get();
 	}
 
 	std::shared_ptr<pbnet::PROBUFF_NET_RANKLIST_RESPONSE> ranklist::get_ranklist(i64_actorid aroleid, pbdb::eranklist atype, int32_t apage)

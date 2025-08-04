@@ -14,23 +14,30 @@ end
 -- parm adata_source 数据来源db,csv,dbnsp
 -- parm adatajson   json数据
 -- parm aedit       数据是否允许在lua中修改
-function push_data(adbname, adata_source, adatajson, aedit)
-    ngldata:push_data(adbname, adata_source, adatajson, aedit)
+function data_push(aname, asource, ajson, aedit)
+    ngldata:data_push(aname, asource, ajson, aedit)
+end
+
+function data_del(aname, adataid)
+    ngldata:data_del(aname, adataid)
 end
 
 -- 检查数据是否被修改
-function check_outdata(adbname, aactorid)
-    return ngldata:check_outdata(adbname, aactorid)
+function data_checkout(aname, adataid)
+    if adataid == -1 then
+        return ngldata:data_checkout(aname)
+    else
+        return ngldata:data_checkoutbyid(aname, adataid)
+    end
 end
 
 -- 检查数据是否被删除
-function check_outdata_del(adbname, aactorid)
-    return ngldata:check_outdata_del(adbname, aactorid)
-end
-
--- 消息结束后会自动调用
-function dbnsp_auto_save()
-    return ngldata:dbnsp_auto_save()
+function data_checkdel(aname, adataid)
+     if adataid == -1 then
+        return ngldata:data_checkdel(aname)
+    else
+        return ngldata:data_checkdelbyid(aname, adataid)
+    end
 end
 
 

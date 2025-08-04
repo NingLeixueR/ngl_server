@@ -38,7 +38,7 @@ namespace ngl
 						return;
 					}
 					auto profamilylist = m_family.get_familylist(familid);
-					if (tools::proto2json<pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE>(*profamilylist, pro.m_data) == false)
+					if (tools::proto2json(*profamilylist, pro.m_data) == false)
 					{
 						return;
 					}

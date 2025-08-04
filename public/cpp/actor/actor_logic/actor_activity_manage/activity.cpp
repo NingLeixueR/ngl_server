@@ -60,13 +60,21 @@ namespace ngl
 		);
 		const tab_activity* ltab = tab();
 		int32_t lday = day();
-		auto& ldb_activity = m_activity->getconst();
-
-		auto itor = ldb_activity.mtask().find(aroleid);
-		if (itor == ldb_activity.mtask().end())
+		const pbdb::db_activity* lpdbactivityconst = m_activity->getconst();
+		if (lpdbactivityconst == nullptr)
 		{
-			(*m_activity->get().mutable_mtask())[aroleid];
-			itor = ldb_activity.mtask().find(aroleid);
+			return;
+		}
+		auto itor = lpdbactivityconst->mtask().find(aroleid);
+		if (itor == lpdbactivityconst->mtask().end())
+		{
+			pbdb::db_activity* lpdbactivity = m_activity->get();
+			if (lpdbactivity == nullptr)
+			{
+				return;
+			}
+			(*lpdbactivity->mutable_mtask())[aroleid];
+			itor = lpdbactivityconst->mtask().find(aroleid);
 		}
 
 		const pbdb::activity_task& ltask = itor->second;

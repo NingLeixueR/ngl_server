@@ -226,7 +226,8 @@ struct std::formatter<ngl::data_modified<NAME>>										\
 	auto format(const ngl::data_modified<NAME>& aval, std::format_context& ctx)const\
 	{																				\
 		std::string ldb;															\
-		ngl::tools::proto2json(aval.getconst(), ldb);								\
+		data_modified_dump_getconst(lpdbdataconst, aval)						\
+		ngl::tools::proto2json(*lpdbdataconst, ldb);								\
 		return std::format_to(ctx.out(), #NAME":<{}>\n", ldb);						\
 	}																				\
 };

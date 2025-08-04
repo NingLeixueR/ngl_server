@@ -29,7 +29,7 @@ namespace ngl
 						return;
 					}
 					auto prorank = m_ranklist.get_ranklist(nguid::make(), (pbdb::eranklist)lrank.m_type, lrank.m_page);
-					if (tools::proto2json<pbnet::PROBUFF_NET_RANKLIST_RESPONSE>(*prorank, pro.m_data) == false)
+					if (tools::proto2json(*prorank, pro.m_data) == false)
 					{
 						return;
 					}

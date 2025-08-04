@@ -137,7 +137,12 @@ namespace ngl
 				tools::no_core_dump();
 			}
 			data_modified<TDATA>& ldata = data()[aid];
-			ldata.get().set_mid(aid);
+			TDATA* lpdata = ldata.get();
+			if (lpdata == nullptr)
+			{
+				tools::no_core_dump();
+			}
+			lpdata->set_mid(aid);
 			return ldata;
 		}
 
@@ -188,7 +193,7 @@ namespace ngl
 				tools::no_core_dump();
 			}
 			data_modified<TDATA>& ldata = get(aid);
-			ldata.get() = adbtab;
+			*ldata.get() = adbtab;
 			return ldata;
 		}
 

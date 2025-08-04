@@ -500,7 +500,8 @@ namespace ngl
 	{
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
-		protobuf_data<std::map<int64_t, TDATA>> m_data;
+		protobuf_data<std::map<int64_t, TDATA>> m_data;		// 1、数据同步2、数据修改3、数据增加
+		std::vector<int64_t> m_deldata;						// 数据被删除
 		def_protocol(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
 	};
 

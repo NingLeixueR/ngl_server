@@ -81,7 +81,8 @@ namespace ngl
 		auto itor = lmap.find(account);
 		if (itor != lmap.end())
 		{
-			if (itor->second->getconst().mpassworld() != apassworld)
+			data_modified_return_getconst(lpdaccountconst, *itor->second, nullptr);
+			if (lpdaccountconst->mpassworld() != apassworld)
 			{
 				return nullptr;
 			}

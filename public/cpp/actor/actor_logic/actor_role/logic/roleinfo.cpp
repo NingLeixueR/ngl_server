@@ -11,7 +11,7 @@ namespace ngl
 
 	const i64_actorid roleinfo::m_id()
 	{
-		return (int)db()->getconst().mid();
+		return (int)db()->getconst()->mid();
 	}
 
 	pbdb::db_brief* roleinfo::get_brief()

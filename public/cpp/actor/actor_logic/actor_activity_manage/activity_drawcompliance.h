@@ -52,8 +52,12 @@ namespace ngl
 
 		void update(i64_actorid aroleid, int acount)
 		{
-			pbdb::db_activity& lactivitydb = m_activity->get();
-			auto lmap = lactivitydb.mutable_mdrawcompliance();
+			pbdb::db_activity* lpdbactivity = m_activity->get();
+			if (lpdbactivity == nullptr)
+			{
+				return;
+			}
+			auto lmap = lpdbactivity->mutable_mdrawcompliance();
 			auto itor = lmap->find(aroleid);
 			if (itor == lmap->end())
 			{

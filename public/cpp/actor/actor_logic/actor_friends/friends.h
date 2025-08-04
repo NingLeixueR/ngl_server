@@ -42,27 +42,36 @@ namespace ngl
 		int addfriends(i64_actorid aroleid, i64_actorid afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			const pbdb::db_friends& lconstfriends = lfriends.getconst();
-			if (lconstfriends.mfriends_size() >= ttab_specialid::instance().m_friendscount)
+			const pbdb::db_friends* lpfriendsconst = lfriends.getconst();
+			if (lpfriendsconst == nullptr)
 			{
 				return 1;
 			}
-			if (lconstfriends.mapplyfriends_size() >= ttab_specialid::instance().m_friendsapplylistcount)
+			if (lpfriendsconst->mfriends_size() >= ttab_specialid::instance().m_friendscount)
 			{
 				return 2;
 			}
-			auto& lfriendslist = lconstfriends.mfriends();
-			auto& lapplyfriends = lconstfriends.mapplyfriends();
-			if (check_friends(lfriendslist, lapplyfriends, afriends))
+			if (lpfriendsconst->mapplyfriends_size() >= ttab_specialid::instance().m_friendsapplylistcount)
 			{
 				return 3;
 			}
-			if (check_friends(lfriendslist, lapplyfriends, aroleid))
+			auto& lfriendslist = lpfriendsconst->mfriends();
+			auto& lapplyfriends = lpfriendsconst->mapplyfriends();
+			if (check_friends(lfriendslist, lapplyfriends, afriends))
 			{
 				return 4;
 			}
-			lfriends.get().add_mapplyfriends(aroleid);
-			return 5;
+			if (check_friends(lfriendslist, lapplyfriends, aroleid))
+			{
+				return 5;
+			}
+			pbdb::db_friends* lpfriends = lfriends.get();
+			if (lpfriends == nullptr)
+			{
+				return 6;
+			}
+			lpfriends->add_mapplyfriends(aroleid);
+			return 0;
 		}
 
 		// Õ¨“‚/æ‹æ¯∫√”—…Í«Î
@@ -70,26 +79,39 @@ namespace ngl
 		{
 			data_modified<pbdb::db_friends>& lfriends1 = get(aroleid);
 			data_modified<pbdb::db_friends>& lfriends2 = get(afriends);
-			if (lfriends1.getconst().mfriends_size() >= ttab_specialid::instance().m_friendscount)
+			const pbdb::db_friends* lpfriendsconst1 = lfriends1.getconst();
+			const pbdb::db_friends* lpfriendsconst2 = lfriends2.getconst();
+			if (lpfriendsconst1 == nullptr || lpfriendsconst2 == nullptr)
 			{
 				return 1;
 			}
-			if (lfriends2.getconst().mfriends_size() >= ttab_specialid::instance().m_friendscount)
+			if (lpfriendsconst1->mfriends_size() >= ttab_specialid::instance().m_friendscount)
 			{
-				return 2;
+				return 3;
 			}
-			
-			auto lpapplyfriends = lfriends1.get().mutable_mapplyfriends();
+			if (lpfriendsconst2->mfriends_size() >= ttab_specialid::instance().m_friendscount)
+			{
+				return 4;
+			}
+
+			pbdb::db_friends* lpfriends1 = lfriends1.get();
+			pbdb::db_friends* lpfriends2 = lfriends2.get();
+			if (lpfriends1 == nullptr || lpfriends1 == nullptr)
+			{
+				return 5;
+			}
+
+			auto lpapplyfriends = lpfriends1->mutable_mapplyfriends();
 			auto itor = std::find(lpapplyfriends->begin(), lpapplyfriends->end(), afriends);
 			if (itor == lpapplyfriends->end())
 			{
-				return 3;
+				return 6;
 			}
 			lpapplyfriends->erase(itor);
 			if (aratify)
 			{
-				lfriends1.get().add_mfriends(afriends);
-				lfriends2.get().add_mfriends(afriends);
+				lpfriends1->add_mfriends(afriends);
+				lpfriends2->add_mfriends(afriends);
 			}
 			return 0;
 		}
@@ -99,19 +121,26 @@ namespace ngl
 		{
 			data_modified<pbdb::db_friends>& lfriends1 = get(aroleid);
 			data_modified<pbdb::db_friends>& lfriends2 = get(afriends);
-			auto lpfriends1 = lfriends1.get().mutable_mfriends();
-			auto itor = std::find(lpfriends1->begin(), lpfriends1->end(), afriends);
-			if (itor == lpfriends1->end())
+			pbdb::db_friends* lpfriend1 = lfriends1.get();
+			pbdb::db_friends* lpfriend2 = lfriends2.get();
+			if (lpfriend1 == nullptr || lpfriend2 == nullptr)
 			{
 				return 1;
 			}
+
+			auto lpfriends1 = lpfriend1->mutable_mfriends();
+			auto itor = std::find(lpfriends1->begin(), lpfriends1->end(), afriends);
+			if (itor == lpfriends1->end())
+			{
+				return 2;
+			}
 			lpfriends1->erase(itor);
 
-			auto lpfriends2 = lfriends2.get().mutable_mfriends();
+			auto lpfriends2 = lpfriend2->mutable_mfriends();
 			auto itor2 = std::find(lpfriends2->begin(), lpfriends2->end(), afriends);
 			if (itor == lpfriends2->end())
 			{
-				return 2;
+				return 3;
 			}
 			lpfriends2->erase(itor);
 			return 0;
@@ -122,9 +151,16 @@ namespace ngl
 		{
 			auto pro = std::make_shared<pbnet::PROBUFF_NET_FRIEND_RESPONSE>();
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			for (i64_actorid afriends : lfriends.getconst().mfriends())
+			const pbdb::db_friends* lpfriendsconst = lfriends.getconst();
+			if (lpfriendsconst == nullptr)
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
+				return;
+			}
+
+			for (i64_actorid afriends : lpfriendsconst->mfriends())
+			{
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(
+					get_actor()->id_guid()).getconst(afriends);
 				if (lpbrief == nullptr)
 				{
 					return;
@@ -132,9 +168,10 @@ namespace ngl
 				*pro->add_mfriends() = *lpbrief;
 			}
 
-			for (i64_actorid afriends : lfriends.getconst().mapplyfriends())
+			for (i64_actorid afriends : lpfriendsconst->mapplyfriends())
 			{
-				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(get_actor()->id_guid()).getconst(afriends);
+				const pbdb::db_brief* lpbrief = tdb_brief::nsp_cli<actor_friends>::instance(
+					get_actor()->id_guid()).getconst(afriends);
 				if (lpbrief == nullptr)
 				{
 					return;
@@ -148,7 +185,12 @@ namespace ngl
 		bool get_friends(i64_actorid aroleid, std::vector<i64_actorid>& afriends)
 		{
 			data_modified<pbdb::db_friends>& lfriends = get(aroleid);
-			for (i64_actorid aactorid : lfriends.getconst().mfriends())
+			const pbdb::db_friends* lpfriendsconst = lfriends.getconst();
+			if (lpfriendsconst == nullptr)
+			{
+				return false;
+			}
+			for (i64_actorid aactorid : lpfriendsconst->mfriends())
 			{
 				afriends.push_back(aactorid);
 			}

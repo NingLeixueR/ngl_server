@@ -13,9 +13,6 @@ local function new()
         del = {},               -- 哪些数据被删除
         data_source = {},       -- 数据来源：db,csv,dbnsp  如果数据来源dbnsp,修改数据后将自动调用auto_save方法
 
-        -- 临时数据,dbnsp显示调用,自动保存 --
-        dbnsp_autosave = {},
-        -------------------------------------
 
         sysdata = {},
     }
@@ -89,79 +86,53 @@ local function new()
         self.sysdata = self:json_decode(asysjson)
     end
 
-    function instance:push_data(adbname, adata_source, adatajson, aedit)
-        if aedit then
-            logger:write("instance:push_data("..adbname..","..adatajson..",true)")
-        else
-            logger:write("instance:push_data("..adbname..","..adatajson..",false)")
-        end
-        if not adatajson or adatajson == "" then
-            logger:write("Error: adatajson is nil or empty")
+    function instance:data_push(aname, asource, ajson, aedit)
+        logger:write("instance:push_data("..adbname..","..adatajson..(aedit and "true)" or "false)"))
+        if not ajson or ajson == "" then
+            logger:write("Error: ajson is nil or empty")
             return
         end
         
-        local parsedData = self:json_decode(adatajson)
+        local parsedData = self:json_decode(ajson)
         
-        if not self.data[adbname] then
-            self.data[adbname] = {}
-            self.edit[adbname] = aedit
-            self.change[adbname] = {}
-            self.del[adbname] = {}
+        if not self.data[aname] then
+            self.data[aname] = {}
+            self.edit[aname] = aedit
+            self.change[aname] = {}
+            self.del[aname] = {}
         end
 
         for k,v in pairs(parsedData) do
             for k1,v1 in pairs(v) do
-                self.data[adbname][k1] = {
+                self.data[aname][k1] = {
                     parsed_data = v1
                 }
             end
 	    end
 
         
-        self.data_source[adbname] = adata_source
+        self.data_source[aname] = asource
         
-        logger:write("##"..adbname.."##")
+        logger:write("##"..aname.."##")
         self:print_table(parsedData)
         logger:write("####")
     end
 
-    function instance:get(adbname, aactorid)
-       if self.edit[adbname] == false then
+    function instance:get(aname, adataid)
+       logger:write("instance:get("..aname..","..adataid)
+       if self.edit[aname] == false then
             return nil;
        end
 
-       if self.data[adbname] and self.data[adbname][aactorid] then
-            self.change[adbname][aactorid] = true
-            if self.data_source[adbname] == "dbnsp" then
-                self.dbnsp_autosave[adbname] = true
-            end
-            return self.data[adbname][aactorid]["parsed_data"]
+       if self.data[aname] and self.data[aname][adataid] then
+            self.change[aname][adataid] = true
+            return self.data[aname][adataid]["parsed_data"]
        end
        return nil
     end
 
-    -- 手动save，当get 返回的true,数据  需要手动显示调用
-    function instance:dbnsp_auto_save()
-        ret = {}
-
-        for k1,v1 in pairs(self.dbnsp_autosave) do
-            ret[adbname] = {}
-            if v1 then
-                for k2,v2 in pairs(self.change[adbname]) do
-                    if v2 then
-                        ret[adbname][k2] = self.data[adbname][k2]["parsed_data"]
-		            end
-                end
-            self.change[adbname] = {}
-		    end
-        end
-        self.dbnsp_autosave = {}
-       
-        return true,self:json_encode(ret)
-    end
-
-    function instance:getconst(adbname, aactorid)
-       local data = self.data[adbname][aactorid] and self.data[adbname][aactorid]["parsed_data"] or nil
+    function instance:getconst(aname, adataid)
+       local data = self.data[aname][adataid] and self.data[aname][adataid]["parsed_data"] or nil
        if data ~= nil then
            self:print_table(data)
            return setmetatable({}, {
@@ -176,89 +147,103 @@ local function new()
        return nil
     end
 
-    function instance:remove(adbname, aactorid)
-        self.data[adbname][aactorid] = nil
-        self.change[adbname][aactorid] = nil
-        if self.del[adbname] then
-           self.del[adbname] = {}
+    -- parm iscpp 是否cpp调用
+    function instance:data_del(aname, adataid, iscpp)
+        logger:write("instance:data_del("..aname..","..adataid)
+        self.data[aname][adataid] = nil
+        self.change[aname][adataid] = nil
+        if iscpp == nil then
+            self.del[aname][adataid] = true
+        else
+            self.del[aname][adataid] = nil
         end
-        self.del[adbname][aactorid] = true
     end
 
-    function instance:check_outdata(adbname, aactorid)
-        if self.edit[adbname] == false then
+    -- 拉取所有变化数据
+    function instance:data_checkout(aname)
+        if self.edit[aname] == false then
             return false, ""
         end
         ret = {}
-        self:print_table(self.change[adbname])
-        if aactorid == "-1" then
-            ret[adbname] = {}
-            retbool = false
-            if self.data[adbname] then
-                for k,v in pairs(self.change[adbname]) do
-                    if v then
-                        ret[adbname][k] = self.data[adbname][k]["parsed_data"]
-                        retbool = true
-		            end
-                end
-                self.change[adbname] = {}
-                if retbool then
-                    logger:write("instance:check_outdata("..adbname..", "..aactorid..")")
-                    return true, self:json_encode(ret)
-                end
+        self:print_table(self.change[aname])
+        ret[aname] = {}
+        retbool = false
+        if self.data[aname] then
+            for k,v in pairs(self.change[aname]) do
+                if v then
+                    ret[aname][k] = self.data[aname][k]["parsed_data"]
+                    retbool = true
+		        end
             end
-        else
-            ret[adbname] = {}
-            retbool = false
-            if self.change[adbname][aactorid] then
-                ret[adbname][aactorid] = self.data[adbname][aactorid]["parsed_data"]
-                self.change[adbname][aactorid] = nil
-                retbool = true
-            end
+            self.change[aname] = {}
             if retbool then
-                logger:write("instance:check_outdata("..adbname..", "..aactorid..")")
+                logger:write("instance:check_outdata("..aname..")")
                 return true, self:json_encode(ret)
             end
         end
         return false, ""
     end
 
-    function instance:check_outdata_del(adbname, aactorid)
-        if self.edit[adbname] == false then
+	-- 拉起指定变化数据
+    function instance:data_checkoutbyid(aname, adataid)
+        if self.edit[aname] == false then
             return false, ""
         end
         ret = {}
-        self:print_table(self.del[adbname])
-        if aactorid == "-1" then
-            ret[adbname] = {}
+        self:print_table(self.change[aname])
+        
+        ret[aname] = {}
+        retbool = false
+        if self.change[aname][adataid] then
+			ret[aname][adataid] = self.data[aname][adataid]["parsed_data"]
+			self.change[aname][adataid] = nil
+			retbool = true
+        end
+        if retbool then
+			logger:write("instance:data_checkoutbyid("..aname..", "..adataid..")")
+			return true, self:json_encode(ret)
+        end
+        return false, ""
+    end
+
+    function instance:data_checkdel(aname, adataid)
+        if self.edit[aname] == false then
+            return false, ""
+        end
+        ret = {}
+        self:print_table(self.del[aname])
+        ret[aname] = {}
             retbool = false
-            if self.del[adbname] then
-                for k,v in pairs(self.del[adbname]) do
+            if self.del[aname] then
+                for k,v in pairs(self.del[aname]) do
                     if v then
-                        table.insert(ret[adbname], k)
+                        table.insert(ret[aname], k)
                         retbool = true
 		            end
                 end
-               self.del[adbname] = {}
-               if retbool then
-                   logger:write("instance:check_outdata_del("..adbname..", "..aactorid..")")
-                   return true, self:json_encode(ret)
-               end
+                self.del[aname] = {}
+                if retbool then
+                    logger:write("instance:check_outdel("..aname..")")
+                    return true, self:json_encode(ret)
+                end
             end
-        else
-            ret[adbname] = {}
-            retbool = false
-            if self.del[adbname][aactorid] then
-                table.insert(ret[adbname], k)
-                retbool = true
-            end
+    end
 
-            self.del[adbname][aactorid] = nil
-            
-            if retbool then
-                logger:write("instance:check_outdata_del("..adbname..", "..aactorid..")")
-                return true, self:json_encode(ret)
-            end
+    function instance:data_checkdelbyid(aname, adataid)
+        if self.edit[aname] == false then
+            return false, ""
+        end
+        ret = {}
+        ret[aname] = {}
+        retbool = false
+        if self.del[aname][adataid] then
+            table.insert(ret[aname], k)
+            retbool = true
+        end
+        self.del[aname][adataid] = nil
+        if retbool then
+            logger:write("instance:check_outdelbyid("..aname..", "..adataid..")")
+            return true, self:json_encode(ret)
         end
         return false, ""
     end

@@ -65,7 +65,8 @@ namespace ngl
 	{
 		virtual int32_t values(actor_role* arole, const task_condition& atab)
 		{
-			auto& lmap = arole->m_task.get().getconst().mcompleteddatas();
+			data_modified_return_getconst(lptaskconst, arole->m_task.get(), -1);
+			auto& lmap = lptaskconst->mcompleteddatas();
 			return lmap.find(atab.m_parmint) != lmap.end()? atab.m_parmint :-1;
 		}
 	};
@@ -91,22 +92,26 @@ namespace ngl
 
 	google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::complete(actor_role* arole)
 	{
-		return *arole->m_task.get().get().mutable_mcompleteddatas();
+		data_modified_dump_get(lptask, arole->m_task.get());
+		return *lptask->mutable_mcompleteddatas();
 	}
 
 	google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::run(actor_role* arole)
 	{
-		return *arole->m_task.get().get().mutable_mrundatas();
+		data_modified_dump_get(lptask, arole->m_task.get());
+		return *lptask->mutable_mrundatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_complete>& static_task::const_complete(actor_role* arole)
 	{
-		return arole->m_task.get().getconst().mcompleteddatas();
+		data_modified_dump_getconst(lptaskconst, arole->m_task.get());
+		return lptaskconst->mcompleteddatas();
 	}
 
 	const google::protobuf::Map<int32_t, pbdb::db_task_data>& static_task::const_run(actor_role* arole)
 	{
-		return arole->m_task.get().getconst().mrundatas();
+		data_modified_dump_getconst(lptaskconst, arole->m_task.get());
+		return lptaskconst->mrundatas();
 	}
 
 	bool static_task::isfinish_task(actor_role* arole, i32_taskid ataskid)
@@ -157,7 +162,8 @@ namespace ngl
 		{
 			task_check::schedules(arole, *ltemp.mutable_mschedules()->Add(), item);
 		}
-		arole->m_task.get().get().mutable_mrundatas()->insert({ ataskid, ltemp });
+		data_modified_return_get(lptask, arole->m_task.get(), false);
+		lptask->mutable_mrundatas()->insert({ ataskid, ltemp });
 		return true;
 	}
 
@@ -171,8 +177,8 @@ namespace ngl
 	bool static_task::erase_task(actor_role* arole, i32_taskid ataskid)
 	{
 		finish_task(arole, ataskid);
-
-		arole->m_task.get().get().mutable_mrundatas()->erase(ataskid);
+		data_modified_return_get(lptask, arole->m_task.get(), false);
+		lptask->mutable_mrundatas()->erase(ataskid);
 		return true;
 	}
 

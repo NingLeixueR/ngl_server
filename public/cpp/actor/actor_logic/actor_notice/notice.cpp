@@ -12,7 +12,8 @@ namespace ngl
 			//std::pair<const nguid, data_modified<pbdb::db_notice>>
 			for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
 			{
-				*pro->add_mnotices() = lpair.second.getconst();
+				data_modified_continue_getconst(lpdbnotice, lpair.second);
+				*pro->add_mnotices() = *lpdbnotice;
 			}
 			return pro;
 		}
@@ -21,7 +22,8 @@ namespace ngl
 		{
 			return nullptr;
 		}
-		*pro->add_mnotices() = lpdb_notice->getconst();
+		data_modified_return_getconst(lpdbnotice, *lpdb_notice, nullptr);
+		*pro->add_mnotices() = *lpdbnotice;
 		return pro;
 	}
 
@@ -30,21 +32,21 @@ namespace ngl
 		int32_t lnow = (int32_t)localtime::gettime();
 		for (std::pair<const nguid, data_modified<pbdb::db_notice>>& lpair : data())
 		{
-			const pbdb::db_notice& lnotice = lpair.second.getconst();
-			if (lnotice.mfinishtime() != -1)
+			data_modified_continue_getconst(lpnotice, lpair.second);
+			if (lpnotice->mfinishtime() != -1)
 			{
 				continue;
 			}
-			if (localtime::checkutc(lnotice.mfinishtime()) == false)
+			if (localtime::checkutc(lpnotice->mfinishtime()) == false)
 			{
 				nactor()->log_error()->print(
 					"remove_notice {}:{}-{}:{}"
-					, lnotice.mid()
-					, localtime::time2str(lnotice.mstarttime(), "%Y-%m-%d %H:%M:%S")
-					, localtime::time2str(lnotice.mfinishtime(), "%Y-%m-%d %H:%M:%S")
-					, lnotice.mnotice()
+					, lpnotice->mid()
+					, localtime::time2str(lpnotice->mstarttime(), "%Y-%m-%d %H:%M:%S")
+					, localtime::time2str(lpnotice->mfinishtime(), "%Y-%m-%d %H:%M:%S")
+					, lpnotice->mnotice()
 				);
-				remove(lnotice.mid());
+				remove(lpnotice->mid());
 			}
 		}
 	}
