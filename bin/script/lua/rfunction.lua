@@ -24,7 +24,7 @@ end
 
 -- 检查数据是否被修改
 function data_checkout(aname, adataid)
-    if adataid == -1 then
+    if adataid == "-1" then
         return ngldata:data_checkout(aname)
     else
         return ngldata:data_checkoutbyid(aname, adataid)
@@ -33,7 +33,7 @@ end
 
 -- 检查数据是否被删除
 function data_checkdel(aname, adataid)
-     if adataid == -1 then
+     if adataid == "-1" then
         return ngldata:data_checkdel(aname)
     else
         return ngldata:data_checkdelbyid(aname, adataid)

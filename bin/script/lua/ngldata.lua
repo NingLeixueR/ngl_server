@@ -161,6 +161,7 @@ local function new()
 
     -- 拉取所有变化数据
     function instance:data_checkout(aname)
+        logger:write("instance:check_outdata("..aname..")")
         if self.edit[aname] == false then
             return false, ""
         end
@@ -177,7 +178,6 @@ local function new()
             end
             self.change[aname] = {}
             if retbool then
-                logger:write("instance:check_outdata("..aname..")")
                 return true, self:json_encode(ret)
             end
         end
@@ -186,6 +186,7 @@ local function new()
 
 	-- 拉起指定变化数据
     function instance:data_checkoutbyid(aname, adataid)
+        logger:write("instance:data_checkoutbyid("..aname..", "..adataid..")")
         if self.edit[aname] == false then
             return false, ""
         end
@@ -194,42 +195,45 @@ local function new()
         
         ret[aname] = {}
         retbool = false
-        if self.change[aname][adataid] then
-			ret[aname][adataid] = self.data[aname][adataid]["parsed_data"]
-			self.change[aname][adataid] = nil
-			retbool = true
+        if self.change[aname] then
+            if self.change[aname][adataid] then
+			    ret[aname][adataid] = self.data[aname][adataid]["parsed_data"]
+			    self.change[aname][adataid] = nil
+			    retbool = true
+            end
         end
         if retbool then
-			logger:write("instance:data_checkoutbyid("..aname..", "..adataid..")")
 			return true, self:json_encode(ret)
         end
         return false, ""
     end
 
-    function instance:data_checkdel(aname, adataid)
+    function instance:data_checkdel(aname)
+        logger:write("instance:data_checkdel("..aname..")")
         if self.edit[aname] == false then
             return false, ""
         end
         ret = {}
         self:print_table(self.del[aname])
         ret[aname] = {}
-            retbool = false
-            if self.del[aname] then
-                for k,v in pairs(self.del[aname]) do
-                    if v then
-                        table.insert(ret[aname], k)
-                        retbool = true
-		            end
-                end
-                self.del[aname] = {}
-                if retbool then
-                    logger:write("instance:check_outdel("..aname..")")
-                    return true, self:json_encode(ret)
-                end
+        retbool = false
+        if self.del[aname] then
+            for k,v in pairs(self.del[aname]) do
+                if v then
+                    table.insert(ret[aname], k)
+                    retbool = true
+	            end
             end
+            self.del[aname] = {}
+            if retbool then
+                return true, self:json_encode(ret)
+            end
+        end
+        return false, ""
     end
 
     function instance:data_checkdelbyid(aname, adataid)
+        logger:write("instance:data_checkdelbyid("..aname..", "..adataid..")")
         if self.edit[aname] == false then
             return false, ""
         end
@@ -242,7 +246,6 @@ local function new()
         end
         self.del[aname][adataid] = nil
         if retbool then
-            logger:write("instance:check_outdelbyid("..aname..", "..adataid..")")
             return true, self:json_encode(ret)
         end
         return false, ""
