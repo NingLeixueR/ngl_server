@@ -43,11 +43,11 @@ function handle(amsgname, amsgjson)
 			ngldata:print_table(testlua["mvalue"])
 		end
 	elseif amsgname == "np_testlua" then
-		local ret, data = ngldata:check_outdata("db_testlua", "-1")
+		local ret, data = ngldata:data_checkout("db_testlua", "-1")
 		if ret then
 			print(data)
 		end
-		ngldata:remove("db_testlua", "34359803960")
+		ngldata:data_del("db_testlua", "34359803960")
 	end
 
 	local temp =  ngldata:get("db_brief", nguidstr2int64str("actor_brief#1#1"));
