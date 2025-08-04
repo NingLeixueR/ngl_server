@@ -46,10 +46,18 @@ namespace ngl
 
 		// # 将csv数据写入lua
 		nscript_push_csv<ttab_servers>();
+
+		
+		tdb_brief::nsp_cli<actor_testlua>::instance(id_guid(), true).init_parts(this, 
+			{
+				ngl::tools::nguidstr2int64("actor_brief#1#1")
+			});
 	}
 
 	void actor_testlua::erase_actor_before()
 	{
+		tdb_brief::nsp_cli<actor_testlua>::instance(id_guid()).exit();
+		tdb_brief::nsp_cli<actor_testlua>::freensp(id_guid());
 	}
 	
 	void actor_testlua::loaddb_finish(bool adbishave)

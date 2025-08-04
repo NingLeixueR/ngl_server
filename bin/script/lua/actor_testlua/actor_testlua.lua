@@ -50,5 +50,10 @@ function handle(amsgname, amsgjson)
 		ngldata:remove("db_testlua", "34359803960")
 	end
 
+	local temp =  ngldata:get("db_brief", nguidstr2int64str("actor_brief#1#1"));
+	print("mlv:"..temp["mlv"])
+	temp["mlv"] = 999
+	print("mlv:"..temp["mlv"])
+
 	send_actor("actor_testlua2#1#-1", amsgname, amsgjson)
 end

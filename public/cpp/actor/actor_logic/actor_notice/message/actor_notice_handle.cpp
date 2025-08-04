@@ -29,7 +29,8 @@ namespace ngl
 					for (const auto& [_guid, _data] : lmapdb)
 					{
 						pro.m_data.resize(pro.m_data.size() + 1);
-						tools::proto2json(_data.getconst(), *pro.m_data.rbegin());
+						data_modified_continue_getconst(lpdbnoticeconst, _data);
+						tools::proto2json(*lpdbnoticeconst, *pro.m_data.rbegin());
 					}
 					pro.m_istoutf8 = false;
 				};

@@ -143,7 +143,8 @@ namespace ngl
 						pro->m_firstsynchronize = true;
 						std::map<int64_t, TDATA>& lmapdata = *pro->m_data.m_data;
 
-						lmapdata[itempair.first] = itempair.second.getconst();
+						data_modified_continue_getconst(lpddataconst, itempair.second);
+						lmapdata[itempair.first] = *lpddataconst;
 						if (lmapdata.size() >= ESEND_MAX_COUNT)
 						{
 							actor::send_actor(lactorid, nguid::make(), pro);
@@ -163,7 +164,8 @@ namespace ngl
 						if (itor != ldata.end())
 						{
 							pro->m_firstsynchronize = true;
-							(*pro->m_data.m_data)[dataid] = itor->second.getconst();
+							data_modified_continue_getconst(lpddataconst, itor->second);
+							(*pro->m_data.m_data)[dataid] = *lpddataconst;
 						}
 					}
 				}
@@ -233,13 +235,18 @@ namespace ngl
 
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
 		{
-			auto& recv = *adata.get_data();
-			std::map<int64_t, TDATA>& lmap = *recv.m_data.m_data;
-			for (std::pair<const int64_t, TDATA>& lpair : lmap)
+			const np_channel_data<TDATA>* recv = adata.get_data();
+			const std::map<int64_t, TDATA>& lmap = *recv->m_data.m_data;
+			for (const auto& lpair : lmap)
 			{
 				// # m_dbmodule->get:数据不存在就创建
 				data_modified<TDATA>& ldata = m_dbmodule->get(lpair.first);
-				ldata.get() = lpair.second;
+				data_modified_continue_get(lpddata, ldata);
+				*lpddata = lpair.second;
+			}
+			for (int64_t dataid : recv->m_deldata)
+			{
+				m_dbmodule->erase(dataid);
 			}
 		}
 	public:
@@ -282,7 +289,8 @@ namespace ngl
 			{
 				for (std::pair<const nguid, data_modified<TDATA>>& lpair : m_dbmodule->data())
 				{
-					lmap[lpair.first] = lpair.second.getconst();
+					data_modified_continue_getconst(lpddataconst, lpair.second);
+					lmap[lpair.first] = *lpddataconst;
 				}
 			}
 			else
@@ -290,7 +298,8 @@ namespace ngl
 				for (i64_actorid actorid : *lpset)
 				{
 					data_modified<TDATA>& ldata = m_dbmodule->get(actorid);
-					lmap[ldata.getconst().mid()] = ldata.getconst();
+					data_modified_continue_getconst(lpddataconst, ldata);
+					lmap[lpddataconst->mid()] = *lpddataconst;
 				}
 			}
 			if (!lmap.empty())

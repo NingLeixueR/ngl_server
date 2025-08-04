@@ -15,7 +15,7 @@ namespace ngl
 		impl_actor(const impl_actor&) = delete;
 		impl_actor& operator=(const impl_actor&) = delete;
 
-#define STL_MESSAGELIST
+//#define STL_MESSAGELIST
 #ifdef STL_MESSAGELIST
 		template <typename T>
 		using tls = std::deque<T>;
@@ -104,8 +104,8 @@ namespace ngl
 			{
 				return false;
 			}
-			//Try
-			//{
+			Try
+			{
 				set_kcp(aparm);
 				nrfunbase* lprfun = m_actor->m_actorfun[aparm.m_protocoltype];
 				if (lprfun == nullptr)
@@ -119,7 +119,7 @@ namespace ngl
 				}
 				lprfun->notfindfun(m_actor, athreadid, aparm);
 				return true;
-			//}Catch
+			}Catch
 			return false;
 		}
 

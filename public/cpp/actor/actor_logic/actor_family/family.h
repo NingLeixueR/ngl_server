@@ -34,7 +34,12 @@ namespace ngl
 		{
 			data_modified<pbdb::db_familyer>& lpdbfamilyer = get(aroleid);
 			auto lnow = (int32_t)localtime::gettime();
-			if (lnow - lpdbfamilyer.getconst().mlastleaveutc() < ttab_specialid::instance().m_familjoininterval)
+			const pbdb::db_familyer* lpdbfamilyerconst = lpdbfamilyer.getconst();
+			if (lpdbfamilyerconst == nullptr)
+			{
+				return false;
+			}
+			if (lnow - lpdbfamilyerconst->mlastleaveutc() < ttab_specialid::instance().m_familjoininterval)
 			{
 				return false;
 			}
@@ -68,18 +73,22 @@ namespace ngl
 			log_error()->print("{}", data());
 			for (std::pair<const nguid, data_modified<pbdb::db_family>>& lpair : data())
 			{
-				const pbdb::db_family& lbdfamily = lpair.second.getconst();
+				const pbdb::db_family* lpdbfamilyconst = lpair.second.getconst();
+				if (lpdbfamilyconst == nullptr)
+				{
+					continue;
+				}
 				m_maxid = std::max(m_maxid, (int32_t)lpair.first.id());
 				
 				std::string lmember;
-				for (i64_actorid roleid : lbdfamily.mmember())
+				for (i64_actorid roleid : lpdbfamilyconst->mmember())
 				{
 					m_rolefamily[roleid] = lpair.first;
 				}
 
-				m_familyname.insert(lbdfamily.mname());
+				m_familyname.insert(lpdbfamilyconst->mname());
 
-				for (i64_actorid roleid : lbdfamily.mapplylist())
+				for (i64_actorid roleid : lpdbfamilyconst->mapplylist())
 				{
 					m_applylist[roleid].insert(lpair.first);
 				}

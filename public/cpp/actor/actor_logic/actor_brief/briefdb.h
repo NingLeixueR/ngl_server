@@ -31,7 +31,7 @@ namespace ngl
 		// 没有就添加
 		void update_brief(const pbdb::db_brief* adata)
 		{
-			data()[adata->mid()].get() = *adata;
+			*(data()[adata->mid()].get()) = *adata;
 		}
 
 		virtual void initdata()

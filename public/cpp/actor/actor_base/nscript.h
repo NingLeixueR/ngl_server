@@ -95,7 +95,7 @@ namespace ngl
 		virtual void init(const char* asubdirectory, const char* ascript) = 0;
 
 		// # 将数据压入lua
-		virtual bool push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit) = 0;
+		virtual bool data_push(const char* aname, const char* asource, const char* ajson, bool aedit) = 0;
 
 		// # 数据加载完成
 		virtual bool db_loadfinish() = 0;
@@ -103,14 +103,14 @@ namespace ngl
 		// # lua消息处理
 		virtual bool handle(const char* aname, const char* ajson) = 0;
 
+		// # 数据被删除
+		virtual bool data_del(const char* aname, i64_actorid aactorid) = 0;
+
 		// # 检查数据是否被修改
-		virtual bool check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson) = 0;
+		virtual bool data_checkout(const char* aname, i64_actorid adataid, std::string& ajson) = 0;
 
 		// # 检查数据是否被删除
-		virtual bool check_outdata_del(const char* adbname, i64_actorid aactorid, std::string& adatajson) = 0;
-
-		// # 消息结束后会自动调用
-		virtual bool dbnsp_auto_save(std::string& ajson) = 0;
+		virtual bool data_checkdel(const char* aname, i64_actorid adataid, std::string& ajson) = 0;
 
 		static std::shared_ptr<nscript> malloc_script(enscript atype, actor_base* aactor)
 		{
@@ -212,26 +212,51 @@ namespace ngl
 		}
 
 		// # 将db数据压入
-		virtual bool push_data(const char* adbname, const char* adata_source, const char* adatajson, bool aedit)
+		virtual bool data_push(const char* aname, const char* asource, const char* ajson, bool aedit)
 		{
 			if (L == nullptr)
 			{
 				return false;
 			}
-			int result = lua_getglobal(L, "push_data");
+			int result = lua_getglobal(L, "data_push");
 			if (result == LUA_TNIL)
 			{
 				LOG_SCRIPT("lua_getglobal get failure[{}.push_data]", m_scriptpath);
 				lua_pop(L, 1); // 弹出nil值
 				return false;
 			}
-			lua_pushstring(L, adbname);
-			lua_pushstring(L, adata_source);
-			lua_pushstring(L, adatajson);
+			lua_pushstring(L, aname);
+			lua_pushstring(L, asource);
+			lua_pushstring(L, ajson);
 			lua_pushboolean(L, aedit);
 			if (lua_pcall(L, 4, 0, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.push_data error [{}]", m_scriptpath, lua_tostring(L, -1));
+				lua_pop(L, 1); // 弹出错误信息
+				return false;
+			}
+			return true;
+		}
+
+		// # 数据被删除
+		virtual bool data_del(const char* aname, i64_actorid adataid)
+		{
+			if (L == nullptr)
+			{
+				return false;
+			}
+			int result = lua_getglobal(L, "data_del");
+			if (result == LUA_TNIL)
+			{
+				LOG_SCRIPT("lua_getglobal get failure[{}.del_data]", m_scriptpath);
+				lua_pop(L, 1); // 弹出nil值
+				return false;
+			}
+			lua_pushstring(L, aname);
+			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
+			if (lua_pcall(L, 2, 0, 0) != LUA_OK)
+			{
+				LOG_SCRIPT("{}.del_data error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1); // 弹出错误信息
 				return false;
 			}
@@ -288,23 +313,22 @@ namespace ngl
 		}
 
 		// # 查询数据是否被修改#如果被修改就加载数据
-		// # aactorid == nguid::make() 检查全部数据
-		virtual bool check_outdata(const char* adbname, i64_actorid aactorid, std::string& adatajson)
+		virtual bool data_checkout(const char* adbname, i64_actorid adataid, std::string& ajson)
 		{
 			if (L == nullptr)
 			{
 				return false;
 			}
 
-			int result = lua_getglobal(L, "check_outdata");
+			int result = lua_getglobal(L, "data_checkout");
 			if (result == LUA_TNIL)
 			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.{}]", m_scriptpath, "check_outdata");
+				LOG_SCRIPT("lua_getglobal get failure[{}.check_outdata]", m_scriptpath);
 				lua_pop(L, 1);
 				return false;
 			}
 			lua_pushstring(L, adbname);
-			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
+			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
 			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
 			{
 				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
@@ -336,7 +360,7 @@ namespace ngl
 			bool success = lua_toboolean(L, -2) != 0;
 			if (success)
 			{
-				adatajson = lua_tostring(L, -1);
+				ajson = lua_tostring(L, -1);
 			}
 			lua_pop(L, 2);
 
@@ -345,99 +369,46 @@ namespace ngl
 		
 		// # 查询数据是否被删除
 		// # aactorid == nguid::make() 检查全部数据
-		virtual bool check_outdata_del(const char* adbname, i64_actorid aactorid, std::string& adatajson)
+		virtual bool data_checkdel(const char* adbname, i64_actorid adataid, std::string& ajson)
 		{
 			if (L == nullptr)
 			{
 				return false;
 			}
 
-			int result = lua_getglobal(L, "check_outdata_del");
+			int result = lua_getglobal(L, "data_checkdel");
 			if (result == LUA_TNIL)
 			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.check_outdata_del]", m_scriptpath);
+				LOG_SCRIPT("lua_getglobal get failure[{}.data_checkdel]", m_scriptpath);
 				lua_pop(L, 1);
 				return false;
 			}
 			lua_pushstring(L, adbname);
-			lua_pushstring(L, tools::lexical_cast<std::string>(aactorid).c_str());
+			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
 			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
 			{
-				LOG_SCRIPT("{}.check_outdata error [{}]", m_scriptpath, lua_tostring(L, -1));
+				LOG_SCRIPT("{}.data_checkdel error [{}]", m_scriptpath, lua_tostring(L, -1));
 				lua_pop(L, 1);
 				return false;
 			}
 
 			if (lua_gettop(L) < 2)
 			{
-				LOG_SCRIPT("{}.check_outdata return count error", m_scriptpath);
+				LOG_SCRIPT("{}.data_checkdel return count error", m_scriptpath);
 				lua_settop(L, -lua_gettop(L));
 				return false;
 			}
 
 			if (!lua_isboolean(L, -2))
 			{
-				LOG_SCRIPT("{}.check_outdata return error isboolean", m_scriptpath);
+				LOG_SCRIPT("{}.data_checkdel return error isboolean", m_scriptpath);
 				lua_settop(L, -lua_gettop(L));
 				return false;
 			}
 
 			if (!lua_isstring(L, -1))
 			{
-				LOG_SCRIPT("{}.check_outdata return error isstring", m_scriptpath);
-				lua_pop(L, 1);
-				return false;
-			}
-
-			bool success = lua_toboolean(L, -2) != 0;
-			if (success)
-			{
-				adatajson = lua_tostring(L, -1);
-			}
-			lua_pop(L, 2);
-
-			return success;
-		}
-	
-		virtual bool dbnsp_auto_save(std::string& ajson)
-		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-
-			int result = lua_getglobal(L, "dbnsp_auto_save");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.dbnsp_auto_save]", m_scriptpath);
-				lua_pop(L, 1);
-				return false;
-			}
-			
-			if (lua_pcall(L, 0, 2, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.dbnsp_auto_save error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1);
-				return false;
-			}
-
-			if (lua_gettop(L) < 2)
-			{
-				LOG_SCRIPT("{}.dbnsp_auto_save return count error", m_scriptpath);
-				lua_settop(L, -lua_gettop(L));
-				return false;
-			}
-
-			if (!lua_isboolean(L, -2))
-			{
-				LOG_SCRIPT("{}.dbnsp_auto_save return error isboolean", m_scriptpath);
-				lua_settop(L, -lua_gettop(L));
-				return false;
-			}
-
-			if (!lua_isstring(L, -1))
-			{
-				LOG_SCRIPT("{}.dbnsp_auto_save return error isstring", m_scriptpath);
+				LOG_SCRIPT("{}.data_checkdel return error isstring", m_scriptpath);
 				lua_pop(L, 1);
 				return false;
 			}

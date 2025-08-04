@@ -76,23 +76,38 @@ namespace ngl
 		// # 活动是否开启
 		virtual bool is_start()
 		{
-			return m_activitytimes->getconst().mstart();
+			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
+			if (lpdata == nullptr)
+			{
+				return false;
+			}
+			return lpdata->mstart();
 		}
 
 		// # 活动开启时间
 		int32_t start_utc()
 		{
-			return m_activitytimes->getconst().mbeg();
+			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
+			if (lpdata == nullptr)
+			{
+				return -1;
+			}
+			return lpdata->mbeg();
 		}
 		
 		// # 活动结束时间
 		int32_t finish_utc()
 		{
-			if (m_activitytimes->getconst().mduration() == -1)
+			const pbdb::db_activitytimes* lpdata = m_activitytimes->getconst();
+			if (lpdata == nullptr)
 			{
 				return -1;
 			}
-			return start_utc() + m_activitytimes->getconst().mduration();
+			if (lpdata->mduration() == -1)
+			{
+				return -1;
+			}
+			return start_utc() + lpdata->mduration();
 		}
 
 		// # 此刻是活动第几天
@@ -116,12 +131,22 @@ namespace ngl
 		// # 调用:活动开启
 		virtual void start() 
 		{
-			if (m_activitytimes->getconst().mstart())
+			const pbdb::db_activitytimes* lpconstdata = m_activitytimes->getconst();
+			if (lpconstdata == nullptr)
+			{
+				return;
+			}
+			if (lpconstdata->mstart())
 			{
 				return;
 			}
 			log_error()->print("activity::start() activityid=[{}]", activityid());
-			m_activitytimes->get().set_mstart(true);
+			pbdb::db_activitytimes* lpdata = m_activitytimes->get();
+			if (lpdata == nullptr)
+			{
+				return;
+			}
+			lpdata->set_mstart(true);
 		}
 
 		// # 调用:活动开启后和服务器重启
@@ -136,13 +161,18 @@ namespace ngl
 		// # 调用:玩家开启活动成功
 		void recv_task_response(i64_actorid aroleid, int32_t aindex, bool aisreceive)
 		{
+			pbdb::db_activity* lpdata = m_activity->get();
+			if (lpdata == nullptr)
+			{
+				return;
+			}
 			if (aisreceive)
 			{
-				(*(*m_activity->get().mutable_mtask())[aroleid].mutable_mopen())[aindex] = true;
+				(*(*lpdata->mutable_mtask())[aroleid].mutable_mopen())[aindex] = true;
 			}
 			else
 			{
-				(*(*m_activity->get().mutable_mtask())[aroleid].mutable_mclose())[aindex] = true;
+				(*(*lpdata->mutable_mtask())[aroleid].mutable_mclose())[aindex] = true;
 			}
 		}
 

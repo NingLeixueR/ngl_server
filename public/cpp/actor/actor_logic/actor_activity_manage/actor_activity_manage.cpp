@@ -81,9 +81,9 @@ namespace ngl
 			{
 				continue;
 			}
-			const pbdb::db_activitytimes& lactivitytimes = lpair.second.getconst();
-			int32_t lbeg = lactivitytimes.mbeg();
-			int32_t lduration = lactivitytimes.mduration();
+			data_modified_continue_getconst(lpactivitytimesconst, lpair.second);
+			int32_t lbeg = lpactivitytimesconst->mbeg();
+			int32_t lduration = lpactivitytimesconst->mduration();
 			start_activity(lpair.first, lbeg, lduration);
 		}
 

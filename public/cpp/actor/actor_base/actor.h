@@ -138,9 +138,13 @@ namespace ngl
 				std::string lname = tools::type_name<TDerived>();
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
-					ninst<TDerived, TYPE>().template rfun<TDerived, T, true>((Tfun<TDerived, T>) & TDerived::handle, aisload);
+					ninst<TDerived, TYPE>().template rfun<TDerived, T, true>(
+						(Tfun<TDerived, T>) & TDerived::handle, aisload
+					);
 				}
-				ninst<TDerived, TYPE>().template rfun<TDerived, T, false>((Tfun<TDerived, T>) & TDerived::handle, aisload);
+				ninst<TDerived, TYPE>().template rfun<TDerived, T, false>(
+					(Tfun<TDerived, T>) & TDerived::handle, aisload
+				);
 			}
 		};
 	public:
@@ -309,15 +313,24 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata)
 		{
+			const TMESSAGE& ldata = *adata.get_data();
 			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 			{
-				nscript_custom_handle(*adata.get_data());
+				std::string ljson;
+				tools::custom2json(ldata, ljson);
+				nscript_handle(tools::type_name<TMESSAGE>().c_str(), ljson.c_str());
 			}
 			else
 			{
-				nscript_proto_handle(*adata.get_data());
+				std::string ljson;
+				if (!tools::proto2json(ldata, ljson))
+				{
+					return false;
+				}
+				nscript_handle(tools::type_name<TMESSAGE>().c_str(), ljson.c_str());
 			}
-			nscript_change_dbnsp();
+			nscript_check<true>(ecorrelation_nsp);
+			nscript_check<false>(ecorrelation_nsp);
 			return true;
 		}
 

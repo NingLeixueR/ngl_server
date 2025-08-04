@@ -32,7 +32,8 @@ namespace ngl
 		bool keyvalue(nguid aid, T& adata)
 		{
 			data_modified<pbdb::db_keyvalue>& ldata = get(aid);
-			adata = tools::lexical_cast<T>(ldata.getconst().mvalue());
+			data_modified_return_getconst(lpdkeyvalue, ldata, false);
+			adata = tools::lexical_cast<T>(lpdkeyvalue->mvalue());
 			return true;
 		}
 
@@ -49,7 +50,12 @@ namespace ngl
 		// 没有就添加
 		void update_keyvalue(const pbdb::db_keyvalue* adata)
 		{
-			data()[adata->mid()].get() = *adata;
+			pbdb::db_keyvalue* lpdata = data()[adata->mid()].get();
+			if (lpdata == nullptr)
+			{
+				return;
+			}
+			*lpdata = *adata;
 		}
 
 		virtual void initdata()

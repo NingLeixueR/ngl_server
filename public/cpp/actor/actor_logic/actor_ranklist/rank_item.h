@@ -30,13 +30,24 @@ namespace ngl
 		{
 			m_data[atype].m_value = avalfun(abrief);
 
-			auto& lmap = aranklist->getconst().mitems();
+			const pbdb::db_ranklist* lpconstdata = aranklist->getconst();
+			if (lpconstdata == nullptr)
+			{
+				return false;
+			}
+
+			auto& lmap = lpconstdata->mitems();
 			auto itor = lmap.find(atype);
 			if (itor != lmap.end())
 			{
 				if (itor->second.mvalue() != m_data[atype].m_value)
 				{
-					change(atype, aranklist->get());
+					pbdb::db_ranklist* lpdata = aranklist->get();
+					if (lpdata == nullptr)
+					{
+						return false;
+					}
+					change(atype, *lpdata);
 					return true;
 				}
 				else
@@ -45,7 +56,12 @@ namespace ngl
 					return false;
 				}				
 			}
-			change(atype, aranklist->get());
+			pbdb::db_ranklist* lpdata = aranklist->get();
+			if (lpdata == nullptr)
+			{
+				return false;
+			}
+			change(atype, *lpdata);
 			return true;
 		}
 
