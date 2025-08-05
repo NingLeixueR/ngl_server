@@ -245,7 +245,10 @@ namespace ngl
 		// parm adelfun			如果数据被删除由此函数处理
 		using nscript_callback = std::function<bool(const char*)>;
 		void nscript_correlation_checkout(
-			ecorrelation atype, const char* aname, const nscript_callback& achangefun, const nscript_callback& adelfun
+			ecorrelation atype
+			, const char* aname
+			, const nscript_callback& achangefun
+			, const nscript_callback& adelfun
 		);
 	public:
 		// # actor是否使用脚本
@@ -324,7 +327,7 @@ namespace ngl
 		{
 			if (!nscript_using())
 			{
-				return false;
+				return;
 			}
 			nscript_data_del(tools::type_name<T>().c_str(), adataid);
 		}

@@ -56,11 +56,6 @@ namespace ngl
 			bool lonlyread = recv->m_onlyread;
 			const std::set<i64_actorid>& ldataid = recv->m_dataid;
 
-			if (ldataid.contains(0))
-			{
-				std::cout << std::endl;
-			}
-
 			if (m_onlyreads.contains(lactorid))
 			{
 				return;
