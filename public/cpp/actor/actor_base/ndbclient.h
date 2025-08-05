@@ -43,11 +43,13 @@ namespace ngl
 	private:
 		static std::set<i64_actorid> m_modified;
 	public:
+		// # 哪些被修改
 		static std::set<i64_actorid>& which_modified()
 		{
 			return m_modified;
 		}
 
+		// # 检查是否被修改
 		static bool is_modified(i64_actorid aidentifier)
 		{
 			return m_modified.find(aidentifier) != m_modified.end();
@@ -59,7 +61,7 @@ namespace ngl
 			m_modified.insert(aidentifier);
 		}
 
-		// # 清空修改状态
+		// # 清空修改状态被
 		static void clear_modified(i64_actorid aidentifier)
 		{
 			m_modified.erase(aidentifier);
@@ -68,7 +70,6 @@ namespace ngl
 
 	template <typename TDBTAB>
 	std::set<i64_actorid> nmodified<TDBTAB>::m_modified;
-
 
 	template <typename TDBTAB>
 	struct data_modified 
@@ -164,16 +165,6 @@ namespace ngl
 			return &ldata;
 		}
 	};
-
-
-
-
-#define data_modified_getconst(NAME, DATA, ...)		\
-	auto NAME = DATA.getconst();\
-	if(NAME == nullptr)\
-	{\
-		return #__VA_ARGS__;\
-	}
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db;

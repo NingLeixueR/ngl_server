@@ -259,10 +259,10 @@ namespace ngl
 		}
 
 		inline bool nscript_data_push(
-			const char* adbname, const char* adata_source, const char* adatajson, bool aedit
+			const char* aname, const char* asource, const char* ajson, bool aedit
 		)
 		{
-			return m_script->data_push(adbname, adata_source, adatajson, aedit);
+			return m_script->data_push(aname, asource, ajson, aedit);
 		}
 
 		inline bool nscript_handle(const char* aname, const char* ajson)
@@ -347,7 +347,6 @@ namespace ngl
 			lpinfo->m_type = atype;
 			lpinfo->m_name = aname;
 			lpinfo->m_function = std::make_pair(achangefun, adelfun);
-
 			m_scripttypecheck[atype][aname] = lpinfo;
 		}
 
@@ -593,14 +592,14 @@ namespace ngl
 	}
 
 	bool actor_base::nscript_data_push(
-		const char* adbname, const char* adata_source, const char* adatajson, bool aedit /*= false*/
+		const char* aname, const char* asource, const char* ajson, bool aedit /*= false*/
 	)
 	{
 		if (!nscript_using())
 		{
 			return false;
 		}
-		return m_impl_actor_base()->nscript_data_push(adbname, adata_source, adatajson, aedit);
+		return m_impl_actor_base()->nscript_data_push(aname, asource, ajson, aedit);
 	}
 
 	bool actor_base::nscript_handle(const char* aname, const char* ajson)
@@ -612,7 +611,7 @@ namespace ngl
 		return m_impl_actor_base()->nscript_handle(aname, ajson);
 	}
 
-	bool actor_base::nscript_check(const char* adbname, i64_actorid aactorid, bool adel)
+	bool actor_base::nscript_check(const char* aname, i64_actorid adataid, bool adel)
 	{
 		if (!nscript_using())
 		{
@@ -620,11 +619,11 @@ namespace ngl
 		}
 		if (adel)
 		{
-			return m_impl_actor_base()->nscript_check<true>(adbname, aactorid);
+			return m_impl_actor_base()->nscript_check<true>(aname, adataid);
 		}
 		else
 		{
-			return m_impl_actor_base()->nscript_check<false>(adbname, aactorid);
+			return m_impl_actor_base()->nscript_check<false>(aname, adataid);
 		}
 	}
 
@@ -654,7 +653,10 @@ namespace ngl
 	}
 
 	void actor_base::nscript_correlation_checkout(
-		actor_base::ecorrelation atype, const char* aname, const actor_base::nscript_callback& achangefun, const actor_base::nscript_callback& adelfun
+		actor_base::ecorrelation atype
+		, const char* aname
+		, const actor_base::nscript_callback& achangefun
+		, const actor_base::nscript_callback& adelfun
 	)
 	{
 		if (!nscript_using())
