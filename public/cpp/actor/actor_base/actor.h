@@ -180,7 +180,6 @@ namespace ngl
 		template <EPROTOCOL_TYPE TYPE, typename TDerived>
 		using register_script_handle = template_arg<actor::cregister_actor_handle<TYPE, TDerived>, bool>;
 
-
 #pragma region register_actornonet
 		//# 与register_actor类似 只不过不注册网络层
 		template <EPROTOCOL_TYPE TYPE, typename TDerived, typename T>

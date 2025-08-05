@@ -96,7 +96,7 @@ namespace ngl
 
 			pbdb::db_friends* lpfriends1 = lfriends1.get();
 			pbdb::db_friends* lpfriends2 = lfriends2.get();
-			if (lpfriends1 == nullptr || lpfriends1 == nullptr)
+			if (lpfriends1 == nullptr || lpfriends2 == nullptr)
 			{
 				return 5;
 			}
