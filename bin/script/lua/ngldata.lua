@@ -87,7 +87,7 @@ local function new()
     end
 
     function instance:data_push(aname, asource, ajson, aedit)
-        logger:write("instance:push_data("..adbname..","..adatajson..(aedit and "true)" or "false)"))
+        logger:write("instance:push_data("..aname..","..ajson..(aedit and "true)" or "false)"))
         if not ajson or ajson == "" then
             logger:write("Error: ajson is nil or empty")
             return
@@ -153,10 +153,10 @@ local function new()
     -- parm iscpp ÊÇ·ñcppµ÷ÓÃ
     function instance:data_del(aname, adataid, iscpp)
         logger:write("instance:data_del("..aname..","..adataid)
-        if self.data[aname][adataid] then
+        if self.data[aname] and self.data[aname][adataid] then
             self.data[aname][adataid] = nil
         end
-        if self.change[aname][adataid] then
+        if self.change[aname] and self.change[aname][adataid] then
             self.change[aname][adataid] = nil
         end
         if iscpp == nil then

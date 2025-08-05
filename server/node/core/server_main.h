@@ -35,7 +35,7 @@ void init_DB_ROLE(const char* aname, int beg)
 		ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 		ltemp.set_mid(lid);
 		pbdb::db_brief lrolebase;
-		lrolebase.set_mid(lid);
+		lrolebase.set_mid(ngl::nguid::make(ngl::ACTOR_BRIEF, tab_self_area, i));
 		lrolebase.set_mname(std::string(aname) + ngl::tools::lexical_cast<std::string>(i % DEF_COUNT));
 		lrolebase.set_mlv(i);
 		lrolebase.set_mmoneygold(0);
