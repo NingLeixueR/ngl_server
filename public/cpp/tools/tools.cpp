@@ -1384,8 +1384,8 @@ namespace ngl
 	{
 		ngl::ENUM_ACTOR lactortype;
 		std::string lactortypestr;
-		ngl::i16_area larea;
-		ngl::i32_actordataid ldataid;
+		ngl::i16_area larea = nguid::none_area();
+		ngl::i32_actordataid ldataid = nguid::none_actordataid();
 		ngl::tools::splite(anguidstr, "#", lactortypestr, larea, ldataid);
 		lactortype = ngl::em<ngl::ENUM_ACTOR>::get_enum(lactortypestr.c_str());
 		std::cout << "tools nguid:" << lactortypestr << "#" << (int32_t)lactortype << ":" << larea << ":" << ldataid << std::endl;
