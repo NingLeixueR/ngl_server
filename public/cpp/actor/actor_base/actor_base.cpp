@@ -262,30 +262,17 @@ namespace ngl
 			const char* adbname, const char* adata_source, const char* adatajson, bool aedit
 		)
 		{
-			if (!nscript_using())
-			{
-				return false;
-			}
 			return m_script->data_push(adbname, adata_source, adatajson, aedit);
 		}
 
 		inline bool nscript_handle(const char* aname, const char* ajson)
 		{
-			if (!nscript_using())
-			{
-				return false;
-			}
 			return m_script->handle(aname, ajson);
 		}
 
 		template <bool DEL>
 		inline bool nscript_check(const char* aname, i64_accountid adataid)
 		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-
 			auto itor = m_scriptnamecheck.find(aname);
 			if (itor == m_scriptnamecheck.end())
 			{
@@ -314,11 +301,6 @@ namespace ngl
 		template <bool DEL>
 		inline bool nscript_check(actor_base::ecorrelation atype)
 		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-
 			auto itor = m_scripttypecheck.find(atype);
 			if (itor == m_scripttypecheck.end())
 			{
@@ -351,10 +333,6 @@ namespace ngl
 
 		inline void nscript_db_loadfinish()
 		{
-			if (!nscript_using())
-			{
-				return;
-			}
 			m_script->db_loadfinish();
 		}
 
@@ -365,11 +343,6 @@ namespace ngl
 			, const actor_base::nscript_callback& adelfun
 		)
 		{
-			if (!nscript_using())
-			{
-				return;
-			}
-
 			nscript_info* lpinfo = &m_scriptnamecheck[aname];
 			lpinfo->m_type = atype;
 			lpinfo->m_name = aname;
@@ -380,10 +353,6 @@ namespace ngl
 
 		void nscript_data_del(const char* aname, int64_t adataid)
 		{
-			if (!nscript_using())
-			{
-				return;
-			}
 			m_script->data_del(aname, adataid);
 		}
 
@@ -627,16 +596,28 @@ namespace ngl
 		const char* adbname, const char* adata_source, const char* adatajson, bool aedit /*= false*/
 	)
 	{
+		if (!nscript_using())
+		{
+			return false;
+		}
 		return m_impl_actor_base()->nscript_data_push(adbname, adata_source, adatajson, aedit);
 	}
 
 	bool actor_base::nscript_handle(const char* aname, const char* ajson)
 	{
+		if (!nscript_using())
+		{
+			return false;
+		}
 		return m_impl_actor_base()->nscript_handle(aname, ajson);
 	}
 
 	bool actor_base::nscript_check(const char* adbname, i64_actorid aactorid, bool adel)
 	{
+		if (!nscript_using())
+		{
+			return false;
+		}
 		if (adel)
 		{
 			return m_impl_actor_base()->nscript_check<true>(adbname, aactorid);
@@ -649,6 +630,10 @@ namespace ngl
 
 	bool actor_base::nscript_check(actor_base::ecorrelation atype, bool adel)
 	{
+		if (!nscript_using())
+		{
+			return false;
+		}
 		if (adel)
 		{
 			return m_impl_actor_base()->nscript_check<true>(atype);
@@ -661,6 +646,10 @@ namespace ngl
 
 	void actor_base::nscript_db_loadfinish()
 	{
+		if (!nscript_using())
+		{
+			return;
+		}
 		return m_impl_actor_base()->nscript_db_loadfinish();
 	}
 
@@ -668,11 +657,19 @@ namespace ngl
 		actor_base::ecorrelation atype, const char* aname, const actor_base::nscript_callback& achangefun, const actor_base::nscript_callback& adelfun
 	)
 	{
+		if (!nscript_using())
+		{
+			return;
+		}
 		return m_impl_actor_base()->nscript_correlation_checkout(atype, aname, achangefun, adelfun);
 	}
 
 	void actor_base::nscript_data_del(const char* aname, int64_t adataid)
 	{
+		if (!nscript_using())
+		{
+			return;
+		}
 		return m_impl_actor_base()->nscript_data_del(aname, adataid);
 	}
 

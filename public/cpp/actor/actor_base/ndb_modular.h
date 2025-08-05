@@ -137,7 +137,7 @@ namespace ngl
 				tools::no_core_dump();
 			}
 			data_modified<TDATA>& ldata = data()[aid];
-			TDATA* lpdata = ldata.get();
+			TDATA* lpdata = ldata.get(false, false);
 			if (lpdata == nullptr)
 			{
 				tools::no_core_dump();

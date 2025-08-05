@@ -51,6 +51,7 @@ function handle(amsgname, amsgjson)
 	end
 
 	local temp =  ngldata:get("db_brief", nguidstr2int64str("actor_brief#1#1"));
+	print(temp)
 	print("mlv:"..temp["mlv"])
 	temp["mlv"] = 999
 	print("mlv:"..temp["mlv"])

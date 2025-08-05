@@ -121,6 +121,11 @@ namespace ngl
 		TDBTAB* get(bool achange = true, bool anscript = true)
 		{
 			TDBTAB& ldata = m_pdata == nullptr ? m_data : *m_pdata;
+			i64_actorid lidentifier = identifier();
+			if ((achange || anscript) && (lidentifier == 0 || lidentifier == nguid::make()))
+			{
+				return nullptr;
+			}
 			if (achange)
 			{
 				modified();

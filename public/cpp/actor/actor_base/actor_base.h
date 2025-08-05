@@ -260,6 +260,10 @@ namespace ngl
 			ecorrelation atype, const nscript_callback& achangefun, const nscript_callback& adelfun
 		)
 		{
+			if (!nscript_using())
+			{
+				return;
+			}
 			nscript_correlation_checkout(atype, tools::type_name<T>().c_str(), achangefun, adelfun);
 		}
 
@@ -267,6 +271,10 @@ namespace ngl
 		template <typename TTAB>
 		bool nscript_push_csv()
 		{
+			if (!nscript_using())
+			{
+				return false;
+			}
 			std::string ljson;
 			tools::custom2json(TTAB::instance().tablecsv(), ljson);
 			const char* lname = tools::type_name<typename TTAB::type_tab>().c_str();
@@ -277,41 +285,67 @@ namespace ngl
 		template <typename TDB>
 		bool nscript_push_db(const std::map<i64_actorid, TDB>& adata)
 		{
+			if (!nscript_using())
+			{
+				return false;
+			}
 			std::string ljson;
 			if (!tools::proto2json(adata, ljson))
 			{
 				return false;
 			}
-			return nscript_data_push(tools::type_name<TDB>().c_str(), "db", ljson.c_str(), true);
+			using type = typename std::remove_const<
+				typename std::remove_pointer<TDB>::type
+			>::type;
+			return nscript_data_push(tools::type_name<type>().c_str(), "db", ljson.c_str(), true);
 		}
 
 		// # 压入nsp数据
 		template <typename TDB>
 		bool nscript_push_nsp(const std::map<i64_actorid, TDB>& adata, bool aedit = false)
 		{
+			if (!nscript_using())
+			{
+				return false;
+			}
 			std::string ljson;
 			if (!tools::proto2json(adata, ljson))
 			{
 				return false;
 			}
-			return nscript_data_push(tools::type_name<TDB>().c_str(), "nsp", ljson.c_str(), aedit);
+			using type = typename std::remove_const<
+				typename std::remove_pointer<TDB>::type
+			>::type;
+			return nscript_data_push(tools::type_name<type>().c_str(), "nsp", ljson.c_str(), aedit);
 		}
 
 		template <typename T>
 		void nscript_data_del(int64_t adataid)
 		{
+			if (!nscript_using())
+			{
+				return false;
+			}
 			nscript_data_del(tools::type_name<T>().c_str(), adataid);
 		}
 
 		template <typename T, bool DEL>
 		inline bool nscript_check(i64_actorid adataid)
 		{
+			if (!nscript_using())
+			{
+				return false;
+			}
 			return nscript_check(tools::type_name<T>().c_str(), adataid, DEL);
 		}
 
 		template <bool DEL>
 		inline bool nscript_check(actor_base::ecorrelation atype)
 		{
+			if (!nscript_using())
+			{
+				return false;
+			}
 			return nscript_check(atype, DEL);
 		}
 
