@@ -82,7 +82,7 @@ local function new()
         return cjson.encode(adata)
     end
 
-    function instance:push_sysdata(asysjson)
+    function instance:init_sysdata(asysjson)
         self.sysdata = self:json_decode(asysjson)
     end
 

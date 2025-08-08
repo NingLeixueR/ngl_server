@@ -1,13 +1,6 @@
 #pragma once
 
-#include "lua.hpp"
-#include "nguid.h"
-
-#include <string>
-#include <map>
-
-//# define LOG_SCRIPT(...)  ::ngl::log_error()->print(__VA_ARGS__)
-# define LOG_SCRIPT(...)  std::cout << std::format(__VA_ARGS__) << std::endl
+#include "luafunction.h"
 
 extern "C"
 {
@@ -186,241 +179,103 @@ namespace ngl
 				L = nullptr;
 				return;
 			}
+
+			k2 ltemp1
+			{
+				.m_v1 = 1999,
+				.m_v2 = k1{
+					.m_v1 = 1988,
+					.m_v2 = 5.134,
+					.m_v3 = "chinachina",
+					.m_v4 = {1,3,5,7,9,11},
+					.m_v5 = {
+						{1, "t1"},
+						{2, "t2"},
+						{3, "t3"},
+					},
+					.m_v6 = {
+						{ "wac", "th1"},
+						{ "lzs", "th2"},
+						{ "lzm", "th3"},
+						{ "lb", "th4"},
+					},
+					.m_v7 = {
+						{"china", k0{.m_v1 = 1,.m_v2 = 2.3, .m_v3 = "china"}},
+						{"jp", k0{.m_v1 = 2,.m_v2 = 3.3, .m_v3 = "jp"}},
+					},
+				},
+			};
+			//ltemp1.push(L);
+			std::cout << std::endl;
+			luafunction lfun(L, m_scriptpath.c_str(), "test");
+			lfun.set_call(ltemp1);
+			k2 ltemp2;
+			lfun.set_return(ltemp2);
+			lfun.call();
 		}
 
 		virtual bool init_sysdata(const char* asysjson)
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-			int result = lua_getglobal(L, "init_sysdata");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.init_sysdata]", m_scriptpath);
-				lua_pop(L, 1); // 弹出nil值
-				return false;
-			}
-			lua_pushstring(L, asysjson);
-			if (lua_pcall(L, 1, 0, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.init_sysdata error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1); // 弹出错误信息
-				return false;
-			}
-			return true;
+			luafunction lfun(L, m_scriptpath.c_str(), "init_sysdata");
+			lfun.set_call(asysjson);
+			lfun.set_return();
+			return lfun.call();
 		}
 
 		// # 将db数据压入
 		virtual bool data_push(const char* aname, const char* asource, const char* ajson, bool aedit)
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-			int result = lua_getglobal(L, "data_push");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.push_data]", m_scriptpath);
-				lua_pop(L, 1); // 弹出nil值
-				return false;
-			}
-			lua_pushstring(L, aname);
-			lua_pushstring(L, asource);
-			lua_pushstring(L, ajson);
-			lua_pushboolean(L, aedit);
-			if (lua_pcall(L, 4, 0, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.push_data error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1); // 弹出错误信息
-				return false;
-			}
-			return true;
+			luafunction lfun(L, m_scriptpath.c_str(), "data_push");
+			lfun.set_call(aname, asource, ajson, aedit);
+			lfun.set_return();
+			return lfun.call();
 		}
 
 		// # 数据被删除
 		virtual bool data_del(const char* aname, i64_actorid adataid)
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-			int result = lua_getglobal(L, "data_del");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.del_data]", m_scriptpath);
-				lua_pop(L, 1); // 弹出nil值
-				return false;
-			}
-			lua_pushstring(L, aname);
-			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
-			if (lua_pcall(L, 2, 0, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.del_data error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1); // 弹出错误信息
-				return false;
-			}
-			return true;
+			luafunction lfun(L, m_scriptpath.c_str(), "data_del");
+			lfun.set_call(aname, tools::lexical_cast<std::string>(adataid));
+			lfun.set_return();
+			return lfun.call();
 		}
 
 		virtual bool db_loadfinish()
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-			int result = lua_getglobal(L, "db_loadfinish");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.db_loadfinish]", m_scriptpath);
-				lua_pop(L, 1); // 弹出nil值
-				return false;
-			}
-			if (lua_pcall(L, 0, 0, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.db_loadfinish error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1); // 弹出错误信息
-				return false;
-			}
-
-			return true;
+			luafunction lfun(L, m_scriptpath.c_str(), "db_loadfinish");
+			lfun.set_call();
+			lfun.set_return();
+			return lfun.call();
 		}
 
 		// # 消息处理
 		virtual bool handle(const char* aname, const char* ajson)
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-			int result = lua_getglobal(L, "handle");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.handle]", m_scriptpath);
-				lua_pop(L, 1); // 弹出nil值
-				return false;
-			}
-			lua_pushstring(L, aname);
-			lua_pushstring(L, ajson);
-			if (lua_pcall(L, 2, 0, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.handle error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1); // 弹出错误信息
-				return false;
-			}
-
-			return true;
+			luafunction lfun(L, m_scriptpath.c_str(), "handle");
+			lfun.set_call(aname, ajson);
+			lfun.set_return();
+			return lfun.call();
 		}
 
 		// # 查询数据是否被修改#如果被修改就加载数据
-		virtual bool data_checkout(const char* adbname, i64_actorid adataid, std::string& ajson)
+		virtual bool data_checkout(const char* aname, i64_actorid adataid, std::string& ajson)
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-
-			int result = lua_getglobal(L, "data_checkout");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.data_checkout]", m_scriptpath);
-				lua_pop(L, 1);
-				return false;
-			}
-			lua_pushstring(L, adbname);
-			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
-			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.data_checkout error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1);
-				return false;
-			}
-
-			if (lua_gettop(L) < 2)
-			{
-				LOG_SCRIPT("{}.data_checkout return count error", m_scriptpath);
-				lua_settop(L, -lua_gettop(L));
-				return false;
-			}
-
-			if (!lua_isboolean(L, -2))
-			{
-				LOG_SCRIPT("{}.check_outdata return error isboolean", m_scriptpath);
-				lua_settop(L, -lua_gettop(L));
-				return false;
-			}
-
-			if (!lua_isstring(L, -1))
-			{
-				LOG_SCRIPT("{}.check_outdata return error isstring", m_scriptpath);
-				lua_pop(L, 1);
-				return false;
-			}
-
-			bool success = lua_toboolean(L, -2) != 0;
-			if (success)
-			{
-				ajson = lua_tostring(L, -1);
-			}
-			lua_pop(L, 2);
-
-			return success;
+			luafunction lfun(L, m_scriptpath.c_str(), "data_checkout");
+			lfun.set_call(aname, tools::lexical_cast<std::string>(adataid));
+			bool success = false;
+			lfun.set_return(success, ajson);
+			return lfun.call();
 		}
 		
 		// # 查询数据是否被删除
 		// # aactorid == nguid::make() 检查全部数据
-		virtual bool data_checkdel(const char* adbname, i64_actorid adataid, std::string& ajson)
+		virtual bool data_checkdel(const char* aname, i64_actorid adataid, std::string& ajson)
 		{
-			if (L == nullptr)
-			{
-				return false;
-			}
-
-			int result = lua_getglobal(L, "data_checkdel");
-			if (result == LUA_TNIL)
-			{
-				LOG_SCRIPT("lua_getglobal get failure[{}.data_checkdel]", m_scriptpath);
-				lua_pop(L, 1);
-				return false;
-			}
-			lua_pushstring(L, adbname);
-			lua_pushstring(L, tools::lexical_cast<std::string>(adataid).c_str());
-			if (lua_pcall(L, 2, 2, 0) != LUA_OK)
-			{
-				LOG_SCRIPT("{}.data_checkdel error [{}]", m_scriptpath, lua_tostring(L, -1));
-				lua_pop(L, 1);
-				return false;
-			}
-
-			if (lua_gettop(L) < 2)
-			{
-				LOG_SCRIPT("{}.data_checkdel return count error", m_scriptpath);
-				lua_settop(L, -lua_gettop(L));
-				return false;
-			}
-
-			if (!lua_isboolean(L, -2))
-			{
-				LOG_SCRIPT("{}.data_checkdel return error isboolean", m_scriptpath);
-				lua_settop(L, -lua_gettop(L));
-				return false;
-			}
-
-			if (!lua_isstring(L, -1))
-			{
-				LOG_SCRIPT("{}.data_checkdel return error isstring", m_scriptpath);
-				lua_pop(L, 1);
-				return false;
-			}
-
-			bool success = lua_toboolean(L, -2) != 0;
-			if (success)
-			{
-				ajson = lua_tostring(L, -1);
-			}
-			lua_pop(L, 2);
-
-			return success;
+			luafunction lfun(L, m_scriptpath.c_str(), "data_checkdel");
+			lfun.set_call(aname, tools::lexical_cast<std::string>(adataid));
+			bool success = false;
+			lfun.set_return(success, ajson);
+			return lfun.call();
 		}
 	};
 }//namespace ngl

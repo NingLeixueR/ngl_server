@@ -40,4 +40,9 @@ function data_checkdel(aname, adataid)
     end
 end
 
+function test(adata)
+    ngldata:print_table(adata)
+    return adata
+end
+
 

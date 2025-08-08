@@ -921,6 +921,32 @@ namespace ngl
 
 		// nguid str(actor_type#areaid#dataid) => nguid int64_t
 		static int64_t nguidstr2int64(const char* anguidstr);
+
+
+		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount)
+		{
+			std::vector<const char*> lpbuffs;
+			int j = 0;
+			for (int32_t i = 0; i < abuffcount; )
+			{
+				if (apbuff[i] == ',')
+				{
+					apbuff[i] = '\0';
+					lpbuffs.push_back(&apbuff[j]);
+					j = ++i;
+					if (j < abuffcount && apbuff[j] == ' ')
+					{
+						j = ++i;
+					}
+				}
+				else
+				{
+					++i;
+				}
+			}
+			lpbuffs.push_back(&apbuff[j]);
+			return lpbuffs;
+		}
 	};
 
 	template <typename T>
@@ -965,4 +991,5 @@ namespace ngl
 		}
 		return true;
 	}
+
 }
