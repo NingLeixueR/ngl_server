@@ -129,6 +129,10 @@ INCLUDE_DIRECTORIES(public/cpp/tools/curl/)
 INCLUDE_DIRECTORIES(public/cpp/tools/log/)
 INCLUDE_DIRECTORIES(public/cpp/tools/log/bi)
 
+INCLUDE_DIRECTORIES(public/cpp/tools/script)
+INCLUDE_DIRECTORIES(public/cpp/tools/script/lua)
+
+
 INCLUDE_DIRECTORIES(public/cpp/logic)
 INCLUDE_DIRECTORIES(public/cpp/logic/public)
 INCLUDE_DIRECTORIES(public/cpp/logic/public/role)

@@ -155,18 +155,14 @@ public:
 	}
 
 	template <typename T>
-	bool fun(
-		int32_t apos, T& adata
-	)
+	bool fun(int32_t apos, T& adata)
 	{
 		dosth(m_json, m_parts[apos], adata);
 		return true;
 	}
 
 	template <typename T, typename ...ARG>
-	bool fun(
-		int32_t apos, T& adata, ARG&... args
-	)
+	bool fun(int32_t apos, T& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
