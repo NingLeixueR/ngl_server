@@ -818,33 +818,35 @@ namespace ngl
 		return lvec;\
 	}
 
+
+template <bool POP>
 class help_nlua
 {
 	std::vector<const char*>& m_vec;
 	int32_t m_pos = 0;
 	lua_State* L = nullptr;
 	const char* m_name = nullptr;
-	bool m_pop = false;
 public:
-	help_nlua(lua_State* aL, const char* aname, std::vector<const char*>& avec, bool apop) :
+	help_nlua(lua_State* aL, const char* aname, std::vector<const char*>& avec) :
 		m_vec(avec),
 		L(aL),
-		m_name(aname),
-		m_pop(apop)
+		m_name(aname)
 	{
-		if (apop)
+		if constexpr (POP)
 		{
 			ngl::nlua_table::table_start_pop(aL, aname);
+			m_pos = m_vec.size() - 1;
 		}
 		else
 		{
 			ngl::nlua_table::table_start_push(aL, aname);
+			m_pos = 0;
 		}
 	}
 
 	~help_nlua()
 	{
-		if (m_pop)
+		if constexpr (POP)
 		{
 			ngl::nlua_table::table_finish_pop(L, m_name);
 		}
@@ -857,7 +859,7 @@ public:
 	template <typename T>
 	void push(const T& adata)
 	{
-		ngl::nlua_table::table_push(L, m_vec[m_pos], adata);
+		ngl::nlua_table::table_push(L, m_vec[m_pos++], adata);
 	}
 
 	template <typename T, typename ...TARGS>
@@ -870,8 +872,7 @@ public:
 	template <typename T>
 	bool pop(T& adata)
 	{
-		int32_t lpos = m_vec.size() - 1 - m_pos++;
-		return ngl::nlua_table::table_pop(L, m_vec[lpos], adata);
+		return ngl::nlua_table::table_pop(L, m_vec[m_pos--], adata);
 	}
 
 	template <typename T, typename ...TARGS>
@@ -885,17 +886,15 @@ public:
 #define def_nlua_push(...)													\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
 	{																		\
-		{help_nlua ltemp(aL, aname, parms(), false);						\
-		ltemp.push(__VA_ARGS__);}											\
+		help_nlua<false> ltemp(aL, aname, parms());							\
+		ltemp.push(__VA_ARGS__);											\
 	}
 
 #define def_nlua_pop(...)													\
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
 	{																		\
-		bool lret = false;													\
-		{help_nlua ltemp(aL, aname, parms(), true);							\
-		lret = ltemp.pop(__VA_ARGS__);}										\
-		return lret;														\
+		help_nlua<true> ltemp(aL, aname, parms());							\
+		return ltemp.pop(__VA_ARGS__);										\
 	}
 
 #define def_nlua_function(...)	\
