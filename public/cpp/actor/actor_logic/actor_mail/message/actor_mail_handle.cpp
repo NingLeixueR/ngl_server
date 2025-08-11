@@ -32,14 +32,14 @@ namespace ngl
 					{
 						int32_t m_itemtid = -1;
 						int32_t m_count;
-						def_jsonfunction(m_itemtid, m_count)
+						dprotocoljson(gm_mailitem, m_itemtid, m_count)
 					};
 					struct gm_mail
 					{
 						int64_t m_roleid = nguid::make();
 						std::string m_content;				// 邮件内容
 						std::vector<gm_mailitem>  m_items;	// 邮件附件
-						def_jsonfunction(m_roleid, m_content, m_items)
+						dprotocoljson(gm_mail, m_roleid, m_content, m_items)
 					};
 					gm_mail recv;
 					if (aos.read("data", recv) == false)
@@ -65,7 +65,7 @@ namespace ngl
 					{
 						int64_t m_roleid = nguid::make();
 						int32_t m_mailid = -1;
-						def_jsonfunction(m_roleid, m_mailid)
+						dprotocoljson(gm_deletemail, m_roleid, m_mailid)
 					};
 					gm_deletemail ldelmail;
 					if (aos.read("data", ldelmail) == false)

@@ -83,12 +83,12 @@ namespace ngl
 		{
 			std::string m_actor_name;
 			std::map<i16_area, std::vector<i32_actordataid>> m_actor;
-			def_jsonfunction(m_actor_name, m_actor)
+			dprotocoljson(msg_actor, m_actor_name, m_actor)
 		};
 		struct msg_actor_stat
 		{
 			std::vector<msg_actor> m_vec;
-			def_jsonfunction(m_vec)
+			dprotocoljson(msg_actor_stat, m_vec)
 		};
 		void get_actor_stat(msg_actor_stat& adata);
 	};

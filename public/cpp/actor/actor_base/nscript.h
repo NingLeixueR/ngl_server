@@ -1,6 +1,8 @@
 #pragma once
 
 #include "luafunction.h"
+#include "ndefine.h"
+#include "test_lua.h"
 
 extern "C"
 {
@@ -205,7 +207,6 @@ namespace ngl
 					},
 				},
 			};
-			//ltemp1.push(L);
 			std::cout << std::endl;
 			luafunction lfun(L, m_scriptpath.c_str(), "test");
 			lfun.set_call(ltemp1);

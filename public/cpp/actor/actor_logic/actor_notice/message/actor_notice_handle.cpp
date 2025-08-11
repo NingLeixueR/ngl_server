@@ -7,7 +7,7 @@ namespace ngl
 		std::string	m_notice;
 		int32_t		m_starttime;// 开始时间
 		int32_t		m_finishtime;// 结束时间
-		def_jsonfunction(m_id, m_notice, m_starttime, m_finishtime)
+		dprotocoljson(gm_notice, m_id, m_notice, m_starttime, m_finishtime)
 	};
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{

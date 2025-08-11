@@ -1,7 +1,6 @@
 #pragma once
 
 #include "lua.hpp"
-#include "nguid.h"
 
 #include <string>
 #include <map>
@@ -14,33 +13,13 @@ namespace ngl
 	template <typename T>
 	struct serialize_lua
 	{
-		static void stack_push(lua_State* L, const T& adata)
-		{
-			adata.nlua_push(L, nullptr);
-		}
+		static void stack_push(lua_State* L, const T& adata);
 
-		static bool stack_pop(lua_State* L, T& adata, bool apop = true)
-		{
-			if (!adata.nlua_pop(L))
-			{
-				return false;
-			}
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
-		}
+		static bool stack_pop(lua_State* L, T& adata, bool apop = true);
 
-		static void table_push(lua_State* L, const char* aname, const T& adata)
-		{
-			adata.nlua_push(L, aname);
-		}
+		static void table_push(lua_State* L, const char* aname, const T& adata);
 
-		static bool table_pop(lua_State* L, const char* aname, T& adata)
-		{
-			return adata.nlua_pop(L, aname);
-		}
+		static bool table_pop(lua_State* L, const char* aname, T& adata);
 	};
 
 	template <>
@@ -807,17 +786,76 @@ namespace ngl
 		}
 
 	};
-}//namespace ngl
 
 
-#define def_parmname(...) \
-	static std::vector<const char*>& parms()\
-	{\
-		static char lbuff[] = #__VA_ARGS__;\
-		static std::vector<const char*> lvec = ngl::tools::split_str(lbuff, sizeof(lbuff));\
-		return lvec;\
+	
+	template <typename T>
+	void serialize_lua<T>::stack_push(lua_State* L, const T& adata)
+	{
+		if constexpr (std::is_enum<T>::value)
+		{
+			int32_t lvalue = (int32_t)(adata);
+			serialize_lua<int32_t>::stack_push(L, lvalue);
+		}
+		else
+		{
+			adata.nlua_push(L, nullptr);
+		}
 	}
 
+	template <typename T>
+	bool serialize_lua<T>::stack_pop(lua_State* L, T& adata, bool apop/* = true*/)
+	{
+		if constexpr (std::is_enum<T>::value)
+		{
+			int32_t lvalue = 0;
+			if (!serialize_lua<int32_t>::stack_pop(L, lvalue))
+			{
+				return false;
+			}
+			adata = (T)lvalue;
+		}
+		else
+		{
+			if (!adata.nlua_pop(L))
+			{
+				return false;
+			}
+		}
+		if (apop)
+		{
+			lua_pop(L, 1);
+		}
+		return true;
+	}
+
+	template <typename T>
+	void serialize_lua<T>::table_push(lua_State* L, const char* aname, const T& adata)
+	{
+		if constexpr (std::is_enum<T>::value)
+		{
+			stack_push(L, adata);
+		}
+		else
+		{
+			adata.nlua_push(L, aname);
+		}
+	}
+
+	template <typename T>
+	bool serialize_lua<T>::table_pop(lua_State* L, const char* aname, T& adata)
+	{
+		if constexpr (std::is_enum<T>::value)
+		{
+			return stack_pop(L, adata);
+		}
+		else
+		{
+			return adata.nlua_pop(L, aname);
+		}
+	}
+
+}//namespace ngl
 
 template <bool POP>
 class help_nlua
@@ -834,12 +872,12 @@ public:
 	{
 		if constexpr (POP)
 		{
-			ngl::nlua_table::table_start_pop(aL, aname);
+			ngl::nlua_table::table_start_pop(L, m_name);
 			m_pos = m_vec.size() - 1;
 		}
 		else
 		{
-			ngl::nlua_table::table_start_push(aL, aname);
+			ngl::nlua_table::table_start_push(L, m_name);
 			m_pos = 0;
 		}
 	}
@@ -856,6 +894,10 @@ public:
 		}
 	}
 
+	void push()
+	{
+	}
+
 	template <typename T>
 	void push(const T& adata)
 	{
@@ -867,6 +909,11 @@ public:
 	{
 		push(adata);
 		push(args...);
+	}
+
+	bool pop()
+	{
+		return true;
 	}
 
 	template <typename T>
@@ -883,57 +930,3 @@ public:
 };
 
 
-#define def_nlua_push(...)													\
-	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
-	{																		\
-		help_nlua<false> ltemp(aL, aname, parms());							\
-		ltemp.push(__VA_ARGS__);											\
-	}
-
-#define def_nlua_pop(...)													\
-	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
-	{																		\
-		help_nlua<true> ltemp(aL, aname, parms());							\
-		return ltemp.pop(__VA_ARGS__);										\
-	}
-
-#define def_nlua_function(...)	\
-	def_parmname(__VA_ARGS__)\
-	def_nlua_push(__VA_ARGS__)\
-	def_nlua_pop(__VA_ARGS__)\
-
-
-namespace ngl
-{
-	// # ≤‚ ‘
-
-	struct k0
-	{
-		int m_v1;
-		double m_v2;
-		std::string m_v3;
-
-		def_nlua_function(m_v1, m_v2, m_v3)
-	};
-
-	struct k1
-	{
-		int m_v1;
-		double m_v2;
-		std::string m_v3;
-		std::vector<int32_t> m_v4;
-		std::map<int32_t, std::string> m_v5;
-		std::map<std::string, std::string> m_v6;
-		std::map<std::string, k0> m_v7;
-
-		def_nlua_function(m_v1, m_v2, m_v3, m_v4, m_v5, m_v6, m_v7)
-	};
-
-	struct k2
-	{
-		int m_v1;
-		k1 m_v2;
-
-		def_nlua_function(m_v1, m_v2)
-	};
-}//namespace ngl
