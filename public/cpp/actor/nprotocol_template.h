@@ -32,7 +32,86 @@ namespace ngl
 	{
 		nguid m_id = -1;
 
-		dprotocoljson(np_actordb_load, m_id)
+		static std::vector<const char*>& parms(const char* astr = nullptr) 
+		{
+			static std::vector<const char*> tempvec; 
+			if (astr == nullptr) 
+			{
+				return tempvec;
+			} 
+			static std::string tempstr(astr); 
+			static std::atomic<bool> lregister = true; 
+			if (lregister.exchange(false) && !tempstr.empty()) 
+			{
+				tempvec = tools::split_str(&tempstr[0], tempstr.size());
+			} 
+			return tempvec;
+		} 
+		inline void write(ngl::json_write& ijsn, const char* akey)const 
+		{
+			ngl::json_write ltemp; write(ltemp); 
+			ijsn.write(akey, ltemp.nofree());
+		} 
+		inline void write(ngl::json_write& ijsn)const 
+		{
+			help_writejson ltemp(parms("m_id"), ijsn); 
+			ltemp.fun(0, m_id);
+		} 
+		inline bool read(const ngl::json_read& ijsn, const char* akey) 
+		{
+			ngl::json_read ltemp;
+			if (ijsn.read(akey, ltemp) == false) 
+			{
+				return false;
+			} 
+			return read(ltemp);
+		} 
+		inline bool read(const ngl::json_read& ijsn) 
+		{
+			help_readjson ltemp(parms("m_id"), ijsn); 
+			return ltemp.fun(0, m_id);
+		} 
+		bool pop(ngl::unserialize& ser) 
+		{
+			return ser.pop(m_id);
+		} 
+		bool ParseFromArray(const void* data, int32_t size) 
+		{
+			ngl::unserialize lunserialize((const char*)data, size); 
+			return pop(lunserialize);
+		} 
+		bool push(ngl::serialize& ser)const 
+		{
+			return ser.push(m_id);
+		} 
+		bool SerializeToArray(void* data, int32_t size) const 
+		{
+			ngl::serialize lserialize((char*)data, size); 
+			return push(lserialize);
+		} 
+		int bytes(ngl::serialize_bytes& abytes)const 
+		{
+			return abytes.bytes(m_id);
+		} 
+		int ByteSize()const 
+		{
+			ngl::serialize_bytes lserialize_bytes; 
+			return bytes(lserialize_bytes);
+		} 
+		static const char* name() 
+		{
+			return "np_actordb_load";
+		} 
+		void nlua_push(lua_State* aL, const char* aname = nullptr)const 
+		{
+			help_nlua<false> ltemp(aL, aname, parms("m_id")); 
+			ltemp.push(m_id);
+		} 
+		bool nlua_pop(lua_State* aL, const char* aname = nullptr) 
+		{
+			help_nlua<true> ltemp(aL, aname, parms("m_id")); 
+			return ltemp.pop(m_id);
+		}
 	};
 
 	template <pbdb::ENUM_DB DBTYPE, typename T>

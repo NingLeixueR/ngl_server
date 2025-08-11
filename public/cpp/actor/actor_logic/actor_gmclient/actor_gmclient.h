@@ -23,7 +23,7 @@ namespace ngl
 		std::map<i32_protocolnum, std::string> m_promap;
 		std::map<i32_protocolnum, std::string> m_custommap;
 
-		def_jsonfunction(m_promap, m_custommap)
+		dprotocoljson(protocols, m_promap, m_custommap)
 	};
 
 	class actor_gmclient : 

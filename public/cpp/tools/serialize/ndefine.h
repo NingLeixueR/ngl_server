@@ -1,6 +1,8 @@
 #pragma once
 
+#include "serialize_lua.h"
 #include "serialize.h"
+#include "lua.hpp"
 
 #define def_function_pop(...)									\
 	bool pop(ngl::unserialize& ser)								\
@@ -74,9 +76,25 @@
 #define def_rcsv2(...) return ngl::rcsv::readcsv(apair __VA_OPT__(,) ##__VA_ARGS__);
 #endif
 
+#define def_parmname														\
+	static std::vector<const char*>& parms(const char* astr = nullptr)		\
+	{																		\
+		static std::vector<const char*> tempvec;							\
+		if(astr == nullptr)													\
+		{																	\
+			return tempvec;													\
+		}																	\
+		static std::string tempstr(astr);									\
+		static std::atomic<bool> lregister = true;							\
+		if (lregister.exchange(false) && !tempstr.empty())					\
+		{																	\
+			tempvec = tools::split_str(&tempstr[0], tempstr.size());		\
+		}																	\
+		return tempvec;														\
+	}
+
 #include "json_write.h"
 #include "json_read.h"
-
 
 enum
 {
@@ -210,6 +228,8 @@ public:
 	def_jsonfunction_write_parm(__VA_ARGS__)
 
 
+
+
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_jsonfunction(...)										\
 	inline void write(ngl::json_write& ijsn, const char* akey)const	\
@@ -218,35 +238,9 @@ public:
 		write(ltemp);												\
 		ijsn.write(akey, ltemp.nofree());							\
 	}																\
-	inline std::vector<const char*>& jsonparmvec(const char* astr = nullptr)const	\
-	{																\
-		static std::vector<const char*> tempvec;					\
-		if(astr == nullptr)											\
-		{															\
-			return tempvec;											\
-		}															\
-		static std::string tempstr(astr);							\
-		static std::atomic<bool> lregister = true;					\
-		if (lregister.exchange(false) && !tempstr.empty())			\
-		{															\
-			ngl::tools::replace(" ", "", tempstr, tempstr);			\
-			int32_t lpos = 0;										\
-			for (int32_t i = 0; i < tempstr.size(); ++i)			\
-			{														\
-				if (tempstr[i] == ',')								\
-				{													\
-					tempstr[i] = '\0';								\
-					tempvec.push_back(&tempstr.c_str()[lpos]);		\
-					lpos = i + 1;									\
-				}													\
-			}														\
-			tempvec.push_back(&tempstr.c_str()[lpos]);				\
-		}															\
-		return tempvec;												\
-	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		help_writejson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
+		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);			\
 		ltemp.fun(0, __VA_ARGS__);									\
 	}																\
 	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
@@ -260,7 +254,7 @@ public:
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
-		help_readjson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
+		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);				\
 		return ltemp.fun(0, __VA_ARGS__);							\
 	}
 #else
@@ -271,34 +265,9 @@ public:
 		write(ltemp);												\
 		ijsn.write(akey, ltemp.nofree());							\
 	}																\
-	inline std::vector<const char*>& jsonparmvec(const char* astr = nullptr)const	\
-	{																\
-		static std::vector<const char*> tempvec;					\
-		if(astr == nullptr)											\
-		{															\
-			return tempvec;											\
-		}															\
-		static std::string tempstr(astr);							\
-		static std::atomic<bool> lregister = true;					\
-		if (lregister.exchange(false) && !tempstr.empty())			\
-		{															\
-			int32_t lpos = 0;										\
-			for (int32_t i = 0; i < tempstr.size(); ++i)			\
-			{														\
-				if (tempstr[i] == ',')								\
-				{													\
-					tempstr[i] = '\0';								\
-					tempvec.push_back(&tempstr.c_str()[lpos]);		\
-					lpos = i + 1;									\
-				}													\
-			}														\
-			tempvec.push_back(&tempstr.c_str()[lpos]);				\
-		}															\
-		return tempvec;												\
-	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		help_writejson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
+		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);			\
 		ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);					\
 	}																\
 	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
@@ -312,11 +281,33 @@ public:
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
-		help_readjson ltemp(jsonparmvec(#__VA_ARGS__), ijsn);		\
+		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);				\
 		return ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);			\
 	}
 #endif
 
+#define def_nlua_push(...)													\
+	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
+	{																		\
+		help_nlua<false> ltemp(aL, aname, parms(#__VA_ARGS__));				\
+		ltemp.push(__VA_ARGS__);											\
+	}
+
+#define def_nlua_pop(...)													\
+	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
+	{																		\
+		help_nlua<true> ltemp(aL, aname, parms(#__VA_ARGS__));				\
+		return ltemp.pop(__VA_ARGS__);										\
+	}
+
+
+#define def_nlua_function(...)			\
+	def_nlua_push(__VA_ARGS__)			\
+	def_nlua_pop(__VA_ARGS__)
+
+
 #define dprotocoljson(NAME, ...)			\
+	def_parmname							\
 	def_jsonfunction(__VA_ARGS__)			\
-	def_protocol(NAME, __VA_ARGS__)
+	def_protocol(NAME, __VA_ARGS__)			\
+	def_nlua_function(__VA_ARGS__)

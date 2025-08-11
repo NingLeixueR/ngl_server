@@ -1391,4 +1391,29 @@ namespace ngl
 		std::cout << "tools nguid:" << lactortypestr << "#" << (int32_t)lactortype << ":" << larea << ":" << ldataid << std::endl;
 		return ngl::nguid::make(lactortype, larea, ldataid);
 	}
+
+	std::vector<const char*> tools::split_str(char* apbuff, int32_t abuffcount)
+	{
+		std::vector<const char*> lpbuffs;
+		int j = 0;
+		for (int32_t i = 0; i < abuffcount; )
+		{
+			if (apbuff[i] == ',')
+			{
+				apbuff[i] = '\0';
+				lpbuffs.push_back(&apbuff[j]);
+				j = ++i;
+				if (j < abuffcount && apbuff[j] == ' ')
+				{
+					j = ++i;
+				}
+			}
+			else
+			{
+				++i;
+			}
+		}
+		lpbuffs.push_back(&apbuff[j]);
+		return lpbuffs;
+	}
 }// namespace ngl
