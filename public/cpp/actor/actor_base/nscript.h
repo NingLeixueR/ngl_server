@@ -1,8 +1,9 @@
 #pragma once
 
 #include "luafunction.h"
-#include "ndefine.h"
+#include "actor_base.h"
 #include "test_lua.h"
+#include "ndefine.h"
 
 extern "C"
 {
@@ -24,12 +25,6 @@ extern "C"
 namespace ngl
 {
 	class actor_base;
-
-	enum enscript
-	{
-		enscript_none,
-		enscript_lua,
-	};
 
 	class luatools
 	{
@@ -64,78 +59,96 @@ namespace ngl
 		dprotocoljson(nscript_sysdata, m_nguid)
 	};
 
+	template <enscript ESCRIPT>
 	class nscript
 	{
-		virtual std::shared_ptr<nscript> mscript(actor_base*) = 0;
-		static std::map<enscript, nscript*> m_data;
-		enscript m_type;
-		actor_base* m_actor;
 	public:
-		nscript(enscript atype, actor_base* aactor, bool amallocinit = false);
+		static enscript type()
+		{
+			return ESCRIPT;
+		}
 
+		actor_base* get_actor()
+		{
+			return nullptr;
+		}
+
+		template <typename T>
+		bool init_sysdata(const T& asys)
+		{
+			return false;
+		}
+
+		bool init(actor_base* actor, const char* asubdirectory, const char* ascript)
+		{
+			return false;
+		}
+
+		template <typename T>
+		bool data_push(const char* aname, const char* asource, const T& ajson, bool aedit)
+		{
+			return false;
+		}
+
+		bool db_loadfinish()
+		{
+			return false;
+		}
+
+		template <typename T>
+		bool handle(const char* aname, const T& ajson)
+		{
+			return false;
+		}
+
+		// # 数据被删除
+		bool data_del(const char* aname, int64_t adataid)
+		{
+			return false;
+		}
+
+		// # 检查数据是否被修改
+		template <typename T>
+		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
+		{
+			return false;
+		}
+
+		template <typename T>
+		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
+		{
+			return false;
+		}
+
+		// # 检查数据是否被删除
+		bool data_checkdel(const char* aname, int64_t adataid)
+		{
+			return false;
+		}
+
+		bool data_checkdel(const char* aname, std::vector<int64_t>& adataid)
+		{
+			return false;
+		}
+	};
+
+	template <>
+	class nscript<enscript_lua>
+	{
+		lua_State* L = nullptr;
+		std::string m_scriptpath;
+		actor_base* m_actor = nullptr;
+	public:
 		actor_base* get_actor()
 		{
 			return m_actor;
 		}
 
-		enscript type()
+		template <typename T>
+		bool init_sysdata(const T& asys)
 		{
-			return m_type;
-		}
-
-		// # 初始化一些杂项
-		virtual bool init_sysdata(const char* asysjson) = 0;
-
-		// # lua初始化
-		virtual void init(const char* asubdirectory, const char* ascript) = 0;
-
-		// # 将数据压入lua
-		virtual bool data_push(const char* aname, const char* asource, const char* ajson, bool aedit) = 0;
-
-		// # 数据加载完成
-		virtual bool db_loadfinish() = 0;
-
-		// # lua消息处理
-		virtual bool handle(const char* aname, const char* ajson) = 0;
-
-		// # 数据被删除
-		virtual bool data_del(const char* aname, i64_actorid aactorid) = 0;
-
-		// # 检查数据是否被修改
-		virtual bool data_checkout(const char* aname, i64_actorid adataid, std::string& ajson) = 0;
-
-		// # 检查数据是否被删除
-		virtual bool data_checkdel(const char* aname, i64_actorid adataid, std::string& ajson) = 0;
-
-		static std::shared_ptr<nscript> malloc_script(enscript atype, actor_base* aactor)
-		{
-			auto itor = m_data.find(atype);
-			if (itor == m_data.end())
-			{
-				return nullptr;
-			}
-			return itor->second->mscript(aactor);
-		}
-	};
-
-	class nscriptlua
-		:public nscript
-	{
-		lua_State* L = nullptr;
-		std::string m_scriptpath;//脚本文件名称
-
-		virtual std::shared_ptr<nscript> mscript(actor_base* aactor)
-		{
-			return std::make_shared<nscriptlua>(aactor);
-		}
-	public:
-		nscriptlua(actor_base* aactor, bool amallocinit = false) :
-			nscript(enscript_lua, aactor, amallocinit)
-		{}
-
-		virtual ~nscriptlua()
-		{
-			lua_close(L);
+			nlua_stack::stack_push(L, asys);
+			return true;
 		}
 
 		void setupluapaths()
@@ -155,11 +168,12 @@ namespace ngl
 			lua_register(L, "nguidstr2int64str", nguidstr2int64str);
 			lua_register(L, "send_client", send_client);
 			lua_register(L, "send_actor", send_actor);
-			lua_register(L, "nsp_auto_save", send_client);			
+			lua_register(L, "nsp_auto_save", send_client);
 		}
 
-		virtual void init(const char* asubdirectory, const char* ascript)
+		bool init(actor_base* aactor, const char* asubdirectory, const char* ascript)
 		{
+			m_actor = aactor;
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
 			setupluapaths();
@@ -171,7 +185,7 @@ namespace ngl
 				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
 				lua_close(L);
 				L = nullptr;
-				return;
+				return false;
 			}
 			m_scriptpath = std::format("../script/lua/{}/{}", asubdirectory, ascript);
 			if (luaL_loadfile(L, m_scriptpath.c_str()) || lua_pcall(L, 0, 0, 0))
@@ -179,69 +193,21 @@ namespace ngl
 				LOG_SCRIPT("can't run [{}#{}] : {} !", asubdirectory, m_scriptpath, lua_tostring(L, -1));
 				lua_close(L);
 				L = nullptr;
-				return;
+				return false;
 			}
-
-			k2 ltemp1
-			{
-				.m_v1 = 1999,
-				.m_v2 = k1{
-					.m_v1 = 1988,
-					.m_v2 = 5.134,
-					.m_v3 = "chinachina",
-					.m_v4 = {1,3,5,7,9,11},
-					.m_v5 = {
-						{1, "t1"},
-						{2, "t2"},
-						{3, "t3"},
-					},
-					.m_v6 = {
-						{ "wac", "th1"},
-						{ "lzs", "th2"},
-						{ "lzm", "th3"},
-						{ "lb", "th4"},
-					},
-					.m_v7 = {
-						{"china", k0{.m_v1 = 1,.m_v2 = 2.3, .m_v3 = "china"}},
-						{"jp", k0{.m_v1 = 2,.m_v2 = 3.3, .m_v3 = "jp"}},
-					},
-				},
-			};
-			std::cout << std::endl;
-			luafunction lfun(L, m_scriptpath.c_str(), "test");
-			lfun.set_call(ltemp1);
-			k2 ltemp2;
-			lfun.set_return(ltemp2);
-			lfun.call();
+			return true;
 		}
 
-		virtual bool init_sysdata(const char* asysjson)
-		{
-			luafunction lfun(L, m_scriptpath.c_str(), "init_sysdata");
-			lfun.set_call(asysjson);
-			lfun.set_return();
-			return lfun.call();
-		}
-
-		// # 将db数据压入
-		virtual bool data_push(const char* aname, const char* asource, const char* ajson, bool aedit)
+		template <typename T>
+		bool data_push(const char* aname, const char* asource, const T& adata, bool aedit)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_push");
-			lfun.set_call(aname, asource, ajson, aedit);
+			lfun.set_call(aname, asource, adata, aedit);
 			lfun.set_return();
 			return lfun.call();
 		}
 
-		// # 数据被删除
-		virtual bool data_del(const char* aname, i64_actorid adataid)
-		{
-			luafunction lfun(L, m_scriptpath.c_str(), "data_del");
-			lfun.set_call(aname, tools::lexical_cast<std::string>(adataid));
-			lfun.set_return();
-			return lfun.call();
-		}
-
-		virtual bool db_loadfinish()
+		bool db_loadfinish()
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "db_loadfinish");
 			lfun.set_call();
@@ -249,34 +215,279 @@ namespace ngl
 			return lfun.call();
 		}
 
-		// # 消息处理
-		virtual bool handle(const char* aname, const char* ajson)
+		template <typename T>
+		bool handle(const char* aname, const T& adata)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "handle");
-			lfun.set_call(aname, ajson);
+			lfun.set_call(aname, adata);
 			lfun.set_return();
 			return lfun.call();
 		}
 
-		// # 查询数据是否被修改#如果被修改就加载数据
-		virtual bool data_checkout(const char* aname, i64_actorid adataid, std::string& ajson)
+		bool data_del(const char* aname, int64_t adataid)
+		{
+			luafunction lfun(L, m_scriptpath.c_str(), "data_del");
+			lfun.set_call(aname, adataid);
+			lfun.set_return();
+			return lfun.call();
+		}
+
+		// # 检查数据是否被修改
+		template <typename T>
+		bool data_checkout(const char* aname, i64_actorid adataid, T& adata)
+		{
+			luafunction lfun(L, m_scriptpath.c_str(), "data_checkoutbyid");
+			lfun.set_call(aname, adataid);
+			bool success = false;
+			lfun.set_return(success, adata);
+			return lfun.call();
+		}
+
+		template <typename T>
+		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_checkout");
-			lfun.set_call(aname, tools::lexical_cast<std::string>(adataid));
+			lfun.set_call(aname);
 			bool success = false;
-			lfun.set_return(success, ajson);
+			lfun.set_return(success, adata);
 			return lfun.call();
 		}
-		
-		// # 查询数据是否被删除
-		// # aactorid == nguid::make() 检查全部数据
-		virtual bool data_checkdel(const char* aname, i64_actorid adataid, std::string& ajson)
+
+		// # 检查数据是否被删除
+		bool data_checkdel(const char* aname, i64_actorid adataid)
+		{
+			luafunction lfun(L, m_scriptpath.c_str(), "data_checkdelbyid");
+			lfun.set_call(aname, adataid);
+			bool success = false;
+			lfun.set_return(success);
+			if (lfun.call())
+			{
+				return success;
+			}
+			return false;
+		}
+
+		bool data_checkdel(const char* aname, std::vector<int64_t>& adataid)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_checkdel");
-			lfun.set_call(aname, tools::lexical_cast<std::string>(adataid));
+			lfun.set_call(aname);
 			bool success = false;
-			lfun.set_return(success, ajson);
-			return lfun.call();
+			lfun.set_return(success, adataid);
+			if (lfun.call())
+			{
+				return success;
+			}
+			return false;
 		}
 	};
+
+
+	class nscript_manage
+	{
+	public:
+		static void* malloc(enscript atype, actor_base* actor, const char* asubdirectory, const char* ascript)
+		{
+			if(atype == enscript_lua)
+			{
+				nscript<enscript_lua>* lpnscript =  new nscript<enscript_lua>();
+				if (lpnscript->init(actor, asubdirectory, ascript))
+				{
+					return lpnscript;
+				}
+			}
+			return nullptr;
+		}
+
+		static void release(void* anscript)
+		{
+			if (anscript != nullptr)
+			{
+				delete anscript;
+			}
+		}
+
+		template <typename T>
+		static bool init_sysdata(enscript atype, void* anscript, const T& asys)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->init_sysdata(asys);
+			}
+			return false;
+		}
+
+		template <typename T>
+		static bool data_push(enscript atype, void* anscript, const char* aname, const char* asource, const T& ajson, bool aedit)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->data_push(aname, asource, ajson, aedit);
+			}
+			return false;
+		}
+
+		static bool db_loadfinish(enscript atype, void* anscript)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->db_loadfinish();
+			}
+			return false;
+		}
+
+		template <typename T>
+		static bool handle(enscript atype, void* anscript, const char* aname, const T& adata)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->handle(aname, adata);
+			}
+			return false;
+		}
+
+		static bool data_del(enscript atype, void* anscript, const char* aname, int64_t adataid)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->data_del(aname, adataid);
+			}
+			return false;
+		}
+
+		template <typename T>
+		static bool data_checkout(enscript atype, void* anscript, const char* aname, i64_actorid adataid, T& adata)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->data_checkout(aname, adataid, adata);
+			}
+			return false;
+		}
+
+		template <typename T>
+		static bool data_checkout(enscript atype, void* anscript, const char* aname, std::map<int64_t,T>& adata)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->data_checkout(aname, adata);
+			}
+			return false;
+		}
+
+		static bool data_checkdel(
+			enscript atype, void* anscript, const char* aname, int64_t adataid
+		)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->data_checkdel(aname, adataid);
+			}
+			return false;
+		}
+
+		static bool data_checkdel(
+			enscript atype, void* anscript, const char* aname, std::vector<int64_t>& adelids
+		)
+		{
+			if (atype == enscript_lua)
+			{
+				auto lpnscript = (nscript<enscript_lua>*)(anscript);
+				return lpnscript->data_checkdel(aname, adelids);
+			}
+			return false;
+		}
+	};
+
+
+}//namespace ngl
+
+
+namespace ngl
+{
+	bool actor_base::nscript_db_loadfinish()
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::db_loadfinish(m_enscript, m_script);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_push(m_enscript, m_script, tools::type_name<T>().c_str(), asource, adata, aedit);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_del(int64_t adataid)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkout(int64_t adataid, T& adata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adataid, adata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkout(std::map<int64_t, T>& adata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkdel(int64_t adataid)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_data_checkdel(std::vector<int64_t>& adeldata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adeldata);
+	}
+
+	template <typename T>
+	bool actor_base::nscript_handle(const T& adata)
+	{
+		if (!nscript_using())
+		{
+			return false;
+		}
+		return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+	}
 }//namespace ngl

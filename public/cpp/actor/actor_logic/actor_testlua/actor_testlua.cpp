@@ -45,7 +45,8 @@ namespace ngl
 		*/
 
 		// # 将csv数据写入lua
-		nscript_push_csv<ttab_servers>();
+		nscript_data_csv<tab_servers> ltab(ttab_servers::instance().tablecsv());
+		nscript_data_push("csv", ltab);
 
 		
 		tdb_brief::nsp_cli<actor_testlua>::instance(id_guid(), true).init_parts(this, 

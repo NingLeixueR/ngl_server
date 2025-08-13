@@ -58,16 +58,7 @@ extern "C"
 
 namespace ngl
 {
-	std::map<enscript, nscript*> nscript::m_data;
-	nscriptlua g_mallocnscriptlua(nullptr, true);
 
-	nscript::nscript(enscript atype, actor_base* aactor, bool amallocinit/* = false*/) :
-		m_type(atype),
-		m_actor(aactor)
-	{
-		if (amallocinit)
-		{
-			m_data[atype] = this;
-		}
-	}
+
+
 }//namespace ngl
