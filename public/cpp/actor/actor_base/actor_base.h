@@ -4,7 +4,6 @@
 #include "handle_pram.h"
 #include "nactortype.h"
 #include "localtime.h"
-#include "nscript.h"
 #include "ntimer.h"
 #include "ngroup.h"
 #include "nguid.h"
@@ -52,6 +51,12 @@ namespace ngl
 
 		std::shared_ptr<nactor_logitem> log_error(const std::source_location& asource = std::source_location::current())const;
 		std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())const;
+	};
+
+	enum enscript
+	{
+		enscript_none,
+		enscript_lua,
 	};
 
 	struct actorparmbase
@@ -204,155 +209,82 @@ namespace ngl
 		static void push_task_type(ENUM_ACTOR atype, handle_pram& apram);
 
 #pragma region nscript
-		enum ecorrelation
+	public:
+		//# 对脚本语言的支持
+		void* m_script = nullptr;
+		enscript m_enscript = enscript_none;					// 脚本支持
+
+		// # actor是否使用脚本
+		bool nscript_using()
 		{
-			ecorrelation_csv = 0x00000001,
-			ecorrelation_db = 0x00000002,
-			ecorrelation_nsp = 0x00000004,
-			ecorrelation_count = 3,
+			return m_script != nullptr && m_enscript != enscript_none;
+		}
+
+		// # 通知脚本db数据加载完毕
+		bool nscript_db_loadfinish();
+
+		template <typename T>
+		struct nscript_data_csv
+		{
+			const std::map<int32_t, T>& data;
+
+			nscript_data_csv(const std::map<int32_t, T>& adata) :
+				data(adata)
+			{}
+
+			dprotocoljson(nscript_data_csv<T>, data)
 		};
-	private:
+
+		template <typename T>
+		struct nscript_data_db
+		{
+			std::map<int64_t, T*> data;
+
+			dprotocoljson(nscript_data_db<T>, data)
+		};
+
+		template <typename T>
+		struct nscript_data_nsp
+		{
+			const std::map<int64_t, T>& data;
+			nscript_data_nsp(const std::map<int64_t, T>& adata) :
+				data(adata)
+			{}
+
+			dprotocoljson(nscript_data_nsp<T>, data)
+		};
+
 		// # 向脚本压入数据(1、csv数据 2、db数据 3、nsp数据)
 		// parm aname			数据名称
 		// parm asource			数据来源(csv,db,nsp)
-		// parm ajson			压入数据的json串
+		// parm adata			压入的数据
 		// parm aedit			是否可以在脚本中修改
-		bool nscript_data_push(
-			const char* aname, const char* asource, const char* ajson, bool aedit = false
-		);
+		template <typename T>
+		bool nscript_data_push(const char* asource, const T& adata, bool aedit = false);
+
+
 
 		// # 告诉脚本数据被删除了
 		// parm aname			数据名称
 		// parm adataid			数据id
-		void nscript_data_del(const char* aname, int64_t adataid);
-
-		// # 检查数据是否被修改/删除?
-		// parm aname			数据名称
-		// parm adataid			数据id(-1检查全部数据)
-		// parm adel			是检查删除还是修改
-		bool nscript_check(const char* aname, int64_t adataid, bool adel);
-
-		// # 检查数据是否被修改/删除?
-		// parm aname			数据名称
-		// parm atype			检查该类型
-		// parm adel			是检查删除还是修改
-		bool nscript_check(actor_base::ecorrelation atype, bool adel);
-		
-
-		// # 注册数据(改变|删除)处理函数
-		// parm aname			数据名称
-		// parm achangefun		如果数据被修改由此函数处理
-		// parm adelfun			如果数据被删除由此函数处理
-		using nscript_callback = std::function<bool(const char*)>;
-		void nscript_correlation_checkout(
-			ecorrelation atype
-			, const char* aname
-			, const nscript_callback& achangefun
-			, const nscript_callback& adelfun
-		);
-	public:
-		// # actor是否使用脚本
-		bool nscript_using();
-
-		// # 通知脚本db数据加载完毕
-		void nscript_db_loadfinish();
-
-		// # 注册数据(改变|删除)处理函数
 		template <typename T>
-		void nscript_correlation_checkout(
-			ecorrelation atype, const nscript_callback& achangefun, const nscript_callback& adelfun
-		)
-		{
-			if (!nscript_using())
-			{
-				return;
-			}
-			nscript_correlation_checkout(atype, tools::type_name<T>().c_str(), achangefun, adelfun);
-		}
+		bool nscript_data_del(int64_t adataid);
 
-		// # 压入csv数据
-		template <typename TTAB>
-		bool nscript_push_csv()
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			std::string ljson;
-			tools::custom2json(TTAB::instance().tablecsv(), ljson);
-			const char* lname = tools::type_name<typename TTAB::type_tab>().c_str();
-			return nscript_data_push(lname, "csv", ljson.c_str(), false);
-		}
-
-		// # 压入db数据
-		template <typename TDB>
-		bool nscript_push_db(const std::map<i64_actorid, TDB>& adata)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			std::string ljson;
-			if (!tools::proto2json(adata, ljson))
-			{
-				return false;
-			}
-			using type = typename std::remove_const<
-				typename std::remove_pointer<TDB>::type
-			>::type;
-			return nscript_data_push(tools::type_name<type>().c_str(), "db", ljson.c_str(), true);
-		}
-
-		// # 压入nsp数据
-		template <typename TDB>
-		bool nscript_push_nsp(const std::map<i64_actorid, TDB>& adata, bool aedit = false)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			std::string ljson;
-			if (!tools::proto2json(adata, ljson))
-			{
-				return false;
-			}
-			using type = typename std::remove_const<
-				typename std::remove_pointer<TDB>::type
-			>::type;
-			return nscript_data_push(tools::type_name<type>().c_str(), "nsp", ljson.c_str(), aedit);
-		}
+		// # 检查数据是否被修改
+		template <typename T>
+		bool nscript_data_checkout(int64_t adataid, T& adata);
 
 		template <typename T>
-		void nscript_data_del(int64_t adataid)
-		{
-			if (!nscript_using())
-			{
-				return;
-			}
-			nscript_data_del(tools::type_name<T>().c_str(), adataid);
-		}
+		bool nscript_data_checkout(std::map<int64_t, T>& adata);
 
-		template <typename T, bool DEL>
-		inline bool nscript_check(i64_actorid adataid)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_check(tools::type_name<T>().c_str(), adataid, DEL);
-		}
+		template <typename T>
+		bool nscript_data_checkdel(int64_t adataid);
 
-		template <bool DEL>
-		inline bool nscript_check(actor_base::ecorrelation atype)
-		{
-			if (!nscript_using())
-			{
-				return false;
-			}
-			return nscript_check(atype, DEL);
-		}
+		template <typename T>
+		bool nscript_data_checkdel(std::vector<int64_t>& adeldata);
 
-		bool nscript_handle(const char* aname, const char* ajson);
+		template <typename T>
+		bool nscript_handle(const T& adata);
 #pragma endregion 
 
 #pragma region net

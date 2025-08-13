@@ -93,25 +93,6 @@ namespace ngl
 		static int									m_broadcasttimer;
 		//# 是否接收广播消息
 		bool										m_isbroadcast = false;	
-		//# 对脚本语言的支持
-		using type_nscript_pair = std::pair<
-			std::function<bool(const char*)>
-			, std::function<bool(const char*)>
-		>;
-		struct nscript_info
-		{
-			std::string m_name;
-			actor_base::ecorrelation m_type;
-			type_nscript_pair m_function;
-		};
-		using map_name_nscript = std::map<std::string, nscript_info>;
-		using map_type_nscript = std::map<actor_base::ecorrelation, std::map<std::string, nscript_info*>>;
-		std::shared_ptr<nscript>					m_script = nullptr;
-		// 用于存储检查脚本中是否修改删除数据的处理函数
-		map_name_nscript							m_scriptnamecheck;
-		map_type_nscript							m_scripttypecheck;
-
-
 
 		inline impl_actor_base(actor_base* aactor, const actorparmbase& aparm):
 			m_guid(aparm.m_type, aparm.m_area, aparm.m_id),
@@ -125,21 +106,6 @@ namespace ngl
 					{
 						aactor->loaddb_finish(adbishave);
 					});
-			}
-			if (aparm.m_enscript != enscript_none)
-			{
-				m_script = nscript::malloc_script(aparm.m_enscript, aactor);
-
-				const char* lactorname = em<ENUM_ACTOR>::get_name(type());
-				m_script->init(lactorname, std::format("{}.lua", lactorname).c_str());
-
-				nscript_sysdata lsysdata
-				{
-					.m_nguid = tools::lexical_cast<std::string>(id_guid())
-				};
-				std::string lsysdatajson;
-				tools::custom2json(lsysdata, lsysdatajson);
-				m_script->init_sysdata(lsysdatajson.c_str());
 			}
 		}
 
@@ -253,108 +219,6 @@ namespace ngl
 			return ntimer::addtimer(m_actor, lparm);
 		}
 
-		inline bool nscript_using()
-		{
-			return m_script != nullptr;
-		}
-
-		inline bool nscript_data_push(
-			const char* aname, const char* asource, const char* ajson, bool aedit
-		)
-		{
-			return m_script->data_push(aname, asource, ajson, aedit);
-		}
-
-		inline bool nscript_handle(const char* aname, const char* ajson)
-		{
-			return m_script->handle(aname, ajson);
-		}
-
-		template <bool DEL>
-		inline bool nscript_check(const char* aname, i64_accountid adataid)
-		{
-			auto itor = m_scriptnamecheck.find(aname);
-			if (itor == m_scriptnamecheck.end())
-			{
-				return false;
-			}
-			std::string ljson;
-			if constexpr(DEL)
-			{
-				if (!m_script->data_checkdel(aname, adataid, ljson))
-				{
-					return false;
-				}
-				return itor->second.m_function.second(ljson.c_str());
-			}
-			else
-			{
-				if (!m_script->data_checkout(aname, adataid, ljson))
-				{
-					return false;
-				}
-				return itor->second.m_function.first(ljson.c_str());
-			}
-			
-		}
-
-		template <bool DEL>
-		inline bool nscript_check(actor_base::ecorrelation atype)
-		{
-			auto itor = m_scripttypecheck.find(atype);
-			if (itor == m_scripttypecheck.end())
-			{
-				return false;
-			}
-
-			for (const auto& item : itor->second)
-			{
-				nscript_info* lpinfo = item.second;
-				std::string ljson;
-				if constexpr(DEL)
-				{
-					if (!m_script->data_checkdel(lpinfo->m_name.c_str(), nguid::make(), ljson))
-					{
-						continue;
-					}
-					lpinfo->m_function.second(ljson.c_str());
-				}
-				else
-				{
-					if (!m_script->data_checkout(lpinfo->m_name.c_str(), nguid::make(), ljson))
-					{
-						continue;
-					}
-					lpinfo->m_function.first(ljson.c_str());
-				}				
-			}
-			return true;
-		}
-
-		inline void nscript_db_loadfinish()
-		{
-			m_script->db_loadfinish();
-		}
-
-		inline void nscript_correlation_checkout(
-			actor_base::ecorrelation atype
-			, const char* aname
-			, const actor_base::nscript_callback& achangefun
-			, const actor_base::nscript_callback& adelfun
-		)
-		{
-			nscript_info* lpinfo = &m_scriptnamecheck[aname];
-			lpinfo->m_type = atype;
-			lpinfo->m_name = aname;
-			lpinfo->m_function = std::make_pair(achangefun, adelfun);
-			m_scripttypecheck[atype][aname] = lpinfo;
-		}
-
-		void nscript_data_del(const char* aname, int64_t adataid)
-		{
-			m_script->data_del(aname, adataid);
-		}
-
 		inline bool isbroadcast()const
 		{
 			return m_isbroadcast;
@@ -395,6 +259,20 @@ namespace ngl
 		tools_log(this)
 	{
 		m_impl_actor_base.make_unique(this, aparm);
+		if (aparm.m_enscript != enscript_none)
+		{
+			m_enscript = aparm.m_enscript;
+			const char* lactorname = em<ENUM_ACTOR>::get_name(type());
+			m_script = nscript_manage::malloc(m_enscript, this, lactorname, std::format("{}.lua", lactorname).c_str());
+			if (m_script != nullptr)
+			{
+				nscript_sysdata lsysdata
+				{
+					.m_nguid = tools::lexical_cast<std::string>(id_guid())
+				};
+				nscript_manage::init_sysdata(m_enscript, m_script, lsysdata);
+			}
+		}
 	}
 
 	void actor_base::erase_actor()
@@ -585,94 +463,4 @@ namespace ngl
 			});
 		return true;
 	}
-
-	bool actor_base::nscript_using()
-	{
-		return m_impl_actor_base()->nscript_using();
-	}
-
-	bool actor_base::nscript_data_push(
-		const char* aname, const char* asource, const char* ajson, bool aedit /*= false*/
-	)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return m_impl_actor_base()->nscript_data_push(aname, asource, ajson, aedit);
-	}
-
-	bool actor_base::nscript_handle(const char* aname, const char* ajson)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return m_impl_actor_base()->nscript_handle(aname, ajson);
-	}
-
-	bool actor_base::nscript_check(const char* aname, i64_actorid adataid, bool adel)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		if (adel)
-		{
-			return m_impl_actor_base()->nscript_check<true>(aname, adataid);
-		}
-		else
-		{
-			return m_impl_actor_base()->nscript_check<false>(aname, adataid);
-		}
-	}
-
-	bool actor_base::nscript_check(actor_base::ecorrelation atype, bool adel)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		if (adel)
-		{
-			return m_impl_actor_base()->nscript_check<true>(atype);
-		}
-		else
-		{
-			return m_impl_actor_base()->nscript_check<false>(atype);
-		}
-	}
-
-	void actor_base::nscript_db_loadfinish()
-	{
-		if (!nscript_using())
-		{
-			return;
-		}
-		return m_impl_actor_base()->nscript_db_loadfinish();
-	}
-
-	void actor_base::nscript_correlation_checkout(
-		actor_base::ecorrelation atype
-		, const char* aname
-		, const actor_base::nscript_callback& achangefun
-		, const actor_base::nscript_callback& adelfun
-	)
-	{
-		if (!nscript_using())
-		{
-			return;
-		}
-		return m_impl_actor_base()->nscript_correlation_checkout(atype, aname, achangefun, adelfun);
-	}
-
-	void actor_base::nscript_data_del(const char* aname, int64_t adataid)
-	{
-		if (!nscript_using())
-		{
-			return;
-		}
-		return m_impl_actor_base()->nscript_data_del(aname, adataid);
-	}
-
 }//namespace ngl

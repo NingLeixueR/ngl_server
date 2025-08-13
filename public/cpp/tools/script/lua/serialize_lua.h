@@ -2,8 +2,13 @@
 
 #include "lua.hpp"
 
+#include <google/protobuf/map.h>
+#include <google/protobuf/repeated_field.h>
+
+#include <vector>
 #include <string>
 #include <map>
+#include <set>
 
 //# define LOG_SCRIPT(...)  ::ngl::log_error()->print(__VA_ARGS__)
 # define LOG_SCRIPT(...)  std::cout << std::format(__VA_ARGS__) << std::endl
@@ -611,8 +616,6 @@ namespace ngl
 		}
 	};
 
-	//typename TMAP::key_type;
-	//typename TMAP::value_type::second_type;
 	template <typename KEY, typename VAL>
 	struct serialize_lua<std::map<KEY, VAL>>
 	{
@@ -646,6 +649,89 @@ namespace ngl
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, std::map<KEY, VAL>& adata)
+		{
+			lua_getfield(L, -1, aname);
+			return stack_pop(L, adata);
+		}
+	};
+
+	template <typename KEY, typename VAL>
+	struct serialize_lua<google::protobuf::Map<KEY, VAL>>
+	{
+		static void stack_push(lua_State* L, const google::protobuf::Map<KEY, VAL>& adata)
+		{
+			lua_newtable(L);
+			for (const auto& item : adata)
+			{
+				serialize_lua<VAL>::stack_push(L, item.second);
+				tools_table_key<KEY>::key(L, item.first);
+			}
+		}
+
+		static void table_push(lua_State* L, const char* aname, const google::protobuf::Map<KEY, VAL>& adata)
+		{
+			stack_push(L, adata);
+			lua_setfield(L, -2, aname);
+		}
+
+		static bool stack_pop(lua_State* L, google::protobuf::Map<KEY, VAL>& adata, bool apop = true)
+		{
+			if (!tools_pop_tables::keyvalues(L, adata))
+			{
+				return false;
+			}
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool table_pop(lua_State* L, const char* aname, google::protobuf::Map<KEY, VAL>& adata)
+		{
+			lua_getfield(L, -1, aname);
+			return stack_pop(L, adata);
+		}
+	};
+
+	template <typename T>
+	struct serialize_lua<google::protobuf::RepeatedPtrField<T>>
+	{
+		static void stack_push(lua_State* L, const google::protobuf::RepeatedPtrField<T>& adata)
+		{
+			lua_newtable(L);
+			for (size_t i = 0; i < adata.size(); ++i)
+			{
+				serialize_lua<T>::stack_push(L, adata[i]);
+				lua_rawseti(L, -2, i + 1);
+			}
+		}
+
+		static void table_push(lua_State* L, const char* aname, const google::protobuf::RepeatedPtrField<T>& adata)
+		{
+			stack_push(L, adata);
+			lua_setfield(L, -2, aname);
+		}
+
+		static bool stack_pop(lua_State* L, google::protobuf::RepeatedPtrField<T>& adata, bool apop = true)
+		{
+			std::map<int32_t, T> lmap;
+			if (!tools_pop_tables::keyvalues(L, lmap))
+			{
+				return false;
+			}
+			for (const auto& item : lmap)
+			{
+				adata.push_back(item.second);
+			}
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool table_pop(lua_State* L, const char* aname, google::protobuf::RepeatedPtrField<T>& adata)
 		{
 			lua_getfield(L, -1, aname);
 			return stack_pop(L, adata);
@@ -788,7 +874,6 @@ namespace ngl
 	};
 
 
-	
 	template <typename T>
 	void serialize_lua<T>::stack_push(lua_State* L, const T& adata)
 	{

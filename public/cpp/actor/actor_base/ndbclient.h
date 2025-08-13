@@ -134,12 +134,11 @@ namespace ngl
 			// # 检查脚本语言中的备份是否被修改
 			if (anscript && m_actor != nullptr)
 			{
-				if (m_actor->nscript_check<TDBTAB, true>(ldata.mid()))
+				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
 				{//被删除了
 					return nullptr;
 				}
-
-				if (m_actor->nscript_check<TDBTAB, false>(ldata.mid()))
+				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
 				{
 					modified();
 				}
@@ -153,11 +152,11 @@ namespace ngl
 			// # 检查脚本语言中的备份是否被修改
 			if (anscript && m_actor != nullptr)
 			{
-				if (m_actor->nscript_check<TDBTAB, true>(ldata.mid()))
+				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
 				{//被删除了
 					return nullptr;
 				}
-				if (m_actor->nscript_check<TDBTAB, false>(ldata.mid()))
+				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
 				{
 					modified();
 				}
@@ -307,36 +306,6 @@ namespace ngl
 				actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
 			}
 			init_load();
-
-			m_actor->nscript_correlation_checkout<TDBTAB>(actor_base::ecorrelation_db, 
-				[this](const char* ajson)->bool
-				{
-					std::map<int64_t, TDBTAB> lmap;
-					if (!tools::json2proto(ajson, lmap))
-					{
-						return false;
-					}
-					for (const auto& item : lmap)
-					{
-						*(m_data[item.first].get(true, false)) = item.second;
-					}
-					return true;
-				},
-				[this](const char* ajson)->bool
-				{
-					json_read lread(ajson);
-					std::vector<std::string> lvec;
-					if (!lread.read(tools::type_name<TDBTAB>().c_str(), lvec))
-					{
-						return false;
-					}
-					for (std::string& item : lvec)
-					{
-						del(tools::lexical_cast<int64_t>(item));
-					}
-					return true;
-				}
-			);
 		}
 
 		bool isload() final	
@@ -356,11 +325,33 @@ namespace ngl
 
 		void savedb(const nguid& aid)
 		{
-			m_actor->nscript_check<TDBTAB, true>(aid);
-			m_actor->nscript_check<TDBTAB, false>(aid);
-
-			np_actordb_save<DBTYPE, TDBTAB> pro;
 			data_modified<TDBTAB>* lpdata = nullptr;
+
+			std::vector<int64_t> ldels;
+			if (m_actor->nscript_data_checkdel<TDBTAB>(ldels))
+			{
+				for (int64_t id : ldels)
+				{
+					del(id);
+				}
+			}
+
+			std::map<int64_t, TDBTAB> ldata;
+			if (m_actor->nscript_data_checkout<TDBTAB>(ldata))
+			{
+				for (const auto& item : ldata)
+				{
+					lpdata = tools::findmap(m_data, nguid(item.first));
+					if (lpdata == nullptr)
+					{
+						continue;
+					}
+					*lpdata->get(true, false) = item.second;
+				}
+			}
+
+			lpdata = nullptr;
+			np_actordb_save<DBTYPE, TDBTAB> pro;
 			if (aid != nguid::make())
 			{
 				if (aid == m_id)
@@ -426,7 +417,12 @@ namespace ngl
 
 		void deldb() final
 		{
-			m_actor->nscript_check<TDBTAB, false>(nguid::make());
+			std::vector<int64_t> ldels;
+			if (m_actor->nscript_data_checkdel<TDBTAB>(ldels))
+			{
+				del(ldels);
+			}
+
 			np_actordb_delete<DBTYPE, TDBTAB> pro;
 			if (m_dellist.empty())
 			{
@@ -454,12 +450,13 @@ namespace ngl
 			{
 				return;
 			}
-			std::map<int64_t, TDBTAB*> lmap;
+
+			actor_base::nscript_data_db<TDBTAB> ltemp;
 			for (std::pair<const nguid, data_modified<TDBTAB>>& item : m_data)
 			{
-				lmap.insert(std::make_pair((int64_t)item.first, item.second.get(false, false)));
+				ltemp.data.insert(std::make_pair((int64_t)item.first, item.second.get(false, false)));
 			}
-			m_actor->nscript_push_db(lmap);
+			m_actor->nscript_data_push("db", ltemp, true);
 		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)

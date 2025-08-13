@@ -168,11 +168,11 @@ namespace ngl
 				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 				{
 					ninst<TDerived, TYPE>().template rfun<actor, T, true>(
-						(Tfun<actor, T>) & actor::handle_script<TYPE, T>, aisload
+						(Tfun<actor, T>) & actor::handle_script<T>, aisload
 					);
 				}
 				ninst<TDerived, TYPE>().template rfun<actor, T, false>(
-					(Tfun<actor, T>) & actor::handle_script<TYPE, T>, aisload
+					(Tfun<actor, T>) & actor::handle_script<T>, aisload
 				);
 			}
 		};
@@ -309,28 +309,11 @@ namespace ngl
 		}
 
 		// # 脚本语言处理消息
-		template <EPROTOCOL_TYPE TYPE, typename TMESSAGE>
+		template <typename TMESSAGE>
 		bool handle_script(const message<TMESSAGE>& adata)
 		{
 			const TMESSAGE& ldata = *adata.get_data();
-			if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
-			{
-				std::string ljson;
-				tools::custom2json(ldata, ljson);
-				nscript_handle(tools::type_name<TMESSAGE>().c_str(), ljson.c_str());
-			}
-			else
-			{
-				std::string ljson;
-				if (!tools::proto2json(ldata, ljson))
-				{
-					return false;
-				}
-				nscript_handle(tools::type_name<TMESSAGE>().c_str(), ljson.c_str());
-			}
-			nscript_check<true>(ecorrelation_nsp);
-			nscript_check<false>(ecorrelation_nsp);
-			return true;
+			return nscript_handle(ldata);
 		}
 
 		static i64_actorid tab2actor(ENUM_ACTOR atype, int32_t atabid)

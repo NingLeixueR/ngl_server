@@ -92,8 +92,8 @@ namespace ngl
 					m_deldatafun(dataid);
 				}
 			}
-
-			m_actor->nscript_push_nsp<T>(m_data, m_onlyread == false);
+			actor_base::nscript_data_nsp<T> ltemp(m_data);
+			m_actor->nscript_data_push("nsp", ltemp, m_onlyread == false);
 		}
 
 		// # ¥Ú”°–≈œ¢
@@ -377,7 +377,7 @@ namespace ngl
 							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
 						}, false);
 
-					m_actor->nscript_correlation_checkout<T>(actor_base::ecorrelation_nsp,
+					/*m_actor->nscript_correlation_checkout<T>(actor_base::ecorrelation_nsp,
 						[this](const char* ajson)->bool
 						{
 							std::map<int64_t, T> lmap;
@@ -408,8 +408,8 @@ namespace ngl
 							del(l64vec);
 							return true;
 						}
-					);
-				}				
+					);*/	
+				}			
 			}
 
 			i64_actorid lactorid = m_actor->id_guid();
