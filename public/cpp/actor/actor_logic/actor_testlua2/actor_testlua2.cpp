@@ -44,8 +44,8 @@ namespace ngl
 		*/
 
 		// # 将csv数据写入lua
-		nscript_data_csv<tab_servers> ltab(ttab_servers::instance().tablecsv());
-		nscript_data_push("csv", ltab);
+		//nscript_data_csv<tab_servers> ltab(ttab_servers::instance().tablecsv());
+		//nscript_data_push("csv", ltab);
 	}
 
 	void actor_testlua2::erase_actor_before()

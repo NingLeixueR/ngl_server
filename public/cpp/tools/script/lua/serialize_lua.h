@@ -485,6 +485,29 @@ namespace ngl
 	struct tools_pop_tables
 	{
 		template <typename KEY, typename VAL>
+		static bool keyvalues(lua_State* L, google::protobuf::Map<KEY, VAL>& amap)
+		{
+			if (!lua_istable(L, -1))
+			{
+				return false;
+			}
+
+			lua_pushnil(L);
+			while (lua_next(L, -2) != 0)
+			{
+				KEY lkey;
+				VAL lvalue;
+				// 弹出value，保留key用于下一次迭代
+				if (!(serialize_lua<VAL>::stack_pop(L, lvalue) && serialize_lua<KEY>::stack_pop(L, lkey, false)))
+				{
+					return false;
+				}
+				amap[lkey] = lvalue;
+			}
+			return true;
+		}
+
+		template <typename KEY, typename VAL>
 		static bool keyvalues(lua_State* L, std::map<KEY, VAL>& amap)
 		{
 			if (!lua_istable(L, -1))
@@ -722,7 +745,7 @@ namespace ngl
 			}
 			for (const auto& item : lmap)
 			{
-				adata.push_back(item.second);
+				*adata.Add() = item.second;
 			}
 			if (apop)
 			{
@@ -732,6 +755,50 @@ namespace ngl
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, google::protobuf::RepeatedPtrField<T>& adata)
+		{
+			lua_getfield(L, -1, aname);
+			return stack_pop(L, adata);
+		}
+	};
+
+	template <typename T>
+	struct serialize_lua<google::protobuf::RepeatedField<T>>
+	{
+		static void stack_push(lua_State* L, const google::protobuf::RepeatedField<T>& adata)
+		{
+			lua_newtable(L);
+			for (size_t i = 0; i < adata.size(); ++i)
+			{
+				serialize_lua<T>::stack_push(L, adata[i]);
+				lua_rawseti(L, -2, i + 1);
+			}
+		}
+
+		static void table_push(lua_State* L, const char* aname, const google::protobuf::RepeatedField<T>& adata)
+		{
+			stack_push(L, adata);
+			lua_setfield(L, -2, aname);
+		}
+
+		static bool stack_pop(lua_State* L, google::protobuf::RepeatedField<T>& adata, bool apop = true)
+		{
+			std::map<int32_t, T> lmap;
+			if (!tools_pop_tables::keyvalues(L, lmap))
+			{
+				return false;
+			}
+			for (const auto& item : lmap)
+			{
+				*adata.Add() = item.second;
+			}
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool table_pop(lua_State* L, const char* aname, google::protobuf::RepeatedField<T>& adata)
 		{
 			lua_getfield(L, -1, aname);
 			return stack_pop(L, adata);
@@ -1015,3 +1082,6 @@ public:
 };
 
 
+#include "nscript_pbexample.h"
+#include "nscript_pbnet.h"
+#include "nscript_pbdb.h"

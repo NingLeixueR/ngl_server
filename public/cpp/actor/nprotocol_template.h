@@ -191,6 +191,7 @@ namespace ngl
 		using BASE_TYPE = T;
 
 		def_jsonfunction_parm("m_identifier", m_identifier, "m_data", *m_data)
+		def_nlua_function2("m_identifier", m_identifier, "m_data", *m_data)
 
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
 			m_identifier(aidentifier),
