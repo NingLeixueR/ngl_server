@@ -28,7 +28,13 @@ int main(int argc, char** argv)
 
     google::protobuf::compiler::DiskSourceTree sourceTree;
     sourceTree.MapPath("", argv[1]);
+
+    xml_protocol::nscript_foreachProtobuf(sourceTree, "db");
+    xml_protocol::nscript_foreachProtobuf(sourceTree, "net");
+    xml_protocol::nscript_foreachProtobuf(sourceTree, "example");
+
     xml_protocol::nactor_auto(sourceTree, "db");
+
    
     xml_protocol::g_stream_sql << "/*Date:" << ngl::localtime::time2str("%Y-%m-%d %H:%M:%S")<< "*/" << std::endl;
     xml_protocol::g_stream_sql << std::endl;
@@ -38,6 +44,8 @@ int main(int argc, char** argv)
     xml_protocol::g_stream_sql << std::endl;
 
     xml_protocol::db(sourceTree, "Template", "db");
+
+
   
     // 生成对应的sql文件
     ngl::writefile lsql("create_db.sql");

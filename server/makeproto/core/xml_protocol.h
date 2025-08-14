@@ -47,6 +47,268 @@ public:
     static std::stringstream g_stream_sql;
     static std::stringstream g_stream_xml;
 
+    static std::string get_cpp_type_name(const google::protobuf::FieldDescriptor* field) {
+        switch (field->cpp_type()) {
+        case google::protobuf::FieldDescriptor::CPPTYPE_INT32:
+            return "int32_t";
+        case google::protobuf::FieldDescriptor::CPPTYPE_INT64:
+            return "int64_t";
+        case google::protobuf::FieldDescriptor::CPPTYPE_UINT32:
+            return "uint32_t";
+        case google::protobuf::FieldDescriptor::CPPTYPE_UINT64:
+            return "uint64_t";
+        case google::protobuf::FieldDescriptor::CPPTYPE_FLOAT:
+            return "float";
+        case google::protobuf::FieldDescriptor::CPPTYPE_DOUBLE:
+            return "double";
+        case google::protobuf::FieldDescriptor::CPPTYPE_BOOL:
+            return "bool";
+        case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
+            return "std::string";
+        case google::protobuf::FieldDescriptor::CPPTYPE_MESSAGE:
+            return field->message_type()->full_name(); // 嵌套消息类型名
+        case google::protobuf::FieldDescriptor::CPPTYPE_ENUM:
+            return field->enum_type()->full_name(); // 枚举类型名
+        default:
+            return "unknown";
+        }
+    }
+
+    static std::map<std::string, std::string> m_nscriptmap;
+    static std::set<std::string> m_nscriptset;
+    // 递归打印字段类型信息
+    std::string FieldType(const google::protobuf::FieldDescriptor* field) 
+    {
+        return google::protobuf::FieldDescriptor::TypeName(field->type());
+    }
+
+    static void nscript_func(const google::protobuf::Descriptor* messageDescriptor, std::string& lnamespace, const std::string& astruct)
+    {
+        std::stringstream m_stream;
+
+        std::string lmesname;
+        
+        //if (astruct == "")
+        //{
+        lmesname = messageDescriptor->full_name();//std::format("{}::{}", lnamespace, messageDescriptor->full_name());
+        ngl::tools::replace("\\.", "::", lmesname, lmesname);
+       // }
+       // else
+       // {
+       //     lmesname = std::format("{}::{}::{}", lnamespace, astruct, messageDescriptor->name());
+       // }
+
+        std::string lfstr1 = "M";
+        std::string lfstr2 = "Entry";
+        bool lbool = lmesname.find(lfstr1) != std::string::npos;
+        lbool = lbool && lmesname.find(lfstr2) != std::string::npos;
+        if (m_nscriptset.contains(lmesname))
+        {
+            return;
+        }
+        if (lbool)
+        {
+            return;
+        }
+        m_nscriptmap[lmesname] = "";
+        m_nscriptset.insert(lmesname);
+
+        m_stream << "   template <>" << std::endl;
+        m_stream << "   struct serialize_lua<" << lmesname << ">" << std::endl;
+        m_stream << "   {" << std::endl;
+        m_stream << "       static void stack_push(lua_State* L, const " << lmesname << "& adata)" << std::endl;
+        m_stream << "       {" << std::endl;
+        if (messageDescriptor->field_count() > 0)
+        {
+            m_stream << "            lua_newtable(L);" << std::endl;
+            m_stream << "            nlua_stack::stack_push(L, ";
+            std::cout << "name: " << messageDescriptor->name() << std::endl;
+            for (int i = 0; i < messageDescriptor->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
+                if (i != 0)
+                {
+                    m_stream << ",";
+                }
+                m_stream << "adata." << field->name() << "()";
+            }
+            m_stream << ");" << std::endl;
+        }
+
+        m_stream << "       }" << std::endl;
+
+        m_stream << "       static bool stack_pop(lua_State* L, " << lmesname << "& adata, bool apop = true)" << std::endl;
+        m_stream << "       {" << std::endl;
+        if (messageDescriptor->field_count() > 0)
+        {
+            for (int i = 0; i < messageDescriptor->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
+                if (field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE ||
+                    field->type() == google::protobuf::FieldDescriptor::TYPE_GROUP ||
+                    field->is_repeated()
+                    )
+                {
+
+                }
+                else
+                {
+                    std::string ltypename = get_cpp_type_name(field);
+                    ngl::tools::replace("\\.", "::", ltypename, ltypename);
+                    m_stream << "           " << ltypename << " l" << field->name() << ";" << std::endl;
+                }
+            }
+            m_stream << "           if(!nlua_stack::stack_pop(L, ";
+            for (int i = 0; i < messageDescriptor->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
+                if (i != 0)
+                {
+                    m_stream << ", ";
+                }
+                if (field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE ||
+                    field->type() == google::protobuf::FieldDescriptor::TYPE_GROUP ||
+                    field->is_repeated()
+                    )
+                {
+                    m_stream << " *adata.mutable_" << field->name() << "()";
+                }
+                else
+                {
+                    m_stream << "l" << field->name();
+                }
+            }
+            m_stream << "))" << std::endl;
+            m_stream << "           {" << std::endl;
+            m_stream << "               return false;" << std::endl;
+            m_stream << "           }" << std::endl;
+            for (int i = 0; i < messageDescriptor->field_count(); ++i)
+            {
+                const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
+                if (field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE ||
+                    field->type() == google::protobuf::FieldDescriptor::TYPE_GROUP 
+                    )
+                {
+                    if (field->is_map()) 
+                    {
+                        const google::protobuf::Descriptor* map_desc = field->message_type();
+                        const google::protobuf::FieldDescriptor* value_field = map_desc->field(1);
+                        if (value_field && value_field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE)
+                        {
+                            nscript_func(value_field->message_type(), lnamespace, messageDescriptor->name());
+                        }
+                       
+                    }
+                    else
+                    {
+                        nscript_func(field->message_type(), lnamespace, messageDescriptor->name());
+                    }
+                    //m_stream << "           *adata.mutable_" << field->name() << "() = " << field->name() << ";" << std::endl;
+                }
+                else if(field->is_repeated())
+                {
+
+                }
+                else if (field->type() == google::protobuf::FieldDescriptor::TYPE_ENUM)
+                {
+                    m_stream << "           adata.set_" << field->name() << "(l" << field->name() << ");" << std::endl;
+                }
+                else
+                {
+                    m_stream << "           adata.set_" << field->name() << "(l" << field->name() << ");" << std::endl;
+                }
+            }
+        }
+
+        m_stream << "           return true;" << std::endl;
+        m_stream << "       }" << std::endl;
+
+        m_stream << "       static void table_push(lua_State * L, const char* aname, const " << lmesname << "& adata)" << std::endl;
+        m_stream << "       {" << std::endl;
+        if (messageDescriptor->field_count() > 0)
+        {
+            m_stream << "           stack_push(L, adata);" << std::endl;
+            m_stream << "           lua_setfield(L, -2, aname);" << std::endl;
+        }
+        m_stream << "       }" << std::endl;
+        m_stream << "       static bool table_pop(lua_State * L, const char* aname, " << lmesname << "& adata)" << std::endl;
+        m_stream << "       {" << std::endl;
+        if (messageDescriptor->field_count() > 0)
+        {
+            m_stream << "           lua_getfield(L, -1, aname);" << std::endl;
+            m_stream << "           return stack_pop(L, adata);" << std::endl;
+        }
+        else
+        {
+            m_stream << "           return true;" << std::endl;
+        }
+        m_stream << "       }" << std::endl;
+
+
+        m_stream << "   };" << std::endl;
+
+        m_nscriptmap[lmesname] = m_stream.str();
+
+    }
+
+    static void nscript_auto(const google::protobuf::FileDescriptor* fileDescriptor, const std::string& axml)
+    {
+        m_nscriptmap.clear();
+        std::string lnamespace;
+        if (axml == "net")
+        {
+            lnamespace = "pbnet";
+        }
+        else if (axml == "example")
+        {
+            lnamespace = "pbexample";
+        }
+        else if (axml == "db")
+        {
+            lnamespace = "pbdb";
+        }
+
+        ngl::writefile lfile(std::format("./nscript_{}.h", lnamespace).c_str());
+        std::stringstream m_stream;
+        m_stream << " // 注意【makeproto 工具生成文件，不要手动修改】" << std::endl;
+        m_stream << " // 创建时间【" << ngl::localtime::time2str() << "】" << std::endl;
+        m_stream << std::endl;
+        m_stream << "#pragma once" << std::endl;
+        m_stream << "#include \"ndefine.h\"" << std::endl;
+        m_stream << "#include \"example.pb.h\"" << std::endl;
+        m_stream << "#include \"net.pb.h\"" << std::endl;
+        m_stream << "#include \"db.pb.h\"" << std::endl;
+        m_stream << std::endl;
+        m_stream << "namespace ngl" << std::endl;
+        m_stream << "{" << std::endl;
+        int messageCount = fileDescriptor->message_type_count();
+        for (int i = 0; i < messageCount; ++i)
+        {
+            const google::protobuf::Descriptor* messageDescriptor = fileDescriptor->message_type(i);
+            nscript_func(messageDescriptor, lnamespace, "");
+        }
+        for (const auto& item : m_nscriptmap)
+        {
+            m_stream << item.second;
+        }
+
+        m_stream << "}//namespace ngl" << std::endl;
+        lfile.write(m_stream.str());
+    }
+
+    static void nscript_foreachProtobuf(google::protobuf::compiler::DiskSourceTree& sourceTree, const char* aname)
+    {
+        google::protobuf::compiler::Importer importer(&sourceTree, nullptr);
+        const google::protobuf::FileDescriptor* fileDescriptor = importer.Import(std::string(aname) + ".proto");
+        if (fileDescriptor == nullptr) {
+            std::cerr << "Failed to import protobuf file descriptor" << std::endl;
+            return;
+        }
+        nscript_auto(fileDescriptor, aname);
+        return;
+    }
+
+
     static void xml_fun(const google::protobuf::FileDescriptor* fileDescriptor, int32_t& aprotocol, const std::string& axml)
     {
         ngl::writefile lfile("./config/" + axml + "_protocol.xml");
@@ -1543,3 +1805,5 @@ std::map<std::string, std::string> xml_protocol::g_typearr =
 
 std::stringstream xml_protocol::g_stream_sql;
 std::stringstream xml_protocol::g_stream_xml;
+std::map<std::string, std::string> xml_protocol::m_nscriptmap;
+std::set<std::string> xml_protocol::m_nscriptset;

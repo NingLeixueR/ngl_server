@@ -92,8 +92,8 @@ namespace ngl
 					m_deldatafun(dataid);
 				}
 			}
-			actor_base::nscript_data_nsp<T> ltemp(m_data);
-			m_actor->nscript_data_push("nsp", ltemp, m_onlyread == false);
+			//actor_base::nscript_data_nsp<T> ltemp(m_data);
+			//m_actor->nscript_data_push("nsp", ltemp, m_onlyread == false);
 		}
 
 		// # ´òÓ¡ĞÅÏ¢
