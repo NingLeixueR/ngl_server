@@ -83,7 +83,7 @@ local function new()
     end
 
     function instance:init_sysdata(asys)
-         print(json_encode(asys));
+        self:print_table(asys)
         self.sysdata = asys
     end
 
@@ -93,7 +93,7 @@ local function new()
             logger:write("Error: adata is nil or empty")
             return
         end
-        print(json_encode(adata));
+        self:print_table(adata)
     end
 
     function instance:get(aname, adataid)

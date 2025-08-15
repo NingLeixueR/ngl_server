@@ -42,12 +42,12 @@ namespace ngl
 
 		static void table_push(lua_State* L, const char* aname, const T* adata)
 		{
-			serialize_lua<T>::stack_pop(L, aname, *adata);
+			serialize_lua<T>::table_push(L, aname, *adata);
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, T* adata)
 		{
-			serialize_lua<T>::stack_pop(L, aname, *adata);
+			serialize_lua<T>::table_pop(L, aname, *adata);
 		}
 	};
 
@@ -671,7 +671,7 @@ namespace ngl
 			lua_newtable(L);
 			for (const auto& item : adata)
 			{
-				serialize_lua<VAL>::stack_push(L, item.second);
+				serialize_lua<VAL>::table_push(L, nullptr, item.second);
 				tools_table_key<KEY>::key(L, item.first);
 			}
 		}
@@ -710,7 +710,7 @@ namespace ngl
 			lua_newtable(L);
 			for (const auto& item : adata)
 			{
-				serialize_lua<VAL>::stack_push(L, item.second);
+				serialize_lua<VAL>::table_push(L, nullptr, item.second);
 				tools_table_key<KEY>::key(L, item.first);
 			}
 		}
