@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-14 17:39:07】
+ // 创建时间【2025-08-15 15:16:46】
 
 #pragma once
 #include "ndefine.h"
@@ -14,15 +14,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.marea(),adata.maccount(),adata.mpassword());
+            ngl::nlua_table::table_push(L, "marea", adata.marea(),"maccount", adata.maccount(),"mpassword", adata.mpassword());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata, bool apop = true)
        {
            int32_t lmarea;
            std::string lmaccount;
            std::string lmpassword;
-           if(!nlua_stack::stack_pop(L, lmarea, lmaccount, lmpassword))
+           if(!ngl::nlua_table::table_pop(L, "marea", lmarea, "maccount", lmaccount, "mpassword", lmpassword))
            {
                return false;
            }
@@ -33,13 +32,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -47,8 +52,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.marea(),adata.mroleid(),adata.msession(),adata.maccount(),adata.mgatewayid());
+            ngl::nlua_table::table_push(L, "marea", adata.marea(),"mroleid", adata.mroleid(),"msession", adata.msession(),"maccount", adata.maccount(),"mgatewayid", adata.mgatewayid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, bool apop = true)
        {
@@ -57,7 +61,7 @@ namespace ngl
            std::string lmsession;
            std::string lmaccount;
            int32_t lmgatewayid;
-           if(!nlua_stack::stack_pop(L, lmarea, lmroleid, lmsession, lmaccount, lmgatewayid))
+           if(!ngl::nlua_table::table_pop(L, "marea", lmarea, "mroleid", lmroleid, "msession", lmsession, "maccount", lmaccount, "mgatewayid", lmgatewayid))
            {
                return false;
            }
@@ -70,13 +74,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -91,9 +101,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_SYNC& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_BAG_SYNC& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -102,12 +121,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mbag());
+            ngl::nlua_table::table_push(L, "mbag", adata.mbag());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mbag()))
+           if(!ngl::nlua_table::table_pop(L, "mbag",  *adata.mutable_mbag()))
            {
                return false;
            }
@@ -115,13 +133,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -129,12 +153,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_UPDATE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mdelitems(),adata.mdelnostackitems(),adata.madditems(),adata.maddnostackitems());
+            ngl::nlua_table::table_push(L, "mdelitems", adata.mdelitems(),"mdelnostackitems", adata.mdelnostackitems(),"madditems", adata.madditems(),"maddnostackitems", adata.maddnostackitems());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mdelitems(),  *adata.mutable_mdelnostackitems(),  *adata.mutable_madditems(),  *adata.mutable_maddnostackitems()))
+           if(!ngl::nlua_table::table_pop(L, "mdelitems",  *adata.mutable_mdelitems(), "mdelnostackitems",  *adata.mutable_mdelnostackitems(), "madditems",  *adata.mutable_madditems(), "maddnostackitems",  *adata.mutable_maddnostackitems()))
            {
                return false;
            }
@@ -142,13 +165,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_UPDATE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_BAG_UPDATE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -156,14 +185,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mcount());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mcount", adata.mcount());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata, bool apop = true)
        {
            int32_t lmid;
            int32_t lmcount;
-           if(!nlua_stack::stack_pop(L, lmid, lmcount))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mcount", lmcount))
            {
                return false;
            }
@@ -173,13 +201,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -187,14 +221,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mcount());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mcount", adata.mcount());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata, bool apop = true)
        {
            int32_t lmid;
            int32_t lmcount;
-           if(!nlua_stack::stack_pop(L, lmid, lmcount))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mcount", lmcount))
            {
                return false;
            }
@@ -204,13 +237,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -218,12 +257,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CHANGE_ANGLE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mposition());
+            ngl::nlua_table::table_push(L, "mposition", adata.mposition());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHANGE_ANGLE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mposition()))
+           if(!ngl::nlua_table::table_pop(L, "mposition",  *adata.mutable_mposition()))
            {
                return false;
            }
@@ -231,13 +269,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CHANGE_ANGLE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_CHANGE_ANGLE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -245,15 +289,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CHAT& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtype(),adata.mchannelid(),adata.mcontent());
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mchannelid", adata.mchannelid(),"mcontent", adata.mcontent());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHAT& adata, bool apop = true)
        {
            int32_t lmtype;
            int32_t lmchannelid;
            std::string lmcontent;
-           if(!nlua_stack::stack_pop(L, lmtype, lmchannelid, lmcontent))
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mchannelid", lmchannelid, "mcontent", lmcontent))
            {
                return false;
            }
@@ -264,13 +307,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CHAT& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_CHAT& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -278,15 +327,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CHAT_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtype(),adata.mchannelid(),adata.mchatlist(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mchannelid", adata.mchannelid(),"mchatlist", adata.mchatlist(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHAT_RESPONSE& adata, bool apop = true)
        {
            int32_t lmtype;
            int32_t lmchannelid;
            bool lmstat;
-           if(!nlua_stack::stack_pop(L, lmtype, lmchannelid,  *adata.mutable_mchatlist(), lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mchannelid", lmchannelid, "mchatlist",  *adata.mutable_mchatlist(), "mstat", lmstat))
            {
                return false;
            }
@@ -297,13 +345,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CHAT_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_CHAT_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -311,13 +365,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_CMD& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mcmd());
+            ngl::nlua_table::table_push(L, "mcmd", adata.mcmd());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CMD& adata, bool apop = true)
        {
            std::string lmcmd;
-           if(!nlua_stack::stack_pop(L, lmcmd))
+           if(!ngl::nlua_table::table_pop(L, "mcmd", lmcmd))
            {
                return false;
            }
@@ -326,13 +379,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CMD& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_CMD& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -340,15 +399,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mrechargeid(),adata.morderid(),adata.mgold(),adata.mitems());
+            ngl::nlua_table::table_push(L, "mrechargeid", adata.mrechargeid(),"morderid", adata.morderid(),"mgold", adata.mgold(),"mitems", adata.mitems());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata, bool apop = true)
        {
            int32_t lmrechargeid;
            std::string lmorderid;
            int32_t lmgold;
-           if(!nlua_stack::stack_pop(L, lmrechargeid, lmorderid, lmgold,  *adata.mutable_mitems()))
+           if(!ngl::nlua_table::table_pop(L, "mrechargeid", lmrechargeid, "morderid", lmorderid, "mgold", lmgold, "mitems",  *adata.mutable_mitems()))
            {
                return false;
            }
@@ -359,13 +417,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -373,13 +437,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.misenter(),adata.munits());
+            ngl::nlua_table::table_push(L, "misenter", adata.misenter(),"munits", adata.munits());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata, bool apop = true)
        {
            bool lmisenter;
-           if(!nlua_stack::stack_pop(L, lmisenter,  *adata.mutable_munits()))
+           if(!ngl::nlua_table::table_pop(L, "misenter", lmisenter, "munits",  *adata.mutable_munits()))
            {
                return false;
            }
@@ -388,13 +451,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -402,13 +471,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ERROR& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.merrmessage());
+            ngl::nlua_table::table_push(L, "merrmessage", adata.merrmessage());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ERROR& adata, bool apop = true)
        {
            std::string lmerrmessage;
-           if(!nlua_stack::stack_pop(L, lmerrmessage))
+           if(!ngl::nlua_table::table_pop(L, "merrmessage", lmerrmessage))
            {
                return false;
            }
@@ -417,13 +485,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ERROR& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ERROR& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -431,13 +505,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CEDE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mroleid());
+            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CEDE& adata, bool apop = true)
        {
            int64_t lmroleid;
-           if(!nlua_stack::stack_pop(L, lmroleid))
+           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid))
            {
                return false;
            }
@@ -446,13 +519,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CEDE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_CEDE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -460,13 +539,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -475,13 +553,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -489,14 +573,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfamilid(),adata.mname());
+            ngl::nlua_table::table_push(L, "mfamilid", adata.mfamilid(),"mname", adata.mname());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata, bool apop = true)
        {
            int64_t lmfamilid;
            std::string lmname;
-           if(!nlua_stack::stack_pop(L, lmfamilid, lmname))
+           if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid, "mname", lmname))
            {
                return false;
            }
@@ -506,13 +589,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -520,13 +609,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -535,13 +623,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -549,13 +643,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mname());
+            ngl::nlua_table::table_push(L, "mname", adata.mname());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CREATE& adata, bool apop = true)
        {
            std::string lmname;
-           if(!nlua_stack::stack_pop(L, lmname))
+           if(!ngl::nlua_table::table_pop(L, "mname", lmname))
            {
                return false;
            }
@@ -564,13 +657,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -578,13 +677,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -593,13 +691,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -614,9 +718,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_INFO& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_INFO& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -625,13 +738,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat(),adata.minfo(),adata.mmember());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat(),"minfo", adata.minfo(),"mmember", adata.mmember());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat,  *adata.mutable_minfo(),  *adata.mutable_mmember()))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat, "minfo",  *adata.mutable_minfo(), "mmember",  *adata.mutable_mmember()))
            {
                return false;
            }
@@ -640,13 +752,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -654,14 +772,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_JOIN& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfamilid(),adata.mapply());
+            ngl::nlua_table::table_push(L, "mfamilid", adata.mfamilid(),"mapply", adata.mapply());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_JOIN& adata, bool apop = true)
        {
            int64_t lmfamilid;
            bool lmapply;
-           if(!nlua_stack::stack_pop(L, lmfamilid, lmapply))
+           if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid, "mapply", lmapply))
            {
                return false;
            }
@@ -671,13 +788,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_JOIN& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_JOIN& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -685,13 +808,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -700,13 +822,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -714,13 +842,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LEAVE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfamilid());
+            ngl::nlua_table::table_push(L, "mfamilid", adata.mfamilid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LEAVE& adata, bool apop = true)
        {
            int64_t lmfamilid;
-           if(!nlua_stack::stack_pop(L, lmfamilid))
+           if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid))
            {
                return false;
            }
@@ -729,13 +856,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LEAVE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_LEAVE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -743,13 +876,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -758,13 +890,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -772,13 +910,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LIST& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfamilid());
+            ngl::nlua_table::table_push(L, "mfamilid", adata.mfamilid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LIST& adata, bool apop = true)
        {
            int64_t lmfamilid;
-           if(!nlua_stack::stack_pop(L, lmfamilid))
+           if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid))
            {
                return false;
            }
@@ -787,13 +924,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LIST& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_LIST& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -801,13 +944,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfamilid(),adata.mfamily());
+            ngl::nlua_table::table_push(L, "mfamilid", adata.mfamilid(),"mfamily", adata.mfamily());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata, bool apop = true)
        {
            int64_t lmfamilid;
-           if(!nlua_stack::stack_pop(L, lmfamilid,  *adata.mutable_mfamily()))
+           if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid, "mfamily",  *adata.mutable_mfamily()))
            {
                return false;
            }
@@ -816,13 +958,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -830,14 +978,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mroleid(),adata.mratify());
+            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid(),"mratify", adata.mratify());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata, bool apop = true)
        {
            int64_t lmroleid;
            bool lmratify;
-           if(!nlua_stack::stack_pop(L, lmroleid, lmratify))
+           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid, "mratify", lmratify))
            {
                return false;
            }
@@ -847,13 +994,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -861,13 +1014,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -876,13 +1028,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -890,13 +1048,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_SIGN& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfamilid());
+            ngl::nlua_table::table_push(L, "mfamilid", adata.mfamilid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_SIGN& adata, bool apop = true)
        {
            int64_t lmfamilid;
-           if(!nlua_stack::stack_pop(L, lmfamilid))
+           if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid))
            {
                return false;
            }
@@ -905,13 +1062,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_SIGN& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_SIGN& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -919,13 +1082,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata, bool apop = true)
        {
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
                return false;
            }
@@ -934,13 +1096,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -955,9 +1123,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -966,13 +1143,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ADD& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriedid());
+            ngl::nlua_table::table_push(L, "mfriedid", adata.mfriedid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ADD& adata, bool apop = true)
        {
            int64_t lmfriedid;
-           if(!nlua_stack::stack_pop(L, lmfriedid))
+           if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid))
            {
                return false;
            }
@@ -981,13 +1157,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ADD& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_ADD& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -995,14 +1177,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriedid(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mfriedid", adata.mfriedid(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata, bool apop = true)
        {
            int64_t lmfriedid;
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmfriedid, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mstat", lmstat))
            {
                return false;
            }
@@ -1012,13 +1193,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1026,13 +1213,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ERASE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriedid());
+            ngl::nlua_table::table_push(L, "mfriedid", adata.mfriedid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ERASE& adata, bool apop = true)
        {
            int64_t lmfriedid;
-           if(!nlua_stack::stack_pop(L, lmfriedid))
+           if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid))
            {
                return false;
            }
@@ -1041,13 +1227,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ERASE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_ERASE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1055,14 +1247,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriedid(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mfriedid", adata.mfriedid(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata, bool apop = true)
        {
            int64_t lmfriedid;
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmfriedid, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mstat", lmstat))
            {
                return false;
            }
@@ -1072,13 +1263,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1086,14 +1283,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriedid(),adata.mratify());
+            ngl::nlua_table::table_push(L, "mfriedid", adata.mfriedid(),"mratify", adata.mratify());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata, bool apop = true)
        {
            int64_t lmfriedid;
            bool lmratify;
-           if(!nlua_stack::stack_pop(L, lmfriedid, lmratify))
+           if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mratify", lmratify))
            {
                return false;
            }
@@ -1103,13 +1299,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1117,15 +1319,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriedid(),adata.mratify(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mfriedid", adata.mfriedid(),"mratify", adata.mratify(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata, bool apop = true)
        {
            int64_t lmfriedid;
            bool lmratify;
            int32_t lmstat;
-           if(!nlua_stack::stack_pop(L, lmfriedid, lmratify, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mratify", lmratify, "mstat", lmstat))
            {
                return false;
            }
@@ -1136,13 +1337,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1150,12 +1357,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mfriends(),adata.mapplyfriends());
+            ngl::nlua_table::table_push(L, "mfriends", adata.mfriends(),"mapplyfriends", adata.mapplyfriends());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mfriends(),  *adata.mutable_mapplyfriends()))
+           if(!ngl::nlua_table::table_pop(L, "mfriends",  *adata.mutable_mfriends(), "mapplyfriends",  *adata.mutable_mapplyfriends()))
            {
                return false;
            }
@@ -1163,13 +1369,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1184,9 +1396,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_GET_TIME& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_GET_TIME& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -1195,13 +1416,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mutc());
+            ngl::nlua_table::table_push(L, "mutc", adata.mutc());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata, bool apop = true)
        {
            int32_t lmutc;
-           if(!nlua_stack::stack_pop(L, lmutc))
+           if(!ngl::nlua_table::table_pop(L, "mutc", lmutc))
            {
                return false;
            }
@@ -1210,13 +1430,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1231,9 +1457,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_HEARTBEAT& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_HEARTBEAT& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -1242,8 +1477,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mserverid(),adata.muip(),adata.muport(),adata.mconv());
+            ngl::nlua_table::table_push(L, "mserverid", adata.mserverid(),"muip", adata.muip(),"muport", adata.muport(),"mconv", adata.mconv());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION& adata, bool apop = true)
        {
@@ -1251,7 +1485,7 @@ namespace ngl
            std::string lmuip;
            int32_t lmuport;
            int32_t lmconv;
-           if(!nlua_stack::stack_pop(L, lmserverid, lmuip, lmuport, lmconv))
+           if(!ngl::nlua_table::table_pop(L, "mserverid", lmserverid, "muip", lmuip, "muport", lmuport, "mconv", lmconv))
            {
                return false;
            }
@@ -1263,13 +1497,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_KCPSESSION& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_KCPSESSION& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1277,13 +1517,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mkcpsession());
+            ngl::nlua_table::table_push(L, "mkcpsession", adata.mkcpsession());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, bool apop = true)
        {
            std::string lmkcpsession;
-           if(!nlua_stack::stack_pop(L, lmkcpsession))
+           if(!ngl::nlua_table::table_pop(L, "mkcpsession", lmkcpsession))
            {
                return false;
            }
@@ -1292,13 +1531,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1306,13 +1551,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DEL& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmailid());
+            ngl::nlua_table::table_push(L, "mmailid", adata.mmailid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DEL& adata, bool apop = true)
        {
            int64_t lmmailid;
-           if(!nlua_stack::stack_pop(L, lmmailid))
+           if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid))
            {
                return false;
            }
@@ -1321,13 +1565,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DEL& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_DEL& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1335,14 +1585,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmailid(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mmailid", adata.mmailid(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata, bool apop = true)
        {
            int64_t lmmailid;
            bool lmstat;
-           if(!nlua_stack::stack_pop(L, lmmailid, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid, "mstat", lmstat))
            {
                return false;
            }
@@ -1352,13 +1601,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1366,13 +1621,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DRAW& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmailid());
+            ngl::nlua_table::table_push(L, "mmailid", adata.mmailid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DRAW& adata, bool apop = true)
        {
            int64_t lmmailid;
-           if(!nlua_stack::stack_pop(L, lmmailid))
+           if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid))
            {
                return false;
            }
@@ -1381,13 +1635,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DRAW& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_DRAW& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1395,14 +1655,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmailid(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mmailid", adata.mmailid(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata, bool apop = true)
        {
            int64_t lmmailid;
            bool lmstat;
-           if(!nlua_stack::stack_pop(L, lmmailid, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid, "mstat", lmstat))
            {
                return false;
            }
@@ -1412,13 +1671,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1433,9 +1698,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_LIST& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_LIST& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -1444,12 +1718,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmail());
+            ngl::nlua_table::table_push(L, "mmail", adata.mmail());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mmail()))
+           if(!ngl::nlua_table::table_pop(L, "mmail",  *adata.mutable_mmail()))
            {
                return false;
            }
@@ -1457,13 +1730,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1471,13 +1750,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_READ& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmailid());
+            ngl::nlua_table::table_push(L, "mmailid", adata.mmailid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_READ& adata, bool apop = true)
        {
            int64_t lmmailid;
-           if(!nlua_stack::stack_pop(L, lmmailid))
+           if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid))
            {
                return false;
            }
@@ -1486,13 +1764,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_READ& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_READ& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1500,14 +1784,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmailid(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mmailid", adata.mmailid(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata, bool apop = true)
        {
            int64_t lmmailid;
            bool lmstat;
-           if(!nlua_stack::stack_pop(L, lmmailid, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid, "mstat", lmstat))
            {
                return false;
            }
@@ -1517,13 +1800,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1531,13 +1820,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_MSG_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmsg());
+            ngl::nlua_table::table_push(L, "mmsg", adata.mmsg());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MSG_RESPONSE& adata, bool apop = true)
        {
            std::string lmmsg;
-           if(!nlua_stack::stack_pop(L, lmmsg))
+           if(!ngl::nlua_table::table_pop(L, "mmsg", lmmsg))
            {
                return false;
            }
@@ -1546,13 +1834,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MSG_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_MSG_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1567,9 +1861,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_NOTICE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_NOTICE& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -1578,12 +1881,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mnotices());
+            ngl::nlua_table::table_push(L, "mnotices", adata.mnotices());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mnotices()))
+           if(!ngl::nlua_table::table_pop(L, "mnotices",  *adata.mutable_mnotices()))
            {
                return false;
            }
@@ -1591,13 +1893,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1605,8 +1913,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RANKLIST& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.miscross(),adata.mtype(),adata.mactivityid(),adata.mpage());
+            ngl::nlua_table::table_push(L, "miscross", adata.miscross(),"mtype", adata.mtype(),"mactivityid", adata.mactivityid(),"mpage", adata.mpage());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RANKLIST& adata, bool apop = true)
        {
@@ -1614,7 +1921,7 @@ namespace ngl
            pbdb::eranklist lmtype;
            int32_t lmactivityid;
            int32_t lmpage;
-           if(!nlua_stack::stack_pop(L, lmiscross, lmtype, lmactivityid, lmpage))
+           if(!ngl::nlua_table::table_pop(L, "miscross", lmiscross, "mtype", lmtype, "mactivityid", lmactivityid, "mpage", lmpage))
            {
                return false;
            }
@@ -1626,13 +1933,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RANKLIST& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_RANKLIST& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1640,8 +1953,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtype(),adata.mitems(),adata.mpage(),adata.mcount(),adata.mrolerank());
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mitems", adata.mitems(),"mpage", adata.mpage(),"mcount", adata.mcount(),"mrolerank", adata.mrolerank());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata, bool apop = true)
        {
@@ -1649,7 +1961,7 @@ namespace ngl
            int32_t lmpage;
            int32_t lmcount;
            int32_t lmrolerank;
-           if(!nlua_stack::stack_pop(L, lmtype,  *adata.mutable_mitems(), lmpage, lmcount, lmrolerank))
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mitems",  *adata.mutable_mitems(), "mpage", lmpage, "mcount", lmcount, "mrolerank", lmrolerank))
            {
                return false;
            }
@@ -1661,13 +1973,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1675,13 +1993,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RECHARGE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mrechargeid());
+            ngl::nlua_table::table_push(L, "mrechargeid", adata.mrechargeid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RECHARGE& adata, bool apop = true)
        {
            int32_t lmrechargeid;
-           if(!nlua_stack::stack_pop(L, lmrechargeid))
+           if(!ngl::nlua_table::table_pop(L, "mrechargeid", lmrechargeid))
            {
                return false;
            }
@@ -1690,13 +2007,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RECHARGE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_RECHARGE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1704,15 +2027,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mrechargeid(),adata.mstat(),adata.morderid());
+            ngl::nlua_table::table_push(L, "mrechargeid", adata.mrechargeid(),"mstat", adata.mstat(),"morderid", adata.morderid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata, bool apop = true)
        {
            int32_t lmrechargeid;
            pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat lmstat;
            std::string lmorderid;
-           if(!nlua_stack::stack_pop(L, lmrechargeid, lmstat, lmorderid))
+           if(!ngl::nlua_table::table_pop(L, "mrechargeid", lmrechargeid, "mstat", lmstat, "morderid", lmorderid))
            {
                return false;
            }
@@ -1723,13 +2045,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1737,12 +2065,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mitems());
+            ngl::nlua_table::table_push(L, "mitems", adata.mitems());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mitems()))
+           if(!ngl::nlua_table::table_pop(L, "mitems",  *adata.mutable_mitems()))
            {
                return false;
            }
@@ -1750,13 +2077,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1764,15 +2097,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLESTAT& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mstat(),adata.mlogicstat(),adata.mroleid());
+            ngl::nlua_table::table_push(L, "mstat", adata.mstat(),"mlogicstat", adata.mlogicstat(),"mroleid", adata.mroleid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLESTAT& adata, bool apop = true)
        {
            pbnet::PROBUFF_NET_ROLESTAT::stat lmstat;
            pbnet::PROBUFF_NET_ROLESTAT::logic_stat lmlogicstat;
            int64_t lmroleid;
-           if(!nlua_stack::stack_pop(L, lmstat, lmlogicstat, lmroleid))
+           if(!ngl::nlua_table::table_pop(L, "mstat", lmstat, "mlogicstat", lmlogicstat, "mroleid", lmroleid))
            {
                return false;
            }
@@ -1783,13 +2115,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLESTAT& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLESTAT& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1797,8 +2135,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mroleid(),adata.msession(),adata.miscreate(),adata.marea(),adata.mgatewayid());
+            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid(),"msession", adata.msession(),"miscreate", adata.miscreate(),"marea", adata.marea(),"mgatewayid", adata.mgatewayid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_LOGIN& adata, bool apop = true)
        {
@@ -1807,7 +2144,7 @@ namespace ngl
            bool lmiscreate;
            int32_t lmarea;
            int32_t lmgatewayid;
-           if(!nlua_stack::stack_pop(L, lmroleid, lmsession, lmiscreate, lmarea, lmgatewayid))
+           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid, "msession", lmsession, "miscreate", lmiscreate, "marea", lmarea, "mgatewayid", lmgatewayid))
            {
                return false;
            }
@@ -1820,13 +2157,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1841,9 +2184,18 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_SYNC& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
+           stack_push(L, adata);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_SYNC& adata)
        {
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
            return true;
        }
    };
@@ -1852,12 +2204,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mrole(),adata.mbrief(),adata.mbag(),adata.mtask());
+            ngl::nlua_table::table_push(L, "mrole", adata.mrole(),"mbrief", adata.mbrief(),"mbag", adata.mbag(),"mtask", adata.mtask());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mrole(),  *adata.mutable_mbrief(),  *adata.mutable_mbag(),  *adata.mutable_mtask()))
+           if(!ngl::nlua_table::table_pop(L, "mrole",  *adata.mutable_mrole(), "mbrief",  *adata.mutable_mbrief(), "mbag",  *adata.mutable_mbag(), "mtask",  *adata.mutable_mtask()))
            {
                return false;
            }
@@ -1865,13 +2216,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1879,13 +2236,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SWITCH_LINE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mline());
+            ngl::nlua_table::table_push(L, "mline", adata.mline());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SWITCH_LINE& adata, bool apop = true)
        {
            int32_t lmline;
-           if(!nlua_stack::stack_pop(L, lmline))
+           if(!ngl::nlua_table::table_pop(L, "mline", lmline))
            {
                return false;
            }
@@ -1894,13 +2250,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SWITCH_LINE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_SWITCH_LINE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1908,14 +2270,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mline(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mline", adata.mline(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata, bool apop = true)
        {
            int32_t lmline;
            bool lmstat;
-           if(!nlua_stack::stack_pop(L, lmline, lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mline", lmline, "mstat", lmstat))
            {
                return false;
            }
@@ -1925,13 +2286,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1939,12 +2306,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmodules());
+            ngl::nlua_table::table_push(L, "mmodules", adata.mmodules());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mmodules()))
+           if(!ngl::nlua_table::table_pop(L, "mmodules",  *adata.mutable_mmodules()))
            {
                return false;
            }
@@ -1952,13 +2318,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1966,12 +2338,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SYNC_POSITION& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mposition());
+            ngl::nlua_table::table_push(L, "mposition", adata.mposition());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_POSITION& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mposition()))
+           if(!ngl::nlua_table::table_pop(L, "mposition",  *adata.mutable_mposition()))
            {
                return false;
            }
@@ -1979,13 +2350,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SYNC_POSITION& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_SYNC_POSITION& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -1993,12 +2370,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_SYNC_UNIT& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.munits());
+            ngl::nlua_table::table_push(L, "munits", adata.munits());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_UNIT& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_munits()))
+           if(!ngl::nlua_table::table_pop(L, "munits",  *adata.mutable_munits()))
            {
                return false;
            }
@@ -2006,13 +2382,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SYNC_UNIT& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_SYNC_UNIT& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2020,13 +2402,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtaskid());
+            ngl::nlua_table::table_push(L, "mtaskid", adata.mtaskid());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata, bool apop = true)
        {
            int32_t lmtaskid;
-           if(!nlua_stack::stack_pop(L, lmtaskid))
+           if(!ngl::nlua_table::table_pop(L, "mtaskid", lmtaskid))
            {
                return false;
            }
@@ -2035,13 +2416,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2049,14 +2436,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtaskid(),adata.mstat(),adata.mdrop());
+            ngl::nlua_table::table_push(L, "mtaskid", adata.mtaskid(),"mstat", adata.mstat(),"mdrop", adata.mdrop());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata, bool apop = true)
        {
            int32_t lmtaskid;
            bool lmstat;
-           if(!nlua_stack::stack_pop(L, lmtaskid, lmstat,  *adata.mutable_mdrop()))
+           if(!ngl::nlua_table::table_pop(L, "mtaskid", lmtaskid, "mstat", lmstat, "mdrop",  *adata.mutable_mdrop()))
            {
                return false;
            }
@@ -2066,13 +2452,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2080,14 +2472,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::PROBUFF_NET_TESTLUA& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mvalue(),adata.mdata());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mvalue", adata.mvalue(),"mdata", adata.mdata());
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TESTLUA& adata, bool apop = true)
        {
            int64_t lmid;
            std::string lmvalue;
-           if(!nlua_stack::stack_pop(L, lmid, lmvalue,  *adata.mutable_mdata()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mvalue", lmvalue, "mdata",  *adata.mutable_mdata()))
            {
                return false;
            }
@@ -2097,13 +2488,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_TESTLUA& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::PROBUFF_NET_TESTLUA& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2111,15 +2508,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::UNIT& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtype(),adata.mid(),adata.mposition(),adata.mmodules(),adata.mstat());
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mid", adata.mid(),"mposition", adata.mposition(),"mmodules", adata.mmodules(),"mstat", adata.mstat());
        }
        static bool stack_pop(lua_State* L, pbnet::UNIT& adata, bool apop = true)
        {
            pbnet::eunit lmtype;
            int64_t lmid;
            pbnet::eunitstat lmstat;
-           if(!nlua_stack::stack_pop(L, lmtype, lmid,  *adata.mutable_mposition(),  *adata.mutable_mmodules(), lmstat))
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mid", lmid, "mposition",  *adata.mutable_mposition(), "mmodules",  *adata.mutable_mmodules(), "mstat", lmstat))
            {
                return false;
            }
@@ -2130,13 +2526,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UNIT& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::UNIT& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2144,15 +2546,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::UNIT_POSITION& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mposition(),adata.mangle(),adata.mspeed());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mposition", adata.mposition(),"mangle", adata.mangle(),"mspeed", adata.mspeed());
        }
        static bool stack_pop(lua_State* L, pbnet::UNIT_POSITION& adata, bool apop = true)
        {
            int64_t lmid;
            int32_t lmangle;
            int32_t lmspeed;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mposition(), lmangle, lmspeed))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mposition",  *adata.mutable_mposition(), "mangle", lmangle, "mspeed", lmspeed))
            {
                return false;
            }
@@ -2163,13 +2564,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UNIT_POSITION& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::UNIT_POSITION& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2177,14 +2584,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::UnitAttribute& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtype(),adata.mvalue());
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mvalue", adata.mvalue());
        }
        static bool stack_pop(lua_State* L, pbnet::UnitAttribute& adata, bool apop = true)
        {
            int32_t lmtype;
            int64_t lmvalue;
-           if(!nlua_stack::stack_pop(L, lmtype, lmvalue))
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mvalue", lmvalue))
            {
                return false;
            }
@@ -2194,13 +2600,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UnitAttribute& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::UnitAttribute& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2208,13 +2620,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::UnitModule& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mmtype(),adata.mmodules());
+            ngl::nlua_table::table_push(L, "mmtype", adata.mmtype(),"mmodules", adata.mmodules());
        }
        static bool stack_pop(lua_State* L, pbnet::UnitModule& adata, bool apop = true)
        {
            int32_t lmmtype;
-           if(!nlua_stack::stack_pop(L, lmmtype,  *adata.mutable_mmodules()))
+           if(!ngl::nlua_table::table_pop(L, "mmtype", lmmtype, "mmodules",  *adata.mutable_mmodules()))
            {
                return false;
            }
@@ -2223,13 +2634,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UnitModule& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::UnitModule& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2237,14 +2654,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::VECTOR2& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mx(),adata.my());
+            ngl::nlua_table::table_push(L, "mx", adata.mx(),"my", adata.my());
        }
        static bool stack_pop(lua_State* L, pbnet::VECTOR2& adata, bool apop = true)
        {
            int32_t lmx;
            int32_t lmy;
-           if(!nlua_stack::stack_pop(L, lmx, lmy))
+           if(!ngl::nlua_table::table_pop(L, "mx", lmx, "my", lmy))
            {
                return false;
            }
@@ -2254,13 +2670,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::VECTOR2& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::VECTOR2& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2268,15 +2690,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::VECTOR3& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mx(),adata.my(),adata.mz());
+            ngl::nlua_table::table_push(L, "mx", adata.mx(),"my", adata.my(),"mz", adata.mz());
        }
        static bool stack_pop(lua_State* L, pbnet::VECTOR3& adata, bool apop = true)
        {
            int32_t lmx;
            int32_t lmy;
            int32_t lmz;
-           if(!nlua_stack::stack_pop(L, lmx, lmy, lmz))
+           if(!ngl::nlua_table::table_pop(L, "mx", lmx, "my", lmy, "mz", lmz))
            {
                return false;
            }
@@ -2287,13 +2708,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::VECTOR3& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::VECTOR3& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2301,8 +2728,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::chatitem& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mroleid(),adata.mrolename(),adata.mcontent(),adata.mutc());
+            ngl::nlua_table::table_push(L, "mroleid", adata.mroleid(),"mrolename", adata.mrolename(),"mcontent", adata.mcontent(),"mutc", adata.mutc());
        }
        static bool stack_pop(lua_State* L, pbnet::chatitem& adata, bool apop = true)
        {
@@ -2310,7 +2736,7 @@ namespace ngl
            std::string lmrolename;
            std::string lmcontent;
            int32_t lmutc;
-           if(!nlua_stack::stack_pop(L, lmroleid, lmrolename, lmcontent, lmutc))
+           if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid, "mrolename", lmrolename, "mcontent", lmcontent, "mutc", lmutc))
            {
                return false;
            }
@@ -2322,13 +2748,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::chatitem& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::chatitem& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -2336,14 +2768,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbnet::drop_item& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mitem(),adata.mcount());
+            ngl::nlua_table::table_push(L, "mitem", adata.mitem(),"mcount", adata.mcount());
        }
        static bool stack_pop(lua_State* L, pbnet::drop_item& adata, bool apop = true)
        {
            int32_t lmitem;
            int32_t lmcount;
-           if(!nlua_stack::stack_pop(L, lmitem, lmcount))
+           if(!ngl::nlua_table::table_pop(L, "mitem", lmitem, "mcount", lmcount))
            {
                return false;
            }
@@ -2353,13 +2784,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::drop_item& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbnet::drop_item& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
 }//namespace ngl

@@ -134,14 +134,14 @@ namespace ngl
 			// # 检查脚本语言中的备份是否被修改
 			if (anscript && m_actor != nullptr)
 			{
-				//if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
-				//{//被删除了
-				//	return nullptr;
-				//}
-				//if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
-				//{
-				//	modified();
-				//}
+				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
+				{//被删除了
+					return nullptr;
+				}
+				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
+				{
+					modified();
+				}
 			}
 			return &ldata;
 		}
@@ -152,14 +152,14 @@ namespace ngl
 			// # 检查脚本语言中的备份是否被修改
 			if (anscript && m_actor != nullptr)
 			{
-				//if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
-				//{//被删除了
-				//	return nullptr;
-				//}
-				//if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
-				//{
-				//	modified();
-				//}
+				if (m_actor->nscript_data_checkdel<TDBTAB>(ldata.mid()))
+				{//被删除了
+					return nullptr;
+				}
+				if (m_actor->nscript_data_checkout<TDBTAB>(ldata.mid(), ldata))
+				{
+					modified();
+				}
 			}
 			return &ldata;
 		}
@@ -327,7 +327,7 @@ namespace ngl
 		{
 			data_modified<TDBTAB>* lpdata = nullptr;
 
-			/*std::vector<int64_t> ldels;
+			std::vector<int64_t> ldels;
 			if (m_actor->nscript_data_checkdel<TDBTAB>(ldels))
 			{
 				for (int64_t id : ldels)
@@ -348,7 +348,7 @@ namespace ngl
 					}
 					*lpdata->get(true, false) = item.second;
 				}
-			}*/
+			}
 
 			lpdata = nullptr;
 			np_actordb_save<DBTYPE, TDBTAB> pro;
@@ -446,7 +446,7 @@ namespace ngl
 
 		void nscript_push_data() final
 		{
-			/*if (!m_actor->nscript_using())
+			if (!m_actor->nscript_using())
 			{
 				return;
 			}
@@ -456,7 +456,7 @@ namespace ngl
 			{
 				ltemp.data.insert(std::make_pair((int64_t)item.first, item.second.get(false, false)));
 			}
-			m_actor->nscript_data_push("db", ltemp, true);*/
+			m_actor->nscript_data_push("db", ltemp, true);
 		}
 	public:
 		const TDBTAB* set(const nguid& aid, const TDBTAB& adbtab)

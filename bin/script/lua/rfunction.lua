@@ -1,8 +1,8 @@
 local ngldata = require("ngldata").getInstance()
 
 -- json数据记录一些基本信息,如脚本对应的actor_id
-function init_sysdata(asysjson)
-    ngldata:init_sysdata(asysjson)
+function init_sysdata(asys)
+    ngldata:init_sysdata(asys)
 end
 
 -- 将CPP数据压入数据lua
