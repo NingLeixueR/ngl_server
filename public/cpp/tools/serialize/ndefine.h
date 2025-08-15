@@ -101,27 +101,19 @@ enum
 	ESPLIT_STR = 32,
 };
 
-template <typename TJS, bool READ>
-class help_json
+class help_writejson
 {
 	const std::vector<const char*>& m_parts;
-	TJS& m_json;
+	ngl::json_write& m_json;
 
 	template <typename T>
-	bool dosth(TJS& ijson, const char* astr, const T& adata)
+	bool dosth(ngl::json_write& ijson, const char* astr, const T& adata)
 	{
-		if constexpr (READ)
-		{
-			return ojson.read(astr, adata);
-		}
-		else
-		{
-			ijson.write(astr, adata);
-			return true;
-		}
+		ijson.write(astr, adata);
+		return true;
 	}
 public:
-	help_json(const std::vector<const char*>& aparts, TJS& aijson) :
+	help_writejson(const std::vector<const char*>& aparts, ngl::json_write& aijson) :
 		m_parts(aparts),
 		m_json(aijson)
 	{}
@@ -147,6 +139,48 @@ public:
 		, const T& adata
 		, const ARG&... args
 	)
+	{
+		if constexpr (sizeof...(ARG) >= 1)
+		{
+			return fun(apos, adata) && fun(++apos, args...);
+		}
+		else
+		{
+			return fun(apos, adata);
+		}
+	}
+};
+
+class help_readjson
+{
+	const std::vector<const char*>& m_parts;
+	const ngl::json_read& m_json;
+
+	template <typename T>
+	bool dosth(const ngl::json_read& ojson, const char* astr, T& adata)
+	{
+		return ojson.read(astr, adata);
+	}
+public:
+	help_readjson(const std::vector<const char*>& aparts, const ngl::json_read& aijson) :
+		m_parts(aparts),
+		m_json(aijson)
+	{}
+
+	bool fun(int32_t apos)
+	{
+		return true;
+	}
+
+	template <typename T>
+	bool fun(int32_t apos, T& adata)
+	{
+		dosth(m_json, m_parts[apos], adata);
+		return true;
+	}
+
+	template <typename T, typename ...ARG>
+	bool fun(int32_t apos, T& adata, ARG&... args)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
 		{
@@ -206,7 +240,7 @@ public:
 	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		help_json<ngl::json_write,false> ltemp(parms(#__VA_ARGS__), ijsn);			\
+		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);			\
 		ltemp.fun(0, __VA_ARGS__);									\
 	}																\
 	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
@@ -220,7 +254,7 @@ public:
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
-		help_json<ngl::json_read,true> ltemp(parms(#__VA_ARGS__), ijsn);	\
+		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);				\
 		return ltemp.fun(0, __VA_ARGS__);							\
 	}
 #else
@@ -233,7 +267,7 @@ public:
 	}																\
 	inline void write(ngl::json_write& ijsn)const					\
 	{																\
-		help_json<ngl::json_write,false> ltemp(parms(#__VA_ARGS__), ijsn);			\
+		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);			\
 		ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);					\
 	}																\
 	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
@@ -247,7 +281,7 @@ public:
 	}																\
 	inline bool read(const ngl::json_read& ijsn) 					\
 	{																\
-		help_json<ngl::json_read,true> ltemp(parms(#__VA_ARGS__), ijsn);	\
+		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);				\
 		return ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);			\
 	}
 #endif
@@ -274,15 +308,17 @@ public:
 #define def_nlua_push2(...)													\
 	void nlua_push(lua_State* aL, const char* aname = nullptr)const			\
 	{																		\
-		ngl::nlua_table::table_finish_push(aL, aname);						\
+		ngl::nlua_table::table_start_push(aL, aname);						\
 		ngl::nlua_table::table_push(aL, __VA_ARGS__);						\
+		ngl::nlua_table::table_finish_push(aL, aname);						\
 	}
 
 #define def_nlua_pop2(...)													\
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
 	{																		\
-		ngl::nlua_table::table_finish_pop(aL, aname);;						\
+		ngl::nlua_table::table_start_pop(aL, aname);						\
 		ngl::nlua_table::table_pop(aL, __VA_ARGS__);						\
+		ngl::nlua_table::table_finish_pop(aL, aname);						\
 	}
 
 #define def_nlua_function2(...)			\

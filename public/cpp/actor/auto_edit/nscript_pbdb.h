@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-14 17:39:07】
+ // 创建时间【2025-08-15 15:16:46】
 
 #pragma once
 #include "ndefine.h"
@@ -14,13 +14,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::activity_drawcompliance& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mcount(),adata.mreward());
+            ngl::nlua_table::table_push(L, "mcount", adata.mcount(),"mreward", adata.mreward());
        }
        static bool stack_pop(lua_State* L, pbdb::activity_drawcompliance& adata, bool apop = true)
        {
            int32_t lmcount;
-           if(!nlua_stack::stack_pop(L, lmcount,  *adata.mutable_mreward()))
+           if(!ngl::nlua_table::table_pop(L, "mcount", lmcount, "mreward",  *adata.mutable_mreward()))
            {
                return false;
            }
@@ -29,13 +28,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::activity_drawcompliance& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::activity_drawcompliance& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -43,12 +48,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::activity_task& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mopen(),adata.mclose());
+            ngl::nlua_table::table_push(L, "mopen", adata.mopen(),"mclose", adata.mclose());
        }
        static bool stack_pop(lua_State* L, pbdb::activity_task& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mopen(),  *adata.mutable_mclose()))
+           if(!ngl::nlua_table::table_pop(L, "mopen",  *adata.mutable_mopen(), "mclose",  *adata.mutable_mclose()))
            {
                return false;
            }
@@ -56,13 +60,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::activity_task& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::activity_task& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -70,12 +80,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::brief_activityvalues& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mactivity_rolelv(),adata.mactivity_rolegold());
+            ngl::nlua_table::table_push(L, "mactivity_rolelv", adata.mactivity_rolelv(),"mactivity_rolegold", adata.mactivity_rolegold());
        }
        static bool stack_pop(lua_State* L, pbdb::brief_activityvalues& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mactivity_rolelv(),  *adata.mutable_mactivity_rolegold()))
+           if(!ngl::nlua_table::table_pop(L, "mactivity_rolelv",  *adata.mutable_mactivity_rolelv(), "mactivity_rolegold",  *adata.mutable_mactivity_rolegold()))
            {
                return false;
            }
@@ -83,13 +92,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::brief_activityvalues& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::brief_activityvalues& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -97,8 +112,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_account& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mroleid(),adata.maccount(),adata.mpassworld(),adata.marea());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mroleid", adata.mroleid(),"maccount", adata.maccount(),"mpassworld", adata.mpassworld(),"marea", adata.marea());
        }
        static bool stack_pop(lua_State* L, pbdb::db_account& adata, bool apop = true)
        {
@@ -107,7 +121,7 @@ namespace ngl
            std::string lmaccount;
            std::string lmpassworld;
            int32_t lmarea;
-           if(!nlua_stack::stack_pop(L, lmid, lmroleid, lmaccount, lmpassworld, lmarea))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mroleid", lmroleid, "maccount", lmaccount, "mpassworld", lmpassworld, "marea", lmarea))
            {
                return false;
            }
@@ -120,13 +134,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_account& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_account& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -134,13 +154,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_activity& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mtask(),adata.mdrawcompliance());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mtask", adata.mtask(),"mdrawcompliance", adata.mdrawcompliance());
        }
        static bool stack_pop(lua_State* L, pbdb::db_activity& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mtask(),  *adata.mutable_mdrawcompliance()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mtask",  *adata.mutable_mtask(), "mdrawcompliance",  *adata.mutable_mdrawcompliance()))
            {
                return false;
            }
@@ -149,13 +168,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_activity& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_activity& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -163,8 +188,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_activitytimes& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mbeg(),adata.mduration(),adata.mstart());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mbeg", adata.mbeg(),"mduration", adata.mduration(),"mstart", adata.mstart());
        }
        static bool stack_pop(lua_State* L, pbdb::db_activitytimes& adata, bool apop = true)
        {
@@ -172,7 +196,7 @@ namespace ngl
            int32_t lmbeg;
            int32_t lmduration;
            bool lmstart;
-           if(!nlua_stack::stack_pop(L, lmid, lmbeg, lmduration, lmstart))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mbeg", lmbeg, "mduration", lmduration, "mstart", lmstart))
            {
                return false;
            }
@@ -184,13 +208,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_activitytimes& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_activitytimes& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -198,14 +228,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_bag& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mitems(),adata.mmaxid());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mitems", adata.mitems(),"mmaxid", adata.mmaxid());
        }
        static bool stack_pop(lua_State* L, pbdb::db_bag& adata, bool apop = true)
        {
            int64_t lmid;
            int32_t lmmaxid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mitems(), lmmaxid))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mitems",  *adata.mutable_mitems(), "mmaxid", lmmaxid))
            {
                return false;
            }
@@ -215,13 +244,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_bag& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_bag& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -229,8 +264,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_brief& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mname(),adata.mlv(),adata.mmoneygold(),adata.mmoneysilver(),adata.mvip(),adata.mnotalkutc(),adata.mcreateutc(),adata.mactivityvalues());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mname", adata.mname(),"mlv", adata.mlv(),"mmoneygold", adata.mmoneygold(),"mmoneysilver", adata.mmoneysilver(),"mvip", adata.mvip(),"mnotalkutc", adata.mnotalkutc(),"mcreateutc", adata.mcreateutc(),"mactivityvalues", adata.mactivityvalues());
        }
        static bool stack_pop(lua_State* L, pbdb::db_brief& adata, bool apop = true)
        {
@@ -242,7 +276,7 @@ namespace ngl
            int32_t lmvip;
            int32_t lmnotalkutc;
            int32_t lmcreateutc;
-           if(!nlua_stack::stack_pop(L, lmid, lmname, lmlv, lmmoneygold, lmmoneysilver, lmvip, lmnotalkutc, lmcreateutc,  *adata.mutable_mactivityvalues()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mname", lmname, "mlv", lmlv, "mmoneygold", lmmoneygold, "mmoneysilver", lmmoneysilver, "mvip", lmvip, "mnotalkutc", lmnotalkutc, "mcreateutc", lmcreateutc, "mactivityvalues",  *adata.mutable_mactivityvalues()))
            {
                return false;
            }
@@ -258,13 +292,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_brief& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_brief& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -272,8 +312,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_family& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mcreateutc(),adata.mname(),adata.mleader(),adata.mlv(),adata.mexp(),adata.mmember(),adata.mapplylist());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mcreateutc", adata.mcreateutc(),"mname", adata.mname(),"mleader", adata.mleader(),"mlv", adata.mlv(),"mexp", adata.mexp(),"mmember", adata.mmember(),"mapplylist", adata.mapplylist());
        }
        static bool stack_pop(lua_State* L, pbdb::db_family& adata, bool apop = true)
        {
@@ -283,7 +322,7 @@ namespace ngl
            int64_t lmleader;
            int32_t lmlv;
            int32_t lmexp;
-           if(!nlua_stack::stack_pop(L, lmid, lmcreateutc, lmname, lmleader, lmlv, lmexp,  *adata.mutable_mmember(),  *adata.mutable_mapplylist()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mcreateutc", lmcreateutc, "mname", lmname, "mleader", lmleader, "mlv", lmlv, "mexp", lmexp, "mmember",  *adata.mutable_mmember(), "mapplylist",  *adata.mutable_mapplylist()))
            {
                return false;
            }
@@ -297,13 +336,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_family& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_family& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -311,8 +356,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_familyer& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mjoinutc(),adata.mlastsignutc(),adata.mlastleaveutc(),adata.mposition());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mjoinutc", adata.mjoinutc(),"mlastsignutc", adata.mlastsignutc(),"mlastleaveutc", adata.mlastleaveutc(),"mposition", adata.mposition());
        }
        static bool stack_pop(lua_State* L, pbdb::db_familyer& adata, bool apop = true)
        {
@@ -321,7 +365,7 @@ namespace ngl
            int32_t lmlastsignutc;
            int32_t lmlastleaveutc;
            pbdb::db_familyer::eposition lmposition;
-           if(!nlua_stack::stack_pop(L, lmid, lmjoinutc, lmlastsignutc, lmlastleaveutc, lmposition))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mjoinutc", lmjoinutc, "mlastsignutc", lmlastsignutc, "mlastleaveutc", lmlastleaveutc, "mposition", lmposition))
            {
                return false;
            }
@@ -334,13 +378,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_familyer& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_familyer& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -348,13 +398,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_friends& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mfriends(),adata.mapplyfriends());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mfriends", adata.mfriends(),"mapplyfriends", adata.mapplyfriends());
        }
        static bool stack_pop(lua_State* L, pbdb::db_friends& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mfriends(),  *adata.mutable_mapplyfriends()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mfriends",  *adata.mutable_mfriends(), "mapplyfriends",  *adata.mutable_mapplyfriends()))
            {
                return false;
            }
@@ -363,13 +412,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_friends& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_friends& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -377,14 +432,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_keyvalue& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mvalue());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mvalue", adata.mvalue());
        }
        static bool stack_pop(lua_State* L, pbdb::db_keyvalue& adata, bool apop = true)
        {
            int64_t lmid;
            std::string lmvalue;
-           if(!nlua_stack::stack_pop(L, lmid, lmvalue))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mvalue", lmvalue))
            {
                return false;
            }
@@ -394,13 +448,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_keyvalue& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_keyvalue& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -408,13 +468,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_mail& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mmail());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mmail", adata.mmail());
        }
        static bool stack_pop(lua_State* L, pbdb::db_mail& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mmail()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mmail",  *adata.mutable_mmail()))
            {
                return false;
            }
@@ -423,13 +482,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_mail& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_mail& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -437,8 +502,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_notice& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mnotice(),adata.mstarttime(),adata.mfinishtime());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mnotice", adata.mnotice(),"mstarttime", adata.mstarttime(),"mfinishtime", adata.mfinishtime());
        }
        static bool stack_pop(lua_State* L, pbdb::db_notice& adata, bool apop = true)
        {
@@ -446,7 +510,7 @@ namespace ngl
            std::string lmnotice;
            int32_t lmstarttime;
            int32_t lmfinishtime;
-           if(!nlua_stack::stack_pop(L, lmid, lmnotice, lmstarttime, lmfinishtime))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mnotice", lmnotice, "mstarttime", lmstarttime, "mfinishtime", lmfinishtime))
            {
                return false;
            }
@@ -458,13 +522,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_notice& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_notice& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -472,13 +542,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_ranklist& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mitems());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mitems", adata.mitems());
        }
        static bool stack_pop(lua_State* L, pbdb::db_ranklist& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mitems()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mitems",  *adata.mutable_mitems()))
            {
                return false;
            }
@@ -487,13 +556,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_ranklist& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_ranklist& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -501,13 +576,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_role& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mrecharge());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mrecharge", adata.mrecharge());
        }
        static bool stack_pop(lua_State* L, pbdb::db_role& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mrecharge()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mrecharge",  *adata.mutable_mrecharge()))
            {
                return false;
            }
@@ -516,13 +590,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_role& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_role& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -530,14 +610,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_role::recharge& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mrechargeid(),adata.mutc());
+            ngl::nlua_table::table_push(L, "mrechargeid", adata.mrechargeid(),"mutc", adata.mutc());
        }
        static bool stack_pop(lua_State* L, pbdb::db_role::recharge& adata, bool apop = true)
        {
            int32_t lmrechargeid;
            int32_t lmutc;
-           if(!nlua_stack::stack_pop(L, lmrechargeid, lmutc))
+           if(!ngl::nlua_table::table_pop(L, "mrechargeid", lmrechargeid, "mutc", lmutc))
            {
                return false;
            }
@@ -547,13 +626,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_role::recharge& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_role::recharge& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -561,13 +646,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_rolekeyvalue& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mdata());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mdata", adata.mdata());
        }
        static bool stack_pop(lua_State* L, pbdb::db_rolekeyvalue& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mdata()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mdata",  *adata.mutable_mdata()))
            {
                return false;
            }
@@ -576,13 +660,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_rolekeyvalue& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_rolekeyvalue& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -590,13 +680,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_task& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mrundatas(),adata.mcompleteddatas());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mrundatas", adata.mrundatas(),"mcompleteddatas", adata.mcompleteddatas());
        }
        static bool stack_pop(lua_State* L, pbdb::db_task& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mrundatas(),  *adata.mutable_mcompleteddatas()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mrundatas",  *adata.mutable_mrundatas(), "mcompleteddatas",  *adata.mutable_mcompleteddatas()))
            {
                return false;
            }
@@ -605,13 +694,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_task& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -619,12 +714,11 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_task::complete& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mhistory());
+            ngl::nlua_table::table_push(L, "mhistory", adata.mhistory());
        }
        static bool stack_pop(lua_State* L, pbdb::db_task::complete& adata, bool apop = true)
        {
-           if(!nlua_stack::stack_pop(L,  *adata.mutable_mhistory()))
+           if(!ngl::nlua_table::table_pop(L, "mhistory",  *adata.mutable_mhistory()))
            {
                return false;
            }
@@ -632,13 +726,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task::complete& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_task::complete& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -646,8 +746,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_task::data& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtaskid(),adata.mreceiveutc(),adata.mfinshutc(),adata.mschedules(),adata.mreceive());
+            ngl::nlua_table::table_push(L, "mtaskid", adata.mtaskid(),"mreceiveutc", adata.mreceiveutc(),"mfinshutc", adata.mfinshutc(),"mschedules", adata.mschedules(),"mreceive", adata.mreceive());
        }
        static bool stack_pop(lua_State* L, pbdb::db_task::data& adata, bool apop = true)
        {
@@ -655,7 +754,7 @@ namespace ngl
            int32_t lmreceiveutc;
            int32_t lmfinshutc;
            bool lmreceive;
-           if(!nlua_stack::stack_pop(L, lmtaskid, lmreceiveutc, lmfinshutc,  *adata.mutable_mschedules(), lmreceive))
+           if(!ngl::nlua_table::table_pop(L, "mtaskid", lmtaskid, "mreceiveutc", lmreceiveutc, "mfinshutc", lmfinshutc, "mschedules",  *adata.mutable_mschedules(), "mreceive", lmreceive))
            {
                return false;
            }
@@ -667,13 +766,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task::data& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_task::data& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -681,15 +786,14 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_task::data_schedule& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mtype(),adata.mvalue(),adata.msumint());
+            ngl::nlua_table::table_push(L, "mtype", adata.mtype(),"mvalue", adata.mvalue(),"msumint", adata.msumint());
        }
        static bool stack_pop(lua_State* L, pbdb::db_task::data_schedule& adata, bool apop = true)
        {
            int32_t lmtype;
            int32_t lmvalue;
            int32_t lmsumint;
-           if(!nlua_stack::stack_pop(L, lmtype, lmvalue, lmsumint))
+           if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mvalue", lmvalue, "msumint", lmsumint))
            {
                return false;
            }
@@ -700,13 +804,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task::data_schedule& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_task::data_schedule& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -714,13 +824,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_testlua& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mvalue(),adata.mdatas());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mvalue", adata.mvalue(),"mdatas", adata.mdatas());
        }
        static bool stack_pop(lua_State* L, pbdb::db_testlua& adata, bool apop = true)
        {
            int64_t lmid;
-           if(!nlua_stack::stack_pop(L, lmid,  *adata.mutable_mvalue(),  *adata.mutable_mdatas()))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mvalue",  *adata.mutable_mvalue(), "mdatas",  *adata.mutable_mdatas()))
            {
                return false;
            }
@@ -729,13 +838,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_testlua& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_testlua& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -743,14 +858,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::db_testlua::luadata& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mkey(),adata.mval());
+            ngl::nlua_table::table_push(L, "mkey", adata.mkey(),"mval", adata.mval());
        }
        static bool stack_pop(lua_State* L, pbdb::db_testlua::luadata& adata, bool apop = true)
        {
            std::string lmkey;
            std::string lmval;
-           if(!nlua_stack::stack_pop(L, lmkey, lmval))
+           if(!ngl::nlua_table::table_pop(L, "mkey", lmkey, "mval", lmval))
            {
                return false;
            }
@@ -760,13 +874,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_testlua::luadata& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::db_testlua::luadata& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -774,13 +894,12 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::dbcross_test& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mname(),adata.mvalue());
+            ngl::nlua_table::table_push(L, "mname", adata.mname(),"mvalue", adata.mvalue());
        }
        static bool stack_pop(lua_State* L, pbdb::dbcross_test& adata, bool apop = true)
        {
            std::string lmname;
-           if(!nlua_stack::stack_pop(L, lmname,  *adata.mutable_mvalue()))
+           if(!ngl::nlua_table::table_pop(L, "mname", lmname, "mvalue",  *adata.mutable_mvalue()))
            {
                return false;
            }
@@ -789,13 +908,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::dbcross_test& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::dbcross_test& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -803,8 +928,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::item& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mtid(),adata.mcount(),adata.mlv(),adata.mstar());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mtid", adata.mtid(),"mcount", adata.mcount(),"mlv", adata.mlv(),"mstar", adata.mstar());
        }
        static bool stack_pop(lua_State* L, pbdb::item& adata, bool apop = true)
        {
@@ -813,7 +937,7 @@ namespace ngl
            int32_t lmcount;
            int32_t lmlv;
            int32_t lmstar;
-           if(!nlua_stack::stack_pop(L, lmid, lmtid, lmcount, lmlv, lmstar))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mtid", lmtid, "mcount", lmcount, "mlv", lmlv, "mstar", lmstar))
            {
                return false;
            }
@@ -826,13 +950,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::item& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::item& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -840,8 +970,7 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::mail& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mid(),adata.mcreateutc(),adata.mtid(),adata.mprams(),adata.mcontent(),adata.mitems(),adata.mread(),adata.mdraw());
+            ngl::nlua_table::table_push(L, "mid", adata.mid(),"mcreateutc", adata.mcreateutc(),"mtid", adata.mtid(),"mprams", adata.mprams(),"mcontent", adata.mcontent(),"mitems", adata.mitems(),"mread", adata.mread(),"mdraw", adata.mdraw());
        }
        static bool stack_pop(lua_State* L, pbdb::mail& adata, bool apop = true)
        {
@@ -852,7 +981,7 @@ namespace ngl
            std::string lmcontent;
            bool lmread;
            bool lmdraw;
-           if(!nlua_stack::stack_pop(L, lmid, lmcreateutc, lmtid, lmprams, lmcontent,  *adata.mutable_mitems(), lmread, lmdraw))
+           if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mcreateutc", lmcreateutc, "mtid", lmtid, "mprams", lmprams, "mcontent", lmcontent, "mitems",  *adata.mutable_mitems(), "mread", lmread, "mdraw", lmdraw))
            {
                return false;
            }
@@ -867,13 +996,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::mail& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::mail& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -881,14 +1016,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::mailitem& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mitemtid(),adata.mcount());
+            ngl::nlua_table::table_push(L, "mitemtid", adata.mitemtid(),"mcount", adata.mcount());
        }
        static bool stack_pop(lua_State* L, pbdb::mailitem& adata, bool apop = true)
        {
            int32_t lmitemtid;
            int32_t lmcount;
-           if(!nlua_stack::stack_pop(L, lmitemtid, lmcount))
+           if(!ngl::nlua_table::table_pop(L, "mitemtid", lmitemtid, "mcount", lmcount))
            {
                return false;
            }
@@ -898,13 +1032,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::mailitem& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::mailitem& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
    template <>
@@ -912,14 +1052,13 @@ namespace ngl
    {
        static void stack_push(lua_State* L, const pbdb::rankitem& adata)
        {
-            lua_newtable(L);
-            nlua_stack::stack_push(L, adata.mvalue(),adata.mtime());
+            ngl::nlua_table::table_push(L, "mvalue", adata.mvalue(),"mtime", adata.mtime());
        }
        static bool stack_pop(lua_State* L, pbdb::rankitem& adata, bool apop = true)
        {
            int64_t lmvalue;
            int32_t lmtime;
-           if(!nlua_stack::stack_pop(L, lmvalue, lmtime))
+           if(!ngl::nlua_table::table_pop(L, "mvalue", lmvalue, "mtime", lmtime))
            {
                return false;
            }
@@ -929,13 +1068,19 @@ namespace ngl
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::rankitem& adata)
        {
+           ngl::nlua_table::table_start_push(L, aname);
            stack_push(L, adata);
-           lua_setfield(L, -2, aname);
+           ngl::nlua_table::table_finish_push(L, aname);
        }
        static bool table_pop(lua_State * L, const char* aname, pbdb::rankitem& adata)
        {
-           lua_getfield(L, -1, aname);
-           return stack_pop(L, adata);
+           ngl::nlua_table::table_start_pop(L, aname);
+           if (!stack_pop(L, adata, false))
+           {
+               return false;
+           }
+           ngl::nlua_table::table_finish_pop(L, aname);
+           return true;
        }
    };
 }//namespace ngl

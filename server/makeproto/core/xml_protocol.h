@@ -120,8 +120,8 @@ public:
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
-            m_stream << "            lua_newtable(L);" << std::endl;
-            m_stream << "            nlua_stack::stack_push(L, ";
+            //ngl::nlua_table::table_push(L, "mcount", adata.mcount(), "mreward", adata.mreward());
+            m_stream << "            ngl::nlua_table::table_push(L, ";
             std::cout << "name: " << messageDescriptor->name() << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
@@ -130,7 +130,7 @@ public:
                 {
                     m_stream << ",";
                 }
-                m_stream << "adata." << field->name() << "()";
+                m_stream << "\""<< field->name() <<"\", " << "adata." << field->name() << "()";
             }
             m_stream << ");" << std::endl;
         }
@@ -158,7 +158,7 @@ public:
                     m_stream << "           " << ltypename << " l" << field->name() << ";" << std::endl;
                 }
             }
-            m_stream << "           if(!nlua_stack::stack_pop(L, ";
+            m_stream << "           if(!ngl::nlua_table::table_pop(L, ";
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);
@@ -166,6 +166,8 @@ public:
                 {
                     m_stream << ", ";
                 }
+                m_stream << "\"" << field->name() << "\"" << ", ";
+
                 if (field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE ||
                     field->type() == google::protobuf::FieldDescriptor::TYPE_GROUP ||
                     field->is_repeated()
@@ -225,23 +227,21 @@ public:
 
         m_stream << "       static void table_push(lua_State * L, const char* aname, const " << lmesname << "& adata)" << std::endl;
         m_stream << "       {" << std::endl;
-        if (messageDescriptor->field_count() > 0)
-        {
-            m_stream << "           stack_push(L, adata);" << std::endl;
-            m_stream << "           lua_setfield(L, -2, aname);" << std::endl;
-        }
+        m_stream << "           ngl::nlua_table::table_start_push(L, aname);" << std::endl;
+        m_stream << "           stack_push(L, adata);" << std::endl;
+        m_stream << "           ngl::nlua_table::table_finish_push(L, aname);" << std::endl;
         m_stream << "       }" << std::endl;
         m_stream << "       static bool table_pop(lua_State * L, const char* aname, " << lmesname << "& adata)" << std::endl;
         m_stream << "       {" << std::endl;
-        if (messageDescriptor->field_count() > 0)
-        {
-            m_stream << "           lua_getfield(L, -1, aname);" << std::endl;
-            m_stream << "           return stack_pop(L, adata);" << std::endl;
-        }
-        else
-        {
-            m_stream << "           return true;" << std::endl;
-        }
+       
+        
+        m_stream << "           ngl::nlua_table::table_start_pop(L, aname);" << std::endl;
+        m_stream << "           if (!stack_pop(L, adata, false))" << std::endl;
+        m_stream << "           {" << std::endl;
+        m_stream << "               return false;" << std::endl;
+        m_stream << "           }" << std::endl;
+        m_stream << "           ngl::nlua_table::table_finish_pop(L, aname);" << std::endl;
+        m_stream << "           return true;" << std::endl;
         m_stream << "       }" << std::endl;
 
 

@@ -82,40 +82,18 @@ local function new()
         return cjson.encode(adata)
     end
 
-    function instance:init_sysdata(asysjson)
-        self.sysdata = self:json_decode(asysjson)
+    function instance:init_sysdata(asys)
+         print(json_encode(asys));
+        self.sysdata = asys
     end
 
-    function instance:data_push(aname, asource, ajson, aedit)
-        logger:write("instance:push_data("..aname..","..ajson..(aedit and "true)" or "false)"))
-        if not ajson or ajson == "" then
-            logger:write("Error: ajson is nil or empty")
+    function instance:data_push(aname, asource, adata, aedit)
+        logger:write("instance:push_data("..aname..","..(aedit and "true)" or "false)"))
+        if not adata or adata == "" then
+            logger:write("Error: adata is nil or empty")
             return
         end
-        
-        local parsedData = self:json_decode(ajson)
-        
-        if not self.data[aname] then
-            self.data[aname] = {}
-            self.edit[aname] = aedit
-            self.change[aname] = {}
-            self.del[aname] = {}
-        end
-
-        for k,v in pairs(parsedData) do
-            for k1,v1 in pairs(v) do
-                self.data[aname][k1] = {
-                    parsed_data = v1
-                }
-            end
-	    end
-
-        
-        self.data_source[aname] = asource
-        
-        logger:write("##"..aname.."##")
-        self:print_table(parsedData)
-        logger:write("####")
+        print(json_encode(adata));
     end
 
     function instance:get(aname, adataid)
