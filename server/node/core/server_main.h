@@ -264,6 +264,13 @@ void init_DB_TESTLUA()
 		{
 			ltestlua.add_mvalue(i*1000 + i);
 		}
+		pbdb::db_testlua::luadata ltemp;
+		for (int i = 0; i < 5; ++i)
+		{
+			ltemp.set_mkey(std::format("key_{}", i).c_str());
+			ltemp.set_mval(std::format("val_{}", i).c_str());
+			(*ltestlua.mutable_mdatas())[i] = ltemp;
+		}
 	}
 
 	for (const auto& apair : lmap)

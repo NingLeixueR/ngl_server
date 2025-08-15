@@ -12,10 +12,14 @@ end
 -- parm 参数 
 -- parm adbname     数据名称
 -- parm adata_source 数据来源db,csv,dbnsp
--- parm adatajson   json数据
+-- parm adata       json数据
 -- parm aedit       数据是否允许在lua中修改
-function data_push(aname, asource, ajson, aedit)
-    ngldata:data_push(aname, asource, ajson, aedit)
+function data_push(aname, asource, adata, aedit)
+    print(aname)
+    print(asource)
+    print(adata)
+    print(aedit)
+    ngldata:data_push(aname, asource, adata, aedit)
 end
 
 function data_del(aname, adataid)
