@@ -53,7 +53,7 @@ namespace ngl
 			}
 			if (lua_gettop(L) < m_returncount)
 			{
-				LOG_SCRIPT("{}.{} return count=[{},{}] error", lua_gettop(L), m_returncount);
+				LOG_SCRIPT("{}.{} return count=[{},{}] error", m_scriptpath, m_function, lua_gettop(L), m_returncount);
 				lua_settop(L, -lua_gettop(L));
 				return false;
 			}
