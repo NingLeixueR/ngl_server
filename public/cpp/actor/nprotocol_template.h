@@ -455,29 +455,32 @@ namespace ngl
 	template <typename TDATA>
 	struct np_channel_register
 	{
+		std::string m_msg;										// 调试查看信息
 		i64_actorid	m_actorid		= nguid::make();			// 子节点id
 		bool m_onlyread				= true;						// 是否只读
 		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 
-		dprotocoljson(np_channel_register, m_actorid, m_onlyread, m_dataid)
+		dprotocoljson(np_channel_register, m_msg, m_actorid, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
 	struct np_channel_register_reply
 	{
-		i64_actorid m_actorid;												// 子节点id
-		std::set<i64_actorid> m_onlyreads;									// 只读全部数据
-		std::set<i64_actorid> m_writealls;									// 读/写全部数据
+		std::string m_msg;											// 调试查看信息
+		i64_actorid m_actorid;										// 子节点id
+		std::set<i64_actorid> m_onlyreads;							// 只读全部数据
+		std::set<i64_actorid> m_writealls;							// 读/写全部数据
 		// m_publishlist_write.first:<结点id>
 		// m_publishlist_write.second:<读写的数据id列表>
 		std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist;
 
-		dprotocoljson(np_channel_register_reply, m_actorid, m_onlyreads, m_writealls, m_publishlist)
+		dprotocoljson(np_channel_register_reply, m_msg, m_actorid, m_onlyreads, m_writealls, m_publishlist)
 	};
 
 	template <typename TDATA>
 	struct np_channel_dataid_sync
 	{
+		std::string m_msg;										// 调试查看信息
 		i64_actorid m_actorid = 0;								// 异变的子节点id
 		bool m_add = true;										// 增加还是删除
 		// add
@@ -486,32 +489,35 @@ namespace ngl
 		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 		// ]
 
-		dprotocoljson(np_channel_dataid_sync, m_actorid, m_add, m_onlyread, m_dataid)
+		dprotocoljson(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
 	struct np_channel_exit
 	{
+		std::string				m_msg;							// 调试查看信息
 		i64_actorid				m_actorid;
-		dprotocoljson(np_channel_exit, m_actorid)
+		dprotocoljson(np_channel_exit, m_msg, m_actorid)
 	};
 
 	template <typename TDATA>
 	struct np_channel_data
 	{
+		std::string m_msg;									// 调试查看信息
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
 		protobuf_data<std::map<int64_t, TDATA>> m_data;		// 1、数据同步2、数据修改3、数据增加
 		std::vector<int64_t> m_deldata;						// 数据被删除
-		def_protocol(np_channel_data<TDATA>, m_firstsynchronize, m_recvfinish, m_data)
+		def_protocol(np_channel_data<TDATA>, m_msg, m_firstsynchronize, m_recvfinish, m_data)
 	};
 
 	template <typename TDATA>
 	struct np_channel_check
 	{
+		std::string m_msg;									// 调试查看信息
 		int64_t m_timer;
 		i16_area m_area;
-		dprotocoljson(np_channel_check, m_timer, m_area)
+		dprotocoljson(np_channel_check, m_msg, m_timer, m_area)
 	};
 
 
