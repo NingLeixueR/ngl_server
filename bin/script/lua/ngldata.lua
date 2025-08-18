@@ -93,7 +93,29 @@ local function new()
             logger:write("Error: adata is nil or empty")
             return
         end
-        self:print_table(adata)
+
+        local parsedData = adata
+
+        if not self.data[aname] then
+            self.data[aname] = {}
+            self.edit[aname] = aedit
+            self.change[aname] = {}
+            self.del[aname] = {}
+        end
+
+        for k,v in pairs(parsedData) do
+            for k1,v1 in pairs(v) do
+                self.data[aname][k1] = {
+                    parsed_data = v1
+                }
+            end
+        end
+
+        self.data_source[aname] = asource
+
+        logger:write("##"..aname.."##")
+        self:print_table(self.data[aname])
+        logger:write("####")
     end
 
     function instance:get(aname, adataid)
@@ -148,7 +170,7 @@ local function new()
     function instance:data_checkout(aname)
         logger:write("instance:check_outdata("..aname..")")
         if self.edit[aname] == false then
-            return false, ""
+            return false, nil
         end
         ret = {}
         self:print_table(self.change[aname])
@@ -163,17 +185,17 @@ local function new()
             end
             self.change[aname] = {}
             if retbool then
-                return true, self:json_encode(ret)
+                return true, ret
             end
         end
-        return false, ""
+        return false, nil
     end
 
 	-- 拉起指定变化数据
     function instance:data_checkoutbyid(aname, adataid)
         logger:write("instance:data_checkoutbyid("..aname..", "..adataid..")")
         if self.edit[aname] == false then
-            return false, ""
+            return false, nil
         end
         ret = {}
         self:print_table(self.change[aname])
@@ -188,15 +210,15 @@ local function new()
             end
         end
         if retbool then
-			return true, self:json_encode(ret)
+			return true, ret
         end
-        return false, ""
+        return false, nil
     end
 
     function instance:data_checkdel(aname)
         logger:write("instance:data_checkdel("..aname..")")
         if self.edit[aname] == false then
-            return false, ""
+            return false, nil
         end
         ret = {}
         ret[aname] = {}
@@ -210,16 +232,16 @@ local function new()
             end
             self.del[aname] = {}
             if retbool then
-                return true, self:json_encode(ret)
+                return true, ret
             end
         end
-        return false, ""
+        return false, nil
     end
 
     function instance:data_checkdelbyid(aname, adataid)
         logger:write("instance:data_checkdelbyid("..aname..", "..adataid..")")
         if self.edit[aname] == false then
-            return false, ""
+            return false, nil
         end
         ret = {}
         ret[aname] = {}
@@ -230,9 +252,9 @@ local function new()
         end
         self.del[aname][adataid] = nil
         if retbool then
-            return true, self:json_encode(ret)
+            return true, ret
         end
-        return false, ""
+        return false, nil
     end
     
 

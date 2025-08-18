@@ -34,6 +34,12 @@ namespace ngl
 
 		static ndb_modular<ENUMDB, TDATA, TDerived>*			m_dbmodule;
 
+		template <typename TX>
+		static void msg_info(TX& adata)
+		{
+			adata.m_msg = std::format("{}:{}", tools::type_name<TDerived>(), tools::type_name<TDATA>());
+		}
+
 		static void log(const char* amessage)
 		{
 			m_dbmodule->get_actor()->log_error()->print(
@@ -119,6 +125,7 @@ namespace ngl
 					}
 				}
 				lset.erase(lactorid);
+				msg_info(*pro);
 				actor::send_actor(lset, nguid::make(), pro);
 			}
 			
@@ -129,6 +136,7 @@ namespace ngl
 				pro->m_onlyreads = m_onlyreads;
 				pro->m_writealls = m_writealls;
 				pro->m_publishlist = m_publishlist;
+				msg_info(*pro);
 				actor::send_actor(lactorid, nguid::make(), pro);
 			}
 
@@ -147,12 +155,14 @@ namespace ngl
 						lmapdata[itempair.first] = *lpddataconst;
 						if (lmapdata.size() >= ESEND_MAX_COUNT)
 						{
+							msg_info(*pro);
 							actor::send_actor(lactorid, nguid::make(), pro);
 							pro = std::make_shared<np_channel_data<TDATA>>();
 							pro->m_data.make();
 						}
 					}
 					pro->m_recvfinish = true;
+					msg_info(*pro);
 					actor::send_actor(lactorid, nguid::make(), pro);
 					return;
 				}
@@ -169,6 +179,7 @@ namespace ngl
 						}
 					}
 				}
+				msg_info(*pro);
 				actor::send_actor(lactorid, nguid::make(), pro);
 			}
 		}
@@ -230,6 +241,7 @@ namespace ngl
 			}
 
 			m_publishlist.erase(recv->m_actorid);
+			msg_info(*pro);
 			actor::send_actor(lset, nguid::make(), pro);
 		}
 
@@ -304,6 +316,7 @@ namespace ngl
 			}
 			if (!lmap.empty())
 			{
+				msg_info(*pro);
 				actor::send_actor(aactor, nguid::make(), pro);
 			}
 		}

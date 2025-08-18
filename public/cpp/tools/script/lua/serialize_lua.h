@@ -576,15 +576,19 @@ namespace ngl
 
 		static bool stack_pop(lua_State* L, std::vector<T>& adata, bool apop = true)
 		{
-			std::map<int32_t, T> lmap;
-			if (!tools_pop_tables::keyvalues(L, lmap))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
+				std::map<int32_t, T> lmap;
+				if (!tools_pop_tables::keyvalues(L, lmap))
+				{
+					return false;
+				}
+				for (const auto& item : lmap)
+				{
+					adata.push_back(item.second);
+				}
 			}
-			for (const auto& item : lmap)
-			{
-				adata.push_back(item.second);
-			}
+			
 			if (apop)
 			{
 				lua_pop(L, 1);
@@ -621,15 +625,19 @@ namespace ngl
 
 		static bool stack_pop(lua_State* L, std::set<T>& adata, bool apop = true)
 		{
-			std::map<int32_t, T> lmap;
-			if (!tools_pop_tables::keyvalues(L, lmap))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
+				std::map<int32_t, T> lmap;
+				if (!tools_pop_tables::keyvalues(L, lmap))
+				{
+					return false;
+				}
+				for (const auto& item : lmap)
+				{
+					adata.insert(item.second);
+				}
 			}
-			for (const auto& item : lmap)
-			{
-				adata.insert(item.second);
-			}
+			
 			if (apop)
 			{
 				lua_pop(L, 1);
@@ -684,9 +692,12 @@ namespace ngl
 
 		static bool stack_pop(lua_State* L, std::map<KEY, VAL>& adata, bool apop = true)
 		{
-			if (!tools_pop_tables::keyvalues(L, adata))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
+				if (!tools_pop_tables::keyvalues(L, adata))
+				{
+					return false;
+				}
 			}
 			if (apop)
 			{
@@ -723,9 +734,12 @@ namespace ngl
 
 		static bool stack_pop(lua_State* L, google::protobuf::Map<KEY, VAL>& adata, bool apop = true)
 		{
-			if (!tools_pop_tables::keyvalues(L, adata))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
+				if (!tools_pop_tables::keyvalues(L, adata))
+				{
+					return false;
+				}
 			}
 			if (apop)
 			{
@@ -762,15 +776,19 @@ namespace ngl
 
 		static bool stack_pop(lua_State* L, google::protobuf::RepeatedPtrField<T>& adata, bool apop = true)
 		{
-			std::map<int32_t, T> lmap;
-			if (!tools_pop_tables::keyvalues(L, lmap))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
+				std::map<int32_t, T> lmap;
+				if (!tools_pop_tables::keyvalues(L, lmap))
+				{
+					return false;
+				}
+				for (const auto& item : lmap)
+				{
+					*adata.Add() = item.second;
+				}
 			}
-			for (const auto& item : lmap)
-			{
-				*adata.Add() = item.second;
-			}
+			
 			if (apop)
 			{
 				lua_pop(L, 1);
@@ -806,15 +824,19 @@ namespace ngl
 
 		static bool stack_pop(lua_State* L, google::protobuf::RepeatedField<T>& adata, bool apop = true)
 		{
-			std::map<int32_t, T> lmap;
-			if (!tools_pop_tables::keyvalues(L, lmap))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
+				std::map<int32_t, T> lmap;
+				if (!tools_pop_tables::keyvalues(L, lmap))
+				{
+					return false;
+				}
+				for (const auto& item : lmap)
+				{
+					*adata.Add() = item.second;
+				}
 			}
-			for (const auto& item : lmap)
-			{
-				*adata.Add() = item.second;
-			}
+			
 			if (apop)
 			{
 				lua_pop(L, 1);
@@ -849,6 +871,11 @@ namespace ngl
 			stack_push(L, aargs...);
 		}
 
+		static bool stack_pop(lua_State* L)
+		{
+			return true;
+		}
+
 		template <typename T>
 		static bool stack_pop(lua_State* L, T& adata)
 		{
@@ -864,7 +891,6 @@ namespace ngl
 		template <typename ...TARGS>
 		static bool stack_pop(lua_State* L, TARGS&... aargs)
 		{
-			int32_t lpos = -sizeof...(TARGS);
 			return stack_pop(L, aargs...);
 		}
 	};
@@ -945,7 +971,20 @@ namespace ngl
 			{
 				lua_getfield(ainfo.L, -1, ainfo.m_name);
 			}
+			if (table_isnil(ainfo.L))
+			{
+				return true;
+			}
 			return table_pop(ainfo.L, args...);
+		}
+
+		static bool table_isnil(lua_State* L)
+		{
+			if (lua_isnil(L, -1))
+			{
+				return true;
+			}
+			return false;
 		}
 
 		static bool table_start_pop(lua_State* L, const char* aname)
@@ -1095,12 +1134,20 @@ public:
 	template <typename T>
 	bool pop(T& adata)
 	{
+		if(ngl::nlua_table::table_isnil(L))
+		{
+			return true;
+		}
 		return ngl::nlua_table::table_pop(L, m_vec[m_pos--], adata);
 	}
 
 	template <typename T, typename ...TARGS>
 	bool pop(T& adata, TARGS&... args)
 	{
+		if (ngl::nlua_table::table_isnil(L))
+		{
+			return true;
+		}
 		return pop(args...) && pop(adata);
 	}
 };

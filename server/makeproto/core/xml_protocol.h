@@ -141,6 +141,10 @@ public:
         m_stream << "       {" << std::endl;
         if (messageDescriptor->field_count() > 0)
         {
+            m_stream << "           if (ngl::nlua_table::table_isnil(L))" << std::endl;
+            m_stream << "           {" << std::endl;
+            m_stream << "               return true;" << std::endl;
+            m_stream << "           }" << std::endl;
             for (int i = 0; i < messageDescriptor->field_count(); ++i)
             {
                 const google::protobuf::FieldDescriptor* field = messageDescriptor->field(i);

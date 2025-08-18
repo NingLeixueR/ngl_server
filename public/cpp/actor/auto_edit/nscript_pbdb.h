@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-15 15:16:46】
+ // 创建时间【2025-08-18 16:30:51】
 
 #pragma once
 #include "ndefine.h"
@@ -18,6 +18,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::activity_drawcompliance& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmcount;
            if(!ngl::nlua_table::table_pop(L, "mcount", lmcount, "mreward",  *adata.mutable_mreward()))
            {
@@ -52,6 +56,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::activity_task& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mopen",  *adata.mutable_mopen(), "mclose",  *adata.mutable_mclose()))
            {
                return false;
@@ -84,6 +92,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::brief_activityvalues& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mactivity_rolelv",  *adata.mutable_mactivity_rolelv(), "mactivity_rolegold",  *adata.mutable_mactivity_rolegold()))
            {
                return false;
@@ -116,6 +128,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_account& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            int64_t lmroleid;
            std::string lmaccount;
@@ -158,6 +174,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_activity& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mtask",  *adata.mutable_mtask(), "mdrawcompliance",  *adata.mutable_mdrawcompliance()))
            {
@@ -192,6 +212,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_activitytimes& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            int32_t lmbeg;
            int32_t lmduration;
@@ -232,6 +256,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_bag& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            int32_t lmmaxid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mitems",  *adata.mutable_mitems(), "mmaxid", lmmaxid))
@@ -268,6 +296,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_brief& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            std::string lmname;
            int32_t lmlv;
@@ -316,6 +348,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_family& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            int32_t lmcreateutc;
            std::string lmname;
@@ -360,6 +396,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_familyer& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            int32_t lmjoinutc;
            int32_t lmlastsignutc;
@@ -402,6 +442,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_friends& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mfriends",  *adata.mutable_mfriends(), "mapplyfriends",  *adata.mutable_mapplyfriends()))
            {
@@ -436,6 +480,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_keyvalue& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            std::string lmvalue;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mvalue", lmvalue))
@@ -472,6 +520,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_mail& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mmail",  *adata.mutable_mmail()))
            {
@@ -506,6 +558,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_notice& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            std::string lmnotice;
            int32_t lmstarttime;
@@ -546,6 +602,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_ranklist& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mitems",  *adata.mutable_mitems()))
            {
@@ -580,6 +640,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_role& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mrecharge",  *adata.mutable_mrecharge()))
            {
@@ -614,6 +678,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_role::recharge& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmrechargeid;
            int32_t lmutc;
            if(!ngl::nlua_table::table_pop(L, "mrechargeid", lmrechargeid, "mutc", lmutc))
@@ -650,6 +718,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_rolekeyvalue& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mdata",  *adata.mutable_mdata()))
            {
@@ -684,6 +756,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_task& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mrundatas",  *adata.mutable_mrundatas(), "mcompleteddatas",  *adata.mutable_mcompleteddatas()))
            {
@@ -718,6 +794,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_task::complete& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mhistory",  *adata.mutable_mhistory()))
            {
                return false;
@@ -750,6 +830,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_task::data& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtaskid;
            int32_t lmreceiveutc;
            int32_t lmfinshutc;
@@ -790,6 +874,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_task::data_schedule& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtype;
            int32_t lmvalue;
            int32_t lmsumint;
@@ -828,6 +916,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_testlua& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mvalue",  *adata.mutable_mvalue(), "mdatas",  *adata.mutable_mdatas()))
            {
@@ -862,6 +954,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::db_testlua::luadata& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmkey;
            std::string lmval;
            if(!ngl::nlua_table::table_pop(L, "mkey", lmkey, "mval", lmval))
@@ -898,6 +994,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::dbcross_test& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmname;
            if(!ngl::nlua_table::table_pop(L, "mname", lmname, "mvalue",  *adata.mutable_mvalue()))
            {
@@ -932,6 +1032,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::item& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmid;
            int32_t lmtid;
            int32_t lmcount;
@@ -974,6 +1078,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::mail& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmid;
            int32_t lmcreateutc;
            int32_t lmtid;
@@ -1020,6 +1128,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::mailitem& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmitemtid;
            int32_t lmcount;
            if(!ngl::nlua_table::table_pop(L, "mitemtid", lmitemtid, "mcount", lmcount))
@@ -1056,6 +1168,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbdb::rankitem& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmvalue;
            int32_t lmtime;
            if(!ngl::nlua_table::table_pop(L, "mvalue", lmvalue, "mtime", lmtime))

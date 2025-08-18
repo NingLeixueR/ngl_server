@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-15 15:16:46】
+ // 创建时间【2025-08-18 16:30:51】
 
 #pragma once
 #include "ndefine.h"
@@ -18,6 +18,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PLAYER& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            bool lmisconfirm;
            if(!ngl::nlua_table::table_pop(L, "mplayers",  *adata.mutable_mplayers(), "misconfirm", lmisconfirm))
            {
@@ -52,6 +56,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmguessnumber;
            if(!ngl::nlua_table::table_pop(L, "mguessnumber", lmguessnumber))
            {
@@ -86,6 +94,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmbombvalue;
            int64_t lmroleid;
            if(!ngl::nlua_table::table_pop(L, "mbombvalue", lmbombvalue, "mroleid", lmroleid))
@@ -122,6 +134,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::E_GUESS_NUMBER_ERROR lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -156,6 +172,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmmaxnumber;
            int32_t lmminnumber;
            int64_t lmwhoguess;
@@ -194,6 +214,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::EPLAY_TYPE lmtype;
            int32_t lmroomid;
            if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mroomid", lmroomid))
@@ -230,6 +254,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_CREATE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::EPLAY_TYPE lmtype;
            int64_t lmexampleactorid;
            pbexample::PROBUFF_EXAMPLE_PLAY_CREATE::estat lmstat;
@@ -268,6 +296,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::ECROSS lmcross;
            pbexample::EPLAY_TYPE lmtype;
            int64_t lmexampleactorid;
@@ -306,6 +338,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::ECROSS lmcross;
            pbexample::EPLAY_TYPE lmtype;
            int64_t lmexampleactorid;
@@ -344,6 +380,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::ECROSS lmcross;
            pbexample::EPLAY_TYPE lmtype;
            if(!ngl::nlua_table::table_pop(L, "mcross", lmcross, "mtype", lmtype))
@@ -380,6 +420,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmroomid;
            if(!ngl::nlua_table::table_pop(L, "mroomid", lmroomid))
            {
@@ -414,6 +458,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmroomid;
            int32_t lmtotalnumber;
            int64_t lmroomcreate;
@@ -454,6 +502,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbexample::PLAY_MATCHING_EERROR_CODE lmerrorcode;
            int32_t lmroomid;
            if(!ngl::nlua_table::table_pop(L, "merrorcode", lmerrorcode, "mroomid", lmroomid))
@@ -490,6 +542,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            bool lmisconfirm;
            int32_t lmroomid;
            if(!ngl::nlua_table::table_pop(L, "misconfirm", lmisconfirm, "mroomid", lmroomid))

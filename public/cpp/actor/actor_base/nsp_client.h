@@ -43,6 +43,11 @@ namespace ngl
 
 		nsp_client() = default;
 	private:
+		template <typename TX>
+		static void msg_info(TX& adata)
+		{
+			adata.m_msg = std::format("{}:{}:{}", tools::type_name<TDerived>(), tools::type_name<TACTOR>(), tools::type_name<T>());
+		}
 
 		void log(const char* amessage)
 		{
@@ -92,8 +97,8 @@ namespace ngl
 					m_deldatafun(dataid);
 				}
 			}
-			//actor_base::nscript_data_nsp<T> ltemp(m_data);
-			//m_actor->nscript_data_push("nsp", ltemp, m_onlyread == false);
+			actor_base::nscript_data_nsp<T> ltemp(m_data);
+			m_actor->nscript_data_push("nsp", ltemp, m_onlyread == false);
 		}
 
 		// # 打印信息
@@ -338,7 +343,8 @@ namespace ngl
 						{
 							return;
 						}
-						log_error()->print("nsp_client recv np_channel_data<{}> : {}", typeid(T).name(), nguid(aacotor->id_guid()));
+						log_error()->print("nsp_client recv np_channel_data<{}> : {}", 
+							typeid(T).name(), nguid(aacotor->id_guid()));
 						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_data(aacotor, adata);
 					}, false);
 
@@ -350,7 +356,8 @@ namespace ngl
 						{
 							return;
 						}
-						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_register_reply(aacotor, adata);
+						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid())
+							.channel_register_reply(aacotor, adata);
 					}, false);
 
 				// 检查
@@ -361,7 +368,8 @@ namespace ngl
 						{
 							return;
 						}
-						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_check(aacotor, adata);
+						nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid())
+							.channel_check(aacotor, adata);
 					}, false);
 
 				// 同步channel_dataid
@@ -374,41 +382,9 @@ namespace ngl
 							{
 								return;
 							}
-							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid()).channel_dataid_sync(aacotor, adata);
+							nsp_client<TDerived, TACTOR, T>::instance(aacotor->id_guid())
+								.channel_dataid_sync(aacotor, adata);
 						}, false);
-
-					/*m_actor->nscript_correlation_checkout<T>(actor_base::ecorrelation_nsp,
-						[this](const char* ajson)->bool
-						{
-							std::map<int64_t, T> lmap;
-							if (!tools::json2proto(ajson, lmap))
-							{
-								return false;
-							}
-							for (const auto& item : lmap)
-							{
-								m_data[item.first] = item.second;
-								change(item.first);
-							}
-							return true;
-						},
-						[this](const char* ajson)
-						{
-							json_read lread(ajson);
-							std::vector<std::string> lvec;
-							if (!lread.read(tools::type_name<T>().c_str(), lvec))
-							{
-								return false;
-							}
-							std::vector<int64_t> l64vec;
-							for (const std::string& item : lvec)
-							{
-								l64vec.push_back(tools::lexical_cast<int64_t>(item));
-							}
-							del(l64vec);
-							return true;
-						}
-					);*/	
 				}			
 			}
 
@@ -428,6 +404,7 @@ namespace ngl
 								.m_timer = anode->m_timerid,
 								.m_area = larea,
 							});
+						msg_info(*pro);
 						actor::send_actor(lactorid, nguid::make(), pro);
 					}
 				};twheel::wheel().addtimer(lparm);
@@ -488,6 +465,7 @@ namespace ngl
 			}
 			for (auto itor = lmap.begin(); itor != lmap.end(); ++itor)
 			{
+				msg_info(*itor->second);
 				actor::send_actor(m_nspserver[itor->first], nguid::make(), itor->second);
 			}
 		}
@@ -537,6 +515,7 @@ namespace ngl
 			(*pro->m_data.m_data)[adataid] = *lpdata;
 
 			// # 发送给nsp server
+			msg_info(*pro);
 			actor::send_actor(m_nspserver[nguid::area(adataid)], nguid::make(), pro);
 			// # 发送给其他nsp client结点
 			std::set<i64_actorid> lnodeids;
@@ -550,6 +529,7 @@ namespace ngl
 			{
 				lnodeids.insert(itor->second.begin(), itor->second.end());
 			}
+			msg_info(*pro);
 			actor::send_actor(lnodeids, m_actor->id_guid(), pro);
 			return true;
 		}
@@ -590,6 +570,8 @@ namespace ngl
 				pro->m_deldata.push_back(dataid);
 				lnodeserver.insert(nguid::area(dataid));
 			}
+
+			msg_info(*pro);
 			
 			// # 发送给nsp server
 			for (i16_area area : lnodeserver)
@@ -611,6 +593,7 @@ namespace ngl
 					lnodeids.insert(itor->second.begin(), itor->second.end());
 				}
 			}
+			msg_info(*pro);
 			actor::send_actor(lnodeids, m_actor->id_guid(), pro);
 			return true;
 		}
@@ -627,6 +610,7 @@ namespace ngl
 		{
 			auto pro = std::make_shared<np_channel_exit<T>>();
 			pro->m_actorid = m_actor->id_guid();
+			msg_info(*pro);
 
 			const std::set<i16_area>* lsetarea = ttab_servers::instance().get_arealist(nconfig::m_nodeid);
 			if (lsetarea != nullptr)
@@ -647,6 +631,7 @@ namespace ngl
 			pro->m_onlyread = m_onlyread;
 			pro->m_dataid = m_dataid;
 			log_error()->print("nsp_client register: {} -> {}", nguid(pro->m_actorid), nguid(m_nspserver[aarea]));
+			msg_info(*pro);
 			actor::send_actor(m_nspserver[aarea], nguid::make(), pro);
 		}
 	};

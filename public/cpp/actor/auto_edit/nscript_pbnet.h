@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-15 15:16:46】
+ // 创建时间【2025-08-18 16:30:51】
 
 #pragma once
 #include "ndefine.h"
@@ -18,6 +18,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmarea;
            std::string lmaccount;
            std::string lmpassword;
@@ -56,6 +60,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmarea;
            int64_t lmroleid;
            std::string lmsession;
@@ -125,6 +133,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mbag",  *adata.mutable_mbag()))
            {
                return false;
@@ -157,6 +169,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mdelitems",  *adata.mutable_mdelitems(), "mdelnostackitems",  *adata.mutable_mdelnostackitems(), "madditems",  *adata.mutable_madditems(), "maddnostackitems",  *adata.mutable_maddnostackitems()))
            {
                return false;
@@ -189,6 +205,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmid;
            int32_t lmcount;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mcount", lmcount))
@@ -225,6 +245,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmid;
            int32_t lmcount;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mcount", lmcount))
@@ -261,6 +285,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHANGE_ANGLE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mposition",  *adata.mutable_mposition()))
            {
                return false;
@@ -293,6 +321,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHAT& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtype;
            int32_t lmchannelid;
            std::string lmcontent;
@@ -331,6 +363,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CHAT_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtype;
            int32_t lmchannelid;
            bool lmstat;
@@ -369,6 +405,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_CMD& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmcmd;
            if(!ngl::nlua_table::table_pop(L, "mcmd", lmcmd))
            {
@@ -403,6 +443,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmrechargeid;
            std::string lmorderid;
            int32_t lmgold;
@@ -441,6 +485,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            bool lmisenter;
            if(!ngl::nlua_table::table_pop(L, "misenter", lmisenter, "munits",  *adata.mutable_munits()))
            {
@@ -475,6 +523,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ERROR& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmerrmessage;
            if(!ngl::nlua_table::table_pop(L, "merrmessage", lmerrmessage))
            {
@@ -509,6 +561,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CEDE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmroleid;
            if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid))
            {
@@ -543,6 +599,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -577,6 +637,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfamilid;
            std::string lmname;
            if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid, "mname", lmname))
@@ -613,6 +677,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -647,6 +715,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CREATE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmname;
            if(!ngl::nlua_table::table_pop(L, "mname", lmname))
            {
@@ -681,6 +753,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -742,6 +818,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat, "minfo",  *adata.mutable_minfo(), "mmember",  *adata.mutable_mmember()))
            {
@@ -776,6 +856,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_JOIN& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfamilid;
            bool lmapply;
            if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid, "mapply", lmapply))
@@ -812,6 +896,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -846,6 +934,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LEAVE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfamilid;
            if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid))
            {
@@ -880,6 +972,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -914,6 +1010,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LIST& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfamilid;
            if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid))
            {
@@ -948,6 +1048,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfamilid;
            if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid, "mfamily",  *adata.mutable_mfamily()))
            {
@@ -982,6 +1086,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmroleid;
            bool lmratify;
            if(!ngl::nlua_table::table_pop(L, "mroleid", lmroleid, "mratify", lmratify))
@@ -1018,6 +1126,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -1052,6 +1164,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_SIGN& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfamilid;
            if(!ngl::nlua_table::table_pop(L, "mfamilid", lmfamilid))
            {
@@ -1086,6 +1202,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mstat", lmstat))
            {
@@ -1147,6 +1267,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ADD& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfriedid;
            if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid))
            {
@@ -1181,6 +1305,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfriedid;
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mstat", lmstat))
@@ -1217,6 +1345,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ERASE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfriedid;
            if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid))
            {
@@ -1251,6 +1383,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfriedid;
            int32_t lmstat;
            if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mstat", lmstat))
@@ -1287,6 +1423,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfriedid;
            bool lmratify;
            if(!ngl::nlua_table::table_pop(L, "mfriedid", lmfriedid, "mratify", lmratify))
@@ -1323,6 +1463,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmfriedid;
            bool lmratify;
            int32_t lmstat;
@@ -1361,6 +1505,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mfriends",  *adata.mutable_mfriends(), "mapplyfriends",  *adata.mutable_mapplyfriends()))
            {
                return false;
@@ -1420,6 +1568,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmutc;
            if(!ngl::nlua_table::table_pop(L, "mutc", lmutc))
            {
@@ -1481,6 +1633,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmserverid;
            std::string lmuip;
            int32_t lmuport;
@@ -1521,6 +1677,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmkcpsession;
            if(!ngl::nlua_table::table_pop(L, "mkcpsession", lmkcpsession))
            {
@@ -1555,6 +1715,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DEL& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmmailid;
            if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid))
            {
@@ -1589,6 +1753,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmmailid;
            bool lmstat;
            if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid, "mstat", lmstat))
@@ -1625,6 +1793,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DRAW& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmmailid;
            if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid))
            {
@@ -1659,6 +1831,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmmailid;
            bool lmstat;
            if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid, "mstat", lmstat))
@@ -1722,6 +1898,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_LIST_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mmail",  *adata.mutable_mmail()))
            {
                return false;
@@ -1754,6 +1934,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_READ& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmmailid;
            if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid))
            {
@@ -1788,6 +1972,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmmailid;
            bool lmstat;
            if(!ngl::nlua_table::table_pop(L, "mmailid", lmmailid, "mstat", lmstat))
@@ -1824,6 +2012,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MSG_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            std::string lmmsg;
            if(!ngl::nlua_table::table_pop(L, "mmsg", lmmsg))
            {
@@ -1885,6 +2077,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_NOTICE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mnotices",  *adata.mutable_mnotices()))
            {
                return false;
@@ -1917,6 +2113,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RANKLIST& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            bool lmiscross;
            pbdb::eranklist lmtype;
            int32_t lmactivityid;
@@ -1957,6 +2157,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbdb::eranklist lmtype;
            int32_t lmpage;
            int32_t lmcount;
@@ -1997,6 +2201,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RECHARGE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmrechargeid;
            if(!ngl::nlua_table::table_pop(L, "mrechargeid", lmrechargeid))
            {
@@ -2031,6 +2239,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmrechargeid;
            pbnet::PROBUFF_NET_RECHARGE_RESPONSE::Estat lmstat;
            std::string lmorderid;
@@ -2069,6 +2281,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_REWARD_ITEM_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mitems",  *adata.mutable_mitems()))
            {
                return false;
@@ -2101,6 +2317,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLESTAT& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbnet::PROBUFF_NET_ROLESTAT::stat lmstat;
            pbnet::PROBUFF_NET_ROLESTAT::logic_stat lmlogicstat;
            int64_t lmroleid;
@@ -2139,6 +2359,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_LOGIN& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmroleid;
            std::string lmsession;
            bool lmiscreate;
@@ -2208,6 +2432,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_SYNC_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mrole",  *adata.mutable_mrole(), "mbrief",  *adata.mutable_mbrief(), "mbag",  *adata.mutable_mbag(), "mtask",  *adata.mutable_mtask()))
            {
                return false;
@@ -2240,6 +2468,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SWITCH_LINE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmline;
            if(!ngl::nlua_table::table_pop(L, "mline", lmline))
            {
@@ -2274,6 +2506,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmline;
            bool lmstat;
            if(!ngl::nlua_table::table_pop(L, "mline", lmline, "mstat", lmstat))
@@ -2310,6 +2546,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_ATTRIBUTE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mmodules",  *adata.mutable_mmodules()))
            {
                return false;
@@ -2342,6 +2582,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_POSITION& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "mposition",  *adata.mutable_mposition()))
            {
                return false;
@@ -2374,6 +2618,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_SYNC_UNIT& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            if(!ngl::nlua_table::table_pop(L, "munits",  *adata.mutable_munits()))
            {
                return false;
@@ -2406,6 +2654,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtaskid;
            if(!ngl::nlua_table::table_pop(L, "mtaskid", lmtaskid))
            {
@@ -2440,6 +2692,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtaskid;
            bool lmstat;
            if(!ngl::nlua_table::table_pop(L, "mtaskid", lmtaskid, "mstat", lmstat, "mdrop",  *adata.mutable_mdrop()))
@@ -2476,6 +2732,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_TESTLUA& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            std::string lmvalue;
            if(!ngl::nlua_table::table_pop(L, "mid", lmid, "mvalue", lmvalue, "mdata",  *adata.mutable_mdata()))
@@ -2512,6 +2772,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::UNIT& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            pbnet::eunit lmtype;
            int64_t lmid;
            pbnet::eunitstat lmstat;
@@ -2550,6 +2814,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::UNIT_POSITION& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmid;
            int32_t lmangle;
            int32_t lmspeed;
@@ -2588,6 +2856,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::UnitAttribute& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmtype;
            int64_t lmvalue;
            if(!ngl::nlua_table::table_pop(L, "mtype", lmtype, "mvalue", lmvalue))
@@ -2624,6 +2896,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::UnitModule& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmmtype;
            if(!ngl::nlua_table::table_pop(L, "mmtype", lmmtype, "mmodules",  *adata.mutable_mmodules()))
            {
@@ -2658,6 +2934,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::VECTOR2& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmx;
            int32_t lmy;
            if(!ngl::nlua_table::table_pop(L, "mx", lmx, "my", lmy))
@@ -2694,6 +2974,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::VECTOR3& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmx;
            int32_t lmy;
            int32_t lmz;
@@ -2732,6 +3016,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::chatitem& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int64_t lmroleid;
            std::string lmrolename;
            std::string lmcontent;
@@ -2772,6 +3060,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::drop_item& adata, bool apop = true)
        {
+           if (ngl::nlua_table::table_isnil(L))
+           {
+               return true;
+           }
            int32_t lmitem;
            int32_t lmcount;
            if(!ngl::nlua_table::table_pop(L, "mitem", lmitem, "mcount", lmcount))

@@ -12,13 +12,9 @@ end
 -- parm 参数 
 -- parm adbname     数据名称
 -- parm adata_source 数据来源db,csv,dbnsp
--- parm adata       json数据
+-- parm adata       数据
 -- parm aedit       数据是否允许在lua中修改
 function data_push(aname, asource, adata, aedit)
-    print(aname)
-    print(asource)
-    print(adata)
-    print(aedit)
     ngldata:data_push(aname, asource, adata, aedit)
 end
 
@@ -28,7 +24,9 @@ end
 
 -- 检查数据是否被修改
 function data_checkout(aname, adataid)
-    if adataid == "-1" then
+    print(aname)
+    print(adataid)
+    if adataid == nil or adataid == -1 then
         return ngldata:data_checkout(aname)
     else
         return ngldata:data_checkoutbyid(aname, adataid)
@@ -37,7 +35,7 @@ end
 
 -- 检查数据是否被删除
 function data_checkdel(aname, adataid)
-     if adataid == "-1" then
+     if adataid == nil or adataid == -1 then
         return ngldata:data_checkdel(aname)
     else
         return ngldata:data_checkdelbyid(aname, adataid)
