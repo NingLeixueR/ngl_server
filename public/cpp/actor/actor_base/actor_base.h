@@ -226,6 +226,7 @@ namespace ngl
 		template <typename T>
 		struct nscript_data_csv
 		{
+			using TDATA = T;
 			const std::map<int32_t, T>& data;
 
 			nscript_data_csv(const std::map<int32_t, T>& adata) :
@@ -238,6 +239,7 @@ namespace ngl
 		template <typename T>
 		struct nscript_data_db
 		{
+			using TDATA = T;
 			std::map<int64_t, T*> data;
 
 			dprotocoljson(nscript_data_db<T>, data)
@@ -246,6 +248,7 @@ namespace ngl
 		template <typename T>
 		struct nscript_data_nsp
 		{
+			using TDATA = T;
 			const std::map<int64_t, T>& data;
 			nscript_data_nsp(const std::map<int64_t, T>& adata) :
 				data(adata)

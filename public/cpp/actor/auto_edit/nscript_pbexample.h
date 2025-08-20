@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-18 16:30:51】
+ // 创建时间【2025-08-20 09:44:01】
 
 #pragma once
 #include "ndefine.h"
@@ -28,6 +28,10 @@ namespace ngl
                return false;
            }
            adata.set_misconfirm(lmisconfirm);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PLAYER& adata)
@@ -66,6 +70,10 @@ namespace ngl
                return false;
            }
            adata.set_mguessnumber(lmguessnumber);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER& adata)
@@ -106,6 +114,10 @@ namespace ngl
            }
            adata.set_mbombvalue(lmbombvalue);
            adata.set_mroleid(lmroleid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_BOMB& adata)
@@ -144,6 +156,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_ERROR& adata)
@@ -186,6 +202,10 @@ namespace ngl
            adata.set_mmaxnumber(lmmaxnumber);
            adata.set_mminnumber(lmminnumber);
            adata.set_mwhoguess(lmwhoguess);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER_INFO& adata)
@@ -226,6 +246,10 @@ namespace ngl
            }
            adata.set_mtype(lmtype);
            adata.set_mroomid(lmroomid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL& adata)
@@ -268,6 +292,10 @@ namespace ngl
            adata.set_mtype(lmtype);
            adata.set_mexampleactorid(lmexampleactorid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_CREATE& adata)
@@ -310,6 +338,10 @@ namespace ngl
            adata.set_mcross(lmcross);
            adata.set_mtype(lmtype);
            adata.set_mexampleactorid(lmexampleactorid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
@@ -352,6 +384,10 @@ namespace ngl
            adata.set_mcross(lmcross);
            adata.set_mtype(lmtype);
            adata.set_mexampleactorid(lmexampleactorid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE_RESPONSE& adata)
@@ -392,6 +428,10 @@ namespace ngl
            }
            adata.set_mcross(lmcross);
            adata.set_mtype(lmtype);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN& adata)
@@ -430,6 +470,10 @@ namespace ngl
                return false;
            }
            adata.set_mroomid(lmroomid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_JOIN_RESPONSE& adata)
@@ -474,6 +518,10 @@ namespace ngl
            adata.set_mtotalnumber(lmtotalnumber);
            adata.set_mroomcreate(lmroomcreate);
            adata.set_mroomready(lmroomready);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING& adata)
@@ -514,6 +562,10 @@ namespace ngl
            }
            adata.set_merrorcode(lmerrorcode);
            adata.set_mroomid(lmroomid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_MATCHING_RESULT& adata)
@@ -554,6 +606,10 @@ namespace ngl
            }
            adata.set_misconfirm(lmisconfirm);
            adata.set_mroomid(lmroomid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM& adata)

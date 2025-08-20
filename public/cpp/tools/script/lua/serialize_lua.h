@@ -76,12 +76,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, double adata)
 		{
 			lua_pushnumber(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, double& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -111,12 +117,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, float adata)
 		{
 			lua_pushnumber(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, float& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -146,12 +158,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, bool adata)
 		{
 			lua_pushboolean(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, bool& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -181,12 +199,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, const std::string& adata)
 		{
 			lua_pushstring(L, adata.c_str());
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, std::string& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -216,12 +240,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, const char* adata)
 		{
 			lua_pushstring(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, const char*& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -251,12 +281,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, int8_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, int8_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -286,12 +322,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, int16_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, int16_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -321,12 +363,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, int32_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, int32_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -356,12 +404,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, int64_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, int64_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -391,12 +445,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, uint8_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, uint8_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -426,12 +486,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, uint16_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, uint16_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -461,12 +527,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, uint32_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, uint32_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -496,12 +568,18 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, uint64_t adata)
 		{
 			lua_pushinteger(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool table_pop(lua_State* L, const char* aname, uint64_t& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -598,7 +676,10 @@ namespace ngl
 
 		static bool table_pop(lua_State* L, const char* aname, std::vector<T>& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -647,7 +728,10 @@ namespace ngl
 
 		static bool table_pop(lua_State* L, const char* aname, std::set<T>& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -708,7 +792,10 @@ namespace ngl
 
 		static bool table_pop(lua_State* L, const char* aname, std::map<KEY, VAL>& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -729,7 +816,10 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, const google::protobuf::Map<KEY, VAL>& adata)
 		{
 			stack_push(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool stack_pop(lua_State* L, google::protobuf::Map<KEY, VAL>& adata, bool apop = true)
@@ -798,7 +888,10 @@ namespace ngl
 
 		static bool table_pop(lua_State* L, const char* aname, google::protobuf::RepeatedPtrField<T>& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -819,7 +912,10 @@ namespace ngl
 		static void table_push(lua_State* L, const char* aname, const google::protobuf::RepeatedField<T>& adata)
 		{
 			stack_push(L, adata);
-			lua_setfield(L, -2, aname);
+			if (aname != nullptr)
+			{
+				lua_setfield(L, -2, aname);
+			}
 		}
 
 		static bool stack_pop(lua_State* L, google::protobuf::RepeatedField<T>& adata, bool apop = true)
@@ -846,7 +942,10 @@ namespace ngl
 
 		static bool table_pop(lua_State* L, const char* aname, google::protobuf::RepeatedField<T>& adata)
 		{
-			lua_getfield(L, -1, aname);
+			if (aname != nullptr)
+			{
+				lua_getfield(L, -1, aname);
+			}
 			return stack_pop(L, adata);
 		}
 	};
@@ -1032,10 +1131,13 @@ namespace ngl
 		}
 		else
 		{
-			if (!adata.nlua_pop(L))
+			if (!lua_isnil(L, -1))
 			{
-				return false;
-			}
+				if (!adata.nlua_pop(L))
+				{
+					return false;
+				}
+			}			
 		}
 		if (apop)
 		{

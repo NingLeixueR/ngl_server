@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-18 16:30:51】
+ // 创建时间【2025-08-20 09:44:01】
 
 #pragma once
 #include "ndefine.h"
@@ -28,6 +28,10 @@ namespace ngl
                return false;
            }
            adata.set_mcount(lmcount);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::activity_drawcompliance& adata)
@@ -64,6 +68,10 @@ namespace ngl
            {
                return false;
            }
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::activity_task& adata)
@@ -99,6 +107,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mactivity_rolelv",  *adata.mutable_mactivity_rolelv(), "mactivity_rolegold",  *adata.mutable_mactivity_rolegold()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -146,6 +158,10 @@ namespace ngl
            adata.set_maccount(lmaccount);
            adata.set_mpassworld(lmpassworld);
            adata.set_marea(lmarea);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_account& adata)
@@ -184,6 +200,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_activity& adata)
@@ -228,6 +248,10 @@ namespace ngl
            adata.set_mbeg(lmbeg);
            adata.set_mduration(lmduration);
            adata.set_mstart(lmstart);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_activitytimes& adata)
@@ -268,6 +292,10 @@ namespace ngl
            }
            adata.set_mid(lmid);
            adata.set_mmaxid(lmmaxid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_bag& adata)
@@ -320,6 +348,10 @@ namespace ngl
            adata.set_mvip(lmvip);
            adata.set_mnotalkutc(lmnotalkutc);
            adata.set_mcreateutc(lmcreateutc);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_brief& adata)
@@ -368,6 +400,10 @@ namespace ngl
            adata.set_mleader(lmleader);
            adata.set_mlv(lmlv);
            adata.set_mexp(lmexp);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_family& adata)
@@ -414,6 +450,10 @@ namespace ngl
            adata.set_mlastsignutc(lmlastsignutc);
            adata.set_mlastleaveutc(lmlastleaveutc);
            adata.set_mposition(lmposition);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_familyer& adata)
@@ -452,6 +492,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_friends& adata)
@@ -492,6 +536,10 @@ namespace ngl
            }
            adata.set_mid(lmid);
            adata.set_mvalue(lmvalue);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_keyvalue& adata)
@@ -530,6 +578,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_mail& adata)
@@ -574,6 +626,10 @@ namespace ngl
            adata.set_mnotice(lmnotice);
            adata.set_mstarttime(lmstarttime);
            adata.set_mfinishtime(lmfinishtime);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_notice& adata)
@@ -612,6 +668,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_ranklist& adata)
@@ -650,6 +710,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_role& adata)
@@ -690,6 +754,10 @@ namespace ngl
            }
            adata.set_mrechargeid(lmrechargeid);
            adata.set_mutc(lmutc);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_role::recharge& adata)
@@ -728,6 +796,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_rolekeyvalue& adata)
@@ -766,6 +838,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task& adata)
@@ -801,6 +877,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mhistory",  *adata.mutable_mhistory()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -846,6 +926,10 @@ namespace ngl
            adata.set_mreceiveutc(lmreceiveutc);
            adata.set_mfinshutc(lmfinshutc);
            adata.set_mreceive(lmreceive);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task::data& adata)
@@ -888,6 +972,10 @@ namespace ngl
            adata.set_mtype(lmtype);
            adata.set_mvalue(lmvalue);
            adata.set_msumint(lmsumint);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_task::data_schedule& adata)
@@ -926,6 +1014,10 @@ namespace ngl
                return false;
            }
            adata.set_mid(lmid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_testlua& adata)
@@ -966,6 +1058,10 @@ namespace ngl
            }
            adata.set_mkey(lmkey);
            adata.set_mval(lmval);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::db_testlua::luadata& adata)
@@ -1004,6 +1100,10 @@ namespace ngl
                return false;
            }
            adata.set_mname(lmname);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::dbcross_test& adata)
@@ -1050,6 +1150,10 @@ namespace ngl
            adata.set_mcount(lmcount);
            adata.set_mlv(lmlv);
            adata.set_mstar(lmstar);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::item& adata)
@@ -1100,6 +1204,10 @@ namespace ngl
            adata.set_mcontent(lmcontent);
            adata.set_mread(lmread);
            adata.set_mdraw(lmdraw);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::mail& adata)
@@ -1140,6 +1248,10 @@ namespace ngl
            }
            adata.set_mitemtid(lmitemtid);
            adata.set_mcount(lmcount);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::mailitem& adata)
@@ -1180,6 +1292,10 @@ namespace ngl
            }
            adata.set_mvalue(lmvalue);
            adata.set_mtime(lmtime);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbdb::rankitem& adata)

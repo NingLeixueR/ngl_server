@@ -7,7 +7,7 @@
 
 extern "C"
 {
-	extern int nguidstr2int64str(lua_State* L);
+	extern int nguidstr2int64(lua_State* L);
 
 	// # lua发送协议给客户端
 	// # parm 1 nguid(actor_type#areaid#dataid)
@@ -165,7 +165,7 @@ namespace ngl
 			lua_setfield(L, -2, "path");
 			lua_pop(L, 1);
 
-			lua_register(L, "nguidstr2int64str", nguidstr2int64str);
+			lua_register(L, "nguidstr2int64", nguidstr2int64);
 			lua_register(L, "send_client", send_client);
 			lua_register(L, "send_actor", send_actor);
 			lua_register(L, "nsp_auto_save", send_client);
@@ -244,12 +244,26 @@ namespace ngl
 		}
 
 		template <typename T>
+		struct dmap_checkout
+		{
+			std::map<int64_t, T>& m_data;
+
+			dmap_checkout(std::map<int64_t, T>& adata) :
+				m_data(adata)
+			{}
+
+			def_nlua_push2(tools::type_name<T>().c_str(), m_data);
+			def_nlua_pop2(tools::type_name<T>().c_str(), m_data);
+		};
+
+		template <typename T>
 		bool data_checkout(const char* aname, std::map<int64_t, T>& adata)
 		{
 			luafunction lfun(L, m_scriptpath.c_str(), "data_checkout");
 			lfun.set_call(aname);
 			bool success = false;
-			lfun.set_return(success, adata);
+			dmap_checkout<T> ltemp(adata);
+			lfun.set_return(success, ltemp);
 			return lfun.call();
 		}
 
@@ -428,7 +442,7 @@ namespace ngl
 		{
 			return false;
 		}
-		return nscript_manage::data_push(m_enscript, m_script, tools::type_name<T>().c_str(), asource, adata, aedit);
+		return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
 	}
 
 	template <typename T>
