@@ -1,12 +1,11 @@
 local ngldata = require("ngldata").getInstance()
 require("ngldata")
 
-
 function db_loadfinish()
     -- 数据加载完成
 end
 
-function handle(amsgname, amsgjson)
+function handle(amsgname, amsg)
 	-- 如何获取db数据:明确需求是否修改
 	-- 无需修改数据使用 ngldata:getconst("数据名称")
 	-- 需修改数据使用 ngldata:get("数据名称")
@@ -32,15 +31,20 @@ function handle(amsgname, amsgjson)
 
 	-- 可以通过[amsgname]和[amsgjson]进行消息处理
 	print("msg name:" .. amsgname)
-	print(amsgjson)
+	print(amsg)
 
 	if amsgname == "np_actormodule_forward<PROBUFF_NET_TESTLUA>" then
 		-- 此处对db_testlua数据进行了修改
-		local testlua = ngldata:get("db_testlua", nguidstr2int64str("actor_testlua#1#1"))
+		local testlua = ngldata:get("db_testlua", nguidstr2int64("actor_testlua#1#1"))
 		if testlua ~= nil then
+			ngldata:print_table(testlua)
+			print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 			ngldata:print_table(testlua["mvalue"])
+			print("===================================")
 			table.remove(testlua["mvalue"], 1)
+			print("===================================")
 			ngldata:print_table(testlua["mvalue"])
+			print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 		end
 	elseif amsgname == "np_testlua" then
 		local ret, data = ngldata:data_checkout("db_testlua", "-1")
@@ -50,11 +54,11 @@ function handle(amsgname, amsgjson)
 		ngldata:data_del("db_testlua", "34359803960")
 	end
 
-	local temp =  ngldata:get("db_brief", nguidstr2int64str("actor_brief#1#1"));
-	print(temp)
-	print("mlv:"..temp["mlv"])
-	temp["mlv"] = 999
-	print("mlv:"..temp["mlv"])
-
-	send_actor("actor_testlua2#1#-1", amsgname, amsgjson)
+	-- local temp =  ngldata:get("db_brief", nguidstr2int64("actor_brief#1#1"));
+	-- print(temp)
+	-- print("mlv:"..temp["mlv"])
+	-- temp["mlv"] = 999
+	-- print("mlv:"..temp["mlv"])
+	-- 
+	-- send_actor("actor_testlua2#1#-1", amsgname, amsg)
 end

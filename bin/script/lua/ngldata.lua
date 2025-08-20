@@ -105,9 +105,7 @@ local function new()
 
         for k,v in pairs(parsedData) do
             for k1,v1 in pairs(v) do
-                self.data[aname][k1] = {
-                    parsed_data = v1
-                }
+                self.data[aname][k1] = v1
             end
         end
 
@@ -120,13 +118,16 @@ local function new()
 
     function instance:get(aname, adataid)
        logger:write("instance:get("..aname..","..adataid..")")
+       logger:write("##################################START")
+       self:print_table(self.data[aname])
+       logger:write("##################################FINISH")
        if self.edit[aname] == false then
             return nil;
        end
 
        if self.data[aname] and self.data[aname][adataid] then
             self.change[aname][adataid] = true
-            return self.data[aname][adataid]["parsed_data"]
+            return self.data[aname][adataid]
        end
        return nil
     end
@@ -134,7 +135,7 @@ local function new()
     function instance:getconst(aname, adataid)
         logger:write("instance:getconst("..aname..","..adataid..")")
         if self.data[aname] and self.data[aname][adataid] then
-            local data = self.data[aname][adataid] and self.data[aname][adataid]["parsed_data"] or nil
+            local data = self.data[aname][adataid]
             if data ~= nil then
                 self:print_table(data)
                 return setmetatable({}, {
@@ -179,12 +180,15 @@ local function new()
         if self.data[aname] then
             for k,v in pairs(self.change[aname]) do
                 if v then
-                    ret[aname][k] = self.data[aname][k]["parsed_data"]
+                    ret[aname][k] = self.data[aname][k]
                     retbool = true
 		        end
             end
             self.change[aname] = {}
             if retbool then
+                print("###############")
+                self:print_table(ret)
+                print("###############")
                 return true, ret
             end
         end
@@ -204,7 +208,7 @@ local function new()
         retbool = false
         if self.change[aname] then
             if self.change[aname][adataid] then
-			    ret[aname][adataid] = self.data[aname][adataid]["parsed_data"]
+			    ret[aname][adataid] = self.data[aname][adataid]
 			    self.change[aname][adataid] = nil
 			    retbool = true
             end

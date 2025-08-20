@@ -1,5 +1,5 @@
  // 注意【makeproto 工具生成文件，不要手动修改】
- // 创建时间【2025-08-18 16:30:51】
+ // 创建时间【2025-08-20 09:44:01】
 
 #pragma once
 #include "ndefine.h"
@@ -32,6 +32,10 @@ namespace ngl
            adata.set_marea(lmarea);
            adata.set_maccount(lmaccount);
            adata.set_mpassword(lmpassword);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ACOUNT_LOGIN& adata)
@@ -78,6 +82,10 @@ namespace ngl
            adata.set_msession(lmsession);
            adata.set_maccount(lmaccount);
            adata.set_mgatewayid(lmgatewayid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE& adata)
@@ -105,6 +113,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_BAG_SYNC& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_SYNC& adata)
@@ -141,6 +153,10 @@ namespace ngl
            {
                return false;
            }
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_SYNC_RESPONSE& adata)
@@ -176,6 +192,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mdelitems",  *adata.mutable_mdelitems(), "mdelnostackitems",  *adata.mutable_mdelnostackitems(), "madditems",  *adata.mutable_madditems(), "maddnostackitems",  *adata.mutable_maddnostackitems()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -217,6 +237,10 @@ namespace ngl
            }
            adata.set_mid(lmid);
            adata.set_mcount(lmcount);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_UPDATE::additem& adata)
@@ -257,6 +281,10 @@ namespace ngl
            }
            adata.set_mid(lmid);
            adata.set_mcount(lmcount);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_BAG_UPDATE::delitem& adata)
@@ -292,6 +320,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mposition",  *adata.mutable_mposition()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -335,6 +367,10 @@ namespace ngl
            adata.set_mtype(lmtype);
            adata.set_mchannelid(lmchannelid);
            adata.set_mcontent(lmcontent);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CHAT& adata)
@@ -377,6 +413,10 @@ namespace ngl
            adata.set_mtype(lmtype);
            adata.set_mchannelid(lmchannelid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CHAT_RESPONSE& adata)
@@ -415,6 +455,10 @@ namespace ngl
                return false;
            }
            adata.set_mcmd(lmcmd);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_CMD& adata)
@@ -457,6 +501,10 @@ namespace ngl
            adata.set_mrechargeid(lmrechargeid);
            adata.set_morderid(lmorderid);
            adata.set_mgold(lmgold);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_DELIVER_GOODS_RECHARGE& adata)
@@ -495,6 +543,10 @@ namespace ngl
                return false;
            }
            adata.set_misenter(lmisenter);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ENTER_LEAVE_VIEW& adata)
@@ -533,6 +585,10 @@ namespace ngl
                return false;
            }
            adata.set_merrmessage(lmerrmessage);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ERROR& adata)
@@ -571,6 +627,10 @@ namespace ngl
                return false;
            }
            adata.set_mroleid(lmroleid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CEDE& adata)
@@ -609,6 +669,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CEDE_RESPONSE& adata)
@@ -649,6 +713,10 @@ namespace ngl
            }
            adata.set_mfamilid(lmfamilid);
            adata.set_mname(lmname);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME& adata)
@@ -687,6 +755,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CHANGENAME_RESPONSE& adata)
@@ -725,6 +797,10 @@ namespace ngl
                return false;
            }
            adata.set_mname(lmname);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CREATE& adata)
@@ -763,6 +839,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_CREATE_RESPONSE& adata)
@@ -790,6 +870,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FAMIL_INFO& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_INFO& adata)
@@ -828,6 +912,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_INFO_RESPONSE& adata)
@@ -868,6 +956,10 @@ namespace ngl
            }
            adata.set_mfamilid(lmfamilid);
            adata.set_mapply(lmapply);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_JOIN& adata)
@@ -906,6 +998,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_JOIN_RESPONSE& adata)
@@ -944,6 +1040,10 @@ namespace ngl
                return false;
            }
            adata.set_mfamilid(lmfamilid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LEAVE& adata)
@@ -982,6 +1082,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LEAVE_RESPONSE& adata)
@@ -1020,6 +1124,10 @@ namespace ngl
                return false;
            }
            adata.set_mfamilid(lmfamilid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LIST& adata)
@@ -1058,6 +1166,10 @@ namespace ngl
                return false;
            }
            adata.set_mfamilid(lmfamilid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_LIST_RESPONSE& adata)
@@ -1098,6 +1210,10 @@ namespace ngl
            }
            adata.set_mroleid(lmroleid);
            adata.set_mratify(lmratify);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN& adata)
@@ -1136,6 +1252,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN_RESPONSE& adata)
@@ -1174,6 +1294,10 @@ namespace ngl
                return false;
            }
            adata.set_mfamilid(lmfamilid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_SIGN& adata)
@@ -1212,6 +1336,10 @@ namespace ngl
                return false;
            }
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FAMIL_SIGN_RESPONSE& adata)
@@ -1239,6 +1367,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_FRIEND& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND& adata)
@@ -1277,6 +1409,10 @@ namespace ngl
                return false;
            }
            adata.set_mfriedid(lmfriedid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ADD& adata)
@@ -1317,6 +1453,10 @@ namespace ngl
            }
            adata.set_mfriedid(lmfriedid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ADD_RESPONSE& adata)
@@ -1355,6 +1495,10 @@ namespace ngl
                return false;
            }
            adata.set_mfriedid(lmfriedid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ERASE& adata)
@@ -1395,6 +1539,10 @@ namespace ngl
            }
            adata.set_mfriedid(lmfriedid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_ERASE_RESPONSE& adata)
@@ -1435,6 +1583,10 @@ namespace ngl
            }
            adata.set_mfriedid(lmfriedid);
            adata.set_mratify(lmratify);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD& adata)
@@ -1477,6 +1629,10 @@ namespace ngl
            adata.set_mfriedid(lmfriedid);
            adata.set_mratify(lmratify);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD_RESPONSE& adata)
@@ -1513,6 +1669,10 @@ namespace ngl
            {
                return false;
            }
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_FRIEND_RESPONSE& adata)
@@ -1540,6 +1700,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_GET_TIME& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_GET_TIME& adata)
@@ -1578,6 +1742,10 @@ namespace ngl
                return false;
            }
            adata.set_mutc(lmutc);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_GET_TIME_RESPONSE& adata)
@@ -1605,6 +1773,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_HEARTBEAT& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_HEARTBEAT& adata)
@@ -1649,6 +1821,10 @@ namespace ngl
            adata.set_muip(lmuip);
            adata.set_muport(lmuport);
            adata.set_mconv(lmconv);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_KCPSESSION& adata)
@@ -1687,6 +1863,10 @@ namespace ngl
                return false;
            }
            adata.set_mkcpsession(lmkcpsession);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_KCPSESSION_RESPONSE& adata)
@@ -1725,6 +1905,10 @@ namespace ngl
                return false;
            }
            adata.set_mmailid(lmmailid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DEL& adata)
@@ -1765,6 +1949,10 @@ namespace ngl
            }
            adata.set_mmailid(lmmailid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DEL_RESPONSE& adata)
@@ -1803,6 +1991,10 @@ namespace ngl
                return false;
            }
            adata.set_mmailid(lmmailid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DRAW& adata)
@@ -1843,6 +2035,10 @@ namespace ngl
            }
            adata.set_mmailid(lmmailid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_DRAW_RESPONSE& adata)
@@ -1870,6 +2066,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_MAIL_LIST& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_LIST& adata)
@@ -1905,6 +2105,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mmail",  *adata.mutable_mmail()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -1944,6 +2148,10 @@ namespace ngl
                return false;
            }
            adata.set_mmailid(lmmailid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_READ& adata)
@@ -1984,6 +2192,10 @@ namespace ngl
            }
            adata.set_mmailid(lmmailid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MAIL_READ_RESPONSE& adata)
@@ -2022,6 +2234,10 @@ namespace ngl
                return false;
            }
            adata.set_mmsg(lmmsg);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_MSG_RESPONSE& adata)
@@ -2049,6 +2265,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_NOTICE& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_NOTICE& adata)
@@ -2084,6 +2304,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mnotices",  *adata.mutable_mnotices()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -2129,6 +2353,10 @@ namespace ngl
            adata.set_mtype(lmtype);
            adata.set_mactivityid(lmactivityid);
            adata.set_mpage(lmpage);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RANKLIST& adata)
@@ -2173,6 +2401,10 @@ namespace ngl
            adata.set_mpage(lmpage);
            adata.set_mcount(lmcount);
            adata.set_mrolerank(lmrolerank);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RANKLIST_RESPONSE& adata)
@@ -2211,6 +2443,10 @@ namespace ngl
                return false;
            }
            adata.set_mrechargeid(lmrechargeid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RECHARGE& adata)
@@ -2253,6 +2489,10 @@ namespace ngl
            adata.set_mrechargeid(lmrechargeid);
            adata.set_mstat(lmstat);
            adata.set_morderid(lmorderid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_RECHARGE_RESPONSE& adata)
@@ -2288,6 +2528,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mitems",  *adata.mutable_mitems()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -2331,6 +2575,10 @@ namespace ngl
            adata.set_mstat(lmstat);
            adata.set_mlogicstat(lmlogicstat);
            adata.set_mroleid(lmroleid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLESTAT& adata)
@@ -2377,6 +2625,10 @@ namespace ngl
            adata.set_miscreate(lmiscreate);
            adata.set_marea(lmarea);
            adata.set_mgatewayid(lmgatewayid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_LOGIN& adata)
@@ -2404,6 +2656,10 @@ namespace ngl
        }
        static bool stack_pop(lua_State* L, pbnet::PROBUFF_NET_ROLE_SYNC& adata, bool apop = true)
        {
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_ROLE_SYNC& adata)
@@ -2439,6 +2695,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mrole",  *adata.mutable_mrole(), "mbrief",  *adata.mutable_mbrief(), "mbag",  *adata.mutable_mbag(), "mtask",  *adata.mutable_mtask()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -2478,6 +2738,10 @@ namespace ngl
                return false;
            }
            adata.set_mline(lmline);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SWITCH_LINE& adata)
@@ -2518,6 +2782,10 @@ namespace ngl
            }
            adata.set_mline(lmline);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SWITCH_LINE_RESPONSE& adata)
@@ -2553,6 +2821,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "mmodules",  *adata.mutable_mmodules()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -2590,6 +2862,10 @@ namespace ngl
            {
                return false;
            }
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_SYNC_POSITION& adata)
@@ -2625,6 +2901,10 @@ namespace ngl
            if(!ngl::nlua_table::table_pop(L, "munits",  *adata.mutable_munits()))
            {
                return false;
+           }
+           if (apop)
+           {
+               lua_pop(L, 1);
            }
            return true;
        }
@@ -2664,6 +2944,10 @@ namespace ngl
                return false;
            }
            adata.set_mtaskid(lmtaskid);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD& adata)
@@ -2704,6 +2988,10 @@ namespace ngl
            }
            adata.set_mtaskid(lmtaskid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD_RESPONSE& adata)
@@ -2744,6 +3032,10 @@ namespace ngl
            }
            adata.set_mid(lmid);
            adata.set_mvalue(lmvalue);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::PROBUFF_NET_TESTLUA& adata)
@@ -2786,6 +3078,10 @@ namespace ngl
            adata.set_mtype(lmtype);
            adata.set_mid(lmid);
            adata.set_mstat(lmstat);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UNIT& adata)
@@ -2828,6 +3124,10 @@ namespace ngl
            adata.set_mid(lmid);
            adata.set_mangle(lmangle);
            adata.set_mspeed(lmspeed);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UNIT_POSITION& adata)
@@ -2868,6 +3168,10 @@ namespace ngl
            }
            adata.set_mtype(lmtype);
            adata.set_mvalue(lmvalue);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UnitAttribute& adata)
@@ -2906,6 +3210,10 @@ namespace ngl
                return false;
            }
            adata.set_mmtype(lmmtype);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::UnitModule& adata)
@@ -2946,6 +3254,10 @@ namespace ngl
            }
            adata.set_mx(lmx);
            adata.set_my(lmy);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::VECTOR2& adata)
@@ -2988,6 +3300,10 @@ namespace ngl
            adata.set_mx(lmx);
            adata.set_my(lmy);
            adata.set_mz(lmz);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::VECTOR3& adata)
@@ -3032,6 +3348,10 @@ namespace ngl
            adata.set_mrolename(lmrolename);
            adata.set_mcontent(lmcontent);
            adata.set_mutc(lmutc);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::chatitem& adata)
@@ -3072,6 +3392,10 @@ namespace ngl
            }
            adata.set_mitem(lmitem);
            adata.set_mcount(lmcount);
+           if (apop)
+           {
+               lua_pop(L, 1);
+           }
            return true;
        }
        static void table_push(lua_State * L, const char* aname, const pbnet::drop_item& adata)

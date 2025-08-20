@@ -226,6 +226,11 @@ public:
             }
         }
 
+        m_stream << "           if (apop)" << std::endl;
+        m_stream << "           {" << std::endl;
+        m_stream << "               lua_pop(L, 1);" << std::endl;
+        m_stream << "           }" << std::endl;
+
         m_stream << "           return true;" << std::endl;
         m_stream << "       }" << std::endl;
 

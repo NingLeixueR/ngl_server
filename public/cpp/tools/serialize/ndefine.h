@@ -317,8 +317,9 @@ public:
 	bool nlua_pop(lua_State* aL, const char* aname = nullptr)				\
 	{																		\
 		ngl::nlua_table::table_start_pop(aL, aname);						\
-		ngl::nlua_table::table_pop(aL, __VA_ARGS__);						\
+		bool lret = ngl::nlua_table::table_pop(aL, __VA_ARGS__);			\
 		ngl::nlua_table::table_finish_pop(aL, aname);						\
+		return lret;														\
 	}
 
 #define def_nlua_function2(...)			\
