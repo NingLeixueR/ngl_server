@@ -54,11 +54,17 @@ function handle(amsgname, amsg)
 		ngldata:data_del("db_testlua", "34359803960")
 	end
 
-	-- local temp =  ngldata:get("db_brief", nguidstr2int64("actor_brief#1#1"));
-	-- print(temp)
-	-- print("mlv:"..temp["mlv"])
-	-- temp["mlv"] = 999
-	-- print("mlv:"..temp["mlv"])
+	local ret,id = nguidstr2int64("actor_brief#1#1")
+	if ret then
+		local brief =  ngldata:get("db_brief", id);
+		if brief ~= nil then
+			print(brief)
+			print("mlv:"..brief["mlv"])
+			brief["mlv"] = brief["mlv"] + 999
+			print("mlv:"..brief["mlv"])
+		end
+	end
+	
 	-- 
-	-- send_actor("actor_testlua2#1#-1", amsgname, amsg)
+	send_actor("actor_testlua2#1#-1", amsgname, amsg)
 end
