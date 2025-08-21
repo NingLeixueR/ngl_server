@@ -53,12 +53,6 @@ namespace ngl
 		std::shared_ptr<nactor_logitem> log_error_net(const std::source_location& asource = std::source_location::current())const;
 	};
 
-	enum enscript
-	{
-		enscript_none,
-		enscript_lua,
-	};
-
 	struct actorparmbase
 	{
 		ENUM_ACTOR		m_type				= nguid::none_type();				// actor类型
@@ -595,24 +589,26 @@ namespace ngl
 	template <typename T>
 	void tprotocol::tforward::func(int32_t aprotocolnum)
 	{
-		pinfo* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF,true>::func<T>(aprotocolnum);
+		info* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF,true>::func<T>(aprotocolnum);
 		if (lptemp != nullptr)
 		{
 			lptemp->m_forward = true;
-			lptemp->m_toclient = [](int64_t aactorid, const char* adata)
+			lptemp->m_toclient[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
+					lua_State* L = (lua_State*)(aL);
 					auto pro = std::make_shared<typename T::BASE_TYPE>();
-					if (!tools::json2proto<typename T::BASE_TYPE>(adata, *pro))
+					if (!ngl::nlua_stack::stack_pop(L, *pro))
 					{
 						return false;
 					}
 					actor_base::send_client(aactorid, pro);
 					return true;
 				};
-			lptemp->m_toactor = [](int64_t aactorid, const char* adata)
+			lptemp->m_toactor[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
+					lua_State* L = (lua_State*)(aL);
 					auto pro = std::make_shared<typename T::BASE_TYPE>();
-					if (!tools::json2proto<typename T::BASE_TYPE>(adata, *pro))
+					if (!ngl::nlua_stack::stack_pop(L, *pro))
 					{
 						return false;
 					}
@@ -622,13 +618,68 @@ namespace ngl
 		}
 	}
 
-	template <EPROTOCOL_TYPE TYPE, bool REGISTER_JSON>
-	template <typename TX>
-	void tprotocol::tcustoms<TYPE, REGISTER_JSON>::send_actor(int64_t aactorid, const char* adata)
+	template <enscript SCRIPT>
+	struct tcustoms_send
 	{
-		ngl::json_read lread(adata);
-		auto pro = std::make_shared<TX>();
-		pro->read(lread);
-		actor_base::send_actor(aactorid, nguid::make(), pro);
+		template <typename TX>
+		static bool send_actor(int64_t aactorid, void* aL)
+		{
+			return true;
+		}
+	};
+
+	template <>
+	struct tcustoms_send<enscript_lua>
+	{
+		template <typename TX>
+		static bool send_actor(int64_t aactorid, void* aL)
+		{
+			lua_State* L = (lua_State*)(aL);
+			auto pro = std::make_shared<TX>();
+			if (!ngl::nlua_stack::stack_pop(L, *pro))
+			{
+				return false;
+			}
+			actor_base::send_actor(aactorid, nguid::make(), pro);
+			return true;
+		}
+	};
+
+	template <EPROTOCOL_TYPE TYPE, bool SCRIPT>
+	template <typename T>
+	static tprotocol::info* tprotocol::tcustoms<TYPE, SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
+	{
+		if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+		{
+			info* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
+			if (linfo != nullptr)
+			{
+				if constexpr (SCRIPT)
+				{
+					linfo->m_toactor[enscript_lua] = std::bind(
+						&tcustoms_send<enscript_lua>::send_actor<np_mass_actor<T>>
+						, std::placeholders::_1
+						, std::placeholders::_2
+					);
+				}
+			}
+			linfo = funcx<T>(aprotocolnum);
+			if (linfo != nullptr)
+			{
+				if constexpr (SCRIPT)
+				{
+					linfo->m_toactor[enscript_lua] = std::bind(
+						&tcustoms_send<enscript_lua>::send_actor<T>
+						, std::placeholders::_1
+						, std::placeholders::_2
+					);
+				}
+			}
+			return linfo;
+		}
+		else
+		{
+			return funcx<T>(aprotocolnum);
+		}
 	}
 }

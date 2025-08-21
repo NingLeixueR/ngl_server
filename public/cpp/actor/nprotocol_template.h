@@ -436,6 +436,7 @@ namespace ngl
 
 		def_jsonfunction_parm("m_actorids", m_actorids, "m_data", *m_data)
 		def_protocol(np_mass_actor, m_actorids, *m_data)
+		def_nlua_function2("m_actorids", m_actorids, "m_data", *m_data)
 	};
 
 

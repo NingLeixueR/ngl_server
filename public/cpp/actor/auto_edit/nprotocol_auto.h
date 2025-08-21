@@ -15,7 +15,7 @@ namespace ngl
 	{
 		tprotocol::set_customs_index(200000000);
 		// 新增内部协议需要补充
-		tprotocol::tp_customsjson::template func <
+		tprotocol::tp_customs_script::template func <
 			/*200000001*/np_timerparm
 			/*200000002, np_mass_actor<np_timerparm>*/
 			/*200000003*/, np_robot_pram
@@ -98,7 +98,7 @@ namespace ngl
 			/*200000080, np_mass_actor<np_activityrank_operator>*/
 		>();
 		tprotocol::set_customs_index(210000000);
-		tprotocol::tp_customsjson::template func<
+		tprotocol::tp_customs_script::template func<
 			/*210000001*/mforward<np_timerparm>
 			/*210000002, np_mass_actor<mforward<np_timerparm>>>*/
 			/*210000003*/, mforward<np_robot_pram>

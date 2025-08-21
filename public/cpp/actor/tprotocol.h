@@ -3,6 +3,7 @@
 #include "template_arg.h"
 #include "xmlprotocol.h"
 #include "net.pb.h"
+#include "lua.hpp"
 #include "tools.h"
 
 #include <map>
@@ -12,27 +13,60 @@ namespace ngl
 	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
 	struct np_actor_forward;
 
+
+	enum enscript
+	{
+		enscript_none = -1,
+		enscript_lua = 0,
+		enscript_count,
+	};
+
 	class tprotocol
 	{
 		tprotocol() = delete;
 		tprotocol(const tprotocol&) = delete;
 		tprotocol& operator=(const tprotocol&) = delete;
 	public:
-		struct pinfo
+
+		struct info
 		{
 			EPROTOCOL_TYPE	m_type;
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
 			bool m_forward = false;
-			// # 为了给脚本提供根据结构名字发送数据给客户端:参数pb的json串
-			std::function<bool(int64_t, const char*)> m_toclient;
-			// # 为了给脚本提供根据结构名字发送数据给其他actor:参数pb的json串
-			std::function<void(int64_t, const char*)> m_toactor;
+
+			using func = std::function<bool(int64_t, void*)>;
+			// # 为了给脚本提供根据结构名字发送数据给客户端
+			std::array<func, enscript_count> m_toclient;
+			// # 为了给脚本提供根据结构名字发送数据给其他actor
+			std::array<func, enscript_count> m_toactor;
+
+
+			template <enscript SCRIPT>
+			const func& toactor()
+			{
+				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
+				{
+					return m_toactor[SCRIPT];
+				}
+				return nullptr;
+			}
+
+			template <enscript SCRIPT>
+			const func& toclient()
+			{
+				if constexpr (SCRIPT < enscript_count && SCRIPT > 0)
+				{
+					return m_toclient[SCRIPT];
+				}
+				return nullptr;
+			}
 		};
+
 	private:
-		static std::map<size_t, pinfo>				m_keyval;
-		static std::map<i32_protocolnum, pinfo*>	m_protocol;
-		static std::map<std::string, pinfo*>		m_nameprotocol;
+		static std::map<size_t, info>				m_keyval;
+		static std::map<i32_protocolnum, info*>	m_protocol;
+		static std::map<std::string, info*>		m_nameprotocol;
 		// pbnet/pbexample		[1			-  100000000];
 		// custom				[200000001	-  300000000];
 		static int32_t								m_customs/* = 200000000*/;
@@ -45,21 +79,18 @@ namespace ngl
 		}
 
 		//CUSTOM
-		template <EPROTOCOL_TYPE TYPE, bool REGISTER_JSON>
+		template <EPROTOCOL_TYPE TYPE, bool SCRIPT>
 		struct tcustoms
 		{
-			template <typename TX>
-			static void send_actor(int64_t aactorid, const char* adata);
-
 			template <typename T>
-			static pinfo* funcx(int32_t aprotocolnum = -1)
+			static info* funcx(int32_t aprotocolnum = -1)
 			{
 				size_t lcode = hash_code<T>();
 				if (m_keyval.contains(lcode))
 				{
 					return nullptr;
 				}
-				pinfo& linfo = m_keyval[lcode];
+				info& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
 				linfo.m_type = TYPE;
 
@@ -73,42 +104,9 @@ namespace ngl
 			}
 
 			template <typename T>
-			static pinfo* func(int32_t aprotocolnum = -1)
-			{
-				if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
-				{
-					pinfo* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
-					if (linfo != nullptr)
-					{
-						if constexpr (REGISTER_JSON)
-						{
-							linfo->m_toactor = std::bind(
-								&tcustoms<TYPE, REGISTER_JSON>::send_actor<np_mass_actor<T>>
-								, std::placeholders::_1
-								, std::placeholders::_2
-							);
-						}						
-					}
-					linfo = funcx<T>(aprotocolnum);
-					if (linfo != nullptr)
-					{
-						if constexpr (REGISTER_JSON)
-						{
-							linfo->m_toactor = std::bind(
-								&tcustoms<TYPE, REGISTER_JSON>::send_actor<T>
-								, std::placeholders::_1
-								, std::placeholders::_2
-							);
-						}
-					}
-					return linfo;
-				}
-				else
-				{
-					return funcx<T>(aprotocolnum);
-				}
-			}
+			static info* func(int32_t aprotocolnum = -1);
 		};
+
 		struct tforward
 		{
 			template <typename T>
@@ -122,7 +120,7 @@ namespace ngl
 		}
 
 		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, false>>;
-		using tp_customsjson = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, true>>;
+		using tp_customs_script = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, true>>;
 		using tp_forward = template_arg<tforward, int32_t>;
 
 		template <typename T>
@@ -134,7 +132,7 @@ namespace ngl
 			{
 				return false;
 			}
-			pinfo& linfo = m_keyval[hash_code<T>()];
+			info& linfo = m_keyval[hash_code<T>()];
 			linfo.m_name = lname;
 			linfo.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF;
 			linfo.m_protocol = lprotocol;
@@ -143,7 +141,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static pinfo& get()
+		static info& get()
 		{
 			using TRC = std::remove_const<T>::type;
 			size_t lcode = hash_code<T>();
@@ -164,7 +162,7 @@ namespace ngl
 			return itor->second;
 		}
 
-		static pinfo* getbyname(const char* aname)
+		static info* getbyname(const char* aname)
 		{
 			auto itor = m_nameprotocol.find(aname);
 			if (itor == m_nameprotocol.end())
@@ -178,7 +176,7 @@ namespace ngl
 		template <typename T>
 		static i32_protocolnum protocol()
 		{
-			pinfo& linfo = get<T>();
+			info& linfo = get<T>();
 			return linfo.m_protocol;
 		}
 
@@ -186,7 +184,7 @@ namespace ngl
 		template <typename T>
 		static EPROTOCOL_TYPE protocol_type()
 		{
-			pinfo& linfo = get<T>();
+			info& linfo = get<T>();
 			return linfo.m_type;
 		}
 
@@ -194,27 +192,27 @@ namespace ngl
 		template <typename T>
 		static const std::string& protocol_name()
 		{
-			pinfo& linfo = get<T>();
+			info& linfo = get<T>();
 			return linfo.m_name;
 		}
 
 		template <typename T>
 		static bool isforward()
 		{
-			pinfo& linfo = get<T>();
+			info& linfo = get<T>();
 			return linfo.m_forward;
 		}
 
-		static pinfo* get(i32_protocolnum aprotocolnum)
+		static info* get(i32_protocolnum aprotocolnum)
 		{
-			pinfo** linfo = tools::findmap(m_protocol, aprotocolnum);
+			info** linfo = tools::findmap(m_protocol, aprotocolnum);
 			return *linfo;
 		}
 
 		// # 根据协议号获取协议名称
 		static std::string protocol_name(i32_protocolnum aprotocolnum)
 		{
-			pinfo* linfo = get(aprotocolnum);
+			info* linfo = get(aprotocolnum);
 			if (linfo == nullptr)
 			{
 				return "none";
@@ -225,7 +223,7 @@ namespace ngl
 		// # 根据协议号获取协议类型
 		static EPROTOCOL_TYPE protocol(i32_protocolnum aprotocolnum)
 		{
-			pinfo* linfo = get(aprotocolnum);
+			info* linfo = get(aprotocolnum);
 			if (linfo == nullptr)
 			{
 				return EPROTOCOL_TYPE_ERROR;
@@ -242,7 +240,7 @@ namespace ngl
 		{
 			for (const auto& apair : m_keyval)
 			{
-				const pinfo& litem = apair.second;
+				const info& litem = apair.second;
 				if (litem.m_type == EPROTOCOL_TYPE_CUSTOM)
 				{
 					acustommap[litem.m_protocol] = litem.m_name;

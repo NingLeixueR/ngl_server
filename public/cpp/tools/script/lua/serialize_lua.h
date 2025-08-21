@@ -15,6 +15,166 @@
 
 namespace ngl
 {
+	class luaapi
+	{
+	public:
+		static bool isnumber(lua_State* L)
+		{
+			return lua_isnumber(L, -1);
+		}
+		static void pushnumber(lua_State* L, double adata)
+		{
+			lua_pushnumber(L, adata);
+		}
+		static bool popnumber(lua_State* L, double& adata, bool apop = true)
+		{
+			if (!isnumber(L))
+			{
+				return false;
+			}
+			adata = lua_tonumber(L, -1);
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool isnil(lua_State* L)
+		{
+			return lua_isnil(L, -1);
+		}
+		static void pushnil(lua_State* L)
+		{
+			lua_pushnil(L);
+		}
+		static bool popnil(lua_State* L, bool apop = true)
+		{
+			if (!isnil(L))
+			{
+				return false;
+			}
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool isinteger(lua_State* L)
+		{
+			return lua_isinteger(L, -1);
+		}
+		static void pushinteger(lua_State* L, int64_t aval)
+		{
+			lua_pushinteger(L, aval);
+		}
+		static bool popinteger(lua_State* L, int64_t& aval, bool apop = true)
+		{
+			if (!isinteger(L))
+			{
+				return false;
+			}
+			aval = lua_tonumber(L, -1);
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool isstring(lua_State* L)
+		{
+			return lua_isstring(L, -1);
+		}
+		static const char* pushstring(lua_State* L, const char* astr)
+		{
+			return lua_pushstring(L, astr);
+		}
+		static const char* pushstring(lua_State* L, const std::string& astr)
+		{
+			return lua_pushstring(L, astr.c_str());
+		}
+		static bool popstring(lua_State* L, std::string& aval, bool apop = true)
+		{
+			if (!isstring(L))
+			{
+				return false;
+			}
+			const char* lpstr = lua_tostring(L, -1);
+			if (lpstr == nullptr)
+			{
+				return false;
+			}
+			aval = lpstr;
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+		static bool popstring(lua_State* L, const char*& aval, bool apop = true)
+		{
+			if (!isstring(L))
+			{
+				return false;
+			}
+			aval = lua_tostring(L, -1);
+			if (aval == nullptr)
+			{
+				return false;
+			}
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static bool isboolean(lua_State* L)
+		{
+			return lua_isboolean(L, -1);
+		}
+		static void pushboolean(lua_State* L, bool aval)
+		{
+			lua_pushboolean(L, aval);
+		}
+		static bool popboolean(lua_State* L, bool& aval, bool apop = true)
+		{
+			if (!isboolean(L))
+			{
+				return false;
+			}
+			aval = lua_toboolean(L, -1);
+			if (apop)
+			{
+				lua_pop(L, 1);
+			}
+			return true;
+		}
+
+		static void register_func(lua_State* L, const char* afuncname, lua_CFunction fn)
+		{
+			lua_register(L, afuncname, fn);
+		}
+
+		static void add_package_path(lua_State* L, const char* apath)
+		{
+			lua_getglobal(L, "package");
+			lua_getfield(L, -1, "path");
+			std::string lpath = lua_tostring(L, -1);
+
+			// 添加自定义路径（保留原有路径）
+			lpath += std::format(";{}?.lua", apath);
+
+			lua_pop(L, 1);
+			lua_pushstring(L, lpath.c_str());
+			lua_setfield(L, -2, "path");
+			lua_pop(L, 1);
+		}
+	};
+
+
 	template <typename T>
 	struct serialize_lua
 	{
@@ -56,26 +216,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, double adata)
 		{
-			lua_pushnumber(L, adata);
+			luaapi::pushnumber(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, double& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
-			{
-				return false;
-			}
-			adata = lua_tonumber(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return luaapi::popnumber(L, adata, apop);
 		}
 
 		static void table_push(lua_State* L, const char* aname, double adata)
 		{
-			lua_pushnumber(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -97,26 +248,23 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, float adata)
 		{
-			lua_pushnumber(L, adata);
+			luaapi::pushnumber(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, float& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			double lvalue = 0.0;
+			if (luaapi::popnumber(L, lvalue, apop))
 			{
-				return false;
+				adata = (float)lvalue;
+				return true;
 			}
-			adata = lua_tonumber(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, float adata)
 		{
-			lua_pushnumber(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -138,26 +286,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, bool adata)
 		{
-			lua_pushboolean(L, adata);
+			luaapi::pushboolean(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, bool& adata, bool apop = true)
 		{
-			if (!lua_isboolean(L, -1))
-			{
-				return false;
-			}
-			adata = lua_toboolean(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return luaapi::popboolean(L, adata, apop);
 		}
 
 		static void table_push(lua_State* L, const char* aname, bool adata)
 		{
-			lua_pushboolean(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -179,26 +318,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, const std::string& adata)
 		{
-			lua_pushstring(L, adata.c_str());
+			luaapi::pushstring(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, std::string& adata, bool apop = true)
 		{
-			if (!lua_isstring(L, -1))
-			{
-				return false;
-			}
-			adata = lua_tostring(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return luaapi::popstring(L, adata, apop);
 		}
 
 		static void table_push(lua_State* L, const char* aname, const std::string& adata)
 		{
-			lua_pushstring(L, adata.c_str());
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -220,26 +350,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, const char* adata)
 		{
-			lua_pushstring(L, adata);
+			luaapi::pushstring(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, const char*& adata, bool apop = true)
 		{
-			if (!lua_isstring(L, -1))
-			{
-				return false;
-			}
-			adata = lua_tostring(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return luaapi::popstring(L, adata, apop);
 		}
 
 		static void table_push(lua_State* L, const char* aname, const char* adata)
 		{
-			lua_pushstring(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -261,26 +382,23 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, int8_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, int8_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (int8_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, int8_t adata)
 		{
-			lua_pushinteger(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -302,26 +420,23 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, int16_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, int16_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (int16_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, int16_t adata)
 		{
-			lua_pushinteger(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -343,26 +458,23 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, int32_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, int32_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (int32_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, int32_t adata)
 		{
-			lua_pushinteger(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -384,26 +496,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, int64_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, int64_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
-			{
-				return false;
-			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
+			return luaapi::popinteger(L, adata, apop);
 		}
 
 		static void table_push(lua_State* L, const char* aname, int64_t adata)
 		{
-			lua_pushinteger(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -425,26 +528,22 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, uint8_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, uint8_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (uint8_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint8_t adata)
 		{
-			lua_pushinteger(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -466,21 +565,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, uint16_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, uint16_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (uint16_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint16_t adata)
@@ -507,21 +602,17 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, uint32_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, uint32_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (uint32_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint32_t adata)
@@ -548,26 +639,22 @@ namespace ngl
 	{
 		static void stack_push(lua_State* L, uint64_t adata)
 		{
-			lua_pushinteger(L, adata);
+			luaapi::pushinteger(L, adata);
 		}
 
 		static bool stack_pop(lua_State* L, uint64_t& adata, bool apop = true)
 		{
-			if (!lua_isnumber(L, -1))
+			int64_t lvalue = 0;
+			if (luaapi::popinteger(L, lvalue, apop))
 			{
-				return false;
+				adata = (uint64_t)lvalue;
+				return true;
 			}
-			adata = lua_tointeger(L, -1);
-			if (apop)
-			{
-				lua_pop(L, 1);
-			}
-			return true;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint64_t adata)
 		{
-			lua_pushinteger(L, adata);
+			stack_push(L, adata);
 			if (aname != nullptr)
 			{
 				lua_setfield(L, -2, aname);
@@ -584,7 +671,7 @@ namespace ngl
 		}
 	};
 
-	struct tools_pop_tables
+	struct serialize_lua_map
 	{
 		template <typename KEY, typename VAL>
 		static bool keyvalues(lua_State* L, google::protobuf::Map<KEY, VAL>& amap)
@@ -657,7 +744,7 @@ namespace ngl
 			if (!lua_isnil(L, -1))
 			{
 				std::map<int32_t, T> lmap;
-				if (!tools_pop_tables::keyvalues(L, lmap))
+				if (!serialize_lua_map::keyvalues(L, lmap))
 				{
 					return false;
 				}
@@ -709,7 +796,7 @@ namespace ngl
 			if (!lua_isnil(L, -1))
 			{
 				std::map<int32_t, T> lmap;
-				if (!tools_pop_tables::keyvalues(L, lmap))
+				if (!serialize_lua_map::keyvalues(L, lmap))
 				{
 					return false;
 				}
@@ -738,7 +825,7 @@ namespace ngl
 
 	// 只有各种int 与 string
 	template <typename T>
-	struct tools_table_key
+	struct serialize_lua_table_key
 	{
 		static void key(lua_State* L, T adata)
 		{
@@ -747,7 +834,7 @@ namespace ngl
 	};
 
 	template <>
-	struct tools_table_key<std::string>
+	struct serialize_lua_table_key<std::string>
 	{
 		static void key(lua_State* L, const std::string& adata)
 		{
@@ -764,7 +851,7 @@ namespace ngl
 			for (const auto& item : adata)
 			{
 				serialize_lua<VAL>::table_push(L, nullptr, item.second);
-				tools_table_key<KEY>::key(L, item.first);
+				serialize_lua_table_key<KEY>::key(L, item.first);
 			}
 		}
 
@@ -778,7 +865,7 @@ namespace ngl
 		{
 			if (!lua_isnil(L, -1))
 			{
-				if (!tools_pop_tables::keyvalues(L, adata))
+				if (!serialize_lua_map::keyvalues(L, adata))
 				{
 					return false;
 				}
@@ -809,7 +896,7 @@ namespace ngl
 			for (const auto& item : adata)
 			{
 				serialize_lua<VAL>::table_push(L, nullptr, item.second);
-				tools_table_key<KEY>::key(L, item.first);
+				serialize_lua_table_key<KEY>::key(L, item.first);
 			}
 		}
 
@@ -826,7 +913,7 @@ namespace ngl
 		{
 			if (!lua_isnil(L, -1))
 			{
-				if (!tools_pop_tables::keyvalues(L, adata))
+				if (!serialize_lua_map::keyvalues(L, adata))
 				{
 					return false;
 				}
@@ -869,7 +956,7 @@ namespace ngl
 			if (!lua_isnil(L, -1))
 			{
 				std::map<int32_t, T> lmap;
-				if (!tools_pop_tables::keyvalues(L, lmap))
+				if (!serialize_lua_map::keyvalues(L, lmap))
 				{
 					return false;
 				}
@@ -923,7 +1010,7 @@ namespace ngl
 			if (!lua_isnil(L, -1))
 			{
 				std::map<int32_t, T> lmap;
-				if (!tools_pop_tables::keyvalues(L, lmap))
+				if (!serialize_lua_map::keyvalues(L, lmap))
 				{
 					return false;
 				}
@@ -1099,7 +1186,6 @@ namespace ngl
 		{
 			return true;
 		}
-
 	};
 
 
@@ -1253,7 +1339,6 @@ public:
 		return pop(args...) && pop(adata);
 	}
 };
-
 
 #include "nscript_pbexample.h"
 #include "nscript_pbnet.h"

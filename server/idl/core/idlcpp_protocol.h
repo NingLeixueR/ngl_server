@@ -285,7 +285,7 @@ namespace ngl
 	{
 		tprotocol::set_customs_index(200000000);
 		// 新增内部协议需要补充
-		tprotocol::tp_customsjson::template func <
+		tprotocol::tp_customs_script::template func <
 )";
 		int lindex = 200000000;
 		std::map<std::string, idl_file>& lmap = idl::instance().data();
