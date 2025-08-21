@@ -539,6 +539,7 @@ namespace ngl
 				adata = (uint8_t)lvalue;
 				return true;
 			}
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint8_t adata)
@@ -576,6 +577,7 @@ namespace ngl
 				adata = (uint16_t)lvalue;
 				return true;
 			}
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint16_t adata)
@@ -613,6 +615,7 @@ namespace ngl
 				adata = (uint32_t)lvalue;
 				return true;
 			}
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint32_t adata)
@@ -650,6 +653,7 @@ namespace ngl
 				adata = (uint64_t)lvalue;
 				return true;
 			}
+			return false;
 		}
 
 		static void table_push(lua_State* L, const char* aname, uint64_t adata)
