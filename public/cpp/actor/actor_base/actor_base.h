@@ -235,7 +235,7 @@ namespace ngl
 				data(adata)
 			{}
 
-			dprotocoljson(nscript_data_csv<T>, data)
+			dprotocol(nscript_data_csv<T>, data)
 		};
 
 		template <typename T>
@@ -244,7 +244,7 @@ namespace ngl
 			using TDATA = T;
 			std::map<int64_t, T*> data;
 
-			dprotocoljson(nscript_data_db<T>, data)
+			dprotocol(nscript_data_db<T>, data)
 		};
 
 		template <typename T>
@@ -256,7 +256,7 @@ namespace ngl
 				data(adata)
 			{}
 
-			dprotocoljson(nscript_data_nsp<T>, data)
+			dprotocol(nscript_data_nsp<T>, data)
 		};
 
 		// # 向脚本压入数据(1、csv数据 2、db数据 3、nsp数据)

@@ -18,7 +18,7 @@ namespace ngl
 					{
 						int64_t m_familid;
 						std::string m_familname;
-						dprotocoljson(gm_changename, m_familid, m_familname)
+						dprotocol(gm_changename, m_familid, m_familname)
 					};
 					gm_changename recv;
 					if (aos.read("data", recv) == false)

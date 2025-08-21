@@ -83,7 +83,7 @@ namespace ngl
 	{
 		std::vector<int64_t> m_data;
 
-		dprotocoljson(actor_db_delete<T>, m_data)
+		dprotocol(actor_db_delete<T>, m_data)
 	};
 
 	// db cache list  保存缓存列表
@@ -98,7 +98,7 @@ namespace ngl
 		enum_cache_list			m_type;
 		std::set<i64_actorid>	m_ls;
 
-		dprotocoljson(actor_time_db_cache<T>, m_ls)
+		dprotocol(actor_time_db_cache<T>, m_ls)
 	};
 
 	// ---- 模块间转发
@@ -278,7 +278,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		dprotocoljson(np_actor_forward, m_uid, m_area/*, m_data*/)
+		dprotocol(np_actor_forward, m_uid, m_area/*, m_data*/)
 	};
 
 	template <typename T, EPROTOCOL_TYPE PROTYPE>
@@ -304,7 +304,7 @@ namespace ngl
 			return nullptr;
 		}
 
-		dprotocoljson(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
+		dprotocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
 	};
 
 	template <typename T>
@@ -408,7 +408,7 @@ namespace ngl
 			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
 		{}
 
-		dprotocoljson(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
+		dprotocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
 	};
 
 	// # 群发数据给其他actor
@@ -450,7 +450,7 @@ namespace ngl
 		i32_serverid	m_toserverid = 0;
 		T				m_pram;
 
-		dprotocoljson(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
+		dprotocol(np_actorswitch_process, m_actor, m_serverid, m_toserverid, m_pram);
 	};
 		
 	template <typename TDATA>
@@ -461,7 +461,7 @@ namespace ngl
 		bool m_onlyread				= true;						// 是否只读
 		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 
-		dprotocoljson(np_channel_register, m_msg, m_actorid, m_onlyread, m_dataid)
+		dprotocol(np_channel_register, m_msg, m_actorid, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
@@ -475,7 +475,7 @@ namespace ngl
 		// m_publishlist_write.second:<读写的数据id列表>
 		std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist;
 
-		dprotocoljson(np_channel_register_reply, m_msg, m_actorid, m_onlyreads, m_writealls, m_publishlist)
+		dprotocol(np_channel_register_reply, m_msg, m_actorid, m_onlyreads, m_writealls, m_publishlist)
 	};
 
 	template <typename TDATA>
@@ -490,7 +490,7 @@ namespace ngl
 		std::set<i64_actorid> m_dataid;							// 关注哪些数据,结点可读可写
 		// ]
 
-		dprotocoljson(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_onlyread, m_dataid)
+		dprotocol(np_channel_dataid_sync, m_msg, m_actorid, m_add, m_onlyread, m_dataid)
 	};
 
 	template <typename TDATA>
@@ -498,7 +498,7 @@ namespace ngl
 	{
 		std::string				m_msg;							// 调试查看信息
 		i64_actorid				m_actorid;
-		dprotocoljson(np_channel_exit, m_msg, m_actorid)
+		dprotocol(np_channel_exit, m_msg, m_actorid)
 	};
 
 	template <typename TDATA>
@@ -518,7 +518,7 @@ namespace ngl
 		std::string m_msg;									// 调试查看信息
 		int64_t m_timer;
 		i16_area m_area;
-		dprotocoljson(np_channel_check, m_msg, m_timer, m_area)
+		dprotocol(np_channel_check, m_msg, m_timer, m_area)
 	};
 
 
@@ -526,14 +526,14 @@ namespace ngl
 	{
 		std::string m_json;
 
-		dprotocoljson(np_gm, m_json)
+		dprotocol(np_gm, m_json)
 	};
 
 	struct np_gm_response
 	{
 		std::string m_json;
 
-		dprotocoljson(np_gm_response, m_json)
+		dprotocol(np_gm_response, m_json)
 	};
 
 	struct np_testlua
@@ -541,6 +541,6 @@ namespace ngl
 		std::string m_name;
 		std::map<int, std::string> m_data;
 
-		dprotocoljson(np_testlua, m_name, m_data)
+		dprotocol(np_testlua, m_name, m_data)
 	};
 }//namespace ngl

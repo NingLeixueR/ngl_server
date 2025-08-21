@@ -29,7 +29,7 @@ namespace ngl
 					struct operator_set_time
 					{
 						int32_t m_time = 0;
-						dprotocoljson(operator_set_time, m_time)
+						dprotocol(operator_set_time, m_time)
 					};
 					operator_set_time ltime;
 					if (aos.read("data", ltime))
