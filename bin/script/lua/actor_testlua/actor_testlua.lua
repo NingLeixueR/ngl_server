@@ -33,9 +33,15 @@ function handle(amsgname, amsg)
 	print("msg name:" .. amsgname)
 	print(amsg)
 
+	local ret,id = nguidstr2int64("actor_brief#1#1")
+	if ret == false then
+		print("nguidstr2int64(\"actor_brief#1#1\") fail")
+		return
+	end
+
 	if amsgname == "np_actormodule_forward<PROBUFF_NET_TESTLUA>" then
 		-- 此处对db_testlua数据进行了修改
-		local testlua = ngldata:get("db_testlua", nguidstr2int64("actor_testlua#1#1"))
+		local testlua = ngldata:get("db_testlua", id)
 		if testlua ~= nil then
 			ngldata:print_table(testlua)
 			print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
@@ -54,15 +60,13 @@ function handle(amsgname, amsg)
 		ngldata:data_del("db_testlua", "34359803960")
 	end
 
-	local ret,id = nguidstr2int64("actor_brief#1#1")
-	if ret then
-		local brief =  ngldata:get("db_brief", id);
-		if brief ~= nil then
-			print(brief)
-			print("mlv:"..brief["mlv"])
-			brief["mlv"] = brief["mlv"] + 999
-			print("mlv:"..brief["mlv"])
-		end
+	
+	local brief =  ngldata:get("db_brief", id);
+	if brief ~= nil then
+		print(brief)
+		print("mlv:"..brief["mlv"])
+		brief["mlv"] = brief["mlv"] + 999
+		print("mlv:"..brief["mlv"])
 	end
 	
 	-- 
