@@ -268,7 +268,7 @@ namespace ngl
 			{
 				nscript_sysdata lsysdata
 				{
-					.m_nguid = tools::lexical_cast<std::string>(id_guid())
+					.m_nguid = id_guid()
 				};
 				nscript_manage::init_sysdata(m_enscript, m_script, lsysdata);
 			}
