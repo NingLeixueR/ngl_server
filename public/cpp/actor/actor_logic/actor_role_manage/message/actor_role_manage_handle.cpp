@@ -23,7 +23,7 @@ namespace ngl
 					{
 						int64_t m_roleid = 0;
 						int32_t m_stat = 0;
-						dprotocoljson(banrole, m_roleid, m_stat)
+						dprotocol(banrole, m_roleid, m_stat)
 					};
 					banrole m_banrole;
 					if (aos.read("data", m_banrole) == false)

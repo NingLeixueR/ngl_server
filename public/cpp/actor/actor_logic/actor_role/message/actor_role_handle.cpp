@@ -33,7 +33,7 @@ namespace ngl
 					{
 						std::string m_orderid;
 						int32_t m_rechargeid;
-						dprotocoljson(pay, m_orderid, m_rechargeid)
+						dprotocol(pay, m_orderid, m_rechargeid)
 					};
 					pay lpay;
 					if (aos.read("data", lpay) == false)

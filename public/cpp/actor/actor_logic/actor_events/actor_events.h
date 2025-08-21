@@ -69,7 +69,7 @@ namespace ngl
 			//std::map<E_EVENTS, std::set<i64_actorid>> m_vecpair;
 			E_EVENTS m_event;
 			i64_actorid m_actorid;
-			dprotocoljson(np_event_register, m_event, m_actorid)
+			dprotocol(np_event_register, m_event, m_actorid)
 		};
 
 		static void nregister()

@@ -11,7 +11,7 @@ namespace ngl
 		double m_v2;
 		std::string m_v3;
 
-		dprotocoljson(k0, m_v1, m_v2, m_v3)
+		dprotocol(k0, m_v1, m_v2, m_v3)
 	};
 
 	struct k1
@@ -24,7 +24,7 @@ namespace ngl
 		std::map<std::string, std::string> m_v6;
 		std::map<std::string, k0> m_v7;
 
-		dprotocoljson(k1, m_v1, m_v2, m_v3, m_v4, m_v5, m_v6, m_v7)
+		dprotocol(k1, m_v1, m_v2, m_v3, m_v4, m_v5, m_v6, m_v7)
 	};
 
 	struct k2
@@ -32,6 +32,6 @@ namespace ngl
 		int m_v1;
 		k1 m_v2;
 
-		dprotocoljson(k2, m_v1, m_v2)
+		dprotocol(k2, m_v1, m_v2)
 	};
 }//namespace ngl

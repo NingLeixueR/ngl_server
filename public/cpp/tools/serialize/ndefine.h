@@ -327,7 +327,7 @@ public:
 	def_nlua_pop2(__VA_ARGS__)
 
 
-#define dprotocoljson(NAME, ...)			\
+#define dprotocol(NAME, ...)			\
 	def_parmname							\
 	def_jsonfunction(__VA_ARGS__)			\
 	def_protocol(NAME, __VA_ARGS__)			\
