@@ -263,7 +263,7 @@ namespace ngl
 		{
 			m_enscript = aparm.m_enscript;
 			const char* lactorname = em<ENUM_ACTOR>::get_name(type());
-			m_script = nscript_manage::malloc(m_enscript, this, lactorname, std::format("{}.lua", lactorname).c_str());
+			m_script = nscript_manage::malloc(m_enscript, lactorname, std::format("{}.lua", lactorname).c_str());
 			if (m_script != nullptr)
 			{
 				nscript_sysdata lsysdata
