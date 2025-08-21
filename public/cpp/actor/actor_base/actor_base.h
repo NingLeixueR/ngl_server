@@ -647,7 +647,7 @@ namespace ngl
 
 	template <EPROTOCOL_TYPE TYPE, bool SCRIPT>
 	template <typename T>
-	static tprotocol::info* tprotocol::tcustoms<TYPE, SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
+	tprotocol::info* tprotocol::tcustoms<TYPE, SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
 	{
 		if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
 		{
