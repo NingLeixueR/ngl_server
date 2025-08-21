@@ -6,6 +6,7 @@
 #include "nregister.h"
 #include "db_manage.h"
 #include "actor_db.h"
+#include "nscript.h"
 #include "db_data.h"
 #include "db_pool.h"
 #include "actor.h"
