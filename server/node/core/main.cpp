@@ -15,26 +15,6 @@
 
 Dumper lDumper;
 
-struct a1
-{
-	int32_t m_a1_1;
-	std::string m_a1_2;
-};
-
-struct a2
-{
-	int32_t m_a2_1;
-	std::string m_a2_2;
-	std::map<int32_t, a1> m_a2_3;
-};
-
-struct a3
-{
-	int32_t m_a3_1;
-	std::string m_a3_2;
-	std::map<std::string, a2> m_a3_3;
-};
-
 int main(int argc, char** argv)
 {
 	if (argc <= 3)
