@@ -10,7 +10,6 @@
 
 namespace ngl
 {
-	
 	struct actorparm
 	{
 		actorparmbase	m_parm;
