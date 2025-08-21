@@ -26,32 +26,6 @@ namespace ngl
 {
 	class actor_base;
 
-	class luatools
-	{
-	public:
-		// 保存 void* 到 Lua
-		template <typename T>
-		static void set_pointer(lua_State* L, T* ptr, int64_t aid = 0)
-		{
-			std::string lname = std::format("{}_{}", tools::type_name<T>(), aid);
-			lua_pushlightuserdata(L, ptr);
-			lua_setglobal(L, lname.c_str());
-		}
-
-		// 从 Lua 获取 void*
-		template <typename T>
-		static T* get_pointer(lua_State* L, int64_t aid = 0)
-		{
-			std::string lname = std::format("{}_{}", tools::type_name<T>(), aid);
-			lua_getglobal(L, lname.c_str());  // 获取全局变量
-			if (lua_islightuserdata(L, -1))
-			{
-				return (T*)lua_touserdata(L, -1);  // 返回指针
-			}
-			return nullptr;  // 类型不匹配
-		}
-	};
-
 	struct nscript_sysdata
 	{
 		std::string m_nguid;
@@ -153,22 +127,12 @@ namespace ngl
 
 		void setupluapaths()
 		{
-			lua_getglobal(L, "package");
-			lua_getfield(L, -1, "path");
-			std::string lpath = lua_tostring(L, -1);
+			luaapi::add_package_path(L, sysconfig::lua().c_str());
 
-			// 添加自定义路径（保留原有路径）
-			lpath += std::format(";{}?.lua", sysconfig::lua());
-
-			lua_pop(L, 1);
-			lua_pushstring(L, lpath.c_str());
-			lua_setfield(L, -2, "path");
-			lua_pop(L, 1);
-
-			lua_register(L, "nguidstr2int64", nguidstr2int64);
-			lua_register(L, "send_client", send_client);
-			lua_register(L, "send_actor", send_actor);
-			lua_register(L, "nsp_auto_save", send_client);
+			luaapi::register_func(L, "nguidstr2int64", nguidstr2int64);
+			luaapi::register_func(L, "send_client", send_client);
+			luaapi::register_func(L, "send_actor", send_actor);
+			luaapi::register_func(L, "nsp_auto_save", send_client);
 		}
 
 		bool init(actor_base* aactor, const char* asubdirectory, const char* ascript)
@@ -177,8 +141,6 @@ namespace ngl
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
 			setupluapaths();
-
-			luatools::set_pointer(L, get_actor());
 
 			if (luaL_loadfile(L, (sysconfig::lua() + "rfunction.lua").c_str()) || lua_pcall(L, 0, 0, 0))
 			{
