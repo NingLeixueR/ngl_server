@@ -42,18 +42,13 @@ namespace ngl
 			return ESCRIPT;
 		}
 
-		actor_base* get_actor()
-		{
-			return nullptr;
-		}
-
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
 			return false;
 		}
 
-		bool init(actor_base* actor, const char* asubdirectory, const char* ascript)
+		bool init(const char* asubdirectory, const char* ascript)
 		{
 			return false;
 		}
@@ -111,13 +106,7 @@ namespace ngl
 	{
 		lua_State* L = nullptr;
 		std::string m_scriptpath;
-		actor_base* m_actor = nullptr;
 	public:
-		actor_base* get_actor()
-		{
-			return m_actor;
-		}
-
 		template <typename T>
 		bool init_sysdata(const T& asys)
 		{
@@ -135,9 +124,8 @@ namespace ngl
 			luaapi::register_func(L, "nsp_auto_save", send_client);
 		}
 
-		bool init(actor_base* aactor, const char* asubdirectory, const char* ascript)
+		bool init(const char* asubdirectory, const char* ascript)
 		{
-			m_actor = aactor;
 			L = luaL_newstate();
 			luaL_openlibs(L);  // 打开标准库
 			setupluapaths();
@@ -261,12 +249,12 @@ namespace ngl
 	class nscript_manage
 	{
 	public:
-		static void* malloc(enscript atype, actor_base* actor, const char* asubdirectory, const char* ascript)
+		static void* malloc(enscript atype, const char* asubdirectory, const char* ascript)
 		{
 			if(atype == enscript_lua)
 			{
 				nscript<enscript_lua>* lpnscript =  new nscript<enscript_lua>();
-				if (lpnscript->init(actor, asubdirectory, ascript))
+				if (lpnscript->init(asubdirectory, ascript))
 				{
 					return lpnscript;
 				}
@@ -357,9 +345,7 @@ namespace ngl
 			return false;
 		}
 
-		static bool data_checkdel(
-			enscript atype, void* anscript, const char* aname, int64_t adataid
-		)
+		static bool data_checkdel(enscript atype, void* anscript, const char* aname, int64_t adataid)
 		{
 			if (atype == enscript_lua)
 			{
@@ -383,87 +369,4 @@ namespace ngl
 	};
 
 
-}//namespace ngl
-
-
-namespace ngl
-{
-	bool actor_base::nscript_db_loadfinish()
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::db_loadfinish(m_enscript, m_script);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_data_del(int64_t adataid)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_data_checkout(int64_t adataid, T& adata)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adataid, adata);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_data_checkout(std::map<int64_t, T>& adata)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_data_checkdel(int64_t adataid)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_data_checkdel(std::vector<int64_t>& adeldata)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adeldata);
-	}
-
-	template <typename T>
-	bool actor_base::nscript_handle(const T& adata)
-	{
-		if (!nscript_using())
-		{
-			return false;
-		}
-		return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
-	}
 }//namespace ngl

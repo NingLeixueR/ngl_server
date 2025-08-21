@@ -4,6 +4,7 @@
 #include "handle_pram.h"
 #include "nactortype.h"
 #include "localtime.h"
+#include "nscript.h"
 #include "ntimer.h"
 #include "ngroup.h"
 #include "nguid.h"
@@ -215,7 +216,14 @@ namespace ngl
 		}
 
 		// # 通知脚本db数据加载完毕
-		bool nscript_db_loadfinish();
+		bool nscript_db_loadfinish()
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::db_loadfinish(m_enscript, m_script);
+		}
 
 		template <typename T>
 		struct nscript_data_csv
@@ -257,31 +265,79 @@ namespace ngl
 		// parm adata			压入的数据
 		// parm aedit			是否可以在脚本中修改
 		template <typename T>
-		bool nscript_data_push(const char* asource, const T& adata, bool aedit = false);
-
+		bool nscript_data_push(const char* asource, const T& adata, bool aedit/* = false*/)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::data_push(m_enscript, m_script, tools::type_name<typename T::TDATA>().c_str(), asource, adata, aedit);
+		}
 
 
 		// # 告诉脚本数据被删除了
 		// parm aname			数据名称
 		// parm adataid			数据id
 		template <typename T>
-		bool nscript_data_del(int64_t adataid);
+		bool nscript_data_del(int64_t adataid)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::data_del(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+		}
 
 		// # 检查数据是否被修改
 		template <typename T>
-		bool nscript_data_checkout(int64_t adataid, T& adata);
+		bool nscript_data_checkout(int64_t adataid, T& adata)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adataid, adata);
+		}
 
 		template <typename T>
-		bool nscript_data_checkout(std::map<int64_t, T>& adata);
+		bool nscript_data_checkout(std::map<int64_t, T>& adata)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::data_checkout(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+		}
 
 		template <typename T>
-		bool nscript_data_checkdel(int64_t adataid);
+		bool nscript_data_checkdel(int64_t adataid)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adataid);
+		}
 
 		template <typename T>
-		bool nscript_data_checkdel(std::vector<int64_t>& adeldata);
+		bool nscript_data_checkdel(std::vector<int64_t>& adeldata)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::data_checkdel(m_enscript, m_script, tools::type_name<T>().c_str(), adeldata);
+		}
 
 		template <typename T>
-		bool nscript_handle(const T& adata);
+		bool nscript_handle(const T& adata)
+		{
+			if (!nscript_using())
+			{
+				return false;
+			}
+			return nscript_manage::handle(m_enscript, m_script, tools::type_name<T>().c_str(), adata);
+		}
 #pragma endregion 
 
 #pragma region net
