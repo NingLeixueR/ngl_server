@@ -31,14 +31,14 @@ namespace ngl
 		std::set<i64_actorid>											m_dataid;				// 关注哪些数据,结点可读可写
 
 		// [[ m_onlyread == false 才有意义
-			std::set<i64_actorid> m_onlyreads;									// 只读全部数据
-			std::set<i64_actorid> m_writealls;									// 读/写全部数据
+			std::set<i64_actorid> m_onlyreads;													// 只读全部数据
+			std::set<i64_actorid> m_writealls;													// 读/写全部数据
 			// m_publishlist1.first:<结点id>
 			// m_publishlist1.second:<读写的数据id列表>
 			std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist1;
 			// m_publishlist2.first:<数据id>
 			// m_publishlist2.second:读写的结点列表
-			std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist2;							//<数据>被<哪些结点>关注
+			std::map<i64_actorid, std::set<i64_actorid>>			m_publishlist2;				//<数据>被<哪些结点>关注
 		// ]]
 
 		nsp_client() = default;
@@ -46,7 +46,12 @@ namespace ngl
 		template <typename TX>
 		static void msg_info(TX& adata)
 		{
-			adata.m_msg = std::format("{}:{}:{}", tools::type_name<TDerived>(), tools::type_name<TACTOR>(), tools::type_name<T>());
+			adata.m_msg = std::format(
+				"{}:{}:{}"
+				, tools::type_name<TDerived>()
+				, tools::type_name<TACTOR>()
+				, tools::type_name<T>()
+			);
 		}
 
 		void log(const char* amessage)
