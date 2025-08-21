@@ -12,13 +12,13 @@ extern "C"
 	// # lua发送协议给客户端
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	// # parm 2 msgname
-	// # parm 3 jsonmsg 
+	// # parm 3 lua table
 	extern int send_client(lua_State* L);
 
 	// # lua发送协议给其他actor
 	// # parm 1 nguid(actor_type#areaid#dataid)
 	// # parm 2 msgname
-	// # parm 3 jsonmsg 
+	// # parm 3 lua table
 	extern int send_actor(lua_State* L);
 }
 
@@ -28,9 +28,9 @@ namespace ngl
 
 	struct nscript_sysdata
 	{
-		std::string m_nguid;
+		int64_t m_nguid;
 
-		dprotocoljson(nscript_sysdata, m_nguid)
+		def_nlua_function2("m_nguid", m_nguid)
 	};
 
 	template <enscript ESCRIPT>

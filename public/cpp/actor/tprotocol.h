@@ -27,7 +27,6 @@ namespace ngl
 		tprotocol(const tprotocol&) = delete;
 		tprotocol& operator=(const tprotocol&) = delete;
 	public:
-
 		struct info
 		{
 			EPROTOCOL_TYPE	m_type;
@@ -49,7 +48,8 @@ namespace ngl
 				{
 					return m_toactor[SCRIPT];
 				}
-				return nullptr;
+				static const func lnullfun = nullptr;
+				return lnullfun;
 			}
 
 			template <enscript SCRIPT>
@@ -59,14 +59,14 @@ namespace ngl
 				{
 					return m_toclient[SCRIPT];
 				}
-				return nullptr;
+				static const func lnullfun = nullptr;
+				return lnullfun;
 			}
 		};
-
 	private:
 		static std::map<size_t, info>				m_keyval;
-		static std::map<i32_protocolnum, info*>	m_protocol;
-		static std::map<std::string, info*>		m_nameprotocol;
+		static std::map<i32_protocolnum, info*>		m_protocol;
+		static std::map<std::string, info*>			m_nameprotocol;
 		// pbnet/pbexample		[1			-  100000000];
 		// custom				[200000001	-  300000000];
 		static int32_t								m_customs/* = 200000000*/;
