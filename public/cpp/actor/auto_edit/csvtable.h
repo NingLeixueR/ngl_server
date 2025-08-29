@@ -4,7 +4,7 @@
 
 #include "csv.h"
 #include "ndefine.h"
-#include "serialize.h"
+#include "nserialize.h"
 namespace ngl{
 enum ENET_CONFIG
 {
@@ -34,7 +34,6 @@ enum EPH
 	EPH_BYTES = EPH_MASK_COUNT,	// 协议字节数
 	EPH_TIME,	// 发送端的时间戳
 	EPH_PROTOCOLNUM,	// 协议号
-	EPH_PROTOCOLTYPE,	// 协议类型 EPROTOCOL_TYPE
 	EPH_ACTOR_TYPEAREA,	// ACTOR_TYPE_AREA
 	EPH_ACTOR_ID,	// ACTOR_ID
 	EPH_REQUEST_ACTOR_TYPEAREA,	// Request ACTOR_TYPE_AREA

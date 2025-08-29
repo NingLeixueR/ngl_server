@@ -1,5 +1,5 @@
 // 注意【rebuild.bat 工具生成文件，不要手动修改】
-// 创建时间 25-08-13 14:34:59
+// 创建时间 25-08-26 16:48:10
 #include "attribute_value.cpp"
 #include "time_consuming.cpp"
 #include "server_session.cpp"
@@ -18,6 +18,7 @@
 #include "manage_curl.cpp"
 #include "handle_pram.cpp"
 #include "time_wheel.cpp"
+#include "nserialize.cpp"
 #include "nscript_pb.cpp"
 #include "manage_csv.cpp"
 #include "json_write.cpp"
@@ -27,7 +28,6 @@
 #include "tprotocol.cpp"
 #include "sysconfig.cpp"
 #include "synthesis.cpp"
-#include "serialize.cpp"
 #include "rank_item.cpp"
 #include "pack_head.cpp"
 #include "nprotocol.cpp"

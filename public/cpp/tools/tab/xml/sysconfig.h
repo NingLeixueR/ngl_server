@@ -2,6 +2,7 @@
 
 #include "type.h"
 #include <vector>
+#include <set>
 
 namespace ngl
 {

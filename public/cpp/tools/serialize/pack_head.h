@@ -1,6 +1,6 @@
 #pragma once
 
-#include "serialize.h"
+#include "nserialize.h"
 #include "csvtable.h"
 #include "tools.h"
 #include "type.h"
@@ -80,13 +80,13 @@ namespace ngl
 		// # 获取/设置协议号
 		i32_protocolnum get_protocolnumber()const;
 		void			set_protocol(i32_protocolnum aprotocolnum);
-
-		// # 获取/设置协议类型
-		EPROTOCOL_TYPE	get_protocoltype()const;
-		void			set_protocoltype(EPROTOCOL_TYPE atype);
 		
 		EPH_HEAD_VAL push(const char*& abuff, int32_t& alen);
-		bool push(ngl::serialize& aflow);
+		bool push_format(ngl::ser::serialize_push* aserialize)const
+		{
+			return aserialize->basetype((void*)m_data, sizeof(int32_t) * EPH_SUM);
+		}
+
 		void reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair);
 	};
 }// namespace ngl
@@ -111,14 +111,10 @@ struct std::formatter<ngl::pack_head>
 			});
 		ngl::nguid lactor(*(int64_t*)&val.m_data[ngl::EPH_ACTOR_TYPEAREA]);
 		ngl::nguid lrequestactor(*(int64_t*)&val.m_data[ngl::EPH_REQUEST_ACTOR_TYPEAREA]);
-		std::format_to(out, "HEAD[MASK:{},BYTES:{},TIME:{},PROTOCOLNUM:{},PROTOCOLTYPE:{},ACTOR:{},REQUEST_ACTOR:{}]", 
-			ss, 
-			val.m_data[ngl::EPH_BYTES],
+		std::format_to(out, "HEAD[MASK:{},BYTES:{},TIME:{},PROTOCOLNUM:{},ACTOR:{},REQUEST_ACTOR:{}]", 
+			ss, val.m_data[ngl::EPH_BYTES],
 			ngl::localtime::time2str(val.m_data[ngl::EPH_TIME], "%y/%m/%d %H:%M:%S"),
-			val.m_data[ngl::EPH_PROTOCOLNUM],
-			val.m_data[ngl::EPH_PROTOCOLTYPE],
-			lactor,
-			lrequestactor
+			val.m_data[ngl::EPH_PROTOCOLNUM], lactor, lrequestactor
 		);
 		return out;
 	}

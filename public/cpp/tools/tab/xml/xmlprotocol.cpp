@@ -21,9 +21,15 @@ namespace ngl
 
 				std::string lname;
 				int32_t lnumber = 0;
+				std::map<std::string, int32_t>& lmap = xmlprotocol::m_protocol;
 				if (ltemp.find("name", lname) && ltemp.find("number", lnumber))
 				{
-					xmlprotocol::m_protocol[tools::type_name_handle(lname)] = lnumber;
+					lmap[tools::type_name_handle(lname)] = lnumber;
+					lmap[std::format("np_actormodule_forward<{}>", lname)] = lnumber;
+					lmap[std::format("np_actor_forward<{},forward_g2c<forward>>", lname)] = lnumber;
+					lmap[std::format("np_actor_forward<{0},forward_g2c<{0}>>", lname)] = lnumber;
+					lmap[std::format("np_actor_forward<{},forward_c2g<forward>>", lname)] = lnumber;
+					lmap[std::format("np_actor_forward<{0},forward_c2g<{0}>>", lname)] = lnumber;
 				}
 				ltemp.plog();
 			};
@@ -38,8 +44,9 @@ namespace ngl
 
 	int32_t xmlprotocol::protocol(const std::string& aname)
 	{
-		auto itor = m_protocol.find(aname);
-		if (itor == m_protocol.end())
+		std::map<std::string, int32_t>& lmap = m_protocol;
+		auto itor = lmap.find(aname);
+		if (itor == lmap.end())
 		{
 			return -1;
 		}

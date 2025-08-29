@@ -1,8 +1,8 @@
 #pragma once
 
 #include "time_wheel.h"
+#include "nserialize.h"
 #include "nprotocol.h"
-#include "serialize.h"
 #include "ndefine.h"
 #include "pack.h"
 

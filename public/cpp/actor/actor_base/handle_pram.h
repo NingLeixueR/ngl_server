@@ -43,7 +43,6 @@ namespace ngl
 		i32_protocolnum			m_enum			= -1;						// 协议号
 		std::shared_ptr<void>	m_data			= nullptr;					// 协议结构
 		std::shared_ptr<pack>	m_pack			= nullptr;					// 如果是网络消息会携带pack信息
-		EPROTOCOL_TYPE			m_protocoltype	= EPROTOCOL_TYPE_CUSTOM;	// 协议类型
 		nguid					m_actor			= nguid::make();			// 发送给哪个actor
 		nguid					m_requestactor	= nguid::make();			// 哪个actor发送的
 		std::set<i64_actorid>   m_massactors;								// 群发列表
@@ -144,7 +143,6 @@ namespace ngl
 			lpram.m_data			= adata;
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
-			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
 			lpram.m_issend			= IS_SEND;
 			make_forwardfun<T, IS_FORWARDFUN&& IS_SEND>(lpram);
@@ -152,11 +150,11 @@ namespace ngl
 			return lpram;
 		}
 
-		template <typename T>
+		//Y:forward或者T
+		template <typename T, typename Y>
 		static handle_pram create(
-			const nguid& aid
-			, const nguid& arid
-			, const std::shared_ptr<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>& adata
+			const nguid& aid, const nguid& arid
+			, const std::shared_ptr<np_actor_forward<T, forward_g2c<Y>>>& adata
 			, const std::function<void()>& afailfun = nullptr
 		)
 		{
@@ -165,11 +163,29 @@ namespace ngl
 			lpram.m_data			= adata;
 			lpram.m_actor			= aid;
 			lpram.m_requestactor	= arid;
-			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
 			lpram.m_issend			= true;
 			make_client<T>(lpram);
 			lpram.m_failfun			= afailfun;
+			return lpram;
+		}
+
+		template <typename T, typename Y>
+		static handle_pram create(
+			const nguid& aid, const nguid& arid
+			, const std::shared_ptr<np_actor_forward<T, forward_c2g<Y>>>& adata
+			, const std::function<void()>& afailfun = nullptr
+		)
+		{
+			handle_pram lpram;
+			lpram.m_enum = tprotocol::protocol<T>();
+			lpram.m_data = adata;
+			lpram.m_actor = aid;
+			lpram.m_requestactor = arid;
+			lpram.m_forwardfun = nullptr;
+			lpram.m_issend = true;
+			lpram.m_forwardfun = nullptr;
+			lpram.m_failfun = afailfun;
 			return lpram;
 		}
 
@@ -184,7 +200,6 @@ namespace ngl
 			lpram.m_actor			= nguid::make();
 			lpram.m_massactors		= aids;
 			lpram.m_requestactor	= arid;
-			lpram.m_protocoltype	= (EPROTOCOL_TYPE)tprotocol::protocol_type<T>();
 			lpram.m_forwardfun		= nullptr;
 			lpram.m_issend			= IS_SEND;
 			make_massfun<T, IS_SEND>(lpram);
@@ -305,9 +320,9 @@ namespace ngl
 
 		nguid lactorid			= adata.m_actor;
 		nguid lrequestactor		= adata.m_requestactor;
-		auto ldata				= (np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>*)adata.m_data.get();
-		std::vector<i32_actordataid>& luid	= ldata->m_uid;
-		std::vector<i16_area>& larea		= ldata->m_area;
+		auto ldata				= (np_actor_forward<T, forward_g2c<T>>*)adata.m_data.get();
+		std::vector<i32_actordataid>& luid	= ldata->m_data.m_uid;
+		std::vector<i16_area>& larea		= ldata->m_data.m_area;
 		std::set<i32_serverid> lgateway;
 		for (int i = 0; i < luid.size() && i < larea.size(); ++i)
 		{
@@ -320,7 +335,7 @@ namespace ngl
 		}
 		for (i32_serverid lserverid : lgateway)
 		{
-			handle_pram_send<np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>>::sendbyserver(
+			handle_pram_send<np_actor_forward<T, forward_g2c<T>>>::sendbyserver(
 				lserverid, adata
 			);
 		}

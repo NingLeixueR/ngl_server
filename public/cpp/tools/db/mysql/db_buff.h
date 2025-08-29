@@ -41,11 +41,11 @@ namespace ngl
 		{
 			e_buffsize = 10 * 1024 * 1024, // µ•blob…œœﬁ 10M
 		};
-		dbuff* m_buff;
-		dbuff* m_mallocbuff;
+		std::shared_ptr<dbuff> m_buff;
+		std::shared_ptr<dbuff> m_mallocbuff;
 	public:
 		inline db_buff() :
-			m_buff(new dbuff(e_buffsize))
+			m_buff(std::make_shared<dbuff>(e_buffsize))
 			, m_mallocbuff(nullptr)
 		{}
 
@@ -86,40 +86,78 @@ namespace ngl
 		}
 
 		template <typename T>
-		inline bool do_serialize(T& adata, dbuff* abuff)
+		inline bool do_binary(T& adata, dbuff* abuff)
 		{
-			ngl::serialize lserialize(m_buff->m_buff, m_buff->m_buffsize);
-			if (lserialize.push(adata))
+			ngl::ser::serialize_push lserialize(abuff->m_buff, abuff->m_buffsize);
+			if (ngl::ser::nserialize::push(&lserialize, adata))
 			{
-				m_buff->m_pos = lserialize.byte();
+				abuff->m_pos = lserialize.pos();
 				return true;
 			}
 			return false;
 		}
 
 		template <typename T>
+		inline bool do_serialize_binary(T& adata)
+		{
+			if (do_binary(adata, m_buff.get()))
+			{
+				return true;
+			}
+			ngl::ser::serialize_byte lbyte;
+			ngl::ser::nserialize::bytes(&lbyte, adata);
+			m_mallocbuff = std::make_shared<dbuff>(lbyte.pos());
+			if (do_binary(adata, m_mallocbuff.get()))
+			{
+				return true;
+			}
+			return false;
+		}
+
+
+
+		template <typename T>
+		inline bool do_serialize_json(T& adata)
+		{
+			ngl::json_write lwrite;
+			if (adata.write(lwrite))
+			{
+				lwrite.set_nonformatstr();
+				std::string ltemp;
+				lwrite.get(ltemp);
+				if (ltemp.size() > m_buff->m_buffsize)
+				{
+					m_mallocbuff = std::make_shared<dbuff>(ltemp.size()+1);
+					memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
+					m_mallocbuff->m_pos = ltemp.size() + 1;
+				}
+				else
+				{
+					memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
+					m_buff->m_pos = ltemp.size() + 1;
+				}
+				return true;
+			}
+			return false;
+		}
+
+		template <typename T, bool ISBINARY>
 		inline void serialize(T& adata)
 		{
-			if (do_serialize(adata, m_buff))
+			if constexpr (ISBINARY)
 			{
-				return;
-			}
-
-			if (adata.m_isbinary)
-			{
-				int32_t lbytes = adata.m_data->ByteSize();
-				if (lbytes > e_buffsize)
+				if (!do_serialize_binary(adata))
 				{
-					if (m_mallocbuff != nullptr)
-					{
-						delete m_mallocbuff;
-					}
-					m_mallocbuff = new dbuff(lbytes);
-					if (do_serialize(adata, m_mallocbuff))
-					{
-						return;
-					}
-					reset();
+					log_error()->print("do_serialize_binary fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
+					return;
+				}
+			}
+			else
+			{
+				if (!do_serialize_json(adata))
+				{
+					log_error()->print("do_serialize_json fail T=[{}:{}]", tools::type_name<T>(), adata.mid());
+					return;
 				}
 			}
 			Throw("malloc_buff.serialize fail");

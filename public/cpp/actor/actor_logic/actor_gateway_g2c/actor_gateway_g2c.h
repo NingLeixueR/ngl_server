@@ -47,32 +47,32 @@ namespace ngl
 
 		bool handle(const message<np_arg_null>&);
 
-		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(const message<np_actor_forward<T, TYPE, true, ngl::forward>>& adata)
+		template <typename T>
+		bool handle(const message<np_actor_forward<T, forward_g2c<forward>>>& adata)
 		{
 			auto lparm = adata.get_data();
 			auto lpack = adata.get_pack();
 			// Game->Gate  需要把这个消息传递给Client服务器
 			gateway_socket* info = nullptr;
 			std::map<i32_sessionid, i64_actorid> lmap;
-			if (lparm->m_uid.empty())
+			if (lparm->m_data.m_uid.empty())
 			{
 				return true;
 			}
-			if (lparm->m_area[0] == -1 && lparm->m_uid[0] == -1)
+			if (lparm->m_data.m_area[0] == -1 && lparm->m_data.m_uid[0] == -1)
 			{
 				// 获取所有客户端
 				get_allclient(lmap);
 			}
-			else if (lparm->m_area[0] != -1 && lparm->m_uid[0] == -1)
+			else if (lparm->m_data.m_area[0] != -1 && lparm->m_data.m_uid[0] == -1)
 			{
 				// 获取指定区服上的所有客户端
-				get_allclientbyarea(lmap, lparm->m_area[0]);
+				get_allclientbyarea(lmap, lparm->m_data.m_area[0]);
 			}
 			else
 			{
-				int32_t luidsize = (int32_t)lparm->m_uid.size();
-				int32_t lareasize = (int32_t)lparm->m_area.size();
+				int32_t luidsize = (int32_t)lparm->m_data.m_uid.size();
+				int32_t lareasize = (int32_t)lparm->m_data.m_area.size();
 				if (luidsize != lareasize)
 				{
 					log_error()->print("actor_gatewayg2c uidsize[{}]!=areasize[{}]", luidsize, lareasize);
@@ -80,8 +80,8 @@ namespace ngl
 				}
 				for (int i = 0; i < luidsize; ++i)
 				{
-					i16_area larea = lparm->m_area[i];
-					i32_actordataid ldataid = lparm->m_uid[i];
+					i16_area larea = lparm->m_data.m_area[i];
+					i32_actordataid ldataid = lparm->m_data.m_uid[i];
 					info = m_info.get(larea, ldataid);
 					if (info == nullptr)
 					{
@@ -91,8 +91,7 @@ namespace ngl
 					lmap.insert(std::make_pair(info->m_socket, lactorid));
 				}
 			}
-			np_actor_forward<T, TYPE, false, ngl::forward> ltemp(*lparm);
-			nets::sendmore(lmap, ltemp, lpack->m_head.get_request_actor());
+			nets::sendmore(lmap, *lparm, lpack->m_head.get_request_actor());
 			return true;
 		}
 

@@ -75,24 +75,22 @@ namespace ngl
 			np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
 			pro.m_stat = true;
 			pro.m_over = false;
-			pro.m_data.make();
 			ngl::db_data<TDBTAB>::foreach_index(
 				[lrequestactor, lsendmaxcount, apack, &pro](int aindex, TDBTAB& atab)
 				{
 					nguid lguid(atab.mid());
-					pro.m_data.m_data->insert(std::make_pair(lguid, atab));
+					pro.m_data.insert(std::make_pair(lguid, atab));
 					if (aindex % lsendmaxcount == 0)
 					{
 						nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
 						pro = np_actordb_load_response<TDBTAB_TYPE, TDBTAB>();
 						pro.m_stat = true;
 						pro.m_over = false;
-						pro.m_data.make();
 					}
 				});
 			pro.m_over = true;
 			nets::sendbysession(apack->m_id, pro, lrequestactor, nguid::make());
-			log_info()->print("loadall[{}]", tools::protobuf_tabname<TDBTAB>::name());
+			log_info()->print("loadall[{}]", tools::type_name<TDBTAB>());
 		}
 
 		// # 加载表中的指定数据
@@ -132,14 +130,13 @@ namespace ngl
 				load(athreadid, lid);
 				
 				np_actordb_load_response<TDBTAB_TYPE, TDBTAB> pro;
-				pro.m_data.make();
 				pro.m_over = true;
 				pro.m_stat = false;
 
 				TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
 				if (ldata != nullptr)
 				{
-					(*pro.m_data.m_data)[adata.m_id] = *ldata;
+					(pro.m_data)[adata.m_id] = *ldata;
 				}
 
 				i64_actorid lrequestactor = apack->m_head.get_request_actor();
@@ -172,7 +169,7 @@ namespace ngl
 
 		static void save(i32_threadid athreadid, const pack*, const np_actordb_save<TDBTAB_TYPE, TDBTAB>& adata)
 		{
-			const std::map<nguid, TDBTAB>& lmap = *adata.m_data.m_data;
+			const std::map<nguid, TDBTAB>& lmap = adata.m_data;
 			for (const std::pair<const nguid, TDBTAB>& item : lmap)
 			{
 				save(athreadid, item.second);
@@ -224,20 +221,20 @@ namespace ngl
 
 		static void nregister()
 		{
-			actor::register_handle_custom<tactor_db>::template func<
+			register_handle<tactor_db>::template func<
 				np_actordb_load<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_delete<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>
 			>(true);
-			actor::register_handle_custom<tactor_db>::template func<
+			register_handle<tactor_db>::template func<
 				mforward<np_gm>
 			>(true);
 		}
 
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			std::string lname = tools::protobuf_tabname<TDBTAB>::name();
+			std::string lname = tools::type_name<TDBTAB>();
 			log_error()->print("load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id);
 			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
@@ -312,7 +309,7 @@ namespace ngl
 						{
 							db_manage::select<TDBTAB>(db_pool::instance().get(athread), lid);
 						}
-						protobuf_data<TDBTAB> m_savetemp;
+						/*protobuf_data<TDBTAB> m_savetemp;
 						m_savetemp.m_isbinary = false;
 						m_savetemp.m_data = std::make_shared<TDBTAB>();
 						TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
@@ -326,7 +323,7 @@ namespace ngl
 						if (lserialize.push(m_savetemp))
 						{
 							pro.m_data = lbuff;
-						}
+						}*/
 					};
 
 				struct query_page
@@ -350,15 +347,15 @@ namespace ngl
 
 						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro](int32_t aindex, TDBTAB& aitem)
 							{
-								protobuf_data<TDBTAB> m_savetemp;
+								/*protobuf_data<TDBTAB> m_savetemp;
 								m_savetemp.m_isbinary = false;
 								m_savetemp.m_data = std::make_shared<TDBTAB>(aitem);
-								char lbuff[10240] = { 0 };
-								ngl::serialize lserialize(lbuff, 10240);
+								char lbuff[10240] = { 0 };*/
+								/*ngl::serialize lserialize(lbuff, 10240);
 								if (lserialize.push(m_savetemp))
 								{
 									pro.m_data.push_back(lbuff);
-								}
+								}*/
 							});
 					};
 
@@ -371,16 +368,16 @@ namespace ngl
 						{
 							return;
 						}
-						protobuf_data<TDBTAB> ldata;
-						ldata.m_isbinary = false;
-						if (ngl::unserialize lunser(ljson.c_str(), (int)ljson.size() + 1); !lunser.pop(ldata))
+						//protobuf_data<TDBTAB> ldata;
+						//ldata.m_isbinary = false;
+						/*if (ngl::unserialize lunser(ljson.c_str(), (int)ljson.size() + 1); !lunser.pop(ldata))
 						{
 							return;
 						}
 						int64_t lid = ldata.m_data->mid();
 						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
 						db_manage::save<TDBTAB>(db_pool::instance().get(athread), lid);
-						pro.m_data = true;
+						pro.m_data = true;*/
 					};
 			}
 

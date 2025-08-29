@@ -1,0 +1,872 @@
+#pragma once
+
+#include <unordered_map>
+#include <unordered_set>
+#include <functional>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <cstdio>
+#include <vector>
+#include <string>
+#include <list>
+#include <set>
+#include <map>
+
+#include <google/protobuf/util/json_util.h>
+#include <google/protobuf/message_lite.h>
+#include <google/protobuf/descriptor.h>
+
+#include "tools.h"
+#include "net.pb.h"
+
+namespace ngl
+{
+	namespace ser
+	{
+		// # TBUFF char* 对应push
+		// # TBUFF const char* 对应pop
+		template <typename TBUFF>
+		class serialize
+		{
+			TBUFF m_buff;
+			int32_t m_len;
+			int32_t m_pos;
+		public:
+			serialize(TBUFF abuff, int32_t alen) :
+				m_buff(abuff),
+				m_len(alen),
+				m_pos(0)
+			{}
+
+			inline TBUFF buff()
+			{
+				return m_buff;
+			}
+
+			inline int& pos()
+			{
+				return m_pos;
+			}
+
+			inline int& len()
+			{
+				return m_len;
+			}
+
+			inline int move_pos(int abytes)
+			{
+				m_pos += abytes;
+				return m_pos;
+			}
+
+			virtual bool basetype(void* adata, int32_t abytes) = 0;
+		};
+
+		class serialize_byte
+		{
+			int32_t m_pos;
+		public:
+			serialize_byte() :
+				m_pos(0)
+			{}
+
+			int32_t pos()
+			{
+				return m_pos;
+			}
+
+			inline int move_pos(int abytes)
+			{
+				m_pos += abytes;
+				return m_pos;
+			}
+		};
+
+		class serialize_push : public serialize<char*>
+		{
+		public:
+			serialize_push(char* abuff, int32_t alen) :
+				serialize<char*>(abuff, alen)
+			{}
+
+			virtual bool basetype(void* adata, int32_t abytes)
+			{
+				if (pos() + abytes > len())
+				{
+					return false;
+				}
+				memcpy(&buff()[pos()], adata, abytes);
+				move_pos(abytes);
+				return true;
+			}
+		};
+
+		class serialize_pop : public serialize<const char*>
+		{
+		public:
+			serialize_pop(const char* abuff, int32_t alen) :
+				serialize<const char*>(abuff, alen)
+			{}
+
+			virtual bool basetype(void* adata, int32_t abytes)
+			{
+				if (pos() + abytes > len())
+				{
+					return false;
+				}
+				memcpy(adata, &buff()[pos()], abytes);
+				move_pos(abytes);
+				return true;
+			}
+		};
+
+		template <typename T>
+		struct serialize_format
+		{
+			static bool push(serialize_push* aserialize, const T& adata);
+
+			static bool pop(serialize_pop* aserialize, T& adata);
+
+			static void bytes(serialize_byte* aserialize, const T& adata);
+		};
+
+		template <typename T>
+		struct serialize_format<T*>
+		{
+			static bool push(serialize_push* aserialize, const T* adata)
+			{
+				if (adata == nullptr)
+				{
+					return false;
+				}
+				return serialize_format<T>::push(aserialize, *adata);
+			}
+
+			static bool pop(serialize_pop* aserialize, T* adata)
+			{
+				if (adata == nullptr)
+				{
+					return false;
+				}
+				return serialize_format<T>::pop(aserialize, *adata);
+			}
+
+			static void bytes(serialize_byte* aserialize, const T* adata)
+			{
+				if (adata == nullptr)
+				{
+					return;
+				}
+				serialize_format<T>::bytes(aserialize, *adata);
+			}
+		};
+
+		template <>
+		struct serialize_format<int8_t>
+		{
+			static bool push(serialize_push* aserialize, const int8_t adata)
+			{
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static bool pop(serialize_pop* aserialize, int8_t& adata)
+			{
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static void bytes(serialize_byte* aserialize, const int8_t adata)
+			{
+				aserialize->move_pos(sizeof(adata));
+			}
+		};
+
+		template <>
+		struct serialize_format<int16_t>
+		{
+			static bool push(serialize_push* aserialize, const int16_t adata)
+			{
+				tools::parm lparm(adata);
+				lparm.m_value = tools::transformlittle(lparm);
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static bool pop(serialize_pop* aserialize, int16_t& adata)
+			{
+				tools::parm<int16_t> lparm(adata);
+				adata = tools::transformlittle(lparm);
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static void bytes(serialize_byte* aserialize, const int16_t adata)
+			{
+				aserialize->move_pos(sizeof(adata));
+			}
+		};
+
+		template <>
+		struct serialize_format<int32_t>
+		{
+			static bool push(serialize_push* aserialize, const int32_t adata)
+			{
+				tools::parm lparmtrans(adata);
+				lparmtrans.m_value = tools::transformlittle(lparmtrans);
+				tools::varint_parm<int32_t> lparm
+				{
+					.m_value = lparmtrans.m_value,
+					.m_buf = &aserialize->buff()[aserialize->pos()],
+					.m_len = aserialize->len() - aserialize->pos(),
+					.m_bytes = &aserialize->pos(),
+				};
+				return tools::varint_encode(lparm);
+			}
+
+			static bool pop(serialize_pop* aserialize, int32_t& adata)
+			{
+				tools::varint_parm<int32_t> lparm
+				{
+					.m_value = adata,
+					.m_buf = (char*)&aserialize->buff()[aserialize->pos()],
+					.m_len = aserialize->len() - aserialize->pos(),
+					.m_bytes = &aserialize->pos(),
+				};
+				if (tools::varint_decode(lparm) == false)
+				{
+					return false;
+				}
+				tools::parm lparmtrans(lparm.m_value);
+				adata = tools::transformlittle(lparmtrans);
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const int32_t adata)
+			{
+				aserialize->move_pos(sizeof(adata));
+			}
+		};
+
+		template <>
+		struct serialize_format<int64_t>
+		{
+			static bool push(serialize_push* aserialize, const int64_t adata)
+			{
+				tools::parm lparmtrans(adata);
+				lparmtrans.m_value = tools::transformlittle(lparmtrans);
+				tools::varint_parm<int64_t> lparm
+				{
+					.m_value = lparmtrans.m_value,
+					.m_buf = &aserialize->buff()[aserialize->pos()],
+					.m_len = aserialize->len() - aserialize->pos(),
+					.m_bytes = &aserialize->pos(),
+				};
+				return tools::varint_encode(lparm);
+			}
+
+			static bool pop(serialize_pop* aserialize, int64_t& adata)
+			{
+				tools::varint_parm<int64_t> lparm
+				{
+					.m_value = adata,
+					.m_buf = (char*)&aserialize->buff()[aserialize->pos()],
+					.m_len = aserialize->len() - aserialize->pos(),
+					.m_bytes = &aserialize->pos(),
+				};
+				if (tools::varint_decode(lparm) == false)
+				{
+					return false;
+				}
+				tools::parm lparmtrans(lparm.m_value);
+				adata = tools::transformlittle(lparmtrans);
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const int64_t adata)
+			{
+				aserialize->move_pos(sizeof(adata));
+			}
+		};
+
+		template <>
+		struct serialize_format<uint8_t>
+		{
+			static bool push(serialize_push* aserialize, const uint8_t adata)
+			{
+				return serialize_format<int8_t>::push(aserialize, adata);
+			}
+
+			static bool pop(serialize_pop* aserialize, uint8_t& adata)
+			{
+				int8_t lvalue = 0;
+				if (serialize_format<int8_t>::pop(aserialize, lvalue))
+				{
+					adata = lvalue;
+					return true;
+				}
+				return false;
+			}
+
+			static void bytes(serialize_byte* aserialize, const uint8_t adata)
+			{
+				serialize_format<int8_t>::bytes(aserialize, adata);
+			}
+		};
+
+		template <>
+		struct serialize_format<uint16_t>
+		{
+			static bool push(serialize_push* aserialize, const uint16_t adata)
+			{
+				return serialize_format<uint16_t>::push(aserialize, adata);
+			}
+
+			static bool pop(serialize_pop* aserialize, uint16_t& adata)
+			{
+				int16_t lvalue = 0;
+				if (serialize_format<int16_t>::pop(aserialize, lvalue))
+				{
+					adata = lvalue;
+					return true;
+				}
+				return false;
+			}
+
+			static void bytes(serialize_byte* aserialize, const uint16_t adata)
+			{
+				serialize_format<int16_t>::bytes(aserialize, adata);
+			}
+		};
+
+		template <>
+		struct serialize_format<uint32_t>
+		{
+			static bool push(serialize_push* aserialize, const uint32_t adata)
+			{
+				return serialize_format<uint32_t>::push(aserialize, adata);
+			}
+
+			static bool pop(serialize_pop* aserialize, uint32_t& adata)
+			{
+				int32_t lvalue = 0;
+				if (serialize_format<int32_t>::pop(aserialize, lvalue))
+				{
+					adata = lvalue;
+					return true;
+				}
+				return false;
+			}
+
+			static void bytes(serialize_byte* aserialize, const uint32_t adata)
+			{
+				serialize_format<int32_t>::bytes(aserialize, adata);
+			}
+		};
+
+		template <>
+		struct serialize_format<uint64_t>
+		{
+			static bool push(serialize_push* aserialize, const uint64_t adata)
+			{
+				return serialize_format<uint64_t>::push(aserialize, adata);
+			}
+
+			static bool pop(serialize_pop* aserialize, uint64_t& adata)
+			{
+				int64_t lvalue = 0;
+				if (serialize_format<int64_t>::pop(aserialize, lvalue))
+				{
+					adata = lvalue;
+					return true;
+				}
+				return false;
+			}
+
+			static void bytes(serialize_byte* aserialize, const uint64_t adata)
+			{
+				serialize_format<int64_t>::bytes(aserialize, adata);
+			}
+		};
+
+		template <>
+		struct serialize_format<bool>
+		{
+			static bool push(serialize_push* aserialize, const bool adata)
+			{
+				int8_t lvalue = adata ? 1 : 0;
+				return serialize_format<int8_t>::push(aserialize, lvalue);
+			}
+
+			static bool pop(serialize_pop* aserialize, bool& adata)
+			{
+				int8_t lvalue = 0;
+				if (serialize_format<int8_t>::pop(aserialize, lvalue))
+				{
+					adata = lvalue == 0 ? false : true;
+					return true;
+				}
+				return false;
+			}
+
+			static void bytes(serialize_byte* aserialize, const bool adata)
+			{
+				serialize_format<int8_t>::bytes(aserialize, adata ? 1 : 0);
+			}
+		};
+
+		template <>
+		struct serialize_format<float>
+		{
+			static bool push(serialize_push* aserialize, const float adata)
+			{
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static bool pop(serialize_pop* aserialize, float& adata)
+			{
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static void bytes(serialize_byte* aserialize, const float adata)
+			{
+				aserialize->move_pos(sizeof(adata));
+			}
+		};
+
+		template <>
+		struct serialize_format<double>
+		{
+			static bool push(serialize_push* aserialize, const double adata)
+			{
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static bool pop(serialize_pop* aserialize, double& adata)
+			{
+				return aserialize->basetype((void*)&adata, sizeof(adata));
+			}
+
+			static void bytes(serialize_byte* aserialize, const double adata)
+			{
+				aserialize->move_pos(sizeof(adata));
+			}
+		};
+
+		template <>
+		struct serialize_format<std::string>
+		{
+			static bool push(serialize_push* aserialize, const std::string& adata)
+			{
+				int32_t lsize = adata.size();
+				if (!serialize_format<int32_t>::push(aserialize, lsize))
+				{
+					return false;
+				}
+				return aserialize->basetype((void*)adata.c_str(), lsize);
+			}
+
+			static bool pop(serialize_pop* aserialize, std::string& adata)
+			{
+				int32_t lsize = 0;
+				if (!serialize_format<int32_t>::pop(aserialize, lsize))
+				{
+					return false;
+				}
+				adata.resize(lsize);
+				return aserialize->basetype((void*)adata.data(), lsize);
+			}
+
+			static void bytes(serialize_byte* aserialize, const std::string& adata)
+			{
+				int32_t lsize = adata.size();
+				serialize_format<int32_t>::bytes(aserialize, lsize);
+				aserialize->move_pos(lsize);
+			}
+		};
+
+
+		template <typename T>
+		struct serialize_format<std::vector<T>>
+		{
+			static bool push(serialize_push* aserialize, const std::vector<T>& adata)
+			{
+				int32_t lsize = adata.size();
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					if (!serialize_format<T>::push(aserialize, *itor))
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+
+			static bool pop(serialize_pop* aserialize, std::vector<T>& adata)
+			{
+				int32_t lsize = 0;
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				if (lsize > 0)
+				{
+					adata.resize(lsize);
+				}
+				for (int32_t i = 0; i < lsize; ++i)
+				{
+					if (!serialize_format<T>::pop(aserialize, adata[i]))
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const std::vector<T>& adata)
+			{
+				int32_t lsize = adata.size();
+				serialize_format<int32_t>::bytes(aserialize, lsize);
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					serialize_format<T>::bytes(aserialize, *itor);
+				}
+			}
+		};
+
+		template <typename T>
+		struct serialize_format<std::set<T>>
+		{
+			static bool push(serialize_push* aserialize, const std::set<T>& adata)
+			{
+				int32_t lsize = adata.size();
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					if (!serialize_format<T>::push(aserialize, *itor))
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+
+			static bool pop(serialize_pop* aserialize, std::set<T>& adata)
+			{
+				int32_t lsize = 0;
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (int32_t i = 0; i < lsize; ++i)
+				{
+					T ltemp;
+					if (!serialize_format<T>::pop(aserialize, ltemp))
+					{
+						return false;
+					}
+					adata.insert(ltemp);
+				}
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const std::set<T>& adata)
+			{
+				int32_t lsize = adata.size();
+				serialize_format<int32_t>::bytes(aserialize, lsize);
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					serialize_format<T>::bytes(aserialize, *itor);
+				}
+			}
+		};
+
+		template <typename T>
+		struct serialize_format<std::list<T>>
+		{
+			static bool push(serialize_push* aserialize, const std::list<T>& adata)
+			{
+				int32_t lsize = adata.size();
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					if (!serialize_format<T>::push(aserialize, *itor))
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+
+			static bool pop(serialize_pop* aserialize, std::list<T>& adata)
+			{
+				int32_t lsize = 0;
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (int32_t i = 0; i < lsize; ++i)
+				{
+					T ltemp;
+					if (!serialize_format<T>::pop(aserialize, ltemp))
+					{
+						return false;
+					}
+					adata.push_back(ltemp);
+				}
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const std::list<T>& adata)
+			{
+				int32_t lsize = adata.size();
+				serialize_format<int32_t>::bytes(aserialize, lsize);
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					serialize_format<T>::bytes(aserialize, *itor);
+				}
+			}
+		};
+
+		template <typename TKEY, typename TVAL>
+		struct serialize_format<std::map<TKEY, TVAL>>
+		{
+			static bool push(serialize_push* aserialize, const std::map<TKEY, TVAL>& adata)
+			{
+				int32_t lsize = adata.size();
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					if (!serialize_format<TKEY>::push(aserialize, itor->first))
+					{
+						return false;
+					}
+					if (!serialize_format<TVAL>::push(aserialize, itor->second))
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+
+			static bool pop(serialize_pop* aserialize, std::map<TKEY, TVAL>& adata)
+			{
+				int32_t lsize = 0;
+				if (!aserialize->basetype((void*)&lsize, sizeof(lsize)))
+				{
+					return false;
+				}
+				for (int32_t i = 0; i < lsize; ++i)
+				{
+					TKEY ltempkey;
+					if (!serialize_format<TKEY>::pop(aserialize, ltempkey))
+					{
+						return false;
+					}
+					TVAL ltempvalue;
+					if (!serialize_format<TVAL>::pop(aserialize, ltempvalue))
+					{
+						return false;
+					}
+					adata.insert(std::make_pair(ltempkey, ltempvalue));
+				}
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const std::map<TKEY, TVAL>& adata)
+			{
+				int32_t lsize = adata.size();
+				serialize_format<int32_t>::bytes(aserialize, lsize);
+				for (auto itor = adata.begin(); itor != adata.end(); ++itor)
+				{
+					serialize_format<TKEY>::bytes(aserialize, itor->first);
+					serialize_format<TVAL>::bytes(aserialize, itor->second);
+				}
+			}
+		};
+
+		struct nserialize
+		{
+			// # push
+			static bool push(serialize_push* aserialize)
+			{
+				return true;
+			}
+
+			template <typename T>
+			static bool push(serialize_push* aserialize, const T& adata)
+			{
+				return serialize_format<T>::push(aserialize, adata);
+			}
+
+			template <typename T, typename ...ARGS>
+			static bool push(serialize_push* aserialize, const T& adata, const ARGS&... aargs)
+			{
+				return push(aserialize, adata) && push(aserialize, aargs...);
+			}
+
+			// # pop
+			static bool pop(serialize_pop* aserialize)
+			{
+				return true;
+			}
+
+			template <typename T>
+			static bool pop(serialize_pop* aserialize, T& adata)
+			{
+				return serialize_format<T>::pop(aserialize, adata);
+			}
+
+			template <typename T, typename ...ARGS>
+			static bool pop(serialize_pop* aserialize, T& adata, ARGS&... aargs)
+			{
+				return pop(aserialize, adata) && pop(aserialize, aargs...);
+			}
+
+			// # bytes
+			static void bytes(serialize_byte* aserialize)
+			{
+
+			}
+
+			template <typename T>
+			static void bytes(serialize_byte* aserialize, const T& adata)
+			{
+				serialize_format<T>::bytes(aserialize, adata);
+			}
+
+			template <typename T, typename ...ARGS>
+			static void bytes(serialize_byte* aserialize, const T& adata, const ARGS&... aargs)
+			{
+				bytes(aserialize, adata);
+				bytes(aserialize, aargs...);
+			}
+		};
+
+		extern void test_serialize();
+	}// namespace ser
+}// namespace ngl
+
+
+namespace ngl
+{
+	namespace ser
+	{
+		template <typename T, typename = void>
+		struct has_protobuf_descriptor;
+
+		template <typename T>
+		struct has_protobuf_descriptor<
+			T,
+			std::void_t<decltype(T::descriptor())>
+		> : std::is_same<
+			decltype(T::descriptor()),
+			const google::protobuf::Descriptor*
+		> {};
+
+		template <typename T, typename>
+		struct has_protobuf_descriptor : std::false_type {};
+
+		template <typename T>
+		struct is_protobuf_message : std::conjunction<
+			std::is_base_of<google::protobuf::MessageLite, std::remove_cv_t<std::remove_reference_t<T>>>,
+			has_protobuf_descriptor<std::remove_cv_t<std::remove_reference_t<T>>>
+		> {};
+
+
+		template <typename T>
+		bool serialize_format<T>::push(serialize_push* aserialize, const T& adata)
+		{
+			if constexpr (std::is_enum<T>::value)
+			{
+				return serialize_format<int32_t>::push(aserialize, (int32_t)adata);
+			}
+			else if constexpr (is_protobuf_message<T>::value)
+			{
+				int32_t lbytes = adata.ByteSize();
+				if (!serialize_format<int32_t>::push(aserialize, lbytes))
+				{
+					return false;
+				}
+				if (lbytes > (aserialize->len() - aserialize->pos()))
+				{
+					return false;
+				}
+				if (!adata.SerializeToArray(&aserialize->buff()[aserialize->pos()], lbytes))
+				{
+					return false;
+				}
+				aserialize->move_pos(lbytes);
+				return true;
+			}
+			else
+			{
+				return adata.push_format(aserialize);
+			}
+		}
+
+		template <typename T>
+		bool serialize_format<T>::pop(serialize_pop* aserialize, T& adata)
+		{
+			if constexpr (std::is_enum<T>::value)
+			{
+				int32_t lvalues = 0;
+				if (!serialize_format<int32_t>::pop(aserialize, lvalues))
+				{
+					return false;
+				}
+				adata = (T)lvalues;
+				return true;
+			}
+			else if constexpr (is_protobuf_message<T>::value)
+			{
+				int32_t lbytes = 0;
+				if (!serialize_format<int32_t>::pop(aserialize, lbytes))
+				{
+					return false;
+				}
+				if (!adata.ParseFromArray(&aserialize->buff()[aserialize->pos()], lbytes))
+				{
+					return false;
+				}
+				aserialize->move_pos(lbytes);
+				return true;
+			}
+			else
+			{
+				return adata.pop_format(aserialize);
+			}
+		}
+
+		template <typename T>
+		void serialize_format<T>::bytes(serialize_byte* aserialize, const T& adata)
+		{
+			if constexpr (std::is_enum<T>::value)
+			{
+				int32_t lvalue = (int32_t)adata;
+				serialize_format<int32_t>::bytes(aserialize, lvalue);
+			}
+			else if constexpr (is_protobuf_message<T>::value)
+			{
+				int32_t lvalue = (int32_t)adata.ByteSize();
+				serialize_format<int32_t>::bytes(aserialize, lvalue);
+				aserialize->move_pos(lvalue);
+			}
+			else
+			{
+				adata.bytes_format(aserialize);
+			}
+		}
+	}//namespce ser
+
+}//namespce ngl

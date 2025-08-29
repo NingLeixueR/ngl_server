@@ -24,8 +24,8 @@ namespace ngl
 
 	void pack_head::head_set_actor(int32_t* abuff, i64_actorid aactor)
 	{
-		serialize lserialize((char*)&abuff[EPH::EPH_ACTOR_TYPEAREA], sizeof(i64_actorid));
-		lserialize.push(((int32_t*)(&aactor))[0], ((int32_t*)(&aactor))[1]);
+		ngl::ser::serialize_push lserialize((char*)&abuff[EPH::EPH_ACTOR_TYPEAREA], sizeof(i64_actorid));
+		lserialize.basetype(&aactor, sizeof(aactor));
 	}
 
 	void pack_head::set_actor(
@@ -183,16 +183,6 @@ namespace ngl
 		m_data[EPH::EPH_PROTOCOLNUM] = aprotocolnum;
 	}
 
-	EPROTOCOL_TYPE pack_head::get_protocoltype()const
-	{
-		return (EPROTOCOL_TYPE)m_data[EPH::EPH_PROTOCOLTYPE];
-	}
-
-	void pack_head::set_protocoltype(EPROTOCOL_TYPE atype)
-	{
-		m_data[EPH::EPH_PROTOCOLTYPE] = atype;
-	}
-
 	EPH_HEAD_VAL pack_head::push(const char*& abuff, int32_t& alen)
 	{
 		if (check_mask() == EPH_HEAD_MASK_FAIL)
@@ -207,11 +197,6 @@ namespace ngl
 		abuff += ltemp;
 		m_wpos += ltemp;
 		return isready();		
-	}
-
-	bool pack_head::push(ngl::serialize& aflow)
-	{
-		return aflow.basetype(m_data, sizeof(int32_t) * EPH_SUM);
 	}
 
 	void pack_head::reservebuff(char* abuff, int abufflen, std::pair<char*, int32_t>& apair)

@@ -48,19 +48,19 @@ namespace ngl
 	void actor_client::nregister()
 	{
 		//# 设置未找到协议处理函数
-		nrfun<actor_client, EPROTOCOL_TYPE_CUSTOM>::instance().set_notfindfun(
+		nrfun<actor_client>::instance().set_notfindfun(
 			[](int, handle_pram& apram) 
 			{
 				naddress::forward(apram);
 			});
-		nrfun<actor_client, EPROTOCOL_TYPE_PROTOCOLBUFF>::instance().set_notfindfun(
+		nrfun<actor_client>::instance().set_notfindfun(
 			[](int, handle_pram& apram)
 			{
 				naddress::forward(apram);
 			});
 
 		//# 注册协议
-		register_handle_custom<actor_client>::func<
+		register_handle<actor_client>::func<
 			np_actornode_register_response
 			, np_actorclient_node_connect
 			, np_actornode_connect_task

@@ -13,10 +13,15 @@
 #include "slist.h"
 #include "tools.h"
 
+#include "nserialize.h"
+
+
 Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	ngl::ser::test_serialize();
+
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;

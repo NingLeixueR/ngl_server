@@ -20,10 +20,9 @@ namespace ngl
 {
 	struct protocols
 	{
-		std::map<i32_protocolnum, std::string> m_promap;
-		std::map<i32_protocolnum, std::string> m_custommap;
+		std::map<i32_protocolnum, std::string> m_data;
 
-		dprotocol(protocols, m_promap, m_custommap)
+		dprotocol(protocols, m_data)
 	};
 
 	class actor_gmclient : 

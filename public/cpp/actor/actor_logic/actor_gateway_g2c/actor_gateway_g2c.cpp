@@ -55,7 +55,7 @@ namespace ngl
 		actor::register_timer<actor_gateway_g2c>(&actor_gateway_g2c::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_gateway_g2c>::func<
+		register_handle<actor_gateway_g2c>::func<
 			np_actor_gatewayinfo_updata
 		>(true);
 

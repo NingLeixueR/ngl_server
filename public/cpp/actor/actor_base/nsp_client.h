@@ -66,7 +66,7 @@ namespace ngl
 		void channel_data(TDerived*, const message<np_channel_data<T>>& adata)
 		{
 			const np_channel_data<T>* recv = adata.get_data();
-			std::map<int64_t, T>& lmap = *recv->m_data.m_data;
+			const std::map<int64_t, T>& lmap = recv->m_data;
 			bool lfirstsynchronize = recv->m_firstsynchronize;
 			for (const auto& apair : lmap)
 			{
@@ -341,7 +341,7 @@ namespace ngl
 			if (lisregister.exchange(false))
 			{
 				// 更新数据
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<T>>(
+				actor::register_actor_s<TDerived, np_channel_data<T>>(
 					[](TDerived* aacotor, const message<np_channel_data<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -354,7 +354,7 @@ namespace ngl
 					}, false);
 
 				// 注册回复
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register_reply<T>>(
+				actor::register_actor_s<TDerived, np_channel_register_reply<T>>(
 					[](TDerived* aacotor, const message<np_channel_register_reply<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -366,7 +366,7 @@ namespace ngl
 					}, false);
 
 				// 检查
-				actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_check<T>>(
+				actor::register_actor_s<TDerived, np_channel_check<T>>(
 					[](TDerived* aacotor, const message<np_channel_check<T>>& adata)
 					{
 						if (aacotor == nullptr)
@@ -380,7 +380,7 @@ namespace ngl
 				// 同步channel_dataid
 				if (!aonlyread)
 				{//只读结点不需要知道数据被哪些结点订阅，因为他不能修改数据
-					actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_dataid_sync<T>>(
+					actor::register_actor_s<TDerived, np_channel_dataid_sync<T>>(
 						[](TDerived* aacotor, const message<np_channel_dataid_sync<T>>& adata)
 						{
 							if (aacotor == nullptr)
@@ -461,11 +461,10 @@ namespace ngl
 				if (!lmap.contains(larea))
 				{
 					lmap[larea] = std::make_shared<np_channel_data<T>>();
-					lmap[larea]->m_data.make();
 				}
 				if (afun(itor->second))
 				{
-					(*lmap[larea]->m_data.m_data)[itor->first] = itor->second;
+					(lmap[larea]->m_data)[itor->first] = itor->second;
 				}
 			}
 			for (auto itor = lmap.begin(); itor != lmap.end(); ++itor)
@@ -516,8 +515,7 @@ namespace ngl
 			}
 
 			auto pro = std::make_shared<np_channel_data<T>>();
-			pro->m_data.make();
-			(*pro->m_data.m_data)[adataid] = *lpdata;
+			pro->m_data[adataid] = *lpdata;
 
 			// # 发送给nsp server
 			msg_info(*pro);

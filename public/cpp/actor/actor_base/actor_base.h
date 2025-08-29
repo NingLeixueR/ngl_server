@@ -12,6 +12,7 @@
 #include "impl.h"
 #include "ukcp.h"
 
+#include <memory>
 #include <vector>
 #include <atomic>
 #include <list>
@@ -399,26 +400,23 @@ namespace ngl
 #pragma endregion 
 
 #pragma region send_client
-	public:
-		template <typename T>
-		using tactor_forward = np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>;
 	private:
 		static i64_actorid actorclient_guid();
 
 		template <typename T>
-		static std::shared_ptr<tactor_forward<T>> create_cpro(const std::shared_ptr<T>& adata)
+		static std::shared_ptr<np_actor_forward<T, forward_g2c<T>>> create_cpro(const std::shared_ptr<T>& adata)
 		{
-			auto pro = std::make_shared<tactor_forward<T>>();
-			pro->set_data(adata);
+			auto pro = std::make_shared<np_actor_forward<T, forward_g2c<T>>>();
+			pro->m_data.m_data = *adata;
 			return pro;
 		}
 
 		template <typename T>
-		static i64_actorid cpro_push_actorid(const std::shared_ptr<tactor_forward<T>>& apro, i64_actorid aid)
+		static i64_actorid cpro_push_actorid(const std::shared_ptr<np_actor_forward<T, forward_g2c<T>>>& apro, i64_actorid aid)
 		{
 			nguid lguid(aid);
-			apro->m_uid.push_back(lguid.actordataid());
-			apro->m_area.push_back(lguid.area());
+			apro->m_data.m_uid.push_back(lguid.actordataid());
+			apro->m_data.m_area.push_back(lguid.area());
 			return lguid.make_type(nguid::none_type());
 		}
 	public:
@@ -619,14 +617,12 @@ namespace ngl
 		template <typename TDerived>
 		static void first_nregister(ENUM_ACTOR atype)
 		{
-			static bool lfirst = true;
-			if (lfirst == false)
+			static std::atomic<bool> lfirst = true;
+			if (lfirst.exchange(false))
 			{
-				return;
+				TDerived::nregister();
+				create_log(atype);
 			}
-			lfirst = false;
-			TDerived::nregister();
-			create_log(atype);
 		}
 
 		//# 用于创建非单例actor
@@ -647,7 +643,7 @@ namespace ngl
 	template <typename T>
 	void tprotocol::tforward::func(int32_t aprotocolnum)
 	{
-		info* lptemp = tcustoms<EPROTOCOL_TYPE_PROTOCOLBUFF,true>::func<T>(aprotocolnum);
+		info* lptemp = tcustoms<true>::func<T>(aprotocolnum);
 		if (lptemp != nullptr)
 		{
 			lptemp->m_forward = true;
@@ -703,41 +699,34 @@ namespace ngl
 		}
 	};
 
-	template <EPROTOCOL_TYPE TYPE, bool SCRIPT>
+	template <bool SCRIPT>
 	template <typename T>
-	tprotocol::info* tprotocol::tcustoms<TYPE, SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
+	tprotocol::info* tprotocol::tcustoms<SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
 	{
-		if constexpr (TYPE == EPROTOCOL_TYPE_CUSTOM)
+		info* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
+		if (linfo != nullptr)
 		{
-			info* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
-			if (linfo != nullptr)
+			if constexpr (SCRIPT)
 			{
-				if constexpr (SCRIPT)
-				{
-					linfo->m_toactor[enscript_lua] = std::bind(
-						&tcustoms_send<enscript_lua>::send_actor<np_mass_actor<T>>
-						, std::placeholders::_1
-						, std::placeholders::_2
-					);
-				}
+				linfo->m_toactor[enscript_lua] = std::bind(
+					&tcustoms_send<enscript_lua>::send_actor<np_mass_actor<T>>
+					, std::placeholders::_1
+					, std::placeholders::_2
+				);
 			}
-			linfo = funcx<T>(aprotocolnum);
-			if (linfo != nullptr)
-			{
-				if constexpr (SCRIPT)
-				{
-					linfo->m_toactor[enscript_lua] = std::bind(
-						&tcustoms_send<enscript_lua>::send_actor<T>
-						, std::placeholders::_1
-						, std::placeholders::_2
-					);
-				}
-			}
-			return linfo;
 		}
-		else
+		linfo = funcx<T>(aprotocolnum);
+		if (linfo != nullptr)
 		{
-			return funcx<T>(aprotocolnum);
+			if constexpr (SCRIPT)
+			{
+				linfo->m_toactor[enscript_lua] = std::bind(
+					&tcustoms_send<enscript_lua>::send_actor<T>
+					, std::placeholders::_1
+					, std::placeholders::_2
+				);
+			}
 		}
+		return linfo;
 	}
 }

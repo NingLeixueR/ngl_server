@@ -19,7 +19,7 @@ namespace ngl
 {
 	ENUM_ACTOR db_enum(pbdb::ENUM_DB TDBTAB_TYPE)
 	{
-		return (ENUM_ACTOR)(EPROTOCOL_TYPE_PROTOCOLBUFF * 1000 + ACTOR_DB + TDBTAB_TYPE);
+		return (ENUM_ACTOR)(ACTOR_DB + TDBTAB_TYPE);
 	}
 
 	template <pbdb::ENUM_DB DBTYPE, typename TDB>
@@ -132,17 +132,17 @@ namespace ngl
 	}
 
 	template <typename PB>
-	using type_forward_pb = ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>;
+	using type_forward_pb = ngl::np_actor_forward<PB, ngl::forward>;
 
 	template <typename PB>
 	void help_tprotocol_forward_pb(const PB*)
 	{
-		tprotocol::tp_customs::template func<
+		/*tprotocol::tp_customs::template func<
 			ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
 			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>
 			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
 			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
-		>();
+		>();*/
 	}
 
 	template <typename PB, typename ...ARG>

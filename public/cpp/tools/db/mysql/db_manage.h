@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ttab_mergearea.h"
-#include "serialize.h"
+#include "nserialize.h"
 #include "db_data.h"
 #include "db_buff.h"
 #include "tools.h"
@@ -21,35 +21,33 @@ namespace ngl
 			}
 		}
 
-		template <typename T>
+		template <typename T, bool ISBINARY>
 		static void serialize(db* adb, T& adata)
 		{
-			return adb->m_malloc.serialize(adata);
+			return adb->m_malloc.serialize<T, ISBINARY>(adata);
 		}
 
-		template <typename T>
+		// 数据库保存方式  二进制或者Json格式
+
+		template <typename T, bool ISBINARY>
 		static bool unserialize(db* adb, T& adata, char* abuff, int alen)
 		{
-			ngl::unserialize lunser(abuff, alen);
-			if (!lunser.pop(adata))
+			if constexpr (ISBINARY)
 			{
-				return false;
+				ngl::ser::serialize_pop lserialize(abuff, alen);
+				return ngl::ser::nserialize::pop(&lserialize, adata);
 			}
-			return true;
+			else
+			{
+				ngl::json_read lread(abuff);
+				return adata.read(lread);
+			}
 		}
 		
 		template <typename T>
 		static void save(db* adb, T* adata)
 		{
-			static protobuf_data<T> m_savetemp;
-			if (m_savetemp.m_data == nullptr)
-			{
-				m_savetemp.make();
-				m_savetemp.m_isbinary = m_dbprotobinary;
-			}
-			*m_savetemp.m_data = *adata;
-
-			db_manage::serialize(adb, m_savetemp);
+			db_manage::serialize<T,true>(adb, *adata);
 
 			MYSQL_BIND lbind[1];
 			memset(lbind, 0, sizeof(MYSQL_BIND));
@@ -69,7 +67,7 @@ namespace ngl
 			int llen = snprintf(
 				lbuff, 4096
 				, "INSERT INTO %s (id, area, data)VALUES(%lld, %d, ?)  ON DUPLICATE KEY UPDATE data=values(data), area=values(area);"
-				, tools::protobuf_tabname<T>::name().c_str(), adata->mid(), larea
+				, tools::type_name<T>().c_str(), adata->mid(), larea
 			);
 
 			if (llen <= 0)
@@ -87,7 +85,7 @@ namespace ngl
 			T* ldata = db_data<T>::find(aid);
 			if (ldata == nullptr)
 			{
-				log_error()->print("db_manage::save fail id:{} !!! name:{}", aid, tools::protobuf_tabname<T>::name());
+				log_error()->print("db_manage::save fail id:{} !!! name:{}", aid, tools::type_name<T>());
 				return;
 			}
 			save(adb, ldata);
@@ -108,7 +106,7 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
 				"DELETE FROM %s WHERE id='%lld';",
-				tools::protobuf_tabname<T>::name().c_str(), aid
+				tools::type_name<T>().c_str(), aid
 			);
 			if (llen <= 0)
 			{
@@ -152,7 +150,7 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(lbuff,1024,
 				"SELECT id,data FROM %s WHERE id = '%lld' AND (%s);",
-				tools::protobuf_tabname<T>::name().c_str(), aid, where_area()
+				tools::type_name<T>().c_str(), aid, where_area()
 			);
 			if (llen <= 0)
 			{
@@ -162,16 +160,15 @@ namespace ngl
 			return adb->select(lbuff, llen,
 				[adb, aid](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
-					protobuf_data<T> ldata;
-					ldata.m_isbinary = m_dbprotobinary;
-					bool lunserialize = db_manage::unserialize(
+					T ldata;
+					bool lunserialize = db_manage::unserialize<T,true>(
 						adb, ldata, amysqlrow[1], alens[1]
 					);
 					if (lunserialize == false)
 					{
 						return false;
 					}
-					ngl::db_data<T>::set(ldata.m_data->mid(), *ldata.m_data);
+					ngl::db_data<T>::set(ldata.mid(), ldata);
 					return true;
 				}
 			);
@@ -184,7 +181,7 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024, "SELECT id,data FROM %s WHERE %s;",
-				tools::protobuf_tabname<T>::name().c_str(), where_area()
+				tools::type_name<T>().c_str(), where_area()
 			);
 			if (llen <= 0)
 			{
@@ -194,16 +191,14 @@ namespace ngl
 			return adb->select(lbuff, llen,
 				[adb](MYSQL_ROW amysqlrow, unsigned long* alens, int arol, int acol)->bool
 				{
-					protobuf_data<T> ldata;
-					ldata.m_isbinary = m_dbprotobinary;
-					bool lunserialize = ngl::db_manage::unserialize(
+					T ldata;
+					if (!ngl::db_manage::unserialize<T,true>(
 						adb, ldata, amysqlrow[1], alens[1]
-					);
-					if (lunserialize == false)
+					))
 					{
 						return false;
 					}
-					ngl::db_data<T>::set(ldata.m_data->mid(), *ldata.m_data);
+					ngl::db_data<T>::set(ldata.mid(), ldata);
 					return true;
 				}
 			);
@@ -217,7 +212,7 @@ namespace ngl
 			char lbuff[1024] = { 0 };
 			int llen = snprintf(
 				lbuff, 1024, "SELECT id FROM %s WHERE %s;",
-				tools::protobuf_tabname<T>::name().c_str(), where_area()
+				tools::type_name<T>().c_str(), where_area()
 			);
 			if (llen <= 0)
 			{
