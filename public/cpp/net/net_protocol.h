@@ -144,7 +144,7 @@ namespace ngl
 		template <typename T>
 		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
 		{
-			np_actor_forward<T, forward_g2c> pro;
+			np_actor_forward<T, forward_g2c<forward>> pro;
 			pro.m_data.m_uid.push_back(auid);
 			pro.m_data.m_area.push_back(aarea);
 
@@ -165,7 +165,7 @@ namespace ngl
 					if (lsession > 0)
 					{
 						send(lsession, pro, nguid::make(), nguid::make());
-						netbuff_pool::instance().free(lforward.m_buff);
+						netbuff_pool::instance().free((char*)lforward.m_buff);
 						return true;
 					}
 				}
@@ -176,7 +176,7 @@ namespace ngl
 		template <typename T>
 		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 		{
-			np_actor_forward<T, forward_g2c> pro;
+			np_actor_forward<T, forward_g2c<forward>> pro;
 			for (int i = 0; i < avec.size(); ++i)
 			{
 				pro.m_data.m_uid.push_back(avec[i].first);
@@ -200,7 +200,7 @@ namespace ngl
 					if (lsession > 0)
 					{
 						send(lsession, pro, nguid::make(), nguid::make());
-						netbuff_pool::instance().free(lforward.m_buff);
+						netbuff_pool::instance().free((char*)lforward.m_buff);
 						return true;
 					}
 				}
