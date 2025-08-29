@@ -64,7 +64,7 @@ namespace ngl
 {
 	void test_hiredis()
 	{
-		ngl::redis_arg larg;
+		/*ngl::redis_arg larg;
 		larg.m_ip = "127.0.0.1";
 		larg.m_port = 6379;
 		larg.m_passworld = "123456";
@@ -72,8 +72,7 @@ namespace ngl
 
 		for (int i = 1; i < 10; ++i)
 		{
-			protobuf_data<pbdb::db_role> ltemp;
-			ltemp.make();
+			pbdb::db_role ltemp;
 			
 			ngl::i64_actorid lid = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 			ltemp->set_mid(lid);
@@ -102,6 +101,6 @@ namespace ngl
 		np_connect_actor_server ltempk2;
 		lredis.get(322, ltempk2);
 
-		std::cout << std::endl;
+		std::cout << std::endl;*/
 	}
 }// namespace ngl

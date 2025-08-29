@@ -74,7 +74,7 @@ namespace ngl
 
 		static void nregister()
 		{
-			register_handle_custom<tactor_events>::template func<
+			register_handle<tactor_events>::template func<
 				tactor_events::np_event_register
 			>(true);
 		}
@@ -84,7 +84,7 @@ namespace ngl
 		static void register_parm(E_EVENTS atype)
 		{
 			m_parmtype[atype]= typeid(TPARM).hash_code();
-			actor::register_actor_s<EPROTOCOL_TYPE_CUSTOM, tactor_events, TPARM>
+			actor::register_actor_s<tactor_events, TPARM>
 				(
 					[atype](tactor_events*, message<TPARM>& adata)
 					{

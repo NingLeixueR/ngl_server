@@ -1,57 +1,44 @@
 #pragma once
 
 #include "serialize_lua.h"
-#include "serialize.h"
+#include "nserialize.h"
 #include "lua.hpp"
 
-#define def_function_pop(...)									\
-	bool pop(ngl::unserialize& ser)								\
-	{															\
-		return ser.pop(__VA_ARGS__);							\
-	}															\
-	bool ParseFromArray(const void* data, int32_t size)			\
-	{															\
-		ngl::unserialize lunserialize((const char*)data, size);	\
-		return pop(lunserialize);								\
+#if defined(WIN32)||defined(WINCE)||defined(WIN64)
+#define def_portocol_format(...)										\
+	bool push_format(ngl::ser::serialize_push* aserialize)const			\
+	{																	\
+		return ngl::ser::nserialize::push(aserialize, ##__VA_ARGS__);	\
+	}																	\
+	bool pop_format(ngl::ser::serialize_pop* aserialize)				\
+	{																	\
+		return ngl::ser::nserialize::pop(aserialize, ##__VA_ARGS__);	\
+	}																	\
+	void bytes_format(ngl::ser::serialize_byte* aserialize)const		\
+	{																	\
+		ngl::ser::nserialize::bytes(aserialize, ##__VA_ARGS__);			\
 	}
-
-
-#define def_function_push(...)									\
-	bool push(ngl::serialize& ser)const							\
-	{															\
-		return ser.push(__VA_ARGS__);							\
-	}															\
-	bool SerializeToArray(void* data, int32_t size) const		\
-	{															\
-		ngl::serialize lserialize((char*)data, size);			\
-		return push(lserialize);								\
+#else
+#define def_portocol_format(...)													\
+	bool push_format(ngl::ser::serialize_push* aserialize)const						\
+	{																				\
+		return ngl::ser::nserialize::push(aserialize __VA_OPT__(,) ##__VA_ARGS__);	\
+	}																				\
+	bool pop_format(ngl::ser::serialize_pop* aserialize)							\
+	{																				\
+		return ngl::ser::nserialize::pop(aserialize __VA_OPT__(,) ##__VA_ARGS__);	\
+	}																				\
+	void bytes_format(ngl::ser::serialize_byte* aserialize)const					\
+	{																				\
+		ngl::ser::nserialize::bytes(aserialize __VA_OPT__(,) ##__VA_ARGS__);		\
 	}
+#endif
 
-
-#define def_portocol_bytes(...)								\
-	int bytes(ngl::serialize_bytes& abytes)const			\
-	{														\
-		return abytes.bytes(__VA_ARGS__);					\
-	}														\
-	int ByteSize()const										\
-	{														\
-		ngl::serialize_bytes lserialize_bytes;				\
-		return bytes(lserialize_bytes);						\
-	}
-
-#define def_portocol_name(_Name)							\
-	static const char* name()								\
-	{														\
-		return #_Name;										\
-	}
 
 ///// 简化定义协议类
 // --- 名称 ....(成员)
-#define def_portocol_function(_Name,...)					\
-	def_function_pop	(__VA_ARGS__)						\
-	def_function_push	(__VA_ARGS__)						\
-	def_portocol_bytes	(__VA_ARGS__)						\
-	def_portocol_name	(_Name)								
+#define def_portocol_function(_Name,...)	def_portocol_format(__VA_ARGS__)
+	
 
 // --- 协议号  协议类型  名称 ....(成员)
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)

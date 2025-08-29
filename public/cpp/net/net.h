@@ -174,7 +174,7 @@ namespace ngl
 	std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> net_protocol::more_pack(T& adata, i64_actorid aactorid)
 	{
 		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> lpair;
-		lpair.first = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
+		/*lpair.first = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
 		if (lpair.first == nullptr)
 		{
 			return std::make_pair<std::shared_ptr<pack>, std::shared_ptr<pack>>(nullptr, nullptr);
@@ -191,7 +191,7 @@ namespace ngl
 				ngl::tools::bytexor(lbuff, llen, lpos);
 			}
 		}
-		lpair.second = lpack_;
+		lpair.second = lpack_;*/
 		return lpair;
 	}
 

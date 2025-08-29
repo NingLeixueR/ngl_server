@@ -91,48 +91,49 @@ namespace ngl
 	template <typename TDerived, typename TPRAM>
 	using Tfun = bool (TDerived::*)(const message<TPRAM>&);
 
-	template <typename TDerived, EPROTOCOL_TYPE TYPE>
-	class nrfun : 
-		public nrfunbase
+	template <typename TDerived>
+	class nrfun : public nrfunbase
 	{
 		nrfun(const nrfun&) = delete;
 		nrfun& operator=(const nrfun&) = delete;
 
 		nrfun() = default;
 	public:
-		static nrfun<TDerived, TYPE>& instance()
+		static nrfun<TDerived>& instance()
 		{
-			static nrfun<TDerived, TYPE> ltemp;
+			static nrfun<TDerived> ltemp;
 			return ltemp;
 		}
 
 		//# 允许任意std::function<void(TTTDerived*, T&)>挂载到指定actor上
-		template <typename TTTDerived, typename T, bool MASS>
+		template <typename TTTDerived, typename T>
 		nrfun& rfun(const std::function<void(TTTDerived*, message<T>&)>& afun, bool aisload = false);
 
 		//# bool aisload = false 
 		//# 是否允许db数据加载完成之前处理此消息
-		template <typename TTTDerived, typename T, bool MASS>
+		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
 		//# actor间消息处理
-		template <typename TTTDerived, typename T, bool MASS>
+		template <typename TTTDerived, typename T>
 		nrfun& rfun(const Tfun<TTTDerived, T> afun, ENUM_ACTOR atype, bool aisload = false);
 
 		//# actor间消息处理,不注册网络层
-		template <typename TTTDerived, typename T, bool MASS>
+		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
-
-		//# 注册转发协议
-		template <bool BOOL, typename T>
-		nrfun& rfun_forward(
-			const Tfun<TDerived, np_actor_forward<T, TYPE, BOOL, ngl::forward>> afun
-			, ENUM_ACTOR atype
-			, bool aisload = false
-		);
 
 		//# 注册接收转发协议处理协议
 		template <typename T>
-		nrfun& rfun_recvforward(const Tfun<TDerived, T> afun, bool aisload = false);
+		nrfun& rfun_c2g_gateway(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
+
+		template <typename T>
+		nrfun& rfun_c2g_game(const Tfun<TDerived, T> afun, bool aisload = false);
+
+		template <typename T>
+		nrfun& rfun_g2c_gateway(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);
+
+		template <typename T>
+		nrfun& rfun_g2c_client(const Tfun<TDerived, T> afun, bool aisload = false);
+
 	};
 }//namespace ngl

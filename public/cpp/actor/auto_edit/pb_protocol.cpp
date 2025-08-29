@@ -14,20 +14,20 @@ namespace ngl
    template <typename PB>
    void help_role_tprotocol_forward_pb(const PB* apb)
    {
-       int32_t lprotocolnum = tprotocol::protocol<PB>();
-       tprotocol::tp_forward::template func<
-           ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
-           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>
-           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
-           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
-           , np_actormodule_forward<PB>
-       >(lprotocolnum);
+       //int32_t lprotocolnum = tprotocol::protocol<PB>();
+      // tprotocol::tp_forward::template func<
+       //    ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, >
+       //    , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>
+       //    , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
+       //    , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
+       //    , np_actormodule_forward<PB>
+      // >(lprotocolnum);
    }
    template <typename PB, typename ...ARG>
    void help_role_tprotocol_forward_pb(const PB* apb, const ARG*... arg)
    {
-       help_role_tprotocol_forward_pb<PB>(apb);
-       help_role_tprotocol_forward_pb<ARG...>(arg...);
+       //help_role_tprotocol_forward_pb<PB>(apb);
+      // help_role_tprotocol_forward_pb<ARG...>(arg...);
    }
    void tprotocol_forward_pb()
    {

@@ -11,7 +11,8 @@
 
 namespace ngl
 {
-	class actor_gateway_c2g : public actor
+	class actor_gateway_c2g 
+		: public actor
 	{
 		actor_gateway_c2g(const actor_gateway_c2g&) = delete;
 		actor_gateway_c2g& operator=(const actor_gateway_c2g&) = delete;
@@ -42,8 +43,8 @@ namespace ngl
 
 		bool handle(const message<np_arg_null>&);
 
-		template <EPROTOCOL_TYPE TYPE, typename T>
-		bool handle(const message<np_actor_forward<T, TYPE, false, ngl::forward>>& adata)
+		template <typename T>
+		bool handle(const message<np_actor_forward<T, forward_c2g<forward>>>& adata)
 		{
 			//Client->Gate  需要把这个消息传递给Game服务器
 			//adata.m_uid == socket id
@@ -64,11 +65,9 @@ namespace ngl
 			{
 				return false;
 			}
-			np_actor_forward<T, TYPE, true, ngl::forward> ltemp(*lpram);
-			ltemp.m_uid.push_back(info->m_dataid);
-			ltemp.m_area.push_back(info->m_area);
+
 			i64_actorid lactorid = nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid);
-			nets::sendbyserver(info->m_gameid, ltemp, lactorid, lpack->m_head.get_request_actor());
+			nets::sendbyserver(info->m_gameid, *lpram, lactorid, lpack->m_head.get_request_actor());
 			return true;
 		}
 

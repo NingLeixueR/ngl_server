@@ -76,12 +76,12 @@ namespace ngl
 		actor::register_timer<actor_role_manage>(&actor_role_manage::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_role_manage>::func<
+		register_handle<actor_role_manage>::func<
 			mforward<np_gm>
 		>(false);
 
 		// 绑定pb消息
-		register_handle_proto<actor_role_manage>::func<
+		register_handle<actor_role_manage>::func<
 			pbnet::PROBUFF_NET_ROLE_LOGIN
 		>(false);
 	}

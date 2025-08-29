@@ -1,6 +1,7 @@
 #pragma once
 
 #include "server_session.h"
+#include "netbuff_pool.h"
 #include "handle_pram.h"
 #include "structbytes.h"
 #include "actor_base.h"
@@ -14,47 +15,9 @@
 #include <vector>
 #include <memory>
 
+
 namespace ngl
 {
-	class forward_pack
-	{
-		forward_pack() = delete;
-		forward_pack(const forward_pack&) = delete;
-		forward_pack& operator=(const forward_pack&) = delete;
-
-	public:
-		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(Y&)
-		{
-			static std::shared_ptr<pack> lnull = nullptr;
-			return lnull;
-		}
-
-		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, true, ngl::forward>& adata)
-		{
-			return adata.m_recvpack;
-		}
-
-		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>& adata)
-		{
-			return adata.m_recvpack;
-		}
-
-		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_CUSTOM, false, ngl::forward>& adata)
-		{
-			return adata.m_recvpack;
-		}
-
-		template <typename Y>
-		static std::shared_ptr<pack>& get_pack(np_actor_forward<Y, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>& adata)
-		{
-			return adata.m_recvpack;
-		}
-	};
-
 	class net_protocol
 	{
 		net_protocol() = delete;
@@ -130,7 +93,7 @@ namespace ngl
 			{
 				return false;
 			}
-			std::shared_ptr<pack>& lpack2 = forward_pack::get_pack(adata);
+			/*std::shared_ptr<pack>& lpack2 = forward_pack::get_pack(adata);
 			if (lpack2 == nullptr)
 			{
 				return true;
@@ -142,7 +105,7 @@ namespace ngl
 			if (sendpack(asession, lpack2) == false)
 			{
 				return false;
-			}
+			}*/
 			return true;
 		}
 
@@ -179,42 +142,70 @@ namespace ngl
 		);
 
 		template <typename T>
-		void send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
+		bool send_client(i32_actordataid auid, i16_area aarea, i32_gatewayid agateway, T& adata)
 		{
-			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
-			pro.m_uid.push_back(auid);
-			pro.m_area.push_back(aarea);
-			pro.set_data(&adata);
-			if (agateway != 0)
+			np_actor_forward<T, forward_g2c> pro;
+			pro.m_data.m_uid.push_back(auid);
+			pro.m_data.m_area.push_back(aarea);
+
+			forward& lforward = pro.m_data.m_data;
+
+			ngl::ser::serialize_byte lserializebyte;
+			ngl::ser::nserialize::bytes(&lserializebyte, adata);
+
+			lforward.m_bufflen = lserializebyte.pos();
+			lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
+
+			ngl::ser::serialize_push lserializepush(lforward.m_buff, lforward.m_bufflen);
+			if (ngl::ser::nserialize::push(&lserializepush, adata))
 			{
-				i32_session lsession = server_session::sessionid(agateway);
-				if (lsession == -1)
+				if (agateway != 0)
 				{
-					return;
+					i32_session lsession = server_session::sessionid(agateway);
+					if (lsession > 0)
+					{
+						send(lsession, pro, nguid::make(), nguid::make());
+						netbuff_pool::instance().free(lforward.m_buff);
+						return true;
+					}
 				}
-				send(lsession, pro, nguid::make(), nguid::make());
 			}
+			netbuff_pool::instance().free(lforward.m_buff);
 		}
 
 		template <typename T>
 		void send_client(const std::vector<std::pair<i32_actordataid, i16_area>>& avec, i32_gatewayid agateway, T& adata)
 		{
-			np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T> pro;
+			np_actor_forward<T, forward_g2c> pro;
 			for (int i = 0; i < avec.size(); ++i)
 			{
-				pro.m_uid.push_back(avec[i].first);
-				pro.m_area.push_back(avec[i].second);
+				pro.m_data.m_uid.push_back(avec[i].first);
+				pro.m_data.m_area.push_back(avec[i].second);
 			}
-			pro.set_data(&adata);
-			if (agateway != 0)
+
+			forward& lforward = pro.m_data.m_data;
+
+			ngl::ser::serialize_byte lserializebyte;
+			ngl::ser::nserialize::bytes(&lserializebyte, adata);
+
+			lforward.m_bufflen = lserializebyte.pos();
+			lforward.m_buff = netbuff_pool::instance().malloc_private(lforward.m_bufflen);
+
+			ngl::ser::serialize_push lserializepush(lforward.m_buff, lforward.m_bufflen);
+			if (ngl::ser::nserialize::push(&lserializepush, adata))
 			{
-				i32_session lsession = server_session::sessionid(agateway);
-				if (lsession == -1)
+				if (agateway != 0)
 				{
-					return;
+					i32_session lsession = server_session::sessionid(agateway);
+					if (lsession > 0)
+					{
+						send(lsession, pro, nguid::make(), nguid::make());
+						netbuff_pool::instance().free(lforward.m_buff);
+						return true;
+					}
 				}
-				send(lsession, pro, nguid::make(), nguid::make());
 			}
+			netbuff_pool::instance().free(lforward.m_buff);
 		}
 	};
 }// namespace ngl

@@ -10,10 +10,7 @@
 
 namespace ngl
 {
-	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
-	struct np_actor_forward;
-
-
+	
 	enum enscript
 	{
 		enscript_none = -1,
@@ -29,7 +26,6 @@ namespace ngl
 	public:
 		struct info
 		{
-			EPROTOCOL_TYPE	m_type;
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
 			bool m_forward = false;
@@ -79,7 +75,7 @@ namespace ngl
 		}
 
 		//CUSTOM
-		template <EPROTOCOL_TYPE TYPE, bool SCRIPT>
+		template <bool SCRIPT>
 		struct tcustoms
 		{
 			template <typename T>
@@ -92,7 +88,6 @@ namespace ngl
 				}
 				info& linfo = m_keyval[lcode];
 				linfo.m_name = tools::type_name<T>();
-				linfo.m_type = TYPE;
 
 				linfo.m_protocol = (aprotocolnum == -1) ? ++m_customs : aprotocolnum;
 
@@ -119,9 +114,9 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, false>>;
-		using tp_customs_script = template_arg<tcustoms<EPROTOCOL_TYPE_CUSTOM, true>>;
-		using tp_forward = template_arg<tforward, int32_t>;
+		using tp_customs = template_arg<tcustoms<false>>;
+		using tp_customs_script = template_arg<tcustoms<true>>;
+		//using tp_forward = template_arg<tforward, int32_t>;
 
 		template <typename T>
 		static bool init_protobufs()
@@ -134,7 +129,6 @@ namespace ngl
 			}
 			info& linfo = m_keyval[hash_code<T>()];
 			linfo.m_name = lname;
-			linfo.m_type = EPROTOCOL_TYPE_PROTOCOLBUFF;
 			linfo.m_protocol = lprotocol;
 			m_protocol[linfo.m_protocol] = &linfo;
 			return true;
@@ -180,22 +174,6 @@ namespace ngl
 			return linfo.m_protocol;
 		}
 
-		// # 根据协议获取协议类型
-		template <typename T>
-		static EPROTOCOL_TYPE protocol_type()
-		{
-			info& linfo = get<T>();
-			return linfo.m_type;
-		}
-
-		// # 根据协议获取协议名称
-		template <typename T>
-		static const std::string& protocol_name()
-		{
-			info& linfo = get<T>();
-			return linfo.m_name;
-		}
-
 		template <typename T>
 		static bool isforward()
 		{
@@ -210,45 +188,23 @@ namespace ngl
 		}
 
 		// # 根据协议号获取协议名称
-		static std::string protocol_name(i32_protocolnum aprotocolnum)
+		static const char* protocol_name(i32_protocolnum aprotocolnum)
 		{
 			info* linfo = get(aprotocolnum);
 			if (linfo == nullptr)
 			{
 				return "none";
 			}
-			return linfo->m_name;
-		}
-
-		// # 根据协议号获取协议类型
-		static EPROTOCOL_TYPE protocol(i32_protocolnum aprotocolnum)
-		{
-			info* linfo = get(aprotocolnum);
-			if (linfo == nullptr)
-			{
-				return EPROTOCOL_TYPE_ERROR;
-			}
-			return linfo->m_type;
+			return linfo->m_name.c_str();
 		}
 
 		// # 获取当前进程已注册的所有协议
-		static void get_allprotocol(
-			std::map<i32_protocolnum
-			, std::string>& apromap
-			, std::map<i32_protocolnum, std::string>& acustommap
-		)
+		static void get_allprotocol(std::map<i32_protocolnum, std::string>& amap)
 		{
 			for (const auto& apair : m_keyval)
 			{
 				const info& litem = apair.second;
-				if (litem.m_type == EPROTOCOL_TYPE_CUSTOM)
-				{
-					acustommap[litem.m_protocol] = litem.m_name;
-				}
-				else
-				{
-					apromap[litem.m_protocol] = litem.m_name;
-				}
+				amap[litem.m_protocol] = litem.m_name;
 			}
 		}
 	};

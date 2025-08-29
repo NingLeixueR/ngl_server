@@ -142,14 +142,13 @@ namespace ngl
 
 			{
 				auto pro = std::make_shared<np_channel_data<TDATA>>();
-				pro->m_data.make();
 				std::map<nguid, data_modified<TDATA>>& ldata = m_dbmodule->data();
 				if (lonlyread || ldataid.empty())
 				{
 					for (const std::pair<const nguid, data_modified<TDATA>>& itempair : ldata)
 					{
 						pro->m_firstsynchronize = true;
-						std::map<int64_t, TDATA>& lmapdata = *pro->m_data.m_data;
+						std::map<int64_t, TDATA>& lmapdata = pro->m_data;
 
 						data_modified_continue_getconst(lpddataconst, itempair.second);
 						lmapdata[itempair.first] = *lpddataconst;
@@ -158,7 +157,6 @@ namespace ngl
 							msg_info(*pro);
 							actor::send_actor(lactorid, nguid::make(), pro);
 							pro = std::make_shared<np_channel_data<TDATA>>();
-							pro->m_data.make();
 						}
 					}
 					pro->m_recvfinish = true;
@@ -175,7 +173,7 @@ namespace ngl
 						{
 							pro->m_firstsynchronize = true;
 							data_modified_continue_getconst(lpddataconst, itor->second);
-							(*pro->m_data.m_data)[dataid] = *lpddataconst;
+							(pro->m_data)[dataid] = *lpddataconst;
 						}
 					}
 				}
@@ -248,7 +246,7 @@ namespace ngl
 		static void channel_data(TDerived*, message<np_channel_data<TDATA>>& adata)
 		{
 			const np_channel_data<TDATA>* recv = adata.get_data();
-			const std::map<int64_t, TDATA>& lmap = *recv->m_data.m_data;
+			const std::map<int64_t, TDATA>& lmap = recv->m_data;
 			for (const auto& lpair : lmap)
 			{
 				// # m_dbmodule->get:数据不存在就创建
@@ -267,17 +265,17 @@ namespace ngl
 			m_dbmodule = adbmodule;
 			// # 订阅注册处理
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_register<TDATA>
+				TDerived, np_channel_register<TDATA>
 			>(std::bind_front(&tnsp_server::channel_register), false);
 
 			// # 订阅数据被修改
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_data<TDATA>
+				TDerived, np_channel_data<TDATA>
 			>(std::bind_front(&tnsp_server::channel_data), false);
 
 			// # 退出订阅
 			actor::register_actor_s<
-				EPROTOCOL_TYPE_CUSTOM, TDerived, np_channel_exit<TDATA>
+				TDerived, np_channel_exit<TDATA>
 			>(std::bind_front(&tnsp_server::channel_exit), false);
 		}
 
@@ -295,8 +293,7 @@ namespace ngl
 
 			auto pro = std::make_shared<np_channel_data<TDATA>>();
 			pro->m_firstsynchronize = true;
-			pro->m_data.make();
-			std::map<int64_t, TDATA>& lmap = *pro->m_data.m_data;
+			std::map<int64_t, TDATA>& lmap = pro->m_data;
 			if (lpset->empty())
 			{
 				for (std::pair<const nguid, data_modified<TDATA>>& lpair : m_dbmodule->data())

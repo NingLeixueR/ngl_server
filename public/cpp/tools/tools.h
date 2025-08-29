@@ -26,14 +26,6 @@
 #define snprintf _snprintf
 #endif //WIN32
 
-enum EPROTOCOL_TYPE
-{
-	EPROTOCOL_TYPE_CUSTOM,			// 自定义二进制协议
-	EPROTOCOL_TYPE_PROTOCOLBUFF,	// protobuff协议
-	EPROTOCOL_TYPE_COUNT,
-	EPROTOCOL_TYPE_ERROR,
-};
-
 namespace ngl
 {
 	template <typename Target>
@@ -860,24 +852,6 @@ namespace ngl
 			return lname;
 		}
 
-		template <typename T>
-		class protobuf_tabname
-		{
-			static std::string m_name;
-		public:
-			static std::string& name()
-			{
-				if (m_name.empty())
-				{
-					m_name = T().descriptor()->full_name();
-					ngl::tools::replace("pbdb.", "", m_name, m_name);
-					ngl::tools::replace("pbnet.", "", m_name, m_name);
-					ngl::tools::replace("pbexample.", "", m_name, m_name);
-				}
-				return m_name;
-			}
-		};
-
 		static std::string md5(const std::string& text);
 
 		static std::string sh1(std::string_view text);
@@ -924,9 +898,6 @@ namespace ngl
 
 		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
 	};
-
-	template <typename T>
-	std::string tools::protobuf_tabname<T>::m_name;
 
 	template <typename T>
 	std::function<std::string(const T&)> tools::m_splicing = [](const T& adata)

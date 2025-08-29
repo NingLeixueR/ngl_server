@@ -90,12 +90,12 @@ namespace ngl
 
 		virtual const char* csvname()
 		{
-			return T::name();
+			return tools::type_name<T>().c_str();
 		}
 
 		static std::string path()
 		{
-			std::string lcsvname = std::format("./{}/{}.csv", csvbase::get_path(), T::name());
+			std::string lcsvname = std::format("./{}/{}.csv", csvbase::get_path(), tools::type_name<T>());
 			return lcsvname;
 		}
 
@@ -116,7 +116,7 @@ namespace ngl
 
 		static const char* name()
 		{
-			return T::name();
+			return tools::type_name<T>().c_str();
 		}
 	};
 
@@ -136,7 +136,7 @@ namespace ngl
 			{
 				using TAB = typename TTAB::type_tab;
 				csvbase* lp = athis;
-				allcsv::add(TAB::name(), lp);
+				allcsv::add(tools::type_name<TAB>().c_str(), lp);
 				lp->load();
 				lp->reload();
 			}
@@ -189,7 +189,7 @@ namespace ngl
 		template <typename T>
 		static void register_csv()
 		{
-			trefun& ltemp = m_fun[T::name()];
+			trefun& ltemp = m_fun[tools::type_name<T>()];
 			ltemp.m_save = [](const std::string& acsvcontent)
 			{
 				std::string lcsvname = manage_csv<T>::path();
@@ -200,7 +200,7 @@ namespace ngl
 
 			ltemp.m_reload = []()
 			{
-				csvbase* lpcsv = allcsv::get_csvbase(T::name());
+				csvbase* lpcsv = allcsv::get_csvbase(tools::type_name<T>());
 				if (lpcsv == nullptr)
 				{
 					return;

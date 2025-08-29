@@ -193,7 +193,7 @@ namespace ngl
 			// 断线重连或者其他设备顶号
 			i64_actorid lroleactor = nguid::make(ACTOR_ROLE, lguid.area(), lguid.actordataid());
 			pbnet::PROBUFF_NET_ROLE_SYNC ltemp;
-			sendrole(linfo->m_gameid, lroleactor, ltemp);
+			nets::sendbyserver(linfo->m_gameid, ltemp, lroleactor, nguid::make());
 			return true;
 		}
 

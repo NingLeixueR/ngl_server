@@ -43,8 +43,7 @@ namespace ngl
 			);
 			return false;
 		}
-		std::string lenumname = tprotocol::protocol_name(apram.m_enum);
-		time_consuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, lenumname));
+		time_consuming lconsuming(std::format("{}-{}-{}", aactor->guid(), apram.m_enum, tprotocol::protocol_name(apram.m_enum)));
 		lconsuming.consuming_start();
 		itor->second.m_fun(aactor, athreadid, apram);
 		if (aactor->type() != ACTOR_LOG)

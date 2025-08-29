@@ -30,15 +30,13 @@ namespace ngl
 		static void push(std::shared_ptr<pack>& apack);
 
 		// # 注册协议
-		// parm EPROTOCOL_TYPE atype				协议类型
 		// parm i32_protocolnum aprotocolnumber		协议号
 		// parm ENUM_ACTOR aenumactor				actor类型
 		// parm const fun_pack& apackfun			解包回调
 		// parm const fun_run& arunfun				逻辑回调
 		// parm const char* aname					debug name
 		static void register_protocol(
-			EPROTOCOL_TYPE atype
-			, i32_protocolnum aprotocolnumber
+			i32_protocolnum aprotocolnumber
 			, ENUM_ACTOR aenumactor
 			, const fun_pack& apackfun
 			, const fun_run& arunfun
@@ -46,7 +44,7 @@ namespace ngl
 		);
 
 		// # ACTOR间通信 
-		template <typename T, EPROTOCOL_TYPE TYPE>
+		template <typename T>
 		static void registry_actor(ENUM_ACTOR atype, const char* aname)
 		{
 			fun_pack lpackfun = [atype](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
@@ -92,94 +90,129 @@ namespace ngl
 				}
 				return true;
 			};
-			register_protocol(TYPE, tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
+			register_protocol(tprotocol::protocol<T>(), atype, lpackfun, lrunfun, aname);
 		}
 
-		// # 转发[负责转发的actor必须是单例actor]
-		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
-		static void registry_actor_forward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		// # 转发 c2g
+		template <typename T>
+		static void registry_actor_c2g_gateway(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
-			{
-				Try
 				{
-					using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
-					typeforward* lp = new typeforward();
-					lp->m_recvpack = apack;
-					std::shared_ptr<void> ltemp(lp);
-					if (structbytes<typeforward>::tostruct(apack, *lp, true))
+					Try
 					{
-						return ltemp;
-					}
-				}Catch
-				return nullptr;
-			};
-			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
-			{
-				using typeforward = np_actor_forward<T, TYPE, ISTRUE, ngl::forward>;
-				std::shared_ptr<typeforward> ldatapack = std::static_pointer_cast<typeforward>(aptrpram);
-				nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
-				nguid lrequestguid(apack->m_head.get_request_actor());
-				handle_pram lpram = handle_pram::create<typeforward, false>(lguid, lrequestguid, ldatapack);
-				lpram.m_pack = apack;
-				actor_manage::instance().push_task_id(lguid, lpram);
-				return true;
-			};			
-			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);
-		}
-
-		// 接收转发的消息
-		template <typename T, bool ISTRUE, EPROTOCOL_TYPE TYPE>
-		static void registry_actor_recvforward(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
-		{
-			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
-			{
-				Try
-				{
-					using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
-					typeforward* lp = new typeforward();
-					std::shared_ptr<void> ltemp(lp);
-					if (apack->m_protocol == ENET_KCP)
-					{
-						lp->make_data();
-						if (structbytes<T>::tostruct(apack, *(T*)lp->get_data()))
-						{
-							i64_actorid lactorid = nets::kcp()->find_actorid(apack->m_id);
-							lp->m_uid.push_back(nguid::actordataid(lactorid));
-							lp->m_area.push_back(nguid::area(lactorid));
-							return ltemp;
-						}
-					}
-					else
-					{
-						if (structbytes<typeforward>::tostruct(apack, *lp))
+						auto lp = new np_actor_forward<T, forward_c2g<forward>>();
+						std::shared_ptr<void> ltemp(lp);
+						if (structbytes<np_actor_forward<T, forward_c2g<forward>>>::tostruct(apack, *lp, true))
 						{
 							return ltemp;
 						}
-					}
-				}Catch
-				return nullptr;
-			};
+					}Catch
+					return nullptr;
+				};
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
-			{
-				using typeforward = np_actor_forward<T, TYPE, ISTRUE, T>;
-				nguid lrequestguid(apack->m_head.get_request_actor());
-				std::shared_ptr<T> ldatapack = std::static_pointer_cast<T>(aptrpram);
-				typeforward* lp = (typeforward*)aptrpram.get();
-				for (int i = 0; i < lp->m_uid.size() && i < lp->m_area.size(); ++i)
 				{
-					nguid lguid(atype, lp->m_area[i], lp->m_uid[i]);
-					handle_pram lpram = handle_pram::create<T, false, false>(lguid, lrequestguid, ldatapack);
+					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_c2g<forward>>>(aptrpram);
+					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+					nguid lrequestguid(apack->m_head.get_request_actor());
+					handle_pram lpram = handle_pram::create<T, forward>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
 					actor_manage::instance().push_task_id(lguid, lpram);
-				}
-				return true;
-			};
-			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);			
+					return true;
+				};
+			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
+		}
+
+		template <typename T>
+		static void registry_actor_c2g_client(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		{
+			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
+				{
+					Try
+					{
+						auto lp = new np_actor_forward<T, forward_c2g<T>>();
+						std::shared_ptr<void> ltemp(lp);
+						if (structbytes<np_actor_forward<T, forward_c2g<T>>>::tostruct(apack, *lp, true))
+						{
+							return ltemp;
+						}
+					}Catch
+					return nullptr;
+				};
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+				{
+					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_c2g<T>>>(aptrpram);
+					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+					nguid lrequestguid(apack->m_head.get_request_actor());
+					handle_pram lpram = handle_pram::create<T, T>(lguid, lrequestguid, ldatapack);
+					lpram.m_pack = apack;
+					actor_manage::instance().push_task_id(lguid, lpram);
+					return true;
+				};
+			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
+		}
+
+		// # 转发 g2c
+		template <typename T>
+		static void registry_actor_g2c_gateway(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		{
+			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
+				{
+					Try
+					{
+						auto lp = new  np_actor_forward<T, forward_g2c<forward>>();
+						std::shared_ptr<void> ltemp(lp);
+						if (structbytes<np_actor_forward<T, forward_g2c<forward>>>::tostruct(apack, *lp, true))
+						{
+							return ltemp;
+						}
+					}Catch
+					return nullptr;
+				};
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+				{
+					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_g2c<forward>>>(aptrpram);
+					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+					nguid lrequestguid(apack->m_head.get_request_actor());
+					handle_pram lpram = handle_pram::create<np_actor_forward<T, forward_g2c<forward>>>(lguid, lrequestguid, ldatapack);
+					lpram.m_pack = apack;
+					actor_manage::instance().push_task_id(lguid, lpram);
+					return true;
+				};
+			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
+		}
+
+		template <typename T>
+		static void registry_actor_g2c_client(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		{
+			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
+				{
+					Try
+					{
+						auto lp = new  np_actor_forward<T, forward_g2c<T>>();
+						std::shared_ptr<void> ltemp(lp);
+						if (structbytes<np_actor_forward<T, forward_g2c<T>>>::tostruct(apack, *lp, true))
+						{
+							return ltemp;
+						}
+					}Catch
+					return nullptr;
+				};
+			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
+				{
+					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_g2c<T>>>(aptrpram);
+					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+					nguid lrequestguid(apack->m_head.get_request_actor());
+					handle_pram lpram = handle_pram::create<np_actor_forward<T, forward_g2c<T>>>(lguid, lrequestguid, ldatapack);
+					lpram.m_pack = apack;
+					actor_manage::instance().push_task_id(lguid, lpram);
+					return true;
+				};
+			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
 		// 接收转发的消息
-		template <typename T, EPROTOCOL_TYPE TYPE>
+		template <typename T>
 		static void registry_actor_mass(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
@@ -204,7 +237,7 @@ namespace ngl
 					actor_manage::instance().push_task_id(lactorids, lpram);
 					return true;
 				};
-			register_protocol(TYPE, aprotocolnum, atype, lpackfun, lrunfun, aname);
+			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
 		static void cmd(const std::shared_ptr<pack>& apack);

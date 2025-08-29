@@ -5,6 +5,7 @@
 #include "ndefine.h"
 #include "net.pb.h"
 #include "db.pb.h"
+#include "nlog.h"
 
 #include <cstdint>
 #include <string>

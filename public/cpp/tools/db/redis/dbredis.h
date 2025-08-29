@@ -1,6 +1,6 @@
 #pragma once
 
-#include "serialize.h"
+#include "nserialize.h"
 #include "hiredis.h"
 #include "db_buff.h"
 #include "nlog.h"
@@ -28,7 +28,7 @@ namespace ngl
 			redisReply* lreply = cmd(arc, "GET %s:%d", atab, akey);
 			if (lreply != nullptr)
 			{
-				ngl::unserialize lunserialize((const char*)lreply->str, lreply->len);
+				/*ngl::unserialize lunserialize((const char*)lreply->str, lreply->len);
 				if (lunserialize.pop(adata))
 				{
 					freeReplyObject(lreply);
@@ -38,7 +38,7 @@ namespace ngl
 				{
 					freeReplyObject(lreply);
 					return false;
-				}
+				}*/
 			}
 			return false;
 		}
@@ -74,7 +74,7 @@ namespace ngl
 		static bool set(redisContext* arc, const char* atab, int akey, const T& adata)
 		{
 			char lbuff[REDIS_DATA_MAX] = { 0x0 };
-			ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
+			/*ngl::serialize lflow(lbuff, REDIS_DATA_MAX);
 			if (lflow.push(adata))
 			{
 				redisReply* lreply = cmd(arc, "SET %s:%d %b", atab, akey, lflow.buff(), (size_t)lflow.byte());
@@ -83,7 +83,7 @@ namespace ngl
 					freeReplyObject(lreply);
 					return true;
 				}
-			}
+			}*/
 			return false;
 		}
 
@@ -129,10 +129,10 @@ namespace ngl
 			return get(T::name(), akey, adata);
 		}
 
-		template <typename T>
+	/*	template <typename T>
 		bool get(int akey, protobuf_data<T>& adata)
 		{
-			return get(tools::protobuf_tabname<T>::name(), akey, adata);
+			return get(tools::typename<T>(), akey, adata);
 		}
 
 		template <typename T>
@@ -145,7 +145,7 @@ namespace ngl
 		bool set(int akey, const protobuf_data<T>& adata)
 		{
 			return set(tools::protobuf_tabname<T>::name(), akey, adata);
-		}
+		}*/
 
 		template <typename T>
 		bool set(int akey, const T& adata)
@@ -159,11 +159,11 @@ namespace ngl
 			return set(T::name(), adata);
 		}
 
-		template <typename T>
+	/*	template <typename T>
 		bool set(std::map<int, protobuf_data<T>>& adata)
 		{
 			return set(tools::protobuf_tabname<T>::name(), adata);
-		}
+		}*/
 
 		template <typename T>
 		bool del(int aid)

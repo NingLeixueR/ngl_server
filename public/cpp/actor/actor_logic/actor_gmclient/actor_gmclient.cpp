@@ -48,7 +48,7 @@ namespace ngl
 
 	void actor_gmclient::get_allprotocol(protocols& apro)
 	{
-		tprotocol::get_allprotocol(apro.m_promap, apro.m_custommap);
+		tprotocol::get_allprotocol(apro.m_data);
 	}
 
 	void actor_gmclient::nregister()
@@ -57,12 +57,12 @@ namespace ngl
 		actor::register_timer<actor_gmclient>(&actor_gmclient::timer_handle);
 
 		// 绑定自定义np_消息
-		register_handle_custom<actor_gmclient>::func<
+		register_handle<actor_gmclient>::func<
 			mforward<np_gm>
 		>(true);
 
 		// 绑定pb消息
-		register_handle_proto<actor_gmclient>::func<
+		register_handle<actor_gmclient>::func<
 		>(true);
 	}
 

@@ -2,9 +2,8 @@
 
 #include "threadtools.h"
 #include "nactortype.h"
-#include "serialize.h"
+#include "nserialize.h"
 #include "localtime.h"
-#include "serialize.h"
 #include "sysconfig.h"
 #include "ndefine.h"
 #include "nguid.h"
@@ -38,13 +37,14 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load_response
 	{
-		protobuf_data<std::map<nguid, T>>	m_data;
+		//protobuf_data<std::map<nguid, T>>	m_data;
+		std::map<nguid, T>	m_data;
 		bool		m_stat = true;
 		bool		m_over = true;
 
 		const std::map<nguid, T>& data()const
 		{
-			return *m_data.m_data;
+			return m_data;
 		}
 
 		def_protocol(actor_db_load_response<T>, m_stat, m_data, m_over)
@@ -56,22 +56,17 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_save
 	{
-		protobuf_data<std::map<nguid, T>>	m_data;
+		//protobuf_data<std::map<nguid, T>>	m_data;
+		std::map<nguid, T > m_data;
 
 		void add(const nguid& akey, const T& avalue)
 		{
-			if (m_data.m_data == nullptr)
-			{
-				m_data.make();
-			}
-			m_data.m_data->insert(std::make_pair(akey, avalue));
+			m_data.insert(std::make_pair(akey, avalue));
 		}
 
 		bool empty()
 		{
-			if (m_data.m_data == nullptr)
-				return true;
-			return m_data.m_data->empty();
+			return m_data.empty();
 		}
 
 		def_protocol(actor_db_save<T>, m_data)
@@ -111,7 +106,7 @@ namespace ngl
 	public:
 		using BASE_TYPE = T;
 
-		def_jsonfunction_parm("m_identifier", m_identifier, "m_data", *m_data)
+		def_protocol(np_actormodule_forward<T>, m_identifier, *m_data)
 		def_nlua_function2("m_identifier", m_identifier, "m_data", *m_data)
 
 		np_actormodule_forward(int64_t aidentifier, const std::shared_ptr<T>& adata) :
@@ -159,60 +154,7 @@ namespace ngl
 			return m_identifier;
 		}
 
-		static const char* name()
-		{
-			return "actor_module_forward";
-		}
 
-		inline bool push(ngl::serialize& ser)const
-		{
-			if (ser.push(m_identifier) == false)
-			{
-				return false;
-			}
-			if (m_data->SerializeToArray(&ser.buff()[ser.byte()], ser.len() - ser.byte()) == false)
-			{
-				return false;
-			}
-			return true;
-		}
-
-		inline bool SerializeToArray(void* data, int size) const
-		{
-			ngl::serialize lserialize((char*)data, size);
-			return push(lserialize);
-		}
-
-		inline bool pop(ngl::unserialize& ser)
-		{
-			if (ser.pop(m_identifier) == false)
-			{
-				return false;
-			}
-			if (m_data == nullptr)
-			{
-				m_data = std::make_shared<T>();
-			}
-			return m_data->ParseFromArray(&ser.buff()[ser.byte()], ser.len() - ser.byte());
-		}
-
-		inline bool ParseFromArray(const void* data, int size)
-		{
-			ngl::unserialize lunserialize((const char*)data, size);
-			return pop(lunserialize);
-		}
-
-		inline int bytes(ngl::serialize_bytes& abytes)const
-		{
-			int lbytes = abytes.bytes(m_identifier);
-			return lbytes += m_data->ByteSize();
-		}
-
-		inline int ByteSize()const
-		{
-			ngl::serialize_bytes lserialize_bytes;
-			return bytes(lserialize_bytes);
-		}
 	};
 
 	template <typename TDATA>
@@ -235,181 +177,283 @@ namespace ngl
 		return true;
 	}
 
-	template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
+	struct forward
+	{
+		int32_t m_bufflen = 0;
+		const char* m_buff = nullptr;
+	};
+
+	namespace ser
+	{
+		template <>
+		struct serialize_format<forward>
+		{
+			static bool push(serialize_push* aserialize, const forward& adata)
+			{
+				if (!serialize_format<int32_t>::push(aserialize, adata.m_bufflen))
+				{
+					return false;
+				}
+				return aserialize->basetype((void*)adata.m_buff, adata.m_bufflen);
+			}
+
+			static bool pop(serialize_pop* aserialize, forward& adata)
+			{
+				if (!serialize_format<int32_t>::pop(aserialize, adata.m_bufflen))
+				{
+					return false;
+				}
+				if (adata.m_bufflen > (aserialize->len() - aserialize->pos()))
+				{
+					return false;
+				}
+				adata.m_buff = &aserialize->buff()[aserialize->pos()];
+				return true;
+			}
+
+			static void bytes(serialize_byte* aserialize, const forward& adata)
+			{
+				serialize_format<int32_t>::bytes(aserialize, adata.m_bufflen);
+				aserialize->move_pos(adata.m_bufflen);
+			}
+		};
+	}
+
+	template <typename T>
+	struct forward_c2g
+	{
+		T m_data;
+	};
+
+	namespace ser
+	{
+		template <typename T>
+		struct serialize_format<forward_c2g<T>>
+		{
+			static bool push(serialize_push* aserialize, const forward_c2g<T>& adata)
+			{
+				return ngl::ser::nserialize::push(aserialize, adata.m_data);
+			}
+
+			static bool pop(serialize_pop* aserialize, forward_c2g<T>& adata)
+			{
+				return ngl::ser::nserialize::pop(aserialize, adata.m_data);
+			}
+
+			static void bytes(serialize_byte* aserialize, const forward_c2g<T>& adata)
+			{
+				ngl::ser::nserialize::bytes(aserialize, adata.m_data);
+			}
+		};
+	}
+
+	template <typename T>
+	struct forward_g2c
+	{
+		std::vector<int16_t> m_area;
+		std::vector<int32_t> m_uid;
+		T m_data;
+	};
+
+	namespace ser
+	{
+		template <typename T>
+		struct serialize_format<forward_g2c<T>>
+		{
+			static bool push(serialize_push* aserialize, const forward_g2c<T>& adata)
+			{
+				return ngl::ser::nserialize::push(aserialize, adata.m_area, adata.m_uid, adata.m_data);
+			}
+
+			static bool pop(serialize_pop* aserialize, forward_g2c<T>& adata)
+			{
+				return ngl::ser::nserialize::pop(aserialize, adata.m_area, adata.m_uid, adata.m_data);
+			}
+
+			static void bytes(serialize_byte* aserialize, const forward_g2c<T>& adata)
+			{
+				ngl::ser::nserialize::bytes(aserialize, adata.m_area, adata.m_uid, adata.m_data);
+			}
+		};
+	}
+
+
+	template <typename T, typename Y>
 	struct np_actor_forward
 	{
-		using BASE_TYPE = T;
-		static const bool isusing = ISUSING;
+		Y m_data;
 
-		const T* get_data()const
-		{
-			return nullptr;
-		}
-
-		std::shared_ptr<T> get_shared()const
-		{
-			return nullptr;
-		}
+		dprotocol(np_actor_forward, m_data)
 	};
+	
 
-	template <typename T, EPROTOCOL_TYPE PROTYPE>
-	struct np_actor_forward<T, PROTYPE, true, ngl::forward>
-	{
-		using BASE_TYPE = T;
-		static const bool				isusing = true;
-		std::vector<i32_actordataid>	m_uid;
-		std::vector<i16_area>			m_area;
-		std::shared_ptr<pack>			m_recvpack;
+	////////template <typename T, EPROTOCOL_TYPE PROTYPE, bool ISUSING, typename TREAL>
+	////////struct np_actor_forward
+	////////{
+	////////	using BASE_TYPE = T;
+	////////	static const bool isusing = ISUSING;
 
-		np_actor_forward() = default;
+	////////	const T* get_data()const
+	////////	{
+	////////		return nullptr;
+	////////	}
 
-		explicit np_actor_forward(const np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
-			m_recvpack(adata.m_recvpack)
-		{
-		}
+	////////	std::shared_ptr<T> get_shared()const
+	////////	{
+	////////		return nullptr;
+	////////	}
+	////////};
 
-		const T* get_data()const
-		{
-			return nullptr;
-		}
+	////////template <typename T, EPROTOCOL_TYPE PROTYPE>
+	////////struct np_actor_forward<T, PROTYPE, true, ngl::forward>
+	////////{
+	////////	using BASE_TYPE = T;
+	////////	static const bool				isusing = true;
+	////////	std::vector<i32_actordataid>	m_uid;
+	////////	std::vector<i16_area>			m_area;
+	////////	std::shared_ptr<pack>			m_recvpack;
 
-		std::shared_ptr<T> get_shared()const
-		{
-			return nullptr;
-		}
+	////////	np_actor_forward() = default;
 
-		dprotocol(np_actor_forward, m_uid, m_area/*, m_data*/)
-	};
+	////////	explicit np_actor_forward(const np_actor_forward<T, PROTYPE, false, ngl::forward>& adata) :
+	////////		m_recvpack(adata.m_recvpack)
+	////////	{
+	////////	}
 
-	template <typename T, EPROTOCOL_TYPE PROTYPE>
-	struct np_actor_forward<T, PROTYPE, false, ngl::forward>
-	{
-		using BASE_TYPE = T;
-		static const bool isusing = false;
-		std::shared_ptr<pack> m_recvpack;
+	////////	const T* get_data()const
+	////////	{
+	////////		return nullptr;
+	////////	}
 
-		np_actor_forward() = default;
+	////////	std::shared_ptr<T> get_shared()const
+	////////	{
+	////////		return nullptr;
+	////////	}
 
-		explicit np_actor_forward(const np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
-			m_recvpack(adata.m_recvpack)
-		{}
+	////////	dprotocol(np_actor_forward, m_uid, m_area/*, m_data*/)
+	////////};
 
-		const T* get_data()const
-		{
-			return nullptr;
-		}
+	////////template <typename T, EPROTOCOL_TYPE PROTYPE>
+	////////struct np_actor_forward<T, PROTYPE, false, ngl::forward>
+	////////{
+	////////	using BASE_TYPE = T;
+	////////	static const bool isusing = false;
+	////////	std::shared_ptr<pack> m_recvpack;
 
-		std::shared_ptr<T> get_shared()const
-		{
-			return nullptr;
-		}
+	////////	np_actor_forward() = default;
 
-		dprotocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
-	};
+	////////	explicit np_actor_forward(const np_actor_forward<T, PROTYPE, true, ngl::forward>& adata) :
+	////////		m_recvpack(adata.m_recvpack)
+	////////	{}
 
-	template <typename T>
-	struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
-	{
-		using BASE_TYPE = T;
-		static const bool				isusing = true;
-		std::vector<i32_actordataid>	m_uid;
-		std::vector<i16_area>			m_area;
-	private:
-		protobuf_data<T, true> m_data;
-	public:
-		void set_data(const std::shared_ptr<T>& adata)
-		{
-			m_data.m_data = adata;
-		}
+	////////	const T* get_data()const
+	////////	{
+	////////		return nullptr;
+	////////	}
 
-		const T* get_data()const
-		{
-			return m_data.m_data.get();
-		}
+	////////	std::shared_ptr<T> get_shared()const
+	////////	{
+	////////		return nullptr;
+	////////	}
 
-		std::shared_ptr<T> get_shared()const
-		{
-			return m_data.m_data;
-		}
+	////////	dprotocol(np_actor_forward, /*m_uid, m_area,*/ /*m_data*/)
+	////////};
 
-		np_actor_forward() = default;
+	////////template <typename T>
+	////////struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>
+	////////{
+	////////	using BASE_TYPE = T;
+	////////	static const bool				isusing = true;
+	////////	std::vector<i32_actordataid>	m_uid;
+	////////	std::vector<i16_area>			m_area;
+	////////private:
+	////////	//protobuf_data<T, true> m_data;
+	////////	T m_data;
+	////////public:
+	////////	void set_data(const std::shared_ptr<T>& adata)
+	////////	{
+	////////		m_data = *adata;
+	////////	}
 
-		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
-			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
-		{}
+	////////	const T* get_data()const
+	////////	{
+	////////		return &m_data;
+	////////	}
 
-		def_protocol(np_actor_forward, m_uid, m_area, m_data)
-	};
+	////////	np_actor_forward() = default;
 
-	template <typename T>
-	struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>
-	{
-		using BASE_TYPE = T;
-		static const bool				isusing = false;
-		std::vector<i32_actordataid>	m_uid;
-		std::vector<i16_area>			m_area;
-	private:
-		protobuf_data<T, true> m_data;
-	public:
-		void set_data(std::shared_ptr<T>& adata)
-		{
-			m_data.m_data = adata;
-		}
+	////////	explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>& adata)
+	////////		:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
+	////////	{}
 
-		const T* get_data()const
-		{
-			return m_data.m_data.get();
-		}
+	////////	def_protocol(np_actor_forward, m_uid, m_area, m_data)
+	////////};
 
-		std::shared_ptr<T> get_shared()const
-		{
-			return m_data.m_data;
-		}
+	////////template <typename T>
+	////////struct np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, false, T>
+	////////{
+	////////	using BASE_TYPE = T;
+	////////	static const bool				isusing = false;
+	////////	std::vector<i32_actordataid>	m_uid;
+	////////	std::vector<i16_area>			m_area;
+	////////private:
+	////////	//protobuf_data<T, true> m_data;
+	////////	std::shared_ptr<T> m_data;
+	////////public:
+	////////	void set_data(std::shared_ptr<T>& adata)
+	////////	{
+	////////		m_data = adata;
+	////////	}
 
-		void make_data()
-		{
-			m_data.make();
-		}
+	////////	const T* get_data()const
+	////////	{
+	////////		return m_data.get();
+	////////	}
 
-		np_actor_forward() = default;
+	////////	std::shared_ptr<T> get_shared()const
+	////////	{
+	////////		return m_data;
+	////////	}
 
-		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
-			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
-		{}
+	////////	np_actor_forward() = default;
 
-		def_protocol(np_actor_forward, m_uid, m_area, m_data)
-	};
+	////////	explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_PROTOCOLBUFF, true, T>& adata)
+	////////		:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data)
+	////////	{}
 
-	template <typename T, bool ISUSING>
-	struct np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
-	{
-		using BASE_TYPE = T;
-		std::vector<i32_actordataid>	m_uid;
-		std::vector<i16_area>			m_area;
-	private:
-		T m_data_;
-		T* m_data;
-	public:
-		void set_data(T& adata)
-		{
-			m_data = &adata;
-		}
+	////////	def_protocol(np_actor_forward, m_uid, m_area, m_data)
+	////////};
 
-		const T* get_data()const
-		{
-			return m_data != nullptr ? m_data : &m_data_;
-		}
+	////////template <typename T, bool ISUSING>
+	////////struct np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, ISUSING, T>
+	////////{
+	////////	using BASE_TYPE = T;
+	////////	std::vector<i32_actordataid>	m_uid;
+	////////	std::vector<i16_area>			m_area;
+	////////private:
+	////////	T m_data_;
+	////////	T* m_data;
+	////////public:
+	////////	void set_data(T& adata)
+	////////	{
+	////////		m_data = &adata;
+	////////	}
 
-		np_actor_forward()
-			:m_data(nullptr)
-		{}
+	////////	const T* get_data()const
+	////////	{
+	////////		return m_data != nullptr ? m_data : &m_data_;
+	////////	}
 
-		explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, !ISUSING, T>& adata)
-			:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
-		{}
+	////////	np_actor_forward()
+	////////		:m_data(nullptr)
+	////////	{}
 
-		dprotocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
-	};
+	////////	explicit np_actor_forward(const np_actor_forward<T, EPROTOCOL_TYPE_CUSTOM, !ISUSING, T>& adata)
+	////////		:m_uid(adata.m_uid), m_area(adata.m_area), m_data(adata.m_data), m_data_(adata.m_data_)
+	////////	{}
+
+	////////	dprotocol(np_actor_forward, m_uid, m_area, m_data != nullptr ? *m_data : m_data_)
+	////////};
 
 	// # 群发数据给其他actor
 	template <typename T>
@@ -507,7 +551,8 @@ namespace ngl
 		std::string m_msg;									// 调试查看信息
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
-		protobuf_data<std::map<int64_t, TDATA>> m_data;		// 1、数据同步2、数据修改3、数据增加
+		//protobuf_data<std::map<int64_t, TDATA>> m_data;		// 1、数据同步2、数据修改3、数据增加
+		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加
 		std::vector<int64_t> m_deldata;						// 数据被删除
 		def_protocol(np_channel_data<TDATA>, m_msg, m_firstsynchronize, m_recvfinish, m_data)
 	};

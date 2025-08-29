@@ -13,7 +13,9 @@ namespace ngl
 	public:
 		static std::shared_ptr<pack> npack(bpool* apool, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			int lbuffbyte = adata.ByteSize() + pack_head::size();
+			ngl::ser::serialize_byte lserialize;
+			ngl::ser::nserialize::bytes(&lserialize, adata);
+			int lbuffbyte = lserialize.pos() + pack_head::size();
 			std::shared_ptr<pack> lpack = pack::make_pack(apool, lbuffbyte);
 			if (structbytes<T>::tobytes(lpack, adata, aactorid, arequestactorid) == false)
 			{

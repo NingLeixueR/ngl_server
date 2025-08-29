@@ -70,10 +70,10 @@ namespace ngl
 		// ¶¨Ê±Æ÷
 		actor::register_timer<actor_testlua>(&actor_testlua::timer_handle);
 
-		register_script_handle<EPROTOCOL_TYPE_CUSTOM, actor_testlua>::func<
+		register_script_handle<actor_testlua>::func<
 			np_testlua
 		>(true);
-		register_script_handle<EPROTOCOL_TYPE_PROTOCOLBUFF, actor_testlua>::func<
+		register_script_handle<actor_testlua>::func<
 			mforward<pbnet::PROBUFF_NET_TESTLUA>
 		>(true);
 	}
