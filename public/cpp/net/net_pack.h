@@ -11,7 +11,8 @@ namespace ngl
 		net_pack(const net_pack&) = delete;
 		net_pack& operator=(const net_pack&) = delete;
 	public:
-		static std::shared_ptr<pack> npack(bpool* apool, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y>
+		static std::shared_ptr<pack> npack(bpool* apool, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			ngl::ser::serialize_byte lserialize;
 			ngl::ser::nserialize::bytes(&lserialize, adata);

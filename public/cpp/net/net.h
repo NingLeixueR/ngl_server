@@ -76,8 +76,8 @@ namespace ngl
 			return lpprotocol->send(asession, adata, aactorid, arequestactorid);
 		}
 
-		template <typename T>
-		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, T& adata, i64_actorid aactorid)
+		template <typename Y, typename T = Y>
+		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, Y& adata, i64_actorid aactorid)
 		{
 			std::set<ENET_PROTOCOL> lset;
 			for (const auto& lpair : asession)
@@ -104,8 +104,8 @@ namespace ngl
 			return true;
 		}
 
-		template <typename T, typename TSTL>
-		static bool sendmore(const TSTL& asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename TSTL, typename Y, typename T = Y>
+		static bool sendmore(const TSTL& asession, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::map<ENET_PROTOCOL, std::set<i32_sessionid>> lmap;
 			for (i32_sessionid asession : asession)
