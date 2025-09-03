@@ -124,15 +124,15 @@ namespace ngl
 		}
 
 		template <typename T>
-		static void registry_actor_c2g_client(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
+		static void registry_actor_c2g_game(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
 			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
 				{
 					Try
 					{
-						auto lp = new np_actor_forward<T, forward_c2g<T>>();
+						auto lp = new T();
 						std::shared_ptr<void> ltemp(lp);
-						if (structbytes<np_actor_forward<T, forward_c2g<T>>>::tostruct(apack, *lp, true))
+						if (structbytes<T>::tostruct(apack, *lp, true))
 						{
 							return ltemp;
 						}
@@ -141,10 +141,10 @@ namespace ngl
 				};
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
-					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_c2g<T>>>(aptrpram);
+					auto ldatapack = std::static_pointer_cast<T>(aptrpram);
 					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
 					nguid lrequestguid(apack->m_head.get_request_actor());
-					handle_pram lpram = handle_pram::create<T, T>(lguid, lrequestguid, ldatapack);
+					handle_pram lpram = handle_pram::create<T>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
 					actor_manage::instance().push_task_id(lguid, lpram);
 					return true;
@@ -189,9 +189,9 @@ namespace ngl
 				{
 					Try
 					{
-						auto lp = new  np_actor_forward<T, forward_g2c<T>>();
+						auto lp = new T();
 						std::shared_ptr<void> ltemp(lp);
-						if (structbytes<np_actor_forward<T, forward_g2c<T>>>::tostruct(apack, *lp, true))
+						if (structbytes<T>::tostruct(apack, *lp, true))
 						{
 							return ltemp;
 						}
@@ -200,10 +200,10 @@ namespace ngl
 				};
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
-					auto ldatapack = std::static_pointer_cast<np_actor_forward<T, forward_g2c<T>>>(aptrpram);
+					auto ldatapack = std::static_pointer_cast<T>(aptrpram);
 					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
 					nguid lrequestguid(apack->m_head.get_request_actor());
-					handle_pram lpram = handle_pram::create<np_actor_forward<T, forward_g2c<T>>>(lguid, lrequestguid, ldatapack);
+					handle_pram lpram = handle_pram::create<T>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
 					actor_manage::instance().push_task_id(lguid, lpram);
 					return true;

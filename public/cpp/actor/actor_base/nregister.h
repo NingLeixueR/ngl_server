@@ -95,8 +95,8 @@ namespace ngl
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				auto ltemp = (np_actor_forward<T, forward_c2g<T>>*)apram.m_data.get();
-				message<T> lmessage(athreadid, apram.m_pack.get(), &(ltemp->m_data.m_data));
+				T* ltemp = (T*)apram.m_data.get();
+				message<T> lmessage(athreadid, apram.m_pack.get(), ltemp);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
@@ -104,7 +104,7 @@ namespace ngl
 		ENUM_ACTOR ltype = nactor_type<TDerived>::type();
 		int32_t lprotocol = tprotocol::protocol<np_actor_forward<T, forward_c2g<T>>>();
 		std::string& lname = tools::type_name<np_actor_forward<T, forward_c2g<T>>>();
-		protocol::registry_actor_c2g_client<T>(ltype, lprotocol, lname.c_str());
+		protocol::registry_actor_c2g_game<T>(ltype, lprotocol, lname.c_str());
 		return *this;
 	}
 
@@ -118,8 +118,7 @@ namespace ngl
 			.m_isdbload = false,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				using type_forward_g2c = np_actor_forward<T, forward_g2c<forward>>;
-				type_forward_g2c* ltemp = (type_forward_g2c*)apram.m_data.get();
+				T* ltemp = (T*)apram.m_data.get();
 				message<type_forward_g2c> lmessage(athreadid, apram.m_pack.get(), ltemp);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
@@ -151,7 +150,7 @@ namespace ngl
 		ENUM_ACTOR ltype = nactor_type<TDerived>::type();
 		int32_t lprotocol = tprotocol::protocol<np_actor_forward<T, forward_g2c<T>>>();
 		std::string& lname = tools::type_name<np_actor_forward<T, forward_g2c<T>>>();
-		protocol::registry_actor_c2g_client<T>(ltype, lprotocol, lname.c_str());
+		protocol::registry_actor_g2c_client<T>(ltype, lprotocol, lname.c_str());
 		return *this;
 	}
 

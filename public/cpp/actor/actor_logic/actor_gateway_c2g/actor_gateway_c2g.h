@@ -67,7 +67,7 @@ namespace ngl
 			}
 
 			i64_actorid lactorid = nguid::make(ACTOR_ROLE, info->m_area, info->m_dataid);
-			nets::sendbyserver(info->m_gameid, *lpram, lactorid, lpack->m_head.get_request_actor());
+			nets::sendbyserver(info->m_gameid, lparm->m_data.m_data, lactorid, lpack->m_head.get_request_actor());
 			return true;
 		}
 
