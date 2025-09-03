@@ -146,18 +146,10 @@ namespace ngl
 			np_actor_disconnect_close
 			, mforward<np_gm>
 			, mforward<np_operator_task>
-		>(true);
-
-		register_handle<actor_role>::func<
-			np_example_actorid
-		>(true);
-
-
-		// 绑定pb消息
-		register_handle<actor_role>::func<
-			pbnet::PROBUFF_NET_ROLE_SYNC
+			, np_example_actorid
+			, pbnet::PROBUFF_NET_ROLE_SYNC
 			, pbnet::PROBUFF_NET_TASK_RECEIVE_AWARD
-		>(true);
+		>(false);
 
 		nforward::c2g();
 	}

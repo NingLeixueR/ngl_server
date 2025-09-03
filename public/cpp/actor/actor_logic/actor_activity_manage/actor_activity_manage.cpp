@@ -54,7 +54,7 @@ namespace ngl
 		tdb_brief::nsp_cli<actor_activity_manage>::instance(id_guid()).exit();
 		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
 		tdb_keyvalue::nsp_cli<actor_activity_manage>::instance(id_guid()).exit();
-		tdb_brief::nsp_cli<actor_activity_manage>::freensp(id_guid());
+		tdb_keyvalue::nsp_cli<actor_activity_manage>::freensp(id_guid());
 
 		m_drop.exit();
 	}
@@ -216,10 +216,6 @@ namespace ngl
 			, np_eevents_logic_rolevaluechange
 			, np_get_rank_response
 		>(false);
-
-		// °ó¶¨pbÏûÏ¢
-		register_handle<actor_activity_manage>::func<
-		>(true);
 	}
 
 	std::shared_ptr<activity>& actor_activity_manage::get_activity(i64_actorid aactivityid)

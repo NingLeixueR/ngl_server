@@ -88,8 +88,8 @@ namespace ngl
 					lset.insert(ltype);
 				}
 			}
-			auto lpair = net_protocol::more_pack(adata, aactorid);
-			if (lpair.first == nullptr)
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
+			if (lpack == nullptr)
 			{
 				return false;
 			}
@@ -98,7 +98,7 @@ namespace ngl
 				net_protocol* lpprotocol = ngl::nets::nettype(ltype);
 				if (lpprotocol != nullptr)
 				{
-					lpprotocol->sendmore(asession, aactorid, lpair);
+					lpprotocol->sendmore(asession, aactorid, lpack);
 				}
 			}
 			return true;
@@ -116,8 +116,8 @@ namespace ngl
 					lmap[ltype].insert(asession);
 				}
 			}
-			auto lpair = net_protocol::more_pack(adata, aactorid);
-			if (lpair.first == nullptr)
+			std::shared_ptr<pack> lpack = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
+			if (lpack == nullptr)
 			{
 				return false;
 			}
@@ -126,7 +126,7 @@ namespace ngl
 				net_protocol* lpprotocol = ngl::nets::nettype(apair.first);
 				if (lpprotocol != nullptr)
 				{
-					lpprotocol->sendmore(apair.second, aactorid, arequestactorid, lpair);
+					lpprotocol->sendmore(apair.second, aactorid, arequestactorid, lpack);
 				}
 			}
 			return true;
@@ -151,7 +151,7 @@ namespace ngl
 	template <typename TSTL>
 	bool net_protocol::sendmore(
 		const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, 
-		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
+		std::shared_ptr<pack>& apack
 	)
 	{
 		for (i32_sessionid item : asession)
@@ -160,39 +160,10 @@ namespace ngl
 			{
 				continue;
 			}
-			apair.first->set_actor(aactorid, arequestactorid);
-			net_send(item, apair.first);
-			if (apair.second != nullptr)
-			{
-				net_send(item, apair.second);
-			}
+			apack->set_actor(aactorid, arequestactorid);
+			net_send(item, apack);
 		}
 		return  true;
-	}
-
-	template <typename T>
-	std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> net_protocol::more_pack(T& adata, i64_actorid aactorid)
-	{
-		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> lpair;
-		/*lpair.first = net_pack<T>::npack(&nets::net_first()->get_pool(), adata, aactorid, 0);
-		if (lpair.first == nullptr)
-		{
-			return std::make_pair<std::shared_ptr<pack>, std::shared_ptr<pack>>(nullptr, nullptr);
-		}
-
-		std::shared_ptr<pack>& lpack_ = forward_pack::get_pack(adata);
-		if (lpack_ != nullptr)
-		{
-			if (encryption_bytexor::check_xor(lpack_))
-			{
-				char* lbuff = &lpack_->m_buff[lpack_->m_pos];
-				int32_t llen = lpack_->m_len - lpack_->m_pos;
-				int32_t lpos = lpair.first->m_len - pack_head::size();
-				ngl::tools::bytexor(lbuff, llen, lpos);
-			}
-		}
-		lpair.second = lpack_;*/
-		return lpair;
 	}
 
 	template <typename T>

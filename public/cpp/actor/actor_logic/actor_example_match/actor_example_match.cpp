@@ -62,13 +62,9 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_example_match>::func<
 			np_login_request_info
-		>(true);
-
-		// 绑定pb消息
-		register_handle<actor_example_match>::func<
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>,
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>,
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
+			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_JOIN>
+			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL>
+			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM>
 		>(false);
 	}
 

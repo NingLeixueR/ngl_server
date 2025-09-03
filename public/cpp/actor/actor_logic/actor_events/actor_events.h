@@ -76,7 +76,7 @@ namespace ngl
 		{
 			register_handle<tactor_events>::template func<
 				tactor_events::np_event_register
-			>(true);
+			>(false);
 		}
 
 		// # 按照类型触发

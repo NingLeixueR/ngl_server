@@ -61,6 +61,9 @@ namespace ngl
 		//# 获取server id
 		static i32_serverid get_server(const nguid& aguid);
 
+		// 如果[get_server]获取失败，暂时保存发送列表等收到了发送
+		static void server_actor_send(const nguid& aguid, const std::function<void()>& afun);
+
 		//# 获取ENUM_ACTOR 对应的服务器
 		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec);
 #pragma endregion

@@ -79,10 +79,6 @@ namespace ngl
 		register_handle<actor_log>::func<
 			np_logitem
 		>(false);
-
-		// °ó¶¨pbÏûÏ¢
-		register_handle<actor_log>::func<
-		>(true);
 	}
 	
 	bool actor_log::timer_handle(const message<np_timerparm>& adata)

@@ -94,7 +94,7 @@ namespace ngl
 				m_protocol[linfo.m_protocol] = &linfo;
 
 				m_nameprotocol[linfo.m_name] = &linfo;
-				std::cout << linfo.m_protocol << "-" << linfo.m_name << std::endl;
+				//std::cout << linfo.m_protocol << "-" << linfo.m_name << std::endl;
 				return &linfo;
 			}
 
@@ -114,9 +114,8 @@ namespace ngl
 			return true;
 		}
 
-		using tp_customs = template_arg<tcustoms<false>>;
+		using tp_customs = template_arg<tcustoms<false>, int32_t>;
 		using tp_customs_script = template_arg<tcustoms<true>>;
-		//using tp_forward = template_arg<tforward, int32_t>;
 
 		template <typename T>
 		static bool init_protobufs()

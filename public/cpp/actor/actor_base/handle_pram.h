@@ -60,6 +60,8 @@ namespace ngl
 		//# 根据[连接]获取[id]
 		static i32_serverid		get_server(i64_actorid aactorid);
 
+		static void server_actor_send(const nguid& aguid, const std::function<void()>& afun);
+
 		//# 根据[actorid]获取[gatewayid]
 		static i32_serverid		gatewayid(i64_actorid aactorid);
 
@@ -238,6 +240,21 @@ namespace ngl
 					}
 					return true;
 				}
+
+
+				log_error()->print(
+					"handle_pram_send<{}>::send fail actorid[{}] serverid[{}]"
+					, tools::type_name<T>()
+					, nguid(lactorid)
+					, lactorid
+				);
+
+				// # 加入队列
+				handle_pram::server_actor_send(lactorid, [adata]()
+					{
+						handle_pram ldata = adata;
+						handle_pram_send<T>::send(ldata);
+					});
 				return false;
 			}
 			return handle_pram_send<T>::sendbyserver(lserverid, adata);
@@ -308,6 +325,11 @@ namespace ngl
 				{
 					adata.m_failfun();
 				}
+				handle_pram::server_actor_send(lactorid, [adata]()
+					{
+						handle_pram ldata = adata;
+						handle_pram_send<pack>::send(ldata);
+					});
 				return false;
 			}
 			return handle_pram_send<pack>::sendbyserver(lserverid, adata);

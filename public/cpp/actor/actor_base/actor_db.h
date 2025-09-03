@@ -226,10 +226,8 @@ namespace ngl
 				, np_actordb_delete<TDBTAB_TYPE, TDBTAB>
 				, np_actordb_save<TDBTAB_TYPE, TDBTAB>
 				, np_actortime_db_cache<TDBTAB>
-			>(true);
-			register_handle<tactor_db>::template func<
-				mforward<np_gm>
-			>(true);
+				, mforward<np_gm>
+			>(false);
 		}
 
 		bool handle(const message<np_actordb_load<TDBTAB_TYPE, TDBTAB>>& adata)

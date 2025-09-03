@@ -77,7 +77,7 @@ namespace ngl
 		{
 			ninst<TDerived>()
 				.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-					&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, true
+					&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, false
 				);
 		}
 

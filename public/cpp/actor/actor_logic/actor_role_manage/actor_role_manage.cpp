@@ -78,11 +78,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_role_manage>::func<
 			mforward<np_gm>
-		>(false);
-
-		// 绑定pb消息
-		register_handle<actor_role_manage>::func<
-			pbnet::PROBUFF_NET_ROLE_LOGIN
+			, pbnet::PROBUFF_NET_ROLE_LOGIN
 		>(false);
 	}
 

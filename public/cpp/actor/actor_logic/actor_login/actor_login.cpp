@@ -58,14 +58,8 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_login>::func<
 			np_actorserver_connect
-		>(true);
-		register_handle<actor_login>::func<
-			np_actor_disconnect_close
-		>(false);
-
-		// 绑定pb消息
-		register_handle<actor_login>::func<
-			pbnet::PROBUFF_NET_ACOUNT_LOGIN
+			, np_actor_disconnect_close
+			, pbnet::PROBUFF_NET_ACOUNT_LOGIN
 		>(false);
 	}
 

@@ -419,7 +419,8 @@ namespace ngl
 	public:
 		const T* getconst(i64_actorid aactorid)const
 		{
-			const T* lp = tools::findmap(m_data, aactorid);
+			i64_actorid lactorid = nguid::make_type(aactorid, ACTOR_NONE);
+			const T* lp = tools::findmap(m_data, lactorid);
 			return lp;
 		}
 
@@ -430,7 +431,8 @@ namespace ngl
 				tools::no_core_dump();
 				return nullptr;
 			}
-			T* lp = tools::findmap(m_data, aactorid);
+			i64_actorid lactorid = nguid::make_type(aactorid, ACTOR_NONE);
+			T* lp = tools::findmap(m_data, lactorid);
 			return lp;
 		}
 

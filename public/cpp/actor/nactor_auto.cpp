@@ -31,7 +31,7 @@ namespace ngl
 			, np_actordb_save<DBTYPE, TDB>
 			, np_actordb_delete<DBTYPE, TDB>
 			, np_actortime_db_cache<TDB>
-		>();
+		>(-1);
 	}
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB, typename TACTOR>
@@ -137,12 +137,12 @@ namespace ngl
 	template <typename PB>
 	void help_tprotocol_forward_pb(const PB*)
 	{
-		/*tprotocol::tp_customs::template func<
-			ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>
-			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>
-			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>
-			, ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>
-		>();*/
+		tprotocol::tp_customs::template func<
+			ngl::np_actor_forward<PB, forward_g2c<PB>>
+			, ngl::np_actor_forward<PB, forward_c2g<forward>>
+			, ngl::np_actor_forward<PB, forward_g2c<PB>>
+			, ngl::np_actor_forward<PB, forward_c2g<forward>>
+		>(-1);
 	}
 
 	template <typename PB, typename ...ARG>

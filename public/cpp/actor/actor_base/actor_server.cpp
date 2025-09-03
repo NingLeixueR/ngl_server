@@ -31,7 +31,7 @@ namespace ngl
 			, np_actornode_update_server
 			, np_actornode_update_mass
 			, np_actor_gatewayid_updata
-		>(true);
+		>(false);
 	}
 
 	void actor_server::forward_np_actornode_register(
@@ -80,7 +80,8 @@ namespace ngl
 		nets::sendbysession(apack->m_id, lpram, nguid::moreactor(), id_guid());
 
 		std::map<i32_serverid, np_actornode_update> lmapprotocol;
-		naddress::ergodic([aserverid, &lmapprotocol](const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&)
+		naddress::ergodic([aserverid, &lmapprotocol](
+			const std::map<nguid, i32_serverid>& amap, const std::map<i32_serverid, actor_node_session>&)
 			{
 				for (const std::pair<const nguid, i32_serverid>& ipair : amap)
 				{
@@ -114,6 +115,8 @@ namespace ngl
 		}
 
 		i32_serverid lserverid = lrecv->m_node.m_serverid;
+		log_error()->print("actor_server np_actornode_register [{}]", lserverid);
+
 		naddress::set_session(lserverid, lpack->m_id);
 		naddress::add_actor_address(lserverid, lrecv->m_add);
 
@@ -128,7 +131,8 @@ namespace ngl
 	{
 		auto lrecv = adata.get_data();
 		auto lpack = adata.get_pack();
-		const i32_serverid lserverid = lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
+		
+		const i32_serverid lserverid = lrecv->m_data.m_id;//lpack == nullptr?nconfig::m_nodeid:lpack->m_id;
 		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
 		naddress::del_actor_address(lrecv->m_data.m_del);
 		// # 分发给其他结点

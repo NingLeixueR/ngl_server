@@ -10,7 +10,7 @@ namespace ngl
 			, np_channel_exit<T>
 			, np_channel_check<T>
 			, np_channel_dataid_sync<T>
-		>();
+		>(-1);
 	}
 
 	void reister_channel_db()

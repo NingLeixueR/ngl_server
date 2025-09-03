@@ -165,7 +165,7 @@ namespace ngl
 	bool net_protocol::sendmore(
 		const std::map<i32_sessionid, i64_actorid>& asession, 
 		i64_actorid aactorid, 
-		std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
+		std::shared_ptr<pack>& apack
 	)
 	{
 		for (auto& item : asession)
@@ -174,12 +174,8 @@ namespace ngl
 			{
 				continue;
 			}
-			apair.first->set_actor(item.second, aactorid);
-			net_send(item.first, apair.first);
-			if (apair.second != nullptr)
-			{
-				net_send(item.first, apair.second);
-			}
+			apack->set_actor(item.second, aactorid);
+			net_send(item.first, apack);
 		}
 		return  true;
 	}
