@@ -66,7 +66,7 @@ namespace ngl
 		}
 
 		template <typename T>
-		static bool sendbysession(i32_session asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendbysession(i32_session asession, const T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			net_protocol* lpprotocol = net(asession);
 			if (lpprotocol == nullptr)
@@ -77,7 +77,7 @@ namespace ngl
 		}
 
 		template <typename Y, typename T = Y>
-		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, Y& adata, i64_actorid aactorid)
+		static bool sendmore(const std::map<i32_sessionid, i64_actorid>& asession, const Y& adata, i64_actorid aactorid)
 		{
 			std::set<ENET_PROTOCOL> lset;
 			for (const auto& lpair : asession)
@@ -105,7 +105,7 @@ namespace ngl
 		}
 
 		template <typename TSTL, typename Y, typename T = Y>
-		static bool sendmore(const TSTL& asession, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendmore(const TSTL& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::map<ENET_PROTOCOL, std::set<i32_sessionid>> lmap;
 			for (i32_sessionid asession : asession)
