@@ -79,13 +79,8 @@ namespace ngl
 			return sysconfig::isxor();
 		}
 
-		static bool check_xor(std::shared_ptr<pack>& apack)
-		{
-			return check_xor(apack->m_head.getvalue(EPH_PROTOCOLNUM));
-		}
-
 		template <typename Y>
-		static bool check_xor(Y& adata)
+		static bool check_xor()
 		{
 			return check_xor(tprotocol::protocol<Y>());
 		}
@@ -111,7 +106,7 @@ namespace ngl
 				}
 
 				// # encryption bytexor
-				if (encryption_bytexor::check_xor(apack))
+				if (encryption_bytexor::check_xor(apack->m_head.getvalue(EPH_PROTOCOLNUM)))
 				{
 					ngl::tools::bytexor(apack->m_buff, apack->m_len, 0);
 				}
@@ -125,7 +120,8 @@ namespace ngl
 			return true;
 		}
 
-		static bool tobytes(std::shared_ptr<pack>& apack, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y>
+		static bool tobytes(std::shared_ptr<pack>& apack, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::pair<char*, int> lpair;
 			apack->m_head.reservebuff(apack->m_buff, apack->m_len, lpair);
@@ -140,19 +136,9 @@ namespace ngl
 				);
 				return false;
 			}
-			/*if (adata.SerializeToArray(lpair.first, lpair.second) == false)
-			{
-				log_error()->print(
-					"[##structbytes::tobytes()] [T:{}] [actorid:{}] [requestactorid:{}] "
-					, tools::type_name<T>()
-					, aactorid
-					, arequestactorid
-				);
-				return false;
-			}*/
 
 			// # encryption bytexor
-			if(encryption_bytexor::check_xor(adata))
+			if(encryption_bytexor::check_xor<T>())
 			{
 				ngl::tools::bytexor(lpair.first, lpair.second, 0);
 			}
@@ -163,18 +149,7 @@ namespace ngl
 			apack->m_head.set_time();
 			apack->m_head.set_actor(aactorid, arequestactorid);
 			apack->m_head.set_protocol(tprotocol::protocol<T>());
-			//log_error()->print(
-			// "##tobytes## tprotocol::protocol<{}>() = {}", 
-			// tools::type_name<T>(), tprotocol::protocol<T>()
-			//);
-			// ### sethead finish ###
 
-			/*ngl::serialize lser2(apack->m_buff, apack->m_len);
-			if (!apack->m_head.push(lser2))
-			{
-				return false;
-			}
-			apack->m_pos = apack->m_len;*/
 			ngl::ser::serialize_push lserhead(apack->m_buff, apack->m_len);
 			if (!ngl::ser::nserialize::push(&lserhead, apack->m_head))
 			{
