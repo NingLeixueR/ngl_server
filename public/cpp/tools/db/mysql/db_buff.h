@@ -122,7 +122,7 @@ namespace ngl
 			ngl::json_write lwrite;
 			if (adata.write(lwrite))
 			{
-				lwrite.set_nonformatstr();
+				lwrite.set_nonformatstr(true);
 				std::string ltemp;
 				lwrite.get(ltemp);
 				if (ltemp.size() > m_buff->m_buffsize)
