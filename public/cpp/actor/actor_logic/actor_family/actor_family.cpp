@@ -75,11 +75,7 @@ namespace ngl
 			mforward<np_gm>
 			, np_eevents_logic_rolelogin
 			, np_eevents_logic_roleoffline
-		>(true);
-
-		// ∞Û∂®pbœ˚œ¢
-		register_handle<actor_family>::func<
-			mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>
+			, mforward<pbnet::PROBUFF_NET_FAMIL_CREATE>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_JOIN>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_CEDE>
@@ -88,7 +84,7 @@ namespace ngl
 			, mforward<pbnet::PROBUFF_NET_FAMIL_CHANGENAME>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_SIGN>
 			, mforward<pbnet::PROBUFF_NET_FAMIL_INFO>
-		>(true);
+		>(false);
 	}
 
 	bool actor_family::timer_handle(const message<np_timerparm>& adata)

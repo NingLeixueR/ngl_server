@@ -50,6 +50,7 @@ namespace ngl
 
 	void actor_brief::loaddb_finish(bool adbishave)
 	{
+		log_error()->print("actor_brief::loaddb_finish({})", adbishave?"true":"false");
 	}
 
 	void actor_brief::nregister()
@@ -59,11 +60,7 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle<actor_brief>::func<
-		>(true);
-
-		// 绑定pb消息
-		register_handle<actor_brief>::func<
-		>(true);
+		>(false);
 	}
 	
 	bool actor_brief::timer_handle(const message<np_timerparm>& adata)

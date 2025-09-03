@@ -71,15 +71,11 @@ namespace ngl
 		register_handle<actor_friends>::func<
 			np_eevents_logic_rolelogin
 			, np_eevents_logic_roleoffline
-		>(true);
-
-		// °ó¶¨pbÏûÏ¢
-		register_handle<actor_friends>::func<
-			mforward<pbnet::PROBUFF_NET_FRIEND_ADD>
+			, mforward<pbnet::PROBUFF_NET_FRIEND_ADD>
 			, mforward<pbnet::PROBUFF_NET_FRIEND_ERASE>
 			, mforward<pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD>
 			, mforward<pbnet::PROBUFF_NET_FRIEND>
-		>(true);
+		>(false);
 	}
 
 	bool actor_friends::timer_handle(const message<np_timerparm>& adata)

@@ -53,11 +53,6 @@ namespace ngl
 			{
 				naddress::forward(apram);
 			});
-		nrfun<actor_client>::instance().set_notfindfun(
-			[](int, handle_pram& apram)
-			{
-				naddress::forward(apram);
-			});
 
 		//# 注册协议
 		register_handle<actor_client>::func<
@@ -69,7 +64,7 @@ namespace ngl
 			, np_actor_server_register
 			, np_connect_actor_server
 			, np_actornode_update
-		>(true);
+		>(false);
 	}
 
 	void set_node(int32_t aserverid, int asession)
@@ -186,6 +181,7 @@ namespace ngl
 	{
 		if (isactiv_connect(aserverid))
 		{
+			log_error()->print("activ_connect [{}]", aserverid);
 			nets::connect(aserverid, [this, aserverid](i32_session asession)
 				{
 					set_node(aserverid, asession);
@@ -214,7 +210,7 @@ namespace ngl
 
 		for (const nactornode& node : lparm->m_vec)
 		{
-			if (server_session::sessionid(node.m_serverid) == -1)
+			if (nconfig::m_nodeid != node.m_serverid && server_session::sessionid(node.m_serverid) == -1)
 			{
 				// # 比较id(较大的主动连接较小的)
 				// # NODE_TYPE lservertype = ttab_servers::node_type(node.m_serverid);
@@ -289,6 +285,7 @@ namespace ngl
 	bool actor_client::handle(const message<np_actornode_update>& adata)
 	{
 		auto lparm = adata.get_data();
+		log_error()->print("actor_client np_actornode_update serid[{}]", lparm->m_id);
 		naddress::add_actor_address(lparm->m_id, lparm->m_add);
 		naddress::del_actor_address(lparm->m_del);
 		return true;

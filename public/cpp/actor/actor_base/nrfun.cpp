@@ -34,7 +34,7 @@ namespace ngl
 			return false;
 		}
 		bool lisloadfinish = aactor->isloadfinish();
-		if (lisloadfinish == false && itor->second.m_isdbload == false)
+		if (lisloadfinish == false && itor->second.m_isdbload == true)
 		{
 			log_error()->print(
 				"{}::handle_switch isloadfinish() == {}"

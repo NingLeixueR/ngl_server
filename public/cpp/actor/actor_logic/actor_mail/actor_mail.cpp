@@ -64,15 +64,11 @@ namespace ngl
 		register_handle<actor_mail>::func<
 			np_actor_addmail
 			, mforward<np_gm>
-		>(true);
-
-		// °ó¶¨pbÏûÏ¢
-		register_handle<actor_mail>::func<
-			mforward<pbnet::PROBUFF_NET_MAIL_LIST>
+			, mforward<pbnet::PROBUFF_NET_MAIL_LIST>
 			, mforward<pbnet::PROBUFF_NET_MAIL_READ>
 			, mforward<pbnet::PROBUFF_NET_MAIL_DRAW>
 			, mforward<pbnet::PROBUFF_NET_MAIL_DEL>
-		>(true);
+		>(false);
 	}
 
 	bool actor_mail::sendmail(i64_actorid aactorid, int32_t amailid, int32_t adropid, const std::string& aparm)

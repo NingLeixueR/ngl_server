@@ -93,12 +93,8 @@ namespace ngl
 			np_create_example,
 			np_example_equit,
 			np_login_request_info
-		>(true);
-
-		// °ó¶¨pbÏûÏ¢
-		register_handle<actor_example_manage>::func<
-			mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
-		>(true);
+			, mforward<pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE>
+		>(false);
 	}
 
 	bool actor_example_manage::handle(const message<np_arg_null>&)

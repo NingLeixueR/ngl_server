@@ -56,10 +56,6 @@ namespace ngl
 		register_handle<actor_kcp>::func<
 			np_actor_kcp
 		>(false);
-
-		// °ó¶¨pbÏûÏ¢
-		register_handle<actor_kcp>::func<
-		>(true);
 	}
 
 	bool actor_kcp::timer_handle(const message<np_timerparm>& adata)

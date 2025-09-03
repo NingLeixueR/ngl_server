@@ -16,6 +16,7 @@ namespace ngl
 		static naddress::map_typeguid		m_actortypeserver;
 		static naddress::map_servernode		m_session;
 		static naddress::map_rolegateway	m_rolegateway;
+		static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
 	public:
 		static bool set_node(const nactornode& anode)
 		{
@@ -62,6 +63,18 @@ namespace ngl
 			nguid lguid(adataid);
 			m_actorserver[lguid] = aserverid;
 			m_actortypeserver[lguid.type()].insert(adataid);
+			log_error()->print("#actor_address [[{}]->[{}]]", lguid, aserverid);
+
+			//static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
+			auto itor = m_nguidfun.find(adataid);
+			if (itor != m_nguidfun.end())
+			{
+				for (const auto& item : itor->second)
+				{
+					item.second();
+				}
+				m_nguidfun.erase(adataid);
+			}
 		}
 
 		static void del_actor_address(i64_actorid adataid)
@@ -101,6 +114,37 @@ namespace ngl
 				return -1;
 			}
 			return *lpserverid;
+		}
+
+		static void server_actor_send(const nguid& aguid, const std::function<void()>& afun)
+		{
+			//static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
+			if (aguid.type() == ACTOR_LOG)
+			{
+				return;
+			}
+			enum
+			{
+				e_server_actor_send_count = 100,
+			};
+			int32_t ltemp[2] = { 0 };
+			ltemp[0] = localtime::gettime();
+			std::map<int64_t, std::function<void()>>& lmap = m_nguidfun[aguid];
+			if (lmap.size() > e_server_actor_send_count)
+			{
+				lmap.erase(lmap.begin());
+			}
+
+			for (int i = 0; i < e_server_actor_send_count; ++i)
+			{
+				ltemp[1] = i;
+				int64_t lvalue = *(int64_t*)ltemp;
+				if (!lmap.contains(lvalue))
+				{
+					lmap[lvalue] = afun;
+					break;
+				}
+			}
 		}
 
 		static void get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)
@@ -171,6 +215,7 @@ namespace ngl
 	naddress::map_typeguid		impl_actor_address::m_actortypeserver;
 	naddress::map_servernode	impl_actor_address::m_session;
 	naddress::map_rolegateway	impl_actor_address::m_rolegateway;
+	std::map<i64_actorid, std::map<int64_t, std::function<void()>>> impl_actor_address::m_nguidfun;
 
 	bool naddress::set_node(const nactornode& anode)
 	{
@@ -232,6 +277,11 @@ namespace ngl
 	i32_serverid naddress::get_server(const nguid& aguid)
 	{
 		return impl_actor_address::get_server(aguid);
+	}
+
+	void naddress::server_actor_send(const nguid& aguid, const std::function<void()>& afun)
+	{
+		return impl_actor_address::server_actor_send(aguid, afun);
 	}
 
 	void naddress::get_serverlist(ENUM_ACTOR atype, std::set<i32_serverid>& avec)

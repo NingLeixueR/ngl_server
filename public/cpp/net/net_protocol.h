@@ -93,19 +93,6 @@ namespace ngl
 			{
 				return false;
 			}
-			/*std::shared_ptr<pack>& lpack2 = forward_pack::get_pack(adata);
-			if (lpack2 == nullptr)
-			{
-				return true;
-			}
-			if (encryption_bytexor::check_xor(lpack2))
-			{
-				ngl::tools::bytexor(lpack2->m_buff, lpack2->m_len, lpack->m_len - pack_head::size());
-			}
-			if (sendpack(asession, lpack2) == false)
-			{
-				return false;
-			}*/
 			return true;
 		}
 
@@ -129,7 +116,7 @@ namespace ngl
 		bool sendmore(
 			const std::map<i32_sessionid, i64_actorid>& asession, 
 			i64_actorid aactorid, 
-			std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>>& apair
+			std::shared_ptr<pack>& apack
 		);
 
 		template <typename TSTL>
@@ -137,8 +124,7 @@ namespace ngl
 			const TSTL& asession,
 			i64_actorid aactorid,
 			i64_actorid arequestactorid,
-			std::pair<std::shared_ptr<pack>,
-			std::shared_ptr<pack>>&apair
+			std::shared_ptr<pack>& apack
 		);
 
 		template <typename T>

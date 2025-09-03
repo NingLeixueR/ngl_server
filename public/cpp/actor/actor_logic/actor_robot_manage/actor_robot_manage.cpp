@@ -56,11 +56,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_robot_manage>::func<
 			np_robot_pram
-		>(false);
-
-		// 绑定pb消息
-		register_handle<actor_robot_manage>::func<
-			pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
+			, pbnet::PROBUFF_NET_ACOUNT_LOGIN_RESPONSE
 		>(false);
 	}
 

@@ -266,17 +266,17 @@ namespace ngl
 			// # 订阅注册处理
 			actor::register_actor_s<
 				TDerived, np_channel_register<TDATA>
-			>(std::bind_front(&tnsp_server::channel_register), false);
+			>(std::bind_front(&tnsp_server::channel_register), true);
 
 			// # 订阅数据被修改
 			actor::register_actor_s<
 				TDerived, np_channel_data<TDATA>
-			>(std::bind_front(&tnsp_server::channel_data), false);
+			>(std::bind_front(&tnsp_server::channel_data), true);
 
 			// # 退出订阅
 			actor::register_actor_s<
 				TDerived, np_channel_exit<TDATA>
-			>(std::bind_front(&tnsp_server::channel_exit), false);
+			>(std::bind_front(&tnsp_server::channel_exit), true);
 		}
 
 		static void sync(i64_actorid aactor)

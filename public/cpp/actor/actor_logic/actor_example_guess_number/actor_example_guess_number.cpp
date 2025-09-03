@@ -110,7 +110,7 @@ namespace ngl
 		register_handle<actor_example_guess_number>::func<
 			np_example_entergame_ready
 			, mforward<pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER>
-		>(true);
+		>(false);
 	}
 
 

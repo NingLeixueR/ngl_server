@@ -63,11 +63,7 @@ namespace ngl
 			, np_actorswitch_process<np_actorswitch_process_role>
 			, np_actor_session_close
 			, np_actor_kcp
-		>(false);
-
-		// 绑定pb消息
-		register_handle<actor_gateway>::func<
-			pbnet::PROBUFF_NET_ROLE_LOGIN
+			, pbnet::PROBUFF_NET_ROLE_LOGIN
 			, pbnet::PROBUFF_NET_KCPSESSION
 		>(false);
 	}

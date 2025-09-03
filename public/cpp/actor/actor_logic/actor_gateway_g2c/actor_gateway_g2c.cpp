@@ -57,7 +57,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_gateway_g2c>::func<
 			np_actor_gatewayinfo_updata
-		>(true);
+		>(false);
 
 		// 绑定pb消息
 		nforward::g2c();

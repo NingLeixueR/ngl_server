@@ -61,11 +61,7 @@ namespace ngl
 		// 绑定自定义np_消息
 		register_handle<actor_robot>::func<
 			np_thruput_test
-		>(true);
-
-		// 绑定pb消息
-		register_handle<actor_robot>::func<
-			pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
+			, pbnet::PROBUFF_NET_KCPSESSION_RESPONSE
 		>(false);
 
 		nforward::g2c();
