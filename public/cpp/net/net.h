@@ -36,7 +36,7 @@ namespace ngl
 		static ukcp* kcp(int16_t anum = isystemindex);
 
 		template <typename Y, typename T = Y>
-		static bool sendbyserver(i32_serverid aserverid, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendbyserver(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_session lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
@@ -47,7 +47,7 @@ namespace ngl
 		}
 
 		template <typename Y, typename T = Y>
-		static bool sendbyserver(const std::set<i32_serverid>& aserverids, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		static bool sendbyserver(const std::set<i32_serverid>& aserverids, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::set<i32_session> lsessionvec;
 			for (i32_serverid iserverid : aserverids)
