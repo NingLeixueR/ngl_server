@@ -82,7 +82,7 @@ namespace ngl
 
 		// # ·¢ËÍÏûÏ¢
 		template <typename Y, typename T = Y>
-		bool send(i32_sessionid asession, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool send(i32_sessionid asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
@@ -97,7 +97,7 @@ namespace ngl
 		}
 
 		template <typename Y, typename T = Y>
-		bool sendbyserver(i32_serverid aserverid, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		bool sendbyserver(i32_serverid aserverid, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_sessionid lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
@@ -116,9 +116,8 @@ namespace ngl
 			std::shared_ptr<pack>& apack
 		);
 
-		template <typename TSTL>
 		bool sendmore(
-			const TSTL& asession,
+			const std::set<i32_sessionid>& asession,
 			i64_actorid aactorid,
 			i64_actorid arequestactorid,
 			std::shared_ptr<pack>& apack

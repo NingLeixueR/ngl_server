@@ -179,4 +179,21 @@ namespace ngl
 		}
 		return  true;
 	}
+
+	bool net_protocol::sendmore(
+		const std::set<i32_sessionid>& asession, i64_actorid aactorid, i64_actorid arequestactorid,
+		std::shared_ptr<pack>& apack
+	)
+	{
+		for (i32_sessionid item : asession)
+		{
+			if (nets::session2type(item) != (ENET_PROTOCOL)m_index)
+			{
+				continue;
+			}
+			apack->set_actor(aactorid, arequestactorid);
+			net_send(item, apack);
+		}
+		return  true;
+	}
 }// namespace ngl

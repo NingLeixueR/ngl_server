@@ -73,7 +73,7 @@ namespace ngl
 			{
 				return false;
 			}
-			return lpprotocol->send(asession, adata, aactorid, arequestactorid);
+			return lpprotocol->send<Y,T>(asession, adata, aactorid, arequestactorid);
 		}
 
 		template <typename Y, typename T = Y>
@@ -148,24 +148,6 @@ namespace ngl
 
 namespace ngl
 {
-	template <typename TSTL>
-	bool net_protocol::sendmore(
-		const TSTL& asession, i64_actorid aactorid, i64_actorid arequestactorid, 
-		std::shared_ptr<pack>& apack
-	)
-	{
-		for (i32_sessionid item : asession)
-		{
-			if (nets::session2type(item) != (ENET_PROTOCOL)m_index)
-			{
-				continue;
-			}
-			apack->set_actor(aactorid, arequestactorid);
-			net_send(item, apack);
-		}
-		return  true;
-	}
-
 	template <typename T>
 	bool handle_pram_send<T>::sendbyserver(i32_serverid aserverid, const handle_pram& adata)
 	{
