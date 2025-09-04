@@ -152,7 +152,8 @@ namespace ngl
 					}
 				}
 			}
-			netbuff_pool::instance().free(lforward.m_buff);
+			netbuff_pool::instance().free((char*)lforward.m_buff);
+			return true;
 		}
 
 		template <typename T>
@@ -187,7 +188,8 @@ namespace ngl
 					}
 				}
 			}
-			netbuff_pool::instance().free(lforward.m_buff);
+			netbuff_pool::instance().free((char*)lforward.m_buff);
+			return true;
 		}
 	};
 }// namespace ngl
