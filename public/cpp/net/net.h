@@ -35,38 +35,38 @@ namespace ngl
 
 		static ukcp* kcp(int16_t anum = isystemindex);
 
-		template <typename T>
-		static bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y, typename T = Y>
+		static bool sendbyserver(i32_serverid aserverid, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_session lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
 			{
 				return false;
 			}
-			return sendbysession(lsession, adata, aactorid, arequestactorid);
+			return sendbysession<Y,T>(lsession, adata, aactorid, arequestactorid);
 		}
 
-		template <typename T, typename CONTAINER>
-		static bool sendbyserver(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y, typename T = Y>
+		static bool sendbyserver(const std::set<i32_serverid>& aserverids, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
-			std::vector<i32_session> lsessionvec;
+			std::set<i32_session> lsessionvec;
 			for (i32_serverid iserverid : aserverids)
 			{
 				i32_session lsession = server_session::sessionid(iserverid);
 				if (lsession != -1)
 				{
-					lsessionvec.push_back(lsession);
+					lsessionvec.insert(lsession);
 				}
 			}
 			if (!lsessionvec.empty())
 			{
-				return sendmore(lsessionvec, adata, aactorid, arequestactorid);
+				return sendmore<Y, T>(lsessionvec, adata, aactorid, arequestactorid);
 			}
 			return false;
 		}
 
-		template <typename T>
-		static bool sendbysession(i32_session asession, const T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y, typename T = Y>
+		static bool sendbysession(i32_session asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			net_protocol* lpprotocol = net(asession);
 			if (lpprotocol == nullptr)
@@ -104,8 +104,8 @@ namespace ngl
 			return true;
 		}
 
-		template <typename TSTL, typename Y, typename T = Y>
-		static bool sendmore(const TSTL& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y, typename T = Y>
+		static bool sendmore(const std::set<i32_sessionid>& asession, const Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::map<ENET_PROTOCOL, std::set<i32_sessionid>> lmap;
 			for (i32_sessionid asession : asession)
@@ -192,8 +192,8 @@ namespace ngl
 		return nets::sendbyserver(aserverid, adata, aactorid, arequestactorid);
 	}
 
-	template <typename T, typename CONTAINER>
-	bool actor_base::send_server(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+	template <typename T>
+	bool actor_base::send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 	{
 		return nets::sendbyserver(aserverids, adata, aactorid, arequestactorid);
 	}

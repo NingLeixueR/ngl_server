@@ -38,12 +38,12 @@ namespace ngl
 		const pack* apack, const nactornode& anode, i32_serverid aserverid, const std::vector<i64_actorid>& aadd
 	)
 	{
-		std::vector<i32_sessionid> lsessionvec;
+		std::set<i32_sessionid> lsessionvec;
 		naddress::foreach([&lsessionvec, apack](const actor_node_session& asnode)
 			{
 				if (apack->m_id != asnode.m_session)
 				{
-					lsessionvec.push_back(asnode.m_session);
+					lsessionvec.insert(asnode.m_session);
 				}
 				return true;
 			});
@@ -136,19 +136,19 @@ namespace ngl
 		naddress::add_actor_address(lserverid, lrecv->m_data.m_add);
 		naddress::del_actor_address(lrecv->m_data.m_del);
 		// # 分发给其他结点
-		std::vector<i32_sessionid> lvec;
-		naddress::foreach([lserverid, &lvec](const actor_node_session& anode)->bool
+		std::set<i32_sessionid> lsession;
+		naddress::foreach([lserverid, &lsession](const actor_node_session& anode)->bool
 			{
 				if (anode.m_node.m_serverid != lserverid)
 				{
-					lvec.push_back(anode.m_session);
+					lsession.insert(anode.m_session);
 				}
 				return true;
 			}
 		);
-		if (!lvec.empty())
+		if (!lsession.empty())
 		{
-			nets::sendmore(lvec, lrecv->m_data, nguid::moreactor(), id_guid());
+			nets::sendmore(lsession, lrecv->m_data, nguid::moreactor(), id_guid());
 		}
 		return true;
 	}
@@ -187,12 +187,12 @@ namespace ngl
 		{
 			naddress::add_gatewayid(lrecv->m_actorid, lrecv->m_gatewayid);
 		}
-		std::vector<i32_sessionid> lsessionvec;
+		std::set<i32_sessionid> lsessionvec;
 		naddress::foreach([&lsessionvec, lpack](const actor_node_session& anode)
 			{
 				if (lpack->m_id != anode.m_session)
 				{
-					lsessionvec.push_back(anode.m_session);
+					lsessionvec.insert(anode.m_session);
 				}
 				return true;
 			}

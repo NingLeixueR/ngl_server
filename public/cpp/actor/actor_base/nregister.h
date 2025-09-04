@@ -90,7 +90,7 @@ namespace ngl
 	nrfun<TDerived>& nrfun<TDerived>::rfun_c2g_game(const Tfun<TDerived, T> afun, bool aisload /*= false*/)
 	{
 		static const std::string& ltypename = tools::type_name<T>();
-		m_fun[tprotocol::protocol<np_actor_forward<T, forward_c2g<T>>>()] = nlogicfun
+		m_fun[tprotocol::protocol<T>()] = nlogicfun
 		{
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
@@ -118,7 +118,8 @@ namespace ngl
 			.m_isdbload = false,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				T* ltemp = (T*)apram.m_data.get();
+				using type_forward_g2c = np_actor_forward<T, forward_g2c<forward>>;
+				type_forward_g2c* ltemp = (type_forward_g2c*)apram.m_data.get();
 				message<type_forward_g2c> lmessage(athreadid, apram.m_pack.get(), ltemp);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
@@ -136,13 +137,13 @@ namespace ngl
 	nrfun<TDerived>& nrfun<TDerived>::rfun_g2c_client(const Tfun<TDerived, T> afun, bool aisload /*= false*/)
 	{
 		static const std::string& ltypename = tools::type_name<T>();
-		m_fun[tprotocol::protocol<np_actor_forward<T, forward_g2c<T>>>()] = nlogicfun
+		m_fun[tprotocol::protocol<T>()] = nlogicfun
 		{
 			.m_isdbload = aisload,
 			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
 			{
-				auto ltemp = (np_actor_forward<T, forward_g2c<T>>*)apram.m_data.get();
-				message<T> lmessage(athreadid, apram.m_pack.get(), &(ltemp->m_data.m_data));
+				T* ltemp = (T*)apram.m_data.get();
+				message<T> lmessage(athreadid, apram.m_pack.get(), ltemp);
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
