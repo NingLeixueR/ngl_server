@@ -186,16 +186,20 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const int16_t adata)
 			{
-				tools::parm lparm(adata);
+				tools::parm<int16_t> lparm(adata);
 				lparm.m_value = tools::transformlittle(lparm);
 				return aserialize->basetype((void*)&adata, sizeof(adata));
 			}
 
 			static bool pop(serialize_pop* aserialize, int16_t& adata)
 			{
+				if (!aserialize->basetype((void*)&adata, sizeof(adata)))
+				{
+					return false;
+				}
 				tools::parm<int16_t> lparm(adata);
 				adata = tools::transformlittle(lparm);
-				return aserialize->basetype((void*)&adata, sizeof(adata));
+				return true;
 			}
 
 			static void bytes(serialize_byte* aserialize, const int16_t adata)
@@ -209,33 +213,19 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const int32_t adata)
 			{
-				tools::parm lparmtrans(adata);
-				lparmtrans.m_value = tools::transformlittle(lparmtrans);
-				tools::varint_parm<int32_t> lparm
-				{
-					.m_value = lparmtrans.m_value,
-					.m_buf = &aserialize->buff()[aserialize->pos()],
-					.m_len = aserialize->len() - aserialize->pos(),
-					.m_bytes = &aserialize->pos(),
-				};
-				return tools::varint_encode(lparm);
+				tools::parm<int32_t> lparm(adata);
+				lparm.m_value = tools::transformlittle(lparm);
+				return aserialize->basetype((void*)&adata, sizeof(adata));
 			}
 
 			static bool pop(serialize_pop* aserialize, int32_t& adata)
 			{
-				tools::varint_parm<int32_t> lparm
-				{
-					.m_value = adata,
-					.m_buf = (char*)&aserialize->buff()[aserialize->pos()],
-					.m_len = aserialize->len() - aserialize->pos(),
-					.m_bytes = &aserialize->pos(),
-				};
-				if (tools::varint_decode(lparm) == false)
+				if (!aserialize->basetype((void*)&adata, sizeof(adata)))
 				{
 					return false;
 				}
-				tools::parm lparmtrans(lparm.m_value);
-				adata = tools::transformlittle(lparmtrans);
+				tools::parm<int32_t> lparm(adata);
+				adata = tools::transformlittle(lparm);
 				return true;
 			}
 
@@ -250,33 +240,19 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const int64_t adata)
 			{
-				tools::parm lparmtrans(adata);
-				lparmtrans.m_value = tools::transformlittle(lparmtrans);
-				tools::varint_parm<int64_t> lparm
-				{
-					.m_value = lparmtrans.m_value,
-					.m_buf = &aserialize->buff()[aserialize->pos()],
-					.m_len = aserialize->len() - aserialize->pos(),
-					.m_bytes = &aserialize->pos(),
-				};
-				return tools::varint_encode(lparm);
+				tools::parm<int64_t> lparm(adata);
+				lparm.m_value = tools::transformlittle(lparm);
+				return aserialize->basetype((void*)&adata, sizeof(adata));
 			}
 
 			static bool pop(serialize_pop* aserialize, int64_t& adata)
 			{
-				tools::varint_parm<int64_t> lparm
-				{
-					.m_value = adata,
-					.m_buf = (char*)&aserialize->buff()[aserialize->pos()],
-					.m_len = aserialize->len() - aserialize->pos(),
-					.m_bytes = &aserialize->pos(),
-				};
-				if (tools::varint_decode(lparm) == false)
+				if (!aserialize->basetype((void*)&adata, sizeof(adata)))
 				{
 					return false;
 				}
-				tools::parm lparmtrans(lparm.m_value);
-				adata = tools::transformlittle(lparmtrans);
+				tools::parm<int64_t> lparm(adata);
+				adata = tools::transformlittle(lparm);
 				return true;
 			}
 
@@ -291,7 +267,7 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const uint8_t adata)
 			{
-				return serialize_format<int8_t>::push(aserialize, adata);
+				return serialize_format<int8_t>::push(aserialize, (int8_t)adata);
 			}
 
 			static bool pop(serialize_pop* aserialize, uint8_t& adata)
@@ -299,7 +275,7 @@ namespace ngl
 				int8_t lvalue = 0;
 				if (serialize_format<int8_t>::pop(aserialize, lvalue))
 				{
-					adata = lvalue;
+					adata = (uint8_t)lvalue;
 					return true;
 				}
 				return false;
@@ -316,7 +292,7 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const uint16_t adata)
 			{
-				return serialize_format<uint16_t>::push(aserialize, adata);
+				return serialize_format<int16_t>::push(aserialize, (int16_t)adata);
 			}
 
 			static bool pop(serialize_pop* aserialize, uint16_t& adata)
@@ -324,7 +300,7 @@ namespace ngl
 				int16_t lvalue = 0;
 				if (serialize_format<int16_t>::pop(aserialize, lvalue))
 				{
-					adata = lvalue;
+					adata = (uint16_t)lvalue;
 					return true;
 				}
 				return false;
@@ -357,7 +333,7 @@ namespace ngl
 
 			static void bytes(serialize_byte* aserialize, const uint32_t adata)
 			{
-				serialize_format<int32_t>::bytes(aserialize, adata);
+				serialize_format<int32_t>::bytes(aserialize, (int32_t)adata);
 			}
 		};
 
@@ -366,7 +342,7 @@ namespace ngl
 		{
 			static bool push(serialize_push* aserialize, const uint64_t adata)
 			{
-				return serialize_format<uint64_t>::push(aserialize, adata);
+				return serialize_format<int64_t>::push(aserialize, adata);
 			}
 
 			static bool pop(serialize_pop* aserialize, uint64_t& adata)
@@ -374,7 +350,7 @@ namespace ngl
 				int64_t lvalue = 0;
 				if (serialize_format<int64_t>::pop(aserialize, lvalue))
 				{
-					adata = lvalue;
+					adata = (uint64_t)lvalue;
 					return true;
 				}
 				return false;
@@ -382,7 +358,7 @@ namespace ngl
 
 			static void bytes(serialize_byte* aserialize, const uint64_t adata)
 			{
-				serialize_format<int64_t>::bytes(aserialize, adata);
+				serialize_format<int64_t>::bytes(aserialize, (int64_t)adata);
 			}
 		};
 
@@ -832,6 +808,10 @@ namespace ngl
 			{
 				int32_t lbytes = 0;
 				if (!serialize_format<int32_t>::pop(aserialize, lbytes))
+				{
+					return false;
+				}
+				if (lbytes > (aserialize->len() - aserialize->pos()))
 				{
 					return false;
 				}

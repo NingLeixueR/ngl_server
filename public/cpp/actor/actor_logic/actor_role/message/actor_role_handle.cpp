@@ -118,7 +118,7 @@ namespace ngl
 			nguid(id_guid()), recv->m_msg, recv->m_isreceive?"receive":"remove", recv->m_taskids
 		);
 		auto pro = std::make_shared<mforward<np_operator_task_response>>();
-		pro->add_data()->m_msg = recv->m_msg;
+		pro->data()->m_msg = recv->m_msg;
 		actor::send_actor(lactorid, id_guid(), pro);
 		return true;
 	}
