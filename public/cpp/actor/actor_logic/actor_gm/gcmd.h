@@ -51,7 +51,7 @@ namespace ngl
 					ngl::tools::to_utf8(ljson, ljson);
 				}
 				auto pro = std::make_shared<mforward<ngl::np_gm_response>>(id);
-				pro->add_data()->m_json = ljson;
+				pro->data()->m_json = ljson;
 				if (m_actor == nullptr)
 				{
 					actor::send_actor(nguid::make_self(ACTOR_GM), nguid::make(), pro);

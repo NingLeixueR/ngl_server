@@ -88,7 +88,7 @@ namespace ngl
 				if (itoropen == ltask.mopen().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
-					np_operator_task* lnp = pro->add_data();
+					np_operator_task* lnp = pro->data();
 					lnp->m_isreceive = true;
 					lnp->m_taskids = item.m_taskids;
 					lnp->m_msg = std::format("{}:{}", activityid(), i);
@@ -103,7 +103,7 @@ namespace ngl
 				if (itoropen != ltask.mopen().end() && itorclose == ltask.mclose().end())
 				{
 					auto pro = std::make_shared<mforward<np_operator_task>>(actor_activity_manage::actorid());
-					np_operator_task* lnp = pro->add_data();
+					np_operator_task* lnp = pro->data();
 					lnp->m_isreceive = false;
 					lnp->m_taskids = item.m_taskids;
 					lnp->m_msg = std::format("{}:{}", activityid(), i);

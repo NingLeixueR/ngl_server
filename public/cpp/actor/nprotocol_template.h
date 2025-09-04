@@ -123,29 +123,18 @@ namespace ngl
 
 		explicit np_actormodule_forward(int64_t aidentifier) :
 			m_identifier(aidentifier),
-			m_data(nullptr)
+			m_data(std::make_shared<T>())
 		{
 		}
 
 		np_actormodule_forward() :
 			m_identifier(0),
-			m_data(nullptr)
+			m_data(std::make_shared<T>())
 		{
 		}
 
-		T* add_data()
+		T* data()const
 		{
-			if (m_data == nullptr)
-			{
-				m_data = std::make_shared<T>();
-			}
-			return m_data.get();
-		}
-
-		const T* data()const
-		{
-			if (m_data == nullptr)
-				return nullptr;
 			return m_data.get();
 		}
 
@@ -154,7 +143,10 @@ namespace ngl
 			return m_identifier;
 		}
 
-
+		void set_identifier(int64_t aidentifier)
+		{
+			m_identifier = aidentifier;
+		}
 	};
 
 	template <typename TDATA>
