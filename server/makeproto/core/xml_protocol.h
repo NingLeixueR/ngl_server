@@ -539,11 +539,11 @@ namespace ngl
         m_stream << "   void help_role_tprotocol_forward_pb(const PB* apb)" << std::endl;
         m_stream << "   {" << std::endl;
         m_stream << "       int32_t lprotocolnum = tprotocol::protocol<PB>();" << std::endl;
-        m_stream << "       tprotocol::tp_forward::template func<" << std::endl;
-        m_stream << "           ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, ngl::forward>" << std::endl;
-        m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, ngl::forward>" << std::endl;
-        m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, true, PB>" << std::endl;
-        m_stream << "           , ngl::np_actor_forward<PB, EPROTOCOL_TYPE_PROTOCOLBUFF, false, PB>" << std::endl;
+        m_stream << "       tprotocol::tp_customs::template func<" << std::endl;
+        m_stream << "           ngl::np_actor_forward<PB, forward_g2c<PB>>" << std::endl;
+        m_stream << "           , ngl::np_actor_forward<PB, forward_c2g<PB>>" << std::endl;
+        m_stream << "           , ngl::np_actor_forward<PB, forward_g2c<forward>>" << std::endl;
+        m_stream << "           , ngl::np_actor_forward<PB, forward_c2g<forward>>" << std::endl;
         m_stream << "           , np_actormodule_forward<PB>" << std::endl;
         m_stream << "       >(lprotocolnum);" << std::endl;
         m_stream << "   }" << std::endl;
@@ -1563,10 +1563,8 @@ namespace ngl
                 {
                     ngl::readfile lreadfile(lactorfile);
                     std::string lnr;
-                    std::string lfindstr1 = std::format("register_handle_custom<{}>::func<", actorname);
-                    std::string lfindstr2 = std::format("register_handle_proto<{}>::func<", actorname);
+                    std::string lfindstr1 = std::format("register_handle<{}>::func<", actorname);
                     bool lboool1 = false;
-                    bool lboool2 = false;
                     while (lreadfile.readline(lnr))
                     {
                         {
@@ -1582,26 +1580,6 @@ namespace ngl
                                 continue;
                             }
                             if (lboool1)
-                            {
-                                ngl::tools::replace(" ", "", lnr, lnr);
-                                ngl::tools::replace("\t", "", lnr, lnr);
-                                ngl::tools::replace(",", "", lnr, lnr);
-                                lset.insert(lnr);
-                            }
-                        }
-                        {
-                            size_t lpos = lnr.find(lfindstr2);
-                            if (lpos != std::string::npos)
-                            {
-                                lboool2 = true;
-                                continue;
-                            }
-                            if (lboool2 && lnr.find(';') != std::string::npos)
-                            {
-                                lboool2 = false;
-                                continue;
-                            }
-                            if (lboool2)
                             {
                                 ngl::tools::replace(" ", "", lnr, lnr);
                                 ngl::tools::replace("\t", "", lnr, lnr);
