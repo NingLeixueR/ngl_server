@@ -81,8 +81,8 @@ namespace ngl
 		virtual bool connect(const std::string& aip, i16_port aport, const std::function<void(i32_sessionid)>& afun, bool await, bool areconnection);
 
 		// # 发送消息
-		template <typename T>
-		bool send(i32_sessionid asession, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y, typename T = Y>
+		bool send(i32_sessionid asession, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			std::shared_ptr<pack> lpack = net_pack<T>::npack(&get_pool(), adata, aactorid, arequestactorid);
 			if (lpack == nullptr)
@@ -96,19 +96,16 @@ namespace ngl
 			return true;
 		}
 
-		template <typename T>
-		bool sendbyserver(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid)
+		template <typename Y, typename T = Y>
+		bool sendbyserver(i32_serverid aserverid, Y& adata, i64_actorid aactorid, i64_actorid arequestactorid)
 		{
 			i32_sessionid lsession = server_session::sessionid(aserverid);
 			if (lsession == -1)
 			{
 				return false;
 			}
-			return send(lsession, adata, aactorid, arequestactorid);
+			return send<Y, T>(lsession, adata, aactorid, arequestactorid);
 		}
-
-		template <typename T>
-		static std::pair<std::shared_ptr<pack>, std::shared_ptr<pack>> more_pack(T& adata, i64_actorid aactorid);
 
 		// # 给一组sesion发送消息
 		// # key: session values:aactorid

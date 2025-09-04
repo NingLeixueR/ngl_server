@@ -353,8 +353,8 @@ namespace ngl
 		static bool send_server(i32_serverid aserverid, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 向一组服务器发送数据
-		template <typename T, typename CONTAINER>
-		static bool send_server(const CONTAINER& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
+		template <typename T>
+		static bool send_server(const std::set<i32_serverid>& aserverids, T& adata, i64_actorid aactorid, i64_actorid arequestactorid);
 
 		//# 发送pack到指定服务器
 		template <typename T>
