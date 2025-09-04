@@ -61,6 +61,7 @@ namespace ngl
 
 		// 绑定自定义np_消息
 		register_handle<actor_chat>::func<
+			mforward<pbnet::PROBUFF_NET_CHAT>
 		>(false);
 	}
 	
