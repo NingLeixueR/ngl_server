@@ -20,30 +20,6 @@ Dumper lDumper;
 
 int main(int argc, char** argv)
 {
-	ngl::mforward<pbnet::PROBUFF_NET_CHAT> pro;
-	pbnet::PROBUFF_NET_CHAT* lppro = pro.data();
-	lppro->set_mtype(123);
-	lppro->set_mchannelid(456);
-	lppro->set_mcontent("chinachina");
-	pro.set_identifier(987654321);
-
-	char lbuff[10240] = { 0 };
-
-	ngl::ser::serialize_push lpushser(lbuff, 10240);
-	if (!ngl::ser::nserialize::push(&lpushser, pro))
-	{
-		return false;
-	}
-
-	ngl::mforward<pbnet::PROBUFF_NET_CHAT> pro2;
-	ngl::ser::serialize_pop lpopser(lbuff, 10240);
-	if (!ngl::ser::nserialize::pop(&lpopser, pro2))
-	{
-		return false;
-	}
-
-	ngl::ser::test_serialize();
-
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;
