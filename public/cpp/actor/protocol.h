@@ -142,7 +142,7 @@ namespace ngl
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
 					auto ldatapack = std::static_pointer_cast<T>(aptrpram);
-					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+					nguid lguid(apack->m_head.get_actor());
 					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<T>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
@@ -201,7 +201,7 @@ namespace ngl
 			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
 				{
 					auto ldatapack = std::static_pointer_cast<T>(aptrpram);
-					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
+					nguid lguid(apack->m_head.get_actor());
 					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<T>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
