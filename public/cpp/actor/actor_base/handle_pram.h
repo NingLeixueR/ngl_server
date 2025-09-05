@@ -280,9 +280,8 @@ namespace ngl
 				}
 			}
 
-			np_mass_actor<T> pro;
 			std::shared_ptr<T> ldata = std::static_pointer_cast<T>(adata.m_data);
-			pro.set_data(ldata);
+			np_mass_actor<T> pro(ldata);
 
 			for (const auto& item1 : lserveractors)
 			{
