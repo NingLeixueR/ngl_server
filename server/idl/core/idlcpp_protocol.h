@@ -300,12 +300,12 @@ namespace ngl
 					if (isdouhao)
 					{
 						m_stream << "			/*" << ++lindex << "*/, " << item2.name << std::endl;
-						m_stream << "			/*" << ++lindex << ", np_mass_actor<" << item2.name << ">*/" << std::endl;
+						//m_stream << "			/*" << ++lindex << ", np_mass_actor<" << item2.name << ">*/" << std::endl;
 					}
 					else
 					{
 						m_stream << "			/*" << ++lindex << "*/" << item2.name << std::endl;
-						m_stream << "			/*" << ++lindex << ", np_mass_actor<" << item2.name << ">*/" << std::endl;
+						//m_stream << "			/*" << ++lindex << ", np_mass_actor<" << item2.name << ">*/" << std::endl;
 						isdouhao = true;
 					}
 				}				
@@ -327,12 +327,12 @@ namespace ngl
 					if (isdouhao)
 					{
 						m_stream << std::format("			/*{}*/, mforward<{}>", ++lindex, item2.name) << std::endl;
-						m_stream << std::format("			/*{}, np_mass_actor<mforward<{}>>", ++lindex, item2.name) << ">*/" << std::endl;
+						//m_stream << std::format("			/*{}, np_mass_actor<mforward<{}>>", ++lindex, item2.name) << ">*/" << std::endl;
 					}
 					else
 					{
 						m_stream << std::format("			/*{}*/mforward<{}>", ++lindex, item2.name) << std::endl;
-						m_stream << std::format("			/*{}, np_mass_actor<mforward<{}>>", ++lindex, item2.name) << ">*/" << std::endl;
+						//m_stream << std::format("			/*{}, np_mass_actor<mforward<{}>>", ++lindex, item2.name) << ">*/" << std::endl;
 						isdouhao = true;
 					}
 				}
