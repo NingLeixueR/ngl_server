@@ -58,7 +58,7 @@ namespace ngl
 			/*200000040*/, np_activityrank_operator
 		>();
 		tprotocol::set_customs_index(210000000);
-		tprotocol::tp_customsjson::template func<
+		tprotocol::tp_customs_script::template func<
 			/*210000001*/mforward<np_timerparm>
 			/*210000002*/, mforward<np_robot_pram>
 			/*210000003*/, mforward<np_actor_server_register>

@@ -314,7 +314,7 @@ namespace ngl
 
 		m_stream << R"(		>();)" << std::endl;
 		m_stream << "		tprotocol::set_customs_index(210000000);" << std::endl;
-		m_stream << "		tprotocol::tp_customsjson::template func<" << std::endl;
+		m_stream << "		tprotocol::tp_customs_script::template func<" << std::endl;
 		lindex = 210000000;
 		isdouhao = false;
 		for (std::pair<const std::string, idl_file>& item : lmap)
