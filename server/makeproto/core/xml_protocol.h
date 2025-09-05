@@ -818,7 +818,7 @@ namespace ngl
 			, np_channel_exit<T>
 			, np_channel_check<T>
 			, np_channel_dataid_sync<T>
-		>();
+		>(-1);
 	}
 
 	void reister_channel_db()
@@ -1120,12 +1120,12 @@ namespace ngl
 		actor::register_timer<{0}, false>(&{0}::timer_handle);
 
         // 绑定自定义np_消息
-		register_handle_custom<{0}, false>::func<
-		>(true);
-
-        // 绑定pb消息
-		register_handle_proto<{0}, false>::func<
-		>(true);
+		register_handle<{0}>::func<
+		>(false);
+        
+        // 绑定脚本消息
+        register_script_handle<{0}>::func<
+		>(false);
 	}}
 
     bool {0}::timer_handle(const message<np_timerparm>& adata)
@@ -1564,7 +1564,9 @@ namespace ngl
                     ngl::readfile lreadfile(lactorfile);
                     std::string lnr;
                     std::string lfindstr1 = std::format("register_handle<{}>::func<", actorname);
+                    std::string lfindstr2 = std::format("register_script_handle<{}>::func<", actorname);
                     bool lboool1 = false;
+                    bool lboool2 = false;
                     while (lreadfile.readline(lnr))
                     {
                         {
@@ -1587,6 +1589,27 @@ namespace ngl
                                 lset.insert(lnr);
                             }
                         }
+                        {
+                            size_t lpos = lnr.find(lfindstr2);
+                            if (lpos != std::string::npos)
+                            {
+                                lboool2 = true;
+                                continue;
+                            }
+                            if (lboool2 && lnr.find(';') != std::string::npos)
+                            {
+                                lboool2 = false;
+                                continue;
+                            }
+                            if (lboool2)
+                            {
+                                ngl::tools::replace(" ", "", lnr, lnr);
+                                ngl::tools::replace("\t", "", lnr, lnr);
+                                ngl::tools::replace(",", "", lnr, lnr);
+                                lset.insert(lnr);
+                            }
+                        }
+
                     }
                 }
                 {
@@ -1643,7 +1666,7 @@ namespace ngl
                 ngl::tools::replace("\r\n", "\n", lcontent, lcontent);
                 ngl::tools::replace("\r", "\n", lcontent, lcontent);
 
-                size_t lpos = lcontent.find("register_g2c<EPROTOCOL_TYPE_PROTOCOLBUFF,");
+                size_t lpos = lcontent.find("register_g2c<");
                 std::string lbeg(lcontent.begin(), lcontent.begin() + lpos);
                 for (; lcontent[lpos] != '\n'; ++lpos)
                 {
@@ -1687,7 +1710,7 @@ namespace ngl
                 ngl::tools::replace("\r\n", "\n", lcontent, lcontent);
                 ngl::tools::replace("\r", "\n", lcontent, lcontent);
 
-                size_t lpos = lcontent.find("register_c2g<EPROTOCOL_TYPE_PROTOCOLBUFF");
+                size_t lpos = lcontent.find("register_c2g<");
                 std::string lbeg(lcontent.begin(), lcontent.begin() + lpos);
                 for (; lcontent[lpos] != '\n'; ++lpos)
                 {
@@ -1734,9 +1757,18 @@ namespace ngl
 
                 lcontent = lbeg;
                 // role需要处理的
+                bool lfirsttem = true;
                 for (const auto& item1 : lpt)
                 {
-                    lcontent += std::format("\t\t\t, {}\n", item1);
+                    if (lfirsttem)
+                    {
+                        lfirsttem = false;
+                        lcontent += std::format("\t\t\t{}\n", item1);
+                    }
+                    else
+                    {
+                        lcontent += std::format("\t\t\t, {}\n", item1);
+                    }
                 }
                 lcontent += std::format("\t\t>();\n");
                 // 二次转发
@@ -1746,10 +1778,15 @@ namespace ngl
 					std::string ltemp = item1.first;
 					ngl::tools::transform_toupper(ltemp);
                     lcontent += std::format("\t\t// {} 模块二次转发\n", item1.first);
-                    lcontent += std::format("\t\tregister_c2g_2<EPROTOCOL_TYPE_PROTOCOLBUFF, {}\n", ltemp);
+                    lcontent += std::format("\t\tregister_c2g_2< {}\n", ltemp);
+                    bool lfirst = true;
                     for (const auto& item2 : item1.second)
                     {
-                        lcontent += std::format("\t\t\t, {}\n", item2);
+                        if (lfirst)
+                        {
+                            lfirst = false;
+                            lcontent += std::format("\t\t\t, {}\n", item2);
+                        }
                     }
                     lcontent += std::format("\t\t>();\n");
                 }
