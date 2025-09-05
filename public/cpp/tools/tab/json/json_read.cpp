@@ -116,7 +116,6 @@ namespace ngl
 				}
 			}
 			return true;
-			return true;
 		}
 
 		static bool fun_value(const cJSON* ajson, int64_t& adata)
