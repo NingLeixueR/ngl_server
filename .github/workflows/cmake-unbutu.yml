@@ -73,6 +73,7 @@ jobs:
         make -j$(nproc)
         sudo make install
         sudo ldconfig
+        protoc --version
 
     - name: Install Boost.Interprocess
       run: |
