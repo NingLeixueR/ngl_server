@@ -21,7 +21,7 @@ ADD_EXECUTABLE(node
 )
 #set_target_properties
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
-	target_link_libraries(node protobuf)
+	#target_link_libraries(node protobuf)
 	target_link_libraries(node pthread)
 	target_link_libraries(node uuid)
 	target_link_libraries(node mysqlclient)
