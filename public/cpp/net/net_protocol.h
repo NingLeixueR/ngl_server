@@ -184,7 +184,7 @@ namespace ngl
 					{
 						send(lsession, pro, nguid::make(), nguid::make());
 						netbuff_pool::instance().free((char*)lforward.m_buff);
-						return true;
+						return;
 					}
 				}
 			}
