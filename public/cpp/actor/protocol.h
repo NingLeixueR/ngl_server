@@ -123,35 +123,6 @@ namespace ngl
 			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		template <typename T>
-		static void registry_actor_c2g_game(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
-		{
-			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
-				{
-					Try
-					{
-						auto lp = new T();
-						std::shared_ptr<void> ltemp(lp);
-						if (structbytes<T>::tostruct(apack, *lp, true))
-						{
-							return ltemp;
-						}
-					}Catch
-					return nullptr;
-				};
-			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
-				{
-					auto ldatapack = std::static_pointer_cast<T>(aptrpram);
-					nguid lguid(apack->m_head.get_actor());
-					nguid lrequestguid(apack->m_head.get_request_actor());
-					handle_pram lpram = handle_pram::create<T>(lguid, lrequestguid, ldatapack);
-					lpram.m_pack = apack;
-					actor_manage::instance().push_task_id(lguid, lpram);
-					return true;
-				};
-			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
-		}
-
 		// # ×ª·¢ g2c
 		template <typename T>
 		static void registry_actor_g2c_gateway(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
@@ -175,35 +146,6 @@ namespace ngl
 					nguid lguid(atype, tab_self_area, nconfig::m_nodeid);
 					nguid lrequestguid(apack->m_head.get_request_actor());
 					handle_pram lpram = handle_pram::create<np_actor_forward<T, forward_g2c<forward>>>(lguid, lrequestguid, ldatapack);
-					lpram.m_pack = apack;
-					actor_manage::instance().push_task_id(lguid, lpram);
-					return true;
-				};
-			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
-		}
-
-		template <typename T>
-		static void registry_actor_g2c_client(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
-		{
-			fun_pack lpackfun = [](std::shared_ptr<pack>& apack)->std::shared_ptr<void>
-				{
-					Try
-					{
-						auto lp = new T();
-						std::shared_ptr<void> ltemp(lp);
-						if (structbytes<T>::tostruct(apack, *lp, true))
-						{
-							return ltemp;
-						}
-					}Catch
-					return nullptr;
-				};
-			fun_run lrunfun = [atype](std::shared_ptr<pack>& apack, std::shared_ptr<void>& aptrpram)->bool
-				{
-					auto ldatapack = std::static_pointer_cast<T>(aptrpram);
-					nguid lguid(apack->m_head.get_actor());
-					nguid lrequestguid(apack->m_head.get_request_actor());
-					handle_pram lpram = handle_pram::create<T>(lguid, lrequestguid, ldatapack);
 					lpram.m_pack = apack;
 					actor_manage::instance().push_task_id(lguid, lpram);
 					return true;

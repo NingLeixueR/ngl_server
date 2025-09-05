@@ -31,7 +31,6 @@ namespace ngl
 		struct impl_actor;
 		ngl::impl<impl_actor> m_impl_actor;
 
-		//std::array<nrfunbase*, EPROTOCOL_TYPE_COUNT> m_actorfun = { nullptr };
 		nrfunbase* m_actorfun = nullptr;
 
 #pragma region register // 消息注册接口
@@ -119,7 +118,6 @@ namespace ngl
 			template <typename T>
 			static void func(bool aisload)
 			{
-				std::string lname = tools::type_name<TDerived>();
 				ninst<TDerived>().template rfun<TDerived, T>(
 					(Tfun<TDerived, T>) & TDerived::handle, aisload
 				);
@@ -155,7 +153,6 @@ namespace ngl
 			ninst<TDerived>().template rfun_nonet<TDerived, T>(afun, aisload);
 		}
 #pragma endregion 
-
 	public:
 		template <typename TDerived>
 		struct c2g_forward_gateway_handle
@@ -171,31 +168,21 @@ namespace ngl
 		template <typename TDerived>
 		using register_forward_gateway_c2g = template_arg<c2g_forward_gateway_handle<TDerived>>;
 		
+		// # 二次转发
 		template <typename TDerived, ENUM_ACTOR ACTOR>
-		struct c2g_forward_game_handle
+		struct c2g_secondary_forward_handle
 		{
 			template <typename T>
 			static void func()
 			{
-				if constexpr (ACTOR == ACTOR_ROLE)
-				{
-					ninst<TDerived>().template rfun_c2g_game<T>(
-						(Tfun<TDerived, T>) & TDerived::handle
-						, false
-					);
-				}
-				else
-				{
-					ninst<TDerived>().template rfun_c2g_game<T>(
-						(Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR,T>
-						, false
-					);
-				}				
+				ninst<TDerived>().template rfun<TDerived, T>(
+					(Tfun<TDerived, T>) & TDerived::template handle_forward<ACTOR, T>
+					, false
+				);
 			}
 		};
 		template <typename TDerived, ENUM_ACTOR ACTOR>
-		using register_forward_game_c2g = template_arg<c2g_forward_game_handle<TDerived, ACTOR>>;
-
+		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
 
 		template <typename TDerived>
 		struct g2c_forward_gateway_handle
@@ -210,21 +197,6 @@ namespace ngl
 		};
 		template <typename TDerived>
 		using register_forward_gateway_g2c = template_arg<g2c_forward_gateway_handle<TDerived>>;
-
-		template <typename TDerived>
-		struct g2c_forward_client_handle
-		{
-			template <typename T>
-			static void func()
-			{
-				ninst<TDerived>().template rfun_g2c_client<T>(
-					(Tfun<TDerived, T>) & TDerived::handle
-					, false
-				);
-			}
-		};
-		template <typename TDerived>
-		using register_forward_client_g2c = template_arg<g2c_forward_client_handle<TDerived>>;
 
 #pragma endregion 
 	public:
