@@ -175,7 +175,7 @@ namespace ngl
 					std::shared_ptr<np_mass_actor<T>> ldatapack = std::static_pointer_cast<np_mass_actor<T>>(aptrpram);
 					std::set<i64_actorid>& lactorids = ldatapack->m_actorids;
 					nguid lrequestguid(apack->m_head.get_request_actor());
-					handle_pram lpram = handle_pram::create<np_mass_actor<T>, false>(lactorids, lrequestguid, ldatapack);
+					handle_pram lpram = handle_pram::create<T, false>(lactorids, lrequestguid, ldatapack);
 					actor_manage::instance().push_task_id(lactorids, lpram);
 					return true;
 				};
