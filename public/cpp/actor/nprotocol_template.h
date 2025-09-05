@@ -282,23 +282,31 @@ namespace ngl
 	template <typename T>
 	struct np_mass_actor
 	{
-		std::set<i64_actorid>	m_actorids;
+		std::set<i64_actorid> m_actorids;
 	private:
 		std::shared_ptr<T> m_data;
 	public:
-		void set_data(const std::shared_ptr<T>& adata)
-		{
-			m_data = adata;
-		}
+		np_mass_actor() :
+			m_data(std::make_shared<T>())
+		{}
 
-		const T* get_data()const
+		np_mass_actor(std::shared_ptr<T>& adata) :
+			m_data(adata)
+		{}
+
+		T* data()const
 		{
 			return m_data.get();
 		}
 
-		std::shared_ptr<T> get_shared()const
+		void set_actorids(std::set<i64_actorid>& aactorids)
 		{
-			return m_data;
+			m_actorids = aactorids;
+		}
+
+		void add_actorid(i64_actorid aactorid)
+		{
+			m_actorids.insert(aactorid);
 		}
 
 		def_jsonfunction_parm("m_actorids", m_actorids, "m_data", *m_data)
