@@ -23,7 +23,7 @@ namespace ngl
 			}
 			if (ngl::GAME == xmlnode::m_nodetype)
 			{
-				actor_role::register_forward_game_c2g<actor_role, ACTOR_ROLE>:: template func<ARG...>();
+				actor::register_handle<actor_role>:: template func <ARG...>(false);
 				return;
 			}
 		}
@@ -41,7 +41,7 @@ namespace ngl
 			}
 			if (ngl::GAME == xmlnode::m_nodetype)
 			{
-				actor_role::register_forward_game_c2g<actor_role, ACTOR>::template func<ARG...>();
+				actor::register_secondary_forward_c2g<actor_role, ACTOR>:: template func <ARG...>();
 				return;
 			}
 		}
@@ -56,7 +56,7 @@ namespace ngl
 			}
 			if (ngl::ROBOT == xmlnode::m_nodetype)
 			{
-				actor_robot::register_forward_client_g2c<actor_robot>::template func<ARG...>();
+				actor::register_handle<actor_robot>:: template func <ARG...>(false);
 				return;
 			}
 		}

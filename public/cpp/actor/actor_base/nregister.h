@@ -87,29 +87,6 @@ namespace ngl
 
 	template <typename TDerived>
 	template <typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun_c2g_game(const Tfun<TDerived, T> afun, bool aisload /*= false*/)
-	{
-		static const std::string& ltypename = tools::type_name<T>();
-		m_fun[tprotocol::protocol<T>()] = nlogicfun
-		{
-			.m_isdbload = aisload,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
-			{
-				T* ltemp = (T*)apram.m_data.get();
-				message<T> lmessage(athreadid, apram.m_pack.get(), ltemp);
-				(((TDerived*)(aactor))->*afun)(lmessage);
-			}
-		};
-
-		ENUM_ACTOR ltype = nactor_type<TDerived>::type();
-		int32_t lprotocol = tprotocol::protocol<np_actor_forward<T, forward_c2g<T>>>();
-		std::string& lname = tools::type_name<np_actor_forward<T, forward_c2g<T>>>();
-		protocol::registry_actor_c2g_game<T>(ltype, lprotocol, lname.c_str());
-		return *this;
-	}
-
-	template <typename TDerived>
-	template <typename T>
 	nrfun<TDerived>& nrfun<TDerived>::rfun_g2c_gateway(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun)
 	{
 		static const std::string& ltypename = tools::type_name<T>();
@@ -129,29 +106,6 @@ namespace ngl
 		int32_t lprotocol = tprotocol::protocol<np_actor_forward<T, forward_c2g<forward>>>();
 		std::string& lname = tools::type_name<np_actor_forward<T, forward_c2g<forward>>>();
 		protocol::registry_actor_g2c_gateway<T>(ltype, lprotocol, lname.c_str());
-		return *this;
-	}
-
-	template <typename TDerived>
-	template <typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun_g2c_client(const Tfun<TDerived, T> afun, bool aisload /*= false*/)
-	{
-		static const std::string& ltypename = tools::type_name<T>();
-		m_fun[tprotocol::protocol<T>()] = nlogicfun
-		{
-			.m_isdbload = aisload,
-			.m_fun = [afun](actor_base* aactor, i32_threadid athreadid, handle_pram& apram)
-			{
-				T* ltemp = (T*)apram.m_data.get();
-				message<T> lmessage(athreadid, apram.m_pack.get(), ltemp);
-				(((TDerived*)(aactor))->*afun)(lmessage);
-			}
-		};
-
-		ENUM_ACTOR ltype = nactor_type<TDerived>::type();
-		int32_t lprotocol = tprotocol::protocol<np_actor_forward<T, forward_g2c<T>>>();
-		std::string& lname = tools::type_name<np_actor_forward<T, forward_g2c<T>>>();
-		protocol::registry_actor_g2c_client<T>(ltype, lprotocol, lname.c_str());
 		return *this;
 	}
 
