@@ -9,7 +9,6 @@
   * <b>curl</b>
   * <b>hiredis</b>
   * <b>mysql connect/c</b>
-  * <b>protobuf 3.13.0</b>
   * <b>lua-5.4.2</b>
   * <b>lua-cjson-2.1.0</b>
 
