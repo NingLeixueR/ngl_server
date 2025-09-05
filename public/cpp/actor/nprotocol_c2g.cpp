@@ -21,67 +21,54 @@ namespace ngl
 		>();
 
 		// actor_chat 模块二次转发
-		register_c2g_2<ACTOR_CHAT, pbnet::PROBUFF_NET_CHAT>();
+		register_c2g_2< ACTOR_CHAT
+			, pbnet::PROBUFF_NET_CHAT
+		>();
 
 		// actor_example_guess_number 模块二次转发
-		register_c2g_2<ACTOR_EXAMPLE_GUESS_NUMBER
+		register_c2g_2< ACTOR_EXAMPLE_GUESS_NUMBER
 			, pbexample::PROBUFF_EXAMPLE_GUESS_NUMBER
 		>();
 
 		// actor_example_manage 模块二次转发
-		register_c2g_2<ACTOR_EXAMPLE_MANAGE
+		register_c2g_2< ACTOR_EXAMPLE_MANAGE
 			, pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE
 		>();
 
 		// actor_example_match 模块二次转发
-		register_c2g_2<ACTOR_EXAMPLE_MATCH
+		register_c2g_2< ACTOR_EXAMPLE_MATCH
 			, pbexample::PROBUFF_EXAMPLE_PLAY_CANCEL
-			, pbexample::PROBUFF_EXAMPLE_PLAY_JOIN
-			, pbexample::PROBUFF_EXAMPLE_PLAY_PLAYER_CONFIRM
 		>();
 
 		// actor_family 模块二次转发
-		register_c2g_2<ACTOR_FAMILY
+		register_c2g_2< ACTOR_FAMILY
 			, pbnet::PROBUFF_NET_FAMIL_CEDE
-			, pbnet::PROBUFF_NET_FAMIL_CHANGENAME
-			, pbnet::PROBUFF_NET_FAMIL_CREATE
-			, pbnet::PROBUFF_NET_FAMIL_INFO
-			, pbnet::PROBUFF_NET_FAMIL_JOIN
-			, pbnet::PROBUFF_NET_FAMIL_LEAVE
-			, pbnet::PROBUFF_NET_FAMIL_LIST
-			, pbnet::PROBUFF_NET_FAMIL_RATIFY_JOIN
-			, pbnet::PROBUFF_NET_FAMIL_SIGN
 		>();
 
 		// actor_friends 模块二次转发
-		register_c2g_2<ACTOR_FRIENDS
+		register_c2g_2< ACTOR_FRIENDS
 			, pbnet::PROBUFF_NET_FRIEND
-			, pbnet::PROBUFF_NET_FRIEND_ADD
-			, pbnet::PROBUFF_NET_FRIEND_ERASE
-			, pbnet::PROBUFF_NET_FRIEND_RATIFY_ADD
 		>();
 
 		// actor_mail 模块二次转发
-		register_c2g_2<ACTOR_MAIL
+		register_c2g_2< ACTOR_MAIL
 			, pbnet::PROBUFF_NET_MAIL_DEL
-			, pbnet::PROBUFF_NET_MAIL_DRAW
-			, pbnet::PROBUFF_NET_MAIL_LIST
-			, pbnet::PROBUFF_NET_MAIL_READ
 		>();
 
 		// actor_notice 模块二次转发
-		register_c2g_2<ACTOR_NOTICE
+		register_c2g_2< ACTOR_NOTICE
 			, pbnet::PROBUFF_NET_NOTICE
 		>();
 
 		// actor_ranklist 模块二次转发
-		register_c2g_2<ACTOR_RANKLIST
+		register_c2g_2< ACTOR_RANKLIST
 			, pbnet::PROBUFF_NET_RANKLIST
 		>();
 
 		// actor_testlua 模块二次转发
-		register_c2g_2<ACTOR_TESTLUA
+		register_c2g_2< ACTOR_TESTLUA
 			, pbnet::PROBUFF_NET_TESTLUA
 		>();
+
 	}
 }// namespace ngl
