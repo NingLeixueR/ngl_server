@@ -303,25 +303,23 @@ namespace ngl
 						{
 							return;
 						}
+						db* ldb = db_pool::instance().get(athread);
+						if (ldb == nullptr)
+						{
+							return;
+						}
 						if (ngl::db_data<TDBTAB>::find(lid) == nullptr)
 						{
-							db_manage::select<TDBTAB>(db_pool::instance().get(athread), lid);
+							db_manage::select<TDBTAB>(ldb, lid);
 						}
-						/*protobuf_data<TDBTAB> m_savetemp;
-						m_savetemp.m_isbinary = false;
-						m_savetemp.m_data = std::make_shared<TDBTAB>();
 						TDBTAB* ldata = ngl::db_data<TDBTAB>::find(lid);
 						if (ldata == nullptr)
 						{
 							return;
 						}
-						*m_savetemp.m_data.get() = *ldata;
-						char lbuff[102400] = { 0 };
-						ngl::serialize lserialize(lbuff, 102400);
-						if (lserialize.push(m_savetemp))
-						{
-							pro.m_data = lbuff;
-						}*/
+
+						db_manage::serialize<TDBTAB, false>(ldb, *ldata);
+						pro.m_data = ldb->m_malloc.buff();
 					};
 
 				struct query_page
@@ -343,17 +341,15 @@ namespace ngl
 						int32_t lbegindex = lpage.m_everypagecount * (lpage.m_page - 1);
 						int32_t lendindex = lbegindex + lpage.m_everypagecount;
 
-						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro](int32_t aindex, TDBTAB& aitem)
+						db* ldb = db_pool::instance().get(athread);
+						if (ldb == nullptr)
+						{
+							return;
+						}
+						ngl::db_data<TDBTAB>::foreach_index(lbegindex, lendindex, [&pro, ldb](int32_t aindex, TDBTAB& aitem)
 							{
-								/*protobuf_data<TDBTAB> m_savetemp;
-								m_savetemp.m_isbinary = false;
-								m_savetemp.m_data = std::make_shared<TDBTAB>(aitem);
-								char lbuff[10240] = { 0 };*/
-								/*ngl::serialize lserialize(lbuff, 10240);
-								if (lserialize.push(m_savetemp))
-								{
-									pro.m_data.push_back(lbuff);
-								}*/
+								db_manage::serialize<TDBTAB, false>(ldb, aitem);
+								pro.m_data.push_back(ldb->m_malloc.buff());
 							});
 					};
 
@@ -366,16 +362,18 @@ namespace ngl
 						{
 							return;
 						}
-						//protobuf_data<TDBTAB> ldata;
-						//ldata.m_isbinary = false;
-						/*if (ngl::unserialize lunser(ljson.c_str(), (int)ljson.size() + 1); !lunser.pop(ldata))
+						db* ldb = db_pool::instance().get(athread);
+						if (ldb == nullptr)
 						{
 							return;
 						}
-						int64_t lid = ldata.m_data->mid();
-						ngl::db_data<TDBTAB>::set(lid, *ldata.m_data);
-						db_manage::save<TDBTAB>(db_pool::instance().get(athread), lid);
-						pro.m_data = true;*/
+						TDBTAB ldata;
+						if (!tools::json2proto(ljson, ldata))
+						{
+							return;
+						}
+						ngl::db_data<TDBTAB>::set(ldata.mid(), ldata);
+						db_manage::save<TDBTAB>(ldb, ldata.mid());
 					};
 			}
 

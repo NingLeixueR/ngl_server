@@ -153,7 +153,7 @@ namespace ngl
 			register_protocol(aprotocolnum, atype, lpackfun, lrunfun, aname);
 		}
 
-		// 接收转发的消息
+		// # 群发消息
 		template <typename T>
 		static void registry_actor_mass(ENUM_ACTOR atype, int32_t aprotocolnum, const char* aname)
 		{
@@ -175,7 +175,10 @@ namespace ngl
 					std::shared_ptr<np_mass_actor<T>> ldatapack = std::static_pointer_cast<np_mass_actor<T>>(aptrpram);
 					std::set<i64_actorid>& lactorids = ldatapack->m_actorids;
 					nguid lrequestguid(apack->m_head.get_request_actor());
-					handle_pram lpram = handle_pram::create<T, false>(lactorids, lrequestguid, ldatapack);
+
+					std::shared_ptr<T> ldata = ldatapack->shared_data();
+					
+					handle_pram lpram = handle_pram::create<T, false>(lactorids, lrequestguid, ldata);
 					actor_manage::instance().push_task_id(lactorids, lpram);
 					return true;
 				};

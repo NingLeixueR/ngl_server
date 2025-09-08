@@ -346,7 +346,7 @@ namespace ngl
 
 	void actor_base::push_task_id(handle_pram& apram)
 	{
-		actor_manage::instance().push_task_id(m_impl_actor_base()->m_guid, apram);
+		actor_manage::instance().push_task_id(id_guid(), apram);
 	}
 
 	void actor_base::save()

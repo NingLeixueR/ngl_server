@@ -119,26 +119,23 @@ namespace ngl
 		template <typename T>
 		inline bool do_serialize_json(T& adata)
 		{
-			ngl::json_write lwrite;
-			if (adata.write(lwrite))
+			std::string ltemp;
+			if (!tools::proto2json(adata, ltemp))
 			{
-				lwrite.set_nonformatstr(true);
-				std::string ltemp;
-				lwrite.get(ltemp);
-				if (ltemp.size() > m_buff->m_buffsize)
-				{
-					m_mallocbuff = std::make_shared<dbuff>(ltemp.size()+1);
-					memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-					m_mallocbuff->m_pos = ltemp.size() + 1;
-				}
-				else
-				{
-					memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
-					m_buff->m_pos = ltemp.size() + 1;
-				}
-				return true;
+				return false;
 			}
-			return false;
+			if (ltemp.size() > m_buff->m_buffsize)
+			{
+				m_mallocbuff = std::make_shared<dbuff>(ltemp.size() + 1);
+				memcpy(m_mallocbuff->m_buff, ltemp.c_str(), ltemp.size() + 1);
+				m_mallocbuff->m_pos = ltemp.size() + 1;
+			}
+			else
+			{
+				memcpy(m_buff->m_buff, ltemp.c_str(), ltemp.size() + 1);
+				m_buff->m_pos = ltemp.size() + 1;
+			}
+			return true;
 		}
 
 		template <typename T, bool ISBINARY>
