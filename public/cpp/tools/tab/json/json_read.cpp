@@ -37,62 +37,32 @@ namespace ngl
 		template <typename TNUMBER>
 		static bool fun(cJSON* ajson, const char* akey, TNUMBER& adata)
 		{
-			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
-			if (nullptr == ret)
-			{
-				return false;
-			}
-			return fun_value(ret, adata);
+			return fun_value(cJSON_GetObjectItem(ajson, akey), adata);
 		}
 
 		static bool fun(cJSON* ajson, const char* akey, int64_t& adata)
 		{
-			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
-			if (nullptr == ret)
-			{
-				return false;
-			}
-			return fun_value(ret, adata);
+			return fun_value(cJSON_GetObjectItem(ajson, akey), adata);
 		}
 
 		static bool fun(cJSON* ajson, const char* akey, uint64_t& adata)
 		{
-			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
-			if (nullptr == ret)
-			{
-				return false;
-			}
-			return fun_value(ret, adata);
+			return fun_value(cJSON_GetObjectItem(ajson, akey), adata);
 		}
 
 		static bool fun(cJSON* ajson, const char* akey, float& adata)
 		{
-			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
-			if (nullptr == ret)
-			{
-				return false;
-			}
-			return fun_value(ret, adata);
+			return fun_value(cJSON_GetObjectItem(ajson, akey), adata);
 		}
 
 		static bool fun(cJSON* ajson, const char* akey, double& adata)
 		{
-			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
-			if (nullptr == ret)
-			{
-				return false;
-			}
-			return fun_value(ret, adata);
+			return fun_value(cJSON_GetObjectItem(ajson, akey), adata);
 		}
 
 		static bool fun(cJSON* ajson, const char* akey, bool& adata)
 		{
-			const cJSON* ret = cJSON_GetObjectItem(ajson, akey);
-			if (nullptr == ret)
-			{
-				return false;
-			}
-			return fun_value(ret, adata);
+			return fun_value(cJSON_GetObjectItem(ajson, akey), adata);
 		}
 
 		template <typename TNUMBER>
@@ -120,6 +90,10 @@ namespace ngl
 
 		static bool fun_value(const cJSON* ajson, int64_t& adata)
 		{
+			if (nullptr == ajson)
+			{
+				return false;
+			}
 			if (ajson->type == cJSON_String)
 			{
 				adata = tools::lexical_cast<int64_t>(ajson->valuestring);
@@ -136,6 +110,10 @@ namespace ngl
 
 		static bool fun_value(const cJSON* ajson, uint64_t& adata)
 		{
+			if (nullptr == ajson)
+			{
+				return false;
+			}
 			if (ajson->type == cJSON_String)
 			{
 				adata = tools::lexical_cast<uint64_t>(ajson->valuestring);
@@ -152,6 +130,10 @@ namespace ngl
 
 		static bool fun_value(const cJSON* ajson, float& adata)
 		{
+			if (nullptr == ajson)
+			{
+				return false;
+			}
 			if (ajson->type == cJSON_Number)
 			{
 				adata = (float)ajson->valuedouble;
@@ -174,6 +156,10 @@ namespace ngl
 
 		static bool fun_value(const cJSON* ajson, double& adata)
 		{
+			if (nullptr == ajson)
+			{
+				return false;
+			}
 			if (ajson->type == cJSON_Number)
 			{
 				adata = ajson->valuedouble;
@@ -196,6 +182,10 @@ namespace ngl
 
 		static bool fun_value(const cJSON* ajson, bool& adata)
 		{
+			if (nullptr == ajson)
+			{
+				return false;
+			}
 			switch (ajson->type)
 			{
 			case cJSON_True:
