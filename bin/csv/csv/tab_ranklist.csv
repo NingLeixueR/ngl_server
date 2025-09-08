@@ -1,7 +1,7 @@
 int32_t,string,string,int32_t,int32_t,int32_t,int32_t
 m_id,m_name,m_remarks,m_maxitem,m_showitem,m_everypagecount,m_minvalue
  [index:0][load:y] eranklist(0:等级排行), [index:1][load:y] 名字 , [index:2][load:n] 备注, [index:3][load:y] 最大排行结点数量, [index:4][load:y] 展示排行结点数量, [index:5][load:y] 每页展示结点数量, [index:6][load:y] 最小入榜值
-0,等级排行,等级排行,9999,100,10,1
-1,金币排行,金币排行,9999,100,10,1
+1,等级排行,等级排行,9999,100,10,1
+2,金币排行,金币排行,9999,100,10,1
 1000001,活动等级冲榜,活动等级冲榜,9999,100,10,1
 2000001,活动金币冲榜,活动金币冲榜,9999,100,10,1

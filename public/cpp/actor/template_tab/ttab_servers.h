@@ -103,6 +103,12 @@ namespace ngl
 			}
 			for (const std::pair<const int, tab_servers>& item : tablecsv())
 			{
+				std::cout << std::format(
+					"m_area:[{}] m_name:[{}] m_tcount:[{}]"
+					, item.second.m_area
+					, item.second.m_name
+					, item.second.m_tcount
+				) << std::endl;
 				if (item.second.m_area == area && item.second.m_name == aname && item.second.m_tcount == atcount)
 				{
 					return &item.second;
