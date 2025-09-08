@@ -3,3 +3,4 @@ m_id,m_name,m_remarks,m_mergeid
  [index:0] id , [index:1] 名字 , [index:2] 备注,[index:3][load:y] 合并到的区服id
 1,区服1,区服1,1
 2,区服2,区服2,2
+3,区服3,区服3,3
