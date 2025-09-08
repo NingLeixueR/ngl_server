@@ -241,15 +241,11 @@ namespace ngl
 					return true;
 				}
 
-
+				// # 加入等待队列
 				log_error()->print(
-					"handle_pram_send<{}>::send fail actorid[{}] serverid[{}]"
-					, tools::type_name<T>()
-					, nguid(lactorid)
-					, lactorid
+					"handle_pram_send<{}>::send fail add wait list actorid[{}] serverid[{}]"
+					, tools::type_name<T>(), nguid(lactorid), lactorid
 				);
-
-				// # 加入队列
 				handle_pram::server_actor_send(lactorid, [adata]()
 					{
 						handle_pram ldata = adata;
@@ -324,6 +320,11 @@ namespace ngl
 				{
 					adata.m_failfun();
 				}
+				// # 加入等待队列
+				log_error()->print(
+					"handle_pram_send<pack>::send fail add wait list actorid[{}] serverid[{}]"
+					, nguid(lactorid), lactorid
+				);
 				handle_pram::server_actor_send(lactorid, [adata]()
 					{
 						handle_pram ldata = adata;
