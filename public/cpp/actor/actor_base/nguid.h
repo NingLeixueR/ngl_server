@@ -470,4 +470,4 @@ namespace ngl
 		}
 		return true;
 	}
-}
+}//namespace ngl

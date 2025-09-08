@@ -53,7 +53,7 @@ namespace ngl
 		// # 检查是否被修改
 		static bool is_modified(i64_actorid aidentifier)
 		{
-			return m_modified.find(aidentifier) != m_modified.end();
+			return m_modified.contains(aidentifier);
 		}
 
 		// # 设置为修改状态
@@ -200,8 +200,7 @@ namespace ngl
 		// # 加载数据
 		void init_load()
 		{
-			std::string& lname = tools::type_name<type_ndbclient>();
-			log_error()->print("ndbclient init_load [{}]", lname);
+			log_error()->print("ndbclient init_load [{}]", m_name);
 			load();
 		}
 
@@ -225,8 +224,7 @@ namespace ngl
 			np_actordb_load<DBTYPE, TDBTAB> ldata;
 			ldata.m_id = aid;
 			nets::sendbyserver(dbnodeid(), ldata, dbguid(), m_actor->id_guid());
-			std::string& lname = tools::type_name<type_ndbclient>();
-			log_error()->print("ndbclient loaddb [{}] [{}]", lname, aid);
+			log_error()->print("ndbclient loaddb [{}] [{}]", m_name, aid);
 		}
 
 		nguid										m_id = nguid::make();
