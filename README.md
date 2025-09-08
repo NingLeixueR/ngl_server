@@ -23,7 +23,6 @@
 ## Linux CentOs编译
   * 编译安装gcc (GCC) 13.1.0
   * 编译安装protobuf 3.12.2
-  * 下载新版本的boost,boost编译并剪裁后将其放置在目录/3part/boost/下
   * 其他第三方库自行  yum install 进行安装
   * 创建build目录，在build目录下cmake .., 然后make
   * 在linux编译运行
