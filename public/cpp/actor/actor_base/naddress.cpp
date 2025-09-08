@@ -65,7 +65,6 @@ namespace ngl
 			m_actortypeserver[lguid.type()].insert(adataid);
 			log_error()->print("#actor_address [[{}]->[{}]]", lguid, aserverid);
 
-			//static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
 			auto itor = m_nguidfun.find(adataid);
 			if (itor != m_nguidfun.end())
 			{
@@ -118,7 +117,6 @@ namespace ngl
 
 		static void server_actor_send(const nguid& aguid, const std::function<void()>& afun)
 		{
-			//static std::map<i64_actorid, std::map<int64_t, std::function<void()>>> m_nguidfun;
 			if (aguid.type() == ACTOR_LOG)
 			{
 				return;

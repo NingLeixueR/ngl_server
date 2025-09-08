@@ -20,7 +20,7 @@ namespace ngl
 
 	void handle_pram::server_actor_send(const nguid& aguid, const std::function<void()>& afun)
 	{
-
+		naddress::server_actor_send(aguid, afun);
 	}
 
 	i32_serverid handle_pram::gatewayid(i64_actorid aactorid)
