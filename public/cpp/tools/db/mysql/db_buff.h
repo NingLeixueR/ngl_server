@@ -157,7 +157,7 @@ namespace ngl
 					return;
 				}
 			}
-			Throw("malloc_buff.serialize fail");
+			return;
 		}
 	};
 }// namespace ngl
