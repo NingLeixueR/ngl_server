@@ -62,31 +62,8 @@ namespace ngl
 		template <typename TDerived>
 		static void register_timer(Tfun<TDerived, np_timerparm> afun = &TDerived::timer_handle)
 		{
-			ninst<TDerived>().template 
-				rfun_nonet<TDerived, np_timerparm>(afun, false);
+			ninst<TDerived>().template rfun_nonet<TDerived, np_timerparm>(afun, false);
 		}
-
-#pragma region register_db
-		// # ×¢²ádb¼ÓÔØ
-		template <pbdb::ENUM_DB DBTYPE, typename TDBTAB>
-		class db_pair{};
-
-		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB>
-		static void register_db(const db_pair<DBTYPE, TDBTAB>*)
-		{
-			ninst<TDerived>()
-				.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
-					&actor_base::template handle<DBTYPE, TDBTAB, TDerived>, false
-				);
-		}
-
-		template <typename TDerived, pbdb::ENUM_DB DBTYPE, typename TDBTAB, typename ...ARG>
-		static void register_db(const db_pair<DBTYPE, TDBTAB>* ap, const ARG*... arg)
-		{
-			register_db<TDerived>(ap);
-			register_db<TDerived>(arg...);
-		}
-#pragma endregion 
 
 #pragma region register_actor
 

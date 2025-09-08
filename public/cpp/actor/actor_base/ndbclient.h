@@ -304,7 +304,10 @@ namespace ngl
 			static std::atomic<bool> lregister = true;
 			if (lregister.exchange(false))
 			{
-				actor::template register_db<TACTOR, DBTYPE, TDBTAB>(nullptr);
+				nrfun<TACTOR>::instance()
+					.template rfun<actor_base, np_actordb_load_response<DBTYPE, TDBTAB>>(
+						&actor_base::template handle<DBTYPE, TDBTAB, TACTOR>, false
+					);
 			}
 			init_load();
 		}
