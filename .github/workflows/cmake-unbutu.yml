@@ -63,7 +63,7 @@ jobs:
         pwd
         ls
         unzip protobuf-all-3.12.2.zip
-        cd protobuf-3.12.2/cmake
+        cd protobuf-all-3.12.2/protobuf-3.12.2/cmake
         pwd
         mkdir build
         cd build
