@@ -738,28 +738,6 @@ namespace ngl
 {
 	namespace ser
 	{
-		template <typename T, typename = void>
-		struct has_protobuf_descriptor;
-
-		template <typename T>
-		struct has_protobuf_descriptor<
-			T,
-			std::void_t<decltype(T::descriptor())>
-		> : std::is_same<
-			decltype(T::descriptor()),
-			const google::protobuf::Descriptor*
-		> {};
-
-		template <typename T, typename>
-		struct has_protobuf_descriptor : std::false_type {};
-
-		template <typename T>
-		struct is_protobuf_message : std::conjunction<
-			std::is_base_of<google::protobuf::MessageLite, std::remove_cv_t<std::remove_reference_t<T>>>,
-			has_protobuf_descriptor<std::remove_cv_t<std::remove_reference_t<T>>>
-		> {};
-
-
 		template <typename T>
 		bool serialize_format<T>::push(serialize_push* aserialize, const T& adata)
 		{

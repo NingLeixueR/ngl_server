@@ -294,9 +294,14 @@ namespace ngl
 			m_data(adata)
 		{}
 
-		T* data()const
+		T* data()
 		{
 			return m_data.get();
+		}
+
+		std::shared_ptr<T> shared_data()
+		{
+			return m_data;
 		}
 
 		void set_actorids(std::set<i64_actorid>& aactorids)

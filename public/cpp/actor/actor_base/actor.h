@@ -76,7 +76,7 @@ namespace ngl
 
 		// # 注册actor成员函数(可以是非handle)
 		template <typename TDerived, typename T>
-		static void register_actor(bool aisload,  T afun)
+		static void register_actor(bool aisload, T afun)
 		{
 			ninst<TDerived>().template rfun<TDerived, T>(afun, aisload);
 		}

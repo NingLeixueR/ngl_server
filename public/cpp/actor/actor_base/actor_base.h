@@ -400,9 +400,8 @@ namespace ngl
 #pragma endregion 
 
 #pragma region send_client
-	private:
 		static i64_actorid actorclient_guid();
-
+	private:
 		template <typename T>
 		static std::shared_ptr<np_actor_forward<T, forward_g2c<T>>> create_cpro(const std::shared_ptr<T>& adata)
 		{
@@ -434,11 +433,11 @@ namespace ngl
 			push_task_id(actorclient_guid(), lpram);
 		}
 
-		template <typename T, typename CONTAINER>
-		static void send_client(const CONTAINER& asetid, const std::shared_ptr<T>& adata)
+		template <typename T, typename TCONTAINER>
+		static void send_client(const TCONTAINER& asetids, const std::shared_ptr<T>& adata)
 		{
 			auto pro = create_cpro(adata);
-			for (i64_actorid aactorid : asetid)
+			for (i64_actorid aactorid : asetids)
 			{
 				cpro_push_actorid(pro, aactorid);
 			}
@@ -522,10 +521,10 @@ namespace ngl
 #pragma endregion
 
 		// # 方便调试打印协议
-		template <bool PROTO, typename T>
+		template <typename T>
 		void handle_print(const message<T>& adata)
 		{
-			if constexpr (PROTO)
+			if constexpr (is_protobuf_message<T>::value)
 			{
 				tools::print_json2proto(*adata.get_data(), true);
 			}
