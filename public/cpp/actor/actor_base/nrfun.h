@@ -122,7 +122,7 @@ namespace ngl
 		template <typename TTTDerived, typename T>
 		nrfun& rfun_nonet(const Tfun<TTTDerived, T> afun, bool aisload = false);
 
-		//# 注册接收转发协议处理协议
+		//# gateway注册接收转发协议处理协议
 		template <typename T>
 		nrfun& rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
 
