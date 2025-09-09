@@ -13,9 +13,9 @@ namespace ngl
 	
 	enum enscript
 	{
-		enscript_none = -1,
-		enscript_lua = 0,
-		enscript_count,
+		enscript_none = -1,		// 错误
+		enscript_lua = 0,		// lua
+		enscript_count,			// 支持的脚本数据
 	};
 
 	class tprotocol
