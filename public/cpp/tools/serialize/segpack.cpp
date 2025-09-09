@@ -113,7 +113,7 @@ namespace ngl
 			ap += alen;
 			alen = 0;
 			apack->m_buff[apack->m_pos] = '\0';
-			protocol::cmd(apack);
+			protocol::telnet_cmd(apack);
 			return edopush::e_break;
 		}
 
