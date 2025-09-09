@@ -27,8 +27,7 @@ namespace ngl
 			{
 				log_error()->print(
 					"{}::handle_switch  m_fun.find({}) == end"
-					, aactor->guid()
-					, apram.m_enum
+					, aactor->guid(), apram.m_enum
 				);
 			}
 			return false;
@@ -38,8 +37,7 @@ namespace ngl
 		{
 			log_error()->print(
 				"{}::handle_switch isloadfinish() == {}"
-				, aactor->guid()
-				, lisloadfinish
+				, aactor->guid(), lisloadfinish
 			);
 			return false;
 		}
