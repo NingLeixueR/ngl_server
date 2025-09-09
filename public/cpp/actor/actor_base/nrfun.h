@@ -124,9 +124,9 @@ namespace ngl
 
 		//# 注册接收转发协议处理协议
 		template <typename T>
-		nrfun& rfun_c2g_gateway(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
+		nrfun& rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun);
 
 		template <typename T>
-		nrfun& rfun_g2c_gateway(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);		
+		nrfun& rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun);		
 	};
 }//namespace ngl

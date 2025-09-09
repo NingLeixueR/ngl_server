@@ -18,7 +18,7 @@ namespace ngl
 		{
 			if (ngl::GATEWAY == xmlnode::m_nodetype)
 			{
-				actor_gateway_c2g::register_forward_gateway_c2g<actor_gateway_c2g>:: template func<ARG...>();
+				actor_gateway_c2g::register_forward_c2g<actor_gateway_c2g>:: template func<ARG...>();
 				return;
 			}
 			if (ngl::GAME == xmlnode::m_nodetype)
@@ -36,7 +36,7 @@ namespace ngl
 		{
 			if (ngl::GATEWAY == xmlnode::m_nodetype)
 			{
-				actor_gateway_c2g::register_forward_gateway_c2g<actor_gateway_c2g>::template func<ARG...>();
+				actor_gateway_c2g::register_forward_c2g<actor_gateway_c2g>::template func<ARG...>();
 				return;
 			}
 			if (ngl::GAME == xmlnode::m_nodetype)
@@ -51,7 +51,7 @@ namespace ngl
 		{
 			if (ngl::GATEWAY == xmlnode::m_nodetype)
 			{
-				actor_gateway_g2c::register_forward_gateway_g2c<actor_gateway_g2c>::template func<ARG...>();
+				actor_gateway_g2c::register_forward_g2c<actor_gateway_g2c>::template func<ARG...>();
 				return;
 			}
 			if (ngl::ROBOT == xmlnode::m_nodetype)

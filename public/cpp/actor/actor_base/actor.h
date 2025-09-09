@@ -131,20 +131,37 @@ namespace ngl
 		}
 #pragma endregion 
 	public:
+#pragma region 	register_gateway
+		//# gateway注册接收转发协议处理协议
 		template <typename TDerived>
-		struct c2g_forward_gateway_handle
+		struct c2g_forward_handle
 		{
 			template <typename T>
 			static void func()
 			{
-				ninst<TDerived>().template rfun_c2g_gateway<T>(
+				ninst<TDerived>().template rfun_c2g<T>(
 					(Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>>)&TDerived::handle
 				);
 			}
 		};
 		template <typename TDerived>
-		using register_forward_gateway_c2g = template_arg<c2g_forward_gateway_handle<TDerived>>;
+		using register_forward_c2g = template_arg<c2g_forward_handle<TDerived>>;
 		
+		template <typename TDerived>
+		struct g2c_forward_handle
+		{
+			template <typename T>
+			static void func()
+			{
+				ninst<TDerived>().template rfun_g2c<T>(
+					(Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>>) & TDerived::handle
+				);
+			}
+		};
+		template <typename TDerived>
+		using register_forward_g2c = template_arg<g2c_forward_handle<TDerived>>;
+#pragma endregion 
+
 		// # 二次转发
 		template <typename TDerived, ENUM_ACTOR ACTOR>
 		struct c2g_secondary_forward_handle
@@ -161,20 +178,7 @@ namespace ngl
 		template <typename TDerived, ENUM_ACTOR ACTOR>
 		using register_secondary_forward_c2g = template_arg<c2g_secondary_forward_handle<TDerived, ACTOR>>;
 
-		template <typename TDerived>
-		struct g2c_forward_gateway_handle
-		{
-			template <typename T>
-			static void func()
-			{
-				ninst<TDerived>().template rfun_g2c_gateway<T>(
-					(Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>>) & TDerived::handle
-				);
-			}
-		};
-		template <typename TDerived>
-		using register_forward_gateway_g2c = template_arg<g2c_forward_gateway_handle<TDerived>>;
-
+		
 #pragma endregion 
 	public:
 		explicit actor(const actorparm& aparm);
