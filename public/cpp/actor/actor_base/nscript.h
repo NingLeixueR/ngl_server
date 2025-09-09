@@ -7,6 +7,8 @@
 
 extern "C"
 {
+	// # 以#号分割的nguid串(actortype#area#dataid)转换为int64
+	// # parm 1 nguid(actor_type#areaid#dataid)
 	extern int nguidstr2int64(lua_State* L);
 
 	// # lua发送协议给客户端
@@ -121,7 +123,6 @@ namespace ngl
 			luaapi::register_func(L, "nguidstr2int64", nguidstr2int64);
 			luaapi::register_func(L, "send_client", send_client);
 			luaapi::register_func(L, "send_actor", send_actor);
-			luaapi::register_func(L, "nsp_auto_save", send_client);
 		}
 
 		bool init(const char* asubdirectory, const char* ascript)

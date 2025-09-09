@@ -69,11 +69,4 @@ extern "C"
 		lua_pushboolean(L, true);
 		return 1;
 	}	
-}
-
-namespace ngl
-{
-
-
-
-}//namespace ngl
+}//extern "C"
