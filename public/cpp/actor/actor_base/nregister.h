@@ -75,7 +75,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_c2g_gateway<T>(
+		protocol::registry_actor_c2g<T>(
 			nactor_type<TDerived>::type()
 			, tprotocol::protocol<type_forward_c2g>()
 			, tools::type_name<type_forward_c2g>().c_str()
@@ -98,7 +98,7 @@ namespace ngl
 				(((TDerived*)(aactor))->*afun)(lmessage);
 			}
 		};
-		protocol::registry_actor_g2c_gateway<T>(
+		protocol::registry_actor_g2c<T>(
 			nactor_type<TDerived>::type()
 			, tprotocol::protocol<type_forward_g2c>()
 			, tools::type_name<type_forward_g2c>().c_str()

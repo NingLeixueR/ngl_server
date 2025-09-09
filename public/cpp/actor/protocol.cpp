@@ -13,26 +13,29 @@ namespace ngl
 	{
 		struct pfun
 		{
-			protocol::fun_pack								m_packfun;
-			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;
+			protocol::fun_pack								m_packfun;		// 解包回调
+			std::map<ENUM_ACTOR, protocol::fun_run>			m_runfun;		// actor类型对应的逻辑回调
 		};
 
-		static std::map<i32_protocolnum, impl_protocol::pfun>				m_protocolfun;
-		static std::shared_mutex											m_mutex;
+		static std::map<i32_protocolnum, impl_protocol::pfun>				m_protocolfun;	// 协议号关联pfun
+		static std::shared_mutex											m_mutex;		// 锁
 
-		static const char* name(i32_protocolnum aprotocolnum)
+		static const char* name(
+			i32_protocolnum aprotocolnum			/*协议号*/
+		)
 		{
 			const char* lname = em<eprotocol_tar>::get_name((eprotocol_tar)(aprotocolnum));
 			return lname != nullptr ? lname : "none";
 		}
 
-		static void print(const char* amsg, i32_protocolnum aprotocolnum)
+		static void print(
+			const char* amsg						/*打印描述*/
+			, i32_protocolnum aprotocolnum			/*协议号*/
+		)
 		{
 			log_error()->print(
 				"protocol::push msg:{} protocolnum:{} name:{}"
-				, amsg
-				, aprotocolnum
-				, name(aprotocolnum)
+				, amsg, aprotocolnum, name(aprotocolnum)
 			);
 		}
 
@@ -83,17 +86,12 @@ namespace ngl
 		}
 
 		// # 注册网络协议
-		// parm i32_protocolnum aprotocolnumber		协议号
-		// parm ENUM_ACTOR aenumactor				actor类型
-		// parm const fun_pack& apackfun			解包回调
-		// parm const fun_run& arunfun				逻辑回调
-		// parm const char* aname					debug name
 		static void register_protocol(
-			int aprotocolnumber
-			, ENUM_ACTOR aenumactor
-			, const protocol::fun_pack& apackfun
-			, const protocol::fun_run& arunfun
-			, const char* aname
+			int aprotocolnumber							/*协议号*/
+			, ENUM_ACTOR aenumactor						/*actor类型*/
+			, const protocol::fun_pack& apackfun		/*解包回调*/
+			, const protocol::fun_run& arunfun			/*逻辑回调*/
+			, const char* aname							/*debug name*/
 		)
 		{
 			lock_write(m_mutex);
@@ -113,15 +111,17 @@ namespace ngl
 	}
 
 	void protocol::register_protocol(
-		i32_protocolnum aprotocolnumber, ENUM_ACTOR aenumactor
-		, const protocol::fun_pack& apackfun, const protocol::fun_run& arunfun
-		, const char* aname
+		i32_protocolnum aprotocolnumber				/*协议号*/
+		, ENUM_ACTOR aenumactor						/*actor类型*/
+		, const protocol::fun_pack& apackfun		/*解包回调*/
+		, const protocol::fun_run& arunfun			/*逻辑回调*/
+		, const char* aname							/*debug name*/
 	)
 	{
 		impl_protocol::register_protocol(aprotocolnumber, aenumactor, apackfun, arunfun, aname);
 	}
 
-	class cmd_admin
+	class telnet_cmd_admin
 	{
 		static std::set<int> m_adminsocket;
 		static std::shared_mutex	m_mutex;
@@ -151,10 +151,10 @@ namespace ngl
 		}
 	};
 
-	std::set<int> cmd_admin::m_adminsocket;
-	std::shared_mutex cmd_admin::m_mutex;
+	std::set<int> telnet_cmd_admin::m_adminsocket;
+	std::shared_mutex telnet_cmd_admin::m_mutex;
 
-	void protocol::cmd(const std::shared_ptr<pack>& apack)
+	void protocol::telnet_cmd(const std::shared_ptr<pack>& apack)
 	{
 		std::vector<std::string> lvec;
 		if (tools::splite(apack->m_buff, " ", lvec) == false)
@@ -164,11 +164,11 @@ namespace ngl
 		std::string& lkey = lvec[0];
 		std::ranges::transform(lkey, lkey.begin(), tolower);
 
-		if (cmd_admin::check(apack->m_id) == false)
+		if (telnet_cmd_admin::check(apack->m_id) == false)
 		{
 			if (lvec[0] == "/login" && lvec.size() >= 3)
 			{
-				if (cmd_admin::login(apack->m_id, lvec[1], lvec[2]))
+				if (telnet_cmd_admin::login(apack->m_id, lvec[1], lvec[2]))
 				{
 					std::string lstr = std::format("{}:登陆成功\n", lvec[1]);
 					nets::sendmsg(apack->m_id, lstr);
