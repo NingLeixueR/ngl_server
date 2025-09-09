@@ -25,11 +25,11 @@ namespace ngl
 
 	public:
 		activity_drawcompliance(
-			int32_t aactivityid
-			, int32_t atime
-			, int32_t aduration
-			, activitydb& aactivitydb
-			, activitytimedb& aactivitytimedb
+			int32_t aactivityid					/*活动id*/
+			, int32_t atime						/*开启时间*/
+			, int32_t aduration					/*持续时间*/
+			, activitydb& aactivitydb			/*活动数据*/
+			, activitytimedb& aactivitytimedb	/*活动时间数据*/
 		) :
 			activity(aactivityid, atime, aduration, aactivitydb, aactivitytimedb)
 		{}
