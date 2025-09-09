@@ -137,26 +137,12 @@ namespace ngl
 			{
 				return ecross_none;
 			}
-			if (adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY)
-			{
-				return ecross_cross_ordinary;
-			}
-			else
-			{
-				return ecross_ordinary;
-			}
+			return adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		ecross forward_type(const pbexample::PROBUFF_EXAMPLE_PLAY_ENTER_EXAMPLE& adata)
 		{
-			if (adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY)
-			{
-				return ecross_cross_ordinary;
-			}
-			else
-			{
-				return ecross_ordinary;
-			}
+			return adata.mcross() == pbexample::ECROSS_CROSS_ORDINARY ? ecross_cross_ordinary : ecross_ordinary;
 		}
 
 		//# 例子小游戏匹配的转发类型
