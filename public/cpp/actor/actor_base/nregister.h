@@ -62,7 +62,7 @@ namespace ngl
 
 	template <typename TDerived>
 	template <typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun_c2g_gateway(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun)
+	nrfun<TDerived>& nrfun<TDerived>::rfun_c2g(const Tfun<TDerived, np_actor_forward<T, forward_c2g<forward>>> afun)
 	{
 		using type_forward_c2g = np_actor_forward<T, forward_c2g<forward>>;
 		m_fun[tprotocol::protocol<np_actor_forward<T, forward_c2g<forward>>>()] = nlogicfun
@@ -85,7 +85,7 @@ namespace ngl
 
 	template <typename TDerived>
 	template <typename T>
-	nrfun<TDerived>& nrfun<TDerived>::rfun_g2c_gateway(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun)
+	nrfun<TDerived>& nrfun<TDerived>::rfun_g2c(const Tfun<TDerived, np_actor_forward<T, forward_g2c<forward>>> afun)
 	{
 		using type_forward_g2c = np_actor_forward<T, forward_g2c<forward>>;
 		m_fun[tprotocol::protocol<np_actor_forward<T, forward_g2c<forward>>>()] = nlogicfun
