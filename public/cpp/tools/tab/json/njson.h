@@ -781,8 +781,12 @@ namespace ngl
 		if constexpr (std::is_enum<T>::value)
 		{
 			int32_t lvalue = 0;
-			json_format<int32_t>::read(ajson, akey, lvalue);
+			if (!json_format<int32_t>::read(ajson, akey, lvalue))
+			{
+				return false;
+			}
 			adata = (T)lvalue;
+			return true;
 		}
 		else
 		{
