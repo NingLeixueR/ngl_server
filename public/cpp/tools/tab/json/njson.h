@@ -891,7 +891,7 @@ namespace ngl
 namespace ngl
 {
 	template <typename T>
-	static bool tools::json2custom(const std::string& json, T& adata)
+	bool tools::json2custom(const std::string& json, T& adata)
 	{
 		njson_read ljread(json);
 		return njson::read(ljread, tools::type_name<T>().c_str(), adata);
