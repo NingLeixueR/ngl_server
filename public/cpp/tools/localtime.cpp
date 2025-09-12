@@ -46,6 +46,8 @@ namespace ngl
 		{
 			return false;
 		}
+		m_offset = 0;
+		lnow = gettime();
 		m_offset = (sti - lnow);
 		return true;
 	}
