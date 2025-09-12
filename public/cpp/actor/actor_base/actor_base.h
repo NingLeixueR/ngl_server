@@ -702,19 +702,7 @@ namespace ngl
 	template <typename T>
 	tprotocol::info* tprotocol::tcustoms<SCRIPT>::func(int32_t aprotocolnum /*= -1*/)
 	{
-		info* linfo = funcx<np_mass_actor<T>>(aprotocolnum);
-		if (linfo != nullptr)
-		{
-			if constexpr (SCRIPT)
-			{
-				linfo->m_toactor[enscript_lua] = std::bind(
-					&tcustoms_send<enscript_lua>::send_actor<np_mass_actor<T>>
-					, std::placeholders::_1
-					, std::placeholders::_2
-				);
-			}
-		}
-		linfo = funcx<T>(aprotocolnum);
+		info* linfo = funcx<T>(aprotocolnum);
 		if (linfo != nullptr)
 		{
 			if constexpr (SCRIPT)
