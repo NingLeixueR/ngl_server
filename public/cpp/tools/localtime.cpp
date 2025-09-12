@@ -59,6 +59,12 @@ namespace ngl
 		return m_offset + lnow;
 	}
 
+	time_t localtime::getsystime()
+	{
+		time_t lnow = time(nullptr);
+		return lnow;
+	}
+
 	time_t localtime::getms()
 	{
 		return gettimems() % MILLISECOND;
