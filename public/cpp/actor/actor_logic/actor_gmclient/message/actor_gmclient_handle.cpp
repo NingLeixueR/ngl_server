@@ -3,27 +3,27 @@ namespace ngl
 {
 	bool actor_gmclient::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (lojson.read("operator", loperator) == false)
+		if (!njson::read(lojson, "operator", loperator))
 		{
 			return true;
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("all_protocol") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("all_protocol") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<protocols> lpro(id, "all_protocol");
 					get_allprotocol(lpro.m_data);
 				};
 
-			handle_cmd::add("server_stat") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("server_stat") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<actor_manage::msg_actor_stat> lpro(id, "server_stat");
 					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
 
-			handle_cmd::add("set_time") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("set_time") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<std::string> lpro(id, "set_time");
 					struct operator_set_time
@@ -32,14 +32,14 @@ namespace ngl
 						dprotocol(operator_set_time, m_time)
 					};
 					operator_set_time ltime;
-					if (aos.read("data", ltime))
+					if (njson::read(aos, "data", ltime))
 					{
 						bool lbool = localtime::settime(ltime.m_time);
 						lpro.m_data = std::format("set time {} # {}", localtime::time2str("%Y-%m-%d %H:%M:%S"), lbool ? "success" : "fail");
 					}
 				};
 
-			handle_cmd::add("get_time") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("get_time") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<std::string> lpro(id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"));
 				};

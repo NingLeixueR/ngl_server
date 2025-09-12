@@ -33,7 +33,6 @@
 #include "nprotocol.cpp"
 #include "logprintf.cpp"
 #include "localtime.cpp"
-#include "json_read.cpp"
 #include "db_manage.cpp"
 #include "attribute.cpp"
 #include "asio_base.cpp"

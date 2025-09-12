@@ -78,15 +78,15 @@ namespace ngl
 			{
 				return false;
 			}
-			json_read ljread(ltemp.c_str());
-			return ljread.read(arg...);
+			njson_read ljread(ltemp.c_str());
+			return njson::read(ljread, arg...);
 		}
 
 		template <typename ...ARG>
 		bool set_json_value(const char* akey, ARG&... arg)
 		{
-			json_write lwrite;
-			lwrite.write(arg...);
+			njson_write lwrite;
+			njson::write(arg...);
 			std::string lstr;
 			lwrite.get(lstr);
 			set_value(akey, lstr);

@@ -114,12 +114,12 @@ namespace ngl
 #pragma endregion 
 
 		// ## 发起连接
-		void connect(const std::string& akcpsess
+		void connect(std::string& akcpsess
 			, i64_actorid aactorid
 			, const std::string& aip, i16_port aport
 			, const std::function<void(i32_session)>& afun
 		);
-		void connect(const std::string& akcpsess
+		void connect(std::string& akcpsess
 			, i64_actorid aactorid
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun

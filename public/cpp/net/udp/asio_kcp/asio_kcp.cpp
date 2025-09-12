@@ -426,15 +426,15 @@ namespace ngl
 				{
 					apstruct->m_isconnect = true;
 					apstruct->m_pingtm = (int)localtime::gettime();
-					json_read ltempjson(ajson.c_str());
+					njson_read ltempjson(ajson.c_str());
 
 					i64_actorid lactorid;
-					if (ltempjson.read("actorid", lactorid) == false)
+					if (!njson::read(ltempjson, "actorid", lactorid))
 					{
 						return;
 					}
 					std::string lsession;
-					if (ltempjson.read("session", lsession) == false)
+					if (!njson::read(ltempjson, "session", lsession))
 					{
 						return;
 					}
@@ -747,7 +747,7 @@ namespace ngl
 		}
 
 		inline void connect(int32_t aconv
-			, const std::string& akcpsess
+			, std::string& akcpsess
 			, i64_actorid aactorid
 			, const std::string& aip
 			, i16_port aport
@@ -759,7 +759,7 @@ namespace ngl
 		}
 
 		inline void connect(int32_t aconv
-			, const std::string& akcpsess
+			, std::string& akcpsess
 			, i64_actorid aactorid
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun
@@ -767,12 +767,13 @@ namespace ngl
 		{
 			// #### 发起连接
 			ptr_se lpstruct = m_session.add(aconv, aendpoint, aactorid);
-			json_write ltempjson;
-			ltempjson.write("actorid", aactorid);
-			ltempjson.write("session", akcpsess);
+			njson_write ltempjson;
+			njson::write(ltempjson
+				, "actorid", aactorid
+				, "session", akcpsess
+			);
 			ltempjson.set_nonformatstr(true);
-			std::string lparm;
-			ltempjson.get(lparm);
+			std::string lparm = ltempjson.get();
 			udp_cmd::sendcmd(m_kcp, lpstruct->m_session, udp_cmd::ecmd_connect, lparm);
 			m_connectfun = afun;
 		}
@@ -849,7 +850,7 @@ namespace ngl
 	}
 
 	void asio_kcp::connect(int32_t aconv
-		, const std::string& akcpsess
+		, std::string& akcpsess
 		, i64_actorid aactorid
 		, const std::string& aip
 		, i16_port aport
@@ -860,7 +861,7 @@ namespace ngl
 	}
 
 	void asio_kcp::connect(int32_t aconv
-		, const std::string& akcpsess
+		, std::string& akcpsess
 		, i64_actorid aactorid
 		, const asio_udp_endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun

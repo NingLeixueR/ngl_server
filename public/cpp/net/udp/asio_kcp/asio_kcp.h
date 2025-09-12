@@ -2,8 +2,6 @@
 
 #include "threadtools.h"
 #include "time_wheel.h"
-#include "json_write.h"
-#include "json_read.h"
 #include "asio_base.h"
 #include "type.h"
 #include "pack.h"
@@ -59,7 +57,7 @@ namespace ngl
 
 		// # 发起连接
 		void connect(int32_t aconv
-			, const std::string& akcpsess
+			, std::string& akcpsess
 			, i64_actorid aactorid
 			, const std::string& aip
 			, i16_port aport
@@ -68,7 +66,7 @@ namespace ngl
 
 		// # 发起连接
 		void connect(int32_t aconv
-			, const std::string& akcpsess
+			, std::string& akcpsess
 			, i64_actorid aactorid
 			, const asio_udp_endpoint& aendpoint
 			, const std::function<void(i32_session)>& afun

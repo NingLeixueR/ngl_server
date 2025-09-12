@@ -28,7 +28,7 @@ namespace ngl
 			return false;
 		}
 		// 返回值:是否还需要actor_gm处理
-		bool distribute(std::string akey, const json_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
+		bool distribute(std::string akey, njson_read& aos, const message<ngl::np_gm>* adata, actor_gm* agm)
 		{
 			struct servertype
 			{
@@ -36,7 +36,7 @@ namespace ngl
 				dprotocol(servertype, m_servertype)
 			};
 			servertype lservertype;
-			if (aos.read("data", lservertype))
+			if (njson::read(aos, "data", lservertype))
 			{
 				bool lret = false;
 				for (int i = 0; i < lservertype.m_servertype.size(); ++i)
@@ -65,16 +65,16 @@ namespace ngl
 				int32_t m_dataid;
 				dprotocol(gm_guid, m_actor_name, m_area, m_dataid)
 			};
-			handle_cmd::add("server_stat") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("server_stat") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<actor_manage::msg_actor_stat> lpro(adata->get_pack()->m_id, "server_stat", this);
 					actor_manage::instance().get_actor_stat(lpro.m_data);
 				};
-			handle_cmd::add("guid") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("guid") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "guid", this);
 					gm_guid lguid;
-					if (aos.read("data", lguid))
+					if (njson::read(aos, "data", lguid))
 					{
 						ENUM_ACTOR ltype;
 						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
@@ -85,16 +85,16 @@ namespace ngl
 						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.m_area, lguid.m_dataid));
 					}
 				};
-			handle_cmd::add("all_protocol") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("all_protocol") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<protocols> lresponse(adata->get_pack()->m_id, "all_protocol", this);
 					actor_gmclient::get_allprotocol(lresponse.m_data);
 				};
-			handle_cmd::add("close_actor") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("close_actor") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->get_pack()->m_id, "close_actor", false, this);
 					gm_guid lguid;
-					if (aos.read("data", lguid))
+					if (!njson::read(aos, "data", lguid))
 					{
 						ENUM_ACTOR ltype;
 						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
@@ -108,12 +108,12 @@ namespace ngl
 						lresponse.m_data = true;
 					}
 				};
-			handle_cmd::add("get_time") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("get_time") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<std::string> lresponse(adata->get_pack()->m_id, "get_time", localtime::time2str("%Y-%m-%d %H:%M:%S"), this);
 					return;
 				};
-			handle_cmd::add("set_time") = [this](const json_read& aos, const message<ngl::np_gm>* adata)
+			handle_cmd::add("set_time") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
 					gcmd<bool> lresponse(adata->get_pack()->m_id, "set_time", false, this);
 					struct operator_set_time
@@ -122,7 +122,7 @@ namespace ngl
 						dprotocol(operator_set_time, m_time)
 					};
 					operator_set_time ltime;
-					if (aos.read("data", ltime))
+					if (njson::read(aos, "data", ltime))
 					{
 						localtime::settime(ltime.m_time);
 						lresponse.m_data = true;
@@ -137,17 +137,17 @@ namespace ngl
 	bool actor_gm::handle(const message<ngl::np_gm>& adata)
 	{
 		log_error()->print("php2gm [{}]", adata.get_data()->m_json);
-		ngl::json_read lreadjson(adata.get_data()->m_json.c_str());
+		ngl::njson_read lreadjson(adata.get_data()->m_json.c_str());
 
 		std::string lactorname;
 		i64_actorid lactorid = -1;
-		if (lreadjson.read("actor_name", lactorname))
+		if (njson::read(lreadjson, "actor_name", lactorname))
 		{
 			// ### 单例
 			if (lactorname == "ACTOR_GM")
 			{
 				std::string loperator;
-				if (lreadjson.read("operator", loperator) == false)
+				if (!njson::read(lreadjson, "operator", loperator))
 				{
 					return true;
 				}
@@ -170,7 +170,7 @@ namespace ngl
 				if (lactorname == "ACTOR_DB")
 				{
 					int32_t ltype = 0;
-					if (lreadjson.read("db", ltype) == false)
+					if (!njson::read(lreadjson, "db", ltype))
 					{
 						return true;
 					}
@@ -183,7 +183,7 @@ namespace ngl
 			sendbytype(ltype, adata.get_pack(), *adata.get_data());
 			return true;
 		}
-		else if (lreadjson.read("actor_id", lactorid))
+		else if (!njson::read(lreadjson, "actor_id", lactorid))
 		{// ### 非单例
 			sendbyactorid(lactorid, adata.get_pack(), *adata.get_data());
 			return true;
