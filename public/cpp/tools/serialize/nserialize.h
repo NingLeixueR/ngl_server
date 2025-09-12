@@ -111,7 +111,7 @@ namespace ngl
 
 			virtual bool basetype(void* adata, int32_t abytes)
 			{
-				if (pos() + abytes > len())
+				if (pos() + abytes >= len())
 				{
 					return false;
 				}
@@ -429,6 +429,10 @@ namespace ngl
 		template <>
 		struct serialize_format<std::string>
 		{
+			enum
+			{
+				eserialize_format_bytes = 102400,
+			};
 			static bool push(serialize_push* aserialize, const std::string& adata)
 			{
 				int32_t lsize = adata.size();
@@ -443,6 +447,10 @@ namespace ngl
 			{
 				int32_t lsize = 0;
 				if (!serialize_format<int32_t>::pop(aserialize, lsize))
+				{
+					return false;
+				}
+				if (lsize > eserialize_format_bytes)
 				{
 					return false;
 				}
