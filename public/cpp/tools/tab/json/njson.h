@@ -314,7 +314,7 @@ namespace ngl
 				for (T* ltempitor = afun(); ltempitor != nullptr; ltempitor = afun())
 				{
 					njson_write ltemp;
-					ltempitor->json_write(ajson);
+					ltempitor->json_write(ltemp);
 					cJSON_AddItemToArray(larray, ltemp.nofree());
 				}
 				json_format<cJSON*>::write(ajson, akey, larray);
