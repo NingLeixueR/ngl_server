@@ -174,7 +174,8 @@ namespace ngl
 					{
 						return true;
 					}
-					i64_actorid ldbactorid = nguid::make(db_enum((pbdb::ENUM_DB)(ltype)), tab_self_area, nguid::none_actordataid());
+					ENUM_ACTOR lactortype = db_enum((pbdb::ENUM_DB)(ltype));
+					i64_actorid ldbactorid = nguid::make(lactortype, tab_self_area, nguid::none_actordataid());
 					sendbyactorid(ldbactorid, adata.get_pack(), *adata.get_data());
 				}
 				return true;
