@@ -32,16 +32,16 @@ namespace ngl
 		{
 			struct servertype
 			{
-				std::vector<int32_t> m_servertype;
-				dprotocol(servertype, m_servertype)
+				std::vector<int32_t> servertype;
+				dprotocol(servertype, servertype)
 			};
 			servertype lservertype;
 			if (njson::read(aos, "data", lservertype))
 			{
 				bool lret = false;
-				for (int i = 0; i < lservertype.m_servertype.size(); ++i)
+				for (int i = 0; i < lservertype.servertype.size(); ++i)
 				{
-					NODE_TYPE lstype = (NODE_TYPE)lservertype.m_servertype[i];
+					NODE_TYPE lstype = (NODE_TYPE)lservertype.servertype[i];
 					if (actor_gm::checklocalbytype(lstype))
 					{
 						lret = true;
@@ -60,10 +60,10 @@ namespace ngl
 		{
 			struct gm_guid
 			{
-				std::string m_actor_name;
-				int16_t m_area;
-				int32_t m_dataid;
-				dprotocol(gm_guid, m_actor_name, m_area, m_dataid)
+				std::string actor_name;
+				int16_t area;
+				int32_t dataid;
+				dprotocol(gm_guid, actor_name, area, dataid)
 			};
 			handle_cmd::add("server_stat") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
 				{
@@ -77,12 +77,12 @@ namespace ngl
 					if (njson::read(aos, "data", lguid))
 					{
 						ENUM_ACTOR ltype;
-						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
+						ltype = em<ENUM_ACTOR>::get_enum(lguid.actor_name.c_str());
 						if (ltype == em<ENUM_ACTOR>::enum_null())
 						{
 							return;
 						}
-						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.m_area, lguid.m_dataid));
+						lresponse.m_data = tools::lexical_cast<std::string>(nguid::make(ltype, lguid.area, lguid.dataid));
 					}
 				};
 			handle_cmd::add("all_protocol") = [this](njson_read& aos, const message<ngl::np_gm>* adata)
@@ -97,14 +97,14 @@ namespace ngl
 					if (!njson::read(aos, "data", lguid))
 					{
 						ENUM_ACTOR ltype;
-						ltype = em<ENUM_ACTOR>::get_enum(lguid.m_actor_name.c_str());
+						ltype = em<ENUM_ACTOR>::get_enum(lguid.actor_name.c_str());
 						if (ltype == em<ENUM_ACTOR>::enum_null())
 						{
 							return;
 						}
-						nguid::make(ltype, lguid.m_area, lguid.m_dataid);
+						nguid::make(ltype, lguid.area, lguid.dataid);
 						auto pro = std::make_shared<np_actor_close>();
-						actor::send_actor(nguid::make(ltype, lguid.m_area, lguid.m_dataid), id_guid(), pro);
+						actor::send_actor(nguid::make(ltype, lguid.area, lguid.dataid), id_guid(), pro);
 						lresponse.m_data = true;
 					}
 				};
@@ -118,13 +118,13 @@ namespace ngl
 					gcmd<bool> lresponse(adata->get_pack()->m_id, "set_time", false, this);
 					struct operator_set_time
 					{
-						int32_t m_time = 0;
-						dprotocol(operator_set_time, m_time)
+						int32_t time = 0;
+						dprotocol(operator_set_time, time)
 					};
 					operator_set_time ltime;
 					if (njson::read(aos, "data", ltime))
 					{
-						localtime::settime(ltime.m_time);
+						localtime::settime(ltime.time);
 						lresponse.m_data = true;
 					}
 				};

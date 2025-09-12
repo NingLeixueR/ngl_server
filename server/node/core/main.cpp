@@ -20,8 +20,63 @@
 
 Dumper lDumper;
 
+namespace ngl
+{
+	struct servertype
+	{
+		std::vector<int32_t> servertype;
+
+		static std::vector<const char*>& parms(const char* astr = nullptr) 
+		{
+			static std::vector<const char*> tempvec; 
+			if (astr == nullptr) 
+			{
+				return tempvec;
+			} 
+			static std::string tempstr(astr); 
+			static std::atomic<bool> lregister = true; 
+			if (lregister.exchange(false) && !tempstr.empty()) 
+			{
+				tempvec = tools::split_str(&tempstr[0], tempstr.size());
+			} 
+			return tempvec;
+		}
+		inline void json_write(ngl::njson_write& ijsn, const char* akey) 
+		{
+			ngl::njson_write ltemp; 
+			json_write(ltemp); 
+			ngl::njson::write(ijsn, akey, ltemp.nofree());
+		} 
+		inline void json_write(ngl::njson_write& ijsn) 
+		{
+			help_writejson ltemp(parms("servertype"), ijsn); 
+			ltemp.fun(0, servertype);
+		} 
+		inline bool json_read(ngl::njson_read& ijsn, const char* akey) 
+		{
+			ngl::njson_read ltemp; 
+			if (!ngl::njson::read(ijsn, akey, ltemp.json())) 
+			{
+				return false;
+			} 
+			return json_read(ltemp);
+		} 
+		inline bool json_read(ngl::njson_read& ijsn) 
+		{
+			help_readjson ltemp(parms("servertype"), ijsn); 
+			return ltemp.fun(0, servertype);
+		}
+	};
+}
+
 int main(int argc, char** argv)
 {
+	std::string ljson = R"({"actor_name":"ACTOR_GM","operator":"get_time","data":{"servertype":["7"]}})";
+	ngl::njson_read lreadff(ljson.c_str());
+	ngl::servertype lservertype;
+	ngl::njson::read(lreadff, "data", lservertype);
+
+
 	ngl::njson_write lwrite;
 	std::map<int, std::string> lmap1 = 
 	{
