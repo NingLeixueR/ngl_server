@@ -10,7 +10,7 @@ namespace ngl
 		m_kcp(aprot)
 	{}
 
-	void ukcp::connect(const std::string& akcpsess
+	void ukcp::connect(std::string& akcpsess
 		, i64_actorid aactorid
 		, const std::string& aip
 		, i16_port aport
@@ -20,7 +20,7 @@ namespace ngl
 		m_kcp.connect(m_conv, akcpsess, aactorid, aip, aport, afun);
 	}
 
-	void ukcp::connect(const std::string& akcpsess
+	void ukcp::connect(std::string& akcpsess
 		, i64_actorid aactorid
 		, const asio_udp_endpoint& aendpoint
 		, const std::function<void(i32_session)>& afun

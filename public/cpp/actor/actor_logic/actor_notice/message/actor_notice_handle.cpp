@@ -12,17 +12,17 @@ namespace ngl
 	bool actor_notice::handle(const message<mforward<np_gm>>& adata)
 	{
 		//using type = mforward<np_gm_response>;
-		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
 
 		std::string loperator;
-		if (lojson.read("operator", loperator) == false)
+		if (!njson::read(lojson, "operator", loperator))
 		{
 			return true;
 		}
 
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("get_notice") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("get_notice") = [this](int id, ngl::njson_read& aos)
 				{// ·µ»Ø {"notice":gm_notice[]}
 					gcmd<std::vector<std::string>> pro(id, "get_notice");
 					std::map<nguid, data_modified<pbdb::db_notice>>& lmapdb = m_notice.data();
@@ -35,11 +35,11 @@ namespace ngl
 					pro.m_istoutf8 = false;
 				};
 
-			handle_cmd::add("add_notice") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("add_notice") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<bool> pro(id, "add_notice", false);
 					gm_notice recv;
-					if (aos.read("data", recv) == false)
+					if (!njson::read(aos, "data", recv))
 					{
 						return;
 					}
@@ -47,12 +47,12 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_cmd::add("del_notice") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("del_notice") = [this](int id, ngl::njson_read& aos)
 				{
 					// ·µ»Ø bool
 					gcmd<bool> pro(id, "del_notice", false);
 					int64_t lid = 0;
-					if (aos.read("data", lid) == false)
+					if (!njson::read(aos, "data", lid))
 					{
 						return;
 					}

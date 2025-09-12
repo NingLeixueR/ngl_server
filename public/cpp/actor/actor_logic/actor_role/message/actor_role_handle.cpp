@@ -5,8 +5,6 @@
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "actor_role.h"
-#include "json_write.h"
-#include "json_read.h"
 #include "nregister.h"
 #include "ttab_task.h"
 #include "nforward.h"
@@ -17,16 +15,16 @@ namespace ngl
 {
 	bool actor_role::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (lojson.read("operator", loperator) == false)
+		if (!njson::read(lojson, "operator", loperator))
 		{
 			return true;
 		}
 
 		if (handle_gm::empty())
 		{
-			handle_gm::add("pay") = [this](int id, const ngl::json_read& aos)
+			handle_gm::add("pay") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<int32_t> pro(id, "pay");
 					struct pay
@@ -36,18 +34,18 @@ namespace ngl
 						dprotocol(pay, m_orderid, m_rechargeid)
 					};
 					pay lpay;
-					if (aos.read("data", lpay) == false)
+					if (!njson::read(aos, "data", lpay))
 					{
 						return;
 					}
 					pro.m_data = rechange(lpay.m_orderid, lpay.m_rechargeid, false, true);
 				};
 
-			handle_gm::add("gmrechange") = [this](int id, const ngl::json_read& aos)
+			handle_gm::add("gmrechange") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<int32_t> pro(id, "gmrechange");
 					int32_t lrechargeid;
-					if (aos.read("data", lrechargeid) == false)
+					if (!njson::read(aos, "data", lrechargeid))
 					{
 						return;
 					}
@@ -56,11 +54,11 @@ namespace ngl
 					pro.m_data = rechange(lorder, lrechargeid, true, true);
 				};
 
-			handle_gm::add("rechange") = [this](int id, const ngl::json_read& aos)
+			handle_gm::add("rechange") = [this](int id, ngl::njson_read& aos)
 				{//actor_role::loginpay() callback
 					gcmd<int32_t> pro(id, "rechange");
 					prorechange lrechange;
-					if (aos.read("data", lrechange) == false)
+					if (!njson::read(aos, "data", lrechange))
 					{
 						return;
 					}
@@ -69,11 +67,11 @@ namespace ngl
 				};
 
 			// ½ûÑÔ lduration=0½â·â
-			handle_gm::add("bantalk") = [this](int id, const ngl::json_read& aos)
+			handle_gm::add("bantalk") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<bool> pro(id, "bantalk", false);
 					int32_t lduration;
-					if (aos.read("data", lduration) == false)
+					if (!njson::read(aos, "data", lduration))
 					{
 						return;
 					}

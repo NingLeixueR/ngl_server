@@ -13,7 +13,7 @@ namespace ngl
 		ttab_servers(const ttab_servers&) = delete;
 		ttab_servers& operator=(const ttab_servers&) = delete;
 
-		std::map<i16_area, std::map<i32_serverid, const tab_servers*>> m_areaserver;
+		std::map<i16_area, std::map<i32_serverid, tab_servers*>> m_areaserver;
 		std::map<i16_area, std::set<i16_area>> m_coressserver;// key:应该是小于0的跨服 value:跨服对应的区服
 
 		ttab_servers()
@@ -25,7 +25,7 @@ namespace ngl
 		{
 			std::cout << "[ttab_servers] reload" << std::endl;
 			m_areaserver.clear();
-			for (const auto& item : tablecsv())
+			for (std::pair<const int, tab_servers>& item : tablecsv())
 			{
 				m_areaserver[item.second.m_area][item.first] = &item.second;
 
@@ -69,7 +69,7 @@ namespace ngl
 			return ltemp;
 		}
 
-		const std::map<int, tab_servers>& tablecsv()
+		std::map<int, tab_servers>& tablecsv()
 		{
 			ttab_servers* ttab = allcsv::get<ttab_servers>();
 			if (ttab == nullptr)
@@ -221,17 +221,17 @@ namespace ngl
 		}
 
 		// 便利所有服务器
-		void foreach_server(const std::function<void(const tab_servers*)>& afun)
+		void foreach_server(const std::function<void(tab_servers*)>& afun)
 		{
 			ttab_mergearea::instance().foreach([&afun](i16_area aarea, std::set<i16_area>& aset)
 				{
-					
+					//std::map<i32_serverid, const tab_servers*>
 					auto lpmap = tools::findmap(ttab_servers::instance().m_areaserver, aarea);
 					if (lpmap == nullptr)
 					{
 						return;
 					}
-					for (const auto& item : *lpmap)
+					for (std::pair<const i32_serverid, tab_servers*>& item : *lpmap)
 					{
 						afun(item.second);
 					}

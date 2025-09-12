@@ -280,26 +280,26 @@ namespace ngl
 			return true;
 		}
 
-		using handle_cmd = cmd<tactor_db, std::string, int, int, const ngl::json_read&>;
+		using handle_cmd = cmd<tactor_db, std::string, int, int, ngl::njson_read&>;
 
 		bool handle(const message<mforward<np_gm>>& adata)
 		{
 			const mforward<np_gm>& parm = *adata.get_data();
-			ngl::json_read lojson(parm.data()->m_json.c_str());
+			ngl::njson_read lojson(parm.data()->m_json.c_str());
 
 			std::string loperator;
-			if (lojson.read("operator", loperator) == false)
+			if (!njson::read(lojson, "operator", loperator))
 			{
 				return true;
 			}
 
 			if (handle_cmd::empty())
 			{
-				handle_cmd::add("query") = [this](int athread, int id, const ngl::json_read& aos)
+				handle_cmd::add("query") = [this](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<std::string> pro(id, "query");
 						int64_t lid = 0;
-						if (aos.read("data", lid) == false)
+						if (!njson::read(aos, "data", lid))
 						{
 							return;
 						}
@@ -330,11 +330,11 @@ namespace ngl
 					dprotocol(query_page, m_everypagecount, m_page)
 				};
 
-				handle_cmd::add("queryall") = [this](int athread, int id, const ngl::json_read& aos)
+				handle_cmd::add("queryall") = [this](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<std::vector<std::string>> pro(id, "queryall");
 						query_page lpage;
-						if (aos.read("data", lpage) == false)
+						if (!njson::read(aos, "data", lpage))
 						{
 							return;
 						}
@@ -353,12 +353,12 @@ namespace ngl
 							});
 					};
 
-				handle_cmd::add("change") = [this](int athread, int id, const ngl::json_read& aos)
+				handle_cmd::add("change") = [this](int athread, int id, ngl::njson_read& aos)
 					{
 						gcmd<bool> pro(id, "change", false);
 
 						std::string ljson;
-						if (aos.read("data", ljson) == false)
+						if (!njson::read(aos, "data", ljson))
 						{
 							return;
 						}

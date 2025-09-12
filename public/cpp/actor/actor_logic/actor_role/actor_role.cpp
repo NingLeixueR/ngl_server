@@ -5,8 +5,6 @@
 #include "nsp_server.h"
 #include "nsp_client.h"
 #include "actor_role.h"
-#include "json_write.h"
-#include "json_read.h"
 #include "nregister.h"
 #include "nforward.h"
 #include "net.pb.h"
@@ -185,24 +183,24 @@ namespace ngl
 				log_error()->print("actor_role::loginpay curl callback [{}]", ahttp.m_recvdata);
 				try
 				{
-					json_read ltempjson(ahttp.m_recvdata.c_str());
+					njson_read ltempjson(ahttp.m_recvdata.c_str());
 					if (ltempjson.check() == false)
 					{
 						log_error()->print("actor_role::loginpay curl callback fail");
 						return;
 					}
 					std::string lorderid;
-					if (ltempjson.read("orderid", lorderid) == false)
+					if (!njson::read(ltempjson, "orderid", lorderid))
 					{
 						return;
 					}
 					int32_t lrechargeid = -1;
-					if (ltempjson.read("rechargeid", lrechargeid) == false)
+					if (!njson::read(ltempjson, "rechargeid", lrechargeid))
 					{
 						return;
 					}
 					int64_t lroleid = -1;
-					if (ltempjson.read("roleid", lroleid) == false)
+					if (!njson::read(ltempjson, "roleid", lroleid))
 					{
 						return;
 					}
@@ -219,14 +217,14 @@ namespace ngl
 
 							try
 							{
-								json_read ltempjson(ahttp.m_recvdata.c_str());
+								njson_read ltempjson(ahttp.m_recvdata.c_str());
 								if (ltempjson.check() == false)
 								{
 									log_error()->print("actor_role::loginpay curl callback fail");
 									return;
 								}
 								int32_t lstat = -1;
-								if (ltempjson.read("orderid", lstat) == false)
+								if (!njson::read(ltempjson, "orderid", lstat))
 								{
 									return;
 								}
@@ -235,12 +233,12 @@ namespace ngl
 									return;
 								}
 								int32_t lrechargeid = -1;
-								if (ltempjson.read("rechargeid", lrechargeid) == false)
+								if (!njson::read(ltempjson, "rechargeid", lrechargeid))
 								{
 									return;
 								}
 								std::string lorderid;
-								if (ltempjson.read("orderid", lorderid) == false)
+								if (!njson::read(ltempjson, "orderid", lorderid))
 								{
 									return;
 								}

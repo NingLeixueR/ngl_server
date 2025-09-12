@@ -1,6 +1,4 @@
 #include "manage_curl.h"
-#include "json_write.h"
-#include "json_read.h"
 #include "nprotocol.h"
 #include "worklist.h"
 #include "nlog.h"

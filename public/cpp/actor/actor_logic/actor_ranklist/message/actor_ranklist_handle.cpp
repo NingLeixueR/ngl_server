@@ -4,15 +4,15 @@ namespace ngl
 {
 	bool actor_ranklist::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (lojson.read("operator", loperator) == false)
+		if (!njson::read(lojson, "operator", loperator))
 		{
 			return true;
 		}
 		if (handle_cmd::empty())
 		{
-			handle_cmd::add("ranklist") = [this](int id, const ngl::json_read& aos)
+			handle_cmd::add("ranklist") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<std::string> pro(id, "ranklist");
 					struct json_rank
@@ -24,15 +24,12 @@ namespace ngl
 						dprotocol(json_rank, m_type, m_page)
 					};
 					json_rank lrank;
-					if (aos.read("data", lrank) == false)
+					if (!njson::read(aos, "data", lrank))
 					{
-						return;
+						return true;
 					}
 					auto prorank = m_ranklist.get_ranklist(nguid::make(), (pbdb::eranklist)lrank.m_type, lrank.m_page);
-					if (tools::proto2json(*prorank, pro.m_data) == false)
-					{
-						return;
-					}
+					tools::proto2json(*prorank, pro.m_data);
 				};
 		}
 

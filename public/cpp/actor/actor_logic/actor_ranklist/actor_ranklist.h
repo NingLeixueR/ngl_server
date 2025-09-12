@@ -49,7 +49,7 @@ namespace ngl
 
 		static void nregister();
 
-		using handle_cmd = cmd<actor_ranklist, std::string, int, const ngl::json_read&>;
+		using handle_cmd = cmd<actor_ranklist, std::string, int, ngl::njson_read&>;
 
 		bool timer_handle(const message<np_timerparm>& adata);
 

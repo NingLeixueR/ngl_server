@@ -439,35 +439,4 @@ namespace ngl
 	{
 		return from;
 	}
-
-	template <typename VAL>
-	void json_write::write(const char* akey, const std::map<nguid, VAL>& aval)
-	{
-		json_write ltemp;
-		for (const auto& item : aval)
-		{
-			ltemp.write(tools::lexical_cast<std::string>((int64_t)item.first), item.second);
-		}
-		write(akey, ltemp);
-	}
-
-	template <typename VAL>
-	bool json_read::read(const char* akey, std::map<nguid, VAL>& aval)const
-	{
-		json_read ltemp;
-		if (read(akey, ltemp) == false)
-		{
-			return false;
-		}
-
-		for (cJSON* child = ltemp.m_json->child; child != nullptr; child = child->next)
-		{
-			nguid lkey = tools::lexical_cast<int64_t>(child->string);
-			if (!ltemp.read(child->string, aval[lkey]))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
 }//namespace ngl

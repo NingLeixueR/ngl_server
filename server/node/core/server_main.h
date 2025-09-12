@@ -547,7 +547,7 @@ bool start_pushserverconfig()
 	}
 	lpushserver = lgmurl + "/" + lpushserver;
 
-	ngl::ttab_servers::instance().foreach_server([&lpushserver](const ngl::tab_servers* aserver)
+	ngl::ttab_servers::instance().foreach_server([&lpushserver](ngl::tab_servers* aserver)
 		{
 			auto lhttp = ngl::manage_curl::make_http();
 			ngl::manage_curl::set_mode(lhttp, ngl::ENUM_MODE_HTTP);
@@ -564,22 +564,22 @@ bool start_pushserverconfig()
 			//  ENET_TCP = 0,
 			//	ENET_WS = 1,
 			//	ENET_KCP = 2,
-			ngl::json_write lwrite;
+			ngl::njson_write lwrite;
 			std::array<std::string, ngl::ENET_COUNT> lparm = { "tcp","ws","kcp" };
-			for (const ngl::net_works& item : aserver->m_net)
+			for (ngl::net_works& item : aserver->m_net)
 			{
-				ngl::json_write lwritetemp;
-				lwritetemp.write(
-					"ip", item.m_ip, 
-					"nip", item.m_nip,
-					"port", item.m_port
+				ngl::njson_write lwritetemp;
+				ngl::njson::write(lwritetemp
+					, "ip", item.m_ip
+					, "nip", item.m_nip
+					, "port", item.m_port
 				);
-				lwrite.write(lparm[item.m_type].c_str(), lwritetemp);
+				ngl::njson::write(lwrite, lparm[item.m_type].c_str(), lwritetemp.nofree());
 			}
 
 			lwrite.set_nonformatstr(true);
-			std::string lnet;
-			lwrite.get(lnet);
+			std::string lnet = lwrite.get();
+			
 			lstream << "&net=" << lnet;
 
 			std::cout << lnet << std::endl;

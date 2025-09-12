@@ -15,11 +15,33 @@
 
 #include "nserialize.h"
 
+#include "njson.h"
+
 
 Dumper lDumper;
 
 int main(int argc, char** argv)
 {
+	ngl::njson_write lwrite;
+	std::map<int, std::string> lmap1 = 
+	{
+		{1, "c1"},
+		{2, "c2"},
+		{3, "c3"},
+	};
+	std::vector<int> lvec1 = {1,3,5,6,7};
+	int32_t lv11;
+	bool lv12 = false;
+	ngl::njson::write(lwrite, "k1", lv11, "k2", lv12, "k3", lmap1, "k4", lvec1);
+	ngl::njson_read lread(lwrite.get());
+	int32_t lv21 = 0;
+	bool lv22 = true;
+	std::map<int, std::string> lmap2;
+	std::vector<int> lvec2;
+	ngl::njson::read(lread, "k1", lv21, "k2", lv22, "k3", lmap2, "k4", lvec2);
+
+	
+
 	if (argc <= 3)
 	{
 		std::cout << "²ÎÊý´íÎó:EXE name areaid tab_servers::tcount" << std::endl;

@@ -7,16 +7,16 @@ namespace ngl
 {
 	bool actor_role_manage::handle(const message<mforward<np_gm>>& adata)
 	{
-		ngl::json_read lojson(adata.get_data()->data()->m_json.c_str());
+		ngl::njson_read lojson(adata.get_data()->data()->m_json.c_str());
 		std::string loperator;
-		if (lojson.read("operator", loperator) == false)
+		if (!njson::read(lojson, "operator", loperator))
 		{
 			return true;
 		}
 
 		if (handle_gm::empty())
 		{
-			handle_gm::add("roleban") = [this](int id, const ngl::json_read& aos)
+			handle_gm::add("roleban") = [this](int id, ngl::njson_read& aos)
 				{
 					gcmd<bool> pro(id, "roleban", false);
 					struct banrole
@@ -26,7 +26,7 @@ namespace ngl
 						dprotocol(banrole, m_roleid, m_stat)
 					};
 					banrole m_banrole;
-					if (aos.read("data", m_banrole) == false)
+					if (!njson::read(aos, "data", m_banrole))
 					{
 						return;
 					}
@@ -50,7 +50,7 @@ namespace ngl
 					pro.m_data = true;
 				};
 
-			handle_gm::add("get_roleban") = [this](int id, const ngl::json_read&)
+			handle_gm::add("get_roleban") = [this](int id, ngl::njson_read&)
 				{
 					gcmd<std::string> pro(id, "get_roleban");
 					tools::splicing(m_roleban, "*", pro.m_data);

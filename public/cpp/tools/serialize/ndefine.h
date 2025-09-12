@@ -80,8 +80,7 @@
 		return tempvec;														\
 	}
 
-#include "json_write.h"
-#include "json_read.h"
+#include "njson.h"
 
 enum
 {
@@ -91,16 +90,16 @@ enum
 class help_writejson
 {
 	const std::vector<const char*>& m_parts;
-	ngl::json_write& m_json;
+	ngl::njson_write& m_json;
 
 	template <typename T>
-	bool dosth(ngl::json_write& ijson, const char* astr, const T& adata)
+	bool dosth(ngl::njson_write& ijson, const char* astr, T& adata)
 	{
-		ijson.write(astr, adata);
+		ngl::njson::write(ijson, astr, adata);
 		return true;
 	}
 public:
-	help_writejson(const std::vector<const char*>& aparts, ngl::json_write& aijson) :
+	help_writejson(const std::vector<const char*>& aparts, ngl::njson_write& aijson) :
 		m_parts(aparts),
 		m_json(aijson)
 	{}
@@ -113,7 +112,7 @@ public:
 	template <typename T>
 	bool fun(
 		int32_t apos
-		, const T& adata
+		, T& adata
 	)
 	{
 		dosth(m_json, m_parts[apos], adata);
@@ -123,8 +122,8 @@ public:
 	template <typename T, typename ...ARG>
 	bool fun(
 		int32_t apos
-		, const T& adata
-		, const ARG&... args
+		, T& adata
+		, ARG&... args
 	)
 	{
 		if constexpr (sizeof...(ARG) >= 1)
@@ -141,15 +140,15 @@ public:
 class help_readjson
 {
 	const std::vector<const char*>& m_parts;
-	const ngl::json_read& m_json;
+	ngl::njson_read& m_json;
 
 	template <typename T>
-	bool dosth(const ngl::json_read& ojson, const char* astr, T& adata)
+	bool dosth(ngl::njson_read& ojson, const char* astr, T& adata)
 	{
-		return ojson.read(astr, adata);
+		return ngl::njson::read(ojson, astr, adata);
 	}
 public:
-	help_readjson(const std::vector<const char*>& aparts, const ngl::json_read& aijson) :
+	help_readjson(const std::vector<const char*>& aparts, ngl::njson_read& aijson) :
 		m_parts(aparts),
 		m_json(aijson)
 	{}
@@ -181,31 +180,31 @@ public:
 };
 
 #define def_jsonfunction_read_parm(...)									\
-		inline bool read(const ngl::json_read& ijsn, const char* akey)	\
+		inline bool json_read(ngl::njson_read& ijsn, const char* akey)	\
 		{																\
-			ngl::json_read ltemp;										\
-			if (ijsn.read(akey, ltemp) == false)						\
+			ngl::njson_read ltemp;										\
+			if (!ngl::njson::read(ijsn, akey, ltemp.json()))			\
 			{															\
 				return false;											\
 			}															\
-			return read(ltemp);											\
+			return json_read(ltemp);											\
 		}																\
-		inline bool read(const ngl::json_read& ijsn) 					\
+		inline bool json_read(ngl::njson_read& ijsn) 				\
 		{																\
-			return ijsn.read(__VA_ARGS__);								\
+			return ngl::njson::read(__VA_ARGS__);						\
 		}
 
 
 #define def_jsonfunction_write_parm(...)								\
-		inline void write(ngl::json_write& ijsn, const char* akey)const	\
+		inline void json_write(ngl::njson_write& ijsn, const char* akey)const	\
 		{																\
-			ngl::json_write ltemp;										\
-			write(ltemp);												\
-			ijsn.write(akey, ltemp.nofree());							\
+			ngl::njson_write ltemp;										\
+			json_write(ltemp);												\
+			ngl::njson::write(ijsn, akey, ltemp.nofree());			\
 		}																\
-		inline void write(ngl::json_write& ijsn)const					\
+		inline void json_write(ngl::njson_write& ijsn)const					\
 		{																\
-			ijsn.write(__VA_ARGS__);									\
+			ngl::njson::write(ijsn, __VA_ARGS__);						\
 		}
 
 
@@ -219,54 +218,54 @@ public:
 
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_jsonfunction(...)										\
-	inline void write(ngl::json_write& ijsn, const char* akey)const	\
+	inline void json_write(ngl::njson_write& ijsn, const char* akey)	\
 	{																\
-		ngl::json_write ltemp;										\
-		write(ltemp);												\
-		ijsn.write(akey, ltemp.nofree());							\
+		ngl::njson_write ltemp;										\
+		json_write(ltemp);												\
+		ngl::njson::write(ijsn, akey, ltemp.nofree());					\
 	}																\
-	inline void write(ngl::json_write& ijsn)const					\
+	inline void json_write(ngl::njson_write& ijsn)					\
 	{																\
 		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);			\
 		ltemp.fun(0, __VA_ARGS__);									\
 	}																\
-	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
+	inline bool json_read(ngl::njson_read& ijsn, const char* akey)	\
 	{																\
-		ngl::json_read ltemp;										\
-		if (ijsn.read(akey, ltemp) == false)						\
+		ngl::njson_read ltemp;										\
+		if (!ngl::njson::read(ijsn, akey, ltemp.json()))			\
 		{															\
 			return false;											\
 		}															\
-		return read(ltemp);											\
+		return json_read(ltemp);											\
 	}																\
-	inline bool read(const ngl::json_read& ijsn) 					\
+	inline bool json_read(ngl::njson_read& ijsn) 					\
 	{																\
 		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);				\
 		return ltemp.fun(0, __VA_ARGS__);							\
 	}
 #else
 #define def_jsonfunction(...)										\
-	inline void write(ngl::json_write& ijsn, const char* akey)const	\
+inline void json_write(ngl::njson_write& ijsn, const char* akey)	\
 	{																\
-		ngl::json_write ltemp;										\
-		write(ltemp);												\
-		ijsn.write(akey, ltemp.nofree());							\
+		ngl::njson_write ltemp;										\
+		json_write(ltemp);												\
+		ngl::njson::write(ijsn, akey, ltemp.nofree());					\
 	}																\
-	inline void write(ngl::json_write& ijsn)const					\
+	inline void json_write(ngl::njson_write& ijsn)					\
 	{																\
 		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);			\
 		ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);					\
 	}																\
-	inline bool read(const ngl::json_read& ijsn, const char* akey)	\
+	inline bool json_read(ngl::njson_read& ijsn, const char* akey)	\
 	{																\
-		ngl::json_read ltemp;										\
-		if (ijsn.read(akey, ltemp) == false)						\
+		ngl::njson_read ltemp;										\
+		if (!ngl::njson::read(ijsn, akey, ltemp.json()))			\
 		{															\
 			return false;											\
 		}															\
-		return read(ltemp);											\
+		return json_read(ltemp);											\
 	}																\
-	inline bool read(const ngl::json_read& ijsn) 					\
+	inline bool json_read(ngl::njson_read& ijsn) 					\
 	{																\
 		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);				\
 		return ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);			\
@@ -314,7 +313,7 @@ public:
 	def_nlua_pop2(__VA_ARGS__)
 
 
-#define dprotocol(NAME, ...)			\
+#define dprotocol(NAME, ...)				\
 	def_parmname							\
 	def_jsonfunction(__VA_ARGS__)			\
 	def_protocol(NAME, __VA_ARGS__)			\

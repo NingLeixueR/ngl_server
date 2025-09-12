@@ -39,8 +39,8 @@ namespace ngl
 			}
 			else
 			{
-				ngl::json_read lread(abuff);
-				return adata.read(lread);
+				ngl::njson_read lread(abuff);
+				return njson::read(lread, tools::type_name<T>().c_str(), adata);
 			}
 		}
 		

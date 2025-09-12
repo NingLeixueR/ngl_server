@@ -40,12 +40,14 @@ namespace ngl
 		{
 			Try
 			{
-				ngl::json_write lwrite;
-				lwrite.write("operator", m_operator);
-				lwrite.write("data", m_data);
-				lwrite.write("server_name", tools::server_name());
-				std::string ljson;
-				lwrite.get(ljson);
+				ngl::njson_write lwrite;
+			std::string lservername = tools::server_name();
+				njson::write(lwrite
+					, "operator", m_operator
+					, "data", m_data
+					, "server_name", lservername
+				);
+				std::string ljson = lwrite.get();
 				if (m_istoutf8)
 				{
 					ngl::tools::to_utf8(ljson, ljson);

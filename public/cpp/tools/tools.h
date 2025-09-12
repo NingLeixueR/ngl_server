@@ -18,8 +18,6 @@
 
 #include <google/protobuf/util/json_util.h>
 
-#include "json_read.h"
-#include "json_write.h"
 
 
 #ifdef WIN32
@@ -271,69 +269,6 @@ namespace ngl
 		template <typename T>
 		static bool proto2json(const mforward<T>& adata, std::string& json);
 
-		template <typename TKEY, typename TVALUE>
-		static bool proto2json(const std::map<TKEY, TVALUE>& adata, std::string& json)
-		{
-			json = "{\"";
-			json += tools::type_name<TVALUE>();
-			json += "\":{";
-			bool lfirst = true;
-			for (const auto item : adata)
-			{
-				if (lfirst)
-				{
-					lfirst = false;
-				}
-				else
-				{
-					json += ",";
-				}
-				std::string ltemp;
-				if (!proto2json(item.second, ltemp))
-				{
-					continue;
-				}
-				json += "\"";
-				json += tools::lexical_cast<std::string>(item.first);
-				json += "\":";
-				json += ltemp;
-			}
-			json += "}}";
-			return true;
-		}
-
-		template <typename TKEY, typename TVALUE>
-		static bool proto2json(const std::map<TKEY, TVALUE*>& adata, std::string& json)
-		{
-			json = "{\"";
-			json += tools::type_name<TVALUE>();
-			json += "\":{";
-			bool lfirst = true;
-			for (const auto item : adata)
-			{
-				if (lfirst)
-				{
-					lfirst = false;
-				}
-				else
-				{
-					json += ",";
-				}
-				std::string ltemp;
-				if (!proto2json(*item.second, ltemp))
-				{
-					continue;
-				}
-				json += "\"";
-				json += tools::lexical_cast<std::string>(item.first);
-				json += "\":";
-				json += ltemp;
-			}
-			json += "}}";
-			return true;
-		}
-
-
 		// 以json格式打印pb数据
 		template <typename T>
 		static void print_json2proto(const T& adata, bool aislog = false);
@@ -346,76 +281,9 @@ namespace ngl
 			return status.ok();
 		}
 
-		template <typename T>
-		static bool json2proto(const std::string& json, const std::string& aname, T& adata)
-		{
-			json_read ltempread(json.c_str());
-			json_read ltempread2;
-			if (!ltempread.read(aname.c_str(), ltempread2))
-			{
-				return false;
-			}
-			
-			google::protobuf::util::Status status = google::protobuf::util::JsonStringToMessage(ltempread2.get(), &adata);
-			return status.ok();
-		}
-
-		template <typename TKEY, typename TVALUE>
-		static bool json2proto(
-			const std::string& json
-			, std::map<TKEY, TVALUE>& adata
-		)
-		{
-			json_read ltempread(json.c_str());
-			std::map<std::string, json_read> lmap;
-			if (!ltempread.read(tools::type_name<TVALUE>().c_str(), lmap))
-			{
-				return false;
-			}
-
-			for (const auto& item :lmap)
-			{
-				std::string ltemp = item.second.get();
-				TVALUE ltempt;
-				if (json2proto(ltemp, ltempt))
-				{
-					adata[tools::lexical_cast<TKEY>(item.first)] = ltempt;
-				}
-			}
-			return true;
-		}
-
 		//EPROTOCOL_TYPE_CUSTOM
 		template <typename T>
-		static bool json2custom(const std::string& json, T& adata)
-		{
-			json_read ljread(json);
-			return ljread.read(tools::type_name<T>().c_str(), adata);
-		}
-
-		template <typename TKEY, typename TVALUE>
-		static bool json2custom(const std::string& json, std::map<TKEY, TVALUE>& adata)
-		{
-			json_read ljread(json);
-			return ljread.read(tools::type_name<TVALUE>().c_str(), adata);
-		}
-
-		template <typename T>
-		static void custom2json(const T& adata, std::string& ajson)
-		{
-			json_write ljwrite;
-			ljwrite.write(tools::type_name<T>().c_str(), adata);
-			ljwrite.get(ajson);
-		}
-
-		template <typename TKEY, typename TVALUE>
-		static bool custom2json(const std::map<TKEY, TVALUE>& adata, std::string& ajson)
-		{
-			json_write ljwrite;
-			ljwrite.write(tools::type_name<TVALUE>().c_str(), adata);
-			ljwrite.get(ajson);
-			return true;
-		}
+		static bool json2custom(const std::string& json, T& adata);
 
 		template <typename TKEY, typename TVAL>
 		static void copy(const std::map<TKEY, TVAL>& asource, google::protobuf::Map<TKEY, TVAL>& atarget)
@@ -928,38 +796,4 @@ namespace ngl
 	> {};
 
 
-}//namespace ngl
-
-namespace ngl
-{
-	template <typename KEY, typename VAL>
-	void json_write::write_mapnumber(const char* akey, const std::map<KEY, VAL>& aval)
-	{
-		json_write ltemp;
-		for (const auto& item : aval)
-		{
-			ltemp.write(tools::lexical_cast<std::string>(item.first).c_str(), item.second);
-		}
-		write(akey, ltemp);
-	}
-
-	template <typename KEY, typename VAL>
-	bool json_read::read_mapnumber(const char* akey, std::map<KEY, VAL>& aval) const
-	{
-		json_read ltemp;
-		if (read(akey, ltemp) == false)
-		{
-			return false;
-		}
-
-		for (cJSON* child = ltemp.m_json->child; child != nullptr; child = child->next)
-		{
-			KEY lkey = tools::lexical_cast<KEY>(child->string);
-			if (!ltemp.read(child->string, aval[lkey]))
-			{
-				return false;
-			}				
-		}
-		return true;
-	}
 }//namespace ngl
