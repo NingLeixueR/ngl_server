@@ -17,11 +17,11 @@
 namespace ngl
 {
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	class actor_dbtab
+	class ndbtab
 	{
-		actor_dbtab() = delete;
-		actor_dbtab(const actor_dbtab&) = delete;
-		actor_dbtab& operator=(const actor_dbtab&) = delete;
+		ndbtab() = delete;
+		ndbtab(const ndbtab&) = delete;
+		ndbtab& operator=(const ndbtab&) = delete;
 
 		static tab_dbload*		m_tab;			// 数据库加载策略
 		static db_cache			m_cache_save;	// 数据保存队列
@@ -123,7 +123,7 @@ namespace ngl
 			{
 				if(db_data<TDBTAB>::data_stat(lid) == db_data<TDBTAB>::edbdata_notdata)
 				{
-					log_error()->print("load fail notdata {}:{}", tools::type_name<actor_dbtab<TDBTAB_TYPE, TDBTAB>>(), nguid(lid));
+					log_error()->print("load fail notdata {}:{}", tools::type_name<ndbtab<TDBTAB_TYPE, TDBTAB>>(), nguid(lid));
 					return;
 				}
 					
@@ -178,13 +178,13 @@ namespace ngl
 	};
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	tab_dbload* actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_tab = nullptr;
+	tab_dbload* ndbtab<TDBTAB_TYPE, TDBTAB>::m_tab = nullptr;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	db_cache actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_save;
+	db_cache ndbtab<TDBTAB_TYPE, TDBTAB>::m_cache_save;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	db_cache actor_dbtab<TDBTAB_TYPE, TDBTAB>::m_cache_del;
+	db_cache ndbtab<TDBTAB_TYPE, TDBTAB>::m_cache_del;
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
 	class actor_db :
@@ -208,7 +208,7 @@ namespace ngl
 					.m_weight = 0x7fffffff,
 				})
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::init();
+			ndbtab<TDBTAB_TYPE, TDBTAB>::init();
 		}
 	public:
 		friend class actor_instance<tactor_db>;
@@ -234,19 +234,19 @@ namespace ngl
 		{
 			std::string lname = tools::type_name<TDBTAB>();
 			log_error()->print("load: np_actordb_load<{}> id:{}", lname, adata.get_data()->m_id);
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::load(adata.thread(), adata.get_pack(), *adata.get_data());
+			ndbtab<TDBTAB_TYPE, TDBTAB>::load(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
 
 		bool handle(const message<np_actordb_save<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::save(adata.thread(), adata.get_pack(), *adata.get_data());
+			ndbtab<TDBTAB_TYPE, TDBTAB>::save(adata.thread(), adata.get_pack(), *adata.get_data());
 			return true;
 		}
 
 		bool handle(const message<np_actordb_delete<TDBTAB_TYPE, TDBTAB>>& adata)
 		{
-			actor_dbtab<TDBTAB_TYPE, TDBTAB>::del(adata.thread(), adata.get_data()->m_data);
+			ndbtab<TDBTAB_TYPE, TDBTAB>::del(adata.thread(), adata.get_data()->m_data);
 			return true;
 		}
 
@@ -386,7 +386,7 @@ namespace ngl
 	};
 
 	template <pbdb::ENUM_DB TDBTAB_TYPE, typename TDBTAB>
-	void actor_dbtab<TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
+	void ndbtab<TDBTAB_TYPE, TDBTAB>::cachelist(enum_cache_list atype, std::set<i64_actorid>& aset)
 	{
 		if (aset.empty())
 		{
