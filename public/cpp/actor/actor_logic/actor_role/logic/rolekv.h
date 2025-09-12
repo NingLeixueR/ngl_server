@@ -87,8 +87,7 @@ namespace ngl
 		{
 			njson_write lwrite;
 			njson::write(arg...);
-			std::string lstr;
-			lwrite.get(lstr);
+			std::string lstr = lwrite.get();
 			set_value(akey, lstr);
 		}
 	};
