@@ -53,6 +53,9 @@ namespace ngl
 		// # 获取时间
 		static time_t gettime();
 
+		// # 获取时间
+		static time_t getsystime();
+
 		// # 获取秒与秒之间的毫秒数 
 		static time_t getms();
 

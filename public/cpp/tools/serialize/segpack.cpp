@@ -228,7 +228,7 @@ namespace ngl
 					return edopush::e_error;
 				}
 
-				if (localtime::gettime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
+				if (localtime::getsystime() < lpack->m_head.getvalue(EPH_TIME) + sysconfig::net_timeout())
 				{
 					protocol::push(lpack);
 				}
@@ -236,7 +236,7 @@ namespace ngl
 				{
 					log_error()->print(
 						"segpack time[{} < {} + {} ]"
-						, localtime::gettime()
+						, localtime::getsystime()
 						, lpack->m_head.getvalue(EPH_TIME)
 						, sysconfig::net_timeout()
 					);
