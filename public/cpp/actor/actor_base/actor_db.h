@@ -374,6 +374,7 @@ namespace ngl
 						}
 						ngl::db_data<TDBTAB>::set(ldata.mid(), ldata);
 						db_manage::save<TDBTAB>(ldb, ldata.mid());
+						pro.m_data = true;
 					};
 			}
 
