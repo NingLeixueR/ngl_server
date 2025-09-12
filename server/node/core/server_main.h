@@ -15,7 +15,7 @@ void init_DB_ACCOUNT(const char* aname, int beg)
 		ltemp.set_mroleid(ltemp.mid());
 		ltemp.set_marea(tab_self_area);
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_ACCOUNT, pbdb::db_account>::save(0, ltemp);
 	}
 }
 
@@ -42,8 +42,8 @@ void init_DB_ROLE(const char* aname, int beg)
 		lrolebase.set_mmoneysilver(0);
 		lrolebase.set_mcreateutc((int32_t)ngl::localtime::gettime());
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, lrolebase);
-		ngl::actor_dbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_BRIEF, pbdb::db_brief>::save(0, lrolebase);
+		ngl::ndbtab<pbdb::ENUM_DB_ROLE, pbdb::db_role>::save(0, ltemp);
 	}
 }
 
@@ -65,7 +65,7 @@ void init_DB_BAG(const char* aname, int beg)
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		ltemp.set_mmaxid(1);
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_BAG, pbdb::db_bag>::save(0, ltemp);
 	}
 }
 
@@ -93,7 +93,7 @@ void init_DB_TASK(const char* aname, int beg)
 		lschedulesnode->set_msumint(10);
 		(*lrundatas)[lpair.first] = lpair.second;
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_TASK, pbdb::db_task>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_TASK, pbdb::db_task>::save(0, ltemp);
 	}
 }
 
@@ -111,7 +111,7 @@ void init_DB_MAIL(int beg)
 		pbdb::db_mail ltemp;
 		ltemp.set_mid(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_MAIL, pbdb::db_mail>::save(0, ltemp);
 	}
 }
 
@@ -131,7 +131,7 @@ void init_DB_ROLEKEYVALUE(int beg)
 		(*ltemp.mutable_mdata())["test2"] = "2";
 		(*ltemp.mutable_mdata())["test3"] = "3";
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_ROLEKEYVALUE, pbdb::db_rolekeyvalue>::save(0, ltemp);
 	}
 }
 
@@ -166,7 +166,7 @@ void init_DB_NOTICE()
 		ltemp.set_mstarttime((int32_t)time(nullptr));
 		ltemp.set_mfinishtime((int32_t)time(nullptr) + 36000);
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_NOTICE, pbdb::db_notice>::save(0, ltemp);
 	}
 }
 
@@ -178,7 +178,7 @@ void init_DB_KEYVAL()
 	std::string ltempstr = std::format("{}*{}", lnow, ngl::localtime::time2str(lnow, "%y/%m/%d %H:%M:%S"));
 	ltemp.set_mvalue(ltempstr);
 
-	ngl::actor_dbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
+	ngl::ndbtab<pbdb::ENUM_DB_KEYVALUE, pbdb::db_keyvalue>::save(0, ltemp);
 }
 
 void init_DB_FAMILY()
@@ -194,7 +194,7 @@ void init_DB_FAMILY()
 		ltemp.set_mleader(ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i));
 		*ltemp.mutable_mmember()->Add() = ngl::nguid::make(ngl::ACTOR_ROLE, tab_self_area, i);
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_FAMILY, pbdb::db_family>::save(0, ltemp);
 
 		pbdb::db_familyer ltempfamilyer;
 		ltempfamilyer.set_mjoinutc((int32_t)ngl::localtime::gettime());
@@ -202,7 +202,7 @@ void init_DB_FAMILY()
 		ltempfamilyer.set_mposition(pbdb::db_familyer_eposition_leader);
 		ltempfamilyer.set_mlastsignutc((int32_t)ngl::localtime::gettime());
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
+		ngl::ndbtab<pbdb::ENUM_DB_FAMILYER, pbdb::db_familyer>::save(0, ltempfamilyer);
 	}
 }
 
@@ -217,7 +217,7 @@ void init_DB_RANKLIST()
 		lrankitem.set_mvalue(i);
 		(*ltemp.mutable_mitems())[(int)pbdb::eranklist::lv] = lrankitem;
 
-		ngl::actor_dbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
+		ngl::ndbtab<pbdb::ENUM_DB_RANKLIST, pbdb::db_ranklist>::save(0, ltemp);
 	}*/
 }
 
@@ -248,7 +248,7 @@ void init_DB_FRIENDS()
 
 	for (const auto& apair : lmap)
 	{
-		ngl::actor_dbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
+		ngl::ndbtab<pbdb::ENUM_DB_FRIENDS, pbdb::db_friends>::save(0, apair.second);
 	}
 }
 
@@ -275,7 +275,7 @@ void init_DB_TESTLUA()
 
 	for (const auto& apair : lmap)
 	{
-		ngl::actor_dbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua>::save(0, apair.second);
+		ngl::ndbtab<pbdb::ENUM_DB_TESTLUA, pbdb::db_testlua>::save(0, apair.second);
 	}
 }
 
