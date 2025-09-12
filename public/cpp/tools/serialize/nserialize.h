@@ -111,7 +111,7 @@ namespace ngl
 
 			virtual bool basetype(void* adata, int32_t abytes)
 			{
-				if (pos() + abytes >= len())
+				if (pos() + abytes > len())
 				{
 					return false;
 				}
