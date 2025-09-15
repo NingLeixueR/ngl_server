@@ -9,7 +9,6 @@
 #include <set>
 
 #include "cJSON.h"
-//#include "tools.h"
 
 namespace ngl
 {
