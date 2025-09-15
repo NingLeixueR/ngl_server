@@ -112,17 +112,17 @@ public:
 		std::stringstream m_stream;
 		for (auto item : aenum)
 		{
-			m_stream << "enum " << item.name << "\n";
+			m_stream << std::format("enum {}\n", item.name);
 			m_stream << "{\n";
 			for (Data item2 : item.dataVec)
 			{
 				if (item2.m_values_name.empty())
 				{
-					m_stream << "	" << item2.m_type << ",\t" << item2.zhushi << "\n";
+					m_stream << std::format("	{},\t{}\n", item2.m_type, item2.zhushi);
 				}
 				else
 				{
-					m_stream << "	" << item2.m_type << " = " + item2.m_values_name << ",\t" << item2.zhushi << "\n";
+					m_stream << std::format("	{} = {},\t{}\n", item2.m_type, item2.m_values_name, item2.zhushi);
 				}
 			}
 			m_stream << "};\n";
