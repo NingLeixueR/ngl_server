@@ -154,7 +154,7 @@ namespace ngl
 			{
 				return false;
 			}
-			if (ret->type == cJSON_Object || ret->type == cJSON_Array)
+			if (tools::check_cjson_or(ret->type, cJSON_Object, cJSON_Array))
 			{
 				adata = ret;
 				return true;
@@ -173,7 +173,7 @@ namespace ngl
 		template <typename TNUMBER>
 		static bool string_number(cJSON* ret, TNUMBER& adata)
 		{
-			if (ret->type == cJSON_String)
+			if (tools::check_cjson_or(ret->type, cJSON_String))
 			{
 				try
 				{
@@ -209,24 +209,22 @@ namespace ngl
 
 		static bool read_basic_type(cJSON* ret, bool& adata)
 		{
-			switch (ret->type)
-			{
-			case cJSON_True:
+			if (tools::check_cjson_or(ret->type, cJSON_True))
 			{
 				adata = true;
 				return true;
 			}
-			case cJSON_False:
+			if (tools::check_cjson_or(ret->type, cJSON_False))
 			{
 				adata = false;
 				return true;
 			}
-			case cJSON_Number:
+			if (tools::check_cjson_or(ret->type, cJSON_Number))
 			{
 				adata = ret->valueint != 0;
 				return true;
 			}
-			case cJSON_String:
+			if (tools::check_cjson_or(ret->type, cJSON_String))
 			{
 				std::string lvaluestr(ret->valuestring);
 				if (lvaluestr == "false" || lvaluestr == "FALSE" || lvaluestr == "0")
@@ -240,13 +238,16 @@ namespace ngl
 					return true;
 				}
 			}
-			}
 			return false;
 		}
 
 		static bool read_basic_type(cJSON* ret, const char*& adata)
 		{
-			if (nullptr == ret || ret->type != cJSON_String)
+			if (nullptr == ret)
+			{
+				return false;
+			}
+			if (tools::check_cjson_and(ret->type, cJSON_String))
 			{
 				return false;
 			}
@@ -256,7 +257,11 @@ namespace ngl
 
 		static bool read_basic_type(cJSON* ret, std::string& adata)
 		{
-			if (nullptr == ret || ret->type != cJSON_String)
+			if (nullptr == ret)
+			{
+				return false;
+			}
+			if (tools::check_cjson_and(ret->type, cJSON_String))
 			{
 				return false;
 			}
@@ -268,11 +273,15 @@ namespace ngl
 		static bool read_basic_type(njson_read& ajson, const char* akey, TNUMBER& adata)
 		{
 			cJSON* ret = cJSON_GetObjectItem(ajson.json(), akey);
-			if (nullptr == ret || (ret->type != cJSON_Number && ret->type != cJSON_String && ret->type != cJSON_True && ret->type != cJSON_False))
+			if (nullptr == ret)
 			{
 				return false;
 			}
-			return read_basic_type(ret, adata);
+			if (tools::check_cjson_or(ret->type, cJSON_Number, cJSON_String, cJSON_True, cJSON_False))
+			{
+				return read_basic_type(ret, adata);
+			}
+			return false;
 		}
 
 		template <typename TNUMBER>
