@@ -37,7 +37,6 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_load_response
 	{
-		//protobuf_data<std::map<nguid, T>>	m_data;
 		std::map<nguid, T>	m_data;
 		bool		m_stat = true;
 		bool		m_over = true;
@@ -56,7 +55,6 @@ namespace ngl
 	template <pbdb::ENUM_DB DBTYPE, typename T>
 	struct np_actordb_save
 	{
-		//protobuf_data<std::map<nguid, T>>	m_data;
 		std::map<nguid, T > m_data;
 
 		void add(const nguid& akey, const T& avalue)
@@ -269,7 +267,6 @@ namespace ngl
 		};
 	}
 
-
 	template <typename T, typename Y>
 	struct np_actor_forward
 	{
@@ -387,7 +384,6 @@ namespace ngl
 		std::string m_msg;									// 调试查看信息
 		bool m_firstsynchronize = false;					// 首次同步
 		bool m_recvfinish = false;
-		//protobuf_data<std::map<int64_t, TDATA>> m_data;		// 1、数据同步2、数据修改3、数据增加
 		std::map<int64_t, TDATA> m_data;					// 1、数据同步2、数据修改3、数据增加
 		std::vector<int64_t> m_deldata;						// 数据被删除
 		def_protocol(np_channel_data<TDATA>, m_msg, m_firstsynchronize, m_recvfinish, m_data)

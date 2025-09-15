@@ -10,7 +10,6 @@
 
 namespace ngl
 {
-	
 	enum enscript
 	{
 		enscript_none = -1,		// 错误
@@ -28,7 +27,6 @@ namespace ngl
 		{
 			i32_protocolnum	m_protocol;
 			std::string		m_name;
-			bool m_forward = false;
 
 			using func = std::function<bool(int64_t, void*)>;
 			// # 为了给脚本提供根据结构名字发送数据给客户端
@@ -94,7 +92,8 @@ namespace ngl
 				m_protocol[linfo.m_protocol] = &linfo;
 
 				m_nameprotocol[linfo.m_name] = &linfo;
-				//std::cout << linfo.m_protocol << "-" << linfo.m_name << std::endl;
+				
+				//std::cout << std::format("{}-{}", linfo.m_protocol, linfo.m_name) << std::endl;
 				return &linfo;
 			}
 
@@ -171,13 +170,6 @@ namespace ngl
 		{
 			info& linfo = get<T>();
 			return linfo.m_protocol;
-		}
-
-		template <typename T>
-		static bool isforward()
-		{
-			info& linfo = get<T>();
-			return linfo.m_forward;
 		}
 
 		static info* get(i32_protocolnum aprotocolnum)

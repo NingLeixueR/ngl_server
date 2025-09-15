@@ -185,8 +185,6 @@ public:
 	def_jsonfunction_write_parm(__VA_ARGS__)
 
 
-
-
 #if defined(WIN32)||defined(WINCE)||defined(WIN64)
 #define def_jsonfunction(...)											\
 	inline void json_write(ngl::njson_write& ijsn, const char* akey)	\

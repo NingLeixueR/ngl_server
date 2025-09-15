@@ -378,10 +378,10 @@ namespace ngl
 			ELOGLEVEL alevel, ENUM_ACTOR aactortype, ELOG_TYPE alogtype
 			, const std::source_location& asource = std::source_location::current()
 		) :
-			m_actortype(aactortype),
-			m_logtype(alogtype),
-			m_source(asource),
-			m_level(alevel)
+			m_actortype(aactortype)
+			, m_logtype(alogtype)
+			, m_source(asource)
+			, m_level(alevel)
 		{
 		}
 
