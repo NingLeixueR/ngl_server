@@ -1,12 +1,12 @@
 #pragma once
 
-#include "threadtools.h"
-#include "time_wheel.h"
-#include "nlog.h"
-
 #include <algorithm>
 #include <array>
 #include <list>
+
+#include "threadtools.h"
+#include "time_wheel.h"
+#include "nlog.h"
 
 #define ISUSENETPOOL	(true)
 

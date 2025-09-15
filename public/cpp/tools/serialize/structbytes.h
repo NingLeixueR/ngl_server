@@ -12,7 +12,9 @@ namespace ngl
 	public:
 		static bool check_xor(int aprotocolnum)
 		{
-			if (tprotocol::protocol<np_gm>() == aprotocolnum || tprotocol::protocol<np_gm_response>() == aprotocolnum)
+			static const int32_t lprotocolnum1 = tprotocol::protocol<np_gm>();
+			static const int32_t lprotocolnum2 = tprotocol::protocol<np_gm_response>();
+			if(lprotocolnum1 == aprotocolnum || lprotocolnum2 == aprotocolnum)
 			{
 				return false;
 			}
@@ -45,7 +47,6 @@ namespace ngl
 					return false;
 				}
 
-				// # encryption bytexor
 				if (encryption_bytexor::check_xor(apack->m_head.getvalue(EPH_PROTOCOLNUM)))
 				{
 					ngl::tools::bytexor(apack->m_buff, apack->m_len, 0);
