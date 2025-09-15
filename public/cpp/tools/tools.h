@@ -765,6 +765,30 @@ namespace ngl
 		static int64_t nguidstr2int64(const char* anguidstr);
 
 		static std::vector<const char*> split_str(char* apbuff, int32_t abuffcount);
+
+		// ºÏ≤Ècjson¿‡–Õ
+		static bool check_cjson_or(int32_t atype, int32_t acjsontype)
+		{
+			return (atype & acjsontype) != 0;
+		}
+
+		template <typename ...TARGS>
+		static bool check_cjson_or(int32_t atype, int32_t acjsontype, TARGS... args)
+		{
+			return check_cjson_or(atype, acjsontype) || check_cjson_or(atype, args...);
+		}
+
+		static bool check_cjson_and(int32_t atype, int32_t acjsontype)
+		{
+			return (atype & acjsontype) == 0;
+		}
+
+		template <typename ...TARGS>
+		static bool check_cjson_and(int32_t atype, int32_t acjsontype, TARGS... args)
+		{
+			return check_cjson_and(atype, acjsontype) && check_cjson_and(atype, args...);
+		}
+
 	};
 
 	template <typename T>
