@@ -323,7 +323,10 @@ namespace ngl
 		void init(TDerived* aactor, bool aonlyread, const std::set<i64_actorid>& adataid)
 		{
 			m_onlyread = aonlyread;
-			m_dataid = adataid;
+			for (i64_actorid dataid : adataid)
+			{
+				m_dataid.insert(real_id(dataid));
+			}
 
 			std::set<i16_area> lareaset;
 			ttab_servers::instance().get_arealist_nonrepet(nconfig::m_nodeid, lareaset);
@@ -335,7 +338,6 @@ namespace ngl
 				m_register[area] = false;
 			}
 			m_actor		= aactor;
-			m_dataid	= adataid;
 			
 			static std::atomic<bool> lisregister = true;
 			if (lisregister.exchange(false))
@@ -416,23 +418,28 @@ namespace ngl
 			}		
 		}
 
+		i64_actorid real_id(i64_actorid aactorid)
+		{
+			return nguid::make_type(aactorid, nactor_type<TACTOR>::type());
+		}
+
 	public:
 		const T* getconst(i64_actorid aactorid)const
 		{
-			i64_actorid lactorid = nguid::make_type(aactorid, nactor_type<TACTOR>::type());
-			const T* lp = tools::findmap(m_data, lactorid);
+			aactorid = real_id(aactorid);
+			const T* lp = tools::findmap(m_data, aactorid);
 			return lp;
 		}
 
 		T* get(i64_actorid aactorid)
 		{
+			aactorid = real_id(aactorid);
 			if (m_onlyread)
 			{
 				tools::no_core_dump();
 				return nullptr;
 			}
-			i64_actorid lactorid = nguid::make_type(aactorid, nactor_type<TACTOR>::type());
-			T* lp = tools::findmap(m_data, lactorid);
+			T* lp = tools::findmap(m_data, aactorid);
 			return lp;
 		}
 
@@ -478,6 +485,7 @@ namespace ngl
 
 		T* add(i64_actorid adataid)
 		{
+			adataid = real_id(adataid);
 			if (m_onlyread)
 			{
 				tools::no_core_dump();
@@ -496,6 +504,7 @@ namespace ngl
 
 		bool change(i64_actorid adataid)
 		{
+			adataid = real_id(adataid);
 			if (m_onlyread)
 			{
 				tools::no_core_dump();
@@ -541,11 +550,13 @@ namespace ngl
 
 		bool del(i64_actorid adataid)
 		{
+			adataid = real_id(adataid);
 			return del(std::vector<i64_actorid>{adataid});
 		}
 
 		bool check_readwrite(i64_actorid adataid)
 		{
+			adataid = real_id(adataid);
 			if (m_onlyread)
 			{
 				return false;
@@ -567,6 +578,7 @@ namespace ngl
 			std::set<i16_area> lnodeserver;
 			for (i64_actorid dataid : adataid)
 			{
+				dataid = real_id(dataid);
 				if (!check_readwrite(dataid))
 				{
 					continue;
@@ -592,6 +604,7 @@ namespace ngl
 			// # <数据>被<哪些结点>关注
 			for (i64_actorid dataid : adataid)
 			{
+				dataid = real_id(dataid);
 				auto itor = m_publishlist2.find(dataid);
 				if (itor != m_publishlist2.end())
 				{
