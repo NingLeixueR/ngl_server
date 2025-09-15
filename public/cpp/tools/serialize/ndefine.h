@@ -87,71 +87,41 @@ enum
 	ESPLIT_STR = 32,
 };
 
-class help_writejson
+template <bool READ>
+class help_json
 {
 	const std::vector<const char*>& m_parts;
-	ngl::njson_write& m_json;
+	void* m_json = nullptr;
 
 	template <typename T>
-	bool dosth(ngl::njson_write& ijson, const char* astr, T& adata)
+	bool dosth(const char* astr, T& adata)
 	{
-		ngl::njson::write(ijson, astr, adata);
-		return true;
-	}
-public:
-	help_writejson(const std::vector<const char*>& aparts, ngl::njson_write& aijson) :
-		m_parts(aparts),
-		m_json(aijson)
-	{}
-
-	bool fun(int32_t apos)
-	{
-		return true;
-	}
-
-	template <typename T>
-	bool fun(
-		int32_t apos
-		, T& adata
-	)
-	{
-		dosth(m_json, m_parts[apos], adata);
-		return true;
-	}
-
-	template <typename T, typename ...ARG>
-	bool fun(
-		int32_t apos
-		, T& adata
-		, ARG&... args
-	)
-	{
-		if constexpr (sizeof...(ARG) >= 1)
+		if constexpr (READ)
 		{
-			return fun(apos, adata) && fun(++apos, args...);
+			return ngl::njson::read(*(ngl::njson_read*)m_json, astr, adata);
 		}
 		else
 		{
-			return fun(apos, adata);
+			ngl::njson::write(*(ngl::njson_write*)m_json, astr, adata);
+			return true;
 		}
 	}
-};
-
-class help_readjson
-{
-	const std::vector<const char*>& m_parts;
-	ngl::njson_read& m_json;
-
-	template <typename T>
-	bool dosth(ngl::njson_read& ojson, const char* astr, T& adata)
-	{
-		return ngl::njson::read(ojson, astr, adata);
-	}
 public:
-	help_readjson(const std::vector<const char*>& aparts, ngl::njson_read& aijson) :
-		m_parts(aparts),
-		m_json(aijson)
+	help_json(const std::vector<const char*>& aparts) :
+		m_parts(aparts)
 	{}
+
+	void set_json(ngl::njson_write& awjson)
+	{
+		assert(!READ);
+		m_json = &awjson;
+	}
+
+	void set_json(ngl::njson_read& arjson)
+	{
+		assert(READ);
+		m_json = &arjson;
+	}
 
 	bool fun(int32_t apos)
 	{
@@ -161,7 +131,7 @@ public:
 	template <typename T>
 	bool fun(int32_t apos, T& adata)
 	{
-		dosth(m_json, m_parts[apos], adata);
+		dosth(m_parts[apos], adata);
 		return true;
 	}
 
@@ -178,6 +148,7 @@ public:
 		}
 	}
 };
+
 
 #define def_jsonfunction_read_parm(...)									\
 		inline bool json_read(ngl::njson_read& ijsn, const char* akey)	\
@@ -226,7 +197,8 @@ public:
 	}																	\
 	inline void json_write(ngl::njson_write& ijsn)						\
 	{																	\
-		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);				\
+		help_json<false> ltemp(parms(#__VA_ARGS__));					\
+		ltemp.set_json(ijsn);											\
 		ltemp.fun(0, __VA_ARGS__);										\
 	}																	\
 	inline bool json_read(ngl::njson_read& ijsn, const char* akey)		\
@@ -240,7 +212,8 @@ public:
 	}																	\
 	inline bool json_read(ngl::njson_read& ijsn) 						\
 	{																	\
-		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);					\
+		help_json<true> ltemp(parms(#__VA_ARGS__));						\
+		ltemp.set_json(ijsn);											\
 		return ltemp.fun(0, __VA_ARGS__);								\
 	}
 #else
@@ -253,7 +226,8 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 	}																	\
 	inline void json_write(ngl::njson_write& ijsn)						\
 	{																	\
-		help_writejson ltemp(parms(#__VA_ARGS__), ijsn);				\
+		help_json<false> ltemp(parms(#__VA_ARGS__));					\
+		ltemp.set_json(ijsn);											\
 		ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);						\
 	}																	\
 	inline bool json_read(ngl::njson_read& ijsn, const char* akey)		\
@@ -267,7 +241,8 @@ inline void json_write(ngl::njson_write& ijsn, const char* akey)		\
 	}																	\
 	inline bool json_read(ngl::njson_read& ijsn) 						\
 	{																	\
-		help_readjson ltemp(parms(#__VA_ARGS__), ijsn);					\
+		help_json<true> ltemp(parms(#__VA_ARGS__));						\
+		ltemp.set_json(ijsn);											\
 		return ltemp.fun(0 __VA_OPT__(,) ##__VA_ARGS__);				\
 	}
 #endif

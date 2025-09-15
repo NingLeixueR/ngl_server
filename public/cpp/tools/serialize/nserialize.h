@@ -17,8 +17,8 @@
 #include <google/protobuf/message_lite.h>
 #include <google/protobuf/descriptor.h>
 
-#include "tools.h"
 #include "net.pb.h"
+#include "tools.h"
 
 namespace ngl
 {

@@ -10,6 +10,7 @@
 
 namespace ngl
 {
+	// # °üÍ·
 	struct pack_head
 	{
 		int32_t m_data[EPH_SUM] = {0};
