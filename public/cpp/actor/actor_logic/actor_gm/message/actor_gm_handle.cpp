@@ -163,8 +163,7 @@ namespace ngl
 				return true;
 			}
 
-			ENUM_ACTOR ltype;
-			ltype = em<ENUM_ACTOR>::get_enum(lactorname.c_str());
+			ENUM_ACTOR ltype = em<ENUM_ACTOR>::get_enum(lactorname.c_str());
 			if (ltype == em<ENUM_ACTOR>::enum_null())
 			{
 				if (lactorname == "ACTOR_DB")
