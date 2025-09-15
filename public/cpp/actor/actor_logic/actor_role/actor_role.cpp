@@ -66,7 +66,7 @@ namespace ngl
 		*/
 
 		
-		tdb_brief::nsp_cli<actor_role>::instance(id_guid(), true).init_parts(this, { nguid::make_type(id_guid(), ACTOR_BRIEF) });
+		tdb_brief::nsp_cli<actor_role>::instance(id_guid(), true).init_parts(this, { id_guid() });
 		tdb_brief::nsp_cli<actor_role>::instance(id_guid()).set_changedata_fun(
 			[this](int64_t, const pbdb::db_brief&, bool afirstsynchronize)
 			{
