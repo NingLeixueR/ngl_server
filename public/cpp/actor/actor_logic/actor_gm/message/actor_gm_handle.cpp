@@ -183,7 +183,7 @@ namespace ngl
 			sendbytype(ltype, adata.get_pack(), *adata.get_data());
 			return true;
 		}
-		else if (!njson::read(lreadjson, "actor_id", lactorid))
+		else if (njson::read(lreadjson, "actor_id", lactorid))
 		{// ### ·Çµ¥Àý
 			sendbyactorid(lactorid, adata.get_pack(), *adata.get_data());
 			return true;
