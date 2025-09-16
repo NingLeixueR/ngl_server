@@ -418,7 +418,7 @@ namespace ngl
 			}		
 		}
 
-		i64_actorid real_id(i64_actorid aactorid)
+		i64_actorid real_id(i64_actorid aactorid)const
 		{
 			return nguid::make_type(aactorid, nactor_type<TACTOR>::type());
 		}
