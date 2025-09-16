@@ -644,7 +644,6 @@ namespace ngl
 		info* lptemp = tcustoms<true>::func<T>(aprotocolnum);
 		if (lptemp != nullptr)
 		{
-			lptemp->m_forward = true;
 			lptemp->m_toclient[enscript_lua] = [](int64_t aactorid, void* aL)->bool
 				{
 					lua_State* L = (lua_State*)(aL);
