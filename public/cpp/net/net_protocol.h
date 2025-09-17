@@ -25,9 +25,13 @@ namespace ngl
 		net_protocol& operator=(const net_protocol&) = delete;
 
 	protected:
-		struct impl_net_protocol;
-		ngl::impl<impl_net_protocol>	m_impl_net_protocol;
-		int8_t							m_index;
+		i16_port				m_port;											// 服务器监听端口号
+		i32_threadsize			m_socketthreadnum;								// socket 接收数据线程数
+		bpool					m_pool;
+		bool					m_outernet;									    // 是否允许外网连接
+		std::shared_mutex		m_mutex;
+		std::list<pack>			m_packlist;
+		int8_t					m_index;
 
 		net_protocol(int8_t aindex);
 
