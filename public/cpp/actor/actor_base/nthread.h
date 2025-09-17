@@ -13,8 +13,13 @@ namespace ngl
 		nthread(const nthread&) = delete;
 		nthread& operator=(const nthread&) = delete;
 
-		struct impl_nthread;
-		ngl::impl<impl_nthread> m_impl_actor_thread;
+		i32_threadid		m_id;
+		ptractor			m_actor;
+		bool				m_isactivity;
+		ngl::thread			m_thread;
+		std::shared_mutex	m_mutex;
+		ngl::sem			m_sem;
+
 	public:
 		nthread(i32_threadid aid);
 		// # ·µ»ØÏß³Ìid

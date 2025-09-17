@@ -3,86 +3,53 @@
 
 namespace ngl
 {
-	struct nthread::impl_nthread
+	nthread::nthread(i32_threadid aid) :
+		m_id(aid),
+		m_actor(nullptr),
+		m_isactivity(false),
+		m_thread(&nthread::run, this)
 	{
-		impl_nthread() = delete;
-		impl_nthread(const impl_nthread&) = delete;
-		impl_nthread& operator=(const impl_nthread&) = delete;
-
-		i32_threadid		m_id;
-		ptractor			m_actor;
-		bool				m_isactivity;
-		ngl::thread			m_thread;
-		std::shared_mutex	m_mutex;
-		ngl::sem			m_sem;
-
-		inline impl_nthread(i32_threadid aid, nthread* athread) :
-			m_id(aid),
-			m_actor(nullptr),
-			m_isactivity(false),
-			m_thread(&nthread::run, athread)
-		{}
-
-		inline bool isactivity()
-		{
-			monopoly_shared_lock(m_mutex);
-			return m_isactivity;
-		}
-
-		inline void push(ptractor& aactor)
-		{
-			monopoly_shared_lock(m_mutex);
-			m_actor = aactor;
-			m_isactivity = false;
-			m_sem.post();
-		}
-
-		inline void run(nthread* athread)
-		{
-			ptractor lpactor = nullptr;
-			while (true)
-			{
-				m_sem.wait();
-				{
-					monopoly_shared_lock(m_mutex);
-					lpactor = m_actor;
-				}
-				if (lpactor != nullptr && !lpactor->list_empty())
-				{
-					lpactor->actor_handle(m_id);
-					{
-						monopoly_shared_lock(m_mutex);
-						m_actor = nullptr;
-						m_isactivity = false;
-					}
-					actor_manage::instance().push(lpactor, athread);
-				}
-			}
-		}
-	};
-
-	nthread::nthread(i32_threadid aid)
-	{
-		m_impl_actor_thread.make_unique(aid, this);
 	}
 
 	i32_threadid nthread::id()
 	{
-		return m_impl_actor_thread()->m_id;
+		return m_id;
 	}
 
 	bool nthread::isactivity()
 	{
-		return m_impl_actor_thread()->isactivity();
+		monopoly_shared_lock(m_mutex);
+		return m_isactivity;
 	}
 
 	void nthread::push(ptractor aactor)
 	{
-		m_impl_actor_thread()->push(aactor);
+		monopoly_shared_lock(m_mutex);
+		m_actor = aactor;
+		m_isactivity = false;
+		m_sem.post();
 	}
 
 	void nthread::run()
 	{
-		m_impl_actor_thread()->run(this);
+		ptractor lpactor = nullptr;
+		while (true)
+		{
+			m_sem.wait();
+			{
+				monopoly_shared_lock(m_mutex);
+				lpactor = m_actor;
+			}
+			if (lpactor != nullptr && !lpactor->list_empty())
+			{
+				lpactor->actor_handle(m_id);
+				{
+					monopoly_shared_lock(m_mutex);
+					m_actor = nullptr;
+					m_isactivity = false;
+				}
+				actor_manage::instance().push(lpactor, this);
+			}
+		}
 	}
 }//namespace ngl
