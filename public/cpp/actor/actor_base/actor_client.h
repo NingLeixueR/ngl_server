@@ -21,8 +21,8 @@ namespace ngl
 		actor_client(const actor_client&) = delete;
 		actor_client& operator=(const actor_client&) = delete;
 
-		struct impl_actor_client;
-		ngl::impl<impl_actor_client> m_impl_actor_client;
+		std::map<i32_serverid, std::list<std::function<void()>>>	m_connectfun;			// 连接[指定服务器]成功后执行
+		std::set<i32_serverid>										m_connectserverid;		// 已连接的服务器id
 
 		actor_client();
 		virtual ~actor_client();
